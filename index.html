@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>היכל החכמה</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="home" class="overlay">
+        <button class="real-gold-btn" onclick="enterHall()">כניסה להיכל</button>
+    </div>
+    
+    <div id="dash" class="dashboard" style="display:none;">
+        <h1 style="color:var(--gold); margin-bottom:40px;">היכל החכמה</h1>
+        <div class="grid">
+            <div class="card" onclick="location.href='myseal.html'">
+                <h3>חותמות ותהילים</h3>
+            </div>
+            <div class="card" onclick="alert('בקרוב...')">
+                <h3>נומרולוגיה יהודית</h3>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function enterHall() {
+            document.getElementById('home').style.display = 'none';
+            document.getElementById('dash').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

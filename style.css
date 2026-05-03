@@ -1,0 +1,72 @@
+:root {
+    --gold: #d4af37;
+    --glass: rgba(15, 15, 15, 0.95);
+}
+
+body {
+    margin: 0;
+    background: #000;
+    font-family: system-ui, sans-serif;
+    direction: rtl;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.4)), url('IMG_5068.PNG') no-repeat center center;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 95px;
+    z-index: 1000;
+}
+
+.real-gold-btn {
+    background: linear-gradient(135deg, #e8c84a, #b8920a, #e8c84a);
+    color: #1a0800;
+    border: 2px solid #7a5c00;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 1.4rem;
+    padding: 12px 55px;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+    transform: translateX(14%);
+    transition: 0.2s;
+    white-space: nowrap;
+}
+
+.real-gold-btn:active {
+    transform: translateX(14%) scale(0.95);
+}
+
+.dashboard {
+    padding: 60px 20px;
+    text-align: center;
+    color: white;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.card {
+    background: var(--glass);
+    border: 1px solid var(--gold);
+    border-radius: 20px;
+    padding: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.card h3 { color: var(--gold); margin: 0; }
+.card:hover { transform: translateY(-5px); box-shadow: 0 0 20px rgba(212,175,55,0.2); }
