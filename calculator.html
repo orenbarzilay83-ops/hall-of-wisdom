@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>היכל החכמה - מחשבון</title>
+</head>
+<body class="calc-page">
+    <div class="dashboard-container">
+        <h1 class="gold-title">מערכת ייעוץ ונומרולוגיה</h1>
+        
+        <div class="card">
+            <input type="text" id="userName" placeholder="הזן שם מלא...">
+            <input type="date" id="birthDate">
+            <button class="action-btn" onclick="runAnalysis()">נתח נתונים מהספרייה</button>
+        </div>
+
+        <div id="output"></div>
+
+        <div class="grid-nav">
+            <button class="nav-btn" onclick="location.href='myseal.html'">תהילים וחותמות</button>
+            <button class="nav-btn" onclick="location.href='index.html'">חזרה למסך ראשי</button>
+        </div>
+    </div>
+    <script src="library.js"></script>
+    <script src="logic.js"></script>
+</body>
+</html>
