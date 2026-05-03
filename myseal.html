@@ -6,30 +6,36 @@
     <link rel="stylesheet" href="style.css">
     <title>חותמות ותהילים</title>
 </head>
-<body style="background:#000; color:white; padding:20px;">
-    <div style="max-width:600px; margin:0 auto; text-align:center;">
-        <h1 style="color:var(--gold);">חותמות ותהילים</h1>
+<body class="dashboard-body">
+    <div class="container">
+        <h1 class="gold-title">חותמות ותהילים</h1>
         
-        <div class="card" style="margin-bottom:20px;">
+        <div class="card">
             <h3>הפסוק האישי שלך</h3>
             <div id="psalmOutput">
-                <button class="real-gold-btn" style="transform:none; font-size:1rem;" onclick="findPsalm()">גלה את הפסוק שלי</button>
+                <button class="real-gold-btn-small" onclick="findPsalm()">גלה פסוק מהספר המלא</button>
             </div>
         </div>
 
         <div class="card">
-            <h3>חותם המזל היומי</h3>
-            <p id="daySeal">מחשב חותם לפי יום בשבוע...</p>
+            <h3>מזל היום</h3>
+            <div id="dayInfo">
+                <p id="dayName"></p>
+                <p id="dayLeader"></p>
+            </div>
         </div>
 
-        <button onclick="location.href='index.html'" class="real-gold-btn" style="transform:none; margin-top:30px; width:100%;">חזרה להיכל</button>
+        <button onclick="location.href='index.html'" class="real-gold-btn" style="margin-top:20px; width:100%;">חזרה להיכל</button>
     </div>
 
-    <script src="psalms.js"></script>
+    <script src="logic.js"></script>
     <script>
-        const days = ['ראשון - חותם השמש','שני - חותם הירח','שלישי - חותם המאדים','רביעי - חותם הכוכב','חמישי - חותם הצדק','שישי - חותם הנוגה','שבת - חותם השבתאי'];
-        const today = new Date().getDay();
-        document.getElementById('daySeal').innerText = days[today];
+        // הפעלה ראשונית של נתוני היום
+        window.onload = () => {
+            const days = ['ראשון - אברהם (חסד)', 'שני - יצחק (גבורה)', 'שלישי - יעקב (תפארת)', 'רביעי - משה (נצח)', 'חמישי - אהרן (הוד)', 'שישי - יוסף (יסוד)', 'שבת - דוד (מלכות)'];
+            document.getElementById('dayName').innerText = days[new Date().getDay()];
+        };
     </script>
+<script src="library.js"></script>
 </body>
 </html>
