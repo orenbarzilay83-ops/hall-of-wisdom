@@ -8,21 +8,21 @@ body {
     background: #000;
     font-family: system-ui, sans-serif;
     direction: rtl;
+    overflow-x: hidden;
 }
 
 .overlay {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 100vw;
     height: 100vh;
-    background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.4)), url('IMG_5068.PNG') no-repeat center center;
+    background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.3)), url('./IMG_5068.PNG') no-repeat center center;
     background-size: cover;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
-    padding-bottom: 95px;
     z-index: 1000;
 }
 
@@ -32,41 +32,35 @@ body {
     border: 2px solid #7a5c00;
     border-radius: 50px;
     font-weight: bold;
-    font-size: 1.4rem;
-    padding: 12px 55px;
+    /* הגדלתי את הפונט */
+    font-size: 1.6rem; 
+    /* הגדלתי משמעותית את ה-padding כדי שימלא את המסגרת */
+    padding: 15px 70px; 
     cursor: pointer;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.7);
-    transform: translateX(14%);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    /* התאמת גובה מעל התחתית */
+    margin-bottom: 8.5vh; 
     transition: 0.2s;
     white-space: nowrap;
+    position: relative;
+    /* ביטול ההזזה הצידית - המרכוז עכשיו טבעי */
+    transform: none; 
 }
 
 .real-gold-btn:active {
-    transform: translateX(14%) scale(0.95);
+    transform: scale(0.95);
 }
 
-.dashboard {
-    padding: 60px 20px;
-    text-align: center;
-    color: white;
+/* התאמה למצב רוחב (Landscape) כדי שלא יבלוט מדי */
+@media (orientation: landscape) {
+    .real-gold-btn {
+        margin-bottom: 5.5vh;
+        padding: 12px 60px;
+        font-size: 1.4rem;
+    }
 }
 
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-.card {
-    background: var(--glass);
-    border: 1px solid var(--gold);
-    border-radius: 20px;
-    padding: 50px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.card h3 { color: var(--gold); margin: 0; }
-.card:hover { transform: translateY(-5px); box-shadow: 0 0 20px rgba(212,175,55,0.2); }
+.dashboard { padding: 40px 20px; text-align: center; color: white; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; max-width: 900px; margin: 0 auto; }
+.card { background: var(--glass); border: 1px solid var(--gold); border-radius: 20px; padding: 50px; cursor: pointer; }
+.card h3 { color: var(--gold); }
