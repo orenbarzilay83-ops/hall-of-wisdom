@@ -2,12 +2,34 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>חותמות ותהילים</title>
 </head>
-<body style="padding:40px; color:white; text-align:center;">
-    <h1>חותמות ותהילים</h1>
-    <p>הדף בבנייה...</p>
-    <button onclick="location.href='index.html'" class="real-gold-btn" style="transform:none; margin-top:30px;">חזרה</button>
+<body style="background:#000; color:white; padding:20px;">
+    <div style="max-width:600px; margin:0 auto; text-align:center;">
+        <h1 style="color:var(--gold);">חותמות ותהילים</h1>
+        
+        <div class="card" style="margin-bottom:20px;">
+            <h3>הפסוק האישי שלך</h3>
+            <div id="psalmOutput">
+                <button class="real-gold-btn" style="transform:none; font-size:1rem;" onclick="findPsalm()">גלה את הפסוק שלי</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>חותם המזל היומי</h3>
+            <p id="daySeal">מחשב חותם לפי יום בשבוע...</p>
+        </div>
+
+        <button onclick="location.href='index.html'" class="real-gold-btn" style="transform:none; margin-top:30px; width:100%;">חזרה להיכל</button>
+    </div>
+
+    <script src="psalms.js"></script>
+    <script>
+        const days = ['ראשון - חותם השמש','שני - חותם הירח','שלישי - חותם המאדים','רביעי - חותם הכוכב','חמישי - חותם הצדק','שישי - חותם הנוגה','שבת - חותם השבתאי'];
+        const today = new Date().getDay();
+        document.getElementById('daySeal').innerText = days[today];
+    </script>
 </body>
 </html>
