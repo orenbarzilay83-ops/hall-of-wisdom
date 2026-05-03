@@ -1,10 +1,13 @@
 const library = {
-    cycles: `$(cat cyclesData 2>/dev/null)`,
-    days: `$(cat daysData 2>/dev/null)`,
-    dragon: `$(cat dragonData 2>/dev/null)`,
-    lifePath: `$(cat lifePathData 2>/dev/null)`,
-    missing: `$(cat missingNumbersData 2>/dev/null)`,
-    name: `$(cat nameData 2>/dev/null)`,
-    personalYear: `$(cat personalYearData 2>/dev/null)`,
-    pinnacles: `$(cat pinnacles\ challenges 2>/dev/null)`
+    gematria: typeof gematriaMap !== 'undefined' ? gematriaMap : {},
+    days: typeof daysData !== 'undefined' ? daysData : {},
+    lifePath: typeof lifePathData !== 'undefined' ? lifePathData : {},
+    name: typeof nameData !== 'undefined' ? nameData : {},
+    pinnacles: typeof pinnaclesData !== 'undefined' ? pinnaclesData : {},
+    challenges: typeof challengesData !== 'undefined' ? challengesData : {},
+    personalYear: typeof personalYearData !== 'undefined' ? personalYearData : {},
+    dragonHead: typeof dragonHeadData !== 'undefined' ? dragonHeadData : {},
+    dragonTail: typeof dragonTailData !== 'undefined' ? dragonTailData : {},
+    missing: typeof missingNumbersData !== 'undefined' ? missingNumbersData : {},
+    cycles: typeof cyclesData !== 'undefined' ? cyclesData : {}
 };

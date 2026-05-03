@@ -1,41 +1,203 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>חותמות ותהילים</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>חותמות ותהילים</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #1a1a2e; min-height: 100vh; padding: 20px 16px 40px; direction: rtl; text-align: right; }
+  h1 { text-align: center; color: #e0c97f; font-size: 1.4em; letter-spacing: 0.05em; margin-bottom: 24px; padding-top: 8px; }
+  .card { background: #16213e; border-radius: 18px; padding: 22px 18px; margin-bottom: 22px; border: 1px solid #0f3460; box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+  .card-title { color: #e0c97f; font-size: 1.15em; font-weight: bold; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid #0f3460; display: flex; align-items: center; gap: 8px; }
+  .badge { background: #e0c97f; color: #1a1a2e; border-radius: 50%; width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.85em; font-weight: 900; flex-shrink: 0; }
+  label { display: block; color: #a0aec0; font-size: 1em; font-weight: bold; margin-bottom: 6px; margin-top: 14px; }
+  input, textarea, select { width: 100%; padding: 14px; border: 1.5px solid #0f3460; border-radius: 12px; font-size: 20px; font-weight: bold; background: #0f3460; color: #e2e8f0; direction: rtl; outline: none; transition: border-color 0.2s; -webkit-appearance: none; appearance: none; }
+  input:focus, textarea:focus, select:focus { border-color: #e0c97f; }
+  select option { background: #0f3460; color: #e2e8f0; }
+  .date-row { display: flex; gap: 8px; }
+  .date-row select { flex: 1; text-align: center; }
+  textarea { height: 150px; resize: none; font-size: 16px; font-weight: normal; line-height: 1.6; }
+  ::placeholder { color: #4a5568; }
+  .btn { width: 100%; border: none; padding: 18px; border-radius: 14px; font-size: 19px; font-weight: bold; cursor: pointer; margin-top: 18px; letter-spacing: 0.03em; transition: opacity 0.15s, transform 0.1s; -webkit-tap-highlight-color: transparent; }
+  .btn:active { opacity: 0.85; transform: scale(0.98); }
+  .btn-gold { background: linear-gradient(135deg, #e0c97f, #c8a84b); color: #1a1a2e; }
+  .btn-blue { background: linear-gradient(135deg, #4a9eff, #1a73e8); color: white; }
+  .btn-back { background: transparent; border: 1.5px solid #e0c97f; color: #e0c97f; margin-top: 10px; font-size: 15px; padding: 12px; }
+  .btn-clear { background: transparent; border: 1.5px solid #4a5568; color: #718096; margin-top: 10px; font-size: 15px; padding: 12px; }
+  .result-a { display: none; margin-top: 16px; background: #0f3460; border-radius: 12px; padding: 16px; text-align: center; }
+  .psalm-number { font-size: 3em; font-weight: 900; color: #e0c97f; line-height: 1.1; }
+  .psalm-label { color: #a0aec0; font-size: 0.9em; margin-top: 4px; }
+  .total-sum { color: #718096; font-size: 0.82em; margin-top: 8px; }
+  .result-b { display: none; margin-top: 16px; }
+  .stats-row { display: flex; gap: 10px; margin-bottom: 14px; }
+  .stat-box { flex: 1; background: #0f3460; border-radius: 12px; padding: 12px 8px; text-align: center; }
+  .stat-val { font-size: 1.6em; font-weight: 900; color: #e0c97f; }
+  .stat-lbl { font-size: 0.75em; color: #718096; margin-top: 2px; }
+  .seal-wrap { background: #0f3460; border-radius: 14px; padding: 14px; overflow-x: auto; }
+  .seal-title { color: #a0aec0; font-size: 0.82em; margin-bottom: 10px; text-align: center; }
+  table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  td { border: 1.5px solid #1a3a6e; height: 52px; text-align: center; font-weight: bold; font-size: 15px; color: #e2e8f0; background: #16213e; }
+  td.center-x { background: #1a1a2e; color: #4a5568; font-size: 1.2em; }
+  td.cell-s { background: #2d4a22; color: #68d391; border-color: #48bb78; }
+  td.cell-high { background: #2a2000; color: #e0c97f; }
+  .g-total { background: #0f3460; border-radius: 10px; padding: 10px 14px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .g-total-lbl { color: #a0aec0; font-size: 0.88em; }
+  .g-total-val { color: #e0c97f; font-weight: 900; font-size: 1.2em; }
+  .keys-row { display: flex; gap: 10px; margin-bottom: 12px; }
+  .key-box { flex: 1; background: #0f3460; border-radius: 10px; padding: 10px; text-align: center; }
+  .key-val { font-size: 1.3em; font-weight: 900; color: #68d391; }
+  .key-lbl { font-size: 0.75em; color: #718096; margin-top: 2px; }
+</style>
 </head>
-<body class="dashboard-body">
-    <div class="container">
-        <h1 class="gold-title">חותמות ותהילים</h1>
-        
-        <div class="card">
-            <h3>הפסוק האישי שלך</h3>
-            <div id="psalmOutput">
-                <button class="real-gold-btn-small" onclick="findPsalm()">גלה פסוק מהספר המלא</button>
-            </div>
-        </div>
+<body>
 
-        <div class="card">
-            <h3>מזל היום</h3>
-            <div id="dayInfo">
-                <p id="dayName"></p>
-                <p id="dayLeader"></p>
-            </div>
-        </div>
+<h1>✦ חותמות ותהילים ✦</h1>
 
-        <button onclick="location.href='index.html'" class="real-gold-btn" style="margin-top:20px; width:100%;">חזרה להיכל</button>
+<div class="card">
+  <div class="card-title"><span class="badge">א</span> גילוי המזמור</div>
+  <label>שם פרטי:</label>
+  <input type="text" id="firstName">
+  <label>שם האב:</label>
+  <input type="text" id="fatherName">
+  <label>שם האם:</label>
+  <input type="text" id="motherName">
+  <label>שם העיר:</label>
+  <input type="text" id="cityName">
+  <label>תאריך לידה:</label>
+  <div class="date-row">
+    <select id="dobDay"><option value="">יום</option></select>
+    <select id="dobMonth"><option value="">חודש</option></select>
+    <select id="dobYear"><option value="">שנה</option></select>
+  </div>
+  <button class="btn btn-gold" onclick="runCalc1()">חשב</button>
+  <button class="btn btn-clear" onclick="clearCalc1()">🗑 נקה</button>
+  <div class="result-a" id="res1">
+    <div class="psalm-number" id="psalmNum">—</div>
+    <div class="psalm-label">מזמור תהילים שלך</div>
+    <div class="total-sum" id="totalSum"></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title"><span class="badge">ב</span> הפקת זמנים וחותם 5×5</div>
+  <label>הדבק כאן את המזמור (כולל א, ב, ג):</label>
+  <textarea id="psalmText" placeholder="הדבק פסוקים..."></textarea>
+  <button class="btn btn-blue" onclick="runCalc2()">חשב הכל והפק חותם</button>
+  <button class="btn btn-clear" onclick="clearCalc2()">🗑 נקה</button>
+  <div class="result-b" id="res2">
+    <div class="g-total">
+      <span class="g-total-lbl">גימטריה סופית</span>
+      <span class="g-total-val" id="outG">—</span>
     </div>
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-val" id="outDay">—</div><div class="stat-lbl">יום</div></div>
+      <div class="stat-box"><div class="stat-val" id="outHour">—</div><div class="stat-lbl">שעה</div></div>
+    </div>
+    <div class="keys-row">
+      <div class="key-box"><div class="key-val" id="outBase">—</div><div class="key-lbl">מפתח (Base)</div></div>
+      <div class="key-box"><div class="key-val" id="outJebra">—</div><div class="key-lbl">שבר (Jebra)</div></div>
+    </div>
+    <div class="seal-wrap">
+      <div class="seal-title">חותם 5×5</div>
+      <div id="outTable"></div>
+    </div>
+  </div>
+</div>
 
-    <script src="logic.js"></script>
-    <script>
-        // הפעלה ראשונית של נתוני היום
-        window.onload = () => {
-            const days = ['ראשון - אברהם (חסד)', 'שני - יצחק (גבורה)', 'שלישי - יעקב (תפארת)', 'רביעי - משה (נצח)', 'חמישי - אהרן (הוד)', 'שישי - יוסף (יסוד)', 'שבת - דוד (מלכות)'];
-            document.getElementById('dayName').innerText = days[new Date().getDay()];
-        };
-    </script>
-<script src="library.js"></script>
+<button class="btn btn-back" onclick="location.href='calculator.html'">➔ חזרה למחשבון</button>
+
+<script>
+const gMap = {'א':1,'ב':2,'ג':3,'ד':4,'ה':5,'ו':6,'ז':7,'ח':8,'ט':9,'י':10,'כ':20,'ך':20,'ל':30,'מ':40,'ם':40,'נ':50,'ן':50,'ס':60,'ע':70,'פ':80,'ף':80,'צ':90,'ץ':90,'ק':100,'ר':200,'ש':300,'ת':400};
+const dayNames = ['שבת','ראשון','שני','שלישי','רביעי','חמישי','שישי'];
+
+(function() {
+  var dayEl = document.getElementById('dobDay');
+  var monEl = document.getElementById('dobMonth');
+  var yearEl = document.getElementById('dobYear');
+  for (var i = 1; i <= 31; i++) dayEl.innerHTML += '<option value="' + i + '">' + i + '</option>';
+  var months = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+  for (var i = 0; i < months.length; i++) monEl.innerHTML += '<option value="' + (i+1) + '">' + months[i] + '</option>';
+  var cur = new Date().getFullYear();
+  for (var y = cur; y >= 1920; y--) yearEl.innerHTML += '<option value="' + y + '">' + y + '</option>';
+})();
+
+function runCalc1() {
+  var names = document.getElementById('firstName').value + document.getElementById('fatherName').value + document.getElementById('motherName').value + document.getElementById('cityName').value;
+  var day = parseInt(document.getElementById('dobDay').value) || 0;
+  var month = parseInt(document.getElementById('dobMonth').value) || 0;
+  var year = parseInt(document.getElementById('dobYear').value) || 0;
+  var nG = 0;
+  for (var i = 0; i < names.length; i++) nG += gMap[names[i]] || 0;
+  var total = nG + day + month + year;
+  var psalm = (total % 150) || 150;
+  document.getElementById('psalmNum').innerText = psalm;
+  document.getElementById('totalSum').innerText = 'סכום כולל: ' + total;
+  document.getElementById('res1').style.display = 'block';
+}
+
+function clearCalc1() {
+  document.getElementById('firstName').value = '';
+  document.getElementById('fatherName').value = '';
+  document.getElementById('motherName').value = '';
+  document.getElementById('cityName').value = '';
+  document.getElementById('dobDay').selectedIndex = 0;
+  document.getElementById('dobMonth').selectedIndex = 0;
+  document.getElementById('dobYear').selectedIndex = 0;
+  document.getElementById('res1').style.display = 'none';
+}
+
+function cleanPsalm(raw) {
+  var t = raw;
+  t = t.replace(/[\[{(]\s*[\u05D0-\u05EA]\s*[\]})]/g, ' ');
+  t = t.replace(/[^\u05D0-\u05EA\s]/g, ' ');
+  var words = t.trim().split(/\s+/);
+  var result = '';
+  for (var i = 0; i < words.length; i++) { if (words[i].length >= 2) result += words[i]; }
+  return result;
+}
+
+function runCalc2() {
+  var raw = document.getElementById('psalmText').value;
+  var cleaned = cleanPsalm(raw);
+  var g = 0;
+  for (var i = 0; i < cleaned.length; i++) g += gMap[cleaned[i]] || 0;
+  var base = Math.floor(g / 65);
+  var jebra = g % 65;
+  document.getElementById('outG').innerText = g;
+  document.getElementById('outDay').innerText = dayNames[g % 7];
+  document.getElementById('outHour').innerText = g % 24;
+  document.getElementById('outBase').innerText = base;
+  document.getElementById('outJebra').innerText = jebra;
+  var layout = [[15,17,22,2,9],[1,8,14,21,'S'],[20,25,0,7,13],[6,12,19,24,4],[23,3,10,11,18]];
+  function cellVal(n) {
+    if (n === 'S') return (base * 21) + jebra;
+    if (n === 0) return null;
+    if (n <= 20) return base * n;
+    return (base * n) + jebra;
+  }
+  var h = '<table>';
+  for (var r = 0; r < layout.length; r++) {
+    h += '<tr>';
+    for (var c = 0; c < layout[r].length; c++) {
+      var cell = layout[r][c];
+      if (cell === 0) h += '<td class="center-x">✕</td>';
+      else if (cell === 'S') h += '<td class="cell-s">' + cellVal('S') + '</td>';
+      else if (cell >= 21) h += '<td class="cell-high">' + cellVal(cell) + '</td>';
+      else h += '<td>' + cellVal(cell) + '</td>';
+    }
+    h += '</tr>';
+  }
+  h += '</table>';
+  document.getElementById('outTable').innerHTML = h;
+  document.getElementById('res2').style.display = 'block';
+}
+
+function clearCalc2() {
+  document.getElementById('psalmText').value = '';
+  document.getElementById('res2').style.display = 'none';
+  document.getElementById('outTable').innerHTML = '';
+}
+</script>
 </body>
 </html>
