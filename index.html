@@ -14,65 +14,57 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-top: 40vh;
 }
 
 .login-box {
   background: rgba(20, 12, 4, 0.82);
   border: 1.5px solid rgba(224,201,127,.45);
-  border-radius: 20px;
-  padding: 28px 24px;
-  width: 320px;
+  border-radius: 18px;
+  padding: 22px 20px;
+  width: 240px;
   backdrop-filter: blur(8px);
   box-shadow: 0 8px 40px rgba(0,0,0,.6);
   text-align: center;
 }
 
-.login-title {
-  color: #e0c97f;
-  font-size: 1rem;
-  font-weight: 900;
-  letter-spacing: .06em;
-  margin-bottom: 20px;
-}
-
 .login-label {
   display: block;
   color: #a08c60;
-  font-size: .78rem;
+  font-size: .75rem;
   font-weight: 700;
-  margin: 10px 0 4px;
-  text-align: center;
+  margin: 8px 0 3px;
 }
 
 .login-input {
   width: 100%;
-  padding: 11px 14px;
+  padding: 9px 10px;
   background: rgba(255,255,255,.07);
   border: 1.5px solid rgba(224,201,127,.3);
-  border-radius: 11px;
+  border-radius: 9px;
   color: #f0e8d0;
-  font-size: .95rem;
+  font-size: .9rem;
   font-family: inherit;
   outline: none;
   text-align: center;
   transition: border-color .2s;
+  maxlength: 10;
 }
 .login-input:focus { border-color: #e0c97f; }
 .login-input::placeholder { color: #6a5c40; }
 
 .login-btn {
   width: 100%;
-  margin-top: 18px;
-  padding: 13px;
+  margin-top: 14px;
+  padding: 11px;
   background: linear-gradient(135deg, #e0c97f, #c8a84b);
   color: #1a0e00;
   border: none;
-  border-radius: 12px;
-  font-size: 1rem;
+  border-radius: 10px;
+  font-size: .95rem;
   font-weight: 900;
   cursor: pointer;
   font-family: inherit;
-  letter-spacing: .04em;
   box-shadow: 0 4px 20px rgba(200,168,75,.35);
   transition: transform .15s;
 }
@@ -81,25 +73,21 @@ body {
 .error-msg {
   color: #ff8080;
   text-align: center;
-  font-size: .82rem;
-  margin-top: 10px;
+  font-size: .78rem;
+  margin-top: 8px;
   display: none;
 }
 </style>
 </head>
 <body>
-
 <div class="login-box">
-  <div class="login-title">✦ היכל החכמה ✦</div>
-
   <label class="login-label">שם משתמש</label>
-  <input class="login-input" type="text" id="username" placeholder="הזן שם משתמש...">
+  <input class="login-input" type="text" id="username" placeholder="שם משתמש" maxlength="30">
 
   <label class="login-label">סיסמא</label>
-  <input class="login-input" type="password" id="password" placeholder="הזן סיסמא...">
+  <input class="login-input" type="password" id="password" placeholder="סיסמא" maxlength="10">
 
   <button class="login-btn" onclick="doLogin()">כניסה להיכל ←</button>
-
   <div class="error-msg" id="errMsg">שם משתמש או סיסמא שגויים</div>
 </div>
 
