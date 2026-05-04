@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
-<title>היכל החכמה - מחשבון</title>
+<title>היכל החכמה</title>
 </head>
 <body class="calc-page">
 
@@ -15,44 +15,46 @@
     ✦ היכל החכמה
     <button class="side-menu-close" onclick="closeMenu()">✕</button>
   </div>
-
   <div class="menu-section">
     <div class="menu-section-title">מחשבוני נומרולוגיה</div>
-    <button class="menu-item active" onclick="showPage('numerology'); closeMenu()">✦ מחשבון נומרולוגי</button>
+    <button class="menu-item" onclick="showPage('numerology')">✦ מערכת ייעוץ נומרולוגית</button>
     <button class="menu-item disabled">גורל החולה <span class="soon">בקרוב</span></button>
     <button class="menu-item disabled">גורל הזיווג <span class="soon">בקרוב</span></button>
     <button class="menu-item disabled">גורל המעוברת <span class="soon">בקרוב</span></button>
     <button class="menu-item disabled">גורל החול <span class="soon">בקרוב</span></button>
   </div>
-
+  <div class="menu-section">
+    <div class="menu-section-title">תהילים וגימטריה</div>
+    <button class="menu-item" onclick="showPage('psalms')">📖 מחשבון פרק התהילים האישי</button>
+    <button class="menu-item" onclick="showPage('gematria')">🔢 מחשבון גימטריה</button>
+  </div>
   <div class="menu-section">
     <div class="menu-section-title">כלים נוספים</div>
-    <button class="menu-item" onclick="showPage('diary'); closeMenu()">📅 יומן לקוחות</button>
-    <button class="menu-item" onclick="location.href='myseal.html'; closeMenu()">📖 תהילים וחותמות</button>
+    <button class="menu-item" onclick="showPage('diary')">📅 יומן לקוחות</button>
     <button class="menu-item disabled">🗺 מפה אסטרולוגית <span class="soon">בקרוב</span></button>
     <button class="menu-item disabled">🙏 מקבץ תפילות <span class="soon">בקרוב</span></button>
   </div>
-
   <div class="menu-section">
-    <button class="menu-item" onclick="location.href='index.html'">🏠 דף הבית</button>
+    <button class="menu-item" onclick="location.href='index.html'">🚪 יציאה</button>
   </div>
 </div>
 
-<!-- תפריט עליון -->
+<!-- פס עליון -->
 <div class="top-bar">
   <button class="menu-btn" onclick="openMenu()">☰ תפריט</button>
   <div class="top-bar-title">✦ היכל החכמה</div>
   <div class="top-bar-time" id="topTime"></div>
 </div>
 
-
-  <div style="color:var(--muted); font-size:1rem; margin-bottom:40px;">מערכת ייעוץ ונומרולוגיה יהודית</div>
-  <button class="btn btn-gold" style="max-width:280px;margin:0 auto;" onclick="openMenu()">☰ פתח תפריט</button>
+<!-- דף ריק - ברירת מחדל -->
+<div id="page-home" class="dashboard-container" style="text-align:center; padding-top:120px;">
+  <div style="color:var(--gold-dark);font-size:2.5rem;">✦</div>
+  <div style="color:var(--muted);font-size:1rem;margin-top:12px;">בחר כלי מהתפריט</div>
 </div>
 
 <!-- דף נומרולוגיה -->
 <div id="page-numerology" class="dashboard-container fade-in" style="display:none">
-  <h1 class="gold-title">מערכת ייעוץ ונומרולוגיה</h1>
+  <h1 class="gold-title">מערכת ייעוץ נומרולוגית</h1>
   <div class="card">
     <div class="card-title"><span class="badge">א</span> פרטים אישיים</div>
     <label>שם מלא</label>
@@ -60,24 +62,30 @@
     <label>תאריך לידה</label>
     <input type="date" id="birthDate">
     <button class="btn btn-gold" onclick="runAnalysis()">נתח נתונים ←</button>
-    <button class="btn btn-clear" onclick="clearNumerology()">🗑 נקה מחשבון</button>
+    <button class="btn btn-clear" onclick="clearNumerology()">🗑 נקה</button>
   </div>
   <div id="output"></div>
-  <div class="bottom-nav">
-    <button class="btn btn-outline" onclick="location.href='myseal.html'">📖 תהילים וחותמות</button>
-    <button class="btn btn-outline" onclick="openMenu()">☰ תפריט ראשי</button>
-  </div>
+</div>
+
+<!-- דף תהילים -->
+<div id="page-psalms" class="dashboard-container fade-in" style="display:none">
+  <h1 class="gold-title">📖 מחשבון פרק התהילים האישי</h1>
+  <div style="text-align:center;color:var(--muted);padding:40px;">בקרוב...</div>
+</div>
+
+<!-- דף גימטריה -->
+<div id="page-gematria" class="dashboard-container fade-in" style="display:none">
+  <h1 class="gold-title">🔢 מחשבון גימטריה</h1>
+  <div style="text-align:center;color:var(--muted);padding:40px;">בקרוב...</div>
 </div>
 
 <!-- דף יומן -->
 <div id="page-diary" class="dashboard-container fade-in" style="display:none">
   <h1 class="gold-title">📅 יומן לקוחות</h1>
-
   <div class="datetime-bar">
     <div class="date-big" id="diaryDate"></div>
     <div class="time-big" id="diaryTime"></div>
   </div>
-
   <div class="card">
     <div class="card-title">הוספת פגישה</div>
     <label>שם לקוח</label>
@@ -90,34 +98,29 @@
     <input type="text" id="apptNote" placeholder="הערות...">
     <button class="btn btn-gold" onclick="addAppt()">+ הוסף פגישה</button>
   </div>
-
   <div class="card">
     <div class="card-title">פגישות קרובות</div>
     <div id="apptList"></div>
   </div>
-
-  <button class="btn btn-outline" onclick="openMenu()">☰ תפריט ראשי</button>
 </div>
 
 <script src="data.js"></script>
 <script src="library.js"></script>
 <script src="logic.js"></script>
 <script>
-// ── שעון ──
 function updateClock() {
   const now = new Date();
   const days = ['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
   const d = now.toLocaleDateString('he-IL');
-  const t = now.toLocaleTimeString('he-IL', {hour:'2-digit',minute:'2-digit'});
-  const day = days[now.getDay()];
-  document.getElementById('topTime').textContent = 'יום ' + day + ' | ' + d + ' | ' + t;
-  document.getElementById('diaryDate').textContent = 'יום ' + day + ', ' + d;
-  document.getElementById('diaryTime').textContent = t;
+  const t = now.toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('topTime').textContent = 'יום '+days[now.getDay()]+' | '+d+' | '+t;
+  const dd = document.getElementById('diaryDate');
+  const dt = document.getElementById('diaryTime');
+  if(dd) dd.textContent = 'יום '+days[now.getDay()]+', '+d;
+  if(dt) dt.textContent = t;
 }
-setInterval(updateClock, 1000);
-updateClock();
+setInterval(updateClock,1000); updateClock();
 
-// ── תפריט ──
 function openMenu() {
   document.getElementById('sideMenu').classList.add('open');
   document.getElementById('menuOverlay').classList.add('open');
@@ -127,59 +130,48 @@ function closeMenu() {
   document.getElementById('menuOverlay').classList.remove('open');
 }
 
-// ── דפים ──
 function showPage(name) {
-  document.querySelectorAll('.dashboard-container').forEach(p => p.style.display = 'none');
-  document.getElementById('page-' + name).style.display = 'block';
-  document.querySelectorAll('.menu-item').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.dashboard-container').forEach(p=>p.style.display='none');
+  document.getElementById('page-'+name).style.display='block';
+  document.querySelectorAll('.menu-item').forEach(b=>b.classList.remove('active'));
+  closeMenu();
 }
 
-// ── ניקוי נומרולוגיה ──
 function clearNumerology() {
-  document.getElementById('userName').value = '';
-  document.getElementById('birthDate').value = '';
-  document.getElementById('output').innerHTML = '';
+  document.getElementById('userName').value='';
+  document.getElementById('birthDate').value='';
+  document.getElementById('output').innerHTML='';
 }
 
-// ── יומן ──
 function loadAppts() {
-  const appts = JSON.parse(localStorage.getItem('appts') || '[]');
+  const appts = JSON.parse(localStorage.getItem('appts')||'[]');
   const list = document.getElementById('apptList');
-  if (appts.length === 0) {
-    list.innerHTML = '<div style="color:var(--muted);text-align:center;padding:16px;">אין פגישות עדיין</div>';
-    return;
-  }
-  appts.sort((a,b) => (a.date+a.time) > (b.date+b.time) ? 1 : -1);
-  list.innerHTML = appts.map((a,i) => `
-    <div class="appt-item">
-      <div class="appt-info">
-        <div class="appt-name">${a.name}</div>
-        <div class="appt-time">${a.date} | ${a.time}${a.note ? ' | ' + a.note : ''}</div>
-      </div>
-      <button class="appt-del" onclick="delAppt(${i})">מחק</button>
-    </div>`).join('');
+  if(!list) return;
+  if(appts.length===0){list.innerHTML='<div style="color:var(--muted);text-align:center;padding:16px;">אין פגישות עדיין</div>';return;}
+  appts.sort((a,b)=>(a.date+a.time)>(b.date+b.time)?1:-1);
+  list.innerHTML=appts.map((a,i)=>'<div class="appt-item"><div class="appt-info"><div class="appt-name">'+a.name+'</div><div class="appt-time">'+a.date+' | '+a.time+(a.note?' | '+a.note:'')+'</div></div><button class="appt-del" onclick="delAppt('+i+')">מחק</button></div>').join('');
 }
 
 function addAppt() {
-  const name = document.getElementById('apptName').value.trim();
-  const date = document.getElementById('apptDate').value;
-  const time = document.getElementById('apptTime').value;
-  const note = document.getElementById('apptNote').value.trim();
-  if (!name || !date || !time) return alert('מלא שם, תאריך ושעה');
-  const appts = JSON.parse(localStorage.getItem('appts') || '[]');
-  appts.push({name, date, time, note});
-  localStorage.setItem('appts', JSON.stringify(appts));
-  document.getElementById('apptName').value = '';
-  document.getElementById('apptDate').value = '';
-  document.getElementById('apptTime').value = '';
-  document.getElementById('apptNote').value = '';
+  const name=document.getElementById('apptName').value.trim();
+  const date=document.getElementById('apptDate').value;
+  const time=document.getElementById('apptTime').value;
+  const note=document.getElementById('apptNote').value.trim();
+  if(!name||!date||!time) return alert('מלא שם, תאריך ושעה');
+  const appts=JSON.parse(localStorage.getItem('appts')||'[]');
+  appts.push({name,date,time,note});
+  localStorage.setItem('appts',JSON.stringify(appts));
+  document.getElementById('apptName').value='';
+  document.getElementById('apptDate').value='';
+  document.getElementById('apptTime').value='';
+  document.getElementById('apptNote').value='';
   loadAppts();
 }
 
 function delAppt(i) {
-  const appts = JSON.parse(localStorage.getItem('appts') || '[]');
-  appts.splice(i, 1);
-  localStorage.setItem('appts', JSON.stringify(appts));
+  const appts=JSON.parse(localStorage.getItem('appts')||'[]');
+  appts.splice(i,1);
+  localStorage.setItem('appts',JSON.stringify(appts));
   loadAppts();
 }
 
