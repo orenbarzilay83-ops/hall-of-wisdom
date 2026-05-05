@@ -62,6 +62,76 @@ function subBlock(label, num, text) {
 
 
 
+
+// ── פרק 12: זוגיות ──────────────────────────────────
+function calcCompatibility(p1day, p1month, p1year, p2day, p2month, p2year) {
+  // חישוב נתונים בסיסיים
+  const lp1 = reduceNum([...( String(p1day)+String(p1month)+String(p1year) )].reduce((a,b)=>+a+ +b,0));
+  const lp2 = reduceNum([...( String(p2day)+String(p2month)+String(p2year) )].reduce((a,b)=>+a+ +b,0));
+  const day1 = reduceSimple(p1day),   day2 = reduceSimple(p2day);
+  const mon1 = reduceSimple(p1month), mon2 = reduceSimple(p2month);
+  const yr1  = reduceSimple(digitSum(p1year)), yr2 = reduceSimple(digitSum(p2year));
+
+  const pinn1 = calcPinnacles(p1day,p1month,p1year,lp1).map(p=>p.num);
+  const pinn2 = calcPinnacles(p2day,p2month,p2year,lp2).map(p=>p.num);
+  const chall1 = calcChallenges(p1day,p1month,p1year).map(c=>c.num);
+  const chall2 = calcChallenges(p2day,p2month,p2year).map(c=>c.num);
+
+  // 1. התחברות נומרולוגית: מספרי יום+שביל גורל של הגבר בפסגות האישה
+  const p1ConnectsP2 = [day1, lp1].some(n => pinn2.includes(n));
+  const p2ConnectsSelf = [day2, lp2].some(n => pinn2.includes(n));
+  const p1ConnectsSelf = [day1, lp1].some(n => pinn1.includes(n));
+
+  // 2. יין ויאנג: יום=פנימי, חודש=מתווך, שנה=חיצוני
+  const yinYangMatch =
+    day1 === yr2  || yr1 === day2  ||  // פנימי א = חיצוני ב
+    day1 === day2 || mon1 === mon2 ||  // התאמה ישירה
+    lp1  === lp2  || day1 === lp2  || lp1 === day2;
+
+  // 3. סימני אזהרה במשבר זוגי
+  const warningPairs = ['2-7','7-2','4-2','6-4','5-6','6-5','5-4','4-5','5-2','1-2'];
+  const warnings1 = [], warnings2 = [];
+  pinn1.forEach((p,i) => {
+    const key = p+'-'+chall1[i];
+    if (warningPairs.includes(key)) warnings1.push({pinnacle: p, challenge: chall1[i], key});
+  });
+  pinn2.forEach((p,i) => {
+    const key = p+'-'+chall2[i];
+    if (warningPairs.includes(key)) warnings2.push({pinnacle: p, challenge: chall2[i], key});
+  });
+
+  // זיווג תיקון
+  const tikkun1 = pinn1.some((p,i) => (p===2&&chall1[i]===7)||(p===7&&chall1[i]===2));
+  const tikkun2 = pinn2.some((p,i) => (p===2&&chall2[i]===7)||(p===7&&chall2[i]===2));
+
+  // 4. עיתוי נכון לנישואין
+  const today = new Date();
+  const marriageYear1  = calcPersonalYear(p1day, p1month);
+  const marriageYear2  = calcPersonalYear(p2day, p2month);
+  const marriageMonth1 = calcPersonalMonth(p1day, p1month, today.getMonth()+1);
+  const marriageMonth2 = calcPersonalMonth(p2day, p2month, today.getMonth()+1);
+
+  // ציון התאמה כולל
+  let score = 0;
+  if (p1ConnectsP2)   score += 40;
+  if (yinYangMatch)   score += 30;
+  if (p2ConnectsSelf) score += 15;
+  if (p1ConnectsSelf) score += 15;
+
+  let level = score >= 70 ? 'חיבור חזק ✦' : score >= 40 ? 'חיבור בינוני' : 'חיבור חלש';
+
+  return {
+    lp1, lp2, day1, day2, mon1, mon2, yr1, yr2,
+    pinn1, pinn2, chall1, chall2,
+    p1ConnectsP2, p2ConnectsSelf, p1ConnectsSelf,
+    yinYangMatch, tikkun1, tikkun2,
+    warnings1, warnings2,
+    marriageYear1, marriageYear2,
+    marriageMonth1, marriageMonth2,
+    score, level
+  };
+}
+
 // ── פרק 7: חודש ויום אישי ──────────────────────────
 function calcPersonalMonth(day, month, targetMonth) {
   const py = reduceSimple(reduceSimple(day) + reduceSimple(month) + reduceSimple(digitSum(new Date().getFullYear())));
