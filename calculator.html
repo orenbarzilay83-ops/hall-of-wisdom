@@ -1,181 +1,640 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html dir="rtl" lang="he">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
-<title>היכל החכמה</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>היכל החכמה — נומרולוגיה</title>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+<script src="data.js"></script>
+<script src="library.js"></script>
+<script src="logic.js"></script>
+<style>
+:root {
+  --bg:       #07070f;
+  --surface:  #0f0f1a;
+  --card:     #141428;
+  --border:   #c9a84c33;
+  --gold:     #c9a84c;
+  --gold2:    #e8cc80;
+  --green:    #4caf88;
+  --blue:     #4a9eff;
+  --red:      #e06c6c;
+  --text:     #e8e0cc;
+  --muted:    #7a7090;
+  --font:     'Frank Ruhl Libre', serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;direction:rtl}
+
+/* ── STARS BACKGROUND ── */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, #c9a84c44 0%, transparent 100%),
+    radial-gradient(1px 1px at 80% 10%, #c9a84c33 0%, transparent 100%),
+    radial-gradient(1px 1px at 50% 70%, #c9a84c22 0%, transparent 100%),
+    radial-gradient(1px 1px at 10% 80%, #c9a84c33 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 60%, #c9a84c44 0%, transparent 100%);
+  pointer-events:none;z-index:0;
+}
+
+/* ── HEADER ── */
+header{
+  text-align:center;padding:48px 20px 32px;position:relative;z-index:1;
+  border-bottom:1px solid var(--border);
+  background:linear-gradient(to bottom,#0a0a1a,transparent);
+}
+.logo-symbol{font-size:2.2rem;color:var(--gold);letter-spacing:8px;margin-bottom:8px;display:block;opacity:.8}
+h1{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,6vw,3.8rem);
+  font-weight:300;letter-spacing:4px;color:var(--gold2);
+  text-shadow:0 0 40px #c9a84c44;margin-bottom:6px;
+}
+.subtitle{color:var(--muted);font-size:.9rem;letter-spacing:2px;font-weight:300}
+
+/* ── TABS ── */
+.tabs{
+  display:flex;justify-content:center;gap:4px;padding:24px 20px 0;
+  position:sticky;top:0;z-index:100;background:var(--bg);
+  border-bottom:1px solid var(--border);
+}
+.tab{
+  padding:10px 28px;border:1px solid transparent;border-radius:8px 8px 0 0;
+  cursor:pointer;font-family:var(--font);font-size:.9rem;color:var(--muted);
+  background:transparent;transition:all .3s;letter-spacing:1px;
+}
+.tab:hover{color:var(--gold);border-color:var(--border)}
+.tab.active{
+  color:var(--gold);background:var(--surface);
+  border-color:var(--border);border-bottom-color:var(--surface);
+}
+
+/* ── SECTIONS ── */
+.section{display:none;max-width:900px;margin:0 auto;padding:32px 16px 60px;position:relative;z-index:1}
+.section.active{display:block}
+
+/* ── FORM ── */
+.form-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:16px;
+  padding:32px;margin-bottom:32px;
+  box-shadow:0 0 60px #c9a84c0a;
+}
+.form-title{color:var(--gold);font-size:1rem;letter-spacing:2px;margin-bottom:24px;opacity:.8}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-group{display:flex;flex-direction:column;gap:8px}
+.form-group.full{grid-column:1/-1}
+label{color:var(--muted);font-size:.8rem;letter-spacing:1.5px}
+input{
+  background:#0a0a18;border:1px solid var(--border);border-radius:8px;
+  padding:12px 16px;color:var(--text);font-family:var(--font);font-size:1rem;
+  outline:none;transition:border-color .3s,box-shadow .3s;
+}
+input:focus{border-color:var(--gold);box-shadow:0 0 20px #c9a84c22}
+input[type="date"]{color-scheme:dark}
+
+.btn{
+  width:100%;padding:16px;margin-top:8px;
+  background:linear-gradient(135deg,#c9a84c,#a07830);
+  border:none;border-radius:10px;color:#0a0a0f;
+  font-family:var(--font);font-size:1.1rem;font-weight:700;
+  cursor:pointer;letter-spacing:2px;transition:all .3s;
+  box-shadow:0 4px 20px #c9a84c33;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px #c9a84c55}
+.btn:active{transform:translateY(0)}
+
+/* ── RESULTS ── */
+#output,#outputComp,#outputParent{animation:fadeUp .5s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+.section-label{
+  color:var(--muted);font-size:.72rem;letter-spacing:2.5px;
+  text-transform:uppercase;margin-bottom:8px;
+}
+.result-card{
+  background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:20px 22px;margin-bottom:14px;
+  transition:box-shadow .3s;
+}
+.result-card:hover{box-shadow:0 0 30px #c9a84c11}
+.card-header{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+.number-badge{
+  min-width:52px;height:52px;border-radius:12px;display:flex;align-items:center;
+  justify-content:center;font-size:1.7rem;font-weight:900;flex-shrink:0;
+  background:linear-gradient(135deg,#c9a84c22,#c9a84c11);
+  border:1px solid var(--border);color:var(--gold);
+}
+.card-meta{flex:1}
+.card-title{color:var(--gold2);font-size:1.05rem;font-weight:500;margin-bottom:2px}
+.card-subtitle{color:var(--muted);font-size:.78rem;letter-spacing:1px}
+.card-text{
+  color:#b0a8c0;font-size:.88rem;line-height:1.9;
+  border-top:1px solid var(--border);padding-top:12px;margin-top:4px;
+}
+
+/* ── SUB CARD ── */
+.sub-card{
+  background:#0f0f1e;border-radius:10px;padding:14px 16px;
+  margin-bottom:8px;border-right:3px solid var(--border);
+}
+.sub-header{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.sub-num{
+  width:32px;height:32px;border-radius:8px;display:flex;align-items:center;
+  justify-content:center;font-size:1.1rem;font-weight:900;flex-shrink:0;
+  background:var(--card);color:var(--gold);font-family:var(--font);
+}
+.sub-label{color:var(--muted);font-size:.78rem;letter-spacing:1px}
+.sub-text{color:#9090b0;font-size:.83rem;line-height:1.8}
+
+/* ── GRID SECTION ── */
+.group-card{
+  background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:20px 22px;margin-bottom:14px;
+}
+.group-title{color:var(--gold);font-size:.85rem;letter-spacing:2px;margin-bottom:16px;opacity:.9}
+
+/* ── PYTHAGORAS GRID ── */
+.pytha-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.pytha-cell{
+  background:#0a0a18;border:1px solid var(--border);border-radius:10px;
+  padding:14px 8px;text-align:center;transition:all .3s;
+}
+.pytha-cell.present{border-color:#c9a84c88;background:#c9a84c0a}
+.pytha-cell .pnum{font-size:1.6rem;font-weight:900;color:var(--muted)}
+.pytha-cell.present .pnum{color:var(--gold)}
+.pytha-cell .pname{font-size:.68rem;color:var(--muted);letter-spacing:.5px;margin-top:2px}
+.pytha-cell .pcount{font-size:.72rem;color:var(--green);margin-top:2px}
+.arrow-present{border-right-color:var(--gold)!important}
+.arrow-absent{border-right-color:#4a5568!important;opacity:.7}
+
+/* ── LETTERS ── */
+.letters-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.letter-card{
+  background:#0a0a18;border:1px solid var(--border);border-radius:10px;
+  padding:14px;transition:all .3s;
+}
+.letter-card:hover{border-color:var(--gold);background:#c9a84c08}
+.letter-sym{font-size:2rem;font-weight:900;color:var(--gold);margin-bottom:4px}
+.letter-name{font-size:.72rem;color:var(--muted);letter-spacing:1px;margin-bottom:6px}
+.letter-text{font-size:.75rem;color:#8080a0;line-height:1.7}
+
+/* ── COMPATIBILITY ── */
+.score-bar-wrap{margin:16px 0}
+.score-bar{height:8px;border-radius:4px;background:#1a1a2e;overflow:hidden}
+.score-fill{height:100%;border-radius:4px;background:linear-gradient(to left,var(--gold),var(--green));transition:width 1s ease}
+.score-label{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted);margin-top:6px}
+.badge{
+  display:inline-block;padding:4px 12px;border-radius:20px;font-size:.78rem;
+  font-weight:700;letter-spacing:1px;margin:4px 4px 4px 0;
+}
+.badge-gold{background:#c9a84c22;color:var(--gold);border:1px solid var(--border)}
+.badge-green{background:#4caf8822;color:var(--green);border:1px solid #4caf8844}
+.badge-red{background:#e06c6c22;color:var(--red);border:1px solid #e06c6c44}
+.badge-blue{background:#4a9eff22;color:var(--blue);border:1px solid #4a9eff44}
+
+/* ── DIVIDER ── */
+.divider{
+  text-align:center;color:var(--muted);font-size:.8rem;letter-spacing:3px;
+  margin:24px 0;position:relative;
+}
+.divider::before,.divider::after{
+  content:'';position:absolute;top:50%;width:calc(50% - 60px);height:1px;
+  background:var(--border);
+}
+.divider::before{right:0}.divider::after{left:0}
+
+/* ── RESPONSIVE ── */
+@media(max-width:600px){
+  .form-grid{grid-template-columns:1fr}
+  .tabs{gap:2px}
+  .tab{padding:8px 14px;font-size:.8rem}
+}
+</style>
 </head>
-<body class="calc-page">
+<body>
 
-<!-- תפריט צד -->
-<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
-<div class="side-menu" id="sideMenu">
-  <div class="side-menu-header">
-    ✦ היכל החכמה
-    <button class="side-menu-close" onclick="closeMenu()">✕</button>
-  </div>
-  <div class="menu-section">
-    <div class="menu-section-title">מחשבוני נומרולוגיה</div>
-    <button class="menu-item" onclick="showPage('numerology')">✦ מערכת ייעוץ נומרולוגית</button>
-    <button class="menu-item disabled">גורל החולה <span class="soon">בקרוב</span></button>
-    <button class="menu-item disabled">גורל הזיווג <span class="soon">בקרוב</span></button>
-    <button class="menu-item disabled">גורל המעוברת <span class="soon">בקרוב</span></button>
-    <button class="menu-item disabled">גורל החול <span class="soon">בקרוב</span></button>
-  </div>
-  <div class="menu-section">
-    <div class="menu-section-title">תהילים וגימטריה</div>
-    <button class="menu-item" onclick="showPage('psalms')">📖 מחשבון פרק התהילים האישי</button>
-    <button class="menu-item" onclick="showPage('gematria')">🔢 מחשבון גימטריה</button>
-  </div>
-  <div class="menu-section">
-    <div class="menu-section-title">כלים נוספים</div>
-    <button class="menu-item" onclick="showPage('diary')">📅 יומן לקוחות</button>
-    <button class="menu-item disabled">🗺 מפה אסטרולוגית <span class="soon">בקרוב</span></button>
-    <button class="menu-item disabled">🙏 מקבץ תפילות <span class="soon">בקרוב</span></button>
-  </div>
-  <div class="menu-section">
-    <button class="menu-item" onclick="location.href='index.html'">🚪 יציאה</button>
-  </div>
+<header>
+  <span class="logo-symbol">✦ ✡ ✦</span>
+  <h1>היכל החכמה</h1>
+  <p class="subtitle">מחשבון נומרולוגיה קבלי · מבוסס על הנומרולוגיה המקיפה</p>
+</header>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('personal',this)">ניתוח אישי</button>
+  <button class="tab" onclick="showTab('compat',this)">זוגיות</button>
+  <button class="tab" onclick="showTab('parent',this)">הורים ← ילדים</button>
 </div>
 
-<!-- פס עליון -->
-<div class="top-bar">
-  <button class="menu-btn" onclick="openMenu()">☰ תפריט</button>
-  <div class="top-bar-title">✦ היכל החכמה</div>
-  <div class="top-bar-time" id="topTime"></div>
-</div>
-
-<!-- דף ריק - ברירת מחדל -->
-<div id="page-home" class="dashboard-container" style="text-align:center; padding-top:120px;">
-  <div style="color:var(--gold-dark);font-size:2.5rem;">✦</div>
-  <div style="color:var(--muted);font-size:1rem;margin-top:12px;">בחר כלי מהתפריט</div>
-</div>
-
-<!-- דף נומרולוגיה -->
-<div id="page-numerology" class="dashboard-container fade-in" style="display:none">
-  <h1 class="gold-title">מערכת ייעוץ נומרולוגית</h1>
-  <div class="card">
-    <div class="card-title"><span class="badge">א</span> פרטים אישיים</div>
-    <label>שם מלא</label>
-    <input type="text" id="userName" placeholder="הזן שם מלא...">
-    <label>תאריך לידה</label>
-    <input type="date" id="birthDate">
-    <button class="btn btn-gold" onclick="runAnalysis()">נתח נתונים ←</button>
-    <button class="btn btn-clear" onclick="clearNumerology()">🗑 נקה</button>
+<!-- ═══ TAB 1: PERSONAL ═══ -->
+<div class="section active" id="personal">
+  <div class="form-card">
+    <p class="form-title">✦ הזן פרטים לחישוב</p>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>שם פרטי</label>
+        <input id="fname" type="text" placeholder="ישראל">
+      </div>
+      <div class="form-group">
+        <label>שם משפחה</label>
+        <input id="lname" type="text" placeholder="ישראלי">
+      </div>
+      <div class="form-group full">
+        <label>תאריך לידה</label>
+        <input id="bdate" type="date">
+      </div>
+    </div>
+    <button class="btn" onclick="runPersonal()">✦ חשב את המפה הנומרולוגית</button>
   </div>
   <div id="output"></div>
 </div>
 
-<!-- דף תהילים -->
-<div id="page-psalms" class="dashboard-container fade-in" style="display:none">
-  <h1 class="gold-title">📖 מחשבון פרק התהילים האישי</h1>
-  <div style="text-align:center;color:var(--muted);padding:40px;">בקרוב...</div>
+<!-- ═══ TAB 2: COMPATIBILITY ═══ -->
+<div class="section" id="compat">
+  <div class="form-card">
+    <p class="form-title">✦ הכנס פרטי שני בני הזוג</p>
+    <div class="divider">בן / בת זוג א</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>שם פרטי</label>
+        <input id="c1name" type="text" placeholder="ישראל">
+      </div>
+      <div class="form-group">
+        <label>תאריך לידה</label>
+        <input id="c1date" type="date">
+      </div>
+    </div>
+    <div class="divider">בן / בת זוג ב</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>שם פרטי</label>
+        <input id="c2name" type="text" placeholder="ישראלה">
+      </div>
+      <div class="form-group">
+        <label>תאריך לידה</label>
+        <input id="c2date" type="date">
+      </div>
+    </div>
+    <button class="btn" onclick="runCompat()">✦ בדוק התאמה זוגית</button>
+  </div>
+  <div id="outputComp"></div>
 </div>
 
-<!-- דף גימטריה -->
-<div id="page-gematria" class="dashboard-container fade-in" style="display:none">
-  <h1 class="gold-title">🔢 מחשבון גימטריה</h1>
-  <div style="text-align:center;color:var(--muted);padding:40px;">בקרוב...</div>
+<!-- ═══ TAB 3: PARENT-CHILD ═══ -->
+<div class="section" id="parent">
+  <div class="form-card">
+    <p class="form-title">✦ חיבור הורה — ילד</p>
+    <div class="divider">הורה</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>שם הורה</label>
+        <input id="pname" type="text" placeholder="ישראל">
+      </div>
+      <div class="form-group">
+        <label>תאריך לידה</label>
+        <input id="pdate" type="date">
+      </div>
+    </div>
+    <div class="divider">ילד / ילדה</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>שם הילד</label>
+        <input id="chname" type="text" placeholder="ילד">
+      </div>
+      <div class="form-group">
+        <label>תאריך לידה</label>
+        <input id="chdate" type="date">
+      </div>
+    </div>
+    <button class="btn" onclick="runParent()">✦ בדוק חיבור הורה-ילד</button>
+  </div>
+  <div id="outputParent"></div>
 </div>
 
-<!-- דף יומן -->
-<div id="page-diary" class="dashboard-container fade-in" style="display:none">
-  <h1 class="gold-title">📅 יומן לקוחות</h1>
-  <div class="datetime-bar">
-    <div class="date-big" id="diaryDate"></div>
-    <div class="time-big" id="diaryTime"></div>
-  </div>
-  <div class="card">
-    <div class="card-title">הוספת פגישה</div>
-    <label>שם לקוח</label>
-    <input type="text" id="apptName" placeholder="שם הלקוח...">
-    <label>תאריך</label>
-    <input type="date" id="apptDate">
-    <label>שעה</label>
-    <input type="time" id="apptTime">
-    <label>הערות</label>
-    <input type="text" id="apptNote" placeholder="הערות...">
-    <button class="btn btn-gold" onclick="addAppt()">+ הוסף פגישה</button>
-  </div>
-  <div class="card">
-    <div class="card-title">פגישות קרובות</div>
-    <div id="apptList"></div>
-  </div>
-</div>
-
-<script src="data.js"></script>
-<script src="library.js"></script>
-<script src="logic.js"></script>
 <script>
-function updateClock() {
-  const now = new Date();
-  const days = ['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
-  const d = now.toLocaleDateString('he-IL');
-  const t = now.toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'});
-  document.getElementById('topTime').textContent = 'יום '+days[now.getDay()]+' | '+d+' | '+t;
-  const dd = document.getElementById('diaryDate');
-  const dt = document.getElementById('diaryTime');
-  if(dd) dd.textContent = 'יום '+days[now.getDay()]+', '+d;
-  if(dt) dt.textContent = t;
-}
-setInterval(updateClock,1000); updateClock();
-
-function openMenu() {
-  document.getElementById('sideMenu').classList.add('open');
-  document.getElementById('menuOverlay').classList.add('open');
-}
-function closeMenu() {
-  document.getElementById('sideMenu').classList.remove('open');
-  document.getElementById('menuOverlay').classList.remove('open');
+// ── TABS ──
+function showTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
 }
 
-function showPage(name) {
-  document.querySelectorAll('.dashboard-container').forEach(p=>p.style.display='none');
-  document.getElementById('page-'+name).style.display='block';
-  document.querySelectorAll('.menu-item').forEach(b=>b.classList.remove('active'));
-  closeMenu();
+// ── HELPERS ──
+function card(title, subtitle, num, text, color) {
+  return `<div class="result-card">
+    <div class="card-header">
+      <div class="number-badge" style="color:${color||'var(--gold)'};border-color:${color||'var(--gold)'}44">${num}</div>
+      <div class="card-meta">
+        <div class="card-title">${title}</div>
+        ${subtitle?`<div class="card-subtitle">${subtitle}</div>`:''}
+      </div>
+    </div>
+    ${text?`<div class="card-text">${text}</div>`:''}
+  </div>`;
 }
 
-function clearNumerology() {
-  document.getElementById('userName').value='';
-  document.getElementById('birthDate').value='';
-  document.getElementById('output').innerHTML='';
+function subCard(label, num, text, color) {
+  return `<div class="sub-card" style="border-right-color:${color||'var(--border)'}">
+    <div class="sub-header">
+      <div class="sub-num" style="color:${color||'var(--gold)'}">${num}</div>
+      <div class="sub-label">${label}</div>
+    </div>
+    ${text?`<div class="sub-text">${text}</div>`:''}
+  </div>`;
 }
 
-function loadAppts() {
-  const appts = JSON.parse(localStorage.getItem('appts')||'[]');
-  const list = document.getElementById('apptList');
-  if(!list) return;
-  if(appts.length===0){list.innerHTML='<div style="color:var(--muted);text-align:center;padding:16px;">אין פגישות עדיין</div>';return;}
-  appts.sort((a,b)=>(a.date+a.time)>(b.date+b.time)?1:-1);
-  list.innerHTML=appts.map((a,i)=>'<div class="appt-item"><div class="appt-info"><div class="appt-name">'+a.name+'</div><div class="appt-time">'+a.date+' | '+a.time+(a.note?' | '+a.note:'')+'</div></div><button class="appt-del" onclick="delAppt('+i+')">מחק</button></div>').join('');
+function groupCard(title, content) {
+  return `<div class="group-card"><div class="group-title">${title}</div>${content}</div>`;
 }
 
-function addAppt() {
-  const name=document.getElementById('apptName').value.trim();
-  const date=document.getElementById('apptDate').value;
-  const time=document.getElementById('apptTime').value;
-  const note=document.getElementById('apptNote').value.trim();
-  if(!name||!date||!time) return alert('מלא שם, תאריך ושעה');
-  const appts=JSON.parse(localStorage.getItem('appts')||'[]');
-  appts.push({name,date,time,note});
-  localStorage.setItem('appts',JSON.stringify(appts));
-  document.getElementById('apptName').value='';
-  document.getElementById('apptDate').value='';
-  document.getElementById('apptTime').value='';
-  document.getElementById('apptNote').value='';
-  loadAppts();
+function badge(text, type) {
+  return `<span class="badge badge-${type||'gold'}">${text}</span>`;
 }
 
-function delAppt(i) {
-  const appts=JSON.parse(localStorage.getItem('appts')||'[]');
-  appts.splice(i,1);
-  localStorage.setItem('appts',JSON.stringify(appts));
-  loadAppts();
+// ── PYTHAGORAS VISUAL ──
+function buildPythaGrid(pytha) {
+  const labels = {3:'זיכרון',6:'אהבה',9:'סקרנות',2:'סובלנות',5:'חופש',8:'אנרגיה',1:'מזל',4:'כוח',7:'סמכות'};
+  const rows = [[3,6,9],[2,5,8],[1,4,7]];
+  let grid = '<div class="pytha-grid">';
+  rows.forEach(row => row.forEach(n => {
+    const cnt = pytha.counts[n];
+    const cls = cnt > 0 ? 'present' : '';
+    grid += `<div class="pytha-cell ${cls}">
+      <div class="pnum">${n}</div>
+      <div class="pname">${labels[n]}</div>
+      ${cnt>1?`<div class="pcount">×${cnt}</div>`:''}
+    </div>`;
+  }));
+  grid += '</div>';
+
+  // חיצים קיימים
+  let arrows = '';
+  for (const [key, data] of Object.entries(pytha.present)) {
+    const d = pythagorasData[data.cat][key];
+    arrows += subCard(`✦ חץ — ${d.name}`, key, d.present, 'var(--gold)');
+  }
+  // חיצים חסרים
+  for (const [key, data] of Object.entries(pytha.absent)) {
+    const d = pythagorasData[data.cat][key];
+    arrows += subCard(`✧ חסר — ${d.name}`, key, d.absent, 'var(--muted)');
+  }
+  return grid + arrows;
 }
 
-loadAppts();
+// ── LETTERS IN NAME ──
+function buildLetters(fullName) {
+  const seen = new Set();
+  let html = '<div class="letters-grid">';
+  for (const ch of fullName) {
+    if (lettersData[ch] && !seen.has(ch)) {
+      seen.add(ch);
+      html += `<div class="letter-card">
+        <div class="letter-sym">${ch}</div>
+        <div class="letter-name">משמעות קבלית</div>
+        <div class="letter-text">${lettersData[ch].slice(0,120)}...</div>
+      </div>`;
+    }
+  }
+  html += '</div>';
+  return html;
+}
+
+// ══════════════════════════════════
+// ── PERSONAL ANALYSIS ──
+// ══════════════════════════════════
+function runPersonal() {
+  const fname = document.getElementById('fname').value.trim();
+  const lname = document.getElementById('lname').value.trim();
+  const date  = document.getElementById('bdate').value;
+  if (!fname || !date) return alert('נא למלא לפחות שם פרטי ותאריך לידה');
+
+  const [yearS,monthS,dayS] = date.split('-');
+  const day=+dayS, month=+monthS, year=+yearS;
+  const fullName = fname + lname;
+
+  const lifePath   = reduceNum([...date.replace(/-/g,'')].reduce((a,b)=>+a+ +b,0));
+  const nameNum    = reduceNum(calculateGematria(fname));
+  const aspNum     = calcAspiration(fname, lname);
+  const traits     = calcInternalExternal(fname, lname);
+  const dayNum     = reduceSimple(day);
+  const pytha      = calcPythagoras(day, month, year);
+  const pinnacles  = calcPinnacles(day, month, year, lifePath);
+  const challenges = calcChallenges(day, month, year);
+  const hiddenPinn = calcHiddenPinnacles(pinnacles, challenges, lifePath);
+  const cycles     = calcCycles(day, month, year, lifePath);
+  const dragon     = calcDragon(day, month, year);
+  const missing    = getMissingNumbers(fname + lname);
+  const personalYr = calcPersonalYear(day, month);
+  const today      = new Date();
+  const personalMon = calcPersonalMonth(day, month, today.getMonth()+1);
+  const personalDay = calcPersonalDay(day, month, today.getDate(), today.getMonth()+1);
+
+  let html = `<div class="section-label">✦ מפה נומרולוגית — ${fname} ${lname}</div>`;
+
+  // יום לידה
+  html += card('יום הלידה', `יום ${day} בחודש`, day, daysData[day], 'var(--gold)');
+
+  // שביל גורל
+  html += card('שביל הגורל / נתיב החיים', 'חישוב מתאריך הלידה', lifePath, lifePathData[lifePath], 'var(--green)');
+
+  // מספר שם
+  html += card('מספר השם הפרטי', fname, nameNum, nameData[nameNum], 'var(--blue)');
+
+  // שאיפה
+  html += card('מספר השאיפה', 'שם מלא · ' + fname + ' ' + lname, aspNum, aspirationData[aspNum], '#f6ad55');
+
+  // תכונות
+  html += groupCard('✦ תכונות פנימיות וחיצוניות',
+    subCard('תכונות פנימיות — אותיות תנועה', traits.internal, aspirationData[traits.internal], 'var(--green)') +
+    subCard('תכונות חיצוניות — עיצורים', traits.external, aspirationData[traits.external], 'var(--blue)')
+  );
+
+  // פסגות + נסתרות
+  let pinnHtml = '';
+  pinnacles.forEach((p,i) => {
+    pinnHtml += subCard(p.label, p.num, pinnaclesData[p.num], 'var(--gold)');
+    pinnHtml += subCard(`${p.label} — פסגה נסתרת`, hiddenPinn[i].hidden, pinnaclesData[hiddenPinn[i].hidden], '#9b8ec4');
+    pinnHtml += subCard(`${p.label} — אתגר נסתר`, hiddenPinn[i].hiddenChallenge, challengesData[hiddenPinn[i].hiddenChallenge], '#e06c6c');
+  });
+  html += groupCard('✦ פסגות חיים ופסגות נסתרות', pinnHtml);
+
+  // אתגרים
+  let challHtml = challenges.map(c => subCard(c.label, c.num, challengesData[c.num], 'var(--red)')).join('');
+  html += groupCard('✦ אתגרי חיים', challHtml);
+
+  // מחזורים
+  html += groupCard('✦ מחזורי חיים',
+    cycles.map(c => subCard(c.label, c.num, cyclesData[c.num], 'var(--blue)')).join('')
+  );
+
+  // שנה/חודש/יום אישי
+  html += groupCard('✦ שנה · חודש · יום אישי',
+    subCard('שנה אישית ' + new Date().getFullYear(), personalYr, personalYearData[personalYr], 'var(--gold)') +
+    subCard('חודש אישי', personalMon, personalYearData[personalMon], 'var(--green)') +
+    subCard('יום אישי', personalDay, personalYearData[personalDay], 'var(--blue)')
+  );
+
+  // דרקון
+  html += groupCard('✦ ראש וזנב הדרקון',
+    subCard('ראש הדרקון — ייעוד', dragon.head, dragonHeadData[dragon.head], 'var(--green)') +
+    subCard('זנב הדרקון — תיקון', dragon.tail, dragonTailData[dragon.tail], 'var(--red)')
+  );
+
+  // חסרים
+  let missHtml = missing.length === 0
+    ? '<div style="color:var(--green);font-size:.9rem;padding:8px">✓ אין מספרים חסרים — שם מאוזן</div>'
+    : missing.map(m => subCard('מספר חסר', m, missingNumbersData[m], 'var(--red)')).join('');
+  html += groupCard('✦ מספרים חסרים בשם', missHtml);
+
+  // ריבוע פיתגורס
+  html += groupCard('✦ ריבוע פיתגורס', buildPythaGrid(pytha));
+
+  // אותיות
+  html += groupCard('✦ משמעות האותיות בשם — נומרולוגיה קבלית', buildLetters(fullName));
+
+  document.getElementById('output').innerHTML = html;
+  document.getElementById('output').scrollIntoView({behavior:'smooth'});
+}
+
+// ══════════════════════════════════
+// ── COMPATIBILITY ──
+// ══════════════════════════════════
+function runCompat() {
+  const n1 = document.getElementById('c1name').value.trim();
+  const d1 = document.getElementById('c1date').value;
+  const n2 = document.getElementById('c2name').value.trim();
+  const d2 = document.getElementById('c2date').value;
+  if (!d1||!d2) return alert('נא למלא תאריכי לידה');
+
+  const [y1,m1,dd1] = d1.split('-').map(Number);
+  const [y2,m2,dd2] = d2.split('-').map(Number);
+
+  const res = calcCompatibility(dd1,m1,y1, dd2,m2,y2);
+  const name1 = n1||'בן/בת זוג א';
+  const name2 = n2||'בן/בת זוג ב';
+
+  let html = `<div class="section-label">✦ ניתוח התאמה — ${name1} ו${name2}</div>`;
+
+  // ציון כולל
+  html += `<div class="result-card">
+    <div class="card-header">
+      <div class="number-badge" style="font-size:1.4rem">${res.score}%</div>
+      <div class="card-meta">
+        <div class="card-title">${res.level}</div>
+        <div class="card-subtitle">ציון התאמה נומרולוגית כולל</div>
+      </div>
+    </div>
+    <div class="card-text">
+      <div class="score-bar-wrap">
+        <div class="score-bar"><div class="score-fill" style="width:${res.score}%"></div></div>
+        <div class="score-label"><span>0%</span><span>100%</span></div>
+      </div>
+      ${badge('התחברות נומרולוגית: '+(res.p1ConnectsP2?'✓':'✗'), res.p1ConnectsP2?'green':'red')}
+      ${badge('יין ויאנג: '+(res.yinYangMatch?'✓':'✗'), res.yinYangMatch?'green':'red')}
+      ${badge(name1+' מחובר לעצמו: '+(res.p1ConnectsSelf?'✓':'✗'), res.p1ConnectsSelf?'gold':'red')}
+      ${badge(name2+' מחוברת לעצמה: '+(res.p2ConnectsSelf?'✓':'✗'), res.p2ConnectsSelf?'gold':'red')}
+    </div>
+  </div>`;
+
+  // מספרים בסיסיים
+  html += groupCard(`✦ המספרים של ${name1}`,
+    subCard('יום לידה (פנימי)', res.day1, '', 'var(--gold)') +
+    subCard('חודש לידה (מתווך)', res.mon1, '', 'var(--blue)') +
+    subCard('שנה (חיצוני)', res.yr1, '', 'var(--muted)') +
+    subCard('שביל גורל', res.lp1, lifePathData[res.lp1], 'var(--green)')
+  );
+  html += groupCard(`✦ המספרים של ${name2}`,
+    subCard('יום לידה (פנימי)', res.day2, '', 'var(--gold)') +
+    subCard('חודש לידה (מתווך)', res.mon2, '', 'var(--blue)') +
+    subCard('שנה (חיצוני)', res.yr2, '', 'var(--muted)') +
+    subCard('שביל גורל', res.lp2, lifePathData[res.lp2], 'var(--green)')
+  );
+
+  // זיווג תיקון
+  if (res.tikkun1 || res.tikkun2) {
+    let tikHtml = '';
+    if (res.tikkun1) tikHtml += `<div style="color:var(--red);margin-bottom:8px">⚠ ל${name1} יש פסגת זיווג תיקון (2-7). מומלץ לעסוק בטיפול או להביא 2 ילדים לעולם.</div>`;
+    if (res.tikkun2) tikHtml += `<div style="color:var(--red)">⚠ ל${name2} יש פסגת זיווג תיקון (2-7). מומלץ לעסוק בטיפול או להביא 2 ילדים לעולם.</div>`;
+    html += groupCard('⚠ זיווג תיקון', tikHtml);
+  }
+
+  // אזהרות
+  if (res.warnings1.length || res.warnings2.length) {
+    const warnPairs = {'2-7':'זיווג תיקון','7-2':'זיווג תיקון','4-2':'תיקון זוגי','6-4':'דורש יציבות משפחתית','5-6':'שינוי זוגי','6-5':'שינוי זוגי','5-4':'שינוי מסגרת','4-5':'שינוי מסגרת','5-2':'סיכון לגירושין','1-2':'התחלת קשר חדש'};
+    let wHtml = '';
+    res.warnings1.forEach(w => { wHtml += subCard(`${name1} — פסגה ${w.key}`, w.pinnacle, warnPairs[w.key]||'', 'var(--red)'); });
+    res.warnings2.forEach(w => { wHtml += subCard(`${name2} — פסגה ${w.key}`, w.pinnacle, warnPairs[w.key]||'', 'var(--red)'); });
+    html += groupCard('✦ נקודות לתשומת לב', wHtml);
+  }
+
+  // עיתוי נכון
+  html += groupCard('✦ עיתוי מומלץ לנישואין',
+    subCard(`שנה אישית של ${name1}`, res.marriageYear1, res.marriageYear1===6?'✦ שנה אישית 6 — עיתוי מצוין לנישואין!':personalYearData[res.marriageYear1], res.marriageYear1===6?'var(--green)':'var(--muted)') +
+    subCard(`שנה אישית של ${name2}`, res.marriageYear2, res.marriageYear2===6?'✦ שנה אישית 6 — עיתוי מצוין לנישואין!':personalYearData[res.marriageYear2], res.marriageYear2===6?'var(--green)':'var(--muted)')
+  );
+
+  document.getElementById('outputComp').innerHTML = html;
+  document.getElementById('outputComp').scrollIntoView({behavior:'smooth'});
+}
+
+// ══════════════════════════════════
+// ── PARENT-CHILD ──
+// ══════════════════════════════════
+function runParent() {
+  const pn = document.getElementById('pname').value.trim() || 'הורה';
+  const pd = document.getElementById('pdate').value;
+  const cn = document.getElementById('chname').value.trim() || 'ילד';
+  const cd = document.getElementById('chdate').value;
+  if (!pd||!cd) return alert('נא למלא תאריכי לידה');
+
+  const [py,pm,pdd] = pd.split('-').map(Number);
+  const [cy,cm,cdd] = cd.split('-').map(Number);
+
+  const res = calcParentChildConnection(pdd,pm,py, cdd,cm,cy);
+
+  let html = `<div class="section-label">✦ חיבור — ${pn} ← ${cn}</div>`;
+
+  // חיבור
+  const connectColor = res.connects ? 'var(--green)' : 'var(--red)';
+  const connectText = res.connects
+    ? `✦ ${pn} מחובר/ת לפסגות ${cn} — יכול/ה להגשים את צרכיו`
+    : `✧ ${pn} אינו/ה מחובר/ת ישירות לפסגות ${cn}. האחר מילא תפקיד זה, או שהפסגה הראשונה קובעת.`;
+
+  html += `<div class="result-card">
+    <div class="card-header">
+      <div class="number-badge" style="color:${connectColor};border-color:${connectColor}44;font-size:1.4rem">${res.connects?'✓':'✗'}</div>
+      <div class="card-meta">
+        <div class="card-title" style="color:${connectColor}">${res.connects?'חיבור קיים':'חיבור חלש'}</div>
+        <div class="card-subtitle">${pn} ← ${cn}</div>
+      </div>
+    </div>
+    <div class="card-text">${connectText}</div>
+  </div>`;
+
+  // מספרי ההורה
+  html += groupCard(`✦ מספרי ${pn}`,
+    subCard('יום לידה', res.parentDay, '', 'var(--gold)') +
+    subCard('שביל גורל', res.parentLP, lifePathData[res.parentLP], 'var(--green)')
+  );
+
+  // פסגות הילד
+  let cpHtml = '';
+  res.childPinn.forEach((p,i) => {
+    const isConnect = [res.parentDay, res.parentLP].includes(p);
+    cpHtml += subCard(
+      `פסגה ${i+1}${isConnect?' — ✦ ההורה מחובר':''} · אתגר ${res.childChall[i]}`,
+      p, pinnaclesData[p],
+      isConnect ? 'var(--green)' : 'var(--gold)'
+    );
+  });
+  html += groupCard(`✦ פסגות ${cn}`, cpHtml);
+
+  // צורך עיקרי
+  html += card(`הצורך הבסיסי של ${cn}`, `פסגה ראשונה — ${res.firstPinnacle} · אתגר ${res.firstChallenge}`, res.firstPinnacle, res.childNeeds, 'var(--blue)');
+
+  document.getElementById('outputParent').innerHTML = html;
+  document.getElementById('outputParent').scrollIntoView({behavior:'smooth'});
+}
 </script>
 </body>
 </html>
