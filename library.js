@@ -10,5 +10,6 @@ const library = {
     dragonTail: typeof dragonTailData !== 'undefined' ? dragonTailData : {},
     missing: typeof missingNumbersData !== 'undefined' ? missingNumbersData : {},
     cycles: typeof cyclesData !== 'undefined' ? cyclesData : {},
-    aspiration: typeof aspirationData !== 'undefined' ? aspirationData : {}
+    aspiration: typeof aspirationData !== 'undefined' ? aspirationData : {},
+    pythagoras: typeof pythagorasData !== 'undefined' ? pythagorasData : {}
 };
