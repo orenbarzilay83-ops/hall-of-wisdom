@@ -63,6 +63,39 @@ function subBlock(label, num, text) {
 
 
 
+
+// ── פרק 13: חיבור הורים-ילדים ───────────────────────
+function calcParentChildConnection(parentDay, parentMonth, parentYear, childDay, childMonth, childYear) {
+  const parentLP = reduceNum([...(String(parentDay)+String(parentMonth)+String(parentYear))].reduce((a,b)=>+a+ +b,0));
+  const childLP  = reduceNum([...(String(childDay)+String(childMonth)+String(childYear))].reduce((a,b)=>+a+ +b,0));
+
+  const parentDay1 = reduceSimple(parentDay);
+  const childPinn  = calcPinnacles(childDay, childMonth, childYear, childLP).map(p=>p.num);
+  const childChall = calcChallenges(childDay, childMonth, childYear).map(c=>c.num);
+
+  // האם/האב מתחבר לילד?
+  const connects = [parentDay1, parentLP].some(n => childPinn.includes(n));
+
+  // פסגה ראשונה של הילד — הצורך הבסיסי
+  const firstPinnacle = childPinn[0];
+  const firstChallenge = childChall[0];
+
+  // צרכי הילד לפי פסגה ראשונה
+  const childNeeds = pinnaclesData[firstPinnacle] || '';
+
+  return {
+    parentDay: parentDay1,
+    parentLP,
+    childLP,
+    childPinn,
+    childChall,
+    connects,
+    firstPinnacle,
+    firstChallenge,
+    childNeeds
+  };
+}
+
 // ── פרק 12: זוגיות ──────────────────────────────────
 function calcCompatibility(p1day, p1month, p1year, p2day, p2month, p2year) {
   // חישוב נתונים בסיסיים
