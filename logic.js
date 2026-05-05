@@ -60,6 +60,78 @@ function subBlock(label, num, text) {
   return '<div style="background:#0a1628;border-radius:10px;padding:12px;margin-bottom:8px;border-right:3px solid #e0c97f55;"><div style="color:#718096;font-size:.75em;">'+label+' <span style="color:#68d391;font-weight:900;">'+num+'</span></div><div style="color:#a0aec0;font-size:.83em;margin-top:4px;line-height:1.6;">'+(text||'')+'</div></div>';
 }
 
+
+
+// ── פרק 7: חודש ויום אישי ──────────────────────────
+function calcPersonalMonth(day, month, targetMonth) {
+  const py = reduceSimple(reduceSimple(day) + reduceSimple(month) + reduceSimple(digitSum(new Date().getFullYear())));
+  return reduceSimple(py + reduceSimple(targetMonth));
+}
+function calcPersonalDay(day, month, targetDay, targetMonth) {
+  const pm = calcPersonalMonth(day, month, targetMonth);
+  return reduceSimple(pm + reduceSimple(targetDay));
+}
+function calcPersonalYearFull(day, month, year) {
+  const py = reduceSimple(reduceSimple(day) + reduceSimple(month) + digitSum(year));
+  return { visible: py, hidden: reduceSimple(py + 1) };
+}
+
+// ── פרק 11: פסגות ואתגרים נסתרים ────────────────────
+function calcHiddenPinnacles(pinnacles, challenges, lifePath) {
+  return pinnacles.map((p, i) => {
+    const hidden = reduceSimple(p.num + challenges[i].num);
+    const hiddenChallenge = reduceSimple(hidden + reduceSimple(lifePath));
+    return { hidden, hiddenChallenge, label: p.label };
+  });
+}
+
+// ── פרק 3: שאיפה + תכונות פנימיות/חיצוניות ──────────
+function calcAspiration(firstName, lastName) {
+  const small = {'א':1,'ב':2,'ג':3,'ד':4,'ה':5,'ו':6,'ז':7,'ח':8,'ט':9,
+    'י':1,'כ':2,'ך':2,'ל':3,'מ':4,'ם':4,'נ':5,'ן':5,'ס':6,'ע':7,'פ':8,'ף':8,'צ':9,'ץ':9,
+    'ק':1,'ר':2,'ש':3,'ת':4};
+  const full = firstName + lastName;
+  const total = [...full].reduce((s,c) => s + (small[c]||0), 0);
+  return reduceSimple(total);
+}
+function calcInternalExternal(firstName, lastName) {
+  const small = {'א':1,'ב':2,'ג':3,'ד':4,'ה':5,'ו':6,'ז':7,'ח':8,'ט':9,
+    'י':1,'כ':2,'ך':2,'ל':3,'מ':4,'ם':4,'נ':5,'ן':5,'ס':6,'ע':7,'פ':8,'ף':8,'צ':9,'ץ':9,
+    'ק':1,'ר':2,'ש':3,'ת':4};
+  const vowels = new Set(['א','ה','ו','י']);
+  const full = firstName + lastName;
+  let inSum = 0, exSum = 0;
+  for (const c of full) {
+    const v = small[c] || 0;
+    if (!v) continue;
+    if (vowels.has(c)) inSum += v; else exSum += v;
+  }
+  return { internal: reduceSimple(inSum), external: reduceSimple(exSum) };
+}
+
+// ── פרק 6: ריבוע פיתגורס ────────────────────────────
+function calcPythagoras(day, month, year) {
+  const small = {'1':1,'2':2,'3':3,'4':4,'5':5,'6':6,'7':7,'8':8,'9':9,'0':0};
+  const digits = (String(day).padStart(2,'0') + String(month).padStart(2,'0') + String(year))
+    .split('').map(Number).filter(n => n > 0);
+  const counts = {};
+  for (let i=1;i<=9;i++) counts[i] = digits.filter(d=>d===i).length;
+  const grid = [[3,6,9],[2,5,8],[1,4,7]];
+  const lines = {
+    rows: { '123': [1,2,3], '456': [4,5,6], '789': [7,8,9] },
+    columns: { '147': [1,4,7], '258': [2,5,8], '369': [3,6,9] },
+    diagonals: { '159': [1,5,9], '357': [3,5,7] }
+  };
+  const present = {}, absent = {};
+  for (const [cat, group] of Object.entries(lines)) {
+    for (const [key, nums] of Object.entries(group)) {
+      const has = nums.every(n => counts[n] > 0);
+      (has ? present : absent)[key] = { cat, nums };
+    }
+  }
+  return { counts, grid, present, absent };
+}
+
 function runAnalysis() {
   const name = document.getElementById('userName').value.trim();
   const date = document.getElementById('birthDate').value;
@@ -76,6 +148,24 @@ function runAnalysis() {
   const cycles     = calcCycles(day, month, year, lifePath);
   const dragon     = calcDragon(day, month, year);
   const missing    = getMissingNumbers(name);
+
+  // חדש: שאיפה + תכונות
+  const nameParts   = name.trim().split(/\s+/);
+  const firstName   = nameParts[0] || '';
+  const lastName    = nameParts.slice(1).join('') || '';
+  const aspiration  = calcAspiration(firstName, lastName);
+  const traits      = calcInternalExternal(firstName, lastName);
+
+  // חדש: פסגות נסתרות
+  const hiddenPinn  = calcHiddenPinnacles(pinnacles, challenges, lifePath);
+
+  // חדש: ריבוע פיתגורס
+  const pytha       = calcPythagoras(day, month, year);
+
+  // חדש: חודש ויום אישי (היום הנוכחי)
+  const today       = new Date();
+  const personalMon = calcPersonalMonth(day, month, today.getMonth()+1);
+  const personalDay = calcPersonalDay(day, month, today.getDate(), today.getMonth()+1);
 
   let html = '<div style="animation:fadeIn .4s"><h3 style="color:#e0c97f;text-align:center;margin-bottom:16px;">✦ ניתוח נומרולוגי — '+name+' ✦</h3>';
 
@@ -107,6 +197,56 @@ function runAnalysis() {
     missing.forEach(m => { html += subBlock('מספר '+m+' חסר', m, missingNumbersData[m]); });
   }
   html += '</div></div>';
+
+
+  // שאיפה
+  html += block('שאיפה (שם מלא)', aspiration, aspirationData[aspiration], '#f6ad55');
+
+  // תכונות פנימיות / חיצוניות
+  html += '<div style="background:#0f3460;border-radius:12px;padding:14px;margin-bottom:14px;"><div style="color:#a0aec0;font-size:.8em;margin-bottom:10px;">תכונות פנימיות וחיצוניות</div>';
+  html += subBlock('תכונות פנימיות (תנועות)', traits.internal, aspirationData[traits.internal]);
+  html += subBlock('תכונות חיצוניות (עיצורים)', traits.external, aspirationData[traits.external]);
+  html += '</div>';
+
+  // חודש ויום אישי
+  html += '<div style="background:#0f3460;border-radius:12px;padding:14px;margin-bottom:14px;"><div style="color:#a0aec0;font-size:.8em;margin-bottom:10px;">חודש ויום אישי (היום)</div>';
+  html += subBlock('חודש אישי', personalMon, personalYearData[personalMon]);
+  html += subBlock('יום אישי', personalDay, personalYearData[personalDay]);
+  html += '</div>';
+
+  // פסגות נסתרות
+  html += '<div style="background:#0f3460;border-radius:12px;padding:14px;margin-bottom:14px;"><div style="color:#a0aec0;font-size:.8em;margin-bottom:10px;">פסגות ואתגרים נסתרים</div>';
+  hiddenPinn.forEach(h => {
+    html += subBlock(h.label + ' — נסתרת', h.hidden, pinnaclesData[h.hidden]);
+    html += subBlock(h.label + ' — אתגר נסתר', h.hiddenChallenge, challengesData[h.hiddenChallenge]);
+  });
+  html += '</div>';
+
+  // ריבוע פיתגורס
+  html += '<div style="background:#0f3460;border-radius:12px;padding:14px;margin-bottom:14px;"><div style="color:#a0aec0;font-size:.8em;margin-bottom:10px;">ריבוע פיתגורס</div>';
+  const gridLabels = {3:'זיכרון',6:'אהבה',9:'סקרנות',2:'סובלנות',5:'חופש',8:'אנרגיה',1:'מזל',4:'כוח',7:'סמכות'};
+  html += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px;">';
+  [[3,6,9],[2,5,8],[1,4,7]].forEach(row => {
+    row.forEach(n => {
+      const cnt = pytha.counts[n];
+      const color = cnt > 0 ? '#e0c97f' : '#4a5568';
+      html += '<div style="background:#0a1628;border-radius:8px;padding:8px;text-align:center;">'
+        + '<div style="color:'+color+';font-size:1.3em;font-weight:900;">'+n+'</div>'
+        + '<div style="color:#718096;font-size:.7em;">'+gridLabels[n]+'</div>'
+        + (cnt > 1 ? '<div style="color:#68d391;font-size:.7em;">×'+cnt+'</div>' : '')
+        + '</div>';
+    });
+  });
+  html += '</div>';
+  for (const [key, data] of Object.entries(pytha.present)) {
+    const d = pythagorasData[data.cat][key];
+    html += subBlock('✦ חץ ' + d.name, key, d.present);
+  }
+  for (const [key, data] of Object.entries(pytha.absent)) {
+    const d = pythagorasData[data.cat][key];
+    html += subBlock('✧ חסר — ' + d.name, key, d.absent);
+  }
+  html += '</div>';
 
   document.getElementById('output').innerHTML = html;
 }
