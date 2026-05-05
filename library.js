@@ -11,5 +11,6 @@ const library = {
     missing: typeof missingNumbersData !== 'undefined' ? missingNumbersData : {},
     cycles: typeof cyclesData !== 'undefined' ? cyclesData : {},
     aspiration: typeof aspirationData !== 'undefined' ? aspirationData : {},
-    pythagoras: typeof pythagorasData !== 'undefined' ? pythagorasData : {}
+    pythagoras: typeof pythagorasData !== 'undefined' ? pythagorasData : {},
+    letters: typeof lettersData !== 'undefined' ? lettersData : {}
 };
