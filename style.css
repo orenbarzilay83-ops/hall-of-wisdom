@@ -405,3 +405,15 @@ input:focus, select:focus, textarea:focus {
 /* ── FONT FIXES ── */
 .acc-body .sub-text{font-size:.95em;}
 label{font-size:.95em;}
+
+
+/* ── ACCORDION OVERRIDES FIX ── */
+.acc-btn { color: #e2e8f0 !important; font-size: 1.05rem !important; }
+.acc-title { color: #e2e8f0 !important; font-size: 1rem !important; font-weight: 500; }
+.acc-subtitle { color: #718096 !important; font-size: .82rem !important; }
+.acc-num { font-size: 1.8rem !important; font-weight: 900; }
+.acc-body { font-size: 1rem; }
+.sub-item { background:#0a1628; border-radius:10px; padding:13px 14px; margin-bottom:8px; border-right:3px solid #e0c97f44; }
+.sub-label { color:#a0aec0 !important; font-size:.9rem !important; margin-bottom:5px; }
+.sub-num { color:#68d391 !important; font-weight:900 !important; font-size:1rem !important; }
+.sub-text { color:#cbd5e0 !important; font-size:.95rem !important; line-height:1.85 !important; margin-top:7px; }

@@ -255,7 +255,7 @@ function accGroup(title, items) {
   </div>`;
 }
 function sub(label, num, text, color) {
-  return `<div class="acc-body sub-item" style="border-right-color:${color||'#e0c97f44'}">
+  return `<div class="sub-item" style="border-right-color:${color||'#e0c97f44'}">
     <div class="sub-label">${label} <span class="sub-num">${num}</span></div>
     ${text?`<div class="sub-text">${text}</div>`:''}
   </div>`;
