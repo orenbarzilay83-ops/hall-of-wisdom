@@ -52,13 +52,9 @@ function calcDragon(day, month, year) {
   return {head, tail};
 }
 
-function block(title, num, text, color) {
-  return '<div style="background:#0f3460;border-radius:12px;padding:14px;margin-bottom:14px;"><div style="color:#a0aec0;font-size:.8em;margin-bottom:4px;">'+title+'</div><div style="color:'+(color||'#e0c97f')+';font-size:1.8em;font-weight:900;margin-bottom:8px;">'+num+'</div><div style="color:#cbd5e0;font-size:.88em;line-height:1.7;max-height:130px;overflow-y:auto;">'+(text||'')+'</div></div>';
-}
 
-function subBlock(label, num, text) {
-  return '<div style="background:#0a1628;border-radius:10px;padding:12px;margin-bottom:8px;border-right:3px solid #e0c97f55;"><div style="color:#718096;font-size:.75em;">'+label+' <span style="color:#68d391;font-weight:900;">'+num+'</span></div><div style="color:#a0aec0;font-size:.83em;margin-top:4px;line-height:1.6;">'+(text||'')+'</div></div>';
-}
+
+
 
 
 
@@ -235,17 +231,54 @@ function calcPythagoras(day, month, year) {
   return { counts, grid, present, absent };
 }
 
+// ── ACCORDION HELPERS ──
+function acc(title, subtitle, num, body, color) {
+  const c = color||'#e0c97f';
+  return `<div class="acc-item">
+    <button class="acc-btn" onclick="var b=this.nextElementSibling,open=b.style.display!=='none';b.style.display=open?'none':'block';this.querySelector('.acc-arrow').textContent=open?'▼':'▲'">
+      <div class="acc-left">
+        <span class="acc-num" style="color:${c}">${num}</span>
+        <div><div class="acc-title">${title}</div>${subtitle?`<div class="acc-subtitle">${subtitle}</div>`:''}</div>
+      </div>
+      <span class="acc-arrow">▼</span>
+    </button>
+    <div class="acc-body" style="display:none">${body}</div>
+  </div>`;
+}
+function accGroup(title, items) {
+  return `<div class="acc-item">
+    <button class="acc-btn" onclick="var b=this.nextElementSibling,open=b.style.display!=='none';b.style.display=open?'none':'block';this.querySelector('.acc-arrow').textContent=open?'▼':'▲'">
+      <div class="acc-left"><span style="font-size:1rem;color:#e0c97f;padding:0 4px;">✦</span><div class="acc-title">${title}</div></div>
+      <span class="acc-arrow">▼</span>
+    </button>
+    <div class="acc-body" style="display:none">${items}</div>
+  </div>`;
+}
+function sub(label, num, text, color) {
+  return `<div class="acc-body sub-item" style="border-right-color:${color||'#e0c97f44'}">
+    <div class="sub-label">${label} <span class="sub-num">${num}</span></div>
+    ${text?`<div class="sub-text">${text}</div>`:''}
+  </div>`;
+}
+function getDate(dayId, monthId, yearId) {
+  const day   = parseInt(document.getElementById(dayId).value);
+  const month = parseInt(document.getElementById(monthId).value);
+  const year  = parseInt(document.getElementById(yearId).value);
+  return {day, month, year, valid: !isNaN(day)&&!isNaN(month)&&!isNaN(year)&&year>1900};
+}
+function normalizeFinal(ch) {
+  return {'ן':'נ','ם':'מ','ך':'כ','ף':'פ','ץ':'צ'}[ch] || ch;
+}
+
 function runAnalysis() {
-  const name = document.getElementById('userName').value.trim();
-  const lastName = (document.getElementById('userLastName') ? document.getElementById('userLastName').value.trim() : '');
-  const date = document.getElementById('birthDate').value;
-  if (!name || !date) return alert('מלא שם ותאריך לידה');
-  localStorage.setItem('savedName', name);
-  const [yearS,monthS,dayS] = date.split('-');
-  const day=parseInt(dayS), month=parseInt(monthS), year=parseInt(yearS);
+  const name     = document.getElementById('userName').value.trim();
+  const lastName = (document.getElementById('userLastName')||{value:''}).value.trim();
+  const dt       = getDate('birthDay','birthMonth','birthYear');
+  if (!name || !dt.valid) return alert('נא למלא שם ותאריך לידה מלא');
+  const {day, month, year} = dt;
 
   const nameNum    = reduceNum(calculateGematria(name));
-  const lifePath   = reduceNum([...date.replace(/-/g,'')].reduce((a,b)=>+a+ +b,0));
+  const lifePath   = reduceNum([...( String(day)+String(month)+String(year) )].reduce((a,b)=>+a+ +b,0));
   const personalYr = calcPersonalYear(day, month);
   const pinnacles  = calcPinnacles(day, month, year, lifePath);
   const challenges = calcChallenges(day, month, year);
@@ -260,116 +293,184 @@ function runAnalysis() {
   const personalMon = calcPersonalMonth(day, month, today.getMonth()+1);
   const personalDay = calcPersonalDay(day, month, today.getDate(), today.getMonth()+1);
 
-  let html = '<div style="animation:fadeIn .4s"><h3 style="color:var(--gold);text-align:center;margin-bottom:16px;">✦ ניתוח נומרולוגי — '+name+(lastName?' '+lastName:'')+'  ✦</h3>';
+  let html = `<h3 style="color:#e0c97f;text-align:center;margin:16px 0 20px;font-size:1.1rem;letter-spacing:1px;">
+    ✦ ניתוח נומרולוגי — ${name}${lastName?' '+lastName:''} ✦</h3>`;
 
-  // ── יום לידה + שביל גורל + שם
-  html += block('יום הלידה', day, daysData[day]);
-  html += block('שביל הגורל', lifePath, lifePathData[lifePath], '#68d391');
-  html += block('מספר השם הפרטי', nameNum, nameData[nameNum], '#4a9eff');
+  html += acc('יום הלידה','יום '+day+' בחודש', day, daysData[day]||'');
+  html += acc('שביל גורל','נתיב החיים', lifePath, lifePathData[lifePath]||'', '#68d391');
+  html += acc('מספר השם','על פי הגימטריה', nameNum, nameData[nameNum]||'', '#4a9eff');
 
-  // ── שאיפה + תכונות
   if (lastName) {
-    html += block('שאיפה — שם מלא', aspNum, aspirationData[aspNum], '#f6ad55');
-    html += '<div style="background:#0f3460;border-radius:12px;padding:14px;margin-bottom:14px;">';
-    html += '<div style="color:#a0aec0;font-size:.8em;margin-bottom:10px;">תכונות פנימיות וחיצוניות</div>';
-    html += subBlock('תכונות פנימיות (תנועות)', traits.internal, aspirationData[traits.internal]);
-    html += subBlock('תכונות חיצוניות (עיצורים)', traits.external, aspirationData[traits.external]);
-    html += '</div>';
+    html += acc('שאיפה','שם מלא: '+name+' '+lastName, aspNum, aspirationData[aspNum]||'', '#f6ad55');
+    const trBody = sub('אותיות תנועה — תכונות פנימיות', traits.internal, aspirationData[traits.internal]||'', '#68d391')
+                 + sub('עיצורים — תכונות חיצוניות', traits.external, aspirationData[traits.external]||'', '#4a9eff');
+    html += accGroup('תכונות פנימיות וחיצוניות', trBody);
   }
 
-  // ── פסגות + פסגות נסתרות
-  html += '<div style="background:#0f3460;border-radius:12px;padding:14px;margin-bottom:14px;">';
-  html += '<div style="color:#a0aec0;font-size:.8em;margin-bottom:10px;">פסגות חיים ופסגות נסתרות</div>';
-  pinnacles.forEach((p,i) => {
-    html += subBlock(p.label, p.num, pinnaclesData[p.num]);
-    html += subBlock(p.label+' — פסגה נסתרת', hiddenPinn[i].hidden, pinnaclesData[hiddenPinn[i].hidden]);
-    html += subBlock(p.label+' — אתגר נסתר', hiddenPinn[i].hiddenChallenge, challengesData[hiddenPinn[i].hiddenChallenge]);
-  });
-  html += '</div>';
+  let pinnBody = '';
+  pinnacles.forEach(p => { pinnBody += sub(p.label, p.num, pinnaclesData[p.num]||''); });
+  html += accGroup('פסגות חיים', pinnBody);
 
-  // ── אתגרים
-  html += '<div style="background:#0f3460;border-radius:12px;padding:14px;margin-bottom:14px;">';
-  html += '<div style="color:#a0aec0;font-size:.8em;margin-bottom:10px;">אתגרי חיים</div>';
-  challenges.forEach(c => { html += subBlock(c.label, c.num, challengesData[c.num]); });
-  html += '</div>';
+  let hidPinnBody = '';
+  hiddenPinn.forEach(h => { hidPinnBody += sub(h.label+' — נסתרת', h.hidden, pinnaclesData[h.hidden]||'', '#9b8ec4'); });
+  html += accGroup('פסגות נסתרות', hidPinnBody);
 
-  // ── מחזורים
-  html += '<div style="background:#0f3460;border-radius:12px;padding:14px;margin-bottom:14px;">';
-  html += '<div style="color:#a0aec0;font-size:.8em;margin-bottom:10px;">מחזורי חיים</div>';
-  cycles.forEach(c => { html += subBlock(c.label, c.num, cyclesData[c.num]); });
-  html += '</div>';
+  let challBody = '';
+  challenges.forEach(c => { challBody += sub(c.label, c.num, challengesData[c.num]||''); });
+  html += accGroup('אתגרי חיים', challBody);
 
-  // ── שנה/חודש/יום אישי
-  html += '<div style="background:#0f3460;border-radius:12px;padding:14px;margin-bottom:14px;">';
-  html += '<div style="color:#a0aec0;font-size:.8em;margin-bottom:10px;">שנה · חודש · יום אישי</div>';
-  html += subBlock('שנה אישית '+new Date().getFullYear(), personalYr, personalYearData[personalYr]);
-  html += subBlock('חודש אישי', personalMon, personalYearData[personalMon]);
-  html += subBlock('יום אישי', personalDay, personalYearData[personalDay]);
-  html += '</div>';
+  let hidChallBody = '';
+  hiddenPinn.forEach(h => { hidChallBody += sub(h.label+' — אתגר נסתר', h.hiddenChallenge, challengesData[h.hiddenChallenge]||'', '#e06c6c'); });
+  html += accGroup('אתגרים נסתרים', hidChallBody);
 
-  // ── ראש וזנב דרקון
-  html += '<div style="background:#0f3460;border-radius:12px;padding:14px;margin-bottom:14px;">';
-  html += '<div style="color:#a0aec0;font-size:.8em;margin-bottom:10px;">ראש וזנב הדרקון</div>';
-  html += subBlock('ראש הדרקון — ייעוד', dragon.head, dragonHeadData[dragon.head]);
-  html += subBlock('זנב הדרקון — תיקון', dragon.tail, dragonTailData[dragon.tail]);
-  html += '</div>';
+  let cycBody = '';
+  cycles.forEach(c => { cycBody += sub(c.label, c.num, cyclesData[c.num]||''); });
+  html += accGroup('מחזורי חיים', cycBody);
 
-  // ── חסרים
-  html += '<div style="background:#0f3460;border-radius:12px;padding:14px;margin-bottom:14px;">';
-  html += '<div style="color:#a0aec0;font-size:.8em;margin-bottom:10px;">מספרים חסרים בשם</div>';
-  if (missing.length===0) {
-    html += '<div style="color:#68d391;font-size:.9em;padding:4px">✓ אין מספרים חסרים — שם מאוזן</div>';
-  } else {
-    missing.forEach(m => { html += subBlock('מספר '+m+' חסר', m, missingNumbersData[m]); });
+  const timeBody = sub('שנה אישית '+new Date().getFullYear(), personalYr, personalYearData[personalYr]||'')
+                 + sub('חודש אישי', personalMon, personalYearData[personalMon]||'')
+                 + sub('יום אישי', personalDay, personalYearData[personalDay]||'');
+  html += accGroup('שנה · חודש · יום אישי', timeBody);
+
+  const dragBody = sub('ראש הדרקון — ייעוד', dragon.head, dragonHeadData[dragon.head]||'', '#68d391')
+                 + sub('זנב הדרקון — תיקון', dragon.tail, dragonTailData[dragon.tail]||'', '#e06c6c');
+  html += accGroup('ראש וזנב הדרקון', dragBody);
+
+  let missBody = missing.length===0
+    ? '<div style="color:#68d391;padding:8px">✓ אין מספרים חסרים — שם מאוזן</div>'
+    : missing.map(m => sub('מספר '+m+' חסר', m, missingNumbersData[m]||'', '#e06c6c')).join('');
+  html += accGroup('מספרים חסרים בשם', missBody);
+
+  // ריבוע פיתגורס
+  const gLbl = {3:'זיכרון',6:'אהבה',9:'סקרנות',2:'סובלנות',5:'חופש',8:'אנרגיה',1:'מזל',4:'כוח',7:'סמכות'};
+  let pythaBody = '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-width:220px;margin:0 auto 14px;">';
+  [[3,6,9],[2,5,8],[1,4,7]].forEach(row => row.forEach(n => {
+    const cnt=pytha.counts[n], active=cnt>0;
+    pythaBody += `<div style="background:#0a1628;border-radius:8px;padding:12px 4px;text-align:center;border:1px solid ${active?'#e0c97f88':'#2d3748'}">
+      <div style="color:${active?'#e0c97f':'#4a5568'};font-size:1.4rem;font-weight:900">${n}</div>
+      <div style="color:#718096;font-size:.65rem;margin-top:2px">${gLbl[n]}</div>
+      ${cnt>1?`<div style="color:#68d391;font-size:.68rem">×${cnt}</div>`:''}
+    </div>`;
+  }));
+  pythaBody += '</div>';
+  for (const [key,data] of Object.entries(pytha.present)) {
+    const d=pythagorasData[data.cat][key];
+    pythaBody += sub('✦ חץ — '+d.name, key, d.present, '#e0c97f');
   }
-  html += '</div>';
-
-  // ── ריבוע פיתגורס
-  const gridLabels = {3:'זיכרון',6:'אהבה',9:'סקרנות',2:'סובלנות',5:'חופש',8:'אנרגיה',1:'מזל',4:'כוח',7:'סמכות'};
-  html += '<div style="background:#0f3460;border-radius:12px;padding:14px;margin-bottom:14px;">';
-  html += '<div style="color:#a0aec0;font-size:.8em;margin-bottom:12px;">ריבוע פיתגורס</div>';
-  html += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px;">';
-  [[3,6,9],[2,5,8],[1,4,7]].forEach(row => {
-    row.forEach(n => {
-      const cnt = pytha.counts[n];
-      const active = cnt > 0;
-      html += '<div style="background:#0a1628;border-radius:8px;padding:10px 4px;text-align:center;border:1px solid '+(active?'#e0c97f88':'#2d3748')+'">'
-        + '<div style="color:'+(active?'#e0c97f':'#4a5568')+';font-size:1.5em;font-weight:900;">'+n+'</div>'
-        + '<div style="color:#718096;font-size:.65em;margin-top:2px;">'+gridLabels[n]+'</div>'
-        + (cnt>1?'<div style="color:#68d391;font-size:.68em;">×'+cnt+'</div>':'')
-        + '</div>';
-    });
-  });
-  html += '</div>';
-  for (const [key, data] of Object.entries(pytha.present)) {
-    const d = pythagorasData[data.cat][key];
-    html += subBlock('✦ חץ — '+d.name, key, d.present);
+  for (const [key,data] of Object.entries(pytha.absent)) {
+    const d=pythagorasData[data.cat][key];
+    pythaBody += `<div style="opacity:.55">${sub('✧ חסר — '+d.name, key, d.absent, '#4a5568')}</div>`;
   }
-  for (const [key, data] of Object.entries(pytha.absent)) {
-    const d = pythagorasData[data.cat][key];
-    html += '<div style="opacity:.6">'+subBlock('✧ חסר — '+d.name, key, d.absent)+'</div>';
-  }
-  html += '</div>';
+  html += accGroup('ריבוע פיתגורס', pythaBody);
 
-  // ── אותיות קבליות
-  const fullName = name + lastName;
+  // אותיות קבליות — עם נרמול סופיות
+  const fullName = name+(lastName?' '+lastName:'');
   const seen = new Set();
-  let lettersHtml = '';
+  let letBody = '';
   for (const ch of fullName) {
-    if (lettersData && lettersData[ch] && !seen.has(ch)) {
-      seen.add(ch);
-      lettersHtml += '<div style="background:#0a1628;border-radius:8px;padding:10px 12px;margin-bottom:6px;border-right:3px solid #e0c97f44;">'
-        + '<div style="color:#e0c97f;font-size:1.4em;font-weight:900;margin-bottom:4px;">'+ch+'</div>'
-        + '<div style="color:#a0aec0;font-size:.82em;line-height:1.8;">'+lettersData[ch]+'</div>'
-        + '</div>';
+    const norm = normalizeFinal(ch);
+    if (lettersData && lettersData[norm] && !seen.has(norm)) {
+      seen.add(norm);
+      letBody += `<div style="margin-bottom:10px;padding:12px;background:#0a1628;border-radius:10px;border-right:3px solid #e0c97f44">
+        <div style="color:#e0c97f;font-size:1.5rem;font-weight:900;margin-bottom:4px">${ch}</div>
+        <div style="color:#a0aec0;font-size:.92rem;line-height:1.8">${lettersData[norm]}</div>
+      </div>`;
     }
   }
-  if (lettersHtml) {
-    html += '<div style="background:#0f3460;border-radius:12px;padding:14px;margin-bottom:14px;">';
-    html += '<div style="color:#a0aec0;font-size:.8em;margin-bottom:10px;">משמעות האותיות — נומרולוגיה קבלית</div>';
-    html += lettersHtml + '</div>';
+  if (letBody) html += accGroup('משמעות האותיות — נומרולוגיה קבלית', letBody);
+
+  document.getElementById('output').innerHTML = html;
+}
+
+// ── COMPATIBILITY ──
+function runCompatibility() {
+  const n1=document.getElementById('c1fname').value.trim();
+  const l1=document.getElementById('c1lname').value.trim();
+  const dt1=getDate('c1day','c1month','c1year');
+  const n2=document.getElementById('c2fname').value.trim();
+  const l2=document.getElementById('c2lname').value.trim();
+  const dt2=getDate('c2day','c2month','c2year');
+  if (!dt1.valid||!dt2.valid) return alert('נא למלא תאריכי לידה מלאים');
+
+  const res = calcCompatibility(dt1.day,dt1.month,dt1.year, dt2.day,dt2.month,dt2.year);
+  const nm1 = n1||(n1||'בן/בת זוג א'), nm2 = n2||(n2||'בן/בת זוג ב');
+
+  let html = `<h3 style="color:#e0c97f;text-align:center;margin:16px 0 20px;">✦ התאמה — ${nm1} ו${nm2} ✦</h3>`;
+
+  // ציון
+  const scoreColor = res.score>=70?'#68d391':res.score>=40?'#f6ad55':'#e06c6c';
+  const scoreBody = `<div style="font-size:2.5rem;font-weight:900;color:${scoreColor};text-align:center;margin-bottom:12px">${res.score}%</div>
+    <div style="background:#0a1628;border-radius:8px;height:10px;overflow:hidden;margin-bottom:16px">
+      <div style="width:${res.score}%;height:100%;background:linear-gradient(to left,${scoreColor},#4a9eff);transition:width 1s"></div>
+    </div>
+    ${sub('התחברות נומרולוגית — '+nm1+' לפסגות '+nm2, res.p1ConnectsP2?'✓':'✗', '', res.p1ConnectsP2?'#68d391':'#e06c6c')}
+    ${sub('יין ויאנג', res.yinYangMatch?'✓':'✗', '', res.yinYangMatch?'#68d391':'#e06c6c')}
+    ${sub(nm1+' מחובר/ת לעצמו/ה', res.p1ConnectsSelf?'✓':'✗', '', res.p1ConnectsSelf?'#68d391':'#718096')}
+    ${sub(nm2+' מחובר/ת לעצמו/ה', res.p2ConnectsSelf?'✓':'✗', '', res.p2ConnectsSelf?'#68d391':'#718096')}`;
+  html += acc('ציון התאמה', res.level, res.score+'%', scoreBody, scoreColor);
+
+  // מספרים
+  const b1 = sub('יום לידה — פנימי',res.day1,'','#e0c97f')+sub('חודש לידה — מתווך',res.mon1,'','#4a9eff')+sub('שנה — חיצוני',res.yr1,'','#718096')+sub('שביל גורל',res.lp1,lifePathData[res.lp1]||'','#68d391');
+  html += accGroup('המספרים של '+nm1, b1);
+  const b2 = sub('יום לידה — פנימי',res.day2,'','#e0c97f')+sub('חודש לידה — מתווך',res.mon2,'','#4a9eff')+sub('שנה — חיצוני',res.yr2,'','#718096')+sub('שביל גורל',res.lp2,lifePathData[res.lp2]||'','#68d391');
+  html += accGroup('המספרים של '+nm2, b2);
+
+  // זיווג תיקון
+  if (res.tikkun1||res.tikkun2) {
+    let tikBody='';
+    if(res.tikkun1) tikBody+=`<div style="color:#e06c6c;margin-bottom:8px">⚠ ל${nm1} פסגת זיווג תיקון (2-7). מומלץ: עיסוק טיפולי או הבאת 2 ילדים.</div>`;
+    if(res.tikkun2) tikBody+=`<div style="color:#e06c6c">⚠ ל${nm2} פסגת זיווג תיקון (2-7). מומלץ: עיסוק טיפולי או הבאת 2 ילדים.</div>`;
+    html += accGroup('⚠ זיווג תיקון', tikBody);
   }
 
-  html += '</div>';
-  document.getElementById('output').innerHTML = html;
+  // אזהרות
+  const warnMap={'2-7':'זיווג תיקון','7-2':'זיווג תיקון','4-2':'תיקון זוגי','6-4':'יציבות משפחתית','5-6':'שינוי זוגי','6-5':'שינוי זוגי','5-4':'שינוי מסגרת','4-5':'שינוי מסגרת','5-2':'סיכון לגירושין','1-2':'התחלת קשר חדש'};
+  const allW=[...res.warnings1.map(w=>({...w,who:nm1})),...res.warnings2.map(w=>({...w,who:nm2}))];
+  if(allW.length) {
+    let wBody = allW.map(w=>sub(`${w.who} — פסגה ${w.key}`, w.pinnacle, warnMap[w.key]||'', '#e06c6c')).join('');
+    html += accGroup('נקודות לתשומת לב', wBody);
+  }
+
+  // עיתוי נישואין
+  const tyBody = sub('שנה אישית של '+nm1, res.marriageYear1, res.marriageYear1===6?'✦ שנה 6 — עיתוי מצוין לנישואין!':personalYearData[res.marriageYear1]||'', res.marriageYear1===6?'#68d391':'#718096')
+               + sub('שנה אישית של '+nm2, res.marriageYear2, res.marriageYear2===6?'✦ שנה 6 — עיתוי מצוין לנישואין!':personalYearData[res.marriageYear2]||'', res.marriageYear2===6?'#68d391':'#718096');
+  html += accGroup('עיתוי מומלץ לנישואין', tyBody);
+
+  document.getElementById('outputComp').innerHTML = html;
+}
+
+// ── PARENT-CHILD ──
+function runParentChild() {
+  const pn = document.getElementById('p1name').value.trim()||'הורה';
+  const dt1 = getDate('p1day','p1month','p1year');
+  const cn = document.getElementById('p2name').value.trim()||'ילד';
+  const dt2 = getDate('p2day','p2month','p2year');
+  if (!dt1.valid||!dt2.valid) return alert('נא למלא תאריכי לידה מלאים');
+
+  const res = calcParentChildConnection(dt1.day,dt1.month,dt1.year, dt2.day,dt2.month,dt2.year);
+  const color = res.connects?'#68d391':'#e06c6c';
+
+  let html = `<h3 style="color:#e0c97f;text-align:center;margin:16px 0 20px;">✦ חיבור — ${pn} ← ${cn} ✦</h3>`;
+
+  const connBody = `<div style="color:${color};font-size:1rem;line-height:1.8">
+    ${res.connects
+      ? `✦ ${pn} מחובר/ת לפסגות ${cn} ויכול/ה להגשים את צרכיו`
+      : `✧ ${pn} אינו/ה מחובר/ת ישירות לפסגות ${cn}. הפסגה הראשונה היא הקובעת.`}
+  </div>`;
+  html += acc('סטטוס חיבור', pn+' ← '+cn, res.connects?'✓':'✗', connBody, color);
+
+  html += accGroup('מספרי '+pn,
+    sub('יום לידה', res.parentDay, '', '#e0c97f') +
+    sub('שביל גורל', res.parentLP, lifePathData[res.parentLP]||'', '#68d391')
+  );
+
+  let cpBody = '';
+  res.childPinn.forEach((p,i) => {
+    const isConn = [res.parentDay, res.parentLP].includes(p);
+    cpBody += sub(`פסגה ${i+1}${isConn?' — ✦ ההורה מחובר':''}`, p, pinnaclesData[p]||'', isConn?'#68d391':'#e0c97f');
+  });
+  html += accGroup('פסגות '+cn, cpBody);
+  html += acc('הצורך הבסיסי של '+cn,'פסגה ראשונה', res.firstPinnacle, pinnaclesData[res.firstPinnacle]||'', '#4a9eff');
+
+  document.getElementById('outputParent').innerHTML = html;
 }

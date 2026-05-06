@@ -363,3 +363,45 @@ input:focus, select:focus, textarea:focus {
 /* ── אנימציה ── */
 @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
 .fade-in { animation: fadeIn .35s ease; }
+
+
+/* ── ACCORDION ── */
+.acc-item{background:#0f3460;border-radius:12px;margin-bottom:10px;overflow:hidden;}
+.acc-btn{
+  width:100%;padding:16px 18px;background:transparent;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  color:#e2e8f0;font-family:inherit;font-size:1.05rem;text-align:right;
+}
+.acc-btn:hover{background:#ffffff08;}
+.acc-left{display:flex;align-items:center;gap:14px;}
+.acc-num{font-size:1.8rem;font-weight:900;min-width:44px;text-align:center;}
+.acc-title{font-size:1rem;font-weight:500;color:#e2e8f0;}
+.acc-subtitle{font-size:.78rem;color:#718096;margin-top:2px;}
+.acc-arrow{color:#e0c97f;font-size:.9rem;transition:transform .3s;flex-shrink:0;}
+.acc-body{padding:14px 18px 18px;border-top:1px solid #ffffff0a;}
+.acc-body .sub-item{
+  background:#0a1628;border-radius:10px;padding:13px 14px;
+  margin-bottom:8px;border-right:3px solid #e0c97f44;
+}
+.acc-body .sub-label{color:#718096;font-size:.82em;margin-bottom:4px;}
+.acc-body .sub-num{color:#68d391;font-weight:900;font-size:1em;}
+.acc-body .sub-text{color:#a0aec0;font-size:.92em;line-height:1.8;margin-top:6px;}
+
+/* ── DATE ROW ── */
+.date-row{display:grid;grid-template-columns:1fr 1fr 1.6fr;gap:8px;}
+.date-row select,.date-row input{
+  background:#0a0a18;border:1px solid #e0c97f33;border-radius:8px;
+  padding:12px 10px;color:#e2e8f0;font-family:inherit;font-size:1rem;
+  outline:none;appearance:none;-webkit-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23e0c97f' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:left 10px center;
+}
+.date-row input{background-image:none;}
+.date-row select:focus,.date-row input:focus{border-color:#e0c97f;}
+
+/* ── OUTPUT WIDTH ── */
+#output,#outputComp,#outputParent{max-width:720px;margin:0 auto;}
+
+/* ── FONT FIXES ── */
+.acc-body .sub-text{font-size:.95em;}
+label{font-size:.95em;}

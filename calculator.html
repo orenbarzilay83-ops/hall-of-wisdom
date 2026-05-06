@@ -19,8 +19,8 @@
     <div class="menu-section-title">מחשבוני נומרולוגיה</div>
     <button class="menu-item" onclick="showPage('numerology')">✦ מערכת ייעוץ נומרולוגית</button>
     <button class="menu-item disabled">גורל החולה <span class="soon">בקרוב</span></button>
-    <button class="menu-item disabled">גורל הזיווג <span class="soon">בקרוב</span></button>
-    <button class="menu-item disabled">גורל המעוברת <span class="soon">בקרוב</span></button>
+    <button class="menu-item" onclick="showPage('compat')">💑 מחשבון זוגיות</button>
+    <button class="menu-item" onclick="showPage('parent')">👨‍👧 חיבור הורים-ילדים</button>
     <button class="menu-item disabled">גורל החול <span class="soon">בקרוב</span></button>
   </div>
   <div class="menu-section">
@@ -62,7 +62,11 @@
     <label>שם משפחה</label>
     <input type="text" id="userLastName" placeholder="שם משפחה...">
     <label>תאריך לידה</label>
-    <input type="date" id="birthDate">
+    <div class="date-row">
+      <select id="birthDay"><option value="">יום</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option></select>
+      <select id="birthMonth"><option value="">חודש</option><option value="1">ינואר</option><option value="2">פברואר</option><option value="3">מרץ</option><option value="4">אפריל</option><option value="5">מאי</option><option value="6">יוני</option><option value="7">יולי</option><option value="8">אוגוסט</option><option value="9">ספטמבר</option><option value="10">אוקטובר</option><option value="11">נובמבר</option><option value="12">דצמבר</option></select>
+      <input type="number" id="birthYear" placeholder="שנה" min="1900" max="2099">
+    </div>
     <button class="btn btn-gold" onclick="runAnalysis()">נתח נתונים ←</button>
     <button class="btn btn-clear" onclick="clearNumerology()">🗑 נקה</button>
   </div>
@@ -179,5 +183,70 @@ function delAppt(i) {
 
 loadAppts();
 </script>
+
+<!-- דף זוגיות -->
+<div id="page-compat" class="dashboard-container fade-in" style="display:none">
+  <h1 class="gold-title">💑 מחשבון זוגיות</h1>
+  <div class="card">
+    <div class="card-title"><span class="badge">א</span> בן / בת זוג א</div>
+    <label>שם פרטי</label>
+    <input type="text" id="c1fname" placeholder="שם פרטי...">
+    <label>שם משפחה</label>
+    <input type="text" id="c1lname" placeholder="שם משפחה...">
+    <label>תאריך לידה</label>
+    <div class="date-row">
+      <select id="c1day"><option value="">יום</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option></select>
+      <select id="c1month"><option value="">חודש</option><option value="1">ינואר</option><option value="2">פברואר</option><option value="3">מרץ</option><option value="4">אפריל</option><option value="5">מאי</option><option value="6">יוני</option><option value="7">יולי</option><option value="8">אוגוסט</option><option value="9">ספטמבר</option><option value="10">אוקטובר</option><option value="11">נובמבר</option><option value="12">דצמבר</option></select>
+      <input type="number" id="c1year" placeholder="שנה" min="1900" max="2099">
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="badge">ב</span> בן / בת זוג ב</div>
+    <label>שם פרטי</label>
+    <input type="text" id="c2fname" placeholder="שם פרטי...">
+    <label>שם משפחה</label>
+    <input type="text" id="c2lname" placeholder="שם משפחה...">
+    <label>תאריך לידה</label>
+    <div class="date-row">
+      <select id="c2day"><option value="">יום</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option></select>
+      <select id="c2month"><option value="">חודש</option><option value="1">ינואר</option><option value="2">פברואר</option><option value="3">מרץ</option><option value="4">אפריל</option><option value="5">מאי</option><option value="6">יוני</option><option value="7">יולי</option><option value="8">אוגוסט</option><option value="9">ספטמבר</option><option value="10">אוקטובר</option><option value="11">נובמבר</option><option value="12">דצמבר</option></select>
+      <input type="number" id="c2year" placeholder="שנה" min="1900" max="2099">
+    </div>
+    <button class="btn btn-gold" onclick="runCompatibility()">בדוק התאמה ←</button>
+    <button class="btn btn-clear" onclick="document.getElementById('outputComp').innerHTML=''">🗑 נקה</button>
+  </div>
+  <div id="outputComp"></div>
+</div>
+
+<!-- דף הורים-ילדים -->
+<div id="page-parent" class="dashboard-container fade-in" style="display:none">
+  <h1 class="gold-title">👨‍👧 חיבור הורים-ילדים</h1>
+  <div class="card">
+    <div class="card-title"><span class="badge">א</span> הורה</div>
+    <label>שם</label>
+    <input type="text" id="p1name" placeholder="שם ההורה...">
+    <label>תאריך לידה</label>
+    <div class="date-row">
+      <select id="p1day"><option value="">יום</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option></select>
+      <select id="p1month"><option value="">חודש</option><option value="1">ינואר</option><option value="2">פברואר</option><option value="3">מרץ</option><option value="4">אפריל</option><option value="5">מאי</option><option value="6">יוני</option><option value="7">יולי</option><option value="8">אוגוסט</option><option value="9">ספטמבר</option><option value="10">אוקטובר</option><option value="11">נובמבר</option><option value="12">דצמבר</option></select>
+      <input type="number" id="p1year" placeholder="שנה" min="1900" max="2099">
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="badge">ב</span> ילד / ילדה</div>
+    <label>שם</label>
+    <input type="text" id="p2name" placeholder="שם הילד...">
+    <label>תאריך לידה</label>
+    <div class="date-row">
+      <select id="p2day"><option value="">יום</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option></select>
+      <select id="p2month"><option value="">חודש</option><option value="1">ינואר</option><option value="2">פברואר</option><option value="3">מרץ</option><option value="4">אפריל</option><option value="5">מאי</option><option value="6">יוני</option><option value="7">יולי</option><option value="8">אוגוסט</option><option value="9">ספטמבר</option><option value="10">אוקטובר</option><option value="11">נובמבר</option><option value="12">דצמבר</option></select>
+      <input type="number" id="p2year" placeholder="שנה" min="1900" max="2099">
+    </div>
+    <button class="btn btn-gold" onclick="runParentChild()">בדוק חיבור ←</button>
+    <button class="btn btn-clear" onclick="document.getElementById('outputParent').innerHTML=''">🗑 נקה</button>
+  </div>
+  <div id="outputParent"></div>
+</div>
+
 </body>
 </html>
