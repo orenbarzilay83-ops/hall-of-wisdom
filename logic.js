@@ -343,13 +343,13 @@ function runAnalysis() {
 
   // ריבוע פיתגורס
   const gLbl = {3:'זיכרון',6:'אהבה',9:'סקרנות',2:'סובלנות',5:'חופש',8:'אנרגיה',1:'מזל',4:'כוח',7:'סמכות'};
-  let pythaBody = '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-width:220px;margin:0 auto 14px;">';
+  let pythaBody = '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-width:240px;margin:0 auto 16px;">';
   [[3,6,9],[2,5,8],[1,4,7]].forEach(row => row.forEach(n => {
     const cnt=pytha.counts[n], active=cnt>0;
-    pythaBody += `<div style="background:#0a1628;border-radius:8px;padding:12px 4px;text-align:center;border:1px solid ${active?'#e0c97f88':'#2d3748'}">
-      <div style="color:${active?'#e0c97f':'#4a5568'};font-size:1.4rem;font-weight:900">${n}</div>
-      <div style="color:#718096;font-size:.65rem;margin-top:2px">${gLbl[n]}</div>
-      ${cnt>1?`<div style="color:#68d391;font-size:.68rem">×${cnt}</div>`:''}
+    pythaBody += `<div class="pytha-cell ${active?'active':''}">
+      <div class="pn">${n}</div>
+      <div class="pl">${gLbl[n]}</div>
+      ${cnt>1?`<div class="pc">×${cnt}</div>`:''}
     </div>`;
   }));
   pythaBody += '</div>';

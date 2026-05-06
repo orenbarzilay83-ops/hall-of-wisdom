@@ -417,3 +417,26 @@ label{font-size:.95em;}
 .sub-label { color:#a0aec0 !important; font-size:.9rem !important; margin-bottom:5px; }
 .sub-num { color:#68d391 !important; font-weight:900 !important; font-size:1rem !important; }
 .sub-text { color:#cbd5e0 !important; font-size:.95rem !important; line-height:1.85 !important; margin-top:7px; }
+
+
+/* ══ OUTPUT DARK CARDS (FIX FOR LIGHT THEME) ══ */
+#output, #outputComp, #outputParent { color: #e2e8f0; }
+.acc-item { background: #0f3460 !important; border-radius: 12px !important; margin-bottom: 10px !important; overflow: hidden !important; }
+.acc-btn { background: transparent !important; color: #e2e8f0 !important; font-size: 1rem !important; padding: 15px 18px !important; }
+.acc-btn:hover { background: #ffffff0a !important; }
+.acc-title { color: #e8e0cc !important; font-size: 1rem !important; font-weight: 500 !important; }
+.acc-subtitle { color: #9090a8 !important; font-size: .8rem !important; }
+.acc-num { font-size: 1.7rem !important; font-weight: 900 !important; min-width: 44px !important; }
+.acc-arrow { color: #e0c97f !important; }
+.acc-body { background: transparent !important; color: #e2e8f0 !important; padding: 4px 16px 16px !important; }
+.sub-item { background: #0a1628 !important; border-radius: 10px !important; padding: 12px 14px !important; margin-bottom: 8px !important; color: #e2e8f0 !important; }
+.sub-label { color: #a0a8c0 !important; font-size: .88rem !important; margin-bottom: 4px !important; display: block !important; }
+.sub-num { color: #68d391 !important; font-weight: 900 !important; }
+.sub-text { color: #c8d0e0 !important; font-size: .95rem !important; line-height: 1.85 !important; display: block !important; margin-top: 6px !important; }
+.pytha-cell { background: #0a1628 !important; border-radius: 8px !important; padding: 12px 4px !important; text-align: center !important; border: 1px solid #2d3748 !important; }
+.pytha-cell.active { border-color: #e0c97f88 !important; }
+.pytha-cell .pn { font-size: 1.5rem !important; font-weight: 900 !important; color: #4a5568 !important; }
+.pytha-cell.active .pn { color: #e0c97f !important; }
+.pytha-cell .pl { font-size: .65rem !important; color: #718096 !important; margin-top: 2px !important; }
+.pytha-cell .pc { font-size: .7rem !important; color: #68d391 !important; }
+#output h3, #outputComp h3, #outputParent h3 { color: #e0c97f !important; }
