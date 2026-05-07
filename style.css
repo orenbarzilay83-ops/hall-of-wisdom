@@ -101,7 +101,8 @@ body {
 label { display: block; color: var(--text2); font-size: .95rem; font-weight: 700; margin: 12px 0 5px; }
 .field-label { text-align: center;
   text-align-last: center; font-size: 1rem; font-weight: 800; color: var(--text2); }
-.short-input { width: 72% !important; margin: 0 auto !important; display: block !important; text-align: center !important; font-weight: 700 !important; }
+.short-input { width: 72% !important; margin: 0 auto !important; display: block !important; text-align: center !important; font-weight: 700 !important;
+  margin-bottom: 12px !important; }
 .short-date { width: 82%; margin: 0 auto; }
 input[type=text], input[type=date], input[type=time], input[type=password], input[type=email], select, textarea {
   width: 100%; padding: 12px 14px; border: 1.5px solid var(--border2); border-radius: var(--radius-sm);
@@ -128,21 +129,21 @@ input:focus, select:focus, textarea:focus { border-color: var(--gold); box-shado
 @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
 .fade-in { animation: fadeIn .35s ease; }
 @keyframes slideDown { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:translateY(0); } }
-.acc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+.acc-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 8px; }
 .acc-item {
   background: linear-gradient(160deg, #0f3460, #0b2a50);
   border-radius: 14px; border: 1.5px solid transparent; cursor: pointer;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   text-align: center;
-  text-align-last: center; padding: 18px 10px 12px; min-height: 100px; gap: 5px;
+  text-align-last: center; padding: 18px 10px 12px; min-height: 80px; gap: 5px;
   transition: all .2s; box-shadow: 0 2px 8px rgba(0,0,0,.2);
   -webkit-tap-highlight-color: transparent; user-select: none;
 }
 .acc-item:hover { background: linear-gradient(160deg, #163a6a, #0f3460); }
 .acc-item.open { border-color: #e0c97f99; background: linear-gradient(160deg, #163a6a, #0f3460); box-shadow: 0 4px 16px rgba(200,168,75,.2); }
-.acc-num { font-size: 1.9rem; font-weight: 900; color: #e0c97f; line-height: 1; }
+.acc-num { font-size: 1.4rem; font-weight: 900; color: #e0c97f; line-height: 1; }
 .acc-info { width: 100%; }
-.acc-title { font-size: .88rem; font-weight: 700; color: #e8e0cc; line-height: 1.3; }
+.acc-title { font-size: .75rem; font-weight: 700; color: #e8e0cc; line-height: 1.3; }
 .acc-subtitle { font-size: .7rem; color: #718096; margin-top: 2px; }
 .acc-hint { font-size: .65rem; color: #4a5568; margin-top: 4px; transition: color .2s; }
 .acc-item.open .acc-hint { color: #e0c97f; }
@@ -162,7 +163,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--gold); box-shado
 #output, #outputComp, #outputParent { max-width: 720px; margin: 0 auto; color: #e2e8f0; }
 #output h3, #outputComp h3, #outputParent h3 { color: var(--gold-dark); text-align: center;
   text-align-last: center; font-size: 1.05rem; margin: 16px 0 20px; letter-spacing: 1px; font-weight: 800; }
-.date-row { display: grid; grid-template-columns: 1fr 1fr 1.6fr; gap: 8px; }
+.date-row { display: grid; grid-template-columns: repeat(5, 1fr) 1.6fr; gap: 8px; }
 .date-row select, .date-row input { background: #0a0a18; border: 1px solid #e0c97f33; border-radius: 8px; padding: 12px 10px; color: #e2e8f0; font-family: inherit; font-size: 1rem; outline: none; appearance: none; -webkit-appearance: none; text-align: center;
   text-align-last: center; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23e0c97f' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: left 10px center; }
 .date-row input { background-image: none; }
