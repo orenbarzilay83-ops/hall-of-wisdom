@@ -93,12 +93,14 @@ body {
 .menu-overlay { display: none; position: fixed; top:0; left:0; width:100vw; height:100vh; background: rgba(0,0,0,.25); z-index: 199; }
 .menu-overlay.open { display: block; }
 .dashboard-container { max-width: 600px; margin: 0 auto; padding: 20px 16px; }
-.gold-title { text-align: center; color: var(--gold-dark); font-size: 1.3rem; letter-spacing: .04em; margin-bottom: 20px; padding-top: 4px; }
+.gold-title { text-align: center;
+  text-align-last: center; color: var(--gold-dark); font-size: 1.3rem; letter-spacing: .04em; margin-bottom: 20px; padding-top: 4px; }
 .card { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 22px 18px; margin-bottom: 18px; box-shadow: var(--shadow2); }
 .card-title { color: var(--gold-dark); font-size: 1.05rem; font-weight: 800; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1.5px solid var(--border); display: flex; align-items: center; gap: 8px; }
 .badge { background: linear-gradient(135deg, #e0c97f, #c8a84b); color: #1a0e00; border-radius: 50%; width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; font-size: .82rem; font-weight: 900; flex-shrink: 0; }
 label { display: block; color: var(--text2); font-size: .95rem; font-weight: 700; margin: 12px 0 5px; }
-.field-label { text-align: center; font-size: 1rem; font-weight: 800; color: var(--text2); }
+.field-label { text-align: center;
+  text-align-last: center; font-size: 1rem; font-weight: 800; color: var(--text2); }
 .short-input { width: 72% !important; margin: 0 auto !important; display: block !important; text-align: center !important; font-weight: 700 !important; }
 .short-date { width: 82%; margin: 0 auto; }
 input[type=text], input[type=date], input[type=time], input[type=password], input[type=email], select, textarea {
@@ -114,7 +116,8 @@ input:focus, select:focus, textarea:focus { border-color: var(--gold); box-shado
 .btn-clear { background: transparent; border: 1.5px solid var(--border2); color: var(--muted); font-size: .88rem; padding: 10px; margin-top: 8px; }
 .bottom-nav { display: flex; gap: 10px; margin-top: 10px; }
 .bottom-nav .btn { margin-top: 0; }
-.datetime-bar { background: linear-gradient(135deg, #e0c97f22, #c8a84b11); border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 12px 16px; margin-bottom: 14px; text-align: center; }
+.datetime-bar { background: linear-gradient(135deg, #e0c97f22, #c8a84b11); border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 12px 16px; margin-bottom: 14px; text-align: center;
+  text-align-last: center; }
 .datetime-bar .date-big { font-size: 1.3rem; font-weight: 900; color: var(--gold-dark); }
 .datetime-bar .time-big { font-size: 1rem; color: var(--text2); margin-top: 2px; }
 .appt-item { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
@@ -130,7 +133,8 @@ input:focus, select:focus, textarea:focus { border-color: var(--gold); box-shado
   background: linear-gradient(160deg, #0f3460, #0b2a50);
   border-radius: 14px; border: 1.5px solid transparent; cursor: pointer;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  text-align: center; padding: 18px 10px 12px; min-height: 100px; gap: 5px;
+  text-align: center;
+  text-align-last: center; padding: 18px 10px 12px; min-height: 100px; gap: 5px;
   transition: all .2s; box-shadow: 0 2px 8px rgba(0,0,0,.2);
   -webkit-tap-highlight-color: transparent; user-select: none;
 }
@@ -148,15 +152,18 @@ input:focus, select:focus, textarea:focus { border-color: var(--gold); box-shado
 .sub-label { color: #a0aec0; font-size: .85rem; margin-bottom: 4px; display: block; }
 .sub-num { font-weight: 900; font-size: 1rem; color: #e0c97f; }
 .sub-text { color: #cbd5e0; font-size: .95rem; line-height: 1.85; display: block; margin-top: 6px; }
-.pytha-cell { background: #0a1628; border-radius: 8px; padding: 12px 4px; text-align: center; border: 1px solid #2d3748; transition: all .2s; }
+.pytha-cell { background: #0a1628; border-radius: 8px; padding: 12px 4px; text-align: center;
+  text-align-last: center; border: 1px solid #2d3748; transition: all .2s; }
 .pytha-cell.active { border-color: #e0c97f88; background: #0d2040; }
 .pytha-cell .pn { font-size: 1.5rem; font-weight: 900; color: #4a5568; }
 .pytha-cell.active .pn { color: #e0c97f; }
 .pytha-cell .pl { font-size: .65rem; color: #718096; margin-top: 2px; }
 .pytha-cell .pc { font-size: .72rem; font-weight: 700; color: #68d391; margin-top: 2px; }
 #output, #outputComp, #outputParent { max-width: 720px; margin: 0 auto; color: #e2e8f0; }
-#output h3, #outputComp h3, #outputParent h3 { color: var(--gold-dark); text-align: center; font-size: 1.05rem; margin: 16px 0 20px; letter-spacing: 1px; font-weight: 800; }
+#output h3, #outputComp h3, #outputParent h3 { color: var(--gold-dark); text-align: center;
+  text-align-last: center; font-size: 1.05rem; margin: 16px 0 20px; letter-spacing: 1px; font-weight: 800; }
 .date-row { display: grid; grid-template-columns: 1fr 1fr 1.6fr; gap: 8px; }
-.date-row select, .date-row input { background: #0a0a18; border: 1px solid #e0c97f33; border-radius: 8px; padding: 12px 10px; color: #e2e8f0; font-family: inherit; font-size: 1rem; outline: none; appearance: none; -webkit-appearance: none; text-align: center; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23e0c97f' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: left 10px center; }
+.date-row select, .date-row input { background: #0a0a18; border: 1px solid #e0c97f33; border-radius: 8px; padding: 12px 10px; color: #e2e8f0; font-family: inherit; font-size: 1rem; outline: none; appearance: none; -webkit-appearance: none; text-align: center;
+  text-align-last: center; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23e0c97f' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: left 10px center; }
 .date-row input { background-image: none; }
 .date-row select:focus, .date-row input:focus { border-color: #e0c97f; }
