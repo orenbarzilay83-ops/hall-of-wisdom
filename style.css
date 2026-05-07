@@ -163,7 +163,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--gold); box-shado
 #output, #outputComp, #outputParent { max-width: 720px; margin: 0 auto; color: #e2e8f0; }
 #output h3, #outputComp h3, #outputParent h3 { color: var(--gold-dark); text-align: center;
   text-align-last: center; font-size: 1.05rem; margin: 16px 0 20px; letter-spacing: 1px; font-weight: 800; }
-.date-row { display: grid; grid-template-columns: 1fr 1fr 1.6fr; gap: 8px; }
+.date-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
 .date-row select, .date-row input { background: #0a0a18; border: 1px solid #e0c97f33; border-radius: 8px; padding: 12px 10px; color: #e2e8f0; font-family: inherit; font-size: 1rem; outline: none; appearance: none; -webkit-appearance: none; text-align: center;
   text-align-last: center; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23e0c97f' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: left 10px center; }
 .date-row input { background-image: none; }
