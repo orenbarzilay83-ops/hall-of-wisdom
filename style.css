@@ -103,7 +103,7 @@ label { display: block; color: var(--text2); font-size: .95rem; font-weight: 700
   text-align-last: center; font-size: 1rem; font-weight: 800; color: var(--text2); }
 .short-input { width: 72% !important; margin: 0 auto !important; display: block !important; text-align: center !important; font-weight: 700 !important;
   margin-bottom: 12px !important; }
-.short-date { width: 82%; margin: 0 auto; }
+.short-date { width: 100%; }
 input[type=text], input[type=date], input[type=time], input[type=password], input[type=email], select, textarea {
   width: 100%; padding: 12px 14px; border: 1.5px solid var(--border2); border-radius: var(--radius-sm);
   font-size: 1rem; font-family: inherit; background: var(--bg); color: var(--text);
