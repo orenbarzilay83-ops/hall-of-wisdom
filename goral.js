@@ -99,20 +99,30 @@ function goralSignToLetter(sign){
   return sign;
 }
 
+
+function goralFirstJump(key){
+  const k = Number(key || 0);
+
+  // שיטת ההשלמה לעשר לפי הספר
+  if (k >= 1 && k <= 9) return 10 - k;
+
+  const mod = k % 10;
+  return mod === 0 ? 10 : 10 - mod;
+}
+
 function goralNavigate(boardName, jump){
-  const table = G_TABLES[boardName];
-  const seq = table.seq;
-  const start = seq.findIndex(x => x === "הגורל");
+  const seq = G_TABLES[boardName].seq;
+
+  // נקודת העוגן בלוח
+  const start = seq.findIndex(x => x === "הגורל" || x === "גורלי");
   const signs = [];
 
   if(start < 0) return signs;
 
-  // הדילוג הראשוני מהמילה “הגורל”
-  let index = start + Number(jump || 0);
+  // דילוג ראשון לפי שיטת ההשלמה לעשר
+  let index = start + goralFirstJump(jump);
 
-  // אין סיבוב מעגלי — ממשיכים עד סוף הלוח.
-  if(index >= seq.length) return signs;
-
+  // משם כל עשירי
   while(index < seq.length){
     signs.push(seq[index]);
     index += 10;
