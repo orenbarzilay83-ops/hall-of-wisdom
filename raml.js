@@ -192,3 +192,380 @@ if (typeof module !== "undefined") {
   module.exports.ramlRandomMothers = ramlRandomMothers;
   module.exports.ramlRandomChart = ramlRandomChart;
 }
+
+// שלב 1 — מבנה ידע מורחב לצורות גורל החול
+// כאן לא משנים את המנוע. רק מכינים מקום לידע שנכניס בהמשך מתוך הספר.
+
+const RAML_FIGURE_FIELDS = [
+  "key",
+  "hebrew",
+  "arabic",
+  "pattern",
+  "element",
+  "nature",
+  "fortune",
+  "gender",
+  "movement",
+  "basicMeaning",
+  "bookNotes"
+];
+
+function ramlGetFigureProfile(key) {
+  const base = RAML_FIGURES[key];
+
+  if (!base) {
+    return {
+      key,
+      hebrew: "צורה לא מזוהה",
+      arabic: "",
+      pattern: key,
+      element: "",
+      nature: "",
+      fortune: "",
+      gender: "",
+      movement: "",
+      basicMeaning: "",
+      bookNotes: ""
+    };
+  }
+
+  return {
+    key: base.key,
+    hebrew: base.hebrew || "",
+    arabic: base.arabic || "",
+    pattern: base.key,
+    element: base.element || "",
+    nature: base.nature || "",
+    fortune: base.fortune || "",
+    gender: base.gender || "",
+    movement: base.movement || "",
+    basicMeaning: base.meaning || "",
+    bookNotes: base.bookNotes || ""
+  };
+}
+
+function ramlListFigureProfiles() {
+  return Object.keys(RAML_FIGURES)
+    .sort()
+    .map(key => ramlGetFigureProfile(key));
+}
+
+if (typeof module !== "undefined") {
+  module.exports.RAML_FIGURE_FIELDS = RAML_FIGURE_FIELDS;
+  module.exports.ramlGetFigureProfile = ramlGetFigureProfile;
+  module.exports.ramlListFigureProfiles = ramlListFigureProfiles;
+}
+
+// שמות 16 הבתים בגורל החול
+const RAML_HOUSES = {
+  1:  { hebrew: "בית החיים", arabic: "بيت الحياة", role: "השואל, הגוף, החיים, מצב האדם" },
+  2:  { hebrew: "בית הממון", arabic: "بيت المال", role: "ממון, רכוש, פרנסה, מה שיש לאדם" },
+  3:  { hebrew: "בית האחים", arabic: "بيت الإخوة", role: "אחים, קרובים, תנועה קרובה, מסרים" },
+  4:  { hebrew: "בית ההורים", arabic: "بيت الوالدين", role: "אב, אם, בית, שורש, קרקע" },
+  5:  { hebrew: "בית הבנים", arabic: "بيت الأولاد", role: "ילדים, פרי, תוצאה יוצאת" },
+  6:  { hebrew: "בית המחלות", arabic: "بيت الأمراض", role: "חולי, חולשה, משרתים, קושי יומי" },
+  7:  { hebrew: "בית הזוגיות", arabic: "بيت الزواج", role: "זוגיות, שותפות, הצד שמול השואל" },
+  8:  { hebrew: "בית המוות", arabic: "بيت الموت", role: "סוף, פחד, אובדן, שינוי כבד" },
+  9:  { hebrew: "בית הנסיעה", arabic: "بيت السفر", role: "דרך רחוקה, נסיעה, לימוד, חוץ" },
+  10: { hebrew: "בית הכבוד והרוממות", arabic: "بيت العز والرفعة", role: "מעמד, כבוד, הצלחה ציבורית" },
+  11: { hebrew: "בית התקווה והמשאלות", arabic: "بيت الرجاء والآمال", role: "תקוות, משאלות, עזרה, רווח" },
+  12: { hebrew: "בית האויבים", arabic: "بيت الأعداء", role: "אויבים, הסתרה, פחדים, מניעות" },
+  13: { hebrew: "בית השואל", arabic: "بيت السائل", role: "מצב השואל לאחר הולדה" },
+  14: { hebrew: "בית הנשאל עליו", arabic: "بيت المسؤول عنه", role: "הדבר הנשאל, האדם או העניין שמול השואל" },
+  15: { hebrew: "בית המאזן", arabic: "بيت الميزان", role: "איזון, בדיקת אמת, הכרעה פנימית" },
+  16: { hebrew: "בית העכבה", arabic: "بيت العاقبة", role: "אחרית הדבר, תוצאה סופית" },
+};
+
+function ramlGetHouseInfo(houseNumber) {
+  return RAML_HOUSES[houseNumber] || {
+    hebrew: "",
+    arabic: "",
+    role: ""
+  };
+}
+
+function ramlAttachHouseInfo(chart) {
+  return chart.map(h => ({
+    ...h,
+    houseHebrew: ramlGetHouseInfo(h.house).hebrew,
+    houseArabic: ramlGetHouseInfo(h.house).arabic,
+    houseRole: ramlGetHouseInfo(h.house).role
+  }));
+}
+
+if (typeof module !== "undefined") {
+  module.exports.RAML_HOUSES = RAML_HOUSES;
+  module.exports.ramlGetHouseInfo = ramlGetHouseInfo;
+  module.exports.ramlAttachHouseInfo = ramlAttachHouseInfo;
+}
+
+// שלב 2 — נושאי שאלות בגורל החול
+// זה עדיין לא פירוש מלא. זו רק שכבת מיון ראשונית לפי נושאי השאלה.
+// כללים מיוחדים כמו נישואין, אבדה, אסיר, חולי וכו׳ ימולאו בהמשך מתוך הספר.
+
+const RAML_QUESTION_TOPICS = {
+  generalCondition: {
+    id: "generalCondition",
+    hebrew: "מצב כללי של אדם",
+    arabic: "حال المطلوب",
+    focusHouse: 1,
+    keywords: ["מצב", "מה מצבו", "אדם", "פלוני", "מה קורה עם"],
+    needsSpecialRule: false,
+    notes: "שאלה כללית על מצב האדם."
+  },
+
+  success: {
+    id: "success",
+    hebrew: "הצלחה בדבר",
+    arabic: "النجاح في الأمر",
+    focusHouse: 10,
+    keywords: ["האם אצליח", "הצלחה", "יצליח", "האם יצליח", "האם הדבר יצליח"],
+    needsSpecialRule: true,
+    notes: "יש לבדוק בהמשך לפי דיני ההצלחה והבית המתאים לשאלה."
+  },
+
+  moneyProfitLoss: {
+    id: "moneyProfitLoss",
+    hebrew: "רווח או הפסד",
+    arabic: "الكسب أو الخسارة",
+    focusHouse: 2,
+    keywords: ["כסף", "רווח", "הפסד", "ארוויח", "מניות", "עסק", "השקעה", "פרנסה"],
+    needsSpecialRule: true,
+    notes: "קשור לבית הממון, ובהמשך נוסיף כללי רווח/הפסד."
+  },
+
+  travel: {
+    id: "travel",
+    hebrew: "נסיעה / דרך",
+    arabic: "السفر",
+    focusHouse: 9,
+    keywords: ["נסיעה", "לטוס", "לטייל", "דרך", "חו״ל", "מדינה רחוקה", "מסע"],
+    needsSpecialRule: true,
+    notes: "קשור לבית הנסיעה."
+  },
+
+  absentReturn: {
+    id: "absentReturn",
+    hebrew: "חזרת נעדר / רחוק",
+    arabic: "عودة الغائب",
+    focusHouse: 9,
+    keywords: ["יחזור", "נעדר", "רחוק", "חזרת", "אדם רחוק", "מתי יחזור"],
+    needsSpecialRule: true,
+    notes: "דורש כלל מיוחד לחזרת נעדר."
+  },
+
+  stolenLostObject: {
+    id: "stolenLostObject",
+    hebrew: "אבדה / גניבה",
+    arabic: "المسروق أو المفقود",
+    focusHouse: 2,
+    keywords: ["אבדה", "אבד", "גניבה", "נגנב", "אמצא", "חפץ", "רכוש"],
+    needsSpecialRule: true,
+    notes: "דורש כללי אבדה/גניבה. לא להסתפק בבית 2 בלבד."
+  },
+
+  friendTrust: {
+    id: "friendTrust",
+    hebrew: "נאמנות חבר / אדם קרוב",
+    arabic: "وفاء الصاحب",
+    focusHouse: 11,
+    keywords: ["חבר", "סומך", "נאמן", "בוגד", "אמין", "אפשר לסמוך"],
+    needsSpecialRule: true,
+    notes: "דורש בדיקת יחס בין השואל לאדם הנשאל."
+  },
+
+  love: {
+    id: "love",
+    hebrew: "אהבה",
+    arabic: "المحبة",
+    focusHouse: 7,
+    keywords: ["אהבה", "אוהב", "אוהבת", "רגשות", "לב", "האם הוא אוהב", "האם היא אוהבת"],
+    needsSpecialRule: true,
+    notes: "קשור לבית הזוגיות, ובהמשך נוסיף כללי אהבה."
+  },
+
+  marriage: {
+    id: "marriage",
+    hebrew: "נישואין / זיווג",
+    arabic: "الزواج",
+    focusHouse: 7,
+    keywords: ["נישואין", "חתונה", "להתחתן", "זיווג", "אישה", "בעל", "בן זוג", "בת זוג"],
+    needsSpecialRule: true,
+    notes: "דורש דיני נישואין מיוחדים מהספר."
+  },
+
+  spouseDescription: {
+    id: "spouseDescription",
+    hebrew: "תיאור בן/בת זוג",
+    arabic: "صفة الزوج أو الزوجة",
+    focusHouse: 7,
+    keywords: ["איך יהיה הבעל", "איך תהיה האישה", "תכונת בן זוג", "תכונת בת זוג", "מי הזיווג"],
+    needsSpecialRule: true,
+    notes: "שאלת תיאור, לא רק כן/לא."
+  },
+
+  childGender: {
+    id: "childGender",
+    hebrew: "זכר או נקבה בלידה",
+    arabic: "ذكر أم أنثى",
+    focusHouse: 5,
+    keywords: ["בן או בת", "זכר", "נקבה", "ילד", "ילדה", "הריון", "לידה"],
+    needsSpecialRule: true,
+    notes: "קשור לבית הבנים, אבל דורש כלל מין הוולד."
+  },
+
+  illnessHealing: {
+    id: "illnessHealing",
+    hebrew: "חולי ורפואה",
+    arabic: "شفاء المريض",
+    focusHouse: 6,
+    keywords: ["חולה", "מחלה", "יתרפא", "בריאות", "רפואה", "החלמה"],
+    needsSpecialRule: true,
+    notes: "קשור לבית המחלות ודורש דיני חולי."
+  },
+
+  prisonerFreedom: {
+    id: "prisonerFreedom",
+    hebrew: "אסיר / יציאה ממאסר",
+    arabic: "خلاص الأسير أو المسجون",
+    focusHouse: 12,
+    keywords: ["אסיר", "כלא", "מאסר", "ישתחרר", "שחרור", "כלוא"],
+    needsSpecialRule: true,
+    notes: "דורש כלל מיוחד לאסיר/כלוא."
+  },
+
+  dailyLuck: {
+    id: "dailyLuck",
+    hebrew: "מזל היום",
+    arabic: "سعد اليوم أو نحسه",
+    focusHouse: 16,
+    keywords: ["היום", "מזל היום", "האם היום טוב", "האם זה יום טוב"],
+    needsSpecialRule: true,
+    notes: "שאלה על מזל היום ודורשת דין מיוחד."
+  },
+
+  dream: {
+    id: "dream",
+    hebrew: "פירוש חלום",
+    arabic: "تفسير الرؤيا",
+    focusHouse: 9,
+    keywords: ["חלום", "חלמתי", "פירוש חלום", "רؤיה"],
+    needsSpecialRule: true,
+    notes: "דורש כללי פירוש חלום, לא לפרש חופשי."
+  }
+};
+
+function ramlDetectQuestionTopic(question) {
+  const q = String(question || "").trim();
+
+  if (!q) {
+    return RAML_QUESTION_TOPICS.generalCondition;
+  }
+
+  for (const topic of Object.values(RAML_QUESTION_TOPICS)) {
+    if (topic.keywords.some(k => q.includes(k))) {
+      return topic;
+    }
+  }
+
+  return RAML_QUESTION_TOPICS.generalCondition;
+}
+
+function ramlGetFocusHouse(question) {
+  const topic = ramlDetectQuestionTopic(question);
+  return {
+    topic,
+    house: topic.focusHouse,
+    houseInfo: ramlGetHouseInfo(topic.focusHouse)
+  };
+}
+
+if (typeof module !== "undefined") {
+  module.exports.RAML_QUESTION_TOPICS = RAML_QUESTION_TOPICS;
+  module.exports.ramlDetectQuestionTopic = ramlDetectQuestionTopic;
+  module.exports.ramlGetFocusHouse = ramlGetFocusHouse;
+}
+
+// הרצת קריאה בסיסית של גורל החול
+// עדיין בלי פירוש עומק — רק איסוף כל הנתונים המרכזיים לקריאה.
+function ramlRunReading(question, mothers) {
+  const topicResult = ramlGetFocusHouse(question);
+  const chart = ramlBuildShield(mothers);
+  const chartWithHouses = ramlAttachHouseInfo(chart);
+  const groups = ramlGroupShield(chartWithHouses);
+
+  const focusHouse = chartWithHouses.find(h => h.house === topicResult.house);
+  const judge = chartWithHouses.find(h => h.house === 15);
+  const sentence = chartWithHouses.find(h => h.house === 16);
+
+  return {
+    question: String(question || "").trim(),
+    topic: topicResult.topic,
+    focusHouseNumber: topicResult.house,
+    focusHouseInfo: topicResult.houseInfo,
+    focusHouse,
+    judge,
+    sentence,
+    mothers,
+    chart: chartWithHouses,
+    groups,
+    note: "קריאה בסיסית בלבד: זיהוי נושא, בית מרכזי, שופט ומשפט. פירוש עומק יתווסף בהמשך לפי הספר."
+  };
+}
+
+function ramlRunRandomReading(question) {
+  const mothers = ramlRandomMothers();
+  return ramlRunReading(question, mothers);
+}
+
+if (typeof module !== "undefined") {
+  module.exports.ramlRunReading = ramlRunReading;
+  module.exports.ramlRunRandomReading = ramlRunRandomReading;
+}
+
+// סיכום טכני לקריאת גורל החול
+// זה לא פירוש עומק ולא פסיקה. רק מציג את נתוני הקריאה בצורה ברורה.
+function ramlBuildReadingSummary(reading) {
+  if (!reading) {
+    return "לא נוצרה קריאה.";
+  }
+
+  const focus = reading.focusHouse;
+  const judge = reading.judge;
+  const sentence = reading.sentence;
+
+  const lines = [];
+
+  lines.push(`השאלה: ${reading.question || "לא צוינה שאלה"}`);
+  lines.push(`נושא השאלה: ${reading.topic?.hebrew || ""}`);
+  lines.push(`הבית המרכזי לקריאה: בית ${reading.focusHouseNumber} — ${reading.focusHouseInfo?.hebrew || ""}`);
+
+  if (focus) {
+    lines.push(`בבית המרכזי נפלה הצורה: ${focus.hebrew} (${focus.key})`);
+  }
+
+  if (judge) {
+    lines.push(`השופט: ${judge.hebrew} (${judge.key})`);
+  }
+
+  if (sentence) {
+    lines.push(`המשפט / התוצאה הסופית: ${sentence.hebrew} (${sentence.key})`);
+  }
+
+  lines.push("הערה: זהו סיכום טכני בלבד. פירוש עומק יתווסף בהמשך לפי כללי הספר.");
+
+  return lines.join("\n");
+}
+
+function ramlRunRandomReadingSummary(question) {
+  const reading = ramlRunRandomReading(question);
+  return {
+    reading,
+    summary: ramlBuildReadingSummary(reading)
+  };
+}
+
+if (typeof module !== "undefined") {
+  module.exports.ramlBuildReadingSummary = ramlBuildReadingSummary;
+  module.exports.ramlRunRandomReadingSummary = ramlRunRandomReadingSummary;
+}
