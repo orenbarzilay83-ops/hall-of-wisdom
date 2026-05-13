@@ -720,3 +720,53 @@ if (typeof module !== "undefined") {
   module.exports.ramlGetMovementFromKey = ramlGetMovementFromKey;
   module.exports.ramlApplyMovementAndElementToFigures = ramlApplyMovementAndElementToFigures;
 }
+
+// יצירת צורה לפי ספירת נקודות, לפי הספר:
+// אם מספר הנקודות אי־זוגי — נקודה אחת.
+// אם מספר הנקודות זוגי — קו / שתי נקודות.
+function ramlLineFromPointCount(count) {
+  const n = Math.abs(Number(count || 0));
+  if (!Number.isFinite(n) || n === 0) {
+    throw new Error("ספירת נקודות חייבת להיות מספר חיובי.");
+  }
+
+  return n % 2 === 0 ? 2 : 1;
+}
+
+// מקבל 4 ספירות נקודות ומחזיר צורת רמל אחת
+function ramlFigureFromPointCounts(counts) {
+  if (!Array.isArray(counts) || counts.length !== 4) {
+    throw new Error("צריך להזין בדיוק 4 ספירות נקודות לצורה אחת.");
+  }
+
+  return counts.map(ramlLineFromPointCount);
+}
+
+// מקבל 4 אמהות, כל אם מורכבת מ־4 ספירות נקודות
+// דוגמה:
+// [
+//   [17, 24, 31, 18],
+//   [11, 20, 15, 22],
+//   [9, 16, 27, 30],
+//   [14, 21, 28, 33]
+// ]
+function ramlMothersFromPointCounts(matrix) {
+  if (!Array.isArray(matrix) || matrix.length !== 4) {
+    throw new Error("צריך להזין 4 קבוצות של ספירות נקודות — אחת לכל אם.");
+  }
+
+  return matrix.map(ramlFigureFromPointCounts);
+}
+
+// הרצת קריאה לפי ספירת נקודות אמיתית, לא אקראית
+function ramlRunReadingFromPointCounts(question, matrix) {
+  const mothers = ramlMothersFromPointCounts(matrix);
+  return ramlRunReading(question, mothers);
+}
+
+if (typeof module !== "undefined") {
+  module.exports.ramlLineFromPointCount = ramlLineFromPointCount;
+  module.exports.ramlFigureFromPointCounts = ramlFigureFromPointCounts;
+  module.exports.ramlMothersFromPointCounts = ramlMothersFromPointCounts;
+  module.exports.ramlRunReadingFromPointCounts = ramlRunReadingFromPointCounts;
+}
