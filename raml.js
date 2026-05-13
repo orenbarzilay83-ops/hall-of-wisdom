@@ -541,15 +541,15 @@ function ramlBuildReadingSummary(reading) {
   lines.push(`הבית המרכזי לקריאה: בית ${reading.focusHouseNumber} — ${reading.focusHouseInfo?.hebrew || ""}`);
 
   if (focus) {
-    lines.push(`בבית המרכזי נפלה הצורה: ${focus.hebrew} (${focus.key}) — ${focus.fortune || "ללא סיווג"}`);
+    lines.push(`בבית המרכזי נפלה הצורה: ${focus.hebrew} (${focus.key}) — ${focus.fortune || "ללא סיווג"}, ${focus.movement || "ללא תנועה"}, יסוד ${focus.element || "לא ידוע"}`);
   }
 
   if (judge) {
-    lines.push(`השופט: ${judge.hebrew} (${judge.key}) — ${judge.fortune || "ללא סיווג"}`);
+    lines.push(`השופט: ${judge.hebrew} (${judge.key}) — ${judge.fortune || "ללא סיווג"}, ${judge.movement || "ללא תנועה"}, יסוד ${judge.element || "לא ידוע"}`);
   }
 
   if (sentence) {
-    lines.push(`המשפט / התוצאה הסופית: ${sentence.hebrew} (${sentence.key}) — ${sentence.fortune || "ללא סיווג"}`);
+    lines.push(`המשפט / התוצאה הסופית: ${sentence.hebrew} (${sentence.key}) — ${sentence.fortune || "ללא סיווג"}, ${sentence.movement || "ללא תנועה"}, יסוד ${sentence.element || "לא ידוע"}`);
   }
 
   const diagnosis = ramlBuildInitialDiagnosis(reading);
@@ -654,4 +654,69 @@ function ramlBuildInitialDiagnosis(reading) {
 if (typeof module !== "undefined") {
   module.exports.ramlNormalizeFortune = ramlNormalizeFortune;
   module.exports.ramlBuildInitialDiagnosis = ramlBuildInitialDiagnosis;
+}
+
+// לפי باب للخارج والداخل والمنقلب والثابت בספר הראשי בלבד
+// 1 = נקודה יחידה / فرد
+// 2 = זוג / زوج
+function ramlGetMovementFromKey(key) {
+  const k = String(key || "");
+  const first = k[0];
+  const last = k[k.length - 1];
+
+  if (first === "1" && last === "1") {
+    return {
+      movement: "מתהפך",
+      arabic: "منقلب",
+      element: "אוויר"
+    };
+  }
+
+  if (first === "2" && last === "2") {
+    return {
+      movement: "קבוע",
+      arabic: "ثابت",
+      element: "עפר"
+    };
+  }
+
+  if (first === "1" && last === "2") {
+    return {
+      movement: "חיצוני",
+      arabic: "خارج",
+      element: "אש"
+    };
+  }
+
+  if (first === "2" && last === "1") {
+    return {
+      movement: "פנימי",
+      arabic: "داخل",
+      element: "מים"
+    };
+  }
+
+  return {
+    movement: "",
+    arabic: "",
+    element: ""
+  };
+}
+
+function ramlApplyMovementAndElementToFigures() {
+  for (const key of Object.keys(RAML_FIGURES)) {
+    const info = ramlGetMovementFromKey(key);
+    RAML_FIGURES[key].movement = info.movement;
+    RAML_FIGURES[key].movementArabic = info.arabic;
+    RAML_FIGURES[key].element = info.element;
+  }
+
+  return RAML_FIGURES;
+}
+
+ramlApplyMovementAndElementToFigures();
+
+if (typeof module !== "undefined") {
+  module.exports.ramlGetMovementFromKey = ramlGetMovementFromKey;
+  module.exports.ramlApplyMovementAndElementToFigures = ramlApplyMovementAndElementToFigures;
 }
