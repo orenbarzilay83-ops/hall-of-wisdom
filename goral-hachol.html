@@ -98,6 +98,13 @@
       font-size: 15px;
     }
 
+    .field-hint {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
     input, textarea {
       width: 100%;
       border: 1px solid rgba(45, 37, 31, 0.22);
@@ -352,12 +359,10 @@
 
         <div>
           <label>ספירות נקודות — 4 שורות לכל אם</label>
-          <textarea id="countsInput" placeholder="הזן כאן 4 שורות של ספירות נקודות:
-לדוגמה:
-17 24 31 18
-11 20 15 22
-9 16 27 30
-14 21 28 33"></textarea>
+          <textarea id="countsInput" placeholder="הזן כאן 4 שורות — בכל שורה 4 מספרים"></textarea>
+          <div class="field-hint">
+            דוגמה: כל שורה מייצגת אם אחת. בכל שורה כותבים 4 מספרים של ספירות נקודות.
+          </div>
         </div>
 
         <button id="runBtn">✦ צור לוח</button>
@@ -504,16 +509,7 @@
 
     document.getElementById("dateLine").textContent = todayLine();
     document.getElementById("runBtn").addEventListener("click", run);
-    document.getElementById("result").innerHTML = `
-      <div class="summary-box">
-        גורל החול מוכן.
-
-        הזן שאלה וספירות נקודות, ואז לחץ על “צור לוח”.
-
-        בשלב זה הדף מציג את מבנה התכת בלבד:
-        אמהות, בנות, נכדות, עדים, שופט ומשפט.
-      </div>
-    `;
+    document.getElementById("result").innerHTML = "";
   </script>
 </body>
 </html>
