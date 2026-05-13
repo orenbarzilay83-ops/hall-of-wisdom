@@ -8,20 +8,20 @@ const RAML_FIGURES = {
   "2111": { key: "2111", hebrew: "סף נכנס", arabic: "عتبة داخلة / راية الفرح", meaning: "", fortune: "סעד" },
   "2212": { key: "2212", hebrew: "לבן", arabic: "البياض", meaning: "", fortune: "סעד" },
 
-  "1111": { key: "1111", hebrew: "דרך", arabic: "الطريق", meaning: "", fortune: "סעד" },
+  "1111": { key: "1111", hebrew: "דרך", arabic: "الطريق", meaning: "", fortune: "ממוזג־סעד" },
   "1212": { key: "1212", hebrew: "ממון יוצא", arabic: "القبض الخارج", meaning: "", fortune: "נחס" },
   "2122": { key: "2122", hebrew: "אדום", arabic: "الحمرة", meaning: "", fortune: "נחס" },
   "2221": { key: "2221", hebrew: "שפל ראש", arabic: "الأنكيس / المنكوس", meaning: "", fortune: "נחס" },
 
-  "1122": { key: "1122", hebrew: "כבוד יוצא", arabic: "نصرة خارجية / الجواد", meaning: "", fortune: "נחס" },
+  "1122": { key: "1122", hebrew: "כבוד יוצא", arabic: "نصرة خارجية / الجواد", meaning: "", fortune: "סעד" },
   "1221": { key: "1221", hebrew: "סוהר", arabic: "العقلة / الشقاوة", meaning: "", fortune: "ממוזג־נחס" },
-  "2112": { key: "2112", hebrew: "חיבור", arabic: "الاجتماع", meaning: "", fortune: "סעד" },
+  "2112": { key: "2112", hebrew: "חיבור", arabic: "الاجتماع", meaning: "", fortune: "ממוזג־סעד" },
   "2211": { key: "2211", hebrew: "כבוד נכנס", arabic: "نصرة داخلة / النصير", meaning: "", fortune: "סעד" },
 
   "1112": { key: "1112", hebrew: "סף יוצא", arabic: "عتبة خارجة", meaning: "", fortune: "נחס" },
   "1211": { key: "1211", hebrew: "בר הלחי", arabic: "نقي الخد / الأشقر", meaning: "", fortune: "ממוזג־נחס" },
   "2121": { key: "2121", hebrew: "ממון נכנס", arabic: "القبض الداخل", meaning: "", fortune: "סעד" },
-  "2222": { key: "2222", hebrew: "קהלה", arabic: "الجماعة", meaning: "", fortune: "סעד" },
+  "2222": { key: "2222", hebrew: "קהלה", arabic: "الجماعة", meaning: "", fortune: "ממוזג" },
 };
 
 // 1 = נקודה אחת
