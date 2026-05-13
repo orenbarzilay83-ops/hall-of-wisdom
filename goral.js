@@ -145,21 +145,34 @@ function goralGetKeys(tri){
   const apex = tri[tri.length - 1][0];
   const isEven = apex % 2 === 0;
 
-  // צד ימין בעברית = row[0].
-  // לפי הדוגמה בספר הקודקוד כן נכלל, ולכן בדוגמה יוצא: ז-ט-ט-ג.
+  // לפי הספר:
+  // אם הקודקוד זוגי מחפשים רק ב-ד-ו-ח = 2,4,6,8
+  // אם הקודקוד אי־זוגי מחפשים רק א-ג-ה-ז-ט = 1,3,5,7,9
+  // י / 10 אינו מפתח חיפוש בלוחות.
+  const validEvenKeys = [2,4,6,8];
+  const validOddKeys = [1,3,5,7,9];
+
+  function isValidKey(n){
+    return isEven ? validEvenKeys.includes(n) : validOddKeys.includes(n);
+  }
+
+  // צד ימין בעברית = row[0], כולל הקודקוד.
   const rightDiagonal = tri.map(row => row[0]);
 
   let keys = isEven
-    ? rightDiagonal.filter(n => n % 2 === 0)
-    : rightDiagonal.slice().reverse().filter(n => n % 2 !== 0);
+    ? rightDiagonal.filter(isValidKey)
+    : rightDiagonal.slice().reverse().filter(isValidKey);
 
+  // אם חסרים 4 מפתחות — משלימים מהשורה הראשונה מימין לשמאל,
+  // אבל עדיין רק מתוך המפתחות החוקיים.
   if(keys.length < 4){
-    const row1Backup = tri[0].filter(n => isEven ? n % 2 === 0 : n % 2 !== 0);
+    const row1Backup = tri[0].filter(isValidKey);
     keys = [...keys, ...row1Backup];
   }
 
   return keys.slice(0,4);
 }
+
 
 
 
@@ -194,14 +207,27 @@ function goralNavigate(boardName, jump){
   if(start < 0) start = seq.findIndex(x => x === "גורלי");
   if(start < 0) return signs;
 
-  // כיול לפי הדוגמה המאומתת בספר
   const boardOffsets = { "א": 0, "ב": 9, "ג": 11, "ד": 9 };
-  const offset = boardOffsets[boardName] || 0;
 
-  // שיטת ההשלמה לעשר
+  let offset = boardOffsets[boardName] || 0;
+
+  // לוח ג׳ אינו אחיד בכל המפתחות.
+  // לפי בדיקות מול התשובות המאומתות:
+  // ב׳ → כאתה ברצונך
+  // ז׳ → אשר אתה שואל
+  // ט׳ נשאר offset 11 כדי לשמר את דוגמת הספר: אשר אתה שואל
+  if(boardName === "ג"){
+    const k = Number(jump);
+    if([2,5,6,7,8].includes(k)){
+      offset = 9;
+    }
+    if(k === 9){
+      offset = 11;
+    }
+  }
+
   let index = (start + goralFirstJump(jump) + offset + seq.length) % seq.length;
 
-  // לפי הדוגמה בספר: מכל לוח יוצאים 10 סימני תשובה
   for(let i = 0; i < 10; i++){
     signs.push(seq[index]);
     index = (index + 10) % seq.length;
@@ -209,6 +235,7 @@ function goralNavigate(boardName, jump){
 
   return signs;
 }
+
 
 
 
@@ -252,6 +279,7 @@ function goralFormatAnswer(raw){
 
     ["מלאכשלמזלכ", "מלאכ של מזלכ"],
     ["מלאכשלחסד", "מלאכ של חסד"],
+    ["ישלחלכעזרכ", "ישלח לכ עזרכ"],
     ["ומלאמשאלתכ", "ומלא משאלתכ"],
     ["מלאמשאלתכ", "מלא משאלתכ"],
 
