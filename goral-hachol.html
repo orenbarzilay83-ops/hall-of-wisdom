@@ -221,7 +221,7 @@
       width: 10px;
       height: 10px;
       border-radius: 999px;
-      background: #8a1db8;
+      background: #111111;
       display: inline-block;
     }
 
@@ -229,7 +229,7 @@
       width: 46px;
       height: 8px;
       border-radius: 999px;
-      background: #8a1db8;
+      background: #111111;
       display: inline-block;
     }
 
@@ -347,15 +347,17 @@
       <div class="control-grid">
         <div>
           <label>שאלה</label>
-          <input id="questionInput" value="האם ארוויח כסף במניות" />
+          <input id="questionInput" placeholder="כתוב כאן את שאלת גורל החול" />
         </div>
 
         <div>
           <label>ספירות נקודות — 4 שורות לכל אם</label>
-          <textarea id="countsInput">17 24 31 18
+          <textarea id="countsInput" placeholder="הזן כאן 4 שורות של ספירות נקודות:
+לדוגמה:
+17 24 31 18
 11 20 15 22
 9 16 27 30
-14 21 28 33</textarea>
+14 21 28 33"></textarea>
         </div>
 
         <button id="runBtn">✦ צור לוח</button>
@@ -502,7 +504,16 @@
 
     document.getElementById("dateLine").textContent = todayLine();
     document.getElementById("runBtn").addEventListener("click", run);
-    run();
+    document.getElementById("result").innerHTML = `
+      <div class="summary-box">
+        גורל החול מוכן.
+
+        הזן שאלה וספירות נקודות, ואז לחץ על “צור לוח”.
+
+        בשלב זה הדף מציג את מבנה התכת בלבד:
+        אמהות, בנות, נכדות, עדים, שופט ומשפט.
+      </div>
+    `;
   </script>
 </body>
 </html>
