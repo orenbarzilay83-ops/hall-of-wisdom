@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>גורל החול</title>
+  <script src="./raml.js"></script>
+  <style>
+    :root {
+      --bg: #f7f1e8;
+      --paper: #fffaf2;
+      --ink: #251c16;
+      --muted: #7b6b5a;
+      --gold: #b99032;
+      --gold-soft: #e3c96e;
+      --border: #2d251f;
+      --line: rgba(45, 37, 31, 0.24);
+      --dark: #171525;
+      --good: #1f7a3a;
+      --bad: #9b2d22;
+      --mixed: #9a7418;
+      --shadow: 0 18px 45px rgba(59, 43, 22, 0.16);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Times New Roman", "Noto Serif Hebrew", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top, rgba(218, 184, 88, 0.22), transparent 30%),
+        linear-gradient(180deg, #fbf7ef 0%, var(--bg) 100%);
+    }
+
+    .page {
+      width: min(1180px, 94vw);
+      margin: 0 auto;
+      padding: 28px 0 60px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 22px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .brand {
+      color: #8f6b1f;
+      font-weight: 800;
+      letter-spacing: .04em;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 46px);
+      color: #8a681e;
+      letter-spacing: .03em;
+    }
+
+    .hero p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .control-panel {
+      background: rgba(255, 250, 242, 0.86);
+      border: 1px solid rgba(185, 144, 50, 0.35);
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      margin-bottom: 22px;
+    }
+
+    .control-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr auto;
+      gap: 14px;
+      align-items: end;
+    }
+
+    label {
+      display: block;
+      font-weight: 800;
+      color: #7c5c1b;
+      margin-bottom: 7px;
+      font-size: 15px;
+    }
+
+    input, textarea {
+      width: 100%;
+      border: 1px solid rgba(45, 37, 31, 0.22);
+      border-radius: 14px;
+      padding: 12px 14px;
+      background: #fffdf8;
+      color: var(--ink);
+      font-size: 16px;
+      font-family: inherit;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 96px;
+      direction: ltr;
+      text-align: left;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      line-height: 1.5;
+      resize: vertical;
+    }
+
+    button {
+      border: 0;
+      border-radius: 16px;
+      padding: 13px 22px;
+      font-weight: 900;
+      font-size: 16px;
+      cursor: pointer;
+      color: #15120c;
+      background: linear-gradient(135deg, #f3d86d, #b99032);
+      box-shadow: 0 12px 25px rgba(185, 144, 50, 0.25);
+      white-space: nowrap;
+    }
+
+    .reading-card {
+      background: var(--paper);
+      border: 3px solid var(--border);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .reading-header {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      border-bottom: 3px solid var(--border);
+    }
+
+    .header-block {
+      padding: 16px 18px;
+      border-left: 2px solid var(--border);
+    }
+
+    .header-block:last-child { border-left: 0; }
+
+    .header-title {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .header-value {
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .shield {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      border-bottom: 3px solid var(--border);
+    }
+
+    .house {
+      min-height: 190px;
+      padding: 10px 8px;
+      border-left: 2px solid var(--border);
+      border-bottom: 2px solid var(--border);
+      text-align: center;
+      background: rgba(255, 255, 255, 0.32);
+    }
+
+    .house:nth-child(8n) { border-left: 0; }
+
+    .house.wide {
+      min-height: 210px;
+    }
+
+    .house-title {
+      font-weight: 900;
+      font-size: 15px;
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+
+    .house-sub {
+      color: var(--muted);
+      font-size: 13px;
+      min-height: 30px;
+      margin-bottom: 8px;
+    }
+
+    .figure {
+      width: 74px;
+      margin: 0 auto 8px;
+      display: grid;
+      gap: 7px;
+      padding: 7px 6px;
+      border: 1px solid rgba(45, 37, 31, 0.18);
+      background: rgba(255, 255, 255, 0.45);
+    }
+
+    .fig-line {
+      height: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: #8a1db8;
+      display: inline-block;
+    }
+
+    .bar {
+      width: 46px;
+      height: 8px;
+      border-radius: 999px;
+      background: #8a1db8;
+      display: inline-block;
+    }
+
+    .figure-name {
+      font-size: 16px;
+      font-weight: 900;
+      color: #6e5116;
+    }
+
+    .figure-meta {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.25;
+    }
+
+    .middle-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-bottom: 3px solid var(--border);
+    }
+
+    .witness-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 3px solid var(--border);
+    }
+
+    .final-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 3px solid var(--border);
+    }
+
+    .diagnosis {
+      padding: 18px;
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 16px;
+      align-items: center;
+      background: #fff7e8;
+    }
+
+    .diagnosis-title {
+      font-size: 22px;
+      font-weight: 900;
+      color: #7c5c1b;
+    }
+
+    .diagnosis-text {
+      font-size: 16px;
+      line-height: 1.65;
+      color: #3b3128;
+    }
+
+    .summary-box {
+      margin-top: 18px;
+      background: var(--dark);
+      color: #f8f2e5;
+      border-radius: 20px;
+      padding: 18px;
+      white-space: pre-wrap;
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    .error {
+      margin-top: 14px;
+      padding: 12px 14px;
+      background: #ffe9e4;
+      color: #8c2118;
+      border: 1px solid #e2a39a;
+      border-radius: 14px;
+      display: none;
+    }
+
+    @media (max-width: 900px) {
+      .control-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .reading-header,
+      .diagnosis,
+      .final-grid,
+      .witness-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .shield {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .middle-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .house:nth-child(8n) { border-left: 2px solid var(--border); }
+      .house:nth-child(2n) { border-left: 0; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <div id="dateLine"></div>
+      <div class="brand">✦ היכל החכמה</div>
+    </div>
+
+    <section class="hero">
+      <h1>✦ גורל החול</h1>
+      <p>לוח תכת רמלי — אמהות, בנות, נכדות, עדים, שופט ומשפט</p>
+    </section>
+
+    <section class="control-panel">
+      <div class="control-grid">
+        <div>
+          <label>שאלה</label>
+          <input id="questionInput" value="האם ארוויח כסף במניות" />
+        </div>
+
+        <div>
+          <label>ספירות נקודות — 4 שורות לכל אם</label>
+          <textarea id="countsInput">17 24 31 18
+11 20 15 22
+9 16 27 30
+14 21 28 33</textarea>
+        </div>
+
+        <button id="runBtn">✦ צור לוח</button>
+      </div>
+
+      <div class="error" id="errorBox"></div>
+    </section>
+
+    <section id="result"></section>
+  </main>
+
+  <script>
+    function todayLine() {
+      const now = new Date();
+      return new Intl.DateTimeFormat("he-IL", {
+        weekday: "long",
+        day: "numeric",
+        month: "numeric",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      }).format(now);
+    }
+
+    function parseCounts(text) {
+      const rows = String(text || "")
+        .trim()
+        .split(/\n+/)
+        .map(line => line.trim())
+        .filter(Boolean)
+        .map(line => line.split(/[\s,]+/).map(Number));
+
+      if (rows.length !== 4) {
+        throw new Error("צריך להזין בדיוק 4 שורות — שורה אחת לכל אם.");
+      }
+
+      for (const row of rows) {
+        if (row.length !== 4 || row.some(n => !Number.isFinite(n) || n <= 0)) {
+          throw new Error("כל שורה חייבת להכיל בדיוק 4 מספרים חיוביים.");
+        }
+      }
+
+      return rows;
+    }
+
+    function figHtml(fig) {
+      return `
+        <div class="figure">
+          ${fig.map(v => `
+            <div class="fig-line">
+              ${Number(v) === 1 ? '<span class="dot"></span>' : '<span class="bar"></span>'}
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function houseHtml(h, labelOverride) {
+      const label = labelOverride || `בית ${h.house}`;
+      return `
+        <div class="house">
+          <div class="house-title">${label}</div>
+          <div class="house-sub">${h.houseHebrew || ""}</div>
+          ${figHtml(h.figure)}
+          <div class="figure-name">${h.hebrew}</div>
+          <div class="figure-meta">
+            ${h.key}<br/>
+            ${h.fortune || ""} · ${h.movement || ""} · יסוד ${h.element || ""}
+          </div>
+        </div>
+      `;
+    }
+
+    function buildChart(reading) {
+      const h = n => reading.chart.find(x => x.house === n);
+      const diagnosis = ramlBuildInitialDiagnosis(reading);
+
+      const topOrder = [8,7,6,5,4,3,2,1];
+      const middleOrder = [12,11,10,9];
+
+      return `
+        <article class="reading-card">
+          <div class="reading-header">
+            <div class="header-block">
+              <div class="header-title">שאלה</div>
+              <div class="header-value">${reading.question}</div>
+            </div>
+            <div class="header-block">
+              <div class="header-title">נושא ובית מרכזי</div>
+              <div class="header-value">${reading.topic.hebrew} — בית ${reading.focusHouseNumber}</div>
+            </div>
+          </div>
+
+          <div class="shield">
+            ${topOrder.map(n => {
+              const type =
+                n <= 4 ? "אם" :
+                "בת";
+              return houseHtml(h(n), `${n} — ${type}`);
+            }).join("")}
+          </div>
+
+          <div class="middle-grid">
+            ${middleOrder.map(n => houseHtml(h(n), `${n} — נכדה`)).join("")}
+          </div>
+
+          <div class="witness-grid">
+            ${houseHtml(h(14), "14 — עד שני")}
+            ${houseHtml(h(13), "13 — עד ראשון")}
+          </div>
+
+          <div class="final-grid">
+            ${houseHtml(h(15), "15 — שופט")}
+            ${houseHtml(h(16), "16 — משפט")}
+          </div>
+
+          <div class="diagnosis">
+            <div class="diagnosis-title">אבחון ראשוני: ${diagnosis.title}</div>
+            <div class="diagnosis-text">${diagnosis.text}</div>
+          </div>
+        </article>
+
+        <div class="summary-box">${ramlBuildReadingSummary(reading)}</div>
+      `;
+    }
+
+    function run() {
+      const errorBox = document.getElementById("errorBox");
+      const result = document.getElementById("result");
+
+      errorBox.style.display = "none";
+      errorBox.textContent = "";
+
+      try {
+        const question = document.getElementById("questionInput").value;
+        const matrix = parseCounts(document.getElementById("countsInput").value);
+        const reading = ramlRunReadingFromPointCounts(question, matrix);
+        result.innerHTML = buildChart(reading);
+      } catch (err) {
+        errorBox.textContent = err.message || String(err);
+        errorBox.style.display = "block";
+      }
+    }
+
+    document.getElementById("dateLine").textContent = todayLine();
+    document.getElementById("runBtn").addEventListener("click", run);
+    run();
+  </script>
+</body>
+</html>
