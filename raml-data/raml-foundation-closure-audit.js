@@ -213,9 +213,9 @@ const RAML_FOUNDATION_CLOSURE_AUDIT = {
   ],
 
   closureDecision: {
-    canMoveToTopicRules: false,
-    reason: "המשתמש ביקש לא לעבור לדיני שאלות עד סגירת יסודות. לכן קודם מסמנים ומנקים את כל needsFormula.",
-    nextStep: "לעבור סעיף סעיף ברשימת needsFormula ולהחליט: verified / comparisonOnly / blockedUntilSource / doNotUseYet."
+    canMoveToTopicRules: true,
+    reason: "סגירת היסודות לבנייה הנוכחית הושלמה: כל הסעיפים הפעילים מוכנים, וכל מה שלא מוכן סומן במפורש כ־referenceOnly / partiallyVerified / blockedUntilSource / blockedUntilFormula / blockedUntilTable.",
+    nextStep: "אפשר לעבור לדיני שאלות לפי נושא, בלי למחוק או לשכוח את הסעיפים החסומים. כל סעיף חסום ייפתח רק אם יימצא מקור, נוסחה או טבלה מפורשת."
   }
 };
 
