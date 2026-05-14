@@ -863,6 +863,27 @@ const RAML_READING_FOUNDATIONS = {
     ]
   },
 
+
+  generalFortuneBalanceRule: {
+    id: "general-fortune-balance-rule",
+    title: "כלל הכרעה כללי לפי ריבוי צורות טובות ורעות",
+    ruleType: "general-judgement",
+    sourceBook: "القول الجامع",
+    sourceStatus: "verified",
+    ruleHebrew: [
+      "כאשר נשאלים על כל עניין, מסתכלים על הצורות הטובות הנמצאות בלוח הגורל וגם על הצורות הרעות.",
+      "אם הצורות הטובות רבות יותר — הדין נוטה לטוב.",
+      "אם הצורות הרעות רבות יותר — הדין נוטה לרע.",
+      "זהו כלל כללי בלבד ואינו מבטל דיני בית, שופט, משפט, דמיר ודיני שאלה פרטיים."
+    ],
+    implementationReady: true,
+    implementationNotes: [
+      "בעתיד אפשר לחשב score כללי ללוח: טוב מול רע מול נטייה לטוב/רע/ביניים.",
+      "אין להשתמש בכלל הזה לבדו כפסק סופי.",
+      "הוא צריך להופיע כאחד ממדדי האבחון הראשוני."
+    ]
+  },
+
   missingImportantRules: {
     id: "missing-important-rules",
     title: "חוקים חשובים שעדיין אסור לקודד",
