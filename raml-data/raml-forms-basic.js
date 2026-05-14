@@ -229,6 +229,10 @@ const RAML_FORMS_BASIC = {
   }
 };
 
+if (typeof window !== "undefined") {
+  window.RAML_FORMS_BASIC = RAML_FORMS_BASIC;
+}
+
 if (typeof module !== "undefined") {
   module.exports = { RAML_FORMS_BASIC };
 }

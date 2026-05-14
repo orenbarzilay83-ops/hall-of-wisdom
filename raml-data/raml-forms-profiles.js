@@ -1734,6 +1734,12 @@ function ramlListFigureFullProfiles() {
     .map(key => RAML_FORMS_PROFILES[key]);
 }
 
+if (typeof window !== "undefined") {
+  window.RAML_FORMS_PROFILES = RAML_FORMS_PROFILES;
+  window.ramlGetFigureFullProfile = ramlGetFigureFullProfile;
+  window.ramlListFigureFullProfiles = ramlListFigureFullProfiles;
+}
+
 if (typeof module !== "undefined") {
   module.exports = {
     RAML_FORMS_PROFILES,
