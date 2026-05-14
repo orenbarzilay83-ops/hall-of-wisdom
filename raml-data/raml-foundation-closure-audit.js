@@ -165,9 +165,9 @@ const RAML_FOUNDATION_CLOSURE_AUDIT = {
       id: "intishaat",
       title: "انتشاءات — היווצרויות",
       file: "raml-data/raml-foundation-qawl-jami-extra.js",
-      currentStatus: "needsFormula",
-      reason: "ידוע שכל צורה נוצרת בכמה דרכים, אבל צריך טבלת הורים מלאה.",
-      nextAction: "לבנות בהמשך טבלת parentA + parentB => childFigure."
+      currentStatus: "blockedUntilTable",
+      reason: "העיקרון קיים: צורה נוצרת מצירוף שתי צורות. אבל אין עדיין טבלת הורים מלאה לכל צורה.",
+      nextAction: "לא להפעיל במנוע עד בניית טבלת parentA + parentB => childFigure."
     },
     {
       id: "tasyir",

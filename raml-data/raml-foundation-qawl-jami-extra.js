@@ -399,9 +399,11 @@ const RAML_QAWL_JAMI_EXTRA_FOUNDATIONS = {
     intishaat: {
       arabic: "الانتشاءات",
       hebrew: "היווצרויות",
-      status: "needsFormula",
+      status: "blockedUntilTable",
       eachFigureHasWays: 8,
-      fields: ["parentA", "parentB", "childFigure"]
+      fields: ["parentA", "parentB", "childFigure"],
+      implementationReady: false,
+      closureDecision: "העיקרון נשמר כחוק יסוד, אבל לא יופעל במנוע עד שתיבנה טבלת הורים מלאה: parentA + parentB => childFigure."
     },
     tasyir: {
       arabic: "التسيير",
