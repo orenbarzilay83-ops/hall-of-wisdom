@@ -131,9 +131,19 @@ const RAML_FOUNDATION_CLOSURE_AUDIT = {
       id: "dignity-rules",
       title: "בית / ובאל / שרף / הובוט",
       file: "raml-data/raml-foundation-qawl-jami-extra.js",
-      currentStatus: "needsFormula",
-      reason: "יש הגדרות וכוכבים, אבל אין עדיין טבלת בית/ובאל מלאה לכל 16 הצורות.",
-      nextAction: "להשאיר ככלל כוכבי/תיאורטי עד שנמצא מקור מלא."
+      currentStatus: "closedAsReferenceRule",
+      reason: "ההגדרות ורשימת שרף/הובוט לפי כוכבים קיימות ומאומתות כידע יסוד. אין טבלת בית/ובאל מלאה לכל 16 הצורות.",
+      usableParts: [
+        "הגדרת בית",
+        "הגדרת ובאל",
+        "הגדרת שרף",
+        "הגדרת הובוט",
+        "שרף/הובוט לפי כוכבים"
+      ],
+      blockedParts: [
+        "טבלת בית/ובאל מלאה לכל 16 הצורות"
+      ],
+      nextAction: "להשתמש ככלל ייחוס בלבד. לא להפעיל כמנוע הכרעה מלא עד מקור מפורש."
     },
     {
       id: "taskin-hassan",

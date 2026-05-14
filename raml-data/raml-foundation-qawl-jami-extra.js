@@ -316,7 +316,14 @@ const RAML_QAWL_JAMI_EXTRA_FOUNDATIONS = {
     arabicTerm: "بيت / وبال / شرف / هبوط / فرح / حزن",
     hebrewApp: "בית כוח, בית פגיעה, בית רוממות, בית ירידה, שמחה, עצב",
     location: "עמ׳ 29-30",
-    status: "needsFormula",
+    status: "closedAsReferenceRule",
+    usableParts: [
+      "definitions",
+      "exaltationFallByPlanet"
+    ],
+    blockedParts: [
+      "fullHouseWabalTableFor16Figures"
+    ],
     definitions: {
       bayt: "מקום הכוכב המקורי ומושבו",
       wabal: "הבית שמול בית הכוכב",
@@ -340,7 +347,8 @@ const RAML_QAWL_JAMI_EXTRA_FOUNDATIONS = {
       "אין כאן טבלת בית / ובאל מלאה לכל 16 הצורות.",
       "לא לבנות טבלה מלאה בלי מקור נוסף."
     ],
-    implementationReady: false
+    implementationReady: false,
+    closureDecision: "הסעיף סגור ככלל יסוד עיוני/כוכבי. אין להפעיל טבלת בית/ובאל לכל 16 הצורות עד מקור מפורש."
   },
 
   mumazajaRule: {
