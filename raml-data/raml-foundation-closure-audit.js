@@ -190,25 +190,25 @@ const RAML_FOUNDATION_CLOSURE_AUDIT = {
       id: "seeker-fortune-house",
       title: "בית מזל השואל",
       file: "raml-data/raml-reading-foundations.js",
-      currentStatus: "notFoundByExactNameInCurrentSources",
-      reason: "לא נמצא בשם מדויק. ייתכן שקשור לשרף/הובוט או דמיר.",
-      nextAction: "לא להפעיל עד מקור מפורש."
+      currentStatus: "blockedUntilExactSource",
+      reason: "לא נמצא במקורות הנוכחיים בשם מדויק או כנוסחה מפורשת. ייתכן שקשור לדמיר, שרף/הובוט או חיזוק הצורה, אבל אין להפעיל בלי מקור.",
+      nextAction: "לא להפעיל במנוע ולא לפרש עד מקור מפורש."
     },
     {
       id: "seeker-fall-house",
       title: "בית נפילת השואל",
       file: "raml-data/raml-reading-foundations.js",
-      currentStatus: "notFoundByExactNameInCurrentSources",
-      reason: "לא נמצא בשם מדויק. ייתכן שקשור להובוט/נפילת כוכב.",
-      nextAction: "לא להפעיל עד מקור מפורש."
+      currentStatus: "blockedUntilExactSource",
+      reason: "לא נמצא במקורות הנוכחיים בשם מדויק או כנוסחה מפורשת. ייתכן שקשור להובוט/נפילת כוכב, אבל אין להפעיל בלי מקור.",
+      nextAction: "לא להפעיל במנוע ולא לפרש עד מקור מפורש."
     },
     {
       id: "house-before-awtad",
       title: "הבית שלפני היתד",
       file: "raml-data/raml-reading-foundations.js",
-      currentStatus: "notFoundInCurrentSourcesYet",
-      reason: "המשתמש זוכר חוק כזה, אבל עדיין לא נמצא מקור מפורש.",
-      nextAction: "לא להפעיל עד מקור מפורש."
+      currentStatus: "blockedUntilExactSource",
+      reason: "המשתמש זוכר חוק כזה, אבל לא נמצא במקורות הנוכחיים מקור מפורש.",
+      nextAction: "לא להפעיל במנוע ולא לפרש עד מקור מפורש."
     }
   ],
 
