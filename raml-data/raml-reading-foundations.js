@@ -884,6 +884,96 @@ const RAML_READING_FOUNDATIONS = {
     ]
   },
 
+
+  finalFoundationClosure: {
+    id: "final-foundation-closure",
+    title: "סגירה סופית של שלב חוקי היסוד לבנייה הנוכחית",
+    ruleType: "project-control",
+    status: "ready-for-topic-rules-build",
+    decision: [
+      "שלב חוקי היסוד נסגר לבנייה הנוכחית.",
+      "לא מכניסים יותר חוקים משוערים.",
+      "החוקים החסרים נשמרים כפתוחים למחקר, אבל הם לא עוצרים את בניית גורל החול.",
+      "השלב הבא הוא דיני שאלות לפי נושא."
+    ],
+    verifiedFoundationLayers: [
+      "מבנה לוח הגורל",
+      "אמהות, בנות, נכדות, עדים, שופט, משפט",
+      "יתדות / אוטאד",
+      "מוואיל",
+      "סוואקט",
+      "עבר / הווה / עתיד",
+      "בתים מאושרים ובתים קשים",
+      "יחסי בתים",
+      "חזרת צורות כקשר וכיוון",
+      "תנאי עבודה",
+      "בדיקת אמת על ידי חזרה",
+      "דמיר השואל — כשכבת ידע",
+      "דמיר הנשאל עליו — כשכבת ידע",
+      "מבט / דיבור / חיבור / ניתוק",
+      "עדים / שופט / משפט",
+      "קל / כבד",
+      "נראה / נעלם",
+      "זמן",
+      "חולי",
+      "כיוון הגעת נעדר",
+      "הגדרות מספריות",
+      "כלל ריבוי צורות טובות ורעות"
+    ],
+    blockedRules: [
+      {
+        id: "seeker-fortune-house",
+        title: "בית מזל השואל",
+        status: "blockedUntilExactSource",
+        currentDecision: "לא נכנס למנוע ולא משמש לפירוש עד שנמצא מקור מדויק."
+      },
+      {
+        id: "seeker-fall-house",
+        title: "בית נפילת השואל",
+        status: "blockedUntilExactSource",
+        currentDecision: "לא נכנס למנוע ולא משמש לפירוש עד שנמצא מקור מדויק."
+      },
+      {
+        id: "house-before-awtad",
+        title: "הבית שלפני היתד",
+        status: "blockedUntilExactSource",
+        currentDecision: "לא נכנס למנוע ולא משמש לפירוש עד שנמצא מקור מדויק."
+      },
+      {
+        id: "judge-balance-error",
+        title: "בדיקת טעות במאזן / שופט",
+        status: "blockedUntilExactSource",
+        currentDecision: "לא משתמשים בזה כפסילה אוטומטית עד שנמצא נוסח מדויק."
+      },
+      {
+        id: "repeat-mothers-invalid",
+        title: "חזרת צורות באמהות כפוסלת",
+        status: "notVerifiedAsInvalid",
+        currentDecision: "כרגע החזרה נשמרת כחוק כיוון/קשר בלבד, לא כפסילה."
+      }
+    ],
+    nextFileToBuild: "raml-data/raml-topic-rules.js",
+    nextTopics: [
+      "משא ומתן / מסחר",
+      "רווח והפסד",
+      "גניבה",
+      "אבדה",
+      "נעדר",
+      "חולי",
+      "אסיר / כלא",
+      "נישואין",
+      "אהבה",
+      "בן זוג / בת זוג",
+      "הריון / זכר או נקבה",
+      "נסיעה",
+      "מגורים בארץ זרה",
+      "חלום",
+      "יום מוצלח או רע",
+      "מלכים / שלטון",
+      "מלחמה"
+    ]
+  },
+
   missingImportantRules: {
     id: "missing-important-rules",
     title: "חוקים חשובים שעדיין אסור לקודד",
