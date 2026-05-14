@@ -668,6 +668,201 @@ const RAML_READING_FOUNDATIONS = {
       "להגדיר מה פירוש 'מזג' בקוד — האם זה חיבור רמלי רגיל או בדיקת שוויון צורה."
     ]
   },
+
+  ramlCountingDefinitions: {
+    id: "raml-counting-definitions",
+    title: "הגדרות מספריות של לוח הגורל",
+    ruleType: "calculation-foundation",
+    sourceBook: "القول الجامع",
+    sourceStatus: "verified-working",
+    terminology: {
+      board: "לוח הגורל",
+      sourceArabicBoard: "التخت",
+      openPoint: "נקודה יחידה / مفتوح",
+      closedLine: "שתי נקודות / خط / مسدود",
+      boardLayers: "64 שכבות",
+      fullMaximum: 128
+    },
+    rules: [
+      "לוח הגורל בנוי מ־16 בתים.",
+      "בכל בית יש 4 שכבות / שורות.",
+      "כל לוח הגורל הוא 16×4 = 64 שכבות.",
+      "נקודה יחידה נחשבת 1.",
+      "שתי נקודות / קו נחשבות 2.",
+      "מספר פתוח הוא ספירת הנקודות היחידות.",
+      "מספר סגור / מסדוד הוא סכום השורות הזוגיות כשהן נספרות כ־2.",
+      "שטח לוח הגורל כולו הוא סכום כל השורות לפי נקודה=1 וקו=2.",
+      "דרך מהירה: 128 פחות מספר הנקודות היחידות.",
+      "דוגמה: אם יש 34 נקודות יחידות, אז 64-34=30 קווים זוגיים, ושטח הלוח הוא 34 + 30×2 = 94."
+    ],
+    implementationReady: true
+  },
+
+  damirCalculationDefinitions: {
+    id: "damir-calculation-definitions",
+    title: "הגדרות חישוב לדמיר",
+    ruleType: "damir-calculation",
+    sourceBook: "القول الجامع / الفلك المشحون",
+    sourceStatus: "verified-working",
+    definitions: {
+      boardArea: "שטח לוח הגורל כולו לפי נקודה=1 וקו=2",
+      openCount: "מספר הנקודות היחידות בלוח הגורל",
+      closedCount: "מספר השורות הזוגיות כפול 2",
+      fullBoardMaximum: 128,
+      drop15: "הפלה 15־15",
+      drop16: "הפלה 16־16",
+      drop12: "הפלה 12־12",
+      drop9: "הפלה 9־9",
+      drop6: "הפלה 6־6"
+    },
+    verifiedFormulas: [
+      {
+        id: "full-board-area",
+        title: "שטח לוח הגורל כולו",
+        formulaHebrew: "סופרים את כל 64 השורות: נקודה=1, קו=2.",
+        alternativeFormulaHebrew: "128 פחות מספר הנקודות היחידות.",
+        implementationReady: true
+      },
+      {
+        id: "closed-count",
+        title: "מספר מסדוד / סגור",
+        formulaHebrew: "סופרים את השורות הזוגיות ומכפילים ב־2.",
+        implementationReady: true
+      },
+      {
+        id: "damir-open-mothers-on-houses",
+        title: "דמיר מסכום הנקודות הפתוחות באמהות",
+        formulaHebrew: [
+          "אוספים את הנקודות הפתוחות באמהות.",
+          "מפילים / משליכים על הבתים.",
+          "הבית שבו נעצרת הספירה מורה על הדמיר."
+        ],
+        implementationReady: false,
+        needsExactImplementation: [
+          "להגדיר האם הספירה על 12, 15 או 16 לפי הנוסח המדויק.",
+          "להגדיר מה עושים בשארית 0."
+        ]
+      },
+      {
+        id: "damir-all-single-points-to-mizan",
+        title: "דמיר מכל הנקודות היחידות עד המאזן",
+        formulaHebrew: [
+          "סופרים את כל הנקודות היחידות בלוח הגורל עד המאזן.",
+          "מפילים 16־16 לפי נוסח אחד / 15־15 לפי נוסח אחר.",
+          "מקום העצירה מורה על הדמיר."
+        ],
+        implementationReady: false
+      },
+      {
+        id: "damir-all-mothers-points-drop16",
+        title: "דמיר מכל נקודות האמהות",
+        formulaHebrew: [
+          "סופרים את כל נקודות האמהות, יחיד וזוגי.",
+          "מפילים 16־16.",
+          "מקום העצירה מורה על הדמיר."
+        ],
+        implementationReady: false
+      },
+      {
+        id: "damir-awtad-points-drop12",
+        title: "דמיר מנקודות היתדות",
+        formulaHebrew: [
+          "סופרים את נקודות היתדות, יחיד וזוגי.",
+          "מפילים 12־12.",
+          "מקום העצירה מורה על הדמיר."
+        ],
+        implementationReady: false
+      },
+      {
+        id: "damir-board-area-drop9",
+        title: "דמיר משטח לוח הגורל בהפלת 9־9",
+        formulaHebrew: [
+          "מחשבים את שטח לוח הגורל.",
+          "מפילים 9־9.",
+          "מקום העצירה מורה על הדמיר."
+        ],
+        implementationReady: false
+      },
+      {
+        id: "damir-open-fire-drop9",
+        title: "דמיר ממפתוח האש בהפלת 9־9",
+        formulaHebrew: [
+          "לוקחים את מפתוח האש בלוח הגורל.",
+          "מפילים 9־9.",
+          "מקום העצירה מורה על הדמיר."
+        ],
+        implementationReady: false
+      },
+      {
+        id: "damir-open-fire-air-drop6",
+        title: "דמיר ממפתוח האש והאוויר בהפלת 6־6",
+        formulaHebrew: [
+          "לוקחים את מפתוח האש והאוויר.",
+          "מפילים 6־6.",
+          "מקום העצירה מורה על הדמיר."
+        ],
+        implementationReady: false
+      },
+      {
+        id: "damir-first-plus-ninth",
+        title: "דמיר מסכום הראשון והתשיעי",
+        formulaHebrew: [
+          "לוקחים את סכום הבית הראשון והבית התשיעי.",
+          "מפילים על הבתים.",
+          "מקום העצירה מורה על הדמיר."
+        ],
+        implementationReady: false
+      }
+    ],
+    implementationReady: false
+  },
+
+  chartTruthRepeatCheck: {
+    id: "chart-truth-repeat-check",
+    title: "בדיקת אמת לוח הגורל על ידי חזרה",
+    ruleType: "validity",
+    sourceBook: "القول الجامع",
+    sourceStatus: "verified",
+    rules: [
+      "בודקים את אמת העבודה על ידי הכאה פעם שנייה ושלישית.",
+      "אם מתקבלת אותה תשובה — סימן שהעבודה נכונה.",
+      "אם מתקבלת תשובה קרובה ואינה סותרת לגמרי — גם זה סימן שהעבודה נכונה.",
+      "אם מתקבלת תשובה סותרת לגמרי — יש לחשוד שהלוח אינו יציב או שהעבודה לא נקייה."
+    ],
+    implementationReady: false,
+    implementationNotes: [
+      "בעתיד נבנה פונקציה שמשווה שלושה לוחות.",
+      "לא להשוות רק שם צורה, אלא גם בית מרכזי, שופט, משפט, טוב/רע וחזרת מוטיבים.",
+      "בשלב ראשון זה יישאר חוק לימודי ולא חסימה אוטומטית."
+    ]
+  },
+
+  repeatFigureDirectionRules: {
+    id: "repeat-figure-direction-rules",
+    title: "חזרת צורה וקביעת כיוון",
+    ruleType: "direction",
+    sourceBook: "الفلك المشحون",
+    sourceStatus: "verified",
+    zones: {
+      mothers: "מזרח",
+      daughters: "מערב",
+      nieces: "צפון",
+      extrasOrRuling: "דרום"
+    },
+    rules: [
+      "אם צורה חוזרת באמהות ובנכדות / אזור — הכיוון משולב, כגון צפון־מזרח.",
+      "אם צורה חוזרת באמהות ובבנות — בודקים איזה בית חזק יותר.",
+      "אם הבית שבאמהות חזק יותר — הכיוון מזרח.",
+      "אם הבית שבבנות חזק יותר — הכיוון מערב.",
+      "על אותו עיקרון מודדים חזרת צורה בשאר הבתים והכיוונים."
+    ],
+    implementationReady: false,
+    implementationNotes: [
+      "חזרת צורה אינה פסילה אוטומטית.",
+      "לפני כל דין פסילה מחזרת צורות צריך מקור נפרד ומפורש."
+    ]
+  },
+
   missingImportantRules: {
     id: "missing-important-rules",
     title: "חוקים חשובים שעדיין אסור לקודד",
