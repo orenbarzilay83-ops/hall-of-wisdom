@@ -28,8 +28,10 @@ const RAML_BULUGH_AL_AMAL_FOUNDATIONS = {
     principle: "ידע זה כוח",
     currentDecision: [
       "כל חומר יסוד חדש או משלים מתוך מקור זה ייכנס לקבצי הידע.",
+      "לא מדלגים על ידע מתקדם, רוחני, אותיות, שמות, דמיר, סحر, مس, حسد או עין הרע.",
+      "גם ידע שלא מופעל מיד במנוע נשמר בקובץ ידע עם סטטוס מתאים.",
       "לא מערבבים מקור חדש בתוך המנוע לפני סימון מקור וסטטוס.",
-      "כל חוק יסומן לפי: verified / partiallyVerified / referenceOnly / needsFormula / blockedUntilSource.",
+      "כל חוק יסומן לפי: verified / partiallyVerified / referenceOnly / needsFormula / blockedUntilSource / advancedKnowledge / spiritualDiagnostic.",
       "אם מקור זה סותר מקור קודם — לא מוחקים; מסמנים variant או sourceDisagreement."
     ]
   },
@@ -93,9 +95,10 @@ const RAML_BULUGH_AL_AMAL_FOUNDATIONS = {
     {
       pages: [18, 19, 20],
       topic: "תסקין אותיות וחילוץ שם הנשאל עליו",
-      extractionNeed: "letters-name-extraction-future",
-      priority: "medium",
-      status: "needsExtraction"
+      extractionNeed: "letters-and-name-extraction-advanced-knowledge",
+      priority: "high",
+      status: "mustExtract",
+      note: "לא לדלג. זהו ידע מתקדם לעבודה רוחנית: الباب الحادي عشر في تسكين الحروف והباب الثاني عشر في اشتقاق اسم المسؤول عنه."
     }
   ],
 
@@ -315,6 +318,44 @@ const RAML_BULUGH_AL_AMAL_FOUNDATIONS = {
       "אם יימצא הבדל בין המקורות — יש לסמן sourceVariant ולא למחוק מקור קודם."
     ],
     nextExtraction: "עמודים 9–10: יתדות, סוואבט, סוואקט, עדים ושוואהד."
+  },
+
+
+  advancedKnowledgePolicy: {
+    id: "advanced-knowledge-policy",
+    title: "מדיניות שימור ידע מתקדם ורוחני",
+    status: "active",
+    principle: "ידע זה כוח",
+    rules: [
+      "אין לדלג על ידע מתוך מקור מאושר גם אם הוא נראה חריג, רוחני, מאגי או מתקדם.",
+      "המשתמש הוא יועץ רוחני, ולכן ידע על סحر, مس, حسد, עין הרע, אדם מכושף, אותיות ושמות הוא חלק מהמערכת המקצועית.",
+      "ההחלטה אם להציג ידע כזה ללקוח בדוח היא החלטת UI/אתיקה, לא סיבה להשמיט אותו מקבצי הידע.",
+      "ידע רגיש יסומן advisorOnly או spiritualDiagnostic ולא יוצג כברירת מחדל בדוח לקוח.",
+      "ידע שאין לו נוסחה מלאה יישמר כ־needsFormula או advancedKnowledge ולא יופעל כמנוע הכרעה."
+    ],
+    mustExtractTopics: [
+      {
+        id: "taskin-letters",
+        arabic: "تسكين الحروف",
+        hebrew: "תסקין האותיות",
+        sourcePages: [18, 19],
+        status: "mustExtract"
+      },
+      {
+        id: "derive-name-of-questioned",
+        arabic: "اشتقاق اسم المسؤول عنه",
+        hebrew: "חילוץ / גזירת שם הנשאל עליו",
+        sourcePages: [19, 20],
+        status: "mustExtract"
+      },
+      {
+        id: "magic-evil-eye-spiritual-diagnostics",
+        arabic: "السحر / المس / الحسد / العين",
+        hebrew: "סחר / מס / קנאה / עין הרע / אדם מכושף",
+        sourceBooks: ["القول الجامع", "بلوغ الأمل אם יימצא"],
+        status: "mustExtractFromApprovedSources"
+      }
+    ]
   },
 
   extractedRules: {
