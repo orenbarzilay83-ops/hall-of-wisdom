@@ -358,6 +358,412 @@ const RAML_BULUGH_AL_AMAL_FOUNDATIONS = {
     ]
   },
 
+
+  extractedPages6To20: {
+    id: "bulugh-pages-6-to-20-full-extraction",
+    title: "חילוץ עמודים 6–20 מתוך بلوغ الأمل",
+    sourceBook: "بلوغ الأمل في علم الرمل",
+    sourcePages: [6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+    sourceStatus: "verified-from-user-extraction-and-visible-scan",
+    status: "partiallyVerified",
+    note: "זהו בלוק ידע מלא לפי החילוץ שהובא. כל מה שלא ניתן לקידוד ודאי מסומן needsVisualEncoding / needsFormula / blockedUntilSource.",
+
+    castingGeneration: {
+      id: "casting-generation-pages-6-7",
+      title: "הכאה, הולדה, אמהות, בנות, נכדות, עדים ושופט",
+      sourcePages: [6,7],
+      status: "verified",
+      maxPointsPerLine: 12,
+      directionArabic: "من المشرق إلى المغرب",
+      terms: {
+        mothers: "أمهات",
+        daughters: "بنات",
+        generated: "منشآت",
+        judge: ["الحاكم", "عاقبة الأمر", "الميزان"],
+        finalAfterFinal: "عاقبة العاقبة"
+      },
+      rules: [
+        "מכים ארבע שורות נקודות.",
+        "כל שורה מצומצמת לזוג או יחיד: זוג נשאר 2, יחיד נשאר 1.",
+        "כל צורה נוצרת מארבע שורות.",
+        "ארבע הצורות הראשונות הן האמהות.",
+        "הבנות נולדות מן ראשי/חלקי האמהות.",
+        "הצורות הבאות נולדות מחיבור צורות קודמות.",
+        "החاكم / המאזן הוא כלי הכרעה ואימות.",
+        "אם החاكم יוצא فرد — העבודה שגויה ויש לתקן."
+      ],
+      codeNotes: {
+        reduceLine: "points % 2 === 0 ? 2 : 1",
+        combineForms: "same parity => 2, mixed parity => 1",
+        judgeMustBePaired: true
+      },
+      implementationReady: true
+    },
+
+    workingConditions: {
+      id: "working-conditions-pages-6-7",
+      title: "תנאי עבודה וזמנים",
+      sourcePages: [6,7],
+      status: "verified-and-advisorOnly",
+      dailyCastingLimit: 3,
+      allowedTimesArabic: [
+        "من أول النهار إلى الضحى",
+        "من الظهر إلى العصر",
+        "الليل كله"
+      ],
+      dislikedTimesArabic: [
+        "عند طلوع الشمس",
+        "من بعد العصر إلى المغرب",
+        "عند المطر",
+        "عند السحاب",
+        "في قارعة الطريق"
+      ],
+      internalConditions: [
+        "طهارة",
+        "استقبال القبلة",
+        "عدم الكلام בזמן ההכאה",
+        "כוונה נוכחת וטהורה"
+      ],
+      prohibitions: [
+        "לא לבצע למי שבא לנסות או ללעוג.",
+        "לא להכות כאשר היועץ רעב.",
+        "לא להכות כאשר היועץ כועס.",
+        "לא לבצע בשליחות עבור אחר."
+      ],
+      displayPolicy: "advisorOnly עבור הצד הטקסי/תפילתי.",
+      implementationReady: true
+    },
+
+    figureClassification: {
+      id: "figure-classification-page-8",
+      title: "זכר / נקבה / פנימי / חיצוני / נכנס / יוצא",
+      sourcePages: [8],
+      status: "partiallyVerified",
+      needsVisualEncoding: true,
+      arabicTitle: "معرفة المذكر والمؤنث والداخل والخارج",
+      rules: [
+        "הסיווג נועד לדעת מה נכנס ומה יצא בדינים.",
+        "הסיווג משמש גם לשאלה האם הנשאל עליו זכר או נקבה.",
+        "דרך אחת היא הסתכלות בבית הדמיר.",
+        "דרך נוספת היא ספירת הצורות הזכריות והנקביות.",
+        "הרוב קובע.",
+        "אם יש שוויון — הדין לזכר, כי الذكور هو الأصل."
+      ],
+      visualTablesPending: [
+        "المذكر الخارج",
+        "المؤنث الداخل"
+      ],
+      implementationReady: false
+    },
+
+    fortuneCategories: {
+      id: "fortune-categories-pages-8-9",
+      title: "סעד / נחס / ממוזג / נוטה לסעד / נוטה לנחס",
+      sourcePages: [8,9],
+      status: "partiallyVerified",
+      needsVisualEncoding: true,
+      arabicTitle: "الأشكال السعيدة والنحس والممتزجة",
+      categoriesArabic: [
+        "سعيدة",
+        "نحس",
+        "ممتزجة",
+        "مائلة إلى السعد",
+        "مائلة إلى النحس"
+      ],
+      explicitNotes: {
+        "الكوسج": "سعيد مائل إلى النحس"
+      },
+      rules: [
+        "הצורות נחלקות לסעד, נחס, ממוזגות, נוטות לסעד ונוטות לנחס.",
+        "הקוסג׳ מוגדר سعيد אך נוטה לנחס.",
+        "כאשר מצטרפים סעד, נחס וממוזג — יש כלל הכרעה לפי הרכב הצורות.",
+        "במקום שנאמר כך, הסעד גובר."
+      ],
+      implementationReady: false
+    },
+
+    houseStrengthAndWitnesses: {
+      id: "house-strength-witnesses-pages-9-10",
+      title: "יתדות, מה שאחר היתדות, סוואקט ועדים",
+      sourcePages: [9,10],
+      status: "verified-and-partial",
+      houseGroups: {
+        awtad: {
+          arabic: "الأوتاد",
+          houses: [1,4,7,10],
+          strength: "strong",
+          rule: "אם הסעד נכנס ליתדות — השאלה טובה וחזקה, ומורה על יציבות מצב השואל, עמידתו ותיקון ענייניו."
+        },
+        followingAwtad: {
+          arabic: "ما يلي الأوتاد",
+          houses: [2,5,8,11],
+          strength: "medium",
+          rule: "סעד בהם חלש מן היתדות ומורה על תיקון דברים בעתיד."
+        },
+        sawaqit: {
+          arabic: "السواقط",
+          houses: [3,6,9,12],
+          strength: "weak",
+          rule: "סעד בהם חלש יותר והם מורים על עניינים מן העבר."
+        }
+      },
+      pastMatterRule: {
+        topics: ["כסף שאבד", "נעדר", "גניבה", "בורח"],
+        rule: "אם צורות سعيدة داخلة נמצאות בסוואקט — הדבר מורה על חזרה."
+      },
+      negativeRule: {
+        arabicQuote: "إذا انتحست الأوتاد فلا خير في المسألة",
+        hebrew: "אם היתדות נחסיות — אין טוב בשאלה."
+      },
+      witnesses: {
+        arabic: "الشواهد",
+        status: "partiallyVerified",
+        needsFormula: true,
+        rules: [
+          "העדים הם עדי השאלה בטוב וברע.",
+          "לכל צורה יש עד שלישי ממנה — شاهد كل شكل ثالثة.",
+          "אם העדים והחاكم מסכימים בסעד — חותכים להשגת המבוקש.",
+          "אם הם חולקים — חוזרים אל قاضي المسألة."
+        ]
+      },
+      implementationReady: true
+    },
+
+    elementsDirectionsIllness: {
+      id: "elements-directions-illness-pages-10-11",
+      title: "ארבעת היסודות, כיוונים, צבעים, מחלות וסימני טבע",
+      sourcePages: [10,11],
+      status: "partiallyVerified",
+      elements: {
+        fire: { arabic: "النار", humor: "الصفراء", durationValue: 1 },
+        air: { arabic: "الهواء", humor: "الدم", durationValue: 2 },
+        water: { arabic: "الماء", humor: "البلغم", durationValue: 3 },
+        earth: { arabic: "التراب", humor: "السوداء", durationValue: 4 }
+      },
+      hiddenObjectExamples: [
+        "צורה אשית — קרוב למטבח / מקום אש.",
+        "צורה מימית — באר, תעלת מים, ליד מים או עין מים.",
+        "צורה עפרית — קבור בעפר או מעל האדמה.",
+        "צורה אווירית — לא הופיעה דוגמה ברורה באותו פירוט בעמוד."
+      ],
+      dominanceRule: {
+        arabicQuote: "وإن غلبت أشكال طبيعة فالحكم بها",
+        hebrew: "אם טבע מסוים גובר — הדין הולך אחריו."
+      },
+      directions: {
+        status: "needsVisualEncoding",
+        purpose: ["جهة الخبية", "جهة ضائع", "جهة مسؤول عنه"]
+      },
+      displayPolicy: "חולי/ליחות — spiritualDiagnostic / advisorOnly.",
+      implementationReady: false
+    },
+
+    durationAndNumberRules: {
+      id: "duration-number-pages-11-12",
+      title: "מספר, משך, זמן, הפלות ושאריות",
+      sourcePages: [11,12],
+      status: "verified-with-blocked-remainder-zero",
+      arabicQuotes: [
+        "فاضرب الأشكال وعد أمهاتهم وأسقطها ١٢",
+        "فتجعل الأمهات أياماً وساعات",
+        "والبنات أسبوعاً أو أياماً",
+        "والمنشآت شهوراً أو أسابيع",
+        "والموازين سنيناً أو شهوراً"
+      ],
+      rules: [
+        "לחישוב משך או כמות כסף סופרים את האמהות ומפילים ב־12.",
+        "את השארית מחלקים על הבתים.",
+        "האמהות משמשות ימים/שעות.",
+        "הבנות משמשות שבועות/ימים.",
+        "הمنشآت משמשות חודשים/שבועות.",
+        "הموازين משמשים שנים/חודשים."
+      ],
+      durationGroups: {
+        mothers: ["days", "hours"],
+        daughters: ["weeks", "days"],
+        munshaat: ["months", "weeks"],
+        mawazin: ["years", "months"]
+      },
+      numericPlaceByGroup: {
+        mothers: 1,
+        daughters: 10,
+        munshaat: 100,
+        mawazin: 1000
+      },
+      elementDurationValues: {
+        fire: 1,
+        air: 2,
+        water: 3,
+        earth: 4,
+        allElementsTogether: 10
+      },
+      dropsFoundHere: [12],
+      dropsNotFoundHere: [9,6,7],
+      dropsFoundLaterContext: [15,16],
+      remainderZero: "blockedUntilSource",
+      implementationReady: true
+    },
+
+    taskinDays: {
+      id: "taskin-days-pages-12-13",
+      title: "תסקין הימים — ימים ולילות של הצורות",
+      sourcePages: [12,13],
+      status: "partiallyVerified",
+      arabicTitle: "من التسكين وما يكون للأشكال من الأيام",
+      purposeArabic: "معرفة الشخص وفي أي وقت تحصل الحاجة",
+      purposeHebrew: "לדעת את האדם ובאיזה זמן תתקיים הבקשה / הצורך.",
+      rules: [
+        "אם צורה מופיעה בשאלה או בבית של התסקין — לוקחים ממנה את תיאור האדם ואת היום/לילה שלה.",
+        "אם אינה בבית התסקין — מסתכלים אל בית הדמיר ומה שנמצא בו.",
+        "המחבר מציין שהקיצור אינו מכיל את כל صفات الأشكال, ויש לקחת אותם מספרי רמל מורחבים."
+      ],
+      tableStatus: "partiallyVerified-needsSourceCheck",
+      dayNightRows: [
+        { figuresArabic: ["النصرة الخارجة", "القبض الداخل"], dayArabic: "الأحد", nightArabic: "ليلة الخميس", status: "needsSourceCheck" },
+        { figuresArabic: ["البياض", "الطريق"], dayArabic: "الأثنين", nightArabic: "ليلة الجمعة", status: "working" },
+        { figuresArabic: ["الحمرة", "الكوسج"], dayArabic: "الثلاثاء", nightArabic: "ليلة السبت", status: "working" },
+        { figuresArabic: ["الجماعة", "الإجتماع"], dayArabic: "الأربعاء", nightArabic: "ليلة الأحد", status: "working" },
+        { figuresArabic: ["القبض الداخل", "الضاحك"], dayArabic: "الخميس", nightArabic: "ليلة الأثنين", status: "needsSourceCheck", note: "הقبض الداخل מופיע גם בשורה הראשונה לפי החילוץ." },
+        { figuresArabic: ["النصرة الداخلة", "نقي الخد"], dayArabic: "الجمعة", nightArabic: "ليلة الثلاثاء", status: "working" },
+        { figuresArabic: ["العقلة", "الأنكيس"], dayArabic: "السبت", nightArabic: "ليلة الأربعاء", status: "working" }
+      ],
+      implementationReady: false
+    },
+
+    damirExtractionWays: {
+      id: "damir-extraction-pages-13-18",
+      title: "תסקין וחילוץ הדמיר",
+      sourcePages: [13,14,15,16,17,18],
+      status: "advancedKnowledge-partiallyVerified",
+      arabicTitles: ["تسكين الضمير", "استخراج الضمير"],
+      purpose: "גילוי הכוונה הפנימית של השאלה.",
+      generalRules: [
+        "אם צורה שוכנת בבית מן השאלה ובמיוחד אם דרך מן דרכי הדמיר מצביעה עליה — מתארים את הדמיר לפי אותה צורה.",
+        "אם צורות חוזרות — הדמיר מתואר לפי החזרה.",
+        "יש מחלוקת לגבי العتبة الداخلة והדרך.",
+        "יש מי שממקם את الطريق בבית 13 ואת العتبة الداخلة בבית 14, וזה המפורסם אצל בעלי האמנות."
+      ],
+      ways: [
+        {
+          id: "way1",
+          arabic: "الوجه الأول",
+          rule: "סופרים את האמהות ומפילים 12. שארית 1 = בית ראשון, 2 = בית שני וכו׳.",
+          status: "partiallyVerified",
+          blocked: ["remainderZero"]
+        },
+        {
+          id: "way2",
+          arabic: "الوجه الثاني",
+          ruleArabic: "تجمع نقط المسألة إلى خمسة عشر ثم اطرحهم ١٢",
+          rule: "הביטוי דורש פירוש חשבוני מדויק.",
+          status: "needsFormula"
+        },
+        {
+          id: "way3",
+          arabic: "الوجه الثالث",
+          rule: "מסתכלים על المسؤول ומה שדומה לו מן القرعة; שם הדמיר.",
+          status: "referenceOnly",
+          blocked: ["needsQur'aMap"]
+        },
+        {
+          id: "way4",
+          arabic: "الوجه الرابع",
+          rule: "מולידים צורה מן הראשון והרביעי; היוצא הוא מקום הדמיר.",
+          status: "verified"
+        },
+        {
+          id: "way5",
+          arabic: "الوجه الخامس",
+          rule: "מחברים נקודות אש ועפר מכל השאלה ומפילים 12.",
+          allowedHouses: [2,4,6,8,10,12],
+          note: "הדמיר בדרך זו נופל רק בזוגיים.",
+          status: "partiallyVerified-strong"
+        },
+        {
+          id: "way6",
+          arabic: "الوجه السادس",
+          rule: "מסתכלים על הצורה החוזרת. אם אין חזרה או יש שוויון — تعارض.",
+          status: "verified-advancedKnowledge"
+        },
+        {
+          id: "way7",
+          arabic: "الوجه السابع / طريق النقطة",
+          rule: "מסתכלים בבית 15 ומוליכים נקודת אש/עפר עד שתתיישב באמהות או בנות.",
+          note: "המחבר אומר שדרך הנקודה חזקה מן האחרות.",
+          status: "advancedKnowledge-needsFormula"
+        }
+      ],
+      displayPolicy: "advisorOnly עד קידוד מלא.",
+      implementationReady: false
+    },
+
+    letterTaskinAndNameDerivation: {
+      id: "letter-taskin-name-derivation-pages-18-20",
+      title: "תסקין האותיות וגזירת שם הנשאל עליו",
+      sourcePages: [18,19,20],
+      status: "advancedKnowledge-advisorOnly-needsVisualEncoding",
+      arabicTitles: ["تسكين الحروف", "اشتقاق اسم المسؤول عنه"],
+      taskinLetters: {
+        status: "needsVisualEncoding",
+        rules: [
+          "השער עוסק בסידור אותיות על גבי הצורות.",
+          "המחבר מציין שהתסקין המובא כאן אינו זהה לנוסח המחבר.",
+          "מובאת גם צורה הנקראת تسكين المجدولة.",
+          "לצורות المنقلبة נתנו שתי אותיות.",
+          "אין להפעיל במנוע לפני שיוך ודאי של אות לצורה."
+        ]
+      },
+      nameDerivationWays: [
+        {
+          id: "name-way1",
+          arabic: "الوجه الأول",
+          rule: "בודקים את הנקודה אל הבתים ולוקחים אותיות מן הצורות.",
+          status: "needsFormula"
+        },
+        {
+          id: "name-way2",
+          arabic: "الوجه الثاني",
+          rule: "לוקחים יתדות 1,4,7,10. מולידים 1+4, מולידים 7+10, ואז מולידים משניהם. אותיות הצורה היוצאת הן שם הנשאל עליו.",
+          status: "advancedKnowledge-workingFormula"
+        },
+        {
+          id: "name-way3",
+          arabic: "الوجه الثالث",
+          rule: "לוקחים את ארבעת היתדות ועושים אותן אמהות, משלימים עד 16 צורות, ואז לוקחים אותיות של 9, 11, 15.",
+          status: "advancedKnowledge-workingFormula"
+        },
+        {
+          id: "name-way4",
+          arabic: "الوجه الرابع",
+          rule: "לוקחים אותיות الطالع, התשיעי, האחד־עשר והארבעה־עשר.",
+          houses: [1,9,11,14],
+          status: "advancedKnowledge-workingFormula"
+        },
+        {
+          id: "name-way5",
+          arabic: "الوجه الخامس",
+          rule: "הדרך המוסמכת והחזקה ביותר: אם כל הצורות שוכנות — לוקחים אותיות 1,4,12. אם לא, מסתכלים על הצורות המכוונות לשאלה בתסקין האותיות, מוסיפים אותיות של צורה חוזרת אם יש, וגוזרים שם.",
+          note: "יכול להוציא שם ערבי, לועזי, חיה, צמח או מתכת.",
+          status: "advancedKnowledge-strongest-needsLetterTaskin"
+        }
+      ],
+      implementationReady: false
+    },
+
+    openIssuesFromExtraction: [
+      { id: "gender-inside-outside-table", title: "טבלת זכר/נקבה/פנימי/חיצוני", status: "needsVisualEncoding", pages: [8] },
+      { id: "fortune-category-table", title: "טבלת סעד/נחס/ממוזג", status: "needsVisualEncoding", pages: [8,9] },
+      { id: "witness-formula", title: "עדים — شاهد كل شكل ثالثة", status: "needsFormula", pages: [10] },
+      { id: "directions-table", title: "כיווני הצורות", status: "needsVisualEncoding", pages: [11] },
+      { id: "remainder-zero", title: "שארית 0", status: "blockedUntilSource", pages: [11,12] },
+      { id: "drop-9-6-7", title: "הפלות לפי 9/6/7", status: "blockedUntilSource", pages: [11,12] },
+      { id: "damir-way2", title: "הדרך השנייה בדמיר", status: "needsFormula", pages: [14] },
+      { id: "point-path", title: "דרך הנקודה", status: "needsFormula", pages: [15,16,17,18] },
+      { id: "letter-taskin-table", title: "תסקין אותיות", status: "needsVisualEncoding", pages: [18,19] },
+      { id: "name-way1", title: "اشتقاق الاسم דרך ראשונה", status: "needsFormula", pages: [19] }
+    ]
+  },
+
   extractedRules: {
     status: "empty-until-page-extraction",
     rules: []
