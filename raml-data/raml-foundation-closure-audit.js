@@ -181,9 +181,10 @@ const RAML_FOUNDATION_CLOSURE_AUDIT = {
       id: "ismatat-atrohat",
       title: "إسماطات / أطروحات — הפלות ושאריות",
       file: "raml-data/raml-foundation-qawl-jami-extra.js",
-      currentStatus: "needsFormula",
-      reason: "יש בסיסים 12/16/15/9/6/7, אבל צריך לדעת מתי להשתמש בכל בסיס.",
-      nextAction: "לשמור כשיטת ניתוח כללית עד דיני השאלה או נוסחה מדויקת."
+      currentStatus: "blockedUntilContextFormula",
+      reason: "השיטה קיימת כחוק יסוד ויש בסיסים 12/16/15/9/6/7, אבל צריך לדעת מתי משתמשים בכל בסיס.",
+      bases: [12, 16, 15, 9, 6, 7],
+      nextAction: "לשמור כשיטת ניתוח כללית. לא להפעיל כמנוע עצמאי עד שתוגדר נוסחת הקשר לכל בסיס."
     },
     {
       id: "seeker-fortune-house",

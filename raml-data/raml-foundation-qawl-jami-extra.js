@@ -427,8 +427,10 @@ const RAML_QAWL_JAMI_EXTRA_FOUNDATIONS = {
     ismatat: {
       arabic: "الإسماطات / الأطروحات",
       hebrew: "הפלות / השלכות / שאריות",
-      status: "needsFormula",
-      bases: [12, 16, 15, 9, 6, 7]
+      status: "blockedUntilContextFormula",
+      bases: [12, 16, 15, 9, 6, 7],
+      implementationReady: false,
+      closureDecision: "השיטה נשמרת כחוק יסוד, אבל לא תופעל כמנוע עצמאי עד שיוגדר מתי משתמשים בכל בסיס: 12, 16, 15, 9, 6, 7."
     },
     implementationReady: false
   },
