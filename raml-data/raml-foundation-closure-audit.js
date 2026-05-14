@@ -117,9 +117,15 @@ const RAML_FOUNDATION_CLOSURE_AUDIT = {
       id: "shape-triangles-35",
       title: "35 משולשי הצורות",
       file: "raml-data/raml-foundation-qawl-jami-extra.js",
-      currentStatus: "needsVisualVerification",
-      reason: "הרשימה קיימת, אבל חלק מהאותיות דורשות בדיקה חזותית מול הסריקה לפני שימוש קשיח.",
-      nextAction: "לאמת מול עמוד 20–21 בסריקה."
+      currentStatus: "partiallyVerified",
+      reason: "33 מתוך 35 משולשי הצורות מוכנים כידע עבודה. רק משולשים 6 ו־25 דורשים בדיקה חזותית.",
+      verifiedCount: 33,
+      blockedCount: 2,
+      blockedItems: [
+        { n: 6, value: "اطك / اطن", status: "blockedUntilVisualVerification" },
+        { n: 25, value: "زعج", status: "blockedUntilVisualVerification" }
+      ],
+      nextAction: "לא לעכב את כל חוקי היסוד בגלל שני משולשים; להשתמש ב־33 המאומתים, ולחסום רק את 6 ו־25 עד בדיקה חזותית."
     },
     {
       id: "dignity-rules",

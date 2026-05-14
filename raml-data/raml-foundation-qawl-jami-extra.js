@@ -179,7 +179,13 @@ const RAML_QAWL_JAMI_EXTRA_FOUNDATIONS = {
     arabicTerm: "مثلثات علم الرمل / مثلثات البيوت / مثلثات الأشكال / مثلثات النحوس",
     hebrewApp: "משולשי בתים, משולשי צורות, משולשי נחס",
     location: "עמ׳ 20-21, עמ׳ 28, עמ׳ 52",
-    status: "verified-partial",
+    status: "partially-verified",
+    verifiedCount: 33,
+    needsVisualVerificationCount: 2,
+    visualVerificationPending: [
+      { n: 6, value: "اطك / اطن", reason: "נדרש אימות חזותי מול הסריקה" },
+      { n: 25, value: "زعج", reason: "נדרש אימות חזותי מול הסריקה" }
+    ],
     houseTriangles: {
       page20_fullEight: [
         [1, 2, 9],
@@ -205,7 +211,7 @@ const RAML_QAWL_JAMI_EXTRA_FOUNDATIONS = {
       { n: 3, value: "ادل" },
       { n: 4, value: "ازع" },
       { n: 5, value: "احس" },
-      { n: 6, value: "اطك / اطن", status: "needsVisualVerification" },
+      { n: 6, value: "اطك / اطن", status: "blockedUntilVisualVerification" },
       { n: 7, value: "ايو" },
       { n: 8, value: "بجل" },
       { n: 9, value: "بدو" },
@@ -224,7 +230,7 @@ const RAML_QAWL_JAMI_EXTRA_FOUNDATIONS = {
       { n: 22, value: "دين" },
       { n: 23, value: "زحن" },
       { n: 24, value: "زطل" },
-      { n: 25, value: "زعج", status: "needsVisualVerification" },
+      { n: 25, value: "زعج", status: "blockedUntilVisualVerification" },
       { n: 26, value: "حطو" },
       { n: 27, value: "حيك" },
       { n: 28, value: "طيس" },
@@ -247,8 +253,9 @@ const RAML_QAWL_JAMI_EXTRA_FOUNDATIONS = {
       ["عتبة خارجة", "عقلة", "عتبة داخلة"]
     ],
     implementationReady: false,
-    needsVerification: [
-      "35 משולשי הצורות דורשים בדיקה חזותית מול הסריקה לפני שימוש קשיח.",
+    implementationNotes: [
+      "33 מתוך 35 משולשי הצורות מוכנים לשימוש כידע עבודה.",
+      "משולשים 6 ו־25 חסומים עד בדיקה חזותית מול הסריקה.",
       "לא לאחד בכוח בין 8 משולשי הבתים בעמ׳ 20 לבין 5 הקבוצות בעמ׳ 28."
     ]
   },
