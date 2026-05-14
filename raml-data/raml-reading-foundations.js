@@ -974,6 +974,70 @@ const RAML_READING_FOUNDATIONS = {
     ]
   },
 
+
+  unresolvedFoundationResearch: {
+    id: "unresolved-foundation-research",
+    title: "חוקי יסוד שנבדקו אך לא נסגרו כמנוע פעיל",
+    ruleType: "research-status",
+    status: "checked-current-sources",
+    items: [
+      {
+        id: "repeat-mothers-invalid",
+        title: "חזרת צורות באמהות כפוסלת את לוח הגורל",
+        result: "notFoundAsInvalidInCurrentSources",
+        currentDecision: "לא מוגדר כפסילה.",
+        verifiedAlternative: "חזרת צורות באמהות/בנות/נכדות משמשת לחישוב כיוון וקשר בין בתים.",
+        appUse: "להשתמש כחוק כיוון/קשר בלבד, לא כחוק פסילה."
+      },
+      {
+        id: "mizan-parity-rule",
+        title: "כלל המאזן / השופט",
+        result: "verifiedAsStructureRule",
+        currentDecision: "המאזן צריך להישמר כחוק מבני חשוב, לא כפסילת לוח אוטומטית.",
+        verifiedRule: "המאזן אינו בא אלא זוגי — מזוגיים או מפרדיים.",
+        appUse: "להוסיף בעתיד בדיקת מבנה של המאזן, אבל לא לפסול את לוח הגורל בלי מקור נוסף."
+      },
+      {
+        id: "seeker-fortune-house",
+        title: "בית מזל השואל",
+        result: "notFoundByExactNameInCurrentSources",
+        currentDecision: "לא נכנס למנוע.",
+        relatedMaterialFound: [
+          "דמיר השואל",
+          "חלק השואל מול חלק הנשאל עליו",
+          "בית שבו נעצר הדמיר",
+          "בעל הבית / בעל הצורה"
+        ],
+        appUse: "להמתין למקור מדויק או להשוות מקור נוסף."
+      },
+      {
+        id: "seeker-fall-house",
+        title: "בית נפילת השואל",
+        result: "notFoundByExactNameInCurrentSources",
+        currentDecision: "לא נכנס למנוע.",
+        relatedMaterialFound: [
+          "בתים קשים",
+          "חלק השואל מול חלק הנשאל עליו",
+          "דמיר השואל",
+          "מקום חולשה/מניעה לפי בתים"
+        ],
+        appUse: "להמתין למקור מדויק או להשוות מקור נוסף."
+      },
+      {
+        id: "house-before-awtad",
+        title: "הבית שלפני היתד",
+        result: "notFoundInCurrentSourcesYet",
+        currentDecision: "לא נכנס למנוע.",
+        appUse: "להמתין למקור מפורש."
+      }
+    ],
+    conclusion: [
+      "אין לעצור את כל הבנייה בגלל חוקים שלא נמצאו במקור המדויק.",
+      "אבל אין להפעיל אותם במנוע עד מקור ברור.",
+      "הקובץ שומר אותם כנקודות מחקר פתוחות כדי שלא יישכחו."
+    ]
+  },
+
   missingImportantRules: {
     id: "missing-important-rules",
     title: "חוקים חשובים שעדיין אסור לקודד",
