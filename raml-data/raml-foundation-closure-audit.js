@@ -213,9 +213,9 @@ const RAML_FOUNDATION_CLOSURE_AUDIT = {
   ],
 
   closureDecision: {
-    canMoveToTopicRules: true,
-    reason: "סגירת היסודות לבנייה הנוכחית הושלמה: כל הסעיפים הפעילים מוכנים, וכל מה שלא מוכן סומן במפורש כ־referenceOnly / partiallyVerified / blockedUntilSource / blockedUntilFormula / blockedUntilTable.",
-    nextStep: "אפשר לעבור לדיני שאלות לפי נושא, בלי למחוק או לשכוח את הסעיפים החסומים. כל סעיף חסום ייפתח רק אם יימצא מקור, נוסחה או טבלה מפורשת."
+    canMoveToTopicRules: false,
+    reason: "סגירת היסודות נפתחה מחדש לאחר אישור מקור שלישי: بلوغ الأمل في علم الرمل. יש לחלץ ממנו כל חוק יסוד חדש או משלים לפני מעבר לדיני שאלות.",
+    nextStep: "לעבור על raml-foundation-bulugh-al-amal.js, לחלץ עמוד-עמוד, ולהכניס כל חוק חסר או משלים לקבצי הידע."
   }
 };
 
