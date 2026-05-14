@@ -157,9 +157,9 @@ const RAML_FOUNDATION_CLOSURE_AUDIT = {
       id: "taskin-nature-second",
       title: "תסקין הטבע השני",
       file: "raml-data/raml-foundation-qawl-jami-extra.js",
-      currentStatus: "needsFormula",
-      reason: "חסר סדר מלא בקובץ החילוץ.",
-      nextAction: "לא להשתמש במנוע."
+      currentStatus: "blockedUntilSource",
+      reason: "המקור מזכיר תסקין טבע שני, אבל אין לנו סדר מלא.",
+      nextAction: "לא להשתמש במנוע עד שיהיה מקור/סדר מלא."
     },
     {
       id: "intishaat",

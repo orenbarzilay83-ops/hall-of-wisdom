@@ -306,8 +306,10 @@ const RAML_QAWL_JAMI_EXTRA_FOUNDATIONS = {
       status: "comparisonOnly"
     },
     natureSecond: {
-      status: "needsFormula",
-      order: null
+      status: "blockedUntilSource",
+      order: null,
+      implementationReady: false,
+      closureDecision: "מוזכר במקור, אבל סדר מלא לא חולץ. לא להפעיל במנוע עד מקור/סדר מלא."
     },
     implementationReady: false
   },
