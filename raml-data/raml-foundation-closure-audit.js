@@ -1,0 +1,231 @@
+// גורל החול — סגירת יסודות
+// קובץ ביקורת: מה כבר מוכן, מה דורש נוסחה, ומה נשאר לבדיקה.
+// לא מנוע חישוב. לא דיני שאלות פרטיים.
+
+const RAML_FOUNDATION_CLOSURE_AUDIT = {
+  metadata: {
+    id: "raml-foundation-closure-audit",
+    title: "סגירת חוקי יסוד גורל החול",
+    purpose: "לסמן במדויק מה מוכן להפעלה ומה נשאר למחקר לפני מעבר לדיני שאלות",
+    status: "in-progress",
+    externalKnowledgeUsed: false
+  },
+
+  readyForUse: [
+    {
+      id: "shield-structure",
+      title: "מבנה לוח הגורל",
+      files: ["raml.js", "raml-data/raml-reading-foundations.js"],
+      status: "ready",
+      note: "אמהות, בנות, נכדות, עדים, שופט ומשפט קיימים במנוע."
+    },
+    {
+      id: "forms-basic",
+      title: "16 הצורות — בסיס",
+      files: ["raml-data/raml-forms-basic.js"],
+      status: "ready"
+    },
+    {
+      id: "forms-profiles",
+      title: "16 הצורות — פרופילים",
+      files: ["raml-data/raml-forms-profiles.js"],
+      status: "ready"
+    },
+    {
+      id: "houses-basic",
+      title: "16 הבתים — בסיס",
+      files: ["raml-data/raml-houses-basic.js"],
+      status: "ready"
+    },
+    {
+      id: "houses-profiles",
+      title: "16 הבתים — פרופילים",
+      files: ["raml-data/raml-houses-profiles.js"],
+      status: "ready"
+    },
+    {
+      id: "awtad-mawail-sawaqit",
+      title: "יתדות / מוואיל / סוואקט",
+      files: ["raml-data/raml-reading-foundations.js"],
+      status: "ready"
+    },
+    {
+      id: "existence-rule",
+      title: "קיום / אי־קיום לפי נקודה וקו",
+      files: ["raml-data/raml-foundation-qawl-jami-extra.js"],
+      status: "ready"
+    },
+    {
+      id: "board-completeness-96",
+      title: "לוח חסר / לוח שלם לפי 96",
+      files: ["raml-data/raml-foundation-qawl-jami-extra.js", "raml-data/raml-reading-foundations.js"],
+      status: "ready"
+    },
+    {
+      id: "witness-agreement",
+      title: "לא כל העדים חייבים להסכים",
+      files: ["raml-data/raml-foundation-qawl-jami-extra.js"],
+      status: "ready"
+    },
+    {
+      id: "element-planet-relations",
+      title: "אהבה ואיבה בין יסודות וכוכבים",
+      files: ["raml-data/raml-foundation-qawl-jami-extra.js"],
+      status: "ready"
+    },
+    {
+      id: "connections",
+      title: "חיבורים / מבטים / קשרי בתים",
+      files: ["raml-data/raml-reading-foundations.js", "raml-data/raml-foundation-qawl-jami-extra.js"],
+      status: "ready"
+    },
+    {
+      id: "general-fortune-balance",
+      title: "ריבוי צורות טובות מול רעות",
+      files: ["raml-data/raml-reading-foundations.js"],
+      status: "ready"
+    },
+    {
+      id: "repeat-reading-truth",
+      title: "בדיקת אמת על ידי חזרה שנייה ושלישית",
+      files: ["raml-data/raml-reading-foundations.js"],
+      status: "ready-as-rule-not-automatic"
+    },
+    {
+      id: "mumazaja",
+      title: "ממאזגה / התאמה",
+      files: ["raml-data/raml-foundation-qawl-jami-extra.js"],
+      status: "comparisonOnly",
+      note: "נשמר במשקל נמוך בלבד, לא כהכרעה ראשית."
+    },
+    {
+      id: "taskin-abdah",
+      title: "תסקין אבדח",
+      files: ["raml-data/raml-foundation-qawl-jami-extra.js"],
+      status: "ready-as-reference"
+    },
+    {
+      id: "taskin-four-figures",
+      title: "תסקין ארבע הצורות",
+      files: ["raml-data/raml-foundation-qawl-jami-extra.js"],
+      status: "ready-as-reference"
+    }
+  ],
+
+  needsFormula: [
+    {
+      id: "shape-triangles-35",
+      title: "35 משולשי הצורות",
+      file: "raml-data/raml-foundation-qawl-jami-extra.js",
+      currentStatus: "needsVisualVerification",
+      reason: "הרשימה קיימת, אבל חלק מהאותיות דורשות בדיקה חזותית מול הסריקה לפני שימוש קשיח.",
+      nextAction: "לאמת מול עמוד 20–21 בסריקה."
+    },
+    {
+      id: "dignity-rules",
+      title: "בית / ובאל / שרף / הובוט",
+      file: "raml-data/raml-foundation-qawl-jami-extra.js",
+      currentStatus: "needsFormula",
+      reason: "יש הגדרות וכוכבים, אבל אין עדיין טבלת בית/ובאל מלאה לכל 16 הצורות.",
+      nextAction: "להשאיר ככלל כוכבי/תיאורטי עד שנמצא מקור מלא."
+    },
+    {
+      id: "taskin-hassan",
+      title: "תסקין חסאן",
+      file: "raml-data/raml-foundation-qawl-jami-extra.js",
+      currentStatus: "needsFormula",
+      reason: "המקור מזכיר תפקידים: עד, מורה, סוד, משתלט, שואל ונשאל; חסרה נוסחת שימוש מלאה.",
+      nextAction: "לשמור להשוואה בלבד עד חילוץ נוסחה."
+    },
+    {
+      id: "taskin-nature-second",
+      title: "תסקין הטבע השני",
+      file: "raml-data/raml-foundation-qawl-jami-extra.js",
+      currentStatus: "needsFormula",
+      reason: "חסר סדר מלא בקובץ החילוץ.",
+      nextAction: "לא להשתמש במנוע."
+    },
+    {
+      id: "intishaat",
+      title: "انتشاءات — היווצרויות",
+      file: "raml-data/raml-foundation-qawl-jami-extra.js",
+      currentStatus: "needsFormula",
+      reason: "ידוע שכל צורה נוצרת בכמה דרכים, אבל צריך טבלת הורים מלאה.",
+      nextAction: "לבנות בהמשך טבלת parentA + parentB => childFigure."
+    },
+    {
+      id: "tasyir",
+      title: "تسيير — הולכת נקודות",
+      file: "raml-data/raml-foundation-qawl-jami-extra.js",
+      currentStatus: "needsFormula",
+      reason: "קיים בדמיר ובמאזן, אבל צריך נוסחה מדויקת לכל שימוש.",
+      nextAction: "לא להפעיל אוטומטית לפני נוסחה."
+    },
+    {
+      id: "ismatat-atrohat",
+      title: "إسماطات / أطروحات — הפלות ושאריות",
+      file: "raml-data/raml-foundation-qawl-jami-extra.js",
+      currentStatus: "needsFormula",
+      reason: "יש בסיסים 12/16/15/9/6/7, אבל צריך לדעת מתי להשתמש בכל בסיס.",
+      nextAction: "לשמור כשיטת ניתוח כללית עד דיני השאלה או נוסחה מדויקת."
+    },
+    {
+      id: "seeker-fortune-house",
+      title: "בית מזל השואל",
+      file: "raml-data/raml-reading-foundations.js",
+      currentStatus: "notFoundByExactNameInCurrentSources",
+      reason: "לא נמצא בשם מדויק. ייתכן שקשור לשרף/הובוט או דמיר.",
+      nextAction: "לא להפעיל עד מקור מפורש."
+    },
+    {
+      id: "seeker-fall-house",
+      title: "בית נפילת השואל",
+      file: "raml-data/raml-reading-foundations.js",
+      currentStatus: "notFoundByExactNameInCurrentSources",
+      reason: "לא נמצא בשם מדויק. ייתכן שקשור להובוט/נפילת כוכב.",
+      nextAction: "לא להפעיל עד מקור מפורש."
+    },
+    {
+      id: "house-before-awtad",
+      title: "הבית שלפני היתד",
+      file: "raml-data/raml-reading-foundations.js",
+      currentStatus: "notFoundInCurrentSourcesYet",
+      reason: "המשתמש זוכר חוק כזה, אבל עדיין לא נמצא מקור מפורש.",
+      nextAction: "לא להפעיל עד מקור מפורש."
+    }
+  ],
+
+  closureDecision: {
+    canMoveToTopicRules: false,
+    reason: "המשתמש ביקש לא לעבור לדיני שאלות עד סגירת יסודות. לכן קודם מסמנים ומנקים את כל needsFormula.",
+    nextStep: "לעבור סעיף סעיף ברשימת needsFormula ולהחליט: verified / comparisonOnly / blockedUntilSource / doNotUseYet."
+  }
+};
+
+function ramlGetFoundationClosureAudit() {
+  return RAML_FOUNDATION_CLOSURE_AUDIT;
+}
+
+function ramlListFoundationClosureOpenItems() {
+  return RAML_FOUNDATION_CLOSURE_AUDIT.needsFormula || [];
+}
+
+function ramlListFoundationClosureReadyItems() {
+  return RAML_FOUNDATION_CLOSURE_AUDIT.readyForUse || [];
+}
+
+if (typeof window !== "undefined") {
+  window.RAML_FOUNDATION_CLOSURE_AUDIT = RAML_FOUNDATION_CLOSURE_AUDIT;
+  window.ramlGetFoundationClosureAudit = ramlGetFoundationClosureAudit;
+  window.ramlListFoundationClosureOpenItems = ramlListFoundationClosureOpenItems;
+  window.ramlListFoundationClosureReadyItems = ramlListFoundationClosureReadyItems;
+}
+
+if (typeof module !== "undefined") {
+  module.exports = {
+    RAML_FOUNDATION_CLOSURE_AUDIT,
+    ramlGetFoundationClosureAudit,
+    ramlListFoundationClosureOpenItems,
+    ramlListFoundationClosureReadyItems
+  };
+}
