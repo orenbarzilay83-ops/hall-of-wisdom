@@ -750,6 +750,46 @@ const RAML_BULUGH_AL_AMAL_FOUNDATIONS = {
       implementationReady: false
     },
 
+
+    visualEncodingWork: {
+      id: "bulugh-visual-encoding-work",
+      title: "עבודת קידוד חזותי מתוך טבלאות הסריקה",
+      status: "in-progress",
+      sourceBook: "بلوغ الأمل في علم الرمل",
+      note: "טבלאות שלא ניתן לקודד בוודאות מתוך החילוץ הטקסטואלי נשמרות כאן עד פענוח חזותי מלא.",
+
+      genderInsideOutsideTable: {
+        id: "gender-inside-outside-table-page-8",
+        title: "טבלת זכר / נקבה / פנימי / חיצוני",
+        sourcePages: [8],
+        arabicTitle: "معرفة المذكر والمؤنث والداخل والخارج",
+        status: "needsVisualEncoding",
+        sourceStatus: "visible-scan-but-not-fully-encoded",
+        knownRules: [
+          "הטבלה משמשת להבחין בין זכר ונקבה, וכן בין الداخل והخرج.",
+          "אפשר לקבוע לפי בית הדמיר.",
+          "אפשר לקבוע לפי רוב הצורות הזכריות או הנקביות.",
+          "אם הזכר והנקבה שווים — הדין לזכר, כי הזכר הוא الأصل."
+        ],
+        tableGroupsFromHeading: [
+          {
+            arabic: "المذكر الخارج",
+            hebrew: "זכרי חיצוני / יוצא",
+            encodedFigures: [],
+            status: "needsVisualEncoding"
+          },
+          {
+            arabic: "المؤنث الداخل",
+            hebrew: "נקבי פנימי / נכנס",
+            encodedFigures: [],
+            status: "needsVisualEncoding"
+          }
+        ],
+        engineUse: "blockedUntilVisualEncoding",
+        implementationReady: false
+      }
+    },
+
     openIssuesFromExtraction: [
       { id: "gender-inside-outside-table", title: "טבלת זכר/נקבה/פנימי/חיצוני", status: "needsVisualEncoding", pages: [8] },
       { id: "fortune-category-table", title: "טבלת סעד/נחס/ממוזג", status: "needsVisualEncoding", pages: [8,9] },
