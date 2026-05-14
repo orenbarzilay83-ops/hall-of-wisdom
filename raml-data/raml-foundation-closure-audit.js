@@ -149,9 +149,9 @@ const RAML_FOUNDATION_CLOSURE_AUDIT = {
       id: "taskin-hassan",
       title: "תסקין חסאן",
       file: "raml-data/raml-foundation-qawl-jami-extra.js",
-      currentStatus: "needsFormula",
-      reason: "המקור מזכיר תפקידים: עד, מורה, סוד, משתלט, שואל ונשאל; חסרה נוסחת שימוש מלאה.",
-      nextAction: "לשמור להשוואה בלבד עד חילוץ נוסחה."
+      currentStatus: "closedAsReferenceOnly",
+      reason: "המקור מזכיר תפקידים: עד, מורה, סוד, משתלט, שואל ונשאל; אין נוסחת שימוש מלאה להפעלה.",
+      nextAction: "לשמור כתסקין ייחוס בלבד. לא להפעיל במנוע עד מקור מפורש לנוסחה."
     },
     {
       id: "taskin-nature-second",

@@ -288,8 +288,10 @@ const RAML_QAWL_JAMI_EXTRA_FOUNDATIONS = {
       use: "שיטה זנאטית / מספרים / משכים"
     },
     hassan: {
-      status: "needsFormula",
-      use: "עד, מורה, סוד, משתלט, שואל ונשאל"
+      status: "closedAsReferenceOnly",
+      use: "עד, מורה, סוד, משתלט, שואל ונשאל",
+      implementationReady: false,
+      closureDecision: "נשמר כתסקין ייחוס בלבד. לא להפעיל במנוע עד מקור מפורש לנוסחת שימוש מלאה."
     },
     fourFigures: {
       status: "verified",
