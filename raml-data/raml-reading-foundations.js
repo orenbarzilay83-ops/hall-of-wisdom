@@ -169,18 +169,31 @@ const RAML_READING_FOUNDATIONS = {
     id: "chart-validity",
     title: "כשרות / אמינות הגורל",
     ruleType: "validity",
-    sourceStatus: "verified-partial",
+    sourceStatus: "verified-working",
     verifiedRules: [
       {
         id: "do-not-read-for-tester",
         title: "אין לשאול למי שבא לבחון או להתגרות",
-        rule: "אם השואל בא לבחון, לנסות, להתגרות, לצחוק או בלי שאלה אמיתית — אין להכות לו רמל.",
+        rule: "אם השואל בא לבחון, לנסות, להתגרות, לצחוק, להכחיש, להתנסות, או בלי שאלה אמיתית — אין להכות לו רמל.",
+        implementationReady: true
+      },
+      {
+        id: "repeat-reading-validation",
+        title: "בדיקת אמת העבודה על ידי חזרה",
+        rule: "אפשר לבדוק את صحة العمل על ידי הכאה פעם שנייה ושלישית: אם חוזרת אותה תשובה, או תשובה קרובה לה ואינה סותרת לגמרי — זה סימן שהעבודה נכונה.",
+        implementationReady: false,
+        implementationNotes: "לא להפוך מיד לכפתור אוטומטי. קודם לבנות מצב בדיקה שמריץ 2–3 לוחות ומשווה קרבה/סתירה."
+      },
+      {
+        id: "do-not-exceed-three-per-day",
+        title: "לא להכות יותר משלוש פעמים ביום",
+        rule: "אין להכות יותר משלוש פעמים ביום אלא לצורך גדול / הכרח.",
         implementationReady: true
       },
       {
         id: "past-question-warning",
         title: "זהירות בשאלת עבר",
-        rule: "אם שאלה עוסקת בעבר ונופלת בקבוצת הסוואקט/הנופלים, יש לחשוד שהשואל בוחן או מנסה את בעל הרמל.",
+        rule: "אם השאלה עוסקת בעבר ונופלת בקבוצת הסוואקט/הנופלים, יש לחשוד שהשואל בוחן או מנסה את בעל הרמל.",
         implementationReady: false
       },
       {
@@ -192,11 +205,11 @@ const RAML_READING_FOUNDATIONS = {
       }
     ],
     needsVerification: [
-      "נוסח מלא של בדיקת אמת הגורל.",
-      "נוסח מלא של פסילת לוח.",
+      "נוסח מלא של בדיקת פסילת לוח.",
       "האם חזרת צורות באמהות פוסלת או רק מחלישה.",
       "מה בדיוק התנאי שבו השופט/המאזן מורה על טעות בלוח.",
-      "האם יש סימן שהגורל סגור / לא מדבר."
+      "האם יש סימן שהגורל סגור / לא מדבר.",
+      "איך למדוד בקוד 'תשובה קרובה' או 'תשובה סותרת' בבדיקת 2–3 לוחות."
     ],
     implementationReady: false
   },
@@ -207,53 +220,153 @@ const RAML_READING_FOUNDATIONS = {
     ruleType: "pre-reading",
     sourceStatus: "verified-working",
     conditions: [
-      "לא לעבוד למי שאינו שואל באמת.",
-      "לא לעבוד למי שבא לבחון או לנסות.",
-      "לא לעבוד מתוך ליצנות או התגרות.",
-      "יש להקפיד על שקט וישוב הדעת.",
-      "יש להקפיד על מצב מתאים של זמן ומקום לפי הספר.",
-      "תנאי טהרה, זמן, ענן, גשם, רוח, זריחה ושקיעה דורשים ניסוח מדויק נוסף לפני קידוד."
+      "להיות לבד / במקום פרטי.",
+      "להיות בטהרה מלאה.",
+      "להיות במקום שקט.",
+      "לפנות לכיוון הקיבלה לפי המקור הערבי.",
+      "לנקות את המחשבה לגמרי.",
+      "לא לדבר בזמן הכאת השאלה.",
+      "לא להכות יותר משלוש פעמים ביום אלא לצורך גדול.",
+      "לא להשתמש בזה לצחוק, לעג, סרק או התגרות.",
+      "להכות רק ביום בהיר / בזמן מתאים.",
+      "לא להכות למכחיש.",
+      "לא להכות לכופר בדבר.",
+      "לא להכות למלגלג.",
+      "לא להכות למי שבא לנסות.",
+      "לא להכות למי שבא לבחון.",
+      "לא להכות למי שאין לו ודאות או רצינות בשאלה.",
+      "לא להכות במצב שאינו טהור.",
+      "לא להכות במקום שאינו שקט.",
+      "לא להכות בזמן ענן.",
+      "לא להכות בזמן גשם.",
+      "לא להכות בזמן רוח.",
+      "לא להכות בזמן זריחה.",
+      "לא להכות בזמן שקיעה."
     ],
-    implementationReady: false
+    implementationReady: false,
+    implementationNotes: "באפליקציה זה יהיה בעתיד צ׳קליסט לפני קריאה, לא חסימה קשיחה בשלב ראשון."
   },
 
   damirAlSail: {
     id: "damir-al-sail",
     title: "ضمير السائل — דמיר / מצפון השואל",
     ruleType: "damir",
-    sourceStatus: "verified-partial",
-    description: "הדמיר אינו חוק אחד אלא כמה דרכי חילוץ מן הלוח.",
-    methods: [
+    sourceStatus: "verified-working",
+    description: "הדמיר הוא גילוי הדבר הפנימי שעליו השואל באמת שואל. אין להכניס אותו כפרשנות אחת קצרה; יש כמה דרכים להוציא אותו.",
+
+    verifiedMethods: [
       {
-        id: "damir-from-mothers",
-        title: "דמיר מן האמהות",
-        status: "needsExactFormula"
+        id: "damir-from-total-open-count",
+        title: "דמיר השואל ממספר مفتוח הרמל כולו",
+        sourceBook: "الفلك المشحون",
+        formulaHebrew: [
+          "לוקחים את מספר مفتוח הרמל כולו.",
+          "מפילים אותו 15־15.",
+          "את השארית מוליכים על הצורות מתחילת הטכת.",
+          "המקום שבו המספר נעצר — שם נמצא הדמיר.",
+          "הדמיר יכול להתברר דרך הצורה עצמה, הבית שבו נעצר, או בעל הבית."
+        ],
+        implementationReady: false,
+        needsExactDefinition: [
+          "צריך להגדיר בקוד בדיוק מהו عدد مفتوح الرمل كله.",
+          "צריך להגדיר איך הולכים על הצורות: האם מתחילים מבית 1 כולל, ומה עושים אם השארית 0."
+        ]
       },
       {
-        id: "damir-from-awtad",
-        title: "דמיר מן היתדות",
-        status: "needsExactFormula"
+        id: "damir-queried-from-128-minus-open-count",
+        title: "דמיר הנשאל עליו מ־128 פחות מספר مفتוח הרמל",
+        sourceBook: "الفلك المشحون",
+        formulaHebrew: [
+          "לידיעת הנשאל עליו: מחסרים את מספר مفتוח הרמל מן 128.",
+          "את היתרה מפילים 15־15.",
+          "עם השארית השנייה הולכים מתחילת הטכת.",
+          "המקום שבו המספר נעצר — שם הדמיר של הנשאל עליו, או הבית, או בעל הבית."
+        ],
+        implementationReady: false,
+        needsExactDefinition: [
+          "צריך להגדיר בקוד عدد مفتوح الرمل.",
+          "צריך להגדיר שארית 0.",
+          "צריך להגדיר במדויק בעל הבית לפי תסקין."
+        ]
       },
       {
-        id: "damir-from-balance",
-        title: "דמיר מן המאזן / השופט",
-        status: "needsExactFormula"
-      },
-      {
-        id: "damir-from-elements-of-first-four",
-        title: "דמיר מן אש הראשון, אוויר השני, מים השלישי, עפר הרביעי",
-        status: "needsExactFormula"
-      },
-      {
-        id: "damir-from-repeat-house",
-        title: "דמיר ממקום חזרת צורה",
-        status: "needsExactFormula"
+        id: "damir-thalith-method",
+        title: "דרך השליש / طريقة الثليث",
+        sourceBook: "الفلك المشحون",
+        formulaHebrew: [
+          "הדרך נקראת طريقة الثليث.",
+          "הדמיר אינו יוצא משלושה מקומות: הצורה / הבית / בעל הבית.",
+          "בודקים איפה חלה הצורה וכמה עברה מביתה.",
+          "אם חלה בבית 1, 2, 3, 4, 5, 7, 9, 10, 11 או 15 — זה סימן כוח ואושר.",
+          "אם חלה בבית 6, 8, 12 או 14 — זה סימן רדייה, חולשה וקושי."
+        ],
+        strongHouses: [1, 2, 3, 4, 5, 7, 9, 10, 11, 15],
+        weakHouses: [6, 8, 12, 14],
+        implementationReady: false,
+        needsVerification: [
+          "מה דין בית 13 ובית 16 בשיטה זו — המקור בקטע שנמצא לא מזכיר אותם במפורש."
+        ]
       }
     ],
+
+    additionalMethodsFromQawlJami: [
+      {
+        id: "damir-from-nar-hafidat-times-turab",
+        title: "חיבור אש הנכדות עם עפרן",
+        status: "verified-text-needs-formula"
+      },
+      {
+        id: "damir-from-mizan",
+        title: "מאזן הרמל הוא הדמיר",
+        status: "verified-text-needs-formula"
+      },
+      {
+        id: "damir-from-first-four-elements",
+        title: "אש הראשון, אוויר השני, מים השלישי, עפר הרביעי יוצרים צורה והיא הדמיר",
+        status: "verified-text-needs-formula"
+      },
+      {
+        id: "damir-from-nar-awtad",
+        title: "אש היתדות — בו הדמיר",
+        status: "verified-text-needs-formula"
+      },
+      {
+        id: "damir-from-1x7x15",
+        title: "הכאת 1×7×15 — בו הדמיר",
+        status: "verified-text-needs-formula"
+      },
+      {
+        id: "damir-from-tasyir-point",
+        title: "תוצאת הכאת הצורות שעליהן עמד תסייר הנקודה — בו הדמיר",
+        status: "verified-text-needs-formula"
+      },
+      {
+        id: "damir-from-open-count-to-mizan",
+        title: "סופרים כל הרמל, יחיד וזוגי, עד המאזן ומפילים 15־15",
+        status: "verified-text-needs-formula"
+      },
+      {
+        id: "damir-from-nar-awtad-times-turab-awtad",
+        title: "חיבור צורת אש היתדות עם צורת עפר היתדות",
+        status: "verified-text-needs-formula"
+      },
+      {
+        id: "damir-from-cross-triangle",
+        title: "חיבור مثلثة الصليب: נהמת האמהות עם תמכן האמהות",
+        status: "verified-text-needs-formula"
+      },
+      {
+        id: "damir-from-repeat-first",
+        title: "בית חזרת הראשון — בו הדמיר גם כן",
+        status: "verified-text-needs-formula"
+      }
+    ],
+
     implementationReady: false,
     notes: [
-      "לא לקודד דמיר לפני חילוץ נוסחאות מדויקות.",
-      "הדמיר ישמש בהמשך לזיהוי שאלת השואל ומה הוא באמת שואל."
+      "לא לקודד דמיר לפני שמגדירים את המונחים המספריים בדיוק.",
+      "הדמיר ישמש לזיהוי השאלה האמיתית של השואל לפני דיני נושאים.",
+      "כרגע מכניסים את השיטות כידע מאומת/דורש נוסחה, לא כמנוע פעיל."
     ]
   },
 
