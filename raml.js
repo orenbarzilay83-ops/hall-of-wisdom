@@ -2,6 +2,13 @@
 // לא קשור לגורל העשיריות.
 // כאן אנחנו בונים מנוע נפרד לגמרי לפי שיטת הרמל / Geomantic Shield.
 
+let RAML_FORMS_BASIC = {};
+try {
+  ({ RAML_FORMS_BASIC } = require("./raml-data/raml-forms-basic.js"));
+} catch (e) {
+  RAML_FORMS_BASIC = {};
+}
+
 const RAML_FIGURES = {
   "1121": { key: "1121", hebrew: "נלחם", arabic: "جودلة / كوسج", meaning: "", fortune: "ממוזג־סעד" },
   "1222": { key: "1222", hebrew: "נשוא ראש", arabic: "الأحيان / الضاحك", meaning: "", fortune: "סעד" },
@@ -23,6 +30,17 @@ const RAML_FIGURES = {
   "2121": { key: "2121", hebrew: "ממון נכנס", arabic: "القبض الداخل", meaning: "", fortune: "סעד" },
   "2222": { key: "2222", hebrew: "קהלה", arabic: "الجماعة", meaning: "", fortune: "ממוזג" },
 };
+
+// מיזוג קובץ הידע הבסיסי לתוך הצורות של המנוע
+// המנוע נשאר אחראי לחישוב; קובץ הידע אחראי למידע לימודי/פרשני.
+for (const key of Object.keys(RAML_FORMS_BASIC || {})) {
+  RAML_FIGURES[key] = {
+    ...(RAML_FIGURES[key] || {}),
+    ...RAML_FORMS_BASIC[key],
+    key
+  };
+}
+
 
 // 1 = נקודה אחת
 // 2 = שתי נקודות / קו
@@ -541,19 +559,19 @@ function ramlBuildReadingSummary(reading) {
   lines.push(`הבית המרכזי לקריאה: בית ${reading.focusHouseNumber} — ${reading.focusHouseInfo?.hebrew || ""}`);
 
   if (focus) {
-    lines.push(`בבית המרכזי נפלה הצורה: ${focus.hebrew} (${focus.key}) — ${focus.fortune || "ללא סיווג"}, ${focus.movement || "ללא תנועה"}, יסוד ${focus.element || "לא ידוע"}`);
+    lines.push(`בבית המרכזי נפלה הצורה: ${focus.hebrew} (${focus.key}) — ${focus.statusHebrew || focus.fortune || "ללא סיווג"}, ${focus.movement || "ללא תנועה"}, טבע ${focus.element || "לא ידוע"}`);
   }
 
   if (judge) {
-    lines.push(`השופט: ${judge.hebrew} (${judge.key}) — ${judge.fortune || "ללא סיווג"}, ${judge.movement || "ללא תנועה"}, יסוד ${judge.element || "לא ידוע"}`);
+    lines.push(`השופט: ${judge.hebrew} (${judge.key}) — ${judge.statusHebrew || judge.fortune || "ללא סיווג"}, ${judge.movement || "ללא תנועה"}, טבע ${judge.element || "לא ידוע"}`);
   }
 
   if (sentence) {
-    lines.push(`המשפט / התוצאה הסופית: ${sentence.hebrew} (${sentence.key}) — ${sentence.fortune || "ללא סיווג"}, ${sentence.movement || "ללא תנועה"}, יסוד ${sentence.element || "לא ידוע"}`);
+    lines.push(`המשפט / התוצאה הסופית: ${sentence.hebrew} (${sentence.key}) — ${sentence.statusHebrew || sentence.fortune || "ללא סיווג"}, ${sentence.movement || "ללא תנועה"}, טבע ${sentence.element || "לא ידוע"}`);
   }
 
   const diagnosis = ramlBuildInitialDiagnosis(reading);
-  lines.push(`אבחון ראשוני: ${diagnosis.title}`);
+  lines.push(`${diagnosis.title}`);
   lines.push(diagnosis.text);
   lines.push("הערה: זהו אבחון ראשוני בלבד. פירוש עומק יתווסף בהמשך לפי כללי הספר.");
 
@@ -575,81 +593,69 @@ if (typeof module !== "undefined") {
 
 // אבחון ראשוני בלבד לפי סעד / נחס / ממוזג
 // זה לא מחליף את דיני הספר. זה רק נותן תמונת מצב ראשונית.
-function ramlNormalizeFortune(fortune) {
+function ramlNormalizeFortune(fortune, statusHebrew) {
+  const status = String(statusHebrew || "").trim();
+
+  if (status === "טוב") return "good";
+  if (status === "רע") return "bad";
+  if (status === "נטייה לטוב") return "mixed_good";
+  if (status === "נטייה לרע") return "mixed_bad";
+  if (status === "ביניים") return "mixed";
+
+  // תמיכה לאחור בערכי המקור הישנים, שלא נאבד תאימות
   const f = String(fortune || "");
-
-  if (f === "סעד") return "good";
-  if (f === "נחס") return "bad";
+  if (f.includes("ממוזג") && f.includes("סעד")) return "mixed_good";
+  if (f.includes("ממוזג") && f.includes("נחס")) return "mixed_bad";
   if (f.includes("ממוזג")) return "mixed";
-
+  if (f.includes("סעד")) return "good";
+  if (f.includes("נחס")) return "bad";
   return "unknown";
 }
 
 function ramlBuildInitialDiagnosis(reading) {
   if (!reading || !reading.focusHouse || !reading.judge || !reading.sentence) {
     return {
-      status: "unknown",
-      title: "אין מספיק נתונים",
-      text: "לא ניתן לתת אבחון ראשוני ללא בית מרכזי, שופט ומשפט."
+      title: "אבחון ראשוני: לא זמין",
+      text: "אין מספיק נתונים לבניית אבחון ראשוני."
     };
   }
 
-  const focus = ramlNormalizeFortune(reading.focusHouse.fortune);
-  const judge = ramlNormalizeFortune(reading.judge.fortune);
-  const sentence = ramlNormalizeFortune(reading.sentence.fortune);
+  const focus = ramlNormalizeFortune(reading.focusHouse.fortune, reading.focusHouse.statusHebrew);
+  const judge = ramlNormalizeFortune(reading.judge.fortune, reading.judge.statusHebrew);
+  const sentence = ramlNormalizeFortune(reading.sentence.fortune, reading.sentence.statusHebrew);
 
   const values = [focus, judge, sentence];
 
+  if (values.includes("mixed") || values.includes("mixed_good") || values.includes("mixed_bad")) {
+    return {
+      title: "אבחון ראשוני: מצב לא מוכרע",
+      text: "אחת או יותר מן הצורות נמצאת במצב ביניים או נטייה. זה מצב שאינו מוכרע לגמרי לטוב או לרע, ויש לבדוק לפי הבית, השאלה, השופט והמשפט."
+    };
+  }
+
   const goodCount = values.filter(v => v === "good").length;
   const badCount = values.filter(v => v === "bad").length;
-  const mixedCount = values.filter(v => v === "mixed").length;
-
-  if (goodCount === 3) {
-    return {
-      status: "good",
-      title: "נטייה טובה",
-      text: "בבית המרכזי, בשופט ובמשפט מופיעות צורות של סעד. זה מצביע על נטייה ראשונית טובה, אך הפירוש הסופי דורש את דיני הספר."
-    };
-  }
-
-  if (badCount === 3) {
-    return {
-      status: "bad",
-      title: "נטייה קשה",
-      text: "בבית המרכזי, בשופט ובמשפט מופיעות צורות של נחס. זה מצביע על נטייה ראשונית קשה, אך הפירוש הסופי דורש את דיני הספר."
-    };
-  }
-
-  if (mixedCount > 0) {
-    return {
-      status: "mixed",
-      title: "מצב לא מוכרע",
-      text: "אחת או יותר מן הצורות היא ממוזגת. זה מצב ביניים שאינו מוכרע לטוב או לרע, ויש לבדוק לפי הבית, השאלה, השופט והמשפט."
-    };
-  }
 
   if (goodCount > badCount) {
     return {
-      status: "leanGood",
-      title: "נטייה לטוב",
-      text: "רוב הסימנים הראשוניים נוטים לסעד. זו נטייה ראשונית בלבד, לפני בדיקת דיני הפירוש המלאים."
+      title: "אבחון ראשוני: נטייה לטוב",
+      text: "רוב הסימנים הראשוניים נוטים לטוב. זו נטייה ראשונית בלבד, לפני בדיקת דיני הפירוש המלאים."
     };
   }
 
   if (badCount > goodCount) {
     return {
-      status: "leanBad",
-      title: "נטייה לקושי",
-      text: "רוב הסימנים הראשוניים נוטים לנחס. זו נטייה ראשונית בלבד, לפני בדיקת דיני הפירוש המלאים."
+      title: "אבחון ראשוני: נטייה לרע",
+      text: "רוב הסימנים הראשוניים נוטים לרע. זו נטייה ראשונית בלבד, לפני בדיקת דיני הפירוש המלאים."
     };
   }
 
   return {
-    status: "balanced",
-    title: "מצב שקול",
-    text: "הסימנים הראשוניים אינם מכריעים באופן ברור. יש להמשיך לדיני הספר ולבדוק את הקשרים בין הבתים."
+    title: "אבחון ראשוני: מאוזן",
+    text: "הסימנים הראשוניים מאוזנים, ולכן צריך להכריע לפי הבית המרכזי, השופט, המשפט ודיני השאלה."
   };
 }
+
 
 if (typeof module !== "undefined") {
   module.exports.ramlNormalizeFortune = ramlNormalizeFortune;
@@ -708,7 +714,8 @@ function ramlApplyMovementAndElementToFigures() {
     const info = ramlGetMovementFromKey(key);
     RAML_FIGURES[key].movement = info.movement;
     RAML_FIGURES[key].movementArabic = info.arabic;
-    RAML_FIGURES[key].element = info.element;
+    RAML_FIGURES[key].movementElement = info.element;
+    if (!RAML_FIGURES[key].element) RAML_FIGURES[key].element = info.element;
   }
 
   return RAML_FIGURES;
