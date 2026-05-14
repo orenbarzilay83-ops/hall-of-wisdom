@@ -408,8 +408,10 @@ const RAML_QAWL_JAMI_EXTRA_FOUNDATIONS = {
     tasyir: {
       arabic: "التسيير",
       hebrew: "הולכה / הסעת נקודה",
-      status: "needsFormula",
-      source: "openPointsInMizan"
+      status: "blockedUntilFormula",
+      source: "openPointsInMizan",
+      implementationReady: false,
+      closureDecision: "התסייר נשמר כשיטת ניתוח יסודית, אבל לא יופעל כמנוע עצמאי עד שתהיה נוסחת שימוש מדויקת לכל הקשר."
     },
     adrubat: {
       arabic: "الأضروبات",

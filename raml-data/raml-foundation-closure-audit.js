@@ -173,9 +173,9 @@ const RAML_FOUNDATION_CLOSURE_AUDIT = {
       id: "tasyir",
       title: "تسيير — הולכת נקודות",
       file: "raml-data/raml-foundation-qawl-jami-extra.js",
-      currentStatus: "needsFormula",
-      reason: "קיים בדמיר ובמאזן, אבל צריך נוסחה מדויקת לכל שימוש.",
-      nextAction: "לא להפעיל אוטומטית לפני נוסחה."
+      currentStatus: "blockedUntilFormula",
+      reason: "התסייר קיים כשיטת יסוד, אבל אין נוסחת שימוש כללית ומדויקת להפעלה אוטומטית.",
+      nextAction: "לשמור כשדה ידע עתידי לדמיר/זמן/הולכת נקודות. לא להפעיל במנוע עד נוסחה מדויקת."
     },
     {
       id: "ismatat-atrohat",
