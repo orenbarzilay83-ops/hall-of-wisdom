@@ -273,6 +273,50 @@ const RAML_BULUGH_AL_AMAL_FOUNDATIONS = {
     ]
   },
 
+
+  extractedFigureClassificationRules: {
+    id: "bulugh-figure-classification-rules",
+    title: "סיווגי הצורות לפי بلوغ الأمل",
+    sourceBook: "بلوغ الأمل في علم الرمل",
+    sourcePages: [8],
+    sourceStatus: "verified-from-visible-scan",
+    status: "verified-working",
+    ruleType: "forms-classification",
+    categories: [
+      {
+        id: "male-female",
+        title: "זכר ונקבה",
+        arabicTerm: "الذكر والمؤنث",
+        hebrewTerm: "זכר / נקבה",
+        use: "סיווג טבע הצורה, מתאים לשאלות על אדם, מין, יוזמה, קבלה, פעולה או היענות.",
+        implementationReady: true
+      },
+      {
+        id: "inside-outside",
+        title: "פנימי וחיצוני",
+        arabicTerm: "الداخل والخارج",
+        hebrewTerm: "נכנס / יוצא או פנימי / חיצוני",
+        use: "מסמן האם הכוח נכנס פנימה, מתקבל, נשמר, או יוצא החוצה, מתרחק, מתפזר.",
+        implementationReady: true
+      },
+      {
+        id: "fortunate-unfortunate-mixed",
+        title: "צורות טובות, רעות וממוזגות",
+        arabicTerm: "الأشكال السعيدة والنحيسة والممتزجة",
+        hebrewTerm: "טוב / רע / ממוזג",
+        use: "שכבת הכרעה כללית: האם הצורה נוטה לטוב, לרע, או למצב ביניים/מעורב.",
+        implementationReady: true
+      }
+    ],
+    practicalUse: [
+      "הסיווגים מחזקים את מה שכבר קיים ב־raml-forms-basic.js.",
+      "אין לשנות כרגע שמות או סטטוסים קיימים של הצורות בלי השוואה מלאה.",
+      "החומר ישמש כשכבת אימות והשוואה מול מקורות קודמים.",
+      "אם יימצא הבדל בין המקורות — יש לסמן sourceVariant ולא למחוק מקור קודם."
+    ],
+    nextExtraction: "עמודים 9–10: יתדות, סוואבט, סוואקט, עדים ושוואהד."
+  },
+
   extractedRules: {
     status: "empty-until-page-extraction",
     rules: []
