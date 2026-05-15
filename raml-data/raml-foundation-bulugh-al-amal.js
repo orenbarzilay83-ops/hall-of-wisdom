@@ -787,6 +787,70 @@ const RAML_BULUGH_AL_AMAL_FOUNDATIONS = {
         ],
         engineUse: "blockedUntilVisualEncoding",
         implementationReady: false
+      },
+
+      fortuneCategoryTable: {
+        id: "fortune-category-table-pages-8-9",
+        title: "טבלת סעד / נחס / ממוזג / נוטה לסעד / נוטה לנחס",
+        sourcePages: [8, 9],
+        arabicTitle: "الأشكال السعيدة والنحس والممتزجة والمائلة إلى السعد والمائلة إلى النحس",
+        status: "needsVisualEncoding",
+        sourceStatus: "visible-scan-but-not-fully-encoded",
+        duplicateCheck: {
+          existingFilesToCompare: [
+            "raml-data/raml-forms-basic.js",
+            "raml-data/raml-forms-profiles.js",
+            "raml-data/raml-foundation-qawl-jami-extra.js"
+          ],
+          rule: "לא ליצור סטטוס טוב/רע כפול לצורה שכבר קיימת; להשתמש רק כ-sourceSupport או sourceVariant אחרי קידוד חזותי."
+        },
+        knownCategories: [
+          {
+            arabic: "سعيدة",
+            hebrew: "סעד / טוב",
+            encodedFigures: [],
+            status: "needsVisualEncoding"
+          },
+          {
+            arabic: "نحس",
+            hebrew: "נחס / רע",
+            encodedFigures: [],
+            status: "needsVisualEncoding"
+          },
+          {
+            arabic: "ممتزجة",
+            hebrew: "ממוזג / ביניים",
+            encodedFigures: [],
+            status: "needsVisualEncoding"
+          },
+          {
+            arabic: "مائلة إلى السعد",
+            hebrew: "נוטה לסעד",
+            encodedFigures: [],
+            status: "needsVisualEncoding"
+          },
+          {
+            arabic: "مائلة إلى النحس",
+            hebrew: "נוטה לנחס",
+            encodedFigures: [],
+            status: "needsVisualEncoding"
+          }
+        ],
+        verifiedTextualRules: [
+          "הצורות נחלקות לסעד, נחס, ממוזגות, נוטות לסעד ונוטות לנחס.",
+          "המקור מציין: الصحيح أن الكوسج سعيد مائل إلى النحس.",
+          "אם מצטרפים סעד, נחס וממוזג — יש כלל הכרעה לפי הרכב הצורות.",
+          "אין להחליף את סיווגי הצורות הקיימים עד קידוד חזותי מלא והשוואה מול המקורות הקודמים."
+        ],
+        explicitNotes: {
+          "الكوسج": {
+            arabic: "سعيد مائل إلى النحس",
+            hebrew: "טוב אבל נוטה לנחס",
+            status: "verified-text-note"
+          }
+        },
+        engineUse: "blockedUntilVisualEncodingAndDuplicateCheck",
+        implementationReady: false
       }
     },
 
