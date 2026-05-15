@@ -789,6 +789,37 @@ const RAML_BULUGH_AL_AMAL_FOUNDATIONS = {
         implementationReady: false
       },
 
+      directionsTableWork: {
+        id: "directions-table-page-11",
+        title: "טבלת כיווני הצורות",
+        sourcePages: [11],
+        arabicTitle: "جهات الأشكال",
+        status: "needsVisualEncoding",
+        sourceStatus: "visible-scan-but-not-fully-encoded",
+        purpose: [
+          "جهة الخبية — כיוון דבר נסתר / מוחבא",
+          "جهة ضائع — כיוון דבר שאבד",
+          "جهة مسؤول عنه — כיוון הנשאל עליו"
+        ],
+        knownRules: [
+          "המקור מציג טבלה של כיווני הצורות.",
+          "הכיוונים משמשים לאיתור דבר נסתר, דבר אבוד או הנשאל עליו.",
+          "אין לקודד כיוון לצורה בלי פענוח חזותי ודאי של הטבלה."
+        ],
+        duplicateCheck: {
+          existingFilesToCompare: [
+            "raml-data/raml-forms-basic.js",
+            "raml-data/raml-forms-profiles.js",
+            "raml-data/raml-reading-foundations.js",
+            "raml-data/raml-foundation-qawl-jami-extra.js"
+          ],
+          rule: "אם קיימים כיוונים ממקור קודם, אין להחליף אותם; יש לסמן sourceSupport או sourceVariant אחרי קידוד חזותי."
+        },
+        encodedDirections: [],
+        engineUse: "blockedUntilVisualEncodingAndDuplicateCheck",
+        implementationReady: false
+      },
+
       witnessFormulaWork: {
         id: "witness-formula-page-10",
         title: "נוסחת העדים — شاهد كل شكل ثالثة",
