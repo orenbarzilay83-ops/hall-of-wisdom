@@ -789,6 +789,48 @@ const RAML_BULUGH_AL_AMAL_FOUNDATIONS = {
         implementationReady: false
       },
 
+      nameWay1Work: {
+        id: "name-way1-page-19",
+        title: "הדרך הראשונה בגזירת שם הנשאל עליו",
+        sourcePages: [19],
+        arabicTitle: "الوجه الأول في اشتقاق اسم المسؤول عنه",
+        status: "needsFormula-advisorOnly",
+        sourceStatus: "text-found-but-numeric-and-letter-process-not-fully-defined",
+        knownContext: [
+          "הדרך הראשונה שייכת לפרק اشتقاق اسم المسؤول عنه.",
+          "הדרך עוסקת בבדיקת הנקודה אל הבתים ולקיחת אותיות מן הצורות.",
+          "המספרים והשלבים בסריקה אינם מספיק ודאיים לקידוד מנוע.",
+          "אין להפעיל את הדרך לפני קידוד מלא של תסקין האותיות."
+        ],
+        missingFormula: [
+          "מה בדיוק פירוש בדיקת הנקודה אל הבתים.",
+          "מאיזה בית מתחילים.",
+          "איך סופרים את הנקודה.",
+          "מאילו צורות לוקחים אותיות.",
+          "איך מטפלים בכמה אותיות לאותה צורה.",
+          "איך מחברים את האותיות לשם.",
+          "איך מאמתים את התוצאה מול תסקין האותיות."
+        ],
+        dependency: [
+          "letterTaskinTableWork",
+          "encoded letter-to-figure table",
+          "point movement formula"
+        ],
+        advisorUse: [
+          "לשמור כידע מתקדם ליועץ.",
+          "לא להציג בדוח לקוח כברירת מחדל.",
+          "לא להפעיל כמנוע עד שתסקין האותיות והנוסחה יהיו מלאים."
+        ],
+        suggestedCode: {
+          status: "needsFormula",
+          requiresLetterTaskin: true,
+          requiresPointPath: true,
+          output: "possibleName",
+          advisorOnly: true
+        },
+        implementationReady: false
+      },
+
       letterTaskinTableWork: {
         id: "letter-taskin-table-pages-18-19",
         title: "תסקין אותיות",
