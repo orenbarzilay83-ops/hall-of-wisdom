@@ -789,6 +789,42 @@ const RAML_BULUGH_AL_AMAL_FOUNDATIONS = {
         implementationReady: false
       },
 
+      dropNineSixSevenWork: {
+        id: "drop-9-6-7-pages-11-12",
+        title: "הפלות לפי 9 / 6 / 7",
+        sourcePages: [11, 12],
+        arabicTerms: [
+          "إسماط",
+          "إسقاط",
+          "طرح",
+          "الباقي",
+          "على ٩",
+          "على ٦",
+          "على ٧"
+        ],
+        status: "blockedUntilSource",
+        sourceStatus: "not-found-in-bulugh-pages-11-12",
+        knownContext: [
+          "בפרק معرفة كم العدد والمدد נמצא שימוש מפורש בהפלה לפי 12.",
+          "החילוץ לא מצא בעמודים 11–12 כלל מפורש להפלה לפי 9.",
+          "החילוץ לא מצא בעמודים 11–12 כלל מפורש להפלה לפי 6.",
+          "החילוץ לא מצא בעמודים 11–12 כלל מפורש להפלה לפי 7.",
+          "לפי 15 ו־16 יש הקשרים בהמשך בפרקי הדמיר, אבל לא כאן ככלל כללי."
+        ],
+        engineDecision: [
+          "לא להפעיל הפלות לפי 9/6/7 מתוך מקור זה.",
+          "לא למחוק את האפשרות, כי היא קיימת כמטרה פתוחה ממקורות אחרים.",
+          "אם יימצא מקור מפורש אחר — להוסיף sourceVariant ולא להחליף בלי בדיקה."
+        ],
+        suggestedCode: {
+          drop9: "blockedUntilSource",
+          drop6: "blockedUntilSource",
+          drop7: "blockedUntilSource",
+          doNotInferFromDrop12: true
+        },
+        implementationReady: false
+      },
+
       remainderZeroWork: {
         id: "remainder-zero-pages-11-12",
         title: "שארית 0 בהפלות",
