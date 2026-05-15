@@ -180,6 +180,7 @@
     }
 
     .shield {
+      direction: rtl;
       display: grid;
       grid-template-columns: repeat(8, 1fr);
       border-bottom: 3px solid var(--border);
@@ -262,18 +263,21 @@
     }
 
     .middle-grid {
+      direction: rtl;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       border-bottom: 3px solid var(--border);
     }
 
     .witness-grid {
+      direction: rtl;
       display: grid;
       grid-template-columns: 1fr 1fr;
       border-bottom: 3px solid var(--border);
     }
 
     .final-grid {
+      direction: rtl;
       display: grid;
       grid-template-columns: 1fr 1fr;
       border-bottom: 3px solid var(--border);
@@ -478,8 +482,8 @@
           </div>
 
           <div class="witness-grid">
-            ${houseHtml(h(14), "14 — עד שני")}
             ${houseHtml(h(13), "13 — עד ראשון")}
+            ${houseHtml(h(14), "14 — עד שני")}
           </div>
 
           <div class="final-grid">
