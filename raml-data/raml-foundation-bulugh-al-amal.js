@@ -789,6 +789,51 @@ const RAML_BULUGH_AL_AMAL_FOUNDATIONS = {
         implementationReady: false
       },
 
+      letterTaskinTableWork: {
+        id: "letter-taskin-table-pages-18-19",
+        title: "תסקין אותיות",
+        sourcePages: [18, 19],
+        arabicTitle: "تسكين الحروف",
+        status: "needsVisualEncoding-advisorOnly",
+        sourceStatus: "visible-table-found-but-not-fully-encoded",
+        knownContext: [
+          "השער עוסק בסידור אותיות על גבי הצורות.",
+          "המחבר מציין שהתסקין המובא כאן אינו זהה לנוסח המחבר.",
+          "מופיעה גם צורה הנקראת تسكين المجدولة.",
+          "לצורות المنقلبة ניתנו שתי אותיות.",
+          "הטבלה קיימת בעמודים 18–19, אבל השיוך המדויק של אות לצורה דורש קידוד חזותי."
+        ],
+        missingVisualEncoding: [
+          "שיוך כל אות לצורה המתאימה.",
+          "זיהוי הצורות הגרפיות שמתחת לאותיות.",
+          "הבחנה בין התסקין הרגיל לבין تسكين المجدولة.",
+          "בדיקת הצורות المنقلبة שיש להן שתי אותיות.",
+          "אימות כל אות מול הסריקה לפני הכנסת מנוע."
+        ],
+        advisorUse: [
+          "לשמור כידע מתקדם ליועץ.",
+          "לא להציג בדוח לקוח כברירת מחדל.",
+          "לא להפעיל מנוע אותיות עד טבלה מלאה ומאומתת."
+        ],
+        duplicateCheck: {
+          existingFilesToCompare: [
+            "raml-data/raml-foundation-qawl-jami-extra.js",
+            "raml-data/raml-reading-foundations.js"
+          ],
+          rule: "אם קיימת טבלת אותיות ממקור אחר, לא למזג בלי השוואת אות-צורה-מקור."
+        },
+        encodedLetters: [],
+        suggestedCode: {
+          status: "needsVisualEncoding",
+          tableType: "letterTaskin",
+          letterToFigureMap: "undefined",
+          figureToLettersMap: "undefined",
+          invertedFiguresWithTwoLetters: "undefined",
+          advisorOnly: true
+        },
+        implementationReady: false
+      },
+
       pointPathWork: {
         id: "point-path-pages-15-18",
         title: "דרך הנקודה בדמיר",
