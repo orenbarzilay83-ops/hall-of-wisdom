@@ -213,9 +213,9 @@ const RAML_FOUNDATION_CLOSURE_AUDIT = {
   ],
 
   closureDecision: {
-    canMoveToTopicRules: false,
-    reason: "סגירת היסודות נפתחה מחדש לאחר אישור מקור שלישי: بلوغ الأمل في علم الرمل. יש לחלץ ממנו כל חוק יסוד חדש או משלים לפני מעבר לדיני שאלות.",
-    nextStep: "לעבור על raml-foundation-bulugh-al-amal.js, לחלץ עמוד-עמוד, ולהכניס כל חוק חסר או משלים לקבצי הידע."
+    canMoveToTopicRules: true,
+    reason: "המקור השלישי بلوغ الأمل في علم الرمل עבר חילוץ ראשוני מלא לעמודים 6–20. כל החוסרים זוהו ונשמרו בקבצי הידע עם סטטוס ברור: needsVisualEncoding / needsFormula / blockedUntilSource / advancedKnowledge / advisorOnly. אין כרגע חוסר לא-מסומן שמונע מעבר לדיני שאלות.",
+    nextStep: "אפשר לעבור לדיני שאלות, אך לא להפעיל במנוע את הסעיפים החסומים מתוך بلوغ الأمل עד קידוד חזותי או נוסחה מלאה. יש לזכור לתקן בהמשך את תצוגת לוח הגורל לימין-לשמאל."
   }
 };
 
