@@ -347,6 +347,113 @@ const RAML_TOPIC_RULES = {
         advisorOnlyWhenSpiritualOrIllness: true
       },
       implementationReady: true
+    },
+
+    house2MoneyRules: {
+      id: "house-2-money-question-rules",
+      house: 2,
+      title: "בית 2 — דיני כסף, רכוש ופרנסה",
+      arabicTerms: ["بيت المال", "المال", "الرزق", "المتاع"],
+      status: "foundation-ready",
+      sourceStatus: "compiled-from-approved-foundation-rules-and-topic-map",
+      coreMeaning: [
+        "בית 2 מייצג כסף, רכוש, פרנסה, חפצים ומה ששייך לשואל.",
+        "בשאלות ממון בית 2 הוא בית הנושא המרכזי.",
+        "אין לקרוא את בית 2 לבד; יש להשוות אותו לבית 1 — השואל.",
+        "אם השאלה עוסקת באובדן, גניבה או חפץ שנעלם, בית 2 מייצג את ממון/חפץ השואל, אבל יש לשלב גם דיני אבודים/גניבה כאשר יוכנסו ממקור מפורש."
+      ],
+      questionTypes: [
+        {
+          id: "will-i-gain-money",
+          hebrew: "האם ארוויח כסף?",
+          focusHouse: 2,
+          compareWith: [1, 10, 11],
+          note: "בית 2 הוא הכסף; בית 1 הוא השואל; בית 10 תוצאה גלויה/עבודה; בית 11 רווח/תקווה."
+        },
+        {
+          id: "salary-income-livelihood",
+          hebrew: "פרנסה / הכנסה / משכורת",
+          focusHouse: 2,
+          compareWith: [1, 10, 11],
+          note: "לשלב בהמשך עם דיני עבודה אם השאלה קשורה למשרה."
+        },
+        {
+          id: "property-belongings",
+          hebrew: "רכוש / חפצים / דבר ששייך לשואל",
+          focusHouse: 2,
+          compareWith: [1, 4],
+          note: "אם זה נכס/קרקע/בית — בית 4 נעשה חשוב במיוחד."
+        },
+        {
+          id: "lost-money-or-object",
+          hebrew: "כסף שאבד / חפץ שנעלם",
+          focusHouse: 2,
+          compareWith: [1, 4, 7, 12],
+          note: "דיני אבודים וגניבה ייכנסו בהמשך רק ממקור מפורש."
+        }
+      ],
+      whatToInspect: [
+        {
+          id: "figure-in-house-2",
+          title: "הצורה בבית 2",
+          rule: "בודקים את הצורה בבית 2: האם היא סעד/נחס/ממוזג, יסוד, קל/כבד, פתוח/סגור, נכנס/יוצא אם יש קידוד מאומת.",
+          implementationReady: true
+        },
+        {
+          id: "house-2-strength",
+          title: "חוזק בית 2",
+          rule: "בית 2 הוא מה שאחר היתד, ולכן הוא חלש מן היתדות אך עדיין מורה על דבר שיכול להתפתח/להיתקן בהמשך.",
+          relatedFoundation: "followingAwtad",
+          implementationReady: true
+        },
+        {
+          id: "seeker-money-relationship",
+          title: "יחס בית 1 לבית 2",
+          rule: "בודקים האם בית 1 והשואל תומכים בבית 2 או מתנגדים לו: חזרת צורה, התאמת יסודות, סעד/נחס, וחיבור דרך דמיר/עדים אם קיים.",
+          implementationReady: true
+        },
+        {
+          id: "money-result-support",
+          title: "תמיכת בית 10 ובית 11",
+          rule: "בשאלות רווח/פרנסה, בית 10 מראה תוצאה גלויה/עבודה, ובית 11 מראה תקווה, רווח ועזרה.",
+          implementationReady: true
+        },
+        {
+          id: "money-loss-risk",
+          title: "סיכון הפסד / הסתרה",
+          rule: "אם השאלה על הפסד, גניבה או חפץ שנעלם — יש לבדוק גם בית 12 לאויבים נסתרים וסוד, ובית 7 לאדם שמול השואל/יריב גלוי.",
+          implementationReady: "partial",
+          note: "דיני גניבה ואבודים פרטיים עדיין לא הוכנסו."
+        }
+      ],
+      decisionLayers: [
+        "שכבה 1: מצב בית 2 לפי הצורה שבו.",
+        "שכבה 2: יחס בית 1 לבית 2 — האם השואל יכול להגיע לכסף/רכוש.",
+        "שכבה 3: האם בית 2 נתמך על ידי בית 10 או 11 בשאלות פרנסה ורווח.",
+        "שכבה 4: האם יש סכנת הפסד/הסתרה דרך בית 12 או יריב דרך בית 7.",
+        "שכבה 5: האם העדים והשופט מחזקים את השגת המבוקש או מחלישים."
+      ],
+      blockedOrCarefulUse: [
+        {
+          id: "do-not-predict-investments-as-financial-advice",
+          rule: "בשאלות השקעה/מניות/כסף אין להציג ייעוץ פיננסי מחייב. זהו פירוש רמלי בלבד.",
+          status: "advisorNote"
+        },
+        {
+          id: "lost-object-rules-not-yet-active",
+          rule: "דיני אבודים/גניבה פרטיים עדיין לא פעילים עד הכנסת מקור מפורש.",
+          status: "blockedUntilTopicSource"
+        }
+      ],
+      engineUse: {
+        role: "money-topic-house",
+        useWhenFocusHouseIs: 2,
+        compareWithSeekerHouse: true,
+        supportHouses: [10, 11],
+        riskHouses: [7, 12],
+        canDecideAlone: false
+      },
+      implementationReady: true
     }
   },
 
