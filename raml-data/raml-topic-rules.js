@@ -256,6 +256,100 @@ const RAML_TOPIC_RULES = {
     }
   },
 
+
+  houseQuestionRules: {
+    id: "house-question-rules-by-order",
+    title: "דיני שאלות לפי סדר הבתים",
+    status: "in-progress",
+    sourcePolicy: "approved-sources-only",
+    note: "הרחבה הדרגתית לפי בית. כל דין פרטי יופעל רק אם מקורו ברור ומסומן.",
+
+    house1SeekerRules: {
+      id: "house-1-seeker-question-rules",
+      house: 1,
+      title: "בית 1 — דיני השואל",
+      arabicTerms: ["الطالع", "بيت السائل", "السائل", "المريض"],
+      status: "foundation-ready",
+      sourceStatus: "compiled-from-approved-foundation-rules",
+      coreMeaning: [
+        "בית 1 מייצג את השואל עצמו.",
+        "בית 1 מייצג את גופו, מצבו, תחילת השאלה וכוונת השאלה.",
+        "באבחון רוחני/חולי, בית 1 הוא החולה / בעל השאלה.",
+        "בית 1 הוא נקודת המוצא לכל קריאה: לפני דיני נושא פרטיים בודקים את מצב השואל."
+      ],
+      whatToInspect: [
+        {
+          id: "figure-in-house-1",
+          title: "הצורה בבית 1",
+          rule: "בודקים את הצורה העומדת בבית 1: טבעה, סעד/נחס/ממוזג, יסוד, פתוח/סגור, קל/כבד, נכנס/יוצא אם קיים.",
+          implementationReady: true
+        },
+        {
+          id: "house-1-strength",
+          title: "חוזק הבית",
+          rule: "בית 1 הוא יתד, ולכן יש לו כוח יסודי חזק בלוח.",
+          relatedFoundation: "awtad",
+          implementationReady: true
+        },
+        {
+          id: "seeker-vs-topic-house",
+          title: "יחס השואל לבית הנושא",
+          rule: "לא מספיק לבדוק את בית 1 לבד. יש להשוות את בית 1 לבית הנושא של השאלה.",
+          examples: [
+            "שאלת כסף — בית 1 מול בית 2.",
+            "שאלת בית/נכס — בית 1 מול בית 4.",
+            "שאלת זוגיות/אדם מולו — בית 1 מול בית 7.",
+            "שאלת חולי — בית 1 מול בית 6.",
+            "שאלת עבודה/מעמד — בית 1 מול בית 10."
+          ],
+          implementationReady: true
+        },
+        {
+          id: "seeker-and-damir",
+          title: "בית 1 ודמיר",
+          rule: "אם הדמיר או אחת מדרכי הדמיר מחזירות לבית 1 או לצורה החוזרת בבית 1, הדבר מחזק שהשאלה נובעת ישירות ממצב השואל עצמו.",
+          implementationReady: "partial",
+          note: "חלק מדרכי הדמיר עדיין needsFormula ולכן לא כולן מופעלות."
+        },
+        {
+          id: "seeker-spiritual-diagnostic",
+          title: "בית 1 באבחון רוחני/חולי",
+          rule: "במודול הרוחני בית 1 הוא המريض — החולה / האדם שעליו שואלים.",
+          relatedFile: "raml-spiritual-diagnostics.js",
+          displayPolicy: "advisorOnly",
+          implementationReady: true
+        }
+      ],
+      decisionLayers: [
+        "שכבה 1: האם בית 1 טוב/רע/ממוזג לפי הצורה.",
+        "שכבה 2: האם הצורה בבית 1 מתאימה לנושא השאלה או מתנגשת איתו.",
+        "שכבה 3: האם בית הנושא מחזק או מחליש את בית 1.",
+        "שכבה 4: האם יש חזרת צורה בין בית 1 לבית הנושא, לעדים, לשופט או לדמיר.",
+        "שכבה 5: האם קיימת אינדיקציה רוחנית/חולית שמחייבת מצב advisorOnly."
+      ],
+      blockedOrCarefulUse: [
+        {
+          id: "do-not-diagnose-medically",
+          rule: "אין להציג מסקנה רפואית ללקוח. חולי/אבחון רוחני נשמר ליועץ בלבד.",
+          status: "advisorOnly"
+        },
+        {
+          id: "do-not-force-topic",
+          rule: "אם השאלה אינה שייכת לבית 1 אלא לבית אחר, בית 1 נשאר השואל ולא מחליף את בית הנושא.",
+          status: "active"
+        }
+      ],
+      engineUse: {
+        role: "seeker-baseline",
+        useBeforeEveryReading: true,
+        canDecideAlone: false,
+        mustCompareWithTopicHouse: true,
+        advisorOnlyWhenSpiritualOrIllness: true
+      },
+      implementationReady: true
+    }
+  },
+
   engineRules: {
     status: "topic-routing-only",
     rules: [
