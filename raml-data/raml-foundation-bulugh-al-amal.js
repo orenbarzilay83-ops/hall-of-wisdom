@@ -789,6 +789,41 @@ const RAML_BULUGH_AL_AMAL_FOUNDATIONS = {
         implementationReady: false
       },
 
+      witnessFormulaWork: {
+        id: "witness-formula-page-10",
+        title: "נוסחת העדים — شاهد كل شكل ثالثة",
+        sourcePages: [10],
+        arabicTitle: "الشواهد",
+        status: "needsFormula",
+        sourceStatus: "textual-rule-found-but-formula-not-fully-defined",
+        arabicTerms: [
+          "الشواهد",
+          "شاهد كل شكل ثالثة",
+          "قاضي المسألة"
+        ],
+        knownRules: [
+          "העדים הם עדי השאלה בטוב וברע.",
+          "לכל צורה יש עד שלישי ממנה — شاهد كل شكل ثالثة.",
+          "אם העדים והחاكم מסכימים בסעד — חותכים להשגת המבוקש.",
+          "אם העדים חולקים — חוזרים אל قاضي المسألة."
+        ],
+        missingFormula: [
+          "להגדיר בדיוק מה פירוש 'עד שלישי' לכל צורה.",
+          "האם מחשבים לפי ספירה מחזורית של צורות.",
+          "האם מחשבים לפי טבלת צורות קבועה.",
+          "האם מתייחסים לבית שבו הצורה עומדת או לצורה עצמה בלבד."
+        ],
+        duplicateCheck: {
+          existingFilesToCompare: [
+            "raml-data/raml-reading-foundations.js",
+            "raml-data/raml-foundation-qawl-jami-extra.js"
+          ],
+          rule: "לא להחליף את מערכת העדים הקיימת; לשמור כנוסחת מקור שדורשת אימות."
+        },
+        engineUse: "blockedUntilFormula",
+        implementationReady: false
+      },
+
       fortuneCategoryTable: {
         id: "fortune-category-table-pages-8-9",
         title: "טבלת סעד / נחס / ממוזג / נוטה לסעד / נוטה לנחס",
