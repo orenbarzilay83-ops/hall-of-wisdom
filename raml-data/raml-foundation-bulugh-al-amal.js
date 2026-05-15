@@ -789,6 +789,50 @@ const RAML_BULUGH_AL_AMAL_FOUNDATIONS = {
         implementationReady: false
       },
 
+      remainderZeroWork: {
+        id: "remainder-zero-pages-11-12",
+        title: "שארית 0 בהפלות",
+        sourcePages: [11, 12],
+        arabicTerms: [
+          "الباقي",
+          "باقي",
+          "إسقاط",
+          "إسماط",
+          "طرح العدد"
+        ],
+        status: "blockedUntilSource",
+        sourceStatus: "not-found-as-explicit-rule-in-this-range",
+        knownContext: [
+          "בפרק معرفة كم العدد والمدد נמצא שימוש בהפלה לפי 12.",
+          "נמצא שמחשבים מספר/משך ומחלקים את השארית על הבתים.",
+          "לא נמצא כלל מפורש מה עושים כאשר השארית היא 0.",
+          "אין להניח אוטומטית ש־0 = 12 או 0 = הבית האחרון בלי מקור מפורש."
+        ],
+        relatedRules: [
+          "durationAndNumberRules",
+          "drop-by-12",
+          "damir-way1",
+          "ismatat-atrohat"
+        ],
+        engineDecision: [
+          "לא להפעיל טיפול בשארית 0 במנוע.",
+          "אם חישוב מחזיר 0, להחזיר status blockedUntilSource.",
+          "להציג ליועץ שהמקור אינו נותן כלל מפורש לשארית 0.",
+          "אפשר להוסיף בהמשך sourceVariant אם מקור אחר אומר ש־0 שייך לבית 12/16/15."
+        ],
+        suggestedCode: {
+          remainderZero: "blockedUntilSource",
+          doNotMapZeroAutomatically: true,
+          possibleFutureVariants: [
+            "zeroAsLastHouse",
+            "zeroAsFullCycle",
+            "zeroRequiresRecast",
+            "zeroHasSpecialJudgment"
+          ]
+        },
+        implementationReady: false
+      },
+
       directionsTableWork: {
         id: "directions-table-page-11",
         title: "טבלת כיווני הצורות",
