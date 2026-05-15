@@ -789,6 +789,52 @@ const RAML_BULUGH_AL_AMAL_FOUNDATIONS = {
         implementationReady: false
       },
 
+      damirWay2Work: {
+        id: "damir-way2-page-14",
+        title: "הדרך השנייה בדמיר",
+        sourcePages: [14],
+        arabicTitle: "الوجه الثاني في استخراج الضمير",
+        arabicFormula: "تجمع نقط المسألة إلى خمسة عشر ثم اطرحهم ١٢",
+        status: "needsFormula",
+        sourceStatus: "text-found-but-calculation-not-fully-defined",
+        knownContext: [
+          "הדרך השנייה שייכת לפרק استخراج الضمير.",
+          "הנוסח מדבר על جمع نقط المسألة — איסוף/סיכום נקודות השאלה.",
+          "הנוסח מזכיר خمسة عشر ואז طرح 12.",
+          "לא ברור עדיין האם הכוונה להוסיף עד 15, לקחת מנקודות השאלה עד 15, או לבצע שלב חישובי אחר.",
+          "אין להפעיל את הדרך במנוע עד פירוש מדויק."
+        ],
+        missingFormula: [
+          "מה בדיוק נספר תחת نقط المسألة.",
+          "מה פירוש إلى خمسة عشر כאן.",
+          "האם מפילים 12 אחרי השלמה ל־15 או מתוך סכום שהגיע ל־15.",
+          "איך ממפים את השארית לבית.",
+          "מה עושים בשארית 0."
+        ],
+        duplicateCheck: {
+          existingFilesToCompare: [
+            "raml-data/raml-reading-foundations.js",
+            "raml-data/raml-foundation-qawl-jami-extra.js",
+            "raml-data/raml-foundation-bulugh-al-amal.js"
+          ],
+          rule: "לא להחליף שיטות דמיר שכבר מאומתות; לשמור כדרך נוספת שדורשת נוסחה."
+        },
+        engineDecision: [
+          "לא להפעיל במנוע.",
+          "להציג כידע מתקדם ליועץ בלבד.",
+          "לפתוח להפעלה רק אחרי אימות נוסחה מהמקור או מקור מאושר נוסף."
+        ],
+        suggestedCode: {
+          status: "needsFormula",
+          countQuestionPoints: "undefined",
+          toFifteenMeaning: "undefined",
+          dropBase: 12,
+          remainderMapping: "undefined",
+          remainderZero: "blockedUntilSource"
+        },
+        implementationReady: false
+      },
+
       dropNineSixSevenWork: {
         id: "drop-9-6-7-pages-11-12",
         title: "הפלות לפי 9 / 6 / 7",
