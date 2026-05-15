@@ -1,0 +1,302 @@
+// גורל החול — דיני שאלות לפי סדר הבתים
+// קובץ נושאים בלבד בשלב ראשון.
+// לא מנוע הכרעה סופי.
+// כל דין שאלה פרטני ייכנס בהמשך רק אם נמצא במקור מאושר.
+
+const RAML_TOPIC_RULES = {
+  metadata: {
+    id: "raml-topic-rules",
+    title: "דיני שאלות לפי סדר הבתים",
+    status: "foundation-topic-map",
+    sourcePolicy: "approved-sources-only",
+    externalKnowledgeUsed: false,
+    note: "קובץ זה מסדר את נושאי השאלות לפי 12 הבתים. דינים פרטיים יתווספו בהמשך רק עם מקור מאושר."
+  },
+
+  houseTopicOrder: [
+    {
+      house: 1,
+      id: "house-1-seeker",
+      title: "בית 1 — השואל",
+      arabicTerms: ["الطالع", "بيت السائل", "السائل"],
+      hebrewTopics: [
+        "השואל",
+        "גוף השואל",
+        "מצב אישי",
+        "תחילת השאלה",
+        "כוונת השואל",
+        "הדמיר כשהוא נוגע לשואל"
+      ],
+      engineUse: "focus-house",
+      implementationReady: true
+    },
+    {
+      house: 2,
+      id: "house-2-money",
+      title: "בית 2 — כסף ורכוש",
+      arabicTerms: ["المال", "بيت المال"],
+      hebrewTopics: [
+        "כסף",
+        "רכוש",
+        "פרנסה",
+        "רווח",
+        "חפצים",
+        "מה ששייך לשואל"
+      ],
+      engineUse: "topic-house",
+      implementationReady: true
+    },
+    {
+      house: 3,
+      id: "house-3-siblings-messages",
+      title: "בית 3 — אחים, שכנים ותנועה קרובה",
+      arabicTerms: ["الإخوة", "الجيران", "الرسائل"],
+      hebrewTopics: [
+        "אחים",
+        "אחיות",
+        "שכנים",
+        "נסיעה קרובה",
+        "שליחים",
+        "הודעות",
+        "דיבור קרוב"
+      ],
+      engineUse: "topic-house",
+      implementationReady: true
+    },
+    {
+      house: 4,
+      id: "house-4-home-root-end",
+      title: "בית 4 — בית, קרקע ושורש הדבר",
+      arabicTerms: ["الأرض", "البيت", "العاقبة", "الأب"],
+      hebrewTopics: [
+        "בית",
+        "קרקע",
+        "אב",
+        "שורש הדבר",
+        "סוף הדבר",
+        "מקום קבוע",
+        "נכס"
+      ],
+      engineUse: "topic-house-and-ending-root",
+      implementationReady: true
+    },
+    {
+      house: 5,
+      id: "house-5-children-joy-love",
+      title: "בית 5 — ילדים, שמחה ואהבה",
+      arabicTerms: ["الأولاد", "الفرح", "المحبة"],
+      hebrewTopics: [
+        "ילדים",
+        "שמחה",
+        "אהבה",
+        "הנאה",
+        "יצירה",
+        "משחק",
+        "היריון — רק אם מקור שאלה מתאים יאושר בהמשך"
+      ],
+      engineUse: "topic-house",
+      implementationReady: true
+    },
+    {
+      house: 6,
+      id: "house-6-illness-work-trouble",
+      title: "בית 6 — חולי, טרחה ועובדים",
+      arabicTerms: ["المرض", "الخدم", "التعب"],
+      hebrewTopics: [
+        "חולי",
+        "טרחה",
+        "עובדים",
+        "עבודה כפויה",
+        "עבדות/שירות במונחי המקורות",
+        "אויבים קטנים",
+        "דברים שמחלישים את השואל"
+      ],
+      displayPolicy: "spiritualDiagnostic / advisorOnly when illness is involved",
+      engineUse: "topic-house",
+      implementationReady: true
+    },
+    {
+      house: 7,
+      id: "house-7-queried-partner-opponent",
+      title: "בית 7 — הנשאל, זוגיות, שותף ויריב גלוי",
+      arabicTerms: ["المسؤول عنه", "الزوج", "الشريك", "الخصم"],
+      hebrewTopics: [
+        "הנשאל עליו",
+        "בן/בת זוג",
+        "שותף",
+        "יריב גלוי",
+        "אדם מול השואל",
+        "נישואין — דינים פרטיים ייכנסו בהמשך רק ממקור"
+      ],
+      engineUse: "opposite-house-topic",
+      implementationReady: true
+    },
+    {
+      house: 8,
+      id: "house-8-death-loss-fear",
+      title: "בית 8 — מוות, הפסד, פחד וירושה",
+      arabicTerms: ["الموت", "الخوف", "الميراث"],
+      hebrewTopics: [
+        "מוות",
+        "פחד",
+        "הפסד",
+        "ירושה",
+        "דבר כבד ונסתר",
+        "סכנה",
+        "תוצאה קשה"
+      ],
+      displayPolicy: "advisorOnly / careful language",
+      engineUse: "topic-house",
+      implementationReady: true
+    },
+    {
+      house: 9,
+      id: "house-9-travel-religion-dream",
+      title: "בית 9 — נסיעה רחוקה, דת, חלום וחכמה",
+      arabicTerms: ["السفر", "الدين", "الرؤيا", "العلم"],
+      hebrewTopics: [
+        "נסיעה רחוקה",
+        "דת",
+        "אמונה",
+        "חלום",
+        "חזון",
+        "חכמה",
+        "לימוד",
+        "מורה"
+      ],
+      engineUse: "topic-house",
+      implementationReady: true
+    },
+    {
+      house: 10,
+      id: "house-10-authority-work-reputation",
+      title: "בית 10 — שלטון, עבודה, מעלה ותוצאה גלויה",
+      arabicTerms: ["السلطان", "العمل", "الجاه", "الصيت"],
+      hebrewTopics: [
+        "שלטון",
+        "אדם בעל כוח",
+        "עבודה",
+        "קריירה",
+        "מעמד",
+        "שם טוב",
+        "תוצאה גלויה",
+        "מעלה"
+      ],
+      engineUse: "topic-house-and-public-result",
+      implementationReady: true
+    },
+    {
+      house: 11,
+      id: "house-11-friends-hope-gain",
+      title: "בית 11 — חברים, תקווה ורווח",
+      arabicTerms: ["الأصدقاء", "الرجاء", "الربح"],
+      hebrewTopics: [
+        "חברים",
+        "תקווה",
+        "עזרה",
+        "רווח",
+        "תמיכה",
+        "אנשים שעוזרים לשואל"
+      ],
+      engineUse: "topic-house",
+      implementationReady: true
+    },
+    {
+      house: 12,
+      id: "house-12-hidden-enemies-prison-sorrow",
+      title: "בית 12 — אויבים נסתרים, מאסר, סוד וצער",
+      arabicTerms: ["الأعداء", "السجن", "السر", "الحزن"],
+      hebrewTopics: [
+        "אויבים נסתרים",
+        "מאסר",
+        "סוד",
+        "צער",
+        "נזק נסתר",
+        "דבר שפועל מאחורי הקלעים",
+        "כישוף/עין הרע — רק אם מקור דיני שאלה מפורש יאושר"
+      ],
+      displayPolicy: "advisorOnly / spiritualDiagnostic when relevant",
+      engineUse: "topic-house",
+      implementationReady: true
+    }
+  ],
+
+  topicAliases: {
+    money: {
+      hebrew: ["כסף", "פרנסה", "רווח", "משכורת", "חוב", "חפץ", "רכוש"],
+      focusHouse: 2
+    },
+    home: {
+      hebrew: ["בית", "דירה", "קרקע", "נכס", "אדמה", "שורש"],
+      focusHouse: 4
+    },
+    love: {
+      hebrew: ["אהבה", "זוגיות", "בן זוג", "בת זוג", "נישואין", "קשר"],
+      focusHouseCandidates: [5, 7],
+      note: "אהבה כללית יכולה להתחיל בבית 5; זוגיות/נישואין/האדם שמול השואל — בית 7."
+    },
+    illness: {
+      hebrew: ["חולי", "מחלה", "כאב", "בריאות", "רפואה"],
+      focusHouse: 6,
+      displayPolicy: "spiritualDiagnostic / advisorOnly"
+    },
+    travel: {
+      hebrew: ["נסיעה", "מסע", "חו״ל", "דרך", "טיסה"],
+      focusHouseCandidates: [3, 9],
+      note: "תנועה קרובה — בית 3; נסיעה רחוקה — בית 9."
+    },
+    work: {
+      hebrew: ["עבודה", "קריירה", "תפקיד", "משרה", "מעמד"],
+      focusHouse: 10
+    },
+    hiddenEnemy: {
+      hebrew: ["אויב נסתר", "סוד", "פגיעה נסתרת", "עין הרע", "כישוף"],
+      focusHouse: 12,
+      displayPolicy: "advisorOnly / spiritualDiagnostic"
+    }
+  },
+
+  engineRules: {
+    status: "topic-routing-only",
+    rules: [
+      "בשלב זה הקובץ קובע בית נושא לפי שאלה.",
+      "הכרעה לפי צורות, עדים, דמיר ודינים פרטיים תתווסף בהמשך.",
+      "אין להפעיל דיני שאלה שלא הוכנסו ממקור מאושר.",
+      "אם שאלה מתאימה ליותר מבית אחד, יש לסמן focusHouseCandidates ולא להכריע בכוח."
+    ]
+  }
+};
+
+function ramlGetTopicRules() {
+  return RAML_TOPIC_RULES;
+}
+
+function ramlListTopicHouses() {
+  return RAML_TOPIC_RULES.houseTopicOrder || [];
+}
+
+function ramlFindTopicHouseByNumber(houseNumber) {
+  return ramlListTopicHouses().find(x => x.house === Number(houseNumber)) || null;
+}
+
+function ramlFindTopicAliases() {
+  return RAML_TOPIC_RULES.topicAliases || {};
+}
+
+if (typeof window !== "undefined") {
+  window.RAML_TOPIC_RULES = RAML_TOPIC_RULES;
+  window.ramlGetTopicRules = ramlGetTopicRules;
+  window.ramlListTopicHouses = ramlListTopicHouses;
+  window.ramlFindTopicHouseByNumber = ramlFindTopicHouseByNumber;
+  window.ramlFindTopicAliases = ramlFindTopicAliases;
+}
+
+if (typeof module !== "undefined") {
+  module.exports = {
+    RAML_TOPIC_RULES,
+    ramlGetTopicRules,
+    ramlListTopicHouses,
+    ramlFindTopicHouseByNumber,
+    ramlFindTopicAliases
+  };
+}
