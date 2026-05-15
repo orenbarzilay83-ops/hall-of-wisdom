@@ -789,6 +789,51 @@ const RAML_BULUGH_AL_AMAL_FOUNDATIONS = {
         implementationReady: false
       },
 
+      pointPathWork: {
+        id: "point-path-pages-15-18",
+        title: "דרך הנקודה בדמיר",
+        sourcePages: [15, 16, 17, 18],
+        arabicTitle: "طريق النقطة",
+        status: "advancedKnowledge-needsFormula",
+        sourceStatus: "text-found-but-movement-formula-not-fully-defined",
+        knownContext: [
+          "דרך הנקודה היא אחת מדרכי استخراج الضمير.",
+          "המקור מתייחס לבית 15.",
+          "מוליכים נקודת אש או נקודת עפר עד שהיא מתיישבת באמהות או בבנות.",
+          "המחבר מציין שדרך הנקודה חזקה מן הדרכים האחרות.",
+          "עדיין חסרה נוסחה מדויקת לקידוד תנועת הנקודה."
+        ],
+        missingFormula: [
+          "איך בוחרים נקודת אש או נקודת עפר.",
+          "מאיזה מקום בדיוק מתחילים בבית 15.",
+          "באיזה סדר מוליכים את הנקודה.",
+          "מה פירוש שתתיישב באמהות או בבנות.",
+          "מה עושים אם יש כמה אפשרויות.",
+          "איך ממפים את התוצאה לבית הדמיר או לצורה."
+        ],
+        advisorUse: [
+          "לשמור כידע מתקדם ליועץ.",
+          "לא להציג בדוח לקוח כברירת מחדל.",
+          "לא להפעיל כמנוע חישוב עד נוסחה מלאה."
+        ],
+        duplicateCheck: {
+          existingFilesToCompare: [
+            "raml-data/raml-reading-foundations.js",
+            "raml-data/raml-foundation-qawl-jami-extra.js"
+          ],
+          rule: "אם קיימת הולכת נקודות במקור אחר, לא למזג בלי השוואת נוסחה."
+        },
+        suggestedCode: {
+          status: "needsFormula",
+          sourceHouse: 15,
+          pointTypes: ["fire", "earth"],
+          movementOrder: "undefined",
+          settlementTarget: ["mothers", "daughters"],
+          output: "undefined"
+        },
+        implementationReady: false
+      },
+
       damirWay2Work: {
         id: "damir-way2-page-14",
         title: "הדרך השנייה בדמיר",
