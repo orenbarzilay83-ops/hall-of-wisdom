@@ -1872,6 +1872,282 @@ const RAML_TOPIC_RULES = {
         clientWordingControlledByAdvisor: true
       },
       implementationReady: true
+    },
+
+    house10AuthorityWorkResultRules: {
+      id: "house-10-authority-work-result-rules",
+      house: 10,
+      title: "בית 10 — דיני שלטון, עבודה, מעמד, שם טוב, סמכות ותוצאה גלויה",
+      arabicTerms: [
+        "السلطان",
+        "الحاكم",
+        "الملك",
+        "العمل",
+        "الجاه",
+        "الصيت",
+        "الشهرة",
+        "العاقبة الظاهرة",
+        "الطبيب",
+        "المعالج",
+        "القاضي",
+        "الحكم"
+      ],
+      status: "foundation-ready-spiritual-linked",
+      sourceStatus: "compiled-from-approved-foundation-rules-topic-map-and-spiritual-diagnostics",
+      displayPolicy: "advisorControlled",
+      professionalUse: true,
+      clientWordingControlledByAdvisor: true,
+      coreMeaning: [
+        "בית 10 מייצג שלטון, מלכות, סמכות, אדם בעל כוח, מנהל, רשות, דיין או גורם שמכריע בגלוי.",
+        "בית 10 מייצג עבודה, קריירה, תפקיד, מעמד, שם טוב, פרסום, כבוד ומעלה.",
+        "בית 10 מייצג תוצאה גלויה — איך הדבר יוצא לעולם, איך הוא נראה לעיני אחרים, ומה נעשה מפורסם או מוכרע.",
+        "במודול האבחון הרוחני בית 10 הוא الطبيب أو المعالج — הרופא, המרפא או המטפל.",
+        "בית 10 הוא יתד, ולכן הוא בית חזק מאוד בהכרעות גלויות, תוצאה חיצונית, סמכות ומעמד.",
+        "בית 10 אינו מחליף את בית 4 כסוף הדבר או שורש הדבר, אבל הוא מראה את התוצאה הגלויה והמעמד החיצוני של הדבר.",
+        "בית 10 אינו מחליף את בית 11 כרווח/תקווה/עזרה, אבל הוא מראה הכרה, משרה, סמכות ותוצאה נראית."
+      ],
+      questionTypes: [
+        {
+          id: "career-work-position",
+          hebrew: "עבודה / קריירה / משרה / תפקיד / קידום",
+          focusHouse: 10,
+          compareWith: [1, 2, 6, 11],
+          note: "בית 1 השואל; בית 2 כסף/שכר; בית 6 עומס/עובדים/שירות; בית 11 תמיכה ורווח."
+        },
+        {
+          id: "authority-government-approval",
+          hebrew: "שלטון / רשות / אישור / בעל סמכות",
+          focusHouse: 10,
+          compareWith: [1, 4, 7, 12],
+          note: "בית 4 שורש/נכס/מקום; בית 7 צד שני/יריב; בית 12 סוד/עיכוב/אויב נסתר."
+        },
+        {
+          id: "reputation-honor-public-name",
+          hebrew: "שם טוב / כבוד / פרסום / מעמד ציבורי",
+          focusHouse: 10,
+          compareWith: [1, 11, 12],
+          note: "בית 11 תמיכה וחברים; בית 12 יכול להראות פגיעה נסתרת בשם/סוד/אויב מאחורי הקלעים."
+        },
+        {
+          id: "visible-result",
+          hebrew: "תוצאה גלויה / מה ייראה בפועל / הכרעה חיצונית",
+          focusHouse: 10,
+          compareWith: [1, 4, 15, 16],
+          note: "בית 4 שורש/סוף; שופט ומשפט נותנים הכרעה כוללת."
+        },
+        {
+          id: "doctor-healer-treatment",
+          hebrew: "רופא / מטפל / מרפא / טיפול",
+          focusHouse: 10,
+          compareWith: [1, 4, 6, 8, 12],
+          note: "במודול הרוחני בית 10 הוא الطبيب أو المعالج; בית 6 מחלה; בית 4 תרופה/שורש ריפוי; בית 8 כובד/סכנה; בית 12 נסתר."
+        },
+        {
+          id: "judge-ruling-decision",
+          hebrew: "דיין / שופט / החלטה / הכרעה",
+          focusHouse: 10,
+          compareWith: [1, 7, 12, 15, 16],
+          note: "בית 7 יריב/צד שני; בית 12 נסתר/תחבולה; שופט ומשפט מראים הכרעה רמלית פנימית."
+        }
+      ],
+      whatToInspect: [
+        {
+          id: "figure-in-house-10",
+          title: "הצורה בבית 10",
+          rule: "בודקים את הצורה בבית 10: סעד/נחס/ממוזג, יסוד, פתוח/סגור, קל/כבד, נכנס/יוצא אם קיים קידוד מאומת.",
+          implementationReady: true
+        },
+        {
+          id: "house-10-strength",
+          title: "חוזק בית 10",
+          rule: "בית 10 הוא יתד, ולכן הוא חזק מאוד ומייצג סמכות, תוצאה גלויה, מעלה והכרעה שנראית לעין.",
+          relatedFoundation: "awtad",
+          implementationReady: true
+        },
+        {
+          id: "seeker-house10-relationship",
+          title: "יחס בית 1 לבית 10",
+          rule: "בודקים האם השואל מחובר למעמד, לעבודה, לסמכות או לתוצאה הגלויה, או האם יש התנגדות בין בית 1 לבית 10.",
+          implementationReady: true
+        },
+        {
+          id: "work-money-house2",
+          title: "עבודה וכסף — בית 10 מול בית 2",
+          rule: "בשאלות עבודה, בית 10 מראה תפקיד/מעמד/קריירה, ובית 2 מראה כסף, שכר ורווח חומרי.",
+          implementationReady: true
+        },
+        {
+          id: "work-burden-house6",
+          title: "עבודה מול עומס ושירות — בית 10 מול בית 6",
+          rule: "בית 10 מראה עבודה, משרה ומעמד; בית 6 מראה עומס, כפיפות, טרחה, שירות ועובדים.",
+          implementationReady: true
+        },
+        {
+          id: "authority-other-party-house7",
+          title: "סמכות מול צד שני",
+          rule: "כאשר השאלה כוללת אדם מול השואל, יריב, שותף, קונה/מוכר או בעל דין — בית 7 משתתף עם בית 10.",
+          implementationReady: true
+        },
+        {
+          id: "public-result-hidden-house12",
+          title: "תוצאה גלויה מול נסתר",
+          rule: "בית 10 מראה מה גלוי; בית 12 מראה מה נסתר, סוד, אויב מאחורי הקלעים או עיכוב סמוי.",
+          implementationReady: true
+        },
+        {
+          id: "healer-doctor-spiritual-diagnostic",
+          title: "בית 10 כרופא / מטפל / מרפא",
+          rule: "במודול הרוחני בית 10 הוא الطبيب أو المعالج — הרופא, המרפא או המטפל. בשאלות חולי/פגיעה רוחנית בודקים אותו מול בית 6, בית 4, בית 8 ובית 12.",
+          relatedFile: "raml-spiritual-diagnostics.js",
+          implementationReady: true
+        },
+        {
+          id: "house10-with-house9",
+          title: "בית 10 עם בית 9",
+          rule: "חיבור בין בית 10 לבית 9 יכול להראות מורה, רב, חכם, בעל סמכות רוחנית, מטפל רוחני, מרפא, או תוצאה גלויה של עניין דתי/רוחני.",
+          implementationReady: true
+        },
+        {
+          id: "house10-with-house8",
+          title: "בית 10 עם בית 8",
+          rule: "חיבור בין בית 10 לבית 8 יכול להראות הכרעה גלויה בעניין כבד: פחד, הפסד, ירושה, סכנה, מוות, חוב או משבר.",
+          implementationReady: true
+        },
+        {
+          id: "judge-and-final-result",
+          title: "בית 10 מול שופט ומשפט",
+          rule: "בית 10 מראה תוצאה גלויה, אבל שופט ומשפט מראים את הכרעת הגורל הפנימית; יש לבדוק את שניהם.",
+          relatedHouses: [13, 14, 15, 16],
+          implementationReady: true
+        }
+      ],
+      spiritualDiagnosticLinks: {
+        id: "house-10-spiritual-healer-authority-links",
+        title: "בית 10 במודול הרוחני — רופא, מרפא, מטפל, סמכות ותוצאה גלויה",
+        status: "advisorControlled",
+        professionalUse: true,
+        clientWordingControlledByAdvisor: true,
+        relatedFile: "raml-spiritual-diagnostics.js",
+        roles: [
+          {
+            arabic: "الطبيب",
+            hebrew: "רופא",
+            house10Meaning: "מי שמטפל, מאבחן או מחזיק תפקיד טיפולי/רפואי בתוך מבנה השאלה."
+          },
+          {
+            arabic: "المعالج",
+            hebrew: "מרפא / מטפל",
+            house10Meaning: "מטפל, מרפא, בעל טיפול רוחני או אדם שמנסה לתקן את המצב."
+          },
+          {
+            arabic: "الحاكم / السلطان",
+            hebrew: "שלטון / בעל סמכות",
+            house10Meaning: "גורם שמכריע, נותן אישור, פוסק, מעלה או מוריד את העניין."
+          },
+          {
+            arabic: "القاضي / الحكم",
+            hebrew: "דיין / שופט / הכרעה",
+            house10Meaning: "הכרעה גלויה, דין, משפט, החלטה או תוצאה נראית."
+          }
+        ],
+        houseCombinations: [
+          {
+            houses: [6, 10],
+            meaning: "מחלה/חולשה מול רופא/מטפל/מרפא."
+          },
+          {
+            houses: [4, 10],
+            meaning: "תרופה/שורש ריפוי מול מטפל/סמכות או תוצאה בבית/נכס/שורש."
+          },
+          {
+            houses: [8, 10],
+            meaning: "עניין כבד, סכנה, הפסד או ירושה שיוצא להכרעה גלויה או טיפול."
+          },
+          {
+            houses: [9, 10],
+            meaning: "בעל ידע, מורה, רוחני, מטפל רוחני או תוצאה גלויה של עניין רוחני."
+          },
+          {
+            houses: [10, 12],
+            meaning: "סמכות/תוצאה גלויה מול סוד, אויב נסתר, עיכוב סמוי או פגיעה מאחורי הקלעים."
+          }
+        ],
+        diagnosticChecks: [
+          "לבדוק את הצורה בבית 10.",
+          "לבדוק אם בית 10 מקבל צורה חוזרת מבית 6, 8, 9 או 12.",
+          "לבדוק האם בית 10 מחזק את בית 6 בשאלות חולי.",
+          "לבדוק האם בית 10 פותר או מגלה את בית 12 כאשר יש סוד/אויב נסתר.",
+          "לבדוק האם בית 10 מוציא לאור עניין של בית 8.",
+          "לבדוק עדים, שופט ומשפט לפני חיתוך סופי."
+        ]
+      },
+      houseCombinations: [
+        {
+          houses: [1, 10],
+          meaning: "השואל מול מעמד, עבודה, סמכות, תוצאה גלויה או שם טוב."
+        },
+        {
+          houses: [2, 10],
+          meaning: "עבודה/מעמד מול כסף, שכר, רווח וחומר."
+        },
+        {
+          houses: [6, 10],
+          meaning: "עבודה מול טרחה, שירות, חולי, עובדים או מטפל."
+        },
+        {
+          houses: [7, 10],
+          meaning: "צד שני, יריב, בן זוג או שותף מול סמכות/תוצאה גלויה."
+        },
+        {
+          houses: [8, 10],
+          meaning: "עניין כבד, ירושה, הפסד, סכנה, מוות או פחד שמגיע לתוצאה גלויה."
+        },
+        {
+          houses: [9, 10],
+          meaning: "מורה, רב, חכם, מטפל רוחני, מרפא, דת או חכמה שמקבלים מעמד גלוי."
+        },
+        {
+          houses: [10, 11],
+          meaning: "מעמד/עבודה/תוצאה גלויה יחד עם רווח, תקווה, חברים ועזרה."
+        },
+        {
+          houses: [10, 12],
+          meaning: "תוצאה גלויה מול אויב נסתר, סוד, הסתרה, פגיעה או דבר שפועל מאחורי הקלעים."
+        }
+      ],
+      decisionLayers: [
+        "שכבה 1: מצב בית 10 לפי הצורה שבו.",
+        "שכבה 2: יחס בית 1 לבית 10 — האם השואל מחובר למעמד/עבודה/סמכות/תוצאה.",
+        "שכבה 3: בשאלות עבודה — לבדוק בית 2 כסף, בית 6 עומס/שירות, בית 11 תמיכה.",
+        "שכבה 4: בשאלות סמכות/רשות/משפט — לבדוק בית 7 ובית 12.",
+        "שכבה 5: בשאלות חולי/רוחני — לבדוק בית 6, בית 4, בית 8, בית 9 ובית 12.",
+        "שכבה 6: לבדוק האם בית 10 מגלה דבר נסתר מבית 12 או מכריע דבר כבד מבית 8.",
+        "שכבה 7: לבדוק עדים, שופט ומשפט לפני הכרעה."
+      ],
+      blockedOrCarefulUse: [
+        {
+          id: "advisor-controlled-authority-work-healer-domain",
+          rule: "בית 10 כולל שלטון, עבודה, מעמד, סמכות, שם טוב, רופא, מרפא, מטפל, דיין ותוצאה גלויה; הניסוח וההכרעה בשליטת היועץ המקצועי.",
+          status: "advisorControlled"
+        }
+      ],
+      engineUse: {
+        role: "authority-work-reputation-healer-visible-result-house",
+        useWhenFocusHouseIs: 10,
+        compareWithSeekerHouse: true,
+        moneyHouse: 2,
+        serviceIllnessHouse: 6,
+        otherPartyHouse: 7,
+        heavyHiddenHouse: 8,
+        spiritualTeacherHouse: 9,
+        supportGainHouse: 11,
+        hiddenEnemyHouse: 12,
+        judgeHouses: [13, 14, 15, 16],
+        canDecideAlone: false,
+        advisorControlled: true,
+        clientWordingControlledByAdvisor: true
+      },
+      implementationReady: true
     }
   },
 
