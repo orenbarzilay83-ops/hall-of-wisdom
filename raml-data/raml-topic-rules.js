@@ -562,6 +562,129 @@ const RAML_TOPIC_RULES = {
         canDecideAlone: false
       },
       implementationReady: true
+    },
+
+    house4HomeRootEndRules: {
+      id: "house-4-home-root-end-rules",
+      house: 4,
+      title: "בית 4 — דיני בית, קרקע, נכס, אב, שורש וסוף הדבר",
+      arabicTerms: ["الأرض", "البيت", "العقار", "الأب", "العاقبة", "أصل الأمر"],
+      status: "foundation-ready",
+      sourceStatus: "compiled-from-approved-foundation-rules-and-topic-map",
+      coreMeaning: [
+        "בית 4 מייצג בית, קרקע, אדמה, נכס ומקום קבוע.",
+        "בית 4 מייצג את האב או שורש המשפחה כאשר השאלה נוגעת לכך.",
+        "בית 4 משמש גם כשורש הדבר או סוף הדבר לפי אופי השאלה.",
+        "בגלל שבית 4 הוא יתד, יש לו כוח יסודי חזק בלוח.",
+        "בשאלות על נכס, בית, מעבר, קרקע, מקום מגורים או שורש עניין — בית 4 הוא בית הנושא המרכזי."
+      ],
+      questionTypes: [
+        {
+          id: "home-property-land",
+          hebrew: "בית / דירה / קרקע / נכס",
+          focusHouse: 4,
+          compareWith: [1, 2, 10],
+          note: "בית 1 הוא השואל; בית 2 הכסף/יכולת רכישה; בית 10 תוצאה גלויה/אישור/מעמד."
+        },
+        {
+          id: "buy-sell-property",
+          hebrew: "קנייה או מכירה של בית/נכס",
+          focusHouse: 4,
+          compareWith: [1, 2, 7, 10],
+          note: "בית 7 מייצג את הצד השני בעסקה; בית 2 את הכסף; בית 10 את התוצאה הגלויה."
+        },
+        {
+          id: "father-family-root",
+          hebrew: "אב / שורש משפחתי / עניין שבא מן הבית",
+          focusHouse: 4,
+          compareWith: [1, 10, 12],
+          note: "אם יש סוד משפחתי/דבר נסתר — לבדוק גם בית 12."
+        },
+        {
+          id: "end-of-matter",
+          hebrew: "סוף הדבר / אחרית העניין",
+          focusHouse: 4,
+          compareWith: [1, 10, 15, 16],
+          note: "בית 4 יכול לשמש סוף הדבר, ובמקביל יש להתחשב בשופט/משפט לפי מבנה הגורל."
+        }
+      ],
+      whatToInspect: [
+        {
+          id: "figure-in-house-4",
+          title: "הצורה בבית 4",
+          rule: "בודקים את הצורה בבית 4: סעד/נחס/ממוזג, יסוד, פתוח/סגור, קל/כבד, נכנס/יוצא אם קיים קידוד מאומת.",
+          implementationReady: true
+        },
+        {
+          id: "house-4-strength",
+          title: "חוזק בית 4",
+          rule: "בית 4 הוא יתד, ולכן הוא חזק ומשפיע על שורש הדבר ועל יציבות התוצאה.",
+          relatedFoundation: "awtad",
+          implementationReady: true
+        },
+        {
+          id: "seeker-house4-relationship",
+          title: "יחס בית 1 לבית 4",
+          rule: "בודקים האם השואל מחובר לבית/נכס/שורש העניין, או האם יש התנגדות בין בית 1 לבית 4.",
+          implementationReady: true
+        },
+        {
+          id: "money-and-property",
+          title: "בית 2 מול בית 4",
+          rule: "בשאלות רכישת נכס או בית, בית 2 מראה כסף ויכולת, ובית 4 מראה את הנכס עצמו.",
+          implementationReady: true
+        },
+        {
+          id: "other-party-property",
+          title: "בית 7 בעסקת נכס",
+          rule: "כאשר יש מוכר, קונה, שותף או צד שני בעסקה — יש לבדוק גם את בית 7.",
+          implementationReady: true
+        },
+        {
+          id: "public-result-property",
+          title: "בית 10 בתוצאה גלויה",
+          rule: "בית 10 מראה תוצאה גלויה, אישור, מעמד, רשות או איך הדבר נראה כלפי חוץ.",
+          implementationReady: true
+        },
+        {
+          id: "hidden-problem-in-property",
+          title: "בית 12 כסוד או בעיה נסתרת",
+          rule: "אם השאלה כוללת חשש מבעיה נסתרת בבית/נכס/משפחה, בודקים גם בית 12.",
+          implementationReady: true
+        }
+      ],
+      decisionLayers: [
+        "שכבה 1: מצב בית 4 לפי הצורה שבו.",
+        "שכבה 2: האם בית 4 חזק או חלש ביחס לבית 1.",
+        "שכבה 3: בשאלות נכס — האם בית 2 תומך בכסף והאם בית 7 מראה צד שני נוח או קשה.",
+        "שכבה 4: האם בית 10 מראה תוצאה גלויה טובה או מכשול ציבורי/רשמי.",
+        "שכבה 5: אם השאלה על סוף דבר — לשלב את בית 4 עם השופט/משפט ועם כלל סוף הדבר.",
+        "שכבה 6: אם יש חשד נסתר — לבדוק את בית 12."
+      ],
+      blockedOrCarefulUse: [
+        {
+          id: "property-legal-financial-care",
+          rule: "בשאלות נכס/קנייה/מכירה אין להציג ייעוץ משפטי או פיננסי מחייב. זהו פירוש רמלי בלבד.",
+          status: "advisorNote"
+        },
+        {
+          id: "end-of-matter-not-alone",
+          rule: "בית 4 יכול להראות סוף דבר, אבל אין להכריע רק ממנו בלי שופט/משפט, עדים ובית הנושא.",
+          status: "active"
+        }
+      ],
+      engineUse: {
+        role: "home-property-root-end-house",
+        useWhenFocusHouseIs: 4,
+        compareWithSeekerHouse: true,
+        moneyHouse: 2,
+        otherPartyHouse: 7,
+        publicResultHouse: 10,
+        hiddenProblemHouse: 12,
+        judgeHouses: [15, 16],
+        canDecideAlone: false
+      },
+      implementationReady: true
     }
   },
 
