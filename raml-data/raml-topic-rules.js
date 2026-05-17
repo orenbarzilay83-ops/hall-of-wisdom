@@ -1584,6 +1584,294 @@ const RAML_TOPIC_RULES = {
         clientWordingControlledByAdvisor: true
       },
       implementationReady: true
+    },
+
+    house9TravelReligionDreamSpiritualRules: {
+      id: "house-9-travel-religion-dream-spiritual-rules",
+      house: 9,
+      title: "בית 9 — דיני נסיעה רחוקה, דת, חלום, חזון, לימוד, חכמה ועבודה רוחנית",
+      arabicTerms: [
+        "السفر",
+        "السفر البعيد",
+        "الدين",
+        "الرؤيا",
+        "الحلم",
+        "العلم",
+        "الحكمة",
+        "الأستاذ",
+        "المعلم",
+        "الساحر",
+        "الروحاني",
+        "الكهانة",
+        "العرافة",
+        "الشعوذة"
+      ],
+      status: "foundation-ready-spiritual-linked",
+      sourceStatus: "compiled-from-approved-foundation-rules-topic-map-and-spiritual-diagnostics",
+      displayPolicy: "advisorControlled",
+      professionalUse: true,
+      clientWordingControlledByAdvisor: true,
+      coreMeaning: [
+        "בית 9 מייצג נסיעה רחוקה, דרך רחוקה, חו״ל ומסע משמעותי.",
+        "בית 9 מייצג דת, אמונה, עבודת קודש, תפילה, תורה, לימוד וחכמה.",
+        "בית 9 מייצג חלום, חזון, ראייה פנימית, סימן רוחני או ידיעה שמגיעה ממקור גבוה/נסתר.",
+        "בית 9 מייצג מורה, רב, חכם, מדריך, בעל ידע או מי שמוסר חכמה.",
+        "במודול האבחון הרוחני בית 9 מוגדר כבית الساحر — הסוחר/המכשף/בעל עבודה רוחנית.",
+        "בית 9 יכול להראות אדם העוסק בכישוף, סחר, רוחניות, כהאנה, עראפה, שעודה, ג׳ין, רוחות או עבודה נסתרת.",
+        "בית 9 אינו מחליף את בית 12: בית 9 מראה את בעל העבודה/הידע/הכוח הרוחני; בית 12 מראה אויב נסתר, סוד, פגיעה מאחורי הקלעים.",
+        "בית 9 אינו מחליף את בית 6: בית 6 מראה מחלה/חולשה; בית 9 יכול להראות את המקור הרוחני או בעל הפעולה כאשר יש קשר רוחני."
+      ],
+      questionTypes: [
+        {
+          id: "long-travel-foreign-place",
+          hebrew: "נסיעה רחוקה / חו״ל / דרך ארוכה / מקום רחוק",
+          focusHouse: 9,
+          compareWith: [1, 3, 4, 10],
+          note: "בית 3 תנועה קרובה; בית 9 נסיעה רחוקה; בית 4 מקום/בית/שורש; בית 10 תוצאה גלויה."
+        },
+        {
+          id: "religion-faith-prayer",
+          hebrew: "דת / אמונה / תפילה / עבודת קודש",
+          focusHouse: 9,
+          compareWith: [1, 10, 11, 12],
+          note: "בית 1 השואל; בית 10 תוצאה גלויה/מעמד; בית 11 תקווה ותמיכה; בית 12 סוד/נסתר."
+        },
+        {
+          id: "dream-vision-sign",
+          hebrew: "חלום / חזון / סימן / ידיעה פנימית",
+          focusHouse: 9,
+          compareWith: [1, 12, 15, 16],
+          note: "בית 12 נסתר וסוד; שופט/משפט מראים הכרעה כללית של המסר."
+        },
+        {
+          id: "learning-wisdom-teacher",
+          hebrew: "לימוד / חכמה / מורה / רב / מדריך",
+          focusHouse: 9,
+          compareWith: [1, 10, 11],
+          note: "בית 10 מראה מעמד/תוצאה גלויה; בית 11 עזרה ותמיכה."
+        },
+        {
+          id: "spiritual-practitioner-sorcerer",
+          hebrew: "סוחר / מכשף / בעל עבודה רוחנית / איש רוח / כהאנה / עראפה",
+          focusHouse: 9,
+          compareWith: [1, 6, 8, 10, 12],
+          note: "לפי המודול הרוחני בית 9 הוא בית الساحر. יש לבדוק בית 6 מחלה, בית 8 כובד/פחד/הפסד, בית 10 מטפל/מרפא/תוצאה, בית 12 אויב נסתר/סוד."
+        },
+        {
+          id: "jinn-spirits-occult-source",
+          hebrew: "ג׳ין / שדים / רוחות / מקור רוחני של פגיעה",
+          focusHouse: 9,
+          compareWith: [1, 6, 8, 10, 12],
+          note: "בית 9 יכול להראות בעל פעולה או מקור ידע/עבודה רוחנית; בית 12 מראה הסתרה/אויב נסתר; בית 6 חולי; בית 8 כובד/סכנה/פחד."
+        }
+      ],
+      whatToInspect: [
+        {
+          id: "figure-in-house-9",
+          title: "הצורה בבית 9",
+          rule: "בודקים את הצורה בבית 9: סעד/נחס/ממוזג, יסוד, פתוח/סגור, קל/כבד, נכנס/יוצא אם קיים קידוד מאומת.",
+          implementationReady: true
+        },
+        {
+          id: "house-9-strength",
+          title: "חוזק בית 9",
+          rule: "בית 9 הוא מן הבתים הנופלים / הסוואקט, ולכן יש לבדוק היטב אם הדבר רחוק, נסתר, רוחני, תלוי בזמן או אינו בשליטת השואל.",
+          relatedFoundation: "sawaqit",
+          implementationReady: true
+        },
+        {
+          id: "seeker-house9-relationship",
+          title: "יחס בית 1 לבית 9",
+          rule: "בודקים האם השואל מחובר לנסיעה, לאמונה, לחלום, ללימוד או לאדם הרוחני שמופיע בבית 9.",
+          implementationReady: true
+        },
+        {
+          id: "short-vs-long-travel-house3-house9",
+          title: "הבחנה בין בית 3 לבית 9 בנסיעות",
+          rule: "בית 3 מראה תנועה קרובה, שליחים והודעות; בית 9 מראה נסיעה רחוקה, חו״ל, דרך ארוכה ומסע משמעותי.",
+          implementationReady: true
+        },
+        {
+          id: "dream-hidden-house12",
+          title: "חלום וחזון מול בית 12",
+          rule: "בחלום, חזון או סימן נסתר יש לבדוק את בית 9 כמסר/חזון ואת בית 12 כסוד, נסתר או דבר שלא נראה בגלוי.",
+          implementationReady: true
+        },
+        {
+          id: "teacher-authority-house10",
+          title: "מורה, רב, מדריך ותוצאה גלויה",
+          rule: "בשאלות לימוד, מורה, רב או חכם — בית 9 מראה את הידע/המורה ובית 10 יכול להראות מעמד, אישור, הכרה או תוצאה גלויה.",
+          implementationReady: true
+        },
+        {
+          id: "spiritual-practitioner-house9",
+          title: "בית 9 כסוחר/מכשף/בעל עבודה רוחנית",
+          rule: "במודול הרוחני בית 9 הוא بيت الساحر — הסוחר/המכשף/בעל העבודה הרוחנית. בודקים אותו כאשר יש שאלה על סחר, כישוף, ג׳ין, רוחות, כהאנה, עראפה או שעודה.",
+          relatedFile: "raml-spiritual-diagnostics.js",
+          implementationReady: true
+        },
+        {
+          id: "house9-with-house6",
+          title: "בית 9 עם בית 6",
+          rule: "חיבור בין בית 9 לבית 6 יכול להראות קשר בין בעל פעולה/מקור רוחני לבין חולי, חולשה, טרחה או מחלה.",
+          relatedFile: "raml-spiritual-diagnostics.js",
+          implementationReady: true
+        },
+        {
+          id: "house9-with-house8",
+          title: "בית 9 עם בית 8",
+          rule: "חיבור בין בית 9 לבית 8 יכול להראות עבודה רוחנית כבדה, סחר/כישוף כבד, פחד, הפסד, מוות, קבר, ירושה, סכנה או דבר נסתר בעל משקל.",
+          implementationReady: true
+        },
+        {
+          id: "house9-with-house12",
+          title: "בית 9 עם בית 12",
+          rule: "חיבור בין בית 9 לבית 12 יכול להראות עבודה נסתרת, אויב נסתר בעל ידע, סוד רוחני, כישוף נסתר, ג׳ין, רוחות, עין, חסד, קללה או פגיעה מאחורי הקלעים.",
+          implementationReady: true
+        },
+        {
+          id: "house9-with-house10",
+          title: "בית 9 עם בית 10",
+          rule: "חיבור בין בית 9 לבית 10 יכול להראות רופא/מרפא/מטפל, בעל סמכות רוחנית, מורה גלוי, או שהעניין הרוחני יוצא לתוצאה גלויה.",
+          implementationReady: true
+        }
+      ],
+      occultSpiritualTopics: {
+        id: "house-9-occult-spiritual-practitioner-topics",
+        title: "בית 9 — בעל עבודה רוחנית, סחר, ג׳ין, רוחות, כהאנה ועראפה",
+        status: "advisorControlled",
+        professionalUse: true,
+        clientWordingControlledByAdvisor: true,
+        sourceLinks: [
+          "raml-spiritual-diagnostics.js",
+          "approved uploaded spiritual-diagnostic source"
+        ],
+        occultTerms: [
+          {
+            arabic: "الساحر",
+            hebrew: "הסוחר / המכשף",
+            house9Meaning: "אדם שעושה פעולה רוחנית, כישוף, סחר או עבודה נסתרת."
+          },
+          {
+            arabic: "الروحاني",
+            hebrew: "רוחני / בעל עבודה רוחנית",
+            house9Meaning: "אדם הפועל דרך ידע רוחני, שמות, השבעות, עבודות או דרכים נסתרות."
+          },
+          {
+            arabic: "الكاهن",
+            hebrew: "כאהן / כהאנה",
+            house9Meaning: "אדם העוסק בניחוש, ידיעה נסתרת או עבודה מסורתית של כהאנה."
+          },
+          {
+            arabic: "العراف",
+            hebrew: "עראף / מגיד נסתרות",
+            house9Meaning: "אדם הטוען לידיעת נסתרות או גילוי דברים שאינם גלויים."
+          },
+          {
+            arabic: "الشعوذة",
+            hebrew: "שעודה / כשפים / להטוטים",
+            house9Meaning: "עיסוק במעשים רוחניים/מאגיים/להטוטיים לפי לשון המקורות."
+          },
+          {
+            arabic: "الجن",
+            hebrew: "ג׳ין / שדים",
+            house9Meaning: "בית 9 יכול להראות מי שעובד עם ג׳ין או מקור פעולה שקשור בג׳ין כאשר יש תמיכה מבתים 6/8/12."
+          },
+          {
+            arabic: "الأرواح",
+            hebrew: "רוחות",
+            house9Meaning: "מקור רוחני, רוחות, מסרים או השפעות שאינן גשמיות."
+          },
+          {
+            arabic: "السحر",
+            hebrew: "סחר / כישוף",
+            house9Meaning: "בית 9 יכול להצביע על בעל הסחר/המכשף או מקור הפעולה."
+          },
+          {
+            arabic: "العين",
+            hebrew: "עין הרע",
+            house9Meaning: "כאשר בית 9 מתחבר לבית 12/8/6, אפשר לבדוק אם מקור הפגיעה קשור לעין או בעל פעולה רוחנית."
+          },
+          {
+            arabic: "الحسد",
+            hebrew: "חסד / קנאה",
+            house9Meaning: "קנאה או חסד עם מקור רוחני/אדם פועל/ידיעה נסתרת."
+          },
+          {
+            arabic: "اللعنة",
+            hebrew: "קללה",
+            house9Meaning: "קללה או דיבור מזיק כאשר יש קשר לבית 12 להסתרה או לבית 8 לכובד/נזק."
+          }
+        ],
+        diagnosticChecks: [
+          "לבדוק את הצורה בבית 9.",
+          "לבדוק אם הצורה בבית 9 חוזרת בבית 6, 8, 10, 12, בעדים, בשופט או במשפט.",
+          "לבדוק אם בית 9 מחובר לבית 12 — עבודה נסתרת או אויב נסתר בעל ידע.",
+          "לבדוק אם בית 9 מחובר לבית 6 — השפעה על חולי/חולשה.",
+          "לבדוק אם בית 9 מחובר לבית 8 — כישוף כבד, פחד, הפסד, סכנה, קבר, ירושה או דבר מת.",
+          "לבדוק אם בית 9 מחובר לבית 10 — מטפל/מרפא/מורה/בעל סמכות או תוצאה גלויה.",
+          "לבדוק את raml-spiritual-diagnostics.js כאשר יש סימנים לסחר, מס, חסד, עין, ג׳ין, רוחות או קללות.",
+          "לבדוק דמיר, חזרת צורות, עדים, שופט ומשפט לפני חיתוך."
+        ]
+      },
+      houseCombinations: [
+        {
+          houses: [1, 9],
+          meaning: "השואל קשור לנסיעה רחוקה, אמונה, חלום, לימוד, מורה או עניין רוחני."
+        },
+        {
+          houses: [3, 9],
+          meaning: "הבחנה בין נסיעה קרובה/הודעה לבין נסיעה רחוקה/חזון/מסר עמוק."
+        },
+        {
+          houses: [6, 9],
+          meaning: "חולי/חולשה/טרחה עם מקור רוחני, בעל פעולה, סחר, ג׳ין או עבודה נסתרת."
+        },
+        {
+          houses: [8, 9],
+          meaning: "עבודה רוחנית כבדה, כישוף כבד, פחד, הפסד, מוות, קבר, ירושה או דבר נסתר חמור."
+        },
+        {
+          houses: [9, 10],
+          meaning: "מורה/רב/מטפל/מרפא/בעל סמכות רוחנית או תוצאה גלויה של עניין רוחני."
+        },
+        {
+          houses: [9, 12],
+          meaning: "עבודה נסתרת, אויב נסתר בעל ידע, סוד רוחני, פגיעה מאחורי הקלעים, עין, חסד, ג׳ין, רוחות או קללה."
+        }
+      ],
+      decisionLayers: [
+        "שכבה 1: מצב בית 9 לפי הצורה שבו.",
+        "שכבה 2: יחס בית 1 לבית 9 — האם השואל מחובר לנסיעה, חזון, לימוד, דת או עניין רוחני.",
+        "שכבה 3: בנסיעות — להבחין בין בית 3 לבית 9.",
+        "שכבה 4: בחלומות/חזיונות — לבדוק בית 12, עדים, שופט ומשפט.",
+        "שכבה 5: בלימוד/מורה/רב — לבדוק בית 10 ובית 11.",
+        "שכבה 6: בעניינים רוחניים — לבדוק בית 6, 8, 10, 12 ואת raml-spiritual-diagnostics.js.",
+        "שכבה 7: לבדוק חזרת צורות, דמיר, עדים ושופט לפני הכרעה."
+      ],
+      blockedOrCarefulUse: [
+        {
+          id: "advisor-controlled-spiritual-house9-domain",
+          rule: "בית 9 כולל דת, חלום, חזון, חכמה, מורה, סוחר/מכשף, ג׳ין, רוחות, כהאנה, עראפה, שעודה ועבודה רוחנית; הניסוח וההכרעה בשליטת היועץ המקצועי.",
+          status: "advisorControlled"
+        }
+      ],
+      engineUse: {
+        role: "long-travel-religion-dream-wisdom-spiritual-practitioner-house",
+        useWhenFocusHouseIs: 9,
+        compareWithSeekerHouse: true,
+        shortTravelHouse: 3,
+        illnessHouse: 6,
+        heavyHiddenHouse: 8,
+        authorityHealerTeacherHouse: 10,
+        supportHouse: 11,
+        hiddenEnemyHouse: 12,
+        judgeHouses: [13, 14, 15, 16],
+        canDecideAlone: false,
+        advisorControlled: true,
+        clientWordingControlledByAdvisor: true
+      },
+      implementationReady: true
     }
   },
 
