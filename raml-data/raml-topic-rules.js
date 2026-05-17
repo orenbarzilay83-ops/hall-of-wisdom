@@ -454,6 +454,114 @@ const RAML_TOPIC_RULES = {
         canDecideAlone: false
       },
       implementationReady: true
+    },
+
+    house3SiblingsMessagesMovementRules: {
+      id: "house-3-siblings-messages-movement-rules",
+      house: 3,
+      title: "בית 3 — דיני אחים, שכנים, הודעות ותנועה קרובה",
+      arabicTerms: ["الإخوة", "الجيران", "الرسل", "الرسائل", "السفر القريب"],
+      status: "foundation-ready",
+      sourceStatus: "compiled-from-approved-foundation-rules-and-topic-map",
+      coreMeaning: [
+        "בית 3 מייצג אחים ואחיות.",
+        "בית 3 מייצג שכנים ואנשים קרובים בסביבה הקרובה.",
+        "בית 3 מייצג שליחים, הודעות, מכתבים, דיבור והעברת מידע.",
+        "בית 3 מייצג תנועה קרובה, דרך קצרה ונסיעה שאינה רחוקה.",
+        "בקריאה לפי בתים, בית 3 אינו מחליף את בית 9: בית 3 הוא תנועה קרובה, בית 9 הוא נסיעה רחוקה."
+      ],
+      questionTypes: [
+        {
+          id: "siblings-question",
+          hebrew: "שאלה על אח / אחות / קשר עם אחים",
+          focusHouse: 3,
+          compareWith: [1, 7],
+          note: "בית 1 הוא השואל; בית 3 הוא האחים; בית 7 יכול להראות את האדם שמול השואל אם השאלה על עימות או קשר ישיר."
+        },
+        {
+          id: "neighbors-question",
+          hebrew: "שאלה על שכנים או סביבה קרובה",
+          focusHouse: 3,
+          compareWith: [1, 4, 7, 12],
+          note: "בית 4 מראה את הבית/המקום; בית 12 אם יש דבר נסתר או הפרעה מאחורי הקלעים."
+        },
+        {
+          id: "message-news-answer",
+          hebrew: "הודעה / בשורה / מכתב / תשובה שמחכים לה",
+          focusHouse: 3,
+          compareWith: [1, 10, 11],
+          note: "בית 10 יכול להראות תוצאה גלויה; בית 11 תקווה וקבלת עזרה."
+        },
+        {
+          id: "short-trip-movement",
+          hebrew: "נסיעה קרובה / תנועה קצרה / יציאה לסידור",
+          focusHouse: 3,
+          compareWith: [1, 4, 9],
+          note: "אם הדרך הופכת לנסיעה רחוקה או חו״ל — יש לשלב את בית 9."
+        }
+      ],
+      whatToInspect: [
+        {
+          id: "figure-in-house-3",
+          title: "הצורה בבית 3",
+          rule: "בודקים את הצורה בבית 3: האם היא סעד/נחס/ממוזג, יסוד, קל/כבד, פתוח/סגור, נכנסת/יוצאת אם קיים קידוד מאומת.",
+          implementationReady: true
+        },
+        {
+          id: "house-3-strength",
+          title: "חוזק בית 3",
+          rule: "בית 3 הוא מן הסוואקט / הבתים הנופלים, ולכן הוא חלש יותר מן היתדות וממה שאחר היתדות. הוא מתאים לעניינים חולפים, תנועה, הודעות ודברים שאינם יציבים לגמרי.",
+          relatedFoundation: "sawaqit",
+          implementationReady: true
+        },
+        {
+          id: "seeker-house3-relationship",
+          title: "יחס בית 1 לבית 3",
+          rule: "בודקים האם השואל יכול לקבל את ההודעה, להגיע אל האח/השכן, או להצליח בתנועה הקרובה לפי היחס בין בית 1 לבית 3.",
+          implementationReady: true
+        },
+        {
+          id: "message-result-support",
+          title: "תוצאה של הודעה או בשורה",
+          rule: "בשאלות הודעה/בשורה, בית 10 יכול להראות את התוצאה הגלויה ובית 11 את התקווה או העזרה לקבלת הדבר.",
+          implementationReady: true
+        },
+        {
+          id: "short-vs-long-travel",
+          title: "הבחנה בין נסיעה קרובה לרחוקה",
+          rule: "אם השאלה על דרך קצרה, שליחות או תנועה קרובה — בית 3. אם השאלה על נסיעה רחוקה, חו״ל, לימוד או מסע משמעותי — יש לשלב או להעביר לבית 9.",
+          implementationReady: true
+        }
+      ],
+      decisionLayers: [
+        "שכבה 1: מצב בית 3 לפי הצורה שבו.",
+        "שכבה 2: יחס בית 1 לבית 3 — האם השואל מחובר לדבר הקרוב, להודעה או לאח/שכן.",
+        "שכבה 3: האם בית 10 או 11 תומכים בקבלת תשובה/בשורה.",
+        "שכבה 4: אם יש קושי, לבדוק בית 12 להסתרה/עיכוב נסתר, ובית 7 אם יש אדם מול השואל.",
+        "שכבה 5: אם מדובר בנסיעה, להבחין בין בית 3 לבית 9."
+      ],
+      blockedOrCarefulUse: [
+        {
+          id: "do-not-use-house3-for-long-travel-alone",
+          rule: "בית 3 אינו מספיק לנסיעה רחוקה או חו״ל; במקרים כאלה יש לבדוק גם בית 9.",
+          status: "active"
+        },
+        {
+          id: "messages-private-sensitive",
+          rule: "בשאלות על הודעות או אנשים אחרים, לשמור על ניסוח זהיר ולא להציג חדירה לפרטיות כעובדה מוחלטת.",
+          status: "advisorNote"
+        }
+      ],
+      engineUse: {
+        role: "siblings-neighbors-messages-short-movement-house",
+        useWhenFocusHouseIs: 3,
+        compareWithSeekerHouse: true,
+        supportHouses: [10, 11],
+        riskHouses: [7, 12],
+        relatedTravelHouse: 9,
+        canDecideAlone: false
+      },
+      implementationReady: true
     }
   },
 
