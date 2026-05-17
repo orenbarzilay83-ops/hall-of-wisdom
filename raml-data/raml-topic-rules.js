@@ -1036,6 +1036,158 @@ const RAML_TOPIC_RULES = {
         advisorOnlyWhenIllnessOrSpiritual: true
       },
       implementationReady: true
+    },
+
+    house7QueriedPartnerOpponentRules: {
+      id: "house-7-queried-partner-opponent-rules",
+      house: 7,
+      title: "בית 7 — דיני הנשאל עליו, זוגיות, שותף, יריב גלוי וצד שני",
+      arabicTerms: [
+        "المسؤول عنه",
+        "الزوج",
+        "الزوجة",
+        "الشريك",
+        "الخصم",
+        "المقابل",
+        "الغريم"
+      ],
+      status: "foundation-ready",
+      sourceStatus: "compiled-from-approved-foundation-rules-and-topic-map",
+      coreMeaning: [
+        "בית 7 מייצג את האדם שמול השואל.",
+        "בית 7 מייצג בן זוג, בת זוג, נישואין וקשר זוגי ממשי.",
+        "בית 7 מייצג שותף, צד שני בעסקה, מוכר/קונה, יריב גלוי ובעל דין.",
+        "בית 7 הוא היתד שמול בית 1, ולכן הוא הבית המרכזי להשוואה בין השואל לבין מי שעומד מולו.",
+        "בשאלות אהבה קלות בית 5 יכול להיות חשוב, אבל כאשר מדובר באדם מול השואל, קשר ממשי או נישואין — בית 7 נעשה מרכזי."
+      ],
+      questionTypes: [
+        {
+          id: "marriage-relationship",
+          hebrew: "זוגיות / נישואין / קשר ממשי",
+          focusHouse: 7,
+          compareWith: [1, 5, 10, 11],
+          note: "בית 1 השואל; בית 7 האדם שמולו; בית 5 אהבה/שמחה; בית 10 תוצאה גלויה; בית 11 תקווה ועזרה."
+        },
+        {
+          id: "queried-person",
+          hebrew: "אדם ששואלים עליו / הנשאל עליו",
+          focusHouse: 7,
+          compareWith: [1, 3, 10, 12],
+          note: "בית 7 הוא האדם שמול השואל. בית 12 אם יש סוד/הסתרה; בית 3 אם מדובר בהודעה/קשר/דיבור."
+        },
+        {
+          id: "business-partner",
+          hebrew: "שותף / שותפות / צד שני בעסק",
+          focusHouse: 7,
+          compareWith: [1, 2, 10, 11],
+          note: "בית 2 כסף; בית 10 תוצאה גלויה/מעמד; בית 11 רווח/תמיכה."
+        },
+        {
+          id: "buyer-seller-deal",
+          hebrew: "קונה / מוכר / צד שני בעסקה",
+          focusHouse: 7,
+          compareWith: [1, 2, 4, 10],
+          note: "בשאלת נכס/בית יש לשלב בית 4. בשאלת כסף יש לשלב בית 2."
+        },
+        {
+          id: "open-opponent-dispute",
+          hebrew: "יריב גלוי / סכסוך / אדם שמתנגד לשואל",
+          focusHouse: 7,
+          compareWith: [1, 6, 10, 12],
+          note: "בית 7 יריב גלוי; בית 6 אויבים קטנים/טרדות; בית 12 אויבים נסתרים; בית 10 הכרעה גלויה/סמכות."
+        }
+      ],
+      whatToInspect: [
+        {
+          id: "figure-in-house-7",
+          title: "הצורה בבית 7",
+          rule: "בודקים את הצורה בבית 7: סעד/נחס/ממוזג, יסוד, פתוח/סגור, קל/כבד, נכנס/יוצא אם קיים קידוד מאומת.",
+          implementationReady: true
+        },
+        {
+          id: "house-7-strength",
+          title: "חוזק בית 7",
+          rule: "בית 7 הוא יתד, ולכן הוא חזק מאוד ומייצג אדם/צד שעומד בבירור מול השואל.",
+          relatedFoundation: "awtad",
+          implementationReady: true
+        },
+        {
+          id: "seeker-vs-other",
+          title: "בית 1 מול בית 7",
+          rule: "בודקים את היחס בין השואל בבית 1 לבין האדם/צד שני בבית 7: התאמה, התנגדות, חזרת צורה, תמיכה או ניגוד יסודות.",
+          implementationReady: true
+        },
+        {
+          id: "love-house5-house7",
+          title: "בית 5 מול בית 7 באהבה",
+          rule: "בית 5 מראה אהבה, שמחה ונטיית לב; בית 7 מראה קשר ממשי, זוגיות, נישואין והאדם שמול השואל.",
+          implementationReady: true
+        },
+        {
+          id: "partnership-money",
+          title: "שותפות וכסף",
+          rule: "בשאלת שותפות עסקית או עסקה, יש לבדוק בית 2 לכסף ואת בית 10 לתוצאה גלויה/מעמד.",
+          implementationReady: true
+        },
+        {
+          id: "opponent-visible-hidden",
+          title: "יריב גלוי מול אויב נסתר",
+          rule: "בית 7 מראה יריב גלוי. בית 12 מראה אויב נסתר או דבר שפועל מאחורי הקלעים.",
+          implementationReady: true
+        },
+        {
+          id: "dispute-authority",
+          title: "סכסוך והכרעה גלויה",
+          rule: "אם השאלה על סכסוך, משפט, תביעה או יריב — בית 10 יכול להראות סמכות/הכרעה גלויה, ובית 12 יכול להראות תחבולה או סוד.",
+          implementationReady: true
+        },
+        {
+          id: "damir-other-person",
+          title: "דמיר והאדם שמול השואל",
+          rule: "אם הדמיר מצביע לבית 7 או לצורה החוזרת בבית 7, הדבר מחזק שהשאלה נוגעת באמת לאדם שמול השואל.",
+          implementationReady: "partial",
+          note: "חלק מדרכי הדמיר עדיין needsFormula ולכן לא כולן פעילות."
+        }
+      ],
+      decisionLayers: [
+        "שכבה 1: מצב בית 7 לפי הצורה שבו.",
+        "שכבה 2: יחס בית 1 לבית 7 — האם יש חיבור, התנגדות, משיכה או עימות.",
+        "שכבה 3: באהבה — לשלב בית 5; בזוגיות/נישואין — בית 7 מרכזי.",
+        "שכבה 4: בעסקה/שותפות — לשלב בית 2 כסף, בית 10 תוצאה ובית 11 תמיכה.",
+        "שכבה 5: ביריב/סכסוך — לבדוק בית 12 לאויב נסתר ובית 10 להכרעה גלויה.",
+        "שכבה 6: לבדוק עדים ושופט כדי לראות אם הצד השני תומך, מתנגד או משנה את המהלך."
+      ],
+      blockedOrCarefulUse: [
+        {
+          id: "do-not-force-love-from-house5-alone",
+          rule: "בשאלה על אדם ממשי, זוגיות או נישואין — אין להכריע מבית 5 בלבד; בית 7 חייב להיבדק.",
+          status: "active"
+        },
+        {
+          id: "privacy-care",
+          rule: "בשאלות על אדם אחר יש לנסח בזהירות ולא להציג חדירה מוחלטת למחשבותיו כעובדה.",
+          status: "advisorNote"
+        },
+        {
+          id: "legal-dispute-care",
+          rule: "בשאלות סכסוך/תביעה/משפט אין להציג ייעוץ משפטי. זהו פירוש רמלי בלבד.",
+          status: "advisorNote"
+        }
+      ],
+      engineUse: {
+        role: "queried-person-partner-opponent-house",
+        useWhenFocusHouseIs: 7,
+        compareWithSeekerHouse: true,
+        loveJoyHouse: 5,
+        moneyHouse: 2,
+        propertyHouse: 4,
+        authorityResultHouse: 10,
+        supportHouse: 11,
+        hiddenEnemyHouse: 12,
+        smallEnemiesHouse: 6,
+        canDecideAlone: false
+      },
+      implementationReady: true
     }
   },
 
