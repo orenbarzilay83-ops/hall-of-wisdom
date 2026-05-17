@@ -1188,6 +1188,260 @@ const RAML_TOPIC_RULES = {
         canDecideAlone: false
       },
       implementationReady: true
+    },
+
+    house8DeathLossFearInheritanceRules: {
+      id: "house-8-death-loss-fear-inheritance-rules",
+      house: 8,
+      title: "בית 8 — דיני מוות, פחד, הפסד, ירושה, סכנה ודבר כבד נסתר",
+      arabicTerms: [
+        "الموت",
+        "الخوف",
+        "الهلاك",
+        "الفقد",
+        "الخسارة",
+        "الميراث",
+        "مال الميت",
+        "الأمر الخفي الثقيل",
+        "الخطر",
+        "العاقبة الصعبة"
+      ],
+      status: "foundation-ready-sensitive",
+      sourceStatus: "compiled-from-approved-foundation-rules-and-topic-map",
+      displayPolicy: "advisorOnly / carefulLanguage",
+      coreMeaning: [
+        "בית 8 מייצג מוות במובן המסורתי של דיני הבתים, אך אין להציג זאת ללקוח כפסק מוחלט.",
+        "בית 8 מייצג פחד, חרדה, סכנה, הפסד ודבר כבד.",
+        "בית 8 מייצג ירושה, ממון שבא מן המת, חובות או רכוש שעובר דרך משבר.",
+        "בית 8 מייצג דבר נסתר וכבד שאינו גלוי מיד כמו בית 10 ואינו אויב נסתר רגיל כמו בית 12.",
+        "בית 8 יכול להראות סוף קשה, אובדן, ניתוק, פחד עמוק או שינוי דרך משבר.",
+        "בכל עניין רגיש של מוות, סכנה, חולי קשה או פחד — משתמשים בשפה זהירה בלבד."
+      ],
+      questionTypes: [
+        {
+          id: "death-or-danger-sensitive",
+          hebrew: "מוות / סכנה / פחד קשה — רגיש מאוד",
+          focusHouse: 8,
+          compareWith: [1, 6, 4, 10, 12],
+          note: "בית 1 האדם; בית 6 חולי; בית 4 שורש/סוף/תרופה במודול רוחני; בית 10 תוצאה גלויה/מטפל; בית 12 נסתר/אויב נסתר. לא להציג ללקוח כפסק מוות."
+        },
+        {
+          id: "fear-anxiety-heavy-hidden-matter",
+          hebrew: "פחד / חרדה / דבר כבד שיושב על השואל",
+          focusHouse: 8,
+          compareWith: [1, 6, 12, 15, 16],
+          note: "בית 8 מראה כובד ופחד; בית 12 מראה נסתר; שופט/משפט מראים הכרעה כללית."
+        },
+        {
+          id: "loss-damage-failure",
+          hebrew: "הפסד / אובדן / נזק / כישלון",
+          focusHouse: 8,
+          compareWith: [1, 2, 7, 10, 12],
+          note: "בית 2 כסף ורכוש; בית 7 צד שני/יריב; בית 12 הסתרה/אויב נסתר."
+        },
+        {
+          id: "inheritance-dead-person-money",
+          hebrew: "ירושה / ממון של מת / רכוש שעובר אחרי מוות",
+          focusHouse: 8,
+          compareWith: [1, 2, 4, 7, 10],
+          note: "בית 2 כסף; בית 4 שורש משפחתי/נכס; בית 7 צד שני או יורש מול השואל; בית 10 תוצאה גלויה/אישור."
+        },
+        {
+          id: "debts-obligations-after-crisis",
+          hebrew: "חובות / התחייבויות / כסף דרך משבר",
+          focusHouse: 8,
+          compareWith: [1, 2, 10, 12],
+          note: "בית 8 מראה כסף כבד או הפסד; בית 2 הכסף הרגיל של השואל."
+        },
+        {
+          id: "hidden-heavy-transition",
+          hebrew: "שינוי כבד / מעבר דרך משבר / דבר נסתר שמכביד",
+          focusHouse: 8,
+          compareWith: [1, 4, 10, 12],
+          note: "בית 4 שורש וסוף; בית 10 תוצאה גלויה; בית 12 מה שמוסתר מאחורי הקלעים."
+        },
+        {
+          id: "spiritual-heavy-harm",
+          hebrew: "פגיעה רוחנית כבדה / פחד רוחני / כובד נסתר",
+          focusHouse: 8,
+          compareWith: [1, 6, 9, 10, 12],
+          note: "להשתמש בזהירות ובמודול הרוחני בלבד: בית 6 חולי, בית 9 סוחר/מכשף, בית 10 מטפל, בית 12 אויבים נסתרים."
+        }
+      ],
+      whatToInspect: [
+        {
+          id: "figure-in-house-8",
+          title: "הצורה בבית 8",
+          rule: "בודקים את הצורה בבית 8: סעד/נחס/ממוזג, יסוד, פתוח/סגור, קל/כבד, נכנס/יוצא אם קיים קידוד מאומת.",
+          implementationReady: true
+        },
+        {
+          id: "house-8-strength",
+          title: "חוזק בית 8",
+          rule: "בית 8 הוא מן הבתים שאחרי היתדות, ולכן הוא אינו יתד אך יש לו משקל גדול בענייני הפסד, פחד, ירושה ומשבר.",
+          relatedFoundation: "followingAwtad",
+          implementationReady: true
+        },
+        {
+          id: "seeker-house8-relationship",
+          title: "יחס בית 1 לבית 8",
+          rule: "בודקים אם בית 8 משפיע ישירות על השואל: חזרת צורה, ניגוד יסודות, סעד/נחס, קשר לעדים או לשופט.",
+          implementationReady: true
+        },
+        {
+          id: "illness-danger-house6",
+          title: "בית 6 מול בית 8 בענייני חולי וסכנה",
+          rule: "אם השאלה נוגעת לחולי או סכנה, בית 6 מראה את המחלה/חולשה ובית 8 מראה כובד, פחד או סכנת הפסד. אין להציג אבחנה רפואית.",
+          displayPolicy: "carefulLanguage / advisorOnly",
+          implementationReady: true
+        },
+        {
+          id: "inheritance-money-house2",
+          title: "בית 2 מול בית 8 בירושה וממון",
+          rule: "בית 2 מראה כסף ורכוש של השואל. בית 8 מראה ירושה, הפסד, ממון של מת או כסף שבא דרך משבר.",
+          implementationReady: true
+        },
+        {
+          id: "property-inheritance-house4",
+          title: "בית 4 מול בית 8 בנכס/ירושה",
+          rule: "אם הירושה או ההפסד קשורים לבית, קרקע, משפחה או שורש עניין — משלבים את בית 4.",
+          implementationReady: true
+        },
+        {
+          id: "other-party-house7",
+          title: "בית 7 מול בית 8 בצד שני או יריב",
+          rule: "אם ההפסד, הירושה או המשבר תלויים באדם אחר, יריב, יורש נוסף, קונה/מוכר או צד שני — בודקים את בית 7.",
+          implementationReady: true
+        },
+        {
+          id: "hidden-enemy-house12",
+          title: "בית 12 מול בית 8 בדבר נסתר",
+          rule: "בית 8 מראה כובד, פחד, הפסד ומשבר; בית 12 מראה אויב נסתר, סוד, הסתרה או פגיעה מאחורי הקלעים. יש להבדיל ביניהם אך לבדוק קשר ביניהם.",
+          implementationReady: true
+        },
+        {
+          id: "authority-result-house10",
+          title: "בית 10 כתוצאה גלויה או סמכות",
+          rule: "בשאלות ירושה, הפסד, חוב או סכנה — בית 10 יכול להראות הכרעה גלויה, סמכות, רופא/מטפל, שופט, רשות או תוצאה שנראית לעין.",
+          implementationReady: true
+        },
+        {
+          id: "judge-and-final-houses",
+          title: "שופט ומשפט בבית 8",
+          rule: "בעניינים כבדים אין להכריע רק מבית 8. יש לבדוק עדים, שופט ומשפט כדי לדעת אם הכובד מתאשר, נחלש או משתנה.",
+          relatedHouses: [13, 14, 15, 16],
+          implementationReady: true
+        },
+        {
+          id: "spiritual-diagnostic-connection",
+          title: "קשר למודול האבחון הרוחני",
+          rule: "אם בית 8 מצטרף לבית 6, 9, 10 או 12 בשאלת חולי/פחד/פגיעה נסתרת, יש לבדוק את המודול הרוחני אך לשמור זאת advisorOnly.",
+          relatedFile: "raml-spiritual-diagnostics.js",
+          displayPolicy: "advisorOnly / spiritualDiagnostic",
+          implementationReady: true
+        },
+        {
+          id: "elemental-heavy-indication",
+          title: "יסוד הצורה בבית 8",
+          rule: "יסוד הצורה בבית 8 עשוי לרמוז על אופי הכובד: אש — חריפות/סכנה מהירה; אוויר — תנועה/דאגה; מים — הצפה/בלבול/לחות; עפר — כובד/תקיעות/ירידה. לא להציג כאבחנה רפואית.",
+          displayPolicy: "advisorOnly / carefulLanguage",
+          implementationReady: "partial"
+        }
+      ],
+      spiritualAndSensitiveLinks: {
+        relatedFile: "raml-spiritual-diagnostics.js",
+        status: "advisorOnly",
+        relatedHouses: [
+          {
+            house: 1,
+            role: "השואל / האדם שעליו שואלים"
+          },
+          {
+            house: 6,
+            role: "בית המחלה / חולשה"
+          },
+          {
+            house: 8,
+            role: "כובד, פחד, הפסד, סכנה, ירושה ודבר משברי"
+          },
+          {
+            house: 9,
+            role: "סוחר/מכשף או עוסק בעבודה רוחנית לפי המודול הרוחני"
+          },
+          {
+            house: 10,
+            role: "רופא / מטפל / סמכות / תוצאה גלויה"
+          },
+          {
+            house: 12,
+            role: "אויב נסתר / סוד / פגיעה מאחורי הקלעים"
+          }
+        ],
+        sensitiveTopics: [
+          "מוות",
+          "סכנה",
+          "חולי קשה",
+          "פחד כבד",
+          "פגיעה רוחנית",
+          "סחר / מס / חסד / עין",
+          "אובדן וירושה"
+        ],
+        clientReportDefault: false
+      },
+      decisionLayers: [
+        "שכבה 1: מצב בית 8 לפי הצורה שבו.",
+        "שכבה 2: יחס בית 1 לבית 8 — האם הכובד/פחד/הפסד נוגע ישירות לשואל.",
+        "שכבה 3: אם מדובר בכסף/ירושה — לשלב בית 2 ובית 4.",
+        "שכבה 4: אם מדובר באדם אחר או יריב — לשלב בית 7.",
+        "שכבה 5: אם מדובר בחולי/סכנה — לשלב בית 6, בית 10 ובית 4 בזהירות.",
+        "שכבה 6: אם יש חשד לדבר נסתר או רוחני — לשלב בית 12, בית 9 והמודול הרוחני במצב advisorOnly.",
+        "שכבה 7: לבדוק עדים, שופט ומשפט לפני כל מסקנה קשה.",
+        "שכבה 8: להמיר ניסוח קשה לשפה מקצועית וזהירה בדוח לקוח."
+      ],
+      blockedOrCarefulUse: [
+        {
+          id: "no-direct-death-prediction",
+          rule: "אין להציג ללקוח נבואת מוות או קביעה מוחלטת על מוות. בית 8 נשמר ליועץ ולשפה זהירה בלבד.",
+          status: "mandatory"
+        },
+        {
+          id: "no-medical-diagnosis",
+          rule: "אין להציג אבחנה רפואית או תחזית רפואית. במקרה של חולי או סכנה יש לנסח בזהירות ולהפנות להתייעצות מתאימה.",
+          status: "mandatory"
+        },
+        {
+          id: "inheritance-legal-care",
+          rule: "בשאלות ירושה, חוב או רכוש אין להציג ייעוץ משפטי/פיננסי מחייב. זהו פירוש רמלי בלבד.",
+          status: "advisorNote"
+        },
+        {
+          id: "spiritual-heavy-advisor-only",
+          rule: "פגיעה רוחנית, סחר, עין, מס, חסד או ג׳ין בהקשר בית 8 הם advisorOnly ולא מוצגים ללקוח כברירת מחדל.",
+          status: "mandatory"
+        },
+        {
+          id: "do-not-decide-from-house8-alone",
+          rule: "בית 8 לעולם לא מספיק לבדו למסקנה קשה. חייבים לבדוק בית נושא, בית 1, עדים, שופט ומשפט.",
+          status: "active"
+        }
+      ],
+      engineUse: {
+        role: "death-loss-fear-inheritance-heavy-hidden-house",
+        useWhenFocusHouseIs: 8,
+        compareWithSeekerHouse: true,
+        moneyHouse: 2,
+        propertyFamilyRootHouse: 4,
+        illnessHouse: 6,
+        otherPartyHouse: 7,
+        spiritualPractitionerHouse: 9,
+        authorityHealerResultHouse: 10,
+        hiddenEnemyHouse: 12,
+        judgeHouses: [13, 14, 15, 16],
+        canDecideAlone: false,
+        advisorOnlyWhenDeathDangerIllnessOrSpiritual: true,
+        clientReportRequiresSoftLanguage: true
+      },
+      implementationReady: true
     }
   },
 
