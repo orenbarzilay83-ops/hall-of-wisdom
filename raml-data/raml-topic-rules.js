@@ -685,6 +685,129 @@ const RAML_TOPIC_RULES = {
         canDecideAlone: false
       },
       implementationReady: true
+    },
+
+    house5ChildrenJoyLoveRules: {
+      id: "house-5-children-joy-love-rules",
+      house: 5,
+      title: "בית 5 — דיני ילדים, שמחה, אהבה, הנאה ויצירה",
+      arabicTerms: ["الأولاد", "الفرح", "المحبة", "اللذة", "السرور"],
+      status: "foundation-ready",
+      sourceStatus: "compiled-from-approved-foundation-rules-and-topic-map",
+      coreMeaning: [
+        "בית 5 מייצג ילדים וצאצאים.",
+        "בית 5 מייצג שמחה, הנאה, משחק, יצירה ודברים שמביאים שמחת לב.",
+        "בית 5 יכול לשמש לשאלות אהבה קלות או נטיית לב, אך אינו מחליף את בית 7 בשאלות זוגיות/נישואין/אדם מול השואל.",
+        "בית 5 הוא מן הבתים שאחרי היתדות, ולכן הוא פחות חזק מן היתד אך יכול להראות התפתחות ותיקון."
+      ],
+      questionTypes: [
+        {
+          id: "children-question",
+          hebrew: "שאלה על ילדים / בן / בת / צאצאים",
+          focusHouse: 5,
+          compareWith: [1, 4, 10],
+          note: "בית 1 הוא השואל; בית 4 שורש המשפחה/הבית; בית 10 תוצאה גלויה."
+        },
+        {
+          id: "joy-pleasure-celebration",
+          hebrew: "שמחה / אירוע / הנאה / דבר משמח",
+          focusHouse: 5,
+          compareWith: [1, 10, 11],
+          note: "בית 11 מוסיף תקווה ותמיכה; בית 10 מראה תוצאה גלויה."
+        },
+        {
+          id: "love-interest-light",
+          hebrew: "אהבה / משיכה / נטיית לב",
+          focusHouse: 5,
+          compareWith: [1, 7, 11],
+          note: "אם מדובר בקשר ממשי, זוגיות, נישואין או האדם שמול השואל — בית 7 נעשה מרכזי."
+        },
+        {
+          id: "creativity-creation",
+          hebrew: "יצירה / רעיון / פרויקט שמביא שמחה",
+          focusHouse: 5,
+          compareWith: [1, 10, 11],
+          note: "אם הפרויקט מקצועי/עסקי — לשלב גם בית 10 ובית 2."
+        },
+        {
+          id: "pregnancy-sensitive",
+          hebrew: "היריון / לידה",
+          focusHouse: 5,
+          compareWith: [1, 4, 6, 10],
+          note: "להפעיל בזהירות ורק כידע מסורתי; לא כהבטחה רפואית."
+        }
+      ],
+      whatToInspect: [
+        {
+          id: "figure-in-house-5",
+          title: "הצורה בבית 5",
+          rule: "בודקים את הצורה בבית 5: סעד/נחס/ממוזג, יסוד, פתוח/סגור, קל/כבד, נכנס/יוצא אם קיים קידוד מאומת.",
+          implementationReady: true
+        },
+        {
+          id: "house-5-strength",
+          title: "חוזק בית 5",
+          rule: "בית 5 הוא מן הבתים שאחרי היתדות, ולכן הוא מראה אפשרות להתפתחות, שמחה או תוצאה שנבנית בהמשך.",
+          relatedFoundation: "followingAwtad",
+          implementationReady: true
+        },
+        {
+          id: "seeker-house5-relationship",
+          title: "יחס בית 1 לבית 5",
+          rule: "בודקים האם השואל מחובר לשמחה/ילד/אהבה/יצירה או האם יש התנגדות בין בית 1 לבית 5.",
+          implementationReady: true
+        },
+        {
+          id: "love-house5-vs-house7",
+          title: "הבחנה בין בית 5 לבית 7 באהבה",
+          rule: "בית 5 מתאים לשמחה, אהבה קלה, משיכה והנאה. בית 7 מתאים לאדם מול השואל, זוגיות, נישואין ושותפות ממשית.",
+          implementationReady: true
+        },
+        {
+          id: "children-family-root",
+          title: "ילדים ושורש משפחתי",
+          rule: "בשאלות ילדים יש לשלב לפי הצורך את בית 4 כשורש הבית והמשפחה.",
+          implementationReady: true
+        },
+        {
+          id: "health-sensitive-child-pregnancy",
+          title: "רגישות בריאותית בילדים/היריון",
+          rule: "אם השאלה נוגעת לבריאות, היריון, לידה או סכנה — יש לשלב את בית 6 ולהשתמש בניסוח זהיר בלבד.",
+          displayPolicy: "advisorOnly / careful language",
+          implementationReady: true
+        }
+      ],
+      decisionLayers: [
+        "שכבה 1: מצב בית 5 לפי הצורה שבו.",
+        "שכבה 2: יחס בית 1 לבית 5 — האם השואל מחובר לשמחה, לילד, ליצירה או לאהבה.",
+        "שכבה 3: באהבה — לבדוק אם בית 7 צריך להפוך לבית המרכזי.",
+        "שכבה 4: בילדים/משפחה — לשלב את בית 4 לפי הצורך.",
+        "שכבה 5: בעניינים רגישים של היריון/בריאות — לשלב בית 6 ולהשאיר ניסוח זהיר.",
+        "שכבה 6: לבדוק את העדים והשופט אם הם מחזקים שמחה/הצלחה או עיכוב."
+      ],
+      blockedOrCarefulUse: [
+        {
+          id: "pregnancy-no-medical-promise",
+          rule: "אין לתת הבטחה רפואית על היריון, לידה, בריאות ילד או מצב גופני. זהו פירוש רמלי מסורתי בלבד.",
+          status: "advisorNote"
+        },
+        {
+          id: "love-house7-caution",
+          rule: "לא להכריע זוגיות/נישואין מבית 5 בלבד כאשר השאלה היא על אדם מול השואל; יש לבדוק בית 7.",
+          status: "active"
+        }
+      ],
+      engineUse: {
+        role: "children-joy-love-creation-house",
+        useWhenFocusHouseIs: 5,
+        compareWithSeekerHouse: true,
+        relationshipHouse: 7,
+        familyRootHouse: 4,
+        healthHouse: 6,
+        supportHouses: [10, 11],
+        canDecideAlone: false
+      },
+      implementationReady: true
     }
   },
 
