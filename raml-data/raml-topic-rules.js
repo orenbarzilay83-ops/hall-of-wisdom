@@ -808,6 +808,234 @@ const RAML_TOPIC_RULES = {
         canDecideAlone: false
       },
       implementationReady: true
+    },
+
+    house6IllnessServiceTroubleRules: {
+      id: "house-6-illness-service-trouble-rules",
+      house: 6,
+      title: "בית 6 — דיני חולי, טרחה, עובדים, שירות ואויבים קטנים",
+      arabicTerms: [
+        "المرض",
+        "بيت المرض",
+        "الخدم",
+        "العبيد",
+        "التعب",
+        "الأعداء الصغار",
+        "الضعف"
+      ],
+      status: "foundation-ready-sensitive",
+      sourceStatus: "compiled-from-approved-foundation-rules-topic-map-and-spiritual-diagnostics",
+      displayPolicy: "carefulLanguage / advisorOnly when illness or spiritual diagnosis is involved",
+      coreMeaning: [
+        "בית 6 מייצג חולי, חולשה, כאב, טרחה ודברים שמחלישים את השואל.",
+        "בית 6 מייצג עובדים, משרתים, שירות, עבודה תחת עומס או עבודה שאינה בשליטה מלאה של השואל.",
+        "בית 6 מייצג אויבים קטנים, הפרעות קטנות, קושי יומיומי ודברים שמציקים אך אינם בהכרח יריב גלוי גדול.",
+        "במודול הרוחני בית 6 הוא بيت المرض — בית המחלה.",
+        "אין להשתמש בבית 6 כדי לתת אבחנה רפואית. באפליקציה זה ידע רמלי/רוחני מסורתי בלבד."
+      ],
+      questionTypes: [
+        {
+          id: "illness-health-pain",
+          hebrew: "חולי / בריאות / כאב / חולשה",
+          focusHouse: 6,
+          compareWith: [1, 4, 10, 12],
+          note: "בית 1 הוא האדם/החולה; בית 6 הוא המחלה; בית 4 יכול להראות תרופה/שורש ריפוי במודול הרוחני; בית 10 יכול להראות רופא/מטפל; בית 12 יכול להראות דבר נסתר/אויב נסתר/רוחני."
+        },
+        {
+          id: "workload-service-employees",
+          hebrew: "עובדים / משרתים / שירות / עבודה תחת עומס",
+          focusHouse: 6,
+          compareWith: [1, 10, 11],
+          note: "בית 10 הוא עבודה/מעמד/סמכות; בית 11 עזרה ותמיכה; בית 6 מראה טרחה, כפיפות ועומס."
+        },
+        {
+          id: "small-enemies-annoyances",
+          hebrew: "אויבים קטנים / הפרעות קטנות / טרדות יומיומיות",
+          focusHouse: 6,
+          compareWith: [1, 7, 12],
+          note: "בית 7 הוא יריב גלוי; בית 12 אויבים נסתרים; בית 6 הפרעות קטנות או מחלישות."
+        },
+        {
+          id: "spiritual-or-hidden-illness",
+          hebrew: "חשש לחולי רוחני / עין הרע / סחר / מס / חסד",
+          focusHouse: 6,
+          compareWith: [1, 4, 9, 10, 12],
+          note: "להשתמש רק עם raml-spiritual-diagnostics.js ובמצב advisorOnly."
+        },
+        {
+          id: "pregnancy-child-health-sensitive",
+          hebrew: "בריאות ילד / היריון / לידה — רגיש",
+          focusHouse: 6,
+          compareWith: [1, 5, 4, 10],
+          note: "בית 5 ילדים/היריון; בית 6 בריאות/חולי; לא להציג כהבטחה רפואית."
+        }
+      ],
+      whatToInspect: [
+        {
+          id: "figure-in-house-6",
+          title: "הצורה בבית 6",
+          rule: "בודקים את הצורה בבית 6: סעד/נחס/ממוזג, יסוד, פתוח/סגור, קל/כבד, נכנס/יוצא אם קיים קידוד מאומת.",
+          implementationReady: true
+        },
+        {
+          id: "house-6-strength",
+          title: "חוזק בית 6",
+          rule: "בית 6 הוא מן הסוואקט / הבתים הנופלים, ולכן מורה על חולשה, נפילה, קושי, טרחה או דבר שאינו עומד חזק לטובת השואל.",
+          relatedFoundation: "sawaqit",
+          implementationReady: true
+        },
+        {
+          id: "seeker-house6-relationship",
+          title: "יחס בית 1 לבית 6",
+          rule: "בודקים את היחס בין השואל בבית 1 לבין בית 6. אם בית 6 חזק או קשה מול בית 1, הדבר מראה שהקושי/חולי/טרחה משפיעים על השואל.",
+          implementationReady: true
+        },
+        {
+          id: "medicine-root-healing-house4",
+          title: "בית 4 כתרופה / שורש ריפוי במודול הרוחני",
+          rule: "במודול האבחון הרוחני, בית 4 הוא الدواء — התרופה או שורש הריפוי. לכן בשאלות חולי/רוחני יש להשוות בית 6 לבית 4.",
+          relatedFile: "raml-spiritual-diagnostics.js",
+          displayPolicy: "advisorOnly",
+          implementationReady: true
+        },
+        {
+          id: "doctor-healer-house10",
+          title: "בית 10 כרופא / מטפל / סמכות טיפולית",
+          rule: "במודול האבחון הרוחני, בית 10 הוא الطبيب أو المعالج — הרופא או המרפא. לכן בשאלות חולי בודקים אם בית 10 תומך או חלש.",
+          relatedFile: "raml-spiritual-diagnostics.js",
+          displayPolicy: "advisorOnly",
+          implementationReady: true
+        },
+        {
+          id: "hidden-spiritual-risk-house12",
+          title: "בית 12 כסוד / אויב נסתר / פגיעה נסתרת",
+          rule: "אם בשאלת חולי יש חשש למקור נסתר, עין הרע, סחר, מס, חסד או אויב נסתר — משלבים את בית 12 ואת המודול הרוחני.",
+          relatedFile: "raml-spiritual-diagnostics.js",
+          displayPolicy: "advisorOnly / spiritualDiagnostic",
+          implementationReady: true
+        },
+        {
+          id: "sorcerer-house9",
+          title: "בית 9 כסוחר/מכשף במודול הרוחני",
+          rule: "במודול הרוחני בית 9 מוגדר כבית الساحر / העוסק בעבודה רוחנית מסוג זה. לכן בשאלות סחר/כישוף יש לשלב את בית 9.",
+          relatedFile: "raml-spiritual-diagnostics.js",
+          displayPolicy: "advisorOnly / spiritualDiagnostic",
+          implementationReady: true
+        },
+        {
+          id: "elemental-illness",
+          title: "חולי לפי יסודות",
+          rule: "אם משתמשים בשכבת יסודות: אש/אוויר/מים/עפר עשויים לרמוז על סוג טבע החולי או הליחה לפי המקורות. אין להציג זאת כאבחנה רפואית.",
+          relatedFoundation: "elementsDirectionsIllness",
+          displayPolicy: "advisorOnly",
+          implementationReady: "partial"
+        },
+        {
+          id: "drop-seven-open-points",
+          title: "הפלת פתוח הרמל 7־7 באבחון רוחני",
+          rule: "במודול הרוחני קיימת ספירת مفتوح الرمل והפלה 7־7: 1 ג׳ין, 2 חסד/עין, 3 סחר מאדם, 4 מים/בלغم, 5 אוויר/דם, 6 עפר/סודאא, 7 אש/צפראא.",
+          relatedFile: "raml-spiritual-diagnostics.js",
+          displayPolicy: "advisorOnly / spiritualDiagnostic",
+          implementationReady: true
+        },
+        {
+          id: "small-enemies-vs-open-opponent",
+          title: "אויבים קטנים מול יריב גלוי",
+          rule: "בית 6 מתאים לאויבים קטנים, טרדות והחלשות. אם מדובר ביריב גלוי או אדם מול השואל — יש לבדוק בית 7.",
+          implementationReady: true
+        },
+        {
+          id: "hidden-enemies-vs-small-enemies",
+          title: "אויבים נסתרים מול אויבים קטנים",
+          rule: "בית 12 מראה אויבים נסתרים, סוד ונזק מאחורי הקלעים. בית 6 מראה טרדות, מחלישים ואויבים קטנים.",
+          implementationReady: true
+        }
+      ],
+      spiritualDiagnosticLinks: {
+        relatedFile: "raml-spiritual-diagnostics.js",
+        status: "advisorOnly",
+        houseRoles: [
+          {
+            house: 1,
+            role: "המريض — החולה / האדם שעליו שואלים"
+          },
+          {
+            house: 4,
+            role: "الدواء — התרופה / פתרון / שורש ריפוי"
+          },
+          {
+            house: 6,
+            role: "بيت المرض — בית המחלה"
+          },
+          {
+            house: 9,
+            role: "الساحر — הסוחר/מכשף או בעלי עבודה רוחנית"
+          },
+          {
+            house: 10,
+            role: "الطبيب أو المعالج — רופא / מרפא / מטפל"
+          },
+          {
+            house: 12,
+            role: "بيت الأعداء — בית האויבים"
+          }
+        ],
+        sensitiveTopics: [
+          "سحر — סחר / כישוף",
+          "مس — מס / פגיעה מג׳ין",
+          "حسد — חסד / קנאה",
+          "عين — עין הרע",
+          "جن — ג׳ין",
+          "مرض روحي — חולי רוחני"
+        ],
+        clientReportDefault: false
+      },
+      decisionLayers: [
+        "שכבה 1: מצב בית 6 לפי הצורה שבו.",
+        "שכבה 2: יחס בית 1 לבית 6 — האם החולי/טרחה/עומס משפיעים ישירות על השואל.",
+        "שכבה 3: בשאלת חולי — לבדוק בית 4 כתרופה/שורש ריפוי ובית 10 כרופא/מטפל.",
+        "שכבה 4: אם יש חשש לדבר נסתר/רוחני — לבדוק בית 12 ובית 9, ולהפעיל רק ידע advisorOnly.",
+        "שכבה 5: אם מדובר בעובדים/שירות/עבודה תחת עומס — לבדוק גם בית 10 ובית 11.",
+        "שכבה 6: אם מדובר באויבים — להבדיל בין בית 6 אויבים קטנים, בית 7 יריב גלוי, ובית 12 אויבים נסתרים.",
+        "שכבה 7: לבדוק עדים ושופט כדי לראות אם הקושי מתמשך, נחלש או נפתר."
+      ],
+      blockedOrCarefulUse: [
+        {
+          id: "no-medical-diagnosis",
+          rule: "אין להציג מסקנה רפואית או אבחנה רפואית. יש לנסח כקריאה רמלית/רוחנית מסורתית בלבד.",
+          status: "mandatory"
+        },
+        {
+          id: "spiritual-diagnosis-advisor-only",
+          rule: "סחר, מס, חסד, עין הרע, ג׳ין וחולי רוחני הם advisorOnly ולא מופיעים בדוח לקוח כברירת מחדל.",
+          status: "mandatory"
+        },
+        {
+          id: "needs-human-judgment",
+          rule: "אין להפעיל אבחון רוחני אוטומטי בלי שיקול דעת היועץ, כי יש לשלב צורה, בית, דמיר, עדים ושופט.",
+          status: "active"
+        },
+        {
+          id: "do-not-confuse-service-with-career",
+          rule: "בית 6 מראה שירות/עומס/עובדים/כפיפות; בית 10 מראה קריירה, מעמד ותפקיד גלוי.",
+          status: "active"
+        }
+      ],
+      engineUse: {
+        role: "illness-service-trouble-small-enemies-house",
+        useWhenFocusHouseIs: 6,
+        compareWithSeekerHouse: true,
+        medicineHouse: 4,
+        healerHouse: 10,
+        spiritualHiddenHouse: 12,
+        sorcererHouse: 9,
+        openOpponentHouse: 7,
+        childrenPregnancyHouse: 5,
+        supportHouses: [10, 11],
+        canDecideAlone: false,
+        advisorOnlyWhenIllnessOrSpiritual: true
+      },
+      implementationReady: true
     }
   },
 
