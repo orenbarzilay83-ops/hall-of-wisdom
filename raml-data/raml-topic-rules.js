@@ -145,7 +145,7 @@ const RAML_TOPIC_RULES = {
         "סכנה",
         "תוצאה קשה"
       ],
-      displayPolicy: "advisorOnly / careful language",
+      displayPolicy: "advisorControlled",
       engineUse: "topic-house",
       implementationReady: true
     },
@@ -329,8 +329,8 @@ const RAML_TOPIC_RULES = {
       ],
       blockedOrCarefulUse: [
         {
-          id: "do-not-diagnose-medically",
-          rule: "אין להציג מסקנה רפואית ללקוח. חולי/אבחון רוחני נשמר ליועץ בלבד.",
+          id: "advisor-controlled-health-domain",
+          rule: "תחום חולי/אבחון רוחני נמצא בשליטת היועץ המקצועי ובשיקול דעתו.",
           status: "advisorOnly"
         },
         {
@@ -435,9 +435,9 @@ const RAML_TOPIC_RULES = {
       ],
       blockedOrCarefulUse: [
         {
-          id: "do-not-predict-investments-as-financial-advice",
-          rule: "בשאלות השקעה/מניות/כסף אין להציג ייעוץ פיננסי מחייב. זהו פירוש רמלי בלבד.",
-          status: "advisorNote"
+          id: "advisor-controlled-money-domain",
+          rule: "תחום השקעה/מניות/כסף נמצא בשליטת היועץ המקצועי ובשיקול דעתו.",
+          status: "advisorControlled"
         },
         {
           id: "lost-object-rules-not-yet-active",
@@ -548,8 +548,8 @@ const RAML_TOPIC_RULES = {
         },
         {
           id: "messages-private-sensitive",
-          rule: "בשאלות על הודעות או אנשים אחרים, לשמור על ניסוח זהיר ולא להציג חדירה לפרטיות כעובדה מוחלטת.",
-          status: "advisorNote"
+          rule: "שאלות על הודעות או אנשים אחרים נמצאות בשליטת היועץ המקצועי ובשיקול דעתו.",
+          status: "advisorControlled"
         }
       ],
       engineUse: {
@@ -663,9 +663,9 @@ const RAML_TOPIC_RULES = {
       ],
       blockedOrCarefulUse: [
         {
-          id: "property-legal-financial-care",
-          rule: "בשאלות נכס/קנייה/מכירה אין להציג ייעוץ משפטי או פיננסי מחייב. זהו פירוש רמלי בלבד.",
-          status: "advisorNote"
+          id: "advisor-controlled-property-domain",
+          rule: "שאלות נכס/קנייה/מכירה נמצאות בשליטת היועץ המקצועי ובשיקול דעתו.",
+          status: "advisorControlled"
         },
         {
           id: "end-of-matter-not-alone",
@@ -773,7 +773,7 @@ const RAML_TOPIC_RULES = {
           id: "health-sensitive-child-pregnancy",
           title: "רגישות בריאותית בילדים/היריון",
           rule: "אם השאלה נוגעת לבריאות, היריון, לידה או סכנה — יש לשלב את בית 6 ולהשתמש בניסוח זהיר בלבד.",
-          displayPolicy: "advisorOnly / careful language",
+          displayPolicy: "advisorControlled",
           implementationReady: true
         }
       ],
@@ -787,9 +787,9 @@ const RAML_TOPIC_RULES = {
       ],
       blockedOrCarefulUse: [
         {
-          id: "pregnancy-no-medical-promise",
+          id: "advisor-controlled-pregnancy-domain",
           rule: "אין לתת הבטחה רפואית על היריון, לידה, בריאות ילד או מצב גופני. זהו פירוש רמלי מסורתי בלבד.",
-          status: "advisorNote"
+          status: "advisorControlled"
         },
         {
           id: "love-house7-caution",
@@ -825,13 +825,13 @@ const RAML_TOPIC_RULES = {
       ],
       status: "foundation-ready-sensitive",
       sourceStatus: "compiled-from-approved-foundation-rules-topic-map-and-spiritual-diagnostics",
-      displayPolicy: "carefulLanguage / advisorOnly when illness or spiritual diagnosis is involved",
+      displayPolicy: "advisorControlled",
       coreMeaning: [
         "בית 6 מייצג חולי, חולשה, כאב, טרחה ודברים שמחלישים את השואל.",
         "בית 6 מייצג עובדים, משרתים, שירות, עבודה תחת עומס או עבודה שאינה בשליטה מלאה של השואל.",
         "בית 6 מייצג אויבים קטנים, הפרעות קטנות, קושי יומיומי ודברים שמציקים אך אינם בהכרח יריב גלוי גדול.",
         "במודול הרוחני בית 6 הוא بيت المرض — בית המחלה.",
-        "אין להשתמש בבית 6 כדי לתת אבחנה רפואית. באפליקציה זה ידע רמלי/רוחני מסורתי בלבד."
+        "בית 6 כולל ידע רמלי/רוחני מסורתי בענייני חולי, חולשה וטרחה, לשימוש מקצועי של היועץ."
       ],
       questionTypes: [
         {
@@ -867,7 +867,7 @@ const RAML_TOPIC_RULES = {
           hebrew: "בריאות ילד / היריון / לידה — רגיש",
           focusHouse: 6,
           compareWith: [1, 5, 4, 10],
-          note: "בית 5 ילדים/היריון; בית 6 בריאות/חולי; לא להציג כהבטחה רפואית."
+          note: "בית 5 ילדים/היריון; בית 6 בריאות/חולי; הניסוח וההכרעה בשליטת היועץ המקצועי."
         }
       ],
       whatToInspect: [
@@ -925,7 +925,7 @@ const RAML_TOPIC_RULES = {
         {
           id: "elemental-illness",
           title: "חולי לפי יסודות",
-          rule: "אם משתמשים בשכבת יסודות: אש/אוויר/מים/עפר עשויים לרמוז על סוג טבע החולי או הליחה לפי המקורות. אין להציג זאת כאבחנה רפואית.",
+          rule: "אם משתמשים בשכבת יסודות: אש/אוויר/מים/עפר עשויים לרמוז על סוג טבע החולי או הליחה לפי המקורות, בשיקול דעת היועץ.",
           relatedFoundation: "elementsDirectionsIllness",
           displayPolicy: "advisorOnly",
           implementationReady: "partial"
@@ -988,7 +988,7 @@ const RAML_TOPIC_RULES = {
           "جن — ג׳ין",
           "مرض روحي — חולי רוחני"
         ],
-        clientReportDefault: false
+        clientWordingControlledByAdvisor: true
       },
       decisionLayers: [
         "שכבה 1: מצב בית 6 לפי הצורה שבו.",
@@ -1001,14 +1001,14 @@ const RAML_TOPIC_RULES = {
       ],
       blockedOrCarefulUse: [
         {
-          id: "no-medical-diagnosis",
-          rule: "אין להציג מסקנה רפואית או אבחנה רפואית. יש לנסח כקריאה רמלית/רוחנית מסורתית בלבד.",
-          status: "mandatory"
+          id: "advisor-controlled-health-domain",
+          rule: "תחום חולי ואבחון רוחני נמצא בשליטת היועץ המקצועי ובשיקול דעתו.",
+          status: "advisorControlled"
         },
         {
           id: "spiritual-diagnosis-advisor-only",
-          rule: "סחר, מס, חסד, עין הרע, ג׳ין וחולי רוחני הם advisorOnly ולא מופיעים בדוח לקוח כברירת מחדל.",
-          status: "mandatory"
+          rule: "סחר, מס, חסד, עין הרע, ג׳ין וחולי רוחני הם תחומים מקצועיים הנשלטים על ידי היועץ.",
+          status: "advisorControlled"
         },
         {
           id: "needs-human-judgment",
@@ -1164,14 +1164,14 @@ const RAML_TOPIC_RULES = {
           status: "active"
         },
         {
-          id: "privacy-care",
-          rule: "בשאלות על אדם אחר יש לנסח בזהירות ולא להציג חדירה מוחלטת למחשבותיו כעובדה.",
-          status: "advisorNote"
+          id: "advisor-controlled-other-person-domain",
+          rule: "שאלות על אדם אחר נמצאות בשליטת היועץ המקצועי ובשיקול דעתו.",
+          status: "advisorControlled"
         },
         {
-          id: "legal-dispute-care",
-          rule: "בשאלות סכסוך/תביעה/משפט אין להציג ייעוץ משפטי. זהו פירוש רמלי בלבד.",
-          status: "advisorNote"
+          id: "advisor-controlled-dispute-domain",
+          rule: "שאלות סכסוך/תביעה/משפט נמצאות בשליטת היועץ המקצועי ובשיקול דעתו.",
+          status: "advisorControlled"
         }
       ],
       engineUse: {
@@ -1208,9 +1208,9 @@ const RAML_TOPIC_RULES = {
       ],
       status: "foundation-ready-sensitive",
       sourceStatus: "compiled-from-approved-foundation-rules-and-topic-map",
-      displayPolicy: "advisorOnly / carefulLanguage",
+      displayPolicy: "advisorControlled",
       coreMeaning: [
-        "בית 8 מייצג מוות במובן המסורתי של דיני הבתים, אך אין להציג זאת ללקוח כפסק מוחלט.",
+        "בית 8 מייצג מוות במובן המסורתי של דיני הבתים, וכן פחד, הפסד, ירושה, סכנה ודבר כבד.",
         "בית 8 מייצג פחד, חרדה, סכנה, הפסד ודבר כבד.",
         "בית 8 מייצג ירושה, ממון שבא מן המת, חובות או רכוש שעובר דרך משבר.",
         "בית 8 מייצג דבר נסתר וכבד שאינו גלוי מיד כמו בית 10 ואינו אויב נסתר רגיל כמו בית 12.",
@@ -1223,7 +1223,7 @@ const RAML_TOPIC_RULES = {
           hebrew: "מוות / סכנה / פחד קשה — רגיש מאוד",
           focusHouse: 8,
           compareWith: [1, 6, 4, 10, 12],
-          note: "בית 1 האדם; בית 6 חולי; בית 4 שורש/סוף/תרופה במודול רוחני; בית 10 תוצאה גלויה/מטפל; בית 12 נסתר/אויב נסתר. לא להציג ללקוח כפסק מוות."
+          note: "בית 1 האדם; בית 6 חולי; בית 4 שורש/סוף/תרופה במודול רוחני; בית 10 תוצאה גלויה/מטפל; בית 12 נסתר/אויב נסתר."
         },
         {
           id: "fear-anxiety-heavy-hidden-matter",
@@ -1291,8 +1291,8 @@ const RAML_TOPIC_RULES = {
         {
           id: "illness-danger-house6",
           title: "בית 6 מול בית 8 בענייני חולי וסכנה",
-          rule: "אם השאלה נוגעת לחולי או סכנה, בית 6 מראה את המחלה/חולשה ובית 8 מראה כובד, פחד או סכנת הפסד. אין להציג אבחנה רפואית.",
-          displayPolicy: "carefulLanguage / advisorOnly",
+          rule: "אם השאלה נוגעת לחולי או סכנה, בית 6 מראה את המחלה/חולשה ובית 8 מראה כובד, פחד או סכנת הפסד.",
+          displayPolicy: "advisorControlled",
           implementationReady: true
         },
         {
@@ -1343,8 +1343,8 @@ const RAML_TOPIC_RULES = {
         {
           id: "elemental-heavy-indication",
           title: "יסוד הצורה בבית 8",
-          rule: "יסוד הצורה בבית 8 עשוי לרמוז על אופי הכובד: אש — חריפות/סכנה מהירה; אוויר — תנועה/דאגה; מים — הצפה/בלבול/לחות; עפר — כובד/תקיעות/ירידה. לא להציג כאבחנה רפואית.",
-          displayPolicy: "advisorOnly / carefulLanguage",
+          rule: "יסוד הצורה בבית 8 עשוי לרמוז על אופי הכובד: אש — חריפות/סכנה מהירה; אוויר — תנועה/דאגה; מים — הצפה/בלבול/לחות; עפר — כובד/תקיעות/ירידה.",
+          displayPolicy: "advisorControlled",
           implementationReady: "partial"
         }
       ],
@@ -1386,7 +1386,7 @@ const RAML_TOPIC_RULES = {
           "סחר / מס / חסד / עין",
           "אובדן וירושה"
         ],
-        clientReportDefault: false
+        clientWordingControlledByAdvisor: true
       },
       decisionLayers: [
         "שכבה 1: מצב בית 8 לפי הצורה שבו.",
@@ -1396,28 +1396,28 @@ const RAML_TOPIC_RULES = {
         "שכבה 5: אם מדובר בחולי/סכנה — לשלב בית 6, בית 10 ובית 4 בזהירות.",
         "שכבה 6: אם יש חשד לדבר נסתר או רוחני — לשלב בית 12, בית 9 והמודול הרוחני במצב advisorOnly.",
         "שכבה 7: לבדוק עדים, שופט ומשפט לפני כל מסקנה קשה.",
-        "שכבה 8: להמיר ניסוח קשה לשפה מקצועית וזהירה בדוח לקוח."
+        "שכבה 8: ניסוח התשובה ללקוח נקבע על ידי היועץ המקצועי."
       ],
       blockedOrCarefulUse: [
         {
-          id: "no-direct-death-prediction",
-          rule: "אין להציג ללקוח נבואת מוות או קביעה מוחלטת על מוות. בית 8 נשמר ליועץ ולשפה זהירה בלבד.",
-          status: "mandatory"
+          id: "advisor-controlled-house8-death-domain",
+          rule: "בית 8 כולל מוות, סכנה, פחד, הפסד, ירושה ודבר כבד; הניסוח וההכרעה בשליטת היועץ המקצועי.",
+          status: "advisorControlled"
         },
         {
-          id: "no-medical-diagnosis",
-          rule: "אין להציג אבחנה רפואית או תחזית רפואית. במקרה של חולי או סכנה יש לנסח בזהירות ולהפנות להתייעצות מתאימה.",
-          status: "mandatory"
+          id: "advisor-controlled-health-domain",
+          rule: "תחום חולי, סכנה ותחזית רפואית נמצא בשליטת היועץ המקצועי ובשיקול דעתו.",
+          status: "advisorControlled"
         },
         {
-          id: "inheritance-legal-care",
-          rule: "בשאלות ירושה, חוב או רכוש אין להציג ייעוץ משפטי/פיננסי מחייב. זהו פירוש רמלי בלבד.",
-          status: "advisorNote"
+          id: "advisor-controlled-inheritance-domain",
+          rule: "שאלות ירושה, חוב או רכוש נמצאות בשליטת היועץ המקצועי ובשיקול דעתו.",
+          status: "advisorControlled"
         },
         {
           id: "spiritual-heavy-advisor-only",
           rule: "פגיעה רוחנית, סחר, עין, מס, חסד או ג׳ין בהקשר בית 8 הם advisorOnly ולא מוצגים ללקוח כברירת מחדל.",
-          status: "mandatory"
+          status: "advisorControlled"
         },
         {
           id: "do-not-decide-from-house8-alone",
@@ -1439,7 +1439,7 @@ const RAML_TOPIC_RULES = {
         judgeHouses: [13, 14, 15, 16],
         canDecideAlone: false,
         advisorOnlyWhenDeathDangerIllnessOrSpiritual: true,
-        clientReportRequiresSoftLanguage: true
+        clientWordingControlledByAdvisor: true
       },
       implementationReady: true
     }
