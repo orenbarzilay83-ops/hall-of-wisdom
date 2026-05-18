@@ -28,35 +28,35 @@ const HAWI_FIGURE_TRANSITS_INDEX = {
       arabicName: "النصرة الخارجة",
       hebrewName: "נצרה ח׳ארג׳ה",
       file: "./hawi-figure-nusra-kharija.js",
-      extractionStatus: "next"
+      extractionStatus: "file-created-ready"
     },
     {
       id: "nusra-dakhila",
       arabicName: "النصرة الداخلة",
       hebrewName: "נצרה דאחלה",
       file: "./hawi-figure-nusra-dakhila.js",
-      extractionStatus: "not-started"
+      extractionStatus: "file-created-ready"
     },
     {
       id: "qabd-dakhil",
       arabicName: "القبض الداخل",
       hebrewName: "קבץ דאחל",
       file: "./hawi-figure-qabd-dakhil.js",
-      extractionStatus: "not-started"
+      extractionStatus: "file-created-ready"
     },
     {
       id: "qabd-kharij",
       arabicName: "القبض الخارج",
       hebrewName: "קבץ ח׳ארג׳",
       file: "./hawi-figure-qabd-kharij.js",
-      extractionStatus: "not-started"
+      extractionStatus: "file-created-ready"
     },
     {
       id: "tariq",
       arabicName: "الطريق",
       hebrewName: "הדרך",
       file: "./hawi-figure-tariq.js",
-      extractionStatus: "not-started"
+      extractionStatus: "next"
     },
     {
       id: "jamaa",
