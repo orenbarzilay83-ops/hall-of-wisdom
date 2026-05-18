@@ -84,56 +84,56 @@ const HAWI_FIGURE_TRANSITS_INDEX = {
       arabicName: "الحيان",
       hebrewName: "חיאן",
       file: "./hawi-figure-hayyan.js",
-      extractionStatus: "next"
+      extractionStatus: "file-created-ready"
     },
     {
       id: "nakis",
       arabicName: "النكيس / المنكوس",
       hebrewName: "אנקיס / המהופך",
       file: "./hawi-figure-nakis.js",
-      extractionStatus: "not-started"
+      extractionStatus: "file-created-ready"
     },
     {
       id: "naqi-khad",
       arabicName: "نقي الخد",
       hebrewName: "נקי אל־חד",
       file: "./hawi-figure-naqi-khad.js",
-      extractionStatus: "not-started"
+      extractionStatus: "file-created-ready"
     },
     {
       id: "judla",
       arabicName: "الجودلة",
       hebrewName: "ג׳ודלה",
       file: "./hawi-figure-judla.js",
-      extractionStatus: "not-started"
+      extractionStatus: "file-created-ready"
     },
     {
       id: "humra",
       arabicName: "الحمرة",
       hebrewName: "חומרה",
       file: "./hawi-figure-humra.js",
-      extractionStatus: "not-started"
+      extractionStatus: "file-created-ready"
     },
     {
       id: "bayad",
       arabicName: "البياض",
       hebrewName: "ביאד",
       file: "./hawi-figure-bayad.js",
-      extractionStatus: "not-started"
+      extractionStatus: "file-created-ready"
     },
     {
       id: "ataba-dakhila",
       arabicName: "العتبة الداخلة",
       hebrewName: "עתבה דאחלה",
       file: "./hawi-figure-ataba-dakhila.js",
-      extractionStatus: "not-started"
+      extractionStatus: "file-created-ready"
     },
     {
       id: "ataba-kharija",
       arabicName: "العتبة الخارجة",
       hebrewName: "עתבה ח׳ארג׳ה",
       file: "./hawi-figure-ataba-kharija.js",
-      extractionStatus: "not-started"
+      extractionStatus: "file-created-ready"
     }
   ],
   notes: [
