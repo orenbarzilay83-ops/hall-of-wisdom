@@ -56,35 +56,35 @@ const HAWI_FIGURE_TRANSITS_INDEX = {
       arabicName: "الطريق",
       hebrewName: "הדרך",
       file: "./hawi-figure-tariq.js",
-      extractionStatus: "next"
+      extractionStatus: "file-created-ready"
     },
     {
       id: "jamaa",
       arabicName: "الجماعة",
       hebrewName: "ג׳מאעה",
       file: "./hawi-figure-jamaa.js",
-      extractionStatus: "not-started"
+      extractionStatus: "file-created-ready"
     },
     {
       id: "ijtima",
       arabicName: "الاجتماع",
       hebrewName: "אג׳תמאע",
       file: "./hawi-figure-ijtima.js",
-      extractionStatus: "not-started"
+      extractionStatus: "file-created-ready"
     },
     {
       id: "aqla",
       arabicName: "العقلة",
       hebrewName: "עקלה",
       file: "./hawi-figure-aqla.js",
-      extractionStatus: "not-started"
+      extractionStatus: "file-created-ready"
     },
     {
       id: "hayyan",
       arabicName: "الحيان",
       hebrewName: "חיאן",
       file: "./hawi-figure-hayyan.js",
-      extractionStatus: "not-started"
+      extractionStatus: "next"
     },
     {
       id: "nakis",
