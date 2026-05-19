@@ -2,6 +2,10 @@ import { HAWI_METADATA } from './hawi-metadata.js';
 import {
   HAWI_FOUNDATIONS,
   getHawiHouse,
+  HAWI_FIGURE_NAMES,
+  HAWI_FIGURE_NAMES_BY_ID,
+  getHawiFigureCanonicalName,
+  getHawiFigureHebrewName,
 } from './foundations/hawi-foundations.js';
 import {
   HAWI_QUESTION_RULES_LIST,
@@ -57,6 +61,10 @@ export {
   HAWI_METADATA,
   HAWI_FOUNDATIONS,
   getHawiHouse,
+  HAWI_FIGURE_NAMES,
+  HAWI_FIGURE_NAMES_BY_ID,
+  getHawiFigureCanonicalName,
+  getHawiFigureHebrewName,
   HAWI_QUESTION_RULES_LIST,
   HAWI_QUESTION_RULES_BY_ID,
   HAWI_FIGURE_TRANSITS_LIST,
