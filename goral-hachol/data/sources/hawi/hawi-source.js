@@ -1,5 +1,8 @@
 import { HAWI_METADATA } from './hawi-metadata.js';
-import { HAWI_FOUNDATIONS } from './foundations/hawi-foundations.js';
+import {
+  HAWI_FOUNDATIONS,
+  getHawiHouse,
+} from './foundations/hawi-foundations.js';
 import {
   HAWI_QUESTION_RULES_LIST,
   HAWI_QUESTION_RULES_BY_ID,
@@ -33,6 +36,7 @@ export const HAWI_SOURCE = {
 export {
   HAWI_METADATA,
   HAWI_FOUNDATIONS,
+  getHawiHouse,
   HAWI_QUESTION_RULES_LIST,
   HAWI_QUESTION_RULES_BY_ID,
   HAWI_FIGURE_TRANSITS_LIST,
