@@ -89,6 +89,8 @@ export const HAWI_FIGURE_STATES_BY_ID = Object.fromEntries(
   HAWI_FIGURE_STATES_LIST.map((figureState) => [figureState.id, figureState])
 );
 
+export const HAWI_FIGURE_STATES_AUDIT = HAWI_FIGURE_STATES_SOURCE_AUDIT;
+
 export const HAWI_FIGURE_STATES_BY_FIGURE_ID = Object.fromEntries(
   HAWI_FIGURE_STATES_LIST.flatMap((figureState) => {
     const entries = [[figureState.figureId, figureState]];
@@ -112,6 +114,11 @@ export function getHawiFigureState(id) {
     null
   );
 }
+
+export const HAWI_FIGURE_STATES_META = {
+  audit: HAWI_FIGURE_STATES_AUDIT,
+  getAudit: getHawiFigureStateAudit,
+};
 
 export function getHawiFigureStateHouse(id, house) {
   const figureState = getHawiFigureState(id);
@@ -191,6 +198,12 @@ export default {
   HAWI_FIGURE_STATES_BY_FIGURE_ID,
 };
 
+
+import {
+  HAWI_FIGURE_STATES_SOURCE_AUDIT,
+  getHawiFigureStateAudit,
+} from './hawi-figure-states-source-audit.js';
+
 if (typeof module !== 'undefined') {
   module.exports = {
     HAWI_FIGURE_STATES_LIST,
@@ -198,3 +211,5 @@ if (typeof module !== 'undefined') {
     HAWI_FIGURE_STATES_BY_FIGURE_ID,
   };
 }
+
+export { getHawiFigureStateAudit };
