@@ -125,14 +125,84 @@ export const HAWI_SPIRITUAL_DIAGNOSTICS = {
     },
 
     {
+      id: 'spiritual-pdf37-38-talismans-incense-name-extraction',
+      category: 'talismans-incense-name-extraction',
+      arabicTerms: ['صور', 'طلسمات', 'بخورات', 'استخراج اسم'],
+      hebrewTerms: ['צורות מיסטיות', 'טליסמאות', 'בכור / קטורת', 'חילוץ שם'],
+      sourceLocation: {
+        sourceType: 'full-book-page-index',
+        pdfPages: ['PDF document 37.pdf', 'PDF document 38.pdf'],
+        relatedTopics: ['state', 'talismans', 'letters-names', 'spiritual-mystical-context']
+      },
+      sourceStatus: 'found-in-full-book-index-needs-source-review-before-engine-use',
+      appDisplayHebrew:
+        'במיפוי הספר מופיע חומר מיסטי מתקדם על צורות, טליסמאות, בכורות/קטורות וחילוץ שם. זהו ידע שצריך להישמר באפליקציה כשכבת ידע עתידית, אך לא להפעיל במנוע לפני בדיקת מקור מדויקת.',
+      caution:
+        'לא להשתמש כחוק פסיקה פעיל עדיין. החומר הגיע ממיפוי OCR/אינדקס עמודים ודורש בדיקת מקור לפני הפעלה.'
+    },
+
+    {
+      id: 'spiritual-pdf52-56-hidden-knowledge-kahana-raml-stars',
+      category: 'hidden-knowledge-divination',
+      arabicTerms: ['علم المغيبات', 'الكهانة', 'الرمل', 'النجوم', 'الحكمة'],
+      hebrewTerms: ['ידיעת נסתרות', 'חיזוי / קהאנא', 'רמל', 'כוכבים', 'חכמה'],
+      sourceLocation: {
+        sourceType: 'full-book-page-index',
+        pdfPages: ['PDF document 52.pdf', 'PDF document 55.pdf', 'PDF document 56.pdf'],
+        relatedTopics: ['birth-nativity', 'spiritual-mystical-context', 'hidden-knowledge']
+      },
+      sourceStatus: 'found-in-full-book-index-needs-source-review-before-engine-use',
+      appDisplayHebrew:
+        'שער המולד במיפוי הספר כולל ידיעת נסתרות, קהאנא, רמל, כוכבים וחכמה. בתצוגה יהודית אפשר להציג זאת כחכמה רוחנית, ידיעת נסתרות, רמל וכוכבים — בלי למחוק את לשון המקור.',
+      religiousAdaptation:
+        'כאשר המקור מדבר על אנשי דת או מדעי נסתר, בתצוגה ליהודי דתי ניתן להוסיף מקבילה: רב, מקובל, חכם, ספרי קודש, תנ״ך או ספר תורני — לפי ההקשר.',
+      caution:
+        'זהו חומר עתידי של שער מולד/אדם, לא דיני שאלה רגילים. לא לערבב עם מנוע השאלה הבסיסי.'
+    },
+
+    {
+      id: 'spiritual-pdf52-58-sihr-talismans-science-like-magic',
+      category: 'magic-talismans-principle',
+      arabicTerms: ['السحر', 'الطلسمات', 'العلم مثل السحر'],
+      hebrewTerms: ['כישוף', 'טליסמאות', 'המדע דומה לכישוף'],
+      sourceLocation: {
+        sourceType: 'full-book-page-index',
+        pdfPages: ['PDF document 52.pdf', 'PDF document 55.pdf', 'PDF document 58.pdf'],
+        relatedTopics: ['birth-nativity', 'siḥr', 'talismans', 'teacher-transmission', 'symbols']
+      },
+      sourceStatus: 'found-in-full-book-index-needs-source-review-before-engine-use',
+      appDisplayHebrew:
+        'במיפוי שער המולד מופיעים כישוף, טליסמאות, והמשפט שהמדע הזה “כמו סחר/כישוף”, בהקשר של הבנת טבעים, סמלים ורמזים. זה חומר יסוד מתקדם שחובה לשמר.',
+      caution:
+        'לא לפרש את המשפט לבד ולא להרחיב מעבר למקור. יש לשמור אותו כעיקרון מקור ולבדוק צילום/מקור לפני ניסוח סופי.'
+    },
+
+    {
+      id: 'spiritual-pdf61-62-elements-planets-weather-yearly-omens',
+      category: 'elements-planets-yearly-omens',
+      arabicTerms: ['النار', 'الهواء', 'الماء', 'التراب', 'القمر', 'زحل', 'المريخ', 'المشتري', 'الزهرة', 'عطارد'],
+      hebrewTerms: ['אש', 'אוויר', 'מים', 'עפר', 'ירח', 'שבתאי', 'מאדים', 'צדק', 'ונוס', 'מרקורי'],
+      sourceLocation: {
+        sourceType: 'full-book-page-index',
+        pdfPages: ['PDF document 61.pdf', 'PDF document 62.pdf'],
+        relatedTopics: ['yearly-forecast', 'rain', 'weather', 'elements', 'planetary-correspondences']
+      },
+      sourceStatus: 'found-in-full-book-index-needs-source-review-before-engine-use',
+      appDisplayHebrew:
+        'שער טאלע השנה ושער הגשם מציגים מערכת של יסודות, כוכבים, ירח, גשם, קור, שלג, רוחות, מלחמות ומחלות. זו שכבת ידע עתידית לחיזוי שנתי/טבעי ולא דיני שאלה פרטית.',
+      caution:
+        'לא להפעיל במודול השאלות הרגיל. זה דורש תת־מודול עתידי נפרד.'
+    },
+
+    {
       id: 'spiritual-missing-eye-jinn-mass-bukhoor',
       category: 'missing-requires-source-extraction',
-      arabicTerms: ['عين', 'جن', 'مس', 'بخور', 'علم المغيبات'],
-      hebrewTerms: ['עין הרע', 'ג׳ין', 'אחיזה/פגיעה רוחנית', 'בכור/קטורת', 'ידיעת נסתרות'],
+      arabicTerms: ['عين', 'جن', 'مس'],
+      hebrewTerms: ['עין הרע', 'ג׳ין', 'אחיזה/פגיעה רוחנית'],
       sourceLocation: null,
       sourceStatus: 'not-yet-found-in-current-code-search',
       appDisplayHebrew:
-        'המונחים האלה חשובים לאבחון רוחני, אבל אינם קיימים עדיין בצורה מסודרת בקבצי הקוד לפי החיפוש הנוכחי. יש לאתר אותם בספר המלא או במיפוי העמודים לפני הכנסת דין.',
+        'המונחים האלה חשובים לאבחון רוחני, אבל עדיין לא נמצאו אצלנו כמקור מפורש ומסודר לפי החיפוש והמיפוי הנוכחי. יש לאתר אותם בספר המלא לפני הכנסת דין.',
       caution:
         'לא להמציא. אם המקור לא מביא דין מפורש — לסמן not-explicit-in-source.'
     }
