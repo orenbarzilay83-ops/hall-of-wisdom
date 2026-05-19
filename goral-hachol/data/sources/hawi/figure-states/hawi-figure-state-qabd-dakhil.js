@@ -10,7 +10,7 @@ export const HAWI_FIGURE_STATE_QABD_DAKHIL = {
   sourceSectionHebrew: 'שער מצבי הצורות בבתים — מצב הקבץ הפנימי בשישה־עשר הבתים',
   sourcePages: ['PDF document 45.pdf'],
   sourceType: 'full-book-page-index',
-  extractionStatus: 'source-mapped-needs-photo-review',
+  extractionStatus: 'source-audited-from-drive-pdf-45-51',
 
   noteHebrew:
     'זה אינו פירוש מעבר הצורה הרגיל, אלא שכבה נוספת: מצב הצורה בבית — נاطق/صامت, سعد/نحس, חזק/חלש, מתקן/מקלקל. החומר נלקח ממיפוי PDF 45 ודורש בדיקת מקור/צילום לפני הפעלה מלאה במנוע.',
@@ -201,7 +201,7 @@ export const HAWI_FIGURE_STATE_QABD_DAKHIL = {
     explicitCoverage: '14/16',
     notExplicit: [14, 15],
     sourcePages: ['PDF document 45.pdf'],
-    status: 'initial-source-mapped'
+    status: 'source-audited-from-drive-pdf-45-51'
   }
 };
 

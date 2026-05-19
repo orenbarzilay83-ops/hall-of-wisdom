@@ -10,7 +10,7 @@ export const HAWI_FIGURE_STATE_NUSRA_DAKHILA = {
   sourceSectionHebrew: 'שער מצבי הצורות בבתים — כבוד נכנס בשישה־עשר הבתים',
   sourcePages: ['PDF document 49.pdf'],
   sourceType: 'full-book-page-index',
-  extractionStatus: 'source-mapped-needs-photo-review',
+  extractionStatus: 'source-audited-from-drive-pdf-45-51',
   noteHebrew: 'מצב הצורה כבוד נכנס / النصرة الداخلة בכל בית. נלקח ממיפוי PDF 49 ודורש בדיקת צילום לפני הפעלה מלאה במנוע.',
   states: [
     { house: 1, arabicText: ['في الأول صامت سعد يتعب القلب'], hebrewTranslation: ['בבית הראשון: שותק וטוב; מעייף את הלב.'], speakingState: 'silent', fortuneState: 'benefic-heart-fatigue', effectHebrew: 'טוב שיש בו עייפות/טרדת לב.', sourceStatus: 'sourceMapped' },
@@ -30,7 +30,7 @@ export const HAWI_FIGURE_STATE_NUSRA_DAKHILA = {
     { house: 15, arabicText: ['وفي الخامس عشر ناطق سعيد مدبر في غاية القوة في كل شيء ترومه'], hebrewTranslation: ['בבית החמישה־עשר: מדבר, טוב ומסדר; בתכלית הכוח בכל דבר שאתה מבקש.'], speakingState: 'speaking', fortuneState: 'benefic-very-strong', effectHebrew: 'כוח גדול מאוד בתוצאה ובמבוקש.', sourceStatus: 'sourceMapped' },
     { house: 16, arabicText: ['وفي السادس عشر ناطق يصلح العواقب'], hebrewTranslation: ['בבית השישה־עשר: מדבר; מתקן את האחריות/האחרית.'], speakingState: 'speaking', fortuneState: 'benefic-outcome', effectHebrew: 'תיקון אחרית הדבר.', sourceStatus: 'sourceMapped' }
   ],
-  summary: { housesLength: 16, explicitCoverage: '16/16', notExplicit: [], sourcePages: ['PDF document 49.pdf'], status: 'initial-source-mapped' }
+  summary: { housesLength: 16, explicitCoverage: '16/16', notExplicit: [], sourcePages: ['PDF document 49.pdf'], status: 'source-audited-from-drive-pdf-45-51' }
 };
 
 export function getHawiFigureStateNusraDakhilaHouse(house) {

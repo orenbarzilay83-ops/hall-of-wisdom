@@ -10,7 +10,7 @@ export const HAWI_FIGURE_STATE_ATABA_DAKHILA = {
   sourceSectionHebrew: 'שער מצבי הצורות בבתים — סף נכנס בשישה־עשר הבתים',
   sourcePages: ['PDF document 50.pdf'],
   sourceType: 'full-book-page-index',
-  extractionStatus: 'source-mapped-needs-photo-review',
+  extractionStatus: 'source-audited-from-drive-pdf-45-51',
   noteHebrew: 'מצב הצורה סף נכנס / العتبة الداخلة. במיפוי הנוכחי בתים 15–16 אינם קיימים בקריאה, ואין להשלים מסברה.',
   states: [
     { house: 1, arabicText: ['في الأول صامت سعد قوي متمكن سخي'], hebrewTranslation: ['בבית הראשון: שותק, טוב, חזק, מבוסס ונדיב.'], speakingState: 'silent', fortuneState: 'benefic-strong-established', effectHebrew: 'טוב, כוח, יציבות ונדיבות.', sourceStatus: 'sourceMapped' },
@@ -30,7 +30,7 @@ export const HAWI_FIGURE_STATE_ATABA_DAKHILA = {
     { house: 15, arabicText: [], hebrewTranslation: ['בית 15 לא נמצא בקריאה הנוכחית עבור סף נכנס.'], speakingState: null, fortuneState: null, effectHebrew: 'אין להשלים מסברה.', sourceStatus: 'not-explicit-in-current-page-index' },
     { house: 16, arabicText: [], hebrewTranslation: ['בית 16 לא נמצא בקריאה הנוכחית עבור סף נכנס.'], speakingState: null, fortuneState: null, effectHebrew: 'אין להשלים מסברה.', sourceStatus: 'not-explicit-in-current-page-index' }
   ],
-  summary: { housesLength: 16, explicitCoverage: '14/16', notExplicit: [15, 16], sourcePages: ['PDF document 50.pdf'], status: 'initial-source-mapped' }
+  summary: { housesLength: 16, explicitCoverage: '14/16', notExplicit: [15, 16], sourcePages: ['PDF document 50.pdf'], status: 'source-audited-from-drive-pdf-45-51' }
 };
 
 export function getHawiFigureStateAtabaDakhilaHouse(house) {

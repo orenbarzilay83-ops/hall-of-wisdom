@@ -10,7 +10,7 @@ export const HAWI_FIGURE_STATE_JUDLA = {
   sourceSectionHebrew: 'שער מצבי הצורות בבתים — נלחם בשישה־עשר הבתים',
   sourcePages: ['PDF document 46.pdf'],
   sourceType: 'full-book-page-index',
-  extractionStatus: 'source-mapped-needs-photo-review',
+  extractionStatus: 'source-audited-from-drive-pdf-45-51',
   noteHebrew: 'מצב הצורה נלחם / الجودلة בכל בית. בית 15 מסומן במקור: لم يظهر — לא הופיע, ואין להשלים מסברה.',
   states: [
     { house: 1, arabicText: ['في الأول ناطق نحس مدبر إن تكرر في الرمل وإن لم يتكرر فهو سعيد متمكن'], hebrewTranslation: ['בבית הראשון: מדבר, נחס ומסדר אם הוא חוזר ברמל; ואם אינו חוזר — הוא טוב ומבוסס.'], speakingState: 'speaking', fortuneState: 'conditional', effectHebrew: 'אם חוזר — נחס ומסדר; אם אינו חוזר — טוב ומבוסס.', sourceStatus: 'sourceMapped' },
@@ -30,7 +30,7 @@ export const HAWI_FIGURE_STATE_JUDLA = {
     { house: 15, arabicText: ['لم يظهر'], hebrewTranslation: ['בית 15: לא הופיע במקור לפי המיפוי הנוכחי.'], speakingState: null, fortuneState: null, effectHebrew: 'אין להשלים מסברה.', sourceStatus: 'not-explicit-in-current-page-index' },
     { house: 16, arabicText: ['وفي السادس عشر قوي جيد'], hebrewTranslation: ['בבית השישה־עשר: חזק וטוב.'], speakingState: null, fortuneState: 'benefic-strong', effectHebrew: 'כוח וטוב.', sourceStatus: 'sourceMapped' }
   ],
-  summary: { housesLength: 16, explicitCoverage: '15/16', notExplicit: [15], sourcePages: ['PDF document 46.pdf'], status: 'initial-source-mapped' }
+  summary: { housesLength: 16, explicitCoverage: '15/16', notExplicit: [15], sourcePages: ['PDF document 46.pdf'], status: 'source-audited-from-drive-pdf-45-51' }
 };
 
 export function getHawiFigureStateJudlaHouse(house) {

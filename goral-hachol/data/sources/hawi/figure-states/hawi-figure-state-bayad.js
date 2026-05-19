@@ -10,7 +10,7 @@ export const HAWI_FIGURE_STATE_BAYAD = {
   sourceSectionHebrew: 'שער מצבי הצורות בבתים — לבן בשישה־עשר הבתים',
   sourcePages: ['PDF document 48.pdf'],
   sourceType: 'full-book-page-index',
-  extractionStatus: 'source-mapped-needs-photo-review',
+  extractionStatus: 'source-audited-from-drive-pdf-45-51',
   noteHebrew: 'מצב הצורה לבן / البياض בכל בית. בית 15 לא הופיע במיפוי הנוכחי, ואין להשלים מסברה.',
   states: [
     { house: 1, arabicText: ['في الأول صامت سعيد قوي متمكن'], hebrewTranslation: ['בבית הראשון: שותק, טוב, חזק ומבוסס.'], speakingState: 'silent', fortuneState: 'benefic-strong-established', effectHebrew: 'טוב, כוח ויציבות.', sourceStatus: 'sourceMapped' },
@@ -30,7 +30,7 @@ export const HAWI_FIGURE_STATE_BAYAD = {
     { house: 15, arabicText: [], hebrewTranslation: ['בית 15 לא הופיע במיפוי הנוכחי עבור לבן.'], speakingState: null, fortuneState: null, effectHebrew: 'אין להשלים מסברה.', sourceStatus: 'not-explicit-in-current-page-index' },
     { house: 16, arabicText: ['وفي السادس عشر صامت نحس مدبر جميع أفعاله'], hebrewTranslation: ['בבית השישה־עשר: שותק, נחס, וכל פעולותיו מסודרות/מנוהלות.'], speakingState: 'silent', fortuneState: 'malefic', effectHebrew: 'אחרית נחסית וכל פעולותיה מנוהלות באותה איכות.', sourceStatus: 'sourceMapped' }
   ],
-  summary: { housesLength: 16, explicitCoverage: '15/16', notExplicit: [15], sourcePages: ['PDF document 48.pdf'], status: 'initial-source-mapped' }
+  summary: { housesLength: 16, explicitCoverage: '15/16', notExplicit: [15], sourcePages: ['PDF document 48.pdf'], status: 'source-audited-from-drive-pdf-45-51' }
 };
 
 export function getHawiFigureStateBayadHouse(house) {

@@ -10,7 +10,7 @@ export const HAWI_FIGURE_STATE_HUMRA = {
   sourceSectionHebrew: 'שער מצבי הצורות בבתים — אדום בשישה־עשר הבתים',
   sourcePages: ['PDF document 47.pdf', 'PDF document 48.pdf'],
   sourceType: 'full-book-page-index',
-  extractionStatus: 'source-mapped-needs-photo-review',
+  extractionStatus: 'source-audited-from-drive-pdf-45-51',
   noteHebrew: 'מצב הצורה אדום / الحمرة בכל בית. בית 15 לא הופיע במיפוי הנוכחי, ואין להשלים מסברה.',
   states: [
     { house: 1, arabicText: ['في الأول نحس مدبر الفعال'], hebrewTranslation: ['בבית הראשון: נחס, מסדר/מנהל את הפעולות.'], speakingState: null, fortuneState: 'malefic', effectHebrew: 'פעולה נחסית ומסדרת.', sourceStatus: 'sourceMapped' },
@@ -30,7 +30,7 @@ export const HAWI_FIGURE_STATE_HUMRA = {
     { house: 15, arabicText: [], hebrewTranslation: ['בית 15 לא הופיע במיפוי הנוכחי עבור אדום.'], speakingState: null, fortuneState: null, effectHebrew: 'אין להשלים מסברה.', sourceStatus: 'not-explicit-in-current-page-index' },
     { house: 16, arabicText: ['وفي السادس عشر صامت سعيد يصلح ويفسد'], hebrewTranslation: ['בבית השישה־עשר: שותק וטוב; מתקן ומקלקל.'], speakingState: 'silent', fortuneState: 'mixed', effectHebrew: 'תיקון וקלקול יחד באחרית העניין.', sourceStatus: 'sourceMapped' }
   ],
-  summary: { housesLength: 16, explicitCoverage: '15/16', notExplicit: [15], sourcePages: ['PDF document 47.pdf', 'PDF document 48.pdf'], status: 'initial-source-mapped' }
+  summary: { housesLength: 16, explicitCoverage: '15/16', notExplicit: [15], sourcePages: ['PDF document 47.pdf', 'PDF document 48.pdf'], status: 'source-audited-from-drive-pdf-45-51' }
 };
 
 export function getHawiFigureStateHumraHouse(house) {

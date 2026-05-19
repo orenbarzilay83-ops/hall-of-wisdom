@@ -10,7 +10,7 @@ export const HAWI_FIGURE_STATE_TARIQ = {
   sourceSectionHebrew: 'שער מצבי הצורות בבתים — דרך בשישה־עשר הבתים',
   sourcePages: ['PDF document 49.pdf', 'PDF document 50.pdf'],
   sourceType: 'full-book-page-index',
-  extractionStatus: 'source-mapped-needs-photo-review',
+  extractionStatus: 'source-audited-from-drive-pdf-45-51',
   noteHebrew: 'מצב הצורה דרך / الطريق. בית 1 נקטע בסוף PDF 49 וממשיך ב־PDF 50, ובית 8 מסומן במיפוי: لم يذكر.',
   states: [
     { house: 1, arabicText: ['في الأول نحس ناطق مدبر يحير'], hebrewTranslation: ['בבית הראשון: נחס, מדבר ומסדר; מבלבל.'], speakingState: 'speaking', fortuneState: 'malefic-confusing', effectHebrew: 'בלבול ונחס בפתיחת העניין.', sourceStatus: 'sourceMapped' },
@@ -30,7 +30,7 @@ export const HAWI_FIGURE_STATE_TARIQ = {
     { house: 15, arabicText: ['وفي الخامس عشر ناطق يصلح ويفسد'], hebrewTranslation: ['בבית החמישה־עשר: מדבר; מתקן ומקלקל.'], speakingState: 'speaking', fortuneState: 'mixed', effectHebrew: 'תיקון וקלקול יחד בתוצאה.', sourceStatus: 'sourceMapped' },
     { house: 16, arabicText: ['وفي السادس عشر ناطق مليح الفعل'], hebrewTranslation: ['בבית השישה־עשר: מדבר, טוב/נאה בפעולתו.'], speakingState: 'speaking', fortuneState: 'benefic', effectHebrew: 'פעולה טובה באחרית העניין.', sourceStatus: 'sourceMapped' }
   ],
-  summary: { housesLength: 16, explicitCoverage: '15/16', notExplicit: [8], sourcePages: ['PDF document 49.pdf', 'PDF document 50.pdf'], status: 'initial-source-mapped' }
+  summary: { housesLength: 16, explicitCoverage: '15/16', notExplicit: [8], sourcePages: ['PDF document 49.pdf', 'PDF document 50.pdf'], status: 'source-audited-from-drive-pdf-45-51' }
 };
 
 export function getHawiFigureStateTariqHouse(house) {

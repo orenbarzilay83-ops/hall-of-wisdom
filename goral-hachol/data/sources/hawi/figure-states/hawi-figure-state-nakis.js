@@ -10,7 +10,7 @@ export const HAWI_FIGURE_STATE_NAKIS = {
   sourceSectionHebrew: 'שער מצבי הצורות בבתים — שפל ראש בשישה־עשר הבתים',
   sourcePages: ['PDF document 47.pdf'],
   sourceType: 'full-book-page-index',
-  extractionStatus: 'source-mapped-needs-photo-review',
+  extractionStatus: 'source-audited-from-drive-pdf-45-51',
   noteHebrew: 'מצב הצורה שפל ראש / النكيس בכל בית. בית 15 לא הופיע במיפוי הנוכחי, ואין להשלים מסברה.',
   states: [
     { house: 1, arabicText: ['في الأول صامت سعد به قوى كما تريد'], hebrewTranslation: ['בבית הראשון: שותק, טוב, ויש בו כוח כפי שתרצה.'], speakingState: 'silent', fortuneState: 'benefic-strong', effectHebrew: 'כוח וטוב לפי המבוקש.', sourceStatus: 'sourceMapped' },
@@ -30,7 +30,7 @@ export const HAWI_FIGURE_STATE_NAKIS = {
     { house: 15, arabicText: [], hebrewTranslation: ['בית 15 לא הופיע במיפוי הנוכחי עבור שפל ראש.'], speakingState: null, fortuneState: null, effectHebrew: 'אין להשלים מסברה.', sourceStatus: 'not-explicit-in-current-page-index' },
     { house: 16, arabicText: ['وفي السادس عشر ناطق نحس مدبر'], hebrewTranslation: ['בבית השישה־עשר: מדבר, נחס ומסדר/מנהל.'], speakingState: 'speaking', fortuneState: 'malefic', effectHebrew: 'ניהול/סידור באיכות נחסית באחרית הדבר.', sourceStatus: 'sourceMapped' }
   ],
-  summary: { housesLength: 16, explicitCoverage: '15/16', notExplicit: [15], sourcePages: ['PDF document 47.pdf'], status: 'initial-source-mapped' }
+  summary: { housesLength: 16, explicitCoverage: '15/16', notExplicit: [15], sourcePages: ['PDF document 47.pdf'], status: 'source-audited-from-drive-pdf-45-51' }
 };
 
 export function getHawiFigureStateNakisHouse(house) {

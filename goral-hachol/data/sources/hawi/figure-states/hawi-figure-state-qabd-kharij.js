@@ -10,7 +10,7 @@ export const HAWI_FIGURE_STATE_QABD_KHARIJ = {
   sourceSectionHebrew: 'שער מצבי הצורות בבתים — מצב ממון יוצא בשישה־עשר הבתים',
   sourcePages: ['PDF document 45.pdf'],
   sourceType: 'full-book-page-index',
-  extractionStatus: 'source-mapped-needs-photo-review',
+  extractionStatus: 'source-audited-from-drive-pdf-45-51',
 
   noteHebrew:
     'זה אינו פירוש מעבר הצורה הרגיל, אלא שכבת מצב הצורה בבית: נاطق/صامت, سعد/نحس, חזק/חלש, מתקן/מקלקל. החומר נלקח ממיפוי PDF 45 ודורש בדיקת מקור/צילום לפני הפעלה מלאה במנוע.',
@@ -167,7 +167,7 @@ export const HAWI_FIGURE_STATE_QABD_KHARIJ = {
     explicitCoverage: '16/16',
     notExplicit: [],
     sourcePages: ['PDF document 45.pdf'],
-    status: 'initial-source-mapped'
+    status: 'source-audited-from-drive-pdf-45-51'
   }
 };
 
