@@ -15,6 +15,13 @@ import {
   getHawiFigureHouseMeaning,
 } from './figure-transits/hawi-figure-transits.js';
 import {
+  HAWI_FIGURE_STATES_LIST,
+  HAWI_FIGURE_STATES_BY_ID,
+  HAWI_FIGURE_STATES_BY_FIGURE_ID,
+  getHawiFigureState,
+  getHawiFigureStateHouse,
+} from './figure-states/hawi-figure-states.js';
+import {
   HAWI_FULL_BOOK_GAP_AUDIT,
   getHawiFullBookGap,
   getHawiFullBookGapsByStatus,
@@ -36,6 +43,13 @@ export const HAWI_SOURCE = {
     getById: getHawiFigureTransit,
     getHouseMeaning: getHawiFigureHouseMeaning,
   },
+  figureStates: {
+    list: HAWI_FIGURE_STATES_LIST,
+    byId: HAWI_FIGURE_STATES_BY_ID,
+    byFigureId: HAWI_FIGURE_STATES_BY_FIGURE_ID,
+    getById: getHawiFigureState,
+    getHouseState: getHawiFigureStateHouse,
+  },
   fullBookGapAudit: HAWI_FULL_BOOK_GAP_AUDIT,
 };
 
@@ -47,9 +61,14 @@ export {
   HAWI_QUESTION_RULES_BY_ID,
   HAWI_FIGURE_TRANSITS_LIST,
   HAWI_FIGURE_TRANSITS_BY_ID,
+  HAWI_FIGURE_STATES_LIST,
+  HAWI_FIGURE_STATES_BY_ID,
+  HAWI_FIGURE_STATES_BY_FIGURE_ID,
   getHawiQuestionRules,
   getHawiFigureTransit,
   getHawiFigureHouseMeaning,
+  getHawiFigureState,
+  getHawiFigureStateHouse,
   HAWI_FULL_BOOK_GAP_AUDIT,
   getHawiFullBookGap,
   getHawiFullBookGapsByStatus,
