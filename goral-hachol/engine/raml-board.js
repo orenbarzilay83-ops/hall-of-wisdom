@@ -80,3 +80,7 @@ export function getRamlBoardHouse(board, houseNumber) {
 
   return board.housesByNumber?.[house] || board.houses?.[house - 1] || null;
 }
+
+export function buildManualRamlBoard(figureIds) {
+  return createRamlBoard(figureIds);
+}
