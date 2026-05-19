@@ -154,7 +154,7 @@ export const HAWI_FIGURE_NAMES = [
     id: 'hawi-figure-jamaa',
     shortId: 'jamaa',
     arabicName: 'الجماعة',
-    hebrewName: 'קהילה',
+    hebrewName: 'קהלה',
     fortuneHebrew: 'ממוזג',
     movementHebrew: 'קבוע',
     elementHebrew: 'עפר',
