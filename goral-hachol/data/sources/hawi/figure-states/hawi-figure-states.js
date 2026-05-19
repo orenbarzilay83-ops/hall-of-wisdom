@@ -3,8 +3,14 @@ import {
   getHawiFigureStateQabdDakhilHouse,
 } from './hawi-figure-state-qabd-dakhil.js';
 
+import {
+  HAWI_FIGURE_STATE_QABD_KHARIJ,
+  getHawiFigureStateQabdKharijHouse,
+} from './hawi-figure-state-qabd-kharij.js';
+
 export const HAWI_FIGURE_STATES_LIST = [
   HAWI_FIGURE_STATE_QABD_DAKHIL,
+  HAWI_FIGURE_STATE_QABD_KHARIJ,
 ];
 
 export const HAWI_FIGURE_STATES_BY_ID = Object.fromEntries(
@@ -50,6 +56,10 @@ export function getHawiFigureStateHouse(id, house) {
 
   if (figureState.id === HAWI_FIGURE_STATE_QABD_DAKHIL.id) {
     return getHawiFigureStateQabdDakhilHouse(houseNumber);
+  }
+
+  if (figureState.id === HAWI_FIGURE_STATE_QABD_KHARIJ.id) {
+    return getHawiFigureStateQabdKharijHouse(houseNumber);
   }
 
   return figureState.states.find((state) => state.house === houseNumber) || null;
