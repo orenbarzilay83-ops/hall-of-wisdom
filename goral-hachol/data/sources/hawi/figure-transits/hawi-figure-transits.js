@@ -15,6 +15,12 @@ import * as QABD_DAKHIL from './hawi-figure-qabd-dakhil.js';
 import * as QABD_KHARIJ from './hawi-figure-qabd-kharij.js';
 import * as TARIQ from './hawi-figure-tariq.js';
 
+import {
+  HAWI_FIGURE_TRANSITS_SOURCE_AUDIT,
+  getHawiFigureTransitAudit,
+} from './hawi-figure-transits-source-audit.js';
+
+
 function resolveFigure(moduleExports, fileName) {
   const candidates = Object.values(moduleExports);
 
@@ -73,6 +79,14 @@ export const HAWI_FIGURE_TRANSITS_BY_ID = Object.fromEntries(
   })
 );
 
+
+export const HAWI_FIGURE_TRANSITS_AUDIT = HAWI_FIGURE_TRANSITS_SOURCE_AUDIT;
+
+export const HAWI_FIGURE_TRANSITS_META = {
+  audit: HAWI_FIGURE_TRANSITS_AUDIT,
+  getAudit: getHawiFigureTransitAudit,
+};
+
 export function getHawiFigureTransit(id) {
   const normalizedId = normalizeHawiFigureTransitId(id);
 
@@ -106,3 +120,5 @@ export function getHawiFigureHouseMeaning(id, house) {
     null
   );
 }
+
+export { getHawiFigureTransitAudit };
