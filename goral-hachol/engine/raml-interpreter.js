@@ -59,7 +59,7 @@ function getGeneralQuestionMeaning(questionRule) {
   };
 }
 
-export function interpretRamlBoard({
+function interpretRamlBoardInternal({
   questionText = '',
   topicId,
   board,
@@ -187,3 +187,36 @@ export function getInterpretationSummary(interpretation) {
     missingSourceNotes: interpretation.missingSourceNotes || [],
   };
 }
+
+export function interpretRamlBoard(input = {}) {
+  const base = interpretRamlBoardInternal(input);
+
+  const topicHouses = Array.isArray(base.questionRule?.rules)
+    ? [...new Set(
+        base.questionRule.rules.flatMap((rule) =>
+          Array.isArray(rule.houses) ? rule.houses : []
+        )
+      )]
+    : [];
+
+  const mainHouse = base.question?.houseNumber || null;
+  const mainBoardHouse = base.question?.house || null;
+
+  return {
+    ...base,
+
+    questionText: base.questionText,
+    topicId: base.topicId,
+
+    querentHouse: base.querent?.houseNumber || 1,
+    topicHouses,
+    mainHouse,
+    mainFigure: base.question?.figure || null,
+    mainHouseMeaning: mainBoardHouse?.houseMeaning || null,
+    figureHouseMeaning: base.question?.figureHouseMeaning || null,
+    questionRules: base.questionRule || null,
+    witnessNotes: base.witnesses || [],
+    sourceWarnings: base.missingSourceNotes || [],
+  };
+}
+
