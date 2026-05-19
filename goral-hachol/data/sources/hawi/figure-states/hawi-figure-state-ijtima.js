@@ -30,7 +30,7 @@ export const HAWI_FIGURE_STATE_IJTIMA = {
     { house: 15, arabicText: ['وفي الخامس عشر ناطق سعد ليس يصلح جميع ما تقدمه وهو في غاية الكمال'], hebrewTranslation: ['בבית החמישה־עשר: מדבר וטוב; אינו מתקן כל מה שאתה מקדים, והוא בתכלית השלמות.'], speakingState: 'speaking', fortuneState: 'mixed-perfect', effectHebrew: 'שלמות גבוהה עם מגבלה בתיקון מה שמוקדם לפניו.', sourceStatus: 'sourceMapped' },
     { house: 16, arabicText: ['وفي السادس عشر صامت نحس رديء الفعال'], hebrewTranslation: ['בבית השישה־עשר: שותק, נחס, רע בפעולתו.'], speakingState: 'silent', fortuneState: 'malefic', effectHebrew: 'אחרית נחסית ופעולה רעה.', sourceStatus: 'sourceMapped' }
   ],
-  summary: { housesLength: 16, explicitCoverage: '15/16', notExplicit: [10], sourcePages: ['PDF document 50.pdf', 'PDF document 51.pdf'], status: 'initial-source-mapped-with-ocr-uncertainty' }
+  summary: { housesLength: 16, explicitCoverage: '15/16', notExplicit: [10], sourcePages: ['PDF document 50.pdf', 'PDF document 51.pdf'], status: 'source-audited-with-ocr-uncertainty' }
 };
 
 export function getHawiFigureStateIjtimaHouse(house) {
