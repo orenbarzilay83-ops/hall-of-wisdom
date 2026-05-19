@@ -41,10 +41,11 @@ function resolveQuestionRule(moduleExports, fileName) {
 
 export const HAWI_QUESTION_ENEMIES_RECOVERY = {
   id: 'hawi-question-enemies',
-  hebrewTitle: 'שער האויבות',
+  sourceSectionArabic: 'باب في أمر العداوة',
+  sourceSectionHebrew: 'שער האויבות',
   status: 'needs-source-recovery',
   sourceStatus: 'not-explicit-in-source',
-  note: 'קובץ מלא לשער האויבות לא נמצא בתיקיית question-rules בזמן יצירת האינדקס.',
+  note: 'לא הוכנס כמקור מלא. אין להשלים מסברה.',
 };
 
 export const HAWI_QUESTION_RULES_LIST = [
