@@ -48,12 +48,39 @@ export const HAWI_FIGURE_TRANSITS_LIST = [
   resolveFigure(TARIQ, 'hawi-figure-tariq.js'),
 ];
 
+export function normalizeHawiFigureTransitId(id) {
+  if (typeof id !== 'string' || !id.trim()) {
+    return null;
+  }
+
+  const cleanId = id.trim();
+
+  if (cleanId.startsWith('hawi-figure-')) {
+    return cleanId;
+  }
+
+  return `hawi-figure-${cleanId}`;
+}
+
 export const HAWI_FIGURE_TRANSITS_BY_ID = Object.fromEntries(
-  HAWI_FIGURE_TRANSITS_LIST.map((figure) => [figure.id, figure])
+  HAWI_FIGURE_TRANSITS_LIST.flatMap((figure) => {
+    const shortId = figure.id.replace(/^hawi-figure-/, '');
+
+    return [
+      [figure.id, figure],
+      [shortId, figure],
+    ];
+  })
 );
 
 export function getHawiFigureTransit(id) {
-  return HAWI_FIGURE_TRANSITS_BY_ID[id] || null;
+  const normalizedId = normalizeHawiFigureTransitId(id);
+
+  return (
+    HAWI_FIGURE_TRANSITS_BY_ID[id] ||
+    HAWI_FIGURE_TRANSITS_BY_ID[normalizedId] ||
+    null
+  );
 }
 
 export function getHawiFigureHouseMeaning(id, house) {
