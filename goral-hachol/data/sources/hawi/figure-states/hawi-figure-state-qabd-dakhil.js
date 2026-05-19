@@ -3,7 +3,7 @@ export const HAWI_FIGURE_STATE_QABD_DAKHIL = {
   figureId: 'hawi-figure-qabd-dakhil',
   shortFigureId: 'qabd-dakhil',
   arabicName: 'القبض الداخل',
-  hebrewName: 'הקבץ הפנימי',
+  hebrewName: 'ממון נכנס',
   sourceBook: 'حاوي العجائب ومظهر الغرائب',
   sourceAuthor: 'أحمد ابن زنبل المحلي',
   sourceSectionArabic: 'الباب الثامن عشر في الكلام على الاشكال — الفصل الاول في حالات الاشكال في البيوت وافعالها',
@@ -165,7 +165,7 @@ export const HAWI_FIGURE_STATE_QABD_DAKHIL = {
       house: 14,
       arabicText: [],
       hebrewTranslation: [
-        'המקור במיפוי הנוכחי אינו מביא דין מפורש לבית 14 עבור הקבץ הפנימי.'
+        'המקור במיפוי הנוכחי אינו מביא דין מפורש לבית 14 עבור ממון נכנס.'
       ],
       speakingState: null,
       fortuneState: null,
@@ -176,7 +176,7 @@ export const HAWI_FIGURE_STATE_QABD_DAKHIL = {
       house: 15,
       arabicText: [],
       hebrewTranslation: [
-        'המקור במיפוי הנוכחי אינו מביא דין מפורש לבית 15 עבור הקבץ הפנימי.'
+        'המקור במיפוי הנוכחי אינו מביא דין מפורש לבית 15 עבור ממון נכנס.'
       ],
       speakingState: null,
       fortuneState: null,
