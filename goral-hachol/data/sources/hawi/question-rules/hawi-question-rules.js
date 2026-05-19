@@ -8,6 +8,7 @@ import * as ILLNESS from './hawi-question-illness.js';
 import * as LOVE_HATE from './hawi-question-love-hate.js';
 import * as MARRIAGE from './hawi-question-marriage.js';
 import * as TRAVEL from './hawi-question-travel.js';
+import * as ENEMIES from './hawi-question-enemies.js';
 
 function findQuestionRule(value) {
   if (!value || typeof value !== 'object') {
@@ -39,15 +40,6 @@ function resolveQuestionRule(moduleExports, fileName) {
   return rule;
 }
 
-export const HAWI_QUESTION_ENEMIES_RECOVERY = {
-  id: 'hawi-question-enemies',
-  sourceSectionArabic: 'باب في أمر العداوة',
-  sourceSectionHebrew: 'שער האויבות',
-  status: 'needs-source-recovery',
-  sourceStatus: 'not-explicit-in-source',
-  note: 'לא הוכנס כמקור מלא. אין להשלים מסברה.',
-};
-
 export const HAWI_QUESTION_RULES_LIST = [
   resolveQuestionRule(CHILDREN_PREGNANCY, 'hawi-question-children-pregnancy.js'),
   resolveQuestionRule(COMMERCE, 'hawi-question-commerce.js'),
@@ -59,7 +51,7 @@ export const HAWI_QUESTION_RULES_LIST = [
   resolveQuestionRule(LOVE_HATE, 'hawi-question-love-hate.js'),
   resolveQuestionRule(MARRIAGE, 'hawi-question-marriage.js'),
   resolveQuestionRule(TRAVEL, 'hawi-question-travel.js'),
-  HAWI_QUESTION_ENEMIES_RECOVERY,
+  resolveQuestionRule(ENEMIES, 'hawi-question-enemies.js'),
 ];
 
 export const HAWI_QUESTION_RULES_BY_ID = Object.fromEntries(
