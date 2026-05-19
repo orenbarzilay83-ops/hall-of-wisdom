@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>בדיקת גורל החול</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #101727;
+      color: #f4ead2;
+      direction: rtl;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    h1, h2 {
+      color: #f4c66a;
+    }
+
+    .panel {
+      border: 1px solid rgba(244, 198, 106, 0.35);
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    input, select, button {
+      width: 100%;
+      box-sizing: border-box;
+      margin: 8px 0 14px;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(244, 198, 106, 0.35);
+      font-size: 16px;
+    }
+
+    button {
+      background: #f4c66a;
+      color: #111;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .board {
+      display: grid;
+      gap: 12px;
+    }
+
+    .board-row {
+      display: flex;
+      flex-direction: row;
+      direction: rtl;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .house-card {
+      width: 120px;
+      min-height: 110px;
+      border: 1px solid rgba(244, 198, 106, 0.35);
+      border-radius: 14px;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.22);
+    }
+
+    .house-number {
+      color: #f4c66a;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .figure-id {
+      direction: ltr;
+      text-align: left;
+      font-size: 12px;
+      word-break: break-word;
+    }
+
+    pre {
+      white-space: pre-wrap;
+      direction: rtl;
+      font-family: Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>✦ גורל החול — בדיקת UI</h1>
+
+    <section class="panel">
+      <label>שאלה</label>
+      <input id="questionInput" value="האם הדבר יצליח?" />
+
+      <label>נושא שאלה</label>
+      <select id="topicSelect"></select>
+
+      <button id="runBtn">צור לוח ופירוש</button>
+    </section>
+
+    <section class="panel">
+      <h2>לוח הגורל</h2>
+      <div id="board" class="board"></div>
+    </section>
+
+    <section class="panel">
+      <h2>פירוש בסיסי</h2>
+      <pre id="summaryOutput"></pre>
+    </section>
+
+    <section class="panel">
+      <h2>הערות מקור חסר</h2>
+      <pre id="missingOutput"></pre>
+    </section>
+  </main>
+
+  <script type="module">
+    import { createRamlUiState } from './goral-hachol-ui.js';
+
+    const questionInput = document.getElementById('questionInput');
+    const topicSelect = document.getElementById('topicSelect');
+    const runBtn = document.getElementById('runBtn');
+    const boardEl = document.getElementById('board');
+    const summaryOutput = document.getElementById('summaryOutput');
+    const missingOutput = document.getElementById('missingOutput');
+
+    function createState() {
+      return createRamlUiState({
+        questionText: questionInput.value,
+        topicId: topicSelect.value || 'hawi-question-completion',
+      });
+    }
+
+    function renderTopics(state) {
+      topicSelect.innerHTML = '';
+
+      for (const topic of state.topics) {
+        const option = document.createElement('option');
+        option.value = topic.id;
+        option.textContent = topic.title + ' — ' + topic.status;
+        topicSelect.appendChild(option);
+      }
+
+      topicSelect.value = state.topicId;
+    }
+
+    function renderBoard(state) {
+      boardEl.innerHTML = '';
+
+      for (const row of state.boardRowsRtl) {
+        const rowEl = document.createElement('div');
+        rowEl.className = 'board-row';
+
+        for (const item of row) {
+          const card = document.createElement('div');
+          card.className = 'house-card';
+
+          card.innerHTML = `
+            <div class="house-number">בית ${item.houseNumber}</div>
+            <div class="figure-id">${item.figureId}</div>
+          `;
+
+          rowEl.appendChild(card);
+        }
+
+        boardEl.appendChild(rowEl);
+      }
+    }
+
+    function renderInterpretation(state) {
+      summaryOutput.textContent = JSON.stringify(state.summary, null, 2);
+
+      missingOutput.textContent = state.interpretation.missingSourceNotes.length
+        ? JSON.stringify(state.interpretation.missingSourceNotes, null, 2)
+        : 'אין הערות מקור חסר.';
+    }
+
+    function render(state) {
+      renderTopics(state);
+      renderBoard(state);
+      renderInterpretation(state);
+    }
+
+    let state = createRamlUiState({
+      questionText: questionInput.value,
+      topicId: 'hawi-question-completion',
+    });
+
+    render(state);
+
+    runBtn.addEventListener('click', () => {
+      state = createState();
+      render(state);
+    });
+  </script>
+</body>
+</html>
