@@ -1,6 +1,7 @@
 import {
   HAWI_SOURCE,
   getHawiQuestionRules,
+  getHawiFigureStateHouse,
 } from '../data/sources/hawi/hawi-source.js';
 
 import {
@@ -77,6 +78,10 @@ function interpretRamlBoardInternal({
   const querentHouse = getRamlBoardHouse(board, querentHouseNumber);
   const questionHouse = questionHouseNumber
     ? getRamlBoardHouse(board, questionHouseNumber)
+    : null;
+
+  const figureState = questionHouse?.figureId && questionHouse?.houseNumber
+    ? getHawiFigureStateHouse(questionHouse.figureId, questionHouse.houseNumber)
     : null;
 
   const ruleHouses = questionRule ? getRuleHouses(questionRule) : [];
@@ -159,6 +164,7 @@ function interpretRamlBoardInternal({
       figureId: questionHouse?.figureId || null,
       figure: questionHouse?.figure || null,
       figureHouseMeaning: questionHouse?.figureHouseMeaning || null,
+      figureState,
     },
 
     witnesses,
@@ -183,6 +189,14 @@ export function getInterpretationSummary(interpretation) {
     querentHouse: interpretation.querent?.houseNumber || null,
     questionHouse: interpretation.question?.houseNumber || null,
     questionFigureId: interpretation.question?.figureId || null,
+    figureState: interpretation.question?.figureState
+      ? {
+          speakingState: interpretation.question.figureState.speakingState || null,
+          fortuneState: interpretation.question.figureState.fortuneState || null,
+          effectHebrew: interpretation.question.figureState.effectHebrew || null,
+          sourceStatus: interpretation.question.figureState.sourceStatus || null,
+        }
+      : null,
     sourceStatus: interpretation.sourceStatus,
     missingSourceNotes: interpretation.missingSourceNotes || [],
   };
@@ -214,6 +228,7 @@ export function interpretRamlBoard(input = {}) {
     mainFigure: base.question?.figure || null,
     mainHouseMeaning: mainBoardHouse?.houseMeaning || null,
     figureHouseMeaning: base.question?.figureHouseMeaning || null,
+    figureState: base.question?.figureState || null,
     questionRules: base.questionRule || null,
     witnessNotes: base.witnesses || [],
     sourceWarnings: base.missingSourceNotes || [],
