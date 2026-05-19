@@ -9,6 +9,13 @@ import {
 } from './hawi-witnesses.js';
 
 import {
+  HAWI_FIGURE_NAMES,
+  HAWI_FIGURE_NAMES_BY_ID,
+  getHawiFigureCanonicalName,
+  getHawiFigureHebrewName,
+} from './hawi-figure-names.js';
+
+import {
   HAWI_SPIRITUAL_DIAGNOSTICS,
   getHawiSpiritualDiagnosticRule,
   getHawiSpiritualDiagnosticsByCategory,
@@ -49,6 +56,12 @@ export const HAWI_FOUNDATIONS = {
     houseGroupsList: HAWI_HOUSE_GROUPS_LIST,
     houseGroupByHouse: HAWI_HOUSE_GROUP_BY_HOUSE,
   },
+  figureNames: {
+    list: HAWI_FIGURE_NAMES,
+    byId: HAWI_FIGURE_NAMES_BY_ID,
+    getCanonicalName: getHawiFigureCanonicalName,
+    getHebrewName: getHawiFigureHebrewName,
+  },
   spiritualDiagnostics: HAWI_SPIRITUAL_DIAGNOSTICS,
 };
 
@@ -65,6 +78,10 @@ export function getHawiHouse(houseNumber) {
 export {
   getHawiHouseGroup,
   getHawiWitnessRule,
+  HAWI_FIGURE_NAMES,
+  HAWI_FIGURE_NAMES_BY_ID,
+  getHawiFigureCanonicalName,
+  getHawiFigureHebrewName,
   getHawiSpiritualDiagnosticRule,
   getHawiSpiritualDiagnosticsByCategory,
 };
