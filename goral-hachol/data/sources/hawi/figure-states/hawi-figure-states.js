@@ -38,6 +38,21 @@ import {
   getHawiFigureStateBayadHouse,
 } from './hawi-figure-state-bayad.js';
 
+import {
+  HAWI_FIGURE_STATE_NUSRA_KHARIJA,
+  getHawiFigureStateNusraKharijaHouse,
+} from './hawi-figure-state-nusra-kharija.js';
+
+import {
+  HAWI_FIGURE_STATE_NUSRA_DAKHILA,
+  getHawiFigureStateNusraDakhilaHouse,
+} from './hawi-figure-state-nusra-dakhila.js';
+
+import {
+  HAWI_FIGURE_STATE_ATABA_KHARIJA,
+  getHawiFigureStateAtabaKharijaHouse,
+} from './hawi-figure-state-ataba-kharija.js';
+
 export const HAWI_FIGURE_STATES_LIST = [
   HAWI_FIGURE_STATE_QABD_DAKHIL,
   HAWI_FIGURE_STATE_QABD_KHARIJ,
@@ -47,6 +62,9 @@ export const HAWI_FIGURE_STATES_LIST = [
   HAWI_FIGURE_STATE_NAKIS,
   HAWI_FIGURE_STATE_HUMRA,
   HAWI_FIGURE_STATE_BAYAD,
+  HAWI_FIGURE_STATE_NUSRA_KHARIJA,
+  HAWI_FIGURE_STATE_NUSRA_DAKHILA,
+  HAWI_FIGURE_STATE_ATABA_KHARIJA,
 ];
 
 export const HAWI_FIGURE_STATES_BY_ID = Object.fromEntries(
@@ -120,6 +138,18 @@ export function getHawiFigureStateHouse(id, house) {
 
   if (figureState.id === HAWI_FIGURE_STATE_BAYAD.id) {
     return getHawiFigureStateBayadHouse(houseNumber);
+  }
+
+  if (figureState.id === HAWI_FIGURE_STATE_NUSRA_KHARIJA.id) {
+    return getHawiFigureStateNusraKharijaHouse(houseNumber);
+  }
+
+  if (figureState.id === HAWI_FIGURE_STATE_NUSRA_DAKHILA.id) {
+    return getHawiFigureStateNusraDakhilaHouse(houseNumber);
+  }
+
+  if (figureState.id === HAWI_FIGURE_STATE_ATABA_KHARIJA.id) {
+    return getHawiFigureStateAtabaKharijaHouse(houseNumber);
   }
 
   return figureState.states.find((state) => state.house === houseNumber) || null;
