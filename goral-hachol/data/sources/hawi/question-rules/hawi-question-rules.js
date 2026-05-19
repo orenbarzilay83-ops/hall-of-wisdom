@@ -9,6 +9,7 @@ import * as LOVE_HATE from './hawi-question-love-hate.js';
 import * as MARRIAGE from './hawi-question-marriage.js';
 import * as TRAVEL from './hawi-question-travel.js';
 import * as ENEMIES from './hawi-question-enemies.js';
+import * as MISSING_PERSON from './hawi-question-missing-person.js';
 
 function findQuestionRule(value) {
   if (!value || typeof value !== 'object') {
@@ -52,6 +53,7 @@ export const HAWI_QUESTION_RULES_LIST = [
   resolveQuestionRule(MARRIAGE, 'hawi-question-marriage.js'),
   resolveQuestionRule(TRAVEL, 'hawi-question-travel.js'),
   resolveQuestionRule(ENEMIES, 'hawi-question-enemies.js'),
+  resolveQuestionRule(MISSING_PERSON, 'hawi-question-missing-person.js'),
 ];
 
 export const HAWI_QUESTION_RULES_BY_ID = Object.fromEntries(
