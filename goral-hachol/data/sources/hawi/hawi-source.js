@@ -14,6 +14,11 @@ import {
   getHawiFigureTransit,
   getHawiFigureHouseMeaning,
 } from './figure-transits/hawi-figure-transits.js';
+import {
+  HAWI_FULL_BOOK_GAP_AUDIT,
+  getHawiFullBookGap,
+  getHawiFullBookGapsByStatus,
+} from './hawi-full-book-gap-audit.js';
 
 export const HAWI_SOURCE = {
   id: 'hawi-source',
@@ -31,6 +36,7 @@ export const HAWI_SOURCE = {
     getById: getHawiFigureTransit,
     getHouseMeaning: getHawiFigureHouseMeaning,
   },
+  fullBookGapAudit: HAWI_FULL_BOOK_GAP_AUDIT,
 };
 
 export {
@@ -44,4 +50,7 @@ export {
   getHawiQuestionRules,
   getHawiFigureTransit,
   getHawiFigureHouseMeaning,
+  HAWI_FULL_BOOK_GAP_AUDIT,
+  getHawiFullBookGap,
+  getHawiFullBookGapsByStatus,
 };
