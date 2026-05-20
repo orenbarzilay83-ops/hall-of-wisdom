@@ -9,6 +9,10 @@ import {
 } from '../engine/raml-board.js';
 
 import {
+  buildRamlBoardFromMothers,
+} from '../engine/raml-board-generator.js';
+
+import {
   interpretRamlBoard,
   getInterpretationSummary,
 } from '../engine/raml-interpreter.js';
@@ -47,13 +51,26 @@ export function getRamlUiFigureOptions() {
 export function createRamlUiState({
   questionText = '',
   topicId = 'hawi-question-marriage',
+  inputMode = 'manual-mothers',
+  manualMothers = [],
   manualFigures = [],
 } = {}) {
-  const figures = manualFigures.length
-    ? manualFigures
-    : HAWI_FIGURE_TRANSITS_LIST.map((figure) => figure.id);
+  const defaultMothers = [
+    'tariq',
+    'qabd-kharij',
+    'hayyan',
+    'bayad',
+  ];
 
-  const board = createRamlBoard(figures);
+  const mothers = manualMothers.length ? manualMothers : defaultMothers;
+
+  const board = inputMode === 'manual-board'
+    ? createRamlBoard(
+        manualFigures.length
+          ? manualFigures
+          : HAWI_FIGURE_TRANSITS_LIST.map((figure) => figure.id)
+      )
+    : buildRamlBoardFromMothers(mothers);
 
   const interpretation = interpretRamlBoard({
     questionText,
@@ -67,6 +84,8 @@ export function createRamlUiState({
     sourceId: HAWI_SOURCE.sourceId,
     questionText,
     topicId,
+    inputMode,
+    manualMothers: mothers,
     topics: getRamlUiQuestionTopics(),
     figureOptions: getRamlUiFigureOptions(),
     board,

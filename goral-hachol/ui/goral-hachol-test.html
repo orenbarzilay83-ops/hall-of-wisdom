@@ -102,7 +102,21 @@
       <label>נושא שאלה</label>
       <select id="topicSelect"></select>
 
-      <button id="runBtn">צור לוח ופירוש</button>
+      <h2>הכנסת 4 אמהות</h2>
+
+      <label>אם 1 — בית 1</label>
+      <select id="mother1Select"></select>
+
+      <label>אם 2 — בית 2</label>
+      <select id="mother2Select"></select>
+
+      <label>אם 3 — בית 3</label>
+      <select id="mother3Select"></select>
+
+      <label>אם 4 — בית 4</label>
+      <select id="mother4Select"></select>
+
+      <button id="runBtn">צור לוח גורל ופירוש</button>
     </section>
 
     <section class="panel">
@@ -126,6 +140,12 @@
 
     const questionInput = document.getElementById('questionInput');
     const topicSelect = document.getElementById('topicSelect');
+    const mother1Select = document.getElementById('mother1Select');
+    const mother2Select = document.getElementById('mother2Select');
+    const mother3Select = document.getElementById('mother3Select');
+    const mother4Select = document.getElementById('mother4Select');
+    const motherSelects = [mother1Select, mother2Select, mother3Select, mother4Select];
+
     const runBtn = document.getElementById('runBtn');
     const boardEl = document.getElementById('board');
     const summaryOutput = document.getElementById('summaryOutput');
@@ -135,6 +155,8 @@
       return createRamlUiState({
         questionText: questionInput.value,
         topicId: topicSelect.value || 'hawi-question-completion',
+        inputMode: 'manual-mothers',
+        manualMothers: motherSelects.map((select) => select.value),
       });
     }
 
@@ -151,6 +173,28 @@
       topicSelect.value = state.topicId;
     }
 
+    function renderMotherSelectors(state) {
+      const defaultMothers = state.manualMothers || [
+        'tariq',
+        'qabd-kharij',
+        'hayyan',
+        'bayad',
+      ];
+
+      motherSelects.forEach((select, index) => {
+        select.innerHTML = '';
+
+        for (const figure of state.figureOptions) {
+          const option = document.createElement('option');
+          option.value = figure.id;
+          option.textContent = figure.title;
+          select.appendChild(option);
+        }
+
+        select.value = defaultMothers[index] || state.figureOptions[index]?.id || '';
+      });
+    }
+
     function renderBoard(state) {
       boardEl.innerHTML = '';
 
@@ -162,8 +206,12 @@
           const card = document.createElement('div');
           card.className = 'house-card';
 
+          const role = state.board.entries?.[item.houseNumber - 1]?.roleHebrew || '';
+
           card.innerHTML = `
             <div class="house-number">בית ${item.houseNumber}</div>
+            <div>${role}</div>
+            <div><strong>${item.figure?.hebrewName || item.figureId}</strong></div>
             <div class="figure-id">${item.figureId}</div>
           `;
 
@@ -184,6 +232,7 @@
 
     function render(state) {
       renderTopics(state);
+      renderMotherSelectors(state);
       renderBoard(state);
       renderInterpretation(state);
     }
