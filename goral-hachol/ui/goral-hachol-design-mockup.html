@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>הדמיית גורל החול</title>
+  <style>
+    :root {
+      --navy: #07182b;
+      --navy2: #102844;
+      --gold: #d8a842;
+      --gold2: #f3d28a;
+      --paper: #f7f0df;
+      --ink: #161616;
+      --line: rgba(20,20,20,.35);
+      --soft: rgba(216,168,66,.18);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(216,168,66,.18), transparent 32%),
+        linear-gradient(135deg, #07182b, #111827);
+      color: var(--ink);
+      direction: rtl;
+    }
+
+    .page {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 22px;
+    }
+
+    .topbar {
+      height: 64px;
+      border-radius: 18px 18px 0 0;
+      background: linear-gradient(90deg, var(--navy), var(--navy2));
+      color: var(--gold2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 22px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.28);
+    }
+
+    .topbar h1 {
+      margin: 0;
+      font-size: 26px;
+      letter-spacing: .5px;
+    }
+
+    .menu-icon {
+      font-size: 26px;
+      color: white;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      background: linear-gradient(180deg, #fffaf0, var(--paper));
+      border: 1px solid rgba(216,168,66,.65);
+      border-radius: 0 0 18px 18px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.18);
+    }
+
+    .side {
+      background: linear-gradient(180deg, #09203a, #041222);
+      color: white;
+      border: 1px solid rgba(216,168,66,.5);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+
+    .side h2 {
+      margin: 0;
+      padding: 18px;
+      color: var(--gold2);
+      border-bottom: 1px solid rgba(216,168,66,.35);
+      text-align: center;
+    }
+
+    .menu-item {
+      padding: 15px 18px;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .menu-item.active {
+      background: rgba(216,168,66,.25);
+      color: var(--gold2);
+    }
+
+    .section-title {
+      margin: 0 0 16px;
+      color: var(--navy);
+      font-size: 24px;
+      border-bottom: 1px solid rgba(216,168,66,.5);
+      padding-bottom: 8px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px 18px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      color: #1c2a3a;
+      margin-bottom: 6px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid rgba(7,24,43,.25);
+      border-radius: 12px;
+      background: rgba(255,255,255,.82);
+      padding: 12px;
+      font-size: 16px;
+      color: var(--ink);
+    }
+
+    textarea {
+      min-height: 78px;
+      resize: vertical;
+    }
+
+    .full { grid-column: 1 / -1; }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: default;
+    }
+
+    .primary {
+      background: linear-gradient(180deg, var(--navy2), var(--navy));
+      color: var(--gold2);
+    }
+
+    .secondary {
+      background: #fff6df;
+      color: var(--navy);
+      border: 1px solid rgba(216,168,66,.7);
+    }
+
+    .danger {
+      background: #f5f5f5;
+      color: #333;
+      border: 1px solid rgba(0,0,0,.2);
+    }
+
+    .screen {
+      margin-top: 18px;
+      border: 1px solid rgba(7,24,43,.16);
+      border-radius: 18px;
+      overflow: hidden;
+      background: rgba(255,255,255,.5);
+    }
+
+    .screen-head {
+      background: var(--navy);
+      color: var(--gold2);
+      padding: 14px 18px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .screen-body {
+      padding: 18px;
+    }
+
+    .mothers-status {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .mother-slot {
+      border: 1px dashed rgba(7,24,43,.4);
+      border-radius: 14px;
+      padding: 12px;
+      min-height: 78px;
+      text-align: center;
+      background: rgba(255,255,255,.45);
+    }
+
+    .mother-slot.selected {
+      border: 2px solid var(--gold);
+      box-shadow: 0 0 0 4px rgba(216,168,66,.15);
+    }
+
+    .figure-grid {
+      direction: rtl;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      background: white;
+    }
+
+    .figure-card {
+      min-height: 112px;
+      border-left: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      background: #fffaf0;
+    }
+
+    .figure-card.chosen {
+      background: rgba(216,168,66,.16);
+      outline: 3px solid rgba(216,168,66,.75);
+      outline-offset: -3px;
+      position: relative;
+    }
+
+    .figure-card.chosen::before {
+      content: "✓";
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      color: var(--navy);
+      font-weight: bold;
+      background: var(--gold2);
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+    }
+
+    .glyph {
+      width: 54px;
+      height: 64px;
+      display: grid;
+      grid-template-rows: repeat(4, 1fr);
+      gap: 4px;
+      align-items: center;
+      justify-items: center;
+    }
+
+    .row1, .row2 {
+      height: 6px;
+      background: #111;
+      border-radius: 10px;
+    }
+
+    .row1 { width: 9px; }
+    .row2 { width: 34px; }
+
+    .figure-name {
+      font-weight: bold;
+      font-size: 15px;
+    }
+
+    .board {
+      direction: rtl;
+      border: 2px solid #111;
+      background: white;
+    }
+
+    .board-row {
+      display: grid;
+      border-bottom: 2px solid #111;
+    }
+
+    .board-row.r1 { grid-template-columns: repeat(8, 1fr); }
+    .board-row.r2 { grid-template-columns: repeat(4, 1fr); }
+    .board-row.r3 { grid-template-columns: repeat(2, 1fr); }
+    .board-row.r4 { grid-template-columns: repeat(2, 1fr); border-bottom: 0; }
+
+    .house {
+      min-height: 130px;
+      border-left: 1px solid #111;
+      padding: 8px;
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      place-items: center;
+      text-align: center;
+    }
+
+    .house:last-child { border-left: 0; }
+
+    .house-title {
+      font-weight: bold;
+      font-size: 15px;
+    }
+
+    .house-sub {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 6px;
+    }
+
+    .note {
+      margin-top: 12px;
+      color: #5a4a26;
+      font-size: 14px;
+    }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .form-grid, .action-row, .mothers-status { grid-template-columns: 1fr; }
+      .figure-grid { grid-template-columns: repeat(2, 1fr); }
+      .board-row.r1 { grid-template-columns: repeat(4, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="layout">
+      <main>
+        <div class="topbar">
+          <div class="menu-icon">☰</div>
+          <h1>גורל החול</h1>
+          <div>✦</div>
+        </div>
+
+        <section class="panel">
+          <h2 class="section-title">עמוד פתיחה</h2>
+
+          <div class="form-grid">
+            <div>
+              <label>שם הפונה</label>
+              <input value="ישראל כהן" />
+            </div>
+
+            <div>
+              <label>שם האב</label>
+              <input value="ראובן" />
+            </div>
+
+            <div>
+              <label>תאריך השאלה</label>
+              <input value="21/03/2026" />
+            </div>
+
+            <div>
+              <label>שעת השאלה</label>
+              <input value="22:05" />
+            </div>
+
+            <div class="full">
+              <label>שאלה / כוונה</label>
+              <textarea>האם אמצא את הדבר שאבד לי, ואם כן — היכן הוא נמצא?</textarea>
+            </div>
+
+            <div class="full">
+              <label>נושא השאלה</label>
+              <select>
+                <option>נעדרים / אבידה</option>
+                <option>בריאות</option>
+                <option>כסף / מסחר</option>
+                <option>זוגיות / נישואין</option>
+                <option>נסיעה</option>
+                <option>משפט / סכסוך</option>
+                <option>כללי</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button class="secondary">הכנסה ידנית של 4 האמהות</button>
+            <button class="secondary">בחירה אוטומטית לפי עצירה</button>
+            <button class="danger">נקה טופס</button>
+          </div>
+
+          <div class="action-row">
+            <button class="primary">התחל</button>
+          </div>
+
+          <section class="screen">
+            <div class="screen-head">
+              <span>בחירת 4 האמהות</span>
+              <span>בחר צורה אחת לכל אם</span>
+            </div>
+
+            <div class="screen-body">
+              <div class="mothers-status">
+                <div class="mother-slot selected">אם 1<br>ממתינה לבחירה</div>
+                <div class="mother-slot">אם 2<br>טרם נבחר</div>
+                <div class="mother-slot">אם 3<br>טרם נבחר</div>
+                <div class="mother-slot">אם 4<br>טרם נבחר</div>
+              </div>
+
+              <div class="figure-grid">
+                <div class="figure-card chosen"><div class="glyph"><div class="row1"></div><div class="row1"></div><div class="row1"></div><div class="row1"></div></div><div class="figure-name">דרך</div></div>
+                <div class="figure-card"><div class="glyph"><div class="row1"></div><div class="row1"></div><div class="row1"></div><div class="row2"></div></div><div class="figure-name">סף יוצא</div></div>
+                <div class="figure-card"><div class="glyph"><div class="row1"></div><div class="row1"></div><div class="row2"></div><div class="row1"></div></div><div class="figure-name">נלחם</div></div>
+                <div class="figure-card"><div class="glyph"><div class="row1"></div><div class="row1"></div><div class="row2"></div><div class="row2"></div></div><div class="figure-name">כבוד יוצא</div></div>
+
+                <div class="figure-card"><div class="glyph"><div class="row1"></div><div class="row2"></div><div class="row1"></div><div class="row1"></div></div><div class="figure-name">בר הלחי</div></div>
+                <div class="figure-card"><div class="glyph"><div class="row1"></div><div class="row2"></div><div class="row1"></div><div class="row2"></div></div><div class="figure-name">ממון יוצא</div></div>
+                <div class="figure-card"><div class="glyph"><div class="row1"></div><div class="row2"></div><div class="row2"></div><div class="row1"></div></div><div class="figure-name">סוהר</div></div>
+                <div class="figure-card"><div class="glyph"><div class="row1"></div><div class="row2"></div><div class="row2"></div><div class="row2"></div></div><div class="figure-name">נשוא ראש</div></div>
+
+                <div class="figure-card"><div class="glyph"><div class="row2"></div><div class="row1"></div><div class="row1"></div><div class="row1"></div></div><div class="figure-name">סף נכנס</div></div>
+                <div class="figure-card"><div class="glyph"><div class="row2"></div><div class="row1"></div><div class="row1"></div><div class="row2"></div></div><div class="figure-name">חיבור</div></div>
+                <div class="figure-card"><div class="glyph"><div class="row2"></div><div class="row1"></div><div class="row2"></div><div class="row1"></div></div><div class="figure-name">ממון נכנס</div></div>
+                <div class="figure-card"><div class="glyph"><div class="row2"></div><div class="row1"></div><div class="row2"></div><div class="row2"></div></div><div class="figure-name">אדום</div></div>
+
+                <div class="figure-card"><div class="glyph"><div class="row2"></div><div class="row2"></div><div class="row1"></div><div class="row1"></div></div><div class="figure-name">כבוד נכנס</div></div>
+                <div class="figure-card"><div class="glyph"><div class="row2"></div><div class="row2"></div><div class="row1"></div><div class="row2"></div></div><div class="figure-name">לבן</div></div>
+                <div class="figure-card"><div class="glyph"><div class="row2"></div><div class="row2"></div><div class="row2"></div><div class="row1"></div></div><div class="figure-name">שפל ראש</div></div>
+                <div class="figure-card"><div class="glyph"><div class="row2"></div><div class="row2"></div><div class="row2"></div><div class="row2"></div></div><div class="figure-name">קהלה</div></div>
+              </div>
+
+              <div class="note">הסימן ✓ מציין צורה שכבר נבחרה. בהמשך נחליט אם להציג גם מספר אם קטן בתוך הסימון.</div>
+            </div>
+          </section>
+
+          <section class="screen">
+            <div class="screen-head">
+              <span>לוח הגורל</span>
+              <span>תצוגה מימין לשמאל</span>
+            </div>
+
+            <div class="screen-body">
+              <div class="board">
+                <div class="board-row r1">
+                  <div class="house"><div class="house-title">בית 1</div><div class="house-sub">השואל</div><div class="glyph"><div class="row1"></div><div class="row1"></div><div class="row1"></div><div class="row1"></div></div></div>
+                  <div class="house"><div class="house-title">בית 2</div><div class="house-sub">המשאבים</div><div class="glyph"><div class="row1"></div><div class="row2"></div><div class="row1"></div><div class="row2"></div></div></div>
+                  <div class="house"><div class="house-title">בית 3</div><div class="house-sub">משפחה</div><div class="glyph"><div class="row1"></div><div class="row2"></div><div class="row2"></div><div class="row2"></div></div></div>
+                  <div class="house"><div class="house-title">בית 4</div><div class="house-sub">בית</div><div class="glyph"><div class="row2"></div><div class="row2"></div><div class="row1"></div><div class="row2"></div></div></div>
+                  <div class="house"><div class="house-title">בית 5</div><div class="house-sub">ילדים / שמחה</div><div class="glyph"><div class="row1"></div><div class="row1"></div><div class="row1"></div><div class="row2"></div></div></div>
+                  <div class="house"><div class="house-title">בית 6</div><div class="house-sub">בריאות / חולי</div><div class="glyph"><div class="row1"></div><div class="row2"></div><div class="row2"></div><div class="row2"></div></div></div>
+                  <div class="house"><div class="house-title">בית 7</div><div class="house-sub">הנשאל / יריב</div><div class="glyph"><div class="row1"></div><div class="row1"></div><div class="row2"></div><div class="row1"></div></div></div>
+                  <div class="house"><div class="house-title">בית 8</div><div class="house-sub">מוות / ירושה</div><div class="glyph"><div class="row1"></div><div class="row2"></div><div class="row2"></div><div class="row2"></div></div></div>
+                </div>
+
+                <div class="board-row r2">
+                  <div class="house"><div class="house-title">בית 9</div><div class="house-sub">נסיעות / לימוד</div><div class="glyph"><div class="row2"></div><div class="row1"></div><div class="row2"></div><div class="row1"></div></div></div>
+                  <div class="house"><div class="house-title">בית 10</div><div class="house-sub">מעמד / קריירה</div><div class="glyph"><div class="row1"></div><div class="row2"></div><div class="row1"></div><div class="row2"></div></div></div>
+                  <div class="house"><div class="house-title">בית 11</div><div class="house-sub">ידידים / תקוות</div><div class="glyph"><div class="row2"></div><div class="row1"></div><div class="row1"></div><div class="row2"></div></div></div>
+                  <div class="house"><div class="house-title">בית 12</div><div class="house-sub">סתר / מגבלות</div><div class="glyph"><div class="row2"></div><div class="row1"></div><div class="row2"></div><div class="row1"></div></div></div>
+                </div>
+
+                <div class="board-row r3">
+                  <div class="house"><div class="house-title">בית 13</div><div class="house-sub">עד ראשון</div><div class="glyph"><div class="row1"></div><div class="row1"></div><div class="row1"></div><div class="row1"></div></div></div>
+                  <div class="house"><div class="house-title">בית 14</div><div class="house-sub">עד שני</div><div class="glyph"><div class="row2"></div><div class="row2"></div><div class="row1"></div><div class="row1"></div></div></div>
+                </div>
+
+                <div class="board-row r4">
+                  <div class="house"><div class="house-title">בית 15</div><div class="house-sub">דין</div><div class="glyph"><div class="row1"></div><div class="row1"></div><div class="row2"></div><div class="row2"></div></div></div>
+                  <div class="house"><div class="house-title">בית 16</div><div class="house-sub">משפט / השפעת הדין</div><div class="glyph"><div class="row2"></div><div class="row2"></div><div class="row1"></div><div class="row1"></div></div></div>
+                </div>
+              </div>
+
+              <div class="note">לוח אסטרולוגי / כיוונים — פרק נפרד לסוף, לא חלק מהמסך הזה כרגע.</div>
+            </div>
+          </section>
+        </section>
+      </main>
+
+      <aside class="side">
+        <h2>תפריט גורל החול</h2>
+        <div class="menu-item">דף הבית <span>⌂</span></div>
+        <div class="menu-item">יומן לקוחות <span>☷</span></div>
+        <div class="menu-item active">גורל החול <span>✦</span></div>
+        <div class="menu-item">תפילה לעשיית הגורל <span>☰</span></div>
+        <div class="menu-item">לימוד גורל החול <span>◈</span></div>
+        <div class="menu-item">הדפסות וטפסים <span>▣</span></div>
+        <div class="menu-item">לוח אסטרולוגי — בהמשך <span>◎</span></div>
+        <div class="menu-item">הגדרות <span>⚙</span></div>
+        <div class="menu-item">עזרה <span>?</span></div>
+        <div class="menu-item">יציאה <span>↪</span></div>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>
