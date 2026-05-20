@@ -39,11 +39,7 @@ import {
   getHawiFigureStateAudit,
 } from './figure-states/hawi-figure-states.js';
 
-import {
-  HAWI_FULL_BOOK_GAP_AUDIT,
-  getHawiFullBookGap,
-  getHawiFullBookGapsByStatus,
-} from './hawi-full-book-gap-audit.js';
+import { HAWI_FULL_BOOK_GAP_AUDIT } from './hawi-full-book-gap-audit.js';
 
 import {
   HAWI_TOPIC_INDEX,
@@ -51,6 +47,48 @@ import {
   getHawiTopicsByStatus,
   getHawiTopicsByPriority,
 } from './hawi-topic-index.js';
+
+import { HAWI_INTRODUCTION_MAHW_THABAT } from './foundations/hawi-introduction-mahw-thabat.js';
+import { HAWI_DHAMIR_DIRECTIONS_VALIDATION } from './foundations/hawi-dhamir-directions-validation.js';
+import { HAWI_HOUSE_STATES_COLORS } from './foundations/hawi-house-states-colors.js';
+
+import { HAWI_BIRTH_NATIVITY } from './birth-nativity/hawi-birth-nativity.js';
+import { HAWI_TRIANGLES_ZODIAC } from './triangles/hawi-triangles-zodiac.js';
+
+import { HAWI_YEARLY_PRICES_FORECAST } from './yearly-forecast/hawi-yearly-prices-forecast.js';
+import { HAWI_RAIN_WEATHER_FORECAST } from './yearly-forecast/hawi-rain-weather-forecast.js';
+
+import { HAWI_AUTHORITY_STATE_RULERS } from './authority-state/hawi-authority-state-rulers.js';
+import { HAWI_PLANETARY_CORRESPONDENCES } from './planetary-correspondences/hawi-planetary-correspondences.js';
+
+import { HAWI_QUESTION_CHILDREN_PREGNANCY_EXTRA } from './question-rules/hawi-question-children-pregnancy-extra.js';
+import { HAWI_QUESTION_HIDDEN_TREASURE_EXTRA } from './question-rules/hawi-question-hidden-treasure-extra.js';
+import { HAWI_QUESTION_MISSING_PERSON_EXTRA } from './question-rules/hawi-question-missing-person-extra.js';
+import { HAWI_QUESTION_TRAVEL_EXTRA } from './question-rules/hawi-question-travel-extra.js';
+
+export const HAWI_EXTENDED_KNOWLEDGE_LIST = [
+  HAWI_INTRODUCTION_MAHW_THABAT,
+  HAWI_DHAMIR_DIRECTIONS_VALIDATION,
+  HAWI_HOUSE_STATES_COLORS,
+  HAWI_BIRTH_NATIVITY,
+  HAWI_TRIANGLES_ZODIAC,
+  HAWI_YEARLY_PRICES_FORECAST,
+  HAWI_RAIN_WEATHER_FORECAST,
+  HAWI_AUTHORITY_STATE_RULERS,
+  HAWI_PLANETARY_CORRESPONDENCES,
+  HAWI_QUESTION_CHILDREN_PREGNANCY_EXTRA,
+  HAWI_QUESTION_HIDDEN_TREASURE_EXTRA,
+  HAWI_QUESTION_MISSING_PERSON_EXTRA,
+  HAWI_QUESTION_TRAVEL_EXTRA,
+];
+
+export const HAWI_EXTENDED_KNOWLEDGE_BY_ID = Object.fromEntries(
+  HAWI_EXTENDED_KNOWLEDGE_LIST.map((item) => [item.id, item])
+);
+
+export function getHawiExtendedKnowledge(id) {
+  return HAWI_EXTENDED_KNOWLEDGE_BY_ID[id] || null;
+}
 
 export const HAWI_SOURCE = {
   id: 'hawi-source',
@@ -93,6 +131,26 @@ export const HAWI_SOURCE = {
     getAudit: getHawiFigureStateAudit,
   },
 
+  extendedKnowledge: {
+    list: HAWI_EXTENDED_KNOWLEDGE_LIST,
+    byId: HAWI_EXTENDED_KNOWLEDGE_BY_ID,
+    getById: getHawiExtendedKnowledge,
+
+    introductionMahwThabat: HAWI_INTRODUCTION_MAHW_THABAT,
+    dhamirDirectionsValidation: HAWI_DHAMIR_DIRECTIONS_VALIDATION,
+    houseStatesColors: HAWI_HOUSE_STATES_COLORS,
+    birthNativity: HAWI_BIRTH_NATIVITY,
+    trianglesZodiac: HAWI_TRIANGLES_ZODIAC,
+    yearlyPricesForecast: HAWI_YEARLY_PRICES_FORECAST,
+    rainWeatherForecast: HAWI_RAIN_WEATHER_FORECAST,
+    authorityStateRulers: HAWI_AUTHORITY_STATE_RULERS,
+    planetaryCorrespondences: HAWI_PLANETARY_CORRESPONDENCES,
+    childrenPregnancyExtra: HAWI_QUESTION_CHILDREN_PREGNANCY_EXTRA,
+    hiddenTreasureExtra: HAWI_QUESTION_HIDDEN_TREASURE_EXTRA,
+    missingPersonExtra: HAWI_QUESTION_MISSING_PERSON_EXTRA,
+    travelExtra: HAWI_QUESTION_TRAVEL_EXTRA,
+  },
+
   fullBookGapAudit: HAWI_FULL_BOOK_GAP_AUDIT,
 
   topicIndex: HAWI_TOPIC_INDEX,
@@ -131,11 +189,23 @@ export {
   getHawiFigureStateAudit,
 
   HAWI_FULL_BOOK_GAP_AUDIT,
-  getHawiFullBookGap,
-  getHawiFullBookGapsByStatus,
 
   HAWI_TOPIC_INDEX,
   getHawiTopic,
   getHawiTopicsByStatus,
   getHawiTopicsByPriority,
+
+  HAWI_INTRODUCTION_MAHW_THABAT,
+  HAWI_DHAMIR_DIRECTIONS_VALIDATION,
+  HAWI_HOUSE_STATES_COLORS,
+  HAWI_BIRTH_NATIVITY,
+  HAWI_TRIANGLES_ZODIAC,
+  HAWI_YEARLY_PRICES_FORECAST,
+  HAWI_RAIN_WEATHER_FORECAST,
+  HAWI_AUTHORITY_STATE_RULERS,
+  HAWI_PLANETARY_CORRESPONDENCES,
+  HAWI_QUESTION_CHILDREN_PREGNANCY_EXTRA,
+  HAWI_QUESTION_HIDDEN_TREASURE_EXTRA,
+  HAWI_QUESTION_MISSING_PERSON_EXTRA,
+  HAWI_QUESTION_TRAVEL_EXTRA,
 };
