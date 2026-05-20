@@ -411,6 +411,16 @@
     <section id="result"></section>
   </main>
 
+  <script type="module">
+    import {
+      interpretHawiQuestionInitial
+    } from './goral-hachol/engine/hawi-interpreter.js';
+
+    window.HAWI_INTERPRETER = {
+      interpretHawiQuestionInitial
+    };
+  </script>
+
   <script>
     function todayLine() {
       const now = new Date();
@@ -473,6 +483,79 @@
       `;
     }
 
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function hawiSourceInsightHtml(reading) {
+      if (!window.HAWI_INTERPRETER || !window.HAWI_INTERPRETER.interpretHawiQuestionInitial) {
+        return `
+          <div class="summary-box">
+            <strong>ניתוח חאוי:</strong><br/>
+            שכבת הידע נטענת. אם זה נשאר כך, רענן את הדף.
+          </div>
+        `;
+      }
+
+      const insight = window.HAWI_INTERPRETER.interpretHawiQuestionInitial(reading.question, reading);
+
+      const sources = insight.knowledgeSources
+        .map(s => `<li>${escapeHtml(s.id)} — ${escapeHtml(s.titleHebrew)}</li>`)
+        .join("");
+
+      const rules = insight.relevantRules.slice(0, 7)
+        .map(rule => {
+          const houses = rule.houses
+            ? ` | בתים: ${rule.houses.join(", ")}`
+            : rule.house
+              ? ` | בית: ${rule.house}`
+              : "";
+
+          const page = rule.sourcePage ? ` | עמוד מקור: ${rule.sourcePage}` : "";
+          const text = rule.hebrew || rule.result || rule.condition || rule.id || "כלל מקור";
+
+          return `<li>${escapeHtml(text)}${escapeHtml(houses)}${escapeHtml(page)}</li>`;
+        })
+        .join("");
+
+      return `
+        <div class="summary-box">
+          <div style="font-weight:800; margin-bottom:10px;">ניתוח חאוי לפי מקור</div>
+
+          <div style="margin-bottom:8px;">
+            <strong>נושא השאלה:</strong>
+            ${escapeHtml(insight.topicHebrew)}
+          </div>
+
+          <div style="margin-bottom:8px;">
+            <strong>בתים עיקריים לבדיקה:</strong>
+            ${escapeHtml(insight.mainHouses.join(", "))}
+          </div>
+
+          <div style="margin-bottom:8px;">
+            <strong>מקורות ידע שנשלפו:</strong>
+            <ul style="margin-top:6px;">${sources}</ul>
+          </div>
+
+          <div style="margin-bottom:8px;">
+            <strong>חוקים ראשונים מתוך המקור:</strong>
+            <ul style="margin-top:6px;">${rules}</ul>
+          </div>
+
+          <div style="margin-top:10px; opacity:.9;">
+            ${escapeHtml(insight.boardContext.noteHebrew)}
+          </div>
+        </div>
+      `;
+    }
+
+
     function buildChart(reading) {
       const h = n => reading.chart.find(x => x.house === n);
       const diagnosis = ramlBuildInitialDiagnosis(reading);
@@ -523,6 +606,8 @@
         </article>
 
         <div class="summary-box">${ramlBuildReadingSummary(reading)}</div>
+
+        ${hawiSourceInsightHtml(reading)}
       `;
     }
 
