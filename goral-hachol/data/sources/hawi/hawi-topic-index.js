@@ -119,3 +119,15 @@ export default { HAWI_TOPIC_INDEX };
 if (typeof module !== 'undefined') {
   module.exports = { HAWI_TOPIC_INDEX };
 }
+
+export function getHawiTopic(id) {
+  return HAWI_TOPIC_INDEX.topics?.find((topic) => topic.id === id || topic.topicId === id) || null;
+}
+
+export function getHawiTopicsByStatus(status) {
+  return HAWI_TOPIC_INDEX.topics?.filter((topic) => topic.coverageStatus === status || topic.status === status) || [];
+}
+
+export function getHawiTopicsByPriority(priority) {
+  return HAWI_TOPIC_INDEX.topics?.filter((topic) => topic.priority === priority) || [];
+}
