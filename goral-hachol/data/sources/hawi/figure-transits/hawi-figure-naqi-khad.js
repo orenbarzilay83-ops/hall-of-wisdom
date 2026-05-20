@@ -25,7 +25,7 @@ const HAWI_FIGURE_NAQI_KHAD = {
   section: 'ترحيل الأشكال الستة عشر في الستة عشر بيتا',
   sourceBook: 'حاوي العجائب ومظهر الغرائب',
   sourcePages: ['PDF document 18.pdf', 'PDF document 19.pdf'],
-  extractionStatus: 'source-expanded-from-full-book-mapping',
+  extractionStatus: 'source-audited-enriched-option-2',
   auditStatus: 'source-present-expanded-from-transit-audit',
   next: 'hawi-figure-judla',
 
@@ -58,7 +58,9 @@ const HAWI_FIGURE_NAQI_KHAD = {
         'המקור כולל לשון של תשוקה, נשים ונערים. לשמר כידע מקור; ניסוח לקוח ייקבע בנפרד.'
       ],
       witnessDependent: true,
-      topics: ['male-female', 'joy', 'food-drink', 'pleasure', 'money', 'desire', 'marriage', 'young-children', 'witness-dependent']
+      topics: ['male-female', 'joy', 'food-drink', 'pleasure', 'money', 'desire', 'marriage', 'young-children', 'witness-dependent'],
+      criticalArabicTerms: ['الشواهد الجيدة'],
+      specialRules: ['אהבה/חשק וקבלה מנשים/נערים לפי עדים טובים; לשמור כחומר מקור רגיש.'],
     },
     {
       house: 2,
@@ -77,7 +79,9 @@ const HAWI_FIGURE_NAQI_KHAD = {
         'דרהמים וזהב מאישה שאוהבת/חושקת בו לפי העדים.'
       ],
       witnessDependent: true,
-      topics: ['money', 'women', 'commerce', 'gold', 'delayed-payment', 'witness-dependent']
+      topics: ['money', 'women', 'commerce', 'gold', 'delayed-payment', 'witness-dependent'],
+      criticalArabicTerms: ['بالشواهد'],
+      specialRules: ['קבלת ממון לאחר עיכוב ודחייה, זהב/דרהמים מאישה לפי העדים.'],
     },
     {
       house: 3,
@@ -101,7 +105,9 @@ const HAWI_FIGURE_NAQI_KHAD = {
         'המקור מזכיר اهل الزنا واللواطة. לשמר את המונחים בשכבת ידע; ניסוח לקוח ייקבע בנפרד.'
       ],
       witnessDependent: true,
-      topics: ['siblings', 'friends', 'speech', 'beloved', 'sexual-conduct', 'separation', 'money', 'witness-dependent']
+      topics: ['siblings', 'friends', 'speech', 'beloved', 'sexual-conduct', 'separation', 'money', 'witness-dependent'],
+      criticalArabicTerms: ['على قدر الشواهد'],
+      specialRules: ['אהבה בין חברים ואחים, אבל גם חומר רגיש: זנות/לוואט; קבלת דרהמים לפי העדים.'],
     },
     {
       house: 4,
@@ -121,7 +127,9 @@ const HAWI_FIGURE_NAQI_KHAD = {
         'קבלת צרור דרהמים לפי העדים.'
       ],
       witnessDependent: true,
-      topics: ['parents', 'land', 'property', 'secrecy', 'tears', 'money', 'witness-dependent']
+      topics: ['parents', 'land', 'property', 'secrecy', 'tears', 'money', 'witness-dependent'],
+      criticalArabicTerms: ['على قدر الشواهد'],
+      specialRules: ['תועלת מהורים/קרקע + שמירת סוד + בכי ודמעות + צרור דרהמים לפי העדים.'],
     },
     {
       house: 5,
@@ -141,7 +149,9 @@ const HAWI_FIGURE_NAQI_KHAD = {
         'ילד שייוולד לפי העדים.'
       ],
       witnessDependent: true,
-      topics: ['children', 'birth', 'joy', 'gifts', 'messengers', 'letters', 'benefic', 'witness-dependent']
+      topics: ['children', 'birth', 'joy', 'gifts', 'messengers', 'letters', 'benefic', 'witness-dependent'],
+      criticalArabicTerms: ['على قدر الشواهد'],
+      specialRules: ['ילד שייוולד לפי העדים.'],
     },
     {
       house: 6,
@@ -163,7 +173,9 @@ const HAWI_FIGURE_NAQI_KHAD = {
         'קבלת דבר ממנו לפי העדים.'
       ],
       witnessDependent: true,
-      topics: ['illness', 'death', 'servants', 'water', 'livestock', 'travel', 'women', 'beloved', 'witness-dependent']
+      topics: ['illness', 'death', 'servants', 'water', 'livestock', 'travel', 'women', 'beloved', 'witness-dependent'],
+      criticalArabicTerms: ['على قدر الشواهد'],
+      specialRules: ['מחלה/מוות בעבדים ומים; קשר עם אהוב שנפרד וקבלת דבר ממנו לפי העדים.'],
     },
     {
       house: 7,
@@ -186,7 +198,8 @@ const HAWI_FIGURE_NAQI_KHAD = {
       sensitiveNotes: [
         'המקור מזכיר الحرام والعشق والفسق. לשמר כידע מקור; ניסוח לקוח ייקבע בנפרד.'
       ],
-      topics: ['marriage', 'women', 'partnership', 'commerce', 'mixing', 'beloved', 'forbidden', 'sexual-conduct']
+      topics: ['marriage', 'women', 'partnership', 'commerce', 'mixing', 'beloved', 'forbidden', 'sexual-conduct'],
+      specialRules: ['נישואין/שותפות/נשים, אבל גם איסור/חשק/فسق; חומר רגיש לשימור.'],
     },
     {
       house: 8,
@@ -207,7 +220,9 @@ const HAWI_FIGURE_NAQI_KHAD = {
         'בן זוג שיקבל קושי ואולי יאבד/ייהרג לפי העדים.'
       ],
       witnessDependent: true,
-      topics: ['children', 'inheritance', 'sword', 'death', 'spouse', 'difficulty', 'witness-dependent']
+      topics: ['children', 'inheritance', 'sword', 'death', 'spouse', 'difficulty', 'witness-dependent'],
+      criticalArabicTerms: ['على قدر الشواهد'],
+      specialRules: ['קטנים/ירושות/חרב בנדן; מות נערה; בן זוג בקושי ואולי אובדן לפי העדים.'],
     },
     {
       house: 9,
@@ -229,7 +244,9 @@ const HAWI_FIGURE_NAQI_KHAD = {
         'יציאה מן היד לצורך נישואין לפי העדים.'
       ],
       witnessDependent: true,
-      topics: ['travel', 'hidden-knowledge', 'wisdom', 'philosophy', 'dreams', 'spouse', 'authority', 'witness-dependent']
+      topics: ['travel', 'hidden-knowledge', 'wisdom', 'philosophy', 'dreams', 'spouse', 'authority', 'witness-dependent'],
+      criticalArabicTerms: ['على قدر الشواهد'],
+      specialRules: ['חכמות נסתרות, פילוסופיה, חלומות; יציאה עם אישה/לצורך נישואין לפי העדים.'],
     },
     {
       house: 10,
@@ -291,7 +308,8 @@ const HAWI_FIGURE_NAQI_KHAD = {
       sensitiveNotes: [
         'יש לשמור את לשון המוות והמרמה כמקור; ניסוח לקוח ייקבע בנפרד.'
       ],
-      topics: ['corruption', 'deception', 'schemes', 'animals', 'water', 'servants', 'death', 'friendship', 'good-ending']
+      topics: ['corruption', 'deception', 'schemes', 'animals', 'water', 'servants', 'death', 'friendship', 'good-ending'],
+      specialRules: ['קלקול, מרמה ותחבולות; תועלת מבהמות/מים/עבדים; אחרית טובה עם חבר/בן ברית.'],
     },
     {
       house: 13,
@@ -324,7 +342,8 @@ const HAWI_FIGURE_NAQI_KHAD = {
         'קבלה/אחיזה במשהו מתוך קושי.',
         'יש בה גם انفصال — היפרדות/ניתוק.'
       ],
-      topics: ['benefit', 'receiving', 'difficulty', 'separation']
+      topics: ['benefit', 'receiving', 'difficulty', 'separation'],
+      specialRules: ['תועלות וקבלה מתוך קושי והיפרדות.'],
     },
     {
       house: 15,
@@ -341,7 +360,8 @@ const HAWI_FIGURE_NAQI_KHAD = {
         'לכן הבית נשמר כ־explicit-in-source אך מסומן לבדיקת צילום/מקור כדי להשלים נוסח ערבי מדויק.'
       ],
       sourceReview: 'needs-arabic-source-line-review',
-      topics: ['attainment', 'connection', 'separation', 'needs-review']
+      topics: ['attainment', 'connection', 'separation', 'needs-review'],
+      reviewNotes: ['בית 15 — חסר נוסח ערבי מלא במיפוי הנוכחי; להשאיר needs-arabic-source-line-review.'],
     },
     {
       house: 16,
@@ -357,7 +377,8 @@ const HAWI_FIGURE_NAQI_KHAD = {
         'קשר/חיבור שמקווים לו.',
         'הדין מורכב: הפסד מצד אחד, אפשרות חיבור מצד שני.'
       ],
-      topics: ['money-loss', 'connection', 'hope', 'mixed']
+      topics: ['money-loss', 'connection', 'hope', 'mixed'],
+      specialRules: ['הפסד ממון + קשר/חיבור שמקווים לו; דין מעורב.'],
     }
   ],
 

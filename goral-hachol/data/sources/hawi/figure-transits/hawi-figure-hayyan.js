@@ -6,7 +6,7 @@
  * ترحيل الأشكال الستة عشر في الستة عشر بيتا
  *
  * Figure:
- * الحيان / الأحيان — נושא ראש
+ * الحيان / الأحيان — נשוא ראש
  *
  * Source pages:
  * PDF document 17.pdf — houses 1–8
@@ -19,18 +19,18 @@ const HAWI_FIGURE_HAYYAN = {
   id: 'hawi-figure-hayyan',
   order: 9,
   arabicName: 'الأحيان / الحيان',
-  hebrewName: 'נושא ראש',
+  hebrewName: 'נשוא ראש',
   aliases: ['الضاحك القائم'],
   source: 'hawi',
   section: 'ترحيل الأشكال الستة عشر في الستة عشر بيتا',
   sourceBook: 'حاوي العجائب ومظهر الغرائب',
   sourcePages: ['PDF document 17.pdf', 'PDF document 18.pdf'],
-  extractionStatus: 'source-expanded-from-full-book-mapping',
+  extractionStatus: 'source-audited-enriched-option-2',
   auditStatus: 'source-present-expanded-from-transit-audit',
   next: 'hawi-figure-nakis',
 
   noteHebrew:
-    'זהו פירוש מעבר/תרחיל הצורה נושא ראש בבתים, ולא שכבת מצב צורה לפי ناطق/صامت/سعد/نحس. לפי מיפוי הספר, נושא ראש מופיע בפרק התרחיל בעמודים 17–18, אך לא נמצא בפרק מצבי הצורות בעמודים 45–51.',
+    'זהו פירוש מעבר/תרחיל הצורה נשוא ראש בבתים, ולא שכבת מצב צורה לפי ناطق/صامت/سعد/نحس. לפי מיפוי הספר, נשוא ראש מופיע בפרק התרחיל בעמודים 17–18, אך לא נמצא בפרק מצבי הצורות בעמודים 45–51.',
 
   houses: [
     {
@@ -129,7 +129,8 @@ const HAWI_FIGURE_HAYYAN = {
         'שמחה לאחר קושי רפואי או שירותי.',
         'בית זה חשוב לשאלות חולי, עבדים/עובדים, מקנה ורכוש חי.'
       ],
-      topics: ['illness', 'recovery', 'servants', 'livestock', 'animals', 'joy']
+      topics: ['illness', 'recovery', 'servants', 'livestock', 'animals', 'joy'],
+      specialRules: ['יציאה מן המחלה ושמחה.'],
     },
     {
       house: 7,
@@ -162,7 +163,8 @@ const HAWI_FIGURE_HAYYAN = {
         'ייתכן דין של ولاية — אחריות, שליטה או מינוי על עניינים רחבים.',
         'אין לצמצם את בית 8 רק למוות; כאן המקור נותן תועלת של ירושה ואפשרות של אחריות רחבה.'
       ],
-      topics: ['inheritance', 'authority', 'wide-affairs', 'house-8']
+      topics: ['inheritance', 'authority', 'wide-affairs', 'house-8'],
+      specialRules: ['לא לצמצם למוות: כאן המקור נותן ירושות ואפשרות מינוי/שליטה בעניינים רחבים.'],
     },
     {
       house: 9,
@@ -273,7 +275,8 @@ const HAWI_FIGURE_HAYYAN = {
           ruleType: 'engine-structural-note'
         }
       ],
-      topics: ['completion', 'happiness', 'long-life', 'honor', 'mizan', 'structural-rule']
+      topics: ['completion', 'happiness', 'long-life', 'honor', 'mizan', 'structural-rule'],
+      specialRules: ['כלל מנוע חשוב: נשוא ראש אינו נכנס במאזן מפני שהוא מן הצורות היחידות.'],
     },
     {
       house: 15,
@@ -286,7 +289,8 @@ const HAWI_FIGURE_HAYYAN = {
         'בית 15 לא מופיע במיפוי שנמסר עבור החיאן.',
         'אין להשלים מתוך היגיון או מתוך בית אחר.'
       ],
-      topics: ['not-explicit']
+      topics: ['not-explicit'],
+      specialRules: ['לא מפורש במקור; אין להשלים מסברה.'],
     },
     {
       house: 16,
@@ -302,7 +306,8 @@ const HAWI_FIGURE_HAYYAN = {
         'יחד עם זה מופיע قلة حصوله — מיעוט השגה או קושי בקבלת הדבר.',
         'לכן בית 16 אינו רק טוב או רק רע; יש בו סיום/התפנות או פריסה, אך השגה מועטה.'
       ],
-      topics: ['ending', 'completion', 'low-attainment', 'house-16']
+      topics: ['ending', 'completion', 'low-attainment', 'house-16'],
+      specialRules: ['סיום/פרוג של כל דבר יחד עם מיעוט השגה או קושי להשיג.'],
     }
   ],
 
