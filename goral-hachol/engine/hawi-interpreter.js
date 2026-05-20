@@ -6,6 +6,11 @@ import {
   HAWI_SOURCE,
 } from '../data/sources/hawi/hawi-source.js';
 
+import {
+  diagnoseSpiritualInfluence,
+  isSpiritualQuestion,
+} from './goral-spiritual-diagnostics-engine.js';
+
 const TOPIC_MAIN_HOUSES = {
   travel: [1, 3, 5, 8, 9, 12],
   missingPerson: [1, 7, 8, 9, 12],
@@ -413,6 +418,7 @@ export function interpretHawiQuestionInitial(question, board = null) {
   const boardAnalysis = buildBoardAnalysis(board, route.topicId, mainHouses);
   const relevantRules = collectRelevantRules(route.knowledge, route.topicId, mainHouses);
   const boardScore = scoreBoard(boardAnalysis);
+  const spiritualDiagnosis = diagnoseSpiritualInfluence(question, board);
   const finalConclusionHebrew = buildFinalConclusion(
     topicHebrew,
     boardScore,
@@ -448,6 +454,7 @@ export function interpretHawiQuestionInitial(question, board = null) {
 
     boardAnalysis,
     boardScore,
+    spiritualDiagnosis,
     finalConclusionHebrew,
     conclusionDraftHebrew: finalConclusionHebrew,
   };

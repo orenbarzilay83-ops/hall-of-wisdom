@@ -542,6 +542,27 @@
         ? insight.boardScore.reasons.map(r => `<li>${escapeHtml(r)}</li>`).join("")
         : "";
 
+      const spiritualBox = insight.spiritualDiagnosis && insight.spiritualDiagnosis.active
+        ? `
+          <div style="margin-bottom:8px;">
+            <strong>אבחון רוחני:</strong><br/>
+            ${escapeHtml(insight.spiritualDiagnosis.finalHebrew)}
+            ${
+              insight.spiritualDiagnosis.mainReasons && insight.spiritualDiagnosis.mainReasons.length
+                ? `<ul style="margin-top:6px;">${
+                    insight.spiritualDiagnosis.mainReasons.slice(0, 6).map(r => `
+                      <li>
+                        בית ${escapeHtml(r.house)} — ${escapeHtml(r.role)}:
+                        ${escapeHtml((r.signals || []).join(" "))}
+                      </li>
+                    `).join("")
+                  }</ul>`
+                : ""
+            }
+          </div>
+        `
+        : "";
+
       return `
         <div class="summary-box">
           <div style="font-weight:800; margin-bottom:10px;">אבחון גורל החול</div>
@@ -570,6 +591,8 @@
             <strong>שיקולי פסיקה:</strong>
             <ul style="margin-top:6px;">${reasons}</ul>
           </div>
+
+          ${spiritualBox}
 
           <div style="margin-bottom:8px;">
             <strong>שכבות ידע שנבדקו:</strong>
