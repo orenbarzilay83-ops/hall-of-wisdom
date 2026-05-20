@@ -40,7 +40,7 @@ const HAWI_FIGURE_TARIQ = {
   "extractionStatus": "source-audited-enriched-option-2",
   "id": "hawi-figure-tariq",
   "arabicName": "الطريق",
-  "hebrewName": "הדרך",
+  "hebrewName": "דרך",
   "generalDescription": "אדם דק/רזה בגופו, פנים נוחות/נעימות, צבע עור חיטה.",
   "generalMeaning": "צורה של דרך, נסיעה, תנועה, מעבר ממקום למקום, יציאה, ידיעות, שליחים וכתבים. איכות הדין נקבעת לפי הבית והעדים: יכולה להיות נסיעה טובה ותועלתית, אך בבתים קשים מורה על אובדן, גלות, פירוד, עייפות, סכנה או מוות.",
   "houses": [

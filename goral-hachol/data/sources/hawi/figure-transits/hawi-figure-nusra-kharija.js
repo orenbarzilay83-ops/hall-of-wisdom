@@ -39,7 +39,7 @@ const HAWI_FIGURE_NUSRA_KHARIJA = {
   "extractionStatus": "source-audited-enriched-option-2",
   "id": "hawi-figure-nusra-kharija",
   "arabicName": "النصرة الخارجة",
-  "hebrewName": "נצרה ח׳ארג׳ה",
+  "hebrewName": "כבוד יוצא",
   "generalMeaning": "צורה של מעלה, כבוד, שלטון, ניצחון, רוממות, קשר לאנשים גדולים, נסיעה, בקשת תועלת והצלחה. מורה גם על שלמות/שלום בכל מקום שהיא נופלת בו. בבתים קשים יכולה להראות פחד משלטון, עוול מצד גדולים, מוות/אובדן, מניעה או סכנה מצד כוח שלטוני — לפי העדים.",
   "houses": [
     {

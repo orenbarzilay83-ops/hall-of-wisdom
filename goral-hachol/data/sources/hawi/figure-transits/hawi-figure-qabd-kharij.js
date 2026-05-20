@@ -39,7 +39,7 @@ const HAWI_FIGURE_QABD_KHARIJ = {
   "extractionStatus": "source-audited-enriched-option-2",
   "id": "hawi-figure-qabd-kharij",
   "arabicName": "القبض الخارج",
-  "hebrewName": "קבץ ח׳ארג׳",
+  "hebrewName": "ממון יוצא",
   "generalMeaning": "צורה של יציאה, איבוד, הפסד, דבר היוצא מן היד, גניבה, פירוד, בריחה, התרחקות, מעבר, תנועה, נסיעה, שחרור או סילוק. בחולה/אסיר/נוסע יכולה להיות טובה כיציאה ממחלה/מאסר או חזרת נוסע לפי העדים.",
   "houses": [
     {

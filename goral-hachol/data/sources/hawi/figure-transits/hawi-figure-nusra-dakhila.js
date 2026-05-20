@@ -39,7 +39,7 @@ const HAWI_FIGURE_NUSRA_DAKHILA = {
   "extractionStatus": "source-audited-enriched-option-2",
   "id": "hawi-figure-nusra-dakhila",
   "arabicName": "النصرة الداخلة",
-  "hebrewName": "נצרה דאחלה",
+  "hebrewName": "כבוד נכנס",
   "alsoCalledArabic": "التبشير",
   "alsoCalledHebrew": "הבשורה",
   "generalMeaning": "צורה של בשורה, סעד, תיקון, הצלה, תועלת, שלום, חכמה, צניעות, פרנסה, קשרים טובים, נישואין טובים, הצלחה מול אויבים ותיקון מצבים קשים. גם במקומות קשים היא הופכת רע לטוב לפי המקור והעדים.",

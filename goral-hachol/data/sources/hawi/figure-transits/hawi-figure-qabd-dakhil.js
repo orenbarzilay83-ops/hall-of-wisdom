@@ -39,7 +39,7 @@ const HAWI_FIGURE_QABD_DAKHIL = {
   "extractionStatus": "source-audited-enriched-option-2",
   "id": "hawi-figure-qabd-dakhil",
   "arabicName": "القبض الداخل",
-  "hebrewName": "קבץ דאחל",
+  "hebrewName": "ממון נכנס",
   "generalMeaning": "צורה של קבלה, אחיזה, חזרת דבר ליד האדם, פרנסה, תועלת, גבייה, השגת מבוקש ותיקון מצב. בבתים קשים היא עדיין מראה קבלה, אך דרך צער, דמעות, עיכוב, חולי, עבדות, פחד או מאמץ.",
   "houses": [
     {
