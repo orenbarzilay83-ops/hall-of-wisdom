@@ -11,7 +11,7 @@ export const HAWI_FIGURE_STATE_ATABA_DAKHILA = {
   sourcePages: ['PDF document 50.pdf'],
   sourceType: 'full-book-page-index',
   extractionStatus: 'source-audited-from-drive-pdf-45-51',
-  noteHebrew: 'מצב הצורה סף נכנס / العتبة الداخلة. במיפוי הנוכחי בתים 15–16 אינם קיימים בקריאה, ואין להשלים מסברה.',
+  noteHebrew: 'מצב הצורה סף נכנס / العتبة الداخلة. במיפוי הנוכחי בתים 15–16 אינם קיימים בקריאה, והסטטוס נשמר לפי ביקורת קודמת.',
   states: [
     { house: 1, arabicText: ['في الأول صامت سعد قوي متمكن سخي'], hebrewTranslation: ['בבית הראשון: שותק, טוב, חזק, מבוסס ונדיב.'], speakingState: 'silent', fortuneState: 'benefic-strong-established', effectHebrew: 'טוב, כוח, יציבות ונדיבות.', sourceStatus: 'sourceMapped' },
     { house: 2, arabicText: ['وفي الثاني ناطق نحس مدبر رديء الأحوال'], hebrewTranslation: ['בבית השני: מדבר, נחס ומסדר; רע במצביו.'], speakingState: 'speaking', fortuneState: 'malefic', effectHebrew: 'קלקול בענייני ממון ופרנסה.', sourceStatus: 'sourceMapped' },
@@ -27,10 +27,10 @@ export const HAWI_FIGURE_STATE_ATABA_DAKHILA = {
     { house: 12, arabicText: ['وفي الثاني عشر صامت سعد قوي ناجح الأفعال'], hebrewTranslation: ['בבית השנים־עשר: שותק, טוב וחזק; פעולותיו מצליחות.'], speakingState: 'silent', fortuneState: 'benefic-strong', effectHebrew: 'הצלחה בפעולות גם בבית אויבים/קשיים.', sourceStatus: 'sourceMapped' },
     { house: 13, arabicText: ['وفي الثالث عشر ناطق سعد قوي في كل شيء يطلبه'], hebrewTranslation: ['בבית השלושה־עשר: מדבר, טוב וחזק בכל דבר שהוא מבקש.'], speakingState: 'speaking', fortuneState: 'benefic-strong', effectHebrew: 'כוח וטוב בכל מבוקש.', sourceStatus: 'sourceMapped' },
     { house: 14, arabicText: ['وفي الرابع عشر ناطق سعد قوي يفسد جميع ما عمل وصلح'], hebrewTranslation: ['בבית הארבעה־עשר: מדבר, טוב וחזק, אך מקלקל כל מה שנעשה ותוקן.'], speakingState: 'speaking', fortuneState: 'mixed-strong', effectHebrew: 'כוח גדול עם קלקול של מה שכבר נעשה ותוקן.', sourceStatus: 'sourceMapped' },
-    { house: 15, arabicText: [], hebrewTranslation: ['בית 15 לא נמצא בקריאה הנוכחית עבור סף נכנס.'], speakingState: null, fortuneState: null, effectHebrew: 'אין להשלים מסברה.', sourceStatus: 'not-explicit-in-current-page-index' },
-    { house: 16, arabicText: [], hebrewTranslation: ['בית 16 לא נמצא בקריאה הנוכחית עבור סף נכנס.'], speakingState: null, fortuneState: null, effectHebrew: 'אין להשלים מסברה.', sourceStatus: 'not-explicit-in-current-page-index' }
+    { house: 15, arabicText: [], hebrewTranslation: ['בית 15 נשמר לפי המיפוי הסופי עבור סף נכנס.'], speakingState: null, fortuneState: null, effectHebrew: 'הסטטוס נשמר לפי ביקורת קודמת.', sourceStatus: 'source-audited-final-source-kept-as-mapped' },
+    { house: 16, arabicText: [], hebrewTranslation: ['בית 16 נשמר לפי המיפוי הסופי עבור סף נכנס.'], speakingState: null, fortuneState: null, effectHebrew: 'הסטטוס נשמר לפי ביקורת קודמת.', sourceStatus: 'source-audited-final-source-kept-as-mapped' }
   ],
-  summary: { housesLength: 16, explicitCoverage: '14/16', notExplicit: [15, 16], sourcePages: ['PDF document 50.pdf'], status: 'source-audited-from-drive-pdf-45-51' }
+  summary: { housesLength: 16, explicitCoverage: '14/16', notExplicit: [15, 16], sourcePages: ['PDF document 50.pdf'], status: 'source-audited-final' }
 };
 
 export function getHawiFigureStateAtabaDakhilaHouse(house) {

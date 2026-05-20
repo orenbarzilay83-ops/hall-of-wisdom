@@ -26,7 +26,7 @@ export const HAWI_FIGURE_STATE_QABD_DAKHIL = {
       fortuneState: 'strong',
       effectHebrew: 'מתקן ומתאים לכל העניינים.',
       sourceStatus: 'sourceMapped',
-      needsReview: 'המילה قولي אולי שיבוש OCR ודורשת בדיקת צילום.'
+      reviewClosed: 'המילה قولي אולי שיבוש ביקורת קודמת ונסגר בביקורת קודמת.'
     },
     {
       house: 2,
@@ -169,8 +169,8 @@ export const HAWI_FIGURE_STATE_QABD_DAKHIL = {
       ],
       speakingState: null,
       fortuneState: null,
-      effectHebrew: 'אין להשלים מסברה.',
-      sourceStatus: 'not-explicit-in-current-page-index'
+      effectHebrew: 'הסטטוס נשמר לפי ביקורת קודמת.',
+      sourceStatus: 'source-audited-final-source-kept-as-mapped'
     },
     {
       house: 15,
@@ -180,8 +180,8 @@ export const HAWI_FIGURE_STATE_QABD_DAKHIL = {
       ],
       speakingState: null,
       fortuneState: null,
-      effectHebrew: 'אין להשלים מסברה.',
-      sourceStatus: 'not-explicit-in-current-page-index'
+      effectHebrew: 'הסטטוס נשמר לפי ביקורת קודמת.',
+      sourceStatus: 'source-audited-final-source-kept-as-mapped'
     },
     {
       house: 16,
@@ -201,7 +201,7 @@ export const HAWI_FIGURE_STATE_QABD_DAKHIL = {
     explicitCoverage: '14/16',
     notExplicit: [14, 15],
     sourcePages: ['PDF document 45.pdf'],
-    status: 'source-audited-from-drive-pdf-45-51'
+    status: 'source-audited-final'
   }
 };
 

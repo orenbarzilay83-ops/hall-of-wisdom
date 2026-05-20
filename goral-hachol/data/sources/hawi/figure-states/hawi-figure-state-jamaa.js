@@ -30,7 +30,7 @@ export const HAWI_FIGURE_STATE_JAMAA = {
     { house: 15, arabicText: ['وفي الخامس عشر صامت رديء في جميع الأحوال'], hebrewTranslation: ['בבית החמישה־עשר: שותק ורע בכל המצבים.'], speakingState: 'silent', fortuneState: 'malefic-general', effectHebrew: 'רע כללי במאזן/תוצאת העניין.', sourceStatus: 'sourceMapped' },
     { house: 16, arabicText: ['وفي السادس عشر ناطق سعيد قوي في جميع الأمور'], hebrewTranslation: ['בבית השישה־עשר: מדבר, טוב וחזק בכל העניינים.'], speakingState: 'speaking', fortuneState: 'benefic-strong', effectHebrew: 'טוב וחזק בכל העניינים.', sourceStatus: 'sourceMapped' }
   ],
-  summary: { housesLength: 16, explicitCoverage: '16/16', notExplicit: [], sourcePages: ['PDF document 45.pdf', 'PDF document 46.pdf'], status: 'source-audited-from-drive-pdf-45-51' }
+  summary: { housesLength: 16, explicitCoverage: '16/16', notExplicit: [], sourcePages: ['PDF document 45.pdf', 'PDF document 46.pdf'], status: 'source-audited-final' }
 };
 
 export function getHawiFigureStateJamaaHouse(house) {

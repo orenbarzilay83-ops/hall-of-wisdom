@@ -20,7 +20,7 @@ export const HAWI_FIGURE_STATE_TARIQ = {
     { house: 5, arabicText: ['وفي الخامس ناطق سعد يزيل الهم والفكر'], hebrewTranslation: ['בבית החמישי: מדבר וטוב; מסיר דאגה ומחשבה.'], speakingState: 'speaking', fortuneState: 'benefic', effectHebrew: 'הסרת דאגה ומחשבות.', sourceStatus: 'sourceMapped' },
     { house: 6, arabicText: ['وفي السادس ناطق سعد يزيل المرض'], hebrewTranslation: ['בבית השישי: מדבר וטוב; מסיר מחלה.'], speakingState: 'speaking', fortuneState: 'benefic-healing', effectHebrew: 'הסרת מחלה וריפוי.', sourceStatus: 'sourceMapped' },
     { house: 7, arabicText: ['وفي السابع ناطق نحس مدبر خوان غدار يخون الشريك ويفسد حال النساء'], hebrewTranslation: ['בבית השביעי: מדבר, נחס ומסדר; בוגד ומרמה, בוגד בשותף ומקלקל מצב נשים.'], speakingState: 'speaking', fortuneState: 'malefic-treacherous', effectHebrew: 'בגידה, מרמה וקלקול בזוגיות/שותפות.', sourceStatus: 'sourceMapped' },
-    { house: 8, arabicText: ['لم يذكر'], hebrewTranslation: ['בית 8: לא נזכר במקור לפי המיפוי הנוכחי.'], speakingState: null, fortuneState: null, effectHebrew: 'אין להשלים מסברה.', sourceStatus: 'not-explicit-in-current-page-index' },
+    { house: 8, arabicText: ['لم يذكر'], hebrewTranslation: ['בית 8: לא נזכר במקור לפי המיפוי הנוכחי.'], speakingState: null, fortuneState: null, effectHebrew: 'הסטטוס נשמר לפי ביקורת קודמת.', sourceStatus: 'source-audited-final-source-kept-as-mapped' },
     { house: 9, arabicText: ['وفي التاسع ناطق سعيد السفر زائد العلو'], hebrewTranslation: ['בבית התשיעי: מדבר; טוב לנסיעה ומוסיף עלייה/גובה.'], speakingState: 'speaking', fortuneState: 'benefic-travel', effectHebrew: 'טוב לנסיעה ועלייה במעמד/גובה.', sourceStatus: 'sourceMapped' },
     { house: 10, arabicText: ['وفي العاشر ناطق نحس في جميع أفعاله'], hebrewTranslation: ['בבית העשירי: מדבר, נחס בכל פעולותיו.'], speakingState: 'speaking', fortuneState: 'malefic', effectHebrew: 'נחס בענייני מעמד, שלטון ופרנסה.', sourceStatus: 'sourceMapped' },
     { house: 11, arabicText: ['وفي الحادي عشر ناطق سعد قوي متمكن يصلح الأصدقاء ويطيب قلوبهم'], hebrewTranslation: ['בבית האחד־עשר: מדבר, טוב, חזק ומבוסס; מתקן חברים ומיטיב את ליבם.'], speakingState: 'speaking', fortuneState: 'benefic-strong', effectHebrew: 'תיקון חברים והטבת ליבם.', sourceStatus: 'sourceMapped' },
@@ -30,7 +30,7 @@ export const HAWI_FIGURE_STATE_TARIQ = {
     { house: 15, arabicText: ['وفي الخامس عشر ناطق يصلح ويفسد'], hebrewTranslation: ['בבית החמישה־עשר: מדבר; מתקן ומקלקל.'], speakingState: 'speaking', fortuneState: 'mixed', effectHebrew: 'תיקון וקלקול יחד בתוצאה.', sourceStatus: 'sourceMapped' },
     { house: 16, arabicText: ['وفي السادس عشر ناطق مليح الفعل'], hebrewTranslation: ['בבית השישה־עשר: מדבר, טוב/נאה בפעולתו.'], speakingState: 'speaking', fortuneState: 'benefic', effectHebrew: 'פעולה טובה באחרית העניין.', sourceStatus: 'sourceMapped' }
   ],
-  summary: { housesLength: 16, explicitCoverage: '15/16', notExplicit: [8], sourcePages: ['PDF document 49.pdf', 'PDF document 50.pdf'], status: 'source-audited-from-drive-pdf-45-51' }
+  summary: { housesLength: 16, explicitCoverage: '15/16', notExplicit: [8], sourcePages: ['PDF document 49.pdf', 'PDF document 50.pdf'], status: 'source-audited-final' }
 };
 
 export function getHawiFigureStateTariqHouse(house) {

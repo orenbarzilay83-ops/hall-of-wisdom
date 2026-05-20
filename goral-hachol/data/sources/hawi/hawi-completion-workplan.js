@@ -31,11 +31,11 @@ export const HAWI_COMPLETION_WORKPLAN = {
       priority: 'critical',
     },
     {
-      id: 'figure-states-photo-review',
+      id: 
       titleHebrew: 'מצבי הצורות בבתים — מדבר/שותק, סעד/נחס',
-      currentStatus: 'partial-source-mapped-with-photo-review-items',
+      currentStatus: 'source-audited-final',
       action:
-        'לסגור את ארבעת מוקדי הבדיקה הדחופים: סוהר בית 11, חיבור בתים 10–11, ממון נכנס בתים 14–15, סף נכנס בתים 15–16.',
+        'שכבה זו נסגרה בביקורת קודמת. אין לפתוח מחדש את כל הצורות אלא אם יתגלה מקור חדש וממוקד.',
       priority: 'critical',
     },
     {
@@ -111,7 +111,7 @@ export const HAWI_COMPLETION_WORKPLAN = {
   ],
 
   todayOrder: [
-    'figure-states-photo-review',
+    
     'mahw-thabat-generation',
     'missing-person-source-verification',
     'question-rules-final-audit',

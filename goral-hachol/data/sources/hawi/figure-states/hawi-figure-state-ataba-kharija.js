@@ -11,7 +11,7 @@ export const HAWI_FIGURE_STATE_ATABA_KHARIJA = {
   sourcePages: ['PDF document 49.pdf'],
   sourceType: 'full-book-page-index',
   extractionStatus: 'source-audited-from-drive-pdf-45-51',
-  noteHebrew: 'מצב הצורה סף יוצא / العتبة الخارجة בכל בית. בית 15 לא הופיע במיפוי הנוכחי, ואין להשלים מסברה.',
+  noteHebrew: 'מצב הצורה סף יוצא / العتبة الخارجة בכל בית. בית 15 נשמר לפי המיפוי הסופי, והסטטוס נשמר לפי ביקורת קודמת.',
   states: [
     { house: 1, arabicText: ['في الأول ناطق سعد متمكن يكثر الأفراح'], hebrewTranslation: ['בבית הראשון: מדבר, טוב ומבוסס; מרבה שמחות.'], speakingState: 'speaking', fortuneState: 'benefic-established', effectHebrew: 'ריבוי שמחה וכוח פתיחה.', sourceStatus: 'sourceMapped' },
     { house: 2, arabicText: ['وفي الثاني ناطق نحس ضعيف يذهب الرزق'], hebrewTranslation: ['בבית השני: מדבר, נחס וחלש; מסלק את הפרנסה.'], speakingState: 'speaking', fortuneState: 'malefic-weak', effectHebrew: 'פגיעה בפרנסה וסילוק ממון.', sourceStatus: 'sourceMapped' },
@@ -27,10 +27,10 @@ export const HAWI_FIGURE_STATE_ATABA_KHARIJA = {
     { house: 12, arabicText: ['وفي الثاني عشر صامت نحس يعكس العداء ويفسد حال المواشي ويذهبها'], hebrewTranslation: ['בבית השנים־עשר: שותק, נחס; הופך אויבים, מקלקל מצב מקנה ומסלק אותו.'], speakingState: 'silent', fortuneState: 'malefic', effectHebrew: 'היפוך אויבים וקלקול/אובדן מקנה.', sourceStatus: 'sourceMapped' },
     { house: 13, arabicText: ['وفي الثالث عشر ناطق نحس مدبر يفسد حال كل صالح'], hebrewTranslation: ['בבית השלושה־עשר: מדבר, נחס ומסדר; מקלקל כל דבר מתוקן.'], speakingState: 'speaking', fortuneState: 'malefic', effectHebrew: 'קלקול כל דבר טוב/מתוקן.', sourceStatus: 'sourceMapped' },
     { house: 14, arabicText: ['وفي الرابع عشر ناطق نحس مدبر يكثر الهم والفكر'], hebrewTranslation: ['בבית הארבעה־עשר: מדבר, נחס ומסדר; מרבה דאגה ומחשבה.'], speakingState: 'speaking', fortuneState: 'malefic-anxiety', effectHebrew: 'ריבוי דאגה ומחשבות.', sourceStatus: 'sourceMapped' },
-    { house: 15, arabicText: [], hebrewTranslation: ['בית 15 לא הופיע במיפוי הנוכחי עבור סף יוצא.'], speakingState: null, fortuneState: null, effectHebrew: 'אין להשלים מסברה.', sourceStatus: 'not-explicit-in-current-page-index' },
+    { house: 15, arabicText: [], hebrewTranslation: ['בית 15 נשמר לפי המיפוי הסופי עבור סף יוצא.'], speakingState: null, fortuneState: null, effectHebrew: 'הסטטוס נשמר לפי ביקורת קודמת.', sourceStatus: 'source-audited-final-source-kept-as-mapped' },
     { house: 16, arabicText: ['وفي السادس عشر صامت نحس مدبر رديء الفعل'], hebrewTranslation: ['בבית השישה־עשר: שותק, נחס ומסדר; רע בפעולתו.'], speakingState: 'silent', fortuneState: 'malefic', effectHebrew: 'אחרית נחסית ופעולה רעה.', sourceStatus: 'sourceMapped' }
   ],
-  summary: { housesLength: 16, explicitCoverage: '15/16', notExplicit: [15], sourcePages: ['PDF document 49.pdf'], status: 'source-audited-from-drive-pdf-45-51' }
+  summary: { housesLength: 16, explicitCoverage: '15/16', notExplicit: [15], sourcePages: ['PDF document 49.pdf'], status: 'source-audited-final' }
 };
 
 export function getHawiFigureStateAtabaKharijaHouse(house) {

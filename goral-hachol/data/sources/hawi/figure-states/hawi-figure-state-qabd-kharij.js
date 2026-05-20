@@ -167,7 +167,7 @@ export const HAWI_FIGURE_STATE_QABD_KHARIJ = {
     explicitCoverage: '16/16',
     notExplicit: [],
     sourcePages: ['PDF document 45.pdf'],
-    status: 'source-audited-from-drive-pdf-45-51'
+    status: 'source-audited-final'
   }
 };
 

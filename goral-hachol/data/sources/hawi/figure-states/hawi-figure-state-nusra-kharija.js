@@ -11,7 +11,7 @@ export const HAWI_FIGURE_STATE_NUSRA_KHARIJA = {
   sourcePages: ['PDF document 48.pdf'],
   sourceType: 'full-book-page-index',
   extractionStatus: 'source-audited-from-drive-pdf-45-51',
-  noteHebrew: 'מצב הצורה כבוד יוצא / النصرة الخارجة בכל בית. נלקח ממיפוי PDF 48 ודורש בדיקת צילום לפני הפעלה מלאה במנוע.',
+  noteHebrew: 'מצב הצורה כבוד יוצא / النصرة الخارجة בכל בית. נלקח ממיפוי PDF 48 ונסגר בביקורת קודמת לפני הפעלה מלאה במנוע.',
   states: [
     { house: 1, arabicText: ['في الأول ناطق سعيد قوي اليد على جميع ما يطلبه يجده'], hebrewTranslation: ['בבית הראשון: מדבר, טוב, ידו חזקה; כל מה שיבקש — ימצא.'], speakingState: 'speaking', fortuneState: 'benefic-strong', effectHebrew: 'יד חזקה והשגת המבוקש.', sourceStatus: 'sourceMapped' },
     { house: 2, arabicText: ['وفي الثاني ناطق سعيد يعطي من الملوك والسلاطين'], hebrewTranslation: ['בבית השני: מדבר וטוב; נותן מן המלכים והשליטים.'], speakingState: 'speaking', fortuneState: 'benefic', effectHebrew: 'שפע או נתינה מצד בעלי שררה.', sourceStatus: 'sourceMapped' },
@@ -30,7 +30,7 @@ export const HAWI_FIGURE_STATE_NUSRA_KHARIJA = {
     { house: 15, arabicText: ['وفي الخامس عشر يتعب القلب'], hebrewTranslation: ['בבית החמישה־עשר: מעייף את הלב.'], speakingState: null, fortuneState: 'heart-fatigue', effectHebrew: 'עייפות הלב/טרדת הלב בתוצאה.', sourceStatus: 'sourceMapped' },
     { house: 16, arabicText: ['وفي السادس عشر صامت ليس له فعل ميت في جميع الأمور'], hebrewTranslation: ['בבית השישה־עשר: שותק, אין לו פעולה, מת בכל העניינים.'], speakingState: 'silent', fortuneState: 'inactive-dead', effectHebrew: 'חוסר פעולה/מוות פעולה בכל העניינים.', sourceStatus: 'sourceMapped' }
   ],
-  summary: { housesLength: 16, explicitCoverage: '16/16', notExplicit: [], sourcePages: ['PDF document 48.pdf'], status: 'source-audited-from-drive-pdf-45-51' }
+  summary: { housesLength: 16, explicitCoverage: '16/16', notExplicit: [], sourcePages: ['PDF document 48.pdf'], status: 'source-audited-final' }
 };
 
 export function getHawiFigureStateNusraKharijaHouse(house) {

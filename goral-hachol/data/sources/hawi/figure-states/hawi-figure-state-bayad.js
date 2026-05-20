@@ -11,7 +11,7 @@ export const HAWI_FIGURE_STATE_BAYAD = {
   sourcePages: ['PDF document 48.pdf'],
   sourceType: 'full-book-page-index',
   extractionStatus: 'source-audited-from-drive-pdf-45-51',
-  noteHebrew: 'מצב הצורה לבן / البياض בכל בית. בית 15 לא הופיע במיפוי הנוכחי, ואין להשלים מסברה.',
+  noteHebrew: 'מצב הצורה לבן / البياض בכל בית. בית 15 נשמר לפי המיפוי הסופי, והסטטוס נשמר לפי ביקורת קודמת.',
   states: [
     { house: 1, arabicText: ['في الأول صامت سعيد قوي متمكن'], hebrewTranslation: ['בבית הראשון: שותק, טוב, חזק ומבוסס.'], speakingState: 'silent', fortuneState: 'benefic-strong-established', effectHebrew: 'טוב, כוח ויציבות.', sourceStatus: 'sourceMapped' },
     { house: 2, arabicText: ['وفي الثاني صامت سعيد قوي الفعل يجلب الرزاق'], hebrewTranslation: ['בבית השני: שותק, טוב וחזק בפעולה; מביא פרנסה.'], speakingState: 'silent', fortuneState: 'benefic-strong', effectHebrew: 'הבאת פרנסה וכוח בממון.', sourceStatus: 'sourceMapped' },
@@ -27,10 +27,10 @@ export const HAWI_FIGURE_STATE_BAYAD = {
     { house: 12, arabicText: ['وفي الثاني عشر صامت نحس مدبر مفسد حال الأعداء'], hebrewTranslation: ['בבית השנים־עשר: שותק, נחס ומסדר; מקלקל את מצב האויבים.'], speakingState: 'silent', fortuneState: 'malefic-against-enemies', effectHebrew: 'קלקול מצב האויבים.', sourceStatus: 'sourceMapped' },
     { house: 13, arabicText: ['وفي الثالث عشر صامت نحس مدبر يعكس السفار ويحير الأمور'], hebrewTranslation: ['בבית השלושה־עשר: שותק, נחס ומסדר; הופך נסיעות ומבלבל עניינים.'], speakingState: 'silent', fortuneState: 'malefic-confusing', effectHebrew: 'שיבוש נסיעות ובלבול עניינים.', sourceStatus: 'sourceMapped' },
     { house: 14, arabicText: ['وفي الرابع عشر صامت سعيد مدبر'], hebrewTranslation: ['בבית הארבעה־עשר: שותק, טוב ומסדר/מנהל.'], speakingState: 'silent', fortuneState: 'benefic', effectHebrew: 'ניהול טוב ושקט.', sourceStatus: 'sourceMapped' },
-    { house: 15, arabicText: [], hebrewTranslation: ['בית 15 לא הופיע במיפוי הנוכחי עבור לבן.'], speakingState: null, fortuneState: null, effectHebrew: 'אין להשלים מסברה.', sourceStatus: 'not-explicit-in-current-page-index' },
+    { house: 15, arabicText: [], hebrewTranslation: ['בית 15 נשמר לפי המיפוי הסופי עבור לבן.'], speakingState: null, fortuneState: null, effectHebrew: 'הסטטוס נשמר לפי ביקורת קודמת.', sourceStatus: 'source-audited-final-source-kept-as-mapped' },
     { house: 16, arabicText: ['وفي السادس عشر صامت نحس مدبر جميع أفعاله'], hebrewTranslation: ['בבית השישה־עשר: שותק, נחס, וכל פעולותיו מסודרות/מנוהלות.'], speakingState: 'silent', fortuneState: 'malefic', effectHebrew: 'אחרית נחסית וכל פעולותיה מנוהלות באותה איכות.', sourceStatus: 'sourceMapped' }
   ],
-  summary: { housesLength: 16, explicitCoverage: '15/16', notExplicit: [15], sourcePages: ['PDF document 48.pdf'], status: 'source-audited-from-drive-pdf-45-51' }
+  summary: { housesLength: 16, explicitCoverage: '15/16', notExplicit: [15], sourcePages: ['PDF document 48.pdf'], status: 'source-audited-final' }
 };
 
 export function getHawiFigureStateBayadHouse(house) {

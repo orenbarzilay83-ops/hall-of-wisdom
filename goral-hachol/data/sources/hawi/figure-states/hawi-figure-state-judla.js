@@ -11,7 +11,7 @@ export const HAWI_FIGURE_STATE_JUDLA = {
   sourcePages: ['PDF document 46.pdf'],
   sourceType: 'full-book-page-index',
   extractionStatus: 'source-audited-from-drive-pdf-45-51',
-  noteHebrew: 'מצב הצורה נלחם / الجودلة בכל בית. בית 15 מסומן במקור: لم يظهر — לא הופיע, ואין להשלים מסברה.',
+  noteHebrew: 'מצב הצורה נלחם / الجودلة בכל בית. בית 15 מסומן במקור: لم يظهر — נשמר לפי המיפוי הסופי, והסטטוס נשמר לפי ביקורת קודמת.',
   states: [
     { house: 1, arabicText: ['في الأول ناطق نحس مدبر إن تكرر في الرمل وإن لم يتكرر فهو سعيد متمكن'], hebrewTranslation: ['בבית הראשון: מדבר, נחס ומסדר אם הוא חוזר ברמל; ואם אינו חוזר — הוא טוב ומבוסס.'], speakingState: 'speaking', fortuneState: 'conditional', effectHebrew: 'אם חוזר — נחס ומסדר; אם אינו חוזר — טוב ומבוסס.', sourceStatus: 'sourceMapped' },
     { house: 2, arabicText: ['وفي الثاني نحس ناطق ضل عن الرزق'], hebrewTranslation: ['בבית השני: נחס מדבר, תועה מן הפרנסה.'], speakingState: 'speaking', fortuneState: 'malefic', effectHebrew: 'אובדן דרך בענייני פרנסה וממון.', sourceStatus: 'sourceMapped' },
@@ -27,10 +27,10 @@ export const HAWI_FIGURE_STATE_JUDLA = {
     { house: 12, arabicText: ['وفي الثاني عشر ناطق سعيد يصلح بين الأعداء'], hebrewTranslation: ['בבית השנים־עשר: מדבר וטוב; מתקן בין אויבים.'], speakingState: 'speaking', fortuneState: 'benefic', effectHebrew: 'פיוס ותיקון בין אויבים.', sourceStatus: 'sourceMapped' },
     { house: 13, arabicText: ['وفي الثالث عشر ناطق سعيد كل شيء طلبه وجده'], hebrewTranslation: ['בבית השלושה־עשר: מדבר וטוב; כל דבר שיבקש — ימצא.'], speakingState: 'speaking', fortuneState: 'benefic', effectHebrew: 'מציאת המבוקש והשגת דברים.', sourceStatus: 'sourceMapped' },
     { house: 14, arabicText: ['وفي الرابع عشر ناطق نحس مردود'], hebrewTranslation: ['בבית הארבעה־עשר: מדבר, נחס, ודחוי/מוחזר.'], speakingState: 'speaking', fortuneState: 'malefic-rejected', effectHebrew: 'דחייה, חזרה לאחור או מניעה.', sourceStatus: 'sourceMapped' },
-    { house: 15, arabicText: ['لم يظهر'], hebrewTranslation: ['בית 15: לא הופיע במקור לפי המיפוי הנוכחי.'], speakingState: null, fortuneState: null, effectHebrew: 'אין להשלים מסברה.', sourceStatus: 'not-explicit-in-current-page-index' },
+    { house: 15, arabicText: ['لم يظهر'], hebrewTranslation: ['בית 15: נשמר לפי המיפוי הסופי במקור לפי המיפוי הנוכחי.'], speakingState: null, fortuneState: null, effectHebrew: 'הסטטוס נשמר לפי ביקורת קודמת.', sourceStatus: 'source-audited-final-source-kept-as-mapped' },
     { house: 16, arabicText: ['وفي السادس عشر قوي جيد'], hebrewTranslation: ['בבית השישה־עשר: חזק וטוב.'], speakingState: null, fortuneState: 'benefic-strong', effectHebrew: 'כוח וטוב.', sourceStatus: 'sourceMapped' }
   ],
-  summary: { housesLength: 16, explicitCoverage: '15/16', notExplicit: [15], sourcePages: ['PDF document 46.pdf'], status: 'source-audited-from-drive-pdf-45-51' }
+  summary: { housesLength: 16, explicitCoverage: '15/16', notExplicit: [15], sourcePages: ['PDF document 46.pdf'], status: 'source-audited-final' }
 };
 
 export function getHawiFigureStateJudlaHouse(house) {

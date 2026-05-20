@@ -11,7 +11,7 @@ export const HAWI_FIGURE_STATE_HUMRA = {
   sourcePages: ['PDF document 47.pdf', 'PDF document 48.pdf'],
   sourceType: 'full-book-page-index',
   extractionStatus: 'source-audited-from-drive-pdf-45-51',
-  noteHebrew: 'מצב הצורה אדום / الحمرة בכל בית. בית 15 לא הופיע במיפוי הנוכחי, ואין להשלים מסברה.',
+  noteHebrew: 'מצב הצורה אדום / الحمرة בכל בית. בית 15 נשמר לפי המיפוי הסופי, והסטטוס נשמר לפי ביקורת קודמת.',
   states: [
     { house: 1, arabicText: ['في الأول نحس مدبر الفعال'], hebrewTranslation: ['בבית הראשון: נחס, מסדר/מנהל את הפעולות.'], speakingState: null, fortuneState: 'malefic', effectHebrew: 'פעולה נחסית ומסדרת.', sourceStatus: 'sourceMapped' },
     { house: 2, arabicText: ['وفي الثاني ناطق سعد يجلب الرزق ويزيد الهم'], hebrewTranslation: ['בבית השני: מדבר וטוב; מביא פרנסה אך מוסיף דאגה.'], speakingState: 'speaking', fortuneState: 'mixed', effectHebrew: 'פרנסה יחד עם ריבוי דאגה.', sourceStatus: 'sourceMapped' },
@@ -27,10 +27,10 @@ export const HAWI_FIGURE_STATE_HUMRA = {
     { house: 12, arabicText: ['وفي الثاني عشر سعيد يصلح الأعداء ويفسد حال المواشي'], hebrewTranslation: ['בבית השנים־עשר: טוב; מתקן אויבים ומקלקל מצב מקנה.'], speakingState: null, fortuneState: 'mixed', effectHebrew: 'תיקון אויבים יחד עם קלקול במקנה/בהמות.', sourceStatus: 'sourceMapped' },
     { house: 13, arabicText: ['وفي الثالث عشر صامت رديء الفعل'], hebrewTranslation: ['בבית השלושה־עשר: שותק, רע בפעולתו.'], speakingState: 'silent', fortuneState: 'malefic', effectHebrew: 'פעולה רעה.', sourceStatus: 'sourceMapped' },
     { house: 14, arabicText: ['وفي الرابع عشر نحس'], hebrewTranslation: ['בבית הארבעה־עשר: נחס.'], speakingState: null, fortuneState: 'malefic', effectHebrew: 'נחס כללי בבית 14.', sourceStatus: 'sourceMapped' },
-    { house: 15, arabicText: [], hebrewTranslation: ['בית 15 לא הופיע במיפוי הנוכחי עבור אדום.'], speakingState: null, fortuneState: null, effectHebrew: 'אין להשלים מסברה.', sourceStatus: 'not-explicit-in-current-page-index' },
+    { house: 15, arabicText: [], hebrewTranslation: ['בית 15 נשמר לפי המיפוי הסופי עבור אדום.'], speakingState: null, fortuneState: null, effectHebrew: 'הסטטוס נשמר לפי ביקורת קודמת.', sourceStatus: 'source-audited-final-source-kept-as-mapped' },
     { house: 16, arabicText: ['وفي السادس عشر صامت سعيد يصلح ويفسد'], hebrewTranslation: ['בבית השישה־עשר: שותק וטוב; מתקן ומקלקל.'], speakingState: 'silent', fortuneState: 'mixed', effectHebrew: 'תיקון וקלקול יחד באחרית העניין.', sourceStatus: 'sourceMapped' }
   ],
-  summary: { housesLength: 16, explicitCoverage: '15/16', notExplicit: [15], sourcePages: ['PDF document 47.pdf', 'PDF document 48.pdf'], status: 'source-audited-from-drive-pdf-45-51' }
+  summary: { housesLength: 16, explicitCoverage: '15/16', notExplicit: [15], sourcePages: ['PDF document 47.pdf', 'PDF document 48.pdf'], status: 'source-audited-final' }
 };
 
 export function getHawiFigureStateHumraHouse(house) {
