@@ -497,7 +497,7 @@
       if (!window.HAWI_INTERPRETER || !window.HAWI_INTERPRETER.interpretHawiQuestionInitial) {
         return `
           <div class="summary-box">
-            <strong>ניתוח חאוי:</strong><br/>
+            <strong>אבחון גורל החול:</strong><br/>
             שכבת הידע נטענת. אם זה נשאר כך, רענן את הדף.
           </div>
         `;
@@ -524,9 +524,32 @@
         })
         .join("");
 
+      const boardRows = insight.boardAnalysis && insight.boardAnalysis.hasBoard
+        ? insight.boardAnalysis.houses.slice(0, 10).map(h => `
+            <li>
+              בית ${escapeHtml(h.house)} —
+              ${escapeHtml(h.figureHebrew || "")}
+              ${h.house === insight.boardAnalysis.focusHouseNumber ? " — בית מרכזי" : ""}
+              ${h.house === 13 ? " — עד ראשון" : ""}
+              ${h.house === 14 ? " — עד שני" : ""}
+              ${h.house === 15 ? " — דיין" : ""}
+              ${h.house === 16 ? " — משלים בית 15" : ""}
+            </li>
+          `).join("")
+        : "";
+
+      const reasons = insight.boardScore && insight.boardScore.reasons
+        ? insight.boardScore.reasons.map(r => `<li>${escapeHtml(r)}</li>`).join("")
+        : "";
+
       return `
         <div class="summary-box">
-          <div style="font-weight:800; margin-bottom:10px;">ניתוח חאוי לפי מקור</div>
+          <div style="font-weight:800; margin-bottom:10px;">אבחון גורל החול</div>
+
+          <div style="margin-bottom:10px;">
+            <strong>מסקנה:</strong><br/>
+            ${escapeHtml(insight.finalConclusionHebrew || insight.conclusionDraftHebrew)}
+          </div>
 
           <div style="margin-bottom:8px;">
             <strong>נושא השאלה:</strong>
@@ -539,12 +562,22 @@
           </div>
 
           <div style="margin-bottom:8px;">
-            <strong>מקורות ידע שנשלפו:</strong>
+            <strong>לוח בפועל:</strong>
+            <ul style="margin-top:6px;">${boardRows}</ul>
+          </div>
+
+          <div style="margin-bottom:8px;">
+            <strong>שיקולי פסיקה:</strong>
+            <ul style="margin-top:6px;">${reasons}</ul>
+          </div>
+
+          <div style="margin-bottom:8px;">
+            <strong>שכבות ידע שנבדקו:</strong>
             <ul style="margin-top:6px;">${sources}</ul>
           </div>
 
           <div style="margin-bottom:8px;">
-            <strong>חוקים ראשונים מתוך המקור:</strong>
+            <strong>כללי גורל החול שנבדקו:</strong>
             <ul style="margin-top:6px;">${rules}</ul>
           </div>
 
