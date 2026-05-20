@@ -26,6 +26,69 @@ function describeTone(score = 0) {
   return 'הלוח מאוזן או מעורב, ולכן צריך לקרוא את הפרטים ולא להסתפק בתשובה של כן או לא.';
 }
 
+function clientContextParagraph(clientContext = {}, question = '') {
+  const name = clean(clientContext.clientName);
+  const parent = clean(clientContext.parentName);
+  const age = clean(clientContext.ageOrLifeStage);
+  const context = clean(clientContext.consultationContext);
+  const q = clean(question);
+
+  const parts = [];
+
+  if (name) {
+    parts.push(`הקריאה נעשית עבור ${name}${parent ? `, ${parent}` : ''}.`);
+  }
+
+  if (age) {
+    parts.push(`הנתון של הגיל או שלב החיים חשוב כאן: ${age}.`);
+  }
+
+  if (context) {
+    parts.push(`הרקע שהובא לקריאה הוא: ${context}.`);
+  }
+
+  if (q) {
+    parts.push(`השאלה שנשאלה בפועל היא: "${q}".`);
+  }
+
+  if (!parts.length) {
+    return '';
+  }
+
+  return parts.join(' ');
+}
+
+function questionFocusParagraph(topicId, clientContext = {}) {
+  const context = clean(clientContext.consultationContext);
+
+  if (topicId === 'spiritualDiagnostics') {
+    return 'לכן האבחון לא ניגש לשאלה בצורה כללית, אלא מחפש האם הקושי שייך לגוף האדם, לאויב נסתר, לקנאה, לאחיזה, לעין או לפגיעה רוחנית אחרת.';
+  }
+
+  if (topicId === 'travel') {
+    return 'לכן הדגש הוא לא רק אם הדרך פתוחה, אלא האם הדרך מתאימה לאדם הזה בזמן הזה ובתנאים שהובאו.';
+  }
+
+  if (topicId === 'childrenPregnancy') {
+    return 'לכן הדגש הוא על מצב האדם והשאלה האישית, ולא רק על סימן כללי של ילד או היריון.';
+  }
+
+  if (topicId === 'hiddenTreasure') {
+    return 'לכן הדגש הוא אם הדבר החבוי שייך לשואל, אם יש אליו גישה, ואם הלוח מראה חסימה או פתיחה.';
+  }
+
+  if (topicId === 'missingPerson') {
+    return 'לכן הדגש הוא על מצב האדם הנעדר, אפשרות חזרתו, ומה מעכב או מסתיר את הדבר.';
+  }
+
+  if (context) {
+    return 'לכן המסקנה נקראת לפי ההקשר האישי של הלקוח ולא רק לפי שם הצורה שעלתה.';
+  }
+
+  return '';
+}
+
+
 function topicOpening(topicId, topicHebrew) {
   const openings = {
     travel:
@@ -160,7 +223,9 @@ export function writeHumanGoralConclusion(result) {
   const score = result.boardScore?.score || 0;
 
   const paragraphs = [
+    clientContextParagraph(result.clientContext, result.question),
     topicOpening(topicId, topicHebrew),
+    questionFocusParagraph(topicId, result.clientContext),
     `${getGradeText(grade)}. ${describeTone(score)}`,
     describeCoreHouses(result.boardAnalysis),
     spiritualParagraph(result.spiritualDiagnosis, topicId),
