@@ -291,8 +291,35 @@
 
     .board-row.r1 { grid-template-columns:repeat(8,1fr); }
     .board-row.r2 { grid-template-columns:repeat(4,1fr); }
-    .board-row.r3 { grid-template-columns:repeat(2,1fr); }
-    .board-row.r4 { grid-template-columns:repeat(2,1fr); border-bottom:0; }
+    .board-row.r3 { grid-template-columns:repeat(2,1fr); border-bottom:0; }
+
+    .final-row {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:22px;
+      margin-top:22px;
+      align-items:start;
+    }
+
+    .final-box {
+      border:2px solid var(--border);
+      background:white;
+      min-height:150px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      text-align:center;
+    }
+
+    .final-box.right {
+      justify-self:stretch;
+    }
+
+    .final-box.left {
+      justify-self:stretch;
+    }
 
     .house {
       min-height:132px;
@@ -358,7 +385,7 @@
 
     <section id="screen-open" class="screen active">
       <div class="panel">
-        <h2>עמוד פתיחה</h2>
+        <h2>פרטי הלקוח</h2>
 
         <div class="form-grid">
           <div>
@@ -401,7 +428,7 @@
         </div>
 
         <div class="actions">
-          <button class="btn" onclick="showScreen('select')">הכנסה ידנית של 4 האמהות</button>
+          <button class="btn" onclick="showScreen('select')">הכנסה ידנית של 4 הצורות הראשונות</button>
           <button class="btn">בחירה אוטומטית לפי עצירה</button>
           <button class="btn gray">נקה טופס</button>
         </div>
@@ -414,13 +441,13 @@
 
     <section id="screen-select" class="screen">
       <div class="panel">
-        <h2>בחירת 4 האמהות</h2>
+        <h2>בחירת 4 צורות ראשונות</h2>
 
         <div class="mother-slots">
-          <div class="slot current">אם 1<br>ממתינה לבחירה</div>
-          <div class="slot">אם 2<br>טרם נבחר</div>
-          <div class="slot">אם 3<br>טרם נבחר</div>
-          <div class="slot">אם 4<br>טרם נבחר</div>
+          <div class="slot current"></div>
+          <div class="slot"></div>
+          <div class="slot"></div>
+          <div class="slot"></div>
         </div>
 
         <div id="figureGrid" class="figure-grid"></div>
@@ -470,11 +497,13 @@
       ],
       [
         [13,'עד ראשון','1111'], [14,'עד שני','2211']
-      ],
-      [
-        [16,'משלים בית 15','2211'], [15,'הדיין','1122']
       ]
     ];
+
+    const finalHouses = {
+      house16: [16,'משלים בית 15','2211'],
+      house15: [15,'הדיין','1122']
+    };
 
     function glyph(pattern) {
       return '<div class="glyph">' + pattern.split('').map(x =>
@@ -494,7 +523,8 @@
 
     function renderBoard() {
       const board = document.getElementById('board');
-      board.innerHTML = boardHouses.map((row, i) => `
+
+      const mainRows = boardHouses.map((row, i) => `
         <div class="board-row r${i + 1}">
           ${row.map(h => `
             <div class="house">
@@ -505,6 +535,25 @@
           `).join('')}
         </div>
       `).join('');
+
+      const h16 = finalHouses.house16;
+      const h15 = finalHouses.house15;
+
+      board.innerHTML = mainRows + `
+        <div class="final-row">
+          <div class="final-box right">
+            <div class="house-title">בית ${h16[0]}</div>
+            <div class="house-name">${h16[1]}</div>
+            ${glyph(h16[2])}
+          </div>
+
+          <div class="final-box left">
+            <div class="house-title">בית ${h15[0]}</div>
+            <div class="house-name">${h15[1]}</div>
+            ${glyph(h15[2])}
+          </div>
+        </div>
+      `;
     }
 
     function showScreen(name) {
