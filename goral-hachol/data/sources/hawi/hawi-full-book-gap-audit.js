@@ -168,14 +168,14 @@ export const HAWI_FULL_BOOK_GAP_AUDIT = {
     {
       id: 'gap-missing-person-ghaib',
       sourcePages: ['PDF document 59.pdf', 'PDF document 60.pdf'],
-      status: 'missing-or-not-yet-dedicated',
-      targetKnowledgeArea: 'future-question-rules-missing-person',
+      status: 'source-mapped-dedicated-file-needs-photo-review',
+      targetKnowledgeArea: 'goral-hachol/data/sources/hawi/question-rules/hawi-question-missing-person.js',
       hebrewTitle: 'שער הגאיב / נעדר — האם חוזר, מתי, חי או מת',
       arabicKeywords: ['باب الغايب', 'هل يقدم الغايب', 'هل هو حي ام ميت'],
       missingSummaryHebrew:
-        'נמצא שער מפורש על נעדר: האם יחזור, האם חי או מת, חזרה מאוחרת, מוות בגלות, כלא או חולי במקום שאליו נסע, ותנאי מוות לפי בתים וצורות.',
+        'הפער אינו חסר עוד כקובץ: נוצר קובץ ייעודי hawi-question-missing-person.js עם 19 כללים מתוך PDF 59–60. הקובץ כולל חזרה מהירה/מאוחרת, שמועות שקר, פחד, כלא/חולי, מוות בגלות, בדיקת חי/מת, ותנאי מוות לפי בתים וצורות.',
       recommendedAction:
-        'ליצור קובץ דיני שאלה ייעודי לגאיב/נעדר אחרי בדיקת מקור מלאה.',
+        'לא ליצור קובץ חדש. השלב הבא הוא בדיקת צילום/מקור לכל שורה לפני הפעלה מלאה במנוע, ולאחר מכן לשנות את הסטטוס ל-source-verified.',
     },
 
     {
@@ -208,13 +208,13 @@ export const HAWI_FULL_BOOK_GAP_AUDIT = {
   summary: {
     totalGapItems: 11,
     immediateNextCandidates: [
-      'gap-missing-person-ghaib',
-      'gap-advanced-figure-states-speaking-silent',
       'gap-houses-16-deep-correspondences',
       'gap-birth-nativity-mawlud',
+      'gap-planetary-correspondences-regions-materials',
+      'gap-spiritual-diagnostics-eye-jinn-mass',
     ],
     recommendedNextStepHebrew:
-      'השלב הבא המומלץ הוא לבחור שער אחד חסר לגמרי ולהכניס אותו כקובץ מקור עצמאי. המועמד הכי מעשי הוא שער הגאיב/נעדר, כי הוא דיני שאלה ברור וממוקד.',
+      'שער הגאיב/נעדר כבר קיים כקובץ ייעודי ומחובר, אך דורש ביקורת צילום לפני הפעלה מלאה. השלב הבא המומלץ הוא לבחור בין העמקת 16 הבתים לבין שכבת האבחון הרוחני/הנסתרות.',
   },
 };
 
