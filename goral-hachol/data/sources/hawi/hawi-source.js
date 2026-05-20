@@ -45,6 +45,13 @@ import {
   getHawiFullBookGapsByStatus,
 } from './hawi-full-book-gap-audit.js';
 
+import {
+  HAWI_TOPIC_INDEX,
+  getHawiTopic,
+  getHawiTopicsByStatus,
+  getHawiTopicsByPriority,
+} from './hawi-topic-index.js';
+
 export const HAWI_SOURCE = {
   id: 'hawi-source',
   sourceId: HAWI_METADATA.id,
@@ -87,6 +94,8 @@ export const HAWI_SOURCE = {
   },
 
   fullBookGapAudit: HAWI_FULL_BOOK_GAP_AUDIT,
+
+  topicIndex: HAWI_TOPIC_INDEX,
 };
 
 export {
@@ -124,4 +133,9 @@ export {
   HAWI_FULL_BOOK_GAP_AUDIT,
   getHawiFullBookGap,
   getHawiFullBookGapsByStatus,
+
+  HAWI_TOPIC_INDEX,
+  getHawiTopic,
+  getHawiTopicsByStatus,
+  getHawiTopicsByPriority,
 };
