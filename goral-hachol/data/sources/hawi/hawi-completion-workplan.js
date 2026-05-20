@@ -2,9 +2,35 @@ export const HAWI_COMPLETION_WORKPLAN = {
   id: 'hawi-completion-workplan',
   sourceBook: 'حاوي العجائب ومظهر الغرائب',
   project: 'גורל החול',
-  status: 'active-completion-workplan',
+  status: 'clean-workplan-after-old-instructions-removed',
   purposeHebrew:
-    'תוכנית עבודה לסגירת החומר המקיף של ספר חאוי באפליקציית גורל החול. אין כאן דיני מנוע חדשים; זה קובץ ניהול וסגירת פערים.',
+    'תוכנית עבודה נקייה אחרי מחיקת הוראות צ׳אטים ישנות. אין לפתוח מחדש שכבות שכבר נבדקו.',
+
+  closedDoNotReopen: [
+    'שמות 16 הצורות',
+    'חוק הכאת הצורות',
+    'בניית לוח הגורל עד בית 16',
+    'אמהות, בנות, נכדות, עדים, דיין ומשלים בית 15',
+    'מצבי הצורות — מדבר/שותק, סעד/נחס',
+    'מעבר הצורות ב־16 הבתים',
+    '16 הבתים',
+    'דיני שאלות קיימים בשכבת חאוי',
+  ],
+
+  nextOnlyIfNeeded: [
+    {
+      id: 'spiritual-diagnostics-expanded',
+      titleHebrew: 'אבחון רוחני מורחב',
+      ruleHebrew:
+        'רק ממקורות מאושרים. לא להמציא ולא לפתוח מחדש חומר שכבר קיים.',
+    },
+    {
+      id: 'future-modules',
+      titleHebrew: 'מודולים עתידיים',
+      ruleHebrew:
+        'שער מולד, כוכבים/חומרים, טאלע שנה ושלטון הם מודולים עתידיים; הם לא מעכבים את גורל החול הבסיסי.',
+    },
+  ],
 
   terminologyHebrew: {
     saad: 'סעד / טוב',
@@ -12,120 +38,17 @@ export const HAWI_COMPLETION_WORKPLAN = {
     mumtazij: 'ממוזג',
     natiq: 'מדבר',
     samit: 'שותק',
-    mothers: 'אמהות',
-    daughters: 'בנות',
-    granddaughters: 'נכדות',
-    witnesses: 'עדים',
+    takhth: 'לוח הגורל',
     judge: 'דיין',
     sentence: 'משלים בית 15',
-    takhth: 'לוח הגורל',
   },
 
-  immediateEngineCritical: [
-    {
-      id: 'mahw-thabat-generation',
-      titleHebrew: 'باب المحو والثبات — הולדת הצורות והכאתן',
-      currentStatus: 'engine-exists-but-source-layer-needs-full-foundation-file',
-      action:
-        'ליצור/לעדכן קובץ יסוד שמסביר מחיקה, קיום, הכאה, חלוקה והולדה לפי המקור, בלי לשנות את המנוע שכבר עובד.',
-      priority: 'critical',
-    },
-    {
-      id: 
-      titleHebrew: 'מצבי הצורות בבתים — מדבר/שותק, סעד/נחס',
-      currentStatus: 'source-audited-final',
-      action:
-        'שכבה זו נסגרה בביקורת קודמת. אין לפתוח מחדש את כל הצורות אלא אם יתגלה מקור חדש וממוקד.',
-      priority: 'critical',
-    },
-    {
-      id: 'missing-person-source-verification',
-      titleHebrew: 'שער הגאיב / נעדר',
-      currentStatus: 'dedicated-file-created-needs-photo-review',
-      action:
-        'לעבור על hawi-question-missing-person.js ולשנות רק שורות מאומתות ל-source-verified.',
-      priority: 'high',
-    },
-    {
-      id: 'question-rules-final-audit',
-      titleHebrew: 'דיני שאלות קיימים',
-      currentStatus: 'many-files-complete-but-need-final-topic-audit',
-      action:
-        'לוודא שאין שערים חסרים או תתי־דינים חסרים בשערים שכבר בנינו: מסחר, נסיעה, חולי, נישואין, פחד, אויבים, מטמון, אהבה/שנאה, ילד/הריון, השלמת דבר.',
-      priority: 'high',
-    },
-  ],
-
-  preserveKnowledgeNotActiveYet: [
-    {
-      id: 'planetary-correspondences',
-      titleHebrew: 'כוכבים, אזורים, מתכות, אבנים, מאכלים, צמחים ובעלי חיים',
-      action:
-        'להכניס כקובץ ידע עתידי. לא להפעיל במנוע עד אימות סימני הצורות והכוכבים.',
-      priority: 'medium-high',
-    },
-    {
-      id: 'spiritual-diagnostics-expanded',
-      titleHebrew: 'אבחון רוחני מורחב — כישוף, קנאה, עין, ג׳ין, מס',
-      action:
-        'לשמר כל מקור מאושר. אם חאווי לא מביא عين/جن/مس במפורש, להשלים רק ממקור מאושר אחר ולסמן sourceGroup מתאים.',
-      priority: 'high',
-    },
-    {
-      id: 'letters-names-talismans',
-      titleHebrew: 'אותיות, חילוץ שם, טליסמאות וקטורות',
-      action:
-        'להכניס לשכבת ידע עתידית, לא למנוע השאלות הרגיל.',
-      priority: 'medium-high',
-    },
-  ],
-
-  futureSeparateModules: [
-    {
-      id: 'birth-nativity-mawlud',
-      titleHebrew: 'שער המולד / امر المولود',
-      action: 'מודול עתידי נפרד. לא לערבב עם שאלות רגילות.',
-      priority: 'medium',
-    },
-    {
-      id: 'yearly-weather-omens',
-      titleHebrew: 'טאלע שנה, גשם, מחירים, מלחמות ומגפות',
-      action: 'מודול עתידי נפרד.',
-      priority: 'medium',
-    },
-    {
-      id: 'authority-state-kings-rulers',
-      titleHebrew: 'מלכים, מושלים, מדינות ואויבי מדינה',
-      action: 'מודול עתידי נפרד או שכבת שאלות מיוחדת.',
-      priority: 'medium',
-    },
-  ],
-
-  excludedForNow: [
-    {
-      id: 'introduction-history-idris-tamtam',
-      titleHebrew: 'הקדמה, ייחוס, סיפורי מקור',
-      reason: 'המשתמש ביקש להתמקד בידע מעשי ולא במבוא או היסטוריה.',
-      priority: 'low',
-    },
-  ],
-
-  todayOrder: [
-    
-    'mahw-thabat-generation',
-    'missing-person-source-verification',
-    'question-rules-final-audit',
-    'spiritual-diagnostics-expanded',
-    'planetary-correspondences',
-  ],
+  currentDecisionHebrew:
+    'מכאן ממשיכים רק לפי פער אמיתי וממוקד. לא חוזרים לסיבובים על הצורות או על בניית הלוח בגלל הוראות ישנות.',
 };
 
-export function getHawiCompletionTodayOrder() {
-  return HAWI_COMPLETION_WORKPLAN.todayOrder;
-}
+export default { HAWI_COMPLETION_WORKPLAN };
 
-export function getHawiCompletionCriticalItems() {
-  return HAWI_COMPLETION_WORKPLAN.immediateEngineCritical;
+if (typeof module !== 'undefined') {
+  module.exports = { HAWI_COMPLETION_WORKPLAN };
 }
-
-export default HAWI_COMPLETION_WORKPLAN;

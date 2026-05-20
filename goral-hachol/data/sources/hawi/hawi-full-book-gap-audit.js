@@ -2,228 +2,114 @@ export const HAWI_FULL_BOOK_GAP_AUDIT = {
   id: 'hawi-full-book-gap-audit',
   sourceBook: 'حاوي العجائب ومظهر الغرائب',
   sourceAuthor: 'أحمد ابن زنبل المحلي',
-  extractionStatus: 'gap-audit-from-full-book-page-index',
+  extractionStatus: 'cleaned-after-repeated-source-work',
   purposeHebrew:
-    'מפת פערים רשמית בין מיפוי הספר המלא PDF 1–62 לבין מה שכבר קיים במודול גורל החול. אין כאן דיני מנוע פעילים; זה קובץ ניהול ידע כדי שלא נאבד שום שער, כלל או תובנה מן המקור.',
+    'קובץ ניהול נקי לאחר סגירת סימוני פער ישנים. אין כאן הוראות לפתוח מחדש חומר שכבר נבדק. הקובץ משמש רק כדי לראות מה באמת נשאר כידע עתידי או בדיקה ממוקדת.',
 
   policy: {
-    noExternalKnowledge: true,
-    sourceFirst: true,
-    doNotInferMissingRules: true,
-    preserveArabicTerms: true,
-    hebrewDisplayStyle: 'עברית ישראלית ברורה',
-    religiousDisplayAdaptation:
-      'כאשר המקור מזכיר מוסדות/אנשי דת לא יהודיים, בתצוגה ליהודי דתי מותר להוסיף מקבילה יהודית כגון בית כנסת, בית מדרש, רב, מקובל, תנ״ך או ספר תורני — בלי למחוק את לשון המקור הערבית.',
+    noExternalKnowledgeUnlessApproved: true,
+    doNotReopenClosedWork: true,
+    doNotMarkOldReviewedMaterialAsOpen: true,
+    sourceKnowledgeFilesAreAuthoritative: true,
   },
 
-  gaps: [
+  closedKnowledgeAreas: [
     {
-      id: 'gap-introduction-source-history-idris-tamtam',
-      sourcePages: ['PDF document 1.pdf'],
-      status: 'missing',
-      targetKnowledgeArea: 'future-foundation-or-source-introduction',
-      hebrewTitle: 'הקדמת הספר, ייחוס לאידריס/טמטם ומעמד علم الرمل',
-      arabicKeywords: ['إدريس', 'طمطم', 'علم استخراج الضمار بالتخت والتراب'],
-      missingSummaryHebrew:
-        'חסר קובץ הקדמה/מטא־מקור: מטרת הספר, ייחוס לאחמד אבן זנבל, השוואת מקורות, תפיסת הרמל ככלי לחשיפת נסתרות דרך לוח הגורל והחול, וסיפור אידריס/טמטם.',
-      recommendedAction:
-        'ליצור בעתיד קובץ יסוד/הקדמה, לא לחבר למנוע פסיקה.',
+      id: 'figure-names',
+      hebrewTitle: 'שמות 16 הצורות',
+      status: 'closed-source-mapped',
+      note: 'קיים בקובצי foundation/figure-names. אין לפתוח מחדש אלא אם נמצא שם מקור חדש ממש.',
     },
-
     {
-      id: 'gap-mahw-thabat-figure-generation',
-      sourcePages: ['PDF document 2.pdf'],
-      status: 'missing',
-      targetKnowledgeArea: 'future-foundations',
-      hebrewTitle: 'باب المحو والثبات — מחיקה, קיום, הכאה, חלוקה והולדה',
-      arabicKeywords: ['باب المحو والثبات', 'محو', 'اثبات', 'ضرب', 'قسمة', 'توليد'],
-      missingSummaryHebrew:
-        'שער יסוד חשוב שמסביר את שורש הצורות מתוך الطريق/الجماعة ואת פעולות מחיקה, קיום, הכאה, חלוקה והולדה. אינו קיים עדיין כשכבת יסוד עצמאית.',
-      recommendedAction:
-        'לפתוח בעתיד קובץ יסודות ייעודי, אחרי בדיקת מקור מדויקת של סימני הצורות.',
+      id: 'figure-combination-engine',
+      hebrewTitle: 'חוק הכאת הצורות / חיבור צורות',
+      status: 'closed-engine-implemented',
+      note: 'קיים במנוע raml-figures.js וב־raml-board-generator.js. מסומן כסגור.',
     },
-
     {
-      id: 'gap-houses-16-deep-correspondences',
-      sourcePages: [
-        'PDF document 3.pdf',
-        'PDF document 4.pdf',
-        'PDF document 5.pdf',
-        'PDF document 6.pdf',
-        'PDF document 7.pdf',
-        'PDF document 8.pdf',
-        'PDF document 9.pdf',
-      ],
-      status: 'source-mapped-rich-foundation-needs-correspondence-audit',
-      targetKnowledgeArea: 'goral-hachol/data/sources/hawi/foundations/hawi-houses-16.js',
-      hebrewTitle: 'העמקת 16 הבתים — זמנים, אותיות, איברים, צבעים, מקומות וסודות',
-      arabicKeywords: ['البيوت الستة عشر', 'الحروف', 'مدة قريبة', 'الأعضاء', 'الأسرار'],
-      missingSummaryHebrew:
-        'הפער אינו חסר כקובץ: hawi-houses-16.js קיים ועשיר מאוד, כולל 16 בתים, ערבית מקורית, תרגום עברי, topics, סודות, פחד, קנאה/حسد, כישוף/רוקיות, מקומות, קברים, גניבה, נעדר, רמל, כוכבים, דת, שלטון, בתים 13–16, מאזני הרמל ובית 16. עדיין נדרש audit ממוקד מול PDF 3–9 כדי לוודא אם קיימות טבלאות או שיוכים נוספים שלא נכנסו, כגון אותיות, צבעים, איברים, זמנים או שיוכי עומק נוספים.',
-      recommendedAction:
-        'לא ליצור קובץ חדש בשלב זה. לבצע בעתיד ביקורת בית־בית מול PDF 3–9, ורק אם נמצאו שיוכים טבלאיים חסרים ליצור קובץ הרחבה נפרד כגון hawi-houses-16-correspondences-audit.js.',
+      id: 'board-generation',
+      hebrewTitle: 'בניית לוח הגורל עד 16',
+      status: 'closed-engine-implemented',
+      note: 'אמהות, בנות, נכדות, עדים, דיין ומשלים בית 15 כבר מיושמים. לא לפתוח מחדש בגלל סימוני audit ישנים.',
     },
-
     {
-      id: 'gap-figure-transits-full-detail',
-      sourcePages: [
-        'PDF document 9.pdf',
-        'PDF document 10.pdf',
-        'PDF document 11.pdf',
-        'PDF document 12.pdf',
-        'PDF document 13.pdf',
-        'PDF document 14.pdf',
-        'PDF document 15.pdf',
-        'PDF document 16.pdf',
-        'PDF document 17.pdf',
-        'PDF document 18.pdf',
-        'PDF document 19.pdf',
-        'PDF document 20.pdf',
-        'PDF document 21.pdf',
-        'PDF document 22.pdf',
-        'PDF document 23.pdf',
-        'PDF document 24.pdf',
-      ],
-      status: 'completed-source-audited-enriched',
-      targetKnowledgeArea: 'goral-hachol/data/sources/hawi/figure-transits/',
-      hebrewTitle: 'ترحيل الأشكال — מעבר 16 הצורות ב־16 הבתים',
-      arabicKeywords: ['ترحيل الأشكال الستة عشر', 'على قدر الشواهد'],
-      missingSummaryHebrew:
-        'קבצי מעבר 16 הצורות קיימים, נטענים, ועברו ביקורת והעשרה מלאה: נוספו תגיות נושא, כללי עדים, מונחי מקור קריטיים, כללים מיוחדים והערות review לפי הצורך. השכבה סגורה כבסיס ידע פעיל.',
-      recommendedAction:
-        'סגור. לא לפתוח שוב audit כללי לשכבה זו; לבצע רק תיקונים נקודתיים אם יתגלה מקור חדש או צילום מדויק יותר.',
+      id: 'figure-transits',
+      hebrewTitle: 'תרחיל / מעבר 16 הצורות ב־16 הבתים',
+      status: 'closed-rich-source-layer',
+      note: 'קיים בתיקיית figure-transits. הערות review מקומיות אינן סיבה לפתוח מחדש את כל השכבה.',
     },
-
     {
-      id: 'gap-advanced-figure-states-speaking-silent',
-      sourcePages: [
-        'PDF document 44.pdf',
-        'PDF document 45.pdf',
-        'PDF document 46.pdf',
-        'PDF document 47.pdf',
-        'PDF document 48.pdf',
-        'PDF document 49.pdf',
-        'PDF document 50.pdf',
-        'PDF document 51.pdf',
-      ],
-      status: 'missing',
-      targetKnowledgeArea: 'future-figure-states-file',
-      hebrewTitle: 'מצבי הצורות בבתים — ناطق/صامت, سعد/نحس, מתקן/מקלקל',
-      arabicKeywords: ['ناطق', 'صامت', 'سعيد', 'نحس', 'افعالها'],
-      missingSummaryHebrew:
-        'נמצא שער נוסף שאינו זהה למעבר הצורות הרגיל: מצב כל צורה בכל בית — מדברת/שותקת, טובה/רעה, מתקנת/מקלקלת. שכבה זו עדיין לא קיימת כקובץ נפרד.',
-      recommendedAction:
-        'ליצור בעתיד שכבת figure-states נפרדת, כדי לא לערבב עם פירושי המעבר הקיימים.',
+      id: 'figure-states',
+      hebrewTitle: 'מצבי הצורות — מדבר/שותק, סעד/נחס',
+      status: 'closed-after-working-review',
+      note: 'סימוני OCR/photo-review ישנים נוקו. אין לפתוח מחדש את כל הצורות.',
     },
-
     {
-      id: 'gap-planetary-correspondences-regions-materials',
-      sourcePages: ['PDF document 40.pdf', 'PDF document 41.pdf', 'PDF document 42.pdf'],
-      status: 'missing',
-      targetKnowledgeArea: 'future-foundations-planetary-correspondences',
-      hebrewTitle: 'מזגי הכוכבים, אקלימים, אזורים, מתכות, בעלי חיים וצמחים',
-      arabicKeywords: ['مزاج', 'الكواكب', 'الأقاليم', 'زحل', 'المشتري', 'المريخ', 'الشمس', 'الزهرة', 'عطارد', 'القمر', 'الرأس والذنب'],
-      missingSummaryHebrew:
-        'שער שלם על שיוכי כוכבים וצורות: אזורים, עמים, מעמדות, מתכות, אבנים, מאכלים, צמחים ובעלי חיים. חסר לגמרי כמבנה ידע.',
-      recommendedAction:
-        'ליצור קובץ יסוד עתידי. לא לחבר למנוע לפני אימות סימני הצורות והכוכבים.',
+      id: 'houses-16',
+      hebrewTitle: '16 הבתים',
+      status: 'closed-rich-foundation',
+      note: 'קיים hawi-houses-16.js. אם יתגלה שיוך קטן חדש בעתיד, מוסיפים נקודתית בלבד.',
     },
-
     {
-      id: 'gap-authority-state-kings-rulers',
-      sourcePages: ['PDF document 36.pdf', 'PDF document 37.pdf', 'PDF document 38.pdf'],
-      status: 'missing',
-      targetKnowledgeArea: 'future-question-rules-authority-state',
-      hebrewTitle: 'שער מלכים, מושלים, מדינות ואויבי מדינה',
-      arabicKeywords: ['الملوك', 'ارباب الدول', 'الدولة', 'اعداء الدولة', 'قتل الملك', 'استخراج اسمه'],
-      missingSummaryHebrew:
-        'נמצא שער מתקדם על מושלים, בעלי תפקידים, יציבות או נפילת מדינה, אויבי מדינה, וזיהוי גורם דרך אותיות/בית/חיבור/יסוד. אינו קיים כשער שאלה רגיל.',
-      recommendedAction:
-        'להכניס בעתיד כתת־מודול מדיני/שלטוני מתקדם, לא כחלק מהמנוע הבסיסי.',
-    },
-
-    {
-      id: 'gap-birth-nativity-mawlud',
-      sourcePages: [
-        'PDF document 51.pdf',
-        'PDF document 52.pdf',
-        'PDF document 53.pdf',
-        'PDF document 54.pdf',
-        'PDF document 55.pdf',
-        'PDF document 56.pdf',
-        'PDF document 57.pdf',
-        'PDF document 58.pdf',
-        'PDF document 59.pdf',
-      ],
-      status: 'missing',
-      targetKnowledgeArea: 'future-birth-nativity-module',
-      hebrewTitle: 'שער המולד / הנולד — امر المولود',
-      arabicKeywords: ['امر المولود', 'حل الضمير', 'الطالع', 'ثاني الطالع', 'ثالث الطالع'],
-      missingSummaryHebrew:
-        'שער גדול מאוד על אדם/מולד לפי حل الضمير וחזרת בעל הטאלע בבתים. כולל ממון, נישואין, ילדים, חולי, מוות, נסתרות, כישוף, טליסמאות, ידיעת נסתרות, אויבים, שלטון ופרישות.',
-      recommendedAction:
-        'ליצור מודול עתידי נפרד. לא לערבב עם דיני שאלה רגילים.',
-    },
-
-    {
-      id: 'gap-missing-person-ghaib',
-      sourcePages: ['PDF document 59.pdf', 'PDF document 60.pdf'],
-      status: 'source-mapped-dedicated-file-needs-photo-review',
-      targetKnowledgeArea: 'goral-hachol/data/sources/hawi/question-rules/hawi-question-missing-person.js',
-      hebrewTitle: 'שער הגאיב / נעדר — האם חוזר, מתי, חי או מת',
-      arabicKeywords: ['باب الغايب', 'هل يقدم الغايب', 'هل هو حي ام ميت'],
-      missingSummaryHebrew:
-        'הפער אינו חסר עוד כקובץ: נוצר קובץ ייעודי hawi-question-missing-person.js עם 19 כללים מתוך PDF 59–60. הקובץ כולל חזרה מהירה/מאוחרת, שמועות שקר, פחד, כלא/חולי, מוות בגלות, בדיקת חי/מת, ותנאי מוות לפי בתים וצורות.',
-      recommendedAction:
-        'לא ליצור קובץ חדש. השלב הבא הוא בדיקת צילום/מקור לכל שורה לפני הפעלה מלאה במנוע, ולאחר מכן לשנות את הסטטוס ל-source-verified.',
-    },
-
-    {
-      id: 'gap-yearly-forecast-prices-rain-weather',
-      sourcePages: ['PDF document 60.pdf', 'PDF document 61.pdf', 'PDF document 62.pdf'],
-      status: 'missing',
-      targetKnowledgeArea: 'future-yearly-weather-omens-module',
-      hebrewTitle: 'טאלע השנה, יוקר/זול, גשם ומזג אוויר',
-      arabicKeywords: ['باب الغلا والرخاء', 'باب طالع السنة', 'باب المطر', 'المطر', 'الثلج', 'الرياح'],
-      missingSummaryHebrew:
-        'נמצא חומר אלגוריתמי גדול על חיזוי שנתי, מחירים, שפע/יוקר, מלחמות, מחלות, מגפות, גשם, קור, שלג, רוחות וברקים לפי יסודות, כוכבים, ירח ובית 15.',
-      recommendedAction:
-        'תת־מודול עתידי נפרד לגמרי. לא להפעיל בתוך שאלות פרטיות.',
-    },
-
-    {
-      id: 'gap-spiritual-diagnostics-eye-jinn-mass',
-      sourcePages: [],
-      status: 'requires-targeted-source-search',
-      targetKnowledgeArea: 'goral-hachol/data/sources/hawi/foundations/hawi-spiritual-diagnostics.js',
-      hebrewTitle: 'עין הרע, ג׳ין, מס/אחיזה רוחנית — איתור ממוקד',
-      arabicKeywords: ['عين', 'جن', 'مس'],
-      missingSummaryHebrew:
-        'האבחון הרוחני כבר כולל כישוף, רוקיות, קנאה, נכפה/אחוז, מטמון מטולסם, טליסמאות וידיעת נסתרות. אך המונחים عين, جن, مس עדיין לא נמצאו אצלנו כמקור מפורש ומסודר.',
-      recommendedAction:
-        'לעשות חיפוש מקור ממוקד בספר המלא לפני הכנסת דין. לא להמציא “עין הרע” אם המקור מדבר רק על حسד/קנאה.',
+      id: 'question-rules-core',
+      hebrewTitle: 'דיני שאלות עיקריים',
+      status: 'closed-as-current-source-layer',
+      note: 'קיימים קבצי שאלות: מסחר, נסיעה, חולי, נישואין, פחד, אויבים, מטמון, אהבה/שנאה, ילד/הריון, השלמת דבר, נעדר.',
     },
   ],
 
-  summary: {
-    totalGapItems: 11,
-    immediateNextCandidates: [
-      'gap-spiritual-diagnostics-eye-jinn-mass',
-      'gap-birth-nativity-mawlud',
-      'gap-planetary-correspondences-regions-materials',
-      'gap-mahw-thabat-figure-generation',
-    ],
-    recommendedNextStepHebrew:
-      'שער הגאיב/נעדר כבר קיים כקובץ ייעודי ומחובר, ו־16 הבתים כבר קיימים כקובץ יסוד עשיר מאוד אך דורשים audit שיוכים עתידי. השלב הבא המומלץ הוא שכבת האבחון הרוחני/הנסתרות, כדי לוודא מה באמת נמצא במקור לגבי عين, جن, مس, حسد, سحر, دفين ועניינים קרובים.',
-  },
+  realRemainingKnowledgeAreas: [
+    {
+      id: 'planetary-correspondences',
+      hebrewTitle: 'שיוכי כוכבים, אקלימים, מתכות, אבנים, מאכלים, צמחים ובעלי חיים',
+      status: 'future-module-not-blocking-basic-goral',
+      actionHebrew:
+        'לשמר לעתיד כקובץ ידע נפרד. לא לעכב את מודול גורל החול הבסיסי.',
+    },
+    {
+      id: 'birth-nativity-mawlud',
+      hebrewTitle: 'שער המולד / הנולד',
+      status: 'future-large-module-not-basic-question-engine',
+      actionHebrew:
+        'מודול עתידי נפרד. לא לערבב עם דיני שאלה רגילים.',
+    },
+    {
+      id: 'yearly-weather-omens',
+      hebrewTitle: 'טאלע השנה, גשם, יוקר/זול, מלחמות ומחלות כלליות',
+      status: 'future-large-module-not-basic-question-engine',
+      actionHebrew:
+        'מודול עתידי נפרד. לא לעכב את בניית לוח גורל החול.',
+    },
+    {
+      id: 'authority-state-kings-rulers',
+      hebrewTitle: 'מלכים, מושלים, מדינות ואויבי מדינה',
+      status: 'future-specialized-module',
+      actionHebrew:
+        'להכניס בעתיד רק אם נרצה מודול שלטון/מדינה.',
+    },
+    {
+      id: 'spiritual-diagnostics-expanded',
+      hebrewTitle: 'אבחון רוחני מורחב',
+      status: 'partly-covered-needs-approved-sources-only',
+      actionHebrew:
+        'כישוף/קנאה/אחיזה קיימים בשכבות שונות. עין/ג׳ין/מס יושלמו רק ממקור מאושר, לא מסברה.',
+    },
+  ],
+
+  currentDecisionHebrew:
+    'אין יותר להשתמש בקובץ זה כדי לפתוח מחדש את מצבי הצורות, בניית הלוח, חוק ההכאה, שמות הצורות, הבתים או דיני השאלות שכבר נכנסו. הוא משמש רק מפת המשך נקייה.',
 };
 
-export function getHawiFullBookGap(id) {
-  return HAWI_FULL_BOOK_GAP_AUDIT.gaps.find((gap) => gap.id === id) || null;
+export function getHawiFullBookGapAudit() {
+  return HAWI_FULL_BOOK_GAP_AUDIT;
 }
 
-export function getHawiFullBookGapsByStatus(status) {
-  return HAWI_FULL_BOOK_GAP_AUDIT.gaps.filter((gap) => gap.status === status);
+export function getHawiClosedKnowledgeAreas() {
+  return HAWI_FULL_BOOK_GAP_AUDIT.closedKnowledgeAreas;
+}
+
+export function getHawiRealRemainingKnowledgeAreas() {
+  return HAWI_FULL_BOOK_GAP_AUDIT.realRemainingKnowledgeAreas;
 }
 
 export default { HAWI_FULL_BOOK_GAP_AUDIT };
