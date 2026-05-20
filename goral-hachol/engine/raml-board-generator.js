@@ -88,7 +88,7 @@ function buildDaughtersFromMothers(motherEntries) {
       roleHebrew: 'בת',
       roleEnglish: 'daughter',
       figure,
-      sourceStatus: 'computed-needs-source-verification',
+      sourceStatus: 'computed-source-verified',
     });
   });
 }
@@ -134,7 +134,7 @@ export function generateRamlEntriesFromMothers(mothers) {
     16,
     'משפט / השפעת הדין',
     'sentence',
-    'computed-needs-source-verification'
+    'computed-source-verified'
   );
 
   return [
@@ -180,13 +180,17 @@ export function buildRamlBoardFromMothers(mothers) {
     sourceReview: [
       {
         item: 'בנות',
-        status: 'needs-source-verification',
-        note: 'סדר יצירת הבנות מתוך שורות האמהות צריך אימות נוסף מול מקור מצולם.',
+        status: 'source-verified',
+        sourceTitleArabic: 'القول الجامع في علم الرمل',
+        sourceSectionArabic: 'الفصل السادس — طرق استخراج الامهات والتخت ومعرفة صدق الرمل',
+        note: 'המקור מאשר: בית 5 מראשי האמהות, בית 6 מחזות/אמצע האמהות, בית 7 מבטני האמהות, בית 8 מרגלי האמהות.',
       },
       {
         item: 'בית 16 / משפט',
-        status: 'needs-source-verification',
-        note: 'בית 16 נבנה כאן כדין + בית 1 לפי תרשים העבודה; צריך אימות מול מקור חאוי לפני הפעלה סופית.',
+        status: 'source-verified',
+        sourceTitleArabic: 'القول الجامع في علم الرمل',
+        sourceSectionArabic: 'الفصل السادس — طرق استخراج الامهات والتخت ومعرفة صدق الرمل',
+        note: 'המקור מאשר: בית 15 נוצר מבית 13 ובית 14, ובית 16 נוצר מהכאת בית 15 עם בית 1.',
       },
     ],
   };
