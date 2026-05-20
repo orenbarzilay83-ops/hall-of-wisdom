@@ -74,7 +74,7 @@ export const HAWI_FIGURE_NAMES = [
     id: 'hawi-figure-hayyan',
     shortId: 'hayyan',
     arabicName: 'الأحيان / الضاحك',
-    hebrewName: 'נושא ראש',
+    hebrewName: 'נשוא ראש',
     fortuneHebrew: 'סעד',
     movementHebrew: 'חיצוני',
     elementHebrew: 'אש',
