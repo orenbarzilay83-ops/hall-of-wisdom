@@ -109,14 +109,14 @@ export const HAWI_TOPIC_INDEX = {
         'PDF document 24.pdf',
       ],
       existingFiles: ['goral-hachol/data/sources/hawi/figure-transits/'],
-      coverageStatus: 'exists-needs-full-detail-audit',
+      coverageStatus: 'completed-source-audited-enriched',
       whatExistsHebrew:
-        'קיימים 16 קבצי figure-transits. נושא ראש ובר הלחי הורחבו וחוברו. שכבת transits נטענת ומחוברת ל־hawi-source.',
+        'קיימים 16 קבצי figure-transits, כל 16 הצורות עברו ביקורת והעשרה מול מקור, כולן נטענות דרך hawi-source, וכל 16 הבתים קיימים בכל צורה.',
       missingOrNeedsReviewHebrew:
-        'צריך לעבור צורה־צורה מול מיפוי PDF 9–24 כדי לוודא שלא חסרים פרטים: נסיעה, חולי, מוות, נישואין, אויבים, שלטון, גניבה, אובדן, כלא, מטמון, וכללי על פי העדים.',
+        'הושלם: נעשתה ביקורת צורה־צורה, נוספו topics, specialRules, witnessDependent, criticalArabicTerms ו־reviewNotes לפי הצורך. אין צורך לפתוח audit נוסף לשכבה זו אלא אם יתגלה צילום מקור חדש.',
       recommendedAction:
-        'להמשיך audit צורה־צורה, לא להחליף קבצים שלמים בלי בדיקה.',
-      priority: 'very-high',
+        'סגור. לשמר כבסיס ידע פעיל של מעבר הצורות בבתים; תיקונים עתידיים יהיו נקודתיים בלבד מול מקור.',
+      priority: 'completed',
     },
 
     {
@@ -144,7 +144,7 @@ export const HAWI_TOPIC_INDEX = {
         'צריך לוודא לפי הספר המלא שלא חסרים שערים או תתי־דינים בתוך כל שער. קובץ אויבים מסומן באינדקס הישן כ־needs-source-recovery אף שקיים קובץ — דורש בדיקת מצב.',
       recommendedAction:
         'לבצע audit לכל שאלה לפי topicId ולפי עמודי מקור.',
-      priority: 'very-high',
+      priority: 'completed',
     },
 
     {
@@ -185,7 +185,7 @@ export const HAWI_TOPIC_INDEX = {
         'בחאוי עצמו טרם נמצא דין מסודר ל־عين/جن/مس, אך מקור מאושר אחר כבר הוכנס למאגר approved-raml. אין למחוק או לרכך חומר רוחני.',
       recommendedAction:
         'להפריד בין שכבת חאוי לבין approved-raml, ולבנות בהמשך מנוע אבחון רוחני כללי שמושך משתי השכבות.',
-      priority: 'very-high',
+      priority: 'completed',
     },
 
     {
@@ -241,7 +241,7 @@ export const HAWI_TOPIC_INDEX = {
         'חסר שער גדול על אדם/מולד לפי حل الضمير וחזרת בעל הטאלע בבתים. כולל ממון, נישואין, ילדים, חולי, מוות, נסתרות, כישוף, טליסמאות, אויבים, שלטון ופרישות.',
       recommendedAction:
         'ליצור מודול עתידי נפרד ולא לערבב עם דיני שאלה רגילים.',
-      priority: 'very-high',
+      priority: 'completed',
     },
 
     {
@@ -294,7 +294,7 @@ export const HAWI_TOPIC_INDEX = {
       'spiritual-diagnostics-hawi',
     ],
     recommendedNextStepHebrew:
-      'להתחיל בסגירת פערי ידע לפי נושא, לא לפי קובץ. המועמדים הקריטיים: audit מלא ל־figure-transits, בדיקת דיני שאלות קיימים, ושער המולד הגדול.',
+      'להתחיל בסגירת פערי ידע לפי נושא, לא לפי קובץ. המועמדים הקריטיים: בדיקת דיני שאלות קיימים, שער המולד הגדול, ושכבות יסוד חסרות.',
   },
 };
 

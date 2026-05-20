@@ -96,7 +96,7 @@ const HAWI_SOURCE_INDEX = {
       file: "./figure-transits/",
       arabicTitle: "ترحيل الأشكال الستة عشر في الستة عشر بيتا",
       hebrewTitle: "הצבת שש־עשרה הצורות בשישה־עשר הבתים",
-      extractionStatus: "not-started-next"
+      extractionStatus: "completed-source-audited-enriched"
     }
   ]
 };

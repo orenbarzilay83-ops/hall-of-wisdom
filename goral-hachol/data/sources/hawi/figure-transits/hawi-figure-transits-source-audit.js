@@ -60,10 +60,10 @@ export const HAWI_FIGURE_TRANSITS_SOURCE_AUDIT = {
     priorityNow: [
       'לעבות את hawi-figure-hayyan.js לפי PDF 17–18',
       'לעבות את hawi-figure-naqi-khad.js לפי PDF 18–19',
-      'אחר כך לעבור צורה־צורה על שאר figure-transits לפי עמודים 9–24'
+      'הושלם מעבר צורה־צורה על כל figure-transits לפי עמודים 9–24'
     ],
     conclusionHebrew:
-      'שכבת התרחיל קיימת לכל 16 הצורות, אך חלק מהקבצים הם תקציריים מדי. עכשיו צריך להרחיב אותם לפי מיפוי הספר המלא בלי למחוק ידע קיים.'
+      'שכבת התרחיל קיימת לכל 16 הצורות ועברה הרחבה וביקורת. כל קובץ כולל 16 בתים, שמות עבריים מנורמלים, topics, specialRules, witnessDependent, criticalArabicTerms ו־reviewNotes לפי הצורך.'
   }
 };
 
