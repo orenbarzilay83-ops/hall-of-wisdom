@@ -54,14 +54,14 @@ export const HAWI_FULL_BOOK_GAP_AUDIT = {
         'PDF document 8.pdf',
         'PDF document 9.pdf',
       ],
-      status: 'partially-exists',
+      status: 'source-mapped-rich-foundation-needs-correspondence-audit',
       targetKnowledgeArea: 'goral-hachol/data/sources/hawi/foundations/hawi-houses-16.js',
       hebrewTitle: 'העמקת 16 הבתים — זמנים, אותיות, איברים, צבעים, מקומות וסודות',
       arabicKeywords: ['البيوت الستة عشر', 'الحروف', 'مدة قريبة', 'الأعضاء', 'الأسرار'],
       missingSummaryHebrew:
-        'קובץ 16 הבתים קיים, אך צריך להשוות אם כל עומק הבתים נכנס: זמנים, אותיות, איברים, צבעים, מקומות, ערים, שערים, קברים, סודות, כישוף/רוקיות, קנאה, פחד, ידיעת נסתרות ושיוכי בתים 13–16.',
+        'הפער אינו חסר כקובץ: hawi-houses-16.js קיים ועשיר מאוד, כולל 16 בתים, ערבית מקורית, תרגום עברי, topics, סודות, פחד, קנאה/حسد, כישוף/רוקיות, מקומות, קברים, גניבה, נעדר, רמל, כוכבים, דת, שלטון, בתים 13–16, מאזני הרמל ובית 16. עדיין נדרש audit ממוקד מול PDF 3–9 כדי לוודא אם קיימות טבלאות או שיוכים נוספים שלא נכנסו, כגון אותיות, צבעים, איברים, זמנים או שיוכי עומק נוספים.',
       recommendedAction:
-        'לעשות מעבר בית־בית ולעדכן רק חטיבה אחת בכל פעם.',
+        'לא ליצור קובץ חדש בשלב זה. לבצע בעתיד ביקורת בית־בית מול PDF 3–9, ורק אם נמצאו שיוכים טבלאיים חסרים ליצור קובץ הרחבה נפרד כגון hawi-houses-16-correspondences-audit.js.',
     },
 
     {
@@ -208,13 +208,13 @@ export const HAWI_FULL_BOOK_GAP_AUDIT = {
   summary: {
     totalGapItems: 11,
     immediateNextCandidates: [
-      'gap-houses-16-deep-correspondences',
+      'gap-spiritual-diagnostics-eye-jinn-mass',
       'gap-birth-nativity-mawlud',
       'gap-planetary-correspondences-regions-materials',
-      'gap-spiritual-diagnostics-eye-jinn-mass',
+      'gap-mahw-thabat-figure-generation',
     ],
     recommendedNextStepHebrew:
-      'שער הגאיב/נעדר כבר קיים כקובץ ייעודי ומחובר, אך דורש ביקורת צילום לפני הפעלה מלאה. השלב הבא המומלץ הוא לבחור בין העמקת 16 הבתים לבין שכבת האבחון הרוחני/הנסתרות.',
+      'שער הגאיב/נעדר כבר קיים כקובץ ייעודי ומחובר, ו־16 הבתים כבר קיימים כקובץ יסוד עשיר מאוד אך דורשים audit שיוכים עתידי. השלב הבא המומלץ הוא שכבת האבחון הרוחני/הנסתרות, כדי לוודא מה באמת נמצא במקור לגבי عين, جن, مس, حسد, سحر, دفين ועניינים קרובים.',
   },
 };
 
