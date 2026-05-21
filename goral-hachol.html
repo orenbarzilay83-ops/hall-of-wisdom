@@ -940,84 +940,59 @@
       return n % 2 === 0 ? 2 : 1;
     }
 
-    function figureNameFromEngine(lines) {
-      try {
-        const infoFn =
-          (typeof ramlFigureInfo === "function" ? ramlFigureInfo : null) ||
-          (typeof window !== "undefined" && typeof window.ramlFigureInfo === "function" ? window.ramlFigureInfo : null);
-
-        const keyFn =
-          (typeof ramlFigureKey === "function" ? ramlFigureKey : null) ||
-          (typeof window !== "undefined" && typeof window.ramlFigureKey === "function" ? window.ramlFigureKey : null);
-
-        if (typeof infoFn !== "function") {
-          return "";
-        }
-
-        const key = typeof keyFn === "function" ? keyFn(lines) : lines.join("");
-
-        const attempts = [
-          key,
-          String(key),
-          lines,
-          lines.join("")
-        ];
-
-        for (const value of attempts) {
-          try {
-            const info = infoFn(value);
-
-            if (typeof info === "string" && info.trim()) {
-              return info.trim();
-            }
-
-            const name =
-              info?.hebrew ||
-              info?.hebrewName ||
-              info?.nameHebrew ||
-              info?.titleHebrew ||
-              info?.name ||
-              info?.title ||
-              "";
-
-            if (name) return String(name).trim();
-          } catch {
-            // try next format
-          }
-        }
-      } catch (err) {
-        console.warn("Could not read figure name from engine", lines, err);
-      }
-
-      return "";
+    function linesFromKey(key) {
+      return String(key).split("").map(Number);
     }
 
     function getFiguresForPicker() {
       /*
-        מסך הבחירה לא משתמש יותר בשמות דמו.
-        הוא מייצר את כל 16 הצורות האפשריות ושואל את raml.js מה השם האמיתי של כל צורה.
+        מקור אמת:
+        קודם RAML_FORMS_BASIC מתוך raml-data/raml-forms-basic.js.
+        אם מסיבה כלשהי הוא לא נטען בדפדפן, משתמשים באותו מיפוי מדויק מתוך raml.js.
+        אין כאן שמות דמו ואין "צורה 1".
       */
-      const patterns = [];
 
-      for (const a of [1, 2]) {
-        for (const b of [1, 2]) {
-          for (const c of [1, 2]) {
-            for (const d of [1, 2]) {
-              patterns.push([a, b, c, d]);
-            }
-          }
-        }
-      }
+      const fallbackForms = {
+        "1222": { key: "1222", hebrew: "נשוא ראש" },
+        "2122": { key: "2122", hebrew: "אדום" },
+        "1122": { key: "1122", hebrew: "כבוד יוצא" },
+        "2212": { key: "2212", hebrew: "לבן" },
+        "1212": { key: "1212", hebrew: "ממון יוצא" },
+        "2112": { key: "2112", hebrew: "חיבור" },
+        "1112": { key: "1112", hebrew: "סף יוצא" },
+        "2221": { key: "2221", hebrew: "שפל ראש" },
+        "1221": { key: "1221", hebrew: "סוהר" },
+        "2121": { key: "2121", hebrew: "ממון נכנס" },
+        "1121": { key: "1121", hebrew: "נלחם" },
+        "2211": { key: "2211", hebrew: "כבוד נכנס" },
+        "1211": { key: "1211", hebrew: "בר הלחי" },
+        "2111": { key: "2111", hebrew: "סף נכנס" },
+        "1111": { key: "1111", hebrew: "דרך" },
+        "2222": { key: "2222", hebrew: "קהלה" }
+      };
 
-      return patterns.map((lines, index) => {
-        const key = lines.join("");
-        const engineName = figureNameFromEngine(lines);
+      const forms =
+        (typeof window !== "undefined" && window.RAML_FORMS_BASIC && Object.keys(window.RAML_FORMS_BASIC).length)
+          ? window.RAML_FORMS_BASIC
+          : fallbackForms;
+
+      const order = [
+        "1222", "2122", "1122", "2212",
+        "1212", "2112", "1112", "2221",
+        "1221", "2121", "1121", "2211",
+        "1211", "2111", "1111", "2222"
+      ];
+
+      return order.map(key => {
+        const item = forms[key] || fallbackForms[key];
 
         return {
-          id: `engine-figure-${key}`,
+          id: `raml-form-${key}`,
           key,
-          name: engineName || `צורה ${index + 1}`,
-          lines
+          name: item.hebrew,
+          arabic: item.arabic || "",
+          statusHebrew: item.statusHebrew || item.fortune || "",
+          lines: linesFromKey(key)
         };
       });
     }
