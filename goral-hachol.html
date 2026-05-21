@@ -557,9 +557,120 @@
       box-shadow: 0 10px 24px rgba(0,0,0,.12) !important;
     }
 
+  
+    /* === ACTIVE GORAL HACHOL SINGLE SCREEN DESIGN === */
+    body {
+      background:
+        radial-gradient(circle at 50% 0%, rgba(220, 178, 82, .18), transparent 32%),
+        linear-gradient(180deg, #fbf6ea 0%, #f5eedc 44%, #efe2c4 100%) !important;
+      color: #24180b;
+    }
+
+    .topbar {
+      background: transparent !important;
+      border: 0 !important;
+      box-shadow: none !important;
+      color: #8a6826 !important;
+    }
+
+    .back-main-menu-btn {
+      background: linear-gradient(135deg, #f3d86d, #b98b2c) !important;
+      color: #24180b !important;
+      border: 1px solid rgba(89, 56, 13, .28) !important;
+      border-radius: 999px !important;
+      box-shadow: 0 10px 24px rgba(120, 82, 20, .22) !important;
+      font-weight: 800 !important;
+    }
+
+    h1 {
+      color: #8a6826 !important;
+      font-size: clamp(2rem, 4vw, 3rem) !important;
+      letter-spacing: .02em;
+      text-shadow: 0 2px 0 rgba(255,255,255,.7);
+    }
+
+    .page-subtitle,
+    .subtitle,
+    .lead {
+      color: rgba(36, 24, 11, .65) !important;
+    }
+
+    .input-card,
+    .form-card,
+    .panel,
+    .setup-panel,
+    .controls,
+    .reading-card {
+      background:
+        radial-gradient(circle at 18% 12%, rgba(255,255,255,.55), transparent 25%),
+        radial-gradient(circle at 85% 20%, rgba(129, 82, 24, .12), transparent 30%),
+        linear-gradient(135deg, #fff8e5 0%, #ecd8a8 55%, #d4ae6a 100%) !important;
+      border: 1px solid rgba(91, 56, 13, .34) !important;
+      border-radius: 24px !important;
+      box-shadow:
+        inset 0 0 42px rgba(91, 56, 13, .12),
+        0 20px 45px rgba(63, 42, 12, .14) !important;
+      color: #24180b !important;
+    }
+
+    input,
+    textarea {
+      background: rgba(255, 252, 242, .82) !important;
+      border: 1px solid rgba(91, 56, 13, .20) !important;
+      border-radius: 14px !important;
+      color: #24180b !important;
+      box-shadow: inset 0 2px 8px rgba(70, 45, 15, .05) !important;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(36, 24, 11, .35) !important;
+    }
+
+    label {
+      color: #4b3515 !important;
+      font-weight: 800 !important;
+    }
+
+    button,
+    .btn {
+      border-radius: 16px !important;
+      border: 1px solid rgba(91, 56, 13, .22) !important;
+      font-weight: 900 !important;
+    }
+
+    #runBtn {
+      background: linear-gradient(135deg, #f7df68, #b78929) !important;
+      color: #130d06 !important;
+      box-shadow: 0 13px 26px rgba(120, 82, 20, .24) !important;
+    }
+
+    #archiveBtn,
+    #clearArchiveBtn {
+      background: rgba(255,255,255,.62) !important;
+      color: #3a2810 !important;
+    }
+
+    #result {
+      margin-top: 28px;
+    }
+
+    /* make the active input screen feel like one unified parchment tool */
+    .client-details-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    @media (max-width: 760px) {
+      .client-details-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
   </style>
 </head>
-<body>
+<body data-design-version="parchment-active-v2">
 <a href="calculator.html" class="back-main-menu-btn">← חזרה לתפריט הראשי</a>
   <main class="page">
     <div class="topbar">
