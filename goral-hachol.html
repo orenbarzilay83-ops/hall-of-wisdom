@@ -807,6 +807,13 @@
         const matrix = parseCounts(document.getElementById("countsInput").value);
         const reading = ramlRunReadingFromPointCounts(question, matrix);
         reading.clientContext = getClientContext();
+
+        if (window.GORAL_CLIENT_ARCHIVE && reading.clientContext.clientName) {
+          reading.clientHistorySummary = window.GORAL_CLIENT_ARCHIVE.summarizeGoralClientHistory(
+            reading.clientContext.clientName
+          );
+        }
+
         result.innerHTML = buildChart(reading);
       } catch (err) {
         errorBox.textContent = err.message || String(err);

@@ -89,6 +89,29 @@ function questionFocusParagraph(topicId, clientContext = {}) {
 }
 
 
+function clientHistoryParagraph(history) {
+  if (!history || !history.total) {
+    return '';
+  }
+
+  const parts = [];
+
+  parts.push(history.summaryHebrew);
+
+  if (Array.isArray(history.repeatedTopics) && history.repeatedTopics.length) {
+    const topics = history.repeatedTopics
+      .map((item) => `${item.topic} (${item.count} פעמים)`)
+      .join(', ');
+    parts.push(`יש נושאים שחוזרים אצל הלקוח: ${topics}.`);
+  }
+
+  if (Array.isArray(history.repeatedSpiritualFlags) && history.repeatedSpiritualFlags.length) {
+    parts.push('יש חזרה של סימנים רוחניים או דפוסי חשד בקריאות קודמות, ולכן צריך לבדוק אם מדובר בדפוס מתמשך ולא במקרה חד־פעמי.');
+  }
+
+  return parts.join(' ');
+}
+
 function topicOpening(topicId, topicHebrew) {
   const openings = {
     travel:
@@ -224,6 +247,7 @@ export function writeHumanGoralConclusion(result) {
 
   const paragraphs = [
     clientContextParagraph(result.clientContext, result.question),
+    clientHistoryParagraph(result.clientHistorySummary),
     topicOpening(topicId, topicHebrew),
     questionFocusParagraph(topicId, result.clientContext),
     `${getGradeText(grade)}. ${describeTone(score)}`,

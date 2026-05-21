@@ -417,6 +417,7 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
 export function interpretHawiQuestionInitial(question, board = null) {
   const route = routeHawiQuestion(question);
   const clientContext = board?.clientContext || {};
+  const clientHistorySummary = board?.clientHistorySummary || null;
   const mainHouses = TOPIC_MAIN_HOUSES[route.topicId] || TOPIC_MAIN_HOUSES.foundations;
   const topicHebrew = TOPIC_HEBREW_TITLES[route.topicId] || TOPIC_HEBREW_TITLES.foundations;
 
@@ -436,6 +437,7 @@ export function interpretHawiQuestionInitial(question, board = null) {
     status: 'board-aware-source-based-interpretation',
     question,
     clientContext,
+    clientHistorySummary,
     topicId: route.topicId,
     topicHebrew,
     confidence: route.confidence,
@@ -465,6 +467,7 @@ export function interpretHawiQuestionInitial(question, board = null) {
     finalConclusionHebrew: writeHumanGoralConclusion({
       question,
       clientContext,
+      clientHistorySummary,
       topicId: route.topicId,
       topicHebrew,
       boardScore,
