@@ -423,6 +423,140 @@
       }
     }
 
+  
+    /* === PARCHMENT GEOMANTIC BOARD DESIGN === */
+    .reading-card {
+      background:
+        radial-gradient(circle at 18% 12%, rgba(255,255,255,.50), transparent 24%),
+        radial-gradient(circle at 78% 26%, rgba(130,91,35,.10), transparent 30%),
+        linear-gradient(135deg, #efe1bd 0%, #d9bd86 45%, #caa36c 100%);
+      border: 1px solid rgba(92, 58, 22, 0.45);
+      border-radius: 22px;
+      box-shadow:
+        inset 0 0 45px rgba(80, 45, 15, 0.18),
+        0 18px 40px rgba(0,0,0,.18);
+      color: #1f160d;
+    }
+
+    .reading-header,
+    .diagnosis,
+    .summary-box {
+      background: rgba(255, 248, 224, 0.78);
+      border: 1px solid rgba(80, 45, 15, 0.25);
+      box-shadow: inset 0 0 20px rgba(120, 75, 25, 0.07);
+    }
+
+    .shield,
+    .middle-grid,
+    .witness-grid,
+    .final-area {
+      gap: 0 !important;
+      margin-top: 0;
+    }
+
+    .shield {
+      border-top: 2px solid #22180d;
+      border-right: 2px solid #22180d;
+      border-left: 2px solid #22180d;
+      background: rgba(238, 216, 171, .40);
+    }
+
+    .middle-grid,
+    .witness-grid {
+      border-right: 2px solid #22180d;
+      border-left: 2px solid #22180d;
+      background: rgba(238, 216, 171, .40);
+    }
+
+    .witness-grid {
+      border-bottom: 0;
+    }
+
+    .house {
+      border: 0 !important;
+      border-left: 2px solid #22180d !important;
+      border-bottom: 2px solid #22180d !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      min-height: 145px;
+      padding: 10px 8px;
+    }
+
+    .shield .house:last-child,
+    .middle-grid .house:last-child,
+    .witness-grid .house:last-child {
+      border-left: 0 !important;
+    }
+
+    .house-title {
+      color: #16100a;
+      font-weight: 900;
+      font-size: 1.05rem;
+    }
+
+    .house-sub,
+    .figure-name,
+    .figure-meta {
+      color: rgba(31, 22, 13, 0.72);
+    }
+
+    .figure-name {
+      font-weight: 800;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      background:
+        radial-gradient(circle at 35% 30%, #777 0 10%, #4b4b4b 42%, #232323 100%);
+      border-radius: 50%;
+      box-shadow:
+        inset -1px -1px 2px rgba(0,0,0,.45),
+        1px 2px 3px rgba(0,0,0,.28);
+    }
+
+    .bar {
+      width: 48px;
+      height: 10px;
+      border-radius: 10px;
+      background:
+        linear-gradient(180deg, #494949, #111);
+      box-shadow:
+        inset 0 1px 1px rgba(255,255,255,.2),
+        1px 2px 3px rgba(0,0,0,.28);
+    }
+
+    .final-area {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px !important;
+      margin-top: 20px;
+      align-items: start;
+      direction: rtl;
+      background: transparent;
+    }
+
+    .final-main {
+      grid-column: 2 / 3;
+    }
+
+    .final-detached {
+      grid-column: 1 / 2;
+      max-width: 100%;
+    }
+
+    .final-main .house,
+    .final-detached .house {
+      border: 2px solid #22180d !important;
+      min-height: 160px;
+      background: rgba(238, 216, 171, .52) !important;
+    }
+
+    .final-detached .house {
+      box-shadow: 0 10px 24px rgba(0,0,0,.12) !important;
+    }
+
   </style>
 </head>
 <body>
