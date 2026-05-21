@@ -873,5 +873,447 @@
     });
     document.getElementById("result").innerHTML = "";
   </script>
+
+<style>
+/* === REAL WORKING GORAL HACHOL DESIGN FLOW V2 === */
+.goral-real-shell {
+  direction: rtl;
+  max-width: 1180px;
+  margin: 26px auto 48px;
+  padding: 0 14px;
+  color: #172033;
+}
+
+.goral-real-title {
+  text-align: center;
+  margin: 18px 0 10px;
+  color: #8a6a21;
+  font-size: clamp(2.2rem, 4vw, 3.7rem);
+  font-weight: 900;
+}
+
+.goral-real-title::before,
+.goral-real-title::after {
+  content: "✦";
+  margin: 0 14px;
+}
+
+.goral-real-subtitle {
+  text-align: center;
+  margin-bottom: 22px;
+  color: rgba(40, 35, 25, .65);
+}
+
+.goral-screen {
+  display: none;
+  background: rgba(255, 253, 247, .92);
+  border: 1px solid rgba(204, 170, 82, .55);
+  border-radius: 22px;
+  padding: 24px;
+  box-shadow: 0 18px 40px rgba(90, 65, 20, .12);
+}
+
+.goral-screen.active {
+  display: block;
+}
+
+.goral-screen h2 {
+  margin: 0 0 16px;
+  font-size: 1.65rem;
+  color: #172033;
+  border-bottom: 1px solid rgba(204, 170, 82, .55);
+  padding-bottom: 12px;
+}
+
+.goral-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.goral-field {
+  display: grid;
+  gap: 7px;
+}
+
+.goral-field.full {
+  grid-column: 1 / -1;
+}
+
+.goral-field label {
+  font-weight: 900;
+  color: #172033;
+}
+
+.goral-field input,
+.goral-field textarea,
+.goral-field select {
+  width: 100%;
+  min-height: 48px;
+  border-radius: 14px;
+  border: 1px solid rgba(20, 30, 50, .18);
+  background: rgba(255,255,255,.85);
+  padding: 10px 12px;
+  color: #172033;
+  font-size: 1rem;
+}
+
+.goral-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.goral-btn {
+  border: 1px solid rgba(20, 30, 50, .18);
+  border-radius: 14px;
+  min-height: 54px;
+  padding: 12px 18px;
+  font-weight: 900;
+  font-size: 1rem;
+  cursor: pointer;
+  background: #f7f7f7;
+  color: #1c1c1c;
+}
+
+.goral-btn.primary {
+  background: linear-gradient(135deg, #f7df68, #b88a2b);
+  color: #101010;
+  border-color: rgba(164, 116, 34, .45);
+}
+
+.goral-btn.dark {
+  background: linear-gradient(180deg, #0d2648, #06172d);
+  color: #f7df68;
+  border-color: #06172d;
+}
+
+.goral-mother-slots {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.goral-mother-slot {
+  min-height: 82px;
+  border: 2px dashed rgba(20, 30, 50, .24);
+  border-radius: 16px;
+  background: rgba(255,255,255,.62);
+  display: grid;
+  place-items: center;
+  text-align: center;
+  cursor: pointer;
+  font-weight: 800;
+  color: #1b1b1b;
+}
+
+.goral-mother-slot.active {
+  border-style: solid;
+  border-color: #c79a2c;
+  box-shadow: inset 0 0 0 3px rgba(247, 223, 104, .32);
+}
+
+.goral-mother-slot.filled {
+  background: rgba(255, 245, 205, .78);
+}
+
+.goral-picker {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border: 1px solid rgba(20, 30, 50, .22);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.goral-figure-choice {
+  min-height: 145px;
+  border: 1px solid rgba(20, 30, 50, .12);
+  background: rgba(255,255,255,.48);
+  color: #111;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.goral-figure-choice.selected,
+.goral-figure-choice:hover {
+  background: rgba(247, 223, 104, .38);
+  box-shadow: inset 0 0 0 3px rgba(190, 145, 38, .65);
+}
+
+.goral-figure {
+  display: grid;
+  gap: 7px;
+  justify-items: center;
+}
+
+.goral-dot {
+  display: block;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #111;
+}
+
+.goral-bar {
+  display: block;
+  width: 42px;
+  height: 9px;
+  border-radius: 999px;
+  background: #111;
+}
+
+.goral-original-hidden {
+  display: none !important;
+}
+
+#goralRealResult #result {
+  display: block;
+}
+
+@media (max-width: 760px) {
+  .goral-form-grid,
+  .goral-actions,
+  .goral-mother-slots {
+    grid-template-columns: 1fr;
+  }
+
+  .goral-picker {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+</style>
+
+<script>
+/* === REAL WORKING GORAL HACHOL DESIGN FLOW V2 === */
+(function () {
+  const figures = [
+    { id: "tariq", name: "דרך", lines: [1,1,1,1] },
+    { id: "jamaa", name: "קהלה", lines: [2,2,2,2] },
+    { id: "bayad", name: "לבן", lines: [2,2,1,2] },
+    { id: "humra", name: "אדום", lines: [2,1,2,2] },
+    { id: "aqla", name: "סוהר", lines: [2,1,1,2] },
+    { id: "ijtima", name: "חיבור", lines: [1,2,2,1] },
+    { id: "qabdDakhil", name: "ממון נכנס", lines: [2,1,2,1] },
+    { id: "qabdKharij", name: "ממון יוצא", lines: [1,2,1,2] },
+    { id: "nusraDakhila", name: "כבוד נכנס", lines: [2,2,2,1] },
+    { id: "nusraKharija", name: "כבוד יוצא", lines: [1,2,2,2] },
+    { id: "atabaDakhila", name: "סף נכנס", lines: [2,1,1,1] },
+    { id: "atabaKharija", name: "סף יוצא", lines: [1,1,1,2] },
+    { id: "nakis", name: "שפל ראש", lines: [2,2,1,1] },
+    { id: "hayyan", name: "נשוא ראש", lines: [1,1,2,2] },
+    { id: "judla", name: "נלחם", lines: [1,1,2,1] },
+    { id: "farah", name: "שפע", lines: [2,1,2,2] }
+  ];
+
+  let mothers = [null, null, null, null];
+  let activeMother = 0;
+
+  function lineHtml(lines) {
+    return `
+      <div class="goral-figure">
+        ${lines.map(v => `<span class="${Number(v) === 1 ? "goral-dot" : "goral-bar"}"></span>`).join("")}
+      </div>
+    `;
+  }
+
+  function showGoralScreen(name) {
+    document.querySelectorAll(".goral-screen").forEach(s => s.classList.remove("active"));
+    const el = document.getElementById("goral-screen-" + name);
+    if (el) el.classList.add("active");
+  }
+
+  function syncCountsInput() {
+    const countsInput = document.getElementById("countsInput");
+    if (!countsInput) return;
+
+    countsInput.value = mothers
+      .filter(Boolean)
+      .map(m => m.lines.join(" "))
+      .join("\\n");
+  }
+
+  function renderMotherSlots() {
+    const box = document.getElementById("goralMotherSlots");
+    if (!box) return;
+
+    box.innerHTML = mothers.map((m, i) => `
+      <button type="button" class="goral-mother-slot ${i === activeMother ? "active" : ""} ${m ? "filled" : ""}" data-index="${i}">
+        <div>
+          <div>אם ${i + 1}</div>
+          <div>${m ? m.name : "טרם נבחרה"}</div>
+        </div>
+      </button>
+    `).join("");
+
+    box.querySelectorAll(".goral-mother-slot").forEach(btn => {
+      btn.addEventListener("click", () => {
+        activeMother = Number(btn.dataset.index);
+        renderMotherSlots();
+        renderPicker();
+      });
+    });
+  }
+
+  function renderPicker() {
+    const picker = document.getElementById("goralFigurePicker");
+    if (!picker) return;
+
+    picker.innerHTML = figures.map((fig, i) => {
+      const selected = mothers.some(m => m && m.id === fig.id);
+      return `
+        <button type="button" class="goral-figure-choice ${selected ? "selected" : ""}" data-index="${i}">
+          ${lineHtml(fig.lines)}
+          <span>${fig.name}</span>
+        </button>
+      `;
+    }).join("");
+
+    picker.querySelectorAll(".goral-figure-choice").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const fig = figures[Number(btn.dataset.index)];
+        mothers[activeMother] = fig;
+        if (activeMother < 3) activeMother += 1;
+        syncCountsInput();
+        renderMotherSlots();
+        renderPicker();
+      });
+    });
+  }
+
+  function mountGoralRealFlow() {
+    if (document.getElementById("goralRealShell")) return;
+
+    const clientName = document.getElementById("clientNameInput");
+    const parentName = document.getElementById("clientParentInput");
+    const age = document.getElementById("clientAgeInput");
+    const context = document.getElementById("consultationContextInput");
+    const question = document.getElementById("questionInput");
+    const countsInput = document.getElementById("countsInput");
+    const runBtn = document.getElementById("runBtn");
+    const archiveBtn = document.getElementById("archiveBtn");
+    const clearArchiveBtn = document.getElementById("clearArchiveBtn");
+    const result = document.getElementById("result");
+
+    if (!clientName || !parentName || !age || !context || !question || !countsInput || !runBtn || !result) {
+      console.error("Goral real flow: missing required original elements");
+      return;
+    }
+
+    const originalSection = clientName.closest("section") || question.closest("section");
+    if (!originalSection || !originalSection.parentNode) {
+      console.error("Goral real flow: original section not found");
+      return;
+    }
+
+    const shell = document.createElement("div");
+    shell.id = "goralRealShell";
+    shell.className = "goral-real-shell";
+
+    shell.innerHTML = `
+      <h1 class="goral-real-title">גורל החול</h1>
+      <div class="goral-real-subtitle">לוח חכם רמלי — אמהות, בנות, נכדות, עדים, דיין ומשלים</div>
+
+      <section id="goral-screen-open" class="goral-screen active">
+        <h2>פרטי הלקוח</h2>
+        <div id="goralFields" class="goral-form-grid"></div>
+        <div class="goral-actions">
+          <button type="button" class="goral-btn">נקה טופס</button>
+          <button type="button" class="goral-btn">בחירה אוטומטית לפי עצירה</button>
+          <button type="button" id="goralGoSelect" class="goral-btn primary">הכנסה ידנית של 4 הצורות הראשונות</button>
+        </div>
+      </section>
+
+      <section id="goral-screen-select" class="goral-screen">
+        <h2>בחירת 4 צורות ראשונות</h2>
+        <div id="goralMotherSlots" class="goral-mother-slots"></div>
+        <div id="goralFigurePicker" class="goral-picker"></div>
+        <div class="goral-actions">
+          <button type="button" id="goralBackOpen" class="goral-btn">חזרה</button>
+          <button type="button" id="goralClearMothers" class="goral-btn">נקה בחירה</button>
+          <button type="button" id="goralRunReading" class="goral-btn dark">המשך ללוח הגורל</button>
+        </div>
+      </section>
+
+      <section id="goral-screen-board" class="goral-screen">
+        <h2>לוח הגורל</h2>
+        <div id="goralResultMount"></div>
+        <div class="goral-actions" id="goralBoardButtons"></div>
+      </section>
+    `;
+
+    originalSection.parentNode.insertBefore(shell, originalSection);
+    originalSection.classList.add("goral-original-hidden");
+
+    function addField(label, element, full) {
+      const wrap = document.createElement("div");
+      wrap.className = "goral-field" + (full ? " full" : "");
+      const l = document.createElement("label");
+      l.textContent = label;
+      wrap.appendChild(l);
+      wrap.appendChild(element);
+      document.getElementById("goralFields").appendChild(wrap);
+    }
+
+    addField("שם הלקוח", clientName, false);
+    addField("שם האב / האם", parentName, false);
+    addField("גיל / שלב חיים", age, false);
+    addField("רקע קצר", context, false);
+    addField("שאלה / כוונה", question, true);
+
+    countsInput.style.display = "none";
+    runBtn.style.display = "none";
+
+    document.getElementById("goralGoSelect").addEventListener("click", () => showGoralScreen("select"));
+    document.getElementById("goralBackOpen").addEventListener("click", () => showGoralScreen("open"));
+
+    document.getElementById("goralClearMothers").addEventListener("click", () => {
+      mothers = [null, null, null, null];
+      activeMother = 0;
+      syncCountsInput();
+      renderMotherSlots();
+      renderPicker();
+    });
+
+    document.getElementById("goralRunReading").addEventListener("click", () => {
+      if (mothers.some(m => !m)) {
+        alert("צריך לבחור 4 אמהות לפני יצירת לוח הגורל.");
+        return;
+      }
+
+      syncCountsInput();
+      runBtn.click();
+
+      const mount = document.getElementById("goralResultMount");
+      mount.innerHTML = "";
+      mount.appendChild(result);
+
+      const buttons = document.getElementById("goralBoardButtons");
+      buttons.innerHTML = "";
+
+      if (archiveBtn) buttons.appendChild(archiveBtn);
+      if (clearArchiveBtn) buttons.appendChild(clearArchiveBtn);
+
+      showGoralScreen("board");
+    });
+
+    renderMotherSlots();
+    renderPicker();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", mountGoralRealFlow);
+  } else {
+    mountGoralRealFlow();
+  }
+})();
+</script>
+
 </body>
 </html>
