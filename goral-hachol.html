@@ -277,15 +277,7 @@
       grid-template-columns: 1fr 1fr;
       border-bottom: 3px solid var(--border);
     }
-
-    .final-grid {
-      direction: rtl;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      border-bottom: 3px solid var(--border);
-    }
-
-    .diagnosis {
+.diagnosis {
       padding: 18px;
       display: grid;
       grid-template-columns: 1fr 1.2fr;
@@ -353,7 +345,6 @@
 
       .reading-header,
       .diagnosis,
-      .final-grid,
       .witness-grid {
         grid-template-columns: 1fr;
       }
@@ -391,7 +382,48 @@
 .back-main-menu-btn:hover {
   filter: brightness(1.03);
 }
-</style>
+
+    .final-area {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 18px;
+      align-items: start;
+      direction: rtl;
+    }
+
+    .final-main {
+      grid-column: 2 / 3;
+    }
+
+    .final-detached {
+      grid-column: 1 / 2;
+      max-width: 100%;
+    }
+
+    .final-detached .house {
+      border: 2px solid rgba(20, 20, 20, 0.88);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.10);
+      background: rgba(255, 255, 255, 0.92);
+      min-height: 150px;
+    }
+
+    .final-main .house {
+      min-height: 150px;
+    }
+
+    @media (max-width: 700px) {
+      .final-area {
+        grid-template-columns: 1fr;
+      }
+
+      .final-main,
+      .final-detached {
+        grid-column: auto;
+      }
+    }
+
+  </style>
 </head>
 <body>
 <a href="calculator.html" class="back-main-menu-btn">← חזרה לתפריט הראשי</a>
@@ -579,7 +611,7 @@
               ${h.house === 13 ? " — עד ראשון" : ""}
               ${h.house === 14 ? " — עד שני" : ""}
               ${h.house === 15 ? " — דיין" : ""}
-              ${h.house === 16 ? " — משלים בית 15" : ""}
+              ${h.house === 16 ? " — משלים" : ""}
             </li>
           `).join("")
         : "";
@@ -698,9 +730,13 @@
             ${houseHtml(h(14), "14 — עד שני")}
           </div>
 
-          <div class="final-grid">
-            ${houseHtml(h(15), "15 — שופט")}
-            ${houseHtml(h(16), "16 — משפט")}
+          <div class="final-area">
+            <div class="final-main">
+              ${houseHtml(h(15), "15 — דיין")}
+            </div>
+            <div class="final-detached">
+              ${houseHtml(h(16), "16 — משלים")}
+            </div>
           </div>
 
           <div class="diagnosis">
