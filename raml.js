@@ -803,3 +803,13 @@ if (typeof module !== "undefined") {
   module.exports.ramlMothersFromPointCounts = ramlMothersFromPointCounts;
   module.exports.ramlRunReadingFromPointCounts = ramlRunReadingFromPointCounts;
 }
+
+/* Expose Goral Hachol engine functions to browser */
+if (typeof window !== "undefined") {
+  window.ramlRunReading = ramlRunReading;
+  window.ramlRunReadingFromPointCounts = ramlRunReadingFromPointCounts;
+  window.ramlMothersFromPointCounts = ramlMothersFromPointCounts;
+  window.ramlFigureFromPointCounts = ramlFigureFromPointCounts;
+  window.ramlBuildReadingSummary = ramlBuildReadingSummary;
+  window.ramlBuildInitialDiagnosis = ramlBuildInitialDiagnosis;
+}
