@@ -806,6 +806,7 @@ if (typeof module !== "undefined") {
 
 /* Expose Goral Hachol engine functions to browser */
 if (typeof window !== "undefined") {
+  window.ramlFigureInfo = ramlFigureInfo;
   window.ramlRunReading = ramlRunReading;
   window.ramlRunReadingFromPointCounts = ramlRunReadingFromPointCounts;
   window.ramlMothersFromPointCounts = ramlMothersFromPointCounts;

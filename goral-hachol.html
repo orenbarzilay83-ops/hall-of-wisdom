@@ -940,27 +940,59 @@
       return n % 2 === 0 ? 2 : 1;
     }
 
-    const fallbackFigures = [
-      { id: "tariq", name: "דרך", lines: [1, 1, 1, 1] },
-      { id: "jamaa", name: "קהלה", lines: [2, 2, 2, 2] },
-      { id: "bayad", name: "לבן", lines: [2, 2, 1, 2] },
-      { id: "humra", name: "אדום", lines: [2, 1, 2, 2] },
-      { id: "aqla", name: "סוהר", lines: [2, 1, 1, 2] },
-      { id: "ijtima", name: "חיבור", lines: [1, 2, 2, 1] },
-      { id: "qabd-dakhil", name: "ממון נכנס", lines: [2, 1, 2, 1] },
-      { id: "qabd-kharij", name: "ממון יוצא", lines: [1, 2, 1, 2] },
-      { id: "nusra-dakhila", name: "כבוד נכנס", lines: [2, 2, 2, 1] },
-      { id: "nusra-kharija", name: "כבוד יוצא", lines: [1, 2, 2, 2] },
-      { id: "ataba-dakhila", name: "סף נכנס", lines: [2, 1, 1, 1] },
-      { id: "ataba-kharija", name: "סף יוצא", lines: [1, 1, 1, 2] },
-      { id: "nakis", name: "שפל ראש", lines: [2, 2, 1, 1] },
-      { id: "hayyan", name: "נשוא ראש", lines: [1, 1, 2, 2] },
-      { id: "judla", name: "נלחם", lines: [1, 1, 2, 1] },
-      { id: "farah", name: "שפע", lines: [2, 1, 2, 1] }
-    ];
+    function figureNameFromEngine(lines) {
+      try {
+        const fn =
+          (typeof ramlFigureInfo === "function" ? ramlFigureInfo : null) ||
+          (window && typeof window.ramlFigureInfo === "function" ? window.ramlFigureInfo : null);
+
+        if (typeof fn === "function") {
+          const info = fn(lines);
+
+          return (
+            info?.hebrew ||
+            info?.hebrewName ||
+            info?.nameHebrew ||
+            info?.name ||
+            info?.title ||
+            ""
+          );
+        }
+      } catch (err) {
+        console.warn("Could not read figure name from ramlFigureInfo", lines, err);
+      }
+
+      return "";
+    }
 
     function getFiguresForPicker() {
-      return fallbackFigures;
+      /*
+        מסך הבחירה לא משתמש יותר בשמות דמו.
+        הוא מייצר את כל 16 הצורות האפשריות ושואל את raml.js מה השם האמיתי של כל צורה.
+      */
+      const patterns = [];
+
+      for (const a of [1, 2]) {
+        for (const b of [1, 2]) {
+          for (const c of [1, 2]) {
+            for (const d of [1, 2]) {
+              patterns.push([a, b, c, d]);
+            }
+          }
+        }
+      }
+
+      return patterns.map((lines, index) => {
+        const key = lines.join("");
+        const engineName = figureNameFromEngine(lines);
+
+        return {
+          id: `engine-figure-${key}`,
+          key,
+          name: engineName || `צורה ${index + 1}`,
+          lines
+        };
+      });
     }
 
     const figures = getFiguresForPicker();
