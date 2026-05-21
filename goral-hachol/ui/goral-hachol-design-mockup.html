@@ -570,5 +570,370 @@
     renderFigures();
     renderBoard();
   </script>
+
+<script>
+/* === ACTIVE MOCKUP INTERACTION: REAL FIGURE SELECTION === */
+(function () {
+  const figures = [
+    { id: "tariq", name: "דרך", lines: [1,1,1,1] },
+    { id: "bar-hayli", name: "בר הלחי", lines: [2,2,1,1] },
+    { id: "qabd-dakhil", name: "כבוד נכנס", lines: [2,2,2,1] },
+    { id: "qabd-kharij", name: "כבוד יוצא", lines: [1,2,2,2] },
+    { id: "saf-kharij", name: "סף יוצא", lines: [1,1,1,2] },
+    { id: "mamon-yotze", name: "ממון יוצא", lines: [1,2,1,2] },
+    { id: "chibur", name: "חיבור", lines: [2,1,1,2] },
+    { id: "lavan", name: "לבן", lines: [2,2,1,2] },
+    { id: "lacham", name: "נלחם", lines: [1,1,2,1] },
+    { id: "sohar", name: "סוהר", lines: [2,2,2,1] },
+    { id: "mamon-nichnas", name: "ממון נכנס", lines: [2,1,2,1] },
+    { id: "shfal-rosh", name: "שפל ראש", lines: [2,2,2,1] },
+    { id: "naso-rosh", name: "נשוא ראש", lines: [1,2,2,2] },
+    { id: "adom", name: "אדום", lines: [2,1,2,2] },
+    { id: "kahala", name: "קהלה", lines: [2,2,2,2] },
+    { id: "shafa", name: "שפע", lines: [2,2,1,1] },
+  ];
+
+  let selectedMothers = [null, null, null, null];
+  let activeSlot = 0;
+
+  function figHtml(lines) {
+    return `
+      <div class="figure">
+        ${lines.map(v => `
+          <div class="fig-line">
+            ${Number(v) === 1 ? '<span class="dot"></span>' : '<span class="bar"></span>'}
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  function buildFigurePicker() {
+    const board = document.getElementById("board");
+    if (!board) return;
+
+    board.innerHTML = `
+      <div class="figure-picker-grid">
+        ${figures.map((f, index) => `
+          <button class="figure-choice" type="button" data-index="${index}">
+            ${figHtml(f.lines)}
+            <strong>${f.name}</strong>
+          </button>
+        `).join("")}
+      </div>
+    `;
+
+    board.querySelectorAll(".figure-choice").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const index = Number(btn.dataset.index);
+        chooseFigure(figures[index]);
+      });
+    });
+  }
+
+  function chooseFigure(fig) {
+    selectedMothers[activeSlot] = fig;
+
+    if (activeSlot < 3) {
+      activeSlot += 1;
+    }
+
+    renderMotherSlots();
+    buildFigurePicker();
+    markSelectedFigures();
+  }
+
+  function renderMotherSlots() {
+    const slots = document.querySelector(".mother-slots");
+    if (!slots) return;
+
+    slots.innerHTML = selectedMothers.map((fig, index) => `
+      <button type="button"
+        class="mother-slot ${index === activeSlot ? "active" : ""} ${fig ? "filled" : ""}"
+        data-slot="${index}">
+        <div class="slot-title">אם ${index + 1}</div>
+        <div class="slot-value">${fig ? fig.name : "טרם נבחר"}</div>
+      </button>
+    `).join("");
+
+    slots.querySelectorAll(".mother-slot").forEach(slot => {
+      slot.addEventListener("click", () => {
+        activeSlot = Number(slot.dataset.slot);
+        renderMotherSlots();
+        markSelectedFigures();
+      });
+    });
+  }
+
+  function markSelectedFigures() {
+    document.querySelectorAll(".figure-choice").forEach(btn => {
+      const fig = figures[Number(btn.dataset.index)];
+      const isSelected = selectedMothers.some(m => m && m.id === fig.id);
+      btn.classList.toggle("selected", isSelected);
+    });
+  }
+
+  function combine(a, b) {
+    return a.lines.map((v, i) => ((v + b.lines[i]) % 2 === 0 ? 2 : 1));
+  }
+
+  function findFigureByLines(lines) {
+    return figures.find(f => f.lines.join("") === lines.join("")) || {
+      id: "generated",
+      name: "צורה מחושבת",
+      lines
+    };
+  }
+
+  function buildFullBoardFromMothers() {
+    const mothers = selectedMothers;
+    if (mothers.some(x => !x)) {
+      alert("צריך לבחור 4 אמהות לפני המשך ללוח הגורל.");
+      return null;
+    }
+
+    const daughters = [0,1,2,3].map(rowIndex => {
+      const lines = mothers.map(m => m.lines[rowIndex]);
+      return findFigureByLines(lines);
+    });
+
+    const all = [...mothers, ...daughters];
+
+    const n1 = findFigureByLines(combine(all[0], all[1]));
+    const n2 = findFigureByLines(combine(all[2], all[3]));
+    const n3 = findFigureByLines(combine(all[4], all[5]));
+    const n4 = findFigureByLines(combine(all[6], all[7]));
+
+    const w1 = findFigureByLines(combine(n1, n2));
+    const w2 = findFigureByLines(combine(n3, n4));
+    const judge = findFigureByLines(combine(w1, w2));
+    const sentence = findFigureByLines(combine(judge, mothers[0]));
+
+    return [
+      ...mothers,
+      ...daughters,
+      n1, n2, n3, n4,
+      w1, w2,
+      judge,
+      sentence
+    ].map((fig, index) => ({
+      house: index + 1,
+      ...fig
+    }));
+  }
+
+  function renderFinalBoard() {
+    const data = buildFullBoardFromMothers();
+    if (!data) return;
+
+    const board = document.getElementById("board");
+    if (!board) return;
+
+    const house = (h, label) => {
+      const item = data[h - 1];
+      return `
+        <div class="board-house">
+          <div class="house-title">בית ${h}</div>
+          <div class="house-sub">${label || ""}</div>
+          ${figHtml(item.lines)}
+          <strong>${item.name}</strong>
+        </div>
+      `;
+    };
+
+    board.innerHTML = `
+      <div class="real-board">
+        <div class="board-row r1">
+          ${[8,7,6,5,4,3,2,1].map(n => house(n, n <= 4 ? "אם" : "בת")).join("")}
+        </div>
+        <div class="board-row r2">
+          ${[12,11,10,9].map(n => house(n, "נכדה")).join("")}
+        </div>
+        <div class="board-row r3">
+          ${house(14, "עד שני")}
+          ${house(13, "עד ראשון")}
+        </div>
+        <div class="board-row r4">
+          ${house(15, "דיין")}
+        </div>
+        <div class="detached-16">
+          ${house(16, "משלים")}
+        </div>
+      </div>
+    `;
+  }
+
+  const oldShowScreen = window.showScreen;
+
+  window.showScreen = function(name) {
+    if (typeof oldShowScreen === "function") {
+      oldShowScreen(name);
+    } else {
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      const screen = document.getElementById("screen-" + name);
+      if (screen) screen.classList.add("active");
+    }
+
+    if (name === "select") {
+      renderMotherSlots();
+      buildFigurePicker();
+      markSelectedFigures();
+    }
+
+    if (name === "board") {
+      renderFinalBoard();
+    }
+  };
+
+  window.addEventListener("DOMContentLoaded", () => {
+    renderMotherSlots();
+    buildFigurePicker();
+
+    document.querySelectorAll("button").forEach(btn => {
+      if ((btn.textContent || "").includes("המשך ללוח הגורל")) {
+        btn.onclick = () => window.showScreen("board");
+      }
+    });
+  });
+})();
+</script>
+
+<style>
+/* === ACTIVE MOCKUP SELECTION STYLES === */
+.figure-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border: 1px solid rgba(0,0,0,.18);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.figure-choice {
+  min-height: 138px;
+  background: rgba(255,255,255,.42);
+  border: 1px solid rgba(0,0,0,.16);
+  border-radius: 0;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  cursor: pointer;
+}
+
+.figure-choice.selected {
+  background: rgba(247, 214, 106, .35);
+  outline: 3px solid #d2aa45;
+  outline-offset: -3px;
+}
+
+.mother-slot {
+  min-height: 72px;
+  background: rgba(255,255,255,.55);
+  border: 2px dashed rgba(0,0,0,.22);
+  border-radius: 14px;
+  box-shadow: none;
+  color: #151515;
+}
+
+.mother-slot.active {
+  border-style: solid;
+  border-color: #d2aa45;
+  box-shadow: inset 0 0 0 2px rgba(210,170,69,.35);
+}
+
+.mother-slot.filled {
+  background: rgba(255, 245, 205, .72);
+}
+
+.slot-title {
+  font-weight: 900;
+}
+
+.slot-value {
+  margin-top: 4px;
+  font-weight: 700;
+}
+
+.real-board {
+  display: grid;
+  gap: 0;
+}
+
+.real-board .board-row {
+  display: grid;
+  gap: 0;
+}
+
+.real-board .r1 {
+  grid-template-columns: repeat(8, 1fr);
+}
+
+.real-board .r2 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.real-board .r3 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.real-board .r4 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.real-board .r4 .board-house {
+  grid-column: 2;
+}
+
+.board-house {
+  min-height: 126px;
+  border: 1px solid rgba(0,0,0,.55);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  background: rgba(255,255,255,.22);
+}
+
+.detached-16 {
+  width: calc(50% - 12px);
+  margin-top: 22px;
+  margin-right: 0;
+}
+
+.detached-16 .board-house {
+  border: 2px solid rgba(0,0,0,.75);
+  min-height: 145px;
+  background: rgba(255,255,255,.32);
+}
+
+.house-title {
+  font-weight: 900;
+}
+
+.house-sub {
+  opacity: .7;
+  font-size: .9em;
+}
+
+@media (max-width: 760px) {
+  .figure-picker-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .real-board .r1,
+  .real-board .r2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .detached-16 {
+    width: 100%;
+  }
+}
+</style>
+
 </body>
 </html>
