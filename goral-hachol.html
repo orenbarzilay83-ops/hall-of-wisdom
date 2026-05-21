@@ -942,24 +942,51 @@
 
     function figureNameFromEngine(lines) {
       try {
-        const fn =
+        const infoFn =
           (typeof ramlFigureInfo === "function" ? ramlFigureInfo : null) ||
-          (window && typeof window.ramlFigureInfo === "function" ? window.ramlFigureInfo : null);
+          (typeof window !== "undefined" && typeof window.ramlFigureInfo === "function" ? window.ramlFigureInfo : null);
 
-        if (typeof fn === "function") {
-          const info = fn(lines);
+        const keyFn =
+          (typeof ramlFigureKey === "function" ? ramlFigureKey : null) ||
+          (typeof window !== "undefined" && typeof window.ramlFigureKey === "function" ? window.ramlFigureKey : null);
 
-          return (
-            info?.hebrew ||
-            info?.hebrewName ||
-            info?.nameHebrew ||
-            info?.name ||
-            info?.title ||
-            ""
-          );
+        if (typeof infoFn !== "function") {
+          return "";
+        }
+
+        const key = typeof keyFn === "function" ? keyFn(lines) : lines.join("");
+
+        const attempts = [
+          key,
+          String(key),
+          lines,
+          lines.join("")
+        ];
+
+        for (const value of attempts) {
+          try {
+            const info = infoFn(value);
+
+            if (typeof info === "string" && info.trim()) {
+              return info.trim();
+            }
+
+            const name =
+              info?.hebrew ||
+              info?.hebrewName ||
+              info?.nameHebrew ||
+              info?.titleHebrew ||
+              info?.name ||
+              info?.title ||
+              "";
+
+            if (name) return String(name).trim();
+          } catch {
+            // try next format
+          }
         }
       } catch (err) {
-        console.warn("Could not read figure name from ramlFigureInfo", lines, err);
+        console.warn("Could not read figure name from engine", lines, err);
       }
 
       return "";
