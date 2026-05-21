@@ -420,6 +420,28 @@
         width: 100%;
       }
     }
+  
+    /* opening screen exact layout */
+    .opening-actions {
+      grid-template-columns: repeat(3, 1fr);
+      align-items: stretch;
+    }
+
+    .opening-actions .start-btn {
+      grid-column: 3 / 4;
+      margin-top: 6px;
+    }
+
+    @media (max-width: 800px) {
+      .opening-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .opening-actions .start-btn {
+        grid-column: auto;
+      }
+    }
+
   </style>
 </head>
 
@@ -433,7 +455,7 @@
 
     <section id="screen-open" class="screen active">
       <div class="panel">
-        <h2>פרטי הלקוח</h2>
+        <h2>עמוד פתיחה</h2>
 
         <div class="form-grid">
           <div>
@@ -442,30 +464,31 @@
           </div>
 
           <div>
-            <label>שם האב / האם</label>
+            <label>שם האב</label>
             <input id="clientParentInput" placeholder="שם האב / האם אם ידוע" / value="" autocomplete="off">
           </div>
 
           <div>
-            <label>גיל / שלב חיים</label>
+            <label>תאריך השאלה</label>
             <input id="clientAgeInput" placeholder="גיל / שלב חיים" / value="" autocomplete="off">
           </div>
 
           <div>
-            <label>רקע קצר</label>
+            <label>שעת השאלה</label>
             <input id="consultationContextInput" placeholder="רקע קצר: על מה האדם מבקש הכוונה?" / value="" autocomplete="off">
           </div>
 
           <div class="full">
             <label>שאלה / כוונה</label>
-            <textarea id="questionInput" placeholder="כתוב כאן את שאלת גורל החול"></textarea>
+            <textarea id="questionInput" placeholder="כתוב כאן את שאלת גורל החול" autocomplete="off"></textarea>
           </div>
         </div>
 
-        <div class="actions">
-          <button class="btn gold" id="goToSelectBtn">הכנסה ידנית של 4 הצורות הראשונות</button>
+        <div class="actions opening-actions">
+          <button class="btn gold" id="goToSelectBtn">הכנסה ידנית של 4 האמהות</button>
           <button class="btn gray" id="autoSelectBtn">בחירה אוטומטית לפי עצירה</button>
           <button class="btn gray" id="clearFormBtn">נקה טופס</button>
+          <button class="btn primary start-btn" id="startBtn" type="button">התחל</button>
         </div>
       </div>
     </section>
@@ -989,6 +1012,12 @@
     }
 
     clearInitialClientFields();
+
+    document.getElementById("startBtn")?.addEventListener("click", () => {
+      renderMotherSlots();
+      buildFigurePicker();
+      showScreen("select");
+    });
 
     document.getElementById("goToSelectBtn").addEventListener("click", () => {
       renderMotherSlots();
