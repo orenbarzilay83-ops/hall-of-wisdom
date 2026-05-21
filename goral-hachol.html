@@ -811,7 +811,7 @@
           </div>
         </article>
 
-        <div class="summary-box">${ramlBuildReadingSummary(reading)}</div>
+        <div class="summary-box">${typeof ramlBuildReadingSummary === "function" ? ramlBuildReadingSummary(reading) : localGoralBuildSummary(reading)}</div>
 
         ${hawiSourceInsightHtml(reading)}
       `;
@@ -894,6 +894,116 @@
       };
     }
 
+
+    function localGoralFigureKey(fig) {
+      return fig.map(v => Number(v) === 2 ? 2 : 1).join("");
+    }
+
+    function localGoralFigureInfo(fig) {
+      const key = localGoralFigureKey(fig);
+      const forms = window.RAML_FORMS_BASIC || {};
+      const item = forms[key] || {};
+
+      return {
+        key,
+        hebrew: item.hebrew || "צורה לא מזוהה",
+        arabic: item.arabic || "",
+        fortune: item.statusHebrew || item.fortune || "",
+        statusHebrew: item.statusHebrew || "",
+        element: item.element || "",
+        direction: item.direction || "",
+        color: item.color || "",
+        planet: item.planet || ""
+      };
+    }
+
+    function localGoralCombine(a, b) {
+      return [0, 1, 2, 3].map(i => {
+        const x = Number(a[i]) === 2 ? 2 : 1;
+        const y = Number(b[i]) === 2 ? 2 : 1;
+        return (x + y) % 2 === 0 ? 2 : 1;
+      });
+    }
+
+    function localGoralHouseName(n) {
+      const houses = window.RAML_HOUSES_BASIC || {};
+      const h = houses[n] || houses[String(n)] || {};
+      return h.hebrew || h.name || "";
+    }
+
+    function localGoralEntry(house, figure) {
+      const info = localGoralFigureInfo(figure);
+      return {
+        house,
+        figure,
+        key: info.key,
+        hebrew: info.hebrew,
+        arabic: info.arabic,
+        fortune: info.fortune,
+        statusHebrew: info.statusHebrew,
+        element: info.element,
+        direction: info.direction,
+        color: info.color,
+        planet: info.planet,
+        houseHebrew: localGoralHouseName(house)
+      };
+    }
+
+    function localGoralRunReadingFromPointCounts(question, matrix) {
+      const mothers = matrix.map(row => row.map(v => Number(v) === 2 ? 2 : 1));
+
+      if (mothers.length !== 4 || mothers.some(row => row.length !== 4)) {
+        throw new Error("צריך לבחור בדיוק 4 אמהות.");
+      }
+
+      const h1 = mothers[0];
+      const h2 = mothers[1];
+      const h3 = mothers[2];
+      const h4 = mothers[3];
+
+      const h5 = [h1[0], h2[0], h3[0], h4[0]];
+      const h6 = [h1[1], h2[1], h3[1], h4[1]];
+      const h7 = [h1[2], h2[2], h3[2], h4[2]];
+      const h8 = [h1[3], h2[3], h3[3], h4[3]];
+
+      const h9 = localGoralCombine(h1, h2);
+      const h10 = localGoralCombine(h3, h4);
+      const h11 = localGoralCombine(h5, h6);
+      const h12 = localGoralCombine(h7, h8);
+
+      const h13 = localGoralCombine(h9, h10);
+      const h14 = localGoralCombine(h11, h12);
+      const h15 = localGoralCombine(h13, h14);
+
+      // בית 16 / משלים — חיבור הדיין עם בית 1, כדי לתת השלמת דין לקריאה.
+      const h16 = localGoralCombine(h15, h1);
+
+      const figures = [h1,h2,h3,h4,h5,h6,h7,h8,h9,h10,h11,h12,h13,h14,h15,h16];
+      const chart = figures.map((fig, idx) => localGoralEntry(idx + 1, fig));
+
+      return {
+        question,
+        chart,
+        topic: { id: "general", hebrew: "כללי" },
+        focusHouseNumber: 1,
+        createdAt: new Date().toISOString(),
+        engineMode: "local-ui-fallback"
+      };
+    }
+
+    function localGoralBuildSummary(reading) {
+      const judge = reading.chart.find(h => h.house === 15);
+      const sentence = reading.chart.find(h => h.house === 16);
+
+      return [
+        "סיכום לוח:",
+        `דיין: ${judge?.hebrew || ""}`,
+        `משלים: ${sentence?.hebrew || ""}`,
+        "",
+        "הלוח נבנה מתוך 4 האמהות שנבחרו במסך."
+      ].join("\n");
+    }
+
     function run() {
       const errorBox = document.getElementById("errorBox");
       const boardResult = document.getElementById("boardResult");
@@ -907,14 +1017,8 @@
         const matrix = parseCounts(document.getElementById("countsInput").value);
         const runEngine =
           window.ramlRunReadingFromPointCounts ||
-          window.runRamlReadingFromPointCounts ||
-          window.ramlRunReading ||
-          window.runRamlReading ||
-          (typeof ramlRunReadingFromPointCounts !== "undefined" ? ramlRunReadingFromPointCounts : null);
-
-        if (typeof runEngine !== "function") {
-          throw new Error("מנוע גורל החול לא נטען: לא נמצאה פונקציית יצירת לוח מתוך raml.js.");
-        }
+          (typeof ramlRunReadingFromPointCounts !== "undefined" ? ramlRunReadingFromPointCounts : null) ||
+          localGoralRunReadingFromPointCounts;
 
         const reading = runEngine(question, matrix);
         reading.clientContext = getClientContext();
