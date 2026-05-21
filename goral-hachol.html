@@ -442,6 +442,27 @@
       }
     }
 
+  
+    /* Exact opening screen layout */
+    .opening-actions {
+      grid-template-columns: repeat(3, 1fr);
+      align-items: stretch;
+    }
+
+    .opening-actions .start-btn {
+      grid-column: 3 / 4;
+    }
+
+    @media (max-width: 800px) {
+      .opening-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .opening-actions .start-btn {
+        grid-column: auto;
+      }
+    }
+
   </style>
 </head>
 
@@ -460,34 +481,50 @@
         <div class="form-grid">
           <div>
             <label>שם הפונה</label>
-            <input id="clientNameInput" placeholder="שם הלקוח" / value="" autocomplete="off">
+            <input id="clientNameInput" placeholder="שם הלקוח" value="" autocomplete="off" />
           </div>
 
           <div>
             <label>שם האב</label>
-            <input id="clientParentInput" placeholder="שם האב / האם אם ידוע" / value="" autocomplete="off">
+            <input id="clientParentInput" placeholder="שם האב" value="" autocomplete="off" />
           </div>
 
           <div>
             <label>תאריך השאלה</label>
-            <input id="clientAgeInput" placeholder="גיל / שלב חיים" / value="" autocomplete="off">
+            <input id="clientAgeInput" placeholder="תאריך השאלה" value="" autocomplete="off" />
           </div>
 
           <div>
             <label>שעת השאלה</label>
-            <input id="consultationContextInput" placeholder="רקע קצר: על מה האדם מבקש הכוונה?" / value="" autocomplete="off">
+            <input id="consultationContextInput" placeholder="שעת השאלה" value="" autocomplete="off" />
           </div>
 
           <div class="full">
             <label>שאלה / כוונה</label>
             <textarea id="questionInput" placeholder="כתוב כאן את שאלת גורל החול" autocomplete="off"></textarea>
           </div>
+
+          <div class="full">
+            <label>נושא השאלה</label>
+            <select id="questionTopicInput" autocomplete="off">
+              <option value="">בחר נושא שאלה</option>
+              <option value="travel">נסיעה</option>
+              <option value="missingPerson">נעדרים / אבידה</option>
+              <option value="childrenPregnancy">ילדים / הריון</option>
+              <option value="hiddenTreasure">מטמון / דבר חבוי</option>
+              <option value="spiritualDiagnostics">אבחון רוחני / עין / כישוף</option>
+              <option value="authorityState">שלטון / סמכות / בעלי תפקידים</option>
+              <option value="yearlyForecast">טאלע השנה / גשם / יוקר וזול</option>
+              <option value="birthNativity">מולד / טבע האדם</option>
+              <option value="general">כללי</option>
+            </select>
+          </div>
         </div>
 
         <div class="actions opening-actions">
-          <button class="btn gold" id="goToSelectBtn">הכנסה ידנית של 4 האמהות</button>
-          <button class="btn gray" id="autoSelectBtn">בחירה אוטומטית לפי עצירה</button>
-          <button class="btn gray" id="clearFormBtn">נקה טופס</button>
+          <button class="btn gold" id="goToSelectBtn" type="button">הכנסה ידנית של 4 האמהות</button>
+          <button class="btn gray" id="autoSelectBtn" type="button">בחירה אוטומטית לפי עצירה</button>
+          <button class="btn gray" id="clearFormBtn" type="button">נקה טופס</button>
           <button class="btn primary start-btn" id="startBtn" type="button">התחל</button>
         </div>
       </div>
@@ -1068,6 +1105,8 @@
       document.getElementById("clientAgeInput").value = "";
       document.getElementById("consultationContextInput").value = "";
       document.getElementById("questionInput").value = "";
+      const topicInput = document.getElementById("questionTopicInput");
+      if (topicInput) topicInput.value = "";
       selectedMothers = [null, null, null, null];
       activeMother = 0;
       syncCountsInput();
