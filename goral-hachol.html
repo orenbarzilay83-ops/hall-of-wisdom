@@ -423,7 +423,7 @@
   </style>
 </head>
 
-<body>
+<body autocomplete="off">
   <div class="app">
     <header class="topbar">
       <button class="icon-btn" onclick="location.href='calculator.html'">←</button>
@@ -438,22 +438,22 @@
         <div class="form-grid">
           <div>
             <label>שם הפונה</label>
-            <input id="clientNameInput" placeholder="שם הלקוח" />
+            <input id="clientNameInput" placeholder="שם הלקוח" / value="" autocomplete="off">
           </div>
 
           <div>
             <label>שם האב / האם</label>
-            <input id="clientParentInput" placeholder="שם האב / האם אם ידוע" />
+            <input id="clientParentInput" placeholder="שם האב / האם אם ידוע" / value="" autocomplete="off">
           </div>
 
           <div>
             <label>גיל / שלב חיים</label>
-            <input id="clientAgeInput" placeholder="גיל / שלב חיים" />
+            <input id="clientAgeInput" placeholder="גיל / שלב חיים" / value="" autocomplete="off">
           </div>
 
           <div>
             <label>רקע קצר</label>
-            <input id="consultationContextInput" placeholder="רקע קצר: על מה האדם מבקש הכוונה?" />
+            <input id="consultationContextInput" placeholder="רקע קצר: על מה האדם מבקש הכוונה?" / value="" autocomplete="off">
           </div>
 
           <div class="full">
@@ -530,6 +530,14 @@
   </script>
 
   <script>
+
+    function clearInitialClientFields() {
+      ["clientNameInput", "clientParentInput", "clientAgeInput", "consultationContextInput", "questionInput"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = "";
+      });
+    }
+
     function parseCounts(text) {
       const rows = String(text || "")
         .trim()
@@ -837,7 +845,18 @@
       try {
         const question = document.getElementById("questionInput").value;
         const matrix = parseCounts(document.getElementById("countsInput").value);
-        const reading = ramlRunReadingFromPointCounts(question, matrix);
+        const runEngine =
+          window.ramlRunReadingFromPointCounts ||
+          window.runRamlReadingFromPointCounts ||
+          window.ramlRunReading ||
+          window.runRamlReading ||
+          (typeof ramlRunReadingFromPointCounts !== "undefined" ? ramlRunReadingFromPointCounts : null);
+
+        if (typeof runEngine !== "function") {
+          throw new Error("מנוע גורל החול לא נטען: לא נמצאה פונקציית יצירת לוח מתוך raml.js.");
+        }
+
+        const reading = runEngine(question, matrix);
         reading.clientContext = getClientContext();
 
         if (window.GORAL_CLIENT_ARCHIVE && reading.clientContext.clientName) {
@@ -968,6 +987,8 @@
       if (screen) screen.classList.add("active");
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
+
+    clearInitialClientFields();
 
     document.getElementById("goToSelectBtn").addEventListener("click", () => {
       renderMotherSlots();
