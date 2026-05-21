@@ -3,475 +3,367 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>גורל החול</title>
+  <title>גורל החול — ממשק חדש</title>
 
-  <script src="./raml-data/raml-forms-basic.js?v=20260521-final-raml-engine"></script>
-  <script src="./raml-data/raml-forms-profiles.js?v=20260521-final-raml-engine"></script>
-  <script src="./raml-data/raml-houses-basic.js?v=20260521-final-raml-engine"></script>
-  <script src="./raml-data/raml-houses-profiles.js?v=20260521-final-raml-engine"></script>
-  <script src="./raml-data/raml-reading-foundations.js?v=20260521-final-raml-engine"></script>
-  <script src="./raml-data/raml-foundation-qawl-jami-extra.js?v=20260521-final-raml-engine"></script>
-  <script src="./raml-data/raml-foundation-closure-audit.js?v=20260521-final-raml-engine"></script>
-  <script src="./raml-data/raml-foundation-bulugh-al-amal.js?v=20260521-final-raml-engine"></script>
-  <script src="./raml-data/raml-spiritual-diagnostics.js?v=20260521-final-raml-engine"></script>
-  <script src="./raml-data/raml-topic-rules.js?v=20260521-final-raml-engine"></script>
-  <script src="./raml.js?v=20260521-final-raml-engine"></script>
+  <script src="./raml-data/raml-forms-basic.js?v=clean-ui-1"></script>
+  <script src="./raml-data/raml-houses-basic.js?v=clean-ui-1"></script>
+  <script src="./raml.js?v=clean-ui-1"></script>
 
   <style>
     :root {
-      --navy: #06192d;
-      --navy2: #0d2a49;
-      --gold: #d8aa45;
-      --gold2: #f2d27b;
-      --paper: #fff8e8;
-      --ink: #111;
-      --muted: #6d6250;
-      --border: #1d1d1d;
+      --navy:#06192d;
+      --navy2:#0d2a49;
+      --gold:#d8aa45;
+      --gold2:#f2d27b;
+      --paper:#fffaf0;
+      --paper2:#f7eedc;
+      --ink:#101010;
+      --line:#111;
+      --muted:#6d6250;
     }
 
-    * { box-sizing: border-box; }
+    * { box-sizing:border-box; }
 
     body {
-      margin: 0;
-      direction: rtl;
+      margin:0;
+      direction:rtl;
       font-family: Arial, sans-serif;
-      background:
-        radial-gradient(circle at top, rgba(242, 210, 123, .18), transparent 35%),
-        linear-gradient(135deg, #06192d, #0a1424);
-      color: var(--ink);
+      background:linear-gradient(135deg,#06192d,#0a1424);
+      color:var(--ink);
     }
 
     .app {
-      max-width: 980px;
-      margin: 0 auto;
-      min-height: 100vh;
-      background: linear-gradient(180deg, #fffaf0, #f7eedc);
-      box-shadow: 0 0 35px rgba(0, 0, 0, 0.35);
+      max-width:980px;
+      margin:0 auto;
+      min-height:100vh;
+      background:linear-gradient(180deg,var(--paper),var(--paper2));
+      box-shadow:0 0 35px rgba(0,0,0,.35);
     }
 
     .topbar {
-      height: 68px;
-      background: linear-gradient(90deg, var(--navy), var(--navy2));
-      color: var(--gold2);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 20px;
-      position: sticky;
-      top: 0;
-      z-index: 20;
+      height:68px;
+      background:linear-gradient(90deg,var(--navy),var(--navy2));
+      color:var(--gold2);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 20px;
+      position:sticky;
+      top:0;
+      z-index:20;
     }
 
     .topbar h1 {
-      margin: 0;
-      font-size: 25px;
+      margin:0;
+      font-size:25px;
+      font-weight:900;
     }
 
     .icon-btn {
-      border: 0;
-      background: transparent;
-      color: var(--gold2);
-      font-size: 28px;
-      cursor: pointer;
-      padding: 8px 10px;
+      border:0;
+      background:transparent;
+      color:var(--gold2);
+      font-size:28px;
+      cursor:pointer;
+      padding:8px 10px;
     }
 
     .screen {
-      display: none;
-      padding: 26px;
+      display:none;
+      padding:26px;
     }
 
-    .screen.active {
-      display: block;
-    }
+    .screen.active { display:block; }
 
     .panel {
-      border: 1px solid rgba(216, 170, 69, 0.45);
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.72);
-      padding: 22px;
-      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+      border:1px solid rgba(216,170,69,.45);
+      border-radius:18px;
+      background:rgba(255,255,255,.72);
+      padding:22px;
+      box-shadow:0 14px 30px rgba(0,0,0,.08);
     }
 
     h2 {
-      margin: 0 0 18px;
-      color: #071b30;
-      border-bottom: 1px solid rgba(216, 170, 69, 0.6);
-      padding-bottom: 10px;
-      font-size: 25px;
+      margin:0 0 18px;
+      color:#071b30;
+      border-bottom:1px solid rgba(216,170,69,.6);
+      padding-bottom:10px;
+      font-size:25px;
     }
 
     .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
     }
 
-    .full {
-      grid-column: 1 / -1;
-    }
+    .full { grid-column:1 / -1; }
 
     label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 800;
-      color: #1e2a36;
+      display:block;
+      margin-bottom:6px;
+      font-weight:800;
+      color:#1e2a36;
     }
 
-    input, select, textarea {
-      width: 100%;
-      border: 1px solid rgba(0, 0, 0, 0.18);
-      border-radius: 13px;
-      background: white;
-      padding: 13px;
-      font-size: 17px;
-      color: #111;
+    input, textarea, select {
+      width:100%;
+      border:1px solid rgba(0,0,0,.18);
+      border-radius:13px;
+      background:white;
+      padding:13px;
+      font-size:17px;
+      color:#111;
     }
 
     textarea {
-      min-height: 90px;
-      resize: vertical;
+      min-height:90px;
+      resize:vertical;
     }
 
     .actions {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 18px;
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+      margin-top:18px;
     }
 
     .btn {
-      border: 1px solid rgba(216, 170, 69, 0.5);
-      border-radius: 14px;
-      padding: 15px;
-      font-weight: 900;
-      font-size: 16px;
-      cursor: pointer;
-      background: #fff4d8;
-      color: #071b30;
+      border:1px solid rgba(216,170,69,.5);
+      border-radius:14px;
+      padding:15px;
+      font-weight:900;
+      font-size:16px;
+      cursor:pointer;
+      background:#fff4d8;
+      color:#071b30;
     }
 
     .btn.primary {
-      background: linear-gradient(180deg, #0d2a49, #06192d);
-      color: var(--gold2);
-      border: 0;
-    }
-
-    .btn.gold {
-      background: linear-gradient(180deg, #f2d27b, #d8aa45);
-      color: #071b30;
-      border: 0;
+      background:linear-gradient(180deg,#0d2a49,#06192d);
+      color:var(--gold2);
+      border:0;
     }
 
     .btn.gray {
-      background: #f4f4f4;
-      color: #333;
-      border: 1px solid rgba(0, 0, 0, 0.16);
+      background:#f4f4f4;
+      color:#333;
+      border:1px solid rgba(0,0,0,.16);
     }
 
     .mother-slots {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin-bottom: 18px;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+      margin-bottom:18px;
     }
 
     .mother-slot {
-      border: 1px dashed rgba(0, 0, 0, 0.3);
-      border-radius: 14px;
-      min-height: 74px;
-      display: grid;
-      place-items: center;
-      text-align: center;
-      background: white;
-      font-weight: 700;
-      cursor: pointer;
-      padding: 8px;
+      border:1px dashed rgba(0,0,0,.3);
+      border-radius:14px;
+      min-height:74px;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      background:white;
+      font-weight:700;
+      cursor:pointer;
+      padding:8px;
     }
 
     .mother-slot.active {
-      border: 2px solid var(--gold);
-      box-shadow: 0 0 0 4px rgba(216, 170, 69, 0.18);
+      border:2px solid var(--gold);
+      box-shadow:0 0 0 4px rgba(216,170,69,.18);
     }
 
     .mother-slot.filled {
-      background: rgba(255, 245, 205, 0.72);
+      background:rgba(255,245,205,.72);
     }
 
     .figure-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      border: 1px solid rgba(0, 0, 0, 0.35);
-      border-radius: 16px;
-      overflow: hidden;
-      background: white;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      border:1px solid rgba(0,0,0,.35);
+      border-radius:16px;
+      overflow:hidden;
+      background:white;
     }
 
     .figure-card {
-      min-height: 135px;
-      border: 0;
-      border-left: 1px solid rgba(0, 0, 0, 0.24);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.24);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      position: relative;
-      background: #fffaf0;
-      cursor: pointer;
-      padding: 8px;
-      color: #111;
+      min-height:135px;
+      border:0;
+      border-left:1px solid rgba(0,0,0,.24);
+      border-bottom:1px solid rgba(0,0,0,.24);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      position:relative;
+      background:#fffaf0;
+      cursor:pointer;
+      padding:8px;
+      color:#111;
     }
 
     .figure-card.selected {
-      outline: 3px solid var(--gold);
-      outline-offset: -3px;
-      background: #fff2cc;
+      outline:3px solid var(--gold);
+      outline-offset:-3px;
+      background:#fff2cc;
     }
 
     .figure-card.selected::after {
-      content: "✓";
-      position: absolute;
-      top: 9px;
-      right: 9px;
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: var(--gold2);
-      color: #071b30;
-      display: grid;
-      place-items: center;
-      font-weight: 900;
+      content:"✓";
+      position:absolute;
+      top:9px;
+      right:9px;
+      width:26px;
+      height:26px;
+      border-radius:50%;
+      background:var(--gold2);
+      color:#071b30;
+      display:grid;
+      place-items:center;
+      font-weight:900;
     }
 
     .glyph {
-      width: 58px;
-      display: grid;
-      grid-template-rows: repeat(4, 13px);
-      gap: 7px;
-      justify-items: center;
-      align-items: center;
+      width:58px;
+      display:grid;
+      grid-template-rows:repeat(4,13px);
+      gap:7px;
+      justify-items:center;
+      align-items:center;
     }
 
     .one {
-      width: 9px;
-      height: 9px;
-      background: #111;
-      border-radius: 50%;
+      width:9px;
+      height:9px;
+      background:#111;
+      border-radius:50%;
     }
 
     .two {
-      width: 38px;
-      height: 7px;
-      background: #111;
-      border-radius: 99px;
+      width:38px;
+      height:7px;
+      background:#111;
+      border-radius:99px;
     }
 
     .figure-name {
-      font-weight: 900;
-      font-size: 16px;
+      font-weight:900;
+      font-size:16px;
     }
 
     .board {
-      border: 2px solid var(--border);
-      background: white;
-      max-width: 860px;
-      margin: 0 auto;
+      border:2px solid var(--line);
+      background:white;
+      max-width:860px;
+      margin:0 auto;
+      direction:rtl;
     }
 
     .board-row {
-      display: grid;
-      border-bottom: 2px solid var(--border);
+      display:grid;
+      border-bottom:2px solid var(--line);
+      direction:rtl;
     }
 
-    .board-row.r1 {
-      grid-template-columns: repeat(8, 1fr);
-    }
-
-    .board-row.r2 {
-      grid-template-columns: repeat(4, 1fr);
-    }
-
-    .board-row.r3 {
-      grid-template-columns: repeat(2, 1fr);
-      border-bottom: 0;
-    }
-
-    .final-row {
-      display: flex;
-      flex-direction: row;
-      gap: 22px;
-      margin-top: 22px;
-      align-items: start;
-      direction: rtl;
-    }
-
-    .final-box {
-      border: 2px solid var(--border);
-      background: white;
-      min-height: 150px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      justify-content: center;
-      text-align: center;
-    }
-
-    .sentence-box {
-      order: 1;
-    }
-
-    .judge-box {
-      order: 2;
-    }
+    .board-row.r1 { grid-template-columns:repeat(8,1fr); }
+    .board-row.r2 { grid-template-columns:repeat(4,1fr); }
+    .board-row.r3 { grid-template-columns:repeat(2,1fr); border-bottom:0; }
 
     .house {
-      min-height: 132px;
-      border-left: 1px solid var(--border);
-      padding: 8px 5px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      gap: 6px;
+      min-height:132px;
+      border-left:1px solid var(--line);
+      padding:8px 5px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      gap:6px;
+      background:white;
     }
 
-    .house:last-child {
-      border-left: 0;
-    }
-
-    .final-box .house {
-      border-left: 0;
-    }
+    .house:last-child { border-left:0; }
 
     .house-title {
-      font-weight: 900;
-      font-size: 16px;
+      font-weight:900;
+      font-size:16px;
     }
 
     .house-name {
-      color: #555;
-      font-size: 13px;
-      min-height: 18px;
+      color:#555;
+      font-size:13px;
+      min-height:18px;
     }
 
-    .note {
-      margin-top: 14px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 14px;
+    .final-row {
+      max-width:860px;
+      margin:22px auto 0;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:22px;
+      direction:rtl;
+    }
+
+    .final-box {
+      border:2px solid var(--line);
+      background:white;
+      min-height:150px;
+    }
+
+    .final-box .house {
+      border-left:0;
+      min-height:150px;
     }
 
     .summary-box {
-      margin-top: 18px;
-      background: var(--navy);
-      color: #f8f2e5;
-      border-radius: 20px;
-      padding: 18px;
-      white-space: pre-wrap;
-      line-height: 1.7;
-      font-size: 16px;
+      margin-top:18px;
+      background:var(--navy);
+      color:#f8f2e5;
+      border-radius:20px;
+      padding:18px;
+      white-space:pre-wrap;
+      line-height:1.7;
+      font-size:16px;
     }
 
     .error {
-      margin-top: 14px;
-      padding: 12px 14px;
-      background: #ffe9e4;
-      color: #8c2118;
-      border: 1px solid #e2a39a;
-      border-radius: 14px;
-      display: none;
+      margin-top:14px;
+      padding:12px 14px;
+      background:#ffe9e4;
+      color:#8c2118;
+      border:1px solid #e2a39a;
+      border-radius:14px;
+      display:none;
+      white-space:pre-wrap;
     }
 
-    #countsInput,
-    #runBtn,
-    #result,
-    #archivePanel {
-      display: none;
+    .note {
+      margin-top:14px;
+      text-align:center;
+      color:var(--muted);
+      font-size:14px;
     }
 
-    @media (max-width: 800px) {
-      .screen {
-        padding: 16px;
-      }
-
-      .form-grid,
-      .actions,
-      .mother-slots {
-        grid-template-columns: 1fr;
-      }
-
-      .figure-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .board-row.r1 {
-        grid-template-columns: repeat(4, 1fr);
-      }
-
-      .final-row {
-        flex-direction: column;
-      }
-
-      .final-box {
-        width: 100%;
-      }
+    @media (max-width:800px) {
+      .screen { padding:16px; }
+      .form-grid, .actions, .mother-slots { grid-template-columns:1fr; }
+      .figure-grid { grid-template-columns:repeat(2,1fr); }
+      .board-row.r1 { grid-template-columns:repeat(4,1fr); }
+      .final-row { grid-template-columns:1fr; }
     }
-  
-    /* opening screen exact layout */
-    .opening-actions {
-      grid-template-columns: repeat(3, 1fr);
-      align-items: stretch;
-    }
-
-    .opening-actions .start-btn {
-      grid-column: 3 / 4;
-      margin-top: 6px;
-    }
-
-    @media (max-width: 800px) {
-      .opening-actions {
-        grid-template-columns: 1fr;
-      }
-
-      .opening-actions .start-btn {
-        grid-column: auto;
-      }
-    }
-
-  
-    /* Exact opening screen layout */
-    .opening-actions {
-      grid-template-columns: repeat(3, 1fr);
-      align-items: stretch;
-    }
-
-    .opening-actions .start-btn {
-      grid-column: 3 / 4;
-    }
-
-    @media (max-width: 800px) {
-      .opening-actions {
-        grid-template-columns: 1fr;
-      }
-
-      .opening-actions .start-btn {
-        grid-column: auto;
-      }
-    }
-
   </style>
 </head>
 
-<body autocomplete="off">
+<body>
   <div class="app">
     <header class="topbar">
       <button class="icon-btn" onclick="location.href='calculator.html'">←</button>
       <h1>גורל החול</h1>
-      <div style="width: 40px;"></div>
+      <div style="width:40px;"></div>
     </header>
 
     <section id="screen-open" class="screen active">
@@ -481,22 +373,22 @@
         <div class="form-grid">
           <div>
             <label>שם הפונה</label>
-            <input id="clientNameInput" placeholder="שם הלקוח" value="" autocomplete="off" />
+            <input id="clientNameInput" placeholder="שם הלקוח" autocomplete="off" />
           </div>
 
           <div>
             <label>שם האב</label>
-            <input id="clientParentInput" placeholder="שם האב" value="" autocomplete="off" />
+            <input id="clientParentInput" placeholder="שם האב" autocomplete="off" />
           </div>
 
           <div>
             <label>תאריך השאלה</label>
-            <input id="clientAgeInput" placeholder="תאריך השאלה" value="" autocomplete="off" />
+            <input id="questionDateInput" placeholder="תאריך השאלה" autocomplete="off" />
           </div>
 
           <div>
             <label>שעת השאלה</label>
-            <input id="consultationContextInput" placeholder="שעת השאלה" value="" autocomplete="off" />
+            <input id="questionTimeInput" placeholder="שעת השאלה" autocomplete="off" />
           </div>
 
           <div class="full">
@@ -506,14 +398,14 @@
 
           <div class="full">
             <label>נושא השאלה</label>
-            <select id="questionTopicInput" autocomplete="off">
+            <select id="questionTopicInput">
               <option value="">בחר נושא שאלה</option>
               <option value="travel">נסיעה</option>
-              <option value="missingPerson">נעדרים / אבידה</option>
+              <option value="missingPerson">נעדר / אבידה</option>
               <option value="childrenPregnancy">ילדים / הריון</option>
               <option value="hiddenTreasure">מטמון / דבר חבוי</option>
               <option value="spiritualDiagnostics">אבחון רוחני / עין / כישוף</option>
-              <option value="authorityState">שלטון / סמכות / בעלי תפקידים</option>
+              <option value="authorityState">שלטון / סמכות</option>
               <option value="yearlyForecast">טאלע השנה / גשם / יוקר וזול</option>
               <option value="birthNativity">מולד / טבע האדם</option>
               <option value="general">כללי</option>
@@ -521,11 +413,11 @@
           </div>
         </div>
 
-        <div class="actions opening-actions">
-          <button class="btn gold" id="goToSelectBtn" type="button">הכנסה ידנית של 4 האמהות</button>
-          <button class="btn gray" id="autoSelectBtn" type="button">בחירה אוטומטית לפי עצירה</button>
-          <button class="btn gray" id="clearFormBtn" type="button">נקה טופס</button>
-          <button class="btn primary start-btn" id="startBtn" type="button">התחל</button>
+        <div class="actions">
+          <button class="btn" id="manualBtn" type="button">הכנסה ידנית של 4 האמהות</button>
+          <button class="btn gray" id="autoBtn" type="button">בחירה אוטומטית לפי עצירה</button>
+          <button class="btn gray" id="clearBtn" type="button">נקה טופס</button>
+          <button class="btn primary" id="startBtn" type="button">התחל</button>
         </div>
       </div>
     </section>
@@ -538,9 +430,9 @@
         <div id="figureGrid" class="figure-grid"></div>
 
         <div class="actions">
-          <button class="btn gray" id="backToOpenBtn">חזרה</button>
-          <button class="btn gray" id="clearSelectionBtn">נקה בחירה</button>
-          <button class="btn primary" id="goToBoardBtn">המשך ללוח הגורל</button>
+          <button class="btn gray" id="backOpenBtn" type="button">חזרה</button>
+          <button class="btn gray" id="clearSelectionBtn" type="button">נקה בחירה</button>
+          <button class="btn primary" id="buildBoardBtn" type="button">המשך ללוח הגורל</button>
         </div>
 
         <div class="note">הסימון ✓ מציין צורה שכבר נבחרה.</div>
@@ -554,22 +446,16 @@
         <div id="errorBox" class="error"></div>
 
         <div class="actions">
-          <button class="btn gray" id="backToBoardSelectBtn">חזרה לבחירת אמהות</button>
-          <button class="btn primary" id="archiveBtn">ארכיון קריאות</button>
-          <button class="btn gray" id="clearArchiveBtn">נקה ארכיון</button>
+          <button class="btn gray" id="backSelectBtn" type="button">חזרה לבחירת אמהות</button>
+          <button class="btn primary" id="archiveBtn" type="button">ארכיון קריאות</button>
+          <button class="btn gray" id="clearArchiveBtn" type="button">נקה ארכיון</button>
         </div>
       </div>
     </section>
   </div>
 
-  <textarea id="countsInput"></textarea>
-  <button id="runBtn" type="button"></button>
-  <section id="result"></section>
-  <section id="archivePanel" class="summary-box"></section>
-
   <script type="module">
     import { interpretHawiQuestionInitial } from './goral-hachol/engine/hawi-interpreter.js';
-
     import {
       getGoralArchive,
       saveGoralReadingToArchive,
@@ -579,7 +465,6 @@
     } from './goral-hachol/engine/goral-client-archive.js';
 
     window.HAWI_INTERPRETER = { interpretHawiQuestionInitial };
-
     window.GORAL_CLIENT_ARCHIVE = {
       getGoralArchive,
       saveGoralReadingToArchive,
@@ -590,58 +475,15 @@
   </script>
 
   <script>
+    const FIGURE_ORDER = [
+      "1222", "2122", "1122", "2212",
+      "1212", "2112", "1112", "2221",
+      "1221", "2121", "1121", "2211",
+      "1211", "2111", "1111", "2222"
+    ];
 
-    function clearInitialClientFields() {
-      ["clientNameInput", "clientParentInput", "clientAgeInput", "consultationContextInput", "questionInput"].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.value = "";
-      });
-    }
-
-    function parseCounts(text) {
-      const rows = String(text || "")
-        .trim()
-        .split(/\n+/)
-        .map(line => line.trim())
-        .filter(Boolean)
-        .map(line => line.split(/[\s,]+/).map(Number));
-
-      if (rows.length !== 4) {
-        throw new Error("צריך להזין בדיוק 4 שורות — שורה אחת לכל אם.");
-      }
-
-      for (const row of rows) {
-        if (row.length !== 4 || row.some(n => !Number.isFinite(n) || n <= 0)) {
-          throw new Error("כל שורה חייבת להכיל בדיוק 4 מספרים חיוביים.");
-        }
-      }
-
-      return rows;
-    }
-
-    function figHtml(fig) {
-      return `
-        <div class="glyph" style="margin-bottom:8px;">
-          ${fig.map(v => `<div class="${Number(v) === 1 ? "one" : "two"}"></div>`).join("")}
-        </div>
-      `;
-    }
-
-    function houseHtml(h, labelOverride) {
-      const label = labelOverride || `בית ${h.house}`;
-      return `
-        <div class="house">
-          <div class="house-title">${label}</div>
-          <div class="house-name">${h.houseHebrew || ""}</div>
-          ${figHtml(h.figure)}
-          <div class="figure-name">${h.hebrew}</div>
-          <div class="house-name" style="font-size:12px; margin-top:4px;">
-            ${h.key}<br/>
-            ${h.fortune || ""} · ${h.movement || ""} · יסוד ${h.element || ""}
-          </div>
-        </div>
-      `;
-    }
+    let selectedMothers = [null, null, null, null];
+    let activeMother = 0;
 
     function escapeHtml(value) {
       return String(value ?? "")
@@ -652,458 +494,26 @@
         .replace(/'/g, "&#039;");
     }
 
-    function hawiSourceInsightHtml(reading) {
-      if (!window.HAWI_INTERPRETER || !window.HAWI_INTERPRETER.interpretHawiQuestionInitial) {
-        return `
-          <div class="summary-box">
-            <strong>אבחון גורל החול:</strong><br/>
-            שכבת הידע נטענת. אם זה נשאר כך, רענן את הדף.
-          </div>
-        `;
-      }
-
-      const insight = window.HAWI_INTERPRETER.interpretHawiQuestionInitial(reading.question, reading);
-      const archiveSaveBox = saveCurrentReading(reading, insight);
-
-      const sources = (insight.knowledgeSources || [])
-        .map(s => `<li>${escapeHtml(s.id)} — ${escapeHtml(s.titleHebrew)}</li>`)
-        .join("");
-
-      const rules = (insight.relevantRules || []).slice(0, 7)
-        .map(rule => {
-          const houses = rule.houses
-            ? ` | בתים: ${rule.houses.join(", ")}`
-            : rule.house
-              ? ` | בית: ${rule.house}`
-              : "";
-
-          const page = rule.sourcePage ? ` | עמוד מקור: ${rule.sourcePage}` : "";
-          const text = rule.hebrew || rule.result || rule.condition || rule.id || "כלל מקור";
-
-          return `<li>${escapeHtml(text)}${escapeHtml(houses)}${escapeHtml(page)}</li>`;
-        })
-        .join("");
-
-      const boardRows = insight.boardAnalysis && insight.boardAnalysis.hasBoard
-        ? insight.boardAnalysis.houses.slice(0, 16).map(h => `
-            <li>
-              בית ${escapeHtml(h.house)} —
-              ${escapeHtml(h.figureHebrew || "")}
-              ${h.house === insight.boardAnalysis.focusHouseNumber ? " — בית מרכזי" : ""}
-              ${h.house === 13 ? " — עד ראשון" : ""}
-              ${h.house === 14 ? " — עד שני" : ""}
-              ${h.house === 15 ? " — דיין" : ""}
-              ${h.house === 16 ? " — משלים" : ""}
-            </li>
-          `).join("")
-        : "";
-
-      const reasons = insight.boardScore && insight.boardScore.reasons
-        ? insight.boardScore.reasons.map(r => `<li>${escapeHtml(r)}</li>`).join("")
-        : "";
-
-      const spiritualBox = insight.spiritualDiagnosis && insight.spiritualDiagnosis.active
-        ? `
-          <div style="margin-bottom:8px;">
-            <strong>אבחון רוחני:</strong><br/>
-            ${escapeHtml(insight.spiritualDiagnosis.finalHebrew)}
-            ${
-              insight.spiritualDiagnosis.mainReasons && insight.spiritualDiagnosis.mainReasons.length
-                ? `<ul style="margin-top:6px;">${
-                    insight.spiritualDiagnosis.mainReasons.slice(0, 6).map(r => `
-                      <li>
-                        בית ${escapeHtml(r.house)} — ${escapeHtml(r.role)}:
-                        ${escapeHtml((r.signals || []).join(" "))}
-                      </li>
-                    `).join("")
-                  }</ul>`
-                : ""
-            }
-          </div>
-        `
-        : "";
-
-      return `
-        <div class="summary-box">
-          <div style="font-weight:800; margin-bottom:10px;">אבחון גורל החול</div>
-
-          <div style="margin-bottom:10px;">
-            <strong>מסקנה:</strong><br/>
-            ${escapeHtml(insight.finalConclusionHebrew || insight.conclusionDraftHebrew)}
-          </div>
-
-          <div style="margin-bottom:8px;">
-            <strong>נושא השאלה:</strong>
-            ${escapeHtml(insight.topicHebrew)}
-          </div>
-
-          <div style="margin-bottom:8px;">
-            <strong>בתים עיקריים לבדיקה:</strong>
-            ${escapeHtml((insight.mainHouses || []).join(", "))}
-          </div>
-
-          <div style="margin-bottom:8px;">
-            <strong>לוח בפועל:</strong>
-            <ul style="margin-top:6px;">${boardRows}</ul>
-          </div>
-
-          <div style="margin-bottom:8px;">
-            <strong>שיקולי פסיקה:</strong>
-            <ul style="margin-top:6px;">${reasons}</ul>
-          </div>
-
-          ${spiritualBox}
-
-          <div style="margin-bottom:8px;">
-            <strong>שכבות ידע שנבדקו:</strong>
-            <ul style="margin-top:6px;">${sources}</ul>
-          </div>
-
-          <div style="margin-bottom:8px;">
-            <strong>כללי גורל החול שנבדקו:</strong>
-            <ul style="margin-top:6px;">${rules}</ul>
-          </div>
-
-          <div style="margin-top:10px; opacity:.9;">
-            ${escapeHtml(insight.boardContext?.noteHebrew || "")}
-          </div>
-        </div>
-
-        ${archiveSaveBox}
-      `;
-    }
-
-    function buildChart(reading) {
-      const h = n => reading.chart.find(x => x.house === n);
-
-      const topOrder = [8, 7, 6, 5, 4, 3, 2, 1];
-      const middleOrder = [12, 11, 10, 9];
-
-      return `
-        <article class="board">
-          <div class="board-row r1">
-            ${topOrder
-              .map(n => {
-                const type = n <= 4 ? "אם" : "בת";
-                return houseHtml(h(n), `${n} — ${type}`);
-              })
-              .join("")}
-          </div>
-
-          <div class="board-row r2">
-            ${middleOrder
-              .map(n => houseHtml(h(n), `${n} — נכדה`))
-              .join("")}
-          </div>
-
-          <div class="board-row r3">
-            ${houseHtml(h(14), "14 — עד שני")}
-            ${houseHtml(h(13), "13 — עד ראשון")}
-          </div>
-
-          <div class="final-row">
-            <div class="final-box sentence-box">
-              ${houseHtml(h(16), "16 — משלים")}
-            </div>
-            <div class="final-box judge-box">
-              ${houseHtml(h(15), "15 — דיין")}
-            </div>
-          </div>
-        </article>
-
-        <div class="summary-box">${typeof ramlBuildReadingSummary === "function" ? ramlBuildReadingSummary(reading) : localGoralBuildSummary(reading)}</div>
-
-        ${hawiSourceInsightHtml(reading)}
-      `;
-    }
-
-    function formatArchiveDate(value) {
-      try {
-        return new Intl.DateTimeFormat("he-IL", {
-          day: "numeric",
-          month: "numeric",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit"
-        }).format(new Date(value));
-      } catch {
-        return "";
-      }
-    }
-
-    function renderArchivePanel() {
-      const panel = document.getElementById("archivePanel");
-      const api = window.GORAL_CLIENT_ARCHIVE;
-      const boardResult = document.getElementById("boardResult");
-
-      if (!panel || !api || !boardResult) return;
-
-      const archive = api.getGoralArchive();
-
-      if (!archive.length) {
-        boardResult.innerHTML = `<div class="summary-box"><strong>ארכיון קריאות</strong><br/>אין עדיין קריאות שמורות.</div>`;
-        return;
-      }
-
-      boardResult.innerHTML = `
-        <div class="summary-box">
-          <div style="font-weight:800; margin-bottom:10px;">ארכיון קריאות לקוחות</div>
-          ${archive.slice(0, 20).map(item => `
-            <div style="border-top:1px solid rgba(255,255,255,.18); padding:10px 0;">
-              <div><strong>${escapeHtml(item.clientName || "לקוח ללא שם")}</strong> — ${escapeHtml(item.topicHebrew || "")}</div>
-              <div style="opacity:.8; font-size:.92em;">${escapeHtml(formatArchiveDate(item.createdAt))}</div>
-              <div style="margin-top:5px;"><strong>שאלה:</strong> ${escapeHtml(item.question || "")}</div>
-              <div style="margin-top:5px; white-space:pre-line;">${escapeHtml(item.conclusion || "")}</div>
-              <button type="button" onclick="window.deleteGoralArchiveItem('${escapeHtml(item.id)}')">מחק קריאה</button>
-            </div>
-          `).join("")}
-        </div>
-      `;
-    }
-
-    window.deleteGoralArchiveItem = function(id) {
-      if (!window.GORAL_CLIENT_ARCHIVE) return;
-      window.GORAL_CLIENT_ARCHIVE.deleteGoralArchiveRecord(id);
-      renderArchivePanel();
-    };
-
-    function saveCurrentReading(reading, interpretation) {
-      const api = window.GORAL_CLIENT_ARCHIVE;
-      if (!api || !reading || !interpretation) return "";
-
-      const saved = api.saveGoralReadingToArchive(reading, interpretation);
-      if (!saved.ok) return "";
-
-      const clientName = reading.clientContext?.clientName || "";
-      const history = api.summarizeGoralClientHistory(clientName);
-
-      return `
-        <div class="summary-box">
-          <strong>הקריאה נשמרה בארכיון.</strong><br/>
-          ${escapeHtml(history.summaryHebrew)}
-        </div>
-      `;
-    }
-
-    function getClientContext() {
-      return {
-        clientName: document.getElementById("clientNameInput")?.value?.trim() || "",
-        parentName: document.getElementById("clientParentInput")?.value?.trim() || "",
-        ageOrLifeStage: document.getElementById("clientAgeInput")?.value?.trim() || "",
-        consultationContext: document.getElementById("consultationContextInput")?.value?.trim() || ""
-      };
-    }
-
-
-    function localGoralFigureKey(fig) {
-      return fig.map(v => Number(v) === 2 ? 2 : 1).join("");
-    }
-
-    function localGoralFigureInfo(fig) {
-      const key = localGoralFigureKey(fig);
-      const forms = window.RAML_FORMS_BASIC || {};
-      const item = forms[key] || {};
-
-      return {
-        key,
-        hebrew: item.hebrew || "צורה לא מזוהה",
-        arabic: item.arabic || "",
-        fortune: item.statusHebrew || item.fortune || "",
-        statusHebrew: item.statusHebrew || "",
-        element: item.element || "",
-        direction: item.direction || "",
-        color: item.color || "",
-        planet: item.planet || ""
-      };
-    }
-
-    function localGoralCombine(a, b) {
-      return [0, 1, 2, 3].map(i => {
-        const x = Number(a[i]) === 2 ? 2 : 1;
-        const y = Number(b[i]) === 2 ? 2 : 1;
-        return (x + y) % 2 === 0 ? 2 : 1;
-      });
-    }
-
-    function localGoralHouseName(n) {
-      const houses = window.RAML_HOUSES_BASIC || {};
-      const h = houses[n] || houses[String(n)] || {};
-      return h.hebrew || h.name || "";
-    }
-
-    function localGoralEntry(house, figure) {
-      const info = localGoralFigureInfo(figure);
-      return {
-        house,
-        figure,
-        key: info.key,
-        hebrew: info.hebrew,
-        arabic: info.arabic,
-        fortune: info.fortune,
-        statusHebrew: info.statusHebrew,
-        element: info.element,
-        direction: info.direction,
-        color: info.color,
-        planet: info.planet,
-        houseHebrew: localGoralHouseName(house)
-      };
-    }
-
-    function localGoralRunReadingFromPointCounts(question, matrix) {
-      const mothers = matrix.map(row => row.map(v => Number(v) === 2 ? 2 : 1));
-
-      if (mothers.length !== 4 || mothers.some(row => row.length !== 4)) {
-        throw new Error("צריך לבחור בדיוק 4 אמהות.");
-      }
-
-      const h1 = mothers[0];
-      const h2 = mothers[1];
-      const h3 = mothers[2];
-      const h4 = mothers[3];
-
-      const h5 = [h1[0], h2[0], h3[0], h4[0]];
-      const h6 = [h1[1], h2[1], h3[1], h4[1]];
-      const h7 = [h1[2], h2[2], h3[2], h4[2]];
-      const h8 = [h1[3], h2[3], h3[3], h4[3]];
-
-      const h9 = localGoralCombine(h1, h2);
-      const h10 = localGoralCombine(h3, h4);
-      const h11 = localGoralCombine(h5, h6);
-      const h12 = localGoralCombine(h7, h8);
-
-      const h13 = localGoralCombine(h9, h10);
-      const h14 = localGoralCombine(h11, h12);
-      const h15 = localGoralCombine(h13, h14);
-
-      // בית 16 / משלים — חיבור הדיין עם בית 1, כדי לתת השלמת דין לקריאה.
-      const h16 = localGoralCombine(h15, h1);
-
-      const figures = [h1,h2,h3,h4,h5,h6,h7,h8,h9,h10,h11,h12,h13,h14,h15,h16];
-      const chart = figures.map((fig, idx) => localGoralEntry(idx + 1, fig));
-
-      return {
-        question,
-        chart,
-        topic: { id: "general", hebrew: "כללי" },
-        focusHouseNumber: 1,
-        createdAt: new Date().toISOString(),
-        engineMode: "local-ui-fallback"
-      };
-    }
-
-    function localGoralBuildSummary(reading) {
-      const judge = reading.chart.find(h => h.house === 15);
-      const sentence = reading.chart.find(h => h.house === 16);
-
-      return [
-        "סיכום לוח:",
-        `דיין: ${judge?.hebrew || ""}`,
-        `משלים: ${sentence?.hebrew || ""}`,
-        "",
-        "הלוח נבנה מתוך 4 האמהות שנבחרו במסך."
-      ].join("\n");
-    }
-
-    function run() {
-      const errorBox = document.getElementById("errorBox");
-      const boardResult = document.getElementById("boardResult");
-      const result = document.getElementById("result");
-
-      errorBox.style.display = "none";
-      errorBox.textContent = "";
-
-      try {
-        const question = document.getElementById("questionInput").value;
-        const matrix = parseCounts(document.getElementById("countsInput").value);
-        const runEngine =
-          window.ramlRunReadingFromPointCounts ||
-          (typeof ramlRunReadingFromPointCounts !== "undefined" ? ramlRunReadingFromPointCounts : null) ||
-          localGoralRunReadingFromPointCounts;
-
-        const reading = runEngine(question, matrix);
-        reading.clientContext = getClientContext();
-
-        if (window.GORAL_CLIENT_ARCHIVE && reading.clientContext.clientName) {
-          reading.clientHistorySummary = window.GORAL_CLIENT_ARCHIVE.summarizeGoralClientHistory(
-            reading.clientContext.clientName
-          );
-        }
-
-        const chartHtml = buildChart(reading);
-        boardResult.innerHTML = chartHtml;
-        result.innerHTML = chartHtml;
-      } catch (err) {
-        errorBox.textContent = err.message || String(err);
-        errorBox.style.display = "block";
-      }
-    }
-
-    function normalizeLineValue(v) {
-      const n = Number(v);
-      if (n === 1 || n === 2) return n;
-      return n % 2 === 0 ? 2 : 1;
-    }
-
     function linesFromKey(key) {
       return String(key).split("").map(Number);
     }
 
     function getFiguresForPicker() {
-      /*
-        מקור אמת:
-        קודם RAML_FORMS_BASIC מתוך raml-data/raml-forms-basic.js.
-        אם מסיבה כלשהי הוא לא נטען בדפדפן, משתמשים באותו מיפוי מדויק מתוך raml.js.
-        אין כאן שמות דמו ואין "צורה 1".
-      */
-
-      const fallbackForms = {
-        "1222": { key: "1222", hebrew: "נשוא ראש" },
-        "2122": { key: "2122", hebrew: "אדום" },
-        "1122": { key: "1122", hebrew: "כבוד יוצא" },
-        "2212": { key: "2212", hebrew: "לבן" },
-        "1212": { key: "1212", hebrew: "ממון יוצא" },
-        "2112": { key: "2112", hebrew: "חיבור" },
-        "1112": { key: "1112", hebrew: "סף יוצא" },
-        "2221": { key: "2221", hebrew: "שפל ראש" },
-        "1221": { key: "1221", hebrew: "סוהר" },
-        "2121": { key: "2121", hebrew: "ממון נכנס" },
-        "1121": { key: "1121", hebrew: "נלחם" },
-        "2211": { key: "2211", hebrew: "כבוד נכנס" },
-        "1211": { key: "1211", hebrew: "בר הלחי" },
-        "2111": { key: "2111", hebrew: "סף נכנס" },
-        "1111": { key: "1111", hebrew: "דרך" },
-        "2222": { key: "2222", hebrew: "קהלה" }
-      };
-
-      const forms =
-        (typeof window !== "undefined" && window.RAML_FORMS_BASIC && Object.keys(window.RAML_FORMS_BASIC).length)
-          ? window.RAML_FORMS_BASIC
-          : fallbackForms;
-
-      const order = [
-        "1222", "2122", "1122", "2212",
-        "1212", "2112", "1112", "2221",
-        "1221", "2121", "1121", "2211",
-        "1211", "2111", "1111", "2222"
-      ];
-
-      return order.map(key => {
-        const item = forms[key] || fallbackForms[key];
-
+      const forms = window.RAML_FORMS_BASIC || {};
+      return FIGURE_ORDER.map(key => {
+        const item = forms[key] || {};
         return {
-          id: `raml-form-${key}`,
+          id: `raml-${key}`,
           key,
-          name: item.hebrew,
+          name: item.hebrew || key,
           arabic: item.arabic || "",
-          statusHebrew: item.statusHebrew || item.fortune || "",
+          statusHebrew: item.statusHebrew || "",
           lines: linesFromKey(key)
         };
       });
     }
 
     const figures = getFiguresForPicker();
-    let selectedMothers = [null, null, null, null];
-    let activeMother = 0;
 
     function glyphHtml(lines) {
       return `
@@ -1113,158 +523,211 @@
       `;
     }
 
+    function showScreen(name) {
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      document.getElementById("screen-" + name)?.classList.add("active");
+      window.scrollTo({ top:0, behavior:"smooth" });
+    }
+
     function renderMotherSlots() {
-      const slots = document.getElementById("motherSlots");
-      if (!slots) return;
+      const box = document.getElementById("motherSlots");
+      box.innerHTML = selectedMothers.map((fig, index) => `
+        <button type="button"
+          class="mother-slot ${index === activeMother ? "active" : ""} ${fig ? "filled" : ""}"
+          data-index="${index}">
+          <div>
+            <div style="font-weight:900;">אם ${index + 1}</div>
+            <div style="margin-top:4px;">${fig ? escapeHtml(fig.name) : "טרם נבחר"}</div>
+          </div>
+        </button>
+      `).join("");
 
-      slots.innerHTML = selectedMothers
-        .map((fig, index) => `
-          <button type="button"
-            class="mother-slot ${index === activeMother ? "active" : ""} ${fig ? "filled" : ""}"
-            data-slot="${index}">
-            <div>
-              <div style="font-weight:900;">אם ${index + 1}</div>
-              <div style="margin-top:4px; font-weight:700;">${fig ? fig.name : "טרם נבחר"}</div>
-            </div>
-          </button>
-        `)
-        .join("");
-
-      slots.querySelectorAll(".mother-slot").forEach(slot => {
-        slot.addEventListener("click", () => {
-          activeMother = Number(slot.dataset.slot);
+      box.querySelectorAll(".mother-slot").forEach(btn => {
+        btn.addEventListener("click", () => {
+          activeMother = Number(btn.dataset.index);
           renderMotherSlots();
-          buildFigurePicker();
+          renderFigureGrid();
         });
       });
     }
 
-    function buildFigurePicker() {
+    function renderFigureGrid() {
       const grid = document.getElementById("figureGrid");
-      if (!grid) return;
-
-      grid.innerHTML = figures
-        .map((fig, index) => {
-          const isSelected = selectedMothers.some(m => m && m.id === fig.id);
-          return `
-            <button type="button" class="figure-card ${isSelected ? "selected" : ""}" data-index="${index}">
-              ${glyphHtml(fig.lines)}
-              <div class="figure-name">${fig.name}</div>
-            </button>
-          `;
-        })
-        .join("");
+      grid.innerHTML = figures.map((fig, index) => {
+        const selected = selectedMothers.some(m => m && m.key === fig.key);
+        return `
+          <button type="button" class="figure-card ${selected ? "selected" : ""}" data-index="${index}">
+            ${glyphHtml(fig.lines)}
+            <div class="figure-name">${escapeHtml(fig.name)}</div>
+          </button>
+        `;
+      }).join("");
 
       grid.querySelectorAll(".figure-card").forEach(btn => {
         btn.addEventListener("click", () => {
-          const fig = figures[Number(btn.dataset.index)];
-          selectedMothers[activeMother] = fig;
-          if (activeMother < 3) activeMother += 1;
-          syncCountsInput();
+          selectedMothers[activeMother] = figures[Number(btn.dataset.index)];
+          if (activeMother < 3) activeMother++;
           renderMotherSlots();
-          buildFigurePicker();
+          renderFigureGrid();
         });
       });
     }
 
-    function syncCountsInput() {
-      const countsInput = document.getElementById("countsInput");
-      if (!countsInput) return;
+    function getClientContext() {
+      return {
+        clientName: document.getElementById("clientNameInput").value.trim(),
+        parentName: document.getElementById("clientParentInput").value.trim(),
+        questionDate: document.getElementById("questionDateInput").value.trim(),
+        questionTime: document.getElementById("questionTimeInput").value.trim(),
+        consultationContext: "",
+        topicOverride: document.getElementById("questionTopicInput").value
+      };
+    }
 
-      if (selectedMothers.some(m => !m)) {
-        countsInput.value = "";
-        return;
+    function houseName(number) {
+      const h = (window.RAML_HOUSES_BASIC || {})[number] || {};
+      return h.hebrew || "";
+    }
+
+    function figNameFromReadingHouse(house) {
+      return house.hebrew || house.figureHebrew || house.name || "";
+    }
+
+    function houseHtml(h, label) {
+      return `
+        <div class="house">
+          <div class="house-title">${label}</div>
+          <div class="house-name">${escapeHtml(h.houseHebrew || houseName(h.house))}</div>
+          ${glyphHtml(h.figure)}
+          <div class="figure-name">${escapeHtml(figNameFromReadingHouse(h))}</div>
+        </div>
+      `;
+    }
+
+    function buildBoardHtml(reading) {
+      const h = n => reading.chart.find(x => Number(x.house) === Number(n));
+
+      return `
+        <article class="board">
+          <div class="board-row r1">
+            ${[1,2,3,4,5,6,7,8].map(n => houseHtml(h(n), `${n} — ${n <= 4 ? "אם" : "בת"}`)).join("")}
+          </div>
+
+          <div class="board-row r2">
+            ${[9,10,11,12].map(n => houseHtml(h(n), `${n} — נכדה`)).join("")}
+          </div>
+
+          <div class="board-row r3">
+            ${houseHtml(h(13), "13 — עד ראשון")}
+            ${houseHtml(h(14), "14 — עד שני")}
+          </div>
+        </article>
+
+        <div class="final-row">
+          <div class="final-box">
+            ${houseHtml(h(16), "16 — משלים")}
+          </div>
+          <div class="final-box">
+            ${houseHtml(h(15), "15 — דיין")}
+          </div>
+        </div>
+      `;
+    }
+
+    function buildInterpretationHtml(reading) {
+      if (!window.HAWI_INTERPRETER?.interpretHawiQuestionInitial) {
+        return `<div class="summary-box">אבחון גורל החול נטען. רענן את הדף אם ההודעה נשארת.</div>`;
       }
 
-      countsInput.value = selectedMothers.map(m => m.lines.map(normalizeLineValue).join(" ")).join("\n");
+      const insight = window.HAWI_INTERPRETER.interpretHawiQuestionInitial(reading.question, reading);
+
+      return `
+        <div class="summary-box">
+          <strong>מסקנה:</strong><br/>
+          ${escapeHtml(insight.finalConclusionHebrew || insight.conclusionDraftHebrew || "")}
+        </div>
+      `;
     }
 
-    function showScreen(name) {
-      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-      const screen = document.getElementById("screen-" + name);
-      if (screen) screen.classList.add("active");
-      window.scrollTo({ top: 0, behavior: "smooth" });
+    function runReading() {
+      const errorBox = document.getElementById("errorBox");
+      const boardResult = document.getElementById("boardResult");
+
+      errorBox.style.display = "none";
+      errorBox.textContent = "";
+
+      try {
+        if (selectedMothers.some(m => !m)) {
+          throw new Error("צריך לבחור 4 אמהות לפני יצירת לוח הגורל.");
+        }
+
+        const question = document.getElementById("questionInput").value.trim();
+        const mothers = selectedMothers.map(m => m.lines);
+
+        if (typeof window.ramlRunReading !== "function") {
+          throw new Error("מנוע גורל החול לא נטען מתוך raml.js.");
+        }
+
+        const reading = window.ramlRunReading(question, mothers);
+        reading.clientContext = getClientContext();
+
+        boardResult.innerHTML = buildBoardHtml(reading) + buildInterpretationHtml(reading);
+        showScreen("board");
+      } catch (err) {
+        errorBox.textContent = err.message || String(err);
+        errorBox.style.display = "block";
+        showScreen("board");
+      }
     }
 
-    clearInitialClientFields();
-
-    document.getElementById("startBtn")?.addEventListener("click", () => {
-      renderMotherSlots();
-      buildFigurePicker();
-      showScreen("select");
-    });
-
-    document.getElementById("goToSelectBtn").addEventListener("click", () => {
-      renderMotherSlots();
-      buildFigurePicker();
-      showScreen("select");
-    });
-
-    document.getElementById("autoSelectBtn").addEventListener("click", () => {
-      const shuffled = [...figures].sort(() => Math.random() - 0.5);
-      selectedMothers = shuffled.slice(0, 4);
+    function clearForm() {
+      ["clientNameInput","clientParentInput","questionDateInput","questionTimeInput","questionInput","questionTopicInput"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = "";
+      });
+      selectedMothers = [null,null,null,null];
       activeMother = 0;
-      syncCountsInput();
       renderMotherSlots();
-      buildFigurePicker();
+      renderFigureGrid();
+    }
+
+    document.getElementById("manualBtn").addEventListener("click", () => {
+      renderMotherSlots();
+      renderFigureGrid();
       showScreen("select");
     });
 
-    document.getElementById("backToOpenBtn").addEventListener("click", () => {
-      showScreen("open");
+    document.getElementById("startBtn").addEventListener("click", () => {
+      renderMotherSlots();
+      renderFigureGrid();
+      showScreen("select");
     });
 
+    document.getElementById("autoBtn").addEventListener("click", () => {
+      alert("בחירה אוטומטית לפי עצירה תיבנה בשלב הבא. כרגע משתמשים בהכנסה ידנית בלבד.");
+    });
+
+    document.getElementById("backOpenBtn").addEventListener("click", () => showScreen("open"));
+    document.getElementById("backSelectBtn").addEventListener("click", () => showScreen("select"));
     document.getElementById("clearSelectionBtn").addEventListener("click", () => {
-      selectedMothers = [null, null, null, null];
+      selectedMothers = [null,null,null,null];
       activeMother = 0;
-      syncCountsInput();
       renderMotherSlots();
-      buildFigurePicker();
+      renderFigureGrid();
     });
 
-    document.getElementById("goToBoardBtn").addEventListener("click", () => {
-      if (selectedMothers.some(m => !m)) {
-        alert("צריך לבחור 4 אמהות לפני המשך ללוח הגורל.");
-        return;
-      }
-
-      syncCountsInput();
-      run();
-      showScreen("board");
-    });
-
-    document.getElementById("backToBoardSelectBtn").addEventListener("click", () => {
-      showScreen("select");
-    });
-
-    document.getElementById("clearFormBtn").addEventListener("click", () => {
-      document.getElementById("clientNameInput").value = "";
-      document.getElementById("clientParentInput").value = "";
-      document.getElementById("clientAgeInput").value = "";
-      document.getElementById("consultationContextInput").value = "";
-      document.getElementById("questionInput").value = "";
-      const topicInput = document.getElementById("questionTopicInput");
-      if (topicInput) topicInput.value = "";
-      selectedMothers = [null, null, null, null];
-      activeMother = 0;
-      syncCountsInput();
-      renderMotherSlots();
-      buildFigurePicker();
-    });
+    document.getElementById("buildBoardBtn").addEventListener("click", runReading);
+    document.getElementById("clearBtn").addEventListener("click", clearForm);
 
     document.getElementById("archiveBtn").addEventListener("click", () => {
-      renderArchivePanel();
+      alert("ארכיון הקריאות יחובר אחרי שהממשק החדש יאושר.");
     });
 
     document.getElementById("clearArchiveBtn").addEventListener("click", () => {
-      if (!window.GORAL_CLIENT_ARCHIVE) return;
-      if (confirm("לנקות את כל ארכיון הקריאות?")) {
-        window.GORAL_CLIENT_ARCHIVE.clearGoralArchive();
-        renderArchivePanel();
-      }
+      alert("ניקוי ארכיון יחובר אחרי שהממשק החדש יאושר.");
     });
 
-    document.getElementById("runBtn").addEventListener("click", run);
+    clearForm();
   </script>
 </body>
 </html>
