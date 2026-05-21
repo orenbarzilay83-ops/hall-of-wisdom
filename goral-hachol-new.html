@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>גורל החול — ממשק חדש</title>
+
+  <script src="./raml-data/raml-forms-basic.js?v=clean-ui-1"></script>
+  <script src="./raml-data/raml-houses-basic.js?v=clean-ui-1"></script>
+  <script src="./raml.js?v=clean-ui-1"></script>
+
+  <style>
+    :root {
+      --navy:#06192d;
+      --navy2:#0d2a49;
+      --gold:#d8aa45;
+      --gold2:#f2d27b;
+      --paper:#fffaf0;
+      --paper2:#f7eedc;
+      --ink:#101010;
+      --line:#111;
+      --muted:#6d6250;
+    }
+
+    * { box-sizing:border-box; }
+
+    body {
+      margin:0;
+      direction:rtl;
+      font-family: Arial, sans-serif;
+      background:linear-gradient(135deg,#06192d,#0a1424);
+      color:var(--ink);
+    }
+
+    .app {
+      max-width:980px;
+      margin:0 auto;
+      min-height:100vh;
+      background:linear-gradient(180deg,var(--paper),var(--paper2));
+      box-shadow:0 0 35px rgba(0,0,0,.35);
+    }
+
+    .topbar {
+      height:68px;
+      background:linear-gradient(90deg,var(--navy),var(--navy2));
+      color:var(--gold2);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 20px;
+      position:sticky;
+      top:0;
+      z-index:20;
+    }
+
+    .topbar h1 {
+      margin:0;
+      font-size:25px;
+      font-weight:900;
+    }
+
+    .icon-btn {
+      border:0;
+      background:transparent;
+      color:var(--gold2);
+      font-size:28px;
+      cursor:pointer;
+      padding:8px 10px;
+    }
+
+    .screen {
+      display:none;
+      padding:26px;
+    }
+
+    .screen.active { display:block; }
+
+    .panel {
+      border:1px solid rgba(216,170,69,.45);
+      border-radius:18px;
+      background:rgba(255,255,255,.72);
+      padding:22px;
+      box-shadow:0 14px 30px rgba(0,0,0,.08);
+    }
+
+    h2 {
+      margin:0 0 18px;
+      color:#071b30;
+      border-bottom:1px solid rgba(216,170,69,.6);
+      padding-bottom:10px;
+      font-size:25px;
+    }
+
+    .form-grid {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+    }
+
+    .full { grid-column:1 / -1; }
+
+    label {
+      display:block;
+      margin-bottom:6px;
+      font-weight:800;
+      color:#1e2a36;
+    }
+
+    input, textarea, select {
+      width:100%;
+      border:1px solid rgba(0,0,0,.18);
+      border-radius:13px;
+      background:white;
+      padding:13px;
+      font-size:17px;
+      color:#111;
+    }
+
+    textarea {
+      min-height:90px;
+      resize:vertical;
+    }
+
+    .actions {
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+      margin-top:18px;
+    }
+
+    .btn {
+      border:1px solid rgba(216,170,69,.5);
+      border-radius:14px;
+      padding:15px;
+      font-weight:900;
+      font-size:16px;
+      cursor:pointer;
+      background:#fff4d8;
+      color:#071b30;
+    }
+
+    .btn.primary {
+      background:linear-gradient(180deg,#0d2a49,#06192d);
+      color:var(--gold2);
+      border:0;
+    }
+
+    .btn.gray {
+      background:#f4f4f4;
+      color:#333;
+      border:1px solid rgba(0,0,0,.16);
+    }
+
+    .mother-slots {
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+      margin-bottom:18px;
+    }
+
+    .mother-slot {
+      border:1px dashed rgba(0,0,0,.3);
+      border-radius:14px;
+      min-height:74px;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      background:white;
+      font-weight:700;
+      cursor:pointer;
+      padding:8px;
+    }
+
+    .mother-slot.active {
+      border:2px solid var(--gold);
+      box-shadow:0 0 0 4px rgba(216,170,69,.18);
+    }
+
+    .mother-slot.filled {
+      background:rgba(255,245,205,.72);
+    }
+
+    .figure-grid {
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      border:1px solid rgba(0,0,0,.35);
+      border-radius:16px;
+      overflow:hidden;
+      background:white;
+    }
+
+    .figure-card {
+      min-height:135px;
+      border:0;
+      border-left:1px solid rgba(0,0,0,.24);
+      border-bottom:1px solid rgba(0,0,0,.24);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      position:relative;
+      background:#fffaf0;
+      cursor:pointer;
+      padding:8px;
+      color:#111;
+    }
+
+    .figure-card.selected {
+      outline:3px solid var(--gold);
+      outline-offset:-3px;
+      background:#fff2cc;
+    }
+
+    .figure-card.selected::after {
+      content:"✓";
+      position:absolute;
+      top:9px;
+      right:9px;
+      width:26px;
+      height:26px;
+      border-radius:50%;
+      background:var(--gold2);
+      color:#071b30;
+      display:grid;
+      place-items:center;
+      font-weight:900;
+    }
+
+    .glyph {
+      width:58px;
+      display:grid;
+      grid-template-rows:repeat(4,13px);
+      gap:7px;
+      justify-items:center;
+      align-items:center;
+    }
+
+    .one {
+      width:9px;
+      height:9px;
+      background:#111;
+      border-radius:50%;
+    }
+
+    .two {
+      width:38px;
+      height:7px;
+      background:#111;
+      border-radius:99px;
+    }
+
+    .figure-name {
+      font-weight:900;
+      font-size:16px;
+    }
+
+    .board {
+      border:2px solid var(--line);
+      background:white;
+      max-width:860px;
+      margin:0 auto;
+      direction:rtl;
+    }
+
+    .board-row {
+      display:grid;
+      border-bottom:2px solid var(--line);
+      direction:rtl;
+    }
+
+    .board-row.r1 { grid-template-columns:repeat(8,1fr); }
+    .board-row.r2 { grid-template-columns:repeat(4,1fr); }
+    .board-row.r3 { grid-template-columns:repeat(2,1fr); border-bottom:0; }
+
+    .house {
+      min-height:132px;
+      border-left:1px solid var(--line);
+      padding:8px 5px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      gap:6px;
+      background:white;
+    }
+
+    .house:last-child { border-left:0; }
+
+    .house-title {
+      font-weight:900;
+      font-size:16px;
+    }
+
+    .house-name {
+      color:#555;
+      font-size:13px;
+      min-height:18px;
+    }
+
+    .final-row {
+      max-width:860px;
+      margin:22px auto 0;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:22px;
+      direction:rtl;
+    }
+
+    .final-box {
+      border:2px solid var(--line);
+      background:white;
+      min-height:150px;
+    }
+
+    .final-box .house {
+      border-left:0;
+      min-height:150px;
+    }
+
+    .summary-box {
+      margin-top:18px;
+      background:var(--navy);
+      color:#f8f2e5;
+      border-radius:20px;
+      padding:18px;
+      white-space:pre-wrap;
+      line-height:1.7;
+      font-size:16px;
+    }
+
+    .error {
+      margin-top:14px;
+      padding:12px 14px;
+      background:#ffe9e4;
+      color:#8c2118;
+      border:1px solid #e2a39a;
+      border-radius:14px;
+      display:none;
+      white-space:pre-wrap;
+    }
+
+    .note {
+      margin-top:14px;
+      text-align:center;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    @media (max-width:800px) {
+      .screen { padding:16px; }
+      .form-grid, .actions, .mother-slots { grid-template-columns:1fr; }
+      .figure-grid { grid-template-columns:repeat(2,1fr); }
+      .board-row.r1 { grid-template-columns:repeat(4,1fr); }
+      .final-row { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <header class="topbar">
+      <button class="icon-btn" onclick="location.href='calculator.html'">←</button>
+      <h1>גורל החול</h1>
+      <div style="width:40px;"></div>
+    </header>
+
+    <section id="screen-open" class="screen active">
+      <div class="panel">
+        <h2>עמוד פתיחה</h2>
+
+        <div class="form-grid">
+          <div>
+            <label>שם הפונה</label>
+            <input id="clientNameInput" placeholder="שם הלקוח" autocomplete="off" />
+          </div>
+
+          <div>
+            <label>שם האב</label>
+            <input id="clientParentInput" placeholder="שם האב" autocomplete="off" />
+          </div>
+
+          <div>
+            <label>תאריך השאלה</label>
+            <input id="questionDateInput" placeholder="תאריך השאלה" autocomplete="off" />
+          </div>
+
+          <div>
+            <label>שעת השאלה</label>
+            <input id="questionTimeInput" placeholder="שעת השאלה" autocomplete="off" />
+          </div>
+
+          <div class="full">
+            <label>שאלה / כוונה</label>
+            <textarea id="questionInput" placeholder="כתוב כאן את שאלת גורל החול" autocomplete="off"></textarea>
+          </div>
+
+          <div class="full">
+            <label>נושא השאלה</label>
+            <select id="questionTopicInput">
+              <option value="">בחר נושא שאלה</option>
+              <option value="travel">נסיעה</option>
+              <option value="missingPerson">נעדר / אבידה</option>
+              <option value="childrenPregnancy">ילדים / הריון</option>
+              <option value="hiddenTreasure">מטמון / דבר חבוי</option>
+              <option value="spiritualDiagnostics">אבחון רוחני / עין / כישוף</option>
+              <option value="authorityState">שלטון / סמכות</option>
+              <option value="yearlyForecast">טאלע השנה / גשם / יוקר וזול</option>
+              <option value="birthNativity">מולד / טבע האדם</option>
+              <option value="general">כללי</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn" id="manualBtn" type="button">הכנסה ידנית של 4 האמהות</button>
+          <button class="btn gray" id="autoBtn" type="button">בחירה אוטומטית לפי עצירה</button>
+          <button class="btn gray" id="clearBtn" type="button">נקה טופס</button>
+          <button class="btn primary" id="startBtn" type="button">התחל</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-select" class="screen">
+      <div class="panel">
+        <h2>בחירת 4 צורות ראשונות</h2>
+
+        <div id="motherSlots" class="mother-slots"></div>
+        <div id="figureGrid" class="figure-grid"></div>
+
+        <div class="actions">
+          <button class="btn gray" id="backOpenBtn" type="button">חזרה</button>
+          <button class="btn gray" id="clearSelectionBtn" type="button">נקה בחירה</button>
+          <button class="btn primary" id="buildBoardBtn" type="button">המשך ללוח הגורל</button>
+        </div>
+
+        <div class="note">הסימון ✓ מציין צורה שכבר נבחרה.</div>
+      </div>
+    </section>
+
+    <section id="screen-board" class="screen">
+      <div class="panel">
+        <h2>לוח הגורל</h2>
+        <div id="boardResult"></div>
+        <div id="errorBox" class="error"></div>
+
+        <div class="actions">
+          <button class="btn gray" id="backSelectBtn" type="button">חזרה לבחירת אמהות</button>
+          <button class="btn primary" id="archiveBtn" type="button">ארכיון קריאות</button>
+          <button class="btn gray" id="clearArchiveBtn" type="button">נקה ארכיון</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script type="module">
+    import { interpretHawiQuestionInitial } from './goral-hachol/engine/hawi-interpreter.js';
+    import {
+      getGoralArchive,
+      saveGoralReadingToArchive,
+      deleteGoralArchiveRecord,
+      clearGoralArchive,
+      summarizeGoralClientHistory
+    } from './goral-hachol/engine/goral-client-archive.js';
+
+    window.HAWI_INTERPRETER = { interpretHawiQuestionInitial };
+    window.GORAL_CLIENT_ARCHIVE = {
+      getGoralArchive,
+      saveGoralReadingToArchive,
+      deleteGoralArchiveRecord,
+      clearGoralArchive,
+      summarizeGoralClientHistory
+    };
+  </script>
+
+  <script>
+    const FIGURE_ORDER = [
+      "1222", "2122", "1122", "2212",
+      "1212", "2112", "1112", "2221",
+      "1221", "2121", "1121", "2211",
+      "1211", "2111", "1111", "2222"
+    ];
+
+    let selectedMothers = [null, null, null, null];
+    let activeMother = 0;
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function linesFromKey(key) {
+      return String(key).split("").map(Number);
+    }
+
+    function getFiguresForPicker() {
+      const forms = window.RAML_FORMS_BASIC || {};
+      return FIGURE_ORDER.map(key => {
+        const item = forms[key] || {};
+        return {
+          id: `raml-${key}`,
+          key,
+          name: item.hebrew || key,
+          arabic: item.arabic || "",
+          statusHebrew: item.statusHebrew || "",
+          lines: linesFromKey(key)
+        };
+      });
+    }
+
+    const figures = getFiguresForPicker();
+
+    function glyphHtml(lines) {
+      return `
+        <div class="glyph">
+          ${lines.map(v => `<div class="${Number(v) === 1 ? "one" : "two"}"></div>`).join("")}
+        </div>
+      `;
+    }
+
+    function showScreen(name) {
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      document.getElementById("screen-" + name)?.classList.add("active");
+      window.scrollTo({ top:0, behavior:"smooth" });
+    }
+
+    function renderMotherSlots() {
+      const box = document.getElementById("motherSlots");
+      box.innerHTML = selectedMothers.map((fig, index) => `
+        <button type="button"
+          class="mother-slot ${index === activeMother ? "active" : ""} ${fig ? "filled" : ""}"
+          data-index="${index}">
+          <div>
+            <div style="font-weight:900;">אם ${index + 1}</div>
+            <div style="margin-top:4px;">${fig ? escapeHtml(fig.name) : "טרם נבחר"}</div>
+          </div>
+        </button>
+      `).join("");
+
+      box.querySelectorAll(".mother-slot").forEach(btn => {
+        btn.addEventListener("click", () => {
+          activeMother = Number(btn.dataset.index);
+          renderMotherSlots();
+          renderFigureGrid();
+        });
+      });
+    }
+
+    function renderFigureGrid() {
+      const grid = document.getElementById("figureGrid");
+      grid.innerHTML = figures.map((fig, index) => {
+        const selected = selectedMothers.some(m => m && m.key === fig.key);
+        return `
+          <button type="button" class="figure-card ${selected ? "selected" : ""}" data-index="${index}">
+            ${glyphHtml(fig.lines)}
+            <div class="figure-name">${escapeHtml(fig.name)}</div>
+          </button>
+        `;
+      }).join("");
+
+      grid.querySelectorAll(".figure-card").forEach(btn => {
+        btn.addEventListener("click", () => {
+          selectedMothers[activeMother] = figures[Number(btn.dataset.index)];
+          if (activeMother < 3) activeMother++;
+          renderMotherSlots();
+          renderFigureGrid();
+        });
+      });
+    }
+
+    function getClientContext() {
+      return {
+        clientName: document.getElementById("clientNameInput").value.trim(),
+        parentName: document.getElementById("clientParentInput").value.trim(),
+        questionDate: document.getElementById("questionDateInput").value.trim(),
+        questionTime: document.getElementById("questionTimeInput").value.trim(),
+        consultationContext: "",
+        topicOverride: document.getElementById("questionTopicInput").value
+      };
+    }
+
+    function houseName(number) {
+      const h = (window.RAML_HOUSES_BASIC || {})[number] || {};
+      return h.hebrew || "";
+    }
+
+    function figNameFromReadingHouse(house) {
+      return house.hebrew || house.figureHebrew || house.name || "";
+    }
+
+    function houseHtml(h, label) {
+      return `
+        <div class="house">
+          <div class="house-title">${label}</div>
+          <div class="house-name">${escapeHtml(h.houseHebrew || houseName(h.house))}</div>
+          ${glyphHtml(h.figure)}
+          <div class="figure-name">${escapeHtml(figNameFromReadingHouse(h))}</div>
+        </div>
+      `;
+    }
+
+    function buildBoardHtml(reading) {
+      const h = n => reading.chart.find(x => Number(x.house) === Number(n));
+
+      return `
+        <article class="board">
+          <div class="board-row r1">
+            ${[1,2,3,4,5,6,7,8].map(n => houseHtml(h(n), `${n} — ${n <= 4 ? "אם" : "בת"}`)).join("")}
+          </div>
+
+          <div class="board-row r2">
+            ${[9,10,11,12].map(n => houseHtml(h(n), `${n} — נכדה`)).join("")}
+          </div>
+
+          <div class="board-row r3">
+            ${houseHtml(h(13), "13 — עד ראשון")}
+            ${houseHtml(h(14), "14 — עד שני")}
+          </div>
+        </article>
+
+        <div class="final-row">
+          <div class="final-box">
+            ${houseHtml(h(16), "16 — משלים")}
+          </div>
+          <div class="final-box">
+            ${houseHtml(h(15), "15 — דיין")}
+          </div>
+        </div>
+      `;
+    }
+
+    function buildInterpretationHtml(reading) {
+      if (!window.HAWI_INTERPRETER?.interpretHawiQuestionInitial) {
+        return `<div class="summary-box">אבחון גורל החול נטען. רענן את הדף אם ההודעה נשארת.</div>`;
+      }
+
+      const insight = window.HAWI_INTERPRETER.interpretHawiQuestionInitial(reading.question, reading);
+
+      return `
+        <div class="summary-box">
+          <strong>מסקנה:</strong><br/>
+          ${escapeHtml(insight.finalConclusionHebrew || insight.conclusionDraftHebrew || "")}
+        </div>
+      `;
+    }
+
+    function runReading() {
+      const errorBox = document.getElementById("errorBox");
+      const boardResult = document.getElementById("boardResult");
+
+      errorBox.style.display = "none";
+      errorBox.textContent = "";
+
+      try {
+        if (selectedMothers.some(m => !m)) {
+          throw new Error("צריך לבחור 4 אמהות לפני יצירת לוח הגורל.");
+        }
+
+        const question = document.getElementById("questionInput").value.trim();
+        const mothers = selectedMothers.map(m => m.lines);
+
+        if (typeof window.ramlRunReading !== "function") {
+          throw new Error("מנוע גורל החול לא נטען מתוך raml.js.");
+        }
+
+        const reading = window.ramlRunReading(question, mothers);
+        reading.clientContext = getClientContext();
+
+        boardResult.innerHTML = buildBoardHtml(reading) + buildInterpretationHtml(reading);
+        showScreen("board");
+      } catch (err) {
+        errorBox.textContent = err.message || String(err);
+        errorBox.style.display = "block";
+        showScreen("board");
+      }
+    }
+
+    function clearForm() {
+      ["clientNameInput","clientParentInput","questionDateInput","questionTimeInput","questionInput","questionTopicInput"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = "";
+      });
+      selectedMothers = [null,null,null,null];
+      activeMother = 0;
+      renderMotherSlots();
+      renderFigureGrid();
+    }
+
+    document.getElementById("manualBtn").addEventListener("click", () => {
+      renderMotherSlots();
+      renderFigureGrid();
+      showScreen("select");
+    });
+
+    document.getElementById("startBtn").addEventListener("click", () => {
+      renderMotherSlots();
+      renderFigureGrid();
+      showScreen("select");
+    });
+
+    document.getElementById("autoBtn").addEventListener("click", () => {
+      alert("בחירה אוטומטית לפי עצירה תיבנה בשלב הבא. כרגע משתמשים בהכנסה ידנית בלבד.");
+    });
+
+    document.getElementById("backOpenBtn").addEventListener("click", () => showScreen("open"));
+    document.getElementById("backSelectBtn").addEventListener("click", () => showScreen("select"));
+    document.getElementById("clearSelectionBtn").addEventListener("click", () => {
+      selectedMothers = [null,null,null,null];
+      activeMother = 0;
+      renderMotherSlots();
+      renderFigureGrid();
+    });
+
+    document.getElementById("buildBoardBtn").addEventListener("click", runReading);
+    document.getElementById("clearBtn").addEventListener("click", clearForm);
+
+    document.getElementById("archiveBtn").addEventListener("click", () => {
+      alert("ארכיון הקריאות יחובר אחרי שהממשק החדש יאושר.");
+    });
+
+    document.getElementById("clearArchiveBtn").addEventListener("click", () => {
+      alert("ניקוי ארכיון יחובר אחרי שהממשק החדש יאושר.");
+    });
+
+    clearForm();
+  </script>
+</body>
+</html>
