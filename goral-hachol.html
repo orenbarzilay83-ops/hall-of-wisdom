@@ -429,12 +429,15 @@
         </div>
 
         <button id="runBtn">✦ צור לוח</button>
+        <button id="archiveBtn" type="button">ארכיון קריאות</button>
+        <button id="clearArchiveBtn" type="button">נקה ארכיון</button>
       </div>
 
       <div class="error" id="errorBox"></div>
     </section>
 
     <section id="result"></section>
+    <section id="archivePanel" class="summary-box" style="display:none;"></section>
   </main>
 
   <script type="module">
@@ -442,8 +445,24 @@
       interpretHawiQuestionInitial
     } from './goral-hachol/engine/hawi-interpreter.js';
 
+    import {
+      getGoralArchive,
+      saveGoralReadingToArchive,
+      deleteGoralArchiveRecord,
+      clearGoralArchive,
+      summarizeGoralClientHistory
+    } from './goral-hachol/engine/goral-client-archive.js';
+
     window.HAWI_INTERPRETER = {
       interpretHawiQuestionInitial
+    };
+
+    window.GORAL_CLIENT_ARCHIVE = {
+      getGoralArchive,
+      saveGoralReadingToArchive,
+      deleteGoralArchiveRecord,
+      clearGoralArchive,
+      summarizeGoralClientHistory
     };
   </script>
 
@@ -530,6 +549,7 @@
       }
 
       const insight = window.HAWI_INTERPRETER.interpretHawiQuestionInitial(reading.question, reading);
+      const archiveSaveBox = saveCurrentReading(reading, insight);
 
       const sources = insight.knowledgeSources
         .map(s => `<li>${escapeHtml(s.id)} — ${escapeHtml(s.titleHebrew)}</li>`)
@@ -634,6 +654,8 @@
             ${escapeHtml(insight.boardContext.noteHebrew)}
           </div>
         </div>
+
+        ${archiveSaveBox}
       `;
     }
 
@@ -694,6 +716,75 @@
     }
 
 
+
+    function formatArchiveDate(value) {
+      try {
+        return new Intl.DateTimeFormat("he-IL", {
+          day: "numeric",
+          month: "numeric",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit"
+        }).format(new Date(value));
+      } catch {
+        return "";
+      }
+    }
+
+    function renderArchivePanel() {
+      const panel = document.getElementById("archivePanel");
+      const api = window.GORAL_CLIENT_ARCHIVE;
+
+      if (!panel || !api) return;
+
+      const archive = api.getGoralArchive();
+
+      if (!archive.length) {
+        panel.style.display = "block";
+        panel.innerHTML = "<strong>ארכיון קריאות</strong><br/>אין עדיין קריאות שמורות.";
+        return;
+      }
+
+      panel.style.display = "block";
+      panel.innerHTML = `
+        <div style="font-weight:800; margin-bottom:10px;">ארכיון קריאות לקוחות</div>
+        ${archive.slice(0, 20).map(item => `
+          <div style="border-top:1px solid rgba(255,255,255,.18); padding:10px 0;">
+            <div><strong>${escapeHtml(item.clientName || "לקוח ללא שם")}</strong> — ${escapeHtml(item.topicHebrew || "")}</div>
+            <div style="opacity:.8; font-size:.92em;">${escapeHtml(formatArchiveDate(item.createdAt))}</div>
+            <div style="margin-top:5px;"><strong>שאלה:</strong> ${escapeHtml(item.question || "")}</div>
+            <div style="margin-top:5px; white-space:pre-line;">${escapeHtml(item.conclusion || "")}</div>
+            <button type="button" onclick="window.deleteGoralArchiveItem('${escapeHtml(item.id)}')">מחק קריאה</button>
+          </div>
+        `).join("")}
+      `;
+    }
+
+    window.deleteGoralArchiveItem = function(id) {
+      if (!window.GORAL_CLIENT_ARCHIVE) return;
+      window.GORAL_CLIENT_ARCHIVE.deleteGoralArchiveRecord(id);
+      renderArchivePanel();
+    };
+
+    function saveCurrentReading(reading, interpretation) {
+      const api = window.GORAL_CLIENT_ARCHIVE;
+      if (!api || !reading || !interpretation) return "";
+
+      const saved = api.saveGoralReadingToArchive(reading, interpretation);
+      if (!saved.ok) return "";
+
+      const clientName = reading.clientContext?.clientName || "";
+      const history = api.summarizeGoralClientHistory(clientName);
+
+      return `
+        <div class="summary-box">
+          <strong>הקריאה נשמרה בארכיון.</strong><br/>
+          ${escapeHtml(history.summaryHebrew)}
+        </div>
+      `;
+    }
+
+
     function getClientContext() {
       return {
         clientName: document.getElementById("clientNameInput")?.value?.trim() || "",
@@ -725,6 +816,18 @@
 
     document.getElementById("dateLine").textContent = todayLine();
     document.getElementById("runBtn").addEventListener("click", run);
+
+    document.getElementById("archiveBtn")?.addEventListener("click", () => {
+      renderArchivePanel();
+    });
+
+    document.getElementById("clearArchiveBtn")?.addEventListener("click", () => {
+      if (!window.GORAL_CLIENT_ARCHIVE) return;
+      if (confirm("לנקות את כל ארכיון הקריאות?")) {
+        window.GORAL_CLIENT_ARCHIVE.clearGoralArchive();
+        renderArchivePanel();
+      }
+    });
     document.getElementById("result").innerHTML = "";
   </script>
 </body>
