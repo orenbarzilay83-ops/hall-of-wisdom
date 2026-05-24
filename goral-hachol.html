@@ -307,7 +307,7 @@
     }
 
     .house.dhamir-house::before {
-      content: "ض";
+      content: "★";
       position: absolute;
       top: 3px;
       left: 4px;
@@ -455,6 +455,85 @@
       color:#f0c0e0;
     }
 
+    .topic-grid {
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+      margin-top:8px;
+    }
+    @media (min-width:600px) {
+      .topic-grid { grid-template-columns:repeat(3,1fr); }
+    }
+
+    .topic-card {
+      border:2px solid rgba(216,170,69,.4);
+      border-radius:16px;
+      padding:14px 16px;
+      cursor:pointer;
+      background:white;
+      text-align:right;
+      transition:background .15s, border-color .15s;
+    }
+    .topic-card:hover { background:#fffbee; border-color:var(--gold); }
+    .topic-card.selected {
+      background:#fff4cc;
+      border-color:var(--gold);
+      box-shadow:0 0 0 3px rgba(216,170,69,.25);
+    }
+    .topic-card-house {
+      font-size:12px;
+      color:#888;
+      margin-bottom:4px;
+    }
+    .topic-card-title {
+      font-weight:900;
+      font-size:17px;
+      color:#071b30;
+      margin-bottom:4px;
+    }
+    .topic-card-desc {
+      font-size:13px;
+      color:#555;
+      line-height:1.4;
+    }
+    .topic-free-btn {
+      grid-column:1 / -1;
+      border:2px dashed rgba(0,0,0,.2);
+      border-radius:16px;
+      padding:14px;
+      cursor:pointer;
+      background:white;
+      font-size:16px;
+      font-weight:700;
+      color:#444;
+      text-align:center;
+    }
+    .topic-free-btn.selected {
+      background:#e8f4ff;
+      border-color:#5599cc;
+      color:#1a4a7a;
+    }
+
+    .details-toggle {
+      display:block;
+      width:100%;
+      margin-top:16px;
+      padding:13px;
+      border:1px solid rgba(0,0,0,.2);
+      border-radius:14px;
+      background:#f7f7f7;
+      font-size:16px;
+      font-weight:700;
+      cursor:pointer;
+      color:#333;
+      text-align:center;
+    }
+    .details-toggle:hover { background:#efefef; }
+
+    .details-panel {
+      margin-top:12px;
+    }
+
     .error {
       margin-top:14px;
       padding:12px 14px;
@@ -508,12 +587,12 @@
 
           <div>
             <label>תאריך השאלה</label>
-            <input id="questionDateInput" placeholder="תאריך השאלה" autocomplete="off" />
+            <input type="date" id="questionDateInput" autocomplete="off" />
           </div>
 
           <div>
             <label>שעת השאלה</label>
-            <input id="questionTimeInput" placeholder="שעת השאלה" autocomplete="off" />
+            <input type="time" id="questionTimeInput" autocomplete="off" />
           </div>
 
           <div class="full">
@@ -522,27 +601,8 @@
           </div>
 
           <div class="full">
-            <label>נושא השאלה</label>
-            <select id="questionTopicInput">
-              <option value="">בחר נושא שאלה</option>
-              <option value="marriage">נישואין / זוגיות</option>
-              <option value="spiritualDiagnostics">אבחון רוחני / עין / כישוף</option>
-              <option value="illness">חולה / מחלה</option>
-              <option value="travel">נסיעה</option>
-              <option value="missingPerson">נעדר / גאיב</option>
-              <option value="childrenPregnancy">ילדים / הריון</option>
-              <option value="commerce">מסחר / קנייה ומכירה</option>
-              <option value="disputes">סכסוך / תביעה</option>
-              <option value="enemies">אויב / אויבות</option>
-              <option value="fear">פחד / סכנה</option>
-              <option value="loveHate">אהבה ושנאה</option>
-              <option value="completion">האם הדבר יצליח / יושלם</option>
-              <option value="hiddenTreasure">מטמון / דבר חבוי</option>
-              <option value="authorityState">שלטון / סמכות</option>
-              <option value="yearlyForecast">טאלע השנה / גשם / יוקר וזול</option>
-              <option value="birthNativity">מולד / טבע האדם</option>
-              <option value="general">כללי</option>
-            </select>
+            <label>נושא השאלה — בחר את הבית שקשור לשאלתך</label>
+            <div class="topic-grid" id="topicGrid"></div>
           </div>
         </div>
 
@@ -647,6 +707,42 @@
 
     let selectedMothers = [null, null, null, null];
     let activeMother = 0;
+    let selectedTopicId = null;
+
+    const TOPIC_CARDS = [
+      { house: 1,  title: 'מצב החיים הכללי', desc: 'בריאות, גוף, נפש, מצב השואל', topicId: 'foundations' },
+      { house: 2,  title: 'כסף ופרנסה',      desc: 'ממון, רכוש, עסקים, מסחר',     topicId: 'commerce' },
+      { house: 4,  title: 'בית ונכסים',      desc: 'דירה, נדל"ן, ירושה, מה שנסתר', topicId: 'hiddenTreasure' },
+      { house: 5,  title: 'ילדים והריון',    desc: 'לידה, הריון, ילדים',           topicId: 'childrenPregnancy' },
+      { house: 6,  title: 'מחלה ובריאות',   desc: 'חולי, מצב רפואי, החלמה',       topicId: 'illness' },
+      { house: 7,  title: 'זוגיות ונישואין', desc: 'בן/בת זוג, שותפות, יריב',      topicId: 'marriage' },
+      { house: 9,  title: 'נסיעה ומסע',      desc: 'יציאה, נסיעה, מסע',            topicId: 'travel' },
+      { house: 10, title: 'עבודה ומעמד',     desc: 'קריירה, שלטון, בעלי סמכות',   topicId: 'authorityState' },
+      { house: 11, title: 'חברות ואהבה',     desc: 'חברים, קשרים, אהבה',           topicId: 'loveHate' },
+      { house: 12, title: 'אויבים ופחד',     desc: 'פחד, אויבים, מה מפריע',        topicId: 'enemies' },
+    ];
+
+    function renderTopicGrid() {
+      const grid = document.getElementById("topicGrid");
+      if (!grid) return;
+      grid.innerHTML = TOPIC_CARDS.map(c => `
+        <button type="button" class="topic-card ${selectedTopicId === c.topicId ? 'selected' : ''}" data-topic="${c.topicId}">
+          <div class="topic-card-house">בית ${c.house}</div>
+          <div class="topic-card-title">${c.title}</div>
+          <div class="topic-card-desc">${c.desc}</div>
+        </button>
+      `).join("") + `
+        <button type="button" class="topic-free-btn ${selectedTopicId === '__free__' ? 'selected' : ''}" data-topic="__free__">
+          שאלה חופשית — האפליקציה תזהה את הנושא לבד
+        </button>`;
+
+      grid.querySelectorAll("[data-topic]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          selectedTopicId = btn.dataset.topic === "__free__" ? null : btn.dataset.topic;
+          renderTopicGrid();
+        });
+      });
+    }
 
     function escapeHtml(value) {
       return String(value ?? "")
@@ -748,7 +844,7 @@
         questionDate: document.getElementById("questionDateInput").value.trim(),
         questionTime: document.getElementById("questionTimeInput").value.trim(),
         consultationContext: "",
-        topicOverride: document.getElementById("questionTopicInput").value
+        topicOverride: selectedTopicId || ""
       };
     }
 
@@ -795,16 +891,16 @@
       return `
         <article class="board">
           <div class="board-row r1">
-            ${[1,2,3,4,5,6,7,8].map(n => houseHtml(h(n), `${n} — ${n <= 4 ? "אם" : "בת"}`, d(n))).join("")}
+            ${[1,2,3,4,5,6,7,8].map(n => houseHtml(h(n), `בית ${n}`, d(n))).join("")}
           </div>
 
           <div class="board-row r2">
-            ${[9,10,11,12].map(n => houseHtml(h(n), `${n} — נכדה`, d(n))).join("")}
+            ${[9,10,11,12].map(n => houseHtml(h(n), `בית ${n}`, d(n))).join("")}
           </div>
 
           <div class="board-row r3">
-            ${houseHtml(h(13), "13 — עד ראשון", d(13))}
-            ${houseHtml(h(14), "14 — עד שני", d(14))}
+            ${houseHtml(h(13), "13 — עד א׳", d(13))}
+            ${houseHtml(h(14), "14 — עד ב׳", d(14))}
           </div>
         </article>
 
@@ -816,7 +912,7 @@
             ${houseHtml(h(15), "15 — דיין", d(15))}
           </div>
         </div>
-        ${dhamirHouseNum ? `<div class="dhamir-legend">ض = בית הדמיר (בית ${dhamirHouseNum}) — הצורה שכל שאר הצורות מעידות עליה</div>` : ""}
+        ${dhamirHouseNum ? `<div class="dhamir-legend">★ = בית הדמיר (בית ${dhamirHouseNum}) — הצורה שכל שאר הצורות מעידות עליה</div>` : ""}
       `;
     }
 
@@ -973,19 +1069,53 @@
         `
         : "";
 
+      // Board score warning only (if incomplete) — always visible
+      const boardWarnHtml = (boardScoreData && !boardScoreData.isComplete)
+        ? `<div class="board-info-row board-score-warn">⚠ ${escapeHtml(boardScoreData.hebrewSummary)}</div>`
+        : "";
+
+      // Short key facts line — always visible
+      const judgeHouse = insight.boardAnalysis?.judge;
+      const h1House = insight.boardAnalysis?.house1Analysis;
+      const keyFactsHtml = (judgeHouse || h1House) ? `
+        <div style="margin-top:12px; font-size:15px; color:#555; text-align:center; direction:rtl;">
+          ${judgeHouse ? `דיין: ${escapeHtml(judgeHouse.figureHebrew || "")} [${escapeHtml(judgeHouse.fortune || "")}]` : ""}
+          ${judgeHouse && h1House ? " &nbsp;|&nbsp; " : ""}
+          ${h1House ? `בית 1: ${escapeHtml(h1House.figureHebrew || "")} [${escapeHtml(h1House.fortune || "")}]` : ""}
+        </div>` : "";
+
+      // Rewrite terminology in banners
+      function hebrewTerms(s) {
+        return s
+          .replace(/תסדיס/g, "קשר צדדי")
+          .replace(/ריבוע/g, "קשר חזק")
+          .replace(/משולש/g, "קשר טבעי")
+          .replace(/מול/g, "קשר מנוגד")
+          .replace(/נאר \(אש\)/g, "אש")
+          .replace(/הוואא \(אוויר\)/g, "אוויר")
+          .replace(/מאא \(מים\)/g, "מים")
+          .replace(/תראב \(אדמה\)/g, "עפר")
+          .replace(/בית יתד/g, "בית חזק")
+          .replace(/איתיסלאת/g, "חיבורים");
+      }
+
+      // Details panel content
+      const detailsContent = `
+        <div class="details-panel">
+          ${hebrewTerms(boardInfoHtml)}
+          <div class="summary-box">
+            <strong>מסקנה מפורטת:</strong><br/>
+            ${hebrewTerms(escapeHtml(conclusion)).replace(/\n/g, "<br/>")}
+          </div>
+          ${spiritualDetailHtml}
+        </div>`;
+
       return `
-        ${boardInfoHtml}
-
+        ${boardWarnHtml}
         ${verdictHtml}
-
-        <div class="summary-box">
-          <strong>מסקנה מפורטת:</strong><br/>
-          ${escapeHtml(conclusion).replace(/\n/g, "<br/>")}
-        </div>
-
-        ${spiritualDetailHtml}
-        ${rulesHtml}
-        ${sourcesHtml}
+        ${keyFactsHtml}
+        <button class="details-toggle" onclick="const p=this.nextElementSibling;p.hidden=!p.hidden;this.textContent=p.hidden?'פרטים ▼':'סגור ▲'">פרטים ▼</button>
+        <div hidden>${detailsContent}</div>
       `;
     }
 
@@ -1026,15 +1156,19 @@
     }
 
     function clearForm() {
-      ["clientNameInput","clientParentInput","questionDateInput","questionTimeInput","questionInput","questionTopicInput"].forEach(id => {
+      ["clientNameInput","clientParentInput","questionDateInput","questionTimeInput","questionInput"].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.value = "";
       });
+      selectedTopicId = null;
+      renderTopicGrid();
       selectedMothers = [null,null,null,null];
       activeMother = 0;
       renderMotherSlots();
       renderFigureGrid();
     }
+
+    renderTopicGrid();
 
     document.getElementById("manualBtn").addEventListener("click", () => {
       renderMotherSlots();
