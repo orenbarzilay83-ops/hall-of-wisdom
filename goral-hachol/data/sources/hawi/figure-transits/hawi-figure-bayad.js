@@ -9,7 +9,7 @@
  * No external knowledge.
  */
 
-const HAWI_FIGURE_BAYAD = {
+export const HAWI_FIGURE_BAYAD = {
   "id": "hawi-figure-bayad",
   "order": 14,
   "arabicName": "البياض",

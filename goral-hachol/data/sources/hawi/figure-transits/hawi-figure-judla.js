@@ -9,7 +9,7 @@
  * No external knowledge.
  */
 
-const HAWI_FIGURE_JUDLA = {
+export const HAWI_FIGURE_JUDLA = {
   "id": "hawi-figure-judla",
   "order": 12,
   "arabicName": "الكوسج / الجودلة",

@@ -9,7 +9,7 @@
  * No external knowledge.
  */
 
-const HAWI_FIGURE_ATABA_KHARIJA = {
+export const HAWI_FIGURE_ATABA_KHARIJA = {
   "id": "hawi-figure-ataba-kharija",
   "order": 16,
   "arabicName": "العتبة الخارجة",

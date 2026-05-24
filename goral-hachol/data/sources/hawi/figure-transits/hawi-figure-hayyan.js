@@ -15,7 +15,7 @@
  * No external knowledge.
  */
 
-const HAWI_FIGURE_HAYYAN = {
+export const HAWI_FIGURE_HAYYAN = {
   id: 'hawi-figure-hayyan',
   order: 9,
   arabicName: 'الأحيان / الحيان',

@@ -9,7 +9,7 @@
  * No external knowledge.
  */
 
-const HAWI_FIGURE_ATABA_DAKHILA = {
+export const HAWI_FIGURE_ATABA_DAKHILA = {
   "id": "hawi-figure-ataba-dakhila",
   "order": 15,
   "arabicName": "العتبة الداخلة",

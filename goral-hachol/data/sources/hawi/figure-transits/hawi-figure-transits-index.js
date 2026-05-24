@@ -15,7 +15,7 @@
  * - Later we may add displayHebrew for app-friendly wording.
  */
 
-const HAWI_FIGURE_TRANSITS_INDEX = {
+export const HAWI_FIGURE_TRANSITS_INDEX = {
   id: "hawi-figure-transits-index",
   sourceBook: "حاوي العجائب ومظهر الغرائب",
   sourceAuthor: "أحمد ابن زنبل المحلي",

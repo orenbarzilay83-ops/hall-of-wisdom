@@ -17,7 +17,7 @@
  * - Later we may add displayHebrew for app-friendly wording.
  */
 
-const HAWI_QUESTION_DISPUTES = {
+export const HAWI_QUESTION_DISPUTES = {
   id: "hawi-question-disputes",
   sourceBook: "حاوي العجائب ومظهر الغرائب",
   sourceAuthor: "أحمد ابن زنبل المحلي",

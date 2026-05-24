@@ -12,7 +12,7 @@
  * No external knowledge.
  */
 
-const HAWI_FIGURE_TARIQ = {
+export const HAWI_FIGURE_TARIQ = {
   "sourceBook": "حاوي العجائب ومظهر الغرائب",
   "sourceSectionArabic": "ترحيل الأشكال الستة عشر في الستة عشر بيتا",
   "sourceSectionHebrew": "הצבת שש־עשרה הצורות בשישה־עשר הבתים",

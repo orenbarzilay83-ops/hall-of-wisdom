@@ -9,7 +9,7 @@
  * No external knowledge.
  */
 
-const HAWI_FIGURE_NAKIS = {
+export const HAWI_FIGURE_NAKIS = {
   "id": "hawi-figure-nakis",
   "order": 10,
   "arabicName": "الأنكيس / النكيس / المنكوس",

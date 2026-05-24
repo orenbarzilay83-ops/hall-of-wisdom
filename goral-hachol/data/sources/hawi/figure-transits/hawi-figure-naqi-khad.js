@@ -15,7 +15,7 @@
  * No external knowledge.
  */
 
-const HAWI_FIGURE_NAQI_KHAD = {
+export const HAWI_FIGURE_NAQI_KHAD = {
   id: 'hawi-figure-naqi-khad',
   order: 11,
   arabicName: 'نقي الخد / الأشقر',
