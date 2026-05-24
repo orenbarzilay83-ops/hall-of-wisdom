@@ -300,21 +300,38 @@ function findSourceRecordByFigure(house, sourceList) {
 }
 
 function getTransitMeaningForHouse(house) {
-  const record = findSourceRecordByFigure(house, HAWI_SOURCE.figureTransits?.list);
-  if (!record) return null;
-
-  const meanings = record.houses || record.houseMeanings || record.meanings || record.transits || [];
-  const houseMeaning = Array.isArray(meanings)
-    ? meanings.find((x) => Number(x.house) === Number(house.house))
-    : null;
-
+  if (!house) return null;
+  const houseNum = Number(house.house);
+  // Try direct lookup by figureId or shortId
+  const figureId = house.figureId || house.shortId || null;
+  let houseMeaning = null;
+  if (figureId) {
+    houseMeaning = HAWI_SOURCE.figureTransits.getHouseMeaning(figureId, houseNum);
+  }
+  // If that failed, try by pattern (house.key = "2221" etc.)
+  if (!houseMeaning && house.key) {
+    // Find the figure by pattern from HAWI_SOURCE.figureNames.list
+    const figureByPattern = HAWI_SOURCE.figureNames.list.find(f => f.pattern === house.key);
+    if (figureByPattern) {
+      houseMeaning = HAWI_SOURCE.figureTransits.getHouseMeaning(figureByPattern.shortId, houseNum);
+    }
+  }
+  // If still failed, try by Hebrew name
+  if (!houseMeaning && house.hebrew) {
+    const figureByHebrew = HAWI_SOURCE.figureNames.list.find(f =>
+      f.hebrewName === house.hebrew
+    );
+    if (figureByHebrew) {
+      houseMeaning = HAWI_SOURCE.figureTransits.getHouseMeaning(figureByHebrew.shortId, houseNum);
+    }
+  }
+  if (!houseMeaning) return null;
   return {
-    sourceId: record.id || null,
     figure: house.hebrew || house.key || null,
     house: house.house,
-    meaning: houseMeaning?.meaning || houseMeaning?.hebrew || houseMeaning?.rule || null,
-    topics: houseMeaning?.topics || null,
-    sourceStatus: houseMeaning?.sourceStatus || record.status || null,
+    meaning: houseMeaning.meaning || null,
+    topics: houseMeaning.topics || null,
+    sourceStatus: houseMeaning.sourceStatus || null,
   };
 }
 
@@ -455,19 +472,16 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
     return 'עדיין אין לוח גורל מלא, לכן ניתן רק לזהות את נושא השאלה ואת שכבות הידע המתאימות.';
   }
 
-  const focus = boardAnalysis.focusHouse;
   const judge = boardAnalysis.judge;
   const sentence = boardAnalysis.sentence;
   const judgeVerdict = boardScore.judgeVerdict || null;
 
   const parts = [];
 
-  // Lead with judge verdict
-  if (judgeVerdict?.hebrewFull) {
-    parts.push(judgeVerdict.hebrewFull);
-  } else {
-    parts.push(boardScore.hebrew);
-  }
+  // Lead with judge verdict (short form to avoid duplication with describeCoreHouses)
+  const judgeHebrew = judge?.figureHebrew || 'לא מזוהה';
+  const judgeFortune = judge?.fortune ? ` (${judge.fortune})` : '';
+  parts.push(`הדיין בבית 15: ${judgeHebrew}${judgeFortune} — ${judgeVerdict?.hebrewShort || boardScore.hebrewShort || 'תשובה לא מוכרעת'}.`);
 
   if (sentence) {
     parts.push(

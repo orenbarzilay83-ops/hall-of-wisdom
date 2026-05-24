@@ -135,7 +135,7 @@ function topicOpening(topicId, topicHebrew) {
   return openings[topicId] || `בעניין ${topicHebrew}, הקריאה בודקת את הבית המרכזי, העדים, הדיין והשלמת הדין.`;
 }
 
-function describeCoreHouses(analysis) {
+function describeCoreHouses(analysis, topicId) {
   if (!analysis || !analysis.hasBoard) {
     return 'עדיין אין לוח מלא, ולכן אי אפשר לתת מסקנה מלאה מתוך הצורות.';
   }
@@ -148,31 +148,41 @@ function describeCoreHouses(analysis) {
   const parts = [];
 
   if (focus) {
+    const figureName = focus.figureHebrew || 'שאינה מזוהה בשם';
+    const transitMeaning = focus.transit?.meaning;
+    const transitPart = transitMeaning ? `: ${transitMeaning}` : '';
     parts.push(
-      `הבית המרכזי הוא בית ${focus.house}, ושם מופיעה הצורה ${focus.figureHebrew || 'שאינה מזוהה בשם'}; זהו המקום שמחזיק את גוף השאלה.`
+      `הבית המרכזי בית ${focus.house} — ${figureName}${transitPart}`
     );
   }
 
   if (witnesses.length) {
-    const witnessText = witnesses
-      .map((w) => `בית ${w.house} עם ${w.figureHebrew || 'צורה לא מזוהה'}`)
-      .join(' ו־');
-    parts.push(`העדים הם ${witnessText}, והם מראים את הכיוון שממנו הדין מקבל חיזוק או התנגדות.`);
+    const witnessLines = witnesses.map((w) => {
+      const wName = w.figureHebrew || 'צורה לא מזוהה';
+      const wTransit = w.transit?.meaning;
+      const wTransitPart = wTransit ? `: ${wTransit}` : '';
+      return `בית ${w.house} — ${wName}${wTransitPart}`;
+    });
+    parts.push(`העדים: ${witnessLines.join(' ו־')}`);
   }
 
   if (judge) {
+    const judgeName = judge.figureHebrew || 'צורה לא מזוהה';
+    const judgeFortune = judge.fortune ? ` [${judge.fortune}]` : '';
+    const judgeTransit = judge.transit?.meaning;
+    const judgeTransitPart = judgeTransit ? `: ${judgeTransit}` : '';
     parts.push(
-      `הדיין בבית 15 הוא ${judge.figureHebrew || 'צורה לא מזוהה'}, ולכן הוא משמש כמרכז הפסיקה של הלוח.`
+      `הדיין בית 15 — ${judgeName}${judgeFortune}${judgeTransitPart}`
     );
   }
 
   if (sentence) {
     parts.push(
-      `בית 16 — משלים בבית 16 הוא ${sentence.figureHebrew || 'צורה לא מזוהה'}, והוא מראה איך הדבר נוטה להיסגר בסוף.`
+      `בית 16 — משלים: ${sentence.figureHebrew || 'צורה לא מזוהה'}, מראה את אחרית הדין.`
     );
   }
 
-  return parts.join(' ');
+  return parts.join('\n');
 }
 
 function spiritualVerdict(spiritualDiagnosis) {
@@ -225,19 +235,44 @@ function spiritualParagraph(spiritualDiagnosis, topicId) {
   return important.filter(Boolean).join('\n');
 }
 
-function recommendationByTopic(topicId, grade) {
+function getHouseFromBoard(boardAnalysis, houseNumber) {
+  if (!boardAnalysis || !Array.isArray(boardAnalysis.houses)) return null;
+  return boardAnalysis.houses.find((h) => Number(h.house) === Number(houseNumber)) || null;
+}
+
+function houseDescription(house) {
+  if (!house) return null;
+  const name = house.figureHebrew || 'לא מזוהה';
+  const transit = house.transit?.meaning;
+  return transit ? `${name}: ${transit}` : name;
+}
+
+function recommendationByTopic(topicId, grade, boardAnalysis) {
   if (topicId === 'travel') {
-    if (grade === 'positive') return 'לכן אפשר לשקול יציאה, אבל עדיין לבדוק זמן, דרך ואנשים מעורבים.';
-    if (grade === 'negative') return 'לכן לא מומלץ למהר לנסיעה. עדיף לדחות, לבדוק מחדש או לשנות תנאים.';
-    return 'לכן ההמלצה היא לא למהר: לבדוק את התנאים, הדרך והזמן לפני החלטה.';
+    const house9 = getHouseFromBoard(boardAnalysis, 9);
+    const house9Desc = houseDescription(house9);
+    let base = '';
+    if (grade === 'positive') base = 'לכן אפשר לשקול יציאה, אבל עדיין לבדוק זמן, דרך ואנשים מעורבים.';
+    else if (grade === 'negative') base = 'לכן לא מומלץ למהר לנסיעה. עדיף לדחות, לבדוק מחדש או לשנות תנאים.';
+    else base = 'לכן ההמלצה היא לא למהר: לבדוק את התנאים, הדרך והזמן לפני החלטה.';
+    if (house9Desc) base += ` בדוק בית 9 (נסיעה): ${house9Desc}`;
+    return base;
   }
 
   if (topicId === 'missingPerson') {
-    return 'לכן צריך לקרוא בזהירות את סימני החזרה, העיכוב והפחד, ולא להסתפק בסימן אחד בלבד.';
+    const house8 = getHouseFromBoard(boardAnalysis, 8);
+    const house8Desc = houseDescription(house8);
+    let base = 'לכן צריך לקרוא בזהירות את סימני החזרה, העיכוב והפחד, ולא להסתפק בסימן אחד בלבד.';
+    if (house8Desc) base += ` בדוק בית 8 (מות/אובדן): ${house8Desc}`;
+    return base;
   }
 
   if (topicId === 'childrenPregnancy') {
-    return 'לכן יש לבדוק את בית הילדים, העדים והדיין יחד, ורק אז להכריע לגבי אפשרות ההיריון או סימני זכר ונקבה.';
+    const house5 = getHouseFromBoard(boardAnalysis, 5);
+    const house5Desc = houseDescription(house5);
+    let base = 'לכן יש לבדוק את בית הילדים, העדים והדיין יחד, ורק אז להכריע לגבי אפשרות ההיריון או סימני זכר ונקבה.';
+    if (house5Desc) base += ` בדוק בית 5 (ילדים): ${house5Desc}`;
+    return base;
   }
 
   if (topicId === 'hiddenTreasure') {
@@ -275,9 +310,9 @@ export function writeHumanGoralConclusion(result) {
     verdictParagraph,
     topicOpening(topicId, topicHebrew),
     questionFocusParagraph(topicId, result.clientContext),
-    describeCoreHouses(result.boardAnalysis),
+    describeCoreHouses(result.boardAnalysis, topicId),
     spiritualParagraph(result.spiritualDiagnosis, topicId),
-    recommendationByTopic(topicId, grade),
+    recommendationByTopic(topicId, grade, result.boardAnalysis),
   ].filter((p) => clean(p));
 
   return paragraphs.join('\n\n');
