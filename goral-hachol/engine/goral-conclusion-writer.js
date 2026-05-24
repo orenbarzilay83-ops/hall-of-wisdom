@@ -193,15 +193,24 @@ function describeCoreHouses(analysis, topicId) {
   const sentence = analysis.sentence;
   const witnesses = analysis.witnesses || [];
 
+  const dhamir = analysis.dhamirHouse || null;
   const parts = [];
 
   if (focus) {
     const figureName = focus.figureHebrew || 'שאינה מזוהה בשם';
     const transitMeaning = focus.transit?.meaning;
     const transitPart = transitMeaning ? `: ${transitMeaning}` : '';
-    parts.push(
-      `הבית המרכזי בית ${focus.house} — ${figureName}${transitPart}`
-    );
+    let focusLine = `הבית המרכזי בית ${focus.house} — ${figureName}${transitPart}`;
+    if (focus.isAdversarial) {
+      const tone = focus.fortune || '';
+      const adversarialNote = tone === 'נחס'
+        ? ' [בית הצד שכנגד — נחס בבית זה = חולשה של הצד השני, טוב לשואל]'
+        : tone === 'סעד'
+        ? ' [בית הצד שכנגד — סעד בבית זה = הצד השני חזק]'
+        : ' [בית הצד שכנגד — יש להפוך את הפרשנות: מה שרע לצד זה טוב לשואל]';
+      focusLine += adversarialNote;
+    }
+    parts.push(focusLine);
   }
 
   if (witnesses.length) {
@@ -227,6 +236,13 @@ function describeCoreHouses(analysis, topicId) {
   if (sentence) {
     parts.push(
       `בית 16 — משלים: ${sentence.figureHebrew || 'צורה לא מזוהה'}, מראה את אחרית הדין.`
+    );
+  }
+
+  if (dhamir) {
+    const dhamirFortune = dhamir.fortune ? ` [${dhamir.fortune}]` : '';
+    parts.push(
+      `הדמיר (חל הדמיר): בית ${dhamir.houseNumber} — ${dhamir.figureHebrew}${dhamirFortune}. הצורה שבה נפל הדמיר — כל הדין נמצא בה לפי המקור.`
     );
   }
 

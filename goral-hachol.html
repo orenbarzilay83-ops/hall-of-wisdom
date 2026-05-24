@@ -284,9 +284,42 @@
       text-align:center;
       gap:6px;
       background:white;
+      position:relative;
+    }
+
+    .house.dhamir-house {
+      background: #fffbea;
+      outline: 2px solid #c8a200;
+      outline-offset: -2px;
+    }
+
+    .house.dhamir-house::before {
+      content: "ض";
+      position: absolute;
+      top: 3px;
+      left: 4px;
+      font-size: 11px;
+      font-weight: 900;
+      color: #c8a200;
+      background: #fff8cc;
+      border-radius: 3px;
+      padding: 1px 3px;
+      line-height: 1;
     }
 
     .house:last-child { border-left:0; }
+
+    .dhamir-legend {
+      text-align: center;
+      font-size: 13px;
+      color: #8a6d00;
+      background: #fffbea;
+      border: 1px solid #e8d870;
+      border-radius: 6px;
+      padding: 6px 12px;
+      margin: 8px auto 0;
+      max-width: 860px;
+    }
 
     .house-title {
       font-weight:900;
@@ -676,9 +709,28 @@
       return house.hebrew || house.figureHebrew || house.name || "";
     }
 
-    function houseHtml(h, label) {
+    function computeDhamirHouseNumber(chart) {
+      // Count single ('1') points from the 4 mothers (houses 1-4)
+      // Then look up position in taskin east order to find dhamir house
+      const TASKIN_EAST = [
+        '2212','2111','1222','1121','2122','2221','1211','1112',
+        '2211','2112','1221','1122','2222','2121','1111','1212'
+      ];
+      let totalOnes = 0;
+      for (let i = 1; i <= 4; i++) {
+        const m = chart.find(x => Number(x.house) === i);
+        if (m?.key) for (const ch of String(m.key)) if (ch === '1') totalOnes++;
+      }
+      let pos = totalOnes % 16;
+      if (pos === 0) pos = 16;
+      const targetPattern = TASKIN_EAST[pos - 1];
+      const entry = chart.find(x => x.key === targetPattern);
+      return entry ? Number(entry.house) : null;
+    }
+
+    function houseHtml(h, label, isDhamir) {
       return `
-        <div class="house">
+        <div class="house${isDhamir ? ' dhamir-house' : ''}">
           <div class="house-title">${label}</div>
           <div class="house-name">${escapeHtml(h.houseHebrew || houseName(h.house))}</div>
           ${glyphHtml(h.figure)}
@@ -689,31 +741,35 @@
 
     function buildBoardHtml(reading) {
       const h = n => reading.chart.find(x => Number(x.house) === Number(n));
+      const dhamirHouseNum = computeDhamirHouseNumber(reading.chart);
+
+      const d = n => n === dhamirHouseNum;
 
       return `
         <article class="board">
           <div class="board-row r1">
-            ${[1,2,3,4,5,6,7,8].map(n => houseHtml(h(n), `${n} — ${n <= 4 ? "אם" : "בת"}`)).join("")}
+            ${[1,2,3,4,5,6,7,8].map(n => houseHtml(h(n), `${n} — ${n <= 4 ? "אם" : "בת"}`, d(n))).join("")}
           </div>
 
           <div class="board-row r2">
-            ${[9,10,11,12].map(n => houseHtml(h(n), `${n} — נכדה`)).join("")}
+            ${[9,10,11,12].map(n => houseHtml(h(n), `${n} — נכדה`, d(n))).join("")}
           </div>
 
           <div class="board-row r3">
-            ${houseHtml(h(13), "13 — עד ראשון")}
-            ${houseHtml(h(14), "14 — עד שני")}
+            ${houseHtml(h(13), "13 — עד ראשון", d(13))}
+            ${houseHtml(h(14), "14 — עד שני", d(14))}
           </div>
         </article>
 
         <div class="final-row">
           <div class="final-box">
-            ${houseHtml(h(16), "16 — משלים")}
+            ${houseHtml(h(16), "16 — משלים", d(16))}
           </div>
           <div class="final-box">
-            ${houseHtml(h(15), "15 — דיין")}
+            ${houseHtml(h(15), "15 — דיין", d(15))}
           </div>
         </div>
+        ${dhamirHouseNum ? `<div class="dhamir-legend">ض = בית הדמיר (בית ${dhamirHouseNum}) — הצורה שכל שאר הצורות מעידות עליה</div>` : ""}
       `;
     }
 

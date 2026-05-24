@@ -15,6 +15,41 @@ import {
   writeHumanGoralConclusion,
 } from './goral-conclusion-writer.js';
 
+// Taskin al-Sharq order (تسكين الشرق) — 16 figure patterns in source order
+// Converted from | (=1, single) / 0 (=2, double) notation in hawi-dhamir-directions-validation.js
+const TASKIN_EAST_PATTERNS = [
+  '2212', // לבן
+  '2111', // סף נכנס
+  '1222', // נשוא ראש
+  '1121', // נלחם
+  '2122', // אדום
+  '2221', // שפל ראש
+  '1211', // בר הלחי
+  '1112', // סף יוצא
+  '2211', // כבוד נכנס
+  '2112', // חיבור
+  '1221', // סוהר
+  '1122', // כבוד יוצא
+  '2222', // דרך
+  '2121', // ממון נכנס
+  '1111', // קהלה
+  '1212', // ממון יוצא
+];
+
+// Fortune tone of each house by its structural nature (from hawi-house-states-colors.js)
+const HOUSE_FORTUNE_TONES = {
+  1: 1, 2: -1, 3: 0.5, 4: -1, 5: 1, 6: -0.5,
+  7: -1, 8: -0.5, 9: 1, 10: 1, 11: 1, 12: -1,
+  13: 1, 14: -0.5, 15: 0, 16: 1,
+};
+
+// Houses that represent the OTHER SIDE (opponent/illness/enemy) — fortune is inverted for the questioner
+const ADVERSARIAL_HOUSES_BY_TOPIC = {
+  disputes: [7],
+  enemies: [7, 12],
+  illness: [6],
+};
+
 const TOPIC_MAIN_HOUSES = {
   travel: [1, 3, 5, 8, 9, 12],
   missingPerson: [1, 7, 8, 9, 12],
@@ -105,6 +140,42 @@ function getFigureFortuneTone(house) {
   if (isGoodValue(fortune)) return 1;
   if (isBadValue(fortune)) return -1;
   return 0;
+}
+
+function getHouseFortuneTone(houseNumber) {
+  return HOUSE_FORTUNE_TONES[Number(houseNumber)] ?? 0;
+}
+
+// Count single (odd/'1') points from the 4 mothers, find dhamir position in taskin east
+function computeDhamirHouse(board) {
+  if (!board || !Array.isArray(board.chart)) return null;
+
+  let totalOnes = 0;
+  for (let i = 1; i <= 4; i++) {
+    const motherHouse = board.chart.find((h) => Number(h.house) === i);
+    if (motherHouse?.key) {
+      for (const ch of String(motherHouse.key)) {
+        if (ch === '1') totalOnes++;
+      }
+    }
+  }
+
+  let position = totalOnes % 16;
+  if (position === 0) position = 16;
+
+  const targetPattern = TASKIN_EAST_PATTERNS[position - 1];
+  const dhamirEntry = board.chart.find((h) => h.key === targetPattern);
+  if (!dhamirEntry) return null;
+
+  const figureRecord = (HAWI_SOURCE.figureNames?.list || []).find((f) => f.pattern === targetPattern);
+  return {
+    houseNumber: Number(dhamirEntry.house),
+    pattern: targetPattern,
+    figureHebrew: dhamirEntry.hebrew || figureRecord?.hebrewName || targetPattern,
+    fortune: dhamirEntry.fortune || figureRecord?.fortuneHebrew || null,
+    totalOnes,
+    taskinPosition: position,
+  };
 }
 
 function buildJudgeVerdict(boardAnalysis) {
@@ -405,6 +476,8 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     16,
   ])).filter(Boolean);
 
+  const adversarialHouseNums = new Set(ADVERSARIAL_HOUSES_BY_TOPIC[topicId] || []);
+
   const houses = selectedHouseNumbers
     .map((n) => getHouse(board, n))
     .filter(Boolean)
@@ -420,6 +493,8 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
       transit: getTransitMeaningForHouse(house),
       figureState: getFigureStateForHouse(house),
       houseState: getHouseStateColor(house.house),
+      houseFortuneTone: getHouseFortuneTone(house.house),
+      isAdversarial: adversarialHouseNums.has(Number(house.house)),
     }));
 
   const focusHouse = houses.find((h) => Number(h.house) === focusHouseNumber) || null;
@@ -427,6 +502,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const witness14 = houses.find((h) => Number(h.house) === 14) || null;
   const judge15 = houses.find((h) => Number(h.house) === 15) || null;
   const sentence16 = houses.find((h) => Number(h.house) === 16) || null;
+  const dhamirHouse = computeDhamirHouse(board);
 
   return {
     hasBoard: true,
@@ -437,6 +513,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     witnesses: [witness13, witness14].filter(Boolean),
     judge: judge15,
     sentence: sentence16,
+    dhamirHouse,
   };
 }
 
