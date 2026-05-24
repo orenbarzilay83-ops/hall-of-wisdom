@@ -444,6 +444,16 @@
       border:2px solid #5c9fc7;
       color:#c8e0f4;
     }
+    .board-ittisalat-ok {
+      background:#1a2d1a;
+      border:2px solid #76c442;
+      color:#b8f0a0;
+    }
+    .board-ittisalat-warn {
+      background:#2d1a2a;
+      border:2px solid #b06090;
+      color:#f0c0e0;
+    }
 
     .error {
       margin-top:14px;
@@ -861,6 +871,16 @@
           `שורת ${escapeHtml(t.rowElement)} → בית ${t.dhamirHouseNumber} (${escapeHtml(t.dhamirHebrew)}${t.dhamirFortune ? ', ' + t.dhamirFortune : ''})`
         ).join(' | ');
         boardInfoHtml += `<div class="board-info-row board-dhamir">🎯 הדמיר: ${traceText} — הדמיר העיקרי: בית ${dhamirMizanData.primaryHouseNumber}</div>`;
+      }
+
+      // Ittisalat banner
+      const ittisalatData = insight.boardAnalysis?.ittisalat || null;
+      if (ittisalatData) {
+        const connIcon = ittisalatData.isConnected ? "🔗" : "🔓";
+        const connStatus = ittisalatData.isConnected ? "יש חיבור" : "אין חיבור";
+        const connClass = ittisalatData.isConnected ? "board-ittisalat-ok" : "board-ittisalat-warn";
+        const lines = (ittisalatData.summaryLines || []).map(l => escapeHtml(l)).join(" &nbsp;|&nbsp; ");
+        boardInfoHtml += `<div class="board-info-row ${connClass}">${connIcon} איתיסלאת (${connStatus}): ${lines}</div>`;
       }
 
       // Prominent verdict box

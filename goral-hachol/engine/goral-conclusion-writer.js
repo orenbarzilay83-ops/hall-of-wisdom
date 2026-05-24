@@ -266,6 +266,16 @@ function describeCoreHouses(analysis, topicId) {
     );
   }
 
+  // ── איתיסלאת — חיבורים בין בתים ──────────────────────────────────────────
+  const ittisalat = analysis.ittisalat || null;
+  if (ittisalat && ittisalat.summaryLines && ittisalat.summaryLines.length > 0) {
+    const connectionStatus = ittisalat.isConnected
+      ? 'יש חיבור בין השואל לעניין'
+      : 'אין חיבור ישיר בין השואל לעניין';
+    const lines = ittisalat.summaryLines.map((l) => `  ${l}`).join('\n');
+    parts.push(`איתיסלאת (${connectionStatus}):\n${lines}`);
+  }
+
   return parts.join('\n');
 }
 

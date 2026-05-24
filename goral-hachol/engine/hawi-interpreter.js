@@ -147,6 +147,145 @@ function getHouseFortuneTone(houseNumber) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// איתיסלאת — חיבורים בין בתים (اتصالات)
+// שני סוגים: (1) חזרת צורה בבתים שונים, (2) קשר מבטי (תסדיס/ריבוע/משולש/מול)
+
+const ASPECT_RULES = [
+  { id: 'tasdis',   hebrew: 'תסדיס',  offsets: [2, 10] },
+  { id: 'tarbi',    hebrew: 'ריבוע',  offsets: [3, 9]  },
+  { id: 'tathlith', hebrew: 'משולש',  offsets: [4, 8]  },
+  { id: 'muqabala', hebrew: 'מול',    offsets: [6, 13] },
+];
+
+function forwardDistance(from, to) {
+  return ((to - from + 15) % 16) + 1; // 1‒16
+}
+
+function aspectTypeBetween(h1, h2) {
+  const d1 = forwardDistance(h1, h2);
+  const d2 = forwardDistance(h2, h1);
+  for (const rule of ASPECT_RULES) {
+    if (rule.offsets.includes(d1) || rule.offsets.includes(d2)) return rule;
+  }
+  return null;
+}
+
+function figureFortuneTone(fortune) {
+  if (!fortune) return 0;
+  if (fortune.includes('נחס')) return -1;
+  if (fortune.includes('סעד')) return 1;
+  return 0;
+}
+
+function connectionQualityHebrew(figureFortune, houseATone, houseBTone) {
+  const fig = figureFortuneTone(figureFortune);
+  const houseAvg = (houseATone + houseBTone) / 2;
+  if (fig >= 0 && houseAvg >= 0) return 'חיבור טוב — צורה טובה בבתים טובים';
+  if (fig < 0 && houseAvg < 0) return 'חיבור רע — צורה רעה בבתים קשים';
+  if (fig > 0 && houseAvg < 0) return 'חיבור מסוכן — הבטחה שקרית, שמחה ואז צער';
+  if (fig < 0 && houseAvg > 0) return 'חיבור מחליש — קלקול הנושא';
+  return 'חיבור ממוזג';
+}
+
+function computeIttisalat(chart, focusHouseNumber, mainHouses) {
+  if (!Array.isArray(chart)) return null;
+
+  const KEY_HOUSES = Array.from(new Set([1, focusHouseNumber, 13, 14, 15, 16, ...mainHouses]));
+
+  // ── 1. חזרת צורה בבתים עיקריים ──────────────────────────────────────────
+  const byFigure = {};
+  for (const h of chart) {
+    const k = h.key;
+    if (!k) continue;
+    if (!byFigure[k]) byFigure[k] = [];
+    byFigure[k].push(Number(h.house));
+  }
+
+  const figureConnections = [];
+  for (const [figKey, houses] of Object.entries(byFigure)) {
+    const inKey = houses.filter((n) => KEY_HOUSES.includes(n));
+    if (inKey.length < 2) continue;
+    const sample = chart.find((h) => h.key === figKey);
+    const houseATone = getHouseFortuneTone(inKey[0]);
+    const houseBTone = getHouseFortuneTone(inKey[1]);
+    figureConnections.push({
+      figureKey: figKey,
+      figureHebrew: sample?.hebrew || figKey,
+      figureFortune: sample?.fortune || '',
+      houses: inKey,
+      quality: connectionQualityHebrew(sample?.fortune || '', houseATone, houseBTone),
+    });
+  }
+
+  // ── 2. קשר מבטי בין בית 1, בית המרכזי, בית 15 ───────────────────────────
+  function linkBetween(aNum, bNum) {
+    const a = chart.find((h) => Number(h.house) === aNum);
+    const b = chart.find((h) => Number(h.house) === bNum);
+    if (!a || !b) return null;
+    if (a.key === b.key) {
+      return {
+        type: 'same-figure',
+        aspectType: null,
+        aspectHebrew: null,
+        figureHebrew: a.hebrew || a.key,
+        quality: connectionQualityHebrew(a.fortune, getHouseFortuneTone(aNum), getHouseFortuneTone(bNum)),
+        hebrewShort: `בית ${aNum}↔${bNum}: אותה צורה (${a.hebrew || a.key})`,
+      };
+    }
+    const aspect = aspectTypeBetween(aNum, bNum);
+    if (aspect) {
+      return {
+        type: 'aspect',
+        aspectType: aspect.id,
+        aspectHebrew: aspect.hebrew,
+        figureHebrew: null,
+        quality: null,
+        hebrewShort: `בית ${aNum}↔${bNum}: ${aspect.hebrew}`,
+      };
+    }
+    return {
+      type: 'none',
+      aspectType: null,
+      aspectHebrew: null,
+      figureHebrew: null,
+      quality: null,
+      hebrewShort: `בית ${aNum}↔${bNum}: אין חיבור`,
+    };
+  }
+
+  const questioner_to_focus = focusHouseNumber !== 1 ? linkBetween(1, focusHouseNumber) : null;
+  const questioner_to_judge = linkBetween(1, 15);
+  const focus_to_judge      = focusHouseNumber !== 15 ? linkBetween(focusHouseNumber, 15) : null;
+  const witness_to_witness   = linkBetween(13, 14);
+
+  const isConnected =
+    questioner_to_focus?.type === 'same-figure' ||
+    questioner_to_focus?.type === 'aspect' ||
+    questioner_to_judge?.type === 'same-figure' ||
+    questioner_to_judge?.type === 'aspect';
+
+  // Hebrew summary for conclusion
+  const summaryLines = [];
+  if (questioner_to_focus) summaryLines.push(questioner_to_focus.hebrewShort);
+  if (questioner_to_judge) summaryLines.push(questioner_to_judge.hebrewShort);
+  if (focus_to_judge)      summaryLines.push(focus_to_judge.hebrewShort);
+  if (witness_to_witness)  summaryLines.push(witness_to_witness.hebrewShort);
+  for (const fc of figureConnections) {
+    summaryLines.push(`צורה חוזרת: ${fc.figureHebrew} בבתים ${fc.houses.join(', ')} — ${fc.quality}`);
+  }
+
+  return {
+    figureConnections,
+    questioner_to_focus,
+    questioner_to_judge,
+    focus_to_judge,
+    witness_to_witness,
+    isConnected,
+    summaryLines,
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // ציון שלמות הלוח — כלל 96 הנקודות (ناقص / كامل)
 // ציון = 128 − (מספר שורות יחידות). < 96 = חסר.
 function computeBoardScore(chart) {
@@ -584,6 +723,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const dhamirHouse = computeDhamirHouse(board);
   const dhamirByMizan = computeDhamirByMizanTracing(board.chart);
   const boardScore = computeBoardScore(board.chart);
+  const ittisalat = computeIttisalat(board.chart, focusHouseNumber, mainHouses);
 
   return {
     hasBoard: true,
@@ -597,6 +737,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     dhamirHouse,
     dhamirByMizan,
     boardScore,
+    ittisalat,
   };
 }
 
