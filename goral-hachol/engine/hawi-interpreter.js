@@ -146,24 +146,19 @@ function getHouseFortuneTone(houseNumber) {
   return HOUSE_FORTUNE_TONES[Number(houseNumber)] ?? 0;
 }
 
-// Count single (odd/'1') points from the 4 mothers, find dhamir position in taskin east
+// נהמת האמהות: שורה 1 מאם 1 + שורה 2 מאם 2 + שורה 3 מאם 3 + שורה 4 מאם 4 → צורת הדמיר
 function computeDhamirHouse(board) {
   if (!board || !Array.isArray(board.chart)) return null;
 
-  let totalOnes = 0;
+  const rows = [];
   for (let i = 1; i <= 4; i++) {
     const motherHouse = board.chart.find((h) => Number(h.house) === i);
-    if (motherHouse?.key) {
-      for (const ch of String(motherHouse.key)) {
-        if (ch === '1') totalOnes++;
-      }
-    }
+    const key = motherHouse?.key ? String(motherHouse.key) : null;
+    if (!key || key.length < 4) return null;
+    rows.push(key[i - 1]); // row i-1 (0-indexed) from mother i
   }
 
-  let position = totalOnes % 16;
-  if (position === 0) position = 16;
-
-  const targetPattern = TASKIN_EAST_PATTERNS[position - 1];
+  const targetPattern = rows.join('');
   const dhamirEntry = board.chart.find((h) => h.key === targetPattern);
   if (!dhamirEntry) return null;
 
@@ -173,8 +168,7 @@ function computeDhamirHouse(board) {
     pattern: targetPattern,
     figureHebrew: dhamirEntry.hebrew || figureRecord?.hebrewName || targetPattern,
     fortune: dhamirEntry.fortune || figureRecord?.fortuneHebrew || null,
-    totalOnes,
-    taskinPosition: position,
+    method: 'nahmah-al-ummahat',
   };
 }
 
