@@ -725,10 +725,10 @@
         ? `
           <div class="summary-box">
             <strong>אבחון רוחני:</strong><br/>
-            דרגה: ${escapeHtml(spiritual.grade || "לא נקבע")}<br/>
+            ${escapeHtml(spiritual.finalHebrew || spiritual.grade || "לא נקבע")}<br/>
             ${Array.isArray(spiritual.mainReasons) && spiritual.mainReasons.length
-              ? `<ul>${spiritual.mainReasons.slice(0, 4).map(reason => `
-                  <li>${escapeHtml(reason.label || reason.houseLabel || reason.reason || "")}</li>
+              ? `<ul>${spiritual.mainReasons.filter(r => r.score > 0).slice(0, 5).map(reason => `
+                  <li><strong>בית ${reason.house}</strong> (${escapeHtml(reason.role || "")})${reason.figureHebrew ? ` — ${escapeHtml(reason.figureHebrew)}` : ""}: ${escapeHtml((reason.signals || []).join(" "))}</li>
                 `).join("")}</ul>`
               : ""}
           </div>

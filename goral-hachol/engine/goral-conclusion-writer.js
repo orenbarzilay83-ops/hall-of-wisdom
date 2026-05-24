@@ -175,6 +175,26 @@ function describeCoreHouses(analysis) {
   return parts.join(' ');
 }
 
+function spiritualVerdict(spiritualDiagnosis) {
+  if (!spiritualDiagnosis || !spiritualDiagnosis.hasBoard) return '';
+  const grade = spiritualDiagnosis.grade;
+  const finalHebrew = spiritualDiagnosis.finalHebrew || '';
+
+  if (grade === 'strong-suspicion') {
+    return `פסיקה: כן — הלוח מראה סימנים חזקים לפגיעה רוחנית. ${finalHebrew}`;
+  }
+  if (grade === 'medium-suspicion') {
+    return `פסיקה: ייתכן — יש חשד בינוני לפגיעה רוחנית, אך אין הכרעה מוחלטת. ${finalHebrew}`;
+  }
+  if (grade === 'weak-suspicion') {
+    return `פסיקה: ספק — הסימנים חלשים או מעורבים. ${finalHebrew}`;
+  }
+  if (grade === 'mostly-clear') {
+    return `פסיקה: לא — אין סימן חזק לפגיעה רוחנית בלוח זה. ${finalHebrew}`;
+  }
+  return finalHebrew;
+}
+
 function spiritualParagraph(spiritualDiagnosis, topicId) {
   if (!spiritualDiagnosis || !spiritualDiagnosis.active || !spiritualDiagnosis.hasBoard) {
     return '';
@@ -190,27 +210,19 @@ function spiritualParagraph(spiritualDiagnosis, topicId) {
   if (!shouldShow) {
     return '';
   }
+
   const reasons = spiritualDiagnosis.mainReasons || [];
 
-  let opening = '';
-  if (grade === 'strong-suspicion') {
-    opening = 'בצד הרוחני, הלוח מראה חשד חזק לפגיעה או עומס רוחני. זה לא נראה כמו קושי רגיל בלבד.';
-  } else if (grade === 'medium-suspicion') {
-    opening = 'בצד הרוחני, יש סימנים שדורשים בדיקה. החשד קיים, אבל צריך לדייק אם מדובר בקנאה, עין, אחיזה או חסימה אחרת.';
-  } else if (grade === 'weak-suspicion') {
-    opening = 'בצד הרוחני, יש רמזים מסוימים, אבל הם לא מספיק חזקים כדי לקבוע פגיעה ברורה.';
-  } else if (grade === 'mostly-clear') {
-    opening = 'בצד הרוחני, אין סימן חזק לפגיעה. נראה שיש יותר אפשרות לתיקון מאשר לחסימה ממשית.';
-  } else {
-    opening = 'בצד הרוחני, הקריאה מעורבת וצריכה בדיקה זהירה.';
-  }
+  const important = reasons
+    .filter((r) => r.score > 0)
+    .slice(0, 4)
+    .map((r) => {
+      const figure = r.figureHebrew ? ` — צורה: ${r.figureHebrew}` : '';
+      const signals = (r.signals || []).join(' ');
+      return `בית ${r.house} (${r.role})${figure}: ${signals}`;
+    });
 
-  const important = reasons.slice(0, 3).map((r) => {
-    const signals = (r.signals || []).join(' ');
-    return `בית ${r.house} (${r.role}) מראה: ${signals}`;
-  });
-
-  return [opening, ...important].filter(Boolean).join(' ');
+  return important.filter(Boolean).join('\n');
 }
 
 function recommendationByTopic(topicId, grade) {
@@ -244,10 +256,12 @@ export function writeHumanGoralConclusion(result) {
   const topicHebrew = result.topicHebrew;
   const grade = result.boardScore?.grade || 'mixed';
   const score = result.boardScore?.score || 0;
+  const isSpiritualTopic = topicId === 'spiritualDiagnostics';
 
   const paragraphs = [
     clientContextParagraph(result.clientContext, result.question),
     clientHistoryParagraph(result.clientHistorySummary),
+    isSpiritualTopic ? spiritualVerdict(result.spiritualDiagnosis) : '',
     topicOpening(topicId, topicHebrew),
     questionFocusParagraph(topicId, result.clientContext),
     `${getGradeText(grade)}. ${describeTone(score)}`,
