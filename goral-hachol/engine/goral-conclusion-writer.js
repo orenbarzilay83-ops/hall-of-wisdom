@@ -266,6 +266,13 @@ function describeCoreHouses(analysis, topicId) {
     );
   }
 
+  // ── מצב הטאלע — ניתוח בית 1 ───────────────────────────────────────────────
+  const h1Analysis = analysis.house1Analysis || null;
+  if (h1Analysis) {
+    const lines = h1Analysis.summaryLines.map((l) => `  ${l}`).join('\n');
+    parts.push(`מצב השואל (בית הטאלע):\n${lines}`);
+  }
+
   // ── איתיסלאת — חיבורים בין בתים ──────────────────────────────────────────
   const ittisalat = analysis.ittisalat || null;
   if (ittisalat && ittisalat.summaryLines && ittisalat.summaryLines.length > 0) {
@@ -274,6 +281,13 @@ function describeCoreHouses(analysis, topicId) {
       : 'אין חיבור ישיר בין השואל לעניין';
     const lines = ittisalat.summaryLines.map((l) => `  ${l}`).join('\n');
     parts.push(`איתיסלאת (${connectionStatus}):\n${lines}`);
+  }
+
+  // ── בדיקות נושא — זוגות בתים לפי סוג השאלה ────────────────────────────────
+  const topicConn = analysis.topicConnections || null;
+  if (topicConn && topicConn.checks && topicConn.checks.length > 0) {
+    const lines = topicConn.checks.map((c) => `  ${c.hebrewShort}`).join('\n');
+    parts.push(`בדיקות נושא (${topicConn.topicId}):\n${lines}`);
   }
 
   return parts.join('\n');

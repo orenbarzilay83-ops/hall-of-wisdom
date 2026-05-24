@@ -286,6 +286,214 @@ function computeIttisalat(chart, focusHouseNumber, mainHouses) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// מצב הטאלע — ניתוח עומק של בית 1 (בית השואל / بيت الطالع)
+
+const ELEMENT_BODY_MAP = {
+  'אש':    'ראש, פנים, רוח — מייצג את השואל עצמו',
+  'אוויר': 'צוואר, חזה, ידיים — כוח הדיבור והתקשורת',
+  'מים':   'בטן, רחם — חיבורים רגשיים ויחסים',
+  'עפר':   'ירכיים, רגליים — יסוד גשמי וממוני',
+};
+
+const MOVEMENT_HEBREW_MAP = {
+  'מתהפך': 'מתהפך — שינוי ואי-יציבות במצב השואל',
+  'קבוע':  'קבוע — יציבות וחוסר שינוי',
+  'חיצוני': 'חיצוני — תנועה החוצה, הרפיה',
+  'פנימי':  'פנימי — תנועה פנימה, פעילות',
+};
+
+const TOPIC_H1_NOTES = {
+  illness:    'בית 1 = גוף החולה. האלמנט מצביע על אזור הגוף הפגוע.',
+  disputes:   'בית 1 = השואל בדיון. מצבו קובע צד חזק/חלש.',
+  marriage:   'בית 1 = הבעל/השואל. יש להשוות עם בית 7 (הצד השני).',
+  enemies:    'בית 1 = כוח השואל מול האויב. אם טוב — יכול להתמודד.',
+  loveHate:   'בית 1 = מצב השואל הרגשי. בדוק חיבור לבית 11.',
+  commerce:   'בית 1 = השואל כסוחר. בדוק מצבו מול בית 2 (ממון).',
+  fear:       'בית 1 = השואל. אם הצורה רעה — הפחד מוצדק.',
+  missingPerson: 'בית 1 = השואל המחפש. בדוק מול בית 7 (הנעדר).',
+  travel:     'בית 1 = הנוסע. צורה טובה = נסיעה מוצלחת.',
+  completion: 'בית 1 = השואל שרוצה להשלים. צורה טובה = יש כוח להשלמה.',
+};
+
+function computeHouse1Analysis(chart, topicId) {
+  if (!Array.isArray(chart)) return null;
+  const h1 = chart.find((h) => Number(h.house) === 1);
+  if (!h1) return null;
+
+  const fortune = h1.fortune || '';
+  const element = h1.element || '';
+  const movement = h1.movement || '';
+  const figureHebrew = h1.hebrew || h1.key || '';
+
+  let fortuneGrade = 0;
+  if (fortune.includes('סעד')) fortuneGrade = 1;
+  else if (fortune.includes('נחס')) fortuneGrade = -1;
+
+  const fortuneHebrew =
+    fortuneGrade > 0  ? `טוב (${fortune}) — השואל במצב טוב`  :
+    fortuneGrade < 0  ? `קשה (${fortune}) — השואל נתקל בקושי` :
+    `ממוזג (${fortune}) — מצב השואל אינו מוכרע`;
+
+  const elementMeaning = ELEMENT_BODY_MAP[element] || element;
+  const movementHebrew = MOVEMENT_HEBREW_MAP[movement] || movement;
+  const isNatural = h1.key === '1121'; // נלחם = natural figure of house 1
+  const topicNote = TOPIC_H1_NOTES[topicId] || null;
+
+  const summaryLines = [
+    `בית 1 — ${figureHebrew} [${fortune}]: ${fortuneHebrew}`,
+    `אלמנט: ${element} — ${elementMeaning}`,
+    `תנועה: ${movementHebrew}`,
+    isNatural ? 'הצורה הטבעית של הבית — הדין חזק במיוחד' : 'בית יתד (חזק) — מצב הנוכחי של השואל',
+  ];
+  if (topicNote) summaryLines.push(topicNote);
+
+  return {
+    houseNumber: 1,
+    figureKey: h1.key,
+    figureHebrew,
+    fortune,
+    fortuneGrade,
+    fortuneHebrew,
+    element,
+    elementMeaning,
+    movement,
+    movementHebrew,
+    isNatural,
+    topicNote,
+    summaryLines,
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// בדיקות קשר נוספות לפי נושא (Topic-specific house-pair checks)
+
+const TOPIC_KEY_PAIRS = {
+  marriage: [
+    { houses: [1, 7],  role: 'שואל ↔ בן/בת זוג' },
+    { houses: [7, 12], role: 'בן/בת זוג ↔ אבדה/סכנה' },
+    { houses: [1, 8],  role: 'שואל ↔ ממון הצד השני' },
+  ],
+  illness: [
+    { houses: [1, 6],  role: 'חולה ↔ מקור המחלה' },
+    { houses: [6, 8],  role: 'מחלה ↔ סכנת מוות' },
+    { houses: [1, 8],  role: 'חולה ↔ סכנה' },
+  ],
+  disputes: [
+    { houses: [1, 7],  role: 'שואל ↔ יריב' },
+    { houses: [1, 10], role: 'שואל ↔ שופט/סמכות' },
+    { houses: [7, 10], role: 'יריב ↔ שופט' },
+  ],
+  enemies: [
+    { houses: [1, 7],  role: 'שואל ↔ אויב' },
+    { houses: [1, 12], role: 'שואל ↔ סכנה נסתרת' },
+    { houses: [7, 12], role: 'אויב ↔ כוח מסתור' },
+  ],
+  loveHate: [
+    { houses: [1, 5],  role: 'שואל ↔ הנאה/יצירה' },
+    { houses: [1, 11], role: 'שואל ↔ חברות/קשר' },
+    { houses: [5, 11], role: 'הנאה ↔ חברות' },
+  ],
+  commerce: [
+    { houses: [1, 2],  role: 'שואל ↔ ממונו' },
+    { houses: [1, 7],  role: 'שואל ↔ שותף/לקוח' },
+    { houses: [2, 8],  role: 'ממון שואל ↔ ממון הצד השני' },
+  ],
+  completion: [
+    { houses: [1, 5],  role: 'שואל ↔ מה ייצא' },
+    { houses: [1, 9],  role: 'שואל ↔ מסע/עתיד' },
+    { houses: [5, 11], role: 'תוצאה ↔ תקווה' },
+  ],
+  missingPerson: [
+    { houses: [1, 7],  role: 'מחפש ↔ נעדר' },
+    { houses: [7, 8],  role: 'נעדר ↔ מצבו' },
+    { houses: [7, 12], role: 'נעדר ↔ כלא/מסתור' },
+  ],
+  travel: [
+    { houses: [1, 3],  role: 'שואל ↔ דרך הנסיעה' },
+    { houses: [3, 9],  role: 'נסיעה ↔ מסע ארוך' },
+    { houses: [1, 9],  role: 'שואל ↔ יעד' },
+  ],
+  fear: [
+    { houses: [1, 12], role: 'שואל ↔ פחד נסתר' },
+    { houses: [1, 4],  role: 'שואל ↔ שורש הפחד' },
+    { houses: [4, 8],  role: 'שורש ↔ סכנה' },
+  ],
+  childrenPregnancy: [
+    { houses: [1, 5],  role: 'שואל ↔ ילדים' },
+    { houses: [5, 11], role: 'ילדים ↔ תקווה' },
+    { houses: [4, 5],  role: 'בית/עם ↔ ילדים' },
+  ],
+  hiddenTreasure: [
+    { houses: [1, 4],  role: 'שואל ↔ מקום הטמון' },
+    { houses: [4, 8],  role: 'אדמה ↔ עומק' },
+    { houses: [2, 4],  role: 'ממון ↔ מקום' },
+  ],
+  yearlyForecast: [
+    { houses: [1, 10], role: 'שואל ↔ שנה/ממסד' },
+    { houses: [1, 15], role: 'שואל ↔ פסיקה סופית' },
+  ],
+  authorityState: [
+    { houses: [1, 10], role: 'שואל ↔ שלטון/עמדה' },
+    { houses: [10, 15], role: 'סמכות ↔ פסיקה' },
+  ],
+};
+
+function computeTopicConnections(chart, topicId) {
+  if (!Array.isArray(chart)) return null;
+  const pairs = TOPIC_KEY_PAIRS[topicId] || [];
+  if (!pairs.length) return null;
+
+  const checks = [];
+  for (const pair of pairs) {
+    const [aNum, bNum] = pair.houses;
+    const a = chart.find((h) => Number(h.house) === aNum);
+    const b = chart.find((h) => Number(h.house) === bNum);
+    if (!a || !b) continue;
+
+    let connType = 'none';
+    let connDetail = null;
+
+    if (a.key === b.key) {
+      connType = 'same-figure';
+      const figFortune = a.fortune || '';
+      const hToneA = HOUSE_FORTUNE_TONES[aNum] ?? 0;
+      const hToneB = HOUSE_FORTUNE_TONES[bNum] ?? 0;
+      connDetail = connectionQualityHebrew(figFortune, hToneA, hToneB);
+    } else {
+      const aspect = aspectTypeBetween(aNum, bNum);
+      if (aspect) {
+        connType = 'aspect';
+        connDetail = aspect.hebrew;
+      }
+    }
+
+    const assessment =
+      connType === 'same-figure' ? `אותה צורה (${a.hebrew}) — ${connDetail}` :
+      connType === 'aspect'      ? connDetail :
+      'אין חיבור';
+
+    const fortuneA = a.fortune || '';
+    const fortuneB = b.fortune || '';
+    const toneA = fortuneA.includes('סעד') ? 1 : fortuneA.includes('נחס') ? -1 : 0;
+    const toneB = fortuneB.includes('סעד') ? 1 : fortuneB.includes('נחס') ? -1 : 0;
+    const combinedTone = toneA + toneB;
+
+    checks.push({
+      houses: [aNum, bNum],
+      role: pair.role,
+      connType,
+      assessment,
+      figureA: { key: a.key, hebrew: a.hebrew, fortune: fortuneA },
+      figureB: { key: b.key, hebrew: b.hebrew, fortune: fortuneB },
+      combinedTone,
+      hebrewShort: `${pair.role} [בית ${aNum}: ${a.hebrew} / בית ${bNum}: ${b.hebrew}] — ${assessment}`,
+    });
+  }
+
+  return { topicId, checks };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // ציון שלמות הלוח — כלל 96 הנקודות (ناقص / كامل)
 // ציון = 128 − (מספר שורות יחידות). < 96 = חסר.
 function computeBoardScore(chart) {
@@ -724,6 +932,8 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const dhamirByMizan = computeDhamirByMizanTracing(board.chart);
   const boardScore = computeBoardScore(board.chart);
   const ittisalat = computeIttisalat(board.chart, focusHouseNumber, mainHouses);
+  const house1Analysis = computeHouse1Analysis(board.chart, topicId);
+  const topicConnections = computeTopicConnections(board.chart, topicId);
 
   return {
     hasBoard: true,
@@ -738,6 +948,8 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     dhamirByMizan,
     boardScore,
     ittisalat,
+    house1Analysis,
+    topicConnections,
   };
 }
 
