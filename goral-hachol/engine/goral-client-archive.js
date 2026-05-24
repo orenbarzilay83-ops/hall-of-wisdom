@@ -152,3 +152,14 @@ if (typeof module !== 'undefined') {
     summarizeGoralClientHistory,
   };
 }
+
+if (typeof window !== 'undefined') {
+  window.GORAL_CLIENT_ARCHIVE = {
+    getGoralArchive,
+    saveGoralReadingToArchive,
+    deleteGoralArchiveRecord,
+    clearGoralArchive,
+    getGoralClientHistory,
+    summarizeGoralClientHistory,
+  };
+}

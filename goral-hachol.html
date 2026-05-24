@@ -8,6 +8,8 @@
   <script src="./raml-data/raml-forms-basic.js?v=clean-ui-1"></script>
   <script src="./raml-data/raml-houses-basic.js?v=clean-ui-1"></script>
   <script src="./raml.js?v=clean-ui-1"></script>
+  <script type="module" src="./goral-hachol/engine/hawi-interpreter.js"></script>
+  <script type="module" src="./goral-hachol/engine/goral-client-archive.js"></script>
 
   <style>
     :root {
@@ -454,55 +456,6 @@
     </section>
   </div>
 
-  <script type="module">
-    console.log("🚀 Starting HAWI module loading...");
-    console.log("🚀 Starting HAWI module loading...");
-    window.__HAWI_MODULE_READY = Promise.all([
-      import('/goral-hachol/engine/hawi-interpreter.js'),
-      import('/goral-hachol/engine/goral-client-archive.js')
-    ]).then(([hawi, archive]) => {
-      window.HAWI_INTERPRETER = {
-        interpretHawiQuestionInitial: hawi.interpretHawiQuestionInitial
-      };
-
-      window.GORAL_CLIENT_ARCHIVE = {
-        getGoralArchive: archive.getGoralArchive,
-        saveGoralReadingToArchive: archive.saveGoralReadingToArchive,
-        deleteGoralArchiveRecord: archive.deleteGoralArchiveRecord,
-        clearGoralArchive: archive.clearGoralArchive,
-        summarizeGoralClientHistory: archive.summarizeGoralClientHistory
-      };
-
-      console.log("✅ HAWI modules loaded successfully!");
-      console.log("window.HAWI_INTERPRETER:", window.HAWI_INTERPRETER);
-      console.log("window.GORAL_CLIENT_ARCHIVE:", window.GORAL_CLIENT_ARCHIVE);
-
-      console.log("✅ HAWI modules loaded successfully!");
-      console.log("window.HAWI_INTERPRETER:", window.HAWI_INTERPRETER);
-      console.log("window.GORAL_CLIENT_ARCHIVE:", window.GORAL_CLIENT_ARCHIVE);
-
-      return true;
-    }).catch((err) => {
-      const errorMsg = err?.message || String(err);
-      const errorType = err?.name || "Unknown";
-      console.error("❌ HAWI module load FAILED!");
-      console.error("Error Type:", errorType);
-      console.error("Error Message:", errorMsg);
-      console.error("Full Error:", err);
-      console.error("Import paths attempted:", [
-        '/goral-hachol/engine/hawi-interpreter.js',
-        '/goral-hachol/engine/goral-client-archive.js'
-      ]);
-      
-      window.__HAWI_MODULE_ERROR = err;
-      window.__HAWI_MODULE_ERROR_MSG = `${errorType}: ${errorMsg}`;
-      
-      // הצג בhalert גם
-      console.log("You can see the error in the console above ⬆️");
-      
-      return false;
-    });
-  </script>
 
   <script>
     const FIGURE_ORDER = [
@@ -752,7 +705,7 @@
       `;
     }
 
-    async async async function runReading() {
+    async function runReading() {
       const errorBox = document.getElementById("errorBox");
       const boardResult = document.getElementById("boardResult");
 
@@ -765,21 +718,6 @@
         }
 
         const question = document.getElementById("questionInput").value.trim();
-
-        // המתן למנועי הידע לטעון לפני בניית הפירוש
-        if (window.__HAWI_MODULE_READY) {
-          await window.__HAWI_MODULE_READY;
-        }
-
-        // המתן למנועי הידע לטעון לפני בניית הפירוש
-        if (window.__HAWI_MODULE_READY) {
-          await window.__HAWI_MODULE_READY;
-        }
-
-        // המתן למנועי הידע לטעון לפני בניית הפירוש
-        if (window.__HAWI_MODULE_READY) {
-          await window.__HAWI_MODULE_READY;
-        }
 
         const mothers = selectedMothers.map(m => m.lines);
 

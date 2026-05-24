@@ -513,3 +513,10 @@ if (typeof module !== 'undefined') {
     formatHawiInitialInterpretationHebrew,
   };
 }
+
+if (typeof window !== 'undefined') {
+  window.HAWI_INTERPRETER = {
+    interpretHawiQuestionInitial,
+    formatHawiInitialInterpretationHebrew,
+  };
+}
