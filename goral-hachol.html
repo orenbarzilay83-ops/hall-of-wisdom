@@ -639,13 +639,86 @@
         return `<div class="summary-box">אבחון גורל החול נטען. רענן את הדף אם ההודעה נשארת.</div>`;
       }
 
+      if (window.GORAL_CLIENT_ARCHIVE?.summarizeGoralClientHistory) {
+        const clientName = reading.clientContext?.clientName || "";
+        reading.clientHistorySummary = window.GORAL_CLIENT_ARCHIVE.summarizeGoralClientHistory(clientName);
+      }
+
       const insight = window.HAWI_INTERPRETER.interpretHawiQuestionInitial(reading.question, reading);
+      window.__LAST_GORAL_READING = reading;
+      window.__LAST_GORAL_INTERPRETATION = insight;
+
+      const conclusion = insight.finalConclusionHebrew || insight.conclusionDraftHebrew || insight.technicalConclusionHebrew || "";
+      const score = insight.boardScore || {};
+      const rules = Array.isArray(insight.relevantRules) ? insight.relevantRules.slice(0, 6) : [];
+      const sources = Array.isArray(insight.knowledgeSources) ? insight.knowledgeSources.slice(0, 5) : [];
+      const spiritual = insight.spiritualDiagnosis || null;
+      const showSpiritual =
+        spiritual &&
+        (
+          insight.topicId === "spiritualDiagnostics" ||
+          spiritual.shouldShow === true ||
+          spiritual.isSpiritualQuestion === true ||
+          Number(spiritual.score || 0) > 0
+        );
+
+      const rulesHtml = rules.length
+        ? `
+          <div class="summary-box">
+            <strong>חוקים שנבדקו מתוך המקור:</strong>
+            <ul>
+              ${rules.map(rule => `
+                <li>
+                  ${escapeHtml(rule.hebrew || rule.result || rule.condition || "")}
+                  ${rule.arabic ? `<br/><small>${escapeHtml(rule.arabic)}</small>` : ""}
+                </li>
+              `).join("")}
+            </ul>
+          </div>
+        `
+        : "";
+
+      const sourcesHtml = sources.length
+        ? `
+          <div class="summary-box">
+            <strong>מקורות ידע שהופעלו:</strong>
+            <ul>
+              ${sources.map(src => `
+                <li>${escapeHtml(src.titleHebrew || src.id || "")}</li>
+              `).join("")}
+            </ul>
+          </div>
+        `
+        : "";
+
+      const spiritualHtml = showSpiritual
+        ? `
+          <div class="summary-box">
+            <strong>אבחון רוחני:</strong><br/>
+            דרגה: ${escapeHtml(spiritual.grade || "לא נקבע")}<br/>
+            ${Array.isArray(spiritual.mainReasons) && spiritual.mainReasons.length
+              ? `<ul>${spiritual.mainReasons.slice(0, 4).map(reason => `
+                  <li>${escapeHtml(reason.label || reason.houseLabel || reason.reason || "")}</li>
+                `).join("")}</ul>`
+              : ""}
+          </div>
+        `
+        : "";
 
       return `
         <div class="summary-box">
-          <strong>מסקנה:</strong><br/>
-          ${escapeHtml(insight.finalConclusionHebrew || insight.conclusionDraftHebrew || "")}
+          <strong>מסקנה אנושית:</strong><br/>
+          ${escapeHtml(conclusion).replace(/\n/g, "<br/>")}
         </div>
+
+        <div class="summary-box">
+          <strong>ציון הלוח:</strong><br/>
+          ${escapeHtml(score.grade || "לא נקבע")} — ${escapeHtml(String(score.score ?? ""))}
+        </div>
+
+        ${rulesHtml}
+        ${spiritualHtml}
+        ${sourcesHtml}
       `;
     }
 

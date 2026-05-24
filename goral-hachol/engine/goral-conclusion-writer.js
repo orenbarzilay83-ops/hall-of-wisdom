@@ -168,7 +168,7 @@ function describeCoreHouses(analysis) {
 
   if (sentence) {
     parts.push(
-      `משלים בית 15 בבית 16 הוא ${sentence.figureHebrew || 'צורה לא מזוהה'}, והוא מראה איך הדבר נוטה להיסגר בסוף.`
+      `בית 16 — משלים בבית 16 הוא ${sentence.figureHebrew || 'צורה לא מזוהה'}, והוא מראה איך הדבר נוטה להיסגר בסוף.`
     );
   }
 
