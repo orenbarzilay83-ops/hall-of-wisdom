@@ -147,7 +147,7 @@ function gradeFromMatches(specificMatches, openingMatches, genericScore) {
   return 'mixed';
 }
 
-function buildFinalHebrew(grade, specificMatches, openingMatches) {
+function buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, jinnTypeResult) {
   const verdictMap = {
     'strong-suspicion': 'מסקנה רוחנית: כן — הלוח מראה סימנים חזקים לפגיעה רוחנית לפי כללי המקור.',
     'medium-suspicion': 'מסקנה רוחנית: ייתכן — יש חשד בינוני לפגיעה רוחנית. נמצאו התאמות מהמקור שדורשות בדיקה.',
@@ -159,18 +159,26 @@ function buildFinalHebrew(grade, specificMatches, openingMatches) {
   let base = verdictMap[grade] || verdictMap.mixed;
   const details = [];
 
-  for (const m of specificMatches.slice(0, 3)) {
+  for (const m of specificMatches.slice(0, 4)) {
     const position = m.house === 15 ? 'הדיין' : m.house === 13 ? 'עד ראשון' : m.house === 14 ? 'עד שני' : `בית ${m.house}`;
     details.push(`${position} (${m.figureHebrew}): ${m.diagnosisHebrew}`);
   }
 
-  for (const m of openingMatches.slice(0, 3)) {
+  for (const m of openingMatches.slice(0, 2)) {
     const position = m.house === 15 ? 'הדיין' : m.house === 13 ? 'עד ראשון' : m.house === 14 ? 'עד שני' : `בית ${m.house}`;
     details.push(`${position} (${m.figureHebrew}): ${m.diagnosisHebrew}`);
   }
 
   if (details.length > 0) {
-    base += ` פרטים מהמקור: ${details.join(' | ')}`;
+    base += '\n' + details.join('\n');
+  }
+
+  if (isqatResult?.hebrewText) {
+    base += '\nספירת מפתוח 7×7: ' + isqatResult.hebrewText;
+  }
+
+  if (jinnTypeResult?.hebrewText) {
+    base += '\nסוג הג׳ין (15×4): ' + jinnTypeResult.hebrewText;
   }
 
   return base;
@@ -217,6 +225,72 @@ function quickHouseScore(board) {
   return score;
 }
 
+// Count open (odd) points in the board and apply 7×7 isqat method from ספר 2
+function applyIsqatSevenMethod(board, source) {
+  const allHouses = asArray(board?.chart);
+  if (!allHouses.length) return null;
+
+  // Count total open (odd) points across all 16 houses
+  let openCount = 0;
+  for (const house of allHouses) {
+    const pattern = house.figure || house.key || '';
+    if (pattern && /^[12]{4}$/.test(String(pattern))) {
+      for (const ch of String(pattern)) {
+        if (ch === '1') openCount++;
+      }
+    } else if (house.figure && Array.isArray(house.figure)) {
+      for (const v of house.figure) {
+        if (Number(v) === 1) openCount++;
+      }
+    }
+  }
+
+  if (!openCount) return null;
+
+  // Reduce modulo 7, remainder in range 1-7
+  const remainder = ((openCount - 1) % 7) + 1;
+
+  const results = asArray(source?.isqatSevenRules?.results);
+  const match = results.find((r) => Number(r.remainder) === remainder);
+
+  return {
+    openCount,
+    remainder,
+    diagnosis: match?.diagnosis || null,
+    hebrewText: match?.hebrew || null,
+  };
+}
+
+// Get figure element (fire/air/water/earth) from pattern
+function getFigureElement(house) {
+  const element = String(house?.element || house?.elementHebrew || '').toLowerCase();
+  if (element.includes('אש') || element.includes('fire')) return 'fire';
+  if (element.includes('אוויר') || element.includes('air')) return 'air';
+  if (element.includes('מים') || element.includes('water')) return 'water';
+  if (element.includes('עפר') || element.includes('earth') || element.includes('ard')) return 'earth';
+  return null;
+}
+
+// Apply 15×4 jinn type method from ספר 2
+function applyJinnTypeMethod(board, source) {
+  const judge = asArray(board?.chart).find((h) => Number(h.house) === 15);
+  if (!judge) return null;
+
+  const judgeElement = getFigureElement(judge);
+  if (!judgeElement) return null;
+
+  const jinnRules = asArray(source?.jinnTypeRules);
+  const match = jinnRules.find((r) => r.element === judgeElement);
+  if (!match) return null;
+
+  return {
+    judgeFigure: judge.hebrew || judge.figureHebrew || null,
+    judgeElement,
+    jinnType: match.jinnType || null,
+    hebrewText: match.resultHebrew || null,
+  };
+}
+
 export function diagnoseSpiritualInfluence(question = '', board = null) {
   const source = getApprovedSpiritualSource();
   const questionHits = detectSpiritualTopicFromQuestion(question);
@@ -234,13 +308,15 @@ export function diagnoseSpiritualInfluence(question = '', board = null) {
   const specificMatches = checkFigureHouseRules(board, source);
   const openingMatches = checkOpeningRules(board, source);
   const genericScore = quickHouseScore(board) + (questionHits.length ? 2 : 0);
+  const isqatResult = applyIsqatSevenMethod(board, source);
+  const jinnTypeResult = applyJinnTypeMethod(board, source);
 
   const grade = gradeFromMatches(specificMatches, openingMatches, genericScore);
-  const finalHebrew = buildFinalHebrew(grade, specificMatches, openingMatches);
+  const finalHebrew = buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, jinnTypeResult);
 
   const mainReasons = specificMatches.map((m) => ({
     house: m.house,
-    role: `בית ${m.house}`,
+    role: m.house === 15 ? 'הדיין' : m.house === 13 ? 'עד ראשון' : m.house === 14 ? 'עד שני' : `בית ${m.house}`,
     figureHebrew: m.figureHebrew,
     score: severityScore(m.severity),
     signals: [m.diagnosisHebrew],
@@ -251,12 +327,25 @@ export function diagnoseSpiritualInfluence(question = '', board = null) {
     openingMatches.slice(0, 3).forEach((m) => {
       mainReasons.push({
         house: m.house,
-        role: `בית ${m.house}`,
+        role: m.house === 15 ? 'הדיין' : m.house === 13 ? 'עד ראשון' : m.house === 14 ? 'עד שני' : `בית ${m.house}`,
         figureHebrew: m.figureHebrew,
         score: 1,
         signals: [m.diagnosisHebrew],
         sourceBased: true,
       });
+    });
+  }
+
+  // Add isqat result as a signal if found
+  if (isqatResult?.hebrewText) {
+    mainReasons.push({
+      house: null,
+      role: 'ספירת מפתוח (7×7)',
+      figureHebrew: null,
+      score: 1,
+      signals: [isqatResult.hebrewText],
+      sourceBased: true,
+      isqat: true,
     });
   }
 
@@ -268,6 +357,8 @@ export function diagnoseSpiritualInfluence(question = '', board = null) {
     specificMatches,
     openingMatches,
     genericScore,
+    isqatResult,
+    jinnTypeResult,
     grade,
     finalHebrew,
     mainReasons,

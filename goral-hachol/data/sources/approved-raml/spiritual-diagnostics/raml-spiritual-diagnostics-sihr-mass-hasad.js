@@ -293,6 +293,42 @@ export const RAML_SPIRITUAL_DIAGNOSTICS_SIHR_MASS_HASAD = {
       severity: "extreme",
       sourceReview: "last words in screenshot should be reviewed visually before final wording",
       status: "explicit-in-user-approved-screenshot"
+    },
+    {
+      id: "jawdala-house13-confused-witchcraft",
+      sourcePage: 58,
+      arabicText: ["الجودلة في الثالث عشر فهو مدعوم وله سحر مشوش وأيضا"],
+      hebrewTranslation: ["ג׳ודלה בבית 13 — הוא נתמך ויש לו כישוף מבולבל/מעורבב."],
+      figure: "الجودلة",
+      house: 13,
+      diagnosis: "confused-chaotic-witchcraft",
+      appMeaningHebrew: "סימן לכישוף מבולבל, עם השפעה על מצב השואל.",
+      severity: "high",
+      status: "source-extracted-sefer-2"
+    },
+    {
+      id: "jawdala-house14-magic-in-house-or-place",
+      sourcePage: 58,
+      arabicText: ["الجودلة في الرابع عشر فبيته فيه سحر معلق أو في المكان أو البيت"],
+      hebrewTranslation: ["ג׳ודלה בבית 14 — ביתו יש בו כישוף תלוי, או במקום הבית."],
+      figure: "الجودلة",
+      house: 14,
+      diagnosis: "hanging-magic-in-house",
+      appMeaningHebrew: "סימן לכישוף תלוי בבית, בחדר או במקום שבו החולה נמצא.",
+      severity: "high",
+      status: "source-extracted-sefer-2"
+    },
+    {
+      id: "ankis-house6-buried-underground-sorcery",
+      sourcePage: 58,
+      arabicText: ["المنكوس في السادس فهو سحر مدفون في الأرض"],
+      hebrewTranslation: ["שפל ראש (מנכוס) בבית 6 — זהו כישוף קבור בקרקע."],
+      figure: "المنكوس",
+      house: 6,
+      diagnosis: "buried-underground-sorcery",
+      appMeaningHebrew: "סימן לכישוף קבור באדמה (גרסה מורחבת — לא בקבר בלבד).",
+      severity: "high",
+      status: "source-extracted-sefer-2"
     }
   ],
 

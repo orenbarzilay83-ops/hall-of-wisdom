@@ -77,6 +77,110 @@ function isBadValue(value = '') {
     v.includes('نحس')
   );
 }
+function getFigureFortuneTone(house) {
+  if (!house) return 0;
+  const fortune = String(house.fortune || house.fortuneHebrew || '');
+  if (!fortune) return 0;
+  if (fortune === 'סעד') return 1;
+  if (fortune === 'נחס') return -1;
+  if (fortune.startsWith('ממוזג') && fortune.includes('סעד')) return 0.5;
+  if (fortune.startsWith('ממוזג') && fortune.includes('נחס')) return -0.5;
+  if (fortune.startsWith('ממוזג')) return 0;
+  if (isGoodValue(fortune)) return 1;
+  if (isBadValue(fortune)) return -1;
+  return 0;
+}
+
+function buildJudgeVerdict(boardAnalysis) {
+  if (!boardAnalysis.hasBoard) {
+    return { verdict: 'no-board', grade: 'unknown', hebrewShort: '', hebrewFull: '' };
+  }
+
+  const judge = boardAnalysis.judge;
+  const w1 = boardAnalysis.witnesses?.[0] || null;
+  const w2 = boardAnalysis.witnesses?.[1] || null;
+  const focus = boardAnalysis.focusHouse;
+
+  if (!judge) {
+    return { verdict: 'unknown', grade: 'mixed', hebrewShort: 'הדיין לא נמצא', hebrewFull: 'לא ניתן לקבוע תשובה ללא בית 15.' };
+  }
+
+  const judgeTone = getFigureFortuneTone(judge);
+  const w1Tone = w1 ? getFigureFortuneTone(w1) : 0;
+  const w2Tone = w2 ? getFigureFortuneTone(w2) : 0;
+  const focusTone = focus ? getFigureFortuneTone(focus) : 0;
+  const witnessTone = (w1Tone + w2Tone) / 2;
+
+  const judgeFigure = judge.figureHebrew || '';
+  const judgeFortune = judge.fortune || '';
+  const w1Figure = w1?.figureHebrew || '';
+  const w2Figure = w2?.figureHebrew || '';
+  const focusFigure = focus?.figureHebrew || '';
+  const focusHouseNum = focus?.house || '';
+
+  let verdict, grade, hebrewShort, hebrewFull;
+
+  if (judgeTone > 0) {
+    if (witnessTone >= 0) {
+      verdict = 'yes-strong';
+      grade = 'positive';
+      hebrewShort = 'כן';
+      hebrewFull = 'תשובה: כן — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא צורה של סעד, והעדים מחזקים.' +
+        (w1Figure ? ' עד ראשון: ' + w1Figure + '.' : '') +
+        (w2Figure ? ' עד שני: ' + w2Figure + '.' : '') +
+        (focusFigure ? ' הבית המרכזי (בית ' + focusHouseNum + '): ' + focusFigure + '.' : '');
+    } else {
+      verdict = 'yes-weak';
+      grade = 'cautiously-positive';
+      hebrewShort = 'ייתכן שכן';
+      hebrewFull = 'תשובה: ייתכן שכן — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא סעד, אך העדים מראים ספק.' +
+        (w1Figure ? ' עד ראשון: ' + w1Figure + '.' : '') +
+        (w2Figure ? ' עד שני: ' + w2Figure + '.' : '');
+    }
+  } else if (judgeTone < 0) {
+    if (witnessTone <= 0) {
+      verdict = 'no-strong';
+      grade = 'negative';
+      hebrewShort = 'לא';
+      hebrewFull = 'תשובה: לא — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא צורה של נחס, והעדים מחזקים את הדין.' +
+        (w1Figure ? ' עד ראשון: ' + w1Figure + '.' : '') +
+        (w2Figure ? ' עד שני: ' + w2Figure + '.' : '') +
+        (focusFigure ? ' הבית המרכזי (בית ' + focusHouseNum + '): ' + focusFigure + '.' : '');
+    } else {
+      verdict = 'no-weak';
+      grade = 'cautiously-negative';
+      hebrewShort = 'ייתכן שלא';
+      hebrewFull = 'תשובה: ייתכן שלא — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא נחס, אך העדים מציגים צד חיובי.' +
+        (w1Figure ? ' עד ראשון: ' + w1Figure + '.' : '') +
+        (w2Figure ? ' עד שני: ' + w2Figure + '.' : '');
+    }
+  } else {
+    if (witnessTone > 0 || focusTone > 0) {
+      verdict = 'maybe-positive';
+      grade = 'cautiously-positive';
+      hebrewShort = 'ייתכן';
+      hebrewFull = 'תשובה: ייתכן — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא ממוזג, ויש נטייה לטובה לפי העדים.' +
+        (w1Figure ? ' עד ראשון: ' + w1Figure + '.' : '') +
+        (w2Figure ? ' עד שני: ' + w2Figure + '.' : '');
+    } else if (witnessTone < 0 || focusTone < 0) {
+      verdict = 'maybe-negative';
+      grade = 'cautiously-negative';
+      hebrewShort = 'ייתכן שלא';
+      hebrewFull = 'תשובה: ייתכן שלא — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא ממוזג, ויש נטייה לקשיים לפי העדים.' +
+        (w1Figure ? ' עד ראשון: ' + w1Figure + '.' : '') +
+        (w2Figure ? ' עד שני: ' + w2Figure + '.' : '');
+    } else {
+      verdict = 'mixed';
+      grade = 'mixed';
+      hebrewShort = 'ממוזג';
+      hebrewFull = 'תשובה: ממוזג — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא ממוזג ואינו מכריע, יש לבדוק את פרטי הבית המרכזי.' +
+        (w1Figure ? ' עד ראשון: ' + w1Figure + '.' : '') +
+        (w2Figure ? ' עד שני: ' + w2Figure + '.' : '');
+    }
+  }
+
+  return { verdict, grade, judgeFigure, judgeFortune, judgeTone, witnessTone, focusTone, hebrewShort, hebrewFull };
+}
 
 function judgeHouseTone(house) {
   if (!house) return { score: 0, tone: 'unknown', hebrew: 'לא נמצא בית בלוח.' };
@@ -312,64 +416,37 @@ function scoreBoard(boardAnalysis) {
     };
   }
 
-  let score = 0;
+  const judgeVerdict = buildJudgeVerdict(boardAnalysis);
+  const judge = boardAnalysis.judge;
+  const w1 = boardAnalysis.witnesses?.[0];
+  const w2 = boardAnalysis.witnesses?.[1];
+  const focus = boardAnalysis.focusHouse;
+
+  const judgeTone = getFigureFortuneTone(judge);
+  const w1Tone = w1 ? getFigureFortuneTone(w1) : 0;
+  const w2Tone = w2 ? getFigureFortuneTone(w2) : 0;
+  const focusTone = focus ? getFigureFortuneTone(focus) : 0;
+
+  // Judge (house 15) is primary — weight 4
+  // Each witness — weight 1
+  // Focus house — weight 2
+  const score = Math.round(
+    (judgeTone * 4 + w1Tone * 1 + w2Tone * 1 + focusTone * 2) * 2
+  );
+
   const reasons = [];
-
-  const items = [
-    { label: 'הבית המרכזי', item: boardAnalysis.focusHouse, weight: 3 },
-    { label: 'עד ראשון', item: boardAnalysis.witnesses?.[0], weight: 1 },
-    { label: 'עד שני', item: boardAnalysis.witnesses?.[1], weight: 1 },
-    { label: 'בית 15 / דיין', item: boardAnalysis.judge, weight: 3 },
-    { label: 'בית 16 / משלים בית 15', item: boardAnalysis.sentence, weight: 2 },
-  ];
-
-  for (const { label, item, weight } of items) {
-    if (!item) continue;
-
-    const toneScore = item.tone?.score || 0;
-    score += toneScore * weight;
-
-    if (toneScore > 0) {
-      reasons.push(`${label}: סימן טוב / סעד`);
-    } else if (toneScore < 0) {
-      reasons.push(`${label}: סימן קשה / נחס`);
-    } else {
-      reasons.push(`${label}: סימן ממוזג או לא מוכרע`);
-    }
-
-    if (item.figureState?.fortuneState) {
-      if (isGoodValue(item.figureState.fortuneState)) score += 1;
-      if (isBadValue(item.figureState.fortuneState)) score -= 1;
-    }
-
-    if (item.houseState?.fortuneState) {
-      if (isGoodValue(item.houseState.fortuneState)) score += 1;
-      if (isBadValue(item.houseState.fortuneState)) score -= 1;
-    }
-  }
-
-  let grade = 'mixed';
-  let hebrew = 'הגורל ממוזג: יש צדדים מסייעים וצדדים מעכבים. צריך לקרוא לפי פרטי הבית המרכזי, הדיין והעדים.';
-
-  if (score >= 5) {
-    grade = 'positive';
-    hebrew = 'מסקנה ראשונית: הכיוון חיובי. יש תמיכה מן הלוח, ובפרט אם הבית המרכזי, הדיין והעדים אינם סותרים.';
-  } else if (score <= -5) {
-    grade = 'negative';
-    hebrew = 'מסקנה ראשונית: הכיוון קשה או חסום. יש סימני עיכוב/נחס, וצריך זהירות לפני פעולה.';
-  } else if (score >= 2) {
-    grade = 'cautiously-positive';
-    hebrew = 'מסקנה ראשונית: יש נטייה טובה, אך לא מוחלטת. יש לבדוק את תנאי המקור ואת העדים לפני פסיקה סופית.';
-  } else if (score <= -2) {
-    grade = 'cautiously-negative';
-    hebrew = 'מסקנה ראשונית: יש נטייה מעכבת או מזהירה, אך לא מוחלטת. צריך לבדוק אם קיימים סעדים שמתקנים את הדין.';
-  }
+  if (judge) reasons.push('בית 15 (דיין): ' + (judge.figureHebrew || '') + ' — ' + (judge.fortune || ''));
+  if (w1) reasons.push('עד ראשון: ' + (w1.figureHebrew || '') + ' — ' + (w1.fortune || ''));
+  if (w2) reasons.push('עד שני: ' + (w2.figureHebrew || '') + ' — ' + (w2.fortune || ''));
+  if (focus) reasons.push('הבית המרכזי (בית ' + (focus.house || '') + '): ' + (focus.figureHebrew || '') + ' — ' + (focus.fortune || ''));
 
   return {
     score,
-    grade,
-    hebrew,
+    grade: judgeVerdict.grade,
+    hebrew: judgeVerdict.hebrewFull,
+    hebrewShort: judgeVerdict.hebrewShort,
     reasons,
+    judgeVerdict,
   };
 }
 
@@ -381,37 +458,31 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
   const focus = boardAnalysis.focusHouse;
   const judge = boardAnalysis.judge;
   const sentence = boardAnalysis.sentence;
+  const judgeVerdict = boardScore.judgeVerdict || null;
 
   const parts = [];
 
-  parts.push(boardScore.hebrew);
-
-  if (focus) {
-    parts.push(
-      `הבית המרכזי לשאלה (${focus.house}) הוא ${focus.figureHebrew || 'ללא שם צורה'}, והוא נותן את גוף הדין בנושא ${topicHebrew}.`
-    );
-  }
-
-  if (judge) {
-    parts.push(
-      `בית 15 / הדיין הוא ${judge.figureHebrew || 'ללא שם צורה'}; הוא משמש כפסיקת הלוח לאחר העדים.`
-    );
+  // Lead with judge verdict
+  if (judgeVerdict?.hebrewFull) {
+    parts.push(judgeVerdict.hebrewFull);
+  } else {
+    parts.push(boardScore.hebrew);
   }
 
   if (sentence) {
     parts.push(
-      `בית 16 / משלים בית 15 הוא ${sentence.figureHebrew || 'ללא שם צורה'}; הוא מראה את השלמת הדין ואת סיום התהליך.`
+      `בית 16 (אחרית הדבר): ${sentence.figureHebrew || 'לא מזוהה'} — מראה את השלמת הדין.`
     );
   }
 
   const firstRule = relevantRules.find((r) => r.hebrew || r.result || r.condition);
   if (firstRule) {
     parts.push(
-      `כלל מקור מרכזי שנבדק: ${firstRule.hebrew || firstRule.result || firstRule.condition}.`
+      `כלל מקור: ${firstRule.hebrew || firstRule.result || firstRule.condition}.`
     );
   }
 
-  return parts.join(' ');
+  return parts.join('\n\n');
 }
 
 export function interpretHawiQuestionInitial(question, board = null) {
@@ -424,6 +495,7 @@ export function interpretHawiQuestionInitial(question, board = null) {
   const boardAnalysis = buildBoardAnalysis(board, route.topicId, mainHouses);
   const relevantRules = collectRelevantRules(route.knowledge, route.topicId, mainHouses);
   const boardScore = scoreBoard(boardAnalysis);
+  const judgeVerdict = boardScore.judgeVerdict || buildJudgeVerdict(boardAnalysis);
   const spiritualDiagnosis = diagnoseSpiritualInfluence(question, board);
   const technicalConclusionHebrew = buildFinalConclusion(
     topicHebrew,
@@ -447,6 +519,7 @@ export function interpretHawiQuestionInitial(question, board = null) {
     mainHouses,
     knowledgeSources: summarizeKnowledgeItems(route.knowledge),
     relevantRules,
+    judgeVerdict,
 
     boardContext: boardAnalysis.hasBoard
       ? {
@@ -474,6 +547,7 @@ export function interpretHawiQuestionInitial(question, board = null) {
       boardAnalysis,
       spiritualDiagnosis,
       relevantRules,
+      judgeVerdict,
     }),
     conclusionDraftHebrew: technicalConclusionHebrew,
   };

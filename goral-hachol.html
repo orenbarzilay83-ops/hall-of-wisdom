@@ -330,6 +330,51 @@
       font-size:16px;
     }
 
+    .verdict-box {
+      margin-top:20px;
+      border-radius:20px;
+      padding:22px 24px;
+      text-align:center;
+      border:3px solid transparent;
+    }
+    .verdict-box.verdict-yes {
+      background:#1a3d1a;
+      border-color:#4caf50;
+      color:#a8f0a0;
+    }
+    .verdict-box.verdict-no {
+      background:#3d1a1a;
+      border-color:#e53935;
+      color:#f4a0a0;
+    }
+    .verdict-box.verdict-maybe {
+      background:#3d3000;
+      border-color:#ffb300;
+      color:#ffe082;
+    }
+    .verdict-box.verdict-mixed {
+      background:#1a2a3a;
+      border-color:#78909c;
+      color:#b0c4d8;
+    }
+    .verdict-label {
+      font-size:13px;
+      opacity:0.75;
+      margin-bottom:6px;
+      letter-spacing:0.05em;
+    }
+    .verdict-answer {
+      font-size:28px;
+      font-weight:900;
+      margin-bottom:10px;
+    }
+    .verdict-detail {
+      font-size:14px;
+      line-height:1.6;
+      opacity:0.9;
+      white-space:pre-wrap;
+    }
+
     .error {
       margin-top:14px;
       padding:12px 14px;
@@ -664,6 +709,16 @@
       `;
     }
 
+    function verdictClass(verdict) {
+      if (!verdict) return "";
+      if (verdict === "yes-strong") return "verdict-yes";
+      if (verdict === "yes-weak") return "verdict-maybe";
+      if (verdict === "no-strong") return "verdict-no";
+      if (verdict === "no-weak") return "verdict-maybe";
+      if (verdict === "maybe-positive" || verdict === "maybe-negative") return "verdict-maybe";
+      return "verdict-mixed";
+    }
+
     function buildInterpretationHtml(reading) {
       if (!window.HAWI_INTERPRETER?.interpretHawiQuestionInitial) {
         return `<div class="summary-box">אבחון גורל החול עדיין נטען. אם ההודעה נשארת, מנוע הידע לא נטען בדפדפן.</div>`;
@@ -680,17 +735,47 @@
 
       const conclusion = insight.finalConclusionHebrew || insight.conclusionDraftHebrew || insight.technicalConclusionHebrew || "";
       const score = insight.boardScore || {};
+      const judgeV = insight.judgeVerdict || score.judgeVerdict || null;
       const rules = Array.isArray(insight.relevantRules) ? insight.relevantRules.slice(0, 6) : [];
       const sources = Array.isArray(insight.knowledgeSources) ? insight.knowledgeSources.slice(0, 5) : [];
       const spiritual = insight.spiritualDiagnosis || null;
+      const isSpiritualTopic = insight.topicId === "spiritualDiagnostics";
       const showSpiritual =
         spiritual &&
         (
-          insight.topicId === "spiritualDiagnostics" ||
+          isSpiritualTopic ||
           spiritual.shouldShow === true ||
           spiritual.isSpiritualQuestion === true ||
           Number(spiritual.score || 0) > 0
         );
+
+      // Prominent verdict box
+      let verdictHtml = "";
+      if (isSpiritualTopic && spiritual?.grade) {
+        const gradeMap = {
+          "strong-suspicion": "כן — יש פגיעה רוחנית",
+          "medium-suspicion": "ייתכן — חשד בינוני לפגיעה רוחנית",
+          "weak-suspicion": "ספק — סימנים חלשים בלבד",
+          "mostly-clear": "לא — אין פגיעה רוחנית",
+          "mixed": "ממוזג — יש לבדוק עוד"
+        };
+        const verdictText = gradeMap[spiritual.grade] || spiritual.grade;
+        const vClass = spiritual.grade === "strong-suspicion" ? "verdict-yes" :
+                       spiritual.grade === "mostly-clear" ? "verdict-no" : "verdict-maybe";
+        verdictHtml = `
+          <div class="verdict-box ${vClass}">
+            <div class="verdict-label">תשובה לשאלה</div>
+            <div class="verdict-answer">${escapeHtml(verdictText)}</div>
+            <div class="verdict-detail">${escapeHtml(spiritual.finalHebrew || "")}</div>
+          </div>`;
+      } else if (judgeV && judgeV.hebrewShort) {
+        verdictHtml = `
+          <div class="verdict-box ${escapeHtml(verdictClass(judgeV.verdict))}">
+            <div class="verdict-label">תשובה לשאלה</div>
+            <div class="verdict-answer">${escapeHtml(judgeV.hebrewShort)}</div>
+            <div class="verdict-detail">${escapeHtml(judgeV.hebrewFull || "")}</div>
+          </div>`;
+      }
 
       const rulesHtml = rules.length
         ? `
@@ -721,33 +806,30 @@
         `
         : "";
 
-      const spiritualHtml = showSpiritual
+      const spiritualDetailHtml = showSpiritual
         ? `
           <div class="summary-box">
-            <strong>אבחון רוחני:</strong><br/>
-            ${escapeHtml(spiritual.finalHebrew || spiritual.grade || "לא נקבע")}<br/>
+            <strong>${isSpiritualTopic ? "פרטי האבחון הרוחני:" : "אבחון רוחני נוסף:"}</strong>
+            ${!isSpiritualTopic ? `<br/>${escapeHtml(spiritual.finalHebrew || "")}` : ""}
             ${Array.isArray(spiritual.mainReasons) && spiritual.mainReasons.length
-              ? `<ul>${spiritual.mainReasons.filter(r => r.score > 0).slice(0, 5).map(reason => `
+              ? `<ul>${spiritual.mainReasons.filter(r => r.score > 0).slice(0, 6).map(reason => `
                   <li><strong>בית ${reason.house}</strong> (${escapeHtml(reason.role || "")})${reason.figureHebrew ? ` — ${escapeHtml(reason.figureHebrew)}` : ""}: ${escapeHtml((reason.signals || []).join(" "))}</li>
                 `).join("")}</ul>`
-              : ""}
+              : (isSpiritualTopic ? "<p>לא נמצאו חוקים ספציפיים מהמקור. הפסיקה מבוססת על הדיין והעדים.</p>" : "")}
           </div>
         `
         : "";
 
       return `
+        ${verdictHtml}
+
         <div class="summary-box">
-          <strong>מסקנה אנושית:</strong><br/>
+          <strong>מסקנה מפורטת:</strong><br/>
           ${escapeHtml(conclusion).replace(/\n/g, "<br/>")}
         </div>
 
-        <div class="summary-box">
-          <strong>ציון הלוח:</strong><br/>
-          ${escapeHtml(score.grade || "לא נקבע")} — ${escapeHtml(String(score.score ?? ""))}
-        </div>
-
+        ${spiritualDetailHtml}
         ${rulesHtml}
-        ${spiritualHtml}
         ${sourcesHtml}
       `;
     }
@@ -766,17 +848,6 @@
 
         const question = document.getElementById("questionInput").value.trim();
 
-        // המתן למנועי הידע לטעון לפני בניית הפירוש
-        if (window.__HAWI_MODULE_READY) {
-          await window.__HAWI_MODULE_READY;
-        }
-
-        // המתן למנועי הידע לטעון לפני בניית הפירוש
-        if (window.__HAWI_MODULE_READY) {
-          await window.__HAWI_MODULE_READY;
-        }
-
-        // המתן למנועי הידע לטעון לפני בניית הפירוש
         if (window.__HAWI_MODULE_READY) {
           await window.__HAWI_MODULE_READY;
         }

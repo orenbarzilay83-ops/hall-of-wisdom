@@ -257,14 +257,24 @@ export function writeHumanGoralConclusion(result) {
   const grade = result.boardScore?.grade || 'mixed';
   const score = result.boardScore?.score || 0;
   const isSpiritualTopic = topicId === 'spiritualDiagnostics';
+  const judgeVerdict = result.judgeVerdict || result.boardScore?.judgeVerdict || null;
+
+  // Leading verdict paragraph
+  let verdictParagraph = '';
+  if (isSpiritualTopic) {
+    verdictParagraph = spiritualVerdict(result.spiritualDiagnosis);
+  } else if (judgeVerdict?.hebrewFull) {
+    verdictParagraph = judgeVerdict.hebrewFull;
+  } else if (result.boardScore?.hebrew) {
+    verdictParagraph = result.boardScore.hebrew;
+  }
 
   const paragraphs = [
     clientContextParagraph(result.clientContext, result.question),
     clientHistoryParagraph(result.clientHistorySummary),
-    isSpiritualTopic ? spiritualVerdict(result.spiritualDiagnosis) : '',
+    verdictParagraph,
     topicOpening(topicId, topicHebrew),
     questionFocusParagraph(topicId, result.clientContext),
-    `${getGradeText(grade)}. ${describeTone(score)}`,
     describeCoreHouses(result.boardAnalysis),
     spiritualParagraph(result.spiritualDiagnosis, topicId),
     recommendationByTopic(topicId, grade),
