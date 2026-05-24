@@ -455,6 +455,8 @@
   </div>
 
   <script type="module">
+    console.log("🚀 Starting HAWI module loading...");
+    console.log("🚀 Starting HAWI module loading...");
     window.__HAWI_MODULE_READY = Promise.all([
       import('/goral-hachol/engine/hawi-interpreter.js'),
       import('/goral-hachol/engine/goral-client-archive.js')
@@ -470,6 +472,14 @@
         clearGoralArchive: archive.clearGoralArchive,
         summarizeGoralClientHistory: archive.summarizeGoralClientHistory
       };
+
+      console.log("✅ HAWI modules loaded successfully!");
+      console.log("window.HAWI_INTERPRETER:", window.HAWI_INTERPRETER);
+      console.log("window.GORAL_CLIENT_ARCHIVE:", window.GORAL_CLIENT_ARCHIVE);
+
+      console.log("✅ HAWI modules loaded successfully!");
+      console.log("window.HAWI_INTERPRETER:", window.HAWI_INTERPRETER);
+      console.log("window.GORAL_CLIENT_ARCHIVE:", window.GORAL_CLIENT_ARCHIVE);
 
       return true;
     }).catch((err) => {
@@ -742,7 +752,7 @@
       `;
     }
 
-    async function runReading() {
+    async async async function runReading() {
       const errorBox = document.getElementById("errorBox");
       const boardResult = document.getElementById("boardResult");
 
@@ -755,6 +765,16 @@
         }
 
         const question = document.getElementById("questionInput").value.trim();
+
+        // המתן למנועי הידע לטעון לפני בניית הפירוש
+        if (window.__HAWI_MODULE_READY) {
+          await window.__HAWI_MODULE_READY;
+        }
+
+        // המתן למנועי הידע לטעון לפני בניית הפירוש
+        if (window.__HAWI_MODULE_READY) {
+          await window.__HAWI_MODULE_READY;
+        }
 
         // המתן למנועי הידע לטעון לפני בניית הפירוש
         if (window.__HAWI_MODULE_READY) {
