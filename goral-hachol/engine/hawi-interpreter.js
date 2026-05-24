@@ -255,7 +255,8 @@ function computeIttisalat(chart, focusHouseNumber, mainHouses) {
 
   const questioner_to_focus = focusHouseNumber !== 1 ? linkBetween(1, focusHouseNumber) : null;
   const questioner_to_judge = linkBetween(1, 15);
-  const focus_to_judge      = focusHouseNumber !== 15 ? linkBetween(focusHouseNumber, 15) : null;
+  // skip focus→judge when focus IS house 1 (would duplicate questioner_to_judge)
+  const focus_to_judge = (focusHouseNumber !== 15 && focusHouseNumber !== 1) ? linkBetween(focusHouseNumber, 15) : null;
   const witness_to_witness   = linkBetween(13, 14);
 
   const isConnected =
@@ -490,7 +491,7 @@ function computeTopicConnections(chart, topicId) {
     });
   }
 
-  return { topicId, checks };
+  return { topicId, topicHebrew: TOPIC_HEBREW_TITLES[topicId] || topicId, checks };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

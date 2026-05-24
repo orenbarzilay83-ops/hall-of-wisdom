@@ -287,7 +287,7 @@ function describeCoreHouses(analysis, topicId) {
   const topicConn = analysis.topicConnections || null;
   if (topicConn && topicConn.checks && topicConn.checks.length > 0) {
     const lines = topicConn.checks.map((c) => `  ${c.hebrewShort}`).join('\n');
-    parts.push(`בדיקות נושא (${topicConn.topicId}):\n${lines}`);
+    parts.push(`בדיקות נושא — ${topicConn.topicHebrew || topicConn.topicId}:\n${lines}`);
   }
 
   return parts.join('\n');
