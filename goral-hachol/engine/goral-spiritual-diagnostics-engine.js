@@ -61,6 +61,100 @@ function figureMatchesRule(house, ruleArabicFigure) {
   return houseText.includes(normalizeText(ruleArabicFigure));
 }
 
+// Helper: check if a house has a specific 4-digit pattern
+function houseHasPattern(house, pattern) {
+  if (!house) return false;
+  const key = house.key || (Array.isArray(house.figure) ? house.figure.join('') : '');
+  return key === pattern;
+}
+
+// Check jamaa derivation rules — house 13 from 9×10, house 14 from 11×12
+function checkJamaaDerivedRules(board, source) {
+  const matched = [];
+
+  // Patterns
+  const JAMAA_PATTERN = '2222';  // קהלה
+  const HUMRA_PATTERN = '2122';  // אדום
+  const NAKIS_PATTERN = '2221';  // שפל ראש
+
+  const house9 = getHouse(board, 9);
+  const house10 = getHouse(board, 10);
+  const house11 = getHouse(board, 11);
+  const house12 = getHouse(board, 12);
+  const house13 = getHouse(board, 13);
+  const house14 = getHouse(board, 14);
+
+  // Rule 1: house 13 = קהלה AND houses 9+10 are both אדום
+  if (
+    houseHasPattern(house13, JAMAA_PATTERN) &&
+    houseHasPattern(house9, HUMRA_PATTERN) &&
+    houseHasPattern(house10, HUMRA_PATTERN)
+  ) {
+    matched.push({
+      ruleId: 'jamaa-from-two-humra-witness1',
+      house: 13,
+      figureHebrew: 'קהלה',
+      diagnosisHebrew: 'ג׳מאעה שיצאה משתי חומרה — קנאה חזקה מאוד',
+      meaningHebrew: 'ג׳מאעה שיצאה משתי חומרה — קנאה חזקה מאוד',
+      severity: 'very-high',
+      sourcePage: null,
+    });
+  }
+
+  // Rule 2: house 13 = קהלה AND houses 9+10 are both שפל ראש
+  if (
+    houseHasPattern(house13, JAMAA_PATTERN) &&
+    houseHasPattern(house9, NAKIS_PATTERN) &&
+    houseHasPattern(house10, NAKIS_PATTERN)
+  ) {
+    matched.push({
+      ruleId: 'jamaa-from-two-nakis-witness1',
+      house: 13,
+      figureHebrew: 'קהלה',
+      diagnosisHebrew: 'ג׳מאעה שיצאה משני שפל ראש — שני כישופים קבורים ומתחדשים',
+      meaningHebrew: 'ג׳מאעה שיצאה משני שפל ראש — שני כישופים קבורים ומתחדשים',
+      severity: 'extreme',
+      sourcePage: null,
+    });
+  }
+
+  // Rule 3: house 14 = קהלה AND houses 11+12 are both אדום
+  if (
+    houseHasPattern(house14, JAMAA_PATTERN) &&
+    houseHasPattern(house11, HUMRA_PATTERN) &&
+    houseHasPattern(house12, HUMRA_PATTERN)
+  ) {
+    matched.push({
+      ruleId: 'jamaa-from-two-humra-witness2',
+      house: 14,
+      figureHebrew: 'קהלה',
+      diagnosisHebrew: 'ג׳מאעה שיצאה משתי חומרה — קנאה חזקה מאוד',
+      meaningHebrew: 'ג׳מאעה שיצאה משתי חומרה — קנאה חזקה מאוד',
+      severity: 'very-high',
+      sourcePage: null,
+    });
+  }
+
+  // Rule 4: house 14 = קהלה AND houses 11+12 are both שפל ראש
+  if (
+    houseHasPattern(house14, JAMAA_PATTERN) &&
+    houseHasPattern(house11, NAKIS_PATTERN) &&
+    houseHasPattern(house12, NAKIS_PATTERN)
+  ) {
+    matched.push({
+      ruleId: 'jamaa-from-two-nakis-witness2',
+      house: 14,
+      figureHebrew: 'קהלה',
+      diagnosisHebrew: 'ג׳מאעה שיצאה משני שפל ראש — שני כישופים קבורים ומתחדשים',
+      meaningHebrew: 'ג׳מאעה שיצאה משני שפל ראש — שני כישופים קבורים ומתחדשים',
+      severity: 'extreme',
+      sourcePage: null,
+    });
+  }
+
+  return matched;
+}
+
 // Check specific figure+house rules from the source data
 function checkFigureHouseRules(board, source) {
   const rules = asArray(source.figureHouseRules);
@@ -305,7 +399,10 @@ export function diagnoseSpiritualInfluence(question = '', board = null) {
     };
   }
 
-  const specificMatches = checkFigureHouseRules(board, source);
+  const specificMatches = [
+    ...checkFigureHouseRules(board, source),
+    ...checkJamaaDerivedRules(board, source),
+  ];
   const openingMatches = checkOpeningRules(board, source);
   const genericScore = quickHouseScore(board) + (questionHits.length ? 2 : 0);
   const isqatResult = applyIsqatSevenMethod(board, source);
