@@ -2,35 +2,41 @@
 // לא קשור לגורל העשיריות.
 // כאן אנחנו בונים מנוע נפרד לגמרי לפי שיטת הרמל / Geomantic Shield.
 
-let RAML_FORMS_BASIC = {};
+let RAML_FORMS_BASIC_ENGINE = {};
 try {
-  ({ RAML_FORMS_BASIC } = require("./raml-data/raml-forms-basic.js"));
+  if (typeof require === "function") {
+    const loadedForms = require("./raml-data/raml-forms-basic.js");
+    RAML_FORMS_BASIC_ENGINE = loadedForms.RAML_FORMS_BASIC || {};
+  }
 } catch (e) {
-  RAML_FORMS_BASIC = {};
+  RAML_FORMS_BASIC_ENGINE = {};
 }
 
 if (
   typeof window !== "undefined" &&
   window.RAML_FORMS_BASIC &&
-  Object.keys(RAML_FORMS_BASIC).length === 0
+  Object.keys(RAML_FORMS_BASIC_ENGINE).length === 0
 ) {
-  RAML_FORMS_BASIC = window.RAML_FORMS_BASIC;
+  RAML_FORMS_BASIC_ENGINE = window.RAML_FORMS_BASIC;
 }
 
 
-let RAML_HOUSES_BASIC = {};
+let RAML_HOUSES_BASIC_ENGINE = {};
 try {
-  ({ RAML_HOUSES_BASIC } = require("./raml-data/raml-houses-basic.js"));
+  if (typeof require === "function") {
+    const loadedHouses = require("./raml-data/raml-houses-basic.js");
+    RAML_HOUSES_BASIC_ENGINE = loadedHouses.RAML_HOUSES_BASIC || {};
+  }
 } catch (e) {
-  RAML_HOUSES_BASIC = {};
+  RAML_HOUSES_BASIC_ENGINE = {};
 }
 
 if (
   typeof window !== "undefined" &&
   window.RAML_HOUSES_BASIC &&
-  Object.keys(RAML_HOUSES_BASIC).length === 0
+  Object.keys(RAML_HOUSES_BASIC_ENGINE).length === 0
 ) {
-  RAML_HOUSES_BASIC = window.RAML_HOUSES_BASIC;
+  RAML_HOUSES_BASIC_ENGINE = window.RAML_HOUSES_BASIC;
 }
 
 const RAML_FIGURES = {
@@ -57,10 +63,10 @@ const RAML_FIGURES = {
 
 // מיזוג קובץ הידע הבסיסי לתוך הצורות של המנוע
 // המנוע נשאר אחראי לחישוב; קובץ הידע אחראי למידע לימודי/פרשני.
-for (const key of Object.keys(RAML_FORMS_BASIC || {})) {
+for (const key of Object.keys(RAML_FORMS_BASIC_ENGINE || {})) {
   RAML_FIGURES[key] = {
     ...(RAML_FIGURES[key] || {}),
-    ...RAML_FORMS_BASIC[key],
+    ...RAML_FORMS_BASIC_ENGINE[key],
     key
   };
 }
@@ -299,7 +305,7 @@ if (typeof module !== "undefined") {
 }
 
 // שמות 16 הבתים בגורל החול
-const RAML_HOUSES = Object.keys(RAML_HOUSES_BASIC || {}).length
+const RAML_HOUSES = Object.keys(RAML_HOUSES_BASIC_ENGINE || {}).length
   ? RAML_HOUSES_BASIC
   : {
   1:  { number: 1,  hebrew: "בית החיים", arabic: "بيت الحياة", role: "השואל, הגוף, החיים, מצב האדם" },
