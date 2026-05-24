@@ -473,8 +473,23 @@
 
       return true;
     }).catch((err) => {
-      console.error("HAWI module load failed:", err);
+      const errorMsg = err?.message || String(err);
+      const errorType = err?.name || "Unknown";
+      console.error("❌ HAWI module load FAILED!");
+      console.error("Error Type:", errorType);
+      console.error("Error Message:", errorMsg);
+      console.error("Full Error:", err);
+      console.error("Import paths attempted:", [
+        '/goral-hachol/engine/hawi-interpreter.js',
+        '/goral-hachol/engine/goral-client-archive.js'
+      ]);
+      
       window.__HAWI_MODULE_ERROR = err;
+      window.__HAWI_MODULE_ERROR_MSG = `${errorType}: ${errorMsg}`;
+      
+      // הצג בhalert גם
+      console.log("You can see the error in the console above ⬆️");
+      
       return false;
     });
   </script>
