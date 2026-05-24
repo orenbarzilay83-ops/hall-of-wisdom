@@ -1,5 +1,29 @@
 import * as APPROVED_SPIRITUAL_SOURCE from '../data/sources/approved-raml/spiritual-diagnostics/raml-spiritual-diagnostics-sihr-mass-hasad.js';
 
+// Mapping from Arabic figure names (as they appear in source rules) to Hebrew names used in the board
+const ARABIC_TO_HEBREW_FIGURE = {
+  'الأنكيس': 'שפל ראש',
+  'المنكوس': 'שפל ראש',
+  'الجودلة': 'נלחם',
+  'كوسج': 'נלחם',
+  'القبض الداخل': 'ממון נכנס',
+  'الأحيان': 'נשוא ראש',
+  'الضاحك': 'נשוא ראש',
+  'العقلة': 'סוהר',
+  'الشقاوة': 'סוהר',
+  'الجماعة': 'קהלה',
+  'الحمرة': 'אדום',
+  'الاجتماع': 'חיבור',
+  'البياض': 'לבן',
+  'القبض الخارج': 'ממון יוצא',
+  'الطريق': 'דרך',
+  'عتبة خارجة': 'סף יוצא',
+  'عتبة داخلة': 'סף נכנס',
+  'نصرة خارجة': 'כבוד יוצא',
+  'نصرة داخلة': 'כבוד נכנס',
+  'نقي الخد': 'בר הלחי',
+};
+
 function normalizeText(value = '') {
   return String(value)
     .trim()
@@ -22,289 +46,173 @@ function getHouse(board, houseNumber) {
   return asArray(board?.chart).find((h) => Number(h.house) === Number(houseNumber)) || null;
 }
 
-function hasAnyText(value, words) {
-  const text = normalizeText(value);
-  return words.some((w) => text.includes(normalizeText(w)));
+function getFigureHebrewName(house) {
+  return house?.hebrew || house?.figureHebrew || house?.name || null;
 }
 
-function isGoodValue(value = '') {
-  return hasAnyText(value, ['סעד', 'טוב', 'benefic', 'saad', 'سعد']);
+function figureMatchesRule(house, ruleArabicFigure) {
+  if (!house || !ruleArabicFigure) return false;
+  const figureHebrew = getFigureHebrewName(house);
+  if (!figureHebrew) return false;
+  const expectedHebrew = ARABIC_TO_HEBREW_FIGURE[ruleArabicFigure.trim()];
+  if (expectedHebrew && normalizeText(figureHebrew) === normalizeText(expectedHebrew)) return true;
+  // Fallback: check if Arabic name appears in house fields
+  const houseText = normalizeText([house.arabic, house.arabicName, house.key].filter(Boolean).join(' '));
+  return houseText.includes(normalizeText(ruleArabicFigure));
 }
 
-function isBadValue(value = '') {
-  return hasAnyText(value, ['נחס', 'רע', 'malefic', 'nahs', 'نحس']);
+// Check specific figure+house rules from the source data
+function checkFigureHouseRules(board, source) {
+  const rules = asArray(source.figureHouseRules);
+  const matched = [];
+
+  for (const rule of rules) {
+    if (!rule.figure || !rule.house) continue;
+    const house = getHouse(board, rule.house);
+    if (!house) continue;
+    if (!figureMatchesRule(house, rule.figure)) continue;
+
+    const figureHebrew = getFigureHebrewName(house);
+    const diagnosis = (rule.hebrewTranslation || []).join(' ');
+    const meaning = rule.appMeaningHebrew || diagnosis;
+
+    matched.push({
+      ruleId: rule.id,
+      house: rule.house,
+      figureHebrew,
+      diagnosisHebrew: diagnosis,
+      meaningHebrew: meaning,
+      severity: rule.severity || 'medium',
+      sourcePage: rule.sourcePage || null,
+    });
+  }
+
+  return matched;
 }
 
-const SPIRITUAL_KEYWORDS = {
-  sihr: ['כישוף', 'סחר', 'סحر', 'sihr', 'קשירה', 'טליסמא', 'طلسم', 'طلسمات'],
-  ayin: ['עין', 'עין הרע', 'عين'],
-  hasad: ['קנאה', 'חסד', 'حسد', 'hasad'],
-  jinn: ['ג׳ין', 'גין', 'שדים', 'جن', 'jinn'],
-  mass: ['מס', 'אחיזה', 'פגיעה רוחנית', 'مس', 'mass'],
-  fearHiddenEnemy: ['פחד', 'אויב נסתר', 'שנאה', 'טינה', 'הסתרה'],
-};
+// Check general opening rules (e.g. "עקלה = מכשפה", "חיבור = מכשף רע")
+function checkOpeningRules(board, source) {
+  const rules = asArray(source.openingRules);
+  const matched = [];
 
-const SPIRITUAL_HOUSES = [
-  {
-    house: 1,
-    role: 'גוף השואל / מצב כללי',
-    categories: ['general', 'sihr', 'mass'],
-    weight: 2,
-  },
-  {
-    house: 6,
-    role: 'חולי / אחיזה / קנאה / פגיעה',
-    categories: ['illness', 'mass', 'hasad', 'sihr'],
-    weight: 4,
-  },
-  {
-    house: 8,
-    role: 'פגיעה עמוקה / פחד / סודות / מוות',
-    categories: ['deep-harm', 'sihr', 'fearHiddenEnemy'],
-    weight: 3,
-  },
-  {
-    house: 9,
-    role: 'חלומות / ידיעת נסתרות / רוחניות',
-    categories: ['dreams', 'hidden-knowledge', 'jinn'],
-    weight: 2,
-  },
-  {
-    house: 12,
-    role: 'אויב נסתר / קנאה / שנאה / הסתרה',
-    categories: ['hidden-enemy', 'hasad', 'ayin', 'fearHiddenEnemy'],
-    weight: 4,
-  },
-  {
-    house: 13,
-    role: 'עד ראשון',
-    categories: ['witness'],
-    weight: 2,
-  },
-  {
-    house: 14,
-    role: 'עד שני',
-    categories: ['witness'],
-    weight: 2,
-  },
-  {
-    house: 15,
-    role: 'דיין',
-    categories: ['judge'],
-    weight: 4,
-  },
-  {
-    house: 16,
-    role: 'משלים בית 15',
-    categories: ['sentence'],
-    weight: 3,
-  },
-];
+  for (const rule of rules) {
+    const figures = asArray(rule.figures);
+    for (const arabicFigure of figures) {
+      // Check if this figure appears anywhere on the board
+      const allHouses = asArray(board?.chart);
+      const found = allHouses.find((h) => figureMatchesRule(h, arabicFigure));
+      if (!found) continue;
 
-function detectSpiritualTopicFromQuestion(question = '') {
-  const hits = [];
+      const figureHebrew = getFigureHebrewName(found);
+      const diagnosis = asArray(rule.hebrewTranslation).join(' ');
 
-  for (const [category, words] of Object.entries(SPIRITUAL_KEYWORDS)) {
-    if (hasAnyText(question, words)) {
-      hits.push(category);
+      matched.push({
+        ruleId: rule.id,
+        house: found.house,
+        figureHebrew,
+        diagnosisHebrew: diagnosis,
+        meaningHebrew: diagnosis,
+        severity: 'medium',
+        sourcePage: rule.sourcePage || null,
+      });
+      break;
     }
   }
 
+  return matched;
+}
+
+function severityScore(severity) {
+  const map = { extreme: 8, 'very-high': 6, high: 4, 'medium-high': 3, medium: 2, low: 1 };
+  return map[severity] || 2;
+}
+
+function gradeFromMatches(specificMatches, openingMatches, genericScore) {
+  const specificScore = specificMatches.reduce((s, m) => s + severityScore(m.severity), 0);
+  const openingScore = openingMatches.reduce((s, m) => s + 1, 0);
+  const total = specificScore * 2 + openingScore + genericScore;
+
+  if (specificMatches.some((m) => m.severity === 'extreme' || m.severity === 'very-high') || total >= 12) {
+    return 'strong-suspicion';
+  }
+  if (specificMatches.length > 0 || total >= 7) {
+    return 'medium-suspicion';
+  }
+  if (openingMatches.length > 0 || total >= 3) {
+    return 'weak-suspicion';
+  }
+  if (total <= -2) {
+    return 'mostly-clear';
+  }
+  return 'mixed';
+}
+
+function buildFinalHebrew(grade, specificMatches) {
+  const verdictMap = {
+    'strong-suspicion': 'מסקנה רוחנית: כן — הלוח מראה סימנים חזקים לפגיעה רוחנית לפי כללי המקור.',
+    'medium-suspicion': 'מסקנה רוחנית: ייתכן — יש חשד בינוני לפגיעה רוחנית. נמצאו התאמות מהמקור שדורשות בדיקה.',
+    'weak-suspicion': 'מסקנה רוחנית: ספק — יש סימנים חלשים בלבד, אין הכרעה חזקה.',
+    'mostly-clear': 'מסקנה רוחנית: לא — אין סימן חזק לפגיעה רוחנית בלוח זה.',
+    mixed: 'מסקנה רוחנית: הלוח ממוזג. יש לבדוק את בית 6, בית 12, העדים והדיין לפני הכרעה.',
+  };
+
+  let base = verdictMap[grade] || verdictMap.mixed;
+
+  if (specificMatches.length > 0) {
+    const details = specificMatches
+      .slice(0, 3)
+      .map((m) => `בית ${m.house} (${m.figureHebrew}): ${m.diagnosisHebrew}`)
+      .join(' | ');
+    base += ` פרטים מהמקור: ${details}`;
+  }
+
+  return base;
+}
+
+function detectSpiritualTopicFromQuestion(question = '') {
+  const keywords = {
+    sihr: ['כישוף', 'סחר', 'סحر', 'sihr', 'קשירה', 'טליסמא', 'طلسم'],
+    ayin: ['עין', 'עין הרע', 'عين'],
+    hasad: ['קנאה', 'חסד', 'حسد', 'hasad'],
+    jinn: ['ג׳ין', 'גין', 'שדים', 'جن', 'jinn'],
+    mass: ['מס', 'אחיזה', 'פגיעה רוחנית', 'مس', 'mass'],
+    fearHiddenEnemy: ['פחד', 'אויב נסתר', 'שנאה', 'טינה', 'הסתרה'],
+  };
+  const hits = [];
+  const text = normalizeText(question);
+  for (const [cat, words] of Object.entries(keywords)) {
+    if (words.some((w) => text.includes(normalizeText(w)))) hits.push(cat);
+  }
   return hits;
 }
 
-function collectSourceRules(source) {
-  const rules = [];
+// Generic house scoring (kept as a secondary signal)
+function quickHouseScore(board) {
+  const SCORED_HOUSES = [
+    { house: 1, weight: 1 },
+    { house: 6, weight: 3 },
+    { house: 8, weight: 2 },
+    { house: 12, weight: 3 },
+    { house: 15, weight: 2 },
+  ];
 
-  function walk(value, path = []) {
-    if (!value) return;
-
-    if (Array.isArray(value)) {
-      for (const item of value) walk(item, path);
-      return;
-    }
-
-    if (typeof value !== 'object') return;
-
-    const textFields = [
-      value.hebrew,
-      value.rule,
-      value.ruleHebrew,
-      value.effectHebrew,
-      value.appDisplayHebrew,
-      value.diagnosisHebrew,
-      value.meaning,
-      value.note,
-      value.arabic,
-      value.arabicText,
-    ].filter(Boolean);
-
-    const hasUsefulText = textFields.length > 0;
-
-    const text = normalizeText(textFields.join(' '));
-    const spiritualHit =
-      hasAnyText(text, [
-        'כישוף',
-        'סחר',
-        'סحر',
-        'עין',
-        'عين',
-        'קנאה',
-        'حسد',
-        'ג׳ין',
-        'جن',
-        'מס',
-        'مس',
-        'אחיזה',
-        'רוחני',
-        'טליסמא',
-        'طلسم',
-      ]);
-
-    if (hasUsefulText && spiritualHit) {
-      rules.push({
-        path: path.join('.'),
-        id: value.id || null,
-        house: value.house || null,
-        houses: value.houses || null,
-        category: value.category || value.type || null,
-        hebrew:
-          value.hebrew ||
-          value.ruleHebrew ||
-          value.effectHebrew ||
-          value.appDisplayHebrew ||
-          value.diagnosisHebrew ||
-          value.meaning ||
-          value.note ||
-          null,
-        arabic: value.arabic || value.arabicText || null,
-      });
-    }
-
-    for (const [key, child] of Object.entries(value)) {
-      if (key === 'default') continue;
-      walk(child, [...path, key]);
-    }
-  }
-
-  walk(source, []);
-  return rules;
-}
-
-function analyzeSpiritualHouse(board, config) {
-  const house = getHouse(board, config.house);
-
-  if (!house) {
-    return {
-      house: config.house,
-      role: config.role,
-      found: false,
-      score: 0,
-      signals: ['הבית לא נמצא בלוח.'],
-    };
-  }
-
-  const combined = [
-    house.hebrew,
-    house.figureHebrew,
-    house.key,
-    house.fortune,
-    house.movement,
-    house.element,
-    house.houseHebrew,
-  ].filter(Boolean).join(' ');
+  const BAD_MARKERS = ['נחס', 'רע', 'malefic', 'nahs', 'نحس', 'אדום', 'humra', 'الحمرة'];
+  const GOOD_MARKERS = ['סעד', 'טוב', 'benefic', 'saad', 'سعد', 'לבן', 'bayad', 'البياض'];
 
   let score = 0;
-  const signals = [];
-
-  if (isBadValue(combined)) {
-    score += config.weight;
-    signals.push('נמצא סימן נחס / קושי בבית זה.');
+  for (const { house, weight } of SCORED_HOUSES) {
+    const h = getHouse(board, house);
+    if (!h) continue;
+    const text = normalizeText([h.hebrew, h.key, h.fortune, h.element].filter(Boolean).join(' '));
+    if (BAD_MARKERS.some((w) => text.includes(normalizeText(w)))) score += weight;
+    if (GOOD_MARKERS.some((w) => text.includes(normalizeText(w)))) score -= 1;
   }
-
-  if (isGoodValue(combined)) {
-    score -= Math.max(1, Math.floor(config.weight / 2));
-    signals.push('נמצא סימן סעד / תיקון בבית זה.');
-  }
-
-  if (hasAnyText(combined, ['אדום', 'humra', 'חמרה', 'الحمرة'])) {
-    score += 2;
-    signals.push('אדום מחזק חשד לחום, פגיעה, עימות או מזיק פעיל.');
-  }
-
-  if (hasAnyText(combined, ['עקלה', 'סוהר', 'aqla', 'العقلة'])) {
-    score += 2;
-    signals.push('עקלה/סוהר מחזקת חסימה, קשירה או אחיזה.');
-  }
-
-  if (hasAnyText(combined, ['ממון יוצא', 'qabd-kharij', 'قبض خارج'])) {
-    score += 1;
-    signals.push('ממון יוצא מחזק יציאה, הפסד, התרוקנות או כוח מזיק.');
-  }
-
-  if (hasAnyText(combined, ['לבן', 'bayad', 'البياض'])) {
-    score -= 1;
-    signals.push('לבן עשוי להראות ריכוך, ניקוי או אפשרות תיקון.');
-  }
-
-  if (hasAnyText(combined, ['דרך', 'tariq', 'الطريق'])) {
-    signals.push('דרך מראה תנועה, מעבר או השפעה נעה ולא קבועה.');
-  }
-
-  return {
-    house: config.house,
-    role: config.role,
-    categories: config.categories,
-    found: true,
-    figureHebrew: house.hebrew || house.figureHebrew || null,
-    figureKey: house.key || null,
-    fortune: house.fortune || null,
-    movement: house.movement || null,
-    element: house.element || null,
-    score,
-    signals,
-  };
-}
-
-function gradeSpiritualScore(score) {
-  if (score >= 13) {
-    return {
-      grade: 'strong-suspicion',
-      hebrew: 'מסקנה רוחנית: קיימים סימנים חזקים לפגיעה רוחנית / כישוף / עין / אחיזה, לפי הבתים המרכזיים והדיין.',
-    };
-  }
-
-  if (score >= 8) {
-    return {
-      grade: 'medium-suspicion',
-      hebrew: 'מסקנה רוחנית: קיימים סימנים בינוניים לחשד רוחני. לא לפסוק לבד; יש לבדוק את סוג הפגיעה לפי הבית והצורה.',
-    };
-  }
-
-  if (score >= 4) {
-    return {
-      grade: 'weak-suspicion',
-      hebrew: 'מסקנה רוחנית: קיימים סימנים חלשים או מעורבים. ייתכן קושי רגשי/חברתי/רוחני, אך אין הכרעה חזקה.',
-    };
-  }
-
-  if (score <= -2) {
-    return {
-      grade: 'mostly-clear',
-      hebrew: 'מסקנה רוחנית: אין סימן חזק לפגיעה רוחנית. קיימים סימני ריכוך או תיקון.',
-    };
-  }
-
-  return {
-    grade: 'mixed',
-    hebrew: 'מסקנה רוחנית: הלוח ממוזג. יש לבדוק את בית 6, בית 12, העדים והדיין לפני הכרעה.',
-  };
+  return score;
 }
 
 export function diagnoseSpiritualInfluence(question = '', board = null) {
   const source = getApprovedSpiritualSource();
   const questionHits = detectSpiritualTopicFromQuestion(question);
-  const sourceRules = collectSourceRules(source);
 
   if (!board || !Array.isArray(board.chart)) {
     return {
@@ -312,41 +220,52 @@ export function diagnoseSpiritualInfluence(question = '', board = null) {
       active: true,
       hasBoard: false,
       questionHits,
-      sourceRules: sourceRules.slice(0, 12),
-      finalHebrew:
-        'שכבת האבחון הרוחני פעילה, אבל לא התקבל לוח גורל מלא. לכן אין לפסוק כישוף/עין/אחיזה בלי לוח.',
+      finalHebrew: 'שכבת האבחון הרוחני פעילה, אבל לא התקבל לוח גורל מלא. לכן אין לפסוק כישוף/עין/אחיזה בלי לוח.',
     };
   }
 
-  const houseAnalysis = SPIRITUAL_HOUSES.map((config) => analyzeSpiritualHouse(board, config));
-  const rawScore = houseAnalysis.reduce((sum, item) => sum + (item.score || 0), 0);
+  const specificMatches = checkFigureHouseRules(board, source);
+  const openingMatches = checkOpeningRules(board, source);
+  const genericScore = quickHouseScore(board) + (questionHits.length ? 2 : 0);
 
-  const questionBoost = questionHits.length ? 2 : 0;
-  const score = rawScore + questionBoost;
-  const grade = gradeSpiritualScore(score);
+  const grade = gradeFromMatches(specificMatches, openingMatches, genericScore);
+  const finalHebrew = buildFinalHebrew(grade, specificMatches);
 
-  const mainReasons = houseAnalysis
-    .filter((item) => item.signals && item.signals.length)
-    .map((item) => ({
-      house: item.house,
-      role: item.role,
-      figureHebrew: item.figureHebrew,
-      score: item.score,
-      signals: item.signals,
-    }));
+  const mainReasons = specificMatches.map((m) => ({
+    house: m.house,
+    role: `בית ${m.house}`,
+    figureHebrew: m.figureHebrew,
+    score: severityScore(m.severity),
+    signals: [m.diagnosisHebrew],
+    sourceBased: true,
+  }));
+
+  if (!mainReasons.length && openingMatches.length) {
+    openingMatches.slice(0, 3).forEach((m) => {
+      mainReasons.push({
+        house: m.house,
+        role: `בית ${m.house}`,
+        figureHebrew: m.figureHebrew,
+        score: 1,
+        signals: [m.diagnosisHebrew],
+        sourceBased: true,
+      });
+    });
+  }
 
   return {
     id: 'goral-spiritual-diagnostics',
     active: true,
     hasBoard: true,
     questionHits,
-    checkedHouses: SPIRITUAL_HOUSES.map((h) => h.house),
-    houseAnalysis,
-    sourceRules: sourceRules.slice(0, 12),
-    score,
-    grade: grade.grade,
-    finalHebrew: grade.hebrew,
+    specificMatches,
+    openingMatches,
+    genericScore,
+    grade,
+    finalHebrew,
     mainReasons,
+    shouldShow: grade !== 'mixed',
+    isSpiritualQuestion: questionHits.length > 0,
   };
 }
 
