@@ -147,7 +147,7 @@ function gradeFromMatches(specificMatches, openingMatches, genericScore) {
   return 'mixed';
 }
 
-function buildFinalHebrew(grade, specificMatches) {
+function buildFinalHebrew(grade, specificMatches, openingMatches) {
   const verdictMap = {
     'strong-suspicion': 'מסקנה רוחנית: כן — הלוח מראה סימנים חזקים לפגיעה רוחנית לפי כללי המקור.',
     'medium-suspicion': 'מסקנה רוחנית: ייתכן — יש חשד בינוני לפגיעה רוחנית. נמצאו התאמות מהמקור שדורשות בדיקה.',
@@ -157,13 +157,20 @@ function buildFinalHebrew(grade, specificMatches) {
   };
 
   let base = verdictMap[grade] || verdictMap.mixed;
+  const details = [];
 
-  if (specificMatches.length > 0) {
-    const details = specificMatches
-      .slice(0, 3)
-      .map((m) => `בית ${m.house} (${m.figureHebrew}): ${m.diagnosisHebrew}`)
-      .join(' | ');
-    base += ` פרטים מהמקור: ${details}`;
+  for (const m of specificMatches.slice(0, 3)) {
+    const position = m.house === 15 ? 'הדיין' : m.house === 13 ? 'עד ראשון' : m.house === 14 ? 'עד שני' : `בית ${m.house}`;
+    details.push(`${position} (${m.figureHebrew}): ${m.diagnosisHebrew}`);
+  }
+
+  for (const m of openingMatches.slice(0, 3)) {
+    const position = m.house === 15 ? 'הדיין' : m.house === 13 ? 'עד ראשון' : m.house === 14 ? 'עד שני' : `בית ${m.house}`;
+    details.push(`${position} (${m.figureHebrew}): ${m.diagnosisHebrew}`);
+  }
+
+  if (details.length > 0) {
+    base += ` פרטים מהמקור: ${details.join(' | ')}`;
   }
 
   return base;
@@ -229,7 +236,7 @@ export function diagnoseSpiritualInfluence(question = '', board = null) {
   const genericScore = quickHouseScore(board) + (questionHits.length ? 2 : 0);
 
   const grade = gradeFromMatches(specificMatches, openingMatches, genericScore);
-  const finalHebrew = buildFinalHebrew(grade, specificMatches);
+  const finalHebrew = buildFinalHebrew(grade, specificMatches, openingMatches);
 
   const mainReasons = specificMatches.map((m) => ({
     house: m.house,
