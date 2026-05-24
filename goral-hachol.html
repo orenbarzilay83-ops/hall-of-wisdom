@@ -727,7 +727,7 @@
       `;
     }
 
-    function runReading() {
+    async function runReading() {
       const errorBox = document.getElementById("errorBox");
       const boardResult = document.getElementById("boardResult");
 
@@ -740,6 +740,12 @@
         }
 
         const question = document.getElementById("questionInput").value.trim();
+
+        // המתן למנועי הידע לטעון לפני בניית הפירוש
+        if (window.__HAWI_MODULE_READY) {
+          await window.__HAWI_MODULE_READY;
+        }
+
         const mothers = selectedMothers.map(m => m.lines);
 
         if (typeof window.ramlRunReading !== "function") {
