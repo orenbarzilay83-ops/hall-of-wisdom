@@ -207,6 +207,9 @@ function buildJudgeVerdict(boardAnalysis) {
 
   let verdict, grade, hebrewShort, hebrewFull;
 
+  // The judge (house 15) is the primary and final ruling in ilm al-raml.
+  // Witnesses can only strengthen the certainty or note a contradiction —
+  // they cannot override the judge's direction.
   if (judgeTone > 0) {
     if (witnessTone >= 0) {
       verdict = 'yes-strong';
@@ -218,9 +221,9 @@ function buildJudgeVerdict(boardAnalysis) {
         (focusFigure ? ' הבית המרכזי (בית ' + focusHouseNum + '): ' + focusFigure + '.' : '');
     } else {
       verdict = 'yes-weak';
-      grade = 'cautiously-positive';
-      hebrewShort = 'ייתכן שכן';
-      hebrewFull = 'תשובה: ייתכן שכן — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא סעד, אך העדים מראים ספק.' +
+      grade = 'positive';
+      hebrewShort = 'כן';
+      hebrewFull = 'תשובה: כן — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא סעד. העדים מנוגדים לו, אך הדיין פוסק — יש כוחות שמעכבים אבל הכיוון חיובי.' +
         (w1Figure ? ' עד ראשון: ' + w1Figure + '.' : '') +
         (w2Figure ? ' עד שני: ' + w2Figure + '.' : '');
     }
@@ -235,32 +238,33 @@ function buildJudgeVerdict(boardAnalysis) {
         (focusFigure ? ' הבית המרכזי (בית ' + focusHouseNum + '): ' + focusFigure + '.' : '');
     } else {
       verdict = 'no-weak';
-      grade = 'cautiously-negative';
-      hebrewShort = 'ייתכן שלא';
-      hebrewFull = 'תשובה: ייתכן שלא — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא נחס, אך העדים מציגים צד חיובי.' +
+      grade = 'negative';
+      hebrewShort = 'לא';
+      hebrewFull = 'תשובה: לא — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא נחס. העדים מראים צד חיובי אך אינם יכולים לשנות פסיקת הדיין — יש כוח חיובי שמנסה לפעול, אך הכרעת הגורל שלילית.' +
         (w1Figure ? ' עד ראשון: ' + w1Figure + '.' : '') +
         (w2Figure ? ' עד שני: ' + w2Figure + '.' : '');
     }
   } else {
+    // Judge is mixed (ממוזג) — here witnesses do decide the lean
     if (witnessTone > 0 || focusTone > 0) {
       verdict = 'maybe-positive';
       grade = 'cautiously-positive';
-      hebrewShort = 'ייתכן';
-      hebrewFull = 'תשובה: ייתכן — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא ממוזג, ויש נטייה לטובה לפי העדים.' +
+      hebrewShort = 'ייתכן שכן';
+      hebrewFull = 'תשובה: ייתכן שכן — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא ממוזג ולא מכריע. העדים נוטים לטובה.' +
         (w1Figure ? ' עד ראשון: ' + w1Figure + '.' : '') +
         (w2Figure ? ' עד שני: ' + w2Figure + '.' : '');
     } else if (witnessTone < 0 || focusTone < 0) {
       verdict = 'maybe-negative';
       grade = 'cautiously-negative';
       hebrewShort = 'ייתכן שלא';
-      hebrewFull = 'תשובה: ייתכן שלא — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא ממוזג, ויש נטייה לקשיים לפי העדים.' +
+      hebrewFull = 'תשובה: ייתכן שלא — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא ממוזג ולא מכריע. העדים נוטים לקשיים.' +
         (w1Figure ? ' עד ראשון: ' + w1Figure + '.' : '') +
         (w2Figure ? ' עד שני: ' + w2Figure + '.' : '');
     } else {
       verdict = 'mixed';
       grade = 'mixed';
       hebrewShort = 'ממוזג';
-      hebrewFull = 'תשובה: ממוזג — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא ממוזג ואינו מכריע, יש לבדוק את פרטי הבית המרכזי.' +
+      hebrewFull = 'תשובה: ממוזג — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא ממוזג, והעדים אינם מכריעים לכאן או לכאן. יש לבדוק את הבית המרכזי.' +
         (w1Figure ? ' עד ראשון: ' + w1Figure + '.' : '') +
         (w2Figure ? ' עד שני: ' + w2Figure + '.' : '');
     }

@@ -227,6 +227,19 @@
       font-weight:900;
     }
 
+    .figure-card.other-selected {
+      outline:1px dashed #aaa;
+      outline-offset:-2px;
+      background:#f5f5f5;
+      opacity:0.72;
+    }
+
+    .other-slot-badge {
+      font-size:10px;
+      color:#888;
+      margin-top:-2px;
+    }
+
     .glyph {
       width:58px;
       display:grid;
@@ -670,11 +683,16 @@
     function renderFigureGrid() {
       const grid = document.getElementById("figureGrid");
       grid.innerHTML = figures.map((fig, index) => {
-        const selected = selectedMothers.some(m => m && m.key === fig.key);
+        const isCurrentSlot = selectedMothers[activeMother] && selectedMothers[activeMother].key === fig.key;
+        const isOtherSlot = !isCurrentSlot && selectedMothers.some((m, i) => i !== activeMother && m && m.key === fig.key);
+        const slotNum = isOtherSlot
+          ? selectedMothers.findIndex((m, i) => i !== activeMother && m && m.key === fig.key) + 1
+          : null;
         return `
-          <button type="button" class="figure-card ${selected ? "selected" : ""}" data-index="${index}">
+          <button type="button" class="figure-card ${isCurrentSlot ? "selected" : isOtherSlot ? "other-selected" : ""}" data-index="${index}">
             ${glyphHtml(fig.lines)}
             <div class="figure-name">${escapeHtml(fig.name)}</div>
+            ${isOtherSlot && slotNum ? `<div class="other-slot-badge">אם ${slotNum}</div>` : ""}
           </button>
         `;
       }).join("");
@@ -775,10 +793,8 @@
 
     function verdictClass(verdict) {
       if (!verdict) return "";
-      if (verdict === "yes-strong") return "verdict-yes";
-      if (verdict === "yes-weak") return "verdict-maybe";
-      if (verdict === "no-strong") return "verdict-no";
-      if (verdict === "no-weak") return "verdict-maybe";
+      if (verdict === "yes-strong" || verdict === "yes-weak") return "verdict-yes";
+      if (verdict === "no-strong" || verdict === "no-weak") return "verdict-no";
       if (verdict === "maybe-positive" || verdict === "maybe-negative") return "verdict-maybe";
       return "verdict-mixed";
     }
@@ -804,13 +820,13 @@
       const sources = Array.isArray(insight.knowledgeSources) ? insight.knowledgeSources.slice(0, 5) : [];
       const spiritual = insight.spiritualDiagnosis || null;
       const isSpiritualTopic = insight.topicId === "spiritualDiagnostics";
+      // Only show spiritual section when explicitly spiritual topic,
+      // or when the engine finds very strong suspicion (not just any score > 0)
       const showSpiritual =
         spiritual &&
         (
           isSpiritualTopic ||
-          spiritual.shouldShow === true ||
-          spiritual.isSpiritualQuestion === true ||
-          Number(spiritual.score || 0) > 0
+          spiritual.grade === 'strong-suspicion'
         );
 
       // Prominent verdict box
