@@ -194,7 +194,17 @@ function describeCoreHouses(analysis, topicId) {
   const witnesses = analysis.witnesses || [];
 
   const dhamir = analysis.dhamirHouse || null;
+  const dhamirMizan = analysis.dhamirByMizan || null;
+  const boardScore = analysis.boardScore || null;
   const parts = [];
+
+  // שלמות הלוח — ראשון לכל
+  if (boardScore) {
+    parts.push(boardScore.isComplete
+      ? `✓ ${boardScore.hebrewSummary}`
+      : `⚠ ${boardScore.hebrewSummary}`
+    );
+  }
 
   if (focus) {
     const figureName = focus.figureHebrew || 'שאינה מזוהה בשם';
@@ -239,10 +249,20 @@ function describeCoreHouses(analysis, topicId) {
     );
   }
 
-  if (dhamir) {
+  // דמיר — תסיירת נקטת המיזאן (שיטה ראשית לפי הספר)
+  if (dhamirMizan && dhamirMizan.traces.length > 0) {
+    const traceLines = dhamirMizan.traces.map((t) => {
+      const fortune = t.dhamirFortune ? ` [${t.dhamirFortune}]` : '';
+      return `  שורת ${t.rowElement} → בית ${t.dhamirHouseNumber} — ${t.dhamirHebrew}${fortune}`;
+    });
+    parts.push(
+      `הדמיר (תסיירת נקטת המיזאן):\n${traceLines.join('\n')}\n  → הדמיר העיקרי: בית ${dhamirMizan.primaryHouseNumber} — כל הדין שם.`
+    );
+  } else if (dhamir) {
+    // גיבוי: נהמת האמהות
     const dhamirFortune = dhamir.fortune ? ` [${dhamir.fortune}]` : '';
     parts.push(
-      `הדמיר (חל הדמיר): בית ${dhamir.houseNumber} — ${dhamir.figureHebrew}${dhamirFortune}. הצורה שבה נפל הדמיר — כל הדין נמצא בה לפי המקור.`
+      `הדמיר (נהמת האמהות): בית ${dhamir.houseNumber} — ${dhamir.figureHebrew}${dhamirFortune}. הצורה שבה נפל הדמיר — כל הדין נמצא בה לפי המקור.`
     );
   }
 

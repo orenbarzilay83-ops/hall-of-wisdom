@@ -421,6 +421,30 @@
       white-space:pre-wrap;
     }
 
+    .board-info-row {
+      margin-top:10px;
+      border-radius:12px;
+      padding:10px 16px;
+      font-size:15px;
+      line-height:1.6;
+      direction:rtl;
+    }
+    .board-score-ok {
+      background:#1a3d1a;
+      border:2px solid #4caf50;
+      color:#a8f0a0;
+    }
+    .board-score-warn {
+      background:#3d2800;
+      border:2px solid #ff9800;
+      color:#ffe0a0;
+    }
+    .board-dhamir {
+      background:#1a2a3a;
+      border:2px solid #5c9fc7;
+      color:#c8e0f4;
+    }
+
     .error {
       margin-top:14px;
       padding:12px 14px;
@@ -824,6 +848,21 @@
           spiritual.grade === 'strong-suspicion'
         );
 
+      // Board score + dhamir banner (before verdict)
+      const boardScoreData = insight.boardAnalysis?.boardScore || null;
+      const dhamirMizanData = insight.boardAnalysis?.dhamirByMizan || null;
+      let boardInfoHtml = "";
+      if (boardScoreData) {
+        const scoreClass = boardScoreData.isComplete ? "board-score-ok" : "board-score-warn";
+        boardInfoHtml += `<div class="board-info-row ${scoreClass}">📊 ${escapeHtml(boardScoreData.hebrewSummary)}</div>`;
+      }
+      if (dhamirMizanData && dhamirMizanData.traces && dhamirMizanData.traces.length > 0) {
+        const traceText = dhamirMizanData.traces.map(t =>
+          `שורת ${escapeHtml(t.rowElement)} → בית ${t.dhamirHouseNumber} (${escapeHtml(t.dhamirHebrew)}${t.dhamirFortune ? ', ' + t.dhamirFortune : ''})`
+        ).join(' | ');
+        boardInfoHtml += `<div class="board-info-row board-dhamir">🎯 הדמיר: ${traceText} — הדמיר העיקרי: בית ${dhamirMizanData.primaryHouseNumber}</div>`;
+      }
+
       // Prominent verdict box
       let verdictHtml = "";
       if (isSpiritualTopic && spiritual?.grade) {
@@ -896,6 +935,8 @@
         : "";
 
       return `
+        ${boardInfoHtml}
+
         ${verdictHtml}
 
         <div class="summary-box">

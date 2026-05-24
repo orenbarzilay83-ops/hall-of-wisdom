@@ -146,6 +146,87 @@ function getHouseFortuneTone(houseNumber) {
   return HOUSE_FORTUNE_TONES[Number(houseNumber)] ?? 0;
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// ציון שלמות הלוח — כלל 96 הנקודות (ناقص / كامل)
+// ציון = 128 − (מספר שורות יחידות). < 96 = חסר.
+function computeBoardScore(chart) {
+  if (!Array.isArray(chart)) return null;
+  let singles = 0;
+  for (const house of chart) {
+    const key = String(house.key || '');
+    for (const ch of key) {
+      if (ch === '1') singles++;
+    }
+  }
+  const score = 128 - singles;
+  return {
+    singleRows: singles,
+    doubleRows: 64 - singles,
+    score,
+    isComplete: score >= 96,
+    status: score >= 96 ? 'שלם' : 'חסר',
+    hebrewSummary: score >= 96
+      ? `לוח שלם (${score} נקודות ≥ 96)`
+      : `לוח חסר (${score} נקודות < 96) — השאלה עשויה שלא להיפתר`,
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// תסיירת נקטת המיזאן — הדמיר לפי עקיבה אחורה בשרשרת הגזירה
+// מקור: "أهم قاعدة هي تسيير نقط الميزان"
+const DHAMIR_PARENT_PAIRS = {
+  9: [1, 2], 10: [3, 4], 11: [5, 6], 12: [7, 8],
+  13: [9, 10], 14: [11, 12], 15: [13, 14],
+};
+const ROW_ELEMENTS = ['נאר (אש)', 'הוואא (אוויר)', 'מאא (מים)', 'תראב (אדמה)'];
+
+function traceRowBack(chart, houseNum, rowIndex) {
+  if (houseNum <= 8) return houseNum; // הגענו לאם/בת
+  const [leftNum, rightNum] = DHAMIR_PARENT_PAIRS[houseNum] || [];
+  if (!leftNum) return null;
+  const leftKey  = String(chart.find((h) => Number(h.house) === leftNum)?.key  || '');
+  const rightKey = String(chart.find((h) => Number(h.house) === rightNum)?.key || '');
+  if (leftKey[rowIndex]  === '1') return traceRowBack(chart, leftNum,  rowIndex);
+  if (rightKey[rowIndex] === '1') return traceRowBack(chart, rightNum, rowIndex);
+  return null;
+}
+
+function computeDhamirByMizanTracing(chart) {
+  if (!Array.isArray(chart)) return null;
+  const judge = chart.find((h) => Number(h.house) === 15);
+  if (!judge) return null;
+
+  const judgeKey = String(judge.key || '');
+  const traces = [];
+
+  for (let r = 0; r < 4; r++) {
+    if (judgeKey[r] !== '1') continue;
+    const dhamirNum = traceRowBack(chart, 15, r);
+    if (!dhamirNum) continue;
+    const dh = chart.find((h) => Number(h.house) === dhamirNum);
+    const figureRecord = (HAWI_SOURCE.figureNames?.list || []).find((f) => f.pattern === dh?.key);
+    traces.push({
+      rowIndex: r,
+      rowElement: ROW_ELEMENTS[r],
+      dhamirHouseNumber: dhamirNum,
+      dhamirKey: dh?.key || '',
+      dhamirHebrew: dh?.hebrew || figureRecord?.hebrewName || '',
+      dhamirFortune: dh?.fortune || figureRecord?.fortuneHebrew || '',
+    });
+  }
+
+  const primary = traces[0] || null;
+  return {
+    method: 'mizan-tracing',
+    methodHebrew: 'תסיירת נקטת המיזאן',
+    traces,
+    primaryHouseNumber: primary?.dhamirHouseNumber || null,
+    primaryHebrew: primary?.dhamirHebrew || '',
+    primaryFortune: primary?.dhamirFortune || '',
+    primaryElement: primary?.rowElement || '',
+  };
+}
+
 // נהמת האמהות: שורה 1 מאם 1 + שורה 2 מאם 2 + שורה 3 מאם 3 + שורה 4 מאם 4 → צורת הדמיר
 function computeDhamirHouse(board) {
   if (!board || !Array.isArray(board.chart)) return null;
@@ -501,6 +582,8 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const judge15 = houses.find((h) => Number(h.house) === 15) || null;
   const sentence16 = houses.find((h) => Number(h.house) === 16) || null;
   const dhamirHouse = computeDhamirHouse(board);
+  const dhamirByMizan = computeDhamirByMizanTracing(board.chart);
+  const boardScore = computeBoardScore(board.chart);
 
   return {
     hasBoard: true,
@@ -512,6 +595,8 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     judge: judge15,
     sentence: sentence16,
     dhamirHouse,
+    dhamirByMizan,
+    boardScore,
   };
 }
 
