@@ -24,6 +24,14 @@ const TOPIC_MAIN_HOUSES = {
   authorityState: [1, 7, 10, 11, 15],
   birthNativity: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
   spiritualDiagnostics: [1, 6, 8, 9, 12],
+  marriage: [1, 7, 8, 12, 13, 14, 15],
+  illness: [1, 6, 7, 8, 13, 14, 15],
+  disputes: [1, 7, 13, 14, 15],
+  enemies: [1, 7, 9, 12, 13, 14, 15],
+  fear: [1, 4, 12, 13, 14, 15],
+  commerce: [1, 2, 7, 10, 13, 14, 15],
+  loveHate: [1, 5, 7, 11, 13, 14, 15],
+  completion: [1, 13, 14, 15],
   foundations: [1, 13, 14, 15, 16],
 };
 
@@ -36,6 +44,14 @@ const TOPIC_HEBREW_TITLES = {
   authorityState: 'שלטון / מדינה / בעלי תפקידים',
   birthNativity: 'מולד / נולד',
   spiritualDiagnostics: 'אבחון רוחני',
+  marriage: 'נישואין / זוגיות',
+  illness: 'חולה / מחלה',
+  disputes: 'סכסוך / תביעה',
+  enemies: 'אויב / אויבות',
+  fear: 'פחד / סכנה',
+  commerce: 'מסחר / קנייה ומכירה',
+  loveHate: 'אהבה ושנאה',
+  completion: 'האם הדבר יצליח / יושלם',
   foundations: 'יסודות גורל החול',
 };
 

@@ -81,6 +81,38 @@ function questionFocusParagraph(topicId, clientContext = {}) {
     return 'לכן הדגש הוא על מצב האדם הנעדר, אפשרות חזרתו, ומה מעכב או מסתיר את הדבר.';
   }
 
+  if (topicId === 'marriage') {
+    return 'לכן הדגש הוא על מצב שני הצדדים: בית 1 לשואל ובית 7 לצד השני, ועל מה שמקשר או מפריד ביניהם לפי הלוח.';
+  }
+
+  if (topicId === 'illness') {
+    return 'לכן הדגש הוא על מצב החולה, כוח המחלה, ואם הלוח מראה פתח לריפוי או לשינוי.';
+  }
+
+  if (topicId === 'disputes') {
+    return 'לכן הדגש הוא על כוח כל צד, מי עומד בעמדה חזקה יותר, ומה מראה הדיין לגבי הכרעת הסכסוך.';
+  }
+
+  if (topicId === 'enemies') {
+    return 'לכן הדגש הוא על כוח האויב לעומת השואל, האם יש סכנה ממשית, ומה מגן על השואל לפי הלוח.';
+  }
+
+  if (topicId === 'fear') {
+    return 'לכן הדגש הוא אם הפחד מבוסס על מציאות בלוח, מה מקורו, ואם יש פתיחה או הגנה בסוף הדרך.';
+  }
+
+  if (topicId === 'commerce') {
+    return 'לכן הדגש הוא על כוח העסקה, מצב הכסף, מי המרוויח ומי המפסיד, ואם הלוח מראה הצלחה עסקית.';
+  }
+
+  if (topicId === 'loveHate') {
+    return 'לכן הדגש הוא על הקשר בין שני הצדדים, כוח הרגש מכל צד, ואם הלוח מראה חיבור או ניתוק.';
+  }
+
+  if (topicId === 'completion') {
+    return 'לכן הדגש הוא על הכרעת הדיין — האם הדבר יסתיים כראוי, יעוכב, או יתפרק לחלוטין.';
+  }
+
   if (context) {
     return 'לכן המסקנה נקראת לפי ההקשר האישי של הלקוח ולא רק לפי שם הצורה שעלתה.';
   }
@@ -130,6 +162,22 @@ function topicOpening(topicId, topicHebrew) {
       'בעניין המולד או מצב האדם, הקריאה בודקת את שורש האדם, מזלו, כוחו, הקשיים שלו והדברים שמלווים אותו לאורך הדרך.',
     spiritualDiagnostics:
       'באבחון הרוחני, הקריאה בודקת אם הקושי נראה רגיל וטבעי בלבד, או שיש סימנים לפגיעה רוחנית, קנאה, עין, כישוף, אחיזה או אויב נסתר.',
+    marriage:
+      'בעניין נישואין וזוגיות, הקריאה בודקת את מצב השואל ובית 7 כדליל הצד השני, את ההתאמה ביניהם, ואת הסימנים לחיבור, כבוד או קושי.',
+    illness:
+      'בעניין החולה, הקריאה בודקת את בית 1 כדליל החולה, בית 6 כדליל המחלה, ובית 8 כדליל הסכנה — ומה מראה הדיין לגבי מהלך המחלה.',
+    disputes:
+      'בעניין הסכסוך או התביעה, הקריאה בודקת את כוח השואל לעומת יריבו, את מצב כל צד בלוח, ומה הדיין פוסק על הניצחון.',
+    enemies:
+      'בעניין האויב, הקריאה בודקת את כוח האויב, מקומו בלוח, את מה שמגן על השואל, ואת תוצאת העימות לפי הדיין.',
+    fear:
+      'בעניין הפחד, הקריאה בודקת אם הסכנה ממשית לפי הלוח, מה מקורה, ואם הדרך בסוף מובילה לבטחה או להמשך קושי.',
+    commerce:
+      'בעניין מסחר, קנייה ומכירה, הקריאה בודקת את בית 1 כדליל השואל, בית 2 כדליל הממון, בית 7 כדליל הצד השני, ובית 10 כדליל תוצאת העסקה.',
+    loveHate:
+      'בעניין אהבה ושנאה, הקריאה בודקת את הקשר הרגשי בין הצדדים, מי אוהב ומי שונא, ומה הלוח מראה על עתיד הקשר.',
+    completion:
+      'בעניין האם הדבר יושלם, הקריאה מתמקדת בעיקר בדיין — בית 15 — שהוא הפסיקה הסופית, ובעדים שמחזקים או מחלישים את הכרעתו.',
   };
 
   return openings[topicId] || `בעניין ${topicHebrew}, הקריאה בודקת את הבית המרכזי, העדים, הדיין והשלמת הדין.`;
@@ -281,6 +329,87 @@ function recommendationByTopic(topicId, grade, boardAnalysis) {
 
   if (topicId === 'spiritualDiagnostics') {
     return 'לכן נכון להמשיך באבחון מדויק לפי הבתים והצורות, ולא לקבוע רק לפי תחושה או פחד.';
+  }
+
+  if (topicId === 'marriage') {
+    const house7 = getHouseFromBoard(boardAnalysis, 7);
+    const house7Desc = houseDescription(house7);
+    let base = '';
+    if (grade === 'positive') base = 'לכן הלוח מראה נטייה חיובית לנישואין — בדוק את בית 7 ואת ההתאמה.';
+    else if (grade === 'negative') base = 'לכן הלוח מראה קושי או מניעה — יש לדון בצורות בפירוט לפני החלטה.';
+    else base = 'לכן התמונה מעורבת — יש לבדוק את שני הצדדים בנפרד ואת הקשר ביניהם.';
+    if (house7Desc) base += ` בדוק בית 7 (הצד השני): ${house7Desc}`;
+    return base;
+  }
+
+  if (topicId === 'illness') {
+    const house6 = getHouseFromBoard(boardAnalysis, 6);
+    const house6Desc = houseDescription(house6);
+    let base = '';
+    if (grade === 'positive') base = 'לכן הלוח מראה נטייה לשיפור ולהחלמה.';
+    else if (grade === 'negative') base = 'לכן הלוח מראה מחלה קשה — יש לפעול בזהירות ולבדוק את בית 8.';
+    else base = 'לכן המחלה בלוח מעורבת — לא ניתן לקבוע בוודאות.';
+    if (house6Desc) base += ` בדוק בית 6 (המחלה): ${house6Desc}`;
+    return base;
+  }
+
+  if (topicId === 'disputes') {
+    const house7 = getHouseFromBoard(boardAnalysis, 7);
+    const house7Desc = houseDescription(house7);
+    let base = '';
+    if (grade === 'positive') base = 'לכן הלוח מראה יתרון לשואל בסכסוך — הצד שלו חזק יותר.';
+    else if (grade === 'negative') base = 'לכן הלוח מראה עמדה חלשה — מומלץ לשקול פשרה לפני הכרעה.';
+    else base = 'לכן הסכסוך מאוזן — לא ניתן להכריע בקלות לאחד הצדדים.';
+    if (house7Desc) base += ` בדוק בית 7 (הצד השני): ${house7Desc}`;
+    return base;
+  }
+
+  if (topicId === 'enemies') {
+    const house12 = getHouseFromBoard(boardAnalysis, 12);
+    const house12Desc = houseDescription(house12);
+    let base = '';
+    if (grade === 'positive') base = 'לכן הלוח מראה שהשואל עומד בעמדה חזקה לעומת האויב.';
+    else if (grade === 'negative') base = 'לכן הלוח מראה אויב חזק — יש להיזהר ולא להתמודד ישירות.';
+    else base = 'לכן מצב האויב מעורב — יש לדון בכל צורה בנפרד.';
+    if (house12Desc) base += ` בדוק בית 12 (אויבים נסתרים): ${house12Desc}`;
+    return base;
+  }
+
+  if (topicId === 'fear') {
+    const house12 = getHouseFromBoard(boardAnalysis, 12);
+    const house12Desc = houseDescription(house12);
+    let base = '';
+    if (grade === 'positive') base = 'לכן הלוח מראה שהסכנה לא ממשית או שיש הגנה — הפחד גדול מהמציאות.';
+    else if (grade === 'negative') base = 'לכן הלוח מראה שיש בסיס ממשי לפחד — יש לנהוג בזהירות.';
+    else base = 'לכן הסיכון בלוח מעורב — אין הכרעה ברורה לכאן או לכאן.';
+    if (house12Desc) base += ` בדוק בית 12 (פחד ואויבים): ${house12Desc}`;
+    return base;
+  }
+
+  if (topicId === 'commerce') {
+    const house2 = getHouseFromBoard(boardAnalysis, 2);
+    const house2Desc = houseDescription(house2);
+    let base = '';
+    if (grade === 'positive') base = 'לכן הלוח מראה נטייה לרווח — הדרך לעסקה פתוחה.';
+    else if (grade === 'negative') base = 'לכן הלוח מראה הפסד או חסימה — לא זמן מתאים לעסקה זו.';
+    else base = 'לכן תוצאת העסקה מעורבת — יש לבדוק את בית 2 ובית 7 בנפרד.';
+    if (house2Desc) base += ` בדוק בית 2 (הממון): ${house2Desc}`;
+    return base;
+  }
+
+  if (topicId === 'loveHate') {
+    const house7 = getHouseFromBoard(boardAnalysis, 7);
+    const house7Desc = houseDescription(house7);
+    let base = '';
+    if (grade === 'positive') base = 'לכן הלוח מראה נטייה לחיבה ולקרבה — יש חיבור בין הצדדים.';
+    else if (grade === 'negative') base = 'לכן הלוח מראה שנאה או ניתוק — אין חיבור בין הצדדים בלוח זה.';
+    else base = 'לכן הרגש מעורב — יש צדדים חיוביים ושליליים בקשר.';
+    if (house7Desc) base += ` בדוק בית 7 (הצד השני): ${house7Desc}`;
+    return base;
+  }
+
+  if (topicId === 'completion') {
+    return 'לכן הכרעת הדיין היא העיקר — אם הדיין סעד הדבר יושלם, ואם נחס יש מניעה. העדים מחזקים או מחלישים.';
   }
 
   return 'לכן המסקנה צריכה להיקבע לפי שילוב הבית המרכזי, העדים, הדיין והכללים שנבדקו.';

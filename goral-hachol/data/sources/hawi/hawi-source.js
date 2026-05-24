@@ -66,6 +66,15 @@ import { HAWI_QUESTION_HIDDEN_TREASURE_EXTRA } from './question-rules/hawi-quest
 import { HAWI_QUESTION_MISSING_PERSON_EXTRA } from './question-rules/hawi-question-missing-person-extra.js';
 import { HAWI_QUESTION_TRAVEL_EXTRA } from './question-rules/hawi-question-travel-extra.js';
 
+import { HAWI_QUESTION_MARRIAGE } from './question-rules/hawi-question-marriage.js';
+import { HAWI_QUESTION_ILLNESS } from './question-rules/hawi-question-illness.js';
+import { HAWI_QUESTION_DISPUTES } from './question-rules/hawi-question-disputes.js';
+import { HAWI_QUESTION_FEAR } from './question-rules/hawi-question-fear.js';
+import { HAWI_QUESTION_COMMERCE } from './question-rules/hawi-question-commerce.js';
+import { HAWI_QUESTION_LOVE_HATE } from './question-rules/hawi-question-love-hate.js';
+import { HAWI_QUESTION_ENEMIES } from './question-rules/hawi-question-enemies.js';
+import { HAWI_QUESTION_COMPLETION } from './question-rules/hawi-question-completion.js';
+
 export const HAWI_EXTENDED_KNOWLEDGE_LIST = [
   HAWI_INTRODUCTION_MAHW_THABAT,
   HAWI_DHAMIR_DIRECTIONS_VALIDATION,
@@ -80,6 +89,14 @@ export const HAWI_EXTENDED_KNOWLEDGE_LIST = [
   HAWI_QUESTION_HIDDEN_TREASURE_EXTRA,
   HAWI_QUESTION_MISSING_PERSON_EXTRA,
   HAWI_QUESTION_TRAVEL_EXTRA,
+  HAWI_QUESTION_MARRIAGE,
+  HAWI_QUESTION_ILLNESS,
+  HAWI_QUESTION_DISPUTES,
+  HAWI_QUESTION_FEAR,
+  HAWI_QUESTION_COMMERCE,
+  HAWI_QUESTION_LOVE_HATE,
+  HAWI_QUESTION_ENEMIES,
+  HAWI_QUESTION_COMPLETION,
 ];
 
 export const HAWI_EXTENDED_KNOWLEDGE_BY_ID = Object.fromEntries(
@@ -149,6 +166,14 @@ export const HAWI_SOURCE = {
     hiddenTreasureExtra: HAWI_QUESTION_HIDDEN_TREASURE_EXTRA,
     missingPersonExtra: HAWI_QUESTION_MISSING_PERSON_EXTRA,
     travelExtra: HAWI_QUESTION_TRAVEL_EXTRA,
+    marriage: HAWI_QUESTION_MARRIAGE,
+    illness: HAWI_QUESTION_ILLNESS,
+    disputes: HAWI_QUESTION_DISPUTES,
+    fear: HAWI_QUESTION_FEAR,
+    commerce: HAWI_QUESTION_COMMERCE,
+    loveHate: HAWI_QUESTION_LOVE_HATE,
+    enemies: HAWI_QUESTION_ENEMIES,
+    completion: HAWI_QUESTION_COMPLETION,
   },
 
   fullBookGapAudit: HAWI_FULL_BOOK_GAP_AUDIT,
