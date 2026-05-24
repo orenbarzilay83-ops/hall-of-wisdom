@@ -456,8 +456,8 @@
 
   <script type="module">
     window.__HAWI_MODULE_READY = Promise.all([
-      import('./goral-hachol/engine/hawi-interpreter.js'),
-      import('./goral-hachol/engine/goral-client-archive.js')
+      import('/goral-hachol/engine/hawi-interpreter.js'),
+      import('/goral-hachol/engine/goral-client-archive.js')
     ]).then(([hawi, archive]) => {
       window.HAWI_INTERPRETER = {
         interpretHawiQuestionInitial: hawi.interpretHawiQuestionInitial
