@@ -26,10 +26,10 @@ export const HAWI_COMPLETION_WORKPLAN = {
       priority: 1,
       titleHebrew: 'חיבור מצבי צורות לציון הפסיקה',
       descriptionHebrew:
-        'הנתונים קיימים (מדבר/שותק, מתקדם/מתרחק — ناطق/صامت, مقبل/مدبر) אך אינם מחוברים למנוע הפסיקה. צורה שותקת בבית מרכזי אמורה להחליש את הדין.',
-      status: 'pending',
+        'הנתונים קיימים (מדבר/שותק — ناطق/صامت) ומחוברים כעת למנוע הפסיקה. צורה שותקת מחלישה את משקל תרומתה (×0.6). מצב הצורה בבית (fortuneState) משמש כ-override לסעד/נחס הבסיסי כשקיים.',
+      status: 'done-2026-05-25',
       sourceAvailable: true,
-      notes: 'הנתונים ב-hawi-figure-states-*.js ובמנוע getFigureStateForHouse(). חסר: שקלול תוצאתם ב-scoreBoard ו-buildJudgeVerdict.',
+      notes: 'מומש ב-hawi-interpreter.js: getFigureStateHouseTone(), getSpeakingStateMultiplier(), getSpeakingStateHebrew(). חובר ל-scoreBoard ו-buildJudgeVerdict.',
     },
     {
       id: 'natural-houses-missing',

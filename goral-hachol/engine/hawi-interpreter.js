@@ -194,6 +194,28 @@ function getFigureFortuneTone(house) {
   return 0;
 }
 
+// Tone from figure state's house-specific fortuneState (overrides base figure fortune when available).
+// Source: Hawi chapter on figure states in houses (الباب الثامن عشر).
+function getFigureStateHouseTone(figureState) {
+  if (!figureState?.fortuneState) return null;
+  const fs = figureState.fortuneState;
+  if (fs.startsWith('benefic')) return 1;
+  if (fs.startsWith('malefic')) return -1;
+  return null;
+}
+
+// Weight multiplier when a figure is silent (שותק / صامت) in its house.
+// A silent figure's influence is weakened per Hawi: "צורה שותקת בבית מרכזי מחלישה את הדין".
+function getSpeakingStateMultiplier(figureState) {
+  if (figureState?.speakingState === 'silent') return 0.6;
+  return 1;
+}
+
+function getSpeakingStateHebrew(figureState) {
+  if (!figureState?.speakingState) return null;
+  return figureState.speakingState === 'silent' ? 'שותק' : 'מדבר';
+}
+
 function getHouseFortuneTone(houseNumber) {
   return HOUSE_FORTUNE_TONES[Number(houseNumber)] ?? 0;
 }
@@ -867,10 +889,23 @@ function buildJudgeVerdict(boardAnalysis) {
     return { verdict: 'unknown', grade: 'mixed', hebrewShort: 'הדיין לא נמצא', hebrewFull: 'לא ניתן לקבוע תשובה ללא בית 15.' };
   }
 
-  const judgeTone = getFigureFortuneTone(judge);
-  const w1Tone = w1 ? getFigureFortuneTone(w1) : 0;
-  const w2Tone = w2 ? getFigureFortuneTone(w2) : 0;
-  const focusTone = focus ? getFigureFortuneTone(focus) : 0;
+  // Base tones from figure intrinsic fortune (סעד/נחס)
+  const judgeToneBase = getFigureFortuneTone(judge);
+  const w1ToneBase = w1 ? getFigureFortuneTone(w1) : 0;
+  const w2ToneBase = w2 ? getFigureFortuneTone(w2) : 0;
+  const focusToneBase = focus ? getFigureFortuneTone(focus) : 0;
+
+  // House-specific fortune override from Hawi figure-states chapter (when available)
+  const judgeStateTone = getFigureStateHouseTone(judge?.figureState);
+  const w1StateTone = getFigureStateHouseTone(w1?.figureState);
+  const w2StateTone = getFigureStateHouseTone(w2?.figureState);
+  const focusStateTone = getFigureStateHouseTone(focus?.figureState);
+
+  // Use house-specific override when available, else fall back to base fortune
+  const judgeTone = judgeStateTone ?? judgeToneBase;
+  const w1Tone = w1StateTone ?? w1ToneBase;
+  const w2Tone = w2StateTone ?? w2ToneBase;
+  const focusTone = focusStateTone ?? focusToneBase;
   const witnessTone = (w1Tone + w2Tone) / 2;
 
   const judgeFigure = judge.figureHebrew || '';
@@ -879,6 +914,12 @@ function buildJudgeVerdict(boardAnalysis) {
   const w2Figure = w2?.figureHebrew || '';
   const focusFigure = focus?.figureHebrew || '';
   const focusHouseNum = focus?.house || '';
+
+  // Speaking state (ناطق/صامت) — silent judge weakens the ruling
+  const judgeSpeaking = getSpeakingStateHebrew(judge?.figureState);
+  const judgeSilentNote = judgeSpeaking === 'שותק'
+    ? ` [הדיין שותק (صامت) בבית זה — כוחו מוחלש.]`
+    : (judgeSpeaking === 'מדבר' ? ` [הדיין מדבר (ناطق) — כוחו מלא.]` : '');
 
   let verdict, grade, hebrewShort, hebrewFull;
 
@@ -891,6 +932,7 @@ function buildJudgeVerdict(boardAnalysis) {
       grade = 'positive';
       hebrewShort = 'כן';
       hebrewFull = 'תשובה: כן — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא צורה של סעד, והעדים מחזקים.' +
+        judgeSilentNote +
         (w1Figure ? ' עד ראשון: ' + w1Figure + '.' : '') +
         (w2Figure ? ' עד שני: ' + w2Figure + '.' : '') +
         (focusFigure ? ' הבית המרכזי (בית ' + focusHouseNum + '): ' + focusFigure + '.' : '');
@@ -899,6 +941,7 @@ function buildJudgeVerdict(boardAnalysis) {
       grade = 'positive';
       hebrewShort = 'כן';
       hebrewFull = 'תשובה: כן — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא סעד. העדים מנוגדים לו, אך הדיין פוסק — יש כוחות שמעכבים אבל הכיוון חיובי.' +
+        judgeSilentNote +
         (w1Figure ? ' עד ראשון: ' + w1Figure + '.' : '') +
         (w2Figure ? ' עד שני: ' + w2Figure + '.' : '');
     }
@@ -908,6 +951,7 @@ function buildJudgeVerdict(boardAnalysis) {
       grade = 'negative';
       hebrewShort = 'לא';
       hebrewFull = 'תשובה: לא — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא צורה של נחס, והעדים מחזקים את הדין.' +
+        judgeSilentNote +
         (w1Figure ? ' עד ראשון: ' + w1Figure + '.' : '') +
         (w2Figure ? ' עד שני: ' + w2Figure + '.' : '') +
         (focusFigure ? ' הבית המרכזי (בית ' + focusHouseNum + '): ' + focusFigure + '.' : '');
@@ -916,6 +960,7 @@ function buildJudgeVerdict(boardAnalysis) {
       grade = 'negative';
       hebrewShort = 'לא';
       hebrewFull = 'תשובה: לא — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא נחס. העדים מראים צד חיובי אך אינם יכולים לשנות פסיקת הדיין — יש כוח חיובי שמנסה לפעול, אך הכרעת הגורל שלילית.' +
+        judgeSilentNote +
         (w1Figure ? ' עד ראשון: ' + w1Figure + '.' : '') +
         (w2Figure ? ' עד שני: ' + w2Figure + '.' : '');
     }
@@ -926,6 +971,7 @@ function buildJudgeVerdict(boardAnalysis) {
       grade = 'cautiously-positive';
       hebrewShort = 'ייתכן שכן';
       hebrewFull = 'תשובה: ייתכן שכן — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא ממוזג ולא מכריע. העדים נוטים לטובה.' +
+        judgeSilentNote +
         (w1Figure ? ' עד ראשון: ' + w1Figure + '.' : '') +
         (w2Figure ? ' עד שני: ' + w2Figure + '.' : '');
     } else if (witnessTone < 0 || focusTone < 0) {
@@ -933,6 +979,7 @@ function buildJudgeVerdict(boardAnalysis) {
       grade = 'cautiously-negative';
       hebrewShort = 'ייתכן שלא';
       hebrewFull = 'תשובה: ייתכן שלא — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא ממוזג ולא מכריע. העדים נוטים לקשיים.' +
+        judgeSilentNote +
         (w1Figure ? ' עד ראשון: ' + w1Figure + '.' : '') +
         (w2Figure ? ' עד שני: ' + w2Figure + '.' : '');
     } else {
@@ -940,6 +987,7 @@ function buildJudgeVerdict(boardAnalysis) {
       grade = 'mixed';
       hebrewShort = 'ממוזג';
       hebrewFull = 'תשובה: ממוזג — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא ממוזג, והעדים אינם מכריעים לכאן או לכאן. יש לבדוק את הבית המרכזי.' +
+        judgeSilentNote +
         (w1Figure ? ' עד ראשון: ' + w1Figure + '.' : '') +
         (w2Figure ? ' עד שני: ' + w2Figure + '.' : '');
     }
@@ -1223,23 +1271,44 @@ function scoreBoard(boardAnalysis) {
   const w2 = boardAnalysis.witnesses?.[1];
   const focus = boardAnalysis.focusHouse;
 
-  const judgeTone = getFigureFortuneTone(judge);
-  const w1Tone = w1 ? getFigureFortuneTone(w1) : 0;
-  const w2Tone = w2 ? getFigureFortuneTone(w2) : 0;
-  const focusTone = focus ? getFigureFortuneTone(focus) : 0;
+  // Use house-specific fortune override from figure states when available, else base figure fortune
+  const judgeTone = (getFigureStateHouseTone(judge?.figureState) ?? getFigureFortuneTone(judge));
+  const w1Tone = w1 ? (getFigureStateHouseTone(w1?.figureState) ?? getFigureFortuneTone(w1)) : 0;
+  const w2Tone = w2 ? (getFigureStateHouseTone(w2?.figureState) ?? getFigureFortuneTone(w2)) : 0;
+  const focusTone = focus ? (getFigureStateHouseTone(focus?.figureState) ?? getFigureFortuneTone(focus)) : 0;
 
-  // Judge (house 15) is primary — weight 4
-  // Each witness — weight 1
-  // Focus house — weight 2
+  // Speaking state multiplier (שותק = silent = weakened influence, per Hawi figure states chapter)
+  const judgeMulti = getSpeakingStateMultiplier(judge?.figureState);
+  const w1Multi = getSpeakingStateMultiplier(w1?.figureState);
+  const w2Multi = getSpeakingStateMultiplier(w2?.figureState);
+  const focusMulti = getSpeakingStateMultiplier(focus?.figureState);
+
+  // Judge (house 15) is primary — base weight 4; witnesses — weight 1; focus house — weight 2
   const score = Math.round(
-    (judgeTone * 4 + w1Tone * 1 + w2Tone * 1 + focusTone * 2) * 2
+    (judgeTone * 4 * judgeMulti + w1Tone * 1 * w1Multi + w2Tone * 1 * w2Multi + focusTone * 2 * focusMulti) * 2
   );
 
   const reasons = [];
-  if (judge) reasons.push('בית 15 (דיין): ' + (judge.figureHebrew || '') + ' — ' + (judge.fortune || ''));
-  if (w1) reasons.push('עד ראשון: ' + (w1.figureHebrew || '') + ' — ' + (w1.fortune || ''));
-  if (w2) reasons.push('עד שני: ' + (w2.figureHebrew || '') + ' — ' + (w2.fortune || ''));
-  if (focus) reasons.push('הבית המרכזי (בית ' + (focus.house || '') + '): ' + (focus.figureHebrew || '') + ' — ' + (focus.fortune || ''));
+  if (judge) {
+    const judgeSpeak = getSpeakingStateHebrew(judge.figureState);
+    reasons.push('בית 15 (דיין): ' + (judge.figureHebrew || '') + ' — ' + (judge.fortune || '') +
+      (judgeSpeak ? ` [${judgeSpeak}]` : ''));
+  }
+  if (w1) {
+    const w1Speak = getSpeakingStateHebrew(w1.figureState);
+    reasons.push('עד ראשון: ' + (w1.figureHebrew || '') + ' — ' + (w1.fortune || '') +
+      (w1Speak ? ` [${w1Speak}]` : ''));
+  }
+  if (w2) {
+    const w2Speak = getSpeakingStateHebrew(w2.figureState);
+    reasons.push('עד שני: ' + (w2.figureHebrew || '') + ' — ' + (w2.fortune || '') +
+      (w2Speak ? ` [${w2Speak}]` : ''));
+  }
+  if (focus) {
+    const focusSpeak = getSpeakingStateHebrew(focus.figureState);
+    reasons.push('הבית המרכזי (בית ' + (focus.house || '') + '): ' + (focus.figureHebrew || '') + ' — ' + (focus.fortune || '') +
+      (focusSpeak ? ` [${focusSpeak}]` : ''));
+  }
 
   return {
     score,
