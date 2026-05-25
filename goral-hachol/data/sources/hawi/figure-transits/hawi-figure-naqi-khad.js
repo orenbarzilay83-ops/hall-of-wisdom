@@ -12,7 +12,9 @@
  * PDF document 18.pdf — heading begins at end
  * PDF document 19.pdf — houses 1–16
  *
- * No external knowledge.
+ * Secondary source checked (بلوغ الأمل في علم الرمل):
+ * Only topic-specific rules found (commerce, theft) — no per-house transit data.
+ * No enrichment added; Hawi data stands as sole source.
  */
 
 export const HAWI_FIGURE_NAQI_KHAD = {

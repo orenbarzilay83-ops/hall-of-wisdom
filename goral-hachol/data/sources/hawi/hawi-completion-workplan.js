@@ -73,6 +73,20 @@ export const HAWI_COMPLETION_WORKPLAN = {
     },
   ],
 
+  secondarySourceEnrichments: [
+    {
+      id: 'hayyan-enriched-from-balugh-alamal',
+      status: 'done-2026-05-25',
+      figure: 'الأحيان / נשוא ראש',
+      sourceBook: 'بلوغ الأمل في علم الرمل',
+      housesEnriched: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16],
+      housesConfirmingGap: [15],
+      housesWithTonalConflict: [7, 10, 12],
+      policy: 'חאוי גובר תמיד. נתוני המקור המשני נשמרים בשדה supplementarySource. בתים עם קונפליקט טונלי מסומנים בדגל.',
+      notes: 'בית 15 נעדר גם מבלוג' האמל — מאשר פער מקורי. נקי-חד לא נמצא בנתוני מעבר לבתים בספר זה.',
+    },
+  ],
+
   futureModulesNotUrgent: [
     {
       id: 'yearly-forecast',
