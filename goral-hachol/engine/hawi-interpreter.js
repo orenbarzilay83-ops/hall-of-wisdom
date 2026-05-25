@@ -17,21 +17,25 @@ import {
 
 // Natural figure (جدول, jadwal) for each house — the figure that naturally belongs there.
 // When the figure in a house matches its natural figure, the judgement is especially strong.
-// Houses 1 and 10 confirmed from Hawi source (حاوي العجائب). Other houses follow the
-// traditional Arabic/Western geomancy zodiacal assignment and may need source verification.
+// Source: חאוי העג׳איב (حاوي العجائب) PDFs only — no Western/zodiacal tradition used.
 export const NATURAL_HOUSE_FIGURES = {
-  1:  '1121', // נלחם     = Puer       = Aries/Mars          — confirmed from Hawi
-  2:  '1212', // ממון יוצא = Amissio    = Taurus/Venus
-  3:  '2212', // לבן      = Albus      = Gemini/Mercury
-  4:  '2222', // קהלה     = Populus    = Cancer/Moon
-  5:  '1122', // כבוד יוצא = Fortuna Major = Leo/Sun
-  6:  '2112', // חיבור    = Conjunctio = Virgo/Mercury
-  7:  '1112', // סף יוצא  = Puella     = Libra/Venus
-  8:  '2122', // אדום     = Rubeus     = Scorpio/Mars
-  9:  '2121', // ממון נכנס = Acquisitio = Sagittarius/Jupiter
-  10: '1221', // סוהר     = Carcer     = Capricorn/Saturn    — confirmed from Hawi
-  11: '2221', // שפל ראש  = Tristitia  = Aquarius/Saturn
-  12: '1222', // נשוא ראש = Laetitia   = Pisces/Jupiter
+  // Confirmed directly from Hawi PDF chapter headings
+  1:  '1121', // נלחם — "الجدولة 00|0" בית 1
+  4:  '2212', // לבן — "(||0|) البيت الرابع" בית 4
+  10: '1221', // סוהר — "وتد الشمال 0||0" בית 10
+
+  // Extracted from Hawi PDF chapter heading OCR (medium confidence)
+  2:  '1222', // נשוא ראש — תבנית "0|||" בכותרת פרק בית 2
+  3:  '2111', // סף נכנס — תבנית "|000" + "ساقط" בכותרת פרק בית 3
+  9:  '1122', // כבוד יוצא — תבנית "00||" + "ساقط" בכותרת פרק בית 9
+
+  // Not yet available in uploaded Hawi PDFs — PDF covering houses 5-8 missing from Drive
+  5:  null,
+  6:  null,
+  7:  null,
+  8:  null,
+  11: null,
+  12: null,
 };
 
 // Taskin al-Sharq order (تسكين الشرق) — 16 figure patterns in source order
@@ -49,9 +53,9 @@ const TASKIN_EAST_PATTERNS = [
   '2112', // חיבור
   '1221', // סוהר
   '1122', // כבוד יוצא
-  '2222', // דרך
+  '2222', // קהלה
   '2121', // ממון נכנס
-  '1111', // קהלה
+  '1111', // דרך
   '1212', // ממון יוצא
 ];
 

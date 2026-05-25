@@ -908,11 +908,18 @@
       return entry ? Number(entry.house) : null;
     }
 
-    // Natural figure (جدول) for each zodiac house — matches hawi-interpreter.js NATURAL_HOUSE_FIGURES
+    // Natural figure (جدول) for each house — from חאוי העג׳איב PDFs only, no Western tradition.
     const NATURAL_HOUSE_FIGURES = {
-      1: '1121', 2: '1212', 3: '2212', 4: '2222',
-      5: '1122', 6: '2112', 7: '1112', 8: '2122',
-      9: '2121', 10: '1221', 11: '2221', 12: '1222',
+      // Confirmed from Hawi PDF chapter headings
+      1: '1121', // נלחם — "الجدولة 00|0"
+      4: '2212', // לבן — "(||0|) البيت الرابع"
+      10: '1221', // סוהר — "وتد الشمال 0||0"
+      // Extracted from Hawi PDF OCR (medium confidence)
+      2: '1222', // נשוא ראש — תבנית "0|||" בכותרת פרק בית 2
+      3: '2111', // סף נכנס — תבנית "|000" + "ساقط" בכותרת פרק בית 3
+      9: '1122', // כבוד יוצא — תבנית "00||" + "ساقط" בכותרת פרק בית 9
+      // Not yet available — PDF covering houses 5-8 missing from Drive
+      5: null, 6: null, 7: null, 8: null, 11: null, 12: null,
     };
 
     function houseHtml(h, label, isDhamir, isNatural) {
