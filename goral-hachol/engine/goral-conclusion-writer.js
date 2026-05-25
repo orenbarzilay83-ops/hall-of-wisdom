@@ -290,6 +290,15 @@ function describeCoreHouses(analysis, topicId) {
     parts.push(`בדיקות נושא — ${topicConn.topicHebrew || topicConn.topicId}:\n${lines}`);
   }
 
+  // ── תחסיל ומניעה — שאלת ההגעה המרכזית ──────────────────────────────────
+  const tahasil = analysis.tahasil || null;
+  if (tahasil) {
+    parts.push(`תחסיל — האם הדבר ייגמר:\n  ${tahasil.tahasilHebrew}`);
+    if (tahasil.hayulaActive) {
+      parts.push(`  ⚠ ${tahasil.hayulaHebrew}`);
+    }
+  }
+
   return parts.join('\n');
 }
 
@@ -475,6 +484,34 @@ function recommendationByTopic(topicId, grade, boardAnalysis) {
   return 'לכן המסקנה צריכה להיקבע לפי שילוב הבית המרכזי, העדים, הדיין והכללים שנבדקו.';
 }
 
+function tahasilParagraph(boardAnalysis) {
+  const tahasil = boardAnalysis?.tahasil;
+  if (!tahasil || tahasil.tahasilStatus === undefined) return '';
+
+  const strengthLabels = {
+    strong: 'חזקה',
+    medium: 'בינונית',
+    weak:   'חלשה',
+    none:   '',
+  };
+
+  const lines = [];
+
+  if (tahasil.tahasilStatus === 'none') {
+    lines.push(`לפי בדיקת התחסיל (שאלת ההגעה): ${tahasil.tahasilHebrew}`);
+  } else {
+    const strength = strengthLabels[tahasil.tahasilStrength] || '';
+    const label = strength ? ` (הגעה ${strength})` : '';
+    lines.push(`לפי בדיקת התחסיל${label}: ${tahasil.tahasilHebrew}`);
+  }
+
+  if (tahasil.hayulaActive && tahasil.hayulaHebrew) {
+    lines.push(`אך יש לשים לב: ${tahasil.hayulaHebrew}`);
+  }
+
+  return lines.join(' ');
+}
+
 export function writeHumanGoralConclusion(result) {
   const topicId = result.topicId;
   const topicHebrew = result.topicHebrew;
@@ -497,6 +534,7 @@ export function writeHumanGoralConclusion(result) {
     clientContextParagraph(result.clientContext, result.question),
     clientHistoryParagraph(result.clientHistorySummary),
     verdictParagraph,
+    tahasilParagraph(result.boardAnalysis),
     topicOpening(topicId, topicHebrew),
     questionFocusParagraph(topicId, result.clientContext),
     describeCoreHouses(result.boardAnalysis, topicId),

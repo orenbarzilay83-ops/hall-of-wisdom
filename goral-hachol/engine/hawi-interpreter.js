@@ -113,6 +113,36 @@ const TOPIC_HEBREW_TITLES = {
   foundations: 'יסודות גורל החול',
 };
 
+// הבית המייצג את הנשאל לפי נושא (house of the quesited / бيت المطلوب)
+const TOPIC_QUESITED_HOUSE = {
+  marriage:             7,  // בית בן/בת הזוג
+  illness:              6,  // בית המחלה
+  disputes:             7,  // בית היריב
+  enemies:              7,  // בית האויב
+  fear:                12,  // בית הסכנה הנסתרת
+  commerce:             2,  // בית הממון
+  loveHate:             7,  // בית הצד השני
+  missingPerson:        7,  // בית הנעדר
+  travel:               9,  // בית המסע
+  childrenPregnancy:    5,  // בית הילדים
+  hiddenTreasure:       4,  // בית המקום הנסתר
+  completion:          15,  // הדיין עצמו
+  foundations:         15,
+  yearlyForecast:      10,
+  authorityState:      10,
+  birthNativity:        1,
+  spiritualDiagnostics: 6,
+};
+
+// צורות הנחשבות נחס (رمال النحوس) לפי מסורת חאוי
+const MALEFIC_FIGURE_PATTERNS = new Set([
+  '2122', // אדום — נחס חזק
+  '2221', // שפל ראש — נחס חזק
+  '1212', // ממון יוצא — נחס
+  '2211', // כבוד נכנס — נחס ממוזג
+  '1221', // סוהר — נחס (כלא)
+]);
+
 function normalizeText(value = '') {
   return String(value)
     .trim()
@@ -515,6 +545,206 @@ function computeTopicConnections(chart, topicId) {
   }
 
   return { topicId, topicHebrew: TOPIC_HEBREW_TITLES[topicId] || topicId, checks };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// תחסיל (تحصيل) — האם הדבר ייגמר?
+// מניעה (حيلولة) — מה חוסם את ההגעה?
+// ─────────────────────────────────────────────────────────────────────────────
+
+function countRowMatches(figA, figB) {
+  if (!figA || !figB || figA.length !== 4 || figB.length !== 4) return 0;
+  let n = 0;
+  for (let i = 0; i < 4; i++) if (figA[i] === figB[i]) n++;
+  return n;
+}
+
+function getNaturalHouseOf(figurePattern) {
+  if (!figurePattern) return null;
+  for (const [hNum, pat] of Object.entries(NATURAL_HOUSE_FIGURES)) {
+    if (pat === figurePattern) return Number(hNum);
+  }
+  return null;
+}
+
+function chartHouse(chart, houseNum) {
+  return chart.find((h) => Number(h.house) === Number(houseNum)) || null;
+}
+
+/**
+ * computeHayula — מניעה (حيلولة): האם יש כוח שחוסם את ההגעה?
+ * מחזיר { active, hebrew }.
+ */
+function computeHayula(chart, quesitedHouseNum, querentFig, quesitedFig, tahasilStatus) {
+  if (tahasilStatus === 'none') return { active: false, hebrew: '' };
+
+  const judge = chartHouse(chart, 15);
+  const h12   = chartHouse(chart, 12);
+  const h8    = chartHouse(chart, 8);
+  const reasons = [];
+
+  // חסימה 1: הדיין נחס ואינו קשור לאחד הצדדים
+  if (judge && MALEFIC_FIGURE_PATTERNS.has(judge.key)) {
+    if (judge.key !== querentFig && judge.key !== quesitedFig) {
+      reasons.push(`הדיין (בית 15: ${judge.hebrew || judge.key}) הוא נחס ואינו מחובר לצד השואל ולצד הנשאל — הוא חוסם את הפסיקה.`);
+    }
+  }
+
+  // חסימה 2: בית 12 (אויב נסתר/אבדה) נחס ואינו קשור לאחד הצדדים
+  if (h12 && MALEFIC_FIGURE_PATTERNS.has(h12.key)) {
+    if (h12.key !== querentFig && h12.key !== quesitedFig) {
+      reasons.push(`בית 12 (${h12.hebrew || h12.key}) — סכנה נסתרת של נחס — מפריעה להגעה.`);
+    }
+  }
+
+  // חסימה 3: בית 8 (מוות/הפסד) נחס ואינו קשור — חוסם בנישואין/מחלה/נסיעה
+  if (h8 && MALEFIC_FIGURE_PATTERNS.has(h8.key)) {
+    if (h8.key !== querentFig && h8.key !== quesitedFig) {
+      reasons.push(`בית 8 (${h8.hebrew || h8.key}) — נחס — מטיל צל של הפסד או סכנה על הדין.`);
+    }
+  }
+
+  if (!reasons.length) return { active: false, hebrew: '' };
+
+  return {
+    active: true,
+    hebrew: `מניעה (חיסולה): ${reasons.join(' | ')}`,
+  };
+}
+
+/**
+ * computeTahasil — תחסיל (تحصيل): האם הדבר ייגמר?
+ *
+ * חמש שיטות לפי סדר עדיפות:
+ *   1. ישיר (اتحاد)     — אותה צורה בבית 1 ובבית הנשאל  → חזק מאוד
+ *   2. טבעי (جدول)      — צורת הטאלע שייכת טבעית לבית הנשאל → חזק
+ *   3. עדים/דיין (شهادة) — העדים/הדיין מחברים בין שני הצדדים → בינוני-חזק
+ *   4. העברה (نقل النور) — צורה ביניים מחברת → בינוני
+ *   5. שיתוף שורות       — דרגת קשר חלקי → חלש
+ */
+function computeTahasil(chart, topicId) {
+  if (!Array.isArray(chart)) return null;
+
+  const quesitedHouseNum = TOPIC_QUESITED_HOUSE[topicId] || 15;
+  const querentEntry  = chartHouse(chart, 1);
+  const quesitedEntry = chartHouse(chart, quesitedHouseNum);
+
+  if (!querentEntry || !quesitedEntry) {
+    return {
+      tahasilStatus: 'none',
+      tahasilStrength: 'none',
+      tahasilHebrew: 'לא ניתן לחשב תחסיל — חסרים נתונים.',
+      hayulaActive: false,
+      hayulaHebrew: '',
+      quesitedHouseNum,
+    };
+  }
+
+  const querentFig  = querentEntry.key;
+  const quesitedFig = quesitedEntry.key;
+  const querentName  = querentEntry.hebrew  || querentFig;
+  const quesitedName = quesitedEntry.hebrew || quesitedFig;
+
+  let tahasilStatus   = 'none';
+  let tahasilStrength = 'none';
+  let tahasilHebrew   = '';
+
+  // ── 1. ישיר (اتحاد) ──────────────────────────────────────────────────────
+  if (querentFig && querentFig === quesitedFig) {
+    tahasilStatus   = 'direct';
+    tahasilStrength = 'strong';
+    tahasilHebrew   = `תחסיל ישיר (אתחאד): אותה צורה — "${querentName}" — בבית 1 ובבית ${quesitedHouseNum}. הדבר ייגמר ואין ספק בו.`;
+  }
+
+  // ── 2. טבעי (جدول) ───────────────────────────────────────────────────────
+  if (tahasilStatus === 'none') {
+    const naturalOfQuerent  = getNaturalHouseOf(querentFig);
+    const naturalOfQuesited = getNaturalHouseOf(quesitedFig);
+    if (naturalOfQuerent === quesitedHouseNum) {
+      tahasilStatus   = 'natural';
+      tahasilStrength = 'strong';
+      tahasilHebrew   = `תחסיל טבעי (ג׳דוול): הצורה "${querentName}" שייכת טבעית לבית ${quesitedHouseNum} — הדבר ייגמר בדרך הטבע.`;
+    } else if (naturalOfQuesited === 1) {
+      tahasilStatus   = 'natural';
+      tahasilStrength = 'strong';
+      tahasilHebrew   = `תחסיל טבעי (ג׳דוול): הצורה "${quesitedName}" שייכת טבעית לבית 1 — הנשאל מגיע אל השואל.`;
+    }
+  }
+
+  // ── 3. עדים/דיין (شهادة) ─────────────────────────────────────────────────
+  if (tahasilStatus === 'none') {
+    const judge = chartHouse(chart, 15);
+    const w1    = chartHouse(chart, 13);
+    const w2    = chartHouse(chart, 14);
+
+    const judgeHasQ  = judge?.key === querentFig;
+    const judgeHasT  = judge?.key === quesitedFig;
+    const w1HasQ = w1?.key === querentFig;
+    const w1HasT = w1?.key === quesitedFig;
+    const w2HasQ = w2?.key === querentFig;
+    const w2HasT = w2?.key === quesitedFig;
+
+    if ((judgeHasQ || judgeHasT) && ((w1HasQ || w1HasT) || (w2HasQ || w2HasT))) {
+      tahasilStatus   = 'witness';
+      tahasilStrength = 'strong';
+      tahasilHebrew   = `תחסיל דרך עדים ודיין: הדיין מחובר לאחד הצדדים ועד מחובר לצד השני — הדבר ייגמר, אך ייקח זמן.`;
+    } else if ((w1HasQ && w2HasT) || (w1HasT && w2HasQ)) {
+      tahasilStatus   = 'witness';
+      tahasilStrength = 'medium';
+      tahasilHebrew   = `תחסיל דרך עדים: עד ראשון מחובר לצד אחד ועד שני לצד השני — גורם ביניים מעביר את הדבר.`;
+    } else if ((w1HasQ || w1HasT) && (w2HasQ || w2HasT)) {
+      tahasilStatus   = 'witness';
+      tahasilStrength = 'medium';
+      tahasilHebrew   = `תחסיל חלקי דרך עדים: שני העדים קשורים לאחד הצדדים — יש תמיכה, אך לא הגעה ישירה.`;
+    }
+  }
+
+  // ── 4. העברה (نقل النور) ─────────────────────────────────────────────────
+  if (tahasilStatus === 'none') {
+    const bridge = chart.find((h) => {
+      const n = Number(h.house);
+      return n !== 1 && n !== quesitedHouseNum && n <= 12 &&
+        (h.key === querentFig || h.key === quesitedFig);
+    });
+    if (bridge) {
+      tahasilStatus   = 'translation';
+      tahasilStrength = 'medium';
+      const bridgeName = bridge.hebrew || bridge.key;
+      tahasilHebrew   = `תחסיל בהעברה (נקל אל-נור): הצורה "${bridgeName}" בבית ${bridge.house} מחברת בין בית 1 לבית ${quesitedHouseNum} — הדבר ייגמר בעזרת גורם שלישי.`;
+    }
+  }
+
+  // ── 5. שיתוף שורות (اشتراك الأوتاد) ─────────────────────────────────────
+  if (tahasilStatus === 'none') {
+    const shared = countRowMatches(querentFig, quesitedFig);
+    if (shared >= 3) {
+      tahasilStatus   = 'partial';
+      tahasilStrength = 'medium';
+      tahasilHebrew   = `קשר חלקי חזק: ${shared}/4 שורות משותפות בין בית 1 לבית ${quesitedHouseNum} — יש פוטנציאל גבוה, אך לא ודאות.`;
+    } else if (shared === 2) {
+      tahasilStatus   = 'partial';
+      tahasilStrength = 'weak';
+      tahasilHebrew   = `קשר חלקי: ${shared}/4 שורות משותפות — הדבר מסופק, תלוי בגורמים נוספים.`;
+    } else {
+      tahasilHebrew = `אין תחסיל: לא נמצא חיבור בין בית 1 ("${querentName}") לבית ${quesitedHouseNum} ("${quesitedName}") — הדבר לא ייגמר כפי שמקווים.`;
+    }
+  }
+
+  // ── מניעה (حيلولة) ───────────────────────────────────────────────────────
+  const hayula = computeHayula(chart, quesitedHouseNum, querentFig, quesitedFig, tahasilStatus);
+
+  return {
+    tahasilStatus,
+    tahasilStrength,
+    tahasilHebrew,
+    hayulaActive: hayula.active,
+    hayulaHebrew: hayula.hebrew,
+    quesitedHouseNum,
+    querentFigure:       querentFig,
+    quesitedFigure:      quesitedFig,
+    querentFigureHebrew:  querentName,
+    quesitedFigureHebrew: quesitedName,
+  };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -958,6 +1188,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const ittisalat = computeIttisalat(board.chart, focusHouseNumber, mainHouses);
   const house1Analysis = computeHouse1Analysis(board.chart, topicId);
   const topicConnections = computeTopicConnections(board.chart, topicId);
+  const tahasil = computeTahasil(board.chart, topicId);
 
   return {
     hasBoard: true,
@@ -974,6 +1205,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     ittisalat,
     house1Analysis,
     topicConnections,
+    tahasil,
   };
 }
 
@@ -1040,6 +1272,15 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
     parts.push(
       `בית 16 (אחרית הדבר): ${sentence.figureHebrew || 'לא מזוהה'} — מראה את השלמת הדין.`
     );
+  }
+
+  // תחסיל ומניעה — שאלת ההגעה המרכזית
+  const tahasil = boardAnalysis.tahasil;
+  if (tahasil) {
+    parts.push(tahasil.tahasilHebrew);
+    if (tahasil.hayulaActive) {
+      parts.push(tahasil.hayulaHebrew);
+    }
   }
 
   const firstRule = relevantRules.find((r) => r.hebrew || r.result || r.condition);
