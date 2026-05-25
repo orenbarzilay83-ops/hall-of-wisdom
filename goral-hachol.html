@@ -322,6 +322,43 @@
 
     .house:last-child { border-left:0; }
 
+    .house.natural-house {
+      background: #f0f8f0;
+      outline: 2px solid #2e8b4a;
+      outline-offset: -2px;
+    }
+
+    .house.natural-house::after {
+      content: "✦";
+      position: absolute;
+      top: 3px;
+      right: 4px;
+      font-size: 11px;
+      font-weight: 900;
+      color: #2e8b4a;
+      background: #d6f0de;
+      border-radius: 3px;
+      padding: 1px 3px;
+      line-height: 1;
+    }
+
+    .house.dhamir-house.natural-house::after {
+      top: 3px;
+      right: 4px;
+    }
+
+    .natural-house-legend {
+      text-align: center;
+      font-size: 13px;
+      color: #1a6633;
+      background: #f0f8f0;
+      border: 1px solid #88cc99;
+      border-radius: 6px;
+      padding: 6px 12px;
+      margin: 6px auto 0;
+      max-width: 860px;
+    }
+
     .dhamir-legend {
       text-align: center;
       font-size: 13px;
@@ -871,9 +908,19 @@
       return entry ? Number(entry.house) : null;
     }
 
-    function houseHtml(h, label, isDhamir) {
+    // Natural figure (جدول) for each zodiac house — matches hawi-interpreter.js NATURAL_HOUSE_FIGURES
+    const NATURAL_HOUSE_FIGURES = {
+      1: '1121', 2: '1212', 3: '2212', 4: '2222',
+      5: '1122', 6: '2112', 7: '1112', 8: '2122',
+      9: '2121', 10: '1221', 11: '2221', 12: '1222',
+    };
+
+    function houseHtml(h, label, isDhamir, isNatural) {
+      let cls = 'house';
+      if (isDhamir)  cls += ' dhamir-house';
+      if (isNatural) cls += ' natural-house';
       return `
-        <div class="house${isDhamir ? ' dhamir-house' : ''}">
+        <div class="${cls}">
           <div class="house-title">${label}</div>
           <div class="house-name">${escapeHtml(h.houseHebrew || houseName(h.house))}</div>
           ${glyphHtml(h.figure)}
@@ -887,31 +934,38 @@
       const dhamirHouseNum = computeDhamirHouseNumber(reading.chart);
 
       const d = n => n === dhamirHouseNum;
+      const nat = n => {
+        const entry = h(n);
+        return !!(entry && NATURAL_HOUSE_FIGURES[n] && entry.key === NATURAL_HOUSE_FIGURES[n]);
+      };
+
+      const naturalHouseNums = [1,2,3,4,5,6,7,8,9,10,11,12].filter(nat);
 
       return `
         <article class="board">
           <div class="board-row r1">
-            ${[1,2,3,4,5,6,7,8].map(n => houseHtml(h(n), `בית ${n}`, d(n))).join("")}
+            ${[1,2,3,4,5,6,7,8].map(n => houseHtml(h(n), `בית ${n}`, d(n), nat(n))).join("")}
           </div>
 
           <div class="board-row r2">
-            ${[9,10,11,12].map(n => houseHtml(h(n), `בית ${n}`, d(n))).join("")}
+            ${[9,10,11,12].map(n => houseHtml(h(n), `בית ${n}`, d(n), nat(n))).join("")}
           </div>
 
           <div class="board-row r3">
-            ${houseHtml(h(13), "13 — עד א׳", d(13))}
-            ${houseHtml(h(14), "14 — עד ב׳", d(14))}
+            ${houseHtml(h(13), "13 — עד א׳", d(13), false)}
+            ${houseHtml(h(14), "14 — עד ב׳", d(14), false)}
           </div>
         </article>
 
         <div class="final-row">
           <div class="final-box">
-            ${houseHtml(h(16), "16 — משלים", d(16))}
+            ${houseHtml(h(16), "16 — משלים", d(16), false)}
           </div>
           <div class="final-box">
-            ${houseHtml(h(15), "15 — דיין", d(15))}
+            ${houseHtml(h(15), "15 — דיין", d(15), false)}
           </div>
         </div>
+        ${naturalHouseNums.length > 0 ? `<div class="natural-house-legend">✦ = צורה טבעית (בית${naturalHouseNums.length > 1 ? 'ות' : ''} ${naturalHouseNums.join(', ')}) — הצורה הטבעית של הבית, הדין חזק במיוחד</div>` : ""}
         ${dhamirHouseNum ? `<div class="dhamir-legend">★ = בית הדמיר (בית ${dhamirHouseNum}) — הצורה שכל שאר הצורות מעידות עליה</div>` : ""}
       `;
     }

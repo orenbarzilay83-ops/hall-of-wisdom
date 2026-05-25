@@ -15,6 +15,25 @@ import {
   writeHumanGoralConclusion,
 } from './goral-conclusion-writer.js';
 
+// Natural figure (جدول, jadwal) for each house — the figure that naturally belongs there.
+// When the figure in a house matches its natural figure, the judgement is especially strong.
+// Houses 1 and 10 confirmed from Hawi source (حاوي العجائب). Other houses follow the
+// traditional Arabic/Western geomancy zodiacal assignment and may need source verification.
+export const NATURAL_HOUSE_FIGURES = {
+  1:  '1121', // נלחם     = Puer       = Aries/Mars          — confirmed from Hawi
+  2:  '1212', // ממון יוצא = Amissio    = Taurus/Venus
+  3:  '2212', // לבן      = Albus      = Gemini/Mercury
+  4:  '2222', // קהלה     = Populus    = Cancer/Moon
+  5:  '1122', // כבוד יוצא = Fortuna Major = Leo/Sun
+  6:  '2112', // חיבור    = Conjunctio = Virgo/Mercury
+  7:  '1112', // סף יוצא  = Puella     = Libra/Venus
+  8:  '2122', // אדום     = Rubeus     = Scorpio/Mars
+  9:  '2121', // ממון נכנס = Acquisitio = Sagittarius/Jupiter
+  10: '1221', // סוהר     = Carcer     = Capricorn/Saturn    — confirmed from Hawi
+  11: '2221', // שפל ראש  = Tristitia  = Aquarius/Saturn
+  12: '1222', // נשוא ראש = Laetitia   = Pisces/Jupiter
+};
+
 // Taskin al-Sharq order (تسكين الشرق) — 16 figure patterns in source order
 // Converted from | (=1, single) / 0 (=2, double) notation in hawi-dhamir-directions-validation.js
 const TASKIN_EAST_PATTERNS = [
@@ -337,7 +356,7 @@ function computeHouse1Analysis(chart, topicId) {
 
   const elementMeaning = ELEMENT_BODY_MAP[element] || element;
   const movementHebrew = MOVEMENT_HEBREW_MAP[movement] || movement;
-  const isNatural = h1.key === '1121'; // נלחם = natural figure of house 1
+  const isNatural = h1.key === NATURAL_HOUSE_FIGURES[1];
   const topicNote = TOPIC_H1_NOTES[topicId] || null;
 
   const summaryLines = [
