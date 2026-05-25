@@ -12,9 +12,9 @@
  * PDF document 18.pdf — heading begins at end
  * PDF document 19.pdf — houses 1–16
  *
- * Secondary source checked (بلوغ الأمل في علم الرمل):
- * Only topic-specific rules found (commerce, theft) — no per-house transit data.
- * No enrichment added; Hawi data stands as sole source.
+ * Secondary source (بلوغ الأمل في علم الرمل):
+ * Complete per-house transit data for H1-H14, H16. H15 also missing there.
+ * supplementarySource blocks added per house. Hawi always takes precedence.
  */
 
 export const HAWI_FIGURE_NAQI_KHAD = {
@@ -63,7 +63,14 @@ export const HAWI_FIGURE_NAQI_KHAD = {
       topics: ['male-female', 'joy', 'food-drink', 'pleasure', 'money', 'desire', 'marriage', 'young-children', 'witness-dependent'],
       criticalArabicTerms: ['الشواهد الجيدة'],
       specialRules: ['אהבה/חשק וקבלה מנשים/נערים לפי עדים טובים; לשמור כחומר מקור רגיש.'],
-    },
+      supplementarySource: {
+        sourceBook: 'بلوغ الأمل في علم الرمل',
+        sourceArabic: 'دل على الإجتماع وتحصيل أمر في الخاطر عسر وسؤال عن نفس',
+        meaningHebrew: 'מורה על התכנסות, השגת עניין קשה בדעת ושאלה על הנפש.',
+        conflictsWithHawi: true,
+        note: 'חאוי: שמחה, ממון, תשוקה (חיובי). בלוג האמל: כינוס, עניין קשה (מעורב). חאוי גובר.',
+      },
+},
     {
       house: 2,
       sourcePages: ['PDF document 19.pdf'],
@@ -84,7 +91,13 @@ export const HAWI_FIGURE_NAQI_KHAD = {
       topics: ['money', 'women', 'commerce', 'gold', 'delayed-payment', 'witness-dependent'],
       criticalArabicTerms: ['بالشواهد'],
       specialRules: ['קבלת ממון לאחר עיכוב ודחייה, זהב/דרהמים מאישה לפי העדים.'],
-    },
+      supplementarySource: {
+        sourceBook: 'بلوغ الأمل في علم الرمل',
+        sourceArabic: 'دل على تيسير الأرزاق ونصر على الأعداء وهمة مفيدة',
+        meaningHebrew: 'מורה על הקלת פרנסה, ניצחון על אויבים ושאיפה מועילה.',
+        conflictsWithHawi: false,
+      },
+},
     {
       house: 3,
       sourcePages: ['PDF document 19.pdf'],
@@ -110,7 +123,13 @@ export const HAWI_FIGURE_NAQI_KHAD = {
       topics: ['siblings', 'friends', 'speech', 'beloved', 'sexual-conduct', 'separation', 'money', 'witness-dependent'],
       criticalArabicTerms: ['على قدر الشواهد'],
       specialRules: ['אהבה בין חברים ואחים, אבל גם חומר רגיש: זנות/לוואט; קבלת דרהמים לפי העדים.'],
-    },
+      supplementarySource: {
+        sourceBook: 'بلوغ الأمل في علم الرمل',
+        sourceArabic: 'دل على حركة ميسرة وسفر فيه نفع وفائدة وإستملاك',
+        meaningHebrew: 'מורה על תנועה קלה, נסיעה עם תועלת ורכישת נכסים.',
+        conflictsWithHawi: false,
+      },
+},
     {
       house: 4,
       sourcePages: ['PDF document 19.pdf'],
@@ -132,7 +151,13 @@ export const HAWI_FIGURE_NAQI_KHAD = {
       topics: ['parents', 'land', 'property', 'secrecy', 'tears', 'money', 'witness-dependent'],
       criticalArabicTerms: ['على قدر الشواهد'],
       specialRules: ['תועלת מהורים/קרקע + שמירת סוד + בכי ודמעות + צרור דרהמים לפי העדים.'],
-    },
+      supplementarySource: {
+        sourceBook: 'بلوغ الأمل في علم الرمل',
+        sourceArabic: 'دل على عاقبة سليمة وطلب عز حاصل وقهر عدو مناكد',
+        meaningHebrew: 'מורה על תוצאה שלמה, השגת כבוד ודיכוי אויב עקשן.',
+        conflictsWithHawi: false,
+      },
+},
     {
       house: 5,
       sourcePages: ['PDF document 19.pdf'],
@@ -154,7 +179,13 @@ export const HAWI_FIGURE_NAQI_KHAD = {
       topics: ['children', 'birth', 'joy', 'gifts', 'messengers', 'letters', 'benefic', 'witness-dependent'],
       criticalArabicTerms: ['على قدر الشواهد'],
       specialRules: ['ילד שייוולד לפי העדים.'],
-    },
+      supplementarySource: {
+        sourceBook: 'بلوغ الأمل في علم الرمل',
+        sourceArabic: 'دل على الخلاص من الشدة وجمع مفيد ومحبوب مواصل',
+        meaningHebrew: 'מורה על חמלה מצרה, כינוס מועיל ואהוב שמחובר.',
+        conflictsWithHawi: false,
+      },
+},
     {
       house: 6,
       sourcePages: ['PDF document 19.pdf'],
@@ -178,7 +209,13 @@ export const HAWI_FIGURE_NAQI_KHAD = {
       topics: ['illness', 'death', 'servants', 'water', 'livestock', 'travel', 'women', 'beloved', 'witness-dependent'],
       criticalArabicTerms: ['على قدر الشواهد'],
       specialRules: ['מחלה/מוות בעבדים ומים; קשר עם אהוב שנפרד וקבלת דבר ממנו לפי העדים.'],
-    },
+      supplementarySource: {
+        sourceBook: 'بلوغ الأمل في علم الرمل',
+        sourceArabic: 'دل على طلب غائب ومدة قريبة وخلاص نفس من شدة',
+        meaningHebrew: 'מורה על חיפוש נעדר, תקופה קרובה ושחרור הנפש מצרה.',
+        conflictsWithHawi: false,
+      },
+},
     {
       house: 7,
       sourcePages: ['PDF document 19.pdf'],
@@ -202,7 +239,13 @@ export const HAWI_FIGURE_NAQI_KHAD = {
       ],
       topics: ['marriage', 'women', 'partnership', 'commerce', 'mixing', 'beloved', 'forbidden', 'sexual-conduct'],
       specialRules: ['נישואין/שותפות/נשים, אבל גם איסור/חשק/فسق; חומר רגיש לשימור.'],
-    },
+      supplementarySource: {
+        sourceBook: 'بلوغ الأمل في علم الرمل',
+        sourceArabic: 'دل على الطريق وورود شيء غائب وحركات مفيدة وفراش',
+        meaningHebrew: 'מורה על הדרך, הגעת דבר נעדר, תנועות מועילות ומיטה/נישואין.',
+        conflictsWithHawi: false,
+      },
+},
     {
       house: 8,
       sourcePages: ['PDF document 19.pdf'],
@@ -225,7 +268,13 @@ export const HAWI_FIGURE_NAQI_KHAD = {
       topics: ['children', 'inheritance', 'sword', 'death', 'spouse', 'difficulty', 'witness-dependent'],
       criticalArabicTerms: ['على قدر الشواهد'],
       specialRules: ['קטנים/ירושות/חרב בנדן; מות נערה; בן זוג בקושי ואולי אובדן לפי העדים.'],
-    },
+      supplementarySource: {
+        sourceBook: 'بلوغ الأمل في علم الرمل',
+        sourceArabic: 'دل على شيء يخرج من اليد وربما حصل للسائل ضيق',
+        meaningHebrew: 'מורה על יציאת דבר מהיד וייתכן שיגיע לשואל מיצר.',
+        conflictsWithHawi: false,
+      },
+},
     {
       house: 9,
       sourcePages: ['PDF document 19.pdf'],
@@ -249,7 +298,13 @@ export const HAWI_FIGURE_NAQI_KHAD = {
       topics: ['travel', 'hidden-knowledge', 'wisdom', 'philosophy', 'dreams', 'spouse', 'authority', 'witness-dependent'],
       criticalArabicTerms: ['على قدر الشواهد'],
       specialRules: ['חכמות נסתרות, פילוסופיה, חלומות; יציאה עם אישה/לצורך נישואין לפי העדים.'],
-    },
+      supplementarySource: {
+        sourceBook: 'بلوغ الأمل في علم الرمل',
+        sourceArabic: 'دل على فرح وحركة مفيدة وخير السفر للسائل والعز',
+        meaningHebrew: 'מורה על שמחה, תנועה מועילה, טוב הנסיעה לשואל וכבוד.',
+        conflictsWithHawi: false,
+      },
+},
     {
       house: 10,
       sourcePages: ['PDF document 19.pdf'],
@@ -269,8 +324,14 @@ export const HAWI_FIGURE_NAQI_KHAD = {
         'حباء — מתנות, הענקה או חיבה מצד בעל סמכות.',
         'שירות הסולטן.'
       ],
-      topics: ['authority', 'sultan', 'governors', 'commerce', 'success', 'king', 'honor', 'service']
-    },
+      topics: ['authority', 'sultan', 'governors', 'commerce', 'success', 'king', 'honor', 'service'],
+      supplementarySource: {
+        sourceBook: 'بلوغ الأمل في علم الرمل',
+        sourceArabic: 'فرح وبيان لما خفي وكسب وعز ومناصب وأفراح',
+        meaningHebrew: 'מורה על שמחה, בירור הנסתר, רווח, כבוד, משרות ושמחות.',
+        conflictsWithHawi: false,
+      },
+},
     {
       house: 11,
       sourcePages: ['PDF document 19.pdf'],
@@ -287,8 +348,14 @@ export const HAWI_FIGURE_NAQI_KHAD = {
         'תועלת מן ילד ונישואין.',
         'תועלת ותיקון מצד בן זוג הנושא את איכות בר הלחי.'
       ],
-      topics: ['friends', 'joy', 'siblings', 'children', 'marriage', 'spouse', 'reconciliation']
-    },
+      topics: ['friends', 'joy', 'siblings', 'children', 'marriage', 'spouse', 'reconciliation'],
+      supplementarySource: {
+        sourceBook: 'بلوغ الأمل في علم الرمل',
+        sourceArabic: 'يدل على الإتصال في نفس وفرح بما يختار وطلب ميسر',
+        meaningHebrew: 'מורה על קשר נפשי, שמחה על מה שנבחר ובקשה קלה.',
+        conflictsWithHawi: false,
+      },
+},
     {
       house: 12,
       sourcePages: ['PDF document 19.pdf'],
@@ -312,7 +379,13 @@ export const HAWI_FIGURE_NAQI_KHAD = {
       ],
       topics: ['corruption', 'deception', 'schemes', 'animals', 'water', 'servants', 'death', 'friendship', 'good-ending'],
       specialRules: ['קלקול, מרמה ותחבולות; תועלת מבהמות/מים/עבדים; אחרית טובה עם חבר/בן ברית.'],
-    },
+      supplementarySource: {
+        sourceBook: 'بلوغ الأمل في علم الرمل',
+        sourceArabic: 'يدل على ذهاب شيء من اليد أو مال ويعدمه',
+        meaningHebrew: 'מורה על ירידת דבר מהיד או ממון ואיבודו.',
+        conflictsWithHawi: false,
+      },
+},
     {
       house: 13,
       sourcePages: ['PDF document 19.pdf'],
@@ -328,8 +401,14 @@ export const HAWI_FIGURE_NAQI_KHAD = {
         'תועלת מצד נסיעה.',
         'אחרית טובה.'
       ],
-      topics: ['authority', 'religion', 'travel', 'good-ending']
-    },
+      topics: ['authority', 'religion', 'travel', 'good-ending'],
+      supplementarySource: {
+        sourceBook: 'بلوغ الأمل في علم الرمل',
+        sourceArabic: 'دل على الخير وطلب مال وإستلام شيء به نفع وأوامره',
+        meaningHebrew: 'מורה על טוב, חיפוש ממון, קבלת דבר מועיל והוראותיו.',
+        conflictsWithHawi: false,
+      },
+},
     {
       house: 14,
       sourcePages: ['PDF document 19.pdf'],
@@ -346,7 +425,13 @@ export const HAWI_FIGURE_NAQI_KHAD = {
       ],
       topics: ['benefit', 'receiving', 'difficulty', 'separation'],
       specialRules: ['תועלות וקבלה מתוך קושי והיפרדות.'],
-    },
+      supplementarySource: {
+        sourceBook: 'بلوغ الأمل في علم الرمل',
+        sourceArabic: 'دل على مسئول غير مناسب ورديء فاسد وأعداء وتعب',
+        meaningHebrew: 'מורה על מבוקש לא מתאים, דבר מקולקל, אויבים ועייפות.',
+        conflictsWithHawi: false,
+      },
+},
     {
       house: 15,
       sourcePages: ['PDF document 19.pdf'],
@@ -381,9 +466,23 @@ export const HAWI_FIGURE_NAQI_KHAD = {
       ],
       topics: ['money-loss', 'connection', 'hope', 'mixed'],
       specialRules: ['הפסד ממון + קשר/חיבור שמקווים לו; דין מעורב.'],
-    }
+      supplementarySource: {
+        sourceBook: 'بلوغ الأمل في علم الرمل',
+        sourceArabic: 'دل على عاقبة حميدة وكذب قد امتد ولا فائدة في الطلب',
+        meaningHebrew: 'מורה על תוצאה ראויה, כזב שהתמשך ואין תועלת בבקשה.',
+        conflictsWithHawi: true,
+        note: 'חאוי: הפסד ממון וקשר שמקווים לו. בלוג האמל: תוצאה ראויה + כזב + אין תועלת. חאוי גובר.',
+      },
+}
   ],
 
+
+  secondarySourceEnrichment: {
+    sourceBook: 'بلوغ الأمل في علم الرمل',
+    housesEnriched: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16],
+    housesWithConflict: [1, 16],
+    policy: 'Hawi takes precedence. Conflicts flagged with conflictsWithHawi: true.',
+  },
   coverage: '16/16',
   housesListed: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
   notExplicitInSource: [],
