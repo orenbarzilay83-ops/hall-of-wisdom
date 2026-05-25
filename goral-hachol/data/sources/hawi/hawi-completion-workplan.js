@@ -46,10 +46,10 @@ export const HAWI_COMPLETION_WORKPLAN = {
       priority: 3,
       titleHebrew: 'בדיקת תקינות הלוח (אצאלה / أصالة)',
       descriptionHebrew:
-        'האם השאלה תקפה בכלל לפסיקה? בדיקה ראשונית לפני כל פסיקה. אם הלוח אינו "אצאלי" — אין לפסוק.',
-      status: 'pending',
+        'מומש. הפונקציה computeAsala() בודקת: (1) נוכחות צורת הלבנה (לבן/דרך), (2) נוכחות מחלקת כל 7 כוכבים. תוצאה מוצגת ב-buildFinalConclusion לפני פסיקת הדין.',
+      status: 'done-2026-05-25',
       sourceAvailable: true,
-      notes: 'חומר קיים ב-hawi-dhamir-directions-validation.js. צריך לחלץ את כללי האצאלה ולממש פונקציה.',
+      notes: 'מקור: hawi-dhamir-directions-validation.js, strikeValidityPrinciples + moonValidationRules. קוד: computeAsala() ב-hawi-interpreter.js.',
     },
   ],
 

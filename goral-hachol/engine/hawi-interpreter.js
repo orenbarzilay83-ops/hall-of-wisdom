@@ -592,6 +592,62 @@ function chartHouse(chart, houseNum) {
   return chart.find((h) => Number(h.house) === Number(houseNum)) || null;
 }
 
+// Planetary figure assignments from Hawi (hawi-dhamir-directions-validation.js, doc 33-34).
+// Each planet has two representative figures. Converted from |/0 notation: |=2, 0=1.
+const PLANETARY_FIGURES = [
+  { hebrew: 'שמש',    figures: ['1122', '2121'] },
+  { hebrew: 'לבנה',   figures: ['2212', '1111'] },
+  { hebrew: 'מאדים',  figures: ['2122', '1121'] },
+  { hebrew: 'כוכב',   figures: ['2222'] },           // second shape partial in source, using only ||||
+  { hebrew: 'שבתאי',  figures: ['2221', '1221'] },
+  { hebrew: 'נוגה',   figures: ['2211', '1211'] },
+  { hebrew: 'צדק',    figures: ['1222', '2111'] },
+];
+
+/**
+ * computeAsala — אצאלה (أصالة): האם הלוח תקף לפסיקה?
+ *
+ * שני כללים מחאוי (PDF docs 33-34, strikeValidityPrinciples + moonValidationRules):
+ *   1. צורת הלבנה (לבן 2212 / דרך 1111) חייבת להופיע בלוח — אחרת חוזרים על ההכאה.
+ *   2. מחלקת כל אחד מ-7 הכוכבים חייבת להופיע — אחרת אין לסמוך על הלוח.
+ */
+function computeAsala(chart) {
+  if (!Array.isArray(chart)) return null;
+
+  const chartKeys = new Set(chart.map((h) => h.key).filter(Boolean));
+
+  // Rule 1 — moon figure (לבן = 2212) or (דרך = 1111) must appear
+  const moonFigures = ['2212', '1111'];
+  const hasMoon = moonFigures.some((f) => chartKeys.has(f));
+  const moonFigureFound = moonFigures.find((f) => chartKeys.has(f));
+
+  // Rule 2 — at least one figure from each planet's pair must appear
+  const missingPlanets = PLANETARY_FIGURES
+    .filter((p) => !p.figures.some((f) => chartKeys.has(f)))
+    .map((p) => p.hebrew);
+
+  const isRadical = hasMoon && missingPlanets.length === 0;
+  const isPartiallyRadical = hasMoon && missingPlanets.length > 0;
+
+  let hebrewNote;
+  if (!hasMoon) {
+    hebrewNote = 'הלוח אינו אצאלי — צורת הלבנה (לבן) אינה מופיעה בלוח. לפי חאוי: יש לחזור על ההכאה ולא לפסוק על לוח זה.';
+  } else if (missingPlanets.length > 0) {
+    hebrewNote = `הלוח חלקי — הלבנה נוכחת (${moonFigureFound === '2212' ? 'לבן' : 'דרך'}), אך חסרים כוכבים: ${missingPlanets.join(', ')}. לפי חאוי: אפשר לדון אך בזהירות.`;
+  } else {
+    hebrewNote = `הלוח אצאלי — הלבנה נוכחת (${moonFigureFound === '2212' ? 'לבן' : 'דרך'}) וכל כוכבי המזל מיוצגים.`;
+  }
+
+  return {
+    isRadical,
+    isPartiallyRadical,
+    hasMoon,
+    moonFigureFound: moonFigureFound || null,
+    missingPlanets,
+    hebrewNote,
+  };
+}
+
 /**
  * computeHayula — מניעה (حيلولة): האם יש כוח שחוסם את ההגעה?
  * מחזיר { active, hebrew }.
@@ -1236,6 +1292,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const house1Analysis = computeHouse1Analysis(board.chart, topicId);
   const topicConnections = computeTopicConnections(board.chart, topicId);
   const tahasil = computeTahasil(board.chart, topicId);
+  const asala = computeAsala(board.chart);
 
   return {
     hasBoard: true,
@@ -1253,6 +1310,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     house1Analysis,
     topicConnections,
     tahasil,
+    asala,
   };
 }
 
@@ -1330,6 +1388,12 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
   const judgeVerdict = boardScore.judgeVerdict || null;
 
   const parts = [];
+
+  // אצאלה — תקפות הלוח (בדיקה מקדימה לכל פסיקה, לפי חאוי)
+  const asala = boardAnalysis.asala;
+  if (asala && !asala.isRadical) {
+    parts.push(asala.hebrewNote);
+  }
 
   // Lead with judge verdict (short form to avoid duplication with describeCoreHouses)
   const judgeHebrew = judge?.figureHebrew || 'לא מזוהה';
