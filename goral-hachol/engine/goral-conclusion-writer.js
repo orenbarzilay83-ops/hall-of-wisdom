@@ -255,14 +255,29 @@ function describeCoreHouses(analysis, topicId) {
       const fortune = t.dhamirFortune ? ` [${t.dhamirFortune}]` : '';
       return `  שורת ${t.rowElement} → בית ${t.dhamirHouseNumber} — ${t.dhamirHebrew}${fortune}`;
     });
+    const dhamirFort = dhamirMizan.primaryFortune || '';
+    const dhamirTone = dhamirFort.includes('סעד') ? 1 : dhamirFort.includes('נחס') ? -1 : 0;
+    const judgeToneLocal = judge ? (judge.fortune?.includes('סעד') ? 1 : judge.fortune?.includes('נחס') ? -1 : 0) : 0;
+    let dhamirConcord = '';
+    if (dhamirTone !== 0 && judgeToneLocal !== 0) {
+      const confirming = (judgeToneLocal > 0 && dhamirTone > 0) || (judgeToneLocal < 0 && dhamirTone < 0);
+      dhamirConcord = confirming ? ' ✓ מאשר את הדיין.' : ' ⚠ סותר את הדיין — שים לב.';
+    }
     parts.push(
-      `הדמיר (תסיירת נקטת המיזאן):\n${traceLines.join('\n')}\n  → הדמיר העיקרי: בית ${dhamirMizan.primaryHouseNumber} — כל הדין שם.`
+      `הדמיר (תסיירת נקטת המיזאן):\n${traceLines.join('\n')}\n  → הדמיר העיקרי: בית ${dhamirMizan.primaryHouseNumber} — כל הדין שם.${dhamirConcord}`
     );
   } else if (dhamir) {
     // גיבוי: נהמת האמהות
     const dhamirFortune = dhamir.fortune ? ` [${dhamir.fortune}]` : '';
+    const dhamirTone = (dhamir.fortune || '').includes('סעד') ? 1 : (dhamir.fortune || '').includes('נחס') ? -1 : 0;
+    const judgeToneLocal = judge ? (judge.fortune?.includes('סעד') ? 1 : judge.fortune?.includes('נחס') ? -1 : 0) : 0;
+    let dhamirConcord = '';
+    if (dhamirTone !== 0 && judgeToneLocal !== 0) {
+      const confirming = (judgeToneLocal > 0 && dhamirTone > 0) || (judgeToneLocal < 0 && dhamirTone < 0);
+      dhamirConcord = confirming ? ' ✓ מאשר את הדיין.' : ' ⚠ סותר את הדיין — שים לב.';
+    }
     parts.push(
-      `הדמיר (נהמת האמהות): בית ${dhamir.houseNumber} — ${dhamir.figureHebrew}${dhamirFortune}. הצורה שבה נפל הדמיר — כל הדין נמצא בה לפי המקור.`
+      `הדמיר (נהמת האמהות): בית ${dhamir.houseNumber} — ${dhamir.figureHebrew}${dhamirFortune}. הצורה שבה נפל הדמיר — כל הדין נמצא בה לפי המקור.${dhamirConcord}`
     );
   }
 
@@ -512,6 +527,34 @@ function tahasilParagraph(boardAnalysis) {
   return lines.join(' ');
 }
 
+function dhamirParagraph(boardAnalysis, judgeVerdict) {
+  const dhamirMizan = boardAnalysis?.dhamirByMizan;
+  const dhamirH = boardAnalysis?.dhamirHouse;
+  const dhamirFort = dhamirMizan?.primaryFortune || dhamirH?.fortune || '';
+  if (!dhamirFort) return '';
+
+  const dhamirTone = dhamirFort.includes('סעד') ? 1 : dhamirFort.includes('נחס') ? -1 : 0;
+  const judgeTone = judgeVerdict?.judgeTone ?? 0;
+  if (dhamirTone === 0 || judgeTone === 0) return '';
+
+  const confirming = (judgeTone > 0 && dhamirTone > 0) || (judgeTone < 0 && dhamirTone < 0);
+  const dhamirHouseNum = dhamirMizan?.primaryHouseNumber || dhamirH?.houseNumber || '';
+  const dhamirFigure = dhamirMizan?.primaryHebrew || dhamirH?.figureHebrew || '';
+
+  if (confirming) {
+    return `הדמיר (בית ${dhamirHouseNum}${dhamirFigure ? ` — ${dhamirFigure}` : ''}): ${dhamirFort} — מאשר את הדיין ומחזק את הפסיקה. כשהדמיר מסכים עם הדיין, הוא מוסיף ודאות לתשובה.`;
+  } else {
+    return `הדמיר (בית ${dhamirHouseNum}${dhamirFigure ? ` — ${dhamirFigure}` : ''}): ${dhamirFort} — סותר את הדיין. כשהדמיר מנוגד לדיין, יש לקחת בחשבון שהמצב עשוי להשתנות, או שיש כוחות פנימיים שמעכבים את הגעת התשובה.`;
+  }
+}
+
+function boardScoreParagraph(boardAnalysis) {
+  const bScore = boardAnalysis?.boardScore;
+  if (!bScore) return '';
+  if (bScore.isComplete) return '';
+  return `לוח חסר: ${bScore.hebrewSummary}. כשהלוח חסר (פחות מ-96 נקודות), השאלה עשויה להישאר לא פתורה, או שהתשובה תאחר להתברר.`;
+}
+
 export function writeHumanGoralConclusion(result) {
   const topicId = result.topicId;
   const topicHebrew = result.topicHebrew;
@@ -533,7 +576,9 @@ export function writeHumanGoralConclusion(result) {
   const paragraphs = [
     clientContextParagraph(result.clientContext, result.question),
     clientHistoryParagraph(result.clientHistorySummary),
+    boardScoreParagraph(result.boardAnalysis),
     verdictParagraph,
+    dhamirParagraph(result.boardAnalysis, judgeVerdict),
     tahasilParagraph(result.boardAnalysis),
     topicOpening(topicId, topicHebrew),
     questionFocusParagraph(topicId, result.clientContext),

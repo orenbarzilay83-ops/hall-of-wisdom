@@ -32,6 +32,16 @@ export const HAWI_COMPLETION_WORKPLAN = {
       notes: 'מומש ב-hawi-interpreter.js: getFigureStateHouseTone(), getSpeakingStateMultiplier(), getSpeakingStateHebrew(). חובר ל-scoreBoard ו-buildJudgeVerdict.',
     },
     {
+      id: 'dhamir-scoring',
+      priority: 2,
+      titleHebrew: 'דמיר משפיע על ציון הפסיקה',
+      descriptionHebrew:
+        'הדמיר (الضمير) מחובר כעת לציון הפסיקה במשקל 1.5. שיטת תסיירת נקטת המיזאן היא הראשית. הדמיר מאשר או סותר את הדיין ומוצג בפסיקה הסופית.',
+      status: 'done-2026-05-25',
+      sourceAvailable: true,
+      notes: 'מומש ב-scoreBoard(): dhamirTone × 1.5. בנוסף: repetitionBonus (×0.4 לכל חזרת הדיין), aspectBonus (1.0/0.5 לחיבורי בית 1), completenessMultiplier (×0.8 אם לוח חסר). buildJudgeVerdict() ו-buildFinalConclusion() מציגים אישור/סתירת הדמיר.',
+    },
+    {
       id: 'natural-houses-missing',
       priority: 2,
       titleHebrew: 'בתים טבעיים חסרים — בתים 5, 6, 7',

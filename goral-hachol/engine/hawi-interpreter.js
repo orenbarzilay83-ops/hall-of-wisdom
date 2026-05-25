@@ -1196,6 +1196,21 @@ function buildJudgeVerdict(boardAnalysis) {
     }
   }
 
+  // Dhamir confirmation/contradiction note
+  const dhamirFort = boardAnalysis.dhamirByMizan?.primaryFortune || boardAnalysis.dhamirHouse?.fortune || '';
+  const dhamirToneVerdict = dhamirFort.includes('סעד') ? 1 : dhamirFort.includes('נחס') ? -1 : 0;
+  if (dhamirToneVerdict !== 0) {
+    const dhamirH = boardAnalysis.dhamirByMizan?.primaryHouseNumber || boardAnalysis.dhamirHouse?.houseNumber || '';
+    const confirming = (judgeTone > 0 && dhamirToneVerdict > 0) || (judgeTone < 0 && dhamirToneVerdict < 0);
+    hebrewFull += confirming
+      ? ` הדמיר (בית ${dhamirH}) מאשר את הפסיקה — ${dhamirFort}.`
+      : ` הדמיר (בית ${dhamirH}) מנוגד לדיין — ${dhamirFort} — ייתכן שינוי במהלך.`;
+  }
+  // Board completeness note
+  if (boardAnalysis.boardScore?.isComplete === false) {
+    hebrewFull += ` [הערה: הלוח חסר (${boardAnalysis.boardScore.score} נקודות) — הפסיקה פחות ודאית.]`;
+  }
+
   return { verdict, grade, judgeFigure, judgeFortune, judgeTone, witnessTone, focusTone, hebrewShort, hebrewFull };
 }
 
@@ -1544,20 +1559,43 @@ function scoreBoard(boardAnalysis) {
     .filter((c) => c.connected)
     .length * 0.5;
 
-  // Weights: judge(4) + w1(1) + w2(1) + focus(2) + quesited(2) + direction + natural + connections
-  const score = Math.round(
-    (judgeTone * 4 * judgeMulti +
-     w1Tone * 1 * w1Multi +
-     w2Tone * 1 * w2Multi +
-     focusTone * 2 * focusMulti +
-     quesitedTone * 2 * quesitedMulti +
-     directionModifier(quesitedEntry) +
-     directionModifier(focus) +
-     naturalBonus(judge, 0.5) +
-     naturalBonus(quesitedEntry, 0.25) +
-     naturalBonus(focus, 0.25) +
-     topicConnectionBonus) * 2
-  );
+  // Dhamir (الضمير) — the hidden intention behind the question. Mizan-tracing is primary.
+  // When dhamir agrees with judge → confirms ruling. When opposed → signals inner conflict or change.
+  const dhamirFortune = boardAnalysis.dhamirByMizan?.primaryFortune || boardAnalysis.dhamirHouse?.fortune || '';
+  const dhamirTone = dhamirFortune.includes('סעד') ? 1 : dhamirFortune.includes('נחס') ? -1 : 0;
+
+  // Figure repetition bonus: judge figure appearing in multiple houses = judgment reinforced.
+  const judgePattern = judge?.figureKey;
+  const judgeRepeatCount = judgePattern
+    ? ((boardAnalysis.ittisalat?.figureConnections || []).find((fc) => fc.figureKey === judgePattern)?.houses?.length || 1)
+    : 1;
+  const repetitionBonus = Math.max(0, judgeRepeatCount - 1) * 0.4;
+
+  // Aspect/connection bonus: questioner (house 1) connecting to focus house = outcome more reachable.
+  const h1toFocus = boardAnalysis.ittisalat?.questioner_to_focus;
+  const aspectBonus = (h1toFocus?.type === 'same-figure') ? 1.0
+    : (h1toFocus?.type === 'aspect') ? 0.5 : 0;
+
+  // Board completeness: incomplete board (< 96 pts) reduces verdict confidence by 20%.
+  const boardComplete = boardAnalysis.boardScore?.isComplete !== false;
+  const completenessMultiplier = boardComplete ? 1 : 0.8;
+
+  // Weights: judge(4) + w1(1) + w2(1) + focus(2) + quesited(2) + direction + natural + connections + dhamir(1.5) + repetition + aspect
+  const rawScore = (judgeTone * 4 * judgeMulti +
+    w1Tone * 1 * w1Multi +
+    w2Tone * 1 * w2Multi +
+    focusTone * 2 * focusMulti +
+    quesitedTone * 2 * quesitedMulti +
+    directionModifier(quesitedEntry) +
+    directionModifier(focus) +
+    naturalBonus(judge, 0.5) +
+    naturalBonus(quesitedEntry, 0.25) +
+    naturalBonus(focus, 0.25) +
+    topicConnectionBonus +
+    dhamirTone * 1.5 +
+    repetitionBonus +
+    aspectBonus);
+  const score = Math.round(rawScore * completenessMultiplier * 2);
 
   const reasons = [];
   if (judge) {
@@ -1588,6 +1626,20 @@ function scoreBoard(boardAnalysis) {
   if (topicConnectionBonus > 0) {
     reasons.push('קשרי נושא: ' + (boardAnalysis.topicConnections?.checks || []).filter((c) => c.connected).map((c) => c.role).join(', '));
   }
+  if (dhamirTone !== 0) {
+    const dhamirHouseNum = boardAnalysis.dhamirByMizan?.primaryHouseNumber || boardAnalysis.dhamirHouse?.houseNumber || '';
+    const dhamirNote = dhamirTone > 0 ? ' — מאשר את הדיין' : ' — סותר את הדיין, זהירות';
+    reasons.push(`דמיר (בית ${dhamirHouseNum}): ${dhamirFortune}${dhamirNote}`);
+  }
+  if (repetitionBonus > 0) {
+    reasons.push(`צורת הדיין (${judge?.figureHebrew || ''}) חוזרת ${judgeRepeatCount} פעמים בלוח — הדין מחוזק`);
+  }
+  if (aspectBonus > 0) {
+    reasons.push(`קשר בין בית 1 לבית המרכזי: ${h1toFocus?.hebrewShort || (aspectBonus >= 1 ? 'צורה זהה' : 'מבט')}`);
+  }
+  if (!boardComplete) {
+    reasons.push(`לוח חסר (${boardAnalysis.boardScore?.score || '?'} נקודות < 96) — הפסיקה מוחלשת ב-20%`);
+  }
 
   return {
     score,
@@ -1610,6 +1662,12 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
 
   const parts = [];
 
+  // שלמות הלוח — תנאי מוקדם לפסיקה
+  const bScore = boardAnalysis.boardScore;
+  if (bScore && !bScore.isComplete) {
+    parts.push(`⚠ ${bScore.hebrewSummary} — הפסיקה אפשרית אך בטחונה מוגבל.`);
+  }
+
   // אצאלה — תקפות הלוח (בדיקה מקדימה לכל פסיקה, לפי חאוי)
   const asala = boardAnalysis.asala;
   if (asala && !asala.isRadical) {
@@ -1620,6 +1678,22 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
   const judgeHebrew = judge?.figureHebrew || 'לא מזוהה';
   const judgeFortune = judge?.fortune ? ` (${judge.fortune})` : '';
   parts.push(`הדיין בבית 15: ${judgeHebrew}${judgeFortune} — ${judgeVerdict?.hebrewShort || boardScore.hebrewShort || 'תשובה לא מוכרעת'}.`);
+
+  // דמיר — האם מאשר או סותר את הדיין
+  const dhamirByMizan = boardAnalysis.dhamirByMizan;
+  const dhamirHouseEntry = boardAnalysis.dhamirHouse;
+  const dhamirFort = dhamirByMizan?.primaryFortune || dhamirHouseEntry?.fortune || '';
+  const dhamirToneConclusion = dhamirFort.includes('סעד') ? 1 : dhamirFort.includes('נחס') ? -1 : 0;
+  const judgeToneConclusion = judgeVerdict?.judgeTone ?? 0;
+  if (dhamirByMizan?.traces?.length > 0 && dhamirToneConclusion !== 0) {
+    const confirmingConclusion = (judgeToneConclusion > 0 && dhamirToneConclusion > 0) || (judgeToneConclusion < 0 && dhamirToneConclusion < 0);
+    const dhamirLabel = confirmingConclusion ? 'מאשר את הדיין ומחזק את הפסיקה' : 'סותר את הדיין — שים לב, ייתכן שינוי';
+    parts.push(`הדמיר (בית ${dhamirByMizan.primaryHouseNumber} — ${dhamirByMizan.primaryHebrew}): ${dhamirFort} — ${dhamirLabel}.`);
+  } else if (dhamirHouseEntry && dhamirToneConclusion !== 0) {
+    const confirmingConclusion = (judgeToneConclusion > 0 && dhamirToneConclusion > 0) || (judgeToneConclusion < 0 && dhamirToneConclusion < 0);
+    const dhamirLabel = confirmingConclusion ? 'מאשר את הדיין' : 'סותר את הדיין — זהירות';
+    parts.push(`הדמיר (בית ${dhamirHouseEntry.houseNumber} — ${dhamirHouseEntry.figureHebrew}): ${dhamirFort} — ${dhamirLabel}.`);
+  }
 
   if (sentence) {
     parts.push(
