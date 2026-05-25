@@ -484,7 +484,9 @@ function computeIttisalat(chart, focusHouseNumber, mainHouses) {
     questioner_to_focus?.type === 'same-figure' ||
     questioner_to_focus?.type === 'aspect' ||
     questioner_to_judge?.type === 'same-figure' ||
-    questioner_to_judge?.type === 'aspect';
+    questioner_to_judge?.type === 'aspect' ||
+    focus_to_judge?.type === 'same-figure' ||
+    focus_to_judge?.type === 'aspect';
 
   // Hebrew summary for conclusion
   const summaryLines = [];
@@ -1358,6 +1360,10 @@ function getTransitMeaningForHouse(house) {
     }
   }
   if (!houseMeaning) return null;
+  // Do not return a transit meaning for houses that are genuinely absent from the source.
+  // The source itself omits certain house entries (most commonly house 15 for some figures).
+  // Returning null keeps the conclusion clean — no "המקור אינו מביא דין" showing up in text.
+  if (houseMeaning.sourceStatus === 'not-explicit-in-source') return null;
   return {
     figure: house.hebrew || house.key || null,
     house: house.house,
@@ -1467,6 +1473,31 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const directionQuadrant = (['travel', 'hiddenTreasure', 'missingPerson'].includes(topicId))
     ? computeDirectionQuadrant(board.chart) : null;
 
+  // Source quality — how many key houses have explicit transit data from the source.
+  // Some houses are genuinely absent from the Hawi text itself (verified across multiple books).
+  const keyHouseNums = Array.from(new Set([1, focusHouseNumber, 13, 14, 15, 16]));
+  const keyHouseTransitData = keyHouseNums.map((n) => {
+    const h = houses.find((x) => Number(x.house) === n);
+    return {
+      house: n,
+      hasTransit: !!(h?.transit),
+      hasState: !!(h?.figureState?.speakingState),
+      figureHebrew: h?.figureHebrew || null,
+    };
+  });
+  const missingTransitHouses = keyHouseTransitData.filter((h) => !h.hasTransit).map((h) => h.house);
+  const sourceQuality = {
+    keyHouseNums,
+    keyHouseTransitData,
+    transitAvailableCount: keyHouseTransitData.filter((h) => h.hasTransit).length,
+    totalKeyHouses: keyHouseNums.length,
+    missingTransitHouses,
+    isFullyCovered: missingTransitHouses.length === 0,
+    noteHebrew: missingTransitHouses.length > 0
+      ? `בתים ${missingTransitHouses.join(', ')} — מעבר הצורה לא מפורש במקור חאוי. הפסיקה מסתמכת על מזל הצורה הכללי בלבד.`
+      : 'כל הבתים העיקריים מכוסים במקור.',
+  };
+
   // בדיקת השביעית — האם צורה כלשהי בבית 1 מוצאת את שביעיתה בלוח
   const h1Key = board.chart.find((h) => Number(h.house) === 1)?.key;
   const h1Seventh = getSeventhFigure(h1Key);
@@ -1493,6 +1524,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     asala,
     lifeDeathAnalysis,
     directionQuadrant,
+    sourceQuality,
     seventhOfHouse1: seventhOfHouse1Found
       ? { pattern: h1Seventh, foundInHouse: Number(seventhOfHouse1Found.house), figureHebrew: seventhOfHouse1Found.hebrew || h1Seventh }
       : null,
@@ -1770,6 +1802,12 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
     if (dom.incomingBenefic > 0) {
       parts.push(`כיוון דומיננטי: ${dom.hebrewDir} — ${dom.incomingBenefic} צורות נכנסות וטובות בריבוע זה.`);
     }
+  }
+
+  // הערת איכות מקור — מידע לפרקטיקן בלבד
+  const sq = boardAnalysis.sourceQuality;
+  if (sq && !sq.isFullyCovered) {
+    parts.push(`הערת מקור: בתים ${sq.missingTransitHouses.join(', ')} — ${sq.noteHebrew}`);
   }
 
   const firstRule = relevantRules.find((r) => r.hebrew || r.result || r.condition);

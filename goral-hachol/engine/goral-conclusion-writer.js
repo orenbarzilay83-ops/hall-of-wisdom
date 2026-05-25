@@ -237,7 +237,9 @@ function describeCoreHouses(analysis, topicId) {
     const judgeName = judge.figureHebrew || 'צורה לא מזוהה';
     const judgeFortune = judge.fortune ? ` [${judge.fortune}]` : '';
     const judgeTransit = judge.transit?.meaning;
-    const judgeTransitPart = judgeTransit ? `: ${judgeTransit}` : '';
+    const judgeTransitPart = judgeTransit
+      ? `: ${judgeTransit}`
+      : ' [מעבר הצורה לבית 15 לא מפורש במקור — פסיקה לפי מזל כללי]';
     parts.push(
       `הדיין בית 15 — ${judgeName}${judgeFortune}${judgeTransitPart}`
     );

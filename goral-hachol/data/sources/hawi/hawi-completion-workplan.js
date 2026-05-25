@@ -61,6 +61,16 @@ export const HAWI_COMPLETION_WORKPLAN = {
       sourceAvailable: true,
       notes: 'מקור: hawi-dhamir-directions-validation.js, strikeValidityPrinciples + moonValidationRules. קוד: computeAsala() ב-hawi-interpreter.js.',
     },
+    {
+      id: 'source-gap-handling',
+      priority: 4,
+      titleHebrew: 'טיפול בפערי מקור — בתים שלא מפורשים בספר',
+      descriptionHebrew:
+        'חלק מהצורות חסרות מעבר מפורש בחלק מהבתים (בעיקר בית 15 ו-16) — וזה אומת מספרים מרובים. המנוע מתייחס לכך נכון: getTransitMeaningForHouse() מחזיר null עבור not-explicit-in-source ולא מציג "המקור אינו מביא דין". boardAnalysis.sourceQuality מדווח לפרקטיקן על כמה בתים עיקריים מכוסים. buildFinalConclusion() מציג הערת מקור כשיש פערים.',
+      status: 'done-2026-05-25',
+      sourceAvailable: true,
+      notes: 'מדיניות: אין להשלים ידע מסברה. הפסיקה על בתים חסרי מקור מבוצעת לפי מזל הצורה הכללי בלבד. isConnected בittisalat תוקן לכלול גם focus_to_judge.',
+    },
   ],
 
   futureModulesNotUrgent: [
