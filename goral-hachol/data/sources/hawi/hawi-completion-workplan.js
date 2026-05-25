@@ -34,12 +34,12 @@ export const HAWI_COMPLETION_WORKPLAN = {
     {
       id: 'natural-houses-missing',
       priority: 2,
-      titleHebrew: 'בתים טבעיים חסרים — בתים 5, 6, 7, 8, 11, 12',
+      titleHebrew: 'בתים טבעיים חסרים — בתים 5, 6, 7',
       descriptionHebrew:
-        'ה-PDF של חאוי המכיל פרקי בתים אלה חסר מתיקיית גוגל דרייב. ברגע שיועלה — יש לחלץ ממנו את הצורות הטבעיות ולעדכן NATURAL_HOUSE_FIGURES.',
-      status: 'blocked-waiting-for-pdf',
+        'בתים 8, 9, 10, 11, 12 אושרו ועודכנו ב-NATURAL_HOUSE_FIGURES. נותרים בתים 5, 6, 7 — ה-OCR של פרקי חאוי לבתים אלה לא לכד את סמלי הצורה. יש לחפש PDF עם OCR טוב יותר או מקור חלופי בתוך קובצי חאוי.',
+      status: 'partial-blocked-waiting-for-better-ocr',
       sourceAvailable: false,
-      notes: 'אין לשלים מסברה או ממקורות אחרים. רק מחאוי ישירות.',
+      notes: 'אין לשלים מסברה או ממקורות אחרים. רק מחאוי ישירות. בתים שאושרו: 1,2,3,4,8,9,10,11,12.',
     },
     {
       id: 'radicality-check',

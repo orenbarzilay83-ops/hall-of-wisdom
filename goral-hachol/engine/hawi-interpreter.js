@@ -18,24 +18,23 @@ import {
 // Natural figure (جدول, jadwal) for each house — the figure that naturally belongs there.
 // When the figure in a house matches its natural figure, the judgement is especially strong.
 // Source: חאוי העג׳איב (حاوي العجائب) PDFs only — no Western/zodiacal tradition used.
+// Reading method: extract |/0 chars from OCR section heading left-to-right → 4-digit figure code.
 export const NATURAL_HOUSE_FIGURES = {
-  // Confirmed directly from Hawi PDF chapter headings
-  1:  '1121', // נלחם — "الجدولة 00|0" בית 1
-  4:  '2212', // לבן — "(||0|) البيت الرابع" בית 4
-  10: '1221', // סוהר — "وتد الشمال 0||0" בית 10
+  // Confirmed directly from Hawi PDF chapter headings (OCR pattern)
+  1:  '1121', // נלחם — doc2: "الجدولة 00|0"
+  2:  '1222', // נשוא ראש — doc3: "0|||" בכותרת פרק בית 2
+  3:  '2111', // סף נכנס — doc3: "|000" + "ساقط" בכותרת פרק בית 3
+  4:  '2212', // לבן — doc3: "(||0|) البيت الرابع"
+  8:  '2221', // שפל ראש — doc5: "||| ... 0" (L→R: |||0 = 2221)
+  9:  '1122', // כבוד יוצא — doc6: "00 ... ||" (L→R: 00|| = 1122) + "ساقط"
+  10: '1221', // סוהר — doc6: "0||0 وتد الشمال"
+  11: '2112', // חיבור — doc7: "| ... 00 ... |" (L→R: |00| = 2112) + "يلي الوتد"
+  12: '2211', // כבוד נכנס — doc7: "|| ... 00" (L→R: ||00 = 2211) + "ساقط"
 
-  // Extracted from Hawi PDF chapter heading OCR (medium confidence)
-  2:  '1222', // נשוא ראש — תבנית "0|||" בכותרת פרק בית 2
-  3:  '2111', // סף נכנס — תבנית "|000" + "ساقط" בכותרת פרק בית 3
-  9:  '1122', // כבוד יוצא — תבנית "00||" + "ساقط" בכותרת פרק בית 9
-
-  // Not yet available in uploaded Hawi PDFs — PDF covering houses 5-8 missing from Drive
+  // Figure symbols not captured in OCR for these houses — blocked until clearer PDF source
   5:  null,
   6:  null,
   7:  null,
-  8:  null,
-  11: null,
-  12: null,
 };
 
 // Taskin al-Sharq order (تسكين الشرق) — 16 figure patterns in source order
