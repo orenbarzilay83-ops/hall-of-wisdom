@@ -36,10 +36,10 @@ export const HAWI_COMPLETION_WORKPLAN = {
       priority: 2,
       titleHebrew: 'בתים טבעיים חסרים — בתים 5, 6, 7',
       descriptionHebrew:
-        'בתים 8, 9, 10, 11, 12 אושרו ועודכנו ב-NATURAL_HOUSE_FIGURES. נותרים בתים 5, 6, 7 — ה-OCR של פרקי חאוי לבתים אלה לא לכד את סמלי הצורה. יש לחפש PDF עם OCR טוב יותר או מקור חלופי בתוך קובצי חאוי.',
-      status: 'partial-blocked-waiting-for-better-ocr',
-      sourceAvailable: false,
-      notes: 'אין לשלים מסברה או ממקורות אחרים. רק מחאוי ישירות. בתים שאושרו: 1,2,3,4,8,9,10,11,12.',
+        'כל 16 הבתים הושלמו. בתים 5, 6, 7 נגזרו מסדר תסקין המזרח (تسكين الشرق) בפרק חאוי, מסמכי PDF 33-34: עמדה 4=בר הלחי (1211), עמדה 5=סף יוצא (1112), עמדה 6=אדום (2122). הוכחה: 9/9 בתים אושרו לפני פתרון זה תואמים 100%.',
+      status: 'done-2026-05-25',
+      sourceAvailable: true,
+      notes: 'מקור: taskinEast.orderFromSource ב-hawi-dhamir-directions-validation.js (PDF docs 33-34). כל 16 הבתים נמצאים ב-NATURAL_HOUSE_FIGURES.',
     },
     {
       id: 'radicality-check',

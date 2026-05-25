@@ -31,10 +31,10 @@ export const NATURAL_HOUSE_FIGURES = {
   11: '2112', // חיבור — doc7: "| ... 00 ... |" (L→R: |00| = 2112) + "يلي الوتد"
   12: '2211', // כבוד נכנס — doc7: "|| ... 00" (L→R: ||00 = 2211) + "ساقط"
 
-  // Figure symbols not captured in OCR for these houses — blocked until clearer PDF source
-  5:  null,
-  6:  null,
-  7:  null,
+  // Taskin al-Sharq source positions 4,5,6 (Hawi PDF docs 33-34, taskinEast.orderFromSource)
+  5:  '1211', // בר הלחי — Taskin East[4] = "0|00"
+  6:  '1112', // סף יוצא — Taskin East[5] = "000|"
+  7:  '2122', // אדום — Taskin East[6] = "|0||"
 };
 
 // Taskin al-Sharq order (تسكين الشرق) — 16 figure patterns in source order
