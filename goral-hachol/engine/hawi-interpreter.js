@@ -221,6 +221,153 @@ function getHouseFortuneTone(houseNumber) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// כיוון הצורה (الداخل / الخارج / الثابت / المتغير)
+// מקור: מבנה הצורה — שתי הספרות הראשונות של הדפוס קובעות את הכיוון.
+// 21xx = נכנס (داخل/مقبل)  — מגיע לעבר העניין
+// 12xx = יוצא (خارج/مدبر) — מתרחק מן העניין
+// 22xx = קבוע (ثابت)       — יציב ומושרש
+// 11xx = מתהפך (متحول)    — לא יציב, ניתן לשינוי
+// ─────────────────────────────────────────────────────────────────────────────
+function getFigureDirection(pattern) {
+  if (!pattern || pattern.length < 2) return null;
+  const p = pattern[0] + pattern[1];
+  if (p === '21') return 'incoming';
+  if (p === '12') return 'outgoing';
+  if (p === '22') return 'stable';
+  if (p === '11') return 'mutable';
+  return null;
+}
+
+function getFigureDirectionHebrew(direction) {
+  return { incoming: 'נכנס', outgoing: 'יוצא', stable: 'קבוע', mutable: 'מתהפך' }[direction] || null;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// כל צורה מבקשת את השביעית שלה (كل شكل يطلب سابعة)
+// מקור: חאוי, hawi-dhamir-directions-validation.js, sourcePage 34.
+// הסדר: מיקום N בתסקין → השביעית היא מיקום (N+7) mod 16.
+// ─────────────────────────────────────────────────────────────────────────────
+const TASKIN_ORDER_PATTERNS = [
+  '1121','1222','2111','2212','1211','1112','2122','2221',
+  '1122','1221','2112','2211','1111','1212','2222','2121',
+];
+
+function getSeventhFigure(pattern) {
+  if (!pattern) return null;
+  const idx = TASKIN_ORDER_PATTERNS.indexOf(pattern);
+  if (idx === -1) return null;
+  return TASKIN_ORDER_PATTERNS[(idx + 7) % 16];
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ניתוח כיוונים — ריבוע הבתים לפי מקור חאוי (hawi-question-hidden-treasure-extra.js)
+// בתים 1-4 = מזרח, 5-8 = מערב, 9-12 = דרום, 13-16 = צפון
+// ─────────────────────────────────────────────────────────────────────────────
+const HOUSE_QUADRANT = (h) => {
+  const n = Number(h);
+  if (n >= 1  && n <= 4)  return { dir: 'east',  hebrew: 'מזרח'  };
+  if (n >= 5  && n <= 8)  return { dir: 'west',  hebrew: 'מערב'  };
+  if (n >= 9  && n <= 12) return { dir: 'south', hebrew: 'דרום'  };
+  if (n >= 13 && n <= 16) return { dir: 'north', hebrew: 'צפון'  };
+  return null;
+};
+
+function computeDirectionQuadrant(chart) {
+  if (!Array.isArray(chart)) return null;
+  const quadrants = { east: [], west: [], south: [], north: [] };
+  for (const h of chart) {
+    const q = HOUSE_QUADRANT(h.house);
+    if (!q) continue;
+    const dir = getFigureDirection(h.key);
+    quadrants[q.dir].push({
+      house: h.house,
+      figureHebrew: h.hebrew || h.key,
+      fortune: h.fortune || '',
+      direction: dir,
+      directionHebrew: getFigureDirectionHebrew(dir),
+    });
+  }
+  // Find the strongest incoming+benefic quadrant — indicates where/toward what
+  const summary = Object.entries(quadrants).map(([dir, houses]) => {
+    const hebrewDir = { east: 'מזרח', west: 'מערב', south: 'דרום', north: 'צפון' }[dir];
+    const incomingBenefic = houses.filter((h) => h.direction === 'incoming' && h.fortune.includes('סעד')).length;
+    const outgoingMalefic = houses.filter((h) => h.direction === 'outgoing' && h.fortune.includes('נחס')).length;
+    return { dir, hebrewDir, houses, incomingBenefic, outgoingMalefic };
+  });
+  const dominant = summary.reduce((a, b) => (b.incomingBenefic > a.incomingBenefic ? b : a), summary[0]);
+  return { quadrants: summary, dominant };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// חי או מת — אלגוריתם לשאלת נעדר
+// מקור: hawi-question-missing-person-extra.js, specificDeathRules (PDF 59-60)
+// ─────────────────────────────────────────────────────────────────────────────
+const DEATH_FIGURE_PATTERNS = new Set(['1112', '1212']); // עתבה יוצאת, קבץ יוצא — "מן הצורות הנחסות ביותר"
+
+function computeLifeDeath(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h1  = chartHouse(chart, 1);
+  const h8  = chartHouse(chart, 8);
+  const h9  = chartHouse(chart, 9);
+  const h12 = chartHouse(chart, 12);
+  const h13 = chartHouse(chart, 13);
+  const h14 = chartHouse(chart, 14);
+
+  const isMalefic = (h) => h && MALEFIC_FIGURE_PATTERNS.has(h.key);
+  const isBenefic = (h) => h && !MALEFIC_FIGURE_PATTERNS.has(h.key) && h.fortune && h.fortune.includes('סעד');
+  const isDeathFigure = (h) => h && DEATH_FIGURE_PATTERNS.has(h.key);
+
+  const deathSignals = [];
+  const lifeSignals  = [];
+
+  // כלל 1: עתבה יוצאת / קבץ יוצא בבתים מרכזיים
+  for (const h of [h1, h8, h9, h14]) {
+    if (isDeathFigure(h)) {
+      deathSignals.push(`${h.hebrew || h.key} (בית ${h.house}) — מן הצורות הנחסיות ביותר, מורה על מוות.`);
+    }
+  }
+
+  // כלל 2: חזרה בבית 14 או 8 כנחס
+  if (isMalefic(h14)) deathSignals.push(`בית 14 נחס (${h14.key}) — חזרה בבית 14 כנחס, סימן מוות.`);
+  if (isMalefic(h8))  deathSignals.push(`בית 8 נחס (${h8.key}) — בית המוות בנחס.`);
+
+  // כלל 3: בתים 1, 9, 13 כולם נחסיים + חזרה בבית 12
+  if (isMalefic(h1) && isMalefic(h9) && isMalefic(h13)) {
+    if (isMalefic(h12) || (h12 && h12.key === h1?.key)) {
+      deathSignals.push('בתים 1, 9, 13 כולם נחסיים וחזרה בבית 12 — לפי חאוי: פסוק מוות.');
+    }
+  }
+
+  // כלל 4: סעדים חזקים המביטים אל בית 8 — מבטלים/מרככים מוות
+  if (isBenefic(h1) && isBenefic(h9)) {
+    lifeSignals.push('סעדים בבית 1 ובית 9 — בית המוות מוקף בטוב, הנעדר בסכנה אך ניצל.');
+  }
+  if (!isMalefic(h8)) {
+    lifeSignals.push(`בית 8 אינו נחס (${h8?.key || '?'}) — אין סימן מוות ישיר.`);
+  }
+
+  const deathScore  = deathSignals.length;
+  const lifeScore   = lifeSignals.length;
+  let verdict, hebrewVerdict;
+
+  if (deathScore >= 3) {
+    verdict = 'dead';
+    hebrewVerdict = 'מוות — שלושה סימנים או יותר מצביעים על מות הנעדר.';
+  } else if (deathScore >= 2 && lifeScore === 0) {
+    verdict = 'likely-dead';
+    hebrewVerdict = 'ספק מוות — שני סימני מוות ללא איזון. יש לבדוק בזהירות.';
+  } else if (deathScore >= 1 && lifeScore >= 1) {
+    verdict = 'uncertain';
+    hebrewVerdict = 'לא מוכרע — יש סימני מוות וגם סימני חיים. הדין תלוי.';
+  } else {
+    verdict = 'alive';
+    hebrewVerdict = 'חי — אין סימני מוות ברורים. הנעדר ככל הנראה חי.';
+  }
+
+  return { verdict, hebrewVerdict, deathSignals, lifeSignals, deathScore, lifeScore };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // איתיסלאת — חיבורים בין בתים (اتصالات)
 // שני סוגים: (1) חזרת צורה בבתים שונים, (2) קשר מבטי (תסדיס/ריבוע/משולש/מול)
 
@@ -1264,21 +1411,29 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const houses = selectedHouseNumbers
     .map((n) => getHouse(board, n))
     .filter(Boolean)
-    .map((house) => ({
-      house: house.house,
-      houseHebrew: house.houseHebrew || null,
-      figureHebrew: house.hebrew || house.figureHebrew || null,
-      figureKey: house.key || null,
-      fortune: house.fortune || null,
-      movement: house.movement || null,
-      element: house.element || null,
-      tone: judgeHouseTone(house),
-      transit: getTransitMeaningForHouse(house),
-      figureState: getFigureStateForHouse(house),
-      houseState: getHouseStateColor(house.house),
-      houseFortuneTone: getHouseFortuneTone(house.house),
-      isAdversarial: adversarialHouseNums.has(Number(house.house)),
-    }));
+    .map((house) => {
+      const dir = getFigureDirection(house.key || null);
+      return {
+        house: house.house,
+        houseHebrew: house.houseHebrew || null,
+        figureHebrew: house.hebrew || house.figureHebrew || null,
+        figureKey: house.key || null,
+        fortune: house.fortune || null,
+        movement: house.movement || null,
+        element: house.element || null,
+        tone: judgeHouseTone(house),
+        transit: getTransitMeaningForHouse(house),
+        figureState: getFigureStateForHouse(house),
+        houseState: getHouseStateColor(house.house),
+        houseFortuneTone: getHouseFortuneTone(house.house),
+        isAdversarial: adversarialHouseNums.has(Number(house.house)),
+        direction: dir,
+        directionHebrew: getFigureDirectionHebrew(dir),
+        isNaturalFigure: !!(house.key && NATURAL_HOUSE_FIGURES[house.house] === house.key),
+        seventhFigure: getSeventhFigure(house.key || null),
+        quadrant: HOUSE_QUADRANT(house.house),
+      };
+    });
 
   const focusHouse = houses.find((h) => Number(h.house) === focusHouseNumber) || null;
   const witness13 = houses.find((h) => Number(h.house) === 13) || null;
@@ -1293,6 +1448,16 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const topicConnections = computeTopicConnections(board.chart, topicId);
   const tahasil = computeTahasil(board.chart, topicId);
   const asala = computeAsala(board.chart);
+  const lifeDeathAnalysis = (topicId === 'missingPerson') ? computeLifeDeath(board.chart) : null;
+  const directionQuadrant = (['travel', 'hiddenTreasure', 'missingPerson'].includes(topicId))
+    ? computeDirectionQuadrant(board.chart) : null;
+
+  // בדיקת השביעית — האם צורה כלשהי בבית 1 מוצאת את שביעיתה בלוח
+  const h1Key = board.chart.find((h) => Number(h.house) === 1)?.key;
+  const h1Seventh = getSeventhFigure(h1Key);
+  const seventhOfHouse1Found = h1Seventh
+    ? board.chart.find((h) => h.key === h1Seventh && Number(h.house) !== 1)
+    : null;
 
   return {
     hasBoard: true,
@@ -1311,6 +1476,11 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     topicConnections,
     tahasil,
     asala,
+    lifeDeathAnalysis,
+    directionQuadrant,
+    seventhOfHouse1: seventhOfHouse1Found
+      ? { pattern: h1Seventh, foundInHouse: Number(seventhOfHouse1Found.house), figureHebrew: seventhOfHouse1Found.hebrew || h1Seventh }
+      : null,
   };
 }
 
@@ -1342,7 +1512,6 @@ function scoreBoard(boardAnalysis) {
   const focusMulti = getSpeakingStateMultiplier(focus?.figureState);
 
   // Quesited house (בית הנשאל) — the house representing the subject of the question.
-  // Adds topic-specific weight to the score alongside the judge and witnesses.
   const quesitedHouseNum = boardAnalysis.tahasil?.quesitedHouseNum;
   const quesitedEntry = quesitedHouseNum
     ? boardAnalysis.houses?.find?.((h) => Number(h.house) === quesitedHouseNum)
@@ -1352,19 +1521,41 @@ function scoreBoard(boardAnalysis) {
     : 0;
   const quesitedMulti = getSpeakingStateMultiplier(quesitedEntry?.figureState);
 
+  // Direction modifier (כיוון הצורה): incoming figure in quesited house = positive pull toward outcome
+  // outgoing = moving away. Source: Hawi figure classification داخل/خارج.
+  const directionModifier = (entry) => {
+    const d = entry?.direction;
+    if (d === 'incoming') return 0.3;
+    if (d === 'outgoing') return -0.3;
+    if (d === 'stable')   return 0.15;
+    return 0;
+  };
+
+  // Natural figure bonus: when the figure in a key house matches the natural (jadwal) figure of that house,
+  // the judgment is especially strong per Hawi. Adds ±0.5 for judge, ±0.25 for others.
+  const naturalBonus = (entry, weight) => {
+    if (!entry?.isNaturalFigure) return 0;
+    const tone = getFigureFortuneTone(entry);
+    return tone * weight;
+  };
+
   // Topic key-pair connections: each confirmed beneficial connection adds a small bonus.
-  // Source: Hawi — the stronger the connection between questioner and quesited house, the clearer the judgment.
   const topicConnectionBonus = (boardAnalysis.topicConnections?.checks || [])
     .filter((c) => c.connected)
     .length * 0.5;
 
-  // Weights: judge(4) + w1(1) + w2(1) + focus(2) + quesited(2) + topic connections bonus
+  // Weights: judge(4) + w1(1) + w2(1) + focus(2) + quesited(2) + direction + natural + connections
   const score = Math.round(
     (judgeTone * 4 * judgeMulti +
      w1Tone * 1 * w1Multi +
      w2Tone * 1 * w2Multi +
      focusTone * 2 * focusMulti +
      quesitedTone * 2 * quesitedMulti +
+     directionModifier(quesitedEntry) +
+     directionModifier(focus) +
+     naturalBonus(judge, 0.5) +
+     naturalBonus(quesitedEntry, 0.25) +
+     naturalBonus(focus, 0.25) +
      topicConnectionBonus) * 2
   );
 
@@ -1465,6 +1656,46 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
   const connections = (boardAnalysis.topicConnections?.checks || []).filter((c) => c.connected);
   if (connections.length > 0) {
     parts.push(`קשרים פעילים: ${connections.map((c) => c.role).join(' | ')}.`);
+  }
+
+  // כיוון בית הנשאל (נכנס/יוצא/קבוע/מתהפך)
+  const qFocus = boardAnalysis.focusHouse;
+  if (qFocus?.directionHebrew) {
+    const naturalNote = qFocus.isNaturalFigure ? ' — הצורה הטבעית של הבית, הדין חזק במיוחד.' : '.';
+    parts.push(`כיוון הצורה בבית המרכזי (${qFocus.house}): ${qFocus.figureHebrew} — ${qFocus.directionHebrew}${naturalNote}`);
+  }
+
+  // בית 1 — מצב השואל
+  const h1a = boardAnalysis.house1Analysis;
+  if (h1a) {
+    const naturalH1 = h1a.isNatural ? ' הצורה הטבעית לבית הטאלע — כוח כפול.' : '';
+    parts.push(`מצב השואל (בית 1): ${h1a.figureHebrew} — ${h1a.fortuneHebrew}.${naturalH1}`);
+  }
+
+  // כל צורה מבקשת שביעיתה
+  const seventh = boardAnalysis.seventhOfHouse1;
+  if (seventh) {
+    parts.push(`השביעית של בית 1 (${boardAnalysis.house1Analysis?.figureHebrew || ''}): ${seventh.figureHebrew} — נמצאת בבית ${seventh.foundInHouse}. קשר זה חזק לפי חאוי.`);
+  }
+
+  // איתיסלאת — חיבורי צורות חוזרות
+  const repeatedFigs = (boardAnalysis.ittisalat?.figureConnections || []).filter((c) => c.houses?.length >= 2);
+  if (repeatedFigs.length > 0) {
+    const top = repeatedFigs[0];
+    parts.push(`צורה חוזרת: ${top.figureHebrew} בבתים ${top.houses.join(', ')} — ${top.quality}.`);
+  }
+
+  // חי או מת — שאלת נעדר
+  if (boardAnalysis.lifeDeathAnalysis) {
+    parts.push(`חי/מת: ${boardAnalysis.lifeDeathAnalysis.hebrewVerdict}`);
+  }
+
+  // ניתוח כיוונים — נסיעה / מטמון
+  if (boardAnalysis.directionQuadrant?.dominant) {
+    const dom = boardAnalysis.directionQuadrant.dominant;
+    if (dom.incomingBenefic > 0) {
+      parts.push(`כיוון דומיננטי: ${dom.hebrewDir} — ${dom.incomingBenefic} צורות נכנסות וטובות בריבוע זה.`);
+    }
   }
 
   const firstRule = relevantRules.find((r) => r.hebrew || r.result || r.condition);
