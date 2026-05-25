@@ -1341,9 +1341,31 @@ function scoreBoard(boardAnalysis) {
   const w2Multi = getSpeakingStateMultiplier(w2?.figureState);
   const focusMulti = getSpeakingStateMultiplier(focus?.figureState);
 
-  // Judge (house 15) is primary — base weight 4; witnesses — weight 1; focus house — weight 2
+  // Quesited house (בית הנשאל) — the house representing the subject of the question.
+  // Adds topic-specific weight to the score alongside the judge and witnesses.
+  const quesitedHouseNum = boardAnalysis.tahasil?.quesitedHouseNum;
+  const quesitedEntry = quesitedHouseNum
+    ? boardAnalysis.houses?.find?.((h) => Number(h.house) === quesitedHouseNum)
+    : null;
+  const quesitedTone = quesitedEntry
+    ? (getFigureStateHouseTone(quesitedEntry?.figureState) ?? getFigureFortuneTone(quesitedEntry))
+    : 0;
+  const quesitedMulti = getSpeakingStateMultiplier(quesitedEntry?.figureState);
+
+  // Topic key-pair connections: each confirmed beneficial connection adds a small bonus.
+  // Source: Hawi — the stronger the connection between questioner and quesited house, the clearer the judgment.
+  const topicConnectionBonus = (boardAnalysis.topicConnections?.checks || [])
+    .filter((c) => c.connected)
+    .length * 0.5;
+
+  // Weights: judge(4) + w1(1) + w2(1) + focus(2) + quesited(2) + topic connections bonus
   const score = Math.round(
-    (judgeTone * 4 * judgeMulti + w1Tone * 1 * w1Multi + w2Tone * 1 * w2Multi + focusTone * 2 * focusMulti) * 2
+    (judgeTone * 4 * judgeMulti +
+     w1Tone * 1 * w1Multi +
+     w2Tone * 1 * w2Multi +
+     focusTone * 2 * focusMulti +
+     quesitedTone * 2 * quesitedMulti +
+     topicConnectionBonus) * 2
   );
 
   const reasons = [];
@@ -1366,6 +1388,14 @@ function scoreBoard(boardAnalysis) {
     const focusSpeak = getSpeakingStateHebrew(focus.figureState);
     reasons.push('הבית המרכזי (בית ' + (focus.house || '') + '): ' + (focus.figureHebrew || '') + ' — ' + (focus.fortune || '') +
       (focusSpeak ? ` [${focusSpeak}]` : ''));
+  }
+  if (quesitedEntry && quesitedHouseNum !== (focus?.house)) {
+    const qSpeak = getSpeakingStateHebrew(quesitedEntry?.figureState);
+    reasons.push('בית הנשאל (בית ' + quesitedHouseNum + '): ' + (quesitedEntry.figureHebrew || '') + ' — ' + (quesitedEntry.fortune || '') +
+      (qSpeak ? ` [${qSpeak}]` : ''));
+  }
+  if (topicConnectionBonus > 0) {
+    reasons.push('קשרי נושא: ' + (boardAnalysis.topicConnections?.checks || []).filter((c) => c.connected).map((c) => c.role).join(', '));
   }
 
   return {
@@ -1413,6 +1443,28 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
     if (tahasil.hayulaActive) {
       parts.push(tahasil.hayulaHebrew);
     }
+
+    // בית הנשאל — מצב הצד הנשאל בשאלה
+    const quesitedHouseNum = tahasil.quesitedHouseNum;
+    const quesitedEntry = quesitedHouseNum
+      ? boardAnalysis.houses?.find?.((h) => Number(h.house) === quesitedHouseNum)
+      : null;
+    if (quesitedEntry && quesitedHouseNum !== (boardAnalysis.focusHouseNumber)) {
+      const qFortune = quesitedEntry.fortune || '';
+      const qFigure = quesitedEntry.figureHebrew || '';
+      const qSpeak = getSpeakingStateHebrew(quesitedEntry?.figureState);
+      if (qFigure) {
+        parts.push(
+          `בית הנשאל (בית ${quesitedHouseNum}): ${qFigure}${qFortune ? ` — ${qFortune}` : ''}${qSpeak ? ` [${qSpeak}]` : ''}.`
+        );
+      }
+    }
+  }
+
+  // קשרי נושא ספציפיים
+  const connections = (boardAnalysis.topicConnections?.checks || []).filter((c) => c.connected);
+  if (connections.length > 0) {
+    parts.push(`קשרים פעילים: ${connections.map((c) => c.role).join(' | ')}.`);
   }
 
   const firstRule = relevantRules.find((r) => r.hebrew || r.result || r.condition);
