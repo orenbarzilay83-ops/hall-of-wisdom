@@ -1822,6 +1822,13 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
 
 export function interpretHawiQuestionInitial(question, board = null) {
   const route = routeHawiQuestion(question);
+  // Allow caller to supply a pre-resolved topicId (e.g. from a UI topic selector)
+  const topicOverride = board?.topicId;
+  if (topicOverride && TOPIC_MAIN_HOUSES[topicOverride]) {
+    route.topicId = topicOverride;
+    route.confidence = 'topic-override';
+    route.matchedBy = 'board.topicId';
+  }
   const clientContext = board?.clientContext || {};
   const clientHistorySummary = board?.clientHistorySummary || null;
   const mainHouses = TOPIC_MAIN_HOUSES[route.topicId] || TOPIC_MAIN_HOUSES.foundations;

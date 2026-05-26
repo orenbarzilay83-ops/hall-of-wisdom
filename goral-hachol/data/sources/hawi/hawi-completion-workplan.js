@@ -83,7 +83,7 @@ export const HAWI_COMPLETION_WORKPLAN = {
       housesConfirmingGap: [15],
       housesWithTonalConflict: [7, 10, 12],
       policy: 'חאוי גובר תמיד. נתוני המקור המשני נשמרים בשדה supplementarySource. בתים עם קונפליקט טונלי מסומנים בדגל.',
-      notes: 'בית 15 נעדר גם מבלוג' האמל — מאשר פער מקורי. נקי-חד לא נמצא בנתוני מעבר לבתים בספר זה.',
+      notes: 'בית 15 נעדר גם מבלוג׳ האמל — מאשר פער מקורי. נקי-חד לא נמצא בנתוני מעבר לבתים בספר זה.',
     },
     {
       id: 'judla-ataba-dakhila-bayad-naqi-khad-enriched-from-balugh-alamal',
@@ -94,7 +94,7 @@ export const HAWI_COMPLETION_WORKPLAN = {
       housesWithNewHawiData: ['Judla H16 (supplemented-from-secondary-source)', 'Ataba-Dakhila H16 (supplemented-from-secondary-source)'],
       housesConfirmingGap: [15],
       policy: 'חאוי גובר תמיד. בתים עם קונפליקט מסומנים בדגל. בתים 16 של נלחם וסף נכנס עברו מ-not-explicit ל-supplemented-from-secondary-source.',
-      notes: 'נמצא פרק שלם בבלוג' האמל עם נתוני מעבר לבתים לכלל 16 הצורות. בית 15 נעדר מכל הצורות גם שם — מאשר פער מקורי עצמאי.',
+      notes: 'נמצא פרק שלם בבלוג׳ האמל עם נתוני מעבר לבתים לכלל 16 הצורות. בית 15 נעדר מכל הצורות גם שם — מאשר פער מקורי עצמאי.',
     },
   ],
 
