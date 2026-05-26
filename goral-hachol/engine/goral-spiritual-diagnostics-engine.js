@@ -241,7 +241,7 @@ function gradeFromMatches(specificMatches, openingMatches, genericScore) {
   return 'mixed';
 }
 
-function buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, jinnTypeResult) {
+function buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, jinnTypeResult, organDiagnosisResult) {
   const verdictMap = {
     'strong-suspicion': 'מסקנה רוחנית: כן — הלוח מראה סימנים חזקים לפגיעה רוחנית לפי כללי המקור.',
     'medium-suspicion': 'מסקנה רוחנית: ייתכן — יש חשד בינוני לפגיעה רוחנית. נמצאו התאמות מהמקור שדורשות בדיקה.',
@@ -273,6 +273,13 @@ function buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, j
 
   if (jinnTypeResult?.hebrewText) {
     base += '\nסוג הג׳ין (15×4): ' + jinnTypeResult.hebrewText;
+  }
+
+  if (organDiagnosisResult?.hebrewText) {
+    base += '\nאבחון איבר (בית 6 × בית 8): ' + organDiagnosisResult.hebrewText;
+    if (organDiagnosisResult.organHebrew) {
+      base += ' | איבר: ' + organDiagnosisResult.organHebrew;
+    }
   }
 
   return base;
@@ -365,6 +372,46 @@ function getFigureElement(house) {
   return null;
 }
 
+// Apply 8×6 organ/illness-type method from ספר 2
+// Looks at the dominant element in houses 6 and 8 to identify the type of physical illness
+function applyOrganDiagnosisMethod(board, source) {
+  const house6 = getHouse(board, 6);
+  const house8 = getHouse(board, 8);
+  if (!house6 && !house8) return null;
+
+  const elements = [house6, house8]
+    .filter(Boolean)
+    .map(getFigureElement)
+    .filter(Boolean);
+
+  if (!elements.length) return null;
+
+  // Count element occurrences; if tie, prefer house 6 (illness house)
+  const counts = {};
+  for (const el of elements) counts[el] = (counts[el] || 0) + 1;
+
+  let dominant = getFigureElement(house6) || getFigureElement(house8);
+  let maxCount = 0;
+  for (const [el, count] of Object.entries(counts)) {
+    if (count > maxCount) { maxCount = count; dominant = el; }
+  }
+
+  if (!dominant) return null;
+
+  const results = asArray(source?.organDiagnosisRules?.results);
+  const match = results.find((r) => r.element === dominant);
+  if (!match) return null;
+
+  return {
+    house6Element: getFigureElement(house6),
+    house8Element: getFigureElement(house8),
+    dominantElement: dominant,
+    diagnosis: match.diagnosis,
+    hebrewText: match.hebrewIllness,
+    organHebrew: match.organHebrew,
+  };
+}
+
 // Apply 15×4 jinn type method from ספר 2
 function applyJinnTypeMethod(board, source) {
   const judge = asArray(board?.chart).find((h) => Number(h.house) === 15);
@@ -407,9 +454,10 @@ export function diagnoseSpiritualInfluence(question = '', board = null) {
   const genericScore = quickHouseScore(board) + (questionHits.length ? 2 : 0);
   const isqatResult = applyIsqatSevenMethod(board, source);
   const jinnTypeResult = applyJinnTypeMethod(board, source);
+  const organDiagnosisResult = applyOrganDiagnosisMethod(board, source);
 
   const grade = gradeFromMatches(specificMatches, openingMatches, genericScore);
-  const finalHebrew = buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, jinnTypeResult);
+  const finalHebrew = buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, jinnTypeResult, organDiagnosisResult);
 
   const mainReasons = specificMatches.map((m) => ({
     house: m.house,
@@ -456,6 +504,7 @@ export function diagnoseSpiritualInfluence(question = '', board = null) {
     genericScore,
     isqatResult,
     jinnTypeResult,
+    organDiagnosisResult,
     grade,
     finalHebrew,
     mainReasons,
