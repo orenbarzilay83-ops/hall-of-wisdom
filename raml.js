@@ -306,7 +306,7 @@ if (typeof module !== "undefined") {
 
 // שמות 16 הבתים בגורל החול
 const RAML_HOUSES = Object.keys(RAML_HOUSES_BASIC_ENGINE || {}).length
-  ? RAML_HOUSES_BASIC
+  ? RAML_HOUSES_BASIC_ENGINE
   : {
   1:  { number: 1,  hebrew: "בית החיים", arabic: "بيت الحياة", role: "השואל, הגוף, החיים, מצב האדם" },
   2:  { number: 2,  hebrew: "בית הממון", arabic: "بيت المال", role: "ממון, רכוש, פרנסה, מה שיש לאדם" },
