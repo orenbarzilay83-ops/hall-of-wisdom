@@ -410,7 +410,25 @@ function recommendationByTopic(topicId, grade, boardAnalysis) {
   }
 
   if (topicId === 'hiddenTreasure') {
-    return 'לכן צריך לבדוק אם הדבר באמת קיים, אם הוא חסום או שמור, ומה הכיוון שהלוח נותן לחיפוש.';
+    const tl = boardAnalysis?.treasureLocation;
+    if (!tl) return 'לכן צריך לבדוק אם הדבר באמת קיים, אם הוא חסום או שמור, ומה הכיוון שהלוח נותן לחיפוש.';
+
+    const parts = [];
+
+    // Presence verdict
+    parts.push(tl.presenceHebrew);
+
+    // Figure-in-house-1 location rule
+    if (tl.locationHebrew) {
+      const figName = tl.house1Hebrew || tl.house1Pattern;
+      if (tl.presenceVerdict === 'not-found' && tl.locationRule?.resultHebrew) {
+        parts.push(`צורת בית 1 (${figName}): ${tl.locationHebrew}`);
+      } else if (tl.presenceVerdict !== 'not-found') {
+        parts.push(`צורת בית 1 (${figName}) — מיקום לפי המקור: ${tl.locationHebrew}`);
+      }
+    }
+
+    return parts.join('\n');
   }
 
   if (topicId === 'spiritualDiagnostics') {

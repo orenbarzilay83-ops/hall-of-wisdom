@@ -15,6 +15,10 @@ import {
   writeHumanGoralConclusion,
 } from './goral-conclusion-writer.js';
 
+import {
+  HAWI_QUESTION_HIDDEN_TREASURE_EXTRA,
+} from '../data/sources/hawi/question-rules/hawi-question-hidden-treasure-extra.js';
+
 // Natural figure (جدول, jadwal) for each house — the figure that naturally belongs there.
 // When the figure in a house matches its natural figure, the judgement is especially strong.
 // Source: חאוי העג׳איב (حاوي العجائب) PDFs only — no Western/zodiacal tradition used.
@@ -1407,6 +1411,111 @@ function getHouseStateColor(houseNumber) {
   };
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// שאלת מטמון / חבוי — חישוב מיקום לפי צורה בבית 1 ובדיקת קיום
+// מקור: hawi-question-hidden-treasure-extra.js (שער החבוי, חאוי)
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Saturn figure patterns (עקלה 1221, שפל ראש 2221) — key treasure presence indicators
+const SATURN_FIGURE_PATTERNS_TREASURE = new Set(['1221', '2221']);
+
+// Map from figure pattern to location rule from hawi-question-hidden-treasure-extra.js
+const TREASURE_FIGURE_LOCATION_RULES = (function buildTreasureRules() {
+  const PATTERN_MAP = {
+    'القبض الداخل':    '2121',
+    'القبض الخارج':    '1212',
+    'العتبة الخارجة':  '1112',
+    'العتبة الداخلة':  '2111',
+    'الحمرة':          '2122',
+    'البياض':          '2212',
+    'الحيان':          '1222',
+    'النكيس':          '2221',
+    'النقي':           '1211',
+    'الجودلة':         '1121',
+    'النصرة الداخلة':  '2211',
+    'النصرة الخارجة':  '1122',
+    'الجماعة':         '2222',
+    'الاجتماع':        '2112',
+    'الطريق':          '1111',
+    'العقلة':          '1221',
+  };
+  const rules = {};
+  for (const rule of (HAWI_QUESTION_HIDDEN_TREASURE_EXTRA?.figureLocationRules || [])) {
+    const pattern = PATTERN_MAP[rule.figureArabic];
+    if (pattern) rules[pattern] = rule;
+  }
+  return rules;
+})();
+
+function buildTreasureLocationHebrew(rule) {
+  if (!rule) return null;
+  if (rule.resultHebrew) return rule.resultHebrew;
+
+  const parts = [];
+  if (rule.certaintyHebrew) parts.push(rule.certaintyHebrew);
+  if (rule.directionHebrew) parts.push(`כיוון: ${rule.directionHebrew}`);
+  if (rule.materialOrPlaceHebrew?.length) parts.push(`חומר/מקום: ${rule.materialOrPlaceHebrew.join(', ')}`);
+  if (rule.containerHebrew?.length) parts.push(`מיכל/מבנה: ${rule.containerHebrew.join(' או ')}`);
+  if (rule.placeHebrew) parts.push(`תיאור: ${rule.placeHebrew}`);
+  if (rule.conditionHebrew) parts.push(`(תנאי: ${rule.conditionHebrew})`);
+  return parts.join(' | ');
+}
+
+function computeTreasureLocation(chart) {
+  if (!Array.isArray(chart)) return null;
+
+  const house1 = chart.find((h) => Number(h.house) === 1);
+  if (!house1) return null;
+
+  const house1Pattern = house1.key || '';
+
+  // Step 1: check Saturn figures in key houses (8, 12, 16) — primary presence test
+  const saturnKeyHouses = [8, 12, 16].map((n) => chart.find((h) => Number(h.house) === n)).filter(Boolean);
+  const hasSaturnInKeyHouses = saturnKeyHouses.some((h) => SATURN_FIGURE_PATTERNS_TREASURE.has(h.key || ''));
+
+  // Step 2: check secondary houses (2, 6, 8) for qabd dakhil (ממון נכנס = 2121)
+  const secondaryHouses = [2, 6, 8].map((n) => chart.find((h) => Number(h.house) === n)).filter(Boolean);
+  const hasQabdDakhilInSecondary = secondaryHouses.some((h) => (h.key || '') === '2121');
+
+  // Determine presence verdict
+  let presenceVerdict;
+  let presenceHebrew;
+  if (hasSaturnInKeyHouses) {
+    presenceVerdict = 'likely-present';
+    presenceHebrew = 'סימני שבתאי (עקלה / שפל ראש) נמצאו בבתים 8, 12 או 16 — הלוח מצביע על קיום דבר קבור במקום';
+  } else if (hasQabdDakhilInSecondary) {
+    presenceVerdict = 'likely-present';
+    presenceHebrew = 'ממון נכנס נמצא בבית 2, 6 או 8 — סימן שיש דבר קבור';
+  } else {
+    const angleHouses = [1, 4, 7, 10].map((n) => chart.find((h) => Number(h.house) === n)).filter(Boolean);
+    const hasSaturnInAngles = angleHouses.some((h) =>
+      SATURN_FIGURE_PATTERNS_TREASURE.has(h.key || '') || (h.key || '') === '2121'
+    );
+    if (hasSaturnInAngles) {
+      presenceVerdict = 'possible';
+      presenceHebrew = 'צורות ביתד מצביעות על אפשרות קיום — יש לאשש על פי שאר הכללים';
+    } else {
+      presenceVerdict = 'not-found';
+      presenceHebrew = 'לא נמצאו סימני שבתאי, עקלה, שפל ראש או ממון נכנס ביתדות ובבתים 8/12/16 — לפי המקור, המקום ריק';
+    }
+  }
+
+  // Figure in house 1 → location rule
+  const locationRule = TREASURE_FIGURE_LOCATION_RULES[house1Pattern] || null;
+  const locationHebrew = buildTreasureLocationHebrew(locationRule);
+
+  return {
+    house1Pattern,
+    house1Hebrew: house1.hebrew || '',
+    presenceVerdict,
+    presenceHebrew,
+    hasSaturnInKeyHouses,
+    hasQabdDakhilInSecondary,
+    locationRule,
+    locationHebrew,
+  };
+}
+
 function buildBoardAnalysis(board, topicId, mainHouses) {
   if (!board || !Array.isArray(board.chart)) {
     return {
@@ -1470,6 +1579,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const tahasil = computeTahasil(board.chart, topicId);
   const asala = computeAsala(board.chart);
   const lifeDeathAnalysis = (topicId === 'missingPerson') ? computeLifeDeath(board.chart) : null;
+  const treasureLocation = (topicId === 'hiddenTreasure') ? computeTreasureLocation(board.chart) : null;
   const directionQuadrant = (['travel', 'hiddenTreasure', 'missingPerson'].includes(topicId))
     ? computeDirectionQuadrant(board.chart) : null;
 
@@ -1523,6 +1633,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     tahasil,
     asala,
     lifeDeathAnalysis,
+    treasureLocation,
     directionQuadrant,
     sourceQuality,
     seventhOfHouse1: seventhOfHouse1Found
