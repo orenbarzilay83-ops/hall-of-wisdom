@@ -19,6 +19,10 @@ import {
   HAWI_QUESTION_HIDDEN_TREASURE_EXTRA,
 } from '../data/sources/hawi/question-rules/hawi-question-hidden-treasure-extra.js';
 
+import {
+  FIGURE_LETTER_EXTRACTION,
+} from '../data/sources/hawi/foundations/hawi-figure-letter-extraction.js';
+
 // Natural figure (جدول, jadwal) for each house — the figure that naturally belongs there.
 // When the figure in a house matches its natural figure, the judgement is especially strong.
 // Source: חאוי העג׳איב (حاوي العجائب) PDFs only — no Western/zodiacal tradition used.
@@ -1516,6 +1520,58 @@ function computeTreasureLocation(chart) {
   };
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// הוצאת שם — استخراج الاسم
+// מקור: תסקין עבדוה (hawi-figure-letter-extraction.js)
+// בית 9 = מכשף/גורם רוחני, בית 7 = גנב/אויב/אדם לא ידוע
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Build a lookup map once: pattern → letter entry
+const PATTERN_TO_LETTERS = (function buildLetterMap() {
+  const map = {};
+  for (const entry of (FIGURE_LETTER_EXTRACTION?.figureLetters || [])) {
+    map[entry.pattern] = entry;
+  }
+  return map;
+})();
+
+function computeNameLetters(chart, houseNumber) {
+  if (!Array.isArray(chart) || !houseNumber) return null;
+  const house = chart.find((h) => Number(h.house) === Number(houseNumber));
+  if (!house || !house.key) return null;
+
+  const entry = PATTERN_TO_LETTERS[house.key];
+  if (!entry) return null;
+
+  const letters = entry.letters || [];
+  const houseRole = FIGURE_LETTER_EXTRACTION?.usageHouses?.[Number(houseNumber)] || `בית ${houseNumber}`;
+
+  let outputHebrew;
+  if (letters.length === 1) {
+    outputHebrew = `שמו מתחיל ב: ${letters[0]}`;
+  } else if (letters.length === 2) {
+    outputHebrew = `שמו מתחיל ב: ${letters[0]} או ${letters[1]}`;
+  } else {
+    outputHebrew = `שמו מתחיל ב: ${letters.join(' / ')}`;
+  }
+
+  return {
+    houseNumber: Number(houseNumber),
+    houseRole,
+    figurePattern: house.key,
+    figureHebrew: entry.hebrewName || house.hebrew || house.key,
+    letters,
+    outputHebrew,
+  };
+}
+
+// Topics where name extraction is relevant and which house to read
+const NAME_EXTRACTION_HOUSES_BY_TOPIC = {
+  spiritualDiagnostics: [9],   // בית 9 = המכשף
+  enemies:              [7, 9], // בית 7 = האויב, בית 9 = מי שכישף
+  disputes:             [7],   // בית 7 = היריב
+};
+
 function buildBoardAnalysis(board, topicId, mainHouses) {
   if (!board || !Array.isArray(board.chart)) {
     return {
@@ -1580,6 +1636,10 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const asala = computeAsala(board.chart);
   const lifeDeathAnalysis = (topicId === 'missingPerson') ? computeLifeDeath(board.chart) : null;
   const treasureLocation = (topicId === 'hiddenTreasure') ? computeTreasureLocation(board.chart) : null;
+  const nameExtractionHouses = NAME_EXTRACTION_HOUSES_BY_TOPIC[topicId] || [];
+  const nameLetters = nameExtractionHouses.length > 0
+    ? nameExtractionHouses.map((h) => computeNameLetters(board.chart, h)).filter(Boolean)
+    : null;
   const directionQuadrant = (['travel', 'hiddenTreasure', 'missingPerson'].includes(topicId))
     ? computeDirectionQuadrant(board.chart) : null;
 
@@ -1634,6 +1694,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     asala,
     lifeDeathAnalysis,
     treasureLocation,
+    nameLetters,
     directionQuadrant,
     sourceQuality,
     seventhOfHouse1: seventhOfHouse1Found

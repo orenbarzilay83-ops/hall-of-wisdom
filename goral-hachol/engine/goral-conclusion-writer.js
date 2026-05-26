@@ -316,6 +316,15 @@ function describeCoreHouses(analysis, topicId) {
     }
   }
 
+  // ── הוצאת שם (استخراج الاسم) ──────────────────────────────────────────
+  const nameLetters = analysis.nameLetters;
+  if (Array.isArray(nameLetters) && nameLetters.length > 0) {
+    const nameLines = nameLetters.map((nl) =>
+      `  ${nl.houseRole} (בית ${nl.houseNumber} — ${nl.figureHebrew}): ${nl.outputHebrew}`
+    );
+    parts.push(`הוצאת שם (תסקין עבדוה):\n${nameLines.join('\n')}`);
+  }
+
   return parts.join('\n');
 }
 
