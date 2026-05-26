@@ -325,6 +325,30 @@ function describeCoreHouses(analysis, topicId) {
     parts.push(`הוצאת שם (תסקין עבדוה):\n${nameLines.join('\n')}`);
   }
 
+  // ── שלטון / בעלי תפקידים ─────────────────────────────────────────────
+  const authAnalysis = analysis.authorityStateAnalysis;
+  if (authAnalysis) {
+    parts.push(`ניתוח שלטון (שער מלכים, חאוי עמ׳ 36-38):\n${authAnalysis.outputHebrew}`);
+  }
+
+  // ── טאלע השנה / יוקר וזול / גשם ────────────────────────────────────
+  const yearlyAnalysis = analysis.yearlyForecastAnalysis;
+  if (yearlyAnalysis) {
+    parts.push(`ניתוח טאלע השנה (חאוי עמ׳ 60-62):\n${yearlyAnalysis.outputHebrew}`);
+  }
+
+  // ── שער המולד / הנולד ───────────────────────────────────────────────
+  const birthAnalysis = analysis.birthNativityAnalysis;
+  if (birthAnalysis) {
+    parts.push(`שער המולד (חאוי עמ׳ 51-58):\n${birthAnalysis.outputHebrew}`);
+  }
+
+  // ── משולשים — כוכבים לפי יסוד ────────────────────────────────────────
+  const triangles = analysis.trianglesEnrichment;
+  if (triangles) {
+    parts.push(`ניתוח משולשים (שער המשולשים, חאוי עמ׳ 59):\n${triangles.outputHebrew}`);
+  }
+
   return parts.join('\n');
 }
 
