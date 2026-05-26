@@ -145,7 +145,7 @@ const TOPIC_QUESITED_HOUSE = {
   foundations:         15,
   yearlyForecast:      10,
   authorityState:      10,
-  birthNativity:        1,
+  birthNativity:       10,  // בית הגורל / הייעוד
   spiritualDiagnostics: 6,
   prisoner:            12,
   partnership:          7,
@@ -844,9 +844,11 @@ function computeHayula(chart, quesitedHouseNum, querentFig, quesitedFig, tahasil
   const reasons = [];
 
   // חסימה 1: הדיין נחס ואינו קשור לאחד הצדדים
-  if (judge && MALEFIC_FIGURE_PATTERNS.has(judge.key)) {
+  const judgeIsNahs = judge && judge.fortune && judge.fortune.includes('נחס');
+  if (judgeIsNahs) {
     if (judge.key !== querentFig && judge.key !== quesitedFig) {
-      reasons.push(`הדיין (בית 15: ${judge.hebrew || judge.key}) הוא נחס ואינו מחובר לצד השואל ולצד הנשאל — הוא חוסם את הפסיקה.`);
+      const judgeFortuneLabel = judge.fortune || 'נחס';
+      reasons.push(`הדיין (בית 15: ${judge.hebrew || judge.key}) [${judgeFortuneLabel}] אינו מחובר לצד השואל ולצד הנשאל — הוא חוסם את הפסיקה.`);
     }
   }
 
@@ -1561,7 +1563,7 @@ const PATTERN_TO_LETTERS = (function buildLetterMap() {
   return map;
 })();
 
-function computeNameLetters(chart, houseNumber) {
+function computeNameLetters(chart, houseNumber, labelOverride) {
   if (!Array.isArray(chart) || !houseNumber) return null;
   const house = chart.find((h) => Number(h.house) === Number(houseNumber));
   if (!house || !house.key) return null;
@@ -1570,7 +1572,9 @@ function computeNameLetters(chart, houseNumber) {
   if (!entry) return null;
 
   const letters = entry.letters || [];
-  const houseRole = FIGURE_LETTER_EXTRACTION?.usageHouses?.[Number(houseNumber)] || `בית ${houseNumber}`;
+  const houseRole = labelOverride
+    || FIGURE_LETTER_EXTRACTION?.usageHouses?.[Number(houseNumber)]
+    || `בית ${houseNumber}`;
 
   let outputHebrew;
   if (letters.length === 1) {
@@ -1593,13 +1597,13 @@ function computeNameLetters(chart, houseNumber) {
 
 // Topics where name extraction is relevant and which house to read
 const NAME_EXTRACTION_HOUSES_BY_TOPIC = {
-  spiritualDiagnostics: [9],      // בית 9 = המכשף
-  enemies:              [7, 9],   // בית 7 = האויב, בית 9 = מי שכישף
-  disputes:             [7],      // בית 7 = היריב
-  authorityState:       [7],      // בית 7 = אויב המדינה / גורם הנפילה (חאוי עמ׳ 37-38)
-  missingPerson:        [7],      // בית 7 = הנעדר
-  prisoner:             [12],     // בית 12 = הכלא / הגורם לכליאה
-  partnership:          [7],      // בית 7 = השותף
+  spiritualDiagnostics: [{ house: 9 }],
+  enemies:              [{ house: 7 }, { house: 9 }],
+  disputes:             [{ house: 7 }],
+  authorityState:       [{ house: 7, labelOverride: 'שם גורם הנפילה / האויב הפוליטי' }],
+  missingPerson:        [{ house: 7, labelOverride: 'שם הנעדר' }],
+  prisoner:             [{ house: 12, labelOverride: 'שם הגורם לכליאה' }],
+  partnership:          [{ house: 7, labelOverride: 'שם השותף' }],
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -2542,7 +2546,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const treasureLocation = (topicId === 'hiddenTreasure') ? computeTreasureLocation(board.chart) : null;
   const nameExtractionHouses = NAME_EXTRACTION_HOUSES_BY_TOPIC[topicId] || [];
   const nameLetters = nameExtractionHouses.length > 0
-    ? nameExtractionHouses.map((h) => computeNameLetters(board.chart, h)).filter(Boolean)
+    ? nameExtractionHouses.map((e) => computeNameLetters(board.chart, e.house, e.labelOverride)).filter(Boolean)
     : null;
 
   const authorityStateAnalysis = (topicId === 'authorityState')
@@ -2584,7 +2588,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     ? computePhysicalDescriptionForHouse(board.chart, 7) : null;
 
   const physicalDescriptionMissing = (topicId === 'missingPerson')
-    ? computePhysicalDescriptionForHouse(board.chart, 1) : null;
+    ? computePhysicalDescriptionForHouse(board.chart, 7) : null;
 
   const prisonerAnalysis = (topicId === 'prisoner')
     ? computePrisonerAnalysis(board.chart) : null;

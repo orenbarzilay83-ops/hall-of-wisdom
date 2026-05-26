@@ -413,8 +413,12 @@ function describeCoreHouses(analysis, topicId, question) {
   }
 
   // ── צורה ראשונה × חזרות (בלוג' אלאמל פרק 17) ────────────────────────
+  // רלוונטי רק כשאין ידיעה מראש על הנושא; כשהנושא ידוע, הפרשנות עלולה להטעות
   const firstFigRep = analysis.firstFigureRepetition;
-  if (firstFigRep) {
+  const TOPICS_WITH_FIGURE_MEANING = new Set([
+    'enemies', 'theft', 'missingPerson', 'illness', 'spiritualDiagnostics', 'hiddenTreasure',
+  ]);
+  if (firstFigRep && TOPICS_WITH_FIGURE_MEANING.has(topicId)) {
     parts.push(firstFigRep.outputHebrew);
   }
 
