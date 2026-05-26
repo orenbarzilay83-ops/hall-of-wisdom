@@ -183,7 +183,7 @@ function topicOpening(topicId, topicHebrew) {
   return openings[topicId] || `בעניין ${topicHebrew}, הקריאה בודקת את הבית המרכזי, העדים, הדיין והשלמת הדין.`;
 }
 
-function describeCoreHouses(analysis, topicId) {
+function describeCoreHouses(analysis, topicId, question) {
   if (!analysis || !analysis.hasBoard) {
     return 'עדיין אין לוח מלא, ולכן אי אפשר לתת מסקנה מלאה מתוך הצורות.';
   }
@@ -396,13 +396,15 @@ function spiritualParagraph(spiritualDiagnosis, topicId) {
     .map((r) => {
       const figure = r.figureHebrew ? ` — צורה: ${r.figureHebrew}` : '';
       const signals = (r.signals || []).join(' ');
-      return `בית ${r.house} (${r.role})${figure}: ${signals}`;
+      const houseLabel = r.house != null ? `בית ${r.house}` : r.role;
+      const roleLabel = r.house != null ? ` (${r.role})` : '';
+      return `${houseLabel}${roleLabel}${figure}: ${signals}`;
     });
 
   return important.filter(Boolean).join('\n');
 }
 
-function getHouseFromBoard(boardAnalysis, houseNumber) {
+function getHouseFromBoard(analysis, houseNumber) {
   if (!boardAnalysis || !Array.isArray(boardAnalysis.houses)) return null;
   return boardAnalysis.houses.find((h) => Number(h.house) === Number(houseNumber)) || null;
 }
@@ -416,7 +418,7 @@ function houseDescription(house) {
 
 function recommendationByTopic(topicId, grade, boardAnalysis) {
   if (topicId === 'travel') {
-    const house9 = getHouseFromBoard(boardAnalysis, 9);
+    const house9 = getHouseFromBoard(analysis, 9);
     const house9Desc = houseDescription(house9);
     let base = '';
     if (grade === 'positive') base = 'לכן אפשר לשקול יציאה, אבל עדיין לבדוק זמן, דרך ואנשים מעורבים.';
@@ -427,7 +429,7 @@ function recommendationByTopic(topicId, grade, boardAnalysis) {
   }
 
   if (topicId === 'missingPerson') {
-    const house8 = getHouseFromBoard(boardAnalysis, 8);
+    const house8 = getHouseFromBoard(analysis, 8);
     const house8Desc = houseDescription(house8);
     let base = 'לכן צריך לקרוא בזהירות את סימני החזרה, העיכוב והפחד, ולא להסתפק בסימן אחד בלבד.';
     if (house8Desc) base += ` בדוק בית 8 (מות/אובדן): ${house8Desc}`;
@@ -435,7 +437,7 @@ function recommendationByTopic(topicId, grade, boardAnalysis) {
   }
 
   if (topicId === 'childrenPregnancy') {
-    const house5 = getHouseFromBoard(boardAnalysis, 5);
+    const house5 = getHouseFromBoard(analysis, 5);
     const house5Desc = houseDescription(house5);
     let base = 'לכן יש לבדוק את בית הילדים, העדים והדיין יחד, ורק אז להכריע לגבי אפשרות ההיריון או סימני זכר ונקבה.';
     if (house5Desc) base += ` בדוק בית 5 (ילדים): ${house5Desc}`;
@@ -443,7 +445,7 @@ function recommendationByTopic(topicId, grade, boardAnalysis) {
   }
 
   if (topicId === 'hiddenTreasure') {
-    const tl = boardAnalysis?.treasureLocation;
+    const tl = analysis?.treasureLocation;
     if (!tl) return 'לכן צריך לבדוק אם הדבר באמת קיים, אם הוא חסום או שמור, ומה הכיוון שהלוח נותן לחיפוש.';
 
     const parts = [];
@@ -469,7 +471,7 @@ function recommendationByTopic(topicId, grade, boardAnalysis) {
   }
 
   if (topicId === 'marriage') {
-    const house7 = getHouseFromBoard(boardAnalysis, 7);
+    const house7 = getHouseFromBoard(analysis, 7);
     const house7Desc = houseDescription(house7);
     let base = '';
     if (grade === 'positive') base = 'לכן הלוח מראה נטייה חיובית לנישואין — בדוק את בית 7 ואת ההתאמה.';
@@ -480,7 +482,7 @@ function recommendationByTopic(topicId, grade, boardAnalysis) {
   }
 
   if (topicId === 'illness') {
-    const house6 = getHouseFromBoard(boardAnalysis, 6);
+    const house6 = getHouseFromBoard(analysis, 6);
     const house6Desc = houseDescription(house6);
     let base = '';
     if (grade === 'positive') base = 'לכן הלוח מראה נטייה לשיפור ולהחלמה.';
@@ -491,7 +493,7 @@ function recommendationByTopic(topicId, grade, boardAnalysis) {
   }
 
   if (topicId === 'disputes') {
-    const house7 = getHouseFromBoard(boardAnalysis, 7);
+    const house7 = getHouseFromBoard(analysis, 7);
     const house7Desc = houseDescription(house7);
     let base = '';
     if (grade === 'positive') base = 'לכן הלוח מראה יתרון לשואל בסכסוך — הצד שלו חזק יותר.';
@@ -502,18 +504,76 @@ function recommendationByTopic(topicId, grade, boardAnalysis) {
   }
 
   if (topicId === 'enemies') {
-    const house12 = getHouseFromBoard(boardAnalysis, 12);
-    const house12Desc = houseDescription(house12);
-    let base = '';
-    if (grade === 'positive') base = 'לכן הלוח מראה שהשואל עומד בעמדה חזקה לעומת האויב.';
-    else if (grade === 'negative') base = 'לכן הלוח מראה אויב חזק — יש להיזהר ולא להתמודד ישירות.';
-    else base = 'לכן מצב האויב מעורב — יש לדון בכל צורה בנפרד.';
-    if (house12Desc) base += ` בדוק בית 12 (אויבים נסתרים): ${house12Desc}`;
-    return base;
+    const house7  = getHouseFromBoard(analysis, 7);
+    const house9  = getHouseFromBoard(analysis, 9);
+    const house12 = getHouseFromBoard(analysis, 12);
+    const house7Name  = house7?.figureHebrew  || null;
+    const house9Name  = house9?.figureHebrew  || null;
+    const house12Name = house12?.figureHebrew || null;
+
+    const lines = [];
+
+    // Is this a theft question? detect from question keywords in the broader result
+    // We identify theft by checking if house 7 is the "thief" focus
+    const theftKeywords = ['גנב', 'גנבה', 'גנוב', 'נגנב', 'גניבה', 'מי גנב'];
+    const questionText = String(question || '');
+    const isTheftQuestion = theftKeywords.some((k) => questionText.includes(k));
+
+    if (isTheftQuestion && house7) {
+      // Thief identity: figure in house 7 + its transit description
+      const transitMeaning = house7.transit?.meaning || '';
+      const element = house7.elementHebrew || house7.element || '';
+
+      let thiefDesc = `הגנב מיוצג על ידי "${house7Name}" בבית 7.`;
+
+      if (transitMeaning) {
+        thiefDesc += ` לפי מעבר הצורה: ${transitMeaning}`;
+      }
+
+      // Element → proximity/relationship clue (from Hawi figure-transit logic)
+      if (element.includes('אוויר')) {
+        thiefDesc += ' — אדם קרוב או בן הבית / שכן.';
+      } else if (element.includes('אש')) {
+        thiefDesc += ' — אדם בעל סמכות, גברי ובעל נחישות.';
+      } else if (element.includes('עפר')) {
+        thiefDesc += ' — אדם קרוב, ייתכן קרוב משפחה או אדם מוכר.';
+      } else if (element.includes('מים')) {
+        thiefDesc += ' — אדם שיש לו קשר רגשי או קשר עם הבית.';
+      }
+
+      // Entering/exiting: נשוא/שפל/כבוד נכנס = thief still near; ממון יוצא/סף יוצא = already left
+      const exitFigures = ['ממון יוצא', 'סף יוצא', 'כבוד יוצא', 'שפל ראש'];
+      const enterFigures = ['ממון נכנס', 'סף נכנס', 'כבוד נכנס', 'נשוא ראש'];
+      if (exitFigures.some((f) => house7Name?.includes(f.split(' ')[0]))) {
+        thiefDesc += ' הצורה יוצאת — הגנב/החפץ כבר התרחק.';
+      } else if (enterFigures.some((f) => house7Name?.includes(f.split(' ')[0]))) {
+        thiefDesc += ' הצורה נכנסת — הגנב עדיין קרוב, הדבר עשוי לחזור.';
+      }
+
+      lines.push(thiefDesc);
+
+      if (house9Name) {
+        lines.push(`בית 9 (${house9Name}): ייתכן קשר לגורם נסתר נוסף.`);
+      }
+      if (house12Name) {
+        lines.push(`בית 12 (${house12Name}): מורה על מה שנסתר — חפץ/אדם שמוסתר.`);
+      }
+    } else {
+      // Generic enemy analysis
+      let base = '';
+      if (grade === 'positive') base = 'לכן הלוח מראה שהשואל עומד בעמדה חזקה לעומת האויב.';
+      else if (grade === 'negative') base = 'לכן הלוח מראה אויב חזק — יש להיזהר ולא להתמודד ישירות.';
+      else base = 'לכן מצב האויב מעורב — יש לדון בכל צורה בנפרד.';
+      if (house7Name) base += ` בית 7 (האויב): ${house7Name}${house7.transit?.meaning ? ` — ${house7.transit.meaning}` : ''}.`;
+      if (house12Name) base += ` בית 12 (אויבים נסתרים): ${house12Name}.`;
+      lines.push(base);
+    }
+
+    return lines.join('\n');
   }
 
   if (topicId === 'fear') {
-    const house12 = getHouseFromBoard(boardAnalysis, 12);
+    const house12 = getHouseFromBoard(analysis, 12);
     const house12Desc = houseDescription(house12);
     let base = '';
     if (grade === 'positive') base = 'לכן הלוח מראה שהסכנה לא ממשית או שיש הגנה — הפחד גדול מהמציאות.';
@@ -524,7 +584,7 @@ function recommendationByTopic(topicId, grade, boardAnalysis) {
   }
 
   if (topicId === 'commerce') {
-    const house2 = getHouseFromBoard(boardAnalysis, 2);
+    const house2 = getHouseFromBoard(analysis, 2);
     const house2Desc = houseDescription(house2);
     let base = '';
     if (grade === 'positive') base = 'לכן הלוח מראה נטייה לרווח — הדרך לעסקה פתוחה.';
@@ -535,7 +595,7 @@ function recommendationByTopic(topicId, grade, boardAnalysis) {
   }
 
   if (topicId === 'loveHate') {
-    const house7 = getHouseFromBoard(boardAnalysis, 7);
+    const house7 = getHouseFromBoard(analysis, 7);
     const house7Desc = houseDescription(house7);
     let base = '';
     if (grade === 'positive') base = 'לכן הלוח מראה נטייה לחיבה ולקרבה — יש חיבור בין הצדדים.';
@@ -635,7 +695,7 @@ export function writeHumanGoralConclusion(result) {
     tahasilParagraph(result.boardAnalysis),
     topicOpening(topicId, topicHebrew),
     questionFocusParagraph(topicId, result.clientContext),
-    describeCoreHouses(result.boardAnalysis, topicId),
+    describeCoreHouses(result.boardAnalysis, topicId, result.question),
     spiritualParagraph(result.spiritualDiagnosis, topicId),
     recommendationByTopic(topicId, grade, result.boardAnalysis),
   ].filter((p) => clean(p));
