@@ -404,9 +404,9 @@ function spiritualParagraph(spiritualDiagnosis, topicId) {
   return important.filter(Boolean).join('\n');
 }
 
-function getHouseFromBoard(analysis, houseNumber) {
-  if (!boardAnalysis || !Array.isArray(boardAnalysis.houses)) return null;
-  return boardAnalysis.houses.find((h) => Number(h.house) === Number(houseNumber)) || null;
+function getHouseFromBoard(boardData, houseNumber) {
+  if (!boardData || !Array.isArray(boardData.houses)) return null;
+  return boardData.houses.find((h) => Number(h.house) === Number(houseNumber)) || null;
 }
 
 function houseDescription(house) {
@@ -416,9 +416,9 @@ function houseDescription(house) {
   return transit ? `${name}: ${transit}` : name;
 }
 
-function recommendationByTopic(topicId, grade, boardAnalysis) {
+function recommendationByTopic(topicId, grade, boardAnalysis, question) {
   if (topicId === 'travel') {
-    const house9 = getHouseFromBoard(analysis, 9);
+    const house9 = getHouseFromBoard(boardAnalysis, 9);
     const house9Desc = houseDescription(house9);
     let base = '';
     if (grade === 'positive') base = 'לכן אפשר לשקול יציאה, אבל עדיין לבדוק זמן, דרך ואנשים מעורבים.';
@@ -429,7 +429,7 @@ function recommendationByTopic(topicId, grade, boardAnalysis) {
   }
 
   if (topicId === 'missingPerson') {
-    const house8 = getHouseFromBoard(analysis, 8);
+    const house8 = getHouseFromBoard(boardAnalysis, 8);
     const house8Desc = houseDescription(house8);
     let base = 'לכן צריך לקרוא בזהירות את סימני החזרה, העיכוב והפחד, ולא להסתפק בסימן אחד בלבד.';
     if (house8Desc) base += ` בדוק בית 8 (מות/אובדן): ${house8Desc}`;
@@ -437,7 +437,7 @@ function recommendationByTopic(topicId, grade, boardAnalysis) {
   }
 
   if (topicId === 'childrenPregnancy') {
-    const house5 = getHouseFromBoard(analysis, 5);
+    const house5 = getHouseFromBoard(boardAnalysis, 5);
     const house5Desc = houseDescription(house5);
     let base = 'לכן יש לבדוק את בית הילדים, העדים והדיין יחד, ורק אז להכריע לגבי אפשרות ההיריון או סימני זכר ונקבה.';
     if (house5Desc) base += ` בדוק בית 5 (ילדים): ${house5Desc}`;
@@ -445,7 +445,7 @@ function recommendationByTopic(topicId, grade, boardAnalysis) {
   }
 
   if (topicId === 'hiddenTreasure') {
-    const tl = analysis?.treasureLocation;
+    const tl = boardAnalysis?.treasureLocation;
     if (!tl) return 'לכן צריך לבדוק אם הדבר באמת קיים, אם הוא חסום או שמור, ומה הכיוון שהלוח נותן לחיפוש.';
 
     const parts = [];
@@ -471,7 +471,7 @@ function recommendationByTopic(topicId, grade, boardAnalysis) {
   }
 
   if (topicId === 'marriage') {
-    const house7 = getHouseFromBoard(analysis, 7);
+    const house7 = getHouseFromBoard(boardAnalysis, 7);
     const house7Desc = houseDescription(house7);
     let base = '';
     if (grade === 'positive') base = 'לכן הלוח מראה נטייה חיובית לנישואין — בדוק את בית 7 ואת ההתאמה.';
@@ -482,7 +482,7 @@ function recommendationByTopic(topicId, grade, boardAnalysis) {
   }
 
   if (topicId === 'illness') {
-    const house6 = getHouseFromBoard(analysis, 6);
+    const house6 = getHouseFromBoard(boardAnalysis, 6);
     const house6Desc = houseDescription(house6);
     let base = '';
     if (grade === 'positive') base = 'לכן הלוח מראה נטייה לשיפור ולהחלמה.';
@@ -493,7 +493,7 @@ function recommendationByTopic(topicId, grade, boardAnalysis) {
   }
 
   if (topicId === 'disputes') {
-    const house7 = getHouseFromBoard(analysis, 7);
+    const house7 = getHouseFromBoard(boardAnalysis, 7);
     const house7Desc = houseDescription(house7);
     let base = '';
     if (grade === 'positive') base = 'לכן הלוח מראה יתרון לשואל בסכסוך — הצד שלו חזק יותר.';
@@ -504,9 +504,9 @@ function recommendationByTopic(topicId, grade, boardAnalysis) {
   }
 
   if (topicId === 'enemies') {
-    const house7  = getHouseFromBoard(analysis, 7);
-    const house9  = getHouseFromBoard(analysis, 9);
-    const house12 = getHouseFromBoard(analysis, 12);
+    const house7  = getHouseFromBoard(boardAnalysis, 7);
+    const house9  = getHouseFromBoard(boardAnalysis, 9);
+    const house12 = getHouseFromBoard(boardAnalysis, 12);
     const house7Name  = house7?.figureHebrew  || null;
     const house9Name  = house9?.figureHebrew  || null;
     const house12Name = house12?.figureHebrew || null;
@@ -573,7 +573,7 @@ function recommendationByTopic(topicId, grade, boardAnalysis) {
   }
 
   if (topicId === 'fear') {
-    const house12 = getHouseFromBoard(analysis, 12);
+    const house12 = getHouseFromBoard(boardAnalysis, 12);
     const house12Desc = houseDescription(house12);
     let base = '';
     if (grade === 'positive') base = 'לכן הלוח מראה שהסכנה לא ממשית או שיש הגנה — הפחד גדול מהמציאות.';
@@ -584,7 +584,7 @@ function recommendationByTopic(topicId, grade, boardAnalysis) {
   }
 
   if (topicId === 'commerce') {
-    const house2 = getHouseFromBoard(analysis, 2);
+    const house2 = getHouseFromBoard(boardAnalysis, 2);
     const house2Desc = houseDescription(house2);
     let base = '';
     if (grade === 'positive') base = 'לכן הלוח מראה נטייה לרווח — הדרך לעסקה פתוחה.';
@@ -595,7 +595,7 @@ function recommendationByTopic(topicId, grade, boardAnalysis) {
   }
 
   if (topicId === 'loveHate') {
-    const house7 = getHouseFromBoard(analysis, 7);
+    const house7 = getHouseFromBoard(boardAnalysis, 7);
     const house7Desc = houseDescription(house7);
     let base = '';
     if (grade === 'positive') base = 'לכן הלוח מראה נטייה לחיבה ולקרבה — יש חיבור בין הצדדים.';
@@ -697,7 +697,7 @@ export function writeHumanGoralConclusion(result) {
     questionFocusParagraph(topicId, result.clientContext),
     describeCoreHouses(result.boardAnalysis, topicId, result.question),
     spiritualParagraph(result.spiritualDiagnosis, topicId),
-    recommendationByTopic(topicId, grade, result.boardAnalysis),
+    recommendationByTopic(topicId, grade, result.boardAnalysis, result.question),
   ].filter((p) => clean(p));
 
   return paragraphs.join('\n\n');
