@@ -198,12 +198,9 @@ function describeCoreHouses(analysis, topicId, question) {
   const boardScore = analysis.boardScore || null;
   const parts = [];
 
-  // שלמות הלוח — ראשון לכל
-  if (boardScore) {
-    parts.push(boardScore.isComplete
-      ? `✓ ${boardScore.hebrewSummary}`
-      : `⚠ ${boardScore.hebrewSummary}`
-    );
+  // שלמות הלוח — רק אם חסר (הלוח השלם מוצג בפסיקה הראשית)
+  if (boardScore && !boardScore.isComplete) {
+    parts.push(`⚠ ${boardScore.hebrewSummary}`);
   }
 
   if (focus) {
@@ -251,7 +248,7 @@ function describeCoreHouses(analysis, topicId, question) {
     );
   }
 
-  // דמיר — תסיירת נקטת המיזאן (שיטה ראשית לפי הספר)
+  // דמיר — שרשרת הגזירה (שיטה ראשית לפי הספר)
   if (dhamirMizan && dhamirMizan.traces.length > 0) {
     const traceLines = dhamirMizan.traces.map((t) => {
       const fortune = t.dhamirFortune ? ` [${t.dhamirFortune}]` : '';
@@ -266,7 +263,7 @@ function describeCoreHouses(analysis, topicId, question) {
       dhamirConcord = confirming ? ' ✓ מאשר את הדיין.' : ' ⚠ סותר את הדיין — שים לב.';
     }
     parts.push(
-      `הדמיר (תסיירת נקטת המיזאן):\n${traceLines.join('\n')}\n  → הדמיר העיקרי: בית ${dhamirMizan.primaryHouseNumber} — כל הדין שם.${dhamirConcord}`
+      `הדמיר (שרשרת הגזירה):\n${traceLines.join('\n')}\n  → הדמיר העיקרי: בית ${dhamirMizan.primaryHouseNumber} — כל הדין שם.${dhamirConcord}`
     );
   } else if (dhamir) {
     // גיבוי: נהמת האמהות
@@ -675,11 +672,22 @@ export function writeHumanGoralConclusion(result) {
   const score = result.boardScore?.score || 0;
   const isSpiritualTopic = topicId === 'spiritualDiagnostics';
   const judgeVerdict = result.judgeVerdict || result.boardScore?.judgeVerdict || null;
+  const question = clean(result.question);
+  const isMiQuestion = /^מי[\s,]/.test(question);
 
   // Leading verdict paragraph
   let verdictParagraph = '';
   if (isSpiritualTopic) {
     verdictParagraph = spiritualVerdict(result.spiritualDiagnosis);
+  } else if (isMiQuestion && topicId === 'enemies') {
+    // "מי" questions need identification, not yes/no
+    const house7 = result.boardAnalysis?.houses?.find(h => h.house === 7);
+    const house7Fig = house7?.figureHebrew || '';
+    if (grade === 'positive' || grade === 'cautiously-positive') {
+      verdictParagraph = `הלוח מאפשר זיהוי — יש סיכוי לגלות את מי שעומד מאחורי הגניבה או הפגיעה. בית 7${house7Fig ? ` (${house7Fig})` : ''} מציין את הגנב — פרטים בהמשך.`;
+    } else {
+      verdictParagraph = `הלוח מצביע על קושי בזיהוי — הגנב נסתר או קשה לאיתור. בית 7${house7Fig ? ` (${house7Fig})` : ''} מציין את הגנב — פרטים בהמשך.`;
+    }
   } else if (judgeVerdict?.hebrewFull) {
     verdictParagraph = judgeVerdict.hebrewFull;
   } else if (result.boardScore?.hebrew) {

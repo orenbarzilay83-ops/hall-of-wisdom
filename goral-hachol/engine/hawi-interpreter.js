@@ -395,7 +395,7 @@ function computeLifeDeath(chart) {
 // שני סוגים: (1) חזרת צורה בבתים שונים, (2) קשר מבטי (תסדיס/ריבוע/משולש/מול)
 
 const ASPECT_RULES = [
-  { id: 'tasdis',   hebrew: 'תסדיס',  offsets: [2, 10] },
+  { id: 'tasdis',   hebrew: 'חיבור-שישה',  offsets: [2, 10] },
   { id: 'tarbi',    hebrew: 'ריבוע',  offsets: [3, 9]  },
   { id: 'tathlith', hebrew: 'משולש',  offsets: [4, 8]  },
   { id: 'muqabala', hebrew: 'מול',    offsets: [6, 13] },
@@ -857,7 +857,7 @@ function computeHayula(chart, quesitedHouseNum, querentFig, quesitedFig, tahasil
 
   return {
     active: true,
-    hebrew: `מניעה (חיסולה): ${reasons.join(' | ')}`,
+    hebrew: `מניעה: ${reasons.join(' | ')}`,
   };
 }
 
@@ -959,7 +959,7 @@ function computeTahasil(chart, topicId) {
       tahasilStatus   = 'translation';
       tahasilStrength = 'medium';
       const bridgeName = bridge.hebrew || bridge.key;
-      tahasilHebrew   = `תחסיל בהעברה (נקל אל-נור): הצורה "${bridgeName}" בבית ${bridge.house} מחברת בין בית 1 לבית ${quesitedHouseNum} — הדבר ייגמר בעזרת גורם שלישי.`;
+      tahasilHebrew   = `תחסיל בהעברה: הצורה "${bridgeName}" בבית ${bridge.house} מחברת בין בית 1 לבית ${quesitedHouseNum} — הדבר ייגמר בעזרת גורם שלישי.`;
     }
   }
 
@@ -1146,8 +1146,8 @@ function buildJudgeVerdict(boardAnalysis) {
   // Speaking state (ناطق/صامت) — silent judge weakens the ruling
   const judgeSpeaking = getSpeakingStateHebrew(judge?.figureState);
   const judgeSilentNote = judgeSpeaking === 'שותק'
-    ? ` [הדיין שותק (صامت) בבית זה — כוחו מוחלש.]`
-    : (judgeSpeaking === 'מדבר' ? ` [הדיין מדבר (ناطق) — כוחו מלא.]` : '');
+    ? ` [הדיין שותק בבית זה — כוחו מוחלש.]`
+    : (judgeSpeaking === 'מדבר' ? ` [הדיין פעיל — כוחו מלא.]` : '');
 
   let verdict, grade, hebrewShort, hebrewFull;
 
