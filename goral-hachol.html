@@ -116,7 +116,10 @@
       color:#111;
     }
 
-    /* Opening form — compact input sizing (font-size must be ≥16px to prevent iOS auto-zoom) */
+    /* Opening form — compact, centered, proportional fields (font-size ≥16px to prevent iOS auto-zoom) */
+    #screen-open h2 { text-align:center; }
+    #screen-open label { text-align:center; }
+
     #screen-open .form-grid input,
     #screen-open .form-grid select {
       padding:8px 10px;
@@ -124,8 +127,20 @@
       border-radius:10px;
     }
 
-    .dt-row { display:flex; gap:10px; }
-    .dt-row > div { flex:1; min-width:0; }
+    /* Name inputs: limit width and center within grid cell */
+    #screen-open #clientNameInput,
+    #screen-open #clientParentInput {
+      width:180px;
+      display:block;
+      margin:0 auto;
+    }
+
+    .dt-row { display:flex; gap:10px; justify-content:center; }
+    .dt-row > div { flex:none; text-align:center; }
+
+    /* Date and time inputs sized to their content */
+    #questionDateInput { width:148px; }
+    #questionTimeInput { width:108px; }
 
     .casting-alert {
       margin-top:8px;
