@@ -116,6 +116,39 @@
       color:#111;
     }
 
+    /* Opening form — compact input sizing */
+    #screen-open .form-grid input,
+    #screen-open .form-grid select {
+      padding:8px 10px;
+      font-size:14px;
+      border-radius:10px;
+    }
+
+    .dt-row { display:flex; gap:10px; }
+    .dt-row > div { flex:1; min-width:0; }
+
+    .casting-alert {
+      margin-top:8px;
+      padding:7px 12px;
+      border-radius:10px;
+      font-size:13px;
+      font-weight:700;
+      text-align:center;
+      display:none;
+    }
+    .casting-alert.good {
+      display:block;
+      background:rgba(39,174,96,.1);
+      color:#1a6634;
+      border:1px solid rgba(39,174,96,.3);
+    }
+    .casting-alert.caution {
+      display:block;
+      background:rgba(231,76,60,.08);
+      color:#922b21;
+      border:1px solid rgba(231,76,60,.28);
+    }
+
     textarea {
       min-height:90px;
       resize:vertical;
@@ -609,7 +642,7 @@
 
     <section id="screen-open" class="screen active">
       <div class="panel">
-        <h2>עמוד פתיחה</h2>
+        <h2>פרטי הקריאה</h2>
 
         <div class="form-grid">
           <div>
@@ -622,14 +655,18 @@
             <input id="clientParentInput" placeholder="שם האב" autocomplete="off" />
           </div>
 
-          <div>
-            <label>תאריך השאלה</label>
-            <input type="date" id="questionDateInput" autocomplete="off" />
-          </div>
-
-          <div>
-            <label>שעת השאלה</label>
-            <input type="time" id="questionTimeInput" autocomplete="off" />
+          <div class="full">
+            <div class="dt-row">
+              <div>
+                <label>תאריך</label>
+                <input type="date" id="questionDateInput" autocomplete="off" />
+              </div>
+              <div>
+                <label>שעה</label>
+                <input type="time" id="questionTimeInput" autocomplete="off" />
+              </div>
+            </div>
+            <div id="castingTimeAlert" class="casting-alert"></div>
           </div>
 
           <div class="full">
@@ -1228,6 +1265,53 @@
       renderMotherSlots();
       renderFigureGrid();
     }
+
+    // ── שעות טובות ורעות להטלה (בלוג' אלאמל עמ' 2) ──
+    function updateCastingTimeAlert() {
+      const el = document.getElementById('castingTimeAlert');
+      if (!el) return;
+      const timeInput = document.getElementById('questionTimeInput');
+      let h, m;
+      if (timeInput && timeInput.value) {
+        [h, m] = timeInput.value.split(':').map(Number);
+      } else {
+        const now = new Date();
+        h = now.getHours();
+        m = now.getMinutes();
+      }
+      const total = h * 60 + m;
+      let cls, txt;
+      if (total >= 20 * 60 || total < 6 * 60) {
+        cls = 'good'; txt = '🌙 שעה טובה להטלה — לילה (הלילה טוב מהיום לפי הספר)';
+      } else if (total >= 6 * 60 && total < 14 * 60 + 30) {
+        cls = 'good'; txt = '☀️ שעה טובה להטלה — שחרית עד מנחה';
+      } else {
+        cls = 'caution'; txt = '⚠️ שעה מכוהנת — אחרי מנחה עד שקיעה, עדיף לדחות את ההטלה';
+      }
+      el.className = 'casting-alert ' + cls;
+      el.textContent = txt;
+    }
+
+    // מלא תאריך ושעה נוכחיים בטעינה
+    (function setDefaultDateTime() {
+      const now = new Date();
+      const dateEl = document.getElementById('questionDateInput');
+      const timeEl = document.getElementById('questionTimeInput');
+      if (dateEl && !dateEl.value) {
+        const y = now.getFullYear();
+        const mo = String(now.getMonth() + 1).padStart(2, '0');
+        const d = String(now.getDate()).padStart(2, '0');
+        dateEl.value = `${y}-${mo}-${d}`;
+      }
+      if (timeEl && !timeEl.value) {
+        const hh = String(now.getHours()).padStart(2, '0');
+        const mm = String(now.getMinutes()).padStart(2, '0');
+        timeEl.value = `${hh}:${mm}`;
+      }
+    })();
+
+    document.getElementById('questionTimeInput')?.addEventListener('change', updateCastingTimeAlert);
+    updateCastingTimeAlert();
 
     renderTopicGrid();
 
