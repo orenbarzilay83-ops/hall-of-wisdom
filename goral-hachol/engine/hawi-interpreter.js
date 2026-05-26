@@ -75,57 +75,65 @@ const HOUSE_FORTUNE_TONES = {
 
 // Houses that represent the OTHER SIDE (opponent/illness/enemy) — fortune is inverted for the questioner
 const ADVERSARIAL_HOUSES_BY_TOPIC = {
-  disputes:    [7],
-  enemies:     [7, 12],
-  illness:     [6],
-  prisoner:    [12],
-  partnership: [7],
+  disputes:         [7],
+  enemies:          [7, 12],
+  illness:          [6],
+  prisoner:         [12],
+  partnership:      [7],
+  theft:            [7],
+  deathInheritance: [8],
 };
 
 const TOPIC_MAIN_HOUSES = {
-  travel: [1, 3, 5, 8, 9, 12],
-  missingPerson: [1, 7, 8, 9, 12],
-  childrenPregnancy: [1, 4, 5, 6, 7, 11, 13, 14, 15],
-  hiddenTreasure: [1, 2, 4, 6, 7, 8, 10, 12, 15, 16],
-  yearlyForecast: [1, 10, 15],
-  authorityState: [1, 7, 10, 11, 15],
-  birthNativity: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+  travel:           [1, 3, 5, 8, 9, 12],
+  missingPerson:    [1, 7, 8, 9, 12],
+  childrenPregnancy:[1, 4, 5, 6, 7, 11, 13, 14, 15],
+  hiddenTreasure:   [1, 2, 4, 6, 7, 8, 10, 12, 15, 16],
+  yearlyForecast:   [1, 10, 15],
+  authorityState:   [1, 7, 10, 11, 15],
+  birthNativity:    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
   spiritualDiagnostics: [1, 6, 8, 9, 12],
-  marriage: [1, 7, 8, 12, 13, 14, 15],
-  illness: [1, 6, 7, 8, 13, 14, 15],
-  disputes: [1, 7, 13, 14, 15],
-  enemies: [1, 7, 9, 12, 13, 14, 15],
-  fear: [1, 4, 12, 13, 14, 15],
-  commerce: [1, 2, 7, 10, 13, 14, 15],
-  loveHate: [1, 5, 7, 11, 13, 14, 15],
-  completion: [1, 13, 14, 15],
-  foundations: [1, 13, 14, 15, 16],
-  prisoner:    [1, 4, 5, 12, 15],
-  partnership: [1, 2, 7, 10, 13, 14, 15],
-  seaVoyage:   [1, 8, 9, 12, 15],
+  marriage:         [1, 7, 8, 12, 13, 14, 15],
+  illness:          [1, 6, 7, 8, 13, 14, 15],
+  disputes:         [1, 7, 13, 14, 15],
+  enemies:          [1, 7, 9, 12, 13, 14, 15],
+  fear:             [1, 4, 12, 13, 14, 15],
+  commerce:         [1, 2, 7, 10, 13, 14, 15],
+  loveHate:         [1, 5, 7, 11, 13, 14, 15],
+  completion:       [1, 13, 14, 15],
+  foundations:      [1, 13, 14, 15, 16],
+  prisoner:         [1, 4, 5, 12, 15],
+  partnership:      [1, 2, 7, 10, 13, 14, 15],
+  seaVoyage:        [1, 8, 9, 12, 15],
+  theft:            [1, 2, 7, 8, 13, 14, 15],
+  siblings:         [1, 3, 7, 13, 14, 15],
+  deathInheritance: [1, 7, 8, 2, 13, 14, 15],
 };
 
 const TOPIC_HEBREW_TITLES = {
-  travel: 'נסיעה',
-  missingPerson: 'נעדר / גאיב',
-  childrenPregnancy: 'ילדים והריון',
-  hiddenTreasure: 'מטמון / חבוי',
-  yearlyForecast: 'טאלע השנה / גשם / יוקר וזול',
-  authorityState: 'שלטון / מדינה / בעלי תפקידים',
-  birthNativity: 'מולד / נולד',
+  travel:           'נסיעה',
+  missingPerson:    'נעדר / גאיב',
+  childrenPregnancy:'ילדים והריון',
+  hiddenTreasure:   'מטמון / חבוי',
+  yearlyForecast:   'טאלע השנה / גשם / יוקר וזול',
+  authorityState:   'שלטון / מדינה / בעלי תפקידים',
+  birthNativity:    'מולד / נולד',
   spiritualDiagnostics: 'אבחון רוחני',
-  marriage: 'נישואין / זוגיות',
-  illness: 'חולה / מחלה',
-  disputes: 'סכסוך / תביעה',
-  enemies: 'אויב / אויבות',
-  fear: 'פחד / סכנה',
-  commerce: 'מסחר / קנייה ומכירה',
-  loveHate: 'אהבה ושנאה',
-  completion: 'האם הדבר יצליח / יושלם',
-  foundations: 'יסודות גורל החול',
-  prisoner: 'אסיר / כלא / מעצר',
-  partnership: 'שותפות / ערבות / קשר עסקי',
-  seaVoyage: 'מסע ים / ספינה',
+  marriage:         'נישואין / זוגיות',
+  illness:          'חולה / מחלה',
+  disputes:         'סכסוך / תביעה',
+  enemies:          'אויב / אויבות',
+  fear:             'פחד / סכנה',
+  commerce:         'מסחר / קנייה ומכירה',
+  loveHate:         'אהבה ושנאה',
+  completion:       'האם הדבר יצליח / יושלם',
+  foundations:      'יסודות גורל החול',
+  prisoner:         'אסיר / כלא / מעצר',
+  partnership:      'שותפות / ערבות / קשר עסקי',
+  seaVoyage:        'מסע ים / ספינה',
+  theft:            'גנבה / חפץ גנוב',
+  siblings:         'אחים / שכנים / קרובים',
+  deathInheritance: 'מוות / ירושה / פחד גדול',
 };
 
 // הבית המייצג את הנשאל לפי נושא (house of the quesited / бيت المطلوب)
@@ -150,6 +158,9 @@ const TOPIC_QUESITED_HOUSE = {
   prisoner:            12,
   partnership:          7,
   seaVoyage:            9,
+  theft:                7,  // בית הגנב (הצד השני)
+  siblings:             3,  // בית האחים / השכנים
+  deathInheritance:     8,  // בית המוות / הירושה
 };
 
 // צורות הנחשבות נחס (رمال النحوس) לפי מסורת חאוי
@@ -561,16 +572,19 @@ const MOVEMENT_HEBREW_MAP = {
 };
 
 const TOPIC_H1_NOTES = {
-  illness:    'בית 1 = גוף החולה. האלמנט מצביע על אזור הגוף הפגוע.',
-  disputes:   'בית 1 = השואל בדיון. מצבו קובע צד חזק/חלש.',
-  marriage:   'בית 1 = הבעל/השואל. יש להשוות עם בית 7 (הצד השני).',
-  enemies:    'בית 1 = כוח השואל מול האויב. אם טוב — יכול להתמודד.',
-  loveHate:   'בית 1 = מצב השואל הרגשי. בדוק חיבור לבית 11.',
-  commerce:   'בית 1 = השואל כסוחר. בדוק מצבו מול בית 2 (ממון).',
-  fear:       'בית 1 = השואל. אם הצורה רעה — הפחד מוצדק.',
-  missingPerson: 'בית 1 = השואל המחפש. בדוק מול בית 7 (הנעדר).',
-  travel:     'בית 1 = הנוסע. צורה טובה = נסיעה מוצלחת.',
-  completion: 'בית 1 = השואל שרוצה להשלים. צורה טובה = יש כוח להשלמה.',
+  illness:          'בית 1 = גוף החולה. האלמנט מצביע על אזור הגוף הפגוע.',
+  disputes:         'בית 1 = השואל בדיון. מצבו קובע צד חזק/חלש.',
+  marriage:         'בית 1 = הבעל/השואל. יש להשוות עם בית 7 (הצד השני).',
+  enemies:          'בית 1 = כוח השואל מול האויב. אם טוב — יכול להתמודד.',
+  loveHate:         'בית 1 = מצב השואל הרגשי. בדוק חיבור לבית 11.',
+  commerce:         'בית 1 = השואל כסוחר. בדוק מצבו מול בית 2 (ממון).',
+  fear:             'בית 1 = השואל. אם הצורה רעה — הפחד מוצדק.',
+  missingPerson:    'בית 1 = השואל המחפש. בדוק מול בית 7 (הנעדר).',
+  travel:           'בית 1 = הנוסע. צורה טובה = נסיעה מוצלחת.',
+  completion:       'בית 1 = השואל שרוצה להשלים. צורה טובה = יש כוח להשלמה.',
+  theft:            'בית 1 = הנגנב. בית 7 = הגנב. בית 2 = הרכוש הגנוב. בית 8 = תיאור הגנב.',
+  siblings:         'בית 1 = השואל. בית 3 = האח/השכן/הקרוב הנשאל עליו.',
+  deathInheritance: 'בית 1 = השואל. בית 8 = המוות/הירושה. בית 7 = הצד השני (יורש/נפטר).',
 };
 
 function computeHouse1Analysis(chart, topicId) {
@@ -693,6 +707,20 @@ const TOPIC_KEY_PAIRS = {
   authorityState: [
     { houses: [1, 10], role: 'שואל ↔ שלטון/עמדה' },
     { houses: [10, 15], role: 'סמכות ↔ פסיקה' },
+  ],
+  theft: [
+    { houses: [1, 7],  role: 'נגנב ↔ גנב' },
+    { houses: [1, 2],  role: 'שואל ↔ ממונו הגנוב' },
+    { houses: [7, 8],  role: 'גנב ↔ תיאורו' },
+  ],
+  siblings: [
+    { houses: [1, 3],  role: 'שואל ↔ אח/שכן' },
+    { houses: [3, 9],  role: 'קרוב ↔ נסיעה/תנועה' },
+  ],
+  deathInheritance: [
+    { houses: [1, 8],  role: 'שואל ↔ מוות/ירושה' },
+    { houses: [7, 8],  role: 'צד שני ↔ הירושה' },
+    { houses: [1, 2],  role: 'שואל ↔ ממון הירושה' },
   ],
 };
 
@@ -1604,6 +1632,7 @@ const NAME_EXTRACTION_HOUSES_BY_TOPIC = {
   missingPerson:        [{ house: 7, labelOverride: 'שם הנעדר' }],
   prisoner:             [{ house: 12, labelOverride: 'שם הגורם לכליאה' }],
   partnership:          [{ house: 7, labelOverride: 'שם השותף' }],
+  theft:                [{ house: 7, labelOverride: 'שם הגנב' }],
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -2585,10 +2614,10 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const yearlyFigureForecast = (topicId === 'yearlyForecast')
     ? computeYearlyFigureForecast(board.chart) : null;
 
-  const alternativeNameExtraction = (['enemies', 'spiritualDiagnostics', 'missingPerson', 'prisoner', 'partnership'].includes(topicId))
+  const alternativeNameExtraction = (['enemies', 'spiritualDiagnostics', 'missingPerson', 'prisoner', 'partnership', 'theft'].includes(topicId))
     ? computeAlternativeNameExtraction(board.chart) : null;
 
-  const physicalDescriptionThief = (['enemies', 'disputes'].includes(topicId))
+  const physicalDescriptionThief = (['enemies', 'disputes', 'theft'].includes(topicId))
     ? computePhysicalDescriptionForHouse(board.chart, 7) : null;
 
   const physicalDescriptionMissing = (topicId === 'missingPerson')

@@ -796,41 +796,84 @@
 
     let selectedMothers = [null, null, null, null];
     let activeMother = 0;
-    let selectedTopicId = null;
+    let selectedHouseNum = null;  // בית שנבחר (1-12)
 
+    // 12 כרטיסים לפי סדר הבתים. הנושא המדויק נקבע בזמן הריצה לפי השאלה.
     const TOPIC_CARDS = [
-      { house: 1,  title: 'מצב החיים הכללי', desc: 'בריאות, גוף, נפש, מצב השואל', topicId: 'foundations' },
-      { house: 2,  title: 'כסף ופרנסה',      desc: 'ממון, רכוש, עסקים, מסחר',     topicId: 'commerce' },
-      { house: 4,  title: 'בית ונכסים',      desc: 'דירה, נדל"ן, ירושה, מה שנסתר', topicId: 'hiddenTreasure' },
-      { house: 5,  title: 'ילדים והריון',    desc: 'לידה, הריון, ילדים',           topicId: 'childrenPregnancy' },
-      { house: 6,  title: 'מחלה ובריאות',   desc: 'חולי, מצב רפואי, החלמה',       topicId: 'illness' },
-      { house: 7,  title: 'זוגיות ונישואין', desc: 'בן/בת זוג, שותפות, יריב',      topicId: 'marriage' },
-      { house: 9,  title: 'נסיעה ומסע',      desc: 'יציאה, נסיעה, מסע',            topicId: 'travel' },
-      { house: 10, title: 'עבודה ומעמד',     desc: 'קריירה, שלטון, בעלי סמכות',   topicId: 'authorityState' },
-      { house: 11, title: 'חברות ואהבה',     desc: 'חברים, קשרים, אהבה',           topicId: 'loveHate' },
-      { house: 12, title: 'אויבים ופחד',     desc: 'פחד, אויבים, מה מפריע',        topicId: 'enemies' },
-      { house: 12, title: 'אסיר / כלא',      desc: 'מאסר, מעצר, יציאה מכלא',       topicId: 'prisoner' },
-      { house: 7,  title: 'שותפות / ערבות',  desc: 'שותף עסקי, ערב, קשר משותף',    topicId: 'partnership' },
-      { house: 9,  title: 'מסע ים',           desc: 'נסיעה בים, ספינה, סכנות ים',   topicId: 'seaVoyage' },
+      { house: 1,  title: 'מצב השואל',      desc: 'בריאות, גוף, נפש, מצב כללי',           defaultTopicId: 'foundations' },
+      { house: 2,  title: 'כסף ופרנסה',     desc: 'ממון, רכוש, עסקים, מסחר',              defaultTopicId: 'commerce' },
+      { house: 3,  title: 'אחים ושכנים',    desc: 'אחים, שכנים, קרובים, מכתבים',          defaultTopicId: 'siblings' },
+      { house: 4,  title: 'בית ונכסים',     desc: 'דירה, נדל"ן, ירושה, דברים נסתרים',    defaultTopicId: 'hiddenTreasure' },
+      { house: 5,  title: 'ילדים והריון',   desc: 'לידה, הריון, ילדים, שמחה',             defaultTopicId: 'childrenPregnancy' },
+      { house: 6,  title: 'מחלה ובריאות',  desc: 'חולי, מצב רפואי, החלמה, כישוף',        defaultTopicId: 'illness' },
+      { house: 7,  title: 'הצד השני',       desc: 'בן/בת זוג, שותף, יריב, גנב, נעדר',     defaultTopicId: 'marriage' },
+      { house: 8,  title: 'מוות וירושה',    desc: 'מוות, ירושה, פחד גדול, שינוי עמוק',   defaultTopicId: 'deathInheritance' },
+      { house: 9,  title: 'נסיעה ומסע',     desc: 'יציאה, נסיעה, ים, דת, רוחניות',        defaultTopicId: 'travel' },
+      { house: 10, title: 'עבודה ומעמד',    desc: 'קריירה, שלטון, בעלי סמכות',            defaultTopicId: 'authorityState' },
+      { house: 11, title: 'חברים ואהבה',    desc: 'חברים, קשרים, תקוות, אהבה',            defaultTopicId: 'loveHate' },
+      { house: 12, title: 'אויבים וכלא',    desc: 'אויבים נסתרים, מאסר, סכנה, כישוף',    defaultTopicId: 'enemies' },
     ];
+
+    // מיפוי מילות מפתח לנושא מדויק לפי בית — כל בית יכול להכיל כמה תת-נושאים
+    const HOUSE_TOPIC_KEYWORDS = {
+      6: [
+        { topicId: 'spiritualDiagnostics', kw: ['עין הרע','כישוף','עין','קנאה','רוח רעה','שד','דיבוק','קללה','עשב','מזיק','אבחון רוחני','חרם','נגיעה'] },
+        // default: illness
+      ],
+      7: [
+        { topicId: 'theft',         kw: ['גנב','גנבה','גנוב','נגנב','גנבו','מי לקח','לקחו','הגנבה','נגנב לי','גנבו לי','גנב לי'] },
+        { topicId: 'missingPerson', kw: ['נעדר','נעלם','נעלמה','לא חזר','לא חזרה','אבד','אבדה','היכן הוא','היכן היא','איפה הוא','איפה היא'] },
+        { topicId: 'disputes',      kw: ['תביעה','בית משפט','מחלוקת','ריב','סכסוך','יריב','תובע','נתבע','דיון משפטי','פסיקה','עורך דין'] },
+        { topicId: 'partnership',   kw: ['שותף','שותפות','עסק משותף','ערב','ערבות','חוזה','הסכם עסקי','קשר עסקי'] },
+        { topicId: 'enemies',       kw: ['אויב','אויבים','מתנקש','שונא','שונאים','מי מזיק','מי עושה לי','מי פוגע'] },
+        // default: marriage
+      ],
+      9: [
+        { topicId: 'seaVoyage',            kw: ['ים','ספינה','אונייה','שייט','ימי','נמל','דיג','מסע ים','נסיעה בים','אוקיינוס'] },
+        { topicId: 'spiritualDiagnostics', kw: ['חלום','חזון','נבואה','סימן שמיימי','דת','אמונה','רוחניות','נסתר','קבלה','ספיריטואל'] },
+        // default: travel
+      ],
+      10: [
+        { topicId: 'yearlyForecast', kw: ['שנה','תחזית שנתית','טאלע','גורל השנה','מה יקרה השנה','השנה הקרובה'] },
+        // default: authorityState
+      ],
+      12: [
+        { topicId: 'prisoner',  kw: ['כלא','מאסר','מעצר','עצור','נאסר','כלוא','בית סוהר','שחרור מכלא','תיק פלילי','פלילי'] },
+        { topicId: 'fear',      kw: ['פחד','סכנה','מסוכן','איום','מאיים','חרדה','פוחד','מפחד','סכנת חיים'] },
+        { topicId: 'spiritualDiagnostics', kw: ['כישוף','עין הרע','שד','רוח רעה','קללה','דיבוק','נגיעה','חרם'] },
+        // default: enemies
+      ],
+    };
+
+    function detectTopicFromQuestion(houseNum, questionText) {
+      const q = (questionText || '').toLowerCase();
+      const rules = HOUSE_TOPIC_KEYWORDS[houseNum];
+      if (rules) {
+        for (const rule of rules) {
+          if (rule.kw.some(k => q.includes(k))) return rule.topicId;
+        }
+      }
+      const card = TOPIC_CARDS.find(c => c.house === houseNum);
+      return card ? card.defaultTopicId : 'foundations';
+    }
 
     function renderTopicGrid() {
       const grid = document.getElementById("topicGrid");
       if (!grid) return;
       grid.innerHTML = TOPIC_CARDS.map(c => `
-        <button type="button" class="topic-card ${selectedTopicId === c.topicId ? 'selected' : ''}" data-topic="${c.topicId}">
+        <button type="button" class="topic-card ${selectedHouseNum === c.house ? 'selected' : ''}" data-house="${c.house}">
           <div class="topic-card-house">בית ${c.house}</div>
           <div class="topic-card-title">${c.title}</div>
           <div class="topic-card-desc">${c.desc}</div>
         </button>
       `).join("") + `
-        <button type="button" class="topic-free-btn ${selectedTopicId === '__free__' ? 'selected' : ''}" data-topic="__free__">
+        <button type="button" class="topic-free-btn ${selectedHouseNum === 0 ? 'selected' : ''}" data-house="0">
           שאלה חופשית — האפליקציה תזהה את הנושא לבד
         </button>`;
 
-      grid.querySelectorAll("[data-topic]").forEach(btn => {
+      grid.querySelectorAll("[data-house]").forEach(btn => {
         btn.addEventListener("click", () => {
-          selectedTopicId = btn.dataset.topic === "__free__" ? null : btn.dataset.topic;
+          selectedHouseNum = Number(btn.dataset.house);
           renderTopicGrid();
         });
       });
@@ -929,14 +972,15 @@
       });
     }
 
-    function getClientContext() {
+    function getClientContext(resolvedTopicId) {
       return {
         clientName: document.getElementById("clientNameInput").value.trim(),
         parentName: document.getElementById("clientParentInput").value.trim(),
         questionDate: document.getElementById("questionDateInput").value.trim(),
         questionTime: document.getElementById("questionTimeInput").value.trim(),
         consultationContext: "",
-        topicOverride: selectedTopicId || ""
+        topicOverride: resolvedTopicId || "",
+        selectedHouse: selectedHouseNum || null,
       };
     }
 
@@ -1259,8 +1303,14 @@
           throw new Error("מנוע גורל החול לא נטען מתוך raml.js.");
         }
 
+        // זהה נושא מדויק לפי הבית שנבחר + תוכן השאלה
+        const resolvedTopicId = (selectedHouseNum && selectedHouseNum > 0)
+          ? detectTopicFromQuestion(selectedHouseNum, question)
+          : null;  // null = המנוע יחליט לבד לפי טקסט השאלה
+
         const reading = window.ramlRunReading(question, mothers);
-        reading.clientContext = getClientContext();
+        reading.topicId = resolvedTopicId;           // מעביר ישירות למנוע
+        reading.clientContext = getClientContext(resolvedTopicId);
 
         boardResult.innerHTML = buildBoardHtml(reading) + buildInterpretationHtml(reading);
         showScreen("board");
@@ -1276,7 +1326,7 @@
         const el = document.getElementById(id);
         if (el) el.value = "";
       });
-      selectedTopicId = null;
+      selectedHouseNum = null;
       renderTopicGrid();
       selectedMothers = [null,null,null,null];
       activeMother = 0;
