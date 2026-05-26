@@ -1906,6 +1906,344 @@ function computeTrianglesEnrichment(chart) {
   return { enriched, outputHebrew: enriched.map((e) => e.hebrewNote).join('\n') };
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// אלמנט → סוג מחלה (בלוג' אלאמל פרק 5)
+// ─────────────────────────────────────────────────────────────────────────────
+const ELEMENT_ILLNESS_TYPE = {
+  'אש':    'מרה צהובה — חום, כבד, מרה, בעיות עיכול (חולי אש)',
+  'אוויר': 'דם — לחץ דם, עצבים, מחלות נשימה (חולי אוויר)',
+  'מים':   'כיח / ריר — ריאות, כליות, בעיות נוזלים (חולי מים)',
+  'עפר':   'מרה שחורה — עצבות, עייפות, מחלות כרוניות (חולי עפר)',
+};
+
+function computeIllnessElementDiagnosis(chart) {
+  const counts = { 'אש': 0, 'אוויר': 0, 'מים': 0, 'עפר': 0 };
+  for (const h of chart) {
+    const el = h.element || h.elementHebrew || '';
+    if (counts[el] !== undefined) counts[el]++;
+  }
+  const h6 = chart.find((h) => Number(h.house) === 6);
+  const h8 = chart.find((h) => Number(h.house) === 8);
+  const h6El = h6?.element || h6?.elementHebrew || '';
+  const h8El = h8?.element || h8?.elementHebrew || '';
+
+  // בית 6 = מחלה, בית 8 = סכנה. בית 6 גובר.
+  const primaryEl = h6El || Object.entries(counts).sort(([,a],[,b]) => b - a)[0][0];
+  const illnessType = ELEMENT_ILLNESS_TYPE[primaryEl] || '';
+  const dangerType  = h8El ? ELEMENT_ILLNESS_TYPE[h8El] : null;
+
+  const lines = [`אלמנט בית 6 (מחלה): ${h6El || 'לא ידוע'} → ${illnessType}`];
+  if (dangerType && h8El !== h6El) {
+    lines.push(`אלמנט בית 8 (סכנה): ${h8El} → ${dangerType}`);
+  }
+
+  // סימנים ספציפיים מהספר (פרק 24)
+  const specificSigns = [];
+  const h6Key = h6?.key || '';
+  const h1Key = chart.find((h) => Number(h.house) === 1)?.key || '';
+  if (h6Key === '2112') specificSigns.push('חיבור בבית 6 — מחלת בטן (כבד, טחול, שיעול)');
+  if (h6Key === '1111') specificSigns.push('דרך בבית 6 — חשד לרעל או אכילת מזיקה');
+  if (h6Key === '1221') specificSigns.push('סוהר בבית 6 — מחלה קשה, קבר פתוח — זהירות');
+  if (h6Key === '2212') specificSigns.push('לבן בבית 6 — המחלה לא תאריך ימים');
+  if (specificSigns.length) lines.push(...specificSigns);
+
+  return {
+    primaryElement: primaryEl,
+    illnessType,
+    dangerType,
+    elementCounts: counts,
+    specificSigns,
+    outputHebrew: lines.join('\n'),
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// זיהוי גנב לפי בית חזרת הצורה (בלוג' אלאמל פרק 19 ועמ' 64)
+// ─────────────────────────────────────────────────────────────────────────────
+function computeThiefLocationDetails(chart) {
+  const figureHouses = {};
+  for (const h of chart) {
+    const key = h.key;
+    if (!key) continue;
+    if (!figureHouses[key]) figureHouses[key] = [];
+    figureHouses[key].push({ house: Number(h.house), hebrew: h.hebrew || h.key });
+  }
+
+  const lines = [];
+  const findings = [];
+
+  for (const [key, entries] of Object.entries(figureHouses)) {
+    if (entries.length < 2) continue;
+    const houseNums = entries.map((e) => e.house);
+    const figHebrew = entries[0].hebrew;
+
+    const inMothers   = houseNums.some((n) => n >= 1 && n <= 4);
+    const inHouse5    = houseNums.includes(5);
+    const inHouse6    = houseNums.includes(6);
+    const afterSeven  = houseNums.filter((n) => n >= 7 && n <= 12);
+
+    let thiefType = '';
+    if (inMothers)        thiefType = 'הגנב מאנשי הבית / המשרתים';
+    else if (inHouse5)    thiefType = 'הגנב מהשכנים';
+    else if (inHouse6)    thiefType = 'הגנב מהיכרים / אוהבים של הבעלים';
+    else if (afterSeven.length >= 2) thiefType = `יש ${afterSeven.length} גנבים (צורה חוזרת אחרי בית 7)`;
+
+    if (thiefType) {
+      lines.push(`${figHebrew} חוזר בבתים ${houseNums.join(', ')} — ${thiefType}`);
+      findings.push({ figureKey: key, figureHebrew: figHebrew, houses: houseNums, thiefType });
+    }
+  }
+
+  const h8 = chart.find((h) => Number(h.house) === 8);
+  const h6 = chart.find((h) => Number(h.house) === 6);
+  if (h8) lines.push(`תיאור הגנב (בית 8 — ${h8.hebrew || h8.key}): ${h8.transit?.meaning || 'ראה פסיקת המעבר'}`);
+  if (h6) lines.push(`תיאור החפץ הגנוב (בית 6 — ${h6.hebrew || h6.key}): ${h6.transit?.meaning || 'ראה פסיקת המעבר'}`);
+
+  if (!lines.length) return null;
+  return { findings, outputHebrew: lines.join('\n') };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// גילוי אויב בסביבה הקרובה (בלוג' אלאמל עמ' 64)
+// נוסחה: נקודות פתוחות של צורות נחסיות, חלקי 5, חלוקה על הבתים
+// ─────────────────────────────────────────────────────────────────────────────
+function computeEnemyInHousehold(chart) {
+  const MALEFIC = new Set(['1212','2122','2221','2222','1221']);
+  let openDots = 0;
+  for (const h of chart) {
+    if (!MALEFIC.has(h.key || '')) continue;
+    for (const ch of String(h.key || '')) {
+      if (ch === '1') openDots++;
+    }
+  }
+  if (openDots === 0) return { hasEnemy: false, outputHebrew: 'לא נמצאו סימנים לאויב בסביבה הקרובה.' };
+
+  const remainder = openDots % 5 || 5;
+  const targetHouse = chart.find((h) => Number(h.house) === remainder);
+  const targetFig = targetHouse?.key || '';
+  const isMalefic = MALEFIC.has(targetFig);
+  const isBenefic = ['1122','2211','2121','1222'].includes(targetFig);
+
+  let verdict = '';
+  if (isMalefic)       verdict = 'יש אויב בסביבה הקרובה';
+  else if (isBenefic)  verdict = 'אין אויב — מדובר בחבר או אדם ניטרלי';
+  else                 verdict = 'אדם מפוקפק בסביבה — לא אויב ברור אבל לא ידיד מוחלט';
+
+  const repetitions = chart.filter((h) => h.key === targetFig).length;
+  const enemyCount = repetitions > 1 ? ` (מספר האויבים: ${repetitions})` : '';
+
+  return {
+    hasEnemy: isMalefic,
+    openDots,
+    remainder,
+    targetHouse: remainder,
+    targetFigure: targetHouse?.hebrew || targetFig,
+    verdict,
+    outputHebrew: `גילוי אויב בסביבה (נוסחת הנקודות הפתוחות): נפל על בית ${remainder} — ${targetHouse?.hebrew || targetFig} — ${verdict}${enemyCount}`,
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// עיתוי — מתי יסתיים העניין? (בלוג' אלאמל פרק 7)
+// יסוד הצורה בבית הדמיר קובע את יחידת הזמן
+// ─────────────────────────────────────────────────────────────────────────────
+const ELEMENT_TIMING_UNITS = {
+  'אש':    { single: 1, label: 'יום / שעה' },
+  'אוויר': { single: 2, label: 'ימיים / שעתיים' },
+  'מים':   { single: 3, label: 'שלושה ימים / שעות' },
+  'עפר':   { single: 4, label: 'ארבעה ימים / שעות' },
+};
+
+function computeTimingEstimate(chart, dhamirHouse, topicId) {
+  if (!dhamirHouse || !Array.isArray(chart)) return null;
+
+  const dh = Number(dhamirHouse.houseNumber || dhamirHouse.house);
+  const dhamirEntry = chart.find((h) => Number(h.house) === dh);
+  if (!dhamirEntry) return null;
+
+  const el = dhamirEntry.element || dhamirEntry.elementHebrew || '';
+  const timing = ELEMENT_TIMING_UNITS[el];
+  if (!timing) return null;
+
+  // קבוצת הבית קובעת את מה מדדים (ימים/שבועות/חודשים/שנים)
+  let scale = '';
+  if (dh >= 1  && dh <= 4)  scale = 'ימים / שעות (אמהות — מהיר)';
+  if (dh >= 5  && dh <= 8)  scale = 'שבועות / ימים (בנות — בינוני)';
+  if (dh >= 9  && dh <= 12) scale = 'חודשים / שבועות (נכדות — ממושך)';
+  if (dh >= 13 && dh <= 16) scale = 'שנים / חודשים (מאזנים — ארוך)';
+
+  return {
+    dhamirHouse: dh,
+    dhamirFigure: dhamirEntry.hebrew || dhamirEntry.key,
+    element: el,
+    timingUnits: timing.label,
+    scale,
+    outputHebrew: `עיתוי (מתי יסתיים?): הדמיר בבית ${dh} (${dhamirEntry.hebrew || dhamirEntry.key}) — אלמנט ${el} — ${timing.label}. סקאלה: ${scale}`,
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// צורה שולטת × נישואין (בלוג' אלאמל פרק 33)
+// ─────────────────────────────────────────────────────────────────────────────
+const MARRIAGE_BY_DOMINANT_FIGURE = {
+  '1111': 'דרך שולטת — לא יתאחד עד לאחר זמן; האיחוד יבוא בעיכוב',
+  '1112': 'סף יוצא שולט — נישואין עם מכשולים ביציאה; יש עיכוב כבד',
+  '1121': 'נלחם שולט — ישמח בה; נישואין עם שמחה',
+  '1122': 'כבוד יוצא שולט — לא ינקה מנכד ורוגז; קושי בנישואין',
+  '1211': 'בר הלחי שולט — זיווג ושמחה מצד הנשים; הצלחה בשותפות',
+  '1212': 'ממון יוצא שולט — ייצא ממנה ולא יחזור; פרידה בסוף',
+  '1221': 'סוהר שולט — נישואין ישנו את מצבו לטובה',
+  '1222': 'נשוא ראש שולט — אין טוב לנישואין אלה; ריב ונכד',
+  '2111': 'סף נכנס שולט — יתחתן אבל יגרש לאחר מכן',
+  '2112': 'חיבור שולט — ישמח בה; נישואין טובים עם שמחה',
+  '2121': 'ממון נכנס שולט — קבלה עם קושי אך אחרית טובה; נישואין עם סבל שמסתיים בטוב',
+  '2122': 'אדום שולט — יפיק תועלת גדולה מהנישואין',
+  '2211': 'כבוד נכנס שולט — נישואין עם אהבה ביניהם; קשר חזק',
+  '2212': 'לבן שולט — אין טוב לו בנישואין אלה; לא מומלץ',
+  '2221': 'שפל ראש שולט — יש תנועה חיובית; נישואין אפשריים עם הסתייגות',
+  '2222': 'קהלה שולטת — קשיים ורב כיוון; ריב ונכד בנישואין',
+};
+
+function computeMarriageFigureForecast(chart) {
+  const counts = {};
+  for (const h of chart) {
+    const k = h.key || '';
+    if (k) counts[k] = (counts[k] || 0) + 1;
+  }
+  const dominant = Object.entries(counts).sort(([,a],[,b]) => b - a)[0];
+  if (!dominant) return null;
+
+  const [domKey, domCount] = dominant;
+  const meaning = MARRIAGE_BY_DOMINANT_FIGURE[domKey];
+  if (!meaning) return null;
+
+  const domHebrew = chart.find((h) => h.key === domKey)?.hebrew || domKey;
+  return {
+    dominantKey: domKey,
+    dominantHebrew: domHebrew,
+    count: domCount,
+    meaning,
+    outputHebrew: `פסיקת נישואין לפי צורה שולטת: "${domHebrew}" (${domCount}×) — ${meaning}`,
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// צורה ראשונה × חזרות (בלוג' אלאמל פרק 17)
+// ─────────────────────────────────────────────────────────────────────────────
+const FIRST_FIGURE_REPETITIONS = {
+  // [1x, 2x, 3x, 4x]
+  '1111': [
+    'שואל על נסיעה בשותפות עם אחרים — נסיעה מבורכת',
+    'ניוד — העברת דבר ממקום למקום',
+    'החפצים מושגים, תנועות מוצלחות',
+    'כמו שלוש — תנועה וקיום הצרכים',
+  ],
+  '2222': [
+    'שואל על אישה שיש ריב ביניהם ורוצה להתפייס',
+    'כנ"ל — עם תמיכה לאחד מהצדדים',
+    'שואל על נסיעה עם קבוצה — לא כדאי לנסוע',
+    'שואל על שיירה גדולה עם פחד — אין לזוז בכלל',
+  ],
+  '2211': [
+    'שואל על חולה שמצבו קשה אך יחלים בסוף',
+    'שואל על נעדר שמת לפי הסימנים',
+    'שואל על אסיר שמאסרו יתמשך',
+    'שואל על חולה שימות מן המחלה',
+  ],
+  '1122': [
+    'שואל על נסיעה — מסע מבורך עם עתיד טוב',
+    'שואל על ניוד דבר ממקום למקום',
+    'החוסר יושלם',
+    'יגיע דבר מרחוק',
+  ],
+  '1222': [
+    'שואל על אדם חשוב — חכם, עשיר, שופט, בעל מעמד',
+    'שואל על שניים — עניין כפול',
+    'שואל על נושא כבד ומסובך',
+    'שואל על בית משפט / עניין שלטוני',
+  ],
+  '2122': [
+    'שואל על רופא או חולה במחלה קשה עם ירידת כבוד',
+    'כנ"ל — עם כפל משמעות',
+    'שואל על מחלה קשה ומתמשכת',
+    'שואל על אדם שחולה בקשיים כפולים',
+  ],
+  '2221': [
+    'שואל על אדם בעל יחס של עבדות, עיוורים, נכים — או הארב מהמסתר',
+    'שואל על שניים בעלי מגבלה',
+    'שואל על ריבוי קשיים',
+    'שואל על ריבוי נחסים',
+  ],
+  '2112': [
+    'שואל על חכמה, ידע, דיבור, כתיבה',
+    'שואל על ידע שמתרבה',
+    'שואל על חיבור חיובי',
+    'שואל על חיבור חזק מאוד',
+  ],
+  '2121': [
+    'שואל על קבלת כסף או נכס',
+    'שואל על הכנסה כפולה',
+    'שואל על הכנסות מרובות',
+    'שואל על עושר גדול שמגיע',
+  ],
+  '1221': [
+    'שואל על עניין עצור, מדינה נצורה, פרנסה חסומה',
+    'שואל על נשים מתאספות ובוכות, פחד חזק',
+    'שואל על מוות או ארון קבורה',
+    'שואל על פחד חזק ונשים יחד בוכות',
+  ],
+  '1212': [
+    'שואל על תקלה, גנבה, דבר אבוד',
+    'שואל על גנבה כפולה',
+    'שואל על גנבה ואובדן מרובה',
+    'שואל על אובדן גדול',
+  ],
+  '1211': [
+    'שואל על נישואין, שמחה מצד נשים, שותפות',
+    'שואל על שני קשרים',
+    'שואל על קשרים מרובים',
+    'שואל על עסקת קשר גדולה',
+  ],
+  '2111': [
+    'שואל על כוח בקשרים, רווח, תנועה קדימה',
+    'שואל על תנועה כפולה',
+    'שואל על נסיעה מרובה',
+    'שואל על תנועה גדולה',
+  ],
+  '1112': [
+    'שואל על יציאה — דבר שיוצא מידיו',
+    'יציאה כפולה — שתי פעולות יוצאות',
+    'ריבוי יציאות',
+    'תנועה גדולה החוצה',
+  ],
+};
+
+function computeFirstFigureRepetition(chart) {
+  const h1Figure = chart.find((h) => Number(h.house) === 1);
+  if (!h1Figure) return null;
+
+  const firstKey = h1Figure.key || '';
+  const firstHebrew = h1Figure.hebrew || h1Figure.key;
+
+  // ספור כמה פעמים הצורה הראשונה חוזרת בכל הלוח
+  const allOccurrences = chart.filter((h) => h.key === firstKey);
+  const count = allOccurrences.length;
+
+  const meanings = FIRST_FIGURE_REPETITIONS[firstKey];
+  const countIndex = Math.min(count - 1, 3);
+  const meaning = meanings ? meanings[countIndex] : null;
+
+  if (!meaning) return null;
+
+  return {
+    figureKey: firstKey,
+    figureHebrew: firstHebrew,
+    count,
+    meaning,
+    outputHebrew: `צורה ראשונה בלוח: "${firstHebrew}" (חוזרת ${count}×) — ${meaning}`,
+  };
+}
+
 function buildBoardAnalysis(board, topicId, mainHouses) {
   if (!board || !Array.isArray(board.chart)) {
     return {
@@ -1989,6 +2327,23 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const directionQuadrant = (['travel', 'hiddenTreasure', 'missingPerson'].includes(topicId))
     ? computeDirectionQuadrant(board.chart) : null;
 
+  const illnessElementDiagnosis = (topicId === 'illness')
+    ? computeIllnessElementDiagnosis(board.chart) : null;
+
+  const thiefLocationDetails = (['theft', 'enemies'].includes(topicId))
+    ? computeThiefLocationDetails(board.chart) : null;
+
+  const enemyInHousehold = (topicId === 'enemies')
+    ? computeEnemyInHousehold(board.chart) : null;
+
+  const timingEstimate = dhamirHouse
+    ? computeTimingEstimate(board.chart, dhamirHouse, topicId) : null;
+
+  const marriageFigureForecast = (topicId === 'marriage')
+    ? computeMarriageFigureForecast(board.chart) : null;
+
+  const firstFigureRepetition = computeFirstFigureRepetition(board.chart);
+
   // Source quality — how many key houses have explicit transit data from the source.
   // Some houses are genuinely absent from the Hawi text itself (verified across multiple books).
   const keyHouseNums = Array.from(new Set([1, focusHouseNumber, 13, 14, 15, 16]));
@@ -2046,6 +2401,12 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     birthNativityAnalysis,
     trianglesEnrichment,
     directionQuadrant,
+    illnessElementDiagnosis,
+    thiefLocationDetails,
+    enemyInHousehold,
+    timingEstimate,
+    marriageFigureForecast,
+    firstFigureRepetition,
     sourceQuality,
     seventhOfHouse1: seventhOfHouse1Found
       ? { pattern: h1Seventh, foundInHouse: Number(seventhOfHouse1Found.house), figureHebrew: seventhOfHouse1Found.hebrew || h1Seventh }

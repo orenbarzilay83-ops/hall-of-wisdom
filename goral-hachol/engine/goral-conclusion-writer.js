@@ -346,6 +346,42 @@ function describeCoreHouses(analysis, topicId, question) {
     parts.push(`ניתוח משולשים (שער המשולשים, חאוי עמ׳ 59):\n${triangles.outputHebrew}`);
   }
 
+  // ── אבחון מחלה לפי יסוד (בלוג' אלאמל פרק 5) ──────────────────────────
+  const illnessDiag = analysis.illnessElementDiagnosis;
+  if (illnessDiag) {
+    parts.push(`אבחון מחלה לפי יסוד (בלוג' אלאמל פרק 5):\n  ${illnessDiag.outputHebrew.replace(/\n/g, '\n  ')}`);
+  }
+
+  // ── זיהוי הגנב לפי חזרת צורות (בלוג' אלאמל פרק 19) ──────────────────
+  const thiefLoc = analysis.thiefLocationDetails;
+  if (thiefLoc) {
+    parts.push(`זיהוי הגנב (בלוג' אלאמל פרק 19):\n  ${thiefLoc.outputHebrew.replace(/\n/g, '\n  ')}`);
+  }
+
+  // ── גילוי אויב בסביבה הקרובה (בלוג' אלאמל עמ' 64) ───────────────────
+  const enemyHH = analysis.enemyInHousehold;
+  if (enemyHH) {
+    parts.push(`גילוי אויב בסביבה (בלוג' אלאמל עמ' 64):\n  ${enemyHH.outputHebrew}`);
+  }
+
+  // ── פסיקת נישואין לפי צורה שולטת (בלוג' אלאמל פרק 33) ──────────────
+  const marriageForecast = analysis.marriageFigureForecast;
+  if (marriageForecast) {
+    parts.push(`פסיקת נישואין לפי צורה שולטת (בלוג' אלאמל פרק 33):\n  ${marriageForecast.outputHebrew}`);
+  }
+
+  // ── צורה ראשונה × חזרות (בלוג' אלאמל פרק 17) ────────────────────────
+  const firstFigRep = analysis.firstFigureRepetition;
+  if (firstFigRep) {
+    parts.push(firstFigRep.outputHebrew);
+  }
+
+  // ── עיתוי — מתי יסתיים? (בלוג' אלאמל פרק 7) ─────────────────────────
+  const timing = analysis.timingEstimate;
+  if (timing) {
+    parts.push(timing.outputHebrew);
+  }
+
   return parts.join('\n');
 }
 
