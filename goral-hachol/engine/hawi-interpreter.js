@@ -2572,8 +2572,12 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const enemyInHousehold = (topicId === 'enemies')
     ? computeEnemyInHousehold(board.chart) : null;
 
-  const timingEstimate = dhamirHouse
-    ? computeTimingEstimate(board.chart, dhamirHouse, topicId) : null;
+  // עיתוי: מעדיף דמיר לפי מיזאן (זהה לדמיר הראשי בפסיקה); חוזר לדמיר אמהות אם חסר
+  const timingDhamirSource = (dhamirByMizan?.primaryHouseNumber)
+    ? { houseNumber: dhamirByMizan.primaryHouseNumber }
+    : dhamirHouse;
+  const timingEstimate = timingDhamirSource
+    ? computeTimingEstimate(board.chart, timingDhamirSource, topicId) : null;
 
   const marriageFigureForecast = (topicId === 'marriage')
     ? computeMarriageFigureForecast(board.chart) : null;
