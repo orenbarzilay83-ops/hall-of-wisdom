@@ -98,6 +98,16 @@ export const HAWI_COMPLETION_WORKPLAN = {
     },
   ],
 
+  lowPriorityPending: [
+    { id: 'direction-by-figure',    page: '6',     title: 'כיוון לפי צורה — כל 16 הצורות ב-4 כיוונים' },
+    { id: 'specific-theft-items',   page: '22',    title: 'גנבת עצים / חפצים ספציפיים' },
+    { id: 'horse-color-by-figure',  page: '22',    title: 'צבע הסוס לפי צורה' },
+    { id: 'animals-camels-donkeys', page: '22-23', title: 'בעלי חיים — גמלים, חמורים' },
+    { id: 'blindness-eye-defects',  page: '22',    title: 'עיוורון ופגמי עיניים' },
+    { id: 'army-battalion-details', page: '23',    title: 'גדוד / צבא בשטח — פרטים' },
+    { id: 'surety-guarantee',       page: '26',    title: 'ערבות / ביטחון — פרטים' },
+  ],
+
   futureModulesNotUrgent: [
     {
       id: 'yearly-forecast',
