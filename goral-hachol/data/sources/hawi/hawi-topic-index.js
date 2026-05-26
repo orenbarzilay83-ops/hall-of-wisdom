@@ -71,34 +71,37 @@ export const HAWI_TOPIC_INDEX = {
 
   remainingTopics: [
     {
-      topicId: 'planetary-correspondences',
-      hebrewTitle: 'שיוכי כוכבים וחומרים',
-      coverageStatus: 'future-module',
-      noteHebrew: 'לא מעכב את גורל החול הבסיסי.',
-    },
-    {
-      topicId: 'birth-nativity-mawlud',
-      hebrewTitle: 'שער המולד',
-      coverageStatus: 'future-large-module',
-      noteHebrew: 'מודול עתידי נפרד.',
-    },
-    {
-      topicId: 'yearly-weather-omens',
-      hebrewTitle: 'טאלע השנה / גשם / יוקר וזול',
-      coverageStatus: 'future-large-module',
-      noteHebrew: 'מודול עתידי נפרד.',
-    },
-    {
-      topicId: 'authority-state',
-      hebrewTitle: 'מלכים / מדינות / שלטון',
-      coverageStatus: 'future-specialized-module',
-      noteHebrew: 'לא חלק מהמנוע הבסיסי.',
-    },
-    {
       topicId: 'spiritual-diagnostics-expanded',
       hebrewTitle: 'עין / ג׳ין / מס ואבחון רוחני מורחב',
       coverageStatus: 'needs-approved-source-only',
       noteHebrew: 'להשלים רק ממקור מאושר, לא מסברה.',
+    },
+  ],
+
+  implementedTopics: [
+    {
+      topicId: 'planetary-correspondences',
+      hebrewTitle: 'שיוכי כוכבים וחומרים / משולשי יסודות',
+      coverageStatus: 'engine-implemented',
+      noteHebrew: 'משולשי יסודות וכוכבים פעילים במנוע trianglesEnrichment.',
+    },
+    {
+      topicId: 'birth-nativity-mawlud',
+      hebrewTitle: 'שער המולד',
+      coverageStatus: 'engine-implemented',
+      noteHebrew: 'מנוע birthNativity פעיל לפי חאוי.',
+    },
+    {
+      topicId: 'yearly-weather-omens',
+      hebrewTitle: 'טאלע השנה / גשם / יוקר וזול',
+      coverageStatus: 'engine-implemented',
+      noteHebrew: 'מנוע yearlyForecast פעיל לפי חאוי עמ׳ 61-62.',
+    },
+    {
+      topicId: 'authority-state',
+      hebrewTitle: 'מלכים / מדינות / שלטון',
+      coverageStatus: 'engine-implemented',
+      noteHebrew: 'מנוע authorityState פעיל. חילוץ שם אויב מדינה דרך בית 7.',
     },
   ],
 

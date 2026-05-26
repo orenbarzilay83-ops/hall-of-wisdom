@@ -62,30 +62,30 @@ export const HAWI_FULL_BOOK_GAP_AUDIT = {
     {
       id: 'planetary-correspondences',
       hebrewTitle: 'שיוכי כוכבים, אקלימים, מתכות, אבנים, מאכלים, צמחים ובעלי חיים',
-      status: 'future-module-not-blocking-basic-goral',
+      status: 'engine-implemented',
       actionHebrew:
-        'לשמר לעתיד כקובץ ידע נפרד. לא לעכב את מודול גורל החול הבסיסי.',
+        'משולשי יסודות וכוכבים פעילים במנוע trianglesEnrichment. שיוכים נוספים (מתכות, אבנים, צמחים) נשמרים כשכבת ידע.',
     },
     {
       id: 'birth-nativity-mawlud',
       hebrewTitle: 'שער המולד / הנולד',
-      status: 'future-large-module-not-basic-question-engine',
+      status: 'engine-implemented',
       actionHebrew:
-        'מודול עתידי נפרד. לא לערבב עם דיני שאלה רגילים.',
+        'מנוע birthNativity פעיל: בית 1 = בעל הטאלע, חזרת הצורה בבתים = משמעויות חיים לפי חאוי.',
     },
     {
       id: 'yearly-weather-omens',
       hebrewTitle: 'טאלע השנה, גשם, יוקר/זול, מלחמות ומחלות כלליות',
-      status: 'future-large-module-not-basic-question-engine',
+      status: 'engine-implemented',
       actionHebrew:
-        'מודול עתידי נפרד. לא לעכב את בניית לוח גורל החול.',
+        'מנוע yearlyForecast פעיל: בית 15, כוכבים ביתדות, גשם ומזג אוויר לפי חאוי עמ׳ 61-62.',
     },
     {
       id: 'authority-state-kings-rulers',
       hebrewTitle: 'מלכים, מושלים, מדינות ואויבי מדינה',
-      status: 'future-specialized-module',
+      status: 'engine-implemented',
       actionHebrew:
-        'להכניס בעתיד רק אם נרצה מודול שלטון/מדינה.',
+        'מנוע authorityState פעיל: יציבות תפקיד, חזרה לשלטון, שמש/לבנה ביתדות, חילוץ שם אויב מדינה דרך בית 7.',
     },
     {
       id: 'spiritual-diagnostics-expanded',

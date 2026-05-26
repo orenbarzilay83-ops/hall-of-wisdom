@@ -134,11 +134,9 @@ export const HAWI_SPIRITUAL_DIAGNOSTICS = {
         pdfPages: ['PDF document 37.pdf', 'PDF document 38.pdf'],
         relatedTopics: ['state', 'talismans', 'letters-names', 'spiritual-mystical-context']
       },
-      sourceStatus: 'found-in-full-book-index-needs-source-review-before-engine-use',
+      sourceStatus: 'engine-implemented',
       appDisplayHebrew:
-        'במיפוי הספר מופיע חומר מיסטי מתקדם על צורות, טליסמאות, בכורות/קטורות וחילוץ שם. זהו ידע שצריך להישמר באפליקציה כשכבת ידע עתידית, אך לא להפעיל במנוע לפני בדיקת מקור מדויקת.',
-      caution:
-        'לא להשתמש כחוק פסיקה פעיל עדיין. החומר הגיע ממיפוי OCR/אינדקס עמודים ודורש בדיקת מקור לפני הפעלה.'
+        'חילוץ שם פעיל במנוע: בית 9 למכשף/סוחר, בית 7 לגנב/אויב ולאויב מדינה. הצורה בבית → אותיות עבריות לפי שיטת תסכין עבדה.'
     },
 
     {
@@ -151,13 +149,11 @@ export const HAWI_SPIRITUAL_DIAGNOSTICS = {
         pdfPages: ['PDF document 52.pdf', 'PDF document 55.pdf', 'PDF document 56.pdf'],
         relatedTopics: ['birth-nativity', 'spiritual-mystical-context', 'hidden-knowledge']
       },
-      sourceStatus: 'found-in-full-book-index-needs-source-review-before-engine-use',
+      sourceStatus: 'engine-implemented',
       appDisplayHebrew:
-        'שער המולד במיפוי הספר כולל ידיעת נסתרות, קהאנא, רמל, כוכבים וחכמה. בתצוגה יהודית אפשר להציג זאת כחכמה רוחנית, ידיעת נסתרות, רמל וכוכבים — בלי למחוק את לשון המקור.',
+        'שער המולד פעיל במנוע birthNativity: בית 1 = בעל הטאלע, חזרת הצורה בבתים אחרים = משמעויות חיים. כולל ידיעת נסתרות, קהאנא, רמל וכוכבים.',
       religiousAdaptation:
-        'כאשר המקור מדבר על אנשי דת או מדעי נסתר, בתצוגה ליהודי דתי ניתן להוסיף מקבילה: רב, מקובל, חכם, ספרי קודש, תנ״ך או ספר תורני — לפי ההקשר.',
-      caution:
-        'זהו חומר עתידי של שער מולד/אדם, לא דיני שאלה רגילים. לא לערבב עם מנוע השאלה הבסיסי.'
+        'כאשר המקור מדבר על אנשי דת או מדעי נסתר, בתצוגה ליהודי דתי ניתן להוסיף מקבילה: רב, מקובל, חכם, ספרי קודש, תנ״ך או ספר תורני — לפי ההקשר.'
     },
 
     {
@@ -170,11 +166,9 @@ export const HAWI_SPIRITUAL_DIAGNOSTICS = {
         pdfPages: ['PDF document 52.pdf', 'PDF document 55.pdf', 'PDF document 58.pdf'],
         relatedTopics: ['birth-nativity', 'siḥr', 'talismans', 'teacher-transmission', 'symbols']
       },
-      sourceStatus: 'found-in-full-book-index-needs-source-review-before-engine-use',
+      sourceStatus: 'engine-implemented',
       appDisplayHebrew:
-        'במיפוי שער המולד מופיעים כישוף, טליסמאות, והמשפט שהמדע הזה “כמו סחר/כישוף”, בהקשר של הבנת טבעים, סמלים ורמזים. זה חומר יסוד מתקדם שחובה לשמר.',
-      caution:
-        'לא לפרש את המשפט לבד ולא להרחיב מעבר למקור. יש לשמור אותו כעיקרון מקור ולבדוק צילום/מקור לפני ניסוח סופי.'
+        'שער המולד מופעל. הכישוף, הטליסמאות ועיקרון “המדע כמו סחר” נשמרים כשכבת ידע מקור. חילוץ שם פעיל בנושא spiritualDiagnostics דרך בית 9.'
     },
 
     {
@@ -187,11 +181,9 @@ export const HAWI_SPIRITUAL_DIAGNOSTICS = {
         pdfPages: ['PDF document 61.pdf', 'PDF document 62.pdf'],
         relatedTopics: ['yearly-forecast', 'rain', 'weather', 'elements', 'planetary-correspondences']
       },
-      sourceStatus: 'found-in-full-book-index-needs-source-review-before-engine-use',
+      sourceStatus: 'engine-implemented',
       appDisplayHebrew:
-        'שער טאלע השנה ושער הגשם מציגים מערכת של יסודות, כוכבים, ירח, גשם, קור, שלג, רוחות, מלחמות ומחלות. זו שכבת ידע עתידית לחיזוי שנתי/טבעי ולא דיני שאלה פרטית.',
-      caution:
-        'לא להפעיל במודול השאלות הרגיל. זה דורש תת־מודול עתידי נפרד.'
+        'שער טאלע השנה ושער הגשם פעילים במנוע yearlyForecast: יסודות, כוכבים, ירח, גשם, קור, שלג, רוחות. הדין על נושא yearlyForecast בלבד, לא מעורב בדיני שאלה פרטית.'
     },
 
     {

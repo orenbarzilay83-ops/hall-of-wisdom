@@ -1582,9 +1582,10 @@ function computeNameLetters(chart, houseNumber) {
 
 // Topics where name extraction is relevant and which house to read
 const NAME_EXTRACTION_HOUSES_BY_TOPIC = {
-  spiritualDiagnostics: [9],   // בית 9 = המכשף
-  enemies:              [7, 9], // בית 7 = האויב, בית 9 = מי שכישף
-  disputes:             [7],   // בית 7 = היריב
+  spiritualDiagnostics: [9],      // בית 9 = המכשף
+  enemies:              [7, 9],   // בית 7 = האויב, בית 9 = מי שכישף
+  disputes:             [7],      // בית 7 = היריב
+  authorityState:       [7],      // בית 7 = אויב המדינה / גורם הנפילה (חאוי עמ׳ 37-38)
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
