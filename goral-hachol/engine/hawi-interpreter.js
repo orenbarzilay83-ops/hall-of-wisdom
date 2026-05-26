@@ -75,9 +75,11 @@ const HOUSE_FORTUNE_TONES = {
 
 // Houses that represent the OTHER SIDE (opponent/illness/enemy) — fortune is inverted for the questioner
 const ADVERSARIAL_HOUSES_BY_TOPIC = {
-  disputes: [7],
-  enemies: [7, 12],
-  illness: [6],
+  disputes:    [7],
+  enemies:     [7, 12],
+  illness:     [6],
+  prisoner:    [12],
+  partnership: [7],
 };
 
 const TOPIC_MAIN_HOUSES = {
@@ -98,6 +100,9 @@ const TOPIC_MAIN_HOUSES = {
   loveHate: [1, 5, 7, 11, 13, 14, 15],
   completion: [1, 13, 14, 15],
   foundations: [1, 13, 14, 15, 16],
+  prisoner:    [1, 4, 5, 12, 15],
+  partnership: [1, 2, 7, 10, 13, 14, 15],
+  seaVoyage:   [1, 8, 9, 12, 15],
 };
 
 const TOPIC_HEBREW_TITLES = {
@@ -118,6 +123,9 @@ const TOPIC_HEBREW_TITLES = {
   loveHate: 'אהבה ושנאה',
   completion: 'האם הדבר יצליח / יושלם',
   foundations: 'יסודות גורל החול',
+  prisoner: 'אסיר / כלא / מעצר',
+  partnership: 'שותפות / ערבות / קשר עסקי',
+  seaVoyage: 'מסע ים / ספינה',
 };
 
 // הבית המייצג את הנשאל לפי נושא (house of the quesited / бيت المطلوب)
@@ -139,6 +147,9 @@ const TOPIC_QUESITED_HOUSE = {
   authorityState:      10,
   birthNativity:        1,
   spiritualDiagnostics: 6,
+  prisoner:            12,
+  partnership:          7,
+  seaVoyage:            9,
 };
 
 // צורות הנחשבות נחס (رمال النحوس) לפי מסורת חאוי
@@ -1586,6 +1597,9 @@ const NAME_EXTRACTION_HOUSES_BY_TOPIC = {
   enemies:              [7, 9],   // בית 7 = האויב, בית 9 = מי שכישף
   disputes:             [7],      // בית 7 = היריב
   authorityState:       [7],      // בית 7 = אויב המדינה / גורם הנפילה (חאוי עמ׳ 37-38)
+  missingPerson:        [7],      // בית 7 = הנעדר
+  prisoner:             [12],     // בית 12 = הכלא / הגורם לכליאה
+  partnership:          [7],      // בית 7 = השותף
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -2244,6 +2258,224 @@ function computeFirstFigureRepetition(chart) {
   };
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// תחזית שנתית לפי צורה שולטת (בלוג' אלאמל עמ' 25)
+// ─────────────────────────────────────────────────────────────────────────────
+const YEARLY_BY_DOMINANT_FIGURE = {
+  '1111': 'דרך שולטת — שנת תנועה ונדידה, ללא ברכה יציבה. טוב לנוסעים ולמסחר בדרכים',
+  '1112': 'סף יוצא שולט — שנת יציאות והוצאות; דברים יוצאים מהיד. זהירות מהפסדים',
+  '1121': 'נלחם שולט — שנת סכסוכים ומחלוקות; עמל רב, אך מי שיחזיק מעמד יצלח',
+  '1122': 'כבוד יוצא שולט — שנה עם כבוד ופרידות; יש כבוד אבל גם עזיבות ואובדן',
+  '1211': 'בר הלחי שולט — שנה טובה לנישואין ושמחה; שותפויות ואחרית טובה',
+  '1212': 'ממון יוצא שולט — שנת הפסד; כסף וחפצים יוצאים מהיד, זהירות מגנבות',
+  '1221': 'סוהר שולט — שנה כבדה; עיכובים, חסימות ומכשולים בכל דרך',
+  '1222': 'נשוא ראש שולט — שנת שלטון ומעמד; עסקים עם בעלי סמכות, ויכוחים גדולים',
+  '2111': 'סף נכנס שולט — שנת כניסה ורכישה; דברים חדשים נכנסים לחיים, הזדמנויות',
+  '2112': 'חיבור שולט — שנה שפופה; ריבוי עניינים ומועקה ללא הצלחה ברורה',
+  '2121': 'ממון נכנס שולט — שנת שפע; כסף נכנס, עסקים מצליחים, ברכה בממון',
+  '2122': 'אדום שולט — שנה עם מחלות ועימותים; זהירות בבריאות ובמריבות',
+  '2211': 'כבוד נכנס שולט — שנה מצוינת, שנה עם הרבה טוב; כבוד, הצלחה ושפע',
+  '2212': 'לבן שולט — שנת ניקיון ושלום; שנה יציבה ורגועה, ללא גדולות',
+  '2221': 'שפל ראש שולט — שנת ירידה; קשיים, עיכובים, הפסדים ורוע מזל',
+  '2222': 'קהלה שולטת — שנת ריבוי עניינים; הרבה אנשים ומחלוקות, קשה למצוא שקט',
+};
+
+function computeYearlyFigureForecast(chart) {
+  const counts = {};
+  for (const h of chart) {
+    const k = h.key || '';
+    if (k) counts[k] = (counts[k] || 0) + 1;
+  }
+  const dominant = Object.entries(counts).sort(([,a],[,b]) => b - a)[0];
+  if (!dominant) return null;
+
+  const [domKey, domCount] = dominant;
+  const meaning = YEARLY_BY_DOMINANT_FIGURE[domKey];
+  if (!meaning) return null;
+
+  const domHebrew = chart.find((h) => h.key === domKey)?.hebrew || domKey;
+  return {
+    dominantKey: domKey,
+    dominantHebrew: domHebrew,
+    count: domCount,
+    meaning,
+    outputHebrew: `תחזית שנתית לפי צורה שולטת: "${domHebrew}" (${domCount}×) — ${meaning}`,
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// שיטת חילוץ שם נוספת — שיטה 5 (בלוג' אלאמל עמ' 13-15)
+// בתים 1, 4, 12; אם צורה חוזרת — האותיות כפולות
+// ─────────────────────────────────────────────────────────────────────────────
+function computeAlternativeNameExtraction(chart) {
+  const houseNums = [1, 4, 12];
+  const results = houseNums.map((n) => computeNameLetters(chart, n)).filter(Boolean);
+  if (!results.length) return null;
+
+  const keysSeen = {};
+  const withRepeat = results.map((r) => {
+    const k = r.figurePattern || '';
+    keysSeen[k] = (keysSeen[k] || 0) + 1;
+    return { ...r, repeatCount: keysSeen[k] };
+  });
+
+  const lines = withRepeat.map((r) =>
+    `  בית ${r.houseNumber} — ${r.figureHebrew}: ${r.outputHebrew}${r.repeatCount > 1 ? ' (צורה חוזרת — אותיות כפולות)' : ''}`
+  );
+
+  return {
+    houses: houseNums,
+    results: withRepeat,
+    outputHebrew: `שיטה 5 (בתים 1, 4, 12):\n${lines.join('\n')}`,
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// תיאורי גוף לפי צורה (בלוג' אלאמל עמ' 65-71)
+// משמשים לזיהוי הגנב, הנעדר, השותף, ועוד
+// ─────────────────────────────────────────────────────────────────────────────
+const FIGURE_PHYSICAL_DESCRIPTION = {
+  '1111': { height: 'בינוני', skin: 'חיוור / עור בהיר', hair: 'ישר ובינוני', eyes: 'עיניים אפורות / ירוקות', signs: 'מראה תנועתי, לא יושב בשקט', character: 'נוטה לנדידה, חברותי, חסר מנוחה' },
+  '1112': { height: 'נמוך ורזה', skin: 'עור בהיר', hair: 'דק וקצר', eyes: 'עיניים קטנות', signs: 'גוף דק, תנועות מהירות', character: 'שקוע במחשבות, נוטה לצאת ולברוח' },
+  '1121': { height: 'בינוני עם בטן בולטת', skin: 'עור כהה-בינוני', hair: 'סמיך ומסורבל', eyes: 'עיניים כהות', signs: 'שיער לסת, פנים חדות', character: 'עקשן, נוטה לסכסוכים, עמלן' },
+  '1122': { height: 'גבוה ורזה', skin: 'עור בהיר עם גוון', hair: 'ישר ומאורך', eyes: 'עיניים בהירות', signs: 'מראה אצילי, הליכה זקופה', character: 'מכובד, נוטה לעזוב, אוהב כבוד' },
+  '1211': { height: 'בינוני-נמוך', skin: 'עור נקי וצהבהב', hair: 'רך ומסודר', eyes: 'עיניים יפות', signs: 'לחיים נקיות ויפות, פנים נעימות', character: 'חברותי, אוהב נשים ושותפויות' },
+  '1212': { height: 'קצר ועבה', skin: 'עור כהה', hair: 'מסובך ולא מסודר', eyes: 'עיניים קטנות וחדות', signs: 'ידיים עסוקות, מבט חשדן', character: 'גנבן, עצלן, נוטה לאובדן' },
+  '1221': { height: 'גוף כבד ועצל', skin: 'עור כהה-שחרחר', hair: 'מסורבל', eyes: 'עיניים עמוקות', signs: 'תנועות עצלות, מסורבל', character: 'ממושקל, עצור, לא נוח לזוז' },
+  '1222': { height: 'גבוה ורחב', skin: 'עור בינוני', hair: 'ראש גדול, שיער כהה', eyes: 'עיניים גדולות ושלטוניות', signs: 'ראש גדול, מראה סמכותי', character: 'שלטוני, בעל מעמד, אוהב שליטה' },
+  '2111': { height: 'נמוך ורחב', skin: 'עור בינוני', hair: 'מסודר', eyes: 'עיניים רחבות', signs: 'גוף רחב ויציב', character: 'נוטה לכניסה ולהיאחז, אוהב לקבל' },
+  '2112': { height: 'עבה ורחב', skin: 'עור חיוור-צהבהב', hair: 'מסולסל', eyes: 'עיניים עגולות', signs: 'פנים עגולות, גוף מלא', character: 'חיבורי, אוהב קשרים, ידען' },
+  '2121': { height: 'בינוני', skin: 'עור בינוני', hair: 'ישר', eyes: 'עיניים ממוקדות ופקחות', signs: 'ידיים פתוחות, מראה של מקבל', character: 'ממוקד, עסקי, אוהב ממון' },
+  '2122': { height: 'גוף כבד', skin: 'עור אדמדם-כהה', hair: 'צבוע בגוון חם', eyes: 'עיניים אדומות / חמות', signs: 'פנים אדמדמות, סימני מחלה', character: 'חולני, נוטה לעימותים, עצבני' },
+  '2211': { height: 'גוף יפה ומאוזן', skin: 'עור בהיר ונקי', hair: 'מסודר ומכובד', eyes: 'עיניים בהירות ונעימות', signs: 'מראה של עושר וכבוד', character: 'מכובד, אוהב כבוד, נדיב' },
+  '2212': { height: 'גוף רזה ונמוך', skin: 'עור לבן מאוד', hair: 'שיער בהיר', eyes: 'עיניים בהירות', signs: 'מראה שקט ורגוע', character: 'שקט, נסוג, לא נוהר לקדמה' },
+  '2221': { height: 'גוף שפוף', skin: 'עור כהה', hair: 'שיער מדולדל', eyes: 'מבט מושפל', signs: 'ראש שפוף, כתפיים נמוכות', character: 'עצוב, מושפל, נוטה לירידה' },
+  '2222': { height: 'גוף גדול ומסיבי', skin: 'עור כהה', hair: 'עבות ומסורבל', eyes: 'עיניים גדולות', signs: 'מסה גדולה, קשה לפספוס', character: 'נמשך לקבוצות, בלגנאי, רבגוני' },
+};
+
+function computePhysicalDescriptionForHouse(chart, houseNumber) {
+  const house = chart.find((h) => Number(h.house) === Number(houseNumber));
+  if (!house?.key) return null;
+  const desc = FIGURE_PHYSICAL_DESCRIPTION[house.key];
+  if (!desc) return null;
+  const figHebrew = house.hebrew || house.key;
+  return {
+    houseNumber,
+    figureKey: house.key,
+    figureHebrew: figHebrew,
+    ...desc,
+    outputHebrew: `תיאור האדם (${figHebrew} בבית ${houseNumber}): גובה — ${desc.height}, עור — ${desc.skin}, שיער — ${desc.hair}, עיניים — ${desc.eyes}. ${desc.signs}. אופי: ${desc.character}`,
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ניתוח אסיר / כלא (בלוג' אלאמל עמ' 28, 57)
+// ─────────────────────────────────────────────────────────────────────────────
+function computePrisonerAnalysis(chart) {
+  const h1  = chart.find((h) => Number(h.house) === 1);
+  const h4  = chart.find((h) => Number(h.house) === 4);
+  const h5  = chart.find((h) => Number(h.house) === 5);
+  const h12 = chart.find((h) => Number(h.house) === 12);
+  const h15 = chart.find((h) => Number(h.house) === 15);
+
+  if (!h1 || !h12) return null;
+
+  const lines = [];
+
+  // כלל 1: בית 1 מחובר לבית 12 = האסיר עדיין בכלא
+  const samePattern = h1.key && h1.key === h12.key;
+  if (samePattern) {
+    lines.push(`בית 1 = בית 12 (${h1.hebrew || h1.key}) — האסיר עדיין קשור לכלא`);
+  }
+
+  // כלל 2: נשוא ראש בבית 5 = יצא ויפוצה
+  if (h5?.key === '1222') {
+    lines.push('נשוא ראש בבית 5 — האסיר ייצא ויקבל פיצוי (חאוי)');
+  }
+
+  // כלל 3: סוהר בבית 15 = ימות בכלא
+  if (h15?.key === '1221') {
+    lines.push('⚠ סוהר בבית 15 (הדיין) — סימן לאסיר שמאסרו יתמשך');
+  }
+
+  // כלל 4: בית 4 = מצב הכלא עצמו; בית 5 = גורל האסיר
+  if (h4) {
+    const h4Fortune = h4.fortune || '';
+    lines.push(`בית 4 (מצב הכלא): ${h4.hebrew || h4.key} [${h4Fortune || 'לא ידוע'}]`);
+  }
+  if (h5) {
+    const h5Fortune = h5.fortune || '';
+    lines.push(`בית 5 (גורל האסיר): ${h5.hebrew || h5.key} [${h5Fortune || 'לא ידוע'}]`);
+  }
+
+  // פסיקת היציאה
+  const judgeForAcquit = h15?.fortune?.includes('סעד');
+  const judgeForDetain = h15?.fortune?.includes('נחס');
+  let exitVerdict = '';
+  if (judgeForAcquit) exitVerdict = 'הדיין סעד — יש סיכוי ליציאה';
+  else if (judgeForDetain) exitVerdict = 'הדיין נחס — המאסר ממשיך';
+  if (exitVerdict) lines.push(exitVerdict);
+
+  return {
+    samePattern,
+    lines,
+    outputHebrew: lines.join('\n'),
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ניתוח מסע ים (בלוג' אלאמל עמ' 26)
+// ─────────────────────────────────────────────────────────────────────────────
+function computeSeaVoyageRisks(chart) {
+  const h1  = chart.find((h) => Number(h.house) === 1);
+  const h8  = chart.find((h) => Number(h.house) === 8);
+  const h9  = chart.find((h) => Number(h.house) === 9);
+  const h12 = chart.find((h) => Number(h.house) === 12);
+
+  const lines = [];
+
+  // כלל 1: נשוא ראש בבית 8 = מציל מרעה בים
+  if (h8?.key === '1222') {
+    lines.push('נשוא ראש בבית 8 — מציל מסכנה בים (מגן על הנוסע)');
+  }
+
+  // כלל 2: אדום + נשוא ראש ביחד = סכנת טביעה
+  const hasHamra = [h1,h8,h9,h12].some((h) => h?.key === '2122');
+  const hasRais   = [h1,h8,h9,h12].some((h) => h?.key === '1222');
+  if (hasHamra && hasRais) {
+    lines.push('⚠ אדום ונשוא ראש ביחד — סכנת טביעה בים; לשקול דחיית המסע');
+  }
+
+  // כלל 3: סוהר בבית 9 = המסע ייעצר / ייתקע
+  if (h9?.key === '1221') {
+    lines.push('⚠ סוהר בבית 9 (המסע) — המסע ייתקע או יעוכב');
+  }
+
+  // כלל 4: ממון יוצא בבית 9 = הפסד בים
+  if (h9?.key === '1212') {
+    lines.push('ממון יוצא בבית 9 — הפסד כספי בדרך הים');
+  }
+
+  // כלל 5: דרך בבית 9 = מסע טוב
+  if (h9?.key === '1111') {
+    lines.push('דרך בבית 9 — מסע ים טוב ומבורך');
+  }
+
+  // בית 12 = מה נסתר בים / סכנות נסתרות
+  if (h12) {
+    const isMalefic = ['1212','2122','2221','2222','1221'].includes(h12.key || '');
+    if (isMalefic) {
+      lines.push(`⚠ ${h12.hebrew || h12.key} בבית 12 — סכנה נסתרת בים, להיזהר`);
+    }
+  }
+
+  if (!lines.length) return null;
+  return {
+    lines,
+    outputHebrew: `ניתוח מסע ים (בלוג' אלאמל עמ' 26):\n${lines.map((l) => `  ${l}`).join('\n')}`,
+  };
+}
+
 function buildBoardAnalysis(board, topicId, mainHouses) {
   if (!board || !Array.isArray(board.chart)) {
     return {
@@ -2342,6 +2574,24 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const marriageFigureForecast = (topicId === 'marriage')
     ? computeMarriageFigureForecast(board.chart) : null;
 
+  const yearlyFigureForecast = (topicId === 'yearlyForecast')
+    ? computeYearlyFigureForecast(board.chart) : null;
+
+  const alternativeNameExtraction = (['enemies', 'spiritualDiagnostics', 'missingPerson', 'prisoner', 'partnership'].includes(topicId))
+    ? computeAlternativeNameExtraction(board.chart) : null;
+
+  const physicalDescriptionThief = (['enemies', 'disputes'].includes(topicId))
+    ? computePhysicalDescriptionForHouse(board.chart, 7) : null;
+
+  const physicalDescriptionMissing = (topicId === 'missingPerson')
+    ? computePhysicalDescriptionForHouse(board.chart, 1) : null;
+
+  const prisonerAnalysis = (topicId === 'prisoner')
+    ? computePrisonerAnalysis(board.chart) : null;
+
+  const seaVoyageRisks = (topicId === 'seaVoyage')
+    ? computeSeaVoyageRisks(board.chart) : null;
+
   const firstFigureRepetition = computeFirstFigureRepetition(board.chart);
 
   // Source quality — how many key houses have explicit transit data from the source.
@@ -2406,6 +2656,12 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     enemyInHousehold,
     timingEstimate,
     marriageFigureForecast,
+    yearlyFigureForecast,
+    alternativeNameExtraction,
+    physicalDescriptionThief,
+    physicalDescriptionMissing,
+    prisonerAnalysis,
+    seaVoyageRisks,
     firstFigureRepetition,
     sourceQuality,
     seventhOfHouse1: seventhOfHouse1Found

@@ -178,6 +178,12 @@ function topicOpening(topicId, topicHebrew) {
       'בעניין אהבה ושנאה, הקריאה בודקת את הקשר הרגשי בין הצדדים, מי אוהב ומי שונא, ומה הלוח מראה על עתיד הקשר.',
     completion:
       'בעניין האם הדבר יושלם, הקריאה מתמקדת בעיקר בדיין — בית 15 — שהוא הפסיקה הסופית, ובעדים שמחזקים או מחלישים את הכרעתו.',
+    prisoner:
+      'בעניין האסיר, הקריאה בודקת אם בית 1 מחובר לבית 12 ואם יש דליל יציאה. בית 5 ובית 15 קובעים את גורל האסיר לפי הספר.',
+    partnership:
+      'בעניין השותפות, הקריאה בודקת את בית 1 (השואל), בית 7 (השותף), ובית 2 ו-10 (הממון ותוצאת העסקה). ההתאמה בין בית 1 לבית 7 היא לב הקריאה.',
+    seaVoyage:
+      'בעניין מסע הים, הקריאה בודקת את בית 1 (הנוסע), בית 9 (המסע), ובית 8 ו-12 (הסכנה). יש חוקים ספציפיים לסכנות ים שונים מנסיעה יבשתית.',
   };
 
   return openings[topicId] || `בעניין ${topicHebrew}, הקריאה בודקת את הבית המרכזי, העדים, הדיין והשלמת הדין.`;
@@ -368,6 +374,42 @@ function describeCoreHouses(analysis, topicId, question) {
   const marriageForecast = analysis.marriageFigureForecast;
   if (marriageForecast) {
     parts.push(`פסיקת נישואין לפי צורה שולטת (בלוג' אלאמל פרק 33):\n  ${marriageForecast.outputHebrew}`);
+  }
+
+  // ── תחזית שנתית לפי צורה שולטת (בלוג' אלאמל עמ' 25) ────────────────
+  const yearlyForecast = analysis.yearlyFigureForecast;
+  if (yearlyForecast) {
+    parts.push(`תחזית שנתית לפי צורה שולטת (בלוג' אלאמל עמ' 25):\n  ${yearlyForecast.outputHebrew}`);
+  }
+
+  // ── שיטת חילוץ שם נוספת — שיטה 5 (בלוג' אלאמל עמ' 13-15) ──────────
+  const altName = analysis.alternativeNameExtraction;
+  if (altName) {
+    parts.push(`חילוץ שם — שיטה 5 (בלוג' אלאמל עמ' 13-15):\n${altName.outputHebrew}`);
+  }
+
+  // ── תיאור פיזי של הגנב / האויב ───────────────────────────────────────
+  const physThief = analysis.physicalDescriptionThief;
+  if (physThief) {
+    parts.push(`תיאור פיזי — הגנב / האויב (בלוג' אלאמל עמ' 65-71):\n  ${physThief.outputHebrew}`);
+  }
+
+  // ── תיאור פיזי של הנעדר ──────────────────────────────────────────────
+  const physMissing = analysis.physicalDescriptionMissing;
+  if (physMissing) {
+    parts.push(`תיאור פיזי — הנעדר (בלוג' אלאמל עמ' 65-71):\n  ${physMissing.outputHebrew}`);
+  }
+
+  // ── ניתוח אסיר / כלא ─────────────────────────────────────────────────
+  const prisoner = analysis.prisonerAnalysis;
+  if (prisoner) {
+    parts.push(`ניתוח אסיר/כלא (בלוג' אלאמל עמ' 28, 57):\n${prisoner.lines.map((l) => `  ${l}`).join('\n')}`);
+  }
+
+  // ── מסע ים ───────────────────────────────────────────────────────────
+  const seaRisks = analysis.seaVoyageRisks;
+  if (seaRisks) {
+    parts.push(seaRisks.outputHebrew);
   }
 
   // ── צורה ראשונה × חזרות (בלוג' אלאמל פרק 17) ────────────────────────
@@ -640,6 +682,42 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
 
   if (topicId === 'completion') {
     return 'לכן הכרעת הדיין היא העיקר — אם הדיין סעד הדבר יושלם, ואם נחס יש מניעה. העדים מחזקים או מחלישים.';
+  }
+
+  if (topicId === 'prisoner') {
+    const house5 = getHouseFromBoard(boardAnalysis, 5);
+    const house12 = getHouseFromBoard(boardAnalysis, 12);
+    let base = '';
+    if (grade === 'positive') base = 'לכן הלוח מראה נטייה לשחרור — יש סיכוי ליציאת האסיר.';
+    else if (grade === 'negative') base = 'לכן הלוח מראה המשך מאסר — אין סימן ברור ליציאה.';
+    else base = 'לכן המצב מעורב — יש לבדוק את בית 5 ובית 15 בנפרד.';
+    if (house5) base += ` בית 5 (גורל האסיר): ${houseDescription(house5) || house5.figureHebrew || ''}.`;
+    if (house12) base += ` בית 12 (הכלא): ${houseDescription(house12) || house12.figureHebrew || ''}.`;
+    return base;
+  }
+
+  if (topicId === 'partnership') {
+    const house7 = getHouseFromBoard(boardAnalysis, 7);
+    const house2 = getHouseFromBoard(boardAnalysis, 2);
+    let base = '';
+    if (grade === 'positive') base = 'לכן הלוח מראה שותפות מוצלחת — יש התאמה בין הצדדים.';
+    else if (grade === 'negative') base = 'לכן הלוח מראה קושי בשותפות — יש לדון בתנאים לפני כניסה.';
+    else base = 'לכן השותפות מעורבת — יש לבדוק את בית 7 ובית 2 בנפרד.';
+    if (house7) base += ` בית 7 (השותף): ${houseDescription(house7) || ''}.`;
+    if (house2) base += ` בית 2 (הממון): ${houseDescription(house2) || ''}.`;
+    return base;
+  }
+
+  if (topicId === 'seaVoyage') {
+    const house9 = getHouseFromBoard(boardAnalysis, 9);
+    const house8 = getHouseFromBoard(boardAnalysis, 8);
+    let base = '';
+    if (grade === 'positive') base = 'לכן הלוח מראה מסע ים בטוח — אפשר לצאת.';
+    else if (grade === 'negative') base = 'לכן הלוח מראה סכנה בים — יש לשקול דחיית המסע.';
+    else base = 'לכן המסע מעורב — יש לבדוק את בית 9 ובית 8 בנפרד.';
+    if (house9) base += ` בית 9 (המסע): ${houseDescription(house9) || ''}.`;
+    if (house8) base += ` בית 8 (הסכנה): ${houseDescription(house8) || ''}.`;
+    return base;
   }
 
   return 'לכן המסקנה צריכה להיקבע לפי שילוב הבית המרכזי, העדים, הדיין והכללים שנבדקו.';
