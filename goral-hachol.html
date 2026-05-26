@@ -116,11 +116,11 @@
       color:#111;
     }
 
-    /* Opening form — compact input sizing */
+    /* Opening form — compact input sizing (font-size must be ≥16px to prevent iOS auto-zoom) */
     #screen-open .form-grid input,
     #screen-open .form-grid select {
       padding:8px 10px;
-      font-size:14px;
+      font-size:16px;
       border-radius:10px;
     }
 
@@ -659,7 +659,7 @@
             <div class="dt-row">
               <div>
                 <label>תאריך</label>
-                <input type="date" id="questionDateInput" autocomplete="off" />
+                <input type="text" id="questionDateInput" placeholder="DD/MM/YYYY" inputmode="numeric" autocomplete="off" />
               </div>
               <div>
                 <label>שעה</label>
@@ -1345,10 +1345,10 @@
       const dateEl = document.getElementById('questionDateInput');
       const timeEl = document.getElementById('questionTimeInput');
       if (dateEl) {
-        const y = now.getFullYear();
-        const mo = String(now.getMonth() + 1).padStart(2, '0');
         const d = String(now.getDate()).padStart(2, '0');
-        dateEl.value = `${y}-${mo}-${d}`;
+        const mo = String(now.getMonth() + 1).padStart(2, '0');
+        const y = now.getFullYear();
+        dateEl.value = `${d}/${mo}/${y}`;
       }
       if (timeEl) {
         timeEl.value = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
