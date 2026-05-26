@@ -113,6 +113,10 @@ function questionFocusParagraph(topicId, clientContext = {}) {
     return 'לכן הדגש הוא על הכרעת הדיין — האם הדבר יסתיים כראוי, יעוכב, או יתפרק לחלוטין.';
   }
 
+  if (topicId === 'theft') {
+    return 'לכן הדגש הוא על שלוש שאלות: מי גנב (זיהוי לפי בית 7 ובית 8), האם החפץ יחזור (לפי הדיין וכיוון הצורה בבית 7), ואיפה הגנב כעת (לפי חזרות הצורה בלוח וסוג האדם שהוא).';
+  }
+
   if (context) {
     return 'לכן המסקנה נקראת לפי ההקשר האישי של הלקוח ולא רק לפי שם הצורה שעלתה.';
   }
@@ -184,6 +188,8 @@ function topicOpening(topicId, topicHebrew) {
       'בעניין השותפות, הקריאה בודקת את בית 1 (השואל), בית 7 (השותף), ובית 2 ו-10 (הממון ותוצאת העסקה). ההתאמה בין בית 1 לבית 7 היא לב הקריאה.',
     seaVoyage:
       'בעניין מסע הים, הקריאה בודקת את בית 1 (הנוסע), בית 9 (המסע), ובית 8 ו-12 (הסכנה). יש חוקים ספציפיים לסכנות ים שונים מנסיעה יבשתית.',
+    theft:
+      'בשאלת הגנבה, הקריאה בודקת שלושה דברים עיקריים: מי הגנב (בית 7 לזיהוי, בית 8 לתיאור), האם החפץ הגנוב יחזור (לפי הדיין, התחסיל, וכיוון הצורה בבית 7 — נכנסת או יוצאת), ומה מסגיר את זהות הגנב (חזרת צורות בלוח, תיאור הגוף ואותיות השם).',
   };
 
   return openings[topicId] || `בעניין ${topicHebrew}, הקריאה בודקת את הבית המרכזי, העדים, הדיין והשלמת הדין.`;
@@ -582,6 +588,88 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
     return base;
   }
 
+  if (topicId === 'theft') {
+    const house7 = getHouseFromBoard(boardAnalysis, 7);
+    const house8 = getHouseFromBoard(boardAnalysis, 8);
+    const house4 = getHouseFromBoard(boardAnalysis, 4);
+    const thiefLocation = boardAnalysis?.thiefLocationDetails;
+    const nameLetters   = boardAnalysis?.nameLetters;
+    const altName       = boardAnalysis?.alternativeNameExtraction;
+
+    const isOutgoing = house7?.directionHebrew === 'יוצא';
+    const isIncoming = house7?.directionHebrew === 'נכנס';
+
+    const lines = [];
+
+    // 1. Will stolen item return?
+    let returnVerdict;
+    if (grade === 'positive' || grade === 'cautiously-positive') {
+      returnVerdict = isIncoming
+        ? 'הדיין נוטה לטובה, והצורה בבית 7 נכנסת — הגנב עדיין בסביבה. יש סיכוי טוב לאיתור החפץ.'
+        : isOutgoing
+        ? 'הדיין נוטה לטובה אך הצורה יוצאת — הגנב כבר התרחק. החזרת החפץ אפשרית אך תדרוש מאמץ.'
+        : 'הדיין נוטה לטובה — יש סיכוי לאיתור החפץ הגנוב ולגילוי הגנב.';
+    } else if (grade === 'negative' || grade === 'cautiously-negative') {
+      returnVerdict = isOutgoing
+        ? 'הדיין נוטה לרעה, והצורה יוצאת — הגנב ברח, החפץ הגנוב כנראה לא יחזור.'
+        : 'הדיין מצביע על קושי — קשה לאתר את הגנב, החפץ עלול לא לחזור.';
+    } else {
+      returnVerdict = isIncoming
+        ? 'הלוח מעורב, אך הצורה בבית 7 נכנסת — הגנב עדיין בסביבה. כדאי לנסות לאתרו.'
+        : isOutgoing
+        ? 'הלוח מעורב, אך הצורה יוצאת — הגנב כבר עזב. הסיכויים לאיתור נמוכים.'
+        : 'הלוח מעורב — יש לבדוק את כיוון הצורה בבית 7 ואת פסיקת הדיין לפני הכרעה.';
+    }
+    lines.push(returnVerdict);
+
+    // 2. Thief location type (from figure repetitions in the board — deduplicated)
+    if (thiefLocation?.findings?.length > 0) {
+      const uniqueTypes = [...new Set(thiefLocation.findings.map(f => f.thiefType))];
+      for (const type of uniqueTypes) {
+        lines.push(`לפי חזרת הצורות בלוח: ${type}.`);
+      }
+    }
+
+    // 3. Name letters — two-letter sequence from houses 7 + 8
+    if (Array.isArray(nameLetters) && nameLetters.length > 0) {
+      const h7Entry = nameLetters.find(n => n.houseNumber === 7);
+      const h8Entry = nameLetters.find(n => n.houseNumber === 8);
+      if (h7Entry?.letters?.length > 0) {
+        const firstLetters = h7Entry.letters.join(' / ');
+        if (h8Entry?.letters?.length > 0) {
+          const secondLetters = h8Entry.letters.join(' / ');
+          const combos = h7Entry.letters.flatMap(l7 => h8Entry.letters.map(l8 => l7 + l8)).join(' / ');
+          lines.push(`שם הגנב: האות הראשונה — ${firstLetters}, האות השנייה — ${secondLetters} (שם מתחיל ב: ${combos})`);
+        } else {
+          lines.push(`שם הגנב: שמו מתחיל ב: ${firstLetters}`);
+        }
+      }
+      if (altName?.results?.length > 0) {
+        const altLetters = [...new Set(altName.results.flatMap(r => r.letters || []))];
+        if (altLetters.length > 0) {
+          lines.push(`שיטה משלימה (בתים 1, 4, 12): אותיות — ${altLetters.join(' / ')}`);
+        }
+      }
+    }
+
+    // 4. House 4 — place of theft
+    if (house4) {
+      const h4Transit = house4.transit?.meaning;
+      if (h4Transit) lines.push(`מקום הגנבה (בית 4 — ${house4.figureHebrew || ''}): ${h4Transit}`);
+    }
+
+    // 5. Practical recommendation
+    if (grade === 'positive' || grade === 'cautiously-positive') {
+      lines.push('ההמלצה: לחקור בין הסביבה הקרובה לפי הסימנים שהלוח מסמן — הסיכוי לאיתור קיים. יש להתמקד באנשים שתואמים את התיאור הפיזי ואת אותיות השם שעלו בלוח.');
+    } else if (grade === 'negative' || grade === 'cautiously-negative') {
+      lines.push('ההמלצה: יש לשקול אם כדאי להמשיך בחיפוש — הלוח מצביע על קושי ממשי. ניתן לנסות לעמת את האנשים שתואמים את הסימנים, אך ציפיות ריאליות נדרשות.');
+    } else {
+      lines.push('ההמלצה: לחקור בין המוכרים הקרובים ולא למהר לוותר — הלוח אינו חד-משמעי. המיקוד יהיה לפי אותיות השם, הסוג האנושי שעלה, ומיקום הגנבה.');
+    }
+
+    return lines.join('\n');
+  }
+
   if (topicId === 'enemies') {
     const house7  = getHouseFromBoard(boardAnalysis, 7);
     const house9  = getHouseFromBoard(boardAnalysis, 9);
@@ -797,6 +885,20 @@ export function writeHumanGoralConclusion(result) {
   let verdictParagraph = '';
   if (isSpiritualTopic) {
     verdictParagraph = spiritualVerdict(result.spiritualDiagnosis);
+  } else if (topicId === 'theft') {
+    const house7 = result.boardAnalysis?.houses?.find(h => Number(h.house) === 7);
+    const house7Fig = house7?.figureHebrew || '';
+    const isIncoming = house7?.directionHebrew === 'נכנס';
+    const isOutgoing = house7?.directionHebrew === 'יוצא';
+    const dirNote = isIncoming ? ' — צורה נכנסת, הגנב עדיין בסביבה'
+                  : isOutgoing ? ' — צורה יוצאת, הגנב כבר עזב' : '';
+    if (grade === 'positive' || grade === 'cautiously-positive') {
+      verdictParagraph = `הלוח נוטה לטובה — יש סיכוי לגלות את הגנב ולאתר את החפץ. בית 7 (${house7Fig}${dirNote}) מציין את הגנב — פרטים בהמשך.`;
+    } else if (grade === 'negative' || grade === 'cautiously-negative') {
+      verdictParagraph = `הלוח מצביע על קושי — החפץ עלול לא לחזור. בית 7 (${house7Fig}${dirNote}) מציין את הגנב — פרטים בהמשך.`;
+    } else {
+      verdictParagraph = `הלוח מעורב — אפשרות החזרת החפץ אינה ברורה. בית 7 (${house7Fig}${dirNote}) מציין את הגנב — פרטים בהמשך.`;
+    }
   } else if (isMiQuestion && topicId === 'enemies') {
     // "מי" questions need identification, not yes/no
     const house7 = result.boardAnalysis?.houses?.find(h => h.house === 7);

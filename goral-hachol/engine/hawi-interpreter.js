@@ -1632,7 +1632,10 @@ const NAME_EXTRACTION_HOUSES_BY_TOPIC = {
   missingPerson:        [{ house: 7, labelOverride: 'שם הנעדר' }],
   prisoner:             [{ house: 12, labelOverride: 'שם הגורם לכליאה' }],
   partnership:          [{ house: 7, labelOverride: 'שם השותף' }],
-  theft:                [{ house: 7, labelOverride: 'שם הגנב' }],
+  theft:                [
+    { house: 7, labelOverride: 'שם הגנב — אות ראשונה' },
+    { house: 8, labelOverride: 'שם הגנב — אות שנייה' },
+  ],
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -2392,12 +2395,14 @@ function computePhysicalDescriptionForHouse(chart, houseNumber) {
   const desc = FIGURE_PHYSICAL_DESCRIPTION[house.key];
   if (!desc) return null;
   const figHebrew = house.hebrew || house.key;
+  const bodyDesc = desc.height.startsWith('גוף') ? desc.height : `מבנה גוף ${desc.height}`;
+  const hairDesc = desc.hair.startsWith('שיער') ? desc.hair : `שיער ${desc.hair}`;
   return {
     houseNumber,
     figureKey: house.key,
     figureHebrew: figHebrew,
     ...desc,
-    outputHebrew: `תיאור האדם (${figHebrew} בבית ${houseNumber}): גובה — ${desc.height}, עור — ${desc.skin}, שיער — ${desc.hair}, עיניים — ${desc.eyes}. ${desc.signs}. אופי: ${desc.character}`,
+    outputHebrew: `${figHebrew}: ${bodyDesc}, ${desc.skin}, ${hairDesc}, ${desc.eyes}. ${desc.signs}. אופי: ${desc.character}.`,
   };
 }
 
