@@ -1295,23 +1295,6 @@
       el.textContent = txt;
     }
 
-    // מלא תאריך ושעה נוכחיים בטעינה
-    (function setDefaultDateTime() {
-      const now = new Date();
-      const dateEl = document.getElementById('questionDateInput');
-      const timeEl = document.getElementById('questionTimeInput');
-      if (dateEl && !dateEl.value) {
-        const y = now.getFullYear();
-        const mo = String(now.getMonth() + 1).padStart(2, '0');
-        const d = String(now.getDate()).padStart(2, '0');
-        dateEl.value = `${y}-${mo}-${d}`;
-      }
-      if (timeEl && !timeEl.value) {
-        const hh = String(now.getHours()).padStart(2, '0');
-        const mm = String(now.getMinutes()).padStart(2, '0');
-        timeEl.value = `${hh}:${mm}`;
-      }
-    })();
 
     document.getElementById('questionTimeInput')?.addEventListener('change', updateCastingTimeAlert);
     updateCastingTimeAlert();
@@ -1355,6 +1338,23 @@
     });
 
     clearForm();
+
+    // מלא תאריך ושעה נוכחיים — חייב להיות אחרי clearForm() שמוחק שדות
+    (function fillCurrentDateTime() {
+      const now = new Date();
+      const dateEl = document.getElementById('questionDateInput');
+      const timeEl = document.getElementById('questionTimeInput');
+      if (dateEl) {
+        const y = now.getFullYear();
+        const mo = String(now.getMonth() + 1).padStart(2, '0');
+        const d = String(now.getDate()).padStart(2, '0');
+        dateEl.value = `${y}-${mo}-${d}`;
+      }
+      if (timeEl) {
+        timeEl.value = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+      }
+      updateCastingTimeAlert();
+    })();
   </script>
 </body>
 </html>
