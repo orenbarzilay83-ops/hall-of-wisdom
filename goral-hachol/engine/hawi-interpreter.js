@@ -23,8 +23,6 @@ import {
   FIGURE_LETTER_EXTRACTION,
 } from '../data/sources/hawi/foundations/hawi-figure-letter-extraction.js';
 
-// Natural figure (جدول, jadwal) for each house — the figure that naturally belongs there.
-// When the figure in a house matches its natural figure, the judgement is especially strong.
 export const NATURAL_HOUSE_FIGURES = {
   1:  '1121', // נלחם — doc2: "الجدولة 00|0"
   2:  '1222', // נשוא ראש — doc3: "0|||" בכותרת פרק בית 2
@@ -129,7 +127,6 @@ const TOPIC_HEBREW_TITLES = {
   deathInheritance: 'מוות / ירושה / פחד גדול',
 };
 
-// הבית המייצג את הנשאל לפי נושא (house of the quesited / бيت المطلوب)
 const TOPIC_QUESITED_HOUSE = {
   marriage:             7,  // בית בן/בת הזוג
   illness:              6,  // בית המחלה
@@ -156,7 +153,6 @@ const TOPIC_QUESITED_HOUSE = {
   deathInheritance:     8,  // בית המוות / הירושה
 };
 
-// צורות הנחשבות נחס (رمال النحوس) לפי מסורת חאוי
 const MALEFIC_FIGURE_PATTERNS = new Set([
   '2122', // אדום — נחס חזק
   '2221', // שפל ראש — נחס חזק
@@ -165,14 +161,11 @@ const MALEFIC_FIGURE_PATTERNS = new Set([
   '1221', // סוהר — נחס (כלא)
 ]);
 
-// יתדות (awtad) — בתים יציבים/זוויתיים
 const ANGULAR_HOUSES_SET = new Set([1, 4, 7, 10]);
 
-// צורות שמש ולבנה (لأشكال الشمس والقمر) לפי PLANETARY_FIGURES
 const SUN_FIGURE_PATTERNS  = new Set(['1122', '2121']); // כבוד יוצא, ממון נכנס
 const MOON_FIGURE_PATTERNS = new Set(['2212', '1111']); // לבן, דרך
 
-// משולשי יסודות — כוכבים לפי יסוד (שער המשולשים, חאוי עמ׳ 59)
 const ELEMENT_TRIANGLE_PLANETS = {
   'אש':    ['שמש', 'צדק', 'שבתאי'],
   'עפר':   ['נוגה', 'מאדים', 'שבתאי'],
@@ -232,8 +225,6 @@ function getFigureFortuneTone(house) {
   return 0;
 }
 
-// Tone from figure state's house-specific fortuneState (overrides base figure fortune when available).
-// Source: Hawi chapter on figure states in houses (الباب الثامن عشر).
 function getFigureStateHouseTone(figureState) {
   if (!figureState?.fortuneState) return null;
   const fs = figureState.fortuneState;
@@ -242,8 +233,6 @@ function getFigureStateHouseTone(figureState) {
   return null;
 }
 
-// Weight multiplier when a figure is silent (שותק / صامت) in its house.
-// A silent figure's influence is weakened per Hawi: "צורה שותקת בבית מרכזי מחלישה את הדין".
 function getSpeakingStateMultiplier(figureState) {
   if (figureState?.speakingState === 'silent') return 0.6;
   return 1;
@@ -258,14 +247,6 @@ function getHouseFortuneTone(houseNumber) {
   return HOUSE_FORTUNE_TONES[Number(houseNumber)] ?? 0;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// כיוון הצורה (الداخل / الخارج / الثابت / المتغير)
-// מקור: מבנה הצורה — שתי הספרות הראשונות של הדפוס קובעות את הכיוון.
-// 21xx = נכנס (داخل/مقبل)  — מגיע לעבר העניין
-// 12xx = יוצא (خارج/مدبر) — מתרחק מן העניין
-// 22xx = קבוע (ثابت)       — יציב ומושרש
-// 11xx = מתהפך (متحول)    — לא יציב, ניתן לשינוי
-// ─────────────────────────────────────────────────────────────────────────────
 function getFigureDirection(pattern) {
   if (!pattern || pattern.length < 2) return null;
   const p = pattern[0] + pattern[1];
@@ -280,11 +261,6 @@ function getFigureDirectionHebrew(direction) {
   return { incoming: 'נכנס', outgoing: 'יוצא', stable: 'קבוע', mutable: 'מתהפך' }[direction] || null;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// כל צורה מבקשת את השביעית שלה (كل شكل يطلب سابعة)
-// מקור: חאוי, hawi-dhamir-directions-validation.js, sourcePage 34.
-// הסדר: מיקום N בתסקין → השביעית היא מיקום (N+7) mod 16.
-// ─────────────────────────────────────────────────────────────────────────────
 const TASKIN_ORDER_PATTERNS = [
   '1121','1222','2111','2212','1211','1112','2122','2221',
   '1122','1221','2112','2211','1111','1212','2222','2121',
@@ -297,10 +273,6 @@ function getSeventhFigure(pattern) {
   return TASKIN_ORDER_PATTERNS[(idx + 7) % 16];
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ניתוח כיוונים — ריבוע הבתים לפי מקור חאוי (hawi-question-hidden-treasure-extra.js)
-// בתים 1-4 = מזרח, 5-8 = מערב, 9-12 = דרום, 13-16 = צפון
-// ─────────────────────────────────────────────────────────────────────────────
 const HOUSE_QUADRANT = (h) => {
   const n = Number(h);
   if (n >= 1  && n <= 4)  return { dir: 'east',  hebrew: 'מזרח'  };
@@ -325,7 +297,6 @@ function computeDirectionQuadrant(chart) {
       directionHebrew: getFigureDirectionHebrew(dir),
     });
   }
-  // Find the strongest incoming+benefic quadrant — indicates where/toward what
   const summary = Object.entries(quadrants).map(([dir, houses]) => {
     const hebrewDir = { east: 'מזרח', west: 'מערב', south: 'דרום', north: 'צפון' }[dir];
     const incomingBenefic = houses.filter((h) => h.direction === 'incoming' && h.fortune.includes('סעד')).length;
@@ -336,10 +307,6 @@ function computeDirectionQuadrant(chart) {
   return { quadrants: summary, dominant };
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// חי או מת — אלגוריתם לשאלת נעדר
-// מקור: hawi-question-missing-person-extra.js, specificDeathRules (PDF 59-60)
-// ─────────────────────────────────────────────────────────────────────────────
 const DEATH_FIGURE_PATTERNS = new Set(['1112', '1212']); // עתבה יוצאת, קבץ יוצא — "מן הצורות הנחסות ביותר"
 
 function computeLifeDeath(chart) {
@@ -358,25 +325,21 @@ function computeLifeDeath(chart) {
   const deathSignals = [];
   const lifeSignals  = [];
 
-  // כלל 1: עתבה יוצאת / קבץ יוצא בבתים מרכזיים
   for (const h of [h1, h8, h9, h14]) {
     if (isDeathFigure(h)) {
       deathSignals.push(`${h.hebrew || h.key} (בית ${h.house}) — מן הצורות הנחסיות ביותר, מורה על מוות.`);
     }
   }
 
-  // כלל 2: חזרה בבית 14 או 8 כנחס
   if (isMalefic(h14)) deathSignals.push(`בית 14 נחס (${h14.key}) — חזרה בבית 14 כנחס, סימן מוות.`);
   if (isMalefic(h8))  deathSignals.push(`בית 8 נחס (${h8.key}) — בית המוות בנחס.`);
 
-  // כלל 3: בתים 1, 9, 13 כולם נחסיים + חזרה בבית 12
   if (isMalefic(h1) && isMalefic(h9) && isMalefic(h13)) {
     if (isMalefic(h12) || (h12 && h12.key === h1?.key)) {
       deathSignals.push('בתים 1, 9, 13 כולם נחסיים וחזרה בבית 12 — לפי חאוי: פסוק מוות.');
     }
   }
 
-  // כלל 4: סעדים חזקים המביטים אל בית 8 — מבטלים/מרככים מוות
   if (isBenefic(h1) && isBenefic(h9)) {
     lifeSignals.push('סעדים בבית 1 ובית 9 — בית המוות מוקף בטוב, הנעדר בסכנה אך ניצל.');
   }
@@ -404,10 +367,6 @@ function computeLifeDeath(chart) {
 
   return { verdict, hebrewVerdict, deathSignals, lifeSignals, deathScore, lifeScore };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// איתיסלאת — חיבורים בין בתים (اتصالات)
-// שני סוגים: (1) חזרת צורה בבתים שונים, (2) קשר מבטי (תסדיס/ריבוע/משולש/מול)
 
 const ASPECT_RULES = [
   { id: 'tasdis',   hebrew: 'חיבור-שישה',  offsets: [2, 10] },
@@ -451,7 +410,6 @@ function computeIttisalat(chart, focusHouseNumber, mainHouses) {
 
   const KEY_HOUSES = Array.from(new Set([1, focusHouseNumber, 13, 14, 15, 16, ...mainHouses]));
 
-  // ── 1. חזרת צורה בבתים עיקריים ──────────────────────────────────────────
   const byFigure = {};
   for (const h of chart) {
     const k = h.key;
@@ -476,7 +434,6 @@ function computeIttisalat(chart, focusHouseNumber, mainHouses) {
     });
   }
 
-  // ── 2. קשר מבטי בין בית 1, בית המרכזי, בית 15 ───────────────────────────
   function linkBetween(aNum, bNum) {
     const a = chart.find((h) => Number(h.house) === aNum);
     const b = chart.find((h) => Number(h.house) === bNum);
@@ -526,7 +483,6 @@ function computeIttisalat(chart, focusHouseNumber, mainHouses) {
     focus_to_judge?.type === 'same-figure' ||
     focus_to_judge?.type === 'aspect';
 
-  // Hebrew summary for conclusion
   const summaryLines = [];
   if (questioner_to_focus) summaryLines.push(questioner_to_focus.hebrewShort);
   if (questioner_to_judge) summaryLines.push(questioner_to_judge.hebrewShort);
@@ -547,8 +503,7 @@ function computeIttisalat(chart, focusHouseNumber, mainHouses) {
   };
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// מצב הטאלע — ניתוח עומק של בית 1 (בית השואל / بيت الطالع)
+
 
 const ELEMENT_BODY_MAP = {
   'אש':    'ראש, פנים, רוח — מייצג את השואל עצמו',
@@ -628,9 +583,6 @@ function computeHouse1Analysis(chart, topicId) {
     summaryLines,
   };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// בדיקות קשר נוספות לפי נושא (Topic-specific house-pair checks)
 
 const TOPIC_KEY_PAIRS = {
   marriage: [
@@ -772,11 +724,6 @@ function computeTopicConnections(chart, topicId) {
   return { topicId, topicHebrew: TOPIC_HEBREW_TITLES[topicId] || topicId, checks };
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// תחסיל (تحصيل) — האם הדבר ייגמר?
-// מניעה (حيلولة) — מה חוסם את ההגעה?
-// ─────────────────────────────────────────────────────────────────────────────
-
 function countRowMatches(figA, figB) {
   if (!figA || !figB || figA.length !== 4 || figB.length !== 4) return 0;
   let n = 0;
@@ -796,8 +743,6 @@ function chartHouse(chart, houseNum) {
   return chart.find((h) => Number(h.house) === Number(houseNum)) || null;
 }
 
-// Planetary figure assignments from Hawi (hawi-dhamir-directions-validation.js, doc 33-34).
-// Each planet has two representative figures. Converted from |/0 notation: |=2, 0=1.
 const PLANETARY_FIGURES = [
   { hebrew: 'שמש',    figures: ['1122', '2121'] },
   { hebrew: 'לבנה',   figures: ['2212', '1111'] },
@@ -820,12 +765,10 @@ function computeAsala(chart) {
 
   const chartKeys = new Set(chart.map((h) => h.key).filter(Boolean));
 
-  // Rule 1 — moon figure (לבן = 2212) or (דרך = 1111) must appear
   const moonFigures = ['2212', '1111'];
   const hasMoon = moonFigures.some((f) => chartKeys.has(f));
   const moonFigureFound = moonFigures.find((f) => chartKeys.has(f));
 
-  // Rule 2 — at least one figure from each planet's pair must appear
   const missingPlanets = PLANETARY_FIGURES
     .filter((p) => !p.figures.some((f) => chartKeys.has(f)))
     .map((p) => p.hebrew);
@@ -864,7 +807,6 @@ function computeHayula(chart, quesitedHouseNum, querentFig, quesitedFig, tahasil
   const h8    = chartHouse(chart, 8);
   const reasons = [];
 
-  // חסימה 1: הדיין נחס ואינו קשור לאחד הצדדים
   const judgeIsNahs = judge && judge.fortune && judge.fortune.includes('נחס');
   if (judgeIsNahs) {
     if (judge.key !== querentFig && judge.key !== quesitedFig) {
@@ -873,14 +815,12 @@ function computeHayula(chart, quesitedHouseNum, querentFig, quesitedFig, tahasil
     }
   }
 
-  // חסימה 2: בית 12 (אויב נסתר/אבדה) נחס ואינו קשור לאחד הצדדים
   if (h12 && MALEFIC_FIGURE_PATTERNS.has(h12.key)) {
     if (h12.key !== querentFig && h12.key !== quesitedFig) {
       reasons.push(`בית 12 (${h12.hebrew || h12.key}) — סכנה נסתרת של נחס — מפריעה להגעה.`);
     }
   }
 
-  // חסימה 3: בית 8 (מוות/הפסד) נחס ואינו קשור — חוסם בנישואין/מחלה/נסיעה
   if (h8 && MALEFIC_FIGURE_PATTERNS.has(h8.key)) {
     if (h8.key !== querentFig && h8.key !== quesitedFig) {
       reasons.push(`בית 8 (${h8.hebrew || h8.key}) — נחס — מטיל צל של הפסד או סכנה על הדין.`);
@@ -932,14 +872,12 @@ function computeTahasil(chart, topicId) {
   let tahasilStrength = 'none';
   let tahasilHebrew   = '';
 
-  // ── 1. ישיר (اتحاد) ──────────────────────────────────────────────────────
   if (querentFig && querentFig === quesitedFig) {
     tahasilStatus   = 'direct';
     tahasilStrength = 'strong';
     tahasilHebrew   = `תחסיל ישיר (אתחאד): אותה צורה — "${querentName}" — בבית 1 ובבית ${quesitedHouseNum}. הדבר ייגמר ואין ספק בו.`;
   }
 
-  // ── 2. טבעי (جدول) ───────────────────────────────────────────────────────
   if (tahasilStatus === 'none') {
     const naturalOfQuerent  = getNaturalHouseOf(querentFig);
     const naturalOfQuesited = getNaturalHouseOf(quesitedFig);
@@ -954,7 +892,6 @@ function computeTahasil(chart, topicId) {
     }
   }
 
-  // ── 3. עדים/דיין (شهادة) ─────────────────────────────────────────────────
   if (tahasilStatus === 'none') {
     const judge = chartHouse(chart, 15);
     const w1    = chartHouse(chart, 13);
@@ -982,7 +919,6 @@ function computeTahasil(chart, topicId) {
     }
   }
 
-  // ── 4. העברה (نقل النور) ─────────────────────────────────────────────────
   if (tahasilStatus === 'none') {
     const bridge = chart.find((h) => {
       const n = Number(h.house);
@@ -997,7 +933,6 @@ function computeTahasil(chart, topicId) {
     }
   }
 
-  // ── 5. שיתוף שורות (اشتراك الأوتاد) ─────────────────────────────────────
   if (tahasilStatus === 'none') {
     const shared = countRowMatches(querentFig, quesitedFig);
     if (shared >= 3) {
@@ -1013,7 +948,6 @@ function computeTahasil(chart, topicId) {
     }
   }
 
-  // ── מניעה (حيلولة) ───────────────────────────────────────────────────────
   const hayula = computeHayula(chart, quesitedHouseNum, querentFig, quesitedFig, tahasilStatus);
 
   return {
@@ -1030,9 +964,6 @@ function computeTahasil(chart, topicId) {
   };
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ציון שלמות הלוח — כלל 96 הנקודות (ناقص / كامل)
-// ציון = 128 − (מספר שורות יחידות). < 96 = חסר.
 function computeBoardScore(chart) {
   if (!Array.isArray(chart)) return null;
   let singles = 0;
@@ -1054,10 +985,6 @@ function computeBoardScore(chart) {
       : `לוח חסר (${score} נקודות < 96) — השאלה עשויה שלא להיפתר`,
   };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// תסיירת נקטת המיזאן — הדמיר לפי עקיבה אחורה בשרשרת הגזירה
-// מקור: "أهم قاعدة هي تسيير نقط الميزان"
 const DHAMIR_PARENT_PAIRS = {
   9: [1, 2], 10: [3, 4], 11: [5, 6], 12: [7, 8],
   13: [9, 10], 14: [11, 12], 15: [13, 14],
@@ -1111,7 +1038,6 @@ function computeDhamirByMizanTracing(chart) {
   };
 }
 
-// נהמת האמהות: שורה 1 מאם 1 + שורה 2 מאם 2 + שורה 3 מאם 3 + שורה 4 מאם 4 → צורת הדמיר
 function computeDhamirHouse(board) {
   if (!board || !Array.isArray(board.chart)) return null;
 
@@ -1151,19 +1077,16 @@ function buildJudgeVerdict(boardAnalysis) {
     return { verdict: 'unknown', grade: 'mixed', hebrewShort: 'הדיין לא נמצא', hebrewFull: 'לא ניתן לקבוע תשובה ללא בית 15.' };
   }
 
-  // Base tones from figure intrinsic fortune (סעד/נחס)
   const judgeToneBase = getFigureFortuneTone(judge);
   const w1ToneBase = w1 ? getFigureFortuneTone(w1) : 0;
   const w2ToneBase = w2 ? getFigureFortuneTone(w2) : 0;
   const focusToneBase = focus ? getFigureFortuneTone(focus) : 0;
 
-  // House-specific fortune override from Hawi figure-states chapter (when available)
   const judgeStateTone = getFigureStateHouseTone(judge?.figureState);
   const w1StateTone = getFigureStateHouseTone(w1?.figureState);
   const w2StateTone = getFigureStateHouseTone(w2?.figureState);
   const focusStateTone = getFigureStateHouseTone(focus?.figureState);
 
-  // Use house-specific override when available, else fall back to base fortune
   const judgeTone = judgeStateTone ?? judgeToneBase;
   const w1Tone = w1StateTone ?? w1ToneBase;
   const w2Tone = w2StateTone ?? w2ToneBase;
@@ -1177,7 +1100,6 @@ function buildJudgeVerdict(boardAnalysis) {
   const focusFigure = focus?.figureHebrew || '';
   const focusHouseNum = focus?.house || '';
 
-  // Speaking state (ناطق/صامت) — silent judge weakens the ruling
   const judgeSpeaking = getSpeakingStateHebrew(judge?.figureState);
   const judgeSilentNote = judgeSpeaking === 'שותק'
     ? ` [הדיין שותק בבית זה — כוחו מוחלש.]`
@@ -1255,7 +1177,6 @@ function buildJudgeVerdict(boardAnalysis) {
     }
   }
 
-  // Dhamir confirmation/contradiction note
   const dhamirFort = boardAnalysis.dhamirByMizan?.primaryFortune || boardAnalysis.dhamirHouse?.fortune || '';
   const dhamirToneVerdict = dhamirFort.includes('סעד') ? 1 : dhamirFort.includes('נחס') ? -1 : 0;
   if (dhamirToneVerdict !== 0) {
@@ -1265,7 +1186,6 @@ function buildJudgeVerdict(boardAnalysis) {
       ? ` הדמיר (בית ${dhamirH}) מאשר את הפסיקה — ${dhamirFort}.`
       : ` הדמיר (בית ${dhamirH}) מנוגד לדיין — ${dhamirFort} — ייתכן שינוי במהלך.`;
   }
-  // Board completeness note
   if (boardAnalysis.boardScore?.isComplete === false) {
     hebrewFull += ` [הערה: הלוח חסר (${boardAnalysis.boardScore.score} נקודות) — הפסיקה פחות ודאית.]`;
   }
@@ -1393,21 +1313,17 @@ function findSourceRecordByFigure(house, sourceList) {
 function getTransitMeaningForHouse(house) {
   if (!house) return null;
   const houseNum = Number(house.house);
-  // Try direct lookup by figureId or shortId
   const figureId = house.figureId || house.shortId || null;
   let houseMeaning = null;
   if (figureId) {
     houseMeaning = HAWI_SOURCE.figureTransits.getHouseMeaning(figureId, houseNum);
   }
-  // If that failed, try by pattern (house.key = "2221" etc.)
   if (!houseMeaning && house.key) {
-    // Find the figure by pattern from HAWI_SOURCE.figureNames.list
     const figureByPattern = HAWI_SOURCE.figureNames.list.find(f => f.pattern === house.key);
     if (figureByPattern) {
       houseMeaning = HAWI_SOURCE.figureTransits.getHouseMeaning(figureByPattern.shortId, houseNum);
     }
   }
-  // If still failed, try by Hebrew name
   if (!houseMeaning && house.hebrew) {
     const figureByHebrew = HAWI_SOURCE.figureNames.list.find(f =>
       f.hebrewName === house.hebrew
@@ -1464,15 +1380,8 @@ function getHouseStateColor(houseNumber) {
   };
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// שאלת מטמון / חבוי — חישוב מיקום לפי צורה בבית 1 ובדיקת קיום
-// מקור: hawi-question-hidden-treasure-extra.js (שער החבוי, חאוי)
-// ─────────────────────────────────────────────────────────────────────────────
-
-// Saturn figure patterns (עקלה 1221, שפל ראש 2221) — key treasure presence indicators
 const SATURN_FIGURE_PATTERNS_TREASURE = new Set(['1221', '2221']);
 
-// Map from figure pattern to location rule from hawi-question-hidden-treasure-extra.js
 const TREASURE_FIGURE_LOCATION_RULES = (function buildTreasureRules() {
   const PATTERN_MAP = {
     'القبض الداخل':    '2121',
@@ -1522,15 +1431,12 @@ function computeTreasureLocation(chart) {
 
   const house1Pattern = house1.key || '';
 
-  // Step 1: check Saturn figures in key houses (8, 12, 16) — primary presence test
   const saturnKeyHouses = [8, 12, 16].map((n) => chart.find((h) => Number(h.house) === n)).filter(Boolean);
   const hasSaturnInKeyHouses = saturnKeyHouses.some((h) => SATURN_FIGURE_PATTERNS_TREASURE.has(h.key || ''));
 
-  // Step 2: check secondary houses (2, 6, 8) for qabd dakhil (ממון נכנס = 2121)
   const secondaryHouses = [2, 6, 8].map((n) => chart.find((h) => Number(h.house) === n)).filter(Boolean);
   const hasQabdDakhilInSecondary = secondaryHouses.some((h) => (h.key || '') === '2121');
 
-  // Determine presence verdict
   let presenceVerdict;
   let presenceHebrew;
   if (hasSaturnInKeyHouses) {
@@ -1553,7 +1459,6 @@ function computeTreasureLocation(chart) {
     }
   }
 
-  // Figure in house 1 → location rule
   const locationRule = TREASURE_FIGURE_LOCATION_RULES[house1Pattern] || null;
   const locationHebrew = buildTreasureLocationHebrew(locationRule);
 
@@ -1569,13 +1474,6 @@ function computeTreasureLocation(chart) {
   };
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// הוצאת שם — استخراج الاسم
-// מקור: תסקין עבדוה (hawi-figure-letter-extraction.js)
-// בית 9 = מכשף/גורם רוחני, בית 7 = גנב/אויב/אדם לא ידוע
-// ─────────────────────────────────────────────────────────────────────────────
-
-// Build a lookup map once: pattern → letter entry
 const PATTERN_TO_LETTERS = (function buildLetterMap() {
   const map = {};
   for (const entry of (FIGURE_LETTER_EXTRACTION?.figureLetters || [])) {
@@ -1616,7 +1514,6 @@ function computeNameLetters(chart, houseNumber, labelOverride) {
   };
 }
 
-// Topics where name extraction is relevant and which house to read
 const NAME_EXTRACTION_HOUSES_BY_TOPIC = {
   spiritualDiagnostics: [{ house: 9 }],
   enemies:              [{ house: 7 }, { house: 9 }],
@@ -1630,11 +1527,6 @@ const NAME_EXTRACTION_HOUSES_BY_TOPIC = {
     { house: 8, labelOverride: 'שם הגנב — אות שנייה' },
   ],
 };
-
-// ─────────────────────────────────────────────────────────────────────────────
-// מנוע שלטון / בעלי תפקידים (authorityState)
-// מקור: hawi-authority-state-rulers.js (חאוי עמ׳ 36-38)
-// ─────────────────────────────────────────────────────────────────────────────
 function computeAuthorityStateAnalysis(chart, authoritySource) {
   if (!Array.isArray(chart)) return null;
 
@@ -1650,7 +1542,6 @@ function computeAuthorityStateAnalysis(chart, authoritySource) {
   const isIncoming = (h) => h && getFigureDirection(h.key) === 'incoming';
   const isStable   = (h) => h && getFigureDirection(h.key) === 'stable';
 
-  // pull official Hebrew texts from source when available
   const srcStability = authoritySource?.officeStabilityRules || [];
   const srcReturn    = authoritySource?.returnToOfficeRules  || [];
 
@@ -1664,7 +1555,6 @@ function computeAuthorityStateAnalysis(chart, authoritySource) {
 
   const signals = [];
 
-  // כלל 1: יציבות — בית 1 קבוע+סעד ומחובר לבית 10
   const h1BeneficStable = isBenefic(h1) && (isStable(h1) || isIncoming(h1));
   const h10Benefic = isBenefic(h10);
   const h1ConnectsH10 = !!(h1?.key && h10?.key && (h1.key === h10.key || aspectTypeBetween(1, 10)));
@@ -1675,7 +1565,6 @@ function computeAuthorityStateAnalysis(chart, authoritySource) {
         : `בית 1 (${h1?.hebrew || ''}) סעד+קבוע/נכנס ומחובר לבית 10 (${h10?.hebrew || ''}) — המושל יציב בתפקידו ומכובד.` });
   }
 
-  // כלל 2: ריבוי תומכים — בית 10 חוזר בבית 11 ושלושתם טובים
   if (h10?.key && h11?.key && h10.key === h11.key && isBenefic(h1)) {
     signals.push({ verdict: 'stable', weight: 2, sourceId: rule2Src?.id || null,
       hebrew: rule2Src?.hebrew
@@ -1683,7 +1572,6 @@ function computeAuthorityStateAnalysis(chart, authoritySource) {
         : `בית 10 (${h10?.hebrew || ''}) חוזר בבית 11 ובית 1 סעד — ריבוי תומכים, חברים ואחים.` });
   }
 
-  // כלל 3: נפילה — בית 1 נחס, או נחסים בבית 10 ו-11 יחד
   if (isMalefic(h1) || (isMalefic(h10) && isMalefic(h11))) {
     signals.push({ verdict: 'removal', weight: -3, sourceId: rule3Src?.id || null,
       hebrew: rule3Src?.hebrew
@@ -1691,7 +1579,6 @@ function computeAuthorityStateAnalysis(chart, authoritySource) {
         : `בית 1 (${h1?.hebrew || ''}) או בתים 10+11 (${h10?.hebrew || ''}/${h11?.hebrew || ''}) נחסיים — סימן ליציאה מן התפקיד.` });
   }
 
-  // כלל 4: נפילה קשה — נחסים מבית 7 ו-15 (ראש+זנב מן השביעי)
   if (isMalefic(h7) && isMalefic(h15)) {
     signals.push({ verdict: 'removal', weight: -4, sourceId: rule4Src?.id || null,
       hebrew: rule4Src?.hebrew
@@ -1702,7 +1589,6 @@ function computeAuthorityStateAnalysis(chart, authoritySource) {
       hebrew: `נחס בבית 7 (${h7?.hebrew || ''}) — לחץ מן הצד השני.` });
   }
 
-  // כלל 5: חזרה לתפקיד — בתים 1, 5, 15, 11 מסועדים ונכנסים
   const returnHouses = [h1, h5, h15, h11];
   const returnBeneficCount = returnHouses.filter((h) => h && isBenefic(h) && isIncoming(h)).length;
   if (returnBeneficCount >= 3) {
@@ -1717,7 +1603,6 @@ function computeAuthorityStateAnalysis(chart, authoritySource) {
     signals.push({ verdict: 'return', weight: 1, sourceId: returnH10Src?.id || null, hebrew: baseText });
   }
 
-  // כלל 6: שמש ולבנה — יציבות מדינה
   const sunInAngular  = chart.some((h) => SUN_FIGURE_PATTERNS.has(h.key || '') && ANGULAR_HOUSES_SET.has(Number(h.house)));
   const moonInAngular = chart.some((h) => MOON_FIGURE_PATTERNS.has(h.key || '') && ANGULAR_HOUSES_SET.has(Number(h.house)));
   const sunInBoard    = chart.some((h) => SUN_FIGURE_PATTERNS.has(h.key || ''));
@@ -1752,7 +1637,6 @@ function computeAuthorityStateAnalysis(chart, authoritySource) {
     'removal':        'סימנים חזקים לנפילת המושל מתפקידו.',
   }[stabilityVerdict] || 'לא מוכרע.';
 
-  // scope description from source
   const scopeNote = authoritySource?.authorityQuestionScope?.hebrew || null;
 
   return {
@@ -1768,13 +1652,6 @@ function computeAuthorityStateAnalysis(chart, authoritySource) {
   };
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// מנוע טאלע השנה / יוקר וזול / גשם
-// מקור: hawi-yearly-prices-forecast.js + hawi-rain-weather-forecast.js
-//        + hawi-planetary-correspondences.js
-// ─────────────────────────────────────────────────────────────────────────────
-
-// figure pattern → planet name Hebrew
 // Note: sourceShapes in hawi-planetary-correspondences has inconsistent row-order encoding
 // between planets, so we keep the verified hardcoded mapping here.
 const FIGURE_PLANET_MAP = (function () {
@@ -1791,7 +1668,6 @@ const FIGURE_PLANET_MAP = (function () {
   return m;
 })();
 
-// Build planet name → enrichment data (materials, foods, lands) from official source
 const PLANET_ENRICHMENT_MAP = (function () {
   const m = {};
   const planets = HAWI_SOURCE.extendedKnowledge?.planetaryCorrespondences?.planets || [];
@@ -1808,7 +1684,6 @@ const PLANET_ENRICHMENT_MAP = (function () {
   return m;
 })();
 
-// Planet → what gets expensive/important that year (from priceRulesByPlacement)
 const PLANET_YEARLY_MEANING = {
   'שמש':           'צדק המלך, ירידה בעוול, שלטון ראוי',
   'לבנה':          'חיזוק הצבא/עמים, כוח חברתי',
@@ -1819,7 +1694,6 @@ const PLANET_YEARLY_MEANING = {
   'צדק':           'התייקרות זהב וכסף, חיזוק נכבדים',
 };
 
-// House-15 specific yearly outcome rules
 const YEARLY_H15_OUTCOME_RULES = [
   {
     id: 'jamaa-from-two-jamaa',
@@ -1849,20 +1723,17 @@ function computeYearlyForecastAnalysis(chart, pricesSource, rainSource) {
   const w13 = chartHouse(chart, 13);
   const w14 = chartHouse(chart, 14);
 
-  // בית 15 — כללים ספציפיים
   let house15Result = null;
   for (const rule of YEARLY_H15_OUTCOME_RULES) {
     if (rule.match(h15, w13, w14)) { house15Result = rule; break; }
   }
 
-  // כוכבים ביתדות — מה מתייקר השנה
   const angularPlanets = chart
     .filter((h) => ANGULAR_HOUSES_SET.has(Number(h.house)) && FIGURE_PLANET_MAP[h.key])
     .map((h) => {
       const planetName = FIGURE_PLANET_MAP[h.key];
       const enrichment = PLANET_ENRICHMENT_MAP[planetName] || {};
       const isBenefic = !MALEFIC_FIGURE_PATTERNS.has(h.key || '');
-      // use pricesSource rule: benefic = expensive, malefic = cheap
       const priceRule = isBenefic
         ? pricesSource?.priceRulesByPlacement?.find(r => r.id === 'benefic-sign-increases-price')?.result
         : pricesSource?.priceRulesByPlacement?.find(r => r.id === 'malefic-fallen-sign-lowers-price')?.result;
@@ -1880,7 +1751,6 @@ function computeYearlyForecastAnalysis(chart, pricesSource, rainSource) {
       };
     });
 
-  // יסוד דומיננטי בלוח
   const elCounts = {};
   for (const h of chart) { if (h.element) elCounts[h.element] = (elCounts[h.element] || 0) + 1; }
   const dominantElement = Object.entries(elCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || null;
@@ -1891,14 +1761,12 @@ function computeYearlyForecastAnalysis(chart, pricesSource, rainSource) {
     'עפר':   'שנת עפר — יציבות, חקלאות, ממון',
   };
 
-  // דין גשם — לפי rainSource.rainStrengthRules + כוח לבנה ביתד
   const moonAngular   = chart.some((h) => MOON_FIGURE_PATTERNS.has(h.key || '') && ANGULAR_HOUSES_SET.has(Number(h.house)));
   const moonInBoard   = chart.some((h) => MOON_FIGURE_PATTERNS.has(h.key || ''));
   const venusInBoard  = chart.some((h) => ['2211', '1211'].includes(h.key || ''));
   const saturnAngular = chart.some((h) => ['2221', '1221'].includes(h.key || '') && ANGULAR_HOUSES_SET.has(Number(h.house)));
   const waterHousesActive = chart.some((h) => h.element === 'מים' && ANGULAR_HOUSES_SET.has(Number(h.house)));
 
-  // use rainSource rule descriptions when available
   const strongRainRule = rainSource?.rainStrengthRules?.find(r => r.id === 'strong-first-half-heavy-rain');
   const coldSnowRule   = rainSource?.rainStrengthRules?.find(r => r.id === 'watery-houses-cold-snow-mix');
 
@@ -1916,7 +1784,6 @@ function computeYearlyForecastAnalysis(chart, pricesSource, rainSource) {
     : rainVerdict === 'cold-dry'      ? 'שבתאי ביתד — קור, יובש ועננים שחורים.'
     : 'לא ניתן לקבוע דין גשם ברור מלוח זה.';
 
-  // regionAdjustmentNote from rainSource
   const regionNote = rainSource?.regionAdjustmentRules?.[0]?.hebrew || null;
 
   const parts = [];
@@ -1944,12 +1811,6 @@ function computeYearlyForecastAnalysis(chart, pricesSource, rainSource) {
   };
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// שער המולד / הנולד — חזרת בעל הטאלע בבתים
-// מקור: hawi-birth-nativity.js (חאוי עמ׳ 51-58)
-// ─────────────────────────────────────────────────────────────────────────────
-
-// Build house-number → meanings lookup from all rule groups
 function buildNativityLookup(birthSource) {
   if (!birthSource) return {};
   const lookup = {};
@@ -1980,7 +1841,6 @@ function computeBirthNativityAnalysis(chart, birthSource) {
   const taliPattern = tali.key;
   const taliHebrew  = tali.hebrew || tali.key;
 
-  // בתים שבהם חוזרת צורת הטאלע (מלבד בית 1 עצמו)
   const repeatingHouses = chart
     .filter((h) => h.key === taliPattern && Number(h.house) !== 1)
     .map((h) => Number(h.house))
@@ -2008,18 +1868,12 @@ function computeBirthNativityAnalysis(chart, birthSource) {
 
   return { taliPattern, taliHebrew, repeatingHouses, findings, outputHebrew: parts.join('\n') };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// אינדקס אבחון רוחני — מפה של בתים לתחומים רוחניים/מיסטיים
-// מקור: hawi-spiritual-diagnostics.js
-// ─────────────────────────────────────────────────────────────────────────────
 function computeSpiritualDiagnosticsHouseIndex(chart, spiritualSource) {
   if (!Array.isArray(chart) || !spiritualSource) return null;
 
   const rules = spiritualSource.rules || [];
   if (!rules.length) return null;
 
-  // build house → [spiritual rules] map
   const houseRuleMap = {};
   for (const rule of rules) {
     const houseNum = rule.sourceLocation?.house;
@@ -2029,7 +1883,6 @@ function computeSpiritualDiagnosticsHouseIndex(chart, spiritualSource) {
     }
   }
 
-  // for each house in the chart that has a spiritual rule, record the match
   const findings = chart
     .map((h) => {
       const houseNum = Number(h.house);
@@ -2049,7 +1902,6 @@ function computeSpiritualDiagnosticsHouseIndex(chart, spiritualSource) {
     .filter(Boolean)
     .sort((a, b) => a.houseNumber - b.houseNumber);
 
-  // highlight significant houses (malefic figure in spiritually sensitive house)
   const alerts = findings.filter(f => f.isMalefic);
 
   const parts = [`אינדקס אבחון רוחני לפי חאוי:`];
@@ -2068,14 +1920,9 @@ function computeSpiritualDiagnosticsHouseIndex(chart, spiritualSource) {
     outputHebrew: parts.join('\n'),
   };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// ניתוח משולשים — כוכבים לפי יסוד (שער המשולשים, חאוי עמ׳ 59)
-// ─────────────────────────────────────────────────────────────────────────────
 function computeTrianglesEnrichment(chart) {
   if (!Array.isArray(chart)) return null;
 
-  // בתים מרכזיים: 1, 7, 10, 15
   const enriched = [1, 7, 10, 15]
     .map((n) => chartHouse(chart, n))
     .filter((h) => h && h.element)
@@ -2095,10 +1942,6 @@ function computeTrianglesEnrichment(chart) {
   if (!enriched.length) return null;
   return { enriched, outputHebrew: enriched.map((e) => e.hebrewNote).join('\n') };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// אלמנט → סוג מחלה (בלוג' אלאמל פרק 5)
-// ─────────────────────────────────────────────────────────────────────────────
 const ELEMENT_ILLNESS_TYPE = {
   'אש':    'מרה צהובה — חום, כבד, מרה, בעיות עיכול (חולי אש)',
   'אוויר': 'דם — לחץ דם, עצבים, מחלות נשימה (חולי אוויר)',
@@ -2127,7 +1970,6 @@ function computeIllnessElementDiagnosis(chart) {
     lines.push(`אלמנט בית 8 (סכנה): ${h8El} → ${dangerType}`);
   }
 
-  // סימנים ספציפיים מהספר (פרק 24)
   const specificSigns = [];
   const h6Key = h6?.key || '';
   const h1Key = chart.find((h) => Number(h.house) === 1)?.key || '';
@@ -2146,10 +1988,6 @@ function computeIllnessElementDiagnosis(chart) {
     outputHebrew: lines.join('\n'),
   };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// זיהוי גנב לפי בית חזרת הצורה (בלוג' אלאמל פרק 19 ועמ' 64)
-// ─────────────────────────────────────────────────────────────────────────────
 function computeThiefLocationDetails(chart) {
   const figureHouses = {};
   for (const h of chart) {
@@ -2192,11 +2030,6 @@ function computeThiefLocationDetails(chart) {
   if (!lines.length) return null;
   return { findings, outputHebrew: lines.join('\n') };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// גילוי אויב בסביבה הקרובה (בלוג' אלאמל עמ' 64)
-// נוסחה: נקודות פתוחות של צורות נחסיות, חלקי 5, חלוקה על הבתים
-// ─────────────────────────────────────────────────────────────────────────────
 function computeEnemyInHousehold(chart) {
   const MALEFIC = new Set(['1212','2122','2221','2222','1221']);
   let openDots = 0;
@@ -2232,11 +2065,6 @@ function computeEnemyInHousehold(chart) {
     outputHebrew: `גילוי אויב בסביבה (נוסחת הנקודות הפתוחות): נפל על בית ${remainder} — ${targetHouse?.hebrew || targetFig} — ${verdict}${enemyCount}`,
   };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// עיתוי — מתי יסתיים העניין? (בלוג' אלאמל פרק 7)
-// יסוד הצורה בבית הדמיר קובע את יחידת הזמן
-// ─────────────────────────────────────────────────────────────────────────────
 const ELEMENT_TIMING_UNITS = {
   'אש':    { single: 1, label: 'יום / שעה' },
   'אוויר': { single: 2, label: 'ימיים / שעתיים' },
@@ -2255,7 +2083,6 @@ function computeTimingEstimate(chart, dhamirHouse, topicId) {
   const timing = ELEMENT_TIMING_UNITS[el];
   if (!timing) return null;
 
-  // קבוצת הבית קובעת את מה מדדים (ימים/שבועות/חודשים/שנים)
   let scale = '';
   if (dh >= 1  && dh <= 4)  scale = 'ימים / שעות (אמהות — מהיר)';
   if (dh >= 5  && dh <= 8)  scale = 'שבועות / ימים (בנות — בינוני)';
@@ -2271,10 +2098,6 @@ function computeTimingEstimate(chart, dhamirHouse, topicId) {
     outputHebrew: `עיתוי (מתי יסתיים?): הדמיר בבית ${dh} (${dhamirEntry.hebrew || dhamirEntry.key}) — אלמנט ${el} — ${timing.label}. סקאלה: ${scale}`,
   };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// צורה שולטת × נישואין (בלוג' אלאמל פרק 33)
-// ─────────────────────────────────────────────────────────────────────────────
 const MARRIAGE_BY_DOMINANT_FIGURE = {
   '1111': 'דרך שולטת — לא יתאחד עד לאחר זמן; האיחוד יבוא בעיכוב',
   '1112': 'סף יוצא שולט — נישואין עם מכשולים ביציאה; יש עיכוב כבד',
@@ -2316,10 +2139,6 @@ function computeMarriageFigureForecast(chart) {
     outputHebrew: `פסיקת נישואין לפי צורה שולטת: "${domHebrew}" (${domCount}×) — ${meaning}`,
   };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// צורה ראשונה × חזרות (בלוג' אלאמל פרק 17)
-// ─────────────────────────────────────────────────────────────────────────────
 const FIRST_FIGURE_REPETITIONS = {
   // [1x, 2x, 3x, 4x]
   '1111': [
@@ -2415,7 +2234,6 @@ function computeFirstFigureRepetition(chart) {
   const firstKey = h1Figure.key || '';
   const firstHebrew = h1Figure.hebrew || h1Figure.key;
 
-  // ספור כמה פעמים הצורה הראשונה חוזרת בכל הלוח
   const allOccurrences = chart.filter((h) => h.key === firstKey);
   const count = allOccurrences.length;
 
@@ -2433,10 +2251,6 @@ function computeFirstFigureRepetition(chart) {
     outputHebrew: `צורה ראשונה בלוח: "${firstHebrew}" (חוזרת ${count}×) — ${meaning}`,
   };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// תחזית שנתית לפי צורה שולטת (בלוג' אלאמל עמ' 25)
-// ─────────────────────────────────────────────────────────────────────────────
 const YEARLY_BY_DOMINANT_FIGURE = {
   '1111': 'דרך שולטת — שנת תנועה ונדידה, ללא ברכה יציבה. טוב לנוסעים ולמסחר בדרכים',
   '1112': 'סף יוצא שולט — שנת יציאות והוצאות; דברים יוצאים מהיד. זהירות מהפסדים',
@@ -2478,11 +2292,6 @@ function computeYearlyFigureForecast(chart) {
     outputHebrew: `תחזית שנתית לפי צורה שולטת: "${domHebrew}" (${domCount}×) — ${meaning}`,
   };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// שיטת חילוץ שם נוספת — שיטה 5 (בלוג' אלאמל עמ' 13-15)
-// בתים 1, 4, 12; אם צורה חוזרת — האותיות כפולות
-// ─────────────────────────────────────────────────────────────────────────────
 function computeAlternativeNameExtraction(chart) {
   const houseNums = [1, 4, 12];
   const results = houseNums.map((n) => computeNameLetters(chart, n)).filter(Boolean);
@@ -2505,11 +2314,6 @@ function computeAlternativeNameExtraction(chart) {
     outputHebrew: `שיטה 5 (בתים 1, 4, 12):\n${lines.join('\n')}`,
   };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// תיאורי גוף לפי צורה (בלוג' אלאמל עמ' 65-71)
-// משמשים לזיהוי הגנב, הנעדר, השותף, ועוד
-// ─────────────────────────────────────────────────────────────────────────────
 const FIGURE_PHYSICAL_DESCRIPTION = {
   '1111': { height: 'בינוני', skin: 'חיוור / עור בהיר', hair: 'ישר ובינוני', eyes: 'עיניים אפורות / ירוקות', signs: 'מראה תנועתי, לא יושב בשקט', character: 'נוטה לנדידה, חברותי, חסר מנוחה' },
   '1112': { height: 'נמוך ורזה', skin: 'עור בהיר', hair: 'דק וקצר', eyes: 'עיניים קטנות', signs: 'גוף דק, תנועות מהירות', character: 'שקוע במחשבות, נוטה לצאת ולברוח' },
@@ -2545,10 +2349,6 @@ function computePhysicalDescriptionForHouse(chart, houseNumber) {
     outputHebrew: `${figHebrew}: ${bodyDesc}, ${desc.skin}, ${hairDesc}, ${desc.eyes}. ${desc.signs}. אופי: ${desc.character}.`,
   };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// ניתוח אסיר / כלא (בלוג' אלאמל עמ' 28, 57)
-// ─────────────────────────────────────────────────────────────────────────────
 function computePrisonerAnalysis(chart) {
   const h1  = chart.find((h) => Number(h.house) === 1);
   const h4  = chart.find((h) => Number(h.house) === 4);
@@ -2560,23 +2360,19 @@ function computePrisonerAnalysis(chart) {
 
   const lines = [];
 
-  // כלל 1: בית 1 מחובר לבית 12 = האסיר עדיין בכלא
   const samePattern = h1.key && h1.key === h12.key;
   if (samePattern) {
     lines.push(`בית 1 = בית 12 (${h1.hebrew || h1.key}) — האסיר עדיין קשור לכלא`);
   }
 
-  // כלל 2: נשוא ראש בבית 5 = יצא ויפוצה
   if (h5?.key === '1222') {
     lines.push('נשוא ראש בבית 5 — האסיר ייצא ויקבל פיצוי (חאוי)');
   }
 
-  // כלל 3: סוהר בבית 15 = ימות בכלא
   if (h15?.key === '1221') {
     lines.push('⚠ סוהר בבית 15 (הדיין) — סימן לאסיר שמאסרו יתמשך');
   }
 
-  // כלל 4: בית 4 = מצב הכלא עצמו; בית 5 = גורל האסיר
   if (h4) {
     const h4Fortune = h4.fortune || '';
     lines.push(`בית 4 (מצב הכלא): ${h4.hebrew || h4.key} [${h4Fortune || 'לא ידוע'}]`);
@@ -2586,7 +2382,6 @@ function computePrisonerAnalysis(chart) {
     lines.push(`בית 5 (גורל האסיר): ${h5.hebrew || h5.key} [${h5Fortune || 'לא ידוע'}]`);
   }
 
-  // פסיקת היציאה
   const judgeForAcquit = h15?.fortune?.includes('סעד');
   const judgeForDetain = h15?.fortune?.includes('נחס');
   let exitVerdict = '';
@@ -2600,10 +2395,6 @@ function computePrisonerAnalysis(chart) {
     outputHebrew: lines.join('\n'),
   };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// ניתוח מסע ים (בלוג' אלאמל עמ' 26)
-// ─────────────────────────────────────────────────────────────────────────────
 function computeSeaVoyageRisks(chart) {
   const h1  = chart.find((h) => Number(h.house) === 1);
   const h8  = chart.find((h) => Number(h.house) === 8);
@@ -2612,34 +2403,28 @@ function computeSeaVoyageRisks(chart) {
 
   const lines = [];
 
-  // כלל 1: נשוא ראש בבית 8 = מציל מרעה בים
   if (h8?.key === '1222') {
     lines.push('נשוא ראש בבית 8 — מציל מסכנה בים (מגן על הנוסע)');
   }
 
-  // כלל 2: אדום + נשוא ראש ביחד = סכנת טביעה
   const hasHamra = [h1,h8,h9,h12].some((h) => h?.key === '2122');
   const hasRais   = [h1,h8,h9,h12].some((h) => h?.key === '1222');
   if (hasHamra && hasRais) {
     lines.push('⚠ אדום ונשוא ראש ביחד — סכנת טביעה בים; לשקול דחיית המסע');
   }
 
-  // כלל 3: סוהר בבית 9 = המסע ייעצר / ייתקע
   if (h9?.key === '1221') {
     lines.push('⚠ סוהר בבית 9 (המסע) — המסע ייתקע או יעוכב');
   }
 
-  // כלל 4: ממון יוצא בבית 9 = הפסד בים
   if (h9?.key === '1212') {
     lines.push('ממון יוצא בבית 9 — הפסד כספי בדרך הים');
   }
 
-  // כלל 5: דרך בבית 9 = מסע טוב
   if (h9?.key === '1111') {
     lines.push('דרך בבית 9 — מסע ים טוב ומבורך');
   }
 
-  // בית 12 = מה נסתר בים / סכנות נסתרות
   if (h12) {
     const isMalefic = ['1212','2122','2221','2222','1221'].includes(h12.key || '');
     if (isMalefic) {
@@ -2808,7 +2593,6 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
       : 'כל הבתים העיקריים מכוסים במקור.',
   };
 
-  // בדיקת השביעית — האם צורה כלשהי בבית 1 מוצאת את שביעיתה בלוח
   const h1Key = board.chart.find((h) => Number(h.house) === 1)?.key;
   const h1Seventh = getSeventhFigure(h1Key);
   const seventhOfHouse1Found = h1Seventh
@@ -2875,19 +2659,16 @@ function scoreBoard(boardAnalysis) {
   const w2 = boardAnalysis.witnesses?.[1];
   const focus = boardAnalysis.focusHouse;
 
-  // Use house-specific fortune override from figure states when available, else base figure fortune
   const judgeTone = (getFigureStateHouseTone(judge?.figureState) ?? getFigureFortuneTone(judge));
   const w1Tone = w1 ? (getFigureStateHouseTone(w1?.figureState) ?? getFigureFortuneTone(w1)) : 0;
   const w2Tone = w2 ? (getFigureStateHouseTone(w2?.figureState) ?? getFigureFortuneTone(w2)) : 0;
   const focusTone = focus ? (getFigureStateHouseTone(focus?.figureState) ?? getFigureFortuneTone(focus)) : 0;
 
-  // Speaking state multiplier (שותק = silent = weakened influence, per Hawi figure states chapter)
   const judgeMulti = getSpeakingStateMultiplier(judge?.figureState);
   const w1Multi = getSpeakingStateMultiplier(w1?.figureState);
   const w2Multi = getSpeakingStateMultiplier(w2?.figureState);
   const focusMulti = getSpeakingStateMultiplier(focus?.figureState);
 
-  // Quesited house (בית הנשאל) — the house representing the subject of the question.
   const quesitedHouseNum = boardAnalysis.tahasil?.quesitedHouseNum;
   const quesitedEntry = quesitedHouseNum
     ? boardAnalysis.houses?.find?.((h) => Number(h.house) === quesitedHouseNum)
@@ -2897,8 +2678,6 @@ function scoreBoard(boardAnalysis) {
     : 0;
   const quesitedMulti = getSpeakingStateMultiplier(quesitedEntry?.figureState);
 
-  // Direction modifier (כיוון הצורה): incoming figure in quesited house = positive pull toward outcome
-  // outgoing = moving away. Source: Hawi figure classification داخل/خارج.
   const directionModifier = (entry) => {
     const d = entry?.direction;
     if (d === 'incoming') return 0.3;
@@ -2915,7 +2694,6 @@ function scoreBoard(boardAnalysis) {
     return tone * weight;
   };
 
-  // Topic key-pair connections: each confirmed beneficial connection adds a small bonus.
   const topicConnectionBonus = (boardAnalysis.topicConnections?.checks || [])
     .filter((c) => c.connected)
     .length * 0.5;
@@ -2925,14 +2703,12 @@ function scoreBoard(boardAnalysis) {
   const dhamirFortune = boardAnalysis.dhamirByMizan?.primaryFortune || boardAnalysis.dhamirHouse?.fortune || '';
   const dhamirTone = dhamirFortune.includes('סעד') ? 1 : dhamirFortune.includes('נחס') ? -1 : 0;
 
-  // Figure repetition bonus: judge figure appearing in multiple houses = judgment reinforced.
   const judgePattern = judge?.figureKey;
   const judgeRepeatCount = judgePattern
     ? ((boardAnalysis.ittisalat?.figureConnections || []).find((fc) => fc.figureKey === judgePattern)?.houses?.length || 1)
     : 1;
   const repetitionBonus = Math.max(0, judgeRepeatCount - 1) * 0.4;
 
-  // Aspect/connection bonus: questioner (house 1) connecting to focus house = outcome more reachable.
   const h1toFocus = boardAnalysis.ittisalat?.questioner_to_focus;
   const aspectBonus = (h1toFocus?.type === 'same-figure') ? 1.0
     : (h1toFocus?.type === 'aspect') ? 0.5 : 0;
@@ -3023,24 +2799,20 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
 
   const parts = [];
 
-  // שלמות הלוח — תנאי מוקדם לפסיקה
   const bScore = boardAnalysis.boardScore;
   if (bScore && !bScore.isComplete) {
     parts.push(`⚠ ${bScore.hebrewSummary} — הפסיקה אפשרית אך בטחונה מוגבל.`);
   }
 
-  // אצאלה — תקפות הלוח (בדיקה מקדימה לכל פסיקה, לפי חאוי)
   const asala = boardAnalysis.asala;
   if (asala && !asala.isRadical) {
     parts.push(asala.hebrewNote);
   }
 
-  // Lead with judge verdict (short form to avoid duplication with describeCoreHouses)
   const judgeHebrew = judge?.figureHebrew || 'לא מזוהה';
   const judgeFortune = judge?.fortune ? ` (${judge.fortune})` : '';
   parts.push(`הדיין בבית 15: ${judgeHebrew}${judgeFortune} — ${judgeVerdict?.hebrewShort || boardScore.hebrewShort || 'תשובה לא מוכרעת'}.`);
 
-  // דמיר — האם מאשר או סותר את הדיין
   const dhamirByMizan = boardAnalysis.dhamirByMizan;
   const dhamirHouseEntry = boardAnalysis.dhamirHouse;
   const dhamirFort = dhamirByMizan?.primaryFortune || dhamirHouseEntry?.fortune || '';
@@ -3062,7 +2834,6 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
     );
   }
 
-  // תחסיל ומניעה — שאלת ההגעה המרכזית
   const tahasil = boardAnalysis.tahasil;
   if (tahasil) {
     parts.push(tahasil.tahasilHebrew);
@@ -3070,7 +2841,6 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
       parts.push(tahasil.hayulaHebrew);
     }
 
-    // בית הנשאל — מצב הצד הנשאל בשאלה
     const quesitedHouseNum = tahasil.quesitedHouseNum;
     const quesitedEntry = quesitedHouseNum
       ? boardAnalysis.houses?.find?.((h) => Number(h.house) === quesitedHouseNum)
@@ -3087,45 +2857,38 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
     }
   }
 
-  // קשרי נושא ספציפיים
   const connections = (boardAnalysis.topicConnections?.checks || []).filter((c) => c.connected);
   if (connections.length > 0) {
     parts.push(`קשרים פעילים: ${connections.map((c) => c.role).join(' | ')}.`);
   }
 
-  // כיוון בית הנשאל (נכנס/יוצא/קבוע/מתהפך)
   const qFocus = boardAnalysis.focusHouse;
   if (qFocus?.directionHebrew) {
     const naturalNote = qFocus.isNaturalFigure ? ' — הצורה הטבעית של הבית, הדין חזק במיוחד.' : '.';
     parts.push(`כיוון הצורה בבית המרכזי (${qFocus.house}): ${qFocus.figureHebrew} — ${qFocus.directionHebrew}${naturalNote}`);
   }
 
-  // בית 1 — מצב השואל
   const h1a = boardAnalysis.house1Analysis;
   if (h1a) {
     const naturalH1 = h1a.isNatural ? ' הצורה הטבעית לבית הטאלע — כוח כפול.' : '';
     parts.push(`מצב השואל (בית 1): ${h1a.figureHebrew} — ${h1a.fortuneHebrew}.${naturalH1}`);
   }
 
-  // כל צורה מבקשת שביעיתה
   const seventh = boardAnalysis.seventhOfHouse1;
   if (seventh) {
     parts.push(`השביעית של בית 1 (${boardAnalysis.house1Analysis?.figureHebrew || ''}): ${seventh.figureHebrew} — נמצאת בבית ${seventh.foundInHouse}. קשר זה חזק לפי חאוי.`);
   }
 
-  // איתיסלאת — חיבורי צורות חוזרות
   const repeatedFigs = (boardAnalysis.ittisalat?.figureConnections || []).filter((c) => c.houses?.length >= 2);
   if (repeatedFigs.length > 0) {
     const top = repeatedFigs[0];
     parts.push(`צורה חוזרת: ${top.figureHebrew} בבתים ${top.houses.join(', ')} — ${top.quality}.`);
   }
 
-  // חי או מת — שאלת נעדר
   if (boardAnalysis.lifeDeathAnalysis) {
     parts.push(`חי/מת: ${boardAnalysis.lifeDeathAnalysis.hebrewVerdict}`);
   }
 
-  // ניתוח כיוונים — נסיעה / מטמון
   if (boardAnalysis.directionQuadrant?.dominant) {
     const dom = boardAnalysis.directionQuadrant.dominant;
     if (dom.incomingBenefic > 0) {
@@ -3133,7 +2896,6 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
     }
   }
 
-  // הערת איכות מקור — מידע לפרקטיקן בלבד
   const sq = boardAnalysis.sourceQuality;
   if (sq && !sq.isFullyCovered) {
     parts.push(`הערת מקור: בתים ${sq.missingTransitHouses.join(', ')} — ${sq.noteHebrew}`);

@@ -284,7 +284,6 @@ function describeCoreHouses(analysis, topicId, question) {
     );
   }
 
-  // דמיר — שרשרת הגזירה (שיטה ראשית לפי הספר)
   if (dhamirMizan && dhamirMizan.traces.length > 0) {
     const traceLines = dhamirMizan.traces.map((t) => {
       const fortune = t.dhamirFortune ? ` [${t.dhamirFortune}]` : '';
@@ -302,7 +301,6 @@ function describeCoreHouses(analysis, topicId, question) {
       `הדמיר (שרשרת הגזירה):\n${traceLines.join('\n')}\n  → הדמיר העיקרי: בית ${dhamirMizan.primaryHouseNumber} — כל הדין שם.${dhamirConcord}`
     );
   } else if (dhamir) {
-    // גיבוי: נהמת האמהות
     const dhamirFortune = dhamir.fortune ? ` [${dhamir.fortune}]` : '';
     const dhamirTone = (dhamir.fortune || '').includes('סעד') ? 1 : (dhamir.fortune || '').includes('נחס') ? -1 : 0;
     const judgeToneLocal = judge ? (judge.fortune?.includes('סעד') ? 1 : judge.fortune?.includes('נחס') ? -1 : 0) : 0;
@@ -316,14 +314,12 @@ function describeCoreHouses(analysis, topicId, question) {
     );
   }
 
-  // ── מצב הטאלע — ניתוח בית 1 ───────────────────────────────────────────────
   const h1Analysis = analysis.house1Analysis || null;
   if (h1Analysis) {
     const lines = h1Analysis.summaryLines.map((l) => `  ${l}`).join('\n');
     parts.push(`מצב השואל (בית הטאלע):\n${lines}`);
   }
 
-  // ── איתיסלאת — חיבורים בין בתים ──────────────────────────────────────────
   const ittisalat = analysis.ittisalat || null;
   if (ittisalat && ittisalat.summaryLines && ittisalat.summaryLines.length > 0) {
     const connectionStatus = ittisalat.isConnected
@@ -333,14 +329,12 @@ function describeCoreHouses(analysis, topicId, question) {
     parts.push(`איתיסלאת (${connectionStatus}):\n${lines}`);
   }
 
-  // ── בדיקות נושא — זוגות בתים לפי סוג השאלה ────────────────────────────────
   const topicConn = analysis.topicConnections || null;
   if (topicConn && topicConn.checks && topicConn.checks.length > 0) {
     const lines = topicConn.checks.map((c) => `  ${c.hebrewShort}`).join('\n');
     parts.push(`בדיקות נושא — ${topicConn.topicHebrew || topicConn.topicId}:\n${lines}`);
   }
 
-  // ── תחסיל ומניעה — שאלת ההגעה המרכזית ──────────────────────────────────
   const tahasil = analysis.tahasil || null;
   if (tahasil) {
     parts.push(`תחסיל — האם הדבר ייגמר:\n  ${tahasil.tahasilHebrew}`);
@@ -349,7 +343,6 @@ function describeCoreHouses(analysis, topicId, question) {
     }
   }
 
-  // ── הוצאת שם (استخراج الاسم) ──────────────────────────────────────────
   const nameLetters = analysis.nameLetters;
   if (Array.isArray(nameLetters) && nameLetters.length > 0) {
     const nameLines = nameLetters.map((nl) =>
@@ -358,91 +351,76 @@ function describeCoreHouses(analysis, topicId, question) {
     parts.push(`הוצאת שם (תסקין עבדוה):\n${nameLines.join('\n')}`);
   }
 
-  // ── שלטון / בעלי תפקידים ─────────────────────────────────────────────
   const authAnalysis = analysis.authorityStateAnalysis;
   if (authAnalysis) {
     parts.push(`ניתוח שלטון (שער מלכים, חאוי עמ׳ 36-38):\n${authAnalysis.outputHebrew}`);
   }
 
-  // ── טאלע השנה / יוקר וזול / גשם ────────────────────────────────────
   const yearlyAnalysis = analysis.yearlyForecastAnalysis;
   if (yearlyAnalysis) {
     parts.push(`ניתוח טאלע השנה (חאוי עמ׳ 60-62):\n${yearlyAnalysis.outputHebrew}`);
   }
 
-  // ── שער המולד / הנולד ───────────────────────────────────────────────
   const birthAnalysis = analysis.birthNativityAnalysis;
   if (birthAnalysis) {
     parts.push(`שער המולד (חאוי עמ׳ 51-58):\n${birthAnalysis.outputHebrew}`);
   }
 
-  // ── משולשים — כוכבים לפי יסוד ────────────────────────────────────────
   const triangles = analysis.trianglesEnrichment;
   if (triangles) {
     parts.push(`ניתוח משולשים (שער המשולשים, חאוי עמ׳ 59):\n${triangles.outputHebrew}`);
   }
 
-  // ── אבחון מחלה לפי יסוד (בלוג' אלאמל פרק 5) ──────────────────────────
   const illnessDiag = analysis.illnessElementDiagnosis;
   if (illnessDiag) {
     parts.push(`אבחון מחלה לפי יסוד (בלוג' אלאמל פרק 5):\n  ${illnessDiag.outputHebrew.replace(/\n/g, '\n  ')}`);
   }
 
-  // ── זיהוי הגנב לפי חזרת צורות (בלוג' אלאמל פרק 19) ──────────────────
   const thiefLoc = analysis.thiefLocationDetails;
   if (thiefLoc) {
     parts.push(`זיהוי הגנב (בלוג' אלאמל פרק 19):\n  ${thiefLoc.outputHebrew.replace(/\n/g, '\n  ')}`);
   }
 
-  // ── גילוי אויב בסביבה הקרובה (בלוג' אלאמל עמ' 64) ───────────────────
   const enemyHH = analysis.enemyInHousehold;
   if (enemyHH) {
     parts.push(`גילוי אויב בסביבה (בלוג' אלאמל עמ' 64):\n  ${enemyHH.outputHebrew}`);
   }
 
-  // ── פסיקת נישואין לפי צורה שולטת (בלוג' אלאמל פרק 33) ──────────────
   const marriageForecast = analysis.marriageFigureForecast;
   if (marriageForecast) {
     parts.push(`פסיקת נישואין לפי צורה שולטת (בלוג' אלאמל פרק 33):\n  ${marriageForecast.outputHebrew}`);
   }
 
-  // ── תחזית שנתית לפי צורה שולטת (בלוג' אלאמל עמ' 25) ────────────────
   const yearlyForecast = analysis.yearlyFigureForecast;
   if (yearlyForecast) {
     parts.push(`תחזית שנתית לפי צורה שולטת (בלוג' אלאמל עמ' 25):\n  ${yearlyForecast.outputHebrew}`);
   }
 
-  // ── שיטת חילוץ שם נוספת — שיטה 5 (בלוג' אלאמל עמ' 13-15) ──────────
   const altName = analysis.alternativeNameExtraction;
   if (altName) {
     parts.push(`חילוץ שם — שיטה 5 (בלוג' אלאמל עמ' 13-15):\n${altName.outputHebrew}`);
   }
 
-  // ── תיאור פיזי של הגנב / האויב ───────────────────────────────────────
   const physThief = analysis.physicalDescriptionThief;
   if (physThief) {
     parts.push(`תיאור פיזי — הגנב / האויב (בלוג' אלאמל עמ' 65-71):\n  ${physThief.outputHebrew}`);
   }
 
-  // ── תיאור פיזי של הנעדר ──────────────────────────────────────────────
   const physMissing = analysis.physicalDescriptionMissing;
   if (physMissing) {
     parts.push(`תיאור פיזי — הנעדר (בלוג' אלאמל עמ' 65-71):\n  ${physMissing.outputHebrew}`);
   }
 
-  // ── ניתוח אסיר / כלא ─────────────────────────────────────────────────
   const prisoner = analysis.prisonerAnalysis;
   if (prisoner) {
     parts.push(`ניתוח אסיר/כלא (בלוג' אלאמל עמ' 28, 57):\n${prisoner.lines.map((l) => `  ${l}`).join('\n')}`);
   }
 
-  // ── מסע ים ───────────────────────────────────────────────────────────
   const seaRisks = analysis.seaVoyageRisks;
   if (seaRisks) {
     parts.push(seaRisks.outputHebrew);
   }
 
-  // ── צורה ראשונה × חזרות (בלוג' אלאמל פרק 17) ────────────────────────
   // רלוונטי רק כשאין ידיעה מראש על הנושא; כשהנושא ידוע, הפרשנות עלולה להטעות
   const firstFigRep = analysis.firstFigureRepetition;
   const TOPICS_WITH_FIGURE_MEANING = new Set([
@@ -452,7 +430,6 @@ function describeCoreHouses(analysis, topicId, question) {
     parts.push(firstFigRep.outputHebrew);
   }
 
-  // ── עיתוי — מתי יסתיים? (בלוג' אלאמל פרק 7) ─────────────────────────
   const timing = analysis.timingEstimate;
   if (timing) {
     parts.push(timing.outputHebrew);
@@ -559,10 +536,8 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
 
     const parts = [];
 
-    // Presence verdict
     parts.push(tl.presenceHebrew);
 
-    // Figure-in-house-1 location rule
     if (tl.locationHebrew) {
       const figName = tl.house1Hebrew || tl.house1Pattern;
       if (tl.presenceVerdict === 'not-found' && tl.locationRule?.resultHebrew) {
@@ -584,7 +559,6 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
       if (alerts.length) {
         lines.push(`בתים רגישים עם צורות נחסיות: ${alerts.map(a => `בית ${a.houseNumber} (${a.figureHebrew}) — ${a.hebrewTerms.slice(0,2).join(', ')}`).join(' | ')}`);
       }
-      // list top 4 findings with spiritual meaning
       const top = houseIndex.findings.slice(0, 4);
       for (const f of top) {
         lines.push(`בית ${f.houseNumber} (${f.figureHebrew}): ${f.hebrewTerms.slice(0,3).join(', ')}`);
@@ -640,7 +614,6 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
 
     const lines = [];
 
-    // 1. Will stolen item return?
     let returnVerdict;
     if (grade === 'positive' || grade === 'cautiously-positive') {
       returnVerdict = isIncoming
@@ -661,7 +634,6 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
     }
     lines.push(returnVerdict);
 
-    // 2. Thief location type (from figure repetitions in the board — deduplicated)
     if (thiefLocation?.findings?.length > 0) {
       const uniqueTypes = [...new Set(thiefLocation.findings.map(f => f.thiefType))];
       for (const type of uniqueTypes) {
@@ -669,7 +641,6 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
       }
     }
 
-    // 3. Name letters — two-letter sequence from houses 7 + 8
     if (Array.isArray(nameLetters) && nameLetters.length > 0) {
       const h7Entry = nameLetters.find(n => n.houseNumber === 7);
       const h8Entry = nameLetters.find(n => n.houseNumber === 8);
@@ -691,13 +662,11 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
       }
     }
 
-    // 4. House 4 — place of theft
     if (house4) {
       const h4Transit = house4.transit?.meaning;
       if (h4Transit) lines.push(`מקום הגנבה (בית 4 — ${house4.figureHebrew || ''}): ${h4Transit}`);
     }
 
-    // 5. Practical recommendation
     if (grade === 'positive' || grade === 'cautiously-positive') {
       lines.push('ההמלצה: לחקור בין הסביבה הקרובה לפי הסימנים שהלוח מסמן — הסיכוי לאיתור קיים. יש להתמקד באנשים שתואמים את התיאור הפיזי ואת אותיות השם שעלו בלוח.');
     } else if (grade === 'negative' || grade === 'cautiously-negative') {
@@ -726,7 +695,6 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
     const isTheftQuestion = theftKeywords.some((k) => questionText.includes(k));
 
     if (isTheftQuestion && house7) {
-      // Thief identity: figure in house 7 + its transit description
       const transitMeaning = house7.transit?.meaning || '';
       const element = house7.elementHebrew || house7.element || '';
 
@@ -736,7 +704,6 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
         thiefDesc += ` לפי מעבר הצורה: ${transitMeaning}`;
       }
 
-      // Element → proximity/relationship clue (from Hawi figure-transit logic)
       if (element.includes('אוויר')) {
         thiefDesc += ' — אדם קרוב או בן הבית / שכן.';
       } else if (element.includes('אש')) {
@@ -765,7 +732,6 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
         lines.push(`בית 12 (${house12Name}): מורה על מה שנסתר — חפץ/אדם שמוסתר.`);
       }
     } else {
-      // Generic enemy analysis
       let base = '';
       if (grade === 'positive') base = 'לכן הלוח מראה שהשואל עומד בעמדה חזקה לעומת האויב.';
       else if (grade === 'negative') base = 'לכן הלוח מראה אויב חזק — יש להיזהר ולא להתמודד ישירות.';
@@ -1008,7 +974,6 @@ export function writeHumanGoralConclusion(result) {
   const question = clean(result.question);
   const isMiQuestion = /^מי[\s,]/.test(question);
 
-  // Leading verdict paragraph
   let verdictParagraph = '';
   if (isSpiritualTopic) {
     verdictParagraph = spiritualVerdict(result.spiritualDiagnosis);
