@@ -1642,7 +1642,7 @@ const NAME_EXTRACTION_HOUSES_BY_TOPIC = {
 // מנוע שלטון / בעלי תפקידים (authorityState)
 // מקור: hawi-authority-state-rulers.js (חאוי עמ׳ 36-38)
 // ─────────────────────────────────────────────────────────────────────────────
-function computeAuthorityStateAnalysis(chart) {
+function computeAuthorityStateAnalysis(chart, authoritySource) {
   if (!Array.isArray(chart)) return null;
 
   const h1  = chartHouse(chart, 1);
@@ -1657,6 +1657,18 @@ function computeAuthorityStateAnalysis(chart) {
   const isIncoming = (h) => h && getFigureDirection(h.key) === 'incoming';
   const isStable   = (h) => h && getFigureDirection(h.key) === 'stable';
 
+  // pull official Hebrew texts from source when available
+  const srcStability = authoritySource?.officeStabilityRules || [];
+  const srcReturn    = authoritySource?.returnToOfficeRules  || [];
+
+  const rule1Src = srcStability.find(r => r.id === 'first-fixed-benefic-connected-to-tenth-stable-rule');
+  const rule2Src = srcStability.find(r => r.id === 'tenth-repeats-in-eleventh-many-supporters');
+  const rule3Src = srcStability.find(r => r.id === 'malefic-first-or-tenth-eleventh-with-malefics-removal');
+  const rule4Src = srcStability.find(r => r.id === 'malefics-from-seventh-head-tail-and-fifteenth-anger-of-king');
+  const returnSrc = srcReturn.find(r => r.id === 'benefic-similar-incoming-forms-return-certain');
+  const returnH10Src = srcReturn.find(r => r.id === 'return-strengthened-by-tenth-and-fifteenth');
+  const sunMoonSrc = authoritySource?.stateStrengthRules?.find(r => r.id === 'do-not-neglect-sun-and-moon');
+
   const signals = [];
 
   // כלל 1: יציבות — בית 1 קבוע+סעד ומחובר לבית 10
@@ -1664,28 +1676,36 @@ function computeAuthorityStateAnalysis(chart) {
   const h10Benefic = isBenefic(h10);
   const h1ConnectsH10 = !!(h1?.key && h10?.key && (h1.key === h10.key || aspectTypeBetween(1, 10)));
   if (h1BeneficStable && h10Benefic && h1ConnectsH10) {
-    signals.push({ verdict: 'stable', weight: 3,
-      hebrew: `בית 1 (${h1?.hebrew || ''}) סעד+קבוע/נכנס ומחובר לבית 10 (${h10?.hebrew || ''}) — המושל יציב בתפקידו ומכובד.` });
+    signals.push({ verdict: 'stable', weight: 3, sourceId: rule1Src?.id || null,
+      hebrew: rule1Src?.hebrew
+        ? `${rule1Src.hebrew} [בית 1: ${h1?.hebrew || ''}, בית 10: ${h10?.hebrew || ''}]`
+        : `בית 1 (${h1?.hebrew || ''}) סעד+קבוע/נכנס ומחובר לבית 10 (${h10?.hebrew || ''}) — המושל יציב בתפקידו ומכובד.` });
   }
 
   // כלל 2: ריבוי תומכים — בית 10 חוזר בבית 11 ושלושתם טובים
   if (h10?.key && h11?.key && h10.key === h11.key && isBenefic(h1)) {
-    signals.push({ verdict: 'stable', weight: 2,
-      hebrew: `בית 10 (${h10?.hebrew || ''}) חוזר בבית 11 ובית 1 סעד — ריבוי תומכים, חברים ואחים.` });
+    signals.push({ verdict: 'stable', weight: 2, sourceId: rule2Src?.id || null,
+      hebrew: rule2Src?.hebrew
+        ? `${rule2Src.hebrew} [בית 10: ${h10?.hebrew || ''}, בית 11: ${h11?.hebrew || ''}]`
+        : `בית 10 (${h10?.hebrew || ''}) חוזר בבית 11 ובית 1 סעד — ריבוי תומכים, חברים ואחים.` });
   }
 
   // כלל 3: נפילה — בית 1 נחס, או נחסים בבית 10 ו-11 יחד
   if (isMalefic(h1) || (isMalefic(h10) && isMalefic(h11))) {
-    signals.push({ verdict: 'removal', weight: -3,
-      hebrew: `בית 1 (${h1?.hebrew || ''}) או בתים 10+11 (${h10?.hebrew || ''}/${h11?.hebrew || ''}) נחסיים — סימן ליציאה מן התפקיד.` });
+    signals.push({ verdict: 'removal', weight: -3, sourceId: rule3Src?.id || null,
+      hebrew: rule3Src?.hebrew
+        ? `${rule3Src.hebrew} [בית 1: ${h1?.hebrew || ''}, בית 10: ${h10?.hebrew || ''}]`
+        : `בית 1 (${h1?.hebrew || ''}) או בתים 10+11 (${h10?.hebrew || ''}/${h11?.hebrew || ''}) נחסיים — סימן ליציאה מן התפקיד.` });
   }
 
   // כלל 4: נפילה קשה — נחסים מבית 7 ו-15 (ראש+זנב מן השביעי)
   if (isMalefic(h7) && isMalefic(h15)) {
-    signals.push({ verdict: 'removal', weight: -4,
-      hebrew: `נחסים בבית 7 (${h7?.hebrew || ''}) ובבית 15 (${h15?.hebrew || ''}) — נפילה קשה וכעס השליט.` });
+    signals.push({ verdict: 'removal', weight: -4, sourceId: rule4Src?.id || null,
+      hebrew: rule4Src?.hebrew
+        ? `${rule4Src.hebrew} [בית 7: ${h7?.hebrew || ''}, בית 15: ${h15?.hebrew || ''}]`
+        : `נחסים בבית 7 (${h7?.hebrew || ''}) ובבית 15 (${h15?.hebrew || ''}) — נפילה קשה וכעס השליט.` });
   } else if (isMalefic(h7)) {
-    signals.push({ verdict: 'removal', weight: -2,
+    signals.push({ verdict: 'removal', weight: -2, sourceId: null,
       hebrew: `נחס בבית 7 (${h7?.hebrew || ''}) — לחץ מן הצד השני.` });
   }
 
@@ -1693,11 +1713,15 @@ function computeAuthorityStateAnalysis(chart) {
   const returnHouses = [h1, h5, h15, h11];
   const returnBeneficCount = returnHouses.filter((h) => h && isBenefic(h) && isIncoming(h)).length;
   if (returnBeneficCount >= 3) {
-    signals.push({ verdict: 'return', weight: 2,
-      hebrew: `${returnBeneficCount}/4 מבתים 1,5,15,11 מסועדים ונכנסים — חזרה לתפקיד בוודאות.` });
+    const baseText = returnSrc?.hebrew
+      ? `${returnSrc.hebrew} [${returnBeneficCount}/4 מבתים 1,5,15,11 מסועדים ונכנסים]`
+      : `${returnBeneficCount}/4 מבתים 1,5,15,11 מסועדים ונכנסים — חזרה לתפקיד בוודאות.`;
+    signals.push({ verdict: 'return', weight: 2, sourceId: returnSrc?.id || null, hebrew: baseText });
   } else if (returnBeneficCount >= 2 && h10Benefic) {
-    signals.push({ verdict: 'return', weight: 1,
-      hebrew: `בתים לחזרה (1,5,15,11) נוטים לסעד ובית 10 תומך — סימן לחזרה.` });
+    const baseText = returnH10Src?.hebrew
+      ? `${returnH10Src.hebrew} [בתים לחזרה נוטים לסעד, בית 10 תומך]`
+      : `בתים לחזרה (1,5,15,11) נוטים לסעד ובית 10 תומך — סימן לחזרה.`;
+    signals.push({ verdict: 'return', weight: 1, sourceId: returnH10Src?.id || null, hebrew: baseText });
   }
 
   // כלל 6: שמש ולבנה — יציבות מדינה
@@ -1707,14 +1731,16 @@ function computeAuthorityStateAnalysis(chart) {
   const moonInBoard   = chart.some((h) => MOON_FIGURE_PATTERNS.has(h.key || ''));
 
   if (sunInAngular && moonInAngular) {
-    signals.push({ verdict: 'stable', weight: 2,
-      hebrew: 'צורות השמש והלבנה ביתדות — המדינה יציבה ושלטונה תקף.' });
+    const sunMoonHebrew = sunMoonSrc?.hebrew
+      ? `${sunMoonSrc.hebrew} — שניהם ביתדות: המדינה יציבה ושלטונה תקף.`
+      : 'צורות השמש והלבנה ביתדות — המדינה יציבה ושלטונה תקף.';
+    signals.push({ verdict: 'stable', weight: 2, sourceId: sunMoonSrc?.id || null, hebrew: sunMoonHebrew });
   } else if (sunInBoard && moonInBoard) {
-    signals.push({ verdict: 'stable', weight: 1,
+    signals.push({ verdict: 'stable', weight: 1, sourceId: sunMoonSrc?.id || null,
       hebrew: 'צורות השמש והלבנה מופיעות בלוח — סימן טוב לשלטון.' });
   } else {
     const missing = [!sunInBoard && 'שמש', !moonInBoard && 'לבנה'].filter(Boolean).join(', ');
-    if (missing) signals.push({ verdict: 'warning', weight: -1,
+    if (missing) signals.push({ verdict: 'warning', weight: -1, sourceId: null,
       hebrew: `צורות ${missing} לא נמצאות בלוח — לפי חאוי, יש להיזהר.` });
   }
 
@@ -1733,6 +1759,9 @@ function computeAuthorityStateAnalysis(chart) {
     'removal':        'סימנים חזקים לנפילת המושל מתפקידו.',
   }[stabilityVerdict] || 'לא מוכרע.';
 
+  // scope description from source
+  const scopeNote = authoritySource?.authorityQuestionScope?.hebrew || null;
+
   return {
     stabilityVerdict,
     verdictHebrew,
@@ -1741,6 +1770,7 @@ function computeAuthorityStateAnalysis(chart) {
     returnSignal: signals.find((s) => s.verdict === 'return') || null,
     sunInAngular,
     moonInAngular,
+    scopeNote,
     outputHebrew: [`פסיקת שלטון: ${verdictHebrew}`, ...signals.map((s) => `• ${s.hebrew}`)].join('\n'),
   };
 }
@@ -1748,9 +1778,12 @@ function computeAuthorityStateAnalysis(chart) {
 // ─────────────────────────────────────────────────────────────────────────────
 // מנוע טאלע השנה / יוקר וזול / גשם
 // מקור: hawi-yearly-prices-forecast.js + hawi-rain-weather-forecast.js
+//        + hawi-planetary-correspondences.js
 // ─────────────────────────────────────────────────────────────────────────────
 
-// figure pattern → planet name Hebrew (built from PLANETARY_FIGURES)
+// figure pattern → planet name Hebrew
+// Note: sourceShapes in hawi-planetary-correspondences has inconsistent row-order encoding
+// between planets, so we keep the verified hardcoded mapping here.
 const FIGURE_PLANET_MAP = (function () {
   const m = {};
   for (const p of [
@@ -1762,6 +1795,23 @@ const FIGURE_PLANET_MAP = (function () {
     { hebrew: 'נוגה',           figures: ['2211', '1211'] },
     { hebrew: 'צדק',            figures: ['1222', '2111'] },
   ]) { for (const f of p.figures) m[f] = p.hebrew; }
+  return m;
+})();
+
+// Build planet name → enrichment data (materials, foods, lands) from official source
+const PLANET_ENRICHMENT_MAP = (function () {
+  const m = {};
+  const planets = HAWI_SOURCE.extendedKnowledge?.planetaryCorrespondences?.planets || [];
+  for (const p of planets) {
+    if (!p.planetHebrew) continue;
+    m[p.planetHebrew] = {
+      materials: p.materialsHebrew || [],
+      foods: p.plantsFoodsHebrew || [],
+      lands: p.landsHebrew || [],
+      people: p.peopleHebrew || [],
+      climate: p.climateHebrew || '',
+    };
+  }
   return m;
 })();
 
@@ -1799,7 +1849,7 @@ const YEARLY_H15_OUTCOME_RULES = [
   },
 ];
 
-function computeYearlyForecastAnalysis(chart) {
+function computeYearlyForecastAnalysis(chart, pricesSource, rainSource) {
   if (!Array.isArray(chart)) return null;
 
   const h15 = chartHouse(chart, 15);
@@ -1815,13 +1865,27 @@ function computeYearlyForecastAnalysis(chart) {
   // כוכבים ביתדות — מה מתייקר השנה
   const angularPlanets = chart
     .filter((h) => ANGULAR_HOUSES_SET.has(Number(h.house)) && FIGURE_PLANET_MAP[h.key])
-    .map((h) => ({
-      house: h.house,
-      figureHebrew: h.hebrew || h.key,
-      planet: FIGURE_PLANET_MAP[h.key],
-      meaning: PLANET_YEARLY_MEANING[FIGURE_PLANET_MAP[h.key]] || '',
-      fortune: h.fortune || '',
-    }));
+    .map((h) => {
+      const planetName = FIGURE_PLANET_MAP[h.key];
+      const enrichment = PLANET_ENRICHMENT_MAP[planetName] || {};
+      const isBenefic = !MALEFIC_FIGURE_PATTERNS.has(h.key || '');
+      // use pricesSource rule: benefic = expensive, malefic = cheap
+      const priceRule = isBenefic
+        ? pricesSource?.priceRulesByPlacement?.find(r => r.id === 'benefic-sign-increases-price')?.result
+        : pricesSource?.priceRulesByPlacement?.find(r => r.id === 'malefic-fallen-sign-lowers-price')?.result;
+      return {
+        house: h.house,
+        figureHebrew: h.hebrew || h.key,
+        planet: planetName,
+        meaning: PLANET_YEARLY_MEANING[planetName] || '',
+        fortune: h.fortune || '',
+        isBenefic,
+        priceRule: priceRule || null,
+        materials: enrichment.materials || [],
+        foods: enrichment.foods?.slice(0, 4) || [],
+        lands: enrichment.lands?.slice(0, 3) || [],
+      };
+    });
 
   // יסוד דומיננטי בלוח
   const elCounts = {};
@@ -1834,34 +1898,57 @@ function computeYearlyForecastAnalysis(chart) {
     'עפר':   'שנת עפר — יציבות, חקלאות, ממון',
   };
 
-  // דין גשם — לבנה + נוגה + שבתאי
+  // דין גשם — לפי rainSource.rainStrengthRules + כוח לבנה ביתד
   const moonAngular   = chart.some((h) => MOON_FIGURE_PATTERNS.has(h.key || '') && ANGULAR_HOUSES_SET.has(Number(h.house)));
   const moonInBoard   = chart.some((h) => MOON_FIGURE_PATTERNS.has(h.key || ''));
   const venusInBoard  = chart.some((h) => ['2211', '1211'].includes(h.key || ''));
   const saturnAngular = chart.some((h) => ['2221', '1221'].includes(h.key || '') && ANGULAR_HOUSES_SET.has(Number(h.house)));
+  const waterHousesActive = chart.some((h) => h.element === 'מים' && ANGULAR_HOUSES_SET.has(Number(h.house)));
+
+  // use rainSource rule descriptions when available
+  const strongRainRule = rainSource?.rainStrengthRules?.find(r => r.id === 'strong-first-half-heavy-rain');
+  const coldSnowRule   = rainSource?.rainStrengthRules?.find(r => r.id === 'watery-houses-cold-snow-mix');
 
   const rainVerdict =
     (moonAngular && venusInBoard) ? 'heavy-rain' :
+    (moonAngular && waterHousesActive) ? 'cold-snow' :
     (moonInBoard && !saturnAngular) ? 'moderate-rain' :
     saturnAngular ? 'cold-dry' : 'unknown';
 
-  const rainHebrew = {
-    'heavy-rain':    'לבנה ביתד + נוגה בלוח — גשם רב וכללי צפוי.',
-    'moderate-rain': 'לבנה בלוח ושבתאי לא ביתד — גשם מתון.',
-    'cold-dry':      'שבתאי ביתד — קור, יובש ועננים שחורים.',
-    'unknown':       'לא ניתן לקבוע דין גשם ברור מלוח זה.',
-  }[rainVerdict];
+  const rainHebrew = rainVerdict === 'heavy-rain'
+    ? (strongRainRule?.hebrew || 'לבנה ביתד + נוגה בלוח — גשם רב וכללי צפוי.')
+    : rainVerdict === 'cold-snow'
+    ? (coldSnowRule?.hebrew   || 'לבנה ביתד + בתים מימיים — קור, שלג ותערובת.')
+    : rainVerdict === 'moderate-rain' ? 'לבנה בלוח ושבתאי לא ביתד — גשם מתון.'
+    : rainVerdict === 'cold-dry'      ? 'שבתאי ביתד — קור, יובש ועננים שחורים.'
+    : 'לא ניתן לקבוע דין גשם ברור מלוח זה.';
+
+  // regionAdjustmentNote from rainSource
+  const regionNote = rainSource?.regionAdjustmentRules?.[0]?.hebrew || null;
 
   const parts = [];
   if (house15Result) parts.push(`בית 15 (אחרית השנה): ${house15Result.hebrewResult}`);
   if (dominantElement) parts.push(`יסוד דומיננטי: ${dominantElement} — ${ELEMENT_YEAR_CHARACTER[dominantElement] || dominantElement}`);
   if (angularPlanets.length) {
-    parts.push('כוכבים ביתדות:\n' + angularPlanets.map((p) =>
-      `  ${p.planet} (בית ${p.house} — ${p.figureHebrew}): ${p.meaning}`).join('\n'));
+    parts.push('כוכבים ביתדות:\n' + angularPlanets.map((p) => {
+      let line = `  ${p.planet} (בית ${p.house} — ${p.figureHebrew}): ${p.meaning}`;
+      if (p.materials.length) line += ` | חומרים: ${p.materials.slice(0,3).join(', ')}`;
+      if (p.priceRule) line += ` (${p.priceRule})`;
+      return line;
+    }).join('\n'));
   }
   parts.push(`דין גשם ומזג: ${rainHebrew}`);
+  if (regionNote) parts.push(`הערת אזור: ${regionNote}`);
 
-  return { house15Result, angularPlanets, dominantElement, rainVerdict, rainHebrew, outputHebrew: parts.join('\n') };
+  return {
+    house15Result,
+    angularPlanets,
+    dominantElement,
+    rainVerdict,
+    rainHebrew,
+    regionNote,
+    outputHebrew: parts.join('\n'),
+  };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1927,6 +2014,66 @@ function computeBirthNativityAnalysis(chart, birthSource) {
   }
 
   return { taliPattern, taliHebrew, repeatingHouses, findings, outputHebrew: parts.join('\n') };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// אינדקס אבחון רוחני — מפה של בתים לתחומים רוחניים/מיסטיים
+// מקור: hawi-spiritual-diagnostics.js
+// ─────────────────────────────────────────────────────────────────────────────
+function computeSpiritualDiagnosticsHouseIndex(chart, spiritualSource) {
+  if (!Array.isArray(chart) || !spiritualSource) return null;
+
+  const rules = spiritualSource.rules || [];
+  if (!rules.length) return null;
+
+  // build house → [spiritual rules] map
+  const houseRuleMap = {};
+  for (const rule of rules) {
+    const houseNum = rule.sourceLocation?.house;
+    if (houseNum) {
+      if (!houseRuleMap[houseNum]) houseRuleMap[houseNum] = [];
+      houseRuleMap[houseNum].push(rule);
+    }
+  }
+
+  // for each house in the chart that has a spiritual rule, record the match
+  const findings = chart
+    .map((h) => {
+      const houseNum = Number(h.house);
+      const rulesForHouse = houseRuleMap[houseNum];
+      if (!rulesForHouse) return null;
+      return {
+        houseNumber: houseNum,
+        figureHebrew: h.hebrew || h.key || '',
+        figureKey: h.key || '',
+        isMalefic: MALEFIC_FIGURE_PATTERNS.has(h.key || ''),
+        spiritualRules: rulesForHouse,
+        appDisplayHebrew: rulesForHouse.map(r => r.appDisplayHebrew).join(' | '),
+        categories: rulesForHouse.map(r => r.category),
+        hebrewTerms: rulesForHouse.flatMap(r => r.hebrewTerms || []),
+      };
+    })
+    .filter(Boolean)
+    .sort((a, b) => a.houseNumber - b.houseNumber);
+
+  // highlight significant houses (malefic figure in spiritually sensitive house)
+  const alerts = findings.filter(f => f.isMalefic);
+
+  const parts = [`אינדקס אבחון רוחני לפי חאוי:`];
+  for (const f of findings) {
+    const alertMark = f.isMalefic ? ' ⚠' : '';
+    parts.push(`בית ${f.houseNumber} (${f.figureHebrew})${alertMark}: ${f.hebrewTerms.join(', ')}`);
+  }
+  if (alerts.length) {
+    parts.push(`\nסימנים לבדיקה: ${alerts.map(a => `בית ${a.houseNumber} — ${a.figureHebrew}`).join(', ')}`);
+  }
+
+  return {
+    findings,
+    alerts,
+    purposeHebrew: spiritualSource.purposeHebrew || '',
+    outputHebrew: parts.join('\n'),
+  };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -2584,13 +2731,20 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     : null;
 
   const authorityStateAnalysis = (topicId === 'authorityState')
-    ? computeAuthorityStateAnalysis(board.chart) : null;
+    ? computeAuthorityStateAnalysis(board.chart, HAWI_SOURCE.extendedKnowledge?.authorityStateRulers) : null;
 
   const yearlyForecastAnalysis = (topicId === 'yearlyForecast')
-    ? computeYearlyForecastAnalysis(board.chart) : null;
+    ? computeYearlyForecastAnalysis(
+        board.chart,
+        HAWI_SOURCE.extendedKnowledge?.yearlyPricesForecast,
+        HAWI_SOURCE.extendedKnowledge?.rainWeatherForecast
+      ) : null;
 
   const birthNativityAnalysis = (topicId === 'birthNativity')
     ? computeBirthNativityAnalysis(board.chart, HAWI_SOURCE.extendedKnowledge?.birthNativity) : null;
+
+  const spiritualDiagnosticsHouseIndex = (topicId === 'spiritualDiagnostics')
+    ? computeSpiritualDiagnosticsHouseIndex(board.chart, HAWI_SOURCE.extendedKnowledge?.spiritualDiagnosticsIndex) : null;
 
   const trianglesEnrichment = (['yearlyForecast', 'birthNativity', 'authorityState'].includes(topicId))
     ? computeTrianglesEnrichment(board.chart) : null;
@@ -2691,6 +2845,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     authorityStateAnalysis,
     yearlyForecastAnalysis,
     birthNativityAnalysis,
+    spiritualDiagnosticsHouseIndex,
     trianglesEnrichment,
     directionQuadrant,
     illnessElementDiagnosis,

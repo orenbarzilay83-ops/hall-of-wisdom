@@ -51,6 +51,16 @@ import {
 import { HAWI_INTRODUCTION_MAHW_THABAT } from './foundations/hawi-introduction-mahw-thabat.js';
 import { HAWI_DHAMIR_DIRECTIONS_VALIDATION } from './foundations/hawi-dhamir-directions-validation.js';
 import { HAWI_HOUSE_STATES_COLORS } from './foundations/hawi-house-states-colors.js';
+import {
+  HAWI_WITNESS_SEQUENCE,
+  HAWI_HOUSE_GROUPS,
+  HAWI_HOUSE_GROUPS_LIST,
+  HAWI_HOUSE_GROUP_BY_HOUSE,
+  HAWI_WITNESS_ADDITIONAL_RULE,
+  getHawiHouseGroup,
+  getHawiWitnessRule,
+} from './foundations/hawi-witnesses.js';
+import { HAWI_SPIRITUAL_DIAGNOSTICS } from './foundations/hawi-spiritual-diagnostics.js';
 
 import { HAWI_BIRTH_NATIVITY } from './birth-nativity/hawi-birth-nativity.js';
 import { HAWI_TRIANGLES_ZODIAC } from './triangles/hawi-triangles-zodiac.js';
@@ -79,6 +89,7 @@ export const HAWI_EXTENDED_KNOWLEDGE_LIST = [
   HAWI_INTRODUCTION_MAHW_THABAT,
   HAWI_DHAMIR_DIRECTIONS_VALIDATION,
   HAWI_HOUSE_STATES_COLORS,
+  HAWI_SPIRITUAL_DIAGNOSTICS,
   HAWI_BIRTH_NATIVITY,
   HAWI_TRIANGLES_ZODIAC,
   HAWI_YEARLY_PRICES_FORECAST,
@@ -156,6 +167,16 @@ export const HAWI_SOURCE = {
     introductionMahwThabat: HAWI_INTRODUCTION_MAHW_THABAT,
     dhamirDirectionsValidation: HAWI_DHAMIR_DIRECTIONS_VALIDATION,
     houseStatesColors: HAWI_HOUSE_STATES_COLORS,
+    spiritualDiagnosticsIndex: HAWI_SPIRITUAL_DIAGNOSTICS,
+    witnesses: {
+      sequence: HAWI_WITNESS_SEQUENCE,
+      houseGroups: HAWI_HOUSE_GROUPS,
+      houseGroupsList: HAWI_HOUSE_GROUPS_LIST,
+      houseGroupByHouse: HAWI_HOUSE_GROUP_BY_HOUSE,
+      additionalRule: HAWI_WITNESS_ADDITIONAL_RULE,
+      getHouseGroup: getHawiHouseGroup,
+      getWitnessRule: getHawiWitnessRule,
+    },
     birthNativity: HAWI_BIRTH_NATIVITY,
     trianglesZodiac: HAWI_TRIANGLES_ZODIAC,
     yearlyPricesForecast: HAWI_YEARLY_PRICES_FORECAST,
@@ -223,6 +244,14 @@ export {
   HAWI_INTRODUCTION_MAHW_THABAT,
   HAWI_DHAMIR_DIRECTIONS_VALIDATION,
   HAWI_HOUSE_STATES_COLORS,
+  HAWI_SPIRITUAL_DIAGNOSTICS,
+  HAWI_WITNESS_SEQUENCE,
+  HAWI_HOUSE_GROUPS,
+  HAWI_HOUSE_GROUPS_LIST,
+  HAWI_HOUSE_GROUP_BY_HOUSE,
+  HAWI_WITNESS_ADDITIONAL_RULE,
+  getHawiHouseGroup,
+  getHawiWitnessRule,
   HAWI_BIRTH_NATIVITY,
   HAWI_TRIANGLES_ZODIAC,
   HAWI_YEARLY_PRICES_FORECAST,

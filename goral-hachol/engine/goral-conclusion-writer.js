@@ -576,7 +576,22 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
   }
 
   if (topicId === 'spiritualDiagnostics') {
-    return 'לכן נכון להמשיך באבחון מדויק לפי הבתים והצורות, ולא לקבוע רק לפי תחושה או פחד.';
+    const houseIndex = boardAnalysis?.spiritualDiagnosticsHouseIndex;
+    const lines = ['לכן נכון להמשיך באבחון מדויק לפי הבתים והצורות, ולא לקבוע רק לפי תחושה או פחד.'];
+
+    if (houseIndex?.findings?.length) {
+      const alerts = houseIndex.alerts || [];
+      if (alerts.length) {
+        lines.push(`בתים רגישים עם צורות נחסיות: ${alerts.map(a => `בית ${a.houseNumber} (${a.figureHebrew}) — ${a.hebrewTerms.slice(0,2).join(', ')}`).join(' | ')}`);
+      }
+      // list top 4 findings with spiritual meaning
+      const top = houseIndex.findings.slice(0, 4);
+      for (const f of top) {
+        lines.push(`בית ${f.houseNumber} (${f.figureHebrew}): ${f.hebrewTerms.slice(0,3).join(', ')}`);
+      }
+    }
+
+    return lines.join('\n');
   }
 
   if (topicId === 'marriage') {
@@ -859,6 +874,21 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
       lines.push(`דין גשם: ${yearlyAnalysis.rainHebrew}`);
     }
 
+    if (yearlyAnalysis?.regionNote) {
+      lines.push(`הערת אזור: ${yearlyAnalysis.regionNote}`);
+    }
+
+    // enriched angular planets with materials/foods from planetary correspondences
+    if (yearlyAnalysis?.angularPlanets?.length) {
+      for (const p of yearlyAnalysis.angularPlanets) {
+        let pLine = `${p.planet} (בית ${p.house}): ${p.meaning}`;
+        if (p.materials?.length) pLine += ` | חומרים: ${p.materials.slice(0,3).join(', ')}`;
+        if (p.foods?.length) pLine += ` | מזון: ${p.foods.slice(0,3).join(', ')}`;
+        if (p.priceRule) pLine += ` (${p.priceRule})`;
+        lines.push(pLine);
+      }
+    }
+
     if (yearlyFigure) {
       lines.push(yearlyFigure.outputHebrew);
     }
@@ -878,6 +908,10 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
     const authAnalysis = boardAnalysis?.authorityStateAnalysis;
     const lines = [];
 
+    if (authAnalysis?.scopeNote) {
+      lines.push(`היקף השאלה לפי המקור: ${authAnalysis.scopeNote}`);
+    }
+
     if (authAnalysis) {
       lines.push(authAnalysis.verdictHebrew);
       if (authAnalysis.returnSignal) {
@@ -886,6 +920,9 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
       const topSignals = (authAnalysis.signals || []).slice(0, 3);
       for (const s of topSignals) {
         lines.push(`• ${s.hebrew}`);
+      }
+      if (authAnalysis.sunInAngular && authAnalysis.moonInAngular) {
+        lines.push('שמש ולבנה ביתדות — המלך ושרו חזקים; המדינה יציבה.');
       }
     } else if (grade === 'positive' || grade === 'cautiously-positive') {
       lines.push('הלוח מראה יציבות בתפקיד — בית 10 ובית 1 חזקים.');
