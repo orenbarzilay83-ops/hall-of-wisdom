@@ -635,6 +635,176 @@
       white-space:nowrap;
     }
 
+    /* ─── Menu Drawer ─────────────────────────────────────────── */
+    .menu-overlay {
+      display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;
+    }
+    .menu-overlay.open { display:block; }
+    .menu-drawer {
+      position:fixed;top:0;right:0;bottom:0;width:270px;
+      background:#fff;z-index:201;
+      transform:translateX(100%);transition:transform .25s ease;
+      display:flex;flex-direction:column;box-shadow:-4px 0 20px rgba(0,0,0,.15);
+    }
+    .menu-drawer.open { transform:translateX(0); }
+    .menu-drawer-header {
+      display:flex;align-items:center;justify-content:space-between;
+      padding:18px 20px;background:var(--navy);color:#fff;
+    }
+    .menu-drawer-title { font-size:18px;font-weight:900; }
+    .menu-nav { padding:16px 12px;display:flex;flex-direction:column;gap:8px; }
+    .menu-item {
+      display:flex;align-items:center;gap:14px;
+      padding:16px 18px;border-radius:14px;border:none;background:#f4f6fa;
+      font-size:17px;font-weight:700;color:#071b30;cursor:pointer;
+      text-align:right;transition:background .15s;
+    }
+    .menu-item:hover { background:#e8ecf5; }
+    .menu-item-icon { font-size:22px;flex-shrink:0; }
+
+    /* ─── Guide Screen ─────────────────────────────────────────── */
+    .screen-back-bar {
+      display:flex;align-items:center;gap:12px;
+      padding:0 0 16px;border-bottom:1px solid #eee;margin-bottom:18px;
+    }
+    .guide-tabs {
+      display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;
+    }
+    .guide-tab {
+      padding:8px 16px;border-radius:20px;border:2px solid rgba(0,0,0,.12);
+      background:#fff;font-size:14px;font-weight:700;cursor:pointer;color:#444;
+      transition:background .15s,border-color .15s;
+    }
+    .guide-tab.active {
+      background:var(--navy);color:#fff;border-color:var(--navy);
+    }
+    .guide-section { display:none; }
+    .guide-section.active { display:block; }
+    .figures-grid {
+      display:grid;grid-template-columns:repeat(2,1fr);gap:12px;
+    }
+    @media(min-width:600px){ .figures-grid{grid-template-columns:repeat(3,1fr);} }
+    .fig-card {
+      border:1.5px solid #eee;border-radius:14px;padding:12px;
+      background:#fff;text-align:center;
+    }
+    .fig-card .glyph { margin:0 auto 8px; }
+    .fig-name { font-weight:900;font-size:16px;color:#071b30;margin-bottom:2px; }
+    .fig-arabic { font-size:12px;color:#888;margin-bottom:6px; }
+    .fig-badges { display:flex;flex-wrap:wrap;justify-content:center;gap:4px;margin-top:4px; }
+    .badge {
+      font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;
+      background:#f0f0f0;color:#444;
+    }
+    .badge.saad { background:#d4edda;color:#155724; }
+    .badge.nahas { background:#f8d7da;color:#721c24; }
+    .badge.mixed { background:#fff3cd;color:#856404; }
+    .badge.fire { background:#ffe5d0;color:#7a3000; }
+    .badge.water { background:#d0e8ff;color:#003d7a; }
+    .badge.air { background:#e8f5e9;color:#1b5e20; }
+    .badge.earth { background:#f5e6d0;color:#5d4037; }
+    .houses-table { width:100%;border-collapse:collapse; }
+    .houses-table th {
+      background:var(--navy);color:#fff;padding:8px 12px;
+      font-size:13px;text-align:right;
+    }
+    .houses-table td {
+      padding:10px 12px;border-bottom:1px solid #eee;
+      font-size:14px;vertical-align:top;
+    }
+    .houses-table tr:nth-child(even) td { background:#f8f9fa; }
+    .house-num-cell { font-weight:900;color:var(--navy);font-size:16px;white-space:nowrap; }
+    .concept-card {
+      border:1.5px solid #e0e0e0;border-radius:14px;padding:16px;
+      margin-bottom:14px;background:#fafafa;
+    }
+    .concept-title { font-weight:900;font-size:17px;color:var(--navy);margin-bottom:6px; }
+    .concept-sub { font-size:13px;color:#888;margin-bottom:8px; }
+    .concept-body { font-size:14px;color:#333;line-height:1.6; }
+    .build-step {
+      display:flex;align-items:flex-start;gap:14px;margin-bottom:18px;
+    }
+    .step-num {
+      width:36px;height:36px;border-radius:50%;background:var(--navy);
+      color:#fff;font-weight:900;font-size:16px;
+      display:flex;align-items:center;justify-content:center;flex-shrink:0;
+    }
+    .step-body { flex:1; }
+    .step-title { font-weight:900;font-size:16px;color:#071b30;margin-bottom:4px; }
+    .step-desc { font-size:14px;color:#555;line-height:1.5; }
+    .step-example {
+      margin-top:6px;font-size:13px;font-family:monospace;
+      background:#f0f0f0;border-radius:8px;padding:8px 12px;color:#333;
+    }
+
+    /* ─── Journal Screen ───────────────────────────────────────── */
+    .journal-empty {
+      text-align:center;padding:40px 20px;color:#888;font-size:16px;
+    }
+    .journal-entry {
+      border:1.5px solid #e8e8e8;border-radius:14px;padding:14px;
+      margin-bottom:12px;background:#fff;cursor:pointer;
+      transition:border-color .15s,box-shadow .15s;
+    }
+    .journal-entry:hover { border-color:var(--gold);box-shadow:0 2px 8px rgba(0,0,0,.07); }
+    .journal-entry.expanded { border-color:var(--gold); }
+    .je-header { display:flex;justify-content:space-between;align-items:flex-start;gap:8px; }
+    .je-name { font-weight:900;font-size:17px;color:#071b30; }
+    .je-date { font-size:12px;color:#888;white-space:nowrap; }
+    .je-topic { font-size:13px;color:#666;margin-top:3px; }
+    .je-grade {
+      display:inline-block;margin-top:6px;padding:2px 10px;border-radius:10px;
+      font-size:12px;font-weight:700;
+    }
+    .je-grade.positive { background:#d4edda;color:#155724; }
+    .je-grade.negative { background:#f8d7da;color:#721c24; }
+    .je-grade.neutral { background:#fff3cd;color:#856404; }
+    .je-detail {
+      display:none;margin-top:12px;padding-top:12px;
+      border-top:1px solid #eee;
+    }
+    .je-detail.open { display:block; }
+    .je-question { font-size:14px;color:#444;margin-bottom:8px;font-style:italic; }
+    .je-conclusion {
+      font-size:13px;color:#333;line-height:1.5;max-height:120px;
+      overflow:hidden;position:relative;
+    }
+    .je-conclusion::after {
+      content:'';position:absolute;bottom:0;left:0;right:0;
+      height:30px;background:linear-gradient(transparent,#fff);
+    }
+    .je-del-btn {
+      margin-top:10px;padding:6px 14px;border-radius:8px;border:none;
+      background:#f8d7da;color:#721c24;font-size:13px;font-weight:700;cursor:pointer;
+    }
+    .journal-clear-btn {
+      width:100%;padding:12px;border-radius:12px;border:none;
+      background:#f8d7da;color:#721c24;font-size:15px;font-weight:700;cursor:pointer;
+      margin-top:16px;
+    }
+
+    /* ─── Prayer Screen ────────────────────────────────────────── */
+    .prayer-container {
+      background:linear-gradient(135deg,#1a1040,#071b30);
+      border-radius:18px;padding:28px 24px;margin-top:8px;
+    }
+    .prayer-title {
+      text-align:center;font-size:20px;font-weight:900;color:#e8d88a;
+      margin-bottom:20px;letter-spacing:1px;
+    }
+    .prayer-arabic {
+      font-size:18px;line-height:2;color:#f5f0d0;text-align:center;
+      direction:rtl;margin-bottom:20px;font-family:serif;
+    }
+    .prayer-hebrew {
+      font-size:15px;line-height:1.9;color:#c8d8e8;text-align:right;
+      border-top:1px solid rgba(255,255,255,.15);padding-top:18px;
+    }
+    .prayer-note {
+      margin-top:18px;font-size:13px;color:#8899aa;text-align:center;
+      border-top:1px solid rgba(255,255,255,.1);padding-top:14px;
+    }
+
     .details-toggle {
       display:block;
       width:100%;
@@ -688,8 +858,27 @@
     <header class="topbar">
       <button class="icon-btn" onclick="location.href='calculator.html'">←</button>
       <h1>גורל החול</h1>
-      <div style="width:40px;"></div>
+      <button class="icon-btn" id="menuOpenBtn" aria-label="תפריט">☰</button>
     </header>
+
+    <div id="menuOverlay" class="menu-overlay"></div>
+    <div id="menuDrawer" class="menu-drawer">
+      <div class="menu-drawer-header">
+        <span class="menu-drawer-title">תפריט</span>
+        <button class="icon-btn" id="menuCloseBtn" style="color:#fff">✕</button>
+      </div>
+      <nav class="menu-nav">
+        <button class="menu-item" id="menuGuideBtn">
+          <span class="menu-item-icon">📖</span>מבוא לגורל החול
+        </button>
+        <button class="menu-item" id="menuJournalBtn">
+          <span class="menu-item-icon">📋</span>יומן לקוחות
+        </button>
+        <button class="menu-item" id="menuPrayerBtn">
+          <span class="menu-item-icon">🤲</span>תפילה לפני הגורל
+        </button>
+      </nav>
+    </div>
 
     <section id="screen-open" class="screen active">
       <div class="panel">
@@ -770,6 +959,73 @@
         </div>
       </div>
     </section>
+
+    <!-- ─── מבוא לגורל החול ─────────────────────────────── -->
+    <section id="screen-guide" class="screen">
+      <div class="panel">
+        <div class="screen-back-bar">
+          <button class="btn gray" id="backFromGuideBtn">← חזרה</button>
+          <h2 style="margin:0">מבוא לגורל החול</h2>
+        </div>
+        <div class="guide-tabs">
+          <button class="guide-tab active" data-tab="figures">16 הצורות</button>
+          <button class="guide-tab" data-tab="houses">16 הבתים</button>
+          <button class="guide-tab" data-tab="build">כיצד בונים לוח</button>
+          <button class="guide-tab" data-tab="concepts">מושגי יסוד</button>
+        </div>
+        <div id="guide-figures" class="guide-section active"></div>
+        <div id="guide-houses" class="guide-section"></div>
+        <div id="guide-build" class="guide-section"></div>
+        <div id="guide-concepts" class="guide-section"></div>
+      </div>
+    </section>
+
+    <!-- ─── יומן לקוחות ──────────────────────────────────── -->
+    <section id="screen-journal" class="screen">
+      <div class="panel">
+        <div class="screen-back-bar">
+          <button class="btn gray" id="backFromJournalBtn">← חזרה</button>
+          <h2 style="margin:0">יומן לקוחות</h2>
+        </div>
+        <div id="journalList"></div>
+      </div>
+    </section>
+
+    <!-- ─── תפילה לפני הגורל ─────────────────────────────── -->
+    <section id="screen-prayer" class="screen">
+      <div class="panel">
+        <div class="screen-back-bar">
+          <button class="btn gray" id="backFromPrayerBtn">← חזרה</button>
+          <h2 style="margin:0">תפילה לפני הגורל</h2>
+        </div>
+        <div class="prayer-container">
+          <div class="prayer-title">بسم الله الرحمن الرحيم</div>
+          <div class="prayer-arabic">
+            اللهم يا عالم الغيب والشهادة،<br>
+            يا من أودعت في هذا العلم أسرار قدرتك،<br>
+            أنر بصيرتي وسدد يدي في هذه القراءة،<br>
+            واجعل ما يظهر في هذا الرمل حقاً وصواباً،<br>
+            واهدنا إلى ما فيه خير لهذا السائل.<br>
+            آمين وآمين.
+          </div>
+          <div class="prayer-hebrew">
+            <strong>תרגום:</strong><br><br>
+            בשם ה' הרחמן והרחום,<br>
+            אלוהים, יודע הנסתר והנגלה,<br>
+            אתה שהפקדת בחכמה זו את סודות יכולתך —<br>
+            האר את עיני לבי והכוון את ידי בקריאה זו.<br>
+            ותהי מה שיתגלה בגורל הזה אמת וישרה,<br>
+            ותנחה אותנו אל מה שטוב לשואל הזה.<br>
+            אמן ואמן.
+          </div>
+          <div class="prayer-note">
+            מקור: حاوي العجائب ومظهر الغرائب, أحمد ابن زنبل المحلي<br>
+            נהוג לומר תפילה זו בלב שקט לפני הטלת האמהות.
+          </div>
+        </div>
+      </div>
+    </section>
+
   </div>
 
   <script type="module">
@@ -1149,6 +1405,11 @@
       window.__LAST_GORAL_READING = reading;
       window.__LAST_GORAL_INTERPRETATION = insight;
 
+      // שמור לארכיון לקוחות אוטומטית
+      if (window.GORAL_CLIENT_ARCHIVE?.saveGoralReadingToArchive) {
+        window.GORAL_CLIENT_ARCHIVE.saveGoralReadingToArchive(reading, insight);
+      }
+
       const conclusion = insight.finalConclusionHebrew || insight.conclusionDraftHebrew || insight.technicalConclusionHebrew || "";
       const score = insight.boardScore || {};
       const judgeV = insight.judgeVerdict || score.judgeVerdict || null;
@@ -1449,12 +1710,220 @@
     document.getElementById("clearBtn").addEventListener("click", clearForm);
 
     document.getElementById("archiveBtn").addEventListener("click", () => {
-      alert("ארכיון הקריאות יחובר אחרי שהממשק החדש יאושר.");
+      openMenu(); document.getElementById("menuJournalBtn").click();
     });
 
     document.getElementById("clearArchiveBtn").addEventListener("click", () => {
-      alert("ניקוי ארכיון יחובר אחרי שהממשק החדש יאושר.");
+      if (!confirm("למחוק את כל הארכיון?")) return;
+      if (window.GORAL_CLIENT_ARCHIVE?.clearGoralArchive) window.GORAL_CLIENT_ARCHIVE.clearGoralArchive();
     });
+
+    // ─── Menu Drawer ──────────────────────────────────────────────
+    function openMenu()  { document.getElementById("menuDrawer").classList.add("open"); document.getElementById("menuOverlay").classList.add("open"); }
+    function closeMenu() { document.getElementById("menuDrawer").classList.remove("open"); document.getElementById("menuOverlay").classList.remove("open"); }
+
+    document.getElementById("menuOpenBtn").addEventListener("click", openMenu);
+    document.getElementById("menuCloseBtn").addEventListener("click", closeMenu);
+    document.getElementById("menuOverlay").addEventListener("click", closeMenu);
+
+    document.getElementById("menuGuideBtn").addEventListener("click", () => {
+      closeMenu(); showScreen("guide"); renderGuide();
+    });
+    document.getElementById("menuJournalBtn").addEventListener("click", () => {
+      closeMenu(); showScreen("journal"); renderJournal();
+    });
+    document.getElementById("menuPrayerBtn").addEventListener("click", () => {
+      closeMenu(); showScreen("prayer");
+    });
+
+    document.getElementById("backFromGuideBtn").addEventListener("click", () => showScreen("open"));
+    document.getElementById("backFromJournalBtn").addEventListener("click", () => showScreen("open"));
+    document.getElementById("backFromPrayerBtn").addEventListener("click", () => showScreen("open"));
+
+    // ─── Guide Tab Logic ──────────────────────────────────────────
+    document.querySelectorAll(".guide-tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".guide-tab").forEach(t => t.classList.remove("active"));
+        document.querySelectorAll(".guide-section").forEach(s => s.classList.remove("active"));
+        tab.classList.add("active");
+        document.getElementById("guide-" + tab.dataset.tab)?.classList.add("active");
+      });
+    });
+
+    // Figure fortune/movement data (not in RAML_FORMS_BASIC)
+    const FIGURE_EXTRA = {
+      '1111': { fortune: 'ממוזג', fClass: 'mixed', movement: 'מתהפך' },
+      '1112': { fortune: 'נחס', fClass: 'nahas', movement: 'חיצוני' },
+      '1121': { fortune: 'ממוזג', fClass: 'mixed', movement: 'מתהפך' },
+      '1122': { fortune: 'סעד', fClass: 'saad', movement: 'חיצוני' },
+      '1211': { fortune: 'ממוזג-נחס', fClass: 'mixed', movement: 'מתהפך' },
+      '1212': { fortune: 'נחס', fClass: 'nahas', movement: 'חיצוני' },
+      '1221': { fortune: 'ממוזג-נחס', fClass: 'mixed', movement: 'מתהפך' },
+      '1222': { fortune: 'סעד', fClass: 'saad', movement: 'חיצוני' },
+      '2111': { fortune: 'סעד', fClass: 'saad', movement: 'פנימי' },
+      '2112': { fortune: 'ממוזג-סעד', fClass: 'mixed', movement: 'קבוע' },
+      '2121': { fortune: 'סעד', fClass: 'saad', movement: 'פנימי' },
+      '2122': { fortune: 'נחס', fClass: 'nahas', movement: 'קבוע' },
+      '2211': { fortune: 'סעד', fClass: 'saad', movement: 'פנימי' },
+      '2212': { fortune: 'סעד', fClass: 'saad', movement: 'קבוע' },
+      '2221': { fortune: 'נחס', fClass: 'nahas', movement: 'פנימי' },
+      '2222': { fortune: 'ממוזג', fClass: 'mixed', movement: 'קבוע' },
+    };
+    const ELEMENT_CLASS = { 'אש': 'fire', 'מים': 'water', 'אוויר': 'air', 'עפר': 'earth' };
+
+    let guideRendered = false;
+    function renderGuide() {
+      if (guideRendered) return;
+      guideRendered = true;
+      renderFiguresGuide();
+      renderHousesGuide();
+      renderBuildGuide();
+      renderConceptsGuide();
+    }
+
+    function renderFiguresGuide() {
+      const el = document.getElementById("guide-figures");
+      const forms = window.RAML_FORMS_BASIC || {};
+      el.innerHTML = '<div class="figures-grid">' + FIGURE_ORDER.map(key => {
+        const f = forms[key] || {};
+        const ex = FIGURE_EXTRA[key] || {};
+        const elClass = ELEMENT_CLASS[f.element] || '';
+        return `<div class="fig-card">
+          ${glyphHtml(linesFromKey(key))}
+          <div class="fig-name">${escapeHtml(f.hebrew || key)}</div>
+          <div class="fig-arabic">${escapeHtml(f.arabic || '')}</div>
+          <div class="fig-badges">
+            <span class="badge ${ex.fClass}">${escapeHtml(ex.fortune || '')}</span>
+            <span class="badge ${elClass}">${escapeHtml(f.element || '')}</span>
+            <span class="badge">${escapeHtml(ex.movement || '')}</span>
+            ${f.planet ? `<span class="badge">${escapeHtml(f.planet)}</span>` : ''}
+          </div>
+        </div>`;
+      }).join('') + '</div>';
+    }
+
+    function renderHousesGuide() {
+      const el = document.getElementById("guide-houses");
+      const houses = window.ramlListHousesBasic ? window.ramlListHousesBasic() : [];
+      el.innerHTML = '<table class="houses-table"><thead><tr><th>בית</th><th>שם</th><th>תחומים</th></tr></thead><tbody>' +
+        houses.map(h => `<tr>
+          <td class="house-num-cell">${h.number}</td>
+          <td><strong>${escapeHtml(h.hebrew)}</strong><br><span style="font-size:12px;color:#888">${escapeHtml(h.arabic)}</span></td>
+          <td>${escapeHtml(h.role)}</td>
+        </tr>`).join('') +
+        '</tbody></table>';
+    }
+
+    function renderBuildGuide() {
+      const el = document.getElementById("guide-build");
+      const steps = [
+        { title: 'הטלת האמהות', desc: 'מטילים נקודות 4 פעמים. כל שורה נספרת: זוגי = 2 נקודות (●●), אי-זוגי = 1 נקודה (●). מתקבלות 4 אמהות — שורת הלוח הראשונה.' },
+        { title: 'יצירת הבנות', desc: 'מחשבים XOR בין שורות האמהות הסמוכות: בת 1 = אם 1 XOR אם 2, בת 2 = אם 2 XOR אם 3, בת 3 = אם 3 XOR אם 4, בת 4 = אם 4 XOR בת 1.', example: 'אם 1=1111, אם 2=2112 → בת 1=1221 (סוהר)' },
+        { title: 'יצירת הנכדות', desc: 'מסובבים את הצורות — כל עמודה של 4 שורות הופכת לצורה חדשה. נכדה 1 = שורה 1 של כל 4 האמהות.', example: 'שורה 1 של אמהות 1-4: 1,2,1,2 → 1212 (ממון יוצא)' },
+        { title: 'העדים (בתים 13-14)', desc: 'עד 1 (בית 13) = XOR בין בת 1 ובת 2. עד 2 (בית 14) = XOR בין בת 3 ובת 4. העדים מחזקים או מחלישים את הדיין.' },
+        { title: 'הדיין (בית 15)', desc: 'הכרעה הסופית של הלוח. מחושב: דיין = XOR(עד 1, עד 2). אם הדיין סעד — תשובה חיובית. אם נחס — שלילית. אם ממוזג — תלוי.' },
+        { title: 'המשלים (בית 16)', desc: 'מחושב: משלים = XOR(דיין, בית 1). מורה על אחרית הדבר ועל תוצאת הדין לאורך זמן.' },
+      ];
+      el.innerHTML = steps.map((s, i) => `
+        <div class="build-step">
+          <div class="step-num">${i+1}</div>
+          <div class="step-body">
+            <div class="step-title">${escapeHtml(s.title)}</div>
+            <div class="step-desc">${escapeHtml(s.desc)}</div>
+            ${s.example ? `<div class="step-example">${escapeHtml(s.example)}</div>` : ''}
+          </div>
+        </div>`).join('');
+    }
+
+    function renderConceptsGuide() {
+      const el = document.getElementById("guide-concepts");
+      const concepts = [
+        { title: 'דיין — השופט (بيت 15)', sub: 'הכרעה הסופית', body: 'הדיין בבית 15 הוא "שופט הלוח". צורה שלו קובעת את התשובה הכוללת. סעד = כן/טוב, נחס = לא/רע, ממוזג = תלוי בעדים. הדיין גובר על הכול — גם אם כל הלוח רע, דיין סעד פוסק בחיוב.' },
+        { title: 'עדים — בתים 13-14', sub: 'מחזקים או מחלישים את הדיין', body: 'שני העדים (בית 13 ו-14) מחזקים את פסיקת הדיין. אם שניהם מסכימים עם הדיין — הפסיקה ודאית. אם סותרים — הדין מסופק. בית 13 = צד השואל. בית 14 = הדבר הנשאל.' },
+        { title: 'דמיר — הכוונה הנסתרת (الضمير)', sub: 'מה באמת רוצה השואל', body: 'הדמיר מחושב ממיזן (מאזניים) ה-4 יסודות: אש, אוויר, מים, עפר. מכוון לבית מסוים בלוח המגלה את ה"שאלה האמיתית" שבלב השואל — לפעמים שונה משאלתו המוצהרת.' },
+        { title: 'תחסיל — השלמת הדבר (تحصيل)', sub: 'האם הדבר ייגמר?', body: 'בודקים האם יש חיבור ישיר, עקיף, או בהעברה בין בית 1 (השואל) לבית 7 (הנשאל). חיבור ישיר = הדבר יצא לפועל בוודאות. הגעה בינונית = תלוי גורמים. אין חיבור = הדבר לא ייגמר.' },
+        { title: 'איתיסלאת — חיבור (الاتصال)', sub: 'קשרים בין צורות בלוח', body: 'כאשר צורה חוזרת בשני בתים שונים נוצר "חיבור" ביניהם. חיבור בין בית 1 לבית 7 = השואל והנשאל קשורים. חיבור לבית 10 = עניין ציבורי/שלטוני מחובר. סוגי חיבורים: ריבוע, משולש, מול, תסדיס.' },
+        { title: 'אצאלה — תוקף הלוח (الأصالة)', sub: 'האם הלוח תקף?', body: 'לוח תקף כאשר צורת בית 1 (השואל) מופיעה בלפחות עוד בית אחד בלוח. אם הצורה מופיעה רק בבית 1 — הלוח חלש ויש לנהוג בזהירות בפרשנות. צורה שחוזרת בבתים 1, 4, 7 ו-10 = לוח חזק מאוד.' },
+        { title: 'ג\'מלה — ספירת נקודות (الجملة)', sub: 'כוח הלוח הכללי', body: 'ספירת סה"כ הנקודות בלוח (1 = נקודה אחת, 2 = שתי נקודות, לכל שורה). מחלקים ל-4 לבדיקת מחלות, ל-3 לבדיקת ילדים. תוצאה זוגית/אי-זוגית מוסיפה שכבת פרשנות.' },
+      ];
+      el.innerHTML = concepts.map(c => `
+        <div class="concept-card">
+          <div class="concept-title">${escapeHtml(c.title)}</div>
+          <div class="concept-sub">${escapeHtml(c.sub)}</div>
+          <div class="concept-body">${escapeHtml(c.body)}</div>
+        </div>`).join('');
+    }
+
+    // ─── Journal Rendering ────────────────────────────────────────
+    function formatDate(iso) {
+      try {
+        const d = new Date(iso);
+        return d.toLocaleDateString('he-IL', { day:'2-digit', month:'2-digit', year:'numeric' }) +
+               ' ' + d.toLocaleTimeString('he-IL', { hour:'2-digit', minute:'2-digit' });
+      } catch { return iso || ''; }
+    }
+
+    function gradeClass(score) {
+      if (!score) return 'neutral';
+      const g = score.grade || '';
+      if (g === 'positive' || g === 'very-positive') return 'positive';
+      if (g === 'negative' || g === 'very-negative') return 'negative';
+      return 'neutral';
+    }
+
+    function gradeLabel(score) {
+      if (!score) return '';
+      const map = { positive: 'חיובי', 'very-positive': 'חיובי מאוד', negative: 'שלילי', 'very-negative': 'שלילי מאוד', neutral: 'ממוזג' };
+      return map[score.grade] || score.grade || '';
+    }
+
+    function renderJournal() {
+      const el = document.getElementById("journalList");
+      const archive = window.GORAL_CLIENT_ARCHIVE?.getGoralArchive?.() || [];
+      if (!archive.length) {
+        el.innerHTML = '<div class="journal-empty">אין קריאות שמורות עדיין.<br>כל קריאה תישמר כאן אוטומטית.</div>';
+        return;
+      }
+      el.innerHTML = archive.map((rec, idx) => `
+        <div class="journal-entry" id="je-${idx}">
+          <div class="je-header">
+            <div>
+              <div class="je-name">${escapeHtml(rec.clientName || 'לא ידוע')}</div>
+              <div class="je-topic">${escapeHtml(rec.topicHebrew || rec.topicId || '')}</div>
+              <span class="je-grade ${gradeClass(rec.boardScore)}">${gradeLabel(rec.boardScore)}</span>
+            </div>
+            <div class="je-date">${escapeHtml(formatDate(rec.createdAt))}</div>
+          </div>
+          <div class="je-detail" id="jd-${idx}">
+            <div class="je-question">❓ ${escapeHtml(rec.question || '')}</div>
+            <div class="je-conclusion">${escapeHtml((rec.conclusion || '').slice(0, 400))}</div>
+            <button class="je-del-btn" data-id="${escapeHtml(rec.id)}">🗑 מחק קריאה זו</button>
+          </div>
+        </div>`).join('') +
+        '<button class="journal-clear-btn" id="journalClearAll">🗑 מחק את כל הארכיון</button>';
+
+      el.querySelectorAll(".journal-entry").forEach((entry, idx) => {
+        entry.addEventListener("click", (e) => {
+          if (e.target.classList.contains("je-del-btn")) return;
+          const detail = document.getElementById("jd-" + idx);
+          detail?.classList.toggle("open");
+          entry.classList.toggle("expanded");
+        });
+      });
+      el.querySelectorAll(".je-del-btn").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          if (!confirm("למחוק קריאה זו?")) return;
+          window.GORAL_CLIENT_ARCHIVE?.deleteGoralArchiveRecord?.(btn.dataset.id);
+          renderJournal();
+        });
+      });
+      document.getElementById("journalClearAll")?.addEventListener("click", () => {
+        if (!confirm("למחוק את כל הארכיון?")) return;
+        window.GORAL_CLIENT_ARCHIVE?.clearGoralArchive?.();
+        renderJournal();
+      });
+    }
 
     clearForm();
 
