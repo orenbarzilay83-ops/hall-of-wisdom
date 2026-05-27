@@ -150,6 +150,54 @@ const tests = [
     mothers: ['1111', '2122', '1222', '2112'],
     topicId: 'seaVoyage',
   },
+  {
+    label: 'גנבה (theft — נושא נפרד)',
+    question: 'נגנב לי הארנק — מי גנב ואיפה הוא',
+    mothers: ['2122', '1221', '2212', '1111'],
+    topicId: 'theft',
+  },
+  {
+    label: 'סכסוך / תביעה (disputes)',
+    question: 'יש לי ריב עם השכן על הגבול — מי ינצח בבית משפט',
+    mothers: ['2211', '1222', '2121', '1112'],
+    topicId: 'disputes',
+  },
+  {
+    label: 'פחד / סכנה (fear)',
+    question: 'אני מפחד מהאיום שקיבלתי — האם יש סכנה ממשית',
+    mothers: ['2221', '1212', '1121', '2122'],
+    topicId: 'fear',
+  },
+  {
+    label: 'אהבה ושנאה (loveHate)',
+    question: 'האם האיש הזה אוהב אותי באמת או שהוא עושה מניפולציה',
+    mothers: ['2211', '2122', '1111', '1221'],
+    topicId: 'loveHate',
+  },
+  {
+    label: 'השלמת הדבר (completion)',
+    question: 'האם הפרויקט שהתחלתי יסתיים בהצלחה',
+    mothers: ['2121', '2212', '2211', '1122'],
+    topicId: 'completion',
+  },
+  {
+    label: 'אחים / שכנים (siblings)',
+    question: 'האם אחי יעזור לי בזמן הצרה',
+    mothers: ['1211', '2121', '1122', '2212'],
+    topicId: 'siblings',
+  },
+  {
+    label: 'מוות / ירושה (deathInheritance)',
+    question: 'האם אקבל את ירושת הדוד שנפטר',
+    mothers: ['1222', '2212', '2121', '1111'],
+    topicId: 'deathInheritance',
+  },
+  {
+    label: 'יסודות גורל החול (foundations)',
+    question: 'מה הם יסודות גורל החול וכיצד עובד הלוח',
+    mothers: ['2112', '1111', '2212', '1221'],
+    topicId: 'foundations',
+  },
 ];
 
 // ─── Run all tests ─────────────────────────────────────────────────────────────
