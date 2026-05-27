@@ -852,59 +852,19 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
   }
 
   if (topicId === 'yearlyForecast') {
-    const yearlyAnalysis  = boardAnalysis?.yearlyForecastAnalysis;
-    const yearlyFigure    = boardAnalysis?.yearlyFigureForecast;
-    const lines = [];
-
-    if (yearlyAnalysis?.house15Result) {
-      lines.push(`אחרית השנה (דיין): ${yearlyAnalysis.house15Result.hebrewResult}`);
-    }
-
-    if (yearlyAnalysis?.dominantElement) {
-      const elChar = {
-        'אש':    'שנת חום ומחלוקות — ריבוי סכסוכים',
-        'מים':   'שנת שינויים — גשם, רגש, תנועה',
-        'אוויר': 'שנת מסחר ותנועה — שינויים מהירים',
-        'עפר':   'שנת יציבות וממון — חקלאות וכלכלה',
-      };
-      lines.push(`יסוד השנה: ${yearlyAnalysis.dominantElement} — ${elChar[yearlyAnalysis.dominantElement] || yearlyAnalysis.dominantElement}`);
-    }
-
-    if (yearlyAnalysis?.rainHebrew) {
-      lines.push(`דין גשם: ${yearlyAnalysis.rainHebrew}`);
-    }
-
-    if (yearlyAnalysis?.regionNote) {
-      lines.push(`הערת אזור: ${yearlyAnalysis.regionNote}`);
-    }
-
-    // enriched angular planets with materials/foods from planetary correspondences
-    if (yearlyAnalysis?.angularPlanets?.length) {
-      for (const p of yearlyAnalysis.angularPlanets) {
-        let pLine = `${p.planet} (בית ${p.house}): ${p.meaning}`;
-        if (p.materials?.length) pLine += ` | חומרים: ${p.materials.slice(0,3).join(', ')}`;
-        if (p.foods?.length) pLine += ` | מזון: ${p.foods.slice(0,3).join(', ')}`;
-        if (p.priceRule) pLine += ` (${p.priceRule})`;
-        lines.push(pLine);
-      }
-    }
-
-    if (yearlyFigure) {
-      lines.push(yearlyFigure.outputHebrew);
-    }
-
+    // describeCoreHouses already renders yearlyAnalysis.outputHebrew (element, planets, rain, region)
+    // and yearlyFigureForecast.outputHebrew. Add only the final verdict here.
     if (grade === 'positive' || grade === 'cautiously-positive') {
-      lines.push('לכן השנה מבטיחה בכלל — הכיוון הכללי לטובה.');
+      return 'לכן השנה מבטיחה בכלל — הכיוון הכללי לטובה.';
     } else if (grade === 'negative' || grade === 'cautiously-negative') {
-      lines.push('לכן יש להיזהר — השנה מביאה קשיים, ויש לנהוג בזהירות ולחסוך.');
-    } else {
-      lines.push('לכן השנה מעורבת — יש תקופות טובות ותקופות קשות. כדאי לתכנן בזהירות.');
+      return 'לכן יש להיזהר — השנה מביאה קשיים, ויש לנהוג בזהירות ולחסוך.';
     }
-
-    return lines.join('\n');
+    return 'לכן השנה מעורבת — יש תקופות טובות ותקופות קשות. כדאי לתכנן בזהירות.';
   }
 
   if (topicId === 'authorityState') {
+    // describeCoreHouses already rendered authAnalysis.outputHebrew (verdict + signals)
+    // add only scopeNote + grade-based conclusion here
     const authAnalysis = boardAnalysis?.authorityStateAnalysis;
     const lines = [];
 
@@ -912,20 +872,8 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
       lines.push(`היקף השאלה לפי המקור: ${authAnalysis.scopeNote}`);
     }
 
-    if (authAnalysis) {
-      lines.push(authAnalysis.verdictHebrew);
-      if (authAnalysis.returnSignal) {
-        lines.push(`סימן לחזרה לתפקיד: ${authAnalysis.returnSignal.hebrew}`);
-      }
-      const topSignals = (authAnalysis.signals || []).slice(0, 3);
-      for (const s of topSignals) {
-        lines.push(`• ${s.hebrew}`);
-      }
-      if (authAnalysis.sunInAngular && authAnalysis.moonInAngular) {
-        lines.push('שמש ולבנה ביתדות — המלך ושרו חזקים; המדינה יציבה.');
-      }
-    } else if (grade === 'positive' || grade === 'cautiously-positive') {
-      lines.push('הלוח מראה יציבות בתפקיד — בית 10 ובית 1 חזקים.');
+    if (grade === 'positive' || grade === 'cautiously-positive') {
+      lines.push('הלוח מראה יציבות בתפקיד.');
     } else if (grade === 'negative' || grade === 'cautiously-negative') {
       lines.push('הלוח מצביע על סכנה לתפקיד — יש לבדוק בית 7 ובית 15.');
     } else {
@@ -936,30 +884,14 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
   }
 
   if (topicId === 'birthNativity') {
-    const birthAnalysis = boardAnalysis?.birthNativityAnalysis;
-    const lines = [];
-
-    if (birthAnalysis) {
-      lines.push(`בעל הטאלע: ${birthAnalysis.taliHebrew}`);
-      if (birthAnalysis.findings?.length > 0) {
-        lines.push('חזרות הצורה וגורל האדם:');
-        for (const f of birthAnalysis.findings.slice(0, 5)) {
-          lines.push(`  בית ${f.houseNumber}: ${f.hebrewShort}`);
-        }
-      } else {
-        lines.push('הצורה אינה חוזרת בבתים אחרים — הגורל תלוי בעיקר בדיין ובמצב בית 1.');
-      }
-    }
-
+    // describeCoreHouses already rendered birthAnalysis.outputHebrew (tali + findings)
+    // add only the grade-based conclusion here
     if (grade === 'positive' || grade === 'cautiously-positive') {
-      lines.push('הדיין נוטה לטובה — הגורל הכללי של האדם בתקופה זו לטובה.');
+      return 'הדיין נוטה לטובה — הגורל הכללי של האדם בתקופה זו לטובה.';
     } else if (grade === 'negative' || grade === 'cautiously-negative') {
-      lines.push('הדיין מצביע על קושי — יש לחזק את בית 1 ולזהות איזה בית מקשה.');
-    } else {
-      lines.push('הגורל מעורב — חלק מהחזרות חיוביות וחלק שליליות. יש לקרוא כל בית בנפרד.');
+      return 'הדיין מצביע על קושי — יש לחזק את בית 1 ולזהות איזה בית מקשה.';
     }
-
-    return lines.join('\n');
+    return 'הגורל מעורב — חלק מהחזרות חיוביות וחלק שליליות. יש לקרוא כל בית בנפרד.';
   }
 
   if (topicId === 'siblings') {
