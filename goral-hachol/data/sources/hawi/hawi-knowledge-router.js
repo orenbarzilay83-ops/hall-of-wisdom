@@ -190,6 +190,9 @@ const TOPIC_ALIASES = {
     'completion',
     'tamam',
   ],
+  theft: ['גנבה', 'גנב', 'גנוב', 'נגנב', 'גניבה', 'מי גנב', 'theft', 'sariq'],
+  seaVoyage: ['ים', 'ספינה', 'מסע ים', 'נסיעה בים', 'ים מסוכן', 'sea', 'bahr'],
+  prisoner: ['אסיר', 'כלא', 'מאסר', 'שחרור', 'בית סוהר', 'עצור', 'prisoner', 'sajin'],
   foundations: [
     'יסוד',
     'הכאה',
@@ -291,6 +294,9 @@ const TOPIC_TO_KNOWLEDGE_IDS = {
     'hawi-house-states-colors',
     'hawi-dhamir-directions-validation',
   ],
+  theft: ['hawi-question-theft', 'hawi-house-states-colors', 'hawi-dhamir-directions-validation'],
+  seaVoyage: ['hawi-question-sea-voyage', 'hawi-house-states-colors', 'hawi-dhamir-directions-validation'],
+  prisoner: ['hawi-question-prisoner', 'hawi-house-states-colors', 'hawi-dhamir-directions-validation'],
   foundations: [
     'hawi-introduction-mahw-thabat',
     'hawi-dhamir-directions-validation',

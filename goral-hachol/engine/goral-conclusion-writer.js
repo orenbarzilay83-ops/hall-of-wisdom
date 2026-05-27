@@ -421,6 +421,170 @@ function describeCoreHouses(analysis, topicId, question) {
     parts.push(seaRisks.outputHebrew);
   }
 
+  // --- GROUP B: topic-specific analysis sections ---
+
+  // childrenPregnancy: house 5 fertility analysis
+  if (topicId === 'childrenPregnancy') {
+    const h5 = getHouseFromBoard(analysis, 5);
+    const h1 = getHouseFromBoard(analysis, 1);
+    if (h5) {
+      const h5Fortune = h5.fortune || '';
+      const h5Name = h5.figureHebrew || h5.figureKey || '';
+      const isFertile = h5Fortune.includes('סעד');
+      const isBarren = h5Fortune.includes('נחס');
+      const sameAsH1 = h1 && h5.figureKey === h1.figureKey;
+      const verdictLine = isFertile
+        ? `בית 5 (ילדים) — ${h5Name} [סעד]: סימן להיריון / לידה אפשרית.`
+        : isBarren
+        ? `בית 5 (ילדים) — ${h5Name} [נחס]: עיכוב בהיריון, ייתכן קושי.`
+        : `בית 5 (ילדים) — ${h5Name}: מצב ביניים — יש לבדוק את העדים.`;
+      parts.push(`אבחון פריון (בית 5):\n  ${verdictLine}${sameAsH1 ? '\n  ⚠ צורת בית 5 זהה לבית 1 — קשר ישיר בין השואל לעניין הילדים.' : ''}`);
+    }
+  }
+
+  // travel: house 9 detailed + dangers
+  if (topicId === 'travel') {
+    const h9 = getHouseFromBoard(analysis, 9);
+    const h8 = getHouseFromBoard(analysis, 8);
+    const h12 = getHouseFromBoard(analysis, 12);
+    if (h9) {
+      const h9Fortune = h9.fortune || '';
+      const h9Dir = h9.directionHebrew || '';
+      const dangerHouses = [];
+      if (h8?.fortune?.includes('נחס')) dangerHouses.push(`בית 8 (${h8.figureHebrew}) — סכנה`);
+      if (h12?.fortune?.includes('נחס')) dangerHouses.push(`בית 12 (${h12.figureHebrew}) — אויב נסתר`);
+      const dangerNote = dangerHouses.length ? `\n  ⚠ בתי סכנה: ${dangerHouses.join(' | ')}` : '';
+      parts.push(`ניתוח מסלול נסיעה (בית 9):\n  בית 9 — ${h9.figureHebrew} [${h9Fortune}]${h9Dir ? ', כיוון: ' + h9Dir : ''}${dangerNote}`);
+    }
+  }
+
+  // disputes: house 1 vs house 7 power comparison
+  if (topicId === 'disputes') {
+    const h1 = getHouseFromBoard(analysis, 1);
+    const h7 = getHouseFromBoard(analysis, 7);
+    if (h1 && h7) {
+      const h1Saad = h1.fortune?.includes('סעד') ? 1 : h1.fortune?.includes('נחס') ? -1 : 0;
+      const h7Saad = h7.fortune?.includes('סעד') ? 1 : h7.fortune?.includes('נחס') ? -1 : 0;
+      const h1Tone = h1Saad > 0 ? 'חזק [סעד]' : h1Saad < 0 ? 'חלש [נחס]' : 'ביניים';
+      const h7Tone = h7Saad > 0 ? 'חזק [סעד]' : h7Saad < 0 ? 'חלש [נחס]' : 'ביניים';
+      const advantage = (h1Saad > h7Saad) ? '→ יתרון לשואל' : (h1Saad < h7Saad) ? '→ יתרון ליריב' : '→ כוחות שקולים';
+      parts.push(`כוח הצדדים בסכסוך:\n  שואל (בית 1 — ${h1.figureHebrew}): ${h1Tone}\n  יריב (בית 7 — ${h7.figureHebrew}): ${h7Tone}\n  ${advantage}`);
+    }
+  }
+
+  // commerce: houses 2 and 10 success/failure
+  if (topicId === 'commerce') {
+    const h2 = getHouseFromBoard(analysis, 2);
+    const h10 = getHouseFromBoard(analysis, 10);
+    if (h2 || h10) {
+      const lines = [];
+      if (h2) lines.push(`  בית 2 (ממון) — ${h2.figureHebrew} [${h2.fortune || 'ביניים'}]: ${h2.fortune?.includes('סעד') ? 'כסף זמין, עסקה ממונית חיובית' : h2.fortune?.includes('נחס') ? 'חסרון כספי, עסקה בסיכון' : 'מצב ממוני בינוני'}`);
+      if (h10) lines.push(`  בית 10 (תוצאת עסקה) — ${h10.figureHebrew} [${h10.fortune || 'ביניים'}]: ${h10.fortune?.includes('סעד') ? 'תוצאה חיובית, רווח' : h10.fortune?.includes('נחס') ? 'תוצאה שלילית, הפסד' : 'תוצאה בינונית'}`);
+      if (h2 && h10) {
+        const bothSaad = h2.fortune?.includes('סעד') && h10.fortune?.includes('סעד');
+        const bothNahs = h2.fortune?.includes('נחס') && h10.fortune?.includes('נחס');
+        lines.push(bothSaad ? '  → שני הבתים טובים — עסקה מומלצת' : bothNahs ? '  → שני הבתים רעים — הימנע מהעסקה' : '  → מצב מעורב — נדרשת זהירות');
+      }
+      parts.push(`ניתוח עסקה (בית 2 + בית 10):\n${lines.join('\n')}`);
+    }
+  }
+
+  // fear: source of fear per houses
+  if (topicId === 'fear') {
+    const h1 = getHouseFromBoard(analysis, 1);
+    const h7 = getHouseFromBoard(analysis, 7);
+    const h12 = getHouseFromBoard(analysis, 12);
+    const h8 = getHouseFromBoard(analysis, 8);
+    const fearSources = [];
+    if (h7?.fortune?.includes('נחס')) fearSources.push(`בית 7 (${h7.figureHebrew}) — פחד מאויב גלוי`);
+    if (h12?.fortune?.includes('נחס')) fearSources.push(`בית 12 (${h12.figureHebrew}) — פחד מאויב נסתר`);
+    if (h8?.fortune?.includes('נחס')) fearSources.push(`בית 8 (${h8.figureHebrew}) — פחד ממות/אסון`);
+    if (h1?.fortune?.includes('נחס')) fearSources.push(`בית 1 (${h1.figureHebrew}) — חולשה ייתכן מקור הפחד בשואל עצמו`);
+    if (fearSources.length) {
+      parts.push(`מקור הפחד:\n${fearSources.map(s => '  ' + s).join('\n')}`);
+    } else {
+      parts.push('מקור הפחד: לפי הלוח — אין בתי נחס ברורים. הפחד ייתכן מגזים.');
+    }
+  }
+
+  // loveHate: love/hate strength + what separates
+  if (topicId === 'loveHate') {
+    const h1 = getHouseFromBoard(analysis, 1);
+    const h7 = getHouseFromBoard(analysis, 7);
+    if (h1 && h7) {
+      const h1Tone = h1.fortune?.includes('סעד') ? 'אהבה חיובית' : h1.fortune?.includes('נחס') ? 'שנאה / דחייה' : 'רגש מעורב';
+      const h7Tone = h7.fortune?.includes('סעד') ? 'אהבה חיובית' : h7.fortune?.includes('נחס') ? 'שנאה / דחייה' : 'רגש מעורב';
+      const sameKey = h1.figureKey === h7.figureKey;
+      const separator = sameKey
+        ? '  → שני הצדדים חולקים אותה צורה — מראה הדדיות.'
+        : h1.fortune?.includes('סעד') && h7.fortune?.includes('נחס')
+        ? '  → אהבה חד-צדדית: השואל אוהב, הצד השני שונא.'
+        : h1.fortune?.includes('נחס') && h7.fortune?.includes('סעד')
+        ? '  → אהבה חד-צדדית: הצד השני אוהב, השואל שונא.'
+        : '  → בדוק חיבורי האיתיסאלאת בין בית 1 לבית 7 לפירוט.';
+      parts.push(`כוח הרגש:\n  שואל (בית 1 — ${h1.figureHebrew}): ${h1Tone}\n  הצד השני (בית 7 — ${h7.figureHebrew}): ${h7Tone}\n${separator}`);
+    }
+  }
+
+  // completion: tahasil-based analysis (tahasil already shown above, but add specific verdict)
+  if (topicId === 'completion') {
+    const judgeLocal = analysis.judge;
+    const tahasilLocal = analysis.tahasil;
+    if (judgeLocal || tahasilLocal) {
+      const judgeVerd = judgeLocal?.fortune?.includes('סעד') ? 'הדיין פוסק לטובה' : judgeLocal?.fortune?.includes('נחס') ? 'הדיין פוסק לרעה' : 'הדיין אינו חד-משמעי';
+      const tahasilVerd = tahasilLocal?.tahasilStatus === 'achieved'
+        ? 'התחסיל: הדבר יסתיים ✓'
+        : tahasilLocal?.tahasilStatus === 'not-achieved'
+        ? 'התחסיל: הדבר לא יסתיים ✗'
+        : 'התחסיל: מצב ביניים';
+      parts.push(`ניתוח השלמה:\n  ${judgeVerd}\n  ${tahasilVerd}`);
+    }
+  }
+
+  // --- GROUP C: enriched skeleton topics ---
+
+  // partnership: house 1 vs 7 compatibility + house 2/10 for money
+  if (topicId === 'partnership') {
+    const h1 = getHouseFromBoard(analysis, 1);
+    const h7 = getHouseFromBoard(analysis, 7);
+    const h2 = getHouseFromBoard(analysis, 2);
+    const h10 = getHouseFromBoard(analysis, 10);
+    if (h1 && h7) {
+      const h1F = h1.fortune || '';
+      const h7F = h7.fortune || '';
+      const compatible = (h1F.includes('סעד') && h7F.includes('סעד')) ? 'שני הצדדים חזקים — שותפות טובה'
+        : (h1F.includes('נחס') && h7F.includes('נחס')) ? 'שני הצדדים חלשים — שותפות מסוכנת'
+        : 'מצב מעורב — בדוק תנאים לפני כניסה';
+      const moneyNote = (h2 && h10) ? `\n  ממון (בית 2 — ${h2.figureHebrew}) / תוצאה (בית 10 — ${h10.figureHebrew}): ${h2.fortune?.includes('סעד') && h10.fortune?.includes('סעד') ? 'רווח מצופה' : h2.fortune?.includes('נחס') || h10.fortune?.includes('נחס') ? 'סיכון כלכלי' : 'ממוצע'}` : '';
+      parts.push(`ניתוח שותפות:\n  שואל (בית 1 — ${h1.figureHebrew}): ${h1F || 'ביניים'}\n  שותף (בית 7 — ${h7.figureHebrew}): ${h7F || 'ביניים'}\n  → ${compatible}${moneyNote}`);
+    }
+  }
+
+  // siblings: house 3 analysis + connection to house 1
+  if (topicId === 'siblings') {
+    const h3 = getHouseFromBoard(analysis, 3);
+    const h1 = getHouseFromBoard(analysis, 1);
+    if (h3) {
+      const h3F = h3.fortune || '';
+      const sameKey = h1 && h3.figureKey === h1.figureKey;
+      const connectionNote = sameKey ? '\n  → צורת בית 3 זהה לבית 1 — קשר חזק מאוד, אחווה ממשית.' : '';
+      parts.push(`ניתוח האח/השכן (בית 3):\n  בית 3 — ${h3.figureHebrew} [${h3F || 'ביניים'}]: ${h3F.includes('סעד') ? 'קשר חיובי, תמיכה' : h3F.includes('נחס') ? 'קושי בקשר, ריחוק' : 'קשר בינוני'}${connectionNote}`);
+    }
+  }
+
+  // deathInheritance: house 8 + 7 + 2 analysis
+  if (topicId === 'deathInheritance') {
+    const h8 = getHouseFromBoard(analysis, 8);
+    const h7 = getHouseFromBoard(analysis, 7);
+    const h2 = getHouseFromBoard(analysis, 2);
+    if (h8) {
+      const h8F = h8.fortune || '';
+      const h7Note = h7 ? `\n  היורש/הנפטר (בית 7 — ${h7.figureHebrew}): ${h7.fortune?.includes('סעד') ? 'מצב חיובי' : h7.fortune?.includes('נחס') ? 'מצב קשה' : 'ביניים'}` : '';
+      const h2Note = h2 ? `\n  הירושה הכספית (בית 2 — ${h2.figureHebrew}): ${h2.fortune?.includes('סעד') ? 'ממון זמין' : h2.fortune?.includes('נחס') ? 'ממון חסום או בסכסוך' : 'ביניים'}` : '';
+      parts.push(`ניתוח מוות/ירושה (בית 8):\n  בית 8 — ${h8.figureHebrew} [${h8F || 'ביניים'}]: ${h8F.includes('סעד') ? 'סכנה נמוכה / ירושה זמינה' : h8F.includes('נחס') ? 'סכנה ממשית / ירושה מסובכת' : 'מצב בינוני'}${h7Note}${h2Note}`);
+    }
+  }
+
   // מה בלב השואל — מוצג לכל נושא לפי שיטת חזרת הצורה הראשונה (بلوغ الامل פ׳ 17)
   const firstFigRep = analysis.firstFigureRepetition;
   if (firstFigRep) {

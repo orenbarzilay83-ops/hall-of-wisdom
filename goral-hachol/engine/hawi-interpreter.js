@@ -1923,19 +1923,38 @@ function computeSpiritualDiagnosticsHouseIndex(chart, spiritualSource) {
 function computeTrianglesEnrichment(chart) {
   if (!Array.isArray(chart)) return null;
 
+  // Load zodiac map from HAWI_SOURCE if available
+  const zodiacMap = HAWI_SOURCE.extendedKnowledge?.trianglesZodiac?.zodiacPlanetaryMap || [];
+
   const enriched = [1, 7, 10, 15]
     .map((n) => chartHouse(chart, n))
     .filter((h) => h && h.element)
     .map((h) => {
       const planets = ELEMENT_TRIANGLE_PLANETS[h.element] || [];
+
+      // Find zodiac signs whose planet list overlaps with this element's planets
+      let zodiacNote = '';
+      if (planets.length && zodiacMap.length) {
+        const matchingSigns = zodiacMap
+          .filter((entry) => {
+            if (!Array.isArray(entry.planetsHebrew)) return false;
+            return planets.some((p) => entry.planetsHebrew.includes(p));
+          })
+          .map((entry) => entry.signHebrew);
+        if (matchingSigns.length) {
+          zodiacNote = ` | מזלות קשורים: ${matchingSigns.join(', ')}`;
+        }
+      }
+
       return {
         house: h.house,
         element: h.element,
         figureHebrew: h.hebrew || h.key,
         trianglePlanets: planets,
+        zodiacNote,
         hebrewNote: planets.length
-          ? `בית ${h.house} (${h.hebrew || h.key}) — יסוד ${h.element} → כוכבי המשולש: ${planets.join(', ')}`
-          : `בית ${h.house} (${h.hebrew || h.key}) — יסוד ${h.element}`,
+          ? `בית ${h.house} (${h.hebrew || h.key}) — יסוד ${h.element} → כוכבי המשולש: ${planets.join(', ')}${zodiacNote}`
+          : `בית ${h.house} (${h.hebrew || h.key}) — יסוד ${h.element}${zodiacNote}`,
       };
     });
 

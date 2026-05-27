@@ -12,6 +12,12 @@ import * as MARRIAGE from './hawi-question-marriage.js';
 import * as TRAVEL from './hawi-question-travel-extra.js';
 import * as ENEMIES from './hawi-question-enemies.js';
 import * as MISSING_PERSON from './hawi-question-missing-person-extra.js';
+import * as THEFT from './hawi-question-theft.js';
+import * as AUTHORITY_STATE from './hawi-question-authority-state.js';
+import * as BIRTH_NATIVITY from './hawi-question-birth-nativity.js';
+import * as YEARLY_FORECAST from './hawi-question-yearly-forecast.js';
+import * as SEA_VOYAGE from './hawi-question-sea-voyage.js';
+import * as PRISONER from './hawi-question-prisoner.js';
 
 function findQuestionRule(value) {
   if (!value || typeof value !== 'object') {
@@ -56,6 +62,12 @@ export const HAWI_QUESTION_RULES_LIST = [
   resolveQuestionRule(TRAVEL, 'hawi-question-travel-extra.js'),
   resolveQuestionRule(ENEMIES, 'hawi-question-enemies.js'),
   resolveQuestionRule(MISSING_PERSON, 'hawi-question-missing-person-extra.js'),
+  resolveQuestionRule(THEFT, 'hawi-question-theft.js'),
+  resolveQuestionRule(AUTHORITY_STATE, 'hawi-question-authority-state.js'),
+  resolveQuestionRule(BIRTH_NATIVITY, 'hawi-question-birth-nativity.js'),
+  resolveQuestionRule(YEARLY_FORECAST, 'hawi-question-yearly-forecast.js'),
+  resolveQuestionRule(SEA_VOYAGE, 'hawi-question-sea-voyage.js'),
+  resolveQuestionRule(PRISONER, 'hawi-question-prisoner.js'),
 ];
 
 export const HAWI_QUESTION_RULES_BY_ID = Object.fromEntries(

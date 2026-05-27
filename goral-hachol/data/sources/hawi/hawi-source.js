@@ -84,6 +84,9 @@ import { HAWI_QUESTION_COMMERCE } from './question-rules/hawi-question-commerce.
 import { HAWI_QUESTION_LOVE_HATE } from './question-rules/hawi-question-love-hate.js';
 import { HAWI_QUESTION_ENEMIES } from './question-rules/hawi-question-enemies.js';
 import { HAWI_QUESTION_COMPLETION } from './question-rules/hawi-question-completion.js';
+import { HAWI_QUESTION_THEFT } from './question-rules/hawi-question-theft.js';
+import { HAWI_QUESTION_SEA_VOYAGE } from './question-rules/hawi-question-sea-voyage.js';
+import { HAWI_QUESTION_PRISONER } from './question-rules/hawi-question-prisoner.js';
 
 export const HAWI_EXTENDED_KNOWLEDGE_LIST = [
   HAWI_INTRODUCTION_MAHW_THABAT,
@@ -108,6 +111,9 @@ export const HAWI_EXTENDED_KNOWLEDGE_LIST = [
   HAWI_QUESTION_LOVE_HATE,
   HAWI_QUESTION_ENEMIES,
   HAWI_QUESTION_COMPLETION,
+  HAWI_QUESTION_THEFT,
+  HAWI_QUESTION_SEA_VOYAGE,
+  HAWI_QUESTION_PRISONER,
 ];
 
 export const HAWI_EXTENDED_KNOWLEDGE_BY_ID = Object.fromEntries(
@@ -195,6 +201,9 @@ export const HAWI_SOURCE = {
     loveHate: HAWI_QUESTION_LOVE_HATE,
     enemies: HAWI_QUESTION_ENEMIES,
     completion: HAWI_QUESTION_COMPLETION,
+    theft: HAWI_QUESTION_THEFT,
+    seaVoyage: HAWI_QUESTION_SEA_VOYAGE,
+    prisoner: HAWI_QUESTION_PRISONER,
   },
 
   fullBookGapAudit: HAWI_FULL_BOOK_GAP_AUDIT,
