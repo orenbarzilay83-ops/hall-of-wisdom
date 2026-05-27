@@ -61,7 +61,7 @@ export const HAWI_TOPIC_INDEX = {
     {
       topicId: 'spiritual-diagnostics-current',
       hebrewTitle: 'אבחון רוחני קיים',
-      coverageStatus: 'partly-covered-current-layer',
+      coverageStatus: 'engine-implemented',
       existingFiles: [
         'goral-hachol/data/sources/hawi/foundations/hawi-spiritual-diagnostics.js',
         'goral-hachol/data/sources/approved-raml/spiritual-diagnostics/raml-spiritual-diagnostics-sihr-mass-hasad.js',
