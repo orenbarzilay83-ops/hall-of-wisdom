@@ -25,10 +25,7 @@ import {
 
 // Natural figure (جدول, jadwal) for each house — the figure that naturally belongs there.
 // When the figure in a house matches its natural figure, the judgement is especially strong.
-// Source: חאוי העג׳איב (حاوي العجائب) PDFs only — no Western/zodiacal tradition used.
-// Reading method: extract |/0 chars from OCR section heading left-to-right → 4-digit figure code.
 export const NATURAL_HOUSE_FIGURES = {
-  // Confirmed directly from Hawi PDF chapter headings (OCR pattern)
   1:  '1121', // נלחם — doc2: "الجدولة 00|0"
   2:  '1222', // נשוא ראש — doc3: "0|||" בכותרת פרק בית 2
   3:  '2111', // סף נכנס — doc3: "|000" + "ساقط" בכותרת פרק בית 3
@@ -39,14 +36,11 @@ export const NATURAL_HOUSE_FIGURES = {
   11: '2112', // חיבור — doc7: "| ... 00 ... |" (L→R: |00| = 2112) + "يلي الوتد"
   12: '2211', // כבוד נכנס — doc7: "|| ... 00" (L→R: ||00 = 2211) + "ساقط"
 
-  // Taskin al-Sharq source positions 4,5,6 (Hawi PDF docs 33-34, taskinEast.orderFromSource)
   5:  '1211', // בר הלחי — Taskin East[4] = "0|00"
   6:  '1112', // סף יוצא — Taskin East[5] = "000|"
   7:  '2122', // אדום — Taskin East[6] = "|0||"
 };
 
-// Taskin al-Sharq order (تسكين الشرق) — 16 figure patterns in source order
-// Converted from | (=1, single) / 0 (=2, double) notation in hawi-dhamir-directions-validation.js
 const TASKIN_EAST_PATTERNS = [
   '2212', // לבן
   '2111', // סף נכנס
@@ -66,7 +60,6 @@ const TASKIN_EAST_PATTERNS = [
   '1212', // ממון יוצא
 ];
 
-// Fortune tone of each house by its structural nature (from hawi-house-states-colors.js)
 const HOUSE_FORTUNE_TONES = {
   1: 1, 2: -1, 3: 0.5, 4: -1, 5: 1, 6: -0.5,
   7: -1, 8: -0.5, 9: 1, 10: 1, 11: 1, 12: -1,
