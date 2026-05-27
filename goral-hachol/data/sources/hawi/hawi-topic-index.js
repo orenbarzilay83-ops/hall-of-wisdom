@@ -1,9 +1,15 @@
+// המקור הראשי לאפליקציה: תיקיית Google Drive "ספרים לאפליקציית גורל החול"
+// ID: 183LO6vN9CsPW13CkNWN7Q-8_MMylrkmO
+// תמיד יש לחפש ולהשלים ידע משם לפני כל יישום חדש.
+
 export const HAWI_TOPIC_INDEX = {
   id: 'hawi-topic-index',
   sourceBook: 'حاوي العجائب ومظهر الغرائب',
   status: 'clean-current-topic-index',
   purposeHebrew:
     'אינדקס נושאים נקי לאחר מחיקת הוראות צ׳אטים ישנות. האינדקס לא פותח מחדש חומר שכבר נבדק.',
+  primarySourceNote:
+    'תיקיית Google Drive "ספרים לאפליקציית גורל החול" (ID: 183LO6vN9CsPW13CkNWN7Q-8_MMylrkmO) היא המקור הראשי לכל הידע באפליקציה — חפש ממנה תמיד קודם.',
 
   terminologyHebrew: {
     saad: 'סעד / טוב',

@@ -421,12 +421,9 @@ function describeCoreHouses(analysis, topicId, question) {
     parts.push(seaRisks.outputHebrew);
   }
 
-  // רלוונטי רק כשאין ידיעה מראש על הנושא; כשהנושא ידוע, הפרשנות עלולה להטעות
+  // מה בלב השואל — מוצג לכל נושא לפי שיטת חזרת הצורה הראשונה (بلوغ الامل פ׳ 17)
   const firstFigRep = analysis.firstFigureRepetition;
-  const TOPICS_WITH_FIGURE_MEANING = new Set([
-    'enemies', 'theft', 'missingPerson', 'illness', 'spiritualDiagnostics', 'hiddenTreasure',
-  ]);
-  if (firstFigRep && TOPICS_WITH_FIGURE_MEANING.has(topicId)) {
+  if (firstFigRep) {
     parts.push(firstFigRep.outputHebrew);
   }
 
