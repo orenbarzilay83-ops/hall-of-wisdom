@@ -87,6 +87,9 @@ import { HAWI_QUESTION_COMPLETION } from './question-rules/hawi-question-complet
 import { HAWI_QUESTION_THEFT } from './question-rules/hawi-question-theft.js';
 import { HAWI_QUESTION_SEA_VOYAGE } from './question-rules/hawi-question-sea-voyage.js';
 import { HAWI_QUESTION_PRISONER } from './question-rules/hawi-question-prisoner.js';
+import { HAWI_QUESTION_PARTNERSHIP } from './question-rules/hawi-question-partnership.js';
+import { HAWI_QUESTION_SIBLINGS } from './question-rules/hawi-question-siblings.js';
+import { HAWI_QUESTION_DEATH_INHERITANCE } from './question-rules/hawi-question-death-inheritance.js';
 
 export const HAWI_EXTENDED_KNOWLEDGE_LIST = [
   HAWI_INTRODUCTION_MAHW_THABAT,
@@ -114,6 +117,9 @@ export const HAWI_EXTENDED_KNOWLEDGE_LIST = [
   HAWI_QUESTION_THEFT,
   HAWI_QUESTION_SEA_VOYAGE,
   HAWI_QUESTION_PRISONER,
+  HAWI_QUESTION_PARTNERSHIP,
+  HAWI_QUESTION_SIBLINGS,
+  HAWI_QUESTION_DEATH_INHERITANCE,
 ];
 
 export const HAWI_EXTENDED_KNOWLEDGE_BY_ID = Object.fromEntries(

@@ -18,6 +18,9 @@ import * as BIRTH_NATIVITY from './hawi-question-birth-nativity.js';
 import * as YEARLY_FORECAST from './hawi-question-yearly-forecast.js';
 import * as SEA_VOYAGE from './hawi-question-sea-voyage.js';
 import * as PRISONER from './hawi-question-prisoner.js';
+import * as PARTNERSHIP from './hawi-question-partnership.js';
+import * as SIBLINGS from './hawi-question-siblings.js';
+import * as DEATH_INHERITANCE from './hawi-question-death-inheritance.js';
 
 function findQuestionRule(value) {
   if (!value || typeof value !== 'object') {
@@ -68,6 +71,9 @@ export const HAWI_QUESTION_RULES_LIST = [
   resolveQuestionRule(YEARLY_FORECAST, 'hawi-question-yearly-forecast.js'),
   resolveQuestionRule(SEA_VOYAGE, 'hawi-question-sea-voyage.js'),
   resolveQuestionRule(PRISONER, 'hawi-question-prisoner.js'),
+  resolveQuestionRule(PARTNERSHIP, 'hawi-question-partnership.js'),
+  resolveQuestionRule(SIBLINGS, 'hawi-question-siblings.js'),
+  resolveQuestionRule(DEATH_INHERITANCE, 'hawi-question-death-inheritance.js'),
 ];
 
 export const HAWI_QUESTION_RULES_BY_ID = Object.fromEntries(
