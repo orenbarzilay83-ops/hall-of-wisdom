@@ -117,6 +117,26 @@ function questionFocusParagraph(topicId, clientContext = {}) {
     return 'לכן הדגש הוא על שלוש שאלות: מי גנב (זיהוי לפי בית 7 ובית 8), האם החפץ יחזור (לפי הדיין וכיוון הצורה בבית 7), ואיפה הגנב כעת (לפי חזרות הצורה בלוח וסוג האדם שהוא).';
   }
 
+  if (topicId === 'yearlyForecast') {
+    return 'לכן הדגש הוא על שלושה אפיקים: תחזית הדיין לאחרית השנה, כוחות הכוכבים ביתדות שמשפיעים על מחירים ותנועות, ודין הגשם לפי מיקום הלבנה ונוגה בלוח.';
+  }
+
+  if (topicId === 'authorityState') {
+    return 'לכן הדגש הוא על שלושה פרמטרים: יציבות בית 1 ובית 10, כוח האויב מבית 7, וחזרת בתים 1, 5, 11, 15 כסימן לחזרה לתפקיד.';
+  }
+
+  if (topicId === 'birthNativity') {
+    return 'לכן הדגש הוא על בית הטאלע (בית 1) ועל חזרת הצורה שלו בבתים אחרים — כל חזרה מגלה פן נוסף מגורל האדם ומשפיע על פרשנות הקריאה.';
+  }
+
+  if (topicId === 'siblings') {
+    return 'לכן הדגש הוא על בית 3 (האח / השכן) ועל מצבו ביחס לשואל — האם יש קשר, עזרה, קושי, או ריחוק בין הצדדים.';
+  }
+
+  if (topicId === 'deathInheritance') {
+    return 'לכן הדגש הוא על בית 8 (מוות / ירושה) ועל כוח הדיין — הוא הקובע אם מדובר בסכנה ממשית, בירושה, בפחד גדול, או בשינוי גורל עמוק.';
+  }
+
   if (context) {
     return 'לכן המסקנה נקראת לפי ההקשר האישי של הלקוח ולא רק לפי שם הצורה שעלתה.';
   }
@@ -190,6 +210,10 @@ function topicOpening(topicId, topicHebrew) {
       'בעניין מסע הים, הקריאה בודקת את בית 1 (הנוסע), בית 9 (המסע), ובית 8 ו-12 (הסכנה). יש חוקים ספציפיים לסכנות ים שונים מנסיעה יבשתית.',
     theft:
       'בשאלת הגנבה, הקריאה בודקת שלושה דברים עיקריים: מי הגנב (בית 7 לזיהוי, בית 8 לתיאור), האם החפץ הגנוב יחזור (לפי הדיין, התחסיל, וכיוון הצורה בבית 7 — נכנסת או יוצאת), ומה מסגיר את זהות הגנב (חזרת צורות בלוח, תיאור הגוף ואותיות השם).',
+    siblings:
+      'בעניין האח, השכן או הקרוב, הקריאה בודקת את בית 3 כדליל הנשאל עליו, ואת הקשר בינו לבין השואל (בית 1). הדיין קובע את תוצאת הקשר ואת כיוון ההשפעה.',
+    deathInheritance:
+      'בעניין מוות, ירושה או שינוי גורל גדול, הקריאה בודקת את בית 8 כדליל המוות והירושה, בית 7 כדליל הצד השני (הנפטר או היורש), ובית 2 לגבי הממון. הדיין קובע את המסקנה הסופית.',
   };
 
   return openings[topicId] || `בעניין ${topicHebrew}, הקריאה בודקת את הבית המרכזי, העדים, הדיין והשלמת הדין.`;
@@ -810,6 +834,140 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
     if (house9) base += ` בית 9 (המסע): ${houseDescription(house9) || ''}.`;
     if (house8) base += ` בית 8 (הסכנה): ${houseDescription(house8) || ''}.`;
     return base;
+  }
+
+  if (topicId === 'yearlyForecast') {
+    const yearlyAnalysis  = boardAnalysis?.yearlyForecastAnalysis;
+    const yearlyFigure    = boardAnalysis?.yearlyFigureForecast;
+    const lines = [];
+
+    if (yearlyAnalysis?.house15Result) {
+      lines.push(`אחרית השנה (דיין): ${yearlyAnalysis.house15Result.hebrewResult}`);
+    }
+
+    if (yearlyAnalysis?.dominantElement) {
+      const elChar = {
+        'אש':    'שנת חום ומחלוקות — ריבוי סכסוכים',
+        'מים':   'שנת שינויים — גשם, רגש, תנועה',
+        'אוויר': 'שנת מסחר ותנועה — שינויים מהירים',
+        'עפר':   'שנת יציבות וממון — חקלאות וכלכלה',
+      };
+      lines.push(`יסוד השנה: ${yearlyAnalysis.dominantElement} — ${elChar[yearlyAnalysis.dominantElement] || yearlyAnalysis.dominantElement}`);
+    }
+
+    if (yearlyAnalysis?.rainHebrew) {
+      lines.push(`דין גשם: ${yearlyAnalysis.rainHebrew}`);
+    }
+
+    if (yearlyFigure) {
+      lines.push(yearlyFigure.outputHebrew);
+    }
+
+    if (grade === 'positive' || grade === 'cautiously-positive') {
+      lines.push('לכן השנה מבטיחה בכלל — הכיוון הכללי לטובה.');
+    } else if (grade === 'negative' || grade === 'cautiously-negative') {
+      lines.push('לכן יש להיזהר — השנה מביאה קשיים, ויש לנהוג בזהירות ולחסוך.');
+    } else {
+      lines.push('לכן השנה מעורבת — יש תקופות טובות ותקופות קשות. כדאי לתכנן בזהירות.');
+    }
+
+    return lines.join('\n');
+  }
+
+  if (topicId === 'authorityState') {
+    const authAnalysis = boardAnalysis?.authorityStateAnalysis;
+    const lines = [];
+
+    if (authAnalysis) {
+      lines.push(authAnalysis.verdictHebrew);
+      if (authAnalysis.returnSignal) {
+        lines.push(`סימן לחזרה לתפקיד: ${authAnalysis.returnSignal.hebrew}`);
+      }
+      const topSignals = (authAnalysis.signals || []).slice(0, 3);
+      for (const s of topSignals) {
+        lines.push(`• ${s.hebrew}`);
+      }
+    } else if (grade === 'positive' || grade === 'cautiously-positive') {
+      lines.push('הלוח מראה יציבות בתפקיד — בית 10 ובית 1 חזקים.');
+    } else if (grade === 'negative' || grade === 'cautiously-negative') {
+      lines.push('הלוח מצביע על סכנה לתפקיד — יש לבדוק בית 7 ובית 15.');
+    } else {
+      lines.push('מצב התפקיד מעורב — הדיין לא מכריע לכאן או לכאן, יש לעקוב.');
+    }
+
+    return lines.join('\n');
+  }
+
+  if (topicId === 'birthNativity') {
+    const birthAnalysis = boardAnalysis?.birthNativityAnalysis;
+    const lines = [];
+
+    if (birthAnalysis) {
+      lines.push(`בעל הטאלע: ${birthAnalysis.taliHebrew}`);
+      if (birthAnalysis.findings?.length > 0) {
+        lines.push('חזרות הצורה וגורל האדם:');
+        for (const f of birthAnalysis.findings.slice(0, 5)) {
+          lines.push(`  בית ${f.houseNumber}: ${f.hebrewShort}`);
+        }
+      } else {
+        lines.push('הצורה אינה חוזרת בבתים אחרים — הגורל תלוי בעיקר בדיין ובמצב בית 1.');
+      }
+    }
+
+    if (grade === 'positive' || grade === 'cautiously-positive') {
+      lines.push('הדיין נוטה לטובה — הגורל הכללי של האדם בתקופה זו לטובה.');
+    } else if (grade === 'negative' || grade === 'cautiously-negative') {
+      lines.push('הדיין מצביע על קושי — יש לחזק את בית 1 ולזהות איזה בית מקשה.');
+    } else {
+      lines.push('הגורל מעורב — חלק מהחזרות חיוביות וחלק שליליות. יש לקרוא כל בית בנפרד.');
+    }
+
+    return lines.join('\n');
+  }
+
+  if (topicId === 'siblings') {
+    const house3 = getHouseFromBoard(boardAnalysis, 3);
+    const house7 = getHouseFromBoard(boardAnalysis, 7);
+    const lines = [];
+
+    if (grade === 'positive' || grade === 'cautiously-positive') {
+      lines.push('הלוח מראה קשר חיובי — יש נטייה לשיתוף פעולה, עזרה, או חיבור בין הצדדים.');
+    } else if (grade === 'negative' || grade === 'cautiously-negative') {
+      lines.push('הלוח מראה קושי בקשר — יש מחלוקת, ריחוק, או מניעה בין הצדדים.');
+    } else {
+      lines.push('הקשר מעורב — יש חיבור חלקי, אבל גם מרחק או קושי מסוים.');
+    }
+
+    const h3Desc = houseDescription(house3);
+    if (h3Desc) lines.push(`מצב האח/השכן (בית 3): ${h3Desc}`);
+    const h7Desc = houseDescription(house7);
+    if (h7Desc) lines.push(`בדיקה נוספת מבית 7: ${h7Desc}`);
+
+    return lines.join('\n');
+  }
+
+  if (topicId === 'deathInheritance') {
+    const house8 = getHouseFromBoard(boardAnalysis, 8);
+    const house7 = getHouseFromBoard(boardAnalysis, 7);
+    const house2 = getHouseFromBoard(boardAnalysis, 2);
+    const lines = [];
+
+    if (grade === 'positive' || grade === 'cautiously-positive') {
+      lines.push('הדיין נוטה לטובה — אם מדובר בחשש מוות, הסכנה נמוכה. אם מדובר בירושה, יש נטייה לקבלתה.');
+    } else if (grade === 'negative' || grade === 'cautiously-negative') {
+      lines.push('הדיין מצביע על קושי — יש לשים לב לבית 8 ולכוחו. אם מדובר בירושה, ייתכנו עיכובים או מחלוקות.');
+    } else {
+      lines.push('הדין מעורב — יש לבדוק את בית 8 ובית 7 בנפרד כדי להכריע.');
+    }
+
+    const h8Desc = houseDescription(house8);
+    if (h8Desc) lines.push(`מוות / ירושה (בית 8): ${h8Desc}`);
+    const h7Desc = houseDescription(house7);
+    if (h7Desc) lines.push(`הצד השני — יורש / נפטר (בית 7): ${h7Desc}`);
+    const h2Desc = houseDescription(house2);
+    if (h2Desc) lines.push(`ממון הירושה (בית 2): ${h2Desc}`);
+
+    return lines.join('\n');
   }
 
   return 'לכן המסקנה צריכה להיקבע לפי שילוב הבית המרכזי, העדים, הדיין והכללים שנבדקו.';
