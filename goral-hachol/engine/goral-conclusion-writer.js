@@ -525,9 +525,17 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
   if (topicId === 'childrenPregnancy') {
     const house5 = getHouseFromBoard(boardAnalysis, 5);
     const house5Desc = houseDescription(house5);
+    const jumla = boardAnalysis?.jumlaAnalysis;
+    const parts = [];
+
+    if (jumla?.childDiagnosis) {
+      parts.push(jumla.childDiagnosis.outputHebrew);
+    }
+
     let base = 'לכן יש לבדוק את בית הילדים, העדים והדיין יחד, ורק אז להכריע לגבי אפשרות ההיריון או סימני זכר ונקבה.';
     if (house5Desc) base += ` בדוק בית 5 (ילדים): ${house5Desc}`;
-    return base;
+    parts.push(base);
+    return parts.join('\n');
   }
 
   if (topicId === 'hiddenTreasure') {
@@ -552,7 +560,17 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
 
   if (topicId === 'spiritualDiagnostics') {
     const houseIndex = boardAnalysis?.spiritualDiagnosticsHouseIndex;
+    const jumla = boardAnalysis?.jumlaAnalysis;
     const lines = ['לכן נכון להמשיך באבחון מדויק לפי הבתים והצורות, ולא לקבוע רק לפי תחושה או פחד.'];
+
+    if (jumla?.illnessDiagnosis) {
+      const d = jumla.illnessDiagnosis;
+      if (d.isSorcery) {
+        lines.push(`⚠ ${d.outputHebrew} — יש לבדוק סימנים נוספים לכישוף לפי אבחון הבתים.`);
+      } else {
+        lines.push(d.outputHebrew);
+      }
+    }
 
     if (houseIndex?.findings?.length) {
       const alerts = houseIndex.alerts || [];
@@ -582,12 +600,24 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
   if (topicId === 'illness') {
     const house6 = getHouseFromBoard(boardAnalysis, 6);
     const house6Desc = houseDescription(house6);
+    const jumla = boardAnalysis?.jumlaAnalysis;
+    const parts = [];
+
+    if (jumla?.illnessDiagnosis) {
+      const d = jumla.illnessDiagnosis;
+      parts.push(d.isSorcery
+        ? `⚠ ${d.outputHebrew} — יש לשקול בדיקת אבחון רוחני.`
+        : d.outputHebrew);
+    }
+
     let base = '';
     if (grade === 'positive') base = 'לכן הלוח מראה נטייה לשיפור ולהחלמה.';
     else if (grade === 'negative') base = 'לכן הלוח מראה מחלה קשה — יש לפעול בזהירות ולבדוק את בית 8.';
     else base = 'לכן המחלה בלוח מעורבת — לא ניתן לקבוע בוודאות.';
     if (house6Desc) base += ` בדוק בית 6 (המחלה): ${house6Desc}`;
-    return base;
+    parts.push(base);
+
+    return parts.join('\n');
   }
 
   if (topicId === 'disputes') {

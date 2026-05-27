@@ -2065,6 +2065,77 @@ function computeEnemyInHousehold(chart) {
     outputHebrew: `גילוי אויב בסביבה (נוסחת הנקודות הפתוחות): נפל על בית ${remainder} — ${targetHouse?.hebrew || targetFig} — ${verdict}${enemyCount}`,
   };
 }
+
+function computeJumlaAnalysis(chart, topicId) {
+  if (!Array.isArray(chart)) return null;
+
+  // جملة = sum of all dot values: فرد (pattern '1') = 1 dot, زوج (pattern '2') = 2 dots
+  let jumla = 0;
+  for (const house of chart) {
+    for (const ch of String(house.key || '')) {
+      if (ch === '1') jumla += 1;
+      else if (ch === '2') jumla += 2;
+    }
+  }
+
+  // Islamic modular arithmetic: remainder 0 is treated as the divisor value (e.g. mod4=0 → 4)
+  const mod4 = (jumla % 4) || 4;
+  const mod3 = (jumla % 3) || 3;
+  const mod4ForFriendship = mod4; // same divisor, different table
+
+  const ILLNESS_MAP = {
+    1: { hebrewLabel: 'חום / קדחת',           isSorcery: false },
+    2: { hebrewLabel: 'רוחות / ריאות / קור', isSorcery: false },
+    3: { hebrewLabel: 'כישוף (סיהר)',         isSorcery: true  },
+    4: { hebrewLabel: 'רוחות וחום',          isSorcery: false },
+  };
+
+  const CHILDREN_MAP = {
+    1: 'ייוולד זכר (בן)',
+    2: 'תיוולד נקבה (בת)',
+    3: 'הפלה / לא ייוולד ילד בעת הזו',
+  };
+
+  const FRIENDSHIP_MAP = {
+    1: 'שונא אותו',
+    2: 'אוהב אותו',
+    3: 'אוהב אותו לכאורה בלבד',
+    4: 'אין בו טוב',
+  };
+
+  const result = { jumla, mod4, mod3 };
+
+  if (topicId === 'spiritualDiagnostics' || topicId === 'illness') {
+    const entry = ILLNESS_MAP[mod4];
+    result.illnessDiagnosis = {
+      remainder: mod4,
+      hebrewLabel: entry.hebrewLabel,
+      isSorcery: entry.isSorcery,
+      outputHebrew: `ג׳ומלה לאבחון מחלה (${jumla} ÷ 4, שארית ${mod4}): ${entry.hebrewLabel}`,
+    };
+  }
+
+  if (topicId === 'childrenPregnancy') {
+    const outcome = CHILDREN_MAP[mod3];
+    result.childDiagnosis = {
+      remainder: mod3,
+      outcome,
+      outputHebrew: `ג׳ומלה לשאלת ילדים (${jumla} ÷ 3, שארית ${mod3}): ${outcome}`,
+    };
+  }
+
+  if (topicId === 'partnership' || topicId === 'friendship') {
+    const outcome = FRIENDSHIP_MAP[mod4ForFriendship];
+    result.friendshipDiagnosis = {
+      remainder: mod4ForFriendship,
+      outcome,
+      outputHebrew: `ג׳ומלה לשאלת ידידות/שותפות (${jumla} ÷ 4, שארית ${mod4ForFriendship}): ${outcome}`,
+    };
+  }
+
+  return result;
+}
+
 const ELEMENT_TIMING_UNITS = {
   'אש':    { single: 1, label: 'יום / שעה' },
   'אוויר': { single: 2, label: 'ימיים / שעתיים' },
@@ -2538,6 +2609,9 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const enemyInHousehold = (topicId === 'enemies')
     ? computeEnemyInHousehold(board.chart) : null;
 
+  const jumlaAnalysis = (['spiritualDiagnostics', 'illness', 'childrenPregnancy', 'partnership'].includes(topicId))
+    ? computeJumlaAnalysis(board.chart, topicId) : null;
+
   // עיתוי: מעדיף דמיר לפי מיזאן (זהה לדמיר הראשי בפסיקה); חוזר לדמיר אמהות אם חסר
   const timingDhamirSource = (dhamirByMizan?.primaryHouseNumber)
     ? { houseNumber: dhamirByMizan.primaryHouseNumber }
@@ -2628,6 +2702,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     illnessElementDiagnosis,
     thiefLocationDetails,
     enemyInHousehold,
+    jumlaAnalysis,
     timingEstimate,
     marriageFigureForecast,
     yearlyFigureForecast,
