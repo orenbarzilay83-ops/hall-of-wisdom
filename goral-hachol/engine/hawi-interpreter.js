@@ -2543,6 +2543,67 @@ function computeSeaVoyageRisks(chart) {
   };
 }
 
+// HAWI_DHAMIR_DIRECTIONS_VALIDATION.forcedOrChosenTravelRules (חאוי עמ׳ 33)
+function computeForcedTravelAnalysis(chart) {
+  const h1 = chartHouse(chart, 1);
+  if (!h1?.key) return null;
+
+  const h3  = chartHouse(chart, 3);
+  const h9  = chartHouse(chart, 9);
+  const h14 = chartHouse(chart, 14);
+
+  const inH3  = h3  && h3.key  === h1.key;
+  const inH9  = h9  && h9.key  === h1.key;
+  const inH14 = h14 && h14.key === h1.key;
+
+  const h3Nahs = h3?.fortune?.includes('נחס');
+  const h9Nahs = h9?.fortune?.includes('נחס');
+
+  const isForced  = (inH3 && h3Nahs) || (inH9 && h9Nahs);
+  const isChosen  = (inH3 && !h3Nahs) || (inH9 && !h9Nahs) || inH14;
+
+  let travelType = 'unknown';
+  let hebrewNote;
+  if (isForced) {
+    const byHouse = (inH3 && h3Nahs) ? 3 : 9;
+    travelType = 'forced';
+    hebrewNote = `הנסיעה כפויה — צורת הטאלע מופיעה בבית ${byHouse} עם מזל נחס. לפי חאוי (עמ׳ 33): השואל נוסע שלא ברצונו.`;
+  } else if (isChosen) {
+    const byHouse = inH3 ? 3 : inH9 ? 9 : 14;
+    travelType = 'chosen';
+    hebrewNote = `הנסיעה רצונית — צורת הטאלע מופיעה בבית ${byHouse}. לפי חאוי (עמ׳ 33): השואל מבקש את הנסיעה מרצונו.`;
+  } else {
+    hebrewNote = 'אין סימן ברור לנסיעה כפויה או רצונית לפי חוקי תוקף ההכאה (חאוי עמ׳ 33).';
+  }
+
+  return { travelType, hebrewNote };
+}
+
+// HAWI_INTRODUCTION_MAHW_THABAT — יסודות לתצוגה בנושא foundations
+function computeFoundationsDisplay() {
+  const source = HAWI_SOURCE.extendedKnowledge?.introductionMahwThabat;
+  if (!source) return null;
+
+  const lines = [];
+  const terms = source.mahwThabatCore?.hebrewTerms;
+  if (terms) {
+    lines.push(`מונחי יסוד: מחיקה (محو), קיום (ثبات), הכאה (ضرب), חלוקה (قسمة), הולדה (توليد)`);
+  }
+  const bt = source.boardTerminology;
+  if (bt) {
+    lines.push(`מרכיבי הלוח: ${bt.mothers} ← ${bt.daughters} ← ${bt.granddaughters} ← ${bt.witnesses} ← ${bt.judge} ← ${bt.sentence}`);
+  }
+  for (const p of (source.figureGenerationPrinciples || []).slice(0, 3)) {
+    if (p.hebrew) lines.push(p.hebrew);
+  }
+
+  return {
+    lines,
+    outputHebrew: lines.join('\n'),
+    sourceRef: source.sourceSectionHebrew || 'מבוא חאוי — שער מחיקה וקיום',
+  };
+}
+
 function buildBoardAnalysis(board, topicId, mainHouses) {
   if (!board || !Array.isArray(board.chart)) {
     return {
@@ -2675,6 +2736,14 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
 
   const firstFigureRepetition = computeFirstFigureRepetition(board.chart);
 
+  // HAWI_DHAMIR_DIRECTIONS_VALIDATION — נסיעה כפויה/רצונית (חאוי עמ׳ 33)
+  const forcedTravelAnalysis = (topicId === 'travel')
+    ? computeForcedTravelAnalysis(board.chart) : null;
+
+  // HAWI_INTRODUCTION_MAHW_THABAT — יסודות לתצוגה בנושא foundations
+  const foundationsDisplay = (topicId === 'foundations')
+    ? computeFoundationsDisplay() : null;
+
   // Source quality — how many key houses have explicit transit data from the source.
   // Some houses are genuinely absent from the Hawi text itself (verified across multiple books).
   const keyHouseNums = Array.from(new Set([1, focusHouseNumber, 13, 14, 15, 16]));
@@ -2745,6 +2814,8 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     prisonerAnalysis,
     seaVoyageRisks,
     firstFigureRepetition,
+    forcedTravelAnalysis,
+    foundationsDisplay,
     sourceQuality,
     seventhOfHouse1: seventhOfHouse1Found
       ? { pattern: h1Seventh, foundInHouse: Number(seventhOfHouse1Found.house), figureHebrew: seventhOfHouse1Found.hebrew || h1Seventh }

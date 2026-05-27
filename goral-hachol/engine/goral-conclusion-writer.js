@@ -421,6 +421,18 @@ function describeCoreHouses(analysis, topicId, question) {
     parts.push(seaRisks.outputHebrew);
   }
 
+  // HAWI_DHAMIR_DIRECTIONS_VALIDATION — נסיעה כפויה/רצונית
+  const forcedTravel = analysis.forcedTravelAnalysis;
+  if (forcedTravel) {
+    parts.push(`סוג הנסיעה (חאוי עמ׳ 33):\n  ${forcedTravel.hebrewNote}`);
+  }
+
+  // HAWI_INTRODUCTION_MAHW_THABAT — יסודות בנושא foundations
+  const foundations = analysis.foundationsDisplay;
+  if (foundations) {
+    parts.push(`יסודות גורל החול (${foundations.sourceRef}):\n${foundations.lines.map((l) => '  ' + l).join('\n')}`);
+  }
+
   // --- GROUP B: topic-specific analysis sections ---
 
   // childrenPregnancy: house 5 fertility analysis
