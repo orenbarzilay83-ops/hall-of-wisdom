@@ -15,7 +15,7 @@
  * - Preserve house meanings exactly as extracted.
  */
 
-const HAWI_HOUSES_16 = {
+export const HAWI_HOUSES_16 = {
   id: "hawi-houses-16",
   sourceBook: "حاوي العجائب ومظهر الغرائب",
   sourceAuthor: "أحمد ابن زنبل المحلي",

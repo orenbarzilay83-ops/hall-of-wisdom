@@ -12,7 +12,7 @@
  * No external knowledge.
  */
 
-const HAWI_FIGURE_QABD_KHARIJ = {
+export const HAWI_FIGURE_QABD_KHARIJ = {
   "sourceBook": "حاوي العجائب ومظهر الغرائب",
   "sourceSectionArabic": "ترحيل الأشكال الستة عشر في الستة عشر بيتا",
   "sourceSectionHebrew": "הצבת שש־עשרה הצורות בשישה־עשר הבתים",

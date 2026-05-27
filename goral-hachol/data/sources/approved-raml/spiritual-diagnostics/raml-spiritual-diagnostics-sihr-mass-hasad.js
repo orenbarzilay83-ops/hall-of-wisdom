@@ -139,6 +139,12 @@ export const RAML_SPIRITUAL_DIAGNOSTICS_SIHR_MASS_HASAD = {
       meaningHebrew: "בית 7 מייצג את אשתו או בן/בת הזוג."
     },
     {
+      house: 8,
+      arabicRole: "بيت الموت",
+      hebrewRole: "בית המוות / הגוף",
+      meaningHebrew: "בית 8 הוא בית המוות. יחד עם בית 6 הוא מלמד על סוג המחלה הגופנית לפי היסוד השולט בשניהם."
+    },
+    {
       house: 9,
       arabicRole: "الساحر",
       hebrewRole: "המכשף",
@@ -293,8 +299,97 @@ export const RAML_SPIRITUAL_DIAGNOSTICS_SIHR_MASS_HASAD = {
       severity: "extreme",
       sourceReview: "last words in screenshot should be reviewed visually before final wording",
       status: "explicit-in-user-approved-screenshot"
+    },
+    {
+      id: "jawdala-house13-confused-witchcraft",
+      sourcePage: 58,
+      arabicText: ["الجودلة في الثالث عشر فهو مدعوم وله سحر مشوش وأيضا"],
+      hebrewTranslation: ["ג׳ודלה בבית 13 — הוא נתמך ויש לו כישוף מבולבל/מעורבב."],
+      figure: "الجودلة",
+      house: 13,
+      diagnosis: "confused-chaotic-witchcraft",
+      appMeaningHebrew: "סימן לכישוף מבולבל, עם השפעה על מצב השואל.",
+      severity: "high",
+      status: "source-extracted-sefer-2"
+    },
+    {
+      id: "jawdala-house14-magic-in-house-or-place",
+      sourcePage: 58,
+      arabicText: ["الجودلة في الرابع عشر فبيته فيه سحر معلق أو في المكان أو البيت"],
+      hebrewTranslation: ["ג׳ודלה בבית 14 — ביתו יש בו כישוף תלוי, או במקום הבית."],
+      figure: "الجودلة",
+      house: 14,
+      diagnosis: "hanging-magic-in-house",
+      appMeaningHebrew: "סימן לכישוף תלוי בבית, בחדר או במקום שבו החולה נמצא.",
+      severity: "high",
+      status: "source-extracted-sefer-2"
+    },
+    {
+      id: "ankis-house6-buried-underground-sorcery",
+      sourcePage: 58,
+      arabicText: ["المنكوس في السادس فهو سحر مدفون في الأرض"],
+      hebrewTranslation: ["שפל ראש (מנכוס) בבית 6 — זהו כישוף קבור בקרקע."],
+      figure: "المنكوس",
+      house: 6,
+      diagnosis: "buried-underground-sorcery",
+      appMeaningHebrew: "סימן לכישוף קבור באדמה (גרסה מורחבת — לא בקבר בלבד).",
+      severity: "high",
+      status: "source-extracted-sefer-2"
     }
   ],
+
+  organDiagnosisRules: {
+    id: "organ-diagnosis-8x6",
+    sourcePage: null,
+    sourceBook: "المول الجامع في علم الرمل — الشيخ محمد ساس",
+    sourceChapter: "الفصل الرابع عشر — أحكام المرض",
+    arabicText: [
+      "العضو الذي يؤلم المريض 8×6",
+      "انظر إلى الطالع وبيت المرض وهو البيت السادس وما جاورهما والى المتولد منهما",
+      "فإذا كان السؤال عن مريض فما غلب عليه في هذه الطبائع من هذه الأشكال فاحكم له",
+      "النارية: فالمرض من المرارة والصفراء",
+      "المائية: فالمرض من البلغم",
+      "الهوائية: فالمرض من الدم",
+      "الترابية: فالمرض من السوداء"
+    ],
+    hebrewDescription: "כלל 8×6 — לפי היסוד השולט בבית 6 (מחלה) ובית 8 (גוף/מוות) מזהים את סוג המחלה הגופנית.",
+    method: "dominant-element-in-houses-6-and-8",
+    sourceStatus: "source-extracted-sefer-2",
+    results: [
+      {
+        element: "fire",
+        elementHebrew: "אש",
+        arabicIllness: "مرض المرارة والصفراء",
+        hebrewIllness: "מחלת מרה צהובה / מרארה — מחלות אש/כבד/מרה",
+        diagnosis: "yellow-bile-fire-illness",
+        organHebrew: "כבד, מרה, מחלות חום"
+      },
+      {
+        element: "water",
+        elementHebrew: "מים",
+        arabicIllness: "مرض البلغم",
+        hebrewIllness: "מחלת ליחה/בלגם — מחלות מים/ריאות/קיבה",
+        diagnosis: "phlegm-water-illness",
+        organHebrew: "ריאות, קיבה, מחלות ליחה"
+      },
+      {
+        element: "air",
+        elementHebrew: "אוויר",
+        arabicIllness: "مرض الدم",
+        hebrewIllness: "מחלת דם — מחלות אוויר/לב/דם",
+        diagnosis: "blood-air-illness",
+        organHebrew: "לב, דם, מחלות אוויר"
+      },
+      {
+        element: "earth",
+        elementHebrew: "עפר",
+        arabicIllness: "مرض السوداء",
+        hebrewIllness: "מחלת מרה שחורה / סודאא — מחלות עפר/טחול/עצבות",
+        diagnosis: "black-bile-earth-illness",
+        organHebrew: "טחול, עצמות, מחלות עצבות"
+      }
+    ]
+  },
 
   jinnTypeRules: [
     {

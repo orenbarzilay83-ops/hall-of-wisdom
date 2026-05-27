@@ -9,7 +9,7 @@
  * No client wording policy.
  */
 
-const HAWI_METADATA = {
+export const HAWI_METADATA = {
   id: "hawi-al-ajaib-wa-muzhir-al-gharaib",
   sourceBookArabic: "حاوي العجائب ومظهر الغرائب",
   sourceBookHebrew: "חאווי אל־עג׳איב ומט׳הר אל־ע׳ראיב",

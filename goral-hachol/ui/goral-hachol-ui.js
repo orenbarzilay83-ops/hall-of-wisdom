@@ -5,6 +5,10 @@ import {
 } from '../data/sources/hawi/hawi-source.js';
 
 import {
+  HAWI_FIGURE_NAMES_BY_ID,
+} from '../data/sources/hawi/foundations/hawi-figure-names.js';
+
+import {
   createRamlBoard,
 } from '../engine/raml-board.js';
 
@@ -16,6 +20,38 @@ import {
   interpretRamlBoard,
   getInterpretationSummary,
 } from '../engine/raml-interpreter.js';
+
+import {
+  interpretHawiQuestionInitial,
+} from '../engine/hawi-interpreter.js';
+
+// Map UI topicId (e.g. 'hawi-question-missing-person') to the router key ('missingPerson')
+function uiTopicToRouterTopic(topicId) {
+  if (!topicId) return null;
+  const stripped = topicId.replace(/^hawi-question-/, '');
+  return stripped.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+}
+
+// Build a chart array (required by hawi-interpreter.js) from a raml board
+function buildChartFromBoard(board) {
+  const houses = board.houses || [];
+  return houses.map((h) => {
+    const figureId = h.figureId || null;
+    const meta = figureId
+      ? (HAWI_FIGURE_NAMES_BY_ID[figureId] || HAWI_FIGURE_NAMES_BY_ID[figureId.replace('hawi-figure-', '')] || null)
+      : null;
+    return {
+      house: h.houseNumber || h.house,
+      figureId: figureId,
+      shortId: meta?.shortId || null,
+      key: meta?.pattern || null,
+      hebrew: meta?.hebrewName || h.figure?.hebrewName || null,
+      fortune: meta?.fortuneHebrew || null,
+      movement: meta?.movementHebrew || null,
+      element: meta?.elementHebrew || null,
+    };
+  });
+}
 
 export const RAML_RTL_BOARD_ROWS = [
   [1, 2, 3, 4, 5, 6, 7, 8],
@@ -78,6 +114,14 @@ export function createRamlUiState({
     board,
   });
 
+  const routerTopicId = uiTopicToRouterTopic(topicId);
+  const boardWithChart = {
+    ...board,
+    chart: buildChartFromBoard(board),
+    topicId: routerTopicId,
+  };
+  const fullInterpretation = interpretHawiQuestionInitial(questionText || '', boardWithChart);
+
   return {
     id: 'goral-hachol-ui-state',
     source: 'hawi',
@@ -94,6 +138,9 @@ export function createRamlUiState({
     ),
     interpretation,
     summary: getInterpretationSummary(interpretation),
+    fullInterpretation,
+    finalConclusionHebrew: fullInterpretation.finalConclusionHebrew || null,
+    technicalConclusionHebrew: fullInterpretation.technicalConclusionHebrew || null,
   };
 }
 

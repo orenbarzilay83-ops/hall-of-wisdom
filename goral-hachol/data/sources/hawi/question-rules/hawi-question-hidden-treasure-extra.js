@@ -197,6 +197,18 @@ export const HAWI_QUESTION_HIDDEN_TREASURE_EXTRA = {
       materialOrPlaceHebrew: ['דבר שפל', 'מתכות', 'אבנים יקרות'],
       directionHebrew: 'סמוך לקיר הקיבלה / דרום',
       conditionHebrew: 'נחסים או סעד אש',
+      house8SpecificRule: {
+        id: 'nakis-in-house8-old-talismanic-money',
+        sourcePage: 43,
+        arabic:
+          'والنكيس في الثامن يدل على مال قديم مدفون بطلسم وشاهده عطارد',
+        hebrew:
+          'נכיס בבית 8 מורה על ממון ישן קבור בטלסם (קמע/חותם). העד המעיד עליו הוא עטארד/כוכב.',
+        materialOrPlaceHebrew: ['ממון ישן', 'קבור בטלסם'],
+        witnessArabic: 'عطارد',
+        witnessHebrew: 'כוכב / עטארד',
+        sourceFile: 'hawi-question-hidden-treasure.js rule #7',
+      },
     },
     {
       figureArabic: 'النقي',

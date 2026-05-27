@@ -6,10 +6,11 @@
  * ترحيل الأشكال الستة عشر في الستة عشر بيتا
  *
  * Normalized export wrapper.
- * No external knowledge.
+ * Secondary source: بلوغ الأمل في علم الرمل
+ * Partial per-house data found for H1-H3 only (chapter truncated in source).
  */
 
-const HAWI_FIGURE_ATABA_KHARIJA = {
+export const HAWI_FIGURE_ATABA_KHARIJA = {
   "id": "hawi-figure-ataba-kharija",
   "order": 16,
   "arabicName": "العتبة الخارجة",
@@ -29,22 +30,43 @@ const HAWI_FIGURE_ATABA_KHARIJA = {
       "topics": ['נסיעה', 'יציאה', 'מקום פתוח', 'מעבר', 'יציבות במגורים', 'רעות', 'פריצות', 'מיעוט פרנסה', 'שוק', 'בריחה', 'אובדן', 'גזילה', 'בקשת סולטן'],
       "witnessDependent": true,
       "criticalArabicTerms": ['بالشواهد'],
-      "specialRules": ['רעה לכל דבר חוץ מנסיעה, מעבר ובקשת הסולטן; בתחומים האלה טובה לפי העדים.']
-    },
+      "specialRules": ['רעה לכל דבר חוץ מנסיעה, מעבר ובקשת הסולטן; בתחומים האלה טובה לפי העדים.'],
+      supplementarySource: {
+        sourceBook: 'بلوغ الأمل في علم الرمل',
+        sourceArabic: 'تدل على خوف ونصر يدخل على السائل وترك الطلب المطلوب لازم',
+        meaningHebrew: 'מורה על פחד וניצחון הנכנס לשואל, ועל הכרח לוותר על הבקשה המבוקשת.',
+        conflictsWithHawi: false,
+        note: 'Partial data — only H1-H3 visible; chapter truncated in source file.',
+      },
+},
     {
       "house": 2,
       "sourceStatus": "explicit-in-source",
       "meaning": "מורה על הליכת או אובדן ממון, ועל דבר שיוצא מן היד ואינו חוזר.",
       "topics": ['אובדן ממון', 'ממון הולך', 'דבר שיוצא מהיד', 'לא חוזר'],
-      "specialRules": ['ממון הולך/אובד; דבר שיוצא מן היד אינו חוזר.']
-    },
+      "specialRules": ['ממון הולך/אובד; דבר שיוצא מן היד אינו חוזר.'],
+      supplementarySource: {
+        sourceBook: 'بلوغ الأمل في علم الرمل',
+        sourceArabic: 'تدل على إجتماع بعد الأياس وخوف من أعداء وتحرز',
+        meaningHebrew: 'מורה על כינוס לאחר ייאוש, פחד מאויבים וזהירות.',
+        conflictsWithHawi: false,
+        note: 'Partial data — only H1-H3 visible; chapter truncated in source file.',
+      },
+},
     {
       "house": 3,
       "sourceStatus": "explicit-in-source",
       "meaning": "מורה על צרות בין אחים, קרובים וקרובי נישואין; מורה גם על יציאת אישה והמתנה לשובה.",
       "topics": ['צרות', 'אחים', 'קרובים', 'קרובי נישואין', 'אישה יוצאת', 'קשה להחזירה'],
-      "specialRules": ['צרות בין אחים/קרובים/קרובי נישואין; אישה יוצאת וקשה להחזירה.']
-    },
+      "specialRules": ['צרות בין אחים/קרובים/קרובי נישואין; אישה יוצאת וקשה להחזירה.'],
+      supplementarySource: {
+        sourceBook: 'بلوغ الأمل في علم الرمل',
+        sourceArabic: 'تدل على تعقد الحاجة وأمر فيه تعويق وحاجة عسرة',
+        meaningHebrew: 'מורה על סיבוך הצורך, עניין עם עיכוב, וצורך קשה.',
+        conflictsWithHawi: false,
+        note: 'Partial data — only H1-H3 visible; chapter truncated in source file.',
+      },
+},
     {
       "house": 4,
       "sourceStatus": "explicit-in-source",
@@ -145,6 +167,12 @@ const HAWI_FIGURE_ATABA_KHARIJA = {
       "specialRules": ['השגת התקווה ואז יציאה ממנה במהירות; מניעת המבקש מן המבוקש.']
     }
   ],
+
+  secondarySourceEnrichment: {
+    sourceBook: 'بلوغ الأمل في علم الرمل',
+    housesEnriched: [1, 2, 3],
+    note: 'Per-house transit chapter found in secondary source but truncated at H3. H4-H16 not available.',
+  },
   "coverage": "16/16",
   "housesListed": [
     1,

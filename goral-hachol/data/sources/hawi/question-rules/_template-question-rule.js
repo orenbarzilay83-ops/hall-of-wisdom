@@ -4,7 +4,7 @@
  * Do not put inferred engine logic here.
  */
 
-const TEMPLATE_HAWI_QUESTION_RULE = {
+export const TEMPLATE_HAWI_QUESTION_RULE = {
   id: "",
   sourceBook: "حاوي العجائب ومظهر الغرائب",
   sourceAuthor: "أحمد ابن زنبل المحلي",

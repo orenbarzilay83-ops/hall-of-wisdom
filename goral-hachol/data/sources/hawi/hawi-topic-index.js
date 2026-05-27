@@ -1,9 +1,15 @@
+// המקור הראשי לאפליקציה: תיקיית Google Drive "ספרים לאפליקציית גורל החול"
+// ID: 183LO6vN9CsPW13CkNWN7Q-8_MMylrkmO
+// תמיד יש לחפש ולהשלים ידע משם לפני כל יישום חדש.
+
 export const HAWI_TOPIC_INDEX = {
   id: 'hawi-topic-index',
   sourceBook: 'حاوي العجائب ومظهر الغرائب',
   status: 'clean-current-topic-index',
   purposeHebrew:
     'אינדקס נושאים נקי לאחר מחיקת הוראות צ׳אטים ישנות. האינדקס לא פותח מחדש חומר שכבר נבדק.',
+  primarySourceNote:
+    'תיקיית Google Drive "ספרים לאפליקציית גורל החול" (ID: 183LO6vN9CsPW13CkNWN7Q-8_MMylrkmO) היא המקור הראשי לכל הידע באפליקציה — חפש ממנה תמיד קודם.',
 
   terminologyHebrew: {
     saad: 'סעד / טוב',
@@ -61,7 +67,7 @@ export const HAWI_TOPIC_INDEX = {
     {
       topicId: 'spiritual-diagnostics-current',
       hebrewTitle: 'אבחון רוחני קיים',
-      coverageStatus: 'partly-covered-current-layer',
+      coverageStatus: 'engine-implemented',
       existingFiles: [
         'goral-hachol/data/sources/hawi/foundations/hawi-spiritual-diagnostics.js',
         'goral-hachol/data/sources/approved-raml/spiritual-diagnostics/raml-spiritual-diagnostics-sihr-mass-hasad.js',
@@ -69,36 +75,42 @@ export const HAWI_TOPIC_INDEX = {
     },
   ],
 
-  remainingTopics: [
+  remainingTopics: [],
+
+  implementedTopics: [
+    {
+      topicId: 'spiritual-diagnostics-expanded',
+      hebrewTitle: 'ג׳ומלה — אבחון מחלה / ילדים / שותפות לפי שיטת סכום הנקודות',
+      coverageStatus: 'engine-implemented',
+      noteHebrew: 'שיטת הג׳ומלה ממקור בלוג׳ אל-אמל עמ׳ 62-63. מחושב אוטומטית על כל לוח. מחלה: mod4 (שארית 3 = כישוף), ילדים: mod3, שותפות: mod4.',
+      existingFiles: [
+        'goral-hachol/data/sources/approved-raml/spiritual-diagnostics/raml-jumla-method.js',
+        'goral-hachol/engine/hawi-interpreter.js (computeJumlaAnalysis)',
+      ],
+    },
     {
       topicId: 'planetary-correspondences',
-      hebrewTitle: 'שיוכי כוכבים וחומרים',
-      coverageStatus: 'future-module',
-      noteHebrew: 'לא מעכב את גורל החול הבסיסי.',
+      hebrewTitle: 'שיוכי כוכבים וחומרים / משולשי יסודות',
+      coverageStatus: 'engine-implemented',
+      noteHebrew: 'משולשי יסודות וכוכבים פעילים במנוע trianglesEnrichment.',
     },
     {
       topicId: 'birth-nativity-mawlud',
       hebrewTitle: 'שער המולד',
-      coverageStatus: 'future-large-module',
-      noteHebrew: 'מודול עתידי נפרד.',
+      coverageStatus: 'engine-implemented',
+      noteHebrew: 'מנוע birthNativity פעיל לפי חאוי.',
     },
     {
       topicId: 'yearly-weather-omens',
       hebrewTitle: 'טאלע השנה / גשם / יוקר וזול',
-      coverageStatus: 'future-large-module',
-      noteHebrew: 'מודול עתידי נפרד.',
+      coverageStatus: 'engine-implemented',
+      noteHebrew: 'מנוע yearlyForecast פעיל לפי חאוי עמ׳ 61-62.',
     },
     {
       topicId: 'authority-state',
       hebrewTitle: 'מלכים / מדינות / שלטון',
-      coverageStatus: 'future-specialized-module',
-      noteHebrew: 'לא חלק מהמנוע הבסיסי.',
-    },
-    {
-      topicId: 'spiritual-diagnostics-expanded',
-      hebrewTitle: 'עין / ג׳ין / מס ואבחון רוחני מורחב',
-      coverageStatus: 'needs-approved-source-only',
-      noteHebrew: 'להשלים רק ממקור מאושר, לא מסברה.',
+      coverageStatus: 'engine-implemented',
+      noteHebrew: 'מנוע authorityState פעיל. חילוץ שם אויב מדינה דרך בית 7.',
     },
   ],
 

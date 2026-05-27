@@ -15,7 +15,7 @@
  * - Later we may add displayHebrew for app-friendly wording.
  */
 
-const HAWI_QUESTION_HIDDEN_TREASURE = {
+export const HAWI_QUESTION_HIDDEN_TREASURE = {
   id: "hawi-question-hidden-treasure",
   sourceBook: "حاوي العجائب ومظهر الغرائب",
   sourceAuthor: "أحمد ابن زنبل المحلي",

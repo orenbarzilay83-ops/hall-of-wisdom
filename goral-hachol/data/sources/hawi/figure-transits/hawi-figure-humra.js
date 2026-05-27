@@ -9,7 +9,7 @@
  * No external knowledge.
  */
 
-const HAWI_FIGURE_HUMRA = {
+export const HAWI_FIGURE_HUMRA = {
   "id": "hawi-figure-humra",
   "order": 13,
   "arabicName": "الحمرة",

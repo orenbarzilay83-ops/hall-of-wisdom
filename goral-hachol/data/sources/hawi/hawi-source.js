@@ -51,6 +51,16 @@ import {
 import { HAWI_INTRODUCTION_MAHW_THABAT } from './foundations/hawi-introduction-mahw-thabat.js';
 import { HAWI_DHAMIR_DIRECTIONS_VALIDATION } from './foundations/hawi-dhamir-directions-validation.js';
 import { HAWI_HOUSE_STATES_COLORS } from './foundations/hawi-house-states-colors.js';
+import {
+  HAWI_WITNESS_SEQUENCE,
+  HAWI_HOUSE_GROUPS,
+  HAWI_HOUSE_GROUPS_LIST,
+  HAWI_HOUSE_GROUP_BY_HOUSE,
+  HAWI_WITNESS_ADDITIONAL_RULE,
+  getHawiHouseGroup,
+  getHawiWitnessRule,
+} from './foundations/hawi-witnesses.js';
+import { HAWI_SPIRITUAL_DIAGNOSTICS } from './foundations/hawi-spiritual-diagnostics.js';
 
 import { HAWI_BIRTH_NATIVITY } from './birth-nativity/hawi-birth-nativity.js';
 import { HAWI_TRIANGLES_ZODIAC } from './triangles/hawi-triangles-zodiac.js';
@@ -66,10 +76,26 @@ import { HAWI_QUESTION_HIDDEN_TREASURE_EXTRA } from './question-rules/hawi-quest
 import { HAWI_QUESTION_MISSING_PERSON_EXTRA } from './question-rules/hawi-question-missing-person-extra.js';
 import { HAWI_QUESTION_TRAVEL_EXTRA } from './question-rules/hawi-question-travel-extra.js';
 
+import { HAWI_QUESTION_MARRIAGE } from './question-rules/hawi-question-marriage.js';
+import { HAWI_QUESTION_ILLNESS } from './question-rules/hawi-question-illness.js';
+import { HAWI_QUESTION_DISPUTES } from './question-rules/hawi-question-disputes.js';
+import { HAWI_QUESTION_FEAR } from './question-rules/hawi-question-fear.js';
+import { HAWI_QUESTION_COMMERCE } from './question-rules/hawi-question-commerce.js';
+import { HAWI_QUESTION_LOVE_HATE } from './question-rules/hawi-question-love-hate.js';
+import { HAWI_QUESTION_ENEMIES } from './question-rules/hawi-question-enemies.js';
+import { HAWI_QUESTION_COMPLETION } from './question-rules/hawi-question-completion.js';
+import { HAWI_QUESTION_THEFT } from './question-rules/hawi-question-theft.js';
+import { HAWI_QUESTION_SEA_VOYAGE } from './question-rules/hawi-question-sea-voyage.js';
+import { HAWI_QUESTION_PRISONER } from './question-rules/hawi-question-prisoner.js';
+import { HAWI_QUESTION_PARTNERSHIP } from './question-rules/hawi-question-partnership.js';
+import { HAWI_QUESTION_SIBLINGS } from './question-rules/hawi-question-siblings.js';
+import { HAWI_QUESTION_DEATH_INHERITANCE } from './question-rules/hawi-question-death-inheritance.js';
+
 export const HAWI_EXTENDED_KNOWLEDGE_LIST = [
   HAWI_INTRODUCTION_MAHW_THABAT,
   HAWI_DHAMIR_DIRECTIONS_VALIDATION,
   HAWI_HOUSE_STATES_COLORS,
+  HAWI_SPIRITUAL_DIAGNOSTICS,
   HAWI_BIRTH_NATIVITY,
   HAWI_TRIANGLES_ZODIAC,
   HAWI_YEARLY_PRICES_FORECAST,
@@ -80,6 +106,20 @@ export const HAWI_EXTENDED_KNOWLEDGE_LIST = [
   HAWI_QUESTION_HIDDEN_TREASURE_EXTRA,
   HAWI_QUESTION_MISSING_PERSON_EXTRA,
   HAWI_QUESTION_TRAVEL_EXTRA,
+  HAWI_QUESTION_MARRIAGE,
+  HAWI_QUESTION_ILLNESS,
+  HAWI_QUESTION_DISPUTES,
+  HAWI_QUESTION_FEAR,
+  HAWI_QUESTION_COMMERCE,
+  HAWI_QUESTION_LOVE_HATE,
+  HAWI_QUESTION_ENEMIES,
+  HAWI_QUESTION_COMPLETION,
+  HAWI_QUESTION_THEFT,
+  HAWI_QUESTION_SEA_VOYAGE,
+  HAWI_QUESTION_PRISONER,
+  HAWI_QUESTION_PARTNERSHIP,
+  HAWI_QUESTION_SIBLINGS,
+  HAWI_QUESTION_DEATH_INHERITANCE,
 ];
 
 export const HAWI_EXTENDED_KNOWLEDGE_BY_ID = Object.fromEntries(
@@ -139,6 +179,16 @@ export const HAWI_SOURCE = {
     introductionMahwThabat: HAWI_INTRODUCTION_MAHW_THABAT,
     dhamirDirectionsValidation: HAWI_DHAMIR_DIRECTIONS_VALIDATION,
     houseStatesColors: HAWI_HOUSE_STATES_COLORS,
+    spiritualDiagnosticsIndex: HAWI_SPIRITUAL_DIAGNOSTICS,
+    witnesses: {
+      sequence: HAWI_WITNESS_SEQUENCE,
+      houseGroups: HAWI_HOUSE_GROUPS,
+      houseGroupsList: HAWI_HOUSE_GROUPS_LIST,
+      houseGroupByHouse: HAWI_HOUSE_GROUP_BY_HOUSE,
+      additionalRule: HAWI_WITNESS_ADDITIONAL_RULE,
+      getHouseGroup: getHawiHouseGroup,
+      getWitnessRule: getHawiWitnessRule,
+    },
     birthNativity: HAWI_BIRTH_NATIVITY,
     trianglesZodiac: HAWI_TRIANGLES_ZODIAC,
     yearlyPricesForecast: HAWI_YEARLY_PRICES_FORECAST,
@@ -149,6 +199,17 @@ export const HAWI_SOURCE = {
     hiddenTreasureExtra: HAWI_QUESTION_HIDDEN_TREASURE_EXTRA,
     missingPersonExtra: HAWI_QUESTION_MISSING_PERSON_EXTRA,
     travelExtra: HAWI_QUESTION_TRAVEL_EXTRA,
+    marriage: HAWI_QUESTION_MARRIAGE,
+    illness: HAWI_QUESTION_ILLNESS,
+    disputes: HAWI_QUESTION_DISPUTES,
+    fear: HAWI_QUESTION_FEAR,
+    commerce: HAWI_QUESTION_COMMERCE,
+    loveHate: HAWI_QUESTION_LOVE_HATE,
+    enemies: HAWI_QUESTION_ENEMIES,
+    completion: HAWI_QUESTION_COMPLETION,
+    theft: HAWI_QUESTION_THEFT,
+    seaVoyage: HAWI_QUESTION_SEA_VOYAGE,
+    prisoner: HAWI_QUESTION_PRISONER,
   },
 
   fullBookGapAudit: HAWI_FULL_BOOK_GAP_AUDIT,
@@ -198,6 +259,14 @@ export {
   HAWI_INTRODUCTION_MAHW_THABAT,
   HAWI_DHAMIR_DIRECTIONS_VALIDATION,
   HAWI_HOUSE_STATES_COLORS,
+  HAWI_SPIRITUAL_DIAGNOSTICS,
+  HAWI_WITNESS_SEQUENCE,
+  HAWI_HOUSE_GROUPS,
+  HAWI_HOUSE_GROUPS_LIST,
+  HAWI_HOUSE_GROUP_BY_HOUSE,
+  HAWI_WITNESS_ADDITIONAL_RULE,
+  getHawiHouseGroup,
+  getHawiWitnessRule,
   HAWI_BIRTH_NATIVITY,
   HAWI_TRIANGLES_ZODIAC,
   HAWI_YEARLY_PRICES_FORECAST,

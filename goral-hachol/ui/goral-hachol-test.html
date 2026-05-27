@@ -124,9 +124,19 @@
       <div id="board" class="board"></div>
     </section>
 
+    <section class="panel" id="conclusionPanel">
+      <h2>פסיקת גורל החול</h2>
+      <div id="conclusionOutput" style="line-height:1.8; white-space:pre-wrap; font-size:15px;"></div>
+    </section>
+
+    <section class="panel" id="technicalPanel">
+      <h2>ניתוח טכני</h2>
+      <pre id="technicalOutput" style="font-size:13px; opacity:0.85;"></pre>
+    </section>
+
     <section class="panel">
-      <h2>פירוש בסיסי</h2>
-      <pre id="summaryOutput"></pre>
+      <h2>פירוש בסיסי (JSON)</h2>
+      <pre id="summaryOutput" style="font-size:12px; opacity:0.7;"></pre>
     </section>
 
     <section class="panel">
@@ -148,6 +158,8 @@
 
     const runBtn = document.getElementById('runBtn');
     const boardEl = document.getElementById('board');
+    const conclusionOutput = document.getElementById('conclusionOutput');
+    const technicalOutput = document.getElementById('technicalOutput');
     const summaryOutput = document.getElementById('summaryOutput');
     const missingOutput = document.getElementById('missingOutput');
 
@@ -223,6 +235,13 @@
     }
 
     function renderInterpretation(state) {
+      // Full Hebrew conclusion — the main output
+      conclusionOutput.textContent = state.finalConclusionHebrew || '(אין פסיקה — בדוק שגיאות בקונסול)';
+
+      // Technical analysis paragraph (board score, tahasil, etc.)
+      technicalOutput.textContent = state.technicalConclusionHebrew || '';
+
+      // Raw JSON summary
       summaryOutput.textContent = JSON.stringify(state.summary, null, 2);
 
       missingOutput.textContent = state.interpretation.missingSourceNotes.length

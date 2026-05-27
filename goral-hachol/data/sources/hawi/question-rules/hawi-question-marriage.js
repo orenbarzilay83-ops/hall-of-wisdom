@@ -15,7 +15,7 @@
  * - Preserve house numbers and figures exactly as extracted.
  */
 
-const HAWI_QUESTION_MARRIAGE = {
+export const HAWI_QUESTION_MARRIAGE = {
   id: "hawi-question-marriage",
   sourceBook: "حاوي العجائب ومظهر الغرائب",
   sourceAuthor: "أحمد ابن زنبل المحلي",

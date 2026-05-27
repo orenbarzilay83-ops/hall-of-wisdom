@@ -306,7 +306,7 @@ if (typeof module !== "undefined") {
 
 // שמות 16 הבתים בגורל החול
 const RAML_HOUSES = Object.keys(RAML_HOUSES_BASIC_ENGINE || {}).length
-  ? RAML_HOUSES_BASIC
+  ? RAML_HOUSES_BASIC_ENGINE
   : {
   1:  { number: 1,  hebrew: "בית החיים", arabic: "بيت الحياة", role: "השואל, הגוף, החיים, מצב האדם" },
   2:  { number: 2,  hebrew: "בית הממון", arabic: "بيت المال", role: "ממון, רכוש, פרנסה, מה שיש לאדם" },
@@ -811,6 +811,95 @@ if (typeof module !== "undefined") {
 }
 
 /* Expose Goral Hachol engine functions to browser */
+// ────────────────────────────────────────────────────────────
+// ציון שלמות הלוח — כלל 96 הנקודות
+// כל שורה = 1 (יחיד) או 2 (זוגי)
+// ציון הלוח = סכום כל 64 ערכי השורות (16 בתים × 4 שורות)
+// קיצור: ציון = 128 − מספר שורות יחידות
+// < 96 = חסר (ناقص) | ≥ 96 = שלם (كامل)
+function ramlComputeBoardScore(chart) {
+  let singles = 0;
+  for (const house of (chart || [])) {
+    const key = String(house.key || '');
+    for (const ch of key) {
+      if (ch === '1') singles++;
+    }
+  }
+  const score = 128 - singles;
+  const status = score >= 96 ? 'שלם' : 'חסר';
+  return {
+    singleRows: singles,
+    doubleRows: 64 - singles,
+    score,
+    isComplete: score >= 96,
+    status,
+    hebrewSummary: score >= 96
+      ? `לוח שלם (${score} נקודות ≥ 96)`
+      : `לוח חסר (${score} נקודות < 96) — השאלה עשויה שלא להיפתר`
+  };
+}
+
+// ────────────────────────────────────────────────────────────
+// תסיירת נקטת המיזאן — הדמיר לפי עקיבה אחורה בשרשרת הגזירה
+// לכל שורה יחידה בבית 15 (השופט) → עוקבים אחוריה עד האמהות/בנות
+const RAML_PARENT_PAIRS = {
+  9: [1, 2], 10: [3, 4], 11: [5, 6], 12: [7, 8],
+  13: [9, 10], 14: [11, 12], 15: [13, 14]
+};
+
+const RAML_ROW_ELEMENTS = ['נאר (אש)', 'הוואא (אוויר)', 'מאא (מים)', 'תראב (אדמה)'];
+
+function ramlTraceRow(chart, houseNum, rowIndex) {
+  if (houseNum <= 8) return houseNum; // הגענו לאם או בת — עצור
+  const [leftNum, rightNum] = RAML_PARENT_PAIRS[houseNum] || [];
+  if (!leftNum) return null;
+  const leftKey  = String(chart.find(h => Number(h.house) === leftNum)?.key  || '');
+  const rightKey = String(chart.find(h => Number(h.house) === rightNum)?.key || '');
+  if (leftKey[rowIndex]  === '1') return ramlTraceRow(chart, leftNum,  rowIndex);
+  if (rightKey[rowIndex] === '1') return ramlTraceRow(chart, rightNum, rowIndex);
+  return null;
+}
+
+function ramlComputeDhamirByMizan(chart) {
+  const judge = (chart || []).find(h => Number(h.house) === 15);
+  if (!judge) return null;
+
+  const judgeKey = String(judge.key || '');
+  const traces = [];
+
+  for (let r = 0; r < 4; r++) {
+    if (judgeKey[r] !== '1') continue;
+    const dhamirNum = ramlTraceRow(chart, 15, r);
+    if (!dhamirNum) continue;
+    const dhamirHouse = chart.find(h => Number(h.house) === dhamirNum);
+    traces.push({
+      rowIndex: r,
+      rowElement: RAML_ROW_ELEMENTS[r],
+      dhamirHouseNumber: dhamirNum,
+      dhamirKey: dhamirHouse?.key || '',
+      dhamirHebrew: dhamirHouse?.hebrew || '',
+      dhamirFortune: dhamirHouse?.fortune || '',
+    });
+  }
+
+  const primary = traces[0] || null;
+  return {
+    method: 'mizan-tracing',
+    methodHebrew: 'תסיירת נקטת המיזאן',
+    traces,
+    primaryHouseNumber: primary?.dhamirHouseNumber || null,
+    primaryHebrew: primary?.dhamirHebrew || '',
+    primaryFortune: primary?.dhamirFortune || '',
+    primaryElement: primary?.rowElement || '',
+  };
+}
+
+if (typeof module !== "undefined") {
+  module.exports.ramlComputeBoardScore = ramlComputeBoardScore;
+  module.exports.ramlComputeDhamirByMizan = ramlComputeDhamirByMizan;
+  module.exports.ramlTraceRow = ramlTraceRow;
+}
+
 if (typeof window !== "undefined") {
   window.ramlFigureKey = ramlFigureKey;
   window.ramlFigureInfo = ramlFigureInfo;
@@ -820,4 +909,6 @@ if (typeof window !== "undefined") {
   window.ramlFigureFromPointCounts = ramlFigureFromPointCounts;
   window.ramlBuildReadingSummary = ramlBuildReadingSummary;
   window.ramlBuildInitialDiagnosis = ramlBuildInitialDiagnosis;
+  window.ramlComputeBoardScore = ramlComputeBoardScore;
+  window.ramlComputeDhamirByMizan = ramlComputeDhamirByMizan;
 }

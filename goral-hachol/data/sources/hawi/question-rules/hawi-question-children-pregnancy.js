@@ -16,7 +16,7 @@
  * - Later we may add displayHebrew for app-friendly wording.
  */
 
-const HAWI_QUESTION_CHILDREN_PREGNANCY = {
+export const HAWI_QUESTION_CHILDREN_PREGNANCY = {
   id: "hawi-question-children-pregnancy",
   sourceBook: "حاوي العجائب ومظهر الغرائب",
   sourceAuthor: "أحمد ابن زنبل المحلي",
