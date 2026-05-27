@@ -598,6 +598,42 @@
       border-color:#5599cc;
       color:#1a4a7a;
     }
+    .topic-spiritual-btn {
+      grid-column:1 / -1;
+      border:2px solid rgba(120,80,200,.45);
+      border-radius:16px;
+      padding:16px 20px;
+      cursor:pointer;
+      background:linear-gradient(135deg,#f8f4ff,#fff);
+      font-size:16px;
+      font-weight:800;
+      color:#5a2d91;
+      text-align:center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      transition:background .15s,border-color .15s,box-shadow .15s;
+    }
+    .topic-spiritual-btn:hover {
+      background:linear-gradient(135deg,#ede0ff,#f8f4ff);
+      border-color:#7a40cc;
+    }
+    .topic-spiritual-btn.selected {
+      background:linear-gradient(135deg,#e2d0ff,#ede0ff);
+      border-color:#7a40cc;
+      box-shadow:0 0 0 3px rgba(120,80,200,.25);
+      color:#3d1a6e;
+    }
+    .topic-spiritual-badge {
+      background:#7a40cc;
+      color:white;
+      border-radius:20px;
+      padding:2px 10px;
+      font-size:12px;
+      font-weight:700;
+      white-space:nowrap;
+    }
 
     .details-toggle {
       display:block;
@@ -797,6 +833,7 @@
     let selectedMothers = [null, null, null, null];
     let activeMother = 0;
     let selectedHouseNum = null;  // בית שנבחר (1-12)
+    let forcedTopicId = null;     // נושא שנקבע בכוח (למשל: בדיקה רוחנית)
 
     // 12 כרטיסים לפי סדר הבתים. הנושא המדויק נקבע בזמן הריצה לפי השאלה.
     const TOPIC_CARDS = [
@@ -860,19 +897,33 @@
     function renderTopicGrid() {
       const grid = document.getElementById("topicGrid");
       if (!grid) return;
-      grid.innerHTML = TOPIC_CARDS.map(c => `
-        <button type="button" class="topic-card ${selectedHouseNum === c.house ? 'selected' : ''}" data-house="${c.house}">
+      const spiritualActive = forcedTopicId === 'spiritualDiagnostics';
+      grid.innerHTML = `
+        <button type="button" class="topic-spiritual-btn${spiritualActive ? ' selected' : ''}" id="spiritualDxBtn">
+          <span>🌙</span>
+          <span>בדיקה רוחנית — עין הרע, כישוף, ג׳ין</span>
+          <span class="topic-spiritual-badge">ניתוח מיוחד</span>
+        </button>
+      ` + TOPIC_CARDS.map(c => `
+        <button type="button" class="topic-card ${(!forcedTopicId && selectedHouseNum === c.house) ? 'selected' : ''}" data-house="${c.house}">
           <div class="topic-card-house">בית ${c.house}</div>
           <div class="topic-card-title">${c.title}</div>
           <div class="topic-card-desc">${c.desc}</div>
         </button>
       `).join("") + `
-        <button type="button" class="topic-free-btn ${selectedHouseNum === 0 ? 'selected' : ''}" data-house="0">
+        <button type="button" class="topic-free-btn ${(!forcedTopicId && selectedHouseNum === 0) ? 'selected' : ''}" data-house="0">
           שאלה חופשית — האפליקציה תזהה את הנושא לבד
         </button>`;
 
+      document.getElementById("spiritualDxBtn").addEventListener("click", () => {
+        forcedTopicId = spiritualActive ? null : 'spiritualDiagnostics';
+        selectedHouseNum = null;
+        renderTopicGrid();
+      });
+
       grid.querySelectorAll("[data-house]").forEach(btn => {
         btn.addEventListener("click", () => {
+          forcedTopicId = null;
           selectedHouseNum = Number(btn.dataset.house);
           renderTopicGrid();
         });
@@ -1303,10 +1354,12 @@
           throw new Error("מנוע גורל החול לא נטען מתוך raml.js.");
         }
 
-        // זהה נושא מדויק לפי הבית שנבחר + תוכן השאלה
-        const resolvedTopicId = (selectedHouseNum && selectedHouseNum > 0)
-          ? detectTopicFromQuestion(selectedHouseNum, question)
-          : null;  // null = המנוע יחליט לבד לפי טקסט השאלה
+        // זהה נושא מדויק לפי הבית שנבחר + תוכן השאלה (forcedTopicId מקבל עדיפות)
+        const resolvedTopicId = forcedTopicId
+          ? forcedTopicId
+          : (selectedHouseNum && selectedHouseNum > 0)
+            ? detectTopicFromQuestion(selectedHouseNum, question)
+            : null;  // null = המנוע יחליט לבד לפי טקסט השאלה
 
         const reading = window.ramlRunReading(question, mothers);
         reading.topicId = resolvedTopicId;           // מעביר ישירות למנוע
@@ -1327,6 +1380,7 @@
         if (el) el.value = "";
       });
       selectedHouseNum = null;
+      forcedTopicId = null;
       renderTopicGrid();
       selectedMothers = [null,null,null,null];
       activeMother = 0;
