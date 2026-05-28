@@ -398,10 +398,10 @@ function figureFortuneTone(fortune) {
 function connectionQualityHebrew(figureFortune, houseATone, houseBTone) {
   const fig = figureFortuneTone(figureFortune);
   const houseAvg = (houseATone + houseBTone) / 2;
-  if (fig >= 0 && houseAvg >= 0) return 'חיבור טוב — צורה טובה בבתים טובים';
-  if (fig < 0 && houseAvg < 0) return 'חיבור רע — צורה רעה בבתים קשים';
-  if (fig > 0 && houseAvg < 0) return 'חיבור מסוכן — הבטחה שקרית, שמחה ואז צער';
-  if (fig < 0 && houseAvg > 0) return 'חיבור מחליש — קלקול הנושא';
+  if (fig >= 0 && houseAvg >= 0) return 'חיבור טוב';
+  if (fig < 0 && houseAvg < 0) return 'חיבור קשה';
+  if (fig > 0 && houseAvg < 0) return 'חיבור מורכב — פתיחה אך גם מכשולים';
+  if (fig < 0 && houseAvg > 0) return 'חיבור מחליש';
   return 'חיבור ממוזג';
 }
 
@@ -981,8 +981,8 @@ function computeBoardScore(chart) {
     isComplete: score >= 96,
     status: score >= 96 ? 'שלם' : 'חסר',
     hebrewSummary: score >= 96
-      ? `לוח שלם (${score} נקודות ≥ 96)`
-      : `לוח חסר (${score} נקודות < 96) — השאלה עשויה שלא להיפתר`,
+      ? `לוח שלם — ${score} נקודות`
+      : `לוח חסר — ${score} נקודות (נדרשים 96)`,
   };
 }
 const DHAMIR_PARENT_PAIRS = {

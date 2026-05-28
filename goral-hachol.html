@@ -1119,7 +1119,7 @@
       { house: 4,  title: 'בית ונכסים',     desc: 'דירה, נדל"ן, ירושה, דברים נסתרים',    defaultTopicId: 'hiddenTreasure' },
       { house: 5,  title: 'ילדים והריון',   desc: 'לידה, הריון, ילדים, שמחה',             defaultTopicId: 'childrenPregnancy' },
       { house: 6,  title: 'מחלה ובריאות',  desc: 'חולי, מצב רפואי, החלמה, כישוף',        defaultTopicId: 'illness' },
-      { house: 7,  title: 'הצד השני',       desc: 'בן/בת זוג, שותף, יריב, גנב, נעדר',     defaultTopicId: 'marriage' },
+      { house: 7,  title: 'הנשאל עליו',      desc: 'בן/בת זוג, שותף, יריב, גנב, נעדר',     defaultTopicId: 'marriage' },
       { house: 8,  title: 'מוות וירושה',    desc: 'מוות, ירושה, פחד גדול, שינוי עמוק',   defaultTopicId: 'deathInheritance' },
       { house: 9,  title: 'נסיעה ומסע',     desc: 'יציאה, נסיעה, ים, דת, רוחניות',        defaultTopicId: 'travel' },
       { house: 10, title: 'עבודה ומעמד',    desc: 'קריירה, שלטון, בעלי סמכות',            defaultTopicId: 'authorityState' },
@@ -1439,24 +1439,18 @@
       const isSpiritualTopic = insight.topicId === "spiritualDiagnostics";
       // Only show spiritual section when explicitly spiritual topic,
       // or when the engine finds very strong suspicion (not just any score > 0)
-      const showSpiritual =
-        spiritual &&
-        (
-          isSpiritualTopic ||
-          spiritual.grade === 'strong-suspicion'
-        );
+      const showSpiritual = spiritual && isSpiritualTopic;
 
       // Board score + dhamir banner (before verdict)
       const boardScoreData = insight.boardAnalysis?.boardScore || null;
       const dhamirMizanData = insight.boardAnalysis?.dhamirByMizan || null;
       let boardInfoHtml = "";
-      if (boardScoreData) {
-        const scoreClass = boardScoreData.isComplete ? "board-score-ok" : "board-score-warn";
-        boardInfoHtml += `<div class="board-info-row ${scoreClass}">📊 ${escapeHtml(boardScoreData.hebrewSummary)}</div>`;
+      if (boardScoreData && boardScoreData.isComplete) {
+        boardInfoHtml += `<div class="board-info-row board-score-ok">📊 ${escapeHtml(boardScoreData.hebrewSummary)}</div>`;
       }
-      if (dhamirMizanData && dhamirMizanData.traces && dhamirMizanData.traces.length > 0) {
+      if (dhamirMizanData && dhamirMizanData.traces && dhamirMizanData.traces.length > 0 && isSpiritualTopic) {
         const traceText = dhamirMizanData.traces.map(t =>
-          `שורת ${escapeHtml(t.rowElement)} → בית ${t.dhamirHouseNumber} (${escapeHtml(t.dhamirHebrew)}${t.dhamirFortune ? ', ' + t.dhamirFortune : ''})`
+          `שורת ${escapeHtml(t.rowElement)} → בית ${t.dhamirHouseNumber} (${escapeHtml(t.dhamirHebrew)}${t.dhamirFortune ? ', ' + hebrewTermsSimple(t.dhamirFortune) : ''})`
         ).join(' | ');
         boardInfoHtml += `<div class="board-info-row board-dhamir">🎯 הדמיר: ${traceText} — הדמיר העיקרי: בית ${dhamirMizanData.primaryHouseNumber}</div>`;
       }
@@ -1554,7 +1548,7 @@
             ${!isSpiritualTopic ? `<br/>${escapeHtml(spiritual.finalHebrew || "")}` : ""}
             ${Array.isArray(spiritual.mainReasons) && spiritual.mainReasons.length
               ? `<ul>${spiritual.mainReasons.filter(r => r.score > 0).slice(0, 6).map(reason => `
-                  <li><strong>בית ${reason.house}</strong> (${escapeHtml(reason.role || "")})${reason.figureHebrew ? ` — ${escapeHtml(reason.figureHebrew)}` : ""}: ${escapeHtml((reason.signals || []).join(" "))}</li>
+                  <li><strong>${reason.house != null ? `בית ${reason.house}` : escapeHtml(reason.role || "")}</strong>${reason.house != null && reason.role ? ` (${escapeHtml(reason.role)})` : ""}${reason.figureHebrew ? ` — ${escapeHtml(reason.figureHebrew)}` : ""}: ${escapeHtml((reason.signals || []).join(" "))}</li>
                 `).join("")}</ul>`
               : (isSpiritualTopic ? "<p>לא נמצאו חוקים ספציפיים מהמקור. הפסיקה מבוססת על הדיין והעדים.</p>" : "")}
           </div>
@@ -1583,6 +1577,14 @@
           ${h1House ? `בית 1: ${escapeHtml(h1House.figureHebrew || "")} [${escapeHtml(fortuneLabel(h1House.fortune))}]` : ""}
         </div>` : "";
 
+      function hebrewTermsSimple(s) {
+        return String(s || '')
+          .replace(/ממוזג-?סעד/g, "ממוזג-טוב")
+          .replace(/ממוזג-?נחס/g, "ממוזג-רע")
+          .replace(/סעד/g, "טוב")
+          .replace(/נחס/g, "רע");
+      }
+
       // Rewrite terminology in banners
       function hebrewTerms(s) {
         return s
@@ -1596,11 +1598,13 @@
           .replace(/תראב \(אדמה\)/g, "עפר")
           .replace(/בית יתד/g, "בית חזק")
           .replace(/איתיסלאת/g, "חיבורים")
-          // fortune terminology — replace Arabic transliterations with plain Hebrew
-          .replace(/\bממוזג-?סעד\b/g, "ממוזג-טוב")
-          .replace(/\bממוזג-?נחס\b/g, "ממוזג-רע")
-          .replace(/\bסעד\b/g, "טוב")
-          .replace(/\bנחס\b/g, "רע");
+          // fortune terminology — no \b (doesn't work for Hebrew), handle explicit cases first
+          .replace(/ממוזג-?סעד/g, "ממוזג-טוב")
+          .replace(/ממוזג-?נחס/g, "ממוזג-רע")
+          .replace(/\[סעד\]/g, "[טוב]")
+          .replace(/\[נחס\]/g, "[רע]")
+          .replace(/ סעד(?=[^א-ת]|$)/g, " טוב")
+          .replace(/ נחס(?=[^א-ת]|$)/g, " רע");
       }
 
       // Details panel content
