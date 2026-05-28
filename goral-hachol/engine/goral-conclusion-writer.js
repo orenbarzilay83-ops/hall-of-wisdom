@@ -726,8 +726,7 @@ function _judgeLabel(judge, pos, neg, neut) {
 }
 function _hline(role, num, house, quality) {
   if (!house) return null;
-  const m = house.transit?.meaning;
-  return `${role} (בית ${num} — ${house.figureHebrew}): ${quality}${m ? '\n  → ' + m : ''}`;
+  return `${role} (בית ${num} — ${house.figureHebrew}): ${quality}`;
 }
 
 const TOPIC_ANSWER_SCHEMA = {
@@ -904,8 +903,7 @@ const TOPIC_ANSWER_SCHEMA = {
       if (h7) {
         const dirNote = h7.directionHebrew ? `, צורה ${h7.directionHebrew}` : '';
         const elemNote = h7.elementHebrew ? `, אלמנט: ${h7.elementHebrew}` : '';
-        const m7 = h7.transit?.meaning;
-        parts.push(`פרופיל הגנב (בית 7 — ${h7.figureHebrew}${dirNote}${elemNote})${m7 ? '\n  → ' + m7 : ''}`);
+        parts.push(`פרופיל הגנב (בית 7 — ${h7.figureHebrew}${dirNote}${elemNote})`);
       }
 
       // 3. Name letters
@@ -946,8 +944,7 @@ const TOPIC_ANSWER_SCHEMA = {
       // 6. Location / hiding spot
       if (h4) {
         const dir = h4.directionHebrew ? ` — כיוון: ${h4.directionHebrew}` : '';
-        const m4 = h4.transit?.meaning;
-        parts.push(`מיקום הגניבה / מחבוא (בית 4 — ${h4.figureHebrew}${dir})${m4 ? '\n  → ' + m4 : ''}`);
+        parts.push(`מיקום הגניבה / מחבוא (בית 4 — ${h4.figureHebrew}${dir})`);
       }
 
       return parts.join('\n\n');
@@ -984,10 +981,9 @@ const TOPIC_ANSWER_SCHEMA = {
       }
 
       if (h12) {
-        const m12 = h12.transit?.meaning;
         lines.push(_nahs(h12)
-          ? `⚠ אויב נסתר (בית 12 — ${h12.figureHebrew}): מישהו פועל מאחורי הקלעים${m12 ? '\n  → ' + m12 : ''}`
-          : `אויבים נסתרים (בית 12 — ${h12.figureHebrew}): [${_ft(h12)}]${m12 ? '\n  → ' + m12 : ''}`);
+          ? `⚠ אויב נסתר (בית 12 — ${h12.figureHebrew}): מישהו פועל מאחורי הקלעים`
+          : `אויבים נסתרים (בית 12 — ${h12.figureHebrew}): [${_ft(h12)}]`);
       }
 
       if (a?.enemyInHousehold) {
@@ -1055,13 +1051,12 @@ const TOPIC_ANSWER_SCHEMA = {
       if (h9) {
         const dir = h9.directionHebrew ? ` (כיוון: ${h9.directionHebrew})` : '';
         const quality = _saad(h9) ? 'פתוח ובטוח' : _nahs(h9) ? 'חסום — יש קושי בדרך' : 'בינוני';
-        const m9 = h9.transit?.meaning;
-        lines.push(`מסלול הנסיעה (בית 9 — ${h9.figureHebrew}${dir}): ${quality}${m9 ? '\n  → ' + m9 : ''}`);
+        lines.push(`מסלול הנסיעה (בית 9 — ${h9.figureHebrew}${dir}): ${quality}`);
       }
 
       const dangers = [];
-      if (_nahs(h8))  { const m8 = h8?.transit?.meaning; dangers.push(`בית 8 (${h8.figureHebrew}) — סכנת חיים${m8 ? ': ' + m8 : ''}`); }
-      if (_nahs(h12)) { const m12 = h12?.transit?.meaning; dangers.push(`בית 12 (${h12.figureHebrew}) — אויב נסתר בדרך${m12 ? ': ' + m12 : ''}`); }
+      if (_nahs(h8))  dangers.push(`בית 8 (${h8.figureHebrew}) — סכנת חיים`);
+      if (_nahs(h12)) dangers.push(`בית 12 (${h12.figureHebrew}) — אויב נסתר בדרך`);
       if (dangers.length) lines.push(`⚠ בתי סכנה:\n  ${dangers.join('\n  ')}`);
 
       if (a?.forcedTravelAnalysis) lines.push(`סוג הנסיעה: ${a.forcedTravelAnalysis.hebrewNote}`);
@@ -1187,25 +1182,21 @@ const TOPIC_ANSWER_SCHEMA = {
       const h12 = getHouseFromBoard(a, 12);
       const sources = [];
       if (h1 && _nahs(h1)) {
-        const m1 = h1.transit?.meaning;
-        sources.push(`בית 1 (${h1.figureHebrew}) — חולשה אישית, הפחד פנימי${m1 ? '\n    → ' + m1 : ''}`);
+        sources.push(`בית 1 (${h1.figureHebrew}) — חולשה אישית, הפחד פנימי`);
       }
       if (h7 && _nahs(h7)) {
-        const m7 = h7.transit?.meaning;
-        sources.push(`בית 7 (${h7.figureHebrew}) — אויב גלוי${m7 ? '\n    → ' + m7 : ''}`);
+        sources.push(`בית 7 (${h7.figureHebrew}) — אויב גלוי`);
       }
       if (h8) {
         const specificWarning = getFigureMeaning('fear', h8.figureHebrew, 8);
-        const m8 = h8.transit?.meaning;
         if (specificWarning) {
           sources.push(specificWarning);
         } else if (_nahs(h8)) {
-          sources.push(`בית 8 (${h8.figureHebrew}) — חשש מאסון / מוות${m8 ? '\n    → ' + m8 : ''}`);
+          sources.push(`בית 8 (${h8.figureHebrew}) — חשש מאסון / מוות`);
         }
       }
       if (h12 && _nahs(h12)) {
-        const m12 = h12.transit?.meaning;
-        sources.push(`בית 12 (${h12.figureHebrew}) — אויב נסתר${m12 ? '\n    → ' + m12 : ''}`);
+        sources.push(`בית 12 (${h12.figureHebrew}) — אויב נסתר`);
       }
       lines.push(sources.length
         ? `מקורות הפחד:\n${sources.map(s => '  ' + s).join('\n')}`
@@ -1337,12 +1328,11 @@ const TOPIC_ANSWER_SCHEMA = {
       if (h9) {
         const dir = h9.directionHebrew ? ` (כיוון: ${h9.directionHebrew})` : '';
         const quality = _saad(h9) ? 'בטוח' : _nahs(h9) ? 'מסוכן' : 'מעורב';
-        const m9 = h9.transit?.meaning;
-        lines.push(`מסע הים (בית 9 — ${h9.figureHebrew}${dir}): ${quality}${m9 ? '\n  → ' + m9 : ''}`);
+        lines.push(`מסע הים (בית 9 — ${h9.figureHebrew}${dir}): ${quality}`);
       }
       const seaDanger = [];
-      if (_nahs(h8))  { const m8 = h8?.transit?.meaning; seaDanger.push(`בית 8 (${h8.figureHebrew}) — סכנת חיים${m8 ? ': ' + m8 : ''}`); }
-      if (_nahs(h12)) { const m12 = h12?.transit?.meaning; seaDanger.push(`בית 12 (${h12.figureHebrew}) — אויב נסתר${m12 ? ': ' + m12 : ''}`); }
+      if (_nahs(h8))  seaDanger.push(`בית 8 (${h8.figureHebrew}) — סכנת חיים`);
+      if (_nahs(h12)) seaDanger.push(`בית 12 (${h12.figureHebrew}) — אויב נסתר`);
       if (seaDanger.length) lines.push(`⚠ סכנות ספציפיות: ${seaDanger.join(' | ')}`);
       if (a?.seaVoyageRisks) lines.push(a.seaVoyageRisks.outputHebrew);
       if (a?.forcedTravelAnalysis) lines.push(`סוג המסע: ${a.forcedTravelAnalysis.hebrewNote}`);
@@ -1364,8 +1354,7 @@ const TOPIC_ANSWER_SCHEMA = {
       const h12 = getHouseFromBoard(a, 12);
       if (h1) lines.push(_hline('מצב הנעדר', 1, h1, _saad(h1) ? 'בריאות — בחיים ובמצב סביר' : _nahs(h1) ? 'מצוקה — עלולים להיות בסכנה' : 'לא ברור'));
       if (h8 && _nahs(h8)) {
-        const m8 = h8.transit?.meaning;
-        lines.push(`⚠ סכנת חיים (בית 8 — ${h8.figureHebrew}): יש סימן מדאיג — לחקור בדחיפות${m8 ? '\n  → ' + m8 : ''}`);
+        lines.push(`⚠ סכנת חיים (בית 8 — ${h8.figureHebrew}): יש סימן מדאיג — לחקור בדחיפות`);
       }
       if (h12) lines.push(_hline('מוסתר / עצור', 12, h12, _nahs(h12) ? 'מוסתר בכוח' : _saad(h12) ? 'ניתן לאתרו' : 'בינוני'));
       if (a?.physicalDescriptionMissing) lines.push(`תיאור הנעדר: ${a.physicalDescriptionMissing.outputHebrew}`);
