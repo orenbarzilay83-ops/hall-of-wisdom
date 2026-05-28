@@ -573,6 +573,42 @@
       border-color:#5599cc;
       color:#1a4a7a;
     }
+    .topic-general-btn {
+      grid-column:1 / -1;
+      border:2px solid rgba(20,140,80,.4);
+      border-radius:16px;
+      padding:16px 20px;
+      cursor:pointer;
+      background:linear-gradient(135deg,#f2fff6,#fff);
+      font-size:16px;
+      font-weight:800;
+      color:#1a6e40;
+      text-align:center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      transition:background .15s,border-color .15s,box-shadow .15s;
+    }
+    .topic-general-btn:hover {
+      background:linear-gradient(135deg,#d8f5e4,#f2fff6);
+      border-color:#1a8a4a;
+    }
+    .topic-general-btn.selected {
+      background:linear-gradient(135deg,#c2efd4,#d8f5e4);
+      border-color:#1a8a4a;
+      box-shadow:0 0 0 3px rgba(20,140,80,.2);
+      color:#0e4a28;
+    }
+    .topic-general-badge {
+      background:#1a8a4a;
+      color:white;
+      border-radius:20px;
+      padding:2px 10px;
+      font-size:12px;
+      font-weight:700;
+      white-space:nowrap;
+    }
     .topic-spiritual-btn {
       grid-column:1 / -1;
       border:2px solid rgba(120,80,200,.45);
@@ -1183,7 +1219,13 @@
       const grid = document.getElementById("topicGrid");
       if (!grid) return;
       const spiritualActive = forcedTopicId === 'spiritualDiagnostics';
+      const generalActive  = forcedTopicId === 'generalReading';
       grid.innerHTML = `
+        <button type="button" class="topic-general-btn${generalActive ? ' selected' : ''}" id="generalReadingBtn">
+          <span>🔮</span>
+          <span>פתיחה כללית — מצב האדם בכל תחומי החיים</span>
+          <span class="topic-general-badge">סקירה מלאה</span>
+        </button>
         <button type="button" class="topic-spiritual-btn${spiritualActive ? ' selected' : ''}" id="spiritualDxBtn">
           <span>🌙</span>
           <span>בדיקה רוחנית — עין הרע, כישוף, ג׳ין</span>
@@ -1199,6 +1241,12 @@
         <button type="button" class="topic-free-btn ${(!forcedTopicId && selectedHouseNum === 0) ? 'selected' : ''}" data-house="0">
           שאלה חופשית — האפליקציה תזהה את הנושא לבד
         </button>`;
+
+      document.getElementById("generalReadingBtn").addEventListener("click", () => {
+        forcedTopicId = generalActive ? null : 'generalReading';
+        selectedHouseNum = null;
+        renderTopicGrid();
+      });
 
       document.getElementById("spiritualDxBtn").addEventListener("click", () => {
         forcedTopicId = spiritualActive ? null : 'spiritualDiagnostics';

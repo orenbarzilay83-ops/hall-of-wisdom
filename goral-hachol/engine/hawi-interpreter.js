@@ -125,6 +125,7 @@ const TOPIC_HEBREW_TITLES = {
   theft:            'גנבה / חפץ גנוב',
   siblings:         'אחים / שכנים / קרובים',
   deathInheritance: 'מוות / ירושה / פחד גדול',
+  generalReading:   'פתיחה כללית',
 };
 
 const TOPIC_QUESITED_HOUSE = {
