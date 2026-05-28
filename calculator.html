@@ -73,6 +73,20 @@
 <div id="page-diary" class="dashboard-container fade-in" style="display:none">
   <h1 class="gold-title">📅 יומן לקוחות</h1>
   <div class="datetime-bar"><div class="date-big" id="diaryDate"></div><div class="time-big" id="diaryTime"></div></div>
+
+  <!-- ספר לקוחות -->
+  <div class="card">
+    <div class="card-title">👤 ספר לקוחות</div>
+    <div style="display:flex;gap:8px;margin-bottom:8px">
+      <input type="text" id="newContactName" placeholder="שם לקוח" style="flex:1">
+      <input type="tel" id="newContactPhone" placeholder="מספר טלפון" style="flex:1">
+      <button class="btn btn-gold" onclick="addContact()" style="white-space:nowrap">+ הוסף</button>
+    </div>
+    <input type="text" id="contactSearch" placeholder="חיפוש לפי שם או טלפון..." oninput="renderContacts()" style="margin-bottom:8px">
+    <div id="contactList"></div>
+  </div>
+
+  <!-- פגישות -->
   <div class="card">
     <div class="card-title">הוספת פגישה</div>
     <label>שם לקוח</label><input type="text" id="apptName" placeholder="שם הלקוח...">
@@ -93,6 +107,39 @@ function openMenu(){document.getElementById('sideMenu').classList.add('open');do
 function closeMenu(){document.getElementById('sideMenu').classList.remove('open');document.getElementById('menuOverlay').classList.remove('open');}
 function showPage(name){document.querySelectorAll('.dashboard-container').forEach(p=>p.style.display='none');document.getElementById('page-'+name).style.display='block';document.querySelectorAll('.menu-item').forEach(b=>b.classList.remove('active'));closeMenu();}
 function clearNumerology(){document.getElementById('userName').value='';document.getElementById('userLastName').value='';document.getElementById('birthDay').value='';document.getElementById('birthMonth').value='';document.getElementById('birthYear').value='';document.getElementById('output').innerHTML='';}
+// ── ספר לקוחות ──
+const CONTACTS_KEY = 'goralClientContacts_v1';
+function getContacts(){return JSON.parse(localStorage.getItem(CONTACTS_KEY)||'[]');}
+function addContact(){
+  const name=document.getElementById('newContactName').value.trim();
+  const phone=document.getElementById('newContactPhone').value.trim();
+  if(!name)return alert('נא למלא שם לקוח');
+  const contacts=getContacts();
+  const dup=contacts.find(c=>c.name===name||(phone&&c.phone&&c.phone===phone));
+  if(dup){
+    if(phone&&!dup.phone){dup.phone=phone;localStorage.setItem(CONTACTS_KEY,JSON.stringify(contacts));}
+    renderContacts();
+    return alert('לקוח כבר קיים בספר');
+  }
+  contacts.unshift({id:Date.now(),name,phone,createdAt:new Date().toISOString()});
+  localStorage.setItem(CONTACTS_KEY,JSON.stringify(contacts));
+  document.getElementById('newContactName').value='';
+  document.getElementById('newContactPhone').value='';
+  renderContacts();
+}
+function delContact(id){const c=getContacts().filter(c=>c.id!==id);localStorage.setItem(CONTACTS_KEY,JSON.stringify(c));renderContacts();}
+function renderContacts(){
+  const q=(document.getElementById('contactSearch')||{}).value||'';
+  const list=document.getElementById('contactList');
+  if(!list)return;
+  const all=getContacts();
+  const shown=q?all.filter(c=>c.name.includes(q)||c.phone.includes(q)):all;
+  if(shown.length===0){list.innerHTML='<div style="color:var(--muted);text-align:center;padding:12px;">'+(q?'לא נמצאו תוצאות':'אין לקוחות עדיין')+'</div>';return;}
+  list.innerHTML=shown.map(c=>`<div class="appt-item"><div class="appt-info"><div class="appt-name">${c.name}</div><div class="appt-time">${c.phone||'ללא טלפון'}</div></div><button class="appt-del" onclick="delContact(${c.id})">מחק</button></div>`).join('');
+}
+renderContacts();
+
+// ── פגישות ──
 function loadAppts(){const appts=JSON.parse(localStorage.getItem('appts')||'[]');const list=document.getElementById('apptList');if(!list)return;if(appts.length===0){list.innerHTML='<div style="color:var(--muted);text-align:center;padding:16px;">אין פגישות עדיין</div>';return;}appts.sort((a,b)=>(a.date+a.time)>(b.date+b.time)?1:-1);list.innerHTML=appts.map((a,i)=>'<div class="appt-item"><div class="appt-info"><div class="appt-name">'+a.name+'</div><div class="appt-time">'+a.date+' | '+a.time+(a.note?' | '+a.note:'')+'</div></div><button class="appt-del" onclick="delAppt('+i+')">מחק</button></div>').join('');}
 function addAppt(){const name=document.getElementById('apptName').value.trim();const date=document.getElementById('apptDate').value;const time=document.getElementById('apptTime').value;const note=document.getElementById('apptNote').value.trim();if(!name||!date||!time)return alert('מלא שם, תאריך ושעה');const appts=JSON.parse(localStorage.getItem('appts')||'[]');appts.push({name,date,time,note});localStorage.setItem('appts',JSON.stringify(appts));document.getElementById('apptName').value='';document.getElementById('apptDate').value='';document.getElementById('apptTime').value='';document.getElementById('apptNote').value='';loadAppts();}
 function delAppt(i){const appts=JSON.parse(localStorage.getItem('appts')||'[]');appts.splice(i,1);localStorage.setItem('appts',JSON.stringify(appts));loadAppts();}
