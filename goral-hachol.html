@@ -1659,8 +1659,8 @@
             : null;  // null = המנוע יחליט לבד לפי טקסט השאלה
 
         const reading = window.ramlRunReading(question, mothers);
-        reading.topicId = resolvedTopicId;           // מעביר ישירות למנוע
-        reading.clientContext = getClientContext(resolvedTopicId);
+        reading.topicId = resolvedTopicId ?? reading.topicId;
+        reading.clientContext = getClientContext(reading.topicId);
 
         boardResult.innerHTML = buildBoardHtml(reading) + buildInterpretationHtml(reading);
         showScreen("board");
