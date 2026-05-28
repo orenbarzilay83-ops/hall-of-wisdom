@@ -452,93 +452,68 @@
 
     .summary-box {
       margin-top:18px;
-      background:var(--navy);
-      color:#f8f2e5;
-      border-radius:20px;
-      padding:18px;
+      background:#ffffff;
+      color:#1a1a1a;
+      border-radius:16px;
+      padding:20px 22px;
       white-space:pre-wrap;
-      line-height:1.7;
-      font-size:16px;
+      line-height:1.8;
+      font-size:17px;
+      border:1px solid #e0e0e0;
+      text-align:right;
+      direction:rtl;
     }
 
     .verdict-box {
       margin-top:20px;
-      border-radius:20px;
+      border-radius:16px;
       padding:22px 24px;
       text-align:center;
-      border:3px solid transparent;
+      background:#ffffff;
+      border:1px solid #e0e0e0;
+      border-right:6px solid #ccc;
     }
-    .verdict-box.verdict-yes {
-      background:#1a3d1a;
-      border-color:#4caf50;
-      color:#a8f0a0;
-    }
-    .verdict-box.verdict-no {
-      background:#3d1a1a;
-      border-color:#e53935;
-      color:#f4a0a0;
-    }
-    .verdict-box.verdict-maybe {
-      background:#3d3000;
-      border-color:#ffb300;
-      color:#ffe082;
-    }
-    .verdict-box.verdict-mixed {
-      background:#1a2a3a;
-      border-color:#78909c;
-      color:#b0c4d8;
-    }
+    .verdict-box.verdict-yes  { border-right-color:#2e7d32; }
+    .verdict-box.verdict-no   { border-right-color:#c62828; }
+    .verdict-box.verdict-maybe { border-right-color:#e65100; }
+    .verdict-box.verdict-mixed { border-right-color:#546e7a; }
     .verdict-label {
       font-size:13px;
-      opacity:0.75;
-      margin-bottom:6px;
+      color:#888;
+      margin-bottom:8px;
       letter-spacing:0.05em;
     }
     .verdict-answer {
-      font-size:28px;
+      font-size:22px;
       font-weight:900;
       margin-bottom:10px;
+      color:#1a1a1a;
     }
     .verdict-detail {
-      font-size:14px;
-      line-height:1.6;
-      opacity:0.9;
+      font-size:16px;
+      line-height:1.7;
+      color:#333;
       white-space:pre-wrap;
+      text-align:right;
+      direction:rtl;
     }
 
     .board-info-row {
       margin-top:10px;
-      border-radius:12px;
+      border-radius:10px;
       padding:10px 16px;
       font-size:15px;
       line-height:1.6;
       direction:rtl;
+      background:#f8f8f8;
+      color:#333;
+      border:1px solid #e0e0e0;
     }
-    .board-score-ok {
-      background:#1a3d1a;
-      border:2px solid #4caf50;
-      color:#a8f0a0;
-    }
-    .board-score-warn {
-      background:#3d2800;
-      border:2px solid #ff9800;
-      color:#ffe0a0;
-    }
-    .board-dhamir {
-      background:#1a2a3a;
-      border:2px solid #5c9fc7;
-      color:#c8e0f4;
-    }
-    .board-ittisalat-ok {
-      background:#1a2d1a;
-      border:2px solid #76c442;
-      color:#b8f0a0;
-    }
-    .board-ittisalat-warn {
-      background:#2d1a2a;
-      border:2px solid #b06090;
-      color:#f0c0e0;
-    }
+    .board-score-ok   { background:#f0faf0; border-color:#a5d6a7; color:#1b5e20; }
+    .board-score-warn { background:#fff8e1; border-color:#ffcc02; color:#6d4c00; font-weight:700; }
+    .board-dhamir     { background:#f3f3f3; border-color:#bdbdbd; color:#333; }
+    .board-ittisalat-ok { background:#f0faf0; border-color:#a5d6a7; color:#1b5e20; }
+    .board-ittisalat-warn { background:#fce4ec; border-color:#ef9a9a; color:#7f0000; }
 
     .topic-grid {
       display:grid;
@@ -843,6 +818,17 @@
 
     .details-panel {
       margin-top:12px;
+    }
+    .details-panel .summary-box {
+      font-size:17px;
+      line-height:1.9;
+      color:#111;
+    }
+    .details-panel .summary-box p {
+      margin:0;
+    }
+    .details-panel .summary-box strong {
+      color:#071b30;
     }
 
     .error {
@@ -1455,37 +1441,12 @@
         boardInfoHtml += `<div class="board-info-row board-dhamir">🎯 הדמיר: ${traceText} — הדמיר העיקרי: בית ${dhamirMizanData.primaryHouseNumber}</div>`;
       }
 
-      // Ittisalat banner
-      const ittisalatData = insight.boardAnalysis?.ittisalat || null;
-      if (ittisalatData) {
-        const connIcon = ittisalatData.isConnected ? "🔗" : "🔓";
-        const connStatus = ittisalatData.isConnected ? "יש חיבור" : "אין חיבור";
-        const connClass = ittisalatData.isConnected ? "board-ittisalat-ok" : "board-ittisalat-warn";
-        const lines = (ittisalatData.summaryLines || []).map(l => escapeHtml(l)).join(" &nbsp;|&nbsp; ");
-        boardInfoHtml += `<div class="board-info-row ${connClass}">${connIcon} איתיסלאת (${connStatus}): ${lines}</div>`;
-      }
-
-      // House 1 (taleh) banner
-      const h1Data = insight.boardAnalysis?.house1Analysis || null;
-      if (h1Data) {
-        const h1Class = h1Data.fortuneGrade > 0 ? "board-score-ok" : h1Data.fortuneGrade < 0 ? "board-score-warn" : "board-dhamir";
-        const h1Icon = h1Data.fortuneGrade > 0 ? "✨" : h1Data.fortuneGrade < 0 ? "⚠" : "🔵";
-        const h1Lines = h1Data.summaryLines.map(l => escapeHtml(l)).join(" &nbsp;|&nbsp; ");
-        boardInfoHtml += `<div class="board-info-row ${h1Class}">${h1Icon} טאלע: ${h1Lines}</div>`;
-      }
-
-      // Topic connections banner
-      const topicConnData = insight.boardAnalysis?.topicConnections || null;
-      if (topicConnData && topicConnData.checks && topicConnData.checks.length > 0) {
-        const tcLines = topicConnData.checks.map(c => {
-          const icon = c.connType === "same-figure" ? "🔁" : c.connType === "aspect" ? "🔺" : "—";
-          return `${icon} ${escapeHtml(c.role)}: ${escapeHtml(c.assessment)}`;
-        }).join(" &nbsp;|&nbsp; ");
-        boardInfoHtml += `<div class="board-info-row board-dhamir">📋 בדיקות נושא: ${tcLines}</div>`;
-      }
-
       // Prominent verdict box
       let verdictHtml = "";
+      const topicId = insight.topicId || "";
+      const questionText = String(insight.question || "");
+      const isMiQuestion = /^מי[\s,]/.test(questionText);
+
       if (isSpiritualTopic && spiritual?.grade) {
         const gradeMap = {
           "strong-suspicion": "כן — יש פגיעה רוחנית",
@@ -1503,6 +1464,39 @@
             <div class="verdict-answer">${escapeHtml(verdictText)}</div>
             <div class="verdict-detail">${escapeHtml(spiritual.finalHebrew || "")}</div>
           </div>`;
+
+      } else if (topicId === 'theft' || (isMiQuestion && topicId === 'enemies')) {
+        const house7 = insight.boardAnalysis?.houses?.find(h => Number(h.house) === 7);
+        const house7Name = house7?.figureHebrew || "";
+        const nameLetters = insight.boardAnalysis?.nameLetters || [];
+        const h7Letters = nameLetters.find(n => n.houseNumber === 7);
+        const grade = insight.boardScore?.grade || judgeV?.verdict || "";
+        const isGoodGrade = grade === 'positive' || grade === 'cautiously-positive' || grade === 'yes-strong' || grade === 'yes-weak';
+        const isBadGrade = grade === 'negative' || grade === 'cautiously-negative' || grade === 'no-strong' || grade === 'no-weak';
+
+        let answerLine = "";
+        if (isMiQuestion || topicId === 'theft') {
+          if (isGoodGrade) {
+            answerLine = "ניתן לזהות את הגנב — הסיכויים לאיתורו טובים";
+          } else if (isBadGrade) {
+            answerLine = "קשה לאיתור הגנב — הוא כבר התרחק";
+          } else {
+            answerLine = "ייתכן שניתן לזהות את הגנב — הלוח לא חד-משמעי";
+          }
+        }
+
+        let detailParts = [];
+        if (house7Name) detailParts.push(`הגנב מיוצג על ידי: ${house7Name} (בית 7)`);
+        if (h7Letters?.letters?.length) detailParts.push(`שמו מתחיל ב: ${h7Letters.letters.join(" / ")}`);
+
+        const vClass = isGoodGrade ? "verdict-maybe" : isBadGrade ? "verdict-no" : "verdict-mixed";
+        verdictHtml = `
+          <div class="verdict-box ${vClass}">
+            <div class="verdict-label">תשובת הלוח לשאלה</div>
+            <div class="verdict-answer">${escapeHtml(answerLine)}</div>
+            ${detailParts.length ? `<div class="verdict-detail">${escapeHtml(detailParts.join("\n"))}</div>` : ""}
+          </div>`;
+
       } else if (judgeV && judgeV.hebrewShort) {
         verdictHtml = `
           <div class="verdict-box ${escapeHtml(verdictClass(judgeV.verdict))}">
@@ -1607,13 +1601,15 @@
           .replace(/ נחס(?=[^א-ת]|$)/g, " רע");
       }
 
-      // Details panel content
+      // Details panel — client-facing only (no practitioner banners)
+      const conclusionFormatted = hebrewTerms(escapeHtml(conclusion))
+        .replace(/\n\n/g, '</p><p style="margin-top:14px;">')
+        .replace(/\n/g, '<br/>');
+
       const detailsContent = `
         <div class="details-panel">
-          ${hebrewTerms(boardInfoHtml)}
           <div class="summary-box">
-            <strong>מסקנה מפורטת:</strong><br/>
-            ${hebrewTerms(escapeHtml(conclusion)).replace(/\n/g, "<br/>")}
+            <p>${conclusionFormatted}</p>
           </div>
           ${spiritualDetailHtml}
         </div>`;
@@ -1622,7 +1618,7 @@
         ${boardWarnHtml}
         ${verdictHtml}
         ${keyFactsHtml}
-        <button class="details-toggle" onclick="const p=this.nextElementSibling;p.hidden=!p.hidden;this.textContent=p.hidden?'פרטים ▼':'סגור ▲'">פרטים ▼</button>
+        <button class="details-toggle" onclick="const p=this.nextElementSibling;p.hidden=!p.hidden;this.textContent=p.hidden?'קרא עוד ▼':'סגור ▲'">קרא עוד ▼</button>
         <div hidden>${detailsContent}</div>
       `;
     }
