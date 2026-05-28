@@ -901,6 +901,11 @@
             <input id="clientParentInput" placeholder="שם האב" autocomplete="off" />
           </div>
 
+          <div>
+            <label>מספר טלפון</label>
+            <input id="clientPhoneInput" placeholder="טלפון הלקוח" type="tel" autocomplete="off" />
+          </div>
+
           <div class="full">
             <div class="dt-row">
               <div>
@@ -961,6 +966,7 @@
         <div class="actions">
           <button class="btn gray" id="backSelectBtn" type="button">חזרה לבחירת אמהות</button>
           <button class="btn primary" id="archiveBtn" type="button">ארכיון קריאות</button>
+          <button class="btn gray" id="saveClientBtn" type="button">👤 שמור לקוח</button>
           <button class="btn gray" id="clearArchiveBtn" type="button">נקה ארכיון</button>
         </div>
       </div>
@@ -993,6 +999,23 @@
           <button class="btn gray" id="backFromJournalBtn">← חזרה</button>
           <h2 style="margin:0">יומן לקוחות</h2>
         </div>
+
+        <!-- ספר לקוחות -->
+        <div style="margin-bottom:20px">
+          <h3 style="margin:0 0 10px;font-size:1rem">👤 ספר לקוחות</h3>
+          <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+            <input type="text" id="newContactName" placeholder="שם לקוח" style="flex:1;min-width:120px" />
+            <input type="tel" id="newContactPhone" placeholder="מספר טלפון" style="flex:1;min-width:120px" />
+            <button class="btn primary" id="addContactBtn" style="white-space:nowrap">+ הוסף לקוח</button>
+          </div>
+          <input type="text" id="contactSearch" placeholder="חיפוש לפי שם או טלפון..." style="margin-bottom:8px;width:100%;box-sizing:border-box" oninput="renderContacts()" />
+          <div id="contactList"></div>
+        </div>
+
+        <hr style="border:none;border-top:1px solid var(--border,#ddd);margin:16px 0" />
+
+        <!-- ארכיון קריאות -->
+        <h3 style="margin:0 0 10px;font-size:1rem">📋 ארכיון קריאות</h3>
         <div id="journalList"></div>
       </div>
     </section>
@@ -1289,6 +1312,7 @@
       return {
         clientName: document.getElementById("clientNameInput").value.trim(),
         parentName: document.getElementById("clientParentInput").value.trim(),
+        phone: document.getElementById("clientPhoneInput").value.trim(),
         questionDate: document.getElementById("questionDateInput").value.trim(),
         questionTime: document.getElementById("questionTimeInput").value.trim(),
         consultationContext: "",
@@ -1668,7 +1692,7 @@
     }
 
     function clearForm() {
-      ["clientNameInput","clientParentInput","questionDateInput","questionTimeInput","questionInput"].forEach(id => {
+      ["clientNameInput","clientParentInput","clientPhoneInput","questionDateInput","questionTimeInput","questionInput"].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.value = "";
       });
@@ -1750,6 +1774,70 @@
       if (window.GORAL_CLIENT_ARCHIVE?.clearGoralArchive) window.GORAL_CLIENT_ARCHIVE.clearGoralArchive();
     });
 
+    // ─── ספר לקוחות ──────────────────────────────────────────────
+    const CONTACTS_KEY = 'goralClientContacts_v1';
+    function getContacts() { return JSON.parse(localStorage.getItem(CONTACTS_KEY) || '[]'); }
+
+    function renderContacts() {
+      const el = document.getElementById('contactList');
+      if (!el) return;
+      const q = (document.getElementById('contactSearch') || {}).value || '';
+      const all = getContacts();
+      const shown = q ? all.filter(c => c.name.includes(q) || (c.phone && c.phone.includes(q))) : all;
+      if (!shown.length) {
+        el.innerHTML = `<div style="color:var(--muted,#888);text-align:center;padding:12px">${q ? 'לא נמצאו תוצאות' : 'אין לקוחות בספר עדיין'}</div>`;
+        return;
+      }
+      el.innerHTML = shown.map(c =>
+        `<div class="appt-item" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border,#eee)">
+          <div><div style="font-weight:600">${escapeHtml(c.name)}</div><div style="font-size:0.85rem;color:var(--muted,#888)">${escapeHtml(c.phone || 'ללא טלפון')}</div></div>
+          <button class="btn gray" style="font-size:0.8rem;padding:4px 10px" onclick="delContact(${c.id})">מחק</button>
+        </div>`).join('');
+    }
+
+    function addContact() {
+      const name = (document.getElementById('newContactName') || {}).value?.trim();
+      const phone = (document.getElementById('newContactPhone') || {}).value?.trim();
+      if (!name) { alert('נא למלא שם לקוח'); return; }
+      const contacts = getContacts();
+      const dup = contacts.find(c => c.name === name || (phone && c.phone && c.phone === phone));
+      if (dup) {
+        if (phone && !dup.phone) { dup.phone = phone; localStorage.setItem(CONTACTS_KEY, JSON.stringify(contacts)); }
+        renderContacts();
+        return alert('לקוח כבר קיים בספר');
+      }
+      contacts.unshift({ id: Date.now(), name, phone: phone || '', createdAt: new Date().toISOString() });
+      localStorage.setItem(CONTACTS_KEY, JSON.stringify(contacts));
+      document.getElementById('newContactName').value = '';
+      document.getElementById('newContactPhone').value = '';
+      renderContacts();
+    }
+
+    function delContact(id) {
+      const c = getContacts().filter(c => c.id !== id);
+      localStorage.setItem(CONTACTS_KEY, JSON.stringify(c));
+      renderContacts();
+    }
+
+    document.getElementById('addContactBtn')?.addEventListener('click', addContact);
+
+    document.getElementById('saveClientBtn').addEventListener('click', () => {
+      const ctx = getClientContext();
+      const name = ctx.clientName;
+      const phone = ctx.phone;
+      if (!name) { alert('אין שם לקוח — מלא שם בפרטי הקריאה'); return; }
+      const contacts = getContacts();
+      const dup = contacts.find(c => c.name === name || (phone && c.phone && c.phone === phone));
+      if (dup) {
+        if (phone && !dup.phone) { dup.phone = phone; localStorage.setItem(CONTACTS_KEY, JSON.stringify(contacts)); }
+        alert(`הלקוח "${name}" כבר קיים בספר הלקוחות`);
+        return;
+      }
+      contacts.unshift({ id: Date.now(), name, phone: phone || '', createdAt: new Date().toISOString() });
+      localStorage.setItem(CONTACTS_KEY, JSON.stringify(contacts));
+      alert(`הלקוח "${name}" נשמר בספר הלקוחות ✓`);
+    });
+
     // ─── Menu Drawer ──────────────────────────────────────────────
     function openMenu()  { document.getElementById("menuDrawer").classList.add("open"); document.getElementById("menuOverlay").classList.add("open"); }
     function closeMenu() { document.getElementById("menuDrawer").classList.remove("open"); document.getElementById("menuOverlay").classList.remove("open"); }
@@ -1762,7 +1850,7 @@
       closeMenu(); showScreen("guide"); renderGuide();
     });
     document.getElementById("menuJournalBtn").addEventListener("click", () => {
-      closeMenu(); showScreen("journal"); renderJournal();
+      closeMenu(); showScreen("journal"); renderJournal(); renderContacts();
     });
     document.getElementById("menuPrayerBtn").addEventListener("click", () => {
       closeMenu(); showScreen("prayer");
