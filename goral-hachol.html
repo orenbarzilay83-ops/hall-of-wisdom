@@ -709,6 +709,14 @@
     .badge.west  { background:#f0e8ff;color:#400080; }
     .badge.planet { background:#fffbe6;color:#5a4000; }
     .badge.group { background:#f0f8ff;color:#003060;font-size:10px; }
+    .fig-letters {
+      display:flex;justify-content:center;gap:5px;margin-top:5px;
+    }
+    .fig-letter {
+      font-size:18px;font-weight:900;color:var(--navy);
+      background:#f0f4ff;border-radius:8px;padding:2px 8px;
+      border:1px solid #c8d8ff;line-height:1.4;
+    }
     .fig-legend {
       margin-top:14px;padding:10px 14px;background:#f8f9fa;
       border-radius:10px;border:1px solid #e0e0e0;font-size:12px;color:#555;
@@ -1774,26 +1782,26 @@
       });
     });
 
-    // Figure fortune/movement data (not in RAML_FORMS_BASIC)
-    // fortune: טוב=מיטיב, רע=מזיק, ממוזג=בינוני
-    // movement: קבוצת הצורה — יוצאת/נכנסת/קבועה/מתהפכת
+    // Figure data (fortune, movement group, letters) — source: hawi-figure-letter-extraction.js + raml-foundations
+    // fortune: טוב=מיטיב, רע=מזיק, ממוזג=בינוני | movement: קבוצה (יוצאת/נכנסת/קבועה/מתהפכת)
+    // letters: מיפוי תסקין עבדוה מחאוי — אות ראשית + אות משנית (לצורות מתהפכות)
     const FIGURE_EXTRA = {
-      '1111': { fortune: 'ממוזג', fClass: 'mixed', movement: 'מתהפכת' },
-      '1112': { fortune: 'רע',    fClass: 'nahas', movement: 'יוצאת' },
-      '1121': { fortune: 'ממוזג', fClass: 'mixed', movement: 'מתהפכת' },
-      '1122': { fortune: 'טוב',   fClass: 'saad',  movement: 'יוצאת' },
-      '1211': { fortune: 'ממוזג-רע', fClass: 'mixed', movement: 'מתהפכת' },
-      '1212': { fortune: 'רע',    fClass: 'nahas', movement: 'יוצאת' },
-      '1221': { fortune: 'ממוזג-רע', fClass: 'mixed', movement: 'מתהפכת' },
-      '1222': { fortune: 'טוב',   fClass: 'saad',  movement: 'יוצאת' },
-      '2111': { fortune: 'טוב',   fClass: 'saad',  movement: 'נכנסת' },
-      '2112': { fortune: 'ממוזג-טוב', fClass: 'mixed', movement: 'קבועה' },
-      '2121': { fortune: 'טוב',   fClass: 'saad',  movement: 'נכנסת' },
-      '2122': { fortune: 'רע',    fClass: 'nahas', movement: 'קבועה' },
-      '2211': { fortune: 'טוב',   fClass: 'saad',  movement: 'נכנסת' },
-      '2212': { fortune: 'טוב',   fClass: 'saad',  movement: 'קבועה' },
-      '2221': { fortune: 'רע',    fClass: 'nahas', movement: 'נכנסת' },
-      '2222': { fortune: 'ממוזג', fClass: 'mixed', movement: 'קבועה' },
+      '1111': { fortune: 'ממוזג',     fClass: 'mixed', movement: 'מתהפכת', letters: ['ע'] },
+      '1112': { fortune: 'רע',        fClass: 'nahas', movement: 'יוצאת',  letters: ['ח', 'ם'] },
+      '1121': { fortune: 'ממוזג',     fClass: 'mixed', movement: 'מתהפכת', letters: ['ט', 'ן'] },
+      '1122': { fortune: 'טוב',       fClass: 'saad',  movement: 'יוצאת',  letters: ['ה', 'ש'] },
+      '1211': { fortune: 'ממוזג-רע',  fClass: 'mixed', movement: 'מתהפכת', letters: ['י', 'ף'] },
+      '1212': { fortune: 'רע',        fClass: 'nahas', movement: 'יוצאת',  letters: ['ל', 'א'] },
+      '1221': { fortune: 'ממוזג-רע',  fClass: 'mixed', movement: 'מתהפכת', letters: ['נ'] },
+      '1222': { fortune: 'טוב',       fClass: 'saad',  movement: 'יוצאת',  letters: ['א', 'פ'] },
+      '2111': { fortune: 'טוב',       fClass: 'saad',  movement: 'נכנסת',  letters: ['ז', 'ך'] },
+      '2112': { fortune: 'ממוזג-טוב', fClass: 'mixed', movement: 'קבועה',  letters: ['ס'] },
+      '2121': { fortune: 'טוב',       fClass: 'saad',  movement: 'נכנסת',  letters: ['כ', 'ץ'] },
+      '2122': { fortune: 'רע',        fClass: 'nahas', movement: 'קבועה',  letters: ['ג', 'ק'] },
+      '2211': { fortune: 'טוב',       fClass: 'saad',  movement: 'נכנסת',  letters: ['ו', 'ת'] },
+      '2212': { fortune: 'טוב',       fClass: 'saad',  movement: 'קבועה',  letters: ['ד', 'ר'] },
+      '2221': { fortune: 'רע',        fClass: 'nahas', movement: 'נכנסת',  letters: ['ב', 'צ'] },
+      '2222': { fortune: 'ממוזג',     fClass: 'mixed', movement: 'קבועה',  letters: ['מ'] },
     };
     const DIR_CLASS = { 'צפון': 'north', 'דרום': 'south', 'מזרח': 'east', 'מערב': 'west' };
     const ELEMENT_CLASS = { 'אש': 'fire', 'מים': 'water', 'אוויר': 'air', 'עפר': 'earth' };
@@ -1816,10 +1824,12 @@
         const ex = FIGURE_EXTRA[key] || {};
         const elClass = ELEMENT_CLASS[f.element] || '';
         const dirClass = DIR_CLASS[f.direction] || '';
+        const lettersHtml = (ex.letters || []).map(l => `<span class="fig-letter">${escapeHtml(l)}</span>`).join('');
         return `<div class="fig-card">
           ${glyphHtml(linesFromKey(key))}
           <div class="fig-name">${escapeHtml(f.hebrew || key)}</div>
           <div class="fig-arabic">${escapeHtml(f.arabic || '')}</div>
+          ${lettersHtml ? `<div class="fig-letters">${lettersHtml}</div>` : ''}
           <div class="fig-badges">
             <span class="badge ${ex.fClass}">${escapeHtml(ex.fortune || '')}</span>
             <span class="badge ${elClass}">${escapeHtml(f.element || '')}</span>
@@ -1831,17 +1841,15 @@
       }).join('');
       el.innerHTML = `<div class="figures-grid">${cards}</div>
         <div class="fig-legend">
-          <strong>מקרא:</strong>
-          &nbsp;🟢 <strong>טוב</strong> = צורה מיטיבה &nbsp;|&nbsp;
-          🔴 <strong>רע</strong> = צורה מזיקה &nbsp;|&nbsp;
-          🟡 <strong>ממוזג</strong> = בינונית<br>
+          <strong>האותיות</strong> (בתיבות כחולות) = אותיות תסקין עבדוה לפי חאוי — לחילוץ שם הנשאל עליו מבית 7 או 9.<br>
+          <strong>מזל:</strong> 🟢 <strong>טוב</strong> = מיטיב &nbsp;|&nbsp; 🔴 <strong>רע</strong> = מזיק &nbsp;|&nbsp; 🟡 <strong>ממוזג</strong> = בינוני<br>
           <strong>קבוצות תנועה:</strong>
-          &nbsp;<strong>יוצאת</strong> (خارجة) = צורה שמשפעת כלפי חוץ &nbsp;|&nbsp;
-          <strong>נכנסת</strong> (داخلة) = צורה שמשפעת כלפי פנים &nbsp;|&nbsp;
-          <strong>קבועה</strong> (ثابتة) = צורה יציבה &nbsp;|&nbsp;
-          <strong>מתהפכת</strong> (منقلبة) = צורה עם שני פנים<br>
-          <strong>כיוון:</strong> מזרח 🟢 · מערב 🟣 · צפון 🔵 · דרום 🟠
-          &nbsp;|&nbsp; <strong>כוכב</strong> = הגורם השמימי השולט בצורה
+          <strong>יוצאת</strong> (خارجة) = משפיעה כלפי חוץ &nbsp;|&nbsp;
+          <strong>נכנסת</strong> (داخلة) = משפיעה כלפי פנים &nbsp;|&nbsp;
+          <strong>קבועה</strong> (ثابتة) = יציבה &nbsp;|&nbsp;
+          <strong>מתהפכת</strong> (منقلبة) = שני פנים<br>
+          <strong>כיוון:</strong> 🔵 צפון · 🟠 דרום · 🟢 מזרח · 🟣 מערב
+          &nbsp;|&nbsp; <strong>כוכב</strong> = הגורם השמימי השולט
         </div>`;
     }
 
