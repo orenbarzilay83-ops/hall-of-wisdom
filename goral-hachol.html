@@ -1559,14 +1559,14 @@
         `
         : "";
 
-      const spiritualDetailHtml = showSpiritual
+      const spiritualDetailHtml = showSpiritual && !isSpiritualTopic
         ? `
           <div class="summary-box">
             <strong>${isSpiritualTopic ? "פרטי האבחון הרוחני:" : "אבחון רוחני נוסף:"}</strong>
             ${!isSpiritualTopic ? `<br/>${escapeHtml(spiritual.finalHebrew || "")}` : ""}
             ${Array.isArray(spiritual.mainReasons) && spiritual.mainReasons.length
               ? `<ul>${spiritual.mainReasons.filter(r => r.score > 0).slice(0, 6).map(reason => `
-                  <li><strong>${reason.house != null ? `בית ${reason.house}` : escapeHtml(reason.role || "")}</strong>${reason.house != null && reason.role ? ` (${escapeHtml(reason.role)})` : ""}${reason.figureHebrew ? ` — ${escapeHtml(reason.figureHebrew)}` : ""}: ${escapeHtml((reason.signals || []).join(" "))}</li>
+                  <li><strong>${reason.house != null ? `בית ${reason.house}` : escapeHtml(reason.role || "")}</strong>${reason.house != null && reason.role && reason.role !== `בית ${reason.house}` ? ` (${escapeHtml(reason.role)})` : ""}${reason.figureHebrew ? ` — ${escapeHtml(reason.figureHebrew)}` : ""}: ${escapeHtml((reason.signals || []).join(" "))}</li>
                 `).join("")}</ul>`
               : (isSpiritualTopic ? "<p>לא נמצאו חוקים ספציפיים מהמקור. הפסיקה מבוססת על הדיין והעדים.</p>" : "")}
           </div>

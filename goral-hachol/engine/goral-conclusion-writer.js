@@ -650,7 +650,7 @@ function spiritualParagraph(spiritualDiagnosis, topicId) {
       const figure = r.figureHebrew ? ` — צורה: ${r.figureHebrew}` : '';
       const signals = (r.signals || []).join(' ');
       const houseLabel = r.house != null ? `בית ${r.house}` : r.role;
-      const roleLabel = r.house != null ? ` (${r.role})` : '';
+      const roleLabel = r.house != null && r.role && r.role !== `בית ${r.house}` ? ` (${r.role})` : '';
       return `${houseLabel}${roleLabel}${figure}: ${signals}`;
     });
 
