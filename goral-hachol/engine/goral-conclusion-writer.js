@@ -729,6 +729,60 @@ function _hline(role, num, house, quality) {
   return `${role} (בית ${num} — ${house.figureHebrew}): ${quality}`;
 }
 
+// Maps engine spiritual-type category IDs (from questionHits / signal text) to display Hebrew
+const SPIRITUAL_CATEGORY_HEBREW = {
+  ayin:            'עין הרע',
+  sihr:            'כישוף',
+  hasad:           'קנאה',
+  jinn:            "ג׳ן",
+  mass:            'אחיזה רוחנית',
+  fearHiddenEnemy: 'פחד ואויב נסתר',
+};
+
+// Signal keywords for each category — used to infer found types from diagnosisHebrew text
+const SPIRITUAL_SIGNAL_KEYWORDS = {
+  ayin:  ['עין', 'מבט', 'מקונא'],
+  sihr:  ['כישוף', 'כשפ', 'קשירה', 'טליסמא', 'מכשפ'],
+  hasad: ['קנאה'],
+  jinn:  ['גין', 'שדים', 'תחתון'],
+  mass:  ['אחיזה', 'מס '],
+};
+
+function _normSpiritualText(s) {
+  return String(s || '').replace(/[״"׳']/g, '').toLowerCase();
+}
+
+// Returns the first spiritual category ID that appears in the question (via questionHits)
+// Falls back to scanning question text directly for robustness
+function getAskedSpiritualCategories(spiritualDiagnosis, question) {
+  const hits = spiritualDiagnosis?.questionHits;
+  if (Array.isArray(hits) && hits.length) return hits;
+  // Fallback: scan question text
+  const q = _normSpiritualText(question);
+  const fallbackKeywords = {
+    ayin:  ['עין הרע', 'עין'],
+    sihr:  ['כישוף', 'כשפים', 'קשירה'],
+    hasad: ['קנאה'],
+    jinn:  ['גין', 'שדים'],
+    mass:  ['אחיזה', 'פגיעה רוחנית'],
+  };
+  return Object.entries(fallbackKeywords)
+    .filter(([, kws]) => kws.some(kw => q.includes(_normSpiritualText(kw))))
+    .map(([id]) => id);
+}
+
+// Returns spiritual category IDs that appear in the found signals/diagnosis text
+function getFoundSpiritualCategories(spiritualDiagnosis) {
+  const allText = _normSpiritualText(
+    (spiritualDiagnosis?.mainReasons || [])
+      .flatMap(r => r.signals || []).join(' ') +
+    ' ' + (spiritualDiagnosis?.finalHebrew || '')
+  );
+  return Object.entries(SPIRITUAL_SIGNAL_KEYWORDS)
+    .filter(([, kws]) => kws.some(kw => allText.includes(_normSpiritualText(kw))))
+    .map(([id]) => id);
+}
+
 const TOPIC_ANSWER_SCHEMA = {
 
   illness: {
@@ -1013,8 +1067,33 @@ const TOPIC_ANSWER_SCHEMA = {
   },
 
   spiritualDiagnostics: {
-    build(a, grade, judge, question) {
+    build(a, grade, judge, question, spiritualDiagnosis) {
       const lines = [];
+
+      // Answer the specific type that was asked first
+      const askedIds = getAskedSpiritualCategories(spiritualDiagnosis, question);
+      const foundIds = getFoundSpiritualCategories(spiritualDiagnosis);
+
+      if (askedIds.length > 0) {
+        const askedId = askedIds[0];
+        const askedHebrew = SPIRITUAL_CATEGORY_HEBREW[askedId] || askedId;
+        const askedFound = foundIds.includes(askedId);
+        const otherFound = foundIds.filter(id => id !== askedId);
+
+        if (askedFound) {
+          lines.push(`הלוח מאשר — יש סימנים ל${askedHebrew}.`);
+        } else if (otherFound.length > 0) {
+          const otherNames = otherFound.map(id => SPIRITUAL_CATEGORY_HEBREW[id] || id).join(' ו');
+          lines.push(`אין חשד ל${askedHebrew}, אבל יש סימנים לבעיה רוחנית אחרת: ${otherNames}.`);
+        } else {
+          lines.push(`הלוח לא מראה סימנים ל${askedHebrew} ולא לפגיעה רוחנית אחרת בולטת.`);
+        }
+      } else if (foundIds.length > 0) {
+        const names = foundIds.map(id => SPIRITUAL_CATEGORY_HEBREW[id] || id).join(' ו');
+        lines.push(`הלוח מצביע על סימנים ל${names}.`);
+      }
+
+      // Detail what was found
       const houseIndex = a?.spiritualDiagnosticsHouseIndex;
       if (houseIndex?.alerts?.length) {
         lines.push(`בתים רגישים: ${houseIndex.alerts.map(al => `בית ${al.houseNumber} (${al.figureHebrew})`).join(', ')}`);
@@ -1449,7 +1528,7 @@ function buildTopicConclusion(result) {
   const grade = result.boardScore?.grade || 'mixed';
   const judge = a.judge;
   const question = result.question || '';
-  return schema.build(a, grade, judge, question) || null;
+  return schema.build(a, grade, judge, question, result.spiritualDiagnosis) || null;
 }
 
 function recommendationByTopic(topicId, grade, boardAnalysis, question) {
