@@ -1338,10 +1338,12 @@ function getTransitMeaningForHouse(house) {
   // The source itself omits certain house entries (most commonly house 15 for some figures).
   // Returning null keeps the conclusion clean — no "המקור אינו מביא דין" showing up in text.
   if (houseMeaning.sourceStatus === 'not-explicit-in-source') return null;
+  const supp = houseMeaning.supplementarySource;
   return {
     figure: house.hebrew || house.key || null,
     house: house.house,
     meaning: houseMeaning.meaning || null,
+    suppMeaning: (supp && !supp.conflictsWithHawi && supp.meaningHebrew) || null,
     topics: houseMeaning.topics || null,
     sourceStatus: houseMeaning.sourceStatus || null,
   };

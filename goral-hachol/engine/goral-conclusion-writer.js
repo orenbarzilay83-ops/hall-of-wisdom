@@ -1543,11 +1543,21 @@ const TOPIC_ANSWER_SCHEMA = {
       for (const d of HOUSE_DOMAINS) {
         const h = getHouseFromBoard(a, d.num);
         if (!h) continue;
-        // Prefer source-backed transit meaning; fall back to quality-based statement
-        const meaning = h.transit?.meaning ||
-          (_saad(h) ? d.saad : _nahs(h) ? d.nahs : d.mixed);
+        // Build figure-specific interpretation from source data
+        let interp;
+        if (h.transit?.meaning) {
+          interp = h.transit.meaning;
+          // Append supplementary source if it adds meaningful content and doesn't conflict
+          const supp = h.transit.suppMeaning;
+          if (supp && supp !== h.transit.meaning) {
+            interp += ' ' + supp;
+          }
+        } else {
+          // Fallback only when source data is absent for this figure×house
+          interp = _saad(h) ? d.saad : _nahs(h) ? d.nahs : d.mixed;
+        }
         const prefix = _nahs(h) ? '⚠ ' : '';
-        lines.push(`${prefix}${d.domain} (בית ${d.num} — ${h.figureHebrew}): ${meaning}`);
+        lines.push(`${prefix}${d.domain} (בית ${d.num} — ${h.figureHebrew}): ${interp}`);
       }
 
       if (judge) {
