@@ -227,6 +227,9 @@ function goralNavigate(boardName, jump){
     if(k === 1){
       offset = 1;
     }
+    if(k === 3){
+      offset = 6;
+    }
   }
 
   let index = (start + goralFirstJump(jump) + offset + seq.length) % seq.length;
