@@ -224,6 +224,9 @@ function goralNavigate(boardName, jump){
     if(k === 9){
       offset = 11;
     }
+    if(k === 1){
+      offset = 1;
+    }
   }
 
   let index = (start + goralFirstJump(jump) + offset + seq.length) % seq.length;
@@ -285,6 +288,8 @@ function goralFormatAnswer(raw){
     ["ימלאמשאלתכ", "ימלא משאלתכ"],
     ["מלאמשאלתכ", "מלא משאלתכ"],
 
+    ["אשראתהמבקש", "אשר אתה מבקש"],
+    ["תצלחבזה", "תצלח בזה"],
     ["לאמסכימבזה", "לא מסכימ בזה"],
     ["לאיניחלזאת", "לא יניח לזאת"],
     ["והיאלאלטוב", "והיא לא לטוב"],
