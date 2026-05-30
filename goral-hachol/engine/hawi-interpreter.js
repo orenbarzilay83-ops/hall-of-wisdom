@@ -99,6 +99,7 @@ const TOPIC_MAIN_HOUSES = {
   theft:            [1, 2, 7, 8, 13, 14, 15],
   siblings:         [1, 3, 7, 13, 14, 15],
   deathInheritance: [1, 7, 8, 2, 13, 14, 15],
+  generalReading:   [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
 };
 
 const TOPIC_HEBREW_TITLES = {
