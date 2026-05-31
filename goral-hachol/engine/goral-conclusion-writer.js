@@ -598,12 +598,6 @@ function describeCoreHouses(analysis, topicId, question) {
     }
   }
 
-  // מה בלב השואל — מוצג לכל נושא לפי שיטת חזרת הצורה הראשונה (بلوغ الامل פ׳ 17)
-  const firstFigRep = analysis.firstFigureRepetition;
-  if (firstFigRep) {
-    parts.push(firstFigRep.outputHebrew);
-  }
-
   const timing = analysis.timingEstimate;
   if (timing) {
     parts.push(timing.outputHebrew);
@@ -928,6 +922,11 @@ const TOPIC_ANSWER_SCHEMA = {
           `פסיקת הדיין (${judge.figureHebrew}): לטובת העסקה`,
           `פסיקת הדיין (${judge.figureHebrew}): נגד העסקה — הימנע או שנה תנאים`,
           `פסיקת הדיין (${judge.figureHebrew}): לא מכריע — נדרשת בדיקה נוספת`));
+        if (h10 && _nahs(h10) && _saad(judge)) {
+          lines.push('↳ הדיין עוקף את הקושי בבית 10 — הכשלון הוא זמני או שמדובר בשלב ראשוני בלבד; הכרעת הגורל חיובית.');
+        } else if (h10 && _saad(h10) && _nahs(judge)) {
+          lines.push('↳ בית 10 מראה הצלחה, אך הדיין מכריע לרעה — הרווח ראשוני אך הסוף קשה יותר.');
+        }
       }
 
       return lines.join('\n');
@@ -1393,6 +1392,11 @@ const TOPIC_ANSWER_SCHEMA = {
           `פסיקת הדיין (${judge.figureHebrew}): שותפות מוצלחת`,
           `פסיקת הדיין (${judge.figureHebrew}): קושי בשותפות`,
           `פסיקת הדיין (${judge.figureHebrew}): לא ברור`));
+        if (h10 && _nahs(h10) && _saad(judge)) {
+          lines.push('↳ בית 10 מרמז על קושי, אך הדיין פוסק לטובה — הסיכון מנוהל והשותפות תצלח.');
+        } else if (h10 && _saad(h10) && _nahs(judge)) {
+          lines.push('↳ בית 10 מרמז על רווח, אך הדיין מכריע לרעה — הכניסה טובה, אך הסוף בעייתי.');
+        }
       }
       return lines.join('\n');
     }
@@ -1422,6 +1426,11 @@ const TOPIC_ANSWER_SCHEMA = {
           `פסיקת הדיין (${judge.figureHebrew}): מסע בטוח — אפשר לצאת`,
           `פסיקת הדיין (${judge.figureHebrew}): סכנה בים — שקול דחייה`,
           `פסיקת הדיין (${judge.figureHebrew}): לא ברור — לבדוק זמן`));
+        if (h9 && _nahs(h9) && _saad(judge)) {
+          lines.push('↳ בית 9 מראה מסע קשה, אך הדיין עוקף זאת — הסכנה קיימת אך הנוסע יעבור אותה בשלום; לנקוט זהירות בנקודות הקשות.');
+        } else if (h9 && _saad(h9) && _nahs(judge)) {
+          lines.push('↳ בית 9 נראה פתוח, אך הדיין מכריע לרעה — סכנה בלתי צפויה; לדחות או לשנות מסלול.');
+        }
       }
       return lines.join('\n');
     }
@@ -2182,7 +2191,7 @@ export function writeHumanGoralConclusion(result) {
   const question = clean(result.question);
   const isMiQuestion = /^מי[\s,]/.test(question);
 
-  const isGeneralReading = topicId === 'generalReading';
+  const isGeneralReading = topicId === 'generalReading' || topicId === 'foundations';
 
   let verdictParagraph = '';
   if (isGeneralReading) {
@@ -2221,7 +2230,6 @@ export function writeHumanGoralConclusion(result) {
   const topicConclusion = buildTopicConclusion(result);
 
   const extraFromBoard = [
-    result.boardAnalysis?.firstFigureRepetition?.outputHebrew || '',
     result.boardAnalysis?.timingEstimate?.outputHebrew || '',
   ].filter(Boolean).join('\n\n');
 
