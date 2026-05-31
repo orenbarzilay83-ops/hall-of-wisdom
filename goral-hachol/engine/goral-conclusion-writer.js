@@ -1928,12 +1928,17 @@ function buildNarrativeByTopic(result) {
     return paras.join('\n\n');
   }
 
-  // ── foundations ─────────────────────────────────────────────────
-  if (topicId === 'foundations') {
-    const fd = boardAnalysis?.foundationsDisplay;
-    push(topicOpeningLine(topicId, h1, name));
-    if (fd?.lines?.length) push(fd.lines.join('\n'));
-    push(judgeClosingLine(judgeVerdict, grade, topicId));
+  // ── foundations / generalReading ─────────────────────────────────
+  // non-divination topics: no verdict, no educational content
+  if (topicId === 'foundations' || topicId === 'generalReading') {
+    const prefix = name ? `${name}, ` : '';
+    if (t(h1) >= 1) push(`${prefix}הלוח מראה אותך בעמדה חיובית כרגע — רוב תחומי החיים נוטים לטובה.`);
+    else if (t(h1) <= -1) push(`${prefix}הלוח מראה שיש קושי בעמדתך הנוכחית — כדאי לנהוג בזהירות.`);
+    else push(`${prefix}הלוח מראה מצב מאוזן — לא קיצוני לכאן או לכאן.`);
+    if (h7) {
+      if (t(h7) >= 1) push('בצד הסביבה שלך — יש תמיכה. אנשים סביבך נוטים לטובתך.');
+      else if (t(h7) <= -1) push('בצד הסביבה שלך — יש חיכוך. כדאי לשים לב למי שמסביבך.');
+    }
     return paras.join('\n\n');
   }
 
@@ -1960,18 +1965,7 @@ export function writeHumanGoralConclusion(result) {
   // ── Narrative path (client-facing text) ─────────────────────────
   if (!isSpiritualTopic) {
     const narrative = buildNarrativeByTopic(result);
-    if (narrative && clean(narrative)) {
-      const stLine = sentenceTimingLine(
-        result.boardAnalysis?.sentence,
-        result.boardAnalysis?.timingEstimate
-      );
-      if (stLine) {
-        const parts = narrative.split('\n\n');
-        parts.splice(parts.length - 1, 0, stLine);
-        return parts.join('\n\n');
-      }
-      return narrative;
-    }
+    if (narrative && clean(narrative)) return narrative;
   }
 
   // ── Spiritual diagnostics: keep existing verdict format ─────────
