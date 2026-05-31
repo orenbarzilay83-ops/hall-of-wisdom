@@ -1569,7 +1569,7 @@
             ${detailParts.length ? `<div class="verdict-detail">${escapeHtml(detailParts.join("\n"))}</div>` : ""}
           </div>`;
 
-      } else if (judgeV && judgeV.hebrewShort) {
+      } else if (topicId !== 'generalReading' && judgeV && judgeV.hebrewShort) {
         verdictHtml = `
           <div class="verdict-box ${escapeHtml(verdictClass(judgeV.verdict))}">
             <div class="verdict-label">תשובה לשאלה</div>

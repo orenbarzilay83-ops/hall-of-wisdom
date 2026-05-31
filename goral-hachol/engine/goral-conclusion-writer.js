@@ -45,7 +45,7 @@ function clientContextParagraph(clientContext = {}, question = '') {
   const parts = [];
 
   if (name) {
-    parts.push(`הקריאה נעשית עבור ${name}${parent ? `, ${parent}` : ''}.`);
+    parts.push(`הקריאה נעשית עבור ${name}${parent ? ` בן ${parent}` : ''}.`);
   }
 
   if (age) {
