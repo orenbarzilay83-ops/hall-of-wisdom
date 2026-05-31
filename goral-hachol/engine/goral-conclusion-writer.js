@@ -1167,20 +1167,6 @@ function boardScoreParagraph(boardAnalysis) {
   return `לוח חסר: ${bScore.hebrewSummary}. כשהלוח חסר (פחות מ-96 נקודות), השאלה עשויה להישאר לא פתורה, או שהתשובה תאחר להתברר.`;
 }
 
-function sentenceTimingLine(sentence, timing) {
-  const parts = [];
-  if (sentence?.figureHebrew) {
-    const transit = sentence.transit?.meaning;
-    const transitText = transit ? transit.replace(/\.$/, '') : '';
-    parts.push(transitText
-      ? `ובסוף הדבר (${sentence.figureHebrew}): ${transitText}.`
-      : `ובסוף הדבר: הלוח מציג ${sentence.figureHebrew}.`);
-  }
-  if (timing?.outputHebrew && clean(timing.outputHebrew)) {
-    parts.push(timing.outputHebrew);
-  }
-  return parts.filter(Boolean).join('\n');
-}
 
 // ─── NARRATIVE CONCLUSION — text the practitioner reads to the client ────────
 
@@ -1842,19 +1828,6 @@ function buildNarrativeByTopic(result) {
   if (topicId === 'yearlyForecast') {
     const ya = boardAnalysis?.yearlyForecastAnalysis;
     const prefix = name ? `${name}, ` : '';
-
-    const elementYearDesc = {
-      'אש':    'שנה בסימן אש — שנה דינמית עם כוח ותנועה. שינויים גדולים עשויים להתרחש במהירות.',
-      'מים':   'שנה בסימן מים — שנה רגשית ומורכבת. מסחר, נסיעות ועסקאות יעסיקו אנשים רבים.',
-      'אוויר': 'שנה בסימן אוויר — שנה של מסחר, תקשורת ושינויים. תנועה כלכלית וחברתית מהירה.',
-      'עפר':   'שנה בסימן עפר — שנה יציבה אבל איטית. עסקים, אדמה ונדל"ן יעסיקו את רוב האנשים.',
-    };
-
-    if (ya?.dominantElement && elementYearDesc[ya.dominantElement]) {
-      push(`${prefix}${elementYearDesc[ya.dominantElement]}`);
-    } else {
-      push(`${prefix}הלוח מסתכל על מגמת השנה הקרובה.`);
-    }
 
     if (ya?.angularPlanets?.length > 0) {
       const planetLines = ya.angularPlanets
