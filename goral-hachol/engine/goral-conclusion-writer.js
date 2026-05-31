@@ -1167,6 +1167,21 @@ function boardScoreParagraph(boardAnalysis) {
   return `לוח חסר: ${bScore.hebrewSummary}. כשהלוח חסר (פחות מ-96 נקודות), השאלה עשויה להישאר לא פתורה, או שהתשובה תאחר להתברר.`;
 }
 
+function sentenceTimingLine(sentence, timing) {
+  const parts = [];
+  if (sentence?.figureHebrew) {
+    const transit = sentence.transit?.meaning;
+    const transitText = transit ? transit.replace(/\.$/, '') : '';
+    parts.push(transitText
+      ? `ובסוף הדבר (${sentence.figureHebrew}): ${transitText}.`
+      : `ובסוף הדבר: הלוח מציג ${sentence.figureHebrew}.`);
+  }
+  if (timing?.outputHebrew && clean(timing.outputHebrew)) {
+    parts.push(timing.outputHebrew);
+  }
+  return parts.filter(Boolean).join('\n');
+}
+
 // ─── NARRATIVE CONCLUSION — text the practitioner reads to the client ────────
 
 function figureFortuneTone(fortune) {
@@ -1261,20 +1276,156 @@ function topicOpeningLine(topicId, h1, name) {
   }
 }
 
-function judgeClosingLine(judgeVerdict, grade) {
+const TOPIC_VERDICT_PHRASES = {
+  commerce: {
+    'yes-strong': 'הדיין אומר: הדרך פתוחה — עשה את העסקה.',
+    'yes-weak':   'הדיין נוטה לטובה — אפשר להתקדם, אבל בזהירות.',
+    'no-strong':  'הדיין אומר: אל תיכנס לעסקה זו.',
+    'no-weak':    'הדיין מסתייג — בדוק שוב לפני שמתחייב.',
+  },
+  marriage: {
+    'yes-strong': 'הדיין אומר: הדרך לנישואין פתוחה.',
+    'yes-weak':   'הדיין נוטה לטובה — יש בסיס, אבל יש לבחון לעומק.',
+    'no-strong':  'הדיין אומר: לא הזמן הנכון לנישואין אלה.',
+    'no-weak':    'הדיין מסתייג — יש קושי שצריך לטפל בו קודם.',
+  },
+  illness: {
+    'yes-strong': 'הדיין אומר: יש פתח לריפוי — הכיוון טוב.',
+    'yes-weak':   'הדיין נוטה לשיפור — כדאי לטפל ולא לדחות.',
+    'no-strong':  'הדיין אומר: המחלה רצינית — יש לפעול ולא להמתין.',
+    'no-weak':    'הדיין מסתייג — המצב מסובך, אל תתעלם.',
+  },
+  travel: {
+    'yes-strong': 'הדיין אומר: הדרך פתוחה ובטוחה.',
+    'yes-weak':   'הדיין נוטה לטובה — אפשר לצאת, אך בזהירות.',
+    'no-strong':  'הדיין אומר: אל תצא לדרך עכשיו.',
+    'no-weak':    'הדיין מסתייג — בדוק תנאים לפני יציאה.',
+  },
+  seaVoyage: {
+    'yes-strong': 'הדיין אומר: המסע בטוח — הים פתוח.',
+    'yes-weak':   'הדיין נוטה לטובה — אפשר לצאת, אך שים לב לסכנות.',
+    'no-strong':  'הדיין אומר: אל תצא למסע הים — סכנה ממשית.',
+    'no-weak':    'הדיין מסתייג — בדוק תנאים לפני יציאה לים.',
+  },
+  theft: {
+    'yes-strong': 'הדיין אומר: יש סיכוי ממשי לאתר את מה שנגנב.',
+    'yes-weak':   'הדיין נוטה לאפשרות — כדאי לחפש ולא לוותר.',
+    'no-strong':  'הדיין אומר: החפץ הגנוב לא יחזור.',
+    'no-weak':    'הדיין מסתייג — הסיכויים נמוכים, אך לא אפסיים.',
+  },
+  disputes: {
+    'yes-strong': 'הדיין פוסק לטובתך — יש לך יתרון ברור בסכסוך.',
+    'yes-weak':   'הדיין נוטה לטובתך — אבל בדוק תנאי הסדר לפני פעולה.',
+    'no-strong':  'הדיין פוסק נגדך — שקול פשרה לפני הכרעה.',
+    'no-weak':    'הדיין מסתייג — עמדתך לא חזקה מספיק כרגע.',
+  },
+  enemies: {
+    'yes-strong': 'הדיין אומר: יש לך יתרון — האויב חלש.',
+    'yes-weak':   'הדיין נוטה לטובתך — אבל אל תמהר לעימות.',
+    'no-strong':  'הדיין אומר: האויב חזק — אל תתמודד ישירות.',
+    'no-weak':    'הדיין מסתייג — הכוחות שקולים, היזהר.',
+  },
+  fear: {
+    'yes-strong': 'הדיין אומר: הפחד לא מבוסס — הדרך בטוחה.',
+    'yes-weak':   'הדיין נוטה לטובה — יש הגנה, אבל אל תתרשל.',
+    'no-strong':  'הדיין אומר: יש בסיס ממשי לפחד — היזהר.',
+    'no-weak':    'הדיין מסתייג — המצב מעורב, שים לב.',
+  },
+  loveHate: {
+    'yes-strong': 'הדיין אומר: יש חיבור ממשי בין הצדדים.',
+    'yes-weak':   'הדיין נוטה לחיבור — אבל הקשר עדיין עדין.',
+    'no-strong':  'הדיין אומר: אין חיבור — יש ניתוק בין הצדדים.',
+    'no-weak':    'הדיין מסתייג — הרגש מעורב, קשה להכריע.',
+  },
+  partnership: {
+    'yes-strong': 'הדיין אומר: השותפות יכולה לעבוד — הכיוון טוב.',
+    'yes-weak':   'הדיין נוטה לטובה — כנס לשותפות, אך הגדר תנאים ברורים.',
+    'no-strong':  'הדיין אומר: אל תיכנס לשותפות זו.',
+    'no-weak':    'הדיין מסתייג — בדוק תנאים לפני כניסה.',
+  },
+  prisoner: {
+    'yes-strong': 'הדיין אומר: יש סיכוי ממשי לשחרור.',
+    'yes-weak':   'הדיין נוטה לשחרור — אבל הדרך לא קצרה.',
+    'no-strong':  'הדיין אומר: השחרור לא קרוב — המשך העצירה סביר.',
+    'no-weak':    'הדיין מסתייג — המצב לא ברור, המתן.',
+  },
+  missingPerson: {
+    'yes-strong': 'הדיין אומר: יש סימן לחזרה — הנעדר בחיים.',
+    'yes-weak':   'הדיין נוטה לאפשרות חזרה — אבל יש עיכוב.',
+    'no-strong':  'הדיין אומר: הנעדר לא יחזור בקרוב.',
+    'no-weak':    'הדיין מסתייג — המצב מעורב, פעל במהירות.',
+  },
+  childrenPregnancy: {
+    'yes-strong': 'הדיין אומר: יש סימן חיובי להיריון / לידה.',
+    'yes-weak':   'הדיין נוטה לטובה — יש אפשרות, אבל לא בוודאות מלאה.',
+    'no-strong':  'הדיין אומר: יש עיכוב ממשי — לא הזמן הנכון.',
+    'no-weak':    'הדיין מסתייג — המצב לא ברור, בדוק שוב.',
+  },
+  hiddenTreasure: {
+    'yes-strong': 'הדיין אומר: הדבר החבוי קיים ויש גישה אליו.',
+    'yes-weak':   'הדיין נוטה לטובה — יש סיכוי, אבל הדרך לא פשוטה.',
+    'no-strong':  'הדיין אומר: הדבר החבוי חסום או לא נגיש.',
+    'no-weak':    'הדיין מסתייג — הנגישות לא ברורה.',
+  },
+  completion: {
+    'yes-strong': 'הדיין אומר: הדבר יסתיים — הכיוון ברור.',
+    'yes-weak':   'הדיין נוטה לסיום — אבל תלוי במאמץ מצידך.',
+    'no-strong':  'הדיין אומר: הדבר לא יסתיים כמתוכנן.',
+    'no-weak':    'הדיין מסתייג — יש עיכוב, לא ברור אם יסתיים.',
+  },
+  siblings: {
+    'yes-strong': 'הדיין אומר: הקשר חיובי — יש עזרה ותמיכה.',
+    'yes-weak':   'הדיין נוטה לטובה — יש חיבור, אבל לא מושלם.',
+    'no-strong':  'הדיין אומר: יש קושי ממשי בקשר — טפל בו ישירות.',
+    'no-weak':    'הדיין מסתייג — הקשר מעורב, שים לב.',
+  },
+  deathInheritance: {
+    'yes-strong': 'הדיין אומר: הסכנה נמוכה / הירושה נגישה.',
+    'yes-weak':   'הדיין נוטה לטובה — יש פתיחה, אבל בדוק פרטים.',
+    'no-strong':  'הדיין אומר: יש סכנה ממשית / הירושה מסובכת.',
+    'no-weak':    'הדיין מסתייג — המצב לא פשוט, יש לפעול בהתאם.',
+  },
+  yearlyForecast: {
+    'yes-strong': 'הדיין אומר: שנה חיובית — הכיוון טוב.',
+    'yes-weak':   'הדיין נוטה לטובה — יש תקופות טובות, תכנן נכון.',
+    'no-strong':  'הדיין אומר: שנה קשה — תכנן בזהירות ושמור על עצמך.',
+    'no-weak':    'הדיין מסתייג — שנה מעורבת, יש עליות וירידות.',
+  },
+  authorityState: {
+    'yes-strong': 'הדיין אומר: התפקיד / הסמכות יציב — המשך.',
+    'yes-weak':   'הדיין נוטה לטובה — יש יציבות, אבל חזק את עמדתך.',
+    'no-strong':  'הדיין אומר: התפקיד בסכנה — יש לפעול להגנה עליו.',
+    'no-weak':    'הדיין מסתייג — מצב התפקיד לא ברור.',
+  },
+  birthNativity: {
+    'yes-strong': 'הדיין אומר: הגורל הכללי לטובה — יש כוח בדרך.',
+    'yes-weak':   'הדיין נוטה לטובה — רוב הדרך פתוחה, אבל יש אתגרים.',
+    'no-strong':  'הדיין אומר: יש קשיים בדרך — חזק את עצמך.',
+    'no-weak':    'הדיין מסתייג — הגורל מעורב, יש לקרוא כל בית בנפרד.',
+  },
+};
+
+function judgeClosingLine(judgeVerdict, grade, topicId) {
   const jv = judgeVerdict;
+  const verdict = jv?.verdict || '';
+  const phrases = TOPIC_VERDICT_PHRASES[topicId] || null;
+
+  const resolveVerdict = (key) => phrases?.[key] || null;
+
   if (!jv) {
-    if (grade === 'positive' || grade === 'cautiously-positive') return 'הפסיקה הסופית: כן — הכיוון חיובי.';
-    if (grade === 'negative' || grade === 'cautiously-negative') return 'הפסיקה הסופית: לא — יש חסימה.';
+    if (grade === 'positive' || grade === 'cautiously-positive')
+      return resolveVerdict('yes-weak') || 'הפסיקה הסופית: כן — הכיוון חיובי.';
+    if (grade === 'negative' || grade === 'cautiously-negative')
+      return resolveVerdict('no-weak') || 'הפסיקה הסופית: לא — יש חסימה.';
     return 'הפסיקה הסופית: לא ברורה — יש לקרוא את הפרטים בזהירות.';
   }
-  const verdict = jv.verdict || '';
-  if (verdict === 'yes-strong') return 'הדיין פוסק: כן — ובבירור.';
-  if (verdict === 'yes-weak')   return 'הדיין נוטה לכן — לא בעוצמה חזקה, אבל הכיוון חיובי.';
-  if (verdict === 'no-strong')  return 'הדיין פוסק: לא — ובבירור.';
-  if (verdict === 'no-weak')    return 'הדיין נוטה ל"לא" — אין הכרעה חזקה, אבל המיקוד שלילי.';
-  if (verdict.startsWith('maybe-positive'))  return 'הדיין לא מכריע — יש פתח לטובה, אבל נדרשת בדיקה נוספת.';
-  if (verdict.startsWith('maybe-negative'))  return 'הדיין לא מכריע — יש צד שלילי, אבל לא הכרעה מוחלטת.';
+
+  if (verdict === 'yes-strong') return resolveVerdict('yes-strong') || 'הדיין פוסק: כן — ובבירור.';
+  if (verdict === 'yes-weak')   return resolveVerdict('yes-weak')   || 'הדיין נוטה לכן — לא בעוצמה חזקה, אבל הכיוון חיובי.';
+  if (verdict === 'no-strong')  return resolveVerdict('no-strong')  || 'הדיין פוסק: לא — ובבירור.';
+  if (verdict === 'no-weak')    return resolveVerdict('no-weak')    || 'הדיין נוטה ל"לא" — אין הכרעה חזקה, אבל המיקוד שלילי.';
+  if (verdict.startsWith('maybe-positive')) return resolveVerdict('yes-weak') || 'הדיין לא מכריע — יש פתח לטובה, אבל נדרשת בדיקה נוספת.';
+  if (verdict.startsWith('maybe-negative')) return resolveVerdict('no-weak')  || 'הדיין לא מכריע — יש צד שלילי, אבל לא הכרעה מוחלטת.';
   if (verdict === 'mixed') return 'הדיין לא מכריע — התשובה תלויה בנסיבות.';
   return jv.hebrewShort || 'הפסיקה אינה ברורה.';
 }
@@ -1329,7 +1480,7 @@ function buildNarrativeByTopic(result) {
       }
     }
 
-    push(judgeClosingLine(judgeVerdict, grade));
+    push(judgeClosingLine(judgeVerdict, grade, topicId));
     return paras.join('\n\n');
   }
 
@@ -1350,7 +1501,7 @@ function buildNarrativeByTopic(result) {
       }
     }
 
-    push(judgeClosingLine(judgeVerdict, grade));
+    push(judgeClosingLine(judgeVerdict, grade, topicId));
     return paras.join('\n\n');
   }
 
@@ -1379,7 +1530,7 @@ function buildNarrativeByTopic(result) {
 
     if (h8 && t(h8) <= -1) push('יש בלוח סימן לסכנה — לא להמתין יותר מדי זמן.');
 
-    push(judgeClosingLine(judgeVerdict, grade));
+    push(judgeClosingLine(judgeVerdict, grade, topicId));
     return paras.join('\n\n');
   }
 
@@ -1403,7 +1554,7 @@ function buildNarrativeByTopic(result) {
     if (h12 && t(h12) <= -1) dangers.push('אויב נסתר');
     if (dangers.length) push(`יש בלוח סימן ל${dangers.join(' ו')} — לנסוע בזהירות.`);
 
-    push(judgeClosingLine(judgeVerdict, grade));
+    push(judgeClosingLine(judgeVerdict, grade, topicId));
     return paras.join('\n\n');
   }
 
@@ -1420,7 +1571,7 @@ function buildNarrativeByTopic(result) {
       else push('בית הילדים בלוח — לא ברור. יש לבדוק את העדים לפרטים נוספים.');
     }
 
-    push(judgeClosingLine(judgeVerdict, grade));
+    push(judgeClosingLine(judgeVerdict, grade, topicId));
     return paras.join('\n\n');
   }
 
@@ -1443,7 +1594,7 @@ function buildNarrativeByTopic(result) {
       }
     }
 
-    push(judgeClosingLine(judgeVerdict, grade));
+    push(judgeClosingLine(judgeVerdict, grade, topicId));
     return paras.join('\n\n');
   }
 
@@ -1462,7 +1613,7 @@ function buildNarrativeByTopic(result) {
 
     if (h8 && t(h8) <= -2) push('יש בלוח סימן לסכנה — יש לפעול ולחפש.');
 
-    push(judgeClosingLine(judgeVerdict, grade));
+    push(judgeClosingLine(judgeVerdict, grade, topicId));
     return paras.join('\n\n');
   }
 
@@ -1481,7 +1632,7 @@ function buildNarrativeByTopic(result) {
 
     if (h12 && t(h12) <= -1) push('יש בלוח סימן לאויב נסתר — מישהו בסביבה הקרובה שאתה לא חושד בו.');
 
-    push(judgeClosingLine(judgeVerdict, grade));
+    push(judgeClosingLine(judgeVerdict, grade, topicId));
     return paras.join('\n\n');
   }
 
@@ -1504,7 +1655,7 @@ function buildNarrativeByTopic(result) {
       if (h7Entry?.outputHebrew) push(`לגבי שם הגנב: ${h7Entry.outputHebrew}`);
     }
 
-    push(judgeClosingLine(judgeVerdict, grade));
+    push(judgeClosingLine(judgeVerdict, grade, topicId));
     return paras.join('\n\n');
   }
 
@@ -1519,7 +1670,7 @@ function buildNarrativeByTopic(result) {
       else                 push('כוחות שני הצדדים בלוח — שקולים. הכרעה תלויה בדיין.');
     }
 
-    push(judgeClosingLine(judgeVerdict, grade));
+    push(judgeClosingLine(judgeVerdict, grade, topicId));
     return paras.join('\n\n');
   }
 
@@ -1541,7 +1692,7 @@ function buildNarrativeByTopic(result) {
       push(`הלוח מראה שיש בסיס לחשש: ${fearSources.join(', ')}. לא להתעלם, אבל גם לא ללכת בפחד מוחלט.`);
     }
 
-    push(judgeClosingLine(judgeVerdict, grade));
+    push(judgeClosingLine(judgeVerdict, grade, topicId));
     return paras.join('\n\n');
   }
 
@@ -1561,7 +1712,7 @@ function buildNarrativeByTopic(result) {
       }
     }
 
-    push(judgeClosingLine(judgeVerdict, grade));
+    push(judgeClosingLine(judgeVerdict, grade, topicId));
     return paras.join('\n\n');
   }
 
@@ -1576,7 +1727,7 @@ function buildNarrativeByTopic(result) {
       else push('ההגעה בלוח — חלקית. הדבר עשוי להסתיים אבל תלוי בנסיבות.');
     }
 
-    push(judgeClosingLine(judgeVerdict, grade));
+    push(judgeClosingLine(judgeVerdict, grade, topicId));
     return paras.join('\n\n');
   }
 
@@ -1597,7 +1748,7 @@ function buildNarrativeByTopic(result) {
       else if (t(h5) <= -1) push('גורל האסיר לפי הלוח — קשה. אין סימן ברור לשחרור בקרוב.');
     }
 
-    push(judgeClosingLine(judgeVerdict, grade));
+    push(judgeClosingLine(judgeVerdict, grade, topicId));
     return paras.join('\n\n');
   }
 
@@ -1621,7 +1772,7 @@ function buildNarrativeByTopic(result) {
       else if (t(h2) <= -1 || t(h10) <= -1) push('יש סימן כלכלי שלילי בלוח — בדוק את תנאי החלוקה.');
     }
 
-    push(judgeClosingLine(judgeVerdict, grade));
+    push(judgeClosingLine(judgeVerdict, grade, topicId));
     return paras.join('\n\n');
   }
 
@@ -1643,7 +1794,7 @@ function buildNarrativeByTopic(result) {
     if (h12 && t(h12) <= -1) seaDangers.push('מארב נסתר');
     if (seaDangers.length) push(`יש בלוח סימן ל${seaDangers.join(' ו')} בים — לנסוע בזהירות רבה.`);
 
-    push(judgeClosingLine(judgeVerdict, grade));
+    push(judgeClosingLine(judgeVerdict, grade, topicId));
     return paras.join('\n\n');
   }
 
@@ -1661,7 +1812,7 @@ function buildNarrativeByTopic(result) {
       if (h1 && h3.figureKey === h1.figureKey) push('יש בלוח סימן מיוחד: אותה צורה בשניכם — קשר חזק מאוד, אחווה ממשית.');
     }
 
-    push(judgeClosingLine(judgeVerdict, grade));
+    push(judgeClosingLine(judgeVerdict, grade, topicId));
     return paras.join('\n\n');
   }
 
@@ -1683,25 +1834,47 @@ function buildNarrativeByTopic(result) {
       else if (t(h2) <= -1) push('הירושה הכספית בלוח — יש סיבוך או עיכוב. ייתכנו מחלוקות.');
     }
 
-    push(judgeClosingLine(judgeVerdict, grade));
+    push(judgeClosingLine(judgeVerdict, grade, topicId));
     return paras.join('\n\n');
   }
 
   // ── yearlyForecast ───────────────────────────────────────────────
   if (topicId === 'yearlyForecast') {
     const ya = boardAnalysis?.yearlyForecastAnalysis;
-    if (ya?.outputHebrew) {
-      push(ya.outputHebrew);
+    const prefix = name ? `${name}, ` : '';
+
+    const elementYearDesc = {
+      'אש':    'שנה בסימן אש — שנה דינמית עם כוח ותנועה. שינויים גדולים עשויים להתרחש במהירות.',
+      'מים':   'שנה בסימן מים — שנה רגשית ומורכבת. מסחר, נסיעות ועסקאות יעסיקו אנשים רבים.',
+      'אוויר': 'שנה בסימן אוויר — שנה של מסחר, תקשורת ושינויים. תנועה כלכלית וחברתית מהירה.',
+      'עפר':   'שנה בסימן עפר — שנה יציבה אבל איטית. עסקים, אדמה ונדל"ן יעסיקו את רוב האנשים.',
+    };
+
+    if (ya?.dominantElement && elementYearDesc[ya.dominantElement]) {
+      push(`${prefix}${elementYearDesc[ya.dominantElement]}`);
     } else {
-      const prefix = name ? `${name}, ` : '';
-      if (grade === 'positive' || grade === 'cautiously-positive')
-        push(`${prefix}השנה הקרובה בלוח — יש נטייה לטובה. כיוון חיובי.`);
-      else if (grade === 'negative' || grade === 'cautiously-negative')
-        push(`${prefix}השנה הקרובה בלוח — יש לצפות לקשיים. כדאי לתכנן בזהירות.`);
-      else
-        push(`${prefix}השנה הקרובה בלוח — מעורבת. יש תקופות טובות ותקופות קשות.`);
+      push(`${prefix}הלוח מסתכל על מגמת השנה הקרובה.`);
     }
-    push(judgeClosingLine(judgeVerdict, grade));
+
+    if (ya?.angularPlanets?.length > 0) {
+      const planetLines = ya.angularPlanets
+        .filter(p => p.meaning && clean(p.meaning))
+        .map(p => `${p.planet} — ${p.meaning}`)
+        .filter(Boolean);
+      if (planetLines.length > 0) {
+        push(`הכוחות הפעילים השנה: ${planetLines.join('; ')}.`);
+      }
+    }
+
+    if (ya?.rainHebrew && clean(ya.rainHebrew)) {
+      push(ya.rainHebrew);
+    }
+
+    if (ya?.house15Result?.transitMeaning && clean(ya.house15Result.transitMeaning)) {
+      push(`אחרית השנה לפי הדיין: ${ya.house15Result.transitMeaning}.`);
+    }
+
+    push(judgeClosingLine(judgeVerdict, grade, topicId));
     return paras.join('\n\n');
   }
 
@@ -1720,16 +1893,38 @@ function buildNarrativeByTopic(result) {
 
     if (aa?.outputHebrew) push(aa.outputHebrew);
 
-    push(judgeClosingLine(judgeVerdict, grade));
+    push(judgeClosingLine(judgeVerdict, grade, topicId));
     return paras.join('\n\n');
   }
 
   // ── birthNativity ────────────────────────────────────────────────
   if (topicId === 'birthNativity') {
     const ba = boardAnalysis?.birthNativityAnalysis;
-    if (ba?.outputHebrew) push(ba.outputHebrew);
-    else push(topicOpeningLine(topicId, h1, name));
-    push(judgeClosingLine(judgeVerdict, grade));
+    const prefix = name ? `${name}, ` : '';
+
+    if (ba?.taliHebrew) {
+      const taliEssence = FIGURE_ESSENCE[ba.taliHebrew] || null;
+      push(taliEssence
+        ? `${prefix}הצורה שלך — צורת הטאלע — היא ${ba.taliHebrew}, צורה של ${taliEssence}.`
+        : `${prefix}הצורה שלך — צורת הטאלע — היא ${ba.taliHebrew}.`);
+    } else {
+      push(topicOpeningLine(topicId, h1, name));
+    }
+
+    if (ba?.findings?.length > 0) {
+      for (const finding of ba.findings) {
+        if (!finding.meanings?.length) continue;
+        const meaningsText = finding.meanings
+          .map(m => m.hebrew)
+          .filter(Boolean)
+          .join('; ');
+        if (meaningsText) {
+          push(`בית ${finding.houseNumber} — ${meaningsText}.`);
+        }
+      }
+    }
+
+    push(judgeClosingLine(judgeVerdict, grade, topicId));
     return paras.join('\n\n');
   }
 
@@ -1738,7 +1933,7 @@ function buildNarrativeByTopic(result) {
     const fd = boardAnalysis?.foundationsDisplay;
     push(topicOpeningLine(topicId, h1, name));
     if (fd?.lines?.length) push(fd.lines.join('\n'));
-    push(judgeClosingLine(judgeVerdict, grade));
+    push(judgeClosingLine(judgeVerdict, grade, topicId));
     return paras.join('\n\n');
   }
 
@@ -1765,7 +1960,18 @@ export function writeHumanGoralConclusion(result) {
   // ── Narrative path (client-facing text) ─────────────────────────
   if (!isSpiritualTopic) {
     const narrative = buildNarrativeByTopic(result);
-    if (narrative && clean(narrative)) return narrative;
+    if (narrative && clean(narrative)) {
+      const stLine = sentenceTimingLine(
+        result.boardAnalysis?.sentence,
+        result.boardAnalysis?.timingEstimate
+      );
+      if (stLine) {
+        const parts = narrative.split('\n\n');
+        parts.splice(parts.length - 1, 0, stLine);
+        return parts.join('\n\n');
+      }
+      return narrative;
+    }
   }
 
   // ── Spiritual diagnostics: keep existing verdict format ─────────
