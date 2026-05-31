@@ -2195,8 +2195,12 @@ export function writeHumanGoralConclusion(result) {
   const question = clean(result.question);
   const isMiQuestion = /^מי[\s,]/.test(question);
 
+  const isGeneralReading = topicId === 'generalReading';
+
   let verdictParagraph = '';
-  if (isSpiritualTopic) {
+  if (isGeneralReading) {
+    // No yes/no verdict for general reading
+  } else if (isSpiritualTopic) {
     verdictParagraph = spiritualVerdict(result.spiritualDiagnosis);
   } else if (topicId === 'theft') {
     const house7 = result.boardAnalysis?.houses?.find(h => Number(h.house) === 7);
@@ -2239,8 +2243,8 @@ export function writeHumanGoralConclusion(result) {
     clientHistoryParagraph(result.clientHistorySummary),
     boardScoreParagraph(result.boardAnalysis),
     verdictParagraph,
-    dhamirParagraph(result.boardAnalysis, judgeVerdict),
-    tahasilParagraph(result.boardAnalysis),
+    isGeneralReading ? '' : dhamirParagraph(result.boardAnalysis, judgeVerdict),
+    isGeneralReading ? '' : tahasilParagraph(result.boardAnalysis),
     topicOpening(topicId, topicHebrew),
     questionFocusParagraph(topicId, result.clientContext),
     topicConclusion
