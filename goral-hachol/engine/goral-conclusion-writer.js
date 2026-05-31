@@ -2,6 +2,39 @@ function clean(value = '') {
   return String(value || '').trim();
 }
 
+const MARITAL_LABELS = {
+  married:   'נשוי/ה',
+  single:    'רווק/ה',
+  divorced:  'גרוש/ה',
+  widowed:   'אלמן/ה',
+  coupled:   'בזוגיות',
+  separated: 'פרוד/ה',
+};
+
+const WORK_LABELS = {
+  employed:       'שכיר/ה',
+  self:           'עצמאי/ת',
+  unemployed:     'מחפש/ת עבודה',
+  retired:        'בפנסיה',
+  'between-jobs': 'בין עבודות',
+};
+
+const CHILDREN_LABELS = {
+  yes: 'יש ילדים',
+  no:  'אין ילדים',
+};
+
+function formatClientProfile(clientContext = {}) {
+  const parts = [];
+  const marital  = MARITAL_LABELS[clientContext.maritalStatus]  || null;
+  const work     = WORK_LABELS[clientContext.workStatus]         || null;
+  const children = CHILDREN_LABELS[clientContext.hasChildren]   || null;
+  if (marital)  parts.push(marital);
+  if (work)     parts.push(work);
+  if (children) parts.push(children);
+  return parts.length ? parts.join(', ') : null;
+}
+
 function getGradeText(grade) {
   const map = {
     positive: 'הקריאה נוטה לטובה',
@@ -37,6 +70,11 @@ function clientContextParagraph(clientContext = {}, question = '') {
 
   if (name) {
     parts.push(`הקריאה נעשית עבור ${name}${parent ? `, ${parent}` : ''}.`);
+  }
+
+  const profile = formatClientProfile(clientContext);
+  if (profile) {
+    parts.push(`פרופיל: ${profile}.`);
   }
 
   if (age) {
@@ -1319,9 +1357,11 @@ function buildNarrativeByTopic(result) {
   if (h1) {
     const fig = hFig(h1), fort = hFort(h1), transit = hTransit(h1), speak = speakNote(h1);
     const nameLabel = name || 'השואל';
+    const profile = formatClientProfile(clientContext);
     const parts = [];
 
     parts.push(`${nameLabel} (בית 1): ${fig}${fort ? `, ${fort}` : ''}.`);
+    if (profile) parts.push(`פרופיל: ${profile}.`);
     if (speak)   parts.push(`בית 1 ${speak}.`);
     if (transit) parts.push(`חאוי: ${transit}`);
 
