@@ -2,15 +2,6 @@ function clean(value = '') {
   return String(value || '').trim();
 }
 
-function fortuneToHebrew(f) {
-  if (!f) return '';
-  return String(f)
-    .replace(/ממוזג-?סעד/g, 'ממוזג-טוב')
-    .replace(/ממוזג-?נחס/g, 'ממוזג-רע')
-    .replace(/סעד/g, 'טוב')
-    .replace(/נחס/g, 'רע');
-}
-
 function getGradeText(grade) {
   const map = {
     positive: 'הקריאה נוטה לטובה',
@@ -45,7 +36,7 @@ function clientContextParagraph(clientContext = {}, question = '') {
   const parts = [];
 
   if (name) {
-    parts.push(`הקריאה נעשית עבור ${name}${parent ? ` בן ${parent}` : ''}.`);
+    parts.push(`הקריאה נעשית עבור ${name}${parent ? `, ${parent}` : ''}.`);
   }
 
   if (age) {
@@ -187,8 +178,6 @@ function topicOpening(topicId, topicHebrew) {
       'בעניין ילדים והריון, הקריאה בודקת את אפשרות ההיריון, את מצב ההחזקה, את סימני הזכר והנקבה ואת העדים שתומכים או מחלישים.',
     hiddenTreasure:
       'בעניין המטמון או הדבר החבוי, הקריאה בודקת אם יש ממשות בדבר, האם הוא שמור או חסום, ומה הכיוון הכללי של החיפוש.',
-    generalReading:
-      'בפתיחה הכללית, הקריאה עוברת בית-בית על תחומי החיים העיקריים — בריאות, ממון, קשרים, עבודה, ילדים ועוד — ומראה מה הלוח אומר על כל אחד מהם.',
     yearlyForecast:
       'בעניין השנה, הקריאה מסתכלת על המגמה הכללית: שפע או יוקר, גשם או יובש, יציבות או טלטלה.',
     authorityState:
@@ -252,9 +241,17 @@ function describeCoreHouses(analysis, topicId, question) {
 
   if (focus) {
     const figureName = focus.figureHebrew || 'שאינה מזוהה בשם';
-    let focusLine = `הבית המרכזי בית ${focus.house} — ${figureName}`;
+    const transitMeaning = focus.transit?.meaning;
+    const transitPart = transitMeaning ? `: ${transitMeaning}` : '';
+    let focusLine = `הבית המרכזי בית ${focus.house} — ${figureName}${transitPart}`;
     if (focus.isAdversarial) {
-      focusLine += ' (בית הצד שכנגד)';
+      const tone = focus.fortune || '';
+      const adversarialNote = tone === 'נחס'
+        ? ' [בית הצד שכנגד — נחס בבית זה = חולשה של הצד השני, טוב לשואל]'
+        : tone === 'סעד'
+        ? ' [בית הצד שכנגד — סעד בבית זה = הצד השני חזק]'
+        : ' [בית הצד שכנגד — יש להפוך את הפרשנות: מה שרע לצד זה טוב לשואל]';
+      focusLine += adversarialNote;
     }
     parts.push(focusLine);
   }
@@ -262,15 +259,23 @@ function describeCoreHouses(analysis, topicId, question) {
   if (witnesses.length) {
     const witnessLines = witnesses.map((w) => {
       const wName = w.figureHebrew || 'צורה לא מזוהה';
-      return `בית ${w.house} — ${wName}`;
+      const wTransit = w.transit?.meaning;
+      const wTransitPart = wTransit ? `: ${wTransit}` : '';
+      return `בית ${w.house} — ${wName}${wTransitPart}`;
     });
     parts.push(`העדים: ${witnessLines.join(' ו־')}`);
   }
 
   if (judge) {
     const judgeName = judge.figureHebrew || 'צורה לא מזוהה';
-    const judgeFortune = judge.fortune ? ` [${fortuneToHebrew(judge.fortune)}]` : '';
-    parts.push(`הדיין בית 15 — ${judgeName}${judgeFortune}`);
+    const judgeFortune = judge.fortune ? ` [${judge.fortune}]` : '';
+    const judgeTransit = judge.transit?.meaning;
+    const judgeTransitPart = judgeTransit
+      ? `: ${judgeTransit}`
+      : ' [מעבר הצורה לבית 15 לא מפורש במקור — פסיקה לפי מזל כללי]';
+    parts.push(
+      `הדיין בית 15 — ${judgeName}${judgeFortune}${judgeTransitPart}`
+    );
   }
 
   if (sentence) {
@@ -279,9 +284,9 @@ function describeCoreHouses(analysis, topicId, question) {
     );
   }
 
-  if (dhamirMizan && dhamirMizan.traces.length > 0 && topicId === 'spiritualDiagnostics') {
+  if (dhamirMizan && dhamirMizan.traces.length > 0) {
     const traceLines = dhamirMizan.traces.map((t) => {
-      const fortune = t.dhamirFortune ? ` [${fortuneToHebrew(t.dhamirFortune)}]` : '';
+      const fortune = t.dhamirFortune ? ` [${t.dhamirFortune}]` : '';
       return `  שורת ${t.rowElement} → בית ${t.dhamirHouseNumber} — ${t.dhamirHebrew}${fortune}`;
     });
     const dhamirFort = dhamirMizan.primaryFortune || '';
@@ -295,10 +300,8 @@ function describeCoreHouses(analysis, topicId, question) {
     parts.push(
       `הדמיר (שרשרת הגזירה):\n${traceLines.join('\n')}\n  → הדמיר העיקרי: בית ${dhamirMizan.primaryHouseNumber} — כל הדין שם.${dhamirConcord}`
     );
-  }
-
-  if (dhamir) {
-    const dhamirFortune = dhamir.fortune ? ` [${fortuneToHebrew(dhamir.fortune)}]` : '';
+  } else if (dhamir) {
+    const dhamirFortune = dhamir.fortune ? ` [${dhamir.fortune}]` : '';
     const dhamirTone = (dhamir.fortune || '').includes('סעד') ? 1 : (dhamir.fortune || '').includes('נחס') ? -1 : 0;
     const judgeToneLocal = judge ? (judge.fortune?.includes('סעד') ? 1 : judge.fortune?.includes('נחס') ? -1 : 0) : 0;
     let dhamirConcord = '';
@@ -341,96 +344,92 @@ function describeCoreHouses(analysis, topicId, question) {
   }
 
   const nameLetters = analysis.nameLetters;
-  if (Array.isArray(nameLetters) && nameLetters.length > 0 && ['theft', 'enemies'].includes(topicId)) {
-    const seen = new Set();
-    const uniqueLetters = nameLetters.filter((nl) => {
-      if (seen.has(nl.houseNumber)) return false;
-      seen.add(nl.houseNumber);
-      return true;
-    });
-    const nameLines = uniqueLetters.map((nl) =>
+  if (Array.isArray(nameLetters) && nameLetters.length > 0) {
+    const nameLines = nameLetters.map((nl) =>
       `  ${nl.houseRole} (בית ${nl.houseNumber} — ${nl.figureHebrew}): ${nl.outputHebrew}`
     );
     parts.push(`הוצאת שם (תסקין עבדוה):\n${nameLines.join('\n')}`);
   }
 
   const authAnalysis = analysis.authorityStateAnalysis;
-  if (authAnalysis && topicId === 'authorityState') {
+  if (authAnalysis) {
     parts.push(`ניתוח שלטון (שער מלכים, חאוי עמ׳ 36-38):\n${authAnalysis.outputHebrew}`);
   }
 
   const yearlyAnalysis = analysis.yearlyForecastAnalysis;
-  if (yearlyAnalysis && topicId === 'yearlyForecast') {
+  if (yearlyAnalysis) {
     parts.push(`ניתוח טאלע השנה (חאוי עמ׳ 60-62):\n${yearlyAnalysis.outputHebrew}`);
   }
 
   const birthAnalysis = analysis.birthNativityAnalysis;
-  if (birthAnalysis && topicId === 'birthNativity') {
+  if (birthAnalysis) {
     parts.push(`שער המולד (חאוי עמ׳ 51-58):\n${birthAnalysis.outputHebrew}`);
   }
 
   const triangles = analysis.trianglesEnrichment;
-  if (triangles && topicId === 'birthNativity') {
+  if (triangles) {
     parts.push(`ניתוח משולשים (שער המשולשים, חאוי עמ׳ 59):\n${triangles.outputHebrew}`);
   }
 
   const illnessDiag = analysis.illnessElementDiagnosis;
-  if (illnessDiag && ['illness', 'spiritualDiagnostics'].includes(topicId)) {
+  if (illnessDiag) {
     parts.push(`אבחון מחלה לפי יסוד (בלוג' אלאמל פרק 5):\n  ${illnessDiag.outputHebrew.replace(/\n/g, '\n  ')}`);
   }
 
   const thiefLoc = analysis.thiefLocationDetails;
-  if (thiefLoc && topicId === 'theft') {
+  if (thiefLoc) {
     parts.push(`זיהוי הגנב (בלוג' אלאמל פרק 19):\n  ${thiefLoc.outputHebrew.replace(/\n/g, '\n  ')}`);
   }
 
   const enemyHH = analysis.enemyInHousehold;
-  if (enemyHH && ['enemies', 'spiritualDiagnostics'].includes(topicId)) {
+  if (enemyHH) {
     parts.push(`גילוי אויב בסביבה (בלוג' אלאמל עמ' 64):\n  ${enemyHH.outputHebrew}`);
   }
 
   const marriageForecast = analysis.marriageFigureForecast;
-  if (marriageForecast && topicId === 'marriage') {
+  if (marriageForecast) {
     parts.push(`פסיקת נישואין לפי צורה שולטת (בלוג' אלאמל פרק 33):\n  ${marriageForecast.outputHebrew}`);
   }
 
   const yearlyForecast = analysis.yearlyFigureForecast;
-  if (yearlyForecast && topicId === 'yearlyForecast') {
+  if (yearlyForecast) {
     parts.push(`תחזית שנתית לפי צורה שולטת (בלוג' אלאמל עמ' 25):\n  ${yearlyForecast.outputHebrew}`);
   }
 
   const altName = analysis.alternativeNameExtraction;
-  if (altName && topicId === 'theft') {
+  if (altName) {
     parts.push(`חילוץ שם — שיטה 5 (בלוג' אלאמל עמ' 13-15):\n${altName.outputHebrew}`);
   }
 
   const physThief = analysis.physicalDescriptionThief;
-  if (physThief && ['theft', 'enemies'].includes(topicId)) {
+  if (physThief) {
     parts.push(`תיאור פיזי — הגנב / האויב (בלוג' אלאמל עמ' 65-71):\n  ${physThief.outputHebrew}`);
   }
 
   const physMissing = analysis.physicalDescriptionMissing;
-  if (physMissing && topicId === 'missingPerson') {
+  if (physMissing) {
     parts.push(`תיאור פיזי — הנעדר (בלוג' אלאמל עמ' 65-71):\n  ${physMissing.outputHebrew}`);
   }
 
   const prisoner = analysis.prisonerAnalysis;
-  if (prisoner && topicId === 'prisoner') {
+  if (prisoner) {
     parts.push(`ניתוח אסיר/כלא (בלוג' אלאמל עמ' 28, 57):\n${prisoner.lines.map((l) => `  ${l}`).join('\n')}`);
   }
 
   const seaRisks = analysis.seaVoyageRisks;
-  if (seaRisks && topicId === 'seaVoyage') {
+  if (seaRisks) {
     parts.push(seaRisks.outputHebrew);
   }
 
+  // HAWI_DHAMIR_DIRECTIONS_VALIDATION — נסיעה כפויה/רצונית
   const forcedTravel = analysis.forcedTravelAnalysis;
-  if (forcedTravel && ['travel', 'seaVoyage'].includes(topicId)) {
+  if (forcedTravel) {
     parts.push(`סוג הנסיעה (חאוי עמ׳ 33):\n  ${forcedTravel.hebrewNote}`);
   }
 
+  // HAWI_INTRODUCTION_MAHW_THABAT — יסודות בנושא foundations
   const foundations = analysis.foundationsDisplay;
-  if (foundations && topicId === 'foundations') {
+  if (foundations) {
     parts.push(`יסודות גורל החול (${foundations.sourceRef}):\n${foundations.lines.map((l) => '  ' + l).join('\n')}`);
   }
 
@@ -447,9 +446,9 @@ function describeCoreHouses(analysis, topicId, question) {
       const isBarren = h5Fortune.includes('נחס');
       const sameAsH1 = h1 && h5.figureKey === h1.figureKey;
       const verdictLine = isFertile
-        ? `בית 5 (ילדים) — ${h5Name} [טוב]: סימן להיריון / לידה אפשרית.`
+        ? `בית 5 (ילדים) — ${h5Name} [סעד]: סימן להיריון / לידה אפשרית.`
         : isBarren
-        ? `בית 5 (ילדים) — ${h5Name} [רע]: עיכוב בהיריון, ייתכן קושי.`
+        ? `בית 5 (ילדים) — ${h5Name} [נחס]: עיכוב בהיריון, ייתכן קושי.`
         : `בית 5 (ילדים) — ${h5Name}: מצב ביניים — יש לבדוק את העדים.`;
       parts.push(`אבחון פריון (בית 5):\n  ${verdictLine}${sameAsH1 ? '\n  ⚠ צורת בית 5 זהה לבית 1 — קשר ישיר בין השואל לעניין הילדים.' : ''}`);
     }
@@ -467,7 +466,7 @@ function describeCoreHouses(analysis, topicId, question) {
       if (h8?.fortune?.includes('נחס')) dangerHouses.push(`בית 8 (${h8.figureHebrew}) — סכנה`);
       if (h12?.fortune?.includes('נחס')) dangerHouses.push(`בית 12 (${h12.figureHebrew}) — אויב נסתר`);
       const dangerNote = dangerHouses.length ? `\n  ⚠ בתי סכנה: ${dangerHouses.join(' | ')}` : '';
-      parts.push(`ניתוח מסלול נסיעה (בית 9):\n  בית 9 — ${h9.figureHebrew} [${fortuneToHebrew(h9Fortune)}]${h9Dir ? ', כיוון: ' + h9Dir : ''}${dangerNote}`);
+      parts.push(`ניתוח מסלול נסיעה (בית 9):\n  בית 9 — ${h9.figureHebrew} [${h9Fortune}]${h9Dir ? ', כיוון: ' + h9Dir : ''}${dangerNote}`);
     }
   }
 
@@ -491,8 +490,8 @@ function describeCoreHouses(analysis, topicId, question) {
     const h10 = getHouseFromBoard(analysis, 10);
     if (h2 || h10) {
       const lines = [];
-      if (h2) lines.push(`  בית 2 (ממון) — ${h2.figureHebrew} [${fortuneToHebrew(h2.fortune) || 'ביניים'}]: ${h2.fortune?.includes('סעד') ? 'כסף זמין, עסקה ממונית חיובית' : h2.fortune?.includes('נחס') ? 'חסרון כספי, עסקה בסיכון' : 'מצב ממוני בינוני'}`);
-      if (h10) lines.push(`  בית 10 (תוצאת עסקה) — ${h10.figureHebrew} [${fortuneToHebrew(h10.fortune) || 'ביניים'}]: ${h10.fortune?.includes('סעד') ? 'תוצאה חיובית, רווח' : h10.fortune?.includes('נחס') ? 'תוצאה שלילית, הפסד' : 'תוצאה בינונית'}`);
+      if (h2) lines.push(`  בית 2 (ממון) — ${h2.figureHebrew} [${h2.fortune || 'ביניים'}]: ${h2.fortune?.includes('סעד') ? 'כסף זמין, עסקה ממונית חיובית' : h2.fortune?.includes('נחס') ? 'חסרון כספי, עסקה בסיכון' : 'מצב ממוני בינוני'}`);
+      if (h10) lines.push(`  בית 10 (תוצאת עסקה) — ${h10.figureHebrew} [${h10.fortune || 'ביניים'}]: ${h10.fortune?.includes('סעד') ? 'תוצאה חיובית, רווח' : h10.fortune?.includes('נחס') ? 'תוצאה שלילית, הפסד' : 'תוצאה בינונית'}`);
       if (h2 && h10) {
         const bothSaad = h2.fortune?.includes('סעד') && h10.fortune?.includes('סעד');
         const bothNahs = h2.fortune?.includes('נחס') && h10.fortune?.includes('נחס');
@@ -569,7 +568,7 @@ function describeCoreHouses(analysis, topicId, question) {
         : (h1F.includes('נחס') && h7F.includes('נחס')) ? 'שני הצדדים חלשים — שותפות מסוכנת'
         : 'מצב מעורב — בדוק תנאים לפני כניסה';
       const moneyNote = (h2 && h10) ? `\n  ממון (בית 2 — ${h2.figureHebrew}) / תוצאה (בית 10 — ${h10.figureHebrew}): ${h2.fortune?.includes('סעד') && h10.fortune?.includes('סעד') ? 'רווח מצופה' : h2.fortune?.includes('נחס') || h10.fortune?.includes('נחס') ? 'סיכון כלכלי' : 'ממוצע'}` : '';
-      parts.push(`ניתוח שותפות:\n  שואל (בית 1 — ${h1.figureHebrew}): ${fortuneToHebrew(h1F) || 'ביניים'}\n  שותף (בית 7 — ${h7.figureHebrew}): ${fortuneToHebrew(h7F) || 'ביניים'}\n  → ${compatible}${moneyNote}`);
+      parts.push(`ניתוח שותפות:\n  שואל (בית 1 — ${h1.figureHebrew}): ${h1F || 'ביניים'}\n  שותף (בית 7 — ${h7.figureHebrew}): ${h7F || 'ביניים'}\n  → ${compatible}${moneyNote}`);
     }
   }
 
@@ -581,7 +580,7 @@ function describeCoreHouses(analysis, topicId, question) {
       const h3F = h3.fortune || '';
       const sameKey = h1 && h3.figureKey === h1.figureKey;
       const connectionNote = sameKey ? '\n  → צורת בית 3 זהה לבית 1 — קשר חזק מאוד, אחווה ממשית.' : '';
-      parts.push(`ניתוח האח/השכן (בית 3):\n  בית 3 — ${h3.figureHebrew} [${fortuneToHebrew(h3F) || 'ביניים'}]: ${h3F.includes('סעד') ? 'קשר חיובי, תמיכה' : h3F.includes('נחס') ? 'קושי בקשר, ריחוק' : 'קשר בינוני'}${connectionNote}`);
+      parts.push(`ניתוח האח/השכן (בית 3):\n  בית 3 — ${h3.figureHebrew} [${h3F || 'ביניים'}]: ${h3F.includes('סעד') ? 'קשר חיובי, תמיכה' : h3F.includes('נחס') ? 'קושי בקשר, ריחוק' : 'קשר בינוני'}${connectionNote}`);
     }
   }
 
@@ -594,8 +593,14 @@ function describeCoreHouses(analysis, topicId, question) {
       const h8F = h8.fortune || '';
       const h7Note = h7 ? `\n  היורש/הנפטר (בית 7 — ${h7.figureHebrew}): ${h7.fortune?.includes('סעד') ? 'מצב חיובי' : h7.fortune?.includes('נחס') ? 'מצב קשה' : 'ביניים'}` : '';
       const h2Note = h2 ? `\n  הירושה הכספית (בית 2 — ${h2.figureHebrew}): ${h2.fortune?.includes('סעד') ? 'ממון זמין' : h2.fortune?.includes('נחס') ? 'ממון חסום או בסכסוך' : 'ביניים'}` : '';
-      parts.push(`ניתוח מוות/ירושה (בית 8):\n  בית 8 — ${h8.figureHebrew} [${fortuneToHebrew(h8F) || 'ביניים'}]: ${h8F.includes('סעד') ? 'סכנה נמוכה / ירושה זמינה' : h8F.includes('נחס') ? 'סכנה ממשית / ירושה מסובכת' : 'מצב בינוני'}${h7Note}${h2Note}`);
+      parts.push(`ניתוח מוות/ירושה (בית 8):\n  בית 8 — ${h8.figureHebrew} [${h8F || 'ביניים'}]: ${h8F.includes('סעד') ? 'סכנה נמוכה / ירושה זמינה' : h8F.includes('נחס') ? 'סכנה ממשית / ירושה מסובכת' : 'מצב בינוני'}${h7Note}${h2Note}`);
     }
+  }
+
+  // מה בלב השואל — מוצג לכל נושא לפי שיטת חזרת הצורה הראשונה (بلوغ الامل פ׳ 17)
+  const firstFigRep = analysis.firstFigureRepetition;
+  if (firstFigRep) {
+    parts.push(firstFigRep.outputHebrew);
   }
 
   const timing = analysis.timingEstimate;
@@ -631,11 +636,16 @@ function spiritualParagraph(spiritualDiagnosis, topicId) {
     return '';
   }
 
-  if (topicId !== 'spiritualDiagnostics') {
+  const grade = spiritualDiagnosis.grade;
+
+  const shouldShow =
+    topicId === 'spiritualDiagnostics' ||
+    grade === 'strong-suspicion' ||
+    grade === 'medium-suspicion';
+
+  if (!shouldShow) {
     return '';
   }
-
-  const grade = spiritualDiagnosis.grade;
 
   const reasons = spiritualDiagnosis.mainReasons || [];
 
@@ -646,7 +656,7 @@ function spiritualParagraph(spiritualDiagnosis, topicId) {
       const figure = r.figureHebrew ? ` — צורה: ${r.figureHebrew}` : '';
       const signals = (r.signals || []).join(' ');
       const houseLabel = r.house != null ? `בית ${r.house}` : r.role;
-      const roleLabel = r.house != null && r.role && r.role !== `בית ${r.house}` ? ` (${r.role})` : '';
+      const roleLabel = r.house != null ? ` (${r.role})` : '';
       return `${houseLabel}${roleLabel}${figure}: ${signals}`;
     });
 
@@ -663,1029 +673,6 @@ function houseDescription(house) {
   const name = house.figureHebrew || 'לא מזוהה';
   const transit = house.transit?.meaning;
   return transit ? `${name}: ${transit}` : name;
-}
-
-// ─────────────────────────────────────────────────────────────────
-// TOPIC_FIGURE_HOUSE_MEANINGS — figure×house specific meanings from source books
-// Keys: topicId → houseNumber → figureHebrewName → specific meaning string
-// Source: حاوي العجائب ومظهر الغرائب by أحمد ابن زنبل المحلي
-// ─────────────────────────────────────────────────────────────────
-const TOPIC_FIGURE_HOUSE_MEANINGS = {
-  illness: {
-    6: {
-      'דרך':       'מחלת בטן, שלשול, עילפון, הקאה/הוצאה',
-      'סף יוצא':   'מחלה באחת הרגליים; נחס — פגיעה ברגל',
-      'נלחם':      'מחלת בטן; עדות בר הלחי — כאב בזרוע וחום; באישה — שדיים',
-      'כבוד יוצא': 'מחלה מן המרה הצהובה, כאב בראש הלב',
-      'בר הלחי':   'מחלת בטן (כנלחם)',
-      'ממון יוצא': 'חום/קדחת, תופעות במרה הצהובה או ירכיים',
-      'סוהר':      'מחלה פנימית/חבויה, הקאה; חזרה בבית 8 — מוות; ייתכן רעל/נחש',
-      'נשוא ראש':  'כאב ראש וסחרחורת; הצלה עם צורות נכנסות טובות',
-      'סף נכנס':   'מחלה ברגל; חזרה בבית 12 + נחסים — פגיעה ברגל ימין',
-      'חיבור':     'לחץ בצלעות, כובד ונימול בגוף; סעדים יוצאים — הצלה; נחסים נכנסים — מוות',
-      'ממון נכנס': 'מחלה מאוויר, תנועת דם, הפרשות, חצבת',
-      'אדום':      'מחלה מן הדם — בראש, גרון, חזה או ידיים',
-      'כבוד נכנס': 'ריתוק למיטה, מתיחות ועוויתות',
-      'לבן':       'מחלה פנימית, שלשול רב ואי החזקת דבר',
-      'שפל ראש':   'קושי בעמידה/קימה, טחורים, סדקים, מחלות מרה שחורה',
-      'קהלה':      'מחלה בצדדים ובצלעות',
-    },
-  },
-  fear: {
-    8: {
-      'שפל ראש': '⚠ סכנת מוות ואבדון — מן הסימנים החמורים בשער הפחד',
-      'אדום':    '⚠ סכנת מוות ואבדון — מן הסימנים החמורים בשער הפחד',
-      'בר הלחי': '⚠ סכנת חרב שלופה — מן הסימנים החמורים בשער הפחד',
-    },
-  },
-};
-
-function getFigureMeaning(topicId, figureHebrew, houseNumber) {
-  return TOPIC_FIGURE_HOUSE_MEANINGS?.[topicId]?.[houseNumber]?.[figureHebrew] || null;
-}
-
-// ─────────────────────────────────────────────────────────────────
-// TOPIC_ANSWER_SCHEMA — per-topic structured conclusion engine
-// build(boardAnalysis, grade, judge, question) → Hebrew string
-// Every sentence is derived from actual board data — no templates.
-// ─────────────────────────────────────────────────────────────────
-
-function _saad(h) { return !!(h?.fortune?.includes('סעד')); }
-function _nahs(h) { return !!(h?.fortune?.includes('נחס')); }
-function _tone(h) { return _saad(h) ? 1 : _nahs(h) ? -1 : 0; }
-function _ft(h) { return fortuneToHebrew(h?.fortune || '') || 'ביניים'; }
-function _judgeLabel(judge, pos, neg, neut) {
-  if (!judge) return neut;
-  if (_saad(judge)) return pos;
-  if (_nahs(judge)) return neg;
-  return neut;
-}
-function _hline(role, num, house, quality) {
-  if (!house) return null;
-  return `${role} (בית ${num} — ${house.figureHebrew}): ${quality}`;
-}
-
-// Maps engine spiritual-type category IDs (from questionHits / signal text) to display Hebrew
-const SPIRITUAL_CATEGORY_HEBREW = {
-  ayin:            'עין הרע',
-  sihr:            'כישוף',
-  hasad:           'קנאה',
-  jinn:            "ג׳ן",
-  mass:            'אחיזה רוחנית',
-  fearHiddenEnemy: 'פחד ואויב נסתר',
-};
-
-// Signal keywords for each category — used to infer found types from diagnosisHebrew text
-const SPIRITUAL_SIGNAL_KEYWORDS = {
-  ayin:  ['עין', 'מבט', 'מקונא'],
-  sihr:  ['כישוף', 'כשפ', 'קשירה', 'טליסמא', 'מכשפ'],
-  hasad: ['קנאה'],
-  jinn:  ['גין', 'שדים', 'תחתון'],
-  mass:  ['אחיזה', 'מס '],
-};
-
-function _normSpiritualText(s) {
-  return String(s || '').replace(/[״"׳']/g, '').toLowerCase();
-}
-
-// Returns the first spiritual category ID that appears in the question (via questionHits)
-// Falls back to scanning question text directly for robustness
-function getAskedSpiritualCategories(spiritualDiagnosis, question) {
-  const hits = spiritualDiagnosis?.questionHits;
-  if (Array.isArray(hits) && hits.length) return hits;
-  // Fallback: scan question text
-  const q = _normSpiritualText(question);
-  const fallbackKeywords = {
-    ayin:  ['עין הרע', 'עין'],
-    sihr:  ['כישוף', 'כשפים', 'קשירה'],
-    hasad: ['קנאה'],
-    jinn:  ['גין', 'שדים'],
-    mass:  ['אחיזה', 'פגיעה רוחנית'],
-  };
-  return Object.entries(fallbackKeywords)
-    .filter(([, kws]) => kws.some(kw => q.includes(_normSpiritualText(kw))))
-    .map(([id]) => id);
-}
-
-// Returns spiritual category IDs that appear in the found signals/diagnosis text
-function getFoundSpiritualCategories(spiritualDiagnosis) {
-  const allText = _normSpiritualText(
-    (spiritualDiagnosis?.mainReasons || [])
-      .flatMap(r => r.signals || []).join(' ') +
-    ' ' + (spiritualDiagnosis?.finalHebrew || '')
-  );
-  return Object.entries(SPIRITUAL_SIGNAL_KEYWORDS)
-    .filter(([, kws]) => kws.some(kw => allText.includes(_normSpiritualText(kw))))
-    .map(([id]) => id);
-}
-
-const TOPIC_ANSWER_SCHEMA = {
-
-  illness: {
-    build(a, grade, judge, question) {
-      const lines = [];
-      const h1 = getHouseFromBoard(a, 1);
-      const h6 = getHouseFromBoard(a, 6);
-      const h8 = getHouseFromBoard(a, 8);
-
-      if (h1) {
-        const s = _saad(h1) ? 'טוב — יש כוח גוף להחלמה'
-          : _nahs(h1) ? 'קשה — הגוף חלש ומדוכא'
-          : 'בינוני — יש עמידות אך גם תשישות';
-        lines.push(_hline('מצב החולה', 1, h1, s));
-      }
-
-      if (h6) {
-        const specificMeaning = getFigureMeaning('illness', h6.figureHebrew, 6);
-        if (specificMeaning) {
-          lines.push(`אבחנת המחלה (בית 6 — ${h6.figureHebrew}): ${specificMeaning}`);
-        }
-        const s = _nahs(h6) ? 'עוצמת המחלה: גבוה — המחלה פעילה וחזקה'
-          : _saad(h6) ? 'עוצמת המחלה: נמוכה — הגוף מתגבר'
-          : 'עוצמת המחלה: בינוני';
-        lines.push(s);
-      }
-
-      if (h8) {
-        const s = _nahs(h8) ? '⚠ יש סימן לסכנת חיים — לפעול בדחיפות'
-          : _saad(h8) ? 'אין סימן לסכנת חיים'
-          : 'לא ברור — לעקוב';
-        lines.push(_hline('סכנה', 8, h8, s));
-      }
-
-      if (a?.illnessElementDiagnosis) {
-        const d = a.illnessElementDiagnosis;
-        lines.push(d.isSorcery
-          ? `⚠ סוג המחלה לפי יסוד: ${d.outputHebrew} — שקול אבחון רוחני`
-          : `סוג המחלה לפי יסוד: ${d.outputHebrew}`);
-      }
-
-      if (a?.jumlaAnalysis?.illnessDiagnosis) {
-        lines.push(a.jumlaAnalysis.illnessDiagnosis.outputHebrew);
-      }
-
-      if (judge) {
-        lines.push(_judgeLabel(judge,
-          `פסיקת הדיין (${judge.figureHebrew}): נטייה להחלמה`,
-          `פסיקת הדיין (${judge.figureHebrew}): המחלה צפויה להמשיך`,
-          `פסיקת הדיין (${judge.figureHebrew}): לא חד-משמעי — לבדוק בית 6 ובית 8 מחדש`));
-      }
-
-      return lines.filter(Boolean).join('\n');
-    }
-  },
-
-  marriage: {
-    build(a, grade, judge, question) {
-      const lines = [];
-      const h1 = getHouseFromBoard(a, 1);
-      const h7 = getHouseFromBoard(a, 7);
-
-      if (h1) {
-        lines.push(_hline('מצב השואל', 1, h1,
-          _saad(h1) ? 'טוב — פתיחות לנישואין' :
-          _nahs(h1) ? 'קשה — עיכוב או מניעה אישית' : 'בינוני'));
-      }
-
-      if (h7) {
-        lines.push(_hline('מצב הצד השני', 7, h7,
-          _saad(h7) ? 'טוב — פתיחות מהצד השני' :
-          _nahs(h7) ? 'קשה — התנגדות או עיכוב' : 'בינוני'));
-      }
-
-      if (h1 && h7 && h1.figureKey === h7.figureKey) {
-        lines.push('⭐ בית 1 ובית 7 חולקים אותה צורה — מראה הדדיות וקשר עמוק');
-      }
-
-      if (a?.ittisalat) {
-        lines.push(a.ittisalat.isConnected
-          ? 'חיבור בין הצדדים: יש איתיסאלאת — הקשר פעיל'
-          : 'חיבור בין הצדדים: אין איתיסאלאת ישיר — הצדדים לא מחוברים בלוח זה');
-      }
-
-      if (a?.marriageFigureForecast) {
-        lines.push(`תחזית נישואין לפי צורה שולטת: ${a.marriageFigureForecast.outputHebrew}`);
-      }
-
-      if (judge) {
-        lines.push(_judgeLabel(judge,
-          `פסיקת הדיין (${judge.figureHebrew}): לטובת הנישואין`,
-          `פסיקת הדיין (${judge.figureHebrew}): יש מניעה או עיכוב`,
-          `פסיקת הדיין (${judge.figureHebrew}): לא מכריע — לבדוק עוד`));
-      }
-
-      return lines.join('\n');
-    }
-  },
-
-  commerce: {
-    build(a, grade, judge, question) {
-      const lines = [];
-      const h1 = getHouseFromBoard(a, 1);
-      const h2 = getHouseFromBoard(a, 2);
-      const h7 = getHouseFromBoard(a, 7);
-      const h10 = getHouseFromBoard(a, 10);
-
-      if (h1) {
-        lines.push(_hline('מצב השואל בעסקה', 1, h1,
-          _saad(h1) ? 'חזק — עמדת פתיחה טובה' :
-          _nahs(h1) ? 'חלש — יש חסרון אישי בעסקה' : 'בינוני'));
-      }
-
-      if (h2) {
-        lines.push(_hline('הממון', 2, h2,
-          _saad(h2) ? 'זמין — עסקה ממונית חיובית' :
-          _nahs(h2) ? 'חסרון כספי — עסקה בסיכון פיננסי' : 'בינוני'));
-      }
-
-      if (h7) {
-        lines.push(_hline('הצד השני', 7, h7,
-          _saad(h7) ? 'אמין — יש רצון לעסקה' :
-          _nahs(h7) ? 'יש חשש — בדוק אמינות' : 'בינוני'));
-      }
-
-      if (h10) {
-        lines.push(_hline('תוצאת העסקה', 10, h10,
-          _saad(h10) ? 'רווח — הלוח מראה הצלחה' :
-          _nahs(h10) ? 'הפסד — הלוח מראה כישלון' : 'בינוני'));
-      }
-
-      if (h2 && h10) {
-        const both = _saad(h2) && _saad(h10) ? '→ שני הבתים טובים — עסקה מומלצת'
-          : _nahs(h2) && _nahs(h10) ? '→ שני הבתים רעים — הימנע מהעסקה'
-          : '→ מצב מעורב — נדרשת זהירות';
-        lines.push(both);
-      }
-
-      if (judge) {
-        lines.push(_judgeLabel(judge,
-          `פסיקת הדיין (${judge.figureHebrew}): לטובת העסקה`,
-          `פסיקת הדיין (${judge.figureHebrew}): נגד העסקה — הימנע או שנה תנאים`,
-          `פסיקת הדיין (${judge.figureHebrew}): לא מכריע — נדרשת בדיקה נוספת`));
-        if (h10 && _nahs(h10) && _saad(judge)) {
-          lines.push('↳ הדיין עוקף את הקושי בבית 10 — הכשלון הוא זמני או שמדובר בשלב ראשוני בלבד; הכרעת הגורל חיובית.');
-        } else if (h10 && _saad(h10) && _nahs(judge)) {
-          lines.push('↳ בית 10 מראה הצלחה, אך הדיין מכריע לרעה — הרווח ראשוני אך הסוף קשה יותר.');
-        }
-      }
-
-      return lines.join('\n');
-    }
-  },
-
-  theft: {
-    build(a, grade, judge, question) {
-      const parts = [];
-      const h7 = getHouseFromBoard(a, 7);
-      const h8 = getHouseFromBoard(a, 8);
-      const h4 = getHouseFromBoard(a, 4);
-      const isIn  = h7?.directionHebrew === 'נכנס';
-      const isOut = h7?.directionHebrew === 'יוצא';
-
-      // 1. Return probability
-      let returnText;
-      if (_saad(judge) && isIn)  returnText = 'כן — הדיין טוב והצורה נכנסת: הגנב עדיין בסביבה, סיכוי טוב לאיתור';
-      else if (_saad(judge) && isOut) returnText = 'ייתכן — הדיין טוב אך הצורה יוצאת: הגנב התרחק, אך החזרה אפשרית';
-      else if (_nahs(judge) && isOut) returnText = 'לא — הדיין רע והצורה יוצאת: הגנב ברח, החפץ כנראה לא יחזור';
-      else if (_nahs(judge))   returnText = 'קשה — הדיין מצביע על קושי באיתור';
-      else if (isIn)           returnText = 'ייתכן — הצורה נכנסת: הגנב עדיין קרוב';
-      else if (isOut)          returnText = 'קשה — הצורה יוצאת: הגנב כבר עזב';
-      else                     returnText = 'לא ברור — לבדוק כיוון הצורה בבית 7 ופסיקת הדיין';
-      if (judge) returnText += ` (דיין: ${judge.figureHebrew} [${_ft(judge)}])`;
-      parts.push(`האם החפץ יחזור? ${returnText}`);
-
-      // 2. Thief profile — house 7
-      if (h7) {
-        const dirNote = h7.directionHebrew ? `, צורה ${h7.directionHebrew}` : '';
-        const elemNote = h7.elementHebrew ? `, אלמנט: ${h7.elementHebrew}` : '';
-        parts.push(`פרופיל הגנב (בית 7 — ${h7.figureHebrew}${dirNote}${elemNote})`);
-      }
-
-      // 3. Name letters
-      const nameLetters = a?.nameLetters;
-      if (Array.isArray(nameLetters) && nameLetters.length > 0) {
-        const seen = new Set();
-        const uniq = nameLetters.filter(nl => { if (seen.has(nl.houseNumber)) return false; seen.add(nl.houseNumber); return true; });
-        const h7e = uniq.find(n => n.houseNumber === 7);
-        const h8e = uniq.find(n => n.houseNumber === 8);
-        let nameText = 'זיהוי לפי אותיות השם (תסקין עבדוה):';
-        if (h7e) nameText += `\n  בית 7 (${h7e.figureHebrew}): ${h7e.outputHebrew}`;
-        if (h8e) nameText += `\n  בית 8 (${h8e.figureHebrew}): ${h8e.outputHebrew}`;
-        if (h7e?.letters?.length && h8e?.letters?.length) {
-          const combos = h7e.letters.flatMap(l7 => h8e.letters.map(l8 => l7 + l8)).join(' / ');
-          nameText += `\n  שם מתחיל ב: ${combos}`;
-        } else if (h7e?.letters?.length) {
-          nameText += `\n  שם מתחיל ב: ${h7e.letters.join(' / ')}`;
-        }
-        parts.push(nameText);
-      }
-
-      if (a?.alternativeNameExtraction?.results?.length > 0) {
-        const altLetters = [...new Set(a.alternativeNameExtraction.results.flatMap(r => r.letters || []))];
-        if (altLetters.length > 0) parts.push(`שיטה משלימה (בתים 1, 4, 12): אותיות — ${altLetters.join(' / ')}`);
-      }
-
-      // 4. Physical description
-      if (a?.physicalDescriptionThief) {
-        parts.push(`תיאור פיזי של הגנב:\n  ${a.physicalDescriptionThief.outputHebrew}`);
-      }
-
-      // 5. Thief type
-      if (a?.thiefLocationDetails?.findings?.length > 0) {
-        const types = [...new Set(a.thiefLocationDetails.findings.map(f => f.thiefType))];
-        parts.push(`סוג הגנב: ${types.join(' | ')}`);
-      }
-
-      // 6. Location / hiding spot
-      if (h4) {
-        const dir = h4.directionHebrew ? ` — כיוון: ${h4.directionHebrew}` : '';
-        parts.push(`מיקום הגניבה / מחבוא (בית 4 — ${h4.figureHebrew}${dir})`);
-      }
-
-      return parts.join('\n\n');
-    }
-  },
-
-  enemies: {
-    build(a, grade, judge, question) {
-      const lines = [];
-      const h1  = getHouseFromBoard(a, 1);
-      const h7  = getHouseFromBoard(a, 7);
-      const h12 = getHouseFromBoard(a, 12);
-      const isMi = /^מי[\s,]/.test(String(question || ''));
-
-      if (h7) {
-        lines.push(_hline('האויב', 7, h7,
-          _nahs(h7) ? 'חזק — יש כוח לאויב, להיזהר' :
-          _saad(h7) ? 'חלש — האויב במצב חלש, פחות מסוכן' : 'בינוני'));
-      }
-
-      if (h1) {
-        lines.push(_hline('השואל', 1, h1,
-          _saad(h1) ? 'מוגן — יש כוח הגנה' :
-          _nahs(h1) ? 'חשוף — השואל במצב חלש, זהירות' : 'בינוני'));
-      }
-
-      if (h1 && h7) {
-        const t1 = _tone(h1), t7 = _tone(h7);
-        if (t1 !== 0 || t7 !== 0) {
-          lines.push(t1 > t7 ? 'השוואת כוחות: יתרון לשואל'
-            : t1 < t7 ? 'השוואת כוחות: יתרון לאויב — לא להתמודד ישירות'
-            : 'השוואת כוחות: שקולים — לבחור זמן ומקום');
-        }
-      }
-
-      if (h12) {
-        lines.push(_nahs(h12)
-          ? `⚠ אויב נסתר (בית 12 — ${h12.figureHebrew}): מישהו פועל מאחורי הקלעים`
-          : `אויבים נסתרים (בית 12 — ${h12.figureHebrew}): [${_ft(h12)}]`);
-      }
-
-      if (a?.enemyInHousehold) {
-        lines.push(`גילוי אויב בסביבה הקרובה: ${a.enemyInHousehold.outputHebrew}`);
-      }
-
-      if (isMi && Array.isArray(a?.nameLetters) && a.nameLetters.length > 0) {
-        const seen = new Set();
-        const uniq = a.nameLetters.filter(nl => { if (seen.has(nl.houseNumber)) return false; seen.add(nl.houseNumber); return true; });
-        const nameLines = uniq.map(nl => `  ${nl.houseRole} (בית ${nl.houseNumber} — ${nl.figureHebrew}): ${nl.outputHebrew}`);
-        lines.push(`זיהוי האויב לפי אותיות שמו:\n${nameLines.join('\n')}`);
-      }
-
-      if (a?.physicalDescriptionThief) {
-        lines.push(`תיאור פיזי: ${a.physicalDescriptionThief.outputHebrew}`);
-      }
-
-      if (judge) {
-        lines.push(_judgeLabel(judge,
-          `פסיקת הדיין (${judge.figureHebrew}): לטובת השואל — האויב לא יצליח`,
-          `פסיקת הדיין (${judge.figureHebrew}): לרעה — האויב עלול לפגוע, להיזהר`,
-          `פסיקת הדיין (${judge.figureHebrew}): לא מכריע`));
-      }
-
-      return lines.join('\n');
-    }
-  },
-
-  spiritualDiagnostics: {
-    build(a, grade, judge, question, spiritualDiagnosis) {
-      const lines = [];
-
-      // Answer the specific type that was asked first
-      const askedIds = getAskedSpiritualCategories(spiritualDiagnosis, question);
-      const foundIds = getFoundSpiritualCategories(spiritualDiagnosis);
-
-      if (askedIds.length > 0) {
-        const askedId = askedIds[0];
-        const askedHebrew = SPIRITUAL_CATEGORY_HEBREW[askedId] || askedId;
-        const askedFound = foundIds.includes(askedId);
-        const otherFound = foundIds.filter(id => id !== askedId);
-
-        if (askedFound) {
-          lines.push(`הלוח מאשר — יש סימנים ל${askedHebrew}.`);
-        } else if (otherFound.length > 0) {
-          const otherNames = otherFound.map(id => SPIRITUAL_CATEGORY_HEBREW[id] || id).join(' ו');
-          lines.push(`אין חשד ל${askedHebrew}, אבל יש סימנים לבעיה רוחנית אחרת: ${otherNames}.`);
-        } else {
-          lines.push(`הלוח לא מראה סימנים ל${askedHebrew} ולא לפגיעה רוחנית אחרת בולטת.`);
-        }
-      } else if (foundIds.length > 0) {
-        const names = foundIds.map(id => SPIRITUAL_CATEGORY_HEBREW[id] || id).join(' ו');
-        lines.push(`הלוח מצביע על סימנים ל${names}.`);
-      }
-
-      // Detail what was found
-      const houseIndex = a?.spiritualDiagnosticsHouseIndex;
-      if (houseIndex?.alerts?.length) {
-        lines.push(`בתים רגישים: ${houseIndex.alerts.map(al => `בית ${al.houseNumber} (${al.figureHebrew})`).join(', ')}`);
-      }
-      if (houseIndex?.findings?.length) {
-        houseIndex.findings.slice(0, 4).forEach(f => {
-          lines.push(`בית ${f.houseNumber} (${f.figureHebrew}): ${f.hebrewTerms.slice(0, 3).join(', ')}`);
-        });
-      }
-      if (a?.jumlaAnalysis?.illnessDiagnosis) {
-        const d = a.jumlaAnalysis.illnessDiagnosis;
-        lines.push(d.isSorcery ? `⚠ ${d.outputHebrew} — לבדוק סימנים נוספים` : d.outputHebrew);
-      }
-      if (judge) {
-        lines.push(_judgeLabel(judge,
-          `פסיקת הדיין (${judge.figureHebrew}): לא נראית פגיעה חזקה`,
-          `פסיקת הדיין (${judge.figureHebrew}): יש סיבה לחשש`,
-          `פסיקת הדיין (${judge.figureHebrew}): לא חד-משמעי`));
-      }
-      return lines.join('\n');
-    }
-  },
-
-  travel: {
-    build(a, grade, judge, question) {
-      const lines = [];
-      const h1  = getHouseFromBoard(a, 1);
-      const h9  = getHouseFromBoard(a, 9);
-      const h8  = getHouseFromBoard(a, 8);
-      const h12 = getHouseFromBoard(a, 12);
-
-      if (h1) lines.push(_hline('מצב הנוסע', 1, h1, _saad(h1) ? 'טוב — ביכולת לנסוע' : _nahs(h1) ? 'קשה — לשקול דחייה' : 'בינוני'));
-
-      if (h9) {
-        const dir = h9.directionHebrew ? ` (כיוון: ${h9.directionHebrew})` : '';
-        const quality = _saad(h9) ? 'פתוח ובטוח' : _nahs(h9) ? 'חסום — יש קושי בדרך' : 'בינוני';
-        lines.push(`מסלול הנסיעה (בית 9 — ${h9.figureHebrew}${dir}): ${quality}`);
-      }
-
-      const dangers = [];
-      if (_nahs(h8))  dangers.push(`בית 8 (${h8.figureHebrew}) — סכנת חיים`);
-      if (_nahs(h12)) dangers.push(`בית 12 (${h12.figureHebrew}) — אויב נסתר בדרך`);
-      if (dangers.length) lines.push(`⚠ בתי סכנה:\n  ${dangers.join('\n  ')}`);
-
-      if (a?.forcedTravelAnalysis) lines.push(`סוג הנסיעה: ${a.forcedTravelAnalysis.hebrewNote}`);
-
-      if (judge) {
-        lines.push(_judgeLabel(judge,
-          `פסיקת הדיין (${judge.figureHebrew}): אפשר לצאת`,
-          `פסיקת הדיין (${judge.figureHebrew}): עדיף לדחות`,
-          `פסיקת הדיין (${judge.figureHebrew}): לא מכריע — לבדוק זמן ותנאים`));
-      }
-      return lines.join('\n');
-    }
-  },
-
-  childrenPregnancy: {
-    build(a, grade, judge, question) {
-      const lines = [];
-      const h1 = getHouseFromBoard(a, 1);
-      const h5 = getHouseFromBoard(a, 5);
-
-      if (h1) lines.push(_hline('מצב השואל', 1, h1, _saad(h1) ? 'חיוני' : _nahs(h1) ? 'חלש — עיכוב' : 'בינוני'));
-
-      if (h5) {
-        const sameH1 = h1 && h5.figureKey === h1.figureKey;
-        const quality = _saad(h5) ? 'טוב — סימן להיריון / לידה אפשרית' :
-          _nahs(h5) ? 'קשה — עיכוב בהיריון' : 'בינוני — לבדוק עם העדים';
-        const base = _hline('בית הילדים', 5, h5, quality);
-        lines.push(sameH1 ? base + '\n  ⚠ צורת בית 5 זהה לבית 1 — קשר ישיר לעניין' : base);
-      }
-
-      if (a?.jumlaAnalysis?.childDiagnosis) lines.push(a.jumlaAnalysis.childDiagnosis.outputHebrew);
-
-      if (judge) {
-        lines.push(_judgeLabel(judge,
-          `פסיקת הדיין (${judge.figureHebrew}): נטייה לילד / היריון`,
-          `פסיקת הדיין (${judge.figureHebrew}): קושי או מניעה`,
-          `פסיקת הדיין (${judge.figureHebrew}): לא חד-משמעי`));
-      }
-      return lines.join('\n');
-    }
-  },
-
-  yearlyForecast: {
-    build(a, grade, judge, question) {
-      const lines = [];
-      if (a?.yearlyForecastAnalysis) lines.push(`תחזית השנה:\n${a.yearlyForecastAnalysis.outputHebrew}`);
-      if (a?.yearlyFigureForecast) lines.push(`תחזית לפי צורה שולטת:\n${a.yearlyFigureForecast.outputHebrew}`);
-      if (judge) {
-        lines.push(_judgeLabel(judge,
-          `פסיקת הדיין (${judge.figureHebrew}): השנה נוטה לטובה — שגשוג יחסי`,
-          `פסיקת הדיין (${judge.figureHebrew}): השנה נוטה לרעה — קשיים וחסכון`,
-          `פסיקת הדיין (${judge.figureHebrew}): שנה מעורבת`));
-      }
-      return lines.join('\n');
-    }
-  },
-
-  authorityState: {
-    build(a, grade, judge, question) {
-      const lines = [];
-      if (a?.authorityStateAnalysis) {
-        lines.push(`ניתוח סמכות ושלטון:\n${a.authorityStateAnalysis.outputHebrew}`);
-        if (a.authorityStateAnalysis.scopeNote) lines.push(`היקף השאלה: ${a.authorityStateAnalysis.scopeNote}`);
-      }
-      const h1  = getHouseFromBoard(a, 1);
-      const h10 = getHouseFromBoard(a, 10);
-      const h7  = getHouseFromBoard(a, 7);
-      if (h1)  lines.push(_hline('בעל הסמכות', 1, h1, _saad(h1) ? 'יציב' : _nahs(h1) ? 'בסכנה' : 'מעורב'));
-      if (h10) lines.push(_hline('כיסא הסמכות', 10, h10, _saad(h10) ? 'יציב ומוכר' : _nahs(h10) ? 'מאוים' : 'מעורב'));
-      if (h7)  lines.push(_hline('כוח האויב', 7, h7, _nahs(h7) ? 'חזק — יש איום' : _saad(h7) ? 'חלש' : 'מעורב'));
-      if (judge) {
-        lines.push(_judgeLabel(judge,
-          `פסיקת הדיין (${judge.figureHebrew}): יציבות בתפקיד`,
-          `פסיקת הדיין (${judge.figureHebrew}): סכנה לתפקיד`,
-          `פסיקת הדיין (${judge.figureHebrew}): מצב מעורב — לעקוב`));
-      }
-      return lines.join('\n');
-    }
-  },
-
-  birthNativity: {
-    build(a, grade, judge, question) {
-      const lines = [];
-      if (a?.birthNativityAnalysis) lines.push(`שער המולד:\n${a.birthNativityAnalysis.outputHebrew}`);
-      if (a?.trianglesEnrichment) lines.push(`ניתוח משולשים:\n${a.trianglesEnrichment.outputHebrew}`);
-      if (judge) {
-        lines.push(_judgeLabel(judge,
-          `פסיקת הדיין (${judge.figureHebrew}): הגורל הכללי לטובה`,
-          `פסיקת הדיין (${judge.figureHebrew}): יש קושי — לחזק בית 1`,
-          `פסיקת הדיין (${judge.figureHebrew}): גורל מעורב`));
-      }
-      return lines.join('\n');
-    }
-  },
-
-  disputes: {
-    build(a, grade, judge, question) {
-      const lines = [];
-      const h1 = getHouseFromBoard(a, 1);
-      const h7 = getHouseFromBoard(a, 7);
-      const t1 = h1 ? _tone(h1) : 0, t7 = h7 ? _tone(h7) : 0;
-      if (h1) lines.push(_hline('השואל', 1, h1, _ft(h1)));
-      if (h7) lines.push(_hline('היריב', 7, h7, _ft(h7)));
-      if (h1 && h7) {
-        lines.push(`→ השוואת כוחות: ${t1 > t7 ? 'יתרון לשואל' : t1 < t7 ? 'יתרון ליריב' : 'כוחות שקולים'}`);
-      }
-      if (judge) {
-        lines.push(_judgeLabel(judge,
-          `פסיקת הדיין (${judge.figureHebrew}): לטובת השואל — ניצחון`,
-          `פסיקת הדיין (${judge.figureHebrew}): לטובת הצד השני — שקול פשרה`,
-          `פסיקת הדיין (${judge.figureHebrew}): לא מכריע — הסכסוך מורכב`));
-      }
-      return lines.join('\n');
-    }
-  },
-
-  fear: {
-    build(a, grade, judge, question) {
-      const lines = [];
-      const h1  = getHouseFromBoard(a, 1);
-      const h7  = getHouseFromBoard(a, 7);
-      const h8  = getHouseFromBoard(a, 8);
-      const h12 = getHouseFromBoard(a, 12);
-      const sources = [];
-      if (h1 && _nahs(h1)) {
-        sources.push(`בית 1 (${h1.figureHebrew}) — חולשה אישית, הפחד פנימי`);
-      }
-      if (h7 && _nahs(h7)) {
-        sources.push(`בית 7 (${h7.figureHebrew}) — אויב גלוי`);
-      }
-      if (h8) {
-        const specificWarning = getFigureMeaning('fear', h8.figureHebrew, 8);
-        if (specificWarning) {
-          sources.push(specificWarning);
-        } else if (_nahs(h8)) {
-          sources.push(`בית 8 (${h8.figureHebrew}) — חשש מאסון / מוות`);
-        }
-      }
-      if (h12 && _nahs(h12)) {
-        sources.push(`בית 12 (${h12.figureHebrew}) — אויב נסתר`);
-      }
-      lines.push(sources.length
-        ? `מקורות הפחד:\n${sources.map(s => '  ' + s).join('\n')}`
-        : 'מקורות הפחד: אין בתי נחס ברורים — הפחד ייתכן מגזים');
-      if (judge) {
-        lines.push(_judgeLabel(judge,
-          `פסיקת הדיין (${judge.figureHebrew}): הסכנה לא ממשית — יש הגנה`,
-          `פסיקת הדיין (${judge.figureHebrew}): יש בסיס ממשי לפחד`,
-          `פסיקת הדיין (${judge.figureHebrew}): לא ברור`));
-      }
-      return lines.join('\n');
-    }
-  },
-
-  loveHate: {
-    build(a, grade, judge, question) {
-      const lines = [];
-      const h1 = getHouseFromBoard(a, 1);
-      const h7 = getHouseFromBoard(a, 7);
-      if (h1) {
-        const e1 = _saad(h1) ? 'אהבה' : _nahs(h1) ? 'שנאה / דחייה' : 'מעורב';
-        lines.push(_hline('כוח רגש השואל', 1, h1, e1));
-      }
-      if (h7) {
-        const e7 = _saad(h7) ? 'אהבה' : _nahs(h7) ? 'שנאה / דחייה' : 'מעורב';
-        lines.push(_hline('כוח רגש הצד השני', 7, h7, e7));
-      }
-      if (h1 && h7) {
-        let note = '';
-        if (h1.figureKey === h7.figureKey) note = 'הדדיות מלאה — שני הצדדים חולקים אותה צורה';
-        else if (_saad(h1) && _nahs(h7)) note = 'חד-צדדי: השואל אוהב, הצד השני שונא';
-        else if (_nahs(h1) && _saad(h7)) note = 'חד-צדדי: הצד השני אוהב, השואל שונא';
-        else if (_saad(h1) && _saad(h7)) note = 'שני הצדדים מרגישים חיבה';
-        else if (_nahs(h1) && _nahs(h7)) note = 'שני הצדדים רחוקים — קשר שלילי';
-        if (note) lines.push(`→ ${note}`);
-      }
-      if (a?.ittisalat) {
-        lines.push(a.ittisalat.isConnected
-          ? 'חיבור פעיל בין הצדדים (איתיסאלאת): הקשר בא לידי ביטוי'
-          : 'אין חיבור ישיר: הקשר מנותק או עצור');
-      }
-      if (judge) {
-        lines.push(_judgeLabel(judge,
-          `פסיקת הדיין (${judge.figureHebrew}): נוטה לחיבה`,
-          `פסיקת הדיין (${judge.figureHebrew}): נוטה לניתוק`,
-          `פסיקת הדיין (${judge.figureHebrew}): הרגש מעורב`));
-      }
-      return lines.join('\n');
-    }
-  },
-
-  completion: {
-    build(a, grade, judge, question) {
-      const lines = [];
-      if (judge) {
-        lines.push(_judgeLabel(judge,
-          `הדיין (${judge.figureHebrew}): הדבר יושלם`,
-          `הדיין (${judge.figureHebrew}): הדבר לא יושלם — יש מניעה`,
-          `הדיין (${judge.figureHebrew}): לא ברור — תלוי בגורמים נוספים`));
-      }
-      const tahasil = a?.tahasil;
-      if (tahasil) {
-        lines.push(tahasil.tahasilStatus === 'achieved'
-          ? `התחסיל: הדבר יסתיים ✓ — ${tahasil.tahasilHebrew}`
-          : tahasil.tahasilStatus === 'not-achieved'
-          ? `התחסיל: הדבר לא יסתיים ✗ — ${tahasil.tahasilHebrew}`
-          : `התחסיל: ${tahasil.tahasilHebrew}`);
-        if (tahasil.hayulaActive) lines.push(`⚠ ${tahasil.hayulaHebrew}`);
-      }
-      return lines.join('\n');
-    }
-  },
-
-  prisoner: {
-    build(a, grade, judge, question) {
-      const lines = [];
-      if (a?.prisonerAnalysis) lines.push(`ניתוח מצב האסיר:\n${a.prisonerAnalysis.lines.map(l => '  ' + l).join('\n')}`);
-      const h1  = getHouseFromBoard(a, 1);
-      const h5  = getHouseFromBoard(a, 5);
-      const h12 = getHouseFromBoard(a, 12);
-      if (h1)  lines.push(_hline('מצב האסיר', 1, h1, _saad(h1) ? 'טוב — יש כוח' : _nahs(h1) ? 'קשה' : 'בינוני'));
-      if (h5)  lines.push(_hline('גורל האסיר', 5, h5, _saad(h5) ? 'נטייה לשחרור' : _nahs(h5) ? 'המשך מאסר' : 'לא ברור'));
-      if (h12) lines.push(_hline('הכלא', 12, h12, _nahs(h12) ? 'חסימה חזקה' : _saad(h12) ? 'חסימה חלשה' : 'בינוני'));
-      if (judge) {
-        lines.push(_judgeLabel(judge,
-          `פסיקת הדיין (${judge.figureHebrew}): נטייה לשחרור`,
-          `פסיקת הדיין (${judge.figureHebrew}): המשך מאסר`,
-          `פסיקת הדיין (${judge.figureHebrew}): לא ברור`));
-      }
-      return lines.join('\n');
-    }
-  },
-
-  partnership: {
-    build(a, grade, judge, question) {
-      const lines = [];
-      const h1  = getHouseFromBoard(a, 1);
-      const h7  = getHouseFromBoard(a, 7);
-      const h2  = getHouseFromBoard(a, 2);
-      const h10 = getHouseFromBoard(a, 10);
-      if (h1) lines.push(_hline('השואל בשותפות', 1, h1, _ft(h1)));
-      if (h7) lines.push(_hline('השותף', 7, h7, _ft(h7)));
-      if (h1 && h7) {
-        const compat = (_saad(h1) && _saad(h7)) ? 'שני הצדדים חזקים — שותפות טובה'
-          : (_nahs(h1) && _nahs(h7)) ? 'שני הצדדים חלשים — שותפות מסוכנת'
-          : 'מצב מעורב — לבדוק תנאים';
-        lines.push(`→ ${compat}`);
-      }
-      if (h2)  lines.push(_hline('ממון השותפות', 2, h2, _saad(h2) ? 'זמין — רווחי' : _nahs(h2) ? 'סיכון כספי' : 'בינוני'));
-      if (h10) lines.push(_hline('תוצאת השותפות', 10, h10, _saad(h10) ? 'רווח מצופה' : _nahs(h10) ? 'הפסד אפשרי' : 'בינוני'));
-      if (judge) {
-        lines.push(_judgeLabel(judge,
-          `פסיקת הדיין (${judge.figureHebrew}): שותפות מוצלחת`,
-          `פסיקת הדיין (${judge.figureHebrew}): קושי בשותפות`,
-          `פסיקת הדיין (${judge.figureHebrew}): לא ברור`));
-        if (h10 && _nahs(h10) && _saad(judge)) {
-          lines.push('↳ בית 10 מרמז על קושי, אך הדיין פוסק לטובה — הסיכון מנוהל והשותפות תצלח.');
-        } else if (h10 && _saad(h10) && _nahs(judge)) {
-          lines.push('↳ בית 10 מרמז על רווח, אך הדיין מכריע לרעה — הכניסה טובה, אך הסוף בעייתי.');
-        }
-      }
-      return lines.join('\n');
-    }
-  },
-
-  seaVoyage: {
-    build(a, grade, judge, question) {
-      const lines = [];
-      const h1  = getHouseFromBoard(a, 1);
-      const h9  = getHouseFromBoard(a, 9);
-      const h8  = getHouseFromBoard(a, 8);
-      const h12 = getHouseFromBoard(a, 12);
-      if (h1) lines.push(_hline('מצב הנוסע', 1, h1, _saad(h1) ? 'טוב' : _nahs(h1) ? 'קשה — לשקול' : 'בינוני'));
-      if (h9) {
-        const dir = h9.directionHebrew ? ` (כיוון: ${h9.directionHebrew})` : '';
-        const quality = _saad(h9) ? 'בטוח' : _nahs(h9) ? 'מסוכן' : 'מעורב';
-        lines.push(`מסע הים (בית 9 — ${h9.figureHebrew}${dir}): ${quality}`);
-      }
-      const seaDanger = [];
-      if (_nahs(h8))  seaDanger.push(`בית 8 (${h8.figureHebrew}) — סכנת חיים`);
-      if (_nahs(h12)) seaDanger.push(`בית 12 (${h12.figureHebrew}) — אויב נסתר`);
-      if (seaDanger.length) lines.push(`⚠ סכנות ספציפיות: ${seaDanger.join(' | ')}`);
-      if (a?.seaVoyageRisks) lines.push(a.seaVoyageRisks.outputHebrew);
-      if (a?.forcedTravelAnalysis) lines.push(`סוג המסע: ${a.forcedTravelAnalysis.hebrewNote}`);
-      if (judge) {
-        lines.push(_judgeLabel(judge,
-          `פסיקת הדיין (${judge.figureHebrew}): מסע בטוח — אפשר לצאת`,
-          `פסיקת הדיין (${judge.figureHebrew}): סכנה בים — שקול דחייה`,
-          `פסיקת הדיין (${judge.figureHebrew}): לא ברור — לבדוק זמן`));
-        if (h9 && _nahs(h9) && _saad(judge)) {
-          lines.push('↳ בית 9 מראה מסע קשה, אך הדיין עוקף זאת — הסכנה קיימת אך הנוסע יעבור אותה בשלום; לנקוט זהירות בנקודות הקשות.');
-        } else if (h9 && _saad(h9) && _nahs(judge)) {
-          lines.push('↳ בית 9 נראה פתוח, אך הדיין מכריע לרעה — סכנה בלתי צפויה; לדחות או לשנות מסלול.');
-        }
-      }
-      return lines.join('\n');
-    }
-  },
-
-  missingPerson: {
-    build(a, grade, judge, question) {
-      const lines = [];
-      const h1  = getHouseFromBoard(a, 1);
-      const h8  = getHouseFromBoard(a, 8);
-      const h12 = getHouseFromBoard(a, 12);
-      if (h1) lines.push(_hline('מצב הנעדר', 1, h1, _saad(h1) ? 'בריאות — בחיים ובמצב סביר' : _nahs(h1) ? 'מצוקה — עלולים להיות בסכנה' : 'לא ברור'));
-      if (h8 && _nahs(h8)) {
-        lines.push(`⚠ סכנת חיים (בית 8 — ${h8.figureHebrew}): יש סימן מדאיג — לחקור בדחיפות`);
-      }
-      if (h12) lines.push(_hline('מוסתר / עצור', 12, h12, _nahs(h12) ? 'מוסתר בכוח' : _saad(h12) ? 'ניתן לאתרו' : 'בינוני'));
-      if (a?.physicalDescriptionMissing) lines.push(`תיאור הנעדר: ${a.physicalDescriptionMissing.outputHebrew}`);
-      if (judge) {
-        lines.push(_judgeLabel(judge,
-          `פסיקת הדיין (${judge.figureHebrew}): יש סיכוי לחזרה`,
-          `פסיקת הדיין (${judge.figureHebrew}): קשה — החזרה בספק`,
-          `פסיקת הדיין (${judge.figureHebrew}): לא ברור`));
-      }
-      return lines.join('\n');
-    }
-  },
-
-  hiddenTreasure: {
-    build(a, grade, judge, question) {
-      const lines = [];
-      if (a?.treasureLocation) {
-        const tl = a.treasureLocation;
-        lines.push(tl.presenceHebrew);
-        if (tl.locationHebrew) {
-          const fig = tl.house1Hebrew || tl.house1Pattern || '';
-          lines.push(`מיקום לפי צורת בית 1 (${fig}): ${tl.locationHebrew}`);
-        }
-      }
-      if (judge) {
-        lines.push(_judgeLabel(judge,
-          `פסיקת הדיין (${judge.figureHebrew}): יש גישה`,
-          `פסיקת הדיין (${judge.figureHebrew}): המטמון חסום`,
-          `פסיקת הדיין (${judge.figureHebrew}): לא ברור`));
-      }
-      return lines.join('\n');
-    }
-  },
-
-  siblings: {
-    build(a, grade, judge, question) {
-      const lines = [];
-      const h1 = getHouseFromBoard(a, 1);
-      const h3 = getHouseFromBoard(a, 3);
-      if (h1) lines.push(_hline('מצב השואל', 1, h1, _saad(h1) ? 'טוב' : _nahs(h1) ? 'קשה — שואל במצוקה' : 'בינוני'));
-      if (h3) {
-        const same = h1 && h3.figureKey === h1.figureKey;
-        const quality = _saad(h3) ? 'טוב — קשר חיובי, תמיכה' : _nahs(h3) ? 'קשה — קושי בקשר, ריחוק' : 'בינוני';
-        const base = _hline('מצב האח / השכן', 3, h3, quality);
-        lines.push(same ? base + '\n  → צורת בית 3 זהה לבית 1 — אחווה ממשית, קשר חזק מאוד' : base);
-      }
-      if (judge) {
-        lines.push(_judgeLabel(judge,
-          `פסיקת הדיין (${judge.figureHebrew}): קשר חיובי`,
-          `פסיקת הדיין (${judge.figureHebrew}): קושי בקשר`,
-          `פסיקת הדיין (${judge.figureHebrew}): מעורב`));
-      }
-      return lines.join('\n');
-    }
-  },
-
-  deathInheritance: {
-    build(a, grade, judge, question) {
-      const lines = [];
-      const h7 = getHouseFromBoard(a, 7);
-      const h8 = getHouseFromBoard(a, 8);
-      const h2 = getHouseFromBoard(a, 2);
-      if (h8) lines.push(_hline('מוות / ירושה', 8, h8, _nahs(h8) ? '⚠ סכנה ממשית / ירושה מסובכת' : _saad(h8) ? 'סכנה נמוכה / ירושה זמינה' : 'מצב בינוני'));
-      if (h7) lines.push(_hline('היורש / הנפטר', 7, h7, _saad(h7) ? 'מצב חיובי' : _nahs(h7) ? 'מצב קשה' : 'בינוני'));
-      if (h2) lines.push(_hline('ממון הירושה', 2, h2, _saad(h2) ? 'זמין' : _nahs(h2) ? 'חסום או בסכסוך' : 'בינוני'));
-      if (judge) {
-        lines.push(_judgeLabel(judge,
-          `פסיקת הדיין (${judge.figureHebrew}): אם חשש — סכנה נמוכה. אם ירושה — נטייה לקבלתה`,
-          `פסיקת הדיין (${judge.figureHebrew}): יש קושי — עיכוב או מחלוקת אפשרית`,
-          `פסיקת הדיין (${judge.figureHebrew}): מצב מעורב`));
-      }
-      return lines.join('\n');
-    }
-  },
-
-  foundations: {
-    build(a, grade, judge, question) {
-      if (a?.foundationsDisplay) {
-        return `יסודות גורל החול (${a.foundationsDisplay.sourceRef}):\n${a.foundationsDisplay.lines.map(l => '  ' + l).join('\n')}`;
-      }
-      return '';
-    }
-  },
-
-  generalReading: {
-    build(a, grade, judge, question, spiritualDiagnosis, clientContext) {
-      const lines = [];
-      const name  = clientContext?.clientName || '';
-      const prof  = {
-        marital:  clientContext?.maritalStatus  || null,
-        work:     clientContext?.workStatus     || null,
-        children: clientContext?.hasChildren    || null,
-      };
-
-      // House grouping per بلوغ الأمل (باب الرابع في معرفة الأوتاد):
-      // Angular (أوتاد) = current strong situation
-      // Succedent (يلي الأوتاد) = developing near future
-      // Cadent (سواقط) = past / background
-      const ANGULAR   = [1, 4, 7, 10];
-      const SUCCEDENT = [2, 5, 8, 11];
-      const CADENT    = [3, 6, 9, 12];
-
-      // House domains — from حاوي العجائب باب شرح البيوت الستة عشر
-      const DOMAIN = {
-        1:  'מצב האדם',       2:  'ממון ופרנסה',   3:  'אחים וסביבה',
-        4:  'בית ומשפחה',     5:  'ילדים ושמחות',  6:  'בריאות ועבדים',
-        7:  'זוגיות וקשרים',  8:  'משבר ופחד',     9:  'נסיעות ורוחניות',
-        10: 'קריירה ומעמד',   11: 'חברים ותקוות',  12: 'אויבים ונסתר',
-      };
-
-      // Count overall quality across 12 houses
-      let saadN = 0, nahsN = 0;
-      for (let i = 1; i <= 12; i++) {
-        const h = getHouseFromBoard(a, i);
-        if (!h) continue;
-        if (_saad(h)) saadN++; else if (_nahs(h)) nahsN++;
-      }
-      const tone = saadN >= nahsN + 3 ? 'הכיוון הכללי לטובה' :
-                   nahsN >= saadN + 3 ? 'הכיוון הכללי קשה — יש אתגרים משמעותיים' :
-                   'הכיוון מעורב — יש גם טוב וגם קושי';
-      lines.push(name ? `${name}: ${tone}.` : `${tone}.`);
-
-      // Profile context — appended after source text only where relevant
-      // This contextualises the reading for the specific client situation.
-      function _profileContext(num, q) {
-        const m = prof.marital, w = prof.work, c = prof.children;
-        switch (num) {
-          case 7:
-            if (!m) return null;
-            if (m === 'married' || m === 'relationship')
-              return q === 's' ? 'הזוגיות עצמה במצב טוב.'
-                   : q === 'n' ? 'יש קושי בזוגיות — כדאי לשים לב ולתקשר.'
-                   : 'הזוגיות מעורבת — יש תנודות.';
-            if (m === 'single')
-              return q === 's' ? 'פתח חיובי לזוגיות — סימן למפגש שמתפתח.'
-                   : q === 'n' ? 'הדרך לזוגיות עדיין לא פתוחה.'
-                   : 'בנושא זוגיות — יש אפשרות שעדיין לא ברורה.';
-            if (m === 'divorced' || m === 'widowed')
-              return q === 's' ? 'פתח לקשר חדש — יש סימן חיובי.'
-                   : q === 'n' ? 'עדיין זמן ריפוי — לא למהר לקשר חדש.'
-                   : null;
-            return null;
-          case 10:
-            if (!w) return null;
-            if (w === 'unemployed')
-              return q === 's' ? 'סימן לעבודה או קידום שמגיעים.'
-                   : q === 'n' ? 'הקושי המקצועי ממשיך — לא עת שינוי גדול.'
-                   : null;
-            if (w === 'self')
-              return q === 's' ? 'העסק הולך טוב — יש כבוד ורווח.'
-                   : q === 'n' ? 'יש לחץ בעסק — לשים לב.'
-                   : null;
-            return null;
-          case 2:
-            if (w === 'unemployed')
-              return q === 's' ? 'סימן חיובי להכנסה שמגיעה.'
-                   : q === 'n' ? 'הקושי הכלכלי ממשיך.'
-                   : null;
-            return null;
-          case 5:
-            if (!c) return null;
-            if (c === 'yes')
-              return q === 's' ? 'הילדים במצב טוב — יש ברכה.'
-                   : q === 'n' ? 'יש דאגה מסוימת בנושא ילדים.'
-                   : null;
-            if (c === 'no')
-              return q === 's' ? 'סימן חיובי לאפשרות ילדים.'
-                   : q === 'n' ? 'הנושא עדיין לא בשל.'
-                   : null;
-            return null;
-          default:
-            return null;
-        }
-      }
-
-      // Build one formatted entry per house.
-      // Primary text = transit meaning from حاوي العجائب (source-faithful).
-      // When transit is absent, use a quality-based fallback — clearly marked.
-      function _buildHouseEntry(num) {
-        const h = getHouseFromBoard(a, num);
-        if (!h) return null;
-
-        const q       = _saad(h) ? 's' : _nahs(h) ? 'n' : 'm';
-        const warn    = _nahs(h) ? '⚠ ' : '';
-        const star    = ANGULAR.includes(num) ? '★ ' : '';
-        const fig     = h.figureHebrew || '';
-        const fort    = h.fortune ? ` — ${h.fortune}` : '';
-        const header  = `${warn}${star}${DOMAIN[num]} (בית ${num} — ${fig}${fort}):`;
-
-        // Source text from حاوي transit (already computed in boardAnalysis)
-        const sourceText = h.transit?.meaning || null;
-        const ctx        = _profileContext(num, q);
-
-        let body;
-        if (sourceText) {
-          body = ctx ? `${sourceText}\n  ↳ ${ctx}` : sourceText;
-        } else {
-          // No transit data for this figure×house in the source
-          const fallback = q === 's' ? 'כיוון חיובי בתחום זה.'
-                         : q === 'n' ? 'יש קושי בתחום זה — לשים לב.'
-                         : 'תחום זה מעורב.';
-          body = ctx ? `${fallback}\n  ↳ ${ctx}` : fallback;
-        }
-
-        return `${header}\n${body}`;
-      }
-
-      function _renderGroup(nums, header) {
-        const entries = nums.map(_buildHouseEntry).filter(Boolean);
-        if (!entries.length) return;
-        lines.push(`\n${header}`);
-        entries.forEach(e => lines.push(e));
-      }
-
-      _renderGroup(ANGULAR,   'מצב עכשיו — בתים ראשיים:');
-      _renderGroup(SUCCEDENT, 'מה שמתפתח — בתים ממשיכים:');
-      _renderGroup(CADENT,    'רקע — בתים נסתרים:');
-
-      if (judge) {
-        const judgeText = _judgeLabel(judge,
-          'הכיוון הכללי לטובה',
-          'הכיוון הכללי קשה — יש אתגרים שצריך להתמודד איתם',
-          'הכיוון הכללי מעורב — יש גם טוב וגם אתגרים');
-        lines.push(`\nפסיקת הדיין (${judge.figureHebrew}): ${judgeText}`);
-      }
-
-      return lines.join('\n');
-    }
-  },
-
-};
-
-function buildTopicConclusion(result) {
-  const schema = TOPIC_ANSWER_SCHEMA[result.topicId];
-  if (!schema) return null;
-  const a = result.boardAnalysis;
-  if (!a?.hasBoard) return null;
-  const grade = result.boardScore?.grade || 'mixed';
-  const judge = a.judge;
-  const question = result.question || '';
-  return schema.build(a, grade, judge, question, result.spiritualDiagnosis, result.clientContext) || null;
 }
 
 function recommendationByTopic(topicId, grade, boardAnalysis, question) {
@@ -2166,11 +1153,10 @@ function dhamirParagraph(boardAnalysis, judgeVerdict) {
   const dhamirHouseNum = dhamirMizan?.primaryHouseNumber || dhamirH?.houseNumber || '';
   const dhamirFigure = dhamirMizan?.primaryHebrew || dhamirH?.figureHebrew || '';
 
-  const dhamirFortHebrew = fortuneToHebrew(dhamirFort);
   if (confirming) {
-    return `הדמיר (בית ${dhamirHouseNum}${dhamirFigure ? ` — ${dhamirFigure}` : ''}): ${dhamirFortHebrew} — מאשר את הדיין ומחזק את הפסיקה. כשהדמיר מסכים עם הדיין, הוא מוסיף ודאות לתשובה.`;
+    return `הדמיר (בית ${dhamirHouseNum}${dhamirFigure ? ` — ${dhamirFigure}` : ''}): ${dhamirFort} — מאשר את הדיין ומחזק את הפסיקה. כשהדמיר מסכים עם הדיין, הוא מוסיף ודאות לתשובה.`;
   } else {
-    return `הדמיר (בית ${dhamirHouseNum}${dhamirFigure ? ` — ${dhamirFigure}` : ''}): ${dhamirFortHebrew} — סותר את הדיין. כשהדמיר מנוגד לדיין, יש לקחת בחשבון שהמצב עשוי להשתנות, או שיש כוחות פנימיים שמעכבים את הגעת התשובה.`;
+    return `הדמיר (בית ${dhamirHouseNum}${dhamirFigure ? ` — ${dhamirFigure}` : ''}): ${dhamirFort} — סותר את הדיין. כשהדמיר מנוגד לדיין, יש לקחת בחשבון שהמצב עשוי להשתנות, או שיש כוחות פנימיים שמעכבים את הגעת התשובה.`;
   }
 }
 
@@ -2178,27 +1164,625 @@ function boardScoreParagraph(boardAnalysis) {
   const bScore = boardAnalysis?.boardScore;
   if (!bScore) return '';
   if (bScore.isComplete) return '';
-  return `⚠ ${bScore.hebrewSummary} — השאלה עשויה להישאר לא פתורה, או שהתשובה תאחר להתברר.`;
+  return `לוח חסר: ${bScore.hebrewSummary}. כשהלוח חסר (פחות מ-96 נקודות), השאלה עשויה להישאר לא פתורה, או שהתשובה תאחר להתברר.`;
 }
+
+// ─── NARRATIVE CONCLUSION — text the practitioner reads to the client ────────
+
+function figureFortuneTone(fortune) {
+  if (!fortune) return 0;
+  const f = String(fortune);
+  if (f === 'סעד') return 2;
+  if (f.includes('ממוזג-סעד')) return 1;
+  if (f === 'נחס') return -2;
+  if (f.includes('ממוזג-נחס')) return -1;
+  if (f.includes('סעד')) return 1;
+  if (f.includes('נחס')) return -1;
+  return 0;
+}
+
+function askerOpeningLine(h1Fortune, clientName) {
+  const t = figureFortuneTone(h1Fortune);
+  const prefix = clientName ? `${clientName}, ` : '';
+  if (t >= 2) return `${prefix}הלוח רואה אותך בעמדה חזקה וטובה.`;
+  if (t === 1) return `${prefix}הלוח רואה אותך עם יתרון מסוים — לא מושלם, אבל טוב.`;
+  if (t === -1) return `${prefix}הלוח מראה שהמצב שלך לא פשוט כרגע — יש קושי בנקודת הפתיחה.`;
+  if (t <= -2) return `${prefix}הלוח מראה חולשה ממשית בנקודת הפתיחה שלך — כדאי לחכות או לחזק את עמדתך.`;
+  return `${prefix}הלוח רואה אותך במצב מאוזן — לא חזק ולא חלש.`;
+}
+
+// essence derived directly from figure Hebrew names — no invented meanings
+const FIGURE_ESSENCE = {
+  'כבוד נכנס': 'כוח וכבוד',
+  'ממון נכנס':  'ממון שזורם לעברך',
+  'לבן':        'בהירות ורוגע',
+  'חיבור':      'קשרים וחיבורים',
+  'דרך':        'דרך פתוחה',
+  'סף נכנס':    'פתח חדש שנפתח',
+  'נשוא ראש':   'הצלחה ועלייה',
+  'קהלה':       'ריבוי ותנועה',
+  'שפל ראש':    'שפלות וחולשה',
+  'אדום':       'לחץ וסכנה',
+  'בר הלחי':    'הפסד',
+  'נלחם':       'מאבק ולחץ',
+  'סוהר':       'עצירה ומגבלה',
+  'כבוד יוצא':  'כבוד שחולף',
+  'ממון יוצא':  'ממון שיוצא',
+  'סף יוצא':    'חיפוש מוצא',
+};
+
+function topicOpeningLine(topicId, h1, name) {
+  const prefix = name ? `${name}, ` : '';
+  const t = figureFortuneTone(h1?.fortune);
+  const essence = FIGURE_ESSENCE[h1?.figureHebrew] || null;
+
+  const pos = (topic) => {
+    if (!essence) return `${prefix}הלוח רואה אותך בעמדה חיובית ${topic}.`;
+    return `${prefix}הלוח רואה אותך ${topic} ממקום של ${essence}.`;
+  };
+  const posWeak = (topic) => {
+    if (!essence) return `${prefix}הלוח רואה אותך ${topic} עם יתרון מסוים — לא ודאות מלאה.`;
+    return `${prefix}הלוח רואה אותך ${topic} ממקום של ${essence}, אם כי לא בביטחון מלא.`;
+  };
+  const neutral = (topic) => `${prefix}הלוח רואה אותך במצב מאוזן ${topic}.`;
+  const neg = (topic) => {
+    if (!essence) return `${prefix}הלוח מראה עמדה לא חזקה ${topic} — כדאי לחזק את עמדתך.`;
+    return `${prefix}הלוח רואה אותך ${topic} ממקום של ${essence} — זה משפיע על הכניסה.`;
+  };
+  const strongNeg = (topic) => {
+    if (!essence) return `${prefix}הלוח מראה חולשה ממשית ${topic} — לא הזמן הנכון.`;
+    return `${prefix}הלוח רואה אותך ${topic} ממקום של ${essence} — לא הזמן הנכון לפעול.`;
+  };
+
+  const pick = (topic) =>
+    t >= 2 ? pos(topic) : t === 1 ? posWeak(topic) :
+    t === -1 ? neg(topic) : t <= -2 ? strongNeg(topic) : neutral(topic);
+
+  switch (topicId) {
+    case 'commerce':     return pick('נכנס לעסקה הזו');
+    case 'marriage':     return pick('מגיע לשאלת הנישואין הזו');
+    case 'travel':       return pick('יוצא לדרך');
+    case 'disputes':     return pick('נכנס לסכסוך הזה');
+    case 'partnership':  return pick('ניגש לשותפות הזו');
+    case 'fear':         return pick('עומד מול הפחד הזה');
+    case 'loveHate':     return pick('ביחס לקשר הזה');
+    case 'enemies':      return pick('מול האויב');
+    case 'theft':        return pick('בחיפוש אחר מה שנגנב');
+    case 'prisoner':     return pick('בשאלת השחרור');
+    case 'missingPerson': return pick('בחיפוש אחר הנעדר');
+    case 'childrenPregnancy': return pick('ביחס לשאלת ההיריון');
+    case 'hiddenTreasure':    return pick('בחיפוש אחר הדבר החבוי');
+    case 'seaVoyage':    return pick('יוצא למסע הים');
+    case 'completion':   return pick('ביחס לסיום הדבר');
+    case 'siblings':     return pick('ביחס לאח או לשכן');
+    case 'deathInheritance': return pick('ביחס לשאלת הירושה');
+    case 'authorityState':   return pick('בשאלת התפקיד והסמכות');
+    default: return askerOpeningLine(h1?.fortune, name);
+  }
+}
+
+function judgeClosingLine(judgeVerdict, grade) {
+  const jv = judgeVerdict;
+  if (!jv) {
+    if (grade === 'positive' || grade === 'cautiously-positive') return 'הפסיקה הסופית: כן — הכיוון חיובי.';
+    if (grade === 'negative' || grade === 'cautiously-negative') return 'הפסיקה הסופית: לא — יש חסימה.';
+    return 'הפסיקה הסופית: לא ברורה — יש לקרוא את הפרטים בזהירות.';
+  }
+  const verdict = jv.verdict || '';
+  if (verdict === 'yes-strong') return 'הדיין פוסק: כן — ובבירור.';
+  if (verdict === 'yes-weak')   return 'הדיין נוטה לכן — לא בעוצמה חזקה, אבל הכיוון חיובי.';
+  if (verdict === 'no-strong')  return 'הדיין פוסק: לא — ובבירור.';
+  if (verdict === 'no-weak')    return 'הדיין נוטה ל"לא" — אין הכרעה חזקה, אבל המיקוד שלילי.';
+  if (verdict.startsWith('maybe-positive'))  return 'הדיין לא מכריע — יש פתח לטובה, אבל נדרשת בדיקה נוספת.';
+  if (verdict.startsWith('maybe-negative'))  return 'הדיין לא מכריע — יש צד שלילי, אבל לא הכרעה מוחלטת.';
+  if (verdict === 'mixed') return 'הדיין לא מכריע — התשובה תלויה בנסיבות.';
+  return jv.hebrewShort || 'הפסיקה אינה ברורה.';
+}
+
+function buildNarrativeByTopic(result) {
+  const { topicId, boardAnalysis, judgeVerdict, clientContext } = result;
+  const grade = result.boardScore?.grade || 'mixed';
+  const name = clean(clientContext?.clientName || '');
+
+  if (!boardAnalysis?.hasBoard) return null;
+  if (topicId === 'spiritualDiagnostics') return null; // handled separately
+
+  const h1 = getHouseFromBoard(boardAnalysis, 1);
+  const h7 = getHouseFromBoard(boardAnalysis, 7);
+  const t = (house) => figureFortuneTone(house?.fortune);
+
+  const paras = [];
+  const push = (p) => { if (p && clean(p)) paras.push(clean(p)); };
+
+  // ── commerce ────────────────────────────────────────────────────
+  if (topicId === 'commerce') {
+    const h2  = getHouseFromBoard(boardAnalysis, 2);
+    const h10 = getHouseFromBoard(boardAnalysis, 10);
+
+    push(topicOpeningLine(topicId, h1, name));
+
+    if (h7) {
+      const h7name = h7.figureHebrew ? ` (${h7.figureHebrew})` : '';
+      if (t(h7) <= -2) push(`לגבי הצד שמולך${h7name} — יש בלוח סימן אזהרה ברור. לא לחתום לפני שבדקת אותו היטב.`);
+      else if (t(h7) === -1) push(`לגבי הצד השני${h7name} — כדאי לבדוק את פרטי ההסכם לפני שמתקדמים.`);
+      else if (t(h7) >= 1) push(`הצד שמולך${h7name} — נראה אמין ובעמדה טובה.`);
+      else push(`הצד השני${h7name} — לא חד-משמעי. כדאי לבדוק את ההסכם בקפידה.`);
+    }
+
+    if (h2 || h10) {
+      const h2t = t(h2), h10t = t(h10);
+      const positiveGrade = grade === 'positive' || grade === 'cautiously-positive';
+      if (h2 && h10) {
+        if (h2t >= 1 && h10t >= 1)        push('הכסף זמין, והתוצאה הסופית תומכת — הכיוון הכלכלי חיובי.');
+        else if (h2t <= -1 && h10t <= -1) push('בצד הכסף — הלוח מראה חסרון, והתוצאה הסופית גם קשה. כדאי לשקול מחדש.');
+        else if (h10t <= -1)              push(positiveGrade
+          ? 'אף שהכיוון הכללי חיובי, יש בלוח סימן שהדרך לא חלקה לגמרי. כדאי לעקוב.'
+          : 'התוצאה הסופית בלוח לא טובה — גם אם יש כסף, הרווח עלול לא להגיע.');
+        else if (h2t <= -1)               push('יש חסרון כספי בלוח — שים לב לתנאי התשלום.');
+        else if (h10t >= 1)               push('התוצאה הסופית בלוח חיובית — הדרך פתוחה להצלחה.');
+      } else if (h2) {
+        if (h2t >= 1)       push('יש כסף בצינור — הכלכלה תומכת.');
+        else if (h2t <= -1) push('יש חסרון כספי בלוח — שים לב.');
+      } else if (h10) {
+        if (h10t >= 1)       push('התוצאה הסופית בלוח חיובית.');
+        else if (h10t <= -1) push(positiveGrade ? 'יש בלוח סימן שהדרך לא חלקה לגמרי — כדאי לעקוב.' : 'התוצאה הסופית בלוח קשה — שקול מחדש.');
+      }
+    }
+
+    push(judgeClosingLine(judgeVerdict, grade));
+    return paras.join('\n\n');
+  }
+
+  // ── marriage ─────────────────────────────────────────────────────
+  if (topicId === 'marriage') {
+    push(topicOpeningLine(topicId, h1, name));
+
+    if (h7) {
+      const h7name = h7.figureHebrew ? ` (${h7.figureHebrew})` : '';
+      if (t(h7) >= 2)    push(`הצד השני${h7name} — הלוח מראה צד חזק וחיובי. הדרך פתוחה.`);
+      else if (t(h7) === 1)  push(`הצד השני${h7name} — יש פתיחות. כדאי להתקדם ולבחון.`);
+      else if (t(h7) === -1) push(`לגבי הצד השני${h7name} — הלוח מראה סימן שמחייב בדיקה. לא להסכים לכלום לפני שבחנת היטב.`);
+      else if (t(h7) <= -2)  push(`לגבי הצד השני${h7name} — הלוח מראה חסם ממשי בצד הזה. יש קושי בקשר שצריך לבדוק לפני החלטה.`);
+      else push(`הצד השני${h7name} — לא חד-משמעי. כדאי לבדוק יחד את פרטי הקשר.`);
+
+      if (h1 && h7.figureKey === h1.figureKey) {
+        push('יש בלוח סימן מיוחד: שני הצדדים חולקים את אותה צורה — זה מראה על הדדיות ממשית בקשר.');
+      }
+    }
+
+    push(judgeClosingLine(judgeVerdict, grade));
+    return paras.join('\n\n');
+  }
+
+  // ── illness ──────────────────────────────────────────────────────
+  if (topicId === 'illness') {
+    const h6 = getHouseFromBoard(boardAnalysis, 6);
+    const h8 = getHouseFromBoard(boardAnalysis, 8);
+
+    if (h1) {
+      const prefix = name ? `${name}, ` : '';
+      const h1ess = FIGURE_ESSENCE[h1.figureHebrew];
+      if (t(h1) >= 1) push(h1ess
+        ? `${prefix}הלוח רואה את החולה ממקום של ${h1ess} — יש כוח שיכול לסייע בריפוי.`
+        : `${prefix}הלוח רואה את החולה עם כוח עדיין — יש בסיס לריפוי.`);
+      else if (t(h1) <= -1) push(h1ess
+        ? `${prefix}הלוח מראה את החולה ב${h1ess} — יש לטפל בדחיפות.`
+        : `${prefix}הלוח מראה שמצב החולה קשה — יש לטפל בדחיפות.`);
+      else push(`${prefix}מצב החולה בלוח מאוזן — לא ברור עדיין לאיזה כיוון הולכים.`);
+    }
+
+    if (h6) {
+      if (t(h6) <= -2)   push('המחלה עצמה בלוח — חזקה. יש לטפל בה ברצינות ולא להמתין.');
+      else if (t(h6) === -1) push('המחלה בלוח — יש בה כוח, אבל לא בעוצמה מקסימלית.');
+      else if (t(h6) >= 1) push('המחלה בלוח — יש סימן שהמצב פחות חמור ממה שנדמה.');
+    }
+
+    if (h8 && t(h8) <= -1) push('יש בלוח סימן לסכנה — לא להמתין יותר מדי זמן.');
+
+    push(judgeClosingLine(judgeVerdict, grade));
+    return paras.join('\n\n');
+  }
+
+  // ── travel ───────────────────────────────────────────────────────
+  if (topicId === 'travel') {
+    const h9  = getHouseFromBoard(boardAnalysis, 9);
+    const h8  = getHouseFromBoard(boardAnalysis, 8);
+    const h12 = getHouseFromBoard(boardAnalysis, 12);
+
+    push(topicOpeningLine(topicId, h1, name));
+
+    if (h9) {
+      if (t(h9) >= 1)    push('הדרך עצמה בלוח — פתוחה וחיובית. יש סיכוי טוב שהמסע יצליח.');
+      else if (t(h9) === -1) push('הדרך בלוח — יש עיכוב או קושי. כדאי לדחות או לשנות תנאים.');
+      else if (t(h9) <= -2)  push('הדרך בלוח — קשה. לא זמן טוב לנסיעה הזו. עדיף לחכות.');
+      else push('הדרך בלוח — לא ברורה. יש לבדוק תנאים ספציפיים.');
+    }
+
+    const dangers = [];
+    if (h8  && t(h8)  <= -1) dangers.push('סכנה בדרך');
+    if (h12 && t(h12) <= -1) dangers.push('אויב נסתר');
+    if (dangers.length) push(`יש בלוח סימן ל${dangers.join(' ו')} — לנסוע בזהירות.`);
+
+    push(judgeClosingLine(judgeVerdict, grade));
+    return paras.join('\n\n');
+  }
+
+  // ── childrenPregnancy ────────────────────────────────────────────
+  if (topicId === 'childrenPregnancy') {
+    const h5 = getHouseFromBoard(boardAnalysis, 5);
+
+    push(topicOpeningLine(topicId, h1, name));
+
+    if (h5) {
+      if (t(h5) >= 1)    push('בית הילדים בלוח — חיובי. יש סימן לאפשרות הריון או לידה.');
+      else if (t(h5) === -1) push('בית הילדים בלוח — יש עיכוב. ייתכן שהזמן לא מושלם, או שיש קושי שצריך לטפל בו.');
+      else if (t(h5) <= -2)  push('בית הילדים בלוח — קשה. יש לבדוק רפואית ולא להסתמך רק על הגורל.');
+      else push('בית הילדים בלוח — לא ברור. יש לבדוק את העדים לפרטים נוספים.');
+    }
+
+    push(judgeClosingLine(judgeVerdict, grade));
+    return paras.join('\n\n');
+  }
+
+  // ── hiddenTreasure ───────────────────────────────────────────────
+  if (topicId === 'hiddenTreasure') {
+    const tl = boardAnalysis?.treasureLocation;
+
+    push(topicOpeningLine(topicId, h1, name));
+
+    if (tl) {
+      push(tl.presenceHebrew);
+      if (tl.locationHebrew && tl.presenceVerdict !== 'not-found') {
+        push(`כיוון החיפוש לפי הלוח: ${tl.locationHebrew}`);
+      }
+    } else {
+      const h4 = getHouseFromBoard(boardAnalysis, 4);
+      if (h4) {
+        if (t(h4) >= 1)    push('הדבר החבוי בלוח — קיים ויש גישה אליו.');
+        else if (t(h4) <= -1) push('הדבר החבוי בלוח — חסום או לא נגיש כרגע.');
+      }
+    }
+
+    push(judgeClosingLine(judgeVerdict, grade));
+    return paras.join('\n\n');
+  }
+
+  // ── missingPerson ────────────────────────────────────────────────
+  if (topicId === 'missingPerson') {
+    const h8 = getHouseFromBoard(boardAnalysis, 8);
+
+    push(topicOpeningLine(topicId, h1, name));
+
+    if (h7) {
+      if (t(h7) >= 1)    push('הנעדר בלוח — יש סימן שהוא בחיים ובמצב שיש בו כוח. יש סיכוי לחזרה.');
+      else if (t(h7) === -1) push('הנעדר בלוח — יש עיכוב בחזרה. המצב לא פשוט.');
+      else if (t(h7) <= -2)  push('הלוח מראה שמצב הנעדר קשה. יש לפעול במהירות.');
+      else push('מצב הנעדר בלוח — לא ברור. יש לבדוק את הסימנים הנוספים.');
+    }
+
+    if (h8 && t(h8) <= -2) push('יש בלוח סימן לסכנה — יש לפעול ולחפש.');
+
+    push(judgeClosingLine(judgeVerdict, grade));
+    return paras.join('\n\n');
+  }
+
+  // ── enemies ──────────────────────────────────────────────────────
+  if (topicId === 'enemies') {
+    const h12 = getHouseFromBoard(boardAnalysis, 12);
+
+    push(topicOpeningLine(topicId, h1, name));
+
+    if (h7) {
+      if (t(h7) <= -2)  push('האויב בלוח — חזק מאוד. כדאי לא לנסות עימות ישיר.');
+      else if (t(h7) === -1) push('לאויב יש כוח מסוים — יש להיזהר, אבל הוא לא בלתי ניתן לעצירה.');
+      else if (t(h7) >= 1)  push('האויב בלוח — חלש. יש לך יתרון ברור.');
+      else push('האויב בלוח — מצבו לא חד-משמעי.');
+    }
+
+    if (h12 && t(h12) <= -1) push('יש בלוח סימן לאויב נסתר — מישהו בסביבה הקרובה שאתה לא חושד בו.');
+
+    push(judgeClosingLine(judgeVerdict, grade));
+    return paras.join('\n\n');
+  }
+
+  // ── theft ────────────────────────────────────────────────────────
+  if (topicId === 'theft') {
+    const nameLetters = boardAnalysis?.nameLetters;
+
+    push(topicOpeningLine(topicId, h1, name));
+
+    if (h7) {
+      const dir = h7.directionHebrew || '';
+      if (dir === 'יוצא') push('הגנב בלוח — כבר הרחיק מהמקום. החפץ כנראה לא קרוב יותר.');
+      else if (dir === 'נכנס') push('הגנב בלוח — עדיין קרוב. יש סיכוי שהחפץ עדיין בהישג יד.');
+      else if (t(h7) <= -1) push('הלוח מצביע על מישהו שמקשה להחזיר את הדבר.');
+      else push('הלוח מצביע על הגנב — כדאי לחפש בסביבה הקרובה.');
+    }
+
+    if (nameLetters?.length > 0) {
+      const h7Entry = nameLetters.find(n => n.houseNumber === 7);
+      if (h7Entry?.outputHebrew) push(`לגבי שם הגנב: ${h7Entry.outputHebrew}`);
+    }
+
+    push(judgeClosingLine(judgeVerdict, grade));
+    return paras.join('\n\n');
+  }
+
+  // ── disputes ─────────────────────────────────────────────────────
+  if (topicId === 'disputes') {
+    push(topicOpeningLine(topicId, h1, name));
+
+    if (h7) {
+      const h1t = t(h1), h7t = t(h7);
+      if (h1t > h7t)      push('לפי הלוח — יש לך יתרון על הצד השני בסכסוך הזה.');
+      else if (h7t > h1t) push('לפי הלוח — הצד השני חזק יותר כרגע. כדאי לשקול פשרה.');
+      else                 push('כוחות שני הצדדים בלוח — שקולים. הכרעה תלויה בדיין.');
+    }
+
+    push(judgeClosingLine(judgeVerdict, grade));
+    return paras.join('\n\n');
+  }
+
+  // ── fear ─────────────────────────────────────────────────────────
+  if (topicId === 'fear') {
+    const h8  = getHouseFromBoard(boardAnalysis, 8);
+    const h12 = getHouseFromBoard(boardAnalysis, 12);
+
+    push(topicOpeningLine(topicId, h1, name));
+
+    const fearSources = [];
+    if (h7  && t(h7)  <= -1) fearSources.push('אדם שמולך');
+    if (h12 && t(h12) <= -1) fearSources.push('דבר נסתר');
+    if (h8  && t(h8)  <= -1) fearSources.push('סכנה גדולה');
+
+    if (fearSources.length === 0) {
+      push('הלוח לא מראה מקור ממשי לפחד — ייתכן שהפחד גדול מהמציאות.');
+    } else {
+      push(`הלוח מראה שיש בסיס לחשש: ${fearSources.join(', ')}. לא להתעלם, אבל גם לא ללכת בפחד מוחלט.`);
+    }
+
+    push(judgeClosingLine(judgeVerdict, grade));
+    return paras.join('\n\n');
+  }
+
+  // ── loveHate ─────────────────────────────────────────────────────
+  if (topicId === 'loveHate') {
+    push(topicOpeningLine(topicId, h1, name));
+
+    if (h7) {
+      if (t(h1) >= 1 && t(h7) >= 1)       push('הלוח רואה רגש חיובי משני הצדדים — יש חיבור ממשי.');
+      else if (t(h1) >= 1 && t(h7) <= -1)  push('הלוח רואה שהרגש חד-צדדי: אתה אוהב, אבל הצד השני לא נוטה לאותו כיוון.');
+      else if (t(h1) <= -1 && t(h7) >= 1)  push('הלוח רואה שהרגש חד-צדדי: הצד השני פונה אליך, אבל אתה לא מרגיש כלפיו כך.');
+      else if (t(h7) <= -1)                push('הלוח מראה ניתוק או שנאה מצד הצד השני. יש להתרחק.');
+      else                                  push('הרגש בין שני הצדדים בלוח — לא ברור. יש לקרוא את הפרטים ביחד.');
+
+      if (h1 && h7.figureKey === h1.figureKey) {
+        push('יש בלוח סימן מיוחד: שני הצדדים חולקים את אותה צורה — זה מראה על הדדיות ממשית.');
+      }
+    }
+
+    push(judgeClosingLine(judgeVerdict, grade));
+    return paras.join('\n\n');
+  }
+
+  // ── completion ───────────────────────────────────────────────────
+  if (topicId === 'completion') {
+    push(topicOpeningLine(topicId, h1, name));
+
+    const tahasil = boardAnalysis?.tahasil;
+    if (tahasil) {
+      if (tahasil.tahasilStatus === 'achieved')     push('הלוח מראה שיש חיבור — הדבר יגיע לסיום.');
+      else if (tahasil.tahasilStatus === 'not-achieved') push('הלוח מראה שאין חיבור — הדבר לא יסתיים כמתוכנן.');
+      else push('ההגעה בלוח — חלקית. הדבר עשוי להסתיים אבל תלוי בנסיבות.');
+    }
+
+    push(judgeClosingLine(judgeVerdict, grade));
+    return paras.join('\n\n');
+  }
+
+  // ── prisoner ─────────────────────────────────────────────────────
+  if (topicId === 'prisoner') {
+    const h5  = getHouseFromBoard(boardAnalysis, 5);
+    const h12 = getHouseFromBoard(boardAnalysis, 12);
+
+    push(topicOpeningLine(topicId, h1, name));
+
+    if (h12) {
+      if (t(h12) >= 1)    push('המגבלה בלוח — חלשה. יש סימן לפתח יציאה.');
+      else if (t(h12) <= -1) push('המגבלה בלוח — חזקה. השחרור עדיין לא קרוב.');
+    }
+
+    if (h5) {
+      if (t(h5) >= 1)    push('גורל האסיר לפי הלוח — יש נטייה לשחרור.');
+      else if (t(h5) <= -1) push('גורל האסיר לפי הלוח — קשה. אין סימן ברור לשחרור בקרוב.');
+    }
+
+    push(judgeClosingLine(judgeVerdict, grade));
+    return paras.join('\n\n');
+  }
+
+  // ── partnership ──────────────────────────────────────────────────
+  if (topicId === 'partnership') {
+    const h2  = getHouseFromBoard(boardAnalysis, 2);
+    const h10 = getHouseFromBoard(boardAnalysis, 10);
+
+    push(topicOpeningLine(topicId, h1, name));
+
+    if (h7) {
+      if (t(h1) >= 1 && t(h7) >= 1)    push('שני הצדדים בלוח — חזקים. שותפות זו מתחילה ממקום טוב.');
+      else if (t(h1) <= -1 && t(h7) <= -1) push('שני הצדדים בלוח — חלשים. שותפות זו מסוכנת, לא הזמן הנכון.');
+      else if (t(h7) <= -1)             push('השותף בלוח — יש סימן לחשש. בדוק אותו לפני שמתחייבים.');
+      else if (t(h7) >= 1)              push('השותף בלוח — בעמדה טובה. יש בסיס לשותפות.');
+      else push('השותף בלוח — לא חד-משמעי. בדוק תנאים לפני כניסה.');
+    }
+
+    if (h2 && h10) {
+      if (t(h2) >= 1 && t(h10) >= 1)      push('הממון והתוצאה — שניהם חיוביים. הפוטנציאל הכלכלי של השותפות קיים.');
+      else if (t(h2) <= -1 || t(h10) <= -1) push('יש סימן כלכלי שלילי בלוח — בדוק את תנאי החלוקה.');
+    }
+
+    push(judgeClosingLine(judgeVerdict, grade));
+    return paras.join('\n\n');
+  }
+
+  // ── seaVoyage ────────────────────────────────────────────────────
+  if (topicId === 'seaVoyage') {
+    const h9  = getHouseFromBoard(boardAnalysis, 9);
+    const h8  = getHouseFromBoard(boardAnalysis, 8);
+    const h12 = getHouseFromBoard(boardAnalysis, 12);
+
+    push(topicOpeningLine(topicId, h1, name));
+
+    if (h9) {
+      if (t(h9) >= 1)    push('המסע בלוח — חיובי. יש סימן שהים פתוח ועובר בשלום.');
+      else if (t(h9) <= -1) push('המסע בלוח — קשה. יש לשקול דחייה או שינוי מסלול.');
+    }
+
+    const seaDangers = [];
+    if (h8  && t(h8)  <= -1) seaDangers.push('סכנה פיזית');
+    if (h12 && t(h12) <= -1) seaDangers.push('מארב נסתר');
+    if (seaDangers.length) push(`יש בלוח סימן ל${seaDangers.join(' ו')} בים — לנסוע בזהירות רבה.`);
+
+    push(judgeClosingLine(judgeVerdict, grade));
+    return paras.join('\n\n');
+  }
+
+  // ── siblings ─────────────────────────────────────────────────────
+  if (topicId === 'siblings') {
+    const h3 = getHouseFromBoard(boardAnalysis, 3);
+
+    push(topicOpeningLine(topicId, h1, name));
+
+    if (h3) {
+      if (t(h3) >= 1)    push('האח / השכן בלוח — יש קשר חיובי. עזרה ותמיכה בצד.');
+      else if (t(h3) === -1) push('האח / השכן בלוח — יש מרחק או קושי בקשר.');
+      else if (t(h3) <= -2)  push('הקשר עם האח / השכן בלוח — קשה. יש לטפל בזה ישירות.');
+
+      if (h1 && h3.figureKey === h1.figureKey) push('יש בלוח סימן מיוחד: אותה צורה בשניכם — קשר חזק מאוד, אחווה ממשית.');
+    }
+
+    push(judgeClosingLine(judgeVerdict, grade));
+    return paras.join('\n\n');
+  }
+
+  // ── deathInheritance ─────────────────────────────────────────────
+  if (topicId === 'deathInheritance') {
+    const h8 = getHouseFromBoard(boardAnalysis, 8);
+    const h2 = getHouseFromBoard(boardAnalysis, 2);
+
+    push(topicOpeningLine(topicId, h1, name));
+
+    if (h8) {
+      if (t(h8) >= 1)    push('בית הסכנה והירושה בלוח — חיובי. אם מדובר בחשש מוות, הסכנה נמוכה. אם מדובר בירושה, יש פתיחה.');
+      else if (t(h8) === -1) push('יש בלוח סימן שהמצב לא פשוט — יש לקחת את זה ברצינות.');
+      else if (t(h8) <= -2)  push('הלוח מראה סכנה ממשית — יש לפעול בהתאם ולא להמתין.');
+    }
+
+    if (h2) {
+      if (t(h2) >= 1)    push('הירושה הכספית בלוח — הלוח מראה שיש מה לקבל.');
+      else if (t(h2) <= -1) push('הירושה הכספית בלוח — יש סיבוך או עיכוב. ייתכנו מחלוקות.');
+    }
+
+    push(judgeClosingLine(judgeVerdict, grade));
+    return paras.join('\n\n');
+  }
+
+  // ── yearlyForecast ───────────────────────────────────────────────
+  if (topicId === 'yearlyForecast') {
+    const ya = boardAnalysis?.yearlyForecastAnalysis;
+    if (ya?.outputHebrew) {
+      push(ya.outputHebrew);
+    } else {
+      const prefix = name ? `${name}, ` : '';
+      if (grade === 'positive' || grade === 'cautiously-positive')
+        push(`${prefix}השנה הקרובה בלוח — יש נטייה לטובה. כיוון חיובי.`);
+      else if (grade === 'negative' || grade === 'cautiously-negative')
+        push(`${prefix}השנה הקרובה בלוח — יש לצפות לקשיים. כדאי לתכנן בזהירות.`);
+      else
+        push(`${prefix}השנה הקרובה בלוח — מעורבת. יש תקופות טובות ותקופות קשות.`);
+    }
+    push(judgeClosingLine(judgeVerdict, grade));
+    return paras.join('\n\n');
+  }
+
+  // ── authorityState ───────────────────────────────────────────────
+  if (topicId === 'authorityState') {
+    const h10 = getHouseFromBoard(boardAnalysis, 10);
+    const aa  = boardAnalysis?.authorityStateAnalysis;
+
+    push(topicOpeningLine(topicId, h1, name));
+
+    if (h10) {
+      if (t(h10) >= 1)    push('התפקיד / הסמכות בלוח — חיובי. יש יציבות ועמדה חזקה.');
+      else if (t(h10) === -1) push('התפקיד בלוח — יש חשש. יש לחזק את הבסיס לפני פעולה.');
+      else if (t(h10) <= -2)  push('התפקיד בלוח — בסכנה. יש לפעול כדי להגן על המעמד.');
+    }
+
+    if (aa?.outputHebrew) push(aa.outputHebrew);
+
+    push(judgeClosingLine(judgeVerdict, grade));
+    return paras.join('\n\n');
+  }
+
+  // ── birthNativity ────────────────────────────────────────────────
+  if (topicId === 'birthNativity') {
+    const ba = boardAnalysis?.birthNativityAnalysis;
+    if (ba?.outputHebrew) push(ba.outputHebrew);
+    else push(topicOpeningLine(topicId, h1, name));
+    push(judgeClosingLine(judgeVerdict, grade));
+    return paras.join('\n\n');
+  }
+
+  // ── foundations ─────────────────────────────────────────────────
+  if (topicId === 'foundations') {
+    const fd = boardAnalysis?.foundationsDisplay;
+    push(topicOpeningLine(topicId, h1, name));
+    if (fd?.lines?.length) push(fd.lines.join('\n'));
+    push(judgeClosingLine(judgeVerdict, grade));
+    return paras.join('\n\n');
+  }
+
+  // ── generic fallback ─────────────────────────────────────────────
+  push(topicOpeningLine(topicId, h1, name));
+  if (h7) {
+    if (t(h7) >= 1)    push('הצד השני בלוח — חיובי.');
+    else if (t(h7) <= -1) push('הצד השני בלוח — יש חשש. כדאי לבדוק לפני פעולה.');
+  }
+  push(judgeClosingLine(judgeVerdict, grade));
+  return paras.join('\n\n');
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 export function writeHumanGoralConclusion(result) {
   const topicId = result.topicId;
   const topicHebrew = result.topicHebrew;
   const grade = result.boardScore?.grade || 'mixed';
-  const score = result.boardScore?.score || 0;
   const isSpiritualTopic = topicId === 'spiritualDiagnostics';
   const judgeVerdict = result.judgeVerdict || result.boardScore?.judgeVerdict || null;
   const question = clean(result.question);
+
+  // ── Narrative path (client-facing text) ─────────────────────────
+  if (!isSpiritualTopic) {
+    const narrative = buildNarrativeByTopic(result);
+    if (narrative && clean(narrative)) return narrative;
+  }
+
+  // ── Spiritual diagnostics: keep existing verdict format ─────────
+  if (isSpiritualTopic) {
+    const paragraphs = [
+      clientContextParagraph(result.clientContext, question),
+      spiritualVerdict(result.spiritualDiagnosis),
+      spiritualParagraph(result.spiritualDiagnosis, topicId),
+      recommendationByTopic(topicId, grade, result.boardAnalysis, question),
+    ].filter((p) => clean(p));
+    return paragraphs.join('\n\n');
+  }
+
+  // ── Fallback: technical format (no board or unknown topic) ───────
   const isMiQuestion = /^מי[\s,]/.test(question);
-
-  const isGeneralReading = topicId === 'generalReading' || topicId === 'foundations';
-
   let verdictParagraph = '';
-  if (isGeneralReading) {
-    // No yes/no verdict for general reading
-  } else if (isSpiritualTopic) {
-    verdictParagraph = spiritualVerdict(result.spiritualDiagnosis);
-  } else if (topicId === 'theft') {
+  if (topicId === 'theft') {
     const house7 = result.boardAnalysis?.houses?.find(h => Number(h.house) === 7);
     const house7Fig = house7?.figureHebrew || '';
     const isIncoming = house7?.directionHebrew === 'נכנס';
@@ -2213,42 +1797,29 @@ export function writeHumanGoralConclusion(result) {
       verdictParagraph = `הלוח מעורב — אפשרות החזרת החפץ אינה ברורה. בית 7 (${house7Fig}${dirNote}) מציין את הגנב — פרטים בהמשך.`;
     }
   } else if (isMiQuestion && topicId === 'enemies') {
-    // "מי" questions need identification, not yes/no
     const house7 = result.boardAnalysis?.houses?.find(h => h.house === 7);
     const house7Fig = house7?.figureHebrew || '';
-    if (grade === 'positive' || grade === 'cautiously-positive') {
-      verdictParagraph = `הלוח מאפשר זיהוי — יש סיכוי לגלות את מי שעומד מאחורי הגניבה או הפגיעה. בית 7${house7Fig ? ` (${house7Fig})` : ''} מציין את הגנב — פרטים בהמשך.`;
-    } else {
-      verdictParagraph = `הלוח מצביע על קושי בזיהוי — הגנב נסתר או קשה לאיתור. בית 7${house7Fig ? ` (${house7Fig})` : ''} מציין את הגנב — פרטים בהמשך.`;
-    }
+    verdictParagraph = (grade === 'positive' || grade === 'cautiously-positive')
+      ? `הלוח מאפשר זיהוי — יש סיכוי לגלות את מי שעומד מאחורי הגניבה או הפגיעה. בית 7${house7Fig ? ` (${house7Fig})` : ''} מציין את הגנב — פרטים בהמשך.`
+      : `הלוח מצביע על קושי בזיהוי — הגנב נסתר או קשה לאיתור. בית 7${house7Fig ? ` (${house7Fig})` : ''} מציין את הגנב — פרטים בהמשך.`;
   } else if (judgeVerdict?.hebrewFull) {
     verdictParagraph = judgeVerdict.hebrewFull;
   } else if (result.boardScore?.hebrew) {
     verdictParagraph = result.boardScore.hebrew;
   }
 
-  const topicConclusion = buildTopicConclusion(result);
-
-  const extraFromBoard = [
-    result.boardAnalysis?.timingEstimate?.outputHebrew || '',
-  ].filter(Boolean).join('\n\n');
-
   const paragraphs = [
-    clientContextParagraph(result.clientContext, result.question),
+    clientContextParagraph(result.clientContext, question),
     clientHistoryParagraph(result.clientHistorySummary),
     boardScoreParagraph(result.boardAnalysis),
     verdictParagraph,
-    isGeneralReading ? '' : dhamirParagraph(result.boardAnalysis, judgeVerdict),
-    isGeneralReading ? '' : tahasilParagraph(result.boardAnalysis),
+    dhamirParagraph(result.boardAnalysis, judgeVerdict),
+    tahasilParagraph(result.boardAnalysis),
     topicOpening(topicId, topicHebrew),
     questionFocusParagraph(topicId, result.clientContext),
-    topicConclusion
-      ? topicConclusion
-      : describeCoreHouses(result.boardAnalysis, topicId, result.question),
+    describeCoreHouses(result.boardAnalysis, topicId, question),
     spiritualParagraph(result.spiritualDiagnosis, topicId),
-    topicConclusion
-      ? extraFromBoard
-      : recommendationByTopic(topicId, grade, result.boardAnalysis, result.question),
+    recommendationByTopic(topicId, grade, result.boardAnalysis, question),
   ].filter((p) => clean(p));
 
   return paragraphs.join('\n\n');

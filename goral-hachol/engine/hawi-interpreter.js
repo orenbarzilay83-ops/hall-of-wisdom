@@ -99,7 +99,6 @@ const TOPIC_MAIN_HOUSES = {
   theft:            [1, 2, 7, 8, 13, 14, 15],
   siblings:         [1, 3, 7, 13, 14, 15],
   deathInheritance: [1, 7, 8, 2, 13, 14, 15],
-  generalReading:   [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
 };
 
 const TOPIC_HEBREW_TITLES = {
@@ -126,7 +125,6 @@ const TOPIC_HEBREW_TITLES = {
   theft:            'גנבה / חפץ גנוב',
   siblings:         'אחים / שכנים / קרובים',
   deathInheritance: 'מוות / ירושה / פחד גדול',
-  generalReading:   'פתיחה כללית',
 };
 
 const TOPIC_QUESITED_HOUSE = {
@@ -400,10 +398,10 @@ function figureFortuneTone(fortune) {
 function connectionQualityHebrew(figureFortune, houseATone, houseBTone) {
   const fig = figureFortuneTone(figureFortune);
   const houseAvg = (houseATone + houseBTone) / 2;
-  if (fig >= 0 && houseAvg >= 0) return 'חיבור טוב';
-  if (fig < 0 && houseAvg < 0) return 'חיבור קשה';
-  if (fig > 0 && houseAvg < 0) return 'חיבור מורכב — פתיחה אך גם מכשולים';
-  if (fig < 0 && houseAvg > 0) return 'חיבור מחליש';
+  if (fig >= 0 && houseAvg >= 0) return 'חיבור טוב — צורה טובה בבתים טובים';
+  if (fig < 0 && houseAvg < 0) return 'חיבור רע — צורה רעה בבתים קשים';
+  if (fig > 0 && houseAvg < 0) return 'חיבור מסוכן — הבטחה שקרית, שמחה ואז צער';
+  if (fig < 0 && houseAvg > 0) return 'חיבור מחליש — קלקול הנושא';
   return 'חיבור ממוזג';
 }
 
@@ -983,8 +981,8 @@ function computeBoardScore(chart) {
     isComplete: score >= 96,
     status: score >= 96 ? 'שלם' : 'חסר',
     hebrewSummary: score >= 96
-      ? `לוח שלם — ${score} נקודות`
-      : `לוח חסר — ${score} נקודות (נדרשים 96)`,
+      ? `לוח שלם (${score} נקודות ≥ 96)`
+      : `לוח חסר (${score} נקודות < 96) — השאלה עשויה שלא להיפתר`,
   };
 }
 const DHAMIR_PARENT_PAIRS = {
@@ -1339,12 +1337,10 @@ function getTransitMeaningForHouse(house) {
   // The source itself omits certain house entries (most commonly house 15 for some figures).
   // Returning null keeps the conclusion clean — no "המקור אינו מביא דין" showing up in text.
   if (houseMeaning.sourceStatus === 'not-explicit-in-source') return null;
-  const supp = houseMeaning.supplementarySource;
   return {
     figure: house.hebrew || house.key || null,
     house: house.house,
     meaning: houseMeaning.meaning || null,
-    suppMeaning: (supp && !supp.conflictsWithHawi && supp.meaningHebrew) || null,
     topics: houseMeaning.topics || null,
     sourceStatus: houseMeaning.sourceStatus || null,
   };
