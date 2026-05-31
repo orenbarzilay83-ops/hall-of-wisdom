@@ -382,6 +382,11 @@
           </div>
 
           <div>
+            <label>מספר טלפון</label>
+            <input id="clientPhoneInput" placeholder="טלפון הלקוח" autocomplete="off" type="tel" />
+          </div>
+
+          <div>
             <label>תאריך השאלה</label>
             <input id="questionDateInput" placeholder="תאריך השאלה" autocomplete="off" />
           </div>
@@ -448,6 +453,7 @@
         <div class="actions">
           <button class="btn gray" id="backSelectBtn" type="button">חזרה לבחירת אמהות</button>
           <button class="btn primary" id="archiveBtn" type="button">ארכיון קריאות</button>
+          <button class="btn gray" id="saveClientBtn" type="button">👤 שמור לקוח</button>
           <button class="btn gray" id="clearArchiveBtn" type="button">נקה ארכיון</button>
         </div>
       </div>
@@ -582,6 +588,7 @@
       return {
         clientName: document.getElementById("clientNameInput").value.trim(),
         parentName: document.getElementById("clientParentInput").value.trim(),
+        phone: document.getElementById("clientPhoneInput").value.trim(),
         questionDate: document.getElementById("questionDateInput").value.trim(),
         questionTime: document.getElementById("questionTimeInput").value.trim(),
         consultationContext: "",
@@ -759,7 +766,7 @@
     }
 
     function clearForm() {
-      ["clientNameInput","clientParentInput","questionDateInput","questionTimeInput","questionInput","questionTopicInput"].forEach(id => {
+      ["clientNameInput","clientParentInput","clientPhoneInput","questionDateInput","questionTimeInput","questionInput","questionTopicInput"].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.value = "";
       });
@@ -799,6 +806,24 @@
 
     document.getElementById("archiveBtn").addEventListener("click", () => {
       alert("ארכיון הקריאות יחובר אחרי שהממשק החדש יאושר.");
+    });
+
+    document.getElementById("saveClientBtn").addEventListener("click", () => {
+      const ctx = getClientContext();
+      const name = ctx.clientName;
+      const phone = ctx.phone;
+      if (!name) { alert("אין שם לקוח — מלא שם בעמוד הפתיחה"); return; }
+      const CONTACTS_KEY = 'goralClientContacts_v1';
+      const contacts = JSON.parse(localStorage.getItem(CONTACTS_KEY) || '[]');
+      const dup = contacts.find(c => c.name === name || (phone && c.phone && c.phone === phone));
+      if (dup) {
+        if (phone && !dup.phone) { dup.phone = phone; localStorage.setItem(CONTACTS_KEY, JSON.stringify(contacts)); }
+        alert(`הלקוח "${name}" כבר קיים בספר הלקוחות`);
+        return;
+      }
+      contacts.unshift({ id: Date.now(), name, phone: phone || '', createdAt: new Date().toISOString() });
+      localStorage.setItem(CONTACTS_KEY, JSON.stringify(contacts));
+      alert(`הלקוח "${name}" נשמר בספר הלקוחות ✓`);
     });
 
     document.getElementById("clearArchiveBtn").addEventListener("click", () => {
