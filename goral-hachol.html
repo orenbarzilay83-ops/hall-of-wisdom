@@ -609,6 +609,56 @@
       font-weight:700;
       white-space:nowrap;
     }
+    .profile-section {
+      margin-top:14px;
+      background:linear-gradient(135deg,#f2fff6,#fff);
+      border:2px solid rgba(20,140,80,.25);
+      border-radius:14px;
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .profile-section-title {
+      font-size:14px;
+      font-weight:700;
+      color:#1a6e40;
+    }
+    .profile-group {
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .profile-group-label {
+      font-size:13px;
+      color:#555;
+      font-weight:600;
+    }
+    .profile-btn-row {
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .profile-btn {
+      padding:6px 14px;
+      border-radius:20px;
+      border:1.5px solid rgba(20,140,80,.4);
+      background:#fff;
+      color:#1a6e40;
+      font-size:13px;
+      font-weight:600;
+      cursor:pointer;
+      transition:background .15s,border-color .15s;
+    }
+    .profile-btn:hover {
+      background:#e8f5ee;
+      border-color:#1a8a4a;
+    }
+    .profile-btn.selected {
+      background:#1a8a4a;
+      color:#fff;
+      border-color:#1a8a4a;
+    }
     .topic-spiritual-btn {
       grid-column:1 / -1;
       border:2px solid rgba(120,80,200,.45);
@@ -964,6 +1014,34 @@
           <div class="full">
             <label>נושא השאלה — בחר את הבית שקשור לשאלתך</label>
             <div class="topic-grid" id="topicGrid"></div>
+            <div id="profileSection" class="profile-section" style="display:none">
+              <div class="profile-section-title">פרטי הלקוח — לפרשנות מדויקת</div>
+              <div class="profile-group">
+                <div class="profile-group-label">מצב משפחתי</div>
+                <div class="profile-btn-row">
+                  <button type="button" class="profile-btn" data-profile="marital" data-value="married">נשוי/אה</button>
+                  <button type="button" class="profile-btn" data-profile="marital" data-value="single">רווק/ה</button>
+                  <button type="button" class="profile-btn" data-profile="marital" data-value="divorced">גרוש/ה</button>
+                  <button type="button" class="profile-btn" data-profile="marital" data-value="widowed">אלמן/ה</button>
+                </div>
+              </div>
+              <div class="profile-group">
+                <div class="profile-group-label">מצב תעסוקתי</div>
+                <div class="profile-btn-row">
+                  <button type="button" class="profile-btn" data-profile="work" data-value="employed">שכיר</button>
+                  <button type="button" class="profile-btn" data-profile="work" data-value="unemployed">מחפש עבודה</button>
+                  <button type="button" class="profile-btn" data-profile="work" data-value="self">עצמאי</button>
+                  <button type="button" class="profile-btn" data-profile="work" data-value="retired">בפנסיה</button>
+                </div>
+              </div>
+              <div class="profile-group">
+                <div class="profile-group-label">ילדים</div>
+                <div class="profile-btn-row">
+                  <button type="button" class="profile-btn" data-profile="children" data-value="yes">יש ילדים</button>
+                  <button type="button" class="profile-btn" data-profile="children" data-value="no">אין ילדים</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1155,6 +1233,7 @@
     let activeMother = 0;
     let selectedHouseNum = null;  // בית שנבחר (1-12)
     let forcedTopicId = null;     // נושא שנקבע בכוח (למשל: בדיקה רוחנית)
+    let profileState = { marital: null, work: null, children: null };
 
     // 12 כרטיסים לפי סדר הבתים. הנושא המדויק נקבע בזמן הריצה לפי השאלה.
     const TOPIC_CARDS = [
@@ -1261,6 +1340,9 @@
           renderTopicGrid();
         });
       });
+
+      const profSec = document.getElementById('profileSection');
+      if (profSec) profSec.style.display = generalActive ? 'flex' : 'none';
     }
 
     function escapeHtml(value) {
@@ -1366,6 +1448,9 @@
         consultationContext: "",
         topicOverride: resolvedTopicId || "",
         selectedHouse: selectedHouseNum || null,
+        maritalStatus: profileState.marital || null,
+        workStatus: profileState.work || null,
+        hasChildren: profileState.children || null,
       };
     }
 
@@ -1746,6 +1831,8 @@
       });
       selectedHouseNum = null;
       forcedTopicId = null;
+      profileState = { marital: null, work: null, children: null };
+      document.querySelectorAll('.profile-btn.selected').forEach(b => b.classList.remove('selected'));
       renderTopicGrid();
       selectedMothers = [null,null,null,null];
       activeMother = 0;
@@ -1812,6 +1899,20 @@
 
     document.getElementById("buildBoardBtn").addEventListener("click", runReading);
     document.getElementById("clearBtn").addEventListener("click", clearForm);
+
+    document.querySelectorAll('.profile-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const group = btn.dataset.profile;
+        const val   = btn.dataset.value;
+        document.querySelectorAll(`.profile-btn[data-profile="${group}"]`).forEach(b => b.classList.remove('selected'));
+        if (profileState[group] === val) {
+          profileState[group] = null;
+        } else {
+          btn.classList.add('selected');
+          profileState[group] = val;
+        }
+      });
+    });
 
     document.getElementById("archiveBtn").addEventListener("click", () => {
       openMenu(); document.getElementById("menuJournalBtn").click();

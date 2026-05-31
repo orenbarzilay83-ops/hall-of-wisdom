@@ -1521,50 +1521,158 @@ const TOPIC_ANSWER_SCHEMA = {
   },
 
   generalReading: {
-    build(a, grade, judge, question) {
+    build(a, grade, judge, question, spiritualDiagnosis, clientContext) {
       const lines = [];
+      const name  = clientContext?.clientName || '';
+      const prof  = {
+        marital:  clientContext?.maritalStatus  || null,
+        work:     clientContext?.workStatus     || null,
+        children: clientContext?.hasChildren    || null,
+      };
 
-      // House domains for general life reading
-      const HOUSE_DOMAINS = [
-        { num: 1,  domain: 'מצב האדם',       saad: 'מצב האדם טוב — יש כוח, בריאות ואנרגיה',             nahs: 'מצב האדם קשה — יש חולשה, לחץ או עיכוב',          mixed: 'מצב האדם בינוני — לא בשיא אבל לא בשפל' },
-        { num: 2,  domain: 'ממון ופרנסה',     saad: 'הממון נוח — פרנסה זורמת ויציבה',                   nahs: 'הממון בקושי — יש עיכוב, הוצאות או אובדן',        mixed: 'הממון מעורב — לא יציב לגמרי, לשים לב' },
-        { num: 3,  domain: 'אחים ושכנים',     saad: 'יחסים טובים עם קרובים ושכנים — תקשורת חיובית',    nahs: 'יש חיכוך עם קרובים או שכנים — מתח בסביבה',      mixed: 'יחסים עם קרובים מעורבים — לא חלקים לגמרי' },
-        { num: 4,  domain: 'בית ונכסים',      saad: 'הבית יציב — שורשים, נכסים ומשפחה בסדר',           nahs: 'יש חוסר יציבות בבית או בנכסים — לשים לב',       mixed: 'מצב הבית מעורב — יש יציבות חלקית' },
-        { num: 5,  domain: 'ילדים ושמחות',    saad: 'יש שמחה וסימן חיובי בנושא ילדים',                 nahs: 'יש עיכוב בשמחות או בנושא ילדים — לא העת הנכונה', mixed: 'נושא הילדים והשמחות מעורב' },
-        { num: 6,  domain: 'בריאות',          saad: 'הבריאות בסדר — הגוף מגיב טוב',                    nahs: 'יש סימן לקושי בריאותי — לשים לב לגוף',          mixed: 'הבריאות מעורבת — לא מדאיג אבל לא להזניח' },
-        { num: 7,  domain: 'הזולת',           saad: 'הזולת נוח — יחסים טובים, יש הרמוניה',             nahs: 'יש חיכוך עם הזולת — מתח ביחסים הקרובים',       mixed: 'היחסים עם הזולת מעורבים — לא חלקים לגמרי' },
-        { num: 8,  domain: 'משבר ופחד',       saad: 'אין סכנה ממשית — משבר לא צפוי',                   nahs: 'יש סימן למשבר, שינוי גדול או פחד — לשים לב',    mixed: 'יש חשש קל — כדאי להיות ערני' },
-        { num: 9,  domain: 'נסיעות ורוחניות', saad: 'נסיעות ומסעות מבורכים — הדרך פתוחה',              nahs: 'נסיעות קשות — כדאי לדחות',                       mixed: 'נסיעות מעורבות — לבדוק תנאים לפני יציאה' },
-        { num: 10, domain: 'קריירה ומעמד',    saad: 'קריירה ומעמד יציבים — יש כבוד וקידום',            nahs: 'יש עיכוב בקריירה או איום על המעמד',              mixed: 'קריירה מעורבת — יש פתח אבל לא קידום חד-משמעי' },
-        { num: 11, domain: 'חברים ותקוות',    saad: 'יש חברים נאמנים ותקוות שמתממשות',                 nahs: 'אכזבות מחברים — תמיכה חלשה, תקוות לא מתממשות', mixed: 'חברים מעורבים — יש תמיכה אבל גם אכזבות' },
-        { num: 12, domain: 'אויבים ונסתר',    saad: 'אין אויב נסתר פעיל — הסכנות הנסתרות נמוכות',     nahs: 'יש כוח נסתר פועל נגד — לשים לב',                mixed: 'יש כוחות נסתרים — לא חזק אבל לא להזניח' },
-      ];
+      // House grouping per the books: angular = current, succedent = developing, cadent = background
+      const ANGULAR   = [1, 4, 7, 10];
+      const SUCCEDENT = [2, 5, 8, 11];
+      const CADENT    = [3, 6, 9, 12];
 
-      for (const d of HOUSE_DOMAINS) {
-        const h = getHouseFromBoard(a, d.num);
+      const DOMAIN = {
+        1:  'מצב האדם',       2:  'ממון ופרנסה',   3:  'אחים ושכנים',
+        4:  'בית ומשפחה',     5:  'ילדים ושמחות',  6:  'בריאות',
+        7:  'זוגיות וקשרים',  8:  'משבר ופחד',     9:  'נסיעות ורוחניות',
+        10: 'קריירה ומעמד',   11: 'חברים ותקוות',  12: 'אויבים ונסתר',
+      };
+
+      // Count overall quality
+      let saadN = 0, nahsN = 0;
+      for (let i = 1; i <= 12; i++) {
+        const h = getHouseFromBoard(a, i);
         if (!h) continue;
-        // Build figure-specific interpretation from source data
-        let interp;
-        if (h.transit?.meaning) {
-          interp = h.transit.meaning;
-          // Append supplementary source if it adds meaningful content and doesn't conflict
-          const supp = h.transit.suppMeaning;
-          if (supp && supp !== h.transit.meaning) {
-            interp += ' ' + supp;
-          }
-        } else {
-          // Fallback only when source data is absent for this figure×house
-          interp = _saad(h) ? d.saad : _nahs(h) ? d.nahs : d.mixed;
+        if (_saad(h)) saadN++; else if (_nahs(h)) nahsN++;
+      }
+      const tone = saadN >= nahsN + 3 ? 'הכיוון הכללי לטובה' :
+                   nahsN >= saadN + 3 ? 'הכיוון הכללי קשה — יש אתגרים משמעותיים' :
+                   'הכיוון מעורב — יש גם טוב וגם קושי';
+      const opener = name ? `${name}: ${tone}.` : `${tone}.`;
+      lines.push(opener);
+
+      // Helper: profile-aware interpretation for each house
+      function _note(num, h) {
+        const q = _saad(h) ? 's' : _nahs(h) ? 'n' : 'm';
+        const m = prof.marital, w = prof.work, c = prof.children;
+        switch (num) {
+          case 1:
+            return q==='s' ? 'במצב טוב כרגע — יש כוח, בריאות ואנרגיה חיובית'
+                 : q==='n' ? 'יש לחץ ועיכוב — כדאי לשים לב לבריאות ולמצב הנפשי'
+                 : 'המצב האישי מעורב — לא בשיא אבל לא בשפל';
+          case 4:
+            return q==='s' ? 'הבית והשורשים יציבים — יש אדמה תחת הרגליים'
+                 : q==='n' ? 'חוסר יציבות בית — דברים שמבקשים פתרון בשורשים'
+                 : 'הבית מעורב — יש יציבות חלקית';
+          case 7:
+            if (m==='married'||m==='relationship')
+              return q==='s' ? 'הזוגיות במצב טוב — יש הרמוניה ובית שלם'
+                   : q==='n' ? 'יש חיכוך ביחסי הזוגיות — כדאי לשים לב ולתקשר'
+                   : 'הזוגיות מעורבת — יש תנודות ביחסים';
+            if (m==='single')
+              return q==='s' ? 'פתח חיובי לזוגיות — סימן למפגש או קשר שמתפתח'
+                   : q==='n' ? 'הדרך לזוגיות עדיין קשה — לא העת המתאימה'
+                   : 'בנושא זוגיות — יש אפשרות אבל עוד לא ברורה';
+            if (m==='divorced'||m==='widowed')
+              return q==='s' ? 'יש סימן חיובי לחיבור חדש — פתח לקשר'
+                   : q==='n' ? 'עדיין קשה בנושא קשרים — לתת לזמן לעשות את שלו'
+                   : 'הנושא הרגשי מעורב — לא למהר';
+            return q==='s' ? 'הקשרים הקרובים במצב טוב — יש הרמוניה'
+                 : q==='n' ? 'יש מתח בקשרים הקרובים — לשים לב'
+                 : 'הקשרים הקרובים מעורבים';
+          case 10:
+            if (w==='unemployed')
+              return q==='s' ? 'סימן חיובי לשינוי מקצועי — עבודה או קידום קרובים לבוא'
+                   : q==='n' ? 'הקושי המקצועי ממשיך — לא עת שינוי גדול'
+                   : 'בנושא קריירה — יש תנועה אבל לא ודאות';
+            if (w==='self')
+              return q==='s' ? 'העסק הולך טוב — יש כבוד, קידום ורווח'
+                   : q==='n' ? 'יש לחץ בעסק או במעמד — לשים לב'
+                   : 'העסק מעורב — לא עת הגדלה משמעותית';
+            return q==='s' ? 'הקריירה ומעמד יציבים — יש כבוד וקידום'
+                 : q==='n' ? 'יש עיכוב בקריירה או לחץ על המעמד'
+                 : 'הקריירה מעורבת — לא קידום חד-משמעי';
+          case 2:
+            if (w==='unemployed')
+              return q==='s' ? 'סימן חיובי לפרנסה — עבודה או הכנסה עשויה להגיע'
+                   : q==='n' ? 'הקושי הכלכלי ממשיך — לא עת שינוי מיידי'
+                   : 'בנושא הכנסה — יש תנועה אבל לא ודאות';
+            if (w==='self')
+              return q==='s' ? 'הפרנסה טובה — הכנסה ורווח בעסק'
+                   : q==='n' ? 'יש לחץ בממון — להזהר בהוצאות'
+                   : 'הממון בעסק מעורב';
+            return q==='s' ? 'הממון יציב — פרנסה זורמת ונוחה'
+                 : q==='n' ? 'יש לחץ בממון — הוצאות מכריעות או עיכוב בהכנסה'
+                 : 'הממון מעורב — לא יציב לגמרי';
+          case 5:
+            if (c==='yes')
+              return q==='s' ? 'הילדים במצב טוב — יש ברכה ושמחה'
+                   : q==='n' ? 'יש דאגה מסוימת בנושא ילדים — לשים לב'
+                   : 'מצב הילדים מעורב — דורש תשומת לב';
+            if (c==='no')
+              return q==='s' ? 'יש סימן חיובי לאפשרות ילדים — פתח לשמחה'
+                   : q==='n' ? 'הנושא עדיין לא בשל — יש עיכוב'
+                   : 'בנושא ילדים — הדברים עדיין מתגבשים';
+            return q==='s' ? 'בית השמחות טוב — יש שמחה וברכה'
+                 : q==='n' ? 'יש עיכוב בשמחות — לא העת הנכונה'
+                 : 'בית השמחות מעורב';
+          case 8:
+            return q==='s' ? 'אין סכנה ממשית — פחד לא מבוסס, משבר לא צפוי'
+                 : q==='n' ? 'יש סימן למשבר, שינוי גדול או פחד ממשי — לשים לב'
+                 : 'יש חשש קל — כדאי להיות ערני';
+          case 11:
+            return q==='s' ? 'יש חברים נאמנים ותמיכה — תקוות שמתממשות'
+                 : q==='n' ? 'אכזבות מחברים — תמיכה חלשה, תקוות שלא מתממשות'
+                 : 'חברים מעורבים — יש תמיכה אבל גם אכזבות';
+          case 3:
+            return q==='s' ? 'יחסים טובים עם קרובים ושכנים — תקשורת חיובית'
+                 : q==='n' ? 'יש חיכוך עם קרובים — מתח בסביבה הקרובה'
+                 : 'יחסים עם קרובים מעורבים';
+          case 6:
+            return q==='s' ? 'הבריאות בסדר — הגוף מגיב טוב'
+                 : q==='n' ? 'יש סימן לקושי בריאותי — לשים לב לגוף ולנפש'
+                 : 'הבריאות מעורבת — לא להזניח';
+          case 9:
+            return q==='s' ? 'נסיעות ומסעות מבורכים — הדרך פתוחה'
+                 : q==='n' ? 'נסיעות קשות כרגע — כדאי לדחות'
+                 : 'נסיעות מעורבות — לבדוק תנאים לפני יציאה';
+          case 12:
+            return q==='s' ? 'אין אויב נסתר פעיל — הסכנות הנסתרות נמוכות'
+                 : q==='n' ? 'יש כוח נסתר פועל — לשים לב למי שסביב'
+                 : 'יש כוחות נסתרים — לא חזק אבל לא להזניח';
+          default: return null;
         }
-        const prefix = _nahs(h) ? '⚠ ' : '';
-        lines.push(`${prefix}${d.domain} (בית ${d.num} — ${h.figureHebrew}): ${interp}`);
       }
 
+      function _renderGroup(nums, header) {
+        const groupLines = [];
+        for (const num of nums) {
+          const h = getHouseFromBoard(a, num);
+          if (!h) continue;
+          const note  = _note(num, h);
+          const warn  = _nahs(h) ? '⚠ ' : '';
+          const star  = ANGULAR.includes(num) ? '★ ' : '';
+          groupLines.push(`${warn}${star}${DOMAIN[num]} (בית ${num} — ${h.figureHebrew}): ${note}`);
+        }
+        if (!groupLines.length) return;
+        lines.push(`\n${header}`);
+        groupLines.forEach(l => lines.push(l));
+      }
+
+      _renderGroup(ANGULAR,   'מצב עכשיו — בתים ראשיים:');
+      _renderGroup(SUCCEDENT, 'מה שמתפתח — בתים ממשיכים:');
+      _renderGroup(CADENT,    'רקע — בתים נסתרים:');
+
       if (judge) {
-        lines.push(_judgeLabel(judge,
-          `פסיקת הדיין (${judge.figureHebrew}): הכיוון הכללי לטובה`,
-          `פסיקת הדיין (${judge.figureHebrew}): הכיוון הכללי קשה`,
-          `פסיקת הדיין (${judge.figureHebrew}): הכיוון הכללי מעורב`));
+        const judgeText = _judgeLabel(judge,
+          'הכיוון הכללי לטובה',
+          'הכיוון הכללי קשה — יש אתגרים שצריך להתמודד איתם',
+          'הכיוון הכללי מעורב — יש גם טוב וגם אתגרים');
+        lines.push(`\nפסיקת הדיין (${judge.figureHebrew}): ${judgeText}`);
       }
 
       return lines.join('\n');
@@ -1581,7 +1689,7 @@ function buildTopicConclusion(result) {
   const grade = result.boardScore?.grade || 'mixed';
   const judge = a.judge;
   const question = result.question || '';
-  return schema.build(a, grade, judge, question, result.spiritualDiagnosis) || null;
+  return schema.build(a, grade, judge, question, result.spiritualDiagnosis, result.clientContext) || null;
 }
 
 function recommendationByTopic(topicId, grade, boardAnalysis, question) {
