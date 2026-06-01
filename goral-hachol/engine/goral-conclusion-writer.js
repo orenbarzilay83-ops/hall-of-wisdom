@@ -1318,8 +1318,19 @@ function buildNarrativeByTopic(result) {
   const paras    = [];
   const push     = (p) => { if (p && clean(p)) paras.push(clean(p)); };
 
+  const normFort = (f) => {
+    const s = String(f || '');
+    return s
+      .replace(/ממוזג[-־]?סעד/g, 'ממוזג-טוב')
+      .replace(/ממוזג[-־]?נחס/g, 'ממוזג-רע')
+      .replace(/^סעד$/,  'טוב')
+      .replace(/^נחס$/,  'רע')
+      .replace(/(^|[,\s\[])סעד(?=[^א-ת]|$)/g, '$1טוב')
+      .replace(/(^|[,\s\[])נחס(?=[^א-ת]|$)/g, '$1רע');
+  };
+
   const hFig     = (h) => clean(h?.figureHebrew || '');
-  const hFort    = (h) => clean(h?.fortune || '');
+  const hFort    = (h) => normFort(clean(h?.fortune || ''));
   const hTransit = (h) => clean(h?.transit?.meaning || '');
   const hTone    = (h) => figureFortuneTone(h?.fortune);
 
@@ -1329,6 +1340,42 @@ function buildNarrativeByTopic(result) {
   const w14      = boardAnalysis.witnesses?.[1] || getHouseFromBoard(boardAnalysis, 14);
   const focus    = boardAnalysis.focusHouse;
   const focusNum = boardAnalysis.focusHouseNumber;
+
+  // ── 0. SYNTHESIS — plain-language insight first ──────────────────
+  {
+    const judgeTone = hTone(judge);
+    const focusTone = hTone(focus);
+    const judgeFig  = hFig(judge);
+    const focusFig  = hFig(focus);
+    const label     = TOPIC_FOCUS_LABEL[topicId] || '';
+
+    // detect resonance: how many key houses share the judge's figure
+    const allHouses = boardAnalysis.houses || [];
+    const judgeFigKey = judge?.figureKey;
+    const resonantHouses = (judgeFigKey && judgeFig)
+      ? allHouses.filter(h => h.figureKey === judgeFigKey && Number(h.house) !== 15)
+      : [];
+    const resonanceNote = (resonantHouses.length >= 2 && judgeFig)
+      ? ` הצורה "${judgeFig}" חוזרת ב-${resonantHouses.length} בתים מרכזיים — סימן חריג וחזק במיוחד.`
+      : '';
+
+    // judge verdict line
+    const verdictWord = judgeTone > 0 ? 'כן — הכיוון חיובי' : judgeTone < 0 ? 'לא — יש חסם' : 'לא מוכרע — דרוש בירור נוסף';
+
+    // focus house line
+    const focusLine = (focus && Number(focus.house) !== 1 && Number(focus.house) !== 15 && focusFig)
+      ? ` ${label ? label.replace(/\(בית \d+\)/, '').trim() : `בית ${focusNum}`} — ${focusFig} (${normFort(focus.fortune || '')}): ${focusTone > 0 ? 'סימן חיובי לשאלה' : focusTone < 0 ? 'סימן שלילי' : 'מעורב'}.`
+      : '';
+
+    // dhamir note
+    const dh = boardAnalysis.dhamirHouse;
+    const dhNum  = dh?.houseNumber || dh?.house;
+    const dhFig  = hFig(dh);
+    const dhFort = normFort(dh?.fortune || '');
+    const dhLine = (dhFig && dhNum) ? ` הדמיר (בית ${dhNum}): ${dhFig}${dhFort ? ` — ${dhFort}` : ''}.` : '';
+
+    push(`📍 תמצית: ${verdictWord}.${resonanceNote}${focusLine}${dhLine}`);
+  }
 
   // ── 1. THE JUDGE (H15) — THE RULING ─────────────────────────────
   if (judge) {
