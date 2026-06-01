@@ -1503,6 +1503,67 @@ function buildSpiritualNarrative(result) {
   }
   const seenBaseIds = new Set();
 
+  // ── 0. QUESTION-SPECIFIC ANSWER ──────────────────────────────────
+  {
+    const questionHits = sd.questionHits || [];
+    if (questionHits.length > 0) {
+      const CATEGORY_LABELS = {
+        ayin:            'עין הרע',
+        hasad:           'קנאה',
+        sihr:            'כישוף',
+        mass:            'אחיזה רוחנית',
+        jinn:            "ג׳ין",
+        fearHiddenEnemy: 'אויב נסתר',
+      };
+
+      const CATEGORY_KEYWORDS = {
+        ayin:            ['עין'],
+        hasad:           ['קנאה', 'חסד'],
+        sihr:            ['כישוף', 'כשף', 'קשירה'],
+        mass:            ['אחיזה', 'מס'],
+        jinn:            ["ג׳ין", 'שד'],
+        fearHiddenEnemy: ['אויב'],
+      };
+
+      // isqat 7×7 diagnosis → category
+      const ISQAT_TO_CATEGORY = {
+        'possessed-by-jinn': ['jinn', 'mass'],
+        'envy-evil-eye':     ['ayin', 'hasad'],
+        'human-made-magic':  ['sihr'],
+      };
+
+      const isqatCats = ISQAT_TO_CATEGORY[sd.isqatResult?.diagnosis || ''] || [];
+
+      const hasMatchForCategory = (cat) => {
+        const kws = CATEGORY_KEYWORDS[cat] || [];
+        if (allMatches.some((m) =>
+          kws.some((kw) => ((m.diagnosisHebrew || '') + ' ' + (m.meaningHebrew || '')).includes(kw))
+        )) return true;
+        return isqatCats.includes(cat);
+      };
+
+      const focusLines = [];
+      for (const hit of questionHits) {
+        const label = CATEGORY_LABELS[hit] || hit;
+        if (hasMatchForCategory(hit)) {
+          focusLines.push(`לגבי ${label}: הלוח מציג ממצאים — ראה פירוט להלן.`);
+        } else {
+          const otherFound = Object.keys(CATEGORY_LABELS)
+            .filter((k) => k !== hit && hasMatchForCategory(k))
+            .map((k) => CATEGORY_LABELS[k]);
+          if (otherFound.length) {
+            focusLines.push(
+              `לגבי ${label}: לא נמצאו סימנים ספציפיים בלוח. אך הלוח מצביע על: ${otherFound.join(', ')} — ראה פירוט להלן.`
+            );
+          } else {
+            focusLines.push(`לגבי ${label}: הלוח לא מצביע על ממצא כלשהו בנושא זה.`);
+          }
+        }
+      }
+      if (focusLines.length) push(focusLines.join('\n'));
+    }
+  }
+
   // ── 1. OVERALL GRADE ─────────────────────────────────────────────
   {
     const gradeMap = {
