@@ -1475,6 +1475,18 @@ function buildSpiritualNarrative(result) {
   const h9    = getHouseFromBoard(boardAnalysis, 9);
   const h12   = getHouseFromBoard(boardAnalysis, 12);
 
+  // Pre-build match map for inline display in spiritual houses
+  const allMatches  = [...(sd.specificMatches || []), ...(sd.openingMatches || [])];
+  const matchByHouse = {};
+  for (const m of allMatches) {
+    const n = Number(m.house);
+    if (!isNaN(n)) {
+      if (!matchByHouse[n]) matchByHouse[n] = [];
+      matchByHouse[n].push(m);
+    }
+  }
+  const seenBaseIds = new Set();
+
   // ── 1. OVERALL GRADE ─────────────────────────────────────────────
   {
     const gradeMap = {
@@ -1488,7 +1500,7 @@ function buildSpiritualNarrative(result) {
     push(`${namePrefix}${gradeMap[sd.grade] || gradeMap['mixed']}`);
   }
 
-  // ── 2. JUDGE (H15) ────────────────────────────────────────────────
+  // ── 2. JUDGE (H15) — transit relevant here (outcome meaning) ─────
   if (judge) {
     const fig     = hFig(judge);
     const fort    = hFort(judge);
@@ -1503,25 +1515,23 @@ function buildSpiritualNarrative(result) {
     push(parts.join(' '));
   }
 
-  // ── 3. WITNESSES (H13, H14) ───────────────────────────────────────
+  // ── 3. WITNESSES — agree/oppose only, no topic-specific transit ───
   {
     const jTone  = figureFortuneTone(judge?.fortune);
     const wLines = [];
 
     const descW = (w, label, num) => {
       if (!w) return;
-      const fig     = hFig(w);
-      const fort    = hFort(w);
-      const transit = hTransit(w);
-      const speak   = speakNote(w);
-      const tone    = figureFortuneTone(w?.fortune);
+      const fig   = hFig(w);
+      const fort  = hFort(w);
+      const speak = speakNote(w);
+      const tone  = figureFortuneTone(w?.fortune);
       const agreeNote = jTone !== 0
         ? (((jTone > 0 && tone > 0) || (jTone < 0 && tone < 0)) ? 'מחזק את הדיין' : 'מנוגד לדיין')
         : null;
       let line = `${label} (בית ${num}): ${fig}${fort ? `, ${fort}` : ''}`;
       if (speak)     line += `, ${speak}`;
       if (agreeNote) line += ` [${agreeNote}]`;
-      if (transit)   line += `. חאוי: ${transit}`;
       wLines.push(line);
     };
 
@@ -1530,11 +1540,10 @@ function buildSpiritualNarrative(result) {
     if (wLines.length) push(wLines.join('\n'));
   }
 
-  // ── 4. H1 — PATIENT ───────────────────────────────────────────────
+  // ── 4. H1 — PATIENT (no transit — generic transits not relevant) ──
   if (h1) {
     const fig     = hFig(h1);
     const fort    = hFort(h1);
-    const transit = hTransit(h1);
     const speak   = speakNote(h1);
     const nameLabel = name || 'השואל';
     const profile   = formatClientProfile(clientContext);
@@ -1542,11 +1551,10 @@ function buildSpiritualNarrative(result) {
     parts.push(`${nameLabel} (בית 1 — החולה): ${fig}${fort ? `, ${fort}` : ''}.`);
     if (profile) parts.push(`פרופיל: ${profile}.`);
     if (speak)   parts.push(`בית 1 ${speak}.`);
-    if (transit) parts.push(`חאוי: ${transit}`);
     push(parts.join(' '));
   }
 
-  // ── 5. SPIRITUAL HOUSES ───────────────────────────────────────────
+  // ── 5. SPIRITUAL HOUSES — source rules instead of generic transit ─
   {
     const shDefs = [
       { h: h6,  role: 'בית המחלה',   num: 6  },
@@ -1558,13 +1566,24 @@ function buildSpiritualNarrative(result) {
     const shLines = [];
     for (const { h, role, num } of shDefs) {
       if (!h || !hFig(h)) continue;
-      const fig     = hFig(h);
-      const fort    = hFort(h);
-      const transit = hTransit(h);
-      const speak   = speakNote(h);
+      const fig   = hFig(h);
+      const fort  = hFort(h);
+      const speak = speakNote(h);
       let line = `${role} (בית ${num}): ${fig}${fort ? `, ${fort}` : ''}`;
-      if (speak)   line += ` [${speak}]`;
-      if (transit) line += `. חאוי: ${transit}`;
+      if (speak) line += ` [${speak}]`;
+
+      // Show source-based rule meaning instead of generic Hawi transit
+      const houseMatches = matchByHouse[num] || [];
+      const ruleTexts = [];
+      for (const m of houseMatches) {
+        const baseId = String(m.ruleId || '').replace(/-h\d+$/, '');
+        if (!seenBaseIds.has(baseId)) {
+          seenBaseIds.add(baseId);
+          const txt = clean(m.meaningHebrew || m.diagnosisHebrew || '');
+          if (txt) ruleTexts.push(txt);
+        }
+      }
+      if (ruleTexts.length) line += '\n  → ' + ruleTexts.join(' ');
       shLines.push(line);
     }
     if (shLines.length) push(shLines.join('\n'));
@@ -1626,20 +1645,25 @@ function buildSpiritualNarrative(result) {
   // ── 9. DHAMIR ────────────────────────────────────────────────────
   push(dhamirParagraph(boardAnalysis, judgeVerdict));
 
-  // ── 10. SPECIFIC RULE MATCHES FROM SOURCE ────────────────────────
-  const allMatches = [...(sd.specificMatches || []), ...(sd.openingMatches || [])];
-  if (allMatches.length) {
-    const mLines = allMatches.map((m) => {
+  // ── 10. REMAINING MATCHES (not yet shown in spiritual houses) ────
+  const SPIRITUAL_HOUSE_NUMS = new Set([4, 6, 8, 9, 12]);
+  const remainingMatches = allMatches.filter((m) => {
+    if (SPIRITUAL_HOUSE_NUMS.has(Number(m.house))) return false;
+    const baseId = String(m.ruleId || '').replace(/-h\d+$/, '');
+    return !seenBaseIds.has(baseId);
+  });
+  if (remainingMatches.length) {
+    const mLines = remainingMatches.map((m) => {
       const pos = m.house === 15 ? 'הדיין'
                 : m.house === 13 ? 'עד ראשון'
                 : m.house === 14 ? 'עד שני'
                 : m.house != null ? `בית ${m.house}`
                 : m.role || '';
       const fig     = m.figureHebrew ? ` (${m.figureHebrew})` : '';
-      const meaning = m.meaningHebrew || m.diagnosisHebrew || '';
-      return `${pos}${fig}: ${meaning}`;
-    });
-    push('סימנים ספציפיים מהמקור:\n' + mLines.join('\n'));
+      const meaning = clean(m.meaningHebrew || m.diagnosisHebrew || '');
+      return meaning ? `${pos}${fig}: ${meaning}` : null;
+    }).filter(Boolean);
+    if (mLines.length) push('סימנים נוספים מהמקור:\n' + mLines.join('\n'));
   }
 
   return paras.length ? paras.join('\n\n') : null;
