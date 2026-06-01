@@ -1470,8 +1470,77 @@ function buildNarrativeByTopic(result) {
     push(`פירוש החלום: ${dreamNature}.${elementNote}`);
   }
 
+  // ── 4c. TIMING ESTIMATE (judge element + speaking state) ─────────
+  if (judge) {
+    const judgeEl    = clean(judge.element || '');
+    const judgeSpeak = judge?.figureState?.speakingState;
+    const timingRanges = {
+      'אש':  'ימים ספורים עד שבועיים',
+      'רוח': 'שבועיים עד חודש-חודשיים',
+      'מים': 'חודש עד שלושה חודשים',
+      'עפר': 'מספר חודשים עד שנה',
+    };
+    const range = timingRanges[judgeEl];
+    if (range) {
+      const speedNote = judgeSpeak === 'speaking'
+        ? ' הדיין פעיל — הדבר מתקרב.'
+        : judgeSpeak === 'silent'
+        ? ' הדיין שותק — ייתכן עיכוב.'
+        : '';
+      push(`⏱ תזמון: יסוד הדיין (${hFig(judge)}) — ${judgeEl}. הערכה: ${range}.${speedNote}`);
+    }
+  }
+
+  // ── 4d. HIDDEN ADVERSARY PROFILE — H12 ──────────────────────────
+  const ADVERSARY_TOPICS = new Set([
+    'enemies', 'theft', 'disputes', 'loveHate', 'fear', 'partnership', 'commerce', 'missingPerson',
+  ]);
+  const showAdversaryProfile = ADVERSARY_TOPICS.has(topicId);
+  if (showAdversaryProfile) {
+    const h12 = getHouseFromBoard(boardAnalysis, 12);
+    const h12Fig = hFig(h12);
+    if (h12 && h12Fig) {
+      const h12Fort    = hFort(h12);
+      const h12El      = clean(h12?.element || '');
+      const h12Speak   = h12?.figureState?.speakingState;
+      const h12Transit = hTransit(h12);
+
+      const adversaryType = h12Fort === 'טוב'
+        ? 'חבר/מכר מדומה — מציג עצמו כתומך, אינו שמח להצלחתך'
+        : h12Fort === 'רע'
+        ? 'יריב גלוי — פועל נגדך בכוונה'
+        : h12Fort.includes('ממוזג-טוב')
+        ? 'כוח מעורב הנוטה לטובה — אינו אויב ברור, אך כדאי לשמור מרחק'
+        : h12Fort.includes('ממוזג-רע')
+        ? 'כוח מעורב הנוטה לרע — יש חשש לפגיעה, גם אם לא מכוון'
+        : 'כוח לא ברור — יש לשים לב אך לא להגזים בחשש';
+
+      const elementProfile = {
+        'אש':  'אימפולסיבי, קנאי ותחרותי',
+        'מים': 'פועל בשקט, מסתיר כוונות, סבלני',
+        'רוח': 'משתמש במילים ובקשרים חברתיים',
+        'עפר': 'עקשן, מונע על ידי עניינים חומריים',
+      };
+
+      const charProfile = elementProfile[h12El] || '';
+      const urgency     = h12Speak === 'speaking'
+        ? 'פועל כרגע — האיום פעיל.'
+        : h12Speak === 'silent'
+        ? 'אינו פועל כרגע — ממתין לרגע מתאים.'
+        : '';
+
+      const parts = [`🔍 איום נסתר (בית 12): ${h12Fig}${h12Fort ? ` (${h12Fort})` : ''}. ${adversaryType}.`];
+      if (charProfile) parts.push(`אופי: ${charProfile}.`);
+      if (h12Transit)  parts.push(h12Transit);
+      if (urgency)     parts.push(urgency);
+
+      push(parts.join(' '));
+    }
+  }
+
   // ── 5. ADDITIONAL MAIN HOUSES ────────────────────────────────────
-  const skipNums = new Set([1, 13, 14, 15, 16, Number(focusNum)].filter(Boolean));
+  // Skip H12 when adversary profile section already covers it
+  const skipNums = new Set([1, 13, 14, 15, 16, Number(focusNum), ...(showAdversaryProfile ? [12] : [])].filter(Boolean));
   const addHouses = (boardAnalysis.houses || []).filter((h) => !skipNums.has(Number(h.house)));
 
   if (addHouses.length) {
