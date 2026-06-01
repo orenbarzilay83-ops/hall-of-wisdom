@@ -1517,7 +1517,12 @@ function computeNameLetters(chart, houseNumber, labelOverride) {
 }
 
 const NAME_EXTRACTION_HOUSES_BY_TOPIC = {
-  spiritualDiagnostics: [{ house: 9 }],
+  spiritualDiagnostics: [
+    { house: 7, labelOverride: 'שם מי שהזמין הכישוף — אות ראשונה (בית 7)' },
+    { house: 8, labelOverride: 'שם מי שהזמין הכישוף — אות שנייה (בית 8)' },
+    { house: 9, labelOverride: 'שם המכשף שביצע — אות ראשונה (בית 9)' },
+    { house: 10, labelOverride: 'שם המכשף שביצע — אות שנייה (בית 10)' },
+  ],
   enemies:              [{ house: 7 }, { house: 9 }],
   disputes:             [{ house: 7 }],
   authorityState:       [{ house: 7, labelOverride: 'שם גורם הנפילה / האויב הפוליטי' }],

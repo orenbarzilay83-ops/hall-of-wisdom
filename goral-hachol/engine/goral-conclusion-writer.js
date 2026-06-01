@@ -1713,6 +1713,19 @@ function buildSpiritualNarrative(result) {
     const prof = sd.sorcererProfileResult;
     const sihrLines = [];
 
+    // helper: format 1st+2nd letter combo like theft method
+    const nameLetters = boardAnalysis?.nameLetters || [];
+    const buildNameStr = (h1Num, h2Num) => {
+      const e1 = nameLetters.find((n) => n.houseNumber === h1Num);
+      const e2 = nameLetters.find((n) => n.houseNumber === h2Num);
+      if (!e1?.letters?.length) return null;
+      if (e2?.letters?.length) {
+        const combos = e1.letters.flatMap((a) => e2.letters.map((b) => a + b)).join(' / ');
+        return `אות 1: ${e1.letters.join(' / ')} | אות 2: ${e2.letters.join(' / ')} (שם מתחיל ב: ${combos})`;
+      }
+      return `שמו מתחיל ב: ${e1.letters.join(' / ')}`;
+    };
+
     if (perp?.gender || perp?.specificNoteHebrew) {
       const perpGender = perp.gender ? `מין העושה: ${perp.gender}` : '';
       const perpNote   = perp.specificNoteHebrew
@@ -1720,6 +1733,8 @@ function buildSpiritualNarrative(result) {
         : '';
       const perpText   = [perpGender, perpNote].filter(Boolean).join(' — ');
       if (perpText) sihrLines.push(`מי עשה את הכישוף (בית 7 — ${perp.figureHebrew}): ${perpText}`);
+      const perpName = buildNameStr(7, 8);
+      if (perpName) sihrLines.push(`  שם מי שהזמין (תסקין עבדוה, בתים 7-8): ${perpName}`);
     }
 
     if (loc?.locationHebrew) {
@@ -1733,6 +1748,8 @@ function buildSpiritualNarrative(result) {
       if (prof.professionHebrew) profParts.push(prof.professionHebrew);
       if (prof.appearanceHebrew) profParts.push(prof.appearanceHebrew);
       sihrLines.push(`תיאור מבצע הכישוף (בית 9 — ${profFig}): ${profParts.join(' — ')}`);
+      const sorcName = buildNameStr(9, 10);
+      if (sorcName) sihrLines.push(`  שם המכשף שביצע (תסקין עבדוה, בתים 9-10): ${sorcName}`);
     }
 
     if (sihrLines.length) push(sihrLines.join('\n'));
