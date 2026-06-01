@@ -405,15 +405,40 @@
             <label>נושא השאלה</label>
             <select id="questionTopicInput">
               <option value="">בחר נושא שאלה</option>
-              <option value="travel">נסיעה</option>
-              <option value="missingPerson">נעדר / אבידה</option>
-              <option value="childrenPregnancy">ילדים / הריון</option>
-              <option value="hiddenTreasure">מטמון / דבר חבוי</option>
-              <option value="spiritualDiagnostics">אבחון רוחני / עין / כישוף</option>
-              <option value="authorityState">שלטון / סמכות</option>
-              <option value="yearlyForecast">טאלע השנה / גשם / יוקר וזול</option>
-              <option value="birthNativity">מולד / טבע האדם</option>
-              <option value="general">כללי</option>
+              <optgroup label="אנשים ויחסים">
+                <option value="marriage">נישואין / זוגיות</option>
+                <option value="loveHate">אהבה / שנאה</option>
+                <option value="siblings">אחים / שכנים / חברים</option>
+                <option value="partnership">שותפות / עסקים</option>
+              </optgroup>
+              <optgroup label="בריאות ורוחניות">
+                <option value="illness">מחלה / בריאות</option>
+                <option value="spiritualDiagnostics">אבחון רוחני / עין / כישוף</option>
+                <option value="childrenPregnancy">ילדים / הריון</option>
+              </optgroup>
+              <optgroup label="כסף ורכוש">
+                <option value="commerce">מסחר / קנייה / מכירה</option>
+                <option value="hiddenTreasure">מטמון / דבר חבוי</option>
+                <option value="theft">גנבה / אבידה</option>
+                <option value="deathInheritance">ירושה / פטירה</option>
+              </optgroup>
+              <optgroup label="אויבים ומשפט">
+                <option value="enemies">אויבים / מתנגדים</option>
+                <option value="disputes">ריב / תביעה / בית משפט</option>
+                <option value="fear">פחד / סכנה</option>
+                <option value="prisoner">אסיר / כלוא</option>
+              </optgroup>
+              <optgroup label="נסיעות ונעדרים">
+                <option value="travel">נסיעה / מסע</option>
+                <option value="missingPerson">נעדר / איפה הוא</option>
+                <option value="seaVoyage">מסע ים</option>
+              </optgroup>
+              <optgroup label="כללי ועתיד">
+                <option value="completion">הצלחה / השלמת ענין</option>
+                <option value="yearlyForecast">טאלע השנה / גשם / יוקר וזול</option>
+                <option value="authorityState">שלטון / סמכות / משרה</option>
+                <option value="birthNativity">מולד / טבע האדם</option>
+              </optgroup>
             </select>
           </div>
         </div>
@@ -463,8 +488,9 @@
   <script type="module">
     window.__HAWI_MODULE_READY = Promise.all([
       import('./goral-hachol/engine/hawi-interpreter.js'),
-      import('./goral-hachol/engine/goral-client-archive.js')
-    ]).then(([hawi, archive]) => {
+      import('./goral-hachol/engine/goral-client-archive.js'),
+      import('./goral-hachol/data/sources/hawi/foundations/hawi-figure-names.js'),
+    ]).then(([hawi, archive, figNames]) => {
       window.HAWI_INTERPRETER = {
         interpretHawiQuestionInitial: hawi.interpretHawiQuestionInitial
       };
@@ -476,6 +502,8 @@
         clearGoralArchive: archive.clearGoralArchive,
         summarizeGoralClientHistory: archive.summarizeGoralClientHistory
       };
+
+      window.HAWI_FIGURE_NAMES_BY_ID = figNames.HAWI_FIGURE_NAMES_BY_ID;
 
       return true;
     }).catch((err) => {
@@ -647,8 +675,22 @@
     }
 
     function buildInterpretationHtml(reading) {
-      if (!window.HAWI_INTERPRETER?.interpretHawiQuestionInitial) {
-        return `<div class="summary-box">אבחון גורל החול עדיין נטען. אם ההודעה נשארת, מנוע הידע לא נטען בדפדפן.</div>`;
+      // Wire topic override from the form dropdown
+      const topicOverride = reading.clientContext?.topicOverride;
+      if (topicOverride) reading.topicId = topicOverride;
+
+      // Enrich chart entries with fortune/element/movement from HAWI figure names
+      if (window.HAWI_FIGURE_NAMES_BY_ID && Array.isArray(reading.chart)) {
+        reading.chart = reading.chart.map(h => {
+          const meta = window.HAWI_FIGURE_NAMES_BY_ID[h.key] || null;
+          if (!meta) return h;
+          return {
+            ...h,
+            fortune:  h.fortune  || meta.fortuneHebrew  || null,
+            movement: h.movement || meta.movementHebrew || null,
+            element:  h.element  || meta.elementHebrew  || null,
+          };
+        });
       }
 
       if (window.GORAL_CLIENT_ARCHIVE?.summarizeGoralClientHistory) {
@@ -709,9 +751,12 @@
             <strong>אבחון רוחני:</strong><br/>
             דרגה: ${escapeHtml(spiritual.grade || "לא נקבע")}<br/>
             ${Array.isArray(spiritual.mainReasons) && spiritual.mainReasons.length
-              ? `<ul>${spiritual.mainReasons.slice(0, 4).map(reason => `
-                  <li>${escapeHtml(reason.label || reason.houseLabel || reason.reason || "")}</li>
-                `).join("")}</ul>`
+              ? `<ul>${spiritual.mainReasons.slice(0, 4).map(reason => {
+                  const roleText = reason.role || (reason.house != null ? `בית ${reason.house}` : "");
+                  const signalText = Array.isArray(reason.signals) ? reason.signals[0] : (reason.diagnosisHebrew || "");
+                  const text = [roleText, signalText].filter(Boolean).join(": ");
+                  return text ? `<li>${escapeHtml(text)}</li>` : "";
+                }).filter(Boolean).join("")}</ul>`
               : ""}
           </div>
         `
@@ -756,7 +801,21 @@
         const reading = window.ramlRunReading(question, mothers);
         reading.clientContext = getClientContext();
 
-        boardResult.innerHTML = buildBoardHtml(reading) + buildInterpretationHtml(reading);
+        const interpContainer = document.createElement("div");
+        interpContainer.id = "interpretationSection";
+        boardResult.innerHTML = buildBoardHtml(reading);
+        boardResult.appendChild(interpContainer);
+
+        function renderInterpretation() {
+          if (!window.HAWI_INTERPRETER?.interpretHawiQuestionInitial) {
+            interpContainer.innerHTML = `<div class="summary-box" style="color:#a0522d;">מנוע הידע נטען... הפירוש יופיע בעוד רגע.</div>`;
+            window.__HAWI_MODULE_READY && window.__HAWI_MODULE_READY.then(renderInterpretation);
+            return;
+          }
+          interpContainer.innerHTML = buildInterpretationHtml(reading);
+        }
+
+        renderInterpretation();
         showScreen("board");
       } catch (err) {
         errorBox.textContent = err.message || String(err);
