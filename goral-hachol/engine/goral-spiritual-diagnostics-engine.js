@@ -184,7 +184,26 @@ function checkFigureHouseRules(board, source) {
   return matched;
 }
 
+// Spiritual houses where a sorcery-related figure carries higher diagnostic weight
+const CRITICAL_SPIRITUAL_HOUSES = {
+  6:  'high',        // בית המחלה
+  9:  'very-high',   // בית המכשף
+  12: 'medium-high', // בית האויבים
+  13: 'high',        // עד ראשון
+  14: 'high',        // עד שני
+};
+
+function stripArabic(text = '') {
+  return String(text)
+    .replace(/[؀-ۿݐ-ݿﭐ-﷿ﹰ-﻿]+/g, '')
+    .replace(/\s*\/\s*/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 // Check general opening rules (e.g. "עקלה = מכשפה", "חיבור = מכשף רע")
+// Finds ALL occurrences on the board; figures in critical spiritual houses
+// are marked inCriticalHouse=true so they can be promoted to specificMatches.
 function checkOpeningRules(board, source) {
   const rules = asArray(source.openingRules);
   const matched = [];
@@ -192,23 +211,28 @@ function checkOpeningRules(board, source) {
   for (const rule of rules) {
     const figures = asArray(rule.figures);
     for (const arabicFigure of figures) {
-      // Check if this figure appears anywhere on the board
       const allHouses = asArray(board?.chart);
-      const found = allHouses.find((h) => figureMatchesRule(h, arabicFigure));
-      if (!found) continue;
+      const foundAll = allHouses.filter((h) => figureMatchesRule(h, arabicFigure));
+      if (!foundAll.length) continue;
 
-      const figureHebrew = getFigureHebrewName(found);
-      const diagnosis = asArray(rule.hebrewTranslation).join(' ');
+      for (const found of foundAll) {
+        const figureHebrew = getFigureHebrewName(found);
+        const houseNum = Number(found.house);
+        const criticalSeverity = CRITICAL_SPIRITUAL_HOUSES[houseNum];
+        const rawText = asArray(rule.hebrewTranslation).map(stripArabic).join(' ');
+        const meaning = rule.appMeaningHebrew || rawText;
 
-      matched.push({
-        ruleId: rule.id,
-        house: found.house,
-        figureHebrew,
-        diagnosisHebrew: diagnosis,
-        meaningHebrew: diagnosis,
-        severity: 'medium',
-        sourcePage: rule.sourcePage || null,
-      });
+        matched.push({
+          ruleId: `${rule.id}-h${houseNum}`,
+          house: found.house,
+          figureHebrew,
+          diagnosisHebrew: meaning,
+          meaningHebrew: meaning,
+          severity: criticalSeverity || 'medium',
+          sourcePage: rule.sourcePage || null,
+          inCriticalHouse: !!criticalSeverity,
+        });
+      }
       break;
     }
   }
@@ -446,11 +470,13 @@ export function diagnoseSpiritualInfluence(question = '', board = null) {
     };
   }
 
+  const rawOpeningMatches = checkOpeningRules(board, source);
   const specificMatches = [
     ...checkFigureHouseRules(board, source),
     ...checkJamaaDerivedRules(board, source),
+    ...rawOpeningMatches.filter((m) => m.inCriticalHouse),
   ];
-  const openingMatches = checkOpeningRules(board, source);
+  const openingMatches = rawOpeningMatches.filter((m) => !m.inCriticalHouse);
   const genericScore = quickHouseScore(board) + (questionHits.length ? 2 : 0);
   const isqatResult = applyIsqatSevenMethod(board, source);
   const jinnTypeResult = applyJinnTypeMethod(board, source);
