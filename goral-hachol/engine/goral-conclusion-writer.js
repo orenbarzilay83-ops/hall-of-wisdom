@@ -1314,7 +1314,7 @@ function buildNarrativeByTopic(result) {
     const parts = [];
     parts.push(`${namePrefix}הדיין (בית 15): ${fig}${fort ? `, ${fort}` : ''} — פסיקה ${toneWord}.`);
     if (speak)   parts.push(`הדיין ${speak}.`);
-    if (transit) parts.push(`חאוי: ${transit}`);
+    if (transit) parts.push(transit);
 
     push(parts.join(' '));
   }
@@ -1335,7 +1335,7 @@ function buildNarrativeByTopic(result) {
       let line = `${label} (בית ${num}): ${fig}${fort ? `, ${fort}` : ''}`;
       if (speak)     line += `, ${speak}`;
       if (agreeNote) line += ` [${agreeNote}]`;
-      if (transit)   line += `. חאוי: ${transit}`;
+      if (transit)   line += `. ${transit}`;
       wLines.push(line);
     };
 
@@ -1346,7 +1346,7 @@ function buildNarrativeByTopic(result) {
     if (w13 && w14 && jt !== 0) {
       const eitherOpp = (jt > 0 && (w13t < 0 || w14t < 0)) || (jt < 0 && (w13t > 0 || w14t > 0));
       if (eitherOpp) {
-        wLines.push('לפי חאוי: גם כשהעדים מנוגדים לדיין — הדיין הוא הקובע. הניגוד מלמד שיש כוחות בלוח שמעכבים, והדרך תהיה פחות ישירה.');
+        wLines.push('גם כשהעדים מנוגדים לדיין — הדיין הוא הקובע. הניגוד מלמד שיש כוחות בלוח שמעכבים, והדרך תהיה פחות ישירה.');
       }
     }
 
@@ -1363,7 +1363,7 @@ function buildNarrativeByTopic(result) {
     parts.push(`${nameLabel} (בית 1): ${fig}${fort ? `, ${fort}` : ''}.`);
     if (profile) parts.push(`פרופיל: ${profile}.`);
     if (speak)   parts.push(`בית 1 ${speak}.`);
-    if (transit) parts.push(`חאוי: ${transit}`);
+    if (transit) parts.push(transit);
 
     push(parts.join(' '));
   }
@@ -1376,7 +1376,7 @@ function buildNarrativeByTopic(result) {
 
     parts.push(`${label}: ${fig}${fort ? `, ${fort}` : ''}.`);
     if (speak)   parts.push(`${speak}.`);
-    if (transit) parts.push(`חאוי: ${transit}`);
+    if (transit) parts.push(transit);
 
     push(parts.join(' '));
   }
@@ -1392,7 +1392,7 @@ function buildNarrativeByTopic(result) {
       if (!fig && !fort) continue;
       let line = `בית ${h.house}: ${fig}${fort ? `, ${fort}` : ''}`;
       if (speak)   line += ` [${speak}]`;
-      if (transit) line += `. חאוי: ${transit}`;
+      if (transit) line += `. ${transit}`;
       addLines.push(line);
     }
     if (addLines.length) push(addLines.join('\n'));
@@ -1429,13 +1429,29 @@ function buildNarrativeByTopic(result) {
   const checks = (boardAnalysis.topicConnections?.checks || []);
   if (checks.length) {
     const ruleLines = checks.map((c) => c.hebrewShort);
-    push('בדיקות חאוי לנושא:\n' + ruleLines.join('\n'));
+    push('בדיקות נוספות לנושא:\n' + ruleLines.join('\n'));
   }
 
   return paras.length ? paras.join('\n\n') : null;
 }
 
 // ─── SPIRITUAL DIAGNOSTICS NARRATIVE ────────────────────────────────────────
+
+function cleanSpiritualText(text = '') {
+  return String(text)
+    .replace(/[؀-ۿﭐ-﷿ﹰ-﻿]+/g, '')
+    .replace(/שייח['׳]ים\s*[/]?\s*אנשי\s+רוח/g, 'אנשי דת ורוחניות')
+    .replace(/שייח['׳]ים/g, 'אנשי דת ורוחניות')
+    .replace(/עראפה/g, 'ידיעת נסתרות')
+    .replace(/כהאנה/g, 'חיזוי')
+    .replace(/שעוודה/g, 'כישופים')
+    .replace(/זֻחַל\s*[/]?\s*/g, '')
+    .replace(/ברמל/g, 'בגורל החול')
+    .replace(/עקלה/g, 'סוהר')
+    .replace(/צפרא[/]/g, '')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+}
 
 function isJinnRelatedDiagnosis(sd) {
   if (!sd) return false;
@@ -1511,7 +1527,7 @@ function buildSpiritualNarrative(result) {
     const parts = [];
     parts.push(`הדיין (בית 15): ${fig}${fort ? `, ${fort}` : ''} — פסיקה ${toneWord}.`);
     if (speak)   parts.push(`הדיין ${speak}.`);
-    if (transit) parts.push(`חאוי: ${transit}`);
+    if (transit) parts.push(transit);
     push(parts.join(' '));
   }
 
@@ -1579,7 +1595,7 @@ function buildSpiritualNarrative(result) {
         const baseId = String(m.ruleId || '').replace(/-h\d+$/, '');
         if (!seenBaseIds.has(baseId)) {
           seenBaseIds.add(baseId);
-          const txt = clean(m.meaningHebrew || m.diagnosisHebrew || '');
+          const txt = cleanSpiritualText(m.meaningHebrew || m.diagnosisHebrew || '');
           if (txt) ruleTexts.push(txt);
         }
       }
@@ -1598,18 +1614,18 @@ function buildSpiritualNarrative(result) {
 
     if (isqat?.hebrewText) {
       dParts.push(
-        `ספירת הנקודות הפתוחות בלוח (שיטת 7×7): ${isqat.openCount} נקודות — שאר ${isqat.remainder}.\n${isqat.hebrewText}`
+        `ספירת הנקודות הפתוחות בלוח (שיטת 7×7): ${isqat.openCount} נקודות — שאר ${isqat.remainder}.\n${cleanSpiritualText(isqat.hebrewText)}`
       );
     }
 
     if (isJinnRelatedDiagnosis(sd) && jinn?.hebrewText) {
-      dParts.push(`סוג הג׳ין (15×4 — לפי יסוד הדיין): ${jinn.hebrewText}`);
+      dParts.push(`סוג הג׳ין (15×4 — לפי יסוד הדיין): ${cleanSpiritualText(jinn.hebrewText)}`);
     }
 
     const isPhysical = (isqat?.remainder ?? 0) >= 4;
     if ((isPhysical || !isqat) && organ?.hebrewText) {
       dParts.push(
-        `סוג המחלה הגופנית (יסוד בית 6 ובית 8): ${organ.hebrewText}${organ.organHebrew ? ` — איבר: ${organ.organHebrew}` : ''}`
+        `סוג המחלה הגופנית (יסוד בית 6 ובית 8): ${cleanSpiritualText(organ.hebrewText)}${organ.organHebrew ? ` — איבר: ${organ.organHebrew}` : ''}`
       );
     }
 
@@ -1660,7 +1676,7 @@ function buildSpiritualNarrative(result) {
                 : m.house != null ? `בית ${m.house}`
                 : m.role || '';
       const fig     = m.figureHebrew ? ` (${m.figureHebrew})` : '';
-      const meaning = clean(m.meaningHebrew || m.diagnosisHebrew || '');
+      const meaning = cleanSpiritualText(m.meaningHebrew || m.diagnosisHebrew || '');
       return meaning ? `${pos}${fig}: ${meaning}` : null;
     }).filter(Boolean);
     if (mLines.length) push('סימנים נוספים מהמקור:\n' + mLines.join('\n'));
