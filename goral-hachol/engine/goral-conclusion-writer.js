@@ -1435,6 +1435,216 @@ function buildNarrativeByTopic(result) {
   return paras.length ? paras.join('\n\n') : null;
 }
 
+// ─── SPIRITUAL DIAGNOSTICS NARRATIVE ────────────────────────────────────────
+
+function isJinnRelatedDiagnosis(sd) {
+  if (!sd) return false;
+  const r = sd.isqatResult?.remainder;
+  if (r === 1 || r === 3) return true;
+  const matches = [...(sd.specificMatches || []), ...(sd.openingMatches || [])];
+  return matches.some((m) =>
+    (m.diagnosisHebrew || '').includes('ג׳ין') ||
+    (m.diagnosisHebrew || '').includes('אחיזה') ||
+    (m.diagnosisHebrew || '').includes('קרין') ||
+    (m.meaningHebrew   || '').includes('ג׳ין') ||
+    (m.meaningHebrew   || '').includes('אחיזה') ||
+    (m.meaningHebrew   || '').includes('קרין')
+  );
+}
+
+function buildSpiritualNarrative(result) {
+  const { boardAnalysis, spiritualDiagnosis, judgeVerdict, clientContext } = result;
+  if (!boardAnalysis?.hasBoard) return null;
+
+  const sd    = spiritualDiagnosis || {};
+  const name  = clean(clientContext?.clientName || '');
+  const paras = [];
+  const push  = (p) => { if (p && clean(p)) paras.push(clean(p)); };
+
+  const hFig     = (h) => clean(h?.figureHebrew || '');
+  const hFort    = (h) => clean(h?.fortune || '');
+  const hTransit = (h) => clean(h?.transit?.meaning || '');
+
+  const judge = boardAnalysis.judge        || getHouseFromBoard(boardAnalysis, 15);
+  const w13   = boardAnalysis.witnesses?.[0] || getHouseFromBoard(boardAnalysis, 13);
+  const w14   = boardAnalysis.witnesses?.[1] || getHouseFromBoard(boardAnalysis, 14);
+  const h1    = getHouseFromBoard(boardAnalysis, 1);
+  const h4    = getHouseFromBoard(boardAnalysis, 4);
+  const h6    = getHouseFromBoard(boardAnalysis, 6);
+  const h8    = getHouseFromBoard(boardAnalysis, 8);
+  const h9    = getHouseFromBoard(boardAnalysis, 9);
+  const h12   = getHouseFromBoard(boardAnalysis, 12);
+
+  // ── 1. OVERALL GRADE ─────────────────────────────────────────────
+  {
+    const gradeMap = {
+      'strong-suspicion': 'הלוח מראה סימנים חזקים לפגיעה רוחנית.',
+      'medium-suspicion': 'הלוח מראה חשד בינוני לפגיעה רוחנית — ייתכן שיש משהו, אך אין הכרעה חד-משמעית.',
+      'weak-suspicion':   'הלוח מראה סימנים חלשים בלבד — אין הכרעה ברורה לכאן או לכאן.',
+      'mostly-clear':     'הלוח אינו מראה סימנים ברורים לפגיעה רוחנית.',
+      'mixed':            'הלוח מעורב — יש לבדוק את הפרטים לפני כל הכרעה.',
+    };
+    const namePrefix = name ? `${name} — ` : '';
+    push(`${namePrefix}${gradeMap[sd.grade] || gradeMap['mixed']}`);
+  }
+
+  // ── 2. JUDGE (H15) ────────────────────────────────────────────────
+  if (judge) {
+    const fig     = hFig(judge);
+    const fort    = hFort(judge);
+    const transit = hTransit(judge);
+    const speak   = speakNote(judge);
+    const tone    = figureFortuneTone(judge?.fortune);
+    const toneWord = tone > 0 ? 'חיובית' : tone < 0 ? 'שלילית' : 'מעורבת';
+    const parts = [];
+    parts.push(`הדיין (בית 15): ${fig}${fort ? `, ${fort}` : ''} — פסיקה ${toneWord}.`);
+    if (speak)   parts.push(`הדיין ${speak}.`);
+    if (transit) parts.push(`חאוי: ${transit}`);
+    push(parts.join(' '));
+  }
+
+  // ── 3. WITNESSES (H13, H14) ───────────────────────────────────────
+  {
+    const jTone  = figureFortuneTone(judge?.fortune);
+    const wLines = [];
+
+    const descW = (w, label, num) => {
+      if (!w) return;
+      const fig     = hFig(w);
+      const fort    = hFort(w);
+      const transit = hTransit(w);
+      const speak   = speakNote(w);
+      const tone    = figureFortuneTone(w?.fortune);
+      const agreeNote = jTone !== 0
+        ? (((jTone > 0 && tone > 0) || (jTone < 0 && tone < 0)) ? 'מחזק את הדיין' : 'מנוגד לדיין')
+        : null;
+      let line = `${label} (בית ${num}): ${fig}${fort ? `, ${fort}` : ''}`;
+      if (speak)     line += `, ${speak}`;
+      if (agreeNote) line += ` [${agreeNote}]`;
+      if (transit)   line += `. חאוי: ${transit}`;
+      wLines.push(line);
+    };
+
+    descW(w13, 'עד ראשון', 13);
+    descW(w14, 'עד שני', 14);
+    if (wLines.length) push(wLines.join('\n'));
+  }
+
+  // ── 4. H1 — PATIENT ───────────────────────────────────────────────
+  if (h1) {
+    const fig     = hFig(h1);
+    const fort    = hFort(h1);
+    const transit = hTransit(h1);
+    const speak   = speakNote(h1);
+    const nameLabel = name || 'השואל';
+    const profile   = formatClientProfile(clientContext);
+    const parts     = [];
+    parts.push(`${nameLabel} (בית 1 — החולה): ${fig}${fort ? `, ${fort}` : ''}.`);
+    if (profile) parts.push(`פרופיל: ${profile}.`);
+    if (speak)   parts.push(`בית 1 ${speak}.`);
+    if (transit) parts.push(`חאוי: ${transit}`);
+    push(parts.join(' '));
+  }
+
+  // ── 5. SPIRITUAL HOUSES ───────────────────────────────────────────
+  {
+    const shDefs = [
+      { h: h6,  role: 'בית המחלה',   num: 6  },
+      { h: h9,  role: 'בית המכשף',   num: 9  },
+      { h: h4,  role: 'בית התרופה',  num: 4  },
+      { h: h8,  role: 'בית הגוף',    num: 8  },
+      { h: h12, role: 'בית האויבים', num: 12 },
+    ];
+    const shLines = [];
+    for (const { h, role, num } of shDefs) {
+      if (!h || !hFig(h)) continue;
+      const fig     = hFig(h);
+      const fort    = hFort(h);
+      const transit = hTransit(h);
+      const speak   = speakNote(h);
+      let line = `${role} (בית ${num}): ${fig}${fort ? `, ${fort}` : ''}`;
+      if (speak)   line += ` [${speak}]`;
+      if (transit) line += `. חאוי: ${transit}`;
+      shLines.push(line);
+    }
+    if (shLines.length) push(shLines.join('\n'));
+  }
+
+  // ── 6. DIAGNOSTIC METHODS ─────────────────────────────────────────
+  {
+    const isqat  = sd.isqatResult;
+    const jinn   = sd.jinnTypeResult;
+    const organ  = sd.organDiagnosisResult;
+    const dParts = [];
+
+    if (isqat?.hebrewText) {
+      dParts.push(
+        `ספירת הנקודות הפתוחות בלוח (שיטת 7×7): ${isqat.openCount} נקודות — שאר ${isqat.remainder}.\n${isqat.hebrewText}`
+      );
+    }
+
+    if (isJinnRelatedDiagnosis(sd) && jinn?.hebrewText) {
+      dParts.push(`סוג הג׳ין (15×4 — לפי יסוד הדיין): ${jinn.hebrewText}`);
+    }
+
+    const isPhysical = (isqat?.remainder ?? 0) >= 4;
+    if ((isPhysical || !isqat) && organ?.hebrewText) {
+      dParts.push(
+        `סוג המחלה הגופנית (יסוד בית 6 ובית 8): ${organ.hebrewText}${organ.organHebrew ? ` — איבר: ${organ.organHebrew}` : ''}`
+      );
+    }
+
+    if (dParts.length) push(dParts.join('\n'));
+  }
+
+  // ── 7. ITTISALAT ──────────────────────────────────────────────────
+  const ittisalat = boardAnalysis.ittisalat;
+  if (ittisalat) {
+    const q2f  = ittisalat.questioner_to_focus;
+    const q2j  = ittisalat.questioner_to_judge;
+    const fNum = boardAnalysis.focusHouseNumber;
+    const iLines = [];
+
+    if (q2f && fNum) {
+      if (q2f.type !== 'none') {
+        iLines.push(
+          `חיבור בין השואל לבית המחלה (בית ${fNum}): ${q2f.hebrewShort}${q2f.quality ? ` (${q2f.quality})` : ''}.`
+        );
+      } else {
+        iLines.push(`אין חיבור ישיר בין השואל לבית המחלה (בית ${fNum}).`);
+      }
+    }
+    if (q2j && q2j.type !== 'none') {
+      iLines.push(`קשר בין השואל לדיין: ${q2j.hebrewShort}.`);
+    }
+    if (iLines.length) push(iLines.join(' '));
+  }
+
+  // ── 8. TAHASIL ───────────────────────────────────────────────────
+  push(tahasilParagraph(boardAnalysis));
+
+  // ── 9. DHAMIR ────────────────────────────────────────────────────
+  push(dhamirParagraph(boardAnalysis, judgeVerdict));
+
+  // ── 10. SPECIFIC RULE MATCHES FROM SOURCE ────────────────────────
+  const allMatches = [...(sd.specificMatches || []), ...(sd.openingMatches || [])];
+  if (allMatches.length) {
+    const mLines = allMatches.map((m) => {
+      const pos = m.house === 15 ? 'הדיין'
+                : m.house === 13 ? 'עד ראשון'
+                : m.house === 14 ? 'עד שני'
+                : m.house != null ? `בית ${m.house}`
+                : m.role || '';
+      const fig     = m.figureHebrew ? ` (${m.figureHebrew})` : '';
+      const meaning = m.meaningHebrew || m.diagnosisHebrew || '';
+      return `${pos}${fig}: ${meaning}`;
+    });
+    push('סימנים ספציפיים מהמקור:\n' + mLines.join('\n'));
+  }
+
+  return paras.length ? paras.join('\n\n') : null;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function writeHumanGoralConclusion(result) {
@@ -1451,15 +1661,12 @@ export function writeHumanGoralConclusion(result) {
     if (narrative && clean(narrative)) return narrative;
   }
 
-  // ── Spiritual diagnostics: keep existing verdict format ─────────
+  // ── Spiritual diagnostics: full narrative format ────────────────
   if (isSpiritualTopic) {
-    const paragraphs = [
-      clientContextParagraph(result.clientContext, question),
-      spiritualVerdict(result.spiritualDiagnosis),
-      spiritualParagraph(result.spiritualDiagnosis, topicId),
-      recommendationByTopic(topicId, grade, result.boardAnalysis, question),
-    ].filter((p) => clean(p));
-    return paragraphs.join('\n\n');
+    const narrative = buildSpiritualNarrative(result);
+    if (narrative && clean(narrative)) return narrative;
+    return clientContextParagraph(result.clientContext, question) ||
+           'לא התקבל לוח מלא — לא ניתן לפסוק ללא לוח.';
   }
 
   // ── Fallback: technical format (no board or unknown topic) ───────
