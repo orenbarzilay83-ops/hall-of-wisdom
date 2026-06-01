@@ -865,6 +865,61 @@
       background:#f0f0f0;border-radius:8px;padding:8px 12px;color:#333;
     }
 
+    /* ─── Guide Extras ──────────────────────────────────────────── */
+    .guide-info-box {
+      background:#f0f4ff;border:1.5px solid #c8d8ff;border-radius:12px;
+      padding:12px 14px;margin-bottom:16px;font-size:13px;color:#1a2e5a;line-height:1.7;
+    }
+    .badge.judge-ok  { background:#d4edda;color:#155724; }
+    .badge.judge-no  { background:#f8d7da;color:#721c24; }
+    .fig-body-part   { font-size:11px;color:#888;margin-top:4px; }
+    .house-happy-row td { background:#f7fff7; }
+    .house-hard-row  td { background:#fff8f8; }
+    .house-group-badge {
+      display:inline-block;padding:2px 7px;border-radius:8px;
+      font-size:11px;font-weight:700;
+    }
+    .house-group-badge.awtad   { background:#d0e8ff;color:#003d7a; }
+    .house-group-badge.mawail  { background:#d4edda;color:#155724; }
+    .house-group-badge.sawaqit { background:#fff3cd;color:#856404; }
+    .house-group-badge.ruling  { background:#e8d0ff;color:#4a0080; }
+    .house-quality-badge {
+      display:inline-block;padding:2px 7px;border-radius:8px;font-size:11px;font-weight:700;
+    }
+    .house-quality-badge.happy { background:#d4edda;color:#155724; }
+    .house-quality-badge.hard  { background:#f8d7da;color:#721c24; }
+    .house-quality-badge.neutral { background:#e8e8e8;color:#555; }
+    .house-time-cell { font-size:12px;color:#666;white-space:nowrap; }
+    .conditions-section {
+      background:#fffbe6;border:1.5px solid #ffe082;border-radius:12px;
+      padding:12px 14px;margin-bottom:18px;
+    }
+    .conditions-title { font-weight:900;font-size:15px;color:#5a3a00;margin-bottom:8px; }
+    .conditions-list  { margin:0;padding-right:18px; }
+    .conditions-list li { font-size:13px;color:#5a3a00;margin-bottom:4px;line-height:1.4; }
+    .validity-section {
+      background:#fff0f0;border:1.5px solid #ffb3b3;border-radius:12px;
+      padding:12px 14px;margin-top:18px;
+    }
+    .validity-title { font-weight:900;font-size:15px;color:#7a0000;margin-bottom:8px; }
+    .validity-list  { margin:0;padding-right:18px; }
+    .validity-list li { font-size:13px;color:#7a0000;margin-bottom:5px;line-height:1.4; }
+    .concept-group-header {
+      font-weight:900;font-size:13px;color:#888;text-transform:uppercase;
+      letter-spacing:1px;margin:20px 0 10px;padding-bottom:4px;
+      border-bottom:2px solid #eee;
+    }
+    .concept-body ul { margin:6px 0 0;padding-right:18px; }
+    .concept-body li { margin-bottom:3px; }
+    .concept-tag {
+      display:inline-block;font-size:11px;font-weight:700;padding:1px 7px;border-radius:8px;
+      background:#e8e8e8;color:#444;margin-left:6px;
+    }
+    .concept-tag.src  { background:#d0e8ff;color:#003d7a; }
+    .houses-table th:nth-child(4),
+    .houses-table th:nth-child(5),
+    .houses-table th:nth-child(6) { white-space:nowrap; }
+
     /* ─── Journal Screen ───────────────────────────────────────── */
     .journal-empty {
       text-align:center;padding:40px 20px;color:#888;font-size:16px;
@@ -2116,12 +2171,15 @@
     function renderFiguresGuide() {
       const el = document.getElementById("guide-figures");
       const forms = window.RAML_FORMS_BASIC || {};
+      // 8 צורות מזוגות — כשרות לדיין (סכום שורות זוגי מתמטית)
+      const VALID_JUDGES = new Set(['1111','2222','1122','2211','1212','2121','1221','2112']);
       const cards = FIGURE_ORDER.map(key => {
         const f = forms[key] || {};
         const ex = FIGURE_EXTRA[key] || {};
         const elClass = ELEMENT_CLASS[f.element] || '';
         const dirClass = DIR_CLASS[f.direction] || '';
         const lettersHtml = (ex.letters || []).map(l => `<span class="fig-letter">${escapeHtml(l)}</span>`).join('');
+        const isValidJudge = VALID_JUDGES.has(key);
         return `<div class="fig-card">
           ${glyphHtml(linesFromKey(key))}
           <div class="fig-name">${escapeHtml(f.hebrew || key)}</div>
@@ -2132,11 +2190,21 @@
             <span class="badge ${elClass}">${escapeHtml(f.element || '')}</span>
             ${f.direction ? `<span class="badge ${dirClass}">${escapeHtml(f.direction)}</span>` : ''}
             ${f.planet ? `<span class="badge planet">${escapeHtml(f.planet)}</span>` : ''}
-            <span class="badge group">קבוצה: ${escapeHtml(ex.movement || '')}</span>
+            <span class="badge group">קב׳: ${escapeHtml(ex.movement || '')}</span>
+            <span class="badge ${isValidJudge ? 'judge-ok' : 'judge-no'}">${isValidJudge ? 'כשר לדיין ✓' : 'פסול לדיין'}</span>
           </div>
+          ${f.bodyPart ? `<div class="fig-body-part">אבר: ${escapeHtml(f.bodyPart)}</div>` : ''}
         </div>`;
       }).join('');
-      el.innerHTML = `<div class="figures-grid">${cards}</div>
+      const validNames = FIGURE_ORDER.filter(k => VALID_JUDGES.has(k))
+        .map(k => escapeHtml((forms[k] || {}).hebrew || k)).join(' &nbsp;·&nbsp; ');
+      el.innerHTML = `
+        <div class="guide-info-box">
+          <strong>8 הצורות הכשרות לדיין (مزدوجة — מזוגות):</strong><br>
+          ${validNames}<br>
+          <small>הדיין (בית 15) חייב להיות אחת מ-8 הצורות הללו — תכונה מתמטית של מבנה הלוח. צורה פרדית בבית 15 = לוח פגום.</small>
+        </div>
+        <div class="figures-grid">${cards}</div>
         <div class="fig-legend">
           <strong>האותיות</strong> (בתיבות כחולות) = אותיות תסקין עבדוה לפי חאוי — לחילוץ שם הנשאל עליו מבית 7 או 9.<br>
           <strong>מזל:</strong> 🟢 <strong>טוב</strong> = מיטיב &nbsp;|&nbsp; 🔴 <strong>רע</strong> = מזיק &nbsp;|&nbsp; 🟡 <strong>ממוזג</strong> = בינוני<br>
@@ -2146,60 +2214,329 @@
           <strong>קבועה</strong> (ثابتة) = יציבה &nbsp;|&nbsp;
           <strong>מתהפכת</strong> (منقلبة) = שני פנים<br>
           <strong>כיוון:</strong> 🔵 צפון · 🟠 דרום · 🟢 מזרח · 🟣 מערב
-          &nbsp;|&nbsp; <strong>כוכב</strong> = הגורם השמימי השולט
+          &nbsp;|&nbsp; <strong>כוכב</strong> = הגורם השמימי השולט<br>
+          <strong>✓ כשר לדיין</strong> = מן 8 הצורות המזוגות שיכולות להיות דיין (בית 15).<br>
+          <strong>✗ פסול לדיין</strong> = מן 8 הצורות הפרדיות — אינה יכולה להופיע בבית 15 בלוח תקין.<br>
+          <strong>אבר</strong> = האיבר הגופני המיוחס לכל צורה לפי القول الجامع.
         </div>`;
     }
 
     function renderHousesGuide() {
       const el = document.getElementById("guide-houses");
       const houses = window.ramlListHousesBasic ? window.ramlListHousesBasic() : [];
-      el.innerHTML = '<table class="houses-table"><thead><tr><th>בית</th><th>שם</th><th>תחומים</th></tr></thead><tbody>' +
-        houses.map(h => `<tr>
+      // מקור: القول الجامع + raml-reading-foundations.js
+      const HOUSE_META = {
+        1:  { group:'יתד',      gc:'awtad',   time:'הווה',   quality:'מאושר',  qc:'happy' },
+        2:  { group:'מוואיל',   gc:'mawail',  time:'עתיד',   quality:'מאושר',  qc:'happy' },
+        3:  { group:'סוואקט',   gc:'sawaqit', time:'עבר',    quality:'קשה',    qc:'hard'  },
+        4:  { group:'יתד',      gc:'awtad',   time:'הווה',   quality:'—',      qc:'neutral'},
+        5:  { group:'מוואיל',   gc:'mawail',  time:'עתיד',   quality:'מאושר',  qc:'happy' },
+        6:  { group:'סוואקט',   gc:'sawaqit', time:'עבר',    quality:'קשה',    qc:'hard'  },
+        7:  { group:'יתד',      gc:'awtad',   time:'הווה',   quality:'מאושר',  qc:'happy' },
+        8:  { group:'מוואיל',   gc:'mawail',  time:'עתיד',   quality:'קשה',    qc:'hard'  },
+        9:  { group:'סוואקט',   gc:'sawaqit', time:'עבר',    quality:'קשה',    qc:'hard'  },
+        10: { group:'יתד',      gc:'awtad',   time:'הווה',   quality:'מאושר',  qc:'happy' },
+        11: { group:'מוואיל',   gc:'mawail',  time:'עתיד',   quality:'מאושר',  qc:'happy' },
+        12: { group:'סוואקט',   gc:'sawaqit', time:'עבר',    quality:'קשה',    qc:'hard'  },
+        13: { group:'עד א׳',    gc:'ruling',  time:'הכרעה',  quality:'מאושר',  qc:'happy' },
+        14: { group:'עד ב׳',    gc:'ruling',  time:'הכרעה',  quality:'קשה',    qc:'hard'  },
+        15: { group:'דיין',     gc:'ruling',  time:'הכרעה',  quality:'מאושר',  qc:'happy' },
+        16: { group:'משפט',     gc:'ruling',  time:'אחרית',  quality:'קשה',    qc:'hard'  },
+      };
+      const rows = houses.map(h => {
+        const m = HOUSE_META[h.number] || { group:'', gc:'', time:'', quality:'', qc:'neutral' };
+        return `<tr class="${m.qc === 'happy' ? 'house-happy-row' : m.qc === 'hard' ? 'house-hard-row' : ''}">
           <td class="house-num-cell">${h.number}</td>
           <td><strong>${escapeHtml(h.hebrew)}</strong><br><span style="font-size:12px;color:#888">${escapeHtml(h.arabic)}</span></td>
           <td>${escapeHtml(h.role)}</td>
-        </tr>`).join('') +
-        '</tbody></table>';
+          <td><span class="house-group-badge ${m.gc}">${escapeHtml(m.group)}</span></td>
+          <td class="house-time-cell">${escapeHtml(m.time)}</td>
+          <td><span class="house-quality-badge ${m.qc}">${escapeHtml(m.quality)}</span></td>
+        </tr>`;
+      }).join('');
+      el.innerHTML = `
+        <table class="houses-table">
+          <thead><tr>
+            <th>בית</th><th>שם</th><th>תחומים</th>
+            <th>קבוצה</th><th>זמן</th><th>מהות</th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+        <div class="fig-legend" style="margin-top:14px">
+          <strong>קבוצות הבתים — מקור: القول الجامع + raml-reading-foundations</strong><br>
+          🔵 <strong>יתדות (أوتاد)</strong> — בתים 1, 4, 7, 10: הבתים החזקים ביותר. מהם לומדים את מצב הדבר <em>בהווה</em>.<br>
+          🟢 <strong>מוואיל (مواﺋل)</strong> — בתים 2, 5, 8, 11: בינוניים-חזקים. מהם לומדים את <em>העתיד</em>.<br>
+          🟡 <strong>סוואקט (سواقط)</strong> — בתים 3, 6, 9, 12: חלשים. מהם לומדים את <em>העבר</em> או דבר שנחלש.<br>
+          🟣 <strong>עדים, דיין, משפט</strong> — בתים 13–16: מכריעים ופוסקים את הדין.<br>
+          <strong>מאושרים (مسعودة):</strong> 1, 2, 5, 7, 10, 11, 13, 15 — בתים טובים ומסייעים.<br>
+          <strong>קשים (محوسة):</strong> 3, 6, 8, 9, 12, 14, 16 — בתים קשים, מחלישים או מצביעים על קושי.<br>
+          <small>בית 4 אינו מוגדר מפורשות כמאושר/קשה במקורות.</small>
+        </div>`;
     }
 
     function renderBuildGuide() {
       const el = document.getElementById("guide-build");
-      const steps = [
-        { title: 'הטלת האמהות', desc: 'מטילים נקודות 4 פעמים. כל שורה נספרת: זוגי = 2 נקודות (●●), אי-זוגי = 1 נקודה (●). מתקבלות 4 אמהות — שורת הלוח הראשונה.' },
-        { title: 'יצירת הבנות', desc: 'מחשבים XOR בין שורות האמהות הסמוכות: בת 1 = אם 1 XOR אם 2, בת 2 = אם 2 XOR אם 3, בת 3 = אם 3 XOR אם 4, בת 4 = אם 4 XOR בת 1.', example: 'אם 1=1111, אם 2=2112 → בת 1=1221 (סוהר)' },
-        { title: 'יצירת הנכדות', desc: 'מסובבים את הצורות — כל עמודה של 4 שורות הופכת לצורה חדשה. נכדה 1 = שורה 1 של כל 4 האמהות.', example: 'שורה 1 של אמהות 1-4: 1,2,1,2 → 1212 (ממון יוצא)' },
-        { title: 'העדים (בתים 13-14)', desc: 'עד 1 (בית 13) = XOR בין בת 1 ובת 2. עד 2 (בית 14) = XOR בין בת 3 ובת 4. העדים מחזקים או מחלישים את הדיין.' },
-        { title: 'הדיין (בית 15)', desc: 'הכרעה הסופית של הלוח. מחושב: דיין = XOR(עד 1, עד 2). אם הדיין טוב (מיטיב) — תשובה חיובית. אם רע (מזיק) — שלילית. אם ממוזג — תלוי.' },
-        { title: 'המשלים (בית 16)', desc: 'מחושב: משלים = XOR(דיין, בית 1). מורה על אחרית הדבר ועל תוצאת הדין לאורך זמן.' },
+      // תנאים לפני הכאת הלוח — מקור: raml-reading-foundations / workingConditions
+      const conditions = [
+        'להיות לבד במקום פרטי ושקט.',
+        'להיות בטהרה מלאה.',
+        'לנקות את המחשבה לגמרי לפני הכאת השאלה.',
+        'לא לדבר בזמן הכאת השאלה.',
+        'לא להכות יותר משלוש פעמים ביום אלא לצורך גדול.',
+        'לא להשתמש בזה לצחוק, לעג, סרק או התגרות.',
+        'לא להכות למכחיש, לכופר, למלגלג, למי שבא לנסות או לבחון.',
+        'לא להכות בזמן ענן, גשם, רוח, זריחה או שקיעה.',
       ];
-      el.innerHTML = steps.map((s, i) => `
-        <div class="build-step">
-          <div class="step-num">${i+1}</div>
-          <div class="step-body">
-            <div class="step-title">${escapeHtml(s.title)}</div>
-            <div class="step-desc">${escapeHtml(s.desc)}</div>
-            ${s.example ? `<div class="step-example">${escapeHtml(s.example)}</div>` : ''}
-          </div>
-        </div>`).join('');
+      // שלבי בניית הלוח — מקור: حاوي العجائب / القول الجامع
+      const steps = [
+        { title: 'הטלת האמהות (أمهات)',
+          desc: 'מטילים נקודות 4 פעמים. כל שורה נספרת: זוגי = 2 נקודות (●●), אי-זוגי = 1 נקודה (●). מתקבלות 4 אמהות — הן בתים 1–4 של הלוח.' },
+        { title: 'יצירת הבנות (بنات)',
+          desc: 'הבנות נוצרות מ-XOR בין שורות האמהות הסמוכות. בת 1 = אם1 XOR אם2, בת 2 = אם2 XOR אם3, בת 3 = אם3 XOR אם4, בת 4 = אם4 XOR בת1. הבנות = בתים 5–8.',
+          example: 'אם 1=1111, אם 2=2112 → בת 1=1221 (סוהר)' },
+        { title: 'יצירת הנכדות (حفيدات)',
+          desc: 'הנכדות נוצרות על ידי "סיבוב" — כל עמודה של שורה בת-4 האמהות הופכת לצורה חדשה. נכדה 1 = שורות ראשונות של אמהות 1-4. הנכדות = בתים 9–12.',
+          example: 'שורה 1 של אמהות: 1,2,1,2 → נכדה 1 = 1212 (ממון יוצא)' },
+        { title: 'העדים (شاهدان) — בתים 13-14',
+          desc: 'עד א׳ (בית 13) = XOR בין בנות 1 ו-2. עד ב׳ (בית 14) = XOR בין בנות 3 ו-4. בית 13 מייצג את השואל; בית 14 מייצג את הנשאל עליו. העדים מחזקים או מחלישים את הדיין.' },
+        { title: 'הדיין (الحاكم) — בית 15',
+          desc: 'הכרעה הסופית של הלוח. מחושב: דיין = XOR(עד א׳, עד ב׳). הדיין חייב לצאת אחת מ-8 הצורות המזוגות — אחרת הלוח פגום. טוב = תשובה חיובית; רע = שלילית; ממוזג = תלוי.',
+          example: 'דיין טוב גובר על לוח שלילי. דיין רע גובר על לוח חיובי.' },
+        { title: 'המשלים / אחרית הדבר (العاقبة) — בית 16',
+          desc: 'מחושב: משלים = XOR(דיין, בית 1). מורה על אחרית הדבר — איך הדין יסתיים לאורך זמן. בית 16 קשה (محوس) — גם דיין טוב עם משלים קשה מרמז על טוב שמסתיים בקושי.' },
+        { title: 'הדמיר (الضمير) — גילוי הכוונה הנסתרת',
+          desc: 'הדמיר מגלה את ה"שאלה האמיתית" שבלב השואל. מחושב מן הרכבת יסודות ארבע האמהות (שורות ראשונות: אש, אוויר, מים, עפר). הבית שבו הוא מצביע — שם הכוונה האמיתית.',
+          example: 'אם הדמיר מצביע על בית הממון — השואל דואג לכסף, גם אם שאל על אהבה.' },
+      ];
+      // כללי תקינות הלוח
+      const validityRules = [
+        'הדיין חייב להיות אחת מ-8 הצורות המזוגות (מזדוגות). אם יצאה צורה פרדית בבית 15 — הלוח פגום, יש לחזור על ההטלה.',
+        'הדמיר חייב להיות ניתן לאיתור בלוח. אם אינו מופיע — הלוח חסר ותוקפו מוגבל.',
+        'לא לשאול יותר משלוש שאלות ביום אלא לצורך גדול.',
+        'אם השאלה עוסקת בעבר ונופלת בקבוצת הסוואקט/הנופלים — יש לחשוד שהשואל בוחן.',
+        'ניתן לבדוק את נכונות העבודה על ידי הכאה פעם שנייה ושלישית: אם חוזרת אותה תשובה, או תשובה קרובה — העבודה נכונה.',
+      ];
+      el.innerHTML = `
+        <div class="conditions-section">
+          <div class="conditions-title">תנאים לפני הכאת הלוח (القول الجامع)</div>
+          <ul class="conditions-list">${conditions.map(c => `<li>${escapeHtml(c)}</li>`).join('')}</ul>
+        </div>
+        ${steps.map((s, i) => `
+          <div class="build-step">
+            <div class="step-num">${i+1}</div>
+            <div class="step-body">
+              <div class="step-title">${escapeHtml(s.title)}</div>
+              <div class="step-desc">${escapeHtml(s.desc)}</div>
+              ${s.example ? `<div class="step-example">${escapeHtml(s.example)}</div>` : ''}
+            </div>
+          </div>`).join('')}
+        <div class="validity-section">
+          <div class="validity-title">חוקי תקינות הלוח</div>
+          <ul class="validity-list">${validityRules.map(r => `<li>${escapeHtml(r)}</li>`).join('')}</ul>
+        </div>`;
     }
 
     function renderConceptsGuide() {
       const el = document.getElementById("guide-concepts");
-      const concepts = [
-        { title: 'דיין — השופט (بيت 15)', sub: 'הכרעה הסופית', body: 'הדיין בבית 15 הוא "שופט הלוח". צורה שלו קובעת את התשובה הכוללת. טוב (مسعود) = כן/חיובי, רע (محوس) = לא/שלילי, ממוזג = תלוי בעדים. הדיין גובר על הכול — גם אם כל הלוח רע, דיין טוב פוסק בחיוב.' },
-        { title: 'עדים — בתים 13-14', sub: 'מחזקים או מחלישים את הדיין', body: 'שני העדים (בית 13 ו-14) מחזקים את פסיקת הדיין. אם שניהם מסכימים עם הדיין — הפסיקה ודאית. אם סותרים — הדין מסופק. בית 13 = צד השואל. בית 14 = הדבר הנשאל.' },
-        { title: 'דמיר — הכוונה הנסתרת (الضمير)', sub: 'מה באמת רוצה השואל', body: 'הדמיר מחושב ממיזן (מאזניים) ה-4 יסודות: אש, אוויר, מים, עפר. מכוון לבית מסוים בלוח המגלה את ה"שאלה האמיתית" שבלב השואל — לפעמים שונה משאלתו המוצהרת.' },
-        { title: 'תחסיל — השלמת הדבר (تحصيل)', sub: 'האם הדבר ייגמר?', body: 'בודקים האם יש חיבור ישיר, עקיף, או בהעברה בין בית 1 (השואל) לבית 7 (הנשאל). חיבור ישיר = הדבר יצא לפועל בוודאות. הגעה בינונית = תלוי גורמים. אין חיבור = הדבר לא ייגמר.' },
-        { title: 'איתיסלאת — חיבור (الاتصال)', sub: 'קשרים בין צורות בלוח', body: 'כאשר צורה חוזרת בשני בתים שונים נוצר "חיבור" ביניהם. חיבור בין בית 1 לבית 7 = השואל והנשאל קשורים. חיבור לבית 10 = עניין ציבורי/שלטוני מחובר. סוגי חיבורים: ריבוע, משולש, מול, תסדיס.' },
-        { title: 'אצאלה — תוקף הלוח (الأصالة)', sub: 'האם הלוח תקף?', body: 'לוח תקף כאשר צורת בית 1 (השואל) מופיעה בלפחות עוד בית אחד בלוח. אם הצורה מופיעה רק בבית 1 — הלוח חלש ויש לנהוג בזהירות בפרשנות. צורה שחוזרת בבתים 1, 4, 7 ו-10 = לוח חזק מאוד.' },
-        { title: 'ג\'מלה — ספירת נקודות (الجملة)', sub: 'כוח הלוח הכללי', body: 'ספירת סה"כ הנקודות בלוח (1 = נקודה אחת, 2 = שתי נקודות, לכל שורה). מחלקים ל-4 לבדיקת מחלות, ל-3 לבדיקת ילדים. תוצאה זוגית/אי-זוגית מוסיפה שכבת פרשנות.' },
-      ];
-      el.innerHTML = concepts.map(c => `
+      // כל התוכן מאומת מ: القول الجامع / حاوي العجائب / raml-reading-foundations.js
+      el.innerHTML = `
+        <div class="concept-group-header">מבנה הלוח ועמוד השדרה שלו</div>
+
         <div class="concept-card">
-          <div class="concept-title">${escapeHtml(c.title)}</div>
-          <div class="concept-sub">${escapeHtml(c.sub)}</div>
-          <div class="concept-body">${escapeHtml(c.body)}</div>
-        </div>`).join('');
+          <div class="concept-title">דיין — השופט <span class="concept-tag src">بيت 15</span></div>
+          <div class="concept-sub">הכרעה הסופית — גובר על הכול</div>
+          <div class="concept-body">
+            הדיין בבית 15 הוא "שופט הלוח" — הכרעתו גוברת על כל שאר הבתים.<br>
+            <strong>טוב (مسعود)</strong> = תשובה חיובית, כן. &nbsp;
+            <strong>רע (محوس)</strong> = תשובה שלילית, לא. &nbsp;
+            <strong>ממוזג</strong> = תלוי בעדים ובנסיבות.<br>
+            <em>כלל מוחלט:</em> הדיין חייב להיות אחת מ-8 הצורות המזוגות. דיין פרדי = לוח פגום.
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-title">עדים — בתים 13–14 <span class="concept-tag src">شاهدان</span></div>
+          <div class="concept-sub">מחזקים או מחלישים את פסיקת הדיין</div>
+          <div class="concept-body">
+            <strong>בית 13</strong> = עד ראשון — מייצג את צד השואל ומצבו.<br>
+            <strong>בית 14</strong> = עד שני — מייצג את הנשאל עליו (הדבר, האדם, הנושא).<br>
+            אם שני העדים מסכימים עם הדיין — הפסיקה ודאית וחזקה.<br>
+            אם עד אחד סותר — הדין מסופק. אם שניהם סותרים — ספק כבד.
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-title">דמיר — הכוונה הנסתרת <span class="concept-tag src">الضمير</span></div>
+          <div class="concept-sub">מה השואל באמת רוצה לדעת</div>
+          <div class="concept-body">
+            הדמיר מגלה את ה"שאלה האמיתית" שבלב השואל — לפעמים שונה לגמרי מהשאלה המוצהרת.<br>
+            <strong>חישוב:</strong> מרכיבים צורה חדשה מהשורה הראשונה של כל אחת מ-4 האמהות (אש, אוויר, מים, עפר).<br>
+            הצורה המתקבלת נספרת אחורנית על הלוח — הבית שבו היא נעצרת = בית הדמיר.<br>
+            <em>אם הדמיר לא מופיע בלוח — תוקף הלוח מוגבל.</em>
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-title">אחרית הדבר <span class="concept-tag src">بيت 16 / العاقبة</span></div>
+          <div class="concept-sub">כיצד הדין יסתיים לאורך זמן</div>
+          <div class="concept-body">
+            בית 16 = XOR(דיין, בית 1). מורה על האחרית — איך הדין מסתיים לאורך זמן.<br>
+            בית 16 הוא בית קשה (محوس). גם אם הדיין טוב, משלים קשה מרמז שהדבר הטוב מסתיים בצרה.<br>
+            גם אם הדיין רע — משלים טוב עשוי לרמוז שהמצב משתפר בסופו של דבר.
+          </div>
+        </div>
+
+        <div class="concept-group-header">קשרים וחיבורים בין בתים</div>
+
+        <div class="concept-card">
+          <div class="concept-title">תחסיל — השלמת הדבר <span class="concept-tag src">تحصيل</span></div>
+          <div class="concept-sub">האם הדבר ייצא לפועל?</div>
+          <div class="concept-body">
+            בודקים האם יש חיבור בין בית 1 (השואל) לבית 7 (הנשאל עליו / הדבר).<br>
+            <strong>חיבור ישיר</strong> — אותה צורה בשני הבתים = הדבר יצא לפועל בוודאות.<br>
+            <strong>חיבור בהעברה</strong> — דרך בית ביניים = הדבר יצא לפועל בעקיפין, דרך גורם שלישי.<br>
+            <strong>אין חיבור</strong> — הדבר לא ייצא לפועל, או יש מניעה.
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-title">איתיסלאת — חיבור <span class="concept-tag src">الاتصال</span></div>
+          <div class="concept-sub">כאשר אותה צורה מופיעה בשני בתים שונים</div>
+          <div class="concept-body">
+            כשאותה צורה מופיעה בשני בתים — נוצר "חיבור" ביניהם.<br>
+            חיבור בין בית 1 לבית 7 = השואל והנשאל עליו קשורים ישירות.<br>
+            חיבור לבית 10 = הדבר מחובר לשלטון, מעמד, עבודה.<br>
+            <strong>סוגי יחסי מבט (aspects):</strong><br>
+            <ul>
+              <li><strong>תסדיס (تسديس)</strong> — בית ±3 ממנו: קשר צדדי, מסייע</li>
+              <li><strong>תרביע (تربيع)</strong> — בית ±4 ממנו: קשר ריבועי, מתחרה</li>
+              <li><strong>תתליית (تثليث)</strong> — בית ±5 ממנו: קשר משולש, ידידותי</li>
+              <li><strong>מקאבלה (مقابلة)</strong> — בית 7 ממנו (מול): קשר ישיר, מול-מול</li>
+              <li>אין מבט לשני הבתים הסמוכים (±1) ולסמוכים לשביעי.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-title">בית יחסי — ספירת בתים מבסיס <span class="concept-tag src">القول الجامع</span></div>
+          <div class="concept-sub">כל בית מייצג נגזרת של בית מסוים</div>
+          <div class="concept-body">
+            לכל בית יש משמעות יחסית ביחס לבית בסיס. ספירה במרחק:
+            <ul>
+              <li>+2 ממנו = ממון הבית / רכושו</li>
+              <li>+3 ממנו = תנועה, עדות, שינוי של הבית</li>
+              <li>+5 ממנו = שמחה, פרי, תוצאה של הבית</li>
+              <li>+6 ממנו = מחלה, חולשה, נחס של הבית</li>
+              <li>+7 ממנו = היריב, השותף, מי שמול הבית</li>
+              <li>+8 ממנו = מוות, אובדן, פחד של הבית</li>
+              <li>+12 ממנו = אויבים, מניעות, הסתרות של הבית</li>
+            </ul>
+            <em>דוגמה: בית 7 הוא בית +7 מבית 1, כלומר "מי שמול השואל".</em>
+          </div>
+        </div>
+
+        <div class="concept-group-header">כוח הבתים וזמן</div>
+
+        <div class="concept-card">
+          <div class="concept-title">קבוצות הבתים — כוח ודור <span class="concept-tag src">القول الجامع</span></div>
+          <div class="concept-sub">יתדות / מוואיל / סוואקט</div>
+          <div class="concept-body">
+            <strong>יתדות (أوتاد) — 1, 4, 7, 10:</strong> הבתים החזקים ביותר. מהם לומדים את מצב הדבר <em>בהווה</em>.<br>
+            <strong>מוואיל (مواﺋل) — 2, 5, 8, 11:</strong> בינוניים. מהם לומדים את <em>העתיד</em> — מה שבא אחרי.<br>
+            <strong>סוואקט (سواقط) — 3, 6, 9, 12:</strong> חלשים. מהם לומדים את <em>העבר</em> ודבר שנחלש.<br>
+            כלל: אם הצורה הרלוונטית נמצאת ביתד — הדבר קיים וחי עכשיו. בסוואקט — עבר ונחלש.
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-title">בתים מאושרים וקשים <span class="concept-tag src">القول الجامع</span></div>
+          <div class="concept-sub">בתים המסייעים לעומת בתים המחלישים</div>
+          <div class="concept-body">
+            <strong>מאושרים (مسعودة):</strong> 1, 2, 5, 7, 10, 11, 13, 15 — בתים טובים; צורה טובה בהם = חזקה יותר; צורה רעה = מוחלשת.<br>
+            <strong>קשים (محوسة):</strong> 3, 6, 8, 9, 12, 14, 16 — בתים קשים; צורה רעה בהם = מחוזקת; צורה טובה = מוחלשת.<br>
+            <em>לא כלל מוחלט — הדיין גובר על הכול, אבל הבתים מוסיפים רמות פרשנות.</em>
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-title">תזמון לפי יסוד הדיין <span class="concept-tag src">القول الجامع</span></div>
+          <div class="concept-sub">מתי יתרחש הדבר?</div>
+          <div class="concept-body">
+            יסוד הצורה של הדיין מורה על טווח הזמן הצפוי:
+            <ul>
+              <li><strong>אש (نار)</strong> — ימים ספורים עד שבועיים</li>
+              <li><strong>רוח / אוויר (هواء)</strong> — שבועיים עד חודש-חודשיים</li>
+              <li><strong>מים (ماء)</strong> — חודש עד שלושה חודשים</li>
+              <li><strong>עפר (تراب)</strong> — מספר חודשים עד שנה</li>
+            </ul>
+            <strong>מצב הדיין:</strong> דיין "מדבר" (متكلم) = מתקרב, פעיל. דיין "שותק" (ساكت) = עיכוב אפשרי.
+          </div>
+        </div>
+
+        <div class="concept-group-header">כשרות ומהימנות הלוח</div>
+
+        <div class="concept-card">
+          <div class="concept-title">כשרות הדיין — מזוגות ופרדיות <span class="concept-tag src">القول الجامع</span></div>
+          <div class="concept-sub">8 הצורות הכשרות לדיין</div>
+          <div class="concept-body">
+            כלל מתמטי: הדיין יוצא תמיד אחת מ-8 הצורות שסכום שורותיהן זוגי (מזוגות).<br>
+            <strong>8 הצורות הכשרות:</strong> דרך, קהלה, כבוד יוצא, כבוד נכנס, ממון יוצא, ממון נכנס, סוהר, חיבור.<br>
+            <strong>8 הצורות הפסולות:</strong> נשוא ראש, אדום, לבן, שפל ראש, נלחם, בר הלחי, סף יוצא, סף נכנס.<br>
+            <em>אם יצאה צורה פסולה בבית 15 — הלוח פגום; בדוק שגיאת חישוב.</em>
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-title">אצאלה — תוקף הלוח <span class="concept-tag src">الأصالة</span></div>
+          <div class="concept-sub">האם השואל מחובר ללוח?</div>
+          <div class="concept-body">
+            לוח תקף כאשר צורת בית 1 (השואל) מופיעה לפחות בעוד בית אחד בלוח.<br>
+            אם הצורה מופיעה רק בבית 1 — הלוח חלש, יש לנהוג בזהירות בפרשנות.<br>
+            צורה שחוזרת בבתים 1, 4, 7 ו-10 (כל היתדות) = לוח חזק מאוד.
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-title">ג׳מלה — ספירת הנקודות <span class="concept-tag src">الجملة</span></div>
+          <div class="concept-sub">כוח הלוח הכולל לפי מניין</div>
+          <div class="concept-body">
+            סופרים את כל הנקודות בלוח (1=נקודה אחת, 2=שתי נקודות, לכל שורה בכל צורה).<br>
+            הסכום הכולל נחלק ל-4 לבדיקת שאלות מחלה, ל-3 לבדיקת שאלות ילדים.<br>
+            תוצאה זוגית / אי-זוגית מוסיפה שכבת פרשנות נוספת לפי הנושא.
+          </div>
+        </div>
+
+        <div class="concept-group-header">כיוונים ואזורים בלוח</div>
+
+        <div class="concept-card">
+          <div class="concept-title">כיוונים לפי אזורי הלוח <span class="concept-tag src">القول الجامع</span></div>
+          <div class="concept-sub">מאיפה מגיע הדבר?</div>
+          <div class="concept-body">
+            כאשר צורה חוזרת בכמה בתים, הכיוון נקבע לפי האזור בלוח שבו היא חזקה יותר:<br>
+            <ul>
+              <li><strong>אמהות (בתים 1-4)</strong> → כיוון <strong>מזרח</strong></li>
+              <li><strong>בנות (בתים 5-8)</strong> → כיוון <strong>מערב</strong></li>
+              <li><strong>נכדות (בתים 9-12)</strong> → כיוון <strong>צפון</strong></li>
+              <li><strong>עדים/שופט (בתים 13-16)</strong> → כיוון <strong>דרום</strong></li>
+            </ul>
+            אם הצורה חזקה במזרח (אמהות) — הכיוון מזרח. אם חזקה יותר בבנות — מערב.
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-title">נזאר / נטק / איתיסאל / אנפיסאל <span class="concept-tag src">القول الجامع</span></div>
+          <div class="concept-sub">4 ממדי הניתוח — מבט, דיבור, חיבור, ניתוק</div>
+          <div class="concept-body">
+            כל בית ניתן לנתח דרך 4 ממדים:
+            <ul>
+              <li><strong>נזאר (نظر) — מבט / אש:</strong> כוח הרצון והתביעה. בתים 1, 13.</li>
+              <li><strong>נטק (نطق) — דיבור / אוויר:</strong> כוח המילה והשכנוע. בתים 2, 14.</li>
+              <li><strong>איתיסאל (اتصال) — חיבור / מים:</strong> כוח הקשר. בתים 3, 15.</li>
+              <li><strong>אנפיסאל (انفصال) — ניתוק / עפר:</strong> כוח הפרידה. בתים 4, 16.</li>
+            </ul>
+            מי שמספרו גדול יותר באותו יסוד — ידו חזקה יותר באותו עניין.
+          </div>
+        </div>`;
     }
 
     // ─── Journal Rendering ────────────────────────────────────────
