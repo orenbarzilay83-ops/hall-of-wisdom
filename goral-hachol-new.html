@@ -415,6 +415,7 @@
                 <option value="illness">מחלה / בריאות</option>
                 <option value="spiritualDiagnostics">אבחון רוחני / עין / כישוף</option>
                 <option value="childrenPregnancy">ילדים / הריון</option>
+                <option value="dreamInterpretation">חלום / פירוש חלום</option>
               </optgroup>
               <optgroup label="כסף ורכוש">
                 <option value="commerce">מסחר / קנייה / מכירה</option>
@@ -702,6 +703,11 @@
       window.__LAST_GORAL_READING = reading;
       window.__LAST_GORAL_INTERPRETATION = insight;
 
+      // Auto-save to archive after each reading
+      if (window.GORAL_CLIENT_ARCHIVE?.saveGoralReadingToArchive) {
+        window.GORAL_CLIENT_ARCHIVE.saveGoralReadingToArchive(reading, insight);
+      }
+
       const conclusion = insight.finalConclusionHebrew || insight.conclusionDraftHebrew || insight.technicalConclusionHebrew || "";
       const score = insight.boardScore || {};
       const rules = Array.isArray(insight.relevantRules) ? insight.relevantRules.slice(0, 6) : [];
@@ -864,7 +870,7 @@
     document.getElementById("clearBtn").addEventListener("click", clearForm);
 
     document.getElementById("archiveBtn").addEventListener("click", () => {
-      alert("ארכיון הקריאות יחובר אחרי שהממשק החדש יאושר.");
+      showArchivePanel();
     });
 
     document.getElementById("saveClientBtn").addEventListener("click", () => {
@@ -886,8 +892,70 @@
     });
 
     document.getElementById("clearArchiveBtn").addEventListener("click", () => {
-      alert("ניקוי ארכיון יחובר אחרי שהממשק החדש יאושר.");
+      if (!window.GORAL_CLIENT_ARCHIVE?.getGoralArchive) return;
+      const records = window.GORAL_CLIENT_ARCHIVE.getGoralArchive();
+      if (!records.length) { alert("הארכיון ריק — אין מה למחוק."); return; }
+      if (!confirm(`בטוח שרוצה למחוק ${records.length} קריאות מהארכיון?`)) return;
+      window.GORAL_CLIENT_ARCHIVE.clearGoralArchive();
+      alert("הארכיון נוקה ✓");
     });
+
+    function showArchivePanel() {
+      if (!window.GORAL_CLIENT_ARCHIVE?.getGoralArchive) {
+        alert("מודול הארכיון עדיין נטען — נסה שוב בעוד רגע.");
+        return;
+      }
+      const records = window.GORAL_CLIENT_ARCHIVE.getGoralArchive();
+
+      let overlay = document.getElementById("archiveOverlay");
+      if (overlay) overlay.remove();
+
+      overlay = document.createElement("div");
+      overlay.id = "archiveOverlay";
+      overlay.style.cssText = `
+        position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:9999;
+        display:flex;align-items:flex-start;justify-content:center;
+        overflow-y:auto;padding:32px 16px;
+      `;
+
+      const panel = document.createElement("div");
+      panel.style.cssText = `
+        background:#141e30;border:1px solid rgba(244,198,106,0.4);border-radius:18px;
+        padding:28px;max-width:780px;width:100%;color:#f4ead2;font-family:Arial,sans-serif;
+        direction:rtl;
+      `;
+
+      const closeBtn = `<button onclick="document.getElementById('archiveOverlay').remove()" style="float:left;background:transparent;border:none;color:#f4c66a;font-size:22px;cursor:pointer;padding:0 4px">✕</button>`;
+      const header = `<h2 style="color:#f4c66a;margin:0 0 18px">${closeBtn}ארכיון קריאות (${records.length})</h2>`;
+
+      if (!records.length) {
+        panel.innerHTML = header + `<p style="opacity:0.6;text-align:center;padding:32px 0">אין קריאות שמורות עדיין.</p>`;
+      } else {
+        const rows = records.map(rec => {
+          const date = rec.createdAt ? new Date(rec.createdAt).toLocaleString('he-IL') : '';
+          const name = escapeHtml(rec.clientName || 'ללא שם');
+          const topic = escapeHtml(rec.topicHebrew || '');
+          const question = escapeHtml((rec.question || '').slice(0, 80));
+          const conclusion = escapeHtml((rec.conclusion || '').slice(0, 200));
+          return `
+            <div style="border-bottom:1px solid rgba(244,198,106,0.15);padding:14px 0;">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap;">
+                <strong style="color:#f4c66a">${name}</strong>
+                <span style="font-size:12px;opacity:0.55">${date}</span>
+              </div>
+              ${topic ? `<div style="font-size:13px;opacity:0.7;margin:4px 0">${topic}</div>` : ''}
+              ${question ? `<div style="font-size:13px;margin:4px 0">"${question}"</div>` : ''}
+              ${conclusion ? `<div style="font-size:12px;opacity:0.65;margin-top:6px;white-space:pre-wrap">${conclusion}</div>` : ''}
+            </div>
+          `;
+        }).join('');
+        panel.innerHTML = header + `<div>${rows}</div>`;
+      }
+
+      overlay.appendChild(panel);
+      overlay.addEventListener("click", e => { if (e.target === overlay) overlay.remove(); });
+      document.body.appendChild(overlay);
+    }
 
     clearForm();
   </script>

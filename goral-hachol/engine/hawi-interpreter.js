@@ -100,6 +100,7 @@ const TOPIC_MAIN_HOUSES = {
   theft:            [1, 2, 7, 8, 13, 14, 15],
   siblings:         [1, 3, 7, 13, 14, 15],
   deathInheritance: [1, 7, 8, 2, 13, 14, 15],
+  dreamInterpretation: [1, 9, 13, 14, 15],
 };
 
 const TOPIC_HEBREW_TITLES = {
@@ -127,6 +128,7 @@ const TOPIC_HEBREW_TITLES = {
   theft:            'גנבה / חפץ גנוב',
   siblings:         'אחים / שכנים / קרובים',
   deathInheritance: 'מוות / ירושה / פחד גדול',
+  dreamInterpretation: 'חלום / פירוש חלום / רויא',
 };
 
 const TOPIC_QUESITED_HOUSE = {
@@ -153,6 +155,7 @@ const TOPIC_QUESITED_HOUSE = {
   theft:                7,  // בית הגנב (הצד השני)
   siblings:             3,  // בית האחים / השכנים
   deathInheritance:     8,  // בית המוות / הירושה
+  dreamInterpretation:  9,  // בית החלום / הרויא
 };
 
 const MALEFIC_FIGURE_PATTERNS = new Set([

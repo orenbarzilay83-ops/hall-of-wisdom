@@ -175,6 +175,10 @@ function questionFocusParagraph(topicId, clientContext = {}) {
     return 'לכן הדגש הוא על בית 8 (מוות / ירושה) ועל כוח הדיין — הוא הקובע אם מדובר בסכנה ממשית, בירושה, בפחד גדול, או בשינוי גורל עמוק.';
   }
 
+  if (topicId === 'dreamInterpretation') {
+    return 'לכן הדגש הוא על בית 9 — בית החלום, הרויא, הנסתרות. הצורה שעלתה שם מגלה את אופי החלום ומשמעותו, והדיין (בית 15) קובע אם החלום הוא בשורה טובה, אזהרה, או ניטרלי.';
+  }
+
   if (context) {
     return 'לכן המסקנה נקראת לפי ההקשר האישי של הלקוח ולא רק לפי שם הצורה שעלתה.';
   }
@@ -252,6 +256,8 @@ function topicOpening(topicId, topicHebrew) {
       'בעניין האח, השכן או הקרוב, הקריאה בודקת את בית 3 כדליל הנשאל עליו, ואת הקשר בינו לבין השואל (בית 1). הדיין קובע את תוצאת הקשר ואת כיוון ההשפעה.',
     deathInheritance:
       'בעניין מוות, ירושה או שינוי גורל גדול, הקריאה בודקת את בית 8 כדליל המוות והירושה, בית 7 כדליל הצד השני (הנפטר או היורש), ובית 2 לגבי הממון. הדיין קובע את המסקנה הסופית.',
+    dreamInterpretation:
+      'בעניין פירוש החלום, הקריאה מתמקדת בבית 9 — בית החלום, הרויא, הנסתרות ומדע הרמל. הצורה שעלתה שם מגלה את אופי החלום, ובית 1 מייצג את החולם עצמו. הדיין (בית 15) פוסק אם החלום הוא בשורה טובה, אזהרה, או מעבר ניטרלי.',
   };
 
   return openings[topicId] || `בעניין ${topicHebrew}, הקריאה בודקת את הבית המרכזי, העדים, הדיין והשלמת הדין.`;
@@ -632,6 +638,28 @@ function describeCoreHouses(analysis, topicId, question) {
       const h7Note = h7 ? `\n  היורש/הנפטר (בית 7 — ${h7.figureHebrew}): ${h7.fortune?.includes('סעד') ? 'מצב חיובי' : h7.fortune?.includes('נחס') ? 'מצב קשה' : 'ביניים'}` : '';
       const h2Note = h2 ? `\n  הירושה הכספית (בית 2 — ${h2.figureHebrew}): ${h2.fortune?.includes('סעד') ? 'ממון זמין' : h2.fortune?.includes('נחס') ? 'ממון חסום או בסכסוך' : 'ביניים'}` : '';
       parts.push(`ניתוח מוות/ירושה (בית 8):\n  בית 8 — ${h8.figureHebrew} [${h8F || 'ביניים'}]: ${h8F.includes('סעד') ? 'סכנה נמוכה / ירושה זמינה' : h8F.includes('נחס') ? 'סכנה ממשית / ירושה מסובכת' : 'מצב בינוני'}${h7Note}${h2Note}`);
+    }
+  }
+
+  // dreamInterpretation: house 9 (dream/ruyya) + house 1 (dreamer) analysis
+  if (topicId === 'dreamInterpretation') {
+    const h9 = getHouseFromBoard(analysis, 9);
+    const h1 = getHouseFromBoard(analysis, 1);
+    if (h9) {
+      const h9F = h9.fortune || '';
+      const h9El = h9.element || '';
+      const dreamNature = h9F.includes('סעד')
+        ? 'חלום טוב — בשורה, הבטחה או ראייה מבורכת'
+        : h9F.includes('נחס')
+        ? 'חלום קשה — אזהרה, עכבה או דבר שיש לשים לב אליו'
+        : 'חלום ניטרלי — דרוש פירוש לפי ההקשר האישי';
+      const elementNote = h9El
+        ? `\n  יסוד הצורה: ${h9El} — ${h9El.includes('אש') ? 'חלום נלהב, נמרץ, עלול לנבא עניין כוח' : h9El.includes('מים') ? 'חלום רגשי, עמוק, שייך לנפש' : h9El.includes('אוויר') ? 'חלום מחשבתי, קשור לדברים שבאוויר' : 'חלום יציב, קשור לחיי המציאות'}`
+        : '';
+      const dreamerNote = h1
+        ? `\n  החולם (בית 1 — ${h1.figureHebrew}): ${h1.fortune?.includes('סעד') ? 'מצב החולם טוב, הלב פתוח לקבל' : h1.fortune?.includes('נחס') ? 'החולם במצב קשה, החלום עלול לבטא חרדה' : 'מצב ביניים'}`
+        : '';
+      parts.push(`ניתוח החלום (בית 9):\n  בית 9 — ${h9.figureHebrew} [${h9F || 'ביניים'}]: ${dreamNature}${elementNote}${dreamerNote}`);
     }
   }
 

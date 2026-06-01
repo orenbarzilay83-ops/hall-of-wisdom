@@ -227,6 +227,20 @@ const TOPIC_ALIASES = {
     'mawt',
     'mirath',
   ],
+  dreamInterpretation: [
+    'חלום',
+    'חלומות',
+    'חלמתי',
+    'ראיתי בחלום',
+    'פירוש חלום',
+    'חלום טוב',
+    'חלום רע',
+    'חלום מבהיל',
+    'dream',
+    'ruyya',
+    'منام',
+    'رؤيا',
+  ],
   foundations: [
     'יסוד',
     'הכאה',
@@ -345,6 +359,11 @@ const TOPIC_TO_KNOWLEDGE_IDS = {
     'hawi-question-death-inheritance',
     'hawi-house-states-colors',
     'hawi-dhamir-directions-validation',
+  ],
+  dreamInterpretation: [
+    'hawi-house-states-colors',
+    'hawi-dhamir-directions-validation',
+    'hawi-planetary-correspondences',
   ],
   foundations: [
     'hawi-introduction-mahw-thabat',
