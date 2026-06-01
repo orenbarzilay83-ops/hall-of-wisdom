@@ -1315,14 +1315,16 @@ function buildNarrativeByTopic(result) {
   if (topicId === 'spiritualDiagnostics') return null;
 
   const name     = clean(clientContext?.clientName || '');
+  const parent   = clean(clientContext?.parentName || '');
+  const question = clean(result.question           || '');
   const paras    = [];
   const push     = (p) => { if (p && clean(p)) paras.push(clean(p)); };
 
   const normFort = (f) => {
     const s = String(f || '');
     return s
-      .replace(/ממוזג[-־]?סעד/g, 'ממוזג-טוב')
-      .replace(/ממוזג[-־]?נחס/g, 'ממוזג-רע')
+      .replace(/ממוזג[-־]?סעד/g, 'ממוזג')
+      .replace(/ממוזג[-־]?נחס/g, 'ממוזג')
       .replace(/^סעד$/,  'טוב')
       .replace(/^נחס$/,  'רע')
       .replace(/(^|[,\s\[])סעד(?=[^א-ת]|$)/g, '$1טוב')
@@ -1334,286 +1336,91 @@ function buildNarrativeByTopic(result) {
   const hTransit = (h) => clean(h?.transit?.meaning || '');
   const hTone    = (h) => figureFortuneTone(h?.fortune);
 
-  const h1       = getHouseFromBoard(boardAnalysis, 1);
   const judge    = boardAnalysis.judge   || getHouseFromBoard(boardAnalysis, 15);
   const w13      = boardAnalysis.witnesses?.[0] || getHouseFromBoard(boardAnalysis, 13);
   const w14      = boardAnalysis.witnesses?.[1] || getHouseFromBoard(boardAnalysis, 14);
   const focus    = boardAnalysis.focusHouse;
   const focusNum = boardAnalysis.focusHouseNumber;
 
-  // ── 0. DIRECT VERDICT — opening statement that directly answers the question ──
+  // ── 0. HEADER: name + question ──────────────────────────────────────
+  {
+    const nameStr = name ? (parent ? `${name} ${parent}` : name) : '';
+    if (nameStr || question) {
+      const q = question ? `"${question}"` : '';
+      const header = nameStr && question
+        ? `${nameStr} שואל: ${q}`
+        : nameStr || `השאלה: ${q}`;
+      push(header);
+    }
+  }
+
+  // ── 1. BOARD COMPLETENESS WARNING ──────────────────────────────────
+  const boardScore = boardAnalysis?.boardScore;
+  if (boardScore && !boardScore.isComplete) {
+    push(`⚠ ${boardScore.hebrewSummary}`);
+  }
+
+  // ── 2. VERDICT ──────────────────────────────────────────────────────
   {
     const judgeTone  = hTone(judge);
-    const judgeFig   = hFig(judge);
-    const judgeFort  = hFort(judge);
-    const judgeSpeak = judge?.figureState?.speakingState;
-    const namePrefix = name ? `${name}, ` : '';
-
-    // Topic-specific direct answer sentence
-    const TOPIC_OPENING = {
-      commerce:          { pos: 'הלוח מראה שיש פתח לעסק להצליח', neg: 'הלוח מראה שהעסק המתוכנן יתקשה להצליח', neu: 'הלוח מראה תמונה מעורבת לגבי העסק — אין הצלחה ברורה ואין כישלון ברור' },
-      partnership:       { pos: 'הלוח מראה שהשותפות יכולה לצלוח', neg: 'הלוח מראה שהשותפות תיתקל בקשיים', neu: 'הלוח מראה תמונה מעורבת לגבי השותפות' },
-      marriage:          { pos: 'הלוח מראה פתח לחיבור ונישואין', neg: 'הלוח מראה מניעה בדרך לנישואין', neu: 'הלוח מראה תמונה מעורבת בענין הזוגיות' },
-      illness:           { pos: 'הלוח מראה סימני שיפור', neg: 'הלוח מראה קושי ועיכוב בהחלמה', neu: 'הלוח מראה מצב מעורב לגבי המחלה' },
-      travel:            { pos: 'הלוח מראה שהדרך פתוחה לנסיעה', neg: 'הלוח מראה סיכון בנסיעה זו', neu: 'הלוח מראה מצב מעורב לגבי הנסיעה' },
-      childrenPregnancy: { pos: 'הלוח מראה סימנים חיוביים לגבי ילדים', neg: 'הלוח מראה עיכוב בעניין ילדים', neu: 'הלוח מראה מצב מעורב בעניין ילדים' },
-      enemies:           { pos: 'הלוח מראה שהשואל עומד בעמדה חזקה', neg: 'הלוח מראה שהאויב חזק — יש להיזהר', neu: 'הלוח מראה מאבק מעורב' },
-      theft:             { pos: 'הלוח מראה סיכוי לאיתור הגנוב', neg: 'הלוח מראה שהסיכוי לאיתור הגנוב נמוך', neu: 'הלוח מראה מצב מעורב בשאלת הגנבה' },
-      disputes:          { pos: 'הלוח מראה שהשואל עומד בעמדה חזקה בסכסוך', neg: 'הלוח מראה שהצד שכנגד חזק יותר', neu: 'הלוח מראה כוחות שווים בסכסוך' },
-      loveHate:          { pos: 'הלוח מראה חיבור ורגש הדדי', neg: 'הלוח מראה שנאה או ניתוק', neu: 'הלוח מראה קשר מעורב' },
-      fear:              { pos: 'הלוח מראה שהפחד גדול מהמציאות', neg: 'הלוח מראה שיש בסיס ממשי לפחד', neu: 'הלוח מראה מצב לא ברור לגבי הסכנה' },
-      missingPerson:     { pos: 'הלוח מראה שהנעדר בחיים וייתכן שיחזור', neg: 'הלוח מראה חשש לגבי מצב הנעדר', neu: 'הלוח מראה מצב לא ברור לגבי הנעדר' },
-      hiddenTreasure:    { pos: 'הלוח מראה שהדבר החבוי קיים וניתן לאיתור', neg: 'הלוח מראה חסם — הדבר חסום', neu: 'הלוח מראה ספק לגבי הדבר החבוי' },
-      deathInheritance:  { pos: 'הלוח מראה סיכוי לסיום טוב', neg: 'הלוח מראה סכנה ממשית', neu: 'הלוח מראה מצב מעורב' },
-      yearlyForecast:    { pos: 'הלוח מראה שנה עם כיוון כללי טוב', neg: 'הלוח מראה שנה עם קשיים', neu: 'הלוח מראה שנה מעורבת עם תקופות טובות וקשות' },
-      siblings:          { pos: 'הלוח מראה קשר חיובי', neg: 'הלוח מראה קושי בקשר', neu: 'הלוח מראה קשר מעורב' },
-      authorityState:    { pos: 'הלוח מראה יציבות בתפקיד', neg: 'הלוח מראה סכנה לתפקיד', neu: 'הלוח מראה מצב מעורב בתפקיד' },
-    };
-
-    const v = TOPIC_OPENING[topicId];
-    const directStatement = v
-      ? (judgeTone > 0 ? v.pos : judgeTone < 0 ? v.neg : v.neu)
-      : (judgeTone > 0 ? 'הלוח מראה נטייה חיובית' : judgeTone < 0 ? 'הלוח מראה קושי' : 'הלוח מראה תמונה מעורבת');
-
-    const speakSuffix = judgeSpeak === 'silent' ? ' הדיין שותק — כוחו מוחלש.'
-      : judgeSpeak === 'speaking' ? ' הדיין פעיל ומדבר.'
-      : '';
-
-    const allHouses = boardAnalysis.houses || [];
-    const judgeFigKey = judge?.figureKey;
-    const resonantHouses = (judgeFigKey && judgeFig)
-      ? allHouses.filter(h => h.figureKey === judgeFigKey && Number(h.house) !== 15)
-      : [];
-    const resonanceNote = (resonantHouses.length >= 2 && judgeFig)
-      ? ` הצורה "${judgeFig}" חוזרת ב-${resonantHouses.length} בתים נוספים — סימן חריג.`
-      : '';
-
-    push(`${namePrefix}${directStatement}. הדיין — ${judgeFig} [${judgeFort}].${speakSuffix}${resonanceNote}`);
+    const verdictWord = judgeTone > 0 ? 'כן' : judgeTone < 0 ? 'לא' : 'ממוזג';
+    push(`התשובה: ${verdictWord}`);
   }
 
-  // ── 1. WHY — what in the board explains this outcome ─────────────
-  if (judge) {
-    const why = [];
-
-    // Connection between H1 and focus (critical "why" factor)
-    const ittisalatData = boardAnalysis.ittisalat;
-    const q2f = ittisalatData?.questioner_to_focus;
-    if (q2f && focusNum && Number(focusNum) !== 1) {
-      if (q2f.type === 'none') {
-        why.push('אין חיבור ישיר בין השואל לנושא — גם אם הדיין חיובי, הדבר עלול לא להגיע ישירות.');
-      } else {
-        why.push(`יש חיבור בין השואל לנושא: ${q2f.hebrewShort}.`);
-      }
-    }
-
-    // Focus house — brief note only (full detail shown later in section 4)
-    if (focus && Number(focus.house) !== 1 && Number(focus.house) !== 15) {
-      const ff = hFig(focus), fFort = hFort(focus);
-      const fLabel = TOPIC_FOCUS_LABEL[topicId] || `בית ${focusNum}`;
-      if (ff) {
-        const focusTone = hTone(focus);
-        const fNote = focusTone > 0 ? 'מחזק את הכיוון' : focusTone < 0 ? 'מחלש ומעכב' : 'לא מכריע לכאן או לכאן';
-        why.push(`${fLabel}: ${ff} [${fFort}] — ${fNote}.`);
-      }
-    }
-
-    // Witness reinforcement or opposition (one compact sentence)
-    const jt = hTone(judge), w13t = hTone(w13), w14t = hTone(w14);
-    if (w13 && w14 && jt !== 0) {
-      const bothAgree = (jt > 0 && w13t > 0 && w14t > 0) || (jt < 0 && w13t < 0 && w14t < 0);
-      const bothOpp   = (jt > 0 && w13t < 0 && w14t < 0) || (jt < 0 && w13t > 0 && w14t > 0);
-      const oneOpp    = !bothAgree && !bothOpp && ((jt > 0 && (w13t < 0 || w14t < 0)) || (jt < 0 && (w13t > 0 || w14t > 0)));
-      if (bothAgree) why.push('שני העדים מחזקים את הדיין — הפסיקה ודאית.');
-      else if (bothOpp) why.push('שני העדים מנוגדים לדיין — יש כוחות בלוח שמעכבים ומסבכים.');
-      else if (oneOpp)  why.push('אחד מהעדים מנוגד לדיין — הדרך לא תהיה ישירה, תהיה מניעה מסוימת.');
-    }
-
-    if (why.length) push(why.join(' '));
-  }
-
-  // ── 2. WITNESSES (H13, H14) — detail ────────────────────────────
+  // ── 3. KEY BOARD DATA ───────────────────────────────────────────────
   {
-    const jTone = hTone(judge);
-    const wLines = [];
-
-    const descW = (w, label, num) => {
-      if (!w) return;
-      const fig = hFig(w), fort = hFort(w), transit = hTransit(w), speak = speakNote(w);
-      const tone = hTone(w);
-      const agreeNote = jTone !== 0
-        ? ((jTone > 0 && tone > 0) || (jTone < 0 && tone < 0) ? 'מחזק את הדיין' : 'מנוגד לדיין')
-        : null;
-
-      let line = `${label} (בית ${num}): ${fig}${fort ? `, ${fort}` : ''}`;
-      if (speak)     line += `, ${speak}`;
-      if (agreeNote) line += ` [${agreeNote}]`;
-      if (transit)   line += `. ${transit}`;
-      wLines.push(line);
-    };
-
-    descW(w13, 'עד ראשון', 13);
-    descW(w14, 'עד שני', 14);
-
-    if (wLines.length) push(wLines.join('\n'));
-  }
-
-  // ── 3. H1 — THE QUESTIONER ──────────────────────────────────────
-  if (h1) {
-    const fig = hFig(h1), fort = hFort(h1), transit = hTransit(h1), speak = speakNote(h1);
-    const nameLabel = name || 'השואל';
-    const profile = formatClientProfile(clientContext);
-    const parts = [];
-
-    parts.push(`${nameLabel} (בית 1): ${fig}${fort ? `, ${fort}` : ''}.`);
-    if (profile) parts.push(`פרופיל: ${profile}.`);
-    if (speak)   parts.push(`בית 1 ${speak}.`);
-    if (transit) parts.push(transit);
-
-    push(parts.join(' '));
-  }
-
-  // ── 4. FOCUS HOUSE ───────────────────────────────────────────────
-  if (focus && Number(focus.house) !== 1 && Number(focus.house) !== 15) {
-    const fig = hFig(focus), fort = hFort(focus), transit = hTransit(focus), speak = speakNote(focus);
-    const label = TOPIC_FOCUS_LABEL[topicId] || `הבית המרכזי (בית ${focusNum})`;
-    const parts = [];
-
-    parts.push(`${label}: ${fig}${fort ? `, ${fort}` : ''}.`);
-    if (speak)   parts.push(`${speak}.`);
-    if (transit) parts.push(transit);
-
-    push(parts.join(' '));
-  }
-
-  // ── 4b. DREAM INTERPRETATION — H9 specific ──────────────────────
-  if (topicId === 'dreamInterpretation' && focus) {
-    const h9F = hFort(focus);
-    const h9El = clean(focus.element || '');
-    const dreamNature = h9F.includes('סעד')
-      ? 'חלום טוב — בשורה, הבטחה או ראייה מבורכת'
-      : h9F.includes('נחס')
-      ? 'חלום קשה — אזהרה, עכבה או דבר שיש לשים לב אליו'
-      : 'חלום ניטרלי — דרוש פירוש לפי ההקשר האישי';
-    const elementNote = h9El ? ` יסוד הצורה: ${h9El}.` : '';
-    push(`פירוש החלום: ${dreamNature}.${elementNote}`);
-  }
-
-  // ── 4c. TIMING ESTIMATE (judge element + speaking state) ─────────
-  if (judge) {
-    const judgeEl    = clean(judge.element || '');
-    const judgeSpeak = judge?.figureState?.speakingState;
-    const timingRanges = {
-      'אש':  'ימים ספורים עד שבועיים',
-      'רוח': 'שבועיים עד חודש-חודשיים',
-      'מים': 'חודש עד שלושה חודשים',
-      'עפר': 'מספר חודשים עד שנה',
-    };
-    const range = timingRanges[judgeEl];
-    if (range) {
-      const speedNote = judgeSpeak === 'speaking'
-        ? ' הדיין פעיל — הדבר מתקרב.'
-        : judgeSpeak === 'silent'
-        ? ' הדיין שותק — ייתכן עיכוב.'
-        : '';
-      push(`⏱ תזמון: יסוד הדיין (${hFig(judge)}) — ${judgeEl}. הערכה: ${range}.${speedNote}`);
-    }
-  }
-
-  // ── 4d. HIDDEN ADVERSARY PROFILE — H12 ──────────────────────────
-  const ADVERSARY_TOPICS = new Set([
-    'enemies', 'theft', 'disputes', 'loveHate', 'fear', 'partnership', 'commerce', 'missingPerson',
-  ]);
-  const showAdversaryProfile = ADVERSARY_TOPICS.has(topicId);
-  if (showAdversaryProfile) {
-    const h12 = getHouseFromBoard(boardAnalysis, 12);
-    const h12Fig = hFig(h12);
-    if (h12 && h12Fig) {
-      const h12Fort    = hFort(h12);
-      const h12El      = clean(h12?.element || '');
-      const h12Speak   = h12?.figureState?.speakingState;
-      const h12Transit = hTransit(h12);
-
-      const adversaryType = h12Fort === 'טוב'
-        ? 'חבר/מכר מדומה — מציג עצמו כתומך, אינו שמח להצלחתך'
-        : h12Fort === 'רע'
-        ? 'יריב גלוי — פועל נגדך בכוונה'
-        : h12Fort.includes('ממוזג-טוב')
-        ? 'כוח מעורב הנוטה לטובה — אינו אויב ברור, אך כדאי לשמור מרחק'
-        : h12Fort.includes('ממוזג-רע')
-        ? 'כוח מעורב הנוטה לרע — יש חשש לפגיעה, גם אם לא מכוון'
-        : 'כוח לא ברור — יש לשים לב אך לא להגזים בחשש';
-
-      const elementProfile = {
-        'אש':  'אימפולסיבי, קנאי ותחרותי',
-        'מים': 'פועל בשקט, מסתיר כוונות, סבלני',
-        'רוח': 'משתמש במילים ובקשרים חברתיים',
-        'עפר': 'עקשן, מונע על ידי עניינים חומריים',
-      };
-
-      const charProfile = elementProfile[h12El] || '';
-      const urgency     = h12Speak === 'speaking'
-        ? 'פועל כרגע — האיום פעיל.'
-        : h12Speak === 'silent'
-        ? 'אינו פועל כרגע — ממתין לרגע מתאים.'
-        : '';
-
-      const parts = [`🔍 איום נסתר (בית 12): ${h12Fig}${h12Fort ? ` (${h12Fort})` : ''}. ${adversaryType}.`];
-      if (charProfile) parts.push(`אופי: ${charProfile}.`);
-      if (h12Transit)  parts.push(h12Transit);
-      if (urgency)     parts.push(urgency);
-
-      push(parts.join(' '));
-    }
-  }
-
-  // ── 5. ADDITIONAL HOUSES — only those with transit meanings (max 4) ──────────
-  // Skip H12 when adversary profile section already covers it
-  const skipNums = new Set([1, 13, 14, 15, 16, Number(focusNum), ...(showAdversaryProfile ? [12] : [])].filter(Boolean));
-  const addHouses = (boardAnalysis.houses || []).filter((h) => !skipNums.has(Number(h.house)));
-
-  {
-    const addLines = [];
-    // Priority houses for each topic (always show if present)
-    const PRIORITY_HOUSES = {
-      commerce: [2, 7, 10], partnership: [7, 2, 10], marriage: [7, 8],
-      illness: [6, 8], travel: [9, 8], enemies: [7, 12], disputes: [7, 10],
-      loveHate: [7, 11], theft: [7, 8, 4], missingPerson: [7, 8],
-      childrenPregnancy: [5, 7], deathInheritance: [8, 7], fear: [12, 8],
-      yearlyForecast: [10, 2], authorityState: [10, 7], siblings: [3, 7],
-    };
-    const prioritySet = new Set(PRIORITY_HOUSES[topicId] || []);
-
-    for (const h of addHouses) {
-      const fig = hFig(h), fort = hFort(h), transit = hTransit(h), speak = speakNote(h);
-      if (!fig && !fort) continue;
-      // Only show: priority houses OR houses that have a transit meaning
-      if (!transit && !prioritySet.has(Number(h.house))) continue;
-      let line = `בית ${h.house}: ${fig}${fort ? `, ${fort}` : ''}`;
-      if (speak)   line += ` [${speak}]`;
-      if (transit) line += `. ${transit}`;
-      addLines.push(line);
-      if (addLines.length >= 4) break; // cap at 4 additional houses
-    }
-    if (addLines.length) push(addLines.join('\n'));
-  }
-
-  // ── 6. ITTISALAT — only show if not already in section 1 ────────
-  const ittisalat = boardAnalysis.ittisalat;
-  if (ittisalat) {
-    const q2j = ittisalat.questioner_to_judge;
     const lines = [];
-    // Show judge connection if noteworthy (not already shown in section 1)
-    if (q2j && q2j.type !== 'none' && Number(focusNum) !== 15) {
-      lines.push(`קשר בין השואל לדיין: ${q2j.hebrewShort}.`);
+
+    const fmtLine = (label, h) => {
+      const fig = hFig(h), fort = hFort(h), transit = hTransit(h);
+      if (!fig && !fort) return null;
+      let line = `${label} (${fig}) — ${fort}`;
+      if (transit) line += ` — ${transit}`;
+      return line;
+    };
+
+    if (judge) {
+      const l = fmtLine('הדיין', judge);
+      if (l) lines.push(l);
     }
-    if (lines.length) push(lines.join(' '));
+    if (w13) {
+      const l = fmtLine('עד ראשון', w13);
+      if (l) lines.push(l);
+    }
+    if (w14) {
+      const l = fmtLine('עד שני', w14);
+      if (l) lines.push(l);
+    }
+
+    // Dhamir
+    const dhamirMizan = boardAnalysis.dhamirByMizan;
+    const dhamirH     = boardAnalysis.dhamirHouse;
+    if (dhamirMizan?.primaryHebrew) {
+      const fig     = dhamirMizan.primaryHebrew;
+      const fort    = normFort(dhamirMizan.primaryFortune || '');
+      const num     = dhamirMizan.primaryHouseNumber;
+      const dHouse  = getHouseFromBoard(boardAnalysis, num);
+      const transit = dHouse ? hTransit(dHouse) : '';
+      let line = `הדמיר — בית ${num} (${fig}) — ${fort}`;
+      if (transit) line += ` — ${transit}`;
+      lines.push(line);
+    } else if (dhamirH) {
+      const num     = dhamirH.houseNumber;
+      const transit = hTransit(dhamirH);
+      let line = `הדמיר — בית ${num} (${hFig(dhamirH)}) — ${hFort(dhamirH)}`;
+      if (transit) line += ` — ${transit}`;
+      lines.push(line);
+    }
+
+    // Focus house (topic-specific house)
+    if (focus && Number(focus.house) !== 1 && Number(focus.house) !== 15) {
+      const label = TOPIC_FOCUS_LABEL[topicId] || `בית ${focusNum}`;
+      const l = fmtLine(label, focus);
+      if (l) lines.push(l);
+    }
+
+    if (lines.length) push(lines.join('\n'));
   }
-
-  // ── 7. TAHASIL ───────────────────────────────────────────────────
-  push(tahasilParagraph(boardAnalysis));
-
-  // ── 8. DHAMIR ────────────────────────────────────────────────────
-  push(dhamirParagraph(boardAnalysis, judgeVerdict));
 
   return paras.length ? paras.join('\n\n') : null;
 }
