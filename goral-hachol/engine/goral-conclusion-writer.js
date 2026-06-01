@@ -1555,21 +1555,39 @@ function buildSpiritualNarrative(result) {
         return isqatCats.includes(cat);
       };
 
+      const grade = sd.grade || 'mixed';
+      const isqatDiagnosis = sd.isqatResult?.diagnosis || '';
+
       const focusLines = [];
       for (const hit of questionHits) {
         const label = CATEGORY_LABELS[hit] || hit;
-        if (hasMatchForCategory(hit)) {
-          focusLines.push(`לגבי ${label}: הלוח מציג ממצאים — ראה פירוט להלן.`);
+        const directMatch = hasMatchForCategory(hit);
+        const isqatMatch  = isqatCats.includes(hit);
+
+        if (directMatch || isqatMatch) {
+          // Board evidence directly supports what was asked
+          const strength = (grade === 'strong-suspicion')
+            ? `הלוח מצביע בבירור על ${label}.`
+            : (grade === 'medium-suspicion')
+            ? `הלוח מציג חשד ל${label} — אין הכרעה סופית, ראה פירוט.`
+            : `הלוח מציג סימנים ל${label} — ראה פירוט.`;
+          focusLines.push(`תשובה לשאלה — ${label}: ${strength}`);
         } else {
           const otherFound = Object.keys(CATEGORY_LABELS)
             .filter((k) => k !== hit && hasMatchForCategory(k))
             .map((k) => CATEGORY_LABELS[k]);
           if (otherFound.length) {
+            const clearGrade = grade === 'mostly-clear';
+            const verdict = clearGrade
+              ? `הלוח אינו מראה ${label}.`
+              : `הלוח לא מצביע ספציפית על ${label}.`;
             focusLines.push(
-              `לגבי ${label}: לא נמצאו סימנים ספציפיים בלוח. אך הלוח מצביע על: ${otherFound.join(', ')} — ראה פירוט להלן.`
+              `תשובה לשאלה — ${label}: ${verdict} הממצא המרכזי הוא: ${otherFound.join(', ')}.`
             );
+          } else if (grade === 'mostly-clear' || grade === 'weak-suspicion') {
+            focusLines.push(`תשובה לשאלה — ${label}: הלוח לא מצביע על פגיעה רוחנית.`);
           } else {
-            focusLines.push(`לגבי ${label}: הלוח לא מצביע על ממצא כלשהו בנושא זה.`);
+            focusLines.push(`תשובה לשאלה — ${label}: הלוח מעורב — אין הכרעה ברורה.`);
           }
         }
       }
@@ -1602,6 +1620,16 @@ function buildSpiritualNarrative(result) {
     parts.push(`הדיין (בית 15): ${fig}${fort ? `, ${fort}` : ''} — פסיקה ${toneWord}.`);
     if (speak)   parts.push(`הדיין ${speak}.`);
     if (transit) parts.push(transit);
+    const judgeRuleTexts = [];
+    for (const m of (matchByHouse[15] || [])) {
+      const baseId = String(m.ruleId || '').replace(/-h\d+$/, '');
+      if (!seenBaseIds.has(baseId)) {
+        seenBaseIds.add(baseId);
+        const txt = cleanSpiritualText(m.meaningHebrew || m.diagnosisHebrew || '');
+        if (txt) judgeRuleTexts.push(txt);
+      }
+    }
+    if (judgeRuleTexts.length) parts.push('→ ' + judgeRuleTexts.join(' '));
     push(parts.join(' '));
   }
 
@@ -1622,6 +1650,16 @@ function buildSpiritualNarrative(result) {
       let line = `${label} (בית ${num}): ${fig}${fort ? `, ${fort}` : ''}`;
       if (speak)     line += `, ${speak}`;
       if (agreeNote) line += ` [${agreeNote}]`;
+      const wRuleTexts = [];
+      for (const m of (matchByHouse[num] || [])) {
+        const baseId = String(m.ruleId || '').replace(/-h\d+$/, '');
+        if (!seenBaseIds.has(baseId)) {
+          seenBaseIds.add(baseId);
+          const txt = cleanSpiritualText(m.meaningHebrew || m.diagnosisHebrew || '');
+          if (txt) wRuleTexts.push(txt);
+        }
+      }
+      if (wRuleTexts.length) line += '\n  → ' + wRuleTexts.join(' ');
       wLines.push(line);
     };
 
@@ -1641,6 +1679,12 @@ function buildSpiritualNarrative(result) {
     parts.push(`${nameLabel} (בית 1 — החולה): ${fig}${fort ? `, ${fort}` : ''}.`);
     if (profile) parts.push(`פרופיל: ${profile}.`);
     if (speak)   parts.push(`בית 1 ${speak}.`);
+    for (const m of (matchByHouse[1] || [])) {
+      const baseId = String(m.ruleId || '').replace(/-h\d+$/, '');
+      if (!seenBaseIds.has(baseId)) {
+        seenBaseIds.add(baseId);
+      }
+    }
     push(parts.join(' '));
   }
 
