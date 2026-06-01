@@ -2628,7 +2628,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     };
   }
 
-  const focusHouseNumber = Number(board.focusHouseNumber || mainHouses[0] || 1);
+  const focusHouseNumber = Number(TOPIC_QUESITED_HOUSE[topicId] || board.focusHouseNumber || mainHouses[0] || 1);
 
   const selectedHouseNumbers = Array.from(new Set([
     ...mainHouses,
