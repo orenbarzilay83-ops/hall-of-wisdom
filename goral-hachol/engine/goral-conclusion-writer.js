@@ -1420,7 +1420,7 @@ function buildNarrativeByTopic(result) {
       ? 'חלום קשה — אזהרה, עכבה או דבר שיש לשים לב אליו'
       : 'חלום ניטרלי — דרוש פירוש לפי ההקשר האישי';
     const elementNote = h9El ? ` יסוד הצורה: ${h9El}.` : '';
-    push(`פירוש החלום: ${dreamNature}${elementNote}`);
+    push(`פירוש החלום: ${dreamNature}.${elementNote}`);
   }
 
   // ── 5. ADDITIONAL MAIN HOUSES ────────────────────────────────────
