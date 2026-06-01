@@ -1279,27 +1279,27 @@ const FIGURE_ESSENCE = {
 };
 
 const TOPIC_FOCUS_LABEL = {
-  commerce:          'בית הממון (בית 2)',
-  marriage:          'בית בן/בת הזוג (בית 7)',
-  illness:           'בית המחלה (בית 6)',
-  disputes:          'בית היריב (בית 7)',
-  enemies:           'בית האויב (בית 7)',
-  fear:              'בית הפחד (בית 12)',
-  loveHate:          'בית הצד השני (בית 7)',
-  missingPerson:     'בית הנעדר (בית 7)',
-  travel:            'בית המסע (בית 9)',
-  childrenPregnancy: 'בית הילדים (בית 5)',
-  hiddenTreasure:    'בית המקום הנסתר (בית 4)',
-  yearlyForecast:    'בית הגורל (בית 10)',
-  authorityState:    'בית הסמכות (בית 10)',
-  birthNativity:     'בית הגורל (בית 10)',
-  prisoner:          'בית המאסר (בית 12)',
-  partnership:       'בית השותף (בית 7)',
-  seaVoyage:         'בית המסע הימי (בית 9)',
-  theft:             'בית הגנב (בית 7)',
-  siblings:          'בית האחים (בית 3)',
-  deathInheritance:   'בית המוות והירושה (בית 8)',
-  dreamInterpretation:'בית החלום / הרויא (בית 9)',
+  commerce:           'בית הממון',
+  marriage:           'בית בן/בת הזוג',
+  illness:            'בית המחלה',
+  disputes:           'בית היריב',
+  enemies:            'בית האויב',
+  fear:               'בית הפחד',
+  loveHate:           'בית הצד השני',
+  missingPerson:      'בית הנעדר',
+  travel:             'בית המסע',
+  childrenPregnancy:  'בית הילדים',
+  hiddenTreasure:     'בית המקום הנסתר',
+  yearlyForecast:     'בית הגורל',
+  authorityState:     'בית הסמכות',
+  birthNativity:      'בית הגורל',
+  prisoner:           'בית המאסר',
+  partnership:        'בית השותף',
+  seaVoyage:          'בית המסע הימי',
+  theft:              'בית הגנב',
+  siblings:           'בית האחים',
+  deathInheritance:   'בית המוות והירושה',
+  dreamInterpretation:'בית החלום / הרויא',
 };
 
 function speakNote(house) {
@@ -1372,8 +1372,13 @@ function buildNarrativeByTopic(result) {
     const lines = [];
 
     const fmtLine = (label, h) => {
-      const fig = hFig(h), fort = hFort(h), transit = hTransit(h);
+      const fig = hFig(h), fort = hFort(h);
+      let transit = hTransit(h);
       if (!fig && !fort) return null;
+      // strip leading status word from transit if it duplicates the fort
+      if (transit && fort) {
+        transit = transit.replace(/^(טוב|רע|ממוזג)\s*[—\-–]\s*/u, '');
+      }
       let line = `${label} (${fig}) — ${fort}`;
       if (transit) line += ` — ${transit}`;
       return line;
