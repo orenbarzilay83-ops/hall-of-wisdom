@@ -395,6 +395,53 @@
       right: 4px;
     }
 
+    .house.invalid-judge {
+      background: #fff0f0;
+      outline: 2px solid #cc3333;
+      outline-offset: -2px;
+    }
+
+    .house.invalid-judge::before {
+      content: "⚠";
+      position: absolute;
+      top: 3px;
+      left: 4px;
+      font-size: 11px;
+      font-weight: 900;
+      color: #cc3333;
+      background: #ffe0e0;
+      border-radius: 3px;
+      padding: 1px 3px;
+      line-height: 1;
+    }
+
+    .validity-warning {
+      text-align: center;
+      font-size: 13px;
+      color: #7a1800;
+      background: #fff4ef;
+      border: 1px solid #cc4400;
+      border-radius: 6px;
+      padding: 8px 14px;
+      margin: 8px auto 0;
+      max-width: 860px;
+      font-weight: 600;
+    }
+
+    .dhamir-missing-warning {
+      text-align: center;
+      font-size: 13px;
+      color: #550055;
+      background: #fdf0ff;
+      border: 1px solid #993399;
+      border-radius: 6px;
+      padding: 8px 14px;
+      margin: 8px auto 0;
+      max-width: 860px;
+      font-weight: 600;
+    }
+
+
     .natural-house-legend {
       text-align: center;
       font-size: 13px;
@@ -1491,10 +1538,15 @@
       5: null, 6: null, 7: null, 8: null, 11: null, 12: null,
     };
 
-    function houseHtml(h, label, isDhamir, isNatural) {
+    // Odd/unpaired figures — the judge (H15) must never be one of these.
+    // Source: بلوغ الأمل — "לא יכול להיות פרדי לעולם. אם יצא פרדי — זו טעות."
+    const INVALID_JUDGE_PATTERNS = new Set(['1222','2111','1211','2122','1121','2212','1112','2221']);
+
+    function houseHtml(h, label, isDhamir, isNatural, extraClass = '') {
       let cls = 'house';
-      if (isDhamir)  cls += ' dhamir-house';
-      if (isNatural) cls += ' natural-house';
+      if (isDhamir)   cls += ' dhamir-house';
+      if (isNatural)  cls += ' natural-house';
+      if (extraClass) cls += ' ' + extraClass;
       return `
         <div class="${cls}">
           <div class="house-title">${label}</div>
@@ -1517,6 +1569,12 @@
 
       const naturalHouseNums = [1,2,3,4,5,6,7,8,9,10,11,12].filter(nat);
 
+      // Validity checks
+      const judgeH = h(15);
+      const judgeIsInvalid = judgeH?.key && INVALID_JUDGE_PATTERNS.has(judgeH.key);
+      const judgeExtraClass = judgeIsInvalid ? 'invalid-judge' : '';
+      const dhamirMissing = !dhamirHouseNum;
+
       return `
         <article class="board">
           <div class="board-row r1">
@@ -1538,11 +1596,13 @@
             ${houseHtml(h(16), "16 — משלים", d(16), false)}
           </div>
           <div class="final-box">
-            ${houseHtml(h(15), "15 — דיין", d(15), false)}
+            ${houseHtml(h(15), "15 — דיין", d(15), false, judgeExtraClass)}
           </div>
         </div>
         ${naturalHouseNums.length > 0 ? `<div class="natural-house-legend">✦ = צורה טבעית (בית${naturalHouseNums.length > 1 ? 'ות' : ''} ${naturalHouseNums.join(', ')}) — הצורה הטבעית של הבית, הדין חזק במיוחד</div>` : ""}
         ${dhamirHouseNum ? `<div class="dhamir-legend">★ = בית הדמיר (בית ${dhamirHouseNum}) — הצורה שכל שאר הצורות מעידות עליה</div>` : ""}
+        ${judgeIsInvalid ? `<div class="validity-warning">⚠ שגיאה חישובית: הדיין (${escapeHtml(figNameFromReadingHouse(judgeH))}) הוא צורה פרדית — הדיין חייב להיות צורה זוגית בלבד. בדוק מחדש את חישוב האמהות. מקור: بلوغ الأمل — "ולא יכול להיות פרדי לעולם. אם יצא פרדי — זו טעות, תקן את עבודתך."</div>` : ""}
+        ${dhamirMissing ? `<div class="dhamir-missing-warning">⚠ הדמיר לא נמצא בלוח — הצורה המחושבת אינה מופיעה בשום בית. לפי המקור: "אם לא נמצאה הצורה בלוח כלל — הלוח פסול לפירוש, ופירושו שקר וטעות." (بلوغ الأمل)</div>` : ""}
       `;
     }
 
