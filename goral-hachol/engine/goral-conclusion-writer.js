@@ -1298,7 +1298,8 @@ const TOPIC_FOCUS_LABEL = {
   seaVoyage:         'בית המסע הימי (בית 9)',
   theft:             'בית הגנב (בית 7)',
   siblings:          'בית האחים (בית 3)',
-  deathInheritance:  'בית המוות והירושה (בית 8)',
+  deathInheritance:   'בית המוות והירושה (בית 8)',
+  dreamInterpretation:'בית החלום / הרויא (בית 9)',
 };
 
 function speakNote(house) {
@@ -1407,6 +1408,19 @@ function buildNarrativeByTopic(result) {
     if (transit) parts.push(transit);
 
     push(parts.join(' '));
+  }
+
+  // ── 4b. DREAM INTERPRETATION — H9 specific ──────────────────────
+  if (topicId === 'dreamInterpretation' && focus) {
+    const h9F = hFort(focus);
+    const h9El = clean(focus.element || '');
+    const dreamNature = h9F.includes('סעד')
+      ? 'חלום טוב — בשורה, הבטחה או ראייה מבורכת'
+      : h9F.includes('נחס')
+      ? 'חלום קשה — אזהרה, עכבה או דבר שיש לשים לב אליו'
+      : 'חלום ניטרלי — דרוש פירוש לפי ההקשר האישי';
+    const elementNote = h9El ? ` יסוד הצורה: ${h9El}.` : '';
+    push(`פירוש החלום: ${dreamNature}${elementNote}`);
   }
 
   // ── 5. ADDITIONAL MAIN HOUSES ────────────────────────────────────

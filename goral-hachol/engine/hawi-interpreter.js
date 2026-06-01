@@ -538,6 +538,7 @@ const TOPIC_H1_NOTES = {
   theft:            'בית 1 = הנגנב. בית 7 = הגנב. בית 2 = הרכוש הגנוב. בית 8 = תיאור הגנב.',
   siblings:         'בית 1 = השואל. בית 3 = האח/השכן/הקרוב הנשאל עליו.',
   deathInheritance: 'בית 1 = השואל. בית 8 = המוות/הירושה. בית 7 = הצד השני (יורש/נפטר).',
+  dreamInterpretation: 'בית 1 = החולם. בית 9 = החלום / הרויא. צורה טובה בבית 9 = חלום מבורך.',
 };
 
 function computeHouse1Analysis(chart, topicId) {
@@ -671,6 +672,10 @@ const TOPIC_KEY_PAIRS = {
     { houses: [1, 8],  role: 'שואל ↔ מוות/ירושה' },
     { houses: [7, 8],  role: 'צד שני ↔ הירושה' },
     { houses: [1, 2],  role: 'שואל ↔ ממון הירושה' },
+  ],
+  dreamInterpretation: [
+    { houses: [1, 9],  role: 'חולם ↔ חלום/רויא' },
+    { houses: [9, 15], role: 'חלום ↔ פסיקת הדיין' },
   ],
 };
 
