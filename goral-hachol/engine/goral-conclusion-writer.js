@@ -1453,6 +1453,19 @@ function cleanSpiritualText(text = '') {
     .trim();
 }
 
+function isSihrSuspected(sd) {
+  if (!sd) return false;
+  if (sd.isqatResult?.diagnosis === 'human-made-magic') return true;
+  if (sd.grade === 'mostly-clear') return false;
+  const matches = [...(sd.specificMatches || []), ...(sd.openingMatches || [])];
+  const sihrKws = ['כישוף', 'קשירה', 'מכשף', 'מכשפת'];
+  return matches.some((m) =>
+    sihrKws.some((kw) =>
+      (m.diagnosisHebrew || '').includes(kw) || (m.meaningHebrew || '').includes(kw)
+    )
+  );
+}
+
 function isJinnRelatedDiagnosis(sd) {
   if (!sd) return false;
   const r = sd.isqatResult?.remainder;
@@ -1691,6 +1704,38 @@ function buildSpiritualNarrative(result) {
     }
 
     if (dParts.length) push(dParts.join('\n'));
+  }
+
+  // ── 6b. WHO DID IT / WHERE / WHO IS THE SORCERER ─────────────────
+  if (isSihrSuspected(sd)) {
+    const perp = sd.perpetratorResult;
+    const loc  = sd.sorcererLocationResult;
+    const prof = sd.sorcererProfileResult;
+    const sihrLines = [];
+
+    if (perp?.gender || perp?.specificNoteHebrew) {
+      const perpGender = perp.gender ? `מין העושה: ${perp.gender}` : '';
+      const perpNote   = perp.specificNoteHebrew
+        ? cleanSpiritualText(perp.specificNoteHebrew.replace(/\(הספר:[^)]*\)/g, '').trim())
+        : '';
+      const perpText   = [perpGender, perpNote].filter(Boolean).join(' — ');
+      if (perpText) sihrLines.push(`מי עשה את הכישוף (בית 7 — ${perp.figureHebrew}): ${perpText}`);
+    }
+
+    if (loc?.locationHebrew) {
+      const dirNote = loc.direction ? ` [כיוון: ${loc.direction}]` : '';
+      sihrLines.push(`היכן הכישוף מוסתר (בית 6 — ${loc.figureHebrew}): ${loc.locationHebrew}${dirNote}`);
+    }
+
+    if (prof?.professionHebrew || prof?.appearanceHebrew) {
+      const profFig = hFig(h9) || prof.figureHebrew;
+      const profParts = [];
+      if (prof.professionHebrew) profParts.push(prof.professionHebrew);
+      if (prof.appearanceHebrew) profParts.push(prof.appearanceHebrew);
+      sihrLines.push(`תיאור מבצע הכישוף (בית 9 — ${profFig}): ${profParts.join(' — ')}`);
+    }
+
+    if (sihrLines.length) push(sihrLines.join('\n'));
   }
 
   // ── 7. ITTISALAT ──────────────────────────────────────────────────

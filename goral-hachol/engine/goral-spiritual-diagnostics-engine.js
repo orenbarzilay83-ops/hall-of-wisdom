@@ -456,6 +456,86 @@ function applyJinnTypeMethod(board, source) {
   };
 }
 
+function checkPerpetratorRules(board, source) {
+  const h7 = getHouse(board, 7);
+  if (!h7) return null;
+
+  const figureHebrew = getFigureHebrewName(h7);
+  if (!figureHebrew) return null;
+
+  const prRules = source?.perpetratorRules;
+  if (!prRules) return null;
+
+  const normFig = normalizeText(figureHebrew);
+  const maleList   = (prRules.genderFromFigure?.male   || []).map(normalizeText);
+  const femaleList = (prRules.genderFromFigure?.female || []).map(normalizeText);
+
+  const isMale   = maleList.includes(normFig);
+  const isFemale = femaleList.includes(normFig);
+  const gender   = isMale ? 'זכר' : isFemale ? 'נקבה' : null;
+
+  const specificNote = (prRules.specificFigureNotes || [])
+    .find((n) => normalizeText(n.figureHebrew) === normFig);
+
+  if (!gender && !specificNote) return null;
+
+  return {
+    figureHebrew,
+    gender,
+    specificNoteHebrew: specificNote?.noteHebrew || null,
+    hebrewText: gender
+      ? `מין העושה: ${gender}${specificNote ? ` — ${specificNote.noteHebrew}` : ''}`
+      : specificNote?.noteHebrew || null,
+  };
+}
+
+function checkSorcererLocation(board, source) {
+  const h6 = getHouse(board, 6);
+  if (!h6) return null;
+
+  const figureHebrew = getFigureHebrewName(h6);
+  if (!figureHebrew) return null;
+
+  const locRules = source?.sorcererLocationRules;
+  if (!locRules) return null;
+
+  const normFig = normalizeText(figureHebrew);
+  const match = (locRules.figureLocations || [])
+    .find((r) => normalizeText(r.figureHebrew) === normFig);
+  if (!match) return null;
+
+  return {
+    figureHebrew,
+    direction: match.direction,
+    locationHebrew: match.locationHebrew,
+    hebrewText: match.locationHebrew,
+  };
+}
+
+function checkSorcererProfile(board, source) {
+  const h9 = getHouse(board, 9);
+  if (!h9) return null;
+
+  const figureHebrew = getFigureHebrewName(h9);
+  if (!figureHebrew) return null;
+
+  const profRules = source?.sorcererProfileRules;
+  if (!profRules) return null;
+
+  const normFig = normalizeText(figureHebrew);
+  const match = (profRules.figureProfiles || [])
+    .find((r) => normalizeText(r.figureHebrew) === normFig);
+  if (!match) return null;
+
+  return {
+    figureHebrew,
+    genderHint: match.genderHint,
+    professionHebrew: match.professionHebrew,
+    appearanceHebrew: match.appearanceHebrew,
+    hebrewText: [match.professionHebrew, match.appearanceHebrew].filter(Boolean).join(' — '),
+  };
+}
+
 export function diagnoseSpiritualInfluence(question = '', board = null) {
   const source = getApprovedSpiritualSource();
   const questionHits = detectSpiritualTopicFromQuestion(question);
@@ -481,6 +561,10 @@ export function diagnoseSpiritualInfluence(question = '', board = null) {
   const isqatResult = applyIsqatSevenMethod(board, source);
   const jinnTypeResult = applyJinnTypeMethod(board, source);
   const organDiagnosisResult = applyOrganDiagnosisMethod(board, source);
+
+  const perpetratorResult      = checkPerpetratorRules(board, source);
+  const sorcererLocationResult = checkSorcererLocation(board, source);
+  const sorcererProfileResult  = checkSorcererProfile(board, source);
 
   const grade = gradeFromMatches(specificMatches, openingMatches, genericScore);
   const finalHebrew = buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, jinnTypeResult, organDiagnosisResult);
@@ -536,6 +620,9 @@ export function diagnoseSpiritualInfluence(question = '', board = null) {
     mainReasons,
     shouldShow: grade !== 'mixed',
     isSpiritualQuestion: questionHits.length > 0,
+    perpetratorResult,
+    sorcererLocationResult,
+    sorcererProfileResult,
   };
 }
 

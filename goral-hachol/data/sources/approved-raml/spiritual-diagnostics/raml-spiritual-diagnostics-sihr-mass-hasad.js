@@ -520,6 +520,228 @@ export const RAML_SPIRITUAL_DIAGNOSTICS_SIHR_MASS_HASAD = {
     status: "explicit-in-user-approved-screenshot"
   },
 
+  perpetratorRules: {
+    sourceBook: "القول الجامع في علم الرمل — الشيخ محمد ساس",
+    sourcePage: [16, 56],
+    arabicNote: "الأشكال الذكورية والأنثوية حسب التقسيم الأصلي في المصدر — البيت السابع يدل على العدو / العامل",
+    appNote: "הצורה בבית 7 מגלה את מין העושה ואת אופיו. בית 7 = בית הצד שמנגד/העושה בכישוף.",
+    genderFromFigure: {
+      hebrewDescription: "סיווג מגדרי מהמקור — לפי האופי הפנימי של הצורה (לא לפי יסוד בלבד)",
+      male: ['נלחם', 'סף נכנס', 'סף יוצא', 'לבן', 'כבוד נכנס', 'שפל ראש', 'ממון יוצא', 'קהלה'],
+      female: ['ממון נכנס', 'בר הלחי', 'כבוד יוצא', 'נשוא ראש', 'אדום', 'דרך', 'חיבור', 'סוהר']
+    },
+    specificFigureNotes: [
+      {
+        figureHebrew: 'חיבור',
+        figureArabic: 'الاجتماع',
+        noteHebrew: 'חיבור בבית 7 — עושה רע ופגום',
+        sourcePage: 56
+      },
+      {
+        figureHebrew: 'סוהר',
+        figureArabic: 'العقلة',
+        noteHebrew: 'סוהר בבית 7 — מורה על אישה מכשפת',
+        sourcePage: 56
+      }
+    ]
+  },
+
+  sorcererLocationRules: {
+    sourceBook: "كتاب حاوي العجائب ومظهر الغرائب",
+    sourceChapter: "باب في الخبيئة — פרק על המוסתר/הנסתר",
+    arabicNote: "الأصل في المصدر: الشكل في الطالع (بيت 1) يدل على موضع الخبيئة",
+    appNote: "מיושם על הצורה בבית 6 (בית המחלה/כישוף) כמצביע על כיוון ומיקום הכישוף המוסתר",
+    sourceStatus: "extracted-from-hawi-khubayya-chapter",
+    figureLocations: [
+      {
+        figureHebrew: 'נשוא ראש',
+        figureArabic: 'الأحيان',
+        direction: 'מזרח',
+        locationHebrew: 'כיוון מזרח, במקום גבוה, מאוחסן עם חפצי ערך — זהב, כסף, תכשיטים'
+      },
+      {
+        figureHebrew: 'שפל ראש',
+        figureArabic: 'النكيس',
+        direction: 'דרום/קיבלה',
+        locationHebrew: 'קרוב לקיר הדרומי, קבור באדמה, ממתכות או אבנות יקרות'
+      },
+      {
+        figureHebrew: 'אדום',
+        figureArabic: 'الحمرة',
+        direction: 'מערב',
+        locationHebrew: 'כיוון מערב, ליד מקום שריפה, כבשן, או מקום צבוע אדום'
+      },
+      {
+        figureHebrew: 'לבן',
+        figureArabic: 'البياض',
+        direction: 'צפון',
+        locationHebrew: 'כיוון צפון, תחת צמחיה, קרוב לבור מים או מקום מימי'
+      },
+      {
+        figureHebrew: 'כבוד יוצא',
+        figureArabic: 'النصرة الخارجة',
+        direction: 'מזרח',
+        locationHebrew: 'כיוון מזרח, מוסתר כלחש/קמיע, מזהב/כסף/אבנות יקרות'
+      },
+      {
+        figureHebrew: 'כבוד נכנס',
+        figureArabic: 'النصرة الداخلة',
+        direction: 'דרום/קיבלה',
+        locationHebrew: 'ראש קיר או תחת קיר בכיוון דרום, מזהב או כסף'
+      },
+      {
+        figureHebrew: 'נלחם',
+        figureArabic: 'الجودلة',
+        direction: 'קיר',
+        locationHebrew: 'בתוך קיר, ממתכות כגון נחושת'
+      },
+      {
+        figureHebrew: 'קהלה',
+        figureArabic: 'الجماعة',
+        direction: 'כיפה/מבנה',
+        locationHebrew: 'מתחת לכיפה, ארגון גדול, או מבנה — ריבוי חפצים ממקורות שונים'
+      },
+      {
+        figureHebrew: 'חיבור',
+        figureArabic: 'الاجتماع',
+        direction: 'מערב',
+        locationHebrew: 'כיוון מערב, מסוגים ומינים שונים'
+      },
+      {
+        figureHebrew: 'דרך',
+        figureArabic: 'الطريق',
+        direction: 'צפון',
+        locationHebrew: 'כיוון צפון, שטח פתוח ליד דרך/שביל, בין צמחיה'
+      },
+      {
+        figureHebrew: 'סוהר',
+        figureArabic: 'العقلة',
+        direction: 'דרום/קיבלה',
+        locationHebrew: 'כיוון דרום/קיבלה, קבור בחדר אטום, ממון ישן וסגור'
+      },
+      {
+        figureHebrew: 'בר הלחי',
+        figureArabic: 'نقي الخد',
+        direction: 'דרום/קיבלה',
+        locationHebrew: 'כיוון דרום/קיבלה, בתוך כלי אטום — בריכה, קופסה, או מיכל נעול'
+      }
+    ]
+  },
+
+  sorcererProfileRules: {
+    sourceBook: "القول الجامع في علم الرمل — الشيخ محمد ساس",
+    sourcePage: [16, 17, 18, 19],
+    appNote: "הצורה בבית 9 (בית המכשף) מתארת את מראה ואופי העושה לפי הרמל",
+    sourceStatus: "extracted-from-jawami-pages-16-to-19",
+    figureProfiles: [
+      {
+        figureHebrew: 'נשוא ראש',
+        figureArabic: 'الأحيان',
+        genderHint: 'נקבה (לפי המקור)',
+        professionHebrew: 'מורה, סופר, אדם של ידע',
+        appearanceHebrew: 'לבן, חזה גדול, פנים עגולות, עיניים רחבות וחמודות, מוסרי, נדיב, רב שמחה, גוף מלא, זקן רחב'
+      },
+      {
+        figureHebrew: 'שפל ראש',
+        figureArabic: 'النكيس',
+        genderHint: 'זכר (לפי המקור)',
+        professionHebrew: 'עובד עור/בורסקאי, בנאי, או חקלאי',
+        appearanceHebrew: 'עור כהה, גבוה, מכוער, עיניים שחורות, כובע גבוה, שקרן ומרמה, מושחת, מבצע עבירות'
+      },
+      {
+        figureHebrew: 'אדום',
+        figureArabic: 'الحمرة',
+        genderHint: 'נקבה (לפי המקור)',
+        professionHebrew: 'טבח, קצב, ספר, עוסק בדם',
+        appearanceHebrew: 'עור אדום, קול רם ובוטה, חסר בושה, אלים, שופך דם, חסר מצפון דתי'
+      },
+      {
+        figureHebrew: 'לבן',
+        figureArabic: 'البياض',
+        genderHint: 'זכר (לפי המקור)',
+        professionHebrew: 'חייט, סוחר ניירות, עוסק בבד',
+        appearanceHebrew: 'עור לבן או צהוב, פנים עגולות, עיניים שחורות, גוף מלא, מוסרי ודתי, מגודל זקן'
+      },
+      {
+        figureHebrew: 'כבוד יוצא',
+        figureArabic: 'النصرة الخارجة',
+        genderHint: 'נקבה (לפי המקור)',
+        professionHebrew: 'איש מכובד, בעל מעמד ורשות',
+        appearanceHebrew: 'עור כהה, עיניים כחולות, שיער ארוך, פנים יפות, כובע גדול, בעל הוד ועוצמה, קשה לפיוס'
+      },
+      {
+        figureHebrew: 'כבוד נכנס',
+        figureArabic: 'النصرة الداخلة',
+        genderHint: 'זכר (לפי המקור)',
+        professionHebrew: 'גנן, תופף/נגן',
+        appearanceHebrew: 'פנים עגולות, ראש גדול, גוף בשרני, זקן גדול, אוהב נשים, עור כהה/צהוב, סימן על לחי או חזה'
+      },
+      {
+        figureHebrew: 'סף נכנס',
+        figureArabic: 'العتبة الداخلة',
+        genderHint: 'זכר (לפי המקור)',
+        professionHebrew: 'גנן, תופף',
+        appearanceHebrew: 'עור לבן, פנים עגולות, אף קטן, שיער רב, ראש גדול, מצח רחב, צוואר ארוך, זקן גדול, כוונות טובות'
+      },
+      {
+        figureHebrew: 'סף יוצא',
+        figureArabic: 'العتبة الخارجة',
+        genderHint: 'זכר (לפי המקור)',
+        professionHebrew: 'פועל, עמל, עובד ידיים',
+        appearanceHebrew: 'עור שחור/כהה, גוף כבד, מראה לא יפה, לא נאמן, שפתיים עבות'
+      },
+      {
+        figureHebrew: 'נלחם',
+        figureArabic: 'الجودلة',
+        genderHint: 'זכר (לפי המקור)',
+        professionHebrew: 'נוסע, מי שנע בין מקומות',
+        appearanceHebrew: 'עור צהוב/בינוני, יפה, שמח, אוהב נשים, נמנע מקשיים, עיניים חמודות, פה קטן'
+      },
+      {
+        figureHebrew: 'בר הלחי',
+        figureArabic: 'نقي الخد',
+        genderHint: 'נקבה (לפי המקור)',
+        professionHebrew: 'לוחם, בעל חרב',
+        appearanceHebrew: 'עור לבן עם אודם, גבות יפות, כתפיים רחבות, אוהב נשים ובידור, מרמה'
+      },
+      {
+        figureHebrew: 'ממון נכנס',
+        figureArabic: 'القبض الداخل',
+        genderHint: 'נקבה (לפי המקור)',
+        professionHebrew: 'סוחר',
+        appearanceHebrew: 'עור צהוב, מתגדר, גוף לח, כתפיים רחבות, סימן על פנים, אוהב בגדים ומעמד'
+      },
+      {
+        figureHebrew: 'ממון יוצא',
+        figureArabic: 'القبض الخارج',
+        genderHint: 'זכר (לפי המקור)',
+        professionHebrew: 'פילוסוף, צבע, צייר, נגר',
+        appearanceHebrew: 'עור צהוב-אדום, ראש גדול, פנים ארוכות, גב כפוף, מראה לא יפה, ורידים גלויים על פנים, לא נאמן'
+      },
+      {
+        figureHebrew: 'קהלה',
+        figureArabic: 'الجماعة',
+        genderHint: 'זכר (לפי המקור)',
+        professionHebrew: 'שייח׳ ערבי, מהנדס, בנאי',
+        appearanceHebrew: 'עור חמוס/ערמוני, פנים ארוכות, מצח גדול, עיניים כהות, זקן וכובע גדולים, סימן בין גבות, אוהב ספרות וידע, קול טוב'
+      },
+      {
+        figureHebrew: 'חיבור',
+        figureArabic: 'الاجتماع',
+        genderHint: 'נקבה (לפי המקור)',
+        professionHebrew: 'חכם, מעתיק/סופר, שען, בעל ידע',
+        appearanceHebrew: 'עור צהוב/ערמוני, ראש קטן, גוף רזה, שיניים מפוצלות, דיבור מהיר, אדם של ידע ומחשבה'
+      },
+      {
+        figureHebrew: 'דרך',
+        figureArabic: 'الطريق',
+        genderHint: 'נקבה (לפי המקור)',
+        professionHebrew: 'שליח, נוסע, עובד בדרכים',
+        appearanceHebrew: 'ראש קטן, גוף רזה, שיניים מפוצלות, דיבור מינימלי, אף גדול, שיער דק, סימן על פנים'
+      }
+    ]
+  },
+
   practicalNotes: [
     {
       id: "must-know-figures-and-properties",
