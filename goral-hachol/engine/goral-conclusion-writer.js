@@ -1365,7 +1365,7 @@ function modernizeTransitText(text) {
   t = t.replace(/שפחה/g,                     'עוזרת / שכירה');
   t = t.replace(/עבדות/g,                    'שירות / שכירות');
   t = t.replace(/עבדים/g,                    'עובדים שכירים / עוזרים');
-  t = t.replace(/\bעבד\b/g,                  'עובד שכיר / עוזר');
+  t = t.replace(/(?<![א-ת])עבד(?![א-ת])/g,         'עובד שכיר / עוזר');
   t = t.replace(/ממלוכים/g,                  'חיילים / עובדים');
 
   // ── Currency ─────────────────────────────────────────────────────
@@ -1391,6 +1391,11 @@ function modernizeTransitText(text) {
   t = t.replace(/לוואט/g,                   'יחסים אסורים לפי הדת');
   t = t.replace(/משכב\s+אסור/g,             'יחסים אסורים');
 
+  // ── Arabic transliteration cleanup ──────────────────────────────
+  t = t.replace(/אדב\s*\/\s*/g,             '');  // אדב/ = Arabic "أدب" (etiquette) — already covered by "דרך ארץ"
+  t = t.replace(/ווואלי/g,                 'ממונה');
+  t = t.replace(/וואלי/g,                  'ממונה');
+
   // ── Other medieval terms ─────────────────────────────────────────
   t = t.replace(/מלקות/g,                   'ענישה / עונש');
   t = t.replace(/פתנה/g,                    'מחלוקת / סכסוך');
@@ -1400,9 +1405,9 @@ function modernizeTransitText(text) {
   // ── Contextual annotations (meaning depends on questioner's context) ──
   t = t.replace(/דואבים/g,   'דואבים (בעלי חיים / אמצעי תחבורה — לפי ההקשר)');
   t = t.replace(/בהמות/g,    'בהמות (בעלי חיים / אמצעי תחבורה — לפי ההקשר)');
-  t = t.replace(/\bמקנה\b/g, 'מקנה (בעלי חיים / חקלאות — לפי ההקשר)');
-  t = t.replace(/\bצאן\b/g,  'צאן (בעלי חיים / חקלאות — לפי ההקשר)');
-  t = t.replace(/\bשיירה\b/g,'שיירה (שיירת סחר / נסיעה — לפי ההקשר)');
+  t = t.replace(/מקנה(?![א-ת])/g, 'מקנה (בעלי חיים / חקלאות — לפי ההקשר)');
+  t = t.replace(/צאן(?![א-ת])/g,  'צאן (בעלי חיים / חקלאות — לפי ההקשר)');
+  t = t.replace(/שיירה(?![א-ת])/g,'שיירה (שיירת סחר / נסיעה — לפי ההקשר)');
 
   return t;
 }
@@ -1673,6 +1678,14 @@ function buildNarrativeByTopic(result) {
 function cleanSpiritualText(text = '') {
   return String(text)
     .replace(/[؀-ۿﭐ-﷿ﹰ-﻿]+/g, '')
+    // ── Figure name normalization (Arabic transliterations → Hebrew) ─
+    .replace(/ג['׳]ודלה/g,  'נלחם')
+    .replace(/אנקיס/g,       'שפל ראש')
+    .replace(/ג['׳]מאעה/g,  'קהלה')
+    .replace(/חומרה/g,       'אדום')
+    .replace(/\bחיאן\b/g,    'נשוא ראש')
+    .replace(/אחיאן\s*[/]\s*/g, '')
+    // ── Spiritual/religious transliterations ────────────────────────
     .replace(/שייח['׳]ים\s*[/]?\s*אנשי\s+רוח/g, 'אנשי דת ורוחניות')
     .replace(/שייח['׳]ים/g, 'אנשי דת ורוחניות')
     .replace(/עראפה/g, 'ידיעת נסתרות')
@@ -1725,7 +1738,7 @@ function buildSpiritualNarrative(result) {
 
   const hFig     = (h) => clean(h?.figureHebrew || '');
   const hFort    = (h) => clean(h?.fortune || '');
-  const hTransit = (h) => clean(h?.transit?.meaning || '');
+  const hTransit = (h) => cleanSpiritualText(modernizeTransitText(clean(h?.transit?.meaning || '')));
 
   const judge = boardAnalysis.judge        || getHouseFromBoard(boardAnalysis, 15);
   const w13   = boardAnalysis.witnesses?.[0] || getHouseFromBoard(boardAnalysis, 13);

@@ -2573,7 +2573,7 @@ function computeFoundationsDisplay() {
   const lines = [];
   const terms = source.mahwThabatCore?.hebrewTerms;
   if (terms) {
-    lines.push(`מונחי יסוד: מחיקה (محو), קיום (ثبات), הכאה (ضرب), חלוקה (قسمة), הולדה (توليد)`);
+    lines.push(`מונחי יסוד: מחיקה, קיום, הכאה, חלוקה, הולדה`);
   }
   const bt = source.boardTerminology;
   if (bt) {
