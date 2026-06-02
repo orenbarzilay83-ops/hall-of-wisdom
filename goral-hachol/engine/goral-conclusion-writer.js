@@ -1340,6 +1340,25 @@ function boardScoreParagraph(boardAnalysis) {
 }
 
 
+// ─── TOPIC TRANSIT FILTER ────────────────────────────────────────────────────
+// For topic-specific houses (focus house), keep only sentences relevant to the
+// question topic. Non-relevant sentences from the source are not removed from
+// the source data — they are simply not surfaced in this reading's conclusion.
+
+const TOPIC_TRANSIT_KEYWORDS = {
+  illness: ['מחלה', 'חולה', 'חולי', 'ריפוי', 'מות', 'פחד', 'צער', 'בכי',
+            'חלש', 'כאב', 'חמה', 'קדחת', 'כישוף', 'גוף', 'נפש', 'חולשה',
+            'סכנה', 'מיחוש', 'דם', 'לב', 'ראש', 'עייפות', 'פגיעה', 'תרופה'],
+};
+
+function filterTransitForFocusHouse(transitText, topicId) {
+  const keywords = TOPIC_TRANSIT_KEYWORDS[topicId];
+  if (!keywords || !transitText) return transitText;
+  const sentences = transitText.split(/(?<=[.;])\s+/);
+  const relevant = sentences.filter((s) => keywords.some((k) => s.includes(k)));
+  return relevant.length ? relevant.join(' ') : '';
+}
+
 // ─── TRANSIT TEXT MODERNIZATION ──────────────────────────────────────────────
 // Translates medieval Arabic geomancy terminology to modern Hebrew equivalents.
 // Direct replacements: terms with clear modern equivalents regardless of context.
@@ -1603,11 +1622,18 @@ function buildNarrativeByTopic(result) {
       lines.push(line);
     }
 
-    // Focus house (topic-specific house)
+    // Focus house (topic-specific house) — transit filtered to topic-relevant sentences
     if (focus && Number(focus.house) !== 1 && Number(focus.house) !== 15) {
       const label = TOPIC_FOCUS_LABEL[topicId] || `בית ${focusNum}`;
-      const l = fmtLine(label, focus);
-      if (l) lines.push(l);
+      const fig = hFig(focus), fort = hFort(focus);
+      if (fig || fort) {
+        let transit = hTransit(focus);
+        transit = filterTransitForFocusHouse(transit, topicId);
+        if (transit && fort) transit = transit.replace(/^(טוב|רע|ממוזג)\s*[—\-–]\s*/u, '');
+        let l = `${label} (${fig}) — ${fort}`;
+        if (transit) l += ` — ${transit}`;
+        lines.push(l);
+      }
     }
 
     if (lines.length) push(lines.join('\n'));
