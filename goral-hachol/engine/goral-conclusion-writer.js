@@ -1335,9 +1335,8 @@ function dhamirParagraph(boardAnalysis, judgeVerdict) {
 
 function boardScoreParagraph(boardAnalysis) {
   const bScore = boardAnalysis?.boardScore;
-  if (!bScore) return '';
-  if (bScore.isComplete) return '';
-  return `⚠ ${bScore.hebrewSummary} — הדבר מתעכב ואין הכרעה ברורה.`;
+  if (!bScore || bScore.isComplete) return '';
+  return `⚠ ${bScore.hebrewSummary}`;
 }
 
 
@@ -1628,6 +1627,17 @@ function buildNarrativeByTopic(result) {
     const illnessDiag = boardAnalysis.illnessElementDiagnosis;
     if (illnessDiag?.outputHebrew) {
       push(modernizeTransitText(clean(illnessDiag.outputHebrew)));
+    }
+
+    // Jumla illness diagnosis (mod-4 point count — בלוג׳ אל-אמל)
+    if (topicId === 'illness') {
+      const jumla = boardAnalysis?.jumlaAnalysis;
+      if (jumla?.illnessDiagnosis) {
+        const d = jumla.illnessDiagnosis;
+        push(d.isSorcery
+          ? `⚠ ${d.outputHebrew} — יש לשקול בדיקת אבחון רוחני.`
+          : d.outputHebrew);
+      }
     }
 
     // Ittisalat (connection between asker and focus)

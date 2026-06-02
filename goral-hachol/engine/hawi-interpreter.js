@@ -984,15 +984,23 @@ function computeBoardScore(chart) {
     }
   }
   const score = 128 - singles;
+  // בלוג׳ אל-אמל פרק 14: > 90 = ישיג מבוקשו | 61–89 = מתעכב | ≤ 60 = שלילה מוחלטת
+  const isComplete       = score >= 90;
+  const isAbsoluteNegation = score <= 60;
+  const status = isComplete ? 'שלם' : isAbsoluteNegation ? 'שלילה מוחלטת' : 'חסר';
+  const hebrewSummary = isComplete
+    ? `לוח שלם (${score} נקודות) — השואל ישיג את מבוקשו`
+    : isAbsoluteNegation
+      ? `שלילה מוחלטת (${score} נקודות) — הדבר לא יתקיים`
+      : `הלוח חסר (${score} נקודות) — הדבר מתעכב, אין הכרעה ברורה`;
   return {
     singleRows: singles,
     doubleRows: 64 - singles,
     score,
-    isComplete: score >= 90,
-    status: score >= 90 ? 'שלם' : 'חסר',
-    hebrewSummary: score >= 90
-      ? `לוח שלם (${score} נקודות)`
-      : `הלוח חסר (${score} נקודות) — הדבר מתעכב`,
+    isComplete,
+    isAbsoluteNegation,
+    status,
+    hebrewSummary,
   };
 }
 const DHAMIR_PARENT_PAIRS = {
