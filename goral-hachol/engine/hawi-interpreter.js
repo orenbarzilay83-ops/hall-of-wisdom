@@ -2525,7 +2525,7 @@ function computeSeaVoyageRisks(chart) {
   if (!lines.length) return null;
   return {
     lines,
-    outputHebrew: `ניתוח מסע ים (בלוג' אלאמל עמ' 26):\n${lines.map((l) => `  ${l}`).join('\n')}`,
+    outputHebrew: `ניתוח מסע ים:\n${lines.map((l) => `  ${l}`).join('\n')}`,
   };
 }
 

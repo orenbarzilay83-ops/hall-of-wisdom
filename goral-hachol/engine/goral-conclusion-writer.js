@@ -407,57 +407,57 @@ function describeCoreHouses(analysis, topicId, question) {
 
   const birthAnalysis = analysis.birthNativityAnalysis;
   if (birthAnalysis) {
-    parts.push(`שער המולד (חאוי עמ׳ 51-58):\n${birthAnalysis.outputHebrew}`);
+    parts.push(`שער המולד:\n${birthAnalysis.outputHebrew}`);
   }
 
   const triangles = analysis.trianglesEnrichment;
   if (triangles) {
-    parts.push(`ניתוח משולשים (שער המשולשים, חאוי עמ׳ 59):\n${triangles.outputHebrew}`);
+    parts.push(`ניתוח משולשים:\n${triangles.outputHebrew}`);
   }
 
   const illnessDiag = analysis.illnessElementDiagnosis;
   if (illnessDiag) {
-    parts.push(`אבחון מחלה לפי יסוד (בלוג' אלאמל פרק 5):\n  ${illnessDiag.outputHebrew.replace(/\n/g, '\n  ')}`);
+    parts.push(`אבחון מחלה:\n  ${illnessDiag.outputHebrew.replace(/\n/g, '\n  ')}`);
   }
 
   const thiefLoc = analysis.thiefLocationDetails;
   if (thiefLoc) {
-    parts.push(`זיהוי הגנב (בלוג' אלאמל פרק 19):\n  ${thiefLoc.outputHebrew.replace(/\n/g, '\n  ')}`);
+    parts.push(`זיהוי הגנב:\n  ${thiefLoc.outputHebrew.replace(/\n/g, '\n  ')}`);
   }
 
   const enemyHH = analysis.enemyInHousehold;
   if (enemyHH) {
-    parts.push(`גילוי אויב בסביבה (בלוג' אלאמל עמ' 64):\n  ${enemyHH.outputHebrew}`);
+    parts.push(`גילוי אויב בסביבה:\n  ${enemyHH.outputHebrew}`);
   }
 
   const marriageForecast = analysis.marriageFigureForecast;
   if (marriageForecast) {
-    parts.push(`פסיקת נישואין לפי צורה שולטת (בלוג' אלאמל פרק 33):\n  ${marriageForecast.outputHebrew}`);
+    parts.push(`פסיקת נישואין:\n  ${marriageForecast.outputHebrew}`);
   }
 
   const yearlyForecast = analysis.yearlyFigureForecast;
   if (yearlyForecast) {
-    parts.push(`תחזית שנתית לפי צורה שולטת (בלוג' אלאמל עמ' 25):\n  ${yearlyForecast.outputHebrew}`);
+    parts.push(`תחזית שנתית:\n  ${yearlyForecast.outputHebrew}`);
   }
 
   const altName = analysis.alternativeNameExtraction;
   if (altName) {
-    parts.push(`חילוץ שם — שיטה 5 (בלוג' אלאמל עמ' 13-15):\n${altName.outputHebrew}`);
+    parts.push(`חילוץ שם:\n${altName.outputHebrew}`);
   }
 
   const physThief = analysis.physicalDescriptionThief;
   if (physThief) {
-    parts.push(`תיאור פיזי — הגנב / האויב (בלוג' אלאמל עמ' 65-71):\n  ${physThief.outputHebrew}`);
+    parts.push(`תיאור פיזי — הגנב / האויב:\n  ${physThief.outputHebrew}`);
   }
 
   const physMissing = analysis.physicalDescriptionMissing;
   if (physMissing) {
-    parts.push(`תיאור פיזי — הנעדר (בלוג' אלאמל עמ' 65-71):\n  ${physMissing.outputHebrew}`);
+    parts.push(`תיאור פיזי — הנעדר:\n  ${physMissing.outputHebrew}`);
   }
 
   const prisoner = analysis.prisonerAnalysis;
   if (prisoner) {
-    parts.push(`ניתוח אסיר/כלא (בלוג' אלאמל עמ' 28, 57):\n${prisoner.lines.map((l) => `  ${l}`).join('\n')}`);
+    parts.push(`ניתוח אסיר:\n${prisoner.lines.map((l) => `  ${l}`).join('\n')}`);
   }
 
   const seaRisks = analysis.seaVoyageRisks;
@@ -790,7 +790,7 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
       if (tl.presenceVerdict === 'not-found' && tl.locationRule?.resultHebrew) {
         parts.push(`צורת בית 1 (${figName}): ${tl.locationHebrew}`);
       } else if (tl.presenceVerdict !== 'not-found') {
-        parts.push(`צורת בית 1 (${figName}) — מיקום לפי המקור: ${tl.locationHebrew}`);
+        parts.push(`צורת בית 1 (${figName}) — מיקום: ${tl.locationHebrew}`);
       }
     }
 
@@ -1104,7 +1104,7 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
     const lines = [];
 
     if (authAnalysis?.scopeNote) {
-      lines.push(`היקף השאלה לפי המקור: ${authAnalysis.scopeNote}`);
+      lines.push(`היקף השאלה: ${authAnalysis.scopeNote}`);
     }
 
     if (grade === 'positive' || grade === 'cautiously-positive') {
@@ -1907,7 +1907,7 @@ function buildSpiritualNarrative(result) {
       const meaning = cleanSpiritualText(m.meaningHebrew || m.diagnosisHebrew || '');
       return meaning ? `${pos}${fig}: ${meaning}` : null;
     }).filter(Boolean);
-    if (mLines.length) push('סימנים נוספים מהמקור:\n' + mLines.join('\n'));
+    if (mLines.length) push('סימנים נוספים:\n' + mLines.join('\n'));
   }
 
   return paras.length ? paras.join('\n\n') : null;

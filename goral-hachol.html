@@ -1656,8 +1656,8 @@
         </div>
         ${naturalHouseNums.length > 0 ? `<div class="natural-house-legend">✦ = צורה טבעית (בית${naturalHouseNums.length > 1 ? 'ות' : ''} ${naturalHouseNums.join(', ')}) — הצורה הטבעית של הבית, הדין חזק במיוחד</div>` : ""}
         ${dhamirHouseNum ? `<div class="dhamir-legend">★ = בית הדמיר (בית ${dhamirHouseNum}) — הצורה שכל שאר הצורות מעידות עליה</div>` : ""}
-        ${judgeIsInvalid ? `<div class="validity-warning">⚠ שגיאה חישובית: הדיין (${escapeHtml(figNameFromReadingHouse(judgeH))}) הוא צורה פרדית — הדיין חייב להיות צורה זוגית בלבד. בדוק מחדש את חישוב האמהות. מקור: بلوغ الأمل — "ולא יכול להיות פרדי לעולם. אם יצא פרדי — זו טעות, תקן את עבודתך."</div>` : ""}
-        ${dhamirMissing ? `<div class="dhamir-missing-warning">⚠ הדמיר לא נמצא בלוח — הצורה המחושבת אינה מופיעה בשום בית. לפי המקור: "אם לא נמצאה הצורה בלוח כלל — הלוח פסול לפירוש, ופירושו שקר וטעות." (بلوغ الأمل)</div>` : ""}
+        ${judgeIsInvalid ? `<div class="validity-warning">⚠ שגיאה חישובית: הדיין (${escapeHtml(figNameFromReadingHouse(judgeH))}) הוא צורה פרדית — הדיין חייב להיות צורה זוגית בלבד. בדוק מחדש את חישוב האמהות.</div>` : ""}
+        ${dhamirMissing ? `<div class="dhamir-missing-warning">⚠ הדמיר לא נמצא בלוח — הצורה המחושבת אינה מופיעה בשום בית. הלוח פסול לפירוש.</div>` : ""}
       `;
     }
 
