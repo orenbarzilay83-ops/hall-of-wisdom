@@ -992,7 +992,7 @@ function computeBoardScore(chart) {
     status: score >= 90 ? 'שלם' : 'חסר',
     hebrewSummary: score >= 90
       ? `לוח שלם (${score} נקודות)`
-      : `הלוח חסר (${score} נקודות) — הדבר עוצר`,
+      : `הלוח חסר (${score} נקודות) — הדבר מתעכב`,
   };
 }
 const DHAMIR_PARENT_PAIRS = {

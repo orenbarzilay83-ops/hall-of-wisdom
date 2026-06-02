@@ -1230,7 +1230,7 @@ function boardScoreParagraph(boardAnalysis) {
   const bScore = boardAnalysis?.boardScore;
   if (!bScore) return '';
   if (bScore.isComplete) return '';
-  return `⚠ ${bScore.hebrewSummary} — פחות מ-90 נקודות. לפי הספר: "הדבר עוצר".`;
+  return `⚠ ${bScore.hebrewSummary} — הדבר מתעכב ואין הכרעה ברורה.`;
 }
 
 
