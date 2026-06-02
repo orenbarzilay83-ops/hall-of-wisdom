@@ -991,8 +991,8 @@ function computeBoardScore(chart) {
     isComplete: score >= 96,
     status: score >= 96 ? 'שלם' : 'חסר',
     hebrewSummary: score >= 96
-      ? `לוח שלם (${score} נקודות ≥ 96)`
-      : `לוח חסר (${score} נקודות < 96) — השאלה עשויה שלא להיפתר`,
+      ? `לוח שלם (${score} נקודות)`
+      : `השאלה לא בשלה להיפסק — ייתכן שנשאלה מוקדם מדי, או שהנושא עדיין לא גובש`,
   };
 }
 const DHAMIR_PARENT_PAIRS = {
@@ -1168,7 +1168,7 @@ function buildJudgeVerdict(boardAnalysis) {
       : ` הדמיר (בית ${dhamirH}) מנוגד לפסיקה — ייתכן שינוי במהלך.`;
   }
   if (boardAnalysis.boardScore?.isComplete === false) {
-    hebrewFull += ` ⚠ לוח חסר (${boardAnalysis.boardScore.score} נקודות) — הפסיקה פחות ודאית.`;
+    hebrewFull += ` ⚠ השאלה לא בשלה להיפסק — ייתכן שנשאלה מוקדם מדי, או שהנושא עדיין לא גובש.`;
   }
 
   return { verdict, grade, judgeFigure, judgeFortune, judgeTone, witnessTone, focusTone, hebrewShort, hebrewFull };
