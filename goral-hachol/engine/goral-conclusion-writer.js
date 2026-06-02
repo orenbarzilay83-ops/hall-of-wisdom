@@ -1285,6 +1285,7 @@ function modernizeTransitText(text) {
   t = t.replace(/משכב\s+אסור/g,             'יחסים אסורים');
 
   // ── Other medieval terms ─────────────────────────────────────────
+  t = t.replace(/מלקות/g,                   'ענישה / עונש');
   t = t.replace(/פתנה/g,                    'מחלוקת / סכסוך');
   t = t.replace(/שהדויות/g,                 'עדויות');
   t = t.replace(/בוסתנים/g,                 'גנות / שטחים ירוקים');
