@@ -1361,6 +1361,10 @@ function modernizeTransitText(text) {
   t = t.replace(/הרחקה\s+מצד/g,              'בעיות מצד');
 
   // ── Servitude ────────────────────────────────────────────────────
+  t = t.replace(/עבד\s+שחור\s+המבקש\s+חירות/g, 'מי שנמצא בשעבוד ומבקש חירות');
+  t = t.replace(/עבד\s+שחור/g,               'מי שנמצא בתלות / שעבוד');
+  t = t.replace(/השחורים/g,                  'עמלים ממרחקים');
+  t = t.replace(/שחורים/g,                   'עמלים ממרחקים');
   t = t.replace(/שפחות/g,                    'עוזרות / שכירות');
   t = t.replace(/שפחה/g,                     'עוזרת / שכירה');
   t = t.replace(/עבדות/g,                    'שירות / שכירות');
@@ -1402,12 +1406,19 @@ function modernizeTransitText(text) {
   t = t.replace(/שהדויות/g,                 'עדויות');
   t = t.replace(/בוסתנים/g,                 'גנות / שטחים ירוקים');
 
-  // ── Contextual annotations (meaning depends on questioner's context) ──
-  t = t.replace(/דואבים/g,   'דואבים (בעלי חיים / אמצעי תחבורה — לפי ההקשר)');
-  t = t.replace(/בהמות/g,    'בהמות (בעלי חיים / אמצעי תחבורה — לפי ההקשר)');
-  t = t.replace(/מקנה(?![א-ת])/g, 'מקנה (בעלי חיים / חקלאות — לפי ההקשר)');
-  t = t.replace(/צאן(?![א-ת])/g,  'צאן (בעלי חיים / חקלאות — לפי ההקשר)');
-  t = t.replace(/שיירה(?![א-ת])/g,'שיירה (שיירת סחר / נסיעה — לפי ההקשר)');
+  // ── Travel / archaic geographic terms ───────────────────────────────
+  t = t.replace(/עזיבת\s+המולדת/g,   'יציאה לחו"ל / נסיעה לאזור רחוק');
+  t = t.replace(/עזיבת\s+מולדת/g,    'יציאה לחו"ל / נסיעה לאזור רחוק');
+  t = t.replace(/קלקול\s+הדת/g,      'שינוי בדרך החיים / ריחוק מהשגרה');
+  t = t.replace(/יציאה\s+לדבר\s+מכוער/g, 'יציאה לדבר שלילי');
+  t = t.replace(/בני\s+דת\s+אחרת/g,  'אנשים בעלי השקפה שונה');
+
+  // ── Contextual annotations ───────────────────────────────────────────
+  t = t.replace(/דואבים/g,            'בעלי חיים / כלי תחבורה');
+  t = t.replace(/בהמות/g,             'בעלי חיים / כלי תחבורה');
+  t = t.replace(/מקנה(?![א-ת])/g,     'בעלי חיים / חקלאות');
+  t = t.replace(/צאן(?![א-ת])/g,      'בעלי חיים');
+  t = t.replace(/שיירה(?![א-ת])/g,    'שיירת סחר / מסע');
 
   return t;
 }
@@ -1655,8 +1666,14 @@ function buildNarrativeByTopic(result) {
       if (boardAnalysis.physicalDescriptionThief?.outputHebrew)
         push(m(clean(boardAnalysis.physicalDescriptionThief.outputHebrew)));
     }
-    if (topicId === 'missingPerson' && boardAnalysis.physicalDescriptionMissing?.outputHebrew) {
-      push(m(clean(boardAnalysis.physicalDescriptionMissing.outputHebrew)));
+    if (topicId === 'missingPerson') {
+      const ld = boardAnalysis.lifeDeathAnalysis;
+      if (ld?.hebrewVerdict) {
+        push(ld.hebrewVerdict);
+      }
+      if (boardAnalysis.physicalDescriptionMissing?.outputHebrew) {
+        push(m(clean(boardAnalysis.physicalDescriptionMissing.outputHebrew)));
+      }
     }
     if (topicId === 'enemies' && boardAnalysis.enemyInHousehold?.outputHebrew) {
       push(m(clean(boardAnalysis.enemyInHousehold.outputHebrew)));

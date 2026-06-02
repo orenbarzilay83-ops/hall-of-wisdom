@@ -2104,7 +2104,7 @@ function computeJumlaAnalysis(chart, topicId) {
   const CHILDREN_MAP = {
     1: 'ייוולד זכר (בן)',
     2: 'תיוולד נקבה (בת)',
-    3: 'הפלה / לא ייוולד ילד בעת הזו',
+    3: 'העיתוי אינו בשל — ייתכן עיכוב בהגעת הוולד בתקופה הקרובה',
   };
 
   const FRIENDSHIP_MAP = {
@@ -2122,7 +2122,7 @@ function computeJumlaAnalysis(chart, topicId) {
       remainder: mod4,
       hebrewLabel: entry.hebrewLabel,
       isSorcery: entry.isSorcery,
-      outputHebrew: `ג׳ומלה לאבחון מחלה (${jumla} ÷ 4, שארית ${mod4}): ${entry.hebrewLabel}`,
+      outputHebrew: `ספירת נקודות הלוח (מחוון מחלה): ${entry.hebrewLabel}`,
     };
   }
 
@@ -2131,7 +2131,7 @@ function computeJumlaAnalysis(chart, topicId) {
     result.childDiagnosis = {
       remainder: mod3,
       outcome,
-      outputHebrew: `ג׳ומלה לשאלת ילדים (${jumla} ÷ 3, שארית ${mod3}): ${outcome}`,
+      outputHebrew: `ספירת נקודות הלוח (מחוון ילדים): ${outcome}`,
     };
   }
 
@@ -2140,7 +2140,7 @@ function computeJumlaAnalysis(chart, topicId) {
     result.friendshipDiagnosis = {
       remainder: mod4ForFriendship,
       outcome,
-      outputHebrew: `ג׳ומלה לשאלת ידידות/שותפות (${jumla} ÷ 4, שארית ${mod4ForFriendship}): ${outcome}`,
+      outputHebrew: `ספירת נקודות הלוח (מחוון ידידות/שותפות): ${outcome}`,
     };
   }
 
