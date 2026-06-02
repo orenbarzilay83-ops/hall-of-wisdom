@@ -1230,7 +1230,7 @@ function boardScoreParagraph(boardAnalysis) {
   const bScore = boardAnalysis?.boardScore;
   if (!bScore) return '';
   if (bScore.isComplete) return '';
-  return `לוח חסר: ${bScore.hebrewSummary}. כשהלוח חסר (פחות מ-96 נקודות), השאלה עשויה להישאר לא פתורה, או שהתשובה תאחר להתברר.`;
+  return `⚠ ${bScore.hebrewSummary} — פחות מ-90 נקודות. לפי הספר: "הדבר עוצר".`;
 }
 
 
