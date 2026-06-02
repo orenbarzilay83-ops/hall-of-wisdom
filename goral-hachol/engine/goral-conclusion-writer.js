@@ -1605,6 +1605,80 @@ function buildNarrativeByTopic(result) {
     if (lines.length) push(lines.join('\n'));
   }
 
+  // ── 3b. TOPIC-SPECIFIC QUESTION RULES (topicConnections) ───────────
+  {
+    const topicConn = boardAnalysis.topicConnections || null;
+    if (topicConn?.checks?.length > 0) {
+      const ruleLines = topicConn.checks
+        .filter((c) => c.hebrewShort && clean(c.hebrewShort))
+        .map((c) => modernizeTransitText(clean(c.hebrewShort)));
+      if (ruleLines.length) push(ruleLines.join('\n'));
+    }
+
+    // Illness element diagnosis (from بلوغ الأمل figure-element rules)
+    const illnessDiag = boardAnalysis.illnessElementDiagnosis;
+    if (illnessDiag?.outputHebrew) {
+      push(modernizeTransitText(clean(illnessDiag.outputHebrew)));
+    }
+
+    // Ittisalat (connection between asker and focus)
+    const ittisalat = boardAnalysis.ittisalat;
+    if (ittisalat) {
+      const q2f  = ittisalat.questioner_to_focus;
+      const q2j  = ittisalat.questioner_to_judge;
+      const fNum = boardAnalysis.focusHouseNumber;
+      const iLines = [];
+      if (q2f && fNum) {
+        if (q2f.type !== 'none') {
+          iLines.push(`חיבור בין השואל לבית המרכזי (בית ${fNum}): ${q2f.hebrewShort}${q2f.quality ? ` (${q2f.quality})` : ''}.`);
+        } else {
+          iLines.push(`אין חיבור ישיר בין השואל לבית המרכזי (בית ${fNum}).`);
+        }
+      }
+      if (q2j && q2j.type !== 'none') {
+        iLines.push(`קשר בין השואל לדיין: ${q2j.hebrewShort}.`);
+      }
+      if (iLines.length) push(iLines.join(' '));
+    }
+
+    // Tahasil — will the matter come to fruition?
+    {
+      const tp = tahasilParagraph(boardAnalysis);
+      if (tp) push(modernizeTransitText(clean(tp)));
+    }
+
+    // Topic-specific profile / location outputs (from source-derived engine analyses)
+    const m = modernizeTransitText;
+    if (topicId === 'theft') {
+      if (boardAnalysis.thiefLocationDetails?.outputHebrew)
+        push(m(clean(boardAnalysis.thiefLocationDetails.outputHebrew)));
+      if (boardAnalysis.physicalDescriptionThief?.outputHebrew)
+        push(m(clean(boardAnalysis.physicalDescriptionThief.outputHebrew)));
+    }
+    if (topicId === 'missingPerson' && boardAnalysis.physicalDescriptionMissing?.outputHebrew) {
+      push(m(clean(boardAnalysis.physicalDescriptionMissing.outputHebrew)));
+    }
+    if (topicId === 'enemies' && boardAnalysis.enemyInHousehold?.outputHebrew) {
+      push(m(clean(boardAnalysis.enemyInHousehold.outputHebrew)));
+    }
+    if (topicId === 'marriage' && boardAnalysis.marriageFigureForecast?.outputHebrew) {
+      push(m(clean(boardAnalysis.marriageFigureForecast.outputHebrew)));
+    }
+    if (topicId === 'authorityState' && boardAnalysis.authorityStateAnalysis?.outputHebrew) {
+      push(m(clean(boardAnalysis.authorityStateAnalysis.outputHebrew)));
+    }
+
+    // Name letters (תסקין עבדוה) for relevant topics only
+    const NAME_LETTER_TOPICS = new Set(['theft', 'enemies', 'missingPerson', 'disputes']);
+    const nameLetters = boardAnalysis.nameLetters;
+    if (NAME_LETTER_TOPICS.has(topicId) && Array.isArray(nameLetters) && nameLetters.length > 0) {
+      const nameLines = nameLetters.map((nl) =>
+        `${nl.houseRole} (בית ${nl.houseNumber} — ${nl.figureHebrew}): ${nl.outputHebrew}`
+      );
+      push(nameLines.join('\n'));
+    }
+  }
+
   // ── 4. TOPIC-SPECIFIC: childrenPregnancy ────────────────────────────
   if (topicId === 'childrenPregnancy') {
     const h5  = getHouseFromBoard(boardAnalysis, 5);
