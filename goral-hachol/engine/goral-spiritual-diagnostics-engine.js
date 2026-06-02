@@ -265,6 +265,25 @@ function gradeFromMatches(specificMatches, openingMatches, genericScore) {
   return 'mixed';
 }
 
+function cleanDiagnosisText(text = '') {
+  return String(text)
+    .replace(/[؀-ۿﭐ-﷿ﹰ-﻿]+/g, '')
+    .replace(/ג['׳]ודלה/g,  'נלחם')
+    .replace(/אנקיס/g,       'שפל ראש')
+    .replace(/ג['׳]מאעה/g,  'קהלה')
+    .replace(/חומרה/g,       'אדום')
+    .replace(/שייח['׳]ים\s*[/]?\s*אנשי\s+רוח/g, 'אנשי דת ורוחניות')
+    .replace(/שייח['׳]ים/g, 'אנשי דת ורוחניות')
+    .replace(/עראפה/g,       'ידיעת נסתרות')
+    .replace(/כהאנה/g,       'חיזוי')
+    .replace(/שעוודה/g,      'כישופים')
+    .replace(/זֻחַל\s*[/]?\s*/g, '')
+    .replace(/ברמל/g,        'בגורל החול')
+    .replace(/עקלה/g,        'סוהר')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+}
+
 function buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, jinnTypeResult, organDiagnosisResult) {
   const verdictMap = {
     'strong-suspicion': 'מסקנה רוחנית: כן — הלוח מראה סימנים חזקים לפגיעה רוחנית לפי כללי המקור.',
@@ -279,12 +298,14 @@ function buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, j
 
   for (const m of specificMatches.slice(0, 4)) {
     const position = m.house === 15 ? 'הדיין' : m.house === 13 ? 'עד ראשון' : m.house === 14 ? 'עד שני' : `בית ${m.house}`;
-    details.push(`${position} (${m.figureHebrew}): ${m.diagnosisHebrew}`);
+    const diagText = cleanDiagnosisText(m.meaningHebrew || m.diagnosisHebrew || '');
+    if (diagText) details.push(`${position} (${m.figureHebrew}): ${diagText}`);
   }
 
   for (const m of openingMatches.slice(0, 2)) {
     const position = m.house === 15 ? 'הדיין' : m.house === 13 ? 'עד ראשון' : m.house === 14 ? 'עד שני' : `בית ${m.house}`;
-    details.push(`${position} (${m.figureHebrew}): ${m.diagnosisHebrew}`);
+    const diagText = cleanDiagnosisText(m.meaningHebrew || m.diagnosisHebrew || '');
+    if (diagText) details.push(`${position} (${m.figureHebrew}): ${diagText}`);
   }
 
   if (details.length > 0) {
