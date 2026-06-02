@@ -481,20 +481,81 @@ function describeCoreHouses(analysis, topicId, question) {
 
   // childrenPregnancy: house 5 fertility analysis
   if (topicId === 'childrenPregnancy') {
-    const h5 = getHouseFromBoard(analysis, 5);
-    const h1 = getHouseFromBoard(analysis, 1);
+    const h5  = getHouseFromBoard(analysis, 5);
+    const h6  = getHouseFromBoard(analysis, 6);
+    const h11 = getHouseFromBoard(analysis, 11);
+    const h1  = getHouseFromBoard(analysis, 1);
+
+    // Masculine (outer) figures: נשוא ראש, ממון יוצא, אדום, חיבור
+    const MASCULINE_KEYS = new Set(['1222', '1212', '2122', '2112']);
+    // Feminine (inner) figures: ממון נכנס, לבן, בר הלחי, סוהר, קהלה, דרך
+    const FEMININE_KEYS  = new Set(['2121', '2212', '1211', '1221', '2222', '1111']);
+
+    function figurePregnancyNote(key, name) {
+      if (key === '2212') return `${name} — הרה תלד בן.`;
+      if (key === '2121') return `${name} — הרה תלד בן.`;
+      if (key === '2112') return `${name} — ההיריון יסתיים בחיים.`;
+      if (key === '1221') return `${name} — מצביע על אישה הרה.`;
+      return null;
+    }
+
+    const pregnancyLines = [];
+
     if (h5) {
-      const h5Fortune = h5.fortune || '';
-      const h5Name = h5.figureHebrew || h5.figureKey || '';
-      const isFertile = h5Fortune.includes('סעד');
-      const isBarren = h5Fortune.includes('נחס');
-      const sameAsH1 = h1 && h5.figureKey === h1.figureKey;
-      const verdictLine = isFertile
-        ? `בית 5 (ילדים) — ${h5Name} [סעד]: סימן להיריון / לידה אפשרית.`
-        : isBarren
-        ? `בית 5 (ילדים) — ${h5Name} [נחס]: עיכוב בהיריון, ייתכן קושי.`
-        : `בית 5 (ילדים) — ${h5Name}: מצב ביניים — יש לבדוק את העדים.`;
-      parts.push(`אבחון פריון (בית 5):\n  ${verdictLine}${sameAsH1 ? '\n  ⚠ צורת בית 5 זהה לבית 1 — קשר ישיר בין השואל לעניין הילדים.' : ''}`);
+      const h5Key  = h5.figureKey || '';
+      const h5Name = h5.figureHebrew || h5Key;
+      const h5F    = h5.fortune || '';
+      let line = `בית 5 (ילדים) — ${h5Name}`;
+      if (h5F.includes('סעד'))  line += ' [סעד]: פתוח לילדים / לידה.';
+      else if (h5F.includes('נחס')) line += ' [נחס]: קושי או עיכוב בהיריון.';
+      else line += '.';
+      if (h5Key === '2221') line += ' ⚠ שפל ראש בבית 5 — סכנה לוולד.';
+      if (h1 && h5Key === h1.figureKey) line += ' (אותה צורה כבית 1 — קשר ישיר לשואל.)';
+      pregnancyLines.push(line);
+
+      const specificNote = figurePregnancyNote(h5Key, h5Name);
+      if (specificNote) {
+        pregnancyLines.push(`  ${specificNote}`);
+      } else if (MASCULINE_KEYS.has(h5Key)) {
+        pregnancyLines.push(`  סימן זכר מבית 5: ${h5Name} — צורה זכרית.`);
+      } else if (FEMININE_KEYS.has(h5Key)) {
+        pregnancyLines.push(`  סימן נקבה מבית 5: ${h5Name} — צורה נקבית.`);
+      }
+    }
+
+    if (h6) {
+      const h6Key  = h6.figureKey || '';
+      const h6Name = h6.figureHebrew || h6Key;
+      const h6F    = h6.fortune || '';
+      let line = `בית 6 (היריון) — ${h6Name}`;
+      if (h6F.includes('נחס'))  line += ' [נחס]: סימן שלילי להיריון.';
+      else if (h6F.includes('סעד')) line += ' [סעד]: סימן חיובי להיריון.';
+      else line += '.';
+      if (h6Key === '2222') line += ' ⚠ קהלה בבית 6 — סימן להפלה, עקרות, או נזק לילדים.';
+      pregnancyLines.push(line);
+
+      const specificNote = figurePregnancyNote(h6Key, h6Name);
+      if (specificNote) {
+        pregnancyLines.push(`  ${specificNote}`);
+      } else if (MASCULINE_KEYS.has(h6Key)) {
+        pregnancyLines.push(`  סימן זכר מבית 6: ${h6Name} — צורה זכרית.`);
+      } else if (FEMININE_KEYS.has(h6Key)) {
+        pregnancyLines.push(`  סימן נקבה מבית 6: ${h6Name} — צורה נקבית.`);
+      }
+    }
+
+    if (h11) {
+      const h11Name = h11.figureHebrew || h11.figureKey;
+      const h11F    = h11.fortune || '';
+      let line = `בית 11 (מיילדת) — ${h11Name}`;
+      if (h11F.includes('נחס'))  line += ' [נחס]: יש לשים לב לסיכוני לידה.';
+      else if (h11F.includes('סעד')) line += ' [סעד]: הלידה צפויה להתנהל בשלום.';
+      else line += '.';
+      pregnancyLines.push(line);
+    }
+
+    if (pregnancyLines.length > 0) {
+      parts.push(`ניתוח היריון וילדים:\n${pregnancyLines.map((l) => '  ' + l).join('\n')}`);
     }
   }
 
@@ -762,18 +823,64 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
   }
 
   if (topicId === 'childrenPregnancy') {
-    const house5 = getHouseFromBoard(boardAnalysis, 5);
-    const house5Desc = houseDescription(house5);
-    const jumla = boardAnalysis?.jumlaAnalysis;
-    const parts = [];
+    const house5  = getHouseFromBoard(boardAnalysis, 5);
+    const house6  = getHouseFromBoard(boardAnalysis, 6);
+    const house11 = getHouseFromBoard(boardAnalysis, 11);
+    const jumla   = boardAnalysis?.jumlaAnalysis;
+    const parts   = [];
 
+    // Jumla mod3 — primary outcome signal
     if (jumla?.childDiagnosis) {
       parts.push(jumla.childDiagnosis.outputHebrew);
     }
 
-    let base = 'לכן יש לבדוק את בית הילדים, העדים והדיין יחד, ורק אז להכריע לגבי אפשרות ההיריון או סימני זכר ונקבה.';
-    if (house5Desc) base += ` בדוק בית 5 (ילדים): ${house5Desc}`;
-    parts.push(base);
+    // Consolidate gender signals from houses 5 and 6
+    const MASCULINE_KEYS = new Set(['1222', '1212', '2122', '2112']);
+    const FEMININE_KEYS  = new Set(['2121', '2212', '1211', '1221', '2222', '1111']);
+    // לבן and ממון נכנס are feminine by polarity but specifically indicate a male child per source
+    const BOY_SPECIFIC   = new Set(['2212', '2121']);
+
+    const genderSignals = [];
+    for (const [h, label] of [[house5, 'בית 5'], [house6, 'בית 6']]) {
+      if (!h) continue;
+      const key  = h.figureKey || '';
+      const name = h.figureHebrew || key;
+      if (BOY_SPECIFIC.has(key)) {
+        genderSignals.push(`${label} (${name}) → סימן בן.`);
+      } else if (MASCULINE_KEYS.has(key)) {
+        genderSignals.push(`${label} (${name}) → סימן זכר (בן).`);
+      } else if (FEMININE_KEYS.has(key)) {
+        genderSignals.push(`${label} (${name}) → סימן נקבה (בת).`);
+      }
+    }
+    if (genderSignals.length > 0) {
+      parts.push(`סימני מין הוולד:\n${genderSignals.map((s) => '  ' + s).join('\n')}`);
+    }
+
+    // Birth safety and risk indicators
+    const safetyNotes = [];
+    if (house5?.figureKey === '2112') safetyNotes.push('חיבור בבית 5 — ההיריון יסתיים בחיים.');
+    if (house6?.figureKey === '2112') safetyNotes.push('חיבור בבית 6 — ההיריון יסתיים בחיים.');
+    if (house5?.figureKey === '2221') safetyNotes.push('⚠ שפל ראש בבית 5 — סכנה לוולד.');
+    if (house6?.figureKey === '2222') safetyNotes.push('⚠ קהלה בבית 6 — סימן להפלה, עקרות, או נזק לילדים.');
+    if (safetyNotes.length > 0) {
+      parts.push(`הערות:\n${safetyNotes.map((n) => '  ' + n).join('\n')}`);
+    }
+
+    // House 11 — midwife outcome
+    if (house11) {
+      const h11F = house11.fortune || '';
+      if (h11F.includes('נחס')) {
+        parts.push(`בית 11 (מיילדת) — ${house11.figureHebrew} [נחס]: יש לשים לב לסיכוני הלידה.`);
+      } else if (h11F.includes('סעד')) {
+        parts.push(`בית 11 (מיילדת) — ${house11.figureHebrew} [סעד]: הלידה צפויה להתנהל בשלום.`);
+      }
+    }
+
+    if (parts.length === 0) {
+      parts.push('לכן יש לבדוק את בית הילדים, העדים והדיין יחד, ורק אז להכריע לגבי אפשרות ההיריון.');
+    }
+
     return parts.join('\n');
   }
 
@@ -1491,6 +1598,71 @@ function buildNarrativeByTopic(result) {
     }
 
     if (lines.length) push(lines.join('\n'));
+  }
+
+  // ── 4. TOPIC-SPECIFIC: childrenPregnancy ────────────────────────────
+  if (topicId === 'childrenPregnancy') {
+    const h5  = getHouseFromBoard(boardAnalysis, 5);
+    const h6  = getHouseFromBoard(boardAnalysis, 6);
+    const h11 = getHouseFromBoard(boardAnalysis, 11);
+    const jumla = boardAnalysis?.jumlaAnalysis;
+
+    const MASCULINE_KEYS = new Set(['1222', '1212', '2122', '2112']);
+    const FEMININE_KEYS  = new Set(['2121', '2212', '1211', '1221', '2222', '1111']);
+    const BOY_SPECIFIC   = new Set(['2212', '2121']); // לבן, ממון נכנס — specific boy indicator
+
+    // Jumla mod3 verdict
+    if (jumla?.childDiagnosis) {
+      push(jumla.childDiagnosis.outputHebrew);
+    }
+
+    // Houses 5, 6, 11 with figure-specific meanings and gender signals
+    {
+      const pregnancyLines = [];
+
+      // House 5 is already shown as focus house above; add only the pregnancy signal
+      if (h5) {
+        const key  = h5.figureKey || '';
+        const name = hFig(h5) || key;
+        if (key === '2221')      pregnancyLines.push(`⚠ שפל ראש בבית 5 — סכנה לוולד.`);
+        else if (key === '2212') pregnancyLines.push(`בית 5 (${name}) → הרה תלד בן.`);
+        else if (key === '2121') pregnancyLines.push(`בית 5 (${name}) → הרה תלד בן.`);
+        else if (key === '2112') pregnancyLines.push(`בית 5 (${name}) → ההיריון יסתיים בחיים.`);
+        else if (key === '1221') pregnancyLines.push(`בית 5 (${name}) → מצביע על אישה הרה.`);
+        else if (MASCULINE_KEYS.has(key)) pregnancyLines.push(`בית 5 (${name}) → סימן זכר (בן): צורה זכרית.`);
+        else if (FEMININE_KEYS.has(key))  pregnancyLines.push(`בית 5 (${name}) → סימן נקבה (בת): צורה נקבית.`);
+      }
+
+      // House 6 — pregnancy house (not shown elsewhere in conclusion)
+      if (h6) {
+        const key     = h6.figureKey || '';
+        const name    = hFig(h6) || key;
+        const fort    = hFort(h6);
+        const transit = hTransit(h6);
+        let line = `בית 6 — היריון (${name}) — ${fort}`;
+        if (transit) line += ` — ${transit}`;
+        if (key === '2222') line += '. ⚠ קהלה — סימן להפלה, עקרות, או נזק לילדים.';
+        pregnancyLines.push(line);
+        if (key === '2212') pregnancyLines.push(`  → הרה תלד בן.`);
+        else if (key === '2121') pregnancyLines.push(`  → הרה תלד בן.`);
+        else if (key === '2112') pregnancyLines.push(`  → ההיריון יסתיים בחיים.`);
+        else if (key === '1221') pregnancyLines.push(`  → מצביע על אישה הרה.`);
+        else if (MASCULINE_KEYS.has(key)) pregnancyLines.push(`  → סימן זכר (בן): צורה זכרית.`);
+        else if (FEMININE_KEYS.has(key))  pregnancyLines.push(`  → סימן נקבה (בת): צורה נקבית.`);
+      }
+
+      // House 11 — midwife (not shown elsewhere)
+      if (h11) {
+        const name = hFig(h11) || h11.figureKey;
+        const fort = hFort(h11);
+        let line = `בית 11 — מיילדת (${name}) — ${fort}`;
+        if (fort === 'רע')  line += ': יש לשים לב לסיכוני הלידה.';
+        else if (fort === 'טוב') line += ': הלידה צפויה להתנהל בשלום.';
+        pregnancyLines.push(line);
+      }
+
+      if (pregnancyLines.length) push(pregnancyLines.join('\n'));
+    }
   }
 
   return paras.length ? paras.join('\n\n') : null;
