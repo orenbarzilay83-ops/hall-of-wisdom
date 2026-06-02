@@ -1234,6 +1234,71 @@ function boardScoreParagraph(boardAnalysis) {
 }
 
 
+// ─── TRANSIT TEXT MODERNIZATION ──────────────────────────────────────────────
+// Translates medieval Arabic geomancy terminology to modern Hebrew equivalents.
+// Direct replacements: terms with clear modern equivalents regardless of context.
+// Contextual annotations: terms whose meaning depends on the questioner's context.
+
+function modernizeTransitText(text) {
+  if (!text) return text;
+  let t = String(text);
+
+  // ── Government & authority ───────────────────────────────────────
+  t = t.replace(/עוזרי\s+הסולטן/g,           'פקידים ויועצים');
+  t = t.replace(/מטעם\s+הסולטן/g,            'מטעם השלטון');
+  t = t.replace(/הסולטן/g,                   'השלטון / המנהיג');
+  t = t.replace(/סולטנים/g,                  'מנהיגים / שליטים');
+  t = t.replace(/סולטן/g,                    'מנהיג / שליט');
+  t = t.replace(/וואלי/g,                    'ראש עיר / גורם שלטוני מקומי');
+  t = t.replace(/מהמלך|מטעם\s+המלך/g,        'מהשלטון / מגורם בכיר');
+  t = t.replace(/הרחקה\s+מצד/g,              'בעיות מול');
+
+  // ── Servitude ────────────────────────────────────────────────────
+  t = t.replace(/שפחות/g,                    'עוזרות / שכירות');
+  t = t.replace(/שפחה/g,                     'עוזרת / שכירה');
+  t = t.replace(/עבדות/g,                    'שירות / שכירות');
+  t = t.replace(/עבדים/g,                    'עובדים שכירים / עוזרים');
+  t = t.replace(/\bעבד\b/g,                  'עובד שכיר / עוזר');
+  t = t.replace(/ממלוכים/g,                  'חיילים / עובדים');
+
+  // ── Currency ─────────────────────────────────────────────────────
+  t = t.replace(/צרור\s+דינרי\s+זהב/g,       'צרור זהב / כסף');
+  t = t.replace(/צרור\s+דרהמים/g,            'צרור כסף');
+  t = t.replace(/דרהמים/g,                   'כסף / מטבעות');
+  t = t.replace(/דינרים/g,                   'כסף / מטבעות');
+  t = t.replace(/דרהם/g,                     'מטבע / כסף');
+  t = t.replace(/דינר/g,                     'מטבע / כסף');
+
+  // ── Death & burial ───────────────────────────────────────────────
+  t = t.replace(/יציאת\s+המת\s+אל\s+הקברים/g, 'ענייני קבורה');
+  t = t.replace(/תכריכי\s+המת/g,             'ענייני פטירה / אבל');
+  t = t.replace(/תכריכים/g,                  'ענייני פטירה');
+  t = t.replace(/\bכפן\b/g,                  'ענייני פטירה');
+
+  // ── Medical ──────────────────────────────────────────────────────
+  t = t.replace(/חיג[׳']אמה/g,              'פעולה רפואית (כגון בדיקת דם)');
+  t = t.replace(/הקזת\s+דם/g,               'בדיקת דם / תרומת דם');
+  t = t.replace(/הקזה/g,                    'פעולה רפואית');
+
+  // ── Sexual / moral ───────────────────────────────────────────────
+  t = t.replace(/לוואט/g,                   'יחסים אסורים לפי הדת');
+  t = t.replace(/משכב\s+אסור/g,             'יחסים אסורים');
+
+  // ── Other medieval terms ─────────────────────────────────────────
+  t = t.replace(/פתנה/g,                    'מחלוקת / סכסוך');
+  t = t.replace(/שהדויות/g,                 'עדויות');
+  t = t.replace(/בוסתנים/g,                 'גנות / שטחים ירוקים');
+
+  // ── Contextual annotations (meaning depends on questioner's context) ──
+  t = t.replace(/דואבים/g,   'דואבים (בעלי חיים / אמצעי תחבורה — לפי ההקשר)');
+  t = t.replace(/בהמות/g,    'בהמות (בעלי חיים / אמצעי תחבורה — לפי ההקשר)');
+  t = t.replace(/\bמקנה\b/g, 'מקנה (בעלי חיים / חקלאות — לפי ההקשר)');
+  t = t.replace(/\bצאן\b/g,  'צאן (בעלי חיים / חקלאות — לפי ההקשר)');
+  t = t.replace(/\bשיירה\b/g,'שיירה (שיירת סחר / נסיעה — לפי ההקשר)');
+
+  return t;
+}
+
 // ─── NARRATIVE CONCLUSION — text the practitioner reads to the client ────────
 
 function figureFortuneTone(fortune) {
@@ -1333,7 +1398,7 @@ function buildNarrativeByTopic(result) {
 
   const hFig     = (h) => clean(h?.figureHebrew || '');
   const hFort    = (h) => normFort(clean(h?.fortune || ''));
-  const hTransit = (h) => clean(h?.transit?.meaning || '');
+  const hTransit = (h) => modernizeTransitText(clean(h?.transit?.meaning || ''));
   const hTone    = (h) => figureFortuneTone(h?.fortune);
 
   const judge    = boardAnalysis.judge   || getHouseFromBoard(boardAnalysis, 15);
