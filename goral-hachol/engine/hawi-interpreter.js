@@ -2029,8 +2029,14 @@ function computeThiefLocationDetails(chart) {
 
   const h8 = chart.find((h) => Number(h.house) === 8);
   const h6 = chart.find((h) => Number(h.house) === 6);
-  if (h8) lines.push(`תיאור הגנב (בית 8 — ${h8.hebrew || h8.key}): ${h8.transit?.meaning || 'ראה פסיקת המעבר'}`);
-  if (h6) lines.push(`תיאור החפץ הגנוב (בית 6 — ${h6.hebrew || h6.key}): ${h6.transit?.meaning || 'ראה פסיקת המעבר'}`);
+  if (h8) {
+    const t8 = getTransitMeaningForHouse(h8)?.meaning;
+    if (t8) lines.push(`תיאור הגנב (בית 8 — ${h8.hebrew || h8.key}): ${t8}`);
+  }
+  if (h6) {
+    const t6 = getTransitMeaningForHouse(h6)?.meaning;
+    if (t6) lines.push(`תיאור החפץ הגנוב (בית 6 — ${h6.hebrew || h6.key}): ${t6}`);
+  }
 
   if (!lines.length) return null;
   return { findings, outputHebrew: lines.join('\n') };
