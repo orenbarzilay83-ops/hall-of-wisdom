@@ -490,6 +490,17 @@ function describeCoreHouses(analysis, topicId, question) {
     }
   }
 
+  // מסחל — ירחיל הצורה השופטת דרך 16 הבתים (ترحيل الميزان)
+  const mosahal = analysis.mosahal;
+  if (mosahal?.readings?.length) {
+    const lines = mosahal.readings
+      .map((r) => `  בית ${r.house}: ${r.meaning || r.dorusMeaning || ''}`)
+      .filter((l) => l.trim().length > 6);
+    if (lines.length) {
+      parts.push(`מסחל — ${mosahal.judgeHebrew || 'שופט'} בכל הבתים:\n${lines.join('\n')}`);
+    }
+  }
+
   // HAWI_INTRODUCTION_MAHW_THABAT — יסודות בנושא foundations
   const foundations = analysis.foundationsDisplay;
   if (foundations) {
@@ -1486,6 +1497,17 @@ function buildNarrativeByTopic(result) {
   if (checks.length) {
     const ruleLines = checks.map((c) => c.hebrewShort);
     push('בדיקות נושא:\n' + ruleLines.join('\n'));
+  }
+
+  // ── 10. מסחל — ירחיל הדיין דרך 16 הבתים (ترحيل الميزان) ─────────
+  const mosahal = boardAnalysis.mosahal;
+  if (mosahal?.readings?.length) {
+    const mLines = mosahal.readings
+      .map((r) => `  בית ${r.house}: ${r.meaning || r.dorusMeaning || ''}`)
+      .filter((l) => l.trim().length > 6);
+    if (mLines.length) {
+      push(`מסחל — ${mosahal.judgeHebrew || 'הדיין'} בכל הבתים:\n${mLines.join('\n')}`);
+    }
   }
 
   return paras.length ? paras.join('\n\n') : null;

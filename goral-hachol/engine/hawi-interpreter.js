@@ -2841,6 +2841,32 @@ function computeForcedTravelAnalysis(chart) {
   return { travelType, hebrewNote };
 }
 
+// מסחל (ترحيل الميزان): הרצת צורת השופט (ב15) דרך 16 הבתים — חאוי, פרק הירחיל
+function computeMosahal(chart) {
+  const h15 = chartHouse(chart, 15);
+  if (!h15 || !h15.key) return null;
+
+  const readings = [];
+  for (let n = 1; n <= 16; n++) {
+    const virtualHouse = { ...h15, house: n };
+    const transit = getTransitMeaningForHouse(virtualHouse);
+    if (transit) {
+      readings.push({
+        house: n,
+        meaning: transit.meaning || null,
+        dorusMeaning: transit.dorusMeaning || null,
+        topics: transit.topics || null,
+      });
+    }
+  }
+
+  return {
+    judgeKey: h15.key,
+    judgeHebrew: h15.hebrew || null,
+    readings,
+  };
+}
+
 // HAWI_INTRODUCTION_MAHW_THABAT — יסודות לתצוגה בנושא foundations
 function computeFoundationsDisplay() {
   const source = HAWI_SOURCE.extendedKnowledge?.introductionMahwThabat;
@@ -3011,6 +3037,9 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const travelExtra = (topicId === 'travel')
     ? computeTravelExtra(board.chart) : null;
 
+  // מסחל — הרצת צורת השופט דרך כל 16 הבתים (ترحيل الميزان)
+  const mosahal = computeMosahal(board.chart);
+
   // HAWI_INTRODUCTION_MAHW_THABAT — יסודות לתצוגה בנושא foundations
   const foundationsDisplay = (topicId === 'foundations')
     ? computeFoundationsDisplay() : null;
@@ -3089,6 +3118,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     childrenPregnancyExtra,
     missingPersonExtra,
     travelExtra,
+    mosahal,
     foundationsDisplay,
     sourceQuality,
     seventhOfHouse1: seventhOfHouse1Found
