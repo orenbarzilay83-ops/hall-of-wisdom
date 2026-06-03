@@ -20,6 +20,18 @@ import {
 } from '../data/sources/hawi/question-rules/hawi-question-hidden-treasure-extra.js';
 
 import {
+  HAWI_QUESTION_CHILDREN_PREGNANCY_EXTRA,
+} from '../data/sources/hawi/question-rules/hawi-question-children-pregnancy-extra.js';
+
+import {
+  HAWI_QUESTION_MISSING_PERSON_EXTRA,
+} from '../data/sources/hawi/question-rules/hawi-question-missing-person-extra.js';
+
+import {
+  HAWI_QUESTION_TRAVEL_EXTRA,
+} from '../data/sources/hawi/question-rules/hawi-question-travel-extra.js';
+
+import {
   FIGURE_LETTER_EXTRACTION,
 } from '../data/sources/hawi/foundations/hawi-figure-letter-extraction.js';
 
@@ -180,6 +192,9 @@ const MALEFIC_FIGURE_PATTERNS = new Set([
 ]);
 
 const ANGULAR_HOUSES_SET = new Set([1, 4, 7, 10]);
+
+// Standard geomancy gender: first element single dot (1) = masculine, double dots (2) = feminine
+const MASCULINE_FIGURE_PATTERNS = new Set(['1111','1212','1122','1221','1112','1211','1222','1121']);
 
 const SUN_FIGURE_PATTERNS  = new Set(['1122', '2121']); // כבוד יוצא, ממון נכנס
 const MOON_FIGURE_PATTERNS = new Set(['2212', '1111']); // לבן, דרך
@@ -2562,6 +2577,234 @@ function computeSeaVoyageRisks(chart) {
   };
 }
 
+// HAWI_QUESTION_CHILDREN_PREGNANCY_EXTRA (חאוי עמ׳ 42–43)
+function computeChildrenPregnancyExtra(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h1  = chartHouse(chart, 1);
+  const h5  = chartHouse(chart, 5);
+  const h6  = chartHouse(chart, 6);
+  const h7  = chartHouse(chart, 7);
+  const h11 = chartHouse(chart, 11);
+  const h12 = chartHouse(chart, 12);
+  const h13 = chartHouse(chart, 13);
+  const h14 = chartHouse(chart, 14);
+  const h15 = chartHouse(chart, 15);
+
+  const isMalefic = (h) => h && MALEFIC_FIGURE_PATTERNS.has(h.key || '');
+  const isMasc    = (h) => h && MASCULINE_FIGURE_PATTERNS.has(h.key || '');
+
+  const findings = [];
+
+  // childPossibilityRules
+  const aqlaInH15 = h15?.key === '1221';
+  if (aqlaInH15 && h13?.key === '1121' && h14?.key === '2122') {
+    findings.push({ id: 'aqla-15-judla-humra', hebrew: 'עקלה בבית 15 מג׳ודלה וחומרה — יזכה בילדים, רובם נקבות.' });
+  } else if (aqlaInH15 && (h13?.key === '1112' || h14?.key === '1112' || h13?.key === '2111' || h14?.key === '2111')) {
+    findings.push({ id: 'aqla-15-atabat', hebrew: 'עקלה בבית 15 מסף יוצא/נכנס — עניין הילד נעצר; אם יזכה בו יש חשש סכנה.' });
+  } else if (aqlaInH15 && h13?.key === '1222' && h14?.key === '2221') {
+    findings.push({ id: 'aqla-15-hayyan-nakis', hebrew: 'עקלה בבית 15 מחיאן ונכיס — כמעט אינו מגיע לילד שלם; חשש להפלה שלא בזמן.' });
+  } else if (aqlaInH15 && h13?.key === '2221' && h14?.key === '1222') {
+    findings.push({ id: 'aqla-15-nakis-hayyan', hebrew: 'עקלה בבית 15 מנכיס וחיאן — כמעט אינו מגיע לילד שלם; חשש להפלה שלא בזמן.' });
+  }
+
+  const hasJudla = (h13?.key === '1121' || h14?.key === '1121');
+  const hasHumra = (h13?.key === '2122' || h14?.key === '2122');
+  if (hasJudla && hasHumra && !aqlaInH15) {
+    findings.push({ id: 'judla-humra-witnesses', hebrew: 'ג׳ודלה וחומרה בעדים — הולדה לאחר ריחוק וזמן ארוך.' });
+  }
+
+  if (h14?.key === '2212' && h13?.key === '1211') {
+    findings.push({ id: 'bayad-14-naqi-13', hebrew: 'לבן בבית 14 ובר-לחי בבית 13 — ילדים רבים מזכרים ונקבות, מצבם ופרנסתם טובים.' });
+  } else if (h13?.key === '2212' && h14?.key === '1211') {
+    findings.push({ id: 'bayad-13-naqi-14', hebrew: 'לבן ובר-לחי בעדים — ילדים זכרים ונקבות, אך יש חשש עליהם.' });
+  }
+
+  // house15And11Rules
+  if (h15?.key === '2112' && h13?.key === '2222') {
+    findings.push({ id: 'ijtima-15-jamaa-13', hebrew: 'חיבור בבית 15 וג׳מאעה בבית 13 — יזכה לכמה ילדים.' });
+  } else if (h14?.key === '2222' && h15?.key === '2112') {
+    findings.push({ id: 'jamaa-14-ijtima-15', hebrew: 'ג׳מאעה בבית 14 וחיבור בבית 15 — ילדים רבים מכמה נשים; מכובד אצלם ומקונא בגללם.' });
+  } else if (h15?.key === '2112' && ((h13?.key === '1111' && h14?.key === '1221') || (h13?.key === '1221' && h14?.key === '1111'))) {
+    findings.push({ id: 'ijtima-tariq-aqla', hebrew: 'חיבור מדרך ועקלה — ילדיו נקבות ויאריכו ימים.' });
+  } else if (h15?.key === '2112' && ((h13?.key === '1122' || h14?.key === '1122') && (h13?.key === '2121' || h14?.key === '2121'))) {
+    findings.push({ id: 'ijtima-nusra-kharija-qabd-dakhil', hebrew: 'חיבור מכבוד יוצא וממון נכנס — לא יזכה בילד אלא בסוף ימיו.' });
+  }
+
+  if (h13?.key === '1122' || h13?.key === '1212') {
+    findings.push({ id: 'nusra-kharija-or-qabd-kharij-13', hebrew: 'כבוד יוצא / ממון יוצא בבית 13 — ילדים רבים, אך מעט תועלת מהם.' });
+  }
+
+  let h11ChildSign = null;
+  if (h11 && h11.fortune?.includes('סעד') && h11.direction === 'incoming') {
+    h11ChildSign = 'בית 11 סעד נכנס — מורה על ילד.';
+  } else if (h5?.direction === 'incoming' && h11 && isMalefic(h11) && h11.direction === 'outgoing') {
+    h11ChildSign = 'בית 5 נכנס ובית 11 נחס יוצא — יהיה ילד ואחר כך יתקלקל.';
+  }
+  if (h11ChildSign) findings.push({ id: 'h11-child-sign', hebrew: h11ChildSign });
+
+  if (isMalefic(h12) && isMalefic(h7)) {
+    findings.push({ id: 'h12-malefic-h7-malefic', hebrew: 'בית 12 נחס ובית 7 נחס — מורה על קלקול לאחר הלידה.' });
+  }
+
+  // genderRules (h1 + h5)
+  let genderVerdict = null;
+  if (h1 && h5) {
+    if (isMasc(h1) && isMasc(h5)) {
+      genderVerdict = 'בית 1 ובית 5 שניהם זכריים — הולדת זכר.';
+    } else if (!isMasc(h1) && !isMasc(h5)) {
+      genderVerdict = 'בית 1 ובית 5 שניהם נקביים — הולדת נקבה.';
+    }
+  }
+  if (genderVerdict) findings.push({ id: 'gender-h1-h5', hebrew: genderVerdict });
+
+  // House roles display (always for this topic)
+  const houseRolesLines = [
+    `בית 5 (${h5?.hebrew || '?'}) — בית הילד.`,
+    `בית 6 (${h6?.hebrew || '?'}) — בית ההריון.`,
+    `בית 11 (${h11?.hebrew || '?'}) — המיילדת/האומנת.`,
+  ];
+
+  if (findings.length === 0 && genderVerdict === null) return null;
+
+  return {
+    findings,
+    houseRoles: houseRolesLines,
+    outputHebrew: [
+      ...houseRolesLines,
+      ...findings.map((f) => f.hebrew),
+    ].join('\n'),
+  };
+}
+
+// HAWI_QUESTION_MISSING_PERSON_EXTRA (חאוי עמ׳ 59–60)
+function computeMissingPersonExtra(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h1  = chartHouse(chart, 1);
+  const h2  = chartHouse(chart, 2);
+  const h4  = chartHouse(chart, 4);
+  const h6  = chartHouse(chart, 6);
+  const h7  = chartHouse(chart, 7);
+  const h8  = chartHouse(chart, 8);
+  const h9  = chartHouse(chart, 9);
+  const h10 = chartHouse(chart, 10);
+  const h12 = chartHouse(chart, 12);
+  const h13 = chartHouse(chart, 13);
+  const h15 = chartHouse(chart, 15);
+  const h16 = chartHouse(chart, 16);
+
+  const isMalefic = (h) => h && MALEFIC_FIGURE_PATTERNS.has(h.key || '');
+
+  const returnFindings  = [];
+  const deathFindings   = [];
+  const dangerFindings  = [];
+
+  // returnRules
+  if (h1?.key === '1111' || h7?.key === '1111') {
+    const loc = h1?.key === '1111' ? 'בית 1' : 'בית 7';
+    returnFindings.push({ id: 'tariq-return', hebrew: `דרך ב${loc} — סימן לתנועה וחזרה.` });
+  }
+
+  const maleficTravelHouses = [6,8,9,12].filter((n) => {
+    const h = chartHouse(chart, n);
+    return h && isMalefic(h);
+  });
+  if (maleficTravelHouses.length > 0) {
+    dangerFindings.push({ id: 'malefic-travel-houses', hebrew: `נחסים בבתים ${maleficTravelHouses.join(', ')} — סכנה, פחד, כלא, חולי או רעה בדרך.` });
+  }
+
+  // specificReturnCombinations
+  if (h16 && h7 && h16.key === h7.key && h10 && h12 && h10.key === h12.key) {
+    returnFindings.push({ id: 'fast-return-16-7-10-12', hebrew: 'צורת בית 16 חוזרת בבית 7, וצורת בית 10 חוזרת בבית 12 — הנעדר יחזור במהירות.' });
+  }
+
+  if (h7 && h9 && h7.key === h9.key && h9.direction === 'incoming' && h15?.key === '2222') {
+    returnFindings.push({ id: 'false-news-farther', hebrew: 'בית 7 חוזר בבית 9 כנכנס וג׳מאעה בבית 15 — הנעדר חוזר אך ממשיך לארץ רחוקה יותר; יופצו עליו ידיעות שקר.' });
+  } else if (h15?.key === '2222' && h13?.key === '1111' && h14?.key === '1111') {
+    returnFindings.push({ id: 'stays-willingly-returns', hebrew: 'ג׳מאעה בבית 15 משתי דרכים — הנעדר יחזור; הוא שוהה שם ברצון.' });
+  }
+
+  if (h9?.key === '1212' && h16?.key === '1212') {
+    deathFindings.push({ id: 'qabd-kharij-h9-h16', hebrew: 'ממון יוצא בבית 9 וחוזר בבית 16 — חשש מוות בגלות או בארץ זרה.' });
+  } else if (h9?.key === '1212') {
+    returnFindings.push({ id: 'qabd-kharij-h9-alone', hebrew: 'ממון יוצא בבית 9 בלבד — אפשרות לחזרה לאחר זמן רב.' });
+  }
+
+  if (h8 && h9 && h8.key === h9.key) {
+    returnFindings.push({ id: 'h8-h9-connected', hebrew: 'בית 8 מתחבר לבית 9 — הנעדר בדרך חזרה, קם ובא.' });
+  }
+
+  if (h2 && h4 && h2.key === h4.key) {
+    returnFindings.push({ id: 'h2-h4-connected', hebrew: 'בית 2 מתחבר לבית 4 — הנעדר רוצה לחזור, אך מפחד מבפנים.' });
+  }
+
+  if (h7 && h16 && h7.key === h16.key) {
+    dangerFindings.push({ id: 'h7-h16-connected', hebrew: 'בית 7 מתחבר לבית 16 — הנעדר כלוא או חולה במקום שנסע אליו.' });
+  } else if (h7 && h12 && h7.key === h12.key) {
+    dangerFindings.push({ id: 'h7-h12-connected', hebrew: 'בית 7 מתחבר לבית 12 — הנעדר כלוא או חולה בחו״ל.' });
+  }
+
+  // specificDeathRules
+  if ((h1?.key === '1112' || h9?.key === '1112') || (h1?.key === '1212' || h9?.key === '1212')) {
+    const figure = (h1?.key === '1112' || h1?.key === '1212') ? `בית 1: ${h1?.hebrew || h1?.key}` : `בית 9: ${h9?.hebrew || h9?.key}`;
+    deathFindings.push({ id: 'ataba-or-qabd-kharij-h1-h9', hebrew: `${figure} — הצורות הנחסיות ביותר בשאלת נעדר; חשש מוות.` });
+  }
+
+  if (isMalefic(h1) && isMalefic(h9) && isMalefic(h13)) {
+    if (isMalefic(h12) || h12?.key === h1?.key) {
+      deathFindings.push({ id: 'death-1-9-13-h12', hebrew: 'בתים 1, 9, 13 כולם נחסיים וחזרה/נחס בבית 12 — פסיקת מוות.' });
+    }
+  }
+
+  if (returnFindings.length === 0 && deathFindings.length === 0 && dangerFindings.length === 0) return null;
+
+  const allLines = [
+    ...returnFindings.map((f) => f.hebrew),
+    ...dangerFindings.map((f) => f.hebrew),
+    ...deathFindings.map((f) => f.hebrew),
+  ];
+
+  return {
+    returnFindings,
+    dangerFindings,
+    deathFindings,
+    outputHebrew: allLines.join('\n'),
+  };
+}
+
+// HAWI_QUESTION_TRAVEL_EXTRA (חאוי עמ׳ 33–34) — השלמות שלא מכוסות ב-forcedTravelAnalysis
+function computeTravelExtra(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h1 = chartHouse(chart, 1);
+  const h3 = chartHouse(chart, 3);
+  const h8 = chartHouse(chart, 8);
+  const h9 = chartHouse(chart, 9);
+
+  const isMalefic = (h) => h && MALEFIC_FIGURE_PATTERNS.has(h.key || '');
+  const findings = [];
+
+  // dangerAndReturnRules: חיבור לבית 8 → אין חזרה
+  if (h1 && h8 && h1.key === h8.key) {
+    findings.push({ id: 'h1-h8-no-return', hebrew: `צורת בית 1 (${h1.hebrew || h1.key}) מתחברת לבית 8 — הנוסע לא יחזור מנסיעתו.` });
+  }
+
+  // bad-tali-moon-sun-travel-against-him: טאלע נחסי → נסיעה לרעתו
+  if (isMalefic(h1)) {
+    findings.push({ id: 'malefic-tali', hebrew: `בית 1 נחסי (${h1?.hebrew || h1?.key}) — נסיעה זו לרעת השואל.` });
+  }
+
+  // tariq in h3 or h9 → good for travel (moonTravelRules: tariq-best-for-travel)
+  if (h3?.key === '1111' || h9?.key === '1111') {
+    const loc = h3?.key === '1111' ? 'בית 3' : 'בית 9';
+    findings.push({ id: 'tariq-travel-good', hebrew: `דרך ב${loc} — טובה לנסיעה לפי המקור.` });
+  }
+
+  if (findings.length === 0) return null;
+  return {
+    findings,
+    outputHebrew: findings.map((f) => f.hebrew).join('\n'),
+  };
+}
+
 // HAWI_DHAMIR_DIRECTIONS_VALIDATION.forcedOrChosenTravelRules (חאוי עמ׳ 33)
 function computeForcedTravelAnalysis(chart) {
   const h1 = chartHouse(chart, 1);
@@ -2760,6 +3003,14 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const forcedTravelAnalysis = (topicId === 'travel')
     ? computeForcedTravelAnalysis(board.chart) : null;
 
+  // HAWI_QUESTION_CHILDREN_PREGNANCY_EXTRA / MISSING_PERSON_EXTRA / TRAVEL_EXTRA (חאוי עמ׳ 33-34, 42-43, 59-60)
+  const childrenPregnancyExtra = (topicId === 'childrenPregnancy')
+    ? computeChildrenPregnancyExtra(board.chart) : null;
+  const missingPersonExtra = (topicId === 'missingPerson')
+    ? computeMissingPersonExtra(board.chart) : null;
+  const travelExtra = (topicId === 'travel')
+    ? computeTravelExtra(board.chart) : null;
+
   // HAWI_INTRODUCTION_MAHW_THABAT — יסודות לתצוגה בנושא foundations
   const foundationsDisplay = (topicId === 'foundations')
     ? computeFoundationsDisplay() : null;
@@ -2835,6 +3086,9 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     seaVoyageRisks,
     firstFigureRepetition,
     forcedTravelAnalysis,
+    childrenPregnancyExtra,
+    missingPersonExtra,
+    travelExtra,
     foundationsDisplay,
     sourceQuality,
     seventhOfHouse1: seventhOfHouse1Found

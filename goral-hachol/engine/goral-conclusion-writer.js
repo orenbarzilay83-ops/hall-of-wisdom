@@ -465,6 +465,31 @@ function describeCoreHouses(analysis, topicId, question) {
     parts.push(`סוג הנסיעה:\n  ${forcedTravel.hebrewNote}`);
   }
 
+  // HAWI_QUESTION_TRAVEL_EXTRA — השלמות חאוי (עמ׳ 33–34)
+  const travelExtra = analysis.travelExtra;
+  if (travelExtra?.findings?.length) {
+    parts.push(`השלמות נסיעה:\n${travelExtra.findings.map((f) => '  ' + f.hebrew).join('\n')}`);
+  }
+
+  // HAWI_QUESTION_CHILDREN_PREGNANCY_EXTRA — השלמות חאוי (עמ׳ 42–43)
+  const childrenPregnancyExtra = analysis.childrenPregnancyExtra;
+  if (childrenPregnancyExtra?.findings?.length) {
+    parts.push(`השלמות ילדים והריון:\n${childrenPregnancyExtra.findings.map((f) => '  ' + f.hebrew).join('\n')}`);
+  }
+
+  // HAWI_QUESTION_MISSING_PERSON_EXTRA — השלמות חאוי (עמ׳ 59–60)
+  const missingPersonExtra = analysis.missingPersonExtra;
+  if (missingPersonExtra) {
+    const extraLines = [
+      ...( missingPersonExtra.returnFindings || []).map((f) => f.hebrew),
+      ...( missingPersonExtra.dangerFindings  || []).map((f) => f.hebrew),
+      ...( missingPersonExtra.deathFindings   || []).map((f) => f.hebrew),
+    ];
+    if (extraLines.length) {
+      parts.push(`השלמות נעדר:\n${extraLines.map((l) => '  ' + l).join('\n')}`);
+    }
+  }
+
   // HAWI_INTRODUCTION_MAHW_THABAT — יסודות בנושא foundations
   const foundations = analysis.foundationsDisplay;
   if (foundations) {
@@ -728,19 +753,42 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
   if (topicId === 'missingPerson') {
     const house8 = getHouseFromBoard(boardAnalysis, 8);
     const house8Desc = houseDescription(house8);
+    const extra = boardAnalysis?.missingPersonExtra;
+    const parts = [];
+
+    if (extra?.returnFindings?.length) {
+      parts.push(...extra.returnFindings.map((f) => f.hebrew));
+    }
+    if (extra?.dangerFindings?.length) {
+      parts.push(...extra.dangerFindings.map((f) => f.hebrew));
+    }
+    if (extra?.deathFindings?.length) {
+      parts.push(...extra.deathFindings.map((f) => f.hebrew));
+    }
+
     let base = 'לכן צריך לקרוא בזהירות את סימני החזרה, העיכוב והפחד, ולא להסתפק בסימן אחד בלבד.';
     if (house8Desc) base += ` בדוק בית 8 (מות/אובדן): ${house8Desc}`;
-    return base;
+    parts.push(base);
+    return parts.join('\n');
   }
 
   if (topicId === 'childrenPregnancy') {
     const house5 = getHouseFromBoard(boardAnalysis, 5);
     const house5Desc = houseDescription(house5);
     const jumla = boardAnalysis?.jumlaAnalysis;
+    const extra = boardAnalysis?.childrenPregnancyExtra;
     const parts = [];
+
+    if (extra?.houseRoles?.length) {
+      parts.push(...extra.houseRoles);
+    }
 
     if (jumla?.childDiagnosis) {
       parts.push(jumla.childDiagnosis.outputHebrew);
+    }
+
+    if (extra?.findings?.length) {
+      parts.push(...extra.findings.map((f) => f.hebrew));
     }
 
     let base = 'לכן יש לבדוק את בית הילדים, העדים והדיין יחד, ורק אז להכריע לגבי אפשרות ההיריון או סימני זכר ונקבה.';
