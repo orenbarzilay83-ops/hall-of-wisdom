@@ -122,7 +122,7 @@ const TOPIC_MAIN_HOUSES = {
   completion:       [1, 11, 12, 13, 14, 15],
   foundations:      [1, 13, 14, 15, 16],
   generalReading:   [1, 2, 6, 7, 10, 11, 12, 13, 14, 15, 16],
-  prisoner:         [1, 4, 5, 11, 12, 15],
+  prisoner:         [1, 4, 6, 8, 10, 11, 12, 15],
   partnership:      [1, 2, 7, 10, 11, 12, 13, 14, 15],
   seaVoyage:        [1, 8, 9, 11, 12, 15],
   theft:            [1, 2, 7, 8, 11, 12, 13, 14, 15],
