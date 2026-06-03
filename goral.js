@@ -22,7 +22,7 @@ function goralParseTable(str) {
 const G_TABLES = {
   א:{rows:[
     goralParseTable("טו-י-ב-ב-גורלי-יג-יג-יב-יג-יא-ד-יג-א-יא"),
-    goralParseTable("יג-יג-ז-ח-יג-ט-יח-תומך-ו-י-טז-ו-יב"),
+    goralParseTable("יג-יג-ז-ח-יג-ט-יח-תומך-ו-י-טז-י-יב"),
     goralParseTable("יג-יב-יג-ח-יג-יב-ו-א-יג-אתה-יט-יג"),
     goralParseTable("חלקי-ו-ו-א-כ-יב-כא-כ-ד-יב-וכוסי"),
     goralParseTable("מנת-כ-טז-י-ה-כא-יא-יג-ג-כא"),
@@ -224,6 +224,12 @@ function goralNavigate(boardName, jump){
     if(k === 9){
       offset = 11;
     }
+    if(k === 1){
+      offset = 1;
+    }
+    if(k === 3){
+      offset = 6;
+    }
   }
 
   let index = (start + goralFirstJump(jump) + offset + seq.length) % seq.length;
@@ -285,6 +291,10 @@ function goralFormatAnswer(raw){
     ["ימלאמשאלתכ", "ימלא משאלתכ"],
     ["מלאמשאלתכ", "מלא משאלתכ"],
 
+    ["אשראתהמבקש", "אשר אתה מבקש"],
+    ["אשראתהרוצה", "אשר אתה רוצה"],
+    ["תצלחבזה", "תצלח בזה"],
+    ["מלאכהרחמימ", "מלאכ הרחמימ"],
     ["לאמסכימבזה", "לא מסכימ בזה"],
     ["לאיניחלזאת", "לא יניח לזאת"],
     ["והיאלאלטוב", "והיא לא לטוב"],
