@@ -391,67 +391,67 @@ function describeCoreHouses(analysis, topicId, question) {
 
   const authAnalysis = analysis.authorityStateAnalysis;
   if (authAnalysis) {
-    parts.push(`ניתוח שלטון (שער מלכים, חאוי עמ׳ 36-38):\n${authAnalysis.outputHebrew}`);
+    parts.push(`ניתוח שלטון:\n${authAnalysis.outputHebrew}`);
   }
 
   const yearlyAnalysis = analysis.yearlyForecastAnalysis;
   if (yearlyAnalysis) {
-    parts.push(`ניתוח טאלע השנה (חאוי עמ׳ 60-62):\n${yearlyAnalysis.outputHebrew}`);
+    parts.push(`ניתוח טאלע השנה:\n${yearlyAnalysis.outputHebrew}`);
   }
 
   const birthAnalysis = analysis.birthNativityAnalysis;
   if (birthAnalysis) {
-    parts.push(`שער המולד (חאוי עמ׳ 51-58):\n${birthAnalysis.outputHebrew}`);
+    parts.push(`ניתוח מולד:\n${birthAnalysis.outputHebrew}`);
   }
 
   const triangles = analysis.trianglesEnrichment;
   if (triangles) {
-    parts.push(`ניתוח משולשים (שער המשולשים, חאוי עמ׳ 59):\n${triangles.outputHebrew}`);
+    parts.push(`ניתוח משולשים:\n${triangles.outputHebrew}`);
   }
 
   const illnessDiag = analysis.illnessElementDiagnosis;
   if (illnessDiag) {
-    parts.push(`אבחון מחלה לפי יסוד (בלוג' אלאמל פרק 5):\n  ${illnessDiag.outputHebrew.replace(/\n/g, '\n  ')}`);
+    parts.push(`אבחון מחלה לפי יסוד:\n  ${illnessDiag.outputHebrew.replace(/\n/g, '\n  ')}`);
   }
 
   const thiefLoc = analysis.thiefLocationDetails;
   if (thiefLoc) {
-    parts.push(`זיהוי הגנב (בלוג' אלאמל פרק 19):\n  ${thiefLoc.outputHebrew.replace(/\n/g, '\n  ')}`);
+    parts.push(`זיהוי הגנב:\n  ${thiefLoc.outputHebrew.replace(/\n/g, '\n  ')}`);
   }
 
   const enemyHH = analysis.enemyInHousehold;
   if (enemyHH) {
-    parts.push(`גילוי אויב בסביבה (בלוג' אלאמל עמ' 64):\n  ${enemyHH.outputHebrew}`);
+    parts.push(`גילוי אויב בסביבה:\n  ${enemyHH.outputHebrew}`);
   }
 
   const marriageForecast = analysis.marriageFigureForecast;
   if (marriageForecast) {
-    parts.push(`פסיקת נישואין לפי צורה שולטת (בלוג' אלאמל פרק 33):\n  ${marriageForecast.outputHebrew}`);
+    parts.push(`פסיקת נישואין לפי צורה שולטת:\n  ${marriageForecast.outputHebrew}`);
   }
 
   const yearlyForecast = analysis.yearlyFigureForecast;
   if (yearlyForecast) {
-    parts.push(`תחזית שנתית לפי צורה שולטת (בלוג' אלאמל עמ' 25):\n  ${yearlyForecast.outputHebrew}`);
+    parts.push(`תחזית שנתית לפי צורה שולטת:\n  ${yearlyForecast.outputHebrew}`);
   }
 
   const altName = analysis.alternativeNameExtraction;
   if (altName) {
-    parts.push(`חילוץ שם — שיטה 5 (בלוג' אלאמל עמ' 13-15):\n${altName.outputHebrew}`);
+    parts.push(`חילוץ שם:\n${altName.outputHebrew}`);
   }
 
   const physThief = analysis.physicalDescriptionThief;
   if (physThief) {
-    parts.push(`תיאור פיזי — הגנב / האויב (בלוג' אלאמל עמ' 65-71):\n  ${physThief.outputHebrew}`);
+    parts.push(`תיאור פיזי — הגנב / האויב:\n  ${physThief.outputHebrew}`);
   }
 
   const physMissing = analysis.physicalDescriptionMissing;
   if (physMissing) {
-    parts.push(`תיאור פיזי — הנעדר (בלוג' אלאמל עמ' 65-71):\n  ${physMissing.outputHebrew}`);
+    parts.push(`תיאור פיזי — הנעדר:\n  ${physMissing.outputHebrew}`);
   }
 
   const prisoner = analysis.prisonerAnalysis;
   if (prisoner) {
-    parts.push(`ניתוח אסיר/כלא (בלוג' אלאמל עמ' 28, 57):\n${prisoner.lines.map((l) => `  ${l}`).join('\n')}`);
+    parts.push(`ניתוח אסיר/כלא:\n${prisoner.lines.map((l) => `  ${l}`).join('\n')}`);
   }
 
   const seaRisks = analysis.seaVoyageRisks;
@@ -462,13 +462,13 @@ function describeCoreHouses(analysis, topicId, question) {
   // HAWI_DHAMIR_DIRECTIONS_VALIDATION — נסיעה כפויה/רצונית
   const forcedTravel = analysis.forcedTravelAnalysis;
   if (forcedTravel) {
-    parts.push(`סוג הנסיעה (חאוי עמ׳ 33):\n  ${forcedTravel.hebrewNote}`);
+    parts.push(`סוג הנסיעה:\n  ${forcedTravel.hebrewNote}`);
   }
 
   // HAWI_INTRODUCTION_MAHW_THABAT — יסודות בנושא foundations
   const foundations = analysis.foundationsDisplay;
   if (foundations) {
-    parts.push(`יסודות גורל החול (${foundations.sourceRef}):\n${foundations.lines.map((l) => '  ' + l).join('\n')}`);
+    parts.push(`יסודות גורל החול:\n${foundations.lines.map((l) => '  ' + l).join('\n')}`);
   }
 
   // --- GROUP B: topic-specific analysis sections ---
@@ -1314,7 +1314,11 @@ function buildNarrativeByTopic(result) {
     const parts = [];
     parts.push(`${namePrefix}הדיין (בית 15): ${fig}${fort ? `, ${fort}` : ''} — פסיקה ${toneWord}.`);
     if (speak)   parts.push(`הדיין ${speak}.`);
-    if (transit) parts.push(`חאוי: ${transit}`);
+    if (transit) parts.push(transit);
+    const dorusMeaning = judge?.transit?.dorusMeaning;
+    if (dorusMeaning) parts.push(dorusMeaning);
+    const distMeaning = judge?.distanceMeaning;
+    if (distMeaning) parts.push(`הצורה בבית הזה: ${distMeaning.meaning}`);
 
     push(parts.join(' '));
   }
@@ -1335,7 +1339,7 @@ function buildNarrativeByTopic(result) {
       let line = `${label} (בית ${num}): ${fig}${fort ? `, ${fort}` : ''}`;
       if (speak)     line += `, ${speak}`;
       if (agreeNote) line += ` [${agreeNote}]`;
-      if (transit)   line += `. חאוי: ${transit}`;
+      if (transit)   line += `. ${transit}`;
       wLines.push(line);
     };
 
@@ -1346,7 +1350,7 @@ function buildNarrativeByTopic(result) {
     if (w13 && w14 && jt !== 0) {
       const eitherOpp = (jt > 0 && (w13t < 0 || w14t < 0)) || (jt < 0 && (w13t > 0 || w14t > 0));
       if (eitherOpp) {
-        wLines.push('לפי חאוי: גם כשהעדים מנוגדים לדיין — הדיין הוא הקובע. הניגוד מלמד שיש כוחות בלוח שמעכבים, והדרך תהיה פחות ישירה.');
+        wLines.push('גם כשהעדים מנוגדים לדיין — הדיין הוא הקובע. הניגוד מלמד שיש כוחות בלוח שמעכבים, והדרך תהיה פחות ישירה.');
       }
     }
 
@@ -1363,7 +1367,9 @@ function buildNarrativeByTopic(result) {
     parts.push(`${nameLabel} (בית 1): ${fig}${fort ? `, ${fort}` : ''}.`);
     if (profile) parts.push(`פרופיל: ${profile}.`);
     if (speak)   parts.push(`בית 1 ${speak}.`);
-    if (transit) parts.push(`חאוי: ${transit}`);
+    if (transit) parts.push(transit);
+    const distH1 = h1?.distanceMeaning;
+    if (distH1) parts.push(`הצורה בבית הזה: ${distH1.meaning}`);
 
     push(parts.join(' '));
   }
@@ -1376,7 +1382,9 @@ function buildNarrativeByTopic(result) {
 
     parts.push(`${label}: ${fig}${fort ? `, ${fort}` : ''}.`);
     if (speak)   parts.push(`${speak}.`);
-    if (transit) parts.push(`חאוי: ${transit}`);
+    if (transit) parts.push(transit);
+    const distFocus = focus?.distanceMeaning;
+    if (distFocus) parts.push(`הצורה בבית הזה: ${distFocus.meaning}`);
 
     push(parts.join(' '));
   }
@@ -1392,7 +1400,7 @@ function buildNarrativeByTopic(result) {
       if (!fig && !fort) continue;
       let line = `בית ${h.house}: ${fig}${fort ? `, ${fort}` : ''}`;
       if (speak)   line += ` [${speak}]`;
-      if (transit) line += `. חאוי: ${transit}`;
+      if (transit) line += `. ${transit}`;
       addLines.push(line);
     }
     if (addLines.length) push(addLines.join('\n'));
@@ -1429,7 +1437,7 @@ function buildNarrativeByTopic(result) {
   const checks = (boardAnalysis.topicConnections?.checks || []);
   if (checks.length) {
     const ruleLines = checks.map((c) => c.hebrewShort);
-    push('בדיקות חאוי לנושא:\n' + ruleLines.join('\n'));
+    push('בדיקות נושא:\n' + ruleLines.join('\n'));
   }
 
   return paras.length ? paras.join('\n\n') : null;
@@ -1511,7 +1519,11 @@ function buildSpiritualNarrative(result) {
     const parts = [];
     parts.push(`הדיין (בית 15): ${fig}${fort ? `, ${fort}` : ''} — פסיקה ${toneWord}.`);
     if (speak)   parts.push(`הדיין ${speak}.`);
-    if (transit) parts.push(`חאוי: ${transit}`);
+    if (transit) parts.push(transit);
+    const dorusMeaning = judge?.transit?.dorusMeaning;
+    if (dorusMeaning) parts.push(dorusMeaning);
+    const distMeaning = judge?.distanceMeaning;
+    if (distMeaning) parts.push(`הצורה בבית הזה: ${distMeaning.meaning}`);
     push(parts.join(' '));
   }
 

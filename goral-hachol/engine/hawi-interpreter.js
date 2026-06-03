@@ -23,6 +23,10 @@ import {
   FIGURE_LETTER_EXTRACTION,
 } from '../data/sources/hawi/foundations/hawi-figure-letter-extraction.js';
 
+import {
+  getDistanceMeaning,
+} from '../data/sources/dorus/dorus-distance-meanings.js';
+
 export const NATURAL_HOUSE_FIGURES = {
   1:  '1121', // נלחם — doc2: "الجدولة 00|0"
   2:  '1222', // נשוא ראש — doc3: "0|||" בכותרת פרק בית 2
@@ -38,6 +42,18 @@ export const NATURAL_HOUSE_FIGURES = {
   6:  '1112', // סף יוצא — Taskin East[5] = "000|"
   7:  '2122', // אדום — Taskin East[6] = "|0||"
 };
+
+const FIGURE_NATURAL_HOUSE = Object.fromEntries(
+  Object.entries(NATURAL_HOUSE_FIGURES).map(([h, p]) => [p, Number(h)])
+);
+
+function computeDistanceMeaning(figurePattern, houseNum) {
+  if (!figurePattern || !houseNum) return null;
+  const naturalHouse = FIGURE_NATURAL_HOUSE[figurePattern];
+  if (!naturalHouse) return null;
+  const dist = ((Number(houseNum) - naturalHouse + 16) % 16) || 16;
+  return getDistanceMeaning(dist);
+}
 
 const TASKIN_EAST_PATTERNS = [
   '2212', // לבן
@@ -338,7 +354,7 @@ function computeLifeDeath(chart) {
 
   if (isMalefic(h1) && isMalefic(h9) && isMalefic(h13)) {
     if (isMalefic(h12) || (h12 && h12.key === h1?.key)) {
-      deathSignals.push('בתים 1, 9, 13 כולם נחסיים וחזרה בבית 12 — לפי חאוי: פסוק מוות.');
+      deathSignals.push('בתים 1, 9, 13 כולם נחסיים וחזרה בבית 12 — פסוק מוות.');
     }
   }
 
@@ -780,9 +796,9 @@ function computeAsala(chart) {
 
   let hebrewNote;
   if (!hasMoon) {
-    hebrewNote = 'הלוח אינו אצאלי — צורת הלבנה (לבן) אינה מופיעה בלוח. לפי חאוי: יש לחזור על ההכאה ולא לפסוק על לוח זה.';
+    hebrewNote = 'הלוח אינו אצאלי — צורת הלבנה (לבן) אינה מופיעה בלוח. יש לחזור על ההכאה ולא לפסוק על לוח זה.';
   } else if (missingPlanets.length > 0) {
-    hebrewNote = `הלוח חלקי — הלבנה נוכחת (${moonFigureFound === '2212' ? 'לבן' : 'דרך'}), אך חסרים כוכבים: ${missingPlanets.join(', ')}. לפי חאוי: אפשר לדון אך בזהירות.`;
+    hebrewNote = `הלוח חלקי — הלבנה נוכחת (${moonFigureFound === '2212' ? 'לבן' : 'דרך'}), אך חסרים כוכבים: ${missingPlanets.join(', ')}. אפשר לדון אך בזהירות.`;
   } else {
     hebrewNote = `הלוח אצאלי — הלבנה נוכחת (${moonFigureFound === '2212' ? 'לבן' : 'דרך'}) וכל כוכבי המזל מיוצגים.`;
   }
@@ -1344,6 +1360,7 @@ function getTransitMeaningForHouse(house) {
     house: house.house,
     meaning: houseMeaning.meaning || null,
     topics: houseMeaning.topics || null,
+    dorusMeaning: houseMeaning.dorusMeaning || null,
     sourceStatus: houseMeaning.sourceStatus || null,
   };
 }
@@ -1621,7 +1638,7 @@ function computeAuthorityStateAnalysis(chart, authoritySource) {
   } else {
     const missing = [!sunInBoard && 'שמש', !moonInBoard && 'לבנה'].filter(Boolean).join(', ');
     if (missing) signals.push({ verdict: 'warning', weight: -1, sourceId: null,
-      hebrew: `צורות ${missing} לא נמצאות בלוח — לפי חאוי, יש להיזהר.` });
+      hebrew: `צורות ${missing} לא נמצאות בלוח — יש להיזהר.` });
   }
 
   const totalWeight = signals.reduce((s, x) => s + x.weight, 0);
@@ -1906,7 +1923,7 @@ function computeSpiritualDiagnosticsHouseIndex(chart, spiritualSource) {
 
   const alerts = findings.filter(f => f.isMalefic);
 
-  const parts = [`אינדקס אבחון רוחני לפי חאוי:`];
+  const parts = [`אינדקס אבחון רוחני:`];
   for (const f of findings) {
     const alertMark = f.isMalefic ? ' ⚠' : '';
     parts.push(`בית ${f.houseNumber} (${f.figureHebrew})${alertMark}: ${f.hebrewTerms.join(', ')}`);
@@ -2472,7 +2489,7 @@ function computePrisonerAnalysis(chart) {
   }
 
   if (h5?.key === '1222') {
-    lines.push('נשוא ראש בבית 5 — האסיר ייצא ויקבל פיצוי (חאוי)');
+    lines.push('נשוא ראש בבית 5 — האסיר ייצא ויקבל פיצוי.');
   }
 
   if (h15?.key === '1221') {
@@ -2541,7 +2558,7 @@ function computeSeaVoyageRisks(chart) {
   if (!lines.length) return null;
   return {
     lines,
-    outputHebrew: `ניתוח מסע ים (בלוג' אלאמל עמ' 26):\n${lines.map((l) => `  ${l}`).join('\n')}`,
+    outputHebrew: `ניתוח מסע ים:\n${lines.map((l) => `  ${l}`).join('\n')}`,
   };
 }
 
@@ -2569,13 +2586,13 @@ function computeForcedTravelAnalysis(chart) {
   if (isForced) {
     const byHouse = (inH3 && h3Nahs) ? 3 : 9;
     travelType = 'forced';
-    hebrewNote = `הנסיעה כפויה — צורת הטאלע מופיעה בבית ${byHouse} עם מזל נחס. לפי חאוי (עמ׳ 33): השואל נוסע שלא ברצונו.`;
+    hebrewNote = `הנסיעה כפויה — צורת הטאלע מופיעה בבית ${byHouse} עם מזל נחס. השואל נוסע שלא ברצונו.`;
   } else if (isChosen) {
     const byHouse = inH3 ? 3 : inH9 ? 9 : 14;
     travelType = 'chosen';
-    hebrewNote = `הנסיעה רצונית — צורת הטאלע מופיעה בבית ${byHouse}. לפי חאוי (עמ׳ 33): השואל מבקש את הנסיעה מרצונו.`;
+    hebrewNote = `הנסיעה רצונית — צורת הטאלע מופיעה בבית ${byHouse}. השואל מבקש את הנסיעה מרצונו.`;
   } else {
-    hebrewNote = 'אין סימן ברור לנסיעה כפויה או רצונית לפי חוקי תוקף ההכאה (חאוי עמ׳ 33).';
+    hebrewNote = 'אין סימן ברור לנסיעה כפויה או רצונית.';
   }
 
   return { travelType, hebrewNote };
@@ -2602,7 +2619,7 @@ function computeFoundationsDisplay() {
   return {
     lines,
     outputHebrew: lines.join('\n'),
-    sourceRef: source.sourceSectionHebrew || 'מבוא חאוי — שער מחיקה וקיום',
+    sourceRef: source.sourceSectionHebrew || 'יסודות',
   };
 }
 
@@ -2650,6 +2667,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
         direction: dir,
         directionHebrew: getFigureDirectionHebrew(dir),
         isNaturalFigure: !!(house.key && NATURAL_HOUSE_FIGURES[house.house] === house.key),
+        distanceMeaning: computeDistanceMeaning(house.key, house.house),
         seventhFigure: getSeventhFigure(house.key || null),
         quadrant: HOUSE_QUADRANT(house.house),
       };
@@ -2767,7 +2785,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     missingTransitHouses,
     isFullyCovered: missingTransitHouses.length === 0,
     noteHebrew: missingTransitHouses.length > 0
-      ? `בתים ${missingTransitHouses.join(', ')} — מעבר הצורה לא מפורש במקור חאוי. הפסיקה מסתמכת על מזל הצורה הכללי בלבד.`
+      ? `בתים ${missingTransitHouses.join(', ')} — מעבר הצורה לא מפורש במקור. הפסיקה מסתמכת על מזל הצורה הכללי בלבד.`
       : 'כל הבתים העיקריים מכוסים במקור.',
   };
 
@@ -3057,7 +3075,7 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
 
   const seventh = boardAnalysis.seventhOfHouse1;
   if (seventh) {
-    parts.push(`השביעית של בית 1 (${boardAnalysis.house1Analysis?.figureHebrew || ''}): ${seventh.figureHebrew} — נמצאת בבית ${seventh.foundInHouse}. קשר זה חזק לפי חאוי.`);
+    parts.push(`השביעית של בית 1 (${boardAnalysis.house1Analysis?.figureHebrew || ''}): ${seventh.figureHebrew} — נמצאת בבית ${seventh.foundInHouse}. קשר זה חזק.`);
   }
 
   const repeatedFigs = (boardAnalysis.ittisalat?.figureConnections || []).filter((c) => c.houses?.length >= 2);
