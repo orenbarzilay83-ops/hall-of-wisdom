@@ -1098,11 +1098,13 @@
           <button class="guide-tab" data-tab="houses">16 הבתים</button>
           <button class="guide-tab" data-tab="build">כיצד בונים לוח</button>
           <button class="guide-tab" data-tab="concepts">מושגי יסוד</button>
+          <button class="guide-tab" data-tab="about">על השיטה</button>
         </div>
         <div id="guide-figures" class="guide-section active"></div>
         <div id="guide-houses" class="guide-section"></div>
         <div id="guide-build" class="guide-section"></div>
         <div id="guide-concepts" class="guide-section"></div>
+        <div id="guide-about" class="guide-section"></div>
       </div>
     </section>
 
@@ -2051,6 +2053,7 @@
       renderHousesGuide();
       renderBuildGuide();
       renderConceptsGuide();
+      renderAboutGuide();
     }
 
     function renderFiguresGuide() {
@@ -2140,6 +2143,27 @@
           <div class="concept-sub">${escapeHtml(c.sub)}</div>
           <div class="concept-body">${escapeHtml(c.body)}</div>
         </div>`).join('');
+    }
+
+    function renderAboutGuide() {
+      const el = document.getElementById("guide-about");
+      el.innerHTML = `
+        <div class="concept-card">
+          <div class="concept-title">גורל החול — שיטת הבתים</div>
+          <div class="concept-sub">הבסיס שעליו בנויה האפליקציה</div>
+          <div class="concept-body">גורל החול מסורתי מחלק את הלוח ל-16 בתים. לכל בית נושא קבוע: בית 1 הוא השואל, בית 7 הוא הצד השני, בית 10 הוא מעמד ותפקיד, בית 4 הוא הסוף — וכן הלאה. כשנשאלת שאלה, מסתכלים על הצורות שנפלו בבתים הרלוונטיים לאותה שאלה ומהן מסיקים את התשובה. כל שאלה (מחלה, נסיעה, ממון, נישואין וכדומה) מגדירה אילו בתים מרכזיים יש לבחון.</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-title">שיטות אחרות קיימות</div>
+          <div class="concept-sub">גורל חול שעובד בצורה שונה לגמרי</div>
+          <div class="concept-body">ישנה אסכולה שאינה מסתכלת על בתים כלל. היא סופרת איזו צורה מופיעה הכי הרבה פעמים בכל 16 הבתים יחד — ולפי הצורה השלטת פוסקים את התשובה. לדוגמה לשאלת שותפות בשיטה ההיא: אם "נשוא ראש" שולטת — השותפות תצלח; אם "שפל ראש" שולטת — עדיף לוותר; אם "אדום" שולטת — אין תועלת בשותפות הזו. שיטה זו מגיעה ממקורות תקפים ומכובדים, אך מייצגת גישה שונה לגמרי — ולכן אינה חלק מהאפליקציה הזו.</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-title">מה ההבדל בפועל?</div>
+          <div class="concept-sub">בית ספציפי מול שכיחות כללית</div>
+          <div class="concept-body">בשיטת הבתים (שלנו): "מה נפל בבית 7?" נותן מידע על הצד השני בשאלה. בשיטת הספירה (האחרת): "איזו צורה מופיעה הכי הרבה?" נותן את התשובה הכללית, בלי להבחין מה נמצא בכל בית לחוד. שתי השיטות עובדות — אבל הן שפות שונות ואי אפשר לערבב ביניהן.</div>
+        </div>
+      `;
     }
 
     // ─── Journal Rendering ────────────────────────────────────────
