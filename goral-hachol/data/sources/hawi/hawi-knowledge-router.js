@@ -265,6 +265,7 @@ const TOPIC_TO_KNOWLEDGE_IDS = {
     'hawi-house-states-colors',
   ],
   yearlyForecast: [
+    'hawi-question-yearly-forecast',
     'hawi-yearly-prices-forecast',
     'hawi-rain-weather-forecast',
     'hawi-triangles-zodiac',
@@ -272,12 +273,14 @@ const TOPIC_TO_KNOWLEDGE_IDS = {
     'hawi-house-states-colors',
   ],
   authorityState: [
+    'hawi-question-authority-state',
     'hawi-authority-state-rulers',
     'hawi-dhamir-directions-validation',
     'hawi-planetary-correspondences',
     'hawi-house-states-colors',
   ],
   birthNativity: [
+    'hawi-question-birth-nativity',
     'hawi-birth-nativity',
     'hawi-dhamir-directions-validation',
     'hawi-house-states-colors',

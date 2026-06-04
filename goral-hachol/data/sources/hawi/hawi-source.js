@@ -90,6 +90,9 @@ import { HAWI_QUESTION_PRISONER } from './question-rules/hawi-question-prisoner.
 import { HAWI_QUESTION_PARTNERSHIP } from './question-rules/hawi-question-partnership.js';
 import { HAWI_QUESTION_SIBLINGS } from './question-rules/hawi-question-siblings.js';
 import { HAWI_QUESTION_DEATH_INHERITANCE } from './question-rules/hawi-question-death-inheritance.js';
+import { HAWI_QUESTION_AUTHORITY_STATE } from './question-rules/hawi-question-authority-state.js';
+import { HAWI_QUESTION_BIRTH_NATIVITY } from './question-rules/hawi-question-birth-nativity.js';
+import { HAWI_QUESTION_YEARLY_FORECAST } from './question-rules/hawi-question-yearly-forecast.js';
 
 export const HAWI_EXTENDED_KNOWLEDGE_LIST = [
   HAWI_INTRODUCTION_MAHW_THABAT,
@@ -120,6 +123,9 @@ export const HAWI_EXTENDED_KNOWLEDGE_LIST = [
   HAWI_QUESTION_PARTNERSHIP,
   HAWI_QUESTION_SIBLINGS,
   HAWI_QUESTION_DEATH_INHERITANCE,
+  HAWI_QUESTION_AUTHORITY_STATE,
+  HAWI_QUESTION_BIRTH_NATIVITY,
+  HAWI_QUESTION_YEARLY_FORECAST,
 ];
 
 export const HAWI_EXTENDED_KNOWLEDGE_BY_ID = Object.fromEntries(
