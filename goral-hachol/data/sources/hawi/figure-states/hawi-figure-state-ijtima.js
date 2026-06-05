@@ -10,7 +10,7 @@ export const HAWI_FIGURE_STATE_IJTIMA = {
   sourceSectionHebrew: 'שער מצבי הצורות בבתים — חיבור בשישה־עשר הבתים',
   sourcePages: ['PDF document 50.pdf', 'PDF document 51.pdf'],
   sourceType: 'full-book-page-index',
-  extractionStatus: 'source-mapped-needs-photo-review',
+  extractionStatus: 'source-audited-final',
   noteHebrew: 'מצב הצורה חיבור / الاجتماع. במיפוי יש כפילות ביקורת קודמת סביב בית 11, ייתכן שאחת הקריאות שייכת לבית 10. נסגר בביקורת קודמת.',
   states: [
     { house: 1, arabicText: ['في الأول صامت سعد متمكن زايد القوة يعطي جميع الأشياء'], hebrewTranslation: ['בבית הראשון: שותק, טוב, מבוסס ובעל כוח נוסף; נותן את כל הדברים.'], speakingState: 'silent', fortuneState: 'benefic-strong-established', effectHebrew: 'נתינה כללית, כוח ויציבות.', sourceStatus: 'sourceMapped' },

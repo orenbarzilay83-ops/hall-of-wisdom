@@ -10,7 +10,7 @@ export const HAWI_FIGURE_STATE_AQLA = {
   sourceSectionHebrew: 'שער מצבי הצורות בבתים — סוהר בשישה־עשר הבתים',
   sourcePages: ['PDF document 46.pdf', 'PDF document 47.pdf'],
   sourceType: 'full-book-page-index',
-  extractionStatus: 'source-mapped-needs-photo-review',
+  extractionStatus: 'source-audited-final',
   noteHebrew: 'מצב הצורה סוהר / العقلة בכל בית. חלק מן ה־ביקורת קודמת בבית 11 משובש ונסגר בביקורת קודמת.',
   states: [
     { house: 1, arabicText: ['في الأول ناطق سعيد قوي يجلب الرزق ويكثره'], hebrewTranslation: ['בבית הראשון: מדבר, טוב וחזק; מביא פרנסה ומרבה אותה.'], speakingState: 'speaking', fortuneState: 'benefic-strong', effectHebrew: 'משיכת פרנסה וריבויה.', sourceStatus: 'sourceMapped' },

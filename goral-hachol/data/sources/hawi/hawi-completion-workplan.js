@@ -18,6 +18,10 @@ export const HAWI_COMPLETION_WORKPLAN = {
     'תחסיל (تحصيل) — מנוע הגעה: ישיר, טבעי, עדים, העברה, שיתוף שורות',
     'מניעה (حيلولة) — מנוע חסימה: דיין נחס, בית 12, בית 8',
     'NATURAL_HOUSE_FIGURES — ניקוי מסורת מערבית, מילוי ממקורות חאוי בלבד',
+    'טאלע השנה / גשם / יוקר וזול — מנוע פעיל',
+    'מולד / נולד — מנוע פעיל',
+    'שלטון / מדינה / בעלי תפקידים — מנוע פעיל',
+    'אבחון רוחני מורחב (כישוף, עין, ג׳ין, מס) — מנוע פעיל',
   ],
 
   pendingByPriority: [
@@ -108,23 +112,7 @@ export const HAWI_COMPLETION_WORKPLAN = {
     { id: 'surety-guarantee',       page: '26',    title: 'ערבות / ביטחון — פרטים' },
   ],
 
-  futureModulesNotUrgent: [
-    {
-      id: 'yearly-forecast',
-      titleHebrew: 'טאלע השנה / גשם / יוקר וזול',
-      ruleHebrew: 'מודול עתידי. לא מעכב את גורל החול הבסיסי.',
-    },
-    {
-      id: 'birth-nativity',
-      titleHebrew: 'מולד / נולד',
-      ruleHebrew: 'מודול עתידי. לא מעכב.',
-    },
-    {
-      id: 'authority-state',
-      titleHebrew: 'שלטון / מדינה / בעלי תפקידים',
-      ruleHebrew: 'מודול עתידי. לא מעכב.',
-    },
-  ],
+  futureModulesNotUrgent: [],
 
   sourceRuleHebrew:
     'בונים רק מהתיקייה "ספרים לאפליקציית גורל החול" בגוגל דרייב. אין לערבב ידע ממקורות מערביים או מכל מקור אחר.',

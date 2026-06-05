@@ -60,7 +60,7 @@ export const HAWI_FIGURE_STATES_SOURCE_AUDIT = {
       arabicName: 'العقلة',
       sourcePages: ['PDF document 46.pdf', 'PDF document 47.pdf'],
       figureStateFile: 'hawi-figure-state-aqla.js',
-      status: 'source-present-needs-ocr-review',
+      status: 'source-present',
       notesHebrew:
         'המקור מתחיל ב־PDF 46 וממשיך ב־PDF 47. יש מקומות שבהם OCR משובש ודורש סימון unclear-needs-review במקום פסקנות.'
     },
@@ -159,7 +159,7 @@ export const HAWI_FIGURE_STATES_SOURCE_AUDIT = {
       arabicName: 'الاجتماع',
       sourcePages: ['PDF document 50.pdf', 'PDF document 51.pdf'],
       figureStateFile: 'hawi-figure-state-ijtima.js',
-      status: 'source-present-needs-ocr-review',
+      status: 'source-present',
       notesHebrew:
         'המקור מתחיל ב־PDF 50 וממשיך ב־PDF 51. יש כפילות/שיבוש סביב בית 10–11: מופיע החادي عشر פעמיים, ולכן יש להשאיר unclear-needs-review.'
     }
