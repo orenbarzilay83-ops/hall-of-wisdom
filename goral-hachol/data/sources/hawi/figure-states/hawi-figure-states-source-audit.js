@@ -164,17 +164,22 @@ export const HAWI_FIGURE_STATES_SOURCE_AUDIT = {
         'המקור מתחיל ב־PDF 50 וממשיך ב־PDF 51. יש כפילות/שיבוש סביב בית 10–11: מופיע החادي عشر פעמיים, ולכן יש להשאיר unclear-needs-review.'
     }
   ],
-  notFoundInFigureStatesSection: [
+  notFoundInFigureStatesSection: [],
+  globalClassificationFigures: [
     {
       figureId: 'hawi-figure-hayyan',
       shortFigureId: 'hayyan',
-      hebrewName: 'נושא ראש',
+      hebrewName: 'נשוא ראש',
       arabicName: 'الحيان / الأحيان',
       foundInOtherLayer: 'figure-transits',
       knownTransitPages: ['PDF document 17.pdf', 'PDF document 18.pdf'],
-      status: 'not-found-in-pdf-45-51-figure-states-section',
+      figureStateFile: 'hawi-figure-state-hayyan.js',
+      status: 'global-classification-fixed-falak-mashun',
+      sourceBook: 'الفلك المشحون في علم الرمل المصون',
+      globalSpeakingState: 'speaking',
+      globalFortuneState: 'benefic',
       notesHebrew:
-        'הצורה קיימת בפרק תרחיל/מעבר הצורות, אך לא נמצאה בפרק מצבי הצורות בעמודי PDF 45–51.'
+        'הצורה אינה בפרק מצבי הצורות של חאוי (PDF 45–51). היא מהצורות הבודדות (الأشكال المفردة) ואינה נכנסת למיזן. מצבה קבוע בכל הבתים לפי الفلك المشحون: מדברת וטובה.'
     },
     {
       figureId: 'hawi-figure-naqi-khad',
@@ -183,9 +188,13 @@ export const HAWI_FIGURE_STATES_SOURCE_AUDIT = {
       arabicName: 'نقي الخد / الأشقر',
       foundInOtherLayer: 'figure-transits',
       knownTransitPages: ['PDF document 18.pdf', 'PDF document 19.pdf'],
-      status: 'not-found-in-pdf-45-51-figure-states-section',
+      figureStateFile: 'hawi-figure-state-naqi-khad.js',
+      status: 'global-classification-fixed-falak-mashun',
+      sourceBook: 'الفلك المشحون في علم الرمل المصون',
+      globalSpeakingState: 'speaking',
+      globalFortuneState: 'mixed',
       notesHebrew:
-        'הצורה קיימת בפרק תרחיל/מעבר הצורות, אך לא נמצאה בפרק מצבי הצורות בעמודי PDF 45–51.'
+        'הצורה אינה בפרק מצבי הצורות של חאוי (PDF 45–51). מצבה קבוע בכל הבתים לפי الفلك المشحون: מדברת ומעורבת נחס.'
     }
   ],
   summary: {
@@ -199,9 +208,10 @@ export const HAWI_FIGURE_STATES_SOURCE_AUDIT = {
       'PDF document 51.pdf'
     ],
     figureStatesInCurrentSection: 14,
-    figureStatesNotFoundInCurrentSection: 2,
+    figureStatesGlobalClassification: 2,
+    figureStatesNotFoundInCurrentSection: 0,
     conclusionHebrew:
-      'שכבת מצבי הצורות שנבנתה היום תואמת את הפרק בעמודים 45–51 עבור 14 צורות. החיאן ובר הלחי אינן בפרק זה לפי המיפוי הנוכחי, ולכן לא ליצור להן figure-states עד שיימצא מקור נוסף.'
+      'שכבת מצבי הצורות מכסה את כל 16 הצורות. 14 צורות נלקחו מחאוי (PDF 45–51). חיאן ובר הלחי אינן בפרק חאוי — הן צורות בודדות עם מצב קבוע, ומצבן נלקח מסיווג גלובלי לפי הפלק המשחון.'
   }
 };
 
