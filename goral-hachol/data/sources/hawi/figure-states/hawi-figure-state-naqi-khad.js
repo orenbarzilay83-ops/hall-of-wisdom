@@ -11,7 +11,7 @@ export const HAWI_FIGURE_STATE_NAQI_KHAD = {
   sourcePages: [],
   sourceType: 'global-figure-classification',
   extractionStatus: 'global-classification-from-falak-mashun',
-  noteHebrew: 'צורה זו היא מהצורות הבודדות (الأشكال المفردة). מצבה קבוע בכל הבתים: מדברת ומעורבת נחס תמיד. אין לה פרק מצבי צורות לפי בית בחאוי.',
+  noteHebrew: 'צורה בודדת. מצבה קבוע בכל הבתים: מדברת ומעורבת נחס תמיד.',
   states: [
     { house: 1,  arabicText: [], hebrewTranslation: [], speakingState: 'speaking', fortuneState: 'mixed', effectHebrew: 'מדבר, מעורב נחס.', sourceStatus: 'global-classification-fixed' },
     { house: 2,  arabicText: [], hebrewTranslation: [], speakingState: 'speaking', fortuneState: 'mixed', effectHebrew: 'מדבר, מעורב נחס.', sourceStatus: 'global-classification-fixed' },

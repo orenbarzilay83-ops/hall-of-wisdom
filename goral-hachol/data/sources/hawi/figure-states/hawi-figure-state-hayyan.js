@@ -11,7 +11,7 @@ export const HAWI_FIGURE_STATE_HAYYAN = {
   sourcePages: [],
   sourceType: 'global-figure-classification',
   extractionStatus: 'global-classification-from-falak-mashun',
-  noteHebrew: 'צורה זו היא מהצורות הבודדות (الأشكال المفردة) ואינה נכנסת למיזן. מצבה קבוע בכל הבתים: מדברת וטובה תמיד. אין לה פרק מצבי צורות לפי בית בחאוי.',
+  noteHebrew: 'צורה בודדת שאינה נכנסת למיזן. מצבה קבוע בכל הבתים: מדברת וטובה תמיד.',
   states: [
     { house: 1,  arabicText: [], hebrewTranslation: [], speakingState: 'speaking', fortuneState: 'benefic', effectHebrew: 'מדבר וטוב.', sourceStatus: 'global-classification-fixed' },
     { house: 2,  arabicText: [], hebrewTranslation: [], speakingState: 'speaking', fortuneState: 'benefic', effectHebrew: 'מדבר וטוב.', sourceStatus: 'global-classification-fixed' },

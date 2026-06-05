@@ -7,7 +7,7 @@ export const HAWI_FIGURE_STATES_SOURCE_AUDIT = {
     'השער השמונה־עשר — הפרק הראשון במצבי הצורות בבתים ופעולותיהן',
   auditStatus: 'initial-source-audit-from-drive-pdf-45-51',
   importantNoteHebrew:
-    'שכבת figure-states אינה זהה לשכבת figure-transits. מצבי הצורות נמצאו בעמודי PDF 45–51. החיאן ובר הלחי נמצאו בשכבת התרחיל/מעבר הצורות, אך לא נמצאו בפרק מצבי הצורות בעמודים 45–51.',
+    'שכבת figure-states אינה זהה לשכבת figure-transits. מצבי הצורות נמצאו בעמודי PDF 45–51 עבור 14 צורות. חיאן ובר הלחי הן צורות בודדות עם מצב קבוע לפי מקור נוסף.',
   auditedFigures: [
     {
       figureId: 'hawi-figure-qabd-dakhil',
@@ -179,7 +179,7 @@ export const HAWI_FIGURE_STATES_SOURCE_AUDIT = {
       globalSpeakingState: 'speaking',
       globalFortuneState: 'benefic',
       notesHebrew:
-        'הצורה אינה בפרק מצבי הצורות של חאוי (PDF 45–51). היא מהצורות הבודדות (الأشكال المفردة) ואינה נכנסת למיזן. מצבה קבוע בכל הבתים לפי الفلك المشحون: מדברת וטובה.'
+        'צורה בודדת שאינה נכנסת למיזן. מצבה קבוע בכל הבתים: מדברת וטובה.'
     },
     {
       figureId: 'hawi-figure-naqi-khad',
@@ -194,7 +194,7 @@ export const HAWI_FIGURE_STATES_SOURCE_AUDIT = {
       globalSpeakingState: 'speaking',
       globalFortuneState: 'mixed',
       notesHebrew:
-        'הצורה אינה בפרק מצבי הצורות של חאוי (PDF 45–51). מצבה קבוע בכל הבתים לפי الفلك المشحون: מדברת ומעורבת נחס.'
+        'צורה בודדת. מצבה קבוע בכל הבתים: מדברת ומעורבת נחס.'
     }
   ],
   summary: {
