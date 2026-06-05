@@ -709,6 +709,70 @@
       font-weight:700;
       white-space:nowrap;
     }
+    .topic-mawlud-btn {
+      border:2px solid rgba(180,120,20,.4);
+      border-radius:16px;
+      padding:16px 20px;
+      cursor:pointer;
+      background:linear-gradient(135deg,#fffbf0,#fff);
+      font-size:16px;
+      font-weight:800;
+      color:#7a5010;
+      text-align:center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      transition:background .15s,border-color .15s,box-shadow .15s;
+    }
+    .topic-mawlud-btn:hover { background:linear-gradient(135deg,#fef0c0,#fffbf0); border-color:#b88a18; }
+    .topic-mawlud-btn.selected {
+      background:linear-gradient(135deg,#fde68a,#fef3c7);
+      border-color:#b88a18;
+      box-shadow:0 0 0 3px rgba(180,120,20,.2);
+      color:#5a3a08;
+    }
+    .topic-mawlud-badge {
+      background:#b88a18;
+      color:white;
+      border-radius:20px;
+      padding:2px 10px;
+      font-size:12px;
+      font-weight:700;
+      white-space:nowrap;
+    }
+    .topic-completion-btn {
+      border:2px solid rgba(30,80,180,.35);
+      border-radius:16px;
+      padding:16px 20px;
+      cursor:pointer;
+      background:linear-gradient(135deg,#f0f4ff,#fff);
+      font-size:16px;
+      font-weight:800;
+      color:#1a3a80;
+      text-align:center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      transition:background .15s,border-color .15s,box-shadow .15s;
+    }
+    .topic-completion-btn:hover { background:linear-gradient(135deg,#dce8ff,#f0f4ff); border-color:#2a4ecc; }
+    .topic-completion-btn.selected {
+      background:linear-gradient(135deg,#bfcfff,#dce8ff);
+      border-color:#2a4ecc;
+      box-shadow:0 0 0 3px rgba(30,80,180,.2);
+      color:#0d2260;
+    }
+    .topic-completion-badge {
+      background:#2a4ecc;
+      color:white;
+      border-radius:20px;
+      padding:2px 10px;
+      font-size:12px;
+      font-weight:700;
+      white-space:nowrap;
+    }
 
     /* ─── Menu Drawer ─────────────────────────────────────────── */
     .menu-overlay {
@@ -1313,8 +1377,10 @@
     function renderTopicGrid() {
       const grid = document.getElementById("topicGrid");
       if (!grid) return;
-      const spiritualActive = forcedTopicId === 'spiritualDiagnostics';
-      const generalActive  = forcedTopicId === 'generalReading';
+      const spiritualActive  = forcedTopicId === 'spiritualDiagnostics';
+      const generalActive    = forcedTopicId === 'generalReading';
+      const mawludActive     = forcedTopicId === 'birthNativity';
+      const completionActive = forcedTopicId === 'completion';
       grid.innerHTML = `
         <div class="topic-special-row">
           <button type="button" class="topic-general-btn${generalActive ? ' selected' : ''}" id="generalReadingBtn">
@@ -1326,6 +1392,16 @@
             <span>🌙</span>
             <span>בדיקה רוחנית</span>
             <span class="topic-spiritual-badge">ניתוח מיוחד</span>
+          </button>
+          <button type="button" class="topic-mawlud-btn${mawludActive ? ' selected' : ''}" id="mawludBtn">
+            <span>⭐</span>
+            <span>מולד / נולד</span>
+            <span class="topic-mawlud-badge">לוח חיים</span>
+          </button>
+          <button type="button" class="topic-completion-btn${completionActive ? ' selected' : ''}" id="completionBtn">
+            <span>⚖️</span>
+            <span>האם הדבר יצליח</span>
+            <span class="topic-completion-badge">הכרעה</span>
           </button>
         </div>
       ` + TOPIC_CARDS.map(c => `
@@ -1347,6 +1423,18 @@
 
       document.getElementById("spiritualDxBtn").addEventListener("click", () => {
         forcedTopicId = spiritualActive ? null : 'spiritualDiagnostics';
+        selectedHouseNum = null;
+        renderTopicGrid();
+      });
+
+      document.getElementById("mawludBtn").addEventListener("click", () => {
+        forcedTopicId = mawludActive ? null : 'birthNativity';
+        selectedHouseNum = null;
+        renderTopicGrid();
+      });
+
+      document.getElementById("completionBtn").addEventListener("click", () => {
+        forcedTopicId = completionActive ? null : 'completion';
         selectedHouseNum = null;
         renderTopicGrid();
       });
