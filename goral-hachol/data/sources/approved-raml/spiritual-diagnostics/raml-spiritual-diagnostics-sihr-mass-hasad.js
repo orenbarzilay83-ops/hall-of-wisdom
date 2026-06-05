@@ -552,9 +552,9 @@ export const RAML_SPIRITUAL_DIAGNOSTICS_SIHR_MASS_HASAD = {
     diagnosticFocus:
       "כישוף, מס/אחיזה, קנאה/עין, ג׳ין, כישוף קבור, כישוף שתוי, קשירה זוגית/מינית, פגיעה בבית או במקום, אם הצביאן, סוגי ג׳ין, מחלות לפי יסודות.",
     appStatus:
-      "ready-as-approved-knowledge-layer-not-yet-engine-activated",
+      "engine-active-fully-implemented",
     cautionHebrew:
-      "המידע נכנס כשכבת ידע מקצועית למרמל. הפעלה אוטומטית במנוע תיעשה רק לאחר מיפוי שדות וקישור לצורות/בתים."
+      "כל השיטות מיושמות: כלל 7×7, כלל 15×4 (סוג ג׳ין), כלל 8×6 (איבר), כללי צורה×בית, כללי ג׳מאעה. המנוע פעיל ב-goral-spiritual-diagnostics-engine.js."
   }
 };
 

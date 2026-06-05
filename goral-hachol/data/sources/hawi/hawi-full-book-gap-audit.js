@@ -90,9 +90,9 @@ export const HAWI_FULL_BOOK_GAP_AUDIT = {
     {
       id: 'spiritual-diagnostics-expanded',
       hebrewTitle: 'אבחון רוחני מורחב',
-      status: 'partly-covered-needs-approved-sources-only',
+      status: 'engine-active-fully-implemented',
       actionHebrew:
-        'כישוף/קנאה/אחיזה קיימים בשכבות שונות. עין/ג׳ין/מס יושלמו רק ממקור מאושר, לא מסברה.',
+        'כישוף, קנאה, עין, ג׳ין, מס — הכל מיושם. כלל 7×7, 15×4, 8×6, כללי צורה×בית, ג׳מאעה. מנוע פעיל ב-goral-spiritual-diagnostics-engine.js.',
     },
   ],
 

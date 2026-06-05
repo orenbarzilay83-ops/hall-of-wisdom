@@ -80,7 +80,7 @@ export const HAWI_TOPIC_INDEX = {
   implementedTopics: [
     {
       topicId: 'spiritual-diagnostics-expanded',
-      hebrewTitle: 'ג׳ומלה — אבחון מחלה / ילדים / שותפות לפי שיטת סכום הנקודות',
+      hebrewTitle: 'אבחון רוחני מורחב — כישוף, עין, ג׳ין, מס, ג׳ומלה',
       coverageStatus: 'engine-implemented',
       noteHebrew: 'שיטת הג׳ומלה ממקור בלוג׳ אל-אמל עמ׳ 62-63. מחושב אוטומטית על כל לוח. מחלה: mod4 (שארית 3 = כישוף), ילדים: mod3, שותפות: mod4.',
       existingFiles: [
