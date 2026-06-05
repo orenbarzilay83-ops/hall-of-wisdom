@@ -161,6 +161,26 @@ export function buildRamlBoardFromMothers(mothers) {
   const entries = generateRamlEntriesFromMothers(mothers);
   const board = createRamlBoard(entries.map((entry) => entry.figureId));
 
+  // chart is the array format expected by hawi-interpreter.js (board.chart)
+  const chart = entries.map((entry, idx) => {
+    const fig = entry.figure || {};
+    const houseMeaning = board.houses[idx]?.houseMeaning || {};
+    return {
+      house: entry.houseNumber,
+      houseNumber: entry.houseNumber,
+      houseHebrew: houseMeaning.hebrewTitle || null,
+      figureId: entry.figureId,
+      key: entry.pattern || fig.pattern || null,
+      hebrew: fig.hebrewName || entry.hebrewName || null,
+      figureHebrew: fig.hebrewName || entry.hebrewName || null,
+      fortune: fig.fortuneHebrew || null,
+      element: fig.elementHebrew || null,
+      movement: fig.movementHebrew || null,
+      roleHebrew: entry.roleHebrew || null,
+      sourceStatus: entry.sourceStatus || null,
+    };
+  });
+
   return {
     ...board,
     id: 'raml-board-from-mothers',
@@ -169,6 +189,7 @@ export function buildRamlBoardFromMothers(mothers) {
     inputMode: 'manual-mothers',
     displayDirection: 'rtl',
     entries,
+    chart,
     generation: {
       mothers: entries.slice(0, 4),
       daughters: entries.slice(4, 8),
