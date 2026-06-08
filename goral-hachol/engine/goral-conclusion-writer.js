@@ -1598,19 +1598,38 @@ function buildNarrativeByTopic(result) {
   const paras = [];
   const push = (p) => { if (p && clean(p)) paras.push(clean(p)); };
 
+  const verdictDir = (() => {
+    const v = judgeVerdict?.verdict || '';
+    if (v.startsWith('yes') || v === 'maybe-positive') return 'positive';
+    if (v.startsWith('no')  || v === 'maybe-negative') return 'negative';
+    return 'mixed';
+  })();
+  const isPos = verdictDir === 'positive';
+  const isNeg = verdictDir === 'negative';
+
+  // Push opening line; when h1 tone contradicts verdict, add a bridging qualifier.
+  const pushOpeningWithBridge = (topicLabel) => {
+    push(topicOpeningLine(topicLabel, h1, name));
+    const h1t = t(h1);
+    if (h1t > 0 && isNeg) push('אמנם עמדתך בנקודת הפתיחה לא רעה, אך הפסיקה הסופית לא לטובתך.');
+    else if (h1t < 0 && isPos) push('אמנם הנקודת פתיחה לא פשוטה, אך הכיוון הכולל נוטה לטובתך.');
+  };
+
   // ── commerce ────────────────────────────────────────────────────
   if (topicId === 'commerce') {
     const h2  = getHouseFromBoard(boardAnalysis, 2);
     const h10 = getHouseFromBoard(boardAnalysis, 10);
 
-    push(topicOpeningLine(topicId, h1, name));
+    pushOpeningWithBridge(topicId);
 
     if (h7) {
       const h7name = h7.figureHebrew ? ` (${h7.figureHebrew})` : '';
       if (t(h7) <= -2) push(`לגבי הצד שמולך${h7name} — יש בלוח סימן אזהרה ברור. לא לחתום לפני שבדקת אותו היטב.`);
       else if (t(h7) === -1) push(`לגבי הצד השני${h7name} — כדאי לבדוק את פרטי ההסכם לפני שמתקדמים.`);
-      else if (t(h7) >= 1) push(`הצד שמולך${h7name} — נראה אמין ובעמדה טובה.`);
-      else push(`הצד השני${h7name} — לא חד-משמעי. כדאי לבדוק את ההסכם בקפידה.`);
+      else if (t(h7) >= 1) {
+        if (isNeg) push(`הצד שמולך${h7name} נמצא בעמדה טובה — מה שעשוי להסביר את הקושי. הפסיקה לא לטובתך.`);
+        else push(`הצד שמולך${h7name} — נראה אמין ובעמדה טובה.`);
+      } else push(`הצד השני${h7name} — לא חד-משמעי. כדאי לבדוק את ההסכם בקפידה.`);
     }
 
     if (h2 || h10) {
@@ -1639,12 +1658,16 @@ function buildNarrativeByTopic(result) {
 
   // ── marriage ─────────────────────────────────────────────────────
   if (topicId === 'marriage') {
-    push(topicOpeningLine(topicId, h1, name));
+    pushOpeningWithBridge(topicId);
 
     if (h7) {
       const h7name = h7.figureHebrew ? ` (${h7.figureHebrew})` : '';
-      if (t(h7) >= 2)    push(`הצד השני${h7name} — הלוח מראה צד חזק וחיובי. הדרך פתוחה.`);
-      else if (t(h7) === 1)  push(`הצד השני${h7name} — יש פתיחות. כדאי להתקדם ולבחון.`);
+      if (t(h7) >= 2) push(isNeg
+        ? `הצד השני${h7name} מראה כוח ממשי — אך הפסיקה הכוללת מגבילה.`
+        : `הצד השני${h7name} — הלוח מראה צד חזק וחיובי. הדרך פתוחה.`);
+      else if (t(h7) === 1) push(isNeg
+        ? `הצד השני${h7name} מראה פתיחות מסוימת — אבל הפסיקה בסופו של דבר לא תומכת.`
+        : `הצד השני${h7name} — יש פתיחות. כדאי להתקדם ולבחון.`);
       else if (t(h7) === -1) push(`לגבי הצד השני${h7name} — הלוח מראה סימן שמחייב בדיקה. לא להסכים לכלום לפני שבחנת היטב.`);
       else if (t(h7) <= -2)  push(`לגבי הצד השני${h7name} — הלוח מראה חסם ממשי בצד הזה. יש קושי בקשר שצריך לבדוק לפני החלטה.`);
       else push(`הצד השני${h7name} — לא חד-משמעי. כדאי לבדוק יחד את פרטי הקשר.`);
@@ -1693,7 +1716,7 @@ function buildNarrativeByTopic(result) {
     const h8  = getHouseFromBoard(boardAnalysis, 8);
     const h12 = getHouseFromBoard(boardAnalysis, 12);
 
-    push(topicOpeningLine(topicId, h1, name));
+    pushOpeningWithBridge(topicId);
 
     if (h9) {
       if (t(h9) >= 1)    push('הדרך עצמה בלוח — פתוחה וחיובית. יש סיכוי טוב שהמסע יצליח.');
@@ -1715,7 +1738,7 @@ function buildNarrativeByTopic(result) {
   if (topicId === 'childrenPregnancy') {
     const h5 = getHouseFromBoard(boardAnalysis, 5);
 
-    push(topicOpeningLine(topicId, h1, name));
+    pushOpeningWithBridge(topicId);
 
     if (h5) {
       if (t(h5) >= 1)    push('בית הילדים בלוח — חיובי. יש סימן לאפשרות הריון או לידה.');
@@ -1732,7 +1755,7 @@ function buildNarrativeByTopic(result) {
   if (topicId === 'hiddenTreasure') {
     const tl = boardAnalysis?.treasureLocation;
 
-    push(topicOpeningLine(topicId, h1, name));
+    pushOpeningWithBridge(topicId);
 
     if (tl) {
       push(tl.presenceHebrew);
@@ -1755,10 +1778,12 @@ function buildNarrativeByTopic(result) {
   if (topicId === 'missingPerson') {
     const h8 = getHouseFromBoard(boardAnalysis, 8);
 
-    push(topicOpeningLine(topicId, h1, name));
+    pushOpeningWithBridge(topicId);
 
     if (h7) {
-      if (t(h7) >= 1)    push('הנעדר בלוח — יש סימן שהוא בחיים ובמצב שיש בו כוח. יש סיכוי לחזרה.');
+      if (t(h7) >= 1) push(isNeg
+        ? 'הנעדר בלוח — יש כוח מסוים, אך הפסיקה מורכבת. יש לפעול ולחפש.'
+        : 'הנעדר בלוח — יש סימן שהוא בחיים ובמצב שיש בו כוח. יש סיכוי לחזרה.');
       else if (t(h7) === -1) push('הנעדר בלוח — יש עיכוב בחזרה. המצב לא פשוט.');
       else if (t(h7) <= -2)  push('הלוח מראה שמצב הנעדר קשה. יש לפעול במהירות.');
       else push('מצב הנעדר בלוח — לא ברור. יש לבדוק את הסימנים הנוספים.');
@@ -1774,7 +1799,7 @@ function buildNarrativeByTopic(result) {
   if (topicId === 'enemies') {
     const h12 = getHouseFromBoard(boardAnalysis, 12);
 
-    push(topicOpeningLine(topicId, h1, name));
+    pushOpeningWithBridge(topicId);
 
     if (h7) {
       if (t(h7) <= -2)  push('האויב בלוח — חזק מאוד. כדאי לא לנסות עימות ישיר.');
@@ -1793,7 +1818,7 @@ function buildNarrativeByTopic(result) {
   if (topicId === 'theft') {
     const nameLetters = boardAnalysis?.nameLetters;
 
-    push(topicOpeningLine(topicId, h1, name));
+    pushOpeningWithBridge(topicId);
 
     if (h7) {
       const dir = h7.directionHebrew || '';
@@ -1814,11 +1839,13 @@ function buildNarrativeByTopic(result) {
 
   // ── disputes ─────────────────────────────────────────────────────
   if (topicId === 'disputes') {
-    push(topicOpeningLine(topicId, h1, name));
+    pushOpeningWithBridge(topicId);
 
     if (h7) {
       const h1t = t(h1), h7t = t(h7);
-      if (h1t > h7t)      push('לפי הלוח — יש לך יתרון על הצד השני בסכסוך הזה.');
+      if (h1t > h7t) push(isNeg
+        ? 'אמנם יש לך יתרון על הצד השני בלוח, אך הפסיקה הסופית לא לטובתך — כדאי לשקול פשרה.'
+        : 'לפי הלוח — יש לך יתרון על הצד השני בסכסוך הזה.');
       else if (h7t > h1t) push('לפי הלוח — הצד השני חזק יותר כרגע. כדאי לשקול פשרה.');
       else                 push('כוחות שני הצדדים בלוח — שקולים. הכרעה תלויה בדיין.');
     }
