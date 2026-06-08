@@ -432,6 +432,25 @@
       right: 4px;
     }
 
+    .house.questioner-house {
+      background: #eef4ff;
+      outline: 2px solid #2255bb;
+      outline-offset: -2px;
+    }
+    .house.questioner-house::before {
+      content: "◉";
+      position: absolute;
+      top: 3px;
+      left: 4px;
+      font-size: 11px;
+      font-weight: 900;
+      color: #2255bb;
+      background: #ddeeff;
+      border-radius: 3px;
+      padding: 1px 3px;
+      line-height: 1;
+    }
+
     .natural-house-legend {
       text-align: center;
       font-size: 13px;
@@ -1665,10 +1684,11 @@
       5: null, 6: null, 7: null, 8: null, 11: null, 12: null,
     };
 
-    function houseHtml(h, label, isDhamir, isNatural) {
+    function houseHtml(h, label, isDhamir, isNatural, isQuestioner) {
       let cls = 'house';
-      if (isDhamir)  cls += ' dhamir-house';
-      if (isNatural) cls += ' natural-house';
+      if (isDhamir)     cls += ' dhamir-house';
+      if (isNatural)    cls += ' natural-house';
+      if (isQuestioner) cls += ' questioner-house';
       return `
         <div class="${cls}">
           <div class="house-title">${label}</div>
@@ -1694,11 +1714,11 @@
       return `
         <article class="board">
           <div class="board-row r1">
-            ${[1,2,3,4,5,6,7,8].map(n => houseHtml(h(n), `בית ${n}`, d(n), nat(n))).join("")}
+            ${[1,2,3,4,5,6,7,8].map(n => houseHtml(h(n), `בית ${n}`, d(n), nat(n), n===1)).join("")}
           </div>
 
           <div class="board-row r2">
-            ${[9,10,11,12].map(n => houseHtml(h(n), `בית ${n}`, d(n), nat(n))).join("")}
+            ${[9,10,11,12].map(n => houseHtml(h(n), `בית ${n}`, d(n), nat(n), false)).join("")}
           </div>
 
           <div class="board-row r3">
@@ -1715,6 +1735,7 @@
             ${houseHtml(h(15), "15 — דיין", d(15), false)}
           </div>
         </div>
+        <div class="natural-house-legend" style="background:#eef4ff;border-color:#99aadd;color:#1a2a7a;">◉ = בית השואל (בית 1) — מצב השואל עצמו</div>
         ${naturalHouseNums.length > 0 ? `<div class="natural-house-legend">✦ = צורה טבעית (בית${naturalHouseNums.length > 1 ? 'ות' : ''} ${naturalHouseNums.join(', ')}) — הצורה הטבעית של הבית, הדין חזק במיוחד</div>` : ""}
         ${dhamirHouseNum ? `<div class="dhamir-legend">★ = בית הדמיר (בית ${dhamirHouseNum}) — הצורה שכל שאר הצורות מעידות עליה</div>` : ""}
       `;
@@ -1832,8 +1853,8 @@
         verdictHtml = `
           <div class="verdict-box ${escapeHtml(verdictClass(judgeV.verdict))}">
             <div class="verdict-label">תשובה לשאלה</div>
-            <div class="verdict-answer">${escapeHtml(judgeV.hebrewShort)}</div>
-            <div class="verdict-detail">${escapeHtml(judgeV.hebrewFull || "")}</div>
+            <div class="verdict-answer">${hebrewTermsSimple(escapeHtml(judgeV.hebrewShort))}</div>
+            <div class="verdict-detail">${hebrewTermsSimple(escapeHtml(judgeV.hebrewFull || ""))}</div>
           </div>`;
       }
 
@@ -1844,7 +1865,7 @@
             <ul>
               ${rules.map(rule => `
                 <li>
-                  ${escapeHtml(rule.hebrew || rule.result || rule.condition || "")}
+                  ${hebrewTermsSimple(escapeHtml(rule.hebrew || rule.result || rule.condition || ""))}
                   ${rule.arabic ? `<br/><small>${escapeHtml(rule.arabic)}</small>` : ""}
                 </li>
               `).join("")}
