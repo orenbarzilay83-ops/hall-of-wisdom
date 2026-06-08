@@ -774,6 +774,40 @@
       white-space:nowrap;
     }
 
+    .topic-dream-btn {
+      border:2px solid rgba(10,80,100,.35);
+      border-radius:16px;
+      padding:16px 20px;
+      cursor:pointer;
+      background:linear-gradient(135deg,#e8f6ff,#f4fbff);
+      font-size:16px;
+      font-weight:800;
+      color:#0a4060;
+      text-align:center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      transition:background .15s,border-color .15s,box-shadow .15s;
+      grid-column:1 / -1;
+    }
+    .topic-dream-btn:hover { background:linear-gradient(135deg,#c8eeff,#e8f6ff); border-color:#0a6080; }
+    .topic-dream-btn.selected {
+      background:linear-gradient(135deg,#a0d8f0,#c8eeff);
+      border-color:#0a6080;
+      box-shadow:0 0 0 3px rgba(10,80,100,.2);
+      color:#052030;
+    }
+    .topic-dream-badge {
+      background:#0a6080;
+      color:white;
+      border-radius:20px;
+      padding:2px 10px;
+      font-size:12px;
+      font-weight:700;
+      white-space:nowrap;
+    }
+
     /* ─── Menu Drawer ─────────────────────────────────────────── */
     .menu-overlay {
       display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;
@@ -1381,6 +1415,7 @@
       const generalActive    = forcedTopicId === 'generalReading';
       const mawludActive     = forcedTopicId === 'birthNativity';
       const completionActive = forcedTopicId === 'completion';
+      const dreamActive      = forcedTopicId === 'dreamInterpretation';
       grid.innerHTML = `
         <div class="topic-special-row">
           <button type="button" class="topic-general-btn${generalActive ? ' selected' : ''}" id="generalReadingBtn">
@@ -1402,6 +1437,11 @@
             <span>⚖️</span>
             <span>האם הדבר יצליח</span>
             <span class="topic-completion-badge">הכרעה</span>
+          </button>
+          <button type="button" class="topic-dream-btn${dreamActive ? ' selected' : ''}" id="dreamBtn">
+            <span>🌙</span>
+            <span>פירוש חלום</span>
+            <span class="topic-dream-badge">בית הנסיעה</span>
           </button>
         </div>
       ` + TOPIC_CARDS.map(c => `
@@ -1435,6 +1475,12 @@
 
       document.getElementById("completionBtn").addEventListener("click", () => {
         forcedTopicId = completionActive ? null : 'completion';
+        selectedHouseNum = null;
+        renderTopicGrid();
+      });
+
+      document.getElementById("dreamBtn").addEventListener("click", () => {
+        forcedTopicId = dreamActive ? null : 'dreamInterpretation';
         selectedHouseNum = null;
         renderTopicGrid();
       });

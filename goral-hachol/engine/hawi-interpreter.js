@@ -111,6 +111,7 @@ const TOPIC_MAIN_HOUSES = {
   yearlyForecast:   [1, 10, 11, 12, 15],
   authorityState:   [1, 7, 10, 11, 12, 15],
   birthNativity:    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+  dreamInterpretation: [1, 3, 9, 13, 14, 15],
   spiritualDiagnostics: [1, 6, 8, 9, 11, 12],
   marriage:         [1, 7, 8, 11, 12, 13, 14, 15],
   illness:          [1, 6, 7, 8, 11, 12, 13, 14, 15],
@@ -138,6 +139,7 @@ const TOPIC_HEBREW_TITLES = {
   yearlyForecast:   'טאלע השנה / גשם / יוקר וזול',
   authorityState:   'שלטון / מדינה / בעלי תפקידים',
   birthNativity:    'מולד / נולד',
+  dreamInterpretation: 'חלום — האם יתגשם ומה מסמל',
   spiritualDiagnostics: 'אבחון רוחני',
   marriage:         'נישואין / זוגיות',
   illness:          'חולה / מחלה',
@@ -174,6 +176,7 @@ const TOPIC_QUESITED_HOUSE = {
   yearlyForecast:      10,
   authorityState:      10,
   birthNativity:       10,  // בית הגורל / הייעוד
+  dreamInterpretation:  9,  // בית הנסיעה, דת, חלום
   spiritualDiagnostics: 6,
   prisoner:            12,
   partnership:          7,
@@ -562,6 +565,7 @@ const TOPIC_H1_NOTES = {
   fear:             'בית 1 = השואל. אם הצורה רעה — הפחד מוצדק.',
   missingPerson:    'בית 1 = השואל המחפש. בדוק מול בית 7 (הנעדר).',
   travel:           'בית 1 = הנוסע. צורה טובה = נסיעה מוצלחת.',
+  dreamInterpretation: 'בית 1 = החולם. בית 9 = תוכן החלום ואמיתותו.',
   completion:       'בית 1 = השואל שרוצה להשלים. צורה טובה = יש כוח להשלמה.',
   theft:            'בית 1 = הנגנב. בית 7 = הגנב. בית 2 = הרכוש הגנוב. בית 8 = תיאור הגנב.',
   siblings:         'בית 1 = השואל. בית 3 = האח/השכן/הקרוב הנשאל עליו.',
