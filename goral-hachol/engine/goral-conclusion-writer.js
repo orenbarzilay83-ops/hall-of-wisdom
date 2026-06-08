@@ -544,6 +544,27 @@ function describeCoreHouses(analysis, topicId, question) {
     }
   }
 
+  // dreamInterpretation: house 9 is the dream house — fortune determines verdict
+  if (topicId === 'dreamInterpretation') {
+    const h9 = getHouseFromBoard(analysis, 9);
+    const h3 = getHouseFromBoard(analysis, 3);
+    if (h9) {
+      const h9Fortune = h9.fortune || '';
+      const h9Name = h9.figureHebrew || '';
+      const isSaad = h9Fortune.includes('סעד');
+      const isNahs = h9Fortune.includes('נחס');
+      const verdict = isSaad
+        ? 'חלום אמיתי — ייתכן שיתגשם, ראוי להאמין לו'
+        : isNahs
+        ? 'חלום שווא — מקורו בחשש, עייפות, או מחשבות לב ולא בחזון אמת'
+        : 'לא ברור — יש לבדוק את העדים (בית 13 ו-14) לפני פסיקה';
+      const h3Note = h3
+        ? `\n  בית 3 (מסר החלום) — ${h3.figureHebrew} [${h3.fortune || 'ביניים'}]: ${h3.fortune?.includes('סעד') ? 'מסר חיובי' : h3.fortune?.includes('נחס') ? 'מסר מטריד' : 'מסר סתמי'}`
+        : '';
+      parts.push(`אבחון חלום (בית 9):\n  בית 9 — ${h9Name} [${h9Fortune || 'ביניים'}]\n  פסיקה: ${verdict}${h3Note}`);
+    }
+  }
+
   // disputes: house 1 vs house 7 power comparison
   if (topicId === 'disputes') {
     const h1 = getHouseFromBoard(analysis, 1);
@@ -854,6 +875,17 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
     }
 
     return lines.join('\n');
+  }
+
+  if (topicId === 'dreamInterpretation') {
+    const house9 = getHouseFromBoard(boardAnalysis, 9);
+    const house9Desc = houseDescription(house9);
+    let base = '';
+    if (house9?.fortune?.includes('סעד')) base = 'לפי הלוח — החלום אמיתי וראוי להאמין לו. שים לב לפרטיו ובחן את מסריו.';
+    else if (house9?.fortune?.includes('נחס')) base = 'לפי הלוח — החלום שווא. מקורו בחשש פנימי, עייפות, או מחשבות יום ולא בחזון אמת.';
+    else base = 'לא ניתן להכריע על בסיס בית 9 בלבד — יש לבדוק את העדים (בית 13 ו-14) ואת הדיין לפני פסיקה סופית.';
+    if (house9Desc) base += ` בדוק בית 9 (חלום): ${house9Desc}`;
+    return base;
   }
 
   if (topicId === 'marriage') {
@@ -1330,6 +1362,7 @@ const TOPIC_FOCUS_LABEL = {
   theft:             'בית הגנב (בית 7)',
   siblings:          'בית האחים (בית 3)',
   deathInheritance:  'בית המוות והירושה (בית 8)',
+  dreamInterpretation: 'בית החלום (בית 9)',
 };
 
 function speakNote(house) {
