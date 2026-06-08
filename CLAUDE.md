@@ -17,9 +17,9 @@ Use the `mcp__*__download_file_content` or `mcp__*__read_file_content` tools wit
 
 ## Branch
 
-Active development branch: `claude/app-conclusion-generation-B3mlQ`
+Active development branch: `claude/book-format-preference-b4laA`
 
-## ABSOLUTE RULE — No Invented Data
+## Core Rule — No Invented Data
 
 **NEVER insert into the application any interpretation, meaning, or text that is not taken verbatim or paraphrased faithfully from a verified source book.**
 
@@ -31,7 +31,14 @@ This means:
 
 If a source is missing → leave it blank or mark as `sourceStatus: "missing"`. Do NOT fill gaps with guesses.
 
-Verified sources for interpretation data:
-- حاوي العجائب — figure transit meanings (already extracted to figure-transit files)
-- بلوغ الأمل — question rules and house principles
-- European geomancy (Agrippa / Greer) — to be extracted when source is available
+## Verified Sources
+
+**حاوي العجائب** is the primary and most detailed source for this application (figure transits, figure states, house foundations).
+
+All other books in the Google Drive folder **"ספרים לאפליקציית גורל החול"** are approved enrichment sources and may be used to fill gaps or add additional interpretations:
+- `كتاب بلوغ الامل في علم الرمل` — question rules and house principles
+- `كتاب القول الجامع في علم الرمل` — advanced methods (7×7 isqat, etc.)
+- `مستهل الحقائق` — additional interpretations
+- European geomancy books (Agrippa, Greer, etc.) — when available in the Drive folder
+
+When using enrichment sources, always note the source in `sourceTitle` / `sourceTitleArabic` fields.
