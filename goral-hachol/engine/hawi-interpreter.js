@@ -1015,11 +1015,11 @@ function computeBoardScore(chart) {
     singleRows: singles,
     doubleRows: 64 - singles,
     score,
-    isComplete: score >= 90,
-    status: score >= 90 ? 'שלם' : 'חסר',
-    hebrewSummary: score >= 90
-      ? `לוח שלם (${score} נקודות ≥ 90)`
-      : `לוח חסר (${score} נקודות < 90) — השאלה עשויה שלא להיפתר`,
+    isComplete: score >= 96,
+    status: score >= 96 ? 'שלם' : 'חסר',
+    hebrewSummary: score >= 96
+      ? `לוח שלם (${score} נקודות ≥ 96)`
+      : `לוח חסר (${score} נקודות < 96) — השאלה עשויה שלא להיפתר`,
   };
 }
 const DHAMIR_PARENT_PAIRS = {
@@ -3200,7 +3200,7 @@ function scoreBoard(boardAnalysis) {
   const aspectBonus = (h1toFocus?.type === 'same-figure') ? 1.0
     : (h1toFocus?.type === 'aspect') ? 0.5 : 0;
 
-  // Board completeness: incomplete board (< 90 pts) reduces verdict confidence by 20%.
+  // Board completeness: incomplete board (< 96 pts) reduces verdict confidence by 20%.
   const boardComplete = boardAnalysis.boardScore?.isComplete !== false;
   const completenessMultiplier = boardComplete ? 1 : 0.8;
 
@@ -3262,7 +3262,7 @@ function scoreBoard(boardAnalysis) {
     reasons.push(`קשר בין בית 1 לבית המרכזי: ${h1toFocus?.hebrewShort || (aspectBonus >= 1 ? 'צורה זהה' : 'מבט')}`);
   }
   if (!boardComplete) {
-    reasons.push(`לוח חסר (${boardAnalysis.boardScore?.score || '?'} נקודות < 90) — הפסיקה מוחלשת ב-20%`);
+    reasons.push(`לוח חסר (${boardAnalysis.boardScore?.score || '?'} נקודות < 96) — הפסיקה מוחלשת ב-20%`);
   }
 
   return {
