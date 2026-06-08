@@ -617,7 +617,6 @@
       white-space:nowrap;
     }
     .profile-section {
-      margin-top:14px;
       background:linear-gradient(135deg,#f2fff6,#fff);
       border:2px solid rgba(20,140,80,.25);
       border-radius:14px;
@@ -1119,14 +1118,7 @@
           </div>
 
           <div class="full">
-            <label>שאלה / כוונה</label>
-            <textarea id="questionInput" placeholder="כתוב כאן את שאלת גורל החול" autocomplete="off"></textarea>
-          </div>
-
-          <div class="full">
-            <label>נושא השאלה — בחר את הבית שקשור לשאלתך</label>
-            <div class="topic-grid" id="topicGrid"></div>
-            <div id="profileSection" class="profile-section" style="display:none">
+            <div id="profileSection" class="profile-section">
               <div class="profile-section-title">פרטי הלקוח — לפרשנות מדויקת</div>
               <div class="profile-group">
                 <div class="profile-group-label">מצב משפחתי</div>
@@ -1154,6 +1146,16 @@
                 </div>
               </div>
             </div>
+          </div>
+
+          <div class="full">
+            <label>שאלה / כוונה</label>
+            <textarea id="questionInput" placeholder="כתוב כאן את שאלת גורל החול" autocomplete="off"></textarea>
+          </div>
+
+          <div class="full">
+            <label>נושא השאלה — בחר את הבית שקשור לשאלתך</label>
+            <div class="topic-grid" id="topicGrid"></div>
           </div>
         </div>
 
@@ -1493,8 +1495,6 @@
         });
       });
 
-      const profSec = document.getElementById('profileSection');
-      if (profSec) profSec.style.display = 'flex';
     }
 
     function escapeHtml(value) {
