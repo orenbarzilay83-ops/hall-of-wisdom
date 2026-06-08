@@ -1130,6 +1130,12 @@ function buildJudgeVerdict(boardAnalysis) {
   const focusTone = focusStateTone ?? focusToneBase;
   const witnessTone = (w1Tone + w2Tone) / 2;
 
+  const h16Entry = boardAnalysis.houses?.find?.((h) => Number(h.house) === 16) || null;
+  const h16ToneBase = h16Entry ? getFigureFortuneTone(h16Entry) : 0;
+  const h16StateTone = h16Entry ? getFigureStateHouseTone(h16Entry?.figureState) : null;
+  const h16Tone = h16StateTone ?? h16ToneBase;
+  const h16Figure = h16Entry?.figureHebrew || '';
+
   const judgeFigure = judge.figureHebrew || '';
   const judgeFortune = judge.fortune || '';
   const w1Figure = w1?.figureHebrew || '';
@@ -1211,6 +1217,22 @@ function buildJudgeVerdict(boardAnalysis) {
         judgeSilentNote +
         (w1Figure ? ' עד ראשון: ' + w1Figure + '.' : '') +
         (w2Figure ? ' עד שני: ' + w2Figure + '.' : '');
+    }
+  }
+
+  // House 16 = "הלב" (القلب) per חאוי: gives power to the verdict.
+  // Good figure in h16 → strengthens the verdict; bad figure → weakens it.
+  if (h16Tone !== 0 && h16Figure) {
+    if (h16Tone > 0) {
+      if (verdict === 'yes-weak')          verdict = 'yes-strong';
+      else if (verdict === 'no-strong')    verdict = 'no-weak';
+      else if (verdict === 'maybe-negative') { verdict = 'maybe-positive'; grade = 'cautiously-positive'; }
+      hebrewFull += ` הלב (בית 16): "${h16Figure}" — מחזק ומייצב את הפסיקה.`;
+    } else {
+      if (verdict === 'yes-strong')        verdict = 'yes-weak';
+      else if (verdict === 'no-weak')      verdict = 'no-strong';
+      else if (verdict === 'maybe-positive') { verdict = 'maybe-negative'; grade = 'cautiously-negative'; }
+      hebrewFull += ` הלב (בית 16): "${h16Figure}" — מחליש את ביצוע הפסיקה.`;
     }
   }
 
