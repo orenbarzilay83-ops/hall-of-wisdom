@@ -1833,7 +1833,6 @@
           <div class="verdict-box ${escapeHtml(verdictClass(judgeV.verdict))}">
             <div class="verdict-label">תשובה לשאלה</div>
             <div class="verdict-answer">${escapeHtml(judgeV.hebrewShort)}</div>
-            <div class="verdict-detail">${escapeHtml(judgeV.hebrewFull || "")}</div>
           </div>`;
       }
 
@@ -1932,23 +1931,35 @@
           .replace(/ נחס(?=[^א-ת]|$)/g, " רע");
       }
 
-      // Details panel — client-facing only (no practitioner banners)
+      // Narrative — shown immediately after verdict
       const conclusionFormatted = hebrewTerms(escapeHtml(conclusion))
         .replace(/\n\n/g, '</p><p style="margin-top:14px;">')
         .replace(/\n/g, '<br/>');
+      const narrativeHtml = conclusion ? `
+        <div class="summary-box" style="margin-top:12px;">
+          <p>${conclusionFormatted}</p>
+        </div>` : "";
+
+      // Technical detail — goes into hidden "קרא עוד" panel
+      const technicalFormatted = judgeV?.hebrewFull
+        ? hebrewTerms(escapeHtml(judgeV.hebrewFull)).replace(/\n/g, '<br/>')
+        : "";
+      const technicalDetailHtml = technicalFormatted ? `
+        <div class="summary-box">
+          <p>${technicalFormatted}</p>
+        </div>` : "";
 
       const detailsContent = `
         <div class="details-panel">
-          <div class="summary-box">
-            <p>${conclusionFormatted}</p>
-          </div>
+          ${technicalDetailHtml}
+          ${keyFactsHtml}
           ${spiritualDetailHtml}
         </div>`;
 
       return `
         ${boardWarnHtml}
         ${verdictHtml}
-        ${keyFactsHtml}
+        ${narrativeHtml}
         <button class="details-toggle" onclick="const p=this.nextElementSibling;p.hidden=!p.hidden;this.textContent=p.hidden?'קרא עוד ▼':'סגור ▲'">קרא עוד ▼</button>
         <div hidden>${detailsContent}</div>
       `;
