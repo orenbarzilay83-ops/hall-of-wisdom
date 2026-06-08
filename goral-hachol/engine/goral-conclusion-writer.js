@@ -1719,7 +1719,9 @@ function buildNarrativeByTopic(result) {
     pushOpeningWithBridge(topicId);
 
     if (h9) {
-      if (t(h9) >= 1)    push('הדרך עצמה בלוח — פתוחה וחיובית. יש סיכוי טוב שהמסע יצליח.');
+      if (t(h9) >= 1) push(isNeg
+        ? 'הדרך בלוח — יש כוח מסוים, אך הפסיקה הסופית לא תומכת בנסיעה הזו. כדאי לדחות.'
+        : 'הדרך עצמה בלוח — פתוחה וחיובית. יש סיכוי טוב שהמסע יצליח.');
       else if (t(h9) === -1) push('הדרך בלוח — יש עיכוב או קושי. כדאי לדחות או לשנות תנאים.');
       else if (t(h9) <= -2)  push('הדרך בלוח — קשה. לא זמן טוב לנסיעה הזו. עדיף לחכות.');
       else push('הדרך בלוח — לא ברורה. יש לבדוק תנאים ספציפיים.');
@@ -1859,7 +1861,7 @@ function buildNarrativeByTopic(result) {
     const h8  = getHouseFromBoard(boardAnalysis, 8);
     const h12 = getHouseFromBoard(boardAnalysis, 12);
 
-    push(topicOpeningLine(topicId, h1, name));
+    pushOpeningWithBridge(topicId);
 
     const fearSources = [];
     if (h7  && t(h7)  <= -1) fearSources.push('אדם שמולך');
@@ -1878,7 +1880,7 @@ function buildNarrativeByTopic(result) {
 
   // ── loveHate ─────────────────────────────────────────────────────
   if (topicId === 'loveHate') {
-    push(topicOpeningLine(topicId, h1, name));
+    pushOpeningWithBridge(topicId);
 
     if (h7) {
       if (t(h1) >= 1 && t(h7) >= 1)       push('הלוח רואה רגש חיובי משני הצדדים — יש חיבור ממשי.');
@@ -1898,7 +1900,7 @@ function buildNarrativeByTopic(result) {
 
   // ── completion ───────────────────────────────────────────────────
   if (topicId === 'completion') {
-    push(topicOpeningLine(topicId, h1, name));
+    pushOpeningWithBridge(topicId);
 
     const tahasil = boardAnalysis?.tahasil;
     if (tahasil) {
@@ -1916,15 +1918,19 @@ function buildNarrativeByTopic(result) {
     const h5  = getHouseFromBoard(boardAnalysis, 5);
     const h12 = getHouseFromBoard(boardAnalysis, 12);
 
-    push(topicOpeningLine(topicId, h1, name));
+    pushOpeningWithBridge(topicId);
 
     if (h12) {
-      if (t(h12) >= 1)    push('המגבלה בלוח — חלשה. יש סימן לפתח יציאה.');
+      if (t(h12) >= 1) push(isNeg
+        ? 'המגבלה בלוח — עדיין קיימת. הפסיקה לא מצביעה על שחרור קרוב.'
+        : 'המגבלה בלוח — חלשה. יש סימן לפתח יציאה.');
       else if (t(h12) <= -1) push('המגבלה בלוח — חזקה. השחרור עדיין לא קרוב.');
     }
 
     if (h5) {
-      if (t(h5) >= 1)    push('גורל האסיר לפי הלוח — יש נטייה לשחרור.');
+      if (t(h5) >= 1) push(isNeg
+        ? 'יש כוח מסוים בלוח — אך הפסיקה הסופית מסתייגת. לא כרגע.'
+        : 'גורל האסיר לפי הלוח — יש נטייה לשחרור.');
       else if (t(h5) <= -1) push('גורל האסיר לפי הלוח — קשה. אין סימן ברור לשחרור בקרוב.');
     }
 
@@ -1937,13 +1943,17 @@ function buildNarrativeByTopic(result) {
     const h2  = getHouseFromBoard(boardAnalysis, 2);
     const h10 = getHouseFromBoard(boardAnalysis, 10);
 
-    push(topicOpeningLine(topicId, h1, name));
+    pushOpeningWithBridge(topicId);
 
     if (h7) {
-      if (t(h1) >= 1 && t(h7) >= 1)    push('שני הצדדים בלוח — חזקים. שותפות זו מתחילה ממקום טוב.');
+      if (t(h1) >= 1 && t(h7) >= 1) push(isNeg
+        ? 'שני הצדדים בלוח מראים כוח — אך הפסיקה הסופית לא תומכת בשותפות הזו. כדאי לבדוק שוב.'
+        : 'שני הצדדים בלוח — חזקים. שותפות זו מתחילה ממקום טוב.');
       else if (t(h1) <= -1 && t(h7) <= -1) push('שני הצדדים בלוח — חלשים. שותפות זו מסוכנת, לא הזמן הנכון.');
       else if (t(h7) <= -1)             push('השותף בלוח — יש סימן לחשש. בדוק אותו לפני שמתחייבים.');
-      else if (t(h7) >= 1)              push('השותף בלוח — בעמדה טובה. יש בסיס לשותפות.');
+      else if (t(h7) >= 1) push(isNeg
+        ? 'השותף בלוח — בעמדה טובה, מה שעשוי להסביר את הסיכון. כדאי לבחון את תנאי ההסכם.'
+        : 'השותף בלוח — בעמדה טובה. יש בסיס לשותפות.');
       else push('השותף בלוח — לא חד-משמעי. בדוק תנאים לפני כניסה.');
     }
 
@@ -1962,10 +1972,12 @@ function buildNarrativeByTopic(result) {
     const h8  = getHouseFromBoard(boardAnalysis, 8);
     const h12 = getHouseFromBoard(boardAnalysis, 12);
 
-    push(topicOpeningLine(topicId, h1, name));
+    pushOpeningWithBridge(topicId);
 
     if (h9) {
-      if (t(h9) >= 1)    push('המסע בלוח — חיובי. יש סימן שהים פתוח ועובר בשלום.');
+      if (t(h9) >= 1) push(isNeg
+        ? 'המסע בלוח — יש כוח מסוים, אך הפסיקה הסופית לא תומכת. כדאי לדחות.'
+        : 'המסע בלוח — חיובי. יש סימן שהים פתוח ועובר בשלום.');
       else if (t(h9) <= -1) push('המסע בלוח — קשה. יש לשקול דחייה או שינוי מסלול.');
     }
 
@@ -1982,10 +1994,12 @@ function buildNarrativeByTopic(result) {
   if (topicId === 'siblings') {
     const h3 = getHouseFromBoard(boardAnalysis, 3);
 
-    push(topicOpeningLine(topicId, h1, name));
+    pushOpeningWithBridge(topicId);
 
     if (h3) {
-      if (t(h3) >= 1)    push('האח / השכן בלוח — יש קשר חיובי. עזרה ותמיכה בצד.');
+      if (t(h3) >= 1) push(isNeg
+        ? 'הקשר עם האח / השכן בלוח — מראה חיבור מסוים, אך הפסיקה הסופית מסתייגת. שים לב לפרטים.'
+        : 'האח / השכן בלוח — יש קשר חיובי. עזרה ותמיכה בצד.');
       else if (t(h3) === -1) push('האח / השכן בלוח — יש מרחק או קושי בקשר.');
       else if (t(h3) <= -2)  push('הקשר עם האח / השכן בלוח — קשה. יש לטפל בזה ישירות.');
 
@@ -2001,16 +2015,20 @@ function buildNarrativeByTopic(result) {
     const h8 = getHouseFromBoard(boardAnalysis, 8);
     const h2 = getHouseFromBoard(boardAnalysis, 2);
 
-    push(topicOpeningLine(topicId, h1, name));
+    pushOpeningWithBridge(topicId);
 
     if (h8) {
-      if (t(h8) >= 1)    push('בית הסכנה והירושה בלוח — חיובי. אם מדובר בחשש מוות, הסכנה נמוכה. אם מדובר בירושה, יש פתיחה.');
+      if (t(h8) >= 1) push(isNeg
+        ? 'בית הסכנה בלוח — יש כוח, אבל הפסיקה מסתייגת. יש לבדוק לעומק.'
+        : 'בית הסכנה והירושה בלוח — חיובי. אם מדובר בחשש מוות, הסכנה נמוכה. אם מדובר בירושה, יש פתיחה.');
       else if (t(h8) === -1) push('יש בלוח סימן שהמצב לא פשוט — יש לקחת את זה ברצינות.');
       else if (t(h8) <= -2)  push('הלוח מראה סכנה ממשית — יש לפעול בהתאם ולא להמתין.');
     }
 
     if (h2) {
-      if (t(h2) >= 1)    push('הירושה הכספית בלוח — הלוח מראה שיש מה לקבל.');
+      if (t(h2) >= 1) push(isNeg
+        ? 'יש כסף בלוח — אך הפסיקה מעידה על קושי בהגעה אליו. ייתכנו סיבוכים.'
+        : 'הירושה הכספית בלוח — הלוח מראה שיש מה לקבל.');
       else if (t(h2) <= -1) push('הירושה הכספית בלוח — יש סיבוך או עיכוב. ייתכנו מחלוקות.');
     }
 
@@ -2050,10 +2068,12 @@ function buildNarrativeByTopic(result) {
     const h10 = getHouseFromBoard(boardAnalysis, 10);
     const aa  = boardAnalysis?.authorityStateAnalysis;
 
-    push(topicOpeningLine(topicId, h1, name));
+    pushOpeningWithBridge(topicId);
 
     if (h10) {
-      if (t(h10) >= 1)    push('התפקיד / הסמכות בלוח — חיובי. יש יציבות ועמדה חזקה.');
+      if (t(h10) >= 1) push(isNeg
+        ? 'התפקיד בלוח — יש יציבות מסוימת, אך הפסיקה מצביעה על קושי. כדאי לחזק את הבסיס.'
+        : 'התפקיד / הסמכות בלוח — חיובי. יש יציבות ועמדה חזקה.');
       else if (t(h10) === -1) push('התפקיד בלוח — יש חשש. יש לחזק את הבסיס לפני פעולה.');
       else if (t(h10) <= -2)  push('התפקיד בלוח — בסכנה. יש לפעול כדי להגן על המעמד.');
     }
@@ -2100,11 +2120,12 @@ function buildNarrativeByTopic(result) {
     const h9 = getHouseFromBoard(boardAnalysis, 9);
     const h3 = getHouseFromBoard(boardAnalysis, 3);
 
-    push(topicOpeningLine(topicId, h1, name));
+    pushOpeningWithBridge(topicId);
 
     if (h9) {
-      if (t(h9) >= 1)
-        push('בית החלום בלוח — חיובי. יש סימן שהחלום אמיתי ועשוי להתגשם.');
+      if (t(h9) >= 1) push(isNeg
+        ? 'בית החלום בלוח — יש כוח, אבל הפסיקה מסתייגת. החלום עשוי להיות אמיתי אך לא יתגשם כעת.'
+        : 'בית החלום בלוח — חיובי. יש סימן שהחלום אמיתי ועשוי להתגשם.');
       else if (t(h9) <= -1)
         push('בית החלום בלוח — שלילי. החלום עשוי להיות מקורו בחשש, עייפות, או מחשבות לב ולא בחזון אמת.');
       else
@@ -2112,7 +2133,9 @@ function buildNarrativeByTopic(result) {
     }
 
     if (h3) {
-      if (t(h3) >= 1)    push('מסר החלום (בית 3) — חיובי.');
+      if (t(h3) >= 1) push(isNeg
+        ? 'המסר (בית 3) — יש תוכן, אך הפסיקה לא תומכת בהגשמה כרגע.'
+        : 'מסר החלום (בית 3) — חיובי.');
       else if (t(h3) <= -1) push('מסר החלום (בית 3) — מטריד.');
     }
 
@@ -2141,7 +2164,7 @@ function buildNarrativeByTopic(result) {
   }
 
   // ── generic fallback ─────────────────────────────────────────────
-  push(topicOpeningLine(topicId, h1, name));
+  pushOpeningWithBridge(topicId);
   if (h7) {
     if (t(h7) >= 1)    push('הצד השני בלוח — חיובי.');
     else if (t(h7) <= -1) push('הצד השני בלוח — יש חשש. כדאי לבדוק לפני פעולה.');
