@@ -37,6 +37,36 @@ export const HAWI_HOUSE_GROUPS = {
   },
 };
 
+// Source: كشف الأسرار المصونة, page 46
+// "وأما التربيع، فهو: من الأول إلى الرابع، ومن الرابع إلى السابع، ومن السابع إلى العاشر، وهو المسمى: بالأوتاد"
+export const HAWI_SQUARE_ASPECT = {
+  id: 'square-tarbii',
+  arabicName: 'التربيع',
+  hebrewName: 'ריבוע',
+  pairs: [
+    { fromHouse: 1, toHouse: 4, sourceStatus: 'explicit-in-source' },
+    { fromHouse: 4, toHouse: 7, sourceStatus: 'explicit-in-source' },
+    { fromHouse: 7, toHouse: 10, sourceStatus: 'explicit-in-source' },
+  ],
+  note: 'הריבוע הוא היתדות (בתים 1, 4, 7, 10)',
+  sourceStatus: 'explicit-in-source',
+};
+
+// Source: كشف الأسرار المصونة, page 46
+// "وأما التسديس، فهو: من الأول إلى الثالث، ومن التاسع إلى الحادي عشر، ومن الرابع إلى الثامن؛ والثاني ويخص كل تسديس وتدان"
+export const HAWI_SEXTILE_ASPECT = {
+  id: 'sextile-tasdis',
+  arabicName: 'التسديس',
+  hebrewName: 'שישי',
+  pairs: [
+    { fromHouse: 1, toHouse: 3, sourceStatus: 'explicit-in-source' },
+    { fromHouse: 9, toHouse: 11, sourceStatus: 'explicit-in-source' },
+    { fromHouse: 4, toHouse: 8, sourceStatus: 'explicit-in-source' },
+  ],
+  note: 'לכל זוג תסדיס שייכים שני בתי יתד',
+  sourceStatus: 'explicit-in-source',
+};
+
 export const HAWI_WITNESS_ADDITIONAL_RULE = {
   id: 'witnesses-angular-strength-and-mutual-support',
   rule: 'כוח העדים מן היתדות וסיוע הצורות זו לזו יכולים להביא תוצאה, אבל אם הדבר אינו יציב — הוא יוצא מהר ואינו נשאר.',
@@ -81,4 +111,27 @@ export function getHawiWitnessRule(houseNumber) {
     additionalRule: HAWI_WITNESS_ADDITIONAL_RULE,
     sourceStatus: witness || group ? 'explicit-in-source' : 'not-explicit-in-source',
   };
+}
+
+export function getHawiAspectsBetweenHouses(houseA, houseB) {
+  const a = Number(houseA);
+  const b = Number(houseB);
+  const aspects = [];
+
+  const inTrine = HAWI_WITNESS_SEQUENCE.some(
+    (item) => (item.fromHouse === a && item.toHouse === b) || (item.fromHouse === b && item.toHouse === a)
+  );
+  if (inTrine) aspects.push({ type: 'תלת', arabicName: 'التثليث' });
+
+  const inSquare = HAWI_SQUARE_ASPECT.pairs.some(
+    (p) => (p.fromHouse === a && p.toHouse === b) || (p.fromHouse === b && p.toHouse === a)
+  );
+  if (inSquare) aspects.push({ type: 'ריבוע', arabicName: 'التربيع' });
+
+  const inSextile = HAWI_SEXTILE_ASPECT.pairs.some(
+    (p) => (p.fromHouse === a && p.toHouse === b) || (p.fromHouse === b && p.toHouse === a)
+  );
+  if (inSextile) aspects.push({ type: 'שישי', arabicName: 'التسديس' });
+
+  return aspects;
 }
