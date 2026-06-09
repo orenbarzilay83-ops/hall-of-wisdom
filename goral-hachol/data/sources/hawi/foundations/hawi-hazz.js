@@ -9,14 +9,15 @@
 // סוגי יתרון מבוססי-מקור (explicit-in-source):
 //   תסכין-שכינה:  הצורה בביתה הטבעי (לפי נוסחת ספר, עמוד 43)
 //   תסכין-אותיות: הצורה בבית-האות שלה (לפי סדר תסקין עבדוה — hawi-figure-letter-extraction.js)
-//   תסכין-יסוד:   יסוד הצורה = יסוד הבית (מחזורי: 1=אש,2=אוויר,3=מים,4=עפר)
-//   תסכין-זמן:    זמן הצורה (יומי/לילי) = זמן הבית (אי-זוגי=יומי, זוגי=לילי)
+//   תסכין-מזג-ויום: יסוד הצורה = יסוד הבית (מחזורי: 1=אש,2=אוויר,3=מים,4=עפר) + זמן תואם
 //   יתד:          הבית הוא בית יתד (1,4,7,10)
 //
 // שתי מערכות השכינה (שכינה ואותיות) נותנות בתים שונים לאותה צורה ב-14 מתוך 16 מקרים.
 //
-// סוגי יתרון שטרם מיושמים (not-yet-found-in-current-code-search):
-//   כוכב: הכוכב השולט בצורה = הכוכב השולט בבית (צריך מקור נוסף)
+// תסכין-כוכב (عمود 133-134, التسكين الرابع):
+//   כוכב הצורה = כוכב הבית (מחזור: שבתאי,צדק,מאדים,שמש,נוגה,כוכב,ירח × 16 בתים)
+//   3 כוכבים מאומתים (עמוד 133): שמש, נוגה, ירח — sourceStatus: explicit-in-source
+//   4 כוכבים על-פי מסורת רמל (עמוד 134 לא נגיש כעת) — sourceStatus: not-yet-found-in-current-code-search
 
 import { FIGURE_LETTER_EXTRACTION } from './hawi-figure-letter-extraction.js';
 
@@ -24,6 +25,36 @@ import { FIGURE_LETTER_EXTRACTION } from './hawi-figure-letter-extraction.js';
 const FIGURE_LETTER_HOUSE = Object.fromEntries(
   FIGURE_LETTER_EXTRACTION.figureLetters.map((f, idx) => [f.pattern, idx + 1])
 );
+
+// ── תסכין-כוכב ────────────────────────────────────────────────────────────────
+// מיפוי כוכב → צורות (عمود 133-134)
+// sourceStatus per entry: 'explicit-in-source' = מאומת מעמוד 133
+//                         'not-yet-found-in-current-code-search' = מסורת רמל, ממתין לאימות עמוד 134
+export const FIGURE_PLANET_MAP = [
+  // ── מאומת מעמוד 133 ──────────────────────────────────
+  { planet: 'שמש',   arabicName: 'الشمس',   patterns: ['2121', '1122'], sourceStatus: 'explicit-in-source' },
+  { planet: 'נוגה',  arabicName: 'الزهرة',  patterns: ['1212', '2211', '2111'], sourceStatus: 'explicit-in-source' },
+  { planet: 'ירח',   arabicName: 'القمر',   patterns: ['2212', '1111'], sourceStatus: 'explicit-in-source' },
+  // ── ממתין לאימות מעמוד 134 ───────────────────────────
+  { planet: 'שבתאי', arabicName: 'زحل',     patterns: ['2222', '2221'], sourceStatus: 'not-yet-found-in-current-code-search' },
+  { planet: 'צדק',   arabicName: 'المشتري', patterns: ['1211', '1222'], sourceStatus: 'not-yet-found-in-current-code-search' },
+  { planet: 'מאדים', arabicName: 'المريخ',  patterns: ['1221', '2122'], sourceStatus: 'not-yet-found-in-current-code-search' },
+  { planet: 'כוכב',  arabicName: 'عطارد',   patterns: ['2112', '1121', '1112'], sourceStatus: 'not-yet-found-in-current-code-search' },
+];
+
+// מפה הפוכה: pattern → כוכב
+const PATTERN_TO_PLANET = Object.fromEntries(
+  FIGURE_PLANET_MAP.flatMap((entry) =>
+    entry.patterns.map((p) => [p, { planet: entry.planet, arabicName: entry.arabicName, sourceStatus: entry.sourceStatus }])
+  )
+);
+
+// כוכב לפי בית — מחזור שבתאי,צדק,מאדים,שמש,נוגה,כוכב,ירח (בתים 1–16)
+// Source: traditional Arabic raml cycle — sourceStatus: not-yet-found-in-current-code-search
+const PLANET_CYCLE = ['שבתאי', 'צדק', 'מאדים', 'שמש', 'נוגה', 'כוכב', 'ירח'];
+function getHousePlanet(houseNum) {
+  return PLANET_CYCLE[(houseNum - 1) % 7];
+}
 
 // ערכי יסוד עמודות הצורה (עמוד 43):
 // "النقطة النارية واحد... الهواء اثنان... الماء أربعة... التراب ثمانية"
@@ -125,7 +156,7 @@ export function calculateHazz(figure, houseNum) {
     });
   }
 
-  // 5. יתד — הבית הוא יתד (1, 4, 7, 10)
+  // 4. יתד — הבית הוא יתד (1, 4, 7, 10)
   // Source: page 46: "وهو وتد, فهذه أربعة حظوظ" (from الأحيان example)
   if ([1, 4, 7, 10].includes(h)) {
     advantages.push({
@@ -135,8 +166,22 @@ export function calculateHazz(figure, houseNum) {
     });
   }
 
-  // 5. תסכין אותיות — ערך אבג'ד (not-yet-found-in-current-code-search)
-  // 6. כוכב — כוכב שולט (not-yet-found-in-current-code-search)
+  // 5. תסכין-כוכב — כוכב הצורה = כוכב הבית (עמוד 133-134)
+  // Source pages 133-134: التسكين الرابع: تسكين المزاج
+  // 3 planets verified (p.133): שמש/נוגה/ירח — others from raml tradition pending p.134
+  const figurePlanetEntry = PATTERN_TO_PLANET[figure.pattern];
+  if (figurePlanetEntry) {
+    const housePlanet = getHousePlanet(h);
+    if (figurePlanetEntry.planet === housePlanet) {
+      advantages.push({
+        type: 'תסכין-כוכב',
+        arabicName: 'تسكين الكوكب',
+        planet: figurePlanetEntry.planet,
+        housePlanet,
+        sourceStatus: figurePlanetEntry.sourceStatus,
+      });
+    }
+  }
 
   return {
     houseNum: h,
@@ -161,6 +206,7 @@ export default {
   calculateHazz,
   getHazzStrengthLabel,
   BOOK_NATURAL_HOUSE_FIGURES,
+  FIGURE_PLANET_MAP,
 };
 
 if (typeof module !== 'undefined') {
@@ -169,5 +215,6 @@ if (typeof module !== 'undefined') {
     calculateHazz,
     getHazzStrengthLabel,
     BOOK_NATURAL_HOUSE_FIGURES,
+    FIGURE_PLANET_MAP,
   };
 }
