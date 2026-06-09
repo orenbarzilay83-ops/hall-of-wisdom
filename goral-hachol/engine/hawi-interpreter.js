@@ -23,6 +23,15 @@ import {
   FIGURE_LETTER_EXTRACTION,
 } from '../data/sources/hawi/foundations/hawi-figure-letter-extraction.js';
 
+import {
+  calculateHazz,
+  getHazzStrengthLabel,
+} from '../data/sources/hawi/foundations/hawi-hazz.js';
+
+import {
+  HAWI_FIGURE_NAMES_BY_ID,
+} from '../data/sources/hawi/foundations/hawi-figure-names.js';
+
 export const NATURAL_HOUSE_FIGURES = {
   1:  '1121', // נלחם — doc2: "الجدولة 00|0"
   2:  '1222', // נשוא ראש — doc3: "0|||" בכותרת פרק בית 2
@@ -2633,6 +2642,8 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     .filter(Boolean)
     .map((house) => {
       const dir = getFigureDirection(house.key || null);
+      const figureFull = HAWI_FIGURE_NAMES_BY_ID[house.key] || null;
+      const hazz = figureFull ? calculateHazz(figureFull, house.house) : null;
       return {
         house: house.house,
         houseHebrew: house.houseHebrew || null,
@@ -2652,6 +2663,9 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
         isNaturalFigure: !!(house.key && NATURAL_HOUSE_FIGURES[house.house] === house.key),
         seventhFigure: getSeventhFigure(house.key || null),
         quadrant: HOUSE_QUADRANT(house.house),
+        hazz,
+        hazzCount: hazz?.count ?? 0,
+        hazzStrength: hazz ? getHazzStrengthLabel(hazz.count) : null,
       };
     });
 
