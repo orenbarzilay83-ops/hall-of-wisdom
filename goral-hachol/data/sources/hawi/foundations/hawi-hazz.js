@@ -7,14 +7,23 @@
 //   תסכין השכינה + תסכין האותיות + תסכין היסוד + יתד
 //
 // סוגי יתרון מבוססי-מקור (explicit-in-source):
-//   תסכין-שכינה: הצורה בביתה הטבעי (לפי נוסחת ספר, עמוד 43)
-//   תסכין-יסוד:  יסוד הצורה = יסוד הבית (מחזורי: 1=אש,2=אוויר,3=מים,4=עפר)
-//   תסכין-זמן:   זמן הצורה (יומי/לילי) = זמן הבית (אי-זוגי=יומי, זוגי=לילי)
-//   יתד:         הבית הוא בית יתד (1,4,7,10)
+//   תסכין-שכינה:  הצורה בביתה הטבעי (לפי נוסחת ספר, עמוד 43)
+//   תסכין-אותיות: הצורה בבית-האות שלה (לפי סדר תסקין עבדוה — hawi-figure-letter-extraction.js)
+//   תסכין-יסוד:   יסוד הצורה = יסוד הבית (מחזורי: 1=אש,2=אוויר,3=מים,4=עפר)
+//   תסכין-זמן:    זמן הצורה (יומי/לילי) = זמן הבית (אי-זוגי=יומי, זוגי=לילי)
+//   יתד:          הבית הוא בית יתד (1,4,7,10)
+//
+// שתי מערכות השכינה (שכינה ואותיות) נותנות בתים שונים לאותה צורה ב-14 מתוך 16 מקרים.
 //
 // סוגי יתרון שטרם מיושמים (not-yet-found-in-current-code-search):
-//   תסכין-אותיות: ערך אבג'ד של הצורה תואם מספר הבית
-//   כוכב:         הכוכב השולט בצורה = הכוכב השולט בבית
+//   כוכב: הכוכב השולט בצורה = הכוכב השולט בבית (צריך מקור נוסף)
+
+import { FIGURE_LETTER_EXTRACTION } from './hawi-figure-letter-extraction.js';
+
+// בנה מפה: pattern → מיקום אות (1-16) לפי סדר תסקין עבדוה
+const FIGURE_LETTER_HOUSE = Object.fromEntries(
+  FIGURE_LETTER_EXTRACTION.figureLetters.map((f, idx) => [f.pattern, idx + 1])
+);
 
 // ערכי יסוד עמודות הצורה (עמוד 43):
 // "النقطة النارية واحد... الهواء اثنان... الماء أربعة... التراب ثمانية"
@@ -85,31 +94,38 @@ export function calculateHazz(figure, houseNum) {
     });
   }
 
-  // 2. תסכין יסוד — יסוד הצורה תואם יסוד הבית
+  // 2. תסכין אותיות — בית האות של הצורה (לפי סדר תסקין עבדוה) = בית נוכחי
+  // מערכת נפרדת מהשכינה: 14 מתוך 16 צורות מקבלות בית-אות שונה מבית-שכינה
+  const letterHouse = FIGURE_LETTER_HOUSE[figure.pattern];
+  if (letterHouse === h) {
+    advantages.push({
+      type: 'תסכין-אותיות',
+      arabicName: 'تسكين الحروف',
+      letterHouse,
+      sourceStatus: 'explicit-in-source',
+    });
+  }
+
+  // 3. תסכין-מזג-ויום — יסוד הצורה + זמנה תואמים את הבית (יחד = יתרון אחד)
+  // Source: book example calls this combined type "تسكين المزاج واليوم" (one hazz, not two)
+  // אי-זוגי = יומי/אש/אוויר, זוגי = לילי/מים/עפר
   const houseElement = getHouseElementHebrew(h);
-  if (figure.elementHebrew && figure.elementHebrew === houseElement) {
-    advantages.push({
-      type: 'תסכין-יסוד',
-      arabicName: 'تسكين العنصر',
-      sourceStatus: 'explicit-in-source',
-    });
-  }
-
-  // 3. תסכין זמן — זמן הצורה תואם פריות הבית (אי-זוגי=יומי, זוגי=לילי)
-  // Source: page 46: "والبيت الأول: ذكر؛ والثاني: أنثى؛ والثالث: ذكر..."
   const houseIsDay = h % 2 === 1;
-  if (
+  const elementMatches = figure.elementHebrew && figure.elementHebrew === houseElement;
+  const timeMatches =
     (houseIsDay && figure.timeHebrew === 'יומי') ||
-    (!houseIsDay && figure.timeHebrew === 'לילי')
-  ) {
+    (!houseIsDay && figure.timeHebrew === 'לילי');
+  if (elementMatches || timeMatches) {
     advantages.push({
-      type: 'תסכין-זמן',
-      arabicName: 'تسكين اليوم',
+      type: 'תסכין-מזג-ויום',
+      arabicName: 'تسكين المزاج واليوم',
+      elementMatches,
+      timeMatches,
       sourceStatus: 'explicit-in-source',
     });
   }
 
-  // 4. יתד — הבית הוא יתד (1, 4, 7, 10)
+  // 5. יתד — הבית הוא יתד (1, 4, 7, 10)
   // Source: page 46: "وهو وتد, فهذه أربعة حظوظ" (from الأحيان example)
   if ([1, 4, 7, 10].includes(h)) {
     advantages.push({
