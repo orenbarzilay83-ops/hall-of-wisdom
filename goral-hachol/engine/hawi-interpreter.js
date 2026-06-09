@@ -1225,6 +1225,16 @@ function buildJudgeVerdict(boardAnalysis) {
     }
   }
 
+  if (judge.isNaturalFigure) {
+    hebrewFull += ` [תמכן: הדיין בביתו הטבעי — הפסיקה מתחזקת.]`;
+  }
+  if (w1?.isNaturalFigure && w1Figure) {
+    hebrewFull += ` [תמכן: עד ראשון (${w1Figure}) בביתו הטבעי.]`;
+  }
+  if (w2?.isNaturalFigure && w2Figure) {
+    hebrewFull += ` [תמכן: עד שני (${w2Figure}) בביתו הטבעי.]`;
+  }
+
   // House 16 = "הלב" (القلب) per חאוי: gives power to the verdict.
   // Good figure in h16 → strengthens the verdict; bad figure → weakens it.
   if (h16Tone !== 0 && h16Figure) {
@@ -3325,7 +3335,8 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
 
   const judgeHebrew = judge?.figureHebrew || 'לא מזוהה';
   const judgeFortune = judge?.fortune ? ` (${judge.fortune})` : '';
-  parts.push(`הדיין בבית 15: ${judgeHebrew}${judgeFortune} — ${judgeVerdict?.hebrewShort || boardScore.hebrewShort || 'תשובה לא מוכרעת'}.`);
+  const judgeNaturalNote = judge?.isNaturalFigure ? ' [תמכן — הדיין בביתו הטבעי, כוח הפסיקה מוכפל]' : '';
+  parts.push(`הדיין בבית 15: ${judgeHebrew}${judgeFortune}${judgeNaturalNote} — ${judgeVerdict?.hebrewShort || boardScore.hebrewShort || 'תשובה לא מוכרעת'}.`);
 
   const dhamirByMizan = boardAnalysis.dhamirByMizan;
   const dhamirHouseEntry = boardAnalysis.dhamirHouse;
@@ -3343,8 +3354,9 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
   }
 
   if (sentence) {
+    const sentenceNaturalNote = sentence.isNaturalFigure ? ' [תמכן — בביתה הטבעי]' : '';
     parts.push(
-      `בית 16 (אחרית הדבר): ${sentence.figureHebrew || 'לא מזוהה'} — מראה את השלמת הדין.`
+      `בית 16 (אחרית הדבר): ${sentence.figureHebrew || 'לא מזוהה'}${sentenceNaturalNote} — מראה את השלמת הדין.`
     );
   }
 
@@ -3364,8 +3376,9 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
       const qFigure = quesitedEntry.figureHebrew || '';
       const qSpeak = getSpeakingStateHebrew(quesitedEntry?.figureState);
       if (qFigure) {
+        const qNaturalNote = quesitedEntry.isNaturalFigure ? ' [תמכן — בביתה הטבעי]' : '';
         parts.push(
-          `בית הנשאל (בית ${quesitedHouseNum}): ${qFigure}${qFortune ? ` — ${qFortune}` : ''}${qSpeak ? ` [${qSpeak}]` : ''}.`
+          `בית הנשאל (בית ${quesitedHouseNum}): ${qFigure}${qFortune ? ` — ${qFortune}` : ''}${qSpeak ? ` [${qSpeak}]` : ''}${qNaturalNote}.`
         );
       }
     }
