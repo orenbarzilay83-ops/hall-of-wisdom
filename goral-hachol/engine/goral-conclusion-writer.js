@@ -1365,6 +1365,7 @@ function buildNarrativeByTopic(result) {
     if (profile) parts.push(`פרופיל: ${profile}.`);
     if (speak)   parts.push(`בית 1 ${speak}.`);
     if (transit) parts.push(`חאוי: ${transit}`);
+    if (h1.seekerSoughtHebrew) parts.push(`מצב השואל: ${h1.seekerSoughtHebrew}.`);
 
     push(parts.join(' '));
   }
@@ -1378,6 +1379,7 @@ function buildNarrativeByTopic(result) {
     parts.push(`${label}: ${fig}${hHazz(focus)}${fort ? `, ${fort}` : ''}.`);
     if (speak)   parts.push(`${speak}.`);
     if (transit) parts.push(`חאוי: ${transit}`);
+    if (focus.seekerSoughtHebrew) parts.push(`מצב הנדרש: ${focus.seekerSoughtHebrew}.`);
 
     push(parts.join(' '));
   }

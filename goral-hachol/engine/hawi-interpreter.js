@@ -32,6 +32,10 @@ import {
   HAWI_FIGURE_NAMES_BY_ID,
 } from '../data/sources/hawi/foundations/hawi-figure-names.js';
 
+import {
+  getHawiAspectsBetweenHouses,
+} from '../data/sources/hawi/foundations/hawi-witnesses.js';
+
 export const NATURAL_HOUSE_FIGURES = {
   1:  '1121', // נלחם — doc2: "الجدولة 00|0"
   2:  '1222', // נשוא ראש — doc3: "0|||" בכותרת פרק בית 2
@@ -702,10 +706,16 @@ function computeTopicConnections(chart, topicId) {
       const hToneB = HOUSE_FORTUNE_TONES[bNum] ?? 0;
       connDetail = connectionQualityHebrew(figFortune, hToneA, hToneB);
     } else {
-      const aspect = aspectTypeBetween(aNum, bNum);
-      if (aspect) {
+      const bookAspects = getHawiAspectsBetweenHouses(aNum, bNum);
+      if (bookAspects.length > 0) {
         connType = 'aspect';
-        connDetail = aspect.hebrew;
+        connDetail = bookAspects.map((ba) => ba.type).join('+');
+      } else {
+        const aspect = aspectTypeBetween(aNum, bNum);
+        if (aspect) {
+          connType = 'aspect';
+          connDetail = aspect.hebrew;
+        }
       }
     }
 
@@ -2666,6 +2676,8 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
         hazz,
         hazzCount: hazz?.count ?? 0,
         hazzStrength: hazz ? getHazzStrengthLabel(hazz.count) : null,
+        seekerSoughtHebrew: figureFull?.seekerSoughtHebrew || null,
+        seekerStatus: figureFull?.seekerStatus || null,
       };
     });
 
