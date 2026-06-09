@@ -27,19 +27,28 @@ const FIGURE_LETTER_HOUSE = Object.fromEntries(
 );
 
 // ── תסכין-כוכב ────────────────────────────────────────────────────────────────
-// מיפוי כוכב → צורות (عمود 133-134)
-// sourceStatus per entry: 'explicit-in-source' = מאומת מעמוד 133
-//                         'not-yet-found-in-current-code-search' = מסורת רמל, ממתין לאימות עמוד 134
+// מיפוי כוכב → צורות (עמוד 133-134)
+// עמוד 133: שמש, נוגה, ירח — מאומת
+// עמוד 134 (שיר): כוכב/עטארד, שבתאי/זחל, מאדים/מריח', צדק/משתרי — מאומת
+// צמתים (ראש/זנב) — ממתין לאימות
 export const FIGURE_PLANET_MAP = [
   // ── מאומת מעמוד 133 ──────────────────────────────────
   { planet: 'שמש',   arabicName: 'الشمس',   patterns: ['2121', '1122'], sourceStatus: 'explicit-in-source' },
-  { planet: 'נוגה',  arabicName: 'الزهرة',  patterns: ['1212', '2211', '2111'], sourceStatus: 'explicit-in-source' },
+  { planet: 'נוגה',  arabicName: 'الزهرة',  patterns: ['1212', '2211'], sourceStatus: 'explicit-in-source' },
   { planet: 'ירח',   arabicName: 'القمر',   patterns: ['2212', '1111'], sourceStatus: 'explicit-in-source' },
-  // ── ממתין לאימות מעמוד 134 ───────────────────────────
-  { planet: 'שבתאי', arabicName: 'زحل',     patterns: ['2222', '2221'], sourceStatus: 'not-yet-found-in-current-code-search' },
-  { planet: 'צדק',   arabicName: 'المشتري', patterns: ['1211', '1222'], sourceStatus: 'not-yet-found-in-current-code-search' },
-  { planet: 'מאדים', arabicName: 'المريخ',  patterns: ['1221', '2122'], sourceStatus: 'not-yet-found-in-current-code-search' },
-  { planet: 'כוכב',  arabicName: 'عطارد',   patterns: ['2112', '1121', '1112'], sourceStatus: 'not-yet-found-in-current-code-search' },
+  // ── מאומת מעמוד 134 ──────────────────────────────────
+  // "والإجتماع ثم والجماعة عطارد أتاها طباعه"
+  { planet: 'כוכב',  arabicName: 'عطارد',   patterns: ['2112', '2222'], sourceStatus: 'explicit-in-source' },
+  // "وإنما الأنكيس والثقاف لزحل ما فيهما خلاف"
+  { planet: 'שבתאי', arabicName: 'زحل',     patterns: ['2221', '1112'], sourceStatus: 'explicit-in-source' },
+  // "وحمرة كذا نقي الخد لكوكب المريخ فيما عندي"
+  { planet: 'מאדים', arabicName: 'المريخ',  patterns: ['2122', '1211'], sourceStatus: 'explicit-in-source' },
+  // "وعتبة داخلة وضاحكه للمشتري ومن يعاند هالك"
+  { planet: 'צדק',   arabicName: 'المشتري', patterns: ['2111', '1222'], sourceStatus: 'explicit-in-source' },
+  // ── צמתים (ذنب/رأس) — ממתין לאימות ──────────────────
+  // 1221 (סוהר/العقلة) ו-1121 (נלחם/جودلة) — מסורת רמל
+  { planet: 'ראש',   arabicName: 'الرأس',   patterns: ['1121'], sourceStatus: 'not-yet-found-in-current-code-search' },
+  { planet: 'זנב',   arabicName: 'الذنب',   patterns: ['1221'], sourceStatus: 'not-yet-found-in-current-code-search' },
 ];
 
 // מפה הפוכה: pattern → כוכב
