@@ -18,6 +18,9 @@ export const HAWI_FIGURE_NAMES = [
     purityHebrew: 'טהור',
     zodiacPosition: 'האבט',
     seekerStatus: 'טאלב',
+    // Book page 65-66: seeker #8 in app custom order
+    seekerSoughtArabic: 'طالب موجود، لايح رأي العين، ناظر، ناطق، متحرك',
+    seekerSoughtHebrew: 'מחפש קיים, גלוי לעין, צופה, מדבר, נע',
     sourceStatus: 'explicit-in-source',
   },
   {
@@ -36,6 +39,9 @@ export const HAWI_FIGURE_NAMES = [
     purityHebrew: "טמא-ג'ן",
     zodiacPosition: 'סאעד',
     seekerStatus: 'טאלב',
+    // Book page 65-66: seeker #6 in app custom order
+    seekerSoughtArabic: 'طالب غير مدرك الموجود، ذكر، ناظر، ناطق، متحرك',
+    seekerSoughtHebrew: 'מחפש שאינו קולט הקיים, זכר, צופה, מדבר, נע',
     sourceStatus: 'explicit-in-source',
   },
   {
@@ -54,6 +60,9 @@ export const HAWI_FIGURE_NAMES = [
     purityHebrew: 'טהור',
     zodiacPosition: 'גארב',
     seekerStatus: 'טאלב',
+    // Book page 65-66: seeker #3 in app custom order
+    seekerSoughtArabic: 'طالب النذر ضعيف، والفتن موجودة، حتى بالوهم، ناظر، ناطق',
+    seekerSoughtHebrew: 'מחפש הנדר חלש, הפיתויים קיימים גם בדמיון, צופה, מדבר',
     sourceStatus: 'explicit-in-source',
   },
   {
@@ -72,6 +81,9 @@ export const HAWI_FIGURE_NAMES = [
     purityHebrew: 'טהור',
     zodiacPosition: 'סאעד',
     seekerStatus: 'טאלב',
+    // Book page 65-66: seeker #5 in app custom order
+    seekerSoughtArabic: 'طالب قوي، بعيد الثبات، موجود بالنظر والفضل، ناطق',
+    seekerSoughtHebrew: 'מחפש חזק, רחוק מיציבות, קיים במראה ובחסד, מדבר',
     sourceStatus: 'explicit-in-source',
   },
   {
@@ -90,6 +102,9 @@ export const HAWI_FIGURE_NAMES = [
     purityHebrew: 'טהור',
     zodiacPosition: 'טאלע',
     seekerStatus: 'טאלב',
+    // Book page 65-66: seeker #7 in app custom order
+    seekerSoughtArabic: 'طالب مفرط، معتدي، موجود، منفعل، ناظر، متحرك',
+    seekerSoughtHebrew: 'מחפש מוגזם, פולשני, קיים, מגיב, צופה, נע',
     sourceStatus: 'explicit-in-source',
   },
   {
@@ -108,6 +123,9 @@ export const HAWI_FIGURE_NAMES = [
     purityHebrew: "טמא-ג'ן",
     zodiacPosition: 'סאעד',
     seekerStatus: 'טאלב',
+    // Book page 65-66: seeker #2 in app custom order
+    seekerSoughtArabic: 'طالب غير القصد، موجود، غير مفاجي، ناظر، متصل',
+    seekerSoughtHebrew: 'מחפש שלא בכוונה, קיים, לא פתאומי, צופה, מחובר',
     sourceStatus: 'explicit-in-source',
   },
   {
@@ -127,6 +145,9 @@ export const HAWI_FIGURE_NAMES = [
     purityHebrew: 'טמא-אנוש',
     zodiacPosition: 'האבט',
     seekerStatus: 'טאלב',
+    // Book page 65-66: seeker #4 in app custom order
+    seekerSoughtArabic: 'طالب مأخوذ، موجود، محصور، ناظر، باكي',
+    seekerSoughtHebrew: 'מחפש שנלקח, קיים, כלוא, צופה, בוכה',
     sourceStatus: 'explicit-in-source',
   },
   {
@@ -145,6 +166,9 @@ export const HAWI_FIGURE_NAMES = [
     purityHebrew: 'טהור',
     zodiacPosition: 'טאלע',
     seekerStatus: 'טאלב',
+    // Book page 65-66: seeker #1 in app custom order
+    seekerSoughtArabic: 'طالب العلو غير ممكن، موجود بالحس والعقل، ناظر',
+    seekerSoughtHebrew: 'מחפש גובה בלתי מושג, קיים לחוש ולשכל, צופה',
     sourceStatus: 'explicit-in-source',
   },
   {
@@ -163,6 +187,9 @@ export const HAWI_FIGURE_NAMES = [
     purityHebrew: 'טהור',
     zodiacPosition: 'טאלע',
     seekerStatus: 'מטלוב',
+    // Book page 65-66: sought #7 in app custom order
+    seekerSoughtArabic: 'مطلوب، مخيل، متراخي، بطيء، متصل بعد حين',
+    seekerSoughtHebrew: 'מבוקש, מדומיין, איטי, רפוי, מתחבר אחרי זמן',
     sourceStatus: 'explicit-in-source',
   },
   {
@@ -181,6 +208,9 @@ export const HAWI_FIGURE_NAMES = [
     purityHebrew: 'טהור',
     zodiacPosition: 'האבט',
     seekerStatus: 'מטלוב',
+    // Book page 65-66: sought #8 in app custom order
+    seekerSoughtArabic: 'مطلوب جداً، معدوم حد، مقصر، ناطق بذاته',
+    seekerSoughtHebrew: 'מבוקש מאוד, נעדר לגמרי, מקצר, מדבר מעצמו',
     sourceStatus: 'explicit-in-source',
   },
   {
@@ -199,6 +229,9 @@ export const HAWI_FIGURE_NAMES = [
     purityHebrew: 'טהור',
     zodiacPosition: 'טאלע',
     seekerStatus: 'מטלוב',
+    // Book page 65-66: sought #1 in app custom order
+    seekerSoughtArabic: 'مطلوب، معدوم، سالم، ناطق الاختبار، باكي، متحرك',
+    seekerSoughtHebrew: 'מבוקש, נעדר, שלם, מדבר ניסיון, בוכה, נע',
     sourceStatus: 'explicit-in-source',
   },
   {
@@ -218,6 +251,9 @@ export const HAWI_FIGURE_NAMES = [
     purityHebrew: 'טמא-שניהם',
     zodiacPosition: 'גארב',
     seekerStatus: 'מטלוב',
+    // Book page 65-66: sought #4 in app custom order
+    seekerSoughtArabic: 'مطلوب، موجود، ومطلوبه معدوم، مقصود',
+    seekerSoughtHebrew: 'מבוקש, קיים, אך מבוקשו נעדר, מכוון',
     sourceStatus: 'explicit-in-source',
   },
   {
@@ -236,6 +272,9 @@ export const HAWI_FIGURE_NAMES = [
     purityHebrew: 'טהור',
     zodiacPosition: 'גארב',
     seekerStatus: 'מטלוב',
+    // Book page 65-66: sought #6 in app custom order
+    seekerSoughtArabic: 'مطلوب، بالرفق معدم، أمن، ناظر، متحرك',
+    seekerSoughtHebrew: 'מבוקש, נעדר בעדינות, בטוח, צופה, נע',
     sourceStatus: 'explicit-in-source',
   },
   {
@@ -254,6 +293,9 @@ export const HAWI_FIGURE_NAMES = [
     purityHebrew: 'טהור',
     zodiacPosition: 'סאעד',
     seekerStatus: 'מטלוב',
+    // Book page 65-66: sought #5 in app custom order
+    seekerSoughtArabic: 'مطلوب، ملحوق بالشرف، ناطق',
+    seekerSoughtHebrew: 'מבוקש, נלווה לכבוד, מדבר',
     sourceStatus: 'explicit-in-source',
   },
   {
@@ -273,6 +315,9 @@ export const HAWI_FIGURE_NAMES = [
     purityHebrew: 'טמא-אנוש',
     zodiacPosition: 'גארב',
     seekerStatus: 'מטלוב',
+    // Book page 65-66: sought #3 in app custom order
+    seekerSoughtArabic: 'مطلوب متكاثر، معدوم، متراخي، عدم كله',
+    seekerSoughtHebrew: 'מבוקש שוב ושוב, נעדר, רפוי, העדר מוחלט',
     sourceStatus: 'explicit-in-source',
   },
   {
@@ -291,6 +336,9 @@ export const HAWI_FIGURE_NAMES = [
     purityHebrew: 'טהור',
     zodiacPosition: 'האבט',
     seekerStatus: 'מטלוב',
+    // Book page 65-66: sought #2 in app custom order
+    seekerSoughtArabic: 'مطلوب، منتظر، معدوم، منحضر، باكي، صامت',
+    seekerSoughtHebrew: 'מבוקש, ממתין, נעדר, נוכח, בוכה, שותק',
     sourceStatus: 'explicit-in-source',
   },
 ];
