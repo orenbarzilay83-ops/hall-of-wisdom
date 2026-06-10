@@ -68,6 +68,11 @@ import {
   getHawiFigureStateTariqHouse,
 } from './hawi-figure-state-tariq.js';
 
+import {
+  HAWI_FIGURE_STATE_NAQI_KHAD,
+  getHawiFigureStateNaqiKhadHouse,
+} from './hawi-figure-state-naqi-khad.js';
+
 export const HAWI_FIGURE_STATES_LIST = [
   HAWI_FIGURE_STATE_QABD_DAKHIL,
   HAWI_FIGURE_STATE_QABD_KHARIJ,
@@ -83,6 +88,7 @@ export const HAWI_FIGURE_STATES_LIST = [
   HAWI_FIGURE_STATE_ATABA_DAKHILA,
   HAWI_FIGURE_STATE_IJTIMA,
   HAWI_FIGURE_STATE_TARIQ,
+  HAWI_FIGURE_STATE_NAQI_KHAD,
 ];
 
 export const HAWI_FIGURE_STATES_BY_ID = Object.fromEntries(
@@ -187,6 +193,10 @@ export function getHawiFigureStateHouse(id, house) {
 
   if (figureState.id === HAWI_FIGURE_STATE_TARIQ.id) {
     return getHawiFigureStateTariqHouse(houseNumber);
+  }
+
+  if (figureState.id === HAWI_FIGURE_STATE_NAQI_KHAD.id) {
+    return getHawiFigureStateNaqiKhadHouse(houseNumber);
   }
 
   return figureState.states.find((state) => state.house === houseNumber) || null;
