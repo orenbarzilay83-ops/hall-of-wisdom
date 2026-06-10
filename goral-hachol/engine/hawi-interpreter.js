@@ -2678,6 +2678,8 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
         hazzStrength: hazz ? getHazzStrengthLabel(hazz.count) : null,
         seekerSoughtHebrew: figureFull?.seekerSoughtHebrew || null,
         seekerStatus: figureFull?.seekerStatus || null,
+        zodiacHebrew: figureFull?.zodiacHebrew || null,
+        ichchhaHebrew: figureFull?.ichchhaHebrew || null,
       };
     });
 

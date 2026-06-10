@@ -1,5 +1,9 @@
-// Source: كشف الأسرار المصونة في اخراج الضمائر المخزونة, pages 43-67
-// All properties verified against source book. sourceStatus: explicit-in-source
+// Sources:
+//   كشف الأسرار المصونة في اخراج الضمائر المخزونة, pages 43-67
+//     → fortuneHebrew, movementHebrew, elementHebrew, compassDirection, gender, time,
+//       weight, purity, zodiacPosition, seekerStatus, seekerSought
+//   Ramal Shastra (Marathi), page 38
+//     → zodiacHebrew (מזל), ichchhaHebrew (אופי: מזין/מחזק)
 
 export const HAWI_FIGURE_NAMES = [
   {
@@ -17,6 +21,8 @@ export const HAWI_FIGURE_NAMES = [
     weightHebrew: 'כבד',
     purityHebrew: 'טהור',
     zodiacPosition: 'האבט',
+    zodiacHebrew: 'סרטן',
+    ichchhaHebrew: 'מחזק',
     seekerStatus: 'טאלב',
     // Book page 65-66: seeker #8 in app custom order
     seekerSoughtArabic: 'طالب موجود، لايح رأي العين، ناظر، ناطق، متحرك',
@@ -38,6 +44,8 @@ export const HAWI_FIGURE_NAMES = [
     weightHebrew: 'קל',
     purityHebrew: "טמא-ג'ן",
     zodiacPosition: 'סאעד',
+    zodiacHebrew: 'גדי',
+    ichchhaHebrew: 'מזין',
     seekerStatus: 'טאלב',
     // Book page 65-66: seeker #6 in app custom order
     seekerSoughtArabic: 'طالب غير مدرك الموجود، ذكر، ناظر، ناطق، متحرك',
@@ -59,6 +67,8 @@ export const HAWI_FIGURE_NAMES = [
     weightHebrew: 'קל',
     purityHebrew: 'טהור',
     zodiacPosition: 'גארב',
+    zodiacHebrew: 'מאזניים',
+    ichchhaHebrew: 'מחזק',
     seekerStatus: 'טאלב',
     // Book page 65-66: seeker #3 in app custom order
     seekerSoughtArabic: 'طالب النذر ضعيف، والفتن موجودة، حتى بالوهم، ناظر، ناطق',
@@ -80,6 +90,8 @@ export const HAWI_FIGURE_NAMES = [
     weightHebrew: 'כבד',
     purityHebrew: 'טהור',
     zodiacPosition: 'סאעד',
+    zodiacHebrew: 'אריה',
+    ichchhaHebrew: 'מזין',
     seekerStatus: 'טאלב',
     // Book page 65-66: seeker #5 in app custom order
     seekerSoughtArabic: 'طالب قوي، بعيد الثبات، موجود بالنظر والفضل، ناطق',
@@ -101,6 +113,8 @@ export const HAWI_FIGURE_NAMES = [
     weightHebrew: 'קל',
     purityHebrew: 'טהור',
     zodiacPosition: 'טאלע',
+    zodiacHebrew: 'טלה',
+    ichchhaHebrew: 'מחזק',
     seekerStatus: 'טאלב',
     // Book page 65-66: seeker #7 in app custom order
     seekerSoughtArabic: 'طالب مفرط، معتدي، موجود، منفعل، ناظر، متحرك',
@@ -122,6 +136,8 @@ export const HAWI_FIGURE_NAMES = [
     weightHebrew: 'כבד',
     purityHebrew: "טמא-ג'ן",
     zodiacPosition: 'סאעד',
+    zodiacHebrew: 'דלי',
+    ichchhaHebrew: 'מזין',
     seekerStatus: 'טאלב',
     // Book page 65-66: seeker #2 in app custom order
     seekerSoughtArabic: 'طالب غير القصد، موجود، غير مفاجي، ناظر، متصل',
@@ -144,6 +160,8 @@ export const HAWI_FIGURE_NAMES = [
     // Book page 64: "منسوبة لنجاسة الإنس" — impure from humans
     purityHebrew: 'טמא-אנוש',
     zodiacPosition: 'האבט',
+    zodiacHebrew: 'גדי',
+    ichchhaHebrew: 'מחזק',
     seekerStatus: 'טאלב',
     // Book page 65-66: seeker #4 in app custom order
     seekerSoughtArabic: 'طالب مأخوذ، موجود، محصور، ناظر، باكي',
@@ -165,6 +183,8 @@ export const HAWI_FIGURE_NAMES = [
     weightHebrew: 'קל',
     purityHebrew: 'טהור',
     zodiacPosition: 'טאלע',
+    zodiacHebrew: 'קשת',
+    ichchhaHebrew: 'מזין',
     seekerStatus: 'טאלב',
     // Book page 65-66: seeker #1 in app custom order
     seekerSoughtArabic: 'طالب العلو غير ممكن، موجود بالحس والعقل، ناظر',
@@ -186,6 +206,8 @@ export const HAWI_FIGURE_NAMES = [
     weightHebrew: 'קל',
     purityHebrew: 'טהור',
     zodiacPosition: 'טאלע',
+    zodiacHebrew: 'שור',
+    ichchhaHebrew: 'מחזק',
     seekerStatus: 'מטלוב',
     // Book page 65-66: sought #7 in app custom order
     seekerSoughtArabic: 'مطلوب، مخيل، متراخي، بطيء، متصل بعد حين',
@@ -207,6 +229,8 @@ export const HAWI_FIGURE_NAMES = [
     weightHebrew: 'כבד',
     purityHebrew: 'טהור',
     zodiacPosition: 'האבט',
+    zodiacHebrew: 'תאומים',
+    ichchhaHebrew: 'מחזק',
     seekerStatus: 'מטלוב',
     // Book page 65-66: sought #8 in app custom order
     seekerSoughtArabic: 'مطلوب جداً، معدوم حد، مقصر، ناطق بذاته',
@@ -228,6 +252,8 @@ export const HAWI_FIGURE_NAMES = [
     weightHebrew: 'כבד',
     purityHebrew: 'טהור',
     zodiacPosition: 'טאלע',
+    zodiacHebrew: 'אריה',
+    ichchhaHebrew: 'מחזק',
     seekerStatus: 'מטלוב',
     // Book page 65-66: sought #1 in app custom order
     seekerSoughtArabic: 'مطلوب، معدوم، سالم، ناطق الاختبار، باكي، متحرك',
@@ -250,6 +276,8 @@ export const HAWI_FIGURE_NAMES = [
     // Book page 64: "منسوبة لنجاسة الجن والإنس" — impure from both jinn and humans
     purityHebrew: 'טמא-שניהם',
     zodiacPosition: 'גארב',
+    zodiacHebrew: 'עקרב',
+    ichchhaHebrew: 'מחזק',
     seekerStatus: 'מטלוב',
     // Book page 65-66: sought #4 in app custom order
     seekerSoughtArabic: 'مطلوب، موجود، ومطلوبه معدوم، مقصود',
@@ -271,6 +299,8 @@ export const HAWI_FIGURE_NAMES = [
     weightHebrew: 'כבד',
     purityHebrew: 'טהור',
     zodiacPosition: 'גארב',
+    zodiacHebrew: 'דגים',
+    ichchhaHebrew: 'מחזק',
     seekerStatus: 'מטלוב',
     // Book page 65-66: sought #6 in app custom order
     seekerSoughtArabic: 'مطلوب، بالرفق معدم، أمن، ناظر، متحرك',
@@ -292,6 +322,8 @@ export const HAWI_FIGURE_NAMES = [
     weightHebrew: 'קל',
     purityHebrew: 'טהור',
     zodiacPosition: 'סאעד',
+    zodiacHebrew: 'סרטן',
+    ichchhaHebrew: 'מזין',
     seekerStatus: 'מטלוב',
     // Book page 65-66: sought #5 in app custom order
     seekerSoughtArabic: 'مطلوب، ملحوق بالشرف، ناطق',
@@ -314,6 +346,8 @@ export const HAWI_FIGURE_NAMES = [
     // Book page 64: "منسوبة لنجاسة الإنس" — impure from humans
     purityHebrew: 'טמא-אנוש',
     zodiacPosition: 'גארב',
+    zodiacHebrew: 'דלי',
+    ichchhaHebrew: 'מחזק',
     seekerStatus: 'מטלוב',
     // Book page 65-66: sought #3 in app custom order
     seekerSoughtArabic: 'مطلوب متكاثر، معدوم، متراخي، عدم كله',
@@ -335,6 +369,8 @@ export const HAWI_FIGURE_NAMES = [
     weightHebrew: 'כבד',
     purityHebrew: 'טהור',
     zodiacPosition: 'האבט',
+    zodiacHebrew: 'בתולה',
+    ichchhaHebrew: 'מחזק',
     seekerStatus: 'מטלוב',
     // Book page 65-66: sought #2 in app custom order
     seekerSoughtArabic: 'مطلوب، منتظر، معدوم، منحضر، باكي، صامت',

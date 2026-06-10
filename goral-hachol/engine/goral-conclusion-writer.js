@@ -1294,6 +1294,12 @@ function buildNarrativeByTopic(result) {
   const hTransit = (h) => clean(h?.transit?.meaning || '');
   const hTone    = (h) => figureFortuneTone(h?.fortune);
   const hHazz    = (h) => (h?.hazzStrength && h?.hazzCount > 0) ? ` [חַ'ט: ${h.hazzStrength}]` : '';
+  const hMeta    = (h) => {
+    const parts = [];
+    if (h?.zodiacHebrew)  parts.push(`מזל: ${h.zodiacHebrew}`);
+    if (h?.ichchhaHebrew) parts.push(`אופי: ${h.ichchhaHebrew}`);
+    return parts.length ? ` (${parts.join(' | ')})` : '';
+  };
 
   const h1       = getHouseFromBoard(boardAnalysis, 1);
   const judge    = boardAnalysis.judge   || getHouseFromBoard(boardAnalysis, 15);
@@ -1313,7 +1319,7 @@ function buildNarrativeByTopic(result) {
     const namePrefix = name ? `${name} — ` : '';
 
     const parts = [];
-    parts.push(`${namePrefix}הדיין (בית 15): ${fig}${hHazz(judge)}${fort ? `, ${fort}` : ''} — פסיקה ${toneWord}.`);
+    parts.push(`${namePrefix}הדיין (בית 15): ${fig}${hHazz(judge)}${hMeta(judge)}${fort ? `, ${fort}` : ''} — פסיקה ${toneWord}.`);
     if (speak)   parts.push(`הדיין ${speak}.`);
     if (transit) parts.push(`חאוי: ${transit}`);
 
@@ -1333,7 +1339,7 @@ function buildNarrativeByTopic(result) {
         ? ((jTone > 0 && tone > 0) || (jTone < 0 && tone < 0) ? 'מחזק את הדיין' : 'מנוגד לדיין')
         : null;
 
-      let line = `${label} (בית ${num}): ${fig}${hHazz(w)}${fort ? `, ${fort}` : ''}`;
+      let line = `${label} (בית ${num}): ${fig}${hHazz(w)}${hMeta(w)}${fort ? `, ${fort}` : ''}`;
       if (speak)     line += `, ${speak}`;
       if (agreeNote) line += ` [${agreeNote}]`;
       if (transit)   line += `. חאוי: ${transit}`;
@@ -1361,7 +1367,7 @@ function buildNarrativeByTopic(result) {
     const profile = formatClientProfile(clientContext);
     const parts = [];
 
-    parts.push(`${nameLabel} (בית 1): ${fig}${hHazz(h1)}${fort ? `, ${fort}` : ''}.`);
+    parts.push(`${nameLabel} (בית 1): ${fig}${hHazz(h1)}${hMeta(h1)}${fort ? `, ${fort}` : ''}.`);
     if (profile) parts.push(`פרופיל: ${profile}.`);
     if (speak)   parts.push(`בית 1 ${speak}.`);
     if (transit) parts.push(`חאוי: ${transit}`);
@@ -1376,7 +1382,7 @@ function buildNarrativeByTopic(result) {
     const label = TOPIC_FOCUS_LABEL[topicId] || `הבית המרכזי (בית ${focusNum})`;
     const parts = [];
 
-    parts.push(`${label}: ${fig}${hHazz(focus)}${fort ? `, ${fort}` : ''}.`);
+    parts.push(`${label}: ${fig}${hHazz(focus)}${hMeta(focus)}${fort ? `, ${fort}` : ''}.`);
     if (speak)   parts.push(`${speak}.`);
     if (transit) parts.push(`חאוי: ${transit}`);
     if (focus.seekerSoughtHebrew) parts.push(`מצב הנדרש: ${focus.seekerSoughtHebrew}.`);
