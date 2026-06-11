@@ -696,61 +696,6 @@
       white-space:nowrap;
     }
 
-    /* ─── Sub-topic panel (house → specific question) ─────────── */
-    .sub-topic-panel {
-      grid-column: 1 / -1;
-      background: #fffbee;
-      border: 2px solid var(--gold);
-      border-radius: 14px;
-      padding: 16px 18px;
-      margin-top: 2px;
-      animation: fadeIn .15s ease;
-    }
-    @keyframes fadeIn { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:none; } }
-    .sub-topic-panel-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: #8a6a00;
-      margin-bottom: 10px;
-    }
-    .sub-topic-list {
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-    }
-    .sub-topic-btn {
-      border: 1.5px solid rgba(216,170,69,.5);
-      border-radius: 10px;
-      padding: 10px 14px;
-      cursor: pointer;
-      background: white;
-      text-align: right;
-      font-size: 15px;
-      font-weight: 600;
-      color: #1a1000;
-      transition: background .12s, border-color .12s;
-      width: 100%;
-    }
-    .sub-topic-btn:hover { background: #fff4cc; border-color: var(--gold); }
-    .sub-topic-btn.selected {
-      background: #fff0a0;
-      border-color: var(--gold);
-      box-shadow: 0 0 0 2px rgba(216,170,69,.35);
-      color: #5a3c00;
-    }
-    .sub-topic-btn.soon {
-      color: #bbb;
-      border-color: #e0e0e0;
-      cursor: default;
-      font-weight: 400;
-      background: #fafafa;
-    }
-    .sub-topic-btn.soon::after {
-      content: ' — בקרוב';
-      font-size: 12px;
-      color: #ccc;
-    }
-
     /* ─── Menu Drawer ─────────────────────────────────────────── */
     .menu-overlay {
       display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;
@@ -1306,96 +1251,6 @@
       { house: 12, title: 'אויבים וכלא',    desc: 'אויבים נסתרים, מאסר, סכנה, כישוף',    defaultTopicId: 'enemies' },
     ];
 
-    // רשימת השאלות המדויקות לכל בית — מבוסס על ספר כשף-אל-אסראר
-    const HOUSE_TOPICS = {
-      1: [
-        { topicId: 'foundations',   label: 'מצב כללי — מי האדם ואיך הוא עכשיו' },
-        { topicId: 'completion',    label: 'האם הענין יצלח?' },
-        { topicId: 'birthNativity', label: 'מולד — מה נכתב לאדם מלידה' },
-        { topicId: null, label: 'גיל האדם', soon: true },
-        { topicId: null, label: 'להישאר במקום או לנסוע?', soon: true },
-        { topicId: null, label: 'מקצוע / פרנסה לפי הלוח', soon: true },
-      ],
-      2: [
-        { topicId: 'commerce',          label: 'מסחר / קנייה ומכירה' },
-        { topicId: 'partnership',       label: 'שותפות / ערבות עסקית' },
-        { topicId: 'deathInheritance',  label: 'ירושה' },
-        { topicId: null, label: 'מאיפה יבוא הכסף?', soon: true },
-        { topicId: null, label: 'הלוואה — האם תוחזר?', soon: true },
-        { topicId: null, label: 'חלאל או חראם?', soon: true },
-      ],
-      3: [
-        { topicId: 'siblings', label: 'אחים / שכנים / קרובים' },
-        { topicId: null, label: 'לאיזו עיר לעבור?', soon: true },
-        { topicId: null, label: 'איזה מקום עדיף לי?', soon: true },
-      ],
-      4: [
-        { topicId: 'hiddenTreasure', label: 'מטמון / חפץ נעלם — כללי' },
-        { topicId: null, label: 'כיוון המטמון', soon: true },
-        { topicId: null, label: 'עומק המטמון', soon: true },
-        { topicId: null, label: 'האם המטמון עדיין שם?', soon: true },
-        { topicId: null, label: 'קידוח בארות — האם יהיו מים?', soon: true },
-      ],
-      5: [
-        { topicId: 'childrenPregnancy', label: 'האם יהיו ילדים / הריון?' },
-        { topicId: null, label: 'האם בהריון כרגע?', soon: true },
-        { topicId: null, label: 'זכר או נקבה?', soon: true },
-        { topicId: null, label: 'כמה חודשי הריון?', soon: true },
-        { topicId: null, label: 'תאומים?', soon: true },
-        { topicId: null, label: 'הלידה — קלה או קשה?', soon: true },
-      ],
-      6: [
-        { topicId: 'illness', label: 'החולה יבריא?' },
-        { topicId: null, label: 'מיקום המחלה בגוף', soon: true },
-        { topicId: null, label: 'חומרת המחלה', soon: true },
-        { topicId: null, label: 'כמה זמן תמשך המחלה?', soon: true },
-        { topicId: null, label: 'סוג חוסר האיזון (קור / חום / לחות / יבשות)', soon: true },
-      ],
-      7: [
-        { topicId: 'marriage',      label: 'נישואין — האם יקרו?' },
-        { topicId: 'missingPerson', label: 'נעדר — חי או מת?' },
-        { topicId: 'disputes',      label: 'סכסוך — מי ינצח?' },
-        { topicId: null, label: 'האם הנישואין יצליחו? (עומק)', soon: true },
-        { topicId: null, label: 'תיאור בן / בת הזוג', soon: true },
-        { topicId: null, label: 'האם הצד השני אוהב?', soon: true },
-        { topicId: null, label: 'האם הצד השני נאמן?', soon: true },
-      ],
-      8: [
-        { topicId: 'theft',            label: 'גנבה — כללי' },
-        { topicId: 'deathInheritance', label: 'מוות / ירושה' },
-        { topicId: null, label: 'תיאור פיזי של הגנב', soon: true },
-        { topicId: null, label: 'כיוון הגנבה ומיקום הגנוב', soon: true },
-        { topicId: null, label: 'הלוואה — האם תוחזר?', soon: true },
-      ],
-      9: [
-        { topicId: 'travel',    label: 'נסיעה — האם תצלח?' },
-        { topicId: 'seaVoyage', label: 'מסע ים / ספינה' },
-        { topicId: null, label: 'מתי הזמן הנכון לנסוע?', soon: true },
-        { topicId: null, label: 'האם הנוסע ירוויח?', soon: true },
-        { topicId: null, label: 'נעדר — מיקום וכיוון', soon: true },
-        { topicId: null, label: 'חלום — פירוש', soon: true },
-      ],
-      10: [
-        { topicId: 'authorityState', label: 'שלטון / תפקיד / עבודה' },
-        { topicId: 'yearlyForecast', label: 'תחזית שנתית' },
-        { topicId: null, label: 'כמה זמן יימשך התפקיד?', soon: true },
-        { topicId: null, label: 'האם יחזור אחרי פיטורים?', soon: true },
-      ],
-      11: [
-        { topicId: 'loveHate', label: 'אהבה / חברות / קשרים' },
-        { topicId: null, label: 'האם הבטחה תקוים?', soon: true },
-        { topicId: null, label: 'פרנסה — האם תהיה?', soon: true },
-        { topicId: null, label: 'מי שסולק — האם יחזור?', soon: true },
-      ],
-      12: [
-        { topicId: 'enemies',  label: 'אויבים — כללי' },
-        { topicId: 'prisoner', label: 'אסיר — האם ישוחרר?' },
-        { topicId: 'fear',     label: 'פחד / סכנה' },
-        { topicId: null, label: 'תיאור האויב', soon: true },
-        { topicId: null, label: 'אסיר — מתי בדיוק?', soon: true },
-      ],
-    };
-
     // מיפוי מילות מפתח לנושא מדויק לפי בית — כל בית יכול להכיל כמה תת-נושאים
     const HOUSE_TOPIC_KEYWORDS = {
       6: [
@@ -1444,29 +1299,6 @@
       if (!grid) return;
       const spiritualActive = forcedTopicId === 'spiritualDiagnostics';
       const generalActive  = forcedTopicId === 'generalReading';
-      const houseIsActive  = selectedHouseNum > 0 && !spiritualActive && !generalActive;
-
-      // פאנל תת-נושאים — מוצג כשבית נבחר
-      let subPanelHtml = '';
-      if (houseIsActive) {
-        const topics = HOUSE_TOPICS[selectedHouseNum] || [];
-        const houseTitle = (TOPIC_CARDS.find(c => c.house === selectedHouseNum) || {}).title || `בית ${selectedHouseNum}`;
-        subPanelHtml = `
-          <div class="sub-topic-panel">
-            <div class="sub-topic-panel-title">בחר את השאלה המדויקת — ${houseTitle} (בית ${selectedHouseNum}):</div>
-            <div class="sub-topic-list">
-              ${topics.map(t => `
-                <button type="button"
-                  class="sub-topic-btn${t.soon ? ' soon' : ''}${forcedTopicId === t.topicId && t.topicId ? ' selected' : ''}"
-                  ${t.soon ? 'disabled' : ''}
-                  data-subtopic="${t.topicId || ''}">
-                  ${t.label}
-                </button>
-              `).join('')}
-            </div>
-          </div>`;
-      }
-
       grid.innerHTML = `
         <button type="button" class="topic-general-btn${generalActive ? ' selected' : ''}" id="generalReadingBtn">
           <span>🔮</span>
@@ -1479,13 +1311,13 @@
           <span class="topic-spiritual-badge">ניתוח מיוחד</span>
         </button>
       ` + TOPIC_CARDS.map(c => `
-        <button type="button" class="topic-card ${(houseIsActive && selectedHouseNum === c.house) ? 'selected' : ''}" data-house="${c.house}">
+        <button type="button" class="topic-card ${(!forcedTopicId && selectedHouseNum === c.house) ? 'selected' : ''}" data-house="${c.house}">
           <div class="topic-card-house">בית ${c.house}</div>
           <div class="topic-card-title">${c.title}</div>
           <div class="topic-card-desc">${c.desc}</div>
         </button>
-      `).join("") + subPanelHtml + `
-        <button type="button" class="topic-free-btn ${(selectedHouseNum === 0 && !forcedTopicId) ? 'selected' : ''}" data-house="0">
+      `).join("") + `
+        <button type="button" class="topic-free-btn ${(!forcedTopicId && selectedHouseNum === 0) ? 'selected' : ''}" data-house="0">
           שאלה חופשית — האפליקציה תזהה את הנושא לבד
         </button>`;
 
@@ -1505,14 +1337,6 @@
         btn.addEventListener("click", () => {
           forcedTopicId = null;
           selectedHouseNum = Number(btn.dataset.house);
-          renderTopicGrid();
-        });
-      });
-
-      grid.querySelectorAll(".sub-topic-btn:not(.soon)").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const tid = btn.dataset.subtopic;
-          forcedTopicId = (forcedTopicId === tid) ? null : tid;
           renderTopicGrid();
         });
       });
