@@ -28,6 +28,9 @@ import {
   getHazzStrengthLabel,
 } from '../data/sources/hawi/foundations/hawi-hazz.js';
 
+import { getKashfVerdict }         from './kashf-verdict-engine.js';
+import { getKashfSupportAnalysis } from './kashf-support-analyzer.js';
+
 import {
   HAWI_FIGURE_NAMES_BY_ID,
 } from '../data/sources/hawi/foundations/hawi-figure-names.js';
@@ -3146,6 +3149,9 @@ export function interpretHawiQuestionInitial(question, board = null) {
     relevantRules
   );
 
+  const kashfVerdict        = getKashfVerdict(route.topicId, board);
+  const kashfSupportAnalysis = kashfVerdict ? getKashfSupportAnalysis(board, kashfVerdict) : null;
+
   return {
     id: 'goral-hachol-full-interpretation',
     status: 'board-aware-source-based-interpretation',
@@ -3190,8 +3196,14 @@ export function interpretHawiQuestionInitial(question, board = null) {
       spiritualDiagnosis,
       relevantRules,
       judgeVerdict,
+      kashfVerdict,
+      kashfSupportAnalysis,
     }),
     conclusionDraftHebrew: technicalConclusionHebrew,
+
+    // Layer 5-6: כשף-אל-אסראר verdict + support analysis (additive)
+    kashfVerdict,
+    kashfSupportAnalysis,
   };
 }
 

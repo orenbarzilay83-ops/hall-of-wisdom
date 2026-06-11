@@ -1280,14 +1280,31 @@ function speakNote(house) {
   return null;
 }
 
+function buildKashfVerdictBlock(kashfVerdict, kashfSupportAnalysis) {
+  if (!kashfVerdict) return null;
+  const lines = [];
+  lines.push(`━━ פסיקת כשף-אל-אסראר ━━`);
+  lines.push(`${kashfVerdict.verdictHebrew}`);
+  if (kashfSupportAnalysis?.supportSummaryHebrew) {
+    lines.push('');
+    lines.push(kashfSupportAnalysis.supportSummaryHebrew);
+  }
+  lines.push('━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  return lines.join('\n');
+}
+
 function buildNarrativeByTopic(result) {
-  const { topicId, boardAnalysis, judgeVerdict, clientContext } = result;
+  const { topicId, boardAnalysis, judgeVerdict, clientContext, kashfVerdict, kashfSupportAnalysis } = result;
   if (!boardAnalysis?.hasBoard) return null;
   if (topicId === 'spiritualDiagnostics') return null;
 
   const name     = clean(clientContext?.clientName || '');
   const paras    = [];
   const push     = (p) => { if (p && clean(p)) paras.push(clean(p)); };
+
+  // ── 0. KASHF-AL-ASRAR VERDICT BLOCK (if available) ──────────────
+  const kashfBlock = buildKashfVerdictBlock(kashfVerdict, kashfSupportAnalysis);
+  if (kashfBlock) push(kashfBlock);
 
   const hFig     = (h) => clean(h?.figureHebrew || '');
   const hFort    = (h) => clean(h?.fortune || '');
