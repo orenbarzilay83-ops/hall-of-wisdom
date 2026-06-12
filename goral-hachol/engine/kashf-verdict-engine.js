@@ -30,10 +30,17 @@ import {
  * @returns {string|null} pattern
  */
 function getHousePattern(board, houseNumber) {
+  // raml-board-generator.js format: board.entries[].pattern
   const entry = (board?.entries || []).find(
     (h) => Number(h.house) === Number(houseNumber)
   );
-  return entry?.pattern || null;
+  if (entry?.pattern) return entry.pattern;
+
+  // raml.js (legacy) format: board.chart[].key
+  const chartEntry = (board?.chart || []).find(
+    (h) => Number(h.house) === Number(houseNumber)
+  );
+  return chartEntry?.key || null;
 }
 
 /**

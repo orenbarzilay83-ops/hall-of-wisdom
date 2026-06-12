@@ -67,6 +67,27 @@ export const VERDICT_TEMPLATES = {
     'mujassad-kharij': { saad: 'מיקום האובד לא ברור — נוטה להימצא',      nahs: 'מיקום האובד לא ברור — נוטה לאבד',           mixed: 'גורל האובד לא ברור' },
     'mujassad-dakhil': { saad: 'האובד קרוב אך עדיין מוסתר',              nahs: 'האובד עמוק מדי — קשה לאתרו',                 mixed: 'האובד במקום שקשה להגיע אליו' },
   },
+
+  'danger-or-safe': {
+    'kharij':          { saad: 'הסכנה עוברת — אין חשש ממשי',             nahs: 'הסכנה קיימת — יש להיזהר',                    mixed: 'הסכנה עוברת אך זהירות נדרשת' },
+    'dakhil':          { saad: 'הפחד גדול מהמציאות — אין סכנה ממשית',    nahs: 'הסכנה ממשית — נחוצה זהירות רבה',             mixed: 'הסכנה לא מוחלטת' },
+    'mujassad-kharij': { saad: 'מצב מעורפל — נוטה לבטחה',               nahs: 'מצב מעורפל — נוטה לסכנה',                    mixed: 'לא ניתן לקבוע בוודאות' },
+    'mujassad-dakhil': { saad: 'הסכנה תלויה — הזמן יכריע, נוטה לסדר',  nahs: 'הסכנה נשארת — יש לנהוג בזהירות',             mixed: 'מצב הסכנה אינו ברור' },
+  },
+
+  'death-or-safe': {
+    'kharij':          { saad: 'אין סכנת חיים ממשית — הגוף חזק',         nahs: 'יש חשש ממשי — יש לנקוט פעולה',              mixed: 'הסכנה קיימת אך לא מוחלטת' },
+    'dakhil':          { saad: 'הסכנה אינה מיידית — יש זמן לפעול',       nahs: 'סכנה גדולה — יש לפעול כעת',                  mixed: 'הסכנה לא ברורה עדיין' },
+    'mujassad-kharij': { saad: 'מצב לא ברור — נוטה לבטחה',              nahs: 'מצב לא ברור — נוטה לסכנה',                   mixed: 'הלוח אינו מכריע' },
+    'mujassad-dakhil': { saad: 'הסכנה עוברת — אך לאט',                  nahs: 'הסכנה נמשכת — יש להיזהר',                    mixed: 'המשבר תלוי ועומד' },
+  },
+
+  'spiritual-or-natural': {
+    'kharij':          { saad: 'אין פגיעה רוחנית — הקושי מקורו גופני או נפשי', nahs: 'יש פגיעה רוחנית — נחוצה בדיקה נוספת', mixed: 'סימני פגיעה — לא מובהקים' },
+    'dakhil':          { saad: 'פגיעה קלה בלבד — ניתן להתגבר',           nahs: 'פגיעה עמוקה — יש לפעול לטיפול',              mixed: 'מצב רוחני לא ברור — צריך לבדוק עוד' },
+    'mujassad-kharij': { saad: 'הסימנים לא מובהקים — נוטה לנקיון',      nahs: 'הסימנים לא מובהקים — נוטה לפגיעה',           mixed: 'המצב הרוחני מעורפל' },
+    'mujassad-dakhil': { saad: 'קושי רוחני קל — לא חמור, יש תקווה',     nahs: 'קושי רוחני מתמשך — נחוץ טיפול ממוקד',        mixed: 'לא ניתן לקבוע — יש לבדוק עוד' },
+  },
 };
 
 export const KASHF_CHAPTER_MAP = [
@@ -213,6 +234,146 @@ export const KASHF_CHAPTER_MAP = [
     verdictType:   'found-or-lost',
     sourceRef:     'כשף-אל-אסראר, פרק 2',
     confidence:    'todo',
+  },
+
+  // ── תת-נושאים של בית 7 ────────────────────────────────────────
+
+  {
+    topicId:       'theft',
+    kashfChapter:  8,
+    chapterNameHebrew: 'גנבה / אובד / גנב',
+    chapterNameArabic: 'فصل في السرقة والضائع',
+    verdictHouses: [1, 7],
+    verdictMethod: 'combine',
+    verdictType:   'found-or-lost',
+    sourceRef:     'כשף-אל-אסראר, עמ׳ 259–265 (גאיב — הגנוב כנעדר)',
+    confidence:    'derived',
+  },
+
+  {
+    topicId:       'partnership',
+    kashfChapter:  6,
+    chapterNameHebrew: 'שותפות / עסק משותף',
+    chapterNameArabic: 'فصل في الشراكة',
+    verdictHouses: [1, 7],
+    verdictMethod: 'combine',
+    verdictType:   'profit-or-loss',
+    sourceRef:     'כשף-אל-אסראר, עמ׳ 236–248 (מסחר — B7 לשותף)',
+    confidence:    'derived',
+  },
+
+  // ── תת-נושאים של בית 12 ───────────────────────────────────────
+
+  {
+    topicId:       'fear',
+    kashfChapter:  12,
+    chapterNameHebrew: 'פחד / סכנה',
+    chapterNameArabic: 'فصل في الخوف',
+    verdictHouses: [1, 12],
+    verdictMethod: 'combine',
+    verdictType:   'danger-or-safe',
+    sourceRef:     'כשף-אל-אסראר, עמ׳ 271–276 (פרק אויבים — B12 כמקור פחד)',
+    confidence:    'derived',
+  },
+
+  // ── תת-נושאים של בית 9 ────────────────────────────────────────
+
+  {
+    topicId:       'seaVoyage',
+    kashfChapter:  9,
+    chapterNameHebrew: 'מסע ים',
+    chapterNameArabic: 'فصل في سفر البحر',
+    verdictHouses: [1, 9],
+    verdictMethod: 'combine',
+    verdictType:   'happen-or-not',
+    sourceRef:     'כשף-אל-אסראר, עמ׳ 266–270 (נסיעה — B8/12 לסכנת ים)',
+    confidence:    'derived',
+  },
+
+  // ── בתים בודדים ────────────────────────────────────────────────
+
+  {
+    topicId:       'siblings',
+    kashfChapter:  1,
+    chapterNameHebrew: 'אחים / שכנים / קרובים',
+    chapterNameArabic: 'فصل في الأخوة',
+    verdictHouses: [1, 3],
+    verdictMethod: 'combine',
+    verdictType:   'happen-or-not',
+    sourceRef:     'כשף-אל-אסראר, שער שישי פרק שלישי',
+    confidence:    'todo',
+  },
+
+  {
+    topicId:       'yearlyForecast',
+    kashfChapter:  10,
+    chapterNameHebrew: 'תחזית שנתית / גורל השנה',
+    chapterNameArabic: 'فصل في طالع السنة',
+    verdictHouses: [1, 10],
+    verdictMethod: 'combine',
+    verdictType:   'profit-or-loss',
+    sourceRef:     'כשף-אל-אסראר, עמ׳ 271–272 (שלטון — B10 לטאלע השנה)',
+    confidence:    'derived',
+  },
+
+  {
+    topicId:       'completion',
+    kashfChapter:  10,
+    chapterNameHebrew: 'האם הדבר יסתיים / יושלם',
+    chapterNameArabic: 'فصل في تمام الأمر',
+    verdictHouses: [1, 15],
+    verdictMethod: 'combine',
+    verdictType:   'happen-or-not',
+    sourceRef:     'כשף-אל-אסראר — הדיין (B15) כפסיקה מוחלטת',
+    confidence:    'derived',
+  },
+
+  {
+    topicId:       'deathInheritance',
+    kashfChapter:  2,
+    chapterNameHebrew: 'מוות / ירושה',
+    chapterNameArabic: 'فصل في الموت والميراث',
+    verdictHouses: [1, 8],
+    verdictMethod: 'combine',
+    verdictType:   'death-or-safe',
+    sourceRef:     'כשף-אל-אסראר, עמ׳ 191–210 (B8 כבית מוות/ירושה)',
+    confidence:    'derived',
+  },
+
+  {
+    topicId:       'birthNativity',
+    kashfChapter:  1,
+    chapterNameHebrew: 'מולד / גורל האדם',
+    chapterNameArabic: 'فصل في المواليد',
+    verdictHouses: [1, 10],
+    verdictMethod: 'combine',
+    verdictType:   'happen-or-not',
+    sourceRef:     'כשף-אל-אסראר — B1 כטאלע, B10 כגורל כללי',
+    confidence:    'derived',
+  },
+
+  {
+    topicId:       'spiritualDiagnostics',
+    kashfChapter:  3,
+    chapterNameHebrew: 'אבחון רוחני — עין / כישוף / ג׳ין',
+    chapterNameArabic: 'فصل في الأمراض الروحانية',
+    verdictHouses: [1, 6],
+    verdictMethod: 'combine',
+    verdictType:   'spiritual-or-natural',
+    sourceRef:     'כשף-אל-אסראר — B1+B6+B4+B8 לאבחון רוחני (B1+B6 כעיקר)',
+    confidence:    'derived',
+  },
+
+  {
+    topicId:       'foundations',
+    kashfChapter:  1,
+    chapterNameHebrew: 'פתיחה כללית / יסודות',
+    chapterNameArabic: 'فصل في الأساس',
+    verdictHouses: [1, 15],
+    verdictMethod: 'combine',
+    verdictType:   'happen-or-not',
+    sourceRef:     'כשף-אל-אסראר — B1 כשואל, B15 כדיין הכללי',
+    confidence:    'derived',
   },
 
 ];
