@@ -1420,6 +1420,11 @@ function buildNarrativeByTopic(result) {
     push(parts.join(' '));
   }
 
+  // ── 2.7. ELEMENT YES/NO (ספירת יסודות) ─────────────────────────
+  if (result.elementYesNo) {
+    push(`ספירת יסודות (כן/לא): ${result.elementYesNo.hebrewSummary}`);
+  }
+
   // ── 3. H1 — THE QUESTIONER ──────────────────────────────────────
   if (h1) {
     const fig = hFig(h1), fort = hFort(h1), transit = hTransit(h1), speak = speakNote(h1);
@@ -2125,11 +2130,17 @@ export function writeHumanGoralConclusion(result) {
     verdictParagraph = result.boardScore.hebrew;
   }
 
+  const elementYesNo = result.elementYesNo || null;
+  const elementParagraph = elementYesNo
+    ? `ספירת יסודות (כן/לא): ${elementYesNo.hebrewSummary}`
+    : '';
+
   const paragraphs = [
     clientContextParagraph(result.clientContext, question),
     clientHistoryParagraph(result.clientHistorySummary),
     boardScoreParagraph(result.boardAnalysis),
     verdictParagraph,
+    elementParagraph,
     dhamirParagraph(result.boardAnalysis, judgeVerdict),
     tahasilParagraph(result.boardAnalysis),
     topicOpening(topicId, topicHebrew),
