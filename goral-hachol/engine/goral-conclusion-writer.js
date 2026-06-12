@@ -1522,13 +1522,17 @@ function isJinnRelatedDiagnosis(sd) {
 }
 
 function buildSpiritualNarrative(result) {
-  const { boardAnalysis, spiritualDiagnosis, judgeVerdict, clientContext } = result;
+  const { boardAnalysis, spiritualDiagnosis, judgeVerdict, clientContext, kashfVerdict, kashfSupportAnalysis } = result;
   if (!boardAnalysis?.hasBoard) return null;
 
   const sd    = spiritualDiagnosis || {};
   const name  = clean(clientContext?.clientName || '');
   const paras = [];
   const push  = (p) => { if (p && clean(p)) paras.push(clean(p)); };
+
+  // ── 0. KASHF-AL-ASRAR VERDICT BLOCK ─────────────────────────────
+  const kashfBlock = buildKashfVerdictBlock(kashfVerdict, kashfSupportAnalysis);
+  if (kashfBlock) push(kashfBlock);
 
   const hFig     = (h) => clean(h?.figureHebrew || '');
   const hFort    = (h) => clean(h?.fortune || '');
