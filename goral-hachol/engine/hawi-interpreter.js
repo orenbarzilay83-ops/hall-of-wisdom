@@ -13,6 +13,7 @@ import {
 
 import {
   writeHumanGoralConclusion,
+  writeShortClientVerdict,
 } from './goral-conclusion-writer.js';
 
 import {
@@ -3204,6 +3205,16 @@ export function interpretHawiQuestionInitial(question, board = null) {
     // Layer 5-6: כשף-אל-אסראר verdict + support analysis (additive)
     kashfVerdict,
     kashfSupportAnalysis,
+
+    // Short client-facing verdict (always-visible, topic-aware)
+    shortClientVerdict: writeShortClientVerdict({
+      topicId: route.topicId,
+      boardAnalysis,
+      judgeVerdict,
+      kashfVerdict,
+      kashfSupportAnalysis,
+      clientContext,
+    }),
   };
 }
 

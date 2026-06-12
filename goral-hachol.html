@@ -1704,145 +1704,9 @@
         boardInfoHtml += `<div class="board-info-row board-dhamir">🎯 הדמיר: ${traceText} — הדמיר העיקרי: בית ${dhamirMizanData.primaryHouseNumber}</div>`;
       }
 
-      // Prominent verdict box
-      let verdictHtml = "";
       const topicId = insight.topicId || "";
-      const questionText = String(insight.question || "");
-      const isMiQuestion = /^מי[\s,]/.test(questionText);
 
-      if (isSpiritualTopic && spiritual?.grade) {
-        const gradeMap = {
-          "strong-suspicion": "כן — יש פגיעה רוחנית",
-          "medium-suspicion": "ייתכן — חשד בינוני לפגיעה רוחנית",
-          "weak-suspicion": "ספק — סימנים חלשים בלבד",
-          "mostly-clear": "לא — אין פגיעה רוחנית",
-          "mixed": "ממוזג — יש לבדוק עוד"
-        };
-        const verdictText = gradeMap[spiritual.grade] || spiritual.grade;
-        const vClass = spiritual.grade === "strong-suspicion" ? "verdict-yes" :
-                       spiritual.grade === "mostly-clear" ? "verdict-no" : "verdict-maybe";
-        verdictHtml = `
-          <div class="verdict-box ${vClass}">
-            <div class="verdict-label">תשובה לשאלה</div>
-            <div class="verdict-answer">${escapeHtml(verdictText)}</div>
-            <div class="verdict-detail">${escapeHtml(spiritual.finalHebrew || "")}</div>
-          </div>`;
-
-      } else if (topicId === 'theft' || (isMiQuestion && topicId === 'enemies')) {
-        const house7 = insight.boardAnalysis?.houses?.find(h => Number(h.house) === 7);
-        const house7Name = house7?.figureHebrew || "";
-        const nameLetters = insight.boardAnalysis?.nameLetters || [];
-        const h7Letters = nameLetters.find(n => n.houseNumber === 7);
-        const grade = insight.boardScore?.grade || judgeV?.verdict || "";
-        const isGoodGrade = grade === 'positive' || grade === 'cautiously-positive' || grade === 'yes-strong' || grade === 'yes-weak';
-        const isBadGrade = grade === 'negative' || grade === 'cautiously-negative' || grade === 'no-strong' || grade === 'no-weak';
-
-        let answerLine = "";
-        if (isMiQuestion || topicId === 'theft') {
-          if (isGoodGrade) {
-            answerLine = "ניתן לזהות את הגנב — הסיכויים לאיתורו טובים";
-          } else if (isBadGrade) {
-            answerLine = "קשה לאיתור הגנב — הוא כבר התרחק";
-          } else {
-            answerLine = "ייתכן שניתן לזהות את הגנב — הלוח לא חד-משמעי";
-          }
-        }
-
-        let detailParts = [];
-        if (house7Name) detailParts.push(`הגנב מיוצג על ידי: ${house7Name} (בית 7)`);
-        if (h7Letters?.letters?.length) detailParts.push(`שמו מתחיל ב: ${h7Letters.letters.join(" / ")}`);
-
-        const vClass = isGoodGrade ? "verdict-maybe" : isBadGrade ? "verdict-no" : "verdict-mixed";
-        verdictHtml = `
-          <div class="verdict-box ${vClass}">
-            <div class="verdict-label">תשובת הלוח לשאלה</div>
-            <div class="verdict-answer">${escapeHtml(answerLine)}</div>
-            ${detailParts.length ? `<div class="verdict-detail">${escapeHtml(detailParts.join("\n"))}</div>` : ""}
-          </div>`;
-
-      } else if (topicId !== 'generalReading' && judgeV && judgeV.hebrewShort) {
-        verdictHtml = `
-          <div class="verdict-box ${escapeHtml(verdictClass(judgeV.verdict))}">
-            <div class="verdict-label">תשובה לשאלה</div>
-            <div class="verdict-answer">${escapeHtml(judgeV.hebrewShort)}</div>
-            <div class="verdict-detail">${escapeHtml(judgeV.hebrewFull || "")}</div>
-          </div>`;
-      }
-
-      const rulesHtml = rules.length
-        ? `
-          <div class="summary-box">
-            <strong>חוקים שנבדקו מתוך המקור:</strong>
-            <ul>
-              ${rules.map(rule => `
-                <li>
-                  ${escapeHtml(rule.hebrew || rule.result || rule.condition || "")}
-                  ${rule.arabic ? `<br/><small>${escapeHtml(rule.arabic)}</small>` : ""}
-                </li>
-              `).join("")}
-            </ul>
-          </div>
-        `
-        : "";
-
-      const sourcesHtml = sources.length
-        ? `
-          <div class="summary-box">
-            <strong>מקורות ידע שהופעלו:</strong>
-            <ul>
-              ${sources.map(src => `
-                <li>${escapeHtml(src.titleHebrew || src.id || "")}</li>
-              `).join("")}
-            </ul>
-          </div>
-        `
-        : "";
-
-      const spiritualDetailHtml = showSpiritual && !isSpiritualTopic
-        ? `
-          <div class="summary-box">
-            <strong>${isSpiritualTopic ? "פרטי האבחון הרוחני:" : "אבחון רוחני נוסף:"}</strong>
-            ${!isSpiritualTopic ? `<br/>${escapeHtml(spiritual.finalHebrew || "")}` : ""}
-            ${Array.isArray(spiritual.mainReasons) && spiritual.mainReasons.length
-              ? `<ul>${spiritual.mainReasons.filter(r => r.score > 0).slice(0, 6).map(reason => `
-                  <li><strong>${reason.house != null ? `בית ${reason.house}` : escapeHtml(reason.role || "")}</strong>${reason.house != null && reason.role && reason.role !== `בית ${reason.house}` ? ` (${escapeHtml(reason.role)})` : ""}${reason.figureHebrew ? ` — ${escapeHtml(reason.figureHebrew)}` : ""}: ${escapeHtml((reason.signals || []).join(" "))}</li>
-                `).join("")}</ul>`
-              : (isSpiritualTopic ? "<p>לא נמצאו חוקים ספציפיים מהמקור. הפסיקה מבוססת על הדיין והעדים.</p>" : "")}
-          </div>
-        `
-        : "";
-
-      // Board score warning only (if incomplete) — always visible
-      const boardWarnHtml = (boardScoreData && !boardScoreData.isComplete)
-        ? `<div class="board-info-row board-score-warn">⚠ ${escapeHtml(boardScoreData.hebrewSummary)}</div>`
-        : "";
-
-      // Short key facts line — always visible
-      const judgeHouse = insight.boardAnalysis?.judge;
-      const h1House = insight.boardAnalysis?.house1Analysis;
-      function fortuneLabel(f) {
-        const map = { 'saad': 'טוב', 'nahas': 'רע', 'mixed': 'ממוזג', 'positive': 'טוב', 'negative': 'רע', 'neutral': 'ממוזג' };
-        if (!f) return '';
-        const key = String(f).toLowerCase().replace(/[^a-z]/g, '');
-        if (map[key]) return map[key];
-        return String(f).replace(/סעד/g,'טוב').replace(/נחס/g,'רע').replace(/ממוזג-?סעד/g,'ממוזג-טוב').replace(/ממוזג-?נחס/g,'ממוזג-רע');
-      }
-      const keyFactsHtml = (judgeHouse || h1House) ? `
-        <div style="margin-top:12px; font-size:15px; color:#555; text-align:center; direction:rtl;">
-          ${judgeHouse ? `דיין: ${escapeHtml(judgeHouse.figureHebrew || "")} [${escapeHtml(fortuneLabel(judgeHouse.fortune))}]` : ""}
-          ${judgeHouse && h1House ? " &nbsp;|&nbsp; " : ""}
-          ${h1House ? `בית 1: ${escapeHtml(h1House.figureHebrew || "")} [${escapeHtml(fortuneLabel(h1House.fortune))}]` : ""}
-        </div>` : "";
-
-      function hebrewTermsSimple(s) {
-        return String(s || '')
-          .replace(/ממוזג-?סעד/g, "ממוזג-טוב")
-          .replace(/ממוזג-?נחס/g, "ממוזג-רע")
-          .replace(/סעד/g, "טוב")
-          .replace(/נחס/g, "רע");
-      }
-
-      // Rewrite terminology in banners
+      // Rewrite internal terminology for client-facing display
       function hebrewTerms(s) {
         return s
           .replace(/תסדיס/g, "קשר צדדי")
@@ -1855,7 +1719,6 @@
           .replace(/תראב \(אדמה\)/g, "עפר")
           .replace(/בית יתד/g, "בית חזק")
           .replace(/איתיסלאת/g, "חיבורים")
-          // fortune terminology — no \b (doesn't work for Hebrew), handle explicit cases first
           .replace(/ממוזג-?סעד/g, "ממוזג-טוב")
           .replace(/ממוזג-?נחס/g, "ממוזג-רע")
           .replace(/\[סעד\]/g, "[טוב]")
@@ -1864,7 +1727,76 @@
           .replace(/ נחס(?=[^א-ת]|$)/g, " רע");
       }
 
-      // Details panel — client-facing only (no practitioner banners)
+      function hebrewTermsSimple(s) {
+        return String(s || '')
+          .replace(/ממוזג-?סעד/g, "ממוזג-טוב")
+          .replace(/ממוזג-?נחס/g, "ממוזג-רע")
+          .replace(/סעד/g, "טוב")
+          .replace(/נחס/g, "רע");
+      }
+
+      // Board score warning — always visible
+      const boardWarnHtml = (boardScoreData && !boardScoreData.isComplete)
+        ? `<div class="board-info-row board-score-warn">⚠ ${escapeHtml(boardScoreData.hebrewSummary)}</div>`
+        : "";
+
+      // ─── SHORT CLIENT VERDICT (always visible) ─────────────────────────
+      let shortVerdictHtml = "";
+
+      if (isSpiritualTopic && spiritual?.grade) {
+        // Spiritual diagnostics: colored grade box
+        const gradeMap = {
+          "strong-suspicion": "כן — יש פגיעה רוחנית",
+          "medium-suspicion": "ייתכן — חשד בינוני לפגיעה רוחנית",
+          "weak-suspicion": "ספק — סימנים חלשים בלבד",
+          "mostly-clear": "לא — אין פגיעה רוחנית",
+          "mixed": "ממוזג — יש לבדוק עוד"
+        };
+        const verdictText = gradeMap[spiritual.grade] || spiritual.grade;
+        const vClass = spiritual.grade === "strong-suspicion" ? "verdict-yes" :
+                       spiritual.grade === "mostly-clear" ? "verdict-no" : "verdict-maybe";
+        shortVerdictHtml = `
+          <div class="verdict-box ${vClass}">
+            <div class="verdict-label">תשובה לשאלה</div>
+            <div class="verdict-answer">${escapeHtml(verdictText)}</div>
+            <div class="verdict-detail">${escapeHtml(spiritual.finalHebrew || "")}</div>
+          </div>`;
+
+      } else if (insight.shortClientVerdict) {
+        // Topic-aware short verdict from the engine
+        const svText = hebrewTerms(escapeHtml(insight.shortClientVerdict))
+          .replace(/\n\n/g, '<br/><br/>')
+          .replace(/\n/g, '<br/>');
+        shortVerdictHtml = `
+          <div class="summary-box" style="direction:rtl; border-right:4px solid #1a3a5c; padding-right:16px; margin-bottom:0;">
+            <p style="line-height:1.9; margin:0; font-size:16px;">${svText}</p>
+          </div>`;
+
+      } else if (topicId !== 'generalReading' && judgeV && judgeV.hebrewShort) {
+        // Fallback: generic verdict box
+        shortVerdictHtml = `
+          <div class="verdict-box ${escapeHtml(verdictClass(judgeV.verdict))}">
+            <div class="verdict-label">תשובה לשאלה</div>
+            <div class="verdict-answer">${escapeHtml(judgeV.hebrewShort)}</div>
+            <div class="verdict-detail">${escapeHtml(judgeV.hebrewFull || "")}</div>
+          </div>`;
+      }
+
+      // ─── SPIRITUAL DETAIL (inside details panel) ──────────────────────
+      const spiritualDetailHtml = showSpiritual && !isSpiritualTopic
+        ? `
+          <div class="summary-box">
+            <strong>אבחון רוחני נוסף:</strong>
+            <br/>${escapeHtml(spiritual.finalHebrew || "")}
+            ${Array.isArray(spiritual.mainReasons) && spiritual.mainReasons.length
+              ? `<ul>${spiritual.mainReasons.filter(r => r.score > 0).slice(0, 6).map(reason => `
+                  <li><strong>${reason.house != null ? `בית ${reason.house}` : escapeHtml(reason.role || "")}</strong>${reason.house != null && reason.role && reason.role !== `בית ${reason.house}` ? ` (${escapeHtml(reason.role)})` : ""}${reason.figureHebrew ? ` — ${escapeHtml(reason.figureHebrew)}` : ""}: ${escapeHtml((reason.signals || []).join(" "))}</li>
+                `).join("")}</ul>`
+              : ""}
+          </div>`
+        : "";
+
+      // ─── DETAILS PANEL (behind "קרא עוד") ────────────────────────────
       const conclusionFormatted = hebrewTerms(escapeHtml(conclusion))
         .replace(/\n\n/g, '</p><p style="margin-top:14px;">')
         .replace(/\n/g, '<br/>');
@@ -1879,8 +1811,7 @@
 
       return `
         ${boardWarnHtml}
-        ${verdictHtml}
-        ${keyFactsHtml}
+        ${shortVerdictHtml}
         <button class="details-toggle" onclick="const p=this.nextElementSibling;p.hidden=!p.hidden;this.textContent=p.hidden?'קרא עוד ▼':'סגור ▲'">קרא עוד ▼</button>
         <div hidden>${detailsContent}</div>
       `;
