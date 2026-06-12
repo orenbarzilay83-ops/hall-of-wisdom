@@ -1740,6 +1740,338 @@ function buildSpiritualNarrative(result) {
   return paras.length ? paras.join('\n\n') : null;
 }
 
+// ─── SHORT CLIENT VERDICT — topic-aware, 3-6 sentence answer ─────────────────
+// This is the always-visible verdict. It answers the SPECIFIC question the
+// client asked, not a generic positive/negative/mixed.
+
+export function writeShortClientVerdict(result) {
+  const { topicId, boardAnalysis, judgeVerdict: jv, kashfVerdict, kashfSupportAnalysis, clientContext } = result;
+
+  if (!boardAnalysis?.hasBoard) return null;
+  if (topicId === 'spiritualDiagnostics') return null;
+
+  const name     = clean(clientContext?.clientName || '');
+  const quesited = clean(clientContext?.quesitedName || '');
+  const lines    = [];
+
+  const judge    = boardAnalysis.judge    || getHouseFromBoard(boardAnalysis, 15);
+  const h1       = getHouseFromBoard(boardAnalysis, 1);
+  const jTone    = figureFortuneTone(judge?.fortune);
+
+  const kashfText  = kashfVerdict?.verdictHebrew || '';
+  const confLevel  = kashfSupportAnalysis?.confidence?.level || '';
+
+  function fortHebrew(h) {
+    const f = h?.fortune || '';
+    if (f.includes('סעד')) return 'סימן טוב';
+    if (f.includes('נחס')) return 'סימן קשה';
+    return 'סימן ממוזג';
+  }
+
+  function figLine(h, label) {
+    if (!h) return '';
+    return `${label}: "${h.figureHebrew || ''}" — ${fortHebrew(h)}.`;
+  }
+
+  switch (topicId) {
+
+    case 'theft': {
+      const h7 = getHouseFromBoard(boardAnalysis, 7);
+      const nameLetters = boardAnalysis.nameLetters || [];
+      const h7Letters   = nameLetters.find(n => n.houseNumber === 7);
+      const isIncoming  = h7?.directionHebrew === 'נכנס';
+      const isOutgoing  = h7?.directionHebrew === 'יוצא';
+
+      if (h7) lines.push(`הגנב מיוצג בלוח על ידי "${h7.figureHebrew || ''}" (בית 7) — ${fortHebrew(h7)}.`);
+      if (isIncoming) lines.push('הצורה נכנסת — הגנב עדיין בסביבתך ולא רחק.');
+      else if (isOutgoing) lines.push('הצורה יוצאת — הגנב כבר התרחק ממקומו.');
+      if (h7Letters?.letters?.length > 0) lines.push(`שמו מתחיל ב: ${h7Letters.letters.join(' / ')}.`);
+      if (kashfText) lines.push(kashfText);
+      else if (jTone > 0) lines.push('הדיין נוטה לחיוב — יש סיכוי לאתר את החפץ הגנוב.');
+      else if (jTone < 0) lines.push('הדיין פוסק לשלילה — קשה להחזיר את החפץ.');
+      else lines.push('הדיין ממוזג — אפשרות החזרה לא ברורה.');
+      break;
+    }
+
+    case 'missingPerson': {
+      const h7 = getHouseFromBoard(boardAnalysis, 7);
+      const qSubj = quesited || 'הנעדר';
+      const isIncoming = h7?.directionHebrew === 'נכנס';
+      const isOutgoing = h7?.directionHebrew === 'יוצא';
+
+      if (h7) {
+        const h7Tone = figureFortuneTone(h7.fortune);
+        const statusNote = h7Tone > 0 ? 'בחיים, מצב לא גרוע' : h7Tone < 0 ? 'מצב קשה או סכנה' : 'מצב לא ברור';
+        lines.push(`${qSubj} מיוצג/ת בלוח על ידי "${h7.figureHebrew || ''}" (בית 7) — ${statusNote}.`);
+      }
+      if (isIncoming) lines.push('הצורה נכנסת — יש סיכוי לחזרה, הנעדר לא רחוק.');
+      else if (isOutgoing) lines.push('הצורה יוצאת — הנעדר התרחק, החזרה פחות קרובה.');
+      if (kashfText) lines.push(kashfText);
+      else if (jTone > 0) lines.push('הדיין: יש תקווה לחזרה.');
+      else if (jTone < 0) lines.push('הדיין: אין סימן ברור לחזרה.');
+      else lines.push('הדיין ממוזג — הלוח לא מכריע לגבי החזרה.');
+      break;
+    }
+
+    case 'illness': {
+      const h6 = getHouseFromBoard(boardAnalysis, 6);
+      const h8 = getHouseFromBoard(boardAnalysis, 8);
+      const qSubj = quesited || name || 'החולה';
+
+      if (h1) lines.push(figLine(h1, `${qSubj} (בית 1)`));
+      if (h6) lines.push(figLine(h6, 'המחלה (בית 6)'));
+      if (kashfText) lines.push(kashfText);
+      else if (jTone > 0) lines.push('הדיין: פסיקה חיובית — יש נטייה להחלמה.');
+      else if (jTone < 0) lines.push('הדיין: פסיקה קשה — המחלה חמורה, יש לנקוט זהירות.');
+      else lines.push('הדיין ממוזג — ההחלמה לא ודאית.');
+      if (h8 && figureFortuneTone(h8.fortune) < 0) lines.push(`⚠ בית הסכנה (בית 8 — "${h8.figureHebrew}") — יש לשים לב לסימן סכנה.`);
+      break;
+    }
+
+    case 'marriage': {
+      const h7 = getHouseFromBoard(boardAnalysis, 7);
+      const qSubj = quesited || 'הצד השני';
+      const ittisal = boardAnalysis.ittisalat?.questioner_to_focus;
+
+      if (h7) lines.push(figLine(h7, `${qSubj} (בית 7)`));
+      if (ittisal && ittisal.type !== 'none') lines.push(`חיבור בין הצדדים: ${ittisal.hebrewShort}.`);
+      else if (ittisal) lines.push('אין חיבור ישיר בין הצדדים בלוח — עיכוב אפשרי.');
+      if (kashfText) lines.push(kashfText);
+      else if (jTone > 0) lines.push('הדיין: הנישואין יתממשו — הלוח נוטה לחיוב.');
+      else if (jTone < 0) lines.push('הדיין: יש מניעה — הנישואין לא סביר שיתממשו בקרוב.');
+      else lines.push('הדיין ממוזג — הנישואין אפשריים, אך לא ודאיים.');
+      break;
+    }
+
+    case 'disputes': {
+      const h7 = getHouseFromBoard(boardAnalysis, 7);
+      const qSubj = quesited || 'היריב';
+      const h1Tone = figureFortuneTone(h1?.fortune);
+      const h7Tone = figureFortuneTone(h7?.fortune);
+
+      if (h1) lines.push(figLine(h1, `${name || 'השואל'} (בית 1)`));
+      if (h7) lines.push(figLine(h7, `${qSubj} (בית 7 — היריב)`));
+      if (h1Tone > h7Tone) lines.push('השואל במצב חזק יותר מהיריב בלוח.');
+      else if (h1Tone < h7Tone) lines.push('היריב במצב חזק יותר — יש לשקול עמדות.');
+      if (kashfText) lines.push(kashfText);
+      else if (jTone > 0) lines.push('הדיין: הכרעה לטובת השואל — הסיכויים לצדו.');
+      else if (jTone < 0) lines.push('הדיין: הכרעה לרעת השואל — יש לשקול פשרה.');
+      else lines.push('הדיין ממוזג — ייתכן פשרה, אין הכרעה חדה.');
+      break;
+    }
+
+    case 'travel':
+    case 'seaVoyage': {
+      const h9 = getHouseFromBoard(boardAnalysis, 9);
+      const h8 = getHouseFromBoard(boardAnalysis, 8);
+      const label = topicId === 'seaVoyage' ? 'מסע הים (בית 9)' : 'המסע (בית 9)';
+
+      if (h9) lines.push(figLine(h9, label));
+      if (h8 && figureFortuneTone(h8.fortune) < 0) lines.push(`⚠ בית 8 (${h8.figureHebrew}) — יש סימן לסכנה בדרך.`);
+      if (kashfText) lines.push(kashfText);
+      else if (jTone > 0) lines.push('הדיין: המסע בטוח — אפשר לצאת.');
+      else if (jTone < 0) lines.push('הדיין: יש סכנה — כדאי לדחות את המסע.');
+      else lines.push('הדיין ממוזג — המסע אפשרי, אך יש לבדוק תנאים.');
+      break;
+    }
+
+    case 'childrenPregnancy': {
+      const h5 = getHouseFromBoard(boardAnalysis, 5);
+
+      if (h5) lines.push(figLine(h5, 'בית הילדים (בית 5)'));
+      if (kashfText) lines.push(kashfText);
+      else if (jTone > 0) lines.push('הדיין: יש נטייה לחיוב — הריון או ילד אפשרי.');
+      else if (jTone < 0) lines.push('הדיין: יש עיכוב — ההריון לא קרוב כרגע.');
+      else lines.push('הדיין ממוזג — ייתכן הריון, אך לא ברור מתי.');
+      break;
+    }
+
+    case 'deathInheritance': {
+      const h8 = getHouseFromBoard(boardAnalysis, 8);
+      const h2 = getHouseFromBoard(boardAnalysis, 2);
+
+      if (h8) lines.push(figLine(h8, 'בית המוות והירושה (בית 8)'));
+      if (h2) lines.push(figLine(h2, 'הממון / הירושה (בית 2)'));
+      if (kashfText) lines.push(kashfText);
+      else if (jTone > 0) lines.push('הדיין: פסיקה חיובית — סכנת המוות נמוכה. הירושה זמינה.');
+      else if (jTone < 0) lines.push('הדיין: פסיקה קשה — יש סכנה ממשית. הירושה עלולה להיות מסובכת.');
+      else lines.push('הדיין ממוזג — המצב לא ברור, יש לעקוב.');
+      break;
+    }
+
+    case 'partnership': {
+      const h7 = getHouseFromBoard(boardAnalysis, 7);
+      const qSubj = quesited || 'השותף';
+
+      if (h1) lines.push(figLine(h1, `${name || 'השואל'} (בית 1)`));
+      if (h7) lines.push(figLine(h7, `${qSubj} (בית 7)`));
+      if (kashfText) lines.push(kashfText);
+      else if (jTone > 0) lines.push('הדיין: השותפות תצלח — יש כיוון חיובי.');
+      else if (jTone < 0) lines.push('הדיין: השותפות מסוכנת — יש לנהוג בזהירות.');
+      else lines.push('הדיין ממוזג — השותפות אפשרית, אך יש לבדוק תנאים.');
+      break;
+    }
+
+    case 'enemies': {
+      const h7  = getHouseFromBoard(boardAnalysis, 7);
+      const h12 = getHouseFromBoard(boardAnalysis, 12);
+      const qSubj = quesited || 'האויב';
+      const h1Tone = figureFortuneTone(h1?.fortune);
+      const h7Tone = figureFortuneTone(h7?.fortune);
+
+      if (h7) lines.push(figLine(h7, `${qSubj} (בית 7)`));
+      if (h12 && figureFortuneTone(h12.fortune) < 0) lines.push(`⚠ בית 12 (${h12.figureHebrew}) — אויב נסתר חזק.`);
+      if (h1Tone > h7Tone) lines.push('השואל חזק יותר מהאויב בלוח.');
+      else if (h1Tone < h7Tone) lines.push('האויב חזק יותר — יש לנהוג בזהירות.');
+      if (kashfText) lines.push(kashfText);
+      else if (jTone > 0) lines.push('הדיין: הסכנה מהאויב מוגבלת — יש הגנה.');
+      else if (jTone < 0) lines.push('הדיין: האויב בעמדה חזקה — יש לנקוט הגנה ממשית.');
+      else lines.push('הדיין ממוזג — יש לעקוב אחר מצב האויב.');
+      break;
+    }
+
+    case 'fear': {
+      const h12 = getHouseFromBoard(boardAnalysis, 12);
+
+      if (h12) lines.push(figLine(h12, 'מקור הפחד (בית 12)'));
+      if (kashfText) lines.push(kashfText);
+      else if (jTone > 0) lines.push('הדיין: הפחד לא מבוסס לחלוטין — הסכנה קטנה מהמדומה.');
+      else if (jTone < 0) lines.push('הדיין: יש ממשות לפחד — יש לנקוט זהירות ממשית.');
+      else lines.push('הדיין ממוזג — יש אמת חלקית בפחד, אך לא כולו ממשי.');
+      break;
+    }
+
+    case 'commerce': {
+      const h2  = getHouseFromBoard(boardAnalysis, 2);
+      const h10 = getHouseFromBoard(boardAnalysis, 10);
+
+      if (h2)  lines.push(figLine(h2, 'הממון (בית 2)'));
+      if (h10) lines.push(figLine(h10, 'תוצאת העסקה (בית 10)'));
+      if (kashfText) lines.push(kashfText);
+      else if (jTone > 0) lines.push('הדיין: עסקה מומלצת — יש נטייה לרווח.');
+      else if (jTone < 0) lines.push('הדיין: עסקה מסוכנת — הפסד אפשרי.');
+      else lines.push('הדיין ממוזג — יש לבדוק תנאים לפני עסקה.');
+      break;
+    }
+
+    case 'loveHate': {
+      const h7 = getHouseFromBoard(boardAnalysis, 7);
+      const qSubj = quesited || 'הצד השני';
+
+      if (h1) lines.push(figLine(h1, `${name || 'השואל'} (בית 1)`));
+      if (h7) lines.push(figLine(h7, `${qSubj} (בית 7)`));
+      if (kashfText) lines.push(kashfText);
+      else if (jTone > 0) lines.push('הדיין: יש קרבה וחיבה — הקשר חיובי.');
+      else if (jTone < 0) lines.push('הדיין: יש שנאה או ניתוק — הקשר מאתגר.');
+      else lines.push('הדיין ממוזג — הרגש מעורב משני הצדדים.');
+      break;
+    }
+
+    case 'completion': {
+      const tahasil = boardAnalysis.tahasil;
+
+      if (kashfText) lines.push(kashfText);
+      else if (jTone > 0) lines.push('הדיין: הדבר יושלם — הלוח נוטה לחיוב.');
+      else if (jTone < 0) lines.push('הדיין: הדבר לא יושלם — יש מניעה.');
+      else lines.push('הדיין ממוזג — השלמת הדבר לא ודאית.');
+      if (tahasil?.tahasilHebrew) lines.push(`בדיקת ההגעה: ${tahasil.tahasilHebrew}.`);
+      break;
+    }
+
+    case 'hiddenTreasure': {
+      const h4 = getHouseFromBoard(boardAnalysis, 4);
+      const tl = boardAnalysis?.treasureLocation;
+
+      if (tl?.presenceHebrew) lines.push(tl.presenceHebrew);
+      if (h4) lines.push(figLine(h4, 'מיקום אפשרי (בית 4)'));
+      if (kashfText) lines.push(kashfText);
+      else if (jTone > 0) lines.push('הדיין: הדבר החבוי קיים ויש גישה אפשרית.');
+      else if (jTone < 0) lines.push('הדיין: הדבר החבוי חסום — קשה להגיע אליו.');
+      else lines.push('הדיין ממוזג — קיומו ונגישותו לא ברורים.');
+      break;
+    }
+
+    case 'prisoner': {
+      const h12 = getHouseFromBoard(boardAnalysis, 12);
+      const h5  = getHouseFromBoard(boardAnalysis, 5);
+
+      if (h12) lines.push(figLine(h12, 'הכלא (בית 12)'));
+      if (h5)  lines.push(figLine(h5, 'גורל האסיר (בית 5)'));
+      if (kashfText) lines.push(kashfText);
+      else if (jTone > 0) lines.push('הדיין: יש סיכוי לשחרור.');
+      else if (jTone < 0) lines.push('הדיין: המאסר ימשך — אין סימן ברור ליציאה.');
+      else lines.push('הדיין ממוזג — גורל האסיר לא ברור.');
+      break;
+    }
+
+    case 'siblings': {
+      const h3 = getHouseFromBoard(boardAnalysis, 3);
+      const qSubj = quesited || 'האח/השכן';
+
+      if (h3) lines.push(figLine(h3, `${qSubj} (בית 3)`));
+      if (h1) lines.push(figLine(h1, `${name || 'השואל'} (בית 1)`));
+      if (kashfText) lines.push(kashfText);
+      else if (jTone > 0) lines.push('הדיין: הקשר חיובי — יש שיתוף פעולה ועזרה.');
+      else if (jTone < 0) lines.push('הדיין: הקשר קשה — יש מחלוקת או ריחוק.');
+      else lines.push('הדיין ממוזג — הקשר בינוני, אין הכרעה ברורה.');
+      break;
+    }
+
+    case 'yearlyForecast': {
+      if (kashfText) lines.push(kashfText);
+      else if (jTone > 0) lines.push('השנה: מבטיחה בכלל — הכיוון הכללי לטובה.');
+      else if (jTone < 0) lines.push('השנה: קשה — יש להיזהר ולחסוך.');
+      else lines.push('השנה: מעורבת — יש תקופות טובות וקשות.');
+      const yearly = boardAnalysis.yearlyForecastAnalysis;
+      if (yearly?.outputHebrew) {
+        const firstLine = yearly.outputHebrew.split('\n')[0];
+        if (firstLine) lines.push(firstLine);
+      }
+      break;
+    }
+
+    case 'authorityState': {
+      const h10 = getHouseFromBoard(boardAnalysis, 10);
+
+      if (h10) lines.push(figLine(h10, 'בית הסמכות / התפקיד (בית 10)'));
+      if (h1)  lines.push(figLine(h1, `${name || 'השואל'} (בית 1)`));
+      if (kashfText) lines.push(kashfText);
+      else if (jTone > 0) lines.push('הדיין: התפקיד יציב — אין סכנה ממשית.');
+      else if (jTone < 0) lines.push('הדיין: התפקיד בסכנה — יש לנהוג בזהירות.');
+      else lines.push('הדיין ממוזג — מצב התפקיד לא ברור.');
+      break;
+    }
+
+    case 'birthNativity': {
+      if (h1) lines.push(figLine(h1, `${name || 'השואל'} (בית 1 — הטאלע)`));
+      if (kashfText) lines.push(kashfText);
+      else if (jTone > 0) lines.push('הדיין: גורל חיובי — הכוחות בתקופה זו לטובה.');
+      else if (jTone < 0) lines.push('הדיין: גורל קשה — יש קשיים בתקופה זו.');
+      else lines.push('הדיין ממוזג — גורל מאוזן בתקופה זו.');
+      break;
+    }
+
+    default: {
+      if (h1) lines.push(figLine(h1, `${name || 'השואל'} (בית 1)`));
+      if (kashfText) lines.push(kashfText);
+      else if (jv?.hebrewShort) lines.push(`הדיין: ${jv.hebrewShort}`);
+      else if (jTone > 0) lines.push('הדיין פוסק לחיוב.');
+      else if (jTone < 0) lines.push('הדיין פוסק לשלילה.');
+      else lines.push('הדיין ממוזג — אין הכרעה חד-משמעית.');
+      break;
+    }
+  }
+
+  // Confidence warning
+  if (confLevel === 'weak') {
+    lines.push('⚠ הפסיקה מוחלשת — רוב הכוחות בלוח מתנגדים לה. יש לנהוג בזהירות.');
+  } else if (confLevel === 'mixed') {
+    lines.push('⚠ יש כוחות מנוגדים בלוח — הפסיקה נכונה אך לא בוודאות מלאה.');
+  }
+
+  return lines.filter(l => l !== undefined && l !== null).join('\n');
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function writeHumanGoralConclusion(result) {
@@ -1812,8 +2144,9 @@ export function writeHumanGoralConclusion(result) {
 
 export default {
   writeHumanGoralConclusion,
+  writeShortClientVerdict,
 };
 
 if (typeof module !== 'undefined') {
-  module.exports = { writeHumanGoralConclusion };
+  module.exports = { writeHumanGoralConclusion, writeShortClientVerdict };
 }
