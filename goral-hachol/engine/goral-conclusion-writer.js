@@ -951,7 +951,7 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
         thiefDesc += ` לפי מעבר הצורה: ${transitMeaning}`;
       }
 
-      if (element.includes('אוויר')) {
+      if (element.includes('אוויר') || element.includes('רוח')) {
         thiefDesc += ' — אדם קרוב או בן הבית / שכן.';
       } else if (element.includes('אש')) {
         thiefDesc += ' — אדם בעל סמכות, גברי ובעל נחישות.';
