@@ -1530,9 +1530,7 @@ function buildSpiritualNarrative(result) {
   const paras = [];
   const push  = (p) => { if (p && clean(p)) paras.push(clean(p)); };
 
-  // ── 0. KASHF-AL-ASRAR VERDICT BLOCK ─────────────────────────────
-  const kashfBlock = buildKashfVerdictBlock(kashfVerdict, kashfSupportAnalysis);
-  if (kashfBlock) push(kashfBlock);
+  // האבחון הרוחני המפורט הוא הסמכות לנושא זה — הכשף (2 בתים בלבד) אינו מתאים
 
   const hFig     = (h) => clean(h?.figureHebrew || '');
   const hFort    = (h) => clean(h?.fortune || '');
