@@ -109,10 +109,6 @@
 </div>
 <div id="page-psalms" class="dashboard-container fade-in" style="display:none">
   <h1 class="gold-title">📖 מחשבון פרק התהילים האישי</h1>
-  <div style="text-align:center;color:var(--muted);padding:40px;">בקרוב...</div>
-</div>
-<div id="page-gematria" class="dashboard-container fade-in" style="display:none">
-  <h1 class="gold-title">✦ מחשבון גימטריה וחותם</h1>
   <div class="card" style="max-width:560px;margin:0 auto">
     <div class="card-title"><span class="badge">א</span> גילוי המזמור</div>
     <label class="field-label">שם פרטי:</label>
@@ -174,6 +170,49 @@
       <div class="seal-wrap">
         <div class="seal-title">חותם 5×5</div>
         <div id="outTable"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="page-gematria" class="dashboard-container fade-in" style="display:none">
+  <h1 class="gold-title">🔢 מחשבון גימטריה וחותם</h1>
+  <div class="card" style="max-width:560px;margin:0 auto">
+    <div class="card-title"><span class="badge">ב</span> הפקת זמנים וחותם 5×5</div>
+    <span class="selector-label">בחר מזמור תהילים:</span>
+    <div class="selector-row">
+      <button class="arrow-btn" onclick="gChangePs(-1)">›</button>
+      <div class="accordion-trigger" id="gTrigger" onclick="gToggleAccordion()">
+        <div class="trigger-num" id="gPsNum">1</div>
+        <span class="trigger-arrow" id="gTriggerArrow">▾</span>
+      </div>
+      <button class="arrow-btn" onclick="gChangePs(1)">‹</button>
+    </div>
+    <div class="accordion-panel" id="gPanel">
+      <div class="grid-inner" id="gQuickGrid"></div>
+    </div>
+    <button class="btn btn-blue" onclick="gLoadPsalm()" style="margin-top:4px">📖 טען מזמור</button>
+    <div class="psalm-preview" id="gPsalmPreview">
+      <div class="preview-title" id="gPreviewTitle"></div>
+      <div class="preview-text" id="gPreviewText"></div>
+    </div>
+    <button class="btn btn-green" id="gBtnCalc" style="display:none;margin-top:10px" onclick="gRunCalc2()">✦ חשב גימטריה והפק חותם</button>
+    <button class="btn btn-clear" onclick="gClearCalc2()">🗑 נקה מחשבון</button>
+    <div class="result-b" id="gRes2">
+      <div class="g-total">
+        <span class="g-total-lbl">גימטריה סופית</span>
+        <span class="g-total-val" id="gOutG">—</span>
+      </div>
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-val" id="gOutDay">—</div><div class="stat-lbl">יום</div></div>
+        <div class="stat-box"><div class="stat-val" id="gOutHour">—</div><div class="stat-lbl">שעה</div></div>
+      </div>
+      <div class="keys-row">
+        <div class="key-box"><div class="key-val" id="gOutBase">—</div><div class="key-lbl">מפתח (Base)</div></div>
+        <div class="key-box"><div class="key-val" id="gOutJebra">—</div><div class="key-lbl">שבר (Jebra)</div></div>
+      </div>
+      <div class="seal-wrap">
+        <div class="seal-title">חותם 5×5</div>
+        <div id="gOutTable"></div>
       </div>
     </div>
   </div>
@@ -525,6 +564,97 @@ function clearCalc2(){
   document.getElementById('outTable').innerHTML='';
 }
 </script>
+<script>
+// ── מחשבון גימטריה — חלק ב בלבד (g-prefix) ──
+var gCurrent = 1, gIsOpen = false;
+var gGrid = document.getElementById('gQuickGrid');
+(function(){
+  for(var i=1;i<=150;i++){
+    var btn=document.createElement('button');
+    btn.className='q-btn'+(i===1?' selected':'');
+    btn.innerText=i;
+    btn.setAttribute('data-n',i);
+    btn.onclick=(function(n){return function(){gSelectPs(n);gCloseAccordion();};})(i);
+    gGrid.appendChild(btn);
+  }
+})();
+
+function gSelectPs(n){
+  gCurrent=n;
+  document.getElementById('gPsNum').innerText=n;
+  var btns=gGrid.querySelectorAll('.q-btn');
+  for(var i=0;i<btns.length;i++){
+    var bn=parseInt(btns[i].getAttribute('data-n'));
+    btns[i].className='q-btn'+(bn===n?' selected':'');
+  }
+  var sel=gGrid.querySelector('.q-btn.selected');
+  if(sel) sel.scrollIntoView({block:'nearest'});
+}
+function gChangePs(d){var n=gCurrent+d;if(n<1)n=150;if(n>150)n=1;gSelectPs(n);}
+function gToggleAccordion(){gIsOpen?gCloseAccordion():gOpenAccordion();}
+function gOpenAccordion(){
+  gIsOpen=true;
+  document.getElementById('gPanel').classList.add('open');
+  document.getElementById('gTrigger').classList.add('open');
+  var sel=gGrid.querySelector('.q-btn.selected');
+  if(sel) setTimeout(function(){sel.scrollIntoView({block:'nearest'});},50);
+}
+function gCloseAccordion(){
+  gIsOpen=false;
+  document.getElementById('gPanel').classList.remove('open');
+  document.getElementById('gTrigger').classList.remove('open');
+}
+function gLoadPsalm(){
+  gCloseAccordion();
+  var txt=PSALMS[String(gCurrent)]||'';
+  document.getElementById('gPreviewTitle').innerText='מזמור '+gCurrent;
+  document.getElementById('gPreviewText').innerText=txt;
+  document.getElementById('gPsalmPreview').style.display='block';
+  document.getElementById('gBtnCalc').style.display='block';
+  document.getElementById('gRes2').style.display='none';
+}
+function gRunCalc2(){
+  var raw=PSALMS[String(gCurrent)]||'';
+  var cleaned=cleanPsalm(raw);
+  var g=0;
+  for(var i=0;i<cleaned.length;i++) g+=gMap[cleaned[i]]||0;
+  var base=Math.floor(g/65);
+  var jebra=g%65;
+  document.getElementById('gOutG').innerText=g;
+  document.getElementById('gOutDay').innerText=dayNames[g%7];
+  document.getElementById('gOutHour').innerText=g%24;
+  document.getElementById('gOutBase').innerText=base;
+  document.getElementById('gOutJebra').innerText=jebra;
+  var layout=[[15,17,22,2,9],[1,8,14,21,'S'],[20,25,0,7,13],[6,12,19,24,4],[23,3,10,11,18]];
+  function cellVal(n){
+    if(n==='S') return (base*21)+jebra;
+    if(n===0)   return null;
+    if(n<=20)   return base*n;
+    return (base*n)+jebra;
+  }
+  var h='<table>';
+  for(var r=0;r<layout.length;r++){
+    h+='<tr>';
+    for(var c=0;c<layout[r].length;c++){
+      var cell=layout[r][c];
+      if(cell===0)        h+='<td class="center-x">✕</td>';
+      else if(cell==='S') h+='<td class="cell-s">'+cellVal('S')+'</td>';
+      else if(cell>=21)   h+='<td class="cell-high">'+cellVal(cell)+'</td>';
+      else                h+='<td>'+cellVal(cell)+'</td>';
+    }
+    h+='</tr>';
+  }
+  h+='</table>';
+  document.getElementById('gOutTable').innerHTML=h;
+  document.getElementById('gRes2').style.display='block';
+  document.getElementById('gRes2').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function gClearCalc2(){
+  document.getElementById('gPsalmPreview').style.display='none';
+  document.getElementById('gBtnCalc').style.display='none';
+  document.getElementById('gRes2').style.display='none';
+  document.getElementById('gOutTable').innerHTML='';
+}
 </script>
 
 </body>
