@@ -829,6 +829,7 @@ function renderFiguresGuide() {
         <span class="badge ${elClass}">${escapeHtml(f.element || '')}</span>
         ${f.direction ? `<span class="badge ${dirClass}">${escapeHtml(f.direction)}</span>` : ''}
         ${f.planet ? `<span class="badge planet">${escapeHtml(f.planet)}</span>` : ''}
+        ${f.zodiac ? `<span class="badge zodiac">${escapeHtml(f.zodiac)}</span>` : ''}
         <span class="badge group">קבוצה: ${escapeHtml(ex.movement || '')}</span>
       </div>
     </div>`;
@@ -843,8 +844,9 @@ function renderFiguresGuide() {
       <strong>קבועה</strong> (ثابتة) = יציבה &nbsp;|&nbsp;
       <strong>מתהפכת</strong> (منقلبة) = שני פנים<br>
       <strong>יסוד:</strong> 🔴 אש · 💧 מים · 🌬 רוח · 🟤 עפר
-      &nbsp;|&nbsp; <strong>כיוון:</strong> 🔵 צפון · 🟠 דרום · 🟢 מזרח · 🟣 מערב
-      &nbsp;|&nbsp; <strong>כוכב</strong> = הגורם השמימי השולט
+      &nbsp;|&nbsp; <strong>כיוון:</strong> 🔵 צפון · 🟠 דרום · 🟢 מזרח · 🟣 מערב<br>
+      <strong>כוכב</strong> = הגורם השמימי השולט
+      &nbsp;|&nbsp; <strong>מזל</strong> = מזל הגלגל השייך לצורה
     </div>`;
 }
 
