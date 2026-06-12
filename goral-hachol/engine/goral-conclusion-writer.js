@@ -1340,10 +1340,15 @@ function buildNarrativeByTopic(result) {
 
   const h1       = getHouseFromBoard(boardAnalysis, 1);
   const judge    = boardAnalysis.judge   || getHouseFromBoard(boardAnalysis, 15);
+  const sentence = boardAnalysis.sentence || getHouseFromBoard(boardAnalysis, 16);
   const w13      = boardAnalysis.witnesses?.[0] || getHouseFromBoard(boardAnalysis, 13);
   const w14      = boardAnalysis.witnesses?.[1] || getHouseFromBoard(boardAnalysis, 14);
   const focus    = boardAnalysis.focusHouse;
   const focusNum = boardAnalysis.focusHouseNumber;
+
+  // ── 0.7. QUESITED NAME ───────────────────────────────────────────
+  const quesitedName = clean(clientContext?.quesitedName || '');
+  if (quesitedName) push(`הנשאל עליו: ${quesitedName}.`);
 
   // ── 1. THE JUDGE (H15) — THE RULING ─────────────────────────────
   if (judge) {
@@ -1395,6 +1400,24 @@ function buildNarrativeByTopic(result) {
     }
 
     if (wLines.length) push(wLines.join('\n'));
+  }
+
+  // ── 2.5. SENTENCE (H16 — עאקבה) ─────────────────────────────────
+  if (sentence) {
+    const fig     = hFig(sentence);
+    const fort    = hFort(sentence);
+    const transit = hTransit(sentence);
+    const tone    = hTone(sentence);
+    const jTone   = hTone(judge);
+    const confirm = (jTone !== 0 && tone !== 0)
+      ? ((jTone > 0 && tone > 0) || (jTone < 0 && tone < 0) ? 'מאשרת את הדיין' : 'מנוגדת לדיין')
+      : null;
+
+    const parts = [];
+    parts.push(`עאקבה (בית 16 — ${fig}${fort ? `, ${fort}` : ''}): אחרית הדין.`);
+    if (confirm) parts.push(`[${confirm}]`);
+    if (transit) parts.push(`חאוי: ${transit}`);
+    push(parts.join(' '));
   }
 
   // ── 3. H1 — THE QUESTIONER ──────────────────────────────────────
