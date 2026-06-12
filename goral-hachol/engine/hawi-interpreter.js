@@ -3124,6 +3124,26 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
   return parts.join('\n\n');
 }
 
+function buildValidatedConclusion(boardValidation, conclusionText) {
+  if (!boardValidation?.warnings?.length) return conclusionText;
+  const criticals = boardValidation.warnings.filter((w) => w.severity === 'critical');
+  const nonCriticals = boardValidation.warnings.filter((w) => w.severity !== 'critical');
+  const parts = [];
+  if (criticals.length) {
+    parts.push('⚠️ שגיאת לוח קריטית:');
+    criticals.forEach((w) => parts.push(w.hebrewMessage));
+    parts.push('');
+    parts.push('הפירוש שלהלן ניתן לצרכי עיון בלבד — הלוח אינו תקין.');
+  }
+  if (nonCriticals.length) {
+    parts.push('⚠️ אזהרת לוח:');
+    nonCriticals.forEach((w) => parts.push(w.hebrewMessage));
+  }
+  if (parts.length) parts.push('');
+  parts.push(conclusionText);
+  return parts.join('\n');
+}
+
 export function interpretHawiQuestionInitial(question, board = null) {
   const route = routeHawiQuestion(question);
   // Allow caller to supply a pre-resolved topicId (e.g. from a UI topic selector)
@@ -3152,6 +3172,8 @@ export function interpretHawiQuestionInitial(question, board = null) {
 
   const kashfVerdict        = getKashfVerdict(route.topicId, board);
   const kashfSupportAnalysis = kashfVerdict ? getKashfSupportAnalysis(board, kashfVerdict) : null;
+
+  const boardValidation = board?.boardValidation || { isValid: true, hasCritical: false, warnings: [] };
 
   return {
     id: 'goral-hachol-full-interpretation',
@@ -3184,9 +3206,10 @@ export function interpretHawiQuestionInitial(question, board = null) {
 
     boardAnalysis,
     boardScore,
+    boardValidation,
     spiritualDiagnosis,
     technicalConclusionHebrew,
-    finalConclusionHebrew: writeHumanGoralConclusion({
+    finalConclusionHebrew: buildValidatedConclusion(boardValidation, writeHumanGoralConclusion({
       question,
       clientContext,
       clientHistorySummary,
@@ -3199,7 +3222,7 @@ export function interpretHawiQuestionInitial(question, board = null) {
       judgeVerdict,
       kashfVerdict,
       kashfSupportAnalysis,
-    }),
+    })),
     conclusionDraftHebrew: technicalConclusionHebrew,
 
     // Layer 5-6: כשף-אל-אסראר verdict + support analysis (additive)
