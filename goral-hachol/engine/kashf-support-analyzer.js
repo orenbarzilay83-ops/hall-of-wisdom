@@ -23,23 +23,9 @@ const PARENT_PAIRS = {
 };
 
 function getHouseEntry(board, houseNumber) {
-  // raml-board-generator.js format: board.entries[].pattern + .hebrewName
-  const fromEntries = (board?.entries || []).find(
+  return (board?.entries || board?.chart || []).find(
     (h) => Number(h.house) === Number(houseNumber)
-  );
-  if (fromEntries) return fromEntries;
-
-  // raml.js (legacy) format: board.chart[].key + .hebrew
-  const fromChart = (board?.chart || []).find(
-    (h) => Number(h.house) === Number(houseNumber)
-  );
-  if (!fromChart) return null;
-  // normalize to the expected shape
-  return {
-    ...fromChart,
-    pattern:    fromChart.key,
-    hebrewName: fromChart.hebrew || fromChart.key,
-  };
+  ) || null;
 }
 
 function getPattern(board, houseNumber) {
@@ -57,11 +43,8 @@ function computeDhamirDiagonal(board) {
     rows.push(p[i - 1]);
   }
   const targetPattern = rows.join('');
-  // search both entries (pattern) and chart (key)
-  const allHouses = [
-    ...(board?.entries || []).map(h => ({ house: h.house, pattern: h.pattern, name: h.hebrewName })),
-    ...(board?.chart   || []).map(h => ({ house: h.house, pattern: h.key,     name: h.hebrew    })),
-  ];
+  const allHouses = (board?.entries || board?.chart || [])
+    .map(h => ({ house: h.house, pattern: h.pattern, name: h.hebrewName }));
   const found = allHouses.find((h) => h.pattern === targetPattern);
   if (!found) return null;
   return {
