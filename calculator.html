@@ -64,7 +64,20 @@
 </div>
 <div id="page-psalms" class="dashboard-container fade-in" style="display:none">
   <h1 class="gold-title">📖 מחשבון פרק התהילים האישי</h1>
-  <div style="text-align:center;color:var(--muted);padding:40px;">בקרוב...</div>
+  <div class="card" style="max-width:520px;margin:0 auto">
+    <div class="card-title"><span class="badge">א</span> הכנס פרטים אישיים</div>
+    <label class="field-label">שם פרטי</label>
+    <input type="text" id="psalmName" class="short-input" placeholder="שם פרטי...">
+    <label class="field-label">תאריך לידה</label>
+    <div class="date-row">
+      <select id="psalmDay"><option value="">יום</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option></select>
+      <select id="psalmMonth"><option value="">חודש</option><option value="1">ינואר</option><option value="2">פברואר</option><option value="3">מרץ</option><option value="4">אפריל</option><option value="5">מאי</option><option value="6">יוני</option><option value="7">יולי</option><option value="8">אוגוסט</option><option value="9">ספטמבר</option><option value="10">אוקטובר</option><option value="11">נובמבר</option><option value="12">דצמבר</option></select>
+      <input type="number" id="psalmYear" placeholder="שנה" min="1900" max="2025">
+    </div>
+    <button class="btn btn-gold" onclick="calcPersonalPsalm()">חשב פרק תהילים ←</button>
+    <button class="btn btn-clear" onclick="document.getElementById('psalmOutput').innerHTML=''">🗑 נקה</button>
+  </div>
+  <div id="psalmOutput" style="max-width:520px;margin:16px auto 0"></div>
 </div>
 <div id="page-gematria" class="dashboard-container fade-in" style="display:none">
   <h1 class="gold-title">🔢 מחשבון גימטריה</h1>
@@ -252,6 +265,71 @@ loadAppts();
 <script src="goral.js"></script>
 <script>
 (function(){ var e=document.getElementById('goralPrayerText'); if(e) e.textContent=GORAL_PRAYER; })();
+</script>
+<script>
+// ── מחשבון פרק תהילים אישי ──
+let _psalmsCache = null;
+
+function calcPersonalPsalm() {
+  const name  = (document.getElementById('psalmName').value || '').trim();
+  const day   = parseInt(document.getElementById('psalmDay').value);
+  const month = parseInt(document.getElementById('psalmMonth').value);
+  const year  = parseInt(document.getElementById('psalmYear').value);
+  const out   = document.getElementById('psalmOutput');
+
+  if (!name || !day || !month || !year) {
+    out.innerHTML = '<div style="color:#C84B31;text-align:center;padding:12px;">נא למלא שם ותאריך לידה מלא</div>';
+    return;
+  }
+
+  const today = new Date();
+  const birth = new Date(year, month - 1, day);
+  let age = today.getFullYear() - birth.getFullYear();
+  if (today.getMonth() < birth.getMonth() || (today.getMonth() === birth.getMonth() && today.getDate() < birth.getDate())) age--;
+  if (age < 0) { out.innerHTML = '<div style="color:#C84B31;text-align:center;padding:12px;">תאריך לידה לא תקין</div>'; return; }
+
+  const psalmNum = Math.min(age + 1, 150);
+
+  out.innerHTML = '<div style="text-align:center;color:var(--muted);padding:20px;">טוען...</div>';
+
+  function render(data) {
+    const verses   = data.he[psalmNum - 1] || [];
+    const clean    = v => v.replace(/<[^>]+>/g, '').replace(/&thinsp;/g, ' ').replace(/&[a-zA-Z#0-9]+;/g, '').replace(/\s+/g, ' ').trim();
+    const preview  = verses.slice(0, 3).map(clean).join(' ');
+
+    const heMonths = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+
+    out.innerHTML = `
+      <div class="card">
+        <div class="card-title">📖 פרק התהילים האישי של ${name}</div>
+        <div style="text-align:center;padding:20px 0 12px">
+          <div style="font-size:4rem;color:var(--gold,#C9A84C);font-weight:900;line-height:1">${psalmNum}</div>
+          <div style="color:var(--muted);font-size:.82rem;margin-top:6px">פרק ${psalmNum} בספר תהילים</div>
+        </div>
+        <div style="background:rgba(184,149,10,.06);border-radius:10px;padding:16px;border:1px solid var(--border);direction:rtl;line-height:2.3;font-size:.93rem;color:var(--text)">
+          ${preview}
+        </div>
+        <div style="color:var(--muted);font-size:.76rem;margin-top:14px;text-align:center;line-height:1.9">
+          ${name} — גיל ${age} שנים<br>
+          נולד ב-${day} ${heMonths[month-1]} ${year}
+        </div>
+      </div>`;
+  }
+
+  if (_psalmsCache) { render(_psalmsCache); return; }
+
+  fetch('psalms.json')
+    .then(r => r.json())
+    .then(data => { _psalmsCache = data; render(data); })
+    .catch(() => {
+      out.innerHTML = `
+        <div class="card" style="text-align:center">
+          <div style="font-size:3.5rem;color:var(--gold,#C9A84C);font-weight:900;padding:16px 0">${psalmNum}</div>
+          <div style="color:var(--text)">פרק ${psalmNum} בספר תהילים</div>
+          <div style="color:var(--muted);font-size:.8rem;margin-top:8px">${name} — גיל ${age} שנים</div>
+        </div>`;
+    });
+}
 </script>
 
 </body>
