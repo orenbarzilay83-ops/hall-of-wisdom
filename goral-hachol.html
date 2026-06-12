@@ -696,6 +696,61 @@
       white-space:nowrap;
     }
 
+    /* ─── Sub-topic selection row ────────────────────────────── */
+    .subtopic-row {
+      grid-column:1 / -1;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      padding:10px 14px;
+      background:#fffef5;
+      border:2px solid var(--gold);
+      border-radius:12px;
+      margin-top:-4px;
+    }
+    .subtopic-btn {
+      border:2px solid rgba(216,170,69,.45);
+      border-radius:20px;
+      padding:6px 16px;
+      font-size:14px;
+      font-weight:600;
+      color:#444;
+      background:#fff;
+      cursor:pointer;
+      transition:background .15s, border-color .15s;
+    }
+    .subtopic-btn:hover  { background:#fff4cc; border-color:var(--gold); }
+    .subtopic-btn.selected {
+      background:#f5d95e;
+      border-color:#c8920d;
+      color:#3a2000;
+      box-shadow:0 0 0 2px rgba(216,170,69,.3);
+    }
+    /* ─── Quesited name input ────────────────────────────────── */
+    .quesited-field {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      background:#f4f8ff;
+      border:1.5px solid rgba(100,140,200,.35);
+      border-radius:10px;
+      padding:8px 14px;
+      margin-top:6px;
+    }
+    .quesited-field label {
+      font-size:14px;
+      font-weight:700;
+      color:#334;
+      white-space:nowrap;
+    }
+    .quesited-field input {
+      flex:1;
+      border:1px solid #c0cce0;
+      border-radius:8px;
+      padding:6px 10px;
+      font-size:14px;
+    }
+
     /* ─── Menu Drawer ─────────────────────────────────────────── */
     .menu-overlay {
       display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;
@@ -1009,6 +1064,10 @@
           <div class="full">
             <label>שאלה / כוונה</label>
             <textarea id="questionInput" placeholder="כתוב כאן את שאלת גורל החול" autocomplete="off"></textarea>
+            <div class="quesited-field">
+              <label for="quesitedNameInput">הנשאל עליו:</label>
+              <input id="quesitedNameInput" placeholder="שם האדם שעליו נשאלת השאלה (אם יש)" autocomplete="off" />
+            </div>
           </div>
 
           <div class="full">
@@ -1233,22 +1292,44 @@
     let activeMother = 0;
     let selectedHouseNum = null;  // בית שנבחר (1-12)
     let forcedTopicId = null;     // נושא שנקבע בכוח (למשל: בדיקה רוחנית)
+    let selectedTopicId = null;   // תת-נושא שנבחר ישירות מתוך רשימת תת-נושאים
     let profileState = { marital: null, work: null, children: null };
 
     // 12 כרטיסים לפי סדר הבתים. הנושא המדויק נקבע בזמן הריצה לפי השאלה.
+    // subTopics — אם יש, מוצגים לאחר בחירת הבית; null = ברירת מחדל ישירה.
     const TOPIC_CARDS = [
-      { house: 1,  title: 'מצב השואל',      desc: 'בריאות, גוף, נפש, מצב כללי',           defaultTopicId: 'foundations' },
-      { house: 2,  title: 'כסף ופרנסה',     desc: 'ממון, רכוש, עסקים, מסחר',              defaultTopicId: 'commerce' },
-      { house: 3,  title: 'אחים ושכנים',    desc: 'אחים, שכנים, קרובים, מכתבים',          defaultTopicId: 'siblings' },
-      { house: 4,  title: 'בית ונכסים',     desc: 'דירה, נדל"ן, ירושה, דברים נסתרים',    defaultTopicId: 'hiddenTreasure' },
-      { house: 5,  title: 'ילדים והריון',   desc: 'לידה, הריון, ילדים, שמחה',             defaultTopicId: 'childrenPregnancy' },
-      { house: 6,  title: 'מחלה ובריאות',  desc: 'חולי, מצב רפואי, החלמה, כישוף',        defaultTopicId: 'illness' },
-      { house: 7,  title: 'הנשאל עליו',      desc: 'בן/בת זוג, שותף, יריב, גנב, נעדר',     defaultTopicId: 'marriage' },
-      { house: 8,  title: 'מוות וירושה',    desc: 'מוות, ירושה, פחד גדול, שינוי עמוק',   defaultTopicId: 'deathInheritance' },
-      { house: 9,  title: 'נסיעה ומסע',     desc: 'יציאה, נסיעה, ים, דת, רוחניות',        defaultTopicId: 'travel' },
-      { house: 10, title: 'עבודה ומעמד',    desc: 'קריירה, שלטון, בעלי סמכות',            defaultTopicId: 'authorityState' },
-      { house: 11, title: 'חברים ואהבה',    desc: 'חברים, קשרים, תקוות, אהבה',            defaultTopicId: 'loveHate' },
-      { house: 12, title: 'אויבים וכלא',    desc: 'אויבים נסתרים, מאסר, סכנה, כישוף',    defaultTopicId: 'enemies' },
+      { house: 1,  title: 'מצב השואל',      desc: 'בריאות, גוף, נפש, מצב כללי',           defaultTopicId: 'foundations',       subTopics: null },
+      { house: 2,  title: 'כסף ופרנסה',     desc: 'ממון, רכוש, עסקים, מסחר',              defaultTopicId: 'commerce',          subTopics: null },
+      { house: 3,  title: 'אחים ושכנים',    desc: 'אחים, שכנים, קרובים, מכתבים',          defaultTopicId: 'siblings',          subTopics: null },
+      { house: 4,  title: 'בית ונכסים',     desc: 'דירה, נדל"ן, ירושה, דברים נסתרים',    defaultTopicId: 'hiddenTreasure',    subTopics: null },
+      { house: 5,  title: 'ילדים והריון',   desc: 'לידה, הריון, ילדים, שמחה',             defaultTopicId: 'childrenPregnancy', subTopics: null },
+      { house: 6,  title: 'מחלה ובריאות',  desc: 'חולי, מצב רפואי, החלמה',               defaultTopicId: 'illness',           subTopics: [
+        { topicId: 'illness',              label: 'מחלה / בריאות' },
+        { topicId: 'spiritualDiagnostics', label: 'עין הרע / כישוף / ג׳ין' },
+      ]},
+      { house: 7,  title: 'הנשאל עליו',     desc: 'בן/בת זוג, שותף, יריב, גנב, נעדר',     defaultTopicId: 'marriage',          subTopics: [
+        { topicId: 'marriage',             label: 'נישואין / זוגיות' },
+        { topicId: 'disputes',             label: 'תביעה / סכסוך' },
+        { topicId: 'theft',                label: 'גנבה' },
+        { topicId: 'missingPerson',        label: 'נעדר' },
+        { topicId: 'partnership',          label: 'שותפות' },
+        { topicId: 'enemies',              label: 'אויב' },
+      ]},
+      { house: 8,  title: 'מוות וירושה',    desc: 'מוות, ירושה, פחד גדול, שינוי עמוק',   defaultTopicId: 'deathInheritance',  subTopics: null },
+      { house: 9,  title: 'נסיעה ומסע',     desc: 'יציאה, נסיעה, ים, דת, רוחניות',        defaultTopicId: 'travel',            subTopics: [
+        { topicId: 'travel',               label: 'נסיעה / יציאה' },
+        { topicId: 'seaVoyage',            label: 'מסע ים' },
+      ]},
+      { house: 10, title: 'עבודה ומעמד',    desc: 'קריירה, שלטון, בעלי סמכות',            defaultTopicId: 'authorityState',    subTopics: [
+        { topicId: 'authorityState',       label: 'תפקיד / שלטון / קריירה' },
+        { topicId: 'yearlyForecast',       label: 'תחזית שנתית' },
+      ]},
+      { house: 11, title: 'חברים ואהבה',    desc: 'חברים, קשרים, תקוות, אהבה',            defaultTopicId: 'loveHate',          subTopics: null },
+      { house: 12, title: 'אויבים וכלא',    desc: 'אויבים נסתרים, מאסר, סכנה',            defaultTopicId: 'enemies',           subTopics: [
+        { topicId: 'enemies',              label: 'אויבים נסתרים' },
+        { topicId: 'prisoner',             label: 'מאסר / כלא' },
+        { topicId: 'fear',                 label: 'פחד / סכנה' },
+      ]},
     ];
 
     // מיפוי מילות מפתח לנושא מדויק לפי בית — כל בית יכול להכיל כמה תת-נושאים
@@ -1299,6 +1380,18 @@
       if (!grid) return;
       const spiritualActive = forcedTopicId === 'spiritualDiagnostics';
       const generalActive  = forcedTopicId === 'generalReading';
+
+      // תת-נושאים לבית שנבחר (אם יש)
+      const selectedCard = (!forcedTopicId && selectedHouseNum)
+        ? TOPIC_CARDS.find(c => c.house === selectedHouseNum) : null;
+      const subTopicsHtml = (selectedCard?.subTopics?.length)
+        ? `<div class="subtopic-row">` +
+          selectedCard.subTopics.map(st =>
+            `<button type="button" class="subtopic-btn${selectedTopicId === st.topicId ? ' selected' : ''}" data-topic="${st.topicId}">${st.label}</button>`
+          ).join('') +
+          `</div>`
+        : '';
+
       grid.innerHTML = `
         <button type="button" class="topic-general-btn${generalActive ? ' selected' : ''}" id="generalReadingBtn">
           <span>🔮</span>
@@ -1316,7 +1409,7 @@
           <div class="topic-card-title">${c.title}</div>
           <div class="topic-card-desc">${c.desc}</div>
         </button>
-      `).join("") + `
+      `).join("") + subTopicsHtml + `
         <button type="button" class="topic-free-btn ${(!forcedTopicId && selectedHouseNum === 0) ? 'selected' : ''}" data-house="0">
           שאלה חופשית — האפליקציה תזהה את הנושא לבד
         </button>`;
@@ -1324,19 +1417,31 @@
       document.getElementById("generalReadingBtn").addEventListener("click", () => {
         forcedTopicId = generalActive ? null : 'generalReading';
         selectedHouseNum = null;
+        selectedTopicId = null;
         renderTopicGrid();
       });
 
       document.getElementById("spiritualDxBtn").addEventListener("click", () => {
         forcedTopicId = spiritualActive ? null : 'spiritualDiagnostics';
         selectedHouseNum = null;
+        selectedTopicId = null;
         renderTopicGrid();
       });
 
       grid.querySelectorAll("[data-house]").forEach(btn => {
         btn.addEventListener("click", () => {
           forcedTopicId = null;
+          selectedTopicId = null;  // איפוס תת-נושא בעת בחירת בית חדש
           selectedHouseNum = Number(btn.dataset.house);
+          renderTopicGrid();
+        });
+      });
+
+      grid.querySelectorAll(".subtopic-btn").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const tid = btn.dataset.topic;
+          selectedTopicId = (selectedTopicId === tid) ? null : tid;
           renderTopicGrid();
         });
       });
@@ -1445,6 +1550,7 @@
         phone: document.getElementById("clientPhoneInput").value.trim(),
         questionDate: document.getElementById("questionDateInput").value.trim(),
         questionTime: document.getElementById("questionTimeInput").value.trim(),
+        quesitedName: (document.getElementById("quesitedNameInput")?.value || "").trim(),
         consultationContext: "",
         topicOverride: resolvedTopicId || "",
         selectedHouse: selectedHouseNum || null,
@@ -1804,8 +1910,10 @@
           throw new Error("מנוע גורל החול לא נטען מתוך raml.js.");
         }
 
-        // זהה נושא מדויק לפי הבית שנבחר + תוכן השאלה (forcedTopicId מקבל עדיפות)
-        const resolvedTopicId = forcedTopicId
+        // סדר עדיפות: תת-נושא מפורש > בחירת נושא בכוח > זיהוי אוטומטי לפי שאלה
+        const resolvedTopicId = selectedTopicId
+          ? selectedTopicId
+          : forcedTopicId
           ? forcedTopicId
           : (selectedHouseNum && selectedHouseNum > 0)
             ? detectTopicFromQuestion(selectedHouseNum, question)
@@ -1825,12 +1933,13 @@
     }
 
     function clearForm() {
-      ["clientNameInput","clientParentInput","clientPhoneInput","questionDateInput","questionTimeInput","questionInput"].forEach(id => {
+      ["clientNameInput","clientParentInput","clientPhoneInput","questionDateInput","questionTimeInput","questionInput","quesitedNameInput"].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.value = "";
       });
       selectedHouseNum = null;
       forcedTopicId = null;
+      selectedTopicId = null;
       profileState = { marital: null, work: null, children: null };
       document.querySelectorAll('.profile-btn.selected').forEach(b => b.classList.remove('selected'));
       renderTopicGrid();

@@ -68,8 +68,14 @@ function clientContextParagraph(clientContext = {}, question = '') {
 
   const parts = [];
 
+  const quesited = clean(clientContext.quesitedName);
+
   if (name) {
     parts.push(`הקריאה נעשית עבור ${name}${parent ? `, ${parent}` : ''}.`);
+  }
+
+  if (quesited) {
+    parts.push(`הנשאל עליו: ${quesited}.`);
   }
 
   const profile = formatClientProfile(clientContext);
@@ -1305,6 +1311,20 @@ function buildNarrativeByTopic(result) {
   // ── 0. KASHF-AL-ASRAR VERDICT BLOCK (if available) ──────────────
   const kashfBlock = buildKashfVerdictBlock(kashfVerdict, kashfSupportAnalysis);
   if (kashfBlock) push(kashfBlock);
+
+  // ── 0.5. CONFIDENCE TONE MODIFIER ───────────────────────────────
+  // רמת הביטחון מ-kashfSupportAnalysis צובעת את טון הנרטיב שמופיע אחרי
+  const confidenceLevel = kashfSupportAnalysis?.confidence?.level;
+  if (confidenceLevel === 'mixed') {
+    push('⚠ יש כוחות מנוגדים בלוח — הפסיקה הראשית נכונה אך לא בוודאות מלאה. יש לקרוא את הפרטים לפני הכרעה.');
+  } else if (confidenceLevel === 'weak') {
+    push('⚠ הפסיקה הראשית מוחלשת — רוב הכוחות (עדים / דיין) סותרים אותה. יש לנהוג בזהירות ולא לפסוק בוודאות מלאה.');
+  } else if (confidenceLevel === 'neutral') {
+    push('הכוחות בלוח בלתי-מוכרעים — אין עדיפות ברורה לכיוון מסוים. המסקנה דורשת בדיקה נוספת.');
+  } else if (confidenceLevel === 'moderate') {
+    push('יש תמיכה חלקית בפסיקה — הכיוון נכון אך לא כל הכוחות מסכימים. מומלץ לבדוק עוד.');
+  }
+  // very-strong / strong / null — ממשיכים ללא הערה
 
   const hFig     = (h) => clean(h?.figureHebrew || '');
   const hFort    = (h) => clean(h?.fortune || '');
