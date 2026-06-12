@@ -798,7 +798,7 @@ const FIGURE_EXTRA = {
   '2222': { fortune: 'ממוזג',     fClass: 'mixed', movement: 'קבועה',  letters: ['מ'] },
 };
 const DIR_CLASS = { 'צפון': 'north', 'דרום': 'south', 'מזרח': 'east', 'מערב': 'west' };
-const ELEMENT_CLASS = { 'אש': 'fire', 'מים': 'water', 'אוויר': 'air', 'עפר': 'earth' };
+const ELEMENT_CLASS = { 'אש': 'fire', 'מים': 'water', 'רוח': 'air', 'עפר': 'earth' };
 
 let guideRendered = false;
 function renderGuide() {
@@ -842,7 +842,8 @@ function renderFiguresGuide() {
       <strong>נכנסת</strong> (داخلة) = משפיעה כלפי פנים &nbsp;|&nbsp;
       <strong>קבועה</strong> (ثابتة) = יציבה &nbsp;|&nbsp;
       <strong>מתהפכת</strong> (منقلبة) = שני פנים<br>
-      <strong>כיוון:</strong> 🔵 צפון · 🟠 דרום · 🟢 מזרח · 🟣 מערב
+      <strong>יסוד:</strong> 🔴 אש · 💧 מים · 🌬 רוח · 🟤 עפר
+      &nbsp;|&nbsp; <strong>כיוון:</strong> 🔵 צפון · 🟠 דרום · 🟢 מזרח · 🟣 מערב
       &nbsp;|&nbsp; <strong>כוכב</strong> = הגורם השמימי השולט
     </div>`;
 }
