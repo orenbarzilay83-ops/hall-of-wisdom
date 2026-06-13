@@ -61,8 +61,10 @@ function excerptTranslation(text, maxLength = 500) {
     .replace(/#{1,6}\s*/g, '')
     .replace(/\*\*/g, '')
     .replace(/\*/g, '')
-    .replace(/\|[^\n]*\|/g, '')  // הסרת טבלאות
-    .replace(/^[-–—]\s*/gm, '• ')
+    .replace(/\|[^\n]*\|/g, '')      // הסרת טבלאות
+    .replace(/^---+\s*$/gm, '')      // הסרת קווי הפרדה
+    .replace(/^[-–—]{2,}\s*$/gm, '') // הסרת קווים כפולים
+    .replace(/^-\s+/gm, '• ')        // רשימות סימן מינוס → נקודה
     .replace(/\n{3,}/g, '\n\n')
     .trim();
   return cleaned.length <= maxLength
