@@ -1536,6 +1536,18 @@ function buildNarrativeByTopic(result) {
     push('בדיקות חאוי לנושא:\n' + ruleLines.join('\n'));
   }
 
+  // ── 10. ניתוח ספציפי לפי כשף — תפקידי בתים (Task 11) ─────────────
+  const roles = boardAnalysis.specificRolesHebrew || [];
+  if (roles.length) {
+    push('ניתוח בתים לפי כשף אל-אסראר:\n' + roles.join('\n'));
+  }
+
+  // ── 11. תובנה מספר הכשף שער שישי (Task 10) ──────────────────────
+  const kbi = boardAnalysis.kashfBookInsight;
+  if (kbi?.firstExcerpt) {
+    push(`מקור — ${kbi.sourceRef}:\n${kbi.firstExcerpt}`);
+  }
+
   return paras.length ? paras.join('\n\n') : null;
 }
 

@@ -31,6 +31,7 @@ import {
 
 import { getKashfVerdict }         from './kashf-verdict-engine.js';
 import { getKashfSupportAnalysis } from './kashf-support-analyzer.js';
+import { getKashfBookInsight }     from './kashf-book-reader.js';
 
 import {
   HAWI_FIGURE_NAMES_BY_ID,
@@ -170,6 +171,26 @@ const TOPIC_QUESITED_HOUSE = {
   theft:                7,  // בית הגנב (הצד השני)
   siblings:             3,  // בית האחים / השכנים
   deathInheritance:     8,  // בית המוות / הירושה
+};
+
+// ── תפקידים ספציפיים של בתים לפי נושא (כשף אל-אסראר שער שישי) ──────────────
+// מקור: כשף אל-אסראר, שער שישי + פסקה כוללת עמ' 166
+const TOPIC_HOUSE_ROLES = {
+  illness:          { 6: 'טבע המחלה', 2: 'הרפואה / הדרך לריפוי', 8: 'פרוגנוזה: מוות או החלמה' },
+  marriage:         { 7: 'בן/בת הזוג', 13: 'עד — מצב השואל', 14: 'עד — מצב הזוג' },
+  travel:           { 9: 'מצב הנסיעה', 4: 'היעד / הסיום', 12: 'מכשולים / סכנות בדרך' },
+  missingPerson:    { 1: 'מצב הנעדר', 4: 'מיקום הנעדר', 12: 'מה מונע את חזרתו' },
+  theft:            { 2: 'החפץ הגנוב', 12: 'הגנב / מי גנב', 4: 'מיקום החפץ' },
+  authorityState:   { 10: 'השלטון / התפקיד', 1: 'השואל ביחס לשלטון', 11: 'הסיכויים / תקוות' },
+  commerce:         { 2: 'הממון / הסחורה', 7: 'הצד השני (קונה/מוכר)', 10: 'הרווח / מוניטין' },
+  prisoner:         { 1: 'מצב האסיר', 5: 'סיכוי שחרור', 12: 'הכלא / מה מחזיק אותו' },
+  childrenPregnancy:{ 5: 'הילד / ההריון', 4: 'מצב האב/הבית', 11: 'תקוות / אם יתממש' },
+  hiddenTreasure:   { 4: 'מיקום המטמון (קרקע)', 2: 'שווי המטמון', 12: 'מה מסתיר / מה מונע' },
+  enemies:          { 7: 'האויב / מצבו', 12: 'מה שמסתיר האויב', 9: 'תנועת האויב / כוונותיו' },
+  disputes:         { 7: 'היריב', 1: 'השואל בסכסוך', 15: 'ההכרעה הסופית' },
+  deathInheritance: { 8: 'המוות / הסכנה', 2: 'הירושה / הממון', 1: 'מצב השואל' },
+  seaVoyage:        { 9: 'הנסיעה', 8: 'סכנת ים / מוות', 12: 'מכשולים בדרך' },
+  fear:             { 12: 'מקור הפחד / הסכנה', 1: 'מצב השואל', 4: 'מה יקרה' },
 };
 
 const MALEFIC_FIGURE_PATTERNS = new Set([
@@ -2769,6 +2790,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
         seekerStatus: figureFull?.seekerStatus || null,
         zodiacHebrew: figureFull?.zodiacHebrew || null,
         ichchhaHebrew: figureFull?.ichchhaHebrew || null,
+        topicRole: (TOPIC_HOUSE_ROLES[topicId] || {})[Number(house.house)] || null,
       };
     });
 
@@ -2895,6 +2917,20 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     ? board.chart.find((h) => h.key === h1Seventh && Number(h.house) !== 1)
     : null;
 
+  // Task 10: תובנה מספר כשף אל-אסראר שער שישי (מחובר לנושא)
+  const kashfBookInsight = getKashfBookInsight(topicId);
+
+  // Task 11: תפקידים ספציפיים של בתים לפי נושא (מהכשף)
+  const houseRoles = TOPIC_HOUSE_ROLES[topicId] || {};
+  const specificRolesHebrew = Object.entries(houseRoles).map(([hNum, role]) => {
+    const h = houses.find((x) => Number(x.house) === Number(hNum));
+    if (!h) return null;
+    const fig = h.figureHebrew || h.figureKey || '';
+    const fort = h.fortune || '';
+    const transit = h.transit?.meaning || '';
+    return `${role}: ${fig}${fort ? ` (${fort})` : ''}${transit ? ` — ${transit}` : ''}`;
+  }).filter(Boolean);
+
   return {
     hasBoard: true,
     focusHouseNumber,
@@ -2941,6 +2977,8 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     seventhOfHouse1: seventhOfHouse1Found
       ? { pattern: h1Seventh, foundInHouse: Number(seventhOfHouse1Found.house), figureHebrew: seventhOfHouse1Found.hebrew || h1Seventh }
       : null,
+    kashfBookInsight,
+    specificRolesHebrew,
   };
 }
 
