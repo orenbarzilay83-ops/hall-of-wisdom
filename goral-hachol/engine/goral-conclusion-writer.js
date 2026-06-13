@@ -2276,7 +2276,24 @@ export function writeClientReadingHebrew(result) {
     push('הפסיקה נכונה בכללה, אך הדרך לא תהיה ישירה — יש כוחות שיעכבו או יסבכו.');
   }
 
-  // ── 4. נרטיב לפי נושא ──────────────────────────────────────────
+  // ── 4. פולריות הפסיקה (משמשת גם בנרטיב וגם בסיום) ──────────────
+  // Text-based + dakhalKharij give the most reliable per-topic polarity.
+  // saadNahs reflects the figure's intrinsic nature, NOT whether the topic answer is positive.
+  // dakhalKharij: kharij = matter will materialise (positive answer to question)
+  //               dakhil / mujassad-dakhil = matter will not materialise (negative answer)
+  const _vT  = kashfVerdict?.verdictHebrew || '';
+  const _negW = ['לא יימצא','לא יצא','לא יתממש','לא יבריא','עצור','ישאר','לרעת',
+                 'לא נוח','לא בשל','לפגיעה'];
+  const _posW = ['יתממש','יימצא','חי ויחזור','ובשעה טובה','להבראה','להימצא'];
+  const _vNeg = _negW.some(w => _vT.includes(w));
+  const _vPos = _posW.some(w => _vT.includes(w)) && !_vNeg;
+  const dkh   = kashfVerdict?.classification?.dakhalKharij;
+  const isPositive = _vPos || dkh === 'kharij'
+    || (!_vPos && !_vNeg && !dkh && (grade === 'positive' || grade === 'cautiously-positive'));
+  const isNegative = _vNeg || dkh === 'dakhil' || dkh === 'mujassad-dakhil'
+    || (!_vPos && !_vNeg && !dkh && (grade === 'negative' || grade === 'cautiously-negative'));
+
+  // ── 5. נרטיב לפי נושא ──────────────────────────────────────────
 
   switch (topicId) {
 
@@ -2307,7 +2324,8 @@ export function writeClientReadingHebrew(result) {
     case 'theft': {
       const isIncoming = h7?.directionHebrew === 'נכנס';
       const isOutgoing  = h7?.directionHebrew === 'יוצא';
-      if (jTone > 0) {
+      // Use verdict polarity (isPositive/isNegative) as primary; jTone as tiebreaker
+      if (isPositive || (!isNegative && jTone > 0)) {
         push(isIncoming
           ? 'הגנב עדיין בסביבתך ולא ברח רחוק — יש סיכוי ממשי לאיתור.'
           : isOutgoing
@@ -2366,11 +2384,14 @@ export function writeClientReadingHebrew(result) {
 
     case 'missingPerson': {
       const isAlive = missingPerson?.isAlive;
+      // כאשר הכשף כבר אמר שהנעדר חי ויחזור (kharij) — לא מוסיפים משפט מצב שסותר
+      const dkhMissing = kashfVerdict?.classification?.dakhalKharij;
       if (isAlive === true)  push('הלוח מצביע על כך שהנעדר בחיים ובריא.');
       else if (isAlive === false) push('⚠ הלוח מצביע על סכנה לחיי הנעדר — מומלץ לפעול בדחיפות.');
-      else if (h1) {
-        const h1Fort = fortToWord(h1?.fortune);
-        push(h1Fort === 'טוב'
+      else if (dkhMissing !== 'kharij' && h7) {
+        // h7 = הנעדר עצמו (לא h1 שהוא השואל)
+        const h7Fort = fortToWord(h7?.fortune);
+        push(h7Fort === 'טוב'
           ? 'הלוח מצביע על כך שהנעדר בסדר.'
           : 'הלוח מצביע על כך שהנעדר במצב קשה.');
       }
@@ -2391,9 +2412,11 @@ export function writeClientReadingHebrew(result) {
     case 'travel': {
       if (h9) {
         const h9Fort = fortToWord(h9?.fortune);
-        push(h9Fort === 'טוב'
+        // Kashf verdict polarity takes priority over h9 fortune alone
+        const travelPos = isPositive || (!isNegative && h9Fort === 'טוב');
+        push(travelPos
           ? 'הלוח מראה שהנסיעה מובילה לכיוון טוב — יש פתיחה ברורה.'
-          : h9Fort === 'קשה'
+          : (h9Fort === 'קשה' || isNegative)
           ? 'הלוח מראה מכשולים בנסיעה — כדאי לשקול מחדש את העיתוי.'
           : 'הלוח מעורב לגבי הנסיעה — לא כל הדרכים פתוחות.');
       }
@@ -2448,8 +2471,10 @@ export function writeClientReadingHebrew(result) {
       push(h12Fort === 'קשה'
         ? 'הלוח מראה שמצב הכלא כבד — הנסיבות לא קלות לשחרור.'
         : 'הלוח מראה שהמאסר אינו בעוצמה מלאה.');
-      push(h5Fort === 'טוב'
+      push(h5Fort === 'טוב' && !isNegative
         ? 'יש סיכוי טוב לשחרור — הסימנים תומכים ביציאה.'
+        : h5Fort === 'טוב' && isNegative
+        ? 'יש כמה סימנים חיוביים, אך הלוח מצביע על עיכוב בשחרור.'
         : h5Fort === 'קשה'
         ? 'הסיכוי לשחרור מהיר קטן — ייתכן שייקח זמן.'
         : 'שחרור אפשרי, אך לא ודאי.');
@@ -2457,8 +2482,8 @@ export function writeClientReadingHebrew(result) {
       if (nlPrisoner?.letters?.length > 0) {
         push(`הגורם שמחזיק אותו בכלא — שמו מתחיל ב: ${nlPrisoner.letters.join(' / ')}.`);
       }
-      if (jTone > 0) push('הדיין פוסק לחיוב — השחרור יבוא.');
-      else if (jTone < 0) push('הדיין מצביע על כך שהשחרור יתעכב.');
+      if (!isNegative && jTone > 0) push('הדיין פוסק לחיוב — השחרור יבוא.');
+      else if (jTone < 0 || isNegative) push('הדיין מצביע על כך שהשחרור יתעכב.');
       break;
     }
 
@@ -2533,8 +2558,8 @@ export function writeClientReadingHebrew(result) {
         : h1Fort === 'קשה' && h7Fort === 'טוב'
         ? 'הלוח מציג את הצד השני בעמדה חזקה — כדאי לשקול פשרה.'
         : 'הלוח מראה שהסכסוך מאוזן — התוצאה תלויה בהתפתחויות.');
-      if (jTone > 0) push('הדיין פוסק לטובתך — יש יתרון ברור.');
-      else if (jTone < 0) push('הדיין לא פוסק לטובתך — שקול מחדש את הגישה.');
+      if (!isNegative && jTone > 0) push('הדיין פוסק לטובתך — יש יתרון ברור.');
+      else if (jTone < 0 || isNegative) push('הדיין לא פוסק לטובתך — שקול מחדש את הגישה.');
       break;
     }
 
@@ -2597,7 +2622,8 @@ export function writeClientReadingHebrew(result) {
 
     case 'spiritualDiagnostics': {
       const grad = result.boardScore?.grade;
-      push(grad === 'strong-suspicion' || grad === 'medium-suspicion'
+      const spiritFound = grad === 'strong-suspicion' || grad === 'medium-suspicion' || isNegative;
+      push(spiritFound
         ? 'הלוח מראה סימנים לפגיעה רוחנית — מומלץ לטפל בכך.'
         : 'הלוח לא מראה סימנים חזקים לפגיעה רוחנית.');
       break;
@@ -2616,12 +2642,9 @@ export function writeClientReadingHebrew(result) {
     case 'birthNativity':
     case 'completion':
     case 'partnership': {
-      if (h1) {
-        const h1Fort = fortToWord(h1?.fortune);
-        push(askerOpeningLine(h1?.fortune, ''));
-      }
-      if (jTone > 0) push('הדיין פוסק לחיוב — הכיוון הכללי תומך.');
-      else if (jTone < 0) push('הדיין פוסק לשלילה — כדאי לחכות לזמן טוב יותר.');
+      if (h1) push(askerOpeningLine(h1?.fortune, ''));
+      if (!isNegative && jTone > 0) push('הדיין פוסק לחיוב — הכיוון הכללי תומך.');
+      else if (!isPositive && jTone < 0) push('הדיין פוסק לשלילה — כדאי לחכות לזמן טוב יותר.');
       else push('הדיין ממוזג — יש לנהוג בזהירות.');
       break;
     }
@@ -2647,12 +2670,7 @@ export function writeClientReadingHebrew(result) {
   }
 
   // ── 7. סיום נושא-ספציפי ─────────────────────────────────────────
-  // כשיש פסיקת כשף — היא קובעת את הטון, לא ה-grade של המנוע
-  const kashfPolarity = kashfVerdict?.classification?.saadNahs;
-  const isPositive = kashfPolarity === 'saad'
-    || (!kashfPolarity && (grade === 'positive' || grade === 'cautiously-positive'));
-  const isNegative = kashfPolarity === 'nahs'
-    || (!kashfPolarity && (grade === 'negative' || grade === 'cautiously-negative'));
+  // isPositive / isNegative computed above (before the topic switch) are used here too.
 
   const closingByTopic = {
     marriage:           isPositive ? 'בסיכום: יש בסיס לקחת צעד קדימה עם שמירה על עיניים פקוחות.'
@@ -2688,6 +2706,10 @@ export function writeClientReadingHebrew(result) {
                                    : 'בסיכום: שנה מאתגרת בפתח — תכנן, חסוך, והיה שמרן.',
     fear:               isPositive ? 'בסיכום: הלוח מראה שהסכנה תחלוף — היה ערני אך לא משותק.'
                                    : 'בסיכום: יש לטפל במקור הפחד ברצינות — אל תתעלם.',
+    spiritualDiagnostics: isNegative ? 'בסיכום: מומלץ לטפל בנושא ברצינות — פנה לאיש רוחני מנוסה.'
+                                     : 'בסיכום: הלוח לא מצביע על פגיעה ממשית — ניתן להמשיך בשקט.',
+    partnership:        isPositive ? 'בסיכום: יש בסיס לשותפות — המשך לבחון את התנאים לפני חתימה.'
+                                   : 'בסיכום: כדאי לחכות לזמן מתאים יותר לפני קבלת ההחלטה.',
   };
 
   const closingLine = closingByTopic[topicId]
