@@ -56,6 +56,12 @@ function computeDhamirDiagonal(board) {
   };
 }
 
+// ─── עזר: ספירת נקודות צורה (חפיף=1, ת'קיל=2) ───────────────────────────────
+function countDots(pattern) {
+  if (!pattern) return 0;
+  return pattern.split('').reduce((sum, ch) => sum + (ch === '2' ? 2 : 1), 0);
+}
+
 // ─── דמיר שיטה 2: תסיירת המיזאן ─────────────────────────────────────────────
 // מהדיין (ב15) — לכל שורה שהיא '1' בצורת הדיין
 // עוקב אחורה בעץ ההורים עד לאמא/בת (ב1–ב8)
@@ -88,6 +94,85 @@ function computeDhamirMizan(board) {
     };
   }
   return null;
+}
+
+// ─── דמיר שיטה 3: חרכת הערד (תנועת-הרוחב) ───────────────────────────────────
+// מקור: כשף אל-אסראר עמוד 152 — פנים שני
+// "קח את מספר היסודות שבמיזאן, הלך בהם מן-15 אל-1, וכן הלאה עד שתעמוד"
+// כלומר: סכום נקודות בית 15 = N, ספירה אחורה N צעדים החל מ-15
+function computeDhamirHarkatAlArd(board) {
+  const judgePattern = getPattern(board, 15);
+  if (!judgePattern) return null;
+  const n = countDots(judgePattern);
+  if (!n) return null;
+  let pos = 15;
+  for (let i = 0; i < n; i++) {
+    pos = pos === 1 ? 16 : pos - 1;
+  }
+  const entry = getHouseEntry(board, pos);
+  if (!entry) return null;
+  return {
+    method:      'harkat-al-ard',
+    methodHebrew:'חרכת הערד (תנועת-הרוחב)',
+    pattern:     entry.pattern,
+    houseNumber: pos,
+    nameHebrew:  entry.hebrewName || entry.pattern,
+    dotCount:    n,
+    sourceRef:   'כשף אל-אסראר עמוד 152 — פנים שני: ספירת נקודות המיזאן, הליכה מ-15 לאחור',
+  };
+}
+
+// ─── דמיר שיטה 4: ג'והריין ───────────────────────────────────────────────────
+// מקור: כשף אל-אסראר עמוד 153 — פנים רביעי
+// "ספור חפיף+ת'קיל ב-15 בתים (לא 16), צרף הכל, השלך 12 פעמים, ספור מהראשון"
+// כלומר: סכום כל הנקודות מ-H1 עד H15, חלוקת שארית ב-12, הבית המתאים = דמיר
+function computeDhamirJawharayn(board) {
+  let total = 0;
+  for (let i = 1; i <= 15; i++) {
+    const p = getPattern(board, i);
+    if (p) total += countDots(p);
+  }
+  if (!total) return null;
+  let pos = total % 12;
+  if (pos === 0) pos = 12;
+  const entry = getHouseEntry(board, pos);
+  if (!entry) return null;
+  return {
+    method:      'jawharayn',
+    methodHebrew:'שיטת הג׳והריין (שני הרכיבים)',
+    pattern:     entry.pattern,
+    houseNumber: pos,
+    nameHebrew:  entry.hebrewName || entry.pattern,
+    totalDots:   total,
+    sourceRef:   'כשף אל-אסראר עמוד 153 — פנים רביעי: ספירת נקודות ב-15 בתים ÷ 12, ספירה מ-1',
+  };
+}
+
+// ─── בחירת דמיר לפי הרוב ─────────────────────────────────────────────────────
+// מקור: כשף אל-אסראר עמוד 155 — "תאסוף ותכריע לפי הרוב"
+function pickDhamirByMajority(candidates) {
+  const valid = candidates.filter(Boolean);
+  if (!valid.length) return null;
+  const counts = {};
+  for (const d of valid) {
+    const h = d.houseNumber;
+    if (!counts[h]) counts[h] = [];
+    counts[h].push(d);
+  }
+  let best = null;
+  let bestCount = 0;
+  for (const methods of Object.values(counts)) {
+    if (methods.length > bestCount) {
+      bestCount = methods.length;
+      // עדיפות: מיזאן > חרכת-ערד > אלכסון > ג'והריין
+      best = methods.find((d) => d.method === 'mizan')
+          || methods.find((d) => d.method === 'harkat-al-ard')
+          || methods.find((d) => d.method === 'diagonal')
+          || methods[0];
+      best = { ...best, agreementCount: methods.length, methodsAgreed: methods.map((m) => m.methodHebrew) };
+    }
+  }
+  return best;
 }
 
 // ─── ניתוח בית יחיד ──────────────────────────────────────────────────────────
@@ -177,7 +262,10 @@ function buildSupportSummary(primaryVerdict, w13, w14, judge, sentence, dhamir, 
     const dk  = classifyFigure(dhamir.pattern);
     const dhFortune = dk.saadNahs === 'saad' ? 'סעד' : dk.saadNahs === 'nahs' ? 'נחס' : 'ממוזג';
     const dhAgrees  = agreesWithVerdict(dk, primaryVerdict?.classification?.dakhalKharij);
-    lines.push(`**גורם נסתר (דמיר — ב${dhamir.houseNumber} — ${dhamir.nameHebrew}):** ${dhFortune} — ${agreementHebrew(dhAgrees)}`);
+    const agreedBy  = dhamir.methodsAgreed?.length > 1
+      ? ` [${dhamir.agreementCount} שיטות מסכימות: ${dhamir.methodsAgreed.join(', ')}]`
+      : ` [שיטה: ${dhamir.methodHebrew}]`;
+    lines.push(`**גורם נסתר (דמיר — ב${dhamir.houseNumber} — ${dhamir.nameHebrew}):** ${dhFortune} — ${agreementHebrew(dhAgrees)}${agreedBy}`);
   }
 
   return lines.join('\n');
@@ -201,8 +289,14 @@ export function getKashfSupportAnalysis(board, kashfVerdict) {
   const judge     = analyzeHouse(board, 15, 'דיין — ההכרעה הסופית');
   const sentence  = analyzeHouse(board, 16, 'עאקבה — התוצאה הסופית');
 
-  // דמיר: מיזאן קודם, אלכסון כגיבוי
-  const dhamir = computeDhamirMizan(board) || computeDhamirDiagonal(board);
+  // דמיר: 4 שיטות לפי כשף אל-אסראר עמ' 151-155 → הכרעה לפי הרוב
+  const dhamirCandidates = [
+    computeDhamirMizan(board),
+    computeDhamirHarkatAlArd(board),
+    computeDhamirDiagonal(board),
+    computeDhamirJawharayn(board),
+  ];
+  const dhamir = pickDhamirByMajority(dhamirCandidates);
   const dhaminClassification = dhamir ? classifyFigure(dhamir.pattern) : null;
 
   const confidence = computeConfidence(verdictDK, witness13, witness14, judge);
@@ -224,7 +318,7 @@ export function getKashfSupportAnalysis(board, kashfVerdict) {
     judge,
     sentence,
 
-    // דמיר
+    // דמיר — הכרעה מ-4 שיטות (כשף אל-אסראר עמ' 151-155)
     dhamir: dhamir
       ? {
           ...dhamir,
@@ -232,6 +326,13 @@ export function getKashfSupportAnalysis(board, kashfVerdict) {
           agreesWithVerdict: agreesWithVerdict(dhaminClassification, verdictDK),
         }
       : null,
+    dhamirAllMethods: dhamirCandidates.filter(Boolean).map((d) => ({
+      method:      d.method,
+      methodHebrew:d.methodHebrew,
+      houseNumber: d.houseNumber,
+      nameHebrew:  d.nameHebrew,
+      pattern:     d.pattern,
+    })),
 
     // הכרעה
     confidence,
