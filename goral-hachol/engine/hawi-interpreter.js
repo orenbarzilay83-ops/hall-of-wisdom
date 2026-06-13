@@ -2629,6 +2629,64 @@ function computeFoundationsDisplay() {
   };
 }
 
+// ── עדות ספציפית של בתים 13–14 (Task 6) ─────────────────────────────────────
+// מקור: כשף אל-אסראר — בית 13 מעיד על בית 1 ו-9; בית 14 מעיד על בית 5, 6 ו-11
+const WITNESS_13_HOUSES = [1, 9];
+const WITNESS_14_HOUSES = [5, 6, 11];
+
+const HOUSE_TOPIC_LABELS = {
+  1:  'השואל',
+  5:  'ילדים',
+  6:  'מחלה / משרתים',
+  9:  'מזל / נסיעה / דת',
+  11: 'חברים / תקוות',
+};
+
+function describeWitnessEffect(witnessHouse, targetHouseNumbers, chartHouses) {
+  if (!witnessHouse) return null;
+  const tone = getFigureFortuneTone(witnessHouse);
+
+  const targetSummaries = targetHouseNumbers.map((n) => {
+    const h = (chartHouses || []).find((ch) => Number(ch.house) === n);
+    const label = HOUSE_TOPIC_LABELS[n] || `בית ${n}`;
+    const figName = h?.hebrew || h?.figureHebrew || '';
+    const figFort = h?.fortune || '';
+    const targetTone = h ? getFigureFortuneTone({ fortune: figFort }) : 0;
+
+    let effect;
+    if (tone > 0 && targetTone > 0) {
+      effect = 'מחזק לטובה';
+    } else if (tone > 0 && targetTone < 0) {
+      effect = 'מנסה להקל — אך הצורה עצמה שלילית';
+    } else if (tone < 0 && targetTone > 0) {
+      effect = 'מחליש — עד שלילי על בית חיובי';
+    } else if (tone < 0 && targetTone < 0) {
+      effect = 'מחזק לרעה';
+    } else {
+      effect = 'ממוזג';
+    }
+    return `בית ${n} (${label}${figName ? ` — ${figName}` : ''}): ${effect}`;
+  });
+
+  const toneWord = tone > 0 ? 'סעד' : tone < 0 ? 'נחס' : 'ממוזג';
+  return {
+    witnessHouseNum: Number(witnessHouse.house),
+    witnessPattern: witnessHouse.key,
+    witnessFortune: toneWord,
+    targetHouses: targetHouseNumbers,
+    targetSummaries,
+    hebrewSummary: targetSummaries.join('; '),
+  };
+}
+
+function computeWitnessTestimony(witness13, witness14, chartHouses) {
+  return {
+    w13: witness13 ? describeWitnessEffect(witness13, WITNESS_13_HOUSES, chartHouses) : null,
+    w14: witness14 ? describeWitnessEffect(witness14, WITNESS_14_HOUSES, chartHouses) : null,
+    sourceRef: 'כשף אל-אסראר — בית 13 מעיד על בית 1 ו-9; בית 14 מעיד על בית 5, 6 ו-11',
+  };
+}
+
 function buildBoardAnalysis(board, topicId, mainHouses) {
   if (!board || !Array.isArray(board.chart)) {
     return {
@@ -2692,6 +2750,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const witness14 = houses.find((h) => Number(h.house) === 14) || null;
   const judge15 = houses.find((h) => Number(h.house) === 15) || null;
   const sentence16 = houses.find((h) => Number(h.house) === 16) || null;
+  const witnessTestimony = computeWitnessTestimony(witness13, witness14, board.chart);
   const dhamirHouse = computeDhamirHouse(board);
   const dhamirByMizan = computeDhamirByMizanTracing(board.chart);
   const boardScore = computeBoardScore(board.chart);
@@ -2816,6 +2875,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     houses,
     focusHouse,
     witnesses: [witness13, witness14].filter(Boolean),
+    witnessTestimony,
     judge: judge15,
     sentence: sentence16,
     dhamirHouse,

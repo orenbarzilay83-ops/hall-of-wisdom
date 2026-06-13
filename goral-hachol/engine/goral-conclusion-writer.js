@@ -1391,6 +1391,14 @@ function buildNarrativeByTopic(result) {
     descW(w13, 'עד ראשון', 13);
     descW(w14, 'עד שני', 14);
 
+    const wt = boardAnalysis.witnessTestimony;
+    if (wt?.w13?.hebrewSummary) {
+      wLines.push(`עדות בית 13 (על בתים 1, 9): ${wt.w13.hebrewSummary}`);
+    }
+    if (wt?.w14?.hebrewSummary) {
+      wLines.push(`עדות בית 14 (על בתים 5, 6, 11): ${wt.w14.hebrewSummary}`);
+    }
+
     const w13t = hTone(w13), w14t = hTone(w14), jt = hTone(judge);
     if (w13 && w14 && jt !== 0) {
       const eitherOpp = (jt > 0 && (w13t < 0 || w14t < 0)) || (jt < 0 && (w13t > 0 || w14t > 0));
