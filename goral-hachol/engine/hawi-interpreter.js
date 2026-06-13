@@ -344,7 +344,7 @@ function computeDirectionQuadrant(chart) {
     return { dir, hebrewDir, houses, incomingBenefic, outgoingMalefic };
   });
   const dominant = summary.reduce((a, b) => (b.incomingBenefic > a.incomingBenefic ? b : a), summary[0]);
-  return { quadrants: summary, dominant };
+  return { quadrants: summary, dominant, dominantHebrew: dominant?.hebrewDir || null };
 }
 
 const DEATH_FIGURE_PATTERNS = new Set(['1112', '1212']); // עתבה יוצאת, קבץ יוצא — "מן הצורות הנחסות ביותר"
@@ -2235,6 +2235,7 @@ function computeTimingEstimate(chart, dhamirHouse, topicId) {
     dhamirFigure: dhamirEntry.hebrew || dhamirEntry.key,
     pattern,
     dotCount,
+    quantity,
     unit,
     tier,
     timingUnits: tierHebrew,
