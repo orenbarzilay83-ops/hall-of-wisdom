@@ -2180,12 +2180,22 @@ function computeJumlaAnalysis(chart, topicId) {
   return result;
 }
 
-const ELEMENT_TIMING_UNITS = {
-  'אש':    { single: 1, label: 'יום / שעה' },
-  'אוויר': { single: 2, label: 'ימיים / שעתיים' },
-  'מים':   { single: 3, label: 'שלושה ימים / שעות' },
-  'עפר':   { single: 4, label: 'ארבעה ימים / שעות' },
-};
+// ── שיטת האדד המלאה (Task 9) ─────────────────────────────────────────────────
+// מקור: כשף אל-אסראר — ספירת נקודות הצורה לחישוב מדויק של זמן
+// כל שורה '1' = נקודה אחת; כל שורה '2' = שתי נקודות
+// אמהות (ב1–4) = ימים | בנות (ב5–8) = שבועות | נכדות (ב9–12) = חודשים | עדים/דיין (ב13–16) = שנים
+function countFigureDots(pattern) {
+  if (!pattern || pattern.length < 4) return 0;
+  return pattern.split('').reduce((sum, ch) => sum + (ch === '2' ? 2 : 1), 0);
+}
+
+function getTimingUnit(houseNumber) {
+  const n = Number(houseNumber);
+  if (n >= 1  && n <= 4)  return { unit: 'ימים',    unitSingle: 'יום',    tier: 'mothers',       tierHebrew: 'אמהות (מהיר — ימים)' };
+  if (n >= 5  && n <= 8)  return { unit: 'שבועות',  unitSingle: 'שבוע',   tier: 'daughters',     tierHebrew: 'בנות (בינוני — שבועות)' };
+  if (n >= 9  && n <= 12) return { unit: 'חודשים',  unitSingle: 'חודש',   tier: 'granddaughters',tierHebrew: 'נכדות (ממושך — חודשים)' };
+  return                         { unit: 'שנים',     unitSingle: 'שנה',    tier: 'witnesses',     tierHebrew: 'עדים/דיין (ארוך — שנים)' };
+}
 
 function computeTimingEstimate(chart, dhamirHouse, topicId) {
   if (!dhamirHouse || !Array.isArray(chart)) return null;
@@ -2194,23 +2204,21 @@ function computeTimingEstimate(chart, dhamirHouse, topicId) {
   const dhamirEntry = chart.find((h) => Number(h.house) === dh);
   if (!dhamirEntry) return null;
 
-  const el = dhamirEntry.element || dhamirEntry.elementHebrew || '';
-  const timing = ELEMENT_TIMING_UNITS[el];
-  if (!timing) return null;
-
-  let scale = '';
-  if (dh >= 1  && dh <= 4)  scale = 'ימים / שעות (אמהות — מהיר)';
-  if (dh >= 5  && dh <= 8)  scale = 'שבועות / ימים (בנות — בינוני)';
-  if (dh >= 9  && dh <= 12) scale = 'חודשים / שבועות (נכדות — ממושך)';
-  if (dh >= 13 && dh <= 16) scale = 'שנים / חודשים (מאזנים — ארוך)';
+  const pattern = dhamirEntry.key || dhamirEntry.pattern || '';
+  const dotCount = countFigureDots(pattern);
+  const { unit, unitSingle, tier, tierHebrew } = getTimingUnit(dh);
+  const quantity = dotCount === 1 ? `${dotCount} ${unitSingle}` : `${dotCount} ${unit}`;
 
   return {
     dhamirHouse: dh,
     dhamirFigure: dhamirEntry.hebrew || dhamirEntry.key,
-    element: el,
-    timingUnits: timing.label,
-    scale,
-    outputHebrew: `עיתוי (מתי יסתיים?): הדמיר בבית ${dh} (${dhamirEntry.hebrew || dhamirEntry.key}) — אלמנט ${el} — ${timing.label}. סקאלה: ${scale}`,
+    pattern,
+    dotCount,
+    unit,
+    tier,
+    timingUnits: tierHebrew,
+    outputHebrew: `עיתוי (האדד): הדמיר בבית ${dh} (${dhamirEntry.hebrew || dhamirEntry.key}, ${dotCount} נקודות) → ${quantity}. סקאלה: ${tierHebrew}`,
+    sourceRef: 'כשף אל-אסראר — שיטת האדד: ספירת נקודות הצורה × עמדת הבית = תזמון',
   };
 }
 const MARRIAGE_BY_DOMINANT_FIGURE = {
