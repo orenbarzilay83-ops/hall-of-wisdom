@@ -1433,6 +1433,25 @@ function buildNarrativeByTopic(result) {
     push(`ספירת יסודות (כן/לא): ${result.elementYesNo.hebrewSummary}`);
   }
 
+  // ── 2.8. FIGURE × HOUSE INTERACTIONS (מזל מחוזק/מוחלש) ─────────
+  {
+    const interactionLines = [];
+    for (const h of (boardAnalysis.houses || [])) {
+      const ix = h.figureHouseInteraction;
+      if (!ix) continue;
+      const num = Number(h.house);
+      if (num >= 13) continue; // witnesses/judge handled separately
+      const fig = hFig(h);
+      if (!fig) continue;
+      if (ix.code !== 'mixed' && ix.code !== 'neutral-good' && ix.code !== 'neutral-bad') {
+        interactionLines.push(`בית ${num} (${fig}): ${ix.hebrewLabel} — ${ix.note}`);
+      }
+    }
+    if (interactionLines.length) {
+      push('שילוב צורה × בית:\n' + interactionLines.join('\n'));
+    }
+  }
+
   // ── 3. H1 — THE QUESTIONER ──────────────────────────────────────
   if (h1) {
     const fig = hFig(h1), fort = hFort(h1), transit = hTransit(h1), speak = speakNote(h1);
