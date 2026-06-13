@@ -14,6 +14,7 @@ import {
 import {
   writeHumanGoralConclusion,
   writeShortClientVerdict,
+  writeClientReadingHebrew,
 } from './goral-conclusion-writer.js';
 
 import {
@@ -3402,6 +3403,18 @@ export function interpretHawiQuestionInitial(question, board = null) {
       kashfVerdict,
       kashfSupportAnalysis,
       clientContext,
+    }),
+
+    // Clean narrative for reading aloud to client — no technical jargon
+    clientReadingHebrew: writeClientReadingHebrew({
+      topicId: route.topicId,
+      boardAnalysis,
+      judgeVerdict,
+      kashfVerdict,
+      kashfSupportAnalysis,
+      clientContext,
+      boardScore,
+      question,
     }),
   };
 }

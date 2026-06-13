@@ -2195,11 +2195,516 @@ export function writeHumanGoralConclusion(result) {
   return paragraphs.join('\n\n');
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// writeClientReadingHebrew — נרטיב נקי ללקוח, ללא מינוח טכני
+// ─────────────────────────────────────────────────────────────────────────────
+
+function fortToWord(fortune) {
+  if (!fortune) return 'מעורב';
+  if (fortune.includes('סעד')) return 'טוב';
+  if (fortune.includes('נחס')) return 'קשה';
+  return 'מעורב';
+}
+
+function essenceOf(h) {
+  if (!h) return '';
+  return FIGURE_ESSENCE[h.figureHebrew] || h.figureHebrew || '';
+}
+
+function firstSentence(text) {
+  if (!text) return '';
+  // Strip Arabic characters so they don't appear in client-facing text
+  const noArabic = text.replace(/[؀-ۿݐ-ݿ]+/g, '').replace(/\s{2,}/g, ' ').trim();
+  return noArabic.split(/[.;\n]/)[0].trim();
+}
+
+function gradeToVerdict(grade) {
+  switch (grade) {
+    case 'positive':             return 'הלוח נוטה לטובה — יש כיוון חיובי ברור.';
+    case 'cautiously-positive':  return 'הלוח נוטה לטובה, אך בזהירות — הדרך אינה פשוטה לגמרי.';
+    case 'negative':             return 'הלוח מצביע על קשיים — הכיוון הכללי שלילי.';
+    case 'cautiously-negative':  return 'הלוח מצביע על עיכובים ואתגרים, אך לא חסום לגמרי.';
+    default:                     return 'הלוח מאוזן — התשובה מעורבת ותלויה בנסיבות.';
+  }
+}
+
+export function writeClientReadingHebrew(result) {
+  const { topicId, boardAnalysis, clientContext, kashfVerdict, kashfSupportAnalysis } = result;
+  if (!boardAnalysis?.hasBoard) return null;
+
+  const name      = clean(clientContext?.clientName || '');
+  const quesited  = clean(clientContext?.quesitedName || '');
+  const grade     = result.boardScore?.grade || 'mixed';
+  const confLevel = kashfSupportAnalysis?.confidence?.level;
+  const timing    = boardAnalysis.timingEstimate;
+  const nameLetters   = boardAnalysis.nameLetters || [];
+  const dirQ          = boardAnalysis.directionQuadrant;
+  const treasureLoc   = boardAnalysis.treasureLocation;
+  const missingPerson = boardAnalysis.missingPersonAnalysis;
+  const thiefLoc      = boardAnalysis.thiefLocationDetails;
+
+  const judge    = boardAnalysis.judge    || getHouseFromBoard(boardAnalysis, 15);
+  const sentence = boardAnalysis.sentence || getHouseFromBoard(boardAnalysis, 16);
+  const h1  = getHouseFromBoard(boardAnalysis, 1);
+  const h2  = getHouseFromBoard(boardAnalysis, 2);
+  const h4  = getHouseFromBoard(boardAnalysis, 4);
+  const h5  = getHouseFromBoard(boardAnalysis, 5);
+  const h6  = getHouseFromBoard(boardAnalysis, 6);
+  const h7  = getHouseFromBoard(boardAnalysis, 7);
+  const h8  = getHouseFromBoard(boardAnalysis, 8);
+  const h9  = getHouseFromBoard(boardAnalysis, 9);
+  const h10 = getHouseFromBoard(boardAnalysis, 10);
+  const h11 = getHouseFromBoard(boardAnalysis, 11);
+  const h12 = getHouseFromBoard(boardAnalysis, 12);
+
+  const jTone = figureFortuneTone(judge?.fortune);
+
+  const paras = [];
+  const push  = (p) => { if (p && clean(p)) paras.push(clean(p)); };
+
+  // ── 1. פתיחה אישית ─────────────────────────────────────────────
+  const prefix = name ? `${name}, ` : '';
+
+  // ── 2. פסיקה ראשית ─────────────────────────────────────────────
+  const mainVerdict = kashfVerdict?.verdictHebrew || gradeToVerdict(grade);
+  push(`${prefix}${mainVerdict}`);
+
+  // ── 3. רמת ביטחון ──────────────────────────────────────────────
+  if (confLevel === 'weak') {
+    push('כדאי לדעת: הכוחות בלוח אינם חד-משמעיים, ולכן הפסיקה אינה בטוחה לחלוטין. מומלץ לחזור ולשאול שנית אחרי מספר ימים.');
+  } else if (confLevel === 'mixed') {
+    push('הפסיקה נכונה בכללה, אך הדרך לא תהיה ישירה — יש כוחות שיעכבו או יסבכו.');
+  }
+
+  // ── 4. נרטיב לפי נושא ──────────────────────────────────────────
+
+  switch (topicId) {
+
+    case 'marriage': {
+      const h7Fort = fortToWord(h7?.fortune);
+      const qName  = quesited || 'הצד השני';
+      if (h7) {
+        const h7Transit = firstSentence(h7.transit?.meaning);
+        push(h7Fort === 'טוב'
+          ? `${qName} מופיע בלוח בסימן טוב${h7Transit ? ` — ${h7Transit}` : ''}.`
+          : h7Fort === 'קשה'
+          ? `${qName} מופיע בלוח בסימן קשה${h7Transit ? ` — ${h7Transit}` : ''} — יש סימנים שמחייבים בחינה נוספת.`
+          : `${qName} מופיע בלוח בסימן מעורב — הלוח אינו חד-משמעי לגביו.`);
+      }
+      // הדיין — רק אם אין kasf verdict שסותר
+      if (!kashfVerdict?.verdictHebrew) {
+        if (jTone > 0) push('הדיין נוטה לחיוב: הזיווג יכול להצליח.');
+        else if (jTone < 0) push('הדיין פוסק לשלילה: הלוח אינו תומך בנישואין אלו בשלב זה.');
+        else push('הדיין ממוזג: התוצאה תלויה בהחלטות ובמאמץ שיושקעו.');
+      }
+      if (h8) {
+        const h8Fort = fortToWord(h8?.fortune);
+        push(`מצב הממון והמשפחה של הצד השני: ${h8Fort === 'טוב' ? 'נראה יציב ומבטיח' : h8Fort === 'קשה' ? 'יש סימנים לקשיים כלכליים' : 'מעורב'}.`);
+      }
+      break;
+    }
+
+    case 'theft': {
+      const isIncoming = h7?.directionHebrew === 'נכנס';
+      const isOutgoing  = h7?.directionHebrew === 'יוצא';
+      if (jTone > 0) {
+        push(isIncoming
+          ? 'הגנב עדיין בסביבתך ולא ברח רחוק — יש סיכוי ממשי לאיתור.'
+          : isOutgoing
+          ? 'הגנב כבר התרחק, אך עדיין יש סיכוי לאיתור אם תפעל במהירות.'
+          : 'יש סיכוי לאיתור הגנב והחפץ הגנוב.');
+      } else {
+        push(isOutgoing
+          ? 'הגנב כבר ברח ולא נמצא בסביבה — הסיכויים להחזרת החפץ נמוכים.'
+          : 'הסיכוי להחזרת החפץ קטן — הלוח לא מראה פתח ברור לאיתור.');
+      }
+      const h7Letters = nameLetters.find(n => n.houseNumber === 7);
+      const h8Letters = nameLetters.find(n => n.houseNumber === 8);
+      if (h7Letters?.letters?.length > 0) {
+        const firstL  = h7Letters.letters.join(' / ');
+        const secondL = h8Letters?.letters?.length > 0 ? `, האות השנייה: ${h8Letters.letters.join(' / ')}` : '';
+        push(`שם הגנב מתחיל ב: ${firstL}${secondL}.`);
+      }
+      if (thiefLoc?.findings?.length > 0) {
+        const types = [...new Set(thiefLoc.findings.map(f => f.thiefType))];
+        const typeText = types[0];
+        if (typeText && !typeText.startsWith('יש ')) {
+          push(`לפי הלוח, הגנב ${typeText}.`);
+        } else if (typeText) {
+          push(`לפי הלוח: ${typeText}.`);
+        }
+      }
+      if (h4) {
+        const h4Ess = essenceOf(h4);
+        push(`החפץ הגנוב נמצא כנראה במקום של ${h4Ess}.`);
+      }
+      break;
+    }
+
+    case 'illness': {
+      if (h6) {
+        const h6Fort = fortToWord(h6?.fortune);
+        const h6Transit = firstSentence(h6.transit?.meaning);
+        push(h6Fort === 'קשה'
+          ? `המחלה בלוח מופיעה בצורה קשה — ${h6Transit || 'יש לה אחיזה חזקה בגוף'}.`
+          : `המחלה מופיעה כ${h6Fort} — ${h6Transit || 'לא בחריפות מלאה'}.`);
+      }
+      if (h8) {
+        const h8Fort = fortToWord(h8?.fortune);
+        push(h8Fort === 'טוב'
+          ? 'הפרוגנוזה חיובית — הלוח מראה כיוון של החלמה.'
+          : h8Fort === 'קשה'
+          ? 'הפרוגנוזה מדאיגה — הלוח מצביע על מצב חמור שדורש תשומת לב רפואית דחופה.'
+          : 'הפרוגנוזה מעורבת — ייתכן שיפור הדרגתי, אך לא החלמה מהירה.');
+      }
+      if (h2) {
+        const h2Fort = fortToWord(h2?.fortune);
+        push(`מבחינת הטיפול והרפואה: ${h2Fort === 'טוב' ? 'יש סיכוי טוב שהטיפול יצליח' : h2Fort === 'קשה' ? 'הטיפול עלול להיות קשה או יקר' : 'הטיפול יידרש סבלנות'}.`);
+      }
+      break;
+    }
+
+    case 'missingPerson': {
+      const isAlive = missingPerson?.isAlive;
+      if (isAlive === true)  push('הלוח מצביע על כך שהנעדר בחיים ובריא.');
+      else if (isAlive === false) push('⚠ הלוח מצביע על סכנה לחיי הנעדר — מומלץ לפעול בדחיפות.');
+      else if (h1) {
+        const h1Fort = fortToWord(h1?.fortune);
+        push(h1Fort === 'טוב'
+          ? 'הלוח מצביע על כך שהנעדר בסדר.'
+          : 'הלוח מצביע על כך שהנעדר במצב קשה.');
+      }
+      if (dirQ?.dominantHebrew && (dirQ.dominant?.incomingBenefic ?? 0) > 0) {
+        push(`הכיוון שכדאי לחפש: ${dirQ.dominantHebrew}.`);
+      } else if (dirQ?.dominantHebrew) {
+        push(`הלוח מצביע על כיוון ${dirQ.dominantHebrew} כמקום שקשור לנעדר.`);
+      }
+      const nlMissing = nameLetters.find(n => n.houseNumber === 7);
+      if (nlMissing?.letters?.length > 0) {
+        push(`שמו מתחיל ב: ${nlMissing.letters.join(' / ')}.`);
+      }
+      if (jTone > 0) push('הדיין מצביע על חזרה — יש סיכוי שהנעדר יחזור.');
+      else if (jTone < 0) push('הדיין מצביע על עיכוב בחזרה — הנסיבות מורכבות.');
+      break;
+    }
+
+    case 'travel': {
+      if (h9) {
+        const h9Fort = fortToWord(h9?.fortune);
+        push(h9Fort === 'טוב'
+          ? 'הלוח מראה שהנסיעה מובילה לכיוון טוב — יש פתיחה ברורה.'
+          : h9Fort === 'קשה'
+          ? 'הלוח מראה מכשולים בנסיעה — כדאי לשקול מחדש את העיתוי.'
+          : 'הלוח מעורב לגבי הנסיעה — לא כל הדרכים פתוחות.');
+      }
+      if (dirQ?.dominantHebrew && (dirQ.dominant?.incomingBenefic ?? 0) > 0) {
+        push(`הכיוון המומלץ לנסיעה: ${dirQ.dominantHebrew}.`);
+      }
+      if (h12) {
+        const h12Fort = fortToWord(h12?.fortune);
+        if (h12Fort === 'קשה') push('יש סימן למכשולים נסתרים בדרך — מומלץ להיות ערני.');
+      }
+      if (!kashfVerdict?.verdictHebrew) {
+        if (jTone > 0) push('הדיין פוסק לחיוב: הנסיעה תצלח בסופו של דבר.');
+        else if (jTone < 0) push('הדיין פוסק לשלילה: הנסיעה עלולה לא להשיג את מטרתה.');
+      }
+      break;
+    }
+
+    case 'seaVoyage': {
+      if (h9) {
+        const h9Fort = fortToWord(h9?.fortune);
+        push(h9Fort === 'טוב'
+          ? 'הלוח מראה שהמסע הימי בטוח ויצלח.'
+          : h9Fort === 'קשה'
+          ? 'הלוח מצביע על סכנה בים — מומלץ לשקול ברצינות את הנסיעה.'
+          : 'הלוח מעורב לגבי בטיחות המסע.');
+      }
+      if (h8) {
+        const h8Fort = fortToWord(h8?.fortune);
+        if (h8Fort === 'קשה') push('⚠ בית המוות/הסכנה מצביע על סיכון ממשי — יש לנקוט אמצעי זהירות.');
+      }
+      if (jTone > 0) push('הדיין: הנסיעה תסתיים בשלום.');
+      else if (jTone < 0) push('הדיין: יש ספק ביחס לבטיחות הנסיעה.');
+      break;
+    }
+
+    case 'hiddenTreasure': {
+      if (treasureLoc?.presenceHebrew) push(treasureLoc.presenceHebrew);
+      else if (jTone > 0) push('הלוח מצביע על כך שיש ממשות לדבר החבוי.');
+      else if (jTone < 0) push('הלוח מצביע על כך שהדבר החבוי חסום או לא קיים.');
+      if (dirQ?.dominantHebrew && (dirQ.dominant?.incomingBenefic ?? 0) > 0) {
+        push(`הכיוון לחיפוש: ${dirQ.dominantHebrew}.`);
+      }
+      if (h4) {
+        push(`הדבר קשור לקרקע מכיוון ${essenceOf(h4)}.`);
+      }
+      break;
+    }
+
+    case 'prisoner': {
+      const h12Fort = fortToWord(h12?.fortune);
+      const h5Fort  = fortToWord(h5?.fortune);
+      push(h12Fort === 'קשה'
+        ? 'הלוח מראה שמצב הכלא כבד — הנסיבות לא קלות לשחרור.'
+        : 'הלוח מראה שהמאסר אינו בעוצמה מלאה.');
+      push(h5Fort === 'טוב'
+        ? 'יש סיכוי טוב לשחרור — הסימנים תומכים ביציאה.'
+        : h5Fort === 'קשה'
+        ? 'הסיכוי לשחרור מהיר קטן — ייתכן שייקח זמן.'
+        : 'שחרור אפשרי, אך לא ודאי.');
+      const nlPrisoner = nameLetters.find(n => n.houseNumber === 12);
+      if (nlPrisoner?.letters?.length > 0) {
+        push(`הגורם שמחזיק אותו בכלא — שמו מתחיל ב: ${nlPrisoner.letters.join(' / ')}.`);
+      }
+      if (jTone > 0) push('הדיין פוסק לחיוב — השחרור יבוא.');
+      else if (jTone < 0) push('הדיין מצביע על כך שהשחרור יתעכב.');
+      break;
+    }
+
+    case 'commerce': {
+      if (h2) {
+        const h2Fort = fortToWord(h2?.fortune);
+        push(h2Fort === 'טוב'
+          ? 'הממון בלוח נראה טוב — הסחורה/ההשקעה נושאת פנים חיוביות.'
+          : h2Fort === 'קשה'
+          ? 'הממון בלוח מצביע על סכנת הפסד — כדאי לבחון מחדש.'
+          : 'הממון מעורב — לא הפסד ולא ריווח ברור.');
+      }
+      if (h10) {
+        const h10Fort = fortToWord(h10?.fortune);
+        push(h10Fort === 'טוב'
+          ? 'תוצאת העסקה נראית חיובית — יש נטייה לרווח ולהצלחה.'
+          : h10Fort === 'קשה'
+          ? 'תוצאת העסקה עלולה להיות מאכזבת — כדאי לנהל משא ומתן זהיר.'
+          : 'תוצאת העסקה לא ברורה — לשמור על גמישות.');
+      }
+      if (jTone > 0) push('הדיין תומך בעסקה — מומלץ להמשיך.');
+      else if (jTone < 0) push('הדיין מתנגד לעסקה — כדאי לחכות או לשנות תנאים.');
+      break;
+    }
+
+    case 'childrenPregnancy': {
+      if (h5) {
+        const h5Fort = fortToWord(h5?.fortune);
+        push(h5Fort === 'טוב'
+          ? 'הלוח מראה פתיחה חיובית בנושא הילדים/ההריון — יש סימן טוב.'
+          : h5Fort === 'קשה'
+          ? 'הלוח מצביע על קשיים בנושא זה — ייתכן שיידרש טיפול רפואי.'
+          : 'הלוח מעורב — יש אפשרות, אך לא ודאות.');
+      }
+      if (h11) {
+        const h11Fort = fortToWord(h11?.fortune);
+        push(h11Fort === 'טוב'
+          ? 'הסיכויים להגשמת התקווה טובים.'
+          : h11Fort === 'קשה'
+          ? 'התקוות מאתגרות — ייתכן שיידרש סבלנות ועמידה.'
+          : 'התקוות אפשריות אך תלויות בגורמים נוספים.');
+      }
+      if (jTone > 0) push('הדיין פוסק לחיוב — יש סיכוי ממשי.');
+      else if (jTone < 0) push('הדיין לא תומך בשלב זה — אולי עוד לא הזמן הנכון.');
+      break;
+    }
+
+    case 'enemies': {
+      const qName = quesited || 'האויב';
+      if (h7) {
+        const h7Fort = fortToWord(h7?.fortune);
+        push(h7Fort === 'קשה'
+          ? `${qName} נמצא בעמדה חלשה — כוחו מוגבל.`
+          : h7Fort === 'טוב'
+          ? `${qName} נמצא בעמדה חזקה — יש לקחת אותו ברצינות.`
+          : `${qName} בעמדה מעורבת.`);
+      }
+      if (h12) {
+        const h12Fort = fortToWord(h12?.fortune);
+        if (h12Fort === 'קשה') push('יש סכנה נסתרת שעדיין לא גלויה — כדאי להיות ערני.');
+      }
+      if (jTone > 0) push('הדיין פוסק לטובתך — אתה בעמדה הטובה יותר.');
+      else if (jTone < 0) push('הדיין מצביע על כך שהאויב מחזיק ביד העליונה כרגע.');
+      break;
+    }
+
+    case 'disputes': {
+      const h1Fort = fortToWord(h1?.fortune);
+      const h7Fort = fortToWord(h7?.fortune);
+      push(h1Fort === 'טוב' && h7Fort === 'קשה'
+        ? 'הלוח מציג אותך בעמדה חזקה יותר מהצד השני — יש לך יתרון בסכסוך.'
+        : h1Fort === 'קשה' && h7Fort === 'טוב'
+        ? 'הלוח מציג את הצד השני בעמדה חזקה — כדאי לשקול פשרה.'
+        : 'הלוח מראה שהסכסוך מאוזן — התוצאה תלויה בהתפתחויות.');
+      if (jTone > 0) push('הדיין פוסק לטובתך — יש יתרון ברור.');
+      else if (jTone < 0) push('הדיין לא פוסק לטובתך — שקול מחדש את הגישה.');
+      break;
+    }
+
+    case 'loveHate': {
+      const qName2 = quesited || 'הצד השני';
+      if (h7) {
+        const h7Fort = fortToWord(h7?.fortune);
+        push(h7Fort === 'טוב'
+          ? `${qName2} מופיע בלוח בסימן חיובי — נראה שיש רגש אמיתי.`
+          : h7Fort === 'קשה'
+          ? `${qName2} מופיע בלוח בסימן קשה — ייתכן שהרגשות לא כנים.`
+          : `${qName2} מופיע בלוח באופן מעורב — הרגשות מורכבים.`);
+      }
+      if (jTone > 0) push('הדיין מצביע על קרבה וחיבה — הקשר יכול להתפתח.');
+      else if (jTone < 0) push('הדיין מצביע על ניתוק — הקשר בעייתי.');
+      break;
+    }
+
+    case 'authorityState': {
+      if (h10) {
+        const h10Fort = fortToWord(h10?.fortune);
+        push(h10Fort === 'טוב'
+          ? 'עמדת השלטון/התפקיד נראית יציבה ומחוזקת.'
+          : h10Fort === 'קשה'
+          ? 'עמדת השלטון/התפקיד מאוימת — יש כוחות שמנסים לערער אותה.'
+          : 'מצב השלטון/התפקיד תלוי בהתפתחויות.');
+      }
+      if (jTone > 0) push('הדיין מצביע על המשך ויציבות.');
+      else if (jTone < 0) push('הדיין מצביע על שינוי — ייתכן שחרור מהתפקיד.');
+      break;
+    }
+
+    case 'yearlyForecast': {
+      if (h1) {
+        const h1Fort = fortToWord(h1?.fortune);
+        push(h1Fort === 'טוב'
+          ? 'השנה הקרובה מתחילה בסימן חיובי עבורך.'
+          : h1Fort === 'קשה'
+          ? 'השנה הקרובה תביא אתגרים — כדאי להתכונן ולתכנן.'
+          : 'השנה הקרובה מעורבת — יהיו עליות וירידות.');
+      }
+      if (h2) {
+        const h2Fort = fortToWord(h2?.fortune);
+        push(`מצב הפרנסה: ${h2Fort === 'טוב' ? 'צפויה שנה טובה מבחינה כלכלית' : h2Fort === 'קשה' ? 'כדאי לשמור על כסף ולא לסכן השקעות' : 'הכנסה לא קבועה — שנה מעורבת כלכלית'}.`);
+      }
+      break;
+    }
+
+    case 'fear': {
+      if (h12) {
+        const h12Fort = fortToWord(h12?.fortune);
+        push(h12Fort === 'קשה'
+          ? 'הלוח מאשר שיש מקור ממשי לחשש — אין להתעלם ממנו.'
+          : 'הלוח מראה שהפחד גדול מהמציאות — הסכנה פחות ממשית ממה שנראית.');
+      }
+      if (jTone > 0) push('הדיין מצביע על כך שהסכנה תחלוף — יש הגנה.');
+      else if (jTone < 0) push('הדיין מאשר את הסכנה — נקוט אמצעי זהירות.');
+      break;
+    }
+
+    case 'spiritualDiagnostics': {
+      const grad = result.boardScore?.grade;
+      push(grad === 'strong-suspicion' || grad === 'medium-suspicion'
+        ? 'הלוח מראה סימנים לפגיעה רוחנית — מומלץ לטפל בכך.'
+        : 'הלוח לא מראה סימנים חזקים לפגיעה רוחנית.');
+      break;
+    }
+
+    case 'siblings':
+    case 'deathInheritance': {
+      if (jTone > 0) push('הדיין פוסק לחיוב בשאלה זו.');
+      else if (jTone < 0) push('הדיין פוסק לשלילה — יש מכשולים בדרך.');
+      else push('הדיין ממוזג — התוצאה לא ודאית.');
+      break;
+    }
+
+    case 'generalReading':
+    case 'foundations':
+    case 'birthNativity':
+    case 'completion':
+    case 'partnership': {
+      if (h1) {
+        const h1Fort = fortToWord(h1?.fortune);
+        push(askerOpeningLine(h1?.fortune, ''));
+      }
+      if (jTone > 0) push('הדיין פוסק לחיוב — הכיוון הכללי תומך.');
+      else if (jTone < 0) push('הדיין פוסק לשלילה — כדאי לחכות לזמן טוב יותר.');
+      else push('הדיין ממוזג — יש לנהוג בזהירות.');
+      break;
+    }
+
+    default: {
+      if (jTone > 0) push('הדיין פוסק לחיוב.');
+      else if (jTone < 0) push('הדיין פוסק לשלילה.');
+      break;
+    }
+  }
+
+  // ── 5. תזמון ────────────────────────────────────────────────────
+  if (timing?.quantity) {
+    push(`מבחינת עיתוי — הלוח מצביע על כ-${timing.quantity}.`);
+  }
+
+  // ── 6. אות שם (נושאים שלא טופלו בסעיף 4) ───────────────────────
+  const unhandledLetterTopics = ['spiritualDiagnostics', 'authorityState', 'prisoner', 'partnership'];
+  if (unhandledLetterTopics.includes(topicId)) {
+    for (const nl of nameLetters) {
+      push(`${nl.houseRole}: ${nl.outputHebrew}.`);
+    }
+  }
+
+  // ── 7. סיום נושא-ספציפי ─────────────────────────────────────────
+  // כשיש פסיקת כשף — היא קובעת את הטון, לא ה-grade של המנוע
+  const kashfPolarity = kashfVerdict?.classification?.saadNahs;
+  const isPositive = kashfPolarity === 'saad'
+    || (!kashfPolarity && (grade === 'positive' || grade === 'cautiously-positive'));
+  const isNegative = kashfPolarity === 'nahs'
+    || (!kashfPolarity && (grade === 'negative' || grade === 'cautiously-negative'));
+
+  const closingByTopic = {
+    marriage:           isPositive ? 'בסיכום: יש בסיס לקחת צעד קדימה עם שמירה על עיניים פקוחות.'
+                                   : isNegative ? 'בסיכום: כדאי לקחת עוד זמן לפני ההחלטה — הלוח מצביע על כך שהשלב עדיין לא בשל.'
+                                   : 'בסיכום: אין תשובה חד-משמעית — המשך להכיר לפני שמחליטים.',
+    theft:              isPositive ? 'בסיכום: פעל מהר — ככל שתחקור מהר יותר, הסיכוי גדל.'
+                                   : 'בסיכום: נסה לחקור בסביבה הקרובה, אך היה מציאותי לגבי הסיכויים.',
+    illness:            isPositive ? 'בסיכום: יש סיבה לאופטימיות — המשך בטיפול ובעצות הרופא.'
+                                   : 'בסיכום: המחלה תלווה אותו עוד תקופה — חשוב לדאוג לתמיכה ולטיפול רציף.',
+    travel:             isPositive ? 'בסיכום: הנסיעה יכולה להצליח — תכנן טוב ולך.'
+                                   : 'בסיכום: שקול לדחות את הנסיעה או לשנות את עיתויה.',
+    seaVoyage:          isPositive ? 'בסיכום: המסע נראה בטוח — נסע בשלום.'
+                                   : 'בסיכום: נקוט בכל אמצעי הבטיחות, ושקול אם הנסיעה הכרחית.',
+    missingPerson:      isPositive ? 'בסיכום: יש תקווה לחזרה — המשך לחפש בכיוון שהלוח מצביע.'
+                                   : 'בסיכום: המצב מורכב — פנה לגורמים מקצועיים ואל תאבד תקווה.',
+    hiddenTreasure:     isPositive ? 'בסיכום: שווה לחפש בכיוון שהלוח מצביע עליו.'
+                                   : 'בסיכום: הלוח לא מחזק את קיום המטמון — התקדם בזהירות.',
+    prisoner:           isPositive ? 'בסיכום: יש סיכוי לשחרור — המשך לטפל בעניין משפטית.'
+                                   : 'בסיכום: ייתכן שהשחרור יתעכב — יש להמשיך לפעול ולא לוותר.',
+    commerce:           isPositive ? 'בסיכום: העסקה נראית טובה — המשך לנהל משא ומתן ולסגור.'
+                                   : 'בסיכום: אל תמהר לסגור — בדוק מחדש את התנאים לפני חתימה.',
+    childrenPregnancy:  isPositive ? 'בסיכום: יש פתיחה — כדאי להמשיך לנסות ולהיות אופטימי.'
+                                   : 'בסיכום: ייתכן שיידרש עוד זמן — פנה לרפואה ואל תוותר.',
+    enemies:            isPositive ? 'בסיכום: אתה בעמדה טובה — פעל בביטחון.'
+                                   : 'בסיכום: היה זהיר — האויב בעמדת כוח כרגע.',
+    disputes:           isPositive ? 'בסיכום: יש לך יתרון — המשך לטפל בעניין בנחישות.'
+                                   : 'בסיכום: שקול פשרה לפני הכרעה סופית.',
+    loveHate:           isPositive ? 'בסיכום: הקשר יכול להתפתח — תן לו סיכוי.'
+                                   : 'בסיכום: יש לשים לב לאותות שהלוח מראה לגבי כנות הצד השני.',
+    authorityState:     isPositive ? 'בסיכום: עמדת השלטון יציבה — אין סיבה לדאגה מיידית.'
+                                   : 'בסיכום: יש להיערך לאפשרות של שינוי — טפל בבעיות מוקדם.',
+    yearlyForecast:     isPositive ? 'בסיכום: השנה הקרובה מבטיחה — נצל את ההזדמנויות.'
+                                   : 'בסיכום: שנה מאתגרת בפתח — תכנן, חסוך, והיה שמרן.',
+    fear:               isPositive ? 'בסיכום: הלוח מראה שהסכנה תחלוף — היה ערני אך לא משותק.'
+                                   : 'בסיכום: יש לטפל במקור הפחד ברצינות — אל תתעלם.',
+  };
+
+  const closingLine = closingByTopic[topicId]
+    || (isPositive ? 'בסיכום: הלוח מראה כיוון חיובי. פעל בבטחה, אך שים לב לפרטים שהוזכרו.'
+      : isNegative ? 'בסיכום: הלוח מראה עיכוב. מומלץ לא למהר ולבדוק מחדש.'
+      : 'בסיכום: הלוח לא חד-משמעי — פעל בזהירות ובדוק שוב אם הנסיבות ישתנו.');
+  push(closingLine);
+
+  return paras.join('\n\n');
+}
+
 export default {
   writeHumanGoralConclusion,
   writeShortClientVerdict,
+  writeClientReadingHebrew,
 };
 
 if (typeof module !== 'undefined') {
-  module.exports = { writeHumanGoralConclusion, writeShortClientVerdict };
+  module.exports = { writeHumanGoralConclusion, writeShortClientVerdict, writeClientReadingHebrew };
 }
