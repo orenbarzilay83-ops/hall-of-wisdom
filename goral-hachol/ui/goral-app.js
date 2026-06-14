@@ -15,7 +15,7 @@ let profileState = { marital: null, work: null, children: null };
 // 12 כרטיסים לפי סדר הבתים. הנושא המדויק נקבע בזמן הריצה לפי השאלה.
 // subTopics — אם יש, מוצגים לאחר בחירת הבית; null = ברירת מחדל ישירה.
 const TOPIC_CARDS = [
-  { house: 1,  title: 'מצב השואל',      desc: 'בריאות, גוף, נפש, מצב כללי',           defaultTopicId: 'foundations',       subTopics: null },
+  { house: 1,  title: 'החיים',            desc: 'בריאות, גוף, נפש, מצב כללי',           defaultTopicId: 'foundations',       subTopics: null },
   { house: 2,  title: 'כסף ופרנסה',     desc: 'ממון, רכוש, עסקים, מסחר',              defaultTopicId: 'commerce',          subTopics: null },
   { house: 3,  title: 'אחים ושכנים',    desc: 'אחים, שכנים, קרובים, מכתבים',          defaultTopicId: 'siblings',          subTopics: null },
   { house: 4,  title: 'בית ונכסים',     desc: 'דירה, נדל"ן, ירושה, דברים נסתרים',    defaultTopicId: 'hiddenTreasure',    subTopics: null },
@@ -24,7 +24,7 @@ const TOPIC_CARDS = [
     { topicId: 'illness',              label: 'מחלה / בריאות' },
     { topicId: 'spiritualDiagnostics', label: 'עין הרע / כישוף / ג׳ין' },
   ]},
-  { house: 7,  title: 'הנשאל עליו',     desc: 'בן/בת זוג, שותף, יריב, גנב, נעדר',     defaultTopicId: 'marriage',          subTopics: [
+  { house: 7,  title: 'הנישואין',        desc: 'בן/בת זוג, שותף, יריב, גנב, נעדר',     defaultTopicId: 'marriage',          subTopics: [
     { topicId: 'marriage',             label: 'נישואין / זוגיות' },
     { topicId: 'disputes',             label: 'תביעה / סכסוך' },
     { topicId: 'theft',                label: 'גנבה' },
@@ -163,8 +163,6 @@ function renderTopicGrid() {
     });
   });
 
-  const profSec = document.getElementById('profileSection');
-  if (profSec) profSec.style.display = 'flex';
 }
 
 function escapeHtml(value) {
@@ -647,11 +645,11 @@ function updateCastingTimeAlert() {
   const total = h * 60 + m;
   let cls, txt;
   if (total >= 20 * 60 || total < 6 * 60) {
-    cls = 'good'; txt = '🌙 שעה טובה להטלה — לילה (הלילה טוב מהיום לפי הספר)';
+    cls = 'good'; txt = '🌙 לילה — שעה טובה להטלה';
   } else if (total >= 6 * 60 && total < 14 * 60 + 30) {
-    cls = 'good'; txt = '☀️ שעה טובה להטלה — שחרית עד מנחה';
+    cls = 'good'; txt = '☀️ שחרית — שעה טובה להטלה';
   } else {
-    cls = 'caution'; txt = '⚠️ מנחה עד שקיעה אינו זמן טוב להטלת גורל';
+    cls = 'caution'; txt = '⚠️ מנחה עד שקיעה — זמן שכיח';
   }
   el.className = 'casting-alert ' + cls;
   el.textContent = txt;

@@ -116,39 +116,20 @@
       color:#111;
     }
 
-    /* Opening form — compact, centered, proportional fields (font-size ≥16px to prevent iOS auto-zoom) */
-    #screen-open h2 { text-align:center; }
-    #screen-open label { text-align:center; }
-
-    #screen-open .form-grid input,
-    #screen-open .form-grid select {
-      padding:8px 10px;
+    #screen-open input, #screen-open textarea {
+      padding:9px 12px;
       font-size:16px;
       border-radius:10px;
     }
-
-    /* Name inputs: limit width and center within grid cell */
-    #screen-open #clientNameInput,
-    #screen-open #clientParentInput {
-      width:180px;
-      display:block;
-      margin:0 auto;
-    }
-
-    .dt-row { display:flex; gap:10px; justify-content:center; }
-    .dt-row > div { flex:none; text-align:center; }
-
-    /* Date and time inputs sized to their content */
-    #questionDateInput { width:148px; }
-    #questionTimeInput { width:108px; }
+    .dt-row { display:flex; gap:8px; }
+    .dt-row > div { flex:1; }
 
     .casting-alert {
-      margin-top:8px;
-      padding:7px 12px;
-      border-radius:10px;
+      padding:6px 12px;
+      border-radius:20px;
       font-size:13px;
-      font-weight:700;
-      text-align:center;
+      font-weight:600;
+      white-space:nowrap;
       display:none;
     }
     .casting-alert.good {
@@ -609,55 +590,69 @@
       font-weight:700;
       white-space:nowrap;
     }
+    /* ─── מסך פתיחה ─── */
+    .open-title-row {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:16px;
+      padding-bottom:10px;
+      border-bottom:2px solid #d4a843;
+    }
+    .open-title-row h2 { flex-shrink:0; margin:0; border:none; padding:0; }
+    .open-title-row .casting-alert { flex:1; min-width:0; font-size:12px; overflow:hidden; text-overflow:ellipsis; }
+    .open-2col {
+      display:flex;
+      flex-direction:row;
+      gap:16px;
+      margin-bottom:16px;
+    }
+    .open-inputs-col { flex:1; min-width:0; display:flex; flex-direction:column; gap:10px; }
+    .open-profile-col { flex:1; min-width:0; display:flex; flex-direction:column; gap:12px; }
+    .open-field { display:flex; flex-direction:column; gap:4px; }
+    .open-bottom { display:flex; flex-direction:column; gap:12px; }
+    /* ─── פרופיל לקוח ─── */
     .profile-section {
-      margin-top:14px;
-      background:linear-gradient(135deg,#f2fff6,#fff);
-      border:2px solid rgba(20,140,80,.25);
-      border-radius:14px;
-      padding:16px;
       display:flex;
       flex-direction:column;
-      gap:12px;
-    }
-    .profile-section-title {
-      font-size:14px;
-      font-weight:700;
-      color:#1a6e40;
+      gap:10px;
     }
     .profile-group {
       display:flex;
       flex-direction:column;
-      gap:6px;
+      gap:5px;
     }
     .profile-group-label {
       font-size:13px;
-      color:#555;
+      color:#888;
       font-weight:600;
+      text-align:right;
     }
     .profile-btn-row {
       display:flex;
       flex-wrap:wrap;
-      gap:8px;
+      gap:7px;
     }
     .profile-btn {
-      padding:6px 14px;
+      padding:5px 13px;
       border-radius:20px;
-      border:1.5px solid rgba(20,140,80,.4);
+      border:1.5px solid #c8d0da;
       background:#fff;
-      color:#1a6e40;
+      color:#2c3e50;
       font-size:13px;
       font-weight:600;
       cursor:pointer;
-      transition:background .15s,border-color .15s;
+      transition:background .15s,border-color .15s,color .15s;
     }
     .profile-btn:hover {
-      background:#e8f5ee;
-      border-color:#1a8a4a;
+      border-color:#a0b0c0;
+      background:#f4f6f8;
     }
     .profile-btn.selected {
-      background:#1a8a4a;
-      color:#fff;
-      border-color:#1a8a4a;
+      background:#1e2a36;
+      color:#f5c842;
+      border-color:#1e2a36;
     }
     .topic-spiritual-btn {
       grid-column:1 / -1;
@@ -993,10 +988,13 @@
 
     @media (max-width:800px) {
       .screen { padding:16px; }
-      .form-grid, .actions, .mother-slots { grid-template-columns:1fr; }
+      .actions, .mother-slots { grid-template-columns:1fr; }
       .figure-grid { grid-template-columns:repeat(2,1fr); }
       .board-row.r1 { grid-template-columns:repeat(4,1fr); }
       .final-row { grid-template-columns:1fr; }
+    }
+    @media (max-width:400px) {
+      .form-grid { grid-template-columns:1fr; }
     }
   </style>
 </head>
@@ -1033,25 +1031,28 @@
 
     <section id="screen-open" class="screen active">
       <div class="panel">
-        <h2>פרטי הקריאה</h2>
 
-        <div class="form-grid">
-          <div>
-            <label>שם הפונה</label>
-            <input id="clientNameInput" placeholder="שם הלקוח" autocomplete="off" />
-          </div>
+        <!-- כותרת + תגית זמן הטלה -->
+        <div class="open-title-row">
+          <h2 style="margin:0;border:none;padding:0">פרטי הלקוח</h2>
+          <div id="castingTimeAlert" class="casting-alert"></div>
+        </div>
 
-          <div>
-            <label>שם האב</label>
-            <input id="clientParentInput" placeholder="שם האב" autocomplete="off" />
-          </div>
-
-          <div>
-            <label>מספר טלפון</label>
-            <input id="clientPhoneInput" placeholder="טלפון הלקוח" type="tel" autocomplete="off" />
-          </div>
-
-          <div class="full">
+        <!-- 2 עמודות: ימין = שדות | שמאל = פרופיל -->
+        <div class="open-2col">
+          <div class="open-inputs-col">
+            <div class="open-field">
+              <label>שם הלקוח</label>
+              <input id="clientNameInput" placeholder="שם הלקוח" autocomplete="off" />
+            </div>
+            <div class="open-field">
+              <label>שם האב</label>
+              <input id="clientParentInput" placeholder="שם האב" autocomplete="off" />
+            </div>
+            <div class="open-field">
+              <label>מספר טלפון</label>
+              <input id="clientPhoneInput" placeholder="טלפון הלקוח" type="tel" autocomplete="off" />
+            </div>
             <div class="dt-row">
               <div>
                 <label>תאריך</label>
@@ -1062,10 +1063,40 @@
                 <input type="time" id="questionTimeInput" autocomplete="off" />
               </div>
             </div>
-            <div id="castingTimeAlert" class="casting-alert"></div>
           </div>
 
-          <div class="full">
+          <div id="profileSection" class="profile-section open-profile-col">
+            <div class="profile-group">
+              <div class="profile-group-label">מצב משפחתי</div>
+              <div class="profile-btn-row">
+                <button type="button" class="profile-btn" data-profile="marital" data-value="married">נשוי/אה</button>
+                <button type="button" class="profile-btn" data-profile="marital" data-value="single">רווק/ה</button>
+                <button type="button" class="profile-btn" data-profile="marital" data-value="divorced">גרוש/ה</button>
+                <button type="button" class="profile-btn" data-profile="marital" data-value="widowed">אלמן/ה</button>
+              </div>
+            </div>
+            <div class="profile-group">
+              <div class="profile-group-label">מצב תעסוקתי</div>
+              <div class="profile-btn-row">
+                <button type="button" class="profile-btn" data-profile="work" data-value="employed">שכיר</button>
+                <button type="button" class="profile-btn" data-profile="work" data-value="unemployed">מחפש עבודה</button>
+                <button type="button" class="profile-btn" data-profile="work" data-value="self">עצמאי</button>
+                <button type="button" class="profile-btn" data-profile="work" data-value="retired">בפנסיה</button>
+              </div>
+            </div>
+            <div class="profile-group">
+              <div class="profile-group-label">ילדים</div>
+              <div class="profile-btn-row">
+                <button type="button" class="profile-btn" data-profile="children" data-value="yes">יש ילדים</button>
+                <button type="button" class="profile-btn" data-profile="children" data-value="no">אין ילדים</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- שאלה ונושא -->
+        <div class="open-bottom">
+          <div class="open-field">
             <label>שאלה / כוונה</label>
             <textarea id="questionInput" placeholder="כתוב כאן את שאלת גורל החול" autocomplete="off"></textarea>
             <div class="quesited-field">
@@ -1073,38 +1104,9 @@
               <input id="quesitedNameInput" placeholder="שם האדם שעליו נשאלת השאלה (אם יש)" autocomplete="off" />
             </div>
           </div>
-
-          <div class="full">
+          <div>
             <label>נושא השאלה — בחר את הבית שקשור לשאלתך</label>
             <div class="topic-grid" id="topicGrid"></div>
-            <div id="profileSection" class="profile-section" style="display:none">
-              <div class="profile-section-title">פרטי הלקוח — לפרשנות מדויקת</div>
-              <div class="profile-group">
-                <div class="profile-group-label">מצב משפחתי</div>
-                <div class="profile-btn-row">
-                  <button type="button" class="profile-btn" data-profile="marital" data-value="married">נשוי/אה</button>
-                  <button type="button" class="profile-btn" data-profile="marital" data-value="single">רווק/ה</button>
-                  <button type="button" class="profile-btn" data-profile="marital" data-value="divorced">גרוש/ה</button>
-                  <button type="button" class="profile-btn" data-profile="marital" data-value="widowed">אלמן/ה</button>
-                </div>
-              </div>
-              <div class="profile-group">
-                <div class="profile-group-label">מצב תעסוקתי</div>
-                <div class="profile-btn-row">
-                  <button type="button" class="profile-btn" data-profile="work" data-value="employed">שכיר</button>
-                  <button type="button" class="profile-btn" data-profile="work" data-value="unemployed">מחפש עבודה</button>
-                  <button type="button" class="profile-btn" data-profile="work" data-value="self">עצמאי</button>
-                  <button type="button" class="profile-btn" data-profile="work" data-value="retired">בפנסיה</button>
-                </div>
-              </div>
-              <div class="profile-group">
-                <div class="profile-group-label">ילדים</div>
-                <div class="profile-btn-row">
-                  <button type="button" class="profile-btn" data-profile="children" data-value="yes">יש ילדים</button>
-                  <button type="button" class="profile-btn" data-profile="children" data-value="no">אין ילדים</button>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
