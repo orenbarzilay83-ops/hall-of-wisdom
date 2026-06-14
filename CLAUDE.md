@@ -200,6 +200,13 @@ If a `sourceStatus` field is missing, blank, or marked as not found — do NOT f
 
 ## Active Development Branch
 
-`claude/app-conclusion-generation-B3mlQ`
+**ענף עבודה יחיד:** `claude/app-cleanup-organization-mia9b2`
 
-Always develop on this branch. Never push to main without explicit user instruction.
+### כללי חובה לכל צ'אט:
+1. **תמיד פתח בהרצת `git branch` — ודא שאתה על הענף הנכון לפני כל עבודה.**
+2. **אל תיצור ענף חדש — לעולם לא.** כל עבודה מתבצעת אך ורק על `claude/app-cleanup-organization-mia9b2`.
+3. **אל תדחוף ל-main ואל תמזג לענפים אחרים** ללא הוראה מפורשת מהמשתמש.
+4. **קומיט ופוש לאחר כל שינוי** — לעולם אל תשאיר שינויים לא שמורים בסיום.
+
+### תוכנית העבודה:
+ראה קובץ `WORKPLAN.md` — לפני שמתחילים משימה, בדוק שהיא נמצאת שם. כשמשימה הושלמה — **מחק אותה מ-WORKPLAN.md וקומיט.**
