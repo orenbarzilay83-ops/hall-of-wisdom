@@ -125,7 +125,63 @@ Every house entry in every data file has a `sourceStatus` field. This is the int
 
 ---
 
+## ספר כשף אל-אסרר — הספר המובנה באפליקציה (חובה לבדוק ראשון!)
+
+**לפני שמנסים Drive או כל מקור חיצוני** — בדוק תמיד את ספר כשף אל-אסרר שכבר מובנה באפליקציה.
+
+### מיקום הספר
+```
+goral-hachol/data/sources/kashf-al-asrar/kashf-al-asrar-book.js   ← 13,577 שורות, הספר המלא
+goral-hachol/data/sources/kashf-al-asrar/kashf-chapter-map.js     ← מיפוי נושאים לפרקים
+goral-hachol/engine/kashf-book-reader.js                          ← קורא הספר (HOUSE_PAGE_RANGES)
+goral-hachol/engine/kashf-verdict-engine.js                       ← מנוע הפסיקות
+goral-hachol/engine/kashf-support-analyzer.js                     ← ניתוח תמיכה
+goral-hachol/engine/kashf-figure-classifier.js                    ← סיווג צורות
+```
+
+### מבנה הנתונים
+```js
+export const KASHF_AL_ASRAR_PAGES = [
+  {
+    page: Number,           // מספר עמוד בספר
+    chapter: String,        // שם הפרק בערבית
+    chapterHebrew: String,  // שם הפרק בעברית
+    arabicText: String,     // הטקסט הערבי המקורי
+    hebrewTranslation: String, // תרגום עברי
+    topics: Array,          // נושאים רלוונטיים
+    sourceStatus: String,   // מצב המקור
+  }
+]
+```
+
+### איך לחפש בספר
+```bash
+# חיפוש לפי מונח ערבי
+grep -n "حيان" goral-hachol/data/sources/kashf-al-asrar/kashf-al-asrar-book.js
+
+# חיפוש לפי עמוד
+grep -n "page: 73" goral-hachol/data/sources/kashf-al-asrar/kashf-al-asrar-book.js
+
+# חיפוש לפי נושא
+grep -n "נישואים\|marriage" goral-hachol/data/sources/kashf-al-asrar/kashf-al-asrar-book.js
+```
+
+### מיפוי בתים לעמודים (מ-kashf-book-reader.js)
+הפרקים 1-12 בספר (בתים 1-12) ממופים לעמודים 166-276 בספר. ראה `HOUSE_PAGE_RANGES` ב-`kashf-book-reader.js`.
+
+### חשוב: כשף ≠ חאוי
+כשף אל-אסרר וספר חאוי הם **שני ספרים שונים** עם מספרי עמודים שונים לחלוטין. אל תתבלבל ביניהם.
+- עמודים בקוד המוזכרים "חאוי עמ' X" → מתייחסים לספר חאוי (Drive: `1SZ3rxN2AKLeD8ExRoToj67WKr6DIViZR`)
+- עמודים בקוד המוזכרים "כשף עמ' X" → מתייחסים ל-`kashf-al-asrar-book.js`
+
+---
+
 ## Primary Knowledge Sources
+
+**סדר עדיפויות למציאת מקור:**
+1. **ראשון** — חפש ב-`kashf-al-asrar-book.js` (הספר המובנה באפליקציה, כמתואר למעלה)
+2. **שני** — נסה Google Drive (ייתכן שהגישה חסומה בסביבת ה-CI)
+3. **אסור** — להמציא נתונים אם לא נמצא מקור — השאר ריק עם `sourceStatus: "not-yet-found-in-current-code-search"`
 
 The Google Drive folder **"ספרים לאפליקציית גורל החול"** is the **primary source** for all knowledge.
 
