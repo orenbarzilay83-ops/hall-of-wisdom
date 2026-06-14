@@ -1324,8 +1324,12 @@ function buildNarrativeByTopic(result) {
     push('⚠ הפסיקה הראשית מוחלשת — רוב הכוחות (עדים / דיין) סותרים אותה. יש לנהוג בזהירות ולא לפסוק בוודאות מלאה.');
   } else if (confidenceLevel === 'moderate') {
     push('יש תמיכה חלקית בפסיקה — הכיוון נכון אך לא כל הכוחות מסכימים. מומלץ לבדוק עוד.');
+  } else if (confidenceLevel === 'neutral-saad') {
+    push('העדים והדיין צורות מג\'סד — אין הכרעת כיוון, אך מזל הכוחות נוטה לטובה.');
+  } else if (confidenceLevel === 'neutral-nahs') {
+    push('⚠ העדים והדיין צורות מג\'סד — אין הכרעת כיוון, אך מזל הכוחות נוטה לרעה. יש לנהוג בזהירות.');
   }
-  // very-strong / strong / null — ממשיכים ללא הערה
+  // very-strong / strong / neutral / null — ממשיכים ללא הערה
 
   const hFig     = (h) => clean(h?.figureHebrew || '');
   const hFort    = (h) => clean(h?.fortune || '');

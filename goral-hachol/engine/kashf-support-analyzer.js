@@ -227,12 +227,19 @@ function computeConfidence(verdictDK, w13, w14, judge) {
   else if (contradicts >= 2)                    { level = 'weak';      labelHebrew = 'פסיקה חלשה — רוב הכוחות מתנגדים'; }
   else {
     // כל הצורות (עדים + דיין) הן מג'סד — אין להן כיוון ברור (דאח'ל/ח'ארג')
-    // הפסיקה נסמכת על מזל הפסיקה הראשית (סעד/נחס) בלבד
-    const isMujassadVerdict = verdictDK && (verdictDK.startsWith('mujassad') || verdictDK === 'mujassad');
-    labelHebrew = isMujassadVerdict
-      ? 'צורת הפסיקה מג\'סד — הפסיקה לפי מזל הדיין ועדיו'
-      : 'הכוחות ממוזגים — אין הכרעה ברורה בכיוון';
-    level = 'neutral';
+    // מדד חלופי: ספירת מזל (סעד/נחס) של שלושת הכוחות
+    const saadCount = [w13, w14, judge].filter((h) => h?.saadNahs === 'saad').length;
+    const nahsCount = [w13, w14, judge].filter((h) => h?.saadNahs === 'nahs').length;
+    if (saadCount >= 2) {
+      level = 'neutral-saad';
+      labelHebrew = `צורות מג'סד — מזל העדים והדיין נוטה לסעד (${saadCount}/3)`;
+    } else if (nahsCount >= 2) {
+      level = 'neutral-nahs';
+      labelHebrew = `צורות מג'סד — מזל העדים והדיין נוטה לנחס (${nahsCount}/3)`;
+    } else {
+      level = 'neutral';
+      labelHebrew = 'צורות מג\'סד — הכוחות ממוזגים, אין נטייה ברורה';
+    }
   }
 
   return { level, labelHebrew, confirms, contradicts };
