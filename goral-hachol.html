@@ -28,15 +28,21 @@
       margin:0;
       direction:rtl;
       font-family: Arial, sans-serif;
-      background:linear-gradient(135deg,#06192d,#0a1424);
+      background-image:url('assets/sage-landscape.png');
+      background-size:cover;
+      background-position:center top;
+      background-attachment:fixed;
       color:var(--ink);
+    }
+    @media (orientation:portrait) {
+      body { background-image:url('assets/sage-portrait.png'); }
     }
 
     .app {
       max-width:980px;
       margin:0 auto;
       min-height:100vh;
-      background:linear-gradient(180deg,var(--paper),var(--paper2));
+      background:transparent;
       box-shadow:0 0 35px rgba(0,0,0,.35);
     }
 
