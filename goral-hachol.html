@@ -143,12 +143,11 @@
     #questionTimeInput { width:108px; }
 
     .casting-alert {
-      margin-top:8px;
-      padding:7px 12px;
-      border-radius:10px;
+      padding:6px 12px;
+      border-radius:20px;
       font-size:13px;
-      font-weight:700;
-      text-align:center;
+      font-weight:600;
+      white-space:nowrap;
       display:none;
     }
     .casting-alert.good {
@@ -609,6 +608,58 @@
       font-weight:700;
       white-space:nowrap;
     }
+    /* ─── מסך פתיחה ─── */
+    .open-title-row {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:18px;
+      padding-bottom:12px;
+      border-bottom:2px solid #d4a843;
+      flex-wrap:wrap;
+    }
+    .open-title-row h2 {
+      flex-shrink:0;
+      margin:0;border:none;padding:0;
+    }
+    .open-title-row .casting-alert {
+      flex:1;
+      min-width:0;
+      font-size:12px;
+      text-align:center;
+    }
+    .open-2col {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:20px;
+      margin-bottom:18px;
+    }
+    .open-inputs-col {
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .open-profile-col {
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+    .open-field {
+      display:flex;
+      flex-direction:column;
+      gap:5px;
+    }
+    .open-bottom {
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+    @media (max-width:360px) {
+      .open-2col { grid-template-columns:1fr; }
+      .open-profile-col { order:-1; }
+    }
+    /* ─── פרופיל לקוח ─── */
     .profile-section {
       display:flex;
       flex-direction:column;
@@ -629,7 +680,6 @@
       display:flex;
       flex-wrap:wrap;
       gap:7px;
-      justify-content:flex-end;
     }
     .profile-btn {
       padding:5px 13px;
@@ -1025,20 +1075,41 @@
 
     <section id="screen-open" class="screen active">
       <div class="panel">
-        <h2>פרטי הלקוח</h2>
 
-        <div class="form-grid">
-          <div>
-            <label>שם הלקוח</label>
-            <input id="clientNameInput" placeholder="שם הלקוח" autocomplete="off" />
+        <!-- כותרת + תגית זמן הטלה -->
+        <div class="open-title-row">
+          <h2 style="margin:0;border:none;padding:0">פרטי הלקוח</h2>
+          <div id="castingTimeAlert" class="casting-alert"></div>
+        </div>
+
+        <!-- 2 עמודות: ימין = שדות | שמאל = פרופיל -->
+        <div class="open-2col">
+          <div class="open-inputs-col">
+            <div class="open-field">
+              <label>שם הלקוח</label>
+              <input id="clientNameInput" placeholder="שם הלקוח" autocomplete="off" />
+            </div>
+            <div class="open-field">
+              <label>שם האב</label>
+              <input id="clientParentInput" placeholder="שם האב" autocomplete="off" />
+            </div>
+            <div class="open-field">
+              <label>מספר טלפון</label>
+              <input id="clientPhoneInput" placeholder="טלפון הלקוח" type="tel" autocomplete="off" />
+            </div>
+            <div class="dt-row">
+              <div>
+                <label>תאריך</label>
+                <input type="text" id="questionDateInput" placeholder="DD/MM/YYYY" inputmode="numeric" autocomplete="off" />
+              </div>
+              <div>
+                <label>שעה</label>
+                <input type="time" id="questionTimeInput" autocomplete="off" />
+              </div>
+            </div>
           </div>
 
-          <div>
-            <label>שם האב</label>
-            <input id="clientParentInput" placeholder="שם האב" autocomplete="off" />
-          </div>
-
-          <div id="profileSection" class="profile-section full">
+          <div id="profileSection" class="profile-section open-profile-col">
             <div class="profile-group">
               <div class="profile-group-label">מצב משפחתי</div>
               <div class="profile-btn-row">
@@ -1065,27 +1136,11 @@
               </div>
             </div>
           </div>
+        </div>
 
-          <div>
-            <label>מספר טלפון</label>
-            <input id="clientPhoneInput" placeholder="טלפון הלקוח" type="tel" autocomplete="off" />
-          </div>
-
-          <div class="full">
-            <div class="dt-row">
-              <div>
-                <label>תאריך</label>
-                <input type="text" id="questionDateInput" placeholder="DD/MM/YYYY" inputmode="numeric" autocomplete="off" />
-              </div>
-              <div>
-                <label>שעה</label>
-                <input type="time" id="questionTimeInput" autocomplete="off" />
-              </div>
-            </div>
-            <div id="castingTimeAlert" class="casting-alert"></div>
-          </div>
-
-          <div class="full">
+        <!-- שאלה ונושא -->
+        <div class="open-bottom">
+          <div class="open-field">
             <label>שאלה / כוונה</label>
             <textarea id="questionInput" placeholder="כתוב כאן את שאלת גורל החול" autocomplete="off"></textarea>
             <div class="quesited-field">
@@ -1093,8 +1148,7 @@
               <input id="quesitedNameInput" placeholder="שם האדם שעליו נשאלת השאלה (אם יש)" autocomplete="off" />
             </div>
           </div>
-
-          <div class="full">
+          <div>
             <label>נושא השאלה — בחר את הבית שקשור לשאלתך</label>
             <div class="topic-grid" id="topicGrid"></div>
           </div>
