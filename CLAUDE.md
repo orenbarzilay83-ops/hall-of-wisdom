@@ -149,6 +149,8 @@ Every house entry in every data file has a `sourceStatus` field. This is the int
 **כאשר עובדים על קובץ ומוצאים `not-yet-found-in-current-code-search`:**
 - אם הנתון נבדק ולא נמצא במקור → עדכן ל-`source-audited-final-source-kept-as-mapped` **באותו commit**
 - אין להשאיר `not-yet-found` בקובץ שכבר נבדק — זה מה שגורם לכל שיח חדש לחשוב שחסר חומר
+- **אם `not-yet-found` יושב ליד תוכן שכבר קיים ועובד — מוחקים את הערך החסר, לא משנים אותו**
+- **אסור לשנות שום סטטוס בלי לבדוק תחילה אם הנתון כבר קיים במקום אחר בקוד, ובלי לקבל אישור מהמשתמש**
 
 ---
 
