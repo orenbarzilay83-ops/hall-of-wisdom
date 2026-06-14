@@ -645,11 +645,11 @@ function updateCastingTimeAlert() {
   const total = h * 60 + m;
   let cls, txt;
   if (total >= 20 * 60 || total < 6 * 60) {
-    cls = 'good'; txt = '🌙 שעה טובה להטלה — לילה (הלילה טוב מהיום לפי הספר)';
+    cls = 'good'; txt = '🌙 לילה — שעה טובה להטלה';
   } else if (total >= 6 * 60 && total < 14 * 60 + 30) {
-    cls = 'good'; txt = '☀️ שעה טובה להטלה — שחרית עד מנחה';
+    cls = 'good'; txt = '☀️ שחרית — שעה טובה להטלה';
   } else {
-    cls = 'caution'; txt = '⚠️ מנחה עד שקיעה אינו זמן טוב להטלת גורל';
+    cls = 'caution'; txt = '⚠️ מנחה עד שקיעה — זמן שכיח';
   }
   el.className = 'casting-alert ' + cls;
   el.textContent = txt;
