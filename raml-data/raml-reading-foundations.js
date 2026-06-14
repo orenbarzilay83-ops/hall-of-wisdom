@@ -180,7 +180,7 @@ const RAML_READING_FOUNDATIONS = {
       {
         id: "repeat-reading-validation",
         title: "בדיקת אמת העבודה על ידי חזרה",
-        rule: "אפשר לבדוק את صحة العمل על ידי הכאה פעם שנייה ושלישית: אם חוזרת אותה תשובה, או תשובה קרובה לה ואינה סותרת לגמרי — זה סימן שהעבודה נכונה.",
+        rule: "אפשר לבדוק את נכונות העבודה על ידי הכאה פעם שנייה ושלישית: אם חוזרת אותה תשובה, או תשובה קרובה לה ואינה סותרת לגמרי — זה סימן שהעבודה נכונה.",
         implementationReady: false,
         implementationNotes: "לא להפוך מיד לכפתור אוטומטי. קודם לבנות מצב בדיקה שמריץ 2–3 לוחות ומשווה קרבה/סתירה."
       },
@@ -352,7 +352,7 @@ const RAML_READING_FOUNDATIONS = {
       },
       {
         id: "damir-from-cross-triangle",
-        title: "חיבור مثلثة الصليب: תמצית צורות בתי האמהות עם תמכן האמהות",
+        title: "חיבור משולש הצלב: תמצית צורות בתי האמהות עם תמכן האמהות",
         status: "verified-text-needs-formula"
       },
       {
@@ -395,7 +395,7 @@ const RAML_READING_FOUNDATIONS = {
 
   nazarNutqIttisalInfisal: {
     id: "nazar-nutq-ittisal-infisal",
-    title: "نظر / نطق / اتصال / انفصال",
+    title: "מבט / דיבור / חיבור / ניתוק",
     ruleType: "core-interpretation",
     sourceStatus: "verified-working",
     mapping: {
@@ -454,7 +454,7 @@ const RAML_READING_FOUNDATIONS = {
       {
         id: "muqabala",
         arabic: "مقابلة",
-        hebrew: "מול / مقابلة",
+        hebrew: "מול",
         housesFromBase: [7, 14],
         meaning: "עוינות שלמה וקשה / דבר שמולו"
       },
