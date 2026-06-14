@@ -736,7 +736,10 @@ function renderContacts() {
   el.innerHTML = shown.map(c =>
     `<div class="appt-item" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border,#eee)">
       <div><div style="font-weight:600">${escapeHtml(c.name)}</div><div style="font-size:0.85rem;color:var(--muted,#888)">${escapeHtml(c.phone || 'ללא טלפון')}</div></div>
-      <button class="btn gray" style="font-size:0.8rem;padding:4px 10px" onclick="delContact(${c.id})">מחק</button>
+      <div style="display:flex;gap:6px">
+        <button class="btn" style="font-size:0.8rem;padding:4px 10px" onclick="loadContact(${c.id})">טען</button>
+        <button class="btn gray" style="font-size:0.8rem;padding:4px 10px" onclick="delContact(${c.id})">מחק</button>
+      </div>
     </div>`).join('');
 }
 
@@ -764,6 +767,27 @@ function delContact(id) {
   renderContacts();
 }
 
+function loadContact(id) {
+  const contact = getContacts().find(c => c.id === id);
+  if (!contact) return;
+  const nameEl  = document.getElementById('clientNameInput');
+  const phoneEl = document.getElementById('clientPhoneInput');
+  if (nameEl)  nameEl.value  = contact.name  || '';
+  if (phoneEl) phoneEl.value = contact.phone || '';
+  // עדכון כפתורי פרופיל
+  profileState.marital  = contact.marital  || null;
+  profileState.work     = contact.work     || null;
+  profileState.children = contact.children || null;
+  document.querySelectorAll('.profile-btn').forEach(btn => {
+    const group = btn.dataset.profile;
+    const val   = btn.dataset.value;
+    btn.classList.toggle('selected', profileState[group] === val);
+  });
+  showScreen('open');
+}
+window.loadContact = loadContact;
+window.delContact  = delContact;
+
 document.getElementById('addContactBtn')?.addEventListener('click', addContact);
 
 document.getElementById('saveClientBtn').addEventListener('click', () => {
@@ -778,7 +802,13 @@ document.getElementById('saveClientBtn').addEventListener('click', () => {
     alert(`הלקוח "${name}" כבר קיים בספר הלקוחות`);
     return;
   }
-  contacts.unshift({ id: Date.now(), name, phone: phone || '', createdAt: new Date().toISOString() });
+  contacts.unshift({
+    id: Date.now(), name, phone: phone || '',
+    marital: profileState.marital || null,
+    work: profileState.work || null,
+    children: profileState.children || null,
+    createdAt: new Date().toISOString(),
+  });
   localStorage.setItem(CONTACTS_KEY, JSON.stringify(contacts));
   alert(`הלקוח "${name}" נשמר בספר הלקוחות ✓`);
 });
