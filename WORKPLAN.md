@@ -8,17 +8,14 @@
 ## 🔴 קריטי — מנוע המסקנות
 
 ### 1. השלמת נתוני figure-states חסרים (2 בתים)
-- כל 16 הצורות רשומות ✓ — אך **חיין** (1211) ו**ממון נכנס** (2121) חסרים כל אחד **בית אחד** עם `not-yet-found`
-- מקור: חאוי — פרק מצבי הצורות (Drive ID: `1SZ3rxN2AKLeD8ExRoToj67WKr6DIViZR`)
-- מיקום: `goral-hachol/data/sources/hawi/figure-states/hawi-figure-state-hayyan.js` ו-`hawi-figure-state-naqi-khad.js`
-
-### 2. השלמת נתוני figure×house חסרים
-- יש בתים שמסומנים `sourceStatus: "not-yet-found-in-current-code-search"`
-- לכל צורה×בית חסר: להוריד מ-Drive את ספר חאוי ולמצוא את הפסקה המדויקת
-- מיקום: `goral-hachol/data/sources/hawi/figure-transits/`
+- כל 16 הצורות רשומות ✓, ופרשות מעבר ל-16 הבתים מאוּמתות ✓
+- אך **חיין** (1211) ו**ממון נכנס** (2121) חסרים מצב **בית 15** (דיין)
+- מקור: חאוי עמ' 73-74 (חיין) ועמ' 78 (ממון נכנס) — יש להוריד מ-Drive ולמצוא
+- Drive ID: `1SZ3rxN2AKLeD8ExRoToj67WKr6DIViZR`
+- מיקום: `hawi-figure-state-hayyan.js` ו-`hawi-figure-state-naqi-khad.js`
 
 ### 3. מסקנות עם "הכוחות בלתי-מוכרעים" — לוגיקת הכרעה
-- הוסר ההודעה הכפולה ✓ | שופר לייבל ה-neutral ✓
+- הוסר ההודעה הכפולה ✓ | שופר הלייבל ✓
 - נשאר: כאשר כל הצורות מג'סד, להשתמש במזל (סעד/נחס) כמדד חלופי ב-`computeConfidence`
 - מיקום: `goral-hachol/engine/kashf-support-analyzer.js`
 
@@ -27,12 +24,12 @@
 ## 🟠 חשוב — נושאים חסרים
 
 ### 4. birthNativity — לידה ומנהיגות
-- מסגרת קיימת אך ריקה מתוכן
+- מסגרת קיימת, נגישה בגריד ✓ (בית 1) — אך הנתונים ריקים מתוכן
 - מקור: ספר חאוי / כשף אל-אסראר
 - מיקום: `goral-hachol/data/sources/hawi/birth-nativity/`
 
 ### 5. yearlyForecast — תחזית שנתית
-- מיושם חלקית, מסקנות חלשות
+- נגישה בגריד ✓ (בית 10) — מיושם חלקית, מסקנות חלשות
 - מקור: ספרי הרמל — פרק תחזית שנתית
 - מיקום: `goral-hachol/data/sources/hawi/yearly-forecast/`
 
@@ -67,9 +64,10 @@
 
 ## 🟢 ביקורת מקורות (audit)
 
-### 13. בדיקת כל שדות sourceStatus = "not-yet-found"
-- להוריד דפים רלוונטיים מ-Drive ולמלא או לסמן כ-"explicitly-not-shown"
-- מיקום: כל קבצי הנתונים ב-`goral-hachol/data/sources/`
+### 13. בדיקת שדות sourceStatus = "not-yet-found" בנושאי foundations
+- `hawi-hazz.js`: ראש (1121) וזנב (1221) — חסרים דפים 134+
+- `hawi-spiritual-diagnostics.js`: ערך אחד חסר
+- מיקום: `goral-hachol/data/sources/hawi/foundations/`
 
 ### 14. אימות פסיקות Kashf al-Asrar
 - פסיקות רבות בקוד מגיעות מזיכרון — לאמת מול הספר הממוספר
