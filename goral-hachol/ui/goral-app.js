@@ -513,6 +513,19 @@ function buildInterpretationHtml(reading) {
       </div>`
     : "";
 
+  // ─── CLIENT READING (clean narrative for reading aloud) ──────────
+  let clientReadingHtml = "";
+  if (insight.clientReadingHebrew) {
+    const crFormatted = hebrewTerms(escapeHtml(insight.clientReadingHebrew))
+      .replace(/\n\n/g, '</p><p style="margin-top:12px;">')
+      .replace(/\n/g, '<br/>');
+    clientReadingHtml = `
+      <div class="client-reading-panel" style="direction:rtl; margin:18px 0 10px; border:2px solid #b8860b; border-radius:8px; background:#fffef5; padding:18px 20px;">
+        <div style="font-weight:700; font-size:13px; color:#7a5c00; letter-spacing:0.5px; margin-bottom:10px; border-bottom:1px solid #e8d080; padding-bottom:6px;">📖 קרא ללקוח</div>
+        <div style="font-size:16px; line-height:2; color:#2c2c2c;"><p style="margin:0;">${crFormatted}</p></div>
+      </div>`;
+  }
+
   // ─── DETAILS PANEL (behind "קרא עוד") ────────────────────────────
   const conclusionFormatted = hebrewTerms(escapeHtml(conclusion))
     .replace(/\n\n/g, '</p><p style="margin-top:14px;">')
@@ -529,6 +542,7 @@ function buildInterpretationHtml(reading) {
   return `
     ${boardWarnHtml}
     ${shortVerdictHtml}
+    ${clientReadingHtml}
     <button class="details-toggle" onclick="const p=this.nextElementSibling;p.hidden=!p.hidden;this.textContent=p.hidden?'קרא עוד ▼':'סגור ▲'">קרא עוד ▼</button>
     <div hidden>${detailsContent}</div>
   `;

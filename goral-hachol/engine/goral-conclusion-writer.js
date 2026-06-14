@@ -2437,18 +2437,16 @@ export function writeClientReadingHebrew(result) {
     case 'seaVoyage': {
       if (h9) {
         const h9Fort = fortToWord(h9?.fortune);
-        push(h9Fort === 'טוב'
-          ? 'הלוח מראה שהמסע הימי בטוח ויצלח.'
-          : h9Fort === 'קשה'
-          ? 'הלוח מצביע על סכנה בים — מומלץ לשקול ברצינות את הנסיעה.'
-          : 'הלוח מעורב לגבי בטיחות המסע.');
+        if (!isNegative && h9Fort === 'טוב') push('הלוח מראה שהמסע הימי בטוח ויצלח.');
+        else if (isNegative || h9Fort === 'קשה') push('הלוח מצביע על סכנה בים — מומלץ לשקול ברצינות את הנסיעה.');
+        else push('הלוח מעורב לגבי בטיחות המסע.');
       }
       if (h8) {
         const h8Fort = fortToWord(h8?.fortune);
         if (h8Fort === 'קשה') push('⚠ בית המוות/הסכנה מצביע על סיכון ממשי — יש לנקוט אמצעי זהירות.');
       }
-      if (jTone > 0) push('הדיין: הנסיעה תסתיים בשלום.');
-      else if (jTone < 0) push('הדיין: יש ספק ביחס לבטיחות הנסיעה.');
+      if (isPositive || (!isNegative && jTone > 0)) push('הדיין: הנסיעה תסתיים בשלום.');
+      else if (isNegative || jTone < 0) push('הדיין: יש ספק ביחס לבטיחות הנסיעה.');
       break;
     }
 
@@ -2490,44 +2488,40 @@ export function writeClientReadingHebrew(result) {
     case 'commerce': {
       if (h2) {
         const h2Fort = fortToWord(h2?.fortune);
-        push(h2Fort === 'טוב'
+        push((!isNegative && h2Fort === 'טוב')
           ? 'הממון בלוח נראה טוב — הסחורה/ההשקעה נושאת פנים חיוביות.'
-          : h2Fort === 'קשה'
+          : (isNegative || h2Fort === 'קשה')
           ? 'הממון בלוח מצביע על סכנת הפסד — כדאי לבחון מחדש.'
           : 'הממון מעורב — לא הפסד ולא ריווח ברור.');
       }
       if (h10) {
         const h10Fort = fortToWord(h10?.fortune);
-        push(h10Fort === 'טוב'
+        push((!isNegative && h10Fort === 'טוב')
           ? 'תוצאת העסקה נראית חיובית — יש נטייה לרווח ולהצלחה.'
-          : h10Fort === 'קשה'
+          : (isNegative || h10Fort === 'קשה')
           ? 'תוצאת העסקה עלולה להיות מאכזבת — כדאי לנהל משא ומתן זהיר.'
           : 'תוצאת העסקה לא ברורה — לשמור על גמישות.');
       }
-      if (jTone > 0) push('הדיין תומך בעסקה — מומלץ להמשיך.');
-      else if (jTone < 0) push('הדיין מתנגד לעסקה — כדאי לחכות או לשנות תנאים.');
+      if (isPositive || (!isNegative && jTone > 0)) push('הדיין תומך בעסקה — מומלץ להמשיך.');
+      else if (isNegative || jTone < 0) push('הדיין מתנגד לעסקה — כדאי לחכות או לשנות תנאים.');
       break;
     }
 
     case 'childrenPregnancy': {
       if (h5) {
         const h5Fort = fortToWord(h5?.fortune);
-        push(h5Fort === 'טוב'
-          ? 'הלוח מראה פתיחה חיובית בנושא הילדים/ההריון — יש סימן טוב.'
-          : h5Fort === 'קשה'
-          ? 'הלוח מצביע על קשיים בנושא זה — ייתכן שיידרש טיפול רפואי.'
-          : 'הלוח מעורב — יש אפשרות, אך לא ודאות.');
+        if (!isNegative && h5Fort === 'טוב') push('הלוח מראה פתיחה חיובית בנושא הילדים/ההריון — יש סימן טוב.');
+        else if (isNegative || h5Fort === 'קשה') push('הלוח מצביע על קשיים בנושא זה — ייתכן שיידרש טיפול רפואי.');
+        else push('הלוח מעורב — יש אפשרות, אך לא ודאות.');
       }
       if (h11) {
         const h11Fort = fortToWord(h11?.fortune);
-        push(h11Fort === 'טוב'
-          ? 'הסיכויים להגשמת התקווה טובים.'
-          : h11Fort === 'קשה'
-          ? 'התקוות מאתגרות — ייתכן שיידרש סבלנות ועמידה.'
-          : 'התקוות אפשריות אך תלויות בגורמים נוספים.');
+        if (!isNegative && h11Fort === 'טוב') push('הסיכויים להגשמת התקווה טובים.');
+        else if (isNegative || h11Fort === 'קשה') push('התקוות מאתגרות — ייתכן שיידרש סבלנות ועמידה.');
+        else push('התקוות אפשריות אך תלויות בגורמים נוספים.');
       }
-      if (jTone > 0) push('הדיין פוסק לחיוב — יש סיכוי ממשי.');
-      else if (jTone < 0) push('הדיין לא תומך בשלב זה — אולי עוד לא הזמן הנכון.');
+      if (!isNegative && jTone > 0) push('הדיין פוסק לחיוב — יש סיכוי ממשי.');
+      else if (isNegative || jTone < 0) push('הדיין לא תומך בשלב זה — אולי עוד לא הזמן הנכון.');
       break;
     }
 
@@ -2535,18 +2529,18 @@ export function writeClientReadingHebrew(result) {
       const qName = quesited || 'האויב';
       if (h7) {
         const h7Fort = fortToWord(h7?.fortune);
-        push(h7Fort === 'קשה'
-          ? `${qName} נמצא בעמדה חלשה — כוחו מוגבל.`
-          : h7Fort === 'טוב'
-          ? `${qName} נמצא בעמדה חזקה — יש לקחת אותו ברצינות.`
-          : `${qName} בעמדה מעורבת.`);
+        if (isPositive) push(`${qName} נמצא בעמדה חלשה — כוחו מוגבל.`);
+        else if (isNegative) push(`${qName} נמצא בעמדה חזקה — יש לקחת אותו ברצינות.`);
+        else if (h7Fort === 'קשה') push(`${qName} נמצא בעמדה חלשה — כוחו מוגבל.`);
+        else if (h7Fort === 'טוב') push(`${qName} נמצא בעמדה חזקה — יש לקחת אותו ברצינות.`);
+        else push(`${qName} בעמדה מעורבת.`);
       }
       if (h12) {
         const h12Fort = fortToWord(h12?.fortune);
         if (h12Fort === 'קשה') push('יש סכנה נסתרת שעדיין לא גלויה — כדאי להיות ערני.');
       }
-      if (jTone > 0) push('הדיין פוסק לטובתך — אתה בעמדה הטובה יותר.');
-      else if (jTone < 0) push('הדיין מצביע על כך שהאויב מחזיק ביד העליונה כרגע.');
+      if (isPositive || (!isNegative && jTone > 0)) push('הדיין פוסק לטובתך — אתה בעמדה הטובה יותר.');
+      else if (isNegative || jTone < 0) push('הדיין מצביע על כך שהאויב מחזיק ביד העליונה כרגע.');
       break;
     }
 
