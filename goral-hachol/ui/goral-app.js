@@ -786,6 +786,9 @@ document.getElementById("menuOpenBtn").addEventListener("click", openMenu);
 document.getElementById("menuCloseBtn").addEventListener("click", closeMenu);
 document.getElementById("menuOverlay").addEventListener("click", closeMenu);
 
+document.getElementById("menuGoralBtn").addEventListener("click", () => {
+  closeMenu(); showScreen("open");
+});
 document.getElementById("menuGuideBtn").addEventListener("click", () => {
   closeMenu(); showScreen("guide"); renderGuide();
 });
