@@ -804,6 +804,7 @@ document.getElementById("backFromPrayerBtn").addEventListener("click", () => sho
 // ─── Landing screen ───────────────────────────────────────────
 document.getElementById("landingGuideBtn").addEventListener("click", () => { showScreen("guide"); renderGuide(); });
 document.getElementById("landingPrayerBtn").addEventListener("click", () => showScreen("prayer"));
+document.getElementById("landingJournalBtn").addEventListener("click", () => { showScreen("journal"); renderJournal(); renderContacts(); });
 document.getElementById("landingOpenBtn").addEventListener("click", () => showScreen("open"));
 
 // ─── Guide Tab Logic ──────────────────────────────────────────
