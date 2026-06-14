@@ -15,7 +15,7 @@ let profileState = { marital: null, work: null, children: null };
 // 12 כרטיסים לפי סדר הבתים. הנושא המדויק נקבע בזמן הריצה לפי השאלה.
 // subTopics — אם יש, מוצגים לאחר בחירת הבית; null = ברירת מחדל ישירה.
 const TOPIC_CARDS = [
-  { house: 1,  title: 'החיים',            desc: 'בריאות, גוף, נפש, מצב כללי',           defaultTopicId: 'foundations',       subTopics: null },
+  { house: 1,  title: 'בית החיים',            desc: 'בריאות, גוף, נפש, מצב כללי',           defaultTopicId: 'foundations',       subTopics: null },
   { house: 2,  title: 'כסף ופרנסה',     desc: 'ממון, רכוש, עסקים, מסחר',              defaultTopicId: 'commerce',          subTopics: null },
   { house: 3,  title: 'אחים ושכנים',    desc: 'אחים, שכנים, קרובים, מכתבים',          defaultTopicId: 'siblings',          subTopics: null },
   { house: 4,  title: 'בית ונכסים',     desc: 'דירה, נדל"ן, ירושה, דברים נסתרים',    defaultTopicId: 'hiddenTreasure',    subTopics: null },

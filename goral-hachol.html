@@ -133,6 +133,9 @@
       font-weight:600;
       white-space:nowrap;
       display:none;
+      max-width:44%;
+      margin:0 auto 12px;
+      text-align:center;
     }
     .casting-alert.good {
       display:block;
@@ -596,24 +599,24 @@
     .open-title-row {
       display:flex;
       align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom:16px;
+      justify-content:center;
+      margin-bottom:8px;
       padding-bottom:10px;
       border-bottom:2px solid #d4a843;
     }
-    .open-title-row h2 { flex-shrink:0; margin:0; border:none; padding:0; }
-    .open-title-row .casting-alert { flex:1; min-width:0; font-size:12px; overflow:hidden; text-overflow:ellipsis; }
+    .open-title-row h2 { margin:0; border:none; padding:0; text-align:center; }
     .open-2col {
       display:flex;
       flex-direction:row;
       gap:16px;
       margin-bottom:16px;
     }
-    .open-inputs-col { flex:1.4; min-width:0; display:flex; flex-direction:column; gap:12px; }
-    .open-profile-col { flex:1; min-width:0; display:flex; flex-direction:column; gap:14px; border-right:1px solid #e0e0e0; padding-right:16px; }
-    .open-field { display:flex; flex-direction:column; gap:3px; }
-    .open-field label { font-size:13px; color:#888; font-weight:600; margin-bottom:2px; text-align:center; }
+    .open-inputs-col { flex:1.4; min-width:0; display:flex; flex-direction:column; gap:12px; align-items:center; }
+    .open-profile-col { flex:1; min-width:0; display:flex; flex-direction:column; gap:20px; border-right:1px solid #e0e0e0; padding-right:16px; }
+    .open-field { display:flex; flex-direction:column; gap:3px; width:100%; }
+    .open-inputs-col .open-field input { max-width:60%; margin:0 auto; }
+    .dt-row { width:100%; }
+    #questionInput { height:60px; min-height:50px; max-height:90px; resize:vertical; }
     .open-bottom { display:flex; flex-direction:column; gap:12px; }
     /* ─── פרופיל לקוח ─── */
     .profile-section {
@@ -1036,34 +1039,29 @@
     <section id="screen-open" class="screen active">
       <div class="panel">
 
-        <!-- כותרת + תגית זמן הטלה -->
+        <!-- כותרת -->
         <div class="open-title-row">
           <h2 style="margin:0;border:none;padding:0">פרטי הלקוח</h2>
-          <div id="castingTimeAlert" class="casting-alert"></div>
         </div>
+        <div id="castingTimeAlert" class="casting-alert"></div>
 
         <!-- 2 עמודות: ימין = שדות | שמאל = פרופיל -->
         <div class="open-2col">
           <div class="open-inputs-col">
             <div class="open-field">
-              <label>שם הלקוח</label>
               <input id="clientNameInput" placeholder="שם הלקוח" autocomplete="off" />
             </div>
             <div class="open-field">
-              <label>שם האב</label>
               <input id="clientParentInput" placeholder="שם האב" autocomplete="off" />
             </div>
             <div class="open-field">
-              <label>מספר טלפון</label>
               <input id="clientPhoneInput" placeholder="טלפון הלקוח" type="tel" autocomplete="off" />
             </div>
             <div class="dt-row">
               <div>
-                <label>תאריך</label>
                 <input type="text" id="questionDateInput" placeholder="DD/MM/YYYY" inputmode="numeric" autocomplete="off" />
               </div>
               <div>
-                <label>שעה</label>
                 <input type="time" id="questionTimeInput" autocomplete="off" />
               </div>
             </div>
@@ -1101,8 +1099,8 @@
         <!-- שאלה ונושא -->
         <div class="open-bottom">
           <div class="open-field">
-            <label>שאלה / כוונה</label>
-            <textarea id="questionInput" placeholder="כתוב כאן את שאלת גורל החול" autocomplete="off"></textarea>
+            <label>שאלת הלקוח</label>
+            <textarea id="questionInput" rows="2" placeholder="כתוב כאן את שאלת גורל החול" autocomplete="off"></textarea>
             <div class="quesited-field">
               <label for="quesitedNameInput">הנשאל עליו:</label>
               <input id="quesitedNameInput" placeholder="שם האדם שעליו נשאלת השאלה (אם יש)" autocomplete="off" />
