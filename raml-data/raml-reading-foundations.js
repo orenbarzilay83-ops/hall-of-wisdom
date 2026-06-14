@@ -352,7 +352,7 @@ const RAML_READING_FOUNDATIONS = {
       },
       {
         id: "damir-from-cross-triangle",
-        title: "חיבור مثلثة الصليب: נהמת האמהות עם תמכן האמהות",
+        title: "חיבור مثلثة الصليب: תמצית צורות בתי האמהות עם תמכן האמהות",
         status: "verified-text-needs-formula"
       },
       {

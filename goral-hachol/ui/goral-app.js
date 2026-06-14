@@ -287,7 +287,7 @@ function figNameFromReadingHouse(house) {
 }
 
 function computeDhamirHouseNumber(chart) {
-  // נהמת האמהות: שורה i מאם i (0-indexed) → צורת הדמיר
+  // תמצית צורות בתי האמהות: שורה i מאם i (0-indexed) → צורת הדמיר
   const rows = [];
   for (let i = 1; i <= 4; i++) {
     const m = chart.find(x => Number(x.house) === i);
