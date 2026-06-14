@@ -185,19 +185,6 @@ export const HAWI_SPIRITUAL_DIAGNOSTICS = {
       appDisplayHebrew:
         'שער טאלע השנה ושער הגשם פעילים במנוע yearlyForecast: יסודות, כוכבים, ירח, גשם, קור, שלג, רוחות. הדין על נושא yearlyForecast בלבד, לא מעורב בדיני שאלה פרטית.'
     },
-
-    {
-      id: 'spiritual-missing-eye-jinn-mass-bukhoor',
-      category: 'missing-requires-source-extraction',
-      arabicTerms: ['عين', 'جن', 'مس'],
-      hebrewTerms: ['עין הרע', 'ג׳ין', 'אחיזה/פגיעה רוחנית'],
-      sourceLocation: null,
-      sourceStatus: 'not-yet-found-in-current-code-search',
-      appDisplayHebrew:
-        'המונחים האלה חשובים לאבחון רוחני, אבל עדיין לא נמצאו אצלנו כמקור מפורש ומסודר לפי החיפוש והמיפוי הנוכחי. יש לאתר אותם בספר המלא לפני הכנסת דין.',
-      caution:
-        'לא להמציא. אם המקור לא מביא דין מפורש — לסמן not-explicit-in-source.'
-    }
   ],
 
   summary: {

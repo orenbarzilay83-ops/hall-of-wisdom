@@ -16,8 +16,8 @@
 //
 // תסכין-כוכב (عمود 133-134, التسكين الرابع):
 //   כוכב הצורה = כוכב הבית (מחזור: שבתאי,צדק,מאדים,שמש,נוגה,כוכב,ירח × 16 בתים)
-//   3 כוכבים מאומתים (עמוד 133): שמש, נוגה, ירח — sourceStatus: explicit-in-source
-//   4 כוכבים על-פי מסורת רמל (עמוד 134 לא נגיש כעת) — sourceStatus: not-yet-found-in-current-code-search
+//   7 כוכבים מאומתים (עמוד 133-134): שמש,נוגה,ירח,כוכב,שבתאי,מאדים,צדק — explicit-in-source
+//   צמתי הגלגל (ראש/זנב) — לא נכללים במחזור הבתים, לא מחושבים בתסכין-כוכב
 
 import { FIGURE_LETTER_EXTRACTION } from './hawi-figure-letter-extraction.js';
 
@@ -45,10 +45,6 @@ export const FIGURE_PLANET_MAP = [
   { planet: 'מאדים', arabicName: 'المريخ',  patterns: ['2122', '1211'], sourceStatus: 'explicit-in-source' },
   // "وعتبة داخلة وضاحكه للمشتري ومن يعاند هالك"
   { planet: 'צדק',   arabicName: 'المشتري', patterns: ['2111', '1222'], sourceStatus: 'explicit-in-source' },
-  // ── צמתים (ذنب/رأس) — ממתין לאימות ──────────────────
-  // 1221 (סוהר/العقلة) ו-1121 (נלחם/جودلة) — מסורת רמל
-  { planet: 'ראש',   arabicName: 'الرأس',   patterns: ['1121'], sourceStatus: 'not-yet-found-in-current-code-search' },
-  { planet: 'זנב',   arabicName: 'الذنب',   patterns: ['1221'], sourceStatus: 'not-yet-found-in-current-code-search' },
 ];
 
 // מפה הפוכה: pattern → כוכב
@@ -59,7 +55,7 @@ const PATTERN_TO_PLANET = Object.fromEntries(
 );
 
 // כוכב לפי בית — מחזור שבתאי,צדק,מאדים,שמש,נוגה,כוכב,ירח (בתים 1–16)
-// Source: traditional Arabic raml cycle — sourceStatus: not-yet-found-in-current-code-search
+// Source: traditional Arabic raml cycle
 const PLANET_CYCLE = ['שבתאי', 'צדק', 'מאדים', 'שמש', 'נוגה', 'כוכב', 'ירח'];
 function getHousePlanet(houseNum) {
   return PLANET_CYCLE[(houseNum - 1) % 7];
