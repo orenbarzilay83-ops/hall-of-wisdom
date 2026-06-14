@@ -531,12 +531,32 @@ function buildInterpretationHtml(reading) {
     .replace(/\n\n/g, '</p><p style="margin-top:14px;">')
     .replace(/\n/g, '<br/>');
 
+  // Source citations block
+  let sourcesHtml = "";
+  if (rules.length > 0) {
+    const ruleItems = rules
+      .filter(r => r.hebrew || r.result)
+      .slice(0, 8)
+      .map(r => {
+        const text = escapeHtml(r.hebrew || r.result || "");
+        const arabic = r.arabic ? `<span style="font-size:11px; color:#888; font-family:serif; direction:rtl;"> (${escapeHtml(r.arabic)})</span>` : "";
+        const section = r.sourceSectionHebrew ? `<span style="font-size:11px; color:#999;"> — ${escapeHtml(r.sourceSectionHebrew)}</span>` : "";
+        return `<li style="margin-bottom:6px; line-height:1.7;">${text}${section}${arabic}</li>`;
+      }).join("");
+    sourcesHtml = `
+      <div style="margin-top:16px; border-top:1px solid #ddd; padding-top:12px;">
+        <div style="font-weight:700; font-size:12px; color:#555; margin-bottom:8px;">📚 מקורות חאוי — חוקים רלוונטיים</div>
+        <ul style="margin:0; padding-right:18px; font-size:13px; color:#444;">${ruleItems}</ul>
+      </div>`;
+  }
+
   const detailsContent = `
     <div class="details-panel">
       <div class="summary-box">
         <p>${conclusionFormatted}</p>
       </div>
       ${spiritualDetailHtml}
+      ${sourcesHtml}
     </div>`;
 
   return `
