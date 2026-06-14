@@ -609,7 +609,7 @@
       margin-bottom:16px;
     }
     .open-inputs-col { flex:1; min-width:0; display:flex; flex-direction:column; gap:10px; }
-    .open-profile-col { flex:1; min-width:0; display:flex; flex-direction:column; gap:12px; }
+    .open-profile-col { flex:1; min-width:0; display:flex; flex-direction:column; gap:12px; border-right:1px solid #e0e0e0; padding-right:16px; }
     .open-field { display:flex; flex-direction:column; gap:4px; }
     .open-bottom { display:flex; flex-direction:column; gap:12px; }
     /* ─── פרופיל לקוח ─── */
@@ -1077,19 +1077,19 @@
               </div>
             </div>
             <div class="profile-group">
-              <div class="profile-group-label">ילדים</div>
-              <div class="profile-btn-row">
-                <button type="button" class="profile-btn" data-profile="children" data-value="yes">יש ילדים</button>
-                <button type="button" class="profile-btn" data-profile="children" data-value="no">אין ילדים</button>
-              </div>
-            </div>
-            <div class="profile-group">
               <div class="profile-group-label">מצב תעסוקתי</div>
               <div class="profile-btn-row">
                 <button type="button" class="profile-btn" data-profile="work" data-value="employed">שכיר</button>
                 <button type="button" class="profile-btn" data-profile="work" data-value="unemployed">מחפש עבודה</button>
                 <button type="button" class="profile-btn" data-profile="work" data-value="self">עצמאי</button>
                 <button type="button" class="profile-btn" data-profile="work" data-value="retired">בפנסיה</button>
+              </div>
+            </div>
+            <div class="profile-group">
+              <div class="profile-group-label">ילדים</div>
+              <div class="profile-btn-row">
+                <button type="button" class="profile-btn" data-profile="children" data-value="yes">יש ילדים</button>
+                <button type="button" class="profile-btn" data-profile="children" data-value="no">אין ילדים</button>
               </div>
             </div>
           </div>
