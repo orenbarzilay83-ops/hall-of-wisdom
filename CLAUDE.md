@@ -84,7 +84,29 @@ goral-hachol-ui.js::createRamlUiState()
 ## Key Geomantic Concepts
 
 **Figures (16 total):** Each is a 4-line pattern of odd (1) / even (2) points.
-Example: `1111` = Tariq, `2212` = Labbayn, `1122` = Nusra Kharija
+
+### טבלת 16 הצורות — שמות עבריים, ערביים ו-ID קובץ
+
+**חובה לקרוא:** תמיד השתמש בשם העברי + pattern בעת תיעוד ושיחה. ה-shortFigureId משמש בקוד בלבד.
+
+| Pattern | שם עברי | שם ערבי | shortFigureId | קובץ figure-state |
+|---------|---------|---------|---------------|-------------------|
+| `1111` | דרך | الطريق | `tariq` | `hawi-figure-state-tariq.js` |
+| `1112` | סף יוצא | العتبة الخارجة | `ataba-kharija` | `hawi-figure-state-ataba-kharija.js` |
+| `1121` | נלחם | الجودلة | `judla` | `hawi-figure-state-judla.js` |
+| `1122` | כבוד יוצא | النصرة الخارجة | `nusra-kharija` | `hawi-figure-state-nusra-kharija.js` |
+| `1211` | בר הלחי | نقي الخد | `naqi-khad` | `hawi-figure-state-naqi-khad.js` |
+| `1212` | ממון יוצא | القبض الخارج | `qabd-kharij` | `hawi-figure-state-qabd-kharij.js` |
+| `1221` | סוהר | العقلة | `aqla` | `hawi-figure-state-aqla.js` |
+| `1222` | נשוא ראש | الأحيان | `hayyan` | `hawi-figure-state-hayyan.js` |
+| `2111` | סף נכנס | العتبة الداخلة | `ataba-dakhila` | `hawi-figure-state-ataba-dakhila.js` |
+| `2112` | חיבור | الاجتماع | `ijtima` | `hawi-figure-state-ijtima.js` |
+| `2121` | ממון נכנס | القبض الداخل | `qabd-dakhil` | `hawi-figure-state-qabd-dakhil.js` |
+| `2122` | אדום | الحمرة | `humra` | `hawi-figure-state-humra.js` |
+| `2211` | כבוד נכנס | النصرة الداخلة | `nusra-dakhila` | `hawi-figure-state-nusra-dakhila.js` |
+| `2212` | לבן | البياض | `bayad` | `hawi-figure-state-bayad.js` |
+| `2221` | שפל ראש | النكيس | `nakis` | `hawi-figure-state-nakis.js` |
+| `2222` | קהלה | الجماعة | `jamaa` | `hawi-figure-state-jamaa.js` |
 
 **Houses (16 on the RAML board):**
 - House 1 = Querent | House 2 = Moveable property | House 3 = Siblings
@@ -122,6 +144,11 @@ Every house entry in every data file has a `sourceStatus` field. This is the int
 | `not-yet-found-in-current-code-search` | Awaiting verification |
 
 **When source is missing:** set `sourceStatus: "not-yet-found-in-current-code-search"`, leave `arabicText: []`, `hebrewTranslation: []`, `effectHebrew: ""`. **Never fill with guesses.**
+
+### כלל עדכון סטטוס — חובה
+**כאשר עובדים על קובץ ומוצאים `not-yet-found-in-current-code-search`:**
+- אם הנתון נבדק ולא נמצא במקור → עדכן ל-`source-audited-final-source-kept-as-mapped` **באותו commit**
+- אין להשאיר `not-yet-found` בקובץ שכבר נבדק — זה מה שגורם לכל שיח חדש לחשוב שחסר חומר
 
 ---
 
