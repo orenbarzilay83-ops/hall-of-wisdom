@@ -11,7 +11,7 @@ export const HAWI_FIGURE_STATE_AQLA = {
   sourcePages: ['PDF document 46.pdf', 'PDF document 47.pdf'],
   sourceType: 'full-book-page-index',
   extractionStatus: 'source-mapped-needs-photo-review',
-  noteHebrew: 'מצב הצורה סוהר / العقلة בכל בית. חלק מן ה־ביקורת קודמת בבית 11 משובש ונסגר בביקורת קודמת.',
+  noteHebrew: 'מצב הצורה סוהר בכל בית. חלק מן ה־ביקורת קודמת בבית 11 משובש ונסגר בביקורת קודמת.',
   states: [
     { house: 1, arabicText: ['في الأول ناطق سعيد قوي يجلب الرزق ويكثره'], hebrewTranslation: ['בבית הראשון: מדבר, טוב וחזק; מביא פרנסה ומרבה אותה.'], speakingState: 'speaking', fortuneState: 'benefic-strong', effectHebrew: 'משיכת פרנסה וריבויה.', sourceStatus: 'sourceMapped' },
     { house: 2, arabicText: ['وفي الثاني سعد حسن الفعايل طيب الخلق'], hebrewTranslation: ['בבית השני: טוב, מעשיו יפים וטבעו נעים.'], speakingState: null, fortuneState: 'benefic', effectHebrew: 'טוב בממון, מעשים טובים ואופי נוח.', sourceStatus: 'sourceMapped' },

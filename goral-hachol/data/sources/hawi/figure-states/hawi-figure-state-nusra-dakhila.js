@@ -11,7 +11,7 @@ export const HAWI_FIGURE_STATE_NUSRA_DAKHILA = {
   sourcePages: ['PDF document 49.pdf'],
   sourceType: 'full-book-page-index',
   extractionStatus: 'source-audited-from-drive-pdf-45-51',
-  noteHebrew: 'מצב הצורה כבוד נכנס / النصرة الداخلة בכל בית. נלקח ממיפוי PDF 49 ונסגר בביקורת קודמת לפני הפעלה מלאה במנוע.',
+  noteHebrew: 'מצב הצורה כבוד נכנס בכל בית. נלקח ממיפוי PDF 49 ונסגר בביקורת קודמת לפני הפעלה מלאה במנוע.',
   states: [
     { house: 1, arabicText: ['في الأول صامت سعد يتعب القلب'], hebrewTranslation: ['בבית הראשון: שותק וטוב; מעייף את הלב.'], speakingState: 'silent', fortuneState: 'benefic-heart-fatigue', effectHebrew: 'טוב שיש בו עייפות/טרדת לב.', sourceStatus: 'sourceMapped' },
     { house: 2, arabicText: ['وفي الثاني صامت سعيد يوسع الرزق'], hebrewTranslation: ['בבית השני: שותק וטוב; מרחיב את הפרנסה.'], speakingState: 'silent', fortuneState: 'benefic', effectHebrew: 'הרחבת פרנסה וממון.', sourceStatus: 'sourceMapped' },

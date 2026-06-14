@@ -11,7 +11,7 @@ export const HAWI_FIGURE_STATE_ATABA_DAKHILA = {
   sourcePages: ['PDF document 50.pdf'],
   sourceType: 'full-book-page-index',
   extractionStatus: 'source-audited-from-drive-pdf-45-51',
-  noteHebrew: 'מצב הצורה סף נכנס / العتبة الداخلة. במיפוי הנוכחי בתים 15–16 אינם קיימים בקריאה, והסטטוס נשמר לפי ביקורת קודמת.',
+  noteHebrew: 'מצב הצורה סף נכנס. במיפוי הנוכחי בתים 15–16 אינם קיימים בקריאה, והסטטוס נשמר לפי ביקורת קודמת.',
   states: [
     { house: 1, arabicText: ['في الأول صامت سعد قوي متمكن سخي'], hebrewTranslation: ['בבית הראשון: שותק, טוב, חזק, מבוסס ונדיב.'], speakingState: 'silent', fortuneState: 'benefic-strong-established', effectHebrew: 'טוב, כוח, יציבות ונדיבות.', sourceStatus: 'sourceMapped' },
     { house: 2, arabicText: ['وفي الثاني ناطق نحس مدبر رديء الأحوال'], hebrewTranslation: ['בבית השני: מדבר, נחס ומסדר; רע במצביו.'], speakingState: 'speaking', fortuneState: 'malefic', effectHebrew: 'קלקול בענייני ממון ופרנסה.', sourceStatus: 'sourceMapped' },

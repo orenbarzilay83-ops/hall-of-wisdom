@@ -11,7 +11,7 @@ export const HAWI_FIGURE_STATE_NAQI_KHAD = {
   sourcePages: ['page 78'],
   sourceType: 'user-provided-image',
   extractionStatus: 'extracted-from-user-provided-image',
-  noteHebrew: 'מצב הצורה בר הלחי / نقي الخد. תת-כותרת בספר: "(وهو شكل ممتزج قريب للفساد)" — צורה ממוזגת, קרובה לקלקול. בית 15 לא נזכר במקור.',
+  noteHebrew: 'מצב הצורה בר הלחי. תת-כותרת בספר: "צורה ממוזגת, קרובה לקלקול". בית 15 לא נזכר במקור.',
   states: [
     {
       house: 1,

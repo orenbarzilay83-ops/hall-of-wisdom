@@ -11,7 +11,7 @@ export const HAWI_FIGURE_STATE_TARIQ = {
   sourcePages: ['PDF document 49.pdf', 'PDF document 50.pdf'],
   sourceType: 'full-book-page-index',
   extractionStatus: 'source-audited-from-drive-pdf-45-51',
-  noteHebrew: 'מצב הצורה דרך / الطريق. בית 1 נקטע בסוף PDF 49 וממשיך ב־PDF 50, ובית 8 מסומן במיפוי: لم يذكر.',
+  noteHebrew: 'מצב הצורה דרך. בית 1 נקטע בסוף PDF 49 וממשיך ב־PDF 50, ובית 8 מסומן במיפוי: לא נזכר.',
   states: [
     { house: 1, arabicText: ['في الأول نحس ناطق مدبر يحير'], hebrewTranslation: ['בבית הראשון: נחס, מדבר ומסדר; מבלבל.'], speakingState: 'speaking', fortuneState: 'malefic-confusing', effectHebrew: 'בלבול ונחס בפתיחת העניין.', sourceStatus: 'sourceMapped' },
     { house: 2, arabicText: ['وفي الثاني ناطق نحس قوي ينقص الرزق والمال محلول'], hebrewTranslation: ['בבית השני: מדבר, נחס וחזק; מפחית פרנסה וממון, והדבר מפורק/מותר.'], speakingState: 'speaking', fortuneState: 'malefic-strong', effectHebrew: 'פגיעה חזקה בפרנסה ובממון.', sourceStatus: 'sourceMapped' },

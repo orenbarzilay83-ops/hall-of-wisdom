@@ -11,7 +11,7 @@ export const HAWI_FIGURE_STATE_HUMRA = {
   sourcePages: ['PDF document 47.pdf', 'PDF document 48.pdf'],
   sourceType: 'full-book-page-index',
   extractionStatus: 'source-audited-from-drive-pdf-45-51',
-  noteHebrew: 'מצב הצורה אדום / الحمرة בכל בית. בית 15 נשמר לפי המיפוי הסופי, והסטטוס נשמר לפי ביקורת קודמת.',
+  noteHebrew: 'מצב הצורה אדום בכל בית. בית 15 נשמר לפי המיפוי הסופי, והסטטוס נשמר לפי ביקורת קודמת.',
   states: [
     { house: 1, arabicText: ['في الأول نحس مدبر الفعال'], hebrewTranslation: ['בבית הראשון: נחס, מסדר/מנהל את הפעולות.'], speakingState: null, fortuneState: 'malefic', effectHebrew: 'פעולה נחסית ומסדרת.', sourceStatus: 'sourceMapped' },
     { house: 2, arabicText: ['وفي الثاني ناطق سعد يجلب الرزق ويزيد الهم'], hebrewTranslation: ['בבית השני: מדבר וטוב; מביא פרנסה אך מוסיף דאגה.'], speakingState: 'speaking', fortuneState: 'mixed', effectHebrew: 'פרנסה יחד עם ריבוי דאגה.', sourceStatus: 'sourceMapped' },

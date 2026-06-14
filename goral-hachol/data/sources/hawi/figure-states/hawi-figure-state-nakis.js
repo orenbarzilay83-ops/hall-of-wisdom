@@ -11,7 +11,7 @@ export const HAWI_FIGURE_STATE_NAKIS = {
   sourcePages: ['PDF document 47.pdf'],
   sourceType: 'full-book-page-index',
   extractionStatus: 'source-audited-from-drive-pdf-45-51',
-  noteHebrew: 'מצב הצורה שפל ראש / النكيس בכל בית. בית 15 נשמר לפי המיפוי הסופי, והסטטוס נשמר לפי ביקורת קודמת.',
+  noteHebrew: 'מצב הצורה שפל ראש בכל בית. בית 15 נשמר לפי המיפוי הסופי, והסטטוס נשמר לפי ביקורת קודמת.',
   states: [
     { house: 1, arabicText: ['في الأول صامت سعد به قوى كما تريد'], hebrewTranslation: ['בבית הראשון: שותק, טוב, ויש בו כוח כפי שתרצה.'], speakingState: 'silent', fortuneState: 'benefic-strong', effectHebrew: 'כוח וטוב לפי המבוקש.', sourceStatus: 'sourceMapped' },
     { house: 2, arabicText: ['وفي الثاني صامت سعد قوي يرد كل تالف ويجلب الرزق'], hebrewTranslation: ['בבית השני: שותק, טוב וחזק; מחזיר כל דבר שנפגם ומביא פרנסה.'], speakingState: 'silent', fortuneState: 'benefic-strong', effectHebrew: 'החזרת אובדן/פגם והבאת פרנסה.', sourceStatus: 'sourceMapped' },

@@ -11,7 +11,7 @@ export const HAWI_FIGURE_STATE_HAYYAN = {
   sourcePages: ['page 73', 'page 74'],
   sourceType: 'user-provided-image',
   extractionStatus: 'extracted-from-user-provided-image',
-  noteHebrew: 'מצב הצורה נשוא ראש / الأحيان. הספר מכנה אותה "الضاحك" (הצוחק/השמח) ו"أعظم الأشكال" (הגדולה שבצורות). בית 15 לא נזכר במקור שנמסר.',
+  noteHebrew: 'מצב הצורה נשוא ראש. הספר מכנה אותה "הצוחק/השמח" ו"הגדולה שבצורות". בית 15 לא נזכר במקור שנמסר.',
   states: [
     {
       house: 1,
