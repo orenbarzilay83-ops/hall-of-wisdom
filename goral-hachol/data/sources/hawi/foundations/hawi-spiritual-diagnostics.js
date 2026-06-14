@@ -192,9 +192,9 @@ export const HAWI_SPIRITUAL_DIAGNOSTICS = {
       arabicTerms: ['عين', 'جن', 'مس'],
       hebrewTerms: ['עין הרע', 'ג׳ין', 'אחיזה/פגיעה רוחנית'],
       sourceLocation: null,
-      sourceStatus: 'not-yet-found-in-current-code-search',
+      sourceStatus: 'not-explicit-in-source',
       appDisplayHebrew:
-        'המונחים האלה חשובים לאבחון רוחני, אבל עדיין לא נמצאו אצלנו כמקור מפורש ומסודר לפי החיפוש והמיפוי הנוכחי. יש לאתר אותם בספר המלא לפני הכנסת דין.',
+        'המונחים האלה חשובים לאבחון רוחני, אך לא נמצאו בספר כשף אל-אסרר המובנה באפליקציה. יש לאתר אותם בספר חאוי לפני הכנסת דין.',
       caution:
         'לא להמציא. אם המקור לא מביא דין מפורש — לסמן not-explicit-in-source.'
     }

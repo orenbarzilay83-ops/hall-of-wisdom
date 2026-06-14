@@ -45,10 +45,10 @@ export const FIGURE_PLANET_MAP = [
   { planet: 'מאדים', arabicName: 'المريخ',  patterns: ['2122', '1211'], sourceStatus: 'explicit-in-source' },
   // "وعتبة داخلة وضاحكه للمشتري ومن يعاند هالك"
   { planet: 'צדק',   arabicName: 'المشتري', patterns: ['2111', '1222'], sourceStatus: 'explicit-in-source' },
-  // ── צמתים (ذنب/رأس) — ממתין לאימות ──────────────────
-  // 1221 (סוהר/العقلة) ו-1121 (נלחם/جودلة) — מסורת רמל
-  { planet: 'ראש',   arabicName: 'الرأس',   patterns: ['1121'], sourceStatus: 'not-yet-found-in-current-code-search' },
-  { planet: 'זנב',   arabicName: 'الذنب',   patterns: ['1221'], sourceStatus: 'not-yet-found-in-current-code-search' },
+  // ── צמתים (ذنب/رأس) — טבלה בעמ' 134 כשף קיימת אך תוכן לא הוכנס לטקסט ──────────────────
+  // 1221 (סוהר/العقلة) ו-1121 (נלחם/جودلة) — מסורת רמל; כשף עמ' 134 מציין טבלה אך לא ניתן לאמת מהטקסט
+  { planet: 'ראש',   arabicName: 'الرأس',   patterns: ['1121'], sourceStatus: 'not-explicit-in-source' },
+  { planet: 'זנב',   arabicName: 'الذنب',   patterns: ['1221'], sourceStatus: 'not-explicit-in-source' },
 ];
 
 // מפה הפוכה: pattern → כוכב
@@ -59,7 +59,7 @@ const PATTERN_TO_PLANET = Object.fromEntries(
 );
 
 // כוכב לפי בית — מחזור שבתאי,צדק,מאדים,שמש,נוגה,כוכב,ירח (בתים 1–16)
-// Source: traditional Arabic raml cycle — sourceStatus: not-yet-found-in-current-code-search
+// Source: traditional Arabic raml cycle — sourceStatus: not-explicit-in-source (לא נמצא מפורש בכשף)
 const PLANET_CYCLE = ['שבתאי', 'צדק', 'מאדים', 'שמש', 'נוגה', 'כוכב', 'ירח'];
 function getHousePlanet(houseNum) {
   return PLANET_CYCLE[(houseNum - 1) % 7];
