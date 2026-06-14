@@ -13,6 +13,8 @@ import {
 
 import {
   writeHumanGoralConclusion,
+  writeShortClientVerdict,
+  writeClientReadingHebrew,
 } from './goral-conclusion-writer.js';
 
 import {
@@ -22,6 +24,23 @@ import {
 import {
   FIGURE_LETTER_EXTRACTION,
 } from '../data/sources/hawi/foundations/hawi-figure-letter-extraction.js';
+
+import {
+  calculateHazz,
+  getHazzStrengthLabel,
+} from '../data/sources/hawi/foundations/hawi-hazz.js';
+
+import { getKashfVerdict }         from './kashf-verdict-engine.js';
+import { getKashfSupportAnalysis } from './kashf-support-analyzer.js';
+import { getKashfBookInsight }     from './kashf-book-reader.js';
+
+import {
+  HAWI_FIGURE_NAMES_BY_ID,
+} from '../data/sources/hawi/foundations/hawi-figure-names.js';
+
+import {
+  getHawiAspectsBetweenHouses,
+} from '../data/sources/hawi/foundations/hawi-witnesses.js';
 
 export const NATURAL_HOUSE_FIGURES = {
   1:  '1121', // נלחם — doc2: "الجدولة 00|0"
@@ -153,6 +172,26 @@ const TOPIC_QUESITED_HOUSE = {
   theft:                7,  // בית הגנב (הצד השני)
   siblings:             3,  // בית האחים / השכנים
   deathInheritance:     8,  // בית המוות / הירושה
+};
+
+// ── תפקידים ספציפיים של בתים לפי נושא (כשף אל-אסראר שער שישי) ──────────────
+// מקור: כשף אל-אסראר, שער שישי + פסקה כוללת עמ' 166
+const TOPIC_HOUSE_ROLES = {
+  illness:          { 6: 'טבע המחלה', 2: 'הרפואה / הדרך לריפוי', 8: 'פרוגנוזה: מוות או החלמה' },
+  marriage:         { 7: 'בן/בת הזוג', 13: 'עד — מצב השואל', 14: 'עד — מצב הזוג' },
+  travel:           { 9: 'מצב הנסיעה', 4: 'היעד / הסיום', 12: 'מכשולים / סכנות בדרך' },
+  missingPerson:    { 1: 'מצב הנעדר', 4: 'מיקום הנעדר', 12: 'מה מונע את חזרתו' },
+  theft:            { 2: 'החפץ הגנוב', 12: 'הגנב / מי גנב', 4: 'מיקום החפץ' },
+  authorityState:   { 10: 'השלטון / התפקיד', 1: 'השואל ביחס לשלטון', 11: 'הסיכויים / תקוות' },
+  commerce:         { 2: 'הממון / הסחורה', 7: 'הצד השני (קונה/מוכר)', 10: 'הרווח / מוניטין' },
+  prisoner:         { 1: 'מצב האסיר', 5: 'סיכוי שחרור', 12: 'הכלא / מה מחזיק אותו' },
+  childrenPregnancy:{ 5: 'הילד / ההריון', 4: 'מצב האב/הבית', 11: 'תקוות / אם יתממש' },
+  hiddenTreasure:   { 4: 'מיקום המטמון (קרקע)', 2: 'שווי המטמון', 12: 'מה מסתיר / מה מונע' },
+  enemies:          { 7: 'האויב / מצבו', 12: 'מה שמסתיר האויב', 9: 'תנועת האויב / כוונותיו' },
+  disputes:         { 7: 'היריב', 1: 'השואל בסכסוך', 15: 'ההכרעה הסופית' },
+  deathInheritance: { 8: 'המוות / הסכנה', 2: 'הירושה / הממון', 1: 'מצב השואל' },
+  seaVoyage:        { 9: 'הנסיעה', 8: 'סכנת ים / מוות', 12: 'מכשולים בדרך' },
+  fear:             { 12: 'מקור הפחד / הסכנה', 1: 'מצב השואל', 4: 'מה יקרה' },
 };
 
 const MALEFIC_FIGURE_PATTERNS = new Set([
@@ -306,7 +345,7 @@ function computeDirectionQuadrant(chart) {
     return { dir, hebrewDir, houses, incomingBenefic, outgoingMalefic };
   });
   const dominant = summary.reduce((a, b) => (b.incomingBenefic > a.incomingBenefic ? b : a), summary[0]);
-  return { quadrants: summary, dominant };
+  return { quadrants: summary, dominant, dominantHebrew: dominant?.hebrewDir || null };
 }
 
 const DEATH_FIGURE_PATTERNS = new Set(['1112', '1212']); // עתבה יוצאת, קבץ יוצא — "מן הצורות הנחסות ביותר"
@@ -693,10 +732,16 @@ function computeTopicConnections(chart, topicId) {
       const hToneB = HOUSE_FORTUNE_TONES[bNum] ?? 0;
       connDetail = connectionQualityHebrew(figFortune, hToneA, hToneB);
     } else {
-      const aspect = aspectTypeBetween(aNum, bNum);
-      if (aspect) {
+      const bookAspects = getHawiAspectsBetweenHouses(aNum, bNum);
+      if (bookAspects.length > 0) {
         connType = 'aspect';
-        connDetail = aspect.hebrew;
+        connDetail = bookAspects.map((ba) => ba.type).join('+');
+      } else {
+        const aspect = aspectTypeBetween(aNum, bNum);
+        if (aspect) {
+          connType = 'aspect';
+          connDetail = aspect.hebrew;
+        }
       }
     }
 
@@ -2157,12 +2202,22 @@ function computeJumlaAnalysis(chart, topicId) {
   return result;
 }
 
-const ELEMENT_TIMING_UNITS = {
-  'אש':    { single: 1, label: 'יום / שעה' },
-  'אוויר': { single: 2, label: 'ימיים / שעתיים' },
-  'מים':   { single: 3, label: 'שלושה ימים / שעות' },
-  'עפר':   { single: 4, label: 'ארבעה ימים / שעות' },
-};
+// ── שיטת האדד המלאה (Task 9) ─────────────────────────────────────────────────
+// מקור: כשף אל-אסראר — ספירת נקודות הצורה לחישוב מדויק של זמן
+// כל שורה '1' = נקודה אחת; כל שורה '2' = שתי נקודות
+// אמהות (ב1–4) = ימים | בנות (ב5–8) = שבועות | נכדות (ב9–12) = חודשים | עדים/דיין (ב13–16) = שנים
+function countFigureDots(pattern) {
+  if (!pattern || pattern.length < 4) return 0;
+  return pattern.split('').reduce((sum, ch) => sum + (ch === '2' ? 2 : 1), 0);
+}
+
+function getTimingUnit(houseNumber) {
+  const n = Number(houseNumber);
+  if (n >= 1  && n <= 4)  return { unit: 'ימים',    unitSingle: 'יום',    tier: 'mothers',       tierHebrew: 'אמהות (מהיר — ימים)' };
+  if (n >= 5  && n <= 8)  return { unit: 'שבועות',  unitSingle: 'שבוע',   tier: 'daughters',     tierHebrew: 'בנות (בינוני — שבועות)' };
+  if (n >= 9  && n <= 12) return { unit: 'חודשים',  unitSingle: 'חודש',   tier: 'granddaughters',tierHebrew: 'נכדות (ממושך — חודשים)' };
+  return                         { unit: 'שנים',     unitSingle: 'שנה',    tier: 'witnesses',     tierHebrew: 'עדים/דיין (ארוך — שנים)' };
+}
 
 function computeTimingEstimate(chart, dhamirHouse, topicId) {
   if (!dhamirHouse || !Array.isArray(chart)) return null;
@@ -2171,23 +2226,22 @@ function computeTimingEstimate(chart, dhamirHouse, topicId) {
   const dhamirEntry = chart.find((h) => Number(h.house) === dh);
   if (!dhamirEntry) return null;
 
-  const el = dhamirEntry.element || dhamirEntry.elementHebrew || '';
-  const timing = ELEMENT_TIMING_UNITS[el];
-  if (!timing) return null;
-
-  let scale = '';
-  if (dh >= 1  && dh <= 4)  scale = 'ימים / שעות (אמהות — מהיר)';
-  if (dh >= 5  && dh <= 8)  scale = 'שבועות / ימים (בנות — בינוני)';
-  if (dh >= 9  && dh <= 12) scale = 'חודשים / שבועות (נכדות — ממושך)';
-  if (dh >= 13 && dh <= 16) scale = 'שנים / חודשים (מאזנים — ארוך)';
+  const pattern = dhamirEntry.key || dhamirEntry.pattern || '';
+  const dotCount = countFigureDots(pattern);
+  const { unit, unitSingle, tier, tierHebrew } = getTimingUnit(dh);
+  const quantity = dotCount === 1 ? `${dotCount} ${unitSingle}` : `${dotCount} ${unit}`;
 
   return {
     dhamirHouse: dh,
     dhamirFigure: dhamirEntry.hebrew || dhamirEntry.key,
-    element: el,
-    timingUnits: timing.label,
-    scale,
-    outputHebrew: `עיתוי (מתי יסתיים?): הדמיר בבית ${dh} (${dhamirEntry.hebrew || dhamirEntry.key}) — אלמנט ${el} — ${timing.label}. סקאלה: ${scale}`,
+    pattern,
+    dotCount,
+    quantity,
+    unit,
+    tier,
+    timingUnits: tierHebrew,
+    outputHebrew: `עיתוי (האדד): הדמיר בבית ${dh} (${dhamirEntry.hebrew || dhamirEntry.key}, ${dotCount} נקודות) → ${quantity}. סקאלה: ${tierHebrew}`,
+    sourceRef: 'כשף אל-אסראר — שיטת האדד: ספירת נקודות הצורה × עמדת הבית = תזמון',
   };
 }
 const MARRIAGE_BY_DOMINANT_FIGURE = {
@@ -2606,6 +2660,79 @@ function computeFoundationsDisplay() {
   };
 }
 
+// ── עדות ספציפית של בתים 13–14 (Task 6) ─────────────────────────────────────
+// מקור: כשף אל-אסראר — בית 13 מעיד על בית 1 ו-9; בית 14 מעיד על בית 5, 6 ו-11
+const WITNESS_13_HOUSES = [1, 9];
+const WITNESS_14_HOUSES = [5, 6, 11];
+
+const HOUSE_TOPIC_LABELS = {
+  1:  'השואל',
+  5:  'ילדים',
+  6:  'מחלה / משרתים',
+  9:  'מזל / נסיעה / דת',
+  11: 'חברים / תקוות',
+};
+
+function describeWitnessEffect(witnessHouse, targetHouseNumbers, chartHouses) {
+  if (!witnessHouse) return null;
+  const tone = getFigureFortuneTone(witnessHouse);
+
+  const targetSummaries = targetHouseNumbers.map((n) => {
+    const h = (chartHouses || []).find((ch) => Number(ch.house) === n);
+    const label = HOUSE_TOPIC_LABELS[n] || `בית ${n}`;
+    const figName = h?.hebrew || h?.figureHebrew || '';
+    const figFort = h?.fortune || '';
+    const targetTone = h ? getFigureFortuneTone({ fortune: figFort }) : 0;
+
+    let effect;
+    if (tone > 0 && targetTone > 0) {
+      effect = 'מחזק לטובה';
+    } else if (tone > 0 && targetTone < 0) {
+      effect = 'מנסה להקל — אך הצורה עצמה שלילית';
+    } else if (tone < 0 && targetTone > 0) {
+      effect = 'מחליש — עד שלילי על בית חיובי';
+    } else if (tone < 0 && targetTone < 0) {
+      effect = 'מחזק לרעה';
+    } else {
+      effect = 'ממוזג';
+    }
+    return `בית ${n} (${label}${figName ? ` — ${figName}` : ''}): ${effect}`;
+  });
+
+  const toneWord = tone > 0 ? 'סעד' : tone < 0 ? 'נחס' : 'ממוזג';
+  return {
+    witnessHouseNum: Number(witnessHouse.house),
+    witnessPattern: witnessHouse.key,
+    witnessFortune: toneWord,
+    targetHouses: targetHouseNumbers,
+    targetSummaries,
+    hebrewSummary: targetSummaries.join('; '),
+  };
+}
+
+// ── שילוב צורה × בית (Task 7) ────────────────────────────────────────────────
+// מקור: כשף אל-אסראר — מזל הצורה + טבע הבית = הכרעת הקריאה
+function computeFigureHouseInteraction(figureTone, houseFortuneTone) {
+  const f = figureTone > 0 ? 'saad' : figureTone < 0 ? 'nahs' : 'mixed';
+  const h = houseFortuneTone > 0 ? 'good' : houseFortuneTone < 0 ? 'bad' : 'neutral';
+
+  if (f === 'saad' && h === 'good')    return { code: 'reinforced-good',   hebrewLabel: 'מחוזקת',           note: 'צורה טובה בבית טוב — הכוח הטוב מחוזק' };
+  if (f === 'saad' && h === 'bad')     return { code: 'mixed-good-in-bad', hebrewLabel: 'מעורבת',            note: 'צורה טובה בבית קשה — הכוח הטוב מוחלש' };
+  if (f === 'nahs' && h === 'bad')     return { code: 'reinforced-bad',    hebrewLabel: 'מחוזקת לרעה',      note: 'צורה רעה בבית קשה — הקושי מחוזק' };
+  if (f === 'nahs' && h === 'good')    return { code: 'weakened-bad',      hebrewLabel: 'מחלישה',           note: 'צורה רעה בבית טוב — מחלישה את הבית הטוב' };
+  if (f === 'saad' && h === 'neutral') return { code: 'neutral-good',      hebrewLabel: 'ניטרלי-חיובי',     note: 'צורה טובה בבית ניטרלי' };
+  if (f === 'nahs' && h === 'neutral') return { code: 'neutral-bad',       hebrewLabel: 'ניטרלי-שלילי',     note: 'צורה רעה בבית ניטרלי' };
+  return { code: 'mixed',              hebrewLabel: 'ממוזג',               note: 'צורה ממוזגת — הכיוון תלוי בעדים' };
+}
+
+function computeWitnessTestimony(witness13, witness14, chartHouses) {
+  return {
+    w13: witness13 ? describeWitnessEffect(witness13, WITNESS_13_HOUSES, chartHouses) : null,
+    w14: witness14 ? describeWitnessEffect(witness14, WITNESS_14_HOUSES, chartHouses) : null,
+    sourceRef: 'כשף אל-אסראר — בית 13 מעיד על בית 1 ו-9; בית 14 מעיד על בית 5, 6 ו-11',
+  };
+}
+
 function buildBoardAnalysis(board, topicId, mainHouses) {
   if (!board || !Array.isArray(board.chart)) {
     return {
@@ -2633,6 +2760,8 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     .filter(Boolean)
     .map((house) => {
       const dir = getFigureDirection(house.key || null);
+      const figureFull = HAWI_FIGURE_NAMES_BY_ID[house.key] || null;
+      const hazz = figureFull ? calculateHazz(figureFull, house.house) : null;
       return {
         house: house.house,
         houseHebrew: house.houseHebrew || null,
@@ -2646,12 +2775,24 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
         figureState: getFigureStateForHouse(house),
         houseState: getHouseStateColor(house.house),
         houseFortuneTone: getHouseFortuneTone(house.house),
+        figureHouseInteraction: computeFigureHouseInteraction(
+          getFigureFortuneTone({ fortune: house.fortune }),
+          getHouseFortuneTone(house.house)
+        ),
         isAdversarial: adversarialHouseNums.has(Number(house.house)),
         direction: dir,
         directionHebrew: getFigureDirectionHebrew(dir),
         isNaturalFigure: !!(house.key && NATURAL_HOUSE_FIGURES[house.house] === house.key),
         seventhFigure: getSeventhFigure(house.key || null),
         quadrant: HOUSE_QUADRANT(house.house),
+        hazz,
+        hazzCount: hazz?.count ?? 0,
+        hazzStrength: hazz ? getHazzStrengthLabel(hazz.count) : null,
+        seekerSoughtHebrew: figureFull?.seekerSoughtHebrew || null,
+        seekerStatus: figureFull?.seekerStatus || null,
+        zodiacHebrew: figureFull?.zodiacHebrew || null,
+        ichchhaHebrew: figureFull?.ichchhaHebrew || null,
+        topicRole: (TOPIC_HOUSE_ROLES[topicId] || {})[Number(house.house)] || null,
       };
     });
 
@@ -2660,6 +2801,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const witness14 = houses.find((h) => Number(h.house) === 14) || null;
   const judge15 = houses.find((h) => Number(h.house) === 15) || null;
   const sentence16 = houses.find((h) => Number(h.house) === 16) || null;
+  const witnessTestimony = computeWitnessTestimony(witness13, witness14, board.chart);
   const dhamirHouse = computeDhamirHouse(board);
   const dhamirByMizan = computeDhamirByMizanTracing(board.chart);
   const boardScore = computeBoardScore(board.chart);
@@ -2777,6 +2919,20 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     ? board.chart.find((h) => h.key === h1Seventh && Number(h.house) !== 1)
     : null;
 
+  // Task 10: תובנה מספר כשף אל-אסראר שער שישי (מחובר לנושא)
+  const kashfBookInsight = getKashfBookInsight(topicId);
+
+  // Task 11: תפקידים ספציפיים של בתים לפי נושא (מהכשף)
+  const houseRoles = TOPIC_HOUSE_ROLES[topicId] || {};
+  const specificRolesHebrew = Object.entries(houseRoles).map(([hNum, role]) => {
+    const h = houses.find((x) => Number(x.house) === Number(hNum));
+    if (!h) return null;
+    const fig = h.figureHebrew || h.figureKey || '';
+    const fort = h.fortune || '';
+    const transit = h.transit?.meaning || '';
+    return `${role}: ${fig}${fort ? ` (${fort})` : ''}${transit ? ` — ${transit}` : ''}`;
+  }).filter(Boolean);
+
   return {
     hasBoard: true,
     focusHouseNumber,
@@ -2784,6 +2940,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     houses,
     focusHouse,
     witnesses: [witness13, witness14].filter(Boolean),
+    witnessTestimony,
     judge: judge15,
     sentence: sentence16,
     dhamirHouse,
@@ -2822,6 +2979,8 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     seventhOfHouse1: seventhOfHouse1Found
       ? { pattern: h1Seventh, foundInHouse: Number(seventhOfHouse1Found.house), figureHebrew: seventhOfHouse1Found.hebrew || h1Seventh }
       : null,
+    kashfBookInsight,
+    specificRolesHebrew,
   };
 }
 
@@ -3092,6 +3251,62 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
   return parts.join('\n\n');
 }
 
+function buildValidatedConclusion(boardValidation, conclusionText) {
+  if (!boardValidation?.warnings?.length) return conclusionText;
+  const criticals = boardValidation.warnings.filter((w) => w.severity === 'critical');
+  const nonCriticals = boardValidation.warnings.filter((w) => w.severity !== 'critical');
+  const parts = [];
+  if (criticals.length) {
+    parts.push('⚠️ שגיאת לוח קריטית:');
+    criticals.forEach((w) => parts.push(w.hebrewMessage));
+    parts.push('');
+    parts.push('הפירוש שלהלן ניתן לצרכי עיון בלבד — הלוח אינו תקין.');
+  }
+  if (nonCriticals.length) {
+    parts.push('⚠️ אזהרת לוח:');
+    nonCriticals.forEach((w) => parts.push(w.hebrewMessage));
+  }
+  if (parts.length) parts.push('');
+  parts.push(conclusionText);
+  return parts.join('\n');
+}
+
+// ── ספירת יסודות לתשובה כן/לא (Task 5) ─────────────────────────────────────
+// מקור: כשף אל-אסראר — רוב זכרי (אש+אוויר) = חיובי; רוב נקבי (מים+עפר) = שלילי
+const MASCULINE_ELEMENTS = new Set(['אש', 'אוויר', 'רוח']);
+const FEMININE_ELEMENTS  = new Set(['מים', 'עפר']);
+
+function countElementsForYesNo(board) {
+  const entries = board?.entries || [];
+  let masculine = 0;
+  let feminine  = 0;
+
+  for (const entry of entries) {
+    const el = entry.figure?.elementHebrew || '';
+    if (MASCULINE_ELEMENTS.has(el)) masculine++;
+    else if (FEMININE_ELEMENTS.has(el)) feminine++;
+  }
+
+  const total = masculine + feminine;
+  let verdict, hebrewShort, hebrewSummary;
+
+  if (masculine > feminine) {
+    verdict     = 'positive';
+    hebrewShort = 'כן';
+    hebrewSummary = `רוב יסודות זכריים (${masculine} זכרי / ${feminine} נקבי מתוך ${total}) — הלוח נוטה לתשובה חיובית.`;
+  } else if (feminine > masculine) {
+    verdict     = 'negative';
+    hebrewShort = 'לא';
+    hebrewSummary = `רוב יסודות נקביים (${feminine} נקבי / ${masculine} זכרי מתוך ${total}) — הלוח נוטה לתשובה שלילית.`;
+  } else {
+    verdict     = 'neutral';
+    hebrewShort = 'שוויון';
+    hebrewSummary = `שוויון יסודות (${masculine} זכרי / ${feminine} נקבי) — אין הכרעה ביסודות; לסמוך על הדיין.`;
+  }
+
+  return { masculine, feminine, total, verdict, hebrewShort, hebrewSummary };
+}
+
 export function interpretHawiQuestionInitial(question, board = null) {
   const route = routeHawiQuestion(question);
   // Allow caller to supply a pre-resolved topicId (e.g. from a UI topic selector)
@@ -3117,6 +3332,12 @@ export function interpretHawiQuestionInitial(question, board = null) {
     boardAnalysis,
     relevantRules
   );
+
+  const kashfVerdict        = getKashfVerdict(route.topicId, board);
+  const kashfSupportAnalysis = kashfVerdict ? getKashfSupportAnalysis(board, kashfVerdict) : null;
+
+  const boardValidation = board?.boardValidation || { isValid: true, hasCritical: false, warnings: [] };
+  const elementYesNo = (board?.entries?.length > 0) ? countElementsForYesNo(board) : null;
 
   return {
     id: 'goral-hachol-full-interpretation',
@@ -3149,9 +3370,11 @@ export function interpretHawiQuestionInitial(question, board = null) {
 
     boardAnalysis,
     boardScore,
+    boardValidation,
+    elementYesNo,
     spiritualDiagnosis,
     technicalConclusionHebrew,
-    finalConclusionHebrew: writeHumanGoralConclusion({
+    finalConclusionHebrew: buildValidatedConclusion(boardValidation, writeHumanGoralConclusion({
       question,
       clientContext,
       clientHistorySummary,
@@ -3162,8 +3385,37 @@ export function interpretHawiQuestionInitial(question, board = null) {
       spiritualDiagnosis,
       relevantRules,
       judgeVerdict,
-    }),
+      kashfVerdict,
+      kashfSupportAnalysis,
+      elementYesNo,
+    })),
     conclusionDraftHebrew: technicalConclusionHebrew,
+
+    // Layer 5-6: כשף-אל-אסראר verdict + support analysis (additive)
+    kashfVerdict,
+    kashfSupportAnalysis,
+
+    // Short client-facing verdict (always-visible, topic-aware)
+    shortClientVerdict: writeShortClientVerdict({
+      topicId: route.topicId,
+      boardAnalysis,
+      judgeVerdict,
+      kashfVerdict,
+      kashfSupportAnalysis,
+      clientContext,
+    }),
+
+    // Clean narrative for reading aloud to client — no technical jargon
+    clientReadingHebrew: writeClientReadingHebrew({
+      topicId: route.topicId,
+      boardAnalysis,
+      judgeVerdict,
+      kashfVerdict,
+      kashfSupportAnalysis,
+      clientContext,
+      boardScore,
+      question,
+    }),
   };
 }
 

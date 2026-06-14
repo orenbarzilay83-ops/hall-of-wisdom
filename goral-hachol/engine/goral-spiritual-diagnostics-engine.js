@@ -390,7 +390,7 @@ function applyIsqatSevenMethod(board, source) {
 function getFigureElement(house) {
   const element = String(house?.element || house?.elementHebrew || '').toLowerCase();
   if (element.includes('אש') || element.includes('fire')) return 'fire';
-  if (element.includes('אוויר') || element.includes('air')) return 'air';
+  if (element.includes('אוויר') || element.includes('רוח') || element.includes('air')) return 'air';
   if (element.includes('מים') || element.includes('water')) return 'water';
   if (element.includes('עפר') || element.includes('earth') || element.includes('ard')) return 'earth';
   return null;

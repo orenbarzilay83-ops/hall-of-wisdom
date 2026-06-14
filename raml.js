@@ -153,12 +153,19 @@ function ramlBuildShield(mothers) {
     h13, h14, h15, h16
   ];
 
-  return houses.map((fig, index) => ({
-    house: index + 1,
-    figure: fig,
-    key: ramlFigureKey(fig),
-    ...ramlFigureInfo(fig)
-  }));
+  return houses.map((fig, index) => {
+    const key = ramlFigureKey(fig);
+    const info = ramlFigureInfo(fig);
+    return {
+      house: index + 1,
+      houseNumber: index + 1,
+      figure: fig,
+      key,
+      pattern: key,           // alias — פורמט חדש
+      hebrewName: info.hebrew, // alias — פורמט חדש
+      ...info,
+    };
+  });
 }
 
 // בדיקה מהירה לדוגמה
@@ -558,6 +565,7 @@ function ramlRunReading(question, mothers) {
     sentence,
     mothers,
     chart: chartWithHouses,
+    entries: chartWithHouses,  // alias — פורמט חדש (raml-board-generator compatibility)
     groups,
     note: "קריאה בסיסית בלבד: זיהוי נושא, בית מרכזי, שופט ומשפט. פירוש עומק יתווסף בהמשך לפי הספר."
   };
