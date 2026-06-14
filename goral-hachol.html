@@ -1030,17 +1030,45 @@
 
     <section id="screen-open" class="screen active">
       <div class="panel">
-        <h2>פרטי הקריאה</h2>
+        <h2>פרטי הלקוח</h2>
 
         <div class="form-grid">
           <div>
-            <label>שם הפונה</label>
+            <label>שם הלקוח</label>
             <input id="clientNameInput" placeholder="שם הלקוח" autocomplete="off" />
           </div>
 
           <div>
             <label>שם האב</label>
             <input id="clientParentInput" placeholder="שם האב" autocomplete="off" />
+          </div>
+
+          <div id="profileSection" class="profile-section full">
+            <div class="profile-group">
+              <div class="profile-group-label">מצב משפחתי</div>
+              <div class="profile-btn-row">
+                <button type="button" class="profile-btn" data-profile="marital" data-value="married">נשוי/אה</button>
+                <button type="button" class="profile-btn" data-profile="marital" data-value="single">רווק/ה</button>
+                <button type="button" class="profile-btn" data-profile="marital" data-value="divorced">גרוש/ה</button>
+                <button type="button" class="profile-btn" data-profile="marital" data-value="widowed">אלמן/ה</button>
+              </div>
+            </div>
+            <div class="profile-group">
+              <div class="profile-group-label">מצב תעסוקתי</div>
+              <div class="profile-btn-row">
+                <button type="button" class="profile-btn" data-profile="work" data-value="employed">שכיר</button>
+                <button type="button" class="profile-btn" data-profile="work" data-value="unemployed">מחפש עבודה</button>
+                <button type="button" class="profile-btn" data-profile="work" data-value="self">עצמאי</button>
+                <button type="button" class="profile-btn" data-profile="work" data-value="retired">בפנסיה</button>
+              </div>
+            </div>
+            <div class="profile-group">
+              <div class="profile-group-label">ילדים</div>
+              <div class="profile-btn-row">
+                <button type="button" class="profile-btn" data-profile="children" data-value="yes">יש ילדים</button>
+                <button type="button" class="profile-btn" data-profile="children" data-value="no">אין ילדים</button>
+              </div>
+            </div>
           </div>
 
           <div>
@@ -1074,34 +1102,6 @@
           <div class="full">
             <label>נושא השאלה — בחר את הבית שקשור לשאלתך</label>
             <div class="topic-grid" id="topicGrid"></div>
-            <div id="profileSection" class="profile-section" style="display:none">
-              <div class="profile-section-title">פרטי הלקוח — לפרשנות מדויקת</div>
-              <div class="profile-group">
-                <div class="profile-group-label">מצב משפחתי</div>
-                <div class="profile-btn-row">
-                  <button type="button" class="profile-btn" data-profile="marital" data-value="married">נשוי/אה</button>
-                  <button type="button" class="profile-btn" data-profile="marital" data-value="single">רווק/ה</button>
-                  <button type="button" class="profile-btn" data-profile="marital" data-value="divorced">גרוש/ה</button>
-                  <button type="button" class="profile-btn" data-profile="marital" data-value="widowed">אלמן/ה</button>
-                </div>
-              </div>
-              <div class="profile-group">
-                <div class="profile-group-label">מצב תעסוקתי</div>
-                <div class="profile-btn-row">
-                  <button type="button" class="profile-btn" data-profile="work" data-value="employed">שכיר</button>
-                  <button type="button" class="profile-btn" data-profile="work" data-value="unemployed">מחפש עבודה</button>
-                  <button type="button" class="profile-btn" data-profile="work" data-value="self">עצמאי</button>
-                  <button type="button" class="profile-btn" data-profile="work" data-value="retired">בפנסיה</button>
-                </div>
-              </div>
-              <div class="profile-group">
-                <div class="profile-group-label">ילדים</div>
-                <div class="profile-btn-row">
-                  <button type="button" class="profile-btn" data-profile="children" data-value="yes">יש ילדים</button>
-                  <button type="button" class="profile-btn" data-profile="children" data-value="no">אין ילדים</button>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 

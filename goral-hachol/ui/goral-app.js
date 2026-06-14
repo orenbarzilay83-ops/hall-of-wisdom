@@ -163,8 +163,6 @@ function renderTopicGrid() {
     });
   });
 
-  const profSec = document.getElementById('profileSection');
-  if (profSec) profSec.style.display = 'flex';
 }
 
 function escapeHtml(value) {
