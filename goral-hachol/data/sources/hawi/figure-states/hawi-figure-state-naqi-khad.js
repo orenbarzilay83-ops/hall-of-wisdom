@@ -146,7 +146,7 @@ export const HAWI_FIGURE_STATE_NAQI_KHAD = {
       speakingState: null,
       fortuneState: null,
       effectHebrew: '',
-      sourceStatus: 'not-yet-found-in-current-code-search',
+      sourceStatus: 'source-audited-final-source-kept-as-mapped',
     },
     {
       house: 16,
