@@ -627,12 +627,13 @@
       font-size:13px;
       color:#888;
       font-weight:600;
-      text-align:right;
+      text-align:center;
     }
     .profile-btn-row {
       display:flex;
       flex-wrap:wrap;
       gap:7px;
+      justify-content:center;
     }
     .profile-btn {
       padding:5px 13px;
@@ -1076,19 +1077,19 @@
               </div>
             </div>
             <div class="profile-group">
+              <div class="profile-group-label">ילדים</div>
+              <div class="profile-btn-row">
+                <button type="button" class="profile-btn" data-profile="children" data-value="yes">יש ילדים</button>
+                <button type="button" class="profile-btn" data-profile="children" data-value="no">אין ילדים</button>
+              </div>
+            </div>
+            <div class="profile-group">
               <div class="profile-group-label">מצב תעסוקתי</div>
               <div class="profile-btn-row">
                 <button type="button" class="profile-btn" data-profile="work" data-value="employed">שכיר</button>
                 <button type="button" class="profile-btn" data-profile="work" data-value="unemployed">מחפש עבודה</button>
                 <button type="button" class="profile-btn" data-profile="work" data-value="self">עצמאי</button>
                 <button type="button" class="profile-btn" data-profile="work" data-value="retired">בפנסיה</button>
-              </div>
-            </div>
-            <div class="profile-group">
-              <div class="profile-group-label">ילדים</div>
-              <div class="profile-btn-row">
-                <button type="button" class="profile-btn" data-profile="children" data-value="yes">יש ילדים</button>
-                <button type="button" class="profile-btn" data-profile="children" data-value="no">אין ילדים</button>
               </div>
             </div>
           </div>
