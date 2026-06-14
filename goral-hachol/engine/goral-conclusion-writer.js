@@ -2266,13 +2266,26 @@ export function writeClientReadingHebrew(result) {
   const prefix = name ? `${name}, ` : '';
 
   // ── 2. פסיקה ראשית ─────────────────────────────────────────────
-  const mainVerdict = kashfVerdict?.verdictHebrew || gradeToVerdict(grade);
+  // For yearly forecast the kashf engine may produce commerce-specific text — use grade instead.
+  const mainVerdict = topicId === 'yearlyForecast'
+    ? gradeToVerdict(grade)
+    : (kashfVerdict?.verdictHebrew || gradeToVerdict(grade));
   push(`${prefix}${mainVerdict}`);
 
   // ── 3. רמת ביטחון ──────────────────────────────────────────────
-  if (confLevel === 'weak') {
+  // Compute polarity early so we can suppress misleading confidence lines.
+  const _vT_early  = kashfVerdict?.verdictHebrew || '';
+  const _negW_early = ['לא יימצא','לא יצא','לא יתממש','לא יבריא','עצור','ישאר','לרעת',
+                       'לא נוח','לא בשל','לפגיעה'];
+  const _posW_early = ['יתממש','יימצא','חי ויחזור','ובשעה טובה','להבראה','להימצא',
+                       'הפחד גדול','אין סכנה','ינצח','יציב ומחוזק'];
+  const _earlyPos = _posW_early.some(w => _vT_early.includes(w)) && !_negW_early.some(w => _vT_early.includes(w));
+  const _dkh_early = kashfVerdict?.classification?.dakhalKharij;
+  const _earlyIsPos = _earlyPos || _dkh_early === 'kharij';
+
+  if (confLevel === 'weak' && !_earlyIsPos) {
     push('כדאי לדעת: הכוחות בלוח אינם חד-משמעיים, ולכן הפסיקה אינה בטוחה לחלוטין. מומלץ לחזור ולשאול שנית אחרי מספר ימים.');
-  } else if (confLevel === 'mixed') {
+  } else if (confLevel === 'mixed' && !_earlyIsPos) {
     push('הפסיקה נכונה בכללה, אך הדרך לא תהיה ישירה — יש כוחות שיעכבו או יסבכו.');
   }
 
@@ -2370,11 +2383,12 @@ export function writeClientReadingHebrew(result) {
       }
       if (h8) {
         const h8Fort = fortToWord(h8?.fortune);
-        push(h8Fort === 'טוב'
-          ? 'הפרוגנוזה חיובית — הלוח מראה כיוון של החלמה.'
-          : h8Fort === 'קשה'
-          ? 'הפרוגנוזה מדאיגה — הלוח מצביע על מצב חמור שדורש תשומת לב רפואית דחופה.'
-          : 'הפרוגנוזה מעורבת — ייתכן שיפור הדרגתי, אך לא החלמה מהירה.');
+        if (!isNegative && (h8Fort === 'טוב' || isPositive))
+          push('הפרוגנוזה חיובית — הלוח מראה כיוון של החלמה.');
+        else if (!isPositive && (isNegative || h8Fort === 'קשה'))
+          push('הפרוגנוזה מדאיגה — הלוח מצביע על מצב חמור שדורש תשומת לב רפואית דחופה.');
+        else
+          push('הפרוגנוזה מעורבת — ייתכן שיפור הדרגתי, אך לא החלמה מהירה.');
       }
       if (h2) {
         const h2Fort = fortToWord(h2?.fortune);
@@ -2590,15 +2604,16 @@ export function writeClientReadingHebrew(result) {
     case 'yearlyForecast': {
       if (h1) {
         const h1Fort = fortToWord(h1?.fortune);
-        push(h1Fort === 'טוב'
-          ? 'השנה הקרובה מתחילה בסימן חיובי עבורך.'
-          : h1Fort === 'קשה'
-          ? 'השנה הקרובה תביא אתגרים — כדאי להתכונן ולתכנן.'
-          : 'השנה הקרובה מעורבת — יהיו עליות וירידות.');
+        if (!isNegative && h1Fort === 'טוב')
+          push('השנה הקרובה מתחילה בסימן חיובי עבורך.');
+        else if (isNegative || h1Fort === 'קשה')
+          push('השנה הקרובה צפויה להיות מאתגרת — כדאי להתכונן ולתכנן.');
+        else
+          push('השנה הקרובה מעורבת — יהיו עליות וירידות.');
       }
       if (h2) {
         const h2Fort = fortToWord(h2?.fortune);
-        push(`מצב הפרנסה: ${h2Fort === 'טוב' ? 'צפויה שנה טובה מבחינה כלכלית' : h2Fort === 'קשה' ? 'כדאי לשמור על כסף ולא לסכן השקעות' : 'הכנסה לא קבועה — שנה מעורבת כלכלית'}.`);
+        push(`מצב הפרנסה: ${!isNegative && h2Fort === 'טוב' ? 'צפויה שנה טובה מבחינה כלכלית' : isNegative || h2Fort === 'קשה' ? 'כדאי לשמור על כסף ולא לסכן השקעות' : 'הכנסה לא קבועה — שנה מעורבת כלכלית'}.`);
       }
       break;
     }
@@ -2708,7 +2723,7 @@ export function writeClientReadingHebrew(result) {
   }
 
   // ── 6. אות שם (נושאים שלא טופלו בסעיף 4) ───────────────────────
-  const unhandledLetterTopics = ['spiritualDiagnostics', 'authorityState', 'prisoner', 'partnership'];
+  const unhandledLetterTopics = ['spiritualDiagnostics', 'authorityState', 'partnership'];
   if (unhandledLetterTopics.includes(topicId)) {
     for (const nl of nameLetters) {
       push(`${nl.houseRole}: ${nl.outputHebrew}.`);
@@ -2754,8 +2769,10 @@ export function writeClientReadingHebrew(result) {
                                    : 'בסיכום: יש לטפל במקור הפחד ברצינות — אל תתעלם.',
     spiritualDiagnostics: isNegative ? 'בסיכום: מומלץ לטפל בנושא ברצינות — פנה לאיש רוחני מנוסה.'
                                      : 'בסיכום: הלוח לא מצביע על פגיעה ממשית — ניתן להמשיך בשקט.',
-    partnership:        isPositive ? 'בסיכום: יש בסיס לשותפות — המשך לבחון את התנאים לפני חתימה.'
-                                   : 'בסיכום: כדאי לחכות לזמן מתאים יותר לפני קבלת ההחלטה.',
+    completion:         (isPositive || (!isNegative && jTone > 0)) ? 'בסיכום: הסיכויים לסיום טובים — המשך לדחוף קדימה.'
+                                                                   : 'בסיכום: הלוח מראה עיכוב — מומלץ לא למהר ולבדוק מחדש.',
+    partnership:        (isPositive || (!isNegative && jTone > 0)) ? 'בסיכום: יש בסיס לשותפות — המשך לבחון את התנאים לפני חתימה.'
+                                                                    : 'בסיכום: כדאי לחכות לזמן מתאים יותר לפני קבלת ההחלטה.',
     generalReading:     isPositive ? 'בסיכום: הלוח מראה כיוון חיובי כללי — פעל בביטחון ונצל את ההזדמנויות.'
                                    : isNegative ? 'בסיכום: הלוח מצביע על עיכוב כללי — חכה, תכנן, ואל תמהר.'
                                    : 'בסיכום: הלוח מאוזן — אין בהילות, המשך בזהירות ובדוק שוב.',
