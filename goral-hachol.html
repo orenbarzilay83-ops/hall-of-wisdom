@@ -610,54 +610,46 @@
       white-space:nowrap;
     }
     .profile-section {
-      margin-top:14px;
-      background:linear-gradient(135deg,#f2fff6,#fff);
-      border:2px solid rgba(20,140,80,.25);
-      border-radius:14px;
-      padding:16px;
       display:flex;
       flex-direction:column;
-      gap:12px;
-    }
-    .profile-section-title {
-      font-size:14px;
-      font-weight:700;
-      color:#1a6e40;
+      gap:10px;
     }
     .profile-group {
       display:flex;
       flex-direction:column;
-      gap:6px;
+      gap:5px;
     }
     .profile-group-label {
       font-size:13px;
-      color:#555;
+      color:#888;
       font-weight:600;
+      text-align:right;
     }
     .profile-btn-row {
       display:flex;
       flex-wrap:wrap;
-      gap:8px;
+      gap:7px;
+      justify-content:flex-end;
     }
     .profile-btn {
-      padding:6px 14px;
+      padding:5px 13px;
       border-radius:20px;
-      border:1.5px solid rgba(20,140,80,.4);
+      border:1.5px solid #c8d0da;
       background:#fff;
-      color:#1a6e40;
+      color:#2c3e50;
       font-size:13px;
       font-weight:600;
       cursor:pointer;
-      transition:background .15s,border-color .15s;
+      transition:background .15s,border-color .15s,color .15s;
     }
     .profile-btn:hover {
-      background:#e8f5ee;
-      border-color:#1a8a4a;
+      border-color:#a0b0c0;
+      background:#f4f6f8;
     }
     .profile-btn.selected {
-      background:#1a8a4a;
-      color:#fff;
-      border-color:#1a8a4a;
+      background:#1e2a36;
+      color:#f5c842;
+      border-color:#1e2a36;
     }
     .topic-spiritual-btn {
       grid-column:1 / -1;
@@ -993,10 +985,13 @@
 
     @media (max-width:800px) {
       .screen { padding:16px; }
-      .form-grid, .actions, .mother-slots { grid-template-columns:1fr; }
+      .actions, .mother-slots { grid-template-columns:1fr; }
       .figure-grid { grid-template-columns:repeat(2,1fr); }
       .board-row.r1 { grid-template-columns:repeat(4,1fr); }
       .final-row { grid-template-columns:1fr; }
+    }
+    @media (max-width:400px) {
+      .form-grid { grid-template-columns:1fr; }
     }
   </style>
 </head>
