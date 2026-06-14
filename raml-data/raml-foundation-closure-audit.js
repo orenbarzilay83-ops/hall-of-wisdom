@@ -163,7 +163,7 @@ const RAML_FOUNDATION_CLOSURE_AUDIT = {
     },
     {
       id: "intishaat",
-      title: "انتشاءات — היווצרויות",
+      title: "היווצרויות",
       file: "raml-data/raml-foundation-qawl-jami-extra.js",
       currentStatus: "blockedUntilTable",
       reason: "העיקרון קיים: צורה נוצרת מצירוף שתי צורות. אבל אין עדיין טבלת הורים מלאה לכל צורה.",
