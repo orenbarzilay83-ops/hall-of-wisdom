@@ -18,9 +18,8 @@
 - מיקום: `goral-hachol/data/sources/hawi/figure-transits/`
 
 ### 3. מסקנות עם "הכוחות בלתי-מוכרעים" — לוגיקת הכרעה
-- הסיבה: צורות מג'סד (50% מכלל הצורות) אינן מניבות כיוון (דאח'ל/ח'ארג'), ולכן ניתוח התמיכה אומר "ניטרלי" — גם כשהדיין ברור
-- הוסר ההודעה הכפולה ✓ — ה-kashf block כבר מציג את ה"ניטרלי" פעם אחת
-- נשאר: לשפר את `computeConfidence` ב-`kashf-support-analyzer.js` — כאשר כל הצורות מג'סד, להשתמש במזל (סעד/נחס) כמדד חלופי
+- הוסר ההודעה הכפולה ✓ | שופר לייבל ה-neutral ✓
+- נשאר: כאשר כל הצורות מג'סד, להשתמש במזל (סעד/נחס) כמדד חלופי ב-`computeConfidence`
 - מיקום: `goral-hachol/engine/kashf-support-analyzer.js`
 
 ---
@@ -36,10 +35,6 @@
 - מיושם חלקית, מסקנות חלשות
 - מקור: ספרי הרמל — פרק תחזית שנתית
 - מיקום: `goral-hachol/data/sources/hawi/yearly-forecast/`
-
-### 6. הצגת birthNativity ו-yearlyForecast בגריד הבחירה
-- הנושאים קיימים בקוד אך לא נגישים למשתמש
-- מיקום: `goral-hachol/ui/goral-app.js` → TOPIC_CARDS
 
 ---
 
