@@ -171,7 +171,7 @@ const RAML_FOUNDATION_CLOSURE_AUDIT = {
     },
     {
       id: "tasyir",
-      title: "تسيير — הולכת נקודות",
+      title: "הולכת נקודות",
       file: "raml-data/raml-foundation-qawl-jami-extra.js",
       currentStatus: "blockedUntilFormula",
       reason: "התסייר קיים כשיטת יסוד, אבל אין נוסחת שימוש כללית ומדויקת להפעלה אוטומטית.",
