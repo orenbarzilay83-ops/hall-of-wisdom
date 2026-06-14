@@ -180,21 +180,15 @@ grep -n "נישואים\|marriage" goral-hachol/data/sources/kashf-al-asrar/kash
 
 **סדר עדיפויות למציאת מקור:**
 1. **ראשון** — חפש ב-`kashf-al-asrar-book.js` (הספר המובנה באפליקציה, כמתואר למעלה)
-2. **שני** — נסה Google Drive (ייתכן שהגישה חסומה בסביבת ה-CI)
-3. **אסור** — להמציא נתונים אם לא נמצא מקור — השאר ריק עם `sourceStatus: "not-yet-found-in-current-code-search"`
+2. **אסור** — להמציא נתונים אם לא נמצא מקור — השאר ריק עם `sourceStatus: "not-yet-found-in-current-code-search"`
 
-The Google Drive folder **"ספרים לאפליקציית גורל החול"** is the **primary source** for all knowledge.
-
-Drive folder ID: `183LO6vN9CsPW13CkNWN7Q-8_MMylrkmO`
-
-| Book | Drive ID | Role |
-|---|---|---|
-| `كتاب بلوغ الامل في علم الرمل` | `1tPtkzzXeug4OjknSdDQDnNbe1F42xQ_-` | Primary practical source, rules and figures |
-| `كتاب القول الجامع في علم الرمل` | `1oze2_qY4Esmd8rlGwc59f-WuWf-OktO5` | 54 PDFs, advanced methods (7×7 isqat) |
-| `كتاب حاوي العجائب ومظهر الغرائب` | `1SZ3rxN2AKLeD8ExRoToj67WKr6DIViZR` | Core source: figure transits, figure states, foundations |
-| `مستهل الحقائق` | `13KonpnrihbyHVhkvdqoX1V3kdhuMN2Jl` | Additional reference |
-
-Use `mcp__*__download_file_content` or `mcp__*__read_file_content` with these IDs before implementing new features or filling data gaps.
+### מזהי Drive לעיון עתידי (לא לשימוש כרגע)
+| ספר | Drive ID |
+|---|---|
+| `كتاب حاوي العجائب ومظهر الغرائب` | `1SZ3rxN2AKLeD8ExRoToj67WKr6DIViZR` |
+| `كتاب بلوغ الامل في علم الرمل` | `1tPtkzzXeug4OjknSdDQDnNbe1F42xQ_-` |
+| `كتاب القول الجامع في علم الرمل` | `1oze2_qY4Esmd8rlGwc59f-WuWf-OktO5` |
+| `مستهل الحقائق` | `13KonpnrihbyHVhkvdqoX1V3kdhuMN2Jl` |
 
 ---
 
