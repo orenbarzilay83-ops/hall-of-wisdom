@@ -615,14 +615,17 @@
     .open-profile-col { flex:1; min-width:0; display:flex; flex-direction:column; gap:20px; border-right:1px solid #e0e0e0; padding-right:16px; }
     .open-field { display:flex; flex-direction:column; gap:3px; width:100%; }
     .open-inputs-col .open-field input { max-width:60%; margin:0 auto; }
-    .dt-row { width:100%; }
+    .dt-row { width:100%; display:flex; gap:8px; }
+    .dt-row > div { flex:1; display:flex; flex-direction:column; gap:3px; }
+    .dt-row label { font-size:13px; color:#888; font-weight:600; text-align:center; }
+    .dt-row input { max-width:85%; margin:0 auto; }
     #questionInput { height:60px; min-height:50px; max-height:90px; resize:vertical; }
     .open-bottom { display:flex; flex-direction:column; gap:12px; }
     /* ─── פרופיל לקוח ─── */
     .profile-section {
       display:flex;
       flex-direction:column;
-      gap:10px;
+      gap:20px;
     }
     .profile-group {
       display:flex;
@@ -1049,19 +1052,24 @@
         <div class="open-2col">
           <div class="open-inputs-col">
             <div class="open-field">
-              <input id="clientNameInput" placeholder="שם הלקוח" autocomplete="off" />
+              <label>שם הלקוח</label>
+              <input id="clientNameInput" autocomplete="off" />
             </div>
             <div class="open-field">
-              <input id="clientParentInput" placeholder="שם האב" autocomplete="off" />
+              <label>שם האב</label>
+              <input id="clientParentInput" autocomplete="off" />
             </div>
             <div class="open-field">
-              <input id="clientPhoneInput" placeholder="טלפון הלקוח" type="tel" autocomplete="off" />
+              <label>מספר טלפון</label>
+              <input id="clientPhoneInput" type="tel" autocomplete="off" />
             </div>
             <div class="dt-row">
               <div>
+                <label>תאריך</label>
                 <input type="text" id="questionDateInput" placeholder="DD/MM/YYYY" inputmode="numeric" autocomplete="off" />
               </div>
               <div>
+                <label>שעה</label>
                 <input type="time" id="questionTimeInput" autocomplete="off" />
               </div>
             </div>
@@ -1078,19 +1086,19 @@
               </div>
             </div>
             <div class="profile-group">
+              <div class="profile-group-label">ילדים</div>
+              <div class="profile-btn-row">
+                <button type="button" class="profile-btn" data-profile="children" data-value="yes">יש ילדים</button>
+                <button type="button" class="profile-btn" data-profile="children" data-value="no">אין ילדים</button>
+              </div>
+            </div>
+            <div class="profile-group">
               <div class="profile-group-label">מצב תעסוקתי</div>
               <div class="profile-btn-row">
                 <button type="button" class="profile-btn" data-profile="work" data-value="employed">שכיר</button>
                 <button type="button" class="profile-btn" data-profile="work" data-value="unemployed">מחפש עבודה</button>
                 <button type="button" class="profile-btn" data-profile="work" data-value="self">עצמאי</button>
                 <button type="button" class="profile-btn" data-profile="work" data-value="retired">בפנסיה</button>
-              </div>
-            </div>
-            <div class="profile-group">
-              <div class="profile-group-label">ילדים</div>
-              <div class="profile-btn-row">
-                <button type="button" class="profile-btn" data-profile="children" data-value="yes">יש ילדים</button>
-                <button type="button" class="profile-btn" data-profile="children" data-value="no">אין ילדים</button>
               </div>
             </div>
           </div>
