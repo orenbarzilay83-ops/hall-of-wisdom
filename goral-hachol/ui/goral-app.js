@@ -24,7 +24,7 @@ const TOPIC_CARDS = [
     { topicId: 'illness',              label: 'מחלה / בריאות' },
     { topicId: 'spiritualDiagnostics', label: 'עין הרע / כישוף / ג׳ין' },
   ]},
-  { house: 7,  title: 'הנישואין',        desc: 'בן/בת זוג, שותף, יריב, גנב, נעדר',     defaultTopicId: 'marriage',          subTopics: [
+  { house: 7,  title: 'בית הזוגיות',        desc: 'בן/בת זוג, שותף, יריב, גנב, נעדר',     defaultTopicId: 'marriage',          subTopics: [
     { topicId: 'marriage',             label: 'נישואין / זוגיות' },
     { topicId: 'disputes',             label: 'תביעה / סכסוך' },
     { topicId: 'theft',                label: 'גנבה' },
