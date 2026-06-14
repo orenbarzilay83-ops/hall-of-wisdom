@@ -225,7 +225,15 @@ function computeConfidence(verdictDK, w13, w14, judge) {
   else if (confirms >= 1 && contradicts === 0)  { level = 'moderate';  labelHebrew = 'פסיקה בינונית — יש תמיכה חלקית'; }
   else if (confirms > 0 && contradicts > 0)     { level = 'mixed';     labelHebrew = 'פסיקה מעורבת — כוחות נגד כוחות'; }
   else if (contradicts >= 2)                    { level = 'weak';      labelHebrew = 'פסיקה חלשה — רוב הכוחות מתנגדים'; }
-  else                                          { level = 'neutral';   labelHebrew = 'פסיקה ניטרלית — הכוחות בלתי-מוכרעים'; }
+  else {
+    // כל הצורות (עדים + דיין) הן מג'סד — אין להן כיוון ברור (דאח'ל/ח'ארג')
+    // הפסיקה נסמכת על מזל הפסיקה הראשית (סעד/נחס) בלבד
+    const isMujassadVerdict = verdictDK && (verdictDK.startsWith('mujassad') || verdictDK === 'mujassad');
+    labelHebrew = isMujassadVerdict
+      ? 'צורת הפסיקה מג\'סד — הפסיקה לפי מזל הדיין ועדיו'
+      : 'הכוחות ממוזגים — אין הכרעה ברורה בכיוון';
+    level = 'neutral';
+  }
 
   return { level, labelHebrew, confirms, contradicts };
 }

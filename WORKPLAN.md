@@ -7,20 +7,21 @@
 
 ## 🔴 קריטי — מנוע המסקנות
 
-### 1. השלמת נתוני figure-states ל-16 צורות (כרגע יש 14)
-- חסרות: **טריק** (1111 / دارج) ו**קהלה** (2222 / جماعة)
-- מקור: חאוי — פרק מצבי הצורות
-- מיקום: `goral-hachol/data/sources/hawi/figure-states/`
+### 1. השלמת נתוני figure-states חסרים (2 בתים)
+- כל 16 הצורות רשומות ✓ — אך **חיין** (1211) ו**ממון נכנס** (2121) חסרים כל אחד **בית אחד** עם `not-yet-found`
+- מקור: חאוי — פרק מצבי הצורות (Drive ID: `1SZ3rxN2AKLeD8ExRoToj67WKr6DIViZR`)
+- מיקום: `goral-hachol/data/sources/hawi/figure-states/hawi-figure-state-hayyan.js` ו-`hawi-figure-state-naqi-khad.js`
 
 ### 2. השלמת נתוני figure×house חסרים
 - יש בתים שמסומנים `sourceStatus: "not-yet-found-in-current-code-search"`
 - לכל צורה×בית חסר: להוריד מ-Drive את ספר חאוי ולמצוא את הפסקה המדויקת
 - מיקום: `goral-hachol/data/sources/hawi/figure-transits/`
 
-### 3. מסקנות לא עשירות — "הכוחות בלתי-מוכרעים"
-- כ-40% מהבדיקות מחזירות מסקנה סתמית
-- הסיבה: נתוני figure×house חסרים + לוגיקת הכרעה לא מספיק מפותחת
-- מיקום: `goral-hachol/engine/goral-conclusion-writer.js`
+### 3. מסקנות עם "הכוחות בלתי-מוכרעים" — לוגיקת הכרעה
+- הסיבה: צורות מג'סד (50% מכלל הצורות) אינן מניבות כיוון (דאח'ל/ח'ארג'), ולכן ניתוח התמיכה אומר "ניטרלי" — גם כשהדיין ברור
+- הוסר ההודעה הכפולה ✓ — ה-kashf block כבר מציג את ה"ניטרלי" פעם אחת
+- נשאר: לשפר את `computeConfidence` ב-`kashf-support-analyzer.js` — כאשר כל הצורות מג'סד, להשתמש במזל (סעד/נחס) כמדד חלופי
+- מיקום: `goral-hachol/engine/kashf-support-analyzer.js`
 
 ---
 
@@ -63,9 +64,6 @@
 
 ### 10. תיבת שאלת הלקוח — מרכוז וסגנון
 - תיבת הטקסט עדיין נראית גדולה יחסית בפורטרייט
-
-### 11. ניווט חזרה מסכים פנימיים → מסך הפתיחה
-- backFromJournalBtn עדיין הולך ל-screen-open ולא ל-landing
 
 ### 12. כפתורי פרופיל — אינדיקציה לבחירה פעילה
 - כשטוענים פרופיל שמור, הכפתורים לא מוצגים כ-selected

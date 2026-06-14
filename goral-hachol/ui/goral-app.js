@@ -798,7 +798,7 @@ document.getElementById("menuPrayerBtn").addEventListener("click", () => {
 });
 
 document.getElementById("backFromGuideBtn").addEventListener("click", () => showScreen("landing"));
-document.getElementById("backFromJournalBtn").addEventListener("click", () => showScreen("open"));
+document.getElementById("backFromJournalBtn").addEventListener("click", () => showScreen("landing"));
 document.getElementById("backFromPrayerBtn").addEventListener("click", () => showScreen("landing"));
 
 // ─── Landing screen ───────────────────────────────────────────
