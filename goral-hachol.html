@@ -28,23 +28,29 @@
       margin:0;
       direction:rtl;
       font-family: Arial, sans-serif;
-      background-image:url('assets/sage-landscape.png');
-      background-size:cover;
-      background-position:center top;
-      background-attachment:fixed;
+      background:linear-gradient(135deg,#06192d,#0a1424);
       color:var(--ink);
-    }
-    @media (orientation:portrait) {
-      body { background-image:url('assets/sage-portrait.png'); }
     }
 
     .app {
       max-width:980px;
       margin:0 auto;
       min-height:100vh;
-      background:transparent;
+      background:linear-gradient(180deg,var(--paper),var(--paper2));
       box-shadow:0 0 35px rgba(0,0,0,.35);
     }
+
+    /* ─── מסך פתיחה ─── */
+    .landing-image-wrap { width:100%; overflow:hidden; line-height:0; }
+    .landing-img { width:100%; height:auto; display:block; object-fit:cover; }
+    .landing-actions {
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:14px;
+      padding:28px 24px 32px;
+    }
+    .landing-actions .btn { width:70%; max-width:320px; font-size:16px; padding:13px; }
 
     .topbar {
       height:68px;
@@ -1046,7 +1052,22 @@
       </nav>
     </div>
 
-    <section id="screen-open" class="screen active">
+    <!-- ─── מסך פתיחה ─────────────────────────────── -->
+    <section id="screen-landing" class="screen active">
+      <div class="landing-image-wrap">
+        <picture>
+          <source media="(orientation:portrait)" srcset="assets/sage-portrait.png">
+          <img src="assets/sage-landscape.png" alt="גורל החול" class="landing-img">
+        </picture>
+      </div>
+      <div class="landing-actions">
+        <button type="button" class="btn" id="landingGuideBtn">📖 מבוא לגורל החול</button>
+        <button type="button" class="btn" id="landingPrayerBtn">🤲 תפילה לגורל</button>
+        <button type="button" class="btn primary" id="landingOpenBtn">✨ פתיחה בגורל</button>
+      </div>
+    </section>
+
+    <section id="screen-open" class="screen">
       <div class="panel">
 
         <!-- כותרת -->

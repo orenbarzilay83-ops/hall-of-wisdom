@@ -797,9 +797,14 @@ document.getElementById("menuPrayerBtn").addEventListener("click", () => {
   closeMenu(); showScreen("prayer");
 });
 
-document.getElementById("backFromGuideBtn").addEventListener("click", () => showScreen("open"));
+document.getElementById("backFromGuideBtn").addEventListener("click", () => showScreen("landing"));
 document.getElementById("backFromJournalBtn").addEventListener("click", () => showScreen("open"));
-document.getElementById("backFromPrayerBtn").addEventListener("click", () => showScreen("open"));
+document.getElementById("backFromPrayerBtn").addEventListener("click", () => showScreen("landing"));
+
+// ─── Landing screen ───────────────────────────────────────────
+document.getElementById("landingGuideBtn").addEventListener("click", () => { showScreen("guide"); renderGuide(); });
+document.getElementById("landingPrayerBtn").addEventListener("click", () => showScreen("prayer"));
+document.getElementById("landingOpenBtn").addEventListener("click", () => showScreen("open"));
 
 // ─── Guide Tab Logic ──────────────────────────────────────────
 document.querySelectorAll(".guide-tab").forEach(tab => {
