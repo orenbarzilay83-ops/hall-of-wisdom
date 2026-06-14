@@ -249,7 +249,7 @@ const RAML_READING_FOUNDATIONS = {
 
   damirAlSail: {
     id: "damir-al-sail",
-    title: "ضمير السائل — דמיר / מצפון השואל",
+    title: "דמיר / מצפון השואל",
     ruleType: "damir",
     sourceStatus: "verified-working",
     description: "הדמיר הוא גילוי הדבר הפנימי שעליו השואל באמת שואל. אין להכניס אותו כפרשנות אחת קצרה; יש כמה דרכים להוציא אותו.",
