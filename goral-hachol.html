@@ -620,15 +620,16 @@
     .open-2col {
       display:flex;
       flex-direction:row;
-      gap:16px;
+      gap:0;
       margin-bottom:16px;
     }
+    .col-sep { width:1px; background:#e0e0e0; margin:0 12px; align-self:stretch; flex-shrink:0; }
     .open-inputs-col { flex:1.4; min-width:0; display:flex; flex-direction:column; gap:12px; align-items:center; }
-    .open-profile-col { flex:1; min-width:0; display:flex; flex-direction:column; gap:20px; border-right:1px solid #e0e0e0; padding-right:16px; }
+    .open-profile-col { flex:1; min-width:0; display:flex; flex-direction:column; gap:20px; }
     .open-field { display:flex; flex-direction:column; gap:3px; width:100%; }
     .open-field label { font-size:13px; color:#888; font-weight:600; text-align:center; }
     .open-inputs-col .open-field input { width:30%; margin:0 auto; display:block; }
-    .dt-row { width:100%; display:flex; gap:8px; }
+    .dt-row { width:100%; display:flex; gap:3px; }
     .dt-row > div { flex:1; display:flex; flex-direction:column; gap:3px; }
     .dt-row label { font-size:13px; color:#888; font-weight:600; text-align:center; }
     .dt-row input { max-width:50%; margin:0 auto; display:block; }
@@ -1104,6 +1105,7 @@
             </div>
           </div>
 
+          <div class="col-sep"></div>
           <div id="profileSection" class="profile-section open-profile-col">
             <div class="profile-group">
               <div class="profile-group-label">מצב משפחתי</div>
@@ -1137,7 +1139,7 @@
         <div class="open-bottom">
           <div class="open-field">
             <label>שאלת הלקוח</label>
-            <textarea id="questionInput" rows="2" placeholder="כתוב כאן את שאלת גורל החול" autocomplete="off"></textarea>
+            <textarea id="questionInput" rows="2" autocomplete="off"></textarea>
             <div class="quesited-field">
               <label for="quesitedNameInput">הנשאל עליו:</label>
               <input id="quesitedNameInput" placeholder="שם האדם שעליו נשאלת השאלה (אם יש)" autocomplete="off" />
