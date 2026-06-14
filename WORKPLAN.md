@@ -49,6 +49,11 @@
 
 ## 🟢 ביקורת מקורות (audit)
 
+### 13. בדיקת שדות sourceStatus = "not-yet-found" בנושאי foundations
+- `hawi-hazz.js`: ראש (1121) וזנב (1221) — חסרים דפים 134+
+- `hawi-spiritual-diagnostics.js`: ערך אחד חסר
+- מיקום: `goral-hachol/data/sources/hawi/foundations/`
+
 ### 14. אימות פסיקות Kashf al-Asrar
 - פסיקות רבות בקוד מגיעות מזיכרון — לאמת מול הספר הממוספר
 - מיקום: `goral-hachol/engine/goral-conclusion-writer.js`
