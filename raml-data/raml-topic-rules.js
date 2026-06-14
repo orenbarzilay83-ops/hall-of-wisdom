@@ -830,7 +830,7 @@ const RAML_TOPIC_RULES = {
         "בית 6 מייצג חולי, חולשה, כאב, טרחה ודברים שמחלישים את השואל.",
         "בית 6 מייצג עובדים, משרתים, שירות, עבודה תחת עומס או עבודה שאינה בשליטה מלאה של השואל.",
         "בית 6 מייצג אויבים קטנים, הפרעות קטנות, קושי יומיומי ודברים שמציקים אך אינם בהכרח יריב גלוי גדול.",
-        "במודול הרוחני בית 6 הוא بيت المرض — בית המחלה.",
+        "במודול הרוחני בית 6 הוא בית המחלה.",
         "בית 6 כולל ידע רמלי/רוחני מסורתי בענייני חולי, חולשה וטרחה, לשימוש מקצועי של היועץ."
       ],
       questionTypes: [
@@ -893,7 +893,7 @@ const RAML_TOPIC_RULES = {
         {
           id: "medicine-root-healing-house4",
           title: "בית 4 כתרופה / שורש ריפוי במודול הרוחני",
-          rule: "במודול האבחון הרוחני, בית 4 הוא الدواء — התרופה או שורש הריפוי. לכן בשאלות חולי/רוחני יש להשוות בית 6 לבית 4.",
+          rule: "במודול האבחון הרוחני, בית 4 הוא התרופה או שורש הריפוי. לכן בשאלות חולי/רוחני יש להשוות בית 6 לבית 4.",
           relatedFile: "raml-spiritual-diagnostics.js",
           displayPolicy: "advisorOnly",
           implementationReady: true
@@ -901,7 +901,7 @@ const RAML_TOPIC_RULES = {
         {
           id: "doctor-healer-house10",
           title: "בית 10 כרופא / מטפל / סמכות טיפולית",
-          rule: "במודול האבחון הרוחני, בית 10 הוא الطبيب أو المعالج — הרופא או המרפא. לכן בשאלות חולי בודקים אם בית 10 תומך או חלש.",
+          rule: "במודול האבחון הרוחני, בית 10 הוא הרופא או המרפא. לכן בשאלות חולי בודקים אם בית 10 תומך או חלש.",
           relatedFile: "raml-spiritual-diagnostics.js",
           displayPolicy: "advisorOnly",
           implementationReady: true
@@ -917,7 +917,7 @@ const RAML_TOPIC_RULES = {
         {
           id: "sorcerer-house9",
           title: "בית 9 כסוחר/מכשף במודול הרוחני",
-          rule: "במודול הרוחני בית 9 מוגדר כבית الساحر / העוסק בעבודה רוחנית מסוג זה. לכן בשאלות סחר/כישוף יש לשלב את בית 9.",
+          rule: "במודול הרוחני בית 9 מוגדר כבית המכשף / העוסק בעבודה רוחנית מסוג זה. לכן בשאלות סחר/כישוף יש לשלב את בית 9.",
           relatedFile: "raml-spiritual-diagnostics.js",
           displayPolicy: "advisorOnly / spiritualDiagnostic",
           implementationReady: true
@@ -933,7 +933,7 @@ const RAML_TOPIC_RULES = {
         {
           id: "drop-seven-open-points",
           title: "הפלת פתוח הרמל 7־7 באבחון רוחני",
-          rule: "במודול הרוחני קיימת ספירת مفتوح الرمل והפלה 7־7: 1 ג׳ין, 2 חסד/עין, 3 סחר מאדם, 4 מים/בלغم, 5 אוויר/דם, 6 עפר/סודאא, 7 אש/צפראא.",
+          rule: "במודול הרוחני קיימת ספירת פתוח הרמל והפלה 7־7: 1 ג׳ין, 2 חסד/עין, 3 סחר מאדם, 4 מים/ליחה, 5 אוויר/דם, 6 עפר/מרה שחורה, 7 אש/מרה צהובה.",
           relatedFile: "raml-spiritual-diagnostics.js",
           displayPolicy: "advisorOnly / spiritualDiagnostic",
           implementationReady: true
@@ -1514,7 +1514,7 @@ const RAML_TOPIC_RULES = {
           {
             ruleId: "specific-sorcery-examples",
             file: "raml-spiritual-diagnostics.js",
-            use: "דוגמאות צורה+בית: אנקיס בבית 6, ג׳ודלה בבית 6/12, קבץ דאחל בבית 6, עקלה בבית 13/14, ג׳מאעה בבית 6."
+            use: "דוגמאות צורה+בית: שפל ראש בבית 6, נלחם בבית 6/12, ממון נכנס בבית 6, סוהר בבית 13/14, קהלה בבית 6."
           },
           {
             ruleId: "painful-organ-and-jinn-type",

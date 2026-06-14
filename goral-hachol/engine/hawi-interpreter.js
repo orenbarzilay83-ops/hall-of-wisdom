@@ -1745,7 +1745,7 @@ const YEARLY_H15_OUTCOME_RULES = [
   {
     id: 'jamaa-from-two-jamaa',
     match: (h15, w13, w14) => h15?.key === '2222' && w13?.key === '2222' && w14?.key === '2222',
-    hebrewResult: 'ג׳מאעה מג׳מאעתיים — שנה מרובת רע, רעב, מחלות, פיתנות ומרה שחורה.',
+    hebrewResult: 'קהלה מ-שתי קהלות — שנה מרובת רע, רעב, מחלות, מהומות ומרידות, ועצבות ודיכאון (מרה שחורה).',
     grade: 'very-bad',
   },
   {
@@ -1758,7 +1758,7 @@ const YEARLY_H15_OUTCOME_RULES = [
     id: 'qabd-kharij-and-aqla',
     match: (h15, w13, w14) =>
       (w13?.key === '1212' && w14?.key === '1221') || (w13?.key === '1221' && w14?.key === '1212'),
-    hebrewResult: 'קבץ יוצא ועקלה — מלכים במלחמה, מחלות, מגפה, מאסר ופחד.',
+    hebrewResult: 'ממון יוצא וסוהר — מלכים במלחמה, מחלות, מגפה, מאסר ופחד.',
     grade: 'very-bad',
   },
 ];
