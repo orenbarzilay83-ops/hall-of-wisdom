@@ -265,7 +265,7 @@ function gradeFromMatches(specificMatches, openingMatches, genericScore) {
   return 'mixed';
 }
 
-function buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, jinnTypeResult, organDiagnosisResult) {
+function buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, jinnTypeResult, organDiagnosisResult, crossReferenceNote) {
   const verdictMap = {
     'strong-suspicion': 'מסקנה רוחנית: כן — הלוח מראה סימנים חזקים לפגיעה רוחנית לפי כללי המקור.',
     'medium-suspicion': 'מסקנה רוחנית: ייתכן — יש חשד בינוני לפגיעה רוחנית. נמצאו התאמות מהמקור שדורשות בדיקה.',
@@ -275,6 +275,11 @@ function buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, j
   };
 
   let base = verdictMap[grade] || verdictMap.mixed;
+
+  if (crossReferenceNote) {
+    base += '\n' + crossReferenceNote;
+  }
+
   const details = [];
 
   for (const m of specificMatches.slice(0, 4)) {
@@ -324,6 +329,48 @@ function detectSpiritualTopicFromQuestion(question = '') {
     if (words.some((w) => text.includes(normalizeText(w)))) hits.push(cat);
   }
   return hits;
+}
+
+// Maps isqat remainder → spiritual category and Hebrew label
+const ISQAT_REMAINDER_MAP = {
+  1: { category: 'jinn',    hebrew: 'אחיזת ג׳ין',         isSpiritual: true  },
+  2: { category: 'ayin',   hebrew: 'עין הרע / קנאה',      isSpiritual: true  },
+  3: { category: 'sihr',   hebrew: 'כישוף (אדם עשה)',      isSpiritual: true  },
+  4: { category: 'illness', hebrew: 'ליחה/בלגם',           isSpiritual: false },
+  5: { category: 'illness', hebrew: 'מחלת דם',             isSpiritual: false },
+  6: { category: 'illness', hebrew: 'מרה שחורה',           isSpiritual: false },
+  7: { category: 'illness', hebrew: 'מרה צהובה',           isSpiritual: false },
+};
+
+// Resolves primary question category from questionHits
+function resolveQuestionCategory(questionHits) {
+  if (!questionHits?.length) return null;
+  if (questionHits.includes('sihr') || questionHits.includes('mass')) return 'sihr';
+  if (questionHits.includes('ayin') || questionHits.includes('hasad'))  return 'ayin';
+  if (questionHits.includes('jinn')) return 'jinn';
+  return null;
+}
+
+// Computes cross-reference note when isqat result doesn't match what was asked
+function computeCrossReference(questionHits, isqatResult) {
+  if (!isqatResult?.remainder) return null;
+  const questionCategory = resolveQuestionCategory(questionHits);
+  if (!questionCategory) return null;
+
+  const isqatInfo = ISQAT_REMAINDER_MAP[isqatResult.remainder];
+  if (!isqatInfo) return null;
+
+  const questionHebrew = { sihr: 'כישוף', ayin: 'עין הרע / קנאה', jinn: 'ג׳ין' }[questionCategory];
+
+  if (!isqatInfo.isSpiritual) {
+    return `⚠ ספירת מפתוח: הלוח מצביע על ${isqatInfo.hebrew} — לא פגיעה רוחנית. השאלה הייתה על ${questionHebrew} אך ייתכן שהבעיה גופנית.`;
+  }
+
+  if (isqatInfo.category !== questionCategory) {
+    return `⚠ ספירת מפתוח: הלוח מצביע על ${isqatInfo.hebrew} (לא ${questionHebrew}). ייתכן שהבעיה שונה ממה שנשאל — מומלץ לבדוק שני הכיוונים.`;
+  }
+
+  return null; // Categories match — no cross-reference needed
 }
 
 // Generic house scoring (kept as a secondary signal)
@@ -483,7 +530,8 @@ export function diagnoseSpiritualInfluence(question = '', board = null) {
   const organDiagnosisResult = applyOrganDiagnosisMethod(board, source);
 
   const grade = gradeFromMatches(specificMatches, openingMatches, genericScore);
-  const finalHebrew = buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, jinnTypeResult, organDiagnosisResult);
+  const crossReferenceNote = computeCrossReference(questionHits, isqatResult);
+  const finalHebrew = buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, jinnTypeResult, organDiagnosisResult, crossReferenceNote);
 
   const mainReasons = specificMatches.map((m) => ({
     house: m.house,
@@ -531,11 +579,13 @@ export function diagnoseSpiritualInfluence(question = '', board = null) {
     isqatResult,
     jinnTypeResult,
     organDiagnosisResult,
+    crossReferenceNote,
     grade,
     finalHebrew,
     mainReasons,
     shouldShow: grade !== 'mixed',
     isSpiritualQuestion: questionHits.length > 0,
+    questionCategory: resolveQuestionCategory(questionHits),
   };
 }
 
