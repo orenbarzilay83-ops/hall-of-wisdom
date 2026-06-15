@@ -1539,6 +1539,18 @@ function buildNarrativeByTopic(result) {
     }
   }
 
+  // ── 8.6. תחזית שנתית — ניתוח מלא ───────────────────────────────
+  if (topicId === 'yearlyForecast') {
+    const yearlyAnalysis = boardAnalysis?.yearlyForecastAnalysis;
+    if (yearlyAnalysis?.outputHebrew) {
+      push(`ניתוח טאלע השנה (חאוי עמ׳ 60-62):\n${yearlyAnalysis.outputHebrew}`);
+    }
+    const figForecast = boardAnalysis?.yearlyFigureForecast;
+    if (figForecast?.outputHebrew) {
+      push(figForecast.outputHebrew);
+    }
+  }
+
   // ── 9. TOPIC RULES (חוקי חאוי לנושא) ────────────────────────────
   const checks = (boardAnalysis.topicConnections?.checks || []);
   if (checks.length) {

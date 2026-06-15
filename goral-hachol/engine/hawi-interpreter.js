@@ -1763,41 +1763,73 @@ const YEARLY_H15_OUTCOME_RULES = [
   },
 ];
 
+// מיפוי כוכב → מזהה כלל מחיר ספציפי בקובץ המקור
+const PLANET_TO_PRICE_RULE_ID = {
+  'שמש':           'sun-justice-of-king',
+  'לבנה':          'moon-arabs-army-strength',
+  'מאדים':         'mars-weapons-war-supplies',
+  'כוכב / מרקורי': 'mercury-food-shops-scribes-rammalin',
+  'נוגה':          'venus-women-foods-drinks',
+  'צדק':           'jupiter-gold-silver-nobles',
+};
+
+const MARS_FIGURES    = new Set(['2122', '1121']);
+const JUPITER_FIGURES = new Set(['1222', '2111']);
+const SATURN_FIGURES  = new Set(['2221', '1221']);
+const VENUS_FIGURES   = new Set(['2211', '1211']);
+
 function computeYearlyForecastAnalysis(chart, pricesSource, rainSource) {
   if (!Array.isArray(chart)) return null;
 
+  const h1  = chartHouse(chart, 1);
   const h15 = chartHouse(chart, 15);
   const w13 = chartHouse(chart, 13);
   const w14 = chartHouse(chart, 14);
 
+  // 1. בית 15 — אחרית השנה
   let house15Result = null;
   for (const rule of YEARLY_H15_OUTCOME_RULES) {
     if (rule.match(h15, w13, w14)) { house15Result = rule; break; }
   }
 
+  // 2. כלל העוצמה — צורת האם הראשונה (בית 1) מחזקת או מחלישה את הטאלע
+  // מקור: עמוד 61 — "אם חזקה מוסיפה כוח לטאלע; אם חסרה מחסירה"
+  const h1Fortune  = h1?.fortune || '';
+  const strengthNote = h1Fortune.includes('סעד')
+    ? `כלל העוצמה: צורת האם הראשונה (${h1?.hebrew || ''}) מסועדת — מוסיפה כוח לטאלע השנה.`
+    : h1Fortune.includes('נחס')
+    ? `כלל העוצמה: צורת האם הראשונה (${h1?.hebrew || ''}) מנוחסת — מחלישה את כוח הטאלע.`
+    : null;
+
+  // 3. כוכבים ביתדות (בתים 1, 4, 7, 10) עם נושאי מחיר ספציפיים
   const angularPlanets = chart
     .filter((h) => ANGULAR_HOUSES_SET.has(Number(h.house)) && FIGURE_PLANET_MAP[h.key])
     .map((h) => {
-      const planetName = FIGURE_PLANET_MAP[h.key];
-      const enrichment = PLANET_ENRICHMENT_MAP[planetName] || {};
-      const isBenefic = !MALEFIC_FIGURE_PATTERNS.has(h.key || '');
-      const priceRule = isBenefic
+      const planetName   = FIGURE_PLANET_MAP[h.key];
+      const enrichment   = PLANET_ENRICHMENT_MAP[planetName] || {};
+      const isBenefic    = !MALEFIC_FIGURE_PATTERNS.has(h.key || '');
+      const ruleId       = PLANET_TO_PRICE_RULE_ID[planetName];
+      const specificRule = ruleId
+        ? pricesSource?.priceRulesByPlacement?.find(r => r.id === ruleId)
+        : null;
+      const priceTopics  = specificRule?.topics || [];
+      const genericResult = isBenefic
         ? pricesSource?.priceRulesByPlacement?.find(r => r.id === 'benefic-sign-increases-price')?.result
         : pricesSource?.priceRulesByPlacement?.find(r => r.id === 'malefic-fallen-sign-lowers-price')?.result;
       return {
-        house: h.house,
+        house:       h.house,
         figureHebrew: h.hebrew || h.key,
-        planet: planetName,
-        meaning: PLANET_YEARLY_MEANING[planetName] || '',
-        fortune: h.fortune || '',
+        planet:      planetName,
+        meaning:     PLANET_YEARLY_MEANING[planetName] || '',
+        fortune:     h.fortune || '',
         isBenefic,
-        priceRule: priceRule || null,
-        materials: enrichment.materials || [],
-        foods: enrichment.foods?.slice(0, 4) || [],
-        lands: enrichment.lands?.slice(0, 3) || [],
+        priceTopics,
+        genericResult: genericResult || null,
+        materials:   (enrichment.materials || []).slice(0, 3),
       };
     });
 
+  // 4. יסוד דומיננטי
   const elCounts = {};
   for (const h of chart) { if (h.element) elCounts[h.element] = (elCounts[h.element] || 0) + 1; }
   const dominantElement = Object.entries(elCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || null;
@@ -1808,43 +1840,76 @@ function computeYearlyForecastAnalysis(chart, pricesSource, rainSource) {
     'עפר':   'שנת עפר — יציבות, חקלאות, ממון',
   };
 
-  const moonAngular   = chart.some((h) => MOON_FIGURE_PATTERNS.has(h.key || '') && ANGULAR_HOUSES_SET.has(Number(h.house)));
-  const moonInBoard   = chart.some((h) => MOON_FIGURE_PATTERNS.has(h.key || ''));
-  const venusInBoard  = chart.some((h) => ['2211', '1211'].includes(h.key || ''));
-  const saturnAngular = chart.some((h) => ['2221', '1221'].includes(h.key || '') && ANGULAR_HOUSES_SET.has(Number(h.house)));
+  // 5. גשם ומזג — כל הכללים מהמקור (עמוד 62)
+  const moonAngular    = chart.some((h) => MOON_FIGURE_PATTERNS.has(h.key || '') && ANGULAR_HOUSES_SET.has(Number(h.house)));
+  const moonInBoard    = chart.some((h) => MOON_FIGURE_PATTERNS.has(h.key || ''));
+  const venusInBoard   = chart.some((h) => VENUS_FIGURES.has(h.key || ''));
+  const saturnAngular  = chart.some((h) => SATURN_FIGURES.has(h.key || '') && ANGULAR_HOUSES_SET.has(Number(h.house)));
+  const saturnInBoard  = chart.some((h) => SATURN_FIGURES.has(h.key || ''));
+  const marsInBoard    = chart.some((h) => MARS_FIGURES.has(h.key || ''));
+  const jupiterInBoard = chart.some((h) => JUPITER_FIGURES.has(h.key || ''));
   const waterHousesActive = chart.some((h) => h.element === 'מים' && ANGULAR_HOUSES_SET.has(Number(h.house)));
 
   const strongRainRule = rainSource?.rainStrengthRules?.find(r => r.id === 'strong-first-half-heavy-rain');
   const coldSnowRule   = rainSource?.rainStrengthRules?.find(r => r.id === 'watery-houses-cold-snow-mix');
 
   const rainVerdict =
-    (moonAngular && venusInBoard) ? 'heavy-rain' :
-    (moonAngular && waterHousesActive) ? 'cold-snow' :
-    (moonInBoard && !saturnAngular) ? 'moderate-rain' :
-    saturnAngular ? 'cold-dry' : 'unknown';
+    (moonAngular && venusInBoard)      ? 'heavy-rain'    :
+    (moonAngular && waterHousesActive) ? 'cold-snow'     :
+    (moonInBoard && !saturnAngular)    ? 'moderate-rain' :
+    saturnAngular                       ? 'cold-dry'      : 'unknown';
 
-  const rainHebrew = rainVerdict === 'heavy-rain'
+  const mainRainHebrew = rainVerdict === 'heavy-rain'
     ? (strongRainRule?.hebrew || 'לבנה ביתד + נוגה בלוח — גשם רב וכללי צפוי.')
     : rainVerdict === 'cold-snow'
     ? (coldSnowRule?.hebrew   || 'לבנה ביתד + בתים מימיים — קור, שלג ותערובת.')
-    : rainVerdict === 'moderate-rain' ? 'לבנה בלוח ושבתאי לא ביתד — גשם מתון.'
-    : rainVerdict === 'cold-dry'      ? 'שבתאי ביתד — קור, יובש ועננים שחורים.'
+    : rainVerdict === 'moderate-rain'  ? 'לבנה בלוח ושבתאי לא ביתד — גשם מתון.'
+    : rainVerdict === 'cold-dry'       ? 'שבתאי ביתד — קור, יובש ועננים שחורים.'
     : 'לא ניתן לקבוע דין גשם ברור מלוח זה.';
 
-  const regionNote = rainSource?.regionAdjustmentRules?.[0]?.hebrew || null;
+  // כללים נוספים — מאדים, צדק, שבתאי (מ-advancedWeatherRules)
+  const weatherSigns = [];
+  if (marsInBoard) {
+    const r = rainSource?.advancedWeatherRules?.find(r => r.id === 'mars-in-rain-signification-thunder-dryness');
+    weatherSigns.push(r?.hebrew || 'מאדים בלוח — ברקים, רעמים ויובש.');
+  }
+  if (jupiterInBoard && (moonAngular || venusInBoard)) {
+    const r = rainSource?.advancedWeatherRules?.find(r => r.id === 'jupiter-with-rain-signification-storm-winds');
+    weatherSigns.push(r?.hebrew || 'צדק עם גשם — רוחות סוערות.');
+  } else if (jupiterInBoard) {
+    const r = rainSource?.advancedWeatherRules?.find(r => r.id === 'jupiter-winds');
+    weatherSigns.push(r?.hebrew || 'צדק בלוח — רוחות.');
+  }
+  if (saturnInBoard && !saturnAngular) {
+    const r = rainSource?.advancedWeatherRules?.find(r => r.id === 'saturn-continuous-rains');
+    weatherSigns.push(r?.hebrew || 'שבתאי בלוח — גשמים מתמשכים.');
+  }
 
+  const regionNote = rainSource?.regionAdjustmentRules?.[0]?.ruleHebrew || null;
+
+  // 6. בניית פלט
   const parts = [];
-  if (house15Result) parts.push(`בית 15 (אחרית השנה): ${house15Result.hebrewResult}`);
-  if (dominantElement) parts.push(`יסוד דומיננטי: ${dominantElement} — ${ELEMENT_YEAR_CHARACTER[dominantElement] || dominantElement}`);
+  if (house15Result) {
+    parts.push(`בית 15 (אחרית השנה): ${house15Result.hebrewResult}`);
+  }
+  if (strengthNote) {
+    parts.push(strengthNote);
+  }
+  if (dominantElement) {
+    parts.push(`יסוד דומיננטי: ${dominantElement} — ${ELEMENT_YEAR_CHARACTER[dominantElement] || dominantElement}`);
+  }
   if (angularPlanets.length) {
     parts.push('כוכבים ביתדות:\n' + angularPlanets.map((p) => {
       let line = `  ${p.planet} (בית ${p.house} — ${p.figureHebrew}): ${p.meaning}`;
-      if (p.materials.length) line += ` | חומרים: ${p.materials.slice(0,3).join(', ')}`;
-      if (p.priceRule) line += ` (${p.priceRule})`;
+      if (p.priceTopics.length) line += ` | ${p.priceTopics.slice(0, 5).join(', ')}`;
       return line;
     }).join('\n'));
   }
-  parts.push(`דין גשם ומזג: ${rainHebrew}`);
+  const weatherLine = `דין גשם ומזג: ${mainRainHebrew}`;
+  const extraWeather = weatherSigns.length
+    ? '\n  ' + weatherSigns.join(' | ')
+    : '';
+  parts.push(weatherLine + extraWeather);
   if (regionNote) parts.push(`הערת אזור: ${regionNote}`);
 
   return {
@@ -1852,7 +1917,9 @@ function computeYearlyForecastAnalysis(chart, pricesSource, rainSource) {
     angularPlanets,
     dominantElement,
     rainVerdict,
-    rainHebrew,
+    rainHebrew: mainRainHebrew,
+    weatherSigns,
+    strengthNote,
     regionNote,
     outputHebrew: parts.join('\n'),
   };
