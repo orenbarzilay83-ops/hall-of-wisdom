@@ -2286,6 +2286,147 @@ function computeJumlaAnalysis(chart, topicId) {
   return result;
 }
 
+// ── אבחון ילדים/הריון לפי כשף אל-אסרר פרק 5 (עמ' 191-196) ─────────────────
+// "الفصل الخامس: في الأولاد والحمل"
+function computeChildrenPregnancyKashfAnalysis(chart) {
+  if (!Array.isArray(chart) || chart.length < 16) return null;
+
+  const getH = (n) => chart.find((h) => Number(h.house) === n);
+  const h1  = getH(1);
+  const h5  = getH(5);
+  const h6  = getH(6);
+  const h7  = getH(7);
+  const h8  = getH(8);
+  const h11 = getH(11);
+  const h15 = getH(15);
+  const h16 = getH(16);
+
+  if (!h5) return null;
+
+  // Element per pattern (Kashf al-Asrar pp. 43-67, confirmed in hawi-figure-names.js)
+  const ELEMENT = {
+    '1111':'מים','1112':'אש','1121':'אוויר','1122':'אש',
+    '1211':'מים','1212':'אש','1221':'עפר','1222':'אש',
+    '2111':'אוויר','2112':'אוויר','2121':'עפר','2122':'אוויר',
+    '2211':'מים','2212':'מים','2221':'עפר','2222':'עפר',
+  };
+
+  // RAML derivation: same row → 2, different → 1
+  const deriveFigure = (p1, p2) => {
+    if (!p1 || !p2 || p1.length !== 4 || p2.length !== 4) return null;
+    return p1.split('').map((c, i) => c === p2[i] ? '2' : '1').join('');
+  };
+
+  const isBenefic = (h) => {
+    if (!h) return false;
+    const f = String(h.fortune || '');
+    return f.includes('סעד') && !f.startsWith('ממוזג-נחס');
+  };
+  const isMalefic = (h) => {
+    if (!h) return false;
+    return String(h.fortune || '').includes('נחס');
+  };
+
+  const lines = [];
+  const h5Pattern = h5.key || '';
+
+  // 1. האם ההריון אמיתי? (Kashf p.191)
+  // صامت (silent/full): first digit '2' → pregnancy real
+  // فارغ (empty): first digit '1' → pregnancy false
+  const pregnancyReal = h5Pattern.startsWith('2');
+  lines.push(`האם ההריון אמיתי: ${pregnancyReal ? 'כן — בית 5 מלא (צאמת)' : 'לא — בית 5 ריק (פארג)'} [${h5.hebrew || h5Pattern}]`);
+
+  // 2. מין העובר לפי יסוד בית 1+5 (Kashf p.193)
+  // "خذ من الأول والخامس ، فإن خرج ناري أو هوائي ، فالحمل ذكر ؛ وإن كان مائي أو ترابي ، فالحمل أنثى"
+  const derived15Pattern = deriveFigure(h1?.key, h5Pattern);
+  if (derived15Pattern) {
+    const el = ELEMENT[derived15Pattern] || null;
+    if (el === 'אש' || el === 'אוויר') {
+      lines.push(`מין העובר (יסוד בית 1+5 → ${el}): זכר [כשף עמ׳ 193]`);
+    } else if (el === 'מים' || el === 'עפר') {
+      lines.push(`מין העובר (יסוד בית 1+5 → ${el}): נקבה [כשף עמ׳ 193]`);
+    }
+  }
+
+  // 3. הפלה? (Kashf pp.191-192)
+  const h7Pattern = h7?.key || '';
+  const h8Pattern = h8?.key || '';
+  const h11SafeIncoming = h11 && h11.key?.startsWith('2') && isBenefic(h11);
+
+  if (h7Pattern === '2122' || h7Pattern === '2221') {
+    lines.push(`סכנת הפלה: ${h7?.hebrew || h7Pattern} בבית 7 — סכנת הפלה [כשף עמ׳ 191-192]`);
+  }
+  if (h8Pattern === '2122') {
+    lines.push(`סכנת הפלה: אדום (حمرة) בבית 8 — סכנת הפלה [כשף עמ׳ 192]`);
+  }
+  if (h8Pattern === '1221') {
+    if (h11SafeIncoming) {
+      lines.push(`סוהר (عقلة) בבית 8 — האם בסכנה, בית 11 סעד-נכנס: הנולד ינצל [כשף עמ׳ 192]`);
+    } else {
+      lines.push(`סוהר (عقلة) בבית 8 — סכנת מוות לאם ולנולד [כשף עמ׳ 192]`);
+    }
+  }
+
+  // 4. קושי לידה (Kashf p.191)
+  // ثابت (pattern '22xx') → difficult birth; منقلب ('11xx') → easy
+  const dir5 = h5Pattern.slice(0, 2);
+  if (dir5 === '22') {
+    lines.push(`קושי בלידה: בית 5 קבוע (ת׳אבת) — הלידה קשה [כשף עמ׳ 191]`);
+  } else if (dir5 === '11') {
+    lines.push(`לידה קלה: בית 5 מתהפך (מנקלב) — הלידה תתרחש בקלות [כשף עמ׳ 191]`);
+  }
+
+  // 5. תאומים — מוגסד (Kashf p.191)
+  // Palindromic figures: 1111, 1221, 2112, 2222 (same when rows are reversed)
+  const PALINDROMES = new Set(['1111','1221','2112','2222']);
+  if (PALINDROMES.has(h5Pattern)) {
+    lines.push(`תאומים: בית 5 = ${h5.hebrew || h5Pattern} (מוגסד) — יתכן שמדובר בתאומים [כשף עמ׳ 191]`);
+  }
+
+  // 6. טיב/איכות הילד — בית 6 (בריאות) ובית 8 (אריכות ימים) (Kashf p.194)
+  if (h6) {
+    if (isMalefic(h6)) {
+      lines.push(`בריאות הילד בילדות: בית 6 נחס (${h6.hebrew || h6.key}) — מחלות רבות בגיל הרך [כשף עמ׳ 194]`);
+    } else if (isBenefic(h6)) {
+      lines.push(`בריאות הילד: בית 6 סעד (${h6.hebrew || h6.key}) — בריאות טובה [כשף עמ׳ 194]`);
+    }
+  }
+  if (h8) {
+    if (isMalefic(h8)) {
+      lines.push(`אריכות ימים: בית 8 נחס (${h8.hebrew || h8.key}) — מעט תקווה [כשף עמ׳ 194]`);
+    } else if (isBenefic(h8)) {
+      lines.push(`אריכות ימים: בית 8 סעד (${h8.hebrew || h8.key}) — ככל שיגדל מצבו ישתפר [כשף עמ׳ 194]`);
+    }
+  }
+
+  // 7. מזל הילד — בית 5+16 (Kashf p.194)
+  if (h16) {
+    const b5g = isBenefic(h5),  b5b = isMalefic(h5);
+    const b16g = isBenefic(h16), b16b = isMalefic(h16);
+    if (b5g && b16g) {
+      lines.push(`מזל הילד (בית 5+16 שניהם סעד): אושר, מצב טוב, עושר [כשף עמ׳ 194]`);
+    } else if (b5b && b16b) {
+      lines.push(`מזל הילד (בית 5+16 שניהם נחס): מצב ירוד [כשף עמ׳ 194]`);
+    } else {
+      lines.push(`מזל הילד (בית 5+16 מעורב): מצב בינוני [כשף עמ׳ 194]`);
+    }
+  }
+
+  // 8. כמה חודשים עברו (Kashf p.192)
+  // "انظر الشكل الحال في الميزان ، فهو عدد شهورها"
+  // Count dots in house 15 (mizzan = judge)
+  if (h15) {
+    const dots = (h15.key || '').split('').reduce((s, c) => s + (c === '2' ? 2 : 1), 0);
+    lines.push(`חודשי הריון (לפי בית 15 מיזאן — ${h15.hebrew || h15.key}): כ-${dots} חודשים [כשף עמ׳ 192]`);
+  }
+
+  return {
+    outputHebrew: `— אבחון ילד/הריון (כשף פרק 5) —\n${lines.join('\n')}`,
+    details: lines,
+    pregnancyReal,
+  };
+}
+
 // ── שיטת האדד המלאה (Task 9) ─────────────────────────────────────────────────
 // מקור: כשף אל-אסראר — ספירת נקודות הצורה לחישוב מדויק של זמן
 // כל שורה '1' = נקודה אחת; כל שורה '2' = שתי נקודות
@@ -3001,6 +3142,9 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const jumlaAnalysis = (['spiritualDiagnostics', 'illness', 'childrenPregnancy', 'partnership'].includes(topicId))
     ? computeJumlaAnalysis(board.chart, topicId) : null;
 
+  const childrenPregnancyKashf = (topicId === 'childrenPregnancy')
+    ? computeChildrenPregnancyKashfAnalysis(board.chart) : null;
+
   // עיתוי: מעדיף דמיר לפי מיזאן (זהה לדמיר הראשי בפסיקה); חוזר לדמיר אמהות אם חסר
   const timingDhamirSource = (dhamirByMizan?.primaryHouseNumber)
     ? { houseNumber: dhamirByMizan.primaryHouseNumber }
@@ -3115,6 +3259,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     thiefLocationDetails,
     enemyInHousehold,
     jumlaAnalysis,
+    childrenPregnancyKashf,
     timingEstimate,
     marriageFigureForecast,
     yearlyFigureForecast,

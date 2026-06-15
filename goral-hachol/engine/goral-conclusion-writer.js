@@ -743,10 +743,15 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
     const house5 = getHouseFromBoard(boardAnalysis, 5);
     const house5Desc = houseDescription(house5);
     const jumla = boardAnalysis?.jumlaAnalysis;
+    const kashfChild = boardAnalysis?.childrenPregnancyKashf;
     const parts = [];
 
     if (jumla?.childDiagnosis) {
       parts.push(jumla.childDiagnosis.outputHebrew);
+    }
+
+    if (kashfChild?.outputHebrew) {
+      parts.push(kashfChild.outputHebrew);
     }
 
     let base = 'לכן יש לבדוק את בית הילדים, העדים והדיין יחד, ורק אז להכריע לגבי אפשרות ההיריון או סימני זכר ונקבה.';
