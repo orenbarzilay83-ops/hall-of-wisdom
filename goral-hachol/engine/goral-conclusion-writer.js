@@ -1628,7 +1628,39 @@ function buildNarrativeByTopic(result) {
     }
   }
 
-  // ── 8.6. תחזית שנתית — ניתוח מלא ───────────────────────────────
+  // ── 8.6. ניתוח הלוואה — כשף פרק 8 (עמ' 233-234) ───────────────
+  if (topicId === 'loan') {
+    const loanKashf = boardAnalysis?.loanKashf;
+    if (loanKashf?.outputHebrew) {
+      push(loanKashf.outputHebrew);
+    }
+  }
+
+  // ── 8.7. ניתוח דת ואמונה — כשף עמ' 253 ────────────────────────
+  if (topicId === 'religion') {
+    const religionKashf = boardAnalysis?.religionKashf;
+    if (religionKashf?.outputHebrew) {
+      push(religionKashf.outputHebrew);
+    }
+  }
+
+  // ── 8.8. דיני האם — כשף פרק 10 (עמ' 257) ─────────────────────
+  if (topicId === 'motherRules') {
+    const motherRulesKashf = boardAnalysis?.motherRulesKashf;
+    if (motherRulesKashf?.outputHebrew) {
+      push(motherRulesKashf.outputHebrew);
+    }
+  }
+
+  // ── 8.9. ניתוח ילדים/הריון — כשף פרק 5 (עמ' 191-196) ─────────
+  if (topicId === 'childrenPregnancy') {
+    const kashfChild = boardAnalysis?.childrenPregnancyKashf;
+    if (kashfChild?.outputHebrew) {
+      push(kashfChild.outputHebrew);
+    }
+  }
+
+  // ── 8.10. תחזית שנתית — ניתוח מלא ──────────────────────────────
   if (topicId === 'yearlyForecast') {
     const yearlyAnalysis = boardAnalysis?.yearlyForecastAnalysis;
     if (yearlyAnalysis?.outputHebrew) {
