@@ -16,13 +16,6 @@
 
 ---
 
-## 🟢 ביקורת מקורות (audit)
-
-### 14. אימות פסיקות Kashf al-Asrar
-- פסיקות רבות בקוד מגיעות מזיכרון — לאמת מול הספר הממוספר
-- מיקום: `goral-hachol/engine/goral-conclusion-writer.js`
-
----
 
 ## הנחיות לצ'אטים חדשים
 - **ענף עבודה:** `claude/app-cleanup-organization-mia9b2` בלבד
