@@ -119,6 +119,9 @@ const TOPIC_MAIN_HOUSES = {
   theft:            [1, 2, 7, 8, 13, 14, 15],
   siblings:         [1, 3, 7, 13, 14, 15],
   deathInheritance: [1, 7, 8, 2, 13, 14, 15],
+  loan:             [1, 2, 7, 8, 13, 14, 15],
+  religion:         [1, 3, 9, 13, 14, 15],
+  motherRules:      [1, 4, 7, 10, 13, 14, 15],
 };
 
 const TOPIC_HEBREW_TITLES = {
@@ -146,6 +149,9 @@ const TOPIC_HEBREW_TITLES = {
   theft:            'גנבה / חפץ גנוב',
   siblings:         'אחים / שכנים / קרובים',
   deathInheritance: 'מוות / ירושה / פחד גדול',
+  loan:             'הלוואה / חוב',
+  religion:         'דת / אמונה',
+  motherRules:      'דיני האם',
 };
 
 const TOPIC_QUESITED_HOUSE = {
@@ -172,6 +178,9 @@ const TOPIC_QUESITED_HOUSE = {
   theft:                7,  // בית הגנב (הצד השני)
   siblings:             3,  // בית האחים / השכנים
   deathInheritance:     8,  // בית המוות / הירושה
+  loan:                 8,  // בית ההחזרה / ממון נסתר
+  religion:             9,  // בית הדת והאמונה
+  motherRules:         10,  // בית האם / הסמכות
 };
 
 // ── תפקידים ספציפיים של בתים לפי נושא (כשף אל-אסראר שער שישי) ──────────────
@@ -192,6 +201,9 @@ const TOPIC_HOUSE_ROLES = {
   deathInheritance: { 8: 'המוות / הסכנה', 2: 'הירושה / הממון', 1: 'מצב השואל' },
   seaVoyage:        { 9: 'הנסיעה', 8: 'סכנת ים / מוות', 12: 'מכשולים בדרך' },
   fear:             { 12: 'מקור הפחד / הסכנה', 1: 'מצב השואל', 4: 'מה יקרה' },
+  loan:             { 1: 'השואל / המלווה', 7: 'הלווה', 8: 'ממון ההלוואה / ההחזרה' },
+  religion:         { 3: 'שורש האמונה', 9: 'בית הדת — עומק האמונה' },
+  motherRules:      { 10: 'האם (פסיקה)', 1: 'מצב השואל', 4: 'הבית / הביסוס' },
 };
 
 const MALEFIC_FIGURE_PATTERNS = new Set([
@@ -707,6 +719,20 @@ const TOPIC_KEY_PAIRS = {
     { houses: [1, 8],  role: 'שואל ↔ מוות/ירושה' },
     { houses: [7, 8],  role: 'צד שני ↔ הירושה' },
     { houses: [1, 2],  role: 'שואל ↔ ממון הירושה' },
+  ],
+  loan: [
+    { houses: [1, 7],  role: 'מלווה ↔ לווה' },
+    { houses: [2, 8],  role: 'ממון שואל ↔ ממון ההחזרה' },
+    { houses: [7, 8],  role: 'לווה ↔ מצבו הכלכלי' },
+  ],
+  religion: [
+    { houses: [3, 9],  role: 'שליח ↔ בית הדת' },
+    { houses: [1, 9],  role: 'שואל ↔ אמונתו' },
+  ],
+  motherRules: [
+    { houses: [1, 10], role: 'שואל ↔ האם/הסמכות' },
+    { houses: [4, 10], role: 'בית ↔ האם' },
+    { houses: [10, 15], role: 'האם ↔ פסיקה סופית' },
   ],
 };
 
@@ -2427,6 +2453,220 @@ function computeChildrenPregnancyKashfAnalysis(chart) {
   };
 }
 
+// ── הלוואה לפי כשף אל-אסרר פרק 8 (עמ' 233-234) ─────────────────────────────
+// "أنشيء من الأول والسابع شكلا, ومن الثاني والثامن شكلا, وأنشيء من الشكلين شكلا"
+function computeLoanKashfAnalysis(chart) {
+  if (!Array.isArray(chart) || chart.length < 16) return null;
+
+  const getH = (n) => chart.find((h) => Number(h.house) === n);
+  const h1 = getH(1);
+  const h2 = getH(2);
+  const h7 = getH(7);
+  const h8 = getH(8);
+  if (!h1 || !h2 || !h7 || !h8) return null;
+
+  const deriveFigure = (p1, p2) => {
+    if (!p1 || !p2 || p1.length !== 4 || p2.length !== 4) return null;
+    return p1.split('').map((c, i) => c === p2[i] ? '2' : '1').join('');
+  };
+
+  const isBenefic = (pattern) => {
+    if (!pattern) return false;
+    // Benefic figures: tariq(1111), naqi-khad(1211), ijtima(2112), nusra-dakhila(2211), nusra-kharija(1122), bayad(2212)
+    // Malefic: humra(2122), nakis(2221), qabd-kharij(1212), nusra-dakhila(2211) is mixed
+    // Using the standard fortune table from the system
+    const FIGURE_FORTUNE = {
+      '1111': 'סעד', '1112': 'נחס', '1121': 'ממוזג', '1122': 'סעד',
+      '1211': 'סעד', '1212': 'נחס', '1221': 'נחס', '1222': 'ממוזג',
+      '2111': 'ממוזג', '2112': 'סעד', '2121': 'סעד', '2122': 'נחס',
+      '2211': 'ממוזג-נחס', '2212': 'סעד', '2221': 'נחס', '2222': 'ממוזג',
+    };
+    const f = FIGURE_FORTUNE[pattern] || '';
+    return f.includes('סעד') && !f.startsWith('ממוזג-נחס');
+  };
+
+  const figArabicName = {
+    '1111': 'طريق', '1112': 'عتبة خارجة', '1121': 'جودلة', '1122': 'نصرة خارجة',
+    '1211': 'نقي الخد', '1212': 'قبض خارج', '1221': 'عقلة', '1222': 'أحيان',
+    '2111': 'عتبة داخلة', '2112': 'اجتماع', '2121': 'قبض داخل', '2122': 'حمرة',
+    '2211': 'نصرة داخلة', '2212': 'بياض', '2221': 'أنكيس', '2222': 'جماعة',
+  };
+
+  const figHebrew = {
+    '1111':'דרך','1112':'סף יוצא','1121':'נלחם','1122':'כבוד יוצא',
+    '1211':'בר הלחי','1212':'ממון יוצא','1221':'סוהר','1222':'נשוא ראש',
+    '2111':'סף נכנס','2112':'חיבור','2121':'ממון נכנס','2122':'אדום',
+    '2211':'כבוד נכנס','2212':'לבן','2221':'שפל ראש','2222':'קהלה',
+  };
+
+  const figA = deriveFigure(h1.key, h7.key);
+  const figB = deriveFigure(h2.key, h8.key);
+  const figFinal = (figA && figB) ? deriveFigure(figA, figB) : null;
+  const figVerify = deriveFigure(h7.key, h8.key);
+
+  const lines = [];
+
+  lines.push(`בית 1 (${figHebrew[h1.key] || h1.key}) + בית 7 (${figHebrew[h7.key] || h7.key}) → ${figA ? (figHebrew[figA] || figA) : '—'}`);
+  lines.push(`בית 2 (${figHebrew[h2.key] || h2.key}) + בית 8 (${figHebrew[h8.key] || h8.key}) → ${figB ? (figHebrew[figB] || figB) : '—'}`);
+
+  let mainVerdict = '';
+  if (figFinal) {
+    const benefic = isBenefic(figFinal);
+    mainVerdict = benefic
+      ? `צורה משולבת: ${figHebrew[figFinal] || figFinal} (סעד) — הלווה ישיב את ההלוואה`
+      : `צורה משולבת: ${figHebrew[figFinal] || figFinal} (נחס) — יתקשה להחזיר את ההלוואה`;
+    lines.push(mainVerdict);
+  }
+
+  let verifyVerdict = '';
+  if (figVerify) {
+    const benefic = isBenefic(figVerify);
+    verifyVerdict = benefic
+      ? `אימות (ב7+ב8 → ${figHebrew[figVerify] || figVerify}): ייתן — ההלוואה תתממש [כשף עמ׳ 234]`
+      : `אימות (ב7+ב8 → ${figHebrew[figVerify] || figVerify}): לא ייתן — ההלוואה בספק [כשף עמ׳ 234]`;
+    lines.push(verifyVerdict);
+  }
+
+  return {
+    figA, figB, figFinal, figVerify,
+    willRepay: figFinal ? isBenefic(figFinal) : null,
+    willGive: figVerify ? isBenefic(figVerify) : null,
+    outputHebrew: `— ניתוח הלוואה (כשף פרק 8, עמ׳ 233-234) —\n${lines.join('\n')}`,
+    details: lines,
+  };
+}
+
+// ── דת ואמונה לפי כשף אל-אסרר (עמ' 253) ─────────────────────────────────────
+// "إن كان في الثالث والتاسع شكل نحس, فهو قليل الدين; وإن كان سعد, فهو ذوا دين"
+function computeReligionKashfAnalysis(chart) {
+  if (!Array.isArray(chart) || chart.length < 16) return null;
+
+  const getH = (n) => chart.find((h) => Number(h.house) === n);
+  const h3 = getH(3);
+  const h9 = getH(9);
+  if (!h3 || !h9) return null;
+
+  const isBenefic = (h) => {
+    if (!h) return false;
+    const f = String(h.fortune || '');
+    return f.includes('סעד') && !f.startsWith('ממוזג-נחס');
+  };
+  const isMalefic = (h) => !!h && String(h.fortune || '').includes('נחס');
+
+  const h3Benefic = isBenefic(h3);
+  const h9Benefic = isBenefic(h9);
+  const h3Malefic = isMalefic(h3);
+  const h9Malefic = isMalefic(h9);
+
+  const lines = [];
+  lines.push(`בית 3 (${h3.hebrew || h3.key}): ${h3.fortune || '—'}`);
+  lines.push(`בית 9 (${h9.hebrew || h9.key}): ${h9.fortune || '—'}`);
+
+  let verdict = '';
+  const bothBenefic = h3Benefic && h9Benefic;
+  const bothMalefic = h3Malefic && h9Malefic;
+  const anyMalefic  = h3Malefic || h9Malefic;
+  const anyBenefic  = h3Benefic || h9Benefic;
+
+  if (bothBenefic) {
+    verdict = 'בעל דת ויירא את האלוהים — אמונה חזקה [כשף עמ׳ 253]';
+  } else if (bothMalefic) {
+    verdict = 'מעט דת — חסר אמונה בסיסית [כשף עמ׳ 253]';
+  } else if (anyBenefic && !anyMalefic) {
+    verdict = 'אמונה ממוזגת — יש יסוד דתי אך אינו שלם [כשף עמ׳ 253]';
+  } else {
+    verdict = 'מצב אמונה בינוני — סעד ונחס מעורבים [כשף עמ׳ 253]';
+  }
+  lines.push(verdict);
+
+  return {
+    h3Benefic, h9Benefic, h3Malefic, h9Malefic,
+    hasFaith: bothBenefic || (anyBenefic && !anyMalefic),
+    outputHebrew: `— ניתוח דת ואמונה (כשף עמ׳ 253) —\n${lines.join('\n')}`,
+    details: lines,
+    verdict,
+  };
+}
+
+// ── דיני האם לפי כשף אל-אסרר פרק 10 (עמ' 257) ───────────────────────────────
+// "وأما حكم الأم: فإن كان نحس → شر; سعد → خير; البياض/الطريق في الأوتاد → خير وصلاح; السواقط → نكبات"
+function computeMotherRulesKashfAnalysis(chart) {
+  if (!Array.isArray(chart) || chart.length < 16) return null;
+
+  const getH = (n) => chart.find((h) => Number(h.house) === n);
+  const h10 = getH(10);
+  if (!h10) return null;
+
+  const isBenefic = (h) => {
+    if (!h) return false;
+    const f = String(h.fortune || '');
+    return f.includes('סעד') && !f.startsWith('ממוזג-נחס');
+  };
+  const isMalefic = (h) => !!h && String(h.fortune || '').includes('נחס');
+
+  // Pillar houses (אותאד): 1, 4, 7, 10
+  const PILLAR_HOUSES  = [1, 4, 7, 10];
+  // Falling/cadent houses (שואקט): 3, 6, 9, 12
+  const FALLING_HOUSES = [3, 6, 9, 12];
+  // Benefic Venus/Moon figures in RAML: bayad(2212/לבן), tariq(1111/דרך)
+  const SPECIAL_FIGS = new Set(['2212', '1111']);
+
+  const figHebrew = { '2212': 'לבן (بياض)', '1111': 'דרך (طريق)' };
+
+  const lines = [];
+  lines.push(`בית 10 (${h10.hebrew || h10.key}): ${h10.fortune || '—'}`);
+
+  // Primary verdict from h10
+  let primaryVerdict = '';
+  if (isMalefic(h10)) {
+    primaryVerdict = 'נחס בבית האם → רע לה [כשף עמ׳ 257]';
+  } else if (isBenefic(h10)) {
+    primaryVerdict = 'סעד בבית האם → טוב לה [כשף עמ׳ 257]';
+  } else {
+    primaryVerdict = 'בית האם ממוזג → מצב בינוני [כשף עמ׳ 257]';
+  }
+  lines.push(primaryVerdict);
+
+  // Check for bayad/tariq in pillars or falling houses
+  const specialInPillar  = [];
+  const specialInFalling = [];
+
+  for (const hNum of PILLAR_HOUSES) {
+    const h = getH(hNum);
+    if (h && SPECIAL_FIGS.has(h.key)) {
+      specialInPillar.push(`בית ${hNum} (${figHebrew[h.key]})`);
+    }
+  }
+  for (const hNum of FALLING_HOUSES) {
+    const h = getH(hNum);
+    if (h && SPECIAL_FIGS.has(h.key)) {
+      specialInFalling.push(`בית ${hNum} (${figHebrew[h.key]})`);
+    }
+  }
+
+  if (specialInPillar.length > 0) {
+    lines.push(`לבן/דרך בעמוד (${specialInPillar.join(', ')}) → טוב ויושר לאם [כשף עמ׳ 257]`);
+  }
+  if (specialInFalling.length > 0) {
+    lines.push(`לבן/דרך בשואקט (${specialInFalling.join(', ')}) → נכבות לאם [כשף עמ׳ 257]`);
+  }
+
+  const isGoodForMother = isBenefic(h10) || specialInPillar.length > 0;
+  const isBadForMother  = isMalefic(h10) || specialInFalling.length > 0;
+
+  return {
+    h10Benefic: isBenefic(h10),
+    h10Malefic: isMalefic(h10),
+    specialInPillar,
+    specialInFalling,
+    isGoodForMother,
+    isBadForMother,
+    outputHebrew: `— דיני האם (כשף פרק 10, עמ׳ 257) —\n${lines.join('\n')}`,
+    details: lines,
+    primaryVerdict,
+  };
+}
+
 // ── שיטת האדד המלאה (Task 9) ─────────────────────────────────────────────────
 // מקור: כשף אל-אסראר — ספירת נקודות הצורה לחישוב מדויק של זמן
 // כל שורה '1' = נקודה אחת; כל שורה '2' = שתי נקודות
@@ -3145,6 +3385,15 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const childrenPregnancyKashf = (topicId === 'childrenPregnancy')
     ? computeChildrenPregnancyKashfAnalysis(board.chart) : null;
 
+  const loanKashf = (topicId === 'loan')
+    ? computeLoanKashfAnalysis(board.chart) : null;
+
+  const religionKashf = (topicId === 'religion')
+    ? computeReligionKashfAnalysis(board.chart) : null;
+
+  const motherRulesKashf = (topicId === 'motherRules')
+    ? computeMotherRulesKashfAnalysis(board.chart) : null;
+
   // עיתוי: מעדיף דמיר לפי מיזאן (זהה לדמיר הראשי בפסיקה); חוזר לדמיר אמהות אם חסר
   const timingDhamirSource = (dhamirByMizan?.primaryHouseNumber)
     ? { houseNumber: dhamirByMizan.primaryHouseNumber }
@@ -3260,6 +3509,9 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     enemyInHousehold,
     jumlaAnalysis,
     childrenPregnancyKashf,
+    loanKashf,
+    religionKashf,
+    motherRulesKashf,
     timingEstimate,
     marriageFigureForecast,
     yearlyFigureForecast,

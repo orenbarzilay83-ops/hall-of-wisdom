@@ -181,6 +181,18 @@ function questionFocusParagraph(topicId, clientContext = {}) {
     return 'לכן הדגש הוא על בית 8 (מוות / ירושה) ועל כוח הדיין — הוא הקובע אם מדובר בסכנה ממשית, בירושה, בפחד גדול, או בשינוי גורל עמוק.';
   }
 
+  if (topicId === 'loan') {
+    return 'לכן הדגש הוא על שלוש בדיקות: האם הלווה ישיב את ההלוואה (גזירה מב1+ב7+ב2+ב8), ואימות אם ייתן כלל (גזירה מב7+ב8).';
+  }
+
+  if (topicId === 'religion') {
+    return 'לכן הדגש הוא על בית 3 ובית 9 — הם מגלים את עומק האמונה ויראת הרוממות של האדם.';
+  }
+
+  if (topicId === 'motherRules') {
+    return 'לכן הדגש הוא על בית 10 — הוא בית האם, ומצבו מגלה את מזלה, בריאותה ומצבה הכולל.';
+  }
+
   if (context) {
     return 'לכן המסקנה נקראת לפי ההקשר האישי של הלקוח ולא רק לפי שם הצורה שעלתה.';
   }
@@ -258,6 +270,12 @@ function topicOpening(topicId, topicHebrew) {
       'בעניין האח, השכן או הקרוב, הקריאה בודקת את בית 3 כדליל הנשאל עליו, ואת הקשר בינו לבין השואל (בית 1). הדיין קובע את תוצאת הקשר ואת כיוון ההשפעה.',
     deathInheritance:
       'בעניין מוות, ירושה או שינוי גורל גדול, הקריאה בודקת את בית 8 כדליל המוות והירושה, בית 7 כדליל הצד השני (הנפטר או היורש), ובית 2 לגבי הממון. הדיין קובע את המסקנה הסופית.',
+    loan:
+      'בעניין ההלוואה, הקריאה בודקת האם הלווה ישיב את הכסף. לפי כשף אל-אסרר: גוזרים צורה מב1+ב7, ועוד צורה מב2+ב8, ומשלבים — סעד = יחזיר; נחס = יתקשה.',
+    religion:
+      'בעניין הדת והאמונה, הקריאה בודקת את בית 3 ובית 9. לפי כשף אל-אסרר: אם שניהם נחס — מעט דת; אם סעד — בעל דת ויירא אלוהים.',
+    motherRules:
+      'בעניין האם (דיני האם), הקריאה בודקת את בית 10 בעיקר. לפי כשף אל-אסרר: נחס = רע לה; סעד = טוב לה; לבן/דרך בעמוד = טוב ויושר; בשואקט = נכבות.',
   };
 
   return openings[topicId] || `בעניין ${topicHebrew}, הקריאה בודקת את הבית המרכזי, העדים, הדיין והשלמת הדין.`;
@@ -1153,6 +1171,72 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
     if (h7Desc) lines.push(`הצד השני — יורש / נפטר (בית 7): ${h7Desc}`);
     const h2Desc = houseDescription(house2);
     if (h2Desc) lines.push(`ממון הירושה (בית 2): ${h2Desc}`);
+
+    return lines.join('\n');
+  }
+
+  if (topicId === 'loan') {
+    const loanKashf = boardAnalysis?.loanKashf;
+    const lines = [];
+
+    if (loanKashf?.outputHebrew) {
+      lines.push(loanKashf.outputHebrew);
+    } else {
+      const house7 = getHouseFromBoard(boardAnalysis, 7);
+      const house8 = getHouseFromBoard(boardAnalysis, 8);
+      if (grade === 'positive' || grade === 'cautiously-positive') {
+        lines.push('הלוח נוטה לטובה — יש סיכוי טוב שהלווה ישיב את ההלוואה.');
+      } else if (grade === 'negative' || grade === 'cautiously-negative') {
+        lines.push('הלוח מצביע על קושי — הלווה עלול להתקשות בהחזרה.');
+      } else {
+        lines.push('הלוח מעורב — יש לבדוק בית 7 ובית 8 בנפרד.');
+      }
+      const h7Desc = houseDescription(house7);
+      if (h7Desc) lines.push(`הלווה (בית 7): ${h7Desc}`);
+      const h8Desc = houseDescription(house8);
+      if (h8Desc) lines.push(`ממון ההלוואה (בית 8): ${h8Desc}`);
+    }
+
+    return lines.join('\n');
+  }
+
+  if (topicId === 'religion') {
+    const religionKashf = boardAnalysis?.religionKashf;
+    const lines = [];
+
+    if (religionKashf?.outputHebrew) {
+      lines.push(religionKashf.outputHebrew);
+    } else {
+      if (grade === 'positive' || grade === 'cautiously-positive') {
+        lines.push('בית 3 ובית 9 מראים סעד — האדם בעל אמונה ויראת שמים.');
+      } else if (grade === 'negative' || grade === 'cautiously-negative') {
+        lines.push('בית 3 ובית 9 מראים נחס — האדם מועט דת ורחוק מאמונה.');
+      } else {
+        lines.push('מצב האמונה מעורב — יש יסוד דתי אבל לא שלם.');
+      }
+    }
+
+    return lines.join('\n');
+  }
+
+  if (topicId === 'motherRules') {
+    const motherRulesKashf = boardAnalysis?.motherRulesKashf;
+    const lines = [];
+
+    if (motherRulesKashf?.outputHebrew) {
+      lines.push(motherRulesKashf.outputHebrew);
+    } else {
+      const house10 = getHouseFromBoard(boardAnalysis, 10);
+      if (grade === 'positive' || grade === 'cautiously-positive') {
+        lines.push('הלוח מראה טוב לאם — בית 10 נוטה לסעד.');
+      } else if (grade === 'negative' || grade === 'cautiously-negative') {
+        lines.push('הלוח מצביע על קושי לאם — בית 10 נחס.');
+      } else {
+        lines.push('מצב האם מעורב — בית 10 אינו מכריע.');
+      }
+      const h10Desc = houseDescription(house10);
+      if (h10Desc) lines.push(`מצב האם (בית 10): ${h10Desc}`);
+    }
 
     return lines.join('\n');
   }

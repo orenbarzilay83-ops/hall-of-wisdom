@@ -487,6 +487,7 @@ export const HOUSE_TOPICS_MAP = {
     { topicId: 'deathInheritance',  label: 'מוות / סכנת מוות' },
     { topicId: 'illness',           label: 'פרוגנוזה: מוות או החלמה' },
     { topicId: 'seaVoyage',         label: 'סכנת ים / טביעה' },
+    { topicId: 'loan',              label: 'הלוואה — האם יוחזר החוב' },
   ],
   9: [
     { topicId: 'travel',            label: 'נסיעה / מסע' },
@@ -494,11 +495,13 @@ export const HOUSE_TOPICS_MAP = {
     { topicId: 'seaVoyage',         label: 'מסע ים / ספינה' },
     { topicId: 'hiddenTreasure',    label: 'חפץ אבוד — כיוון הנסיעה' },
     { topicId: 'spiritualDiagnostics', label: 'חלום / חזון' },
+    { topicId: 'religion',          label: 'דת / אמונה / יראת שמים' },
   ],
   10: [
     { topicId: 'authorityState',    label: 'שלטון / תפקיד / ממשל' },
     { topicId: 'yearlyForecast',    label: 'טאלע השנה / גורל שנתי' },
     { topicId: 'commerce',          label: 'מוניטין עסקי / הצלחה מקצועית' },
+    { topicId: 'motherRules',       label: 'דיני האם — מזל האם ומצבה' },
   ],
   11: [
     { topicId: 'loveHate',          label: 'אהבה / ידידות / תקוות' },
