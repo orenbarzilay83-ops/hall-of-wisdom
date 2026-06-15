@@ -1887,33 +1887,50 @@ function computeBirthNativityAnalysis(chart, birthSource) {
 
   const taliPattern = tali.key;
   const taliHebrew  = tali.hebrew || tali.key;
+  // בשאלת מולד: מחפשים לפי כוכב הצורה — כל צורה בעלת אותו כוכב = "בעל הבית" שב בבית אחר
+  const taliPlanet  = FIGURE_PLANET_MAP[taliPattern] || null;
 
   const repeatingHouses = chart
-    .filter((h) => h.key === taliPattern && Number(h.house) !== 1)
+    .filter((h) => {
+      if (Number(h.house) === 1) return false;
+      return taliPlanet
+        ? FIGURE_PLANET_MAP[h.key] === taliPlanet
+        : h.key === taliPattern;
+    })
     .map((h) => Number(h.house))
     .sort((a, b) => a - b);
 
   const ruleLookup = buildNativityLookup(birthSource);
 
   const findings = repeatingHouses.map((houseNum) => {
+    const houseEntry = chart.find((h) => Number(h.house) === houseNum);
     const meanings = ruleLookup[houseNum] || [];
     return {
       houseNumber: houseNum,
+      figureHebrew: houseEntry?.hebrew || houseEntry?.key || '',
       meanings,
       hebrewShort: meanings.length
         ? meanings.map((m) => m.hebrew).join(' / ')
-        : `בית ${houseNum} — לא נמצא פירוש ספציפי במקור לחזרה זו.`,
+        : `בית ${houseNum} — לא נמצא פירוש ספציפי במקור.`,
     };
   });
 
-  const parts = [`בעל הטאלע: ${taliHebrew}`];
+  const planetNote = taliPlanet ? ` (כוכב: ${taliPlanet})` : '';
+  const parts = [`בעל הטאלע: ${taliHebrew}${planetNote}`];
   if (!findings.length) {
-    parts.push('הצורה אינה חוזרת בבתים אחרים — אין דין מולד ספציפי מן המקור.');
+    parts.push(taliPlanet
+      ? `כוכב הטאלע (${taliPlanet}) אינו שב בבתים אחרים בלוח — אין דין מולד ספציפי מן המקור.`
+      : 'הצורה אינה חוזרת בבתים אחרים — אין דין מולד ספציפי מן המקור.');
   } else {
-    for (const f of findings) parts.push(`חזרה בבית ${f.houseNumber}: ${f.hebrewShort}`);
+    for (const f of findings) {
+      const label = taliPlanet
+        ? `${taliPlanet} בבית ${f.houseNumber} (${f.figureHebrew})`
+        : `חזרה בבית ${f.houseNumber}`;
+      parts.push(`${label}: ${f.hebrewShort}`);
+    }
   }
 
-  return { taliPattern, taliHebrew, repeatingHouses, findings, outputHebrew: parts.join('\n') };
+  return { taliPattern, taliHebrew, taliPlanet, repeatingHouses, findings, outputHebrew: parts.join('\n') };
 }
 function computeSpiritualDiagnosticsHouseIndex(chart, spiritualSource) {
   if (!Array.isArray(chart) || !spiritualSource) return null;

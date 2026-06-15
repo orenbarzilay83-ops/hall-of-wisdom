@@ -1531,6 +1531,14 @@ function buildNarrativeByTopic(result) {
   // ── 8. DHAMIR ────────────────────────────────────────────────────
   push(dhamirParagraph(boardAnalysis, judgeVerdict));
 
+  // ── 8.5. שאלת מולד — ניתוח בעל הטאלע ──────────────────────────
+  if (topicId === 'birthNativity') {
+    const birthAnalysis = boardAnalysis?.birthNativityAnalysis;
+    if (birthAnalysis?.outputHebrew) {
+      push(`שאלת מולד — ניתוח בעל הטאלע:\n${birthAnalysis.outputHebrew}`);
+    }
+  }
+
   // ── 9. TOPIC RULES (חוקי חאוי לנושא) ────────────────────────────
   const checks = (boardAnalysis.topicConnections?.checks || []);
   if (checks.length) {
@@ -2699,8 +2707,17 @@ export function writeClientReadingHebrew(result) {
       break;
     }
 
+    case 'birthNativity': {
+      if (h1) push(askerOpeningLine(h1?.fortune, ''));
+      const birthAnalysis = boardAnalysis?.birthNativityAnalysis;
+      if (birthAnalysis?.outputHebrew) push(birthAnalysis.outputHebrew);
+      if (!isNegative && jTone > 0) push('הדיין פוסק לחיוב — הכיוון הכללי תומך.');
+      else if (!isPositive && jTone < 0) push('הדיין פוסק לשלילה — כדאי לחכות לזמן טוב יותר.');
+      else push('הדיין ממוזג — יש לנהוג בזהירות.');
+      break;
+    }
+
     case 'foundations':
-    case 'birthNativity':
     case 'completion':
     case 'partnership': {
       if (h1) push(askerOpeningLine(h1?.fortune, ''));
