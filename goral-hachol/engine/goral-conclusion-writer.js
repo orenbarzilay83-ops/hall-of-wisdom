@@ -1736,7 +1736,10 @@ function buildNarrativeByTopic(result) {
   if (topicId === 'childrenPregnancy') {
     const kashfChild = boardAnalysis?.childrenPregnancyKashf;
     if (kashfChild?.outputHebrew) {
-      push(kashfChild.outputHebrew);
+      const scK = (s) => s
+        .replace(/\s*\[(?:כשף|القول|حاوي|חאוי)[^\]]*\]/g, '')
+        .replace(/\s*\((?:القول الجامع|כשף|حاوي|חאוי|PDF[12])\s+עמ׳\s*[^)]*\)/g, '');
+      push(scK(kashfChild.outputHebrew));
     }
   }
 
@@ -1744,7 +1747,7 @@ function buildNarrativeByTopic(result) {
   if (topicId === 'yearlyForecast') {
     const yearlyAnalysis = boardAnalysis?.yearlyForecastAnalysis;
     if (yearlyAnalysis?.outputHebrew) {
-      push(`ניתוח טאלע השנה (חאוי עמ׳ 60-62):\n${yearlyAnalysis.outputHebrew}`);
+      push(`ניתוח טאלע השנה:\n${yearlyAnalysis.outputHebrew}`);
     }
     const figForecast = boardAnalysis?.yearlyFigureForecast;
     if (figForecast?.outputHebrew) {
@@ -1771,79 +1774,85 @@ function buildNarrativeByTopic(result) {
     push(`מקור — ${kbi.sourceRef}:\n${kbi.firstExcerpt}`);
   }
 
-  // ── 12. ניתוחים נושאיים — כשף + القول الجامع (Task 15) ──────────
+  // ── 12. ניתוחים נושאיים (Task 15) ──────────────────────────────
   {
+    const sc = (s) => s
+      .replace(/\s*\[(?:כשף|القول|حاوي|חאוי)[^\]]*\]/g, '')
+      .replace(/\s*\((?:القول الجامع|כשף|حاوي|חאוי|PDF[12])\s+עמ׳\s*[^)]*\)/g, '')
+      .trim();
+    const ind = (s) => sc(s).replace(/\n/g, '\n  ');
+
     const bodyPartDiag = boardAnalysis.bodyPartDiagnosis;
-    if (bodyPartDiag) push(`מיקום המחלה בגוף (القول الجامع עמ׳ 16):\n  ${bodyPartDiag.outputHebrew}`);
+    if (bodyPartDiag) push(`מיקום המחלה בגוף:\n  ${sc(bodyPartDiag.outputHebrew)}`);
 
     const thiefGenderAge = boardAnalysis.thiefGenderAge;
-    if (thiefGenderAge) push(`מין הגנב וגילו (القول الجامع עמ׳ 48):\n  ${thiefGenderAge.outputHebrew}`);
+    if (thiefGenderAge) push(`מין הגנב וגילו:\n  ${sc(thiefGenderAge.outputHebrew)}`);
 
     const thiefAge = boardAnalysis.thiefAge;
-    if (thiefAge) push(`גיל הגנב (القول الجامع עמ׳ 48):\n  ${thiefAge.outputHebrew}`);
+    if (thiefAge) push(`גיל הגנב:\n  ${sc(thiefAge.outputHebrew)}`);
 
     const thiefProximity = boardAnalysis.thiefProximity;
-    if (thiefProximity) push(`קרבת הגנב לשואל (القول الجامع עמ׳ 48-49):\n  ${thiefProximity.outputHebrew.replace(/\n/g, '\n  ')}`);
+    if (thiefProximity) push(`קרבת הגנב:\n  ${ind(thiefProximity.outputHebrew)}`);
 
     const stolenItemReturn = boardAnalysis.stolenItemReturn;
-    if (stolenItemReturn) push(`האם הגנוב יוחזר (القول الجامع עמ׳ 48-49):\n  ${stolenItemReturn.outputHebrew.replace(/\n/g, '\n  ')}`);
+    if (stolenItemReturn) push(`האם הגנוב יוחזר:\n  ${ind(stolenItemReturn.outputHebrew)}`);
 
     const missingPersonLocation = boardAnalysis.missingPersonLocation;
-    if (missingPersonLocation) push(`מיקום הנעדר (القول الجامع עמ׳ 52, حاوي עמ׳ 59):\n  ${missingPersonLocation.outputHebrew.replace(/\n/g, '\n  ')}`);
+    if (missingPersonLocation) push(`מיקום הנעדר:\n  ${ind(missingPersonLocation.outputHebrew)}`);
 
     const missingPersonReturn = boardAnalysis.missingPersonReturn;
-    if (missingPersonReturn) push(`האם הנעדר יחזור (حاوي עמ׳ 59):\n  ${missingPersonReturn.outputHebrew.replace(/\n/g, '\n  ')}`);
+    if (missingPersonReturn) push(`האם הנעדר יחזור:\n  ${ind(missingPersonReturn.outputHebrew)}`);
 
     const geographicDirection = boardAnalysis.geographicDirection;
-    if (geographicDirection) push(`כיוון גיאוגרפי (القول الجامع עמ׳ 30):\n  ${geographicDirection.outputHebrew}`);
+    if (geographicDirection) push(`כיוון גיאוגרפי:\n  ${sc(geographicDirection.outputHebrew)}`);
 
     const travelDirection = boardAnalysis.travelDirection;
-    if (travelDirection) push(`כיוון הנסיעה (القول الجامع פ׳ 10):\n  ${travelDirection.outputHebrew}`);
+    if (travelDirection) push(`כיוון הנסיעה:\n  ${sc(travelDirection.outputHebrew)}`);
 
     const deathRisk = boardAnalysis.deathRisk;
-    if (deathRisk) push(`סיכון מוות (القول الجامع עמ׳ 41-42):\n  ${deathRisk.outputHebrew.replace(/\n/g, '\n  ')}`);
+    if (deathRisk) push(`סיכון מוות:\n  ${ind(deathRisk.outputHebrew)}`);
 
     const jinnType = boardAnalysis.jinnType;
-    if (jinnType) push(`סוג הג׳ין (القول الجامع עמ׳ 57-58):\n  ${jinnType.outputHebrew.replace(/\n/g, '\n  ')}`);
+    if (jinnType) push(`סוג הג׳ין:\n  ${ind(jinnType.outputHebrew)}`);
 
     const wifeVirginityStatus = boardAnalysis.wifeVirginityStatus;
-    if (wifeVirginityStatus) push(`ת׳יב / בכר (القول الجامع עמ׳ 44):\n  ${wifeVirginityStatus.outputHebrew}`);
+    if (wifeVirginityStatus) push(`ת׳יב / בכר:\n  ${sc(wifeVirginityStatus.outputHebrew)}`);
 
     const wifeChastity = boardAnalysis.wifeChastity;
-    if (wifeChastity) push(`צניעות האישה (القول الجامع עמ׳ 43-44):\n  ${wifeChastity.outputHebrew.replace(/\n/g, '\n  ')}`);
+    if (wifeChastity) push(`צניעות האישה:\n  ${ind(wifeChastity.outputHebrew)}`);
 
     const marketPrices = boardAnalysis.marketPrices;
-    if (marketPrices) push(`יוקר / זול — מחירי שוק (القول الجامع עמ׳ 25):\n  ${marketPrices.outputHebrew}`);
+    if (marketPrices) push(`יוקר / זול — מחירי שוק:\n  ${sc(marketPrices.outputHebrew)}`);
 
     const wishFulfillment = boardAnalysis.wishFulfillment;
-    if (wishFulfillment) push(`האם ישיג מה שרוצה (القول الجامع עמ׳ 51-52):\n  ${wishFulfillment.outputHebrew}`);
+    if (wishFulfillment) push(`האם ישיג מה שרוצה:\n  ${sc(wishFulfillment.outputHebrew)}`);
 
     const querentSorceryCheck = boardAnalysis.querentSorceryCheck;
-    if (querentSorceryCheck) push(`האם השואל מכושף (القول الجامع עמ׳ 56-57):\n  ${querentSorceryCheck.outputHebrew}`);
+    if (querentSorceryCheck) push(`האם השואל מכושף:\n  ${sc(querentSorceryCheck.outputHebrew)}`);
 
     const dreamH9 = boardAnalysis.dreamH9;
-    if (dreamH9) push(`חלום — פרשנות (כשף עמ׳ 254):\n  ${dreamH9.outputHebrew}`);
+    if (dreamH9) push(`חלום — פרשנות:\n  ${sc(dreamH9.outputHebrew)}`);
 
     const lostAnimalReturn = boardAnalysis.lostAnimalReturn;
-    if (lostAnimalReturn) push(`האם הבהמה תחזור (כשף עמ׳ 202):\n  ${lostAnimalReturn.outputHebrew}`);
+    if (lostAnimalReturn) push(`האם הבהמה תחזור:\n  ${sc(lostAnimalReturn.outputHebrew)}`);
 
     const animalTypeH6 = boardAnalysis.animalTypeH6;
-    if (animalTypeH6) push(`סוג הבהמה / חיה (כשף עמ׳ 201):\n  ${animalTypeH6.outputHebrew}`);
+    if (animalTypeH6) push(`סוג הבהמה:\n  ${sc(animalTypeH6.outputHebrew)}`);
 
     const kingRulerStatus = boardAnalysis.kingRulerStatus;
-    if (kingRulerStatus) push(`מלך / שליט — מצב (כשף עמ׳ 257):\n  ${kingRulerStatus.outputHebrew.replace(/\n/g, '\n  ')}`);
+    if (kingRulerStatus) push(`מלך / שליט:\n  ${ind(kingRulerStatus.outputHebrew)}`);
 
     const enemyPresenceCheck = boardAnalysis.enemyPresenceCheck;
-    if (enemyPresenceCheck) push(`בדיקת אויב (כשף עמ׳ 271):\n  ${enemyPresenceCheck.outputHebrew.replace(/\n/g, '\n  ')}`);
+    if (enemyPresenceCheck) push(`בדיקת אויב:\n  ${ind(enemyPresenceCheck.outputHebrew)}`);
 
     const prisonerReleaseCheck = boardAnalysis.prisonerReleaseCheck;
-    if (prisonerReleaseCheck) push(`שחרור אסיר (כשף עמ׳ 272):\n  ${prisonerReleaseCheck.outputHebrew.replace(/\n/g, '\n  ')}`);
+    if (prisonerReleaseCheck) push(`שחרור אסיר:\n  ${ind(prisonerReleaseCheck.outputHebrew)}`);
 
     const fatherParentStatus = boardAnalysis.fatherParentStatus;
-    if (fatherParentStatus) push(`מצב האב / הנכס (כשף עמ׳ 184):\n  ${fatherParentStatus.outputHebrew.replace(/\n/g, '\n  ')}`);
+    if (fatherParentStatus) push(`מצב האב / הנכס:\n  ${ind(fatherParentStatus.outputHebrew)}`);
 
     const parnasaLivelihood = boardAnalysis.parnasaLivelihood;
-    if (parnasaLivelihood) push(`פרנסה ומחיה (כשף עמ׳ 182):\n  ${parnasaLivelihood.outputHebrew.replace(/\n/g, '\n  ')}`);
+    if (parnasaLivelihood) push(`פרנסה ומחיה:\n  ${ind(parnasaLivelihood.outputHebrew)}`);
   }
 
   return paras.length ? paras.join('\n\n') : null;

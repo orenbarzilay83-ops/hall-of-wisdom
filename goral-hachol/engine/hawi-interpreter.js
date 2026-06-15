@@ -4201,10 +4201,10 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const dreamH9 = (['foundations', 'generalReading'].includes(topicId))
     ? computeDreamH9(board.chart) : null;
 
-  const lostAnimalReturn = (topicId === 'illness')
+  const lostAnimalReturn = (topicId === 'lostAnimal')
     ? computeLostAnimalReturn(board.chart) : null;
 
-  const animalTypeH6 = (topicId === 'illness')
+  const animalTypeH6 = (topicId === 'lostAnimal')
     ? computeAnimalTypeByH6(board.chart) : null;
 
   const kingRulerStatus = (topicId === 'authorityState')
