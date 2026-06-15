@@ -18,7 +18,7 @@ export const KASHF_TOPICS_PER_HOUSE = {
     topics: [
       { label: 'מצב השואל הכללי',        description: 'כוח הנפש, מצב האדם עכשיו',                        implemented: true,  topicId: 'foundations' },
       { label: 'האם העניין יצליח',        description: 'האם הצורך יתמלא — לפי סעד/נחס ויתדות',            implemented: true,  topicId: 'completion' },
-      { label: 'כישוף / עין הרע',         description: 'האם יש מעשה על השואל מהנשאל',                    implemented: true,  topicId: 'spiritualDiagnostics' },
+      // הערה: כישוף/עין הרע שייך לבית 6 (الشعوذة מפורש שם בספר). בית 1 נכנס לאבחון רוחני רק כבית השואל — לא כבית ספציפי לנושא.
       { label: 'אסתח׳ארה',                description: 'שאלת כוונה ורשות — 21 פעמים בטהרה',               implemented: false, topicId: null },
       { label: 'מולד / גורל האדם',        description: 'מצב האדם מלידה לפי בית 1 כטאלע',                  implemented: true,  topicId: 'birthNativity' },
       { label: 'אורך חיים',               description: 'האם יחיה ארוך — לפי צורות ארוכות/קצרות',          implemented: false, topicId: null },
@@ -80,7 +80,7 @@ export const KASHF_TOPICS_PER_HOUSE = {
       { label: 'סוג המחלה (אח׳לאט)',     description: 'מרה צהובה / שחורה / דם / ליחה לפי יסוד',           implemented: false, topicId: null },
       { label: 'האם ימות',               description: 'טריק/ביאד/עקלה/אג׳תמאע כאמהות = סכנת מוות',       implemented: false, topicId: null },
       { label: 'בהמה / חיה אבודה',       description: 'האם תחזור, איפה היא, מה קרה לה',                   implemented: false, topicId: null },
-      { label: 'אבחון רוחני',            description: 'כישוף, עין, ג׳ין — מה גורם לקושי',                 implemented: true,  topicId: 'spiritualDiagnostics' },
+      { label: 'אבחון רוחני — כישוף / עין / ג׳ין', description: 'הספר: בית 6 = الشعوذة والحسد والشيء الخفي (כישוף, קנאה, נסתר). זהו הבית הספציפי לאבחון רוחני.', implemented: true, topicId: 'spiritualDiagnostics', sourceNote: 'explicit-in-source — kashf line 963' },
     ],
   },
 
