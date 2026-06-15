@@ -453,6 +453,76 @@ function describeCoreHouses(analysis, topicId, question) {
     parts.push(`מין הגנב וגילו (القول الجامع עמ׳ 48):\n  ${thiefGenderAge.outputHebrew}`);
   }
 
+  const thiefAge = analysis.thiefAge;
+  if (thiefAge) {
+    parts.push(`גיל הגנב (القول الجامع עמ׳ 48):\n  ${thiefAge.outputHebrew}`);
+  }
+
+  const thiefProximity = analysis.thiefProximity;
+  if (thiefProximity) {
+    parts.push(`קרבת הגנב לשואל (القول الجامع עמ׳ 48-49):\n  ${thiefProximity.outputHebrew.replace(/\n/g, '\n  ')}`);
+  }
+
+  const stolenItemReturn = analysis.stolenItemReturn;
+  if (stolenItemReturn) {
+    parts.push(`האם הגנוב יוחזר (القول الجامع עמ׳ 48-49):\n  ${stolenItemReturn.outputHebrew.replace(/\n/g, '\n  ')}`);
+  }
+
+  const missingPersonLocation = analysis.missingPersonLocation;
+  if (missingPersonLocation) {
+    parts.push(`מיקום הנעדר (القول الجامع עמ׳ 52, حاوي עמ׳ 59):\n  ${missingPersonLocation.outputHebrew.replace(/\n/g, '\n  ')}`);
+  }
+
+  const missingPersonReturn = analysis.missingPersonReturn;
+  if (missingPersonReturn) {
+    parts.push(`האם הנעדר יחזור (حاوي עמ׳ 59):\n  ${missingPersonReturn.outputHebrew.replace(/\n/g, '\n  ')}`);
+  }
+
+  const geographicDirection = analysis.geographicDirection;
+  if (geographicDirection) {
+    parts.push(`כיוון גיאוגרפי (القول الجامع עמ׳ 30):\n  ${geographicDirection.outputHebrew}`);
+  }
+
+  const travelDirection = analysis.travelDirection;
+  if (travelDirection) {
+    parts.push(`כיוון הנסיעה (القول الجامع פ׳ 10):\n  ${travelDirection.outputHebrew}`);
+  }
+
+  const deathRisk = analysis.deathRisk;
+  if (deathRisk) {
+    parts.push(`סיכון מוות (القول الجامع עמ׳ 41-42):\n  ${deathRisk.outputHebrew.replace(/\n/g, '\n  ')}`);
+  }
+
+  const jinnType = analysis.jinnType;
+  if (jinnType) {
+    parts.push(`סוג הג׳ין (القول الجامع עמ׳ 57-58):\n  ${jinnType.outputHebrew.replace(/\n/g, '\n  ')}`);
+  }
+
+  const wifeVirginityStatus = analysis.wifeVirginityStatus;
+  if (wifeVirginityStatus) {
+    parts.push(`ת׳יב / בכר (القول الجامع עמ׳ 44):\n  ${wifeVirginityStatus.outputHebrew}`);
+  }
+
+  const wifeChastity = analysis.wifeChastity;
+  if (wifeChastity) {
+    parts.push(`צניעות האישה (القول الجامع עמ׳ 43-44):\n  ${wifeChastity.outputHebrew.replace(/\n/g, '\n  ')}`);
+  }
+
+  const marketPrices = analysis.marketPrices;
+  if (marketPrices) {
+    parts.push(`יוקר / זול — מחירי שוק (القول الجامع עמ׳ 25):\n  ${marketPrices.outputHebrew}`);
+  }
+
+  const wishFulfillment = analysis.wishFulfillment;
+  if (wishFulfillment) {
+    parts.push(`האם ישיג מה שרוצה (القول الجامع עמ׳ 51-52):\n  ${wishFulfillment.outputHebrew}`);
+  }
+
+  const querentSorceryCheck = analysis.querentSorceryCheck;
+  if (querentSorceryCheck) {
+    parts.push(`האם השואל מכושף (القول الجامع עמ׳ 56-57):\n  ${querentSorceryCheck.outputHebrew}`);
+  }
+
   const enemyHH = analysis.enemyInHousehold;
   if (enemyHH) {
     parts.push(`גילוי אויב בסביבה (בלוג' אלאמל עמ' 64):\n  ${enemyHH.outputHebrew}`);
