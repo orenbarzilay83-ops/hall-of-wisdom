@@ -1480,6 +1480,12 @@ function buildNarrativeByTopic(result) {
   const paras    = [];
   const push     = (p) => { if (p && clean(p)) paras.push(clean(p)); };
 
+  // מסיר ציטוטי מקור מכל טקסט שמגיע למסקנה
+  const scText = (s) => s
+    .replace(/\s*\[(?:כשף|القول|حاوي|חאוי)[^\]]*\]/g, '')
+    .replace(/\s*\((?:القول الجامع|כשף|حاوي|חאוי|PDF[12])[^)]+\)/g, '')
+    .trim();
+
   // ── 0. KASHF-AL-ASRAR VERDICT BLOCK (if available) ──────────────
   const kashfBlock = buildKashfVerdictBlock(kashfVerdict, kashfSupportAnalysis);
   if (kashfBlock) push(kashfBlock);
@@ -1708,38 +1714,35 @@ function buildNarrativeByTopic(result) {
     }
   }
 
-  // ── 8.6. ניתוח הלוואה — כשף פרק 8 (עמ' 233-234) ───────────────
+  // ── 8.6. ניתוח הלוואה — כשף פרק 8 ─────────────────────────────
   if (topicId === 'loan') {
     const loanKashf = boardAnalysis?.loanKashf;
     if (loanKashf?.outputHebrew) {
-      push(loanKashf.outputHebrew);
+      push(scText(loanKashf.outputHebrew));
     }
   }
 
-  // ── 8.7. ניתוח דת ואמונה — כשף עמ' 253 ────────────────────────
+  // ── 8.7. ניתוח דת ואמונה ─────────────────────────────────────
   if (topicId === 'religion') {
     const religionKashf = boardAnalysis?.religionKashf;
     if (religionKashf?.outputHebrew) {
-      push(religionKashf.outputHebrew);
+      push(scText(religionKashf.outputHebrew));
     }
   }
 
-  // ── 8.8. דיני האם — כשף פרק 10 (עמ' 257) ─────────────────────
+  // ── 8.8. דיני האם ────────────────────────────────────────────
   if (topicId === 'motherRules') {
     const motherRulesKashf = boardAnalysis?.motherRulesKashf;
     if (motherRulesKashf?.outputHebrew) {
-      push(motherRulesKashf.outputHebrew);
+      push(scText(motherRulesKashf.outputHebrew));
     }
   }
 
-  // ── 8.9. ניתוח ילדים/הריון — כשף פרק 5 (עמ' 191-196) ─────────
+  // ── 8.9. ניתוח ילדים/הריון ───────────────────────────────────
   if (topicId === 'childrenPregnancy') {
     const kashfChild = boardAnalysis?.childrenPregnancyKashf;
     if (kashfChild?.outputHebrew) {
-      const scK = (s) => s
-        .replace(/\s*\[(?:כשף|القول|حاوي|חאוי)[^\]]*\]/g, '')
-        .replace(/\s*\((?:القول الجامع|כשף|حاوي|חאוי|PDF[12])\s+עמ׳\s*[^)]*\)/g, '');
-      push(scK(kashfChild.outputHebrew));
+      push(scText(kashfChild.outputHebrew));
     }
   }
 
@@ -1747,11 +1750,11 @@ function buildNarrativeByTopic(result) {
   if (topicId === 'yearlyForecast') {
     const yearlyAnalysis = boardAnalysis?.yearlyForecastAnalysis;
     if (yearlyAnalysis?.outputHebrew) {
-      push(`ניתוח טאלע השנה:\n${yearlyAnalysis.outputHebrew}`);
+      push(`ניתוח טאלע השנה:\n${scText(yearlyAnalysis.outputHebrew)}`);
     }
     const figForecast = boardAnalysis?.yearlyFigureForecast;
     if (figForecast?.outputHebrew) {
-      push(figForecast.outputHebrew);
+      push(scText(figForecast.outputHebrew));
     }
   }
 
@@ -1771,16 +1774,25 @@ function buildNarrativeByTopic(result) {
   // ── 11. תובנה מספר הכשף שער שישי (Task 10) ──────────────────────
   const kbi = boardAnalysis.kashfBookInsight;
   if (kbi?.firstExcerpt) {
-    push(`מקור — ${kbi.sourceRef}:\n${kbi.firstExcerpt}`);
+    const CHAPTER_HEADING = /^(?:פרק|סיום פרק|הפרק|נכּתה|מֻלְתַּקַּט|אחכאם|"רג'ע|> |רג'ע|الفصل)/;
+    const excerptLines = kbi.firstExcerpt.split('\n').filter((ln) => {
+      const t = ln.trim();
+      if (!t) return false;
+      if (t.startsWith('[')) return false;
+      if (t.startsWith('מקור —')) return false;
+      if (CHAPTER_HEADING.test(t)) return false;                               // כותרות פרק ותעתיקי ערבית
+      if (/^[؀-ۿ\s().,،:؛؟!]+$/.test(t)) return false;
+      if ((t.match(/[؀-ۿ]/g) || []).length / t.length > 0.35) return false;
+      return true;
+    });
+    const cleanExcerpt = scText(excerptLines.join('\n')).trim();
+    if (cleanExcerpt) push(cleanExcerpt);
   }
 
   // ── 12. ניתוחים נושאיים (Task 15) ──────────────────────────────
   {
-    const sc = (s) => s
-      .replace(/\s*\[(?:כשף|القول|حاوي|חאוי)[^\]]*\]/g, '')
-      .replace(/\s*\((?:القول الجامع|כשף|حاوي|חאוי|PDF[12])\s+עמ׳\s*[^)]*\)/g, '')
-      .trim();
-    const ind = (s) => sc(s).replace(/\n/g, '\n  ');
+    const sc  = scText;
+    const ind = (s) => scText(s).replace(/\n/g, '\n  ');
 
     const bodyPartDiag = boardAnalysis.bodyPartDiagnosis;
     if (bodyPartDiag) push(`מיקום המחלה בגוף:\n  ${sc(bodyPartDiag.outputHebrew)}`);
