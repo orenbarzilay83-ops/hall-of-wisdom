@@ -377,6 +377,45 @@ function computeCrossReference(questionHits, isqatResult) {
   return null; // Categories match — no cross-reference needed
 }
 
+// Figure pattern → shortFigureId lookup
+const PATTERN_TO_FIGURE_ID = {
+  '1111': 'tariq',        '1112': 'ataba-kharija',
+  '1121': 'judla',        '1122': 'nusra-kharija',
+  '1211': 'naqi-khad',    '1212': 'qabd-kharij',
+  '1221': 'aqla',         '1222': 'hayyan',
+  '2111': 'ataba-dakhila','2112': 'ijtima',
+  '2121': 'qabd-dakhil',  '2122': 'humra',
+  '2211': 'nusra-dakhila','2212': 'bayad',
+  '2221': 'nakis',        '2222': 'jamaa',
+};
+
+// Arabic letter hints per figure — extracted from شعر حروف كل شكل (Kashf al-Asrar pp. 138-139).
+// Each figure maps to 1-2 Arabic letters whose sounds hint at the name being sought.
+// Palindromic figures (same when reversed: tariq/aqla/ijtima/jamaa) get 1 letter; others get 2.
+// Figures not found in the available digitized poem are omitted (naqi-khad, nusra-kharija, nusra-dakhila).
+const FIGURE_LETTER_HINTS = {
+  'tariq':         { display: 'ע (عين)' },                              // 1111 — palindrome
+  'ataba-kharija': { display: 'ח (حاء), ח׳ (خاء)' },                   // 1112
+  'judla':         { display: 'ט (طاء), ד׳ (ذال)' },                   // 1121 — كوسج in poem
+  'qabd-kharij':   { display: 'ל (لام), ג׳ (غين)' },                   // 1212
+  'aqla':          { display: 'נ (نون)' },                              // 1221 — palindrome (= ثقاف)
+  'hayyan':        { display: 'א (ألف), פ (فاء)' },                     // 1222
+  'ataba-dakhila': { display: 'ז (زاي), ת (تاء)' },                     // 2111
+  'ijtima':        { display: 'ס (سين)' },                              // 2112 — palindrome
+  'qabd-dakhil':   { display: 'כ (كاف), ש (شين)' },                    // 2121
+  'humra':         { display: 'ח (حاء), ק (قاف)' },                     // 2122
+  'bayad':         { display: 'ד (دال), ר (راء)' },                     // 2212
+  'nakis':         { display: 'ב (باء), ס (صاد)' },                     // 2221
+  'jamaa':         { display: 'מ (ميم)' },                              // 2222 — palindrome
+};
+
+function getFigureLetterHints(house) {
+  if (!house) return null;
+  const key = house.key || (Array.isArray(house.figure) ? house.figure.join('') : '');
+  const figureId = PATTERN_TO_FIGURE_ID[key];
+  return figureId ? (FIGURE_LETTER_HINTS[figureId] || null) : null;
+}
+
 // Maps rule IDs from figureHouseRules to structured sorcery method info
 // Source: القول الجامع في علم الرمل, pages 57-58
 const SIHR_METHOD_RULE_MAP = {
@@ -417,6 +456,12 @@ function detectSihrDetails(board, specificMatches, isqatResult) {
     else if (house9Norm === normalizeText('חיבור')) desc = 'גבר מכשף רע (חיבור בבית 9)';
     else if (house9Fig)                           desc = `${house9Fig} בבית 9 (בית המכשפים)`;
     if (desc) lines.push(`מי עשה: ${desc}`);
+
+    // Name letter hints from تسكين الحروف table (Kashf al-Asrar pp. 138-139)
+    const nameHints = getFigureLetterHints(house9);
+    if (nameHints) {
+      lines.push(`רמז לשם המכשף: ${nameHints.display}`);
+    }
   }
 
   // Method details — deduplicate by house (take first match per house)
