@@ -1771,6 +1771,57 @@ function buildNarrativeByTopic(result) {
     push(`מקור — ${kbi.sourceRef}:\n${kbi.firstExcerpt}`);
   }
 
+  // ── 12. ניתוחים נושאיים — כשף + القول الجامع (Task 15) ──────────
+  {
+    const bodyPartDiag = boardAnalysis.bodyPartDiagnosis;
+    if (bodyPartDiag) push(`מיקום המחלה בגוף (القول الجامع עמ׳ 16):\n  ${bodyPartDiag.outputHebrew}`);
+
+    const thiefGenderAge = boardAnalysis.thiefGenderAge;
+    if (thiefGenderAge) push(`מין הגנב וגילו (القول الجامع עמ׳ 48):\n  ${thiefGenderAge.outputHebrew}`);
+
+    const thiefAge = boardAnalysis.thiefAge;
+    if (thiefAge) push(`גיל הגנב (القول الجامع עמ׳ 48):\n  ${thiefAge.outputHebrew}`);
+
+    const thiefProximity = boardAnalysis.thiefProximity;
+    if (thiefProximity) push(`קרבת הגנב לשואל (القول الجامع עמ׳ 48-49):\n  ${thiefProximity.outputHebrew.replace(/\n/g, '\n  ')}`);
+
+    const stolenItemReturn = boardAnalysis.stolenItemReturn;
+    if (stolenItemReturn) push(`האם הגנוב יוחזר (القول الجامع עמ׳ 48-49):\n  ${stolenItemReturn.outputHebrew.replace(/\n/g, '\n  ')}`);
+
+    const missingPersonLocation = boardAnalysis.missingPersonLocation;
+    if (missingPersonLocation) push(`מיקום הנעדר (القول الجامع עמ׳ 52, حاوي עמ׳ 59):\n  ${missingPersonLocation.outputHebrew.replace(/\n/g, '\n  ')}`);
+
+    const missingPersonReturn = boardAnalysis.missingPersonReturn;
+    if (missingPersonReturn) push(`האם הנעדר יחזור (حاوي עמ׳ 59):\n  ${missingPersonReturn.outputHebrew.replace(/\n/g, '\n  ')}`);
+
+    const geographicDirection = boardAnalysis.geographicDirection;
+    if (geographicDirection) push(`כיוון גיאוגרפי (القول الجامع עמ׳ 30):\n  ${geographicDirection.outputHebrew}`);
+
+    const travelDirection = boardAnalysis.travelDirection;
+    if (travelDirection) push(`כיוון הנסיעה (القول الجامع פ׳ 10):\n  ${travelDirection.outputHebrew}`);
+
+    const deathRisk = boardAnalysis.deathRisk;
+    if (deathRisk) push(`סיכון מוות (القول الجامع עמ׳ 41-42):\n  ${deathRisk.outputHebrew.replace(/\n/g, '\n  ')}`);
+
+    const jinnType = boardAnalysis.jinnType;
+    if (jinnType) push(`סוג הג׳ין (القول الجامع עמ׳ 57-58):\n  ${jinnType.outputHebrew.replace(/\n/g, '\n  ')}`);
+
+    const wifeVirginityStatus = boardAnalysis.wifeVirginityStatus;
+    if (wifeVirginityStatus) push(`ת׳יב / בכר (القول الجامع עמ׳ 44):\n  ${wifeVirginityStatus.outputHebrew}`);
+
+    const wifeChastity = boardAnalysis.wifeChastity;
+    if (wifeChastity) push(`צניעות האישה (القول الجامع עמ׳ 43-44):\n  ${wifeChastity.outputHebrew.replace(/\n/g, '\n  ')}`);
+
+    const marketPrices = boardAnalysis.marketPrices;
+    if (marketPrices) push(`יוקר / זול — מחירי שוק (القول الجامع עמ׳ 25):\n  ${marketPrices.outputHebrew}`);
+
+    const wishFulfillment = boardAnalysis.wishFulfillment;
+    if (wishFulfillment) push(`האם ישיג מה שרוצה (القول الجامع עמ׳ 51-52):\n  ${wishFulfillment.outputHebrew}`);
+
+    const querentSorceryCheck = boardAnalysis.querentSorceryCheck;
+    if (querentSorceryCheck) push(`האם השואל מכושף (القول الجامع עמ׳ 56-57):\n  ${querentSorceryCheck.outputHebrew}`);
+  }
+
   return paras.length ? paras.join('\n\n') : null;
 }
 
