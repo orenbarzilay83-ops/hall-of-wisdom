@@ -1820,6 +1820,30 @@ function buildNarrativeByTopic(result) {
 
     const querentSorceryCheck = boardAnalysis.querentSorceryCheck;
     if (querentSorceryCheck) push(`האם השואל מכושף (القول الجامع עמ׳ 56-57):\n  ${querentSorceryCheck.outputHebrew}`);
+
+    const dreamH9 = boardAnalysis.dreamH9;
+    if (dreamH9) push(`חלום — פרשנות (כשף עמ׳ 254):\n  ${dreamH9.outputHebrew}`);
+
+    const lostAnimalReturn = boardAnalysis.lostAnimalReturn;
+    if (lostAnimalReturn) push(`האם הבהמה תחזור (כשף עמ׳ 202):\n  ${lostAnimalReturn.outputHebrew}`);
+
+    const animalTypeH6 = boardAnalysis.animalTypeH6;
+    if (animalTypeH6) push(`סוג הבהמה / חיה (כשף עמ׳ 201):\n  ${animalTypeH6.outputHebrew}`);
+
+    const kingRulerStatus = boardAnalysis.kingRulerStatus;
+    if (kingRulerStatus) push(`מלך / שליט — מצב (כשף עמ׳ 257):\n  ${kingRulerStatus.outputHebrew.replace(/\n/g, '\n  ')}`);
+
+    const enemyPresenceCheck = boardAnalysis.enemyPresenceCheck;
+    if (enemyPresenceCheck) push(`בדיקת אויב (כשף עמ׳ 271):\n  ${enemyPresenceCheck.outputHebrew.replace(/\n/g, '\n  ')}`);
+
+    const prisonerReleaseCheck = boardAnalysis.prisonerReleaseCheck;
+    if (prisonerReleaseCheck) push(`שחרור אסיר (כשף עמ׳ 272):\n  ${prisonerReleaseCheck.outputHebrew.replace(/\n/g, '\n  ')}`);
+
+    const fatherParentStatus = boardAnalysis.fatherParentStatus;
+    if (fatherParentStatus) push(`מצב האב / הנכס (כשף עמ׳ 184):\n  ${fatherParentStatus.outputHebrew.replace(/\n/g, '\n  ')}`);
+
+    const parnasaLivelihood = boardAnalysis.parnasaLivelihood;
+    if (parnasaLivelihood) push(`פרנסה ומחיה (כשף עמ׳ 182):\n  ${parnasaLivelihood.outputHebrew.replace(/\n/g, '\n  ')}`);
   }
 
   return paras.length ? paras.join('\n\n') : null;
