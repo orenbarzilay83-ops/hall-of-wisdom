@@ -39,6 +39,7 @@ const TOPIC_CARDS = [
   { house: 9,  title: 'נסיעה ומסע',     desc: 'יציאה, נסיעה, ים, דת, רוחניות',        defaultTopicId: 'travel',            subTopics: [
     { topicId: 'travel',               label: 'נסיעה / יציאה' },
     { topicId: 'seaVoyage',            label: 'מסע ים' },
+    { topicId: 'missingPerson',        label: 'נעדר בדרך / נוסע שנעלם' },
   ]},
   { house: 10, title: 'עבודה ומעמד',    desc: 'קריירה, שלטון, בעלי סמכות',            defaultTopicId: 'authorityState',    subTopics: [
     { topicId: 'authorityState',       label: 'תפקיד / שלטון / קריירה' },
@@ -72,6 +73,7 @@ const HOUSE_TOPIC_KEYWORDS = {
   ],
   9: [
     { topicId: 'seaVoyage',            kw: ['ים','ספינה','אונייה','שייט','ימי','נמל','דיג','מסע ים','נסיעה בים','אוקיינוס'] },
+    { topicId: 'missingPerson',        kw: ['נעדר בדרך','נעלם בנסיעה','לא חזר מנסיעה','נוסע שנעלם','יצא לדרך ולא חזר'] },
     { topicId: 'spiritualDiagnostics', kw: ['חלום','חזון','נבואה','סימן שמיימי','דת','אמונה','רוחניות','נסתר','קבלה','ספיריטואל'] },
     // default: travel
   ],
