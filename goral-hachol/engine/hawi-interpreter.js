@@ -2125,6 +2125,86 @@ const ELEMENT_ILLNESS_TYPE = {
   'עפר':   'מרה שחורה — עצבות, עייפות, מחלות כרוניות (חולי עפר)',
 };
 
+// מיפוי צורה → איבר גוף הכואב
+// מקור: القول الجامع في علم الرمل (שייח׳ מוחמד סאס), עמ׳ 16
+// שיטה: הצורה שנמצאת בבית 6 מורה על האיבר הכואב
+// (3 צורות לא מוזכרות במקור: שפל ראש, סוהר, כבוד יוצא)
+const FIGURE_BODY_PART = {
+  '1222': { arabic: 'الرقبة والكتف الأيمن', hebrew: 'צוואר וכתף ימין' },   // נשוא ראש / أحيان
+  '2212': { arabic: 'الرقبة والكتف الأيمن', hebrew: 'צוואר וכתף ימין' },   // לבן / بياض
+  '2211': { arabic: 'الكتف الأيسر',          hebrew: 'כתף שמאל' },          // כבוד נכנס / نصرة داخلة
+  '1121': { arabic: 'اليد اليمنى',           hebrew: 'יד ימין' },            // נלחם / جودلة
+  '1211': { arabic: 'اليد اليسرى',           hebrew: 'יד שמאל' },            // בר הלחי / نقي الخد
+  '2112': { arabic: 'البطن والأضلاع',        hebrew: 'בטן וצלעות' },         // חיבור / اجتماع
+  '2222': { arabic: 'السرة',                 hebrew: 'טבור' },               // קהלה / جماعة
+  '2122': { arabic: 'الظهر',                 hebrew: 'גב' },                  // אדום / حمرة
+  '1111': { arabic: 'الذكر',                 hebrew: 'איברי מין' },           // דרך / طريق
+  '1212': { arabic: 'الفخذ الأيمن',         hebrew: 'ירך ימין' },            // ממון יוצא / قبض خارج
+  '2121': { arabic: 'الفخذ الأيسر',         hebrew: 'ירך שמאל' },            // ממון נכנס / قبض داخل
+  '2111': { arabic: 'الساق اليمنى',          hebrew: 'שוק ורגל ימין' },       // סף נכנס / عتبة داخلة
+  '1112': { arabic: 'الساق اليسرى',          hebrew: 'שוק ורגל שמאל' },       // סף יוצא / عتبة خارجة
+  // הצורות הבאות לא מוזכרות בפרק זה במקור:
+  '2221': null,  // שפל ראש / انكيس
+  '1221': null,  // סוהר / عقلة
+  '1122': null,  // כבוד יוצא / نصرة خارجة
+};
+
+// מיפוי יסוד → מין וגיל הגנב
+// מקור: القول الجامع في علم الرمل (שייח׳ מוחמד סאס), עמ׳ 48
+// שיטה: יסוד הצורה בבית 7 מורה על מין הגנב וגילו
+const THIEF_GENDER_AGE_BY_ELEMENT = {
+  'אש':    { gender: 'זכר', age: 'צעיר',    outputHebrew: 'זכר צעיר' },
+  'מים':   { gender: 'זכר/נקבה', age: 'ילד/ה', outputHebrew: 'ילד/ה צעיר' },
+  'אוויר': { gender: 'זכר', age: 'מבוגר',   outputHebrew: 'זכר מבוגר' },
+  'עפר':   { gender: 'נקבה', age: 'בגרות',  outputHebrew: 'נקבה' },
+};
+
+function computeBodyPartDiagnosis(chart) {
+  const h6 = chart.find((h) => Number(h.house) === 6);
+  if (!h6?.key) return null;
+  const entry = FIGURE_BODY_PART[h6.key];
+  const figHebrew = h6.hebrew || h6.key;
+  if (entry === undefined) return null;
+  if (entry === null) {
+    return {
+      figureKey: h6.key,
+      figureHebrew: figHebrew,
+      bodyPartHebrew: null,
+      outputHebrew: `${figHebrew} בבית 6 — האיבר הכואב: לא מפורש במקור (הצורה אינה נזכרת בפרק זה ב-القول الجامع עמ׳ 16)`,
+    };
+  }
+  return {
+    figureKey: h6.key,
+    figureHebrew: figHebrew,
+    bodyPartHebrew: entry.hebrew,
+    bodyPartArabic: entry.arabic,
+    outputHebrew: `${figHebrew} בבית 6 — האיבר הכואב: ${entry.hebrew} (${entry.arabic})`,
+  };
+}
+
+function computeThiefGenderAge(chart) {
+  const h7 = chart.find((h) => Number(h.house) === 7);
+  if (!h7?.key) return null;
+  const element = h7.element || h7.elementHebrew || '';
+  const desc = THIEF_GENDER_AGE_BY_ELEMENT[element];
+  const figHebrew = h7.hebrew || h7.key;
+  let specificNote = '';
+  if (h7.key === '1111') specificNote = ' (דרך — זכר בבירור לפי המקור)';
+  if (h7.key === '1122') specificNote = ' (כבוד יוצא — זכר בבירור לפי המקור)';
+  if (!desc && !specificNote) {
+    return {
+      figureKey: h7.key, figureHebrew: figHebrew, element,
+      outputHebrew: `${figHebrew} בבית 7 — מין הגנב: לא מפורש במקור`,
+    };
+  }
+  const baseDesc = desc ? desc.outputHebrew : 'זכר';
+  return {
+    figureKey: h7.key, figureHebrew: figHebrew, element,
+    gender: desc?.gender || 'זכר', age: desc?.age || '',
+    outputHebrew: `${figHebrew} בבית 7 (יסוד: ${element || 'לא ידוע'}) — הגנב: ${baseDesc}${specificNote}`,
+  };
+}
+
 function computeIllnessElementDiagnosis(chart) {
   const counts = { 'אש': 0, 'אוויר': 0, 'מים': 0, 'עפר': 0 };
   for (const h of chart) {
@@ -3373,8 +3453,14 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const illnessElementDiagnosis = (topicId === 'illness')
     ? computeIllnessElementDiagnosis(board.chart) : null;
 
+  const bodyPartDiagnosis = (topicId === 'illness')
+    ? computeBodyPartDiagnosis(board.chart) : null;
+
   const thiefLocationDetails = (['theft', 'enemies'].includes(topicId))
     ? computeThiefLocationDetails(board.chart) : null;
+
+  const thiefGenderAge = (['theft', 'enemies'].includes(topicId))
+    ? computeThiefGenderAge(board.chart) : null;
 
   const enemyInHousehold = (topicId === 'enemies')
     ? computeEnemyInHousehold(board.chart) : null;
@@ -3505,7 +3591,9 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     trianglesEnrichment,
     directionQuadrant,
     illnessElementDiagnosis,
+    bodyPartDiagnosis,
     thiefLocationDetails,
+    thiefGenderAge,
     enemyInHousehold,
     jumlaAnalysis,
     childrenPregnancyKashf,

@@ -438,9 +438,19 @@ function describeCoreHouses(analysis, topicId, question) {
     parts.push(`אבחון מחלה לפי יסוד (בלוג' אלאמל פרק 5):\n  ${illnessDiag.outputHebrew.replace(/\n/g, '\n  ')}`);
   }
 
+  const bodyPartDiag = analysis.bodyPartDiagnosis;
+  if (bodyPartDiag) {
+    parts.push(`מיקום המחלה בגוף (القول الجامع עמ׳ 16):\n  ${bodyPartDiag.outputHebrew}`);
+  }
+
   const thiefLoc = analysis.thiefLocationDetails;
   if (thiefLoc) {
     parts.push(`זיהוי הגנב (בלוג' אלאמל פרק 19):\n  ${thiefLoc.outputHebrew.replace(/\n/g, '\n  ')}`);
+  }
+
+  const thiefGenderAge = analysis.thiefGenderAge;
+  if (thiefGenderAge) {
+    parts.push(`מין הגנב וגילו (القول الجامع עמ׳ 48):\n  ${thiefGenderAge.outputHebrew}`);
   }
 
   const enemyHH = analysis.enemyInHousehold;
