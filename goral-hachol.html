@@ -1288,7 +1288,8 @@
       import('/goral-hachol/engine/goral-client-archive.js')
     ]).then(([hawi, archive]) => {
       window.HAWI_INTERPRETER = {
-        interpretHawiQuestionInitial: hawi.interpretHawiQuestionInitial
+        interpretHawiQuestionInitial: hawi.interpretHawiQuestionInitial,
+        computeTimingByMadad: hawi.computeTimingByMadad,
       };
 
       window.GORAL_CLIENT_ARCHIVE = {

@@ -570,8 +570,42 @@ function buildInterpretationHtml(reading) {
     ${clientReadingHtml}
     <button class="details-toggle" onclick="const p=this.nextElementSibling;p.hidden=!p.hidden;this.textContent=p.hidden?'קרא עוד ▼':'סגור ▲'">קרא עוד ▼</button>
     <div hidden>${detailsContent}</div>
+    <div class="board-tools-row" style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap; direction:rtl;">
+      <button type="button" class="board-tool-btn" onclick="window.showTimingTool(this)" style="background:#1a3a5c; color:#f0d060; border:none; border-radius:6px; padding:8px 18px; font-size:14px; font-weight:700; cursor:pointer; font-family:inherit;">⏱ עיתוי</button>
+    </div>
+    <div id="timingToolPanel" hidden style="direction:rtl; margin-top:10px; background:#f5f8ff; border:1px solid #1a3a5c; border-radius:8px; padding:16px 18px; font-size:14px; line-height:1.9;"></div>
   `;
 }
+
+window.showTimingTool = function(btn) {
+  const panel = document.getElementById('timingToolPanel');
+  if (!panel) return;
+  if (!panel.hidden) { panel.hidden = true; btn.textContent = '⏱ עיתוי'; return; }
+
+  const reading = window.__LAST_GORAL_READING;
+  if (!reading || !Array.isArray(reading.chart) || reading.chart.length < 4) {
+    panel.innerHTML = '<em>אין לוח פעיל לחישוב עיתוי.</em>';
+    panel.hidden = false;
+    return;
+  }
+
+  const result = window.HAWI_INTERPRETER?.computeTimingByMadad?.(reading.chart);
+  if (!result) {
+    panel.innerHTML = '<em>לא ניתן לחשב עיתוי מלוח זה.</em>';
+    panel.hidden = false;
+    return;
+  }
+
+  const lines = result.outputHebrew.split('\n').map(l => `<div>${escapeHtml(l)}</div>`).join('');
+  panel.innerHTML = `
+    <div style="font-weight:700; font-size:13px; color:#1a3a5c; margin-bottom:10px; border-bottom:1px solid #c8d8f0; padding-bottom:6px;">⏱ מתי יקרה הדבר? — שיטת המדד</div>
+    <div style="font-size:15px; font-weight:700; color:#1a3a5c; margin-bottom:8px;">${escapeHtml(result.quantity)} ${escapeHtml(result.unitDisplay || result.unitShort)}</div>
+    <div style="font-size:12px; color:#555; line-height:1.7;">${lines}</div>
+    <div style="margin-top:10px; font-size:11px; color:#999; border-top:1px solid #e0e8f5; padding-top:6px;">מקור: ${escapeHtml(result.sourceRef)}</div>
+  `;
+  panel.hidden = false;
+  btn.textContent = '⏱ עיתוי ▲';
+};
 
 async function runReading() {
   const errorBox = document.getElementById("errorBox");

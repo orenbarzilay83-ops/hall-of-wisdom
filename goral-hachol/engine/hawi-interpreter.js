@@ -2295,6 +2295,73 @@ function countFigureDots(pattern) {
   return pattern.split('').reduce((sum, ch) => sum + (ch === '2' ? 2 : 1), 0);
 }
 
+// ── שיטת המדד — כשף אל-אסרר עמ' 119 ──────────────────────────────────────
+// "ספור את ארבע האמהות, זוג ופרד. הורד ב-(16,16). מה שנשאר — חלק לבתים
+//  מבית הטאלע, נקודה לכל בית. היכן שנפסק — זה בית העיתוי."
+// הסכמת כל בעלי האמנות: "هذا وجه العمل بهذا العلم وما أجمعوا عليه أهل هذا الفن"
+
+function countSingleRows(pattern) {
+  if (!pattern || pattern.length < 4) return 1;
+  const singles = pattern.split('').filter(c => c === '1').length;
+  return singles || 2; // all-double figure (jamaa) → 2 as default
+}
+
+export function computeTimingByMadad(chart) {
+  if (!Array.isArray(chart) || chart.length < 4) return null;
+
+  // שלב 1: ספור נקודות ארבע האמהות (בתים 1–4 בלוח = צורות האמהות)
+  const motherPatterns = chart.slice(0, 4).map(h => h.key || '');
+  const totalDots = motherPatterns.reduce((sum, pat) => {
+    if (!pat || pat.length < 4) return sum;
+    return sum + pat.split('').reduce((s, c) => s + (c === '2' ? 2 : 1), 0);
+  }, 0);
+
+  // שלב 2: mod 16 (הורד ב-16 שוב ושוב)
+  let remainder = totalDots % 16;
+  if (remainder === 0) remainder = 16;
+
+  // שלב 3: הבית שנפסקת בו
+  const landingHouse = remainder;
+  const landingEntry = chart.find(h => Number(h.house) === landingHouse);
+  const figPattern   = landingEntry?.key || '';
+  const figHebrew    = landingEntry?.hebrew || '—';
+
+  // שלב 4: קבוצת הזמן לפי מיקום הבית
+  const n = landingHouse;
+  let tier, tierHebrew, unitShort, unitSingle;
+  if      (n <= 4)  { tier = 'mothers';   tierHebrew = 'שעות / ימים';      unitShort = 'ימים';    unitSingle = 'יום';     }
+  else if (n <= 8)  { tier = 'daughters'; tierHebrew = 'ימים / שבועות';    unitShort = 'שבועות';  unitSingle = 'שבוע';    }
+  else if (n <= 12) { tier = 'nieces';    tierHebrew = 'שבועות / חודשים';  unitShort = 'חודשים';  unitSingle = 'חודש';    }
+  else              { tier = 'witnesses'; tierHebrew = 'חודשים / שנים';    unitShort = 'שנים';    unitSingle = 'שנה';     }
+
+  // שלב 5: כמות — לפי ספירת שורות יחידות בצורה שנפסקת בה
+  const quantity = countSingleRows(figPattern);
+
+  const unitDisplay = quantity === 1 ? unitSingle : unitShort;
+
+  return {
+    totalDots,
+    remainder,
+    landingHouse,
+    figHebrew,
+    figPattern,
+    tier,
+    tierHebrew,
+    quantity,
+    unitShort,
+    unitSingle,
+    unitDisplay,
+    outputHebrew: [
+      `סה״כ נקודות 4 האמהות: ${totalDots}`,
+      `${totalDots} mod 16 = ${remainder} → הגעה לבית ${landingHouse}`,
+      `הצורה בבית ${landingHouse}: ${figHebrew}`,
+      `קבוצת הזמן: ${tierHebrew}`,
+      `תוצאה: ${quantity} ${unitDisplay}`,
+    ].join('\n'),
+    sourceRef: 'כשף אל-אסרר עמ׳ 119 — שיטת המדד',
+  };
+}
+
 function getTimingUnit(houseNumber) {
   const n = Number(houseNumber);
   if (n >= 1  && n <= 4)  return { unit: 'ימים',    unitSingle: 'יום',    tier: 'mothers',       tierHebrew: 'אמהות (מהיר — ימים)' };
@@ -3529,11 +3596,13 @@ export function formatHawiInitialInterpretationHebrew(result) {
 export default {
   interpretHawiQuestionInitial,
   formatHawiInitialInterpretationHebrew,
+  computeTimingByMadad,
 };
 
 if (typeof module !== 'undefined') {
   module.exports = {
     interpretHawiQuestionInitial,
     formatHawiInitialInterpretationHebrew,
+    computeTimingByMadad,
   };
 }
