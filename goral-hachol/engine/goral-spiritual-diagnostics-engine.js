@@ -265,7 +265,7 @@ function gradeFromMatches(specificMatches, openingMatches, genericScore) {
   return 'mixed';
 }
 
-function buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, jinnTypeResult, organDiagnosisResult, crossReferenceNote) {
+function buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, jinnTypeResult, organDiagnosisResult, crossReferenceNote, sihrDetails) {
   const verdictMap = {
     'strong-suspicion': 'מסקנה רוחנית: כן — הלוח מראה סימנים חזקים לפגיעה רוחנית לפי כללי המקור.',
     'medium-suspicion': 'מסקנה רוחנית: ייתכן — יש חשד בינוני לפגיעה רוחנית. נמצאו התאמות מהמקור שדורשות בדיקה.',
@@ -309,6 +309,10 @@ function buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, j
     if (organDiagnosisResult.organHebrew) {
       base += ' | איבר: ' + organDiagnosisResult.organHebrew;
     }
+  }
+
+  if (sihrDetails?.length) {
+    base += '\n\n— פרטי הכישוף —\n' + sihrDetails.join('\n');
   }
 
   return base;
@@ -371,6 +375,62 @@ function computeCrossReference(questionHits, isqatResult) {
   }
 
   return null; // Categories match — no cross-reference needed
+}
+
+// Maps rule IDs from figureHouseRules to structured sorcery method info
+// Source: القول الجامع في علم الرمل, pages 57-58
+const SIHR_METHOD_RULE_MAP = {
+  'ankis-house6-buried-magic-in-grave':       { method: 'קבור',             location: 'בקבר' },
+  'ankis-house6-buried-underground-sorcery':  { method: 'קבור',             location: 'באדמה' },
+  'jawdala-house6-drunk-magic':               { method: 'שתייה / בליעה',    location: null   },
+  'jawdala-house12-bound-from-wife':          { method: 'קשירה זוגית',       location: null   },
+  'qabd-dakhil-house6-bound-from-women':      { method: 'קשירה / עיגון',    location: null   },
+  'aqla-house13-bound-magic-sprinkled':       { method: 'קשירה + ריסוס',    location: null   },
+  'aqla-house14-house-or-place-has-magic':    { method: 'תלוי',             location: 'בבית או במקום' },
+  'jawdala-house14-magic-in-house-or-place':  { method: 'תלוי',             location: 'בבית' },
+  'jamaa-from-two-nakis-witness1':            { method: 'קבור (כפול)',       location: null   },
+  'jamaa-from-two-nakis-witness2':            { method: 'קבור (כפול)',       location: null   },
+};
+
+// Build structured sorcery detail section when sorcery is confirmed or strongly suspected.
+// Activated when: isqat remainder=3 (human-made sorcery), OR figure-house rules match,
+// OR house 9 contains a known sorcerer figure (aqla/ijtima).
+// Source for sorcerer type: القول الجامع p.56 (aqla=female sorcerer, ijtima=bad male sorcerer)
+function detectSihrDetails(board, specificMatches, isqatResult) {
+  const isSihrIsqat = isqatResult?.remainder === 3;
+  const methodMatches = specificMatches.filter(m => SIHR_METHOD_RULE_MAP[m.ruleId]);
+
+  // Check house 9 for known sorcerer figures — activates sihr section even without method match
+  const house9 = getHouse(board, 9);
+  const house9Fig = house9 ? getFigureHebrewName(house9) : null;
+  const house9Norm = normalizeText(house9Fig || '');
+  const house9IsSorcerer = house9Norm === normalizeText('סוהר') || house9Norm === normalizeText('חיבור');
+
+  if (!isSihrIsqat && !methodMatches.length && !house9IsSorcerer) return null;
+
+  const lines = [];
+
+  // Sorcerer identification from house 9 (source: القول الجامع p.56)
+  if (house9) {
+    let desc = null;
+    if (house9Norm === normalizeText('סוהר'))   desc = 'אישה מכשפת (סוהר בבית 9)';
+    else if (house9Norm === normalizeText('חיבור')) desc = 'גבר מכשף רע (חיבור בבית 9)';
+    else if (house9Fig)                           desc = `${house9Fig} בבית 9 (בית המכשפים)`;
+    if (desc) lines.push(`מי עשה: ${desc}`);
+  }
+
+  // Method details — deduplicate by house (take first match per house)
+  const seenHouses = new Set();
+  for (const m of methodMatches) {
+    if (seenHouses.has(m.house)) continue;
+    seenHouses.add(m.house);
+    const info = SIHR_METHOD_RULE_MAP[m.ruleId];
+    const parts = [info.method, info.location].filter(Boolean).join(' — ');
+    lines.push(`שיטה: ${parts} (${m.figureHebrew} בבית ${m.house})`);
+    if (seenHouses.size >= 2) break; // at most 2 method lines
+  }
+
+  return lines.length ? lines : null;
 }
 
 // Generic house scoring (kept as a secondary signal)
@@ -531,7 +591,8 @@ export function diagnoseSpiritualInfluence(question = '', board = null) {
 
   const grade = gradeFromMatches(specificMatches, openingMatches, genericScore);
   const crossReferenceNote = computeCrossReference(questionHits, isqatResult);
-  const finalHebrew = buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, jinnTypeResult, organDiagnosisResult, crossReferenceNote);
+  const sihrDetails = detectSihrDetails(board, specificMatches, isqatResult);
+  const finalHebrew = buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, jinnTypeResult, organDiagnosisResult, crossReferenceNote, sihrDetails);
 
   const mainReasons = specificMatches.map((m) => ({
     house: m.house,
@@ -580,6 +641,7 @@ export function diagnoseSpiritualInfluence(question = '', board = null) {
     jinnTypeResult,
     organDiagnosisResult,
     crossReferenceNote,
+    sihrDetails,
     grade,
     finalHebrew,
     mainReasons,
