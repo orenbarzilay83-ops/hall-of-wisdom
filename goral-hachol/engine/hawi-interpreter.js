@@ -1907,7 +1907,7 @@ function computeYearlyForecastAnalysis(chart, pricesSource, rainSource) {
   }
   const weatherLine = `דין גשם ומזג: ${mainRainHebrew}`;
   const extraWeather = weatherSigns.length
-    ? '\n  ' + weatherSigns.join(' | ')
+    ? '\n  ' + weatherSigns.join('\n  ')
     : '';
   parts.push(weatherLine + extraWeather);
   if (regionNote) parts.push(`הערת אזור: ${regionNote}`);
