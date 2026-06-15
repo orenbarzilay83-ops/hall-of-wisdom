@@ -377,6 +377,27 @@ function computeCrossReference(questionHits, isqatResult) {
   return null; // Categories match — no cross-reference needed
 }
 
+// Figure pattern → { element, compassDirection, hebrewName }
+// Source: كشف الأسرار المصونة في اخراج الضمائر المخزونة pp. 43-67
+const PATTERN_TO_FIGURE_PROPS = {
+  '1111': { element: 'מים',   compassDirection: 'צפון',  hebrewName: 'דרך'       },
+  '1112': { element: 'אש',    compassDirection: 'מזרח',  hebrewName: 'סף יוצא'   },
+  '1121': { element: 'אוויר', compassDirection: 'מערב',  hebrewName: 'נלחם'      },
+  '1122': { element: 'אש',    compassDirection: 'מזרח',  hebrewName: 'כבוד יוצא' },
+  '1211': { element: 'מים',   compassDirection: 'צפון',  hebrewName: 'בר הלחי'   },
+  '1212': { element: 'אש',    compassDirection: 'מזרח',  hebrewName: 'ממון יוצא' },
+  '1221': { element: 'עפר',   compassDirection: 'דרום',  hebrewName: 'סוהר'      },
+  '1222': { element: 'אש',    compassDirection: 'מזרח',  hebrewName: 'נשוא ראש'  },
+  '2111': { element: 'אוויר', compassDirection: 'מערב',  hebrewName: 'סף נכנס'   },
+  '2112': { element: 'אוויר', compassDirection: 'מערב',  hebrewName: 'חיבור'     },
+  '2121': { element: 'עפר',   compassDirection: 'דרום',  hebrewName: 'ממון נכנס' },
+  '2122': { element: 'אוויר', compassDirection: 'מערב',  hebrewName: 'אדום'      },
+  '2211': { element: 'מים',   compassDirection: 'צפון',  hebrewName: 'כבוד נכנס' },
+  '2212': { element: 'מים',   compassDirection: 'צפון',  hebrewName: 'לבן'       },
+  '2221': { element: 'עפר',   compassDirection: 'דרום',  hebrewName: 'שפל ראש'   },
+  '2222': { element: 'עפר',   compassDirection: 'דרום',  hebrewName: 'קהלה'      },
+};
+
 // Figure pattern → shortFigureId lookup
 const PATTERN_TO_FIGURE_ID = {
   '1111': 'tariq',        '1112': 'ataba-kharija',
@@ -414,6 +435,26 @@ function getFigureLetterHints(house) {
   const key = house.key || (Array.isArray(house.figure) ? house.figure.join('') : '');
   const figureId = PATTERN_TO_FIGURE_ID[key];
   return figureId ? (FIGURE_LETTER_HINTS[figureId] || null) : null;
+}
+
+// Element → type of hiding place (Kashf al-Asrar pp. 185-187, أحكام الخبايا)
+const ELEMENT_LOCATION_HINT = {
+  'עפר':   'קבור באדמה',
+  'מים':   'קרוב למים (בור / נהר / כיור)',
+  'אוויר': 'תלוי / קשור באוויר (עץ / גובה)',
+  'אש':    'קרוב למקור חום / אש',
+};
+
+// House 4 = location house for hidden objects — same method as buried treasure (الخبيئة).
+// Element of its figure → type of hiding; compass direction → direction to search.
+function getSihrLocationHint(board) {
+  const house4 = getHouse(board, 4);
+  if (!house4) return null;
+  const key = house4.key || (Array.isArray(house4.figure) ? house4.figure.join('') : '');
+  const props = PATTERN_TO_FIGURE_PROPS[key];
+  if (!props) return null;
+  const locType = ELEMENT_LOCATION_HINT[props.element] || props.element;
+  return `${locType} — כיוון: ${props.compassDirection} (${props.hebrewName} בבית 4)`;
 }
 
 // Maps rule IDs from figureHouseRules to structured sorcery method info
@@ -473,6 +514,12 @@ function detectSihrDetails(board, specificMatches, isqatResult) {
     const parts = [info.method, info.location].filter(Boolean).join(' — ');
     lines.push(`שיטה: ${parts} (${m.figureHebrew} בבית ${m.house})`);
     if (seenHouses.size >= 2) break; // at most 2 method lines
+  }
+
+  // Location hint — same technique as finding buried treasure (Kashf al-Asrar pp. 185-187)
+  const locationHint = getSihrLocationHint(board);
+  if (locationHint) {
+    lines.push(`מיקום הכישוף: ${locationHint}`);
   }
 
   return lines.length ? lines : null;
