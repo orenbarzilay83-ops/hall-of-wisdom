@@ -293,20 +293,6 @@ function figNameFromReadingHouse(house) {
   return house.hebrew || house.figureHebrew || house.name || "";
 }
 
-function computeDhamirHouseNumber(chart) {
-  // תמצית צורות בתי האמהות: שורה i מאם i (0-indexed) → צורת הדמיר
-  const rows = [];
-  for (let i = 1; i <= 4; i++) {
-    const m = chart.find(x => Number(x.house) === i);
-    const key = m?.key ? String(m.key) : null;
-    if (!key || key.length < 4) return null;
-    rows.push(key[i - 1]);
-  }
-  const targetPattern = rows.join('');
-  const entry = chart.find(x => x.key === targetPattern);
-  return entry ? Number(entry.house) : null;
-}
-
 // Natural figure (جدول) for each house — from חאוי העג׳איב PDFs only, no Western tradition.
 const NATURAL_HOUSE_FIGURES = {
   // Confirmed from Hawi PDF chapter headings
@@ -337,7 +323,7 @@ function houseHtml(h, label, isDhamir, isNatural) {
 
 function buildBoardHtml(reading) {
   const h = n => reading.chart.find(x => Number(x.house) === Number(n));
-  const dhamirHouseNum = computeDhamirHouseNumber(reading.chart);
+  const dhamirHouseNum = reading._precomputedInsight?.boardAnalysis?.dhamirHouse?.houseNumber ?? null;
 
   const d = n => n === dhamirHouseNum;
   const nat = n => {
@@ -389,12 +375,14 @@ function buildInterpretationHtml(reading) {
     return `<div class="summary-box">אבחון גורל החול עדיין נטען. אם ההודעה נשארת, מנוע הידע לא נטען בדפדפן.</div>`;
   }
 
-  if (window.GORAL_CLIENT_ARCHIVE?.summarizeGoralClientHistory) {
-    const clientName = reading.clientContext?.clientName || "";
-    reading.clientHistorySummary = window.GORAL_CLIENT_ARCHIVE.summarizeGoralClientHistory(clientName);
+  if (!reading.clientHistorySummary && window.GORAL_CLIENT_ARCHIVE?.summarizeGoralClientHistory) {
+    reading.clientHistorySummary = window.GORAL_CLIENT_ARCHIVE.summarizeGoralClientHistory(
+      reading.clientContext?.clientName || ""
+    );
   }
 
-  const insight = window.HAWI_INTERPRETER.interpretHawiQuestionInitial(reading.question, reading);
+  const insight = reading._precomputedInsight
+    || window.HAWI_INTERPRETER.interpretHawiQuestionInitial(reading.question, reading);
   window.__LAST_GORAL_READING = reading;
   window.__LAST_GORAL_INTERPRETATION = insight;
 
@@ -657,6 +645,16 @@ async function runReading() {
     const reading = window.ramlRunReading(question, mothers);
     reading.topicId = resolvedTopicId ?? reading.topicId;
     reading.clientContext = getClientContext(reading.topicId);
+
+    // Pre-compute once — buildBoardHtml + buildInterpretationHtml share the same insight
+    if (window.GORAL_CLIENT_ARCHIVE?.summarizeGoralClientHistory) {
+      reading.clientHistorySummary = window.GORAL_CLIENT_ARCHIVE.summarizeGoralClientHistory(
+        reading.clientContext?.clientName || ""
+      );
+    }
+    if (window.HAWI_INTERPRETER?.interpretHawiQuestionInitial) {
+      reading._precomputedInsight = window.HAWI_INTERPRETER.interpretHawiQuestionInitial(reading.question, reading);
+    }
 
     boardResult.innerHTML = buildBoardHtml(reading) + buildInterpretationHtml(reading);
     showScreen("board");
