@@ -2082,13 +2082,6 @@ function buildSpiritualNarrative(result) {
       dParts.push(`סוג הג׳ין (15×4 — לפי יסוד הדיין): ${jinn.hebrewText}`);
     }
 
-    const isPhysical = (isqat?.remainder ?? 0) >= 4;
-    if ((isPhysical || !isqat) && organ?.hebrewText) {
-      dParts.push(
-        `סוג המחלה הגופנית (יסוד בית 6 ובית 8): ${organ.hebrewText}${organ.organHebrew ? ` — איבר: ${organ.organHebrew}` : ''}`
-      );
-    }
-
     if (dParts.length) push(dParts.join('\n'));
   }
 

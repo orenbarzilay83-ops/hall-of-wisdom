@@ -265,7 +265,7 @@ function gradeFromMatches(specificMatches, openingMatches, genericScore) {
   return 'mixed';
 }
 
-function buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, jinnTypeResult, organDiagnosisResult, crossReferenceNote, sihrDetails) {
+function buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, jinnTypeResult, crossReferenceNote, sihrDetails) {
   const verdictMap = {
     'strong-suspicion': 'מסקנה רוחנית: כן — הלוח מראה סימנים חזקים לפגיעה רוחנית לפי כללי המקור.',
     'medium-suspicion': 'מסקנה רוחנית: ייתכן — יש חשד בינוני לפגיעה רוחנית. נמצאו התאמות מהמקור שדורשות בדיקה.',
@@ -302,13 +302,6 @@ function buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, j
 
   if (jinnTypeResult?.hebrewText) {
     base += '\nסוג הג׳ין (15×4): ' + jinnTypeResult.hebrewText;
-  }
-
-  if (organDiagnosisResult?.hebrewText) {
-    base += '\nאבחון איבר (בית 6 × בית 8): ' + organDiagnosisResult.hebrewText;
-    if (organDiagnosisResult.organHebrew) {
-      base += ' | איבר: ' + organDiagnosisResult.organHebrew;
-    }
   }
 
   if (sihrDetails?.length) {
@@ -679,12 +672,11 @@ export function diagnoseSpiritualInfluence(question = '', board = null) {
   const genericScore = quickHouseScore(board) + (questionHits.length ? 2 : 0);
   const isqatResult = applyIsqatSevenMethod(board, source);
   const jinnTypeResult = applyJinnTypeMethod(board, source);
-  const organDiagnosisResult = applyOrganDiagnosisMethod(board, source);
 
   const grade = gradeFromMatches(specificMatches, openingMatches, genericScore);
   const crossReferenceNote = computeCrossReference(questionHits, isqatResult);
   const sihrDetails = detectSihrDetails(board, specificMatches, isqatResult);
-  const finalHebrew = buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, jinnTypeResult, organDiagnosisResult, crossReferenceNote, sihrDetails);
+  const finalHebrew = buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, jinnTypeResult, crossReferenceNote, sihrDetails);
 
   const mainReasons = specificMatches.map((m) => ({
     house: m.house,
@@ -731,7 +723,6 @@ export function diagnoseSpiritualInfluence(question = '', board = null) {
     genericScore,
     isqatResult,
     jinnTypeResult,
-    organDiagnosisResult,
     crossReferenceNote,
     sihrDetails,
     grade,
