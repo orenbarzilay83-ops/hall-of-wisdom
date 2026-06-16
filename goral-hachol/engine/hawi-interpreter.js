@@ -1234,7 +1234,7 @@ function computeTimingByDhamirThirds(chart, dhamirHouseNum) {
   const resultEntry = chart.find(h => h.key === resultPattern);
   const houseNum = resultEntry ? Number(resultEntry.house) : null;
   const timing = houseNum ? MADAD_TIMING[houseNum] : null;
-  const TIME_POSITION = { 1:null,4:null,7:null,10:'הווה', 2:'עתיד',5:'עתיד',8:'עתיד',11:'עתיד', 3:'עבר',6:'עבר',9:'עבר',12:'עבר' };
+  const TIME_POSITION = { 1:'הווה',4:'הווה',7:'הווה',10:'הווה', 2:'עתיד',5:'עתיד',8:'עתיד',11:'עתיד', 3:'עבר',6:'עבר',9:'עבר',12:'עבר' };
   const timePos = houseNum ? (TIME_POSITION[houseNum] || null) : null;
   const figRec = (HAWI_SOURCE.figureNames?.list || []).find(f => f.pattern === resultPattern);
   const resultHebrew = resultEntry?.hebrew || figRec?.hebrewName || resultPattern;
