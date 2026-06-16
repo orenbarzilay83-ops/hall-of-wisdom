@@ -1136,6 +1136,45 @@ function computeDhamirHouse(board) {
   };
 }
 
+// כשף עמ' 159: "في معرفة السائل عمن سأل — انظر إلى السادس، وانظر مثله في أي بيت، فاعلم أنه يسأل عن صاحب ذلك"
+const QUERENT_SUBJECT_HOUSE_ROLES = {
+  1:  'השואל עצמו',
+  2:  'ממון ורכוש',
+  3:  'אח/אחות, שכן, קרוב',
+  4:  'אב, בית, קרקע',
+  5:  'ילד/ילדה',
+  7:  'בן/בת זוג, שותף, יריב',
+  8:  'ירושה, מוות',
+  9:  'נסיעה, אדם רחוק, דת',
+  10: 'שלטון, מלך, עבודה',
+  11: 'ידיד, תקווה, רצון',
+  12: 'אויב נסתר, בית סוהר',
+};
+
+function computeQuerentSubject(board) {
+  if (!board?.chart) return null;
+  const house6 = board.chart.find(h => Number(h.house) === 6);
+  if (!house6?.key) return null;
+
+  const matches = board.chart
+    .filter(h => Number(h.house) !== 6 && Number(h.house) <= 12 && h.key === house6.key)
+    .map(h => {
+      const num = Number(h.house);
+      return { houseNumber: num, houseRole: QUERENT_SUBJECT_HOUSE_ROLES[num] || `בית ${num}`, figure: h.hebrew || h.key };
+    });
+
+  if (matches.length === 0) return null;
+
+  const roleText = matches.map(m => `${m.houseRole} (בית ${m.houseNumber})`).join(', ');
+  return {
+    house6Figure: house6.hebrew || house6.key,
+    house6Pattern: house6.key,
+    matches,
+    outputHebrew: `השואל שואל על: ${roleText}`,
+    sourceRef: 'כשף עמ׳ 159',
+  };
+}
+
 function buildJudgeVerdict(boardAnalysis) {
   if (!boardAnalysis.hasBoard) {
     return { verdict: 'no-board', grade: 'unknown', hebrewShort: '', hebrewFull: '' };
@@ -4410,6 +4449,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const witnessTestimony = computeWitnessTestimony(witness13, witness14, board.chart);
   const dhamirHouse = computeDhamirHouse(board);
   const dhamirByMizan = computeDhamirByMizanTracing(board.chart);
+  const querentSubject = computeQuerentSubject(board);
   const boardScore = computeBoardScore(board.chart);
   const ittisalat = computeIttisalat(board.chart, focusHouseNumber, mainHouses);
   const house1Analysis = computeHouse1Analysis(board.chart, topicId);
@@ -4745,6 +4785,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     h4Secrets,
     illnessCauseH4,
     celebrationsH5,
+    querentSubject,
   };
 }
 

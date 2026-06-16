@@ -417,6 +417,10 @@ function buildInterpretationHtml(reading) {
     ).join(' | ');
     boardInfoHtml += `<div class="board-info-row board-dhamir">🎯 הדמיר: ${traceText} — הדמיר העיקרי: בית ${dhamirMizanData.primaryHouseNumber}</div>`;
   }
+  const querentSubjectData = insight.boardAnalysis?.querentSubject || null;
+  if (querentSubjectData) {
+    boardInfoHtml += `<div class="board-info-row board-querent-subject">🔍 ${escapeHtml(querentSubjectData.outputHebrew)} — (ב6=${escapeHtml(querentSubjectData.house6Figure)}, ${escapeHtml(querentSubjectData.sourceRef)})</div>`;
+  }
 
   const topicId = insight.topicId || "";
 
