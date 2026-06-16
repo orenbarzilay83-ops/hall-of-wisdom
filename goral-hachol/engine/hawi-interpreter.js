@@ -1139,6 +1139,39 @@ function computeDhamirHouse(board) {
   };
 }
 
+// כשף עמ' 104: "كل شكل حل في بيته الطبيعي يدل على الضمير — احفظ هذا فإنه سر الضمائر"
+function computeSodHaDhamirim(chart) {
+  if (!Array.isArray(chart)) return null;
+  const matches = [];
+  for (const house of chart) {
+    const hNum = Number(house.house);
+    const naturalFig = NATURAL_HOUSE_FIGURES[hNum];
+    if (naturalFig && house.key === naturalFig) {
+      matches.push({
+        houseNumber: hNum,
+        pattern: house.key,
+        figureHebrew: house.hebrew || house.key,
+        fortune: house.fortune || null,
+      });
+    }
+  }
+  if (matches.length === 0) return null;
+  const primary = matches[0];
+  const outputHebrew = matches.length === 1
+    ? `סוד הדמירים: בית ${primary.houseNumber} — ${primary.figureHebrew} יושבת בביתה הטבעי`
+    : `סוד הדמירים: בתים ${matches.map(m => m.houseNumber).join(', ')} — צורות בביתן הטבעי`;
+  return {
+    method: 'sod-ha-dhamirim',
+    methodHebrew: 'סוד הדמירים',
+    sourceRef: 'כשף עמ׳ 104',
+    matches,
+    primaryHouseNumber: primary.houseNumber,
+    primaryHebrew: primary.figureHebrew,
+    primaryFortune: primary.fortune,
+    outputHebrew,
+  };
+}
+
 // כשף עמ' 159: "في معرفة السائل عمن سأل — انظر إلى السادس، وانظر مثله في أي بيت، فاعلم أنه يسأل عن صاحب ذلك"
 const QUERENT_SUBJECT_HOUSE_ROLES = {
   1:  'השואל עצמו',
@@ -4452,6 +4485,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const witnessTestimony = computeWitnessTestimony(witness13, witness14, board.chart);
   const dhamirHouse = computeDhamirHouse(board);
   const dhamirByMizan = computeDhamirByMizanTracing(board.chart);
+  const sodHaDhamirim = computeSodHaDhamirim(board.chart);
   const querentSubject = computeQuerentSubject(board);
   const boardScore = computeBoardScore(board.chart);
   const ittisalat = computeIttisalat(board.chart, focusHouseNumber, mainHouses);
@@ -4713,6 +4747,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     sentence: sentence16,
     dhamirHouse,
     dhamirByMizan,
+    sodHaDhamirim,
     boardScore,
     ittisalat,
     house1Analysis,

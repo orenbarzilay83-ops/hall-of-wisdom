@@ -427,6 +427,10 @@ function buildInterpretationHtml(reading) {
   if (querentSubjectData) {
     boardInfoHtml += `<div class="board-info-row board-querent-subject">🔍 ${escapeHtml(querentSubjectData.outputHebrew)} — (ב6=${escapeHtml(querentSubjectData.house6Figure)}, ${escapeHtml(querentSubjectData.sourceRef)})</div>`;
   }
+  const sodHaDhamirimData = insight.boardAnalysis?.sodHaDhamirim || null;
+  if (sodHaDhamirimData) {
+    boardInfoHtml += `<div class="board-info-row board-sod-dhamirim">⭐ ${escapeHtml(sodHaDhamirimData.outputHebrew)} — (${escapeHtml(sodHaDhamirimData.sourceRef)})</div>`;
+  }
 
   const topicId = insight.topicId || "";
 
