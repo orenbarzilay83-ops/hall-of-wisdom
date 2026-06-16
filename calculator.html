@@ -200,53 +200,53 @@ loadAppts();
   <div id="outputParent"></div>
 </div>
 
-<div id="page-goral" class="dashboard-container fade-in" style="display:none">
+<div id="page-goral" class="dashboard-container fade-in" style="display:none;max-width:700px">
   <div id="goral-stage-intro">
-    <h1 class="gold-title">✦ גורל העשיריות</h1>
-    <div class="card" style="max-width:520px;margin:0 auto">
-      <p style="text-align:center;color:var(--text);line-height:1.9;margin-bottom:18px;font-size:.92rem">שיטה קבלית עתיקה שנמסרה על ידי <strong>רב צמח בר מר רב אחאי זצ&quot;ל</strong> — שואלים שאלה, בונים משולש מספרים ומנווטים בארבעת לוחות הגורל לקבלת תשובה.</p>
-      <div style="border-top:1px solid var(--border);padding-top:14px;margin-bottom:16px">
-        <button id="goralPrayerBtn" onclick="goralTogglePrayer()" style="background:none;border:none;cursor:pointer;color:#8B7008;font-size:.82rem;font-weight:700;font-family:inherit;padding:0">◀ תפילה לפני הפלת הגורל</button>
-        <div id="goralPrayerText" style="display:none;margin-top:12px;padding:14px;background:var(--bg,#EAE5DC);border-radius:10px;border:1px solid var(--border);font-size:.78rem;line-height:2.1;color:var(--muted)"></div>
+    <h1 class="gold-title" style="font-size:1.9rem;margin-bottom:24px">✦ גורל העשיריות</h1>
+    <div class="card" style="padding:28px 24px">
+      <p style="text-align:center;color:var(--text);line-height:2.1;margin-bottom:22px;font-size:1.05rem">שיטה קבלית עתיקה שנמסרה על ידי <strong>רב צמח בר מר רב אחאי זצ&quot;ל</strong> — שואלים שאלה, בונים משולש מספרים ומנווטים בארבעת לוחות הגורל לקבלת תשובה.</p>
+      <div style="border-top:1px solid var(--border);padding-top:16px;margin-bottom:20px">
+        <button id="goralPrayerBtn" onclick="goralTogglePrayer()" style="background:none;border:none;cursor:pointer;color:#8B7008;font-size:.95rem;font-weight:700;font-family:inherit;padding:0">◀ תפילה לפני הפלת הגורל</button>
+        <div id="goralPrayerText" style="display:none;margin-top:14px;padding:16px;background:var(--bg,#EAE5DC);border-radius:10px;border:1px solid var(--border);font-size:.88rem;line-height:2.2;color:var(--muted)"></div>
       </div>
-      <div style="padding:12px 14px;background:rgba(184,149,10,.08);border-radius:10px;border-right:3px solid #B8950A;margin-bottom:20px">
-        <p style="color:var(--text);font-size:.85rem;margin:0;line-height:1.8"><strong style="color:#8B7008">✦ חשוב:</strong> כתוב את שאלתך בלשון הראשונה שעולה בדעתך, ללא תיקונים.</p>
+      <div style="padding:16px 18px;background:rgba(184,149,10,.08);border-radius:10px;border-right:3px solid #B8950A;margin-bottom:24px">
+        <p style="color:var(--text);font-size:1rem;margin:0;line-height:1.9"><strong style="color:#8B7008">✦ חשוב:</strong> כתוב את שאלתך בלשון הראשונה שעולה בדעתך, ללא תיקונים.</p>
       </div>
-      <button class="btn btn-gold" onclick="goralShowStage('form')">✦ הפל את הגורל ✦</button>
+      <button class="btn btn-gold" style="font-size:1.15rem;padding:17px" onclick="goralShowStage('form')">✦ הפל את הגורל ✦</button>
     </div>
   </div>
   <div id="goral-stage-form" style="display:none">
-    <h1 class="gold-title">שאלה לגורל</h1>
-    <div class="card" style="max-width:520px;margin:0 auto">
-      <button onclick="goralShowStage('intro')" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:.82rem;font-family:inherit;padding:0;margin-bottom:18px">▶ חזרה</button>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
-        <div><label class="field-label">שם השואל</label><input type="text" id="goralName" class="short-input" placeholder="" autocomplete="off"></div>
-        <div><label class="field-label">שם האב</label><input type="text" id="goralFather" class="short-input" placeholder="" autocomplete="off"></div>
+    <h1 class="gold-title" style="font-size:1.9rem;margin-bottom:24px">שאלה לגורל</h1>
+    <div class="card" style="padding:28px 24px">
+      <button onclick="goralShowStage('intro')" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:.92rem;font-family:inherit;padding:0;margin-bottom:22px">▶ חזרה</button>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px">
+        <div><label class="field-label" style="font-size:1rem">שם השואל</label><input type="text" id="goralName" class="short-input" placeholder="" autocomplete="off" style="font-size:1.05rem!important;padding:12px!important"></div>
+        <div><label class="field-label" style="font-size:1rem">שם האב</label><input type="text" id="goralFather" class="short-input" placeholder="" autocomplete="off" style="font-size:1.05rem!important;padding:12px!important"></div>
       </div>
-      <label class="field-label">השאלה</label>
-      <textarea id="goralQuestion" style="width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--input-bg,#FAF7F2);font-size:.9rem;font-family:inherit;color:var(--text);resize:vertical;min-height:95px;outline:none;direction:rtl;line-height:1.8;box-sizing:border-box" placeholder="כתוב את שאלתך כאן..."></textarea>
-      <p style="color:var(--muted);font-size:.76rem;margin:6px 0 16px">✦ כתוב כפי שעולה בדעתך — ניסוח ספונטני ובלשון ראשונה</p>
-      <div id="goralFormError" style="display:none;color:#C84B31;font-size:.82rem;text-align:center;margin-bottom:12px">נא למלא את כל השדות</div>
-      <button class="btn btn-gold" onclick="goralSubmit()">שלח את הגורל ←</button>
-      <button class="btn btn-clear" onclick="goralReset()">🗑 נקה</button>
+      <label class="field-label" style="font-size:1rem">השאלה</label>
+      <textarea id="goralQuestion" style="width:100%;padding:14px 16px;border-radius:10px;border:1.5px solid var(--border);background:var(--input-bg,#FAF7F2);font-size:1.05rem;font-family:inherit;color:var(--text);resize:vertical;min-height:120px;outline:none;direction:rtl;line-height:1.9;box-sizing:border-box" placeholder="כתוב את שאלתך כאן..."></textarea>
+      <p style="color:var(--muted);font-size:.88rem;margin:8px 0 20px">✦ כתוב כפי שעולה בדעתך — ניסוח ספונטני ובלשון ראשונה</p>
+      <div id="goralFormError" style="display:none;color:#C84B31;font-size:.9rem;text-align:center;margin-bottom:14px">נא למלא את כל השדות</div>
+      <button class="btn btn-gold" style="font-size:1.15rem;padding:17px" onclick="goralSubmit()">שלח את הגורל ←</button>
+      <button class="btn btn-clear" style="font-size:.95rem" onclick="goralReset()">🗑 נקה</button>
     </div>
   </div>
   <div id="goral-stage-calc" style="display:none">
-    <h1 class="gold-title">מחשב את הגורל...</h1>
-    <div style="text-align:center;margin-bottom:20px">
-      <div style="font-size:2rem;color:#B8950A;animation:goralSpin 1.5s linear infinite;display:inline-block">✦</div>
-      <p style="color:var(--muted);margin-top:8px;font-size:.88rem">בונה את משולש המספרים</p>
+    <h1 class="gold-title" style="font-size:1.9rem;margin-bottom:24px">מחשב את הגורל...</h1>
+    <div style="text-align:center;margin-bottom:24px">
+      <div style="font-size:2.6rem;color:#B8950A;animation:goralSpin 1.5s linear infinite;display:inline-block">✦</div>
+      <p style="color:var(--muted);margin-top:10px;font-size:1rem">בונה את משולש המספרים</p>
     </div>
-    <div style="max-width:520px;margin:0 auto 18px;height:4px;background:var(--border);border-radius:99px;overflow:hidden">
+    <div style="margin:0 0 20px;height:5px;background:var(--border);border-radius:99px;overflow:hidden">
       <div id="goralProgress" style="height:100%;background:linear-gradient(135deg,#C9A84C,#9A7A06);border-radius:99px;width:0;transition:width .12s"></div>
     </div>
-    <div class="card" style="max-width:520px;margin:0 auto;overflow-x:auto">
-      <div id="goralTriDisplay" style="display:flex;flex-direction:column;align-items:center;gap:5px;min-height:60px"></div>
+    <div class="card" style="overflow-x:auto;padding:28px 24px">
+      <div id="goralTriDisplay" style="display:flex;flex-direction:column;align-items:center;gap:6px;min-height:80px"></div>
     </div>
   </div>
   <div id="goral-stage-result" style="display:none">
-    <h1 class="gold-title">✦ הגורל יצא</h1>
-    <div id="goralResultContainer" style="max-width:520px;margin:0 auto"></div>
+    <h1 class="gold-title" style="font-size:1.9rem;margin-bottom:24px">✦ הגורל יצא</h1>
+    <div id="goralResultContainer"></div>
   </div>
 </div>
 <script src="goral.js"></script>
