@@ -388,7 +388,7 @@ function describeCoreHouses(analysis, topicId, question) {
       ? 'יש חיבור בין השואל לעניין'
       : 'אין חיבור ישיר בין השואל לעניין';
     const lines = ittisalat.summaryLines.map((l) => `  ${l}`).join('\n');
-    parts.push(`איתיסלאת (${connectionStatus}):\n${lines}`);
+    parts.push(`חיבורים (${connectionStatus}):\n${lines}`);
   }
 
   const topicConn = analysis.topicConnections || null;
@@ -399,7 +399,7 @@ function describeCoreHouses(analysis, topicId, question) {
 
   const tahasil = analysis.tahasil || null;
   if (tahasil) {
-    parts.push(`תחסיל — האם הדבר ייגמר:\n  ${tahasil.tahasilHebrew}`);
+    parts.push(`הגעה — האם הדבר ייגמר:\n  ${tahasil.tahasilHebrew}`);
     if (tahasil.hayulaActive) {
       parts.push(`  ⚠ ${tahasil.hayulaHebrew}`);
     }
@@ -1338,11 +1338,11 @@ function tahasilParagraph(boardAnalysis) {
   const lines = [];
 
   if (tahasil.tahasilStatus === 'none') {
-    lines.push(`לפי בדיקת התחסיל (שאלת ההגעה): ${tahasil.tahasilHebrew}`);
+    lines.push(`לפי בדיקת ההגעה: ${tahasil.tahasilHebrew}`);
   } else {
     const strength = strengthLabels[tahasil.tahasilStrength] || '';
     const label = strength ? ` (הגעה ${strength})` : '';
-    lines.push(`לפי בדיקת התחסיל${label}: ${tahasil.tahasilHebrew}`);
+    lines.push(`לפי בדיקת ההגעה${label}: ${tahasil.tahasilHebrew}`);
   }
 
   if (tahasil.hayulaActive && tahasil.hayulaHebrew) {
@@ -1500,9 +1500,9 @@ function buildNarrativeByTopic(result) {
   } else if (confidenceLevel === 'moderate') {
     push('יש תמיכה חלקית בפסיקה — הכיוון נכון אך לא כל הכוחות מסכימים. מומלץ לבדוק עוד.');
   } else if (confidenceLevel === 'neutral-saad') {
-    push('העדים והדיין צורות מג\'סד — אין הכרעת כיוון, אך מזל הכוחות נוטה לטובה.');
+    push('העדים והדיין צורות ניטרליות — אין הכרעת כיוון, אך מזל הכוחות נוטה לטובה.');
   } else if (confidenceLevel === 'neutral-nahs') {
-    push('⚠ העדים והדיין צורות מג\'סד — אין הכרעת כיוון, אך מזל הכוחות נוטה לרעה. יש לנהוג בזהירות.');
+    push('⚠ העדים והדיין צורות ניטרליות — אין הכרעת כיוון, אך מזל הכוחות נוטה לרעה. יש לנהוג בזהירות.');
   }
   // very-strong / strong / neutral / null — ממשיכים ללא הערה
 
@@ -1510,7 +1510,7 @@ function buildNarrativeByTopic(result) {
   const hFort    = (h) => clean(h?.fortune || '');
   const hTransit = (h) => clean(h?.transit?.meaning || '');
   const hTone    = (h) => figureFortuneTone(h?.fortune);
-  const hHazz    = (h) => (h?.hazzStrength && h?.hazzCount > 0) ? ` [חַ'ט: ${h.hazzStrength}]` : '';
+  const hHazz    = (h) => (h?.hazzStrength && h?.hazzCount > 0) ? ` [עוצמה: ${h.hazzStrength}]` : '';
   const hMeta    = (h) => {
     const parts = [];
     if (h?.zodiacHebrew)  parts.push(`מזל: ${h.zodiacHebrew}`);
@@ -1602,7 +1602,7 @@ function buildNarrativeByTopic(result) {
       : null;
 
     const parts = [];
-    parts.push(`עאקבה (בית 16 — ${fig}${fort ? `, ${fort}` : ''}): אחרית הדין.`);
+    parts.push(`אחרית (בית 16 — ${fig}${fort ? `, ${fort}` : ''}): אחרית הדין.`);
     if (confirm) parts.push(`[${confirm}]`);
     if (transit) parts.push(`חאוי: ${transit}`);
     push(parts.join(' '));

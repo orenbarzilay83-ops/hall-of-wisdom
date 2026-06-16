@@ -232,13 +232,13 @@ function computeConfidence(verdictDK, w13, w14, judge) {
     const nahsCount = [w13, w14, judge].filter((h) => h?.saadNahs === 'nahs').length;
     if (saadCount >= 2) {
       level = 'neutral-saad';
-      labelHebrew = `צורות מג'סד — מזל העדים והדיין נוטה לסעד (${saadCount}/3)`;
+      labelHebrew = `צורות ניטרליות — מזל העדים והדיין נוטה לסעד (${saadCount}/3)`;
     } else if (nahsCount >= 2) {
       level = 'neutral-nahs';
-      labelHebrew = `צורות מג'סד — מזל העדים והדיין נוטה לנחס (${nahsCount}/3)`;
+      labelHebrew = `צורות ניטרליות — מזל העדים והדיין נוטה לנחס (${nahsCount}/3)`;
     } else {
       level = 'neutral';
-      labelHebrew = 'צורות מג\'סד — הכוחות ממוזגים, אין נטייה ברורה';
+      labelHebrew = 'צורות ניטרליות — הכוחות ממוזגים, אין נטייה ברורה';
     }
   }
 
@@ -248,9 +248,6 @@ function computeConfidence(verdictDK, w13, w14, judge) {
 // ─── סיכום עברי ──────────────────────────────────────────────────────────────
 function buildSupportSummary(primaryVerdict, w13, w14, judge, sentence, dhamir, confidence) {
   const lines = [];
-
-  lines.push(`**פסיקה ראשית:** ${primaryVerdict?.verdictHebrew || ''}`);
-  lines.push('');
 
   lines.push('**שכבת תמיכה:**');
 
@@ -267,7 +264,7 @@ function buildSupportSummary(primaryVerdict, w13, w14, judge, sentence, dhamir, 
     lines.push(`• דיין (ב15 — ${judge.nameHebrew}): ${judge.dakhalKharijHebrew} | ${judge.saadNahsHebrew} — ${agreementHebrew(ag)}`);
   }
   if (sentence) {
-    lines.push(`• עאקבה (ב16 — ${sentence.nameHebrew}): ${sentence.dakhalKharijHebrew} | ${sentence.saadNahsHebrew}`);
+    lines.push(`• אחרית (ב16 — ${sentence.nameHebrew}): ${sentence.dakhalKharijHebrew} | ${sentence.saadNahsHebrew}`);
   }
 
   lines.push('');

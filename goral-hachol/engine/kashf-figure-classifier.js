@@ -49,10 +49,10 @@ export function getSaadNahs(pattern) {
 }
 
 const DAKHIL_KHARIJ_HEBREW = {
-  'kharij':          "ח'ארג' — חיצוני (יוצא / מתממש)",
-  'dakhil':          "דאח'ל — פנימי (נשאר / מעוכב)",
-  'mujassad-kharij': "מג'סד-חיצוני — מתהפך (תלוי, נוטה לצאת)",
-  'mujassad-dakhil': "מג'סד-פנימי — קבוע (תלוי, נוטה להישאר)",
+  'kharij':          "חיצוני (יוצא / מתממש)",
+  'dakhil':          "פנימי (נשאר / מעוכב)",
+  'mujassad-kharij': "מתהפך (תלוי, נוטה לצאת)",
+  'mujassad-dakhil': "קבוע (תלוי, נוטה להישאר)",
 };
 
 const SAAD_NAHS_HEBREW = {

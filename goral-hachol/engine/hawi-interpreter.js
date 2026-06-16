@@ -932,7 +932,7 @@ function computeTahasil(chart, topicId) {
     return {
       tahasilStatus: 'none',
       tahasilStrength: 'none',
-      tahasilHebrew: 'לא ניתן לחשב תחסיל — חסרים נתונים.',
+      tahasilHebrew: 'לא ניתן לחשב הגעה — חסרים נתונים.',
       hayulaActive: false,
       hayulaHebrew: '',
       quesitedHouseNum,
@@ -951,7 +951,7 @@ function computeTahasil(chart, topicId) {
   if (querentFig && querentFig === quesitedFig) {
     tahasilStatus   = 'direct';
     tahasilStrength = 'strong';
-    tahasilHebrew   = `תחסיל ישיר (אתחאד): אותה צורה — "${querentName}" — בבית 1 ובבית ${quesitedHouseNum}. הדבר ייגמר ואין ספק בו.`;
+    tahasilHebrew   = `הגעה ישירה: אותה צורה — "${querentName}" — בבית 1 ובבית ${quesitedHouseNum}. הדבר ייגמר ואין ספק בו.`;
   }
 
   if (tahasilStatus === 'none') {
@@ -960,11 +960,11 @@ function computeTahasil(chart, topicId) {
     if (naturalOfQuerent === quesitedHouseNum) {
       tahasilStatus   = 'natural';
       tahasilStrength = 'strong';
-      tahasilHebrew   = `תחסיל טבעי (ג׳דוול): הצורה "${querentName}" שייכת טבעית לבית ${quesitedHouseNum} — הדבר ייגמר בדרך הטבע.`;
+      tahasilHebrew   = `הגעה טבעית: הצורה "${querentName}" שייכת טבעית לבית ${quesitedHouseNum} — הדבר ייגמר בדרך הטבע.`;
     } else if (naturalOfQuesited === 1) {
       tahasilStatus   = 'natural';
       tahasilStrength = 'strong';
-      tahasilHebrew   = `תחסיל טבעי (ג׳דוול): הצורה "${quesitedName}" שייכת טבעית לבית 1 — הנשאל מגיע אל השואל.`;
+      tahasilHebrew   = `הגעה טבעית: הצורה "${quesitedName}" שייכת טבעית לבית 1 — הנשאל מגיע אל השואל.`;
     }
   }
 
@@ -983,15 +983,15 @@ function computeTahasil(chart, topicId) {
     if ((judgeHasQ || judgeHasT) && ((w1HasQ || w1HasT) || (w2HasQ || w2HasT))) {
       tahasilStatus   = 'witness';
       tahasilStrength = 'strong';
-      tahasilHebrew   = `תחסיל דרך עדים ודיין: הדיין מחובר לאחד הצדדים ועד מחובר לצד השני — הדבר ייגמר, אך ייקח זמן.`;
+      tahasilHebrew   = `הגעה דרך עדים ודיין: הדיין מחובר לאחד הצדדים ועד מחובר לצד השני — הדבר ייגמר, אך ייקח זמן.`;
     } else if ((w1HasQ && w2HasT) || (w1HasT && w2HasQ)) {
       tahasilStatus   = 'witness';
       tahasilStrength = 'medium';
-      tahasilHebrew   = `תחסיל דרך עדים: עד ראשון מחובר לצד אחד ועד שני לצד השני — גורם ביניים מעביר את הדבר.`;
+      tahasilHebrew   = `הגעה דרך עדים: עד ראשון מחובר לצד אחד ועד שני לצד השני — גורם ביניים מעביר את הדבר.`;
     } else if ((w1HasQ || w1HasT) && (w2HasQ || w2HasT)) {
       tahasilStatus   = 'witness';
       tahasilStrength = 'medium';
-      tahasilHebrew   = `תחסיל חלקי דרך עדים: שני העדים קשורים לאחד הצדדים — יש תמיכה, אך לא הגעה ישירה.`;
+      tahasilHebrew   = `הגעה חלקית דרך עדים: שני העדים קשורים לאחד הצדדים — יש תמיכה, אך לא הגעה ישירה.`;
     }
   }
 
@@ -1005,7 +1005,7 @@ function computeTahasil(chart, topicId) {
       tahasilStatus   = 'translation';
       tahasilStrength = 'medium';
       const bridgeName = bridge.hebrew || bridge.key;
-      tahasilHebrew   = `תחסיל בהעברה: הצורה "${bridgeName}" בבית ${bridge.house} מחברת בין בית 1 לבית ${quesitedHouseNum} — הדבר ייגמר בעזרת גורם שלישי.`;
+      tahasilHebrew   = `הגעה בהעברה: הצורה "${bridgeName}" בבית ${bridge.house} מחברת בין בית 1 לבית ${quesitedHouseNum} — הדבר ייגמר בעזרת גורם שלישי.`;
     }
   }
 
@@ -1020,7 +1020,7 @@ function computeTahasil(chart, topicId) {
       tahasilStrength = 'weak';
       tahasilHebrew   = `קשר חלקי: ${shared}/4 שורות משותפות — הדבר מסופק, תלוי בגורמים נוספים.`;
     } else {
-      tahasilHebrew = `אין תחסיל: לא נמצא חיבור בין בית 1 ("${querentName}") לבית ${quesitedHouseNum} ("${quesitedName}") — הדבר לא ייגמר כפי שמקווים.`;
+      tahasilHebrew = `אין הגעה: לא נמצא חיבור בין בית 1 ("${querentName}") לבית ${quesitedHouseNum} ("${quesitedName}") — הדבר לא ייגמר כפי שמקווים.`;
     }
   }
 
@@ -2601,7 +2601,7 @@ function computeDeathRisk(chart) {
     }
   }
   if (h14 && String(h14.fortune || '').includes('נחס')) {
-    lines.push('בית 14 (עאקבה) נחס — תוצאה שלילית');
+    lines.push('בית 14 (אחרית) נחס — תוצאה שלילית');
     riskLevel += 1;
   }
   for (const h of [h6, h8].filter((h) => h && LIFE_SAVING_FIGURES.has(h.key || ''))) {

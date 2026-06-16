@@ -497,11 +497,12 @@ function buildInterpretationHtml(reading) {
     const verdictText = gradeMap[spiritual.grade] || spiritual.grade;
     const vClass = spiritual.grade === "strong-suspicion" ? "verdict-yes" :
                    spiritual.grade === "mostly-clear" ? "verdict-no" : "verdict-maybe";
-    // Build evidence lines: skip first line (it repeats the verdict-answer) and convert \n → <br>
+    // Build evidence lines: skip first line (repeats verdict), limit to 3 key lines
+    // Full detail is in "קרא עוד" (finalConclusionHebrew via buildSpiritualNarrative)
     const evidenceHtml = (spiritual.finalHebrew || '')
       .split('\n')
       .filter(Boolean)
-      .slice(1)
+      .slice(1, 4)
       .map(l => escapeHtml(l))
       .join('<br/>');
     shortVerdictHtml = `
