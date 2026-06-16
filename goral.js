@@ -22,7 +22,7 @@ function goralParseTable(str) {
 const G_TABLES = {
   א:{rows:[
     goralParseTable("טו-י-ב-ב-גורלי-יג-יג-יב-יג-יא-ד-יג-א-יא"),
-    goralParseTable("יג-יג-ז-ח-יג-ט-יח-תומך-ו-י-טז-י-יב"),
+    goralParseTable("יג-יג-ז-ח-יג-ט-יח-תומך-ו-י-טז-ו-יב"),
     goralParseTable("יג-יב-יג-ח-יג-יב-ו-א-יג-אתה-יט-יג"),
     goralParseTable("חלקי-ו-ו-א-כ-יב-כא-כ-ד-יב-וכוסי"),
     goralParseTable("מנת-כ-טז-י-ה-כא-יא-יג-ג-כא"),
@@ -47,7 +47,7 @@ const G_TABLES = {
     goralParseTable("טו-א-כא-ו-יהיה-י-ז"),
     goralParseTable("לו-יב-טז-א-יג-יב"),
     goralParseTable("ב-יג-יב-י-ה"),
-    goralParseTable("ב-י-יב-י")
+    goralParseTable("ב-י-יב-ו")
   ]},
   ג:{rows:[
     goralParseTable("יב-ו-יב-יד-גורלי-יב-כא-ה-יב-יא-יא-כב-יא-יא"),
@@ -67,7 +67,7 @@ const G_TABLES = {
     goralParseTable("יח-יב-יג-ב-ו-ב-ט-תומך-ז-א-יב-י-ז"),
     goralParseTable("ח-ב-כב-יח-יא-כ-יח-יא-יב-אתה-ב-ז"),
     goralParseTable("חלקי-יב-יא-א-י-יב-ה-כ-ח-א-וכוסי"),
-    goralParseTable("מנת-יח-ב-יב-יא-כב-ח-יב-י-יב"),
+    goralParseTable("מנת-יח-ב-יב-יא-יא-ח-יב-י-יב"),
     goralParseTable("כב-י-א-יא-יד-יב-ט-יב-א"),
     goralParseTable("ו-כ-יא-יח-ב-יח-י-אדני"),
     goralParseTable("ה-כב-ה-ה-יהיה-א-ט"),
