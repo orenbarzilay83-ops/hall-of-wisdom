@@ -147,7 +147,7 @@ goral-hachol-ui.js::createRamlUiState()
 - **Mahw & Thabat** — Erasure & establishment (derivation rules)
 - **Figure States** — Fortune (good/bad), Movement (internal/external/stable), Speaking/Silent
 - **Spiritual Diagnostics** — Detection of sorcery, evil eye, demonic influence
-- **Isqat (7×7)** — Advanced 49-figure extraction method (not yet implemented)
+- **Isqat (7×7)** — Advanced 49-figure extraction method (implemented: `applyIsqatSevenMethod` in `goral-spiritual-diagnostics-engine.js`)
 
 ---
 
@@ -288,7 +288,6 @@ If a `sourceStatus` field is missing, blank, or marked as not found — do NOT f
 
 ### ❌ Not Yet Implemented
 - European geomancy (Agrippa/Greer) — no source extracted yet
-- Advanced 7×7 isqat method (49-figure extraction)
 - Islamic lunar calendar integration for timing
 - Astrological houses (zodiac correspondence for figures)
 - Real-time figure randomization (test data may be hardcoded in places)
