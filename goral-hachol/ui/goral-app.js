@@ -756,9 +756,89 @@ document.getElementById("startBtn").addEventListener("click", () => {
   showScreen("select");
 });
 
-document.getElementById("autoBtn").addEventListener("click", () => {
-  alert("בחירה אוטומטית לפי עצירה תיבנה בשלב הבא. כרגע משתמשים בהכנסה ידנית בלבד.");
+// ─── בחירה אוטומטית לפי עצירה ────────────────────────────────────────────────
+let _autoInterval = null;
+let _autoSpinIdx  = 0;
+let _autoChosen   = [null, null, null, null];
+let _autoSlot     = 0;
+
+function _autoRenderGlyph() {
+  const fig = figures[_autoSpinIdx];
+  document.getElementById('autoGlyph').innerHTML  = glyphHtml(fig.lines);
+  document.getElementById('autoFigName').textContent = fig.name;
+}
+
+function _autoRenderMiniSlots() {
+  document.getElementById('autoMiniSlots').innerHTML = _autoChosen.map((fig, i) => {
+    const isCurrent = i === _autoSlot && !fig;
+    return `<div class="auto-mini-slot ${fig ? 'filled' : ''} ${isCurrent ? 'current' : ''}">
+      ${fig ? glyphHtml(fig.lines) + `<span style="font-size:10px;font-weight:900">${escapeHtml(fig.name)}</span>` : `<span class="auto-slot-label">אם ${i + 1}</span>`}
+    </div>`;
+  }).join('');
+}
+
+function _autoOpen() {
+  _autoChosen  = [null, null, null, null];
+  _autoSlot    = 0;
+  _autoSpinIdx = Math.floor(Math.random() * figures.length);
+  const modal = document.getElementById('autoSelectModal');
+  modal.style.display = 'flex';
+  document.getElementById('autoProceedRow').style.display = 'none';
+  document.getElementById('autoStopBtn').style.display    = '';
+  document.getElementById('autoStopBtn').disabled         = false;
+  _autoRenderMiniSlots();
+  _autoRenderGlyph();
+  if (_autoInterval) clearInterval(_autoInterval);
+  _autoInterval = setInterval(() => {
+    _autoSpinIdx = (_autoSpinIdx + 1) % figures.length;
+    _autoRenderGlyph();
+  }, 70);
+}
+
+function _autoClose() {
+  if (_autoInterval) { clearInterval(_autoInterval); _autoInterval = null; }
+  document.getElementById('autoSelectModal').style.display = 'none';
+}
+
+document.getElementById('autoBtn').addEventListener('click', _autoOpen);
+
+document.getElementById('autoStopBtn').addEventListener('click', () => {
+  if (_autoSlot >= 4) return;
+  _autoChosen[_autoSlot] = figures[_autoSpinIdx];
+  _autoSlot++;
+  _autoRenderMiniSlots();
+  if (_autoSlot >= 4) {
+    clearInterval(_autoInterval);
+    _autoInterval = null;
+    document.getElementById('autoStopBtn').style.display  = 'none';
+    document.getElementById('autoProceedRow').style.display = '';
+  }
 });
+
+document.getElementById('autoProceedBtn').addEventListener('click', () => {
+  selectedMothers = [..._autoChosen];
+  activeMother = 0;
+  _autoClose();
+  runReading();
+});
+
+document.getElementById('autoRestartBtn').addEventListener('click', () => {
+  _autoChosen = [null, null, null, null];
+  _autoSlot   = 0;
+  document.getElementById('autoProceedRow').style.display = 'none';
+  document.getElementById('autoStopBtn').style.display    = '';
+  document.getElementById('autoStopBtn').disabled         = false;
+  _autoRenderMiniSlots();
+  _autoSpinIdx = Math.floor(Math.random() * figures.length);
+  _autoRenderGlyph();
+  if (_autoInterval) clearInterval(_autoInterval);
+  _autoInterval = setInterval(() => {
+    _autoSpinIdx = (_autoSpinIdx + 1) % figures.length;
+    _autoRenderGlyph();
+  }, 70);
+});
+
+document.getElementById('autoCloseBtn').addEventListener('click', _autoClose);
 
 document.getElementById("backOpenBtn").addEventListener("click", () => showScreen("open"));
 document.getElementById("backSelectBtn").addEventListener("click", () => showScreen("select"));
