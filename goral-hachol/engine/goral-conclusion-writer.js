@@ -1741,8 +1741,14 @@ function buildNarrativeByTopic(result) {
   // ── 8.9. ניתוח ילדים/הריון ───────────────────────────────────
   if (topicId === 'childrenPregnancy') {
     const kashfChild = boardAnalysis?.childrenPregnancyKashf;
+    const pregnancyMonthsExists = !!boardAnalysis?.pregnancyMonths;
     if (kashfChild?.outputHebrew) {
-      push(scText(kashfChild.outputHebrew));
+      let text = scText(kashfChild.outputHebrew);
+      // Remove the pregnancy-months line if computePregnancyMonths renders it separately
+      if (pregnancyMonthsExists) {
+        text = text.split('\n').filter(l => !l.startsWith('חודשי הריון')).join('\n').trim();
+      }
+      if (text) push(text);
     }
   }
 
