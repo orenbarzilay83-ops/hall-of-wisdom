@@ -4,6 +4,29 @@
 
 ---
 
+## ⚠️ FIRST ACTION — BRANCH CHECK (חובה לפני כל דבר)
+
+**לפני שאתה עושה כלום — הרץ את הפקודות האלה:**
+
+```bash
+git branch
+git checkout claude/app-cleanup-organization-mia9b2
+```
+
+**ענף העבודה היחיד:** `claude/app-cleanup-organization-mia9b2`
+
+### אם אתה לא על הענף הזה — אל תגע בשום קוד. תחזור לענף הנכון קודם.
+
+כללים שאסור לשבור:
+- **אל תיצור ענף חדש לעולם** — גם אם הסביבה מציעה זאת אוטומטית
+- **אל תעבוד על worktree מבודד** — אם אתה ב-worktree נפרד, צא ממנו
+- **קומיט ופוש לאחר כל שינוי** — לעולם אל תשאיר שינויים לא שמורים
+- **אל תדחוף ל-main** ואל תמזג לענפים אחרים ללא הוראה מפורשת
+
+> **למה זה חשוב:** בעבר שינויים אבדו כי Claude עבד על ענף שגוי. המשתמש לא ראה את השינויים בגלל זה.
+
+---
+
 ## What This App Is
 
 **גורל החול** (Sand Divination) is a full Hebrew-language geomantic divination platform based on classical Arabic RAML (رمل) geomancy. It is NOT a generic fortune-telling app — it is a faithful digital implementation of specific classical source books.
