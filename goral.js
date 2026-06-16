@@ -67,7 +67,7 @@ const G_TABLES = {
     goralParseTable("יח-יב-יג-ב-ו-ב-ט-תומך-ז-א-יב-י-ז"),
     goralParseTable("ח-ב-כב-יח-יא-כ-יח-יא-יב-אתה-ב-ז"),
     goralParseTable("חלקי-יב-יא-א-י-יב-ה-כ-ח-א-וכוסי"),
-    goralParseTable("מנת-יח-ב-יב-יא-יא-ח-יב-י-יב"),
+    goralParseTable("מנת-יח-ב-יב-יא-כב-ח-יב-י-יב"),
     goralParseTable("כב-י-א-יא-יד-יב-ט-יב-א"),
     goralParseTable("ו-כ-יא-יח-ב-יח-י-אדני"),
     goralParseTable("ה-כב-ה-ה-יהיה-א-ט"),
