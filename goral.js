@@ -47,7 +47,7 @@ const G_TABLES = {
     goralParseTable("טו-א-כא-ו-יהיה-י-ז"),
     goralParseTable("לו-יב-טז-א-יג-יב"),
     goralParseTable("ב-יג-יב-י-ה"),
-    goralParseTable("ב-י-יב-ו")
+    goralParseTable("ב-י-יב-י")
   ]},
   ג:{rows:[
     goralParseTable("יב-ו-יב-יד-גורלי-יב-כא-ה-יב-יא-יא-כב-יא-יא"),
