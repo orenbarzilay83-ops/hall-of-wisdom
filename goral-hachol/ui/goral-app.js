@@ -882,6 +882,7 @@ document.querySelectorAll(".guide-tab").forEach(tab => {
     document.querySelectorAll(".guide-section").forEach(s => s.classList.remove("active"));
     tab.classList.add("active");
     document.getElementById("guide-" + tab.dataset.tab)?.classList.add("active");
+    if (tab.dataset.tab === 'kashf') renderKashfBook();
   });
 });
 
@@ -1009,6 +1010,140 @@ function renderConceptsGuide() {
       <div class="concept-sub">${escapeHtml(c.sub)}</div>
       <div class="concept-body">${escapeHtml(c.body)}</div>
     </div>`).join('');
+}
+
+// ─── Kashf Book Viewer ───────────────────────────────────────
+let kashfBookRendered = false;
+let kashfCurrentPageIdx = -1;
+
+async function renderKashfBook() {
+  if (kashfBookRendered) return;
+  const el = document.getElementById('guide-kashf');
+  el.innerHTML = '<div style="text-align:center;padding:40px;color:#888;font-size:16px">טוען ספר...</div>';
+  try {
+    const mod = await import('/goral-hachol/data/sources/kashf-al-asrar/kashf-al-asrar-book.js');
+    window._KASHF_BOOK = { toc: mod.KASHF_AL_ASRAR_TOC || [], pages: mod.KASHF_AL_ASRAR_PAGES || [] };
+  } catch (e) {
+    el.innerHTML = '<div style="text-align:center;padding:40px;color:#c00;font-size:16px">שגיאה בטעינת הספר</div>';
+    return;
+  }
+  kashfBookRendered = true;
+  showKashfToc();
+}
+
+function showKashfToc() {
+  kashfCurrentPageIdx = -1;
+  const el = document.getElementById('guide-kashf');
+  const toc = window._KASHF_BOOK?.toc || [];
+  el.innerHTML = `
+    <div class="kashf-toc-header">
+      <div class="kashf-toc-main-title">📖 כשף אל-אסרר</div>
+      <div class="kashf-toc-subtitle">גילוי הסודות השמורים — תוכן עניינים</div>
+    </div>
+    ${toc.map(entry => `
+      <div class="kashf-toc-item" data-page="${entry.page}">
+        <span>${escapeHtml(entry.hebrewTitle)}</span>
+        <span class="kashf-toc-page">עמ׳ ${entry.page}</span>
+      </div>`).join('')}
+  `;
+  el.querySelectorAll('.kashf-toc-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const pageNum = parseInt(item.dataset.page, 10);
+      const pages = window._KASHF_BOOK?.pages || [];
+      let idx = pages.findIndex(p => p.page >= pageNum);
+      if (idx < 0) idx = pages.length - 1;
+      showKashfPage(idx);
+    });
+  });
+}
+
+function showKashfPage(idx) {
+  const pages = window._KASHF_BOOK?.pages || [];
+  if (!pages.length) return;
+  idx = Math.max(0, Math.min(idx, pages.length - 1));
+  kashfCurrentPageIdx = idx;
+  const p = pages[idx];
+  const el = document.getElementById('guide-kashf');
+  const prevDis = idx === 0 ? 'disabled' : '';
+  const nextDis = idx >= pages.length - 1 ? 'disabled' : '';
+  el.innerHTML = `
+    <div class="kashf-reader">
+      <div class="kashf-reader-nav">
+        <button class="btn gray" id="kashfTocBtn">← תוכן עניינים</button>
+        <span class="kashf-page-counter">עמוד ${idx + 1} מתוך ${pages.length}</span>
+      </div>
+      <div class="kashf-page-meta">
+        <div class="kashf-page-num">עמ׳ ${p.page} בספר</div>
+        <div class="kashf-chapter-title">${escapeHtml(p.chapterHebrew || p.chapter || '')}</div>
+      </div>
+      <div class="kashf-page-text">${kashfMdToHtml(p.hebrewTranslation || '(אין תרגום לעמוד זה)')}</div>
+      <div class="kashf-bottom-nav">
+        <button class="btn gray" id="kashfPrevBtn" ${prevDis}>→ הקודם</button>
+        <button class="btn gray" id="kashfNextBtn" ${nextDis}>הבא ←</button>
+      </div>
+    </div>
+  `;
+  document.getElementById('kashfTocBtn').addEventListener('click', showKashfToc);
+  if (idx > 0) document.getElementById('kashfPrevBtn').addEventListener('click', () => showKashfPage(idx - 1));
+  if (idx < pages.length - 1) document.getElementById('kashfNextBtn').addEventListener('click', () => showKashfPage(idx + 1));
+  el.scrollTop = 0;
+}
+
+function kashfMdToHtml(text) {
+  if (!text) return '';
+  const lines = text.split('\n');
+  const out = [];
+  let tableRows = [];
+  let listItems = [];
+
+  const flushTable = () => {
+    if (!tableRows.length) return;
+    const dataRows = tableRows.filter(r => !/^\|[\s|:-]+\|$/.test(r));
+    const [header, ...body] = dataRows;
+    const thCells = header.split('|').slice(1, -1).map(c => `<th>${escapeHtml(c.trim())}</th>`).join('');
+    const trRows = body.map(r =>
+      `<tr>${r.split('|').slice(1, -1).map(c => `<td>${escapeHtml(c.trim())}</td>`).join('')}</tr>`
+    ).join('');
+    out.push(`<table><thead><tr>${thCells}</tr></thead><tbody>${trRows}</tbody></table>`);
+    tableRows = [];
+  };
+
+  const flushList = () => {
+    if (!listItems.length) return;
+    out.push(`<ul>${listItems.map(item => `<li>${item}</li>`).join('')}</ul>`);
+    listItems = [];
+  };
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+
+    if (trimmed.startsWith('|') && trimmed.endsWith('|') && trimmed.includes('|', 1)) {
+      flushList();
+      tableRows.push(trimmed);
+      continue;
+    }
+    if (tableRows.length) flushTable();
+
+    if (/^[-•]\s+/.test(trimmed)) {
+      listItems.push(kashfInline(trimmed.replace(/^[-•]\s+/, '')));
+      continue;
+    }
+    if (listItems.length) flushList();
+
+    if (trimmed === '') { out.push('<br>'); continue; }
+
+    out.push(`<p>${kashfInline(trimmed)}</p>`);
+  }
+
+  if (tableRows.length) flushTable();
+  if (listItems.length) flushList();
+  return out.join('');
+}
+
+function kashfInline(text) {
+  return escapeHtml(text)
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>');
 }
 
 // ─── Journal Rendering ────────────────────────────────────────

@@ -896,6 +896,38 @@
       background:#f0f0f0;border-radius:8px;padding:8px 12px;color:#333;
     }
 
+    /* ─── Kashf Book Viewer ───────────────────────────────────── */
+    .kashf-toc-header { text-align:center;margin-bottom:20px; }
+    .kashf-toc-main-title { font-size:1.2rem;font-weight:900;color:var(--navy);margin-bottom:4px; }
+    .kashf-toc-subtitle { font-size:14px;color:#888;margin-top:2px; }
+    .kashf-toc-item {
+      display:flex;justify-content:space-between;align-items:center;
+      padding:11px 14px;border-radius:10px;cursor:pointer;
+      border:1px solid #e8e8e8;margin-bottom:7px;background:#fff;
+      font-size:16px;line-height:1.45;
+      transition:background .15s,border-color .15s;
+    }
+    .kashf-toc-item:hover { background:#f0f4ff;border-color:var(--navy); }
+    .kashf-toc-page { color:#888;font-size:13px;white-space:nowrap;margin-right:12px;flex-shrink:0; }
+    .kashf-reader-nav { display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:8px; }
+    .kashf-page-counter { font-size:13px;color:#888; }
+    .kashf-page-meta { text-align:center;margin-bottom:18px;padding-bottom:14px;border-bottom:2px solid #eee; }
+    .kashf-page-num { font-size:14px;color:#888; }
+    .kashf-chapter-title { font-size:1.15rem;font-weight:900;color:var(--navy);margin-top:5px;line-height:1.4; }
+    .kashf-page-text {
+      font-size:19px;line-height:1.95;color:#1a1a2e;
+      direction:rtl;text-align:right;
+    }
+    .kashf-page-text p { margin:0 0 1em; }
+    .kashf-page-text strong { color:#071b30;font-weight:900; }
+    .kashf-page-text em { font-style:italic; }
+    .kashf-page-text ul { padding-right:22px;margin:4px 0 14px; }
+    .kashf-page-text li { margin-bottom:6px; }
+    .kashf-page-text table { border-collapse:collapse;width:100%;margin:14px 0;font-size:16px; }
+    .kashf-page-text th,.kashf-page-text td { border:1px solid #ccc;padding:7px 11px;text-align:right; }
+    .kashf-page-text th { background:#f0f4ff;font-weight:700; }
+    .kashf-bottom-nav { display:flex;justify-content:space-between;margin-top:22px;gap:8px; }
+
     /* ─── Journal Screen ───────────────────────────────────────── */
     .journal-empty {
       text-align:center;padding:40px 20px;color:#888;font-size:16px;
@@ -1201,11 +1233,13 @@
           <button class="guide-tab" data-tab="houses">16 הבתים</button>
           <button class="guide-tab" data-tab="build">כיצד בונים לוח</button>
           <button class="guide-tab" data-tab="concepts">מושגי יסוד</button>
+          <button class="guide-tab" data-tab="kashf">📖 כשף אל-אסרר</button>
         </div>
         <div id="guide-figures" class="guide-section active"></div>
         <div id="guide-houses" class="guide-section"></div>
         <div id="guide-build" class="guide-section"></div>
         <div id="guide-concepts" class="guide-section"></div>
+        <div id="guide-kashf" class="guide-section"></div>
       </div>
     </section>
 
