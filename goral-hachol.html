@@ -1070,34 +1070,34 @@
     }
     .auto-modal-panel {
       background:var(--paper);
-      border-radius:20px;
-      padding:28px 24px 22px;
-      max-width:360px;
+      border-radius:24px;
+      padding:32px 28px 26px;
+      max-width:480px;
       width:92%;
       text-align:center;
       box-shadow:0 12px 50px rgba(0,0,0,0.55);
       direction:rtl;
     }
     .auto-modal-title {
-      font-size:20px; font-weight:900;
-      color:var(--navy); margin:0 0 6px;
+      font-size:24px; font-weight:900;
+      color:var(--navy); margin:0 0 8px;
     }
     .auto-modal-sub {
-      font-size:13px; color:var(--muted);
-      margin:0 0 18px; line-height:1.5;
+      font-size:15px; color:var(--muted);
+      margin:0 0 22px; line-height:1.5;
     }
     .auto-mini-slots {
-      display:flex; justify-content:center; gap:8px; margin-bottom:20px;
+      display:flex; justify-content:center; gap:10px; margin-bottom:24px;
     }
     .auto-mini-slot {
-      width:62px; min-height:62px;
+      width:80px; min-height:90px;
       border:1px dashed rgba(0,0,0,.3);
-      border-radius:10px;
+      border-radius:12px;
       display:flex; flex-direction:column;
       align-items:center; justify-content:center;
-      font-size:10px; font-weight:700;
-      background:white; padding:4px 2px;
-      gap:3px;
+      font-size:12px; font-weight:700;
+      background:white; padding:6px 4px;
+      gap:4px;
     }
     .auto-mini-slot.filled {
       background:rgba(255,245,205,.85);
@@ -1107,36 +1107,43 @@
       border:2px solid var(--navy);
       box-shadow:0 0 0 3px rgba(6,25,45,.12);
     }
+    /* גליף בתוך סלוט קטן — גדלים ישירים, בלי scale */
     .auto-mini-slot .glyph {
-      transform:scale(0.7);
-      transform-origin:center;
-      margin:-6px 0;
+      width:40px;
+      grid-template-rows:repeat(4,9px);
+      gap:5px;
     }
+    .auto-mini-slot .glyph .one { width:7px; height:7px; }
+    .auto-mini-slot .glyph .two { width:28px; height:5px; }
+    /* גליף בתוך ספינר — גדלים ישירים, בלי scale */
     .auto-spinner-wrap {
-      margin:0 auto 18px;
-      width:180px; height:180px;
+      margin:0 auto 22px;
+      width:240px; height:240px;
       background:white;
-      border:2px solid var(--gold);
-      border-radius:18px;
+      border:3px solid var(--gold);
+      border-radius:22px;
       display:flex;
       align-items:center; justify-content:center;
-      box-shadow:0 4px 18px rgba(0,0,0,.12);
+      box-shadow:0 4px 22px rgba(0,0,0,.14);
     }
     .auto-spinner-wrap .glyph {
-      transform:scale(2.8);
-      transform-origin:center;
+      width:100px;
+      grid-template-rows:repeat(4,22px);
+      gap:14px;
     }
+    .auto-spinner-wrap .glyph .one { width:16px; height:16px; }
+    .auto-spinner-wrap .glyph .two { width:70px; height:12px; }
     .auto-stop-btn {
-      font-size:20px !important;
-      padding:13px 50px !important;
+      font-size:22px !important;
+      padding:16px !important;
       width:100%;
     }
     .auto-proceed-row {
-      display:flex; gap:10px; margin-top:12px;
+      display:flex; gap:10px; margin-top:14px;
     }
-    .auto-proceed-row .btn { flex:1; }
-    .auto-close-btn { margin-top:10px; width:100%; }
-    .auto-slot-label { font-size:10px; color:#999; }
+    .auto-proceed-row .btn { flex:1; font-size:16px; padding:13px; }
+    .auto-close-btn { margin-top:12px; width:100%; font-size:16px; padding:13px; }
+    .auto-slot-label { font-size:12px; color:#999; }
   </style>
 </head>
 
