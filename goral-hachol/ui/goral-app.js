@@ -763,16 +763,14 @@ let _autoChosen   = [null, null, null, null];
 let _autoSlot     = 0;
 
 function _autoRenderGlyph() {
-  const fig = figures[_autoSpinIdx];
-  document.getElementById('autoGlyph').innerHTML  = glyphHtml(fig.lines);
-  document.getElementById('autoFigName').textContent = fig.name;
+  document.getElementById('autoGlyph').innerHTML = glyphHtml(figures[_autoSpinIdx].lines);
 }
 
 function _autoRenderMiniSlots() {
   document.getElementById('autoMiniSlots').innerHTML = _autoChosen.map((fig, i) => {
     const isCurrent = i === _autoSlot && !fig;
     return `<div class="auto-mini-slot ${fig ? 'filled' : ''} ${isCurrent ? 'current' : ''}">
-      ${fig ? glyphHtml(fig.lines) + `<span style="font-size:10px;font-weight:900">${escapeHtml(fig.name)}</span>` : `<span class="auto-slot-label">אם ${i + 1}</span>`}
+      ${fig ? glyphHtml(fig.lines) : `<span class="auto-slot-label">אם ${i + 1}</span>`}
     </div>`;
   }).join('');
 }
