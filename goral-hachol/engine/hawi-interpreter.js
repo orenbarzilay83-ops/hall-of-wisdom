@@ -4548,7 +4548,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const hiddenTreasureH2 = (topicId === 'hiddenTreasure')
     ? computeHiddenTreasureH2(board.chart) : null;
 
-  const h3Topics = (['siblings', 'foundations', 'generalReading'].includes(topicId))
+  const h3Topics = (topicId === 'siblings')
     ? computeH3Topics(board.chart) : null;
 
   const h4Secrets = (['hiddenTreasure', 'foundations'].includes(topicId))
@@ -4557,7 +4557,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const illnessCauseH4 = (topicId === 'illness')
     ? computeIllnessCauseH4(board.chart) : null;
 
-  const celebrationsH5 = (['childrenPregnancy', 'foundations', 'generalReading'].includes(topicId))
+  const celebrationsH5 = (topicId === 'childrenPregnancy')
     ? computeCelebrationsH5(board.chart) : null;
 
   const jumlaAnalysis = (['spiritualDiagnostics', 'illness', 'childrenPregnancy', 'partnership'].includes(topicId))
