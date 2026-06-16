@@ -409,6 +409,9 @@ function buildInterpretationHtml(reading) {
   // Only show spiritual section when explicitly spiritual topic,
   // or when the engine finds very strong suspicion (not just any score > 0)
   const showSpiritual = spiritual && isSpiritualTopic;
+  // Show spiritual bleedthrough warning on non-spiritual topics when suspicion is strong/medium
+  const showSpiritualBleedthrough = spiritual && !isSpiritualTopic &&
+    ['strong-suspicion', 'medium-suspicion'].includes(spiritual?.grade);
 
   // Board score + dhamir banner (before verdict)
   const boardScoreData = insight.boardAnalysis?.boardScore || null;
@@ -533,7 +536,7 @@ function buildInterpretationHtml(reading) {
   }
 
   // ─── SPIRITUAL DETAIL (inside details panel) ──────────────────────
-  const spiritualDetailHtml = showSpiritual && !isSpiritualTopic
+  const spiritualDetailHtml = showSpiritualBleedthrough
     ? `
       <div class="summary-box">
         <strong>אבחון רוחני נוסף:</strong>

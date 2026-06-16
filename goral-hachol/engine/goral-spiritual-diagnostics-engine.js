@@ -581,8 +581,13 @@ function applyIsqatSevenMethod(board, source) {
 }
 
 // Get figure element (fire/air/water/earth) from pattern
+// Falls back to PATTERN_TO_FIGURE_PROPS lookup by key when house.element is missing
 function getFigureElement(house) {
-  const element = String(house?.element || house?.elementHebrew || '').toLowerCase();
+  const raw = house?.element || house?.elementHebrew || '';
+  const fromProps = !raw
+    ? (PATTERN_TO_FIGURE_PROPS[house?.key || (Array.isArray(house?.figure) ? house.figure.join('') : '')]?.element || '')
+    : '';
+  const element = String(raw || fromProps).toLowerCase();
   if (element.includes('אש') || element.includes('fire')) return 'fire';
   if (element.includes('אוויר') || element.includes('רוח') || element.includes('air')) return 'air';
   if (element.includes('מים') || element.includes('water')) return 'water';
@@ -672,8 +677,9 @@ export function diagnoseSpiritualInfluence(question = '', board = null) {
   ];
   const openingMatches = rawOpeningMatches.filter((m) => !m.inCriticalHouse);
   const genericScore = quickHouseScore(board) + (questionHits.length ? 2 : 0);
-  const isqatResult = applyIsqatSevenMethod(board, source);
-  const jinnTypeResult = applyJinnTypeMethod(board, source);
+  const isqatResult        = applyIsqatSevenMethod(board, source);
+  const jinnTypeResult      = applyJinnTypeMethod(board, source);
+  const organDiagnosisResult = applyOrganDiagnosisMethod(board, source);
 
   const grade = gradeFromMatches(specificMatches, openingMatches, genericScore);
   const crossReferenceNote = computeCrossReference(questionHits, isqatResult);
@@ -725,6 +731,7 @@ export function diagnoseSpiritualInfluence(question = '', board = null) {
     genericScore,
     isqatResult,
     jinnTypeResult,
+    organDiagnosisResult,
     crossReferenceNote,
     sihrDetails,
     grade,

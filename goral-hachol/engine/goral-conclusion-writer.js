@@ -2082,6 +2082,14 @@ function buildSpiritualNarrative(result) {
       dParts.push(`סוג הג׳ין (15×4 — לפי יסוד הדיין): ${jinn.hebrewText}`);
     }
 
+    if (organ?.hebrewText) {
+      dParts.push(`אבחון גופני (8×6 — לפי יסוד בית 6 ובית 8): ${organ.hebrewText}`);
+    }
+
+    if (sd.crossReferenceNote) {
+      dParts.push(sd.crossReferenceNote);
+    }
+
     if (dParts.length) push(dParts.join('\n'));
   }
 
@@ -2114,11 +2122,16 @@ function buildSpiritualNarrative(result) {
   // ── 9. DHAMIR ────────────────────────────────────────────────────
   push(dhamirParagraph(boardAnalysis, judgeVerdict));
 
-  // ── 10. SORCERER H9 — כיוון המכשף (PDF1 עמ' 56) ──────────────────
+  // ── 10. SORCERER H9 + SIHR DETAILS ───────────────────────────────
   {
     const ind = (s) => s.replace(/\n/g, '\n  ');
     const sorcererH9 = boardAnalysis.sorcererH9;
     if (sorcererH9) push(`כישוף — כיוון המכשף:\n  ${ind(sorcererH9.outputHebrew)}`);
+
+    // Richer sorcery detail from spiritual diagnostics engine
+    if (sd.sihrDetails?.length) {
+      push(`פרטי הכישוף (לפי כללי המקור):\n  ${ind(sd.sihrDetails.join('\n'))}`);
+    }
   }
 
   // ── 11. REMAINING MATCHES (not yet shown in spiritual houses) ────
