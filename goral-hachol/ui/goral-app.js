@@ -765,6 +765,7 @@ let _autoInterval = null;
 let _autoSpinIdx  = 0;
 let _autoChosen   = [null, null, null, null];
 let _autoSlot     = 0;
+let _autoMode     = 'goral';  // 'goral' | 'isqat'
 
 function _autoRenderGlyph() {
   document.getElementById('autoGlyph').innerHTML = glyphHtml(figures[_autoSpinIdx].lines);
@@ -779,7 +780,8 @@ function _autoRenderMiniSlots() {
   }).join('');
 }
 
-function _autoOpen() {
+function _autoOpen(mode) {
+  if (mode) _autoMode = mode;
   _autoChosen  = [null, null, null, null];
   _autoSlot    = 0;
   _autoSpinIdx = Math.floor(Math.random() * figures.length);
@@ -802,7 +804,7 @@ function _autoClose() {
   document.getElementById('autoSelectModal').style.display = 'none';
 }
 
-document.getElementById('autoBtn').addEventListener('click', _autoOpen);
+document.getElementById('autoBtn').addEventListener('click', () => _autoOpen('goral'));
 
 document.getElementById('autoStopBtn').addEventListener('click', () => {
   if (_autoSlot >= 4) return;
@@ -818,10 +820,19 @@ document.getElementById('autoStopBtn').addEventListener('click', () => {
 });
 
 document.getElementById('autoProceedBtn').addEventListener('click', () => {
-  selectedMothers = [..._autoChosen];
-  activeMother = 0;
   _autoClose();
-  runReading();
+  if (_autoMode === 'isqat') {
+    _isqatMothers    = [..._autoChosen];
+    _isqatActiveSlot = 0;
+    _isqatRenderSlots();
+    _isqatRenderGrid();
+    _isqatRun();
+  } else {
+    selectedMothers = [..._autoChosen];
+    activeMother = 0;
+    runReading();
+  }
+  _autoMode = 'goral';
 });
 
 document.getElementById('autoRestartBtn').addEventListener('click', () => {
@@ -991,10 +1002,141 @@ document.getElementById("menuJournalBtn").addEventListener("click", () => {
 document.getElementById("menuPrayerBtn").addEventListener("click", () => {
   closeMenu(); showScreen("prayer");
 });
+document.getElementById("menuIsqatBtn").addEventListener("click", () => {
+  closeMenu(); showScreen("isqat"); _isqatRenderSlots(); _isqatRenderGrid();
+});
 
 document.getElementById("backFromGuideBtn").addEventListener("click", () => showScreen("landing"));
 document.getElementById("backFromJournalBtn").addEventListener("click", () => showScreen("landing"));
 document.getElementById("backFromPrayerBtn").addEventListener("click", () => showScreen("landing"));
+document.getElementById("backFromIsqatBtn").addEventListener("click", () => showScreen("landing"));
+
+// ─── ספירת מפתוח 7×7 ───────────────────────────────────────────────────
+const ISQAT_RESULTS = {
+  1: { hebrew: 'אחיזת ג׳ין',        detail: 'אם נשאר 1 — הוא ממוסס/אחוז מן הג׳ין.',                            color: '#7b2fbe', isSpiritual: true  },
+  2: { hebrew: 'עין הרע / קנאה',    detail: 'אם נשאר 2 — הוא מקונא, נפגע ממבט, ונפגע עין.',                   color: '#c0392b', isSpiritual: true  },
+  3: { hebrew: 'כישוף (אדם עשה)',   detail: 'אם נשאר 3 — הוא מכושף מאדם, ויש פועל/עושה שפועל.',              color: '#8b0000', isSpiritual: true  },
+  4: { hebrew: 'מחלת ליחה (בלגם)',  detail: 'אם נשאר 4 — זו מחלת ליחה, מיוחסת למים.',                         color: '#2980b9', isSpiritual: false },
+  5: { hebrew: 'מחלת דם גופנית',   detail: 'אם נשאר 5 — זו מחלת דם גופנית, מיוחסת לאוויר.',                  color: '#e74c3c', isSpiritual: false },
+  6: { hebrew: 'מרה שחורה',         detail: 'אם נשאר 6 — זו מחלת מרה שחורה גופנית, מיוחסת לעפר.',            color: '#27ae60', isSpiritual: false },
+  7: { hebrew: 'מרה צהובה',         detail: 'אם נשאר 7 — זו מחלת מרה צהובה גופנית, מיוחסת לאש.',             color: '#e67e22', isSpiritual: false },
+};
+
+let _isqatMothers    = [null, null, null, null];
+let _isqatActiveSlot = 0;
+
+function _isqatRenderSlots() {
+  const container = document.getElementById('isqatSlots');
+  if (!container) return;
+  container.innerHTML = _isqatMothers.map((fig, i) => {
+    const isActive = i === _isqatActiveSlot;
+    const filled   = !!fig;
+    return `<div class="isqat-slot${filled ? ' filled' : ''}${isActive ? ' active' : ''}" data-slot="${i}">
+      ${filled ? glyphHtml(fig.lines) : ''}
+      <div class="isqat-slot-lbl">${filled ? fig.name : `אם ${i + 1}`}</div>
+    </div>`;
+  }).join('');
+  container.querySelectorAll('.isqat-slot').forEach(el => {
+    el.addEventListener('click', () => {
+      _isqatActiveSlot = Number(el.dataset.slot);
+      _isqatRenderSlots();
+      _isqatRenderGrid();
+    });
+  });
+  const runBtn = document.getElementById('isqatRunBtn');
+  if (runBtn) runBtn.disabled = _isqatMothers.some(m => !m);
+}
+
+function _isqatRenderGrid() {
+  const grid = document.getElementById('isqatGrid');
+  if (!grid) return;
+  const currentFig = _isqatMothers[_isqatActiveSlot];
+  grid.innerHTML = figures.map(fig => {
+    const isActive = currentFig?.key === fig.key;
+    return `<button type="button" class="isqat-fig-btn${isActive ? ' active-slot-fig' : ''}" data-key="${escapeHtml(fig.key)}">
+      ${glyphHtml(fig.lines)}
+    </button>`;
+  }).join('');
+  grid.querySelectorAll('.isqat-fig-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const fig = figures.find(f => f.key === btn.dataset.key);
+      if (!fig) return;
+      _isqatMothers[_isqatActiveSlot] = fig;
+      // קדם לחריץ הריק הבא
+      let next = _isqatMothers.findIndex((m, i) => !m && i > _isqatActiveSlot);
+      if (next === -1) next = _isqatMothers.findIndex(m => !m);
+      if (next !== -1) _isqatActiveSlot = next;
+      _isqatRenderSlots();
+      _isqatRenderGrid();
+    });
+  });
+}
+
+function _isqatRun() {
+  if (_isqatMothers.some(m => !m)) return;
+  if (typeof window.ramlRunReading !== 'function') {
+    const res = document.getElementById('isqatResult');
+    res.innerHTML = '<p style="color:#e74c3c">מנוע הגורל טרם נטען — נסה שוב בעוד רגע.</p>';
+    res.style.display = '';
+    return;
+  }
+  const mothers  = _isqatMothers.map(m => m.lines);
+  const reading  = window.ramlRunReading('', mothers);
+  const chart    = reading.chart || reading.entries || [];
+
+  // ספירת כל ה-1 ב-16 הצורות
+  let openCount = 0;
+  for (const house of chart) {
+    const key = String(house.key || '');
+    for (const ch of key) { if (ch === '1') openCount++; }
+  }
+  const remainder = ((openCount - 1) % 7) + 1;
+  const res       = ISQAT_RESULTS[remainder] || ISQAT_RESULTS[1];
+  const typeLabel = res.isSpiritual ? 'פגיעה רוחנית' : 'מחלה גופנית';
+
+  // תצוגת 16 הצורות הנגזרות
+  const derivedHtml = chart.map(h => `
+    <div style="text-align:center">
+      ${glyphHtml(String(h.key || '1111').split('').map(Number))}
+      <div style="font-size:9px;color:#607a94;margin-top:2px">${h.house}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('isqatResult').innerHTML = `
+    <div class="isqat-result-box">
+      <div style="text-align:center;margin-bottom:18px">
+        <div style="font-size:12px;color:#7ea8d0;margin-bottom:4px">נקודות פתוחות ב-16 הצורות</div>
+        <div style="font-size:54px;font-weight:900;color:#f0c040;line-height:1">${openCount}</div>
+        <div style="font-size:13px;color:#8eaac8;margin-top:6px">
+          ${openCount} ÷ 7 = שאר <strong style="color:#fff;font-size:18px">${remainder}</strong>
+        </div>
+      </div>
+      <div style="background:${res.color}22;border:2px solid ${res.color};border-radius:10px;padding:16px;text-align:center;margin-bottom:18px">
+        <div style="font-size:11px;color:${res.isSpiritual ? '#c39bd3' : '#7fb3d3'};margin-bottom:6px;letter-spacing:1px">${typeLabel}</div>
+        <div style="font-size:24px;font-weight:900;color:#fff">${escapeHtml(res.hebrew)}</div>
+        <div style="font-size:14px;color:#bcd;margin-top:10px;line-height:1.6">${escapeHtml(res.detail)}</div>
+      </div>
+      <div>
+        <div style="font-size:11px;color:#607a94;margin-bottom:6px;text-align:center">16 הצורות שנגזרו:</div>
+        <div class="isqat-derived-grid">${derivedHtml}</div>
+      </div>
+    </div>`;
+  document.getElementById('isqatResult').style.display = '';
+}
+
+document.getElementById('isqatAutoBtn').addEventListener('click', () => {
+  _autoMode = 'isqat';
+  _autoOpen();
+});
+document.getElementById('isqatClearBtn').addEventListener('click', () => {
+  _isqatMothers    = [null, null, null, null];
+  _isqatActiveSlot = 0;
+  const res = document.getElementById('isqatResult');
+  if (res) res.style.display = 'none';
+  _isqatRenderSlots();
+  _isqatRenderGrid();
+});
+document.getElementById('isqatRunBtn').addEventListener('click', _isqatRun);
 
 
 // ─── Guide Tab Logic ──────────────────────────────────────────

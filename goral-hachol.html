@@ -1144,6 +1144,44 @@
     .auto-proceed-row .btn { flex:1; font-size:16px; padding:13px; }
     .auto-close-btn { margin-top:12px; width:100%; font-size:16px; padding:13px; }
     .auto-slot-label { font-size:12px; color:#999; }
+
+    /* ─── ספירת מפתוח 7×7 ─── */
+    .isqat-desc { font-size:14px; color:#8eaac8; line-height:1.7; margin-bottom:18px; text-align:right; }
+    .isqat-slot-row { display:flex; justify-content:center; gap:10px; margin:18px 0 6px; }
+    .isqat-slot {
+      width:66px; height:96px; border:2px solid #1a3a5c; border-radius:8px;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      cursor:pointer; background:#060f1e; transition: border-color .15s, box-shadow .15s;
+    }
+    .isqat-slot.active  { border-color:#f0c040; box-shadow:0 0 8px #f0c04066; }
+    .isqat-slot.filled  { border-color:#2d8a44; }
+    .isqat-slot .isqat-slot-lbl { font-size:11px; color:#607a94; margin-top:4px; }
+    .isqat-slot .glyph  { width:38px; grid-template-rows:repeat(4,8px); gap:5px; }
+    .isqat-slot .glyph .one { width:7px; height:7px; }
+    .isqat-slot .glyph .two { width:28px; height:5px; }
+    .isqat-grid {
+      display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:10px 0 18px;
+    }
+    .isqat-fig-btn {
+      border:2px solid #1a3a5c; border-radius:8px; padding:8px 4px;
+      background:#060f1e; cursor:pointer; display:flex; align-items:center; justify-content:center;
+      transition: border-color .12s;
+    }
+    .isqat-fig-btn:hover  { border-color:#f0c040; }
+    .isqat-fig-btn.active-slot-fig { border-color:#f0c04088; }
+    .isqat-fig-btn .glyph { width:36px; grid-template-rows:repeat(4,8px); gap:4px; }
+    .isqat-fig-btn .glyph .one { width:6px; height:6px; }
+    .isqat-fig-btn .glyph .two { width:26px; height:5px; }
+    .isqat-result-box {
+      border:2px solid #f0c040; border-radius:12px; padding:20px;
+      margin-top:18px; background:#060f1e; direction:rtl;
+    }
+    .isqat-derived-grid {
+      display:grid; grid-template-columns:repeat(8,1fr); gap:4px; margin-top:10px;
+    }
+    .isqat-derived-grid .glyph { width:28px; grid-template-rows:repeat(4,6px); gap:3px; }
+    .isqat-derived-grid .glyph .one { width:5px; height:5px; }
+    .isqat-derived-grid .glyph .two { width:20px; height:4px; }
   </style>
 </head>
 
@@ -1173,6 +1211,9 @@
         </button>
         <button class="menu-item" id="menuGuideBtn">
           <span class="menu-item-icon">📖</span>מבוא
+        </button>
+        <button class="menu-item" id="menuIsqatBtn">
+          <span class="menu-item-icon">✦</span>ספירת מפתוח 7×7
         </button>
       </nav>
     </div>
@@ -1357,6 +1398,31 @@
         <!-- ארכיון קריאות -->
         <h3 style="margin:0 0 10px;font-size:1rem">📋 ארכיון קריאות</h3>
         <div id="journalList"></div>
+      </div>
+    </section>
+
+    <!-- ─── ספירת מפתוח 7×7 ─────────────────────────────── -->
+    <section id="screen-isqat" class="screen">
+      <div class="panel">
+        <div class="screen-back-bar">
+          <button class="btn gray" id="backFromIsqatBtn">← חזרה</button>
+          <h2 style="margin:0">ספירת מפתוח — שיטת 7×7</h2>
+        </div>
+        <p class="isqat-desc">
+          בחר 4 צורות (אמהות) ידנית — לחץ על בית ואז בחר צורה — או לחץ "אוטומטי".
+          האפליקציה תגזור 16 צורות, תספור את כל הנקודות הפתוחות ותחשב את השארית מחלוקה ב-7.
+        </p>
+
+        <div id="isqatSlots" class="isqat-slot-row"></div>
+        <div id="isqatGrid" class="isqat-grid"></div>
+
+        <div class="actions" style="margin-top:4px; gap:10px; flex-wrap:wrap;">
+          <button class="btn gray" id="isqatAutoBtn">🎲 אוטומטי</button>
+          <button class="btn gray" id="isqatClearBtn">נקה</button>
+          <button class="btn primary" id="isqatRunBtn" disabled>חשב תוצאה</button>
+        </div>
+
+        <div id="isqatResult" style="display:none"></div>
       </div>
     </section>
 
