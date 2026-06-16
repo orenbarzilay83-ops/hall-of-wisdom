@@ -1874,6 +1874,30 @@ function buildNarrativeByTopic(result) {
 
     const debts = boardAnalysis.debts;
     if (debts) push(`חובות:\n  ${ind(debts.outputHebrew)}`);
+
+    const illnessTypeIsqat = boardAnalysis.illnessTypeIsqat;
+    if (illnessTypeIsqat) push(`סוג המחלה (אסקאט×7):\n  ${ind(illnessTypeIsqat.outputHebrew)}`);
+
+    const illnessCauseH4 = boardAnalysis.illnessCauseH4;
+    if (illnessCauseH4) push(`סיבת המחלה:\n  ${ind(illnessCauseH4.outputHebrew)}`);
+
+    const sorcererH9 = boardAnalysis.sorcererH9;
+    if (sorcererH9) push(`כישוף — כיוון המכשף:\n  ${ind(sorcererH9.outputHebrew)}`);
+
+    const diggingDirection = boardAnalysis.diggingDirection;
+    if (diggingDirection) push(`כיוון לחפירה/חיפוש:\n  ${ind(diggingDirection.outputHebrew)}`);
+
+    const hiddenTreasureH2 = boardAnalysis.hiddenTreasureH2;
+    if (hiddenTreasureH2) push(`מטמון / כנוז תת-קרקעי:\n  ${ind(hiddenTreasureH2.outputHebrew)}`);
+
+    const h4Secrets = boardAnalysis.h4Secrets;
+    if (h4Secrets) push(`נסתרות וסודות:\n  ${ind(h4Secrets.outputHebrew)}`);
+
+    const h3Topics = boardAnalysis.h3Topics;
+    if (h3Topics) push(`בית 3 — תנועה / חלום / מסרים:\n  ${ind(h3Topics.outputHebrew)}`);
+
+    const celebrationsH5 = boardAnalysis.celebrationsH5;
+    if (celebrationsH5) push(`שמחות ואירועים:\n  ${ind(celebrationsH5.outputHebrew)}`);
   }
 
   return paras.length ? paras.join('\n\n') : null;
@@ -2091,7 +2115,14 @@ function buildSpiritualNarrative(result) {
   // ── 9. DHAMIR ────────────────────────────────────────────────────
   push(dhamirParagraph(boardAnalysis, judgeVerdict));
 
-  // ── 10. REMAINING MATCHES (not yet shown in spiritual houses) ────
+  // ── 10. SORCERER H9 — כיוון המכשף (PDF1 עמ' 56) ──────────────────
+  {
+    const ind = (s) => s.replace(/\n/g, '\n  ');
+    const sorcererH9 = boardAnalysis.sorcererH9;
+    if (sorcererH9) push(`כישוף — כיוון המכשף:\n  ${ind(sorcererH9.outputHebrew)}`);
+  }
+
+  // ── 11. REMAINING MATCHES (not yet shown in spiritual houses) ────
   const SPIRITUAL_HOUSE_NUMS = new Set([4, 6, 8, 9, 12]);
   const remainingMatches = allMatches.filter((m) => {
     if (SPIRITUAL_HOUSE_NUMS.has(Number(m.house))) return false;
