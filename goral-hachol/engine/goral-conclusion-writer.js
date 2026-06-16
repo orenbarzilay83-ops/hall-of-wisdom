@@ -2072,7 +2072,7 @@ function buildSpiritualNarrative(result) {
     const organ  = sd.organDiagnosisResult;
     const dParts = [];
 
-    if (isqat?.hebrewText) {
+    if (isqat?.hebrewText && isqat.isSpiritual !== false) {
       dParts.push(
         `ספירת הנקודות הפתוחות בלוח (שיטת 7×7): ${isqat.openCount} נקודות — שאר ${isqat.remainder}.\n${isqat.hebrewText}`
       );

@@ -296,7 +296,7 @@ function buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, j
     base += '\n' + details.join('\n');
   }
 
-  if (isqatResult?.hebrewText) {
+  if (isqatResult?.hebrewText && isqatResult.isSpiritual !== false) {
     base += '\nספירת מפתוח 7×7: ' + isqatResult.hebrewText;
   }
 
@@ -569,12 +569,14 @@ function applyIsqatSevenMethod(board, source) {
 
   const results = asArray(source?.isqatSevenRules?.results);
   const match = results.find((r) => Number(r.remainder) === remainder);
+  const isqatInfo = ISQAT_REMAINDER_MAP[remainder];
 
   return {
     openCount,
     remainder,
-    diagnosis: match?.diagnosis || null,
-    hebrewText: match?.hebrew || null,
+    diagnosis:   match?.diagnosis || null,
+    hebrewText:  match?.hebrew || null,
+    isSpiritual: isqatInfo?.isSpiritual ?? true,
   };
 }
 

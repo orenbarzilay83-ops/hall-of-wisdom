@@ -33,11 +33,11 @@ export const RAML_SPIRITUAL_DIAGNOSTICS_SIHR_MASS_HASAD = {
     },
     kahana: {
       arabic: "الكهانة",
- hebrew: "כהאנה / חיזוי"
+ hebrew: "חיזוי / ניבוי"
     },
     arrafah: {
       arabic: "العرافة",
- hebrew: "עראפה / ידיעת נסתרות"
+ hebrew: "ידיעת נסתרות / ניחוש"
     },
     shudhudha: {
       arabic: "الشعوذة",
@@ -84,11 +84,11 @@ export const RAML_SPIRITUAL_DIAGNOSTICS_SIHR_MASS_HASAD = {
       ],
       hebrewTranslation: [
  "צורת חיבור מורה על מכשף רע ופגום.",
- "בית 9 ברמל מורה על מכשפים, שייח׳ים/אנשי רוח, רוחניים, ועל העוסקים בענייני כישוף, ג׳ין, עראפה, כהאנה ושעוודה."
+ "בית 9 ברמל מורה על מכשפים, שייח׳ים/אנשי רוח, רוחניים, ועל העוסקים בענייני כישוף, ג׳ין, ניחוש, ניבוי וכשפים עממיים."
       ],
       figures: ["الاجتماع"],
       houses: [9],
- topics: ["מכשף רע", "כישוף", "ג׳ין", "ידיעת נסתרות", "כהאנה", "שעוודה", "בית 9"],
+ topics: ["מכשף רע", "כישוף", "ג׳ין", "ידיעת נסתרות", "ניבוי", "כשפים", "בית 9"],
       sourceReview: "some-arabic-wording-needs-photo-review",
       status: "explicit-in-user-approved-screenshot"
     }
