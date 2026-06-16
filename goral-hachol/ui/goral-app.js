@@ -479,11 +479,18 @@ function buildInterpretationHtml(reading) {
     const verdictText = gradeMap[spiritual.grade] || spiritual.grade;
     const vClass = spiritual.grade === "strong-suspicion" ? "verdict-yes" :
                    spiritual.grade === "mostly-clear" ? "verdict-no" : "verdict-maybe";
+    // Build evidence lines: skip first line (it repeats the verdict-answer) and convert \n → <br>
+    const evidenceHtml = (spiritual.finalHebrew || '')
+      .split('\n')
+      .filter(Boolean)
+      .slice(1)
+      .map(l => escapeHtml(l))
+      .join('<br/>');
     shortVerdictHtml = `
       <div class="verdict-box ${vClass}">
         <div class="verdict-label">תשובה לשאלה</div>
         <div class="verdict-answer">${escapeHtml(verdictText)}</div>
-        <div class="verdict-detail">${escapeHtml(spiritual.finalHebrew || "")}</div>
+        ${evidenceHtml ? `<div class="verdict-detail" style="margin-top:10px;font-size:13px;line-height:1.8;text-align:right;">${evidenceHtml}</div>` : ''}
       </div>`;
 
   } else if (insight.shortClientVerdict) {
@@ -538,9 +545,9 @@ function buildInterpretationHtml(reading) {
     .replace(/\n\n/g, '</p><p style="margin-top:14px;">')
     .replace(/\n/g, '<br/>');
 
-  // Source citations block
+  // Source citations block — not shown for spiritual diagnostics (full evidence already in verdict-detail + conclusion)
   let sourcesHtml = "";
-  if (rules.length > 0) {
+  if (rules.length > 0 && !isSpiritualTopic) {
     const ruleItems = rules
       .filter(r => r.hebrew || r.result)
       .slice(0, 8)
@@ -557,9 +564,14 @@ function buildInterpretationHtml(reading) {
       </div>`;
   }
 
+  const detailsPanelLabel = isSpiritualTopic
+    ? `<div style="font-weight:700;font-size:13px;color:#5a3e00;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #e0c860;">🔍 ניתוח רוחני מפורט</div>`
+    : `<div style="font-weight:700;font-size:13px;color:#1a3a5c;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #c8d8f0;">📋 מסקנת הרישום</div>`;
+
   const detailsContent = `
     <div class="details-panel">
-      <div class="summary-box">
+      <div class="summary-box" style="padding-top:14px;">
+        ${detailsPanelLabel}
         <p>${conclusionFormatted}</p>
       </div>
       ${spiritualDetailHtml}
