@@ -323,7 +323,9 @@ function houseHtml(h, label, isDhamir, isNatural) {
 
 function buildBoardHtml(reading) {
   const h = n => reading.chart.find(x => Number(x.house) === Number(n));
-  const dhamirHouseNum = reading._precomputedInsight?.boardAnalysis?.dhamirHouse?.houseNumber ?? null;
+  const dhamirHouseNum = reading._precomputedInsight?.boardAnalysis?.dhamirByMizan?.primaryHouseNumber
+    ?? reading._precomputedInsight?.boardAnalysis?.dhamirHouse?.houseNumber
+    ?? null;
 
   const d = n => n === dhamirHouseNum;
   const nat = n => {
@@ -409,7 +411,7 @@ function buildInterpretationHtml(reading) {
   if (boardScoreData && boardScoreData.isComplete) {
     boardInfoHtml += `<div class="board-info-row board-score-ok">📊 ${escapeHtml(boardScoreData.hebrewSummary)}</div>`;
   }
-  if (dhamirMizanData && dhamirMizanData.traces && dhamirMizanData.traces.length > 0 && isSpiritualTopic) {
+  if (dhamirMizanData && dhamirMizanData.traces && dhamirMizanData.traces.length > 0) {
     const traceText = dhamirMizanData.traces.map(t =>
       `שורת ${escapeHtml(t.rowElement)} → בית ${t.dhamirHouseNumber} (${escapeHtml(t.dhamirHebrew)}${t.dhamirFortune ? ', ' + hebrewTermsSimple(t.dhamirFortune) : ''})`
     ).join(' | ');
