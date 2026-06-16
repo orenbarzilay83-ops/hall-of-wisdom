@@ -3700,6 +3700,16 @@ const FIGURE_HEBREW_G = {
   '2211':'כבוד נכנס','2212':'לבן','2221':'שפל ראש','2222':'קהלה',
 };
 
+// יסודות הצורות — מקור: כשף אל-אסרר עמ' 43-67
+const FIGURE_ELEMENT_MAP_G = {
+  '1112':'אש','1122':'אש','1212':'אש','1222':'אש',
+  '1121':'אוויר','2111':'אוויר','2112':'אוויר','2122':'אוויר',
+  '1111':'מים','1211':'מים','2211':'מים','2212':'מים',
+  '1221':'עפר','2121':'עפר','2221':'עפר','2222':'עפר',
+};
+// ערכי יסוד לשיטת ח׳לף הברברי (אבג׳ד): אש=1, אוויר=2, מים=4, עפר=8
+const ELEMENT_ABJAD_VALUES = { 'אש':1, 'אוויר':2, 'מים':4, 'עפר':8 };
+
 // ── 1. computeDreamH9 — חלום (כשף עמ' 254) ──────────────────────────────────
 function computeDreamH9(chart) {
   if (!Array.isArray(chart) || chart.length < 16) return null;
@@ -4035,6 +4045,108 @@ function computeParnasaLivelihood(chart) {
   };
 }
 
+// ── 9. computePregnancyMonths — כמה חודשים הריון (חאוי עמ' 43, שיטת ח׳לף הברברי) ─
+function computePregnancyMonths(chart) {
+  if (!Array.isArray(chart) || chart.length < 16) return null;
+  const getH = (n) => chart.find((h) => Number(h.house) === n);
+  const h5  = getH(5);
+  const h6  = getH(6);
+  const h11 = getH(11);
+  if (!h5?.key || !h6?.key || !h11?.key) return null;
+
+  let total = 0;
+  const details = [];
+  for (const [label, h] of [['ב5', h5], ['ב6', h6], ['ב11', h11]]) {
+    const pattern = h.key;
+    const element = FIGURE_ELEMENT_MAP_G[pattern] || null;
+    if (!element) continue;
+    const elemVal  = ELEMENT_ABJAD_VALUES[element] || 0;
+    const oddCount = pattern.split('').filter((c) => c === '1').length;
+    const contrib  = oddCount * elemVal;
+    total += contrib;
+    const figHebrew = FIGURE_HEBREW_G[pattern] || pattern;
+    details.push(`${label} ${figHebrew} (${element}=${elemVal}) × ${oddCount} = ${contrib}`);
+  }
+  let months = total;
+  while (months > 9) months -= 9;
+  if (months === 0) months = 9;
+  return {
+    months,
+    total,
+    details,
+    outputHebrew: `חודשי הריון: ${details.join(', ')} → סה״כ ${total} → ${months} חודשים עברו מן ההריון`,
+  };
+}
+
+// ── 10. computePrisonerGuilty — מי גרם לכליאה (القول الجامع עמ' 55) ─────────
+function computePrisonerGuilty(chart) {
+  if (!Array.isArray(chart) || chart.length < 16) return null;
+  const getH = (n) => chart.find((h) => Number(h.house) === n);
+  const h1  = getH(1);
+  const h5  = getH(5);
+  const h6  = getH(6);
+  const h7  = getH(7);
+  const h11 = getH(11);
+  if (!h1?.key || !h7?.key) return null;
+
+  // כלל 12 (PDF1 עמ' 55): המתסבב בסגנה מג'נס ד'רב 1×7
+  const derivedPattern = deriveFigureG(h1.key, h7.key);
+  const derivedHebrew  = derivedPattern ? (FIGURE_HEBREW_G[derivedPattern] || derivedPattern) : '—';
+  const element        = derivedPattern ? (FIGURE_ELEMENT_MAP_G[derivedPattern] || null) : null;
+  const isMale         = element === 'אש' || element === 'אוויר';
+  const causeGender    = element ? (isMale ? 'זכר' : 'נקבה') : null;
+  const h1Hebrew = FIGURE_HEBREW_G[h1.key] || h1.key;
+  const h7Hebrew = FIGURE_HEBREW_G[h7.key] || h7.key;
+  const lines = [];
+  if (derivedPattern) {
+    lines.push(`ב1 (${h1Hebrew}) × ב7 (${h7Hebrew}) → ${derivedHebrew}: המסבב את הכליאה מהמין ${causeGender || '—'}`);
+  }
+  // כלל 11: תם-האסיר לפי ב11 מול ב5/ב6
+  if (h11?.key && h5?.key && h6?.key) {
+    if (h11.key === h5.key) {
+      lines.push(`ב11 ≡ ב5 (${FIGURE_HEBREW_G[h11.key] || h11.key}) — האסיר חף מפשע`);
+    } else if (h11.key === h6.key) {
+      lines.push(`ב11 ≡ ב6 (${FIGURE_HEBREW_G[h11.key] || h11.key}) — האסיר חשוד ואשם`);
+    }
+  }
+  return {
+    derivedPattern,
+    derivedHebrew,
+    causeGender,
+    outputHebrew: lines.join('\n'),
+  };
+}
+
+// ── 11. computeDebts — חובות (القول الجامع עמ' 25) ──────────────────────────
+function computeDebts(chart) {
+  if (!Array.isArray(chart) || chart.length < 16) return null;
+  const getH = (n) => chart.find((h) => Number(h.house) === n);
+  const h2  = getH(2);
+  const h12 = getH(12);
+  if (!h12?.key) return null;
+  const h12Hebrew = FIGURE_HEBREW_G[h12.key] || h12.key;
+  const lines = [];
+  if (isBeneficG(h12)) {
+    lines.push(`ב12 סעד (${h12Hebrew}) — בית החובות מורה על קלות: החוב ניתן לפירעון`);
+  } else if (isMaleficG(h12)) {
+    lines.push(`ב12 נחס (${h12Hebrew}) — בית החובות מורה על כבדות: החוב כבד, פירעון קשה`);
+  } else {
+    lines.push(`ב12 ממוזג (${h12Hebrew}) — מצב החוב אינו חד-משמעי`);
+  }
+  if (h2?.key) {
+    const h2Hebrew = FIGURE_HEBREW_G[h2.key] || h2.key;
+    if (isBeneficG(h2)) {
+      lines.push(`ב2 סעד (${h2Hebrew}) — יש אמצעים לפירעון החוב`);
+    } else if (isMaleficG(h2)) {
+      lines.push(`ב2 נחס (${h2Hebrew}) — אמצעי הפירעון מוגבלים`);
+    }
+  }
+  return {
+    h12Fortune: h12.fortune || '',
+    outputHebrew: lines.join('\n'),
+  };
+}
+
 function buildBoardAnalysis(board, topicId, mainHouses) {
   if (!board || !Array.isArray(board.chart)) {
     return {
@@ -4222,6 +4334,15 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const parnasaLivelihood = (['commerce', 'generalReading', 'yearlyForecast'].includes(topicId))
     ? computeParnasaLivelihood(board.chart) : null;
 
+  const pregnancyMonths = (topicId === 'childrenPregnancy')
+    ? computePregnancyMonths(board.chart) : null;
+
+  const prisonerGuilty = (topicId === 'prisoner')
+    ? computePrisonerGuilty(board.chart) : null;
+
+  const debts = (topicId === 'loan')
+    ? computeDebts(board.chart) : null;
+
   const jumlaAnalysis = (['spiritualDiagnostics', 'illness', 'childrenPregnancy', 'partnership'].includes(topicId))
     ? computeJumlaAnalysis(board.chart, topicId) : null;
 
@@ -4396,6 +4517,9 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     prisonerReleaseCheck,
     fatherParentStatus,
     parnasaLivelihood,
+    pregnancyMonths,
+    prisonerGuilty,
+    debts,
   };
 }
 

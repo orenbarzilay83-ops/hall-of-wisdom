@@ -1865,6 +1865,15 @@ function buildNarrativeByTopic(result) {
 
     const parnasaLivelihood = boardAnalysis.parnasaLivelihood;
     if (parnasaLivelihood) push(`פרנסה ומחיה:\n  ${ind(parnasaLivelihood.outputHebrew)}`);
+
+    const pregnancyMonths = boardAnalysis.pregnancyMonths;
+    if (pregnancyMonths) push(`חודשי הריון:\n  ${sc(pregnancyMonths.outputHebrew)}`);
+
+    const prisonerGuilty = boardAnalysis.prisonerGuilty;
+    if (prisonerGuilty?.outputHebrew) push(`מי גרם לכליאה:\n  ${ind(prisonerGuilty.outputHebrew)}`);
+
+    const debts = boardAnalysis.debts;
+    if (debts) push(`חובות:\n  ${ind(debts.outputHebrew)}`);
   }
 
   return paras.length ? paras.join('\n\n') : null;
