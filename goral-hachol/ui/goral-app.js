@@ -431,6 +431,20 @@ function buildInterpretationHtml(reading) {
   if (sodHaDhamirimData) {
     boardInfoHtml += `<div class="board-info-row board-sod-dhamirim">⭐ ${escapeHtml(sodHaDhamirimData.outputHebrew)} — (${escapeHtml(sodHaDhamirimData.sourceRef)})</div>`;
   }
+  const honestyData = insight.boardAnalysis?.querentHonestyCheck || null;
+  if (honestyData) {
+    const cls = honestyData.isHonest ? 'board-honesty-ok' : 'board-honesty-warn';
+    const icon = honestyData.isHonest ? '✅' : '⚠️';
+    boardInfoHtml += `<div class="board-info-row ${cls}">${icon} ${escapeHtml(honestyData.outputHebrew)} — (${escapeHtml(honestyData.sourceRef)})</div>`;
+  }
+  const timingThirdsData = insight.boardAnalysis?.timingByDhamirThirds || null;
+  if (timingThirdsData) {
+    boardInfoHtml += `<div class="board-info-row board-timing-thirds">⏱ ${escapeHtml(timingThirdsData.outputHebrew)} — (${escapeHtml(timingThirdsData.sourceRef)})</div>`;
+  }
+  const temperamentData = insight.boardAnalysis?.querentTemperament || null;
+  if (temperamentData) {
+    boardInfoHtml += `<div class="board-info-row board-temperament">🌡 ${escapeHtml(temperamentData.outputHebrew)} — (${escapeHtml(temperamentData.sourceRef)})</div>`;
+  }
 
   const topicId = insight.topicId || "";
 
