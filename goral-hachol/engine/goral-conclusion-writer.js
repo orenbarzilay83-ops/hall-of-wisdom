@@ -1692,17 +1692,67 @@ function buildNarrativeByTopic(result) {
   }
 
   // ── 5. ADDITIONAL MAIN HOUSES ────────────────────────────────────
-  // עבור foundations — רק בתים מרכזיים (4, 7, 10), ללא העמסת כל 12 הבתים
-  const GENERAL_KEY_HOUSES = new Set([4, 7, 10]);
   const skipNums = new Set([1, 13, 14, 15, 16, Number(focusNum)].filter(Boolean));
   const addHouses = (boardAnalysis.houses || []).filter((h) => {
     const n = Number(h.house);
     if (skipNums.has(n)) return false;
-    if (topicId === 'foundations') return GENERAL_KEY_HOUSES.has(n);
     return true;
   });
 
-  if (addHouses.length) {
+  // ── 5.5. FOUNDATIONS — מסקנה כוללת מלאה (כל תחומי החיים) ────────
+  if (topicId === 'foundations') {
+    const LIFE_AREAS = [
+      { num: 2,  label: 'ממון ורכוש'         },
+      { num: 3,  label: 'אחים וקרובים'        },
+      { num: 4,  label: 'בית, קרקע ואב'       },
+      { num: 5,  label: 'ילדים ויצירה'        },
+      { num: 6,  label: 'בריאות ועבודה'       },
+      { num: 7,  label: 'זוגיות ושותפויות'    },
+      { num: 8,  label: 'ירושה ומוות'         },
+      { num: 9,  label: 'דת, מסע ומזל'        },
+      { num: 10, label: 'קריירה וסמכות'       },
+      { num: 11, label: 'תקוות וחברים'        },
+      { num: 12, label: 'אויבים נסתרים ועיכובים' },
+    ];
+
+    const areaLines = [];
+    for (const area of LIFE_AREAS) {
+      const h = (boardAnalysis.houses || []).find((x) => Number(x.house) === area.num);
+      if (!h) continue;
+      const fig = hFig(h), fort = hFort(h), transit = hTransit(h), speak = speakNote(h);
+      if (!fig && !fort) continue;
+
+      const toneVal = hTone(h);
+      const toneTag = toneVal > 0 ? '✦' : toneVal < 0 ? '✗' : '◇';
+      let line = `${toneTag} ${area.label} (בית ${area.num}): ${fig}${hHazz(h)}${fort ? ` — ${fort}` : ''}`;
+      if (speak) line += ` [${speak}]`;
+      if (transit) line += `.\n   ${transit}`;
+      areaLines.push(line);
+    }
+
+    if (areaLines.length) {
+      const nameLabel = name ? `${name} — ` : '';
+      push(`${nameLabel}סקירת מצב כללית לפי בתי הלוח:\n${areaLines.join('\n')}`);
+    }
+
+    // סיכום כיווני מהיר
+    const positiveAreas = [], negativeAreas = [], mixedAreas = [];
+    for (const area of LIFE_AREAS) {
+      const h = (boardAnalysis.houses || []).find((x) => Number(x.house) === area.num);
+      if (!h) continue;
+      const t = hTone(h);
+      if (t > 0) positiveAreas.push(area.label);
+      else if (t < 0) negativeAreas.push(area.label);
+      else mixedAreas.push(area.label);
+    }
+    const summaryParts = [];
+    if (positiveAreas.length) summaryParts.push(`תחומים חיוביים: ${positiveAreas.join(', ')}`);
+    if (negativeAreas.length) summaryParts.push(`תחומים מאתגרים: ${negativeAreas.join(', ')}`);
+    if (mixedAreas.length)    summaryParts.push(`תחומים מעורבים: ${mixedAreas.join(', ')}`);
+    if (summaryParts.length) push(summaryParts.join(' | '));
+  }
+
+  if (topicId !== 'foundations' && addHouses.length) {
     const addLines = [];
     for (const h of addHouses) {
       const fig = hFig(h), fort = hFort(h), transit = hTransit(h), speak = speakNote(h);
