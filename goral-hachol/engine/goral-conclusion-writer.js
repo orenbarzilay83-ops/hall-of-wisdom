@@ -1793,15 +1793,17 @@ function buildNarrativeByTopic(result) {
   // ── 11. תובנה מספר הכשף שער שישי (Task 10) ──────────────────────
   const kbi = boardAnalysis.kashfBookInsight;
   if (kbi?.firstExcerpt) {
-    const CHAPTER_HEADING = /^(?:פרק|סיום פרק|הפרק|נכּתה|מֻלְתַּקַּט|אחכאם|"רג'ע|> |רג'ע|الفصل)/;
+    const SKIP_LINE = /^(?:פרק|סיום פרק|הפרק|נכּתה|מֻלְתַּקַּט|אחכאם|"רג'ע|> |רג'ע|الفصل|הפסקה|שאלה:|##|—\s|פסקה כוללת|\*\*שאלה)/;
     const excerptLines = kbi.firstExcerpt.split('\n').filter((ln) => {
       const t = ln.trim();
       if (!t) return false;
       if (t.startsWith('[')) return false;
       if (t.startsWith('מקור —')) return false;
-      if (CHAPTER_HEADING.test(t)) return false;                               // כותרות פרק ותעתיקי ערבית
+      if (SKIP_LINE.test(t)) return false;
       if (/^[؀-ۿ\s().,،:؛؟!]+$/.test(t)) return false;
       if ((t.match(/[؀-ۿ]/g) || []).length / t.length > 0.35) return false;
+      if (t.startsWith('*') && t.endsWith('*')) return false;           // שורות הדגשה של כותרות ספר
+      if (t.startsWith('"') && t.length > 15) return false;             // ציטוטי ספר ישירים
       return true;
     });
     const cleanExcerpt = scText(excerptLines.join('\n')).trim();
@@ -1809,114 +1811,150 @@ function buildNarrativeByTopic(result) {
   }
 
   // ── 12. ניתוחים נושאיים (Task 15) ──────────────────────────────
+  // כל שדה מוצג רק אם הנושא רלוונטי — מניעת הצפת מסקנות כלליות בנתונים נושאיים
   {
     const sc  = scText;
     const ind = (s) => scText(s).replace(/\n/g, '\n  ');
+    const is  = (...topics) => topics.includes(topicId);
 
-    const bodyPartDiag = boardAnalysis.bodyPartDiagnosis;
-    if (bodyPartDiag) push(`מיקום המחלה בגוף:\n  ${sc(bodyPartDiag.outputHebrew)}`);
+    if (is('illness','deathInheritance')) {
+      const bodyPartDiag = boardAnalysis.bodyPartDiagnosis;
+      if (bodyPartDiag) push(`מיקום המחלה בגוף:\n  ${sc(bodyPartDiag.outputHebrew)}`);
+    }
 
-    const thiefGenderAge = boardAnalysis.thiefGenderAge;
-    if (thiefGenderAge) push(`מין הגנב וגילו:\n  ${sc(thiefGenderAge.outputHebrew)}`);
+    if (is('theft')) {
+      const thiefGenderAge = boardAnalysis.thiefGenderAge;
+      if (thiefGenderAge) push(`מין הגנב וגילו:\n  ${sc(thiefGenderAge.outputHebrew)}`);
 
-    const thiefAge = boardAnalysis.thiefAge;
-    if (thiefAge) push(`גיל הגנב:\n  ${sc(thiefAge.outputHebrew)}`);
+      const thiefAge = boardAnalysis.thiefAge;
+      if (thiefAge) push(`גיל הגנב:\n  ${sc(thiefAge.outputHebrew)}`);
 
-    const thiefProximity = boardAnalysis.thiefProximity;
-    if (thiefProximity) push(`קרבת הגנב:\n  ${ind(thiefProximity.outputHebrew)}`);
+      const thiefProximity = boardAnalysis.thiefProximity;
+      if (thiefProximity) push(`קרבת הגנב:\n  ${ind(thiefProximity.outputHebrew)}`);
 
-    const stolenItemReturn = boardAnalysis.stolenItemReturn;
-    if (stolenItemReturn) push(`האם הגנוב יוחזר:\n  ${ind(stolenItemReturn.outputHebrew)}`);
+      const stolenItemReturn = boardAnalysis.stolenItemReturn;
+      if (stolenItemReturn) push(`האם הגנוב יוחזר:\n  ${ind(stolenItemReturn.outputHebrew)}`);
+    }
 
-    const missingPersonLocation = boardAnalysis.missingPersonLocation;
-    if (missingPersonLocation) push(`מיקום הנעדר:\n  ${ind(missingPersonLocation.outputHebrew)}`);
+    if (is('missingPerson','seaVoyage')) {
+      const missingPersonLocation = boardAnalysis.missingPersonLocation;
+      if (missingPersonLocation) push(`מיקום הנעדר:\n  ${ind(missingPersonLocation.outputHebrew)}`);
 
-    const missingPersonReturn = boardAnalysis.missingPersonReturn;
-    if (missingPersonReturn) push(`האם הנעדר יחזור:\n  ${ind(missingPersonReturn.outputHebrew)}`);
+      const missingPersonReturn = boardAnalysis.missingPersonReturn;
+      if (missingPersonReturn) push(`האם הנעדר יחזור:\n  ${ind(missingPersonReturn.outputHebrew)}`);
+    }
 
-    const geographicDirection = boardAnalysis.geographicDirection;
-    if (geographicDirection) push(`כיוון גיאוגרפי:\n  ${sc(geographicDirection.outputHebrew)}`);
+    if (is('missingPerson','travel','seaVoyage','hiddenTreasure')) {
+      const geographicDirection = boardAnalysis.geographicDirection;
+      if (geographicDirection) push(`כיוון גיאוגרפי:\n  ${sc(geographicDirection.outputHebrew)}`);
 
-    const travelDirection = boardAnalysis.travelDirection;
-    if (travelDirection) push(`כיוון הנסיעה:\n  ${sc(travelDirection.outputHebrew)}`);
+      const travelDirection = boardAnalysis.travelDirection;
+      if (travelDirection) push(`כיוון הנסיעה:\n  ${sc(travelDirection.outputHebrew)}`);
+    }
 
-    const deathRisk = boardAnalysis.deathRisk;
-    if (deathRisk) push(`סיכון מוות:\n  ${ind(deathRisk.outputHebrew)}`);
+    if (is('illness','deathInheritance','fear')) {
+      const deathRisk = boardAnalysis.deathRisk;
+      if (deathRisk) push(`סיכון מוות:\n  ${ind(deathRisk.outputHebrew)}`);
+    }
 
-    const jinnType = boardAnalysis.jinnType;
-    if (jinnType) push(`סוג הג׳ין:\n  ${ind(jinnType.outputHebrew)}`);
+    if (is('spiritualDiagnostics')) {
+      const jinnType = boardAnalysis.jinnType;
+      if (jinnType) push(`סוג הג׳ין:\n  ${ind(jinnType.outputHebrew)}`);
 
-    const wifeVirginityStatus = boardAnalysis.wifeVirginityStatus;
-    if (wifeVirginityStatus) push(`ת׳יב / בכר:\n  ${sc(wifeVirginityStatus.outputHebrew)}`);
+      const querentSorceryCheck = boardAnalysis.querentSorceryCheck;
+      if (querentSorceryCheck) push(`האם השואל מכושף:\n  ${sc(querentSorceryCheck.outputHebrew)}`);
 
-    const wifeChastity = boardAnalysis.wifeChastity;
-    if (wifeChastity) push(`צניעות האישה:\n  ${ind(wifeChastity.outputHebrew)}`);
+      const sorcererH9 = boardAnalysis.sorcererH9;
+      if (sorcererH9) push(`כישוף — כיוון המכשף:\n  ${ind(sorcererH9.outputHebrew)}`);
+    }
 
-    const marketPrices = boardAnalysis.marketPrices;
-    if (marketPrices) push(`יוקר / זול — מחירי שוק:\n  ${sc(marketPrices.outputHebrew)}`);
+    if (is('marriage','divorce','loveHate')) {
+      const wifeVirginityStatus = boardAnalysis.wifeVirginityStatus;
+      if (wifeVirginityStatus) push(`ת׳יב / בכר:\n  ${sc(wifeVirginityStatus.outputHebrew)}`);
 
-    const wishFulfillment = boardAnalysis.wishFulfillment;
-    if (wishFulfillment) push(`האם ישיג מה שרוצה:\n  ${sc(wishFulfillment.outputHebrew)}`);
+      const wifeChastity = boardAnalysis.wifeChastity;
+      if (wifeChastity) push(`צניעות האישה:\n  ${ind(wifeChastity.outputHebrew)}`);
+    }
 
-    const querentSorceryCheck = boardAnalysis.querentSorceryCheck;
-    if (querentSorceryCheck) push(`האם השואל מכושף:\n  ${sc(querentSorceryCheck.outputHebrew)}`);
+    if (is('yearlyForecast','commerce','partnership')) {
+      const marketPrices = boardAnalysis.marketPrices;
+      if (marketPrices) push(`יוקר / זול — מחירי שוק:\n  ${sc(marketPrices.outputHebrew)}`);
+    }
 
-    const dreamH9 = boardAnalysis.dreamH9;
-    if (dreamH9) push(`חלום — פרשנות:\n  ${sc(dreamH9.outputHebrew)}`);
+    if (is('completion','foundations','generalReading','commerce','partnership','loveHate')) {
+      const wishFulfillment = boardAnalysis.wishFulfillment;
+      if (wishFulfillment) push(`האם ישיג מה שרוצה:\n  ${sc(wishFulfillment.outputHebrew)}`);
+    }
 
-    const lostAnimalReturn = boardAnalysis.lostAnimalReturn;
-    if (lostAnimalReturn) push(`האם הבהמה תחזור:\n  ${sc(lostAnimalReturn.outputHebrew)}`);
+    if (is('travel','siblings','religion')) {
+      const dreamH9 = boardAnalysis.dreamH9;
+      if (dreamH9) push(`חלום — פרשנות:\n  ${sc(dreamH9.outputHebrew)}`);
 
-    const animalTypeH6 = boardAnalysis.animalTypeH6;
-    if (animalTypeH6) push(`סוג הבהמה:\n  ${sc(animalTypeH6.outputHebrew)}`);
+      const h3Topics = boardAnalysis.h3Topics;
+      if (h3Topics) push(`בית 3 — תנועה / חלום / מסרים:\n  ${ind(h3Topics.outputHebrew)}`);
+    }
 
-    const kingRulerStatus = boardAnalysis.kingRulerStatus;
-    if (kingRulerStatus) push(`מלך / שליט:\n  ${ind(kingRulerStatus.outputHebrew)}`);
+    if (is('hiddenTreasure')) {
+      const diggingDirection = boardAnalysis.diggingDirection;
+      if (diggingDirection) push(`כיוון לחפירה/חיפוש:\n  ${ind(diggingDirection.outputHebrew)}`);
 
-    const enemyPresenceCheck = boardAnalysis.enemyPresenceCheck;
-    if (enemyPresenceCheck) push(`בדיקת אויב:\n  ${ind(enemyPresenceCheck.outputHebrew)}`);
+      const hiddenTreasureH2 = boardAnalysis.hiddenTreasureH2;
+      if (hiddenTreasureH2) push(`מטמון / כנוז תת-קרקעי:\n  ${ind(hiddenTreasureH2.outputHebrew)}`);
+    }
 
-    const prisonerReleaseCheck = boardAnalysis.prisonerReleaseCheck;
-    if (prisonerReleaseCheck) push(`שחרור אסיר:\n  ${ind(prisonerReleaseCheck.outputHebrew)}`);
+    if (is('authorityState','partnership','generalReading')) {
+      const kingRulerStatus = boardAnalysis.kingRulerStatus;
+      if (kingRulerStatus) push(`מלך / שליט:\n  ${ind(kingRulerStatus.outputHebrew)}`);
+    }
 
-    const fatherParentStatus = boardAnalysis.fatherParentStatus;
-    if (fatherParentStatus) push(`מצב האב / הנכס:\n  ${ind(fatherParentStatus.outputHebrew)}`);
+    if (is('enemies','disputes','fear')) {
+      const enemyPresenceCheck = boardAnalysis.enemyPresenceCheck;
+      if (enemyPresenceCheck) push(`בדיקת אויב:\n  ${ind(enemyPresenceCheck.outputHebrew)}`);
+    }
 
-    const parnasaLivelihood = boardAnalysis.parnasaLivelihood;
-    if (parnasaLivelihood) push(`פרנסה ומחיה:\n  ${ind(parnasaLivelihood.outputHebrew)}`);
+    if (is('prisoner')) {
+      const prisonerReleaseCheck = boardAnalysis.prisonerReleaseCheck;
+      if (prisonerReleaseCheck) push(`שחרור אסיר:\n  ${ind(prisonerReleaseCheck.outputHebrew)}`);
 
-    const pregnancyMonths = boardAnalysis.pregnancyMonths;
-    if (pregnancyMonths) push(`חודשי הריון:\n  ${sc(pregnancyMonths.outputHebrew)}`);
+      const prisonerGuilty = boardAnalysis.prisonerGuilty;
+      if (prisonerGuilty?.outputHebrew) push(`מי גרם לכליאה:\n  ${ind(prisonerGuilty.outputHebrew)}`);
+    }
 
-    const prisonerGuilty = boardAnalysis.prisonerGuilty;
-    if (prisonerGuilty?.outputHebrew) push(`מי גרם לכליאה:\n  ${ind(prisonerGuilty.outputHebrew)}`);
+    if (is('deathInheritance','motherRules','fear')) {
+      const fatherParentStatus = boardAnalysis.fatherParentStatus;
+      if (fatherParentStatus) push(`מצב האב / הנכס:\n  ${ind(fatherParentStatus.outputHebrew)}`);
+    }
 
-    const debts = boardAnalysis.debts;
-    if (debts) push(`חובות:\n  ${ind(debts.outputHebrew)}`);
+    if (is('commerce','partnership','loan','generalReading')) {
+      const parnasaLivelihood = boardAnalysis.parnasaLivelihood;
+      if (parnasaLivelihood) push(`פרנסה ומחיה:\n  ${ind(parnasaLivelihood.outputHebrew)}`);
 
-    const illnessTypeIsqat = boardAnalysis.illnessTypeIsqat;
-    if (illnessTypeIsqat) push(`סוג המחלה (אסקאט×7):\n  ${ind(illnessTypeIsqat.outputHebrew)}`);
+      const debts = boardAnalysis.debts;
+      if (debts) push(`חובות:\n  ${ind(debts.outputHebrew)}`);
+    }
 
-    const illnessCauseH4 = boardAnalysis.illnessCauseH4;
-    if (illnessCauseH4) push(`סיבת המחלה:\n  ${ind(illnessCauseH4.outputHebrew)}`);
+    if (is('childrenPregnancy')) {
+      const pregnancyMonths = boardAnalysis.pregnancyMonths;
+      if (pregnancyMonths) push(`חודשי הריון:\n  ${sc(pregnancyMonths.outputHebrew)}`);
+    }
 
-    const sorcererH9 = boardAnalysis.sorcererH9;
-    if (sorcererH9) push(`כישוף — כיוון המכשף:\n  ${ind(sorcererH9.outputHebrew)}`);
+    if (is('illness')) {
+      const illnessTypeIsqat = boardAnalysis.illnessTypeIsqat;
+      if (illnessTypeIsqat) push(`סוג המחלה (אסקאט×7):\n  ${ind(illnessTypeIsqat.outputHebrew)}`);
 
-    const diggingDirection = boardAnalysis.diggingDirection;
-    if (diggingDirection) push(`כיוון לחפירה/חיפוש:\n  ${ind(diggingDirection.outputHebrew)}`);
+      const illnessCauseH4 = boardAnalysis.illnessCauseH4;
+      if (illnessCauseH4) push(`סיבת המחלה:\n  ${ind(illnessCauseH4.outputHebrew)}`);
+    }
 
-    const hiddenTreasureH2 = boardAnalysis.hiddenTreasureH2;
-    if (hiddenTreasureH2) push(`מטמון / כנוז תת-קרקעי:\n  ${ind(hiddenTreasureH2.outputHebrew)}`);
+    if (is('hiddenTreasure','religion','generalReading')) {
+      const h4Secrets = boardAnalysis.h4Secrets;
+      if (h4Secrets) push(`נסתרות וסודות:\n  ${ind(h4Secrets.outputHebrew)}`);
+    }
 
-    const h4Secrets = boardAnalysis.h4Secrets;
-    if (h4Secrets) push(`נסתרות וסודות:\n  ${ind(h4Secrets.outputHebrew)}`);
-
-    const h3Topics = boardAnalysis.h3Topics;
-    if (h3Topics) push(`בית 3 — תנועה / חלום / מסרים:\n  ${ind(h3Topics.outputHebrew)}`);
-
-    const celebrationsH5 = boardAnalysis.celebrationsH5;
-    if (celebrationsH5) push(`שמחות ואירועים:\n  ${ind(celebrationsH5.outputHebrew)}`);
+    if (is('marriage','childrenPregnancy','loveHate')) {
+      const celebrationsH5 = boardAnalysis.celebrationsH5;
+      if (celebrationsH5) push(`שמחות ואירועים:\n  ${ind(celebrationsH5.outputHebrew)}`);
+    }
   }
 
   return paras.length ? paras.join('\n\n') : null;
