@@ -2372,7 +2372,7 @@ function computeBodyPartDiagnosis(chart) {
     figureHebrew: figHebrew,
     bodyPartHebrew: entry.hebrew,
     bodyPartArabic: entry.arabic,
-    outputHebrew: `${figHebrew} בבית 6 — האיבר הכואב: ${entry.hebrew} (${entry.arabic})`,
+    outputHebrew: `${figHebrew} בבית 6 — האיבר הכואב: ${entry.hebrew}`,
   };
 }
 

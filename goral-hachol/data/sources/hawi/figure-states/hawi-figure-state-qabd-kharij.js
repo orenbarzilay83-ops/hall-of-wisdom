@@ -4,6 +4,7 @@ export const HAWI_FIGURE_STATE_QABD_KHARIJ = {
   shortFigureId: 'qabd-kharij',
   arabicName: 'القبض الخارج',
   hebrewName: 'ממון יוצא',
+  genderHebrew: 'זכר',
   sourceBook: 'حاوي العجائب ومظهر الغرائب',
   sourceAuthor: 'أحمد ابن زنبل المحلي',
   sourceSectionArabic: 'الباب الثامن عشر في الكلام على الاشكال — الفصل الاول في حالات الاشكال في البيوت وافعالها',

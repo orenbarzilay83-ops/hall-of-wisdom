@@ -4,6 +4,7 @@ export const HAWI_FIGURE_STATE_NAKIS = {
   shortFigureId: 'nakis',
   arabicName: 'النكيس / المنكوس / الأنكيس',
   hebrewName: 'שפל ראש',
+  genderHebrew: 'נקבה',
   sourceBook: 'حاوي العجائب ومظهر الغرائب',
   sourceAuthor: 'أحمد ابن زنبل المحلي',
   sourceSectionArabic: 'الباب الثامن عشر في الكلام على الاشكال — النكيس في البيوت الستة عشر',

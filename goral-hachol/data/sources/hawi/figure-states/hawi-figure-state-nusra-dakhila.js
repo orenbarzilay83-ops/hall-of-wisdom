@@ -4,6 +4,7 @@ export const HAWI_FIGURE_STATE_NUSRA_DAKHILA = {
   shortFigureId: 'nusra-dakhila',
   arabicName: 'النصرة الداخلة',
   hebrewName: 'כבוד נכנס',
+  genderHebrew: 'נקבה',
   sourceBook: 'حاوي العجائب ومظهر الغرائب',
   sourceAuthor: 'أحمد ابن زنبل المحلي',
   sourceSectionArabic: 'الباب الثامن عشر في الكلام على الاشكال — فصل في معرفة النصرة الداخلة',

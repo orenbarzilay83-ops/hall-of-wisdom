@@ -4,6 +4,7 @@ export const HAWI_FIGURE_STATE_TARIQ = {
   shortFigureId: 'tariq',
   arabicName: 'الطريق',
   hebrewName: 'דרך',
+  genderHebrew: 'הרמפרודיט',
   sourceBook: 'حاوي العجائب ومظهر الغرائب',
   sourceAuthor: 'أحمد ابن زنبل المحلي',
   sourceSectionArabic: 'الباب الثامن عشر في الكلام على الاشكال — فصل في معرفة الطريق',

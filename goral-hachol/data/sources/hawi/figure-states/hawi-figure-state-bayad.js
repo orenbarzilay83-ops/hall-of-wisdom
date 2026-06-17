@@ -4,6 +4,7 @@ export const HAWI_FIGURE_STATE_BAYAD = {
   shortFigureId: 'bayad',
   arabicName: 'البياض',
   hebrewName: 'לבן',
+  genderHebrew: 'נקבה',
   sourceBook: 'حاوي العجائب ومظهر الغرائب',
   sourceAuthor: 'أحمد ابن زنبل المحلي',
   sourceSectionArabic: 'الباب الثامن عشر في الكلام على الاشكال — فصل في البياض',

@@ -4,6 +4,7 @@ export const HAWI_FIGURE_STATE_QABD_DAKHIL = {
   shortFigureId: 'qabd-dakhil',
   arabicName: 'القبض الداخل',
   hebrewName: 'ממון נכנס',
+  genderHebrew: 'נקבה',
   sourceBook: 'حاوي العجائب ومظهر الغرائب',
   sourceAuthor: 'أحمد ابن زنبل المحلي',
   sourceSectionArabic: 'الباب الثامن عشر في الكلام على الاشكال — الفصل الاول في حالات الاشكال في البيوت وافعالها',

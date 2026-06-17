@@ -4,6 +4,7 @@ export const HAWI_FIGURE_STATE_IJTIMA = {
   shortFigureId: 'ijtima',
   arabicName: 'الاجتماع',
   hebrewName: 'חיבור',
+  genderHebrew: 'הרמפרודיט',
   sourceBook: 'حاوي العجائب ومظهر الغرائب',
   sourceAuthor: 'أحمد ابن زنبل المحلي',
   sourceSectionArabic: 'الباب الثامن عشر في الكلام على الاشكال — فصل في معرفة الاجتماع',

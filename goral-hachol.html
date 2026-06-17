@@ -829,6 +829,9 @@
     .badge.planet { background:#fffbe6;color:#5a4000; }
     .badge.zodiac { background:#f3e8ff;color:#4a0080; }
     .badge.group { background:#f0f8ff;color:#003060;font-size:10px; }
+    .badge.gender-male { background:#dce8ff;color:#1a3a6b; }
+    .badge.gender-female { background:#ffe0f0;color:#6b0038; }
+    .badge.gender-neutral { background:#efefef;color:#444; }
     .fig-letters {
       display:flex;justify-content:center;gap:5px;margin-top:5px;
     }
@@ -1247,6 +1250,13 @@
 
           <div class="col-sep"></div>
           <div id="profileSection" class="profile-section open-profile-col">
+            <div class="profile-group">
+              <div class="profile-group-label">מין</div>
+              <div class="profile-btn-row">
+                <button type="button" class="profile-btn" data-profile="gender" data-value="male">זכר</button>
+                <button type="button" class="profile-btn" data-profile="gender" data-value="female">נקבה</button>
+              </div>
+            </div>
             <div class="profile-group">
               <div class="profile-group-label">מצב משפחתי</div>
               <div class="profile-btn-row">

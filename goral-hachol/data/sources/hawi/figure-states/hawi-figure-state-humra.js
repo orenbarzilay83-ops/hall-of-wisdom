@@ -4,6 +4,7 @@ export const HAWI_FIGURE_STATE_HUMRA = {
   shortFigureId: 'humra',
   arabicName: 'الحمرة',
   hebrewName: 'אדום',
+  genderHebrew: 'זכר',
   sourceBook: 'حاوي العجائب ومظهر الغرائب',
   sourceAuthor: 'أحمد ابن زنبل المحلي',
   sourceSectionArabic: 'الباب الثامن عشر في الكلام على الاشكال — فصل في معرفة الحمرة',

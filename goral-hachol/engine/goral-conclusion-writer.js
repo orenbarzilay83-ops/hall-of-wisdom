@@ -3,20 +3,20 @@ function clean(value = '') {
 }
 
 const MARITAL_LABELS = {
-  married:   'נשוי/ה',
-  single:    'רווק/ה',
-  divorced:  'גרוש/ה',
-  widowed:   'אלמן/ה',
-  coupled:   'בזוגיות',
-  separated: 'פרוד/ה',
+  married:   { m: 'נשוי',    f: 'נשואה',   n: 'נשוי/ה' },
+  single:    { m: 'רווק',    f: 'רווקה',   n: 'רווק/ה' },
+  divorced:  { m: 'גרוש',    f: 'גרושה',   n: 'גרוש/ה' },
+  widowed:   { m: 'אלמן',    f: 'אלמנה',   n: 'אלמן/ה' },
+  coupled:   { m: 'בזוגיות', f: 'בזוגיות', n: 'בזוגיות' },
+  separated: { m: 'פרוד',    f: 'פרודה',   n: 'פרוד/ה' },
 };
 
 const WORK_LABELS = {
-  employed:       'שכיר/ה',
-  self:           'עצמאי/ת',
-  unemployed:     'מחפש/ת עבודה',
-  retired:        'בפנסיה',
-  'between-jobs': 'בין עבודות',
+  employed:       { m: 'שכיר',       f: 'שכירה',        n: 'שכיר/ה' },
+  self:           { m: 'עצמאי',      f: 'עצמאית',       n: 'עצמאי/ת' },
+  unemployed:     { m: 'מחפש עבודה', f: 'מחפשת עבודה',  n: 'מחפש/ת עבודה' },
+  retired:        { m: 'בפנסיה',     f: 'בפנסיה',       n: 'בפנסיה' },
+  'between-jobs': { m: 'בין עבודות', f: 'בין עבודות',   n: 'בין עבודות' },
 };
 
 const CHILDREN_LABELS = {
@@ -25,10 +25,13 @@ const CHILDREN_LABELS = {
 };
 
 function formatClientProfile(clientContext = {}) {
-  const parts = [];
-  const marital  = MARITAL_LABELS[clientContext.maritalStatus]  || null;
-  const work     = WORK_LABELS[clientContext.workStatus]         || null;
-  const children = CHILDREN_LABELS[clientContext.hasChildren]   || null;
+  const parts   = [];
+  const gKey    = clientContext.gender === 'female' ? 'f' : clientContext.gender === 'male' ? 'm' : 'n';
+  const mEntry  = MARITAL_LABELS[clientContext.maritalStatus];
+  const wEntry  = WORK_LABELS[clientContext.workStatus];
+  const marital = mEntry ? mEntry[gKey] : null;
+  const work    = wEntry ? wEntry[gKey] : null;
+  const children = CHILDREN_LABELS[clientContext.hasChildren] || null;
   if (marital)  parts.push(marital);
   if (work)     parts.push(work);
   if (children) parts.push(children);
@@ -1477,6 +1480,8 @@ function buildNarrativeByTopic(result) {
   if (topicId === 'spiritualDiagnostics') return null;
 
   const name     = clean(clientContext?.clientName || '');
+  const isFemale = clientContext?.gender === 'female';
+  const asker    = isFemale ? 'השואלת' : 'השואל';
   const paras    = [];
   const push     = (p) => { if (p && clean(p)) paras.push(clean(p)); };
 
@@ -1659,7 +1664,7 @@ function buildNarrativeByTopic(result) {
   // ── 3. H1 — THE QUESTIONER ──────────────────────────────────────
   if (h1) {
     const fig = hFig(h1), fort = hFort(h1), transit = hTransit(h1), speak = speakNote(h1);
-    const nameLabel = name || 'השואל';
+    const nameLabel = name || asker;
     const profile = formatClientProfile(clientContext);
     const parts = [];
 
@@ -2004,10 +2009,12 @@ function buildSpiritualNarrative(result) {
   const { boardAnalysis, spiritualDiagnosis, judgeVerdict, clientContext, kashfVerdict, kashfSupportAnalysis } = result;
   if (!boardAnalysis?.hasBoard) return null;
 
-  const sd    = spiritualDiagnosis || {};
-  const name  = clean(clientContext?.clientName || '');
-  const paras = [];
-  const push  = (p) => { if (p && clean(p)) paras.push(clean(p)); };
+  const sd       = spiritualDiagnosis || {};
+  const name     = clean(clientContext?.clientName || '');
+  const isFemale = clientContext?.gender === 'female';
+  const asker    = isFemale ? 'השואלת' : 'השואל';
+  const paras    = [];
+  const push     = (p) => { if (p && clean(p)) paras.push(clean(p)); };
 
   // האבחון הרוחני המפורט הוא הסמכות לנושא זה — הכשף (2 בתים בלבד) אינו מתאים
 
@@ -2095,7 +2102,7 @@ function buildSpiritualNarrative(result) {
     const fig     = hFig(h1);
     const fort    = hFort(h1);
     const speak   = speakNote(h1);
-    const nameLabel = name || 'השואל';
+    const nameLabel = name || asker;
     const profile   = formatClientProfile(clientContext);
     const parts     = [];
     parts.push(`${nameLabel} (בית 1 — החולה): ${fig}${fort ? `, ${fort}` : ''}.`);
@@ -2341,7 +2348,7 @@ export function writeShortClientVerdict(result) {
       const h1Tone = figureFortuneTone(h1?.fortune);
       const h7Tone = figureFortuneTone(h7?.fortune);
 
-      if (h1) lines.push(figLine(h1, `${name || 'השואל'} (בית 1)`));
+      if (h1) lines.push(figLine(h1, `${name || asker} (בית 1)`));
       if (h7) lines.push(figLine(h7, `${qSubj} (בית 7 — היריב)`));
       if (h1Tone > h7Tone) lines.push('השואל במצב חזק יותר מהיריב בלוח.');
       else if (h1Tone < h7Tone) lines.push('היריב במצב חזק יותר — יש לשקול עמדות.');
@@ -2395,7 +2402,7 @@ export function writeShortClientVerdict(result) {
       const h7 = getHouseFromBoard(boardAnalysis, 7);
       const qSubj = quesited || 'השותף';
 
-      if (h1) lines.push(figLine(h1, `${name || 'השואל'} (בית 1)`));
+      if (h1) lines.push(figLine(h1, `${name || asker} (בית 1)`));
       if (h7) lines.push(figLine(h7, `${qSubj} (בית 7)`));
       if (kashfText) lines.push(kashfText);
       else if (jTone > 0) lines.push('הדיין: השותפות תצלח — יש כיוון חיובי.');
@@ -2450,7 +2457,7 @@ export function writeShortClientVerdict(result) {
       const h7 = getHouseFromBoard(boardAnalysis, 7);
       const qSubj = quesited || 'הצד השני';
 
-      if (h1) lines.push(figLine(h1, `${name || 'השואל'} (בית 1)`));
+      if (h1) lines.push(figLine(h1, `${name || asker} (בית 1)`));
       if (h7) lines.push(figLine(h7, `${qSubj} (בית 7)`));
       if (kashfText) lines.push(kashfText);
       else if (jTone > 0) lines.push('הדיין: יש קרבה וחיבה — הקשר חיובי.');
@@ -2501,7 +2508,7 @@ export function writeShortClientVerdict(result) {
       const qSubj = quesited || 'האח/השכן';
 
       if (h3) lines.push(figLine(h3, `${qSubj} (בית 3)`));
-      if (h1) lines.push(figLine(h1, `${name || 'השואל'} (בית 1)`));
+      if (h1) lines.push(figLine(h1, `${name || asker} (בית 1)`));
       if (kashfText) lines.push(kashfText);
       else if (jTone > 0) lines.push('הדיין: הקשר חיובי — יש שיתוף פעולה ועזרה.');
       else if (jTone < 0) lines.push('הדיין: הקשר קשה — יש מחלוקת או ריחוק.');
@@ -2526,7 +2533,7 @@ export function writeShortClientVerdict(result) {
       const h10 = getHouseFromBoard(boardAnalysis, 10);
 
       if (h10) lines.push(figLine(h10, 'בית הסמכות / התפקיד (בית 10)'));
-      if (h1)  lines.push(figLine(h1, `${name || 'השואל'} (בית 1)`));
+      if (h1)  lines.push(figLine(h1, `${name || asker} (בית 1)`));
       if (kashfText) lines.push(kashfText);
       else if (jTone > 0) lines.push('הדיין: התפקיד יציב — אין סכנה ממשית.');
       else if (jTone < 0) lines.push('הדיין: התפקיד בסכנה — יש לנהוג בזהירות.');
@@ -2535,7 +2542,7 @@ export function writeShortClientVerdict(result) {
     }
 
     case 'birthNativity': {
-      if (h1) lines.push(figLine(h1, `${name || 'השואל'} (בית 1 — הטאלע)`));
+      if (h1) lines.push(figLine(h1, `${name || asker} (בית 1 — הטאלע)`));
       if (kashfText) lines.push(kashfText);
       else if (jTone > 0) lines.push('הדיין: גורל חיובי — הכוחות בתקופה זו לטובה.');
       else if (jTone < 0) lines.push('הדיין: גורל קשה — יש קשיים בתקופה זו.');
@@ -2544,7 +2551,7 @@ export function writeShortClientVerdict(result) {
     }
 
     default: {
-      if (h1) lines.push(figLine(h1, `${name || 'השואל'} (בית 1)`));
+      if (h1) lines.push(figLine(h1, `${name || asker} (בית 1)`));
       if (kashfText) lines.push(kashfText);
       else if (jv?.hebrewShort) lines.push(`הדיין: ${jv.hebrewShort}`);
       else if (jTone > 0) lines.push('הדיין פוסק לחיוב.');

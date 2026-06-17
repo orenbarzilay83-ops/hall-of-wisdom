@@ -10,7 +10,7 @@ let activeMother = 0;
 let selectedHouseNum = null;  // בית שנבחר (1-12)
 let forcedTopicId = null;     // נושא שנקבע בכוח (למשל: בדיקה רוחנית)
 let selectedTopicId = null;   // תת-נושא שנבחר ישירות מתוך רשימת תת-נושאים
-let profileState = { marital: null, work: null, children: null };
+let profileState = { gender: null, marital: null, work: null, children: null };
 
 // 12 כרטיסים לפי סדר הבתים. הנושא המדויק נקבע בזמן הריצה לפי השאלה.
 // subTopics — אם יש, מוצגים לאחר בחירת הבית; null = ברירת מחדל ישירה.
@@ -278,6 +278,7 @@ function getClientContext(resolvedTopicId) {
     consultationContext: "",
     topicOverride: resolvedTopicId || "",
     selectedHouse: selectedHouseNum || null,
+    gender: profileState.gender || null,
     maritalStatus: profileState.marital || null,
     workStatus: profileState.work || null,
     hasChildren: profileState.children || null,
@@ -707,7 +708,7 @@ function clearForm() {
   selectedHouseNum = null;
   forcedTopicId = null;
   selectedTopicId = null;
-  profileState = { marital: null, work: null, children: null };
+  profileState = { gender: null, marital: null, work: null, children: null };
   document.querySelectorAll('.profile-btn.selected').forEach(b => b.classList.remove('selected'));
   renderTopicGrid();
   selectedMothers = [null,null,null,null];
@@ -939,6 +940,7 @@ function loadContact(id) {
   if (nameEl)  nameEl.value  = contact.name  || '';
   if (phoneEl) phoneEl.value = contact.phone || '';
   // עדכון כפתורי פרופיל
+  profileState.gender   = contact.gender   || null;
   profileState.marital  = contact.marital  || null;
   profileState.work     = contact.work     || null;
   profileState.children = contact.children || null;
@@ -968,6 +970,7 @@ document.getElementById('saveClientBtn').addEventListener('click', () => {
   }
   contacts.unshift({
     id: Date.now(), name, phone: phone || '',
+    gender: profileState.gender || null,
     marital: profileState.marital || null,
     work: profileState.work || null,
     children: profileState.children || null,
@@ -1146,22 +1149,22 @@ document.querySelectorAll(".guide-tab").forEach(tab => {
 // fortune: טוב=מיטיב, רע=מזיק, ממוזג=בינוני | movement: קבוצה (יוצאת/נכנסת/קבועה/מתהפכת)
 // letters: מיפוי תסקין עבדוה מחאוי — אות ראשית + אות משנית (לצורות מתהפכות)
 const FIGURE_EXTRA = {
-  '1111': { fortune: 'ממוזג',     fClass: 'mixed', movement: 'מתהפכת', letters: ['ע'] },
-  '1112': { fortune: 'רע',        fClass: 'nahas', movement: 'יוצאת',  letters: ['ח', 'ם'] },
-  '1121': { fortune: 'ממוזג',     fClass: 'mixed', movement: 'מתהפכת', letters: ['ט', 'ן'] },
-  '1122': { fortune: 'טוב',       fClass: 'saad',  movement: 'יוצאת',  letters: ['ה', 'ש'] },
-  '1211': { fortune: 'ממוזג-רע',  fClass: 'mixed', movement: 'מתהפכת', letters: ['י', 'ף'] },
-  '1212': { fortune: 'רע',        fClass: 'nahas', movement: 'יוצאת',  letters: ['ל', 'א'] },
-  '1221': { fortune: 'ממוזג-רע',  fClass: 'mixed', movement: 'מתהפכת', letters: ['נ'] },
-  '1222': { fortune: 'טוב',       fClass: 'saad',  movement: 'יוצאת',  letters: ['א', 'פ'] },
-  '2111': { fortune: 'טוב',       fClass: 'saad',  movement: 'נכנסת',  letters: ['ז', 'ך'] },
-  '2112': { fortune: 'ממוזג-טוב', fClass: 'mixed', movement: 'קבועה',  letters: ['ס'] },
-  '2121': { fortune: 'טוב',       fClass: 'saad',  movement: 'נכנסת',  letters: ['כ', 'ץ'] },
-  '2122': { fortune: 'רע',        fClass: 'nahas', movement: 'קבועה',  letters: ['ג', 'ק'] },
-  '2211': { fortune: 'טוב',       fClass: 'saad',  movement: 'נכנסת',  letters: ['ו', 'ת'] },
-  '2212': { fortune: 'טוב',       fClass: 'saad',  movement: 'קבועה',  letters: ['ד', 'ר'] },
-  '2221': { fortune: 'רע',        fClass: 'nahas', movement: 'נכנסת',  letters: ['ב', 'צ'] },
-  '2222': { fortune: 'ממוזג',     fClass: 'mixed', movement: 'קבועה',  letters: ['מ'] },
+  '1111': { fortune: 'ממוזג',     fClass: 'mixed', movement: 'מתהפכת', letters: ['ע'], gender: 'הרמפרודיט', gClass: 'neutral' },
+  '1112': { fortune: 'רע',        fClass: 'nahas', movement: 'יוצאת',  letters: ['ח', 'ם'], gender: 'זכר', gClass: 'male' },
+  '1121': { fortune: 'ממוזג',     fClass: 'mixed', movement: 'מתהפכת', letters: ['ט', 'ן'], gender: 'זכר', gClass: 'male' },
+  '1122': { fortune: 'טוב',       fClass: 'saad',  movement: 'יוצאת',  letters: ['ה', 'ש'], gender: 'זכר', gClass: 'male' },
+  '1211': { fortune: 'ממוזג-רע',  fClass: 'mixed', movement: 'מתהפכת', letters: ['י', 'ף'], gender: 'נקבה', gClass: 'female' },
+  '1212': { fortune: 'רע',        fClass: 'nahas', movement: 'יוצאת',  letters: ['ל', 'א'], gender: 'זכר', gClass: 'male' },
+  '1221': { fortune: 'ממוזג-רע',  fClass: 'mixed', movement: 'מתהפכת', letters: ['נ'], gender: 'הרמפרודיט', gClass: 'neutral' },
+  '1222': { fortune: 'טוב',       fClass: 'saad',  movement: 'יוצאת',  letters: ['א', 'פ'], gender: 'זכר', gClass: 'male' },
+  '2111': { fortune: 'טוב',       fClass: 'saad',  movement: 'נכנסת',  letters: ['ז', 'ך'], gender: 'נקבה', gClass: 'female' },
+  '2112': { fortune: 'ממוזג-טוב', fClass: 'mixed', movement: 'קבועה',  letters: ['ס'], gender: 'הרמפרודיט', gClass: 'neutral' },
+  '2121': { fortune: 'טוב',       fClass: 'saad',  movement: 'נכנסת',  letters: ['כ', 'ץ'], gender: 'נקבה', gClass: 'female' },
+  '2122': { fortune: 'רע',        fClass: 'nahas', movement: 'קבועה',  letters: ['ג', 'ק'], gender: 'זכר', gClass: 'male' },
+  '2211': { fortune: 'טוב',       fClass: 'saad',  movement: 'נכנסת',  letters: ['ו', 'ת'], gender: 'נקבה', gClass: 'female' },
+  '2212': { fortune: 'טוב',       fClass: 'saad',  movement: 'קבועה',  letters: ['ד', 'ר'], gender: 'נקבה', gClass: 'female' },
+  '2221': { fortune: 'רע',        fClass: 'nahas', movement: 'נכנסת',  letters: ['ב', 'צ'], gender: 'נקבה', gClass: 'female' },
+  '2222': { fortune: 'ממוזג',     fClass: 'mixed', movement: 'קבועה',  letters: ['מ'], gender: 'הרמפרודיט', gClass: 'neutral' },
 };
 const DIR_CLASS = { 'צפון': 'north', 'דרום': 'south', 'מזרח': 'east', 'מערב': 'west' };
 const ELEMENT_CLASS = { 'אש': 'fire', 'מים': 'water', 'רוח': 'air', 'עפר': 'earth' };
@@ -1283,6 +1286,7 @@ function renderFiguresGuide() {
       <div class="fig-badges">
         <span class="badge ${ex.fClass}">${escapeHtml(ex.fortune || '')}</span>
         <span class="badge ${elClass}">${escapeHtml(f.element || '')}</span>
+        ${ex.gender ? `<span class="badge gender-${ex.gClass}">${escapeHtml(ex.gender)}</span>` : ''}
         ${f.direction ? `<span class="badge ${dirClass}">${escapeHtml(f.direction)}</span>` : ''}
         ${f.planet ? `<span class="badge planet">${escapeHtml(f.planet)}</span>` : ''}
         ${f.zodiac ? `<span class="badge zodiac">${escapeHtml(f.zodiac)}</span>` : ''}
@@ -1293,6 +1297,7 @@ function renderFiguresGuide() {
   el.innerHTML = `<div class="figures-grid">${cards}</div>
     <div class="fig-legend">
       <strong>האותיות</strong> (בתיבות כחולות) = אותיות תסקין עבדוה לפי חאוי — לחילוץ שם הנשאל עליו מבית 7 או 9.<br>
+      <strong>מין הצורה</strong> (מקור: כשף-אל-אסרר): 🔵 <strong>זכר</strong> (6 צורות) · 🌸 <strong>נקבה</strong> (6 צורות) · ⚪ <strong>הרמפרודיט / חצ"מ</strong> (4 צורות: דרך, סוהר, חיבור, קהלה)<br>
       <strong>מזל:</strong> 🟢 <strong>טוב</strong> = מיטיב &nbsp;|&nbsp; 🔴 <strong>רע</strong> = מזיק &nbsp;|&nbsp; 🟡 <strong>ממוזג</strong> = בינוני<br>
       <strong>קבוצות תנועה:</strong>
       <strong>יוצאת</strong> (خارجة) = משפיעה כלפי חוץ &nbsp;|&nbsp;

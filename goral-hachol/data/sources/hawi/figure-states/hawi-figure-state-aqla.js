@@ -4,6 +4,7 @@ export const HAWI_FIGURE_STATE_AQLA = {
   shortFigureId: 'aqla',
   arabicName: 'العقلة / الشقاوة',
   hebrewName: 'סוהר',
+  genderHebrew: 'הרמפרודיט',
   sourceBook: 'حاوي العجائب ومظهر الغرائب',
   sourceAuthor: 'أحمد ابن زنبل المحلي',
   sourceSectionArabic: 'الباب الثامن عشر في الكلام على الاشكال — العقلة في البيوت الستة عشر',

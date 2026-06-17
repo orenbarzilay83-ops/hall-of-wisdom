@@ -4,6 +4,7 @@ export const HAWI_FIGURE_STATE_ATABA_DAKHILA = {
   shortFigureId: 'ataba-dakhila',
   arabicName: 'العتبة الداخلة',
   hebrewName: 'סף נכנס',
+  genderHebrew: 'נקבה',
   sourceBook: 'حاوي العجائب ومظهر الغرائب',
   sourceAuthor: 'أحمد ابن زنبل المحلي',
   sourceSectionArabic: 'الباب الثامن عشر في الكلام على الاشكال — فصل في معرفة العتبة الداخلة',
