@@ -1490,6 +1490,24 @@ function buildNarrativeByTopic(result) {
   const kashfBlock = buildKashfVerdictBlock(kashfVerdict, kashfSupportAnalysis);
   if (kashfBlock) push(kashfBlock);
 
+  // ── 0.3. הסבר מגשר כשפסיקת כשף מנוגדת לדיין הלוח ─────────────
+  // שתי שיטות עצמאיות: כשף = פסיקה מ-צורה נגזרת (בית 1 + בית שאלה); דיין = בית 15 בלוח
+  if (kashfVerdict) {
+    const jTone0 = figureFortuneTone(boardAnalysis?.judge?.fortune);
+    const kashfPositive = kashfVerdict.verdictHebrew?.includes('חיוב') ||
+                          kashfVerdict.verdictHebrew?.includes('יתממש') ||
+                          kashfVerdict.verdictHebrew?.includes('יצליח') ||
+                          kashfVerdict.verdictHebrew?.includes('יבוא');
+    const kashfNegative = kashfVerdict.verdictHebrew?.includes('לא יתממש') ||
+                          kashfVerdict.verdictHebrew?.includes('לא יצליח') ||
+                          kashfVerdict.verdictHebrew?.includes('מעוכב') ||
+                          kashfVerdict.verdictHebrew?.includes('עצור');
+    const diverged = (kashfNegative && jTone0 > 0) || (kashfPositive && jTone0 < 0);
+    if (diverged) {
+      push('הערה: פסיקת כשף-אל-אסראר מבוססת על צורה נגזרת משני הצדדים (בית 1 ובית השאלה) ועשויה להיות שונה מהדיין הרשמי (בית 15). כשיש מתח — קרא את שני הכיוונים יחד.');
+    }
+  }
+
   // ── 0.5. CONFIDENCE TONE MODIFIER ───────────────────────────────
   // רמת הביטחון מ-kashfSupportAnalysis צובעת את טון הנרטיב שמופיע אחרי
   const confidenceLevel = kashfSupportAnalysis?.confidence?.level;
@@ -1793,7 +1811,7 @@ function buildNarrativeByTopic(result) {
   // ── 11. תובנה מספר הכשף שער שישי (Task 10) ──────────────────────
   const kbi = boardAnalysis.kashfBookInsight;
   if (kbi?.firstExcerpt) {
-    const SKIP_LINE = /^(?:פרק|סיום פרק|הפרק|נכּתה|מֻלְתַּקַּט|אחכאם|"רג'ע|> |רג'ע|الفصل|הפסקה|שאלה:|##|—\s|פסקה כוללת|\*\*שאלה)/;
+    const SKIP_LINE = /^(?:פרק|סיום פרק|הפרק|נכּתה|מֻלְתַּקַּט|אחכאם|"רג'ע|> |רג'ע|الفصل|הפסקה|שאלה:|##|—\s|פסקה כוללת|\*\*שאלה|המשך —|המשך—)/;
     const excerptLines = kbi.firstExcerpt.split('\n').filter((ln) => {
       const t = ln.trim();
       if (!t) return false;
@@ -1804,6 +1822,11 @@ function buildNarrativeByTopic(result) {
       if ((t.match(/[؀-ۿ]/g) || []).length / t.length > 0.35) return false;
       if (t.startsWith('*') && t.endsWith('*')) return false;           // שורות הדגשה של כותרות ספר
       if (t.startsWith('"') && t.length > 15) return false;             // ציטוטי ספר ישירים
+      if (t.endsWith('"') && t.length < 120) return false;              // שורת ציטוט מיותמת (אמצע ציטוט)
+      if (/^\*?\*?\[.*עמוד\s+\d/.test(t)) return false;                // שורות מטא-דאטה [נכּתה... עמוד X]
+      if (t.endsWith(':') && t.length < 100) return false;              // תוויות סעיף (כותרות מהספר)
+      if (t.includes(' → ') && t.length < 80) return false;            // כללי חץ תנאי מהספר
+      if (t.length < 20 && !t.includes('.') && !t.includes(',')) return false; // כותרות קצרות ללא משפט
       return true;
     });
     const cleanExcerpt = scText(excerptLines.join('\n')).trim();
