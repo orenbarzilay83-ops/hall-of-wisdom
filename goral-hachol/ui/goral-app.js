@@ -1054,18 +1054,17 @@ function _isqatRenderGrid() {
   const currentFig = _isqatMothers[_isqatActiveSlot];
   grid.innerHTML = figures.map(fig => {
     const isSelected = currentFig?.key === fig.key;
-    // check if fig is used in any slot (for other-selected styling)
     const slotIdx = _isqatMothers.findIndex(m => m?.key === fig.key);
     const isOther = slotIdx !== -1 && slotIdx !== _isqatActiveSlot;
     return `<button type="button"
-        class="figure-card${isSelected ? ' selected' : ''}${isOther ? ' other-selected' : ''}"
+        class="isqat-pick-btn${isSelected ? ' selected' : ''}${isOther ? ' other-used' : ''}"
         data-key="${escapeHtml(fig.key)}">
       ${glyphHtml(fig.lines)}
-      <div class="figure-name" style="font-size:13px">${escapeHtml(fig.name)}</div>
-      ${isOther ? `<div class="other-slot-badge">אם ${slotIdx + 1}</div>` : ''}
+      <div class="isqat-pick-name">${escapeHtml(fig.name)}</div>
+      ${isOther ? `<div style="font-size:9px;color:#888">אם ${slotIdx + 1}</div>` : ''}
     </button>`;
   }).join('');
-  grid.querySelectorAll('.figure-card').forEach(btn => {
+  grid.querySelectorAll('.isqat-pick-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const fig = figures.find(f => f.key === btn.dataset.key);
       if (!fig) return;
@@ -1082,14 +1081,12 @@ function _isqatRenderGrid() {
 function _isqatRun() {
   if (_isqatMothers.some(m => !m)) return;
   if (typeof window.ramlRunReading !== 'function') {
-    const res = document.getElementById('isqatResult');
-    res.innerHTML = '<p style="color:#e74c3c">מנוע הגורל טרם נטען — נסה שוב בעוד רגע.</p>';
-    res.style.display = '';
+    alert('מנוע הגורל טרם נטען — נסה שוב בעוד רגע.');
     return;
   }
-  const mothers  = _isqatMothers.map(m => m.lines);
-  const reading  = window.ramlRunReading('', mothers);
-  const chart    = reading.chart || reading.entries || [];
+  const mothers = _isqatMothers.map(m => m.lines);
+  const reading = window.ramlRunReading('', mothers);
+  const chart   = reading.chart || reading.entries || [];
 
   // ספירת כל ה-1 ב-16 הצורות
   let openCount = 0;
@@ -1101,6 +1098,10 @@ function _isqatRun() {
   const res       = ISQAT_RESULTS[remainder] || ISQAT_RESULTS[1];
   const typeLabel = res.isSpiritual ? 'פגיעה רוחנית' : 'מחלה גופנית';
 
+  // לוח גורל רגיל
+  const boardEl = document.getElementById('isqatBoardResult');
+  if (boardEl) boardEl.innerHTML = buildBoardHtml(reading);
+
   // תצוגת 16 הצורות הנגזרות
   const derivedHtml = chart.map(h => `
     <div class="fig-cell">
@@ -1109,7 +1110,8 @@ function _isqatRun() {
     </div>
   `).join('');
 
-  document.getElementById('isqatResult').innerHTML = `
+  const resultEl = document.getElementById('isqatResultBox');
+  if (resultEl) resultEl.innerHTML = `
     <div class="isqat-result-box">
       <div style="text-align:center;margin-bottom:18px">
         <div style="font-size:12px;color:#5a6a7a;margin-bottom:4px">נקודות פתוחות ב-16 הצורות</div>
@@ -1128,7 +1130,8 @@ function _isqatRun() {
         <div class="isqat-derived-grid">${derivedHtml}</div>
       </div>
     </div>`;
-  document.getElementById('isqatResult').style.display = '';
+
+  showScreen('isqat-result');
 }
 
 document.getElementById('isqatAutoBtn').addEventListener('click', () => {
@@ -1138,12 +1141,11 @@ document.getElementById('isqatAutoBtn').addEventListener('click', () => {
 document.getElementById('isqatClearBtn').addEventListener('click', () => {
   _isqatMothers    = [null, null, null, null];
   _isqatActiveSlot = 0;
-  const res = document.getElementById('isqatResult');
-  if (res) res.style.display = 'none';
   _isqatRenderSlots();
   _isqatRenderGrid();
 });
 document.getElementById('isqatRunBtn').addEventListener('click', _isqatRun);
+document.getElementById('backFromIsqatResultBtn').addEventListener('click', () => showScreen('isqat'));
 
 
 // ─── Guide Tab Logic ──────────────────────────────────────────
