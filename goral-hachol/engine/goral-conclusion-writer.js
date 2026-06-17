@@ -1508,7 +1508,13 @@ function buildNarrativeByTopic(result) {
 
   const hFig     = (h) => clean(h?.figureHebrew || '');
   const hFort    = (h) => clean(h?.fortune || '');
-  const hTransit = (h) => clean(h?.transit?.meaning || '');
+  // מציג רק את המשפט הראשון של המשמעות, לפני " / " — מונע השמת כל הפירושים כרשימה
+  const hTransit = (h) => {
+    const raw = clean(h?.transit?.meaning || '');
+    if (!raw) return '';
+    const first = raw.split(/\s*\/\s*/)[0].split(/\.\s+/)[0].trim();
+    return first.length > 200 ? first.slice(0, 200) + '…' : first;
+  };
   const hTone    = (h) => figureFortuneTone(h?.fortune);
   const hHazz    = (h) => (h?.hazzStrength && h?.hazzCount > 0) ? ` [עוצמה: ${h.hazzStrength}]` : '';
   const hMeta    = (h) => {
@@ -1663,8 +1669,15 @@ function buildNarrativeByTopic(result) {
   }
 
   // ── 5. ADDITIONAL MAIN HOUSES ────────────────────────────────────
+  // עבור foundations — רק בתים מרכזיים (4, 7, 10), ללא העמסת כל 12 הבתים
+  const GENERAL_KEY_HOUSES = new Set([4, 7, 10]);
   const skipNums = new Set([1, 13, 14, 15, 16, Number(focusNum)].filter(Boolean));
-  const addHouses = (boardAnalysis.houses || []).filter((h) => !skipNums.has(Number(h.house)));
+  const addHouses = (boardAnalysis.houses || []).filter((h) => {
+    const n = Number(h.house);
+    if (skipNums.has(n)) return false;
+    if (topicId === 'foundations') return GENERAL_KEY_HOUSES.has(n);
+    return true;
+  });
 
   if (addHouses.length) {
     const addLines = [];
@@ -1673,7 +1686,7 @@ function buildNarrativeByTopic(result) {
       if (!fig && !fort) continue;
       let line = `בית ${h.house}: ${fig}${hHazz(h)}${fort ? `, ${fort}` : ''}`;
       if (speak)   line += ` [${speak}]`;
-      if (transit) line += `. חאוי: ${transit}`;
+      if (transit) line += `. ${transit}`;
       addLines.push(line);
     }
     if (addLines.length) push(addLines.join('\n'));
@@ -3082,9 +3095,10 @@ export function writeClientReadingHebrew(result) {
     case 'completion':
     case 'partnership': {
       if (h1) push(askerOpeningLine(h1?.fortune, ''));
-      if (!isNegative && jTone > 0) push('הדיין פוסק לחיוב — הכיוון הכללי תומך.');
-      else if (!isPositive && jTone < 0) push('הדיין פוסק לשלילה — כדאי לחכות לזמן טוב יותר.');
-      else push('הדיין ממוזג — יש לנהוג בזהירות.');
+      // משתמשים ב-jTone (הדיין בפועל) ולא ב-isNegative שמחושב מציון כולל
+      if (jTone > 0) push('הדיין פוסק לחיוב — הכיוון הכללי תומך.');
+      else if (jTone < 0) push('הדיין פוסק לשלילה — כדאי לחכות לזמן טוב יותר.');
+      else push('הדיין ממוזג — יש לנהוג בזהירות ולקרוא את הפרטים.');
       break;
     }
 
