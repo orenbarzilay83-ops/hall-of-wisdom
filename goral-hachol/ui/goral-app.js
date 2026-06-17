@@ -1396,8 +1396,15 @@ function showKashfToc() {
     item.addEventListener('click', () => {
       const pageNum = parseInt(item.dataset.page, 10);
       const pages = window._KASHF_BOOK?.pages || [];
-      let idx = pages.findIndex(p => p.page >= pageNum);
-      if (idx < 0) idx = pages.length - 1;
+      let idx = pages.findIndex(p => p.page === pageNum);
+      if (idx < 0) {
+        let best = 0, bestDiff = Infinity;
+        pages.forEach((p, i) => {
+          const diff = Math.abs(p.page - pageNum);
+          if (diff < bestDiff) { bestDiff = diff; best = i; }
+        });
+        idx = best;
+      }
       showKashfPage(idx);
     });
   });
