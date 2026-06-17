@@ -328,6 +328,109 @@ function houseHtml(h, label, isDhamir, isNatural) {
   `;
 }
 
+// ── לוח קונדלי — מפה אסטרולוגית הודית (ראמאל שאסטרה) ──────────────────────────────
+
+const VEDIC_HOUSE_INFO = {
+  1:  { heb: 'לגנה',   sign: 'טלה',     sym: '♈' },
+  2:  { heb: 'ממון',   sign: 'שור',     sym: '♉' },
+  3:  { heb: 'אחים',   sign: 'תאומים',  sym: '♊' },
+  4:  { heb: 'בית/אם', sign: 'סרטן',    sym: '♋' },
+  5:  { heb: 'ילדים',  sign: 'אריה',    sym: '♌' },
+  6:  { heb: 'מחלה',   sign: 'בתולה',   sym: '♍' },
+  7:  { heb: 'זוגיות', sign: 'מאזניים', sym: '♎' },
+  8:  { heb: 'מוות',   sign: 'עקרב',    sym: '♏' },
+  9:  { heb: 'מזל',    sign: 'קשת',     sym: '♐' },
+  10: { heb: 'קריירה', sign: 'גדי',     sym: '♑' },
+  11: { heb: 'רווח',   sign: 'דלי',     sym: '♒' },
+  12: { heb: 'הפסד',   sign: 'דגים',    sym: '♓' },
+};
+
+const ZODIAC_SYM = {
+  'טלה': '♈', 'שור': '♉', 'תאומים': '♊', 'סרטן': '♋',
+  'אריה': '♌', 'בתולה': '♍', 'מאזניים': '♎', 'עקרב': '♏',
+  'קשת': '♐', 'גדי': '♑', 'דלי': '♒', 'דגים': '♓',
+};
+
+const ZODIAC_POS_INFO = {
+  'טאלע': { label: 'עולה ↑',  cls: 'kp-rising'   },
+  'סאעד': { label: 'מצליח ✦', cls: 'kp-fortunate' },
+  'גארב': { label: 'שוקע ↓',  cls: 'kp-setting'   },
+  'האבט': { label: 'יורד ⬇',  cls: 'kp-falling'   },
+};
+
+function buildKundaliHtml(reading) {
+  const getHouse = n => reading.chart.find(x => Number(x.house) === Number(n));
+
+  function kundaliCell(houseNum, gridRow, gridCol) {
+    const entry = getHouse(houseNum);
+    if (!entry) return `<div class="kundali-cell" style="grid-row:${gridRow};grid-column:${gridCol}">—</div>`;
+
+    const key = entry.key;
+    const ex = FIGURE_EXTRA[key] || {};
+    const vedic = VEDIC_HOUSE_INFO[houseNum] || {};
+    const figName = figNameFromReadingHouse(entry);
+    const zodiac = ex.zodiac || '';
+    const zodiacPos = ex.zodiacPos || '';
+    const zodSym = ZODIAC_SYM[zodiac] || '';
+    const posInfo = ZODIAC_POS_INFO[zodiacPos] || {};
+    const isLagna = houseNum === 1;
+    const isOwnSign = vedic.sign && zodiac && vedic.sign === zodiac;
+    const fClass = ex.fClass || '';
+
+    let cls = 'kundali-cell';
+    if (isLagna) cls += ' kundali-lagna';
+    if (isOwnSign) cls += ' kundali-own-sign';
+
+    return `
+      <div class="${cls}" style="grid-row:${gridRow};grid-column:${gridCol}" title="בית ${houseNum} — ${escapeHtml(figName)} — מזל ${escapeHtml(zodiac)}">
+        <div class="kcell-header">
+          <span class="kcell-num">${houseNum}</span>
+          <span class="kcell-vedic">${escapeHtml(vedic.heb || '')}</span>
+        </div>
+        <div class="kcell-glyph">${glyphHtml(entry.figure)}</div>
+        <div class="kcell-fig-name fortune-${fClass}">${escapeHtml(figName)}</div>
+        <div class="kcell-zodiac">${zodSym} ${escapeHtml(zodiac)}</div>
+        ${zodiacPos ? `<span class="kcell-pos ${posInfo.cls || ''}">${escapeHtml(posInfo.label || zodiacPos)}</span>` : ''}
+        ${isOwnSign ? `<span class="kcell-own">✦ ביתו</span>` : ''}
+      </div>
+    `;
+  }
+
+  return `
+    <div class="kundali-wrap">
+      <div class="kundali-header-row">
+        <h3 class="kundali-title">לוח קונדלי — מפה אסטרולוגית הודית</h3>
+        <p class="kundali-subtitle">12 הצורות ממוקמות בבתים הוֶדיים · שיטת ראמאל שאסטרה (מרתי) · <span class="kcell-own">✦ = צורה בסימן מזלה</span></p>
+      </div>
+      <div class="kundali-grid">
+        ${kundaliCell(12,  1, 1)}
+        ${kundaliCell(1,   1, 2)}
+        ${kundaliCell(2,   1, 3)}
+        ${kundaliCell(3,   1, 4)}
+        ${kundaliCell(11,  2, 1)}
+        <div class="kundali-center" style="grid-row:2/4;grid-column:2/4">
+          <div class="kc-title">קונדלי</div>
+          <div class="kc-sub">ראמאל שאסטרה</div>
+          <div class="kc-sub" style="margin-top:6px;font-size:10px;opacity:0.7">מקור: ראמאל שאסטרה עמ' 38</div>
+        </div>
+        ${kundaliCell(4,   2, 4)}
+        ${kundaliCell(10,  3, 1)}
+        ${kundaliCell(5,   3, 4)}
+        ${kundaliCell(9,   4, 1)}
+        ${kundaliCell(8,   4, 2)}
+        ${kundaliCell(7,   4, 3)}
+        ${kundaliCell(6,   4, 4)}
+      </div>
+      <div class="kundali-legend">
+        <span class="kcell-pos kp-rising">עולה = כוח מרבי</span>
+        <span class="kcell-pos kp-fortunate">מצליח = מצב מיטבי</span>
+        <span class="kcell-pos kp-setting">שוקע = כוח פוחת</span>
+        <span class="kcell-pos kp-falling">יורד = כוח חלש</span>
+      </div>
+    </div>
+  `;
+}
+
 function buildBoardHtml(reading) {
   const h = n => reading.chart.find(x => Number(x.house) === Number(n));
   const dhamirHouseNum = reading._precomputedInsight?.boardAnalysis?.dhamirByMizan?.primaryHouseNumber
@@ -691,7 +794,7 @@ async function runReading() {
       reading._precomputedInsight = window.HAWI_INTERPRETER.interpretHawiQuestionInitial(reading.question, reading);
     }
 
-    boardResult.innerHTML = buildBoardHtml(reading) + buildInterpretationHtml(reading);
+    boardResult.innerHTML = buildBoardHtml(reading) + buildInterpretationHtml(reading) + buildKundaliHtml(reading);
     showScreen("board");
   } catch (err) {
     errorBox.textContent = err.message || String(err);
@@ -1149,22 +1252,22 @@ document.querySelectorAll(".guide-tab").forEach(tab => {
 // fortune: טוב=מיטיב, רע=מזיק, ממוזג=בינוני | movement: קבוצה (יוצאת/נכנסת/קבועה/מתהפכת)
 // letters: מיפוי תסקין עבדוה מחאוי — אות ראשית + אות משנית (לצורות מתהפכות)
 const FIGURE_EXTRA = {
-  '1111': { fortune: 'ממוזג',     fClass: 'mixed', movement: 'מתהפכת', letters: ['ע'], gender: 'דו-מיני', gClass: 'neutral' },
-  '1112': { fortune: 'רע',        fClass: 'nahas', movement: 'יוצאת',  letters: ['ח', 'ם'], gender: 'זכר', gClass: 'male' },
-  '1121': { fortune: 'ממוזג',     fClass: 'mixed', movement: 'מתהפכת', letters: ['ט', 'ן'], gender: 'זכר', gClass: 'male' },
-  '1122': { fortune: 'טוב',       fClass: 'saad',  movement: 'יוצאת',  letters: ['ה', 'ש'], gender: 'זכר', gClass: 'male' },
-  '1211': { fortune: 'ממוזג-רע',  fClass: 'mixed', movement: 'מתהפכת', letters: ['י', 'ף'], gender: 'נקבה', gClass: 'female' },
-  '1212': { fortune: 'רע',        fClass: 'nahas', movement: 'יוצאת',  letters: ['ל', 'א'], gender: 'זכר', gClass: 'male' },
-  '1221': { fortune: 'ממוזג-רע',  fClass: 'mixed', movement: 'מתהפכת', letters: ['נ'], gender: 'דו-מיני', gClass: 'neutral' },
-  '1222': { fortune: 'טוב',       fClass: 'saad',  movement: 'יוצאת',  letters: ['א', 'פ'], gender: 'זכר', gClass: 'male' },
-  '2111': { fortune: 'טוב',       fClass: 'saad',  movement: 'נכנסת',  letters: ['ז', 'ך'], gender: 'נקבה', gClass: 'female' },
-  '2112': { fortune: 'ממוזג-טוב', fClass: 'mixed', movement: 'קבועה',  letters: ['ס'], gender: 'דו-מיני', gClass: 'neutral' },
-  '2121': { fortune: 'טוב',       fClass: 'saad',  movement: 'נכנסת',  letters: ['כ', 'ץ'], gender: 'נקבה', gClass: 'female' },
-  '2122': { fortune: 'רע',        fClass: 'nahas', movement: 'קבועה',  letters: ['ג', 'ק'], gender: 'זכר', gClass: 'male' },
-  '2211': { fortune: 'טוב',       fClass: 'saad',  movement: 'נכנסת',  letters: ['ו', 'ת'], gender: 'נקבה', gClass: 'female' },
-  '2212': { fortune: 'טוב',       fClass: 'saad',  movement: 'קבועה',  letters: ['ד', 'ר'], gender: 'נקבה', gClass: 'female' },
-  '2221': { fortune: 'רע',        fClass: 'nahas', movement: 'נכנסת',  letters: ['ב', 'צ'], gender: 'נקבה', gClass: 'female' },
-  '2222': { fortune: 'ממוזג',     fClass: 'mixed', movement: 'קבועה',  letters: ['מ'], gender: 'דו-מיני', gClass: 'neutral' },
+  '1111': { fortune: 'ממוזג',     fClass: 'mixed', movement: 'מתהפכת', letters: ['ע'], gender: 'דו-מיני', gClass: 'neutral', zodiac: 'סרטן',    zodiacPos: 'האבט' },
+  '1112': { fortune: 'רע',        fClass: 'nahas', movement: 'יוצאת',  letters: ['ח', 'ם'], gender: 'זכר', gClass: 'male',    zodiac: 'גדי',      zodiacPos: 'סאעד' },
+  '1121': { fortune: 'ממוזג',     fClass: 'mixed', movement: 'מתהפכת', letters: ['ט', 'ן'], gender: 'זכר', gClass: 'male',    zodiac: 'מאזניים', zodiacPos: 'גארב' },
+  '1122': { fortune: 'טוב',       fClass: 'saad',  movement: 'יוצאת',  letters: ['ה', 'ש'], gender: 'זכר', gClass: 'male',    zodiac: 'אריה',    zodiacPos: 'סאעד' },
+  '1211': { fortune: 'ממוזג-רע',  fClass: 'mixed', movement: 'מתהפכת', letters: ['י', 'ף'], gender: 'נקבה', gClass: 'female', zodiac: 'טלה',     zodiacPos: 'טאלע' },
+  '1212': { fortune: 'רע',        fClass: 'nahas', movement: 'יוצאת',  letters: ['ל', 'א'], gender: 'זכר', gClass: 'male',    zodiac: 'דלי',     zodiacPos: 'סאעד' },
+  '1221': { fortune: 'ממוזג-רע',  fClass: 'mixed', movement: 'מתהפכת', letters: ['נ'], gender: 'דו-מיני', gClass: 'neutral', zodiac: 'גדי',      zodiacPos: 'האבט' },
+  '1222': { fortune: 'טוב',       fClass: 'saad',  movement: 'יוצאת',  letters: ['א', 'פ'], gender: 'זכר', gClass: 'male',    zodiac: 'קשת',     zodiacPos: 'טאלע' },
+  '2111': { fortune: 'טוב',       fClass: 'saad',  movement: 'נכנסת',  letters: ['ז', 'ך'], gender: 'נקבה', gClass: 'female', zodiac: 'שור',     zodiacPos: 'טאלע' },
+  '2112': { fortune: 'ממוזג-טוב', fClass: 'mixed', movement: 'קבועה',  letters: ['ס'], gender: 'דו-מיני', gClass: 'neutral', zodiac: 'תאומים', zodiacPos: 'האבט' },
+  '2121': { fortune: 'טוב',       fClass: 'saad',  movement: 'נכנסת',  letters: ['כ', 'ץ'], gender: 'נקבה', gClass: 'female', zodiac: 'אריה',    zodiacPos: 'טאלע' },
+  '2122': { fortune: 'רע',        fClass: 'nahas', movement: 'קבועה',  letters: ['ג', 'ק'], gender: 'זכר', gClass: 'male',    zodiac: 'עקרב',    zodiacPos: 'גארב' },
+  '2211': { fortune: 'טוב',       fClass: 'saad',  movement: 'נכנסת',  letters: ['ו', 'ת'], gender: 'נקבה', gClass: 'female', zodiac: 'דגים',    zodiacPos: 'גארב' },
+  '2212': { fortune: 'טוב',       fClass: 'saad',  movement: 'קבועה',  letters: ['ד', 'ר'], gender: 'נקבה', gClass: 'female', zodiac: 'סרטן',    zodiacPos: 'סאעד' },
+  '2221': { fortune: 'רע',        fClass: 'nahas', movement: 'נכנסת',  letters: ['ב', 'צ'], gender: 'נקבה', gClass: 'female', zodiac: 'דלי',     zodiacPos: 'גארב' },
+  '2222': { fortune: 'ממוזג',     fClass: 'mixed', movement: 'קבועה',  letters: ['מ'], gender: 'דו-מיני', gClass: 'neutral', zodiac: 'בתולה',   zodiacPos: 'האבט' },
 };
 const DIR_CLASS = { 'צפון': 'north', 'דרום': 'south', 'מזרח': 'east', 'מערב': 'west' };
 const ELEMENT_CLASS = { 'אש': 'fire', 'מים': 'water', 'רוח': 'air', 'עפר': 'earth' };
