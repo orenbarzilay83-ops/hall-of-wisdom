@@ -794,7 +794,12 @@ async function runReading() {
       reading._precomputedInsight = window.HAWI_INTERPRETER.interpretHawiQuestionInitial(reading.question, reading);
     }
 
-    boardResult.innerHTML = buildBoardHtml(reading) + buildInterpretationHtml(reading) + buildKundaliHtml(reading);
+    boardResult.innerHTML = buildBoardHtml(reading) + buildInterpretationHtml(reading);
+    window._lastReading = reading;
+    const kundaliResult = document.getElementById('kundaliResult');
+    const kundaliBtn = document.getElementById('showKundaliBtn');
+    if (kundaliResult) { kundaliResult.style.display = 'none'; kundaliResult.innerHTML = ''; }
+    if (kundaliBtn) { kundaliBtn.textContent = '♐ לוח קונדלי — מפה אסטרולוגית הודית'; }
     showScreen("board");
   } catch (err) {
     errorBox.textContent = err.message || String(err);
@@ -985,6 +990,23 @@ document.getElementById("archiveBtn").addEventListener("click", () => {
 document.getElementById("clearArchiveBtn").addEventListener("click", () => {
   if (!confirm("למחוק את כל הארכיון?")) return;
   if (window.GORAL_CLIENT_ARCHIVE?.clearGoralArchive) window.GORAL_CLIENT_ARCHIVE.clearGoralArchive();
+});
+
+document.getElementById("showKundaliBtn").addEventListener("click", () => {
+  const kundaliResult = document.getElementById('kundaliResult');
+  const btn = document.getElementById('showKundaliBtn');
+  if (!kundaliResult || !window._lastReading) return;
+
+  if (kundaliResult.style.display !== 'none' && kundaliResult.innerHTML) {
+    kundaliResult.style.display = 'none';
+    btn.textContent = '♐ לוח קונדלי — מפה אסטרולוגית הודית';
+    return;
+  }
+
+  kundaliResult.innerHTML = buildKundaliHtml(window._lastReading);
+  kundaliResult.style.display = 'block';
+  btn.textContent = '▲ סגור לוח קונדלי';
+  kundaliResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
 
 // ─── ספר לקוחות ──────────────────────────────────────────────
