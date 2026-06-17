@@ -858,7 +858,7 @@ document.getElementById("clearSelectionBtn").addEventListener("click", () => {
 });
 
 document.getElementById("buildBoardBtn").addEventListener("click", runReading);
-document.getElementById("clearBtn").addEventListener("click", clearForm);
+document.getElementById("clearBtn").addEventListener("click", () => { clearForm(); fillCurrentDateTime(); });
 
 document.querySelectorAll('.profile-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -1566,7 +1566,7 @@ function renderJournal() {
 clearForm();
 
 // מלא תאריך ושעה נוכחיים — חייב להיות אחרי clearForm() שמוחק שדות
-(function fillCurrentDateTime() {
+function fillCurrentDateTime() {
   const now = new Date();
   const dateEl = document.getElementById('questionDateInput');
   const timeEl = document.getElementById('questionTimeInput');
@@ -1580,4 +1580,5 @@ clearForm();
     timeEl.value = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
   }
   updateCastingTimeAlert();
-})();
+}
+fillCurrentDateTime();

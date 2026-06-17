@@ -630,15 +630,15 @@
       margin-bottom:16px;
     }
     .col-sep { width:1px; background:#e0e0e0; margin:0 12px; align-self:stretch; flex-shrink:0; }
-    .open-inputs-col { flex:1.4; min-width:0; display:flex; flex-direction:column; gap:12px; align-items:center; }
+    .open-inputs-col { flex:1.4; min-width:0; display:flex; flex-direction:column; gap:10px; }
     .open-profile-col { flex:1; min-width:0; display:flex; flex-direction:column; gap:20px; }
     .open-field { display:flex; flex-direction:column; gap:3px; width:100%; }
-    .open-field label { font-size:13px; color:#888; font-weight:600; text-align:center; }
-    .open-inputs-col .open-field input { width:30%; margin:0 auto; display:block; }
-    .dt-row { width:100%; display:flex; gap:6px; justify-content:center; }
-    .dt-row > div { flex:0 0 auto; display:flex; flex-direction:column; gap:3px; align-items:center; }
-    .dt-row label { font-size:13px; color:#888; font-weight:600; text-align:center; }
-    .dt-row input { width:110px; text-align:center; }
+    .open-field label { font-size:13px; color:#888; font-weight:600; }
+    .open-inputs-col .open-field input { width:100%; }
+    .dt-row { width:100%; display:flex; gap:8px; }
+    .dt-row > div { flex:1; display:flex; flex-direction:column; gap:3px; }
+    .dt-row label { font-size:13px; color:#888; font-weight:600; }
+    .dt-row input { width:100%; }
     #questionInput { height:60px; min-height:50px; max-height:90px; resize:vertical; }
     @media (orientation:portrait) {
       #questionInput { height:44px; min-height:36px; max-height:70px; }
@@ -754,31 +754,6 @@
       color:#3a2000;
       box-shadow:0 0 0 2px rgba(216,170,69,.3);
     }
-    /* ─── Quesited name input ────────────────────────────────── */
-    .quesited-field {
-      display:flex;
-      align-items:center;
-      gap:10px;
-      background:#f4f8ff;
-      border:1.5px solid rgba(100,140,200,.35);
-      border-radius:10px;
-      padding:8px 14px;
-      margin-top:6px;
-    }
-    .quesited-field label {
-      font-size:14px;
-      font-weight:700;
-      color:#334;
-      white-space:nowrap;
-    }
-    .quesited-field input {
-      flex:1;
-      border:1px solid #c0cce0;
-      border-radius:8px;
-      padding:6px 10px;
-      font-size:14px;
-    }
-
     /* ─── Menu Drawer ─────────────────────────────────────────── */
     .menu-overlay {
       display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;
@@ -1251,6 +1226,10 @@
               <label>מספר טלפון</label>
               <input id="clientPhoneInput" type="tel" autocomplete="off" />
             </div>
+            <div class="open-field">
+              <label>הנשאל עליו</label>
+              <input id="quesitedNameInput" placeholder="שם האדם שעליו נשאלת השאלה (אם יש)" autocomplete="off" />
+            </div>
             <div class="dt-row">
               <div>
                 <label>תאריך</label>
@@ -1298,10 +1277,6 @@
           <div class="open-field">
             <label>שאלת הלקוח</label>
             <textarea id="questionInput" rows="2" autocomplete="off"></textarea>
-            <div class="quesited-field">
-              <label for="quesitedNameInput">הנשאל עליו:</label>
-              <input id="quesitedNameInput" placeholder="שם האדם שעליו נשאלת השאלה (אם יש)" autocomplete="off" />
-            </div>
           </div>
           <div>
             <label>נושא השאלה — בחר את הבית שקשור לשאלתך</label>
@@ -1546,6 +1521,6 @@
     });
   </script>
 
-  <script src="./goral-hachol/ui/goral-app.js?v=8"></script>
+  <script src="./goral-hachol/ui/goral-app.js?v=9"></script>
 </body>
 </html>
