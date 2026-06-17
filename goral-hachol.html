@@ -630,15 +630,15 @@
       margin-bottom:16px;
     }
     .col-sep { width:1px; background:#e0e0e0; margin:0 12px; align-self:stretch; flex-shrink:0; }
-    .open-inputs-col { flex:1.4; min-width:0; display:flex; flex-direction:column; gap:10px; }
+    .open-inputs-col { flex:1.4; min-width:0; display:flex; flex-direction:column; gap:12px; align-items:center; }
     .open-profile-col { flex:1; min-width:0; display:flex; flex-direction:column; gap:20px; }
     .open-field { display:flex; flex-direction:column; gap:3px; width:100%; }
-    .open-field label { font-size:13px; color:#888; font-weight:600; }
-    .open-inputs-col .open-field input { width:100%; }
-    .dt-row { width:100%; display:flex; gap:8px; }
-    .dt-row > div { flex:1; display:flex; flex-direction:column; gap:3px; }
-    .dt-row label { font-size:13px; color:#888; font-weight:600; }
-    .dt-row input { width:100%; }
+    .open-field label { font-size:13px; color:#888; font-weight:600; text-align:center; }
+    .open-inputs-col .open-field input { width:30%; margin:0 auto; display:block; }
+    .dt-row { width:100%; display:flex; gap:6px; justify-content:center; }
+    .dt-row > div { flex:0 0 auto; display:flex; flex-direction:column; gap:3px; align-items:center; }
+    .dt-row label { font-size:13px; color:#888; font-weight:600; text-align:center; }
+    .dt-row input { width:110px; text-align:center; }
     #questionInput { height:60px; min-height:50px; max-height:90px; resize:vertical; }
     @media (orientation:portrait) {
       #questionInput { height:44px; min-height:36px; max-height:70px; }
@@ -1521,6 +1521,6 @@
     });
   </script>
 
-  <script src="./goral-hachol/ui/goral-app.js?v=9"></script>
+  <script src="./goral-hachol/ui/goral-app.js?v=10"></script>
 </body>
 </html>
