@@ -1102,14 +1102,6 @@ function _isqatRun() {
   const boardEl = document.getElementById('isqatBoardResult');
   if (boardEl) boardEl.innerHTML = buildBoardHtml(reading);
 
-  // תצוגת 16 הצורות הנגזרות
-  const derivedHtml = chart.map(h => `
-    <div class="fig-cell">
-      ${glyphHtml(String(h.key || '1111').split('').map(Number))}
-      <div style="font-size:9px;color:#607a94;margin-top:2px">${h.house}</div>
-    </div>
-  `).join('');
-
   const resultEl = document.getElementById('isqatResultBox');
   if (resultEl) resultEl.innerHTML = `
     <div class="isqat-result-box">
@@ -1120,14 +1112,10 @@ function _isqatRun() {
           ${openCount} ÷ 7 = שאר <strong style="color:#071b30;font-size:20px">${remainder}</strong>
         </div>
       </div>
-      <div style="background:${res.color}18;border:2px solid ${res.color};border-radius:10px;padding:16px;text-align:center;margin-bottom:18px">
+      <div style="background:${res.color}18;border:2px solid ${res.color};border-radius:10px;padding:16px;text-align:center">
         <div style="font-size:11px;color:${res.color};margin-bottom:6px;letter-spacing:1px;font-weight:700">${typeLabel}</div>
         <div style="font-size:22px;font-weight:900;color:#071b30">${escapeHtml(res.hebrew)}</div>
         <div style="font-size:14px;color:#2a3a4a;margin-top:10px;line-height:1.7">${escapeHtml(res.detail)}</div>
-      </div>
-      <div>
-        <div style="font-size:11px;color:#607a94;margin-bottom:8px;text-align:center">16 הצורות שנגזרו:</div>
-        <div class="isqat-derived-grid">${derivedHtml}</div>
       </div>
     </div>`;
 
