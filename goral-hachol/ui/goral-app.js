@@ -754,11 +754,6 @@ document.getElementById("manualBtn").addEventListener("click", () => {
   showScreen("select");
 });
 
-document.getElementById("startBtn").addEventListener("click", () => {
-  renderMotherSlots();
-  renderFigureGrid();
-  showScreen("select");
-});
 
 // ─── בחירה אוטומטית לפי עצירה ────────────────────────────────────────────────
 let _autoInterval = null;
@@ -1179,6 +1174,96 @@ function renderGuide() {
   renderHousesGuide();
   renderBuildGuide();
   renderConceptsGuide();
+  renderIsqat7Guide();
+}
+
+function renderIsqat7Guide() {
+  const el = document.getElementById('guide-isqat7');
+  if (!el) return;
+
+  const results = [
+    { num: 1, hebrew: 'אחיזת ג׳ין', arabic: 'مس الجن', color: '#7b2fbe', type: 'רוחנית',
+      desc: 'השארית 1 מרמזת שהמחלה מקורה בנגיעה של ג׳ין. התסמינים כוללים פחדים לילות, שינוי פתאומי באישיות, חלומות מבעיתים, ומחלה שהרפואה המקובלת אינה מצליחה לאבחן.' },
+    { num: 2, hebrew: 'עין הרע / קנאה', arabic: 'العين والحسد', color: '#c0392b', type: 'רוחנית',
+      desc: 'השארית 2 מצביעה על פגיעה מעין הרע או קנאה. האדם נפגע ממבט או מחשבה של קנאה. הפגיעה יכולה להגיע ממכר קרוב מבלי שהתכוון לרע.' },
+    { num: 3, hebrew: 'כישוף (אדם עשה)', arabic: 'السحر', color: '#8b0000', type: 'רוחנית',
+      desc: 'השארית 3 מרמזת על כישוף שאדם עשה בכוונה. מדובר בנזק מכוון — בדרך כלל מצד אויב, יריב, או אדם מקנא.' },
+    { num: 4, hebrew: 'מחלת ליחה (בלגם)', arabic: 'مرض البلغم', color: '#2980b9', type: 'גופנית',
+      desc: 'השארית 4 מצביעה על עודף ליחה (בלגם) בגוף לפי רפואת החומרים הארבעה. תסמינים: עייפות, כבדות, כיח, בעיות נשימה, ירידה בחיוניות.' },
+    { num: 5, hebrew: 'מחלת דם גופנית', arabic: 'مرض الدم', color: '#e74c3c', type: 'גופנית',
+      desc: 'השארית 5 מרמזת על בעיה בדם — עודף, חסר, או זיהום. הגוף נמצא תחת לחץ דמי. התסמינים יכולים לכלול חום, דלקות, אדמומיות.' },
+    { num: 6, hebrew: 'מרה שחורה', arabic: 'السوداء', color: '#27ae60', type: 'גופנית',
+      desc: 'השארית 6 מרמזת על עודף מרה שחורה (ملنخوليا). תסמינים: דיכאון, חרדה, פחדים, בדידות, מחשבות קודרות, קוצר נשימה, כאבי ראש.' },
+    { num: 7, hebrew: 'מרה צהובה', arabic: 'الصفراء', color: '#e67e22', type: 'גופנית',
+      desc: 'השארית 7 מרמזת על עודף מרה צהובה. תסמינים: כאבי בטן ועיכול, צהבהב בעור, מרירות בפה, כעס וחוסר סבלנות, חום גבוה.' },
+  ];
+
+  el.innerHTML = `
+    <div style="direction:rtl">
+      <div class="concept-card" style="margin-bottom:18px">
+        <div class="concept-title">מהי שיטת גורל חולי 7×7?</div>
+        <div class="concept-body" style="line-height:1.9">
+          שיטה פשוטה לאבחון סיבת מחלה או מצוקה — רוחנית או גופנית — דרך לוח הגורל.
+          בסיס השיטה: ספירת הנקודות הבודדות (●) בכל 16 הצורות של הלוח, חלוקה ב-7, והכרעה לפי השארית.
+        </div>
+      </div>
+
+      <div class="build-step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">הטל 4 אמהות</div>
+          <div class="step-desc">בחר 4 צורות ידנית (מהגריד) או לחץ "אוטומטי" לבחירה לפי עצירה. האפליקציה תגזור מהן 16 צורות (אמהות, בנות, נכדות, עדים, דיין, משלים).</div>
+        </div>
+      </div>
+
+      <div class="build-step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">ספירת הנקודות הבודדות</div>
+          <div class="step-desc">
+            בכל צורה יש 4 שורות. כל שורה היא <strong>● (נקודה אחת)</strong> או <strong>●● (שתי נקודות)</strong>.
+            סופרים רק את השורות עם נקודה <em>אחת בלבד</em> — מכל 16 הצורות יחד.
+          </div>
+          <div class="step-example">דוגמה: 16 צורות × 4 שורות = 64 שורות. נניח שמתוכן 20 הן נקודה אחת → סה"כ = 20</div>
+        </div>
+      </div>
+
+      <div class="build-step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">חישוב השארית</div>
+          <div class="step-desc">מחשבים: <strong>(סה"כ − 1) ÷ 7</strong> ולוקחים את השארית. השארית תמיד בין 1 ל-7.</div>
+          <div class="step-example">דוגמה: (20 − 1) = 19 &nbsp;→&nbsp; 19 ÷ 7 = 2 שארית <strong>5</strong> → מחלת דם גופנית</div>
+        </div>
+      </div>
+
+      <div class="build-step" style="margin-bottom:22px">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">קריאת האבחנה</div>
+          <div class="step-desc">השארית (1–7) מורה על סוג הבעיה. ראה טבלת האבחנות למטה.</div>
+        </div>
+      </div>
+
+      <div class="concept-title" style="margin-bottom:12px;font-size:1rem">טבלת האבחנות — שארית 1 עד 7</div>
+      ${results.map(r => `
+        <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;background:${r.color}10;border:1.5px solid ${r.color}50;border-radius:12px;padding:12px 14px">
+          <div style="min-width:32px;height:32px;border-radius:50%;background:${r.color};color:#fff;font-weight:900;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0">${r.num}</div>
+          <div style="flex:1">
+            <div style="font-weight:900;font-size:15px;color:#071b30">${r.hebrew}</div>
+            <div style="font-size:12px;color:${r.color};font-weight:700;margin-bottom:4px">${r.arabic} &nbsp;|&nbsp; ${r.type}</div>
+            <div style="font-size:13px;color:#3a4e62;line-height:1.7">${r.desc}</div>
+          </div>
+        </div>`).join('')}
+
+      <div class="concept-card" style="margin-top:18px">
+        <div class="concept-title">הערה חשובה</div>
+        <div class="concept-body">
+          שיטת 7×7 היא כלי אבחון ראשוני בלבד — היא מצביעה על כיוון, לא פוסקת פסיקה מוחלטת.
+          יש להשלים את הבנת המצב עם ניתוח מלא של לוח הגורל (עדים, דיין, בית 1 ובית 6).
+        </div>
+      </div>
+    </div>`;
 }
 
 function renderFiguresGuide() {
