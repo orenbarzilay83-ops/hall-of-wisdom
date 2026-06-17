@@ -1031,12 +1031,13 @@ function _isqatRenderSlots() {
   container.innerHTML = _isqatMothers.map((fig, i) => {
     const isActive = i === _isqatActiveSlot;
     const filled   = !!fig;
-    return `<div class="isqat-slot${filled ? ' filled' : ''}${isActive ? ' active' : ''}" data-slot="${i}">
+    return `<button type="button" class="mother-slot${filled ? ' filled' : ''}${isActive ? ' active' : ''}" data-slot="${i}">
+      <div style="font-weight:900;font-size:13px;color:#1e2a36">אם ${i + 1}</div>
       ${filled ? glyphHtml(fig.lines) : ''}
-      <div class="isqat-slot-lbl">${filled ? fig.name : `אם ${i + 1}`}</div>
-    </div>`;
+      <div style="font-size:11px;color:#5a6a7a;margin-top:2px">${filled ? escapeHtml(fig.name) : 'לחץ לבחירה'}</div>
+    </button>`;
   }).join('');
-  container.querySelectorAll('.isqat-slot').forEach(el => {
+  container.querySelectorAll('.mother-slot').forEach(el => {
     el.addEventListener('click', () => {
       _isqatActiveSlot = Number(el.dataset.slot);
       _isqatRenderSlots();
@@ -1052,17 +1053,23 @@ function _isqatRenderGrid() {
   if (!grid) return;
   const currentFig = _isqatMothers[_isqatActiveSlot];
   grid.innerHTML = figures.map(fig => {
-    const isActive = currentFig?.key === fig.key;
-    return `<button type="button" class="isqat-fig-btn${isActive ? ' active-slot-fig' : ''}" data-key="${escapeHtml(fig.key)}">
+    const isSelected = currentFig?.key === fig.key;
+    // check if fig is used in any slot (for other-selected styling)
+    const slotIdx = _isqatMothers.findIndex(m => m?.key === fig.key);
+    const isOther = slotIdx !== -1 && slotIdx !== _isqatActiveSlot;
+    return `<button type="button"
+        class="figure-card${isSelected ? ' selected' : ''}${isOther ? ' other-selected' : ''}"
+        data-key="${escapeHtml(fig.key)}">
       ${glyphHtml(fig.lines)}
+      <div class="figure-name" style="font-size:13px">${escapeHtml(fig.name)}</div>
+      ${isOther ? `<div class="other-slot-badge">אם ${slotIdx + 1}</div>` : ''}
     </button>`;
   }).join('');
-  grid.querySelectorAll('.isqat-fig-btn').forEach(btn => {
+  grid.querySelectorAll('.figure-card').forEach(btn => {
     btn.addEventListener('click', () => {
       const fig = figures.find(f => f.key === btn.dataset.key);
       if (!fig) return;
       _isqatMothers[_isqatActiveSlot] = fig;
-      // קדם לחריץ הריק הבא
       let next = _isqatMothers.findIndex((m, i) => !m && i > _isqatActiveSlot);
       if (next === -1) next = _isqatMothers.findIndex(m => !m);
       if (next !== -1) _isqatActiveSlot = next;
@@ -1105,16 +1112,16 @@ function _isqatRun() {
   document.getElementById('isqatResult').innerHTML = `
     <div class="isqat-result-box">
       <div style="text-align:center;margin-bottom:18px">
-        <div style="font-size:12px;color:#4a6080;margin-bottom:4px">נקודות פתוחות ב-16 הצורות</div>
-        <div style="font-size:54px;font-weight:900;color:#1a3a5c;line-height:1">${openCount}</div>
-        <div style="font-size:13px;color:#4a6080;margin-top:6px">
-          ${openCount} ÷ 7 = שאר <strong style="color:#1a3a5c;font-size:20px">${remainder}</strong>
+        <div style="font-size:12px;color:#5a6a7a;margin-bottom:4px">נקודות פתוחות ב-16 הצורות</div>
+        <div style="font-size:54px;font-weight:900;color:#071b30;line-height:1">${openCount}</div>
+        <div style="font-size:13px;color:#5a6a7a;margin-top:6px">
+          ${openCount} ÷ 7 = שאר <strong style="color:#071b30;font-size:20px">${remainder}</strong>
         </div>
       </div>
       <div style="background:${res.color}18;border:2px solid ${res.color};border-radius:10px;padding:16px;text-align:center;margin-bottom:18px">
         <div style="font-size:11px;color:${res.color};margin-bottom:6px;letter-spacing:1px;font-weight:700">${typeLabel}</div>
-        <div style="font-size:24px;font-weight:900;color:#1a1a2e">${escapeHtml(res.hebrew)}</div>
-        <div style="font-size:14px;color:#334;margin-top:10px;line-height:1.7">${escapeHtml(res.detail)}</div>
+        <div style="font-size:22px;font-weight:900;color:#071b30">${escapeHtml(res.hebrew)}</div>
+        <div style="font-size:14px;color:#2a3a4a;margin-top:10px;line-height:1.7">${escapeHtml(res.detail)}</div>
       </div>
       <div>
         <div style="font-size:11px;color:#607a94;margin-bottom:8px;text-align:center">16 הצורות שנגזרו:</div>
