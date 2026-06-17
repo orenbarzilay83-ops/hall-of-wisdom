@@ -1096,7 +1096,7 @@ function _isqatRun() {
 
   // תצוגת 16 הצורות הנגזרות
   const derivedHtml = chart.map(h => `
-    <div style="text-align:center">
+    <div class="fig-cell">
       ${glyphHtml(String(h.key || '1111').split('').map(Number))}
       <div style="font-size:9px;color:#607a94;margin-top:2px">${h.house}</div>
     </div>
@@ -1105,19 +1105,19 @@ function _isqatRun() {
   document.getElementById('isqatResult').innerHTML = `
     <div class="isqat-result-box">
       <div style="text-align:center;margin-bottom:18px">
-        <div style="font-size:12px;color:#7ea8d0;margin-bottom:4px">נקודות פתוחות ב-16 הצורות</div>
-        <div style="font-size:54px;font-weight:900;color:#f0c040;line-height:1">${openCount}</div>
-        <div style="font-size:13px;color:#8eaac8;margin-top:6px">
-          ${openCount} ÷ 7 = שאר <strong style="color:#fff;font-size:18px">${remainder}</strong>
+        <div style="font-size:12px;color:#4a6080;margin-bottom:4px">נקודות פתוחות ב-16 הצורות</div>
+        <div style="font-size:54px;font-weight:900;color:#1a3a5c;line-height:1">${openCount}</div>
+        <div style="font-size:13px;color:#4a6080;margin-top:6px">
+          ${openCount} ÷ 7 = שאר <strong style="color:#1a3a5c;font-size:20px">${remainder}</strong>
         </div>
       </div>
-      <div style="background:${res.color}22;border:2px solid ${res.color};border-radius:10px;padding:16px;text-align:center;margin-bottom:18px">
-        <div style="font-size:11px;color:${res.isSpiritual ? '#c39bd3' : '#7fb3d3'};margin-bottom:6px;letter-spacing:1px">${typeLabel}</div>
-        <div style="font-size:24px;font-weight:900;color:#fff">${escapeHtml(res.hebrew)}</div>
-        <div style="font-size:14px;color:#bcd;margin-top:10px;line-height:1.6">${escapeHtml(res.detail)}</div>
+      <div style="background:${res.color}18;border:2px solid ${res.color};border-radius:10px;padding:16px;text-align:center;margin-bottom:18px">
+        <div style="font-size:11px;color:${res.color};margin-bottom:6px;letter-spacing:1px;font-weight:700">${typeLabel}</div>
+        <div style="font-size:24px;font-weight:900;color:#1a1a2e">${escapeHtml(res.hebrew)}</div>
+        <div style="font-size:14px;color:#334;margin-top:10px;line-height:1.7">${escapeHtml(res.detail)}</div>
       </div>
       <div>
-        <div style="font-size:11px;color:#607a94;margin-bottom:6px;text-align:center">16 הצורות שנגזרו:</div>
+        <div style="font-size:11px;color:#607a94;margin-bottom:8px;text-align:center">16 הצורות שנגזרו:</div>
         <div class="isqat-derived-grid">${derivedHtml}</div>
       </div>
     </div>`;
