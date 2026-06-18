@@ -2105,6 +2105,9 @@ function buildSpiritualNarrative(result) {
     };
     const namePrefix = name ? `${name} — ` : '';
     push(`${namePrefix}${gradeMap[sd.grade] || gradeMap['mixed']}`);
+    // If isqat cross-reference contradicts the grade, show it immediately here
+    // so the user sees both methods side by side before the detailed analysis
+    if (sd.crossReferenceNote) push(sd.crossReferenceNote);
   }
 
   // ── 2. JUDGE (H15) — transit relevant here (outcome meaning) ─────
@@ -2217,9 +2220,7 @@ function buildSpiritualNarrative(result) {
       dParts.push(`אבחון גופני (8×6 — לפי יסוד בית 6 ובית 8): ${organ.hebrewText}`);
     }
 
-    if (sd.crossReferenceNote) {
-      dParts.push(sd.crossReferenceNote);
-    }
+    // crossReferenceNote is shown at the top (section 1) — skip here to avoid repetition
 
     if (dParts.length) push(dParts.join('\n'));
   }
@@ -2256,12 +2257,17 @@ function buildSpiritualNarrative(result) {
   // ── 10. SORCERER H9 + SIHR DETAILS ───────────────────────────────
   {
     const ind = (s) => s.replace(/\n/g, '\n  ');
+    const isqatSaysPhysical = sd.isqatResult?.isSpiritual === false;
     const sorcererH9 = boardAnalysis.sorcererH9;
-    if (sorcererH9) push(`כישוף — כיוון המכשף:\n  ${ind(sorcererH9.outputHebrew)}`);
 
-    // Richer sorcery detail from spiritual diagnostics engine
-    if (sd.sihrDetails?.length) {
-      push(`פרטי הכישוף (לפי כללי המקור):\n  ${ind(sd.sihrDetails.join('\n'))}`);
+    if (sorcererH9 || sd.sihrDetails?.length) {
+      if (isqatSaysPhysical) {
+        push('הפרטים הבאים מבוססים על דפוסי בתים בלבד (שיטת כשף) — ספירת המפתוח מצביעה על גורם גופני:');
+      }
+      if (sorcererH9) push(`כישוף — כיוון המכשף:\n  ${ind(sorcererH9.outputHebrew)}`);
+      if (sd.sihrDetails?.length) {
+        push(`פרטי הכישוף (לפי כללי המקור):\n  ${ind(sd.sihrDetails.join('\n'))}`);
+      }
     }
   }
 

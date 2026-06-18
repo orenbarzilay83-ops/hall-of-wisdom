@@ -114,7 +114,7 @@ const TOPIC_MAIN_HOUSES = {
   commerce:         [1, 2, 7, 10, 13, 14, 15],
   loveHate:         [1, 5, 7, 11, 13, 14, 15],
   completion:       [1, 13, 14, 15],
-  foundations:      [1, 13, 14, 15, 16],
+  foundations:      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
   generalReading:   [1, 2, 6, 7, 10, 11, 12, 13, 14, 15, 16],
   prisoner:         [1, 4, 5, 12, 15],
   partnership:      [1, 2, 7, 10, 13, 14, 15],
