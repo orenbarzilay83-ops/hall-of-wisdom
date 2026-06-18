@@ -2733,6 +2733,8 @@ function gradeToVerdict(grade) {
 export function writeClientReadingHebrew(result) {
   const { topicId, boardAnalysis, clientContext, kashfVerdict, kashfSupportAnalysis } = result;
   if (!boardAnalysis?.hasBoard) return null;
+  // הנרטיב הרוחני המלא מגיע מ-buildSpiritualNarrative — אין צורך בבלוק כפול שגורם לסתירות
+  if (topicId === 'spiritualDiagnostics') return null;
 
   const name      = clean(clientContext?.clientName || '');
   const quesited  = clean(clientContext?.quesitedName || '');
@@ -2768,8 +2770,8 @@ export function writeClientReadingHebrew(result) {
   const prefix = name ? `${name}, ` : '';
 
   // ── 2. פסיקה ראשית ─────────────────────────────────────────────
-  // For yearly forecast the kashf engine may produce commerce-specific text — use grade instead.
-  const mainVerdict = topicId === 'yearlyForecast'
+  // yearlyForecast וגם spiritualDiagnostics (אם הגיעו לכאן) — grade בלבד, לא כשף
+  const mainVerdict = (topicId === 'yearlyForecast' || topicId === 'spiritualDiagnostics')
     ? gradeToVerdict(grade)
     : (kashfVerdict?.verdictHebrew || gradeToVerdict(grade));
   push(`${prefix}${mainVerdict}`);
@@ -3140,8 +3142,9 @@ export function writeClientReadingHebrew(result) {
     }
 
     case 'spiritualDiagnostics': {
-      const grad = result.boardScore?.grade;
-      const spiritFound = grad === 'strong-suspicion' || grad === 'medium-suspicion' || isNegative;
+      // משתמשים ב-grade של מנוע הרוחניות — לא ב-boardScore הכללי שנותן תשובה שגויה
+      const sdGrade = result.spiritualDiagnosis?.grade;
+      const spiritFound = sdGrade === 'strong-suspicion' || sdGrade === 'medium-suspicion';
       push(spiritFound
         ? 'הלוח מראה סימנים לפגיעה רוחנית — מומלץ לטפל בכך.'
         : 'הלוח לא מראה סימנים חזקים לפגיעה רוחנית.');
