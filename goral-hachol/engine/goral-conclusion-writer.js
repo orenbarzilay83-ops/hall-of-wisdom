@@ -1699,8 +1699,8 @@ function buildNarrativeByTopic(result) {
     return true;
   });
 
-  // ── 5.5. FOUNDATIONS — מסקנה כוללת מלאה (כל תחומי החיים) ────────
-  if (topicId === 'foundations') {
+  // ── 5.5. FOUNDATIONS / GENERAL READING — מסקנה כוללת מלאה (כל תחומי החיים) ────────
+  if (topicId === 'foundations' || topicId === 'generalReading') {
     const LIFE_AREAS = [
       { num: 2,  label: 'ממון ורכוש'         },
       { num: 3,  label: 'אחים וקרובים'        },
@@ -1752,7 +1752,7 @@ function buildNarrativeByTopic(result) {
     if (summaryParts.length) push(summaryParts.join(' | '));
   }
 
-  if (topicId !== 'foundations' && addHouses.length) {
+  if (topicId !== 'foundations' && topicId !== 'generalReading' && addHouses.length) {
     const addLines = [];
     for (const h of addHouses) {
       const fig = hFig(h), fort = hFort(h), transit = hTransit(h), speak = speakNote(h);
@@ -2439,11 +2439,15 @@ export function writeShortClientVerdict(result) {
     }
 
     case 'partnership': {
-      const h7 = getHouseFromBoard(boardAnalysis, 7);
+      const h7p  = getHouseFromBoard(boardAnalysis, 7);
+      const h2p  = getHouseFromBoard(boardAnalysis, 2);
+      const h10p = getHouseFromBoard(boardAnalysis, 10);
       const qSubj = quesited || 'השותף';
 
-      if (h1) lines.push(figLine(h1, `${name || asker} (בית 1)`));
-      if (h7) lines.push(figLine(h7, `${qSubj} (בית 7)`));
+      if (h1)   lines.push(figLine(h1,   `${name || asker} (בית 1)`));
+      if (h7p)  lines.push(figLine(h7p,  `${qSubj} (בית 7)`));
+      if (h2p)  lines.push(figLine(h2p,  'הממון המשותף (בית 2)'));
+      if (h10p) lines.push(figLine(h10p, 'תוצאת השותפות (בית 10)'));
       if (kashfText) lines.push(kashfText);
       else if (jTone > 0) lines.push('הדיין: השותפות תצלח — יש כיוון חיובי.');
       else if (jTone < 0) lines.push('הדיין: השותפות מסוכנת — יש לנהוג בזהירות.');
@@ -2494,11 +2498,15 @@ export function writeShortClientVerdict(result) {
     }
 
     case 'loveHate': {
-      const h7 = getHouseFromBoard(boardAnalysis, 7);
+      const h7lh  = getHouseFromBoard(boardAnalysis, 7);
+      const h5lh  = getHouseFromBoard(boardAnalysis, 5);
+      const h11lh = getHouseFromBoard(boardAnalysis, 11);
       const qSubj = quesited || 'הצד השני';
 
-      if (h1) lines.push(figLine(h1, `${name || asker} (בית 1)`));
-      if (h7) lines.push(figLine(h7, `${qSubj} (בית 7)`));
+      if (h1)   lines.push(figLine(h1,   `${name || asker} (בית 1)`));
+      if (h7lh) lines.push(figLine(h7lh, `${qSubj} (בית 7)`));
+      if (h5lh) lines.push(figLine(h5lh, 'הנאה / קשר עמוק (בית 5)'));
+      if (h11lh) lines.push(figLine(h11lh, 'תקוות הקשר (בית 11)'));
       if (kashfText) lines.push(kashfText);
       else if (jTone > 0) lines.push('הדיין: יש קרבה וחיבה — הקשר חיובי.');
       else if (jTone < 0) lines.push('הדיין: יש שנאה או ניתוק — הקשר מאתגר.');
@@ -2508,7 +2516,12 @@ export function writeShortClientVerdict(result) {
 
     case 'completion': {
       const tahasil = boardAnalysis.tahasil;
+      const h5cp = getHouseFromBoard(boardAnalysis, 5);
+      const h9cp = getHouseFromBoard(boardAnalysis, 9);
 
+      if (h1)   lines.push(figLine(h1,   `${name || asker} (בית 1)`));
+      if (h5cp) lines.push(figLine(h5cp, 'תוצאה / מה ייצא (בית 5)'));
+      if (h9cp) lines.push(figLine(h9cp, 'מסע / עתיד הדבר (בית 9)'));
       if (kashfText) lines.push(kashfText);
       else if (jTone > 0) lines.push('הדיין: הדבר יושלם — הלוח נוטה לחיוב.');
       else if (jTone < 0) lines.push('הדיין: הדבר לא יושלם — יש מניעה.');
@@ -2531,11 +2544,13 @@ export function writeShortClientVerdict(result) {
     }
 
     case 'prisoner': {
-      const h12 = getHouseFromBoard(boardAnalysis, 12);
-      const h5  = getHouseFromBoard(boardAnalysis, 5);
+      const h6p  = getHouseFromBoard(boardAnalysis, 6);
+      const h10p = getHouseFromBoard(boardAnalysis, 10);
+      const h12p = getHouseFromBoard(boardAnalysis, 12);
 
-      if (h12) lines.push(figLine(h12, 'הכלא (בית 12)'));
-      if (h5)  lines.push(figLine(h5, 'גורל האסיר (בית 5)'));
+      if (h6p)  lines.push(figLine(h6p,  'האסיר עצמו (בית 6)'));
+      if (h10p) lines.push(figLine(h10p, 'הסמכות המשחררת (בית 10)'));
+      if (h12p) lines.push(figLine(h12p, 'הכלא (בית 12)'));
       if (kashfText) lines.push(kashfText);
       else if (jTone > 0) lines.push('הדיין: יש סיכוי לשחרור.');
       else if (jTone < 0) lines.push('הדיין: המאסר ימשך — אין סימן ברור ליציאה.');
@@ -2544,11 +2559,13 @@ export function writeShortClientVerdict(result) {
     }
 
     case 'siblings': {
-      const h3 = getHouseFromBoard(boardAnalysis, 3);
+      const h3sb = getHouseFromBoard(boardAnalysis, 3);
+      const h7sb = getHouseFromBoard(boardAnalysis, 7);
       const qSubj = quesited || 'האח/השכן';
 
-      if (h3) lines.push(figLine(h3, `${qSubj} (בית 3)`));
-      if (h1) lines.push(figLine(h1, `${name || asker} (בית 1)`));
+      if (h1)   lines.push(figLine(h1,   `${name || asker} (בית 1)`));
+      if (h3sb) lines.push(figLine(h3sb, `${qSubj} (בית 3)`));
+      if (h7sb) lines.push(figLine(h7sb, 'הצד שכנגד / סכסוך (בית 7)'));
       if (kashfText) lines.push(kashfText);
       else if (jTone > 0) lines.push('הדיין: הקשר חיובי — יש שיתוף פעולה ועזרה.');
       else if (jTone < 0) lines.push('הדיין: הקשר קשה — יש מחלוקת או ריחוק.');
@@ -2974,17 +2991,17 @@ export function writeClientReadingHebrew(result) {
 
     case 'prisoner': {
       const h12Fort = fortToWord(h12?.fortune);
-      const h5Fort  = fortToWord(h5?.fortune);
+      const h6Fort  = fortToWord(h6?.fortune);
       push(h12Fort === 'קשה'
         ? 'הלוח מראה שמצב הכלא כבד — הנסיבות לא קלות לשחרור.'
         : 'הלוח מראה שהמאסר אינו בעוצמה מלאה.');
-      push(h5Fort === 'טוב' && !isNegative
-        ? 'יש סיכוי טוב לשחרור — הסימנים תומכים ביציאה.'
-        : h5Fort === 'טוב' && isNegative
-        ? 'יש כמה סימנים חיוביים, אך הלוח מצביע על עיכוב בשחרור.'
-        : h5Fort === 'קשה'
-        ? 'הסיכוי לשחרור מהיר קטן — ייתכן שייקח זמן.'
-        : 'שחרור אפשרי, אך לא ודאי.');
+      push(h6Fort === 'טוב' && !isNegative
+        ? 'מצב האסיר עצמו (בית 6) — יש כוח בצד האסיר, הסימנים תומכים ביציאה.'
+        : h6Fort === 'טוב' && isNegative
+        ? 'יש כמה סימנים חיוביים באסיר, אך הלוח מצביע על עיכוב בשחרור.'
+        : h6Fort === 'קשה'
+        ? 'מצב האסיר קשה — הסיכוי לשחרור מהיר קטן.'
+        : 'מצב האסיר מעורב — שחרור אפשרי, אך לא ודאי.');
       const nlPrisoner = nameLetters.find(n => n.houseNumber === 12);
       if (nlPrisoner?.letters?.length > 0) {
         push(`הגורם שמחזיק אותו בכלא — שמו מתחיל ב: ${nlPrisoner.letters.join(' / ')}.`);
@@ -3150,42 +3167,7 @@ export function writeClientReadingHebrew(result) {
     }
 
     case 'generalReading': {
-      const h4g  = getHouseFromBoard(boardAnalysis, 4);
-      const h7g  = getHouseFromBoard(boardAnalysis, 7);
-      const h10g = getHouseFromBoard(boardAnalysis, 10);
-      const h11g = getHouseFromBoard(boardAnalysis, 11);
-
       if (h1) push(askerOpeningLine(h1?.fortune, ''));
-
-      if (h4g) {
-        const h4Fort = fortToWord(h4g?.fortune);
-        push(h4Fort === 'טוב'
-          ? 'המצב הכללי מוצק — יש בסיס ויציבות.'
-          : h4Fort === 'קשה'
-          ? 'היסודות מעורערים — כדאי לחזק את הבסיס לפני קדמה.'
-          : 'המצב הכללי מאוזן — לא מצוין, לא גרוע.');
-      }
-      if (h7g) {
-        const h7Fort = fortToWord(h7g?.fortune);
-        push(h7Fort === 'טוב'
-          ? 'יחסים עם הסביבה — יש תמיכה וחיבורים חיוביים.'
-          : h7Fort === 'קשה'
-          ? 'יחסים עם הסביבה — יש מתח או התנגדות מאנשים סביב.'
-          : 'הסביבה האנושית מעורבת — חלק תומכים, חלק לא.');
-      }
-      if (h10g) {
-        const h10Fort = fortToWord(h10g?.fortune);
-        if (!isNegative && h10Fort === 'טוב') push('בתחום הקריירה והמעמד — הלוח מצביע על קדמה וסיכוי להצלחה.');
-        else if (isNegative || h10Fort === 'קשה') push('בתחום הקריירה — יש קשיים ועיכובים כרגע.');
-        else push('בתחום הקריירה — המצב ממוצע, לא בולט לטובה או לרעה.');
-      }
-      if (h11g) {
-        const h11Fort = fortToWord(h11g?.fortune);
-        if (!isNegative && h11Fort === 'טוב') push('התקוות והרצונות — יש סיכוי טוב שיתגשמו.');
-        else if (isNegative || h11Fort === 'קשה') push('התקוות — הלוח מראה מכשולים לפני ההגשמה.');
-        else push('התקוות אפשריות — אך לא ודאי.');
-      }
-
       if (isPositive || (!isNegative && jTone > 0)) push('הדיין פוסק לחיוב — הכיוון הכללי תומך.');
       else if (isNegative || jTone < 0) push('הדיין פוסק לשלילה — כדאי לחכות לזמן טוב יותר.');
       else push('הדיין ממוזג — יש לנהוג בזהירות.');
