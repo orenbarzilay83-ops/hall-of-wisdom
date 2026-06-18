@@ -5,6 +5,51 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
 <title>היכל החכמה</title>
+<style>
+/* ── מחשבון גימטריה וחותם ── */
+.result-a{display:none;margin-top:16px;background:var(--bg2);border-radius:12px;padding:16px;text-align:center}
+.psalm-number{font-size:3em;font-weight:900;color:var(--gold);line-height:1.1}
+.psalm-label{color:var(--muted);font-size:.9em;margin-top:4px}
+.total-sum{color:var(--muted);font-size:.82em;margin-top:8px}
+.selector-label{color:var(--text2);font-size:.95em;font-weight:bold;margin-bottom:12px;display:block;text-align:center}
+.selector-row{display:flex;gap:10px;align-items:stretch;margin-bottom:4px}
+.arrow-btn{width:56px;border-radius:14px;border:2px solid var(--border2);background:var(--bg2);color:var(--gold-dark);font-size:2em;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s;font-family:inherit}
+.arrow-btn:active{background:var(--bg3)}
+.accordion-trigger{flex:1;background:var(--bg);border:2px solid var(--border);border-radius:14px;padding:14px 16px;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;transition:border-color .2s}
+.accordion-trigger.open{border-color:var(--gold);border-bottom-left-radius:0;border-bottom-right-radius:0}
+.trigger-num{font-size:2.4em;font-weight:900;color:var(--gold);line-height:1;text-align:center}
+.trigger-arrow{position:absolute;left:16px;color:var(--gold);font-size:1.6em;transition:transform .25s;opacity:.7}
+.accordion-trigger.open .trigger-arrow{transform:rotate(180deg)}
+.accordion-panel{max-height:0;overflow:hidden;transition:max-height .3s ease;background:var(--bg);border:2px solid var(--gold);border-top:none;border-bottom-left-radius:14px;border-bottom-right-radius:14px;margin-bottom:14px}
+.accordion-panel.open{max-height:260px}
+.grid-inner{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;padding:12px;overflow-y:auto;max-height:256px}
+.q-btn{aspect-ratio:1;border-radius:7px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:11px;font-weight:bold;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .1s,color .1s}
+.q-btn.selected{background:var(--gold);color:#1a0e00}
+.psalm-preview{display:none;margin-top:14px;background:var(--bg2);border-radius:12px;padding:14px;border:1px solid var(--border)}
+.preview-title{color:var(--gold-dark);font-size:.9em;font-weight:bold;margin-bottom:8px;text-align:center}
+.preview-text{color:var(--text2);font-size:.88em;line-height:1.9;text-align:right;max-height:110px;overflow-y:auto}
+.result-b{display:none;margin-top:16px}
+.g-total{background:var(--bg2);border-radius:10px;padding:10px 14px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;border:1px solid var(--border)}
+.g-total-lbl{color:var(--muted);font-size:.88em}
+.g-total-val{color:var(--gold-dark);font-weight:900;font-size:1.2em}
+.stats-row{display:flex;gap:10px;margin-bottom:14px}
+.stat-box{flex:1;background:var(--bg2);border-radius:12px;padding:12px 8px;text-align:center;border:1px solid var(--border)}
+.stat-val{font-size:1.6em;font-weight:900;color:var(--gold-dark)}
+.stat-lbl{font-size:.75em;color:var(--muted);margin-top:2px}
+.keys-row{display:flex;gap:10px;margin-bottom:12px}
+.key-box{flex:1;background:var(--bg2);border-radius:10px;padding:10px;text-align:center;border:1px solid var(--border)}
+.key-val{font-size:1.3em;font-weight:900;color:#38a169}
+.key-lbl{font-size:.75em;color:var(--muted);margin-top:2px}
+.seal-wrap{background:var(--bg2);border-radius:14px;padding:14px;overflow-x:auto;border:1px solid var(--border)}
+.seal-title{color:var(--muted);font-size:.82em;margin-bottom:10px;text-align:center}
+.seal-wrap table{width:100%;border-collapse:collapse;table-layout:fixed}
+.seal-wrap td{border:1.5px solid var(--border2);height:52px;text-align:center;font-weight:bold;font-size:15px;color:var(--text);background:var(--card)}
+.seal-wrap td.center-x{background:var(--bg3);color:var(--muted);font-size:1.2em}
+.seal-wrap td.cell-s{background:#f0fff4;color:#2f855a;border-color:#68d391}
+.seal-wrap td.cell-high{background:#fffbeb;color:var(--gold-dark)}
+.btn-blue{background:linear-gradient(135deg,#4a9eff,#1a73e8);color:#fff}
+.btn-green{background:linear-gradient(135deg,#68d391,#38a169);color:#1a1a2e}
+</style>
 </head>
 <body class="calc-page">
 <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
@@ -29,6 +74,10 @@
     <button class="menu-item" onclick="showPage('diary')">📅 יומן לקוחות</button>
     <button class="menu-item disabled">🗺 מפה אסטרולוגית <span class="soon">בקרוב</span></button>
     <button class="menu-item disabled">🙏 מקבץ תפילות <span class="soon">בקרוב</span></button>
+  </div>
+  <div class="menu-section">
+    <div class="menu-section-title">ספרייה</div>
+    <button class="menu-item" onclick="window.open('ramal-shastra.html','_blank')">📚 ראמאל שסטרה</button>
   </div>
   <div class="menu-section">
     <button class="menu-item" onclick="location.href='index.html'">🚪 יציאה</button>
@@ -64,11 +113,113 @@
 </div>
 <div id="page-psalms" class="dashboard-container fade-in" style="display:none">
   <h1 class="gold-title">📖 מחשבון פרק התהילים האישי</h1>
-  <div style="text-align:center;color:var(--muted);padding:40px;">בקרוב...</div>
+  <div class="card" style="max-width:560px;margin:0 auto">
+    <div class="card-title"><span class="badge">א</span> גילוי המזמור</div>
+    <label class="field-label">שם פרטי:</label>
+    <input type="text" id="firstName" class="short-input">
+    <label class="field-label">שם האב:</label>
+    <input type="text" id="fatherName" class="short-input">
+    <label class="field-label">שם האם:</label>
+    <input type="text" id="motherName" class="short-input">
+    <label class="field-label">שם העיר:</label>
+    <input type="text" id="cityName" class="short-input">
+    <label class="field-label">תאריך לידה:</label>
+    <div class="date-row">
+      <select id="dobDay"><option value="">יום</option></select>
+      <select id="dobMonth"><option value="">חודש</option></select>
+      <select id="dobYear"><option value="">שנה</option></select>
+    </div>
+    <button class="btn btn-gold" onclick="runCalc1()" style="margin-top:14px">חשב</button>
+    <button class="btn btn-clear" onclick="clearCalc1()">🗑 נקה מחשבון</button>
+    <div class="result-a" id="res1">
+      <div class="psalm-number" id="psalmNum">—</div>
+      <div class="psalm-label">מזמור תהילים שלך</div>
+      <div class="total-sum" id="totalSum"></div>
+    </div>
+  </div>
+  <div class="card" style="max-width:560px;margin:16px auto 0">
+    <div class="card-title"><span class="badge">ב</span> הפקת זמנים וחותם 5×5</div>
+    <span class="selector-label">בחר מזמור תהילים:</span>
+    <div class="selector-row">
+      <button class="arrow-btn" onclick="changePs(-1)">›</button>
+      <div class="accordion-trigger" id="trigger" onclick="toggleAccordion()">
+        <div class="trigger-num" id="psNum">1</div>
+        <span class="trigger-arrow" id="triggerArrow">▾</span>
+      </div>
+      <button class="arrow-btn" onclick="changePs(1)">‹</button>
+    </div>
+    <div class="accordion-panel" id="panel">
+      <div class="grid-inner" id="quickGrid"></div>
+    </div>
+    <button class="btn btn-blue" onclick="loadPsalm()" style="margin-top:4px">📖 טען מזמור</button>
+    <div class="psalm-preview" id="psalmPreview">
+      <div class="preview-title" id="previewTitle"></div>
+      <div class="preview-text" id="previewText"></div>
+    </div>
+    <button class="btn btn-green" id="btnCalc" style="display:none;margin-top:10px" onclick="runCalc2()">✦ חשב גימטריה והפק חותם</button>
+    <button class="btn btn-clear" onclick="clearCalc2()">🗑 נקה מחשבון</button>
+    <div class="result-b" id="res2">
+      <div class="g-total">
+        <span class="g-total-lbl">גימטריה סופית</span>
+        <span class="g-total-val" id="outG">—</span>
+      </div>
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-val" id="outDay">—</div><div class="stat-lbl">יום</div></div>
+        <div class="stat-box"><div class="stat-val" id="outHour">—</div><div class="stat-lbl">שעה</div></div>
+      </div>
+      <div class="keys-row">
+        <div class="key-box"><div class="key-val" id="outBase">—</div><div class="key-lbl">מפתח (Base)</div></div>
+        <div class="key-box"><div class="key-val" id="outJebra">—</div><div class="key-lbl">שבר (Jebra)</div></div>
+      </div>
+      <div class="seal-wrap">
+        <div class="seal-title">חותם 5×5</div>
+        <div id="outTable"></div>
+      </div>
+    </div>
+  </div>
 </div>
 <div id="page-gematria" class="dashboard-container fade-in" style="display:none">
-  <h1 class="gold-title">🔢 מחשבון גימטריה</h1>
-  <div style="text-align:center;color:var(--muted);padding:40px;">בקרוב...</div>
+  <h1 class="gold-title">🔢 מחשבון גימטריה וחותם</h1>
+  <div class="card" style="max-width:560px;margin:0 auto">
+    <div class="card-title"><span class="badge">ב</span> הפקת זמנים וחותם 5×5</div>
+    <span class="selector-label">בחר מזמור תהילים:</span>
+    <div class="selector-row">
+      <button class="arrow-btn" onclick="gChangePs(-1)">›</button>
+      <div class="accordion-trigger" id="gTrigger" onclick="gToggleAccordion()">
+        <div class="trigger-num" id="gPsNum">1</div>
+        <span class="trigger-arrow" id="gTriggerArrow">▾</span>
+      </div>
+      <button class="arrow-btn" onclick="gChangePs(1)">‹</button>
+    </div>
+    <div class="accordion-panel" id="gPanel">
+      <div class="grid-inner" id="gQuickGrid"></div>
+    </div>
+    <button class="btn btn-blue" onclick="gLoadPsalm()" style="margin-top:4px">📖 טען מזמור</button>
+    <div class="psalm-preview" id="gPsalmPreview">
+      <div class="preview-title" id="gPreviewTitle"></div>
+      <div class="preview-text" id="gPreviewText"></div>
+    </div>
+    <button class="btn btn-green" id="gBtnCalc" style="display:none;margin-top:10px" onclick="gRunCalc2()">✦ חשב גימטריה והפק חותם</button>
+    <button class="btn btn-clear" onclick="gClearCalc2()">🗑 נקה מחשבון</button>
+    <div class="result-b" id="gRes2">
+      <div class="g-total">
+        <span class="g-total-lbl">גימטריה סופית</span>
+        <span class="g-total-val" id="gOutG">—</span>
+      </div>
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-val" id="gOutDay">—</div><div class="stat-lbl">יום</div></div>
+        <div class="stat-box"><div class="stat-val" id="gOutHour">—</div><div class="stat-lbl">שעה</div></div>
+      </div>
+      <div class="keys-row">
+        <div class="key-box"><div class="key-val" id="gOutBase">—</div><div class="key-lbl">מפתח (Base)</div></div>
+        <div class="key-box"><div class="key-val" id="gOutJebra">—</div><div class="key-lbl">שבר (Jebra)</div></div>
+      </div>
+      <div class="seal-wrap">
+        <div class="seal-title">חותם 5×5</div>
+        <div id="gOutTable"></div>
+      </div>
+    </div>
+  </div>
 </div>
 <div id="page-diary" class="dashboard-container fade-in" style="display:none">
   <h1 class="gold-title">📅 יומן לקוחות</h1>
@@ -200,58 +351,314 @@ loadAppts();
   <div id="outputParent"></div>
 </div>
 
-<div id="page-goral" class="dashboard-container fade-in" style="display:none">
+<div id="page-goral" class="dashboard-container fade-in" style="display:none;max-width:700px">
   <div id="goral-stage-intro">
-    <h1 class="gold-title">✦ גורל העשיריות</h1>
-    <div class="card" style="max-width:520px;margin:0 auto">
-      <p style="text-align:center;color:var(--text);line-height:1.9;margin-bottom:18px;font-size:.92rem">שיטה קבלית עתיקה שנמסרה על ידי <strong>רב צמח בר מר רב אחאי זצ&quot;ל</strong> — שואלים שאלה, בונים משולש מספרים ומנווטים בארבעת לוחות הגורל לקבלת תשובה.</p>
-      <div style="border-top:1px solid var(--border);padding-top:14px;margin-bottom:16px">
-        <button id="goralPrayerBtn" onclick="goralTogglePrayer()" style="background:none;border:none;cursor:pointer;color:#8B7008;font-size:.82rem;font-weight:700;font-family:inherit;padding:0">◀ תפילה לפני הפלת הגורל</button>
-        <div id="goralPrayerText" style="display:none;margin-top:12px;padding:14px;background:var(--bg,#EAE5DC);border-radius:10px;border:1px solid var(--border);font-size:.78rem;line-height:2.1;color:var(--muted)"></div>
+    <h1 class="gold-title" style="font-size:1.9rem;margin-bottom:24px">✦ גורל העשיריות</h1>
+    <div class="card" style="padding:28px 24px">
+      <p style="text-align:center;color:var(--text);line-height:2.1;margin-bottom:22px;font-size:1.05rem">שיטה קבלית עתיקה שנמסרה על ידי <strong>רב צמח בר מר רב אחאי זצ&quot;ל</strong> — שואלים שאלה, בונים משולש מספרים ומנווטים בארבעת לוחות הגורל לקבלת תשובה.</p>
+      <div style="border-top:1px solid var(--border);padding-top:16px;margin-bottom:20px">
+        <button id="goralPrayerBtn" onclick="goralTogglePrayer()" style="background:none;border:none;cursor:pointer;color:#8B7008;font-size:.95rem;font-weight:700;font-family:inherit;padding:0">◀ תפילה לפני הפלת הגורל</button>
+        <div id="goralPrayerText" style="display:none;margin-top:14px;padding:16px;background:var(--bg,#EAE5DC);border-radius:10px;border:1px solid var(--border);font-size:.88rem;line-height:2.2;color:var(--muted)"></div>
       </div>
-      <div style="padding:12px 14px;background:rgba(184,149,10,.08);border-radius:10px;border-right:3px solid #B8950A;margin-bottom:20px">
-        <p style="color:var(--text);font-size:.85rem;margin:0;line-height:1.8"><strong style="color:#8B7008">✦ חשוב:</strong> כתוב את שאלתך בלשון הראשונה שעולה בדעתך, ללא תיקונים.</p>
+      <div style="padding:16px 18px;background:rgba(184,149,10,.08);border-radius:10px;border-right:3px solid #B8950A;margin-bottom:24px">
+        <p style="color:var(--text);font-size:1rem;margin:0;line-height:1.9"><strong style="color:#8B7008">✦ חשוב:</strong> כתוב את שאלתך בלשון הראשונה שעולה בדעתך, ללא תיקונים.</p>
       </div>
-      <button class="btn btn-gold" onclick="goralShowStage('form')">✦ הפל את הגורל ✦</button>
+      <button class="btn btn-gold" style="font-size:1.15rem;padding:17px" onclick="goralShowStage('form')">✦ הפל את הגורל ✦</button>
     </div>
   </div>
   <div id="goral-stage-form" style="display:none">
-    <h1 class="gold-title">שאלה לגורל</h1>
-    <div class="card" style="max-width:520px;margin:0 auto">
-      <button onclick="goralShowStage('intro')" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:.82rem;font-family:inherit;padding:0;margin-bottom:18px">▶ חזרה</button>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
-        <div><label class="field-label">שם השואל</label><input type="text" id="goralName" class="short-input" placeholder="" autocomplete="off"></div>
-        <div><label class="field-label">שם האב</label><input type="text" id="goralFather" class="short-input" placeholder="" autocomplete="off"></div>
+    <h1 class="gold-title" style="font-size:1.9rem;margin-bottom:24px">שאלה לגורל</h1>
+    <div class="card" style="padding:28px 24px">
+      <button onclick="goralShowStage('intro')" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:.92rem;font-family:inherit;padding:0;margin-bottom:22px">▶ חזרה</button>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px">
+        <div><label class="field-label" style="font-size:1rem">שם השואל</label><input type="text" id="goralName" class="short-input" placeholder="" autocomplete="off" style="font-size:1.05rem!important;padding:12px!important"></div>
+        <div><label class="field-label" style="font-size:1rem">שם האב</label><input type="text" id="goralFather" class="short-input" placeholder="" autocomplete="off" style="font-size:1.05rem!important;padding:12px!important"></div>
       </div>
-      <label class="field-label">השאלה</label>
-      <textarea id="goralQuestion" style="width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--input-bg,#FAF7F2);font-size:.9rem;font-family:inherit;color:var(--text);resize:vertical;min-height:95px;outline:none;direction:rtl;line-height:1.8;box-sizing:border-box" placeholder="כתוב את שאלתך כאן..."></textarea>
-      <p style="color:var(--muted);font-size:.76rem;margin:6px 0 16px">✦ כתוב כפי שעולה בדעתך — ניסוח ספונטני ובלשון ראשונה</p>
-      <div id="goralFormError" style="display:none;color:#C84B31;font-size:.82rem;text-align:center;margin-bottom:12px">נא למלא את כל השדות</div>
-      <button class="btn btn-gold" onclick="goralSubmit()">שלח את הגורל ←</button>
-      <button class="btn btn-clear" onclick="goralReset()">🗑 נקה</button>
+      <label class="field-label" style="font-size:1rem">השאלה</label>
+      <textarea id="goralQuestion" style="width:100%;padding:14px 16px;border-radius:10px;border:1.5px solid var(--border);background:var(--input-bg,#FAF7F2);font-size:1.05rem;font-family:inherit;color:var(--text);resize:vertical;min-height:120px;outline:none;direction:rtl;line-height:1.9;box-sizing:border-box" placeholder="כתוב את שאלתך כאן..."></textarea>
+      <p style="color:var(--muted);font-size:.88rem;margin:8px 0 20px">✦ כתוב כפי שעולה בדעתך — ניסוח ספונטני ובלשון ראשונה</p>
+      <div id="goralFormError" style="display:none;color:#C84B31;font-size:.9rem;text-align:center;margin-bottom:14px">נא למלא את כל השדות</div>
+      <button class="btn btn-gold" style="font-size:1.15rem;padding:17px" onclick="goralSubmit()">שלח את הגורל ←</button>
+      <button class="btn btn-clear" style="font-size:.95rem" onclick="goralReset()">🗑 נקה</button>
     </div>
   </div>
   <div id="goral-stage-calc" style="display:none">
-    <h1 class="gold-title">מחשב את הגורל...</h1>
-    <div style="text-align:center;margin-bottom:20px">
-      <div style="font-size:2rem;color:#B8950A;animation:goralSpin 1.5s linear infinite;display:inline-block">✦</div>
-      <p style="color:var(--muted);margin-top:8px;font-size:.88rem">בונה את משולש המספרים</p>
+    <h1 class="gold-title" style="font-size:1.9rem;margin-bottom:24px">מחשב את הגורל...</h1>
+    <div style="text-align:center;margin-bottom:24px">
+      <div style="font-size:2.6rem;color:#B8950A;animation:goralSpin 1.5s linear infinite;display:inline-block">✦</div>
+      <p style="color:var(--muted);margin-top:10px;font-size:1rem">בונה את משולש המספרים</p>
     </div>
-    <div style="max-width:520px;margin:0 auto 18px;height:4px;background:var(--border);border-radius:99px;overflow:hidden">
+    <div style="margin:0 0 20px;height:5px;background:var(--border);border-radius:99px;overflow:hidden">
       <div id="goralProgress" style="height:100%;background:linear-gradient(135deg,#C9A84C,#9A7A06);border-radius:99px;width:0;transition:width .12s"></div>
     </div>
-    <div class="card" style="max-width:520px;margin:0 auto;overflow-x:auto">
-      <div id="goralTriDisplay" style="display:flex;flex-direction:column;align-items:center;gap:5px;min-height:60px"></div>
+    <div class="card" style="overflow-x:auto;padding:28px 24px">
+      <div id="goralTriDisplay" style="display:flex;flex-direction:column;align-items:center;gap:6px;min-height:80px"></div>
     </div>
   </div>
   <div id="goral-stage-result" style="display:none">
-    <h1 class="gold-title">✦ הגורל יצא</h1>
-    <div id="goralResultContainer" style="max-width:520px;margin:0 auto"></div>
+    <h1 class="gold-title" style="font-size:1.9rem;margin-bottom:24px">✦ הגורל יצא</h1>
+    <div id="goralResultContainer"></div>
   </div>
 </div>
 <script src="goral.js"></script>
 <script>
 (function(){ var e=document.getElementById('goralPrayerText'); if(e) e.textContent=GORAL_PRAYER; })();
+</script>
+<script src="myseal-data.js"></script>
+<script>
+// ── מחשבון גימטריה וחותם (מ-myseal) ──
+
+// אתחול תאריך
+(function(){
+  var d=document.getElementById('dobDay');
+  var m=document.getElementById('dobMonth');
+  var y=document.getElementById('dobYear');
+  for(var i=1;i<=31;i++) d.innerHTML+='<option value="'+i+'">'+i+'</option>';
+  var months=['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+  for(var i=0;i<months.length;i++) m.innerHTML+='<option value="'+(i+1)+'">'+months[i]+'</option>';
+  var cur=new Date().getFullYear();
+  for(var yr=cur;yr>=1920;yr--) y.innerHTML+='<option value="'+yr+'">'+yr+'</option>';
+})();
+
+// אתחול גריד
+var current=1, isOpen=false;
+var grid=document.getElementById('quickGrid');
+for(var i=1;i<=150;i++){
+  var btn=document.createElement('button');
+  btn.className='q-btn'+(i===1?' selected':'');
+  btn.innerText=i;
+  btn.setAttribute('data-n',i);
+  btn.onclick=(function(n){return function(){selectPs(n);closeAccordion();};})(i);
+  grid.appendChild(btn);
+}
+
+function selectPs(n){
+  current=n;
+  document.getElementById('psNum').innerText=n;
+  var btns=grid.querySelectorAll('.q-btn');
+  for(var i=0;i<btns.length;i++){
+    var bn=parseInt(btns[i].getAttribute('data-n'));
+    btns[i].className='q-btn'+(bn===n?' selected':'');
+  }
+  var sel=grid.querySelector('.q-btn.selected');
+  if(sel) sel.scrollIntoView({block:'nearest'});
+}
+
+function changePs(d){
+  var n=current+d;
+  if(n<1)n=150; if(n>150)n=1;
+  selectPs(n);
+}
+
+function toggleAccordion(){ isOpen?closeAccordion():openAccordion(); }
+
+function openAccordion(){
+  isOpen=true;
+  document.getElementById('panel').classList.add('open');
+  document.getElementById('trigger').classList.add('open');
+  var sel=grid.querySelector('.q-btn.selected');
+  if(sel) setTimeout(function(){sel.scrollIntoView({block:'nearest'});},50);
+}
+
+function closeAccordion(){
+  isOpen=false;
+  document.getElementById('panel').classList.remove('open');
+  document.getElementById('trigger').classList.remove('open');
+}
+
+function loadPsalm(){
+  closeAccordion();
+  var txt=PSALMS[String(current)]||'';
+  document.getElementById('previewTitle').innerText='מזמור '+current;
+  document.getElementById('previewText').innerText=txt;
+  document.getElementById('psalmPreview').style.display='block';
+  document.getElementById('btnCalc').style.display='block';
+  document.getElementById('res2').style.display='none';
+}
+
+// מחשבון א
+function runCalc1(){
+  var names=document.getElementById('firstName').value+
+            document.getElementById('fatherName').value+
+            document.getElementById('motherName').value+
+            document.getElementById('cityName').value;
+  var day=parseInt(document.getElementById('dobDay').value)||0;
+  var month=parseInt(document.getElementById('dobMonth').value)||0;
+  var year=parseInt(document.getElementById('dobYear').value)||0;
+  var nG=0;
+  for(var i=0;i<names.length;i++) nG+=gMap[names[i]]||0;
+  var total=nG+day+month+year;
+  var psalm=(total%150)||150;
+  document.getElementById('psalmNum').innerText=psalm;
+  document.getElementById('totalSum').innerText='סכום כולל: '+total;
+  document.getElementById('res1').style.display='block';
+}
+
+function clearCalc1(){
+  ['firstName','fatherName','motherName','cityName'].forEach(function(id){document.getElementById(id).value='';});
+  document.getElementById('dobDay').selectedIndex=0;
+  document.getElementById('dobMonth').selectedIndex=0;
+  document.getElementById('dobYear').selectedIndex=0;
+  document.getElementById('res1').style.display='none';
+}
+
+// מחשבון ב
+function cleanPsalm(raw){
+  var t=raw;
+  t=t.replace(/[\[{(]\s*[\u05D0-\u05EA]\s*[\]})]/g,' ');
+  t=t.replace(/[^\u05D0-\u05EA\s]/g,' ');
+  var words=t.trim().split(/\s+/);
+  var result='';
+  for(var i=0;i<words.length;i++) if(words[i].length>=2) result+=words[i];
+  return result;
+}
+
+function runCalc2(){
+  var raw=PSALMS[String(current)]||'';
+  var cleaned=cleanPsalm(raw);
+  var g=0;
+  for(var i=0;i<cleaned.length;i++) g+=gMap[cleaned[i]]||0;
+  var base=Math.floor(g/65);
+  var jebra=g%65;
+
+  document.getElementById('outG').innerText=g;
+  document.getElementById('outDay').innerText=dayNames[g%7];
+  document.getElementById('outHour').innerText=g%24;
+  document.getElementById('outBase').innerText=base;
+  document.getElementById('outJebra').innerText=jebra;
+
+  var layout=[
+    [15,17,22, 2, 9],
+    [ 1, 8,14,21,'S'],
+    [20,25, 0, 7,13],
+    [ 6,12,19,24, 4],
+    [23, 3,10,11,18]
+  ];
+
+  function cellVal(n){
+    if(n==='S') return (base*21)+jebra;
+    if(n===0)   return null;
+    if(n<=20)   return base*n;
+    return (base*n)+jebra;
+  }
+
+  var h='<table>';
+  for(var r=0;r<layout.length;r++){
+    h+='<tr>';
+    for(var c=0;c<layout[r].length;c++){
+      var cell=layout[r][c];
+      if(cell===0)        h+='<td class="center-x">✕</td>';
+      else if(cell==='S') h+='<td class="cell-s">'+cellVal('S')+'</td>';
+      else if(cell>=21)   h+='<td class="cell-high">'+cellVal(cell)+'</td>';
+      else                h+='<td>'+cellVal(cell)+'</td>';
+    }
+    h+='</tr>';
+  }
+  h+='</table>';
+
+  document.getElementById('outTable').innerHTML=h;
+  document.getElementById('res2').style.display='block';
+  document.getElementById('res2').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function clearCalc2(){
+  document.getElementById('psalmPreview').style.display='none';
+  document.getElementById('btnCalc').style.display='none';
+  document.getElementById('res2').style.display='none';
+  document.getElementById('outTable').innerHTML='';
+}
+</script>
+<script>
+// ── מחשבון גימטריה — חלק ב בלבד (g-prefix) ──
+var gCurrent = 1, gIsOpen = false;
+var gGrid = document.getElementById('gQuickGrid');
+(function(){
+  for(var i=1;i<=150;i++){
+    var btn=document.createElement('button');
+    btn.className='q-btn'+(i===1?' selected':'');
+    btn.innerText=i;
+    btn.setAttribute('data-n',i);
+    btn.onclick=(function(n){return function(){gSelectPs(n);gCloseAccordion();};})(i);
+    gGrid.appendChild(btn);
+  }
+})();
+
+function gSelectPs(n){
+  gCurrent=n;
+  document.getElementById('gPsNum').innerText=n;
+  var btns=gGrid.querySelectorAll('.q-btn');
+  for(var i=0;i<btns.length;i++){
+    var bn=parseInt(btns[i].getAttribute('data-n'));
+    btns[i].className='q-btn'+(bn===n?' selected':'');
+  }
+  var sel=gGrid.querySelector('.q-btn.selected');
+  if(sel) sel.scrollIntoView({block:'nearest'});
+}
+function gChangePs(d){var n=gCurrent+d;if(n<1)n=150;if(n>150)n=1;gSelectPs(n);}
+function gToggleAccordion(){gIsOpen?gCloseAccordion():gOpenAccordion();}
+function gOpenAccordion(){
+  gIsOpen=true;
+  document.getElementById('gPanel').classList.add('open');
+  document.getElementById('gTrigger').classList.add('open');
+  var sel=gGrid.querySelector('.q-btn.selected');
+  if(sel) setTimeout(function(){sel.scrollIntoView({block:'nearest'});},50);
+}
+function gCloseAccordion(){
+  gIsOpen=false;
+  document.getElementById('gPanel').classList.remove('open');
+  document.getElementById('gTrigger').classList.remove('open');
+}
+function gLoadPsalm(){
+  gCloseAccordion();
+  var txt=PSALMS[String(gCurrent)]||'';
+  document.getElementById('gPreviewTitle').innerText='מזמור '+gCurrent;
+  document.getElementById('gPreviewText').innerText=txt;
+  document.getElementById('gPsalmPreview').style.display='block';
+  document.getElementById('gBtnCalc').style.display='block';
+  document.getElementById('gRes2').style.display='none';
+}
+function gRunCalc2(){
+  var raw=PSALMS[String(gCurrent)]||'';
+  var cleaned=cleanPsalm(raw);
+  var g=0;
+  for(var i=0;i<cleaned.length;i++) g+=gMap[cleaned[i]]||0;
+  var base=Math.floor(g/65);
+  var jebra=g%65;
+  document.getElementById('gOutG').innerText=g;
+  document.getElementById('gOutDay').innerText=dayNames[g%7];
+  document.getElementById('gOutHour').innerText=g%24;
+  document.getElementById('gOutBase').innerText=base;
+  document.getElementById('gOutJebra').innerText=jebra;
+  var layout=[[15,17,22,2,9],[1,8,14,21,'S'],[20,25,0,7,13],[6,12,19,24,4],[23,3,10,11,18]];
+  function cellVal(n){
+    if(n==='S') return (base*21)+jebra;
+    if(n===0)   return null;
+    if(n<=20)   return base*n;
+    return (base*n)+jebra;
+  }
+  var h='<table>';
+  for(var r=0;r<layout.length;r++){
+    h+='<tr>';
+    for(var c=0;c<layout[r].length;c++){
+      var cell=layout[r][c];
+      if(cell===0)        h+='<td class="center-x">✕</td>';
+      else if(cell==='S') h+='<td class="cell-s">'+cellVal('S')+'</td>';
+      else if(cell>=21)   h+='<td class="cell-high">'+cellVal(cell)+'</td>';
+      else                h+='<td>'+cellVal(cell)+'</td>';
+    }
+    h+='</tr>';
+  }
+  h+='</table>';
+  document.getElementById('gOutTable').innerHTML=h;
+  document.getElementById('gRes2').style.display='block';
+  document.getElementById('gRes2').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function gClearCalc2(){
+  document.getElementById('gPsalmPreview').style.display='none';
+  document.getElementById('gBtnCalc').style.display='none';
+  document.getElementById('gRes2').style.display='none';
+  document.getElementById('gOutTable').innerHTML='';
+}
 </script>
 
 </body>

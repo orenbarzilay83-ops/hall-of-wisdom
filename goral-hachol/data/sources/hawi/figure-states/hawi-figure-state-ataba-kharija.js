@@ -4,6 +4,7 @@ export const HAWI_FIGURE_STATE_ATABA_KHARIJA = {
   shortFigureId: 'ataba-kharija',
   arabicName: 'العتبة الخارجة',
   hebrewName: 'סף יוצא',
+  genderHebrew: 'זכר',
   sourceBook: 'حاوي العجائب ومظهر الغرائب',
   sourceAuthor: 'أحمد ابن زنبل المحلي',
   sourceSectionArabic: 'الباب الثامن عشر في الكلام على الاشكال — فصل في معرفة العتبة الخارجة',
@@ -11,7 +12,7 @@ export const HAWI_FIGURE_STATE_ATABA_KHARIJA = {
   sourcePages: ['PDF document 49.pdf'],
   sourceType: 'full-book-page-index',
   extractionStatus: 'source-audited-from-drive-pdf-45-51',
-  noteHebrew: 'מצב הצורה סף יוצא / العتبة الخارجة בכל בית. בית 15 נשמר לפי המיפוי הסופי, והסטטוס נשמר לפי ביקורת קודמת.',
+  noteHebrew: 'מצב הצורה סף יוצא בכל בית. בית 15 נשמר לפי המיפוי הסופי, והסטטוס נשמר לפי ביקורת קודמת.',
   states: [
     { house: 1, arabicText: ['في الأول ناطق سعد متمكن يكثر الأفراح'], hebrewTranslation: ['בבית הראשון: מדבר, טוב ומבוסס; מרבה שמחות.'], speakingState: 'speaking', fortuneState: 'benefic-established', effectHebrew: 'ריבוי שמחה וכוח פתיחה.', sourceStatus: 'sourceMapped' },
     { house: 2, arabicText: ['وفي الثاني ناطق نحس ضعيف يذهب الرزق'], hebrewTranslation: ['בבית השני: מדבר, נחס וחלש; מסלק את הפרנסה.'], speakingState: 'speaking', fortuneState: 'malefic-weak', effectHebrew: 'פגיעה בפרנסה וסילוק ממון.', sourceStatus: 'sourceMapped' },

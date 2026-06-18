@@ -265,16 +265,21 @@ function gradeFromMatches(specificMatches, openingMatches, genericScore) {
   return 'mixed';
 }
 
-function buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, jinnTypeResult, organDiagnosisResult) {
+function buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, jinnTypeResult, crossReferenceNote, sihrDetails) {
   const verdictMap = {
     'strong-suspicion': 'מסקנה רוחנית: כן — הלוח מראה סימנים חזקים לפגיעה רוחנית לפי כללי המקור.',
     'medium-suspicion': 'מסקנה רוחנית: ייתכן — יש חשד בינוני לפגיעה רוחנית. נמצאו התאמות מהמקור שדורשות בדיקה.',
     'weak-suspicion': 'מסקנה רוחנית: ספק — יש סימנים חלשים בלבד, אין הכרעה חזקה.',
-    'mostly-clear': 'מסקנה רוחנית: לא — אין סימן חזק לפגיעה רוחנית בלוח זה.',
-    mixed: 'מסקנה רוחנית: הלוח ממוזג. יש לבדוק את בית 6, בית 12, העדים והדיין לפני הכרעה.',
+    'mostly-clear': 'מסקנה רוחנית: לא — אין סימן חזק לפגיעה רוחנית בלוח זה. אם בכל זאת יש בעיה — כנראה שהיא בתחום אחר. ראה מסקנת הלוח המלאה למטה.',
+    mixed: 'מסקנה רוחנית: הלוח ממוזג — לא ניתן לקבוע בוודאות. יש לבדוק את בית 6, בית 12, העדים והדיין. ייתכן שיש בעיה שאינה רוחנית — ראה מסקנה מלאה למטה.',
   };
 
   let base = verdictMap[grade] || verdictMap.mixed;
+
+  if (crossReferenceNote) {
+    base += '\n' + crossReferenceNote;
+  }
+
   const details = [];
 
   for (const m of specificMatches.slice(0, 4)) {
@@ -291,19 +296,16 @@ function buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, j
     base += '\n' + details.join('\n');
   }
 
-  if (isqatResult?.hebrewText) {
-    base += '\nספירת מפתוח 7×7: ' + isqatResult.hebrewText;
+  if (isqatResult?.hebrewText && isqatResult.isSpiritual !== false) {
+    base += '\nגורל חולי 7×7: ' + isqatResult.hebrewText;
   }
 
   if (jinnTypeResult?.hebrewText) {
     base += '\nסוג הג׳ין (15×4): ' + jinnTypeResult.hebrewText;
   }
 
-  if (organDiagnosisResult?.hebrewText) {
-    base += '\nאבחון איבר (בית 6 × בית 8): ' + organDiagnosisResult.hebrewText;
-    if (organDiagnosisResult.organHebrew) {
-      base += ' | איבר: ' + organDiagnosisResult.organHebrew;
-    }
+  if (sihrDetails?.length) {
+    base += '\n\n— פרטי הכישוף —\n' + sihrDetails.join('\n');
   }
 
   return base;
@@ -324,6 +326,196 @@ function detectSpiritualTopicFromQuestion(question = '') {
     if (words.some((w) => text.includes(normalizeText(w)))) hits.push(cat);
   }
   return hits;
+}
+
+// Maps isqat remainder → spiritual category and Hebrew label
+const ISQAT_REMAINDER_MAP = {
+  1: { category: 'jinn',    hebrew: 'אחיזת ג׳ין',         isSpiritual: true  },
+  2: { category: 'ayin',   hebrew: 'עין הרע / קנאה',      isSpiritual: true  },
+  3: { category: 'sihr',   hebrew: 'כישוף (אדם עשה)',      isSpiritual: true  },
+  4: { category: 'illness', hebrew: 'ליחה/בלגם',           isSpiritual: false },
+  5: { category: 'illness', hebrew: 'מחלת דם',             isSpiritual: false },
+  6: { category: 'illness', hebrew: 'מרה שחורה',           isSpiritual: false },
+  7: { category: 'illness', hebrew: 'מרה צהובה',           isSpiritual: false },
+};
+
+// Resolves primary question category from questionHits
+function resolveQuestionCategory(questionHits) {
+  if (!questionHits?.length) return null;
+  if (questionHits.includes('sihr') || questionHits.includes('mass')) return 'sihr';
+  if (questionHits.includes('ayin') || questionHits.includes('hasad'))  return 'ayin';
+  if (questionHits.includes('jinn')) return 'jinn';
+  return null;
+}
+
+// Computes cross-reference note when isqat result doesn't match what was asked
+function computeCrossReference(questionHits, isqatResult) {
+  if (!isqatResult?.remainder) return null;
+  const questionCategory = resolveQuestionCategory(questionHits);
+  if (!questionCategory) return null;
+
+  const isqatInfo = ISQAT_REMAINDER_MAP[isqatResult.remainder];
+  if (!isqatInfo) return null;
+
+  const questionHebrew = { sihr: 'כישוף', ayin: 'עין הרע / קנאה', jinn: 'ג׳ין' }[questionCategory];
+
+  if (!isqatInfo.isSpiritual) {
+    return `⚠ גורל חולי 7×7: הלוח מצביע על ${isqatInfo.hebrew} — לא פגיעה רוחנית. השאלה הייתה על ${questionHebrew} אך ייתכן שהבעיה גופנית.`;
+  }
+
+  if (isqatInfo.category !== questionCategory) {
+    return `⚠ גורל חולי 7×7: הלוח מצביע על ${isqatInfo.hebrew} (לא ${questionHebrew}). ייתכן שהבעיה שונה ממה שנשאל — מומלץ לבדוק שני הכיוונים.`;
+  }
+
+  return null; // Categories match — no cross-reference needed
+}
+
+// Figure pattern → { element, compassDirection, hebrewName }
+// Source: كشف الأسرار المصونة في اخراج الضمائر المخزونة pp. 43-67
+const PATTERN_TO_FIGURE_PROPS = {
+  '1111': { element: 'מים',   compassDirection: 'צפון',  hebrewName: 'דרך'       },
+  '1112': { element: 'אש',    compassDirection: 'מזרח',  hebrewName: 'סף יוצא'   },
+  '1121': { element: 'אוויר', compassDirection: 'מערב',  hebrewName: 'נלחם'      },
+  '1122': { element: 'אש',    compassDirection: 'מזרח',  hebrewName: 'כבוד יוצא' },
+  '1211': { element: 'מים',   compassDirection: 'צפון',  hebrewName: 'בר הלחי'   },
+  '1212': { element: 'אש',    compassDirection: 'מזרח',  hebrewName: 'ממון יוצא' },
+  '1221': { element: 'עפר',   compassDirection: 'דרום',  hebrewName: 'סוהר'      },
+  '1222': { element: 'אש',    compassDirection: 'מזרח',  hebrewName: 'נשוא ראש'  },
+  '2111': { element: 'אוויר', compassDirection: 'מערב',  hebrewName: 'סף נכנס'   },
+  '2112': { element: 'אוויר', compassDirection: 'מערב',  hebrewName: 'חיבור'     },
+  '2121': { element: 'עפר',   compassDirection: 'דרום',  hebrewName: 'ממון נכנס' },
+  '2122': { element: 'אוויר', compassDirection: 'מערב',  hebrewName: 'אדום'      },
+  '2211': { element: 'מים',   compassDirection: 'צפון',  hebrewName: 'כבוד נכנס' },
+  '2212': { element: 'מים',   compassDirection: 'צפון',  hebrewName: 'לבן'       },
+  '2221': { element: 'עפר',   compassDirection: 'דרום',  hebrewName: 'שפל ראש'   },
+  '2222': { element: 'עפר',   compassDirection: 'דרום',  hebrewName: 'קהלה'      },
+};
+
+// Figure pattern → shortFigureId lookup
+const PATTERN_TO_FIGURE_ID = {
+  '1111': 'tariq',        '1112': 'ataba-kharija',
+  '1121': 'judla',        '1122': 'nusra-kharija',
+  '1211': 'naqi-khad',    '1212': 'qabd-kharij',
+  '1221': 'aqla',         '1222': 'hayyan',
+  '2111': 'ataba-dakhila','2112': 'ijtima',
+  '2121': 'qabd-dakhil',  '2122': 'humra',
+  '2211': 'nusra-dakhila','2212': 'bayad',
+  '2221': 'nakis',        '2222': 'jamaa',
+};
+
+// Arabic letter hints per figure — extracted from شعر حروف كل شكل (Kashf al-Asrar pp. 138-139).
+// Each figure maps to 1-2 Arabic letters whose sounds hint at the name being sought.
+// Palindromic figures (same when reversed: tariq/aqla/ijtima/jamaa) get 1 letter; others get 2.
+// Figures not found in the available digitized poem are omitted (naqi-khad, nusra-kharija, nusra-dakhila).
+const FIGURE_LETTER_HINTS = {
+  'tariq':         { display: 'ע (عين)' },                              // 1111 — palindrome
+  'ataba-kharija': { display: 'ח (حاء), ח׳ (خاء)' },                   // 1112
+  'judla':         { display: 'ט (طاء), ד׳ (ذال)' },                   // 1121 — كوسج in poem
+  'qabd-kharij':   { display: 'ל (لام), ג׳ (غين)' },                   // 1212
+  'aqla':          { display: 'נ (نون)' },                              // 1221 — palindrome (= ثقاف)
+  'hayyan':        { display: 'א (ألف), פ (فاء)' },                     // 1222
+  'ataba-dakhila': { display: 'ז (زاي), ת (تاء)' },                     // 2111
+  'ijtima':        { display: 'ס (سين)' },                              // 2112 — palindrome
+  'qabd-dakhil':   { display: 'כ (كاف), ש (شين)' },                    // 2121
+  'humra':         { display: 'ח (حاء), ק (قاف)' },                     // 2122
+  'bayad':         { display: 'ד (دال), ר (راء)' },                     // 2212
+  'nakis':         { display: 'ב (باء), ס (صاد)' },                     // 2221
+  'jamaa':         { display: 'מ (ميم)' },                              // 2222 — palindrome
+};
+
+function getFigureLetterHints(house) {
+  if (!house) return null;
+  const key = house.key || (Array.isArray(house.figure) ? house.figure.join('') : '');
+  const figureId = PATTERN_TO_FIGURE_ID[key];
+  return figureId ? (FIGURE_LETTER_HINTS[figureId] || null) : null;
+}
+
+// Element → type of hiding place (Kashf al-Asrar pp. 185-187, أحكام الخبايا)
+const ELEMENT_LOCATION_HINT = {
+  'עפר':   'קבור באדמה',
+  'מים':   'קרוב למים (בור / נהר / כיור)',
+  'אוויר': 'תלוי / קשור באוויר (עץ / גובה)',
+  'אש':    'קרוב למקור חום / אש',
+};
+
+// House 4 = location house for hidden objects — same method as buried treasure (الخبيئة).
+// Element of its figure → type of hiding; compass direction → direction to search.
+function getSihrLocationHint(board) {
+  const house4 = getHouse(board, 4);
+  if (!house4) return null;
+  const key = house4.key || (Array.isArray(house4.figure) ? house4.figure.join('') : '');
+  const props = PATTERN_TO_FIGURE_PROPS[key];
+  if (!props) return null;
+  const locType = ELEMENT_LOCATION_HINT[props.element] || props.element;
+  return `${locType} — כיוון: ${props.compassDirection} (${props.hebrewName} בבית 4)`;
+}
+
+// Maps rule IDs from figureHouseRules to structured sorcery method info
+// Source: القول الجامع في علم الرمل, pages 57-58
+const SIHR_METHOD_RULE_MAP = {
+  'ankis-house6-buried-magic-in-grave':       { method: 'קבור',             location: 'בקבר' },
+  'ankis-house6-buried-underground-sorcery':  { method: 'קבור',             location: 'באדמה' },
+  'jawdala-house6-drunk-magic':               { method: 'שתייה / בליעה',    location: null   },
+  'jawdala-house12-bound-from-wife':          { method: 'קשירה זוגית',       location: null   },
+  'qabd-dakhil-house6-bound-from-women':      { method: 'קשירה / עיגון',    location: null   },
+  'aqla-house13-bound-magic-sprinkled':       { method: 'קשירה + ריסוס',    location: null   },
+  'aqla-house14-house-or-place-has-magic':    { method: 'תלוי',             location: 'בבית או במקום' },
+  'jawdala-house14-magic-in-house-or-place':  { method: 'תלוי',             location: 'בבית' },
+  'jamaa-from-two-nakis-witness1':            { method: 'קבור (כפול)',       location: null   },
+  'jamaa-from-two-nakis-witness2':            { method: 'קבור (כפול)',       location: null   },
+};
+
+// Build structured sorcery detail section when sorcery is confirmed or strongly suspected.
+// Activated when: isqat remainder=3 (human-made sorcery), OR figure-house rules match,
+// OR house 9 contains a known sorcerer figure (aqla/ijtima).
+// Source for sorcerer type: القول الجامع p.56 (aqla=female sorcerer, ijtima=bad male sorcerer)
+function detectSihrDetails(board, specificMatches, isqatResult) {
+  const isSihrIsqat = isqatResult?.remainder === 3;
+  const methodMatches = specificMatches.filter(m => SIHR_METHOD_RULE_MAP[m.ruleId]);
+
+  // Check house 9 for known sorcerer figures — activates sihr section even without method match
+  const house9 = getHouse(board, 9);
+  const house9Fig = house9 ? getFigureHebrewName(house9) : null;
+  const house9Norm = normalizeText(house9Fig || '');
+  const house9IsSorcerer = house9Norm === normalizeText('סוהר') || house9Norm === normalizeText('חיבור');
+
+  if (!isSihrIsqat && !methodMatches.length && !house9IsSorcerer) return null;
+
+  const lines = [];
+
+  // Sorcerer identification from house 9 (source: القول الجامع p.56)
+  if (house9) {
+    let desc = null;
+    if (house9Norm === normalizeText('סוהר'))   desc = 'אישה מכשפת (סוהר בבית 9)';
+    else if (house9Norm === normalizeText('חיבור')) desc = 'גבר מכשף רע (חיבור בבית 9)';
+    else if (house9Fig)                           desc = `${house9Fig} בבית 9 (בית המכשפים)`;
+    if (desc) lines.push(`מי עשה: ${desc}`);
+
+    // Name letter hints from تسكين الحروف table (Kashf al-Asrar pp. 138-139)
+    const nameHints = getFigureLetterHints(house9);
+    if (nameHints) {
+      lines.push(`רמז לשם המכשף: ${nameHints.display}`);
+    }
+  }
+
+  // Method details — deduplicate by house (take first match per house)
+  const seenHouses = new Set();
+  for (const m of methodMatches) {
+    if (seenHouses.has(m.house)) continue;
+    seenHouses.add(m.house);
+    const info = SIHR_METHOD_RULE_MAP[m.ruleId];
+    const parts = [info.method, info.location].filter(Boolean).join(' — ');
+    lines.push(`שיטה: ${parts} (${m.figureHebrew} בבית ${m.house})`);
+    if (seenHouses.size >= 2) break; // at most 2 method lines
+  }
+
+  // Location hint — same technique as finding buried treasure (Kashf al-Asrar pp. 185-187)
+  const locationHint = getSihrLocationHint(board);
+  if (locationHint) {
+    lines.push(`מיקום הכישוף: ${locationHint}`);
+  }
+
+  return lines.length ? lines : null;
 }
 
 // Generic house scoring (kept as a secondary signal)
@@ -377,20 +569,27 @@ function applyIsqatSevenMethod(board, source) {
 
   const results = asArray(source?.isqatSevenRules?.results);
   const match = results.find((r) => Number(r.remainder) === remainder);
+  const isqatInfo = ISQAT_REMAINDER_MAP[remainder];
 
   return {
     openCount,
     remainder,
-    diagnosis: match?.diagnosis || null,
-    hebrewText: match?.hebrew || null,
+    diagnosis:   match?.diagnosis || null,
+    hebrewText:  match?.hebrew || null,
+    isSpiritual: isqatInfo?.isSpiritual ?? true,
   };
 }
 
 // Get figure element (fire/air/water/earth) from pattern
+// Falls back to PATTERN_TO_FIGURE_PROPS lookup by key when house.element is missing
 function getFigureElement(house) {
-  const element = String(house?.element || house?.elementHebrew || '').toLowerCase();
+  const raw = house?.element || house?.elementHebrew || '';
+  const fromProps = !raw
+    ? (PATTERN_TO_FIGURE_PROPS[house?.key || (Array.isArray(house?.figure) ? house.figure.join('') : '')]?.element || '')
+    : '';
+  const element = String(raw || fromProps).toLowerCase();
   if (element.includes('אש') || element.includes('fire')) return 'fire';
-  if (element.includes('אוויר') || element.includes('air')) return 'air';
+  if (element.includes('אוויר') || element.includes('רוח') || element.includes('air')) return 'air';
   if (element.includes('מים') || element.includes('water')) return 'water';
   if (element.includes('עפר') || element.includes('earth') || element.includes('ard')) return 'earth';
   return null;
@@ -478,12 +677,14 @@ export function diagnoseSpiritualInfluence(question = '', board = null) {
   ];
   const openingMatches = rawOpeningMatches.filter((m) => !m.inCriticalHouse);
   const genericScore = quickHouseScore(board) + (questionHits.length ? 2 : 0);
-  const isqatResult = applyIsqatSevenMethod(board, source);
-  const jinnTypeResult = applyJinnTypeMethod(board, source);
+  const isqatResult        = applyIsqatSevenMethod(board, source);
+  const jinnTypeResult      = applyJinnTypeMethod(board, source);
   const organDiagnosisResult = applyOrganDiagnosisMethod(board, source);
 
   const grade = gradeFromMatches(specificMatches, openingMatches, genericScore);
-  const finalHebrew = buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, jinnTypeResult, organDiagnosisResult);
+  const crossReferenceNote = computeCrossReference(questionHits, isqatResult);
+  const sihrDetails = detectSihrDetails(board, specificMatches, isqatResult);
+  const finalHebrew = buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, jinnTypeResult, crossReferenceNote, sihrDetails);
 
   const mainReasons = specificMatches.map((m) => ({
     house: m.house,
@@ -511,7 +712,7 @@ export function diagnoseSpiritualInfluence(question = '', board = null) {
   if (isqatResult?.hebrewText) {
     mainReasons.push({
       house: null,
-      role: 'ספירת מפתוח (7×7)',
+      role: 'גורל חולי 7×7',
       figureHebrew: null,
       score: 1,
       signals: [isqatResult.hebrewText],
@@ -531,11 +732,14 @@ export function diagnoseSpiritualInfluence(question = '', board = null) {
     isqatResult,
     jinnTypeResult,
     organDiagnosisResult,
+    crossReferenceNote,
+    sihrDetails,
     grade,
     finalHebrew,
     mainReasons,
     shouldShow: grade !== 'mixed',
     isSpiritualQuestion: questionHits.length > 0,
+    questionCategory: resolveQuestionCategory(questionHits),
   };
 }
 

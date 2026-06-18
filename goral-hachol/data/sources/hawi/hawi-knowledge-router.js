@@ -87,11 +87,20 @@ const TOPIC_ALIASES = {
     'כישוף',
     'עין הרע',
     'עין רע',
+    'עין',
     'קנאה',
     'ג׳ין',
     'אחיזה',
     'רוחני',
     'פגיעה רוחנית',
+    'רוח רעה',
+    'שד',
+    'דיבוק',
+    'קללה',
+    'עשב',
+    'מזיק',
+    'חרם',
+    'נגיעה',
     'sihr',
     'hasad',
   ],
@@ -428,6 +437,96 @@ export function getAllHawiKnowledgeTopics() {
   return Object.keys(TOPIC_TO_KNOWLEDGE_IDS);
 }
 
+// ── מיפוי 12 בתים → נושאי שאלות (כשף אל-אסראר שער שישי) ───────────────────
+// מקור: כשף אל-אסראר, שער שישי — תוכן עניינים עמ׳ 277
+export const HOUSE_TOPICS_MAP = {
+  1: [
+    { topicId: 'generalReading',    label: 'מצב השואל הכללי' },
+    { topicId: 'foundations',       label: 'פתיחה / יסודות הגורל' },
+    { topicId: 'birthNativity',     label: 'גורל האדם / מולד' },
+    { topicId: 'completion',        label: 'האם הדבר יתממש' },
+    { topicId: 'spiritualDiagnostics', label: 'כישוף / עין הרע (אם יש מעשה)' },
+  ],
+  2: [
+    { topicId: 'commerce',          label: 'ממון / כסף / עסק' },
+    { topicId: 'deathInheritance',  label: 'ירושה / עיזבון' },
+    { topicId: 'theft',             label: 'חפץ גנוב — מה נגנב' },
+    { topicId: 'hiddenTreasure',    label: 'שווי אוצר / מטמון' },
+  ],
+  3: [
+    { topicId: 'siblings',          label: 'אחים / שכנים / קרובים' },
+    { topicId: 'travel',            label: 'נסיעה קצרה / תנועה' },
+  ],
+  4: [
+    { topicId: 'hiddenTreasure',    label: 'מטמון / אוצר גנוז (מיקום)' },
+    { topicId: 'missingPerson',     label: 'מיקום הנעדר' },
+    { topicId: 'theft',             label: 'מיקום החפץ הגנוב' },
+    { topicId: 'childrenPregnancy', label: 'מצב האב / הבית' },
+  ],
+  5: [
+    { topicId: 'childrenPregnancy', label: 'ילדים / הריון / לידה' },
+    { topicId: 'prisoner',          label: 'סיכוי שחרור מכלא' },
+    { topicId: 'loveHate',          label: 'ילד האהבה / בן/בת הנאהב' },
+  ],
+  6: [
+    { topicId: 'illness',           label: 'חולה / מחלה' },
+    { topicId: 'spiritualDiagnostics', label: 'אבחון רוחני / כישוף / עין' },
+    { topicId: 'hiddenTreasure',    label: 'חפץ אבוד / בהמה אבודה' },
+  ],
+  7: [
+    { topicId: 'marriage',          label: 'נישואין / זוגיות' },
+    { topicId: 'disputes',          label: 'סכסוך / תביעה / מריבה' },
+    { topicId: 'enemies',           label: 'אויב / יריב' },
+    { topicId: 'missingPerson',     label: 'נעדר (הצד השני)' },
+    { topicId: 'commerce',          label: 'קנייה ומכירה / צד שני' },
+    { topicId: 'partnership',       label: 'שותפות עסקית' },
+    { topicId: 'theft',             label: 'הגנב (מי גנב)' },
+  ],
+  8: [
+    { topicId: 'theft',             label: 'גנבה / חפץ גנוב' },
+    { topicId: 'deathInheritance',  label: 'מוות / סכנת מוות' },
+    { topicId: 'illness',           label: 'פרוגנוזה: מוות או החלמה' },
+    { topicId: 'seaVoyage',         label: 'סכנת ים / טביעה' },
+    { topicId: 'loan',              label: 'הלוואה — האם יוחזר החוב' },
+  ],
+  9: [
+    { topicId: 'travel',            label: 'נסיעה / מסע' },
+    { topicId: 'missingPerson',     label: 'נעדר / גאיב' },
+    { topicId: 'seaVoyage',         label: 'מסע ים / ספינה' },
+    { topicId: 'hiddenTreasure',    label: 'חפץ אבוד — כיוון הנסיעה' },
+    { topicId: 'spiritualDiagnostics', label: 'חלום / חזון' },
+    { topicId: 'religion',          label: 'דת / אמונה / יראת שמים' },
+  ],
+  10: [
+    { topicId: 'authorityState',    label: 'שלטון / תפקיד / ממשל' },
+    { topicId: 'yearlyForecast',    label: 'טאלע השנה / גורל שנתי' },
+    { topicId: 'commerce',          label: 'מוניטין עסקי / הצלחה מקצועית' },
+    { topicId: 'motherRules',       label: 'דיני האם — מזל האם ומצבה' },
+  ],
+  11: [
+    { topicId: 'loveHate',          label: 'אהבה / ידידות / תקוות' },
+    { topicId: 'authorityState',    label: 'סיכויים / תקוות בשלטון' },
+    { topicId: 'childrenPregnancy', label: 'אם ייתממש הדבר' },
+  ],
+  12: [
+    { topicId: 'enemies',           label: 'אויבים נסתרים' },
+    { topicId: 'fear',              label: 'פחד / סכנה נסתרת' },
+    { topicId: 'prisoner',          label: 'אסיר / כלוא / עצור' },
+    { topicId: 'theft',             label: 'הגנב — מי גנב' },
+    { topicId: 'missingPerson',     label: 'מה מונע את חזרת הנעדר' },
+    { topicId: 'travel',            label: 'מכשולים / סכנות בנסיעה' },
+  ],
+};
+
+/**
+ * מחזיר רשימת נושאי שאלות לפי בית.
+ * @param {number} houseNumber - 1–12
+ * @returns {{ topicId, label }[]}
+ */
+export function getTopicsForHouse(houseNumber) {
+  return HOUSE_TOPICS_MAP[Number(houseNumber)] || [];
+}
+
 export function getAllHawiExtendedKnowledge() {
   return HAWI_EXTENDED_KNOWLEDGE_LIST;
 }
@@ -440,6 +539,8 @@ export const HAWI_KNOWLEDGE_ROUTER = {
   detectTopic: detectHawiTopicFromQuestion,
   getKnowledgeForTopic: getHawiKnowledgeForTopic,
   routeQuestion: routeHawiQuestion,
+  getTopicsForHouse,
+  houseTopicsMap: HOUSE_TOPICS_MAP,
 };
 
 export default { HAWI_KNOWLEDGE_ROUTER };
@@ -452,5 +553,7 @@ if (typeof module !== 'undefined') {
     routeHawiQuestion,
     getAllHawiKnowledgeTopics,
     getAllHawiExtendedKnowledge,
+    getTopicsForHouse,
+    HOUSE_TOPICS_MAP,
   };
 }

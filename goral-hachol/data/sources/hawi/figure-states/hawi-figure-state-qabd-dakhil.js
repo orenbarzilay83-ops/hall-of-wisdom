@@ -4,6 +4,7 @@ export const HAWI_FIGURE_STATE_QABD_DAKHIL = {
   shortFigureId: 'qabd-dakhil',
   arabicName: 'القبض الداخل',
   hebrewName: 'ממון נכנס',
+  genderHebrew: 'נקבה',
   sourceBook: 'حاوي العجائب ومظهر الغرائب',
   sourceAuthor: 'أحمد ابن زنبل المحلي',
   sourceSectionArabic: 'الباب الثامن عشر في الكلام على الاشكال — الفصل الاول في حالات الاشكال في البيوت وافعالها',
@@ -13,7 +14,7 @@ export const HAWI_FIGURE_STATE_QABD_DAKHIL = {
   extractionStatus: 'source-audited-from-drive-pdf-45-51',
 
   noteHebrew:
-    'זה אינו פירוש מעבר הצורה הרגיל, אלא שכבה נוספת: מצב הצורה בבית — נاطق/صامت, سعد/نحس, חזק/חלש, מתקן/מקלקל. החומר נלקח ממיפוי PDF 45 ודורש בדיקת מקור/צילום לפני הפעלה מלאה במנוע.',
+    'זה אינו פירוש מעבר הצורה הרגיל, אלא שכבה נוספת: מצב הצורה בבית — מדבר/שותק, סעד/נחס, חזק/חלש, מתקן/מקלקל. החומר נלקח ממיפוי PDF 45 ודורש בדיקת מקור/צילום לפני הפעלה מלאה במנוע.',
 
   states: [
     {
@@ -26,7 +27,7 @@ export const HAWI_FIGURE_STATE_QABD_DAKHIL = {
       fortuneState: 'strong',
       effectHebrew: 'מתקן ומתאים לכל העניינים.',
       sourceStatus: 'sourceMapped',
-      reviewClosed: 'המילה قولي אולי שיבוש ביקורת קודמת ונסגר בביקורת קודמת.'
+      reviewClosed: 'המילה "קולי" (قولي) אולי שיבוש ביקורת קודמת ונסגר בביקורת קודמת.'
     },
     {
       house: 2,

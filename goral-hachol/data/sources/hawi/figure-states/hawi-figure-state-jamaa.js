@@ -4,6 +4,7 @@ export const HAWI_FIGURE_STATE_JAMAA = {
   shortFigureId: 'jamaa',
   arabicName: 'الجماعة',
   hebrewName: 'קהלה',
+  genderHebrew: 'דו-מיני',
   sourceBook: 'حاوي العجائب ومظهر الغرائب',
   sourceAuthor: 'أحمد ابن زنبل المحلي',
   sourceSectionArabic: 'الباب الثامن عشر في الكلام على الاشكال — الجماعة في البيوت الستة عشر',
@@ -11,7 +12,7 @@ export const HAWI_FIGURE_STATE_JAMAA = {
   sourcePages: ['PDF document 45.pdf', 'PDF document 46.pdf'],
   sourceType: 'full-book-page-index',
   extractionStatus: 'source-audited-from-drive-pdf-45-51',
-  noteHebrew: 'שכבת מצב הצורה בבית: נاطق/صامت, سعد/نحس, מתקן/מקלקל. נלקח ממיפוי PDF 45–46 ודורש בדיקת מקור/צילום לפני הפעלה מלאה במנוע.',
+  noteHebrew: 'שכבת מצב הצורה בבית: מדבר/שותק, סעד/נחס, מתקן/מקלקל. נלקח ממיפוי PDF 45–46 ודורש בדיקת מקור/צילום לפני הפעלה מלאה במנוע.',
   states: [
     { house: 1, arabicText: ['في الأول صامت سعد قوي متمكن يصلح لجميع الأشياء'], hebrewTranslation: ['בבית הראשון: שותק, טוב, חזק ומבוסס; מתקן את כל הדברים.'], speakingState: 'silent', fortuneState: 'benefic-strong-established', effectHebrew: 'תיקון כללי, כוח ויציבות.', sourceStatus: 'sourceMapped' },
     { house: 2, arabicText: ['وفي الثاني صامت سعيد قوي يريد المال والرزق'], hebrewTranslation: ['בבית השני: שותק, טוב וחזק; מבקש ממון ופרנסה.'], speakingState: 'silent', fortuneState: 'benefic-strong', effectHebrew: 'חיזוק ממון, פרנסה ורצון להשגה חומרית.', sourceStatus: 'sourceMapped' },

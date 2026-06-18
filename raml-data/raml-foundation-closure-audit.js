@@ -163,7 +163,7 @@ const RAML_FOUNDATION_CLOSURE_AUDIT = {
     },
     {
       id: "intishaat",
-      title: "انتشاءات — היווצרויות",
+      title: "היווצרויות",
       file: "raml-data/raml-foundation-qawl-jami-extra.js",
       currentStatus: "blockedUntilTable",
       reason: "העיקרון קיים: צורה נוצרת מצירוף שתי צורות. אבל אין עדיין טבלת הורים מלאה לכל צורה.",
@@ -171,7 +171,7 @@ const RAML_FOUNDATION_CLOSURE_AUDIT = {
     },
     {
       id: "tasyir",
-      title: "تسيير — הולכת נקודות",
+      title: "הולכת נקודות",
       file: "raml-data/raml-foundation-qawl-jami-extra.js",
       currentStatus: "blockedUntilFormula",
       reason: "התסייר קיים כשיטת יסוד, אבל אין נוסחת שימוש כללית ומדויקת להפעלה אוטומטית.",
@@ -179,7 +179,7 @@ const RAML_FOUNDATION_CLOSURE_AUDIT = {
     },
     {
       id: "ismatat-atrohat",
-      title: "إسماطات / أطروحات — הפלות ושאריות",
+      title: "הפלות ושאריות",
       file: "raml-data/raml-foundation-qawl-jami-extra.js",
       currentStatus: "blockedUntilContextFormula",
       reason: "השיטה קיימת כחוק יסוד ויש בסיסים 12/16/15/9/6/7, אבל צריך לדעת מתי משתמשים בכל בסיס.",

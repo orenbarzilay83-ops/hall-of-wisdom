@@ -304,7 +304,7 @@ export const HAWI_QUESTION_DISPUTES = {
         "العاشر",
         "ميل الحاكم"
       ],
-      rule: "בית 10 מראה לאיזה צד נוטה החاكم/השופט.",
+      rule: "בית 10 מראה לאיזה צד נוטה השופט.",
       status: "sourceExact"
     },
 

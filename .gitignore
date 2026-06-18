@@ -3,5 +3,5 @@
 _backup_goral_core_before_ui_rebuild/
 backup-goral-core-before-ui-rebuild.tar.gz
 
-_backup_goral_core_before_ui_rebuild/
-backup-goral-core-before-ui-rebuild.tar.gz
+# Claude Code local settings
+.claude/

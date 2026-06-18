@@ -4,6 +4,7 @@ export const HAWI_FIGURE_STATE_JUDLA = {
   shortFigureId: 'judla',
   arabicName: 'الجودلة / الكوسج',
   hebrewName: 'נלחם',
+  genderHebrew: 'זכר',
   sourceBook: 'حاوي العجائب ومظهر الغرائب',
   sourceAuthor: 'أحمد ابن زنبل المحلي',
   sourceSectionArabic: 'الباب الثامن عشر في الكلام على الاشكال — فصل في معرفة الجودلة',
@@ -11,7 +12,7 @@ export const HAWI_FIGURE_STATE_JUDLA = {
   sourcePages: ['PDF document 46.pdf'],
   sourceType: 'full-book-page-index',
   extractionStatus: 'source-audited-from-drive-pdf-45-51',
-  noteHebrew: 'מצב הצורה נלחם / الجودلة בכל בית. בית 15 מסומן במקור: لم يظهر — נשמר לפי המיפוי הסופי, והסטטוס נשמר לפי ביקורת קודמת.',
+  noteHebrew: 'מצב הצורה נלחם בכל בית. בית 15 מסומן במקור: לא הופיע — נשמר לפי המיפוי הסופי, והסטטוס נשמר לפי ביקורת קודמת.',
   states: [
     { house: 1, arabicText: ['في الأول ناطق نحس مدبر إن تكرر في الرمل وإن لم يتكرر فهو سعيد متمكن'], hebrewTranslation: ['בבית הראשון: מדבר, נחס ומסדר אם הוא חוזר ברמל; ואם אינו חוזר — הוא טוב ומבוסס.'], speakingState: 'speaking', fortuneState: 'conditional', effectHebrew: 'אם חוזר — נחס ומסדר; אם אינו חוזר — טוב ומבוסס.', sourceStatus: 'sourceMapped' },
     { house: 2, arabicText: ['وفي الثاني نحس ناطق ضل عن الرزق'], hebrewTranslation: ['בבית השני: נחס מדבר, תועה מן הפרנסה.'], speakingState: 'speaking', fortuneState: 'malefic', effectHebrew: 'אובדן דרך בענייני פרנסה וממון.', sourceStatus: 'sourceMapped' },

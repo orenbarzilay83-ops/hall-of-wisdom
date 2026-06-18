@@ -238,7 +238,7 @@ export const HAWI_FIGURE_NAQI_KHAD = {
         'המקור מזכיר الحرام والعشق والفسق. לשמר כידע מקור; ניסוח לקוח ייקבע בנפרד.'
       ],
       topics: ['marriage', 'women', 'partnership', 'commerce', 'mixing', 'beloved', 'forbidden', 'sexual-conduct'],
-      specialRules: ['נישואין/שותפות/נשים, אבל גם איסור/חשק/فسق; חומר רגיש לשימור.'],
+      specialRules: ['נישואין/שותפות/נשים, אבל גם איסור/חשק/אי מוסריות; חומר רגיש לשימור.'],
       supplementarySource: {
         sourceBook: 'بلوغ الأمل في علم الرمل',
         sourceArabic: 'دل على الطريق وورود شيء غائب وحركات مفيدة وفراش',

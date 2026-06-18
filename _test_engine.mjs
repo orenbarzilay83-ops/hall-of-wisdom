@@ -51,10 +51,9 @@ const tests = [
   {
     label: 'גניבה (מי גנב)',
     question: 'מי גנב לי את הספר כתב היד מהבית',
-    // Board from screenshot: mothers approximated from visible houses 1-4
     // H1=חיבור(2112) H2=דרך(1111) H3=שפל ראש(2221) H4=כבוד יוצא(1122)
     mothers: ['2112', '1111', '2221', '1122'],
-    topicId: 'enemies',
+    topicId: 'theft',
   },
   {
     label: 'נישואין',

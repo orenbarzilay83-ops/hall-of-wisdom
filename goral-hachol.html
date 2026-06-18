@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>גורל החול — ממשק חדש</title>
 
-  <script src="./raml-data/raml-forms-basic.js?v=clean-ui-1"></script>
-  <script src="./raml-data/raml-houses-basic.js?v=clean-ui-1"></script>
-  <script src="./raml.js?v=clean-ui-1"></script>
+  <script src="./raml-data/raml-forms-basic.js?v=4"></script>
+  <script src="./raml-data/raml-houses-basic.js?v=3"></script>
+  <script src="./raml.js?v=3"></script>
 
   <style>
     :root {
@@ -39,6 +39,18 @@
       background:linear-gradient(180deg,var(--paper),var(--paper2));
       box-shadow:0 0 35px rgba(0,0,0,.35);
     }
+
+    /* ─── מסך פתיחה ─── */
+    .landing-image-wrap { width:100%; overflow:hidden; line-height:0; }
+    .landing-img { width:100%; height:auto; display:block; object-fit:cover; }
+    .landing-actions {
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:14px;
+      padding:28px 24px 32px;
+    }
+    .landing-actions .btn { width:70%; max-width:320px; font-size:16px; padding:13px; }
 
     .topbar {
       height:68px;
@@ -116,40 +128,26 @@
       color:#111;
     }
 
-    /* Opening form — compact, centered, proportional fields (font-size ≥16px to prevent iOS auto-zoom) */
-    #screen-open h2 { text-align:center; }
-    #screen-open label { text-align:center; }
-
-    #screen-open .form-grid input,
-    #screen-open .form-grid select {
-      padding:8px 10px;
-      font-size:16px;
-      border-radius:10px;
+    #screen-open input, #screen-open textarea {
+      padding:10px 14px;
+      font-size:15px;
+      border-radius:12px;
+      border:1px solid #d8d8d8;
+      text-align:center;
     }
-
-    /* Name inputs: limit width and center within grid cell */
-    #screen-open #clientNameInput,
-    #screen-open #clientParentInput {
-      width:180px;
-      display:block;
-      margin:0 auto;
-    }
-
-    .dt-row { display:flex; gap:10px; justify-content:center; }
-    .dt-row > div { flex:none; text-align:center; }
-
-    /* Date and time inputs sized to their content */
-    #questionDateInput { width:148px; }
-    #questionTimeInput { width:108px; }
+    .dt-row { display:flex; gap:8px; }
+    .dt-row > div { flex:1; }
 
     .casting-alert {
-      margin-top:8px;
-      padding:7px 12px;
-      border-radius:10px;
+      padding:6px 12px;
+      border-radius:20px;
       font-size:13px;
-      font-weight:700;
-      text-align:center;
+      font-weight:600;
+      white-space:nowrap;
       display:none;
+      max-width:44%;
+      margin:0 auto 12px;
+      text-align:center;
     }
     .casting-alert.good {
       display:block;
@@ -511,7 +509,13 @@
     }
     .board-score-ok   { background:#f0faf0; border-color:#a5d6a7; color:#1b5e20; }
     .board-score-warn { background:#fff8e1; border-color:#ffcc02; color:#6d4c00; font-weight:700; }
-    .board-dhamir     { background:#f3f3f3; border-color:#bdbdbd; color:#333; }
+    .board-dhamir          { background:#f3f3f3; border-color:#bdbdbd; color:#333; }
+    .board-querent-subject { background:#fff8e1; border-color:#ffe082; color:#5d4037; }
+    .board-sod-dhamirim    { background:#fff3e0; border-color:#ffb74d; color:#4e342e; font-weight:600; }
+    .board-honesty-ok      { background:#f0faf0; border-color:#81c784; color:#1b5e20; }
+    .board-honesty-warn    { background:#fff3e0; border-color:#e64a19; color:#bf360c; font-weight:700; }
+    .board-timing-thirds   { background:#e8eaf6; border-color:#7986cb; color:#1a237e; }
+    .board-temperament     { background:#fce4ec; border-color:#f48fb1; color:#880e4f; }
     .board-ittisalat-ok { background:#f0faf0; border-color:#a5d6a7; color:#1b5e20; }
     .board-ittisalat-warn { background:#fce4ec; border-color:#ef9a9a; color:#7f0000; }
 
@@ -609,55 +613,79 @@
       font-weight:700;
       white-space:nowrap;
     }
+    /* ─── מסך פתיחה ─── */
+    .open-title-row {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin-bottom:8px;
+      padding-bottom:10px;
+      border-bottom:2px solid #d4a843;
+    }
+    .open-title-row h2 { margin:0; border:none; padding:0; text-align:center; }
+    .open-2col {
+      display:flex;
+      flex-direction:row;
+      gap:0;
+      margin-bottom:16px;
+    }
+    .col-sep { width:1px; background:#e0e0e0; margin:0 12px; align-self:stretch; flex-shrink:0; }
+    .open-inputs-col { flex:1.4; min-width:0; display:flex; flex-direction:column; gap:12px; align-items:center; }
+    .open-profile-col { flex:1; min-width:0; display:flex; flex-direction:column; gap:20px; }
+    .open-field { display:flex; flex-direction:column; gap:3px; width:100%; }
+    .open-field label { font-size:13px; color:#888; font-weight:600; text-align:center; }
+    .open-inputs-col .open-field input { width:30%; margin:0 auto; display:block; }
+    .dt-row { width:100%; display:flex; gap:6px; justify-content:center; }
+    .dt-row > div { flex:0 0 auto; display:flex; flex-direction:column; gap:3px; align-items:center; }
+    .dt-row label { font-size:13px; color:#888; font-weight:600; text-align:center; }
+    .dt-row input { width:110px; text-align:center; }
+    #questionInput { height:60px; min-height:50px; max-height:90px; resize:vertical; }
+    @media (orientation:portrait) {
+      #questionInput { height:44px; min-height:36px; max-height:70px; }
+    }
+    .open-bottom { display:flex; flex-direction:column; gap:12px; }
+    /* ─── פרופיל לקוח ─── */
     .profile-section {
-      margin-top:14px;
-      background:linear-gradient(135deg,#f2fff6,#fff);
-      border:2px solid rgba(20,140,80,.25);
-      border-radius:14px;
-      padding:16px;
       display:flex;
       flex-direction:column;
-      gap:12px;
-    }
-    .profile-section-title {
-      font-size:14px;
-      font-weight:700;
-      color:#1a6e40;
+      gap:20px;
     }
     .profile-group {
       display:flex;
       flex-direction:column;
-      gap:6px;
+      gap:5px;
     }
     .profile-group-label {
       font-size:13px;
-      color:#555;
+      color:#888;
       font-weight:600;
+      text-align:center;
     }
     .profile-btn-row {
       display:flex;
       flex-wrap:wrap;
-      gap:8px;
+      gap:7px;
+      justify-content:center;
     }
     .profile-btn {
-      padding:6px 14px;
+      padding:5px 13px;
       border-radius:20px;
-      border:1.5px solid rgba(20,140,80,.4);
+      border:1.5px solid #2d7a4f;
       background:#fff;
-      color:#1a6e40;
+      color:#1a5c3a;
       font-size:13px;
       font-weight:600;
       cursor:pointer;
-      transition:background .15s,border-color .15s;
+      transition:background .15s,border-color .15s,color .15s;
     }
     .profile-btn:hover {
-      background:#e8f5ee;
-      border-color:#1a8a4a;
+      border-color:#1a5c3a;
+      background:#f0faf4;
     }
     .profile-btn.selected {
-      background:#1a8a4a;
+      background:#2d7a4f;
       color:#fff;
-      border-color:#1a8a4a;
+      border-color:#2d7a4f;
     }
     .topic-spiritual-btn {
       grid-column:1 / -1;
@@ -696,6 +724,36 @@
       white-space:nowrap;
     }
 
+    /* ─── Sub-topic selection row ────────────────────────────── */
+    .subtopic-row {
+      grid-column:1 / -1;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      padding:10px 14px;
+      background:#fffef5;
+      border:2px solid var(--gold);
+      border-radius:12px;
+      margin-top:-4px;
+    }
+    .subtopic-btn {
+      border:2px solid rgba(216,170,69,.45);
+      border-radius:20px;
+      padding:6px 16px;
+      font-size:14px;
+      font-weight:600;
+      color:#444;
+      background:#fff;
+      cursor:pointer;
+      transition:background .15s, border-color .15s;
+    }
+    .subtopic-btn:hover  { background:#fff4cc; border-color:var(--gold); }
+    .subtopic-btn.selected {
+      background:#f5d95e;
+      border-color:#c8920d;
+      color:#3a2000;
+      box-shadow:0 0 0 2px rgba(216,170,69,.3);
+    }
     /* ─── Menu Drawer ─────────────────────────────────────────── */
     .menu-overlay {
       display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;
@@ -744,7 +802,7 @@
     .figures-grid {
       display:grid;grid-template-columns:repeat(2,1fr);gap:12px;
     }
-    @media(min-width:600px){ .figures-grid{grid-template-columns:repeat(3,1fr);} }
+    @media(min-width:520px){ .figures-grid{grid-template-columns:repeat(4,1fr);} }
     .fig-card {
       border:1.5px solid #eee;border-radius:14px;padding:12px;
       background:#fff;text-align:center;
@@ -769,7 +827,11 @@
     .badge.east  { background:#e8ffe0;color:#205000; }
     .badge.west  { background:#f0e8ff;color:#400080; }
     .badge.planet { background:#fffbe6;color:#5a4000; }
+    .badge.zodiac { background:#f3e8ff;color:#4a0080; }
     .badge.group { background:#f0f8ff;color:#003060;font-size:10px; }
+    .badge.gender-male { background:#dce8ff;color:#1a3a6b; }
+    .badge.gender-female { background:#ffe0f0;color:#6b0038; }
+    .badge.gender-neutral { background:#efefef;color:#444; }
     .fig-letters {
       display:flex;justify-content:center;gap:5px;margin-top:5px;
     }
@@ -817,6 +879,41 @@
       margin-top:6px;font-size:13px;font-family:monospace;
       background:#f0f0f0;border-radius:8px;padding:8px 12px;color:#333;
     }
+
+    /* ─── Kashf Book Viewer ───────────────────────────────────── */
+    .kashf-toc-header { text-align:center;margin-bottom:20px; }
+    .kashf-toc-main-title { font-size:1.2rem;font-weight:900;color:var(--navy);margin-bottom:4px; }
+    .kashf-toc-subtitle { font-size:14px;color:#888;margin-top:2px; }
+    .kashf-toc-item {
+      display:flex;justify-content:space-between;align-items:center;
+      padding:11px 14px;border-radius:10px;cursor:pointer;
+      border:1px solid #e8e8e8;margin-bottom:7px;background:#fff;
+      font-size:16px;line-height:1.45;
+      transition:background .15s,border-color .15s;
+    }
+    .kashf-toc-item:hover { background:#f0f4ff;border-color:var(--navy); }
+    .kashf-toc-page { color:#888;font-size:13px;white-space:nowrap;margin-right:12px;flex-shrink:0; }
+    .kashf-reader-nav { display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:8px; }
+    .kashf-page-counter { font-size:13px;color:#888; }
+    .kashf-page-meta { text-align:center;margin-bottom:18px;padding-bottom:14px;border-bottom:2px solid #eee; }
+    .kashf-page-num { font-size:14px;color:#888; }
+    .kashf-chapter-title { font-size:1.15rem;font-weight:900;color:var(--navy);margin-top:5px;line-height:1.4; }
+    .kashf-page-text {
+      font-size:19px;line-height:1.95;color:#1a1a2e;
+      direction:rtl;text-align:right;
+      min-height:320px;max-height:52vh;overflow-y:auto;
+      border:1px solid #e8e8e8;border-radius:10px;padding:16px 18px;
+      background:#fafafa;
+    }
+    .kashf-page-text p { margin:0 0 1em; }
+    .kashf-page-text strong { color:#071b30;font-weight:900; }
+    .kashf-page-text em { font-style:italic; }
+    .kashf-page-text ul { padding-right:22px;margin:4px 0 14px; }
+    .kashf-page-text li { margin-bottom:6px; }
+    .kashf-page-text table { border-collapse:collapse;width:100%;margin:14px 0;font-size:16px; }
+    .kashf-page-text th,.kashf-page-text td { border:1px solid #ccc;padding:7px 11px;text-align:right; }
+    .kashf-page-text th { background:#f0f4ff;font-weight:700; }
+    .kashf-bottom-nav { display:flex;justify-content:space-between;margin-top:22px;gap:8px; }
 
     /* ─── Journal Screen ───────────────────────────────────────── */
     .journal-empty {
@@ -937,10 +1034,229 @@
 
     @media (max-width:800px) {
       .screen { padding:16px; }
-      .form-grid, .actions, .mother-slots { grid-template-columns:1fr; }
+      .actions, .mother-slots { grid-template-columns:1fr; }
       .figure-grid { grid-template-columns:repeat(2,1fr); }
       .board-row.r1 { grid-template-columns:repeat(4,1fr); }
       .final-row { grid-template-columns:1fr; }
+    }
+    @media (max-width:400px) {
+      .form-grid { grid-template-columns:1fr; }
+    }
+
+    /* ─── מודאל בחירה אוטומטית ─── */
+    .auto-modal-overlay {
+      position:fixed; inset:0; z-index:200;
+      background:rgba(6,25,45,0.88);
+      display:flex; align-items:center; justify-content:center;
+    }
+    .auto-modal-panel {
+      background:var(--paper);
+      border-radius:24px;
+      padding:32px 28px 26px;
+      max-width:480px;
+      width:92%;
+      text-align:center;
+      box-shadow:0 12px 50px rgba(0,0,0,0.55);
+      direction:rtl;
+    }
+    .auto-modal-title {
+      font-size:24px; font-weight:900;
+      color:var(--navy); margin:0 0 8px;
+    }
+    .auto-modal-sub {
+      font-size:15px; color:var(--muted);
+      margin:0 0 22px; line-height:1.5;
+    }
+    .auto-mini-slots {
+      display:flex; justify-content:center; gap:10px; margin-bottom:24px;
+    }
+    .auto-mini-slot {
+      width:80px; min-height:90px;
+      border:1px dashed rgba(0,0,0,.3);
+      border-radius:12px;
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      font-size:12px; font-weight:700;
+      background:white; padding:6px 4px;
+      gap:4px;
+    }
+    .auto-mini-slot.filled {
+      background:rgba(255,245,205,.85);
+      border:2px solid var(--gold);
+    }
+    .auto-mini-slot.current {
+      border:2px solid var(--navy);
+      box-shadow:0 0 0 3px rgba(6,25,45,.12);
+    }
+    /* גליף בתוך סלוט קטן — גדלים ישירים, בלי scale */
+    .auto-mini-slot .glyph {
+      width:40px;
+      grid-template-rows:repeat(4,9px);
+      gap:5px;
+    }
+    .auto-mini-slot .glyph .one { width:7px; height:7px; }
+    .auto-mini-slot .glyph .two { width:28px; height:5px; }
+    /* גליף בתוך ספינר — גדלים ישירים, בלי scale */
+    .auto-spinner-wrap {
+      margin:0 auto 22px;
+      width:240px; height:240px;
+      background:white;
+      border:3px solid var(--gold);
+      border-radius:22px;
+      display:flex;
+      align-items:center; justify-content:center;
+      box-shadow:0 4px 22px rgba(0,0,0,.14);
+    }
+    .auto-spinner-wrap .glyph {
+      width:100px;
+      grid-template-rows:repeat(4,22px);
+      gap:14px;
+    }
+    .auto-spinner-wrap .glyph .one { width:16px; height:16px; }
+    .auto-spinner-wrap .glyph .two { width:70px; height:12px; }
+    .auto-stop-btn {
+      font-size:22px !important;
+      padding:16px !important;
+      width:100%;
+    }
+    .auto-proceed-row {
+      display:flex; gap:10px; margin-top:14px;
+    }
+    .auto-proceed-row .btn { flex:1; font-size:16px; padding:13px; }
+    .auto-close-btn { margin-top:12px; width:100%; font-size:16px; padding:13px; }
+    .auto-slot-label { font-size:12px; color:#999; }
+
+    /* ─── גורל חולי 7×7 ─── */
+    .isqat-desc { font-size:14px; color:#3a4e62; line-height:1.7; margin-bottom:14px; text-align:right; }
+    /* גריד בחירה קומפקטי — אותם צבעים, גודל שונה */
+    .isqat-pick-grid {
+      display:grid; grid-template-columns:repeat(4,1fr);
+      border:1px solid rgba(0,0,0,.3); border-radius:14px; overflow:hidden;
+      background:white; margin-bottom:14px;
+    }
+    .isqat-pick-btn {
+      border:0; border-left:1px solid rgba(0,0,0,.15); border-bottom:1px solid rgba(0,0,0,.15);
+      background:#fffaf0; cursor:pointer; padding:6px 4px;
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;
+    }
+    .isqat-pick-btn:hover    { background:#fff8e1; }
+    .isqat-pick-btn.selected { outline:3px solid var(--gold); outline-offset:-3px; background:#fff2cc; }
+    .isqat-pick-btn.other-used { background:#f5f5f5; opacity:.7; }
+    .isqat-pick-btn .glyph { width:40px; grid-template-rows:repeat(4,9px); gap:5px; }
+    .isqat-pick-btn .glyph .one { width:7px; height:7px; }
+    .isqat-pick-btn .glyph .two { width:30px; height:6px; }
+    .isqat-pick-name { font-size:10px; color:#333; font-weight:700; }
+    /* תיבת תוצאה */
+    .isqat-result-box {
+      border:1px solid rgba(216,170,69,.55); border-radius:14px; padding:20px;
+      margin-top:18px; background:rgba(255,255,255,.9); direction:rtl;
+    }
+    /* 16 הצורות הנגזרות */
+    .isqat-derived-grid {
+      display:grid; grid-template-columns:repeat(8,1fr); gap:5px; margin-top:10px;
+    }
+    .isqat-derived-grid .fig-cell {
+      display:flex; flex-direction:column; align-items:center;
+      background:#fffaf0; border:1px solid rgba(0,0,0,.1); border-radius:6px; padding:4px 2px;
+    }
+    .isqat-derived-grid .glyph { width:28px; grid-template-rows:repeat(4,6px); gap:3px; }
+    .isqat-derived-grid .glyph .one { width:5px; height:5px; }
+    .isqat-derived-grid .glyph .two { width:20px; height:4px; }
+
+    /* ─── לוח קונדלי ────────────────────────────────────────────── */
+    .kundali-wrap { margin: 28px 0 8px; direction: rtl; }
+    .kundali-header-row { text-align: center; margin-bottom: 12px; }
+    .kundali-title { font-size: 1.05rem; font-weight: 900; color: var(--navy, #1a3a6b); margin: 0 0 4px; }
+    .kundali-subtitle { font-size: 0.78rem; color: #666; margin: 0; }
+    .kundali-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, auto);
+      border: 2px solid var(--navy, #1a3a6b);
+      border-radius: 8px;
+      overflow: hidden;
+      direction: ltr;
+    }
+    .kundali-cell {
+      border: 1px solid #c8b060;
+      padding: 6px 5px 4px;
+      min-height: 88px;
+      background: #fffdf7;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1px;
+      box-sizing: border-box;
+    }
+    .kundali-cell.kundali-lagna {
+      background: #fffbec;
+      border: 2px solid #c8a000;
+      box-shadow: inset 0 0 0 1px rgba(200,160,0,.3);
+    }
+    .kundali-cell.kundali-own-sign {
+      background: #f3fff5;
+    }
+    .kundali-center {
+      background: linear-gradient(150deg, #1a3a6b 0%, #2a5298 100%);
+      color: #c8a000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 10px;
+    }
+    .kc-title { font-size: 1.3rem; font-weight: 900; letter-spacing: 0.06em; }
+    .kc-sub { font-size: 0.72rem; color: #a0b8d8; margin-top: 3px; }
+    .kcell-header {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      align-items: center;
+      margin-bottom: 2px;
+    }
+    .kcell-num { font-size: 10px; font-weight: 900; color: #888; }
+    .kcell-vedic { font-size: 9px; color: #aaa; }
+    .kcell-glyph { display: flex; align-items: center; justify-content: center; }
+    .kcell-glyph .glyph {
+      width: 28px;
+      grid-template-rows: repeat(4, 7px);
+      gap: 4px;
+      margin: 2px auto;
+    }
+    .kcell-glyph .glyph .one { width: 7px; height: 7px; }
+    .kcell-glyph .glyph .two { width: 22px; height: 5px; }
+    .kcell-fig-name {
+      font-size: 11px;
+      font-weight: 700;
+      color: #1a3a6b;
+      line-height: 1.2;
+    }
+    .kcell-fig-name.fortune-saad  { color: #155724; }
+    .kcell-fig-name.fortune-nahas { color: #721c24; }
+    .kcell-fig-name.fortune-mixed { color: #856404; }
+    .kcell-zodiac { font-size: 11px; color: #555; }
+    .kcell-pos {
+      font-size: 9px;
+      padding: 1px 5px;
+      border-radius: 8px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .kp-rising   { background: #d4edda; color: #155724; }
+    .kp-fortunate { background: #cce5ff; color: #004085; }
+    .kp-setting  { background: #fff3cd; color: #856404; }
+    .kp-falling  { background: #f8d7da; color: #721c24; }
+    .kcell-own { font-size: 9px; color: #2a7a3a; font-weight: 700; }
+    .kundali-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+      justify-content: center;
+      font-size: 11px;
+      direction: rtl;
     }
   </style>
 </head>
@@ -960,39 +1276,67 @@
         <button class="icon-btn" id="menuCloseBtn" style="color:#fff">✕</button>
       </div>
       <nav class="menu-nav">
-        <button class="menu-item" id="menuGuideBtn">
-          <span class="menu-item-icon">📖</span>מבוא לגורל החול
+        <button class="menu-item" id="menuPrayerBtn">
+          <span class="menu-item-icon">🤲</span>תפילה לפני עשיית הגורל
+        </button>
+        <button class="menu-item" id="menuGoralBtn" style="background:#06192d;color:#f0c040;font-weight:900;border:1px solid #f0c040;">
+          <span class="menu-item-icon">✦</span>כניסה לגורל החול
         </button>
         <button class="menu-item" id="menuJournalBtn">
           <span class="menu-item-icon">📋</span>יומן לקוחות
         </button>
-        <button class="menu-item" id="menuPrayerBtn">
-          <span class="menu-item-icon">🤲</span>תפילה לפני הגורל
+        <button class="menu-item" id="menuGuideBtn">
+          <span class="menu-item-icon">📖</span>מבוא
+        </button>
+        <button class="menu-item" id="menuIsqatBtn">
+          <span class="menu-item-icon">✦</span>גורל חולי 7×7
         </button>
       </nav>
     </div>
 
-    <section id="screen-open" class="screen active">
+    <!-- ─── מסך פתיחה ─────────────────────────────── -->
+    <section id="screen-landing" class="screen active">
+      <div class="landing-image-wrap">
+        <picture>
+          <source media="(orientation:portrait)" srcset="assets/sage-portrait.png">
+          <img src="assets/sage-landscape.png" alt="גורל החול" class="landing-img">
+        </picture>
+      </div>
+      <div class="landing-actions">
+        <button class="btn primary" id="landingGoralBtn" type="button">✦ כניסה לגורל החול</button>
+        <button class="btn gray" id="landingJournalBtn" type="button">📋 יומן לקוחות</button>
+        <button class="btn gray" id="landingGuideBtn" type="button">📖 מבוא לגורל החול</button>
+      </div>
+    </section>
+
+    <section id="screen-open" class="screen">
       <div class="panel">
-        <h2>פרטי הקריאה</h2>
 
-        <div class="form-grid">
-          <div>
-            <label>שם הפונה</label>
-            <input id="clientNameInput" placeholder="שם הלקוח" autocomplete="off" />
-          </div>
+        <!-- כותרת -->
+        <div class="open-title-row">
+          <h2 style="margin:0;border:none;padding:0">פרטי הלקוח</h2>
+        </div>
+        <div id="castingTimeAlert" class="casting-alert"></div>
 
-          <div>
-            <label>שם האב</label>
-            <input id="clientParentInput" placeholder="שם האב" autocomplete="off" />
-          </div>
-
-          <div>
-            <label>מספר טלפון</label>
-            <input id="clientPhoneInput" placeholder="טלפון הלקוח" type="tel" autocomplete="off" />
-          </div>
-
-          <div class="full">
+        <!-- 2 עמודות: ימין = שדות | שמאל = פרופיל -->
+        <div class="open-2col">
+          <div class="open-inputs-col">
+            <div class="open-field">
+              <label>שם הלקוח</label>
+              <input id="clientNameInput" autocomplete="off" />
+            </div>
+            <div class="open-field">
+              <label>שם האב</label>
+              <input id="clientParentInput" autocomplete="off" />
+            </div>
+            <div class="open-field">
+              <label>מספר טלפון</label>
+              <input id="clientPhoneInput" type="tel" autocomplete="off" />
+            </div>
+            <div class="open-field">
+              <label>הנשאל עליו</label>
+              <input id="quesitedNameInput" autocomplete="off" />
+            </div>
             <div class="dt-row">
               <div>
                 <label>תאריך</label>
@@ -1003,53 +1347,61 @@
                 <input type="time" id="questionTimeInput" autocomplete="off" />
               </div>
             </div>
-            <div id="castingTimeAlert" class="casting-alert"></div>
           </div>
 
-          <div class="full">
-            <label>שאלה / כוונה</label>
-            <textarea id="questionInput" placeholder="כתוב כאן את שאלת גורל החול" autocomplete="off"></textarea>
-          </div>
-
-          <div class="full">
-            <label>נושא השאלה — בחר את הבית שקשור לשאלתך</label>
-            <div class="topic-grid" id="topicGrid"></div>
-            <div id="profileSection" class="profile-section" style="display:none">
-              <div class="profile-section-title">פרטי הלקוח — לפרשנות מדויקת</div>
-              <div class="profile-group">
-                <div class="profile-group-label">מצב משפחתי</div>
-                <div class="profile-btn-row">
-                  <button type="button" class="profile-btn" data-profile="marital" data-value="married">נשוי/אה</button>
-                  <button type="button" class="profile-btn" data-profile="marital" data-value="single">רווק/ה</button>
-                  <button type="button" class="profile-btn" data-profile="marital" data-value="divorced">גרוש/ה</button>
-                  <button type="button" class="profile-btn" data-profile="marital" data-value="widowed">אלמן/ה</button>
-                </div>
+          <div class="col-sep"></div>
+          <div id="profileSection" class="profile-section open-profile-col">
+            <div class="profile-group">
+              <div class="profile-group-label">מין</div>
+              <div class="profile-btn-row">
+                <button type="button" class="profile-btn" data-profile="gender" data-value="male">זכר</button>
+                <button type="button" class="profile-btn" data-profile="gender" data-value="female">נקבה</button>
               </div>
-              <div class="profile-group">
-                <div class="profile-group-label">מצב תעסוקתי</div>
-                <div class="profile-btn-row">
-                  <button type="button" class="profile-btn" data-profile="work" data-value="employed">שכיר</button>
-                  <button type="button" class="profile-btn" data-profile="work" data-value="unemployed">מחפש עבודה</button>
-                  <button type="button" class="profile-btn" data-profile="work" data-value="self">עצמאי</button>
-                  <button type="button" class="profile-btn" data-profile="work" data-value="retired">בפנסיה</button>
-                </div>
+            </div>
+            <div class="profile-group">
+              <div class="profile-group-label">מצב משפחתי</div>
+              <div class="profile-btn-row">
+                <button type="button" class="profile-btn" data-profile="marital" data-value="married">נשוי/אה</button>
+                <button type="button" class="profile-btn" data-profile="marital" data-value="single">רווק/ה</button>
+                <button type="button" class="profile-btn" data-profile="marital" data-value="divorced">גרוש/ה</button>
+                <button type="button" class="profile-btn" data-profile="marital" data-value="widowed">אלמן/ה</button>
               </div>
-              <div class="profile-group">
-                <div class="profile-group-label">ילדים</div>
-                <div class="profile-btn-row">
-                  <button type="button" class="profile-btn" data-profile="children" data-value="yes">יש ילדים</button>
-                  <button type="button" class="profile-btn" data-profile="children" data-value="no">אין ילדים</button>
-                </div>
+            </div>
+            <div class="profile-group">
+              <div class="profile-group-label">ילדים</div>
+              <div class="profile-btn-row">
+                <button type="button" class="profile-btn" data-profile="children" data-value="yes">יש ילדים</button>
+                <button type="button" class="profile-btn" data-profile="children" data-value="no">אין ילדים</button>
+              </div>
+            </div>
+            <div class="profile-group">
+              <div class="profile-group-label">מצב תעסוקתי</div>
+              <div class="profile-btn-row">
+                <button type="button" class="profile-btn" data-profile="work" data-value="employed">שכיר</button>
+                <button type="button" class="profile-btn" data-profile="work" data-value="unemployed">מחפש עבודה</button>
+                <button type="button" class="profile-btn" data-profile="work" data-value="self">עצמאי</button>
+                <button type="button" class="profile-btn" data-profile="work" data-value="retired">בפנסיה</button>
               </div>
             </div>
           </div>
         </div>
 
+        <!-- שאלה ונושא -->
+        <div class="open-bottom">
+          <div class="open-field">
+            <label>שאלת הלקוח</label>
+            <textarea id="questionInput" rows="2" autocomplete="off"></textarea>
+          </div>
+          <div>
+            <label>נושא השאלה — בחר את הבית שקשור לשאלתך</label>
+            <div class="topic-grid" id="topicGrid"></div>
+          </div>
+        </div>
+
         <div class="actions">
-          <button class="btn" id="manualBtn" type="button">הכנסה ידנית של 4 האמהות</button>
+          <button class="btn primary" id="manualBtn" type="button">הכנסה ידנית של 4 האמהות</button>
           <button class="btn gray" id="autoBtn" type="button">בחירה אוטומטית לפי עצירה</button>
           <button class="btn gray" id="clearBtn" type="button">נקה טופס</button>
-          <button class="btn primary" id="startBtn" type="button">התחל</button>
         </div>
       </div>
     </section>
@@ -1083,6 +1435,13 @@
           <button class="btn gray" id="saveClientBtn" type="button">👤 שמור לקוח</button>
           <button class="btn gray" id="clearArchiveBtn" type="button">נקה ארכיון</button>
         </div>
+
+        <div style="margin-top:10px">
+          <button class="btn primary" id="showKundaliBtn" type="button" style="width:100%;font-size:15px;">
+            ♐ לוח קונדלי — מפה אסטרולוגית הודית
+          </button>
+        </div>
+        <div id="kundaliResult" style="display:none"></div>
       </div>
     </section>
 
@@ -1098,11 +1457,16 @@
           <button class="guide-tab" data-tab="houses">16 הבתים</button>
           <button class="guide-tab" data-tab="build">כיצד בונים לוח</button>
           <button class="guide-tab" data-tab="concepts">מושגי יסוד</button>
+          <button class="guide-tab" data-tab="isqat7">גורל חולי 7×7</button>
+          <button class="guide-tab" data-tab="kashf">📖 כשף אל-אסרר</button>
+          <button class="guide-tab" onclick="window.open('ramal-shastra.html','_blank')">📚 ראמאל שסטרה</button>
         </div>
         <div id="guide-figures" class="guide-section active"></div>
         <div id="guide-houses" class="guide-section"></div>
         <div id="guide-build" class="guide-section"></div>
         <div id="guide-concepts" class="guide-section"></div>
+        <div id="guide-isqat7" class="guide-section"></div>
+        <div id="guide-kashf" class="guide-section"></div>
       </div>
     </section>
 
@@ -1131,6 +1495,40 @@
         <!-- ארכיון קריאות -->
         <h3 style="margin:0 0 10px;font-size:1rem">📋 ארכיון קריאות</h3>
         <div id="journalList"></div>
+      </div>
+    </section>
+
+    <!-- ─── גורל חולי 7×7 — מסך 1: בחירת צורות ─────────────── -->
+    <section id="screen-isqat" class="screen">
+      <div class="panel">
+        <div class="screen-back-bar">
+          <button class="btn gray" id="backFromIsqatBtn">← חזרה</button>
+          <h2 style="margin:0">גורל חולי 7×7</h2>
+        </div>
+        <p class="isqat-desc">
+          בחר 4 אמהות ידנית (לחץ על חריץ ואז על צורה) או לחץ "אוטומטי".
+        </p>
+
+        <div id="isqatSlots" class="mother-slots"></div>
+        <div id="isqatGrid" class="isqat-pick-grid"></div>
+
+        <div class="actions" style="margin-top:14px; gap:10px; flex-wrap:wrap;">
+          <button class="btn gray" id="isqatAutoBtn">🎲 אוטומטי</button>
+          <button class="btn gray" id="isqatClearBtn">נקה</button>
+          <button class="btn primary" id="isqatRunBtn" disabled>המשך ללוח ←</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── גורל חולי 7×7 — מסך 2: לוח ותוצאה ──────────────── -->
+    <section id="screen-isqat-result" class="screen">
+      <div class="panel">
+        <div class="screen-back-bar">
+          <button class="btn gray" id="backFromIsqatResultBtn">← חזרה לבחירת צורות</button>
+          <h2 style="margin:0">גורל חולי 7×7 — תוצאה</h2>
+        </div>
+        <div id="isqatBoardResult"></div>
+        <div id="isqatResultBox"></div>
       </div>
     </section>
 
@@ -1171,6 +1569,29 @@
 
   </div>
 
+  <!-- ─── מודאל בחירה אוטומטית לפי עצירה ─── -->
+  <div id="autoSelectModal" class="auto-modal-overlay" style="display:none">
+    <div class="auto-modal-panel">
+      <h3 class="auto-modal-title">בחירה אוטומטית לפי עצירה</h3>
+      <p class="auto-modal-sub">לחץ "עצור" ברגע הנכון — ארבע פעמים לארבע האמהות</p>
+
+      <div id="autoMiniSlots" class="auto-mini-slots"></div>
+
+      <div class="auto-spinner-wrap">
+        <div id="autoGlyph"></div>
+      </div>
+
+      <button id="autoStopBtn" class="btn primary auto-stop-btn">עצור</button>
+
+      <div id="autoProceedRow" class="auto-proceed-row" style="display:none">
+        <button id="autoProceedBtn" class="btn primary">בנה לוח גורל</button>
+        <button id="autoRestartBtn" class="btn gray">התחל מחדש</button>
+      </div>
+
+      <button id="autoCloseBtn" class="btn gray auto-close-btn">ביטול</button>
+    </div>
+  </div>
+
   <script type="module">
     console.log("🚀 Starting HAWI module loading...");
     console.log("🚀 Starting HAWI module loading...");
@@ -1179,7 +1600,8 @@
       import('/goral-hachol/engine/goral-client-archive.js')
     ]).then(([hawi, archive]) => {
       window.HAWI_INTERPRETER = {
-        interpretHawiQuestionInitial: hawi.interpretHawiQuestionInitial
+        interpretHawiQuestionInitial: hawi.interpretHawiQuestionInitial,
+        computeTimingByMadad: hawi.computeTimingByMadad,
       };
 
       window.GORAL_CLIENT_ARCHIVE = {
@@ -1221,1016 +1643,6 @@
     });
   </script>
 
-  <script>
-    const FIGURE_ORDER = [
-      "1222", "2122", "1122", "2212",
-      "1212", "2112", "1112", "2221",
-      "1221", "2121", "1121", "2211",
-      "1211", "2111", "1111", "2222"
-    ];
-
-    let selectedMothers = [null, null, null, null];
-    let activeMother = 0;
-    let selectedHouseNum = null;  // בית שנבחר (1-12)
-    let forcedTopicId = null;     // נושא שנקבע בכוח (למשל: בדיקה רוחנית)
-    let profileState = { marital: null, work: null, children: null };
-
-    // 12 כרטיסים לפי סדר הבתים. הנושא המדויק נקבע בזמן הריצה לפי השאלה.
-    const TOPIC_CARDS = [
-      { house: 1,  title: 'מצב השואל',      desc: 'בריאות, גוף, נפש, מצב כללי',           defaultTopicId: 'foundations' },
-      { house: 2,  title: 'כסף ופרנסה',     desc: 'ממון, רכוש, עסקים, מסחר',              defaultTopicId: 'commerce' },
-      { house: 3,  title: 'אחים ושכנים',    desc: 'אחים, שכנים, קרובים, מכתבים',          defaultTopicId: 'siblings' },
-      { house: 4,  title: 'בית ונכסים',     desc: 'דירה, נדל"ן, ירושה, דברים נסתרים',    defaultTopicId: 'hiddenTreasure' },
-      { house: 5,  title: 'ילדים והריון',   desc: 'לידה, הריון, ילדים, שמחה',             defaultTopicId: 'childrenPregnancy' },
-      { house: 6,  title: 'מחלה ובריאות',  desc: 'חולי, מצב רפואי, החלמה, כישוף',        defaultTopicId: 'illness' },
-      { house: 7,  title: 'הנשאל עליו',      desc: 'בן/בת זוג, שותף, יריב, גנב, נעדר',     defaultTopicId: 'marriage' },
-      { house: 8,  title: 'מוות וירושה',    desc: 'מוות, ירושה, פחד גדול, שינוי עמוק',   defaultTopicId: 'deathInheritance' },
-      { house: 9,  title: 'נסיעה ומסע',     desc: 'יציאה, נסיעה, ים, דת, רוחניות',        defaultTopicId: 'travel' },
-      { house: 10, title: 'עבודה ומעמד',    desc: 'קריירה, שלטון, בעלי סמכות',            defaultTopicId: 'authorityState' },
-      { house: 11, title: 'חברים ואהבה',    desc: 'חברים, קשרים, תקוות, אהבה',            defaultTopicId: 'loveHate' },
-      { house: 12, title: 'אויבים וכלא',    desc: 'אויבים נסתרים, מאסר, סכנה, כישוף',    defaultTopicId: 'enemies' },
-    ];
-
-    // מיפוי מילות מפתח לנושא מדויק לפי בית — כל בית יכול להכיל כמה תת-נושאים
-    const HOUSE_TOPIC_KEYWORDS = {
-      6: [
-        { topicId: 'spiritualDiagnostics', kw: ['עין הרע','כישוף','עין','קנאה','רוח רעה','שד','דיבוק','קללה','עשב','מזיק','אבחון רוחני','חרם','נגיעה'] },
-        // default: illness
-      ],
-      7: [
-        { topicId: 'theft',         kw: ['גנב','גנבה','גנוב','נגנב','גנבו','מי לקח','לקחו','הגנבה','נגנב לי','גנבו לי','גנב לי'] },
-        { topicId: 'missingPerson', kw: ['נעדר','נעלם','נעלמה','לא חזר','לא חזרה','אבד','אבדה','היכן הוא','היכן היא','איפה הוא','איפה היא'] },
-        { topicId: 'disputes',      kw: ['תביעה','בית משפט','מחלוקת','ריב','סכסוך','יריב','תובע','נתבע','דיון משפטי','פסיקה','עורך דין'] },
-        { topicId: 'partnership',   kw: ['שותף','שותפות','עסק משותף','ערב','ערבות','חוזה','הסכם עסקי','קשר עסקי'] },
-        { topicId: 'enemies',       kw: ['אויב','אויבים','מתנקש','שונא','שונאים','מי מזיק','מי עושה לי','מי פוגע'] },
-        // default: marriage
-      ],
-      9: [
-        { topicId: 'seaVoyage',            kw: ['ים','ספינה','אונייה','שייט','ימי','נמל','דיג','מסע ים','נסיעה בים','אוקיינוס'] },
-        { topicId: 'spiritualDiagnostics', kw: ['חלום','חזון','נבואה','סימן שמיימי','דת','אמונה','רוחניות','נסתר','קבלה','ספיריטואל'] },
-        // default: travel
-      ],
-      10: [
-        { topicId: 'yearlyForecast', kw: ['שנה','תחזית שנתית','טאלע','גורל השנה','מה יקרה השנה','השנה הקרובה'] },
-        // default: authorityState
-      ],
-      12: [
-        { topicId: 'prisoner',  kw: ['כלא','מאסר','מעצר','עצור','נאסר','כלוא','בית סוהר','שחרור מכלא','תיק פלילי','פלילי'] },
-        { topicId: 'fear',      kw: ['פחד','סכנה','מסוכן','איום','מאיים','חרדה','פוחד','מפחד','סכנת חיים'] },
-        { topicId: 'spiritualDiagnostics', kw: ['כישוף','עין הרע','שד','רוח רעה','קללה','דיבוק','נגיעה','חרם'] },
-        // default: enemies
-      ],
-    };
-
-    function detectTopicFromQuestion(houseNum, questionText) {
-      const q = (questionText || '').toLowerCase();
-      const rules = HOUSE_TOPIC_KEYWORDS[houseNum];
-      if (rules) {
-        for (const rule of rules) {
-          if (rule.kw.some(k => q.includes(k))) return rule.topicId;
-        }
-      }
-      const card = TOPIC_CARDS.find(c => c.house === houseNum);
-      return card ? card.defaultTopicId : 'foundations';
-    }
-
-    function renderTopicGrid() {
-      const grid = document.getElementById("topicGrid");
-      if (!grid) return;
-      const spiritualActive = forcedTopicId === 'spiritualDiagnostics';
-      const generalActive  = forcedTopicId === 'generalReading';
-      grid.innerHTML = `
-        <button type="button" class="topic-general-btn${generalActive ? ' selected' : ''}" id="generalReadingBtn">
-          <span>🔮</span>
-          <span>פתיחה כללית — מצב האדם בכל תחומי החיים</span>
-          <span class="topic-general-badge">סקירה מלאה</span>
-        </button>
-        <button type="button" class="topic-spiritual-btn${spiritualActive ? ' selected' : ''}" id="spiritualDxBtn">
-          <span>🌙</span>
-          <span>בדיקה רוחנית — עין הרע, כישוף, ג׳ין</span>
-          <span class="topic-spiritual-badge">ניתוח מיוחד</span>
-        </button>
-      ` + TOPIC_CARDS.map(c => `
-        <button type="button" class="topic-card ${(!forcedTopicId && selectedHouseNum === c.house) ? 'selected' : ''}" data-house="${c.house}">
-          <div class="topic-card-house">בית ${c.house}</div>
-          <div class="topic-card-title">${c.title}</div>
-          <div class="topic-card-desc">${c.desc}</div>
-        </button>
-      `).join("") + `
-        <button type="button" class="topic-free-btn ${(!forcedTopicId && selectedHouseNum === 0) ? 'selected' : ''}" data-house="0">
-          שאלה חופשית — האפליקציה תזהה את הנושא לבד
-        </button>`;
-
-      document.getElementById("generalReadingBtn").addEventListener("click", () => {
-        forcedTopicId = generalActive ? null : 'generalReading';
-        selectedHouseNum = null;
-        renderTopicGrid();
-      });
-
-      document.getElementById("spiritualDxBtn").addEventListener("click", () => {
-        forcedTopicId = spiritualActive ? null : 'spiritualDiagnostics';
-        selectedHouseNum = null;
-        renderTopicGrid();
-      });
-
-      grid.querySelectorAll("[data-house]").forEach(btn => {
-        btn.addEventListener("click", () => {
-          forcedTopicId = null;
-          selectedHouseNum = Number(btn.dataset.house);
-          renderTopicGrid();
-        });
-      });
-
-      const profSec = document.getElementById('profileSection');
-      if (profSec) profSec.style.display = 'flex';
-    }
-
-    function escapeHtml(value) {
-      return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
-
-    function linesFromKey(key) {
-      return String(key).split("").map(Number);
-    }
-
-    function getFiguresForPicker() {
-      const forms = window.RAML_FORMS_BASIC || {};
-      return FIGURE_ORDER.map(key => {
-        const item = forms[key] || {};
-        return {
-          id: `raml-${key}`,
-          key,
-          name: item.hebrew || key,
-          arabic: item.arabic || "",
-          statusHebrew: item.statusHebrew || "",
-          lines: linesFromKey(key)
-        };
-      });
-    }
-
-    const figures = getFiguresForPicker();
-
-    function glyphHtml(lines) {
-      return `
-        <div class="glyph">
-          ${lines.map(v => `<div class="${Number(v) === 1 ? "one" : "two"}"></div>`).join("")}
-        </div>
-      `;
-    }
-
-    function showScreen(name) {
-      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-      document.getElementById("screen-" + name)?.classList.add("active");
-      window.scrollTo({ top:0, behavior:"smooth" });
-    }
-
-    function renderMotherSlots() {
-      const box = document.getElementById("motherSlots");
-      box.innerHTML = selectedMothers.map((fig, index) => `
-        <button type="button"
-          class="mother-slot ${index === activeMother ? "active" : ""} ${fig ? "filled" : ""}"
-          data-index="${index}">
-          <div>
-            <div style="font-weight:900;">אם ${index + 1}</div>
-            <div style="margin-top:4px;">${fig ? escapeHtml(fig.name) : "טרם נבחר"}</div>
-          </div>
-        </button>
-      `).join("");
-
-      box.querySelectorAll(".mother-slot").forEach(btn => {
-        btn.addEventListener("click", () => {
-          activeMother = Number(btn.dataset.index);
-          renderMotherSlots();
-          renderFigureGrid();
-        });
-      });
-    }
-
-    function renderFigureGrid() {
-      const grid = document.getElementById("figureGrid");
-      grid.innerHTML = figures.map((fig, index) => {
-        const isCurrentSlot = selectedMothers[activeMother] && selectedMothers[activeMother].key === fig.key;
-        const isOtherSlot = !isCurrentSlot && selectedMothers.some((m, i) => i !== activeMother && m && m.key === fig.key);
-        const slotNum = isOtherSlot
-          ? selectedMothers.findIndex((m, i) => i !== activeMother && m && m.key === fig.key) + 1
-          : null;
-        return `
-          <button type="button" class="figure-card ${isCurrentSlot ? "selected" : isOtherSlot ? "other-selected" : ""}" data-index="${index}">
-            ${glyphHtml(fig.lines)}
-            <div class="figure-name">${escapeHtml(fig.name)}</div>
-            ${isOtherSlot && slotNum ? `<div class="other-slot-badge">אם ${slotNum}</div>` : ""}
-          </button>
-        `;
-      }).join("");
-
-      grid.querySelectorAll(".figure-card").forEach(btn => {
-        btn.addEventListener("click", () => {
-          selectedMothers[activeMother] = figures[Number(btn.dataset.index)];
-          if (activeMother < 3) activeMother++;
-          renderMotherSlots();
-          renderFigureGrid();
-        });
-      });
-    }
-
-    function getClientContext(resolvedTopicId) {
-      return {
-        clientName: document.getElementById("clientNameInput").value.trim(),
-        parentName: document.getElementById("clientParentInput").value.trim(),
-        phone: document.getElementById("clientPhoneInput").value.trim(),
-        questionDate: document.getElementById("questionDateInput").value.trim(),
-        questionTime: document.getElementById("questionTimeInput").value.trim(),
-        consultationContext: "",
-        topicOverride: resolvedTopicId || "",
-        selectedHouse: selectedHouseNum || null,
-        maritalStatus: profileState.marital || null,
-        workStatus: profileState.work || null,
-        hasChildren: profileState.children || null,
-      };
-    }
-
-    function houseName(number) {
-      const h = (window.RAML_HOUSES_BASIC || {})[number] || {};
-      return h.hebrew || "";
-    }
-
-    function figNameFromReadingHouse(house) {
-      return house.hebrew || house.figureHebrew || house.name || "";
-    }
-
-    function computeDhamirHouseNumber(chart) {
-      // נהמת האמהות: שורה i מאם i (0-indexed) → צורת הדמיר
-      const rows = [];
-      for (let i = 1; i <= 4; i++) {
-        const m = chart.find(x => Number(x.house) === i);
-        const key = m?.key ? String(m.key) : null;
-        if (!key || key.length < 4) return null;
-        rows.push(key[i - 1]);
-      }
-      const targetPattern = rows.join('');
-      const entry = chart.find(x => x.key === targetPattern);
-      return entry ? Number(entry.house) : null;
-    }
-
-    // Natural figure (جدول) for each house — from חאוי העג׳איב PDFs only, no Western tradition.
-    const NATURAL_HOUSE_FIGURES = {
-      // Confirmed from Hawi PDF chapter headings
-      1: '1121', // נלחם — "الجدولة 00|0"
-      4: '2212', // לבן — "(||0|) البيت الرابع"
-      10: '1221', // סוהר — "وتد الشمال 0||0"
-      // Extracted from Hawi PDF OCR (medium confidence)
-      2: '1222', // נשוא ראש — תבנית "0|||" בכותרת פרק בית 2
-      3: '2111', // סף נכנס — תבנית "|000" + "ساقط" בכותרת פרק בית 3
-      9: '1122', // כבוד יוצא — תבנית "00||" + "ساقط" בכותרת פרק בית 9
-      // Not yet available — PDF covering houses 5-8 missing from Drive
-      5: null, 6: null, 7: null, 8: null, 11: null, 12: null,
-    };
-
-    function houseHtml(h, label, isDhamir, isNatural) {
-      let cls = 'house';
-      if (isDhamir)  cls += ' dhamir-house';
-      if (isNatural) cls += ' natural-house';
-      return `
-        <div class="${cls}">
-          <div class="house-title">${label}</div>
-          <div class="house-name">${escapeHtml(h.houseHebrew || houseName(h.house))}</div>
-          ${glyphHtml(h.figure)}
-          <div class="figure-name">${escapeHtml(figNameFromReadingHouse(h))}</div>
-        </div>
-      `;
-    }
-
-    function buildBoardHtml(reading) {
-      const h = n => reading.chart.find(x => Number(x.house) === Number(n));
-      const dhamirHouseNum = computeDhamirHouseNumber(reading.chart);
-
-      const d = n => n === dhamirHouseNum;
-      const nat = n => {
-        const entry = h(n);
-        return !!(entry && NATURAL_HOUSE_FIGURES[n] && entry.key === NATURAL_HOUSE_FIGURES[n]);
-      };
-
-      const naturalHouseNums = [1,2,3,4,5,6,7,8,9,10,11,12].filter(nat);
-
-      return `
-        <article class="board">
-          <div class="board-row r1">
-            ${[1,2,3,4,5,6,7,8].map(n => houseHtml(h(n), `בית ${n}`, d(n), nat(n))).join("")}
-          </div>
-
-          <div class="board-row r2">
-            ${[9,10,11,12].map(n => houseHtml(h(n), `בית ${n}`, d(n), nat(n))).join("")}
-          </div>
-
-          <div class="board-row r3">
-            ${houseHtml(h(13), "13 — עד א׳", d(13), false)}
-            ${houseHtml(h(14), "14 — עד ב׳", d(14), false)}
-          </div>
-        </article>
-
-        <div class="final-row">
-          <div class="final-box">
-            ${houseHtml(h(16), "16 — משלים", d(16), false)}
-          </div>
-          <div class="final-box">
-            ${houseHtml(h(15), "15 — דיין", d(15), false)}
-          </div>
-        </div>
-        ${naturalHouseNums.length > 0 ? `<div class="natural-house-legend">✦ = צורה טבעית (בית${naturalHouseNums.length > 1 ? 'ות' : ''} ${naturalHouseNums.join(', ')}) — הצורה הטבעית של הבית, הדין חזק במיוחד</div>` : ""}
-        ${dhamirHouseNum ? `<div class="dhamir-legend">★ = בית הדמיר (בית ${dhamirHouseNum}) — הצורה שכל שאר הצורות מעידות עליה</div>` : ""}
-      `;
-    }
-
-    function verdictClass(verdict) {
-      if (!verdict) return "";
-      if (verdict === "yes-strong" || verdict === "yes-weak") return "verdict-yes";
-      if (verdict === "no-strong" || verdict === "no-weak") return "verdict-no";
-      if (verdict === "maybe-positive" || verdict === "maybe-negative") return "verdict-maybe";
-      return "verdict-mixed";
-    }
-
-    function buildInterpretationHtml(reading) {
-      if (!window.HAWI_INTERPRETER?.interpretHawiQuestionInitial) {
-        return `<div class="summary-box">אבחון גורל החול עדיין נטען. אם ההודעה נשארת, מנוע הידע לא נטען בדפדפן.</div>`;
-      }
-
-      if (window.GORAL_CLIENT_ARCHIVE?.summarizeGoralClientHistory) {
-        const clientName = reading.clientContext?.clientName || "";
-        reading.clientHistorySummary = window.GORAL_CLIENT_ARCHIVE.summarizeGoralClientHistory(clientName);
-      }
-
-      const insight = window.HAWI_INTERPRETER.interpretHawiQuestionInitial(reading.question, reading);
-      window.__LAST_GORAL_READING = reading;
-      window.__LAST_GORAL_INTERPRETATION = insight;
-
-      // שמור לארכיון לקוחות אוטומטית
-      if (window.GORAL_CLIENT_ARCHIVE?.saveGoralReadingToArchive) {
-        window.GORAL_CLIENT_ARCHIVE.saveGoralReadingToArchive(reading, insight);
-      }
-
-      const conclusion = insight.finalConclusionHebrew || insight.conclusionDraftHebrew || insight.technicalConclusionHebrew || "";
-      const score = insight.boardScore || {};
-      const judgeV = insight.judgeVerdict || score.judgeVerdict || null;
-      const rules = Array.isArray(insight.relevantRules) ? insight.relevantRules.slice(0, 6) : [];
-      const sources = Array.isArray(insight.knowledgeSources) ? insight.knowledgeSources.slice(0, 5) : [];
-      const spiritual = insight.spiritualDiagnosis || null;
-      const isSpiritualTopic = insight.topicId === "spiritualDiagnostics";
-      // Only show spiritual section when explicitly spiritual topic,
-      // or when the engine finds very strong suspicion (not just any score > 0)
-      const showSpiritual = spiritual && isSpiritualTopic;
-
-      // Board score + dhamir banner (before verdict)
-      const boardScoreData = insight.boardAnalysis?.boardScore || null;
-      const dhamirMizanData = insight.boardAnalysis?.dhamirByMizan || null;
-      let boardInfoHtml = "";
-      if (boardScoreData && boardScoreData.isComplete) {
-        boardInfoHtml += `<div class="board-info-row board-score-ok">📊 ${escapeHtml(boardScoreData.hebrewSummary)}</div>`;
-      }
-      if (dhamirMizanData && dhamirMizanData.traces && dhamirMizanData.traces.length > 0 && isSpiritualTopic) {
-        const traceText = dhamirMizanData.traces.map(t =>
-          `שורת ${escapeHtml(t.rowElement)} → בית ${t.dhamirHouseNumber} (${escapeHtml(t.dhamirHebrew)}${t.dhamirFortune ? ', ' + hebrewTermsSimple(t.dhamirFortune) : ''})`
-        ).join(' | ');
-        boardInfoHtml += `<div class="board-info-row board-dhamir">🎯 הדמיר: ${traceText} — הדמיר העיקרי: בית ${dhamirMizanData.primaryHouseNumber}</div>`;
-      }
-
-      // Prominent verdict box
-      let verdictHtml = "";
-      const topicId = insight.topicId || "";
-      const questionText = String(insight.question || "");
-      const isMiQuestion = /^מי[\s,]/.test(questionText);
-
-      if (isSpiritualTopic && spiritual?.grade) {
-        const gradeMap = {
-          "strong-suspicion": "כן — יש פגיעה רוחנית",
-          "medium-suspicion": "ייתכן — חשד בינוני לפגיעה רוחנית",
-          "weak-suspicion": "ספק — סימנים חלשים בלבד",
-          "mostly-clear": "לא — אין פגיעה רוחנית",
-          "mixed": "ממוזג — יש לבדוק עוד"
-        };
-        const verdictText = gradeMap[spiritual.grade] || spiritual.grade;
-        const vClass = spiritual.grade === "strong-suspicion" ? "verdict-yes" :
-                       spiritual.grade === "mostly-clear" ? "verdict-no" : "verdict-maybe";
-        verdictHtml = `
-          <div class="verdict-box ${vClass}">
-            <div class="verdict-label">תשובה לשאלה</div>
-            <div class="verdict-answer">${escapeHtml(verdictText)}</div>
-            <div class="verdict-detail">${escapeHtml(spiritual.finalHebrew || "")}</div>
-          </div>`;
-
-      } else if (topicId === 'theft' || (isMiQuestion && topicId === 'enemies')) {
-        const house7 = insight.boardAnalysis?.houses?.find(h => Number(h.house) === 7);
-        const house7Name = house7?.figureHebrew || "";
-        const nameLetters = insight.boardAnalysis?.nameLetters || [];
-        const h7Letters = nameLetters.find(n => n.houseNumber === 7);
-        const grade = insight.boardScore?.grade || judgeV?.verdict || "";
-        const isGoodGrade = grade === 'positive' || grade === 'cautiously-positive' || grade === 'yes-strong' || grade === 'yes-weak';
-        const isBadGrade = grade === 'negative' || grade === 'cautiously-negative' || grade === 'no-strong' || grade === 'no-weak';
-
-        let answerLine = "";
-        if (isMiQuestion || topicId === 'theft') {
-          if (isGoodGrade) {
-            answerLine = "ניתן לזהות את הגנב — הסיכויים לאיתורו טובים";
-          } else if (isBadGrade) {
-            answerLine = "קשה לאיתור הגנב — הוא כבר התרחק";
-          } else {
-            answerLine = "ייתכן שניתן לזהות את הגנב — הלוח לא חד-משמעי";
-          }
-        }
-
-        let detailParts = [];
-        if (house7Name) detailParts.push(`הגנב מיוצג על ידי: ${house7Name} (בית 7)`);
-        if (h7Letters?.letters?.length) detailParts.push(`שמו מתחיל ב: ${h7Letters.letters.join(" / ")}`);
-
-        const vClass = isGoodGrade ? "verdict-maybe" : isBadGrade ? "verdict-no" : "verdict-mixed";
-        verdictHtml = `
-          <div class="verdict-box ${vClass}">
-            <div class="verdict-label">תשובת הלוח לשאלה</div>
-            <div class="verdict-answer">${escapeHtml(answerLine)}</div>
-            ${detailParts.length ? `<div class="verdict-detail">${escapeHtml(detailParts.join("\n"))}</div>` : ""}
-          </div>`;
-
-      } else if (topicId !== 'generalReading' && judgeV && judgeV.hebrewShort) {
-        verdictHtml = `
-          <div class="verdict-box ${escapeHtml(verdictClass(judgeV.verdict))}">
-            <div class="verdict-label">תשובה לשאלה</div>
-            <div class="verdict-answer">${escapeHtml(judgeV.hebrewShort)}</div>
-            <div class="verdict-detail">${escapeHtml(judgeV.hebrewFull || "")}</div>
-          </div>`;
-      }
-
-      const rulesHtml = rules.length
-        ? `
-          <div class="summary-box">
-            <strong>חוקים שנבדקו מתוך המקור:</strong>
-            <ul>
-              ${rules.map(rule => `
-                <li>
-                  ${escapeHtml(rule.hebrew || rule.result || rule.condition || "")}
-                  ${rule.arabic ? `<br/><small>${escapeHtml(rule.arabic)}</small>` : ""}
-                </li>
-              `).join("")}
-            </ul>
-          </div>
-        `
-        : "";
-
-      const sourcesHtml = sources.length
-        ? `
-          <div class="summary-box">
-            <strong>מקורות ידע שהופעלו:</strong>
-            <ul>
-              ${sources.map(src => `
-                <li>${escapeHtml(src.titleHebrew || src.id || "")}</li>
-              `).join("")}
-            </ul>
-          </div>
-        `
-        : "";
-
-      const spiritualDetailHtml = showSpiritual && !isSpiritualTopic
-        ? `
-          <div class="summary-box">
-            <strong>${isSpiritualTopic ? "פרטי האבחון הרוחני:" : "אבחון רוחני נוסף:"}</strong>
-            ${!isSpiritualTopic ? `<br/>${escapeHtml(spiritual.finalHebrew || "")}` : ""}
-            ${Array.isArray(spiritual.mainReasons) && spiritual.mainReasons.length
-              ? `<ul>${spiritual.mainReasons.filter(r => r.score > 0).slice(0, 6).map(reason => `
-                  <li><strong>${reason.house != null ? `בית ${reason.house}` : escapeHtml(reason.role || "")}</strong>${reason.house != null && reason.role && reason.role !== `בית ${reason.house}` ? ` (${escapeHtml(reason.role)})` : ""}${reason.figureHebrew ? ` — ${escapeHtml(reason.figureHebrew)}` : ""}: ${escapeHtml((reason.signals || []).join(" "))}</li>
-                `).join("")}</ul>`
-              : (isSpiritualTopic ? "<p>לא נמצאו חוקים ספציפיים מהמקור. הפסיקה מבוססת על הדיין והעדים.</p>" : "")}
-          </div>
-        `
-        : "";
-
-      // Board score warning only (if incomplete) — always visible
-      const boardWarnHtml = (boardScoreData && !boardScoreData.isComplete)
-        ? `<div class="board-info-row board-score-warn">⚠ ${escapeHtml(boardScoreData.hebrewSummary)}</div>`
-        : "";
-
-      // Short key facts line — always visible
-      const judgeHouse = insight.boardAnalysis?.judge;
-      const h1House = insight.boardAnalysis?.house1Analysis;
-      function fortuneLabel(f) {
-        const map = { 'saad': 'טוב', 'nahas': 'רע', 'mixed': 'ממוזג', 'positive': 'טוב', 'negative': 'רע', 'neutral': 'ממוזג' };
-        if (!f) return '';
-        const key = String(f).toLowerCase().replace(/[^a-z]/g, '');
-        if (map[key]) return map[key];
-        return String(f).replace(/סעד/g,'טוב').replace(/נחס/g,'רע').replace(/ממוזג-?סעד/g,'ממוזג-טוב').replace(/ממוזג-?נחס/g,'ממוזג-רע');
-      }
-      const keyFactsHtml = (judgeHouse || h1House) ? `
-        <div style="margin-top:12px; font-size:15px; color:#555; text-align:center; direction:rtl;">
-          ${judgeHouse ? `דיין: ${escapeHtml(judgeHouse.figureHebrew || "")} [${escapeHtml(fortuneLabel(judgeHouse.fortune))}]` : ""}
-          ${judgeHouse && h1House ? " &nbsp;|&nbsp; " : ""}
-          ${h1House ? `בית 1: ${escapeHtml(h1House.figureHebrew || "")} [${escapeHtml(fortuneLabel(h1House.fortune))}]` : ""}
-        </div>` : "";
-
-      function hebrewTermsSimple(s) {
-        return String(s || '')
-          .replace(/ממוזג-?סעד/g, "ממוזג-טוב")
-          .replace(/ממוזג-?נחס/g, "ממוזג-רע")
-          .replace(/סעד/g, "טוב")
-          .replace(/נחס/g, "רע");
-      }
-
-      // Rewrite terminology in banners
-      function hebrewTerms(s) {
-        return s
-          .replace(/תסדיס/g, "קשר צדדי")
-          .replace(/ריבוע/g, "קשר חזק")
-          .replace(/משולש/g, "קשר טבעי")
-          .replace(/מול/g, "קשר מנוגד")
-          .replace(/נאר \(אש\)/g, "אש")
-          .replace(/הוואא \(אוויר\)/g, "אוויר")
-          .replace(/מאא \(מים\)/g, "מים")
-          .replace(/תראב \(אדמה\)/g, "עפר")
-          .replace(/בית יתד/g, "בית חזק")
-          .replace(/איתיסלאת/g, "חיבורים")
-          // fortune terminology — no \b (doesn't work for Hebrew), handle explicit cases first
-          .replace(/ממוזג-?סעד/g, "ממוזג-טוב")
-          .replace(/ממוזג-?נחס/g, "ממוזג-רע")
-          .replace(/\[סעד\]/g, "[טוב]")
-          .replace(/\[נחס\]/g, "[רע]")
-          .replace(/ סעד(?=[^א-ת]|$)/g, " טוב")
-          .replace(/ נחס(?=[^א-ת]|$)/g, " רע");
-      }
-
-      // Details panel — client-facing only (no practitioner banners)
-      const conclusionFormatted = hebrewTerms(escapeHtml(conclusion))
-        .replace(/\n\n/g, '</p><p style="margin-top:14px;">')
-        .replace(/\n/g, '<br/>');
-
-      const detailsContent = `
-        <div class="details-panel">
-          <div class="summary-box">
-            <p>${conclusionFormatted}</p>
-          </div>
-          ${spiritualDetailHtml}
-        </div>`;
-
-      return `
-        ${boardWarnHtml}
-        ${verdictHtml}
-        ${keyFactsHtml}
-        <button class="details-toggle" onclick="const p=this.nextElementSibling;p.hidden=!p.hidden;this.textContent=p.hidden?'קרא עוד ▼':'סגור ▲'">קרא עוד ▼</button>
-        <div hidden>${detailsContent}</div>
-      `;
-    }
-
-    async function runReading() {
-      const errorBox = document.getElementById("errorBox");
-      const boardResult = document.getElementById("boardResult");
-
-      errorBox.style.display = "none";
-      errorBox.textContent = "";
-
-      try {
-        if (selectedMothers.some(m => !m)) {
-          throw new Error("צריך לבחור 4 אמהות לפני יצירת לוח הגורל.");
-        }
-
-        const question = document.getElementById("questionInput").value.trim();
-
-        if (window.__HAWI_MODULE_READY) {
-          await window.__HAWI_MODULE_READY;
-        }
-
-        const mothers = selectedMothers.map(m => m.lines);
-
-        if (typeof window.ramlRunReading !== "function") {
-          throw new Error("מנוע גורל החול לא נטען מתוך raml.js.");
-        }
-
-        // זהה נושא מדויק לפי הבית שנבחר + תוכן השאלה (forcedTopicId מקבל עדיפות)
-        const resolvedTopicId = forcedTopicId
-          ? forcedTopicId
-          : (selectedHouseNum && selectedHouseNum > 0)
-            ? detectTopicFromQuestion(selectedHouseNum, question)
-            : null;  // null = המנוע יחליט לבד לפי טקסט השאלה
-
-        const reading = window.ramlRunReading(question, mothers);
-        reading.topicId = resolvedTopicId ?? reading.topicId;
-        reading.clientContext = getClientContext(reading.topicId);
-
-        boardResult.innerHTML = buildBoardHtml(reading) + buildInterpretationHtml(reading);
-        showScreen("board");
-      } catch (err) {
-        errorBox.textContent = err.message || String(err);
-        errorBox.style.display = "block";
-        showScreen("board");
-      }
-    }
-
-    function clearForm() {
-      ["clientNameInput","clientParentInput","clientPhoneInput","questionDateInput","questionTimeInput","questionInput"].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.value = "";
-      });
-      selectedHouseNum = null;
-      forcedTopicId = null;
-      profileState = { marital: null, work: null, children: null };
-      document.querySelectorAll('.profile-btn.selected').forEach(b => b.classList.remove('selected'));
-      renderTopicGrid();
-      selectedMothers = [null,null,null,null];
-      activeMother = 0;
-      renderMotherSlots();
-      renderFigureGrid();
-    }
-
-    // ── שעות טובות ורעות להטלה (בלוג' אלאמל עמ' 2) ──
-    function updateCastingTimeAlert() {
-      const el = document.getElementById('castingTimeAlert');
-      if (!el) return;
-      const timeInput = document.getElementById('questionTimeInput');
-      let h, m;
-      if (timeInput && timeInput.value) {
-        [h, m] = timeInput.value.split(':').map(Number);
-      } else {
-        const now = new Date();
-        h = now.getHours();
-        m = now.getMinutes();
-      }
-      const total = h * 60 + m;
-      let cls, txt;
-      if (total >= 20 * 60 || total < 6 * 60) {
-        cls = 'good'; txt = '🌙 שעה טובה להטלה — לילה (הלילה טוב מהיום לפי הספר)';
-      } else if (total >= 6 * 60 && total < 14 * 60 + 30) {
-        cls = 'good'; txt = '☀️ שעה טובה להטלה — שחרית עד מנחה';
-      } else {
-        cls = 'caution'; txt = '⚠️ מנחה עד שקיעה אינו זמן טוב להטלת גורל';
-      }
-      el.className = 'casting-alert ' + cls;
-      el.textContent = txt;
-    }
-
-
-    document.getElementById('questionTimeInput')?.addEventListener('change', updateCastingTimeAlert);
-    updateCastingTimeAlert();
-
-    renderTopicGrid();
-
-    document.getElementById("manualBtn").addEventListener("click", () => {
-      renderMotherSlots();
-      renderFigureGrid();
-      showScreen("select");
-    });
-
-    document.getElementById("startBtn").addEventListener("click", () => {
-      renderMotherSlots();
-      renderFigureGrid();
-      showScreen("select");
-    });
-
-    document.getElementById("autoBtn").addEventListener("click", () => {
-      alert("בחירה אוטומטית לפי עצירה תיבנה בשלב הבא. כרגע משתמשים בהכנסה ידנית בלבד.");
-    });
-
-    document.getElementById("backOpenBtn").addEventListener("click", () => showScreen("open"));
-    document.getElementById("backSelectBtn").addEventListener("click", () => showScreen("select"));
-    document.getElementById("clearSelectionBtn").addEventListener("click", () => {
-      selectedMothers = [null,null,null,null];
-      activeMother = 0;
-      renderMotherSlots();
-      renderFigureGrid();
-    });
-
-    document.getElementById("buildBoardBtn").addEventListener("click", runReading);
-    document.getElementById("clearBtn").addEventListener("click", clearForm);
-
-    document.querySelectorAll('.profile-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const group = btn.dataset.profile;
-        const val   = btn.dataset.value;
-        document.querySelectorAll(`.profile-btn[data-profile="${group}"]`).forEach(b => b.classList.remove('selected'));
-        if (profileState[group] === val) {
-          profileState[group] = null;
-        } else {
-          btn.classList.add('selected');
-          profileState[group] = val;
-        }
-      });
-    });
-
-    document.getElementById("archiveBtn").addEventListener("click", () => {
-      openMenu(); document.getElementById("menuJournalBtn").click();
-    });
-
-    document.getElementById("clearArchiveBtn").addEventListener("click", () => {
-      if (!confirm("למחוק את כל הארכיון?")) return;
-      if (window.GORAL_CLIENT_ARCHIVE?.clearGoralArchive) window.GORAL_CLIENT_ARCHIVE.clearGoralArchive();
-    });
-
-    // ─── ספר לקוחות ──────────────────────────────────────────────
-    const CONTACTS_KEY = 'goralClientContacts_v1';
-    function getContacts() { return JSON.parse(localStorage.getItem(CONTACTS_KEY) || '[]'); }
-
-    function renderContacts() {
-      const el = document.getElementById('contactList');
-      if (!el) return;
-      const q = (document.getElementById('contactSearch') || {}).value || '';
-      const all = getContacts();
-      const shown = q ? all.filter(c => c.name.includes(q) || (c.phone && c.phone.includes(q))) : all;
-      if (!shown.length) {
-        el.innerHTML = `<div style="color:var(--muted,#888);text-align:center;padding:12px">${q ? 'לא נמצאו תוצאות' : 'אין לקוחות בספר עדיין'}</div>`;
-        return;
-      }
-      el.innerHTML = shown.map(c =>
-        `<div class="appt-item" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border,#eee)">
-          <div><div style="font-weight:600">${escapeHtml(c.name)}</div><div style="font-size:0.85rem;color:var(--muted,#888)">${escapeHtml(c.phone || 'ללא טלפון')}</div></div>
-          <button class="btn gray" style="font-size:0.8rem;padding:4px 10px" onclick="delContact(${c.id})">מחק</button>
-        </div>`).join('');
-    }
-
-    function addContact() {
-      const name = (document.getElementById('newContactName') || {}).value?.trim();
-      const phone = (document.getElementById('newContactPhone') || {}).value?.trim();
-      if (!name) { alert('נא למלא שם לקוח'); return; }
-      const contacts = getContacts();
-      const dup = contacts.find(c => c.name === name || (phone && c.phone && c.phone === phone));
-      if (dup) {
-        if (phone && !dup.phone) { dup.phone = phone; localStorage.setItem(CONTACTS_KEY, JSON.stringify(contacts)); }
-        renderContacts();
-        return alert('לקוח כבר קיים בספר');
-      }
-      contacts.unshift({ id: Date.now(), name, phone: phone || '', createdAt: new Date().toISOString() });
-      localStorage.setItem(CONTACTS_KEY, JSON.stringify(contacts));
-      document.getElementById('newContactName').value = '';
-      document.getElementById('newContactPhone').value = '';
-      renderContacts();
-    }
-
-    function delContact(id) {
-      const c = getContacts().filter(c => c.id !== id);
-      localStorage.setItem(CONTACTS_KEY, JSON.stringify(c));
-      renderContacts();
-    }
-
-    document.getElementById('addContactBtn')?.addEventListener('click', addContact);
-
-    document.getElementById('saveClientBtn').addEventListener('click', () => {
-      const ctx = getClientContext();
-      const name = ctx.clientName;
-      const phone = ctx.phone;
-      if (!name) { alert('אין שם לקוח — מלא שם בפרטי הקריאה'); return; }
-      const contacts = getContacts();
-      const dup = contacts.find(c => c.name === name || (phone && c.phone && c.phone === phone));
-      if (dup) {
-        if (phone && !dup.phone) { dup.phone = phone; localStorage.setItem(CONTACTS_KEY, JSON.stringify(contacts)); }
-        alert(`הלקוח "${name}" כבר קיים בספר הלקוחות`);
-        return;
-      }
-      contacts.unshift({ id: Date.now(), name, phone: phone || '', createdAt: new Date().toISOString() });
-      localStorage.setItem(CONTACTS_KEY, JSON.stringify(contacts));
-      alert(`הלקוח "${name}" נשמר בספר הלקוחות ✓`);
-    });
-
-    // ─── Menu Drawer ──────────────────────────────────────────────
-    function openMenu()  { document.getElementById("menuDrawer").classList.add("open"); document.getElementById("menuOverlay").classList.add("open"); }
-    function closeMenu() { document.getElementById("menuDrawer").classList.remove("open"); document.getElementById("menuOverlay").classList.remove("open"); }
-
-    document.getElementById("menuOpenBtn").addEventListener("click", openMenu);
-    document.getElementById("menuCloseBtn").addEventListener("click", closeMenu);
-    document.getElementById("menuOverlay").addEventListener("click", closeMenu);
-
-    document.getElementById("menuGuideBtn").addEventListener("click", () => {
-      closeMenu(); showScreen("guide"); renderGuide();
-    });
-    document.getElementById("menuJournalBtn").addEventListener("click", () => {
-      closeMenu(); showScreen("journal"); renderJournal(); renderContacts();
-    });
-    document.getElementById("menuPrayerBtn").addEventListener("click", () => {
-      closeMenu(); showScreen("prayer");
-    });
-
-    document.getElementById("backFromGuideBtn").addEventListener("click", () => showScreen("open"));
-    document.getElementById("backFromJournalBtn").addEventListener("click", () => showScreen("open"));
-    document.getElementById("backFromPrayerBtn").addEventListener("click", () => showScreen("open"));
-
-    // ─── Guide Tab Logic ──────────────────────────────────────────
-    document.querySelectorAll(".guide-tab").forEach(tab => {
-      tab.addEventListener("click", () => {
-        document.querySelectorAll(".guide-tab").forEach(t => t.classList.remove("active"));
-        document.querySelectorAll(".guide-section").forEach(s => s.classList.remove("active"));
-        tab.classList.add("active");
-        document.getElementById("guide-" + tab.dataset.tab)?.classList.add("active");
-      });
-    });
-
-    // Figure data (fortune, movement group, letters) — source: hawi-figure-letter-extraction.js + raml-foundations
-    // fortune: טוב=מיטיב, רע=מזיק, ממוזג=בינוני | movement: קבוצה (יוצאת/נכנסת/קבועה/מתהפכת)
-    // letters: מיפוי תסקין עבדוה מחאוי — אות ראשית + אות משנית (לצורות מתהפכות)
-    const FIGURE_EXTRA = {
-      '1111': { fortune: 'ממוזג',     fClass: 'mixed', movement: 'מתהפכת', letters: ['ע'] },
-      '1112': { fortune: 'רע',        fClass: 'nahas', movement: 'יוצאת',  letters: ['ח', 'ם'] },
-      '1121': { fortune: 'ממוזג',     fClass: 'mixed', movement: 'מתהפכת', letters: ['ט', 'ן'] },
-      '1122': { fortune: 'טוב',       fClass: 'saad',  movement: 'יוצאת',  letters: ['ה', 'ש'] },
-      '1211': { fortune: 'ממוזג-רע',  fClass: 'mixed', movement: 'מתהפכת', letters: ['י', 'ף'] },
-      '1212': { fortune: 'רע',        fClass: 'nahas', movement: 'יוצאת',  letters: ['ל', 'א'] },
-      '1221': { fortune: 'ממוזג-רע',  fClass: 'mixed', movement: 'מתהפכת', letters: ['נ'] },
-      '1222': { fortune: 'טוב',       fClass: 'saad',  movement: 'יוצאת',  letters: ['א', 'פ'] },
-      '2111': { fortune: 'טוב',       fClass: 'saad',  movement: 'נכנסת',  letters: ['ז', 'ך'] },
-      '2112': { fortune: 'ממוזג-טוב', fClass: 'mixed', movement: 'קבועה',  letters: ['ס'] },
-      '2121': { fortune: 'טוב',       fClass: 'saad',  movement: 'נכנסת',  letters: ['כ', 'ץ'] },
-      '2122': { fortune: 'רע',        fClass: 'nahas', movement: 'קבועה',  letters: ['ג', 'ק'] },
-      '2211': { fortune: 'טוב',       fClass: 'saad',  movement: 'נכנסת',  letters: ['ו', 'ת'] },
-      '2212': { fortune: 'טוב',       fClass: 'saad',  movement: 'קבועה',  letters: ['ד', 'ר'] },
-      '2221': { fortune: 'רע',        fClass: 'nahas', movement: 'נכנסת',  letters: ['ב', 'צ'] },
-      '2222': { fortune: 'ממוזג',     fClass: 'mixed', movement: 'קבועה',  letters: ['מ'] },
-    };
-    const DIR_CLASS = { 'צפון': 'north', 'דרום': 'south', 'מזרח': 'east', 'מערב': 'west' };
-    const ELEMENT_CLASS = { 'אש': 'fire', 'מים': 'water', 'אוויר': 'air', 'עפר': 'earth' };
-
-    let guideRendered = false;
-    function renderGuide() {
-      if (guideRendered) return;
-      guideRendered = true;
-      renderFiguresGuide();
-      renderHousesGuide();
-      renderBuildGuide();
-      renderConceptsGuide();
-    }
-
-    function renderFiguresGuide() {
-      const el = document.getElementById("guide-figures");
-      const forms = window.RAML_FORMS_BASIC || {};
-      const cards = FIGURE_ORDER.map(key => {
-        const f = forms[key] || {};
-        const ex = FIGURE_EXTRA[key] || {};
-        const elClass = ELEMENT_CLASS[f.element] || '';
-        const dirClass = DIR_CLASS[f.direction] || '';
-        const lettersHtml = (ex.letters || []).map(l => `<span class="fig-letter">${escapeHtml(l)}</span>`).join('');
-        return `<div class="fig-card">
-          ${glyphHtml(linesFromKey(key))}
-          <div class="fig-name">${escapeHtml(f.hebrew || key)}</div>
-          <div class="fig-arabic">${escapeHtml(f.arabic || '')}</div>
-          ${lettersHtml ? `<div class="fig-letters">${lettersHtml}</div>` : ''}
-          <div class="fig-badges">
-            <span class="badge ${ex.fClass}">${escapeHtml(ex.fortune || '')}</span>
-            <span class="badge ${elClass}">${escapeHtml(f.element || '')}</span>
-            ${f.direction ? `<span class="badge ${dirClass}">${escapeHtml(f.direction)}</span>` : ''}
-            ${f.planet ? `<span class="badge planet">${escapeHtml(f.planet)}</span>` : ''}
-            <span class="badge group">קבוצה: ${escapeHtml(ex.movement || '')}</span>
-          </div>
-        </div>`;
-      }).join('');
-      el.innerHTML = `<div class="figures-grid">${cards}</div>
-        <div class="fig-legend">
-          <strong>האותיות</strong> (בתיבות כחולות) = אותיות תסקין עבדוה לפי חאוי — לחילוץ שם הנשאל עליו מבית 7 או 9.<br>
-          <strong>מזל:</strong> 🟢 <strong>טוב</strong> = מיטיב &nbsp;|&nbsp; 🔴 <strong>רע</strong> = מזיק &nbsp;|&nbsp; 🟡 <strong>ממוזג</strong> = בינוני<br>
-          <strong>קבוצות תנועה:</strong>
-          <strong>יוצאת</strong> (خارجة) = משפיעה כלפי חוץ &nbsp;|&nbsp;
-          <strong>נכנסת</strong> (داخلة) = משפיעה כלפי פנים &nbsp;|&nbsp;
-          <strong>קבועה</strong> (ثابتة) = יציבה &nbsp;|&nbsp;
-          <strong>מתהפכת</strong> (منقلبة) = שני פנים<br>
-          <strong>כיוון:</strong> 🔵 צפון · 🟠 דרום · 🟢 מזרח · 🟣 מערב
-          &nbsp;|&nbsp; <strong>כוכב</strong> = הגורם השמימי השולט
-        </div>`;
-    }
-
-    function renderHousesGuide() {
-      const el = document.getElementById("guide-houses");
-      const houses = window.ramlListHousesBasic ? window.ramlListHousesBasic() : [];
-      el.innerHTML = '<table class="houses-table"><thead><tr><th>בית</th><th>שם</th><th>תחומים</th></tr></thead><tbody>' +
-        houses.map(h => `<tr>
-          <td class="house-num-cell">${h.number}</td>
-          <td><strong>${escapeHtml(h.hebrew)}</strong><br><span style="font-size:12px;color:#888">${escapeHtml(h.arabic)}</span></td>
-          <td>${escapeHtml(h.role)}</td>
-        </tr>`).join('') +
-        '</tbody></table>';
-    }
-
-    function renderBuildGuide() {
-      const el = document.getElementById("guide-build");
-      const steps = [
-        { title: 'הטלת האמהות', desc: 'מטילים נקודות 4 פעמים. כל שורה נספרת: זוגי = 2 נקודות (●●), אי-זוגי = 1 נקודה (●). מתקבלות 4 אמהות — שורת הלוח הראשונה.' },
-        { title: 'יצירת הבנות', desc: 'מחשבים XOR בין שורות האמהות הסמוכות: בת 1 = אם 1 XOR אם 2, בת 2 = אם 2 XOR אם 3, בת 3 = אם 3 XOR אם 4, בת 4 = אם 4 XOR בת 1.', example: 'אם 1=1111, אם 2=2112 → בת 1=1221 (סוהר)' },
-        { title: 'יצירת הנכדות', desc: 'מסובבים את הצורות — כל עמודה של 4 שורות הופכת לצורה חדשה. נכדה 1 = שורה 1 של כל 4 האמהות.', example: 'שורה 1 של אמהות 1-4: 1,2,1,2 → 1212 (ממון יוצא)' },
-        { title: 'העדים (בתים 13-14)', desc: 'עד 1 (בית 13) = XOR בין בת 1 ובת 2. עד 2 (בית 14) = XOR בין בת 3 ובת 4. העדים מחזקים או מחלישים את הדיין.' },
-        { title: 'הדיין (בית 15)', desc: 'הכרעה הסופית של הלוח. מחושב: דיין = XOR(עד 1, עד 2). אם הדיין טוב (מיטיב) — תשובה חיובית. אם רע (מזיק) — שלילית. אם ממוזג — תלוי.' },
-        { title: 'המשלים (בית 16)', desc: 'מחושב: משלים = XOR(דיין, בית 1). מורה על אחרית הדבר ועל תוצאת הדין לאורך זמן.' },
-      ];
-      el.innerHTML = steps.map((s, i) => `
-        <div class="build-step">
-          <div class="step-num">${i+1}</div>
-          <div class="step-body">
-            <div class="step-title">${escapeHtml(s.title)}</div>
-            <div class="step-desc">${escapeHtml(s.desc)}</div>
-            ${s.example ? `<div class="step-example">${escapeHtml(s.example)}</div>` : ''}
-          </div>
-        </div>`).join('');
-    }
-
-    function renderConceptsGuide() {
-      const el = document.getElementById("guide-concepts");
-      const concepts = [
-        { title: 'דיין — השופט (بيت 15)', sub: 'הכרעה הסופית', body: 'הדיין בבית 15 הוא "שופט הלוח". צורה שלו קובעת את התשובה הכוללת. טוב (مسعود) = כן/חיובי, רע (محوس) = לא/שלילי, ממוזג = תלוי בעדים. הדיין גובר על הכול — גם אם כל הלוח רע, דיין טוב פוסק בחיוב.' },
-        { title: 'עדים — בתים 13-14', sub: 'מחזקים או מחלישים את הדיין', body: 'שני העדים (בית 13 ו-14) מחזקים את פסיקת הדיין. אם שניהם מסכימים עם הדיין — הפסיקה ודאית. אם סותרים — הדין מסופק. בית 13 = צד השואל. בית 14 = הדבר הנשאל.' },
-        { title: 'דמיר — הכוונה הנסתרת (الضمير)', sub: 'מה באמת רוצה השואל', body: 'הדמיר מחושב ממיזן (מאזניים) ה-4 יסודות: אש, אוויר, מים, עפר. מכוון לבית מסוים בלוח המגלה את ה"שאלה האמיתית" שבלב השואל — לפעמים שונה משאלתו המוצהרת.' },
-        { title: 'תחסיל — השלמת הדבר (تحصيل)', sub: 'האם הדבר ייגמר?', body: 'בודקים האם יש חיבור ישיר, עקיף, או בהעברה בין בית 1 (השואל) לבית 7 (הנשאל). חיבור ישיר = הדבר יצא לפועל בוודאות. הגעה בינונית = תלוי גורמים. אין חיבור = הדבר לא ייגמר.' },
-        { title: 'איתיסלאת — חיבור (الاتصال)', sub: 'קשרים בין צורות בלוח', body: 'כאשר צורה חוזרת בשני בתים שונים נוצר "חיבור" ביניהם. חיבור בין בית 1 לבית 7 = השואל והנשאל קשורים. חיבור לבית 10 = עניין ציבורי/שלטוני מחובר. סוגי חיבורים: ריבוע, משולש, מול, תסדיס.' },
-        { title: 'אצאלה — תוקף הלוח (الأصالة)', sub: 'האם הלוח תקף?', body: 'לוח תקף כאשר צורת בית 1 (השואל) מופיעה בלפחות עוד בית אחד בלוח. אם הצורה מופיעה רק בבית 1 — הלוח חלש ויש לנהוג בזהירות בפרשנות. צורה שחוזרת בבתים 1, 4, 7 ו-10 = לוח חזק מאוד.' },
-        { title: 'ג\'מלה — ספירת נקודות (الجملة)', sub: 'כוח הלוח הכללי', body: 'ספירת סה"כ הנקודות בלוח (1 = נקודה אחת, 2 = שתי נקודות, לכל שורה). מחלקים ל-4 לבדיקת מחלות, ל-3 לבדיקת ילדים. תוצאה זוגית/אי-זוגית מוסיפה שכבת פרשנות.' },
-      ];
-      el.innerHTML = concepts.map(c => `
-        <div class="concept-card">
-          <div class="concept-title">${escapeHtml(c.title)}</div>
-          <div class="concept-sub">${escapeHtml(c.sub)}</div>
-          <div class="concept-body">${escapeHtml(c.body)}</div>
-        </div>`).join('');
-    }
-
-    // ─── Journal Rendering ────────────────────────────────────────
-    function formatDate(iso) {
-      try {
-        const d = new Date(iso);
-        return d.toLocaleDateString('he-IL', { day:'2-digit', month:'2-digit', year:'numeric' }) +
-               ' ' + d.toLocaleTimeString('he-IL', { hour:'2-digit', minute:'2-digit' });
-      } catch { return iso || ''; }
-    }
-
-    function gradeClass(score) {
-      if (!score) return 'neutral';
-      const g = score.grade || '';
-      if (g === 'positive' || g === 'very-positive') return 'positive';
-      if (g === 'negative' || g === 'very-negative') return 'negative';
-      return 'neutral';
-    }
-
-    function gradeLabel(score) {
-      if (!score) return '';
-      const map = { positive: 'חיובי', 'very-positive': 'חיובי מאוד', negative: 'שלילי', 'very-negative': 'שלילי מאוד', neutral: 'ממוזג' };
-      return map[score.grade] || score.grade || '';
-    }
-
-    function renderJournal() {
-      const el = document.getElementById("journalList");
-      const archive = window.GORAL_CLIENT_ARCHIVE?.getGoralArchive?.() || [];
-      if (!archive.length) {
-        el.innerHTML = '<div class="journal-empty">אין קריאות שמורות עדיין.<br>כל קריאה תישמר כאן אוטומטית.</div>';
-        return;
-      }
-      el.innerHTML = archive.map((rec, idx) => `
-        <div class="journal-entry" id="je-${idx}">
-          <div class="je-header">
-            <div>
-              <div class="je-name">${escapeHtml(rec.clientName || 'לא ידוע')}</div>
-              <div class="je-topic">${escapeHtml(rec.topicHebrew || rec.topicId || '')}</div>
-              <span class="je-grade ${gradeClass(rec.boardScore)}">${gradeLabel(rec.boardScore)}</span>
-            </div>
-            <div class="je-date">${escapeHtml(formatDate(rec.createdAt))}</div>
-          </div>
-          <div class="je-detail" id="jd-${idx}">
-            <div class="je-question">❓ ${escapeHtml(rec.question || '')}</div>
-            <div class="je-conclusion">${escapeHtml((rec.conclusion || '').slice(0, 400))}</div>
-            <button class="je-del-btn" data-id="${escapeHtml(rec.id)}">🗑 מחק קריאה זו</button>
-          </div>
-        </div>`).join('') +
-        '<button class="journal-clear-btn" id="journalClearAll">🗑 מחק את כל הארכיון</button>';
-
-      el.querySelectorAll(".journal-entry").forEach((entry, idx) => {
-        entry.addEventListener("click", (e) => {
-          if (e.target.classList.contains("je-del-btn")) return;
-          const detail = document.getElementById("jd-" + idx);
-          detail?.classList.toggle("open");
-          entry.classList.toggle("expanded");
-        });
-      });
-      el.querySelectorAll(".je-del-btn").forEach(btn => {
-        btn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          if (!confirm("למחוק קריאה זו?")) return;
-          window.GORAL_CLIENT_ARCHIVE?.deleteGoralArchiveRecord?.(btn.dataset.id);
-          renderJournal();
-        });
-      });
-      document.getElementById("journalClearAll")?.addEventListener("click", () => {
-        if (!confirm("למחוק את כל הארכיון?")) return;
-        window.GORAL_CLIENT_ARCHIVE?.clearGoralArchive?.();
-        renderJournal();
-      });
-    }
-
-    clearForm();
-
-    // מלא תאריך ושעה נוכחיים — חייב להיות אחרי clearForm() שמוחק שדות
-    (function fillCurrentDateTime() {
-      const now = new Date();
-      const dateEl = document.getElementById('questionDateInput');
-      const timeEl = document.getElementById('questionTimeInput');
-      if (dateEl) {
-        const d = String(now.getDate()).padStart(2, '0');
-        const mo = String(now.getMonth() + 1).padStart(2, '0');
-        const y = now.getFullYear();
-        dateEl.value = `${d}/${mo}/${y}`;
-      }
-      if (timeEl) {
-        timeEl.value = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-      }
-      updateCastingTimeAlert();
-    })();
-  </script>
+  <script src="./goral-hachol/ui/goral-app.js?v=11"></script>
 </body>
 </html>

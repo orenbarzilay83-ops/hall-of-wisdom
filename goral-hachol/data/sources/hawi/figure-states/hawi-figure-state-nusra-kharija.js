@@ -4,6 +4,7 @@ export const HAWI_FIGURE_STATE_NUSRA_KHARIJA = {
   shortFigureId: 'nusra-kharija',
   arabicName: 'النصرة الخارجة',
   hebrewName: 'כבוד יוצא',
+  genderHebrew: 'זכר',
   sourceBook: 'حاوي العجائب ومظهر الغرائب',
   sourceAuthor: 'أحمد ابن زنبل المحلي',
   sourceSectionArabic: 'الباب الثامن عشر في الكلام على الاشكال — فصل في معرفة النصرة الخارجة',
@@ -11,7 +12,7 @@ export const HAWI_FIGURE_STATE_NUSRA_KHARIJA = {
   sourcePages: ['PDF document 48.pdf'],
   sourceType: 'full-book-page-index',
   extractionStatus: 'source-audited-from-drive-pdf-45-51',
-  noteHebrew: 'מצב הצורה כבוד יוצא / النصرة الخارجة בכל בית. נלקח ממיפוי PDF 48 ונסגר בביקורת קודמת לפני הפעלה מלאה במנוע.',
+  noteHebrew: 'מצב הצורה כבוד יוצא בכל בית. נלקח ממיפוי PDF 48 ונסגר בביקורת קודמת לפני הפעלה מלאה במנוע.',
   states: [
     { house: 1, arabicText: ['في الأول ناطق سعيد قوي اليد على جميع ما يطلبه يجده'], hebrewTranslation: ['בבית הראשון: מדבר, טוב, ידו חזקה; כל מה שיבקש — ימצא.'], speakingState: 'speaking', fortuneState: 'benefic-strong', effectHebrew: 'יד חזקה והשגת המבוקש.', sourceStatus: 'sourceMapped' },
     { house: 2, arabicText: ['وفي الثاني ناطق سعيد يعطي من الملوك والسلاطين'], hebrewTranslation: ['בבית השני: מדבר וטוב; נותן מן המלכים והשליטים.'], speakingState: 'speaking', fortuneState: 'benefic', effectHebrew: 'שפע או נתינה מצד בעלי שררה.', sourceStatus: 'sourceMapped' },

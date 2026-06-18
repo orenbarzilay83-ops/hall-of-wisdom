@@ -1,0 +1,85 @@
+# תוכנית עבודה — גורל החול
+> **הוראה חשובה:** כשמשימה הושלמה — סמן ✅ ליד הפריט וקומיט. לא למחוק את הרשימה — היא לצורך מעקב.
+
+> ענף: `claude/app-cleanup-organization-mia9b2` | עודכן: 2026-06-16
+
+---
+
+## הנחיות לצ'אטים חדשים
+- **ענף עבודה:** `claude/app-cleanup-organization-mia9b2` בלבד
+- **לפני כל עבודה:** בדוק `git branch` ו-`git status`
+- **אין להמציא נתונים** — אם מקור חסר, השאר ריק עם sourceStatus: "not-yet-found"
+- **אחרי כל מימוש:** עדכן סטטוס ב-kashf-topics-per-house.js ל-`implemented: true` + topicId
+
+---
+
+## #15 — מימוש 30 נושאים מאושששים מהמקורות
+
+**מקורות:** כשף אל-אסרר (מובנה), القول الجامع (PDF1), حاوي العجائب (PDF2)
+**כלל:** לפני כל מימוש — חפש ב-kashf-al-asrar-book.js. אסור להמציא.
+
+### בית 1 — בית החיים
+- [✅] כיוון גיאוגרפי — PDF1 עמ׳ 30 — computeGeographicDirection (בוצע 2026-06-15)
+
+### בית 2 — בית הממון
+- [✅] פרנסה ומחיה — כשף עמ׳ 181-182 — computeParnasaLivelihood (בוצע 2026-06-15)
+- [✅] מטמון / כנוז תת-קרקעי — PDF1 עמ׳ 24: בתים 2+6+4 יחד — computeHiddenTreasureH2 (בוצע 2026-06-16)
+
+### בית 3 — בית האחים
+- [✅] תנועה ונסיעה קצרה — PDF1 עמ׳ 24 — computeH3Topics (בוצע 2026-06-16)
+- [✅] חלום (קצר-טווח) — PDF1 עמ׳ 24 — computeH3Topics (בוצע 2026-06-16)
+- [✅] מסרים והודעות — PDF1 עמ׳ 24 — computeH3Topics (בוצע 2026-06-16)
+
+### בית 4 — בית ההורים
+- [✅] מצב האב / הבית / הקרקע — כשף עמ׳ 184 — computeFatherParentStatus (בוצע 2026-06-15)
+- [✅] כיוון לחפירה / חיפוש — PDF2 פ׳ 16: ב1+ב7=מזרח/מערב, ב4+ב10=צפון/דרום — computeDiggingDirection (בוצע 2026-06-16)
+- [✅] נסתרות / סודות — PDF1 עמ׳ 24 — computeH4Secrets (בוצע 2026-06-16)
+- [✅] סיבת המחלה — PDF1 עמ׳ 24: בית 4 = בית סיבת המחלה, השווה עם ב6 — computeIllnessCauseH4 (בוצע 2026-06-16)
+
+### בית 5 — בית הבנים
+- [✅] זכר או נקבה — כשף עמ׳ 191-194 — computeChildrenPregnancyKashfAnalysis (בוצע קודם)
+- [✅] חשש להפלה — כשף עמ׳ 191-194 — computeChildrenPregnancyKashfAnalysis (בוצע קודם)
+- [✅] כמה חודשים הריון — PDF2 עמ׳ 43 (ח׳לף הברברי): ב5+ב6+ב11, נקודות פתוחות × ערך יסוד, חסר 9 — computePregnancyMonths (בוצע 2026-06-16)
+- [✅] לידה קלה או כבדה — כשף עמ׳ 191-194 — computeChildrenPregnancyKashfAnalysis (בוצע קודם)
+- [✅] שמחות ואירועים — PDF1 עמ׳ 24 — computeCelebrationsH5 (בוצע 2026-06-16)
+
+### בית 6 — בית המחלות
+- [✅] מיקום המחלה בגוף — FIGURE_BODY_PART + computeBodyPartDiagnosis (בוצע 2026-06-15)
+- [✅] סוג המחלה / אח׳לאט — PDF1 עמ׳ 41+58: שיטת אסקאט×7 — computeIllnessTypeIsqat (בוצע 2026-06-16)
+- [✅] האם ימות — PDF1 עמ׳ 41-42 — computeDeathRisk (בוצע 2026-06-15)
+- [✅] בהמה / חיה אבודה — כשף עמ׳ 201-202 — computeAnimalTypeByH6 + computeLostAnimalReturn (בוצע 2026-06-15)
+- [✅] סוג הג׳ין (אסקאט) — PDF1 עמ׳ 57-58 — computeJinnType (בוצע 2026-06-15)
+
+### בית 7 — בית הזוגיות
+- [✅] ת׳יב / בכר (בתולה?) — PDF1 עמ׳ 44 — computeWifeVirginityStatus (בוצע 2026-06-15)
+- [✅] צניעות האישה — PDF1 עמ׳ 43-44 — computeWifeChastity (בוצע 2026-06-15)
+
+### בית 8 — בית המוות
+- [✅] מין הגנב וגילו — THIEF_GENDER_AGE_BY_ELEMENT + computeThiefGenderAge (בוצע 2026-06-15)
+- [✅] גיל הגנב לפי שם הצורה — PDF1 עמ׳ 48 — computeThiefAge (בוצע 2026-06-15)
+- [✅] קרבת הגנב לשואל — PDF1 עמ׳ 48-49 — computeThiefProximity (בוצע 2026-06-15)
+- [✅] האם הגנוב יוחזר — PDF1 עמ׳ 48-49 — computeStolenItemReturn (בוצע 2026-06-15)
+
+### בית 9 — בית הנסיעה
+- [✅] כיוון הנסיעה — PDF1 פ׳ 10 — computeTravelDirection (בוצע 2026-06-15)
+- [✅] מיקום הנעדר — PDF1 עמ׳ 52 + PDF2 עמ׳ 59 — computeMissingPersonLocation (בוצע 2026-06-15)
+- [✅] האם הנעדר יחזור — PDF2 עמ׳ 59 — computeMissingPersonReturn (בוצע 2026-06-15)
+- [✅] חלום — פרשנות — כשף עמ׳ 254 — computeDreamH9 (בוצע 2026-06-15)
+- [✅] כישוף / מכשפים — PDF1 עמ׳ 56: ב9 מורה על המכשף ועל סוג הכישוף — computeSorcererH9 (בוצע 2026-06-16)
+
+### בית 10 — בית הכבוד
+- [✅] יוקר / זול (מחירי שוק) — PDF1 עמ׳ 25 — computeMarketPrices (בוצע 2026-06-15)
+- [✅] האם השואל מכושף — PDF1 עמ׳ 56-57 — computeQuerentSorceryCheck (בוצע 2026-06-15)
+- [✅] מלך / שליט — האם מפחד — כשף עמ׳ 257 — computeKingRulerStatus (בוצע 2026-06-15)
+
+### בית 11 — בית התקווה
+- [✅] האם ישיג מה שרוצה — PDF1 עמ׳ 51-52 — computeWishFulfillment (בוצע 2026-06-15)
+
+### בית 12 — בית האויבים
+- [✅] פרטי שחרור / עונש — כשף עמ׳ 272 — computePrisonerReleaseCheck + computeEnemyPresenceCheck (בוצע 2026-06-15)
+- [✅] כלא — מי אשם — PDF1 עמ׳ 55 (כלל 12): גזירת ב1×ב7 לקביעת מין המסבב — computePrisonerGuilty (בוצע 2026-06-16)
+- [✅] חובות — PDF1 עמ׳ 25: ב12 = בית החובות, פסיקה לפי מזל ב12+ב2 — computeDebts (בוצע 2026-06-16)
+
+---
+
+**סה"כ:** 38 נושאים ממומשים | **38/38 בוצעו ✅** (2026-06-16)

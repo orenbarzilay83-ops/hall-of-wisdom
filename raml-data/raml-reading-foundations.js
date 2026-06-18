@@ -180,7 +180,7 @@ const RAML_READING_FOUNDATIONS = {
       {
         id: "repeat-reading-validation",
         title: "בדיקת אמת העבודה על ידי חזרה",
-        rule: "אפשר לבדוק את صحة العمل על ידי הכאה פעם שנייה ושלישית: אם חוזרת אותה תשובה, או תשובה קרובה לה ואינה סותרת לגמרי — זה סימן שהעבודה נכונה.",
+        rule: "אפשר לבדוק את נכונות העבודה על ידי הכאה פעם שנייה ושלישית: אם חוזרת אותה תשובה, או תשובה קרובה לה ואינה סותרת לגמרי — זה סימן שהעבודה נכונה.",
         implementationReady: false,
         implementationNotes: "לא להפוך מיד לכפתור אוטומטי. קודם לבנות מצב בדיקה שמריץ 2–3 לוחות ומשווה קרבה/סתירה."
       },
@@ -249,7 +249,7 @@ const RAML_READING_FOUNDATIONS = {
 
   damirAlSail: {
     id: "damir-al-sail",
-    title: "ضمير السائل — דמיר / מצפון השואל",
+    title: "דמיר / מצפון השואל",
     ruleType: "damir",
     sourceStatus: "verified-working",
     description: "הדמיר הוא גילוי הדבר הפנימי שעליו השואל באמת שואל. אין להכניס אותו כפרשנות אחת קצרה; יש כמה דרכים להוציא אותו.",
@@ -257,10 +257,10 @@ const RAML_READING_FOUNDATIONS = {
     verifiedMethods: [
       {
         id: "damir-from-total-open-count",
-        title: "דמיר השואל ממספר مفتוח הרמל כולו",
+        title: "דמיר השואל ממספר הנקודות הפתוחות של הרמל כולו",
         sourceBook: "الفلك المشحون",
         formulaHebrew: [
-          "לוקחים את מספר مفتוח הרמל כולו.",
+          "לוקחים את מספר הנקודות הפתוחות של הרמל כולו.",
           "מפילים אותו 15־15.",
           "את השארית מוליכים על הצורות מתחילת הטכת.",
           "המקום שבו המספר נעצר — שם נמצא הדמיר.",
@@ -274,10 +274,10 @@ const RAML_READING_FOUNDATIONS = {
       },
       {
         id: "damir-queried-from-128-minus-open-count",
-        title: "דמיר הנשאל עליו מ־128 פחות מספר مفتוח הרמל",
+        title: "דמיר הנשאל עליו מ־128 פחות מספר הנקודות הפתוחות של הרמל",
         sourceBook: "الفلك المشحون",
         formulaHebrew: [
-          "לידיעת הנשאל עליו: מחסרים את מספר مفتוח הרמל מן 128.",
+          "לידיעת הנשאל עליו: מחסרים את מספר הנקודות הפתוחות של הרמל מן 128.",
           "את היתרה מפילים 15־15.",
           "עם השארית השנייה הולכים מתחילת הטכת.",
           "המקום שבו המספר נעצר — שם הדמיר של הנשאל עליו, או הבית, או בעל הבית."
@@ -291,10 +291,10 @@ const RAML_READING_FOUNDATIONS = {
       },
       {
         id: "damir-thalith-method",
-        title: "דרך השליש / طريقة الثليث",
+        title: "שיטת המשולש",
         sourceBook: "الفلك المشحون",
         formulaHebrew: [
-          "הדרך נקראת طريقة الثليث.",
+          "שיטת המשולש.",
           "הדמיר אינו יוצא משלושה מקומות: הצורה / הבית / בעל הבית.",
           "בודקים איפה חלה הצורה וכמה עברה מביתה.",
           "אם חלה בבית 1, 2, 3, 4, 5, 7, 9, 10, 11 או 15 — זה סימן כוח ואושר.",
@@ -352,7 +352,7 @@ const RAML_READING_FOUNDATIONS = {
       },
       {
         id: "damir-from-cross-triangle",
-        title: "חיבור مثلثة الصليب: נהמת האמהות עם תמכן האמהות",
+        title: "חיבור משולש הצלב: תמצית צורות בתי האמהות עם תמכן האמהות",
         status: "verified-text-needs-formula"
       },
       {
@@ -395,7 +395,7 @@ const RAML_READING_FOUNDATIONS = {
 
   nazarNutqIttisalInfisal: {
     id: "nazar-nutq-ittisal-infisal",
-    title: "نظر / نطق / اتصال / انفصال",
+    title: "מבט / דיבור / חיבור / ניתוק",
     ruleType: "core-interpretation",
     sourceStatus: "verified-working",
     mapping: {
@@ -454,7 +454,7 @@ const RAML_READING_FOUNDATIONS = {
       {
         id: "muqabala",
         arabic: "مقابلة",
-        hebrew: "מול / مقابلة",
+        hebrew: "מול",
         housesFromBase: [7, 14],
         meaning: "עוינות שלמה וקשה / דבר שמולו"
       },

@@ -4,6 +4,7 @@ export const HAWI_FIGURE_STATE_BAYAD = {
   shortFigureId: 'bayad',
   arabicName: 'البياض',
   hebrewName: 'לבן',
+  genderHebrew: 'נקבה',
   sourceBook: 'حاوي العجائب ومظهر الغرائب',
   sourceAuthor: 'أحمد ابن زنبل المحلي',
   sourceSectionArabic: 'الباب الثامن عشر في الكلام على الاشكال — فصل في البياض',
@@ -11,7 +12,7 @@ export const HAWI_FIGURE_STATE_BAYAD = {
   sourcePages: ['PDF document 48.pdf'],
   sourceType: 'full-book-page-index',
   extractionStatus: 'source-audited-from-drive-pdf-45-51',
-  noteHebrew: 'מצב הצורה לבן / البياض בכל בית. בית 15 נשמר לפי המיפוי הסופי, והסטטוס נשמר לפי ביקורת קודמת.',
+  noteHebrew: 'מצב הצורה לבן בכל בית. בית 15 נשמר לפי המיפוי הסופי, והסטטוס נשמר לפי ביקורת קודמת.',
   states: [
     { house: 1, arabicText: ['في الأول صامت سعيد قوي متمكن'], hebrewTranslation: ['בבית הראשון: שותק, טוב, חזק ומבוסס.'], speakingState: 'silent', fortuneState: 'benefic-strong-established', effectHebrew: 'טוב, כוח ויציבות.', sourceStatus: 'sourceMapped' },
     { house: 2, arabicText: ['وفي الثاني صامت سعيد قوي الفعل يجلب الرزاق'], hebrewTranslation: ['בבית השני: שותק, טוב וחזק בפעולה; מביא פרנסה.'], speakingState: 'silent', fortuneState: 'benefic-strong', effectHebrew: 'הבאת פרנסה וכוח בממון.', sourceStatus: 'sourceMapped' },
