@@ -2208,7 +2208,7 @@ function buildSpiritualNarrative(result) {
 
     if (isqat?.hebrewText && isqat.isSpiritual !== false) {
       dParts.push(
-        `ספירת הנקודות הפתוחות בלוח (שיטת 7×7): ${isqat.openCount} נקודות — שאר ${isqat.remainder}.\n${isqat.hebrewText}`
+        `גורל חולי 7×7: ${isqat.openCount} נקודות פתוחות — שאר ${isqat.remainder}.\n${isqat.hebrewText}`
       );
     }
 
@@ -2262,7 +2262,7 @@ function buildSpiritualNarrative(result) {
 
     if (sorcererH9 || sd.sihrDetails?.length) {
       if (isqatSaysPhysical) {
-        push('הפרטים הבאים מבוססים על דפוסי בתים בלבד (שיטת כשף) — ספירת המפתוח מצביעה על גורם גופני:');
+        push('הפרטים הבאים מבוססים על דפוסי בתים בלבד (שיטת כשף) — גורל חולי 7×7 מצביע על גורם גופני:');
       }
       if (sorcererH9) push(`כישוף — כיוון המכשף:\n  ${ind(sorcererH9.outputHebrew)}`);
       if (sd.sihrDetails?.length) {

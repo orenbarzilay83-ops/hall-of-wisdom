@@ -297,7 +297,7 @@ function buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, j
   }
 
   if (isqatResult?.hebrewText && isqatResult.isSpiritual !== false) {
-    base += '\nספירת מפתוח 7×7: ' + isqatResult.hebrewText;
+    base += '\nגורל חולי 7×7: ' + isqatResult.hebrewText;
   }
 
   if (jinnTypeResult?.hebrewText) {
@@ -360,11 +360,11 @@ function computeCrossReference(questionHits, isqatResult) {
   const questionHebrew = { sihr: 'כישוף', ayin: 'עין הרע / קנאה', jinn: 'ג׳ין' }[questionCategory];
 
   if (!isqatInfo.isSpiritual) {
-    return `⚠ ספירת מפתוח: הלוח מצביע על ${isqatInfo.hebrew} — לא פגיעה רוחנית. השאלה הייתה על ${questionHebrew} אך ייתכן שהבעיה גופנית.`;
+    return `⚠ גורל חולי 7×7: הלוח מצביע על ${isqatInfo.hebrew} — לא פגיעה רוחנית. השאלה הייתה על ${questionHebrew} אך ייתכן שהבעיה גופנית.`;
   }
 
   if (isqatInfo.category !== questionCategory) {
-    return `⚠ ספירת מפתוח: הלוח מצביע על ${isqatInfo.hebrew} (לא ${questionHebrew}). ייתכן שהבעיה שונה ממה שנשאל — מומלץ לבדוק שני הכיוונים.`;
+    return `⚠ גורל חולי 7×7: הלוח מצביע על ${isqatInfo.hebrew} (לא ${questionHebrew}). ייתכן שהבעיה שונה ממה שנשאל — מומלץ לבדוק שני הכיוונים.`;
   }
 
   return null; // Categories match — no cross-reference needed
@@ -712,7 +712,7 @@ export function diagnoseSpiritualInfluence(question = '', board = null) {
   if (isqatResult?.hebrewText) {
     mainReasons.push({
       house: null,
-      role: 'ספירת מפתוח (7×7)',
+      role: 'גורל חולי 7×7',
       figureHebrew: null,
       score: 1,
       signals: [isqatResult.hebrewText],
