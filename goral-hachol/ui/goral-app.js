@@ -1129,6 +1129,10 @@ document.getElementById("menuIsqatBtn").addEventListener("click", () => {
   closeMenu(); showScreen("isqat"); _isqatRenderSlots(); _isqatRenderGrid();
 });
 
+document.getElementById("landingGoralBtn").addEventListener("click", () => showScreen("open"));
+document.getElementById("landingJournalBtn").addEventListener("click", () => { showScreen("journal"); renderJournal(); renderContacts(); });
+document.getElementById("landingGuideBtn").addEventListener("click", () => { showScreen("guide"); renderGuide(); });
+
 document.getElementById("backFromGuideBtn").addEventListener("click", () => showScreen("landing"));
 document.getElementById("backFromJournalBtn").addEventListener("click", () => showScreen("landing"));
 document.getElementById("backFromPrayerBtn").addEventListener("click", () => showScreen("landing"));
