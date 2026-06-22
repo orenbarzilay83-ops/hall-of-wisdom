@@ -619,16 +619,6 @@ function buildInterpretationHtml(reading) {
         ${evidenceHtml ? `<div class="verdict-detail" style="margin-top:10px;font-size:13px;line-height:1.8;text-align:right;">${evidenceHtml}</div>` : ''}
       </div>`;
 
-  } else if (insight.shortClientVerdict) {
-    // Topic-aware short verdict from the engine
-    const svText = hebrewTerms(escapeHtml(insight.shortClientVerdict))
-      .replace(/\n\n/g, '<br/><br/>')
-      .replace(/\n/g, '<br/>');
-    shortVerdictHtml = `
-      <div class="summary-box" style="direction:rtl; border-right:4px solid #1a3a5c; padding-right:16px; margin-bottom:0;">
-        <p style="line-height:1.9; margin:0; font-size:16px;">${svText}</p>
-      </div>`;
-
   } else if (topicId !== 'generalReading' && judgeV && judgeV.hebrewShort) {
     // Fallback: generic verdict box
     shortVerdictHtml = `
@@ -671,24 +661,7 @@ function buildInterpretationHtml(reading) {
     .replace(/\n\n/g, '</p><p style="margin-top:14px;">')
     .replace(/\n/g, '<br/>');
 
-  // Source citations block — not shown for spiritual diagnostics (full evidence already in verdict-detail + conclusion)
-  let sourcesHtml = "";
-  if (rules.length > 0 && !isSpiritualTopic) {
-    const ruleItems = rules
-      .filter(r => r.hebrew || r.result)
-      .slice(0, 8)
-      .map(r => {
-        const text = escapeHtml(r.hebrew || r.result || "");
-        const arabic = r.arabic ? `<span style="font-size:11px; color:#888; font-family:serif; direction:rtl;"> (${escapeHtml(r.arabic)})</span>` : "";
-        const section = r.sourceSectionHebrew ? `<span style="font-size:11px; color:#999;"> — ${escapeHtml(r.sourceSectionHebrew)}</span>` : "";
-        return `<li style="margin-bottom:6px; line-height:1.7;">${text}${section}${arabic}</li>`;
-      }).join("");
-    sourcesHtml = `
-      <div style="margin-top:16px; border-top:1px solid #ddd; padding-top:12px;">
-        <div style="font-weight:700; font-size:12px; color:#555; margin-bottom:8px;">📚 מקורות חאוי — חוקים רלוונטיים</div>
-        <ul style="margin:0; padding-right:18px; font-size:13px; color:#444;">${ruleItems}</ul>
-      </div>`;
-  }
+  const sourcesHtml = "";
 
   const detailsPanelLabel = isSpiritualTopic
     ? `<div style="font-weight:700;font-size:13px;color:#5a3e00;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #e0c860;">🔍 ניתוח רוחני מפורט</div>`

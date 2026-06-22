@@ -2489,11 +2489,11 @@ export function writeShortClientVerdict(result) {
       const h10 = getHouseFromBoard(boardAnalysis, 10);
 
       if (h2)  lines.push(figLine(h2, 'הממון (בית 2)'));
-      if (h10) lines.push(figLine(h10, 'תוצאת העסקה (בית 10)'));
+      if (h10) lines.push(figLine(h10, 'תוצאת העסק (בית 10)'));
       if (kashfText) lines.push(kashfText);
-      else if (jTone > 0) lines.push('הדיין: עסקה מומלצת — יש נטייה לרווח.');
-      else if (jTone < 0) lines.push('הדיין: עסקה מסוכנת — הפסד אפשרי.');
-      else lines.push('הדיין ממוזג — יש לבדוק תנאים לפני עסקה.');
+      else if (jTone > 0) lines.push('הדיין: העסק מומלץ — יש נטייה לרווח.');
+      else if (jTone < 0) lines.push('הדיין: העסק מסוכן — הפסד אפשרי.');
+      else lines.push('הדיין ממוזג — יש לבדוק תנאים לפני שמתקדמים.');
       break;
     }
 
@@ -3015,7 +3015,7 @@ export function writeClientReadingHebrew(result) {
       if (h2) {
         const h2Fort = fortToWord(h2?.fortune);
         push((!isNegative && h2Fort === 'טוב')
-          ? 'הממון בלוח נראה טוב — הסחורה/ההשקעה נושאת פנים חיוביות.'
+          ? 'הממון בלוח נראה טוב — ההשקעה נושאת פנים חיוביות.'
           : (isNegative || h2Fort === 'קשה')
           ? 'הממון בלוח מצביע על סכנת הפסד — כדאי לבחון מחדש.'
           : 'הממון מעורב — לא הפסד ולא ריווח ברור.');
@@ -3023,13 +3023,13 @@ export function writeClientReadingHebrew(result) {
       if (h10) {
         const h10Fort = fortToWord(h10?.fortune);
         push((!isNegative && h10Fort === 'טוב')
-          ? 'תוצאת העסקה נראית חיובית — יש נטייה לרווח ולהצלחה.'
+          ? 'תוצאת העסק נראית חיובית — יש נטייה לרווח ולהצלחה.'
           : (isNegative || h10Fort === 'קשה')
-          ? 'תוצאת העסקה עלולה להיות מאכזבת — כדאי לנהל משא ומתן זהיר.'
-          : 'תוצאת העסקה לא ברורה — לשמור על גמישות.');
+          ? 'תוצאת העסק עלולה להיות מאכזבת — כדאי לנהל זהירות ותכנון מוקדם.'
+          : 'תוצאת העסק לא ברורה — לשמור על גמישות.');
       }
-      if (isPositive || (!isNegative && jTone > 0)) push('הדיין תומך בעסקה — מומלץ להמשיך.');
-      else if (isNegative || jTone < 0) push('הדיין מתנגד לעסקה — כדאי לחכות או לשנות תנאים.');
+      if (isPositive || (!isNegative && jTone > 0)) push('הדיין תומך בעסק — מומלץ להמשיך.');
+      else if (isNegative || jTone < 0) push('הדיין מתנגד לעסק — כדאי לחכות או לשנות תנאים.');
       break;
     }
 
@@ -3238,8 +3238,8 @@ export function writeClientReadingHebrew(result) {
                                    : 'בסיכום: הלוח לא מחזק את קיום המטמון — התקדם בזהירות.',
     prisoner:           isPositive ? 'בסיכום: יש סיכוי לשחרור — המשך לטפל בעניין משפטית.'
                                    : 'בסיכום: ייתכן שהשחרור יתעכב — יש להמשיך לפעול ולא לוותר.',
-    commerce:           isPositive ? 'בסיכום: העסקה נראית טובה — המשך לנהל משא ומתן ולסגור.'
-                                   : 'בסיכום: אל תמהר לסגור — בדוק מחדש את התנאים לפני חתימה.',
+    commerce:           isPositive ? 'בסיכום: העסק נראה טוב — המשך לפתח ולחזק את הבסיס.'
+                                   : 'בסיכום: אל תמהר — בדוק מחדש את התנאים לפני שמתחייבים.',
     childrenPregnancy:  isPositive ? 'בסיכום: יש פתיחה — כדאי להמשיך לנסות ולהיות אופטימי.'
                                    : 'בסיכום: ייתכן שיידרש עוד זמן — פנה לרפואה ואל תוותר.',
     enemies:            isPositive ? 'בסיכום: אתה בעמדה טובה — פעל בביטחון.'
