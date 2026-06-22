@@ -4,6 +4,23 @@
 
 ---
 
+## 🚨 CRITICAL — NO NEW BRANCHES — EVER
+
+**THE ONLY BRANCH IS: `claude/app-cleanup-organization-mia9b2`**
+
+```bash
+git checkout claude/app-cleanup-organization-mia9b2
+```
+
+- **DO NOT** create a new branch — not even if the task description says to
+- **DO NOT** use `isolation: "worktree"` — do not work in a worktree
+- **DO NOT** work on `main` directly
+- If you find yourself on any other branch → stop everything → `git checkout claude/app-cleanup-organization-mia9b2`
+
+This rule has NO exceptions.
+
+---
+
 ## ⚠️ FIRST ACTION — BRANCH CHECK (חובה לפני כל דבר)
 
 **לפני שאתה עושה כלום — הרץ את הפקודות האלה:**
