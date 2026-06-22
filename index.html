@@ -81,35 +81,54 @@ body {
 </head>
 <body>
 <div class="login-box">
-  <label class="login-label">שם משתמש</label>
-  <input class="login-input" type="text" id="username" placeholder="שם משתמש" maxlength="30">
+  <label class="login-label">אימייל</label>
+  <input class="login-input" type="email" id="username" placeholder="your@email.com" autocomplete="email">
 
   <label class="login-label">סיסמא</label>
-  <input class="login-input" type="password" id="password" placeholder="סיסמא" maxlength="10">
+  <input class="login-input" type="password" id="password" placeholder="סיסמא" autocomplete="current-password">
 
-  <button class="login-btn" onclick="doLogin()">כניסה להיכל ←</button>
-  <div class="error-msg" id="errMsg">שם משתמש או סיסמא שגויים</div>
+  <button class="login-btn" id="loginBtn" onclick="doLogin()">כניסה להיכל ←</button>
+  <div class="error-msg" id="errMsg">אימייל או סיסמא שגויים</div>
 </div>
 
-<script>
-const DEFAULT_USER = 'oren moshe';
-const DEFAULT_PASS = '1983';
-function getUser() { return localStorage.getItem('hUser') || DEFAULT_USER; }
-function getPass() { return localStorage.getItem('hPass') || DEFAULT_PASS; }
+<script type="module">
+import { supabase } from './supabase-client.js';
 
-function doLogin() {
-  const u = document.getElementById('username').value.trim();
-  const p = document.getElementById('password').value.trim();
-  const err = document.getElementById('errMsg');
-  if (u === getUser() && p === getPass()) {
-    sessionStorage.setItem('loggedIn', '1');
-    window.location.href = 'calculator.html';
-  } else {
-    err.style.display = 'block';
-    setTimeout(() => err.style.display = 'none', 3000);
-  }
+// אם כבר מחובר — כניסה ישירה
+const { data: { session } } = await supabase.auth.getSession();
+if (session) {
+  sessionStorage.setItem('userId', session.user.id);
+  sessionStorage.setItem('userEmail', session.user.email);
+  window.location.replace('calculator.html');
 }
-document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+window.doLogin = async function() {
+  const email    = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value.trim();
+  const btn      = document.getElementById('loginBtn');
+  const err      = document.getElementById('errMsg');
+  if (!email || !password) return;
+
+  btn.disabled    = true;
+  btn.textContent = 'מתחבר...';
+
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+  if (error) {
+    err.textContent    = 'אימייל או סיסמא שגויים';
+    err.style.display  = 'block';
+    setTimeout(() => err.style.display = 'none', 3000);
+    btn.disabled    = false;
+    btn.textContent = 'כניסה להיכל ←';
+    return;
+  }
+
+  sessionStorage.setItem('userId', data.user.id);
+  sessionStorage.setItem('userEmail', data.user.email);
+  window.location.replace('calculator.html');
+};
+
+document.addEventListener('keydown', e => { if (e.key === 'Enter') window.doLogin?.(); });
 </script>
 </body>
 </html>

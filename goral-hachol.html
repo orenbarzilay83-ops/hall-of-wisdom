@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>גורל החול — ממשק חדש</title>
 
+  <!-- ─── הגנת כניסה — חייב לבוא ראשון ─── -->
+  <script>
+  if (!sessionStorage.getItem('userId')) window.location.replace('/index.html');
+  </script>
+
   <script src="./raml-data/raml-forms-basic.js?v=4"></script>
   <script src="./raml-data/raml-houses-basic.js?v=3"></script>
   <script src="./raml.js?v=3"></script>
@@ -1294,6 +1299,9 @@
         <button class="menu-item" id="menuRamalBtn">
           <span class="menu-item-icon">📚</span>ראמאל שסטרה
         </button>
+        <button class="menu-item" id="menuSignOutBtn" style="margin-top:auto;border-top:1px solid rgba(255,255,255,.12);color:#ff8080;">
+          <span class="menu-item-icon">🚪</span>התנתקות
+        </button>
       </nav>
     </div>
 
@@ -1650,5 +1658,23 @@
   </script>
 
   <script src="./goral-hachol/ui/goral-app.js?v=11"></script>
+
+  <!-- ─── אימות Supabase + יציאה ─── -->
+  <script type="module">
+    import { supabase } from '/supabase-client.js';
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) { sessionStorage.clear(); window.location.replace('/index.html'); }
+    else {
+      sessionStorage.setItem('userId', session.user.id);
+      sessionStorage.setItem('userEmail', session.user.email);
+    }
+    window.__supabase = supabase;
+    window.doSignOut = async () => {
+      await supabase.auth.signOut();
+      sessionStorage.clear();
+      window.location.replace('/index.html');
+    };
+    document.getElementById('menuSignOutBtn')?.addEventListener('click', () => window.doSignOut());
+  </script>
 </body>
 </html>
