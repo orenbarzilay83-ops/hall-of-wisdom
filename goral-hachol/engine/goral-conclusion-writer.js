@@ -1535,7 +1535,7 @@ function buildNarrativeByTopic(result) {
   const hTransit = (h) => {
     const raw = clean(h?.transit?.meaning || '');
     if (!raw) return '';
-    const first = raw.split(/\s*\/\s*/)[0].split(/\.\s+/)[0].trim();
+    const first = raw.split(/\.\s+/)[0].trim();
     return first;
   };
   const hTone    = (h) => figureFortuneTone(h?.fortune);
