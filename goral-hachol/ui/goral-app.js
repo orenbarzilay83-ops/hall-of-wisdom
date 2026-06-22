@@ -1131,12 +1131,16 @@ document.getElementById("menuIsqatBtn").addEventListener("click", () => {
 document.getElementById("menuRamalBtn").addEventListener("click", () => {
   closeMenu(); showScreen("ramal");
 });
+document.getElementById("menuKashfBtn").addEventListener("click", () => {
+  closeMenu(); showScreen("kashf");
+});
 
 document.getElementById("backFromGuideBtn").addEventListener("click", () => showScreen("landing"));
 document.getElementById("backFromJournalBtn").addEventListener("click", () => showScreen("landing"));
 document.getElementById("backFromPrayerBtn").addEventListener("click", () => showScreen("landing"));
 document.getElementById("backFromIsqatBtn").addEventListener("click", () => showScreen("landing"));
 document.getElementById("backFromRamalBtn").addEventListener("click", () => showScreen("landing"));
+document.getElementById("backFromKashfBtn").addEventListener("click", () => showScreen("landing"));
 
 // ─── ספירת מפתוח 7×7 ───────────────────────────────────────────────────
 const ISQAT_RESULTS = {
