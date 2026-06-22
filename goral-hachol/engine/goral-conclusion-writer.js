@@ -1536,7 +1536,7 @@ function buildNarrativeByTopic(result) {
     const raw = clean(h?.transit?.meaning || '');
     if (!raw) return '';
     const first = raw.split(/\s*\/\s*/)[0].split(/\.\s+/)[0].trim();
-    return first.length > 200 ? first.slice(0, 200) + '…' : first;
+    return first;
   };
   const hTone    = (h) => figureFortuneTone(h?.fortune);
   const hHazz    = (h) => (h?.hazzStrength && h?.hazzCount > 0) ? ` [עוצמה: ${h.hazzStrength}]` : '';
