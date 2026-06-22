@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
 <title>היכל החכמה</title>
+<!-- ─── הגנת כניסה ─── -->
+<script>
+if (!sessionStorage.getItem('userId')) window.location.replace('/index.html');
+</script>
 <style>
 /* ── מחשבון גימטריה וחותם ── */
 .result-a{display:none;margin-top:16px;background:var(--bg2);border-radius:12px;padding:16px;text-align:center}
@@ -80,7 +84,7 @@
     <button class="menu-item" onclick="window.open('ramal-shastra.html','_blank')">📚 ראמאל שסטרה</button>
   </div>
   <div class="menu-section">
-    <button class="menu-item" onclick="location.href='index.html'">🚪 יציאה</button>
+    <button class="menu-item" onclick="window.doSignOut?.()">🚪 יציאה</button>
   </div>
 </div>
 <div class="top-bar">
@@ -661,5 +665,17 @@ function gClearCalc2(){
 }
 </script>
 
+<!-- ─── אימות Supabase + יציאה ─── -->
+<script type="module">
+  import { supabase } from '/supabase-client.js';
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) { sessionStorage.clear(); window.location.replace('/index.html'); }
+  window.__supabase = supabase;
+  window.doSignOut = async () => {
+    await supabase.auth.signOut();
+    sessionStorage.clear();
+    window.location.replace('/index.html');
+  };
+</script>
 </body>
 </html>

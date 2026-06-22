@@ -1,4 +1,5 @@
-const STORAGE_KEY = 'goralHacholClientReadingsArchive_v1';
+const _uid = (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('userId')) || 'local';
+const STORAGE_KEY = `goralHacholClientReadingsArchive_v1_${_uid}`;
 
 function safeJsonParse(value, fallback) {
   try {

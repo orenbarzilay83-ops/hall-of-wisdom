@@ -1010,7 +1010,7 @@ document.getElementById("showKundaliBtn").addEventListener("click", () => {
 });
 
 // ─── ספר לקוחות ──────────────────────────────────────────────
-const CONTACTS_KEY = 'goralClientContacts_v1';
+const CONTACTS_KEY = 'goralClientContacts_v1_' + (sessionStorage.getItem('userId') || 'local');
 function getContacts() { return JSON.parse(localStorage.getItem(CONTACTS_KEY) || '[]'); }
 
 function renderContacts() {
