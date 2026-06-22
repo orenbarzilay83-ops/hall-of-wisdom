@@ -1579,17 +1579,21 @@
     <section id="screen-ramal" class="screen">
       <div class="screen-back-bar" style="padding:12px 16px;display:flex;align-items:center;gap:12px;background:#06192d;border-bottom:1px solid #f0c040;">
         <button class="btn gray" id="backFromRamalBtn">← חזרה</button>
-        <h2 style="margin:0;color:#f0c040;font-size:18px;">📚 ראמאל שסטרה</h2>
+        <h2 style="margin:0;color:#f0c040;font-size:18px;flex:1">📚 ראמאל שסטרה</h2>
+        <button class="btn gray" id="editRamalBtn" style="font-size:13px;padding:5px 10px;">✏️ ערוך</button>
+        <button class="btn primary" id="saveRamalBtn" style="font-size:13px;padding:5px 10px;display:none;">💾 שמור</button>
       </div>
-      <iframe src="ramal-shastra.html" style="width:100%;height:calc(100vh - 56px);border:none;display:block;"></iframe>
+      <iframe id="ramalIframe" style="width:100%;height:calc(100vh - 56px);border:none;display:block;"></iframe>
     </section>
 
     <section id="screen-kashf" class="screen">
       <div class="screen-back-bar" style="padding:12px 16px;display:flex;align-items:center;gap:12px;background:#06192d;border-bottom:1px solid #f0c040;">
         <button class="btn gray" id="backFromKashfBtn">← חזרה</button>
-        <h2 style="margin:0;color:#f0c040;font-size:18px;">📖 כשף אל-אסרר</h2>
+        <h2 style="margin:0;color:#f0c040;font-size:18px;flex:1">📖 כשף אל-אסרר</h2>
+        <button class="btn gray" id="editKashfBtn" style="font-size:13px;padding:5px 10px;">✏️ ערוך</button>
+        <button class="btn primary" id="saveKashfBtn" style="font-size:13px;padding:5px 10px;display:none;">💾 שמור</button>
       </div>
-      <iframe src="kashf-al-asrar.html" style="width:100%;height:calc(100vh - 56px);border:none;display:block;"></iframe>
+      <iframe id="kashfIframe" style="width:100%;height:calc(100vh - 56px);border:none;display:block;"></iframe>
     </section>
 
   </div>

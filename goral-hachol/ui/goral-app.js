@@ -1129,11 +1129,49 @@ document.getElementById("menuIsqatBtn").addEventListener("click", () => {
   closeMenu(); showScreen("isqat"); _isqatRenderSlots(); _isqatRenderGrid();
 });
 document.getElementById("menuRamalBtn").addEventListener("click", () => {
-  closeMenu(); showScreen("ramal");
+  closeMenu(); _loadBook('ramalIframe', 'ramal-shastra.html', 'bookEdit_ramal'); showScreen("ramal");
 });
 document.getElementById("menuKashfBtn").addEventListener("click", () => {
-  closeMenu(); showScreen("kashf");
+  closeMenu(); _loadBook('kashfIframe', 'kashf-al-asrar.html', 'bookEdit_kashf'); showScreen("kashf");
 });
+
+// ─── עורך ספרים ─────────────────────────────────────────────
+function _loadBook(iframeId, srcFile, storageKey) {
+  const iframe = document.getElementById(iframeId);
+  const uid    = sessionStorage.getItem('userId') || 'local';
+  const saved  = localStorage.getItem(storageKey + '_' + uid);
+  if (saved) { iframe.removeAttribute('src'); iframe.srcdoc = saved; }
+  else        { iframe.removeAttribute('srcdoc'); iframe.src = srcFile; }
+}
+
+function _setupBookEditor(iframeId, editBtnId, saveBtnId, storageKey) {
+  const editBtn = document.getElementById(editBtnId);
+  const saveBtn = document.getElementById(saveBtnId);
+  const uid     = sessionStorage.getItem('userId') || 'local';
+  const key     = storageKey + '_' + uid;
+
+  editBtn.addEventListener('click', () => {
+    const doc = document.getElementById(iframeId).contentDocument;
+    if (!doc) return;
+    const editing = doc.designMode === 'on';
+    doc.designMode      = editing ? 'off' : 'on';
+    editBtn.textContent = editing ? '✏️ ערוך' : '↩ סיום עריכה';
+    saveBtn.style.display = editing ? 'none' : '';
+  });
+
+  saveBtn.addEventListener('click', () => {
+    const iframe  = document.getElementById(iframeId);
+    const content = iframe.contentDocument?.documentElement?.outerHTML;
+    if (!content) return;
+    localStorage.setItem(key, content);
+    const orig = saveBtn.textContent;
+    saveBtn.textContent = '✅ נשמר!';
+    setTimeout(() => { saveBtn.textContent = orig; }, 1500);
+  });
+}
+
+_setupBookEditor('ramalIframe', 'editRamalBtn', 'saveRamalBtn', 'bookEdit_ramal');
+_setupBookEditor('kashfIframe', 'editKashfBtn', 'saveKashfBtn', 'bookEdit_kashf');
 
 document.getElementById("backFromGuideBtn").addEventListener("click", () => showScreen("landing"));
 document.getElementById("backFromJournalBtn").addEventListener("click", () => showScreen("landing"));
