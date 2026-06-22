@@ -1531,11 +1531,11 @@ function buildNarrativeByTopic(result) {
 
   const hFig     = (h) => clean(h?.figureHebrew || '');
   const hFort    = (h) => clean(h?.fortune || '');
-  // מציג רק את המשפט הראשון של המשמעות, לפני " / " — מונע השמת כל הפירושים כרשימה
+  // מציג את המשפט הראשון של המשמעות (עד הנקודה הראשונה)
   const hTransit = (h) => {
     const raw = clean(h?.transit?.meaning || '');
     if (!raw) return '';
-    const first = raw.split(/\s*\/\s*/)[0].split(/\.\s+/)[0].trim();
+    const first = raw.split(/\.\s+/)[0].trim();
     return first.length > 200 ? first.slice(0, 200) + '…' : first;
   };
   const hTone    = (h) => figureFortuneTone(h?.fortune);
