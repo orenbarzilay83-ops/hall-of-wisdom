@@ -33,6 +33,7 @@
       margin:0;
       direction:rtl;
       font-family: Arial, sans-serif;
+      font-size:16px;
       background:linear-gradient(135deg,#06192d,#0a1424);
       color:var(--ink);
     }
@@ -120,6 +121,7 @@
       display:block;
       margin-bottom:6px;
       font-weight:800;
+      font-size:15px;
       color:#1e2a36;
     }
 
@@ -1263,6 +1265,182 @@
       font-size: 11px;
       direction: rtl;
     }
+
+    /* ─── מסך בחירת שאלה ─── */
+    .qscreen-header {
+      text-align: center;
+      padding: 24px 20px 12px;
+      background: linear-gradient(180deg, var(--navy), var(--navy2));
+      color: white;
+    }
+    .qscreen-header h2 {
+      font-size: 23px;
+      font-weight: 900;
+      color: var(--gold2);
+      border: none;
+      margin: 0 0 6px;
+      padding: 0;
+    }
+    .qscreen-subtitle {
+      font-size: 14px;
+      color: rgba(255,255,255,.75);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .qcat-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 12px 14px;
+      background: white;
+      border-bottom: 2px solid rgba(216,170,69,.3);
+      scrollbar-width: none;
+    }
+    .qcat-tabs::-webkit-scrollbar { display: none; }
+    .qcat-tab {
+      flex-shrink: 0;
+      border: 2px solid;
+      border-radius: 22px;
+      background: white;
+      cursor: pointer;
+      padding: 7px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .qcat-tab.active { color: white !important; }
+    .qcat-tab:hover { opacity: 0.8; }
+
+    .qcard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 11px;
+      padding: 14px 14px 6px;
+    }
+    @media (max-width: 480px) {
+      .qcard-grid { grid-template-columns: 1fr; }
+    }
+
+    .qcard {
+      border: 2px solid rgba(0,0,0,.14);
+      border-radius: 14px;
+      background: white;
+      cursor: pointer;
+      padding: 13px 14px;
+      text-align: right;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .qcard:hover { border-color: var(--gold); box-shadow: 0 3px 14px rgba(0,0,0,.1); }
+    .qcard.selected { border-color: var(--navy) !important; background: #eef2ff; box-shadow: 0 4px 18px rgba(6,25,45,.18); }
+
+    .qcard-emoji { font-size: 24px; line-height: 1.2; }
+    .qcard-label { font-size: 15px; font-weight: 900; color: #071b30; margin-top: 3px; }
+    .qcard-desc  { font-size: 12px; color: #5a6678; line-height: 1.45; margin-top: 2px; }
+    .qcard-badge {
+      display: inline-block;
+      margin-top: 7px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(6,25,45,.08);
+      color: var(--navy);
+    }
+
+    .qscreen-actions {
+      padding: 12px 14px 24px;
+      display: flex;
+      gap: 10px;
+    }
+    .qscreen-actions .btn { flex: 1; font-size: 16px; padding: 14px; }
+
+    /* ─── שאלה נבחרה — באנר ב-screen-open ─── */
+    .question-banner {
+      background: linear-gradient(135deg, var(--navy), var(--navy2));
+      color: white;
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .question-banner-emoji { font-size: 28px; flex-shrink: 0; }
+    .question-banner-text  { flex: 1; }
+    .question-banner-label { font-size: 17px; font-weight: 900; color: var(--gold2); }
+    .question-banner-desc  { font-size: 13px; color: rgba(255,255,255,.8); margin-top: 3px; line-height: 1.45; }
+    .question-banner-change {
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.3);
+      border-radius: 9px;
+      color: white;
+      font-size: 13px;
+      padding: 7px 12px;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      align-self: center;
+    }
+    .question-banner-change:hover { background: rgba(255,255,255,.25); }
+
+    .dynamic-fields-wrap {
+      background: rgba(216,170,69,.08);
+      border: 1px solid rgba(216,170,69,.35);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+    }
+    .dynamic-fields-title {
+      font-size: 14px;
+      font-weight: 900;
+      color: var(--navy);
+      margin: 0 0 10px;
+    }
+    .dynamic-fields-wrap .open-field { margin-bottom: 10px; }
+    .dynamic-fields-wrap .open-field:last-child { margin-bottom: 0; }
+
+    /* ─── כפתור התחל ב-screen-landing ─── */
+    .landing-start-wrap {
+      padding: 26px 24px 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(180deg, var(--paper), var(--paper2));
+    }
+    .landing-start-title {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--navy);
+      margin: 0;
+      text-align: center;
+    }
+    .landing-start-sub {
+      font-size: 14px;
+      color: var(--muted);
+      margin: 0;
+      text-align: center;
+    }
+    .landing-start-btn {
+      width: 80%;
+      max-width: 340px;
+      padding: 16px;
+      font-size: 18px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--navy), var(--navy2));
+      color: var(--gold2);
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      box-shadow: 0 6px 22px rgba(6,25,45,.28);
+      transition: opacity 0.15s;
+    }
+    .landing-start-btn:hover { opacity: 0.88; }
   </style>
 </head>
 
@@ -1316,6 +1494,25 @@
           <img src="assets/sage-landscape.png" alt="גורל החול" class="landing-img">
         </picture>
       </div>
+      <div class="landing-start-wrap">
+        <p class="landing-start-title">✦ גורל החול ✦</p>
+        <p class="landing-start-sub">בחר שאלה — קבל מסקנה מדויקת לפי ספרי הרמל הקלאסיים</p>
+        <button class="landing-start-btn" id="landingStartBtn">בחר שאלה לגורל</button>
+      </div>
+    </section>
+
+    <!-- ─── מסך בחירת שאלה ─────────────────────────────── -->
+    <section id="screen-question" class="screen">
+      <div class="qscreen-header">
+        <h2>בחר שאלה לגורל</h2>
+        <p class="qscreen-subtitle">לחץ על הקטגוריה ואז על השאלה שמדאיגה אותך</p>
+      </div>
+      <div class="qcat-tabs" id="qcatTabs"></div>
+      <div class="qcard-grid" id="qcardGrid"></div>
+      <div class="qscreen-actions">
+        <button class="btn gray" id="backFromQuestionBtn">← חזרה</button>
+        <button class="btn primary" id="continueFromQuestionBtn" disabled>המשך עם שאלה זו →</button>
+      </div>
     </section>
 
     <section id="screen-open" class="screen">
@@ -1326,6 +1523,11 @@
           <h2 style="margin:0;border:none;padding:0">פרטי הלקוח</h2>
         </div>
         <div id="castingTimeAlert" class="casting-alert"></div>
+
+        <!-- באנר שאלה נבחרת -->
+        <div id="questionBanner" style="display:none"></div>
+        <!-- שדות דינמיים לפי שאלה -->
+        <div id="dynamicFieldsSection" style="display:none"></div>
 
         <!-- 2 עמודות: ימין = שדות | שמאל = פרופיל -->
         <div class="open-2col">
@@ -1672,7 +1874,8 @@
     });
   </script>
 
-  <script src="./goral-hachol/ui/goral-app.js?v=11"></script>
+  <script src="./goral-hachol/ui/question-bank.js?v=1"></script>
+  <script src="./goral-hachol/ui/goral-app.js?v=12"></script>
 
   <!-- ─── אימות Supabase + יציאה ─── -->
   <script type="module">

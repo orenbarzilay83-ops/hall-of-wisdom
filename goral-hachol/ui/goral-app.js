@@ -11,6 +11,8 @@ let selectedHouseNum = null;  // בית שנבחר (1-12)
 let forcedTopicId = null;     // נושא שנקבע בכוח (למשל: בדיקה רוחנית)
 let selectedTopicId = null;   // תת-נושא שנבחר ישירות מתוך רשימת תת-נושאים
 let profileState = { gender: null, marital: null, work: null, children: null };
+let selectedQuestion = null;  // שאלה שנבחרה ממסך השאלות
+let _activeCatFilter = 'all'; // פילטר קטגוריה פעיל
 
 // 12 כרטיסים לפי סדר הבתים. הנושא המדויק נקבע בזמן הריצה לפי השאלה.
 // subTopics — אם יש, מוצגים לאחר בחירת הבית; null = ברירת מחדל ישירה.
@@ -219,6 +221,127 @@ function showScreen(name) {
   window.scrollTo({ top:0, behavior:"smooth" });
 }
 
+// ─── מסך בחירת שאלה ────────────────────────────────────────────────────────
+function renderQuestionScreen() {
+  const cats = window.QUESTION_CATEGORIES || [];
+  const bank = window.QUESTION_BANK || [];
+
+  const allCats = [{ id: 'all', label: 'הכל', emoji: '📋', color: '#d0d0d0', border: '#999' }, ...cats];
+
+  const tabsEl = document.getElementById('qcatTabs');
+  if (tabsEl) {
+    tabsEl.innerHTML = allCats.map(cat => {
+      const isActive = _activeCatFilter === cat.id;
+      const bgStyle = isActive ? `background:${cat.border};color:white;` : `color:${cat.border};`;
+      return `<button class="qcat-tab${isActive ? ' active' : ''}" data-cat="${cat.id}"
+        style="border-color:${cat.border};${bgStyle}">
+        ${cat.emoji} ${cat.label}
+      </button>`;
+    }).join('');
+
+    tabsEl.querySelectorAll('.qcat-tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        _activeCatFilter = btn.dataset.cat;
+        renderQuestionScreen();
+      });
+    });
+  }
+
+  const catMap = {};
+  cats.forEach(c => { catMap[c.id] = c; });
+
+  const filtered = _activeCatFilter === 'all' ? bank : bank.filter(q => q.category === _activeCatFilter);
+
+  const gridEl = document.getElementById('qcardGrid');
+  if (gridEl) {
+    gridEl.innerHTML = filtered.map(q => {
+      const cat = catMap[q.category] || {};
+      const isSelected = selectedQuestion && selectedQuestion.id === q.id;
+      return `<button type="button"
+        class="qcard${isSelected ? ' selected' : ''}"
+        data-qid="${q.id}"
+        style="border-color:${isSelected ? 'var(--navy)' : (cat.border || '#ccc')}">
+        <span class="qcard-emoji">${cat.emoji || '•'}</span>
+        <span class="qcard-label">${escapeHtml(q.label)}</span>
+        <span class="qcard-desc">${escapeHtml(q.desc)}</span>
+        <span class="qcard-badge">בית ${q.houseId}</span>
+      </button>`;
+    }).join('');
+
+    gridEl.querySelectorAll('.qcard').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const qid = btn.dataset.qid;
+        selectedQuestion = bank.find(q => q.id === qid) || null;
+        renderQuestionScreen();
+      });
+    });
+  }
+
+  const contBtn = document.getElementById('continueFromQuestionBtn');
+  if (contBtn) contBtn.disabled = !selectedQuestion;
+}
+
+// ─── שדות דינמיים בהתאם לשאלה ─────────────────────────────────────────────
+function renderDynamicClientFields() {
+  const bannerEl = document.getElementById('questionBanner');
+  const fieldsEl = document.getElementById('dynamicFieldsSection');
+
+  if (!selectedQuestion) {
+    if (bannerEl) bannerEl.style.display = 'none';
+    if (fieldsEl) fieldsEl.style.display = 'none';
+    return;
+  }
+
+  const cats = window.QUESTION_CATEGORIES || [];
+  const catMap = {};
+  cats.forEach(c => { catMap[c.id] = c; });
+  const cat = catMap[selectedQuestion.category] || {};
+
+  if (bannerEl) {
+    bannerEl.style.display = '';
+    bannerEl.innerHTML = `<div class="question-banner">
+      <span class="question-banner-emoji">${cat.emoji || '•'}</span>
+      <div class="question-banner-text">
+        <div class="question-banner-label">${escapeHtml(selectedQuestion.label)}</div>
+        <div class="question-banner-desc">${escapeHtml(selectedQuestion.desc)}</div>
+      </div>
+      <button class="question-banner-change" id="changequestionBtn">שנה שאלה</button>
+    </div>`;
+    bannerEl.querySelector('#changequestionBtn')?.addEventListener('click', () => {
+      renderQuestionScreen();
+      showScreen('question');
+    });
+  }
+
+  const fields = selectedQuestion.clientFields || [];
+  if (fieldsEl) {
+    if (fields.length === 0) {
+      fieldsEl.style.display = 'none';
+    } else {
+      fieldsEl.style.display = '';
+      const fieldsHtml = fields.map(f => {
+        const id = 'dynField_' + f.id;
+        let inputHtml;
+        if (f.type === 'textarea') {
+          inputHtml = `<textarea id="${id}" rows="2" placeholder="${escapeHtml(f.placeholder || '')}" autocomplete="off"></textarea>`;
+        } else if (f.type === 'select' && f.options) {
+          inputHtml = `<select id="${id}">
+            <option value="">-- בחר --</option>
+            ${f.options.map(o => `<option value="${escapeHtml(o)}">${escapeHtml(o)}</option>`).join('')}
+          </select>`;
+        } else {
+          inputHtml = `<input id="${id}" type="${f.type || 'text'}" placeholder="${escapeHtml(f.placeholder || '')}" autocomplete="off" />`;
+        }
+        return `<div class="open-field"><label>${escapeHtml(f.label)}</label>${inputHtml}</div>`;
+      }).join('');
+      fieldsEl.innerHTML = `<div class="dynamic-fields-wrap">
+        <div class="dynamic-fields-title">פרטים לפי הנושא</div>
+        ${fieldsHtml}
+      </div>`;
+    }
+  }
+}
+
 function renderMotherSlots() {
   const box = document.getElementById("motherSlots");
   box.innerHTML = selectedMothers.map((fig, index) => `
@@ -269,7 +392,7 @@ function renderFigureGrid() {
 }
 
 function getClientContext(resolvedTopicId) {
-  return {
+  const ctx = {
     clientName: document.getElementById("clientNameInput").value.trim(),
     parentName: document.getElementById("clientParentInput").value.trim(),
     phone: document.getElementById("clientPhoneInput").value.trim(),
@@ -284,6 +407,13 @@ function getClientContext(resolvedTopicId) {
     workStatus: profileState.work || null,
     hasChildren: profileState.children || null,
   };
+  if (selectedQuestion && selectedQuestion.clientFields) {
+    for (const field of selectedQuestion.clientFields) {
+      const el = document.getElementById('dynField_' + field.id);
+      if (el) ctx[field.id] = el.value.trim();
+    }
+  }
+  return ctx;
 }
 
 function houseName(number) {
@@ -790,9 +920,11 @@ function clearForm() {
   selectedHouseNum = null;
   forcedTopicId = null;
   selectedTopicId = null;
+  selectedQuestion = null;
   profileState = { gender: null, marital: null, work: null, children: null };
   document.querySelectorAll('.profile-btn.selected').forEach(b => b.classList.remove('selected'));
   renderTopicGrid();
+  renderDynamicClientFields();
   selectedMothers = [null,null,null,null];
   activeMother = 0;
   renderMotherSlots();
@@ -1088,7 +1220,7 @@ document.getElementById("menuCloseBtn").addEventListener("click", closeMenu);
 document.getElementById("menuOverlay").addEventListener("click", closeMenu);
 
 document.getElementById("menuGoralBtn").addEventListener("click", () => {
-  closeMenu(); showScreen("open");
+  closeMenu(); renderQuestionScreen(); showScreen("question");
 });
 document.getElementById("menuGuideBtn").addEventListener("click", () => {
   closeMenu(); showScreen("guide"); renderGuide();
@@ -1153,6 +1285,28 @@ document.getElementById("backFromPrayerBtn").addEventListener("click", () => sho
 document.getElementById("backFromIsqatBtn").addEventListener("click", () => showScreen("landing"));
 document.getElementById("backFromRamalBtn").addEventListener("click", () => showScreen("landing"));
 document.getElementById("backFromKashfBtn").addEventListener("click", () => showScreen("landing"));
+
+// ─── ניווט מסך שאלות ──────────────────────────────────────────
+document.getElementById("landingStartBtn").addEventListener("click", () => {
+  selectedQuestion = null;
+  _activeCatFilter = 'all';
+  renderQuestionScreen();
+  showScreen("question");
+});
+
+document.getElementById("backFromQuestionBtn").addEventListener("click", () => showScreen("landing"));
+
+document.getElementById("continueFromQuestionBtn").addEventListener("click", () => {
+  if (!selectedQuestion) return;
+  selectedHouseNum = selectedQuestion.houseId;
+  selectedTopicId  = selectedQuestion.topicId;
+  forcedTopicId    = null;
+  const qInput = document.getElementById("questionInput");
+  if (qInput && !qInput.value.trim()) qInput.value = selectedQuestion.label;
+  renderTopicGrid();
+  renderDynamicClientFields();
+  showScreen("open");
+});
 
 // ─── ספירת מפתוח 7×7 ───────────────────────────────────────────────────
 const ISQAT_RESULTS = {
