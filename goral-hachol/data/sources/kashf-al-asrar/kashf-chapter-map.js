@@ -92,27 +92,31 @@ export const VERDICT_TEMPLATES = {
 
 export const KASHF_CHAPTER_MAP = [
 
+  // מיפוי פרקים לפי סדר הבתים (שער שישי, עמ׳ 166–276)
+  // kashfChapter = מספר הפרק כפי שמופיע בספר (1–12, תואם לבית האסטרולוגי)
+  // sourceRef = טווח עמודים מדויק לפי HOUSE_PAGE_RANGES ב-kashf-book-reader.js
+
   {
     topicId:       'illness',
-    kashfChapter:  3,
+    kashfChapter:  6,
     chapterNameHebrew: 'החולה / המחלה',
     chapterNameArabic: 'فصل في المريض',
     verdictHouses: [1, 6],
     verdictMethod: 'combine',
     verdictType:   'recover-or-not',
-    sourceRef:     'כשף-אל-אסראר, עמ׳ 191–210',
+    sourceRef:     'כשף-אל-אסראר — שער שישי, פרק 6: החולה (עמ׳ 196–203)',
     confidence:    'derived',
   },
 
   {
     topicId:       'marriage',
-    kashfChapter:  4,
+    kashfChapter:  7,
     chapterNameHebrew: 'נישואין / זוגיות',
     chapterNameArabic: 'فصل في النكاح',
     verdictHouses: [1, 7],
     verdictMethod: 'combine',
     verdictType:   'happen-or-not',
-    sourceRef:     'כשף-אל-אסראר, עמ׳ 211–225',
+    sourceRef:     'כשף-אל-אסראר — שער שישי, פרק 7: נישואין (עמ׳ 204–223)',
     confidence:    'derived',
   },
 
@@ -124,19 +128,19 @@ export const KASHF_CHAPTER_MAP = [
     verdictHouses: [1, 5],
     verdictMethod: 'combine',
     verdictType:   'happen-or-not',
-    sourceRef:     'כשף-אל-אסראר, עמ׳ 226–235',
+    sourceRef:     'כשף-אל-אסראר — שער שישי, פרק 5: ילדים והריון (עמ׳ 191–195)',
     confidence:    'derived',
   },
 
   {
     topicId:       'commerce',
-    kashfChapter:  6,
+    kashfChapter:  2,
     chapterNameHebrew: 'מסחר / קנייה ומכירה',
     chapterNameArabic: 'فصل في التجارة',
     verdictHouses: [1, 2],
     verdictMethod: 'combine',
     verdictType:   'profit-or-loss',
-    sourceRef:     'כשף-אל-אסראר, עמ׳ 236–248',
+    sourceRef:     'כשף-אל-אסראר — שער שישי, פרק 2: הממון (עמ׳ 179–181)',
     confidence:    'derived',
   },
 
@@ -148,19 +152,19 @@ export const KASHF_CHAPTER_MAP = [
     verdictHouses: [1, 7],
     verdictMethod: 'combine',
     verdictType:   'win-or-lose',
-    sourceRef:     'כשף-אל-אסראר, עמ׳ 249–258',
+    sourceRef:     'כשף-אל-אסראר — שער שישי, פרק 7: גאלב ומגלוב (עמ׳ 204–223)',
     confidence:    'derived',
   },
 
   {
     topicId:       'missingPerson',
-    kashfChapter:  8,
+    kashfChapter:  9,
     chapterNameHebrew: 'נעדר / גאיב',
     chapterNameArabic: 'فصل في الغائب',
     verdictHouses: [1, 7],
     verdictMethod: 'combine',
     verdictType:   'alive-or-feared',
-    sourceRef:     'כשף-אל-אסראר, עמ׳ 259–265',
+    sourceRef:     'כשף-אל-אסראר — שער שישי, פרק 9: גאיב ונסיעה (עמ׳ 236–255)',
     confidence:    'derived',
   },
 
@@ -172,7 +176,7 @@ export const KASHF_CHAPTER_MAP = [
     verdictHouses: [1, 9],
     verdictMethod: 'combine',
     verdictType:   'happen-or-not',
-    sourceRef:     'כשף-אל-אסראר, עמ׳ 266–270',
+    sourceRef:     'כשף-אל-אסראר — שער שישי, פרק 9: נסיעה (עמ׳ 236–255)',
     confidence:    'derived',
   },
 
@@ -184,7 +188,7 @@ export const KASHF_CHAPTER_MAP = [
     verdictHouses: [1, 10],
     verdictMethod: 'combine',
     verdictType:   'happen-or-not',
-    sourceRef:     'כשף-אל-אסראר, עמ׳ 271–272',
+    sourceRef:     'כשף-אל-אסראר — שער שישי, פרק 10: שלטון וכבוד (עמ׳ 256–262)',
     confidence:    'derived',
   },
 
@@ -196,8 +200,8 @@ export const KASHF_CHAPTER_MAP = [
     verdictHouses: [1, 11],
     verdictMethod: 'combine',
     verdictType:   'happen-or-not',
-    sourceRef:     'כשף-אל-אסראר, עמ׳ 273',
-    confidence:    'todo',
+    sourceRef:     'כשף-אל-אסראר — שער שישי, פרק 11: חברים ואהבה (עמ׳ 263–270)',
+    confidence:    'derived',
   },
 
   {
@@ -208,7 +212,7 @@ export const KASHF_CHAPTER_MAP = [
     verdictHouses: [1, 7],
     verdictMethod: 'combine',
     verdictType:   'win-or-lose',
-    sourceRef:     'כשף-אל-אסראר, עמ׳ 271–276',
+    sourceRef:     'כשף-אל-אסראר — שער שישי, פרק 12: אויבים ואסירים (עמ׳ 271–276)',
     confidence:    'derived',
   },
 
@@ -220,23 +224,23 @@ export const KASHF_CHAPTER_MAP = [
     verdictHouses: [1, 5],
     verdictMethod: 'combine',
     verdictType:   'exit-or-stay',
-    sourceRef:     'כשף-אל-אסראר, עמ׳ 274',
+    sourceRef:     'כשף-אל-אסראר — שער שישי, פרק 12: אסיר (עמ׳ 271–276, מפורט בעמ׳ 273–274)',
     confidence:    'explicit',
   },
 
   {
     topicId:       'hiddenTreasure',
-    kashfChapter:  2,
+    kashfChapter:  4,
     chapterNameHebrew: 'אובדות / חפץ נעלם',
     chapterNameArabic: 'فصل في الضائع والمفقود',
     verdictHouses: [1, 4],
     verdictMethod: 'combine',
     verdictType:   'found-or-lost',
-    sourceRef:     'כשף-אל-אסראר, פרק 2',
+    sourceRef:     'כשף-אל-אסראר — שער שישי, פרק 4: נסתרות וחפץ נעלם (עמ׳ 184–190)',
     confidence:    'todo',
   },
 
-  // ── תת-נושאים של בית 7 ────────────────────────────────────────
+  // תת-נושאים של בית 7
 
   {
     topicId:       'theft',
@@ -246,23 +250,23 @@ export const KASHF_CHAPTER_MAP = [
     verdictHouses: [1, 7],
     verdictMethod: 'combine',
     verdictType:   'found-or-lost',
-    sourceRef:     'כשף-אל-אסראר, עמ׳ 259–265 (גאיב — הגנוב כנעדר)',
+    sourceRef:     'כשף-אל-אסראר — שער שישי, פרק 8: גנבה והלוואה (עמ׳ 224–234)',
     confidence:    'derived',
   },
 
   {
     topicId:       'partnership',
-    kashfChapter:  6,
+    kashfChapter:  7,
     chapterNameHebrew: 'שותפות / עסק משותף',
     chapterNameArabic: 'فصل في الشراكة',
     verdictHouses: [1, 7],
     verdictMethod: 'combine',
     verdictType:   'profit-or-loss',
-    sourceRef:     'כשף-אל-אסראר, עמ׳ 236–248 (מסחר — B7 לשותף)',
+    sourceRef:     'כשף-אל-אסראר — שער שישי, פרק 7: שותפות ועסק משותף (עמ׳ 204–223)',
     confidence:    'derived',
   },
 
-  // ── תת-נושאים של בית 12 ───────────────────────────────────────
+  // תת-נושאים של בית 12
 
   {
     topicId:       'fear',
@@ -272,11 +276,11 @@ export const KASHF_CHAPTER_MAP = [
     verdictHouses: [1, 12],
     verdictMethod: 'combine',
     verdictType:   'danger-or-safe',
-    sourceRef:     'כשף-אל-אסראר, עמ׳ 271–276 (פרק אויבים — B12 כמקור פחד)',
+    sourceRef:     'כשף-אל-אסראר — שער שישי, פרק 12: אויבים וכלואים (עמ׳ 271–276)',
     confidence:    'derived',
   },
 
-  // ── תת-נושאים של בית 9 ────────────────────────────────────────
+  // תת-נושאים של בית 9
 
   {
     topicId:       'seaVoyage',
@@ -286,21 +290,21 @@ export const KASHF_CHAPTER_MAP = [
     verdictHouses: [1, 9],
     verdictMethod: 'combine',
     verdictType:   'happen-or-not',
-    sourceRef:     'כשף-אל-אסראר, עמ׳ 266–270 (נסיעה — B8/12 לסכנת ים)',
+    sourceRef:     'כשף-אל-אסראר — שער שישי, פרק 9: נסיעה ביבשה ובים (עמ׳ 236–255)',
     confidence:    'derived',
   },
 
-  // ── בתים בודדים ────────────────────────────────────────────────
+  // בתים בודדים
 
   {
     topicId:       'siblings',
-    kashfChapter:  1,
+    kashfChapter:  3,
     chapterNameHebrew: 'אחים / שכנים / קרובים',
     chapterNameArabic: 'فصل في الأخوة',
     verdictHouses: [1, 3],
     verdictMethod: 'combine',
     verdictType:   'happen-or-not',
-    sourceRef:     'כשף-אל-אסראר, שער שישי פרק שלישי',
+    sourceRef:     'כשף-אל-אסראר — שער שישי, פרק 3: האחים (עמ׳ 182–183)',
     confidence:    'todo',
   },
 
@@ -312,31 +316,31 @@ export const KASHF_CHAPTER_MAP = [
     verdictHouses: [1, 10],
     verdictMethod: 'combine',
     verdictType:   'profit-or-loss',
-    sourceRef:     'כשף-אל-אסראר, עמ׳ 271–272 (שלטון — B10 לטאלע השנה)',
+    sourceRef:     'כשף-אל-אסראר — שער שישי, פרק 10: שלטון וכבוד (עמ׳ 256–262)',
     confidence:    'derived',
   },
 
   {
     topicId:       'completion',
-    kashfChapter:  10,
+    kashfChapter:  1,
     chapterNameHebrew: 'האם הדבר יסתיים / יושלם',
     chapterNameArabic: 'فصل في تمام الأمر',
     verdictHouses: [1, 15],
     verdictMethod: 'combine',
     verdictType:   'happen-or-not',
-    sourceRef:     'כשף-אל-אסראר — הדיין (B15) כפסיקה מוחלטת',
+    sourceRef:     'כשף-אל-אסראר — הדיין (B15) כפסיקה מוחלטת; שאלה כללית (עמ׳ 166–178)',
     confidence:    'derived',
   },
 
   {
     topicId:       'deathInheritance',
-    kashfChapter:  2,
+    kashfChapter:  8,
     chapterNameHebrew: 'מוות / ירושה',
     chapterNameArabic: 'فصل في الموت والميراث',
     verdictHouses: [1, 8],
     verdictMethod: 'combine',
     verdictType:   'death-or-safe',
-    sourceRef:     'כשף-אל-אסראר, עמ׳ 191–210 (B8 כבית מוות/ירושה)',
+    sourceRef:     'כשף-אל-אסראר — שער שישי, פרק 8: מוות וירושה (עמ׳ 224–234)',
     confidence:    'derived',
   },
 
@@ -348,19 +352,19 @@ export const KASHF_CHAPTER_MAP = [
     verdictHouses: [1, 10],
     verdictMethod: 'combine',
     verdictType:   'happen-or-not',
-    sourceRef:     'כשף-אל-אסראר — B1 כטאלע, B10 כגורל כללי',
+    sourceRef:     'כשף-אל-אסראר — שער שישי, פרק 1: הנפש והשואל (עמ׳ 166–178)',
     confidence:    'derived',
   },
 
   {
     topicId:       'spiritualDiagnostics',
-    kashfChapter:  3,
+    kashfChapter:  6,
     chapterNameHebrew: 'אבחון רוחני — עין / כישוף / ג׳ין',
     chapterNameArabic: 'فصل في الأمراض الروحانية',
     verdictHouses: [1, 6],
     verdictMethod: 'combine',
     verdictType:   'spiritual-or-natural',
-    sourceRef:     'כשף-אל-אסראר — B1+B6+B4+B8 לאבחון רוחני (B1+B6 כעיקר)',
+    sourceRef:     'כשף-אל-אסראר — שער שישי, פרק 6: החולה (כולל אבחון רוחני) (עמ׳ 196–203)',
     confidence:    'derived',
   },
 
@@ -372,7 +376,7 @@ export const KASHF_CHAPTER_MAP = [
     verdictHouses: [1, 15],
     verdictMethod: 'combine',
     verdictType:   'happen-or-not',
-    sourceRef:     'כשף-אל-אסראר — B1 כשואל, B15 כדיין הכללי',
+    sourceRef:     'כשף-אל-אסראר — שער שישי, פרק 1: הנפש והשואל (עמ׳ 166–178)',
     confidence:    'derived',
   },
 
