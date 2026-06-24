@@ -2017,6 +2017,45 @@ function computeStateStabilityKashf(chart) {
   return { verdict, outputHebrew };
 }
 
+// Security and lifespan from kashf p.234-236 (house 8)
+function computeSecurityKashf(chart) {
+  const h8 = chartHouse(chart, 8);
+  if (!h8) return null;
+  const isSaad = !MALEFIC_FIGURE_PATTERNS.has(h8.key || '');
+  const dir = getFigureDirection(h8.key);
+  let verdict, outputHebrew;
+  if (isSaad && dir === 'outgoing') {
+    verdict = 'safe-outgoing';
+    outputHebrew = `בית 8 (${h8.hebrew}) — מיטיב יוצא: יינצל השואל מן הפחד, ייכנס בידו ממון, והסוף נוטה לטובה (כשף עמ׳ 236).`;
+  } else if (isSaad) {
+    verdict = 'safe';
+    outputHebrew = `בית 8 (${h8.hebrew}) — מיטיב: ביטחון מפחד, אריכות ימים, ירושה או ממון נעלם שיבוא אל השואל (כשף עמ׳ 234).`;
+  } else if (dir === 'incoming') {
+    verdict = 'fear-incoming';
+    outputHebrew = `בית 8 (${h8.hebrew}) — מזיק פנימי: פחד חזק, אך סופו של האדם בתשובה, שלום ופיוס (כשף עמ׳ 236).`;
+  } else {
+    verdict = 'fear-outgoing';
+    outputHebrew = `בית 8 (${h8.hebrew}) — מזיק יוצא: פחד מרובה ואין ביטחון; מיתתו עלולה להיות בפתאומיות או מחמת פגיעה (כשף עמ׳ 236).`;
+  }
+  return { verdict, outputHebrew };
+}
+
+// Lifespan stages from kashf p.264 (houses 11, 9, 7)
+function computeLifespanKashf(chart) {
+  const h11 = chartHouse(chart, 11);
+  const h9  = chartHouse(chart, 9);
+  const h7  = chartHouse(chart, 7);
+  const isSaad = (h) => h && !MALEFIC_FIGURE_PATTERNS.has(h.key || '');
+  const stageHebrew = (h, label) => {
+    if (!h) return `${label}: לא נמצא`;
+    return `${label} (${h.hebrew}) — ${isSaad(h) ? 'מיטיב' : 'מזיק'}`;
+  };
+  return {
+    verdict: 'three-stages',
+    outputHebrew: `${stageHebrew(h11, 'ראשית החיים — ב11')} | ${stageHebrew(h9, 'אמצע החיים — ב9')} | ${stageHebrew(h7, 'סוף החיים — ב7')} (כשף עמ׳ 264).`,
+  };
+}
+
 // Note: sourceShapes in hawi-planetary-correspondences has inconsistent row-order encoding
 // between planets, so we keep the verified hardcoded mapping here.
 const FIGURE_PLANET_MAP = (function () {
@@ -2032,6 +2071,46 @@ const FIGURE_PLANET_MAP = (function () {
   ]) { for (const f of p.figures) m[f] = p.hebrew; }
   return m;
 })();
+
+const KASHF_PLANET_COLORS = {
+  'שמש':            'צהוב',
+  'לבנה':           'צבעוני / מגוון',
+  'מאדים':          'אדום',
+  'כוכב / מרקורי':  'צבעוני / מגוון',
+  'שבתאי':          'שחור',
+  'נוגה':           'ירוק',
+  'צדק':            'לבן',
+};
+
+// Clothing luck analysis from kashf p.265 (houses 5, 10, 11)
+function computeClothingLuckKashf(chart) {
+  const h5  = chartHouse(chart, 5);
+  const h10 = chartHouse(chart, 10);
+  const h11 = chartHouse(chart, 11);
+  const isSaad = (h) => h && !MALEFIC_FIGURE_PATTERNS.has(h.key || '');
+  const isMutable = (h) => h && getFigureDirection(h.key) === 'mutable';
+  const h5Good  = isSaad(h5);
+  const h10Good = isSaad(h10);
+  const h11Good = isSaad(h11);
+  const planet5 = h5 ? FIGURE_PLANET_MAP[h5.key] : null;
+  const color   = planet5 ? (KASHF_PLANET_COLORS[planet5] || 'לא ידוע') : 'לא ידוע';
+  let verdict, outputHebrew;
+  if (h5Good && h11Good) {
+    verdict = 'luck';
+    const mutableNote = isMutable(h5) ? ' הצורה מתהפכת — אינו עומד על לבוש אחד.' : '';
+    outputHebrew = `ב5 (${h5?.hebrew}) וב11 (${h11?.hebrew}) מיטיבים — יש לו מזל בלבושים.${mutableNote} צבע הלבוש (${planet5 || 'לא ידוע'}): ${color} (כשף עמ׳ 265).`;
+  } else if (!h10Good) {
+    verdict = 'no-luck-rulers';
+    outputHebrew = `ב10 (${h10?.hebrew}) מזיק — אין לו מזל בלבוש המלכים או בכיבוד מצד בעלי מעלה (כשף עמ׳ 265).`;
+  } else {
+    const bothBad = !h5Good && !h11Good;
+    verdict = bothBad ? 'no-luck' : 'partial';
+    outputHebrew = bothBad
+      ? `ב5 (${h5?.hebrew}) וב11 (${h11?.hebrew}) מזיקים — אין מזל בלבוש, הבגד ישאר עליו עד שיקרע (כשף עמ׳ 265).`
+      : `ב5 (${h5?.hebrew}) / ב11 (${h11?.hebrew}) — מצב מעורב, מזל חלקי בלבוש (כשף עמ׳ 265).`;
+  }
+  return { verdict, outputHebrew, colorHebrew: color, planet: planet5 };
+}
 
 const PLANET_ENRICHMENT_MAP = (function () {
   const m = {};
@@ -4821,6 +4900,15 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const stateStabilityKashf = (['authorityState', 'foundations', 'completion'].includes(topicId))
     ? computeStateStabilityKashf(board.chart) : null;
 
+  const securityKashf = (['deathInheritance', 'illness', 'foundations'].includes(topicId))
+    ? computeSecurityKashf(board.chart) : null;
+
+  const lifespanKashf = (['loveHate', 'completion', 'foundations'].includes(topicId))
+    ? computeLifespanKashf(board.chart) : null;
+
+  const clothingLuckKashf = (['loveHate', 'completion', 'foundations', 'children'].includes(topicId))
+    ? computeClothingLuckKashf(board.chart) : null;
+
   const yearlyForecastAnalysis = (topicId === 'yearlyForecast')
     ? computeYearlyForecastAnalysis(
         board.chart,
@@ -5156,6 +5244,9 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     illnessCauseH4,
     celebrationsH5,
     querentSubject,
+    securityKashf,
+    lifespanKashf,
+    clothingLuckKashf,
   };
 }
 

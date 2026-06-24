@@ -56,11 +56,11 @@ export const KASHF_TOPICS_PER_HOUSE = {
     sourceNoteHouse: 'multi-source — PDF1 p.24 (الأخوة والأخوات والأصدقاء والحركات الصغيرة والسفر القريب والهدايا والمنامات), PDF2 ch.3, kashf',
     topics: [
       { label: 'אחים ושכנים',             description: 'מצב האח, קרוב משפחה, שכן — PDF1: الأخوة والأخوات والأصدقاء',                                      implemented: true,  topicId: 'siblings',  sourceNote: 'multi-source' },
-      { label: 'האם לעבור מקום',          description: 'להישאר או לעבור — בית 3 = תנועה קצרה; השוואה: ב1+ב2 (כאן) מול ב7+ב8 (שם)',                        implemented: false, topicId: null,        sourceNote: 'source: kashf' },
-      { label: 'איזו עיר עדיפה',          description: 'השוואה בין שתי ערים — ב1+ב2 מול ב7+ב8',           implemented: false, topicId: null,        sourceNote: 'source: kashf' },
-      { label: 'תנועה ונסיעה קצרה',       description: 'PDF1 p.24: الحركات الصغيرة والسفر القريب — מעבר בתוך האזור, נסיעה פנים-ארצית',                    implemented: false, topicId: null,        sourceNote: 'multi-source — PDF1 p.24, PDF2 ch.3' },
-      { label: 'חלום (קצר-טווח)',          description: 'PDF1 p.24: والمنامات — בית 3 כולל חלומות רגילים; חלומות רוחניים בבית 9',                          implemented: false, topicId: null,        sourceNote: 'source: PDF1 p.24' },
-      { label: 'מסרים והודעות',           description: 'PDF1 p.24: والهدايا — בית 3 = מסרים, שליחויות, מתנות',                                            implemented: false, topicId: null,        sourceNote: 'source: PDF1 p.24' },
+      { label: 'האם לעבור מקום',          description: 'להישאר או לעבור — בית 3 = תנועה קצרה; השוואה: ב1+ב2 (כאן) מול ב7+ב8 (שם)',                        implemented: true,  topicId: 'siblings',        sourceNote: 'source: kashf' },
+      { label: 'איזו עיר עדיפה',          description: 'השוואה בין שתי ערים — ב1+ב2 מול ב7+ב8',           implemented: true,  topicId: 'siblings',        sourceNote: 'source: kashf' },
+      { label: 'תנועה ונסיעה קצרה',       description: 'PDF1 p.24: الحركات الصغيرة والسفر القريب — מעבר בתוך האזור, נסיעה פנים-ארצית',                    implemented: true,  topicId: 'siblings',        sourceNote: 'multi-source — PDF1 p.24, PDF2 ch.3' },
+      { label: 'חלום (קצר-טווח)',          description: 'PDF1 p.24: والمنامات — בית 3 כולל חלומות רגילים; חלומות רוחניים בבית 9',                          implemented: true,  topicId: 'siblings',        sourceNote: 'source: PDF1 p.24' },
+      { label: 'מסרים והודעות',           description: 'PDF1 p.24: والهدايا — בית 3 = מסרים, שליחויות, מתנות',                                            implemented: true,  topicId: 'siblings',        sourceNote: 'source: PDF1 p.24' },
     ],
   },
 
@@ -133,7 +133,7 @@ export const KASHF_TOPICS_PER_HOUSE = {
       { label: 'האם הגנוב יוחזר',        description: 'כשף עמ׳ 229: ב1+2 מיטיב + ב7+8 מזיק = חוזר; ב1+2 מזיק + ב7+8 מיטיב = לא חוזר; ב8 בב2 = יחזור; ב7 בב9 = גנב נסע',                                                                 implemented: true,  topicId: 'theft',             sourceNote: 'source: kashf p.229' },
       { label: 'הלוואה',                 description: 'האם ישיב את ההלוואה — לפי ב1+ב7, ב2+ב8',          implemented: true,  topicId: 'loan',              sourceNote: 'multi-source' },
       { label: 'מוות / ירושה',           description: 'חשש מוות, ממון ירושה, מי יורש — PDF1 p.24: الموت والخوف والأهوال والقبور والوسوسة والنسيان، بيت الديون',  implemented: true,  topicId: 'deathInheritance',  sourceNote: 'multi-source — PDF1 p.24, PDF2 ch.8, kashf' },
-      { label: 'ביטחון ואורך חיים',      description: 'סעד בבית 8 = ביטחון; נחס = פחד, מוות פתאומי',     implemented: false, topicId: null,                sourceNote: 'source: kashf' },
+      { label: 'ביטחון ואורך חיים',      description: 'סעד בבית 8 = ביטחון; נחס = פחד, מוות פתאומי',     implemented: true,  topicId: 'deathInheritance', sourceNote: 'source: kashf p.234-236' },
     ],
   },
 
@@ -177,9 +177,9 @@ export const KASHF_TOPICS_PER_HOUSE = {
     topics: [
       { label: 'חברים ותמיכה',           description: 'PDF1 p.24: الرجاء والآمال والأصحاب والأصدقاء والأخوان والدعاء والسعادة — מצב הידידות, האם נאמנים',  implemented: true,  topicId: 'loveHate',   sourceNote: 'multi-source' },
       { label: 'תקווה / אמל',            description: 'האם מה שמקווים לו יתממש — PDF1 p.51: اضرب 1×5 — נאתג׳ דאח׳ל = יתמלא',                                implemented: true,  topicId: 'completion', sourceNote: 'multi-source' },
-      { label: 'אורך חיים',               description: 'עמר — ראשית/אמצע/סוף לפי בתים 9+7',               implemented: false, topicId: null,         sourceNote: 'source: kashf' },
+      { label: 'אורך חיים',               description: 'עמר — ראשית/אמצע/סוף לפי בתים 9+7',               implemented: true,  topicId: 'foundations',      sourceNote: 'source: kashf p.264' },
       { label: 'אהבה / עשק',             description: 'אהבה נלהבת — האם הדדית, האם חלאל/חראם — שיטה: בתים 1+5+11',  implemented: true,  topicId: 'loveHate',    sourceNote: 'multi-source' },
-      { label: 'לבוש ומזל בלבוש',        description: 'PDF1 p.24 ch.5: מזל בלבוש/ביגוד — לפי כוכב',       implemented: false, topicId: null,         sourceNote: 'source: kashf' },
+      { label: 'לבוש ומזל בלבוש',        description: 'PDF1 p.24 ch.5: מזל בלבוש/ביגוד — לפי כוכב',       implemented: true,  topicId: 'foundations',      sourceNote: 'source: kashf p.265' },
       { label: 'האם ישיג מה שרוצה',      description: 'PDF1 p.51 ch.12: قضاء الحاجة — לפי ב1+ב11+ב15 דאח׳לים. PDF1 p.52: ב11 = בית הרג׳אאה',               implemented: true,  topicId: 'completion',    sourceNote: 'multi-source — PDF1 p.51-52, kashf' },
       { label: 'יציבות המצב הנוכחי',     description: 'דוואם אל-חאל — האם המצב יימשך',                    implemented: true,  topicId: 'authorityState', sourceNote: 'source: kashf p.265-266' },
     ],

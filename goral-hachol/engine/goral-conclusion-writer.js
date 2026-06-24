@@ -436,6 +436,21 @@ function describeCoreHouses(analysis, topicId, question) {
     parts.push(`יציבות המצב הנוכחי (כשף אל-אסרר עמ׳ 265-266):\n  ${stateStabilityKashf.outputHebrew}`);
   }
 
+  const securityKashf = analysis.securityKashf;
+  if (securityKashf) {
+    parts.push(`ביטחון ואורך חיים (כשף אל-אסרר עמ׳ 234-236):\n  ${securityKashf.outputHebrew}`);
+  }
+
+  const lifespanKashf = analysis.lifespanKashf;
+  if (lifespanKashf) {
+    parts.push(`אורך חיים — שלושה שלבים (כשף אל-אסרר עמ׳ 264):\n  ${lifespanKashf.outputHebrew}`);
+  }
+
+  const clothingLuckKashf = analysis.clothingLuckKashf;
+  if (clothingLuckKashf) {
+    parts.push(`לבוש ומזל בלבוש (כשף אל-אסרר עמ׳ 265):\n  ${clothingLuckKashf.outputHebrew}`);
+  }
+
   const yearlyAnalysis = analysis.yearlyForecastAnalysis;
   if (yearlyAnalysis) {
     parts.push(`ניתוח טאלע השנה (חאוי עמ׳ 60-62):\n${yearlyAnalysis.outputHebrew}`);
@@ -2025,6 +2040,23 @@ function buildNarrativeByTopic(result) {
     if (is('authorityState','foundations','completion')) {
       const stateStabilityKashf = boardAnalysis.stateStabilityKashf;
       if (stateStabilityKashf) push(`יציבות המצב הנוכחי (כשף עמ׳ 265-266):\n  ${ind(stateStabilityKashf.outputHebrew)}`);
+    }
+
+    if (is('deathInheritance','illness','foundations')) {
+      const securityKashf = boardAnalysis.securityKashf;
+      if (securityKashf) push(`ביטחון ואורך חיים (כשף עמ׳ 234-236):\n  ${ind(securityKashf.outputHebrew)}`);
+    }
+
+    if (is('loveHate','completion','foundations')) {
+      const lifespanKashf = boardAnalysis.lifespanKashf;
+      if (lifespanKashf) push(`אורך חיים — שלושה שלבים (כשף עמ׳ 264):\n  ${ind(lifespanKashf.outputHebrew)}`);
+      const clothingLuckKashf = boardAnalysis.clothingLuckKashf;
+      if (clothingLuckKashf) push(`לבוש ומזל בלבוש (כשף עמ׳ 265):\n  ${ind(clothingLuckKashf.outputHebrew)}`);
+    }
+
+    if (is('children')) {
+      const clothingLuckKashf = boardAnalysis.clothingLuckKashf;
+      if (clothingLuckKashf) push(`לבוש ומזל בלבוש (כשף עמ׳ 265):\n  ${ind(clothingLuckKashf.outputHebrew)}`);
     }
 
     if (is('enemies','disputes','fear')) {
