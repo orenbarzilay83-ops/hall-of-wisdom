@@ -2327,6 +2327,8 @@ function buildSpiritualNarrative(result) {
     if (sd.sihrDetails?.length) {
       push(`פרטי הכישוף (לפי כללי המקור):\n  ${ind(sd.sihrDetails.join('\n'))}`);
     }
+    const querentSorceryCheck = boardAnalysis.querentSorceryCheck;
+    if (querentSorceryCheck) push(`האם השואל מכושף (القول الجامع עמ׳ 56-57):\n  ${querentSorceryCheck.outputHebrew}`);
   }
 
   // ── 11. REMAINING MATCHES (not yet shown in spiritual houses) ────

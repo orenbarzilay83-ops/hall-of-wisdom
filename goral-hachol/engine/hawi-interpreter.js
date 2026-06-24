@@ -4991,7 +4991,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     ? computeEnemyInHousehold(board.chart) : null;
 
   // ── BATCH G: 8 new Kashf-sourced analysis functions ────────────────────────
-  const dreamH9 = (['foundations', 'generalReading'].includes(topicId))
+  const dreamH9 = (['foundations', 'generalReading', 'travel', 'siblings', 'religion'].includes(topicId))
     ? computeDreamH9(board.chart) : null;
 
   const lostAnimalReturn = (topicId === 'lostAnimal')
