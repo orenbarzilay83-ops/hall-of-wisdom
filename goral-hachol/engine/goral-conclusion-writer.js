@@ -446,6 +446,11 @@ function describeCoreHouses(analysis, topicId, question) {
     parts.push(`מיקום המחלה בגוף (القول الجامع עמ׳ 16):\n  ${bodyPartDiag.outputHebrew}`);
   }
 
+  const bodyPartDiagKashf = analysis.bodyPartDiagnosisKashf;
+  if (bodyPartDiagKashf) {
+    parts.push(`מיקום המחלה בגוף (כשף אל-אסרר עמ׳ 199):\n  ${bodyPartDiagKashf.outputHebrew}`);
+  }
+
   const thiefLoc = analysis.thiefLocationDetails;
   if (thiefLoc) {
     parts.push(`זיהוי הגנב (בלוג' אלאמל פרק 19):\n  ${thiefLoc.outputHebrew.replace(/\n/g, '\n  ')}`);
@@ -1903,6 +1908,8 @@ function buildNarrativeByTopic(result) {
     if (is('illness','deathInheritance')) {
       const bodyPartDiag = boardAnalysis.bodyPartDiagnosis;
       if (bodyPartDiag) push(`מיקום המחלה בגוף:\n  ${sc(bodyPartDiag.outputHebrew)}`);
+      const bodyPartDiagKashf = boardAnalysis.bodyPartDiagnosisKashf;
+      if (bodyPartDiagKashf) push(`מיקום המחלה בגוף (כשף עמ׳ 199):\n  ${sc(bodyPartDiagKashf.outputHebrew)}`);
     }
 
     if (is('theft')) {

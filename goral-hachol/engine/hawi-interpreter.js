@@ -2357,6 +2357,48 @@ const THIEF_GENDER_AGE_BY_ELEMENT = {
   'עפר':   { gender: 'נקבה', age: 'בגרות',  outputHebrew: 'נקבה' },
 };
 
+// מקור: כשף אל-אסרר עמ׳ 199 — תסכין האיברים (שיבוץ איברי הגוף)
+// "התבונן בבית השישי ובצורה שנפלה בו — לפי הצורה תדע באיזה איבר החולי"
+const FIGURE_BODY_PART_KASHF = {
+  '2222': 'ראש',         // קהלה
+  '2112': 'ראש',         // חיבור
+  '2212': 'צוואר',       // לבן
+  '1211': 'חזה',         // בר הלחי
+  '1111': 'בטן',         // דרך
+  '1122': 'בטן',         // כבוד יוצא
+  '2122': 'אחוריים',     // אדום
+  '2211': 'איבר המין',   // כבוד נכנס
+  '1221': 'יד ימין',     // סוהר
+  '1212': 'כתף ימין',    // ממון יוצא
+  '2221': 'צד ימין',     // שפל ראש
+  '1121': 'ירך ימין',    // נלחם
+  '2121': 'כתף שמאל',    // ממון נכנס
+  '1112': 'צד שמאל',     // סף יוצא
+  '2111': 'ירך שמאל',    // סף נכנס
+  // '1222' (נשוא ראש): הספר מזכיר "תשמיר" (רגל ימין) ו"דגל השמחה" (רגל שמאל) — שמות מסורתיים
+};
+
+function computeBodyPartDiagnosisKashf(chart) {
+  const h6 = chart.find((h) => Number(h.house) === 6);
+  if (!h6?.key) return null;
+  const bodyPart = FIGURE_BODY_PART_KASHF[h6.key];
+  const figHebrew = h6.hebrew || h6.key;
+  if (h6.key === '1222') {
+    return {
+      figureKey: h6.key, figureHebrew: figHebrew, bodyPartHebrew: 'רגל',
+      outputHebrew: `${figHebrew} בבית 6 — האיבר הכואב: רגל (כשף עמ׳ 199 — נשוא ראש מוזכר כ"תשמיר" ו"דגל השמחה")`,
+    };
+  }
+  if (!bodyPart) return {
+    figureKey: h6.key, figureHebrew: figHebrew, bodyPartHebrew: null,
+    outputHebrew: `${figHebrew} בבית 6 — האיבר הכואב: לא מופה (כשף עמ׳ 199)`,
+  };
+  return {
+    figureKey: h6.key, figureHebrew: figHebrew, bodyPartHebrew: bodyPart,
+    outputHebrew: `${figHebrew} בבית 6 — האיבר הכואב: ${bodyPart} (כשף עמ׳ 199)`,
+  };
+}
+
 function computeBodyPartDiagnosis(chart) {
   const h6 = chart.find((h) => Number(h.house) === 6);
   if (!h6?.key) return null;
@@ -4700,6 +4742,9 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const bodyPartDiagnosis = (topicId === 'illness')
     ? computeBodyPartDiagnosis(board.chart) : null;
 
+  const bodyPartDiagnosisKashf = (topicId === 'illness')
+    ? computeBodyPartDiagnosisKashf(board.chart) : null;
+
   const deathRisk = (topicId === 'illness')
     ? computeDeathRisk(board.chart) : null;
 
@@ -4944,6 +4989,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     directionQuadrant,
     illnessElementDiagnosis,
     bodyPartDiagnosis,
+    bodyPartDiagnosisKashf,
     deathRisk,
     jinnType,
     thiefLocationDetails,
