@@ -421,6 +421,21 @@ function describeCoreHouses(analysis, topicId, question) {
     parts.push(`ניתוח שלטון (שער מלכים, חאוי עמ׳ 36-38):\n${authAnalysis.outputHebrew}`);
   }
 
+  const authDurationKashf = analysis.authorityDurationKashf;
+  if (authDurationKashf) {
+    parts.push(`משך השררות (כשף אל-אסרר עמ׳ 259):\n  ${authDurationKashf.outputHebrew}`);
+  }
+
+  const returnToOfficeKashf = analysis.returnToOfficeKashf;
+  if (returnToOfficeKashf) {
+    parts.push(`האם יחזור לתפקיד (כשף אל-אסרר עמ׳ 266):\n  ${returnToOfficeKashf.outputHebrew}`);
+  }
+
+  const stateStabilityKashf = analysis.stateStabilityKashf;
+  if (stateStabilityKashf) {
+    parts.push(`יציבות המצב הנוכחי (כשף אל-אסרר עמ׳ 265-266):\n  ${stateStabilityKashf.outputHebrew}`);
+  }
+
   const yearlyAnalysis = analysis.yearlyForecastAnalysis;
   if (yearlyAnalysis) {
     parts.push(`ניתוח טאלע השנה (חאוי עמ׳ 60-62):\n${yearlyAnalysis.outputHebrew}`);
@@ -1998,6 +2013,18 @@ function buildNarrativeByTopic(result) {
     if (is('authorityState','partnership','generalReading')) {
       const kingRulerStatus = boardAnalysis.kingRulerStatus;
       if (kingRulerStatus) push(`מלך / שליט:\n  ${ind(kingRulerStatus.outputHebrew)}`);
+    }
+
+    if (is('authorityState')) {
+      const authDurationKashf = boardAnalysis.authorityDurationKashf;
+      if (authDurationKashf) push(`משך השררות (כשף עמ׳ 259):\n  ${ind(authDurationKashf.outputHebrew)}`);
+      const returnToOfficeKashf = boardAnalysis.returnToOfficeKashf;
+      if (returnToOfficeKashf) push(`האם יחזור לתפקיד (כשף עמ׳ 266):\n  ${ind(returnToOfficeKashf.outputHebrew)}`);
+    }
+
+    if (is('authorityState','foundations','completion')) {
+      const stateStabilityKashf = boardAnalysis.stateStabilityKashf;
+      if (stateStabilityKashf) push(`יציבות המצב הנוכחי (כשף עמ׳ 265-266):\n  ${ind(stateStabilityKashf.outputHebrew)}`);
     }
 
     if (is('enemies','disputes','fear')) {

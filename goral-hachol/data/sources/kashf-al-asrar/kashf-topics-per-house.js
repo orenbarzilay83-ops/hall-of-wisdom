@@ -161,8 +161,8 @@ export const KASHF_TOPICS_PER_HOUSE = {
     sourceNoteHouse: 'multi-source — PDF1 p.24+53 (السلطان والولاية والمعاش والرزق), PDF2 ch.10, kashf',
     topics: [
       { label: 'שלטון / תפקיד / כבוד',  description: 'PDF1 p.24: السلطان والولاية والاتصال بالملوك والمعاش والرزق. PDF1 p.53: ב10=שליט, ב2=אוצר, ב11=שמחות, ב12=אויב',                              implemented: true,  topicId: 'authorityState', sourceNote: 'multi-source — PDF1 p.24+53, PDF2 ch.10, kashf' },
-      { label: 'משך השררות',             description: 'כמה זמן ישאר בתפקיד — מנקלב/ת׳אבת',               implemented: false, topicId: null,             sourceNote: 'source: kashf' },
-      { label: 'האם יחזור לתפקיד',      description: 'מסולק שרוצה לחזור — בית 1+10+11 דאח׳ל',           implemented: false, topicId: null,             sourceNote: 'source: kashf' },
+      { label: 'משך השררות',             description: 'כמה זמן ישאר בתפקיד — מנקלב/ת׳אבת',               implemented: true,  topicId: 'authorityState',  sourceNote: 'source: kashf p.259' },
+      { label: 'האם יחזור לתפקיד',      description: 'מסולק שרוצה לחזור — בית 1+10+11 דאח׳ל',           implemented: true,  topicId: 'authorityState',  sourceNote: 'source: kashf p.266' },
       { label: 'דיני האם',               description: 'מצב האם, מזלה, בריאותה',                            implemented: true,  topicId: 'motherRules',    sourceNote: 'multi-source' },
       { label: 'יוקר / זול (מחירי שוק)', description: 'PDF1 p.25: בית 10 = المعاش; יוקר/זול נגזר מסכום היסודות. אש+אוויר > מים+עפר = יוקר',                                                      implemented: false, topicId: null,             sourceNote: 'multi-source — PDF1 p.25, kashf' },
       { label: 'תחזית שנתית',            description: 'PDF2 p.60: גורל השנה — לפי מקום השמש בשנה. PDF2 p.61-62: طالع السنة — שפע/יובש/גשם. PDF2 p.62: מטר — כפל הלוח ל-16 בתים, קמר=חצי=קור/חצי=חום',  implemented: true,  topicId: 'yearlyForecast',  sourceNote: 'multi-source — PDF2 p.60-62, kashf' },
@@ -181,7 +181,7 @@ export const KASHF_TOPICS_PER_HOUSE = {
       { label: 'אהבה / עשק',             description: 'אהבה נלהבת — האם הדדית, האם חלאל/חראם — שיטה: בתים 1+5+11',  implemented: true,  topicId: 'loveHate',    sourceNote: 'multi-source' },
       { label: 'לבוש ומזל בלבוש',        description: 'PDF1 p.24 ch.5: מזל בלבוש/ביגוד — לפי כוכב',       implemented: false, topicId: null,         sourceNote: 'source: kashf' },
       { label: 'האם ישיג מה שרוצה',      description: 'PDF1 p.51 ch.12: قضاء الحاجة — לפי ב1+ב11+ב15 דאח׳לים. PDF1 p.52: ב11 = בית הרג׳אאה',               implemented: true,  topicId: 'completion',    sourceNote: 'multi-source — PDF1 p.51-52, kashf' },
-      { label: 'יציבות המצב הנוכחי',     description: 'דוואם אל-חאל — האם המצב יימשך',                    implemented: false, topicId: null,         sourceNote: 'source: kashf' },
+      { label: 'יציבות המצב הנוכחי',     description: 'דוואם אל-חאל — האם המצב יימשך',                    implemented: true,  topicId: 'authorityState', sourceNote: 'source: kashf p.265-266' },
     ],
   },
 

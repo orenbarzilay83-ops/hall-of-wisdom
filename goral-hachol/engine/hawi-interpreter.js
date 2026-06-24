@@ -1923,6 +1923,100 @@ function computeAuthorityStateAnalysis(chart, authoritySource) {
   };
 }
 
+// משך השררות — kashf p.259: stability of authority based on 4 angular houses
+function computeAuthorityDurationKashf(chart) {
+  const angularNums = [1, 4, 7, 10];
+  const angulars = angularNums.map((n) => chartHouse(chart, n));
+  const isBenefic = (h) => h && !MALEFIC_FIGURE_PATTERNS.has(h.key || '');
+  const isMutable = (h) => h && getFigureDirection(h.key) === 'mutable';
+  const isMalefic = (h) => h && MALEFIC_FIGURE_PATTERNS.has(h.key || '');
+
+  const allBenefic = angulars.every(isBenefic);
+  const allMalefic = angulars.every(isMalefic);
+  const anyMutable = angulars.some(isMutable);
+  const anyMalefic = angulars.some(isMalefic);
+
+  const housesDisplay = angulars.map((h, i) => `ב${angularNums[i]} (${h?.hebrew || '?'})`).join(', ');
+
+  let verdict, outputHebrew;
+  if (allBenefic) {
+    verdict = 'stable';
+    outputHebrew = `ארבעת היתדות (${housesDisplay}) מסועדות — המושל יישאר בשלטון, שלטונו יציב (כשף עמ׳ 259)`;
+  } else if (allMalefic) {
+    verdict = 'removal-soon';
+    outputHebrew = `ארבעת היתדות (${housesDisplay}) נחסיות — אין שלטון קבוע, יודח בקרוב (כשף עמ׳ 259)`;
+  } else if (anyMutable) {
+    verdict = 'alternating';
+    outputHebrew = `יתדות מתהפכות בלוח (${housesDisplay}) — פעם יודח ופעם ימונה מחדש (כשף עמ׳ 259)`;
+  } else if (anyMalefic) {
+    verdict = 'risk';
+    outputHebrew = `חלק מן היתדות נחסיות (${housesDisplay}) — שלטון עם סיכון; אם חלקן מיטיב, יש לפחד אך לא לייאש (כשף עמ׳ 259)`;
+  } else {
+    verdict = 'stable';
+    outputHebrew = `היתדות (${housesDisplay}) בסעד — שלטון יציב (כשף עמ׳ 259)`;
+  }
+  return { verdict, outputHebrew };
+}
+
+// האם יחזור לתפקיד — kashf p.266: will the dismissed person return to their position?
+function computeReturnToOfficeKashf(chart) {
+  const h1  = chartHouse(chart, 1);
+  const h10 = chartHouse(chart, 10);
+  const h16 = chartHouse(chart, 16);
+  const isBenefic  = (h) => h && !MALEFIC_FIGURE_PATTERNS.has(h.key || '');
+  const isIncoming = (h) => h && getFigureDirection(h.key) === 'incoming';
+
+  const h1Good = isBenefic(h1) && isIncoming(h1);
+  const h10Good = isBenefic(h10);
+  const h16Good = isBenefic(h16);
+
+  let verdict, outputHebrew;
+  if (h1Good && (h10Good || h16Good)) {
+    verdict = 'returns';
+    outputHebrew = `ב1 (${h1?.hebrew}) סעד+נכנס, ב10 (${h10?.hebrew}) / ב16 (${h16?.hebrew}) תומכים — יחזור לתפקידו (כשף עמ׳ 266)`;
+  } else if (!isBenefic(h1)) {
+    verdict = 'no-return';
+    outputHebrew = `ב1 (${h1?.hebrew}) נחס — לא יחזור לתפקיד (כשף עמ׳ 266)`;
+  } else {
+    verdict = 'uncertain';
+    outputHebrew = `ב1 (${h1?.hebrew}) סעד אך לא נכנס, או בית 10/16 לא תומכים — הדין לא מוכרע (כשף עמ׳ 266)`;
+  }
+  return { verdict, outputHebrew };
+}
+
+// יציבות המצב הנוכחי — kashf pp.265-266: durability of current state (דוואם אל-חאל)
+function computeStateStabilityKashf(chart) {
+  const h1  = chartHouse(chart, 1);
+  const h2  = chartHouse(chart, 2);
+  const h9  = chartHouse(chart, 9);
+  const h15 = chartHouse(chart, 15);
+  const isBenefic = (h) => h && !MALEFIC_FIGURE_PATTERNS.has(h.key || '');
+
+  const h1Good = isBenefic(h1);
+  const h1ReturnsInH15 = h1?.key && h15?.key && h1.key === h15.key;
+  const allFourGood = [h1, h2, h9, h15].every(isBenefic);
+  const h15Good = isBenefic(h15);
+
+  let verdict, outputHebrew;
+  if (h1Good && h1ReturnsInH15) {
+    verdict = 'stable-complete';
+    outputHebrew = `ב1 (${h1?.hebrew}) סעד וחוזר בב15 — יציבות מלאה ושלמות האושר (כשף עמ׳ 265)`;
+  } else if (allFourGood) {
+    verdict = 'stable-all';
+    outputHebrew = `ב1+2+9+15 (${h1?.hebrew}/${h2?.hebrew}/${h9?.hebrew}/${h15?.hebrew}) מסועדים — שלמות אושר, מעבר מטוב לטוב (כשף עמ׳ 265)`;
+  } else if (!h1Good && h15Good) {
+    verdict = 'improving';
+    outputHebrew = `ב1 (${h1?.hebrew}) נחס בבית סעד (ב15: ${h15?.hebrew}) — המצב עשוי להשתפר מרע לטוב (כשף עמ׳ 265)`;
+  } else if (!h1Good) {
+    verdict = 'declining';
+    outputHebrew = `ב1 (${h1?.hebrew}) נחס — המצב אינו יציב, צפויה ירידה (כשף עמ׳ 265-266)`;
+  } else {
+    verdict = 'moderate';
+    outputHebrew = `ב1 (${h1?.hebrew}) סעד אך ב15 (${h15?.hebrew}) לא חוזר — יציבות בינונית (כשף עמ׳ 265)`;
+  }
+  return { verdict, outputHebrew };
+}
+
 // Note: sourceShapes in hawi-planetary-correspondences has inconsistent row-order encoding
 // between planets, so we keep the verified hardcoded mapping here.
 const FIGURE_PLANET_MAP = (function () {
@@ -4718,6 +4812,15 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const authorityStateAnalysis = (topicId === 'authorityState')
     ? computeAuthorityStateAnalysis(board.chart, HAWI_SOURCE.extendedKnowledge?.authorityStateRulers) : null;
 
+  const authorityDurationKashf = (topicId === 'authorityState')
+    ? computeAuthorityDurationKashf(board.chart) : null;
+
+  const returnToOfficeKashf = (topicId === 'authorityState')
+    ? computeReturnToOfficeKashf(board.chart) : null;
+
+  const stateStabilityKashf = (['authorityState', 'foundations', 'completion'].includes(topicId))
+    ? computeStateStabilityKashf(board.chart) : null;
+
   const yearlyForecastAnalysis = (topicId === 'yearlyForecast')
     ? computeYearlyForecastAnalysis(
         board.chart,
@@ -4982,6 +5085,9 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     treasureLocation,
     nameLetters,
     authorityStateAnalysis,
+    authorityDurationKashf,
+    returnToOfficeKashf,
+    stateStabilityKashf,
     yearlyForecastAnalysis,
     birthNativityAnalysis,
     spiritualDiagnosticsHouseIndex,
