@@ -2112,6 +2112,210 @@ function computeClothingLuckKashf(chart) {
   return { verdict, outputHebrew, colorHebrew: color, planet: planet5 };
 }
 
+// Who looks at whom — fire row of h1, h7, h13 (kashf p.170)
+function computeWhoLooksAtWhomKashf(chart) {
+  const h1  = chartHouse(chart, 1);
+  const h7  = chartHouse(chart, 7);
+  const h13 = chartHouse(chart, 13);
+  if (!h1 || !h7) return null;
+  // fire row = pattern[0]; '1'=odd=single=open, '2'=even=pair=closed
+  const h1Fire  = h1.key?.[0] === '1';
+  const h7Fire  = h7.key?.[0] === '1';
+  const h13Fire = h13?.key?.[0] === '1';
+  let verdict, outputHebrew;
+  if (h1Fire && !h7Fire) {
+    verdict = 'looks-at-you';
+    outputHebrew = `ב1 (${h1.hebrew}) — שורת האש פתוחה; ב7 (${h7.hebrew}) — שורת האש סתומה: האדם מביט אליך (כשף עמ׳ 170).`;
+  } else if (h13Fire && h7Fire) {
+    verdict = 'looks-at-other';
+    outputHebrew = `ב13 (${h13?.hebrew}) וב7 (${h7.hebrew}) — שתי שורות האש פתוחות: האדם מביט אל אחר (כשף עמ׳ 170).`;
+  } else {
+    verdict = 'unclear';
+    outputHebrew = `ב1 (${h1.hebrew}) / ב7 (${h7.hebrew}) — אין אינדיקציה ברורה מי מביט על מי (כשף עמ׳ 170).`;
+  }
+  return { verdict, outputHebrew };
+}
+
+// Source of money — count all board points mod 7 (kashf p.181)
+function computeMoneySourceKashf(chart) {
+  let total = 0;
+  for (const h of chart) {
+    const key = h.key || '';
+    for (const c of key) total += (c === '1') ? 1 : 2;
+  }
+  const foundMoney = (total % 2 === 0);
+  const rem7 = total % 7;
+  const srcMap = { 1: 'מצד השלטון', 2: 'מצד נשים', 3: 'מצד כתיבה או ספרים',
+                   4: 'מצד ירושה', 5: 'מצד נסיעה', 6: 'מצד מסחר', 0: 'מצד גניבה — אין בה טוב' };
+  const source = srcMap[rem7] || srcMap[0];
+  const moneyNote = foundMoney ? 'ימצא כסף גדול' : 'אינו מוצא כסף';
+  return {
+    verdict: foundMoney ? `money-found-${rem7}` : 'no-money',
+    outputHebrew: `סך נקודות הלוח: ${total} — ${moneyNote}. מקור הכסף (שארית ÷7=${rem7 || 7}): ${source} (כשף עמ׳ 181).`,
+    total, foundMoney, source,
+  };
+}
+
+// Well drilling — h4 saad+incoming = success (kashf p.188-189)
+function computeWellDrillingKashf(chart) {
+  const h1  = chartHouse(chart, 1);
+  const h4  = chartHouse(chart, 4);
+  const h7  = chartHouse(chart, 7);
+  const h10 = chartHouse(chart, 10);
+  if (!h4) return null;
+  const isSaad  = (h) => h && !MALEFIC_FIGURE_PATTERNS.has(h.key || '');
+  const isIn    = (h) => h && getFigureDirection(h.key) === 'incoming';
+  const h4Good  = isSaad(h4) && isIn(h4);
+  const pillarsOk = [h1, h4, h7, h10].every(h => isSaad(h));
+  // Depth unit by h4 element (dominant single-dot row)
+  const k = h4.key || '    ';
+  const depthUnit = k[0]==='1' ? 'אצבעות (אש)' : k[1]==='1' ? 'שיבר (אוויר)' : k[2]==='1' ? 'אמות (מים)' : 'לפי עומק הקרקע (עפר)';
+  let verdict, outputHebrew;
+  if (h4Good && pillarsOk) {
+    verdict = 'success';
+    outputHebrew = `ב4 (${h4.hebrew}) — סעד ופנימי, כל היתדות מיטיבים: הבאר תצלח ויימצאו מים. מידת העומק: ${depthUnit} (כשף עמ׳ 188-189).`;
+  } else if (h4Good) {
+    verdict = 'partial';
+    outputHebrew = `ב4 (${h4.hebrew}) — סעד ופנימי, אך לא כל היתדות מיטיבים: יש סיכוי למים, אך לא מובטח. עומק: ${depthUnit} (כשף עמ׳ 188-189).`;
+  } else {
+    verdict = 'fail';
+    const reason = !isSaad(h4) ? 'מזיק' : 'חיצוני';
+    outputHebrew = `ב4 (${h4.hebrew}) — ${reason}: לא מומלץ לחפור באר בעת זו (כשף עמ׳ 188-189).`;
+  }
+  return { verdict, outputHebrew };
+}
+
+// Travel timing — good figures for h9 (kashf p.238)
+function computeTravelTimingKashf(chart) {
+  const h9 = chartHouse(chart, 9);
+  const h4 = chartHouse(chart, 4);
+  if (!h9) return null;
+  const isSaad = (h) => h && !MALEFIC_FIGURE_PATTERNS.has(h.key || '');
+  // Best figures for h9 travel: tariq(1111), nakis(2221), nusra-dakhila(2211)
+  const BEST = new Set(['1111', '2221', '2211']);
+  // Good: travel happens — tariq(1111), ataba-dakhila(2111), nusra-kharija(1122)
+  const GOOD = new Set(['1111', '2111', '1122']);
+  // Neutral: travel but no full benefit
+  const NEUTRAL = new Set(['2221', '1112', '1212', '1221', '2112', '2222']);
+  const h4Good = isSaad(h4);
+  const h9Key  = h9.key;
+  let verdict, outputHebrew;
+  if (BEST.has(h9Key) && h4Good) {
+    verdict = 'excellent-time';
+    outputHebrew = `ב9 (${h9.hebrew}) — מן הצורות המועדפות לנסיעה, וב4 (${h4?.hebrew}) מיטיב: זמן מצוין לנסיעה (כשף עמ׳ 238).`;
+  } else if (BEST.has(h9Key)) {
+    verdict = 'good-time';
+    outputHebrew = `ב9 (${h9.hebrew}) — צורה מועדפת לנסיעה, אך ב4 (${h4?.hebrew}) מזיק: זמן בינוני לנסיעה (כשף עמ׳ 238).`;
+  } else if (GOOD.has(h9Key) && h4Good) {
+    verdict = 'travel-happens';
+    outputHebrew = `ב9 (${h9.hebrew}) וב4 (${h4?.hebrew}) מיטיבים: הנסיעה תתקיים בהצלחה (כשף עמ׳ 238).`;
+  } else if (NEUTRAL.has(h9Key)) {
+    verdict = 'travel-no-benefit';
+    outputHebrew = `ב9 (${h9.hebrew}) — הנסיעה תתקיים, אך השואל יחזור ללא תועלת שלמה (כשף עמ׳ 238).`;
+  } else {
+    verdict = 'avoid-travel';
+    outputHebrew = `ב9 (${h9.hebrew}) — אינה מן הצורות הטובות לנסיעה: הימנע מנסיעה בעת זו (כשף עמ׳ 238).`;
+  }
+  return { verdict, outputHebrew };
+}
+
+// Profession by planet of h9 (kashf p.254)
+const PROFESSION_BY_PLANET = {
+  'שבתאי':          'חקלאות ועבודת אדמה',
+  'צדק':            'בקשת חכמות ולימודים',
+  'מאדים':          'רפואה ורפואת בהמות',
+  'שמש':            'הנדסה ומדידות',
+  'נוגה':           'דברי הימים, לחנים וניגונים',
+  'כוכב / מרקורי':  'סגולות, כתיבות, חשבונות ואצטגנינות',
+  'לבנה':           'ענייני עניים וצדיקים',
+};
+
+function computeProfessionH9Kashf(chart) {
+  const h9  = chartHouse(chart, 9);
+  const h10 = chartHouse(chart, 10);
+  const h11 = chartHouse(chart, 11);
+  if (!h9) return null;
+  const isSaad  = (h) => h && !MALEFIC_FIGURE_PATTERNS.has(h.key || '');
+  const planet9 = FIGURE_PLANET_MAP[h9.key];
+  const profession = planet9 ? (PROFESSION_BY_PLANET[planet9] || null) : null;
+  const lightWork = isSaad(h10) && isSaad(h11);
+  let outputHebrew = '';
+  if (lightWork) outputHebrew += `ב10 (${h10?.hebrew}) וב11 (${h11?.hebrew}) מיטיבים — מלאכתו מעטה בטרחה ומוצא בה מנוחה. `;
+  if (planet9 && profession) {
+    outputHebrew += `כוכב ב9: ${planet9} (${h9.hebrew}) → מלאכה: ${profession} (כשף עמ׳ 254).`;
+  } else if (planet9) {
+    outputHebrew += `ב9 (${h9.hebrew}) — כוכב ${planet9}, אך המקצוע אינו מפורש בטבלה (כשף עמ׳ 254).`;
+  } else {
+    outputHebrew += `ב9 (${h9.hebrew}) — ראש/זנב התלי: ידיעת הדתות ועניינים נסתרים, או לחלופין בורות ובגידה (כשף עמ׳ 254).`;
+  }
+  return { verdict: planet9 ? `profession-${planet9}` : 'node', outputHebrew, planet: planet9, profession };
+}
+
+// Promise fulfillment — h1,3,8,9,11,15 check (kashf p.255)
+function computePromiseFulfillmentKashf(chart) {
+  const keyHouses = [1, 3, 8, 9, 11, 15].map(n => chartHouse(chart, n));
+  const [h1, h3, h8, h9, h11, h15] = keyHouses;
+  const h2 = chartHouse(chart, 2);
+  const isSaad   = (h) => h && !MALEFIC_FIGURE_PATTERNS.has(h.key || '');
+  const isMutable = (h) => h && getFigureDirection(h.key) === 'mutable';
+  const hasTariq = h1?.key === '1111';
+  const hasAqla  = h1?.key === '1221';
+  const mutableH2H9 = isMutable(h2) || isMutable(h9);
+  const saadCount  = keyHouses.filter(h => h && isSaad(h)).length;
+  const nahusCount = keyHouses.filter(h => h && !isSaad(h)).length;
+  let verdict, outputHebrew;
+  if (hasTariq) {
+    verdict = 'many-promises-empty';
+    outputHebrew = `ב1 — דרך: הבטחות רבות ומשאלות בטלות; ייתכן קיום לאחר עיכוב (כשף עמ׳ 255).`;
+  } else if (hasAqla) {
+    verdict = 'promise-with-delay';
+    outputHebrew = `ב1 — סוהר: הבטחה אמתית ואפשר שתתקיים, אך ייתכן עיכוב (כשף עמ׳ 255).`;
+  } else if (mutableH2H9) {
+    verdict = 'broken-promise';
+    const who = isMutable(h2) ? `ב2 (${h2?.hebrew})` : `ב9 (${h9?.hebrew})`;
+    outputHebrew = `${who} — צורה מתהפכת (דו-גוף): הוא מפר את ההבטחה (כשף עמ׳ 255).`;
+  } else if (saadCount >= 4) {
+    verdict = 'true-promise';
+    outputHebrew = `${saadCount}/6 מן הבתים (ב1,3,8,9,11,15) מיטיבים ופנימיים — ההבטחה אמתית, וממנה יגיע טוב (כשף עמ׳ 255).`;
+  } else if (nahusCount >= 4) {
+    verdict = 'false-promise';
+    outputHebrew = `${nahusCount}/6 מן הבתים (ב1,3,8,9,11,15) מזיקים — ההבטחה אינה אמת ואינה נשלמת (כשף עמ׳ 255).`;
+  } else {
+    verdict = 'mixed';
+    outputHebrew = `${saadCount}/6 מן הבתים (ב1,3,8,9,11,15) מיטיבים — מצב מעורב, ייתכן קיום חלקי של ההבטחה (כשף עמ׳ 255).`;
+  }
+  return { verdict, outputHebrew };
+}
+
+// Fugitive tracking — h1=owner, h7=fugitive, h4=location, h10=purpose, h15=outcome (kashf p.240-241)
+function computeFugitiveKashf(chart) {
+  const h1  = chartHouse(chart, 1);
+  const h4  = chartHouse(chart, 4);
+  const h6  = chartHouse(chart, 6);
+  const h7  = chartHouse(chart, 7);
+  const h10 = chartHouse(chart, 10);
+  const h15 = chartHouse(chart, 15);
+  if (!h1 || !h7) return null;
+  const isSaad = (h) => h && !MALEFIC_FIGURE_PATTERNS.has(h.key || '');
+  const isIn   = (h) => h && getFigureDirection(h.key) === 'incoming';
+  // Method: h1+h6 figure incoming → will return (kashf p.249)
+  const h1h6BothIn = isIn(h1) && isIn(h6);
+  const allFourGood = [h1, h7, h10, h4].every(h => isSaad(h));
+  const outcomeGood = isSaad(h15);
+  let verdict, outputHebrew;
+  if (h1h6BothIn && allFourGood && outcomeGood) {
+    verdict = 'will-return';
+    outputHebrew = `ב1+ב6 פנימיים, כל הבתים הראשיים (ב1,4,7,10) סעד, וב15 (${h15?.hebrew}) לטובה — הבורח לא התרחק ועתיד לשוב (כשף עמ׳ 240-241). מיקום (ב4): ${h4?.hebrew}.`;
+  } else if (!allFourGood || !outcomeGood) {
+    verdict = 'will-not-return';
+    outputHebrew = `ב7 (${h7?.hebrew}) או ב15 (${h15?.hebrew}) מזיק — הבורח לא יחזור (כשף עמ׳ 240-241). מיקום אפשרי (ב4): ${h4?.hebrew}.`;
+  } else {
+    verdict = 'return-possible';
+    outputHebrew = `הסימנים מעורבים — ייתכן שיחזור עם מאמץ (כשף עמ׳ 240-241). ב4 (מיקום): ${h4?.hebrew}. ב15 (סוף): ${h15?.hebrew}.`;
+  }
+  return { verdict, outputHebrew };
+}
+
 const PLANET_ENRICHMENT_MAP = (function () {
   const m = {};
   const planets = HAWI_SOURCE.extendedKnowledge?.planetaryCorrespondences?.planets || [];
@@ -4909,6 +5113,28 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const clothingLuckKashf = (['loveHate', 'completion', 'foundations', 'children'].includes(topicId))
     ? computeClothingLuckKashf(board.chart) : null;
 
+  // ── BATCH I: 7 new Kashf-sourced analysis functions ──────────────────────────
+  const whoLooksAtWhomKashf = (['marriage', 'loveHate', 'foundations', 'generalReading'].includes(topicId))
+    ? computeWhoLooksAtWhomKashf(board.chart) : null;
+
+  const moneySourceKashf = (['commerce', 'generalReading', 'foundations', 'loan'].includes(topicId))
+    ? computeMoneySourceKashf(board.chart) : null;
+
+  const wellDrillingKashf = (topicId === 'foundations')
+    ? computeWellDrillingKashf(board.chart) : null;
+
+  const travelTimingKashf = (['travel', 'seaVoyage'].includes(topicId))
+    ? computeTravelTimingKashf(board.chart) : null;
+
+  const professionH9Kashf = (['foundations', 'generalReading', 'authorityState', 'yearlyForecast'].includes(topicId))
+    ? computeProfessionH9Kashf(board.chart) : null;
+
+  const promiseFulfillmentKashf = (['completion', 'commerce', 'loan'].includes(topicId))
+    ? computePromiseFulfillmentKashf(board.chart) : null;
+
+  const fugitiveKashf = (['missingPerson', 'prisoner', 'theft'].includes(topicId))
+    ? computeFugitiveKashf(board.chart) : null;
+
   const yearlyForecastAnalysis = (topicId === 'yearlyForecast')
     ? computeYearlyForecastAnalysis(
         board.chart,
@@ -5247,6 +5473,13 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     securityKashf,
     lifespanKashf,
     clothingLuckKashf,
+    whoLooksAtWhomKashf,
+    moneySourceKashf,
+    wellDrillingKashf,
+    travelTimingKashf,
+    professionH9Kashf,
+    promiseFulfillmentKashf,
+    fugitiveKashf,
   };
 }
 

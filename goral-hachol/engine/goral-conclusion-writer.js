@@ -451,6 +451,41 @@ function describeCoreHouses(analysis, topicId, question) {
     parts.push(`לבוש ומזל בלבוש (כשף אל-אסרר עמ׳ 265):\n  ${clothingLuckKashf.outputHebrew}`);
   }
 
+  const whoLooksAtWhomKashf = analysis.whoLooksAtWhomKashf;
+  if (whoLooksAtWhomKashf) {
+    parts.push(`מי מסתכל על מי (כשף אל-אסרר עמ׳ 170):\n  ${whoLooksAtWhomKashf.outputHebrew}`);
+  }
+
+  const moneySourceKashf = analysis.moneySourceKashf;
+  if (moneySourceKashf) {
+    parts.push(`מקור הכסף (כשף אל-אסרר עמ׳ 181):\n  ${moneySourceKashf.outputHebrew}`);
+  }
+
+  const wellDrillingKashf = analysis.wellDrillingKashf;
+  if (wellDrillingKashf) {
+    parts.push(`קידוח בארות / עומק מים (כשף אל-אסרר עמ׳ 188-189):\n  ${wellDrillingKashf.outputHebrew}`);
+  }
+
+  const travelTimingKashf = analysis.travelTimingKashf;
+  if (travelTimingKashf) {
+    parts.push(`בחירת זמן לנסיעה (כשף אל-אסרר עמ׳ 238):\n  ${travelTimingKashf.outputHebrew}`);
+  }
+
+  const professionH9Kashf = analysis.professionH9Kashf;
+  if (professionH9Kashf) {
+    parts.push(`מקצוע ועיסוק לפי בית 9 (כשף אל-אסרר עמ׳ 254):\n  ${professionH9Kashf.outputHebrew}`);
+  }
+
+  const promiseFulfillmentKashf = analysis.promiseFulfillmentKashf;
+  if (promiseFulfillmentKashf) {
+    parts.push(`הבטחה — האם תתממש? (כשף אל-אסרר עמ׳ 255):\n  ${promiseFulfillmentKashf.outputHebrew}`);
+  }
+
+  const fugitiveKashf = analysis.fugitiveKashf;
+  if (fugitiveKashf) {
+    parts.push(`בורח / אבוד — מעקב (כשף אל-אסרר עמ׳ 240-241):\n  ${fugitiveKashf.outputHebrew}`);
+  }
+
   const yearlyAnalysis = analysis.yearlyForecastAnalysis;
   if (yearlyAnalysis) {
     parts.push(`ניתוח טאלע השנה (חאוי עמ׳ 60-62):\n${yearlyAnalysis.outputHebrew}`);
@@ -2057,6 +2092,41 @@ function buildNarrativeByTopic(result) {
     if (is('children')) {
       const clothingLuckKashf = boardAnalysis.clothingLuckKashf;
       if (clothingLuckKashf) push(`לבוש ומזל בלבוש (כשף עמ׳ 265):\n  ${ind(clothingLuckKashf.outputHebrew)}`);
+    }
+
+    if (is('marriage','loveHate','foundations','generalReading')) {
+      const whoLooksAtWhomKashf = boardAnalysis.whoLooksAtWhomKashf;
+      if (whoLooksAtWhomKashf) push(`מי מסתכל על מי (כשף עמ׳ 170):\n  ${ind(whoLooksAtWhomKashf.outputHebrew)}`);
+    }
+
+    if (is('commerce','generalReading','foundations','loan')) {
+      const moneySourceKashf = boardAnalysis.moneySourceKashf;
+      if (moneySourceKashf) push(`מקור הכסף (כשף עמ׳ 181):\n  ${ind(moneySourceKashf.outputHebrew)}`);
+    }
+
+    if (is('foundations')) {
+      const wellDrillingKashf = boardAnalysis.wellDrillingKashf;
+      if (wellDrillingKashf) push(`קידוח בארות / עומק מים (כשף עמ׳ 188-189):\n  ${ind(wellDrillingKashf.outputHebrew)}`);
+    }
+
+    if (is('travel','seaVoyage')) {
+      const travelTimingKashf = boardAnalysis.travelTimingKashf;
+      if (travelTimingKashf) push(`בחירת זמן לנסיעה (כשף עמ׳ 238):\n  ${ind(travelTimingKashf.outputHebrew)}`);
+    }
+
+    if (is('foundations','generalReading','authorityState','yearlyForecast')) {
+      const professionH9Kashf = boardAnalysis.professionH9Kashf;
+      if (professionH9Kashf) push(`מקצוע ועיסוק לפי בית 9 (כשף עמ׳ 254):\n  ${ind(professionH9Kashf.outputHebrew)}`);
+    }
+
+    if (is('completion','commerce','loan')) {
+      const promiseFulfillmentKashf = boardAnalysis.promiseFulfillmentKashf;
+      if (promiseFulfillmentKashf) push(`הבטחה — האם תתממש? (כשף עמ׳ 255):\n  ${ind(promiseFulfillmentKashf.outputHebrew)}`);
+    }
+
+    if (is('missingPerson','prisoner','theft')) {
+      const fugitiveKashf = boardAnalysis.fugitiveKashf;
+      if (fugitiveKashf) push(`בורח / אבוד — מעקב (כשף עמ׳ 240-241):\n  ${ind(fugitiveKashf.outputHebrew)}`);
     }
 
     if (is('enemies','disputes','fear')) {
