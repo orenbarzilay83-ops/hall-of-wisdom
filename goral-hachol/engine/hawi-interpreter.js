@@ -1109,7 +1109,7 @@ function computeDhamirByMizanTracing(chart) {
   const primary = traces[0] || null;
   return {
     method: 'mizan-tracing',
-    methodHebrew: 'תסיירת נקטת המיזאן',
+    methodHebrew: 'שיטת ספירת נקודות המאזן',
     traces,
     primaryHouseNumber: primary?.dhamirHouseNumber || null,
     primaryHebrew: primary?.dhamirHebrew || '',
@@ -1162,11 +1162,11 @@ function computeSodHaDhamirim(chart) {
   if (matches.length === 0) return null;
   const primary = matches[0];
   const outputHebrew = matches.length === 1
-    ? `סוד הדמירים: בית ${primary.houseNumber} — ${primary.figureHebrew} יושבת בביתה הטבעי`
-    : `סוד הדמירים: בתים ${matches.map(m => m.houseNumber).join(', ')} — צורות בביתן הטבעי`;
+    ? `סוד הכוונות הנסתרות: בית ${primary.houseNumber} — ${primary.figureHebrew} יושבת בביתה הטבעי`
+    : `סוד הכוונות הנסתרות: בתים ${matches.map(m => m.houseNumber).join(', ')} — צורות בביתן הטבעי`;
   return {
     method: 'sod-ha-dhamirim',
-    methodHebrew: 'סוד הדמירים',
+    methodHebrew: 'סוד הכוונות הנסתרות',
     sourceRef: 'כשף עמ׳ 104',
     matches,
     primaryHouseNumber: primary.houseNumber,
@@ -1454,8 +1454,8 @@ function buildJudgeVerdict(boardAnalysis) {
     const dhamirH = boardAnalysis.dhamirByMizan?.primaryHouseNumber || boardAnalysis.dhamirHouse?.houseNumber || '';
     const confirming = (judgeTone > 0 && dhamirToneVerdict > 0) || (judgeTone < 0 && dhamirToneVerdict < 0);
     hebrewFull += confirming
-      ? ` הדמיר (בית ${dhamirH}) מאשר את הפסיקה — ${dhamirFort}.`
-      : ` הדמיר (בית ${dhamirH}) מנוגד לדיין — ${dhamirFort} — ייתכן שינוי במהלך.`;
+      ? ` הכוונה הנסתרת (בית ${dhamirH}) מאשרת את הפסיקה — ${dhamirFort}.`
+      : ` הכוונה הנסתרת (בית ${dhamirH}) מנוגדת לדיין — ${dhamirFort} — ייתכן שינוי במהלך.`;
   }
   if (boardAnalysis.boardScore?.isComplete === false) {
     hebrewFull += ` [הערה: הלוח חסר (${boardAnalysis.boardScore.score} נקודות) — הפסיקה פחות ודאית.]`;
@@ -3370,7 +3370,7 @@ function computeTimingEstimate(chart, dhamirHouse, topicId) {
     unit,
     tier,
     timingUnits: tierHebrew,
-    outputHebrew: `עיתוי (האדד): הדמיר בבית ${dh} (${dhamirEntry.hebrew || dhamirEntry.key}, ${dotCount} נקודות) → ${quantity}. סקאלה: ${tierHebrew}`,
+    outputHebrew: `עיתוי (האדד): הכוונה הנסתרת בבית ${dh} (${dhamirEntry.hebrew || dhamirEntry.key}, ${dotCount} נקודות) → ${quantity}. סקאלה: ${tierHebrew}`,
     sourceRef: 'כשף אל-אסראר — שיטת האדד: ספירת נקודות הצורה × עמדת הבית = תזמון',
   };
 }
@@ -5079,7 +5079,7 @@ function scoreBoard(boardAnalysis) {
   if (dhamirTone !== 0) {
     const dhamirHouseNum = boardAnalysis.dhamirByMizan?.primaryHouseNumber || boardAnalysis.dhamirHouse?.houseNumber || '';
     const dhamirNote = dhamirTone > 0 ? ' — מאשר את הדיין' : ' — סותר את הדיין, זהירות';
-    reasons.push(`דמיר (בית ${dhamirHouseNum}): ${dhamirFortune}${dhamirNote}`);
+    reasons.push(`הכוונה הנסתרת (בית ${dhamirHouseNum}): ${dhamirFortune}${dhamirNote}`);
   }
   if (repetitionBonus > 0) {
     reasons.push(`צורת הדיין (${judge?.figureHebrew || ''}) חוזרת ${judgeRepeatCount} פעמים בלוח — הדין מחוזק`);
@@ -5134,11 +5134,11 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
   if (dhamirByMizan?.traces?.length > 0 && dhamirToneConclusion !== 0) {
     const confirmingConclusion = (judgeToneConclusion > 0 && dhamirToneConclusion > 0) || (judgeToneConclusion < 0 && dhamirToneConclusion < 0);
     const dhamirLabel = confirmingConclusion ? 'מאשר את הדיין ומחזק את הפסיקה' : 'סותר את הדיין — שים לב, ייתכן שינוי';
-    parts.push(`הדמיר (בית ${dhamirByMizan.primaryHouseNumber} — ${dhamirByMizan.primaryHebrew}): ${dhamirFort} — ${dhamirLabel}.`);
+    parts.push(`הכוונה הנסתרת (בית ${dhamirByMizan.primaryHouseNumber} — ${dhamirByMizan.primaryHebrew}): ${dhamirFort} — ${dhamirLabel}.`);
   } else if (dhamirHouseEntry && dhamirToneConclusion !== 0) {
     const confirmingConclusion = (judgeToneConclusion > 0 && dhamirToneConclusion > 0) || (judgeToneConclusion < 0 && dhamirToneConclusion < 0);
-    const dhamirLabel = confirmingConclusion ? 'מאשר את הדיין' : 'סותר את הדיין — זהירות';
-    parts.push(`הדמיר (בית ${dhamirHouseEntry.houseNumber} — ${dhamirHouseEntry.figureHebrew}): ${dhamirFort} — ${dhamirLabel}.`);
+    const dhamirLabel = confirmingConclusion ? 'מאשרת את הדיין' : 'סותרת את הדיין — זהירות';
+    parts.push(`הכוונה הנסתרת (בית ${dhamirHouseEntry.houseNumber} — ${dhamirHouseEntry.figureHebrew}): ${dhamirFort} — ${dhamirLabel}.`);
   }
 
   if (sentence) {

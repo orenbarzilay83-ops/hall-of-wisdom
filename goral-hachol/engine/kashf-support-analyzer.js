@@ -299,7 +299,7 @@ export function getKashfSupportAnalysis(board, kashfVerdict) {
   const witness13 = analyzeHouse(board, 13, 'עד ימין — צד השואל');
   const witness14 = analyzeHouse(board, 14, 'עד שמאל — צד העניין');
   const judge     = analyzeHouse(board, 15, 'דיין — ההכרעה הסופית');
-  const sentence  = analyzeHouse(board, 16, 'עאקבה — התוצאה הסופית');
+  const sentence  = analyzeHouse(board, 16, 'אחרית הדבר — התוצאה הסופית');
 
   // דמיר: 4 שיטות לפי כשף אל-אסראר עמ' 151-155 → הכרעה לפי הרוב
   const dhamirCandidates = [
