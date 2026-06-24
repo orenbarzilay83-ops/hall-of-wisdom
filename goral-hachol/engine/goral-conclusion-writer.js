@@ -274,11 +274,11 @@ function topicOpening(topicId, topicHebrew) {
     deathInheritance:
       'בעניין מוות, ירושה או שינוי גורל גדול, הקריאה בודקת את בית 8 כדליל המוות והירושה, בית 7 כדליל הצד השני (הנפטר או היורש), ובית 2 לגבי הממון. הדיין קובע את המסקנה הסופית.',
     loan:
-      'בעניין ההלוואה, הקריאה בודקת האם הלווה ישיב את הכסף. לפי כשף אל-אסרר: גוזרים צורה מב1+ב7, ועוד צורה מב2+ב8, ומשלבים — סעד = יחזיר; נחס = יתקשה.',
+      'בעניין ההלוואה, הקריאה בודקת האם הלווה ישיב את הכסף. לפי כשף אל-אסרר: גוזרים צורה מב1+ב7, ועוד צורה מב2+ב8, ומשלבים — מיטיב = יחזיר; מזיק = יתקשה.',
     religion:
-      'בעניין הדת והאמונה, הקריאה בודקת את בית 3 ובית 9. לפי כשף אל-אסרר: אם שניהם נחס — מעט דת; אם סעד — בעל דת ויירא אלוהים.',
+      'בעניין הדת והאמונה, הקריאה בודקת את בית 3 ובית 9. לפי כשף אל-אסרר: אם שניהם מזיק — מעט דת; אם מיטיב — בעל דת ויירא אלוהים.',
     motherRules:
-      'בעניין האם (דיני האם), הקריאה בודקת את בית 10 בעיקר. לפי כשף אל-אסרר: נחס = רע לה; סעד = טוב לה; לבן/דרך בעמוד = טוב ויושר; בשואקט = נכבות.',
+      'בעניין האם (דיני האם), הקריאה בודקת את בית 10 בעיקר. לפי כשף אל-אסרר: מזיק = רע לה; מיטיב = טוב לה; לבן/דרך בעמוד = טוב ויושר; בשואקט = נכבות.',
   };
 
   return openings[topicId] || `בעניין ${topicHebrew}, הקריאה בודקת את הבית המרכזי, העדים, הדיין והשלמת הדין.`;
@@ -312,9 +312,9 @@ function describeCoreHouses(analysis, topicId, question) {
     if (focus.isAdversarial) {
       const tone = focus.fortune || '';
       const adversarialNote = tone === 'נחס'
-        ? ' [בית הצד שכנגד — נחס בבית זה = חולשה של הצד השני, טוב לשואל]'
+        ? ' [בית הצד שכנגד — מזיק בבית זה = חולשה של הצד השני, טוב לשואל]'
         : tone === 'סעד'
-        ? ' [בית הצד שכנגד — סעד בבית זה = הצד השני חזק]'
+        ? ' [בית הצד שכנגד — מיטיב בבית זה = הצד השני חזק]'
         : ' [בית הצד שכנגד — יש להפוך את הפרשנות: מה שרע לצד זה טוב לשואל]';
       focusLine += adversarialNote;
     }
@@ -363,7 +363,7 @@ function describeCoreHouses(analysis, topicId, question) {
       dhamirConcord = confirming ? ' ✓ מאשר את הדיין.' : ' ⚠ סותר את הדיין — שים לב.';
     }
     parts.push(
-      `הדמיר (שרשרת הגזירה):\n${traceLines.join('\n')}\n  → הדמיר העיקרי: בית ${dhamirMizan.primaryHouseNumber} — כל הדין שם.${dhamirConcord}`
+      `הכוונה הנסתרת (שרשרת הגזירה):\n${traceLines.join('\n')}\n  → הדמיר העיקרי: בית ${dhamirMizan.primaryHouseNumber} — כל הדין שם.${dhamirConcord}`
     );
   } else if (dhamir) {
     const dhamirFortune = dhamir.fortune ? ` [${dhamir.fortune}]` : '';
@@ -375,7 +375,7 @@ function describeCoreHouses(analysis, topicId, question) {
       dhamirConcord = confirming ? ' ✓ מאשר את הדיין.' : ' ⚠ סותר את הדיין — שים לב.';
     }
     parts.push(
-      `הדמיר (תמצית צורות בתי האמהות): בית ${dhamir.houseNumber} — ${dhamir.figureHebrew}${dhamirFortune}. הצורה שבה נפל הדמיר — כל הדין נמצא בה לפי המקור.${dhamirConcord}`
+      `הכוונה הנסתרת (תמצית הצורות): בית ${dhamir.houseNumber} — ${dhamir.figureHebrew}${dhamirFortune}. הצורה שבה נפל הדמיר — כל הדין נמצא בה לפי המקור.${dhamirConcord}`
     );
   }
 
@@ -591,9 +591,9 @@ function describeCoreHouses(analysis, topicId, question) {
       const isBarren = h5Fortune.includes('נחס');
       const sameAsH1 = h1 && h5.figureKey === h1.figureKey;
       const verdictLine = isFertile
-        ? `בית 5 (ילדים) — ${h5Name} [סעד]: סימן להיריון / לידה אפשרית.`
+        ? `בית 5 (ילדים) — ${h5Name} [מיטיב]: סימן להיריון / לידה אפשרית.`
         : isBarren
-        ? `בית 5 (ילדים) — ${h5Name} [נחס]: עיכוב בהיריון, ייתכן קושי.`
+        ? `בית 5 (ילדים) — ${h5Name} [מזיק]: עיכוב בהיריון, ייתכן קושי.`
         : `בית 5 (ילדים) — ${h5Name}: מצב ביניים — יש לבדוק את העדים.`;
       parts.push(`אבחון פריון (בית 5):\n  ${verdictLine}${sameAsH1 ? '\n  ⚠ צורת בית 5 זהה לבית 1 — קשר ישיר בין השואל לעניין הילדים.' : ''}`);
     }
@@ -622,8 +622,8 @@ function describeCoreHouses(analysis, topicId, question) {
     if (h1 && h7) {
       const h1Saad = h1.fortune?.includes('סעד') ? 1 : h1.fortune?.includes('נחס') ? -1 : 0;
       const h7Saad = h7.fortune?.includes('סעד') ? 1 : h7.fortune?.includes('נחס') ? -1 : 0;
-      const h1Tone = h1Saad > 0 ? 'חזק [סעד]' : h1Saad < 0 ? 'חלש [נחס]' : 'ביניים';
-      const h7Tone = h7Saad > 0 ? 'חזק [סעד]' : h7Saad < 0 ? 'חלש [נחס]' : 'ביניים';
+      const h1Tone = h1Saad > 0 ? 'חזק [מיטיב]' : h1Saad < 0 ? 'חלש [מזיק]' : 'ביניים';
+      const h7Tone = h7Saad > 0 ? 'חזק [מיטיב]' : h7Saad < 0 ? 'חלש [מזיק]' : 'ביניים';
       const advantage = (h1Saad > h7Saad) ? '→ יתרון לשואל' : (h1Saad < h7Saad) ? '→ יתרון ליריב' : '→ כוחות שקולים';
       parts.push(`כוח הצדדים בסכסוך:\n  שואל (בית 1 — ${h1.figureHebrew}): ${h1Tone}\n  יריב (בית 7 — ${h7.figureHebrew}): ${h7Tone}\n  ${advantage}`);
     }
@@ -660,7 +660,7 @@ function describeCoreHouses(analysis, topicId, question) {
     if (fearSources.length) {
       parts.push(`מקור הפחד:\n${fearSources.map(s => '  ' + s).join('\n')}`);
     } else {
-      parts.push('מקור הפחד: לפי הלוח — אין בתי נחס ברורים. הפחד ייתכן מגזים.');
+      parts.push('מקור הפחד: לפי הלוח — אין בתים מזיקים ברורים. הפחד ייתכן מגזים.');
     }
   }
 
@@ -898,7 +898,7 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
     if (houseIndex?.findings?.length) {
       const alerts = houseIndex.alerts || [];
       if (alerts.length) {
-        lines.push(`בתים רגישים עם צורות נחסיות: ${alerts.map(a => `בית ${a.houseNumber} (${a.figureHebrew}) — ${a.hebrewTerms.slice(0,2).join(', ')}`).join(' | ')}`);
+        lines.push(`בתים רגישים עם צורות מזיקות: ${alerts.map(a => `בית ${a.houseNumber} (${a.figureHebrew}) — ${a.hebrewTerms.slice(0,2).join(', ')}`).join(' | ')}`);
       }
       const top = houseIndex.findings.slice(0, 4);
       for (const f of top) {
@@ -1131,7 +1131,7 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
   }
 
   if (topicId === 'completion') {
-    return 'לכן הכרעת הדיין היא העיקר — אם הדיין סעד הדבר יושלם, ואם נחס יש מניעה. העדים מחזקים או מחלישים.';
+    return 'לכן הכרעת הדיין היא העיקר — אם הדיין מיטיב הדבר יושלם, ואם מזיק יש מניעה. העדים מחזקים או מחלישים.';
   }
 
   if (topicId === 'prisoner') {
@@ -1291,9 +1291,9 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
       lines.push(religionKashf.outputHebrew);
     } else {
       if (grade === 'positive' || grade === 'cautiously-positive') {
-        lines.push('בית 3 ובית 9 מראים סעד — האדם בעל אמונה ויראת שמים.');
+        lines.push('בית 3 ובית 9 מראים מיטיב — האדם בעל אמונה ויראת שמים.');
       } else if (grade === 'negative' || grade === 'cautiously-negative') {
-        lines.push('בית 3 ובית 9 מראים נחס — האדם מועט דת ורחוק מאמונה.');
+        lines.push('בית 3 ובית 9 מראים מזיק — האדם מועט דת ורחוק מאמונה.');
       } else {
         lines.push('מצב האמונה מעורב — יש יסוד דתי אבל לא שלם.');
       }
@@ -1311,9 +1311,9 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
     } else {
       const house10 = getHouseFromBoard(boardAnalysis, 10);
       if (grade === 'positive' || grade === 'cautiously-positive') {
-        lines.push('הלוח מראה טוב לאם — בית 10 נוטה לסעד.');
+        lines.push('הלוח מראה טוב לאם — בית 10 מיטיב.');
       } else if (grade === 'negative' || grade === 'cautiously-negative') {
-        lines.push('הלוח מצביע על קושי לאם — בית 10 נחס.');
+        lines.push('הלוח מצביע על קושי לאם — בית 10 מזיק.');
       } else {
         lines.push('מצב האם מעורב — בית 10 אינו מכריע.');
       }

@@ -86,7 +86,7 @@ function computeDhamirMizan(board) {
     if (!entry) continue;
     return {
       method:      'mizan',
-      methodHebrew:'שיטת תסיירת המיזאן',
+      methodHebrew:'שיטת המאזן',
       pattern:     entry.pattern,
       houseNumber: sourceHouse,
       nameHebrew:  entry.hebrewName || entry.pattern,
@@ -113,7 +113,7 @@ function computeDhamirHarkatAlArd(board) {
   if (!entry) return null;
   return {
     method:      'harkat-al-ard',
-    methodHebrew:'חרכת הערד (תנועת-הרוחב)',
+    methodHebrew:'שיטת ספירת נקודות המאזן',
     pattern:     entry.pattern,
     houseNumber: pos,
     nameHebrew:  entry.hebrewName || entry.pattern,
@@ -139,7 +139,7 @@ function computeDhamirJawharayn(board) {
   if (!entry) return null;
   return {
     method:      'jawharayn',
-    methodHebrew:'שיטת הג׳והריין (שני הרכיבים)',
+    methodHebrew:'שיטת שני היסודות (קל וכבד)',
     pattern:     entry.pattern,
     houseNumber: pos,
     nameHebrew:  entry.hebrewName || entry.pattern,
@@ -249,7 +249,7 @@ function computeConfidence(verdictDK, w13, w14, judge) {
 function buildSupportSummary(primaryVerdict, w13, w14, judge, sentence, dhamir, confidence) {
   const lines = [];
 
-  lines.push('**שכבת תמיכה:**');
+  lines.push('**ניתוח כוחות הלוח:**');
 
   if (w13) {
     const ag = agreesWithVerdict(w13, primaryVerdict?.classification?.dakhalKharij);
@@ -277,7 +277,7 @@ function buildSupportSummary(primaryVerdict, w13, w14, judge, sentence, dhamir, 
     const agreedBy  = dhamir.methodsAgreed?.length > 1
       ? ` [${dhamir.agreementCount} שיטות מסכימות: ${dhamir.methodsAgreed.join(', ')}]`
       : ` [שיטה: ${dhamir.methodHebrew}]`;
-    lines.push(`**גורם נסתר (דמיר — ב${dhamir.houseNumber} — ${dhamir.nameHebrew}):** ${dhFortune} — ${agreementHebrew(dhAgrees)}${agreedBy}`);
+    lines.push(`**הכוונה הנסתרת (— ב${dhamir.houseNumber} — ${dhamir.nameHebrew}):** ${dhFortune} — ${agreementHebrew(dhAgrees)}${agreedBy}`);
   }
 
   return lines.join('\n');
