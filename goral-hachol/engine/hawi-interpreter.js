@@ -3240,7 +3240,7 @@ function computeQuerentSorceryCheck(chart) {
     isSorcered,
     outputHebrew: isSorcered
       ? '⚠ נשוא ראש (احيان) בבית 10 — סימן לכישוף על השואל (القول الجامع עמ׳ 56)'
-      : `${h10.hebrew || h10.key} בבית 10 — אין סימן לכישוף בבית הכבוד`,
+      : `${h10.hebrew || h10.key} בבית 10 — לפי ספר זה, הסימן הספציפי (נשוא ראש) אינו בבית הכבוד; ראה אבחון הכולל לעיל`,
   };
 }
 
