@@ -363,7 +363,7 @@ function describeCoreHouses(analysis, topicId, question) {
       dhamirConcord = confirming ? ' ✓ מאשר את הדיין.' : ' ⚠ סותר את הדיין — שים לב.';
     }
     parts.push(
-      `הכוונה הנסתרת (שרשרת הגזירה):\n${traceLines.join('\n')}\n  → הכוונה הנסתרת הראשית: בית ${dhamirMizan.primaryHouseNumber} — כל הדין שם.${dhamirConcord}`
+      `הכוונה הנסתרת (שרשרת הגזירה):\n${traceLines.join('\n')}\n  → מחשבת השואל: בית ${dhamirMizan.primaryHouseNumber} — כל הדין שם.${dhamirConcord}`
     );
   } else if (dhamir) {
     const dhamirFortune = dhamir.fortune ? ` [${dhamir.fortune}]` : '';
@@ -375,7 +375,7 @@ function describeCoreHouses(analysis, topicId, question) {
       dhamirConcord = confirming ? ' ✓ מאשר את הדיין.' : ' ⚠ סותר את הדיין — שים לב.';
     }
     parts.push(
-      `הכוונה הנסתרת (תמצית הצורות): בית ${dhamir.houseNumber} — ${dhamir.figureHebrew}${dhamirFortune}. הצורה שבה נפלה הכוונה הנסתרת — כל הדין נמצא בה לפי המקור.${dhamirConcord}`
+      `הכוונה הנסתרת (תמצית הצורות): בית ${dhamir.houseNumber} — ${dhamir.figureHebrew}${dhamirFortune}. מחשבת השואל — כל הדין נמצא בה לפי המקור.${dhamirConcord}`
     );
   }
 
@@ -1373,9 +1373,9 @@ function dhamirParagraph(boardAnalysis, judgeVerdict) {
   const timingNote = timing ? ` עיתוי (האדד): ${timing.dotCount} נקודות → ${timing.dotCount} ${timing.unit} (${timing.tierHebrew || timing.timingUnits}).` : '';
 
   if (confirming) {
-    return `הכוונה הנסתרת (בית ${dhamirHouseNum}${dhamirFigure ? ` — ${dhamirFigure}` : ''}): ${dhamirFort} — מאשרת את הדיין ומחזקת את הפסיקה. כשהכוונה הנסתרת מסכימה עם הדיין, היא מוסיפה ודאות לתשובה.${timingNote}`;
+    return `מחשבת השואל (בית ${dhamirHouseNum}${dhamirFigure ? ` — ${dhamirFigure}` : ''}): ${dhamirFort} — מאשרת את הדיין ומחזקת את הפסיקה. כשמחשבת השואל מסכימה עם הדיין, היא מוסיפה ודאות לתשובה.${timingNote}`;
   } else {
-    return `הכוונה הנסתרת (בית ${dhamirHouseNum}${dhamirFigure ? ` — ${dhamirFigure}` : ''}): ${dhamirFort} — סותרת את הדיין. כשהכוונה הנסתרת מנוגדת לדיין, יש לקחת בחשבון שהמצב עשוי להשתנות, או שיש כוחות פנימיים שמעכבים את הגעת התשובה.${timingNote}`;
+    return `מחשבת השואל (בית ${dhamirHouseNum}${dhamirFigure ? ` — ${dhamirFigure}` : ''}): ${dhamirFort} — סותרת את הדיין. כשמחשבת השואל מנוגדת לדיין, יש לקחת בחשבון שהמצב עשוי להשתנות, או שיש כוחות פנימיים שמעכבים את הגעת התשובה.${timingNote}`;
   }
 }
 
