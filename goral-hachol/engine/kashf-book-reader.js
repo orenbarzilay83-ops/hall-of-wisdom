@@ -14,17 +14,19 @@ import { KASHF_AL_ASRAR_PAGES } from '../data/sources/kashf-al-asrar/kashf-al-as
 const HOUSE_PAGE_RANGES = {
   1:  { pageStart: 166, pageEnd: 178, topicArabic: 'النفس',    topicHebrew: 'הנפש — השואל' },
   2:  { pageStart: 179, pageEnd: 181, topicArabic: 'المال',    topicHebrew: 'הממון' },
-  3:  { pageStart: 182, pageEnd: 183, topicArabic: 'الأخوة',   topicHebrew: 'האחים / תנועה' },
-  4:  { pageStart: 184, pageEnd: 190, topicArabic: 'الآباء',   topicHebrew: 'האבות, נכסים, נסתרות' },
-  5:  { pageStart: 191, pageEnd: 195, topicArabic: 'الأولاد',  topicHebrew: 'ילדים, הריון' },
+  3:  { pageStart: 182, firstContentPage: 183, pageEnd: 183, topicArabic: 'الأخوة',   topicHebrew: 'האחים / תנועה' },
+  4:  { pageStart: 184, firstContentPage: 185, pageEnd: 190, topicArabic: 'الآباء',   topicHebrew: 'האבות, נכסים, נסתרות' },
+  5:  { pageStart: 191, firstContentPage: 192, pageEnd: 195, topicArabic: 'الأولاد',  topicHebrew: 'ילדים, הריון' },
   // עמוד 196 = סיום פרק 5 + פתיחת פרק 6 — תוכן מעורב. פרק 6 האמיתי מתחיל בעמוד 197.
   6:  { pageStart: 196, firstContentPage: 197, pageEnd: 203, topicArabic: 'المريض',   topicHebrew: 'החולה, אבוד, בהמות' },
   // עמוד 204 = סיום פרק 6 (קבורה) + פתיחת פרק 7 — תוכן מעורב. פרק 7 האמיתי מתחיל בעמוד 205.
   7:  { pageStart: 204, firstContentPage: 205, pageEnd: 223, topicArabic: 'التزويج',  topicHebrew: 'נישואין, גובר/נגבר, קנייה/מכירה' },
   8:  { pageStart: 224, pageEnd: 234, topicArabic: 'السرقة',   topicHebrew: 'גנבה, הלוואה' },
-  9:  { pageStart: 236, pageEnd: 255, topicArabic: 'السفر',    topicHebrew: 'נסיעה, נעדר, אבוד, חלום, דת' },
+  // עמוד 236 = סוף פרק 8 (מוות/ירושה). פרק 9 האמיתי מתחיל בעמוד 237.
+  9:  { pageStart: 236, firstContentPage: 237, pageEnd: 255, topicArabic: 'السفر',    topicHebrew: 'נסיעה, נעדר, אבוד, חלום, דת' },
   10: { pageStart: 256, pageEnd: 262, topicArabic: 'السلطان',  topicHebrew: 'כבוד, שלטון, משך שררות' },
-  11: { pageStart: 263, pageEnd: 270, topicArabic: 'الأصدقاء', topicHebrew: 'חברים, תקווה, אורך חיים, אהבה' },
+  // עמוד 263 = סיום דיני מלכים + פתיחת פרק 11. פרק 11 הנקי מתחיל בעמוד 264.
+  11: { pageStart: 263, firstContentPage: 264, pageEnd: 270, topicArabic: 'الأصدقاء', topicHebrew: 'חברים, תקווה, אורך חיים, אהבה' },
   12: { pageStart: 271, pageEnd: 276, topicArabic: 'الأعداء',  topicHebrew: 'אויבים, כלואים' },
 };
 
