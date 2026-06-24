@@ -2112,6 +2112,61 @@ function computeClothingLuckKashf(chart) {
   return { verdict, outputHebrew, colorHebrew: color, planet: planet5 };
 }
 
+// Lifespan by figure shapes — kashf p.195
+// Short figures (5): חיבור(2112), בר הלחי(1211), דרך(1111), שפל ראש(2221), אדום(2122)
+// Long figures (2): לבן(2212), קהלה(2222)
+// Rule: check non-pillar houses (not 1,4,7,10); if short/long figures are "numerous" → verdict
+const SHORT_LIFE_FIGURES = new Set(['2112', '1211', '1111', '2221', '2122']);
+const LONG_LIFE_FIGURES  = new Set(['2212', '2222']);
+const PILLAR_HOUSES      = new Set([1, 4, 7, 10]);
+
+function computeLifespanByFigureShapes(chart) {
+  const nonPillars = chart.filter(h => !PILLAR_HOUSES.has(Number(h.house)));
+  let shortCount = 0, longCount = 0;
+  const shortNames = [], longNames = [];
+  for (const h of nonPillars) {
+    if (SHORT_LIFE_FIGURES.has(h.key)) {
+      shortCount++;
+      shortNames.push(`ב${h.house} (${h.hebrew})`);
+    } else if (LONG_LIFE_FIGURES.has(h.key)) {
+      longCount++;
+      longNames.push(`ב${h.house} (${h.hebrew})`);
+    }
+  }
+  let verdict, outputHebrew;
+  if (longCount >= 2) {
+    verdict = 'long-life';
+    outputHebrew = `צורות ארוכות מרובות בבתים הלא-יתדיים: ${longNames.join(', ')} — מורות על אורך ימים (כשף עמ׳ 195).`;
+  } else if (shortCount >= 3) {
+    verdict = 'short-life';
+    outputHebrew = `צורות קצרות מרובות בבתים הלא-יתדיים: ${shortNames.join(', ')} — מורות על קוצר ימים (כשף עמ׳ 195).`;
+  } else if (longCount > shortCount) {
+    verdict = 'leaning-long';
+    outputHebrew = `${longCount} צורות ארוכות (${longNames.join(', ')}) מול ${shortCount} קצרות — נטייה לאורך ימים (כשף עמ׳ 195).`;
+  } else if (shortCount > longCount) {
+    verdict = 'leaning-short';
+    outputHebrew = `${shortCount} צורות קצרות (${shortNames.join(', ')}) מול ${longCount} ארוכות — נטייה לאורך חיים קצר (כשף עמ׳ 195).`;
+  } else {
+    verdict = 'neutral';
+    outputHebrew = `${shortCount} צורות קצרות, ${longCount} ארוכות בבתים הלא-יתדיים — אין הכרעה ברורה לאורך חיים (כשף עמ׳ 195).`;
+  }
+  return { verdict, outputHebrew, shortCount, longCount, shortNames, longNames };
+}
+
+// Preferred clothing figures: כבוד נכנס(2211), לבן(2212), בר הלחי(1211) in h5 — kashf p.196
+function computeClothingBestFiguresKashf(chart) {
+  const h5 = chartHouse(chart, 5);
+  if (!h5) return null;
+  const BEST_CLOTHING = new Set(['2211', '2212', '1211']);
+  const isBest = BEST_CLOTHING.has(h5.key);
+  return {
+    verdict: isBest ? 'best-clothing' : 'other',
+    outputHebrew: isBest
+      ? `ב5 (${h5.hebrew}) — מן הצורות המועדפות לפריסת לבוש ותפירה: כבוד נכנס / לבן / בר הלחי (כשף עמ׳ 196).`
+      : `ב5 (${h5.hebrew}) — אינה מן הצורות המועדפות לפריסת לבוש (כשף עמ׳ 196).`,
+  };
+}
+
 // Who looks at whom — fire row of h1, h7, h13 (kashf p.170)
 function computeWhoLooksAtWhomKashf(chart) {
   const h1  = chartHouse(chart, 1);
@@ -5113,6 +5168,12 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const clothingLuckKashf = (['loveHate', 'completion', 'foundations', 'children'].includes(topicId))
     ? computeClothingLuckKashf(board.chart) : null;
 
+  const lifespanByFigureShapes = (['foundations', 'generalReading', 'childrenPregnancy', 'deathInheritance', 'illness'].includes(topicId))
+    ? computeLifespanByFigureShapes(board.chart) : null;
+
+  const clothingBestFiguresKashf = (['childrenPregnancy', 'loveHate', 'foundations'].includes(topicId))
+    ? computeClothingBestFiguresKashf(board.chart) : null;
+
   // ── BATCH I: 7 new Kashf-sourced analysis functions ──────────────────────────
   const whoLooksAtWhomKashf = (['marriage', 'loveHate', 'foundations', 'generalReading'].includes(topicId))
     ? computeWhoLooksAtWhomKashf(board.chart) : null;
@@ -5473,6 +5534,8 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     securityKashf,
     lifespanKashf,
     clothingLuckKashf,
+    lifespanByFigureShapes,
+    clothingBestFiguresKashf,
     whoLooksAtWhomKashf,
     moneySourceKashf,
     wellDrillingKashf,

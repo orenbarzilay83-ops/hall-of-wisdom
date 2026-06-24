@@ -32,7 +32,7 @@ export const KASHF_TOPICS_PER_HOUSE = {
       // הערה: כישוף/עין הרע שייך לבית 6 (الشعوذة מפורש שם בספר). בית 1 נכנס לאבחון רוחני רק כבית השואל — לא כבית ספציפי לנושא.
       { label: 'אסתח׳ארה',                description: 'שאלת כוונה ורשות — 21 פעמים בטהרה',               implemented: false, topicId: null,            sourceNote: 'source: kashf' },
       { label: 'מולד / גורל האדם',        description: 'מצב האדם מלידה לפי בית 1 כטאלע — PDF2 p.51: إعمل بالضمير من باب الضمير',                           implemented: true,  topicId: 'birthNativity', sourceNote: 'multi-source' },
-      { label: 'אורך חיים',               description: 'האם יחיה ארוך — לפי צורות ארוכות/קצרות',          implemented: false, topicId: null,            sourceNote: 'source: kashf' },
+      { label: 'אורך חיים',               description: 'האם יחיה ארוך — לפי צורות ארוכות/קצרות',          implemented: true,  topicId: 'foundations',            sourceNote: 'source: kashf' },
       { label: 'מי מסתכל על מי',         description: 'האם אדם מסתכל על השואל או על אחר',                 implemented: true,  topicId: 'marriage',            sourceNote: 'source: kashf' },
       { label: 'כיוון גיאוגרפי של העניין', description: 'מזרח/מערב/דרום/צפון לפי יסוד הצורה — PDF1: نار=דרום, ماء=צפון, هواء=מזרח, تراب=מערב',           implemented: true,  topicId: 'foundations',   sourceNote: 'source: PDF1 p.30' },
     ],

@@ -451,6 +451,16 @@ function describeCoreHouses(analysis, topicId, question) {
     parts.push(`לבוש ומזל בלבוש (כשף אל-אסרר עמ׳ 265):\n  ${clothingLuckKashf.outputHebrew}`);
   }
 
+  const lifespanByFigureShapes = analysis.lifespanByFigureShapes;
+  if (lifespanByFigureShapes) {
+    parts.push(`אורך חיים — צורות ארוכות/קצרות (כשף אל-אסרר עמ׳ 195):\n  ${lifespanByFigureShapes.outputHebrew}`);
+  }
+
+  const clothingBestFiguresKashf = analysis.clothingBestFiguresKashf;
+  if (clothingBestFiguresKashf && clothingBestFiguresKashf.verdict === 'best-clothing') {
+    parts.push(`צורת הבית 5 ללבוש ושמחה (כשף אל-אסרר עמ׳ 196):\n  ${clothingBestFiguresKashf.outputHebrew}`);
+  }
+
   const whoLooksAtWhomKashf = analysis.whoLooksAtWhomKashf;
   if (whoLooksAtWhomKashf) {
     parts.push(`מי מסתכל על מי (כשף אל-אסרר עמ׳ 170):\n  ${whoLooksAtWhomKashf.outputHebrew}`);
@@ -2092,6 +2102,16 @@ function buildNarrativeByTopic(result) {
     if (is('children')) {
       const clothingLuckKashf = boardAnalysis.clothingLuckKashf;
       if (clothingLuckKashf) push(`לבוש ומזל בלבוש (כשף עמ׳ 265):\n  ${ind(clothingLuckKashf.outputHebrew)}`);
+    }
+
+    if (is('foundations','generalReading','childrenPregnancy','deathInheritance','illness')) {
+      const lifespanByFigureShapes = boardAnalysis.lifespanByFigureShapes;
+      if (lifespanByFigureShapes) push(`אורך חיים — צורות ארוכות/קצרות (כשף עמ׳ 195):\n  ${ind(lifespanByFigureShapes.outputHebrew)}`);
+    }
+
+    if (is('childrenPregnancy','loveHate','foundations')) {
+      const clothingBestFiguresKashf = boardAnalysis.clothingBestFiguresKashf;
+      if (clothingBestFiguresKashf?.verdict === 'best-clothing') push(`צורת הבית 5 ללבוש ושמחה (כשף עמ׳ 196):\n  ${ind(clothingBestFiguresKashf.outputHebrew)}`);
     }
 
     if (is('marriage','loveHate','foundations','generalReading')) {
