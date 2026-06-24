@@ -1576,7 +1576,7 @@ function showKashfPage(idx) {
       </div>
       <div class="kashf-page-meta">
         <div class="kashf-page-num">עמ׳ ${p.page} בספר</div>
-        <div class="kashf-chapter-title">${escapeHtml(p.chapterHebrew || p.chapter || '')}</div>
+        <div class="kashf-chapter-title">${escapeHtml(p.chapterHebrew || '')}</div>
       </div>
       <div class="kashf-page-text">${kashfMdToHtml(p.hebrewTranslation || '(אין תרגום לעמוד זה)')}</div>
       <div class="kashf-bottom-nav">
