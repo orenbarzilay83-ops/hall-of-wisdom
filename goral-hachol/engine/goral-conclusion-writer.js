@@ -463,12 +463,17 @@ function describeCoreHouses(analysis, topicId, question) {
 
   const thiefProximity = analysis.thiefProximity;
   if (thiefProximity) {
-    parts.push(`קרבת הגנב לשואל (القول الجامع עמ׳ 48-49):\n  ${thiefProximity.outputHebrew.replace(/\n/g, '\n  ')}`);
+    parts.push(`קרבת הגנב לשואל (כשף אל-אסרר עמ׳ 224):\n  ${thiefProximity.outputHebrew.replace(/\n/g, '\n  ')}`);
   }
 
   const stolenItemReturn = analysis.stolenItemReturn;
   if (stolenItemReturn) {
-    parts.push(`האם הגנוב יוחזר (القول الجامع עמ׳ 48-49):\n  ${stolenItemReturn.outputHebrew.replace(/\n/g, '\n  ')}`);
+    parts.push(`האם הגנוב יוחזר (כשף אל-אסרר עמ׳ 229):\n  ${stolenItemReturn.outputHebrew.replace(/\n/g, '\n  ')}`);
+  }
+
+  const thiefPhysicalDescKashf = analysis.thiefPhysicalDescriptionKashf;
+  if (thiefPhysicalDescKashf) {
+    parts.push(`תיאור הגנב (כשף אל-אסרר עמ׳ 231-234):\n  ${thiefPhysicalDescKashf.outputHebrew}`);
   }
 
   const missingPersonLocation = analysis.missingPersonLocation;
@@ -1907,11 +1912,14 @@ function buildNarrativeByTopic(result) {
       const thiefAge = boardAnalysis.thiefAge;
       if (thiefAge) push(`גיל הגנב:\n  ${sc(thiefAge.outputHebrew)}`);
 
+      const thiefPhysDescKashf = boardAnalysis.thiefPhysicalDescriptionKashf;
+      if (thiefPhysDescKashf) push(`תיאור הגנב (כשף עמ׳ 231-234):\n  ${sc(thiefPhysDescKashf.outputHebrew)}`);
+
       const thiefProximity = boardAnalysis.thiefProximity;
-      if (thiefProximity) push(`קרבת הגנב:\n  ${ind(thiefProximity.outputHebrew)}`);
+      if (thiefProximity) push(`קרבת הגנב (כשף עמ׳ 224):\n  ${ind(thiefProximity.outputHebrew)}`);
 
       const stolenItemReturn = boardAnalysis.stolenItemReturn;
-      if (stolenItemReturn) push(`האם הגנוב יוחזר:\n  ${ind(stolenItemReturn.outputHebrew)}`);
+      if (stolenItemReturn) push(`האם הגנוב יוחזר (כשף עמ׳ 229):\n  ${ind(stolenItemReturn.outputHebrew)}`);
     }
 
     if (is('missingPerson','seaVoyage')) {

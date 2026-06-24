@@ -2437,7 +2437,8 @@ function computeTravelDirection(chart) {
 }
 
 // ============================================================
-// BATCH B: גנבה — קרבה, גיל, האם הגנוב יוחזר (PDF1 p.48-49)
+// BATCH B: גנבה — קרבה, גיל, האם הגנוב יוחזר
+// מקור ראשי: כשף אל-אסרר עמ׳ 224, 229-234
 // ============================================================
 const THIEF_AGE_BY_FIGURE = {
   '1211': 'צעיר', '1112': 'צעיר', '2212': 'צעיר',
@@ -2445,19 +2446,40 @@ const THIEF_AGE_BY_FIGURE = {
   '2221': 'זקן',   '1222': 'זקן',
 };
 
+// כשף אל-אסרר עמ׳ 224 — "אם הבית השביעי חוזר באחד הבתים, הוא מורה על סיבת הגניבה ועל מי שקשור בה"
 const THIEF_PROXIMITY_BY_HOUSE = {
-  1: 'אדם קרוב מאוד / מתוך הבית',
-  2: 'מכר / שכן',
-  3: 'בן משפחה / קרוב',
-  4: 'מקורב לבית',
-  5: 'בעל הבית / דייר',
-  6: 'שכן קרוב',
-  7: 'זר ממקום אחר',
-  8: 'אדם מחוץ להישג יד',
-  9: 'אדם מרחוק',
-  10: 'אדם בעל סמכות',
-  11: 'חבר / מכר',
+  1:  'עומד במקום בעל הדבר — הגנב ממעגל השואל הקרוב',
+  2:  'מן העוזרים / המכרים של בעל הדבר',
+  3:  'זה הגנב עצמו — גילויו ודאי (ב3 = הגנב)',
+  4:  'ממי שנכנס לבית הנשאל',
+  5:  'ממי שמתערב עם ילדי בעל הדבר',
+  6:  'הגנב יחלה בגלל הגניבה',
+  7:  'גילוי הגנב ודאי',
+  8:  'אדם רחוק / מחוץ להישג יד',
+  9:  'הדבר בא בגלל נסיעה — הגנב קשור לנסיעה',
+  10: 'ממי שקשור לבעלי השלטון',
+  11: 'קשור לאנשים שהגנב מתחבר עמם',
   12: 'אויב נסתר',
+};
+
+// כשף אל-אסרר עמ׳ 231-234 — תיאור הגנב לפי הצורה בבית 7
+const THIEF_PHYSICAL_DESCRIPTION_KASHF = {
+  '1121': 'דמותו גבוהה, צבעו נוטה לאדמומיות, זקנו דליל — ויש בו חריפות וגסות',
+  '1222': 'עד, סופר או מלמד — שלם במראהו, רחב חזה, עיניים גדולות, פנים עגולות, צבעו לבן ונאה',
+  '2111': 'אישה או דמות נקבית — לבנה, זריזת דיבור, ראשה גדול, כפות רגליה דקות; לחלופין: עירוני / מן אנשי המלאכה',
+  '2212': 'לבן, צוחק, נבון ומובחן — עוסק בכתיבה, נייר או תפירה',
+  '1211': 'נמשך אחר נשים, יש בו תחבולה ודעת; לחלופין: אישה או נער יפה-עיניים',
+  '1112': 'צבעו שחום, מבטו רע וריחו רע — מלאכות ניקוי, אשפה או בזויות',
+  '2122': 'צבעו דמי, קומה גבוהה, רגליים רחבות, סימן בפנים — עוסק בבישול, חריתה או אש; לעיתים רכיל',
+  '2221': 'צבעו שחור, שורש עבדות או שפלות — עוסק בעורות, אדמה או בהמות',
+  '1122': 'עגול-פנים, רחב רגליים, ניכר במעמדו ויופיו — עוסק בזהב, אבנים או חפצי ערך',
+  '1221': 'שחום, רחב בטן, גדול רגליים — עוסק בסנדלרות או עבודה גסה',
+  '2112': 'איש לשכה — כתיבה, חשבון, שיפוט, ספרים',
+  '2211': 'דמות לבנה, עגולת פנים, ראש גדול, קומה קטנה — עוסק בדין, הוראה או מעמד כבוד',
+  '1111': 'נער קטן, דק-גוף, מהיר בתנועה — שליחות, ריקוד, הליכה',
+  '1212': 'פנים לבנות או צהובות, ראש קטן, רגליים גדולות — עוסק ברפואה או חכמה',
+  '2222': 'גוף רחב, סנטר גדול, רגליים רחבות — בעל מנהיגות, ספנות, הנדסה',
+  '2121': 'קומה בינונית, פנים עגולות, ראש ורגליים גדולים, זקן עבה — עוסק בסחורה וקניין',
 };
 
 function computeThiefAge(chart) {
@@ -2471,6 +2493,21 @@ function computeThiefAge(chart) {
   };
   return { figureKey: h7.key, figureHebrew: figHebrew, age,
     outputHebrew: `${figHebrew} בבית 7 — גיל הגנב: ${age}`,
+  };
+}
+
+function computeThiefPhysicalDescriptionKashf(chart) {
+  const h7 = chart.find((h) => Number(h.house) === 7);
+  if (!h7?.key) return null;
+  const desc = THIEF_PHYSICAL_DESCRIPTION_KASHF[h7.key];
+  const figHebrew = h7.hebrew || h7.key;
+  if (!desc) return {
+    figureKey: h7.key, figureHebrew: figHebrew,
+    outputHebrew: `${figHebrew} בבית 7 — תיאור הגנב: לא מפורש במקור (כשף עמ׳ 231-234)`,
+  };
+  return {
+    figureKey: h7.key, figureHebrew: figHebrew, description: desc,
+    outputHebrew: `${figHebrew} בבית 7 — ${desc}`,
   };
 }
 
@@ -2501,22 +2538,31 @@ function computeStolenItemReturn(chart) {
   const isSaad = (h) => !!h && String(h.fortune || '').includes('סעד');
   const isNahs = (h) => !!h && String(h.fortune || '').includes('נחס');
   const lines = [];
+  // כשף עמ׳ 229: "אם מצאת בראשון ובשני צורות מיטיבות, ובשביעי ובשמיני צורות מזיקות — הגניבה חוזרת לבעליה"
   if (isSaad(h1) && isSaad(h2) && isNahs(h7) && isNahs(h8)) {
-    lines.push('בית 1+2 סעד, בית 7+8 נחס → הגנבה תוחזר');
+    lines.push('בית 1+2 מיטיב + בית 7+8 מזיק → הגניבה חוזרת לבעליה (כשף עמ׳ 229)');
+  }
+  // כשף עמ׳ 229: "ואם בראשון ובשני צורות מזיקות, ובשביעי ובשמיני צורות מיטיבות — לא יחזור אליו דבר"
+  if (isNahs(h1) && isNahs(h2) && isSaad(h7) && isSaad(h8)) {
+    lines.push('⚠ בית 1+2 מזיק + בית 7+8 מיטיב → לא יחזור לבעליו (כשף עמ׳ 229)');
+  }
+  // כשף עמ׳ 229: "אם ראית את השמיני בשני, יחזור לבעל הדבר מה שאבד ממנו"
+  if (h8 && h2 && h8.key === h2.key) {
+    lines.push(`בית 8 ובית 2 אותה צורה (${h8.hebrew || h8.key}) → יחזור לבעל הדבר מה שאבד (כשף עמ׳ 229)`);
   }
   const h12Incoming = h12 && h12.direction === 'incoming';
   const h12Outgoing = h12 && h12.direction === 'outgoing';
   const h14Outgoing = h14 && h14.direction === 'outgoing';
   if (h12Incoming) {
-    const ease = h12.movement === 'מתהפך' ? ' בקלות (מנקלב)' : h12.movement === 'קבוע' ? ' בקושי (ת׳אבת)' : '';
+    const ease = h12.movement === 'מתהפך' ? ' בקלות' : h12.movement === 'קבוע' ? ' בקושי' : '';
     lines.push(`בית 12 נכנס → הגנבה תוחזר${ease}`);
   }
   if (h12Outgoing && h14Outgoing) {
     lines.push('בית 12+14 יוצאים → הגנבה לא תוחזר');
   }
   if (!lines.length) {
-    if (isSaad(h1)) lines.push('בית 1 סעד — יש סיכוי להחזרה, תלוי בגנב');
-    else if (isNahs(h1)) lines.push('בית 1 נחס — סיכוי נמוך להחזרה');
+    if (isSaad(h1)) lines.push('בית 1 מיטיב — יש סיכוי להחזרה');
+    else if (isNahs(h1)) lines.push('בית 1 מזיק — סיכוי נמוך להחזרה');
     else lines.push('לא נמצאו סימנים ברורים — ספק תוחזר');
   }
   return { outputHebrew: lines.join('\n') };
@@ -4675,6 +4721,9 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const stolenItemReturn = (topicId === 'theft')
     ? computeStolenItemReturn(board.chart) : null;
 
+  const thiefPhysicalDescriptionKashf = (topicId === 'theft')
+    ? computeThiefPhysicalDescriptionKashf(board.chart) : null;
+
   const missingPersonLocation = (topicId === 'missingPerson')
     ? computeMissingPersonLocation(board.chart) : null;
 
@@ -4902,6 +4951,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     thiefAge,
     thiefProximity,
     stolenItemReturn,
+    thiefPhysicalDescriptionKashf,
     missingPersonLocation,
     missingPersonReturn,
     geographicDirection,
