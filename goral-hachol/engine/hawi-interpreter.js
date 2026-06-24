@@ -125,6 +125,7 @@ const TOPIC_MAIN_HOUSES = {
   loan:             [1, 2, 7, 8, 13, 14, 15],
   religion:         [1, 3, 9, 13, 14, 15],
   motherRules:      [1, 4, 7, 10, 13, 14, 15],
+  lostAnimal:       [1, 6, 7, 8, 13, 14, 15],
 };
 
 const TOPIC_HEBREW_TITLES = {
@@ -155,6 +156,7 @@ const TOPIC_HEBREW_TITLES = {
   loan:             'הלוואה / חוב',
   religion:         'דת / אמונה',
   motherRules:      'דיני האם',
+  lostAnimal:       'בהמה / חיה אבודה',
 };
 
 const TOPIC_QUESITED_HOUSE = {
@@ -5181,7 +5183,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const moneySourceKashf = (['commerce', 'generalReading', 'foundations', 'loan'].includes(topicId))
     ? computeMoneySourceKashf(board.chart) : null;
 
-  const wellDrillingKashf = (topicId === 'foundations')
+  const wellDrillingKashf = (['foundations', 'hiddenTreasure'].includes(topicId))
     ? computeWellDrillingKashf(board.chart) : null;
 
   const travelTimingKashf = (['travel', 'seaVoyage'].includes(topicId))
@@ -5190,7 +5192,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const professionH9Kashf = (['foundations', 'generalReading', 'authorityState', 'yearlyForecast'].includes(topicId))
     ? computeProfessionH9Kashf(board.chart) : null;
 
-  const promiseFulfillmentKashf = (['completion', 'commerce', 'loan'].includes(topicId))
+  const promiseFulfillmentKashf = (['completion', 'foundations', 'commerce', 'loan', 'disputes'].includes(topicId))
     ? computePromiseFulfillmentKashf(board.chart) : null;
 
   const fugitiveKashf = (['missingPerson', 'prisoner', 'theft'].includes(topicId))

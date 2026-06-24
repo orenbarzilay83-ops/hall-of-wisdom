@@ -496,6 +496,16 @@ function describeCoreHouses(analysis, topicId, question) {
     parts.push(`בורח / אבוד — מעקב (כשף אל-אסרר עמ׳ 240-241):\n  ${fugitiveKashf.outputHebrew}`);
   }
 
+    const lostAnimalReturn = analysis.lostAnimalReturn;
+  if (lostAnimalReturn) {
+    parts.push(`האם הבהמה תחזור (כשף אל-אסרר עמ׳ 202):\n  ${lostAnimalReturn.outputHebrew}`);
+  }
+
+  const animalTypeH6 = analysis.animalTypeH6;
+  if (animalTypeH6) {
+    parts.push(`סוג הבהמה (כשף אל-אסרר עמ׳ 201):\n  ${animalTypeH6.outputHebrew}`);
+  }
+
   const yearlyAnalysis = analysis.yearlyForecastAnalysis;
   if (yearlyAnalysis) {
     parts.push(`ניתוח טאלע השנה (חאוי עמ׳ 60-62):\n${yearlyAnalysis.outputHebrew}`);
@@ -2186,6 +2196,14 @@ function buildNarrativeByTopic(result) {
 
       const illnessCauseH4 = boardAnalysis.illnessCauseH4;
       if (illnessCauseH4) push(`סיבת המחלה:\n  ${ind(illnessCauseH4.outputHebrew)}`);
+    }
+
+    if (is('lostAnimal')) {
+      const lostAnimalReturn = boardAnalysis.lostAnimalReturn;
+      if (lostAnimalReturn) push(`האם הבהמה תחזור (כשף עמ׳ 202):\n  ${ind(lostAnimalReturn.outputHebrew)}`);
+
+      const animalTypeH6 = boardAnalysis.animalTypeH6;
+      if (animalTypeH6) push(`סוג הבהמה (כשף עמ׳ 201):\n  ${ind(animalTypeH6.outputHebrew)}`);
     }
 
     if (is('hiddenTreasure','religion','generalReading')) {

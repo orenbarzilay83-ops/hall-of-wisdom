@@ -26,6 +26,7 @@ const TOPIC_CARDS = [
   { house: 6,  title: 'מחלה ובריאות',  desc: 'חולי, מצב רפואי, החלמה',               defaultTopicId: 'illness',           subTopics: [
     { topicId: 'illness',              label: 'מחלה / בריאות' },
     { topicId: 'spiritualDiagnostics', label: 'עין הרע / כישוף / ג׳ין' },
+    { topicId: 'lostAnimal',           label: 'בהמה / חיה אבודה' },
   ]},
   { house: 7,  title: 'בית הזוגיות',        desc: 'בן/בת זוג, שותף, יריב, גנב, נעדר',     defaultTopicId: 'marriage',          subTopics: [
     { topicId: 'marriage',             label: 'נישואין / זוגיות' },
