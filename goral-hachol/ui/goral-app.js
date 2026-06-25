@@ -1287,7 +1287,7 @@ document.getElementById("backFromRamalBtn").addEventListener("click", () => show
 document.getElementById("backFromKashfBtn").addEventListener("click", () => showScreen("landing"));
 
 // ─── ניווט מסך שאלות ──────────────────────────────────────────
-document.getElementById("landingStartBtn").addEventListener("click", () => {
+document.getElementById("landingImgWrap").addEventListener("click", () => {
   selectedQuestion = null;
   _activeCatFilter = 'all';
   renderQuestionScreen();

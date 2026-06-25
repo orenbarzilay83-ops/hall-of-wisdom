@@ -1437,27 +1437,6 @@
     .dynamic-fields-wrap .open-field:last-child { margin-bottom: 0; }
 
     /* ─── כפתור התחל ב-screen-landing ─── */
-    .landing-start-wrap {
-      padding: 20px 24px 24px;
-      display: flex;
-      justify-content: center;
-      background: linear-gradient(180deg, var(--paper), var(--paper2));
-    }
-    .landing-start-btn {
-      width: 80%;
-      max-width: 340px;
-      padding: 16px;
-      font-size: 18px;
-      font-weight: 900;
-      background: linear-gradient(135deg, var(--navy), var(--navy2));
-      color: var(--gold2);
-      border: none;
-      border-radius: 14px;
-      cursor: pointer;
-      box-shadow: 0 6px 22px rgba(6,25,45,.28);
-      transition: opacity 0.15s;
-    }
-    .landing-start-btn:hover { opacity: 0.88; }
   </style>
 </head>
 
@@ -1505,14 +1484,11 @@
 
     <!-- ─── מסך פתיחה ─────────────────────────────── -->
     <section id="screen-landing" class="screen active">
-      <div class="landing-image-wrap">
+      <div class="landing-image-wrap" id="landingImgWrap" style="cursor:pointer">
         <picture>
           <source media="(orientation:portrait)" srcset="assets/sage-portrait.png">
           <img src="assets/sage-landscape.png" alt="גורל החול" class="landing-img">
         </picture>
-      </div>
-      <div class="landing-start-wrap">
-        <button class="landing-start-btn" id="landingStartBtn">בחר שאלה לגורל</button>
       </div>
     </section>
 
