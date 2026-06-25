@@ -6,89 +6,137 @@
 <title>היכל החכמה</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
+
 body {
   font-family: 'Helvetica Neue', Arial, sans-serif;
   min-height: 100vh;
   background: url('./IMG_5068.PNG') no-repeat center center;
   background-size: cover;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
-  padding-top: 40vh;
+  padding-bottom: 8vh;
 }
 
+/* gradient overlay — transparent at top (shows library + title), dark at bottom (form area) */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(6,3,1,0.10) 0%,
+    rgba(6,3,1,0.35) 45%,
+    rgba(6,3,1,0.80) 70%,
+    rgba(6,3,1,0.90) 100%
+  );
+  pointer-events: none;
+}
+
+.login-wrap {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+/* ─── BOX ─── */
 .login-box {
-  background: rgba(20, 12, 4, 0.82);
-  border: 1.5px solid rgba(224,201,127,.45);
-  border-radius: 18px;
-  padding: 22px 20px;
-  width: 240px;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 8px 40px rgba(0,0,0,.6);
+  background: rgba(12, 7, 2, 0.88);
+  border: 1px solid rgba(224,201,127,.35);
+  border-radius: 20px;
+  padding: 28px 26px 24px;
+  width: 300px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 12px 50px rgba(0,0,0,.7), inset 0 1px 0 rgba(224,201,127,.12);
   text-align: center;
+}
+
+.field-group {
+  margin-bottom: 14px;
+  text-align: right;
 }
 
 .login-label {
   display: block;
-  color: #a08c60;
-  font-size: .75rem;
+  color: #8a7850;
+  font-size: .72rem;
   font-weight: 700;
-  margin: 8px 0 3px;
+  letter-spacing: .08em;
+  margin-bottom: 5px;
 }
 
 .login-input {
   width: 100%;
-  padding: 9px 10px;
-  background: rgba(255,255,255,.07);
-  border: 1.5px solid rgba(224,201,127,.3);
-  border-radius: 9px;
+  padding: 10px 12px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(224,201,127,.25);
+  border-radius: 10px;
   color: #f0e8d0;
   font-size: .9rem;
   font-family: inherit;
   outline: none;
-  text-align: center;
-  transition: border-color .2s;
-  maxlength: 10;
+  text-align: right;
+  transition: border-color .2s, background .2s;
 }
-.login-input:focus { border-color: #e0c97f; }
-.login-input::placeholder { color: #6a5c40; }
+.login-input:focus {
+  border-color: rgba(224,201,127,.7);
+  background: rgba(255,255,255,.08);
+}
+.login-input::placeholder { color: #4a3e2a; }
 
 .login-btn {
   width: 100%;
-  margin-top: 14px;
-  padding: 11px;
-  background: linear-gradient(135deg, #e0c97f, #c8a84b);
-  color: #1a0e00;
+  margin-top: 6px;
+  padding: 12px;
+  background: linear-gradient(135deg, #d4b96a, #b8913a);
+  color: #110900;
   border: none;
-  border-radius: 10px;
+  border-radius: 11px;
   font-size: .95rem;
   font-weight: 900;
   cursor: pointer;
   font-family: inherit;
-  box-shadow: 0 4px 20px rgba(200,168,75,.35);
-  transition: transform .15s;
+  letter-spacing: .04em;
+  box-shadow: 0 4px 22px rgba(180,145,58,.4);
+  transition: opacity .15s, transform .15s, box-shadow .15s;
 }
+.login-btn:hover  { opacity: .92; box-shadow: 0 6px 28px rgba(180,145,58,.55); }
 .login-btn:active { transform: scale(.97); }
+.login-btn:disabled { opacity: .5; cursor: default; }
 
 .error-msg {
-  color: #ff8080;
+  color: #e87070;
   text-align: center;
   font-size: .78rem;
-  margin-top: 8px;
+  margin-top: 10px;
   display: none;
+  padding: 7px 10px;
+  background: rgba(200,50,50,.12);
+  border-radius: 8px;
+  border: 1px solid rgba(200,50,50,.25);
 }
 </style>
 </head>
 <body>
-<div class="login-box">
-  <label class="login-label">אימייל</label>
-  <input class="login-input" type="email" id="username" placeholder="your@email.com" autocomplete="email">
+<div class="login-wrap">
+  <div class="login-box">
+    <div class="field-group">
+      <label class="login-label">אימייל</label>
+      <input class="login-input" type="email" id="username" placeholder="your@email.com" autocomplete="email">
+    </div>
 
-  <label class="login-label">סיסמא</label>
-  <input class="login-input" type="password" id="password" placeholder="סיסמא" autocomplete="current-password">
+    <div class="field-group">
+      <label class="login-label">סיסמא</label>
+      <input class="login-input" type="password" id="password" placeholder="••••••••" autocomplete="current-password">
+    </div>
 
-  <button class="login-btn" id="loginBtn" onclick="doLogin()">כניסה להיכל ←</button>
-  <div class="error-msg" id="errMsg">אימייל או סיסמא שגויים</div>
+    <button class="login-btn" id="loginBtn" onclick="doLogin()">כניסה להיכל</button>
+    <div class="error-msg" id="errMsg">אימייל או סיסמא שגויים</div>
+  </div>
+
 </div>
 
 <script type="module">
