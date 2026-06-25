@@ -15,6 +15,62 @@
   <script src="./raml.js?v=3"></script>
 
   <style>
+/* ═══ DESIGN OVERRIDE ═══ */
+@font-face { font-family: 'STAM'; src: url('./fonts/STAM.TTF') format('truetype'); }
+body {
+  font-family: 'STAM', sans-serif !important;
+  background: #0a0602 !important;
+  color: #e8d490 !important;
+}
+.app {
+  max-width: 100% !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+.topbar {
+  background: rgba(10,6,2,0.45) !important;
+  backdrop-filter: blur(8px) !important;
+  border-bottom: 1px solid rgba(224,201,127,0.15) !important;
+}
+.topbar h1 { color: #e8d490 !important; font-family: 'STAM', sans-serif !important; }
+.icon-btn { color: #e8d490 !important; }
+.landing-img { width: 100% !important; height: auto !important; display: block !important; }
+.panel {
+  background: rgba(10,6,2,0.15) !important;
+  backdrop-filter: blur(6px) !important;
+  border-color: rgba(224,201,127,0.22) !important;
+  color: #e8d490 !important;
+}
+.panel h2, .panel h3 { color: #e8d490 !important; font-family: 'STAM', sans-serif !important; }
+.screen { background: transparent !important; }
+.btn.primary {
+  background: linear-gradient(135deg, #d4b96a, #a87c2e) !important;
+  color: #0a0602 !important; border: none !important;
+  font-family: 'STAM', sans-serif !important;
+}
+.btn.gray {
+  background: rgba(10,6,2,0.45) !important;
+  border: 1px solid rgba(224,201,127,0.25) !important;
+  color: #c4a050 !important;
+  font-family: 'STAM', sans-serif !important;
+}
+.btn { font-family: 'STAM', sans-serif !important; }
+input, select, textarea {
+  background: rgba(255,255,255,0.06) !important;
+  border-color: rgba(224,201,127,0.25) !important;
+  color: #e8d490 !important;
+}
+.menu-drawer {
+  background: rgba(10,6,2,0.92) !important;
+  backdrop-filter: blur(16px) !important;
+  border-color: rgba(224,201,127,0.2) !important;
+}
+.menu-drawer-title { color: #e8d490 !important; font-family: 'STAM', sans-serif !important; }
+.menu-item { color: #c4a050 !important; font-family: 'STAM', sans-serif !important; }
+.menu-item:hover { background: rgba(224,201,127,0.1) !important; }
+.screen-back-bar { background: rgba(10,6,2,0.4) !important; backdrop-filter: blur(6px) !important; }
+/* ══════════════════════ */
+
     :root {
       --navy:#06192d;
       --navy2:#0d2a49;
