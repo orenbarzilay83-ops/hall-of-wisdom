@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תצוגת גופנים</title>
+<style>
+@font-face { font-family: 'STAM';              src: url('./fonts/STAM.TTF'); }
+@font-face { font-family: 'STAMO';             src: url('./fonts/STAMO.ttf'); }
+@font-face { font-family: 'SSTAMB';            src: url('./fonts/SSTAMB.ttf'); }
+@font-face { font-family: 'RASHI';             src: url('./fonts/RASHI.ttf'); }
+@font-face { font-family: 'RASI_NEW';          src: url('./fonts/RASI_NEW.ttf'); }
+@font-face { font-family: 'RmzRashi';          src: url('./fonts/RmzRashi.ttf'); }
+@font-face { font-family: 'ShofarRegular';     src: url('./fonts/ShofarRegular.ttf'); }
+@font-face { font-family: 'ShofarOblique';     src: url('./fonts/ShofarRegularOblique.ttf'); }
+@font-face { font-family: 'ShofarDemiBold';    src: url('./fonts/ShofarDemiBold.ttf'); }
+@font-face { font-family: 'ShofarDemiBoldObl'; src: url('./fonts/ShofarDemiBoldOblique.ttf'); }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #0e0905;
+  color: #e8d490;
+  padding: 40px 24px;
+  min-height: 100vh;
+}
+
+h2 {
+  text-align: center;
+  font-family: sans-serif;
+  font-size: 1rem;
+  color: #7a6535;
+  letter-spacing: .2em;
+  margin-bottom: 36px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.card {
+  background: rgba(30, 18, 4, 0.9);
+  border: 1px solid rgba(224, 201, 127, 0.25);
+  border-radius: 14px;
+  padding: 24px 20px 18px;
+  text-align: center;
+}
+
+.font-name {
+  font-family: monospace;
+  font-size: .7rem;
+  color: #6a5528;
+  letter-spacing: .1em;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+}
+
+.font-title {
+  font-size: 2.2rem;
+  color: #e8d490;
+  line-height: 1.3;
+  margin-bottom: 10px;
+}
+
+.font-sub {
+  font-size: 1rem;
+  color: #a08850;
+  line-height: 1.5;
+}
+
+.font-sample {
+  margin-top: 10px;
+  font-size: .85rem;
+  color: #7a6535;
+  border-top: 1px solid rgba(224,201,127,.1);
+  padding-top: 10px;
+}
+</style>
+</head>
+<body>
+
+<h2>בחר גופן — היכל החכמה</h2>
+
+<div class="grid">
+
+  <div class="card">
+    <div class="font-name">STAM.TTF</div>
+    <div class="font-title" style="font-family: 'STAM'">היכל החכמה</div>
+    <div class="font-sub"  style="font-family: 'STAM'">מערכת יעוץ ונומרולוגיה יהודית</div>
+    <div class="font-sample" style="font-family: 'STAM'">אימייל · סיסמה · כניסה</div>
+  </div>
+
+  <div class="card">
+    <div class="font-name">STAMO.ttf (איטלי)</div>
+    <div class="font-title" style="font-family: 'STAMO'">היכל החכמה</div>
+    <div class="font-sub"  style="font-family: 'STAMO'">מערכת יעוץ ונומרולוגיה יהודית</div>
+    <div class="font-sample" style="font-family: 'STAMO'">אימייל · סיסמה · כניסה</div>
+  </div>
+
+  <div class="card">
+    <div class="font-name">SSTAMB.ttf (מודגש)</div>
+    <div class="font-title" style="font-family: 'SSTAMB'">היכל החכמה</div>
+    <div class="font-sub"  style="font-family: 'SSTAMB'">מערכת יעוץ ונומרולוגיה יהודית</div>
+    <div class="font-sample" style="font-family: 'SSTAMB'">אימייל · סיסמה · כניסה</div>
+  </div>
+
+  <div class="card">
+    <div class="font-name">RASHI.ttf</div>
+    <div class="font-title" style="font-family: 'RASHI'">היכל החכמה</div>
+    <div class="font-sub"  style="font-family: 'RASHI'">מערכת יעוץ ונומרולוגיה יהודית</div>
+    <div class="font-sample" style="font-family: 'RASHI'">אימייל · סיסמה · כניסה</div>
+  </div>
+
+  <div class="card">
+    <div class="font-name">RASI_NEW.ttf</div>
+    <div class="font-title" style="font-family: 'RASI_NEW'">היכל החכמה</div>
+    <div class="font-sub"  style="font-family: 'RASI_NEW'">מערכת יעוץ ונומרולוגיה יהודית</div>
+    <div class="font-sample" style="font-family: 'RASI_NEW'">אימייל · סיסמה · כניסה</div>
+  </div>
+
+  <div class="card">
+    <div class="font-name">RmzRashi.ttf</div>
+    <div class="font-title" style="font-family: 'RmzRashi'">היכל החכמה</div>
+    <div class="font-sub"  style="font-family: 'RmzRashi'">מערכת יעוץ ונומרולוגיה יהודית</div>
+    <div class="font-sample" style="font-family: 'RmzRashi'">אימייל · סיסמה · כניסה</div>
+  </div>
+
+  <div class="card">
+    <div class="font-name">ShofarRegular.ttf</div>
+    <div class="font-title" style="font-family: 'ShofarRegular'">היכל החכמה</div>
+    <div class="font-sub"  style="font-family: 'ShofarRegular'">מערכת יעוץ ונומרולוגיה יהודית</div>
+    <div class="font-sample" style="font-family: 'ShofarRegular'">אימייל · סיסמה · כניסה</div>
+  </div>
+
+  <div class="card">
+    <div class="font-name">ShofarRegularOblique.ttf</div>
+    <div class="font-title" style="font-family: 'ShofarOblique'">היכל החכמה</div>
+    <div class="font-sub"  style="font-family: 'ShofarOblique'">מערכת יעוץ ונומרולוגיה יהודית</div>
+    <div class="font-sample" style="font-family: 'ShofarOblique'">אימייל · סיסמה · כניסה</div>
+  </div>
+
+  <div class="card">
+    <div class="font-name">ShofarDemiBold.ttf</div>
+    <div class="font-title" style="font-family: 'ShofarDemiBold'">היכל החכמה</div>
+    <div class="font-sub"  style="font-family: 'ShofarDemiBold'">מערכת יעוץ ונומרולוגיה יהודית</div>
+    <div class="font-sample" style="font-family: 'ShofarDemiBold'">אימייל · סיסמה · כניסה</div>
+  </div>
+
+  <div class="card">
+    <div class="font-name">ShofarDemiBoldOblique.ttf</div>
+    <div class="font-title" style="font-family: 'ShofarDemiBoldObl'">היכל החכמה</div>
+    <div class="font-sub"  style="font-family: 'ShofarDemiBoldObl'">מערכת יעוץ ונומרולוגיה יהודית</div>
+    <div class="font-sample" style="font-family: 'ShofarDemiBoldObl'">אימייל · סיסמה · כניסה</div>
+  </div>
+
+</div>
+</body>
+</html>
