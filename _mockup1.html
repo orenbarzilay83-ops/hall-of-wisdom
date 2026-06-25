@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+@font-face { font-family: 'STAM'; src: url('./fonts/STAM.TTF'); }
+body {
+  font-family: 'STAM', serif;
+  min-height: 100vh;
+  background: #0a0602 url('./calc-bg-landscape.png') no-repeat center center;
+  background-size: cover;
+  display: flex;
+  align-items: stretch;
+}
+/* פאנל שקוף צף מימין */
+.glass-panel {
+  width: 340px;
+  min-height: 100vh;
+  margin-right: auto;
+  background: rgba(10, 6, 2, 0.75);
+  backdrop-filter: blur(16px);
+  border-left: 1px solid rgba(224,201,127,0.2);
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+.panel-header {
+  padding: 22px 20px 16px;
+  border-bottom: 1px solid rgba(224,201,127,0.15);
+  text-align: center;
+}
+.panel-header h1 {
+  color: #e8d490;
+  font-size: 1.5rem;
+  letter-spacing: .05em;
+}
+.panel-header p {
+  color: #7a6535;
+  font-size: .7rem;
+  margin-top: 4px;
+  letter-spacing: .1em;
+}
+.menu-section { padding: 16px 16px 0; }
+.menu-section-title {
+  color: #6a5528;
+  font-size: .65rem;
+  letter-spacing: .15em;
+  margin-bottom: 8px;
+  padding-right: 4px;
+}
+.menu-item {
+  width: 100%;
+  padding: 10px 14px;
+  background: rgba(224,201,127,0.06);
+  border: 1px solid rgba(224,201,127,0.12);
+  border-radius: 10px;
+  color: #d4b96a;
+  font-family: 'STAM', serif;
+  font-size: .85rem;
+  text-align: right;
+  cursor: pointer;
+  margin-bottom: 6px;
+  display: block;
+  transition: background .2s;
+}
+.menu-item:hover { background: rgba(224,201,127,0.14); }
+.menu-item.active {
+  background: rgba(224,201,127,0.18);
+  border-color: rgba(224,201,127,0.4);
+  color: #e8d490;
+}
+.top-bar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 52px;
+  background: rgba(10,6,2,0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(224,201,127,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+.top-bar-title { color: #e8d490; font-size: 1rem; letter-spacing: .08em; }
+.label-option {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(224,201,127,0.9);
+  color: #1a0e00;
+  padding: 6px 18px;
+  border-radius: 20px;
+  font-size: .8rem;
+  font-weight: bold;
+  font-family: sans-serif;
+  z-index: 100;
+}
+</style>
+</head>
+<body>
+<div class="label-option">אפשרות א — פאנל שקוף מימין</div>
+<div class="glass-panel">
+  <div class="panel-header">
+    <h1>✦ היכל החכמה</h1>
+    <p>מערכת יעוץ ונומרולוגיה יהודית</p>
+  </div>
+  <div class="menu-section">
+    <div class="menu-section-title">מחשבוני נומרולוגיה</div>
+    <button class="menu-item active">✦ מערכת ייעוץ נומרולוגית</button>
+    <button class="menu-item">גורל החול</button>
+    <button class="menu-item">✦ גורל העשיריות</button>
+    <button class="menu-item">💑 מחשבון זוגיות</button>
+    <button class="menu-item">👨‍👧 חיבור הורים-ילדים</button>
+  </div>
+  <div class="menu-section" style="margin-top:10px">
+    <div class="menu-section-title">תהילים וגימטריה</div>
+    <button class="menu-item">📖 מחשבון תהילים אישי</button>
+    <button class="menu-item">🔢 מחשבון גימטריה</button>
+  </div>
+  <div class="menu-section" style="margin-top:10px">
+    <div class="menu-section-title">כלים נוספים</div>
+    <button class="menu-item">📅 יומן לקוחות</button>
+  </div>
+  <div style="margin-top:auto;padding:16px">
+    <button class="menu-item" style="color:#a06060;border-color:rgba(160,60,60,0.2)">🚪 יציאה</button>
+  </div>
+</div>
+</body>
+</html>

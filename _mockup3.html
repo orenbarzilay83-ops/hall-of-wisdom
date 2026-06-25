@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+@font-face { font-family: 'STAM'; src: url('./fonts/STAM.TTF'); }
+body {
+  font-family: 'STAM', serif;
+  min-height: 100vh;
+  background: #0a0602 url('./calc-bg-landscape.png') no-repeat center center;
+  background-size: cover;
+  position: relative;
+}
+/* פס שקוף בתחתית */
+.bottom-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 64px;
+  background: rgba(8,5,1,0.9);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(224,201,127,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 16px;
+}
+.bottom-btn {
+  padding: 8px 16px;
+  background: rgba(224,201,127,0.07);
+  border: 1px solid rgba(224,201,127,0.15);
+  border-radius: 12px;
+  color: #b89848;
+  font-family: 'STAM', serif;
+  font-size: .78rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 80px;
+  text-align: center;
+}
+.bottom-btn.active {
+  background: rgba(224,201,127,0.2);
+  border-color: rgba(224,201,127,0.45);
+  color: #e8d490;
+}
+.bottom-btn span { font-size: .6rem; color: #6a5528; }
+/* כרטיס ראשי */
+.float-card {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(8,5,1,0.85);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(224,201,127,0.28);
+  border-radius: 24px;
+  padding: 30px 30px 26px;
+  width: 420px;
+  color: #e8d490;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
+.card-title {
+  font-size: 1.35rem;
+  color: #e8d490;
+  margin-bottom: 20px;
+  text-align: center;
+  border-bottom: 1px solid rgba(224,201,127,0.15);
+  padding-bottom: 14px;
+}
+.field-label { color: #8a7040; font-size: .75rem; margin-bottom: 4px; display: block; }
+.field-input {
+  width: 100%;
+  padding: 9px 12px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(224,201,127,0.2);
+  border-radius: 8px;
+  color: #e8d490;
+  font-family: 'STAM', serif;
+  font-size: .9rem;
+  margin-bottom: 12px;
+  outline: none;
+}
+.btn-gold {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #d4b96a, #a87c2e);
+  color: #1a0900;
+  border: none;
+  border-radius: 10px;
+  font-family: 'STAM', serif;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 4px;
+}
+/* שם בפינה */
+.corner-title {
+  position: fixed;
+  top: 20px;
+  right: 24px;
+  color: rgba(232,212,144,0.7);
+  font-size: 1.1rem;
+  letter-spacing: .06em;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+}
+.label-option {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(224,201,127,0.9);
+  color: #1a0e00;
+  padding: 6px 18px;
+  border-radius: 20px;
+  font-size: .8rem;
+  font-weight: bold;
+  font-family: sans-serif;
+  z-index: 100;
+}
+</style>
+</head>
+<body>
+<div class="label-option">אפשרות ג — כרטיס מרחף + ניווט תחתון</div>
+<div class="corner-title">✦ היכל החכמה</div>
+<div class="float-card">
+  <div class="card-title">✦ מערכת ייעוץ נומרולוגית</div>
+  <label class="field-label">שם פרטי</label>
+  <input class="field-input" placeholder="הכנס שם...">
+  <label class="field-label">שם משפחה</label>
+  <input class="field-input" placeholder="הכנס שם משפחה...">
+  <label class="field-label">תאריך לידה</label>
+  <input class="field-input" placeholder="dd/mm/yyyy">
+  <button class="btn-gold">נתח נתונים ←</button>
+</div>
+<div class="bottom-bar">
+  <button class="bottom-btn active">✦<span>נומרולוגיה</span></button>
+  <button class="bottom-btn">🌙<span>גורל החול</span></button>
+  <button class="bottom-btn">📖<span>תהילים</span></button>
+  <button class="bottom-btn">🔢<span>גימטריה</span></button>
+  <button class="bottom-btn">💑<span>זוגיות</span></button>
+  <button class="bottom-btn">📅<span>יומן</span></button>
+</div>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+@font-face { font-family: 'STAM'; src: url('./fonts/STAM.TTF'); }
+body {
+  font-family: 'STAM', serif;
+  min-height: 100vh;
+  background: #0a0602 url('./calc-bg-landscape.png') no-repeat center center;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+}
+/* סרגל עליון כהה */
+.top-bar {
+  height: 56px;
+  background: rgba(8,5,1,0.92);
+  border-bottom: 1px solid rgba(224,201,127,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  flex-shrink: 0;
+}
+.top-bar-title { color: #e8d490; font-size: 1.1rem; letter-spacing: .06em; }
+.top-bar-nav { display: flex; gap: 6px; }
+.nav-btn {
+  padding: 7px 14px;
+  background: rgba(224,201,127,0.08);
+  border: 1px solid rgba(224,201,127,0.18);
+  border-radius: 8px;
+  color: #c4a958;
+  font-family: 'STAM', serif;
+  font-size: .78rem;
+  cursor: pointer;
+}
+.nav-btn.active {
+  background: rgba(224,201,127,0.22);
+  border-color: rgba(224,201,127,0.5);
+  color: #e8d490;
+}
+/* תוכן ראשי */
+.main { flex: 1; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 40px; }
+.content-card {
+  background: rgba(8,5,1,0.82);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(224,201,127,0.25);
+  border-radius: 20px;
+  padding: 28px 28px 24px;
+  width: 480px;
+  color: #e8d490;
+}
+.card-title {
+  font-size: 1.3rem;
+  color: #e8d490;
+  margin-bottom: 18px;
+  text-align: center;
+  border-bottom: 1px solid rgba(224,201,127,0.15);
+  padding-bottom: 12px;
+}
+.field-label { color: #8a7040; font-size: .75rem; margin-bottom: 4px; display: block; }
+.field-input {
+  width: 100%;
+  padding: 9px 12px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(224,201,127,0.2);
+  border-radius: 8px;
+  color: #e8d490;
+  font-family: 'STAM', serif;
+  font-size: .9rem;
+  margin-bottom: 12px;
+}
+.btn-gold {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #d4b96a, #a87c2e);
+  color: #1a0900;
+  border: none;
+  border-radius: 10px;
+  font-family: 'STAM', serif;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 4px;
+}
+.label-option {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(224,201,127,0.9);
+  color: #1a0e00;
+  padding: 6px 18px;
+  border-radius: 20px;
+  font-size: .8rem;
+  font-weight: bold;
+  font-family: sans-serif;
+  z-index: 100;
+}
+</style>
+</head>
+<body>
+<div class="label-option">אפשרות ב — סרגל עליון + כרטיס תוכן</div>
+<div class="top-bar">
+  <div class="top-bar-title">✦ היכל החכמה</div>
+  <div class="top-bar-nav">
+    <button class="nav-btn active">נומרולוגיה</button>
+    <button class="nav-btn">גורל החול</button>
+    <button class="nav-btn">תהילים</button>
+    <button class="nav-btn">גימטריה</button>
+    <button class="nav-btn">יומן</button>
+  </div>
+</div>
+<div class="main">
+  <div class="content-card">
+    <div class="card-title">✦ מערכת ייעוץ נומרולוגית</div>
+    <label class="field-label">שם פרטי</label>
+    <input class="field-input" placeholder="הכנס שם...">
+    <label class="field-label">שם משפחה</label>
+    <input class="field-input" placeholder="הכנס שם משפחה...">
+    <label class="field-label">תאריך לידה</label>
+    <input class="field-input" placeholder="dd/mm/yyyy">
+    <button class="btn-gold">נתח נתונים ←</button>
+  </div>
+</div>
+</body>
+</html>
