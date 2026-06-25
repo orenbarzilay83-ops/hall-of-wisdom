@@ -637,6 +637,11 @@
       margin-bottom:16px;
     }
     .col-sep { width:1px; background:#e0e0e0; margin:0 12px; align-self:stretch; flex-shrink:0; }
+    @media (max-width:560px) {
+      .open-2col { flex-direction:column; }
+      .col-sep { width:100%; height:1px; margin:14px 0; }
+      .open-inputs-col .open-field input { width:60%; }
+    }
     .open-inputs-col { flex:1.4; min-width:0; display:flex; flex-direction:column; gap:12px; align-items:center; }
     .open-profile-col { flex:1; min-width:0; display:flex; flex-direction:column; gap:20px; }
     .open-field { display:flex; flex-direction:column; gap:3px; width:100%; }
@@ -1319,9 +1324,6 @@
       gap: 11px;
       padding: 14px 14px 6px;
     }
-    @media (max-width: 480px) {
-      .qcard-grid { grid-template-columns: 1fr; }
-    }
 
     .qcard {
       border: 2px solid rgba(0,0,0,.14);
@@ -1350,6 +1352,36 @@
       font-weight: 700;
       background: rgba(6,25,45,.08);
       color: var(--navy);
+    }
+
+    /* ─── מובייל: רשימה קומפקטית במקום כרטיסיות גדולות ─── */
+    @media (max-width: 560px) {
+      .qcard-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+        padding: 6px 10px 6px;
+        background: white;
+        border-radius: 12px;
+        margin: 8px 10px;
+        box-shadow: 0 1px 6px rgba(0,0,0,.09);
+        overflow: hidden;
+      }
+      .qcard {
+        flex-direction: row;
+        align-items: center;
+        padding: 11px 12px;
+        border-radius: 0;
+        border: none;
+        border-bottom: 1px solid rgba(0,0,0,.09);
+        gap: 10px;
+        box-shadow: none !important;
+      }
+      .qcard:last-child { border-bottom: none; }
+      .qcard.selected { background: #eef5ff; border-right: 4px solid var(--navy); }
+      .qcard-emoji { font-size: 20px; flex-shrink: 0; line-height: 1; }
+      .qcard-label { font-size: 14px; font-weight: 700; flex: 1; margin-top: 0; }
+      .qcard-desc { display: none; }
+      .qcard-badge { margin-top: 0; font-size: 10px; padding: 2px 8px; flex-shrink: 0; }
     }
 
     .qscreen-actions {
@@ -1406,25 +1438,10 @@
 
     /* ─── כפתור התחל ב-screen-landing ─── */
     .landing-start-wrap {
-      padding: 26px 24px 30px;
+      padding: 20px 24px 24px;
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
+      justify-content: center;
       background: linear-gradient(180deg, var(--paper), var(--paper2));
-    }
-    .landing-start-title {
-      font-size: 20px;
-      font-weight: 900;
-      color: var(--navy);
-      margin: 0;
-      text-align: center;
-    }
-    .landing-start-sub {
-      font-size: 14px;
-      color: var(--muted);
-      margin: 0;
-      text-align: center;
     }
     .landing-start-btn {
       width: 80%;
@@ -1495,8 +1512,6 @@
         </picture>
       </div>
       <div class="landing-start-wrap">
-        <p class="landing-start-title">✦ גורל החול ✦</p>
-        <p class="landing-start-sub">בחר שאלה — קבל מסקנה מדויקת לפי ספרי הרמל הקלאסיים</p>
         <button class="landing-start-btn" id="landingStartBtn">בחר שאלה לגורל</button>
       </div>
     </section>
