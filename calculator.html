@@ -27,14 +27,10 @@ body.calc-page {
 }
 @media (max-width: 767px) {
   body.calc-page {
-    background-image:
-      linear-gradient(to bottom, transparent 60%, #0a0602 100%),
-      url('./calc-bg-portrait.png') !important;
-    background-size: 100% auto, 100% auto !important;
-    background-position: top center, top center !important;
-    background-repeat: no-repeat, no-repeat !important;
+    background-image: url('./calc-bg-portrait.png') !important;
+    background-size: cover !important;
+    background-position: center center !important;
   }
-  body.calc-page::before { display: none !important; }
 }
 .menu-overlay { display: none; }
 .top-bar {
