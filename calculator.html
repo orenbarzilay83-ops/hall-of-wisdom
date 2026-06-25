@@ -15,17 +15,16 @@ if (!sessionStorage.getItem('userId')) window.location.replace('/index.html');
 
 body.calc-page {
   font-family: 'STAM', sans-serif !important;
-  background: #0a0602 url('./calc-bg-landscape.png') no-repeat center center !important;
+  background: #0a0602 url('./calc-bg-landscape.png') no-repeat center center fixed !important;
   background-size: cover !important;
-  display: flex !important;
+  display: block !important;
   height: 100vh !important;
-  overflow: hidden !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
   padding: 0 !important;
   min-height: unset !important;
-  align-items: stretch !important;
 }
 .menu-overlay { display: none; }
-@media (min-width: 768px) { .menu-btn, .side-menu-close { display: none !important; } }
 .top-bar {
   background: rgba(8,5,1,0.20) !important;
   backdrop-filter: blur(8px);
@@ -36,22 +35,59 @@ body.calc-page {
 .top-bar-title { color: #e8d490 !important; font-family: 'STAM', sans-serif; }
 .top-bar-time  { color: #7a6535 !important; font-size: .68rem !important; }
 
-/* ── Glass Panel (side-menu repurposed) ── */
+/* ── מגירה נשלפת — כל הגדלים ── */
 .side-menu {
-  position: sticky !important;
+  position: fixed !important;
   top: 0 !important;
-  transform: none !important;
-  width: 200px !important;
-  min-width: 200px !important;
+  right: -270px !important;
+  left: auto !important;
+  width: 260px !important;
+  min-width: unset !important;
   height: 100vh !important;
   overflow-y: auto !important;
-  background: rgba(10,6,2,0.15) !important;
-  backdrop-filter: blur(6px) !important;
+  background: rgba(8,5,1,0.93) !important;
+  backdrop-filter: blur(18px) !important;
   border-left: 1px solid rgba(224,201,127,0.22) !important;
   border-right: none !important;
-  box-shadow: none !important;
-  z-index: 10 !important;
+  box-shadow: -8px 0 40px rgba(0,0,0,0.6) !important;
+  z-index: 1000 !important;
+  transition: right 0.3s ease !important;
   flex-shrink: 0 !important;
+}
+.side-menu.open {
+  right: 0 !important;
+}
+.menu-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  background: rgba(10,6,2,0.45) !important;
+  border: 1px solid rgba(224,201,127,0.3) !important;
+  border-radius: 8px !important;
+  color: #e8d490 !important;
+  font-family: 'STAM', sans-serif !important;
+  font-size: .85rem !important;
+  padding: 6px 12px !important;
+  cursor: pointer !important;
+}
+.side-menu-close {
+  display: block !important;
+  position: absolute !important;
+  left: 10px !important;
+  top: 10px !important;
+  background: transparent !important;
+  border: none !important;
+  color: #e8d490 !important;
+  font-size: 1.4rem !important;
+  cursor: pointer !important;
+  padding: 4px 8px !important;
+}
+.menu-overlay.open {
+  display: block !important;
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 999 !important;
+  background: rgba(0,0,0,0.45) !important;
 }
 .side-menu-header {
   background: transparent !important;
@@ -94,9 +130,8 @@ body.calc-page {
 
 /* ── Content Area ── */
 .content-area {
-  flex: 1;
-  overflow-y: auto;
-  height: 100vh;
+  width: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
@@ -200,74 +235,6 @@ input[type=email], input[type=password], select, textarea {
 .btn-blue{background:linear-gradient(135deg,#4a9eff,#1a73e8);color:#fff}
 .btn-green{background:linear-gradient(135deg,#68d391,#38a169);color:#1a1a2e}
 
-/* ── מובייל: מגירה נשלפת ── */
-@media (max-width: 767px) {
-  body.calc-page {
-    display: block !important;
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-    height: auto !important;
-    min-height: 100vh !important;
-    background-attachment: fixed !important;
-  }
-  .content-area {
-    height: auto !important;
-    min-height: 100vh !important;
-  }
-  /* המגירה מוסתרת מחוץ למסך מצד ימין */
-  .side-menu {
-    position: fixed !important;
-    top: 0 !important;
-    right: -260px !important;
-    left: auto !important;
-    width: 260px !important;
-    min-width: 260px !important;
-    height: 100vh !important;
-    z-index: 1000 !important;
-    transition: right 0.3s ease !important;
-    background: rgba(8,5,1,0.92) !important;
-    backdrop-filter: blur(16px) !important;
-    overflow-y: auto !important;
-  }
-  .side-menu.open {
-    right: 0 !important;
-  }
-  /* כפתור סגירה בפנים */
-  .side-menu-close {
-    display: block !important;
-    position: absolute !important;
-    left: 10px !important;
-    top: 10px !important;
-    background: transparent !important;
-    border: none !important;
-    color: #e8d490 !important;
-    font-size: 1.4rem !important;
-    cursor: pointer !important;
-    padding: 4px 8px !important;
-  }
-  /* כפתור המבורגר */
-  .menu-btn {
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: 6px !important;
-    background: rgba(10,6,2,0.5) !important;
-    border: 1px solid rgba(224,201,127,0.3) !important;
-    border-radius: 8px !important;
-    color: #e8d490 !important;
-    font-family: 'STAM', sans-serif !important;
-    font-size: .85rem !important;
-    padding: 6px 12px !important;
-    cursor: pointer !important;
-  }
-  /* רקע-overlay כשהתפריט פתוח */
-  .menu-overlay.open {
-    display: block !important;
-    position: fixed !important;
-    inset: 0 !important;
-    z-index: 999 !important;
-    background: rgba(0,0,0,0.5) !important;
-  }
-}
 </style>
 </head>
 <body class="calc-page">
