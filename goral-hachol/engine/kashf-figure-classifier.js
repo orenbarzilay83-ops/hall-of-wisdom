@@ -49,15 +49,15 @@ export function getSaadNahs(pattern) {
 }
 
 const DAKHIL_KHARIJ_HEBREW = {
-  'kharij':          "חיצוני (יוצא / מתממש)",
-  'dakhil':          "פנימי (נשאר / מעוכב)",
-  'mujassad-kharij': "מתהפך (תלוי, נוטה לצאת)",
-  'mujassad-dakhil': "קבוע (תלוי, נוטה להישאר)",
+  'kharij':          "חיצונית — צוחקת (יוצאת / מתממשת)",
+  'dakhil':          "פנימית — בוכה (נשארת / מעוכבת)",
+  'mujassad-kharij': "מתהפכת (תלוי, נוטה לחוץ)",
+  'mujassad-dakhil': "קבועה (תלוי, נוטה להישאר)",
 };
 
 const SAAD_NAHS_HEBREW = {
-  saad:  'סעד — מזל טוב',
-  nahs:  'נחס — מזל קשה',
+  saad:  'מיטיב',
+  nahs:  'מזיק',
   mixed: 'ממוזג',
 };
 

@@ -94,8 +94,8 @@ function checkJamaaDerivedRules(board, source) {
       ruleId: 'jamaa-from-two-humra-witness1',
       house: 13,
       figureHebrew: 'קהלה',
-      diagnosisHebrew: 'ג׳מאעה שיצאה משתי חומרה — קנאה חזקה מאוד',
-      meaningHebrew: 'ג׳מאעה שיצאה משתי חומרה — קנאה חזקה מאוד',
+      diagnosisHebrew: 'קהלה שיצאה משתי אדום — קנאה חזקה מאוד',
+      meaningHebrew: 'קהלה שיצאה משתי אדום — קנאה חזקה מאוד',
       severity: 'very-high',
       sourcePage: null,
     });
@@ -111,8 +111,8 @@ function checkJamaaDerivedRules(board, source) {
       ruleId: 'jamaa-from-two-nakis-witness1',
       house: 13,
       figureHebrew: 'קהלה',
-      diagnosisHebrew: 'ג׳מאעה שיצאה משני שפל ראש — שני כישופים קבורים ומתחדשים',
-      meaningHebrew: 'ג׳מאעה שיצאה משני שפל ראש — שני כישופים קבורים ומתחדשים',
+      diagnosisHebrew: 'קהלה שיצאה משני שפל ראש — שני כישופים קבורים ומתחדשים',
+      meaningHebrew: 'קהלה שיצאה משני שפל ראש — שני כישופים קבורים ומתחדשים',
       severity: 'extreme',
       sourcePage: null,
     });
@@ -128,8 +128,8 @@ function checkJamaaDerivedRules(board, source) {
       ruleId: 'jamaa-from-two-humra-witness2',
       house: 14,
       figureHebrew: 'קהלה',
-      diagnosisHebrew: 'ג׳מאעה שיצאה משתי חומרה — קנאה חזקה מאוד',
-      meaningHebrew: 'ג׳מאעה שיצאה משתי חומרה — קנאה חזקה מאוד',
+      diagnosisHebrew: 'קהלה שיצאה משתי אדום — קנאה חזקה מאוד',
+      meaningHebrew: 'קהלה שיצאה משתי אדום — קנאה חזקה מאוד',
       severity: 'very-high',
       sourcePage: null,
     });
@@ -145,8 +145,8 @@ function checkJamaaDerivedRules(board, source) {
       ruleId: 'jamaa-from-two-nakis-witness2',
       house: 14,
       figureHebrew: 'קהלה',
-      diagnosisHebrew: 'ג׳מאעה שיצאה משני שפל ראש — שני כישופים קבורים ומתחדשים',
-      meaningHebrew: 'ג׳מאעה שיצאה משני שפל ראש — שני כישופים קבורים ומתחדשים',
+      diagnosisHebrew: 'קהלה שיצאה משני שפל ראש — שני כישופים קבורים ומתחדשים',
+      meaningHebrew: 'קהלה שיצאה משני שפל ראש — שני כישופים קבורים ומתחדשים',
       severity: 'extreme',
       sourcePage: null,
     });

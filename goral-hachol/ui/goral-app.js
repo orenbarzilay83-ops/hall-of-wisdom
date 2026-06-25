@@ -11,6 +11,8 @@ let selectedHouseNum = null;  // בית שנבחר (1-12)
 let forcedTopicId = null;     // נושא שנקבע בכוח (למשל: בדיקה רוחנית)
 let selectedTopicId = null;   // תת-נושא שנבחר ישירות מתוך רשימת תת-נושאים
 let profileState = { gender: null, marital: null, work: null, children: null };
+let selectedQuestion = null;  // שאלה שנבחרה ממסך השאלות
+let _activeCatFilter = 'all'; // פילטר קטגוריה פעיל
 
 // 12 כרטיסים לפי סדר הבתים. הנושא המדויק נקבע בזמן הריצה לפי השאלה.
 // subTopics — אם יש, מוצגים לאחר בחירת הבית; null = ברירת מחדל ישירה.
@@ -26,6 +28,7 @@ const TOPIC_CARDS = [
   { house: 6,  title: 'מחלה ובריאות',  desc: 'חולי, מצב רפואי, החלמה',               defaultTopicId: 'illness',           subTopics: [
     { topicId: 'illness',              label: 'מחלה / בריאות' },
     { topicId: 'spiritualDiagnostics', label: 'עין הרע / כישוף / ג׳ין' },
+    { topicId: 'lostAnimal',           label: 'בהמה / חיה אבודה' },
   ]},
   { house: 7,  title: 'בית הזוגיות',        desc: 'בן/בת זוג, שותף, יריב, גנב, נעדר',     defaultTopicId: 'marriage',          subTopics: [
     { topicId: 'marriage',             label: 'נישואין / זוגיות' },
@@ -218,6 +221,127 @@ function showScreen(name) {
   window.scrollTo({ top:0, behavior:"smooth" });
 }
 
+// ─── מסך בחירת שאלה ────────────────────────────────────────────────────────
+function renderQuestionScreen() {
+  const cats = window.QUESTION_CATEGORIES || [];
+  const bank = window.QUESTION_BANK || [];
+
+  const allCats = [{ id: 'all', label: 'הכל', emoji: '📋', color: '#d0d0d0', border: '#999' }, ...cats];
+
+  const tabsEl = document.getElementById('qcatTabs');
+  if (tabsEl) {
+    tabsEl.innerHTML = allCats.map(cat => {
+      const isActive = _activeCatFilter === cat.id;
+      const bgStyle = isActive ? `background:${cat.border};color:white;` : `color:${cat.border};`;
+      return `<button class="qcat-tab${isActive ? ' active' : ''}" data-cat="${cat.id}"
+        style="border-color:${cat.border};${bgStyle}">
+        ${cat.emoji} ${cat.label}
+      </button>`;
+    }).join('');
+
+    tabsEl.querySelectorAll('.qcat-tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        _activeCatFilter = btn.dataset.cat;
+        renderQuestionScreen();
+      });
+    });
+  }
+
+  const catMap = {};
+  cats.forEach(c => { catMap[c.id] = c; });
+
+  const filtered = _activeCatFilter === 'all' ? bank : bank.filter(q => q.category === _activeCatFilter);
+
+  const gridEl = document.getElementById('qcardGrid');
+  if (gridEl) {
+    gridEl.innerHTML = filtered.map(q => {
+      const cat = catMap[q.category] || {};
+      const isSelected = selectedQuestion && selectedQuestion.id === q.id;
+      return `<button type="button"
+        class="qcard${isSelected ? ' selected' : ''}"
+        data-qid="${q.id}"
+        style="border-color:${isSelected ? 'var(--navy)' : (cat.border || '#ccc')}">
+        <span class="qcard-emoji">${cat.emoji || '•'}</span>
+        <span class="qcard-label">${escapeHtml(q.label)}</span>
+        <span class="qcard-desc">${escapeHtml(q.desc)}</span>
+        <span class="qcard-badge">בית ${q.houseId}</span>
+      </button>`;
+    }).join('');
+
+    gridEl.querySelectorAll('.qcard').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const qid = btn.dataset.qid;
+        selectedQuestion = bank.find(q => q.id === qid) || null;
+        renderQuestionScreen();
+      });
+    });
+  }
+
+  const contBtn = document.getElementById('continueFromQuestionBtn');
+  if (contBtn) contBtn.disabled = !selectedQuestion;
+}
+
+// ─── שדות דינמיים בהתאם לשאלה ─────────────────────────────────────────────
+function renderDynamicClientFields() {
+  const bannerEl = document.getElementById('questionBanner');
+  const fieldsEl = document.getElementById('dynamicFieldsSection');
+
+  if (!selectedQuestion) {
+    if (bannerEl) bannerEl.style.display = 'none';
+    if (fieldsEl) fieldsEl.style.display = 'none';
+    return;
+  }
+
+  const cats = window.QUESTION_CATEGORIES || [];
+  const catMap = {};
+  cats.forEach(c => { catMap[c.id] = c; });
+  const cat = catMap[selectedQuestion.category] || {};
+
+  if (bannerEl) {
+    bannerEl.style.display = '';
+    bannerEl.innerHTML = `<div class="question-banner">
+      <span class="question-banner-emoji">${cat.emoji || '•'}</span>
+      <div class="question-banner-text">
+        <div class="question-banner-label">${escapeHtml(selectedQuestion.label)}</div>
+        <div class="question-banner-desc">${escapeHtml(selectedQuestion.desc)}</div>
+      </div>
+      <button class="question-banner-change" id="changequestionBtn">שנה שאלה</button>
+    </div>`;
+    bannerEl.querySelector('#changequestionBtn')?.addEventListener('click', () => {
+      renderQuestionScreen();
+      showScreen('question');
+    });
+  }
+
+  const fields = selectedQuestion.clientFields || [];
+  if (fieldsEl) {
+    if (fields.length === 0) {
+      fieldsEl.style.display = 'none';
+    } else {
+      fieldsEl.style.display = '';
+      const fieldsHtml = fields.map(f => {
+        const id = 'dynField_' + f.id;
+        let inputHtml;
+        if (f.type === 'textarea') {
+          inputHtml = `<textarea id="${id}" rows="2" placeholder="${escapeHtml(f.placeholder || '')}" autocomplete="off"></textarea>`;
+        } else if (f.type === 'select' && f.options) {
+          inputHtml = `<select id="${id}">
+            <option value="">-- בחר --</option>
+            ${f.options.map(o => `<option value="${escapeHtml(o)}">${escapeHtml(o)}</option>`).join('')}
+          </select>`;
+        } else {
+          inputHtml = `<input id="${id}" type="${f.type || 'text'}" placeholder="${escapeHtml(f.placeholder || '')}" autocomplete="off" />`;
+        }
+        return `<div class="open-field"><label>${escapeHtml(f.label)}</label>${inputHtml}</div>`;
+      }).join('');
+      fieldsEl.innerHTML = `<div class="dynamic-fields-wrap">
+        <div class="dynamic-fields-title">פרטים לפי הנושא</div>
+        ${fieldsHtml}
+      </div>`;
+    }
+  }
+}
+
 function renderMotherSlots() {
   const box = document.getElementById("motherSlots");
   box.innerHTML = selectedMothers.map((fig, index) => `
@@ -268,7 +392,7 @@ function renderFigureGrid() {
 }
 
 function getClientContext(resolvedTopicId) {
-  return {
+  const ctx = {
     clientName: document.getElementById("clientNameInput").value.trim(),
     parentName: document.getElementById("clientParentInput").value.trim(),
     phone: document.getElementById("clientPhoneInput").value.trim(),
@@ -283,6 +407,13 @@ function getClientContext(resolvedTopicId) {
     workStatus: profileState.work || null,
     hasChildren: profileState.children || null,
   };
+  if (selectedQuestion && selectedQuestion.clientFields) {
+    for (const field of selectedQuestion.clientFields) {
+      const el = document.getElementById('dynField_' + field.id);
+      if (el) ctx[field.id] = el.value.trim();
+    }
+  }
+  return ctx;
 }
 
 function houseName(number) {
@@ -619,16 +750,6 @@ function buildInterpretationHtml(reading) {
         ${evidenceHtml ? `<div class="verdict-detail" style="margin-top:10px;font-size:13px;line-height:1.8;text-align:right;">${evidenceHtml}</div>` : ''}
       </div>`;
 
-  } else if (insight.shortClientVerdict) {
-    // Topic-aware short verdict from the engine
-    const svText = hebrewTerms(escapeHtml(insight.shortClientVerdict))
-      .replace(/\n\n/g, '<br/><br/>')
-      .replace(/\n/g, '<br/>');
-    shortVerdictHtml = `
-      <div class="summary-box" style="direction:rtl; border-right:4px solid #1a3a5c; padding-right:16px; margin-bottom:0;">
-        <p style="line-height:1.9; margin:0; font-size:16px;">${svText}</p>
-      </div>`;
-
   } else if (topicId !== 'generalReading' && judgeV && judgeV.hebrewShort) {
     // Fallback: generic verdict box
     shortVerdictHtml = `
@@ -671,24 +792,7 @@ function buildInterpretationHtml(reading) {
     .replace(/\n\n/g, '</p><p style="margin-top:14px;">')
     .replace(/\n/g, '<br/>');
 
-  // Source citations block — not shown for spiritual diagnostics (full evidence already in verdict-detail + conclusion)
-  let sourcesHtml = "";
-  if (rules.length > 0 && !isSpiritualTopic) {
-    const ruleItems = rules
-      .filter(r => r.hebrew || r.result)
-      .slice(0, 8)
-      .map(r => {
-        const text = escapeHtml(r.hebrew || r.result || "");
-        const arabic = r.arabic ? `<span style="font-size:11px; color:#888; font-family:serif; direction:rtl;"> (${escapeHtml(r.arabic)})</span>` : "";
-        const section = r.sourceSectionHebrew ? `<span style="font-size:11px; color:#999;"> — ${escapeHtml(r.sourceSectionHebrew)}</span>` : "";
-        return `<li style="margin-bottom:6px; line-height:1.7;">${text}${section}${arabic}</li>`;
-      }).join("");
-    sourcesHtml = `
-      <div style="margin-top:16px; border-top:1px solid #ddd; padding-top:12px;">
-        <div style="font-weight:700; font-size:12px; color:#555; margin-bottom:8px;">📚 מקורות חאוי — חוקים רלוונטיים</div>
-        <ul style="margin:0; padding-right:18px; font-size:13px; color:#444;">${ruleItems}</ul>
-      </div>`;
-  }
+  const sourcesHtml = "";
 
   const detailsPanelLabel = isSpiritualTopic
     ? `<div style="font-weight:700;font-size:13px;color:#5a3e00;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #e0c860;">🔍 ניתוח רוחני מפורט</div>`
@@ -816,9 +920,11 @@ function clearForm() {
   selectedHouseNum = null;
   forcedTopicId = null;
   selectedTopicId = null;
+  selectedQuestion = null;
   profileState = { gender: null, marital: null, work: null, children: null };
   document.querySelectorAll('.profile-btn.selected').forEach(b => b.classList.remove('selected'));
   renderTopicGrid();
+  renderDynamicClientFields();
   selectedMothers = [null,null,null,null];
   activeMother = 0;
   renderMotherSlots();
@@ -1114,7 +1220,7 @@ document.getElementById("menuCloseBtn").addEventListener("click", closeMenu);
 document.getElementById("menuOverlay").addEventListener("click", closeMenu);
 
 document.getElementById("menuGoralBtn").addEventListener("click", () => {
-  closeMenu(); showScreen("open");
+  closeMenu(); renderQuestionScreen(); showScreen("question");
 });
 document.getElementById("menuGuideBtn").addEventListener("click", () => {
   closeMenu(); showScreen("guide"); renderGuide();
@@ -1179,6 +1285,28 @@ document.getElementById("backFromPrayerBtn").addEventListener("click", () => sho
 document.getElementById("backFromIsqatBtn").addEventListener("click", () => showScreen("landing"));
 document.getElementById("backFromRamalBtn").addEventListener("click", () => showScreen("landing"));
 document.getElementById("backFromKashfBtn").addEventListener("click", () => showScreen("landing"));
+
+// ─── ניווט מסך שאלות ──────────────────────────────────────────
+document.getElementById("landingStartBtn").addEventListener("click", () => {
+  selectedQuestion = null;
+  _activeCatFilter = 'all';
+  renderQuestionScreen();
+  showScreen("question");
+});
+
+document.getElementById("backFromQuestionBtn").addEventListener("click", () => showScreen("landing"));
+
+document.getElementById("continueFromQuestionBtn").addEventListener("click", () => {
+  if (!selectedQuestion) return;
+  selectedHouseNum = selectedQuestion.houseId;
+  selectedTopicId  = selectedQuestion.topicId;
+  forcedTopicId    = null;
+  const qInput = document.getElementById("questionInput");
+  if (qInput && !qInput.value.trim()) qInput.value = selectedQuestion.label;
+  renderTopicGrid();
+  renderDynamicClientFields();
+  showScreen("open");
+});
 
 // ─── ספירת מפתוח 7×7 ───────────────────────────────────────────────────
 const ISQAT_RESULTS = {
@@ -1518,13 +1646,13 @@ function renderBuildGuide() {
 function renderConceptsGuide() {
   const el = document.getElementById("guide-concepts");
   const concepts = [
-    { title: 'דיין — השופט (بيت 15)', sub: 'הכרעה הסופית', body: 'הדיין בבית 15 הוא "שופט הלוח". צורה שלו קובעת את התשובה הכוללת. טוב (مسعود) = כן/חיובי, רע (محوس) = לא/שלילי, ממוזג = תלוי בעדים. הדיין גובר על הכול — גם אם כל הלוח רע, דיין טוב פוסק בחיוב.' },
+    { title: 'הדיין — בית 15', sub: 'הכרעה הסופית', body: 'הדיין בבית 15 הוא "שופט הלוח". צורתו קובעת את התשובה הכוללת. צורה מיטיבה = כן/חיובי, צורה מזיקה = לא/שלילי, ממוזגת = תלוי בעדים. הדיין גובר על הכול — גם אם כל הלוח שלילי, דיין טוב פוסק בחיוב.' },
     { title: 'עדים — בתים 13-14', sub: 'מחזקים או מחלישים את הדיין', body: 'שני העדים (בית 13 ו-14) מחזקים את פסיקת הדיין. אם שניהם מסכימים עם הדיין — הפסיקה ודאית. אם סותרים — הדין מסופק. בית 13 = צד השואל. בית 14 = הדבר הנשאל.' },
-    { title: 'דמיר — הכוונה הנסתרת (الضمير)', sub: 'מה באמת רוצה השואל', body: 'הדמיר מחושב ממיזן (מאזניים) ה-4 יסודות: אש, אוויר, מים, עפר. מכוון לבית מסוים בלוח המגלה את ה"שאלה האמיתית" שבלב השואל — לפעמים שונה משאלתו המוצהרת.' },
-    { title: 'תחסיל — השלמת הדבר (تحصيل)', sub: 'האם הדבר ייגמר?', body: 'בודקים האם יש חיבור ישיר, עקיף, או בהעברה בין בית 1 (השואל) לבית 7 (הנשאל). חיבור ישיר = הדבר יצא לפועל בוודאות. הגעה בינונית = תלוי גורמים. אין חיבור = הדבר לא ייגמר.' },
-    { title: 'איתיסלאת — חיבור (الاتصال)', sub: 'קשרים בין צורות בלוח', body: 'כאשר צורה חוזרת בשני בתים שונים נוצר "חיבור" ביניהם. חיבור בין בית 1 לבית 7 = השואל והנשאל קשורים. חיבור לבית 10 = עניין ציבורי/שלטוני מחובר. סוגי חיבורים: ריבוע, משולש, מול, תסדיס.' },
-    { title: 'אצאלה — תוקף הלוח (الأصالة)', sub: 'האם הלוח תקף?', body: 'לוח תקף כאשר צורת בית 1 (השואל) מופיעה בלפחות עוד בית אחד בלוח. אם הצורה מופיעה רק בבית 1 — הלוח חלש ויש לנהוג בזהירות בפרשנות. צורה שחוזרת בבתים 1, 4, 7 ו-10 = לוח חזק מאוד.' },
-    { title: 'ג\'מלה — ספירת נקודות (الجملة)', sub: 'כוח הלוח הכללי', body: 'ספירת סה"כ הנקודות בלוח (1 = נקודה אחת, 2 = שתי נקודות, לכל שורה). מחלקים ל-4 לבדיקת מחלות, ל-3 לבדיקת ילדים. תוצאה זוגית/אי-זוגית מוסיפה שכבת פרשנות.' },
+    { title: 'גילוי מחשבת השואל', sub: 'מה באמת רוצה השואל', body: 'מחשבת השואל מחושבת דרך גילוי הכוונה הנסתרת — ממאזן ארבעת היסודות: אש, אוויר, מים, עפר. הדרך מכוונת לבית מסוים בלוח המגלה את מחשבת השואל האמיתית — לפעמים שונה משאלתו המוצהרת (כשף אל-אסראר, שער רביעי).' },
+    { title: 'השלמת הדבר', sub: 'האם הדבר ייגמר?', body: 'בודקים האם יש חיבור ישיר, עקיף, או בהעברה בין בית 1 (השואל) לבית 7 (הנשאל). חיבור ישיר = הדבר יצא לפועל בוודאות. הגעה בינונית = תלוי גורמים. אין חיבור = הדבר לא ייגמר.' },
+    { title: 'חיבור בין הצורות', sub: 'קשרים בין צורות בלוח', body: 'כאשר צורה חוזרת בשני בתים שונים נוצר "חיבור" ביניהם. חיבור בין בית 1 לבית 7 = השואל והנשאל קשורים. חיבור לבית 10 = עניין ציבורי/שלטוני מחובר. סוגי חיבורים: ריבוע, משולש, מול, שישית.' },
+    { title: 'תוקף הלוח', sub: 'האם הלוח תקף?', body: 'לוח תקף כאשר צורת בית 1 (השואל) מופיעה בלפחות עוד בית אחד בלוח. אם הצורה מופיעה רק בבית 1 — הלוח חלש ויש לנהוג בזהירות בפרשנות. צורה שחוזרת בבתים 1, 4, 7 ו-10 = לוח חזק מאוד.' },
+    { title: 'ספירת נקודות הלוח', sub: 'כוח הלוח הכללי', body: 'ספירת סה"כ הנקודות בלוח (1 = נקודה אחת, 2 = שתי נקודות, לכל שורה). מחלקים ל-4 לבדיקת מחלות, ל-3 לבדיקת ילדים. תוצאה זוגית/אי-זוגית מוסיפה שכבת פרשנות.' },
   ];
   el.innerHTML = concepts.map(c => `
     <div class="concept-card">
@@ -1603,7 +1731,7 @@ function showKashfPage(idx) {
       </div>
       <div class="kashf-page-meta">
         <div class="kashf-page-num">עמ׳ ${p.page} בספר</div>
-        <div class="kashf-chapter-title">${escapeHtml(p.chapterHebrew || p.chapter || '')}</div>
+        <div class="kashf-chapter-title">${escapeHtml(p.chapterHebrew || '')}</div>
       </div>
       <div class="kashf-page-text">${kashfMdToHtml(p.hebrewTranslation || '(אין תרגום לעמוד זה)')}</div>
       <div class="kashf-bottom-nav">

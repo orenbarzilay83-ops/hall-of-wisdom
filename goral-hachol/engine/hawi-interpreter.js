@@ -125,6 +125,7 @@ const TOPIC_MAIN_HOUSES = {
   loan:             [1, 2, 7, 8, 13, 14, 15],
   religion:         [1, 3, 9, 13, 14, 15],
   motherRules:      [1, 4, 7, 10, 13, 14, 15],
+  lostAnimal:       [1, 6, 7, 8, 13, 14, 15],
 };
 
 const TOPIC_HEBREW_TITLES = {
@@ -155,6 +156,7 @@ const TOPIC_HEBREW_TITLES = {
   loan:             'הלוואה / חוב',
   religion:         'דת / אמונה',
   motherRules:      'דיני האם',
+  lostAnimal:       'בהמה / חיה אבודה',
 };
 
 const TOPIC_QUESITED_HOUSE = {
@@ -1109,7 +1111,7 @@ function computeDhamirByMizanTracing(chart) {
   const primary = traces[0] || null;
   return {
     method: 'mizan-tracing',
-    methodHebrew: 'תסיירת נקטת המיזאן',
+    methodHebrew: 'שיטת ספירת נקודות המאזן',
     traces,
     primaryHouseNumber: primary?.dhamirHouseNumber || null,
     primaryHebrew: primary?.dhamirHebrew || '',
@@ -1162,11 +1164,11 @@ function computeSodHaDhamirim(chart) {
   if (matches.length === 0) return null;
   const primary = matches[0];
   const outputHebrew = matches.length === 1
-    ? `סוד הדמירים: בית ${primary.houseNumber} — ${primary.figureHebrew} יושבת בביתה הטבעי`
-    : `סוד הדמירים: בתים ${matches.map(m => m.houseNumber).join(', ')} — צורות בביתן הטבעי`;
+    ? `סוד הכוונות הנסתרות: בית ${primary.houseNumber} — ${primary.figureHebrew} יושבת בביתה הטבעי`
+    : `סוד הכוונות הנסתרות: בתים ${matches.map(m => m.houseNumber).join(', ')} — צורות בביתן הטבעי`;
   return {
     method: 'sod-ha-dhamirim',
-    methodHebrew: 'סוד הדמירים',
+    methodHebrew: 'סוד הכוונות הנסתרות',
     sourceRef: 'כשף עמ׳ 104',
     matches,
     primaryHouseNumber: primary.houseNumber,
@@ -1454,8 +1456,8 @@ function buildJudgeVerdict(boardAnalysis) {
     const dhamirH = boardAnalysis.dhamirByMizan?.primaryHouseNumber || boardAnalysis.dhamirHouse?.houseNumber || '';
     const confirming = (judgeTone > 0 && dhamirToneVerdict > 0) || (judgeTone < 0 && dhamirToneVerdict < 0);
     hebrewFull += confirming
-      ? ` הדמיר (בית ${dhamirH}) מאשר את הפסיקה — ${dhamirFort}.`
-      : ` הדמיר (בית ${dhamirH}) מנוגד לדיין — ${dhamirFort} — ייתכן שינוי במהלך.`;
+      ? ` מחשבת השואל (בית ${dhamirH}) מאשרת את הפסיקה — ${dhamirFort}.`
+      : ` מחשבת השואל (בית ${dhamirH}) מנוגדת לדיין — ${dhamirFort} — ייתכן שינוי במהלך.`;
   }
   if (boardAnalysis.boardScore?.isComplete === false) {
     hebrewFull += ` [הערה: הלוח חסר (${boardAnalysis.boardScore.score} נקודות) — הפסיקה פחות ודאית.]`;
@@ -1923,6 +1925,139 @@ function computeAuthorityStateAnalysis(chart, authoritySource) {
   };
 }
 
+// משך השררות — kashf p.259: stability of authority based on 4 angular houses
+function computeAuthorityDurationKashf(chart) {
+  const angularNums = [1, 4, 7, 10];
+  const angulars = angularNums.map((n) => chartHouse(chart, n));
+  const isBenefic = (h) => h && !MALEFIC_FIGURE_PATTERNS.has(h.key || '');
+  const isMutable = (h) => h && getFigureDirection(h.key) === 'mutable';
+  const isMalefic = (h) => h && MALEFIC_FIGURE_PATTERNS.has(h.key || '');
+
+  const allBenefic = angulars.every(isBenefic);
+  const allMalefic = angulars.every(isMalefic);
+  const anyMutable = angulars.some(isMutable);
+  const anyMalefic = angulars.some(isMalefic);
+
+  const housesDisplay = angulars.map((h, i) => `ב${angularNums[i]} (${h?.hebrew || '?'})`).join(', ');
+
+  let verdict, outputHebrew;
+  if (allBenefic) {
+    verdict = 'stable';
+    outputHebrew = `ארבעת היתדות (${housesDisplay}) מסועדות — המושל יישאר בשלטון, שלטונו יציב (כשף עמ׳ 259)`;
+  } else if (allMalefic) {
+    verdict = 'removal-soon';
+    outputHebrew = `ארבעת היתדות (${housesDisplay}) נחסיות — אין שלטון קבוע, יודח בקרוב (כשף עמ׳ 259)`;
+  } else if (anyMutable) {
+    verdict = 'alternating';
+    outputHebrew = `יתדות מתהפכות בלוח (${housesDisplay}) — פעם יודח ופעם ימונה מחדש (כשף עמ׳ 259)`;
+  } else if (anyMalefic) {
+    verdict = 'risk';
+    outputHebrew = `חלק מן היתדות נחסיות (${housesDisplay}) — שלטון עם סיכון; אם חלקן מיטיב, יש לפחד אך לא לייאש (כשף עמ׳ 259)`;
+  } else {
+    verdict = 'stable';
+    outputHebrew = `היתדות (${housesDisplay}) בסעד — שלטון יציב (כשף עמ׳ 259)`;
+  }
+  return { verdict, outputHebrew };
+}
+
+// האם יחזור לתפקיד — kashf p.266: will the dismissed person return to their position?
+function computeReturnToOfficeKashf(chart) {
+  const h1  = chartHouse(chart, 1);
+  const h10 = chartHouse(chart, 10);
+  const h16 = chartHouse(chart, 16);
+  const isBenefic  = (h) => h && !MALEFIC_FIGURE_PATTERNS.has(h.key || '');
+  const isIncoming = (h) => h && getFigureDirection(h.key) === 'incoming';
+
+  const h1Good = isBenefic(h1) && isIncoming(h1);
+  const h10Good = isBenefic(h10);
+  const h16Good = isBenefic(h16);
+
+  let verdict, outputHebrew;
+  if (h1Good && (h10Good || h16Good)) {
+    verdict = 'returns';
+    outputHebrew = `ב1 (${h1?.hebrew}) סעד+נכנס, ב10 (${h10?.hebrew}) / ב16 (${h16?.hebrew}) תומכים — יחזור לתפקידו (כשף עמ׳ 266)`;
+  } else if (!isBenefic(h1)) {
+    verdict = 'no-return';
+    outputHebrew = `ב1 (${h1?.hebrew}) נחס — לא יחזור לתפקיד (כשף עמ׳ 266)`;
+  } else {
+    verdict = 'uncertain';
+    outputHebrew = `ב1 (${h1?.hebrew}) סעד אך לא נכנס, או בית 10/16 לא תומכים — הדין לא מוכרע (כשף עמ׳ 266)`;
+  }
+  return { verdict, outputHebrew };
+}
+
+// יציבות המצב הנוכחי — kashf pp.265-266: durability of current state (דוואם אל-חאל)
+function computeStateStabilityKashf(chart) {
+  const h1  = chartHouse(chart, 1);
+  const h2  = chartHouse(chart, 2);
+  const h9  = chartHouse(chart, 9);
+  const h15 = chartHouse(chart, 15);
+  const isBenefic = (h) => h && !MALEFIC_FIGURE_PATTERNS.has(h.key || '');
+
+  const h1Good = isBenefic(h1);
+  const h1ReturnsInH15 = h1?.key && h15?.key && h1.key === h15.key;
+  const allFourGood = [h1, h2, h9, h15].every(isBenefic);
+  const h15Good = isBenefic(h15);
+
+  let verdict, outputHebrew;
+  if (h1Good && h1ReturnsInH15) {
+    verdict = 'stable-complete';
+    outputHebrew = `ב1 (${h1?.hebrew}) סעד וחוזר בב15 — יציבות מלאה ושלמות האושר (כשף עמ׳ 265)`;
+  } else if (allFourGood) {
+    verdict = 'stable-all';
+    outputHebrew = `ב1+2+9+15 (${h1?.hebrew}/${h2?.hebrew}/${h9?.hebrew}/${h15?.hebrew}) מסועדים — שלמות אושר, מעבר מטוב לטוב (כשף עמ׳ 265)`;
+  } else if (!h1Good && h15Good) {
+    verdict = 'improving';
+    outputHebrew = `ב1 (${h1?.hebrew}) נחס בבית סעד (ב15: ${h15?.hebrew}) — המצב עשוי להשתפר מרע לטוב (כשף עמ׳ 265)`;
+  } else if (!h1Good) {
+    verdict = 'declining';
+    outputHebrew = `ב1 (${h1?.hebrew}) נחס — המצב אינו יציב, צפויה ירידה (כשף עמ׳ 265-266)`;
+  } else {
+    verdict = 'moderate';
+    outputHebrew = `ב1 (${h1?.hebrew}) סעד אך ב15 (${h15?.hebrew}) לא חוזר — יציבות בינונית (כשף עמ׳ 265)`;
+  }
+  return { verdict, outputHebrew };
+}
+
+// Security and lifespan from kashf p.234-236 (house 8)
+function computeSecurityKashf(chart) {
+  const h8 = chartHouse(chart, 8);
+  if (!h8) return null;
+  const isSaad = !MALEFIC_FIGURE_PATTERNS.has(h8.key || '');
+  const dir = getFigureDirection(h8.key);
+  let verdict, outputHebrew;
+  if (isSaad && dir === 'outgoing') {
+    verdict = 'safe-outgoing';
+    outputHebrew = `בית 8 (${h8.hebrew}) — מיטיב יוצא: יינצל השואל מן הפחד, ייכנס בידו ממון, והסוף נוטה לטובה (כשף עמ׳ 236).`;
+  } else if (isSaad) {
+    verdict = 'safe';
+    outputHebrew = `בית 8 (${h8.hebrew}) — מיטיב: ביטחון מפחד, אריכות ימים, ירושה או ממון נעלם שיבוא אל השואל (כשף עמ׳ 234).`;
+  } else if (dir === 'incoming') {
+    verdict = 'fear-incoming';
+    outputHebrew = `בית 8 (${h8.hebrew}) — מזיק פנימי: פחד חזק, אך סופו של האדם בתשובה, שלום ופיוס (כשף עמ׳ 236).`;
+  } else {
+    verdict = 'fear-outgoing';
+    outputHebrew = `בית 8 (${h8.hebrew}) — מזיק יוצא: פחד מרובה ואין ביטחון; מיתתו עלולה להיות בפתאומיות או מחמת פגיעה (כשף עמ׳ 236).`;
+  }
+  return { verdict, outputHebrew };
+}
+
+// Lifespan stages from kashf p.264 (houses 11, 9, 7)
+function computeLifespanKashf(chart) {
+  const h11 = chartHouse(chart, 11);
+  const h9  = chartHouse(chart, 9);
+  const h7  = chartHouse(chart, 7);
+  const isSaad = (h) => h && !MALEFIC_FIGURE_PATTERNS.has(h.key || '');
+  const stageHebrew = (h, label) => {
+    if (!h) return `${label}: לא נמצא`;
+    return `${label} (${h.hebrew}) — ${isSaad(h) ? 'מיטיב' : 'מזיק'}`;
+  };
+  return {
+    verdict: 'three-stages',
+    outputHebrew: `${stageHebrew(h11, 'ראשית החיים — ב11')} | ${stageHebrew(h9, 'אמצע החיים — ב9')} | ${stageHebrew(h7, 'סוף החיים — ב7')} (כשף עמ׳ 264).`,
+  };
+}
+
 // Note: sourceShapes in hawi-planetary-correspondences has inconsistent row-order encoding
 // between planets, so we keep the verified hardcoded mapping here.
 const FIGURE_PLANET_MAP = (function () {
@@ -1938,6 +2073,305 @@ const FIGURE_PLANET_MAP = (function () {
   ]) { for (const f of p.figures) m[f] = p.hebrew; }
   return m;
 })();
+
+const KASHF_PLANET_COLORS = {
+  'שמש':            'צהוב',
+  'לבנה':           'צבעוני / מגוון',
+  'מאדים':          'אדום',
+  'כוכב / מרקורי':  'צבעוני / מגוון',
+  'שבתאי':          'שחור',
+  'נוגה':           'ירוק',
+  'צדק':            'לבן',
+};
+
+// Clothing luck analysis from kashf p.265 (houses 5, 10, 11)
+function computeClothingLuckKashf(chart) {
+  const h5  = chartHouse(chart, 5);
+  const h10 = chartHouse(chart, 10);
+  const h11 = chartHouse(chart, 11);
+  const isSaad = (h) => h && !MALEFIC_FIGURE_PATTERNS.has(h.key || '');
+  const isMutable = (h) => h && getFigureDirection(h.key) === 'mutable';
+  const h5Good  = isSaad(h5);
+  const h10Good = isSaad(h10);
+  const h11Good = isSaad(h11);
+  const planet5 = h5 ? FIGURE_PLANET_MAP[h5.key] : null;
+  const color   = planet5 ? (KASHF_PLANET_COLORS[planet5] || 'לא ידוע') : 'לא ידוע';
+  let verdict, outputHebrew;
+  if (h5Good && h11Good) {
+    verdict = 'luck';
+    const mutableNote = isMutable(h5) ? ' הצורה מתהפכת — אינו עומד על לבוש אחד.' : '';
+    outputHebrew = `ב5 (${h5?.hebrew}) וב11 (${h11?.hebrew}) מיטיבים — יש לו מזל בלבושים.${mutableNote} צבע הלבוש (${planet5 || 'לא ידוע'}): ${color} (כשף עמ׳ 265).`;
+  } else if (!h10Good) {
+    verdict = 'no-luck-rulers';
+    outputHebrew = `ב10 (${h10?.hebrew}) מזיק — אין לו מזל בלבוש המלכים או בכיבוד מצד בעלי מעלה (כשף עמ׳ 265).`;
+  } else {
+    const bothBad = !h5Good && !h11Good;
+    verdict = bothBad ? 'no-luck' : 'partial';
+    outputHebrew = bothBad
+      ? `ב5 (${h5?.hebrew}) וב11 (${h11?.hebrew}) מזיקים — אין מזל בלבוש, הבגד ישאר עליו עד שיקרע (כשף עמ׳ 265).`
+      : `ב5 (${h5?.hebrew}) / ב11 (${h11?.hebrew}) — מצב מעורב, מזל חלקי בלבוש (כשף עמ׳ 265).`;
+  }
+  return { verdict, outputHebrew, colorHebrew: color, planet: planet5 };
+}
+
+// Lifespan by figure shapes — kashf p.195
+// Short figures (5): חיבור(2112), בר הלחי(1211), דרך(1111), שפל ראש(2221), אדום(2122)
+// Long figures (2): לבן(2212), קהלה(2222)
+// Rule: check non-pillar houses (not 1,4,7,10); if short/long figures are "numerous" → verdict
+const SHORT_LIFE_FIGURES = new Set(['2112', '1211', '1111', '2221', '2122']);
+const LONG_LIFE_FIGURES  = new Set(['2212', '2222']);
+const PILLAR_HOUSES      = new Set([1, 4, 7, 10]);
+
+function computeLifespanByFigureShapes(chart) {
+  const nonPillars = chart.filter(h => !PILLAR_HOUSES.has(Number(h.house)));
+  let shortCount = 0, longCount = 0;
+  const shortNames = [], longNames = [];
+  for (const h of nonPillars) {
+    if (SHORT_LIFE_FIGURES.has(h.key)) {
+      shortCount++;
+      shortNames.push(`ב${h.house} (${h.hebrew})`);
+    } else if (LONG_LIFE_FIGURES.has(h.key)) {
+      longCount++;
+      longNames.push(`ב${h.house} (${h.hebrew})`);
+    }
+  }
+  let verdict, outputHebrew;
+  if (longCount >= 2) {
+    verdict = 'long-life';
+    outputHebrew = `צורות ארוכות מרובות בבתים הלא-יתדיים: ${longNames.join(', ')} — מורות על אורך ימים (כשף עמ׳ 195).`;
+  } else if (shortCount >= 3) {
+    verdict = 'short-life';
+    outputHebrew = `צורות קצרות מרובות בבתים הלא-יתדיים: ${shortNames.join(', ')} — מורות על קוצר ימים (כשף עמ׳ 195).`;
+  } else if (longCount > shortCount) {
+    verdict = 'leaning-long';
+    outputHebrew = `${longCount} צורות ארוכות (${longNames.join(', ')}) מול ${shortCount} קצרות — נטייה לאורך ימים (כשף עמ׳ 195).`;
+  } else if (shortCount > longCount) {
+    verdict = 'leaning-short';
+    outputHebrew = `${shortCount} צורות קצרות (${shortNames.join(', ')}) מול ${longCount} ארוכות — נטייה לאורך חיים קצר (כשף עמ׳ 195).`;
+  } else {
+    verdict = 'neutral';
+    outputHebrew = `${shortCount} צורות קצרות, ${longCount} ארוכות בבתים הלא-יתדיים — אין הכרעה ברורה לאורך חיים (כשף עמ׳ 195).`;
+  }
+  return { verdict, outputHebrew, shortCount, longCount, shortNames, longNames };
+}
+
+// Preferred clothing figures: כבוד נכנס(2211), לבן(2212), בר הלחי(1211) in h5 — kashf p.196
+function computeClothingBestFiguresKashf(chart) {
+  const h5 = chartHouse(chart, 5);
+  if (!h5) return null;
+  const BEST_CLOTHING = new Set(['2211', '2212', '1211']);
+  const isBest = BEST_CLOTHING.has(h5.key);
+  return {
+    verdict: isBest ? 'best-clothing' : 'other',
+    outputHebrew: isBest
+      ? `ב5 (${h5.hebrew}) — מן הצורות המועדפות לפריסת לבוש ותפירה: כבוד נכנס / לבן / בר הלחי (כשף עמ׳ 196).`
+      : `ב5 (${h5.hebrew}) — אינה מן הצורות המועדפות לפריסת לבוש (כשף עמ׳ 196).`,
+  };
+}
+
+// Who looks at whom — fire row of h1, h7, h13 (kashf p.170)
+function computeWhoLooksAtWhomKashf(chart) {
+  const h1  = chartHouse(chart, 1);
+  const h7  = chartHouse(chart, 7);
+  const h13 = chartHouse(chart, 13);
+  if (!h1 || !h7) return null;
+  // fire row = pattern[0]; '1'=odd=single=open, '2'=even=pair=closed
+  const h1Fire  = h1.key?.[0] === '1';
+  const h7Fire  = h7.key?.[0] === '1';
+  const h13Fire = h13?.key?.[0] === '1';
+  let verdict, outputHebrew;
+  if (h1Fire && !h7Fire) {
+    verdict = 'looks-at-you';
+    outputHebrew = `ב1 (${h1.hebrew}) — שורת האש פתוחה; ב7 (${h7.hebrew}) — שורת האש סתומה: האדם מביט אליך (כשף עמ׳ 170).`;
+  } else if (h13Fire && h7Fire) {
+    verdict = 'looks-at-other';
+    outputHebrew = `ב13 (${h13?.hebrew}) וב7 (${h7.hebrew}) — שתי שורות האש פתוחות: האדם מביט אל אחר (כשף עמ׳ 170).`;
+  } else {
+    verdict = 'unclear';
+    outputHebrew = `ב1 (${h1.hebrew}) / ב7 (${h7.hebrew}) — אין אינדיקציה ברורה מי מביט על מי (כשף עמ׳ 170).`;
+  }
+  return { verdict, outputHebrew };
+}
+
+// Source of money — count all board points mod 7 (kashf p.181)
+function computeMoneySourceKashf(chart) {
+  let total = 0;
+  for (const h of chart) {
+    const key = h.key || '';
+    for (const c of key) total += (c === '1') ? 1 : 2;
+  }
+  const foundMoney = (total % 2 === 0);
+  const rem7 = total % 7;
+  const srcMap = { 1: 'מצד השלטון', 2: 'מצד נשים', 3: 'מצד כתיבה או ספרים',
+                   4: 'מצד ירושה', 5: 'מצד נסיעה', 6: 'מצד מסחר', 0: 'מצד גניבה — אין בה טוב' };
+  const source = srcMap[rem7] || srcMap[0];
+  const moneyNote = foundMoney ? 'ימצא כסף גדול' : 'אינו מוצא כסף';
+  return {
+    verdict: foundMoney ? `money-found-${rem7}` : 'no-money',
+    outputHebrew: `סך נקודות הלוח: ${total} — ${moneyNote}. מקור הכסף (שארית ÷7=${rem7 || 7}): ${source} (כשף עמ׳ 181).`,
+    total, foundMoney, source,
+  };
+}
+
+// Well drilling — h4 saad+incoming = success (kashf p.188-189)
+function computeWellDrillingKashf(chart) {
+  const h1  = chartHouse(chart, 1);
+  const h4  = chartHouse(chart, 4);
+  const h7  = chartHouse(chart, 7);
+  const h10 = chartHouse(chart, 10);
+  if (!h4) return null;
+  const isSaad  = (h) => h && !MALEFIC_FIGURE_PATTERNS.has(h.key || '');
+  const isIn    = (h) => h && getFigureDirection(h.key) === 'incoming';
+  const h4Good  = isSaad(h4) && isIn(h4);
+  const pillarsOk = [h1, h4, h7, h10].every(h => isSaad(h));
+  // Depth unit by h4 element (dominant single-dot row)
+  const k = h4.key || '    ';
+  const depthUnit = k[0]==='1' ? 'אצבעות (אש)' : k[1]==='1' ? 'שיבר (אוויר)' : k[2]==='1' ? 'אמות (מים)' : 'לפי עומק הקרקע (עפר)';
+  let verdict, outputHebrew;
+  if (h4Good && pillarsOk) {
+    verdict = 'success';
+    outputHebrew = `ב4 (${h4.hebrew}) — סעד ופנימי, כל היתדות מיטיבים: הבאר תצלח ויימצאו מים. מידת העומק: ${depthUnit} (כשף עמ׳ 188-189).`;
+  } else if (h4Good) {
+    verdict = 'partial';
+    outputHebrew = `ב4 (${h4.hebrew}) — סעד ופנימי, אך לא כל היתדות מיטיבים: יש סיכוי למים, אך לא מובטח. עומק: ${depthUnit} (כשף עמ׳ 188-189).`;
+  } else {
+    verdict = 'fail';
+    const reason = !isSaad(h4) ? 'מזיק' : 'חיצוני';
+    outputHebrew = `ב4 (${h4.hebrew}) — ${reason}: לא מומלץ לחפור באר בעת זו (כשף עמ׳ 188-189).`;
+  }
+  return { verdict, outputHebrew };
+}
+
+// Travel timing — good figures for h9 (kashf p.238)
+function computeTravelTimingKashf(chart) {
+  const h9 = chartHouse(chart, 9);
+  const h4 = chartHouse(chart, 4);
+  if (!h9) return null;
+  const isSaad = (h) => h && !MALEFIC_FIGURE_PATTERNS.has(h.key || '');
+  // Best figures for h9 travel: tariq(1111), nakis(2221), nusra-dakhila(2211)
+  const BEST = new Set(['1111', '2221', '2211']);
+  // Good: travel happens — tariq(1111), ataba-dakhila(2111), nusra-kharija(1122)
+  const GOOD = new Set(['1111', '2111', '1122']);
+  // Neutral: travel but no full benefit
+  const NEUTRAL = new Set(['2221', '1112', '1212', '1221', '2112', '2222']);
+  const h4Good = isSaad(h4);
+  const h9Key  = h9.key;
+  let verdict, outputHebrew;
+  if (BEST.has(h9Key) && h4Good) {
+    verdict = 'excellent-time';
+    outputHebrew = `ב9 (${h9.hebrew}) — מן הצורות המועדפות לנסיעה, וב4 (${h4?.hebrew}) מיטיב: זמן מצוין לנסיעה (כשף עמ׳ 238).`;
+  } else if (BEST.has(h9Key)) {
+    verdict = 'good-time';
+    outputHebrew = `ב9 (${h9.hebrew}) — צורה מועדפת לנסיעה, אך ב4 (${h4?.hebrew}) מזיק: זמן בינוני לנסיעה (כשף עמ׳ 238).`;
+  } else if (GOOD.has(h9Key) && h4Good) {
+    verdict = 'travel-happens';
+    outputHebrew = `ב9 (${h9.hebrew}) וב4 (${h4?.hebrew}) מיטיבים: הנסיעה תתקיים בהצלחה (כשף עמ׳ 238).`;
+  } else if (NEUTRAL.has(h9Key)) {
+    verdict = 'travel-no-benefit';
+    outputHebrew = `ב9 (${h9.hebrew}) — הנסיעה תתקיים, אך השואל יחזור ללא תועלת שלמה (כשף עמ׳ 238).`;
+  } else {
+    verdict = 'avoid-travel';
+    outputHebrew = `ב9 (${h9.hebrew}) — אינה מן הצורות הטובות לנסיעה: הימנע מנסיעה בעת זו (כשף עמ׳ 238).`;
+  }
+  return { verdict, outputHebrew };
+}
+
+// Profession by planet of h9 (kashf p.254)
+const PROFESSION_BY_PLANET = {
+  'שבתאי':          'חקלאות ועבודת אדמה',
+  'צדק':            'בקשת חכמות ולימודים',
+  'מאדים':          'רפואה ורפואת בהמות',
+  'שמש':            'הנדסה ומדידות',
+  'נוגה':           'דברי הימים, לחנים וניגונים',
+  'כוכב / מרקורי':  'סגולות, כתיבות, חשבונות ואצטגנינות',
+  'לבנה':           'ענייני עניים וצדיקים',
+};
+
+function computeProfessionH9Kashf(chart) {
+  const h9  = chartHouse(chart, 9);
+  const h10 = chartHouse(chart, 10);
+  const h11 = chartHouse(chart, 11);
+  if (!h9) return null;
+  const isSaad  = (h) => h && !MALEFIC_FIGURE_PATTERNS.has(h.key || '');
+  const planet9 = FIGURE_PLANET_MAP[h9.key];
+  const profession = planet9 ? (PROFESSION_BY_PLANET[planet9] || null) : null;
+  const lightWork = isSaad(h10) && isSaad(h11);
+  let outputHebrew = '';
+  if (lightWork) outputHebrew += `ב10 (${h10?.hebrew}) וב11 (${h11?.hebrew}) מיטיבים — מלאכתו מעטה בטרחה ומוצא בה מנוחה. `;
+  if (planet9 && profession) {
+    outputHebrew += `כוכב ב9: ${planet9} (${h9.hebrew}) → מלאכה: ${profession} (כשף עמ׳ 254).`;
+  } else if (planet9) {
+    outputHebrew += `ב9 (${h9.hebrew}) — כוכב ${planet9}, אך המקצוע אינו מפורש בטבלה (כשף עמ׳ 254).`;
+  } else {
+    outputHebrew += `ב9 (${h9.hebrew}) — ראש/זנב התלי: ידיעת הדתות ועניינים נסתרים, או לחלופין בורות ובגידה (כשף עמ׳ 254).`;
+  }
+  return { verdict: planet9 ? `profession-${planet9}` : 'node', outputHebrew, planet: planet9, profession };
+}
+
+// Promise fulfillment — h1,3,8,9,11,15 check (kashf p.255)
+function computePromiseFulfillmentKashf(chart) {
+  const keyHouses = [1, 3, 8, 9, 11, 15].map(n => chartHouse(chart, n));
+  const [h1, h3, h8, h9, h11, h15] = keyHouses;
+  const h2 = chartHouse(chart, 2);
+  const isSaad   = (h) => h && !MALEFIC_FIGURE_PATTERNS.has(h.key || '');
+  const isMutable = (h) => h && getFigureDirection(h.key) === 'mutable';
+  const hasTariq = h1?.key === '1111';
+  const hasAqla  = h1?.key === '1221';
+  const mutableH2H9 = isMutable(h2) || isMutable(h9);
+  const saadCount  = keyHouses.filter(h => h && isSaad(h)).length;
+  const nahusCount = keyHouses.filter(h => h && !isSaad(h)).length;
+  let verdict, outputHebrew;
+  if (hasTariq) {
+    verdict = 'many-promises-empty';
+    outputHebrew = `ב1 — דרך: הבטחות רבות ומשאלות בטלות; ייתכן קיום לאחר עיכוב (כשף עמ׳ 255).`;
+  } else if (hasAqla) {
+    verdict = 'promise-with-delay';
+    outputHebrew = `ב1 — סוהר: הבטחה אמתית ואפשר שתתקיים, אך ייתכן עיכוב (כשף עמ׳ 255).`;
+  } else if (mutableH2H9) {
+    verdict = 'broken-promise';
+    const who = isMutable(h2) ? `ב2 (${h2?.hebrew})` : `ב9 (${h9?.hebrew})`;
+    outputHebrew = `${who} — צורה מתהפכת (דו-גוף): הוא מפר את ההבטחה (כשף עמ׳ 255).`;
+  } else if (saadCount >= 4) {
+    verdict = 'true-promise';
+    outputHebrew = `${saadCount}/6 מן הבתים (ב1,3,8,9,11,15) מיטיבים ופנימיים — ההבטחה אמתית, וממנה יגיע טוב (כשף עמ׳ 255).`;
+  } else if (nahusCount >= 4) {
+    verdict = 'false-promise';
+    outputHebrew = `${nahusCount}/6 מן הבתים (ב1,3,8,9,11,15) מזיקים — ההבטחה אינה אמת ואינה נשלמת (כשף עמ׳ 255).`;
+  } else {
+    verdict = 'mixed';
+    outputHebrew = `${saadCount}/6 מן הבתים (ב1,3,8,9,11,15) מיטיבים — מצב מעורב, ייתכן קיום חלקי של ההבטחה (כשף עמ׳ 255).`;
+  }
+  return { verdict, outputHebrew };
+}
+
+// Fugitive tracking — h1=owner, h7=fugitive, h4=location, h10=purpose, h15=outcome (kashf p.240-241)
+function computeFugitiveKashf(chart) {
+  const h1  = chartHouse(chart, 1);
+  const h4  = chartHouse(chart, 4);
+  const h6  = chartHouse(chart, 6);
+  const h7  = chartHouse(chart, 7);
+  const h10 = chartHouse(chart, 10);
+  const h15 = chartHouse(chart, 15);
+  if (!h1 || !h7) return null;
+  const isSaad = (h) => h && !MALEFIC_FIGURE_PATTERNS.has(h.key || '');
+  const isIn   = (h) => h && getFigureDirection(h.key) === 'incoming';
+  // Method: h1+h6 figure incoming → will return (kashf p.249)
+  const h1h6BothIn = isIn(h1) && isIn(h6);
+  const allFourGood = [h1, h7, h10, h4].every(h => isSaad(h));
+  const outcomeGood = isSaad(h15);
+  let verdict, outputHebrew;
+  if (h1h6BothIn && allFourGood && outcomeGood) {
+    verdict = 'will-return';
+    outputHebrew = `ב1+ב6 פנימיים, כל הבתים הראשיים (ב1,4,7,10) סעד, וב15 (${h15?.hebrew}) לטובה — הבורח לא התרחק ועתיד לשוב (כשף עמ׳ 240-241). מיקום (ב4): ${h4?.hebrew}.`;
+  } else if (!allFourGood || !outcomeGood) {
+    verdict = 'will-not-return';
+    outputHebrew = `ב7 (${h7?.hebrew}) או ב15 (${h15?.hebrew}) מזיק — הבורח לא יחזור (כשף עמ׳ 240-241). מיקום אפשרי (ב4): ${h4?.hebrew}.`;
+  } else {
+    verdict = 'return-possible';
+    outputHebrew = `הסימנים מעורבים — ייתכן שיחזור עם מאמץ (כשף עמ׳ 240-241). ב4 (מיקום): ${h4?.hebrew}. ב15 (סוף): ${h15?.hebrew}.`;
+  }
+  return { verdict, outputHebrew };
+}
 
 const PLANET_ENRICHMENT_MAP = (function () {
   const m = {};
@@ -2357,6 +2791,48 @@ const THIEF_GENDER_AGE_BY_ELEMENT = {
   'עפר':   { gender: 'נקבה', age: 'בגרות',  outputHebrew: 'נקבה' },
 };
 
+// מקור: כשף אל-אסרר עמ׳ 199 — תסכין האיברים (שיבוץ איברי הגוף)
+// "התבונן בבית השישי ובצורה שנפלה בו — לפי הצורה תדע באיזה איבר החולי"
+const FIGURE_BODY_PART_KASHF = {
+  '2222': 'ראש',         // קהלה
+  '2112': 'ראש',         // חיבור
+  '2212': 'צוואר',       // לבן
+  '1211': 'חזה',         // בר הלחי
+  '1111': 'בטן',         // דרך
+  '1122': 'בטן',         // כבוד יוצא
+  '2122': 'אחוריים',     // אדום
+  '2211': 'איבר המין',   // כבוד נכנס
+  '1221': 'יד ימין',     // סוהר
+  '1212': 'כתף ימין',    // ממון יוצא
+  '2221': 'צד ימין',     // שפל ראש
+  '1121': 'ירך ימין',    // נלחם
+  '2121': 'כתף שמאל',    // ממון נכנס
+  '1112': 'צד שמאל',     // סף יוצא
+  '2111': 'ירך שמאל',    // סף נכנס
+  // '1222' (נשוא ראש): הספר מזכיר "תשמיר" (רגל ימין) ו"דגל השמחה" (רגל שמאל) — שמות מסורתיים
+};
+
+function computeBodyPartDiagnosisKashf(chart) {
+  const h6 = chart.find((h) => Number(h.house) === 6);
+  if (!h6?.key) return null;
+  const bodyPart = FIGURE_BODY_PART_KASHF[h6.key];
+  const figHebrew = h6.hebrew || h6.key;
+  if (h6.key === '1222') {
+    return {
+      figureKey: h6.key, figureHebrew: figHebrew, bodyPartHebrew: 'רגל',
+      outputHebrew: `${figHebrew} בבית 6 — האיבר הכואב: רגל (כשף עמ׳ 199 — נשוא ראש מוזכר כ"תשמיר" ו"דגל השמחה")`,
+    };
+  }
+  if (!bodyPart) return {
+    figureKey: h6.key, figureHebrew: figHebrew, bodyPartHebrew: null,
+    outputHebrew: `${figHebrew} בבית 6 — האיבר הכואב: לא מופה (כשף עמ׳ 199)`,
+  };
+  return {
+    figureKey: h6.key, figureHebrew: figHebrew, bodyPartHebrew: bodyPart,
+    outputHebrew: `${figHebrew} בבית 6 — האיבר הכואב: ${bodyPart} (כשף עמ׳ 199)`,
+  };
+}
+
 function computeBodyPartDiagnosis(chart) {
   const h6 = chart.find((h) => Number(h.house) === 6);
   if (!h6?.key) return null;
@@ -2437,7 +2913,8 @@ function computeTravelDirection(chart) {
 }
 
 // ============================================================
-// BATCH B: גנבה — קרבה, גיל, האם הגנוב יוחזר (PDF1 p.48-49)
+// BATCH B: גנבה — קרבה, גיל, האם הגנוב יוחזר
+// מקור ראשי: כשף אל-אסרר עמ׳ 224, 229-234
 // ============================================================
 const THIEF_AGE_BY_FIGURE = {
   '1211': 'צעיר', '1112': 'צעיר', '2212': 'צעיר',
@@ -2445,19 +2922,40 @@ const THIEF_AGE_BY_FIGURE = {
   '2221': 'זקן',   '1222': 'זקן',
 };
 
+// כשף אל-אסרר עמ׳ 224 — "אם הבית השביעי חוזר באחד הבתים, הוא מורה על סיבת הגניבה ועל מי שקשור בה"
 const THIEF_PROXIMITY_BY_HOUSE = {
-  1: 'אדם קרוב מאוד / מתוך הבית',
-  2: 'מכר / שכן',
-  3: 'בן משפחה / קרוב',
-  4: 'מקורב לבית',
-  5: 'בעל הבית / דייר',
-  6: 'שכן קרוב',
-  7: 'זר ממקום אחר',
-  8: 'אדם מחוץ להישג יד',
-  9: 'אדם מרחוק',
-  10: 'אדם בעל סמכות',
-  11: 'חבר / מכר',
+  1:  'עומד במקום בעל הדבר — הגנב ממעגל השואל הקרוב',
+  2:  'מן העוזרים / המכרים של בעל הדבר',
+  3:  'זה הגנב עצמו — גילויו ודאי (ב3 = הגנב)',
+  4:  'ממי שנכנס לבית הנשאל',
+  5:  'ממי שמתערב עם ילדי בעל הדבר',
+  6:  'הגנב יחלה בגלל הגניבה',
+  7:  'גילוי הגנב ודאי',
+  8:  'אדם רחוק / מחוץ להישג יד',
+  9:  'הדבר בא בגלל נסיעה — הגנב קשור לנסיעה',
+  10: 'ממי שקשור לבעלי השלטון',
+  11: 'קשור לאנשים שהגנב מתחבר עמם',
   12: 'אויב נסתר',
+};
+
+// כשף אל-אסרר עמ׳ 231-234 — תיאור הגנב לפי הצורה בבית 7
+const THIEF_PHYSICAL_DESCRIPTION_KASHF = {
+  '1121': 'דמותו גבוהה, צבעו נוטה לאדמומיות, זקנו דליל — ויש בו חריפות וגסות',
+  '1222': 'עד, סופר או מלמד — שלם במראהו, רחב חזה, עיניים גדולות, פנים עגולות, צבעו לבן ונאה',
+  '2111': 'אישה או דמות נקבית — לבנה, זריזת דיבור, ראשה גדול, כפות רגליה דקות; לחלופין: עירוני / מן אנשי המלאכה',
+  '2212': 'לבן, צוחק, נבון ומובחן — עוסק בכתיבה, נייר או תפירה',
+  '1211': 'נמשך אחר נשים, יש בו תחבולה ודעת; לחלופין: אישה או נער יפה-עיניים',
+  '1112': 'צבעו שחום, מבטו רע וריחו רע — מלאכות ניקוי, אשפה או בזויות',
+  '2122': 'צבעו דמי, קומה גבוהה, רגליים רחבות, סימן בפנים — עוסק בבישול, חריתה או אש; לעיתים רכיל',
+  '2221': 'צבעו שחור, שורש עבדות או שפלות — עוסק בעורות, אדמה או בהמות',
+  '1122': 'עגול-פנים, רחב רגליים, ניכר במעמדו ויופיו — עוסק בזהב, אבנים או חפצי ערך',
+  '1221': 'שחום, רחב בטן, גדול רגליים — עוסק בסנדלרות או עבודה גסה',
+  '2112': 'איש לשכה — כתיבה, חשבון, שיפוט, ספרים',
+  '2211': 'דמות לבנה, עגולת פנים, ראש גדול, קומה קטנה — עוסק בדין, הוראה או מעמד כבוד',
+  '1111': 'נער קטן, דק-גוף, מהיר בתנועה — שליחות, ריקוד, הליכה',
+  '1212': 'פנים לבנות או צהובות, ראש קטן, רגליים גדולות — עוסק ברפואה או חכמה',
+  '2222': 'גוף רחב, סנטר גדול, רגליים רחבות — בעל מנהיגות, ספנות, הנדסה',
+  '2121': 'קומה בינונית, פנים עגולות, ראש ורגליים גדולים, זקן עבה — עוסק בסחורה וקניין',
 };
 
 function computeThiefAge(chart) {
@@ -2471,6 +2969,21 @@ function computeThiefAge(chart) {
   };
   return { figureKey: h7.key, figureHebrew: figHebrew, age,
     outputHebrew: `${figHebrew} בבית 7 — גיל הגנב: ${age}`,
+  };
+}
+
+function computeThiefPhysicalDescriptionKashf(chart) {
+  const h7 = chart.find((h) => Number(h.house) === 7);
+  if (!h7?.key) return null;
+  const desc = THIEF_PHYSICAL_DESCRIPTION_KASHF[h7.key];
+  const figHebrew = h7.hebrew || h7.key;
+  if (!desc) return {
+    figureKey: h7.key, figureHebrew: figHebrew,
+    outputHebrew: `${figHebrew} בבית 7 — תיאור הגנב: לא מפורש במקור (כשף עמ׳ 231-234)`,
+  };
+  return {
+    figureKey: h7.key, figureHebrew: figHebrew, description: desc,
+    outputHebrew: `${figHebrew} בבית 7 — ${desc}`,
   };
 }
 
@@ -2501,22 +3014,31 @@ function computeStolenItemReturn(chart) {
   const isSaad = (h) => !!h && String(h.fortune || '').includes('סעד');
   const isNahs = (h) => !!h && String(h.fortune || '').includes('נחס');
   const lines = [];
+  // כשף עמ׳ 229: "אם מצאת בראשון ובשני צורות מיטיבות, ובשביעי ובשמיני צורות מזיקות — הגניבה חוזרת לבעליה"
   if (isSaad(h1) && isSaad(h2) && isNahs(h7) && isNahs(h8)) {
-    lines.push('בית 1+2 סעד, בית 7+8 נחס → הגנבה תוחזר');
+    lines.push('בית 1+2 מיטיב + בית 7+8 מזיק → הגניבה חוזרת לבעליה (כשף עמ׳ 229)');
+  }
+  // כשף עמ׳ 229: "ואם בראשון ובשני צורות מזיקות, ובשביעי ובשמיני צורות מיטיבות — לא יחזור אליו דבר"
+  if (isNahs(h1) && isNahs(h2) && isSaad(h7) && isSaad(h8)) {
+    lines.push('⚠ בית 1+2 מזיק + בית 7+8 מיטיב → לא יחזור לבעליו (כשף עמ׳ 229)');
+  }
+  // כשף עמ׳ 229: "אם ראית את השמיני בשני, יחזור לבעל הדבר מה שאבד ממנו"
+  if (h8 && h2 && h8.key === h2.key) {
+    lines.push(`בית 8 ובית 2 אותה צורה (${h8.hebrew || h8.key}) → יחזור לבעל הדבר מה שאבד (כשף עמ׳ 229)`);
   }
   const h12Incoming = h12 && h12.direction === 'incoming';
   const h12Outgoing = h12 && h12.direction === 'outgoing';
   const h14Outgoing = h14 && h14.direction === 'outgoing';
   if (h12Incoming) {
-    const ease = h12.movement === 'מתהפך' ? ' בקלות (מנקלב)' : h12.movement === 'קבוע' ? ' בקושי (ת׳אבת)' : '';
+    const ease = h12.movement === 'מתהפך' ? ' בקלות' : h12.movement === 'קבוע' ? ' בקושי' : '';
     lines.push(`בית 12 נכנס → הגנבה תוחזר${ease}`);
   }
   if (h12Outgoing && h14Outgoing) {
     lines.push('בית 12+14 יוצאים → הגנבה לא תוחזר');
   }
   if (!lines.length) {
-    if (isSaad(h1)) lines.push('בית 1 סעד — יש סיכוי להחזרה, תלוי בגנב');
-    else if (isNahs(h1)) lines.push('בית 1 נחס — סיכוי נמוך להחזרה');
+    if (isSaad(h1)) lines.push('בית 1 מיטיב — יש סיכוי להחזרה');
+    else if (isNahs(h1)) lines.push('בית 1 מזיק — סיכוי נמוך להחזרה');
     else lines.push('לא נמצאו סימנים ברורים — ספק תוחזר');
   }
   return { outputHebrew: lines.join('\n') };
@@ -2718,7 +3240,7 @@ function computeQuerentSorceryCheck(chart) {
     isSorcered,
     outputHebrew: isSorcered
       ? '⚠ נשוא ראש (احيان) בבית 10 — סימן לכישוף על השואל (القول الجامع עמ׳ 56)'
-      : `${h10.hebrew || h10.key} בבית 10 — אין סימן לכישוף בבית הכבוד`,
+      : `${h10.hebrew || h10.key} בבית 10 — לפי ספר זה, הסימן הספציפי (נשוא ראש) אינו בבית הכבוד; ראה אבחון הכולל לעיל`,
   };
 }
 
@@ -3370,7 +3892,7 @@ function computeTimingEstimate(chart, dhamirHouse, topicId) {
     unit,
     tier,
     timingUnits: tierHebrew,
-    outputHebrew: `עיתוי (האדד): הדמיר בבית ${dh} (${dhamirEntry.hebrew || dhamirEntry.key}, ${dotCount} נקודות) → ${quantity}. סקאלה: ${tierHebrew}`,
+    outputHebrew: `עיתוי (האדד): מחשבת השואל בבית ${dh} (${dhamirEntry.hebrew || dhamirEntry.key}, ${dotCount} נקודות) → ${quantity}. סקאלה: ${tierHebrew}`,
     sourceRef: 'כשף אל-אסראר — שיטת האדד: ספירת נקודות הצורה × עמדת הבית = תזמון',
   };
 }
@@ -4630,6 +5152,52 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const authorityStateAnalysis = (topicId === 'authorityState')
     ? computeAuthorityStateAnalysis(board.chart, HAWI_SOURCE.extendedKnowledge?.authorityStateRulers) : null;
 
+  const authorityDurationKashf = (topicId === 'authorityState')
+    ? computeAuthorityDurationKashf(board.chart) : null;
+
+  const returnToOfficeKashf = (topicId === 'authorityState')
+    ? computeReturnToOfficeKashf(board.chart) : null;
+
+  const stateStabilityKashf = (['authorityState', 'foundations', 'completion'].includes(topicId))
+    ? computeStateStabilityKashf(board.chart) : null;
+
+  const securityKashf = (['deathInheritance', 'illness', 'foundations'].includes(topicId))
+    ? computeSecurityKashf(board.chart) : null;
+
+  const lifespanKashf = (['loveHate', 'completion', 'foundations'].includes(topicId))
+    ? computeLifespanKashf(board.chart) : null;
+
+  const clothingLuckKashf = (['loveHate', 'completion', 'foundations', 'children'].includes(topicId))
+    ? computeClothingLuckKashf(board.chart) : null;
+
+  const lifespanByFigureShapes = (['foundations', 'generalReading', 'childrenPregnancy', 'deathInheritance', 'illness'].includes(topicId))
+    ? computeLifespanByFigureShapes(board.chart) : null;
+
+  const clothingBestFiguresKashf = (['childrenPregnancy', 'loveHate', 'foundations'].includes(topicId))
+    ? computeClothingBestFiguresKashf(board.chart) : null;
+
+  // ── BATCH I: 7 new Kashf-sourced analysis functions ──────────────────────────
+  const whoLooksAtWhomKashf = (['marriage', 'loveHate', 'foundations', 'generalReading'].includes(topicId))
+    ? computeWhoLooksAtWhomKashf(board.chart) : null;
+
+  const moneySourceKashf = (['commerce', 'generalReading', 'foundations', 'loan'].includes(topicId))
+    ? computeMoneySourceKashf(board.chart) : null;
+
+  const wellDrillingKashf = (['foundations', 'hiddenTreasure'].includes(topicId))
+    ? computeWellDrillingKashf(board.chart) : null;
+
+  const travelTimingKashf = (['travel', 'seaVoyage'].includes(topicId))
+    ? computeTravelTimingKashf(board.chart) : null;
+
+  const professionH9Kashf = (['foundations', 'generalReading', 'authorityState', 'yearlyForecast'].includes(topicId))
+    ? computeProfessionH9Kashf(board.chart) : null;
+
+  const promiseFulfillmentKashf = (['completion', 'foundations', 'commerce', 'loan', 'disputes'].includes(topicId))
+    ? computePromiseFulfillmentKashf(board.chart) : null;
+
+  const fugitiveKashf = (['missingPerson', 'prisoner', 'theft'].includes(topicId))
+    ? computeFugitiveKashf(board.chart) : null;
+
   const yearlyForecastAnalysis = (topicId === 'yearlyForecast')
     ? computeYearlyForecastAnalysis(
         board.chart,
@@ -4654,6 +5222,9 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const bodyPartDiagnosis = (topicId === 'illness')
     ? computeBodyPartDiagnosis(board.chart) : null;
 
+  const bodyPartDiagnosisKashf = (topicId === 'illness')
+    ? computeBodyPartDiagnosisKashf(board.chart) : null;
+
   const deathRisk = (topicId === 'illness')
     ? computeDeathRisk(board.chart) : null;
 
@@ -4674,6 +5245,9 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
 
   const stolenItemReturn = (topicId === 'theft')
     ? computeStolenItemReturn(board.chart) : null;
+
+  const thiefPhysicalDescriptionKashf = (topicId === 'theft')
+    ? computeThiefPhysicalDescriptionKashf(board.chart) : null;
 
   const missingPersonLocation = (topicId === 'missingPerson')
     ? computeMissingPersonLocation(board.chart) : null;
@@ -4706,7 +5280,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     ? computeEnemyInHousehold(board.chart) : null;
 
   // ── BATCH G: 8 new Kashf-sourced analysis functions ────────────────────────
-  const dreamH9 = (['foundations', 'generalReading'].includes(topicId))
+  const dreamH9 = (['foundations', 'generalReading', 'travel', 'siblings', 'religion'].includes(topicId))
     ? computeDreamH9(board.chart) : null;
 
   const lostAnimalReturn = (topicId === 'lostAnimal')
@@ -4888,6 +5462,9 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     treasureLocation,
     nameLetters,
     authorityStateAnalysis,
+    authorityDurationKashf,
+    returnToOfficeKashf,
+    stateStabilityKashf,
     yearlyForecastAnalysis,
     birthNativityAnalysis,
     spiritualDiagnosticsHouseIndex,
@@ -4895,6 +5472,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     directionQuadrant,
     illnessElementDiagnosis,
     bodyPartDiagnosis,
+    bodyPartDiagnosisKashf,
     deathRisk,
     jinnType,
     thiefLocationDetails,
@@ -4902,6 +5480,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     thiefAge,
     thiefProximity,
     stolenItemReturn,
+    thiefPhysicalDescriptionKashf,
     missingPersonLocation,
     missingPersonReturn,
     geographicDirection,
@@ -4954,6 +5533,18 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     illnessCauseH4,
     celebrationsH5,
     querentSubject,
+    securityKashf,
+    lifespanKashf,
+    clothingLuckKashf,
+    lifespanByFigureShapes,
+    clothingBestFiguresKashf,
+    whoLooksAtWhomKashf,
+    moneySourceKashf,
+    wellDrillingKashf,
+    travelTimingKashf,
+    professionH9Kashf,
+    promiseFulfillmentKashf,
+    fugitiveKashf,
   };
 }
 
@@ -5079,7 +5670,7 @@ function scoreBoard(boardAnalysis) {
   if (dhamirTone !== 0) {
     const dhamirHouseNum = boardAnalysis.dhamirByMizan?.primaryHouseNumber || boardAnalysis.dhamirHouse?.houseNumber || '';
     const dhamirNote = dhamirTone > 0 ? ' — מאשר את הדיין' : ' — סותר את הדיין, זהירות';
-    reasons.push(`דמיר (בית ${dhamirHouseNum}): ${dhamirFortune}${dhamirNote}`);
+    reasons.push(`מחשבת השואל (בית ${dhamirHouseNum}): ${dhamirFortune}${dhamirNote}`);
   }
   if (repetitionBonus > 0) {
     reasons.push(`צורת הדיין (${judge?.figureHebrew || ''}) חוזרת ${judgeRepeatCount} פעמים בלוח — הדין מחוזק`);
@@ -5134,11 +5725,11 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
   if (dhamirByMizan?.traces?.length > 0 && dhamirToneConclusion !== 0) {
     const confirmingConclusion = (judgeToneConclusion > 0 && dhamirToneConclusion > 0) || (judgeToneConclusion < 0 && dhamirToneConclusion < 0);
     const dhamirLabel = confirmingConclusion ? 'מאשר את הדיין ומחזק את הפסיקה' : 'סותר את הדיין — שים לב, ייתכן שינוי';
-    parts.push(`הדמיר (בית ${dhamirByMizan.primaryHouseNumber} — ${dhamirByMizan.primaryHebrew}): ${dhamirFort} — ${dhamirLabel}.`);
+    parts.push(`מחשבת השואל (בית ${dhamirByMizan.primaryHouseNumber} — ${dhamirByMizan.primaryHebrew}): ${dhamirFort} — ${dhamirLabel}.`);
   } else if (dhamirHouseEntry && dhamirToneConclusion !== 0) {
     const confirmingConclusion = (judgeToneConclusion > 0 && dhamirToneConclusion > 0) || (judgeToneConclusion < 0 && dhamirToneConclusion < 0);
-    const dhamirLabel = confirmingConclusion ? 'מאשר את הדיין' : 'סותר את הדיין — זהירות';
-    parts.push(`הדמיר (בית ${dhamirHouseEntry.houseNumber} — ${dhamirHouseEntry.figureHebrew}): ${dhamirFort} — ${dhamirLabel}.`);
+    const dhamirLabel = confirmingConclusion ? 'מאשרת את הדיין' : 'סותרת את הדיין — זהירות';
+    parts.push(`מחשבת השואל (בית ${dhamirHouseEntry.houseNumber} — ${dhamirHouseEntry.figureHebrew}): ${dhamirFort} — ${dhamirLabel}.`);
   }
 
   if (sentence) {
