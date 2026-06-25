@@ -15,14 +15,21 @@ if (!sessionStorage.getItem('userId')) window.location.replace('/index.html');
 
 body.calc-page {
   font-family: 'STAM', sans-serif !important;
-  background: #0a0602 url('./calc-bg-landscape.png') no-repeat center center fixed !important;
+  background: #0a0602 url('./calc-bg-landscape.png') no-repeat center center !important;
   background-size: cover !important;
+  background-attachment: scroll !important;
   display: block !important;
   height: 100vh !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
   padding: 0 !important;
   min-height: unset !important;
+}
+@media (max-width: 767px) {
+  body.calc-page {
+    background-image: url('./calc-bg-portrait.png') !important;
+    background-position: center top !important;
+  }
 }
 .menu-overlay { display: none; }
 .top-bar {
