@@ -34,8 +34,9 @@
       direction:rtl;
       font-family: Arial, sans-serif;
       font-size:16px;
-      background:linear-gradient(135deg,#06192d,#0a1424);
+      background: var(--paper2);
       color:var(--ink);
+      overscroll-behavior: none;
     }
 
     .app {
@@ -1318,70 +1319,48 @@
     .qcat-tab.active { color: white !important; }
     .qcat-tab:hover { opacity: 0.8; }
 
+    /* ─── רשימת שאלות קומפקטית — לכל המסכים ─── */
     .qcard-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 11px;
-      padding: 14px 14px 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      padding: 8px 14px 8px;
+      background: white;
+      border-radius: 14px;
+      margin: 10px 14px;
+      box-shadow: 0 1px 8px rgba(0,0,0,.09);
+      overflow: hidden;
     }
 
     .qcard {
-      border: 2px solid rgba(0,0,0,.14);
-      border-radius: 14px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border: none;
+      border-bottom: 1px solid rgba(0,0,0,.08);
       background: white;
       cursor: pointer;
-      padding: 13px 14px;
       text-align: right;
-      transition: border-color 0.15s, box-shadow 0.15s;
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
+      transition: background 0.12s;
+      border-radius: 0;
     }
-    .qcard:hover { border-color: var(--gold); box-shadow: 0 3px 14px rgba(0,0,0,.1); }
-    .qcard.selected { border-color: var(--navy) !important; background: #eef2ff; box-shadow: 0 4px 18px rgba(6,25,45,.18); }
+    .qcard:last-child { border-bottom: none; }
+    .qcard:hover { background: #f7f9ff; }
+    .qcard.selected { background: #eef5ff; border-right: 4px solid var(--navy); }
 
-    .qcard-emoji { font-size: 24px; line-height: 1.2; }
-    .qcard-label { font-size: 15px; font-weight: 900; color: #071b30; margin-top: 3px; }
-    .qcard-desc  { font-size: 12px; color: #5a6678; line-height: 1.45; margin-top: 2px; }
+    .qcard-emoji { font-size: 20px; flex-shrink: 0; line-height: 1; }
+    .qcard-label { font-size: 15px; font-weight: 700; color: #071b30; flex: 1; }
+    .qcard-desc  { display: none; }
     .qcard-badge {
-      display: inline-block;
-      margin-top: 7px;
-      padding: 3px 10px;
+      flex-shrink: 0;
+      padding: 2px 9px;
       border-radius: 20px;
       font-size: 11px;
       font-weight: 700;
       background: rgba(6,25,45,.08);
       color: var(--navy);
-    }
-
-    /* ─── מובייל: רשימה קומפקטית במקום כרטיסיות גדולות ─── */
-    @media (max-width: 560px) {
-      .qcard-grid {
-        grid-template-columns: 1fr;
-        gap: 0;
-        padding: 6px 10px 6px;
-        background: white;
-        border-radius: 12px;
-        margin: 8px 10px;
-        box-shadow: 0 1px 6px rgba(0,0,0,.09);
-        overflow: hidden;
-      }
-      .qcard {
-        flex-direction: row;
-        align-items: center;
-        padding: 11px 12px;
-        border-radius: 0;
-        border: none;
-        border-bottom: 1px solid rgba(0,0,0,.09);
-        gap: 10px;
-        box-shadow: none !important;
-      }
-      .qcard:last-child { border-bottom: none; }
-      .qcard.selected { background: #eef5ff; border-right: 4px solid var(--navy); }
-      .qcard-emoji { font-size: 20px; flex-shrink: 0; line-height: 1; }
-      .qcard-label { font-size: 14px; font-weight: 700; flex: 1; margin-top: 0; }
-      .qcard-desc { display: none; }
-      .qcard-badge { margin-top: 0; font-size: 10px; padding: 2px 8px; flex-shrink: 0; }
     }
 
     .qscreen-actions {
