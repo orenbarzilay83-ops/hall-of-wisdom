@@ -10,6 +10,151 @@
 if (!sessionStorage.getItem('userId')) window.location.replace('/index.html');
 </script>
 <style>
+/* ═══ DESIGN OVERRIDE ═══ */
+@font-face { font-family: 'STAM'; src: url('./fonts/STAM.TTF') format('truetype'); }
+
+body.calc-page {
+  font-family: 'STAM', sans-serif !important;
+  background: #0a0602 url('./calc-bg-landscape.png') no-repeat center center !important;
+  background-size: cover !important;
+  display: flex !important;
+  height: 100vh !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  min-height: unset !important;
+  align-items: stretch !important;
+}
+.menu-btn, .menu-overlay, .side-menu-close { display: none !important; }
+.top-bar {
+  background: rgba(8,5,1,0.70) !important;
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(224,201,127,0.15) !important;
+  box-shadow: none !important;
+  padding: 8px 14px !important;
+}
+.top-bar-title { color: #e8d490 !important; font-family: 'STAM', sans-serif; }
+.top-bar-time  { color: #7a6535 !important; font-size: .68rem !important; }
+
+/* ── Glass Panel (side-menu repurposed) ── */
+.side-menu {
+  position: sticky !important;
+  top: 0 !important;
+  transform: none !important;
+  width: 200px !important;
+  min-width: 200px !important;
+  height: 100vh !important;
+  overflow-y: auto !important;
+  background: rgba(10,6,2,0.80) !important;
+  backdrop-filter: blur(16px) !important;
+  border-left: 1px solid rgba(224,201,127,0.22) !important;
+  border-right: none !important;
+  box-shadow: none !important;
+  z-index: 10 !important;
+  flex-shrink: 0 !important;
+}
+.side-menu-header {
+  background: transparent !important;
+  border-bottom: 1px solid rgba(224,201,127,0.15);
+  padding: 16px 10px 12px !important;
+  color: #e8d490 !important;
+  font-family: 'STAM', sans-serif !important;
+  font-size: 1rem !important;
+  text-align: center;
+  line-height: 1.35;
+}
+.menu-section { border-bottom: none !important; padding: 10px 8px 0 !important; }
+.menu-section-title {
+  color: #5a4520 !important;
+  font-size: .58rem !important;
+  padding: 0 !important;
+  text-align: center;
+  letter-spacing: .1em;
+  margin-bottom: 5px !important;
+}
+.menu-item {
+  background: rgba(224,201,127,0.05) !important;
+  border: 1px solid rgba(224,201,127,0.12) !important;
+  border-right: none !important;
+  border-radius: 8px !important;
+  color: #c4a050 !important;
+  font-family: 'STAM', sans-serif !important;
+  font-size: .76rem !important;
+  text-align: center !important;
+  padding: 7px 4px !important;
+  margin-bottom: 4px !important;
+}
+.menu-item:hover, .menu-item.active {
+  background: rgba(224,201,127,0.16) !important;
+  border-color: rgba(224,201,127,0.35) !important;
+  color: #e8d490 !important;
+}
+.menu-item.disabled { opacity: .35 !important; }
+.menu-item .soon { font-size: .58rem !important; background: rgba(224,201,127,0.08) !important; color: #5a4520 !important; }
+
+/* ── Content Area ── */
+.content-area {
+  flex: 1;
+  overflow-y: auto;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.dashboard-container { flex: 1; }
+
+/* ── Dark Cards ── */
+.card {
+  background: rgba(8,5,1,0.78) !important;
+  border-color: rgba(224,201,127,0.18) !important;
+  backdrop-filter: blur(10px);
+  color: #e8d490 !important;
+}
+.card-title { color: #e8d490 !important; border-bottom-color: rgba(224,201,127,0.15) !important; }
+.gold-title { color: #e8c860 !important; font-family: 'STAM', sans-serif; }
+label, .field-label { color: #a08848 !important; }
+input[type=text], input[type=date], input[type=time], input[type=number],
+input[type=email], input[type=password], select, textarea {
+  background: rgba(255,255,255,0.05) !important;
+  border-color: rgba(224,201,127,0.22) !important;
+  color: #e8d490 !important;
+}
+.date-row select, .date-row input {
+  background: rgba(10,6,2,0.8) !important;
+  border-color: rgba(224,201,127,0.22) !important;
+  color: #e8d490 !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23e0c97f' stroke-width='1.5' fill='none'/%3E%3C/svg%3E") !important;
+}
+.badge { background: linear-gradient(135deg, #d4b96a, #a87c2e) !important; color: #0a0602 !important; }
+.result-a, .psalm-preview { background: rgba(8,5,1,0.6) !important; border-color: rgba(224,201,127,0.15) !important; }
+.psalm-number { color: #e0c97f !important; }
+.psalm-label, .total-sum, .selector-label { color: #8a7040 !important; }
+.g-total { background: rgba(8,5,1,0.5) !important; border-color: rgba(224,201,127,0.15) !important; }
+.g-total-lbl { color: #8a7040 !important; }
+.g-total-val, .stat-val { color: #d4b96a !important; }
+.stat-box, .key-box { background: rgba(8,5,1,0.5) !important; border-color: rgba(224,201,127,0.15) !important; }
+.stat-lbl, .key-lbl { color: #8a7040 !important; }
+.key-val { color: #68d391 !important; }
+.seal-wrap { background: rgba(8,5,1,0.5) !important; border-color: rgba(224,201,127,0.15) !important; }
+.seal-title { color: #8a7040 !important; }
+.seal-wrap td { background: rgba(8,5,1,0.5) !important; color: #e8d490 !important; border-color: rgba(224,201,127,0.18) !important; }
+.seal-wrap td.cell-s { background: rgba(40,100,60,0.3) !important; color: #68d391 !important; }
+.seal-wrap td.cell-high { background: rgba(180,140,20,0.15) !important; color: #e0c97f !important; }
+.accordion-trigger { background: rgba(8,5,1,0.6) !important; border-color: rgba(224,201,127,0.22) !important; }
+.trigger-num { color: #d4b96a !important; }
+.trigger-arrow { color: #d4b96a !important; }
+.accordion-panel { background: rgba(8,5,1,0.7) !important; border-color: rgba(224,201,127,0.3) !important; }
+.q-btn { background: rgba(20,12,4,0.7) !important; border-color: rgba(224,201,127,0.15) !important; color: #c4a050 !important; }
+.q-btn.selected { background: #d4b96a !important; color: #0a0602 !important; }
+.arrow-btn { background: rgba(8,5,1,0.6) !important; border-color: rgba(224,201,127,0.25) !important; color: #d4b96a !important; }
+.datetime-bar { background: rgba(8,5,1,0.5) !important; border-color: rgba(224,201,127,0.15) !important; }
+.datetime-bar .date-big { color: #d4b96a !important; }
+.datetime-bar .time-big { color: #8a7040 !important; }
+.appt-item { background: rgba(8,5,1,0.6) !important; border-color: rgba(224,201,127,0.15) !important; }
+.appt-name { color: #e8d490 !important; }
+.appt-time, .appt-del { color: #8a7040 !important; border-color: rgba(224,201,127,0.15) !important; }
+.preview-title { color: #d4b96a !important; }
+.preview-text { color: #c4a050 !important; }
+#page-home { align-items: center; justify-content: center; }
+
 /* ── מחשבון גימטריה וחותם ── */
 .result-a{display:none;margin-top:16px;background:var(--bg2);border-radius:12px;padding:16px;text-align:center}
 .psalm-number{font-size:3em;font-weight:900;color:var(--gold);line-height:1.1}
@@ -86,6 +231,7 @@ if (!sessionStorage.getItem('userId')) window.location.replace('/index.html');
     <button class="menu-item" onclick="window.doSignOut?.()">🚪 יציאה</button>
   </div>
 </div>
+<div class="content-area">
 <div class="top-bar">
   <button class="menu-btn" onclick="openMenu()">☰ תפריט</button>
   <div class="top-bar-title">✦ היכל החכמה</div>
@@ -676,5 +822,6 @@ function gClearCalc2(){
     window.location.replace('/index.html');
   };
 </script>
+</div><!-- /content-area -->
 </body>
 </html>
