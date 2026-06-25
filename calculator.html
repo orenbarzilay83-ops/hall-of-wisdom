@@ -27,9 +27,14 @@ body.calc-page {
 }
 @media (max-width: 767px) {
   body.calc-page {
-    background-image: url('./calc-bg-portrait.png') !important;
-    background-position: center top !important;
+    background-image:
+      linear-gradient(to bottom, transparent 60%, #0a0602 100%),
+      url('./calc-bg-portrait.png') !important;
+    background-size: 100% auto, 100% auto !important;
+    background-position: top center, top center !important;
+    background-repeat: no-repeat, no-repeat !important;
   }
+  body.calc-page::before { display: none !important; }
 }
 .menu-overlay { display: none; }
 .top-bar {
@@ -141,6 +146,8 @@ body.calc-page {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: 2;
 }
 .dashboard-container { flex: 1; }
 
@@ -281,10 +288,7 @@ input[type=email], input[type=password], select, textarea {
   <div class="top-bar-title">✦ היכל החכמה</div>
   <div class="top-bar-time" id="topTime"></div>
 </div>
-<div id="page-home" class="dashboard-container" style="text-align:center;padding-top:120px;">
-  <div style="color:var(--gold-dark);font-size:2.5rem;">✦</div>
-  <div style="color:var(--muted);font-size:1rem;margin-top:12px;">בחר כלי מהתפריט</div>
-</div>
+<div id="page-home" class="dashboard-container"></div>
 <div id="page-numerology" class="dashboard-container fade-in" style="display:none">
   <h1 class="gold-title">מערכת ייעוץ נומרולוגית</h1>
   <div class="card">
