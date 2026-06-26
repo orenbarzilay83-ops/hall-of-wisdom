@@ -271,6 +271,184 @@ input[type=email], input[type=password], select, textarea {
 .btn-blue{background:linear-gradient(135deg,#4a9eff,#1a73e8);color:#fff}
 .btn-green{background:linear-gradient(135deg,#68d391,#38a169);color:#1a1a2e}
 
+/* ── ספרייה ── */
+#page-library {
+  min-height: 100vh;
+  background: url('./library-bg-portrait.png') no-repeat center center;
+  background-size: cover;
+  position: relative;
+  padding: 0;
+}
+@media (min-width: 768px) {
+  #page-library { background-image: url('./library-bg-landscape.png'); }
+}
+.lib-overlay {
+  min-height: 100vh;
+  background: rgba(0,0,0,0.52);
+  padding: 20px 16px 40px;
+  display: flex;
+  flex-direction: column;
+}
+.lib-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+.lib-title {
+  font-family: 'STAM', sans-serif;
+  color: #fff;
+  font-size: 1.4rem;
+  letter-spacing: .05em;
+}
+.lib-add-btn {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 10px;
+  color: #fff;
+  font-family: 'STAM', sans-serif;
+  font-size: .9rem;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+.lib-add-btn:hover { background: rgba(255,255,255,0.22); }
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 14px;
+}
+@media (min-width: 768px) {
+  .book-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 18px; }
+}
+.book-card {
+  background: rgba(20,12,4,0.78);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 12px;
+  padding: 16px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  backdrop-filter: blur(8px);
+}
+.book-card-title {
+  font-family: 'STAM', sans-serif;
+  color: #fff;
+  font-size: .95rem;
+  line-height: 1.35;
+  font-weight: bold;
+}
+.book-card-author {
+  color: rgba(255,255,255,0.5);
+  font-size: .78rem;
+}
+.book-card-desc {
+  color: rgba(255,255,255,0.65);
+  font-size: .78rem;
+  line-height: 1.45;
+  flex: 1;
+}
+.book-card-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+.book-open-btn {
+  flex: 1;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 7px;
+  color: #fff;
+  font-family: 'STAM', sans-serif;
+  font-size: .78rem;
+  padding: 6px 4px;
+  cursor: pointer;
+}
+.book-open-btn:hover { background: rgba(255,255,255,0.2); }
+.book-del-btn {
+  background: rgba(200,50,50,0.25);
+  border: 1px solid rgba(200,50,50,0.35);
+  border-radius: 7px;
+  color: #ff8a8a;
+  font-size: .78rem;
+  padding: 6px 8px;
+  cursor: pointer;
+}
+.book-del-btn:hover { background: rgba(200,50,50,0.45); }
+.lib-empty {
+  color: rgba(255,255,255,0.4);
+  font-family: 'STAM', sans-serif;
+  font-size: 1rem;
+  text-align: center;
+  margin-top: 60px;
+}
+
+/* Modal */
+.lib-modal-bg {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+}
+.lib-modal-bg.open { display: flex; }
+.lib-modal {
+  background: rgba(12,7,2,0.97);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 16px;
+  padding: 24px 20px;
+  width: 90%;
+  max-width: 380px;
+  backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.lib-modal-title {
+  font-family: 'STAM', sans-serif;
+  color: #fff;
+  font-size: 1.1rem;
+  text-align: center;
+  margin-bottom: 4px;
+}
+.lib-modal input, .lib-modal textarea {
+  background: rgba(255,255,255,0.07) !important;
+  border: 1px solid rgba(255,255,255,0.2) !important;
+  border-radius: 8px;
+  color: #fff !important;
+  font-family: 'STAM', sans-serif;
+  font-size: .88rem;
+  padding: 10px 12px;
+  width: 100%;
+  box-sizing: border-box;
+  outline: none;
+}
+.lib-modal textarea { min-height: 70px; resize: vertical; }
+.lib-modal-btns { display: flex; gap: 10px; }
+.lib-save-btn {
+  flex: 1;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 9px;
+  color: #fff;
+  font-family: 'STAM', sans-serif;
+  font-size: .95rem;
+  padding: 10px;
+  cursor: pointer;
+}
+.lib-save-btn:hover { background: rgba(255,255,255,0.25); }
+.lib-cancel-btn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 9px;
+  color: rgba(255,255,255,0.5);
+  font-family: 'STAM', sans-serif;
+  font-size: .95rem;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
 </style>
 </head>
 <body class="calc-page">
@@ -298,6 +476,7 @@ input[type=email], input[type=password], select, textarea {
   </div>
   <div class="menu-section">
     <div class="menu-section-title">ספרייה</div>
+    <button class="menu-item" onclick="showPage('library');closeMenu()">הספרייה</button>
     <button class="menu-item" onclick="window.open('ramal-shastra.html','_blank')">ראמאל שסטרה</button>
   </div>
   <div class="menu-section">
@@ -892,6 +1071,120 @@ function gClearCalc2(){
     window.location.replace('/index.html');
   };
 </script>
+
+<!-- ─── ספרייה ─── -->
+<div id="page-library" class="dashboard-container" style="display:none">
+  <div class="lib-overlay">
+    <div class="lib-header">
+      <div class="lib-title">✦ הספרייה</div>
+      <button class="lib-add-btn" onclick="openAddBookModal()">+ הוסף ספר</button>
+    </div>
+    <div id="bookGrid" class="book-grid"></div>
+    <div id="libEmpty" class="lib-empty" style="display:none">הספרייה ריקה — הוסף ספר ראשון</div>
+  </div>
+</div>
+
+<!-- Modal הוספת ספר -->
+<div class="lib-modal-bg" id="addBookModalBg">
+  <div class="lib-modal">
+    <div class="lib-modal-title">הוספת ספר</div>
+    <input type="text" id="bookTitleInput" placeholder="שם הספר *" />
+    <input type="text" id="bookAuthorInput" placeholder="מחבר" />
+    <textarea id="bookDescInput" placeholder="תיאור (אופציונלי)"></textarea>
+    <div class="lib-modal-btns">
+      <button class="lib-save-btn" onclick="saveBook()">שמור</button>
+      <button class="lib-cancel-btn" onclick="closeAddBookModal()">ביטול</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var STORAGE_KEY = 'halachma_library_books';
+
+  function loadBooks() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+    catch(e) { return []; }
+  }
+
+  function saveBooks(books) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(books));
+  }
+
+  function renderBooks() {
+    var books = loadBooks();
+    var grid = document.getElementById('bookGrid');
+    var empty = document.getElementById('libEmpty');
+    if (!books.length) {
+      grid.innerHTML = '';
+      empty.style.display = 'block';
+      return;
+    }
+    empty.style.display = 'none';
+    grid.innerHTML = books.map(function(b, i) {
+      return '<div class="book-card">' +
+        '<div class="book-card-title">' + escHtml(b.title) + '</div>' +
+        (b.author ? '<div class="book-card-author">' + escHtml(b.author) + '</div>' : '') +
+        (b.desc   ? '<div class="book-card-desc">'   + escHtml(b.desc)   + '</div>' : '') +
+        '<div class="book-card-actions">' +
+          '<button class="book-open-btn" onclick="openBook(' + i + ')">פתח</button>' +
+          '<button class="book-del-btn"  onclick="deleteBook(' + i + ')">✕</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  window.openAddBookModal = function() {
+    document.getElementById('bookTitleInput').value  = '';
+    document.getElementById('bookAuthorInput').value = '';
+    document.getElementById('bookDescInput').value   = '';
+    document.getElementById('addBookModalBg').classList.add('open');
+    setTimeout(function(){ document.getElementById('bookTitleInput').focus(); }, 100);
+  };
+
+  window.closeAddBookModal = function() {
+    document.getElementById('addBookModalBg').classList.remove('open');
+  };
+
+  window.saveBook = function() {
+    var title = document.getElementById('bookTitleInput').value.trim();
+    if (!title) { document.getElementById('bookTitleInput').focus(); return; }
+    var books = loadBooks();
+    books.push({
+      title:  title,
+      author: document.getElementById('bookAuthorInput').value.trim(),
+      desc:   document.getElementById('bookDescInput').value.trim()
+    });
+    saveBooks(books);
+    closeAddBookModal();
+    renderBooks();
+  };
+
+  window.deleteBook = function(i) {
+    var books = loadBooks();
+    books.splice(i, 1);
+    saveBooks(books);
+    renderBooks();
+  };
+
+  window.openBook = function(i) {
+    /* ייפתח כשנחליט על שיטת הפתיחה */
+    alert('פתיחת ספר — בקרוב');
+  };
+
+  /* רנדר כשעמוד הספרייה מוצג */
+  var origShowPage = window.showPage;
+  window.showPage = function(id) {
+    origShowPage(id);
+    if (id === 'library') renderBooks();
+  };
+})();
+</script>
+
 </div><!-- /content-area -->
 </body>
 </html>
