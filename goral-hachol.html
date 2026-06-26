@@ -28,12 +28,22 @@ body {
   box-shadow: none !important;
 }
 .topbar {
-  background: rgba(10,6,2,0.45) !important;
+  background: rgba(0,0,0,0.35) !important;
   backdrop-filter: blur(8px) !important;
-  border-bottom: 1px solid rgba(224,201,127,0.15) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.12) !important;
 }
-.topbar h1 { color: #e8d490 !important; font-family: 'STAM', sans-serif !important; font-size: 2.6rem !important; }
-.icon-btn { color: #e8d490 !important; font-size: 1.8rem !important; padding: 6px 10px !important; }
+.topbar h1 { color: #ffffff !important; font-family: 'STAM', sans-serif !important; font-size: 2.6rem !important; }
+.icon-btn { color: #ffffff !important; font-size: 1.1rem !important; padding: 7px 14px !important; }
+#menuOpenBtn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  background: rgba(0,0,0,0.3) !important;
+  border: 1px solid rgba(255,255,255,0.3) !important;
+  border-radius: 8px !important;
+  font-family: 'STAM', sans-serif !important;
+  cursor: pointer !important;
+}
 .landing-img { width: 100% !important; height: auto !important; display: block !important; }
 .panel {
   background: rgba(10,6,2,0.15) !important;
@@ -61,17 +71,17 @@ input, select, textarea {
   color: #e8d490 !important;
 }
 .menu-drawer {
-  background: rgba(10,6,2,0.18) !important;
-  backdrop-filter: blur(14px) !important;
-  border-left: 1px solid rgba(224,201,127,0.2) !important;
+  background: rgba(8,5,1,0.93) !important;
+  backdrop-filter: blur(18px) !important;
+  border-left: 1px solid rgba(255,255,255,0.12) !important;
   border-right: none !important;
-  box-shadow: none !important;
+  box-shadow: -8px 0 40px rgba(0,0,0,0.6) !important;
 }
 .menu-drawer-header {
   background: transparent !important;
-  border-bottom: 1px solid rgba(224,201,127,0.15) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.12) !important;
 }
-.menu-drawer-title { color: #e8d490 !important; font-family: 'STAM', sans-serif !important; font-size: 1.05rem !important; }
+.menu-drawer-title { color: #ffffff !important; font-family: 'STAM', sans-serif !important; font-size: 1.05rem !important; }
 .menu-nav { background: transparent !important; }
 .menu-item {
   background: rgba(255,255,255,0.04) !important;
@@ -1552,7 +1562,7 @@ input, select, textarea {
 <body>
   <div class="app">
     <header class="topbar">
-      <button class="icon-btn" id="menuOpenBtn" aria-label="תפריט">☰</button>
+      <button class="icon-btn" id="menuOpenBtn" aria-label="תפריט">☰ תפריט</button>
       <h1>גורל החול</h1>
       <button class="icon-btn" onclick="location.href='calculator.html'">←</button>
     </header>
