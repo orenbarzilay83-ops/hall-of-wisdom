@@ -148,11 +148,9 @@ input, select, textarea {
 }
 .qscreen-actions { background: rgba(10,6,2,0.4) !important; backdrop-filter: blur(8px) !important; border-top: 1px solid rgba(224,201,127,0.15) !important; }
 /* ── תפילה ── */
-.prayer-container { background: rgba(10,6,2,0.55) !important; border: 1px solid rgba(224,201,127,0.2) !important; backdrop-filter: blur(8px) !important; }
-.prayer-title { color: #e8d490 !important; }
-.prayer-arabic { color: #d4b96a !important; }
-.prayer-hebrew { color: #c4a050 !important; border-top-color: rgba(224,201,127,0.15) !important; }
-.prayer-note { color: #6a5528 !important; border-top-color: rgba(224,201,127,0.1) !important; }
+.prayer-container { background: rgba(0,0,0,0.25) !important; border: 1px solid rgba(255,255,255,0.12) !important; backdrop-filter: blur(12px) !important; border-radius: 14px !important; padding: 24px 18px !important; }
+.prayer-hebrew { color: rgba(255,255,255,0.9) !important; font-size: 1rem !important; line-height: 2 !important; border-top: none !important; }
+.prayer-note { color: rgba(255,255,255,0.45) !important; border-top: 1px solid rgba(255,255,255,0.1) !important; margin-top: 16px !important; padding-top: 12px !important; font-size: .8rem !important; }
 /* ══════════════════════ */
 
     :root {
@@ -1855,22 +1853,8 @@ input, select, textarea {
     <!-- ─── תפילה לפני הגורל ─────────────────────────────── -->
     <section id="screen-prayer" class="screen">
       <div class="panel">
-        <div class="screen-back-bar">
-          <button class="btn gray" id="backFromPrayerBtn">← חזרה</button>
-          <h2 style="margin:0">תפילה לפני הגורל</h2>
-        </div>
         <div class="prayer-container">
-          <div class="prayer-title">بسم الله الرحمن الرحيم</div>
-          <div class="prayer-arabic">
-            اللهم يا عالم الغيب والشهادة،<br>
-            يا من أودعت في هذا العلم أسرار قدرتك،<br>
-            أنر بصيرتي وسدد يدي في هذه القراءة،<br>
-            واجعل ما يظهر في هذا الرمل حقاً وصواباً،<br>
-            واهدنا إلى ما فيه خير لهذا السائل.<br>
-            آمين وآمين.
-          </div>
           <div class="prayer-hebrew">
-            <strong>תרגום:</strong><br><br>
             בשם ה' הרחמן והרחום,<br>
             אלוהים, יודע הנסתר והנגלה,<br>
             אתה שהפקדת בחכמה זו את סודות יכולתך —<br>
@@ -1880,9 +1864,11 @@ input, select, textarea {
             אמן ואמן.
           </div>
           <div class="prayer-note">
-            מקור: حاوي العجائب ومظهر الغرائب, أحمد ابن زنبل المحلي<br>
             נהוג לומר תפילה זו בלב שקט לפני הטלת האמהות.
           </div>
+        </div>
+        <div style="text-align:center; margin-top: 24px;">
+          <button class="btn gray" id="backFromPrayerBtn">← חזרה</button>
         </div>
       </div>
     </section>
