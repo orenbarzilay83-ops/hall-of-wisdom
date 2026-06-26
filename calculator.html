@@ -32,6 +32,13 @@ body.calc-page {
     background-position: center center !important;
   }
 }
+@media (min-width: 768px) and (max-width: 1024px) {
+  body.calc-page {
+    background-image: url('./calc-bg-landscape.png') !important;
+    background-size: cover !important;
+    background-position: center center !important;
+  }
+}
 .menu-overlay { display: none; }
 .top-bar {
   background: rgba(8,5,1,0.20) !important;
@@ -95,13 +102,13 @@ body.calc-page {
   position: fixed !important;
   inset: 0 !important;
   z-index: 999 !important;
-  background: rgba(0,0,0,0.45) !important;
+  background: rgba(0,0,0,0.15) !important;
 }
 .side-menu-header {
   background: transparent !important;
-  border-bottom: 1px solid rgba(224,201,127,0.15);
+  border-bottom: 1px solid rgba(255,255,255,0.12);
   padding: 16px 10px 12px !important;
-  color: #e8d490 !important;
+  color: rgba(255,255,255,0.9) !important;
   font-family: 'STAM', sans-serif !important;
   font-size: 1rem !important;
   text-align: center;
@@ -109,7 +116,7 @@ body.calc-page {
 }
 .menu-section { border-bottom: none !important; padding: 10px 8px 0 !important; }
 .menu-section-title {
-  color: #5a4520 !important;
+  color: rgba(255,255,255,0.35) !important;
   font-size: .58rem !important;
   padding: 0 !important;
   text-align: center;
@@ -117,11 +124,11 @@ body.calc-page {
   margin-bottom: 5px !important;
 }
 .menu-item {
-  background: rgba(224,201,127,0.05) !important;
-  border: 1px solid rgba(224,201,127,0.12) !important;
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
   border-right: none !important;
   border-radius: 8px !important;
-  color: #c4a050 !important;
+  color: rgba(255,255,255,0.88) !important;
   font-family: 'STAM', sans-serif !important;
   font-size: .76rem !important;
   text-align: center !important;
@@ -129,9 +136,9 @@ body.calc-page {
   margin-bottom: 4px !important;
 }
 .menu-item:hover, .menu-item.active {
-  background: rgba(224,201,127,0.16) !important;
-  border-color: rgba(224,201,127,0.35) !important;
-  color: #e8d490 !important;
+  background: rgba(255,255,255,0.12) !important;
+  border-color: rgba(255,255,255,0.25) !important;
+  color: #ffffff !important;
 }
 .menu-item.disabled { opacity: .35 !important; }
 .menu-item .soon { font-size: .58rem !important; background: rgba(224,201,127,0.08) !important; color: #5a4520 !important; }
@@ -256,26 +263,26 @@ input[type=email], input[type=password], select, textarea {
     <button class="menu-item" onclick="showPage('numerology')">✦ מערכת ייעוץ נומרולוגית</button>
     <button class="menu-item" onclick="location.href='goral-hachol.html'">גורל החול</button>
     <button class="menu-item" onclick="showPage('goral')">✦ גורל העשיריות</button>
-    <button class="menu-item" onclick="showPage('compat')">💑 מחשבון זוגיות</button>
-    <button class="menu-item" onclick="showPage('parent')">👨‍👧 חיבור הורים-ילדים</button>
+    <button class="menu-item" onclick="showPage('compat')">מחשבון זוגיות</button>
+    <button class="menu-item" onclick="showPage('parent')">חיבור הורים-ילדים</button>
   </div>
   <div class="menu-section">
     <div class="menu-section-title">תהילים וגימטריה</div>
-    <button class="menu-item" onclick="showPage('psalms')">📖 מחשבון פרק התהילים האישי</button>
-    <button class="menu-item" onclick="showPage('gematria')">🔢 מחשבון גימטריה</button>
+    <button class="menu-item" onclick="showPage('psalms')">מחשבון פרק התהילים האישי</button>
+    <button class="menu-item" onclick="showPage('gematria')">מחשבון גימטריה</button>
   </div>
   <div class="menu-section">
     <div class="menu-section-title">כלים נוספים</div>
-    <button class="menu-item" onclick="showPage('diary')">📅 יומן לקוחות</button>
-    <button class="menu-item disabled">🗺 מפה אסטרולוגית <span class="soon">בקרוב</span></button>
-    <button class="menu-item disabled">🙏 מקבץ תפילות <span class="soon">בקרוב</span></button>
+    <button class="menu-item" onclick="showPage('diary')">יומן לקוחות</button>
+    <button class="menu-item disabled">מפה אסטרולוגית <span class="soon">בקרוב</span></button>
+    <button class="menu-item disabled">מקבץ תפילות <span class="soon">בקרוב</span></button>
   </div>
   <div class="menu-section">
     <div class="menu-section-title">ספרייה</div>
-    <button class="menu-item" onclick="window.open('ramal-shastra.html','_blank')">📚 ראמאל שסטרה</button>
+    <button class="menu-item" onclick="window.open('ramal-shastra.html','_blank')">ראמאל שסטרה</button>
   </div>
   <div class="menu-section">
-    <button class="menu-item" onclick="window.doSignOut?.()">🚪 יציאה</button>
+    <button class="menu-item" onclick="window.doSignOut?.()">יציאה</button>
   </div>
 </div>
 <div class="content-area">
