@@ -232,9 +232,7 @@ function renderQuestionScreen() {
   if (tabsEl) {
     tabsEl.innerHTML = allCats.map(cat => {
       const isActive = _activeCatFilter === cat.id;
-      const bgStyle = isActive ? `background:${cat.border};color:white;` : `color:${cat.border};`;
-      return `<button class="qcat-tab${isActive ? ' active' : ''}" data-cat="${cat.id}"
-        style="border-color:${cat.border};${bgStyle}">
+      return `<button class="qcat-tab${isActive ? ' active' : ''}" data-cat="${cat.id}">
         ${cat.emoji} ${cat.label}
       </button>`;
     }).join('');
@@ -259,8 +257,7 @@ function renderQuestionScreen() {
       const isSelected = selectedQuestion && selectedQuestion.id === q.id;
       return `<button type="button"
         class="qcard${isSelected ? ' selected' : ''}"
-        data-qid="${q.id}"
-        style="border-color:${isSelected ? 'var(--navy)' : (cat.border || '#ccc')}">
+        data-qid="${q.id}">
         <span class="qcard-emoji">${cat.emoji || '•'}</span>
         <span class="qcard-label">${escapeHtml(q.label)}</span>
         <span class="qcard-desc">${escapeHtml(q.desc)}</span>
