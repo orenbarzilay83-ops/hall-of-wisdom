@@ -171,7 +171,7 @@ input, select, textarea {
 }
 .qcard:hover { background: rgba(0,0,0,0.05) !important; }
 .qcard.selected { background: rgba(0,0,0,0.1) !important; border-right: 3px solid rgba(0,0,0,0.4) !important; }
-.qcard-label { color: #1a0800 !important; font-family: 'STAM', sans-serif !important; }
+.qcard-label { color: #1a0800 !important; font-family: 'STAM', sans-serif !important; font-size: 1.15rem !important; }
 .qcard-badge {
   background: rgba(0,0,0,0.08) !important;
   border: 1px solid rgba(0,0,0,0.15) !important;
@@ -183,16 +183,22 @@ input, select, textarea {
   border-top: 1px solid rgba(0,0,0,0.12) !important;
   flex-shrink: 0 !important;
   padding: 8px 0 !important;
+  justify-content: center !important;
+  gap: 12px !important;
 }
 #screen-question .btn.gray {
   color: #3b1f0a !important;
-  border-color: rgba(100,60,10,0.35) !important;
-  background: rgba(255,240,210,0.5) !important;
+  border-color: rgba(0,0,0,0.25) !important;
+  background: transparent !important;
+  width: auto !important;
+  padding: 8px 14px !important;
 }
 #screen-question .btn.primary {
-  background: rgba(80,48,12,0.8) !important;
-  color: #f0dea0 !important;
-  border: none !important;
+  background: transparent !important;
+  color: #1a0800 !important;
+  border: 1px solid rgba(0,0,0,0.25) !important;
+  width: auto !important;
+  padding: 8px 14px !important;
 }
 @media (min-width: 768px) and (orientation: portrait) {
   .question-scroll-bg { background-image: url('./prayer-scroll-bg-ipad-portrait.png') !important; }
@@ -1750,8 +1756,8 @@ input, select, textarea {
         <div class="qcat-tabs" id="qcatTabs"></div>
         <div class="qcard-grid" id="qcardGrid"></div>
         <div class="qscreen-actions">
-          <button class="btn gray" id="backFromQuestionBtn">← חזרה</button>
-          <button class="btn primary" id="continueFromQuestionBtn" disabled>← המשך עם שאלה זו</button>
+          <button class="btn gray" id="backFromQuestionBtn">חזרה →</button>
+          <button class="btn primary" id="continueFromQuestionBtn" disabled>המשך עם שאלה זו ←</button>
         </div>
       </div>
     </section>
