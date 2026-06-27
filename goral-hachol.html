@@ -200,7 +200,14 @@ input, select, textarea {
   margin-bottom: 26px !important;
   width: 100% !important;
 }
-@media (min-width: 768px) {
+@media (min-width: 768px) and (orientation: portrait) {
+  .prayer-scroll-bg { background-image: url('./prayer-scroll-bg-ipad-portrait.png') !important; }
+  .prayer-title-heb { font-size: 2.2rem !important; }
+  .prayer-paragraph { font-size: 1.35rem !important; }
+  .prayer-scroll-content { top: 16% !important; bottom: 13% !important; padding: 4% 18% 6% !important; }
+}
+@media (min-width: 768px) and (orientation: landscape) {
+  .prayer-scroll-bg { background-image: url('./prayer-scroll-bg-ipad-landscape.png') !important; }
   .prayer-title-heb { font-size: 2.2rem !important; }
   .prayer-paragraph { font-size: 1.35rem !important; }
   .prayer-scroll-content { top: 16% !important; bottom: 13% !important; padding: 4% 18% 6% !important; }
