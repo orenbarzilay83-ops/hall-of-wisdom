@@ -163,14 +163,17 @@ input, select, textarea {
 }
 .prayer-scroll-content {
   position: absolute !important;
-  inset: 0 !important;
+  top: 15% !important;
+  bottom: 12% !important;
+  left: 0 !important;
+  right: 0 !important;
   overflow-y: auto !important;
   -webkit-overflow-scrolling: touch !important;
   z-index: 1 !important;
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
-  padding: 13% 16% 12% !important;
+  padding: 4% 16% 6% !important;
 }
 #screen-prayer .panel {
   background: transparent !important;
@@ -200,7 +203,7 @@ input, select, textarea {
 @media (min-width: 768px) {
   .prayer-title-heb { font-size: 2.2rem !important; }
   .prayer-paragraph { font-size: 1.35rem !important; }
-  .prayer-scroll-content { padding: 13% 18% 12% !important; }
+  .prayer-scroll-content { top: 16% !important; bottom: 13% !important; padding: 4% 18% 6% !important; }
 }
 .prayer-note {
   color: #4a3010 !important;
