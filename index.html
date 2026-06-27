@@ -16,30 +16,52 @@ body {
   font-family: 'STAM', 'Helvetica Neue', Arial, sans-serif;
   min-height: 100vh;
   background: #0a0602;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   position: relative;
+  overflow: hidden;
 }
 
 body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background: url('./login-bg.png') no-repeat center center;
-  background-size: contain;
-  filter: brightness(1.4);
+  background: url('./login-bg-iphone.png') no-repeat center center;
+  background-size: cover;
   z-index: 0;
 }
 
 .login-wrap {
-  position: relative;
+  position: absolute;
   z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 360px;
+  width: 52vw;
+  left: 50%;
+  top: 32%;
+  transform: translateX(-50%);
   padding: 10px 0 20px;
+}
+
+/* iPad portrait */
+@media (min-width: 768px) and (orientation: portrait) {
+  body::before {
+    background-image: url('./login-bg-ipad-portrait.png');
+  }
+  .login-wrap {
+    width: 42vw;
+    top: 27%;
+  }
+}
+
+/* iPad landscape */
+@media (min-width: 768px) and (orientation: landscape) {
+  body::before {
+    background-image: url('./login-bg-ipad-landscape.png');
+  }
+  .login-wrap {
+    width: 36vw;
+    top: 20%;
+  }
 }
 
 /* ─── TITLE ─── */
