@@ -258,7 +258,6 @@ function renderQuestionScreen() {
       return `<button type="button"
         class="qcard${isSelected ? ' selected' : ''}"
         data-qid="${q.id}">
-        <span class="qcard-emoji">${cat.emoji || '•'}</span>
         <span class="qcard-label">${escapeHtml(q.label)}</span>
         <span class="qcard-desc">${escapeHtml(q.desc)}</span>
         <span class="qcard-badge">בית ${q.houseId}</span>
