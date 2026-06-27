@@ -15,7 +15,7 @@ if (!sessionStorage.getItem('userId')) window.location.replace('/index.html');
 
 body.calc-page {
   font-family: 'STAM', sans-serif !important;
-  background: #0a0602 url('./calc-bg-landscape.png') no-repeat center center !important;
+  background: #0a0602 url('./calc-bg-landscape.webp') no-repeat center center !important;
   background-size: cover !important;
   background-attachment: scroll !important;
   display: block !important;
@@ -27,14 +27,14 @@ body.calc-page {
 }
 @media (max-width: 767px) {
   body.calc-page {
-    background-image: url('./calc-bg-portrait.png') !important;
+    background-image: url('./calc-bg-portrait.webp') !important;
     background-size: cover !important;
     background-position: center center !important;
   }
 }
 @media (min-width: 768px) and (max-width: 1024px) {
   body.calc-page {
-    background-image: url('./calc-bg-landscape.png') !important;
+    background-image: url('./calc-bg-landscape.webp') !important;
     background-size: cover !important;
     background-position: center center !important;
   }
@@ -274,13 +274,13 @@ input[type=email], input[type=password], select, textarea {
 /* ── ספרייה ── */
 #page-library {
   min-height: 100vh;
-  background: url('./library-bg-portrait.png') no-repeat center center;
+  background: url('./library-bg-portrait.webp') no-repeat center center;
   background-size: cover;
   position: relative;
   padding: 0;
 }
 @media (min-width: 768px) {
-  #page-library { background-image: url('./library-bg-landscape.png'); }
+  #page-library { background-image: url('./library-bg-landscape.webp'); }
 }
 .lib-overlay {
   min-height: 100vh;
