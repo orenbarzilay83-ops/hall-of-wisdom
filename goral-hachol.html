@@ -149,47 +149,65 @@ input, select, textarea {
 .qscreen-actions { background: rgba(10,6,2,0.4) !important; backdrop-filter: blur(8px) !important; border-top: 1px solid rgba(224,201,127,0.15) !important; }
 /* ── תפילה ── */
 #screen-prayer {
+  position: relative !important;
+  height: 100vh !important;
+  overflow: hidden !important;
+}
+.prayer-scroll-bg {
+  position: absolute !important;
+  inset: 0 !important;
   background: url('./prayer-scroll-bg.png') no-repeat center center !important;
   background-size: cover !important;
-  min-height: 100vh !important;
+  z-index: 0 !important;
+}
+.prayer-scroll-content {
+  position: absolute !important;
+  inset: 0 !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  z-index: 1 !important;
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
-  justify-content: center !important;
+  padding: 6% 20% 10% !important;
 }
 #screen-prayer .panel {
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
   width: 100% !important;
-  max-width: 480px !important;
   padding: 0 !important;
 }
-.prayer-container {
-  background: transparent !important;
-  border: none !important;
-  backdrop-filter: none !important;
-  padding: 8% 18% !important;
-  text-align: center !important;
-}
-.prayer-hebrew {
+.prayer-title-heb {
   color: #3b1f0a !important;
-  font-size: 1rem !important;
-  line-height: 2.1 !important;
   font-family: 'STAM', sans-serif !important;
-  border-top: none !important;
+  font-size: 1.1rem !important;
+  font-weight: bold !important;
+  text-align: center !important;
+  margin-bottom: 18px !important;
+  letter-spacing: .05em !important;
+}
+.prayer-paragraph {
+  color: #3b1f0a !important;
+  font-family: 'STAM', sans-serif !important;
+  font-size: .88rem !important;
+  line-height: 2 !important;
+  text-align: justify !important;
+  margin-bottom: 20px !important;
 }
 .prayer-note {
   color: #7a5228 !important;
   border-top: 1px solid rgba(100,60,10,0.2) !important;
-  margin-top: 16px !important;
+  margin-top: 8px !important;
   padding-top: 12px !important;
-  font-size: .8rem !important;
+  font-size: .78rem !important;
+  text-align: center !important;
 }
 #screen-prayer .btn.gray {
   color: #3b1f0a !important;
   border-color: rgba(100,60,10,0.35) !important;
   background: rgba(255,240,210,0.5) !important;
+  margin-top: 16px !important;
 }
 /* ══════════════════════ */
 
@@ -1892,23 +1910,30 @@ input, select, textarea {
 
     <!-- ─── תפילה לפני הגורל ─────────────────────────────── -->
     <section id="screen-prayer" class="screen">
-      <div class="panel">
-        <div class="prayer-container">
-          <div class="prayer-hebrew">
-            בשם ה' הרחמן והרחום,<br>
-            אלוהים, יודע הנסתר והנגלה,<br>
-            אתה שהפקדת בחכמה זו את סודות יכולתך —<br>
-            האר את עיני לבי והכוון את ידי בקריאה זו.<br>
-            ותהי מה שיתגלה בגורל הזה אמת וישרה,<br>
-            ותנחה אותנו אל מה שטוב לשואל הזה.<br>
-            אמן ואמן.
+      <div class="prayer-scroll-bg"></div>
+      <div class="prayer-scroll-content">
+        <div class="panel">
+          <div class="prayer-title-heb">תפילה לגורל</div>
+
+          <div class="prayer-paragraph">
+            בְּשֵׁם הָאֵל הָרַחֲמָן מָלֵא רַחֲמִים עִלַּת כָּל עִלָּה וְסִבַּת כָּל סִבָּה רִאשׁוֹן וְאַחֲרוֹן קָדוֹשׁ טָהוֹר בּוֹרֵא כָּל הַבְּרוּאִים וּמַחֲלִיף אֶת הַזְּמַנִּים יִתְבָּרַךְ שְׁמוֹ הַקּוֹדֵם לְכָל קֹדֶם אלֹהַי אֶשְׁאָלְךָ בַּאֲדוֹנוּתֵךֳ וּתְמִידוּתֵךָ וּמַעֲשֶׂיךָ הָאֱלוֹהִי שֶׁתְּבִינֵנִי סוֹד מַה שֶׁהִסְכַּמְתִּי דָּבָר בָּרוּר מָה יִהְיֶה אִם טוֹב וְאִם הִפְכּוֹ כִּי אַתָּה יוֹדֵעַ כָּל נִסְתָּר וְגוֹלֶה כָּל מַצְפּוּן וְיוֹדֵעַ מָה יִהְיֶה קֹדֶם שֶׁיִּהְיֶה, שָׁמָיִם וָאָרֶץ לֹא יְכַלְכְּלוּךָ וְאַתָּה מְחַיֶּה אֶת כֻּלָּם וּבְיָדְךָ הָעֹז וְהַכֹּחַ וְהַחֲכָמָה וְהַבִּינָה בּוֹחֵן לְבוֹת וּכְלָיוֹת מְבַשֵּׂר עוֹלָמְךָ בְּטוֹב וְלֹא תְּשַׁלֵּם לְמַעֲשֵׂה יָדְךָ כְּפָעֳלָם כִּי אֵל מֶלֶךְ רַחוּם וְחַנּוּן אָתָּה יִתְבָּרַךְ וְיִשְׁתַּבַּח שִׁמְךָ דַּיָּן הַכֹּל נוֹרָא וְנִשְׂגָּב בָּרוּךְ אַתָּה הַשֵּׁם שׁוֹמֵעַ תְּפִלָּה.
           </div>
+
+          <div class="prayer-paragraph">
+            מִכְתָּם לְדָוִד שָׁמְרֵנִי אֵל כִּי־חָסִיתִי בָךְ׃ אָמַרְתְּ לַיהוָה אֲדֹנָי אָתָּה טוֹבָתִי בַּל־עָלֶיךָ׃ לִקְדוֹשִׁים אֲשֶׁר־בָּאָרֶץ הֵמָּה וְאַדִּירֵי כָּל־חֶפְצִי־בָם׃ יִרְבּוּ עַצְּבוֹתָם אַחֵר מָהָרוּ בַּל־אַסִּיךְ נִסְכֵּיהֶם מִדָּם וּבַל־אֶשָּׂא אֶת־שְׁמוֹתָם עַל־שְׂפָתָי׃ יֶהֹוֺהִ מְנָת־חֶלְקִי וְכוֹסִי אַתָּה תּוֹמִיךְ גּוֹרָלִי׃ חֲבָלִים נָפְלוּ־לִי בַּנְּעִמִים אַף־נַחֲלָת שָׁפְרָה עָלָי׃ אֲבָרֵךְ אֶת־יְהוָה אֲשֶׁר יְעָצָנִי אַף־לֵילּוֹת יִסְּרוּנִי כִלְיוֹתָי׃ שִׁוִּיתִי יְהוָה לְנֶגְדִּי תָמִיד כִּי מִימִינִי בַּל־אֶמּוֹט׃ לָכֵן שָׂמַח לִבִּי וַיָּגֶל כְּבוֹדִי אַף־בְּשָׂרִי יִשְׁכֹּן לָבֶטַח׃ כִּי לֹא־תַעֲזֹב נַפְשִׁי לִשְׁאוֹל לֹא־תִתֵּן חֲסִידְךָ לִרְאוֹת שָׁחַת׃ תּוֹדִיעֵנִי אֹרַח חַיִּים שֹׂבַע שְׂמָחוֹת אֶת־פָּנֶיךָ נְעִמוֹת בִּימִינְךָ נֶצַח׃
+          </div>
+
+          <div class="prayer-paragraph">
+            יְהִי רָצוֹן מִלְּפָנֶיךָ יֶהֹוֺהִ אֱלֹהֵינוּ וֵאלֹהֵי אֲבוֹתֵינוּ עֲשֵׂה לְמַעַנְךְ וּלְמַעַן הַשֵּׁם הַקָּדוֹשׁ הַיּוֹצֵא מִפָּסוּק לַכֹּל זְמָן וְעֵת לְכָל־חֵפֶץ תַּחַת הַשָּׁמָיִם: שֶׁהוּא: מים שהתח תצפח לכלת עונם זלכל. ובשם תָהְוּ הַיּוֹצֵא מִפָּסוּק הַנִּסְתָּרֹת לַיהוָה אֱלֹהֵינוּ וְהַנִּגְלֹת לָנוּ וּלְבָנֵינוּ עַד־עוֹלָם לַעֲשׂוֹת אֶת־כָּל־דִּבְרֵי הַתּוֹרָה הַזֹּאת׃ הִנֵּה יָמִים בָּאִים נְאֻם־יְהוָה וַהֲקִמֹתִי לְדָוִד צֶמַח צַדִּיק וּמָלַךְ מֶלֶךְ וְהִשְׂכִּיל וְעָשָׂה מִשְׁפָּט וּצְדָקָה בָּאָרֶץ: מִי־שָׁת בַּטֻּחוֹת חָכְמָה אוֹ מִי־נָתַן לַשֶּׂכְוִי בִינָה: הֵן־אֱמֶת חָפַצְתָּ בַטֻּחוֹת וּבְסָתֻם חָכְמָה תוֹדִיעֵנִי עַל שְׁאֵלָתִי שֶׁהִיא כָּךְ וְכָךְ….
+          </div>
+
           <div class="prayer-note">
             נהוג לומר תפילה זו בלב שקט לפני הטלת האמהות.
           </div>
-        </div>
-        <div style="text-align:center; margin-top: 24px;">
-          <button class="btn gray" id="backFromPrayerBtn">← חזרה</button>
+
+          <div style="text-align:center;">
+            <button class="btn gray" id="backFromPrayerBtn">← חזרה</button>
+          </div>
         </div>
       </div>
     </section>
