@@ -148,9 +148,49 @@ input, select, textarea {
 }
 .qscreen-actions { background: rgba(10,6,2,0.4) !important; backdrop-filter: blur(8px) !important; border-top: 1px solid rgba(224,201,127,0.15) !important; }
 /* ── תפילה ── */
-.prayer-container { background: rgba(0,0,0,0.25) !important; border: 1px solid rgba(255,255,255,0.12) !important; backdrop-filter: blur(12px) !important; border-radius: 14px !important; padding: 24px 18px !important; }
-.prayer-hebrew { color: rgba(255,255,255,0.9) !important; font-size: 1rem !important; line-height: 2 !important; border-top: none !important; }
-.prayer-note { color: rgba(255,255,255,0.45) !important; border-top: 1px solid rgba(255,255,255,0.1) !important; margin-top: 16px !important; padding-top: 12px !important; font-size: .8rem !important; }
+#screen-prayer {
+  background: url('./prayer-scroll-bg.png') no-repeat center center !important;
+  background-size: cover !important;
+  min-height: 100vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+#screen-prayer .panel {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  width: 100% !important;
+  max-width: 480px !important;
+  padding: 0 !important;
+}
+.prayer-container {
+  background: transparent !important;
+  border: none !important;
+  backdrop-filter: none !important;
+  padding: 8% 18% !important;
+  text-align: center !important;
+}
+.prayer-hebrew {
+  color: #3b1f0a !important;
+  font-size: 1rem !important;
+  line-height: 2.1 !important;
+  font-family: 'STAM', sans-serif !important;
+  border-top: none !important;
+}
+.prayer-note {
+  color: #7a5228 !important;
+  border-top: 1px solid rgba(100,60,10,0.2) !important;
+  margin-top: 16px !important;
+  padding-top: 12px !important;
+  font-size: .8rem !important;
+}
+#screen-prayer .btn.gray {
+  color: #3b1f0a !important;
+  border-color: rgba(100,60,10,0.35) !important;
+  background: rgba(255,240,210,0.5) !important;
+}
 /* ══════════════════════ */
 
     :root {
