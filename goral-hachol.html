@@ -149,8 +149,9 @@ input, select, textarea {
 .qscreen-actions { background: rgba(10,6,2,0.4) !important; backdrop-filter: blur(8px) !important; border-top: 1px solid rgba(224,201,127,0.15) !important; }
 /* ── תפילה ── */
 #screen-prayer {
-  position: relative !important;
-  height: 100vh !important;
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 500 !important;
   overflow: hidden !important;
 }
 .prayer-scroll-bg {
@@ -169,7 +170,7 @@ input, select, textarea {
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
-  padding: 9% 13% 12% !important;
+  padding: 14% 16% 12% !important;
 }
 #screen-prayer .panel {
   background: transparent !important;
