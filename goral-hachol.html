@@ -104,49 +104,104 @@ input, select, textarea {
 .screen-back-bar { background: rgba(10,6,2,0.4) !important; backdrop-filter: blur(6px) !important; }
 
 /* ── מסך בחירת שאלה ── */
-.qscreen-header {
-  background: rgba(15,8,2,0.4) !important;
-  backdrop-filter: blur(10px) !important;
-  border-bottom: 1px solid rgba(224,201,127,0.2) !important;
+#screen-question {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 100 !important;
+  overflow: hidden !important;
 }
-.qscreen-header h2 { color: #e8d490 !important; font-family: 'STAM', sans-serif !important; }
-.qscreen-subtitle { color: rgba(196,160,80,0.85) !important; }
+.question-scroll-bg {
+  position: absolute !important;
+  inset: 0 !important;
+  background: #2e1a08 url('./prayer-scroll-bg.png') no-repeat center center !important;
+  background-size: cover !important;
+  z-index: 0 !important;
+}
+.question-scroll-content {
+  position: absolute !important;
+  top: 15% !important;
+  bottom: 12% !important;
+  left: 0 !important;
+  right: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  z-index: 1 !important;
+  padding: 0 14% !important;
+}
+.qscreen-header {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  border-bottom: 1px solid rgba(0,0,0,0.15) !important;
+  flex-shrink: 0 !important;
+  padding: 12px 0 8px !important;
+}
+.qscreen-header h2 { color: #1a0800 !important; font-family: 'STAM', sans-serif !important; }
+.qscreen-subtitle { color: #4a2e0a !important; }
 .qcat-tabs {
-  background: rgba(15,8,2,0.3) !important;
-  backdrop-filter: blur(8px) !important;
-  border-bottom: 1px solid rgba(224,201,127,0.15) !important;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  border-bottom: 1px solid rgba(0,0,0,0.12) !important;
+  flex-shrink: 0 !important;
 }
 .qcat-tab {
-  background: rgba(224,201,127,0.08) !important;
-  border: 1px solid rgba(224,201,127,0.25) !important;
+  background: rgba(0,0,0,0.07) !important;
+  border: 1px solid rgba(0,0,0,0.2) !important;
   border-radius: 20px !important;
-  color: #c4a050 !important;
+  color: #3a2008 !important;
   font-family: 'STAM', sans-serif !important;
 }
 .qcat-tab.active {
-  background: rgba(212,185,106,0.28) !important;
-  border-color: rgba(224,201,127,0.65) !important;
-  color: #e8d490 !important;
+  background: rgba(0,0,0,0.2) !important;
+  border-color: rgba(0,0,0,0.45) !important;
+  color: #1a0800 !important;
 }
 .qcard-grid {
-  background: rgba(15,8,2,0.2) !important;
-  backdrop-filter: blur(4px) !important;
-  border: 1px solid rgba(224,201,127,0.12) !important;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  border: none !important;
   box-shadow: none !important;
+  flex: 1 !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
 }
 .qcard {
   background: transparent !important;
-  border-bottom: 1px solid rgba(224,201,127,0.12) !important;
+  border-bottom: 1px solid rgba(0,0,0,0.1) !important;
 }
-.qcard:hover { background: rgba(224,201,127,0.08) !important; }
-.qcard.selected { background: rgba(212,185,106,0.15) !important; border-right: 3px solid rgba(224,201,127,0.65) !important; }
-.qcard-label { color: #e8d490 !important; font-family: 'STAM', sans-serif !important; }
+.qcard:hover { background: rgba(0,0,0,0.05) !important; }
+.qcard.selected { background: rgba(0,0,0,0.1) !important; border-right: 3px solid rgba(0,0,0,0.4) !important; }
+.qcard-label { color: #1a0800 !important; font-family: 'STAM', sans-serif !important; }
 .qcard-badge {
-  background: rgba(15,8,2,0.45) !important;
-  border: 1px solid rgba(224,201,127,0.2) !important;
-  color: #8a7040 !important;
+  background: rgba(0,0,0,0.08) !important;
+  border: 1px solid rgba(0,0,0,0.15) !important;
+  color: #4a2e0a !important;
 }
-.qscreen-actions { background: rgba(15,8,2,0.4) !important; backdrop-filter: blur(8px) !important; border-top: 1px solid rgba(224,201,127,0.15) !important; }
+.qscreen-actions {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  border-top: 1px solid rgba(0,0,0,0.12) !important;
+  flex-shrink: 0 !important;
+  padding: 8px 0 !important;
+}
+#screen-question .btn.gray {
+  color: #3b1f0a !important;
+  border-color: rgba(100,60,10,0.35) !important;
+  background: rgba(255,240,210,0.5) !important;
+}
+#screen-question .btn.primary {
+  background: rgba(80,48,12,0.8) !important;
+  color: #f0dea0 !important;
+  border: none !important;
+}
+@media (min-width: 768px) and (orientation: portrait) {
+  .question-scroll-bg { background-image: url('./prayer-scroll-bg-ipad-portrait.png') !important; }
+  .question-scroll-content { top: 18% !important; bottom: 19% !important; padding: 0 16% !important; }
+}
+@media (min-width: 768px) and (orientation: landscape) {
+  .question-scroll-bg { background-image: url('./prayer-scroll-bg-ipad-landscape.png') !important; }
+  .question-scroll-content { top: 18% !important; bottom: 19% !important; padding: 0 16% !important; }
+}
 /* ── תפילה ── */
 #screen-prayer {
   position: fixed !important;
@@ -1686,15 +1741,18 @@ input, select, textarea {
 
     <!-- ─── מסך בחירת שאלה ─────────────────────────────── -->
     <section id="screen-question" class="screen">
-      <div class="qscreen-header">
-        <h2>בחר שאלה לגורל</h2>
-        <p class="qscreen-subtitle">לחץ על הקטגוריה ואז על השאלה שמדאיגה אותך</p>
-      </div>
-      <div class="qcat-tabs" id="qcatTabs"></div>
-      <div class="qcard-grid" id="qcardGrid"></div>
-      <div class="qscreen-actions">
-        <button class="btn gray" id="backFromQuestionBtn">← חזרה</button>
-        <button class="btn primary" id="continueFromQuestionBtn" disabled>← המשך עם שאלה זו</button>
+      <div class="question-scroll-bg"></div>
+      <div class="question-scroll-content">
+        <div class="qscreen-header">
+          <h2>בחר שאלה לגורל</h2>
+          <p class="qscreen-subtitle">לחץ על הקטגוריה ואז על השאלה שמדאיגה אותך</p>
+        </div>
+        <div class="qcat-tabs" id="qcatTabs"></div>
+        <div class="qcard-grid" id="qcardGrid"></div>
+        <div class="qscreen-actions">
+          <button class="btn gray" id="backFromQuestionBtn">← חזרה</button>
+          <button class="btn primary" id="continueFromQuestionBtn" disabled>← המשך עם שאלה זו</button>
+        </div>
       </div>
     </section>
 
