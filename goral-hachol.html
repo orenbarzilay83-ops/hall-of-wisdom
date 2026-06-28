@@ -320,18 +320,11 @@ body:has(#screen-open.active) .topbar { display: none !important; }
   gap: 5px !important; direction: rtl !important;
 }
 
-/* שדה עם תווית */
+/* שדה */
 #screen-open .open-field {
-  display: flex !important; flex-direction: column !important;
-  gap: 2px !important; min-width: 0 !important;
+  min-width: 0 !important;
 }
 #screen-open .open-row .open-field { flex: 1 !important; }
-#screen-open .open-label {
-  font-family: 'STAM', sans-serif !important;
-  font-size: 0.77rem !important; color: #5c2d00 !important;
-  font-weight: 700 !important; text-align: right !important;
-  padding-right: 4px !important; line-height: 1.2 !important;
-}
 
 /* מפריד קטגוריה */
 #screen-open .open-divider {
@@ -372,6 +365,10 @@ body:has(#screen-open.active) .topbar { display: none !important; }
 #screen-open input:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0 100px rgba(240,220,150,0.45) inset !important;
   -webkit-text-fill-color: #1a0800 !important;
+}
+#screen-open .open-form input::placeholder,
+#screen-open .open-form textarea::placeholder {
+  color: rgba(92,45,0,0.55) !important; font-style: italic !important;
 }
 
 /* כפתורי פרופיל */
@@ -1889,22 +1886,18 @@ body:has(#screen-open.active) .topbar { display: none !important; }
       <div class="open-form">
         <div class="open-row">
           <div class="open-field">
-            <span class="open-label">שם הלקוח</span>
-            <input id="clientNameInput" autocomplete="off" />
+            <input id="clientNameInput" placeholder="שם הלקוח" autocomplete="off" />
           </div>
           <div class="open-field">
-            <span class="open-label">שם האב / האם</span>
-            <input id="clientParentInput" autocomplete="off" />
+            <input id="clientParentInput" placeholder="שם האב / האם" autocomplete="off" />
           </div>
         </div>
         <div class="open-row">
           <div class="open-field">
-            <span class="open-label">טלפון</span>
-            <input id="clientPhoneInput" type="tel" autocomplete="off" />
+            <input id="clientPhoneInput" type="tel" placeholder="טלפון" autocomplete="off" />
           </div>
           <div class="open-field">
-            <span class="open-label">שם הנישאל</span>
-            <input id="quesitedNameInput" autocomplete="off" />
+            <input id="quesitedNameInput" placeholder="שם הנישאל" autocomplete="off" />
           </div>
         </div>
         <div class="open-divider">מין</div>
@@ -1933,17 +1926,14 @@ body:has(#screen-open.active) .topbar { display: none !important; }
         </div>
         <div class="open-row">
           <div class="open-field">
-            <span class="open-label">תאריך</span>
-            <input type="text" id="questionDateInput" placeholder="DD/MM/YYYY" inputmode="numeric" autocomplete="off" />
+            <input type="text" id="questionDateInput" placeholder="תאריך DD/MM/YYYY" inputmode="numeric" autocomplete="off" />
           </div>
           <div class="open-field">
-            <span class="open-label">שעה</span>
             <input type="time" id="questionTimeInput" autocomplete="off" />
           </div>
         </div>
         <div class="open-field">
-          <span class="open-label">שאלת הלקוח</span>
-          <textarea id="questionInput" placeholder="כתוב את שאלתך כאן..." autocomplete="off"></textarea>
+          <textarea id="questionInput" placeholder="שאלת הלקוח..." autocomplete="off"></textarea>
         </div>
         <div class="open-row open-actions">
           <button class="btn primary" id="manualBtn" type="button">הכנסה ידנית</button>
