@@ -296,6 +296,9 @@ input, select, textarea {
   background: url('./client-bg-scroll.png') no-repeat top center !important;
   background-size: cover !important;
 }
+@media (orientation: landscape) {
+  #screen-open { background-image: url('./client-bg-landscape.png') !important; }
+}
 body:has(#screen-open.active) .topbar { display: none !important; }
 
 /* שעון גורל — בתיבה הכהה שבראש המגילה */
@@ -322,9 +325,10 @@ body:has(#screen-open.active) .topbar { display: none !important; }
 /* שורות */
 #screen-open .open-row {
   display: flex !important; flex-direction: row !important;
-  gap: 8px !important;
+  flex-wrap: wrap !important; gap: 6px !important;
 }
 #screen-open .open-row > * { flex: 1 !important; min-width: 0 !important; }
+#screen-open .open-row > .profile-btn { flex: 0 0 auto !important; width: auto !important; }
 
 /* קלט ואזור טקסט */
 #screen-open .open-form input,
@@ -354,8 +358,8 @@ body:has(#screen-open.active) .topbar { display: none !important; }
   border-radius: 5px !important;
   color: #1a0800 !important; font-family: 'STAM', sans-serif !important;
   font-size: 0.95rem !important;
-  padding: 7px 4px !important; cursor: pointer !important;
-  text-align: center !important; box-sizing: border-box !important;
+  padding: 6px 14px !important; cursor: pointer !important;
+  text-align: center !important; box-sizing: border-box !important; white-space: nowrap !important;
 }
 #screen-open .open-form .profile-btn.selected {
   background: rgba(70,25,0,0.65) !important;
@@ -2152,32 +2156,30 @@ body:has(#screen-open.active) .topbar { display: none !important; }
   <!-- ─── מיקום מדויק של טופס מסך-פתח על גבי תמונת הרקע ─── -->
   <script>
   (function() {
-    // ממדי תמונת הרקע client-bg-scroll.png
-    var IW = 1086, IH = 1449;
-    // קואורדינטות תיבת הכותרת הכהה בתמונה (px)
-    var BANNER_T = 352, BANNER_B = 416;
-    // קואורדינטות אזור הטופס על הקלף בתמונה (px)
-    var PARCH_L = 218, PARCH_R = 906;
-    var FORM_T   = 440, FORM_B  = 1405;
+    // Portrait: client-bg-scroll.png 1086×1449
+    var P = { IW:1086, IH:1449, PARCH_L:218, PARCH_R:906, BANNER_T:352, BANNER_B:416, FORM_T:440, FORM_B:1405 };
+    // Landscape: client-bg-landscape.png 1448×1086
+    var L = { IW:1448, IH:1086, PARCH_L:290, PARCH_R:1160, BANNER_T:273, BANNER_B:320, FORM_T:335, FORM_B:1050 };
 
     function layoutOpenScreen() {
       var vw = window.innerWidth, vh = window.innerHeight;
+      var c = (vw > vh) ? L : P;
+
       var scale, ox;
-      if (vw / vh < IW / IH) {
-        // רחב מדי — גודל לפי גובה, ממורכז אופקית
-        scale = vh / IH;
-        ox = (vw - IW * scale) / 2;
+      if (vw / vh < c.IW / c.IH) {
+        scale = vh / c.IH;
+        ox = (vw - c.IW * scale) / 2;
       } else {
-        // גבוה מדי — גודל לפי רוחב, מקובע למעלה
-        scale = vw / IW;
+        scale = vw / c.IW;
         ox = 0;
       }
-      var left   = IW * scale > 0 ? PARCH_L * scale + ox : 0;
-      var right  = vw - (PARCH_R * scale + ox);
-      var banTop = BANNER_T * scale;
-      var banH   = (BANNER_B - BANNER_T) * scale;
-      var frmTop = FORM_T * scale;
-      var frmBot = vh - FORM_B * scale;
+
+      var left   = c.PARCH_L * scale + ox;
+      var right  = vw - (c.PARCH_R * scale + ox);
+      var banTop = c.BANNER_T * scale;
+      var banH   = (c.BANNER_B - c.BANNER_T) * scale;
+      var frmTop = c.FORM_T * scale;
+      var frmBot = vh - c.FORM_B * scale;
 
       var alert = document.getElementById('castingTimeAlert');
       var form  = document.querySelector('#screen-open .open-form');
@@ -2195,7 +2197,6 @@ body:has(#screen-open.active) .topbar { display: none !important; }
     document.addEventListener('DOMContentLoaded', layoutOpenScreen);
     window.addEventListener('resize', layoutOpenScreen);
     window.addEventListener('orientationchange', function() { setTimeout(layoutOpenScreen, 350); });
-    // הפעל גם כאשר מסך-פתח הופך לאקטיבי
     document.addEventListener('DOMContentLoaded', function() {
       var screenOpen = document.getElementById('screen-open');
       if (!screenOpen) return;
