@@ -2149,6 +2149,67 @@ body:has(#screen-open.active) .topbar { display: none !important; }
   <script src="./goral-hachol/ui/question-bank.js?v=1"></script>
   <script src="./goral-hachol/ui/goral-app.js?v=12"></script>
 
+  <!-- ─── מיקום מדויק של טופס מסך-פתח על גבי תמונת הרקע ─── -->
+  <script>
+  (function() {
+    // ממדי תמונת הרקע client-bg-scroll.png
+    var IW = 1086, IH = 1449;
+    // קואורדינטות תיבת הכותרת הכהה בתמונה (px)
+    var BANNER_T = 352, BANNER_B = 416;
+    // קואורדינטות אזור הטופס על הקלף בתמונה (px)
+    var PARCH_L = 218, PARCH_R = 906;
+    var FORM_T   = 440, FORM_B  = 1405;
+
+    function layoutOpenScreen() {
+      var vw = window.innerWidth, vh = window.innerHeight;
+      var scale, ox;
+      if (vw / vh < IW / IH) {
+        // רחב מדי — גודל לפי גובה, ממורכז אופקית
+        scale = vh / IH;
+        ox = (vw - IW * scale) / 2;
+      } else {
+        // גבוה מדי — גודל לפי רוחב, מקובע למעלה
+        scale = vw / IW;
+        ox = 0;
+      }
+      var left   = IW * scale > 0 ? PARCH_L * scale + ox : 0;
+      var right  = vw - (PARCH_R * scale + ox);
+      var banTop = BANNER_T * scale;
+      var banH   = (BANNER_B - BANNER_T) * scale;
+      var frmTop = FORM_T * scale;
+      var frmBot = vh - FORM_B * scale;
+
+      var alert = document.getElementById('castingTimeAlert');
+      var form  = document.querySelector('#screen-open .open-form');
+
+      function set(el, styles) {
+        if (!el) return;
+        for (var k in styles) el.style.setProperty(k, styles[k], 'important');
+      }
+      set(alert, { top: banTop+'px', height: banH+'px',
+                   left: Math.max(0,left)+'px', right: Math.max(0,right)+'px', width: 'auto' });
+      set(form,  { top: frmTop+'px', bottom: Math.max(2,frmBot)+'px',
+                   left: Math.max(0,left)+'px', right: Math.max(0,right)+'px', width: 'auto' });
+    }
+
+    document.addEventListener('DOMContentLoaded', layoutOpenScreen);
+    window.addEventListener('resize', layoutOpenScreen);
+    window.addEventListener('orientationchange', function() { setTimeout(layoutOpenScreen, 350); });
+    // הפעל גם כאשר מסך-פתח הופך לאקטיבי
+    document.addEventListener('DOMContentLoaded', function() {
+      var screenOpen = document.getElementById('screen-open');
+      if (!screenOpen) return;
+      new MutationObserver(function(mutations) {
+        mutations.forEach(function(m) {
+          if (m.type === 'attributes' && m.attributeName === 'class') {
+            if (screenOpen.classList.contains('active')) layoutOpenScreen();
+          }
+        });
+      }).observe(screenOpen, { attributes: true });
+    });
+  })();
+  </script>
+
   <!-- ─── אימות Supabase + יציאה ─── -->
   <script type="module">
     import { supabase } from '/supabase-client.js';
