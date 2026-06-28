@@ -291,171 +291,151 @@ input, select, textarea {
 }
 /* ── מסך פרטי הלקוח ── */
 #screen-open {
-  position: fixed !important;
-  inset: 0 !important;
-  z-index: 100 !important;
-  overflow: hidden !important;
-  padding: 0 !important;
+  position: fixed !important; inset: 0 !important;
+  z-index: 100 !important; overflow: hidden !important; padding: 0 !important;
   background: url('./client-bg-iphone.png') no-repeat center center !important;
   background-size: cover !important;
 }
 body:has(#screen-open.active) .topbar { display: none !important; }
+
 #screen-open #castingTimeAlert {
   position: absolute !important;
-  top: 23.5% !important;
-  left: 12% !important;
-  right: 12% !important;
-  height: 4.5% !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background: transparent !important;
-  color: #c8a050 !important;
-  font-family: 'STAM', sans-serif !important;
-  font-size: .8rem !important;
-  border: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
+  display: flex !important; align-items: center !important; justify-content: center !important;
+  background: transparent !important; border: none !important;
+  color: #c8a050 !important; font-family: 'STAM', sans-serif !important;
+  font-size: .8rem !important; padding: 0 !important; margin: 0 !important;
 }
-/* Container spans full screen — children use absolute % per background image */
+
 #screen-open .open-form {
+  position: absolute !important; inset: 0 !important; overflow: visible !important;
+}
+
+/* All form children: absolutely positioned, transparent, no borders */
+#screen-open .open-form > input,
+#screen-open .open-form > textarea {
   position: absolute !important;
-  inset: 0 !important;
-  overflow: visible !important;
-}
-#screen-open .open-form > :nth-child(1),
-#screen-open .open-form > :nth-child(2),
-#screen-open .open-form > :nth-child(3),
-#screen-open .open-form > :nth-child(4),
-#screen-open .open-form > :nth-child(5),
-#screen-open .open-form > :nth-child(6),
-#screen-open .open-form > :nth-child(7),
-#screen-open .open-form > :nth-child(8),
-#screen-open .open-form > :nth-child(9) {
-  position: absolute !important;
-  left: 12% !important;
-  right: 12% !important;
-}
-/* iPhone — vertical positions measured from client-bg-iphone.png */
-#screen-open .open-form > :nth-child(1) { top: 29.5% !important; }
-#screen-open .open-form > :nth-child(2) { top: 37% !important; }
-#screen-open .open-form > :nth-child(3) { top: 44.5% !important; }
-#screen-open .open-form > :nth-child(4) { top: 54% !important; }
-#screen-open .open-form > :nth-child(5) { top: 61% !important; }
-#screen-open .open-form > :nth-child(6) { top: 69% !important; }
-#screen-open .open-form > :nth-child(7) { top: 74.5% !important; }
-#screen-open .open-form > :nth-child(8) { top: 81.5% !important; }
-#screen-open .open-form > :nth-child(9) { top: 87% !important; }
-.open-row-2 {
-  display: flex !important;
-  gap: 4% !important;
-}
-.open-row-2 .open-cell { flex: 1 !important; }
-.open-btns-row {
-  display: flex !important;
-  gap: 2% !important;
-}
-.open-btns-row .profile-btn {
-  flex: 1 !important;
-  background: transparent !important;
-  border: none !important;
-  color: #1a0800 !important;
-  font-family: 'STAM', sans-serif !important;
-  font-size: .78rem !important;
-  padding: 3px 2px !important;
-  border-radius: 5px !important;
-  cursor: pointer !important;
-}
-.open-btns-row .profile-btn.selected {
-  background: rgba(40,20,5,0.65) !important;
-  color: #f0dea0 !important;
-}
-#screen-open input,
-#screen-open textarea {
-  -webkit-appearance: none !important;
-  appearance: none !important;
-  background: transparent !important;
-  background-color: transparent !important;
-  -webkit-box-shadow: none !important;
-  box-shadow: none !important;
-  border: none !important;
-  border-radius: 0 !important;
-  outline: none !important;
-  color: #1a0800 !important;
-  font-family: 'STAM', sans-serif !important;
-  font-size: .9rem !important;
-  padding: 2px 6px !important;
-  width: 100% !important;
+  -webkit-appearance: none !important; appearance: none !important;
+  background: transparent !important; background-color: transparent !important;
+  -webkit-box-shadow: none !important; box-shadow: none !important;
+  border: none !important; border-radius: 0 !important; outline: none !important;
+  color: #1a0800 !important; font-family: 'STAM', sans-serif !important;
+  font-size: .9rem !important; padding: 2px 6px !important;
   box-sizing: border-box !important;
 }
 #screen-open input:-webkit-autofill,
 #screen-open input:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0 100px transparent inset !important;
-  box-shadow: 0 0 0 100px transparent inset !important;
   -webkit-text-fill-color: #1a0800 !important;
 }
-.open-cell-full { flex: none !important; }
-.open-cell-full textarea {
-  height: 3em !important;
-  resize: none !important;
+#screen-open .open-form > button.profile-btn {
+  position: absolute !important;
+  background: transparent !important; border: none !important;
+  color: #1a0800 !important; font-family: 'STAM', sans-serif !important;
+  font-size: .78rem !important; padding: 3px 2px !important;
+  border-radius: 5px !important; cursor: pointer !important;
+  box-sizing: border-box !important;
 }
-.open-actions {
-  display: flex !important;
-  gap: 3% !important;
+#screen-open .open-form > button.profile-btn.selected {
+  background: rgba(40,20,5,0.65) !important; color: #f0dea0 !important;
 }
-#screen-open .open-actions .btn {
-  flex: 1 !important;
-  background: transparent !important;
-  border: none !important;
-  color: #1a0800 !important;
-  font-family: 'STAM', sans-serif !important;
-  font-size: .72rem !important;
-  padding: 3px 2px !important;
+#screen-open .open-form > button.btn {
+  position: absolute !important;
+  background: transparent !important; border: none !important;
+  color: #1a0800 !important; font-family: 'STAM', sans-serif !important;
+  font-size: .72rem !important; padding: 3px 2px !important; cursor: pointer !important;
+  box-sizing: border-box !important;
 }
-/* iPad portrait 768×1024 — tuned values from tune.html */
+#screen-open #questionInput { resize: none !important; height: 5% !important; }
+
+/* ── iPhone base positions ── */
+#screen-open #castingTimeAlert { top:23.5% !important; left:12% !important; right:12% !important; height:4.5% !important; }
+#clientNameInput   { top:29%   !important; left:50%  !important; width:36%  !important; }
+#clientParentInput { top:29%   !important; left:12%  !important; width:36%  !important; }
+#clientPhoneInput  { top:37%   !important; left:50%  !important; width:36%  !important; }
+#quesitedNameInput { top:37%   !important; left:12%  !important; width:36%  !important; }
+#btn-gender-male   { top:44.5% !important; left:50%  !important; width:36%  !important; }
+#btn-gender-female { top:44.5% !important; left:12%  !important; width:36%  !important; }
+#btn-married       { top:54%   !important; left:63%  !important; width:18%  !important; }
+#btn-single        { top:54%   !important; left:44%  !important; width:18%  !important; }
+#btn-divorced      { top:54%   !important; left:26%  !important; width:17%  !important; }
+#btn-widowed       { top:54%   !important; left:12%  !important; width:12%  !important; }
+#btn-ch-yes        { top:61%   !important; left:50%  !important; width:36%  !important; }
+#btn-ch-no         { top:61%   !important; left:12%  !important; width:36%  !important; }
+#btn-employed      { top:69%   !important; left:63%  !important; width:23%  !important; }
+#btn-unemployed    { top:69%   !important; left:38%  !important; width:24%  !important; }
+#btn-self          { top:69%   !important; left:24%  !important; width:13%  !important; }
+#btn-retired       { top:69%   !important; left:12%  !important; width:11%  !important; }
+#questionDateInput { top:74.5% !important; left:50%  !important; width:36%  !important; }
+#questionTimeInput { top:74.5% !important; left:12%  !important; width:36%  !important; }
+#questionInput     { top:81.5% !important; left:12%  !important; width:74%  !important; }
+#manualBtn         { top:87%   !important; left:50%  !important; width:36%  !important; }
+#autoBtn           { top:87%   !important; left:28%  !important; width:21%  !important; }
+#clearBtn          { top:87%   !important; left:12%  !important; width:14%  !important; }
+
+/* ── iPad portrait — tuned values ── */
 @media (min-width: 768px) and (orientation: portrait) {
   #screen-open { background-image: url('./client-bg-ipad-portrait.png') !important; }
-  #screen-open #castingTimeAlert { top: 22.0% !important; left: 21.0% !important; right: 51.5% !important; height: 4.5% !important; }
-  #screen-open .open-form > :nth-child(1) { top: 31.5% !important; left: 21.0% !important; right: 37.5% !important; }
-  #screen-open .open-form > :nth-child(2) { top: 39.5% !important; left: 21.0% !important; right: 37.5% !important; }
-  #screen-open .open-form > :nth-child(3) { top: 48.0% !important; left: 21.0% !important; right: 36.5% !important; }
-  #screen-open .open-form > :nth-child(4) { top: 56.5% !important; left: 57.5% !important; right: 32.0% !important; }
-  #screen-open .open-form > :nth-child(5) { top: 64.5% !important; left: 21.0% !important; right: 38.0% !important; }
-  #screen-open .open-form > :nth-child(6) { top: 73.5% !important; left: 21.0% !important; right: 32.0% !important; }
-  #screen-open .open-form > :nth-child(7) { top: 81.0% !important; left: 21.0% !important; right: 38.5% !important; }
-  #screen-open .open-form > :nth-child(8) { top: 88.5% !important; left: 21.0% !important; right: 28.5% !important; }
-  #screen-open .open-form > :nth-child(9) { top: 95.0% !important; left: 21.0% !important; right: 36.5% !important; }
-  #screen-open input, #screen-open textarea { font-size: 1rem !important; }
-  .open-btns-row .profile-btn { font-size: .88rem !important; }
-  #screen-open .open-actions .btn { font-size: .82rem !important; }
-  .open-cell-full textarea { height: 3.2em !important; }
+  #screen-open #castingTimeAlert { top:20.0% !important; left:36.0% !important; width:27.0% !important; right:auto !important; height:4.5% !important; }
+  #screen-open .open-form > input,
+  #screen-open .open-form > textarea { font-size: 1rem !important; }
+  #screen-open .open-form > button.profile-btn { font-size: .88rem !important; }
+  #screen-open .open-form > button.btn         { font-size: .82rem !important; }
+  #screen-open #questionInput { height: 5% !important; }
+  #clientNameInput   { top:29.3% !important; left:53.8% !important; width:19.5% !important; }
+  #clientParentInput { top:29.1% !important; left:26.4% !important; width:19.5% !important; }
+  #clientPhoneInput  { top:37.5% !important; left:53.8% !important; width:19.5% !important; }
+  #quesitedNameInput { top:37.4% !important; left:26.4% !important; width:19.5% !important; }
+  #btn-gender-male   { top:45.8% !important; left:53.7% !important; width:20.0% !important; }
+  #btn-gender-female { top:45.8% !important; left:26.1% !important; width:20.0% !important; }
+  #btn-married       { top:54.6% !important; left:51.1% !important; width:11.5% !important; }
+  #btn-single        { top:54.5% !important; left:64.4% !important; width:11.5% !important; }
+  #btn-divorced      { top:54.4% !important; left:37.0% !important; width:11.5% !important; }
+  #btn-widowed       { top:54.4% !important; left:23.7% !important; width:11.5% !important; }
+  #btn-ch-yes        { top:62.5% !important; left:53.6% !important; width:20.0% !important; }
+  #btn-ch-no         { top:62.6% !important; left:26.2% !important; width:20.0% !important; }
+  #btn-employed      { top:71.2% !important; left:64.7% !important; width:11.0% !important; }
+  #btn-unemployed    { top:71.2% !important; left:37.0% !important; width:11.5% !important; }
+  #btn-self          { top:71.2% !important; left:51.3% !important; width:11.0% !important; }
+  #btn-retired       { top:71.1% !important; left:24.0% !important; width:11.0% !important; }
+  #questionDateInput { top:78.6% !important; left:53.8% !important; width:19.5% !important; }
+  #questionTimeInput { top:78.7% !important; left:26.4% !important; width:19.5% !important; }
+  #questionInput     { top:85.1% !important; left:24.6% !important; width:50.5% !important; }
+  #manualBtn         { top:92.3% !important; left:58.8% !important; width:14.0% !important; }
+  #autoBtn           { top:92.4% !important; left:42.2% !important; width:15.0% !important; }
+  #clearBtn          { top:92.4% !important; left:28.8% !important; width:10.0% !important; }
 }
-/* iPad landscape 1024×768 — measured from client-bg-ipad-landscape.png */
+
+/* ── iPad landscape — defaults (pending tune) ── */
 @media (min-width: 768px) and (orientation: landscape) {
   #screen-open { background-image: url('./client-bg-ipad-landscape.png') !important; }
-  #screen-open #castingTimeAlert { top: 22% !important; left: 24.5% !important; right: 24.5% !important; height: 4.5% !important; }
-  #screen-open .open-form > :nth-child(1),
-  #screen-open .open-form > :nth-child(2),
-  #screen-open .open-form > :nth-child(3),
-  #screen-open .open-form > :nth-child(4),
-  #screen-open .open-form > :nth-child(5),
-  #screen-open .open-form > :nth-child(6),
-  #screen-open .open-form > :nth-child(7),
-  #screen-open .open-form > :nth-child(8),
-  #screen-open .open-form > :nth-child(9) { left: 24.5% !important; right: 24.5% !important; }
-  #screen-open .open-form > :nth-child(1) { top: 31% !important; }
-  #screen-open .open-form > :nth-child(2) { top: 38% !important; }
-  #screen-open .open-form > :nth-child(3) { top: 46% !important; }
-  #screen-open .open-form > :nth-child(4) { top: 55% !important; }
-  #screen-open .open-form > :nth-child(5) { top: 63% !important; }
-  #screen-open .open-form > :nth-child(6) { top: 70% !important; }
-  #screen-open .open-form > :nth-child(7) { top: 76% !important; }
-  #screen-open .open-form > :nth-child(8) { top: 82% !important; }
-  #screen-open .open-form > :nth-child(9) { top: 88% !important; }
-  #screen-open input, #screen-open textarea { font-size: 1rem !important; }
-  .open-btns-row .profile-btn { font-size: .88rem !important; }
-  #screen-open .open-actions .btn { font-size: .82rem !important; }
-  .open-cell-full textarea { height: 2.4em !important; }
+  #screen-open #castingTimeAlert { top:20.0% !important; left:33.0% !important; width:27.0% !important; right:auto !important; height:4.5% !important; }
+  #screen-open .open-form > input,
+  #screen-open .open-form > textarea { font-size: 1rem !important; }
+  #screen-open .open-form > button.profile-btn { font-size: .88rem !important; }
+  #screen-open .open-form > button.btn         { font-size: .82rem !important; }
+  #screen-open #questionInput { height: 6% !important; }
+  #clientNameInput   { top:31.0% !important; left:52.0% !important; width:21.0% !important; }
+  #clientParentInput { top:31.0% !important; left:27.0% !important; width:21.0% !important; }
+  #clientPhoneInput  { top:38.0% !important; left:52.0% !important; width:21.0% !important; }
+  #quesitedNameInput { top:38.0% !important; left:27.0% !important; width:21.0% !important; }
+  #btn-gender-male   { top:46.0% !important; left:52.0% !important; width:21.0% !important; }
+  #btn-gender-female { top:46.0% !important; left:27.0% !important; width:21.0% !important; }
+  #btn-married       { top:55.0% !important; left:52.0% !important; width:12.5% !important; }
+  #btn-single        { top:55.0% !important; left:65.5% !important; width:12.5% !important; }
+  #btn-divorced      { top:55.0% !important; left:38.0% !important; width:12.5% !important; }
+  #btn-widowed       { top:55.0% !important; left:24.5% !important; width:12.5% !important; }
+  #btn-ch-yes        { top:63.0% !important; left:52.0% !important; width:21.0% !important; }
+  #btn-ch-no         { top:63.0% !important; left:27.0% !important; width:21.0% !important; }
+  #btn-employed      { top:70.0% !important; left:65.5% !important; width:12.0% !important; }
+  #btn-unemployed    { top:70.0% !important; left:38.5% !important; width:12.5% !important; }
+  #btn-self          { top:70.0% !important; left:52.0% !important; width:12.0% !important; }
+  #btn-retired       { top:70.0% !important; left:25.0% !important; width:12.0% !important; }
+  #questionDateInput { top:76.0% !important; left:52.0% !important; width:21.0% !important; }
+  #questionTimeInput { top:76.0% !important; left:27.0% !important; width:21.0% !important; }
+  #questionInput     { top:82.0% !important; left:25.0% !important; width:53.0% !important; }
+  #manualBtn         { top:88.0% !important; left:58.0% !important; width:15.0% !important; }
+  #autoBtn           { top:88.0% !important; left:41.0% !important; width:16.0% !important; }
+  #clearBtn          { top:88.0% !important; left:27.0% !important; width:11.0% !important; }
 }
 /* ══════════════════════ */
 
@@ -1931,46 +1911,28 @@ body:has(#screen-open.active) .topbar { display: none !important; }
     <section id="screen-open" class="screen">
       <div id="castingTimeAlert" class="casting-alert"></div>
       <div class="open-form">
-        <div class="open-row-2">
-          <div class="open-cell"><input id="clientNameInput" autocomplete="off" /></div>
-          <div class="open-cell"><input id="clientParentInput" autocomplete="off" /></div>
-        </div>
-        <div class="open-row-2">
-          <div class="open-cell"><input id="clientPhoneInput" type="tel" autocomplete="off" /></div>
-          <div class="open-cell"><input id="quesitedNameInput" autocomplete="off" /></div>
-        </div>
-        <div class="open-btns-row">
-          <button type="button" class="profile-btn" data-profile="gender" data-value="male">זכר</button>
-          <button type="button" class="profile-btn" data-profile="gender" data-value="female">נקבה</button>
-        </div>
-        <div class="open-btns-row">
-          <button type="button" class="profile-btn" data-profile="marital" data-value="married">נשוי/אה</button>
-          <button type="button" class="profile-btn" data-profile="marital" data-value="single">רווק/ה</button>
-          <button type="button" class="profile-btn" data-profile="marital" data-value="divorced">גרוש/ה</button>
-          <button type="button" class="profile-btn" data-profile="marital" data-value="widowed">אלמן/ה</button>
-        </div>
-        <div class="open-btns-row">
-          <button type="button" class="profile-btn" data-profile="children" data-value="yes">יש ילדים</button>
-          <button type="button" class="profile-btn" data-profile="children" data-value="no">אין ילדים</button>
-        </div>
-        <div class="open-btns-row">
-          <button type="button" class="profile-btn" data-profile="work" data-value="employed">שכיר</button>
-          <button type="button" class="profile-btn" data-profile="work" data-value="unemployed">מחפש עבודה</button>
-          <button type="button" class="profile-btn" data-profile="work" data-value="self">עצמאי</button>
-          <button type="button" class="profile-btn" data-profile="work" data-value="retired">בפנסיה</button>
-        </div>
-        <div class="open-row-2">
-          <div class="open-cell"><input type="text" id="questionDateInput" placeholder="DD/MM/YYYY" inputmode="numeric" autocomplete="off" /></div>
-          <div class="open-cell"><input type="time" id="questionTimeInput" autocomplete="off" /></div>
-        </div>
-        <div class="open-cell-full">
-          <textarea id="questionInput" autocomplete="off"></textarea>
-        </div>
-        <div class="open-actions">
-          <button class="btn primary" id="manualBtn" type="button">הכנסה ידנית של 4 האמהות</button>
-          <button class="btn gray" id="autoBtn" type="button">בחירה אוטומטית לפי עצירה</button>
-          <button class="btn gray" id="clearBtn" type="button">נקה טופס</button>
-        </div>
+        <input id="clientNameInput"   autocomplete="off" />
+        <input id="clientParentInput" autocomplete="off" />
+        <input id="clientPhoneInput"  type="tel" autocomplete="off" />
+        <input id="quesitedNameInput" autocomplete="off" />
+        <button type="button" class="profile-btn" id="btn-gender-male"   data-profile="gender"   data-value="male">זכר</button>
+        <button type="button" class="profile-btn" id="btn-gender-female" data-profile="gender"   data-value="female">נקבה</button>
+        <button type="button" class="profile-btn" id="btn-married"       data-profile="marital"  data-value="married">נשוי/אה</button>
+        <button type="button" class="profile-btn" id="btn-single"        data-profile="marital"  data-value="single">רווק/ה</button>
+        <button type="button" class="profile-btn" id="btn-divorced"      data-profile="marital"  data-value="divorced">גרוש/ה</button>
+        <button type="button" class="profile-btn" id="btn-widowed"       data-profile="marital"  data-value="widowed">אלמן/ה</button>
+        <button type="button" class="profile-btn" id="btn-ch-yes"        data-profile="children" data-value="yes">יש ילדים</button>
+        <button type="button" class="profile-btn" id="btn-ch-no"         data-profile="children" data-value="no">אין ילדים</button>
+        <button type="button" class="profile-btn" id="btn-employed"      data-profile="work"     data-value="employed">שכיר</button>
+        <button type="button" class="profile-btn" id="btn-unemployed"    data-profile="work"     data-value="unemployed">מחפש עבודה</button>
+        <button type="button" class="profile-btn" id="btn-self"          data-profile="work"     data-value="self">עצמאי</button>
+        <button type="button" class="profile-btn" id="btn-retired"       data-profile="work"     data-value="retired">בפנסיה</button>
+        <input type="text" id="questionDateInput" placeholder="DD/MM/YYYY" inputmode="numeric" autocomplete="off" />
+        <input type="time"  id="questionTimeInput" autocomplete="off" />
+        <textarea id="questionInput" autocomplete="off"></textarea>
+        <button class="btn primary" id="manualBtn"  type="button">הכנסה ידנית של 4 האמהות</button>
+        <button class="btn gray"    id="autoBtn"    type="button">בחירה אוטומטית לפי עצירה</button>
+        <button class="btn gray"    id="clearBtn"   type="button">נקה טופס</button>
         <div style="display:none"><div class="topic-grid" id="topicGrid"></div></div>
       </div>
     </section>
