@@ -300,13 +300,10 @@ input, select, textarea {
   background-size: cover !important;
 }
 body:has(#screen-open.active) .topbar { display: none !important; }
-#screen-open #questionBanner {
-  position: absolute !important;
-  top: -999px !important;
-  height: 0 !important;
-  overflow: hidden !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
+#screen-open #questionBanner,
+#screen-open #dynamicFieldsSection,
+#screen-open #profileSection {
+  display: none !important;
 }
 #screen-open #castingTimeAlert {
   position: absolute !important;
