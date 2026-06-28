@@ -9,15 +9,12 @@
     body { background: #000; overflow: hidden; height: 100dvh; }
 
     #preview {
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background: no-repeat center center / cover;
     }
 
     .row-line {
       position: absolute;
-      left: var(--lr);
-      right: var(--lr);
       height: 3px;
       background: rgba(255, 60, 60, 0.85);
       pointer-events: none;
@@ -25,9 +22,9 @@
     .row-line::after {
       content: attr(data-label);
       position: absolute;
-      left: calc(100% + 4px);
+      left: calc(100% + 3px);
       top: -9px;
-      font-size: 11px;
+      font-size: 10px;
       color: #ff5;
       white-space: nowrap;
       text-shadow: 0 0 3px #000, 0 0 3px #000;
@@ -37,10 +34,10 @@
     #panel {
       position: fixed;
       bottom: 0; left: 0; right: 0;
-      background: rgba(0,0,0,0.88);
+      background: rgba(0,0,0,0.90);
       color: #fff;
       z-index: 999;
-      max-height: 48dvh;
+      max-height: 50dvh;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
     }
@@ -52,61 +49,72 @@
       border-bottom: 1px solid #444;
       position: sticky;
       top: 0;
-      background: rgba(0,0,0,0.95);
+      background: rgba(0,0,0,0.97);
+      z-index: 10;
     }
     #top-bar button {
-      flex: 1;
-      padding: 10px 4px;
-      border: none;
-      border-radius: 6px;
-      font-size: 13px;
-      font-family: Arial, sans-serif;
+      flex: 1; padding: 10px 4px;
+      border: none; border-radius: 6px;
+      font-size: 13px; font-family: Arial, sans-serif;
       cursor: pointer;
     }
     #btn-p   { background: #336; color: #fff; }
     #btn-l   { background: #444; color: #fff; }
     #btn-out { background: #252; color: #9f9; }
 
-    .section-hdr {
-      padding: 6px 10px 2px;
+    /* one card per row */
+    .row-card {
+      border-bottom: 1px solid #2a2a2a;
+      padding: 6px 10px;
+    }
+    .row-card .card-title {
       font-size: 11px;
       color: #aaa;
       font-family: Arial, sans-serif;
-      border-bottom: 1px solid #333;
+      margin-bottom: 5px;
     }
-
-    .row-ctrl {
+    .card-controls {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .ctrl-group {
       display: flex;
       align-items: center;
-      gap: 6px;
-      padding: 7px 10px;
-      border-bottom: 1px solid #2a2a2a;
+      gap: 3px;
+      flex: 1;
     }
-    .row-ctrl .lbl { flex: 1; font-size: 12px; font-family: Arial, sans-serif; }
-    .row-ctrl .val {
-      width: 52px;
+    .ctrl-group .axis-lbl {
+      font-size: 10px;
+      color: #888;
+      font-family: monospace;
+      width: 14px;
       text-align: center;
-      font-size: 13px;
+    }
+    .ctrl-group .val {
+      font-size: 11px;
       font-family: monospace;
       color: #ff9;
+      width: 38px;
+      text-align: center;
     }
-    .row-ctrl.margin-ctrl .val { color: #9cf; }
-    .row-ctrl button {
-      background: #333;
-      color: #fff;
+    .ctrl-group.lr-ctrl .val { color: #9cf; }
+    .ctrl-group button {
+      background: #333; color: #fff;
       border: none;
-      width: 40px; height: 40px;
-      font-size: 20px;
-      border-radius: 6px;
+      width: 34px; height: 34px;
+      font-size: 17px;
+      border-radius: 5px;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
+      flex-shrink: 0;
     }
-    .row-ctrl button:active { background: #666; }
+    .ctrl-group button:active { background: #666; }
 
     #output-box {
       display: none;
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
+      inset: 0;
       background: rgba(0,0,0,0.93);
       color: #0f0;
       font-size: 12px;
@@ -114,18 +122,14 @@
       padding: 14px;
       z-index: 1000;
       white-space: pre;
-      line-height: 1.7;
+      line-height: 1.8;
       overflow-y: auto;
     }
     #output-box button {
-      display: block;
-      margin-top: 10px;
-      background: #333;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 6px;
-      font-size: 15px;
+      display: block; margin-top: 12px;
+      background: #333; color: #fff;
+      border: none; padding: 10px 20px;
+      border-radius: 6px; font-size: 15px;
     }
   </style>
 </head>
@@ -144,35 +148,53 @@
 
 <script>
 const ROWS = [
-  { label: '⬛ כותרת שחורה', key: 'alert' },
-  { label: '1 שם לקוח / שם אב',  key: 'r1' },
-  { label: '2 טלפון / דוא"ל',    key: 'r2' },
-  { label: '3 מין',               key: 'r3' },
-  { label: '4 נשוי/רווק/גרוש',   key: 'r4' },
-  { label: '5 יש/אין ילדים',      key: 'r5' },
-  { label: '6 שכיר/עצמאי...',     key: 'r6' },
-  { label: '7 תאריך / שעה',       key: 'r7' },
-  { label: '8 שאלת הלקוח',        key: 'r8' },
-  { label: '9 כפתורי פעולה',      key: 'r9' },
+  { label: '⬛ כותרת שחורה',      key: 'alert' },
+  { label: '1 שם לקוח / שם אב',   key: 'r1' },
+  { label: '2 טלפון / דוא"ל',     key: 'r2' },
+  { label: '3 מין',                key: 'r3' },
+  { label: '4 נשוי/רווק/גרוש',    key: 'r4' },
+  { label: '5 יש/אין ילדים',       key: 'r5' },
+  { label: '6 שכיר/עצמאי...',      key: 'r6' },
+  { label: '7 תאריך / שעה',        key: 'r7' },
+  { label: '8 שאלת הלקוח',         key: 'r8' },
+  { label: '9 כפתורי פעולה',       key: 'r9' },
 ];
 
+// top, left-margin, right-margin per row
 const DEFAULTS = {
   portrait: {
-    margin: 21,
-    alert:24.5, r1:31.5, r2:39, r3:46.5, r4:56, r5:63.5, r6:71, r7:76, r8:83, r9:88.5
+    alert: [24.5, 21, 21],
+    r1:    [31.5, 21, 21],
+    r2:    [39,   21, 21],
+    r3:    [46.5, 21, 21],
+    r4:    [56,   21, 21],
+    r5:    [63.5, 21, 21],
+    r6:    [71,   21, 21],
+    r7:    [76,   21, 21],
+    r8:    [83,   21, 21],
+    r9:    [88.5, 21, 21],
   },
   landscape: {
-    margin: 24.5,
-    alert:22, r1:31, r2:38, r3:46, r4:55, r5:63, r6:70, r7:76, r8:82, r9:88
+    alert: [22,   24.5, 24.5],
+    r1:    [31,   24.5, 24.5],
+    r2:    [38,   24.5, 24.5],
+    r3:    [46,   24.5, 24.5],
+    r4:    [55,   24.5, 24.5],
+    r5:    [63,   24.5, 24.5],
+    r6:    [70,   24.5, 24.5],
+    r7:    [76,   24.5, 24.5],
+    r8:    [82,   24.5, 24.5],
+    r9:    [88,   24.5, 24.5],
   }
 };
 
 let mode = 'portrait';
-let vals = {};
+let vals = {};  // key → [top, left, right]
 
 function setMode(m) {
   mode = m;
-  vals = Object.assign({}, DEFAULTS[m]);
+  vals = {};
+  for (const k in DEFAULTS[m]) vals[k] = [...DEFAULTS[m][k]];
   document.getElementById('btn-p').style.background = m === 'portrait'  ? '#336' : '#444';
   document.getElementById('btn-l').style.background = m === 'landscape' ? '#336' : '#444';
   document.getElementById('preview').style.backgroundImage =
@@ -189,80 +211,77 @@ function rebuildLines() {
     el.className = 'row-line';
     el.dataset.key = row.key;
     el.dataset.label = row.label;
-    el.style.setProperty('--lr', vals.margin + '%');
-    el.style.top = vals[row.key] + '%';
+    applyLine(el, row.key);
     preview.appendChild(el);
   });
 }
 
-function updateMarginOnLines() {
-  document.querySelectorAll('.row-line').forEach(el => {
-    el.style.setProperty('--lr', vals.margin + '%');
-  });
+function applyLine(el, key) {
+  const [top, left, right] = vals[key];
+  el.style.top   = top   + '%';
+  el.style.left  = left  + '%';
+  el.style.right = right + '%';
 }
 
 function buildControls() {
   const c = document.getElementById('rows-ctrl');
   c.innerHTML = '';
-
-  // Margin control
-  c.insertAdjacentHTML('beforeend', '<div class="section-hdr">◄► שוליים שמאל/ימין (לכל השורות)</div>');
-  const mDiv = document.createElement('div');
-  mDiv.className = 'row-ctrl margin-ctrl';
-  mDiv.innerHTML = `
-    <span class="lbl">שוליים</span>
-    <button ontouchstart="startRepeat('margin',-0.5)" ontouchend="stopRepeat()" onmousedown="startRepeat('margin',-0.5)" onmouseup="stopRepeat()">◄</button>
-    <span class="val" id="v-margin">${vals.margin.toFixed(1)}%</span>
-    <button ontouchstart="startRepeat('margin',0.5)" ontouchend="stopRepeat()" onmousedown="startRepeat('margin',0.5)" onmouseup="stopRepeat()">►</button>
-  `;
-  c.appendChild(mDiv);
-
-  // Row controls
-  c.insertAdjacentHTML('beforeend', '<div class="section-hdr">▲▼ מיקום אנכי לכל שורה</div>');
   ROWS.forEach(row => {
-    const div = document.createElement('div');
-    div.className = 'row-ctrl';
-    div.innerHTML = `
-      <span class="lbl">${row.label}</span>
-      <button ontouchstart="startRepeat('${row.key}',-0.5)" ontouchend="stopRepeat()" onmousedown="startRepeat('${row.key}',-0.5)" onmouseup="stopRepeat()">▲</button>
-      <span class="val" id="v-${row.key}">${vals[row.key].toFixed(1)}%</span>
-      <button ontouchstart="startRepeat('${row.key}',0.5)" ontouchend="stopRepeat()" onmousedown="startRepeat('${row.key}',0.5)" onmouseup="stopRepeat()">▼</button>
-    `;
-    c.appendChild(div);
+    const [top, left, right] = vals[row.key];
+    const card = document.createElement('div');
+    card.className = 'row-card';
+    card.innerHTML = `
+      <div class="card-title">${row.label}</div>
+      <div class="card-controls">
+        <div class="ctrl-group lr-ctrl">
+          <span class="axis-lbl">R</span>
+          <button ontouchstart="sr('${row.key}',2,-0.5)" ontouchend="sp()" onmousedown="sr('${row.key}',2,-0.5)" onmouseup="sp()">◄</button>
+          <span class="val" id="v-${row.key}-r">${right.toFixed(1)}%</span>
+          <button ontouchstart="sr('${row.key}',2,0.5)" ontouchend="sp()" onmousedown="sr('${row.key}',2,0.5)" onmouseup="sp()">►</button>
+        </div>
+        <div class="ctrl-group">
+          <span class="axis-lbl">T</span>
+          <button ontouchstart="sr('${row.key}',0,-0.5)" ontouchend="sp()" onmousedown="sr('${row.key}',0,-0.5)" onmouseup="sp()">▲</button>
+          <span class="val" id="v-${row.key}-t">${top.toFixed(1)}%</span>
+          <button ontouchstart="sr('${row.key}',0,0.5)" ontouchend="sp()" onmousedown="sr('${row.key}',0,0.5)" onmouseup="sp()">▼</button>
+        </div>
+        <div class="ctrl-group lr-ctrl">
+          <span class="axis-lbl">L</span>
+          <button ontouchstart="sr('${row.key}',1,-0.5)" ontouchend="sp()" onmousedown="sr('${row.key}',1,-0.5)" onmouseup="sp()">◄</button>
+          <span class="val" id="v-${row.key}-l">${left.toFixed(1)}%</span>
+          <button ontouchstart="sr('${row.key}',1,0.5)" ontouchend="sp()" onmousedown="sr('${row.key}',1,0.5)" onmouseup="sp()">►</button>
+        </div>
+      </div>`;
+    c.appendChild(card);
   });
 }
 
 let _timer = null;
-function startRepeat(key, delta) {
-  adjust(key, delta);
-  _timer = setInterval(() => adjust(key, delta), 120);
+function sr(key, idx, delta) {   // startRepeat
+  adj(key, idx, delta);
+  _timer = setInterval(() => adj(key, idx, delta), 110);
 }
-function stopRepeat() { clearInterval(_timer); _timer = null; }
+function sp() { clearInterval(_timer); _timer = null; }  // stopRepeat
 
-function adjust(key, delta) {
-  vals[key] = Math.round((vals[key] + delta) * 10) / 10;
-  const span = document.getElementById('v-' + key);
-  if (span) span.textContent = vals[key].toFixed(1) + '%';
-
-  if (key === 'margin') {
-    updateMarginOnLines();
-  } else {
-    const line = document.querySelector(`.row-line[data-key="${key}"]`);
-    if (line) line.style.top = vals[key] + '%';
-  }
+function adj(key, idx, delta) {
+  vals[key][idx] = Math.round((vals[key][idx] + delta) * 10) / 10;
+  const suffixes = ['t', 'l', 'r'];
+  const span = document.getElementById(`v-${key}-${suffixes[idx]}`);
+  if (span) span.textContent = vals[key][idx].toFixed(1) + '%';
+  const line = document.querySelector(`.row-line[data-key="${key}"]`);
+  if (line) applyLine(line, key);
 }
 
 function showOutput() {
   const box = document.getElementById('output-box');
-  const lines = [
-    `/* iPad ${mode} */`,
-    `שוליים (left/right): ${vals.margin.toFixed(1)}%`,
-    ``,
-    ...ROWS.map((r, i) => i === 0
-      ? `כותרת שחורה (castingTimeAlert): top: ${vals[r.key].toFixed(1)}%`
-      : `שורה ${i} (${r.label.replace(/^\d+ /, '')}): top: ${vals[r.key].toFixed(1)}%`
-    )
-  ];
+  const lines = [`/* iPad ${mode} */`, ''];
+  ROWS.forEach((row, i) => {
+    const [top, left, right] = vals[row.key];
+    lines.push(i === 0
+      ? `כותרת שחורה:  top:${top.toFixed(1)}%  left:${left.toFixed(1)}%  right:${right.toFixed(1)}%`
+      : `שורה ${i} (${row.label.replace(/^\S+ /, '')}):  top:${top.toFixed(1)}%  left:${left.toFixed(1)}%  right:${right.toFixed(1)}%`
+    );
+  });
   box.innerHTML = lines.join('\n') +
     '\n\n<button onclick="document.getElementById(\'output-box\').style.display=\'none\'">סגור</button>';
   box.style.display = 'block';
