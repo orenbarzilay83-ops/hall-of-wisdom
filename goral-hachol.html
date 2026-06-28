@@ -299,12 +299,13 @@ input, select, textarea {
   background-size: cover !important;
 }
 body:has(#screen-open.active) .topbar { display: none !important; }
+#screen-open #questionBanner { display: none !important; }
 #screen-open #castingTimeAlert {
   position: absolute !important;
-  top: 25.5% !important;
-  left: 15% !important;
-  right: 15% !important;
-  height: 4% !important;
+  top: 24% !important;
+  left: 12% !important;
+  right: 12% !important;
+  height: 5% !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -318,10 +319,10 @@ body:has(#screen-open.active) .topbar { display: none !important; }
 }
 #screen-open .open-form {
   position: absolute !important;
-  top: 30.5% !important;
-  left: 13% !important;
-  right: 13% !important;
-  bottom: 7% !important;
+  top: 30% !important;
+  left: 12% !important;
+  right: 12% !important;
+  bottom: 9% !important;
   display: flex !important;
   flex-direction: column !important;
   justify-content: space-between !important;
@@ -355,12 +356,16 @@ body:has(#screen-open.active) .topbar { display: none !important; }
 #screen-open textarea {
   background: transparent !important;
   border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
   color: #1a0800 !important;
   font-family: 'STAM', sans-serif !important;
   font-size: .9rem !important;
-  padding: 3px 4px !important;
+  padding: 2px 4px !important;
   width: 100% !important;
   outline: none !important;
+  height: 100% !important;
+  box-sizing: border-box !important;
 }
 .open-cell-full { flex: 1 !important; }
 .open-cell-full textarea {
@@ -382,16 +387,16 @@ body:has(#screen-open.active) .topbar { display: none !important; }
 }
 @media (min-width: 768px) and (orientation: portrait) {
   #screen-open { background-image: url('./client-bg-ipad-portrait.png') !important; }
-  #screen-open #castingTimeAlert { top: 22% !important; left: 18% !important; right: 18% !important; }
-  #screen-open .open-form { top: 26.5% !important; left: 18% !important; right: 18% !important; }
+  #screen-open #castingTimeAlert { top: 24% !important; left: 17% !important; right: 17% !important; height: 5% !important; }
+  #screen-open .open-form { top: 30% !important; left: 17% !important; right: 17% !important; bottom: 10% !important; }
   #screen-open input, #screen-open textarea { font-size: 1rem !important; }
   .open-btns-row .profile-btn { font-size: .88rem !important; }
   #screen-open .open-actions .btn { font-size: .82rem !important; }
 }
 @media (min-width: 768px) and (orientation: landscape) {
   #screen-open { background-image: url('./client-bg-ipad-landscape.png') !important; }
-  #screen-open #castingTimeAlert { top: 20% !important; left: 17% !important; right: 17% !important; }
-  #screen-open .open-form { top: 24.5% !important; left: 17% !important; right: 17% !important; }
+  #screen-open #castingTimeAlert { top: 18% !important; left: 17% !important; right: 17% !important; height: 5% !important; }
+  #screen-open .open-form { top: 25% !important; left: 17% !important; right: 17% !important; bottom: 3% !important; }
   #screen-open input, #screen-open textarea { font-size: 1rem !important; }
   .open-btns-row .profile-btn { font-size: .88rem !important; }
   #screen-open .open-actions .btn { font-size: .82rem !important; }
