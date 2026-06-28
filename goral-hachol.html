@@ -299,118 +299,102 @@ input, select, textarea {
   background-size: cover !important;
 }
 body:has(#screen-open.active) .topbar { display: none !important; }
-#screen-open > .panel {
+#screen-open #castingTimeAlert {
   position: absolute !important;
-  top: 27% !important;
+  top: 25.5% !important;
+  left: 15% !important;
+  right: 15% !important;
+  height: 4% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: transparent !important;
+  color: #c8a050 !important;
+  font-family: 'STAM', sans-serif !important;
+  font-size: .8rem !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+#screen-open .open-form {
+  position: absolute !important;
+  top: 30.5% !important;
   left: 13% !important;
   right: 13% !important;
-  bottom: 8% !important;
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  padding: 4px 0 0 !important;
-  overflow-y: auto !important;
-  -webkit-overflow-scrolling: touch !important;
+  bottom: 7% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  overflow: hidden !important;
 }
-#screen-open .open-title-row { display: none !important; }
-#screen-open label,
-#screen-open .profile-group-label,
-#screen-open .dt-row label { display: none !important; }
-#screen-open .casting-alert {
+.open-row-2 {
+  display: flex !important;
+  gap: 4% !important;
+}
+.open-row-2 .open-cell { flex: 1 !important; }
+.open-btns-row {
+  display: flex !important;
+  gap: 2% !important;
+}
+.open-btns-row .profile-btn {
+  flex: 1 !important;
   background: transparent !important;
-  color: #5a3010 !important;
-  font-family: 'STAM', sans-serif !important;
-  text-align: center !important;
-  font-size: .88rem !important;
-  margin-bottom: 10px !important;
   border: none !important;
+  color: #1a0800 !important;
+  font-family: 'STAM', sans-serif !important;
+  font-size: .78rem !important;
+  padding: 3px 2px !important;
+  border-radius: 5px !important;
+  cursor: pointer !important;
+}
+.open-btns-row .profile-btn.selected {
+  background: rgba(40,20,5,0.65) !important;
+  color: #f0dea0 !important;
 }
 #screen-open input,
 #screen-open textarea {
   background: transparent !important;
   border: none !important;
-  border-bottom: 1px solid rgba(60,30,5,0.35) !important;
-  border-radius: 0 !important;
   color: #1a0800 !important;
   font-family: 'STAM', sans-serif !important;
-  font-size: 1rem !important;
-  padding: 6px 4px !important;
+  font-size: .9rem !important;
+  padding: 3px 4px !important;
   width: 100% !important;
-}
-#screen-open input:focus,
-#screen-open textarea:focus {
-  border-bottom-color: rgba(60,30,5,0.7) !important;
   outline: none !important;
 }
-#screen-open .col-sep { display: none !important; }
-#screen-open .open-2col {
-  flex-direction: column !important;
-  gap: 8px !important;
-  margin-bottom: 8px !important;
+.open-cell-full { flex: 1 !important; }
+.open-cell-full textarea {
+  height: 100% !important;
+  resize: none !important;
 }
-#screen-open .open-inputs-col {
-  align-items: stretch !important;
-  gap: 8px !important;
+.open-actions {
+  display: flex !important;
+  gap: 3% !important;
 }
-#screen-open .open-inputs-col .open-field input { width: 100% !important; }
-#screen-open .dt-row { justify-content: space-between !important; gap: 12px !important; }
-#screen-open .dt-row > div { flex: 1 !important; }
-#screen-open .dt-row input { width: 100% !important; }
-#screen-open .profile-btn {
+#screen-open .open-actions .btn {
+  flex: 1 !important;
   background: transparent !important;
-  border: 1px solid rgba(60,30,5,0.4) !important;
+  border: none !important;
   color: #1a0800 !important;
   font-family: 'STAM', sans-serif !important;
-  font-size: .85rem !important;
-}
-#screen-open .profile-btn.selected {
-  background: rgba(50,25,5,0.7) !important;
-  color: #f0dea0 !important;
-  border-color: rgba(50,25,5,0.7) !important;
-}
-#screen-open .profile-section { gap: 8px !important; }
-#screen-open .profile-group { gap: 3px !important; }
-#screen-open .open-bottom { gap: 8px !important; }
-#screen-open #questionBanner {
-  background: rgba(30,15,5,0.55) !important;
-  color: #e8d490 !important;
-  border-radius: 8px !important;
-  padding: 8px 10px !important;
-  margin-bottom: 8px !important;
-  border: none !important;
-}
-#screen-open .actions {
-  background: transparent !important;
-  margin-top: 10px !important;
-  display: flex !important;
-  gap: 8px !important;
-  flex-wrap: wrap !important;
-}
-#screen-open .actions .btn.primary {
-  background: rgba(40,20,5,0.75) !important;
-  color: #f0dea0 !important;
-  border: none !important;
-  flex: 1 !important;
-}
-#screen-open .actions .btn.gray {
-  background: transparent !important;
-  border: 1px solid rgba(60,30,5,0.4) !important;
-  color: #1a0800 !important;
-  flex: 1 !important;
+  font-size: .72rem !important;
+  padding: 3px 2px !important;
 }
 @media (min-width: 768px) and (orientation: portrait) {
   #screen-open { background-image: url('./client-bg-ipad-portrait.png') !important; }
-  #screen-open > .panel { top: 24% !important; left: 18% !important; right: 18% !important; }
-  #screen-open .open-2col { flex-direction: row !important; gap: 0 !important; }
-  #screen-open .col-sep { display: block !important; }
-  #screen-open .open-inputs-col .open-field input { width: 100% !important; }
+  #screen-open #castingTimeAlert { top: 22% !important; left: 18% !important; right: 18% !important; }
+  #screen-open .open-form { top: 26.5% !important; left: 18% !important; right: 18% !important; }
+  #screen-open input, #screen-open textarea { font-size: 1rem !important; }
+  .open-btns-row .profile-btn { font-size: .88rem !important; }
+  #screen-open .open-actions .btn { font-size: .82rem !important; }
 }
 @media (min-width: 768px) and (orientation: landscape) {
   #screen-open { background-image: url('./client-bg-ipad-landscape.png') !important; }
-  #screen-open > .panel { top: 22% !important; left: 17% !important; right: 17% !important; }
-  #screen-open .open-2col { flex-direction: row !important; gap: 0 !important; }
-  #screen-open .col-sep { display: block !important; }
-  #screen-open .open-inputs-col .open-field input { width: 100% !important; }
+  #screen-open #castingTimeAlert { top: 20% !important; left: 17% !important; right: 17% !important; }
+  #screen-open .open-form { top: 24.5% !important; left: 17% !important; right: 17% !important; }
+  #screen-open input, #screen-open textarea { font-size: 1rem !important; }
+  .open-btns-row .profile-btn { font-size: .88rem !important; }
+  #screen-open .open-actions .btn { font-size: .82rem !important; }
 }
 /* ══════════════════════ */
 
@@ -1888,103 +1872,52 @@ body:has(#screen-open.active) .topbar { display: none !important; }
     </section>
 
     <section id="screen-open" class="screen">
-      <div class="panel">
-
-        <!-- כותרת -->
-        <div class="open-title-row">
-          <h2 style="margin:0;border:none;padding:0">פרטי הלקוח</h2>
+      <div id="questionBanner" style="display:none"></div>
+      <div id="dynamicFieldsSection" style="display:none"></div>
+      <div id="profileSection" style="display:none"></div>
+      <div id="castingTimeAlert" class="casting-alert"></div>
+      <div class="open-form">
+        <div class="open-row-2">
+          <div class="open-cell"><input id="clientNameInput" autocomplete="off" /></div>
+          <div class="open-cell"><input id="clientParentInput" autocomplete="off" /></div>
         </div>
-        <div id="castingTimeAlert" class="casting-alert"></div>
-
-        <!-- באנר שאלה נבחרת -->
-        <div id="questionBanner" style="display:none"></div>
-        <!-- שדות דינמיים לפי שאלה -->
-        <div id="dynamicFieldsSection" style="display:none"></div>
-
-        <!-- 2 עמודות: ימין = שדות | שמאל = פרופיל -->
-        <div class="open-2col">
-          <div class="open-inputs-col">
-            <div class="open-field">
-              <label>שם הלקוח</label>
-              <input id="clientNameInput" autocomplete="off" />
-            </div>
-            <div class="open-field">
-              <label>שם האב</label>
-              <input id="clientParentInput" autocomplete="off" />
-            </div>
-            <div class="open-field">
-              <label>מספר טלפון</label>
-              <input id="clientPhoneInput" type="tel" autocomplete="off" />
-            </div>
-            <div class="open-field">
-              <label>הנשאל עליו</label>
-              <input id="quesitedNameInput" autocomplete="off" />
-            </div>
-            <div class="dt-row">
-              <div>
-                <label>תאריך</label>
-                <input type="text" id="questionDateInput" placeholder="DD/MM/YYYY" inputmode="numeric" autocomplete="off" />
-              </div>
-              <div>
-                <label>שעה</label>
-                <input type="time" id="questionTimeInput" autocomplete="off" />
-              </div>
-            </div>
-          </div>
-
-          <div class="col-sep"></div>
-          <div id="profileSection" class="profile-section open-profile-col">
-            <div class="profile-group">
-              <div class="profile-group-label">מין</div>
-              <div class="profile-btn-row">
-                <button type="button" class="profile-btn" data-profile="gender" data-value="male">זכר</button>
-                <button type="button" class="profile-btn" data-profile="gender" data-value="female">נקבה</button>
-              </div>
-            </div>
-            <div class="profile-group">
-              <div class="profile-group-label">מצב משפחתי</div>
-              <div class="profile-btn-row">
-                <button type="button" class="profile-btn" data-profile="marital" data-value="married">נשוי/אה</button>
-                <button type="button" class="profile-btn" data-profile="marital" data-value="single">רווק/ה</button>
-                <button type="button" class="profile-btn" data-profile="marital" data-value="divorced">גרוש/ה</button>
-                <button type="button" class="profile-btn" data-profile="marital" data-value="widowed">אלמן/ה</button>
-              </div>
-            </div>
-            <div class="profile-group">
-              <div class="profile-group-label">ילדים</div>
-              <div class="profile-btn-row">
-                <button type="button" class="profile-btn" data-profile="children" data-value="yes">יש ילדים</button>
-                <button type="button" class="profile-btn" data-profile="children" data-value="no">אין ילדים</button>
-              </div>
-            </div>
-            <div class="profile-group">
-              <div class="profile-group-label">מצב תעסוקתי</div>
-              <div class="profile-btn-row">
-                <button type="button" class="profile-btn" data-profile="work" data-value="employed">שכיר</button>
-                <button type="button" class="profile-btn" data-profile="work" data-value="unemployed">מחפש עבודה</button>
-                <button type="button" class="profile-btn" data-profile="work" data-value="self">עצמאי</button>
-                <button type="button" class="profile-btn" data-profile="work" data-value="retired">בפנסיה</button>
-              </div>
-            </div>
-          </div>
+        <div class="open-row-2">
+          <div class="open-cell"><input id="clientPhoneInput" type="tel" autocomplete="off" /></div>
+          <div class="open-cell"><input id="quesitedNameInput" autocomplete="off" /></div>
         </div>
-
-        <!-- שאלה ונושא -->
-        <div class="open-bottom">
-          <div class="open-field">
-            <label>שאלת הלקוח</label>
-            <textarea id="questionInput" rows="2" autocomplete="off"></textarea>
-          </div>
-          <div style="display:none">
-            <div class="topic-grid" id="topicGrid"></div>
-          </div>
+        <div class="open-btns-row">
+          <button type="button" class="profile-btn" data-profile="gender" data-value="male">זכר</button>
+          <button type="button" class="profile-btn" data-profile="gender" data-value="female">נקבה</button>
         </div>
-
-        <div class="actions">
+        <div class="open-btns-row">
+          <button type="button" class="profile-btn" data-profile="marital" data-value="married">נשוי/אה</button>
+          <button type="button" class="profile-btn" data-profile="marital" data-value="single">רווק/ה</button>
+          <button type="button" class="profile-btn" data-profile="marital" data-value="divorced">גרוש/ה</button>
+          <button type="button" class="profile-btn" data-profile="marital" data-value="widowed">אלמן/ה</button>
+        </div>
+        <div class="open-btns-row">
+          <button type="button" class="profile-btn" data-profile="children" data-value="yes">יש ילדים</button>
+          <button type="button" class="profile-btn" data-profile="children" data-value="no">אין ילדים</button>
+        </div>
+        <div class="open-btns-row">
+          <button type="button" class="profile-btn" data-profile="work" data-value="employed">שכיר</button>
+          <button type="button" class="profile-btn" data-profile="work" data-value="unemployed">מחפש עבודה</button>
+          <button type="button" class="profile-btn" data-profile="work" data-value="self">עצמאי</button>
+          <button type="button" class="profile-btn" data-profile="work" data-value="retired">בפנסיה</button>
+        </div>
+        <div class="open-row-2">
+          <div class="open-cell"><input type="text" id="questionDateInput" placeholder="DD/MM/YYYY" inputmode="numeric" autocomplete="off" /></div>
+          <div class="open-cell"><input type="time" id="questionTimeInput" autocomplete="off" /></div>
+        </div>
+        <div class="open-cell-full">
+          <textarea id="questionInput" autocomplete="off"></textarea>
+        </div>
+        <div class="open-actions">
           <button class="btn primary" id="manualBtn" type="button">הכנסה ידנית של 4 האמהות</button>
           <button class="btn gray" id="autoBtn" type="button">בחירה אוטומטית לפי עצירה</button>
           <button class="btn gray" id="clearBtn" type="button">נקה טופס</button>
         </div>
+        <div style="display:none"><div class="topic-grid" id="topicGrid"></div></div>
       </div>
     </section>
 
