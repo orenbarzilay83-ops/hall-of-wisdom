@@ -11,6 +11,7 @@
     #preview {
       position: fixed; inset: 0;
       background: no-repeat center center / cover;
+      transition: transform 0.2s;
     }
 
     .row-line {
@@ -58,9 +59,10 @@
       font-size: 13px; font-family: Arial, sans-serif;
       cursor: pointer;
     }
-    #btn-p   { background: #336; color: #fff; }
-    #btn-l   { background: #444; color: #fff; }
-    #btn-out { background: #252; color: #9f9; }
+    #btn-p    { background: #336; color: #fff; }
+    #btn-l    { background: #444; color: #fff; }
+    #btn-out  { background: #252; color: #9f9; }
+    #btn-up, #btn-dn { background: #533; color: #fcc; flex: 0 0 44px; font-size: 16px; }
 
     /* row selector strip */
     #row-strip {
@@ -148,6 +150,8 @@
   <div id="top-bar">
     <button id="btn-p"  onclick="setMode('portrait')">iPad Portrait</button>
     <button id="btn-l"  onclick="setMode('landscape')">iPad Landscape</button>
+    <button id="btn-up" onclick="shiftView(-10)">↑</button>
+    <button id="btn-dn" onclick="shiftView(10)">↓</button>
     <button id="btn-out" onclick="showOutput()">📋 ערכים</button>
   </div>
   <div id="row-strip"></div>
@@ -311,6 +315,13 @@ function showOutput() {
   box.innerHTML = lines.join('\n') +
     '\n\n<button onclick="document.getElementById(\'output-box\').style.display=\'none\'">סגור</button>';
   box.style.display = 'block';
+}
+
+let _shift = 0;
+function shiftView(delta) {
+  _shift = Math.max(-40, Math.min(40, _shift + delta));
+  document.getElementById('preview').style.transform =
+    _shift !== 0 ? `translateY(${_shift}%)` : '';
 }
 
 setMode('portrait');
