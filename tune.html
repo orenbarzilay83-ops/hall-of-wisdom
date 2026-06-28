@@ -16,8 +16,13 @@
     .row-line {
       position: absolute;
       height: 3px;
-      background: rgba(255, 60, 60, 0.85);
+      background: rgba(255, 60, 60, 0.55);
       pointer-events: none;
+      transition: background 0.15s;
+    }
+    .row-line.active {
+      background: rgba(255, 230, 0, 0.95);
+      height: 4px;
     }
     .row-line::after {
       content: attr(data-label);
@@ -31,29 +36,24 @@
       font-family: Arial, sans-serif;
     }
 
+    /* ── PANEL ── */
     #panel {
       position: fixed;
       bottom: 0; left: 0; right: 0;
-      background: rgba(0,0,0,0.90);
+      background: rgba(0,0,0,0.92);
       color: #fff;
       z-index: 999;
-      max-height: 50dvh;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
     }
 
+    /* top bar: mode + output */
     #top-bar {
       display: flex;
       gap: 6px;
-      padding: 8px;
-      border-bottom: 1px solid #444;
-      position: sticky;
-      top: 0;
-      background: rgba(0,0,0,0.97);
-      z-index: 10;
+      padding: 6px 8px;
+      border-bottom: 1px solid #333;
     }
     #top-bar button {
-      flex: 1; padding: 10px 4px;
+      flex: 1; padding: 8px 4px;
       border: none; border-radius: 6px;
       font-size: 13px; font-family: Arial, sans-serif;
       cursor: pointer;
@@ -62,21 +62,41 @@
     #btn-l   { background: #444; color: #fff; }
     #btn-out { background: #252; color: #9f9; }
 
-    /* one card per row */
-    .row-card {
-      border-bottom: 1px solid #2a2a2a;
+    /* row selector strip */
+    #row-strip {
+      display: flex;
+      gap: 4px;
+      padding: 5px 8px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border-bottom: 1px solid #333;
+      scrollbar-width: none;
+    }
+    #row-strip::-webkit-scrollbar { display: none; }
+    #row-strip button {
+      flex-shrink: 0;
       padding: 6px 10px;
-    }
-    .row-card .card-title {
-      font-size: 11px;
+      background: #2a2a2a;
       color: #aaa;
+      border: 1px solid #444;
+      border-radius: 5px;
+      font-size: 12px;
       font-family: Arial, sans-serif;
-      margin-bottom: 5px;
+      cursor: pointer;
+      white-space: nowrap;
     }
-    .card-controls {
+    #row-strip button.active {
+      background: #336;
+      color: #fff;
+      border-color: #66f;
+    }
+
+    /* active-row controls */
+    #active-ctrl {
       display: flex;
       gap: 6px;
       align-items: center;
+      padding: 7px 8px;
     }
     .ctrl-group {
       display: flex;
@@ -85,26 +105,18 @@
       flex: 1;
     }
     .ctrl-group .axis-lbl {
-      font-size: 10px;
-      color: #888;
-      font-family: monospace;
-      width: 14px;
-      text-align: center;
+      font-size: 10px; color: #888;
+      font-family: monospace; width: 14px; text-align: center;
     }
     .ctrl-group .val {
-      font-size: 11px;
-      font-family: monospace;
-      color: #ff9;
-      width: 38px;
-      text-align: center;
+      font-size: 11px; font-family: monospace;
+      color: #ff9; width: 38px; text-align: center;
     }
     .ctrl-group.lr-ctrl .val { color: #9cf; }
     .ctrl-group button {
       background: #333; color: #fff;
-      border: none;
-      width: 34px; height: 34px;
-      font-size: 17px;
-      border-radius: 5px;
+      border: none; width: 38px; height: 38px;
+      font-size: 18px; border-radius: 5px;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
       flex-shrink: 0;
@@ -113,17 +125,12 @@
 
     #output-box {
       display: none;
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background: rgba(0,0,0,0.93);
-      color: #0f0;
-      font-size: 12px;
-      font-family: monospace;
-      padding: 14px;
-      z-index: 1000;
-      white-space: pre;
-      line-height: 1.8;
-      overflow-y: auto;
+      color: #0f0; font-size: 12px;
+      font-family: monospace; padding: 14px;
+      z-index: 1000; white-space: pre;
+      line-height: 1.8; overflow-y: auto;
     }
     #output-box button {
       display: block; margin-top: 12px;
@@ -143,24 +150,24 @@
     <button id="btn-l"  onclick="setMode('landscape')">iPad Landscape</button>
     <button id="btn-out" onclick="showOutput()">📋 ערכים</button>
   </div>
-  <div id="rows-ctrl"></div>
+  <div id="row-strip"></div>
+  <div id="active-ctrl"></div>
 </div>
 
 <script>
 const ROWS = [
-  { label: '⬛ כותרת שחורה',      key: 'alert' },
-  { label: '1 שם לקוח / שם אב',   key: 'r1' },
-  { label: '2 טלפון / דוא"ל',     key: 'r2' },
-  { label: '3 מין',                key: 'r3' },
-  { label: '4 נשוי/רווק/גרוש',    key: 'r4' },
-  { label: '5 יש/אין ילדים',       key: 'r5' },
-  { label: '6 שכיר/עצמאי...',      key: 'r6' },
-  { label: '7 תאריך / שעה',        key: 'r7' },
-  { label: '8 שאלת הלקוח',         key: 'r8' },
-  { label: '9 כפתורי פעולה',       key: 'r9' },
+  { label: '⬛ כותרת',        key: 'alert' },
+  { label: '1 שם/אב',         key: 'r1' },
+  { label: '2 טלפון',         key: 'r2' },
+  { label: '3 מין',           key: 'r3' },
+  { label: '4 נשוי/רווק',    key: 'r4' },
+  { label: '5 ילדים',         key: 'r5' },
+  { label: '6 תעסוקה',        key: 'r6' },
+  { label: '7 תאריך',         key: 'r7' },
+  { label: '8 שאלה',          key: 'r8' },
+  { label: '9 כפתורים',       key: 'r9' },
 ];
 
-// top, left-margin, right-margin per row
 const DEFAULTS = {
   portrait: {
     alert: [24.5, 21, 21],
@@ -189,7 +196,8 @@ const DEFAULTS = {
 };
 
 let mode = 'portrait';
-let vals = {};  // key → [top, left, right]
+let vals = {};
+let activeKey = ROWS[0].key;
 
 function setMode(m) {
   mode = m;
@@ -200,7 +208,8 @@ function setMode(m) {
   document.getElementById('preview').style.backgroundImage =
     `url('./client-bg-ipad-${m}.png')`;
   rebuildLines();
-  buildControls();
+  buildStrip();
+  renderActiveCtrl();
 }
 
 function rebuildLines() {
@@ -208,7 +217,7 @@ function rebuildLines() {
   preview.querySelectorAll('.row-line').forEach(el => el.remove());
   ROWS.forEach(row => {
     const el = document.createElement('div');
-    el.className = 'row-line';
+    el.className = 'row-line' + (row.key === activeKey ? ' active' : '');
     el.dataset.key = row.key;
     el.dataset.label = row.label;
     applyLine(el, row.key);
@@ -223,53 +232,70 @@ function applyLine(el, key) {
   el.style.right = right + '%';
 }
 
-function buildControls() {
-  const c = document.getElementById('rows-ctrl');
-  c.innerHTML = '';
+function buildStrip() {
+  const strip = document.getElementById('row-strip');
+  strip.innerHTML = '';
   ROWS.forEach(row => {
-    const [top, left, right] = vals[row.key];
-    const card = document.createElement('div');
-    card.className = 'row-card';
-    card.innerHTML = `
-      <div class="card-title">${row.label}</div>
-      <div class="card-controls">
-        <div class="ctrl-group lr-ctrl">
-          <span class="axis-lbl">R</span>
-          <button ontouchstart="sr('${row.key}',2,-0.5)" ontouchend="sp()" onmousedown="sr('${row.key}',2,-0.5)" onmouseup="sp()">◄</button>
-          <span class="val" id="v-${row.key}-r">${right.toFixed(1)}%</span>
-          <button ontouchstart="sr('${row.key}',2,0.5)" ontouchend="sp()" onmousedown="sr('${row.key}',2,0.5)" onmouseup="sp()">►</button>
-        </div>
-        <div class="ctrl-group">
-          <span class="axis-lbl">T</span>
-          <button ontouchstart="sr('${row.key}',0,-0.5)" ontouchend="sp()" onmousedown="sr('${row.key}',0,-0.5)" onmouseup="sp()">▲</button>
-          <span class="val" id="v-${row.key}-t">${top.toFixed(1)}%</span>
-          <button ontouchstart="sr('${row.key}',0,0.5)" ontouchend="sp()" onmousedown="sr('${row.key}',0,0.5)" onmouseup="sp()">▼</button>
-        </div>
-        <div class="ctrl-group lr-ctrl">
-          <span class="axis-lbl">L</span>
-          <button ontouchstart="sr('${row.key}',1,-0.5)" ontouchend="sp()" onmousedown="sr('${row.key}',1,-0.5)" onmouseup="sp()">◄</button>
-          <span class="val" id="v-${row.key}-l">${left.toFixed(1)}%</span>
-          <button ontouchstart="sr('${row.key}',1,0.5)" ontouchend="sp()" onmousedown="sr('${row.key}',1,0.5)" onmouseup="sp()">►</button>
-        </div>
-      </div>`;
-    c.appendChild(card);
+    const btn = document.createElement('button');
+    btn.textContent = row.label;
+    if (row.key === activeKey) btn.classList.add('active');
+    btn.onclick = () => selectRow(row.key);
+    strip.appendChild(btn);
   });
 }
 
-let _timer = null;
-function sr(key, idx, delta) {   // startRepeat
-  adj(key, idx, delta);
-  _timer = setInterval(() => adj(key, idx, delta), 110);
+function selectRow(key) {
+  activeKey = key;
+  document.querySelectorAll('#row-strip button').forEach((btn, i) => {
+    btn.classList.toggle('active', ROWS[i].key === key);
+  });
+  document.querySelectorAll('.row-line').forEach(el => {
+    el.classList.toggle('active', el.dataset.key === key);
+  });
+  renderActiveCtrl();
+  // scroll strip button into view
+  const idx = ROWS.findIndex(r => r.key === key);
+  document.querySelectorAll('#row-strip button')[idx]?.scrollIntoView({ inline: 'center', behavior: 'smooth' });
 }
-function sp() { clearInterval(_timer); _timer = null; }  // stopRepeat
 
-function adj(key, idx, delta) {
-  vals[key][idx] = Math.round((vals[key][idx] + delta) * 10) / 10;
+function renderActiveCtrl() {
+  const [top, left, right] = vals[activeKey];
+  const c = document.getElementById('active-ctrl');
+  c.innerHTML = `
+    <div class="ctrl-group lr-ctrl">
+      <span class="axis-lbl">R</span>
+      <button ontouchstart="sr(2,-0.5)" ontouchend="sp()" onmousedown="sr(2,-0.5)" onmouseup="sp()">◄</button>
+      <span class="val" id="v-r">${right.toFixed(1)}%</span>
+      <button ontouchstart="sr(2,0.5)" ontouchend="sp()" onmousedown="sr(2,0.5)" onmouseup="sp()">►</button>
+    </div>
+    <div class="ctrl-group">
+      <span class="axis-lbl">T</span>
+      <button ontouchstart="sr(0,-0.5)" ontouchend="sp()" onmousedown="sr(0,-0.5)" onmouseup="sp()">▲</button>
+      <span class="val" id="v-t">${top.toFixed(1)}%</span>
+      <button ontouchstart="sr(0,0.5)" ontouchend="sp()" onmousedown="sr(0,0.5)" onmouseup="sp()">▼</button>
+    </div>
+    <div class="ctrl-group lr-ctrl">
+      <span class="axis-lbl">L</span>
+      <button ontouchstart="sr(1,-0.5)" ontouchend="sp()" onmousedown="sr(1,-0.5)" onmouseup="sp()">◄</button>
+      <span class="val" id="v-l">${left.toFixed(1)}%</span>
+      <button ontouchstart="sr(1,0.5)" ontouchend="sp()" onmousedown="sr(1,0.5)" onmouseup="sp()">►</button>
+    </div>`;
+}
+
+let _timer = null;
+function sr(idx, delta) {
+  adj(idx, delta);
+  _timer = setInterval(() => adj(idx, delta), 110);
+}
+function sp() { clearInterval(_timer); _timer = null; }
+
+function adj(idx, delta) {
+  vals[activeKey][idx] = Math.round((vals[activeKey][idx] + delta) * 10) / 10;
   const suffixes = ['t', 'l', 'r'];
-  const span = document.getElementById(`v-${key}-${suffixes[idx]}`);
-  if (span) span.textContent = vals[key][idx].toFixed(1) + '%';
-  const line = document.querySelector(`.row-line[data-key="${key}"]`);
-  if (line) applyLine(line, key);
+  const span = document.getElementById(`v-${suffixes[idx]}`);
+  if (span) span.textContent = vals[activeKey][idx].toFixed(1) + '%';
+  const line = document.querySelector(`.row-line[data-key="${activeKey}"]`);
+  if (line) applyLine(line, activeKey);
 }
 
 function showOutput() {
