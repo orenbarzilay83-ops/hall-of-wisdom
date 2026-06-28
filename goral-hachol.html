@@ -323,8 +323,9 @@ body:has(#screen-open.active) .topbar { display: none !important; }
 /* שדה עם תווית */
 #screen-open .open-field {
   display: flex !important; flex-direction: column !important;
-  gap: 2px !important; flex: 1 !important; min-width: 0 !important;
+  gap: 2px !important; min-width: 0 !important;
 }
+#screen-open .open-row .open-field { flex: 1 !important; }
 #screen-open .open-label {
   font-family: 'STAM', sans-serif !important;
   font-size: 0.77rem !important; color: #5c2d00 !important;
