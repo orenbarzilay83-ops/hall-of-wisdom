@@ -289,6 +289,129 @@ input, select, textarea {
   background: rgba(255,240,210,0.5) !important;
   margin-top: 16px !important;
 }
+/* ── מסך פרטי הלקוח ── */
+#screen-open {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 100 !important;
+  overflow: hidden !important;
+  background: url('./client-bg-iphone.png') no-repeat center center !important;
+  background-size: cover !important;
+}
+body:has(#screen-open.active) .topbar { display: none !important; }
+#screen-open > .panel {
+  position: absolute !important;
+  top: 27% !important;
+  left: 13% !important;
+  right: 13% !important;
+  bottom: 8% !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 4px 0 0 !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+#screen-open .open-title-row { display: none !important; }
+#screen-open label,
+#screen-open .profile-group-label,
+#screen-open .dt-row label { display: none !important; }
+#screen-open .casting-alert {
+  background: transparent !important;
+  color: #5a3010 !important;
+  font-family: 'STAM', sans-serif !important;
+  text-align: center !important;
+  font-size: .88rem !important;
+  margin-bottom: 10px !important;
+  border: none !important;
+}
+#screen-open input,
+#screen-open textarea {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(60,30,5,0.35) !important;
+  border-radius: 0 !important;
+  color: #1a0800 !important;
+  font-family: 'STAM', sans-serif !important;
+  font-size: 1rem !important;
+  padding: 6px 4px !important;
+  width: 100% !important;
+}
+#screen-open input:focus,
+#screen-open textarea:focus {
+  border-bottom-color: rgba(60,30,5,0.7) !important;
+  outline: none !important;
+}
+#screen-open .col-sep { display: none !important; }
+#screen-open .open-2col {
+  flex-direction: column !important;
+  gap: 8px !important;
+  margin-bottom: 8px !important;
+}
+#screen-open .open-inputs-col {
+  align-items: stretch !important;
+  gap: 8px !important;
+}
+#screen-open .open-inputs-col .open-field input { width: 100% !important; }
+#screen-open .dt-row { justify-content: space-between !important; gap: 12px !important; }
+#screen-open .dt-row > div { flex: 1 !important; }
+#screen-open .dt-row input { width: 100% !important; }
+#screen-open .profile-btn {
+  background: transparent !important;
+  border: 1px solid rgba(60,30,5,0.4) !important;
+  color: #1a0800 !important;
+  font-family: 'STAM', sans-serif !important;
+  font-size: .85rem !important;
+}
+#screen-open .profile-btn.selected {
+  background: rgba(50,25,5,0.7) !important;
+  color: #f0dea0 !important;
+  border-color: rgba(50,25,5,0.7) !important;
+}
+#screen-open .profile-section { gap: 8px !important; }
+#screen-open .profile-group { gap: 3px !important; }
+#screen-open .open-bottom { gap: 8px !important; }
+#screen-open #questionBanner {
+  background: rgba(30,15,5,0.55) !important;
+  color: #e8d490 !important;
+  border-radius: 8px !important;
+  padding: 8px 10px !important;
+  margin-bottom: 8px !important;
+  border: none !important;
+}
+#screen-open .actions {
+  background: transparent !important;
+  margin-top: 10px !important;
+  display: flex !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+}
+#screen-open .actions .btn.primary {
+  background: rgba(40,20,5,0.75) !important;
+  color: #f0dea0 !important;
+  border: none !important;
+  flex: 1 !important;
+}
+#screen-open .actions .btn.gray {
+  background: transparent !important;
+  border: 1px solid rgba(60,30,5,0.4) !important;
+  color: #1a0800 !important;
+  flex: 1 !important;
+}
+@media (min-width: 768px) and (orientation: portrait) {
+  #screen-open { background-image: url('./client-bg-ipad-portrait.png') !important; }
+  #screen-open > .panel { top: 24% !important; left: 18% !important; right: 18% !important; }
+  #screen-open .open-2col { flex-direction: row !important; gap: 0 !important; }
+  #screen-open .col-sep { display: block !important; }
+  #screen-open .open-inputs-col .open-field input { width: 100% !important; }
+}
+@media (min-width: 768px) and (orientation: landscape) {
+  #screen-open { background-image: url('./client-bg-ipad-landscape.png') !important; }
+  #screen-open > .panel { top: 22% !important; left: 17% !important; right: 17% !important; }
+  #screen-open .open-2col { flex-direction: row !important; gap: 0 !important; }
+  #screen-open .col-sep { display: block !important; }
+  #screen-open .open-inputs-col .open-field input { width: 100% !important; }
+}
 /* ══════════════════════ */
 
     :root {
