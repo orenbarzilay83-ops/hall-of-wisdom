@@ -218,6 +218,8 @@ function glyphHtml(lines) {
 function showScreen(name) {
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   document.getElementById("screen-" + name)?.classList.add("active");
+  const topbar = document.querySelector('.topbar');
+  if (topbar) topbar.style.display = name === 'open' ? 'none' : '';
   window.scrollTo({ top:0, behavior:"smooth" });
 }
 
