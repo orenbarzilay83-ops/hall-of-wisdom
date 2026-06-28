@@ -372,17 +372,27 @@ body:has(#screen-open.active) .topbar { display: none !important; }
 }
 #screen-open input,
 #screen-open textarea {
+  -webkit-appearance: none !important;
+  appearance: none !important;
   background: transparent !important;
+  background-color: transparent !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
   border: none !important;
   border-radius: 0 !important;
-  box-shadow: none !important;
+  outline: none !important;
   color: #1a0800 !important;
   font-family: 'STAM', sans-serif !important;
   font-size: .9rem !important;
   padding: 2px 6px !important;
   width: 100% !important;
-  outline: none !important;
   box-sizing: border-box !important;
+}
+#screen-open input:-webkit-autofill,
+#screen-open input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 100px transparent inset !important;
+  box-shadow: 0 0 0 100px transparent inset !important;
+  -webkit-text-fill-color: #1a0800 !important;
 }
 .open-cell-full { flex: none !important; }
 .open-cell-full textarea {
@@ -571,10 +581,6 @@ body:has(#screen-open.active) .topbar { display: none !important; }
     }
 
     #screen-open input, #screen-open textarea {
-      padding:10px 14px;
-      font-size:15px;
-      border-radius:12px;
-      border:1px solid #d8d8d8;
       text-align:center;
     }
     .dt-row { display:flex; gap:8px; }
