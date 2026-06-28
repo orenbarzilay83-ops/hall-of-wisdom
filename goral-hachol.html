@@ -295,11 +295,19 @@ input, select, textarea {
   inset: 0 !important;
   z-index: 100 !important;
   overflow: hidden !important;
+  padding: 0 !important;
   background: url('./client-bg-iphone.png') no-repeat center center !important;
   background-size: cover !important;
 }
 body:has(#screen-open.active) .topbar { display: none !important; }
-#screen-open #questionBanner { display: none !important; }
+#screen-open #questionBanner {
+  position: absolute !important;
+  top: -999px !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
 #screen-open #castingTimeAlert {
   position: absolute !important;
   top: 24% !important;
@@ -361,15 +369,14 @@ body:has(#screen-open.active) .topbar { display: none !important; }
   color: #1a0800 !important;
   font-family: 'STAM', sans-serif !important;
   font-size: .9rem !important;
-  padding: 2px 4px !important;
+  padding: 2px 6px !important;
   width: 100% !important;
   outline: none !important;
-  height: 100% !important;
   box-sizing: border-box !important;
 }
-.open-cell-full { flex: 1 !important; }
+.open-cell-full { flex: none !important; }
 .open-cell-full textarea {
-  height: 100% !important;
+  height: 3em !important;
   resize: none !important;
 }
 .open-actions {
@@ -392,6 +399,7 @@ body:has(#screen-open.active) .topbar { display: none !important; }
   #screen-open input, #screen-open textarea { font-size: 1rem !important; }
   .open-btns-row .profile-btn { font-size: .88rem !important; }
   #screen-open .open-actions .btn { font-size: .82rem !important; }
+  .open-cell-full textarea { height: 3.2em !important; }
 }
 @media (min-width: 768px) and (orientation: landscape) {
   #screen-open { background-image: url('./client-bg-ipad-landscape.png') !important; }
@@ -400,6 +408,7 @@ body:has(#screen-open.active) .topbar { display: none !important; }
   #screen-open input, #screen-open textarea { font-size: 1rem !important; }
   .open-btns-row .profile-btn { font-size: .88rem !important; }
   #screen-open .open-actions .btn { font-size: .82rem !important; }
+  .open-cell-full textarea { height: 3.2em !important; }
 }
 /* ══════════════════════ */
 
