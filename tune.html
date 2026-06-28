@@ -3,142 +3,107 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>כיוון שורות</title>
+  <title>כיוון גרירה</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: #000; overflow: hidden; height: 100dvh; }
+    body { background: #000; overflow: hidden; height: 100dvh; touch-action: none; }
 
     #preview {
       position: fixed; inset: 0;
       background: no-repeat center center / cover;
-      transition: transform 0.2s;
+      transition: transform 0.18s;
     }
 
-    .row-line {
+    /* ── draggable form-element boxes ── */
+    .tune-el {
       position: absolute;
-      height: 3px;
-      background: rgba(255, 60, 60, 0.55);
-      pointer-events: none;
-      transition: background 0.15s;
+      border: 2px solid rgba(255,255,255,0.5);
+      background: rgba(0,0,0,0.18);
+      cursor: grab;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
     }
-    .row-line.active {
-      background: rgba(255, 230, 0, 0.95);
-      height: 4px;
+    .tune-el.selected {
+      border-width: 3px;
+      background: rgba(0,0,0,0.32);
+      z-index: 5;
     }
-    .row-line::after {
-      content: attr(data-label);
-      position: absolute;
-      left: calc(100% + 3px);
-      top: -9px;
-      font-size: 10px;
-      color: #ff5;
-      white-space: nowrap;
-      text-shadow: 0 0 3px #000, 0 0 3px #000;
+    .tune-el.dragging { cursor: grabbing; z-index: 10; }
+    .el-label {
+      font-size: 11px;
+      color: #fff;
       font-family: Arial, sans-serif;
+      text-shadow: 0 1px 4px #000, 0 1px 4px #000;
+      pointer-events: none;
+      text-align: center;
     }
 
-    /* ── PANEL ── */
+    /* ── bottom panel ── */
     #panel {
       position: fixed;
       bottom: 0; left: 0; right: 0;
-      background: rgba(0,0,0,0.92);
+      background: rgba(0,0,0,0.93);
       color: #fff;
       z-index: 999;
     }
 
-    /* top bar: mode + output */
     #top-bar {
-      display: flex;
-      gap: 6px;
-      padding: 6px 8px;
+      display: flex; gap: 5px; padding: 6px 8px;
       border-bottom: 1px solid #333;
     }
     #top-bar button {
       flex: 1; padding: 8px 4px;
       border: none; border-radius: 6px;
-      font-size: 13px; font-family: Arial, sans-serif;
+      font-size: 12px; font-family: Arial, sans-serif;
       cursor: pointer;
     }
-    #btn-p    { background: #336; color: #fff; }
-    #btn-l    { background: #444; color: #fff; }
-    #btn-out  { background: #252; color: #9f9; }
-    #btn-up, #btn-dn { background: #533; color: #fcc; flex: 0 0 44px; font-size: 16px; }
+    #btn-p   { background: #336; color: #fff; }
+    #btn-l   { background: #444; color: #fff; }
+    #btn-up, #btn-dn { background: #533; color: #fcc; flex: 0 0 40px; font-size: 16px; }
+    #btn-out { background: #252; color: #9f9; }
 
-    /* row selector strip */
-    #row-strip {
-      display: flex;
-      gap: 4px;
+    #status-bar {
+      padding: 4px 10px;
+      font-size: 12px; font-family: monospace;
+      color: #ff9; min-height: 22px;
+      border-bottom: 1px solid #222;
+    }
+
+    /* fine-tune row: R T L nudge buttons */
+    #fine-ctrl {
+      display: flex; gap: 5px; align-items: center;
       padding: 5px 8px;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      border-bottom: 1px solid #333;
-      scrollbar-width: none;
     }
-    #row-strip::-webkit-scrollbar { display: none; }
-    #row-strip button {
-      flex-shrink: 0;
-      padding: 6px 10px;
-      background: #2a2a2a;
-      color: #aaa;
-      border: 1px solid #444;
-      border-radius: 5px;
-      font-size: 12px;
-      font-family: Arial, sans-serif;
-      cursor: pointer;
-      white-space: nowrap;
+    .fc-group {
+      display: flex; align-items: center; gap: 3px; flex: 1;
     }
-    #row-strip button.active {
-      background: #336;
-      color: #fff;
-      border-color: #66f;
+    .fc-lbl { font-size: 10px; color: #888; font-family: monospace; width: 14px; text-align: center; }
+    .fc-val { font-size: 11px; font-family: monospace; color: #ff9; width: 38px; text-align: center; }
+    .fc-group.lr .fc-val { color: #9cf; }
+    .fc-group button {
+      background: #333; color: #fff; border: none;
+      width: 34px; height: 34px; font-size: 15px;
+      border-radius: 5px; cursor: pointer;
+      -webkit-tap-highlight-color: transparent; flex-shrink: 0;
     }
+    .fc-group button:active { background: #666; }
 
-    /* active-row controls */
-    #active-ctrl {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-      padding: 7px 8px;
-    }
-    .ctrl-group {
-      display: flex;
-      align-items: center;
-      gap: 3px;
-      flex: 1;
-    }
-    .ctrl-group .axis-lbl {
-      font-size: 10px; color: #888;
-      font-family: monospace; width: 14px; text-align: center;
-    }
-    .ctrl-group .val {
-      font-size: 11px; font-family: monospace;
-      color: #ff9; width: 38px; text-align: center;
-    }
-    .ctrl-group.lr-ctrl .val { color: #9cf; }
-    .ctrl-group button {
-      background: #333; color: #fff;
-      border: none; width: 38px; height: 38px;
-      font-size: 18px; border-radius: 5px;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-      flex-shrink: 0;
-    }
-    .ctrl-group button:active { background: #666; }
-
+    /* output overlay */
     #output-box {
-      display: none;
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.93);
-      color: #0f0; font-size: 12px;
-      font-family: monospace; padding: 14px;
-      z-index: 1000; white-space: pre;
-      line-height: 1.8; overflow-y: auto;
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.93); color: #0f0;
+      font-size: 12px; font-family: monospace;
+      padding: 14px; z-index: 1000;
+      white-space: pre; line-height: 1.8; overflow-y: auto;
     }
     #output-box button {
       display: block; margin-top: 12px;
-      background: #333; color: #fff;
-      border: none; padding: 10px 20px;
-      border-radius: 6px; font-size: 15px;
+      background: #333; color: #fff; border: none;
+      padding: 10px 20px; border-radius: 6px; font-size: 15px;
     }
   </style>
 </head>
@@ -148,180 +113,263 @@
 
 <div id="panel">
   <div id="top-bar">
-    <button id="btn-p"  onclick="setMode('portrait')">iPad Portrait</button>
-    <button id="btn-l"  onclick="setMode('landscape')">iPad Landscape</button>
-    <button id="btn-up" onclick="shiftView(-10)">↑</button>
-    <button id="btn-dn" onclick="shiftView(10)">↓</button>
+    <button id="btn-p"  onclick="setMode('portrait')">Portrait</button>
+    <button id="btn-l"  onclick="setMode('landscape')">Landscape</button>
+    <button id="btn-up" onclick="shiftView(-12)">↑</button>
+    <button id="btn-dn" onclick="shiftView(12)">↓</button>
     <button id="btn-out" onclick="showOutput()">📋 ערכים</button>
   </div>
-  <div id="row-strip"></div>
-  <div id="active-ctrl"></div>
+  <div id="status-bar">בחר שדה וגרור למקום הנכון</div>
+  <div id="fine-ctrl">
+    <div class="fc-group lr">
+      <span class="fc-lbl">R</span>
+      <button ontouchstart="startFc(2,-0.5)" ontouchend="stopFc()" onmousedown="startFc(2,-0.5)" onmouseup="stopFc()">◄</button>
+      <span class="fc-val" id="fc-r">--</span>
+      <button ontouchstart="startFc(2,0.5)" ontouchend="stopFc()" onmousedown="startFc(2,0.5)" onmouseup="stopFc()">►</button>
+    </div>
+    <div class="fc-group">
+      <span class="fc-lbl">T</span>
+      <button ontouchstart="startFc(0,-0.5)" ontouchend="stopFc()" onmousedown="startFc(0,-0.5)" onmouseup="stopFc()">▲</button>
+      <span class="fc-val" id="fc-t">--</span>
+      <button ontouchstart="startFc(0,0.5)" ontouchend="stopFc()" onmousedown="startFc(0,0.5)" onmouseup="stopFc()">▼</button>
+    </div>
+    <div class="fc-group lr">
+      <span class="fc-lbl">L</span>
+      <button ontouchstart="startFc(1,-0.5)" ontouchend="stopFc()" onmousedown="startFc(1,-0.5)" onmouseup="stopFc()">◄</button>
+      <span class="fc-val" id="fc-l">--</span>
+      <button ontouchstart="startFc(1,0.5)" ontouchend="stopFc()" onmousedown="startFc(1,0.5)" onmouseup="stopFc()">►</button>
+    </div>
+  </div>
 </div>
 
 <script>
 const ROWS = [
-  { label: '⬛ כותרת',        key: 'alert' },
-  { label: '1 שם/אב',         key: 'r1' },
-  { label: '2 טלפון',         key: 'r2' },
-  { label: '3 מין',           key: 'r3' },
-  { label: '4 נשוי/רווק',    key: 'r4' },
-  { label: '5 ילדים',         key: 'r5' },
-  { label: '6 תעסוקה',        key: 'r6' },
-  { label: '7 תאריך',         key: 'r7' },
-  { label: '8 שאלה',          key: 'r8' },
-  { label: '9 כפתורים',       key: 'r9' },
+  { key:'alert', label:'⬛ כותרת',    h:4.5 },
+  { key:'r1',    label:'1 שם/אב',     h:5.5 },
+  { key:'r2',    label:'2 טלפון',     h:5.5 },
+  { key:'r3',    label:'3 מין',       h:5.0 },
+  { key:'r4',    label:'4 נשוי/רווק', h:5.0 },
+  { key:'r5',    label:'5 ילדים',     h:5.0 },
+  { key:'r6',    label:'6 תעסוקה',    h:5.0 },
+  { key:'r7',    label:'7 תאריך',     h:5.5 },
+  { key:'r8',    label:'8 שאלה',      h:7.0 },
+  { key:'r9',    label:'9 כפתורים',   h:5.5 },
 ];
 
+const COLORS = [
+  '#ff4444','#ff9900','#ffdd00','#88ff44',
+  '#44ffdd','#44aaff','#aa44ff','#ff44aa',
+  '#ff8888','#88ddff',
+];
+
+// portrait: tuned values from user session
+// landscape: starting defaults (need tuning)
 const DEFAULTS = {
   portrait: {
-    alert: [24.5, 21, 21],
-    r1:    [31.5, 21, 21],
-    r2:    [39,   21, 21],
-    r3:    [46.5, 21, 21],
-    r4:    [56,   21, 21],
-    r5:    [63.5, 21, 21],
-    r6:    [71,   21, 21],
-    r7:    [76,   21, 21],
-    r8:    [83,   21, 21],
-    r9:    [88.5, 21, 21],
+    alert: [22.0, 21.0, 51.5],
+    r1:    [31.5, 21.0, 37.5],
+    r2:    [39.5, 21.0, 37.5],
+    r3:    [48.0, 21.0, 36.5],
+    r4:    [56.5, 57.5, 32.0],
+    r5:    [64.5, 21.0, 38.0],
+    r6:    [73.5, 21.0, 32.0],
+    r7:    [81.0, 21.0, 38.5],
+    r8:    [88.5, 21.0, 28.5],
+    r9:    [95.0, 21.0, 36.5],
   },
   landscape: {
-    alert: [22,   24.5, 24.5],
-    r1:    [31,   24.5, 24.5],
-    r2:    [38,   24.5, 24.5],
-    r3:    [46,   24.5, 24.5],
-    r4:    [55,   24.5, 24.5],
-    r5:    [63,   24.5, 24.5],
-    r6:    [70,   24.5, 24.5],
-    r7:    [76,   24.5, 24.5],
-    r8:    [82,   24.5, 24.5],
-    r9:    [88,   24.5, 24.5],
+    alert: [22.0, 24.5, 24.5],
+    r1:    [31.0, 24.5, 24.5],
+    r2:    [38.0, 24.5, 24.5],
+    r3:    [46.0, 24.5, 24.5],
+    r4:    [55.0, 24.5, 24.5],
+    r5:    [63.0, 24.5, 24.5],
+    r6:    [70.0, 24.5, 24.5],
+    r7:    [76.0, 24.5, 24.5],
+    r8:    [82.0, 24.5, 24.5],
+    r9:    [88.0, 24.5, 24.5],
   }
 };
 
 let mode = 'portrait';
 let vals = {};
-let activeKey = ROWS[0].key;
+let selectedKey = null;
+let _shift = 0;
+let _fcTimer = null;
 
+// ── drag state (global so touchmove on window works) ──
+let _dragKey = null;
+let _dragStartX, _dragStartY, _dragStartVals;
+
+function r1(v) { return Math.round(v * 10) / 10; }
+
+// ── mode ──
 function setMode(m) {
   mode = m;
   vals = {};
   for (const k in DEFAULTS[m]) vals[k] = [...DEFAULTS[m][k]];
-  document.getElementById('btn-p').style.background = m === 'portrait'  ? '#336' : '#444';
-  document.getElementById('btn-l').style.background = m === 'landscape' ? '#336' : '#444';
-  document.getElementById('preview').style.backgroundImage =
-    `url('./client-bg-ipad-${m}.png')`;
-  rebuildLines();
-  buildStrip();
-  renderActiveCtrl();
+  document.getElementById('btn-p').style.background = m==='portrait'  ? '#336' : '#444';
+  document.getElementById('btn-l').style.background = m==='landscape' ? '#336' : '#444';
+  document.getElementById('preview').style.backgroundImage = `url('./client-bg-ipad-${m}.png')`;
+  rebuildElements();
 }
 
-function rebuildLines() {
+// ── view shift ──
+function shiftView(delta) {
+  _shift = Math.max(-40, Math.min(40, _shift + delta));
+  document.getElementById('preview').style.transform =
+    _shift ? `translateY(${_shift}%)` : '';
+}
+
+// ── build draggable elements ──
+function rebuildElements() {
   const preview = document.getElementById('preview');
-  preview.querySelectorAll('.row-line').forEach(el => el.remove());
-  ROWS.forEach(row => {
+  preview.querySelectorAll('.tune-el').forEach(e => e.remove());
+  ROWS.forEach((row, i) => {
     const el = document.createElement('div');
-    el.className = 'row-line' + (row.key === activeKey ? ' active' : '');
+    el.className = 'tune-el';
+    el.id = 'el-' + row.key;
     el.dataset.key = row.key;
-    el.dataset.label = row.label;
-    applyLine(el, row.key);
+    const c = COLORS[i];
+    el.style.borderColor = c + 'cc';
+    el.style.background  = c + '28';
+    el.innerHTML = `<span class="el-label">${row.label}</span>`;
+    applyElStyle(el, row.key, row.h);
+
+    el.addEventListener('touchstart', onElTouchStart, { passive: false });
+    el.addEventListener('mousedown',  onElMouseDown);
     preview.appendChild(el);
   });
 }
 
-function applyLine(el, key) {
+function applyElStyle(el, key, h) {
   const [top, left, right] = vals[key];
-  el.style.top   = top   + '%';
-  el.style.left  = left  + '%';
-  el.style.right = right + '%';
+  el.style.top    = top   + '%';
+  el.style.left   = left  + '%';
+  el.style.right  = right + '%';
+  el.style.height = (h || 5) + '%';
 }
 
-function buildStrip() {
-  const strip = document.getElementById('row-strip');
-  strip.innerHTML = '';
-  ROWS.forEach(row => {
-    const btn = document.createElement('button');
-    btn.textContent = row.label;
-    if (row.key === activeKey) btn.classList.add('active');
-    btn.onclick = () => selectRow(row.key);
-    strip.appendChild(btn);
-  });
+function refreshEl(key) {
+  const row = ROWS.find(r => r.key === key);
+  const el  = document.getElementById('el-' + key);
+  if (el && row) applyElStyle(el, key, row.h);
 }
 
-function selectRow(key) {
-  activeKey = key;
-  document.querySelectorAll('#row-strip button').forEach((btn, i) => {
-    btn.classList.toggle('active', ROWS[i].key === key);
-  });
-  document.querySelectorAll('.row-line').forEach(el => {
-    el.classList.toggle('active', el.dataset.key === key);
-  });
-  renderActiveCtrl();
-  // scroll strip button into view
-  const idx = ROWS.findIndex(r => r.key === key);
-  document.querySelectorAll('#row-strip button')[idx]?.scrollIntoView({ inline: 'center', behavior: 'smooth' });
+// ── selection ──
+function selectEl(key) {
+  selectedKey = key;
+  document.querySelectorAll('.tune-el').forEach(e =>
+    e.classList.toggle('selected', e.dataset.key === key));
+  updateStatus();
+  updateFine();
 }
 
-function renderActiveCtrl() {
-  const [top, left, right] = vals[activeKey];
-  const c = document.getElementById('active-ctrl');
-  c.innerHTML = `
-    <div class="ctrl-group lr-ctrl">
-      <span class="axis-lbl">R</span>
-      <button ontouchstart="sr(2,-0.5)" ontouchend="sp()" onmousedown="sr(2,-0.5)" onmouseup="sp()">◄</button>
-      <span class="val" id="v-r">${right.toFixed(1)}%</span>
-      <button ontouchstart="sr(2,0.5)" ontouchend="sp()" onmousedown="sr(2,0.5)" onmouseup="sp()">►</button>
-    </div>
-    <div class="ctrl-group">
-      <span class="axis-lbl">T</span>
-      <button ontouchstart="sr(0,-0.5)" ontouchend="sp()" onmousedown="sr(0,-0.5)" onmouseup="sp()">▲</button>
-      <span class="val" id="v-t">${top.toFixed(1)}%</span>
-      <button ontouchstart="sr(0,0.5)" ontouchend="sp()" onmousedown="sr(0,0.5)" onmouseup="sp()">▼</button>
-    </div>
-    <div class="ctrl-group lr-ctrl">
-      <span class="axis-lbl">L</span>
-      <button ontouchstart="sr(1,-0.5)" ontouchend="sp()" onmousedown="sr(1,-0.5)" onmouseup="sp()">◄</button>
-      <span class="val" id="v-l">${left.toFixed(1)}%</span>
-      <button ontouchstart="sr(1,0.5)" ontouchend="sp()" onmousedown="sr(1,0.5)" onmouseup="sp()">►</button>
-    </div>`;
+function updateStatus() {
+  if (!selectedKey) return;
+  const [t, l, r] = vals[selectedKey];
+  const row = ROWS.find(x => x.key === selectedKey);
+  document.getElementById('status-bar').textContent =
+    `${row.label}  T:${t.toFixed(1)}%  L:${l.toFixed(1)}%  R:${r.toFixed(1)}%`;
 }
 
-let _timer = null;
-function sr(idx, delta) {
-  adj(idx, delta);
-  _timer = setInterval(() => adj(idx, delta), 110);
-}
-function sp() { clearInterval(_timer); _timer = null; }
-
-function adj(idx, delta) {
-  vals[activeKey][idx] = Math.round((vals[activeKey][idx] + delta) * 10) / 10;
-  const suffixes = ['t', 'l', 'r'];
-  const span = document.getElementById(`v-${suffixes[idx]}`);
-  if (span) span.textContent = vals[activeKey][idx].toFixed(1) + '%';
-  const line = document.querySelector(`.row-line[data-key="${activeKey}"]`);
-  if (line) applyLine(line, activeKey);
+function updateFine() {
+  if (!selectedKey) return;
+  const [t, l, r] = vals[selectedKey];
+  document.getElementById('fc-t').textContent = t.toFixed(1) + '%';
+  document.getElementById('fc-l').textContent = l.toFixed(1) + '%';
+  document.getElementById('fc-r').textContent = r.toFixed(1) + '%';
 }
 
+// ── touch drag ──
+function onElTouchStart(e) {
+  e.preventDefault();
+  const key = this.dataset.key;
+  _dragKey = key;
+  _dragStartX = e.touches[0].clientX;
+  _dragStartY = e.touches[0].clientY;
+  _dragStartVals = [...vals[key]];
+  this.classList.add('dragging');
+  selectEl(key);
+}
+
+window.addEventListener('touchmove', e => {
+  if (!_dragKey) return;
+  e.preventDefault();
+  doDrag(e.touches[0].clientX, e.touches[0].clientY);
+}, { passive: false });
+
+window.addEventListener('touchend', () => {
+  if (_dragKey) {
+    document.getElementById('el-' + _dragKey)?.classList.remove('dragging');
+    _dragKey = null;
+  }
+});
+
+// ── mouse drag ──
+function onElMouseDown(e) {
+  const key = this.dataset.key;
+  _dragKey = key;
+  _dragStartX = e.clientX;
+  _dragStartY = e.clientY;
+  _dragStartVals = [...vals[key]];
+  this.classList.add('dragging');
+  selectEl(key);
+  e.preventDefault();
+}
+
+window.addEventListener('mousemove', e => {
+  if (!_dragKey) return;
+  doDrag(e.clientX, e.clientY);
+});
+
+window.addEventListener('mouseup', () => {
+  if (_dragKey) {
+    document.getElementById('el-' + _dragKey)?.classList.remove('dragging');
+    _dragKey = null;
+  }
+});
+
+function doDrag(cx, cy) {
+  const preview = document.getElementById('preview');
+  const rect = preview.getBoundingClientRect();
+  const dx = (cx - _dragStartX) / rect.width  * 100;
+  const dy = (cy - _dragStartY) / rect.height * 100;
+  vals[_dragKey][0] = r1(_dragStartVals[0] + dy);   // top
+  vals[_dragKey][1] = r1(_dragStartVals[1] + dx);   // left  (follows drag)
+  vals[_dragKey][2] = r1(_dragStartVals[2] - dx);   // right (opposite, keeps width)
+  refreshEl(_dragKey);
+  updateStatus();
+  updateFine();
+}
+
+// ── fine controls ──
+function startFc(idx, delta) {
+  if (!selectedKey) return;
+  doFc(idx, delta);
+  _fcTimer = setInterval(() => doFc(idx, delta), 110);
+}
+function stopFc() { clearInterval(_fcTimer); _fcTimer = null; }
+function doFc(idx, delta) {
+  if (!selectedKey) return;
+  vals[selectedKey][idx] = r1(vals[selectedKey][idx] + delta);
+  refreshEl(selectedKey);
+  updateStatus();
+  updateFine();
+}
+
+// ── output ──
 function showOutput() {
   const box = document.getElementById('output-box');
   const lines = [`/* iPad ${mode} */`, ''];
   ROWS.forEach((row, i) => {
     const [top, left, right] = vals[row.key];
-    lines.push(i === 0
-      ? `כותרת שחורה:  top:${top.toFixed(1)}%  left:${left.toFixed(1)}%  right:${right.toFixed(1)}%`
-      : `שורה ${i} (${row.label.replace(/^\S+ /, '')}):  top:${top.toFixed(1)}%  left:${left.toFixed(1)}%  right:${right.toFixed(1)}%`
-    );
+    const lbl = i === 0 ? 'כותרת שחורה' : `שורה ${i} (${row.label.replace(/^\S+ /, '')})`;
+    lines.push(`${lbl}:  top:${top.toFixed(1)}%  left:${left.toFixed(1)}%  right:${right.toFixed(1)}%`);
   });
   box.innerHTML = lines.join('\n') +
     '\n\n<button onclick="document.getElementById(\'output-box\').style.display=\'none\'">סגור</button>';
   box.style.display = 'block';
-}
-
-let _shift = 0;
-function shiftView(delta) {
-  _shift = Math.max(-40, Math.min(40, _shift + delta));
-  document.getElementById('preview').style.transform =
-    _shift !== 0 ? `translateY(${_shift}%)` : '';
 }
 
 setMode('portrait');
