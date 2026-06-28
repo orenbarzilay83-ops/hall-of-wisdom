@@ -320,17 +320,26 @@ body:has(#screen-open.active) .topbar { display: none !important; }
   gap: 5px !important; direction: rtl !important;
 }
 
-/* שדה עם תווית */
+/* שדה קלט עם תווית בפנים */
 #screen-open .open-field {
-  display: flex !important; flex-direction: column !important;
-  gap: 2px !important; min-width: 0 !important;
+  display: flex !important; flex-direction: row !important;
+  align-items: center !important;
+  background: rgba(255,248,210,0.55) !important;
+  border: 1.5px solid rgba(120,65,10,0.45) !important;
+  border-radius: 8px !important;
+  height: 40px !important; box-sizing: border-box !important;
+  overflow: hidden !important;
+  padding: 0 8px !important; gap: 5px !important;
+  min-width: 0 !important;
 }
 #screen-open .open-row .open-field { flex: 1 !important; }
 #screen-open .open-label {
   font-family: 'STAM', sans-serif !important;
-  font-size: 0.77rem !important; color: #5c2d00 !important;
-  font-weight: 700 !important; text-align: right !important;
-  padding-right: 4px !important; line-height: 1.2 !important;
+  font-size: 0.78rem !important; color: #5c2d00 !important;
+  font-weight: 700 !important; white-space: nowrap !important;
+  flex-shrink: 0 !important; line-height: 1 !important;
+  border-left: 1px solid rgba(120,65,10,0.3) !important;
+  padding-left: 5px !important;
 }
 
 /* מפריד קטגוריה */
@@ -353,23 +362,33 @@ body:has(#screen-open.active) .topbar { display: none !important; }
 }
 #screen-open .open-row > * { flex: 1 !important; min-width: 0 !important; }
 
-/* קלטים */
-#screen-open .open-form input,
+/* קלטים בתוך open-field — ללא עיצוב משלהם */
+#screen-open .open-field input {
+  -webkit-appearance: none !important; appearance: none !important;
+  background: transparent !important;
+  border: none !important; outline: none !important;
+  color: #1a0800 !important; font-family: 'STAM', sans-serif !important;
+  font-size: 0.9rem !important;
+  padding: 0 !important; box-sizing: border-box !important;
+  height: 100% !important; flex: 1 !important; min-width: 0 !important;
+  text-align: right !important; direction: rtl !important;
+  -webkit-box-shadow: none !important; box-shadow: none !important;
+}
+/* textarea עם עיצוב עצמאי */
 #screen-open .open-form textarea {
   -webkit-appearance: none !important; appearance: none !important;
   background: rgba(255,248,210,0.55) !important;
   border: 1.5px solid rgba(120,65,10,0.45) !important;
   border-radius: 8px !important;
   color: #1a0800 !important; font-family: 'STAM', sans-serif !important;
-  font-size: 0.95rem !important;
-  padding: 10px 10px !important; box-sizing: border-box !important;
-  height: 40px !important;
+  font-size: 0.9rem !important;
+  padding: 8px 10px !important; box-sizing: border-box !important;
   text-align: right !important; direction: rtl !important;
   -webkit-box-shadow: none !important; box-shadow: none !important;
   width: 100% !important;
 }
-#screen-open input:-webkit-autofill,
-#screen-open input:-webkit-autofill:focus {
+#screen-open .open-field input:-webkit-autofill,
+#screen-open .open-field input:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0 100px rgba(240,220,150,0.45) inset !important;
   -webkit-text-fill-color: #1a0800 !important;
 }
@@ -390,6 +409,17 @@ body:has(#screen-open.active) .topbar { display: none !important; }
   background: rgba(80,28,0,0.72) !important;
   color: #f5e0a0 !important;
   border-color: rgba(210,160,60,0.65) !important;
+}
+
+/* open-field עצמאי (עוטף textarea) — מחזיר לעמודה רגילה */
+#screen-open .open-form > .open-field {
+  height: auto !important; flex-direction: column !important;
+  background: none !important; border: none !important;
+  border-radius: 0 !important; padding: 0 !important; gap: 2px !important;
+}
+#screen-open .open-form > .open-field .open-label {
+  border-left: none !important; padding-left: 0 !important;
+  padding-right: 4px !important;
 }
 
 /* שאלה */
