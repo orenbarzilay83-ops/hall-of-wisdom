@@ -310,10 +310,10 @@ body:has(#screen-open.active) .topbar { display: none !important; }
 }
 #screen-open #castingTimeAlert {
   position: absolute !important;
-  top: 24% !important;
+  top: 23.5% !important;
   left: 12% !important;
   right: 12% !important;
-  height: 5% !important;
+  height: 4.5% !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -325,17 +325,35 @@ body:has(#screen-open.active) .topbar { display: none !important; }
   padding: 0 !important;
   margin: 0 !important;
 }
+/* Container spans full screen — children use absolute % per background image */
 #screen-open .open-form {
   position: absolute !important;
-  top: 30% !important;
+  inset: 0 !important;
+  overflow: visible !important;
+}
+#screen-open .open-form > :nth-child(1),
+#screen-open .open-form > :nth-child(2),
+#screen-open .open-form > :nth-child(3),
+#screen-open .open-form > :nth-child(4),
+#screen-open .open-form > :nth-child(5),
+#screen-open .open-form > :nth-child(6),
+#screen-open .open-form > :nth-child(7),
+#screen-open .open-form > :nth-child(8),
+#screen-open .open-form > :nth-child(9) {
+  position: absolute !important;
   left: 12% !important;
   right: 12% !important;
-  bottom: 9% !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: space-between !important;
-  overflow: hidden !important;
 }
+/* iPhone — vertical positions measured from client-bg-iphone.png at 390×844 */
+#screen-open .open-form > :nth-child(1) { top: 31% !important; }
+#screen-open .open-form > :nth-child(2) { top: 40% !important; }
+#screen-open .open-form > :nth-child(3) { top: 48% !important; }
+#screen-open .open-form > :nth-child(4) { top: 55% !important; }
+#screen-open .open-form > :nth-child(5) { top: 62% !important; }
+#screen-open .open-form > :nth-child(6) { top: 69% !important; }
+#screen-open .open-form > :nth-child(7) { top: 77% !important; }
+#screen-open .open-form > :nth-child(8) { top: 84.5% !important; }
+#screen-open .open-form > :nth-child(9) { top: 91.5% !important; }
 .open-row-2 {
   display: flex !important;
   gap: 4% !important;
@@ -392,23 +410,59 @@ body:has(#screen-open.active) .topbar { display: none !important; }
   font-size: .72rem !important;
   padding: 3px 2px !important;
 }
+/* iPad portrait 768×1024 — measured from client-bg-ipad-portrait.png */
 @media (min-width: 768px) and (orientation: portrait) {
   #screen-open { background-image: url('./client-bg-ipad-portrait.png') !important; }
-  #screen-open #castingTimeAlert { top: 24% !important; left: 17% !important; right: 17% !important; height: 5% !important; }
-  #screen-open .open-form { top: 30% !important; left: 17% !important; right: 17% !important; bottom: 10% !important; }
+  #screen-open #castingTimeAlert { top: 24.5% !important; left: 21% !important; right: 21% !important; height: 4.5% !important; }
+  #screen-open .open-form > :nth-child(1),
+  #screen-open .open-form > :nth-child(2),
+  #screen-open .open-form > :nth-child(3),
+  #screen-open .open-form > :nth-child(4),
+  #screen-open .open-form > :nth-child(5),
+  #screen-open .open-form > :nth-child(6),
+  #screen-open .open-form > :nth-child(7),
+  #screen-open .open-form > :nth-child(8),
+  #screen-open .open-form > :nth-child(9) { left: 21% !important; right: 21% !important; }
+  #screen-open .open-form > :nth-child(1) { top: 32% !important; }
+  #screen-open .open-form > :nth-child(2) { top: 40% !important; }
+  #screen-open .open-form > :nth-child(3) { top: 47% !important; }
+  #screen-open .open-form > :nth-child(4) { top: 54% !important; }
+  #screen-open .open-form > :nth-child(5) { top: 61.5% !important; }
+  #screen-open .open-form > :nth-child(6) { top: 68.5% !important; }
+  #screen-open .open-form > :nth-child(7) { top: 76% !important; }
+  #screen-open .open-form > :nth-child(8) { top: 83% !important; }
+  #screen-open .open-form > :nth-child(9) { top: 89% !important; }
   #screen-open input, #screen-open textarea { font-size: 1rem !important; }
   .open-btns-row .profile-btn { font-size: .88rem !important; }
   #screen-open .open-actions .btn { font-size: .82rem !important; }
   .open-cell-full textarea { height: 3.2em !important; }
 }
+/* iPad landscape 1024×768 — measured from client-bg-ipad-landscape.png */
 @media (min-width: 768px) and (orientation: landscape) {
   #screen-open { background-image: url('./client-bg-ipad-landscape.png') !important; }
-  #screen-open #castingTimeAlert { top: 18% !important; left: 17% !important; right: 17% !important; height: 5% !important; }
-  #screen-open .open-form { top: 25% !important; left: 17% !important; right: 17% !important; bottom: 3% !important; }
+  #screen-open #castingTimeAlert { top: 25% !important; left: 24.5% !important; right: 24.5% !important; height: 4.5% !important; }
+  #screen-open .open-form > :nth-child(1),
+  #screen-open .open-form > :nth-child(2),
+  #screen-open .open-form > :nth-child(3),
+  #screen-open .open-form > :nth-child(4),
+  #screen-open .open-form > :nth-child(5),
+  #screen-open .open-form > :nth-child(6),
+  #screen-open .open-form > :nth-child(7),
+  #screen-open .open-form > :nth-child(8),
+  #screen-open .open-form > :nth-child(9) { left: 24.5% !important; right: 24.5% !important; }
+  #screen-open .open-form > :nth-child(1) { top: 33% !important; }
+  #screen-open .open-form > :nth-child(2) { top: 42% !important; }
+  #screen-open .open-form > :nth-child(3) { top: 47% !important; }
+  #screen-open .open-form > :nth-child(4) { top: 55% !important; }
+  #screen-open .open-form > :nth-child(5) { top: 64.5% !important; }
+  #screen-open .open-form > :nth-child(6) { top: 72% !important; }
+  #screen-open .open-form > :nth-child(7) { top: 79% !important; }
+  #screen-open .open-form > :nth-child(8) { top: 86% !important; }
+  #screen-open .open-form > :nth-child(9) { top: 93% !important; }
   #screen-open input, #screen-open textarea { font-size: 1rem !important; }
   .open-btns-row .profile-btn { font-size: .88rem !important; }
   #screen-open .open-actions .btn { font-size: .82rem !important; }
-  .open-cell-full textarea { height: 3.2em !important; }
+  .open-cell-full textarea { height: 2.4em !important; }
 }
 /* ══════════════════════ */
 
