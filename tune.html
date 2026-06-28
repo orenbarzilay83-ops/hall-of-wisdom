@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>כיוון שורות</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #000; overflow: hidden; height: 100dvh; }
+
+    #preview {
+      position: fixed;
+      inset: 0;
+      background: no-repeat center center / cover;
+    }
+
+    .row-line {
+      position: absolute;
+      left: var(--left);
+      right: var(--right);
+      height: 3px;
+      background: rgba(255, 60, 60, 0.85);
+      pointer-events: none;
+    }
+    .row-line::after {
+      content: attr(data-label);
+      position: absolute;
+      left: calc(100% + 4px);
+      top: -9px;
+      font-size: 11px;
+      color: #ff5;
+      white-space: nowrap;
+      text-shadow: 0 0 3px #000, 0 0 3px #000;
+      font-family: Arial, sans-serif;
+    }
+
+    #panel {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(0,0,0,0.88);
+      color: #fff;
+      z-index: 999;
+      max-height: 48dvh;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    #top-bar {
+      display: flex;
+      gap: 6px;
+      padding: 8px;
+      border-bottom: 1px solid #444;
+      position: sticky;
+      top: 0;
+      background: rgba(0,0,0,0.95);
+    }
+    #top-bar button {
+      flex: 1;
+      padding: 10px 4px;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: Arial, sans-serif;
+      cursor: pointer;
+    }
+    #btn-p  { background: #225; color: #fff; }
+    #btn-l  { background: #444; color: #fff; }
+    #btn-out { background: #252; color: #9f9; }
+
+    .row-ctrl {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 10px;
+      border-bottom: 1px solid #2a2a2a;
+    }
+    .row-ctrl .lbl { flex: 1; font-size: 12px; font-family: Arial, sans-serif; }
+    .row-ctrl .val {
+      width: 52px;
+      text-align: center;
+      font-size: 13px;
+      font-family: monospace;
+      color: #ff9;
+    }
+    .row-ctrl button {
+      background: #333;
+      color: #fff;
+      border: none;
+      width: 40px; height: 40px;
+      font-size: 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .row-ctrl button:active { background: #666; }
+
+    #output-box {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: rgba(0,0,0,0.9);
+      color: #0f0;
+      font-size: 11px;
+      font-family: monospace;
+      padding: 10px;
+      z-index: 1000;
+      white-space: pre;
+      line-height: 1.6;
+    }
+    #output-box button {
+      display: block;
+      margin-top: 8px;
+      background: #333;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+<div id="preview"></div>
+<div id="output-box"><button onclick="document.getElementById('output-box').style.display='none'">סגור</button></div>
+
+<div id="panel">
+  <div id="top-bar">
+    <button id="btn-p"  onclick="setMode('portrait')">iPad Portrait</button>
+    <button id="btn-l"  onclick="setMode('landscape')">iPad Landscape</button>
+    <button id="btn-out" onclick="showOutput()">📋 ערכים</button>
+  </div>
+  <div id="rows-ctrl"></div>
+</div>
+
+<script>
+const ROWS = [
+  { label: '⬛ כותרת שחורה', key: 'alert' },
+  { label: '1 שם לקוח / שם אב',  key: 'r1' },
+  { label: '2 טלפון / דוא"ל',    key: 'r2' },
+  { label: '3 מין',               key: 'r3' },
+  { label: '4 נשוי/רווק/גרוש',   key: 'r4' },
+  { label: '5 יש/אין ילדים',      key: 'r5' },
+  { label: '6 שכיר/עצמאי...',     key: 'r6' },
+  { label: '7 תאריך / שעה',       key: 'r7' },
+  { label: '8 שאלת הלקוח',        key: 'r8' },
+  { label: '9 כפתורי פעולה',      key: 'r9' },
+];
+
+const DEFAULTS = {
+  portrait: {
+    alert:24.5, r1:31.5, r2:39, r3:46.5, r4:56, r5:63.5, r6:71, r7:76, r8:83, r9:88.5
+  },
+  landscape: {
+    alert:22, r1:31, r2:38, r3:46, r4:55, r5:63, r6:70, r7:76, r8:82, r9:88
+  }
+};
+
+const MARGINS = { portrait: '21%', landscape: '24.5%' };
+
+let mode = 'portrait';
+let vals = {};
+
+function setMode(m) {
+  mode = m;
+  vals = Object.assign({}, DEFAULTS[m]);
+  document.getElementById('btn-p').style.background  = m === 'portrait'  ? '#336' : '#444';
+  document.getElementById('btn-l').style.background  = m === 'landscape' ? '#336' : '#444';
+  document.getElementById('preview').style.backgroundImage =
+    `url('./client-bg-ipad-${m}.png')`;
+
+  // rebuild lines
+  const preview = document.getElementById('preview');
+  preview.querySelectorAll('.row-line').forEach(el => el.remove());
+  const margin = MARGINS[m];
+  ROWS.forEach(row => {
+    const el = document.createElement('div');
+    el.className = 'row-line';
+    el.dataset.key = row.key;
+    el.dataset.label = row.label;
+    el.style.setProperty('--left', margin);
+    el.style.setProperty('--right', margin);
+    el.style.top = vals[row.key] + '%';
+    preview.appendChild(el);
+  });
+
+  buildControls();
+}
+
+function buildControls() {
+  const c = document.getElementById('rows-ctrl');
+  c.innerHTML = '';
+  ROWS.forEach(row => {
+    const div = document.createElement('div');
+    div.className = 'row-ctrl';
+    div.innerHTML = `
+      <span class="lbl">${row.label}</span>
+      <button ontouchstart="startRepeat('${row.key}',-0.5)" ontouchend="stopRepeat()" onmousedown="startRepeat('${row.key}',-0.5)" onmouseup="stopRepeat()">▲</button>
+      <span class="val" id="v-${row.key}">${vals[row.key].toFixed(1)}%</span>
+      <button ontouchstart="startRepeat('${row.key}',0.5)" ontouchend="stopRepeat()" onmousedown="startRepeat('${row.key}',0.5)" onmouseup="stopRepeat()">▼</button>
+    `;
+    c.appendChild(div);
+  });
+}
+
+let _timer = null;
+function startRepeat(key, delta) {
+  adjust(key, delta);
+  _timer = setInterval(() => adjust(key, delta), 120);
+}
+function stopRepeat() { clearInterval(_timer); _timer = null; }
+
+function adjust(key, delta) {
+  vals[key] = Math.round((vals[key] + delta) * 10) / 10;
+  const span = document.getElementById('v-' + key);
+  if (span) span.textContent = vals[key].toFixed(1) + '%';
+  const line = document.querySelector(`.row-line[data-key="${key}"]`);
+  if (line) line.style.top = vals[key] + '%';
+}
+
+function showOutput() {
+  const box = document.getElementById('output-box');
+  const lines = [`/* iPad ${mode} */`]
+    .concat(ROWS.map((r,i) => i === 0
+      ? `castingTimeAlert: top: ${vals[r.key].toFixed(1)}%`
+      : `שורה ${i}: top: ${vals[r.key].toFixed(1)}%`
+    ));
+  box.innerHTML = lines.join('\n') + '\n\n<button onclick="document.getElementById(\'output-box\').style.display=\'none\'">סגור</button>';
+  box.style.display = 'block';
+}
+
+setMode('portrait');
+</script>
+</body>
+</html>
