@@ -585,6 +585,9 @@ function buildBoardHtml(reading) {
       <div class="board-row r3">
         ${houseHtml(h(13), "13 — עד א׳", d(13), false)}
         ${houseHtml(h(14), "14 — עד ב׳", d(14), false)}
+      </div>
+
+      <div class="board-row r4">
         ${houseHtml(h(15), "15 — דיין", d(15), false)}
         ${houseHtml(h(16), "16 — משלים", d(16), false)}
       </div>

@@ -1040,8 +1040,15 @@ body:has(#screen-open.active) .topbar { display: none !important; }
 
     .board-row.r1 { grid-template-columns:repeat(8,1fr); }
     .board-row.r2 { grid-template-columns:repeat(4,1fr); }
-    .board-row.r3 { grid-template-columns:repeat(4,1fr); border-bottom:0; }
-    .board-row.r3 .house { aspect-ratio:1; min-height:0; }
+
+    /* Pyramid rows — dead space is transparent */
+    .board-row.r3 { grid-template-columns:repeat(8,1fr); border-bottom:0; background:transparent; }
+    .board-row.r3 .house:first-child { grid-column: 6 / 8; } /* house 13 — עד א׳ */
+    .board-row.r3 .house:last-child  { grid-column: 2 / 4; } /* house 14 — עד ב׳ */
+
+    .board-row.r4 { grid-template-columns:repeat(8,1fr); border-bottom:0; background:transparent; }
+    .board-row.r4 .house:first-child { grid-column: 4 / 6; } /* house 15 — דיין */
+    .board-row.r4 .house:last-child  { grid-column: 6 / 7; } /* house 16 — משלים */
 
     .house {
       min-height:132px;
