@@ -220,7 +220,6 @@ function showScreen(name) {
   document.getElementById("screen-" + name)?.classList.add("active");
   const topbar = document.querySelector('.topbar');
   if (topbar) topbar.style.display = name === 'open' ? 'none' : '';
-  window.scrollTo({ top:0, behavior:"smooth" });
 }
 
 // ─── מסך בחירת שאלה ────────────────────────────────────────────────────────
