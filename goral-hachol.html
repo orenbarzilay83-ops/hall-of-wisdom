@@ -411,6 +411,16 @@ input, select, textarea {
   .select-scroll-bg { background-image: url('./prayer-scroll-bg-ipad-landscape.png') !important; }
   .select-scroll-content { top: 18% !important; bottom: 19% !important; padding: 0 18% !important; }
 }
+@media (max-width: 767px) {
+  .select-scroll-content { top: 28% !important; bottom: 14% !important; padding: 0 12% !important; }
+  #screen-select .figure-card { min-height: 72px !important; }
+  #screen-select .figure-grid .glyph { width: 32px !important; grid-template-rows: repeat(4, 7px) !important; gap: 3px !important; }
+  #screen-select .figure-grid .glyph .one { width: 5px !important; height: 5px !important; }
+  #screen-select .figure-grid .glyph .two { width: 22px !important; height: 4px !important; }
+  #screen-select .figure-name { font-size: 10px !important; }
+  #screen-select .actions .btn { font-size: 12px !important; padding: 8px 4px !important; }
+  #screen-select h2 { font-size: 1rem !important; }
+}
 /* ── מסך פרטי הלקוח ── */
 #screen-open {
   position: fixed !important; inset: 0 !important;
