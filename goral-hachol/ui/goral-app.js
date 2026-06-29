@@ -346,9 +346,9 @@ function renderMotherSlots() {
     <button type="button"
       class="mother-slot ${index === activeMother ? "active" : ""} ${fig ? "filled" : ""}"
       data-index="${index}">
-      <div>
-        <div style="font-weight:900;">אם ${index + 1}</div>
-        <div style="margin-top:4px;">${fig ? escapeHtml(fig.name) : "טרם נבחר"}</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+        <div style="font-weight:900;font-size:11px;">אם ${index + 1}</div>
+        ${fig ? glyphHtml(fig.lines) : `<div style="font-size:11px;color:#888;">טרם נבחר</div>`}
       </div>
     </button>
   `).join("");
