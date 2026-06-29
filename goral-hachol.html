@@ -799,6 +799,28 @@ body:has(#screen-open.active) .topbar { display: none !important; }
 
     .screen.active { display:block; }
 
+    /* רקע ספריה למסך לוח הגורל */
+    #screen-board {
+      background: #0a0602 url('./library-bg-portrait.webp') no-repeat top center;
+      background-size: cover;
+      min-height: 100vh;
+    }
+    @media (orientation: landscape) {
+      #screen-board { background-image: url('./library-bg-landscape.webp'); }
+    }
+    #screen-board .board { background: rgba(255,248,220,0.93); }
+    #screen-board .house { background: rgba(255,248,210,0.90); }
+    #screen-board .house.dhamir-house { background: #fffbea; }
+    #screen-board .house.natural-house { background: #f0f8f0; }
+    #screen-board .panel {
+      background: rgba(12,6,2,0.72);
+      border-color: rgba(212,175,55,0.55);
+      color: #e8d490;
+    }
+    #screen-board h2 { color: #e8d490; border-color: rgba(212,175,55,0.5); }
+    #screen-board .natural-house-legend { background: rgba(240,248,240,0.85); }
+    #screen-board .dhamir-legend { background: rgba(255,251,234,0.85); }
+
     .panel {
       border:1px solid rgba(216,170,69,.45);
       border-radius:18px;
@@ -1039,7 +1061,8 @@ body:has(#screen-open.active) .topbar { display: none !important; }
 
     .board-row.r1 { grid-template-columns:repeat(8,1fr); }
     .board-row.r2 { grid-template-columns:repeat(4,1fr); }
-    .board-row.r3 { grid-template-columns:repeat(2,1fr); border-bottom:0; }
+    .board-row.r3 { grid-template-columns:repeat(4,1fr); border-bottom:0; }
+    .board-row.r3 .house { aspect-ratio:1; min-height:0; }
 
     .house {
       min-height:132px;

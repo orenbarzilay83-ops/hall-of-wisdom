@@ -585,17 +585,10 @@ function buildBoardHtml(reading) {
       <div class="board-row r3">
         ${houseHtml(h(13), "13 — עד א׳", d(13), false)}
         ${houseHtml(h(14), "14 — עד ב׳", d(14), false)}
-      </div>
-    </article>
-
-    <div class="final-row">
-      <div class="final-box">
+        ${houseHtml(h(15), "15 — דיין", d(15), false)}
         ${houseHtml(h(16), "16 — משלים", d(16), false)}
       </div>
-      <div class="final-box">
-        ${houseHtml(h(15), "15 — דיין", d(15), false)}
-      </div>
-    </div>
+    </article>
     ${naturalHouseNums.length > 0 ? `<div class="natural-house-legend">✦ = צורה טבעית (בית${naturalHouseNums.length > 1 ? 'ות' : ''} ${naturalHouseNums.join(', ')}) — הצורה הטבעית של הבית, הדין חזק במיוחד</div>` : ""}
     ${dhamirHouseNum ? `<div class="dhamir-legend">★ = בית הדמיר (בית ${dhamirHouseNum}) — הצורה שכל שאר הצורות מעידות עליה</div>` : ""}
   `;
