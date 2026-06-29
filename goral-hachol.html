@@ -430,10 +430,14 @@ body:has(#screen-open.active) .topbar { display: none !important; }
     text-align: center !important;
     font-size: 1rem !important;
   }
-  /* הצרת אזור הטופס — ריפוד צדדי גדול יותר */
+  /* הצרת אזור הטופס + הזזה שמאלה (ריפוד ימין > שמאל) */
   #screen-open .open-form {
-    padding-left: 48px !important;
-    padding-right: 48px !important;
+    padding-left: 28px !important;
+    padding-right: 64px !important;
+  }
+  /* תאריך — ספרות ממורכזות בתיבה */
+  #screen-open #questionDateInput {
+    text-align: center !important;
   }
   /* פונטים גדולים יותר בשדות קלט */
   #screen-open .open-form input,
