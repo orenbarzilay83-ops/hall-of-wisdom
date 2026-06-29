@@ -382,10 +382,15 @@ input, select, textarea {
 #screen-select .actions .btn {
   font-size: 13px !important;
   padding: 10px 6px !important;
-  color: #000000 !important;
+  background: rgba(255,248,210,0.55) !important;
+  border: 1.5px solid rgba(120,65,10,0.45) !important;
+  color: #1a0800 !important;
+  border-radius: 8px !important;
 }
 #screen-select .actions .btn.primary {
-  color: #000000 !important;
+  background: rgba(80,28,0,0.72) !important;
+  color: #f5e0a0 !important;
+  border-color: rgba(210,160,60,0.65) !important;
 }
 #screen-select .note {
   font-size: 11px !important;
@@ -395,7 +400,7 @@ input, select, textarea {
 }
 @media (min-width: 768px) and (orientation: portrait) {
   .select-scroll-bg { background-image: url('./prayer-scroll-bg-ipad-portrait.png') !important; }
-  .select-scroll-content { top: 18% !important; bottom: 19% !important; padding: 0 16% !important; }
+  .select-scroll-content { top: 30% !important; bottom: 19% !important; padding: 0 16% !important; }
   #screen-select .figure-card { min-height: 100px !important; }
   #screen-select .figure-grid .glyph { width: 44px !important; grid-template-rows: repeat(4, 10px) !important; gap: 5px !important; }
   #screen-select .figure-grid .glyph .one { width: 7px !important; height: 7px !important; }
