@@ -11,7 +11,7 @@
   </script>
 
   <!-- preload background images so screen transitions never flash black -->
-  <link rel="preload" as="image" href="./client-bg-iphone.png">
+  <link rel="preload" as="image" href="./client-bg-scroll.png">
   <link rel="preload" as="image" href="./select-bg-iphone.png">
 
   <script src="./raml-data/raml-forms-basic.js?v=4"></script>
@@ -452,17 +452,11 @@ body:has(#screen-select.active) .topbar { display: none !important; }
 #screen-open {
   position: fixed !important; inset: 0 !important;
   z-index: 100 !important; overflow: hidden !important; padding: 0 !important;
-  background: url('./client-bg-iphone.png') no-repeat top center !important;
+  background: url('./client-bg-scroll.png') no-repeat top center !important;
   background-size: cover !important;
-}
-@media (min-width: 768px) and (orientation: portrait) {
-  #screen-open { background-image: url('./client-bg-ipad-portrait.png') !important; }
 }
 @media (orientation: landscape) {
   #screen-open { background-image: url('./client-bg-landscape.png') !important; }
-}
-@media (min-width: 768px) and (orientation: landscape) {
-  #screen-open { background-image: url('./client-bg-ipad-landscape.png') !important; }
 }
 body:has(#screen-open.active) .topbar { display: none !important; }
 
