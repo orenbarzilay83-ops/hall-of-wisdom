@@ -459,9 +459,22 @@ body:has(#screen-open.active) .topbar { display: none !important; }
   #screen-open .open-row:first-child .open-field {
     flex: 1 1 42% !important;
   }
-  /* שדה תאריך — פונט קטן שיכנס */
-  #screen-open #questionDateInput {
-    font-size: 0.82rem !important;
+  /* שורת תאריך/שעה — ממורכזת, ה-spacers מבוטלים */
+  #screen-open .open-row.open-row-datetime {
+    justify-content: center !important;
+    gap: 12px !important;
+  }
+  #screen-open .open-row.open-row-datetime > div[style] {
+    display: none !important;
+  }
+  #screen-open .open-row.open-row-datetime .open-field {
+    flex: 0 0 auto !important;
+    width: 140px !important;
+  }
+  /* שדה תאריך — ספרות ממורכזות */
+  #screen-open #questionDateInput,
+  #screen-open #questionTimeInput {
+    font-size: 0.88rem !important;
     text-align: center !important;
   }
   /* באנר שחרית — פונט קטן שלא יגלוש */
@@ -491,8 +504,20 @@ body:has(#screen-open.active) .topbar { display: none !important; }
     padding-left: 38px !important;
     padding-right: 56px !important;
   }
-  /* תאריך — ספרות ממורכזות בתיבה */
-  #screen-open #questionDateInput {
+  /* שורת תאריך/שעה — ממורכזת, ה-spacers מבוטלים */
+  #screen-open .open-row.open-row-datetime {
+    justify-content: center !important;
+    gap: 16px !important;
+  }
+  #screen-open .open-row.open-row-datetime > div[style] {
+    display: none !important;
+  }
+  #screen-open .open-row.open-row-datetime .open-field {
+    flex: 0 0 auto !important;
+    width: 160px !important;
+  }
+  #screen-open #questionDateInput,
+  #screen-open #questionTimeInput {
     text-align: center !important;
   }
   /* פונטים גדולים יותר בשדות קלט */
@@ -2036,7 +2061,7 @@ body:has(#screen-open.active) .topbar { display: none !important; }
           <button type="button" class="profile-btn" id="btn-self"       data-profile="work" data-value="self">עצמאי</button>
           <button type="button" class="profile-btn" id="btn-retired"    data-profile="work" data-value="retired">פנסיה</button>
         </div>
-        <div class="open-row">
+        <div class="open-row open-row-datetime">
           <div class="open-field">
             <span class="open-label">תאריך</span>
             <input type="text" id="questionDateInput" placeholder="DD/MM/YYYY" inputmode="numeric" autocomplete="off" />
