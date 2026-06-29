@@ -417,6 +417,37 @@ body:has(#screen-open.active) .topbar { display: none !important; }
 }
 /* ══════════════════════ */
 
+/* ── iPhone only (max-width 767px) ── */
+@media (max-width: 767px) {
+  /* כותרות: שחור + ממורכז */
+  #screen-open .open-label {
+    color: #000000 !important;
+    text-align: center !important;
+    font-size: 0.72rem !important;
+  }
+  /* שורות 2-כפתורים (מין / ילדים) — לא ימתחו */
+  #screen-open .open-row.open-row-2 {
+    justify-content: center !important;
+    gap: 12px !important;
+  }
+  #screen-open .open-row.open-row-2 > .profile-btn {
+    flex: 0 0 auto !important;
+    width: 110px !important;
+  }
+  /* שורת 4 שדות עליונה — 2 עמודות בכל שורה */
+  #screen-open .open-row:first-child {
+    flex-wrap: wrap !important;
+  }
+  #screen-open .open-row:first-child .open-field {
+    flex: 1 1 42% !important;
+  }
+  /* שדה תאריך — פונט קטן שיכנס */
+  #screen-open #questionDateInput {
+    font-size: 0.82rem !important;
+    text-align: center !important;
+  }
+}
+
 /* ── iPad only (min-width 768px — לא iPhone) ── */
 @media (min-width: 768px) {
   /* כותרות: שחור + ממורכז + גדול יותר */
