@@ -389,7 +389,8 @@ body:has(#screen-select.active) .topbar { display: none !important; }
   background: rgba(255, 248, 210, 0.62) !important;
   border: 1px solid rgba(160, 120, 50, 0.28) !important;
   border-radius: 10px !important;
-  min-height: 70px !important;
+  aspect-ratio: 1 !important;
+  min-height: unset !important;
   padding: 4px !important;
   gap: 3px !important;
   display: flex !important;
@@ -423,7 +424,7 @@ body:has(#screen-select.active) .topbar { display: none !important; }
   .select-parchment-content { top: 40% !important; bottom: 9% !important; left: 9% !important; right: 9% !important; }
   .select-bottom-actions { bottom: 1.5% !important; left: 6% !important; right: 6% !important; }
   .select-btn { font-size: 15px !important; padding: 14px 8px !important; }
-  #screen-select .figure-card { min-height: 90px !important; }
+  #screen-select .figure-card { min-height: unset !important; aspect-ratio: 1 !important; }
   #screen-select .figure-grid .glyph { width: 42px !important; grid-template-rows: repeat(4, 10px) !important; gap: 5px !important; }
   #screen-select .figure-grid .glyph .one { width: 7px !important; height: 7px !important; }
   #screen-select .figure-grid .glyph .two { width: 30px !important; height: 6px !important; }
