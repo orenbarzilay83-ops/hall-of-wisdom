@@ -13,6 +13,7 @@
   <!-- preload background images so screen transitions never flash black -->
   <link rel="preload" as="image" href="./client-bg-scroll.png">
   <link rel="preload" as="image" href="./select-bg-iphone.png">
+  <link rel="preload" as="image" href="./board-bg.png">
 
   <script src="./raml-data/raml-forms-basic.js?v=4"></script>
   <script src="./raml-data/raml-houses-basic.js?v=3"></script>
@@ -57,6 +58,12 @@ body {
 }
 .panel h2, .panel h3 { color: #e8d490 !important; font-family: 'STAM', sans-serif !important; }
 .screen { background: transparent !important; }
+#screen-board {
+  background-image: url('./board-bg.png') !important;
+  background-size: cover !important;
+  background-position: center top !important;
+  background-repeat: no-repeat !important;
+}
 .btn.primary {
   background: linear-gradient(135deg, #d4b96a, #a87c2e) !important;
   color: #0a0602 !important; border: none !important;
