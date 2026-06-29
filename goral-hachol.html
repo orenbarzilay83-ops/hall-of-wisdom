@@ -58,6 +58,12 @@ body {
 }
 .panel h2, .panel h3 { color: #e8d490 !important; font-family: 'STAM', sans-serif !important; }
 .screen { background: transparent !important; }
+#screen-board .panel {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
 #screen-board {
   background-image: url('./board-bg.png') !important;
   background-size: cover !important;
@@ -1069,7 +1075,7 @@ body:has(#screen-open.active) .topbar { display: none !important; }
       justify-content:center;
       text-align:center;
       gap:6px;
-      background:rgba(255,255,255,0.84);
+      background:rgba(255,255,255,0.78);
       position:relative;
     }
 
