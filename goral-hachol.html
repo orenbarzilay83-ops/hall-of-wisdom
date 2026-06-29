@@ -1041,16 +1041,16 @@ body:has(#screen-open.active) .topbar { display: none !important; }
     .board-row.r1 { grid-template-columns:repeat(8,1fr); }
     .board-row.r2 { grid-template-columns:repeat(4,1fr); }
 
-    /* Pyramid rows — direction:ltr so grid-column numbers are physical (1=left, 9=right) */
+    /* Pyramid rows — direction:ltr + explicit grid-row:1 forces both items into same row */
     .board-row.r3 { grid-template-columns:repeat(8,1fr); border-bottom:0; background:transparent; direction:ltr; }
-    .board-row.r3 .house { direction:rtl; } /* restore RTL inside each house for Hebrew text */
-    .board-row.r3 .house:first-child { grid-column: 6 / 8; } /* house 13 — ימין, תחת 9+10 */
-    .board-row.r3 .house:last-child  { grid-column: 2 / 4; } /* house 14 — שמאל, תחת 11+12 */
+    .board-row.r3 .house { direction:rtl; border:1px solid var(--line); }
+    .board-row.r3 .house:first-child { grid-column:6/8; grid-row:1; } /* house 13 — ימין, תחת 9+10 */
+    .board-row.r3 .house:last-child  { grid-column:2/4; grid-row:1; } /* house 14 — שמאל, תחת 11+12 */
 
     .board-row.r4 { grid-template-columns:repeat(8,1fr); border-bottom:0; background:transparent; direction:ltr; }
-    .board-row.r4 .house { direction:rtl; }
-    .board-row.r4 .house:first-child { grid-column: 4 / 6; } /* house 15 — דיין, מרכז */
-    .board-row.r4 .house:last-child  { grid-column: 6 / 7; } /* house 16 — משלים, פינה ימנית של 15 */
+    .board-row.r4 .house { direction:rtl; border:1px solid var(--line); }
+    .board-row.r4 .house:first-child { grid-column:4/6; grid-row:1; } /* house 15 — דיין, מרכז */
+    .board-row.r4 .house:last-child  { grid-column:6/7; grid-row:1; } /* house 16 — משלים, ימין של 15 */
 
     .house {
       min-height:132px;
