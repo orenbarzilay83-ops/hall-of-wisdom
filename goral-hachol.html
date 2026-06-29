@@ -388,8 +388,7 @@ body:has(#screen-select.active) .topbar { display: none !important; }
 #screen-select .figure-grid {
   display: grid !important;
   grid-template-columns: repeat(4, 1fr) !important;
-  grid-template-rows: repeat(4, 1fr) !important;
-  aspect-ratio: 1 !important;
+  grid-auto-rows: calc((min(55vw, 255px) - 15px) / 4) !important;
   width: min(55vw, 255px) !important;
   flex-shrink: 0 !important;
   gap: 5px !important;
@@ -439,7 +438,7 @@ body:has(#screen-select.active) .topbar { display: none !important; }
   #screen-select .mother-slot .glyph { width: 36px !important; grid-template-rows: repeat(4, 8px) !important; gap: 4px !important; }
   #screen-select .mother-slot .glyph .one { width: 6px !important; height: 6px !important; }
   #screen-select .mother-slot .glyph .two { width: 26px !important; height: 5px !important; }
-  #screen-select .figure-grid { width: min(38vw, 420px) !important; }
+  #screen-select .figure-grid { width: min(38vw, 420px) !important; grid-auto-rows: calc((min(38vw, 420px) - 15px) / 4) !important; }
   #screen-select .figure-grid .glyph { width: 48px !important; grid-template-rows: repeat(4, 11px) !important; gap: 5px !important; }
   #screen-select .figure-grid .glyph .one { width: 8px !important; height: 8px !important; }
   #screen-select .figure-grid .glyph .two { width: 34px !important; height: 6px !important; }
