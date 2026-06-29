@@ -314,18 +314,15 @@ body:has(#screen-select.active) .topbar { display: none !important; }
   flex-direction: column !important;
   justify-content: center !important;
   align-items: center !important;
-  gap: 6px !important;
+  gap: 4px !important;
 }
 /* כפתורים תחתונים */
 .select-bottom-actions {
-  position: absolute !important;
-  bottom: 2% !important;
-  left: 5% !important;
-  right: 5% !important;
+  width: 62vw !important;
+  flex-shrink: 0 !important;
   display: grid !important;
   grid-template-columns: repeat(3, 1fr) !important;
   gap: 8px !important;
-  z-index: 2 !important;
 }
 .select-btn {
   background: rgba(12, 7, 2, 0.88) !important;
@@ -345,7 +342,7 @@ body:has(#screen-select.active) .topbar { display: none !important; }
 }
 /* מפריד זהב */
 .select-divider {
-  width: 68vw !important;
+  width: 62vw !important;
   height: 1px !important;
   flex-shrink: 0 !important;
   background: linear-gradient(to left, transparent, rgba(212,175,55,0.55) 25%, rgba(212,175,55,0.55) 75%, transparent) !important;
@@ -355,7 +352,7 @@ body:has(#screen-select.active) .topbar { display: none !important; }
   display: grid !important;
   grid-template-columns: repeat(4, 1fr) !important;
   gap: 6px !important;
-  width: 68vw !important;
+  width: 62vw !important;
   flex-shrink: 0 !important;
 }
 #screen-select .mother-slot {
@@ -392,7 +389,7 @@ body:has(#screen-select.active) .topbar { display: none !important; }
   grid-template-columns: repeat(4, 1fr) !important;
   grid-template-rows: repeat(4, 1fr) !important;
   aspect-ratio: 1 !important;
-  width: 68vw !important;
+  width: 62vw !important;
   flex-shrink: 0 !important;
   gap: 5px !important;
   background: transparent !important;
@@ -435,12 +432,13 @@ body:has(#screen-select.active) .topbar { display: none !important; }
   .select-parchment-content { top: 40% !important; bottom: 9% !important; left: 9% !important; right: 9% !important; }
   .select-bottom-actions { bottom: 1.5% !important; left: 6% !important; right: 6% !important; }
   .select-btn { font-size: 13px !important; padding: 11px 8px !important; }
-  .select-divider { width: 46vw !important; }
-  #screen-select .mother-slots { width: 46vw !important; }
+  .select-divider { width: 42vw !important; }
+  #screen-select .mother-slots { width: 42vw !important; }
+  .select-bottom-actions { width: 42vw !important; }
   #screen-select .mother-slot .glyph { width: 36px !important; grid-template-rows: repeat(4, 8px) !important; gap: 4px !important; }
   #screen-select .mother-slot .glyph .one { width: 6px !important; height: 6px !important; }
   #screen-select .mother-slot .glyph .two { width: 26px !important; height: 5px !important; }
-  #screen-select .figure-grid { width: 46vw !important; }
+  #screen-select .figure-grid { width: 42vw !important; }
   #screen-select .figure-grid .glyph { width: 48px !important; grid-template-rows: repeat(4, 11px) !important; gap: 5px !important; }
   #screen-select .figure-grid .glyph .one { width: 8px !important; height: 8px !important; }
   #screen-select .figure-grid .glyph .two { width: 34px !important; height: 6px !important; }
@@ -2261,11 +2259,11 @@ body:has(#screen-open.active) .topbar { display: none !important; }
         <div id="motherSlots" class="mother-slots"></div>
         <div class="select-divider"></div>
         <div id="figureGrid" class="figure-grid"></div>
-      </div>
-      <div class="select-bottom-actions">
-        <button class="select-btn" id="backOpenBtn" type="button">חזרה</button>
-        <button class="select-btn" id="clearSelectionBtn" type="button">נקה בחירה</button>
-        <button class="select-btn select-btn-primary" id="buildBoardBtn" type="button">המשך ללוח הגורל</button>
+        <div class="select-bottom-actions">
+          <button class="select-btn" id="backOpenBtn" type="button">חזרה</button>
+          <button class="select-btn" id="clearSelectionBtn" type="button">נקה בחירה</button>
+          <button class="select-btn select-btn-primary" id="buildBoardBtn" type="button">המשך ללוח הגורל</button>
+        </div>
       </div>
     </section>
 
