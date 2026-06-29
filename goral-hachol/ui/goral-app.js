@@ -347,8 +347,7 @@ function renderMotherSlots() {
       class="mother-slot ${index === activeMother ? "active" : ""} ${fig ? "filled" : ""}"
       data-index="${index}">
       <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
-        <div style="font-weight:900;font-size:11px;">אם ${index + 1}</div>
-        ${fig ? glyphHtml(fig.lines) : `<div style="font-size:11px;color:#888;">טרם נבחר</div>`}
+        ${fig ? glyphHtml(fig.lines) : `<div style="font-size:11px;color:#888;">אם ${index + 1}</div>`}
       </div>
     </button>
   `).join("");
