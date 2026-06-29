@@ -417,6 +417,28 @@ body:has(#screen-open.active) .topbar { display: none !important; }
 }
 /* ══════════════════════ */
 
+/* ── iPad only (min-width 768px — לא iPhone) ── */
+@media (min-width: 768px) {
+  /* כותרות: שחור + ממורכז */
+  #screen-open .open-label {
+    color: #000000 !important;
+    text-align: center !important;
+  }
+  /* תיבות הקלט: ממורכזות */
+  #screen-open .open-divider {
+    text-align: center !important;
+  }
+  /* שורות 2-כפתורים (מין / ילדים) — כפתורים ממורכזים ולא ארוכים */
+  #screen-open .open-row.open-row-2 {
+    justify-content: center !important;
+    gap: 20px !important;
+  }
+  #screen-open .open-row.open-row-2 > .profile-btn {
+    flex: 0 0 auto !important;
+    width: 130px !important;
+  }
+}
+
     :root {
       --navy:#06192d;
       --navy2:#0d2a49;
@@ -1908,7 +1930,7 @@ body:has(#screen-open.active) .topbar { display: none !important; }
           </div>
         </div>
         <div class="open-divider">מין</div>
-        <div class="open-row">
+        <div class="open-row open-row-2">
           <button type="button" class="profile-btn" id="btn-gender-male"   data-profile="gender" data-value="male">זכר</button>
           <button type="button" class="profile-btn" id="btn-gender-female" data-profile="gender" data-value="female">נקבה</button>
         </div>
@@ -1920,7 +1942,7 @@ body:has(#screen-open.active) .topbar { display: none !important; }
           <button type="button" class="profile-btn" id="btn-widowed"  data-profile="marital" data-value="widowed">אלמן/ה</button>
         </div>
         <div class="open-divider">ילדים</div>
-        <div class="open-row">
+        <div class="open-row open-row-2">
           <button type="button" class="profile-btn" id="btn-ch-yes" data-profile="children" data-value="yes">יש ילדים</button>
           <button type="button" class="profile-btn" id="btn-ch-no"  data-profile="children" data-value="no">אין ילדים</button>
         </div>
@@ -2231,7 +2253,8 @@ body:has(#screen-open.active) .topbar { display: none !important; }
       var right  = vw - (c.PARCH_R * scale + ox);
       var banTop = c.BANNER_T * scale;
       var banH   = (c.BANNER_B - c.BANNER_T) * scale;
-      var frmTop = c.FORM_T * scale;
+      var isTablet = Math.max(vw, vh) >= 768;
+      var frmTop = c.FORM_T * scale + (isTablet ? 28 : 0);
       var frmBot = vh - c.FORM_B * scale;
 
       var alert = document.getElementById('castingTimeAlert');
