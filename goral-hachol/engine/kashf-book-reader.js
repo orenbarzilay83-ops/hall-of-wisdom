@@ -12,7 +12,7 @@ import { KASHF_AL_ASRAR_PAGES } from '../data/sources/kashf-al-asrar/kashf-al-as
 // ── שער שישי — טווחי עמודים לפי בית ──────────────────────────────────────────
 // מקור: תוכן עניינים כשף אל-אסראר, עמ׳ 277
 const HOUSE_PAGE_RANGES = {
-  1:  { pageStart: 166, pageEnd: 178, topicArabic: 'النفس',    topicHebrew: 'הנפש — השואל' },
+  1:  { pageStart: 166, firstContentPage: 167, pageEnd: 178, topicArabic: 'النفس',    topicHebrew: 'הנפש — השואל' },
   2:  { pageStart: 179, pageEnd: 181, topicArabic: 'المال',    topicHebrew: 'הממון' },
   3:  { pageStart: 182, firstContentPage: 183, pageEnd: 183, topicArabic: 'الأخوة',   topicHebrew: 'האחים / תנועה' },
   4:  { pageStart: 184, firstContentPage: 185, pageEnd: 190, topicArabic: 'الآباء',   topicHebrew: 'האבות, נכסים, נסתרות' },
