@@ -806,8 +806,13 @@ function buildInterpretationHtml(reading) {
     ${clientReadingHtml}
     <button class="details-toggle" onclick="const p=this.nextElementSibling;p.hidden=!p.hidden;this.textContent=p.hidden?'קרא עוד ▼':'סגור ▲'">קרא עוד ▼</button>
     <div hidden>${detailsContent}</div>
-    <div class="board-tools-row" style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap; direction:rtl;">
-      <button type="button" class="board-tool-btn" onclick="window.showTimingTool(this)" style="background:#1a3a5c; color:#f0d060; border:none; border-radius:6px; padding:8px 18px; font-size:14px; font-weight:700; cursor:pointer; font-family:inherit;">⏱ עיתוי</button>
+    <div class="board-tools-row" style="margin-top:14px; display:flex; gap:8px; flex-wrap:wrap; direction:rtl; align-items:center;">
+      <button type="button" onclick="window.showTimingTool(this)" style="background:#1a3a5c; color:#f0d060; border:none; border-radius:6px; padding:8px 16px; font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; white-space:nowrap;">⏱ עיתוי</button>
+      <button type="button" onclick="window.boardGoBack()" class="btn gray" style="font-size:13px; padding:8px 14px; white-space:nowrap;">חזרה לבחירת אמהות</button>
+      <button type="button" onclick="window.boardOpenArchive()" class="btn primary" style="font-size:13px; padding:8px 14px; white-space:nowrap;">ארכיון קריאות</button>
+      <button type="button" onclick="window.boardSaveClient()" class="btn gray" style="font-size:13px; padding:8px 14px; white-space:nowrap;">👤 שמור לקוח</button>
+      <button type="button" onclick="window.boardClearArchive()" class="btn gray" style="font-size:13px; padding:8px 14px; white-space:nowrap;">נקה ארכיון</button>
+      <button type="button" onclick="window.boardToggleKundali(this)" class="btn gray" style="font-size:13px; padding:8px 14px; white-space:nowrap;">♐ לוח קונדלי</button>
     </div>
     <div id="timingToolPanel" hidden style="direction:rtl; margin-top:10px; background:#f5f8ff; border:1px solid #1a3a5c; border-radius:8px; padding:16px 18px; font-size:14px; line-height:1.9;"></div>
   `;
@@ -1056,7 +1061,8 @@ document.getElementById('autoRestartBtn').addEventListener('click', () => {
 document.getElementById('autoCloseBtn').addEventListener('click', _autoClose);
 
 document.getElementById("backOpenBtn").addEventListener("click", () => showScreen("open"));
-document.getElementById("backSelectBtn").addEventListener("click", () => showScreen("select"));
+window.boardGoBack = () => showScreen("select");
+document.getElementById("backSelectBtn")?.addEventListener("click", () => showScreen("select"));
 document.getElementById("clearSelectionBtn").addEventListener("click", () => {
   selectedMothers = [null,null,null,null];
   activeMother = 0;
@@ -1081,31 +1087,24 @@ document.querySelectorAll('.profile-btn').forEach(btn => {
   });
 });
 
-document.getElementById("archiveBtn").addEventListener("click", () => {
-  openMenu(); document.getElementById("menuJournalBtn").click();
-});
-
-document.getElementById("clearArchiveBtn").addEventListener("click", () => {
+window.boardOpenArchive = () => { openMenu(); document.getElementById("menuJournalBtn").click(); };
+window.boardClearArchive = () => {
   if (!confirm("למחוק את כל הארכיון?")) return;
   if (window.GORAL_CLIENT_ARCHIVE?.clearGoralArchive) window.GORAL_CLIENT_ARCHIVE.clearGoralArchive();
-});
-
-document.getElementById("showKundaliBtn").addEventListener("click", () => {
+};
+window.boardToggleKundali = function(btn) {
   const kundaliResult = document.getElementById('kundaliResult');
-  const btn = document.getElementById('showKundaliBtn');
   if (!kundaliResult || !window._lastReading) return;
-
   if (kundaliResult.style.display !== 'none' && kundaliResult.innerHTML) {
     kundaliResult.style.display = 'none';
-    btn.textContent = '♐ לוח קונדלי — מפה אסטרולוגית הודית';
+    btn.textContent = '♐ לוח קונדלי';
     return;
   }
-
   kundaliResult.innerHTML = buildKundaliHtml(window._lastReading);
   kundaliResult.style.display = 'block';
   btn.textContent = '▲ סגור לוח קונדלי';
   kundaliResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
-});
+};
 
 // ─── ספר לקוחות ──────────────────────────────────────────────
 const CONTACTS_KEY = 'goralClientContacts_v1_' + (sessionStorage.getItem('userId') || 'local');
@@ -1179,7 +1178,7 @@ window.delContact  = delContact;
 
 document.getElementById('addContactBtn')?.addEventListener('click', addContact);
 
-document.getElementById('saveClientBtn').addEventListener('click', () => {
+window.boardSaveClient = () => {
   const ctx = getClientContext();
   const name = ctx.clientName;
   const phone = ctx.phone;
@@ -1201,7 +1200,7 @@ document.getElementById('saveClientBtn').addEventListener('click', () => {
   });
   localStorage.setItem(CONTACTS_KEY, JSON.stringify(contacts));
   alert(`הלקוח "${name}" נשמר בספר הלקוחות ✓`);
-});
+};
 
 // ─── Menu Drawer ──────────────────────────────────────────────
 function openMenu()  { document.getElementById("menuDrawer").classList.add("open"); document.getElementById("menuOverlay").classList.add("open"); }
