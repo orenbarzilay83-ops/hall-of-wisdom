@@ -2961,22 +2961,25 @@ export function writeClientReadingHebrew(result) {
   const prefix = name ? `${name}, ` : '';
 
   // ── 2. פסיקה ראשית ─────────────────────────────────────────────
-  // yearlyForecast וגם spiritualDiagnostics (אם הגיעו לכאן) — grade בלבד, לא כשף
-  const mainVerdict = (topicId === 'yearlyForecast' || topicId === 'spiritualDiagnostics')
+  // Grade (board judge) is the primary source. Kashf text used only when it agrees with grade.
+  const _gradePos  = grade === 'positive' || grade === 'cautiously-positive';
+  const _gradeNeg  = grade === 'negative' || grade === 'cautiously-negative';
+  const _kText     = kashfVerdict?.verdictHebrew || '';
+  const _kNegKw    = ['לא יימצא','לא יצא','לא יתממש','לא יבריא','עצור','ישאר','לרעת','לא נוח','לא בשל','לפגיעה'];
+  const _kPosKw    = ['יתממש','יימצא','חי ויחזור','ובשעה טובה','להבראה','להימצא','הפחד גדול','אין סכנה','ינצח','יציב ומחוזק'];
+  const _ktNeg     = _kNegKw.some(w => _kText.includes(w));
+  const _ktPos     = _kPosKw.some(w => _kText.includes(w)) && !_ktNeg;
+  // Kashf agrees with grade when: both positive, both negative, kashf is neutral, or grade is mixed
+  const _kashfAgreesGrade = !_kText || (!_ktPos && !_ktNeg)
+    || (_gradePos && _ktPos) || (_gradeNeg && _ktNeg) || (!_gradePos && !_gradeNeg);
+  const mainVerdict = (topicId === 'yearlyForecast' || topicId === 'spiritualDiagnostics' || !_kashfAgreesGrade)
     ? gradeToVerdict(grade)
-    : (kashfVerdict?.verdictHebrew || gradeToVerdict(grade));
+    : (_kText || gradeToVerdict(grade));
   push(`${prefix}${mainVerdict}`);
 
   // ── 3. רמת ביטחון ──────────────────────────────────────────────
-  // Compute polarity early so we can suppress misleading confidence lines.
-  const _vT_early  = kashfVerdict?.verdictHebrew || '';
-  const _negW_early = ['לא יימצא','לא יצא','לא יתממש','לא יבריא','עצור','ישאר','לרעת',
-                       'לא נוח','לא בשל','לפגיעה'];
-  const _posW_early = ['יתממש','יימצא','חי ויחזור','ובשעה טובה','להבראה','להימצא',
-                       'הפחד גדול','אין סכנה','ינצח','יציב ומחוזק'];
-  const _earlyPos = _posW_early.some(w => _vT_early.includes(w)) && !_negW_early.some(w => _vT_early.includes(w));
-  const _dkh_early = kashfVerdict?.classification?.dakhalKharij;
-  const _earlyIsPos = _earlyPos || _dkh_early === 'kharij';
+  // Grade is primary; kashf supplements only when grade is mixed.
+  const _earlyIsPos = _gradePos || (!_gradePos && !_gradeNeg && _ktPos && !_ktNeg);
 
   if (confLevel === 'weak' && !_earlyIsPos) {
     push('כדאי לדעת: הכוחות בלוח אינם חד-משמעיים, ולכן הפסיקה אינה בטוחה לחלוטין. מומלץ לחזור ולשאול שנית אחרי מספר ימים.');
@@ -2985,22 +2988,14 @@ export function writeClientReadingHebrew(result) {
   }
 
   // ── 4. פולריות הפסיקה (משמשת גם בנרטיב וגם בסיום) ──────────────
-  // Text-based + dakhalKharij give the most reliable per-topic polarity.
-  // saadNahs reflects the figure's intrinsic nature, NOT whether the topic answer is positive.
-  // dakhalKharij: kharij = matter will materialise (positive answer to question)
-  //               dakhil / mujassad-dakhil = matter will not materialise (negative answer)
-  const _vT  = kashfVerdict?.verdictHebrew || '';
-  const _negW = ['לא יימצא','לא יצא','לא יתממש','לא יבריא','עצור','ישאר','לרעת',
-                 'לא נוח','לא בשל','לפגיעה'];
-  const _posW = ['יתממש','יימצא','חי ויחזור','ובשעה טובה','להבראה','להימצא',
-                 'הפחד גדול','אין סכנה','ינצח','יציב ומחוזק'];
-  const _vNeg = _negW.some(w => _vT.includes(w));
-  const _vPos = _posW.some(w => _vT.includes(w)) && !_vNeg;
+  // Grade (board judge) is primary. Kashf supplements only when grade is mixed.
+  // dakhalKharij: kharij = matter materialises (positive); dakhil/mujassad-dakhil = does not (negative)
+  const _vT   = _kText;
+  const _vNeg = _ktNeg;
+  const _vPos = _ktPos;
   const dkh   = kashfVerdict?.classification?.dakhalKharij;
-  const isPositive = _vPos || dkh === 'kharij'
-    || (!_vPos && !_vNeg && !dkh && (grade === 'positive' || grade === 'cautiously-positive'));
-  const isNegative = _vNeg || dkh === 'dakhil' || dkh === 'mujassad-dakhil'
-    || (!_vPos && !_vNeg && !dkh && (grade === 'negative' || grade === 'cautiously-negative'));
+  const isPositive = _gradePos || (!_gradePos && !_gradeNeg && (_vPos || dkh === 'kharij') && !_vNeg);
+  const isNegative = _gradeNeg || (!_gradePos && !_gradeNeg && (_vNeg || dkh === 'dakhil' || dkh === 'mujassad-dakhil') && !_vPos);
 
   // ── 5. נרטיב לפי נושא ──────────────────────────────────────────
 
