@@ -289,157 +289,148 @@ input, select, textarea {
   background: rgba(255,240,210,0.5) !important;
   margin-top: 16px !important;
 }
-/* ── מסך בחירת צורות ── */
+/* ── מסך בחירת צורות — עיצוב חדש ── */
 #screen-select {
   position: fixed !important;
   inset: 0 !important;
   z-index: 100 !important;
   overflow: hidden !important;
   padding: 0 !important;
-}
-.select-scroll-bg {
-  position: absolute !important;
-  inset: 0 !important;
-  background: #2e1a08 url('./prayer-scroll-bg.png') no-repeat center center !important;
+  background: #0a0602 url('./select-bg-iphone.png') no-repeat top center !important;
   background-size: cover !important;
-  z-index: 0 !important;
 }
-.select-scroll-content {
+body:has(#screen-select.active) .topbar { display: none !important; }
+/* אזור הקלף — מסלוטים + גריד */
+.select-parchment-content {
   position: absolute !important;
-  top: 25% !important;
-  bottom: 12% !important;
-  left: 0 !important;
-  right: 0 !important;
-  padding: 0 14% !important;
+  top: 44% !important;
+  bottom: 13% !important;
+  left: 8% !important;
+  right: 8% !important;
   overflow-y: auto !important;
   -webkit-overflow-scrolling: touch !important;
   z-index: 1 !important;
-}
-#screen-select .panel {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  padding: 8px 0 !important;
-}
-#screen-select h2 {
-  color: #1a0800 !important;
-  font-size: 1.1rem !important;
-  text-align: center !important;
-  border-bottom: none !important;
-  margin-bottom: 10px !important;
-}
-#screen-select .mother-slots {
-  grid-template-columns: repeat(4, 56px) !important;
+  display: flex !important;
+  flex-direction: column !important;
   justify-content: center !important;
-  margin-bottom: 10px !important;
   gap: 6px !important;
 }
+/* כפתורים תחתונים */
+.select-bottom-actions {
+  position: absolute !important;
+  bottom: 2% !important;
+  left: 5% !important;
+  right: 5% !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 8px !important;
+  z-index: 2 !important;
+}
+.select-btn {
+  background: rgba(12, 7, 2, 0.88) !important;
+  border: 1.5px solid rgba(212, 175, 55, 0.65) !important;
+  color: #d4af37 !important;
+  border-radius: 12px !important;
+  padding: 12px 6px !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  font-family: 'STAM', sans-serif !important;
+  cursor: pointer !important;
+  text-align: center !important;
+}
+.select-btn-primary {
+  border-color: rgba(212, 175, 55, 0.95) !important;
+  color: #f5e070 !important;
+}
+/* משבצות אמהות */
+#screen-select .mother-slots {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 6px !important;
+  margin-bottom: 6px !important;
+}
 #screen-select .mother-slot {
-  font-size: 12px !important;
-  padding: 6px 4px !important;
-  min-height: 54px !important;
-  min-width: 0 !important;
-}
-#screen-select .figure-card {
-  min-height: 80px !important;
+  background: rgba(255, 248, 210, 0.5) !important;
+  border: 1.5px solid rgba(160, 120, 50, 0.4) !important;
+  border-radius: 10px !important;
+  min-height: 52px !important;
+  display: grid !important;
+  place-items: center !important;
+  color: #4a2e0a !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
   padding: 4px !important;
-  gap: 4px !important;
-  background: transparent !important;
-  border: none !important;
 }
-#screen-select .figure-card.other-selected {
-  background: transparent !important;
-  outline: 1px dashed rgba(0,0,0,0.3) !important;
+#screen-select .mother-slot.active {
+  border-color: rgba(212, 175, 55, 0.95) !important;
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.35) !important;
+  background: rgba(255, 248, 210, 0.75) !important;
 }
-#screen-select .figure-grid .glyph {
-  width: 36px !important;
-  grid-template-rows: repeat(4, 8px) !important;
-  gap: 4px !important;
-}
-#screen-select .figure-grid .glyph .one {
-  width: 6px !important;
-  height: 6px !important;
-}
-#screen-select .figure-grid .glyph .two {
-  width: 26px !important;
-  height: 5px !important;
+#screen-select .mother-slot.filled {
+  background: rgba(255, 245, 190, 0.7) !important;
 }
 #screen-select .mother-slot .glyph {
-  width: 28px !important;
+  width: 26px !important;
   grid-template-rows: repeat(4, 6px) !important;
   gap: 3px !important;
 }
-#screen-select .mother-slot .glyph .one {
-  width: 5px !important;
-  height: 5px !important;
+#screen-select .mother-slot .glyph .one { width: 5px !important; height: 5px !important; }
+#screen-select .mother-slot .glyph .two { width: 18px !important; height: 4px !important; }
+/* גריד צורות */
+#screen-select .figure-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 5px !important;
+  background: transparent !important;
+  border: none !important;
 }
-#screen-select .mother-slot .glyph .two {
-  width: 20px !important;
-  height: 4px !important;
+#screen-select .figure-card {
+  background: rgba(255, 248, 210, 0.62) !important;
+  border: 1px solid rgba(160, 120, 50, 0.28) !important;
+  border-radius: 10px !important;
+  min-height: 70px !important;
+  padding: 4px !important;
+  gap: 3px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
 }
-#screen-select .figure-name {
-  font-size: 11px !important;
+#screen-select .figure-card.selected {
+  background: rgba(255, 238, 130, 0.85) !important;
+  border-color: rgba(212, 175, 55, 0.9) !important;
+  outline: 2px solid rgba(212, 175, 55, 0.7) !important;
+  outline-offset: -2px !important;
 }
-#screen-select .actions {
-  margin-top: 10px !important;
-  gap: 8px !important;
+#screen-select .figure-card.other-selected {
+  background: rgba(255, 248, 210, 0.35) !important;
+  opacity: 0.65 !important;
 }
-#screen-select .actions .btn {
-  font-size: 13px !important;
-  padding: 10px 6px !important;
-  background: rgba(255,248,210,0.55) !important;
-  border: 1.5px solid rgba(120,65,10,0.45) !important;
-  color: #1a0800 !important;
-  border-radius: 8px !important;
+#screen-select .figure-grid .glyph {
+  width: 34px !important;
+  grid-template-rows: repeat(4, 8px) !important;
+  gap: 4px !important;
 }
-#screen-select .actions .btn.primary {
-  background: rgba(80,28,0,0.72) !important;
-  color: #f5e0a0 !important;
-  border-color: rgba(210,160,60,0.65) !important;
-}
-#screen-select .note {
-  font-size: 11px !important;
-  color: #4a2e0a !important;
-  text-align: center !important;
-  margin-top: 6px !important;
-}
+#screen-select .figure-grid .glyph .one { width: 6px !important; height: 6px !important; }
+#screen-select .figure-grid .glyph .two { width: 24px !important; height: 5px !important; }
+#screen-select .figure-name { display: none !important; }
+#screen-select .other-slot-badge { display: none !important; }
+/* אייפד portrait */
 @media (min-width: 768px) and (orientation: portrait) {
-  .select-scroll-bg { background-image: url('./prayer-scroll-bg-ipad-portrait.png') !important; }
-  .select-scroll-content { top: 30% !important; bottom: 19% !important; padding: 0 16% !important; }
-  #screen-select .figure-card { min-height: 100px !important; }
-  #screen-select .figure-grid .glyph { width: 44px !important; grid-template-rows: repeat(4, 10px) !important; gap: 5px !important; }
+  #screen-select { background-image: url('./select-bg-ipad-portrait.png') !important; }
+  .select-parchment-content { top: 40% !important; bottom: 9% !important; left: 9% !important; right: 9% !important; }
+  .select-bottom-actions { bottom: 1.5% !important; left: 6% !important; right: 6% !important; }
+  .select-btn { font-size: 15px !important; padding: 14px 8px !important; }
+  #screen-select .figure-card { min-height: 90px !important; }
+  #screen-select .figure-grid .glyph { width: 42px !important; grid-template-rows: repeat(4, 10px) !important; gap: 5px !important; }
   #screen-select .figure-grid .glyph .one { width: 7px !important; height: 7px !important; }
-  #screen-select .figure-grid .glyph .two { width: 32px !important; height: 6px !important; }
-  #screen-select .figure-name { font-size: 13px !important; }
-}
-@media (min-width: 768px) and (orientation: landscape) {
-  .select-scroll-bg { background-image: url('./prayer-scroll-bg-ipad-landscape.png') !important; }
-  .select-scroll-content { top: 18% !important; bottom: 19% !important; padding: 0 18% !important; }
-}
-@media (max-width: 767px) {
-  .select-scroll-content {
-    top: 28% !important; bottom: 14% !important; padding: 0 9% !important;
-    display: flex !important; flex-direction: column !important; justify-content: center !important;
-  }
-  #screen-select .panel { padding: 4px 0 !important; }
-  #screen-select h2 {
-    font-size: 0.85rem !important; margin-bottom: 5px !important;
-    padding-bottom: 5px !important; border-bottom: none !important;
-  }
-  #screen-select .mother-slots { gap: 3px !important; margin-bottom: 5px !important; grid-template-columns: repeat(4, 44px) !important; }
-  #screen-select .mother-slot { min-height: 40px !important; padding: 3px 2px !important; }
-  #screen-select .mother-slot .glyph { width: 20px !important; grid-template-rows: repeat(4, 4px) !important; gap: 2px !important; }
-  #screen-select .mother-slot .glyph .one { width: 3px !important; height: 3px !important; }
-  #screen-select .mother-slot .glyph .two { width: 14px !important; height: 3px !important; }
-  #screen-select .figure-grid { grid-template-columns: repeat(4, 1fr) !important; }
-  #screen-select .figure-card { min-height: 56px !important; padding: 3px !important; gap: 2px !important; }
-  #screen-select .figure-grid .glyph { width: 24px !important; grid-template-rows: repeat(4, 5px) !important; gap: 2px !important; }
-  #screen-select .figure-grid .glyph .one { width: 4px !important; height: 4px !important; }
-  #screen-select .figure-grid .glyph .two { width: 16px !important; height: 3px !important; }
-  #screen-select .figure-name { font-size: 9px !important; }
-  #screen-select .actions { grid-template-columns: repeat(3, 1fr) !important; margin-top: 6px !important; gap: 4px !important; }
-  #screen-select .actions .btn { font-size: 11px !important; padding: 7px 3px !important; }
-  #screen-select .note { font-size: 9px !important; margin-top: 3px !important; }
+  #screen-select .figure-grid .glyph .two { width: 30px !important; height: 6px !important; }
+  #screen-select .mother-slot { min-height: 60px !important; }
+  #screen-select .mother-slot .glyph { width: 32px !important; grid-template-rows: repeat(4, 7px) !important; gap: 3px !important; }
+  #screen-select .mother-slot .glyph .one { width: 6px !important; height: 6px !important; }
+  #screen-select .mother-slot .glyph .two { width: 22px !important; height: 5px !important; }
 }
 /* ── מסך פרטי הלקוח ── */
 #screen-open {
@@ -2253,22 +2244,14 @@ body:has(#screen-open.active) .topbar { display: none !important; }
     </section>
 
     <section id="screen-select" class="screen">
-      <div class="select-scroll-bg"></div>
-      <div class="select-scroll-content">
-        <div class="panel">
-          <h2>בחירת 4 צורות ראשונות</h2>
-
-          <div id="motherSlots" class="mother-slots"></div>
-          <div id="figureGrid" class="figure-grid"></div>
-
-          <div class="actions">
-            <button class="btn gray" id="backOpenBtn" type="button">חזרה</button>
-            <button class="btn gray" id="clearSelectionBtn" type="button">נקה בחירה</button>
-            <button class="btn primary" id="buildBoardBtn" type="button">המשך ללוח הגורל</button>
-          </div>
-
-          <div class="note">הסימון ✓ מציין צורה שכבר נבחרה.</div>
-        </div>
+      <div class="select-parchment-content">
+        <div id="motherSlots" class="mother-slots"></div>
+        <div id="figureGrid" class="figure-grid"></div>
+      </div>
+      <div class="select-bottom-actions">
+        <button class="select-btn" id="backOpenBtn" type="button">חזרה</button>
+        <button class="select-btn" id="clearSelectionBtn" type="button">נקה בחירה</button>
+        <button class="select-btn select-btn-primary" id="buildBoardBtn" type="button">המשך ללוח הגורל</button>
       </div>
     </section>
 
