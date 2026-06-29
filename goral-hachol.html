@@ -1032,7 +1032,7 @@ body:has(#screen-open.active) .topbar { display: none !important; }
     }
 
     .board {
-      border:2px solid var(--line);
+      border:none;
       background:transparent;
       max-width:860px;
       margin:0 auto;
@@ -1069,12 +1069,12 @@ body:has(#screen-open.active) .topbar { display: none !important; }
       justify-content:center;
       text-align:center;
       gap:6px;
-      background:white;
+      background:rgba(255,255,255,0.84);
       position:relative;
     }
 
     .house.dhamir-house {
-      background: #fffbea;
+      background: rgba(255,251,234,0.90);
       outline: 2px solid #c8a200;
       outline-offset: -2px;
     }
@@ -1096,7 +1096,7 @@ body:has(#screen-open.active) .topbar { display: none !important; }
     .house:last-child { border-left:0; }
 
     .house.natural-house {
-      background: #f0f8f0;
+      background: rgba(240,248,240,0.90);
       outline: 2px solid #2e8b4a;
       outline-offset: -2px;
     }
@@ -1177,14 +1177,14 @@ body:has(#screen-open.active) .topbar { display: none !important; }
 
     .summary-box {
       margin-top:18px;
-      background:#ffffff;
+      background:rgba(255,255,255,0.86);
       color:#1a1a1a;
       border-radius:16px;
       padding:20px 22px;
       white-space:pre-wrap;
       line-height:1.8;
-      font-size:17px;
-      border:1px solid #e0e0e0;
+      font-size:19px;
+      border:1px solid rgba(224,224,224,0.5);
       text-align:right;
       direction:rtl;
     }
@@ -1194,8 +1194,8 @@ body:has(#screen-open.active) .topbar { display: none !important; }
       border-radius:16px;
       padding:22px 24px;
       text-align:center;
-      background:#ffffff;
-      border:1px solid #e0e0e0;
+      background:rgba(255,255,255,0.86);
+      border:1px solid rgba(224,224,224,0.5);
       border-right:6px solid #ccc;
     }
     .verdict-box.verdict-yes  { border-right-color:#2e7d32; }
@@ -1215,7 +1215,7 @@ body:has(#screen-open.active) .topbar { display: none !important; }
       color:#1a1a1a;
     }
     .verdict-detail {
-      font-size:16px;
+      font-size:18px;
       line-height:1.7;
       color:#333;
       white-space:pre-wrap;
@@ -1230,21 +1230,21 @@ body:has(#screen-open.active) .topbar { display: none !important; }
       font-size:15px;
       line-height:1.6;
       direction:rtl;
-      background:#f8f8f8;
+      background:rgba(248,248,248,0.85);
       color:#333;
-      border:1px solid #e0e0e0;
+      border:1px solid rgba(224,224,224,0.5);
     }
-    .board-score-ok   { background:#f0faf0; border-color:#a5d6a7; color:#1b5e20; }
-    .board-score-warn { background:#fff8e1; border-color:#ffcc02; color:#6d4c00; font-weight:700; }
-    .board-dhamir          { background:#f3f3f3; border-color:#bdbdbd; color:#333; }
-    .board-querent-subject { background:#fff8e1; border-color:#ffe082; color:#5d4037; }
-    .board-sod-dhamirim    { background:#fff3e0; border-color:#ffb74d; color:#4e342e; font-weight:600; }
-    .board-honesty-ok      { background:#f0faf0; border-color:#81c784; color:#1b5e20; }
-    .board-honesty-warn    { background:#fff3e0; border-color:#e64a19; color:#bf360c; font-weight:700; }
-    .board-timing-thirds   { background:#e8eaf6; border-color:#7986cb; color:#1a237e; }
-    .board-temperament     { background:#fce4ec; border-color:#f48fb1; color:#880e4f; }
-    .board-ittisalat-ok { background:#f0faf0; border-color:#a5d6a7; color:#1b5e20; }
-    .board-ittisalat-warn { background:#fce4ec; border-color:#ef9a9a; color:#7f0000; }
+    .board-score-ok   { background:rgba(240,250,240,0.88); border-color:#a5d6a7; color:#1b5e20; }
+    .board-score-warn { background:rgba(255,248,225,0.88); border-color:#ffcc02; color:#6d4c00; font-weight:700; }
+    .board-dhamir          { background:rgba(243,243,243,0.88); border-color:#bdbdbd; color:#333; }
+    .board-querent-subject { background:rgba(255,248,225,0.88); border-color:#ffe082; color:#5d4037; }
+    .board-sod-dhamirim    { background:rgba(255,243,224,0.88); border-color:#ffb74d; color:#4e342e; font-weight:600; }
+    .board-honesty-ok      { background:rgba(240,250,240,0.88); border-color:#81c784; color:#1b5e20; }
+    .board-honesty-warn    { background:rgba(255,243,224,0.88); border-color:#e64a19; color:#bf360c; font-weight:700; }
+    .board-timing-thirds   { background:rgba(232,234,246,0.88); border-color:#7986cb; color:#1a237e; }
+    .board-temperament     { background:rgba(252,228,236,0.88); border-color:#f48fb1; color:#880e4f; }
+    .board-ittisalat-ok { background:rgba(240,250,240,0.88); border-color:#a5d6a7; color:#1b5e20; }
+    .board-ittisalat-warn { background:rgba(252,228,236,0.88); border-color:#ef9a9a; color:#7f0000; }
 
     .topic-grid {
       display:grid;
@@ -1722,20 +1722,20 @@ body:has(#screen-open.active) .topbar { display: none !important; }
       padding:13px;
       border:1px solid rgba(0,0,0,.2);
       border-radius:14px;
-      background:#f7f7f7;
+      background:rgba(247,247,247,0.82);
       font-size:16px;
       font-weight:700;
       cursor:pointer;
       color:#333;
       text-align:center;
     }
-    .details-toggle:hover { background:#efefef; }
+    .details-toggle:hover { background:rgba(239,239,239,0.88); }
 
     .details-panel {
       margin-top:12px;
     }
     .details-panel .summary-box {
-      font-size:17px;
+      font-size:19px;
       line-height:1.9;
       color:#111;
     }
