@@ -425,6 +425,23 @@ body:has(#screen-open.active) .topbar { display: none !important; }
     text-align: center !important;
     font-size: 0.72rem !important;
   }
+  /* פחות רווח בין אלמנטים */
+  #screen-open .open-form {
+    gap: 3px !important;
+  }
+  /* גובה שדות + כפתורים קטן יותר */
+  #screen-open .open-form input,
+  #screen-open .open-form .profile-btn,
+  #screen-open .open-form .btn {
+    height: 30px !important;
+    font-size: 0.85rem !important;
+    padding: 4px 8px !important;
+  }
+  /* שאלת הלקוח — גובה שדה רגיל (שורה אחת) */
+  #screen-open #questionInput {
+    height: 30px !important;
+    resize: none !important;
+  }
   /* שורות 2-כפתורים (מין / ילדים) — לא ימתחו */
   #screen-open .open-row.open-row-2 {
     justify-content: center !important;
@@ -437,6 +454,7 @@ body:has(#screen-open.active) .topbar { display: none !important; }
   /* שורת 4 שדות עליונה — 2 עמודות בכל שורה */
   #screen-open .open-row:first-child {
     flex-wrap: wrap !important;
+    gap: 4px !important;
   }
   #screen-open .open-row:first-child .open-field {
     flex: 1 1 42% !important;
@@ -445,6 +463,13 @@ body:has(#screen-open.active) .topbar { display: none !important; }
   #screen-open #questionDateInput {
     font-size: 0.82rem !important;
     text-align: center !important;
+  }
+  /* באנר שחרית — פונט קטן שלא יגלוש */
+  #screen-open #castingTimeAlert {
+    font-size: 0.82rem !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
   }
 }
 
@@ -2311,7 +2336,7 @@ body:has(#screen-open.active) .topbar { display: none !important; }
       var right  = vw - (c.PARCH_R * scale + ox);
       var banTop = c.BANNER_T * scale;
       var banH   = (c.BANNER_B - c.BANNER_T) * scale;
-      var isTablet = Math.max(vw, vh) >= 768;
+      var isTablet = Math.min(vw, vh) >= 768;
       var frmTop = c.FORM_T * scale + (isTablet ? 28 : 0);
       var frmBot = vh - c.FORM_B * scale;
 
