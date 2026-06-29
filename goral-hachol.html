@@ -412,9 +412,15 @@ input, select, textarea {
   .select-scroll-content { top: 18% !important; bottom: 19% !important; padding: 0 18% !important; }
 }
 @media (max-width: 767px) {
-  .select-scroll-content { top: 35% !important; bottom: 12% !important; padding: 0 9% !important; }
+  .select-scroll-content {
+    top: 28% !important; bottom: 14% !important; padding: 0 9% !important;
+    display: flex !important; flex-direction: column !important; justify-content: center !important;
+  }
   #screen-select .panel { padding: 4px 0 !important; }
-  #screen-select h2 { font-size: 0.85rem !important; margin-bottom: 5px !important; padding-bottom: 5px !important; }
+  #screen-select h2 {
+    font-size: 0.85rem !important; margin-bottom: 5px !important;
+    padding-bottom: 5px !important; border-bottom: none !important;
+  }
   #screen-select .mother-slots { gap: 3px !important; margin-bottom: 5px !important; grid-template-columns: repeat(4, 44px) !important; }
   #screen-select .mother-slot { min-height: 40px !important; padding: 3px 2px !important; }
   #screen-select .mother-slot .glyph { width: 20px !important; grid-template-rows: repeat(4, 4px) !important; gap: 2px !important; }
@@ -426,7 +432,7 @@ input, select, textarea {
   #screen-select .figure-grid .glyph .one { width: 4px !important; height: 4px !important; }
   #screen-select .figure-grid .glyph .two { width: 16px !important; height: 3px !important; }
   #screen-select .figure-name { font-size: 9px !important; }
-  #screen-select .actions { margin-top: 6px !important; gap: 4px !important; }
+  #screen-select .actions { grid-template-columns: repeat(3, 1fr) !important; margin-top: 6px !important; gap: 4px !important; }
   #screen-select .actions .btn { font-size: 11px !important; padding: 7px 3px !important; }
   #screen-select .note { font-size: 9px !important; margin-top: 3px !important; }
 }
