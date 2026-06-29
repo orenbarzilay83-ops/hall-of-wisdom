@@ -1293,6 +1293,8 @@ document.getElementById("continueFromQuestionBtn").addEventListener("click", () 
   selectedHouseNum = selectedQuestion.houseId;
   selectedTopicId  = selectedQuestion.topicId;
   forcedTopicId    = null;
+  const qInput = document.getElementById("questionInput");
+  if (qInput && !qInput.value.trim()) qInput.value = selectedQuestion.label;
   renderTopicGrid();
   renderDynamicClientFields();
   showScreen("open");
