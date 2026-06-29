@@ -462,13 +462,15 @@ body:has(#screen-open.active) .topbar { display: none !important; }
     flex: 0 0 auto !important;
     width: 110px !important;
   }
-  /* שורת 4 שדות עליונה — 2 עמודות בכל שורה */
+  /* שורת 4 שדות עליונה — 2 עמודות, רוחב מוגבל */
   #screen-open .open-row:first-child {
     flex-wrap: wrap !important;
     gap: 4px !important;
+    justify-content: center !important;
   }
   #screen-open .open-row:first-child .open-field {
-    flex: 1 1 42% !important;
+    flex: 0 0 auto !important;
+    width: 130px !important;
   }
   /* שורת תאריך/שעה — ממורכזת, ה-spacers מבוטלים */
   #screen-open .open-row.open-row-datetime {
@@ -2352,7 +2354,7 @@ body:has(#screen-open.active) .topbar { display: none !important; }
   <script>
   (function() {
     // Portrait: client-bg-scroll.png 853×1844
-    var P = { IW:853, IH:1844, PARCH_L:168, PARCH_R:682, BANNER_T:340, BANNER_B:435, FORM_T:450, FORM_B:1555 };
+    var P = { IW:853, IH:1844, PARCH_L:168, PARCH_R:682, BANNER_T:405, BANNER_B:478, FORM_T:492, FORM_B:1555 };
     // Landscape: client-bg-landscape.png 1448×1086
     var L = { IW:1448, IH:1086, PARCH_L:290, PARCH_R:1160, BANNER_T:273, BANNER_B:320, FORM_T:335, FORM_B:1050 };
 
