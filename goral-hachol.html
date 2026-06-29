@@ -289,6 +289,103 @@ input, select, textarea {
   background: rgba(255,240,210,0.5) !important;
   margin-top: 16px !important;
 }
+/* ── מסך בחירת צורות ── */
+#screen-select {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 100 !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+}
+.select-scroll-bg {
+  position: absolute !important;
+  inset: 0 !important;
+  background: #2e1a08 url('./prayer-scroll-bg.png') no-repeat center center !important;
+  background-size: cover !important;
+  z-index: 0 !important;
+}
+.select-scroll-content {
+  position: absolute !important;
+  top: 15% !important;
+  bottom: 12% !important;
+  left: 0 !important;
+  right: 0 !important;
+  padding: 0 14% !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  z-index: 1 !important;
+}
+#screen-select .panel {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 8px 0 !important;
+}
+#screen-select h2 {
+  color: #1a0800 !important;
+  font-size: 1.1rem !important;
+  text-align: center !important;
+  border-bottom-color: rgba(0,0,0,0.2) !important;
+  margin-bottom: 10px !important;
+}
+#screen-select .mother-slot {
+  font-size: 12px !important;
+  padding: 6px 4px !important;
+  min-height: 50px !important;
+}
+#screen-select .mother-slots {
+  margin-bottom: 10px !important;
+  gap: 6px !important;
+}
+#screen-select .figure-card {
+  min-height: 80px !important;
+  padding: 4px !important;
+  gap: 4px !important;
+  background: rgba(255,250,240,0.88) !important;
+}
+#screen-select .figure-grid .glyph {
+  width: 36px !important;
+  grid-template-rows: repeat(4, 8px) !important;
+  gap: 4px !important;
+}
+#screen-select .figure-grid .glyph .one {
+  width: 6px !important;
+  height: 6px !important;
+}
+#screen-select .figure-grid .glyph .two {
+  width: 26px !important;
+  height: 5px !important;
+}
+#screen-select .figure-name {
+  font-size: 11px !important;
+}
+#screen-select .actions {
+  margin-top: 10px !important;
+  gap: 8px !important;
+}
+#screen-select .actions .btn {
+  font-size: 13px !important;
+  padding: 10px 6px !important;
+}
+#screen-select .note {
+  font-size: 11px !important;
+  color: #4a2e0a !important;
+  text-align: center !important;
+  margin-top: 6px !important;
+}
+@media (min-width: 768px) and (orientation: portrait) {
+  .select-scroll-bg { background-image: url('./prayer-scroll-bg-ipad-portrait.png') !important; }
+  .select-scroll-content { top: 18% !important; bottom: 19% !important; padding: 0 16% !important; }
+  #screen-select .figure-card { min-height: 100px !important; }
+  #screen-select .figure-grid .glyph { width: 44px !important; grid-template-rows: repeat(4, 10px) !important; gap: 5px !important; }
+  #screen-select .figure-grid .glyph .one { width: 7px !important; height: 7px !important; }
+  #screen-select .figure-grid .glyph .two { width: 32px !important; height: 6px !important; }
+  #screen-select .figure-name { font-size: 13px !important; }
+}
+@media (min-width: 768px) and (orientation: landscape) {
+  .select-scroll-bg { background-image: url('./prayer-scroll-bg-ipad-landscape.png') !important; }
+  .select-scroll-content { top: 18% !important; bottom: 19% !important; padding: 0 18% !important; }
+}
 /* ── מסך פרטי הלקוח ── */
 #screen-open {
   position: fixed !important; inset: 0 !important;
@@ -2101,19 +2198,22 @@ body:has(#screen-open.active) .topbar { display: none !important; }
     </section>
 
     <section id="screen-select" class="screen">
-      <div class="panel">
-        <h2>בחירת 4 צורות ראשונות</h2>
+      <div class="select-scroll-bg"></div>
+      <div class="select-scroll-content">
+        <div class="panel">
+          <h2>בחירת 4 צורות ראשונות</h2>
 
-        <div id="motherSlots" class="mother-slots"></div>
-        <div id="figureGrid" class="figure-grid"></div>
+          <div id="motherSlots" class="mother-slots"></div>
+          <div id="figureGrid" class="figure-grid"></div>
 
-        <div class="actions">
-          <button class="btn gray" id="backOpenBtn" type="button">חזרה</button>
-          <button class="btn gray" id="clearSelectionBtn" type="button">נקה בחירה</button>
-          <button class="btn primary" id="buildBoardBtn" type="button">המשך ללוח הגורל</button>
+          <div class="actions">
+            <button class="btn gray" id="backOpenBtn" type="button">חזרה</button>
+            <button class="btn gray" id="clearSelectionBtn" type="button">נקה בחירה</button>
+            <button class="btn primary" id="buildBoardBtn" type="button">המשך ללוח הגורל</button>
+          </div>
+
+          <div class="note">הסימון ✓ מציין צורה שכבר נבחרה.</div>
         </div>
-
-        <div class="note">הסימון ✓ מציין צורה שכבר נבחרה.</div>
       </div>
     </section>
 
