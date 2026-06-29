@@ -332,8 +332,8 @@ body:has(#screen-select.active) .topbar { display: none !important; }
   border: 1.5px solid rgba(212, 175, 55, 0.65) !important;
   color: #d4af37 !important;
   border-radius: 12px !important;
-  padding: 12px 6px !important;
-  font-size: 13px !important;
+  padding: 14px 8px !important;
+  font-size: 15px !important;
   font-weight: 700 !important;
   font-family: 'STAM', sans-serif !important;
   cursor: pointer !important;
@@ -345,7 +345,7 @@ body:has(#screen-select.active) .topbar { display: none !important; }
 }
 /* מפריד זהב */
 .select-divider {
-  width: 74vw !important;
+  width: 68vw !important;
   height: 1px !important;
   flex-shrink: 0 !important;
   background: linear-gradient(to left, transparent, rgba(212,175,55,0.55) 25%, rgba(212,175,55,0.55) 75%, transparent) !important;
@@ -355,14 +355,14 @@ body:has(#screen-select.active) .topbar { display: none !important; }
   display: grid !important;
   grid-template-columns: repeat(4, 1fr) !important;
   gap: 6px !important;
-  width: 74vw !important;
+  width: 68vw !important;
   flex-shrink: 0 !important;
 }
 #screen-select .mother-slot {
   background: rgba(255, 248, 210, 0.5) !important;
   border: 1.5px solid rgba(160, 120, 50, 0.4) !important;
   border-radius: 10px !important;
-  min-height: 44px !important;
+  aspect-ratio: 1 !important;
   display: grid !important;
   place-items: center !important;
   color: #4a2e0a !important;
@@ -392,7 +392,7 @@ body:has(#screen-select.active) .topbar { display: none !important; }
   grid-template-columns: repeat(4, 1fr) !important;
   grid-template-rows: repeat(4, 1fr) !important;
   aspect-ratio: 1 !important;
-  width: 74vw !important;
+  width: 68vw !important;
   flex-shrink: 0 !important;
   gap: 5px !important;
   background: transparent !important;
@@ -434,17 +434,16 @@ body:has(#screen-select.active) .topbar { display: none !important; }
   #screen-select { background-image: url('./select-bg-ipad-portrait.png') !important; }
   .select-parchment-content { top: 40% !important; bottom: 9% !important; left: 9% !important; right: 9% !important; }
   .select-bottom-actions { bottom: 1.5% !important; left: 6% !important; right: 6% !important; }
-  .select-btn { font-size: 15px !important; padding: 14px 8px !important; }
-  .select-divider { width: 56vw !important; }
-  #screen-select .mother-slots { width: 56vw !important; }
-  #screen-select .mother-slot { min-height: 56px !important; }
-  #screen-select .mother-slot .glyph { width: 32px !important; grid-template-rows: repeat(4, 7px) !important; gap: 3px !important; }
+  .select-btn { font-size: 18px !important; padding: 20px 10px !important; }
+  .select-divider { width: 46vw !important; }
+  #screen-select .mother-slots { width: 46vw !important; }
+  #screen-select .mother-slot .glyph { width: 36px !important; grid-template-rows: repeat(4, 8px) !important; gap: 4px !important; }
   #screen-select .mother-slot .glyph .one { width: 6px !important; height: 6px !important; }
-  #screen-select .mother-slot .glyph .two { width: 22px !important; height: 5px !important; }
-  #screen-select .figure-grid { width: 56vw !important; }
-  #screen-select .figure-grid .glyph { width: 42px !important; grid-template-rows: repeat(4, 10px) !important; gap: 5px !important; }
-  #screen-select .figure-grid .glyph .one { width: 7px !important; height: 7px !important; }
-  #screen-select .figure-grid .glyph .two { width: 30px !important; height: 6px !important; }
+  #screen-select .mother-slot .glyph .two { width: 26px !important; height: 5px !important; }
+  #screen-select .figure-grid { width: 46vw !important; }
+  #screen-select .figure-grid .glyph { width: 48px !important; grid-template-rows: repeat(4, 11px) !important; gap: 5px !important; }
+  #screen-select .figure-grid .glyph .one { width: 8px !important; height: 8px !important; }
+  #screen-select .figure-grid .glyph .two { width: 34px !important; height: 6px !important; }
 }
 /* ── מסך פרטי הלקוח ── */
 #screen-open {
