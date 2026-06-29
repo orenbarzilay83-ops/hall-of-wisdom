@@ -419,14 +419,37 @@ body:has(#screen-open.active) .topbar { display: none !important; }
 
 /* ── iPad only (min-width 768px — לא iPhone) ── */
 @media (min-width: 768px) {
-  /* כותרות: שחור + ממורכז */
+  /* כותרות: שחור + ממורכז + גדול יותר */
   #screen-open .open-label {
     color: #000000 !important;
     text-align: center !important;
+    font-size: 1rem !important;
   }
-  /* תיבות הקלט: ממורכזות */
+  /* מפריד קטגוריה */
   #screen-open .open-divider {
     text-align: center !important;
+    font-size: 1rem !important;
+  }
+  /* הצרת אזור הטופס — ריפוד צדדי גדול יותר */
+  #screen-open .open-form {
+    padding-left: 48px !important;
+    padding-right: 48px !important;
+  }
+  /* פונטים גדולים יותר בשדות קלט */
+  #screen-open .open-form input,
+  #screen-open .open-form textarea {
+    font-size: 1.15rem !important;
+    height: 46px !important;
+  }
+  /* כפתורי פרופיל — פונט גדול + גובה */
+  #screen-open .open-form .profile-btn {
+    font-size: 1.05rem !important;
+    height: 46px !important;
+  }
+  /* כפתורי פעולה */
+  #screen-open .open-form .btn {
+    font-size: 1rem !important;
+    height: 46px !important;
   }
   /* שורות 2-כפתורים (מין / ילדים) — כפתורים ממורכזים ולא ארוכים */
   #screen-open .open-row.open-row-2 {
