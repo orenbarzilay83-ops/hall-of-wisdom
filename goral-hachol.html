@@ -121,6 +121,69 @@ input, select, textarea {
 .menu-overlay { background: rgba(0,0,0,0.3) !important; backdrop-filter: blur(2px) !important; }
 .screen-back-bar { background: rgba(10,6,2,0.4) !important; backdrop-filter: blur(6px) !important; }
 
+/* ── מסך מבוא ── */
+#screen-guide {
+  background: #2e1a08 url('./prayer-scroll-bg.png') no-repeat center top !important;
+  background-size: cover !important;
+  background-attachment: fixed !important;
+}
+#screen-guide .panel {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: #1a0800 !important;
+}
+#screen-guide .panel h2,
+#screen-guide .panel h3,
+#screen-guide .panel p,
+#screen-guide .panel li,
+#screen-guide .panel td,
+#screen-guide .panel th,
+#screen-guide .panel span,
+#screen-guide .panel div { color: #1a0800 !important; }
+#screen-guide .screen-back-bar {
+  background: transparent !important;
+  backdrop-filter: none !important;
+}
+#screen-guide .screen-back-bar h2 { color: #1a0800 !important; }
+#screen-guide .guide-tab {
+  background: rgba(255,240,200,0.6) !important;
+  border: 2px solid rgba(100,60,10,0.35) !important;
+  color: #3a1f05 !important;
+}
+#screen-guide .guide-tab.active {
+  background: rgba(60,30,5,0.82) !important;
+  border-color: rgba(60,30,5,0.9) !important;
+  color: #f5e6c0 !important;
+}
+#screen-guide .houses-table th {
+  background: rgba(60,30,5,0.75) !important;
+  color: #f5e6c0 !important;
+}
+#screen-guide .houses-table td {
+  background: transparent !important;
+  color: #1a0800 !important;
+  border-bottom: 1px solid rgba(100,60,10,0.2) !important;
+}
+#screen-guide .houses-table tr:nth-child(even) td {
+  background: rgba(255,235,180,0.25) !important;
+}
+#screen-guide .house-num-cell { color: #3a1f05 !important; }
+#screen-guide .figures-grid .fig-card,
+#screen-guide .concept-card {
+  background: rgba(255,240,200,0.45) !important;
+  border-color: rgba(100,60,10,0.25) !important;
+  color: #1a0800 !important;
+}
+#screen-guide .fig-legend strong { color: #3a1f05 !important; }
+@media (min-width: 768px) and (orientation: portrait) {
+  #screen-guide { background-image: url('./prayer-scroll-bg-ipad-portrait.png') !important; }
+}
+@media (min-width: 768px) and (orientation: landscape) {
+  #screen-guide { background-image: url('./prayer-scroll-bg-ipad-landscape.png') !important; }
+}
+
 /* ── מסך בחירת שאלה ── */
 #screen-question {
   position: fixed !important;
