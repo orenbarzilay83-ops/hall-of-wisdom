@@ -2,6 +2,16 @@ function clean(value = '') {
   return String(value || '').trim();
 }
 
+function fortuneToHuman(fortune) {
+  const f = clean(fortune);
+  if (!f) return '';
+  if (f === 'סעד')         return 'מיטיב';
+  if (f === 'נחס')         return 'מזיק';
+  if (f === 'ממוזג-סעד')  return 'ממוזג-מיטיב';
+  if (f === 'ממוזג-נחס')  return 'ממוזג-מזיק';
+  return f;
+}
+
 const MARITAL_LABELS = {
   married:   { m: 'נשוי',    f: 'נשואה',   n: 'נשוי/ה' },
   single:    { m: 'רווק',    f: 'רווקה',   n: 'רווק/ה' },
@@ -880,8 +890,8 @@ function spiritualParagraph(spiritualDiagnosis, topicId) {
 
   const shouldShow =
     topicId === 'spiritualDiagnostics' ||
-    grade === 'strong-suspicion' ||
-    grade === 'medium-suspicion';
+    topicId === 'foundations' ||
+    topicId === 'generalReading';
 
   if (!shouldShow) {
     return '';
@@ -1625,7 +1635,7 @@ function buildNarrativeByTopic(result) {
   // very-strong / strong / neutral / null — ממשיכים ללא הערה
 
   const hFig     = (h) => clean(h?.figureHebrew || '');
-  const hFort    = (h) => clean(h?.fortune || '');
+  const hFort    = (h) => fortuneToHuman(h?.fortune || '');
   // מציג רק את המשפט הראשון של המשמעות, לפני " / " — מונע השמת כל הפירושים כרשימה
   const hTransit = (h) => {
     const raw = clean(h?.transit?.meaning || '');
@@ -2251,7 +2261,7 @@ function buildSpiritualNarrative(result) {
   // האבחון הרוחני המפורט הוא הסמכות לנושא זה — הכשף (2 בתים בלבד) אינו מתאים
 
   const hFig     = (h) => clean(h?.figureHebrew || '');
-  const hFort    = (h) => clean(h?.fortune || '');
+  const hFort    = (h) => fortuneToHuman(h?.fortune || '');
   const hTransit = (h) => clean(h?.transit?.meaning || '');
 
   const judge = boardAnalysis.judge        || getHouseFromBoard(boardAnalysis, 15);
