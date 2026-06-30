@@ -2557,7 +2557,7 @@ body:has(#screen-open.active) .topbar { display: none !important; }
     console.log("🚀 Starting HAWI module loading...");
     console.log("🚀 Starting HAWI module loading...");
     window.__HAWI_MODULE_READY = Promise.all([
-      import('/goral-hachol/engine/hawi-interpreter.js'),
+      import('/goral-hachol/engine/hawi-interpreter.js?v=2'),
       import('/goral-hachol/engine/goral-client-archive.js')
     ]).then(([hawi, archive]) => {
       window.HAWI_INTERPRETER = {
@@ -2606,7 +2606,7 @@ body:has(#screen-open.active) .topbar { display: none !important; }
 
   <script src="./goral-hachol/ui/question-bank.js?v=1"></script>
   <script src="./goral-hachol/kundali/komilla-house-signs.js"></script>
-  <script src="./goral-hachol/ui/goral-app.js?v=14"></script>
+  <script src="./goral-hachol/ui/goral-app.js?v=15"></script>
 
   <!-- ─── מיקום מדויק של טופס מסך-פתח על גבי תמונת הרקע ─── -->
   <script>
