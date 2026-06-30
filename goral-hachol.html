@@ -15,7 +15,7 @@
   <link rel="preload" as="image" href="./select-bg-iphone.png">
   <link rel="preload" as="image" href="./board-bg.png">
 
-  <script src="./raml-data/raml-forms-basic.js?v=4"></script>
+  <script src="./raml-data/raml-forms-basic.js?v=5"></script>
   <script src="./raml-data/raml-houses-basic.js?v=3"></script>
   <script src="./raml.js?v=3"></script>
 
@@ -2622,10 +2622,10 @@ body:has(#screen-open.active) .topbar { display: none !important; }
 
   <script type="module">
     console.log("🚀 Starting HAWI module loading...");
-    console.log("🚀 Starting HAWI module loading...");
+    const _v = '?v=15';
     window.__HAWI_MODULE_READY = Promise.all([
-      import('/goral-hachol/engine/hawi-interpreter.js'),
-      import('/goral-hachol/engine/goral-client-archive.js')
+      import('/goral-hachol/engine/hawi-interpreter.js' + _v),
+      import('/goral-hachol/engine/goral-client-archive.js' + _v)
     ]).then(([hawi, archive]) => {
       window.HAWI_INTERPRETER = {
         interpretHawiQuestionInitial: hawi.interpretHawiQuestionInitial,
@@ -2672,7 +2672,7 @@ body:has(#screen-open.active) .topbar { display: none !important; }
   </script>
 
   <script src="./goral-hachol/ui/question-bank.js?v=2"></script>
-  <script src="./goral-hachol/kundali/komilla-house-signs.js?v=1"></script>
+  <script src="./goral-hachol/kundali/komilla-house-signs.js?v=2"></script>
   <script src="./goral-hachol/ui/goral-app.js?v=15"></script>
 
   <!-- ─── מיקום מדויק של טופס מסך-פתח על גבי תמונת הרקע ─── -->
