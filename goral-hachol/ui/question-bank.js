@@ -142,7 +142,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-who-looks',
-    category: 'general', houseId: 7, topicId: 'marriage',
+    category: 'general', houseId: 1, topicId: 'marriage',
     label: 'מי מסתכל על מי?',
     desc: 'האם אדם מסתכל על השואל, או ההיפך — לפי שורת האש בצורות',
     clientFields: [F.candidate],
@@ -265,7 +265,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-loan',
-    category: 'money', houseId: 8, topicId: 'loan',
+    category: 'money', houseId: 2, topicId: 'loan',
     label: 'האם החוב יוחזר?',
     desc: 'נושה ומדיון — מי יגבר. בית 1+2 מול בית 7+8',
     clientFields: [F.debtAmount, F.debtPerson, { id: 'loanDir', label: 'אני...', type: 'select', options: ['הנושה (נתתי כסף)', 'החייב (לקחתי כסף)'] }],
@@ -289,7 +289,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-inheritance',
-    category: 'money', houseId: 8, topicId: 'deathInheritance',
+    category: 'money', houseId: 2, topicId: 'deathInheritance',
     label: 'ירושה — מי יורש ומה?',
     desc: 'מי יורש, כמה, האם יגיע בפועל',
     clientFields: [
@@ -299,14 +299,14 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-treasure',
-    category: 'money', houseId: 4, topicId: 'hiddenTreasure',
+    category: 'money', houseId: 2, topicId: 'hiddenTreasure',
     label: 'האם יש מטמון נסתר?',
     desc: 'חיפוש מטמון/חבוי — בית 2+4+6+8+10. כיוון + מיקום',
     clientFields: [F.treasureDesc, F.treasureLoc],
   },
   {
     id: 'q-dig-direction',
-    category: 'money', houseId: 4, topicId: 'hiddenTreasure',
+    category: 'money', houseId: 2, topicId: 'hiddenTreasure',
     label: 'לאיזה כיוון לחפור?',
     desc: 'כיוון לחפירה — מזרח/מערב/דרום/צפון לפי יסוד הצורה',
     clientFields: [F.treasureLoc],
@@ -320,7 +320,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-debts',
-    category: 'money', houseId: 12, topicId: 'loan',
+    category: 'money', houseId: 2, topicId: 'loan',
     label: 'חובות — מה ייצא?',
     desc: 'בית 12 = חובות וכפייה. האם החוב ייגבה או יסולק',
     clientFields: [F.debtAmount, F.debtPerson],
@@ -518,21 +518,21 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-missing-alive',
-    category: 'travel', houseId: 7, topicId: 'missingPerson',
+    category: 'travel', houseId: 9, topicId: 'missingPerson',
     label: 'הנעדר — חי או מת?',
     desc: 'בית 1+4+8+9+12. ג׳ודלה+חמרה+ג׳מאעה בבית 4+12 = מת; סעד בבית 10 = חי',
     clientFields: [F.missingName, F.missingGender, F.missingAge, F.missingWhen, F.missingWhere],
   },
   {
     id: 'q-missing-location',
-    category: 'travel', houseId: 7, topicId: 'missingPerson',
+    category: 'travel', houseId: 9, topicId: 'missingPerson',
     label: 'היכן נמצא הנעדר?',
     desc: 'בית 7+9+10 — כיוון ומיקום הנעדר (כשף עמ׳ 246-250)',
     clientFields: [F.missingName, F.missingWhen, F.missingWhere],
   },
   {
     id: 'q-missing-return',
-    category: 'travel', houseId: 7, topicId: 'missingPerson',
+    category: 'travel', houseId: 9, topicId: 'missingPerson',
     label: 'האם הנעדר יחזור?',
     desc: 'בית 14 נשוא-ראש/כבוד-נכנס = יחזור; בית 1+7 סעד = סיכוי טוב (כשף עמ׳ 251)',
     clientFields: [F.missingName, F.missingWhen],
@@ -595,7 +595,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-stability',
-    category: 'career', houseId: 10, topicId: 'authorityState',
+    category: 'career', houseId: 11, topicId: 'authorityState',
     label: 'האם המצב יישאר יציב?',
     desc: 'דוואם אל-חאל — האם המצב הנוכחי ייגמר',
     clientFields: [F.matter],
@@ -606,21 +606,21 @@ window.QUESTION_BANK = [
   // ════════════════════════════════════════════════════════════════
   {
     id: 'q-theft-who',
-    category: 'conflict', houseId: 7, topicId: 'theft',
+    category: 'conflict', houseId: 8, topicId: 'theft',
     label: 'מי גנב?',
     desc: 'תיאור פיזי ומקצועי של הגנב לפי בית 7 (כשף עמ׳ 231-234)',
     clientFields: [F.stolen, F.stolenWhen, F.stolenValue, F.suspect],
   },
   {
     id: 'q-theft-return',
-    category: 'conflict', houseId: 7, topicId: 'theft',
+    category: 'conflict', houseId: 8, topicId: 'theft',
     label: 'האם הגנוב יוחזר?',
     desc: 'בית 1+2 טוב + בית 7+8 רע = חוזר; הפוך = לא חוזר (כשף עמ׳ 229)',
     clientFields: [F.stolen, F.stolenWhen],
   },
   {
     id: 'q-thief-near',
-    category: 'conflict', houseId: 7, topicId: 'theft',
+    category: 'conflict', houseId: 8, topicId: 'theft',
     label: 'עד כמה הגנב קרוב לי?',
     desc: 'קרבת הגנב — האם מהבית / שכן / זר (כשף עמ׳ 224)',
     clientFields: [F.stolen, F.suspect],
