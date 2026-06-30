@@ -123,16 +123,16 @@ input, select, textarea {
 
 /* ── מסך מבוא ── */
 #screen-guide {
-  background: #2e1a08 url('./prayer-scroll-bg.png') no-repeat center top !important;
+  background: #1a1008 url('./library-bg-portrait.webp') no-repeat center top !important;
   background-size: cover !important;
   background-attachment: fixed !important;
 }
 #screen-guide .panel {
-  background: transparent !important;
+  background: rgba(255,248,230,0.82) !important;
   backdrop-filter: none !important;
   border: none !important;
   box-shadow: none !important;
-  color: #1a0800 !important;
+  color: #111 !important;
 }
 #screen-guide .panel h2,
 #screen-guide .panel h3,
@@ -141,47 +141,48 @@ input, select, textarea {
 #screen-guide .panel td,
 #screen-guide .panel th,
 #screen-guide .panel span,
-#screen-guide .panel div { color: #1a0800 !important; }
+#screen-guide .panel div { color: #111 !important; }
 #screen-guide .screen-back-bar {
-  background: transparent !important;
+  background: rgba(255,248,230,0.7) !important;
   backdrop-filter: none !important;
 }
-#screen-guide .screen-back-bar h2 { color: #1a0800 !important; }
+#screen-guide .screen-back-bar h2 { color: #111 !important; }
 #screen-guide .guide-tab {
-  background: rgba(255,240,200,0.6) !important;
-  border: 2px solid rgba(100,60,10,0.35) !important;
-  color: #3a1f05 !important;
+  background: rgba(255,248,220,0.85) !important;
+  border: 2px solid rgba(100,70,20,0.3) !important;
+  color: #3a2005 !important;
 }
 #screen-guide .guide-tab.active {
-  background: rgba(60,30,5,0.82) !important;
-  border-color: rgba(60,30,5,0.9) !important;
+  background: rgba(26,26,8,0.85) !important;
+  border-color: rgba(26,26,8,0.9) !important;
   color: #f5e6c0 !important;
 }
 #screen-guide .houses-table th {
-  background: rgba(60,30,5,0.75) !important;
+  background: rgba(30,20,5,0.80) !important;
   color: #f5e6c0 !important;
 }
 #screen-guide .houses-table td {
-  background: transparent !important;
-  color: #1a0800 !important;
-  border-bottom: 1px solid rgba(100,60,10,0.2) !important;
+  background: rgba(255,252,240,0.6) !important;
+  color: #111 !important;
+  border-bottom: 1px solid rgba(100,70,20,0.2) !important;
 }
 #screen-guide .houses-table tr:nth-child(even) td {
-  background: rgba(255,235,180,0.25) !important;
+  background: rgba(245,235,200,0.7) !important;
 }
-#screen-guide .house-num-cell { color: #3a1f05 !important; }
+#screen-guide .house-num-cell { color: #3a2005 !important; font-weight: 900 !important; }
 #screen-guide .figures-grid .fig-card,
 #screen-guide .concept-card {
-  background: rgba(255,240,200,0.45) !important;
-  border-color: rgba(100,60,10,0.25) !important;
-  color: #1a0800 !important;
+  background: rgba(255,248,220,0.75) !important;
+  border-color: rgba(100,70,20,0.25) !important;
+  color: #111 !important;
 }
-#screen-guide .fig-legend strong { color: #3a1f05 !important; }
+#screen-guide .fig-legend strong,
+#screen-guide .fig-legend { color: #222 !important; }
 @media (min-width: 768px) and (orientation: portrait) {
-  #screen-guide { background-image: url('./prayer-scroll-bg-ipad-portrait.png') !important; }
+  #screen-guide { background-image: url('./library-bg-portrait.webp') !important; }
 }
 @media (min-width: 768px) and (orientation: landscape) {
-  #screen-guide { background-image: url('./prayer-scroll-bg-ipad-landscape.png') !important; }
+  #screen-guide { background-image: url('./library-bg-landscape.webp') !important; }
 }
 
 /* ── מסך בחירת שאלה ── */
