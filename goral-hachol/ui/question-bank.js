@@ -306,7 +306,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-dig-direction',
-    category: 'money', houseId: 2, topicId: 'hiddenTreasure',
+    category: 'money', houseId: 4, topicId: 'hiddenTreasure',
     label: 'לאיזה כיוון לחפור?',
     desc: 'כיוון לחפירה — מזרח/מערב/דרום/צפון לפי יסוד הצורה',
     clientFields: [F.treasureLoc],
@@ -320,7 +320,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-debts',
-    category: 'money', houseId: 2, topicId: 'loan',
+    category: 'money', houseId: 12, topicId: 'loan',
     label: 'חובות — מה ייצא?',
     desc: 'בית 12 = חובות וכפייה. האם החוב ייגבה או יסולק',
     clientFields: [F.debtAmount, F.debtPerson],
