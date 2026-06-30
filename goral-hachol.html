@@ -133,6 +133,11 @@ input, select, textarea {
   border: none !important;
   box-shadow: none !important;
   color: #2a1200 !important;
+  padding-left: 8% !important;
+  padding-right: 8% !important;
+}
+@media (min-width: 600px) {
+  #screen-guide .panel { padding-left: 14% !important; padding-right: 14% !important; }
 }
 #screen-guide .panel h2,
 #screen-guide .panel h3,
@@ -176,8 +181,12 @@ input, select, textarea {
   border-color: rgba(100,60,10,0.25) !important;
   color: #2a1200 !important;
 }
-#screen-guide .fig-legend strong,
-#screen-guide .fig-legend { color: #2a1200 !important; }
+#screen-guide .fig-legend {
+  background: transparent !important;
+  border: none !important;
+  color: #2a1200 !important;
+}
+#screen-guide .fig-legend strong { color: #2a1200 !important; }
 
 /* ── מסך בחירת שאלה ── */
 #screen-question {
