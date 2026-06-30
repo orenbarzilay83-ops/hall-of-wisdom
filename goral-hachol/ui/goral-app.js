@@ -897,10 +897,6 @@ async function runReading() {
 
     boardResult.innerHTML = buildBoardHtml(reading) + buildInterpretationHtml(reading);
     window._lastReading = reading;
-    const kundaliResult = document.getElementById('kundaliResult');
-    const kundaliBtn = document.getElementById('showKundaliBtn');
-    if (kundaliResult) { kundaliResult.style.display = 'none'; kundaliResult.innerHTML = ''; }
-    if (kundaliBtn) { kundaliBtn.textContent = '♐ לוח קונדלי — מפה אסטרולוגית הודית'; }
     showScreen("board");
   } catch (err) {
     errorBox.textContent = err.message || String(err);
@@ -1092,19 +1088,13 @@ window.boardClearArchive = () => {
   if (!confirm("למחוק את כל הארכיון?")) return;
   if (window.GORAL_CLIENT_ARCHIVE?.clearGoralArchive) window.GORAL_CLIENT_ARCHIVE.clearGoralArchive();
 };
-window.boardToggleKundali = function(btn) {
-  const kundaliResult = document.getElementById('kundaliResult');
-  if (!kundaliResult || !window._lastReading) return;
-  if (kundaliResult.style.display !== 'none' && kundaliResult.innerHTML) {
-    kundaliResult.style.display = 'none';
-    btn.textContent = '♐ לוח קונדלי';
-    return;
-  }
-  kundaliResult.innerHTML = buildKundaliHtml(window._lastReading);
-  kundaliResult.style.display = 'block';
-  btn.textContent = '▲ סגור לוח קונדלי';
-  kundaliResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
-};
+
+document.getElementById("showKundaliBtn").addEventListener("click", () => {
+  if (!window._lastReading) return;
+  const content = document.getElementById('kundaliScreenContent');
+  if (content) content.innerHTML = buildKundaliHtml(window._lastReading);
+  showScreen("kundali");
+});
 
 // ─── ספר לקוחות ──────────────────────────────────────────────
 const CONTACTS_KEY = 'goralClientContacts_v1_' + (sessionStorage.getItem('userId') || 'local');
@@ -1231,6 +1221,9 @@ document.getElementById("menuRamalBtn").addEventListener("click", () => {
 document.getElementById("menuKashfBtn").addEventListener("click", () => {
   closeMenu(); _loadBook('kashfIframe', 'kashf-al-asrar.html', 'bookEdit_kashf'); showScreen("kashf");
 });
+document.getElementById("menuKomillaBtn").addEventListener("click", () => {
+  closeMenu(); _loadBook('komillaIframe', 'goral-hachol/data/sources/komilla/komilla-vedic-astrology.html', 'bookEdit_komilla'); showScreen("komilla");
+});
 
 // ─── עורך ספרים ─────────────────────────────────────────────
 function _loadBook(iframeId, srcFile, storageKey) {
@@ -1269,6 +1262,10 @@ function _setupBookEditor(iframeId, editBtnId, saveBtnId, storageKey) {
 
 _setupBookEditor('ramalIframe', 'editRamalBtn', 'saveRamalBtn', 'bookEdit_ramal');
 _setupBookEditor('kashfIframe', 'editKashfBtn', 'saveKashfBtn', 'bookEdit_kashf');
+_setupBookEditor('komillaIframe', 'editKomillaBtn', 'saveKomillaBtn', 'bookEdit_komilla');
+
+document.getElementById("backFromKomillaBtn").addEventListener("click", () => showScreen("landing"));
+document.getElementById("backFromKundaliBtn").addEventListener("click", () => showScreen("board"));
 
 document.getElementById("backFromGuideBtn").addEventListener("click", () => showScreen("landing"));
 document.getElementById("backFromJournalBtn").addEventListener("click", () => showScreen("landing"));

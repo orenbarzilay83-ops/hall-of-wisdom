@@ -2181,7 +2181,10 @@ body:has(#screen-open.active) .topbar { display: none !important; }
         <button class="menu-item" id="menuKashfBtn">
           <span class="menu-item-icon">📖</span>כשף אל-אסרר
         </button>
-        <button class="menu-item menu-item-signout" id="menuSignOutBtn">
+        <button class="menu-item" id="menuKomillaBtn">
+          <span class="menu-item-icon">♐</span>ספר קומילה — אסטרולוגיה וֶדית
+        </button>
+        <button class="menu-item menu-item-signout" id="menuSignOutBtn" style="margin-top:auto;border-top:1px solid rgba(255,255,255,.12);color:#ff8080;">
           <span class="menu-item-icon">🚪</span>התנתקות
         </button>
       </nav>
@@ -2302,7 +2305,18 @@ body:has(#screen-open.active) .topbar { display: none !important; }
         <div id="boardResult"></div>
         <div id="errorBox" class="error"></div>
 
-        <div id="kundaliResult" style="display:none"></div>
+        <div class="actions">
+          <button class="btn gray" id="backSelectBtn" type="button">חזרה לבחירת אמהות</button>
+          <button class="btn primary" id="archiveBtn" type="button">ארכיון קריאות</button>
+          <button class="btn gray" id="saveClientBtn" type="button">👤 שמור לקוח</button>
+          <button class="btn gray" id="clearArchiveBtn" type="button">נקה ארכיון</button>
+        </div>
+
+        <div style="margin-top:10px">
+          <button class="btn primary" id="showKundaliBtn" type="button" style="width:100%;font-size:15px;">
+            ♐ לוח קונדלי — מפה אסטרולוגית הודית
+          </button>
+        </div>
       </div>
     </section>
 
@@ -2436,6 +2450,26 @@ body:has(#screen-open.active) .topbar { display: none !important; }
         <button class="btn primary" id="saveKashfBtn" style="font-size:13px;padding:5px 10px;display:none;">💾 שמור</button>
       </div>
       <iframe id="kashfIframe" style="width:100%;height:calc(100vh - 56px);border:none;display:block;"></iframe>
+    </section>
+
+    <!-- ─── ספר קומילה — אסטרולוגיה וֶדית ──────────────────────── -->
+    <section id="screen-komilla" class="screen">
+      <div class="screen-back-bar" style="padding:12px 16px;display:flex;align-items:center;gap:12px;background:#06192d;border-bottom:1px solid #f0c040;">
+        <button class="btn gray" id="backFromKomillaBtn">← חזרה</button>
+        <h2 style="margin:0;color:#f0c040;font-size:18px;flex:1">♐ ספר קומילה — אסטרולוגיה וֶדית</h2>
+        <button class="btn gray" id="editKomillaBtn" style="font-size:13px;padding:5px 10px;">✏️ ערוך</button>
+        <button class="btn primary" id="saveKomillaBtn" style="font-size:13px;padding:5px 10px;display:none;">💾 שמור</button>
+      </div>
+      <iframe id="komillaIframe" style="width:100%;height:calc(100vh - 56px);border:none;display:block;"></iframe>
+    </section>
+
+    <!-- ─── לוח קונדלי — מסך נפרד ──────────────────────────────── -->
+    <section id="screen-kundali" class="screen">
+      <div class="screen-back-bar" style="padding:12px 16px;display:flex;align-items:center;gap:12px;background:#06192d;border-bottom:1px solid #f0c040;">
+        <button class="btn gray" id="backFromKundaliBtn">← חזרה ללוח</button>
+        <h2 style="margin:0;color:#f0c040;font-size:18px;flex:1">♐ לוח קונדלי — מפה אסטרולוגית וֶדית</h2>
+      </div>
+      <div class="panel" id="kundaliScreenContent" style="padding-top:16px;"></div>
     </section>
 
   </div>
