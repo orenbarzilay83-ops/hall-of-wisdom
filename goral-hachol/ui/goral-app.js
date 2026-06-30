@@ -554,6 +554,30 @@ function buildKundaliHtml(reading) {
         <span class="kcell-pos kp-setting">שוקע = כוח פוחת</span>
         <span class="kcell-pos kp-falling">יורד = כוח חלש</span>
       </div>
+      <div class="kundali-interpretations">
+        <h4 class="kundali-interp-title">פרשנות בתים — מקור: קומילה סטון, יסודות האסטרולוגיה הוֶדית (עמ' 102–139)</h4>
+        ${Array.from({length: 12}, (_, i) => i + 1).map(houseNum => {
+          const entry = getHouse(houseNum);
+          if (!entry) return '';
+          const ex = FIGURE_EXTRA[entry.key] || {};
+          const vedic = VEDIC_HOUSE_INFO[houseNum] || {};
+          const zodiac = ex.zodiac || '';
+          const zodSym = ZODIAC_SYM[zodiac] || '';
+          const interpData = window.VEDIC_SIGN_IN_HOUSE;
+          const interp = interpData && interpData[houseNum] && zodiac ? (interpData[houseNum][zodiac] || '') : '';
+          if (!interp) return '';
+          return `
+            <div class="kundali-interp-card">
+              <div class="kundali-interp-card-header">
+                <span class="kundali-interp-house-num">בית ${houseNum}</span>
+                <span class="kundali-interp-vedic-name">${escapeHtml(vedic.heb || '')}</span>
+                <span class="kundali-interp-zodiac">${zodSym} ${escapeHtml(zodiac)}</span>
+              </div>
+              <p class="kundali-interp-text">${escapeHtml(interp)}</p>
+            </div>
+          `;
+        }).join('')}
+      </div>
     </div>
   `;
 }
@@ -633,12 +657,11 @@ function buildInterpretationHtml(reading) {
   const sources = Array.isArray(insight.knowledgeSources) ? insight.knowledgeSources.slice(0, 5) : [];
   const spiritual = insight.spiritualDiagnosis || null;
   const isSpiritualTopic = insight.topicId === "spiritualDiagnostics";
-  // Only show spiritual section when explicitly spiritual topic,
-  // or when the engine finds very strong suspicion (not just any score > 0)
+  // Only show spiritual section when explicitly spiritual topic
   const showSpiritual = spiritual && isSpiritualTopic;
-  // Show spiritual bleedthrough warning on non-spiritual topics when suspicion is strong/medium
-  const showSpiritualBleedthrough = spiritual && !isSpiritualTopic &&
-    ['strong-suspicion', 'medium-suspicion'].includes(spiritual?.grade);
+  // Never show witchcraft/spiritual diagnosis bleedthrough on non-spiritual topics —
+  // showing witchcraft accusations on a house-sale or job question is harmful
+  const showSpiritualBleedthrough = false;
 
   // Board score + dhamir banner (before verdict)
   const boardScoreData = insight.boardAnalysis?.boardScore || null;

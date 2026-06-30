@@ -2065,6 +2065,53 @@ body:has(#screen-open.active) .topbar { display: none !important; }
       direction: rtl;
     }
 
+    .kundali-interpretations {
+      margin-top: 24px;
+      direction: rtl;
+    }
+    .kundali-interp-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1a3a5c;
+      margin: 0 0 14px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #c8d8f0;
+    }
+    .kundali-interp-card {
+      background: #f8faff;
+      border: 1px solid #d0dff0;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+    }
+    .kundali-interp-card-header {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+    .kundali-interp-house-num {
+      font-weight: 900;
+      font-size: 14px;
+      color: #1a3a5c;
+    }
+    .kundali-interp-vedic-name {
+      font-size: 12px;
+      color: #7a5c00;
+      font-weight: 600;
+    }
+    .kundali-interp-zodiac {
+      font-size: 12px;
+      color: #555;
+    }
+    .kundali-interp-text {
+      font-size: 14px;
+      line-height: 1.7;
+      color: #2c2c2c;
+      margin: 0;
+    }
+
     /* ─── מסך בחירת שאלה ─── */
     .qscreen-header {
       text-align: center;
@@ -2616,6 +2663,7 @@ body:has(#screen-open.active) .topbar { display: none !important; }
   </script>
 
   <script src="./goral-hachol/ui/question-bank.js?v=1"></script>
+  <script src="./goral-hachol/kundali/komilla-house-signs.js"></script>
   <script src="./goral-hachol/ui/goral-app.js?v=14"></script>
 
   <!-- ─── מיקום מדויק של טופס מסך-פתח על גבי תמונת הרקע ─── -->
