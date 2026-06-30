@@ -313,11 +313,6 @@ function describeCoreHouses(analysis, topicId, question) {
   // for open-ended foundational readings, NOT for specific questions
   const isGenericTopic = !topicId || topicId === 'foundations' || topicId === 'generalReading';
 
-  // שלמות הלוח — רק אם חסר (הלוח השלם מוצג בפסיקה הראשית)
-  if (boardScore && !boardScore.isComplete) {
-    parts.push(`⚠ ${boardScore.hebrewSummary}`);
-  }
-
   if (focus) {
     const figureName = focus.figureHebrew || 'שאינה מזוהה בשם';
     const transitMeaning = focus.transit?.meaning;
@@ -2891,7 +2886,6 @@ export function writeHumanGoralConclusion(result) {
   const paragraphs = [
     clientContextParagraph(result.clientContext, question),
     clientHistoryParagraph(result.clientHistorySummary),
-    boardScoreParagraph(result.boardAnalysis),
     verdictParagraph,
     elementParagraph,
     dhamirParagraph(result.boardAnalysis, judgeVerdict),

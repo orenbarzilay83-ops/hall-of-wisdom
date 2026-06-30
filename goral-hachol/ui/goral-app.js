@@ -741,11 +741,6 @@ function buildInterpretationHtml(reading) {
       .replace(/נחס/g, "רע");
   }
 
-  // Board score warning — always visible
-  const boardWarnHtml = (boardScoreData && !boardScoreData.isComplete)
-    ? `<div class="board-info-row board-score-warn">⚠ ${escapeHtml(boardScoreData.hebrewSummary)}</div>`
-    : "";
-
   // ─── SHORT CLIENT VERDICT (always visible) ─────────────────────────
   let shortVerdictHtml = "";
 
@@ -835,13 +830,13 @@ function buildInterpretationHtml(reading) {
     </div>`;
 
   return `
-    ${boardWarnHtml}
     ${shortVerdictHtml}
     ${clientReadingHtml}
     <button class="details-toggle" onclick="const p=this.nextElementSibling;p.hidden=!p.hidden;this.textContent=p.hidden?'קרא עוד ▼':'סגור ▲'">קרא עוד ▼</button>
     <div hidden>${detailsContent}</div>
     <div class="board-tools-row" style="margin-top:14px; display:flex; gap:8px; flex-wrap:wrap; direction:rtl; align-items:center;">
       <button type="button" onclick="window.showTimingTool(this)" style="background:#1a3a5c; color:#f0d060; border:none; border-radius:6px; padding:8px 16px; font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; white-space:nowrap;">⏱ עיתוי</button>
+      <button type="button" onclick="window.showBoardCompleteness(this)" style="background:#1a3a5c; color:#f0d060; border:none; border-radius:6px; padding:8px 16px; font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; white-space:nowrap;">📊 שלמות הלוח</button>
       <button type="button" onclick="window.boardGoBack()" class="btn gray" style="font-size:13px; padding:8px 14px; white-space:nowrap; color:#111 !important;">חזרה לבחירת אמהות</button>
       <button type="button" onclick="window.boardOpenArchive()" class="btn primary" style="font-size:13px; padding:8px 14px; white-space:nowrap; color:#111 !important;">ארכיון קריאות</button>
       <button type="button" onclick="window.boardSaveClient()" class="btn gray" style="font-size:13px; padding:8px 14px; white-space:nowrap; color:#111 !important;">👤 שמור לקוח</button>
@@ -849,6 +844,7 @@ function buildInterpretationHtml(reading) {
       <button type="button" onclick="window.boardToggleKundali(this)" class="btn gray" style="font-size:13px; padding:8px 14px; white-space:nowrap; color:#111 !important;">♐ לוח קונדלי</button>
     </div>
     <div id="timingToolPanel" hidden style="direction:rtl; margin-top:10px; background:#f5f8ff; border:1px solid #1a3a5c; border-radius:8px; padding:16px 18px; font-size:14px; line-height:1.9;"></div>
+    <div id="boardCompletenessPanel" hidden style="direction:rtl; margin-top:10px; background:#f5f8ff; border:1px solid #1a3a5c; border-radius:8px; padding:16px 18px; font-size:14px; line-height:1.9;"></div>
   `;
 }
 
@@ -880,6 +876,41 @@ window.showTimingTool = function(btn) {
   `;
   panel.hidden = false;
   btn.textContent = '⏱ עיתוי ▲';
+};
+
+window.showBoardCompleteness = function(btn) {
+  const panel = document.getElementById('boardCompletenessPanel');
+  if (!panel) return;
+  if (!panel.hidden) { panel.hidden = true; btn.textContent = '📊 שלמות הלוח'; return; }
+
+  const bScore = window.__LAST_GORAL_INTERPRETATION?.boardAnalysis?.boardScore || null;
+
+  if (!bScore) {
+    panel.innerHTML = '<em>אין נתוני לוח זמינים.</em>';
+    panel.hidden = false;
+    return;
+  }
+
+  const statusIcon = bScore.isComplete ? '✅' : '⚠';
+  const statusColor = bScore.isComplete ? '#1a5c2a' : '#7a2020';
+  const statusBg = bScore.isComplete ? '#eaffea' : '#fff0f0';
+
+  panel.innerHTML = `
+    <div style="font-weight:700; font-size:13px; color:#1a3a5c; margin-bottom:10px; border-bottom:1px solid #c8d8f0; padding-bottom:6px;">📊 שלמות הלוח — חשבון 96 הנקודות</div>
+    <div style="background:${statusBg}; border:1px solid ${statusColor}; border-radius:6px; padding:10px 14px; margin-bottom:10px;">
+      <span style="font-size:16px; font-weight:700; color:${statusColor};">${statusIcon} ${escapeHtml(bScore.status)}</span>
+      <span style="font-size:14px; color:${statusColor}; margin-right:10px;">(${bScore.score} נקודות)</span>
+    </div>
+    <div style="font-size:13px; color:#333; line-height:1.8;">
+      <div>שורות בודדות (1 נקודה): <strong>${bScore.singleRows}</strong></div>
+      <div>שורות זוגיות (2 נקודות): <strong>${bScore.doubleRows}</strong></div>
+      <div>סה"כ נקודות: <strong>${bScore.score}</strong> מתוך 128</div>
+    </div>
+    <div style="margin-top:10px; font-size:12px; color:#555; border-top:1px solid #e0e8f5; padding-top:8px;">${escapeHtml(bScore.hebrewSummary)}</div>
+    <div style="margin-top:6px; font-size:11px; color:#999;">מקור: ספר הקול הכולל בחכמת הרמל — פרק שלמות הלוח (96 נקודות)</div>
+  `;
+  panel.hidden = false;
+  btn.textContent = '📊 שלמות הלוח ▲';
 };
 
 async function runReading() {

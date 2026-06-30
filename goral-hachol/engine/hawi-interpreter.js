@@ -1459,10 +1459,6 @@ function buildJudgeVerdict(boardAnalysis) {
       ? ` מחשבת השואל (בית ${dhamirH}) מאשרת את הפסיקה — ${dhamirFort}.`
       : ` מחשבת השואל (בית ${dhamirH}) מנוגדת לדיין — ${dhamirFort} — ייתכן שינוי במהלך.`;
   }
-  if (boardAnalysis.boardScore?.isComplete === false) {
-    hebrewFull += ` [הערה: הלוח חסר (${boardAnalysis.boardScore.score} נקודות) — הפסיקה פחות ודאית.]`;
-  }
-
   return { verdict, grade, judgeFigure, judgeFortune, judgeTone, witnessTone, focusTone, hebrewShort, hebrewFull };
 }
 
@@ -5617,10 +5613,6 @@ function scoreBoard(boardAnalysis) {
   const aspectBonus = (h1toFocus?.type === 'same-figure') ? 1.0
     : (h1toFocus?.type === 'aspect') ? 0.5 : 0;
 
-  // Board completeness: incomplete board (< 96 pts) reduces verdict confidence by 20%.
-  const boardComplete = boardAnalysis.boardScore?.isComplete !== false;
-  const completenessMultiplier = boardComplete ? 1 : 0.8;
-
   // Weights: judge(4) + w1(1) + w2(1) + focus(2) + quesited(2) + direction + natural + connections + dhamir(1.5) + repetition + aspect
   const rawScore = (judgeTone * 4 * judgeMulti +
     w1Tone * 1 * w1Multi +
@@ -5636,7 +5628,7 @@ function scoreBoard(boardAnalysis) {
     dhamirTone * 1.5 +
     repetitionBonus +
     aspectBonus);
-  const score = Math.round(rawScore * completenessMultiplier * 2);
+  const score = Math.round(rawScore * 2);
 
   const reasons = [];
   if (judge) {
@@ -5678,10 +5670,6 @@ function scoreBoard(boardAnalysis) {
   if (aspectBonus > 0) {
     reasons.push(`קשר בין בית 1 לבית המרכזי: ${h1toFocus?.hebrewShort || (aspectBonus >= 1 ? 'צורה זהה' : 'מבט')}`);
   }
-  if (!boardComplete) {
-    reasons.push(`לוח חסר (${boardAnalysis.boardScore?.score || '?'} נקודות < 96) — הפסיקה מוחלשת ב-20%`);
-  }
-
   return {
     score,
     grade: judgeVerdict.grade,
@@ -5702,11 +5690,6 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
   const judgeVerdict = boardScore.judgeVerdict || null;
 
   const parts = [];
-
-  const bScore = boardAnalysis.boardScore;
-  if (bScore && !bScore.isComplete) {
-    parts.push(`⚠ ${bScore.hebrewSummary} — הפסיקה אפשרית אך בטחונה מוגבל.`);
-  }
 
   const asala = boardAnalysis.asala;
   if (asala && !asala.isRadical) {
