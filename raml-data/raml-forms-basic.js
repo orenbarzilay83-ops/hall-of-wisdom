@@ -54,7 +54,7 @@ const RAML_FORMS_BASIC = {
     hebrew: "לבן",
     arabic: "البياض",
     statusHebrew: "טוב",
-    planet: "ירח",
+    planet: "לבנה",
     zodiac: "סרטן",
     element: "מים",
     direction: "צפון",
@@ -84,7 +84,7 @@ const RAML_FORMS_BASIC = {
     hebrew: "חיבור",
     arabic: "الاجتماع",
     statusHebrew: "נטייה לטוב",
-    planet: "כוכב",
+    planet: "כוכב / מרקורי",
     zodiac: "תאומים",
     element: "רוח",
     direction: "מערב",
@@ -174,14 +174,14 @@ const RAML_FORMS_BASIC = {
     hebrew: "כבוד נכנס",
     arabic: "النصرة الداخلة",
     statusHebrew: "טוב",
-    planet: "צדק",
+    planet: "נוגה",
     zodiac: "דגים",
     element: "מים",
     direction: "צפון",
     color: "אדום",
     taste: "דשן / שמנוני",
     bodyPart: "כתף שמאל",
-    source: "القول الجامع"
+    source: "כשף אל-אסרר עמ' 133"
   },
 
   "1211": {
@@ -204,14 +204,14 @@ const RAML_FORMS_BASIC = {
     hebrew: "סף נכנס",
     arabic: "العتبة الداخلة / راية الفرح",
     statusHebrew: "טוב",
-    planet: "נוגה",
+    planet: "צדק",
     zodiac: "שור",
     element: "רוח",
     direction: "מערב",
     color: "צהוב",
     taste: "מתוק",
     bodyPart: "שוק ימין",
-    source: "القول الجامع"
+    source: "כשף אל-אסרר עמ' 133"
   },
 
   "1111": {
@@ -219,7 +219,7 @@ const RAML_FORMS_BASIC = {
     hebrew: "דרך",
     arabic: "الطريق",
     statusHebrew: "נטייה לטוב",
-    planet: "ירח",
+    planet: "לבנה",
     zodiac: "סרטן",
     element: "מים",
     direction: "צפון",
@@ -234,7 +234,7 @@ const RAML_FORMS_BASIC = {
     hebrew: "קהלה",
     arabic: "الجماعة",
     statusHebrew: "ביניים",
-    planet: "כוכב",
+    planet: "כוכב / מרקורי",
     zodiac: "בתולה",
     element: "עפר",
     direction: "דרום",
