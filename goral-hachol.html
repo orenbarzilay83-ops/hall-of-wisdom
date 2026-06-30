@@ -223,24 +223,35 @@ input, select, textarea {
 }
 .qscreen-header h2 { color: #1a0800 !important; font-family: 'STAM', sans-serif !important; }
 .qscreen-subtitle { color: #4a2e0a !important; }
-.qcat-tabs {
-  background: transparent !important;
-  backdrop-filter: none !important;
+.qhouse-grid {
+  display: grid !important;
+  grid-template-columns: repeat(6, 1fr) !important;
+  gap: 4px !important;
+  padding: 7px 0 !important;
   border-bottom: 1px solid rgba(0,0,0,0.12) !important;
   flex-shrink: 0 !important;
+  background: transparent !important;
 }
-.qcat-tab {
-  background: rgba(0,0,0,0.07) !important;
-  border: 1px solid rgba(0,0,0,0.2) !important;
-  border-radius: 20px !important;
-  color: #3a2008 !important;
-  font-family: 'STAM', sans-serif !important;
+.qhouse-btn {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 2px !important;
+  padding: 6px 2px !important;
+  border: 1px solid rgba(0,0,0,0.22) !important;
+  border-radius: 8px !important;
+  background: rgba(255,245,220,0.45) !important;
+  cursor: pointer !important;
+  transition: all 0.15s !important;
+  min-width: 0 !important;
 }
-.qcat-tab.active {
-  background: rgba(0,0,0,0.2) !important;
-  border-color: rgba(0,0,0,0.45) !important;
-  color: #1a0800 !important;
-}
+.qhouse-btn.active { background: rgba(80,40,8,0.75) !important; border-color: rgba(80,40,8,0.8) !important; }
+.qhouse-num { font-size: 14px !important; font-weight: 900 !important; color: #5c2d0a !important; line-height: 1 !important; }
+.qhouse-btn.active .qhouse-num { color: #f0d090 !important; }
+.qhouse-title { font-size: 8.5px !important; font-weight: 700 !important; color: #3a1a06 !important; text-align: center !important; line-height: 1.2 !important; overflow: hidden !important; white-space: nowrap !important; max-width: 100% !important; }
+.qhouse-btn.active .qhouse-title { color: rgba(240,208,144,.9) !important; }
+.qcard-empty { padding: 24px; text-align: center; color: #6b3d10; font-size: 14px; }
 .qcard-grid {
   background: transparent !important;
   backdrop-filter: none !important;
@@ -288,12 +299,10 @@ input, select, textarea {
   padding: 8px 8px !important;
 }
 @media (min-width: 768px) and (orientation: portrait) {
-  .question-scroll-bg { background-image: url('./prayer-scroll-bg-ipad-portrait.png') !important; }
   .question-scroll-content { top: 18% !important; bottom: 19% !important; padding: 0 16% !important; }
 }
 @media (min-width: 768px) and (orientation: landscape) {
-  .question-scroll-bg { background-image: url('./prayer-scroll-bg-ipad-landscape.png') !important; }
-  .question-scroll-content { top: 18% !important; bottom: 19% !important; padding: 0 16% !important; }
+  .question-scroll-content { top: 12% !important; bottom: 10% !important; padding: 0 22% !important; }
 }
 /* ── תפילה ── */
 #screen-prayer {
@@ -2320,9 +2329,9 @@ body:has(#screen-open.active) .topbar { display: none !important; }
       <div class="question-scroll-content">
         <div class="qscreen-header">
           <h2>בחר שאלה לגורל</h2>
-          <p class="qscreen-subtitle">לחץ על הקטגוריה ואז על השאלה שמדאיגה אותך</p>
+          <p class="qscreen-subtitle">לחץ על בית לסינון, ואז על השאלה שמדאיגה אותך</p>
         </div>
-        <div class="qcat-tabs" id="qcatTabs"></div>
+        <div class="qhouse-grid" id="qhouseGrid"></div>
         <div class="qcard-grid" id="qcardGrid"></div>
         <div class="qscreen-actions">
           <button class="btn gray" id="backFromQuestionBtn">חזרה →</button>
