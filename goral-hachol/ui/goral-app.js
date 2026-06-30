@@ -227,21 +227,6 @@ const SHORT_HOUSE_TITLES = {
   1: 'חיים', 2: 'כסף', 3: 'אחים', 4: 'בית', 5: 'ילדים', 6: 'בריאות',
   7: 'זוגיות', 8: 'מוות', 9: 'נסיעה', 10: 'עבודה', 11: 'חברים', 12: 'אויבים',
 };
-// סינון לפי קטגוריה — כל כפתור בית מציג את הנושאים שלו
-const HOUSE_CAT_MAP = {
-  1: ['general'],
-  2: ['money'],
-  3: ['family'],    // אחים — שאלות משפחה קצרות-טווח
-  4: ['family'],
-  5: ['family'],    // ילדים — תחת family
-  6: ['health'],
-  7: ['love', 'conflict'], // זוגיות + עסקאות/גנב/נעדר
-  8: ['conflict'],
-  9: ['travel', 'spiritual'],
-  10: ['career'],
-  11: ['general'],
-  12: ['conflict'],
-};
 
 function renderQuestionScreen() {
   const bank = window.QUESTION_BANK || [];
@@ -271,11 +256,7 @@ function renderQuestionScreen() {
 
   const filtered = _activeHouseFilter === null
     ? bank
-    : (() => {
-        const allowedCats = HOUSE_CAT_MAP[_activeHouseFilter];
-        if (allowedCats) return bank.filter(q => allowedCats.includes(q.category));
-        return bank.filter(q => q.houseId === _activeHouseFilter);
-      })();
+    : bank.filter(q => q.houseId === _activeHouseFilter);
 
   const gridEl = document.getElementById('qcardGrid');
   if (gridEl) {
