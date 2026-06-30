@@ -12,7 +12,7 @@ let forcedTopicId = null;     // נושא שנקבע בכוח (למשל: בדי�
 let selectedTopicId = null;   // תת-נושא שנבחר ישירות מתוך רשימת תת-נושאים
 let profileState = { gender: null, marital: null, work: null, children: null };
 let selectedQuestion = null;  // שאלה שנבחרה ממסך השאלות
-let _activeCatFilter = 'all'; // פילטר קטגוריה פעיל
+let _activeHouseFilter = null; // פילטר בית פעיל (null = הכל)
 
 // 12 כרטיסים לפי סדר הבתים. הנושא המדויק נקבע בזמן הריצה לפי השאלה.
 // subTopics — אם יש, מוצגים לאחר בחירת הבית; null = ברירת מחדל ישירה.
@@ -223,55 +223,66 @@ function showScreen(name) {
 }
 
 // ─── מסך בחירת שאלה ────────────────────────────────────────────────────────
+const SHORT_HOUSE_TITLES = {
+  1: 'חיים', 2: 'כסף', 3: 'אחים', 4: 'בית', 5: 'ילדים', 6: 'בריאות',
+  7: 'זוגיות', 8: 'מוות', 9: 'נסיעה', 10: 'עבודה', 11: 'חברים', 12: 'אויבים',
+};
+
 function renderQuestionScreen() {
-  const cats = window.QUESTION_CATEGORIES || [];
   const bank = window.QUESTION_BANK || [];
+  const cats = window.QUESTION_CATEGORIES || [];
+  const catMap = {};
+  cats.forEach(c => { catMap[c.id] = c; });
 
-  const allCats = [{ id: 'all', label: 'הכל', emoji: '📋', color: '#d0d0d0', border: '#999' }, ...cats];
-
-  const tabsEl = document.getElementById('qcatTabs');
-  if (tabsEl) {
-    tabsEl.innerHTML = allCats.map(cat => {
-      const isActive = _activeCatFilter === cat.id;
-      return `<button class="qcat-tab${isActive ? ' active' : ''}" data-cat="${cat.id}">
-        ${cat.emoji} ${cat.label}
+  // ── כפתורי 12 בתים (2 שורות × 6) ──
+  const houseEl = document.getElementById('qhouseGrid');
+  if (houseEl) {
+    houseEl.innerHTML = TOPIC_CARDS.map(card => {
+      const isActive = _activeHouseFilter === card.house;
+      return `<button type="button" class="qhouse-btn${isActive ? ' active' : ''}" data-house="${card.house}">
+        <span class="qhouse-num">${card.house}</span>
+        <span class="qhouse-title">${SHORT_HOUSE_TITLES[card.house] || card.title}</span>
       </button>`;
     }).join('');
 
-    tabsEl.querySelectorAll('.qcat-tab').forEach(btn => {
+    houseEl.querySelectorAll('.qhouse-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        _activeCatFilter = btn.dataset.cat;
+        const h = Number(btn.dataset.house);
+        _activeHouseFilter = _activeHouseFilter === h ? null : h;
         renderQuestionScreen();
       });
     });
   }
 
-  const catMap = {};
-  cats.forEach(c => { catMap[c.id] = c; });
-
-  const filtered = _activeCatFilter === 'all' ? bank : bank.filter(q => q.category === _activeCatFilter);
+  const filtered = _activeHouseFilter === null
+    ? bank
+    : bank.filter(q => q.houseId === _activeHouseFilter);
 
   const gridEl = document.getElementById('qcardGrid');
   if (gridEl) {
-    gridEl.innerHTML = filtered.map(q => {
-      const cat = catMap[q.category] || {};
-      const isSelected = selectedQuestion && selectedQuestion.id === q.id;
-      return `<button type="button"
-        class="qcard${isSelected ? ' selected' : ''}"
-        data-qid="${q.id}">
-        <span class="qcard-label">${escapeHtml(q.label)}</span>
-        <span class="qcard-desc">${escapeHtml(q.desc)}</span>
-        <span class="qcard-badge">בית ${q.houseId}</span>
-      </button>`;
-    }).join('');
+    if (filtered.length === 0) {
+      gridEl.innerHTML = `<div class="qcard-empty">אין שאלות לבית זה</div>`;
+    } else {
+      gridEl.innerHTML = filtered.map(q => {
+        const cat = catMap[q.category] || {};
+        const isSelected = selectedQuestion && selectedQuestion.id === q.id;
+        return `<button type="button"
+          class="qcard${isSelected ? ' selected' : ''}"
+          data-qid="${q.id}"
+          style="border-color:${isSelected ? 'var(--navy)' : (cat.border || '#ccc')}">
+          <span class="qcard-label">${escapeHtml(q.label)}</span>
+          <span class="qcard-badge">בית ${q.houseId}</span>
+        </button>`;
+      }).join('');
 
-    gridEl.querySelectorAll('.qcard').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const qid = btn.dataset.qid;
-        selectedQuestion = bank.find(q => q.id === qid) || null;
-        renderQuestionScreen();
+      gridEl.querySelectorAll('.qcard').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const qid = btn.dataset.qid;
+          selectedQuestion = bank.find(q => q.id === qid) || null;
+          renderQuestionScreen();
+        });
       });
-    });
+    }
   }
 
   const contBtn = document.getElementById('continueFromQuestionBtn');
