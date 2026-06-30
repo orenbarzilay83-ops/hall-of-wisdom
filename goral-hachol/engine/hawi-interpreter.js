@@ -1579,7 +1579,7 @@ function findSourceRecordByFigure(house, sourceList) {
   }) || null;
 }
 
-function getTransitMeaningForHouse(house) {
+function getTransitMeaningForHouse(house, topicId = null) {
   if (!house) return null;
   const houseNum = Number(house.house);
   const figureId = house.figureId || house.shortId || null;
@@ -1606,10 +1606,20 @@ function getTransitMeaningForHouse(house) {
   // The source itself omits certain house entries (most commonly house 15 for some figures).
   // Returning null keeps the conclusion clean — no "המקור אינו מביא דין" showing up in text.
   if (houseMeaning.sourceStatus === 'not-explicit-in-source') return null;
+
+  let meaning = houseMeaning.meaning || null;
+  if (meaning && topicId && houseMeaning.meaningTopicFilter?.sentenceFilters) {
+    for (const filter of houseMeaning.meaningTopicFilter.sentenceFilters) {
+      if (filter.onlyForTopics && !filter.onlyForTopics.includes(topicId)) {
+        meaning = meaning.replace(filter.sentence, '').replace(/\s{2,}/g, ' ').replace(/\.\s*\./g, '.').trim();
+      }
+    }
+  }
+
   return {
     figure: house.hebrew || house.key || null,
     house: house.house,
-    meaning: houseMeaning.meaning || null,
+    meaning,
     topics: houseMeaning.topics || null,
     sourceStatus: houseMeaning.sourceStatus || null,
   };
@@ -5094,7 +5104,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
         movement: house.movement || null,
         element: house.element || null,
         tone: judgeHouseTone(house),
-        transit: getTransitMeaningForHouse(house),
+        transit: getTransitMeaningForHouse(house, topicId),
         figureState: getFigureStateForHouse(house),
         houseState: getHouseStateColor(house.house),
         houseFortuneTone: getHouseFortuneTone(house.house),

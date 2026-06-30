@@ -92,6 +92,11 @@ export const HAWI_FIGURE_QABD_KHARIJ = {
     {
       "house": 7,
       "meaning": "יציאת בני הבית וקלקולם, סכסוכים מצד נשים, שותפות שמתפרקת, אובדן/יציאה מן היד. גניבה, בריחה ועזיבה. אישה שבורחת ממיטתה או הפלה לפי העדים.",
+      "meaningTopicFilter": {
+        "sentenceFilters": [
+          { "sentence": "אישה שבורחת ממיטתה או הפלה לפי העדים.", "onlyForTopics": ["marriage", "childrenPregnancy", "loveHate", "generalReading"] }
+        ]
+      },
       "topics": ['בני בית', 'קלקול', 'סכסוכים', 'נשים', 'שותפות מתפרקת', 'גניבה', 'בריחה', 'אישה בורחת', 'הפלה', 'לידה'],
       "witnessDependent": true,
       "criticalArabicTerms": ['على قدر الشواهد'],
