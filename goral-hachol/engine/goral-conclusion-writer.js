@@ -309,6 +309,10 @@ function describeCoreHouses(analysis, topicId, question) {
   const boardScore = analysis.boardScore || null;
   const parts = [];
 
+  // Generic sections (lifespan, clothing, well-drilling, etc.) are only relevant
+  // for open-ended foundational readings, NOT for specific questions
+  const isGenericTopic = !topicId || topicId === 'foundations' || topicId === 'generalReading';
+
   // שלמות הלוח — רק אם חסר (הלוח השלם מוצג בפסיקה הראשית)
   if (boardScore && !boardScore.isComplete) {
     parts.push(`⚠ ${boardScore.hebrewSummary}`);
@@ -441,64 +445,66 @@ function describeCoreHouses(analysis, topicId, question) {
     parts.push(`האם יחזור לתפקיד (כשף אל-אסרר עמ׳ 266):\n  ${returnToOfficeKashf.outputHebrew}`);
   }
 
-  const stateStabilityKashf = analysis.stateStabilityKashf;
-  if (stateStabilityKashf) {
-    parts.push(`יציבות המצב הנוכחי (כשף אל-אסרר עמ׳ 265-266):\n  ${stateStabilityKashf.outputHebrew}`);
-  }
+  if (isGenericTopic) {
+    const stateStabilityKashf = analysis.stateStabilityKashf;
+    if (stateStabilityKashf) {
+      parts.push(`יציבות המצב הנוכחי (כשף אל-אסרר עמ׳ 265-266):\n  ${stateStabilityKashf.outputHebrew}`);
+    }
 
-  const securityKashf = analysis.securityKashf;
-  if (securityKashf) {
-    parts.push(`ביטחון ואורך חיים (כשף אל-אסרר עמ׳ 234-236):\n  ${securityKashf.outputHebrew}`);
-  }
+    const securityKashf = analysis.securityKashf;
+    if (securityKashf) {
+      parts.push(`ביטחון ואורך חיים (כשף אל-אסרר עמ׳ 234-236):\n  ${securityKashf.outputHebrew}`);
+    }
 
-  const lifespanKashf = analysis.lifespanKashf;
-  if (lifespanKashf) {
-    parts.push(`אורך חיים — שלושה שלבים (כשף אל-אסרר עמ׳ 264):\n  ${lifespanKashf.outputHebrew}`);
-  }
+    const lifespanKashf = analysis.lifespanKashf;
+    if (lifespanKashf) {
+      parts.push(`אורך חיים — שלושה שלבים (כשף אל-אסרר עמ׳ 264):\n  ${lifespanKashf.outputHebrew}`);
+    }
 
-  const clothingLuckKashf = analysis.clothingLuckKashf;
-  if (clothingLuckKashf) {
-    parts.push(`לבוש ומזל בלבוש (כשף אל-אסרר עמ׳ 265):\n  ${clothingLuckKashf.outputHebrew}`);
-  }
+    const clothingLuckKashf = analysis.clothingLuckKashf;
+    if (clothingLuckKashf) {
+      parts.push(`לבוש ומזל בלבוש (כשף אל-אסרר עמ׳ 265):\n  ${clothingLuckKashf.outputHebrew}`);
+    }
 
-  const lifespanByFigureShapes = analysis.lifespanByFigureShapes;
-  if (lifespanByFigureShapes) {
-    parts.push(`אורך חיים — צורות ארוכות/קצרות (כשף אל-אסרר עמ׳ 195):\n  ${lifespanByFigureShapes.outputHebrew}`);
-  }
+    const lifespanByFigureShapes = analysis.lifespanByFigureShapes;
+    if (lifespanByFigureShapes) {
+      parts.push(`אורך חיים — צורות ארוכות/קצרות (כשף אל-אסרר עמ׳ 195):\n  ${lifespanByFigureShapes.outputHebrew}`);
+    }
 
-  const clothingBestFiguresKashf = analysis.clothingBestFiguresKashf;
-  if (clothingBestFiguresKashf && clothingBestFiguresKashf.verdict === 'best-clothing') {
-    parts.push(`צורת הבית 5 ללבוש ושמחה (כשף אל-אסרר עמ׳ 196):\n  ${clothingBestFiguresKashf.outputHebrew}`);
-  }
+    const clothingBestFiguresKashf = analysis.clothingBestFiguresKashf;
+    if (clothingBestFiguresKashf && clothingBestFiguresKashf.verdict === 'best-clothing') {
+      parts.push(`צורת הבית 5 ללבוש ושמחה (כשף אל-אסרר עמ׳ 196):\n  ${clothingBestFiguresKashf.outputHebrew}`);
+    }
 
-  const whoLooksAtWhomKashf = analysis.whoLooksAtWhomKashf;
-  if (whoLooksAtWhomKashf) {
-    parts.push(`מי מסתכל על מי (כשף אל-אסרר עמ׳ 170):\n  ${whoLooksAtWhomKashf.outputHebrew}`);
-  }
+    const whoLooksAtWhomKashf = analysis.whoLooksAtWhomKashf;
+    if (whoLooksAtWhomKashf) {
+      parts.push(`מי מסתכל על מי (כשף אל-אסרר עמ׳ 170):\n  ${whoLooksAtWhomKashf.outputHebrew}`);
+    }
 
-  const moneySourceKashf = analysis.moneySourceKashf;
-  if (moneySourceKashf) {
-    parts.push(`מקור הכסף (כשף אל-אסרר עמ׳ 181):\n  ${moneySourceKashf.outputHebrew}`);
-  }
+    const moneySourceKashf = analysis.moneySourceKashf;
+    if (moneySourceKashf) {
+      parts.push(`מקור הכסף (כשף אל-אסרר עמ׳ 181):\n  ${moneySourceKashf.outputHebrew}`);
+    }
 
-  const wellDrillingKashf = analysis.wellDrillingKashf;
-  if (wellDrillingKashf) {
-    parts.push(`קידוח בארות / עומק מים (כשף אל-אסרר עמ׳ 188-189):\n  ${wellDrillingKashf.outputHebrew}`);
-  }
+    const wellDrillingKashf = analysis.wellDrillingKashf;
+    if (wellDrillingKashf) {
+      parts.push(`קידוח בארות / עומק מים (כשף אל-אסרר עמ׳ 188-189):\n  ${wellDrillingKashf.outputHebrew}`);
+    }
 
-  const travelTimingKashf = analysis.travelTimingKashf;
-  if (travelTimingKashf) {
-    parts.push(`בחירת זמן לנסיעה (כשף אל-אסרר עמ׳ 238):\n  ${travelTimingKashf.outputHebrew}`);
-  }
+    const travelTimingKashf = analysis.travelTimingKashf;
+    if (travelTimingKashf) {
+      parts.push(`בחירת זמן לנסיעה (כשף אל-אסרר עמ׳ 238):\n  ${travelTimingKashf.outputHebrew}`);
+    }
 
-  const professionH9Kashf = analysis.professionH9Kashf;
-  if (professionH9Kashf) {
-    parts.push(`מקצוע ועיסוק לפי בית 9 (כשף אל-אסרר עמ׳ 254):\n  ${professionH9Kashf.outputHebrew}`);
-  }
+    const professionH9Kashf = analysis.professionH9Kashf;
+    if (professionH9Kashf) {
+      parts.push(`מקצוע ועיסוק לפי בית 9 (כשף אל-אסרר עמ׳ 254):\n  ${professionH9Kashf.outputHebrew}`);
+    }
 
-  const promiseFulfillmentKashf = analysis.promiseFulfillmentKashf;
-  if (promiseFulfillmentKashf) {
-    parts.push(`הבטחה — האם תתממש? (כשף אל-אסרר עמ׳ 255):\n  ${promiseFulfillmentKashf.outputHebrew}`);
+    const promiseFulfillmentKashf = analysis.promiseFulfillmentKashf;
+    if (promiseFulfillmentKashf) {
+      parts.push(`הבטחה — האם תתממש? (כשף אל-אסרר עמ׳ 255):\n  ${promiseFulfillmentKashf.outputHebrew}`);
+    }
   }
 
   const fugitiveKashf = analysis.fugitiveKashf;
@@ -2102,7 +2108,7 @@ function buildNarrativeByTopic(result) {
       if (returnToOfficeKashf) push(`האם יחזור לתפקיד (כשף עמ׳ 266):\n  ${ind(returnToOfficeKashf.outputHebrew)}`);
     }
 
-    if (is('authorityState','foundations','completion')) {
+    if (is('authorityState','foundations')) {
       const stateStabilityKashf = boardAnalysis.stateStabilityKashf;
       if (stateStabilityKashf) push(`יציבות המצב הנוכחי (כשף עמ׳ 265-266):\n  ${ind(stateStabilityKashf.outputHebrew)}`);
     }
@@ -2112,7 +2118,7 @@ function buildNarrativeByTopic(result) {
       if (securityKashf) push(`ביטחון ואורך חיים (כשף עמ׳ 234-236):\n  ${ind(securityKashf.outputHebrew)}`);
     }
 
-    if (is('loveHate','completion','foundations')) {
+    if (is('loveHate','foundations')) {
       const lifespanKashf = boardAnalysis.lifespanKashf;
       if (lifespanKashf) push(`אורך חיים — שלושה שלבים (כשף עמ׳ 264):\n  ${ind(lifespanKashf.outputHebrew)}`);
       const clothingLuckKashf = boardAnalysis.clothingLuckKashf;
@@ -2485,6 +2491,8 @@ export function writeShortClientVerdict(result) {
 
   const name     = clean(clientContext?.clientName || '');
   const quesited = clean(clientContext?.quesitedName || '');
+  const isFemale = clientContext?.gender === 'female';
+  const asker    = isFemale ? 'השואלת' : 'השואל';
   const lines    = [];
 
   const judge    = boardAnalysis.judge    || getHouseFromBoard(boardAnalysis, 15);
