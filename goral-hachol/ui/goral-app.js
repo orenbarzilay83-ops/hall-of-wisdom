@@ -808,11 +808,11 @@ function buildInterpretationHtml(reading) {
     <div hidden>${detailsContent}</div>
     <div class="board-tools-row" style="margin-top:14px; display:flex; gap:8px; flex-wrap:wrap; direction:rtl; align-items:center;">
       <button type="button" onclick="window.showTimingTool(this)" style="background:#1a3a5c; color:#f0d060; border:none; border-radius:6px; padding:8px 16px; font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; white-space:nowrap;">⏱ עיתוי</button>
-      <button type="button" onclick="window.boardGoBack()" class="btn gray" style="font-size:13px; padding:8px 14px; white-space:nowrap;">חזרה לבחירת אמהות</button>
-      <button type="button" onclick="window.boardOpenArchive()" class="btn primary" style="font-size:13px; padding:8px 14px; white-space:nowrap;">ארכיון קריאות</button>
-      <button type="button" onclick="window.boardSaveClient()" class="btn gray" style="font-size:13px; padding:8px 14px; white-space:nowrap;">👤 שמור לקוח</button>
-      <button type="button" onclick="window.boardClearArchive()" class="btn gray" style="font-size:13px; padding:8px 14px; white-space:nowrap;">נקה ארכיון</button>
-      <button type="button" onclick="window.boardToggleKundali(this)" class="btn gray" style="font-size:13px; padding:8px 14px; white-space:nowrap;">♐ לוח קונדלי</button>
+      <button type="button" onclick="window.boardGoBack()" class="btn gray" style="font-size:13px; padding:8px 14px; white-space:nowrap; color:#111 !important;">חזרה לבחירת אמהות</button>
+      <button type="button" onclick="window.boardOpenArchive()" class="btn primary" style="font-size:13px; padding:8px 14px; white-space:nowrap; color:#111 !important;">ארכיון קריאות</button>
+      <button type="button" onclick="window.boardSaveClient()" class="btn gray" style="font-size:13px; padding:8px 14px; white-space:nowrap; color:#111 !important;">👤 שמור לקוח</button>
+      <button type="button" onclick="window.boardClearArchive()" class="btn gray" style="font-size:13px; padding:8px 14px; white-space:nowrap; color:#111 !important;">נקה ארכיון</button>
+      <button type="button" onclick="window.boardToggleKundali(this)" class="btn gray" style="font-size:13px; padding:8px 14px; white-space:nowrap; color:#111 !important;">♐ לוח קונדלי</button>
     </div>
     <div id="timingToolPanel" hidden style="direction:rtl; margin-top:10px; background:#f5f8ff; border:1px solid #1a3a5c; border-radius:8px; padding:16px 18px; font-size:14px; line-height:1.9;"></div>
   `;
