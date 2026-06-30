@@ -142,7 +142,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-who-looks',
-    category: 'general', houseId: 1, topicId: 'marriage',
+    category: 'general', houseId: 7, topicId: 'marriage',
     label: 'מי מסתכל על מי?',
     desc: 'האם אדם מסתכל על השואל, או ההיפך — לפי שורת האש בצורות',
     clientFields: [F.candidate],
@@ -518,21 +518,21 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-missing-alive',
-    category: 'travel', houseId: 9, topicId: 'missingPerson',
+    category: 'travel', houseId: 7, topicId: 'missingPerson',
     label: 'הנעדר — חי או מת?',
     desc: 'בית 1+4+8+9+12. ג׳ודלה+חמרה+ג׳מאעה בבית 4+12 = מת; סעד בבית 10 = חי',
     clientFields: [F.missingName, F.missingGender, F.missingAge, F.missingWhen, F.missingWhere],
   },
   {
     id: 'q-missing-location',
-    category: 'travel', houseId: 9, topicId: 'missingPerson',
+    category: 'travel', houseId: 7, topicId: 'missingPerson',
     label: 'היכן נמצא הנעדר?',
     desc: 'בית 7+9+10 — כיוון ומיקום הנעדר (כשף עמ׳ 246-250)',
     clientFields: [F.missingName, F.missingWhen, F.missingWhere],
   },
   {
     id: 'q-missing-return',
-    category: 'travel', houseId: 9, topicId: 'missingPerson',
+    category: 'travel', houseId: 7, topicId: 'missingPerson',
     label: 'האם הנעדר יחזור?',
     desc: 'בית 14 נשוא-ראש/כבוד-נכנס = יחזור; בית 1+7 סעד = סיכוי טוב (כשף עמ׳ 251)',
     clientFields: [F.missingName, F.missingWhen],
@@ -595,7 +595,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-stability',
-    category: 'career', houseId: 11, topicId: 'authorityState',
+    category: 'career', houseId: 10, topicId: 'authorityState',
     label: 'האם המצב יישאר יציב?',
     desc: 'דוואם אל-חאל — האם המצב הנוכחי ייגמר',
     clientFields: [F.matter],
@@ -606,21 +606,21 @@ window.QUESTION_BANK = [
   // ════════════════════════════════════════════════════════════════
   {
     id: 'q-theft-who',
-    category: 'conflict', houseId: 8, topicId: 'theft',
+    category: 'conflict', houseId: 7, topicId: 'theft',
     label: 'מי גנב?',
     desc: 'תיאור פיזי ומקצועי של הגנב לפי בית 7 (כשף עמ׳ 231-234)',
     clientFields: [F.stolen, F.stolenWhen, F.stolenValue, F.suspect],
   },
   {
     id: 'q-theft-return',
-    category: 'conflict', houseId: 8, topicId: 'theft',
+    category: 'conflict', houseId: 7, topicId: 'theft',
     label: 'האם הגנוב יוחזר?',
     desc: 'בית 1+2 טוב + בית 7+8 רע = חוזר; הפוך = לא חוזר (כשף עמ׳ 229)',
     clientFields: [F.stolen, F.stolenWhen],
   },
   {
     id: 'q-thief-near',
-    category: 'conflict', houseId: 8, topicId: 'theft',
+    category: 'conflict', houseId: 7, topicId: 'theft',
     label: 'עד כמה הגנב קרוב לי?',
     desc: 'קרבת הגנב — האם מהבית / שכן / זר (כשף עמ׳ 224)',
     clientFields: [F.stolen, F.suspect],
