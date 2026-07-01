@@ -793,6 +793,55 @@ window.QUESTION_BANK = [
     desc: 'בית 1+3 — האם להישאר או לעזוב את המקום הנוכחי (כשף עמ׳ 178)',
     clientFields: [{ id: 'stayPlace', label: 'המקום / הנסיבות', type: 'text', placeholder: 'עיר / מדינה / בית / עבודה...' }],
   },
+  {
+    id: 'q-sibling-eldest',
+    category: 'family', houseId: 3, topicId: 'siblings',
+    label: 'מי הגדול / הראשי בין האחים?',
+    desc: 'קהלה ושפל ראש בבית 3 = גדולים מצד האב; גזר צורה מבית 1+3 (כשף עמ׳ 182)',
+    clientFields: [F.siblingName, F.siblingIssue],
+  },
+  {
+    id: 'q-sibling-agreement',
+    category: 'family', houseId: 3, topicId: 'siblings',
+    label: 'האם האחים בהסכמה או בסכסוך?',
+    desc: 'בית 3 מיטיב = הסכמה; מזיק = קלקול מידות; גזר מבית 1+3, 5+3, 5+13 (כשף עמ׳ 182)',
+    clientFields: [F.siblingName, F.siblingIssue],
+  },
+  {
+    id: 'q-relative-state',
+    category: 'family', houseId: 3, topicId: 'siblings',
+    label: 'מצב הקרוב / החתן / החמות?',
+    desc: 'הקרובים והחתנים — בית 3 מכסה גם קרובי משפחה וחתנים (הגדרת הבית)',
+    clientFields: [F.siblingName, { id: 'relationType', label: 'הקשר', type: 'text', placeholder: 'חתן / חמות / גיס / דוד...' }],
+  },
+  {
+    id: 'q-news-arrive',
+    category: 'general', houseId: 3, topicId: 'siblings',
+    label: 'האם חדשות מרחוק יגיעו?',
+    desc: 'בית 3 = "החדשות, השליחים" — האם שמועה או ידיעה תגיע (הגדרת הבית)',
+    clientFields: [{ id: 'newsFrom', label: 'ממי / מאיפה החדשות?', type: 'text', placeholder: 'שם / מקום' }],
+  },
+  {
+    id: 'q-dream-daily',
+    category: 'general', houseId: 3, topicId: 'siblings',
+    label: 'חלום יומי — האם הוא בשורה?',
+    desc: 'בית 3 = חלום יומי / רגיל (שונה מבית 9 שהוא חלום נבואי/דתי) — הגדרת הבית',
+    clientFields: [F.dreamDesc],
+  },
+  {
+    id: 'q-separation',
+    category: 'general', houseId: 3, topicId: 'siblings',
+    label: 'האם הניתוק / הפרידה מוחלטים?',
+    desc: 'בית 3 = "ההסתלקות והניתוק" — האם הפרידה סופית או זמנית (הגדרת הבית)',
+    clientFields: [F.matter, { id: 'separationFrom', label: 'פרידה ממי?', type: 'text', placeholder: 'שם / קשר' }],
+  },
+  {
+    id: 'q-short-travel',
+    category: 'travel', houseId: 3, topicId: 'siblings',
+    label: 'נסיעה קצרה — האם תצלח?',
+    desc: 'בית 3 = "התנועות הקרובות" — נסיעה קצרה/מקומית, שונה מנסיעה ארוכה (בית 9)',
+    clientFields: [F.destination, F.travelDate],
+  },
 
   // בית 5 — וולד
   {
