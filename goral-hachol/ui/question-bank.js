@@ -100,7 +100,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-success',
-    category: 'general', houseId: 1, topicId: 'foundations',
+    category: 'general', houseId: 1, topicId: 'completion',
     label: 'האם הדבר יצליח?',
     desc: 'האם הצורך יתמלא — לפי סעד/נחס ויתדות',
     clientFields: [F.matter],
@@ -121,7 +121,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-promise',
-    category: 'general', houseId: 9, topicId: 'foundations',
+    category: 'general', houseId: 9, topicId: 'completion',
     label: 'האם יקיים את ההבטחה?',
     desc: 'האם מי שנתן הבטחה יעמוד בה',
     clientFields: [F.promiseDesc],
@@ -394,7 +394,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-celebrations',
-    category: 'family', houseId: 5, topicId: 'childrenPregnancy',
+    category: 'family', houseId: 5, topicId: 'completion',
     label: 'האם תהיה שמחה / אירוע?',
     desc: 'שמחות, אירועים, ולימות, חתונות — בית 5',
     clientFields: [{ id: 'eventType', label: 'מהו האירוע?', type: 'text', placeholder: 'חתונה / בר-מצווה / מסיבה...' }],
@@ -704,7 +704,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-sell-property',
-    category: 'money', houseId: 4, topicId: 'hiddenTreasure',
+    category: 'money', houseId: 4, topicId: 'commerce',
     label: 'האם ימכר הנכס / הבית?',
     desc: 'בית 4 (הנכס) + בית 7 (הקונה) + בית 8 (התמורה) — כשף עמ׳ 218',
     clientFields: [
@@ -738,14 +738,14 @@ window.QUESTION_BANK = [
   // בית 8 — הלוואה
   {
     id: 'q-loan-give',
-    category: 'money', houseId: 8, topicId: 'deathInheritance',
+    category: 'money', houseId: 8, topicId: 'loan',
     label: 'האם ראוי לתת הלוואה?',
     desc: 'בית 7+8 או הכאה עם 3 — מיטיב = ייתן ויטיב; מזיק = סכנה (כשף עמ׳ 235)',
     clientFields: [F.debtAmount, F.debtPerson],
   },
   {
     id: 'q-loan-return',
-    category: 'money', houseId: 8, topicId: 'deathInheritance',
+    category: 'money', houseId: 8, topicId: 'loan',
     label: 'האם הלווה יחזיר את הכסף?',
     desc: 'בית 2+8 — צורה מיטיבה = יוכל להחזיר; מזיקה = יתקשה (כשף עמ׳ 235)',
     clientFields: [F.debtAmount, F.debtPerson],
@@ -952,7 +952,7 @@ window.QUESTION_BANK = [
   // בית 11 — פרנסה
   {
     id: 'q-livelihood-arrive',
-    category: 'money', houseId: 11, topicId: 'loveHate',
+    category: 'money', houseId: 11, topicId: 'commerce',
     label: 'האם הפרנסה תגיע?',
     desc: 'בית 11 מיטיב = פרנסה תגיע; נחס = עיכוב או מניעה (כשף עמ׳ 268)',
     clientFields: [F.matter],
@@ -1011,14 +1011,14 @@ window.QUESTION_BANK = [
   // ── בית 4 — הורים: "החקלאות, תכלית כל דבר ואחרית עניינו" ──
   {
     id: 'q-agriculture',
-    category: 'money', houseId: 4, topicId: 'hiddenTreasure',
+    category: 'money', houseId: 4, topicId: 'yearlyForecast',
     label: 'שאלת חקלאות / אדמה — מה ייצא?',
     desc: 'בית 4 = "נכסי הקרקע, האדמות, החקלאות" — יבול, השקיה, בעלות אדמה (הגדרת הבית, עמ׳ 48)',
     clientFields: [{ id: 'landTopic', label: 'נושא השאלה', type: 'textarea', placeholder: 'יבול / השקיה / בעלות / אדמה...' }],
   },
   {
     id: 'q-matter-end',
-    category: 'general', houseId: 4, topicId: 'foundations',
+    category: 'general', houseId: 4, topicId: 'completion',
     label: 'מה תהיה אחרית / תוצאת העניין?',
     desc: 'בית 4 = "תכלית כל דבר ואחרית עניינו" — מה יהיה הסוף (הגדרת הבית, עמ׳ 48)',
     clientFields: [F.matter],
@@ -1050,7 +1050,7 @@ window.QUESTION_BANK = [
   // ── בית 6 — מחלות: "הדבר האובד, פרידת האהובים" ──
   {
     id: 'q-lost-item',
-    category: 'conflict', houseId: 6, topicId: 'lostAnimal',
+    category: 'conflict', houseId: 6, topicId: 'theft',
     label: 'האם החפץ האבוד יימצא?',
     desc: 'בית 6 = "הדבר האובד" — חפץ שאבד (לא בהמה); בית 6+2 מורים על מציאתו (הגדרת הבית, עמ׳ 49)',
     clientFields: [F.stolen, F.stolenWhen, { id: 'lostWhere', label: 'היכן נראה לאחרונה?', type: 'text', placeholder: 'מקום' }],
@@ -1089,7 +1089,7 @@ window.QUESTION_BANK = [
   // ── בית 8 — מוות: "נדוניית הנשים, יציאה מן הטובות, ריחוק מן הבריות" ──
   {
     id: 'q-dowry',
-    category: 'family', houseId: 8, topicId: 'deathInheritance',
+    category: 'family', houseId: 8, topicId: 'marriage',
     label: 'מה גובה הנדוניה / המוהר?',
     desc: 'בית 8 = "נדוניית הנשים" — גובה המוהר, הנדוניה ותנאי הנישואין (הגדרת הבית, עמ׳ 50)',
     clientFields: [F.candidate, { id: 'dowryContext', label: 'הקשר', type: 'text', placeholder: 'חתן / כלה / שדכנות...' }],
@@ -1112,7 +1112,7 @@ window.QUESTION_BANK = [
   // ── בית 9 — נסיעה: "המדעים, הפילוסופיה, השירה, הכרת המדע" ──
   {
     id: 'q-academic',
-    category: 'general', houseId: 9, topicId: 'religion',
+    category: 'general', houseId: 9, topicId: 'completion',
     label: 'האם הלימוד / המחקר / המדע יצליח?',
     desc: 'בית 9 = "המדעים, הפילוסופיה, השירה, הכרת המדע" — שאלות על לימוד אקדמי (הגדרת הבית, עמ׳ 50-51)',
     clientFields: [{ id: 'studyField', label: 'תחום הלימוד / המחקר', type: 'text', placeholder: 'רפואה / משפטים / כלכלה / גורל החול...' }],
