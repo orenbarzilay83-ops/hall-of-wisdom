@@ -309,6 +309,14 @@ function getHouseFortuneTone(houseNumber) {
   return HOUSE_FORTUNE_TONES[Number(houseNumber)] ?? 0;
 }
 
+function getHousePositionHebrew(houseNumber) {
+  const n = Number(houseNumber);
+  if ([1, 4, 7, 10].includes(n)) return 'יתד';
+  if ([3, 6, 9, 12].includes(n)) return 'שוקע';
+  if ([2, 5, 8, 11].includes(n)) return 'נוטה';
+  return null;
+}
+
 function getFigureDirection(pattern) {
   if (!pattern || pattern.length < 2) return null;
   const p = pattern[0] + pattern[1];
@@ -1448,6 +1456,22 @@ function buildJudgeVerdict(boardAnalysis) {
         (w1Figure ? ' עד ראשון: ' + w1Figure + '.' : '') +
         (w2Figure ? ' עד שני: ' + w2Figure + '.' : '');
     }
+  }
+
+  if (judge.isNaturalFigure) {
+    hebrewFull += ` [תמכן: הדיין בביתו הטבעי — הפסיקה מתחזקת.]`;
+  }
+  if (w1?.isNaturalFigure && w1Figure) {
+    hebrewFull += ` [תמכן: עד ראשון (${w1Figure}) בביתו הטבעי.]`;
+  }
+  if (w2?.isNaturalFigure && w2Figure) {
+    hebrewFull += ` [תמכן: עד שני (${w2Figure}) בביתו הטבעי.]`;
+  }
+  if (w1?.figureState?.speakingState === 'silent' && w1Figure) {
+    hebrewFull += ` [עד ראשון (${w1Figure}) — שותק, כוחו מוחלש.]`;
+  }
+  if (w2?.figureState?.speakingState === 'silent' && w2Figure) {
+    hebrewFull += ` [עד שני (${w2Figure}) — שותק, כוחו מוחלש.]`;
   }
 
   const dhamirFort = boardAnalysis.dhamirByMizan?.primaryFortune || boardAnalysis.dhamirHouse?.fortune || '';
@@ -5709,7 +5733,8 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
 
   const judgeHebrew = judge?.figureHebrew || 'לא מזוהה';
   const judgeFortune = judge?.fortune ? ` (${judge.fortune})` : '';
-  parts.push(`הדיין בבית 15: ${judgeHebrew}${judgeFortune} — ${judgeVerdict?.hebrewShort || boardScore.hebrewShort || 'תשובה לא מוכרעת'}.`);
+  const judgeNaturalNote = judge?.isNaturalFigure ? ' [תמכן — הדיין בביתו הטבעי, כוח הפסיקה מוכפל]' : '';
+  parts.push(`הדיין בבית 15: ${judgeHebrew}${judgeFortune}${judgeNaturalNote} — ${judgeVerdict?.hebrewShort || boardScore.hebrewShort || 'תשובה לא מוכרעת'}.`);
 
   const dhamirByMizan = boardAnalysis.dhamirByMizan;
   const dhamirHouseEntry = boardAnalysis.dhamirHouse;
@@ -5727,8 +5752,10 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
   }
 
   if (sentence) {
+    const sentenceSpeakNote = sentence?.figureState?.speakingState === 'silent' ? ' [שותק]' : '';
+    const sentenceNaturalNote = sentence.isNaturalFigure ? ' [תמכן — בביתה הטבעי]' : '';
     parts.push(
-      `בית 16 (אחרית הדבר): ${sentence.figureHebrew || 'לא מזוהה'} — מראה את השלמת הדין.`
+      `בית 16 (אחרית הדבר): ${sentence.figureHebrew || 'לא מזוהה'}${sentenceSpeakNote}${sentenceNaturalNote} — מראה את השלמת הדין.`
     );
   }
 
@@ -5747,9 +5774,11 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
       const qFortune = quesitedEntry.fortune || '';
       const qFigure = quesitedEntry.figureHebrew || '';
       const qSpeak = getSpeakingStateHebrew(quesitedEntry?.figureState);
+      const qNaturalNote = quesitedEntry.isNaturalFigure ? ' [תמכן — בביתה הטבעי]' : '';
+      const qPosNote = getHousePositionHebrew(quesitedHouseNum) ? ` [${getHousePositionHebrew(quesitedHouseNum)}]` : '';
       if (qFigure) {
         parts.push(
-          `בית הנשאל (בית ${quesitedHouseNum}): ${qFigure}${qFortune ? ` — ${qFortune}` : ''}${qSpeak ? ` [${qSpeak}]` : ''}.`
+          `בית הנשאל (בית ${quesitedHouseNum}): ${qFigure}${qFortune ? ` — ${qFortune}` : ''}${qSpeak ? ` [${qSpeak}]` : ''}${qPosNote}${qNaturalNote}.`
         );
       }
     }
@@ -5762,8 +5791,10 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
 
   const qFocus = boardAnalysis.focusHouse;
   if (qFocus?.directionHebrew) {
+    const qFocusSpeakNote = getSpeakingStateHebrew(qFocus?.figureState) === 'שותק' ? ' [שותק — כוחו מוחלש]' : '';
+    const qFocusPosNote = getHousePositionHebrew(qFocus.house) ? ` [${getHousePositionHebrew(qFocus.house)}]` : '';
     const naturalNote = qFocus.isNaturalFigure ? ' — הצורה הטבעית של הבית, הדין חזק במיוחד.' : '.';
-    parts.push(`כיוון הצורה בבית המרכזי (${qFocus.house}): ${qFocus.figureHebrew} — ${qFocus.directionHebrew}${naturalNote}`);
+    parts.push(`כיוון הצורה בבית המרכזי (${qFocus.house}): ${qFocus.figureHebrew}${qFocusSpeakNote}${qFocusPosNote} — ${qFocus.directionHebrew}${naturalNote}`);
   }
 
   const h1a = boardAnalysis.house1Analysis;
