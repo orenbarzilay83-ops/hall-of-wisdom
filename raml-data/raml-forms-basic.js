@@ -1,5 +1,5 @@
 // גורל החול — קובץ ידע בסיסי לצורות
-// מקור עבודה: القول الجامع في علم الرمل — الشيخ محمد ساس
+// מקור עבודה: كشف الأسرار في علم الحروف والأفلاك — עמ' 68–94, 95–97, 133
 // לא כולל אותיות, מספרים, סורות, צדקה, זבח.
 // חודשים עבריים ואותיות עבריות יושלמו בקבצים נפרדים בהמשך.
 
@@ -13,10 +13,10 @@ const RAML_FORMS_BASIC = {
     zodiac: "קשת",
     element: "אש",
     direction: "מזרח",
-    color: "צהוב",
-    taste: "חמוץ",
+    color: "צהוב ולבן",
+    taste: "מתוק",
     bodyPart: "ראש",
-    source: "القول الجامع"
+    source: "כשף אל-אסרר עמ' 68–69"
   },
 
   "2122": {
@@ -26,12 +26,12 @@ const RAML_FORMS_BASIC = {
     statusHebrew: "רע",
     planet: "מאדים",
     zodiac: "עקרב",
-    element: "רוח",
+    element: "אוויר",
     direction: "מערב",
     color: "אדום",
-    taste: "חמוץ",
-    bodyPart: "טבור",
-    source: "القول الجامع"
+    taste: "מרירות",
+    bodyPart: "כבד",
+    source: "כשף אל-אסרר עמ' 79–80"
   },
 
   "1122": {
@@ -43,25 +43,25 @@ const RAML_FORMS_BASIC = {
     zodiac: "אריה",
     element: "אש",
     direction: "מזרח",
-    color: "צהוב",
-    taste: "מלוח",
-    bodyPart: "כתף ימין",
-    source: "القول الجامع"
+    color: "ירוק ולבן",
+    taste: "מרירות",
+    bodyPart: "ירך ימין",
+    source: "כשף אל-אסרר עמ' 82–85"
   },
 
   "2212": {
     key: "2212",
     hebrew: "לבן",
     arabic: "البياض",
-    statusHebrew: "טוב",
+    statusHebrew: "נטייה לטוב",
     planet: "לבנה",
     zodiac: "סרטן",
     element: "מים",
     direction: "צפון",
     color: "לבן",
     taste: "בלי טעם",
-    bodyPart: "חזה",
-    source: "القول الجامع"
+    bodyPart: "בטן",
+    source: "כשף אל-אסרר עמ' 81–82"
   },
 
   "1212": {
@@ -69,14 +69,14 @@ const RAML_FORMS_BASIC = {
     hebrew: "ממון יוצא",
     arabic: "القبض الخارج",
     statusHebrew: "רע",
-    planet: "זנב",
+    planet: "ראש",
     zodiac: "דלי",
     element: "אש",
     direction: "מזרח",
     color: "צהוב",
-    taste: "מלוח",
-    bodyPart: "ירך ימין",
-    source: "القول الجامع"
+    taste: "חמוץ ומלוח",
+    bodyPart: "רקה שמאלית",
+    source: "כשף אל-אסרר עמ' 71"
   },
 
   "2112": {
@@ -86,12 +86,12 @@ const RAML_FORMS_BASIC = {
     statusHebrew: "נטייה לטוב",
     planet: "כוכב / מרקורי",
     zodiac: "תאומים",
-    element: "רוח",
+    element: "אוויר",
     direction: "מערב",
-    color: "שחור",
-    taste: "רך / לח",
-    bodyPart: "בטן וצלעות",
-    source: "القول الجامع"
+    color: "צהוב וירוק",
+    taste: "מתוק",
+    bodyPart: "נחיר ימין / שכמות",
+    source: "כשף אל-אסרר עמ' 91–92"
   },
 
   "1112": {
@@ -99,14 +99,14 @@ const RAML_FORMS_BASIC = {
     hebrew: "סף יוצא",
     arabic: "العتبة الخارجة / راية الحزن",
     statusHebrew: "רע",
-    planet: "ראש",
+    planet: "זנב",
     zodiac: "גדי",
-    element: "אש",
-    direction: "מזרח",
-    color: "צהוב",
-    taste: "מלוח",
-    bodyPart: "שוק שמאל",
-    source: "القول الجامع"
+    element: "אוויר",
+    direction: "מערב",
+    color: "צהוב וירוק",
+    taste: "מאוסים",
+    bodyPart: "קרסול שמאל",
+    source: "כשף אל-אסרר עמ' 86–88"
   },
 
   "2221": {
@@ -120,8 +120,8 @@ const RAML_FORMS_BASIC = {
     direction: "דרום",
     color: "שחור",
     taste: "מר",
-    bodyPart: "ערווה",
-    source: "القول الجامع"
+    bodyPart: "האחור",
+    source: "כשף אל-אסרר עמ' 78–79"
   },
 
   "1221": {
@@ -134,9 +134,9 @@ const RAML_FORMS_BASIC = {
     element: "עפר",
     direction: "דרום",
     color: "שחור",
-    taste: "מר",
-    bodyPart: "צוואר",
-    source: "القول الجامع"
+    taste: "חמוץ ומלוח",
+    bodyPart: "יד שמאל",
+    source: "כשף אל-אסרר עמ' 76–77"
   },
 
   "2121": {
@@ -148,25 +148,25 @@ const RAML_FORMS_BASIC = {
     zodiac: "אריה",
     element: "עפר",
     direction: "דרום",
-    color: "צהוב",
-    taste: "מתוק",
-    bodyPart: "ירך שמאל",
-    source: "القول الجامع"
+    color: "לבן",
+    taste: "חמוץ",
+    bodyPart: "מוח",
+    source: "כשף אל-אסרר עמ' 69–70"
   },
 
   "1121": {
     key: "1121",
     hebrew: "נלחם",
     arabic: "جودلة / كوسج",
-    statusHebrew: "נטייה לרע",
+    statusHebrew: "נטייה לטוב",
     planet: "נוגה",
     zodiac: "מאזניים",
-    element: "רוח",
-    direction: "מערב",
+    element: "אוויר",
+    direction: "מזרח",
     color: "אדום",
     taste: "דשן / שמנוני",
-    bodyPart: "יד ימין",
-    source: "القول الجامع"
+    bodyPart: "כתף ימין",
+    source: "כשף אל-אסרר עמ' 74–76, 133"
   },
 
   "2211": {
@@ -178,10 +178,10 @@ const RAML_FORMS_BASIC = {
     zodiac: "דגים",
     element: "מים",
     direction: "צפון",
-    color: "אדום",
-    taste: "דשן / שמנוני",
-    bodyPart: "כתף שמאל",
-    source: "כשף אל-אסרר עמ' 133"
+    color: "לבן",
+    taste: "מתוק",
+    bodyPart: "אוזן ימין",
+    source: "כשף אל-אסרר עמ' 85–86"
   },
 
   "1211": {
@@ -193,10 +193,10 @@ const RAML_FORMS_BASIC = {
     zodiac: "טלה",
     element: "מים",
     direction: "צפון",
-    color: "אדום",
-    taste: "חמוץ",
-    bodyPart: "יד שמאל",
-    source: "القول الجامع"
+    color: "שחרחר-זהבהב",
+    taste: "מרירות",
+    bodyPart: "כתף שמאל",
+    source: "כשף אל-אסרר עמ' 93–94"
   },
 
   "2111": {
@@ -206,12 +206,12 @@ const RAML_FORMS_BASIC = {
     statusHebrew: "טוב",
     planet: "צדק",
     zodiac: "שור",
-    element: "רוח",
+    element: "אוויר",
     direction: "מערב",
-    color: "צהוב",
+    color: "כחול",
     taste: "מתוק",
-    bodyPart: "שוק ימין",
-    source: "כשף אל-אסרר עמ' 133"
+    bodyPart: "רגל ימין",
+    source: "כשף אל-אסרר עמ' 89–91"
   },
 
   "1111": {
@@ -225,8 +225,8 @@ const RAML_FORMS_BASIC = {
     direction: "צפון",
     color: "לבן",
     taste: "בלי טעם",
-    bodyPart: "איבר המין",
-    source: "القول الجامع"
+    bodyPart: "רגל שמאל",
+    source: "כשף אל-אסרר עמ' 88–89"
   },
 
   "2222": {
@@ -238,10 +238,10 @@ const RAML_FORMS_BASIC = {
     zodiac: "בתולה",
     element: "עפר",
     direction: "דרום",
-    color: "שחור",
-    taste: "רך / לח",
+    color: "כחול",
+    taste: "מאוסים",
     bodyPart: "גב",
-    source: "القול الجامع"
+    source: "כשף אל-אסרר עמ' 72–74"
   }
 };
 
