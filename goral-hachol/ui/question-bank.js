@@ -779,7 +779,7 @@ window.QUESTION_BANK = [
   // בית 1 — חיים
   {
     id: 'q-lifespan-remaining',
-    category: 'health', houseId: 1, topicId: 'nativity',
+    category: 'health', houseId: 1, topicId: 'birthNativity',
     label: 'כמה שנות חיים נותרו?',
     desc: 'אורך חיים שנותר — לפי צורות קצרות וארוכות בבית 1 (כשף עמ׳ 178)',
     clientFields: [],
@@ -1034,14 +1034,14 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-gift',
-    category: 'general', houseId: 5, topicId: 'childrenPregnancy',
+    category: 'general', houseId: 5, topicId: 'loveHate',
     label: 'האם אקבל מתנה / חסד?',
     desc: 'בית 5 = "המתנות, העדינות, הנדיבות" — האם יגיע חסד, מתנה, טובה (הגדרת הבית, עמ׳ 48)',
     clientFields: [{ id: 'giftFrom', label: 'ממי?', type: 'text', placeholder: 'שם / קשר' }],
   },
   {
     id: 'q-neighbor',
-    category: 'family', houseId: 5, topicId: 'childrenPregnancy',
+    category: 'family', houseId: 5, topicId: 'loveHate',
     label: 'מצב השכן / השכנות?',
     desc: 'בית 5 = "השכנים" — מצב השכן, האם יש שכנות טובה (הגדרת הבית, עמ׳ 48)',
     clientFields: [{ id: 'neighborIssue', label: 'מה השאלה?', type: 'textarea', placeholder: 'רעש / גדר / קשרים / עזרה...' }],
@@ -1112,7 +1112,7 @@ window.QUESTION_BANK = [
   // ── בית 9 — נסיעה: "המדעים, הפילוסופיה, השירה, הכרת המדע" ──
   {
     id: 'q-academic',
-    category: 'general', houseId: 9, topicId: 'travel',
+    category: 'general', houseId: 9, topicId: 'religion',
     label: 'האם הלימוד / המחקר / המדע יצליח?',
     desc: 'בית 9 = "המדעים, הפילוסופיה, השירה, הכרת המדע" — שאלות על לימוד אקדמי (הגדרת הבית, עמ׳ 50-51)',
     clientFields: [{ id: 'studyField', label: 'תחום הלימוד / המחקר', type: 'text', placeholder: 'רפואה / משפטים / כלכלה / גורל החול...' }],
