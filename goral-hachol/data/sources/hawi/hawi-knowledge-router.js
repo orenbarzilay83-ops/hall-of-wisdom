@@ -399,23 +399,25 @@ const TOPIC_TO_KNOWLEDGE_IDS = {
     'hawi-dhamir-directions-validation',
   ],
   loan: [
-    'hawi-question-death-inheritance',
+    'hawi-question-loan',
     'hawi-question-commerce',
     'hawi-house-states-colors',
     'hawi-dhamir-directions-validation',
   ],
   religion: [
-    'hawi-question-travel-extra',
+    'hawi-question-religion',
     'hawi-house-states-colors',
     'hawi-dhamir-directions-validation',
     'hawi-planetary-correspondences',
   ],
   lostAnimal: [
+    'hawi-question-lost-animal',
     'hawi-question-illness',
     'hawi-house-states-colors',
     'hawi-dhamir-directions-validation',
   ],
   motherRules: [
+    'hawi-question-mother-rules',
     'hawi-authority-state-rulers',
     'hawi-house-states-colors',
     'hawi-dhamir-directions-validation',
