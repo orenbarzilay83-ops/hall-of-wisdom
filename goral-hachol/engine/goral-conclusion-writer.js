@@ -2934,10 +2934,49 @@ function gradeToVerdict(grade) {
 }
 
 export function writeClientReadingHebrew(result) {
-  const { topicId, boardAnalysis, clientContext, kashfVerdict, kashfSupportAnalysis } = result;
+  const { topicId, boardAnalysis, clientContext, kashfVerdict, kashfSupportAnalysis, spiritualDiagnosis } = result;
   if (!boardAnalysis?.hasBoard) return null;
-  // הנרטיב הרוחני המלא מגיע מ-buildSpiritualNarrative — אין צורך בבלוק כפול שגורם לסתירות
-  if (topicId === 'spiritualDiagnostics') return null;
+
+  if (topicId === 'spiritualDiagnostics') {
+    const sd = spiritualDiagnosis;
+    if (!sd) return null;
+    const clientName = clean(clientContext?.clientName || '');
+    const prefix = clientName ? `${clientName}, ` : '';
+    const sdParas = [];
+    const sdGradeMap = {
+      'strong-suspicion': 'הלוח מראה סימנים ברורים לפגיעה רוחנית.',
+      'medium-suspicion': 'הלוח מראה חשד לפגיעה רוחנית — יש אותות שכדאי לבדוק.',
+      'weak-suspicion': 'הלוח מראה סימנים קלים בלבד — אין הכרעה חדה.',
+      'mostly-clear': 'הלוח לא מראה פגיעה רוחנית ברורה.',
+      mixed: 'הלוח מראה תמונה מעורבת — לא ניתן להכריע בוודאות.',
+    };
+    sdParas.push(prefix + (sdGradeMap[sd.grade] || sdGradeMap.mixed));
+    const isqatR = sd.isqatResult;
+    // Strip "אם נשאר X — " prefix and trailing period from isqat text for clean client output
+    const isqatText = isqatR?.hebrewText
+      ? isqatR.hebrewText.replace(/^אם נשאר \d+ — /, '').replace(/\.$/, '')
+      : null;
+    if (isqatText) {
+      if (isqatR.isSpiritual === false) {
+        sdParas.push(`בדיקת הלוח הפנימית מצביעה על: ${isqatText}.`);
+      } else if (sd.grade === 'strong-suspicion' || sd.grade === 'medium-suspicion') {
+        sdParas.push(`בדיקת הלוח הפנימית: ${isqatText}.`);
+      }
+    }
+    const hasPhysicalIsqat = isqatText && isqatR?.isSpiritual === false;
+    if (sd.grade === 'strong-suspicion' || sd.grade === 'medium-suspicion') {
+      if (hasPhysicalIsqat) {
+        sdParas.push('מומלץ לבדוק הן את הבריאות הגופנית הן את הצד הרוחני — שניהם עולים מהלוח.');
+      } else {
+        sdParas.push('מומלץ לפנות לאיש רוחני מנוסה ולטפל בנושא בהקדם.');
+      }
+    } else if (sd.grade === 'mostly-clear') {
+      sdParas.push('אם בכל זאת חש בקשיים — כדאי לבדוק גורמים טבעיים ואת הבריאות הכללית.');
+    } else {
+      sdParas.push('כדאי לשמור על עצמך ולחזור לבדיקה אם הקשיים ממשיכים.');
+    }
+    return sdParas.join('\n');
+  }
 
   const name      = clean(clientContext?.clientName || '');
   const quesited  = clean(clientContext?.quesitedName || '');

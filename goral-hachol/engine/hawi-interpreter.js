@@ -6004,6 +6004,7 @@ export function interpretHawiQuestionInitial(question, board = null) {
       clientContext,
       boardScore,
       question,
+      spiritualDiagnosis,
     }),
   };
 }
