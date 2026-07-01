@@ -842,6 +842,27 @@ window.QUESTION_BANK = [
     desc: 'בית 3 = "התנועות הקרובות" — נסיעה קצרה/מקומית, שונה מנסיעה ארוכה (בית 9)',
     clientFields: [F.destination, F.travelDate],
   },
+  {
+    id: 'q-knowledge-success',
+    category: 'general', houseId: 3, topicId: 'siblings',
+    label: 'האם הלמידה / הידע יצלחו?',
+    desc: 'בית 3 = "הדעת, ההבנה, המחשבה" — שאלה על לימוד, ידע, הצלחה אינטלקטואלית (הגדרת הבית)',
+    clientFields: [{ id: 'studyTopic', label: 'נושא הלמידה / הידע', type: 'text', placeholder: 'לימודים / מקצוע / מיומנות...' }],
+  },
+  {
+    id: 'q-spiritual-path',
+    category: 'spiritual', houseId: 3, topicId: 'siblings',
+    label: 'האם הדרך הרוחנית / הלימוד הפנימי יצלחו?',
+    desc: 'בית 3 = "העבודה הרוחנית" — שאלה על מסע פנימי, לימוד רוחני, תיקון הנפש (הגדרת הבית)',
+    clientFields: [F.matter],
+  },
+  {
+    id: 'q-joy-coming',
+    category: 'general', houseId: 3, topicId: 'siblings',
+    label: 'האם תבוא שמחה בקרוב?',
+    desc: 'בית 3 = "השמחה" — האם יגיע אירוע שמח, טובה, אושר (הגדרת הבית)',
+    clientFields: [F.matter],
+  },
 
   // בית 5 — וולד
   {
