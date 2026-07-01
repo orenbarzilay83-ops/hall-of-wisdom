@@ -420,7 +420,7 @@ window.QUESTION_BANK = [
   {
     id: 'q-marriage-thayib',
     category: 'love', houseId: 7, topicId: 'marriage',
-    label: 'ת׳יב או בכר (האישה)?',
+    label: 'האם האישה בתולה או גרושה / אלמנה?',
     desc: 'האם האישה נשואה היתה קודם — לפי כפל 13×7 (PDF1 עמ׳ 44)',
     clientFields: [F.candidate],
   },
