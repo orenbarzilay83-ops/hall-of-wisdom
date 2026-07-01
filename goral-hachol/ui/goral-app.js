@@ -21,11 +21,11 @@ const TOPIC_CARDS = [
     { topicId: 'foundations',   label: 'מצב כללי / שאלה חופשית' },
     { topicId: 'birthNativity', label: 'מולד — גורל האדם' },
   ]},
-  { house: 2,  title: 'כסף ופרנסה',     desc: 'ממון, רכוש, עסקים, מסחר',              defaultTopicId: 'commerce',          subTopics: null },
-  { house: 3,  title: 'אחים ושכנים',    desc: 'אחים, שכנים, קרובים, מכתבים',          defaultTopicId: 'siblings',          subTopics: null },
-  { house: 4,  title: 'בית ונכסים',     desc: 'דירה, נדל"ן, ירושה, דברים נסתרים',    defaultTopicId: 'hiddenTreasure',    subTopics: null },
-  { house: 5,  title: 'ילדים והריון',   desc: 'לידה, הריון, ילדים, שמחה',             defaultTopicId: 'childrenPregnancy', subTopics: null },
-  { house: 6,  title: 'מחלה ובריאות',  desc: 'חולי, מצב רפואי, החלמה',               defaultTopicId: 'illness',           subTopics: [
+  { house: 2,  title: 'בית הממון',              desc: 'ממון, רכוש, עסקים, מסחר',              defaultTopicId: 'commerce',          subTopics: null },
+  { house: 3,  title: 'בית האחים',             desc: 'אחים, שכנים, קרובים, מכתבים',          defaultTopicId: 'siblings',          subTopics: null },
+  { house: 4,  title: 'בית ההורים',            desc: 'הורים, נכסים, ירושה, דברים נסתרים',    defaultTopicId: 'hiddenTreasure',    subTopics: null },
+  { house: 5,  title: 'בית הבנים',             desc: 'לידה, הריון, ילדים, שמחה',             defaultTopicId: 'childrenPregnancy', subTopics: null },
+  { house: 6,  title: 'בית המחלות',            desc: 'חולי, מצב רפואי, החלמה',               defaultTopicId: 'illness',           subTopics: [
     { topicId: 'illness',              label: 'מחלה / בריאות' },
     { topicId: 'spiritualDiagnostics', label: 'עין הרע / כישוף / ג׳ין' },
     { topicId: 'lostAnimal',           label: 'בהמה / חיה אבודה' },
@@ -38,18 +38,18 @@ const TOPIC_CARDS = [
     { topicId: 'partnership',          label: 'שותפות' },
     { topicId: 'enemies',              label: 'אויב' },
   ]},
-  { house: 8,  title: 'מוות וירושה',    desc: 'מוות, ירושה, פחד גדול, שינוי עמוק',   defaultTopicId: 'deathInheritance',  subTopics: null },
-  { house: 9,  title: 'נסיעה ומסע',     desc: 'יציאה, נסיעה, ים, דת, רוחניות',        defaultTopicId: 'travel',            subTopics: [
+  { house: 8,  title: 'בית המוות',              desc: 'מוות, ירושה, פחד גדול, שינוי עמוק',   defaultTopicId: 'deathInheritance',  subTopics: null },
+  { house: 9,  title: 'בית הנסיעה',            desc: 'יציאה, נסיעה, ים, דת, רוחניות',        defaultTopicId: 'travel',            subTopics: [
     { topicId: 'travel',               label: 'נסיעה / יציאה' },
     { topicId: 'seaVoyage',            label: 'מסע ים' },
     { topicId: 'missingPerson',        label: 'נעדר בדרך / נוסע שנעלם' },
   ]},
-  { house: 10, title: 'עבודה ומעמד',    desc: 'קריירה, שלטון, בעלי סמכות',            defaultTopicId: 'authorityState',    subTopics: [
+  { house: 10, title: 'בית הכבוד והרוממות',    desc: 'קריירה, שלטון, בעלי סמכות',            defaultTopicId: 'authorityState',    subTopics: [
     { topicId: 'authorityState',       label: 'תפקיד / שלטון / קריירה' },
     { topicId: 'yearlyForecast',       label: 'תחזית שנתית' },
   ]},
-  { house: 11, title: 'חברים ואהבה',    desc: 'חברים, קשרים, תקוות, אהבה',            defaultTopicId: 'loveHate',          subTopics: null },
-  { house: 12, title: 'אויבים וכלא',    desc: 'אויבים נסתרים, מאסר, סכנה',            defaultTopicId: 'enemies',           subTopics: [
+  { house: 11, title: 'בית התקווה והמשאלות',  desc: 'חברים, קשרים, תקוות, אהבה',            defaultTopicId: 'loveHate',          subTopics: null },
+  { house: 12, title: 'בית האויבים',           desc: 'אויבים נסתרים, מאסר, סכנה',            defaultTopicId: 'enemies',           subTopics: [
     { topicId: 'enemies',              label: 'אויבים נסתרים' },
     { topicId: 'prisoner',             label: 'מאסר / כלא' },
     { topicId: 'fear',                 label: 'פחד / סכנה' },
@@ -224,8 +224,8 @@ function showScreen(name) {
 
 // ─── מסך בחירת שאלה ────────────────────────────────────────────────────────
 const SHORT_HOUSE_TITLES = {
-  1: 'חיים', 2: 'כסף', 3: 'אחים', 4: 'בית', 5: 'ילדים', 6: 'בריאות',
-  7: 'זוגיות', 8: 'מוות', 9: 'נסיעה', 10: 'עבודה', 11: 'חברים', 12: 'אויבים',
+  1: 'חיים', 2: 'ממון', 3: 'אחים', 4: 'הורים', 5: 'בנים', 6: 'מחלות',
+  7: 'זוגיות', 8: 'מוות', 9: 'נסיעה', 10: 'כבוד', 11: 'תקווה', 12: 'אויבים',
 };
 
 function renderQuestionScreen() {
