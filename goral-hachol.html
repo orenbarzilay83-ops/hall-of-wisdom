@@ -749,6 +749,64 @@ body:has(#screen-open.active) .topbar { display: none !important; }
   }
   #menuGuideBtn { display: none !important; }
   #screen-guide { display: none !important; }
+
+  /* ── מסך בחירה ידנית — פחות גובה header, יותר מקום לגריד ── */
+  .select-parchment-content {
+    top: 33% !important;
+    bottom: 8% !important;
+  }
+
+  /* ── מודאל בחירה אוטומטית — כל האלמנטים קטנים יותר ── */
+  .auto-modal-panel {
+    padding: 20px 16px 16px !important;
+  }
+  .auto-modal-title {
+    font-size: 18px !important;
+    margin-bottom: 6px !important;
+  }
+  .auto-modal-sub {
+    font-size: 13px !important;
+    margin-bottom: 14px !important;
+  }
+  .auto-mini-slots {
+    gap: 6px !important;
+    margin-bottom: 14px !important;
+  }
+  .auto-mini-slot {
+    width: 60px !important;
+    min-height: 70px !important;
+  }
+  .auto-mini-slot .glyph {
+    width: 28px !important;
+    grid-template-rows: repeat(4, 6px) !important;
+    gap: 3px !important;
+  }
+  .auto-mini-slot .glyph .one { width: 5px !important; height: 5px !important; }
+  .auto-mini-slot .glyph .two { width: 20px !important; height: 4px !important; }
+  .auto-spinner-wrap {
+    width: 160px !important;
+    height: 160px !important;
+    margin-bottom: 14px !important;
+  }
+  .auto-spinner-wrap .glyph {
+    width: 66px !important;
+    grid-template-rows: repeat(4, 14px) !important;
+    gap: 9px !important;
+  }
+  .auto-spinner-wrap .glyph .one { width: 10px !important; height: 10px !important; }
+  .auto-spinner-wrap .glyph .two { width: 46px !important; height: 8px !important; }
+  .auto-stop-btn {
+    font-size: 16px !important;
+    padding: 10px !important;
+  }
+  .auto-proceed-row .btn {
+    font-size: 14px !important;
+    padding: 9px !important;
+  }
+  .auto-close-btn {
+    font-size: 14px !important;
+    padding: 9px !important;
+  }
 }
 
 /* ── iPad only (min-width 768px — לא iPhone) ── */
@@ -2430,14 +2488,14 @@ body:has(#screen-open.active) .topbar { display: none !important; }
         <div id="boardResult"></div>
         <div id="errorBox" class="error"></div>
 
-        <div class="actions">
+        <div class="actions" style="display:none">
           <button class="btn gray" id="backSelectBtn" type="button">חזרה לבחירת אמהות</button>
           <button class="btn primary" id="archiveBtn" type="button">ארכיון קריאות</button>
           <button class="btn gray" id="saveClientBtn" type="button">👤 שמור לקוח</button>
           <button class="btn gray" id="clearArchiveBtn" type="button">נקה ארכיון</button>
         </div>
 
-        <div style="margin-top:10px">
+        <div style="display:none">
           <button class="btn primary" id="showKundaliBtn" type="button" style="width:100%;font-size:15px;">
             ♐ לוח קונדלי — מפה אסטרולוגית הודית
           </button>

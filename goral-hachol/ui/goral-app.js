@@ -1153,6 +1153,12 @@ window.boardClearArchive = () => {
   if (!confirm("למחוק את כל הארכיון?")) return;
   if (window.GORAL_CLIENT_ARCHIVE?.clearGoralArchive) window.GORAL_CLIENT_ARCHIVE.clearGoralArchive();
 };
+window.boardToggleKundali = () => {
+  if (!window._lastReading) return;
+  const content = document.getElementById('kundaliScreenContent');
+  if (content) content.innerHTML = buildKundaliHtml(window._lastReading);
+  showScreen("kundali");
+};
 
 document.getElementById("showKundaliBtn").addEventListener("click", () => {
   if (!window._lastReading) return;
