@@ -581,7 +581,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-profession',
-    category: 'career', houseId: 9, topicId: 'foundations',
+    category: 'career', houseId: 9, topicId: 'authorityState',
     label: 'מה המקצוע המתאים לי?',
     desc: 'לפי כוכב בית 9+10+11 — חקלאות, רפואה, מדעים, אמנות (כשף עמ׳ 254)',
     clientFields: [],
@@ -1080,7 +1080,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-past-events',
-    category: 'general', houseId: 7, topicId: 'foundations',
+    category: 'general', houseId: 7, topicId: 'completion',
     label: 'מה קרה בעבר / מה היה?',
     desc: 'בית 7 = "דברים שעברו" — בדיקת עבר לאימות הקריאה או גילוי מה שהיה (הגדרת הבית, עמ׳ 49)',
     clientFields: [F.matter],
