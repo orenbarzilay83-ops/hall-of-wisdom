@@ -1511,7 +1511,7 @@ const FIGURE_EXTRA = {
   '2222': { fortune: 'ממוזג',     fClass: 'mixed', movement: 'קבועה',  letters: ['מ'], gender: 'דו-מיני', gClass: 'neutral', zodiac: 'בתולה',   zodiacPos: 'האבט' },
 };
 const DIR_CLASS = { 'צפון': 'north', 'דרום': 'south', 'מזרח': 'east', 'מערב': 'west' };
-const ELEMENT_CLASS = { 'אש': 'fire', 'מים': 'water', 'רוח': 'air', 'אוויר': 'air', 'עפר': 'earth' };
+const ELEMENT_CLASS = { 'אש': 'fire', 'מים': 'water', 'רוח': 'air', 'עפר': 'earth' };
 
 let guideRendered = false;
 function renderGuide() {
@@ -1648,7 +1648,7 @@ function renderFiguresGuide() {
       <strong>נכנסת</strong> (داخلة) = משפיעה כלפי פנים &nbsp;|&nbsp;
       <strong>קבועה</strong> (ثابتة) = יציבה &nbsp;|&nbsp;
       <strong>מתהפכת</strong> (منقلبة) = שני פנים<br>
-      <strong>יסוד:</strong> 🔴 אש · 💧 מים · 🌬 אוויר · 🟤 עפר
+      <strong>יסוד:</strong> 🔴 אש · 💧 מים · 🌬 רוח · 🟤 עפר
       &nbsp;|&nbsp; <strong>כיוון:</strong> 🔵 צפון · 🟠 דרום · 🟢 מזרח · 🟣 מערב<br>
       <strong>כוכב</strong> = הגורם השמימי השולט
       &nbsp;|&nbsp; <strong>מזל</strong> = מזל הגלגל השייך לצורה
