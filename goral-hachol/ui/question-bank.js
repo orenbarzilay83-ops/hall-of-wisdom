@@ -973,4 +973,203 @@ window.QUESTION_BANK = [
     desc: 'בית 12 + בית 8 נחס = עונש קרוב; מיטיב = יינצל (כשף עמ׳ 273)',
     clientFields: [{ id: 'punishmentContext', label: 'ההקשר', type: 'textarea', placeholder: 'מה ההאשמה / האיום...' }],
   },
+
+  // ════════════════════════════════════════════════════════════════
+  // סקר מלא — הגדרות 12 הבתים (עמ׳ 47-52) — נושאים חסרים
+  // ════════════════════════════════════════════════════════════════
+
+  // ── בית 2 — ממון: "העוזרים, ביאת הנעדר, כתבי השלטון, מחלוקות הנשים" ──
+  {
+    id: 'q-helpers',
+    category: 'general', houseId: 2, topicId: 'commerce',
+    label: 'האם אמצא עוזר / עזרה?',
+    desc: 'בית 2 = "העוזרים" — האם יבוא מי שיסייע בעניין (הגדרת הבית, עמ׳ 47)',
+    clientFields: [F.matter],
+  },
+  {
+    id: 'q-missing-money',
+    category: 'money', houseId: 2, topicId: 'commerce',
+    label: 'האם הכסף / הרכוש שנעלם יחזור?',
+    desc: 'בית 2 = "ביאת הנעדר" — חזרת ממון שנעלם, הושקע או נגנב (הגדרת הבית, עמ׳ 47)',
+    clientFields: [F.debtAmount, { id: 'lostMoneyContext', label: 'הקשר', type: 'textarea', placeholder: 'כסף שניתן / הושקע / נגנב...' }],
+  },
+  {
+    id: 'q-official-docs',
+    category: 'money', houseId: 2, topicId: 'commerce',
+    label: 'האם האישורים / המסמכים יתקבלו?',
+    desc: 'בית 2 = "כתבי השלטון" — ויזה, רישיון, חוזה, אישור רשמי (הגדרת הבית, עמ׳ 47)',
+    clientFields: [{ id: 'docType', label: 'סוג המסמך', type: 'text', placeholder: 'רישיון / אישור / ויזה / חוזה...' }],
+  },
+  {
+    id: 'q-women-dispute',
+    category: 'conflict', houseId: 2, topicId: 'disputes',
+    label: 'מחלוקת עם אישה — מי ינצח?',
+    desc: 'בית 2 = "מחלוקות הנשים" — סכסוך מול אישה / נשים (הגדרת הבית, עמ׳ 47)',
+    clientFields: [F.opponent, F.disputeIssue],
+  },
+
+  // ── בית 4 — הורים: "החקלאות, תכלית כל דבר ואחרית עניינו" ──
+  {
+    id: 'q-agriculture',
+    category: 'money', houseId: 4, topicId: 'hiddenTreasure',
+    label: 'שאלת חקלאות / אדמה — מה ייצא?',
+    desc: 'בית 4 = "נכסי הקרקע, האדמות, החקלאות" — יבול, השקיה, בעלות אדמה (הגדרת הבית, עמ׳ 48)',
+    clientFields: [{ id: 'landTopic', label: 'נושא השאלה', type: 'textarea', placeholder: 'יבול / השקיה / בעלות / אדמה...' }],
+  },
+  {
+    id: 'q-matter-end',
+    category: 'general', houseId: 4, topicId: 'foundations',
+    label: 'מה תהיה אחרית / תוצאת העניין?',
+    desc: 'בית 4 = "תכלית כל דבר ואחרית עניינו" — מה יהיה הסוף (הגדרת הבית, עמ׳ 48)',
+    clientFields: [F.matter],
+  },
+
+  // ── בית 5 — בנים: "האהבה, החשק, המתנות, השכנים" ──
+  {
+    id: 'q-love-desire',
+    category: 'love', houseId: 5, topicId: 'loveHate',
+    label: 'האם יש בינינו אהבה / חיבה?',
+    desc: 'בית 5 = "האהבה, החשק, הידידויות" — קסם ומשיכה הדדית (הגדרת הבית, עמ׳ 48)',
+    clientFields: [F.loveWho, F.loveRelation],
+  },
+  {
+    id: 'q-gift',
+    category: 'general', houseId: 5, topicId: 'childrenPregnancy',
+    label: 'האם אקבל מתנה / חסד?',
+    desc: 'בית 5 = "המתנות, העדינות, הנדיבות" — האם יגיע חסד, מתנה, טובה (הגדרת הבית, עמ׳ 48)',
+    clientFields: [{ id: 'giftFrom', label: 'ממי?', type: 'text', placeholder: 'שם / קשר' }],
+  },
+  {
+    id: 'q-neighbor',
+    category: 'family', houseId: 5, topicId: 'childrenPregnancy',
+    label: 'מצב השכן / השכנות?',
+    desc: 'בית 5 = "השכנים" — מצב השכן, האם יש שכנות טובה (הגדרת הבית, עמ׳ 48)',
+    clientFields: [{ id: 'neighborIssue', label: 'מה השאלה?', type: 'textarea', placeholder: 'רעש / גדר / קשרים / עזרה...' }],
+  },
+
+  // ── בית 6 — מחלות: "הדבר האובד, פרידת האהובים" ──
+  {
+    id: 'q-lost-item',
+    category: 'conflict', houseId: 6, topicId: 'lostAnimal',
+    label: 'האם החפץ האבוד יימצא?',
+    desc: 'בית 6 = "הדבר האובד" — חפץ שאבד (לא בהמה); בית 6+2 מורים על מציאתו (הגדרת הבית, עמ׳ 49)',
+    clientFields: [F.stolen, F.stolenWhen, { id: 'lostWhere', label: 'היכן נראה לאחרונה?', type: 'text', placeholder: 'מקום' }],
+  },
+  {
+    id: 'q-separation-loved',
+    category: 'love', houseId: 6, topicId: 'marriage',
+    label: 'האם הפרידה מאהוב/ה מוחלטת?',
+    desc: 'בית 6 = "פרידת האהובים" — האם הניתוק מאדם אהוב סופי או זמני (הגדרת הבית, עמ׳ 49)',
+    clientFields: [F.candidate, { id: 'separationContext', label: 'הקשר', type: 'textarea', placeholder: 'סיבה / נסיבות הפרידה...' }],
+  },
+
+  // ── בית 7 — זוגיות: "הנעשקים, תיאור מי שאינו מוכר, דברים שעברו" ──
+  {
+    id: 'q-wronged',
+    category: 'conflict', houseId: 7, topicId: 'disputes',
+    label: 'האם נפגעתי / נעשקתי עוול?',
+    desc: 'בית 7 = "הנעשקים" — האם עשו לי עוול; בית 1 מול 7 מכריע (הגדרת הבית, עמ׳ 49)',
+    clientFields: [F.opponent, { id: 'wrongContext', label: 'במה נפגעת?', type: 'textarea', placeholder: 'תיאור הפגיעה...' }],
+  },
+  {
+    id: 'q-stranger-desc',
+    category: 'general', houseId: 7, topicId: 'marriage',
+    label: 'מה תיאורו של אדם שאינו מוכר?',
+    desc: 'בית 7 = "תיאור מי שאינו מוכר" — גוף, אופי, מעמד של אדם זר (הגדרת הבית, עמ׳ 49)',
+    clientFields: [{ id: 'strangerContext', label: 'הקשר', type: 'text', placeholder: 'שכן חדש / מועמד / יריב...' }],
+  },
+  {
+    id: 'q-past-events',
+    category: 'general', houseId: 7, topicId: 'foundations',
+    label: 'מה קרה בעבר / מה היה?',
+    desc: 'בית 7 = "דברים שעברו" — בדיקת עבר לאימות הקריאה או גילוי מה שהיה (הגדרת הבית, עמ׳ 49)',
+    clientFields: [F.matter],
+  },
+
+  // ── בית 8 — מוות: "נדוניית הנשים, יציאה מן הטובות, ריחוק מן הבריות" ──
+  {
+    id: 'q-dowry',
+    category: 'family', houseId: 8, topicId: 'deathInheritance',
+    label: 'מה גובה הנדוניה / המוהר?',
+    desc: 'בית 8 = "נדוניית הנשים" — גובה המוהר, הנדוניה ותנאי הנישואין (הגדרת הבית, עמ׳ 50)',
+    clientFields: [F.candidate, { id: 'dowryContext', label: 'הקשר', type: 'text', placeholder: 'חתן / כלה / שדכנות...' }],
+  },
+  {
+    id: 'q-lose-fortune',
+    category: 'money', houseId: 8, topicId: 'deathInheritance',
+    label: 'האם אאבד את הרכוש / המזל?',
+    desc: 'בית 8 = "יציאה מן הטובות, מעבר מן הטוב אל הרע" — סכנת אובדן (הגדרת הבית, עמ׳ 50)',
+    clientFields: [F.matter],
+  },
+  {
+    id: 'q-isolation',
+    category: 'health', houseId: 8, topicId: 'illness',
+    label: 'האם הריחוק מן הבריות יעבור?',
+    desc: 'בית 8 = "ריחוק מן הבריות" — בדידות, ניתוק חברתי, הסתגרות (הגדרת הבית, עמ׳ 50)',
+    clientFields: [F.symptoms, F.duration],
+  },
+
+  // ── בית 9 — נסיעה: "המדעים, הפילוסופיה, השירה, הכרת המדע" ──
+  {
+    id: 'q-academic',
+    category: 'general', houseId: 9, topicId: 'travel',
+    label: 'האם הלימוד / המחקר / המדע יצליח?',
+    desc: 'בית 9 = "המדעים, הפילוסופיה, השירה, הכרת המדע" — שאלות על לימוד אקדמי (הגדרת הבית, עמ׳ 50-51)',
+    clientFields: [{ id: 'studyField', label: 'תחום הלימוד / המחקר', type: 'text', placeholder: 'רפואה / משפטים / כלכלה / גורל החול...' }],
+  },
+
+  // ── בית 10 — כבוד: "הפרסום, הקול הנשמע, הזיכרון הטוב" ──
+  {
+    id: 'q-fame',
+    category: 'career', houseId: 10, topicId: 'authorityState',
+    label: 'האם שמי ייוודע / יתפרסם?',
+    desc: 'בית 10 = "הפרסום, הקול הנשמע, הזיכרון הטוב" — מוניטין, שם טוב (הגדרת הבית, עמ׳ 51)',
+    clientFields: [{ id: 'fameContext', label: 'ההקשר', type: 'textarea', placeholder: 'בעסקים / בפוליטיקה / ברשתות חברתיות...' }],
+  },
+
+  // ── בית 11 — תקווה: "ניצחון, פשרה, הבטחות" ──
+  {
+    id: 'q-compromise',
+    category: 'conflict', houseId: 11, topicId: 'loveHate',
+    label: 'האם תהיה פשרה / הסדר?',
+    desc: 'בית 11 = "פשרה, עדינות, נדיבות" — האם שני הצדדים יגיעו להסדר (הגדרת הבית, עמ׳ 52)',
+    clientFields: [F.opponent, F.disputeIssue],
+  },
+  {
+    id: 'q-victory-goal',
+    category: 'conflict', houseId: 11, topicId: 'loveHate',
+    label: 'האם אנצח / אצליח בעניין?',
+    desc: 'בית 11 = "ניצחון, חוזק, כל כבוד בעניינים" — עמידה ונצחון במטרה (הגדרת הבית, עמ׳ 52)',
+    clientFields: [F.matter],
+  },
+
+  // ── בית 12 — אויבים: "לשון הרע, ווסווס, מה שאינו נשלם, בעלי שני פנים" ──
+  {
+    id: 'q-slander',
+    category: 'conflict', houseId: 12, topicId: 'enemies',
+    label: 'האם מישהו מדבר עלי לשון הרע?',
+    desc: 'בית 12 = "לשון הרע, קנאה, בעלי שתי לשונות" — גילוי מי מרכל (הגדרת הבית, עמ׳ 52)',
+    clientFields: [{ id: 'slanderSuspect', label: 'מי חשוד?', type: 'text', placeholder: 'שם / קשר (אם יש)' }],
+  },
+  {
+    id: 'q-obsession',
+    category: 'spiritual', houseId: 12, topicId: 'spiritualDiagnostics',
+    label: 'האם החרדות / הווסווס הם השפעה רוחנית?',
+    desc: 'בית 12 = "הווסווס, בלבול השכל, הבדידות, המחשבה" — חרדה, מחשבות טורדניות (הגדרת הבית, עמ׳ 52)',
+    clientFields: [F.spiritSymptoms, F.spiritWhen],
+  },
+  {
+    id: 'q-stalled',
+    category: 'general', houseId: 12, topicId: 'fear',
+    label: 'מדוע הדבר נתקע / לא מתקיים?',
+    desc: 'בית 12 = "מה שאינו נשלם, העיכוב, הסיבוך" — גורם לעיכוב (הגדרת הבית, עמ׳ 52)',
+    clientFields: [F.matter],
+  },
+  {
+    id: 'q-two-faced',
+    category: 'conflict', houseId: 12, topicId: 'enemies',
+    label: 'האם יש מסביבי אדם בעל פנים כפולות?',
+    desc: 'בית 12 = "בעלי שני פנים ובעלי שתי לשונות" — מנגן, מרכל, בוגד (הגדרת הבית, עמ׳ 52)',
+    clientFields: [{ id: 'twofacedContext', label: 'הקשר', type: 'text', placeholder: 'שם / תיאור היחסים' }],
+  },
 ];
