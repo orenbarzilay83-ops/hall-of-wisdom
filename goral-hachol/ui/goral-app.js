@@ -1122,6 +1122,7 @@ document.getElementById('autoRestartBtn').addEventListener('click', () => {
 document.getElementById('autoCloseBtn').addEventListener('click', _autoClose);
 
 document.getElementById("backOpenBtn").addEventListener("click", () => showScreen("open"));
+document.getElementById("backFromOpenBtn").addEventListener("click", () => showScreen("question"));
 window.boardGoBack = () => showScreen("select");
 document.getElementById("backSelectBtn")?.addEventListener("click", () => showScreen("select"));
 document.getElementById("clearSelectionBtn").addEventListener("click", () => {
