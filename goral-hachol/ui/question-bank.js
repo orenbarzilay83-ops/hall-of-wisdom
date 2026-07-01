@@ -762,4 +762,13 @@ window.QUESTION_BANK = [
       { id: 'trip2', label: 'מסע שני', type: 'text', placeholder: 'יעד / מטרה' },
     ],
   },
+
+  // בית 6 — פעולה נסתרת
+  {
+    id: 'q-hidden-action',
+    category: 'spiritual', houseId: 6, topicId: 'spiritualDiagnostics',
+    label: 'האם יש פעולה נסתרת מאחורי הדבר?',
+    desc: 'האם מישהו פועל בנסתר נגד העניין — בתים 4+6+8+מאזן (כשף עמ׳ 166)',
+    clientFields: [F.matter, F.spiritSymptoms],
+  },
 ];
