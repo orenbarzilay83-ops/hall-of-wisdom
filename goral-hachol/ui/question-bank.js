@@ -677,4 +677,89 @@ window.QUESTION_BANK = [
     desc: 'מי גרם לאסיר להיכלא — PDF1 עמ׳ 54',
     clientFields: [F.prisonerName],
   },
+
+  // ════════════════════════════════════════════════════════════════
+  // 💰 שאלות חדשות מכשף אל-אסרר
+  // ════════════════════════════════════════════════════════════════
+
+  // בית 2 — ממון
+  {
+    id: 'q-money-halal',
+    category: 'money', houseId: 2, topicId: 'commerce',
+    label: 'האם הממון מותר או אסור?',
+    desc: 'בית 9+11 — נוטה לתשיעי = מותר, לאחד-עשר = אסור (כשף עמ׳ 182)',
+    clientFields: [F.matter],
+  },
+
+  // בית 3/4 — מעבר ונכסים
+  {
+    id: 'q-move-home',
+    category: 'general', houseId: 3, topicId: 'siblings',
+    label: 'האם לעבור דירה / בית?',
+    desc: 'בית 1+2 (כאן) מול בית 7+8 (שם) — כשף עמ׳ 182',
+    clientFields: [
+      { id: 'currentHome', label: 'כתובת נוכחית / שכונה', type: 'text', placeholder: 'עיר / שכונה' },
+      { id: 'newHome', label: 'לאן שוקלים לעבור?', type: 'text', placeholder: 'כתובת / שכונה / עיר' },
+    ],
+  },
+  {
+    id: 'q-sell-property',
+    category: 'money', houseId: 4, topicId: 'hiddenTreasure',
+    label: 'האם ימכר הנכס / הבית?',
+    desc: 'בית 4 (הנכס) + בית 7 (הקונה) + בית 8 (התמורה) — כשף עמ׳ 218',
+    clientFields: [
+      { id: 'propertyType', label: 'סוג הנכס', type: 'text', placeholder: 'דירה / קרקע / חנות...' },
+      { id: 'propertyPrice', label: 'מחיר מבוקש', type: 'text', placeholder: 'סכום / טווח' },
+    ],
+  },
+
+  // בית 7 — קנייה ומכירה / שוק
+  {
+    id: 'q-buy-sell',
+    category: 'money', houseId: 7, topicId: 'commerce',
+    label: 'קנייה — האם העסקה תושלם?',
+    desc: 'בית 1+2 (קונה) מול בית 7+8 (מוכר) + בית 10 (מתווך) — כשף עמ׳ 218',
+    clientFields: [
+      { id: 'dealWhat', label: 'מה רוכשים?', type: 'text', placeholder: 'נדל"ן / סחורה / רכב...' },
+      { id: 'dealPrice', label: 'מחיר / תנאים', type: 'text', placeholder: 'סכום / תנאי התשלום' },
+    ],
+  },
+  {
+    id: 'q-market-price',
+    category: 'money', houseId: 7, topicId: 'yearlyForecast',
+    label: 'יוקר / זול — מה יהיה מחיר הסחורה?',
+    desc: 'בית 2+5+10+11 — יסוד אש/רוח = יוקר, מים/עפר = זול (כשף עמ׳ 218–223)',
+    clientFields: [
+      { id: 'goodType', label: 'סוג הסחורה / המוצר', type: 'text', placeholder: 'חיטה / זהב / נדל"ן...' },
+      { id: 'forecastPeriod', label: 'תקופה', type: 'text', placeholder: 'חודשים / עונה / שנה' },
+    ],
+  },
+
+  // בית 8 — הלוואה
+  {
+    id: 'q-loan-give',
+    category: 'money', houseId: 8, topicId: 'deathInheritance',
+    label: 'האם ראוי לתת הלוואה?',
+    desc: 'בית 7+8 או הכאה עם 3 — מיטיב = ייתן ויטיב; מזיק = סכנה (כשף עמ׳ 235)',
+    clientFields: [F.debtAmount, F.debtPerson],
+  },
+  {
+    id: 'q-loan-return',
+    category: 'money', houseId: 8, topicId: 'deathInheritance',
+    label: 'האם הלווה יחזיר את הכסף?',
+    desc: 'בית 2+8 — צורה מיטיבה = יוכל להחזיר; מזיקה = יתקשה (כשף עמ׳ 235)',
+    clientFields: [F.debtAmount, F.debtPerson],
+  },
+
+  // בית 9 — שני מסעות
+  {
+    id: 'q-two-trips',
+    category: 'travel', houseId: 9, topicId: 'travel',
+    label: 'שני מסעות — איזה מהם עדיף?',
+    desc: 'בית 9 מול בית 7 — הוצאת צורה ביניהם; מיטיב = מסע א עדיף (כשף עמ׳ 247)',
+    clientFields: [
+      { id: 'trip1', label: 'מסע ראשון', type: 'text', placeholder: 'יעד / מטרה' },
+      { id: 'trip2', label: 'מסע שני', type: 'text', placeholder: 'יעד / מטרה' },
+    ],
+  },
 ];
