@@ -25,6 +25,7 @@ import * as LOAN from './hawi-question-loan.js';
 import * as LOST_ANIMAL from './hawi-question-lost-animal.js';
 import * as RELIGION from './hawi-question-religion.js';
 import * as MOTHER_RULES from './hawi-question-mother-rules.js';
+import * as SPIRITUAL_DIAGNOSTICS from './hawi-question-spiritual-diagnostics.js';
 
 function findQuestionRule(value) {
   if (!value || typeof value !== 'object') {
@@ -82,6 +83,7 @@ export const HAWI_QUESTION_RULES_LIST = [
   resolveQuestionRule(LOST_ANIMAL, 'hawi-question-lost-animal.js'),
   resolveQuestionRule(RELIGION, 'hawi-question-religion.js'),
   resolveQuestionRule(MOTHER_RULES, 'hawi-question-mother-rules.js'),
+  resolveQuestionRule(SPIRITUAL_DIAGNOSTICS, 'hawi-question-spiritual-diagnostics.js'),
 ];
 
 export const HAWI_QUESTION_RULES_BY_ID = Object.fromEntries(

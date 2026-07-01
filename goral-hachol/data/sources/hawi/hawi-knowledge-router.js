@@ -336,9 +336,10 @@ const TOPIC_TO_KNOWLEDGE_IDS = {
     'hawi-planetary-correspondences',
   ],
   spiritualDiagnostics: [
+    'hawi-question-spiritual-diagnostics',
+    'hawi-spiritual-diagnostics',
     'hawi-house-states-colors',
     'hawi-planetary-correspondences',
-    'hawi-question-hidden-treasure-extra',
   ],
   marriage: [
     'hawi-question-marriage',

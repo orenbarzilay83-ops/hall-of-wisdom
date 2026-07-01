@@ -94,6 +94,7 @@ import { HAWI_QUESTION_LOAN } from './question-rules/hawi-question-loan.js';
 import { HAWI_QUESTION_LOST_ANIMAL } from './question-rules/hawi-question-lost-animal.js';
 import { HAWI_QUESTION_RELIGION } from './question-rules/hawi-question-religion.js';
 import { HAWI_QUESTION_MOTHER_RULES } from './question-rules/hawi-question-mother-rules.js';
+import { HAWI_QUESTION_SPIRITUAL_DIAGNOSTICS } from './question-rules/hawi-question-spiritual-diagnostics.js';
 
 export const HAWI_EXTENDED_KNOWLEDGE_LIST = [
   HAWI_INTRODUCTION_MAHW_THABAT,
@@ -128,6 +129,7 @@ export const HAWI_EXTENDED_KNOWLEDGE_LIST = [
   HAWI_QUESTION_LOST_ANIMAL,
   HAWI_QUESTION_RELIGION,
   HAWI_QUESTION_MOTHER_RULES,
+  HAWI_QUESTION_SPIRITUAL_DIAGNOSTICS,
 ];
 
 export const HAWI_EXTENDED_KNOWLEDGE_BY_ID = Object.fromEntries(
