@@ -771,4 +771,136 @@ window.QUESTION_BANK = [
     desc: 'האם מישהו פועל בנסתר נגד העניין — בתים 4+6+8+מאזן (כשף עמ׳ 166)',
     clientFields: [F.matter, F.spiritSymptoms],
   },
+
+  // ════════════════════════════════════════════════════════════════
+  // שאלות נוספות מסקר מלא — כשף אל-אסרר
+  // ════════════════════════════════════════════════════════════════
+
+  // בית 1 — חיים
+  {
+    id: 'q-lifespan-remaining',
+    category: 'health', houseId: 1, topicId: 'nativity',
+    label: 'כמה שנות חיים נותרו?',
+    desc: 'אורך חיים שנותר — לפי צורות קצרות וארוכות בבית 1 (כשף עמ׳ 178)',
+    clientFields: [],
+  },
+
+  // בית 3 — אחים / מקום
+  {
+    id: 'q-stay-place',
+    category: 'general', houseId: 3, topicId: 'siblings',
+    label: 'האם כדאי להישאר במקום זה?',
+    desc: 'בית 1+3 — האם להישאר או לעזוב את המקום הנוכחי (כשף עמ׳ 178)',
+    clientFields: [{ id: 'stayPlace', label: 'המקום / הנסיבות', type: 'text', placeholder: 'עיר / מדינה / בית / עבודה...' }],
+  },
+
+  // בית 5 — וולד
+  {
+    id: 'q-child-survive',
+    category: 'family', houseId: 5, topicId: 'childrenPregnancy',
+    label: 'האם הוולד יחיה / יהיה בריא?',
+    desc: 'בית 5+7+8 — האם הנולד ישרוד ויהיה בריא (כשף עמ׳ 192)',
+    clientFields: [F.pregnancyConcern, F.pregnancyMonths],
+  },
+
+  // בית 7 — זוגיות
+  {
+    id: 'q-adultery',
+    category: 'love', houseId: 7, topicId: 'marriage',
+    label: 'האם האישה בגדה / נואפת?',
+    desc: 'בדיקת נאמנות הזוגית — בית 7+4+11; צורות נחס = בגידה (כשף עמ׳ 208)',
+    clientFields: [F.candidate],
+  },
+  {
+    id: 'q-divorce',
+    category: 'love', houseId: 7, topicId: 'marriage',
+    label: 'האם הנישואין יתפרקו / גירושין?',
+    desc: 'האם הזוג יתגרש — בית 1+7 נחס + עד 13 נחס = גירושין (כשף עמ׳ 210-211)',
+    clientFields: [F.candidate, F.obstacle],
+  },
+  {
+    id: 'q-woman-grace',
+    category: 'love', houseId: 7, topicId: 'marriage',
+    label: 'האם האישה תמצא חן בעיני האיש?',
+    desc: 'קסם ואהבה הדדית — בית 1+7 + כוכב הבית (כשף עמ׳ 206)',
+    clientFields: [F.candidate, F.candidateAge],
+  },
+  {
+    id: 'q-reconciliation',
+    category: 'conflict', houseId: 7, topicId: 'disputes',
+    label: 'האם יהיה פיוס בסכסוך?',
+    desc: 'האם שני הצדדים יתפייסו — בית 1+7 מיטיב + עד 13 מיטיב = פיוס (כשף עמ׳ 212)',
+    clientFields: [F.opponent, F.disputeIssue],
+  },
+
+  // בית 9 — נסיעה
+  {
+    id: 'q-sea-or-land',
+    category: 'travel', houseId: 9, topicId: 'travel',
+    label: 'האם הנסיעה בים או ביבשה?',
+    desc: 'יסוד צורה בבית 9: מאאי=ים, תראבי/נארי=יבשה (כשף עמ׳ 239)',
+    clientFields: [F.destination],
+  },
+  {
+    id: 'q-travel-danger',
+    category: 'travel', houseId: 9, topicId: 'travel',
+    label: 'האם יש סכנה בדרך?',
+    desc: 'בית 9 נחס + צורה מזיקה = סכנה; בית 7 נחס = אויב בדרך (כשף עמ׳ 242)',
+    clientFields: [F.destination, F.travelDate, F.travelType],
+  },
+  {
+    id: 'q-travel-profit',
+    category: 'travel', houseId: 9, topicId: 'travel',
+    label: 'האם הנוסע ירוויח?',
+    desc: 'בית 2+9 מיטיב = רווח; נחס = הפסד (כשף עמ׳ 239)',
+    clientFields: [F.destination, F.travelPurpose],
+  },
+  {
+    id: 'q-traveler-return',
+    category: 'travel', houseId: 9, topicId: 'travel',
+    label: 'האם הנוסע יחזור?',
+    desc: 'בית 1+9 דאח׳ל = חזרה; ח׳ארג׳ = יישאר בחוץ (כשף עמ׳ 244)',
+    clientFields: [F.destination, F.travelDate],
+  },
+  {
+    id: 'q-dream-omen',
+    category: 'general', houseId: 9, topicId: 'travel',
+    label: 'חלום — האם הוא בשורה טובה?',
+    desc: 'חלום טוב או רע — בית 9 מיטיב = בשורה; נחס = אזהרה (כשף עמ׳ 253)',
+    clientFields: [F.dreamDesc],
+  },
+
+  // בית 10 — סמכות / תפקיד
+  {
+    id: 'q-position-keep',
+    category: 'career', houseId: 10, topicId: 'authorityState',
+    label: 'האם המינוי / התפקיד ישמר?',
+    desc: 'בית 10 ת׳אבת = יישמר; מנקלב = יאבד; עד 13 מכריע (כשף עמ׳ 257)',
+    clientFields: [F.positionName, F.positionConcern],
+  },
+
+  // בית 11 — פרנסה
+  {
+    id: 'q-livelihood-arrive',
+    category: 'money', houseId: 11, topicId: 'loveHate',
+    label: 'האם הפרנסה תגיע?',
+    desc: 'בית 11 מיטיב = פרנסה תגיע; נחס = עיכוב או מניעה (כשף עמ׳ 268)',
+    clientFields: [F.matter],
+  },
+
+  // בית 12 — אויבים ועונשים
+  {
+    id: 'q-enemy-exists',
+    category: 'conflict', houseId: 12, topicId: 'enemies',
+    label: 'האם יש לי אויב?',
+    desc: 'האם קיים אויב — בית 1+7+12; נחס בבית 12 = אויב פעיל (כשף עמ׳ 271)',
+    clientFields: [F.enemyWho, F.enemyWhat],
+  },
+  {
+    id: 'q-fear-punishment',
+    category: 'conflict', houseId: 12, topicId: 'fear',
+    label: 'האם יש לפחד מן העונש?',
+    desc: 'בית 12 + בית 8 נחס = עונש קרוב; מיטיב = יינצל (כשף עמ׳ 273)',
+    clientFields: [{ id: 'punishmentContext', label: 'ההקשר', type: 'textarea', placeholder: 'מה ההאשמה / האיום...' }],
+  },
 ];
