@@ -320,17 +320,16 @@ export const KASHF_CHAPTER_MAP = [
     confidence:    'derived',
   },
 
-  {
-    topicId:       'completion',
-    kashfChapter:  1,
-    chapterNameHebrew: 'האם הדבר יסתיים / יושלם',
-    chapterNameArabic: 'فصل في تمام الأمر',
-    verdictHouses: [1, 15],
-    verdictMethod: 'combine',
-    verdictType:   'happen-or-not',
-    sourceRef:     'כשף-אל-אסראר — הדיין (B15) כפסיקה מוחלטת; שאלה כללית (עמ׳ 166–178)',
-    confidence:    'derived',
-  },
+  // ⛔ completion — הוסר: הרשומה המקורית השתמשה ב-verdictHouses:[1,15] שמקורה
+  // מכלל "האם האדם נשאר או נוסע" (כשף עמ' 166) — לא מכלל "האם העניין יושלם".
+  //
+  // הכלל הנכון לפי כשף עמ' 173:
+  //   "קח את ראש הראשון, החמישי, התשיעי והעשירי, והעמד מהם צורה.
+  //    אם יצאה חיצונית — העניין לא יושלם; ואם יצאה פנימית — יושלם."
+  //   שיטה חלופית: "קח צורה מן הראשון והשישה-עשר" (בית 1 + בית 16, לא 15).
+  //
+  // שתי השיטות שונות ממה שיושם — דרושה מימוש חדש לפני הוספה חזרה.
+  // עד אז: הלוח הרגיל (דיין + בדיקת הגעה) מספיק ולא יסתור את עצמו.
 
   {
     topicId:       'deathInheritance',
@@ -368,17 +367,9 @@ export const KASHF_CHAPTER_MAP = [
     confidence:    'derived',
   },
 
-  {
-    topicId:       'foundations',
-    kashfChapter:  1,
-    chapterNameHebrew: 'פתיחה כללית / יסודות',
-    chapterNameArabic: 'فصل في الأساس',
-    verdictHouses: [1, 15],
-    verdictMethod: 'combine',
-    verdictType:   'happen-or-not',
-    sourceRef:     'כשף-אל-אסראר — שער שישי, פרק 1: הנפש והשואל (עמ׳ 166–178)',
-    confidence:    'derived',
-  },
+  // ⛔ foundations — הוסר: אותה בעיה כמו completion — verdictHouses:[1,15]
+  // מקורה בכלל "נשאר/נוסע" ולא מכלל "האם הדבר יושלם". ראה הערה מעל.
+  // יש לממש לפי כשף עמ' 173 לפני הוספה חזרה.
 
 ];
 
