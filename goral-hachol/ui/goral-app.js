@@ -270,7 +270,10 @@ function renderQuestionScreen() {
           class="qcard${isSelected ? ' selected' : ''}"
           data-qid="${q.id}"
           style="border-color:${isSelected ? 'var(--navy)' : (cat.border || '#ccc')}">
-          <span class="qcard-label">${escapeHtml(q.label)}</span>
+          <div class="qcard-body">
+            <span class="qcard-label">${escapeHtml(q.label)}</span>
+            ${q.desc ? `<span class="qcard-desc">${escapeHtml(q.desc)}</span>` : ''}
+          </div>
           <span class="qcard-badge">בית ${q.houseId}</span>
         </button>`;
       }).join('');
