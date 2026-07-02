@@ -475,6 +475,7 @@ function describeCoreHouses(analysis, topicId, question) {
     if (whoLooksAtWhomKashf) {
       parts.push(`מי מסתכל על מי (כשף אל-אסרר עמ׳ 170):\n  ${whoLooksAtWhomKashf.outputHebrew}`);
     }
+    // partnership uses same whoLooksAtWhomKashf field
 
     const moneySourceKashf = analysis.moneySourceKashf;
     if (moneySourceKashf) {
@@ -2135,7 +2136,7 @@ function buildNarrativeByTopic(result) {
       if (clothingBestFiguresKashf?.verdict === 'best-clothing') push(`צורת הבית 5 ללבוש ושמחה (כשף עמ׳ 196):\n  ${ind(clothingBestFiguresKashf.outputHebrew)}`);
     }
 
-    if (is('marriage','loveHate','foundations','generalReading')) {
+    if (is('marriage','loveHate','foundations','generalReading','partnership')) {
       const whoLooksAtWhomKashf = boardAnalysis.whoLooksAtWhomKashf;
       if (whoLooksAtWhomKashf) push(`מי מסתכל על מי (כשף עמ׳ 170):\n  ${ind(whoLooksAtWhomKashf.outputHebrew)}`);
     }

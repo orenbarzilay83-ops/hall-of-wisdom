@@ -5208,7 +5208,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     ? computeClothingBestFiguresKashf(board.chart) : null;
 
   // ── BATCH I: 7 new Kashf-sourced analysis functions ──────────────────────────
-  const whoLooksAtWhomKashf = (['marriage', 'loveHate', 'foundations', 'generalReading'].includes(topicId))
+  const whoLooksAtWhomKashf = (['marriage', 'loveHate', 'foundations', 'generalReading', 'partnership'].includes(topicId))
     ? computeWhoLooksAtWhomKashf(board.chart) : null;
 
   const moneySourceKashf = (['commerce', 'generalReading', 'foundations', 'loan'].includes(topicId))

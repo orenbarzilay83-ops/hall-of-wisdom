@@ -141,13 +141,6 @@ window.QUESTION_BANK = [
     clientFields: [F.birthDate],
   },
   {
-    id: 'q-who-looks',
-    category: 'general', houseId: 1, topicId: 'marriage',
-    label: 'מי מסתכל על מי?',
-    desc: 'האם אדם מסתכל על השואל, או ההיפך — לפי שורת האש בצורות',
-    clientFields: [F.candidate],
-  },
-  {
     id: 'q-move-city',
     category: 'general', houseId: 3, topicId: 'siblings',
     label: 'האם כדאי לעבור מקום?',
@@ -286,6 +279,13 @@ window.QUESTION_BANK = [
     label: 'האם השותפות כדאית?',
     desc: 'האם השותפות תצלח, מי ירוויח יותר',
     clientFields: [F.partnerName, F.partnerBiz, F.partnerConcern],
+  },
+  {
+    id: 'q-who-looks-biz',
+    category: 'money', houseId: 7, topicId: 'partnership',
+    label: 'האם הצד השני עדיין מעוניין?',
+    desc: 'מי מביט על מי — האם השותף / הקונה / הצד השני מכוון אליך או עבר הלאה (כשף עמ׳ 170)',
+    clientFields: [F.partnerName, F.partnerConcern],
   },
   {
     id: 'q-inheritance',
@@ -437,6 +437,13 @@ window.QUESTION_BANK = [
     label: 'האם הוא/היא אוהב/ת אותי?',
     desc: 'עוצמת האהבה, הדדיות — בתים 1+5+11',
     clientFields: [F.loveWho, F.loveRelation, F.loveDuration],
+  },
+  {
+    id: 'q-who-looks-love',
+    category: 'love', houseId: 7, topicId: 'marriage',
+    label: 'האם הוא/היא חושב/ת עלי?',
+    desc: 'מי מביט על מי — האם הצד השני מכוון אליך או אל אחר/ת. שימושי לזוגיות, פירוד, שלום בית (כשף עמ׳ 170)',
+    clientFields: [F.candidate],
   },
   {
     id: 'q-friends',
