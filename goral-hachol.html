@@ -849,18 +849,22 @@ body:has(#screen-open.active) .topbar { display: none !important; }
   /* פונטים גדולים יותר בשדות קלט */
   #screen-open .open-form input,
   #screen-open .open-form textarea {
-    font-size: 1.15rem !important;
-    height: 46px !important;
+    font-size: 1.3rem !important;
+    height: 50px !important;
   }
   /* כפתורי פרופיל — פונט גדול + גובה */
   #screen-open .open-form .profile-btn {
-    font-size: 1.05rem !important;
-    height: 46px !important;
+    font-size: 1.2rem !important;
+    height: 50px !important;
   }
   /* כפתורי פעולה */
   #screen-open .open-form .btn {
-    font-size: 1rem !important;
-    height: 46px !important;
+    font-size: 1.15rem !important;
+    height: 50px !important;
+  }
+  /* כותרות שדות */
+  #screen-open .open-label {
+    font-size: 1.05rem !important;
   }
   /* שורות 2-כפתורים (מין / ילדים) — כפתורים ממורכזים ולא ארוכים */
   #screen-open .open-row.open-row-2 {
@@ -2748,7 +2752,9 @@ body:has(#screen-open.active) .topbar { display: none !important; }
     var L = { IW:1448, IH:1086, PARCH_L:290, PARCH_R:1160, BANNER_T:273, BANNER_B:320, FORM_T:335, FORM_B:1050 };
 
     function layoutOpenScreen() {
-      var vw = window.innerWidth, vh = window.innerHeight;
+      var vp = window.visualViewport;
+      var vw = vp ? vp.width  : window.innerWidth;
+      var vh = vp ? vp.height : window.innerHeight;
       var c = (vw > vh) ? L : P;
 
       var scale, ox;
@@ -2783,7 +2789,14 @@ body:has(#screen-open.active) .topbar { display: none !important; }
 
     document.addEventListener('DOMContentLoaded', layoutOpenScreen);
     window.addEventListener('resize', layoutOpenScreen);
-    window.addEventListener('orientationchange', function() { setTimeout(layoutOpenScreen, 350); });
+    window.addEventListener('orientationchange', function() {
+      setTimeout(layoutOpenScreen, 300);
+      setTimeout(layoutOpenScreen, 700);
+    });
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', layoutOpenScreen);
+      window.visualViewport.addEventListener('scroll', layoutOpenScreen);
+    }
     document.addEventListener('DOMContentLoaded', function() {
       var screenOpen = document.getElementById('screen-open');
       if (!screenOpen) return;
