@@ -46,6 +46,10 @@ function deriveVerdictFigure(board, verdictHouses) {
   const patterns = verdictHouses.map((h) => getHousePattern(board, h));
   if (patterns.some((p) => !p)) return null;
 
+  // שני בתים עם אותה צורה → שילוב תמיד מניב 2222 (תוצאה מנוונת).
+  // מצב זה מטופל על ידי בדיקת ההגעה (תחסיל) — לא על ידי שיטת כשף.
+  if (patterns.length >= 2 && patterns.every((p) => p === patterns[0])) return null;
+
   const combined = patterns.reduce((acc, p) =>
     acc ? combineRamlPatterns(acc, p) : p
   , null);
