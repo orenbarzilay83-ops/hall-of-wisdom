@@ -1598,7 +1598,17 @@ function buildNarrativeByTopic(result) {
     .replace(/\s*\((?:القول الجامع|כשף|حاوي|חאוי|PDF[12])[^)]+\)/g, '')
     .trim();
 
-  // ── 0. KASHF-AL-ASRAR VERDICT BLOCK (if available) ──────────────
+  // ── 0. הגעה ישירה — תחסיל חזק ביותר (לפני כל פסיקה) ────────────
+  // כשיש הגעה ישירה (אותה צורה בבית 1 ובבית הנשאל), זהו הסימן החזק ביותר
+  // בכל שיטות הרמל — הוא מופיע לפני פסיקת כשף ולפני הדיין.
+  {
+    const tahasilEarly = boardAnalysis?.tahasil;
+    if (tahasilEarly?.tahasilStatus === 'direct') {
+      push(`⬛ הגעה ישירה (تحصيل): ${tahasilEarly.tahasilHebrew}`);
+    }
+  }
+
+  // ── 0.1. KASHF-AL-ASRAR VERDICT BLOCK (if available) ──────────────
   const kashfBlock = buildKashfVerdictBlock(kashfVerdict, kashfSupportAnalysis);
   if (kashfBlock) push(kashfBlock);
 
@@ -1894,7 +1904,12 @@ function buildNarrativeByTopic(result) {
   }
 
   // ── 7. TAHASIL ───────────────────────────────────────────────────
-  push(tahasilParagraph(boardAnalysis));
+  // הגעה ישירה כבר הוצגה בחלק 0 (ראשית הנרטיב) — לא חוזרים עליה.
+  if (boardAnalysis?.tahasil?.tahasilStatus !== 'direct') {
+    push(tahasilParagraph(boardAnalysis));
+  } else if (boardAnalysis?.tahasil?.hayulaActive) {
+    push(`⚠ מניעה (حيلولة): ${boardAnalysis.tahasil.hayulaHebrew}`);
+  }
 
   // ── 8. DHAMIR ────────────────────────────────────────────────────
   push(dhamirParagraph(boardAnalysis, judgeVerdict));
@@ -2717,6 +2732,10 @@ export function writeShortClientVerdict(result) {
       const h5cp = getHouseFromBoard(boardAnalysis, 5);
       const h9cp = getHouseFromBoard(boardAnalysis, 9);
 
+      // הגעה ישירה — מוצגת ראשונה כי היא הסימן החזק ביותר
+      if (tahasil?.tahasilStatus === 'direct') {
+        lines.push(`הגעה ישירה: ${tahasil.tahasilHebrew}`);
+      }
       if (h1)   lines.push(figLine(h1,   `${name || asker} (בית 1)`));
       if (h5cp) lines.push(figLine(h5cp, 'תוצאה / מה ייצא (בית 5)'));
       if (h9cp) lines.push(figLine(h9cp, 'מסע / עתיד הדבר (בית 9)'));
@@ -2724,7 +2743,10 @@ export function writeShortClientVerdict(result) {
       else if (jTone > 0) lines.push('הדיין: הדבר יושלם — הלוח נוטה לחיוב.');
       else if (jTone < 0) lines.push('הדיין: הדבר לא יושלם — יש מניעה.');
       else lines.push('הדיין ממוזג — השלמת הדבר לא ודאית.');
-      if (tahasil?.tahasilHebrew) lines.push(`בדיקת ההגעה: ${tahasil.tahasilHebrew}.`);
+      // הגעה לא-ישירה — מוצגת בסוף (הישירה כבר הוצגה למעלה)
+      if (tahasil?.tahasilHebrew && tahasil.tahasilStatus !== 'direct') {
+        lines.push(`בדיקת ההגעה: ${tahasil.tahasilHebrew}.`);
+      }
       break;
     }
 
