@@ -283,8 +283,8 @@ window.QUESTION_BANK = [
   {
     id: 'q-who-looks-biz',
     category: 'money', houseId: 7, topicId: 'partnership',
-    label: 'האם הצד השני עדיין מעוניין?',
-    desc: 'מי מביט על מי — האם השותף / הקונה / הצד השני מכוון אליך או עבר הלאה (כשף עמ׳ 170)',
+    label: 'לאן פנויה תשומת הלב של הצד השני?',
+    desc: 'האם השותף / הקונה / הצד השני עדיין מתמקד בך ובעסקה, או שכבר עבר הלאה לכיוון אחר (כשף עמ׳ 170)',
     clientFields: [F.partnerName, F.partnerConcern],
   },
   {
@@ -441,8 +441,8 @@ window.QUESTION_BANK = [
   {
     id: 'q-who-looks-love',
     category: 'love', houseId: 7, topicId: 'marriage',
-    label: 'האם הוא/היא חושב/ת עלי?',
-    desc: 'מי מביט על מי — האם הצד השני מכוון אליך או אל אחר/ת. שימושי לזוגיות, פירוד, שלום בית (כשף עמ׳ 170)',
+    label: 'לאן פונה תשומת ליבו/ה — אלי או להלאה?',
+    desc: 'האם הצד השני עדיין חושב עלייך ומכוון אליך, או שכבר עבר/ה הלאה. שימושי לזוגיות, פירוד, שלום בית (כשף עמ׳ 170)',
     clientFields: [F.candidate],
   },
   {
