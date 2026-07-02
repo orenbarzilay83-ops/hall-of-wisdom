@@ -100,7 +100,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-success',
-    category: 'general', houseId: 1, topicId: 'foundations',
+    category: 'general', houseId: 1, topicId: 'completion',
     label: 'האם הדבר יצליח?',
     desc: 'האם הצורך יתמלא — לפי סעד/נחס ויתדות',
     clientFields: [F.matter],
@@ -121,7 +121,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-promise',
-    category: 'general', houseId: 9, topicId: 'foundations',
+    category: 'general', houseId: 9, topicId: 'completion',
     label: 'האם יקיים את ההבטחה?',
     desc: 'האם מי שנתן הבטחה יעמוד בה',
     clientFields: [F.promiseDesc],
@@ -139,13 +139,6 @@ window.QUESTION_BANK = [
     label: 'מה גורלי מלידה?',
     desc: 'ניתוח מולד — גורל האדם, אופיו, מה ייחודי בו',
     clientFields: [F.birthDate],
-  },
-  {
-    id: 'q-who-looks',
-    category: 'general', houseId: 1, topicId: 'marriage',
-    label: 'מי מסתכל על מי?',
-    desc: 'האם אדם מסתכל על השואל, או ההיפך — לפי שורת האש בצורות',
-    clientFields: [F.candidate],
   },
   {
     id: 'q-move-city',
@@ -288,6 +281,13 @@ window.QUESTION_BANK = [
     clientFields: [F.partnerName, F.partnerBiz, F.partnerConcern],
   },
   {
+    id: 'q-who-looks-biz',
+    category: 'money', houseId: 7, topicId: 'partnership',
+    label: 'לאן פנויה תשומת הלב של הצד השני?',
+    desc: 'האם השותף / הקונה / הצד השני עדיין מתמקד בך ובעסקה, או שכבר עבר הלאה לכיוון אחר (כשף עמ׳ 170)',
+    clientFields: [F.partnerName, F.partnerConcern],
+  },
+  {
     id: 'q-inheritance',
     category: 'money', houseId: 2, topicId: 'deathInheritance',
     label: 'ירושה — מי יורש ומה?',
@@ -394,7 +394,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-celebrations',
-    category: 'family', houseId: 5, topicId: 'childrenPregnancy',
+    category: 'family', houseId: 5, topicId: 'completion',
     label: 'האם תהיה שמחה / אירוע?',
     desc: 'שמחות, אירועים, ולימות, חתונות — בית 5',
     clientFields: [{ id: 'eventType', label: 'מהו האירוע?', type: 'text', placeholder: 'חתונה / בר-מצווה / מסיבה...' }],
@@ -437,6 +437,13 @@ window.QUESTION_BANK = [
     label: 'האם הוא/היא אוהב/ת אותי?',
     desc: 'עוצמת האהבה, הדדיות — בתים 1+5+11',
     clientFields: [F.loveWho, F.loveRelation, F.loveDuration],
+  },
+  {
+    id: 'q-who-looks-love',
+    category: 'love', houseId: 7, topicId: 'marriage',
+    label: 'לאן פונה תשומת ליבו/ה — אלי או להלאה?',
+    desc: 'האם הצד השני עדיין חושב עלייך ומכוון אליך, או שכבר עבר/ה הלאה. שימושי לזוגיות, פירוד, שלום בית (כשף עמ׳ 170)',
+    clientFields: [F.candidate],
   },
   {
     id: 'q-friends',
@@ -581,7 +588,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-profession',
-    category: 'career', houseId: 9, topicId: 'foundations',
+    category: 'career', houseId: 9, topicId: 'authorityState',
     label: 'מה המקצוע המתאים לי?',
     desc: 'לפי כוכב בית 9+10+11 — חקלאות, רפואה, מדעים, אמנות (כשף עמ׳ 254)',
     clientFields: [],
@@ -704,7 +711,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-sell-property',
-    category: 'money', houseId: 4, topicId: 'hiddenTreasure',
+    category: 'money', houseId: 4, topicId: 'commerce',
     label: 'האם ימכר הנכס / הבית?',
     desc: 'בית 4 (הנכס) + בית 7 (הקונה) + בית 8 (התמורה) — כשף עמ׳ 218',
     clientFields: [
@@ -738,14 +745,14 @@ window.QUESTION_BANK = [
   // בית 8 — הלוואה
   {
     id: 'q-loan-give',
-    category: 'money', houseId: 8, topicId: 'deathInheritance',
+    category: 'money', houseId: 8, topicId: 'loan',
     label: 'האם ראוי לתת הלוואה?',
     desc: 'בית 7+8 או הכאה עם 3 — מיטיב = ייתן ויטיב; מזיק = סכנה (כשף עמ׳ 235)',
     clientFields: [F.debtAmount, F.debtPerson],
   },
   {
     id: 'q-loan-return',
-    category: 'money', houseId: 8, topicId: 'deathInheritance',
+    category: 'money', houseId: 8, topicId: 'loan',
     label: 'האם הלווה יחזיר את הכסף?',
     desc: 'בית 2+8 — צורה מיטיבה = יוכל להחזיר; מזיקה = יתקשה (כשף עמ׳ 235)',
     clientFields: [F.debtAmount, F.debtPerson],
@@ -779,7 +786,7 @@ window.QUESTION_BANK = [
   // בית 1 — חיים
   {
     id: 'q-lifespan-remaining',
-    category: 'health', houseId: 1, topicId: 'nativity',
+    category: 'health', houseId: 1, topicId: 'birthNativity',
     label: 'כמה שנות חיים נותרו?',
     desc: 'אורך חיים שנותר — לפי צורות קצרות וארוכות בבית 1 (כשף עמ׳ 178)',
     clientFields: [],
@@ -952,7 +959,7 @@ window.QUESTION_BANK = [
   // בית 11 — פרנסה
   {
     id: 'q-livelihood-arrive',
-    category: 'money', houseId: 11, topicId: 'loveHate',
+    category: 'money', houseId: 11, topicId: 'commerce',
     label: 'האם הפרנסה תגיע?',
     desc: 'בית 11 מיטיב = פרנסה תגיע; נחס = עיכוב או מניעה (כשף עמ׳ 268)',
     clientFields: [F.matter],
@@ -1011,14 +1018,14 @@ window.QUESTION_BANK = [
   // ── בית 4 — הורים: "החקלאות, תכלית כל דבר ואחרית עניינו" ──
   {
     id: 'q-agriculture',
-    category: 'money', houseId: 4, topicId: 'hiddenTreasure',
+    category: 'money', houseId: 4, topicId: 'yearlyForecast',
     label: 'שאלת חקלאות / אדמה — מה ייצא?',
     desc: 'בית 4 = "נכסי הקרקע, האדמות, החקלאות" — יבול, השקיה, בעלות אדמה (הגדרת הבית, עמ׳ 48)',
     clientFields: [{ id: 'landTopic', label: 'נושא השאלה', type: 'textarea', placeholder: 'יבול / השקיה / בעלות / אדמה...' }],
   },
   {
     id: 'q-matter-end',
-    category: 'general', houseId: 4, topicId: 'foundations',
+    category: 'general', houseId: 4, topicId: 'completion',
     label: 'מה תהיה אחרית / תוצאת העניין?',
     desc: 'בית 4 = "תכלית כל דבר ואחרית עניינו" — מה יהיה הסוף (הגדרת הבית, עמ׳ 48)',
     clientFields: [F.matter],
@@ -1034,14 +1041,14 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-gift',
-    category: 'general', houseId: 5, topicId: 'childrenPregnancy',
+    category: 'general', houseId: 5, topicId: 'loveHate',
     label: 'האם אקבל מתנה / חסד?',
     desc: 'בית 5 = "המתנות, העדינות, הנדיבות" — האם יגיע חסד, מתנה, טובה (הגדרת הבית, עמ׳ 48)',
     clientFields: [{ id: 'giftFrom', label: 'ממי?', type: 'text', placeholder: 'שם / קשר' }],
   },
   {
     id: 'q-neighbor',
-    category: 'family', houseId: 5, topicId: 'childrenPregnancy',
+    category: 'family', houseId: 5, topicId: 'loveHate',
     label: 'מצב השכן / השכנות?',
     desc: 'בית 5 = "השכנים" — מצב השכן, האם יש שכנות טובה (הגדרת הבית, עמ׳ 48)',
     clientFields: [{ id: 'neighborIssue', label: 'מה השאלה?', type: 'textarea', placeholder: 'רעש / גדר / קשרים / עזרה...' }],
@@ -1050,7 +1057,7 @@ window.QUESTION_BANK = [
   // ── בית 6 — מחלות: "הדבר האובד, פרידת האהובים" ──
   {
     id: 'q-lost-item',
-    category: 'conflict', houseId: 6, topicId: 'lostAnimal',
+    category: 'conflict', houseId: 6, topicId: 'theft',
     label: 'האם החפץ האבוד יימצא?',
     desc: 'בית 6 = "הדבר האובד" — חפץ שאבד (לא בהמה); בית 6+2 מורים על מציאתו (הגדרת הבית, עמ׳ 49)',
     clientFields: [F.stolen, F.stolenWhen, { id: 'lostWhere', label: 'היכן נראה לאחרונה?', type: 'text', placeholder: 'מקום' }],
@@ -1080,7 +1087,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-past-events',
-    category: 'general', houseId: 7, topicId: 'foundations',
+    category: 'general', houseId: 7, topicId: 'completion',
     label: 'מה קרה בעבר / מה היה?',
     desc: 'בית 7 = "דברים שעברו" — בדיקת עבר לאימות הקריאה או גילוי מה שהיה (הגדרת הבית, עמ׳ 49)',
     clientFields: [F.matter],
@@ -1089,7 +1096,7 @@ window.QUESTION_BANK = [
   // ── בית 8 — מוות: "נדוניית הנשים, יציאה מן הטובות, ריחוק מן הבריות" ──
   {
     id: 'q-dowry',
-    category: 'family', houseId: 8, topicId: 'deathInheritance',
+    category: 'family', houseId: 8, topicId: 'marriage',
     label: 'מה גובה הנדוניה / המוהר?',
     desc: 'בית 8 = "נדוניית הנשים" — גובה המוהר, הנדוניה ותנאי הנישואין (הגדרת הבית, עמ׳ 50)',
     clientFields: [F.candidate, { id: 'dowryContext', label: 'הקשר', type: 'text', placeholder: 'חתן / כלה / שדכנות...' }],
@@ -1112,7 +1119,7 @@ window.QUESTION_BANK = [
   // ── בית 9 — נסיעה: "המדעים, הפילוסופיה, השירה, הכרת המדע" ──
   {
     id: 'q-academic',
-    category: 'general', houseId: 9, topicId: 'travel',
+    category: 'general', houseId: 9, topicId: 'completion',
     label: 'האם הלימוד / המחקר / המדע יצליח?',
     desc: 'בית 9 = "המדעים, הפילוסופיה, השירה, הכרת המדע" — שאלות על לימוד אקדמי (הגדרת הבית, עמ׳ 50-51)',
     clientFields: [{ id: 'studyField', label: 'תחום הלימוד / המחקר', type: 'text', placeholder: 'רפואה / משפטים / כלכלה / גורל החול...' }],

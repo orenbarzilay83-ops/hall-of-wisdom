@@ -53,6 +53,10 @@ const TOPIC_TO_HOUSE = {
   yearlyForecast:       10,
   loveHate:             11,
   fear:                 12,
+  loan:                  8,
+  religion:              9,
+  lostAnimal:            6,
+  motherRules:          10,
 };
 
 // מנקה את הטקסט ומקצר לתצוגה (תרגום v5 — טקסט נקי ללא markdown)
