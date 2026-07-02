@@ -242,6 +242,62 @@ input, select, textarea {
   .question-scroll-content { top: 12% !important; bottom: 10% !important; padding: 0 22% !important; }
 }
 /* ── תפילה ── */
+/* ─── גורל החול — שיטת כשף (מסך הצגה) ─── */
+.kashf-goral-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 56px);
+  padding: 24px 16px;
+  background: #04111f;
+  overflow-y: auto;
+}
+.kashf-goral-card {
+  background: #071e33;
+  border: 1px solid rgba(232,212,144,0.3);
+  border-radius: 12px;
+  padding: 32px 28px;
+  max-width: 520px;
+  width: 100%;
+  text-align: center;
+}
+.kashf-goral-badge {
+  display: inline-block;
+  background: rgba(232,212,144,0.12);
+  border: 1px solid rgba(232,212,144,0.38);
+  color: #e8d490;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+.kashf-goral-title {
+  color: #e8d490;
+  font-size: 22px;
+  font-weight: bold;
+  margin: 0 0 20px;
+  line-height: 1.4;
+}
+.kashf-goral-desc {
+  color: #b8c8d8;
+  font-size: 15px;
+  line-height: 1.85;
+  margin: 0 0 16px;
+  text-align: right;
+}
+.kashf-goral-actions {
+  margin: 24px 0 0;
+}
+.kashf-goral-note {
+  color: #5a7a9a;
+  font-size: 13px;
+  border-top: 1px solid rgba(232,212,144,0.12);
+  padding-top: 16px;
+  margin-top: 20px;
+}
+
 #screen-prayer {
   position: fixed !important;
   inset: 0 !important;
@@ -2321,8 +2377,11 @@ body:has(#screen-open.active) .topbar { display: none !important; }
         <button class="menu-item" id="menuPrayerBtn">
           <span class="menu-item-icon">🤲</span>תפילה לפני עשיית הגורל
         </button>
-        <button class="menu-item menu-item-active" id="menuGoralBtn">
-          <span class="menu-item-icon">✦</span>כניסה לגורל החול
+        <button class="menu-item menu-item-active" id="menuGoralHawiBtn">
+          <span class="menu-item-icon">✦</span>גורל החול — שיטת חאוי
+        </button>
+        <button class="menu-item" id="menuGoralKashfBtn">
+          <span class="menu-item-icon">◈</span>גורל החול — שיטת כשף
         </button>
         <button class="menu-item" id="menuJournalBtn">
           <span class="menu-item-icon">📋</span>יומן לקוחות
@@ -2609,6 +2668,34 @@ body:has(#screen-open.active) .topbar { display: none !important; }
         <button class="btn primary" id="saveKashfBtn" style="font-size:13px;padding:5px 10px;display:none;">💾 שמור</button>
       </div>
       <iframe id="kashfIframe" style="width:100%;height:calc(100vh - 56px);border:none;display:block;"></iframe>
+    </section>
+
+    <!-- ─── גורל החול — שיטת כשף אל-אסרר (מסך הצגה) ────────────── -->
+    <section id="screen-kashf-goral" class="screen">
+      <div class="screen-back-bar" style="padding:12px 16px;display:flex;align-items:center;gap:12px;background:#06192d;border-bottom:1px solid rgba(232,212,144,0.35);">
+        <button class="btn gray" id="backFromKashfGoralBtn">← חזרה</button>
+        <h2 style="margin:0;color:#e8d490;font-size:18px;flex:1">◈ גורל החול — שיטת כשף</h2>
+      </div>
+      <div class="kashf-goral-content">
+        <div class="kashf-goral-card">
+          <div class="kashf-goral-badge">בפיתוח</div>
+          <h3 class="kashf-goral-title">גורל החול לפי שיטת כשף אל-אסרר</h3>
+          <p class="kashf-goral-desc">
+            שיטת כשף אל-אסרר ("חשיפת הסודות הנצורים") בנויה על כללי פסיקה ייחודיים לכל נושא,
+            הנגזרים ישירות מהספר — ולא על מטריצת צורה×בית.
+          </p>
+          <p class="kashf-goral-desc">
+            לכל שאלה קיים פרק הקובע אילו בתים לבדוק ומה הצורה הנגזרת מהם.
+            הפסיקה מתבצעת לפי המינוח "חיצוני / פנימי / מתהפך" — ישירה, עצמאית ומהירה.
+          </p>
+          <div class="kashf-goral-actions">
+            <button class="btn primary" id="openKashfBookFromGoralBtn">📖 פתח ספר כשף לעיון</button>
+          </div>
+          <div class="kashf-goral-note">
+            מנוע הפסיקה המלא לשיטת כשף נמצא בשלב פיתוח ויוטמע בקרוב.
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- ─── ספר קומילה — אסטרולוגיה וֶדית ──────────────────────── -->

@@ -1275,8 +1275,11 @@ document.getElementById("menuOpenBtn").addEventListener("click", openMenu);
 document.getElementById("menuCloseBtn").addEventListener("click", closeMenu);
 document.getElementById("menuOverlay").addEventListener("click", closeMenu);
 
-document.getElementById("menuGoralBtn").addEventListener("click", () => {
+document.getElementById("menuGoralHawiBtn").addEventListener("click", () => {
   closeMenu(); renderQuestionScreen(); showScreen("question");
+});
+document.getElementById("menuGoralKashfBtn").addEventListener("click", () => {
+  closeMenu(); showScreen("kashf-goral");
 });
 document.getElementById("menuGuideBtn").addEventListener("click", () => {
   closeMenu(); showScreen("guide"); renderGuide();
@@ -1348,6 +1351,10 @@ document.getElementById("backFromPrayerBtn").addEventListener("click", () => sho
 document.getElementById("backFromIsqatBtn").addEventListener("click", () => showScreen("landing"));
 document.getElementById("backFromRamalBtn").addEventListener("click", () => showScreen("landing"));
 document.getElementById("backFromKashfBtn").addEventListener("click", () => showScreen("landing"));
+document.getElementById("backFromKashfGoralBtn").addEventListener("click", () => showScreen("landing"));
+document.getElementById("openKashfBookFromGoralBtn").addEventListener("click", () => {
+  _loadBook('kashfIframe', 'kashf-al-asrar.html', 'bookEdit_kashf'); showScreen("kashf");
+});
 
 // ─── ניווט מסך שאלות ──────────────────────────────────────────
 
