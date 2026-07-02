@@ -271,6 +271,7 @@ input, select, textarea {
 .qcard:hover { background: rgba(0,0,0,0.05) !important; }
 .qcard.selected { background: rgba(0,0,0,0.1) !important; border-right: 3px solid rgba(0,0,0,0.4) !important; }
 .qcard-label { color: #1a0800 !important; font-family: 'STAM', sans-serif !important; font-size: 1.15rem !important; }
+.qcard-desc  { color: #5a3a1a !important; font-size: 0.78rem !important; }
 .qcard-badge {
   background: rgba(0,0,0,0.08) !important;
   border: 1px solid rgba(0,0,0,0.15) !important;
@@ -2284,9 +2285,9 @@ body:has(#screen-open.active) .topbar { display: none !important; }
     .qcard {
       display: flex;
       flex-direction: row;
-      align-items: center;
+      align-items: flex-start;
       gap: 12px;
-      padding: 12px 14px;
+      padding: 11px 14px;
       border: none;
       border-bottom: 1px solid rgba(0,0,0,.08);
       background: white;
@@ -2299,9 +2300,10 @@ body:has(#screen-open.active) .topbar { display: none !important; }
     .qcard:hover { background: #f7f9ff; }
     .qcard.selected { background: #eef5ff; border-right: 4px solid var(--navy); }
 
+    .qcard-body { flex: 1; display: flex; flex-direction: column; gap: 2px; }
     .qcard-emoji { font-size: 20px; flex-shrink: 0; line-height: 1; }
-    .qcard-label { font-size: 15px; font-weight: 700; color: #071b30; flex: 1; }
-    .qcard-desc  { display: none; }
+    .qcard-label { font-size: 15px; font-weight: 700; color: #071b30; }
+    .qcard-desc  { font-size: 12px; color: #666; line-height: 1.4; display: block; }
     .qcard-badge {
       flex-shrink: 0;
       padding: 2px 9px;
