@@ -1895,6 +1895,70 @@ body:has(#screen-open.active) .topbar { display: none !important; }
     }
     .guide-section { display:none; }
     .guide-section.active { display:block; }
+
+    /* ── שתי השיטות ── */
+    .guide-methods-page { padding: 10px 2px; }
+    .guide-methods-intro { margin-bottom: 20px; }
+    .guide-methods-intro h3 { font-size: 17px; font-weight: 800; color: var(--navy); margin: 0 0 8px; }
+    .guide-methods-intro p { font-size: 14px; line-height: 1.75; color: #333; margin: 0; }
+    .guide-methods-grid { display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px; }
+    @media (min-width: 700px) { .guide-methods-grid { flex-direction: row; } }
+    .guide-method-card {
+      flex: 1; border-radius: 12px; overflow: hidden;
+      border: 2px solid #dde4ee; background: #fafbff;
+    }
+    .hawi-card { border-color: #b8a060; background: #fffdf5; }
+    .kashf-card { border-color: #7090c0; background: #f5f8ff; }
+    .guide-method-header {
+      display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+      background: rgba(0,0,0,.04);
+    }
+    .hawi-card .guide-method-header { background: rgba(180,150,60,.1); }
+    .kashf-card .guide-method-header { background: rgba(80,110,180,.1); }
+    .guide-method-icon { font-size: 26px; line-height: 1; }
+    .guide-method-name { font-size: 16px; font-weight: 900; color: var(--navy); }
+    .guide-method-book { font-size: 11px; color: #666; margin-top: 2px; font-style: italic; }
+    .guide-method-body { padding: 14px 16px; }
+    .guide-method-body > p { font-size: 13.5px; line-height: 1.75; color: #333; margin: 0 0 14px; }
+    .guide-method-section { margin-bottom: 14px; }
+    .guide-method-section-title {
+      font-size: 12px; font-weight: 800; color: var(--navy);
+      text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px;
+    }
+    .guide-method-section ul { margin: 0; padding-right: 18px; }
+    .guide-method-section li { font-size: 13px; line-height: 1.7; color: #333; margin-bottom: 4px; }
+    .guide-method-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .guide-method-tags span {
+      background: rgba(26,58,92,.1); color: var(--navy);
+      border-radius: 20px; padding: 3px 10px; font-size: 12px; font-weight: 600;
+    }
+    .guide-method-note {
+      margin-top: 12px; font-size: 12px; color: #555; background: rgba(0,0,0,.04);
+      border-radius: 8px; padding: 10px 12px; line-height: 1.6;
+    }
+    .guide-methods-comparison { margin-bottom: 20px; }
+    .guide-methods-comparison h3 { font-size: 15px; font-weight: 800; color: var(--navy); margin: 0 0 12px; }
+    .guide-compare-table { border-radius: 10px; overflow: hidden; border: 1px solid #dde4ee; }
+    .guide-compare-row { display: grid; grid-template-columns: 1fr 1.1fr 1.1fr; }
+    .guide-compare-row.header { background: var(--navy); }
+    .guide-compare-row:not(.header):nth-child(even) { background: #f3f6fb; }
+    .guide-compare-cell {
+      padding: 9px 11px; font-size: 12.5px; border-left: 1px solid #dde4ee;
+      line-height: 1.5;
+    }
+    .guide-compare-cell:first-child { border-left: none; }
+    .guide-compare-row.header .guide-compare-cell { color: #fff; font-weight: 800; font-size: 13px; border-color: rgba(255,255,255,.2); }
+    .guide-compare-row.header .label { background: rgba(255,255,255,.1); }
+    .guide-compare-row.header .hawi { background: rgba(180,150,60,.35); }
+    .guide-compare-row.header .kashf { background: rgba(80,110,180,.35); }
+    .guide-compare-cell.label { font-weight: 700; color: #444; background: rgba(0,0,0,.02); }
+    .guide-compare-cell.hawi { color: #5a3d00; }
+    .guide-compare-cell.kashf { color: #1a3a5c; }
+    .guide-methods-tip {
+      background: #fffbea; border: 1.5px solid #e0c840; border-radius: 10px;
+      padding: 14px 16px; font-size: 13.5px; line-height: 1.75; color: #4a3800;
+    }
+
     .figures-grid {
       display:grid;grid-template-columns:repeat(2,1fr);gap:12px;
     }
@@ -2750,6 +2814,7 @@ body:has(#screen-open.active) .topbar { display: none !important; }
           <h2 style="margin:0">מבוא לגורל החול</h2>
         </div>
         <div class="guide-tabs">
+          <button class="guide-tab" data-tab="methods">⚖️ שתי השיטות</button>
           <button class="guide-tab active" data-tab="figures">16 הצורות</button>
           <button class="guide-tab" data-tab="houses">16 הבתים</button>
           <button class="guide-tab" data-tab="build">כיצד בונים לוח</button>
@@ -2758,6 +2823,7 @@ body:has(#screen-open.active) .topbar { display: none !important; }
           <button class="guide-tab" data-tab="kashf">📖 כשף אל-אסרר</button>
           <button class="guide-tab" onclick="window.open('ramal-shastra.html','_blank')">📚 ראמאל שסטרה</button>
         </div>
+        <div id="guide-methods" class="guide-section"></div>
         <div id="guide-figures" class="guide-section active"></div>
         <div id="guide-houses" class="guide-section"></div>
         <div id="guide-build" class="guide-section"></div>
