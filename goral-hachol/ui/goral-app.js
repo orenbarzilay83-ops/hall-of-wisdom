@@ -1728,7 +1728,7 @@ function renderMethodsGuide() {
         <span class="guide-method-icon">📜</span>
         <div>
           <div class="guide-method-name">שיטת חאוי</div>
-          <div class="guide-method-book">ספר חאוי העג׳איב ומظهر הג׳ראיב</div>
+          <div class="guide-method-book">ספר חאוי העג׳איב ומצהר הג׳ראיב</div>
         </div>
       </div>
       <div class="guide-method-body">
@@ -1761,7 +1761,7 @@ function renderMethodsGuide() {
         </div>
 
         <div class="guide-method-note">
-          📖 מקור: <em>حاوي العجائب ومظهر الغرائب</em> — ספר ערבי קלאסי
+          📖 מקור: ספר חאוי העג׳איב — ספר קלאסי
           המכיל 62 פרקים של פרשנות מפורטת לכל שאלה ונושא
         </div>
       </div>
@@ -1804,7 +1804,7 @@ function renderMethodsGuide() {
         </div>
 
         <div class="guide-method-note">
-          📖 מקור: <em>كشف الأسرار المصونة</em> — הספר המלא מובנה באפליקציה ונגיש
+          📖 מקור: ספר כשף אל-אסרר — הספר המלא מובנה באפליקציה ונגיש
           בלשונית "כשף אל-אסרר" בדף זה
         </div>
       </div>
