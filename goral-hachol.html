@@ -309,6 +309,210 @@ input, select, textarea {
   .question-scroll-content { top: 12% !important; bottom: 10% !important; padding: 0 22% !important; }
 }
 /* ── תפילה ── */
+/* ─── גורל החול — שיטת כשף (מסך הצגה) ─── */
+.kashf-goral-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 56px);
+  padding: 24px 16px;
+  background: #04111f;
+  overflow-y: auto;
+}
+.kashf-goral-card {
+  background: #071e33;
+  border: 1px solid rgba(232,212,144,0.3);
+  border-radius: 12px;
+  padding: 32px 28px;
+  max-width: 520px;
+  width: 100%;
+  text-align: center;
+}
+.kashf-goral-badge {
+  display: inline-block;
+  background: rgba(232,212,144,0.12);
+  border: 1px solid rgba(232,212,144,0.38);
+  color: #e8d490;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+.kashf-goral-title {
+  color: #e8d490;
+  font-size: 22px;
+  font-weight: bold;
+  margin: 0 0 20px;
+  line-height: 1.4;
+}
+.kashf-goral-desc {
+  color: #b8c8d8;
+  font-size: 15px;
+  line-height: 1.85;
+  margin: 0 0 16px;
+  text-align: right;
+}
+.kashf-goral-actions {
+  margin: 24px 0 0;
+}
+.kashf-goral-note {
+  color: #5a7a9a;
+  font-size: 13px;
+  border-top: 1px solid rgba(232,212,144,0.12);
+  padding-top: 16px;
+  margin-top: 20px;
+}
+
+/* ── kashf reading output ── */
+.kashf-reading-scroll {
+  overflow-y: auto;
+  padding: 16px;
+  height: calc(100vh - 56px);
+  direction: rtl;
+}
+.kashf-reading-output {
+  max-width: 680px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.kashf-reading-header {
+  background: linear-gradient(135deg, #06192d 0%, #0a2540 100%);
+  border: 1px solid #e8d490;
+  border-radius: 10px;
+  padding: 20px 18px 16px;
+}
+.kashf-reading-badge {
+  display: inline-block;
+  background: rgba(232,212,144,0.15);
+  color: #e8d490;
+  font-size: 11px;
+  padding: 2px 10px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+  letter-spacing: 0.04em;
+}
+.kashf-reading-header h2 {
+  margin: 0 0 6px;
+  color: #f0c040;
+  font-size: 20px;
+}
+.kashf-topic-desc {
+  color: #9ab4cc;
+  font-size: 13px;
+  margin: 0 0 10px;
+}
+.kashf-client-line, .kashf-question-line {
+  color: #c8ddf0;
+  font-size: 13px;
+  margin: 4px 0;
+}
+.kashf-overall {
+  display: inline-block;
+  margin: 10px 0 6px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.kashf-overall.positive  { background: rgba(72,200,120,0.18); color: #48c878; border: 1px solid rgba(72,200,120,0.35); }
+.kashf-overall.negative  { background: rgba(220,70,70,0.18);  color: #e06060; border: 1px solid rgba(220,70,70,0.35); }
+.kashf-overall.neutral   { background: rgba(200,180,100,0.14); color: #d4b84a; border: 1px solid rgba(200,180,100,0.3); }
+.kashf-source-ref {
+  font-size: 11px;
+  color: #5a7a9a;
+  margin-top: 8px;
+}
+.kashf-reading-card {
+  background: rgba(6,25,45,0.85);
+  border: 1px solid rgba(232,212,144,0.2);
+  border-radius: 8px;
+  padding: 16px;
+}
+.kashf-reading-card.primary-verdict { border-color: rgba(232,212,144,0.45); }
+.kashf-reading-card.alt-verdict     { border-color: rgba(100,160,230,0.3); }
+.kashf-reading-card.supporting      { border-color: rgba(100,200,150,0.2); }
+.kashf-reading-card.board-warnings  { border-color: rgba(220,120,80,0.35); }
+.kashf-card-title {
+  font-size: 14px;
+  color: #e8d490;
+  margin: 0 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(232,212,144,0.15);
+}
+.kashf-verdict-badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.kashf-verdict-badge.positive { background: rgba(72,200,120,0.2);  color: #48c878; border: 1px solid rgba(72,200,120,0.4); }
+.kashf-verdict-badge.negative { background: rgba(220,70,70,0.2);   color: #e06060; border: 1px solid rgba(220,70,70,0.4); }
+.kashf-verdict-badge.neutral  { background: rgba(200,180,80,0.15); color: #d4b84a; border: 1px solid rgba(200,180,80,0.3); }
+.kashf-formula-desc  { color: #7a9ab8; font-size: 12px; margin: 0 0 6px; }
+.kashf-result-figure { color: #c8ddf0; font-size: 13px; margin: 0 0 4px; }
+.kashf-result-class  { color: #8aa4bc; font-size: 12px; margin: 0 0 8px; }
+.kashf-figure-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(232,212,144,0.1);
+  border: 1px solid rgba(232,212,144,0.25);
+  border-radius: 4px;
+  padding: 1px 7px;
+  font-size: 12px;
+  color: #e8d490;
+}
+.kashf-figure-tag code { font-size: 10px; color: #9ab4cc; }
+.kashf-verdict-main, .kashf-verdict-alt { margin: 6px 0; }
+.kashf-verdict-text { color: #c8ddf0; font-size: 14px; margin: 4px 0 0; line-height: 1.55; }
+.kashf-source-quote {
+  margin: 10px 0 0;
+  padding: 8px 12px;
+  border-right: 3px solid rgba(232,212,144,0.3);
+  color: #8aa4bc;
+  font-size: 12px;
+  font-style: italic;
+  line-height: 1.6;
+}
+.kashf-supporting-item {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(232,212,144,0.08);
+}
+.kashf-supporting-item:last-child { border-bottom: none; }
+.kashf-supporting-item.error .kashf-supporting-label { color: #e06060; }
+.kashf-supporting-label { color: #e8d490; font-size: 12px; font-weight: 600; margin-bottom: 3px; }
+.kashf-supporting-detail { color: #c8ddf0; font-size: 13px; }
+.kashf-house-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(232,212,144,0.07);
+}
+.kashf-house-row:last-child { border-bottom: none; }
+.kashf-house-label { color: #9ab4cc; font-size: 12px; min-width: 140px; padding-top: 2px; }
+.kashf-house-figure { color: #c8ddf0; font-size: 13px; font-weight: 600; }
+.kashf-house-figure.saad  { color: #48c878; }
+.kashf-house-figure.nahs  { color: #e06060; }
+.kashf-house-figure.mixed { color: #d4b84a; }
+.kashf-house-meta { font-size: 11px; font-weight: 400; color: #7a9ab8; margin-right: 6px; }
+.kashf-board-warning { padding: 8px 12px; border-radius: 6px; font-size: 13px; margin-bottom: 6px; }
+.kashf-board-warning.critical { background: rgba(220,70,70,0.12); color: #e06060; border: 1px solid rgba(220,70,70,0.3); }
+.kashf-board-warning.warning  { background: rgba(200,150,50,0.12); color: #d4a84a; border: 1px solid rgba(200,150,50,0.3); }
+.kashf-reading-footer {
+  text-align: center;
+  color: #5a7a9a;
+  font-size: 11px;
+  padding: 12px 0;
+}
+.kashf-disclaimer { font-style: italic; margin-top: 4px; }
+
 #screen-prayer {
   position: fixed !important;
   inset: 0 !important;
@@ -2388,8 +2592,11 @@ body:has(#screen-open.active) .topbar { display: none !important; }
         <button class="menu-item" id="menuPrayerBtn">
           <span class="menu-item-icon">🤲</span>תפילה לפני עשיית הגורל
         </button>
-        <button class="menu-item menu-item-active" id="menuGoralBtn">
-          <span class="menu-item-icon">✦</span>כניסה לגורל החול
+        <button class="menu-item menu-item-active" id="menuGoralHawiBtn">
+          <span class="menu-item-icon">✦</span>גורל החול — שיטת חאוי
+        </button>
+        <button class="menu-item" id="menuGoralKashfBtn">
+          <span class="menu-item-icon">◈</span>גורל החול — שיטת כשף
         </button>
         <button class="menu-item" id="menuJournalBtn">
           <span class="menu-item-icon">📋</span>יומן לקוחות
@@ -2678,6 +2885,43 @@ body:has(#screen-open.active) .topbar { display: none !important; }
       <iframe id="kashfIframe" style="width:100%;height:calc(100vh - 56px);border:none;display:block;"></iframe>
     </section>
 
+    <!-- ─── גורל החול — שיטת כשף אל-אסרר (מסך הצגה) ────────────── -->
+    <section id="screen-kashf-goral" class="screen">
+      <div class="screen-back-bar" style="padding:12px 16px;display:flex;align-items:center;gap:12px;background:#06192d;border-bottom:1px solid rgba(232,212,144,0.35);">
+        <button class="btn gray" id="backFromKashfGoralBtn">← חזרה</button>
+        <h2 style="margin:0;color:#e8d490;font-size:18px;flex:1">◈ גורל החול — שיטת כשף</h2>
+      </div>
+      <div class="kashf-goral-content">
+        <div class="kashf-goral-card">
+          <div class="kashf-goral-badge">בפיתוח</div>
+          <h3 class="kashf-goral-title">גורל החול לפי שיטת כשף אל-אסרר</h3>
+          <p class="kashf-goral-desc">
+            שיטת כשף אל-אסרר ("חשיפת הסודות הנצורים") בנויה על כללי פסיקה ייחודיים לכל נושא,
+            הנגזרים ישירות מהספר — ולא על מטריצת צורה×בית.
+          </p>
+          <p class="kashf-goral-desc">
+            לכל שאלה קיים פרק הקובע אילו בתים לבדוק ומה הצורה הנגזרת מהם.
+            הפסיקה מתבצעת לפי המינוח "חיצוני / פנימי / מתהפך" — ישירה, עצמאית ומהירה.
+          </p>
+          <div class="kashf-goral-actions">
+            <button class="btn primary" id="openKashfBookFromGoralBtn">📖 פתח ספר כשף לעיון</button>
+          </div>
+          <div class="kashf-goral-note">
+            בחירת שיטת כשף תפנה אתכם למסך שאלת הגורל עם מנוע כשף אל-אסרר.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── גורל החול — קריאת כשף ────────────────────────────── -->
+    <section id="screen-kashf-reading" class="screen">
+      <div class="screen-back-bar" style="padding:12px 16px;display:flex;align-items:center;gap:12px;background:#06192d;border-bottom:1px solid #e8d490;">
+        <button class="btn gray" id="backFromKashfReadingBtn">← חזרה</button>
+        <h2 style="margin:0;color:#f0c040;font-size:18px;flex:1">◈ גורל החול — שיטת כשף</h2>
+      </div>
+      <div id="kashfReadingOutput" class="kashf-reading-scroll"></div>
+    </section>
+
     <!-- ─── ספר קומילה — אסטרולוגיה וֶדית ──────────────────────── -->
     <section id="screen-komilla" class="screen">
       <div class="screen-back-bar" style="padding:12px 16px;display:flex;align-items:center;gap:12px;background:#06192d;border-bottom:1px solid #f0c040;">
@@ -2771,6 +3015,23 @@ body:has(#screen-open.active) .topbar { display: none !important; }
       console.log("You can see the error in the console above ⬆️");
       
       return false;
+    });
+  </script>
+
+  <!-- ─── מנוע כשף אל-אסרר ─────────────────────────────────────── -->
+  <script type="module">
+    window.__KASHF_MODULE_READY = Promise.all([
+      import('./goral-hachol/engine/kashf-reading-engine.js'),
+      import('./goral-hachol/engine/kashf-narrative-writer.js'),
+      import('./goral-hachol/engine/raml-board-generator.js'),
+    ]).then(([readingMod, narrativeMod, boardMod]) => {
+      window.KASHF_ENGINE = {
+        buildKashfReading: readingMod.buildKashfReading,
+        writeKashfReading: narrativeMod.writeKashfReading,
+        buildRamlBoardFromMothers: boardMod.buildRamlBoardFromMothers,
+      };
+    }).catch(err => {
+      console.error('[kashf-engine] טעינה נכשלה:', err);
     });
   </script>
 

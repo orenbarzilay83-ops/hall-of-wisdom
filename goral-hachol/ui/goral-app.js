@@ -5,6 +5,8 @@ const FIGURE_ORDER = [
   "1211", "2111", "2112", "1111"
 ];
 
+let goralMode = 'hawi'; // 'hawi' | 'kashf'
+
 let selectedMothers = [null, null, null, null];
 let activeMother = 0;
 let selectedHouseNum = null;  // בית שנבחר (1-12)
@@ -91,6 +93,45 @@ const HOUSE_TOPIC_KEYWORDS = {
     // default: enemies
   ],
 };
+
+// מיפוי מזהי נושא של חאוי → מזהי נושא של כשף אל-אסרר
+const HAWI_TO_KASHF_TOPIC = {
+  foundations:          'generalReading',
+  birthNativity:        'generalReading',
+  hiddenTreasure:       'relocation',
+  childrenPregnancy:    'children',
+  spiritualDiagnostics: 'generalReading',
+  lostAnimal:           'generalReading',
+  seaVoyage:            'travel',
+  partnership:          'commerce',
+  enemies:              'disputes',
+  loveHate:             'marriage',
+  yearlyForecast:       'generalReading',
+  fear:                 'generalReading',
+  // זהות מלאה — אין שינוי:
+  illness:              'illness',
+  marriage:             'marriage',
+  disputes:             'disputes',
+  theft:                'theft',
+  missingPerson:        'missingPerson',
+  deathInheritance:     'deathInheritance',
+  travel:               'travel',
+  authorityState:       'authorityState',
+  prisoner:             'prisoner',
+  religion:             'religion',
+  commerce:             'commerce',
+  siblings:             'siblings',
+  money:                'money',
+  loan:                 'loan',
+  relocation:           'relocation',
+  children:             'children',
+  completion:           'completion',
+  generalReading:       'generalReading',
+};
+
+function hawiTopicToKashf(hawiTopicId) {
+  return HAWI_TO_KASHF_TOPIC[hawiTopicId] || 'generalReading';
+}
 
 function detectTopicFromQuestion(houseNum, questionText) {
   const q = (questionText || '').toLowerCase();
@@ -963,6 +1004,43 @@ async function runReading() {
       reading._precomputedInsight = window.HAWI_INTERPRETER.interpretHawiQuestionInitial(reading.question, reading);
     }
 
+    // ── ענף כשף אל-אסרר ─────────────────────────────────────────────────────
+    if (goralMode === 'kashf') {
+      if (window.__KASHF_MODULE_READY) await window.__KASHF_MODULE_READY;
+      if (!window.KASHF_ENGINE?.buildKashfReading) {
+        throw new Error("מנוע כשף אל-אסרר לא נטען. נסה לרענן את הדף.");
+      }
+
+      const hawiTopicId = resolvedTopicId ?? 'generalReading';
+      const kashfTopicId = hawiTopicToKashf(hawiTopicId);
+
+      // reading.chart already has {houseNumber, pattern, hebrewName} in house-order
+      const kashfBoard = {
+        entries: reading.chart,
+        boardValidation: reading.boardValidation || { isValid: true, warnings: [] },
+      };
+
+      const _ctx = getClientContext(resolvedTopicId ?? reading.topicId);
+      const clientCtx = {
+        name:     _ctx.clientName || '',
+        question: question,
+        age:      _ctx.age || '',
+        gender:   _ctx.gender || '',
+      };
+
+      const kashfReading = window.KASHF_ENGINE.buildKashfReading(kashfBoard, kashfTopicId, clientCtx);
+      const kashfHtml = window.KASHF_ENGINE.writeKashfReading(kashfReading);
+
+      const outputEl = document.getElementById("kashfReadingOutput");
+      if (outputEl) outputEl.innerHTML = kashfHtml;
+
+      window._lastReading = reading;
+      window._lastKashfReading = kashfReading;
+      showScreen("kashf-reading");
+      return;
+    }
+
+    // ── ענף חאוי (ברירת מחדל) ───────────────────────────────────────────────
     boardResult.innerHTML = buildBoardHtml(reading) + buildInterpretationHtml(reading);
     window._lastReading = reading;
     showScreen("board");
@@ -1275,8 +1353,11 @@ document.getElementById("menuOpenBtn").addEventListener("click", openMenu);
 document.getElementById("menuCloseBtn").addEventListener("click", closeMenu);
 document.getElementById("menuOverlay").addEventListener("click", closeMenu);
 
-document.getElementById("menuGoralBtn").addEventListener("click", () => {
-  closeMenu(); renderQuestionScreen(); showScreen("question");
+document.getElementById("menuGoralHawiBtn").addEventListener("click", () => {
+  goralMode = 'hawi'; closeMenu(); renderQuestionScreen(); showScreen("question");
+});
+document.getElementById("menuGoralKashfBtn").addEventListener("click", () => {
+  goralMode = 'kashf'; closeMenu(); renderQuestionScreen(); showScreen("question");
 });
 document.getElementById("menuGuideBtn").addEventListener("click", () => {
   closeMenu(); showScreen("guide"); renderGuide();
@@ -1348,6 +1429,11 @@ document.getElementById("backFromPrayerBtn").addEventListener("click", () => sho
 document.getElementById("backFromIsqatBtn").addEventListener("click", () => showScreen("landing"));
 document.getElementById("backFromRamalBtn").addEventListener("click", () => showScreen("landing"));
 document.getElementById("backFromKashfBtn").addEventListener("click", () => showScreen("landing"));
+document.getElementById("backFromKashfGoralBtn").addEventListener("click", () => showScreen("landing"));
+document.getElementById("backFromKashfReadingBtn").addEventListener("click", () => showScreen("question"));
+document.getElementById("openKashfBookFromGoralBtn").addEventListener("click", () => {
+  _loadBook('kashfIframe', 'kashf-al-asrar.html', 'bookEdit_kashf'); showScreen("kashf");
+});
 
 // ─── ניווט מסך שאלות ──────────────────────────────────────────
 
