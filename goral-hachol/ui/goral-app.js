@@ -1698,11 +1698,179 @@ let guideRendered = false;
 function renderGuide() {
   if (guideRendered) return;
   guideRendered = true;
+  renderMethodsGuide();
   renderFiguresGuide();
   renderHousesGuide();
   renderBuildGuide();
   renderConceptsGuide();
   renderIsqat7Guide();
+}
+
+function renderMethodsGuide() {
+  const el = document.getElementById('guide-methods');
+  if (!el) return;
+  el.innerHTML = `
+<div class="guide-methods-page">
+
+  <div class="guide-methods-intro">
+    <h3>שתי שיטות — ספר אחד ולוח אחד</h3>
+    <p>
+      האפליקציה מציעה שתי שיטות קריאה נפרדות לגורל החול, שתיהן מבוססות על לוח זהה של 16 בתים
+      הנבנה מ-4 אמהות. ההבדל ביניהן אינו בלוח — אלא <strong>באיך מפרשים אותו</strong>.
+      כל שיטה נשענת על ספר מקור שונה, עם שפה, מבנה ומתודה פרשנית משלה.
+    </p>
+  </div>
+
+  <div class="guide-methods-grid">
+
+    <div class="guide-method-card hawi-card">
+      <div class="guide-method-header">
+        <span class="guide-method-icon">📜</span>
+        <div>
+          <div class="guide-method-name">שיטת חאוי</div>
+          <div class="guide-method-book">ספר חאוי העג׳איב ומظهر הג׳ראיב</div>
+        </div>
+      </div>
+      <div class="guide-method-body">
+        <p>
+          שיטת חאוי היא שיטה <strong>חיה, מרובדת ומורכבת</strong>. היא אינה מסתפקת בתשובה של
+          "כן" או "לא" — אלא בונה תמונה שלמה של המצב: מזל הצורות, מצבהן בכל בית, מסלול
+          התנועה, יחס העדים לדיין, חישוב הדמיר, ועוד עשרות פרמטרים פרשניים.
+        </p>
+
+        <div class="guide-method-section">
+          <div class="guide-method-section-title">איך עובדת השיטה</div>
+          <ul>
+            <li><strong>שאלה חופשית:</strong> הלקוח שואל שאלה בלשונו הוא — ואתה בוחר את נושא הבית המתאים (נישואין, בריאות, פרנסה וכו׳)</li>
+            <li><strong>הצורה בכל בית:</strong> לכל אחת מ-16 הצורות יש משמעות ייחודית בכל אחד מ-16 הבתים — מטריצה של 256 פרשנויות</li>
+            <li><strong>מצב הצורה:</strong> האם הצורה "מדברת" (גלויה) או "שותקת" (נסתרת)? מה מזלה — סעד, נחס, או ממוזג?</li>
+            <li><strong>עדים ודיין:</strong> בית 13 ו-14 הם עדים; בית 15 הוא הדיין — פסיקה עליונה לכל השאלה</li>
+            <li><strong>הדמיר:</strong> הבית הנסתר — "לב הלוח" המגלה את האמת הפנימית שמאחורי השאלה</li>
+            <li><strong>יסוד וכיוון:</strong> יסוד הצורה (אש, אוויר, מים, עפר) מגלה כיוון, בריאות, טמפרמנט ועוד</li>
+            <li><strong>גאלב ומגלוב:</strong> בנושאי סכסוך — ספירת נקודות יחידות בצד השואל מול צד היריב</li>
+          </ul>
+        </div>
+
+        <div class="guide-method-section">
+          <div class="guide-method-section-title">מתאים במיוחד לשאלות</div>
+          <div class="guide-method-tags">
+            <span>נישואין</span><span>בריאות ומחלה</span><span>פרנסה</span>
+            <span>סכסוכים</span><span>נסיעה</span><span>ילדים</span>
+            <span>גנבה</span><span>נעדרים</span><span>אבחון רוחני</span>
+          </div>
+        </div>
+
+        <div class="guide-method-note">
+          📖 מקור: <em>حاوي العجائب ومظهر الغرائب</em> — ספר ערבי קלאסי
+          המכיל 62 פרקים של פרשנות מפורטת לכל שאלה ונושא
+        </div>
+      </div>
+    </div>
+
+    <div class="guide-method-card kashf-card">
+      <div class="guide-method-header">
+        <span class="guide-method-icon">🔮</span>
+        <div>
+          <div class="guide-method-name">שיטת כשף</div>
+          <div class="guide-method-book">ספר כשף אל-אסרר המצונה</div>
+        </div>
+      </div>
+      <div class="guide-method-body">
+        <p>
+          שיטת כשף היא שיטה <strong>נוסחתית, ממוקדת ומדויקת</strong>. במקום לקרוא את כל הלוח
+          שורה אחר שורה, היא שולפת בתים ספציפיים, מחברת אותם לפי נוסחה מוגדרת, ומפיקה צורה
+          תוצאתית אחת שמכילה את התשובה. כל שאלה — נוסחה אחת, תשובה אחת.
+        </p>
+
+        <div class="guide-method-section">
+          <div class="guide-method-section-title">איך עובדת השיטה</div>
+          <ul>
+            <li><strong>שאלה ממוקדת:</strong> בוחרים שאלה מתוך בנק 252 שאלות מאורגנות לפי נושא ובית</li>
+            <li><strong>נוסחה ראשית:</strong> כל שאלה מגיעה עם נוסחה שלוקחת בתים מסוימים ומחברת אותם (חיבור, הרכבה, שורת-אש) לצורה תוצאתית</li>
+            <li><strong>פסיקה על הצורה:</strong> הצורה התוצאתית מוערכת לפי מעמדה — דאח׳ל/ח׳ארג', סעד/נחס, מיטיב/מזיק</li>
+            <li><strong>נוסחה חלופית:</strong> לרוב השאלות יש גם נוסחת ביקורת משלימה לאימות</li>
+            <li><strong>בדיקות תומכות:</strong> בדיקות נוספות מעמיקות את הפסיקה (מין, יסוד, כיוון, ספירת בתים)</li>
+          </ul>
+        </div>
+
+        <div class="guide-method-section">
+          <div class="guide-method-section-title">מתאים במיוחד כאשר</div>
+          <div class="guide-method-tags">
+            <span>רוצים תשובה מהירה וברורה</span>
+            <span>השאלה מוגדרת היטב</span>
+            <span>רוצים לאמת קריאת חאוי</span>
+            <span>לומדים את שיטת הנוסחות</span>
+          </div>
+        </div>
+
+        <div class="guide-method-note">
+          📖 מקור: <em>كشف الأسرار المصونة</em> — הספר המלא מובנה באפליקציה ונגיש
+          בלשונית "כשף אל-אסרר" בדף זה
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="guide-methods-comparison">
+    <h3>טבלת הבדלים</h3>
+    <div class="guide-compare-table">
+      <div class="guide-compare-row header">
+        <div class="guide-compare-cell label"></div>
+        <div class="guide-compare-cell hawi">שיטת חאוי</div>
+        <div class="guide-compare-cell kashf">שיטת כשף</div>
+      </div>
+      <div class="guide-compare-row">
+        <div class="guide-compare-cell label">אופי השאלה</div>
+        <div class="guide-compare-cell hawi">חופשית, בלשון הלקוח</div>
+        <div class="guide-compare-cell kashf">מובנית מתוך בנק שאלות</div>
+      </div>
+      <div class="guide-compare-row">
+        <div class="guide-compare-cell label">שיטת הפרשנות</div>
+        <div class="guide-compare-cell hawi">קריאת כל 16 הבתים בשכבות</div>
+        <div class="guide-compare-cell kashf">נוסחה — שליפת בתים ספציפיים</div>
+      </div>
+      <div class="guide-compare-row">
+        <div class="guide-compare-cell label">מורכבות</div>
+        <div class="guide-compare-cell hawi">גבוהה — רב-שכבתית</div>
+        <div class="guide-compare-cell kashf">בינונית — ממוקדת ומדויקת</div>
+      </div>
+      <div class="guide-compare-row">
+        <div class="guide-compare-cell label">תוצאה</div>
+        <div class="guide-compare-cell hawi">נרטיב מלא + ניתוח עמוק</div>
+        <div class="guide-compare-cell kashf">פסיקה ברורה + ביאור תמציתי</div>
+      </div>
+      <div class="guide-compare-row">
+        <div class="guide-compare-cell label">עדים ודיין</div>
+        <div class="guide-compare-cell hawi">✓ מרכזיים בפסיקה</div>
+        <div class="guide-compare-cell kashf">✓ מופיעים כבתים תומכים</div>
+      </div>
+      <div class="guide-compare-row">
+        <div class="guide-compare-cell label">הדמיר</div>
+        <div class="guide-compare-cell hawi">✓ חישוב מפורט</div>
+        <div class="guide-compare-cell kashf">— לא חלק מהשיטה הנוסחתית</div>
+      </div>
+      <div class="guide-compare-row">
+        <div class="guide-compare-cell label">מספר שאלות</div>
+        <div class="guide-compare-cell hawi">כל שאלה אפשרית</div>
+        <div class="guide-compare-cell kashf">252 שאלות ממוינות</div>
+      </div>
+      <div class="guide-compare-row">
+        <div class="guide-compare-cell label">מתאים ל</div>
+        <div class="guide-compare-cell hawi">קריאה מקצועית ומעמיקה</div>
+        <div class="guide-compare-cell kashf">תשובה מהירה ואימות</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="guide-methods-tip">
+    <strong>טיפ מקצועי:</strong>
+    כאשר תוצאות שתי השיטות מסכימות — הפסיקה חזקה ואמינה.
+    כאשר הן חלוקות — זה בעצמו מידע: העניין מורכב, יש כוחות נוגדים, או שהשאלה טרם בשלה לתשובה.
+  </div>
+
+</div>
+  `;
 }
 
 function renderIsqat7Guide() {
