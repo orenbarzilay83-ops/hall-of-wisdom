@@ -1764,6 +1764,180 @@ function renderMethodsGuide() {
           📖 מקור: ספר חאוי העג׳איב — ספר קלאסי
           המכיל 62 פרקים של פרשנות מפורטת לכל שאלה ונושא
         </div>
+
+        <div class="guide-method-section" style="margin-top:18px">
+          <div class="guide-method-section-title">שאלות לדוגמה לפי נושא</div>
+          <div class="hawi-topics-grid">
+            <div class="hawi-topic-item">
+              <div class="hawi-topic-name">⚡ מצב כללי</div>
+              <ul class="hawi-topic-qs">
+                <li>"מה צופן לי העתיד הקרוב?"</li>
+                <li>"האם מצבי ישתפר בחודשים הקרובים?"</li>
+                <li>"כיצד הגורל רואה את מצבי כרגע?"</li>
+              </ul>
+            </div>
+            <div class="hawi-topic-item">
+              <div class="hawi-topic-name">💍 זוגיות</div>
+              <ul class="hawi-topic-qs">
+                <li>"האם אתחתן?"</li>
+                <li>"האם הוא/היא מתכוון/ת ברצינות?"</li>
+                <li>"האם הקשר שלנו יתפתח לנישואין?"</li>
+              </ul>
+            </div>
+            <div class="hawi-topic-item">
+              <div class="hawi-topic-name">💰 פרנסה וממון</div>
+              <ul class="hawi-topic-qs">
+                <li>"האם העסק החדש יצליח?"</li>
+                <li>"האם אקבל את הכסף שחייבים לי?"</li>
+                <li>"האם כדאי להשקיע בעסקה הזו?"</li>
+              </ul>
+            </div>
+            <div class="hawi-topic-item">
+              <div class="hawi-topic-name">🏥 בריאות ומחולה</div>
+              <ul class="hawi-topic-qs">
+                <li>"האם המחלה תחלוף?"</li>
+                <li>"מה מקור הסבל שלי?"</li>
+                <li>"האם הוא/היא יתאושש/תתאושש?"</li>
+              </ul>
+            </div>
+            <div class="hawi-topic-item">
+              <div class="hawi-topic-name">✈️ נסיעה</div>
+              <ul class="hawi-topic-qs">
+                <li>"האם הנסיעה תצא לפועל?"</li>
+                <li>"האם הנסיעה מבורכת?"</li>
+                <li>"האם כדאי לנסוע עכשיו?"</li>
+              </ul>
+            </div>
+            <div class="hawi-topic-item">
+              <div class="hawi-topic-name">⚖️ סכסוך ותביעה</div>
+              <ul class="hawi-topic-qs">
+                <li>"האם אנצח בבית המשפט?"</li>
+                <li>"מי יגבר — אני או היריב?"</li>
+                <li>"האם הסכסוך ייפתר בשלום?"</li>
+              </ul>
+            </div>
+            <div class="hawi-topic-item">
+              <div class="hawi-topic-name">👑 קריירה ושלטון</div>
+              <ul class="hawi-topic-qs">
+                <li>"האם אקבל את התפקיד?"</li>
+                <li>"האם הקידום יגיע?"</li>
+                <li>"מה מצבי אצל הממונים עלי?"</li>
+              </ul>
+            </div>
+            <div class="hawi-topic-item">
+              <div class="hawi-topic-name">👶 ילדים והריון</div>
+              <ul class="hawi-topic-qs">
+                <li>"האם אתעבר?"</li>
+                <li>"האם ההריון יעבור בשלום?"</li>
+                <li>"זכר או נקבה?"</li>
+              </ul>
+            </div>
+            <div class="hawi-topic-item">
+              <div class="hawi-topic-name">🔮 אבחון רוחני</div>
+              <ul class="hawi-topic-qs">
+                <li>"האם יש עלי עין הרע?"</li>
+                <li>"האם יש עלי כישוף?"</li>
+                <li>"מה מקור הסבל שאינו מוסבר רפואית?"</li>
+              </ul>
+            </div>
+            <div class="hawi-topic-item">
+              <div class="hawi-topic-name">🔍 גנבה / מגנב</div>
+              <ul class="hawi-topic-qs">
+                <li>"מי גנב ממני?"</li>
+                <li>"האם הגנוב יוחזר?"</li>
+                <li>"איפה הנעדר ומה מצבו?"</li>
+              </ul>
+            </div>
+            <div class="hawi-topic-item">
+              <div class="hawi-topic-name">🕯️ ירושה ומוות</div>
+              <ul class="hawi-topic-qs">
+                <li>"מה יהיה עם הירושה?"</li>
+                <li>"מי יירש את הנכסים?"</li>
+                <li>"מה מצב החולה הכרוני?"</li>
+              </ul>
+            </div>
+            <div class="hawi-topic-item">
+              <div class="hawi-topic-name">📅 תחזית שנתית</div>
+              <ul class="hawi-topic-qs">
+                <li>"מה השנה תביא לי?"</li>
+                <li>"האם מחירי הסחורה יעלו?"</li>
+                <li>"מה מזג האוויר צופן לעונה?"</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="guide-method-section" style="margin-top:18px">
+          <div class="guide-method-section-title">דוגמת קריאה שלמה — שלב אחר שלב</div>
+          <div class="hawi-example-box">
+            <div class="ex-label">שאלת הלקוח</div>
+            לאה, 28, רווקה, שואלת: <strong>"האם אתחתן השנה?"</strong>
+          </div>
+          <div class="hawi-walkthrough">
+            <div class="hawi-step">
+              <div class="hawi-step-num">1</div>
+              <div>
+                <div class="hawi-step-title">בחירת הנושא</div>
+                <div class="hawi-step-body">בוחרים <strong>זוגיות</strong>. האפליקציה יודעת שהבית הקריטי הוא <strong>בית 7</strong> (בית הזוגיות והנישואין) ובית 1 (השואלת עצמה).</div>
+              </div>
+            </div>
+            <div class="hawi-step">
+              <div class="hawi-step-num">2</div>
+              <div>
+                <div class="hawi-step-title">בניית הלוח</div>
+                <div class="hawi-step-body">לאה מזינה 4 אמהות (או מגרילה אותן). האפליקציה בונה אוטומטית לוח של <strong>16 בתים</strong> — כל בית מכיל אחת מ-16 הצורות האפשריות.</div>
+              </div>
+            </div>
+            <div class="hawi-step">
+              <div class="hawi-step-num">3</div>
+              <div>
+                <div class="hawi-step-title">קריאת הבתים הרלוונטיים</div>
+                <div class="hawi-step-body">נניח שהלוח הראה:<br>
+                  • <strong>בית 1 (לאה):</strong> "ממון נכנס" — צורה מיטיבה, השואלת בתנועה חיובית<br>
+                  • <strong>בית 7 (הזוגיות):</strong> "כבוד נכנס" — צורה מיטיבה, קשר מכובד מגיע<br>
+                  • <strong>בית 5 (אהבה):</strong> מחזק — הרגש פעיל ואמיתי</div>
+              </div>
+            </div>
+            <div class="hawi-step">
+              <div class="hawi-step-num">4</div>
+              <div>
+                <div class="hawi-step-title">בדיקת מצב הצורות</div>
+                <div class="hawi-step-body">לכל צורה נבדקים:<br>
+                  • <strong>מדברת או שותקת?</strong> — האם הצורה "גלויה" ופעילה, או "שותקת" ונסתרת<br>
+                  • <strong>מיטיבה, מזיקה, או ממוזגת?</strong> — עוצמת הצורה ומזלה<br>
+                  • <strong>קשר בין בית 1 ובית 7</strong> — האם הצורות מחוברות</div>
+              </div>
+            </div>
+            <div class="hawi-step">
+              <div class="hawi-step-num">5</div>
+              <div>
+                <div class="hawi-step-title">העדים והדיין — הפסיקה העליונה</div>
+                <div class="hawi-step-body">נניח:<br>
+                  • <strong>עד א׳ (בית 13):</strong> "נשוא ראש" — ממוזג, לא מונע<br>
+                  • <strong>עד ב׳ (בית 14):</strong> "לבן" — מיטיב, מחזק<br>
+                  • <strong>דיין (בית 15):</strong> "ממון נכנס" — <strong>מיטיב</strong> — הפסיקה: כן</div>
+              </div>
+            </div>
+            <div class="hawi-step">
+              <div class="hawi-step-num">6</div>
+              <div>
+                <div class="hawi-step-title">הדמיר — לב הלוח</div>
+                <div class="hawi-step-body">האפליקציה מחשבת את <strong>הבית הנסתר</strong> (הדמיר) — מגלה אם יש כוח אמיתי מאחורי השאלה או שהעניין "נסתר ולא בשל". כאן הדמיר מאשר: העניין פעיל.</div>
+              </div>
+            </div>
+            <div class="hawi-step">
+              <div class="hawi-step-num">7</div>
+              <div>
+                <div class="hawi-step-title">המסקנה — נרטיב מלא</div>
+                <div class="hawi-step-body">האפליקציה מייצרת נרטיב עברי מפורט על בסיס כל הנתונים — מהצורות, הדמיר, העדים והדיין — לפי ספר חאוי.</div>
+              </div>
+            </div>
+          </div>
+          <div class="hawi-example-conclusion">
+            "בית הזוגיות מחזיק צורה מיטיבה בעלת תנועה נכנסת — סימן חיובי לקשר שמגיע. הדיין מאשר. על פי לוח זה, כוחות הנישואין פעילים ומסתמנת אפשרות ממשית לקשר רציני במהלך השנה הקרובה."
+          </div>
+        </div>
+
       </div>
     </div>
 
