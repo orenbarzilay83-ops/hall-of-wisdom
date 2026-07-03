@@ -216,11 +216,11 @@ const TOPIC_HOUSE_ROLES = {
 };
 
 const MALEFIC_FIGURE_PATTERNS = new Set([
-  '2122', // אדום — נחס חזק
-  '2221', // שפל ראש — נחס חזק
-  '1212', // ממון יוצא — נחס
-  '2211', // כבוד נכנס — נחס ממוזג
-  '1221', // סוהר — נחס (כלא)
+  '2122', // אדום — מזיק חזק
+  '2221', // שפל ראש — מזיק חזק
+  '1212', // ממון יוצא — מזיק
+  '2211', // כבוד נכנס — מזיק ממוזג
+  '1221', // סוהר — מזיק (כלא)
 ]);
 
 const ANGULAR_HOUSES_SET = new Set([1, 4, 7, 10]);
@@ -255,7 +255,7 @@ function getHouse(board, houseNumber) {
 function isGoodValue(value = '') {
   const v = normalizeText(value);
   return (
-    v.includes('סעד') ||
+    v.includes('מיטיב') ||
     v.includes('טוב') ||
     v.includes('benefic') ||
     v.includes('saad') ||
@@ -266,7 +266,7 @@ function isGoodValue(value = '') {
 function isBadValue(value = '') {
   const v = normalizeText(value);
   return (
-    v.includes('נחס') ||
+    v.includes('מזיק') ||
     v.includes('רע') ||
     v.includes('malefic') ||
     v.includes('nahs') ||
@@ -277,10 +277,10 @@ function getFigureFortuneTone(house) {
   if (!house) return 0;
   const fortune = String(house.fortune || house.fortuneHebrew || '');
   if (!fortune) return 0;
-  if (fortune === 'סעד') return 1;
-  if (fortune === 'נחס') return -1;
-  if (fortune.startsWith('ממוזג') && fortune.includes('סעד')) return 0.5;
-  if (fortune.startsWith('ממוזג') && fortune.includes('נחס')) return -0.5;
+  if (fortune === 'מיטיב') return 1;
+  if (fortune === 'מזיק') return -1;
+  if (fortune.startsWith('ממוזג') && fortune.includes('מיטיב')) return 0.5;
+  if (fortune.startsWith('ממוזג') && fortune.includes('מזיק')) return -0.5;
   if (fortune.startsWith('ממוזג')) return 0;
   if (isGoodValue(fortune)) return 1;
   if (isBadValue(fortune)) return -1;
@@ -369,15 +369,15 @@ function computeDirectionQuadrant(chart) {
   }
   const summary = Object.entries(quadrants).map(([dir, houses]) => {
     const hebrewDir = { east: 'מזרח', west: 'מערב', south: 'דרום', north: 'צפון' }[dir];
-    const incomingBenefic = houses.filter((h) => h.direction === 'incoming' && h.fortune.includes('סעד')).length;
-    const outgoingMalefic = houses.filter((h) => h.direction === 'outgoing' && h.fortune.includes('נחס')).length;
+    const incomingBenefic = houses.filter((h) => h.direction === 'incoming' && h.fortune.includes('מיטיב')).length;
+    const outgoingMalefic = houses.filter((h) => h.direction === 'outgoing' && h.fortune.includes('מזיק')).length;
     return { dir, hebrewDir, houses, incomingBenefic, outgoingMalefic };
   });
   const dominant = summary.reduce((a, b) => (b.incomingBenefic > a.incomingBenefic ? b : a), summary[0]);
   return { quadrants: summary, dominant, dominantHebrew: dominant?.hebrewDir || null };
 }
 
-const DEATH_FIGURE_PATTERNS = new Set(['1112', '1212']); // עתבה יוצאת, קבץ יוצא — "מן הצורות הנחסות ביותר"
+const DEATH_FIGURE_PATTERNS = new Set(['1112', '1212']); // עתבה יוצאת, קבץ יוצא — "מן הצורות המזיקות ביותר"
 
 function computeLifeDeath(chart) {
   if (!Array.isArray(chart)) return null;
@@ -389,7 +389,7 @@ function computeLifeDeath(chart) {
   const h14 = chartHouse(chart, 14);
 
   const isMalefic = (h) => h && MALEFIC_FIGURE_PATTERNS.has(h.key);
-  const isBenefic = (h) => h && !MALEFIC_FIGURE_PATTERNS.has(h.key) && h.fortune && h.fortune.includes('סעד');
+  const isBenefic = (h) => h && !MALEFIC_FIGURE_PATTERNS.has(h.key) && h.fortune && h.fortune.includes('מיטיב');
   const isDeathFigure = (h) => h && DEATH_FIGURE_PATTERNS.has(h.key);
 
   const deathSignals = [];
@@ -397,24 +397,24 @@ function computeLifeDeath(chart) {
 
   for (const h of [h1, h8, h9, h14]) {
     if (isDeathFigure(h)) {
-      deathSignals.push(`${h.hebrew || h.key} (בית ${h.house}) — מן הצורות הנחסיות ביותר, מורה על מוות.`);
+      deathSignals.push(`${h.hebrew || h.key} (בית ${h.house}) — מן הצורות המזיקיות ביותר, מורה על מוות.`);
     }
   }
 
-  if (isMalefic(h14)) deathSignals.push(`בית 14 נחס (${h14.key}) — חזרה בבית 14 כנחס, סימן מוות.`);
-  if (isMalefic(h8))  deathSignals.push(`בית 8 נחס (${h8.key}) — בית המוות בנחס.`);
+  if (isMalefic(h14)) deathSignals.push(`בית 14 מזיק (${h14.key}) — חזרה בבית 14 כמזיק, סימן מוות.`);
+  if (isMalefic(h8))  deathSignals.push(`בית 8 מזיק (${h8.key}) — בית המוות במזיק.`);
 
   if (isMalefic(h1) && isMalefic(h9) && isMalefic(h13)) {
     if (isMalefic(h12) || (h12 && h12.key === h1?.key)) {
-      deathSignals.push('בתים 1, 9, 13 כולם נחסיים וחזרה בבית 12 — לפי חאוי: פסוק מוות.');
+      deathSignals.push('בתים 1, 9, 13 כולם מזיקיים וחזרה בבית 12 — לפי חאוי: פסוק מוות.');
     }
   }
 
   if (isBenefic(h1) && isBenefic(h9)) {
-    lifeSignals.push('סעדים בבית 1 ובית 9 — בית המוות מוקף בטוב, הנעדר בסכנה אך ניצל.');
+    lifeSignals.push('מיטיבים בבית 1 ובית 9 — בית המוות מוקף בטוב, הנעדר בסכנה אך ניצל.');
   }
   if (!isMalefic(h8)) {
-    lifeSignals.push(`בית 8 אינו נחס (${h8?.key || '?'}) — אין סימן מוות ישיר.`);
+    lifeSignals.push(`בית 8 אינו מזיק (${h8?.key || '?'}) — אין סימן מוות ישיר.`);
   }
 
   const deathScore  = deathSignals.length;
@@ -460,8 +460,8 @@ function aspectTypeBetween(h1, h2) {
 
 function figureFortuneTone(fortune) {
   if (!fortune) return 0;
-  if (fortune.includes('נחס')) return -1;
-  if (fortune.includes('סעד')) return 1;
+  if (fortune.includes('מזיק')) return -1;
+  if (fortune.includes('מיטיב')) return 1;
   return 0;
 }
 
@@ -616,8 +616,8 @@ function computeHouse1Analysis(chart, topicId) {
   const figureHebrew = h1.hebrew || h1.key || '';
 
   let fortuneGrade = 0;
-  if (fortune.includes('סעד')) fortuneGrade = 1;
-  else if (fortune.includes('נחס')) fortuneGrade = -1;
+  if (fortune.includes('מיטיב')) fortuneGrade = 1;
+  else if (fortune.includes('מזיק')) fortuneGrade = -1;
 
   const fortuneHebrew =
     fortuneGrade > 0  ? `טוב (${fortune}) — השואל במצב טוב`  :
@@ -795,8 +795,8 @@ function computeTopicConnections(chart, topicId) {
 
     const fortuneA = a.fortune || '';
     const fortuneB = b.fortune || '';
-    const toneA = fortuneA.includes('סעד') ? 1 : fortuneA.includes('נחס') ? -1 : 0;
-    const toneB = fortuneB.includes('סעד') ? 1 : fortuneB.includes('נחס') ? -1 : 0;
+    const toneA = fortuneA.includes('מיטיב') ? 1 : fortuneA.includes('מזיק') ? -1 : 0;
+    const toneB = fortuneB.includes('מיטיב') ? 1 : fortuneB.includes('מזיק') ? -1 : 0;
     const combinedTone = toneA + toneB;
 
     checks.push({
@@ -897,23 +897,23 @@ function computeHayula(chart, quesitedHouseNum, querentFig, quesitedFig, tahasil
   const h8    = chartHouse(chart, 8);
   const reasons = [];
 
-  const judgeIsNahs = judge && judge.fortune && judge.fortune.includes('נחס');
+  const judgeIsNahs = judge && judge.fortune && judge.fortune.includes('מזיק');
   if (judgeIsNahs) {
     if (judge.key !== querentFig && judge.key !== quesitedFig) {
-      const judgeFortuneLabel = judge.fortune || 'נחס';
+      const judgeFortuneLabel = judge.fortune || 'מזיק';
       reasons.push(`הדיין (בית 15: ${judge.hebrew || judge.key}) [${judgeFortuneLabel}] אינו מחובר לצד השואל ולצד הנשאל — הוא חוסם את הפסיקה.`);
     }
   }
 
   if (h12 && MALEFIC_FIGURE_PATTERNS.has(h12.key)) {
     if (h12.key !== querentFig && h12.key !== quesitedFig) {
-      reasons.push(`בית 12 (${h12.hebrew || h12.key}) — סכנה נסתרת של נחס — מפריעה להגעה.`);
+      reasons.push(`בית 12 (${h12.hebrew || h12.key}) — סכנה נסתרת של מזיק — מפריעה להגעה.`);
     }
   }
 
   if (h8 && MALEFIC_FIGURE_PATTERNS.has(h8.key)) {
     if (h8.key !== querentFig && h8.key !== quesitedFig) {
-      reasons.push(`בית 8 (${h8.hebrew || h8.key}) — נחס — מטיל צל של הפסד או סכנה על הדין.`);
+      reasons.push(`בית 8 (${h8.hebrew || h8.key}) — מזיק — מטיל צל של הפסד או סכנה על הדין.`);
     }
   }
 
@@ -1396,7 +1396,7 @@ function buildJudgeVerdict(boardAnalysis) {
       verdict = 'yes-strong';
       grade = 'positive';
       hebrewShort = 'כן';
-      hebrewFull = 'תשובה: כן — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא צורה של סעד, והעדים מחזקים.' +
+      hebrewFull = 'תשובה: כן — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא צורה של מיטיב, והעדים מחזקים.' +
         judgeSilentNote +
         (w1Figure ? ' עד ראשון: ' + w1Figure + '.' : '') +
         (w2Figure ? ' עד שני: ' + w2Figure + '.' : '') +
@@ -1405,7 +1405,7 @@ function buildJudgeVerdict(boardAnalysis) {
       verdict = 'yes-weak';
       grade = 'positive';
       hebrewShort = 'כן';
-      hebrewFull = 'תשובה: כן — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא סעד. העדים מנוגדים לו, אך הדיין פוסק — יש כוחות שמעכבים אבל הכיוון חיובי.' +
+      hebrewFull = 'תשובה: כן — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא מיטיב. העדים מנוגדים לו, אך הדיין פוסק — יש כוחות שמעכבים אבל הכיוון חיובי.' +
         judgeSilentNote +
         (w1Figure ? ' עד ראשון: ' + w1Figure + '.' : '') +
         (w2Figure ? ' עד שני: ' + w2Figure + '.' : '');
@@ -1415,7 +1415,7 @@ function buildJudgeVerdict(boardAnalysis) {
       verdict = 'no-strong';
       grade = 'negative';
       hebrewShort = 'לא';
-      hebrewFull = 'תשובה: לא — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא צורה של נחס, והעדים מחזקים את הדין.' +
+      hebrewFull = 'תשובה: לא — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא צורה של מזיק, והעדים מחזקים את הדין.' +
         judgeSilentNote +
         (w1Figure ? ' עד ראשון: ' + w1Figure + '.' : '') +
         (w2Figure ? ' עד שני: ' + w2Figure + '.' : '') +
@@ -1424,7 +1424,7 @@ function buildJudgeVerdict(boardAnalysis) {
       verdict = 'no-weak';
       grade = 'negative';
       hebrewShort = 'לא';
-      hebrewFull = 'תשובה: לא — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא נחס. העדים מראים צד חיובי אך אינם יכולים לשנות פסיקת הדיין — יש כוח חיובי שמנסה לפעול, אך הכרעת הגורל שלילית.' +
+      hebrewFull = 'תשובה: לא — הדיין (בית 15) הוא "' + judgeFigure + '" שהוא מזיק. העדים מראים צד חיובי אך אינם יכולים לשנות פסיקת הדיין — יש כוח חיובי שמנסה לפעול, אך הכרעת הגורל שלילית.' +
         judgeSilentNote +
         (w1Figure ? ' עד ראשון: ' + w1Figure + '.' : '') +
         (w2Figure ? ' עד שני: ' + w2Figure + '.' : '');
@@ -1475,7 +1475,7 @@ function buildJudgeVerdict(boardAnalysis) {
   }
 
   const dhamirFort = boardAnalysis.dhamirByMizan?.primaryFortune || boardAnalysis.dhamirHouse?.fortune || '';
-  const dhamirToneVerdict = dhamirFort.includes('סעד') ? 1 : dhamirFort.includes('נחס') ? -1 : 0;
+  const dhamirToneVerdict = dhamirFort.includes('מיטיב') ? 1 : dhamirFort.includes('מזיק') ? -1 : 0;
   if (dhamirToneVerdict !== 0) {
     const dhamirH = boardAnalysis.dhamirByMizan?.primaryHouseNumber || boardAnalysis.dhamirHouse?.houseNumber || '';
     const confirming = (judgeTone > 0 && dhamirToneVerdict > 0) || (judgeTone < 0 && dhamirToneVerdict < 0);
@@ -1499,11 +1499,11 @@ function judgeHouseTone(house) {
   ].filter(Boolean).join(' ');
 
   if (isGoodValue(combined)) {
-    return { score: 1, tone: 'good', hebrew: 'הבית נושא סימן טוב / סעד.' };
+    return { score: 1, tone: 'good', hebrew: 'הבית נושא סימן טוב / מיטיב.' };
   }
 
   if (isBadValue(combined)) {
-    return { score: -1, tone: 'bad', hebrew: 'הבית נושא סימן קשה / נחס.' };
+    return { score: -1, tone: 'bad', hebrew: 'הבית נושא סימן קשה / מזיק.' };
   }
 
   return { score: 0, tone: 'mixed', hebrew: 'הבית אינו מוכרע מצד טוב/רע בלבד.' };
@@ -1865,31 +1865,31 @@ function computeAuthorityStateAnalysis(chart, authoritySource) {
     signals.push({ verdict: 'stable', weight: 3, sourceId: rule1Src?.id || null,
       hebrew: rule1Src?.hebrew
         ? `${rule1Src.hebrew} [בית 1: ${h1?.hebrew || ''}, בית 10: ${h10?.hebrew || ''}]`
-        : `בית 1 (${h1?.hebrew || ''}) סעד+קבוע/נכנס ומחובר לבית 10 (${h10?.hebrew || ''}) — המושל יציב בתפקידו ומכובד.` });
+        : `בית 1 (${h1?.hebrew || ''}) מיטיב+קבוע/נכנס ומחובר לבית 10 (${h10?.hebrew || ''}) — המושל יציב בתפקידו ומכובד.` });
   }
 
   if (h10?.key && h11?.key && h10.key === h11.key && isBenefic(h1)) {
     signals.push({ verdict: 'stable', weight: 2, sourceId: rule2Src?.id || null,
       hebrew: rule2Src?.hebrew
         ? `${rule2Src.hebrew} [בית 10: ${h10?.hebrew || ''}, בית 11: ${h11?.hebrew || ''}]`
-        : `בית 10 (${h10?.hebrew || ''}) חוזר בבית 11 ובית 1 סעד — ריבוי תומכים, חברים ואחים.` });
+        : `בית 10 (${h10?.hebrew || ''}) חוזר בבית 11 ובית 1 מיטיב — ריבוי תומכים, חברים ואחים.` });
   }
 
   if (isMalefic(h1) || (isMalefic(h10) && isMalefic(h11))) {
     signals.push({ verdict: 'removal', weight: -3, sourceId: rule3Src?.id || null,
       hebrew: rule3Src?.hebrew
         ? `${rule3Src.hebrew} [בית 1: ${h1?.hebrew || ''}, בית 10: ${h10?.hebrew || ''}]`
-        : `בית 1 (${h1?.hebrew || ''}) או בתים 10+11 (${h10?.hebrew || ''}/${h11?.hebrew || ''}) נחסיים — סימן ליציאה מן התפקיד.` });
+        : `בית 1 (${h1?.hebrew || ''}) או בתים 10+11 (${h10?.hebrew || ''}/${h11?.hebrew || ''}) מזיקיים — סימן ליציאה מן התפקיד.` });
   }
 
   if (isMalefic(h7) && isMalefic(h15)) {
     signals.push({ verdict: 'removal', weight: -4, sourceId: rule4Src?.id || null,
       hebrew: rule4Src?.hebrew
         ? `${rule4Src.hebrew} [בית 7: ${h7?.hebrew || ''}, בית 15: ${h15?.hebrew || ''}]`
-        : `נחסים בבית 7 (${h7?.hebrew || ''}) ובבית 15 (${h15?.hebrew || ''}) — נפילה קשה וכעס השליט.` });
+        : `מזיקים בבית 7 (${h7?.hebrew || ''}) ובבית 15 (${h15?.hebrew || ''}) — נפילה קשה וכעס השליט.` });
   } else if (isMalefic(h7)) {
     signals.push({ verdict: 'removal', weight: -2, sourceId: null,
-      hebrew: `נחס בבית 7 (${h7?.hebrew || ''}) — לחץ מן הצד השני.` });
+      hebrew: `מזיק בבית 7 (${h7?.hebrew || ''}) — לחץ מן הצד השני.` });
   }
 
   const returnHouses = [h1, h5, h15, h11];
@@ -1901,8 +1901,8 @@ function computeAuthorityStateAnalysis(chart, authoritySource) {
     signals.push({ verdict: 'return', weight: 2, sourceId: returnSrc?.id || null, hebrew: baseText });
   } else if (returnBeneficCount >= 2 && h10Benefic) {
     const baseText = returnH10Src?.hebrew
-      ? `${returnH10Src.hebrew} [בתים לחזרה נוטים לסעד, בית 10 תומך]`
-      : `בתים לחזרה (1,5,15,11) נוטים לסעד ובית 10 תומך — סימן לחזרה.`;
+      ? `${returnH10Src.hebrew} [בתים לחזרה נוטים למיטיב, בית 10 תומך]`
+      : `בתים לחזרה (1,5,15,11) נוטים למיטיב ובית 10 תומך — סימן לחזרה.`;
     signals.push({ verdict: 'return', weight: 1, sourceId: returnH10Src?.id || null, hebrew: baseText });
   }
 
@@ -1976,16 +1976,16 @@ function computeAuthorityDurationKashf(chart) {
     outputHebrew = `ארבעת היתדות (${housesDisplay}) מסועדות — המושל יישאר בשלטון, שלטונו יציב (כשף עמ׳ 259)`;
   } else if (allMalefic) {
     verdict = 'removal-soon';
-    outputHebrew = `ארבעת היתדות (${housesDisplay}) נחסיות — אין שלטון קבוע, יודח בקרוב (כשף עמ׳ 259)`;
+    outputHebrew = `ארבעת היתדות (${housesDisplay}) מזיקיות — אין שלטון קבוע, יודח בקרוב (כשף עמ׳ 259)`;
   } else if (anyMutable) {
     verdict = 'alternating';
     outputHebrew = `יתדות מתהפכות בלוח (${housesDisplay}) — פעם יודח ופעם ימונה מחדש (כשף עמ׳ 259)`;
   } else if (anyMalefic) {
     verdict = 'risk';
-    outputHebrew = `חלק מן היתדות נחסיות (${housesDisplay}) — שלטון עם סיכון; אם חלקן מיטיב, יש לפחד אך לא לייאש (כשף עמ׳ 259)`;
+    outputHebrew = `חלק מן היתדות מזיקיות (${housesDisplay}) — שלטון עם סיכון; אם חלקן מיטיב, יש לפחד אך לא לייאש (כשף עמ׳ 259)`;
   } else {
     verdict = 'stable';
-    outputHebrew = `היתדות (${housesDisplay}) בסעד — שלטון יציב (כשף עמ׳ 259)`;
+    outputHebrew = `היתדות (${housesDisplay}) במיטיב — שלטון יציב (כשף עמ׳ 259)`;
   }
   return { verdict, outputHebrew };
 }
@@ -2005,13 +2005,13 @@ function computeReturnToOfficeKashf(chart) {
   let verdict, outputHebrew;
   if (h1Good && (h10Good || h16Good)) {
     verdict = 'returns';
-    outputHebrew = `ב1 (${h1?.hebrew}) סעד+נכנס, ב10 (${h10?.hebrew}) / ב16 (${h16?.hebrew}) תומכים — יחזור לתפקידו (כשף עמ׳ 266)`;
+    outputHebrew = `ב1 (${h1?.hebrew}) מיטיב+נכנס, ב10 (${h10?.hebrew}) / ב16 (${h16?.hebrew}) תומכים — יחזור לתפקידו (כשף עמ׳ 266)`;
   } else if (!isBenefic(h1)) {
     verdict = 'no-return';
-    outputHebrew = `ב1 (${h1?.hebrew}) נחס — לא יחזור לתפקיד (כשף עמ׳ 266)`;
+    outputHebrew = `ב1 (${h1?.hebrew}) מזיק — לא יחזור לתפקיד (כשף עמ׳ 266)`;
   } else {
     verdict = 'uncertain';
-    outputHebrew = `ב1 (${h1?.hebrew}) סעד אך לא נכנס, או בית 10/16 לא תומכים — הדין לא מוכרע (כשף עמ׳ 266)`;
+    outputHebrew = `ב1 (${h1?.hebrew}) מיטיב אך לא נכנס, או בית 10/16 לא תומכים — הדין לא מוכרע (כשף עמ׳ 266)`;
   }
   return { verdict, outputHebrew };
 }
@@ -2032,19 +2032,19 @@ function computeStateStabilityKashf(chart) {
   let verdict, outputHebrew;
   if (h1Good && h1ReturnsInH15) {
     verdict = 'stable-complete';
-    outputHebrew = `ב1 (${h1?.hebrew}) סעד וחוזר בב15 — יציבות מלאה ושלמות האושר (כשף עמ׳ 265)`;
+    outputHebrew = `ב1 (${h1?.hebrew}) מיטיב וחוזר בב15 — יציבות מלאה ושלמות האושר (כשף עמ׳ 265)`;
   } else if (allFourGood) {
     verdict = 'stable-all';
     outputHebrew = `ב1+2+9+15 (${h1?.hebrew}/${h2?.hebrew}/${h9?.hebrew}/${h15?.hebrew}) מסועדים — שלמות אושר, מעבר מטוב לטוב (כשף עמ׳ 265)`;
   } else if (!h1Good && h15Good) {
     verdict = 'improving';
-    outputHebrew = `ב1 (${h1?.hebrew}) נחס בבית סעד (ב15: ${h15?.hebrew}) — המצב עשוי להשתפר מרע לטוב (כשף עמ׳ 265)`;
+    outputHebrew = `ב1 (${h1?.hebrew}) מזיק בבית מיטיב (ב15: ${h15?.hebrew}) — המצב עשוי להשתפר מרע לטוב (כשף עמ׳ 265)`;
   } else if (!h1Good) {
     verdict = 'declining';
-    outputHebrew = `ב1 (${h1?.hebrew}) נחס — המצב אינו יציב, צפויה ירידה (כשף עמ׳ 265-266)`;
+    outputHebrew = `ב1 (${h1?.hebrew}) מזיק — המצב אינו יציב, צפויה ירידה (כשף עמ׳ 265-266)`;
   } else {
     verdict = 'moderate';
-    outputHebrew = `ב1 (${h1?.hebrew}) סעד אך ב15 (${h15?.hebrew}) לא חוזר — יציבות בינונית (כשף עמ׳ 265)`;
+    outputHebrew = `ב1 (${h1?.hebrew}) מיטיב אך ב15 (${h15?.hebrew}) לא חוזר — יציבות בינונית (כשף עמ׳ 265)`;
   }
   return { verdict, outputHebrew };
 }
@@ -2261,10 +2261,10 @@ function computeWellDrillingKashf(chart) {
   let verdict, outputHebrew;
   if (h4Good && pillarsOk) {
     verdict = 'success';
-    outputHebrew = `ב4 (${h4.hebrew}) — סעד ופנימי, כל היתדות מיטיבים: הבאר תצלח ויימצאו מים. מידת העומק: ${depthUnit} (כשף עמ׳ 188-189).`;
+    outputHebrew = `ב4 (${h4.hebrew}) — מיטיב ופנימי, כל היתדות מיטיבים: הבאר תצלח ויימצאו מים. מידת העומק: ${depthUnit} (כשף עמ׳ 188-189).`;
   } else if (h4Good) {
     verdict = 'partial';
-    outputHebrew = `ב4 (${h4.hebrew}) — סעד ופנימי, אך לא כל היתדות מיטיבים: יש סיכוי למים, אך לא מובטח. עומק: ${depthUnit} (כשף עמ׳ 188-189).`;
+    outputHebrew = `ב4 (${h4.hebrew}) — מיטיב ופנימי, אך לא כל היתדות מיטיבים: יש סיכוי למים, אך לא מובטח. עומק: ${depthUnit} (כשף עמ׳ 188-189).`;
   } else {
     verdict = 'fail';
     const reason = !isSaad(h4) ? 'מזיק' : 'חיצוני';
@@ -2393,7 +2393,7 @@ function computeFugitiveKashf(chart) {
   let verdict, outputHebrew;
   if (h1h6BothIn && allFourGood && outcomeGood) {
     verdict = 'will-return';
-    outputHebrew = `ב1+ב6 פנימיים, כל הבתים הראשיים (ב1,4,7,10) סעד, וב15 (${h15?.hebrew}) לטובה — הבורח לא התרחק ועתיד לשוב (כשף עמ׳ 240-241). מיקום (ב4): ${h4?.hebrew}.`;
+    outputHebrew = `ב1+ב6 פנימיים, כל הבתים הראשיים (ב1,4,7,10) מיטיב, וב15 (${h15?.hebrew}) לטובה — הבורח לא התרחק ועתיד לשוב (כשף עמ׳ 240-241). מיקום (ב4): ${h4?.hebrew}.`;
   } else if (!allFourGood || !outcomeGood) {
     verdict = 'will-not-return';
     outputHebrew = `ב7 (${h7?.hebrew}) או ב15 (${h15?.hebrew}) מזיק — הבורח לא יחזור (כשף עמ׳ 240-241). מיקום אפשרי (ב4): ${h4?.hebrew}.`;
@@ -2484,9 +2484,9 @@ function computeYearlyForecastAnalysis(chart, pricesSource, rainSource) {
   // 2. כלל העוצמה — צורת האם הראשונה (בית 1) מחזקת או מחלישה את הטאלע
   // מקור: עמוד 61 — "אם חזקה מוסיפה כוח לטאלע; אם חסרה מחסירה"
   const h1Fortune  = h1?.fortune || '';
-  const strengthNote = h1Fortune.includes('סעד')
+  const strengthNote = h1Fortune.includes('מיטיב')
     ? `כלל העוצמה: צורת האם הראשונה (${h1?.hebrew || ''}) מסועדת — מוסיפה כוח לטאלע השנה.`
-    : h1Fortune.includes('נחס')
+    : h1Fortune.includes('מזיק')
     ? `כלל העוצמה: צורת האם הראשונה (${h1?.hebrew || ''}) מנוחסת — מחלישה את כוח הטאלע.`
     : null;
 
@@ -2870,7 +2870,7 @@ function computeBodyPartDiagnosisHawi(chart) {
   };
 }
 
-// גאלב ומגלוב — שיטת ספירת הנקודות היחידות (חאוי — פרקי סכסוך ואויבים)
+// גובר ונגבר — שיטת ספירת הנקודות היחידות (חאוי — פרקי סכסוך ואויבים)
 // סופרים נקודות יחידות (1) בצד השואל (בתים 1-4) מול צד היריב (בתים 7-10)
 function computeGhalibMaghloub(chart) {
   if (!Array.isArray(chart)) return null;
@@ -2902,11 +2902,11 @@ function computeGhalibMaghloub(chart) {
   let verdict, verdictHebrew, querentWins;
   if (querentPoints > opponentPoints) {
     verdict = 'ghalib-querent';
-    verdictHebrew = `השואל גאלב — עולה על יריבו (${querentPoints} מול ${opponentPoints})`;
+    verdictHebrew = `השואל גובר — עולה על יריבו (${querentPoints} מול ${opponentPoints})`;
     querentWins = true;
   } else if (opponentPoints > querentPoints) {
     verdict = 'ghalib-opponent';
-    verdictHebrew = `היריב גאלב — עולה על השואל (${opponentPoints} מול ${querentPoints})`;
+    verdictHebrew = `היריב גובר — עולה על השואל (${opponentPoints} מול ${querentPoints})`;
     querentWins = false;
   } else {
     verdict = 'equal';
@@ -2924,7 +2924,7 @@ function computeGhalibMaghloub(chart) {
     opponentDetails,
     verdict,
     querentWins,
-    outputHebrew: `גאלב ומגלוב (חאוי — ספירת נקודות יחידות):\n  שואל [ב׳ 1-4]: ${querentPoints} | ${querentLine}\n  יריב [ב׳ 7-10]: ${opponentPoints} | ${opponentLine}\n  ${verdictHebrew}`,
+    outputHebrew: `גובר ונגבר (חאוי — ספירת נקודות יחידות):\n  שואל [ב׳ 1-4]: ${querentPoints} | ${querentLine}\n  יריב [ב׳ 7-10]: ${opponentPoints} | ${opponentLine}\n  ${verdictHebrew}`,
   };
 }
 
@@ -3127,8 +3127,8 @@ function computeStolenItemReturn(chart) {
   const h7 = getH(7); const h8 = getH(8);
   const h12 = getH(12); const h14 = getH(14);
   if (!h1 || !h7) return null;
-  const isSaad = (h) => !!h && String(h.fortune || '').includes('סעד');
-  const isNahs = (h) => !!h && String(h.fortune || '').includes('נחס');
+  const isSaad = (h) => !!h && String(h.fortune || '').includes('מיטיב');
+  const isNahs = (h) => !!h && String(h.fortune || '').includes('מזיק');
   const lines = [];
   // כשף עמ׳ 229: "אם מצאת בראשון ובשני צורות מיטיבות, ובשביעי ובשמיני צורות מזיקות — הגניבה חוזרת לבעליה"
   if (isSaad(h1) && isSaad(h2) && isNahs(h7) && isNahs(h8)) {
@@ -3181,14 +3181,14 @@ function computeMissingPersonLocation(chart) {
     if (dir9)  lines.push(`בית 9 (${h9?.hebrew || h9El || '?'}) → כיוון ${dir9}`);
     if (dir10) lines.push(`בית 10 (${h10?.hebrew || h10El || '?'}) → כיוון ${dir10}`);
   }
-  if (h5 && String(h5.fortune || '').includes('סעד')) {
-    lines.push(`בית 5 סעד (${h5.hebrew || ''}) → הנעדר קרוב לבית`);
+  if (h5 && String(h5.fortune || '').includes('מיטיב')) {
+    lines.push(`בית 5 מיטיב (${h5.hebrew || ''}) → הנעדר קרוב לבית`);
   }
   if (h6?.key === '1212') {
     lines.push('ממון יוצא (قبض خارج) בבית 6 → הנעדר בגלות / רחוק מהבית');
   }
-  if (h11?.key?.startsWith('1') && String(h11.fortune || '').includes('סעד')) {
-    lines.push(`בית 11 פתוח+סעד (${h11.hebrew || ''}) → יש קשר קרוב עם הנעדר`);
+  if (h11?.key?.startsWith('1') && String(h11.fortune || '').includes('מיטיב')) {
+    lines.push(`בית 11 פתוח+מיטיב (${h11.hebrew || ''}) → יש קשר קרוב עם הנעדר`);
   }
   return lines.length ? { outputHebrew: lines.join('\n') } : null;
 }
@@ -3200,7 +3200,7 @@ function computeMissingPersonReturn(chart) {
   const h7  = getH(7);
   const h9  = getH(9);
   const h14 = getH(14);
-  const isSaad = (h) => !!h && String(h.fortune || '').includes('סעד');
+  const isSaad = (h) => !!h && String(h.fortune || '').includes('מיטיב');
   const lines = [];
   if (h14?.key === '1222' || h14?.key === '2211') {
     lines.push(`${h14.hebrew || h14.key} בבית 14 → הנעדר יחזור`);
@@ -3211,8 +3211,8 @@ function computeMissingPersonReturn(chart) {
   if (h6?.key === '1212') {
     lines.push('⚠ ממון יוצא בבית 6 — סכנת מוות בגלות');
   }
-  if (isSaad(h1) && isSaad(h7)) lines.push('בית 1+7 סעד — יש סיכוי טוב לחזרה');
-  else if (!isSaad(h1) && !isSaad(h7)) lines.push('בית 1+7 נחס — הסיכוי לחזרה נמוך');
+  if (isSaad(h1) && isSaad(h7)) lines.push('בית 1+7 מיטיב — יש סיכוי טוב לחזרה');
+  else if (!isSaad(h1) && !isSaad(h7)) lines.push('בית 1+7 מזיק — הסיכוי לחזרה נמוך');
   if (!lines.length) lines.push('לא נמצאו סימנים ברורים לגבי חזרת הנעדר');
   return { outputHebrew: lines.join('\n') };
 }
@@ -3242,8 +3242,8 @@ function computeDeathRisk(chart) {
       riskLevel += 1;
     }
   }
-  if (h14 && String(h14.fortune || '').includes('נחס')) {
-    lines.push('בית 14 (אחרית) נחס — תוצאה שלילית');
+  if (h14 && String(h14.fortune || '').includes('מזיק')) {
+    lines.push('בית 14 (אחרית) מזיק — תוצאה שלילית');
     riskLevel += 1;
   }
   for (const h of [h6, h8].filter((h) => h && LIFE_SAVING_FIGURES.has(h.key || ''))) {
@@ -3338,12 +3338,12 @@ function computeWishFulfillment(chart) {
   const getH = (n) => chart.find((h) => Number(h.house) === n);
   const h1 = getH(1); const h11 = getH(11); const h15 = getH(15);
   if (!h1 || !h11 || !h15) return null;
-  const isPos = (h) => !!h && String(h.fortune || '').includes('סעד');
+  const isPos = (h) => !!h && String(h.fortune || '').includes('מיטיב');
   const all = isPos(h1) && isPos(h11) && isPos(h15);
   const any = isPos(h1) || isPos(h11) || isPos(h15);
   let verdict = '';
-  if (all)      verdict = 'בית 1+11+15 כולם סעד — יצליח להשיג מה שרוצה';
-  else if (any) verdict = 'חלק מהבתים סעד — הצלחה חלקית או עם עיכוב';
+  if (all)      verdict = 'בית 1+11+15 כולם מיטיב — יצליח להשיג מה שרוצה';
+  else if (any) verdict = 'חלק מהבתים מיטיב — הצלחה חלקית או עם עיכוב';
   else          verdict = 'בית 1+11+15 שליליים — לא ישיג מה שרוצה בזמן זה';
   return { all, any, outputHebrew: verdict };
 }
@@ -3582,11 +3582,11 @@ function computeChildrenPregnancyKashfAnalysis(chart) {
   const isBenefic = (h) => {
     if (!h) return false;
     const f = String(h.fortune || '');
-    return f.includes('סעד') && !f.startsWith('ממוזג-נחס');
+    return f.includes('מיטיב') && !f.startsWith('ממוזג-מזיק');
   };
   const isMalefic = (h) => {
     if (!h) return false;
-    return String(h.fortune || '').includes('נחס');
+    return String(h.fortune || '').includes('מזיק');
   };
 
   const lines = [];
@@ -3623,7 +3623,7 @@ function computeChildrenPregnancyKashfAnalysis(chart) {
   }
   if (h8Pattern === '1221') {
     if (h11SafeIncoming) {
-      lines.push(`סוהר (عقلة) בבית 8 — האם בסכנה, בית 11 סעד-נכנס: הנולד ינצל [כשף עמ׳ 192]`);
+      lines.push(`סוהר (عقلة) בבית 8 — האם בסכנה, בית 11 מיטיב-נכנס: הנולד ינצל [כשף עמ׳ 192]`);
     } else {
       lines.push(`סוהר (عقلة) בבית 8 — סכנת מוות לאם ולנולד [כשף עמ׳ 192]`);
     }
@@ -3648,16 +3648,16 @@ function computeChildrenPregnancyKashfAnalysis(chart) {
   // 6. טיב/איכות הילד — בית 6 (בריאות) ובית 8 (אריכות ימים) (Kashf p.194)
   if (h6) {
     if (isMalefic(h6)) {
-      lines.push(`בריאות הילד בילדות: בית 6 נחס (${h6.hebrew || h6.key}) — מחלות רבות בגיל הרך [כשף עמ׳ 194]`);
+      lines.push(`בריאות הילד בילדות: בית 6 מזיק (${h6.hebrew || h6.key}) — מחלות רבות בגיל הרך [כשף עמ׳ 194]`);
     } else if (isBenefic(h6)) {
-      lines.push(`בריאות הילד: בית 6 סעד (${h6.hebrew || h6.key}) — בריאות טובה [כשף עמ׳ 194]`);
+      lines.push(`בריאות הילד: בית 6 מיטיב (${h6.hebrew || h6.key}) — בריאות טובה [כשף עמ׳ 194]`);
     }
   }
   if (h8) {
     if (isMalefic(h8)) {
-      lines.push(`אריכות ימים: בית 8 נחס (${h8.hebrew || h8.key}) — מעט תקווה [כשף עמ׳ 194]`);
+      lines.push(`אריכות ימים: בית 8 מזיק (${h8.hebrew || h8.key}) — מעט תקווה [כשף עמ׳ 194]`);
     } else if (isBenefic(h8)) {
-      lines.push(`אריכות ימים: בית 8 סעד (${h8.hebrew || h8.key}) — ככל שיגדל מצבו ישתפר [כשף עמ׳ 194]`);
+      lines.push(`אריכות ימים: בית 8 מיטיב (${h8.hebrew || h8.key}) — ככל שיגדל מצבו ישתפר [כשף עמ׳ 194]`);
     }
   }
 
@@ -3666,9 +3666,9 @@ function computeChildrenPregnancyKashfAnalysis(chart) {
     const b5g = isBenefic(h5),  b5b = isMalefic(h5);
     const b16g = isBenefic(h16), b16b = isMalefic(h16);
     if (b5g && b16g) {
-      lines.push(`מזל הילד (בית 5+16 שניהם סעד): אושר, מצב טוב, עושר [כשף עמ׳ 194]`);
+      lines.push(`מזל הילד (בית 5+16 שניהם מיטיב): אושר, מצב טוב, עושר [כשף עמ׳ 194]`);
     } else if (b5b && b16b) {
-      lines.push(`מזל הילד (בית 5+16 שניהם נחס): מצב ירוד [כשף עמ׳ 194]`);
+      lines.push(`מזל הילד (בית 5+16 שניהם מזיק): מצב ירוד [כשף עמ׳ 194]`);
     } else {
       lines.push(`מזל הילד (בית 5+16 מעורב): מצב בינוני [כשף עמ׳ 194]`);
     }
@@ -3712,13 +3712,13 @@ function computeLoanKashfAnalysis(chart) {
     // Malefic: humra(2122), nakis(2221), qabd-kharij(1212), nusra-dakhila(2211) is mixed
     // Using the standard fortune table from the system
     const FIGURE_FORTUNE = {
-      '1111': 'סעד', '1112': 'נחס', '1121': 'ממוזג', '1122': 'סעד',
-      '1211': 'סעד', '1212': 'נחס', '1221': 'נחס', '1222': 'ממוזג',
-      '2111': 'ממוזג', '2112': 'סעד', '2121': 'סעד', '2122': 'נחס',
-      '2211': 'ממוזג-נחס', '2212': 'סעד', '2221': 'נחס', '2222': 'ממוזג',
+      '1111': 'מיטיב', '1112': 'מזיק', '1121': 'ממוזג', '1122': 'מיטיב',
+      '1211': 'מיטיב', '1212': 'מזיק', '1221': 'מזיק', '1222': 'ממוזג',
+      '2111': 'ממוזג', '2112': 'מיטיב', '2121': 'מיטיב', '2122': 'מזיק',
+      '2211': 'ממוזג-מזיק', '2212': 'מיטיב', '2221': 'מזיק', '2222': 'ממוזג',
     };
     const f = FIGURE_FORTUNE[pattern] || '';
-    return f.includes('סעד') && !f.startsWith('ממוזג-נחס');
+    return f.includes('מיטיב') && !f.startsWith('ממוזג-מזיק');
   };
 
   const figArabicName = {
@@ -3749,8 +3749,8 @@ function computeLoanKashfAnalysis(chart) {
   if (figFinal) {
     const benefic = isBenefic(figFinal);
     mainVerdict = benefic
-      ? `צורה משולבת: ${figHebrew[figFinal] || figFinal} (סעד) — הלווה ישיב את ההלוואה`
-      : `צורה משולבת: ${figHebrew[figFinal] || figFinal} (נחס) — יתקשה להחזיר את ההלוואה`;
+      ? `צורה משולבת: ${figHebrew[figFinal] || figFinal} (מיטיב) — הלווה ישיב את ההלוואה`
+      : `צורה משולבת: ${figHebrew[figFinal] || figFinal} (מזיק) — יתקשה להחזיר את ההלוואה`;
     lines.push(mainVerdict);
   }
 
@@ -3785,9 +3785,9 @@ function computeReligionKashfAnalysis(chart) {
   const isBenefic = (h) => {
     if (!h) return false;
     const f = String(h.fortune || '');
-    return f.includes('סעד') && !f.startsWith('ממוזג-נחס');
+    return f.includes('מיטיב') && !f.startsWith('ממוזג-מזיק');
   };
-  const isMalefic = (h) => !!h && String(h.fortune || '').includes('נחס');
+  const isMalefic = (h) => !!h && String(h.fortune || '').includes('מזיק');
 
   const h3Benefic = isBenefic(h3);
   const h9Benefic = isBenefic(h9);
@@ -3811,7 +3811,7 @@ function computeReligionKashfAnalysis(chart) {
   } else if (anyBenefic && !anyMalefic) {
     verdict = 'אמונה ממוזגת — יש יסוד דתי אך אינו שלם [כשף עמ׳ 253]';
   } else {
-    verdict = 'מצב אמונה בינוני — סעד ונחס מעורבים [כשף עמ׳ 253]';
+    verdict = 'מצב אמונה בינוני — מיטיב ומזיק מעורבים [כשף עמ׳ 253]';
   }
   lines.push(verdict);
 
@@ -3836,9 +3836,9 @@ function computeMotherRulesKashfAnalysis(chart) {
   const isBenefic = (h) => {
     if (!h) return false;
     const f = String(h.fortune || '');
-    return f.includes('סעד') && !f.startsWith('ממוזג-נחס');
+    return f.includes('מיטיב') && !f.startsWith('ממוזג-מזיק');
   };
-  const isMalefic = (h) => !!h && String(h.fortune || '').includes('נחס');
+  const isMalefic = (h) => !!h && String(h.fortune || '').includes('מזיק');
 
   // Pillar houses (אותאד): 1, 4, 7, 10
   const PILLAR_HOUSES  = [1, 4, 7, 10];
@@ -3855,9 +3855,9 @@ function computeMotherRulesKashfAnalysis(chart) {
   // Primary verdict from h10
   let primaryVerdict = '';
   if (isMalefic(h10)) {
-    primaryVerdict = 'נחס בבית האם → רע לה [כשף עמ׳ 257]';
+    primaryVerdict = 'מזיק בבית האם → רע לה [כשף עמ׳ 257]';
   } else if (isBenefic(h10)) {
-    primaryVerdict = 'סעד בבית האם → טוב לה [כשף עמ׳ 257]';
+    primaryVerdict = 'מיטיב בבית האם → טוב לה [כשף עמ׳ 257]';
   } else {
     primaryVerdict = 'בית האם ממוזג → מצב בינוני [כשף עמ׳ 257]';
   }
@@ -4095,7 +4095,7 @@ const FIRST_FIGURE_REPETITIONS = {
     'שואל על אדם בעל יחס של עבדות, עיוורים, נכים — או הארב מהמסתר',
     'שואל על שניים בעלי מגבלה',
     'שואל על ריבוי קשיים',
-    'שואל על ריבוי נחסים',
+    'שואל על ריבוי מזיקים',
   ],
   '2112': [
     'שואל על חכמה, ידע, דיבור, כתיבה',
@@ -4310,11 +4310,11 @@ function computePrisonerAnalysis(chart) {
     lines.push(`בית 5 (גורל האסיר): ${h5.hebrew || h5.key} [${h5Fortune || 'לא ידוע'}]`);
   }
 
-  const judgeForAcquit = h15?.fortune?.includes('סעד');
-  const judgeForDetain = h15?.fortune?.includes('נחס');
+  const judgeForAcquit = h15?.fortune?.includes('מיטיב');
+  const judgeForDetain = h15?.fortune?.includes('מזיק');
   let exitVerdict = '';
-  if (judgeForAcquit) exitVerdict = 'הדיין סעד — יש סיכוי ליציאה';
-  else if (judgeForDetain) exitVerdict = 'הדיין נחס — המאסר ממשיך';
+  if (judgeForAcquit) exitVerdict = 'הדיין מיטיב — יש סיכוי ליציאה';
+  else if (judgeForDetain) exitVerdict = 'הדיין מזיק — המאסר ממשיך';
   if (exitVerdict) lines.push(exitVerdict);
 
   return {
@@ -4380,8 +4380,8 @@ function computeForcedTravelAnalysis(chart) {
   const inH9  = h9  && h9.key  === h1.key;
   const inH14 = h14 && h14.key === h1.key;
 
-  const h3Nahs = h3?.fortune?.includes('נחס');
-  const h9Nahs = h9?.fortune?.includes('נחס');
+  const h3Nahs = h3?.fortune?.includes('מזיק');
+  const h9Nahs = h9?.fortune?.includes('מזיק');
 
   const isForced  = (inH3 && h3Nahs) || (inH9 && h9Nahs);
   const isChosen  = (inH3 && !h3Nahs) || (inH9 && !h9Nahs) || inH14;
@@ -4391,7 +4391,7 @@ function computeForcedTravelAnalysis(chart) {
   if (isForced) {
     const byHouse = (inH3 && h3Nahs) ? 3 : 9;
     travelType = 'forced';
-    hebrewNote = `הנסיעה כפויה — צורת הטאלע מופיעה בבית ${byHouse} עם מזל נחס. לפי חאוי (עמ׳ 33): השואל נוסע שלא ברצונו.`;
+    hebrewNote = `הנסיעה כפויה — צורת הטאלע מופיעה בבית ${byHouse} עם מזל מזיק. לפי חאוי (עמ׳ 33): השואל נוסע שלא ברצונו.`;
   } else if (isChosen) {
     const byHouse = inH3 ? 3 : inH9 ? 9 : 14;
     travelType = 'chosen';
@@ -4467,7 +4467,7 @@ function describeWitnessEffect(witnessHouse, targetHouseNumbers, chartHouses) {
     return `בית ${n} (${label}${figName ? ` — ${figName}` : ''}): ${effect}`;
   });
 
-  const toneWord = tone > 0 ? 'סעד' : tone < 0 ? 'נחס' : 'ממוזג';
+  const toneWord = tone > 0 ? 'מיטיב' : tone < 0 ? 'מזיק' : 'ממוזג';
   return {
     witnessHouseNum: Number(witnessHouse.house),
     witnessPattern: witnessHouse.key,
@@ -4506,10 +4506,10 @@ function computeWitnessTestimony(witness13, witness14, chartHouses) {
 // ============================================================
 
 const FIGURE_FORTUNE_MAP = {
-  '1111':'נחס','1112':'ממוזג-סעד','1121':'נחס','1122':'סעד',
-  '1211':'ממוזג','1212':'נחס','1221':'נחס','1222':'סעד',
-  '2111':'נחס','2112':'ממוזג','2121':'ממוזג-נחס','2122':'נחס',
-  '2211':'סעד','2212':'סעד','2221':'נחס','2222':'נחס',
+  '1111':'מזיק','1112':'ממוזג-מיטיב','1121':'מזיק','1122':'מיטיב',
+  '1211':'ממוזג','1212':'מזיק','1221':'מזיק','1222':'מיטיב',
+  '2111':'מזיק','2112':'ממוזג','2121':'ממוזג-מזיק','2122':'מזיק',
+  '2211':'מיטיב','2212':'מיטיב','2221':'מזיק','2222':'מזיק',
 };
 function getDerivedFortune(pattern) {
   return FIGURE_FORTUNE_MAP[pattern] || null;
@@ -4517,16 +4517,16 @@ function getDerivedFortune(pattern) {
 function getDerivedFortuneTone(pattern) {
   const f = getDerivedFortune(pattern);
   if (!f) return 0;
-  if (f === 'סעד') return 1;
-  if (f === 'נחס') return -1;
+  if (f === 'מיטיב') return 1;
+  if (f === 'מזיק') return -1;
   return 0;
 }
 function deriveFigureG(p1, p2) {
   if (!p1 || !p2 || p1.length !== 4 || p2.length !== 4) return null;
   return p1.split('').map((c, i) => c === p2[i] ? '2' : '1').join('');
 }
-const isBeneficG = (h) => h && String(h.fortune || '').includes('סעד') && !String(h.fortune || '').startsWith('ממוזג-נחס');
-const isMaleficG = (h) => h && String(h.fortune || '').includes('נחס');
+const isBeneficG = (h) => h && String(h.fortune || '').includes('מיטיב') && !String(h.fortune || '').startsWith('ממוזג-מזיק');
+const isMaleficG = (h) => h && String(h.fortune || '').includes('מזיק');
 const isIncomingG = (h) => h && (h.direction === 'incoming' || (h.key && ['2111','2112','2121','2122','2211','2212','2221','2222'].includes(h.key)));
 
 const FIGURE_HEBREW_G = {
@@ -4558,10 +4558,10 @@ function computeDreamH9(chart) {
   let dreamDesc = '';
   if (isBeneficG(h9)) {
     dreamTone = 1;
-    dreamDesc = `בית 9 סעד (${h9Hebrew}) — החלום מורה על טוב`;
+    dreamDesc = `בית 9 מיטיב (${h9Hebrew}) — החלום מורה על טוב`;
   } else if (isMaleficG(h9)) {
     dreamTone = -1;
-    dreamDesc = `בית 9 נחס (${h9Hebrew}) — החלום מורה על קושי`;
+    dreamDesc = `בית 9 מזיק (${h9Hebrew}) — החלום מורה על קושי`;
   } else {
     dreamTone = 0;
     dreamDesc = `בית 9 ממוזג (${h9Hebrew}) — החלום מעורב, בדוק את פרטיו`;
@@ -4594,10 +4594,10 @@ function computeLostAnimalReturn(chart) {
   let desc = '';
   if (h6Ben && h6In && h8Ben && h8In) {
     returned = true;
-    desc = `בית 6 ובית 8 שניהם סעד-נכנסים (${h6Hebrew} / ${h8Hebrew}) — הבהמה חזרה [כשף עמ׳ 202]`;
+    desc = `בית 6 ובית 8 שניהם מיטיב-נכנסים (${h6Hebrew} / ${h8Hebrew}) — הבהמה חזרה [כשף עמ׳ 202]`;
   } else if (h6Ben && h6In) {
     partial = true;
-    desc = `בית 6 סעד-נכנס (${h6Hebrew}), בית 8 לא עומד בתנאי — יש סיכוי לחזרה, אך לא ודאי [כשף עמ׳ 202]`;
+    desc = `בית 6 מיטיב-נכנס (${h6Hebrew}), בית 8 לא עומד בתנאי — יש סיכוי לחזרה, אך לא ודאי [כשף עמ׳ 202]`;
   } else {
     desc = `בית 6 (${h6Hebrew}) ובית 8 (${h8Hebrew}) — הבהמה לא תחזור [כשף עמ׳ 202]`;
   }
@@ -4659,17 +4659,17 @@ function computeKingRulerStatus(chart) {
   const derivedHebrew = derivedPattern ? (FIGURE_HEBREW_G[derivedPattern] || derivedPattern) : '—';
   const lines = [];
   if (derivedPattern) {
-    const toneWord = tone > 0 ? 'סעד (ג׳ודה) — טוב' : tone < 0 ? 'נחס (ראדאה) — רע' : 'ממוזג';
+    const toneWord = tone > 0 ? 'מיטיב (ג׳ודה) — טוב' : tone < 0 ? 'מזיק (ראדאה) — רע' : 'ממוזג';
     lines.push(`ב7 (${h7Hebrew}) + ב10 (${h10Hebrew}) → ${derivedHebrew} (${derivedPattern}): ${toneWord} [כשף עמ׳ 257]`);
   }
   let h4Risk = null;
   if (h4 && isMaleficG(h4)) {
-    h4Risk = `⚠ בית 4 נחס (${h4.hebrew || FIGURE_HEBREW_G[h4.key] || h4.key}) — יאבד שלטון קרוב [כשף עמ׳ 257]`;
+    h4Risk = `⚠ בית 4 מזיק (${h4.hebrew || FIGURE_HEBREW_G[h4.key] || h4.key}) — יאבד שלטון קרוב [כשף עמ׳ 257]`;
     lines.push(h4Risk);
   }
   let h15DeathRisk = null;
   if (h15 && isMaleficG(h15)) {
-    h15DeathRisk = `⚠⚠ בית 15 נחס (${h15.hebrew || FIGURE_HEBREW_G[h15.key] || h15.key}) — סכנת מוות [כשף עמ׳ 257]`;
+    h15DeathRisk = `⚠⚠ בית 15 מזיק (${h15.hebrew || FIGURE_HEBREW_G[h15.key] || h15.key}) — סכנת מוות [כשף עמ׳ 257]`;
     lines.push(h15DeathRisk);
   }
   return {
@@ -4701,19 +4701,19 @@ function computeEnemyPresenceCheck(chart) {
   let querentWins = false;
   const lines = [];
   if (h1Ben && h12Ben) {
-    lines.push(`בית 1 סעד + בית 12 סעד — אין אויבים [כשף עמ׳ 271]`);
+    lines.push(`בית 1 מיטיב + בית 12 מיטיב — אין אויבים [כשף עמ׳ 271]`);
     enemyPresent = false;
     querentWins = true;
   } else if (h1Mal && h12Mal) {
-    lines.push(`בית 1 נחס + בית 12 נחס — יש אויבים [כשף עמ׳ 271]`);
+    lines.push(`בית 1 מזיק + בית 12 מזיק — יש אויבים [כשף עמ׳ 271]`);
     enemyPresent = true;
     querentWins = false;
   } else if (h1Ben && h12Mal) {
-    lines.push(`בית 1 סעד + בית 12 נחס — הוא ינצח את אויביו [כשף עמ׳ 271]`);
+    lines.push(`בית 1 מיטיב + בית 12 מזיק — הוא ינצח את אויביו [כשף עמ׳ 271]`);
     enemyPresent = true;
     querentWins = true;
   } else if (h1Mal && h12Ben) {
-    lines.push(`בית 1 נחס + בית 12 סעד — האויב ינצח אותו [כשף עמ׳ 271]`);
+    lines.push(`בית 1 מזיק + בית 12 מיטיב — האויב ינצח אותו [כשף עמ׳ 271]`);
     enemyPresent = true;
     querentWins = false;
   } else {
@@ -4760,27 +4760,27 @@ function computePrisonerReleaseCheck(chart) {
   if (derivedTone > 0) {
     outcome = 'good';
     willRelease = true;
-    lines.push(`גורל המחבוס: סעד — גורלו טוב [כשף עמ׳ 272]`);
+    lines.push(`גורל המחבוס: מיטיב — גורלו טוב [כשף עמ׳ 272]`);
   } else if (derivedTone < 0) {
     outcome = 'bad';
     willRelease = false;
-    lines.push(`גורל המחבוס: נחס — גורלו רע [כשף עמ׳ 272]`);
+    lines.push(`גורל המחבוס: מזיק — גורלו רע [כשף עמ׳ 272]`);
   } else {
     lines.push(`גורל המחבוס: ממוזג — לא חד-משמעי [כשף עמ׳ 272]`);
   }
   if (maleficCount >= 3) {
     willRelease = false;
-    lines.push(`בתים 2/3/5/9/10: ${maleficCount} נחסים — האסיר יצא ללא רשות שליט [כשף עמ׳ 272]`);
+    lines.push(`בתים 2/3/5/9/10: ${maleficCount} מזיקים — האסיר יצא ללא רשות שליט [כשף עמ׳ 272]`);
   } else if (maleficCount > 0) {
-    lines.push(`בתים 2/3/5/9/10: ${maleficCount} נחסים — יציאה עם קושי [כשף עמ׳ 272]`);
+    lines.push(`בתים 2/3/5/9/10: ${maleficCount} מזיקים — יציאה עם קושי [כשף עמ׳ 272]`);
   } else {
-    lines.push(`בתים 2/3/5/9/10: ללא נחס — שחרור ברשות [כשף עמ׳ 272]`);
+    lines.push(`בתים 2/3/5/9/10: ללא מזיק — שחרור ברשות [כשף עמ׳ 272]`);
     willRelease = true;
   }
   if (h12 && isBeneficG(h12)) {
-    lines.push(`בית 12 סעד (${h12.hebrew || FIGURE_HEBREW_G[h12.key] || h12.key}) — לאסיר יש תומכים [כשף עמ׳ 272]`);
+    lines.push(`בית 12 מיטיב (${h12.hebrew || FIGURE_HEBREW_G[h12.key] || h12.key}) — לאסיר יש תומכים [כשף עמ׳ 272]`);
   } else if (h12 && isMaleficG(h12)) {
-    lines.push(`בית 12 נחס (${h12.hebrew || FIGURE_HEBREW_G[h12.key] || h12.key}) — אין תמיכה לאסיר [כשף עמ׳ 272]`);
+    lines.push(`בית 12 מזיק (${h12.hebrew || FIGURE_HEBREW_G[h12.key] || h12.key}) — אין תמיכה לאסיר [כשף עמ׳ 272]`);
   }
   return {
     h1h4Derived: derivedPattern,
@@ -4808,10 +4808,10 @@ function computeFatherParentStatus(chart) {
   let propertyStatus = 'mixed';
   if (h4Ben) {
     propertyStatus = 'good';
-    lines.push(`בית 4 סעד (${h4Hebrew}) — יש לו נכס, וייחזיק בנכס [כשף עמ׳ 184]`);
+    lines.push(`בית 4 מיטיב (${h4Hebrew}) — יש לו נכס, וייחזיק בנכס [כשף עמ׳ 184]`);
   } else if (h4Mal) {
     propertyStatus = 'bad';
-    lines.push(`בית 4 נחס (${h4Hebrew}) — אין נכס, או שיצא מידו [כשף עמ׳ 184]`);
+    lines.push(`בית 4 מזיק (${h4Hebrew}) — אין נכס, או שיצא מידו [כשף עמ׳ 184]`);
   } else {
     lines.push(`בית 4 ממוזג (${h4Hebrew}) — מצב הנכס/האב בינוני [כשף עמ׳ 184]`);
   }
@@ -4820,9 +4820,9 @@ function computeFatherParentStatus(chart) {
   }
   if (h5Hebrew) {
     if (h5Ben) {
-      lines.push(`בית 5 סעד (${h5Hebrew}) — יש לו כסף [כשף עמ׳ 184]`);
+      lines.push(`בית 5 מיטיב (${h5Hebrew}) — יש לו כסף [כשף עמ׳ 184]`);
     } else if (h5Mal) {
-      lines.push(`בית 5 נחס (${h5Hebrew}) — אין לו כסף [כשף עמ׳ 184]`);
+      lines.push(`בית 5 מזיק (${h5Hebrew}) — אין לו כסף [כשף עמ׳ 184]`);
     }
   }
   return {
@@ -4862,13 +4862,13 @@ function computeParnasaLivelihood(chart) {
     const h9Ben  = h9 && isBeneficG(h9);
     const h10Ben = isBeneficG(h10);
     if (h9Ben && h9Hebrew) {
-      alternativeSource = `נסיעה (בית 9 סעד — ${h9Hebrew})`;
-      lines.push(`בית 2 נחס — בדוק מקורות אחרים: מנסיעה (בית 9 סעד) [כשף עמ׳ 181]`);
+      alternativeSource = `נסיעה (בית 9 מיטיב — ${h9Hebrew})`;
+      lines.push(`בית 2 מזיק — בדוק מקורות אחרים: מנסיעה (בית 9 מיטיב) [כשף עמ׳ 181]`);
     } else if (h10Ben) {
-      alternativeSource = `סמכות / מלאכה (בית 10 סעד — ${h10Hebrew})`;
-      lines.push(`בית 2 נחס — בדוק מקורות אחרים: משלטון/מלאכה (בית 10) [כשף עמ׳ 181]`);
+      alternativeSource = `סמכות / מלאכה (בית 10 מיטיב — ${h10Hebrew})`;
+      lines.push(`בית 2 מזיק — בדוק מקורות אחרים: משלטון/מלאכה (בית 10) [כשף עמ׳ 181]`);
     } else {
-      lines.push(`בית 2 נחס — קושי כלכלי, חסרי מקור פרנסה ברור [כשף עמ׳ 181]`);
+      lines.push(`בית 2 מזיק — קושי כלכלי, חסרי מקור פרנסה ברור [כשף עמ׳ 181]`);
     }
   }
   return {
@@ -4963,18 +4963,18 @@ function computeDebts(chart) {
   const h12Hebrew = FIGURE_HEBREW_G[h12.key] || h12.key;
   const lines = [];
   if (isBeneficG(h12)) {
-    lines.push(`ב12 סעד (${h12Hebrew}) — בית החובות מורה על קלות: החוב ניתן לפירעון`);
+    lines.push(`ב12 מיטיב (${h12Hebrew}) — בית החובות מורה על קלות: החוב ניתן לפירעון`);
   } else if (isMaleficG(h12)) {
-    lines.push(`ב12 נחס (${h12Hebrew}) — בית החובות מורה על כבדות: החוב כבד, פירעון קשה`);
+    lines.push(`ב12 מזיק (${h12Hebrew}) — בית החובות מורה על כבדות: החוב כבד, פירעון קשה`);
   } else {
     lines.push(`ב12 ממוזג (${h12Hebrew}) — מצב החוב אינו חד-משמעי`);
   }
   if (h2?.key) {
     const h2Hebrew = FIGURE_HEBREW_G[h2.key] || h2.key;
     if (isBeneficG(h2)) {
-      lines.push(`ב2 סעד (${h2Hebrew}) — יש אמצעים לפירעון החוב`);
+      lines.push(`ב2 מיטיב (${h2Hebrew}) — יש אמצעים לפירעון החוב`);
     } else if (isMaleficG(h2)) {
-      lines.push(`ב2 נחס (${h2Hebrew}) — אמצעי הפירעון מוגבלים`);
+      lines.push(`ב2 מזיק (${h2Hebrew}) — אמצעי הפירעון מוגבלים`);
     }
   }
   return {
@@ -5101,9 +5101,9 @@ function computeHiddenTreasureH2(chart) {
   const allMal = b2Mal && (h4 ? b4Mal : true) && (h6 ? b6Mal : true);
   const lines = [];
   lines.push(`ב2 (${h2Hebrew}) + ב6 (${h6Hebrew}) + ב4 (${h4Hebrew}) — אבחון מטמון תת-קרקעי`);
-  if (allBen)       lines.push('שלושת הבתים סעד — יש מטמון וניתן להגיע אליו');
-  else if (allMal)  lines.push('שלושת הבתים נחס — המטמון אינו נגיש או אינו קיים');
-  else if (b2Ben)   lines.push('בית 2 סעד — ייתכן מטמון, בדוק לפי שאר הכללים');
+  if (allBen)       lines.push('שלושת הבתים מיטיב — יש מטמון וניתן להגיע אליו');
+  else if (allMal)  lines.push('שלושת הבתים מזיק — המטמון אינו נגיש או אינו קיים');
+  else if (b2Ben)   lines.push('בית 2 מיטיב — ייתכן מטמון, בדוק לפי שאר הכללים');
   else              lines.push('הבתים ממוזגים — אין הכרעה ברורה לגבי קיום המטמון');
   return { outputHebrew: lines.join('\n') };
 }
@@ -5169,8 +5169,8 @@ function computeCelebrationsH5(chart) {
   if (!h5?.key) return null;
   const h5Hebrew = FIGURE_HEBREW_G[h5.key] || h5.key;
   const isBen = isBeneficG(h5); const isMal = isMaleficG(h5);
-  const desc = isBen ? 'בית 5 סעד — השמחות והאירועים יתקיימו'
-             : (isMal ? 'בית 5 נחס — השמחה מוטלת בספק, עצב'
+  const desc = isBen ? 'בית 5 מיטיב — השמחות והאירועים יתקיימו'
+             : (isMal ? 'בית 5 מזיק — השמחה מוטלת בספק, עצב'
              : 'בית 5 ממוזג — שמחה עם עיכובים/חלקית');
   return { h5Fortune: h5.fortune || '', outputHebrew: `ב5 (${h5Hebrew}) — שמחות ואירועים: ${desc}` };
 }
@@ -5729,7 +5729,7 @@ function scoreBoard(boardAnalysis) {
   // Dhamir (الضمير) — the hidden intention behind the question. Mizan-tracing is primary.
   // When dhamir agrees with judge → confirms ruling. When opposed → signals inner conflict or change.
   const dhamirFortune = boardAnalysis.dhamirByMizan?.primaryFortune || boardAnalysis.dhamirHouse?.fortune || '';
-  const dhamirTone = dhamirFortune.includes('סעד') ? 1 : dhamirFortune.includes('נחס') ? -1 : 0;
+  const dhamirTone = dhamirFortune.includes('מיטיב') ? 1 : dhamirFortune.includes('מזיק') ? -1 : 0;
 
   const judgePattern = judge?.figureKey;
   const judgeRepeatCount = judgePattern
@@ -5832,7 +5832,7 @@ function buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRu
   const dhamirByMizan = boardAnalysis.dhamirByMizan;
   const dhamirHouseEntry = boardAnalysis.dhamirHouse;
   const dhamirFort = dhamirByMizan?.primaryFortune || dhamirHouseEntry?.fortune || '';
-  const dhamirToneConclusion = dhamirFort.includes('סעד') ? 1 : dhamirFort.includes('נחס') ? -1 : 0;
+  const dhamirToneConclusion = dhamirFort.includes('מיטיב') ? 1 : dhamirFort.includes('מזיק') ? -1 : 0;
   const judgeToneConclusion = judgeVerdict?.judgeTone ?? 0;
   if (dhamirByMizan?.traces?.length > 0 && dhamirToneConclusion !== 0) {
     const confirmingConclusion = (judgeToneConclusion > 0 && dhamirToneConclusion > 0) || (judgeToneConclusion < 0 && dhamirToneConclusion < 0);

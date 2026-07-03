@@ -12,8 +12,8 @@ export const HAWI_TOPIC_INDEX = {
     'תיקיית Google Drive "ספרים לאפליקציית גורל החול" (ID: 183LO6vN9CsPW13CkNWN7Q-8_MMylrkmO) היא המקור הראשי לכל הידע באפליקציה — חפש ממנה תמיד קודם.',
 
   terminologyHebrew: {
-    saad: 'סעד / טוב',
-    nahs: 'נחס / רע',
+    saad: 'מיטיב / טוב',
+    nahs: 'מזיק / רע',
     mumtazij: 'ממוזג',
     takhth: 'לוח הגורל',
     mothers: 'אמהות',
@@ -45,7 +45,7 @@ export const HAWI_TOPIC_INDEX = {
     },
     {
       topicId: 'figure-states',
-      hebrewTitle: 'מצבי הצורות — מדבר/שותק, סעד/נחס',
+      hebrewTitle: 'מצבי הצורות — מדבר/שותק, מיטיב/מזיק',
       coverageStatus: 'closed-after-working-review',
       existingFiles: ['goral-hachol/data/sources/hawi/figure-states/'],
     },

@@ -13,7 +13,7 @@
  */
 
 /**
- * תבניות פסיקה לפי ח'ארג'/דאח'ל × סעד/נחס.
+ * תבניות פסיקה לפי ח'ארג'/דאח'ל × מיטיב/מזיק.
  * 4 קטגוריות: kharij | dakhil | mujassad-kharij | mujassad-dakhil
  * × 3 איכויות: saad | nahs | mixed
  */
@@ -152,7 +152,7 @@ export const KASHF_CHAPTER_MAP = [
     verdictHouses: [1, 7],
     verdictMethod: 'combine',
     verdictType:   'win-or-lose',
-    sourceRef:     'כשף-אל-אסראר — שער שישי, פרק 7: גאלב ומגלוב (עמ׳ 204–223)',
+    sourceRef:     'כשף-אל-אסראר — שער שישי, פרק 7: גובר ונגבר (עמ׳ 204–223)',
     confidence:    'derived',
   },
 

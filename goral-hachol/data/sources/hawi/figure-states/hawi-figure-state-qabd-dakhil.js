@@ -14,7 +14,7 @@ export const HAWI_FIGURE_STATE_QABD_DAKHIL = {
   extractionStatus: 'source-audited-from-drive-pdf-45-51',
 
   noteHebrew:
-    'זה אינו פירוש מעבר הצורה הרגיל, אלא שכבה נוספת: מצב הצורה בבית — מדבר/שותק, סעד/נחס, חזק/חלש, מתקן/מקלקל. החומר נלקח ממיפוי PDF 45 ודורש בדיקת מקור/צילום לפני הפעלה מלאה במנוע.',
+    'זה אינו פירוש מעבר הצורה הרגיל, אלא שכבה נוספת: מצב הצורה בבית — מדבר/שותק, מיטיב/מזיק, חזק/חלש, מתקן/מקלקל. החומר נלקח ממיפוי PDF 45 ודורש בדיקת מקור/צילום לפני הפעלה מלאה במנוע.',
 
   states: [
     {
@@ -56,18 +56,18 @@ export const HAWI_FIGURE_STATE_QABD_DAKHIL = {
       house: 4,
       arabicText: ['وفي الرابع ناطق نحس مدبر يخرج ويدخل'],
       hebrewTranslation: [
-        'בבית הרביעי: מדבר, נחס, מתנהל/מסדר, יוצא ונכנס.'
+        'בבית הרביעי: מדבר, מזיק, מתנהל/מסדר, יוצא ונכנס.'
       ],
       speakingState: 'speaking',
       fortuneState: 'malefic',
-      effectHebrew: 'תנועה של יציאה וכניסה עם איכות נחסית.',
+      effectHebrew: 'תנועה של יציאה וכניסה עם איכות מזיקית.',
       sourceStatus: 'sourceMapped'
     },
     {
       house: 5,
       arabicText: ['وفي الخامس صامت نحس يذهب الملبوس ويتعب العواقب'],
       hebrewTranslation: [
-        'בבית החמישי: שותק, נחס, מאבד לבוש ומעייף/מקשה את האחריות והסופים.'
+        'בבית החמישי: שותק, מזיק, מאבד לבוש ומעייף/מקשה את האחריות והסופים.'
       ],
       speakingState: 'silent',
       fortuneState: 'malefic',
@@ -78,7 +78,7 @@ export const HAWI_FIGURE_STATE_QABD_DAKHIL = {
       house: 6,
       arabicText: ['وفي السادس ناطق نحس يتعب العبيد ويفرق بينهم ويقوي المرض'],
       hebrewTranslation: [
-        'בבית השישי: מדבר, נחס, מעייף את העבדים/המשרתים, מפריד ביניהם ומחזק את המחלה.'
+        'בבית השישי: מדבר, מזיק, מעייף את העבדים/המשרתים, מפריד ביניהם ומחזק את המחלה.'
       ],
       speakingState: 'speaking',
       fortuneState: 'malefic',
@@ -89,7 +89,7 @@ export const HAWI_FIGURE_STATE_QABD_DAKHIL = {
       house: 7,
       arabicText: ['وفي السابع نحس صامت يفسد النساء والرجال وأموالهم'],
       hebrewTranslation: [
-        'בבית השביעי: נחס שותק, מקלקל נשים, גברים ואת ממונם.'
+        'בבית השביעי: מזיק שותק, מקלקל נשים, גברים ואת ממונם.'
       ],
       speakingState: 'silent',
       fortuneState: 'malefic',
@@ -133,7 +133,7 @@ export const HAWI_FIGURE_STATE_QABD_DAKHIL = {
       house: 11,
       arabicText: ['وفي الحادي عشر صامت نحس يفرق بين الأصدقاء والأصحاب'],
       hebrewTranslation: [
-        'בבית האחד־עשר: שותק, נחס, ומפריד בין חברים ורעים.'
+        'בבית האחד־עשר: שותק, מזיק, ומפריד בין חברים ורעים.'
       ],
       speakingState: 'silent',
       fortuneState: 'malefic',
@@ -144,7 +144,7 @@ export const HAWI_FIGURE_STATE_QABD_DAKHIL = {
       house: 12,
       arabicText: ['وفي الثاني عشر نحس ناطق يكثر الأعداء ويتعب قلوبهم'],
       hebrewTranslation: [
-        'בבית השנים־עשר: נחס מדבר, מרבה אויבים ומעייף את ליבם.'
+        'בבית השנים־עשר: מזיק מדבר, מרבה אויבים ומעייף את ליבם.'
       ],
       speakingState: 'speaking',
       fortuneState: 'malefic',
@@ -155,11 +155,11 @@ export const HAWI_FIGURE_STATE_QABD_DAKHIL = {
       house: 13,
       arabicText: ['وفي الثالث عشر صامت نحس مدبر كل شيء'],
       hebrewTranslation: [
-        'בבית השלושה־עשר: שותק, נחס, ומסדר/מנהל כל דבר.'
+        'בבית השלושה־עשר: שותק, מזיק, ומסדר/מנהל כל דבר.'
       ],
       speakingState: 'silent',
       fortuneState: 'malefic',
-      effectHebrew: 'ניהול/סידור עם איכות נחסית.',
+      effectHebrew: 'ניהול/סידור עם איכות מזיקית.',
       sourceStatus: 'sourceMapped'
     },
     {
@@ -188,7 +188,7 @@ export const HAWI_FIGURE_STATE_QABD_DAKHIL = {
       house: 16,
       arabicText: ['وفي السادس عشر ناطق نحس يتلف جميع الأشياء'],
       hebrewTranslation: [
-        'בבית השישה־עשר: מדבר, נחס, ומשחית את כל הדברים.'
+        'בבית השישה־עשר: מדבר, מזיק, ומשחית את כל הדברים.'
       ],
       speakingState: 'speaking',
       fortuneState: 'malefic',

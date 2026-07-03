@@ -57,7 +57,7 @@ export const HAWI_QUESTION_LOST_ANIMAL = {
       houses: [6, 8],
       figures: [],
       technicalTerms: ['البيت الثامن', 'البيت السادس', 'أشكال سعيدة داخلة', 'الضائع', 'العودة'],
-      rule: 'ב6+ב8 סעד-פנימי=הבהמה תחזור; אחרת=לא תחזור.',
+      rule: 'ב6+ב8 מיטיב-פנימי=הבהמה תחזור; אחרת=לא תחזור.',
       status: 'sourceExact'
     },
     {
@@ -98,7 +98,7 @@ export const HAWI_QUESTION_LOST_ANIMAL = {
       houses: [1, 6, 8, 12],
       figures: [],
       technicalTerms: ['الأول', 'السادس', 'الثامن', 'الثاني عشر', 'أشكال خفيفة', 'أشكال ثقيلة', 'طول المرض'],
-      rule: 'ב1+ב6+ב8+ב12 קל/יוצא=אחרית טובה; כבד=מוות; נחס=מחלה ממושכת.',
+      rule: 'ב1+ב6+ב8+ב12 קל/יוצא=אחרית טובה; כבד=מוות; מזיק=מחלה ממושכת.',
       status: 'sourceExact'
     }
   ],
@@ -106,7 +106,7 @@ export const HAWI_QUESTION_LOST_ANIMAL = {
     mainHouses: [6, 8],
     supportingHouses: [1, 2, 4, 9, 12, 13],
     animalTypeHouse: 6,
-    returnCondition: 'ב6+ב8 צורות סעד פנימיות',
+    returnCondition: 'ב6+ב8 צורות מיטיב פנימיות',
     sourcePageRange: '201–202',
     status: 'complete'
   }

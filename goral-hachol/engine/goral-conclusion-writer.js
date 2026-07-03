@@ -5,10 +5,10 @@ function clean(value = '') {
 function fortuneToHuman(fortune) {
   const f = clean(fortune);
   if (!f) return '';
-  if (f === 'סעד')         return 'מיטיב';
-  if (f === 'נחס')         return 'מזיק';
-  if (f === 'ממוזג-סעד')  return 'ממוזג-מיטיב';
-  if (f === 'ממוזג-נחס')  return 'ממוזג-מזיק';
+  if (f === 'מיטיב')         return 'מיטיב';
+  if (f === 'מזיק')         return 'מזיק';
+  if (f === 'ממוזג-מיטיב')  return 'ממוזג-מיטיב';
+  if (f === 'ממוזג-מזיק')  return 'ממוזג-מזיק';
   return f;
 }
 
@@ -320,9 +320,9 @@ function describeCoreHouses(analysis, topicId, question) {
     let focusLine = `הבית המרכזי בית ${focus.house} — ${figureName}${transitPart}`;
     if (focus.isAdversarial) {
       const tone = focus.fortune || '';
-      const adversarialNote = tone === 'נחס'
+      const adversarialNote = tone === 'מזיק'
         ? ' [בית הצד שכנגד — מזיק בבית זה = חולשה של הצד השני, טוב לשואל]'
-        : tone === 'סעד'
+        : tone === 'מיטיב'
         ? ' [בית הצד שכנגד — מיטיב בבית זה = הצד השני חזק]'
         : ' [בית הצד שכנגד — יש להפוך את הפרשנות: מה שרע לצד זה טוב לשואל]';
       focusLine += adversarialNote;
@@ -364,8 +364,8 @@ function describeCoreHouses(analysis, topicId, question) {
       return `  שורת ${t.rowElement} → בית ${t.dhamirHouseNumber} — ${t.dhamirHebrew}${fortune}`;
     });
     const dhamirFort = dhamirMizan.primaryFortune || '';
-    const dhamirTone = dhamirFort.includes('סעד') ? 1 : dhamirFort.includes('נחס') ? -1 : 0;
-    const judgeToneLocal = judge ? (judge.fortune?.includes('סעד') ? 1 : judge.fortune?.includes('נחס') ? -1 : 0) : 0;
+    const dhamirTone = dhamirFort.includes('מיטיב') ? 1 : dhamirFort.includes('מזיק') ? -1 : 0;
+    const judgeToneLocal = judge ? (judge.fortune?.includes('מיטיב') ? 1 : judge.fortune?.includes('מזיק') ? -1 : 0) : 0;
     let dhamirConcord = '';
     if (dhamirTone !== 0 && judgeToneLocal !== 0) {
       const confirming = (judgeToneLocal > 0 && dhamirTone > 0) || (judgeToneLocal < 0 && dhamirTone < 0);
@@ -376,8 +376,8 @@ function describeCoreHouses(analysis, topicId, question) {
     );
   } else if (dhamir) {
     const dhamirFortune = dhamir.fortune ? ` [${dhamir.fortune}]` : '';
-    const dhamirTone = (dhamir.fortune || '').includes('סעד') ? 1 : (dhamir.fortune || '').includes('נחס') ? -1 : 0;
-    const judgeToneLocal = judge ? (judge.fortune?.includes('סעד') ? 1 : judge.fortune?.includes('נחס') ? -1 : 0) : 0;
+    const dhamirTone = (dhamir.fortune || '').includes('מיטיב') ? 1 : (dhamir.fortune || '').includes('מזיק') ? -1 : 0;
+    const judgeToneLocal = judge ? (judge.fortune?.includes('מיטיב') ? 1 : judge.fortune?.includes('מזיק') ? -1 : 0) : 0;
     let dhamirConcord = '';
     if (dhamirTone !== 0 && judgeToneLocal !== 0) {
       const confirming = (judgeToneLocal > 0 && dhamirTone > 0) || (judgeToneLocal < 0 && dhamirTone < 0);
@@ -699,8 +699,8 @@ function describeCoreHouses(analysis, topicId, question) {
     if (h5) {
       const h5Fortune = h5.fortune || '';
       const h5Name = h5.figureHebrew || h5.figureKey || '';
-      const isFertile = h5Fortune.includes('סעד');
-      const isBarren = h5Fortune.includes('נחס');
+      const isFertile = h5Fortune.includes('מיטיב');
+      const isBarren = h5Fortune.includes('מזיק');
       const sameAsH1 = h1 && h5.figureKey === h1.figureKey;
       const verdictLine = isFertile
         ? `בית 5 (ילדים) — ${h5Name} [מיטיב]: סימן להיריון / לידה אפשרית.`
@@ -720,8 +720,8 @@ function describeCoreHouses(analysis, topicId, question) {
       const h9Fortune = h9.fortune || '';
       const h9Dir = h9.directionHebrew || '';
       const dangerHouses = [];
-      if (h8?.fortune?.includes('נחס')) dangerHouses.push(`בית 8 (${h8.figureHebrew}) — סכנה`);
-      if (h12?.fortune?.includes('נחס')) dangerHouses.push(`בית 12 (${h12.figureHebrew}) — אויב נסתר`);
+      if (h8?.fortune?.includes('מזיק')) dangerHouses.push(`בית 8 (${h8.figureHebrew}) — סכנה`);
+      if (h12?.fortune?.includes('מזיק')) dangerHouses.push(`בית 12 (${h12.figureHebrew}) — אויב נסתר`);
       const dangerNote = dangerHouses.length ? `\n  ⚠ בתי סכנה: ${dangerHouses.join(' | ')}` : '';
       parts.push(`ניתוח מסלול נסיעה (בית 9):\n  בית 9 — ${h9.figureHebrew} [${h9Fortune}]${h9Dir ? ', כיוון: ' + h9Dir : ''}${dangerNote}`);
     }
@@ -736,8 +736,8 @@ function describeCoreHouses(analysis, topicId, question) {
     const h1 = getHouseFromBoard(analysis, 1);
     const h7 = getHouseFromBoard(analysis, 7);
     if (h1 && h7) {
-      const h1Saad = h1.fortune?.includes('סעד') ? 1 : h1.fortune?.includes('נחס') ? -1 : 0;
-      const h7Saad = h7.fortune?.includes('סעד') ? 1 : h7.fortune?.includes('נחס') ? -1 : 0;
+      const h1Saad = h1.fortune?.includes('מיטיב') ? 1 : h1.fortune?.includes('מזיק') ? -1 : 0;
+      const h7Saad = h7.fortune?.includes('מיטיב') ? 1 : h7.fortune?.includes('מזיק') ? -1 : 0;
       const h1Tone = h1Saad > 0 ? 'חזק [מיטיב]' : h1Saad < 0 ? 'חלש [מזיק]' : 'ביניים';
       const h7Tone = h7Saad > 0 ? 'חזק [מיטיב]' : h7Saad < 0 ? 'חלש [מזיק]' : 'ביניים';
       const advantage = (h1Saad > h7Saad) ? '→ יתרון לשואל' : (h1Saad < h7Saad) ? '→ יתרון ליריב' : '→ כוחות שקולים';
@@ -759,11 +759,11 @@ function describeCoreHouses(analysis, topicId, question) {
     const h10 = getHouseFromBoard(analysis, 10);
     if (h2 || h10) {
       const lines = [];
-      if (h2) lines.push(`  בית 2 (ממון) — ${h2.figureHebrew} [${h2.fortune || 'ביניים'}]: ${h2.fortune?.includes('סעד') ? 'כסף זמין, עסקה ממונית חיובית' : h2.fortune?.includes('נחס') ? 'חסרון כספי, עסקה בסיכון' : 'מצב ממוני בינוני'}`);
-      if (h10) lines.push(`  בית 10 (תוצאת עסקה) — ${h10.figureHebrew} [${h10.fortune || 'ביניים'}]: ${h10.fortune?.includes('סעד') ? 'תוצאה חיובית, רווח' : h10.fortune?.includes('נחס') ? 'תוצאה שלילית, הפסד' : 'תוצאה בינונית'}`);
+      if (h2) lines.push(`  בית 2 (ממון) — ${h2.figureHebrew} [${h2.fortune || 'ביניים'}]: ${h2.fortune?.includes('מיטיב') ? 'כסף זמין, עסקה ממונית חיובית' : h2.fortune?.includes('מזיק') ? 'חסרון כספי, עסקה בסיכון' : 'מצב ממוני בינוני'}`);
+      if (h10) lines.push(`  בית 10 (תוצאת עסקה) — ${h10.figureHebrew} [${h10.fortune || 'ביניים'}]: ${h10.fortune?.includes('מיטיב') ? 'תוצאה חיובית, רווח' : h10.fortune?.includes('מזיק') ? 'תוצאה שלילית, הפסד' : 'תוצאה בינונית'}`);
       if (h2 && h10) {
-        const bothSaad = h2.fortune?.includes('סעד') && h10.fortune?.includes('סעד');
-        const bothNahs = h2.fortune?.includes('נחס') && h10.fortune?.includes('נחס');
+        const bothSaad = h2.fortune?.includes('מיטיב') && h10.fortune?.includes('מיטיב');
+        const bothNahs = h2.fortune?.includes('מזיק') && h10.fortune?.includes('מזיק');
         lines.push(bothSaad ? '  → שני הבתים טובים — עסקה מומלצת' : bothNahs ? '  → שני הבתים רעים — הימנע מהעסקה' : '  → מצב מעורב — נדרשת זהירות');
       }
       parts.push(`ניתוח עסקה (בית 2 + בית 10):\n${lines.join('\n')}`);
@@ -777,10 +777,10 @@ function describeCoreHouses(analysis, topicId, question) {
     const h12 = getHouseFromBoard(analysis, 12);
     const h8 = getHouseFromBoard(analysis, 8);
     const fearSources = [];
-    if (h7?.fortune?.includes('נחס')) fearSources.push(`בית 7 (${h7.figureHebrew}) — פחד מאויב גלוי`);
-    if (h12?.fortune?.includes('נחס')) fearSources.push(`בית 12 (${h12.figureHebrew}) — פחד מאויב נסתר`);
-    if (h8?.fortune?.includes('נחס')) fearSources.push(`בית 8 (${h8.figureHebrew}) — פחד ממות/אסון`);
-    if (h1?.fortune?.includes('נחס')) fearSources.push(`בית 1 (${h1.figureHebrew}) — חולשה ייתכן מקור הפחד בשואל עצמו`);
+    if (h7?.fortune?.includes('מזיק')) fearSources.push(`בית 7 (${h7.figureHebrew}) — פחד מאויב גלוי`);
+    if (h12?.fortune?.includes('מזיק')) fearSources.push(`בית 12 (${h12.figureHebrew}) — פחד מאויב נסתר`);
+    if (h8?.fortune?.includes('מזיק')) fearSources.push(`בית 8 (${h8.figureHebrew}) — פחד ממות/אסון`);
+    if (h1?.fortune?.includes('מזיק')) fearSources.push(`בית 1 (${h1.figureHebrew}) — חולשה ייתכן מקור הפחד בשואל עצמו`);
     if (fearSources.length) {
       parts.push(`מקור הפחד:\n${fearSources.map(s => '  ' + s).join('\n')}`);
     } else {
@@ -793,14 +793,14 @@ function describeCoreHouses(analysis, topicId, question) {
     const h1 = getHouseFromBoard(analysis, 1);
     const h7 = getHouseFromBoard(analysis, 7);
     if (h1 && h7) {
-      const h1Tone = h1.fortune?.includes('סעד') ? 'אהבה חיובית' : h1.fortune?.includes('נחס') ? 'שנאה / דחייה' : 'רגש מעורב';
-      const h7Tone = h7.fortune?.includes('סעד') ? 'אהבה חיובית' : h7.fortune?.includes('נחס') ? 'שנאה / דחייה' : 'רגש מעורב';
+      const h1Tone = h1.fortune?.includes('מיטיב') ? 'אהבה חיובית' : h1.fortune?.includes('מזיק') ? 'שנאה / דחייה' : 'רגש מעורב';
+      const h7Tone = h7.fortune?.includes('מיטיב') ? 'אהבה חיובית' : h7.fortune?.includes('מזיק') ? 'שנאה / דחייה' : 'רגש מעורב';
       const sameKey = h1.figureKey === h7.figureKey;
       const separator = sameKey
         ? '  → שני הצדדים חולקים אותה צורה — מראה הדדיות.'
-        : h1.fortune?.includes('סעד') && h7.fortune?.includes('נחס')
+        : h1.fortune?.includes('מיטיב') && h7.fortune?.includes('מזיק')
         ? '  → אהבה חד-צדדית: השואל אוהב, הצד השני שונא.'
-        : h1.fortune?.includes('נחס') && h7.fortune?.includes('סעד')
+        : h1.fortune?.includes('מזיק') && h7.fortune?.includes('מיטיב')
         ? '  → אהבה חד-צדדית: הצד השני אוהב, השואל שונא.'
         : '  → בדוק חיבורי האיתיסאלאת בין בית 1 לבית 7 לפירוט.';
       parts.push(`כוח הרגש:\n  שואל (בית 1 — ${h1.figureHebrew}): ${h1Tone}\n  הצד השני (בית 7 — ${h7.figureHebrew}): ${h7Tone}\n${separator}`);
@@ -812,7 +812,7 @@ function describeCoreHouses(analysis, topicId, question) {
     const judgeLocal = analysis.judge;
     const tahasilLocal = analysis.tahasil;
     if (judgeLocal || tahasilLocal) {
-      const judgeVerd = judgeLocal?.fortune?.includes('סעד') ? 'הדיין פוסק לטובה' : judgeLocal?.fortune?.includes('נחס') ? 'הדיין פוסק לרעה' : 'הדיין אינו חד-משמעי';
+      const judgeVerd = judgeLocal?.fortune?.includes('מיטיב') ? 'הדיין פוסק לטובה' : judgeLocal?.fortune?.includes('מזיק') ? 'הדיין פוסק לרעה' : 'הדיין אינו חד-משמעי';
       const tahasilVerd = tahasilLocal?.tahasilStatus === 'achieved'
         ? 'התחסיל: הדבר יסתיים ✓'
         : tahasilLocal?.tahasilStatus === 'not-achieved'
@@ -833,10 +833,10 @@ function describeCoreHouses(analysis, topicId, question) {
     if (h1 && h7) {
       const h1F = h1.fortune || '';
       const h7F = h7.fortune || '';
-      const compatible = (h1F.includes('סעד') && h7F.includes('סעד')) ? 'שני הצדדים חזקים — שותפות טובה'
-        : (h1F.includes('נחס') && h7F.includes('נחס')) ? 'שני הצדדים חלשים — שותפות מסוכנת'
+      const compatible = (h1F.includes('מיטיב') && h7F.includes('מיטיב')) ? 'שני הצדדים חזקים — שותפות טובה'
+        : (h1F.includes('מזיק') && h7F.includes('מזיק')) ? 'שני הצדדים חלשים — שותפות מסוכנת'
         : 'מצב מעורב — בדוק תנאים לפני כניסה';
-      const moneyNote = (h2 && h10) ? `\n  ממון (בית 2 — ${h2.figureHebrew}) / תוצאה (בית 10 — ${h10.figureHebrew}): ${h2.fortune?.includes('סעד') && h10.fortune?.includes('סעד') ? 'רווח מצופה' : h2.fortune?.includes('נחס') || h10.fortune?.includes('נחס') ? 'סיכון כלכלי' : 'ממוצע'}` : '';
+      const moneyNote = (h2 && h10) ? `\n  ממון (בית 2 — ${h2.figureHebrew}) / תוצאה (בית 10 — ${h10.figureHebrew}): ${h2.fortune?.includes('מיטיב') && h10.fortune?.includes('מיטיב') ? 'רווח מצופה' : h2.fortune?.includes('מזיק') || h10.fortune?.includes('מזיק') ? 'סיכון כלכלי' : 'ממוצע'}` : '';
       parts.push(`ניתוח שותפות:\n  שואל (בית 1 — ${h1.figureHebrew}): ${h1F || 'ביניים'}\n  שותף (בית 7 — ${h7.figureHebrew}): ${h7F || 'ביניים'}\n  → ${compatible}${moneyNote}`);
     }
   }
@@ -849,7 +849,7 @@ function describeCoreHouses(analysis, topicId, question) {
       const h3F = h3.fortune || '';
       const sameKey = h1 && h3.figureKey === h1.figureKey;
       const connectionNote = sameKey ? '\n  → צורת בית 3 זהה לבית 1 — קשר חזק מאוד, אחווה ממשית.' : '';
-      parts.push(`ניתוח האח/השכן (בית 3):\n  בית 3 — ${h3.figureHebrew} [${h3F || 'ביניים'}]: ${h3F.includes('סעד') ? 'קשר חיובי, תמיכה' : h3F.includes('נחס') ? 'קושי בקשר, ריחוק' : 'קשר בינוני'}${connectionNote}`);
+      parts.push(`ניתוח האח/השכן (בית 3):\n  בית 3 — ${h3.figureHebrew} [${h3F || 'ביניים'}]: ${h3F.includes('מיטיב') ? 'קשר חיובי, תמיכה' : h3F.includes('מזיק') ? 'קושי בקשר, ריחוק' : 'קשר בינוני'}${connectionNote}`);
     }
   }
 
@@ -860,9 +860,9 @@ function describeCoreHouses(analysis, topicId, question) {
     const h2 = getHouseFromBoard(analysis, 2);
     if (h8) {
       const h8F = h8.fortune || '';
-      const h7Note = h7 ? `\n  היורש/הנפטר (בית 7 — ${h7.figureHebrew}): ${h7.fortune?.includes('סעד') ? 'מצב חיובי' : h7.fortune?.includes('נחס') ? 'מצב קשה' : 'ביניים'}` : '';
-      const h2Note = h2 ? `\n  הירושה הכספית (בית 2 — ${h2.figureHebrew}): ${h2.fortune?.includes('סעד') ? 'ממון זמין' : h2.fortune?.includes('נחס') ? 'ממון חסום או בסכסוך' : 'ביניים'}` : '';
-      parts.push(`ניתוח מוות/ירושה (בית 8):\n  בית 8 — ${h8.figureHebrew} [${h8F || 'ביניים'}]: ${h8F.includes('סעד') ? 'סכנה נמוכה / ירושה זמינה' : h8F.includes('נחס') ? 'סכנה ממשית / ירושה מסובכת' : 'מצב בינוני'}${h7Note}${h2Note}`);
+      const h7Note = h7 ? `\n  היורש/הנפטר (בית 7 — ${h7.figureHebrew}): ${h7.fortune?.includes('מיטיב') ? 'מצב חיובי' : h7.fortune?.includes('מזיק') ? 'מצב קשה' : 'ביניים'}` : '';
+      const h2Note = h2 ? `\n  הירושה הכספית (בית 2 — ${h2.figureHebrew}): ${h2.fortune?.includes('מיטיב') ? 'ממון זמין' : h2.fortune?.includes('מזיק') ? 'ממון חסום או בסכסוך' : 'ביניים'}` : '';
+      parts.push(`ניתוח מוות/ירושה (בית 8):\n  בית 8 — ${h8.figureHebrew} [${h8F || 'ביניים'}]: ${h8F.includes('מיטיב') ? 'סכנה נמוכה / ירושה זמינה' : h8F.includes('מזיק') ? 'סכנה ממשית / ירושה מסובכת' : 'מצב בינוני'}${h7Note}${h2Note}`);
     }
   }
 
@@ -1485,7 +1485,7 @@ function dhamirParagraph(boardAnalysis, judgeVerdict) {
   const dhamirFort = dhamirMizan?.primaryFortune || dhamirH?.fortune || '';
   if (!dhamirFort) return '';
 
-  const dhamirTone = dhamirFort.includes('סעד') ? 1 : dhamirFort.includes('נחס') ? -1 : 0;
+  const dhamirTone = dhamirFort.includes('מיטיב') ? 1 : dhamirFort.includes('מזיק') ? -1 : 0;
   const judgeTone = judgeVerdict?.judgeTone ?? 0;
   if (dhamirTone === 0 || judgeTone === 0) return '';
 
@@ -1516,12 +1516,12 @@ function boardScoreParagraph(boardAnalysis) {
 function figureFortuneTone(fortune) {
   if (!fortune) return 0;
   const f = String(fortune);
-  if (f === 'סעד') return 2;
-  if (f.includes('ממוזג-סעד')) return 1;
-  if (f === 'נחס') return -2;
-  if (f.includes('ממוזג-נחס')) return -1;
-  if (f.includes('סעד')) return 1;
-  if (f.includes('נחס')) return -1;
+  if (f === 'מיטיב') return 2;
+  if (f.includes('ממוזג-מיטיב')) return 1;
+  if (f === 'מזיק') return -2;
+  if (f.includes('ממוזג-מזיק')) return -1;
+  if (f.includes('מיטיב')) return 1;
+  if (f.includes('מזיק')) return -1;
   return 0;
 }
 
@@ -2532,8 +2532,8 @@ export function writeShortClientVerdict(result) {
 
   function fortHebrew(h) {
     const f = h?.fortune || '';
-    if (f.includes('סעד')) return 'סימן טוב';
-    if (f.includes('נחס')) return 'סימן קשה';
+    if (f.includes('מיטיב')) return 'סימן טוב';
+    if (f.includes('מזיק')) return 'סימן קשה';
     return 'סימן ממוזג';
   }
 
@@ -2946,8 +2946,8 @@ export function writeHumanGoralConclusion(result) {
 
 function fortToWord(fortune) {
   if (!fortune) return 'מעורב';
-  if (fortune.includes('סעד')) return 'טוב';
-  if (fortune.includes('נחס')) return 'קשה';
+  if (fortune.includes('מיטיב')) return 'טוב';
+  if (fortune.includes('מזיק')) return 'קשה';
   return 'מעורב';
 }
 
