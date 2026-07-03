@@ -528,8 +528,8 @@ function quickHouseScore(board) {
     { house: 15, weight: 2 },
   ];
 
-  const BAD_MARKERS = ['נחס', 'רע', 'malefic', 'nahs', 'نحس', 'אדום', 'humra', 'الحمرة'];
-  const GOOD_MARKERS = ['סעד', 'טוב', 'benefic', 'saad', 'سعد', 'לבן', 'bayad', 'البياض'];
+  const BAD_MARKERS = ['מזיק', 'רע', 'malefic', 'nahs', 'نحس', 'אדום', 'humra', 'الحمرة'];
+  const GOOD_MARKERS = ['מיטיב', 'טוב', 'benefic', 'saad', 'سعد', 'לבן', 'bayad', 'البياض'];
 
   let score = 0;
   for (const { house, weight } of SCORED_HOUSES) {

@@ -177,7 +177,7 @@ const RAML_QAWL_JAMI_EXTRA_FOUNDATIONS = {
     id: "raml-triangles",
     title: "משולשי החול",
     arabicTerm: "مثلثات علم الرمل / مثلثات البيوت / مثلثات الأشكال / مثلثات النحوس",
-    hebrewApp: "משולשי בתים, משולשי צורות, משולשי נחס",
+    hebrewApp: "משולשי בתים, משולשי צורות, משולשי מזיק",
     location: "עמ׳ 20-21, עמ׳ 28, עמ׳ 52",
     status: "partially-verified",
     verifiedCount: 33,

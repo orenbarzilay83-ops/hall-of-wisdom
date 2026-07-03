@@ -35,7 +35,7 @@ export function getDakhalKharij(pattern) {
 }
 
 /**
- * מחזיר סעד/נחס מנתוני חאוי הקיימים.
+ * מחזיר מיטיב/מזיק מנתוני חאוי הקיימים.
  * @param {string} pattern
  * @returns {'saad'|'nahs'|'mixed'|null}
  */
@@ -43,8 +43,8 @@ export function getSaadNahs(pattern) {
   const fig = HAWI_FIGURE_NAMES_BY_ID?.[pattern];
   if (!fig) return null;
   const fortune = fig.fortuneHebrew || '';
-  if (fortune.includes('נחס')) return 'nahs';
-  if (fortune.includes('סעד')) return 'saad';
+  if (fortune.includes('מזיק')) return 'nahs';
+  if (fortune.includes('מיטיב')) return 'saad';
   return 'mixed';
 }
 

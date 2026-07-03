@@ -458,7 +458,7 @@ const RAML_BULUGH_AL_AMAL_FOUNDATIONS = {
 
     fortuneCategories: {
       id: "fortune-categories-pages-8-9",
-      title: "סעד / נחס / ממוזג / נוטה לסעד / נוטה לנחס",
+      title: "מיטיב / מזיק / ממוזג / נוטה למיטיב / נוטה למזיק",
       sourcePages: [8,9],
       status: "partiallyVerified",
       needsVisualEncoding: true,
@@ -474,10 +474,10 @@ const RAML_BULUGH_AL_AMAL_FOUNDATIONS = {
         "الكوسج": "سعيد مائل إلى النحس"
       },
       rules: [
-        "הצורות נחלקות לסעד, נחס, ממוזגות, נוטות לסעד ונוטות לנחס.",
-        "הקוסג׳ מוגדר سعيد אך נוטה לנחס.",
-        "כאשר מצטרפים סעד, נחס וממוזג — יש כלל הכרעה לפי הרכב הצורות.",
-        "במקום שנאמר כך, הסעד גובר."
+        "הצורות נחלקות למיטיב, מזיק, ממוזגות, נוטות למיטיב ונוטות למזיק.",
+        "הקוסג׳ מוגדר سعيد אך נוטה למזיק.",
+        "כאשר מצטרפים מיטיב, מזיק וממוזג — יש כלל הכרעה לפי הרכב הצורות.",
+        "במקום שנאמר כך, המיטיב גובר."
       ],
       implementationReady: false
     },
@@ -492,19 +492,19 @@ const RAML_BULUGH_AL_AMAL_FOUNDATIONS = {
           arabic: "الأوتاد",
           houses: [1,4,7,10],
           strength: "strong",
-          rule: "אם הסעד נכנס ליתדות — השאלה טובה וחזקה, ומורה על יציבות מצב השואל, עמידתו ותיקון ענייניו."
+          rule: "אם המיטיב נכנס ליתדות — השאלה טובה וחזקה, ומורה על יציבות מצב השואל, עמידתו ותיקון ענייניו."
         },
         followingAwtad: {
           arabic: "ما يلي الأوتاد",
           houses: [2,5,8,11],
           strength: "medium",
-          rule: "סעד בהם חלש מן היתדות ומורה על תיקון דברים בעתיד."
+          rule: "מיטיב בהם חלש מן היתדות ומורה על תיקון דברים בעתיד."
         },
         sawaqit: {
           arabic: "السواقط",
           houses: [3,6,9,12],
           strength: "weak",
-          rule: "סעד בהם חלש יותר והם מורים על עניינים מן העבר."
+          rule: "מיטיב בהם חלש יותר והם מורים על עניינים מן העבר."
         }
       },
       pastMatterRule: {
@@ -513,7 +513,7 @@ const RAML_BULUGH_AL_AMAL_FOUNDATIONS = {
       },
       negativeRule: {
         arabicQuote: "إذا انتحست الأوتاد فلا خير في المسألة",
-        hebrew: "אם היתדות נחסיות — אין טוב בשאלה."
+        hebrew: "אם היתדות מזיקיות — אין טוב בשאלה."
       },
       witnesses: {
         arabic: "الشواهد",
@@ -522,7 +522,7 @@ const RAML_BULUGH_AL_AMAL_FOUNDATIONS = {
         rules: [
           "העדים הם עדי השאלה בטוב וברע.",
           "לכל צורה יש עד שלישי ממנה — شاهد كل شكل ثالثة.",
-          "אם העדים והחاكم מסכימים בסעד — חותכים להשגת המבוקש.",
+          "אם העדים והחاكم מסכימים במיטיב — חותכים להשגת המבוקש.",
           "אם הם חולקים — חוזרים אל قاضي المسألة."
         ]
       },
@@ -1093,7 +1093,7 @@ const RAML_BULUGH_AL_AMAL_FOUNDATIONS = {
         knownRules: [
           "העדים הם עדי השאלה בטוב וברע.",
           "לכל צורה יש עד שלישי ממנה — شاهد كل شكل ثالثة.",
-          "אם העדים והחاكم מסכימים בסעד — חותכים להשגת המבוקש.",
+          "אם העדים והחاكم מסכימים במיטיב — חותכים להשגת המבוקש.",
           "אם העדים חולקים — חוזרים אל قاضي المسألة."
         ],
         missingFormula: [
@@ -1115,7 +1115,7 @@ const RAML_BULUGH_AL_AMAL_FOUNDATIONS = {
 
       fortuneCategoryTable: {
         id: "fortune-category-table-pages-8-9",
-        title: "טבלת סעד / נחס / ממוזג / נוטה לסעד / נוטה לנחס",
+        title: "טבלת מיטיב / מזיק / ממוזג / נוטה למיטיב / נוטה למזיק",
         sourcePages: [8, 9],
         arabicTitle: "الأشكال السعيدة والنحس والممتزجة والمائلة إلى السعد والمائلة إلى النحس",
         status: "needsVisualEncoding",
@@ -1131,13 +1131,13 @@ const RAML_BULUGH_AL_AMAL_FOUNDATIONS = {
         knownCategories: [
           {
             arabic: "سعيدة",
-            hebrew: "סעד / טוב",
+            hebrew: "מיטיב / טוב",
             encodedFigures: [],
             status: "needsVisualEncoding"
           },
           {
             arabic: "نحس",
-            hebrew: "נחס / רע",
+            hebrew: "מזיק / רע",
             encodedFigures: [],
             status: "needsVisualEncoding"
           },
@@ -1149,27 +1149,27 @@ const RAML_BULUGH_AL_AMAL_FOUNDATIONS = {
           },
           {
             arabic: "مائلة إلى السعد",
-            hebrew: "נוטה לסעד",
+            hebrew: "נוטה למיטיב",
             encodedFigures: [],
             status: "needsVisualEncoding"
           },
           {
             arabic: "مائلة إلى النحس",
-            hebrew: "נוטה לנחס",
+            hebrew: "נוטה למזיק",
             encodedFigures: [],
             status: "needsVisualEncoding"
           }
         ],
         verifiedTextualRules: [
-          "הצורות נחלקות לסעד, נחס, ממוזגות, נוטות לסעד ונוטות לנחס.",
+          "הצורות נחלקות למיטיב, מזיק, ממוזגות, נוטות למיטיב ונוטות למזיק.",
           "המקור מציין: الصحيح أن الكوسج سعيد مائل إلى النحس.",
-          "אם מצטרפים סעד, נחס וממוזג — יש כלל הכרעה לפי הרכב הצורות.",
+          "אם מצטרפים מיטיב, מזיק וממוזג — יש כלל הכרעה לפי הרכב הצורות.",
           "אין להחליף את סיווגי הצורות הקיימים עד קידוד חזותי מלא והשוואה מול המקורות הקודמים."
         ],
         explicitNotes: {
           "الكوسج": {
             arabic: "سعيد مائل إلى النحس",
-            hebrew: "טוב אבל נוטה לנחס",
+            hebrew: "טוב אבל נוטה למזיק",
             status: "verified-text-note"
           }
         },
@@ -1180,7 +1180,7 @@ const RAML_BULUGH_AL_AMAL_FOUNDATIONS = {
 
     openIssuesFromExtraction: [
       { id: "gender-inside-outside-table", title: "טבלת זכר/נקבה/פנימי/חיצוני", status: "needsVisualEncoding", pages: [8] },
-      { id: "fortune-category-table", title: "טבלת סעד/נחס/ממוזג", status: "needsVisualEncoding", pages: [8,9] },
+      { id: "fortune-category-table", title: "טבלת מיטיב/מזיק/ממוזג", status: "needsVisualEncoding", pages: [8,9] },
       { id: "witness-formula", title: "עדים — شاهد كل شكل ثالثة", status: "needsFormula", pages: [10] },
       { id: "directions-table", title: "כיווני הצורות", status: "needsVisualEncoding", pages: [11] },
       { id: "remainder-zero", title: "שארית 0", status: "blockedUntilSource", pages: [11,12] },

@@ -14,7 +14,7 @@ export const HAWI_FIGURE_STATE_QABD_KHARIJ = {
   extractionStatus: 'source-audited-from-drive-pdf-45-51',
 
   noteHebrew:
-    'זה אינו פירוש מעבר הצורה הרגיל, אלא שכבת מצב הצורה בבית: מדבר/שותק, סעד/נחס, חזק/חלש, מתקן/מקלקל. החומר נלקח ממיפוי PDF 45 ודורש בדיקת מקור/צילום לפני הפעלה מלאה במנוע.',
+    'זה אינו פירוש מעבר הצורה הרגיל, אלא שכבת מצב הצורה בבית: מדבר/שותק, מיטיב/מזיק, חזק/חלש, מתקן/מקלקל. החומר נלקח ממיפוי PDF 45 ודורש בדיקת מקור/צילום לפני הפעלה מלאה במנוע.',
 
   states: [
     {
@@ -29,7 +29,7 @@ export const HAWI_FIGURE_STATE_QABD_KHARIJ = {
     {
       house: 2,
       arabicText: ['وفي الثاني صامت نحس يتلف الأموال'],
-      hebrewTranslation: ['בבית השני: שותק, נחס, ומשחית ממון.'],
+      hebrewTranslation: ['בבית השני: שותק, מזיק, ומשחית ממון.'],
       speakingState: 'silent',
       fortuneState: 'malefic',
       effectHebrew: 'פגיעה בממון והשחתת כספים.',
@@ -47,7 +47,7 @@ export const HAWI_FIGURE_STATE_QABD_KHARIJ = {
     {
       house: 4,
       arabicText: ['وفي الرابع نحس صامت فرحه غير ثابت'],
-      hebrewTranslation: ['בבית הרביעי: נחס שותק; שמחתו אינה יציבה.'],
+      hebrewTranslation: ['בבית הרביעי: מזיק שותק; שמחתו אינה יציבה.'],
       speakingState: 'silent',
       fortuneState: 'malefic-unstable',
       effectHebrew: 'שמחה או הקלה שאינה מחזיקה מעמד.',
@@ -101,7 +101,7 @@ export const HAWI_FIGURE_STATE_QABD_KHARIJ = {
     {
       house: 10,
       arabicText: ['وفي العاشر نحس صامت لا يكسب وأفعاله ردية'],
-      hebrewTranslation: ['בבית העשירי: נחס שותק, אינו מרוויח, ופעולותיו רעות.'],
+      hebrewTranslation: ['בבית העשירי: מזיק שותק, אינו מרוויח, ופעולותיו רעות.'],
       speakingState: 'silent',
       fortuneState: 'malefic',
       effectHebrew: 'חוסר רווח וקלקול בפעולות של מעמד/שלטון/פרנסה.',
@@ -110,7 +110,7 @@ export const HAWI_FIGURE_STATE_QABD_KHARIJ = {
     {
       house: 11,
       arabicText: ['وفي الحادي عشر ناطق نحس يفرق بين الأصدقاء ويكثر العداوة'],
-      hebrewTranslation: ['בבית האחד־עשר: מדבר, נחס, מפריד בין חברים ומרבה איבה.'],
+      hebrewTranslation: ['בבית האחד־עשר: מדבר, מזיק, מפריד בין חברים ומרבה איבה.'],
       speakingState: 'speaking',
       fortuneState: 'malefic',
       effectHebrew: 'פירוד בין חברים וריבוי איבה.',
@@ -128,10 +128,10 @@ export const HAWI_FIGURE_STATE_QABD_KHARIJ = {
     {
       house: 13,
       arabicText: ['وفي الثالث عشر ناطق نحس مدبر'],
-      hebrewTranslation: ['בבית השלושה־עשר: מדבר, נחס, ומסדר/מנהל.'],
+      hebrewTranslation: ['בבית השלושה־עשר: מדבר, מזיק, ומסדר/מנהל.'],
       speakingState: 'speaking',
       fortuneState: 'malefic',
-      effectHebrew: 'ניהול/סידור עם איכות נחסית.',
+      effectHebrew: 'ניהול/סידור עם איכות מזיקית.',
       sourceStatus: 'sourceMapped'
     },
     {
@@ -155,7 +155,7 @@ export const HAWI_FIGURE_STATE_QABD_KHARIJ = {
     {
       house: 16,
       arabicText: ['وفي السادس عشر صامت نحس مدبر جميع ما يصلح يفسده'],
-      hebrewTranslation: ['בבית השישה־עשר: שותק, נחס, ומקלקל כל דבר שהיה מתוקן.'],
+      hebrewTranslation: ['בבית השישה־עשר: שותק, מזיק, ומקלקל כל דבר שהיה מתוקן.'],
       speakingState: 'silent',
       fortuneState: 'malefic',
       effectHebrew: 'קלקול של כל דבר מתוקן.',

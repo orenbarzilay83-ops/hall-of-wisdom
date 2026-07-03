@@ -40,7 +40,7 @@ export const HAWI_FULL_BOOK_GAP_AUDIT = {
     },
     {
       id: 'figure-states',
-      hebrewTitle: 'מצבי הצורות — מדבר/שותק, סעד/נחס',
+      hebrewTitle: 'מצבי הצורות — מדבר/שותק, מיטיב/מזיק',
       status: 'closed-after-working-review',
       note: 'סימוני OCR/photo-review ישנים נוקו. אין לפתוח מחדש את כל הצורות.',
     },

@@ -227,15 +227,15 @@ function computeConfidence(verdictDK, w13, w14, judge) {
   else if (contradicts >= 2)                    { level = 'weak';      labelHebrew = 'פסיקה חלשה — רוב הכוחות מתנגדים'; }
   else {
     // כל הצורות (עדים + דיין) הן מג'סד — אין להן כיוון ברור (דאח'ל/ח'ארג')
-    // מדד חלופי: ספירת מזל (סעד/נחס) של שלושת הכוחות
+    // מדד חלופי: ספירת מזל (מיטיב/מזיק) של שלושת הכוחות
     const saadCount = [w13, w14, judge].filter((h) => h?.saadNahs === 'saad').length;
     const nahsCount = [w13, w14, judge].filter((h) => h?.saadNahs === 'nahs').length;
     if (saadCount >= 2) {
       level = 'neutral-saad';
-      labelHebrew = `צורות ניטרליות — מזל העדים והדיין נוטה לסעד (${saadCount}/3)`;
+      labelHebrew = `צורות ניטרליות — מזל העדים והדיין נוטה למיטיב (${saadCount}/3)`;
     } else if (nahsCount >= 2) {
       level = 'neutral-nahs';
-      labelHebrew = `צורות ניטרליות — מזל העדים והדיין נוטה לנחס (${nahsCount}/3)`;
+      labelHebrew = `צורות ניטרליות — מזל העדים והדיין נוטה למזיק (${nahsCount}/3)`;
     } else {
       level = 'neutral';
       labelHebrew = 'צורות ניטרליות — הכוחות ממוזגים, אין נטייה ברורה';
@@ -272,7 +272,7 @@ function buildSupportSummary(primaryVerdict, w13, w14, judge, sentence, dhamir, 
 
   if (dhamir) {
     const dk  = classifyFigure(dhamir.pattern);
-    const dhFortune = dk.saadNahs === 'saad' ? 'סעד' : dk.saadNahs === 'nahs' ? 'נחס' : 'ממוזג';
+    const dhFortune = dk.saadNahs === 'saad' ? 'מיטיב' : dk.saadNahs === 'nahs' ? 'מזיק' : 'ממוזג';
     const dhAgrees  = agreesWithVerdict(dk, primaryVerdict?.classification?.dakhalKharij);
     const agreedBy  = dhamir.methodsAgreed?.length > 1
       ? ` [${dhamir.agreementCount} שיטות מסכימות: ${dhamir.methodsAgreed.join(', ')}]`

@@ -40,24 +40,24 @@ if (
 }
 
 const RAML_FIGURES = {
-  "1121": { key: "1121", hebrew: "נלחם", arabic: "جودلة / كوسج", meaning: "", fortune: "ממוזג־סעד" },
-  "1222": { key: "1222", hebrew: "נשוא ראש", arabic: "الأحيان / الضاحك", meaning: "", fortune: "סעד" },
-  "2111": { key: "2111", hebrew: "סף נכנס", arabic: "عتبة داخلة / راية الفرح", meaning: "", fortune: "סעד" },
-  "2212": { key: "2212", hebrew: "לבן", arabic: "البياض", meaning: "", fortune: "סעד" },
+  "1121": { key: "1121", hebrew: "נלחם", arabic: "جودلة / كوسج", meaning: "", fortune: "ממוזג־מיטיב" },
+  "1222": { key: "1222", hebrew: "נשוא ראש", arabic: "الأحيان / الضاحك", meaning: "", fortune: "מיטיב" },
+  "2111": { key: "2111", hebrew: "סף נכנס", arabic: "عتبة داخلة / راية الفرح", meaning: "", fortune: "מיטיב" },
+  "2212": { key: "2212", hebrew: "לבן", arabic: "البياض", meaning: "", fortune: "מיטיב" },
 
-  "1111": { key: "1111", hebrew: "דרך", arabic: "الطريق", meaning: "", fortune: "ממוזג־סעד" },
-  "1212": { key: "1212", hebrew: "ממון יוצא", arabic: "القبض الخارج", meaning: "", fortune: "נחס" },
-  "2122": { key: "2122", hebrew: "אדום", arabic: "الحمرة", meaning: "", fortune: "נחס" },
-  "2221": { key: "2221", hebrew: "שפל ראש", arabic: "الأنكيس / المنكوس", meaning: "", fortune: "נחס" },
+  "1111": { key: "1111", hebrew: "דרך", arabic: "الطريق", meaning: "", fortune: "ממוזג־מיטיב" },
+  "1212": { key: "1212", hebrew: "ממון יוצא", arabic: "القبض الخارج", meaning: "", fortune: "מזיק" },
+  "2122": { key: "2122", hebrew: "אדום", arabic: "الحمرة", meaning: "", fortune: "מזיק" },
+  "2221": { key: "2221", hebrew: "שפל ראש", arabic: "الأنكيس / المنكوس", meaning: "", fortune: "מזיק" },
 
-  "1122": { key: "1122", hebrew: "כבוד יוצא", arabic: "نصرة خارجية / الجواد", meaning: "", fortune: "סעד" },
-  "1221": { key: "1221", hebrew: "סוהר", arabic: "العقلة / الشقاوة", meaning: "", fortune: "ממוזג־נחס" },
-  "2112": { key: "2112", hebrew: "חיבור", arabic: "الاجتماع", meaning: "", fortune: "ממוזג־סעד" },
-  "2211": { key: "2211", hebrew: "כבוד נכנס", arabic: "نصرة داخلة / النصير", meaning: "", fortune: "סעד" },
+  "1122": { key: "1122", hebrew: "כבוד יוצא", arabic: "نصرة خارجية / الجواد", meaning: "", fortune: "מיטיב" },
+  "1221": { key: "1221", hebrew: "סוהר", arabic: "العقلة / الشقاوة", meaning: "", fortune: "ממוזג־מזיק" },
+  "2112": { key: "2112", hebrew: "חיבור", arabic: "الاجتماع", meaning: "", fortune: "ממוזג־מיטיב" },
+  "2211": { key: "2211", hebrew: "כבוד נכנס", arabic: "نصرة داخلة / النصير", meaning: "", fortune: "מיטיב" },
 
-  "1112": { key: "1112", hebrew: "סף יוצא", arabic: "عتبة خارجة", meaning: "", fortune: "נחס" },
-  "1211": { key: "1211", hebrew: "בר הלחי", arabic: "نقي الخد / الأشقر", meaning: "", fortune: "ממוזג־נחס" },
-  "2121": { key: "2121", hebrew: "ממון נכנס", arabic: "القبض الداخل", meaning: "", fortune: "סעד" },
+  "1112": { key: "1112", hebrew: "סף יוצא", arabic: "عتبة خارجة", meaning: "", fortune: "מזיק" },
+  "1211": { key: "1211", hebrew: "בר הלחי", arabic: "نقي الخد / الأشقر", meaning: "", fortune: "ממוזג־מזיק" },
+  "2121": { key: "2121", hebrew: "ממון נכנס", arabic: "القبض الداخل", meaning: "", fortune: "מיטיב" },
   "2222": { key: "2222", hebrew: "קהלה", arabic: "الجماعة", meaning: "", fortune: "ממוזג" },
 };
 
@@ -631,7 +631,7 @@ if (typeof module !== "undefined") {
   module.exports.ramlRunRandomReadingSummary = ramlRunRandomReadingSummary;
 }
 
-// אבחון ראשוני בלבד לפי סעד / נחס / ממוזג
+// אבחון ראשוני בלבד לפי מיטיב / מזיק / ממוזג
 // זה לא מחליף את דיני הספר. זה רק נותן תמונת מצב ראשונית.
 function ramlNormalizeFortune(fortune, statusHebrew) {
   const status = String(statusHebrew || "").trim();
@@ -644,11 +644,11 @@ function ramlNormalizeFortune(fortune, statusHebrew) {
 
   // תמיכה לאחור בערכי המקור הישנים, שלא נאבד תאימות
   const f = String(fortune || "");
-  if (f.includes("ממוזג") && f.includes("סעד")) return "mixed_good";
-  if (f.includes("ממוזג") && f.includes("נחס")) return "mixed_bad";
+  if (f.includes("ממוזג") && f.includes("מיטיב")) return "mixed_good";
+  if (f.includes("ממוזג") && f.includes("מזיק")) return "mixed_bad";
   if (f.includes("ממוזג")) return "mixed";
-  if (f.includes("סעד")) return "good";
-  if (f.includes("נחס")) return "bad";
+  if (f.includes("מיטיב")) return "good";
+  if (f.includes("מזיק")) return "bad";
   return "unknown";
 }
 
