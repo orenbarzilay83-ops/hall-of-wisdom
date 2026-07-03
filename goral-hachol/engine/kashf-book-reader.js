@@ -20,7 +20,7 @@ const HOUSE_PAGE_RANGES = {
   // עמוד 196 = סיום פרק 5 + פתיחת פרק 6 — תוכן מעורב. פרק 6 האמיתי מתחיל בעמוד 197.
   6:  { pageStart: 196, firstContentPage: 197, pageEnd: 203, topicArabic: 'المريض',   topicHebrew: 'החולה, אבוד, בהמות' },
   // עמוד 204 = סיום פרק 6 (קבורה) + פתיחת פרק 7 — תוכן מעורב. פרק 7 האמיתי מתחיל בעמוד 205.
-  7:  { pageStart: 204, firstContentPage: 205, pageEnd: 223, topicArabic: 'التزويج',  topicHebrew: 'נישואין, גובר/נגבר, קנייה/מכירה' },
+  7:  { pageStart: 204, firstContentPage: 205, pageEnd: 223, topicArabic: 'التزويج',  topicHebrew: 'נישואין, גובר/נכנע, קנייה/מכירה' },
   8:  { pageStart: 224, pageEnd: 234, topicArabic: 'السرقة',   topicHebrew: 'גנבה, הלוואה' },
   // עמוד 236 = סוף פרק 8 (מוות/ירושה). פרק 9 האמיתי מתחיל בעמוד 237.
   9:  { pageStart: 236, firstContentPage: 237, pageEnd: 255, topicArabic: 'السفر',    topicHebrew: 'נסיעה, נעדר, אבוד, חלום, דת' },

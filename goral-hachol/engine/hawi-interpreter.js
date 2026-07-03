@@ -2870,7 +2870,7 @@ function computeBodyPartDiagnosisHawi(chart) {
   };
 }
 
-// גובר ונגבר — שיטת ספירת הנקודות היחידות (חאוי — פרקי סכסוך ואויבים)
+// גובר ונכנע — שיטת ספירת הנקודות היחידות (חאוי — פרקי סכסוך ואויבים)
 // סופרים נקודות יחידות (1) בצד השואל (בתים 1-4) מול צד היריב (בתים 7-10)
 function computeGhalibMaghloub(chart) {
   if (!Array.isArray(chart)) return null;
@@ -2924,7 +2924,7 @@ function computeGhalibMaghloub(chart) {
     opponentDetails,
     verdict,
     querentWins,
-    outputHebrew: `גובר ונגבר (חאוי — ספירת נקודות יחידות):\n  שואל [ב׳ 1-4]: ${querentPoints} | ${querentLine}\n  יריב [ב׳ 7-10]: ${opponentPoints} | ${opponentLine}\n  ${verdictHebrew}`,
+    outputHebrew: `גובר ונכנע (חאוי — ספירת נקודות יחידות):\n  שואל [ב׳ 1-4]: ${querentPoints} | ${querentLine}\n  יריב [ב׳ 7-10]: ${opponentPoints} | ${opponentLine}\n  ${verdictHebrew}`,
   };
 }
 
