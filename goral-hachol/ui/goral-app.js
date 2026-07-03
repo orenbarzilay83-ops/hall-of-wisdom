@@ -269,7 +269,76 @@ const SHORT_HOUSE_TITLES = {
   7: 'זוגיות', 8: 'מוות', 9: 'נסיעה', 10: 'כבוד', 11: 'תקווה', 12: 'אויבים',
 };
 
+// קטגוריות נושא לשיטת חאוי — 12 בתים + תת-נושאים
+const HAWI_TOPIC_CATEGORIES = [
+  { id: 'foundations',      label: 'מצב כללי',       desc: 'שאלה כללית, בריאות, מצב נפשי',        icon: '⚡' },
+  { id: 'marriage',         label: 'זוגיות',          desc: 'נישואין, זוגיות, יחסים',               icon: '💍' },
+  { id: 'commerce',         label: 'פרנסה וממון',     desc: 'עסקים, רכוש, הכנסה',                   icon: '💰' },
+  { id: 'illness',          label: 'בריאות ומחלה',   desc: 'חולי, החלמה, אבחון',                    icon: '🏥' },
+  { id: 'travel',           label: 'נסיעה',           desc: 'יציאה לדרך, נסיעה, מסע',               icon: '✈️' },
+  { id: 'disputes',         label: 'סכסוך ותביעה',   desc: 'מריבה, בית משפט, יריב',                icon: '⚖️' },
+  { id: 'authorityState',   label: 'קריירה ושלטון',  desc: 'תפקיד, מינוי, עמדת כוח',               icon: '👑' },
+  { id: 'childrenPregnancy',label: 'ילדים והריון',    desc: 'לידה, הריון, ילדים',                    icon: '👶' },
+  { id: 'spiritualDiagnostics', label: 'אבחון רוחני', desc: 'עין הרע, כישוף, השפעה רוחנית',        icon: '🔮' },
+  { id: 'missingPerson',    label: 'נעדר / גנבה',    desc: 'חיפוש אדם, גנוב, מסתתר',               icon: '🔍' },
+  { id: 'deathInheritance', label: 'ירושה ומוות',    desc: 'עיזבון, ירושה, סוף עניין',             icon: '📜' },
+  { id: 'yearlyForecast',   label: 'תחזית שנתית',    desc: 'מה השנה תביא, מחירים, מזג אוויר',      icon: '📅' },
+];
+
+// משתנה לשמירת נושא חאוי שנבחר במסך השאלה
+let _hawiSelectedTopic = null;
+
 function renderQuestionScreen() {
+  // עדכן כותרת המסך לפי המצב הנוכחי
+  const headerEl = document.querySelector('#screen-question .qscreen-header h2');
+  const subtitleEl = document.querySelector('#screen-question .qscreen-subtitle');
+  if (headerEl) headerEl.textContent = goralMode === 'hawi' ? 'גורל החול — שיטת חאוי' : 'גורל החול — שיטת כשף אל-אסרר';
+  if (subtitleEl) subtitleEl.textContent = goralMode === 'hawi' ? 'בחר נושא השאלה' : 'לחץ על בית לסינון';
+
+  if (goralMode === 'hawi') {
+    _renderHawiTopicScreen();
+  } else {
+    _renderKashfQuestionScreen();
+  }
+}
+
+function _renderHawiTopicScreen() {
+  const houseEl = document.getElementById('qhouseGrid');
+  if (houseEl) {
+    houseEl.innerHTML = `<div class="hawi-mode-badge">שיטת חאוי — ספר חאוי העג'איב</div>`;
+  }
+
+  const gridEl = document.getElementById('qcardGrid');
+  if (gridEl) {
+    gridEl.innerHTML = HAWI_TOPIC_CATEGORIES.map(cat => {
+      const isSelected = _hawiSelectedTopic === cat.id;
+      return `<button type="button"
+        class="qcard hawi-topic-card${isSelected ? ' selected' : ''}"
+        data-topicid="${cat.id}">
+        <div class="qcard-body">
+          <span class="hawi-topic-icon">${cat.icon}</span>
+          <span class="qcard-label">${escapeHtml(cat.label)}</span>
+          <span class="qcard-desc">${escapeHtml(cat.desc)}</span>
+        </div>
+      </button>`;
+    }).join('');
+
+    gridEl.querySelectorAll('.hawi-topic-card').forEach(btn => {
+      btn.addEventListener('click', () => {
+        _hawiSelectedTopic = btn.dataset.topicid;
+        _renderHawiTopicScreen();
+      });
+    });
+  }
+
+  const contBtn = document.getElementById('continueFromQuestionBtn');
+  if (contBtn) {
+    contBtn.disabled = !_hawiSelectedTopic;
+    contBtn.textContent = _hawiSelectedTopic ? 'המשך ←' : 'בחר נושא תחילה';
+  }
+}
+
+function _renderKashfQuestionScreen() {
   const bank = window.QUESTION_BANK || [];
   const cats = window.QUESTION_CATEGORIES || [];
   const catMap = {};
@@ -290,7 +359,7 @@ function renderQuestionScreen() {
       btn.addEventListener('click', () => {
         const h = Number(btn.dataset.house);
         _activeHouseFilter = _activeHouseFilter === h ? null : h;
-        renderQuestionScreen();
+        _renderKashfQuestionScreen();
       });
     });
   }
@@ -323,14 +392,17 @@ function renderQuestionScreen() {
         btn.addEventListener('click', () => {
           const qid = btn.dataset.qid;
           selectedQuestion = bank.find(q => q.id === qid) || null;
-          renderQuestionScreen();
+          _renderKashfQuestionScreen();
         });
       });
     }
   }
 
   const contBtn = document.getElementById('continueFromQuestionBtn');
-  if (contBtn) contBtn.disabled = !selectedQuestion;
+  if (contBtn) {
+    contBtn.disabled = !selectedQuestion;
+    contBtn.textContent = 'המשך עם שאלה זו ←';
+  }
 }
 
 // ─── שדות דינמיים בהתאם לשאלה ─────────────────────────────────────────────
@@ -1060,6 +1132,7 @@ function clearForm() {
   forcedTopicId = null;
   selectedTopicId = null;
   selectedQuestion = null;
+  _hawiSelectedTopic = null;
   profileState = { gender: null, marital: null, work: null, children: null };
   document.querySelectorAll('.profile-btn.selected').forEach(b => b.classList.remove('selected'));
   renderTopicGrid();
@@ -1440,13 +1513,25 @@ document.getElementById("openKashfBookFromGoralBtn").addEventListener("click", (
 document.getElementById("backFromQuestionBtn").addEventListener("click", () => showScreen("landing"));
 
 document.getElementById("continueFromQuestionBtn").addEventListener("click", () => {
-  if (!selectedQuestion) return;
-  selectedHouseNum = selectedQuestion.houseId;
-  selectedTopicId  = selectedQuestion.topicId;
-  forcedTopicId    = null;
-  renderTopicGrid();
-  renderDynamicClientFields();
-  showScreen("open");
+  if (goralMode === 'hawi') {
+    if (!_hawiSelectedTopic) return;
+    // הגדר נושא חאוי ועבור ישירות למסך הכניסה הפתוחה
+    selectedTopicId = _hawiSelectedTopic;
+    selectedHouseNum = null;
+    forcedTopicId = null;
+    selectedQuestion = null;
+    renderTopicGrid();
+    renderDynamicClientFields();
+    showScreen("open");
+  } else {
+    if (!selectedQuestion) return;
+    selectedHouseNum = selectedQuestion.houseId;
+    selectedTopicId  = selectedQuestion.topicId;
+    forcedTopicId    = null;
+    renderTopicGrid();
+    renderDynamicClientFields();
+    showScreen("open");
+  }
 });
 
 // ─── ספירת מפתוח 7×7 ───────────────────────────────────────────────────

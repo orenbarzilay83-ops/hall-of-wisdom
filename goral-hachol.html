@@ -235,6 +235,49 @@ input, select, textarea {
   flex: none !important;
   padding: 8px 8px !important;
 }
+/* ── כרטיסי נושא שיטת חאוי ── */
+.hawi-mode-badge {
+  width: 100% !important;
+  text-align: center !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  color: #5c2d0a !important;
+  padding: 6px 0 2px !important;
+  letter-spacing: 0.04em !important;
+  font-family: 'STAM', serif !important;
+}
+.hawi-topic-card {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 4px !important;
+  padding: 10px 14px !important;
+}
+.hawi-topic-card .qcard-body {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 10px !important;
+  width: 100% !important;
+}
+.hawi-topic-icon {
+  font-size: 20px !important;
+  flex-shrink: 0 !important;
+  line-height: 1 !important;
+}
+.hawi-topic-card .qcard-label {
+  font-size: 15px !important;
+  font-weight: 800 !important;
+}
+.hawi-topic-card .qcard-desc {
+  font-size: 12px !important;
+  color: #6a4020 !important;
+  display: block !important;
+}
+.hawi-topic-card.selected {
+  background: rgba(80,40,8,0.12) !important;
+  border-right: 4px solid rgba(80,40,8,0.7) !important;
+}
 @media (min-width: 768px) and (orientation: portrait) {
   .question-scroll-content { top: 18% !important; bottom: 19% !important; padding: 0 16% !important; }
 }
@@ -2450,6 +2493,19 @@ body:has(#screen-open.active) .topbar { display: none !important; }
       background: rgba(6,25,45,.08);
       color: var(--navy);
     }
+    .hawi-mode-badge {
+      width: 100%; text-align: center; font-size: 14px; font-weight: 700;
+      color: var(--navy); padding: 8px 0 4px; letter-spacing: 0.04em;
+    }
+    .hawi-topic-card {
+      display: flex; flex-direction: row; align-items: center; gap: 0; padding: 12px 16px;
+    }
+    .hawi-topic-card .qcard-body {
+      display: flex; flex-direction: row; align-items: center; gap: 12px; width: 100%;
+    }
+    .hawi-topic-icon { font-size: 22px; flex-shrink: 0; line-height: 1; }
+    .hawi-topic-card .qcard-label { font-size: 15px; font-weight: 800; }
+    .hawi-topic-card.selected { background: #eef5ff; border-right: 4px solid var(--navy); }
 
     .qscreen-actions {
       padding: 12px 14px 24px;
@@ -2570,8 +2626,8 @@ body:has(#screen-open.active) .topbar { display: none !important; }
       <div class="question-scroll-bg"></div>
       <div class="question-scroll-content">
         <div class="qscreen-header">
-          <h2>בחר שאלה לגורל</h2>
-          <p class="qscreen-subtitle">לחץ על בית לסינון</p>
+          <h2>גורל החול — שיטת חאוי</h2>
+          <p class="qscreen-subtitle">בחר נושא השאלה</p>
         </div>
         <div class="qhouse-grid" id="qhouseGrid"></div>
         <div class="qcard-grid" id="qcardGrid"></div>
