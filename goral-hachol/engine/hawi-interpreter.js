@@ -2788,6 +2788,16 @@ const ELEMENT_ILLNESS_TYPE = {
   'עפר':   'מרה שחורה — עצבות, עייפות, מחלות כרוניות (חולי עפר)',
 };
 
+// מיפוי יסוד → אזור גוף לפי שיטת חאוי (פרק 12 — تسكين الاعضاء)
+// מקור: חאוי עמ׳ 12 — אזורי הגוף לפי יסוד הצורה
+// יסוד הצורה שנפלה בבית 6 (מחלה) מורה על אזור הגוף בו שוכן החולי
+const ELEMENT_BODY_REGION_HAWI = {
+  'אש':    'ראש, עיניים ומוח (האזור העליון — חולי אש)',
+  'אוויר': 'חזה, כתפיים וידיים (האזור האמצעי-עליון — חולי אוויר)',
+  'מים':   'בטן, כבד, כליות ואיברי הרבייה (האזור האמצעי-תחתון — חולי מים)',
+  'עפר':   'ירכיים, שוקיים ורגליים (האזור התחתון — חולי עפר)',
+};
+
 // מיפוי צורה → איבר גוף הכואב
 // מקור: القول الجامع في علم الرمل (שייח׳ מוחמד סאס), עמ׳ 16
 // שיטה: הצורה שנמצאת בבית 6 מורה על האיבר הכואב
@@ -2842,6 +2852,81 @@ const FIGURE_BODY_PART_KASHF = {
   '2111': 'ירך שמאל',    // סף נכנס
   // '1222' (נשוא ראש): הספר מזכיר "תשמיר" (רגל ימין) ו"דגל השמחה" (רגל שמאל) — שמות מסורתיים
 };
+
+// מאתר אזור הגוף הכואב לפי יסוד הצורה בבית 6 — שיטת חאוי פרק 12
+function computeBodyPartDiagnosisHawi(chart) {
+  const h6 = chart.find((h) => Number(h.house) === 6);
+  if (!h6?.key) return null;
+  const h6El = FIGURE_ELEMENT_MAP_G[h6.key] || h6.element || h6.elementHebrew || '';
+  const bodyRegion = ELEMENT_BODY_REGION_HAWI[h6El];
+  const figHebrew = h6.hebrew || h6.key;
+  if (!h6El || !bodyRegion) return null;
+  return {
+    figureKey: h6.key,
+    figureHebrew: figHebrew,
+    element: h6El,
+    bodyRegion,
+    outputHebrew: `${figHebrew} בבית 6 — יסוד ${h6El} → אזור הגוף הכואב: ${bodyRegion} (חאוי פרק 12)`,
+  };
+}
+
+// גאלב ומגלוב — שיטת ספירת הנקודות היחידות (חאוי — פרקי סכסוך ואויבים)
+// סופרים נקודות יחידות (1) בצד השואל (בתים 1-4) מול צד היריב (בתים 7-10)
+function computeGhalibMaghloub(chart) {
+  if (!Array.isArray(chart)) return null;
+  const getH = (n) => chart.find((h) => Number(h.house) === n);
+
+  const querentNums  = [1, 2, 3, 4];
+  const opponentNums = [7, 8, 9, 10];
+
+  let querentPoints = 0;
+  let opponentPoints = 0;
+  const querentDetails = [];
+  const opponentDetails = [];
+
+  for (const n of querentNums) {
+    const h = getH(n);
+    if (!h?.key) continue;
+    const pts = (h.key.match(/1/g) || []).length;
+    querentPoints += pts;
+    querentDetails.push({ house: n, figure: h.hebrew || h.key, points: pts });
+  }
+  for (const n of opponentNums) {
+    const h = getH(n);
+    if (!h?.key) continue;
+    const pts = (h.key.match(/1/g) || []).length;
+    opponentPoints += pts;
+    opponentDetails.push({ house: n, figure: h.hebrew || h.key, points: pts });
+  }
+
+  let verdict, verdictHebrew, querentWins;
+  if (querentPoints > opponentPoints) {
+    verdict = 'ghalib-querent';
+    verdictHebrew = `השואל גאלב — עולה על יריבו (${querentPoints} מול ${opponentPoints})`;
+    querentWins = true;
+  } else if (opponentPoints > querentPoints) {
+    verdict = 'ghalib-opponent';
+    verdictHebrew = `היריב גאלב — עולה על השואל (${opponentPoints} מול ${querentPoints})`;
+    querentWins = false;
+  } else {
+    verdict = 'equal';
+    verdictHebrew = `תאסוויה — כוחות שקולים (${querentPoints} נקודות לכל צד)`;
+    querentWins = null;
+  }
+
+  const querentLine = querentDetails.map(d => `ב${d.house}(${d.figure}):${d.points}`).join(', ');
+  const opponentLine = opponentDetails.map(d => `ב${d.house}(${d.figure}):${d.points}`).join(', ');
+
+  return {
+    querentPoints,
+    opponentPoints,
+    querentDetails,
+    opponentDetails,
+    verdict,
+    querentWins,
+    outputHebrew: `גאלב ומגלוב (חאוי — ספירת נקודות יחידות):\n  שואל [ב׳ 1-4]: ${querentPoints} | ${querentLine}\n  יריב [ב׳ 7-10]: ${opponentPoints} | ${opponentLine}\n  ${verdictHebrew}`,
+  };
+}
 
 function computeBodyPartDiagnosisKashf(chart) {
   const h6 = chart.find((h) => Number(h.house) === 6);
@@ -5256,6 +5341,12 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const bodyPartDiagnosisKashf = (topicId === 'illness')
     ? computeBodyPartDiagnosisKashf(board.chart) : null;
 
+  const bodyPartDiagnosisHawi = (topicId === 'illness')
+    ? computeBodyPartDiagnosisHawi(board.chart) : null;
+
+  const ghalibMaghloub = (['disputes', 'enemies', 'partnership', 'theft'].includes(topicId))
+    ? computeGhalibMaghloub(board.chart) : null;
+
   const deathRisk = (topicId === 'illness')
     ? computeDeathRisk(board.chart) : null;
 
@@ -5504,6 +5595,8 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     illnessElementDiagnosis,
     bodyPartDiagnosis,
     bodyPartDiagnosisKashf,
+    bodyPartDiagnosisHawi,
+    ghalibMaghloub,
     deathRisk,
     jinnType,
     thiefLocationDetails,

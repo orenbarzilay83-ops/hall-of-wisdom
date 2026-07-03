@@ -548,6 +548,11 @@ function describeCoreHouses(analysis, topicId, question) {
     parts.push(`מיקום המחלה בגוף (כשף אל-אסרר עמ׳ 199):\n  ${bodyPartDiagKashf.outputHebrew}`);
   }
 
+  const bodyPartDiagHawi = analysis.bodyPartDiagnosisHawi;
+  if (bodyPartDiagHawi) {
+    parts.push(`אזור הגוף הכואב (חאוי פרק 12 — שיטת היסודות):\n  ${bodyPartDiagHawi.outputHebrew}`);
+  }
+
   const thiefLoc = analysis.thiefLocationDetails;
   if (thiefLoc) {
     parts.push(`זיהוי הגנב (בלוג' אלאמל פרק 19):\n  ${thiefLoc.outputHebrew.replace(/\n/g, '\n  ')}`);
@@ -722,8 +727,12 @@ function describeCoreHouses(analysis, topicId, question) {
     }
   }
 
-  // disputes: house 1 vs house 7 power comparison
+  // disputes: Ghalib/Maghloub (Hawi point-count method) + house 1 vs 7 fortune
   if (topicId === 'disputes') {
+    const ghalib = analysis.ghalibMaghloub;
+    if (ghalib) {
+      parts.push(ghalib.outputHebrew);
+    }
     const h1 = getHouseFromBoard(analysis, 1);
     const h7 = getHouseFromBoard(analysis, 7);
     if (h1 && h7) {
@@ -732,7 +741,15 @@ function describeCoreHouses(analysis, topicId, question) {
       const h1Tone = h1Saad > 0 ? 'חזק [מיטיב]' : h1Saad < 0 ? 'חלש [מזיק]' : 'ביניים';
       const h7Tone = h7Saad > 0 ? 'חזק [מיטיב]' : h7Saad < 0 ? 'חלש [מזיק]' : 'ביניים';
       const advantage = (h1Saad > h7Saad) ? '→ יתרון לשואל' : (h1Saad < h7Saad) ? '→ יתרון ליריב' : '→ כוחות שקולים';
-      parts.push(`כוח הצדדים בסכסוך:\n  שואל (בית 1 — ${h1.figureHebrew}): ${h1Tone}\n  יריב (בית 7 — ${h7.figureHebrew}): ${h7Tone}\n  ${advantage}`);
+      parts.push(`כוח הצדדים לפי מזל (בית 1 מול בית 7):\n  שואל (בית 1 — ${h1.figureHebrew}): ${h1Tone}\n  יריב (בית 7 — ${h7.figureHebrew}): ${h7Tone}\n  ${advantage}`);
+    }
+  }
+
+  // enemies: also show Ghalib/Maghloub
+  if (topicId === 'enemies') {
+    const ghalib = analysis.ghalibMaghloub;
+    if (ghalib) {
+      parts.push(ghalib.outputHebrew);
     }
   }
 
