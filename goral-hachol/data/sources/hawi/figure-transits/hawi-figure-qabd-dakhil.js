@@ -6,7 +6,7 @@
  * ترحيل الأشكال الستة عشر في الستة عشر بيتا
  *
  * Figure:
- * القبض الداخل — קבץ דאחל
+ * القبض الداخل — ממון נכנס
  *
  * Built from user-provided photographed source pages.
  * No external knowledge.

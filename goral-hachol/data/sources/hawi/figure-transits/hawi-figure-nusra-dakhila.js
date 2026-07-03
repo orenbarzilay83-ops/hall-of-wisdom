@@ -6,7 +6,7 @@
  * ترحيل الأشكال الستة عشر في الستة عشر بيتا
  *
  * Figure:
- * النصرة الداخلة — נצרה דאחלה
+ * النصرة الداخلة — כבוד נכנס
  *
  * Built from user-provided photographed source pages.
  * No external knowledge.

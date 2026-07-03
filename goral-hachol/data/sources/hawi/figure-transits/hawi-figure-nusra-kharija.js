@@ -6,7 +6,7 @@
  * ترحيل الأشكال الستة عشر في الستة عشر بيتا
  *
  * Figure:
- * النصرة الخارجة — נצרה ח׳ארג׳ה
+ * النصرة الخارجة — כבוד יוצא
  *
  * Built from user-provided photographed source pages.
  * No external knowledge.

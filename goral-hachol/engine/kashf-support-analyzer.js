@@ -226,7 +226,7 @@ function computeConfidence(verdictDK, w13, w14, judge) {
   else if (confirms > 0 && contradicts > 0)     { level = 'mixed';     labelHebrew = 'פסיקה מעורבת — כוחות נגד כוחות'; }
   else if (contradicts >= 2)                    { level = 'weak';      labelHebrew = 'פסיקה חלשה — רוב הכוחות מתנגדים'; }
   else {
-    // כל הצורות (עדים + דיין) הן מג'סד — אין להן כיוון ברור (דאח'ל/ח'ארג')
+    // כל הצורות (עדים + דיין) הן מג'סד — אין להן כיוון ברור (נכנס/יוצא)
     // מדד חלופי: ספירת מזל (מיטיב/מזיק) של שלושת הכוחות
     const saadCount = [w13, w14, judge].filter((h) => h?.saadNahs === 'saad').length;
     const nahsCount = [w13, w14, judge].filter((h) => h?.saadNahs === 'nahs').length;
