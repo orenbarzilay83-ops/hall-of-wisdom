@@ -1981,6 +1981,175 @@ function renderMethodsGuide() {
           📖 מקור: ספר כשף אל-אסרר — הספר המלא מובנה באפליקציה ונגיש
           בלשונית "כשף אל-אסרר" בדף זה
         </div>
+
+        <div class="guide-method-section" style="margin-top:18px">
+          <div class="guide-method-section-title">שאלות לדוגמה לפי בתים</div>
+          <div class="hawi-topics-grid">
+            <div class="kashf-topic-item">
+              <div class="kashf-topic-name">🏠 בית 1 — השואל</div>
+              <ul class="hawi-topic-qs">
+                <li>"מה מצבי הכללי כרגע?"</li>
+                <li>"האם העניין שלי יצליח?"</li>
+                <li>"מה הכיוון הגיאוגרפי של עניין זה?"</li>
+              </ul>
+            </div>
+            <div class="kashf-topic-item">
+              <div class="kashf-topic-name">💰 בית 2 — ממון</div>
+              <ul class="hawi-topic-qs">
+                <li>"האם אקבל כסף בקרוב?"</li>
+                <li>"האם החוב יוחזר לי?"</li>
+                <li>"מאיפה תגיע פרנסתי?"</li>
+              </ul>
+            </div>
+            <div class="kashf-topic-item">
+              <div class="kashf-topic-name">👥 בית 3 — אחים ותנועה</div>
+              <ul class="hawi-topic-qs">
+                <li>"מה מצב הקשר עם האח/שכן?"</li>
+                <li>"האם כדאי לעבור לעיר אחרת?"</li>
+                <li>"מה פירוש החלום שחלמתי?"</li>
+              </ul>
+            </div>
+            <div class="kashf-topic-item">
+              <div class="kashf-topic-name">🌍 בית 4 — אב ונסתרות</div>
+              <ul class="hawi-topic-qs">
+                <li>"האם יש דפין/מטמון במקום זה?"</li>
+                <li>"מה מצב הנכס/הקרקע שלי?"</li>
+                <li>"מה מקור הסבל הנסתר?"</li>
+              </ul>
+            </div>
+            <div class="kashf-topic-item">
+              <div class="kashf-topic-name">👶 בית 5 — ילדים</div>
+              <ul class="hawi-topic-qs">
+                <li>"האם אתעבר?"</li>
+                <li>"זכר או נקבה?"</li>
+                <li>"מה גורל הילד שנולד?"</li>
+              </ul>
+            </div>
+            <div class="kashf-topic-item">
+              <div class="kashf-topic-name">🏥 בית 6 — מחלה</div>
+              <ul class="hawi-topic-qs">
+                <li>"מה מקור המחלה שלי?"</li>
+                <li>"האם אתרפא ומתי?"</li>
+                <li>"האם יש כישוף/עין הרע בשורש?"</li>
+              </ul>
+            </div>
+            <div class="kashf-topic-item">
+              <div class="kashf-topic-name">💍 בית 7 — זוגיות ויריבים</div>
+              <ul class="hawi-topic-qs">
+                <li>"מה מצב הזוגיות שלי?"</li>
+                <li>"מי יגבר בסכסוך — אני או יריבי?"</li>
+                <li>"מה כוונות האחר כלפי?"</li>
+              </ul>
+            </div>
+            <div class="kashf-topic-item">
+              <div class="kashf-topic-name">⚰️ בית 8 — ירושה ומוות</div>
+              <ul class="hawi-topic-qs">
+                <li>"מה מצב החולה — לחיים או למוות?"</li>
+                <li>"מה יהיה עם הירושה?"</li>
+                <li>"מתי יבוא הסוף לעניין?"</li>
+              </ul>
+            </div>
+            <div class="kashf-topic-item">
+              <div class="kashf-topic-name">✈️ בית 9 — נסיעה ודת</div>
+              <ul class="hawi-topic-qs">
+                <li>"האם הנסיעה מבורכת?"</li>
+                <li>"מה יקרה לי בדרך?"</li>
+                <li>"מה פירוש החלום הרוחני?"</li>
+              </ul>
+            </div>
+            <div class="kashf-topic-item">
+              <div class="kashf-topic-name">👑 בית 10 — שלטון וקריירה</div>
+              <ul class="hawi-topic-qs">
+                <li>"האם אקבל את התפקיד?"</li>
+                <li>"מה מצבי מול הממונים?"</li>
+                <li>"האם הקידום יגיע?"</li>
+              </ul>
+            </div>
+            <div class="kashf-topic-item">
+              <div class="kashf-topic-name">🤝 בית 11 — חברים ותקוות</div>
+              <ul class="hawi-topic-qs">
+                <li>"האם הידיד יעזור לי?"</li>
+                <li>"האם התקווה שלי תתממש?"</li>
+                <li>"מה מצב הקשרים החברתיים שלי?"</li>
+              </ul>
+            </div>
+            <div class="kashf-topic-item">
+              <div class="kashf-topic-name">🕵️ בית 12 — אויבים נסתרים</div>
+              <ul class="hawi-topic-qs">
+                <li>"האם יש אויב נסתר שפועל נגדי?"</li>
+                <li>"מה מסתתר ממני בעניין זה?"</li>
+                <li>"מה טיב הכישוף/העין שעלי?"</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="guide-method-section" style="margin-top:18px">
+          <div class="guide-method-section-title">דוגמת קריאה שלמה — שלב אחר שלב</div>
+          <div class="kashf-example-box">
+            <div class="ex-label">שאלת הלקוח</div>
+            יוסף, 45, בעל חנות, שואל: <strong>"חבר חייב לי 5,000 ש"ח — האם יחזיר?"</strong>
+          </div>
+          <div class="hawi-walkthrough">
+            <div class="kashf-step">
+              <div class="kashf-step-num">1</div>
+              <div>
+                <div class="kashf-step-title">בחירת השאלה מהבנק</div>
+                <div class="kashf-step-body">נכנסים לבנק השאלות → <strong>בית 2 (ממון)</strong> → בוחרים: <strong>"האם החוב יוחזר לי?"</strong></div>
+              </div>
+            </div>
+            <div class="kashf-step">
+              <div class="kashf-step-num">2</div>
+              <div>
+                <div class="kashf-step-title">הנוסחה הייעודית</div>
+                <div class="kashf-step-body">לשאלה זו הספר נותן נוסחה ספציפית — <strong>מחברים בתים מסוימים</strong> מהלוח (למשל בית 2 עם בית 8) וה"שורה" שיוצאת מהחיבור היא הצורה התוצאתית.</div>
+              </div>
+            </div>
+            <div class="kashf-step">
+              <div class="kashf-step-num">3</div>
+              <div>
+                <div class="kashf-step-title">הצורה התוצאתית</div>
+                <div class="kashf-step-body">נניח שיצאה <strong>"ממון נכנס"</strong> — צורה בעלת תנועה נכנסת ומזל מיטיב. שמה אומר הכל: הממון <em>נכנס</em>.</div>
+              </div>
+            </div>
+            <div class="kashf-step">
+              <div class="kashf-step-num">4</div>
+              <div>
+                <div class="kashf-step-title">פסיקה ראשית</div>
+                <div class="kashf-step-body">הצורה נכנסת ומיטיבה → <strong>כן, הכסף יחזור.</strong> אם הייתה יוצאת (כגון "ממון יוצא") — הכסף לא יחזור.</div>
+              </div>
+            </div>
+            <div class="kashf-step">
+              <div class="kashf-step-num">5</div>
+              <div>
+                <div class="kashf-step-title">נוסחת ביקורת</div>
+                <div class="kashf-step-body">לרוב השאלות יש <strong>נוסחה שנייה לאימות</strong>. הספר נותן חיבור חלופי. גם כאן יצאה צורה נכנסת — הפסיקה מאושרת.</div>
+              </div>
+            </div>
+            <div class="kashf-step">
+              <div class="kashf-step-num">6</div>
+              <div>
+                <div class="kashf-step-title">בדיקות תומכות</div>
+                <div class="kashf-step-body">
+                  • <strong>מין הצורה:</strong> נקבית — הממון יגיע בעקיפין, אולי דרך אדם שלישי<br>
+                  • <strong>יסוד:</strong> מים — עניין רגשי, הלווה בלחץ אבל בסופו כן ישלם<br>
+                  • <strong>ספירת בתים:</strong> מגלה עיתוי מוערך
+                </div>
+              </div>
+            </div>
+            <div class="kashf-step">
+              <div class="kashf-step-num">7</div>
+              <div>
+                <div class="kashf-step-title">הפסיקה הסופית</div>
+                <div class="kashf-step-body">האפליקציה מרכזת את כל הממצאים ומוציאה פסיקה ברורה עם ביאור.</div>
+              </div>
+            </div>
+          </div>
+          <div class="kashf-example-conclusion">
+            "הצורה התוצאתית נכנסת ומיטיבה — הממון צפוי לחזור. שתי הנוסחות מסכימות. על פי בדיקת היסוד, ייתכן שהתשלום יגיע בעקיפין או אחרי לחץ מסוים, אך הגורל מורה על החזרה."
+          </div>
+        </div>
+
       </div>
     </div>
 
