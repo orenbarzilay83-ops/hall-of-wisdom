@@ -71,11 +71,11 @@ export const HAWI_FULL_BOOK_GAP_AUDIT = {
       hebrewTitle: 'שער המולד / הנולד',
       status: 'engine-implemented',
       actionHebrew:
-        'מנוע birthNativity פעיל: בית 1 = בעל הטאלע, חזרת הצורה בבתים = משמעויות חיים לפי חאוי.',
+        'מנוע birthNativity פעיל: בית 1 = בעל העולה, חזרת הצורה בבתים = משמעויות חיים לפי חאוי.',
     },
     {
       id: 'yearly-weather-omens',
-      hebrewTitle: 'טאלע השנה, גשם, יוקר/זול, מלחמות ומחלות כלליות',
+      hebrewTitle: 'עולה השנה, גשם, יוקר/זול, מלחמות ומחלות כלליות',
       status: 'engine-implemented',
       actionHebrew:
         'מנוע yearlyForecast פעיל: בית 15, כוכבים ביתדות, גשם ומזג אוויר לפי חאוי עמ׳ 61-62.',

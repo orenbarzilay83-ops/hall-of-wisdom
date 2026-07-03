@@ -7,7 +7,7 @@ export const HAWI_FIGURE_STATES_SOURCE_AUDIT = {
     'השער השמונה־עשר — הפרק הראשון במצבי הצורות בבתים ופעולותיהן',
   auditStatus: 'initial-source-audit-from-drive-pdf-45-51',
   importantNoteHebrew:
-    'שכבת figure-states אינה זהה לשכבת figure-transits. מצבי הצורות נמצאו בעמודי PDF 45–51. החיאן ובר הלחי נמצאו בשכבת התרחיל/מעבר הצורות, אך לא נמצאו בפרק מצבי הצורות בעמודים 45–51.',
+    'שכבת figure-states אינה זהה לשכבת figure-transits. מצבי הצורות נמצאו בעמודי PDF 45–51. נשוא ראש ובר הלחי נמצאו בשכבת התרחיל/מעבר הצורות, אך לא נמצאו בפרק מצבי הצורות בעמודים 45–51.',
   auditedFigures: [
     {
       figureId: 'hawi-figure-qabd-dakhil',
@@ -201,7 +201,7 @@ export const HAWI_FIGURE_STATES_SOURCE_AUDIT = {
     figureStatesInCurrentSection: 14,
     figureStatesNotFoundInCurrentSection: 2,
     conclusionHebrew:
-      'שכבת מצבי הצורות שנבנתה היום תואמת את הפרק בעמודים 45–51 עבור 14 צורות. החיאן ובר הלחי אינן בפרק זה לפי המיפוי הנוכחי, ולכן לא ליצור להן figure-states עד שיימצא מקור נוסף.'
+      'שכבת מצבי הצורות שנבנתה היום תואמת את הפרק בעמודים 45–51 עבור 14 צורות. נשוא ראש ובר הלחי אינן בפרק זה לפי המיפוי הנוכחי, ולכן לא ליצור להן figure-states עד שיימצא מקור נוסף.'
   }
 };
 

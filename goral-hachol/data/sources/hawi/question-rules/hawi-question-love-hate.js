@@ -162,7 +162,7 @@ export const HAWI_QUESTION_LOVE_HATE = {
         "كان مبغوضا عنده"
       ],
       hebrewTranslation: [
-        "ואם יצאה עקלה — הוא שנוא אצלו."
+        "ואם יצאה סוהר — הוא שנוא אצלו."
       ],
       houses: [],
       figures: [
@@ -172,7 +172,7 @@ export const HAWI_QUESTION_LOVE_HATE = {
         "العقلة",
         "مبغوضا"
       ],
-      rule: "יציאת עקלה בדין זה מורה שהאדם שנוא אצל הצד השני.",
+      rule: "יציאת סוהר בדין זה מורה שהאדם שנוא אצל הצד השני.",
       status: "sourceExact"
     },
 

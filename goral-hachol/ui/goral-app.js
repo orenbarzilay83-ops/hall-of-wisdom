@@ -83,7 +83,7 @@ const HOUSE_TOPIC_KEYWORDS = {
     // default: travel
   ],
   10: [
-    { topicId: 'yearlyForecast', kw: ['שנה','תחזית שנתית','טאלע','גורל השנה','מה יקרה השנה','השנה הקרובה'] },
+    { topicId: 'yearlyForecast', kw: ['שנה','תחזית שנתית','עולה','גורל השנה','מה יקרה השנה','השנה הקרובה'] },
     // default: authorityState
   ],
   12: [
@@ -606,10 +606,10 @@ const ZODIAC_SYM = {
 };
 
 const ZODIAC_POS_INFO = {
-  'טאלע': { label: 'עולה ↑',  cls: 'kp-rising'   },
-  'סאעד': { label: 'מצליח ✦', cls: 'kp-fortunate' },
-  'גארב': { label: 'שוקע ↓',  cls: 'kp-setting'   },
-  'האבט': { label: 'יורד ⬇',  cls: 'kp-falling'   },
+  'עולה': { label: 'עולה ↑',  cls: 'kp-rising'   },
+  'מצליח': { label: 'מצליח ✦', cls: 'kp-fortunate' },
+  'שוקע': { label: 'שוקע ↓',  cls: 'kp-setting'   },
+  'יורד': { label: 'יורד ⬇',  cls: 'kp-falling'   },
 };
 
 function buildKundaliHtml(reading) {
@@ -1023,7 +1023,7 @@ window.showBoardCompleteness = function(btn) {
       <div>סה"כ נקודות: <strong>${bScore.score}</strong> מתוך 128</div>
     </div>
     <div style="margin-top:10px; font-size:12px; color:#555; border-top:1px solid #e0e8f5; padding-top:8px;">${escapeHtml(bScore.hebrewSummary)}</div>
-    <div style="margin-top:6px; font-size:11px; color:#999;">מקור: ספר הקול הכולל בחכמת הרמל — פרק שלמות הלוח (96 נקודות)</div>
+    <div style="margin-top:6px; font-size:11px; color:#999;">מקור: ספר הקול הכולל בחכמת גורל החול — פרק שלמות הלוח (96 נקודות)</div>
   `;
   panel.hidden = false;
   btn.textContent = '📊 שלמות הלוח ▲';
@@ -1674,22 +1674,22 @@ document.querySelectorAll(".guide-tab").forEach(tab => {
 // fortune: טוב=מיטיב, רע=מזיק, ממוזג=בינוני | movement: קבוצה (יוצאת/נכנסת/קבועה/מתהפכת)
 // letters: מיפוי תסקין עבדוה מחאוי — אות ראשית + אות משנית (לצורות מתהפכות)
 const FIGURE_EXTRA = {
-  '1111': { fortune: 'ממוזג',     fClass: 'mixed', movement: 'מתהפכת', letters: ['ע'], gender: 'דו-מיני', gClass: 'neutral', zodiac: 'סרטן',    zodiacPos: 'האבט' },
-  '1112': { fortune: 'רע',        fClass: 'nahas', movement: 'יוצאת',  letters: ['ח', 'ם'], gender: 'זכר', gClass: 'male',    zodiac: 'גדי',      zodiacPos: 'סאעד' },
-  '1121': { fortune: 'ממוזג',     fClass: 'mixed', movement: 'מתהפכת', letters: ['ט', 'ן'], gender: 'זכר', gClass: 'male',    zodiac: 'מאזניים', zodiacPos: 'גארב' },
-  '1122': { fortune: 'טוב',       fClass: 'saad',  movement: 'יוצאת',  letters: ['ה', 'ש'], gender: 'זכר', gClass: 'male',    zodiac: 'אריה',    zodiacPos: 'סאעד' },
-  '1211': { fortune: 'ממוזג-רע',  fClass: 'mixed', movement: 'מתהפכת', letters: ['י', 'ף'], gender: 'נקבה', gClass: 'female', zodiac: 'טלה',     zodiacPos: 'טאלע' },
-  '1212': { fortune: 'רע',        fClass: 'nahas', movement: 'יוצאת',  letters: ['ל', 'א'], gender: 'זכר', gClass: 'male',    zodiac: 'דלי',     zodiacPos: 'סאעד' },
-  '1221': { fortune: 'ממוזג-רע',  fClass: 'mixed', movement: 'מתהפכת', letters: ['נ'], gender: 'דו-מיני', gClass: 'neutral', zodiac: 'גדי',      zodiacPos: 'האבט' },
-  '1222': { fortune: 'טוב',       fClass: 'saad',  movement: 'יוצאת',  letters: ['א', 'פ'], gender: 'זכר', gClass: 'male',    zodiac: 'קשת',     zodiacPos: 'טאלע' },
-  '2111': { fortune: 'טוב',       fClass: 'saad',  movement: 'נכנסת',  letters: ['ז', 'ך'], gender: 'נקבה', gClass: 'female', zodiac: 'שור',     zodiacPos: 'טאלע' },
-  '2112': { fortune: 'ממוזג-טוב', fClass: 'mixed', movement: 'קבועה',  letters: ['ס'], gender: 'דו-מיני', gClass: 'neutral', zodiac: 'תאומים', zodiacPos: 'האבט' },
-  '2121': { fortune: 'טוב',       fClass: 'saad',  movement: 'נכנסת',  letters: ['כ', 'ץ'], gender: 'נקבה', gClass: 'female', zodiac: 'אריה',    zodiacPos: 'טאלע' },
-  '2122': { fortune: 'רע',        fClass: 'nahas', movement: 'קבועה',  letters: ['ג', 'ק'], gender: 'זכר', gClass: 'male',    zodiac: 'עקרב',    zodiacPos: 'גארב' },
-  '2211': { fortune: 'טוב',       fClass: 'saad',  movement: 'נכנסת',  letters: ['ו', 'ת'], gender: 'נקבה', gClass: 'female', zodiac: 'דגים',    zodiacPos: 'גארב' },
-  '2212': { fortune: 'טוב',       fClass: 'saad',  movement: 'קבועה',  letters: ['ד', 'ר'], gender: 'נקבה', gClass: 'female', zodiac: 'סרטן',    zodiacPos: 'סאעד' },
-  '2221': { fortune: 'רע',        fClass: 'nahas', movement: 'נכנסת',  letters: ['ב', 'צ'], gender: 'נקבה', gClass: 'female', zodiac: 'דלי',     zodiacPos: 'גארב' },
-  '2222': { fortune: 'ממוזג',     fClass: 'mixed', movement: 'קבועה',  letters: ['מ'], gender: 'דו-מיני', gClass: 'neutral', zodiac: 'בתולה',   zodiacPos: 'האבט' },
+  '1111': { fortune: 'ממוזג',     fClass: 'mixed', movement: 'מתהפכת', letters: ['ע'], gender: 'דו-מיני', gClass: 'neutral', zodiac: 'סרטן',    zodiacPos: 'יורד' },
+  '1112': { fortune: 'רע',        fClass: 'nahas', movement: 'יוצאת',  letters: ['ח', 'ם'], gender: 'זכר', gClass: 'male',    zodiac: 'גדי',      zodiacPos: 'מצליח' },
+  '1121': { fortune: 'ממוזג',     fClass: 'mixed', movement: 'מתהפכת', letters: ['ט', 'ן'], gender: 'זכר', gClass: 'male',    zodiac: 'מאזניים', zodiacPos: 'שוקע' },
+  '1122': { fortune: 'טוב',       fClass: 'saad',  movement: 'יוצאת',  letters: ['ה', 'ש'], gender: 'זכר', gClass: 'male',    zodiac: 'אריה',    zodiacPos: 'מצליח' },
+  '1211': { fortune: 'ממוזג-רע',  fClass: 'mixed', movement: 'מתהפכת', letters: ['י', 'ף'], gender: 'נקבה', gClass: 'female', zodiac: 'טלה',     zodiacPos: 'עולה' },
+  '1212': { fortune: 'רע',        fClass: 'nahas', movement: 'יוצאת',  letters: ['ל', 'א'], gender: 'זכר', gClass: 'male',    zodiac: 'דלי',     zodiacPos: 'מצליח' },
+  '1221': { fortune: 'ממוזג-רע',  fClass: 'mixed', movement: 'מתהפכת', letters: ['נ'], gender: 'דו-מיני', gClass: 'neutral', zodiac: 'גדי',      zodiacPos: 'יורד' },
+  '1222': { fortune: 'טוב',       fClass: 'saad',  movement: 'יוצאת',  letters: ['א', 'פ'], gender: 'זכר', gClass: 'male',    zodiac: 'קשת',     zodiacPos: 'עולה' },
+  '2111': { fortune: 'טוב',       fClass: 'saad',  movement: 'נכנסת',  letters: ['ז', 'ך'], gender: 'נקבה', gClass: 'female', zodiac: 'שור',     zodiacPos: 'עולה' },
+  '2112': { fortune: 'ממוזג-טוב', fClass: 'mixed', movement: 'קבועה',  letters: ['ס'], gender: 'דו-מיני', gClass: 'neutral', zodiac: 'תאומים', zodiacPos: 'יורד' },
+  '2121': { fortune: 'טוב',       fClass: 'saad',  movement: 'נכנסת',  letters: ['כ', 'ץ'], gender: 'נקבה', gClass: 'female', zodiac: 'אריה',    zodiacPos: 'עולה' },
+  '2122': { fortune: 'רע',        fClass: 'nahas', movement: 'קבועה',  letters: ['ג', 'ק'], gender: 'זכר', gClass: 'male',    zodiac: 'עקרב',    zodiacPos: 'שוקע' },
+  '2211': { fortune: 'טוב',       fClass: 'saad',  movement: 'נכנסת',  letters: ['ו', 'ת'], gender: 'נקבה', gClass: 'female', zodiac: 'דגים',    zodiacPos: 'שוקע' },
+  '2212': { fortune: 'טוב',       fClass: 'saad',  movement: 'קבועה',  letters: ['ד', 'ר'], gender: 'נקבה', gClass: 'female', zodiac: 'סרטן',    zodiacPos: 'מצליח' },
+  '2221': { fortune: 'רע',        fClass: 'nahas', movement: 'נכנסת',  letters: ['ב', 'צ'], gender: 'נקבה', gClass: 'female', zodiac: 'דלי',     zodiacPos: 'שוקע' },
+  '2222': { fortune: 'ממוזג',     fClass: 'mixed', movement: 'קבועה',  letters: ['מ'], gender: 'דו-מיני', gClass: 'neutral', zodiac: 'בתולה',   zodiacPos: 'יורד' },
 };
 const DIR_CLASS = { 'צפון': 'north', 'דרום': 'south', 'מזרח': 'east', 'מערב': 'west' };
 const ELEMENT_CLASS = { 'אש': 'fire', 'מים': 'water', 'רוח': 'air', 'עפר': 'earth' };
@@ -1889,7 +1889,7 @@ function renderIsqat7Guide() {
     { num: 5, hebrew: 'מחלת דם גופנית', arabic: 'مرض الدم', color: '#e74c3c', type: 'גופנית',
       desc: 'השארית 5 מרמזת על בעיה בדם — עודף, חסר, או זיהום. הגוף נמצא תחת לחץ דמי. התסמינים יכולים לכלול חום, דלקות, אדמומיות.' },
     { num: 6, hebrew: 'מרה שחורה', arabic: 'السوداء', color: '#27ae60', type: 'גופנית',
-      desc: 'השארית 6 מרמזת על עודף מרה שחורה (ملنخوليا). תסמינים: דיכאון, חרדה, פחדים, בדידות, מחשבות קודרות, קוצר נשימה, כאבי ראש.' },
+      desc: 'השארית 6 מרמזת על עודף מרה שחורה. תסמינים: דיכאון, חרדה, פחדים, בדידות, מחשבות קודרות, קוצר נשימה, כאבי ראש.' },
     { num: 7, hebrew: 'מרה צהובה', arabic: 'الصفراء', color: '#e67e22', type: 'גופנית',
       desc: 'השארית 7 מרמזת על עודף מרה צהובה. תסמינים: כאבי בטן ועיכול, צהבהב בעור, מרירות בפה, כעס וחוסר סבלנות, חום גבוה.' },
   ];
@@ -1947,7 +1947,7 @@ function renderIsqat7Guide() {
           <div style="min-width:32px;height:32px;border-radius:50%;background:${r.color};color:#fff;font-weight:900;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0">${r.num}</div>
           <div style="flex:1">
             <div style="font-weight:900;font-size:15px;color:#071b30">${r.hebrew}</div>
-            <div style="font-size:12px;color:${r.color};font-weight:700;margin-bottom:4px">${r.arabic} &nbsp;|&nbsp; ${r.type}</div>
+            <div style="font-size:12px;color:${r.color};font-weight:700;margin-bottom:4px">${r.type}</div>
             <div style="font-size:13px;color:#3a4e62;line-height:1.7">${r.desc}</div>
           </div>
         </div>`).join('')}
@@ -1974,7 +1974,6 @@ function renderFiguresGuide() {
     return `<div class="fig-card">
       ${glyphHtml(linesFromKey(key))}
       <div class="fig-name">${escapeHtml(f.hebrew || key)}</div>
-      <div class="fig-arabic">${escapeHtml(f.arabic || '')}</div>
       ${lettersHtml ? `<div class="fig-letters">${lettersHtml}</div>` : ''}
       <div class="fig-badges">
         <span class="badge ${ex.fClass}">${escapeHtml(ex.fortune || '')}</span>
@@ -1990,13 +1989,13 @@ function renderFiguresGuide() {
   el.innerHTML = `<div class="figures-grid">${cards}</div>
     <div class="fig-legend">
       <strong>האותיות</strong> (בתיבות כחולות) = אותיות תסקין עבדוה לפי חאוי — לחילוץ שם הנשאל עליו מבית 7 או 9.<br>
-      <strong>מין הצורה</strong> (מקור: כשף-אל-אסרר): 🔵 <strong>זכר</strong> (6 צורות) · 🌸 <strong>נקבה</strong> (6 צורות) · ⚪ <strong>דו-מיני (خنثى)</strong> (4 צורות: דרך, סוהר, חיבור, קהלה)<br>
+      <strong>מין הצורה</strong> (מקור: חשיפת הסודות): 🔵 <strong>זכר</strong> (6 צורות) · 🌸 <strong>נקבה</strong> (6 צורות) · ⚪ <strong>אנדרוגינוס</strong> (4 צורות: דרך, סוהר, חיבור, קהלה)<br>
       <strong>מזל:</strong> 🟢 <strong>טוב</strong> = מיטיב &nbsp;|&nbsp; 🔴 <strong>רע</strong> = מזיק &nbsp;|&nbsp; 🟡 <strong>ממוזג</strong> = בינוני<br>
       <strong>קבוצות תנועה:</strong>
-      <strong>יוצאת</strong> (خارجة) = משפיעה כלפי חוץ &nbsp;|&nbsp;
-      <strong>נכנסת</strong> (داخلة) = משפיעה כלפי פנים &nbsp;|&nbsp;
-      <strong>קבועה</strong> (ثابتة) = יציבה &nbsp;|&nbsp;
-      <strong>מתהפכת</strong> (منقلبة) = שני פנים<br>
+      <strong>יוצאת</strong> = משפיעה כלפי חוץ &nbsp;|&nbsp;
+      <strong>נכנסת</strong> = משפיעה כלפי פנים &nbsp;|&nbsp;
+      <strong>קבועה</strong> = יציבה &nbsp;|&nbsp;
+      <strong>מתהפכת</strong> = שני פנים<br>
       <strong>יסוד:</strong> 🔴 אש · 💧 מים · 🌬 רוח · 🟤 עפר
       &nbsp;|&nbsp; <strong>כיוון:</strong> 🔵 צפון · 🟠 דרום · 🟢 מזרח · 🟣 מערב<br>
       <strong>כוכב</strong> = הגורם השמימי השולט
@@ -2010,7 +2009,7 @@ function renderHousesGuide() {
   el.innerHTML = '<table class="houses-table"><thead><tr><th>בית</th><th>שם</th><th>תחומים</th></tr></thead><tbody>' +
     houses.map(h => `<tr>
       <td class="house-num-cell">${h.number}</td>
-      <td><strong>${escapeHtml(h.hebrew)}</strong><br><span style="font-size:12px;color:#888">${escapeHtml(h.arabic)}</span></td>
+      <td><strong>${escapeHtml(h.hebrew)}</strong></td>
       <td>${escapeHtml(h.role)}</td>
     </tr>`).join('') +
     '</tbody></table>';
@@ -2045,11 +2044,11 @@ function renderConceptsGuide() {
     { title: 'גילוי מחשבת השואל', sub: 'מה באמת רוצה השואל', body: 'מחשבת השואל מחושבת דרך גילוי הכוונה הנסתרת — ממאזן ארבעת היסודות: אש, אוויר, מים, עפר. הדרך מכוונת לבית מסוים בלוח המגלה את מחשבת השואל האמיתית — לפעמים שונה משאלתו המוצהרת (כשף אל-אסראר, שער רביעי).' },
     { title: 'השלמת הדבר', sub: 'האם הדבר ייגמר?', body: 'בודקים האם יש חיבור ישיר, עקיף, או בהעברה בין בית 1 (השואל) לבית 7 (הנשאל). חיבור ישיר = הדבר יצא לפועל בוודאות. הגעה בינונית = תלוי גורמים. אין חיבור = הדבר לא ייגמר.' },
     { title: 'חיבור בין הצורות', sub: 'קשרים בין צורות בלוח', body: 'כאשר צורה חוזרת בשני בתים שונים נוצר "חיבור" ביניהם. חיבור בין בית 1 לבית 7 = השואל והנשאל קשורים. חיבור לבית 10 = עניין ציבורי/שלטוני מחובר. סוגי חיבורים: ריבוע, משולש, מול, שישית.' },
-    { title: 'אצאלה — תוקף הלוח (الأصالة)', sub: 'האם הלוח תקין לפסיקה?', body: 'לוח נחשב אצאלי (תקין) כשמתקיימים שני תנאים: (1) צורת הלבנה — "לבן" או "דרך" — מופיעה בלוח. (2) כל 7 הכוכבים מיוצגים — לפחות צורה אחת שייכת לכל כוכב. אם הלבנה נעדרת — יש לחזור על ההכאה. אם הלבנה קיימת אך חסרים כוכבים — הלוח חלקי ויש לנהוג בזהירות.' },
-    { title: 'מניעה — מה חוסם את הדבר (حيلولة)', sub: 'שלושה גורמים שמונעים השלמה', body: 'גם כשנראה שהדבר ייגמר, ישנם גורמים שיכולים לחסום: (1) דיין מזיק שאינו מחובר לשואל ולנשאל — חוסם את הפסיקה. (2) צורת מזיק בבית 12 — סכנה נסתרת שמפריעה. (3) צורת מזיק בבית 8 — מטילה צל של הפסד על הדין.' },
-    { title: 'תמכן — צורה בביתה הטבעי (التمكن)', sub: 'כשהצורה שנפלה היא הצורה הקבועה של הבית', body: 'לכל אחד מ-16 הבתים יש צורה קבועה השייכת לו. כשהצורה שנפלה בגורל זהה לצורה הקבועה של אותו בית — הדין מתחזק. אם הצורה טובה (מיטיב) — מתחזק לטובה. אם הצורה רעה (מזיק) — מתחזק לרעה. לדוגמה: "נלחם" בבית 1 הוא ביתו הטבעי — הדין על השואל מתחזק לפי מזל נלחם.' },
-    { title: 'מדבר ושותק — עוצמת הבית (ناطق / صامت)', sub: 'האם הבית פועל במלוא כוחו', body: 'כל בית מוגדר כ"מדבר" (ناطق) או "שותק" (صامت) או "חצי מדבר". בית שותק — הצורה שנפלה בו משתתפת בפסיקה במשקל מוחלש. בית מדבר — הצורה פועלת במלוא כוחה. לדוגמה: בית 1 הוא מדבר — הצורה בו חזקה. בית 2 הוא שותק — הצורה בו מוחלשת.' },
-    { title: 'יתד, שוקע ונוטה — מיקום הבית (وتد / ساقط / مائل)', sub: 'שלוש קבוצות בתים לפי כוח', body: 'הבתים מחולקים לשלוש קבוצות: יתדות (בתים 1, 4, 7, 10) — קבועים וחזקים, הדין בהם אפשרי ויציב. שוקעים/נופלים (בתים 3, 6, 9, 12) — הדין בהם קשה להתממש. אחרי יתדות (בתים 2, 5, 8, 11) — ביניים, יש בהם תקווה אך אינם יציבים.' },
+    { title: 'כשרות הלוח', sub: 'האם הלוח תקין לפסיקה?', body: 'לוח נחשב כשר לפסיקה כשמתקיימים שני תנאים: (1) צורת הלבנה — "לבן" או "דרך" — מופיעה בלוח. (2) כל 7 הכוכבים מיוצגים — לפחות צורה אחת שייכת לכל כוכב. אם הלבנה נעדרת — יש לחזור על ההכאה. אם הלבנה קיימת אך חסרים כוכבים — הלוח חלקי ויש לנהוג בזהירות.' },
+    { title: 'מניעה — מה חוסם את הדבר', sub: 'שלושה גורמים שמונעים השלמה', body: 'גם כשנראה שהדבר ייגמר, ישנם גורמים שיכולים לחסום: (1) דיין מזיק שאינו מחובר לשואל ולנשאל — חוסם את הפסיקה. (2) צורת מזיק בבית 12 — סכנה נסתרת שמפריעה. (3) צורת מזיק בבית 8 — מטילה צל של הפסד על הדין.' },
+    { title: 'צורה בביתה הטבעי', sub: 'כשהצורה שנפלה היא הצורה הקבועה של הבית', body: 'לכל אחד מ-16 הבתים יש צורה קבועה השייכת לו. כשהצורה שנפלה בגורל זהה לצורה הקבועה של אותו בית — הדין מתחזק. אם הצורה טובה (מיטיב) — מתחזק לטובה. אם הצורה רעה (מזיק) — מתחזק לרעה. לדוגמה: "נלחם" בבית 1 הוא ביתו הטבעי — הדין על השואל מתחזק לפי מזל נלחם.' },
+    { title: 'מדבר ושותק — עוצמת הבית', sub: 'האם הבית פועל במלוא כוחו', body: 'כל בית מוגדר כ"מדבר" או "שותק" או "חצי מדבר". בית שותק — הצורה שנפלה בו משתתפת בפסיקה במשקל מוחלש. בית מדבר — הצורה פועלת במלוא כוחה. לדוגמה: בית 1 הוא מדבר — הצורה בו חזקה. בית 2 הוא שותק — הצורה בו מוחלשת.' },
+    { title: 'יתד, שוקע ונוטה — מיקום הבית', sub: 'שלוש קבוצות בתים לפי כוח', body: 'הבתים מחולקים לשלוש קבוצות: יתדות (בתים 1, 4, 7, 10) — קבועים וחזקים, הדין בהם אפשרי ויציב. שוקעים/נופלים (בתים 3, 6, 9, 12) — הדין בהם קשה להתממש. אחרי יתדות (בתים 2, 5, 8, 11) — ביניים, יש בהם תקווה אך אינם יציבים.' },
     { title: 'ספירת נקודות הלוח', sub: 'כוח הלוח הכללי', body: 'ספירת סה"כ הנקודות בלוח (1 = נקודה אחת, 2 = שתי נקודות, לכל שורה). מחלקים ל-4 לבדיקת מחלות, ל-3 לבדיקת ילדים. תוצאה זוגית/אי-זוגית מוסיפה שכבת פרשנות.' },
   ];
   el.innerHTML = concepts.map(c => `

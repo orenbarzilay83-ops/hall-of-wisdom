@@ -6,7 +6,7 @@
  * ترحيل الأشكال الستة عشر في الستة عشر بيتا
  *
  * Figure:
- * العقلة — עקלה
+ * العقلة — סוהר
  *
  * Built from user-provided photographed source summaries.
  * No external knowledge.
