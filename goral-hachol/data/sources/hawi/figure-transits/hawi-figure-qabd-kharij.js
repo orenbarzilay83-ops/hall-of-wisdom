@@ -6,7 +6,7 @@
  * ترحيل الأشكال الستة عشر في الستة عشر بيتا
  *
  * Figure:
- * القبض الخارج — קבץ ח׳ארג׳
+ * القبض الخارج — ממון יוצא
  *
  * Built from user-provided photographed source pages.
  * No external knowledge.
