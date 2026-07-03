@@ -49,7 +49,7 @@ const TOPIC_ALIASES = {
   ],
   yearlyForecast: [
     'שנה',
-    'טאלע השנה',
+    'עולה השנה',
     'יוקר',
     'זול',
     'מחירים',
@@ -78,7 +78,7 @@ const TOPIC_ALIASES = {
     'מולד',
     'נולד',
     'אדם',
-    'טאלע אישי',
+    'העולה האישי',
     'חיי אדם',
     'nativity',
     'mawlud',
@@ -567,7 +567,7 @@ export const HOUSE_TOPICS_MAP = {
   ],
   10: [
     { topicId: 'authorityState',    label: 'שלטון / תפקיד / ממשל' },
-    { topicId: 'yearlyForecast',    label: 'טאלע השנה / גורל שנתי' },
+    { topicId: 'yearlyForecast',    label: 'עולה השנה / גורל שנתי' },
     { topicId: 'commerce',          label: 'מוניטין עסקי / הצלחה מקצועית' },
     { topicId: 'motherRules',       label: 'דיני האם — מזל האם ומצבה' },
   ],

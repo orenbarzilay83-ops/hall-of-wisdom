@@ -31,7 +31,7 @@ export const KASHF_TOPICS_PER_HOUSE = {
       { label: 'האם העניין יצליח',        description: 'האם הצורך יתמלא — לפי מיטיב/מזיק ויתדות',            implemented: true,  topicId: 'completion',    sourceNote: 'multi-source' },
       // הערה: כישוף/עין הרע שייך לבית 6 (الشعوذة מפורש שם בספר). בית 1 נכנס לאבחון רוחני רק כבית השואל — לא כבית ספציפי לנושא.
       { label: 'אסתח׳ארה',                description: 'שאלת כוונה ורשות — 21 פעמים בטהרה',               implemented: false, topicId: null,            sourceNote: 'source: kashf' },
-      { label: 'מולד / גורל האדם',        description: 'מצב האדם מלידה לפי בית 1 כטאלע — PDF2 p.51: إعمل بالضمير من باب الضمير',                           implemented: true,  topicId: 'birthNativity', sourceNote: 'multi-source' },
+      { label: 'מולד / גורל האדם',        description: 'מצב האדם מלידה לפי בית 1 כהבית הראשון — PDF2 p.51: إعمل بالضمير من باب الضمير',                           implemented: true,  topicId: 'birthNativity', sourceNote: 'multi-source' },
       { label: 'אורך חיים',               description: 'האם יחיה ארוך — לפי צורות ארוכות/קצרות',          implemented: true,  topicId: 'foundations',            sourceNote: 'source: kashf' },
       { label: 'מי מסתכל על מי',         description: 'האם אדם מסתכל על השואל או על אחר',                 implemented: true,  topicId: 'marriage',            sourceNote: 'source: kashf' },
       { label: 'כיוון גיאוגרפי של העניין', description: 'מזרח/מערב/דרום/צפון לפי יסוד הצורה — PDF1: نار=דרום, ماء=צפון, هواء=מזרח, تراب=מערב',           implemented: true,  topicId: 'foundations',   sourceNote: 'source: PDF1 p.30' },
@@ -68,7 +68,7 @@ export const KASHF_TOPICS_PER_HOUSE = {
     houseNameHebrew: 'בית ההורים — נכסים ונסתרות',
     sourceNoteHouse: 'multi-source — PDF1 p.24 (العاقبة، الآباء، الأراضي، الكنوز، السحر، الأسرار القديمة), PDF2 ch.16 (الخبينة), kashf',
     topics: [
-      { label: 'מטמון / חפץ נסתר (ח׳בינה)',description: 'PDF2 ch.16 (الخبينة): חלק את הלוח ל-4 כיוונים — ב1+ב7=מזרח/מערב, ב4+ב10=צפון/דרום. בית 2+6+8 לאישור. כוכב בטאלע מורה על מיקום מדויק.',  implemented: true,  topicId: 'hiddenTreasure', sourceNote: 'multi-source — PDF2 ch.16, kashf' },
+      { label: 'מטמון / חפץ נסתר (ח׳בינה)',description: 'PDF2 ch.16 (الخبينة): חלק את הלוח ל-4 כיוונים — ב1+ב7=מזרח/מערב, ב4+ב10=צפון/דרום. בית 2+6+8 לאישור. כוכב בבית הראשון מורה על מיקום מדויק.',  implemented: true,  topicId: 'hiddenTreasure', sourceNote: 'multi-source — PDF2 ch.16, kashf' },
       { label: 'מצב האב / הבית / הקרקע', description: 'PDF1 p.24: الآباء والأمهات والزراعات والعقارات والأراضي والأطعمة والبناءات — בית 4 = בסיס, בית, נדל״ן', implemented: true,  topicId: 'foundations',           sourceNote: 'multi-source — PDF1 p.24, PDF2 ch.4' },
       { label: 'קידוח בארות / עומק מים',  description: 'האם יש מים, באיזה עומק, אכדאד אל-הנדי',           implemented: true,  topicId: 'hiddenTreasure',          sourceNote: 'source: kashf' },
       { label: 'כיוון לחפירה / חיפוש',    description: 'מזרח/מערב/דרום/צפון לפי יסוד הצורה; PDF2 ch.16: احسب النقط لكل جهة من الأول والسابع',                implemented: true,  topicId: 'hiddenTreasure', sourceNote: 'multi-source — PDF2 ch.16, kashf' },
@@ -96,13 +96,13 @@ export const KASHF_TOPICS_PER_HOUSE = {
     houseNameHebrew: 'בית המחלות — חולה, אבוד, בהמות, כישוף',
     sourceNoteHouse: 'multi-source — PDF1 p.24+57 (العبيد والأمراض والسرقة), kashf line 963 (الشعوذة والحسد والشيء الخفي), PDF2 ch.6+8',
     topics: [
-      { label: 'האם החולה יחלים',         description: 'PDF1 p.41: הסתכל בבית 1+6+8+12 ועד. ממון נכנס+נוסרה נכנסת+נקי ח׳ד+עקלה = ישתפר. ג׳ודלה+חמרה+ביאד+ג׳מאעה+אג׳תמאע+טריק = סכנה',  implemented: true,  topicId: 'illness',             sourceNote: 'multi-source — PDF1 p.41, PDF2 ch.8, kashf' },
+      { label: 'האם החולה יחלים',         description: 'PDF1 p.41: הסתכל בבית 1+6+8+12 ועד. ממון נכנס+נוסרה נכנסת+נקי ח׳ד+סוהר = ישתפר. ג׳ודלה+חמרה+ביאד+ג׳מאעה+אג׳תמאע+טריק = סכנה',  implemented: true,  topicId: 'illness',             sourceNote: 'multi-source — PDF1 p.41, PDF2 ch.8, kashf' },
       { label: 'מיקום המחלה בגוף',       description: 'כשף עמ׳ 199: תסכין האיברים — ב6 מורה על האיבר הכואב. טבלה מלאה ממומשת ב-bodyPartDiagnosisKashf (14/16 צורות, 2 שמות מיוחדים לא מזוהים)',  implemented: true, topicId: 'illness',             sourceNote: 'source: kashf p.199' },
       { label: 'סוג המחלה (אח׳לאט)',     description: 'כשף עמ׳ 197: יסוד ב1+ב8 → מאאי=קרירות/לחות, עפר=מרה שחורה, אש=מרה צהובה, אוויר=רוחות. [ממומש ב-illnessElementDiagnosis]',  implemented: true, topicId: 'illness',             sourceNote: 'source: kashf p.197' },
       { label: 'האם ימות',               description: 'PDF1 p.41-42: סימני מוות: ג׳ודלה+חמרה+ביאד+ג׳מאעה+אג׳תמאע+טריק. חמרה בב6 + אנכיס בב8 = "הגלב עليهم الموت". בית 14 (עאקבה) — מזיק חזק = מוות',  implemented: false, topicId: null,                  sourceNote: 'source: PDF1 p.41-42' },
       { label: 'בהמה / חיה אבודה',       description: 'PDF1 p.24: الأمراض والدواب والآبق — האם תחזור, איפה היא. הסתכל ב6 לאישור האבידה ובבית 7 לגנב/איבוד',                                     implemented: true,  topicId: 'lostAnimal',          sourceNote: 'multi-source — PDF1 p.24, kashf' },
       { label: 'אבחון רוחני — כישוף / עין / ג׳ין', description: 'kashf line 963: الشعوذة والحسد والشيء الخفي. PDF1 p.57: אנכיס בב6=קבור בקבר, ג׳ודלה בב6=כישוף שתייה, ממון נכנס בב6=עקוד מנשים, ג׳מאעה בב6 (מ-2 אנכיסים)=שניים קבורים, מחודש כל תקופה',  implemented: true,  topicId: 'spiritualDiagnostics', sourceNote: 'multi-source — kashf line 963, PDF1 p.57' },
-      { label: 'סוג הג׳ין (שיטת אסקאט)', description: 'PDF1 p.58: כפל ב15 ב-4; שארית: 1=ג׳ין (ממוסס), 2=חסד/עין רעה, 3=כישוף ע"י אדם; נוסף: נארי=ג׳ין אש, תראבי=ג׳ין אדמה, מאאי/הוואאי=ג׳ין טייר',  implemented: true,  topicId: 'spiritualDiagnostics', sourceNote: 'source: PDF1 p.57-58' },
+      { label: 'סוג הג׳ין (שיטת שיבוץ)', description: 'PDF1 p.58: כפל ב15 ב-4; שארית: 1=ג׳ין (ממוסס), 2=חסד/עין רעה, 3=כישוף ע"י אדם; נוסף: נארי=ג׳ין אש, תראבי=ג׳ין אדמה, מאאי/הוואאי=ג׳ין טייר',  implemented: true,  topicId: 'spiritualDiagnostics', sourceNote: 'source: PDF1 p.57-58' },
     ],
   },
 
@@ -111,8 +111,8 @@ export const KASHF_TOPICS_PER_HOUSE = {
     sourceNoteHouse: 'multi-source — PDF1 p.24+42-46 (الأزواج والشركة والمنازعات والسارق), PDF2 ch.7+12-15, kashf',
     topics: [
       { label: 'נישואין / זוגיות',        description: 'PDF1 p.45: ב1=שואל, ב7=בן/בת הזוג. בית 8 לאישור (ב7 מתחבר ב8 לב12). שמס=שואל; זהרה=מבוקשת. בית 13+14+15 כעדים',                       implemented: true,  topicId: 'marriage',     sourceNote: 'multi-source — PDF1 p.42-46, PDF2 ch.7, kashf' },
-      { label: 'ת׳יב / בכר (האישה)',     description: 'PDF1 p.44: لمعرفة المرأة ثيب أم بكر — כפל 13×7; פתוחה=ת׳יב, מסגורת=בכר. PDF2 p.44: הסתכל בבית 11 (ממון נכנס) ותוצאה מציינת',               implemented: true,  topicId: 'marriage',             sourceNote: 'multi-source — PDF1 p.44, PDF2 p.44' },
-      { label: 'צניעות האישה',           description: 'PDF1 p.44: אם הזהרה + מריח׳ בבית 7+4 = פחיתות. אג׳תמאע מהשמס+קמר = לוואט. ביאד בב4 = סחאק. אם מריח׳ בטאלע + זהרה בב7+מריח׳ בב7 = זנות בעל',  implemented: true,  topicId: 'marriage',             sourceNote: 'source: PDF1 p.43-44' },
+      { label: 'גרושה/בעולה / בתולה (האישה)',     description: 'PDF1 p.44: لمعرفة المرأة ثيب أم بكر — כפל 13×7; פתוחה=גרושה/בעולה, מסגורת=בתולה. PDF2 p.44: הסתכל בבית 11 (ממון נכנס) ותוצאה מציינת',               implemented: true,  topicId: 'marriage',             sourceNote: 'multi-source — PDF1 p.44, PDF2 p.44' },
+      { label: 'צניעות האישה',           description: 'PDF1 p.44: אם הזהרה + מריח׳ בבית 7+4 = פחיתות. אג׳תמאע מהשמס+קמר = לוואט. ביאד בב4 = סחאק. אם מריח׳ בבית הראשון + זהרה בב7+מריח׳ בב7 = זנות בעל',  implemented: true,  topicId: 'marriage',             sourceNote: 'source: PDF1 p.43-44' },
       { label: 'אהבה ועשק',              description: 'האם מאוהב, עוצמת האהבה, אהבה הדדית — בתים 1+5+11',  implemented: true,  topicId: 'loveHate',     sourceNote: 'multi-source' },
       { label: 'סכסוך / תביעה',          description: 'מי ינצח — גובר ונכנע. PDF1 ch.16: الفصل السادس عشر الغالب والمغلوب. PDF2 ch.8: בתים 1+2+7+8; שופט=ב10; מגשרים=ב3+4+13+14',            implemented: true,  topicId: 'disputes',     sourceNote: 'multi-source — PDF1 ch.16, PDF2 ch.8, kashf' },
       { label: 'קנייה ומכירה',           description: 'PDF1 ch.9: بتم البيع والشراء. בתים 1+2+7+8+9+10 — שואל ב1, קונה ב7, כסף ב2+8',                                                          implemented: true,  topicId: 'commerce',     sourceNote: 'multi-source — PDF1 ch.9, PDF2 ch.13, kashf' },
@@ -167,7 +167,7 @@ export const KASHF_TOPICS_PER_HOUSE = {
       { label: 'יוקר / זול (מחירי שוק)', description: 'PDF1 p.25: בית 10 = المعاش; יוקר/זול נגזר מסכום היסודות. אש+אוויר > מים+עפר = יוקר',                                                      implemented: true,  topicId: 'yearlyForecast',     sourceNote: 'multi-source — PDF1 p.25, kashf' },
       { label: 'תחזית שנתית',            description: 'PDF2 p.60: גורל השנה — לפי מקום השמש בשנה. PDF2 p.61-62: طالع السنة — שפע/יובש/גשם. PDF2 p.62: מטר — כפל הלוח ל-16 בתים, קמר=חצי=קור/חצי=חום',  implemented: true,  topicId: 'yearlyForecast',  sourceNote: 'multi-source — PDF2 p.60-62, kashf' },
       { label: 'מלך / שליט — האם מפחד', description: 'PDF1 p.53: ch.19 — الفصل التاسع عشر أحكام الملوك والحكام. אם מריח׳ חוזר בב10 עם מזיק גדול = השליט בסכנה מאויב',                              implemented: true,  topicId: 'authorityState',     sourceNote: 'source: PDF1 p.53' },
-      { label: 'האם השואל מכושף',        description: 'PDF1 p.56: الاحيان في العاشر = مسحور — אחיאן בב10 = מכושף',                                                                                  implemented: true,  topicId: 'spiritualDiagnostics', sourceNote: 'source: PDF1 p.56-57' },
+      { label: 'האם השואל מכושף',        description: 'PDF1 p.56: الاحيان في العاشر = مسحور — נשוא ראש בב10 = מכושף',                                                                                  implemented: true,  topicId: 'spiritualDiagnostics', sourceNote: 'source: PDF1 p.56-57' },
     ],
   },
 
@@ -191,7 +191,7 @@ export const KASHF_TOPICS_PER_HOUSE = {
     topics: [
       { label: 'אויבים / מתנגדים',       description: 'PDF1 p.24: الأعداء وقطاع الطريق والبلطجية وأسافل الناس واللصوص والحسد وأعداء الدين — כוח האויב, ת׳אבת/מנקלב',  implemented: true,  topicId: 'enemies',   sourceNote: 'multi-source — PDF1 p.24, PDF2 ch.12, kashf' },
       { label: 'פחד / סכנה',             description: 'האם הפחד מבוסס, מה מקורו — PDF2 ch.9: بيت الخوف. בתים 1+6+8+12 לאיתור הסיבה',                                  implemented: true,  topicId: 'fear',      sourceNote: 'multi-source — PDF2 ch.9, kashf' },
-      { label: 'אסיר / כלוא',            description: 'PDF1 p.53-55: ב6=אסיר (המסגון), ב10=שופט/קאדי, ב12=הכלא. יציאה: ב1+ב4+ב8+ב12+ב15 חייבים להיות יוצאת לצאת. אנכיס+עקלה בבתים רעים = שהייה ארוכה',  implemented: true,  topicId: 'prisoner',  sourceNote: 'multi-source — PDF1 p.53-55, kashf' },
+      { label: 'אסיר / כלוא',            description: 'PDF1 p.53-55: ב6=אסיר (המסגון), ב10=שופט, ב12=הכלא. יציאה: ב1+ב4+ב8+ב12+ב15 חייבים להיות יוצאת לצאת. אנכיס+סוהר בבתים רעים = שהייה ארוכה',  implemented: true,  topicId: 'prisoner',  sourceNote: 'multi-source — PDF1 p.53-55, kashf' },
       { label: 'פרטי שחרור / עונש',      description: 'PDF1 p.54-55: מות בכלא: חמרה+ג׳מאעה חוזרות בב4+ב8+ב9 = מות שם. סף יוצא בב1+ב3 ועתבה+קבץ ח׳ ב8+ב12 = בורח. אנכיס בב1 = חולה בכלא. ג׳ודלה בב1+ב12 = עדיין כלוא',  implemented: true,  topicId: 'prisoner',             sourceNote: 'source: PDF1 p.53-55' },
       { label: 'כלא — מי אשם (מין)',      description: 'PDF1 p.54: המסבב לכלא — כפל 7×1 לגנוסו. סף יוצא בב1+ב3 = בורח. ג׳ודלה בב1+ב12 = עצור עדיין',             implemented: true,  topicId: 'prisoner',             sourceNote: 'source: PDF1 p.54' },
       { label: 'בורחים',                 description: 'האם הבורח ייתפס, מיקומו',                           implemented: true,  topicId: 'missingPerson',        sourceNote: 'source: kashf' },
@@ -239,9 +239,9 @@ export const MISSING_TOPICS_SUMMARY = [
   { house: 6,  label: 'סוג המחלה (אח׳לאט)',       priority: 'medium',  sourceStatus: 'verified — PDF1 p.41+58' },
   { house: 6,  label: 'האם ימות',                  priority: 'medium',  sourceStatus: 'verified — PDF1 p.41-42' },
   { house: 6,  label: 'בהמה / חיה אבודה',         priority: 'low',     sourceStatus: 'verified — multi-source' },
-  { house: 6,  label: 'סוג הג׳ין (אסקאט)',        priority: 'medium',  sourceStatus: 'verified — PDF1 p.57-58' },
+  { house: 6,  label: 'סוג הג׳ין (שיבוץ)',        priority: 'medium',  sourceStatus: 'verified — PDF1 p.57-58' },
   // בית 7
-  { house: 7,  label: 'ת׳יב / בכר (האישה)',       priority: 'medium',  sourceStatus: 'verified — PDF1 p.44, PDF2 p.44' },
+  { house: 7,  label: 'גרושה/בעולה / בתולה (האישה)',       priority: 'medium',  sourceStatus: 'verified — PDF1 p.44, PDF2 p.44' },
   { house: 7,  label: 'צניעות האישה',              priority: 'medium',  sourceStatus: 'verified — PDF1 p.43-44' },
   // בית 8
   { house: 8,  label: 'תיאור פיזי של הגנב',       priority: 'high',    sourceStatus: 'verified — PDF1 p.48' },

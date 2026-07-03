@@ -201,7 +201,7 @@ function stripArabic(text = '') {
     .trim();
 }
 
-// Check general opening rules (e.g. "עקלה = מכשפה", "חיבור = מכשף רע")
+// Check general opening rules (e.g. "סוהר = מכשפה", "חיבור = מכשף רע")
 // Finds ALL occurrences on the board; figures in critical spiritual houses
 // are marked inCriticalHouse=true so they can be promoted to specificMatches.
 function checkOpeningRules(board, source) {

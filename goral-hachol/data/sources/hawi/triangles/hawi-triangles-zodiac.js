@@ -117,7 +117,7 @@ export const HAWI_TRIANGLES_ZODIAC = {
     suggestedMenuHebrew: 'משולשים, מזלות וכוכבים',
     relatedModules: [
       'שער המולד',
-      'טאלע השנה',
+      'עולה השנה',
       'שיוכי כוכבים וחומרים',
       'חילוץ דמיר',
       'כיוונים ותסקין',

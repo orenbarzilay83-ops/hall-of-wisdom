@@ -352,7 +352,7 @@ const RAML_READING_FOUNDATIONS = {
       },
       {
         id: "damir-from-cross-triangle",
-        title: "חיבור משולש הצלב: תמצית צורות בתי האמהות עם תמכן האמהות",
+        title: "חיבור משולש הצלב: תמצית צורות בתי האמהות עם ביתה הטבעי האמהות",
         status: "verified-text-needs-formula"
       },
       {

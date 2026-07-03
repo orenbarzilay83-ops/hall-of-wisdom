@@ -183,7 +183,7 @@ function questionFocusParagraph(topicId, clientContext = {}) {
   }
 
   if (topicId === 'birthNativity') {
-    return 'לכן הדגש הוא על בית הטאלע (בית 1) ועל חזרת הצורה שלו בבתים אחרים — כל חזרה מגלה פן נוסף מגורל האדם ומשפיע על פרשנות הקריאה.';
+    return 'לכן הדגש הוא על הבית הראשון (בית 1) ועל חזרת הצורה שלו בבתים אחרים — כל חזרה מגלה פן נוסף מגורל האדם ומשפיע על פרשנות הקריאה.';
   }
 
   if (topicId === 'siblings') {
@@ -256,9 +256,9 @@ function topicOpening(topicId, topicHebrew) {
     spiritualDiagnostics:
       'באבחון הרוחני, הקריאה בודקת אם הקושי נראה רגיל וטבעי בלבד, או שיש סימנים לפגיעה רוחנית, קנאה, עין, כישוף, אחיזה או אויב נסתר.',
     marriage:
-      'בעניין נישואין וזוגיות, הקריאה בודקת את מצב השואל ובית 7 כדליל הצד השני, את ההתאמה ביניהם, ואת הסימנים לחיבור, כבוד או קושי.',
+      'בעניין נישואין וזוגיות, הקריאה בודקת את מצב השואל ובית 7 כמייצג הצד השני, את ההתאמה ביניהם, ואת הסימנים לחיבור, כבוד או קושי.',
     illness:
-      'בעניין החולה, הקריאה בודקת את בית 1 כדליל החולה, בית 6 כדליל המחלה, ובית 8 כדליל הסכנה — ומה מראה הדיין לגבי מהלך המחלה.',
+      'בעניין החולה, הקריאה בודקת את בית 1 כמייצג החולה, בית 6 כמייצג המחלה, ובית 8 כמייצג הסכנה — ומה מראה הדיין לגבי מהלך המחלה.',
     disputes:
       'בעניין הסכסוך או התביעה, הקריאה בודקת את כוח השואל לעומת יריבו, את מצב כל צד בלוח, ומה הדיין פוסק על הניצחון.',
     enemies:
@@ -266,13 +266,13 @@ function topicOpening(topicId, topicHebrew) {
     fear:
       'בעניין הפחד, הקריאה בודקת אם הסכנה ממשית לפי הלוח, מה מקורה, ואם הדרך בסוף מובילה לבטחה או להמשך קושי.',
     commerce:
-      'בעניין מסחר, קנייה ומכירה, הקריאה בודקת את בית 1 כדליל השואל, בית 2 כדליל הממון, בית 7 כדליל הצד השני, ובית 10 כדליל תוצאת העסקה.',
+      'בעניין מסחר, קנייה ומכירה, הקריאה בודקת את בית 1 כמייצג השואל, בית 2 כמייצג הממון, בית 7 כמייצג הצד השני, ובית 10 כמייצג תוצאת העסקה.',
     loveHate:
       'בעניין אהבה ושנאה, הקריאה בודקת את הקשר הרגשי בין הצדדים, מי אוהב ומי שונא, ומה הלוח מראה על עתיד הקשר.',
     completion:
       'בעניין האם הדבר יושלם, הקריאה מתמקדת בעיקר בדיין — בית 15 — שהוא הפסיקה הסופית, ובעדים שמחזקים או מחלישים את הכרעתו.',
     prisoner:
-      'בעניין האסיר, הקריאה בודקת אם בית 1 מחובר לבית 12 ואם יש דליל יציאה. בית 5 ובית 15 קובעים את גורל האסיר לפי הספר.',
+      'בעניין האסיר, הקריאה בודקת אם בית 1 מחובר לבית 12 ואם יש מייצג יציאה. בית 5 ובית 15 קובעים את גורל האסיר לפי הספר.',
     partnership:
       'בעניין השותפות, הקריאה בודקת את בית 1 (השואל), בית 7 (השותף), ובית 2 ו-10 (הממון ותוצאת העסקה). ההתאמה בין בית 1 לבית 7 היא לב הקריאה.',
     seaVoyage:
@@ -280,9 +280,9 @@ function topicOpening(topicId, topicHebrew) {
     theft:
       'בשאלת הגנבה, הקריאה בודקת שלושה דברים עיקריים: מי הגנב (בית 7 לזיהוי, בית 8 לתיאור), האם החפץ הגנוב יחזור (לפי הדיין, התחסיל, וכיוון הצורה בבית 7 — נכנסת או יוצאת), ומה מסגיר את זהות הגנב (חזרת צורות בלוח, תיאור הגוף ואותיות השם).',
     siblings:
-      'בעניין האח, השכן או הקרוב, הקריאה בודקת את בית 3 כדליל הנשאל עליו, ואת הקשר בינו לבין השואל (בית 1). הדיין קובע את תוצאת הקשר ואת כיוון ההשפעה.',
+      'בעניין האח, השכן או הקרוב, הקריאה בודקת את בית 3 כמייצג הנשאל עליו, ואת הקשר בינו לבין השואל (בית 1). הדיין קובע את תוצאת הקשר ואת כיוון ההשפעה.',
     deathInheritance:
-      'בעניין מוות, ירושה או שינוי גורל גדול, הקריאה בודקת את בית 8 כדליל המוות והירושה, בית 7 כדליל הצד השני (הנפטר או היורש), ובית 2 לגבי הממון. הדיין קובע את המסקנה הסופית.',
+      'בעניין מוות, ירושה או שינוי גורל גדול, הקריאה בודקת את בית 8 כמייצג המוות והירושה, בית 7 כמייצג הצד השני (הנפטר או היורש), ובית 2 לגבי הממון. הדיין קובע את המסקנה הסופית.',
     loan:
       'בעניין ההלוואה, הקריאה בודקת האם הלווה ישיב את הכסף. לפי כשף אל-אסרר: גוזרים צורה מב1+ב7, ועוד צורה מב2+ב8, ומשלבים — מיטיב = יחזיר; מזיק = יתקשה.',
     religion:
@@ -391,7 +391,7 @@ function describeCoreHouses(analysis, topicId, question) {
   const h1Analysis = analysis.house1Analysis || null;
   if (h1Analysis) {
     const lines = h1Analysis.summaryLines.map((l) => `  ${l}`).join('\n');
-    parts.push(`מצב השואל (בית הטאלע):\n${lines}`);
+    parts.push(`מצב השואל (הבית הראשון):\n${lines}`);
   }
 
   const ittisalat = analysis.ittisalat || null;
@@ -520,7 +520,7 @@ function describeCoreHouses(analysis, topicId, question) {
 
   const yearlyAnalysis = analysis.yearlyForecastAnalysis;
   if (yearlyAnalysis) {
-    parts.push(`ניתוח טאלע השנה (חאוי עמ׳ 60-62):\n${yearlyAnalysis.outputHebrew}`);
+    parts.push(`ניתוח עולה השנה (חאוי עמ׳ 60-62):\n${yearlyAnalysis.outputHebrew}`);
   }
 
   const birthAnalysis = analysis.birthNativityAnalysis;
@@ -540,7 +540,7 @@ function describeCoreHouses(analysis, topicId, question) {
 
   const bodyPartDiag = analysis.bodyPartDiagnosis;
   if (bodyPartDiag) {
-    parts.push(`מיקום המחלה בגוף (القول الجامع עמ׳ 16):\n  ${bodyPartDiag.outputHebrew}`);
+    parts.push(`מיקום המחלה בגוף (הקול הכולל עמ׳ 16):\n  ${bodyPartDiag.outputHebrew}`);
   }
 
   const bodyPartDiagKashf = analysis.bodyPartDiagnosisKashf;
@@ -560,12 +560,12 @@ function describeCoreHouses(analysis, topicId, question) {
 
   const thiefGenderAge = analysis.thiefGenderAge;
   if (thiefGenderAge) {
-    parts.push(`מין הגנב וגילו (القول الجامع עמ׳ 48):\n  ${thiefGenderAge.outputHebrew}`);
+    parts.push(`מין הגנב וגילו (הקול הכולל עמ׳ 48):\n  ${thiefGenderAge.outputHebrew}`);
   }
 
   const thiefAge = analysis.thiefAge;
   if (thiefAge) {
-    parts.push(`גיל הגנב (القول الجامع עמ׳ 48):\n  ${thiefAge.outputHebrew}`);
+    parts.push(`גיל הגנב (הקול הכולל עמ׳ 48):\n  ${thiefAge.outputHebrew}`);
   }
 
   const thiefProximity = analysis.thiefProximity;
@@ -585,57 +585,57 @@ function describeCoreHouses(analysis, topicId, question) {
 
   const missingPersonLocation = analysis.missingPersonLocation;
   if (missingPersonLocation) {
-    parts.push(`מיקום הנעדר (القول الجامع עמ׳ 52, حاوي עמ׳ 59):\n  ${missingPersonLocation.outputHebrew.replace(/\n/g, '\n  ')}`);
+    parts.push(`מיקום הנעדר (הקול הכולל עמ׳ 52, חאוי עמ׳ 59):\n  ${missingPersonLocation.outputHebrew.replace(/\n/g, '\n  ')}`);
   }
 
   const missingPersonReturn = analysis.missingPersonReturn;
   if (missingPersonReturn) {
-    parts.push(`האם הנעדר יחזור (حاوي עמ׳ 59):\n  ${missingPersonReturn.outputHebrew.replace(/\n/g, '\n  ')}`);
+    parts.push(`האם הנעדר יחזור (חאוי עמ׳ 59):\n  ${missingPersonReturn.outputHebrew.replace(/\n/g, '\n  ')}`);
   }
 
   const geographicDirection = analysis.geographicDirection;
   if (geographicDirection) {
-    parts.push(`כיוון גיאוגרפי (القول الجامع עמ׳ 30):\n  ${geographicDirection.outputHebrew}`);
+    parts.push(`כיוון גיאוגרפי (הקול הכולל עמ׳ 30):\n  ${geographicDirection.outputHebrew}`);
   }
 
   const travelDirection = analysis.travelDirection;
   if (travelDirection) {
-    parts.push(`כיוון הנסיעה (القول الجامع פ׳ 10):\n  ${travelDirection.outputHebrew}`);
+    parts.push(`כיוון הנסיעה (הקול הכולל פ׳ 10):\n  ${travelDirection.outputHebrew}`);
   }
 
   const deathRisk = analysis.deathRisk;
   if (deathRisk) {
-    parts.push(`סיכון מוות (القول الجامع עמ׳ 41-42):\n  ${deathRisk.outputHebrew.replace(/\n/g, '\n  ')}`);
+    parts.push(`סיכון מוות (הקול הכולל עמ׳ 41-42):\n  ${deathRisk.outputHebrew.replace(/\n/g, '\n  ')}`);
   }
 
   const jinnType = analysis.jinnType;
   if (jinnType) {
-    parts.push(`סוג הג׳ין (القول الجامع עמ׳ 57-58):\n  ${jinnType.outputHebrew.replace(/\n/g, '\n  ')}`);
+    parts.push(`סוג הג׳ין (הקול הכולל עמ׳ 57-58):\n  ${jinnType.outputHebrew.replace(/\n/g, '\n  ')}`);
   }
 
   const wifeVirginityStatus = analysis.wifeVirginityStatus;
   if (wifeVirginityStatus) {
-    parts.push(`ת׳יב / בכר (القول الجامع עמ׳ 44):\n  ${wifeVirginityStatus.outputHebrew}`);
+    parts.push(`גרושה/בעולה / בתולה (הקול הכולל עמ׳ 44):\n  ${wifeVirginityStatus.outputHebrew}`);
   }
 
   const wifeChastity = analysis.wifeChastity;
   if (wifeChastity) {
-    parts.push(`צניעות האישה (القول الجامع עמ׳ 43-44):\n  ${wifeChastity.outputHebrew.replace(/\n/g, '\n  ')}`);
+    parts.push(`צניעות האישה (הקול הכולל עמ׳ 43-44):\n  ${wifeChastity.outputHebrew.replace(/\n/g, '\n  ')}`);
   }
 
   const marketPrices = analysis.marketPrices;
   if (marketPrices) {
-    parts.push(`יוקר / זול — מחירי שוק (القول الجامع עמ׳ 25):\n  ${marketPrices.outputHebrew}`);
+    parts.push(`יוקר / זול — מחירי שוק (הקול הכולל עמ׳ 25):\n  ${marketPrices.outputHebrew}`);
   }
 
   const wishFulfillment = analysis.wishFulfillment;
   if (wishFulfillment) {
-    parts.push(`האם ישיג מה שרוצה (القول الجامع עמ׳ 51-52):\n  ${wishFulfillment.outputHebrew}`);
+    parts.push(`האם ישיג מה שרוצה (הקול הכולל עמ׳ 51-52):\n  ${wishFulfillment.outputHebrew}`);
   }
 
   const querentSorceryCheck = analysis.querentSorceryCheck;
   if (querentSorceryCheck) {
-    parts.push(`האם השואל מכושף (القول الجامع עמ׳ 56-57):\n  ${querentSorceryCheck.outputHebrew}`);
+    parts.push(`האם השואל מכושף (הקול הכולל עמ׳ 56-57):\n  ${querentSorceryCheck.outputHebrew}`);
   }
 
   const enemyHH = analysis.enemyInHousehold;
@@ -1611,8 +1611,8 @@ function buildNarrativeByTopic(result) {
 
   // מסיר ציטוטי מקור מכל טקסט שמגיע למסקנה
   const scText = (s) => s
-    .replace(/\s*\[(?:כשף|القول|حاوي|חאוי)[^\]]*\]/g, '')
-    .replace(/\s*\((?:القول الجامع|כשף|حاوي|חאוי|PDF[12])[^)]+\)/g, '')
+    .replace(/\s*\[(?:כשף|القول|חאוי|חאוי)[^\]]*\]/g, '')
+    .replace(/\s*\((?:القول الجامع|כשף|חאוי|חאוי|PDF[12])[^)]+\)/g, '')
     .trim();
 
   // ── 0. הגעה ישירה — תחסיל חזק ביותר (לפני כל פסיקה) ────────────
@@ -1621,7 +1621,7 @@ function buildNarrativeByTopic(result) {
   {
     const tahasilEarly = boardAnalysis?.tahasil;
     if (tahasilEarly?.tahasilStatus === 'direct') {
-      push(`⬛ הגעה ישירה (تحصيل): ${tahasilEarly.tahasilHebrew}`);
+      push(`⬛ הגעה ישירה: ${tahasilEarly.tahasilHebrew}`);
     }
   }
 
@@ -1925,17 +1925,17 @@ function buildNarrativeByTopic(result) {
   if (boardAnalysis?.tahasil?.tahasilStatus !== 'direct') {
     push(tahasilParagraph(boardAnalysis));
   } else if (boardAnalysis?.tahasil?.hayulaActive) {
-    push(`⚠ מניעה (حيلولة): ${boardAnalysis.tahasil.hayulaHebrew}`);
+    push(`⚠ מניעה: ${boardAnalysis.tahasil.hayulaHebrew}`);
   }
 
   // ── 8. DHAMIR ────────────────────────────────────────────────────
   push(dhamirParagraph(boardAnalysis, judgeVerdict));
 
-  // ── 8.5. שאלת מולד — ניתוח בעל הטאלע ──────────────────────────
+  // ── 8.5. שאלת מולד — ניתוח בעל העולה ──────────────────────────
   if (topicId === 'birthNativity') {
     const birthAnalysis = boardAnalysis?.birthNativityAnalysis;
     if (birthAnalysis?.outputHebrew) {
-      push(`שאלת מולד — ניתוח בעל הטאלע:\n${birthAnalysis.outputHebrew}`);
+      push(`שאלת מולד — ניתוח בעל העולה:\n${birthAnalysis.outputHebrew}`);
     }
   }
 
@@ -1981,7 +1981,7 @@ function buildNarrativeByTopic(result) {
   if (topicId === 'yearlyForecast') {
     const yearlyAnalysis = boardAnalysis?.yearlyForecastAnalysis;
     if (yearlyAnalysis?.outputHebrew) {
-      push(`ניתוח טאלע השנה:\n${scText(yearlyAnalysis.outputHebrew)}`);
+      push(`ניתוח עולה השנה:\n${scText(yearlyAnalysis.outputHebrew)}`);
     }
     const figForecast = boardAnalysis?.yearlyFigureForecast;
     if (figForecast?.outputHebrew) {
@@ -2092,7 +2092,7 @@ function buildNarrativeByTopic(result) {
 
     if (is('marriage','divorce','loveHate')) {
       const wifeVirginityStatus = boardAnalysis.wifeVirginityStatus;
-      if (wifeVirginityStatus) push(`ת׳יב / בכר:\n  ${sc(wifeVirginityStatus.outputHebrew)}`);
+      if (wifeVirginityStatus) push(`גרושה/בעולה / בתולה:\n  ${sc(wifeVirginityStatus.outputHebrew)}`);
 
       const wifeChastity = boardAnalysis.wifeChastity;
       if (wifeChastity) push(`צניעות האישה:\n  ${ind(wifeChastity.outputHebrew)}`);
@@ -2236,7 +2236,7 @@ function buildNarrativeByTopic(result) {
 
     if (is('illness')) {
       const illnessTypeIsqat = boardAnalysis.illnessTypeIsqat;
-      if (illnessTypeIsqat) push(`סוג המחלה (אסקאט×7):\n  ${ind(illnessTypeIsqat.outputHebrew)}`);
+      if (illnessTypeIsqat) push(`סוג המחלה (שיבוץ 7):\n  ${ind(illnessTypeIsqat.outputHebrew)}`);
 
       const illnessCauseH4 = boardAnalysis.illnessCauseH4;
       if (illnessCauseH4) push(`סיבת המחלה:\n  ${ind(illnessCauseH4.outputHebrew)}`);
@@ -2480,7 +2480,7 @@ function buildSpiritualNarrative(result) {
       push(`פרטי הכישוף (לפי כללי המקור):\n  ${ind(sd.sihrDetails.join('\n'))}`);
     }
     const querentSorceryCheck = boardAnalysis.querentSorceryCheck;
-    if (querentSorceryCheck) push(`האם השואל מכושף (القول الجامع עמ׳ 56-57):\n  ${querentSorceryCheck.outputHebrew}`);
+    if (querentSorceryCheck) push(`האם השואל מכושף (הקול הכולל עמ׳ 56-57):\n  ${querentSorceryCheck.outputHebrew}`);
   }
 
   // ── 11. REMAINING MATCHES (not yet shown in spiritual houses) ────
@@ -2836,7 +2836,7 @@ export function writeShortClientVerdict(result) {
     }
 
     case 'birthNativity': {
-      if (h1) lines.push(figLine(h1, `${name || asker} (בית 1 — הטאלע)`));
+      if (h1) lines.push(figLine(h1, `${name || asker} (בית 1 — העולה)`));
       if (kashfText) lines.push(kashfText);
       else if (jTone > 0) lines.push('הדיין: גורל חיובי — הכוחות בתקופה זו לטובה.');
       else if (jTone < 0) lines.push('הדיין: גורל קשה — יש קשיים בתקופה זו.');

@@ -8,7 +8,7 @@ export const HAWI_PLANETARY_CORRESPONDENCES = {
   status: 'source-preserved-and-entered',
   appArea: 'planetary-correspondences',
   purposeHebrew:
-    'שכבת ידע מתוך חאוי לשיוכי כוכבים: צורות, אקלימים, ארצות, עמים, בעלי מעמד, מתכות, אבנים, מאכלים, צמחים, בעלי חיים, צבעים וחומרים. זהו חומר בסיס לשערי טאלע השנה, מזג אוויר, דמיר, מדינה, חולי, מטמון ושאלות מעשיות.',
+    'שכבת ידע מתוך חאוי לשיוכי כוכבים: צורות, אקלימים, ארצות, עמים, בעלי מעמד, מתכות, אבנים, מאכלים, צמחים, בעלי חיים, צבעים וחומרים. זהו חומר בסיס לשערי עולה השנה, מזג אוויר, דמיר, מדינה, חולי, מטמון ושאלות מעשיות.',
 
   openingPrinciple: {
     sourcePage: 40,
@@ -446,7 +446,7 @@ export const HAWI_PLANETARY_CORRESPONDENCES = {
     mustEnterApp: true,
     suggestedMenuHebrew: 'שיוכי כוכבים וחומרים',
     relatedModules: [
-      'טאלע השנה',
+      'עולה השנה',
       'גשם ומזג אוויר',
       'שלטון ומדינה',
       'חולי',

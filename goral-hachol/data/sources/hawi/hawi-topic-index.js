@@ -102,7 +102,7 @@ export const HAWI_TOPIC_INDEX = {
     },
     {
       topicId: 'yearly-weather-omens',
-      hebrewTitle: 'טאלע השנה / גשם / יוקר וזול',
+      hebrewTitle: 'עולה השנה / גשם / יוקר וזול',
       coverageStatus: 'engine-implemented',
       noteHebrew: 'מנוע yearlyForecast פעיל לפי חאוי עמ׳ 61-62.',
     },
