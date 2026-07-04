@@ -1104,7 +1104,7 @@ async function runReading() {
       const kashfHtml = window.KASHF_ENGINE.writeKashfReading(kashfReading);
 
       const outputEl = document.getElementById("kashfReadingOutput");
-      if (outputEl) outputEl.innerHTML = kashfHtml;
+      if (outputEl) outputEl.innerHTML = buildBoardHtml(reading) + kashfHtml;
 
       window._lastReading = reading;
       window._lastKashfReading = kashfReading;
