@@ -430,16 +430,6 @@ function describeCoreHouses(analysis, topicId, question) {
     parts.push(`ניתוח שלטון (שער מלכים, חאוי עמ׳ 36-38):\n${authAnalysis.outputHebrew}`);
   }
 
-    const lostAnimalReturn = analysis.lostAnimalReturn;
-  if (lostAnimalReturn) {
-    parts.push(`האם הבהמה תחזור (כשף אל-אסרר עמ׳ 202):\n  ${lostAnimalReturn.outputHebrew}`);
-  }
-
-  const animalTypeH6 = analysis.animalTypeH6;
-  if (animalTypeH6) {
-    parts.push(`סוג הבהמה (כשף אל-אסרר עמ׳ 201):\n  ${animalTypeH6.outputHebrew}`);
-  }
-
   const yearlyAnalysis = analysis.yearlyForecastAnalysis;
   if (yearlyAnalysis) {
     parts.push(`ניתוח עולה השנה (חאוי עמ׳ 60-62):\n${yearlyAnalysis.outputHebrew}`);
@@ -1767,9 +1757,6 @@ function buildNarrativeByTopic(result) {
     }
 
     if (is('travel','siblings','religion')) {
-      const dreamH9 = boardAnalysis.dreamH9;
-      if (dreamH9) push(`חלום — פרשנות:\n  ${sc(dreamH9.outputHebrew)}`);
-
       const h3Topics = boardAnalysis.h3Topics;
       if (h3Topics) push(`בית 3 — תנועה / חלום / מסרים:\n  ${ind(h3Topics.outputHebrew)}`);
     }
@@ -1782,34 +1769,12 @@ function buildNarrativeByTopic(result) {
       if (hiddenTreasureH2) push(`מטמון / כנוז תת-קרקעי:\n  ${ind(hiddenTreasureH2.outputHebrew)}`);
     }
 
-    if (is('authorityState','partnership','generalReading')) {
-      const kingRulerStatus = boardAnalysis.kingRulerStatus;
-      if (kingRulerStatus) push(`מלך / שליט:\n  ${ind(kingRulerStatus.outputHebrew)}`);
-    }
-
-
-    if (is('enemies','disputes','fear')) {
-      const enemyPresenceCheck = boardAnalysis.enemyPresenceCheck;
-      if (enemyPresenceCheck) push(`בדיקת אויב:\n  ${ind(enemyPresenceCheck.outputHebrew)}`);
-    }
-
     if (is('prisoner')) {
-      const prisonerReleaseCheck = boardAnalysis.prisonerReleaseCheck;
-      if (prisonerReleaseCheck) push(`שחרור אסיר:\n  ${ind(prisonerReleaseCheck.outputHebrew)}`);
-
       const prisonerGuilty = boardAnalysis.prisonerGuilty;
       if (prisonerGuilty?.outputHebrew) push(`מי גרם לכליאה:\n  ${ind(prisonerGuilty.outputHebrew)}`);
     }
 
-    if (is('deathInheritance','motherRules','fear')) {
-      const fatherParentStatus = boardAnalysis.fatherParentStatus;
-      if (fatherParentStatus) push(`מצב האב / הנכס:\n  ${ind(fatherParentStatus.outputHebrew)}`);
-    }
-
     if (is('commerce','partnership','loan','generalReading')) {
-      const parnasaLivelihood = boardAnalysis.parnasaLivelihood;
-      if (parnasaLivelihood) push(`פרנסה ומחיה:\n  ${ind(parnasaLivelihood.outputHebrew)}`);
-
       const debts = boardAnalysis.debts;
       if (debts) push(`חובות:\n  ${ind(debts.outputHebrew)}`);
     }
@@ -1825,14 +1790,6 @@ function buildNarrativeByTopic(result) {
 
       const illnessCauseH4 = boardAnalysis.illnessCauseH4;
       if (illnessCauseH4) push(`סיבת המחלה:\n  ${ind(illnessCauseH4.outputHebrew)}`);
-    }
-
-    if (is('lostAnimal')) {
-      const lostAnimalReturn = boardAnalysis.lostAnimalReturn;
-      if (lostAnimalReturn) push(`האם הבהמה תחזור (כשף עמ׳ 202):\n  ${ind(lostAnimalReturn.outputHebrew)}`);
-
-      const animalTypeH6 = boardAnalysis.animalTypeH6;
-      if (animalTypeH6) push(`סוג הבהמה (כשף עמ׳ 201):\n  ${ind(animalTypeH6.outputHebrew)}`);
     }
 
     if (is('hiddenTreasure','religion','generalReading')) {
