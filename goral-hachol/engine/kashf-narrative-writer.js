@@ -162,7 +162,6 @@ function writeVerdictPara(reading) {
   parts.push(`לפי כללי ספר כשף אל-אסרר, ${formulaDesc}.`);
   if (resultDesc) parts.push(resultDesc + '.');
   if (verdictText) parts.push(`<strong>הפסיקה:</strong> ${verdictText}.`);
-  if (srcShort) parts.push(`<em>לפי הספר: "${srcShort}"</em>`);
 
   return `<p class="kashf-prose-paragraph">${parts.join(' ')}</p>`;
 }
@@ -184,7 +183,6 @@ function writeAltPara(reading) {
   const parts = [`<strong>בדיקת אימות נוספת:</strong> ${formulaDesc}.`];
   if (resultDesc) parts.push(resultDesc + '.');
   if (verdictText) parts.push(verdictText + '.');
-  if (srcShort) parts.push(`<em>מקור: "${srcShort}"</em>`);
 
   return `<p class="kashf-prose-paragraph">${parts.join(' ')}</p>`;
 }
@@ -194,43 +192,39 @@ function writeAltPara(reading) {
 function findingSentence(f) {
   if (f.error) return null;
 
-  const srcShort = f.sourceText
-    ? (f.sourceText.length > 100 ? f.sourceText.slice(0, 97) + '...' : f.sourceText)
-    : '';
-  const srcNote = srcShort ? ` — <em>מקור: "${srcShort}"</em>` : '';
-
   if (f.checkType === 'house-quality') {
     const q = qualityWord(f.quality);
     const fig = f.figureName || '';
-    return `<strong>${f.label}:</strong> בית ${f.houseNum} הכיל את הצורה ${fig}${q ? ` — ${q}` : ''}${srcNote}.`;
+    return `<strong>${f.label}:</strong> בית ${f.houseNum} הכיל את הצורה ${fig}${q ? ` — ${q}` : ''}.`;
   }
   if (f.checkType === 'count-quality') {
     const houses = (f.houses || []).join(', ');
-    return `<strong>${f.label}</strong> (בתים ${houses}): ${f.summary}${srcNote}.`;
+    return `<strong>${f.label}</strong> (בתים ${houses}): ${f.summary}.`;
   }
   if (f.checkType === 'house-element') {
-    return `<strong>${f.label}:</strong> יסוד בית ${f.houseNum} הוא ${f.elementHebrew || ''} — כיוון ${f.direction || ''}${srcNote}.`;
+    return `<strong>${f.label}:</strong> יסוד בית ${f.houseNum} הוא ${f.elementHebrew || ''} — כיוון ${f.direction || ''}.`;
   }
   if (f.checkType === 'element-pair') {
-    return `<strong>${f.label}:</strong> ${f.illnessType || '—'}${srcNote}.`;
+    const illnessClean = (f.illnessType || '—').replace(/\s*\(כשף.*?\)/g, '');
+    return `<strong>${f.label}:</strong> ${illnessClean}.`;
   }
   if (f.checkType === 'house-in-house-check') {
     const res = f.matches
       ? `בית ${f.mainHouse} נמצא בבית ${f.targetHouse} — הדין חל`
       : `בית ${f.mainHouse} אינו בבית ${f.targetHouse}`;
-    return `<strong>${f.label}:</strong> ${res}${srcNote}.`;
+    return `<strong>${f.label}:</strong> ${res}.`;
   }
   if (f.checkType === 'house-figure-description') {
     const dk = dakhalWord(f.classification?.dakhalKharij);
-    return `<strong>${f.label}:</strong> בית ${f.houseNum} הכיל <strong>${f.figureName || ''}</strong>${dk ? ` — ${dk}` : ''}${srcNote}.`;
+    return `<strong>${f.label}:</strong> בית ${f.houseNum} הכיל <strong>${f.figureName || ''}</strong>${dk ? ` — ${dk}` : ''}.`;
   }
   if (f.checkType === 'house-gender') {
-    return `<strong>${f.label}:</strong> בית ${f.houseNum} — ${f.genderHebrew || ''}${srcNote}.`;
+    return `<strong>${f.label}:</strong> בית ${f.houseNum} — ${f.genderHebrew || ''}.`;
   }
   if (f.checkType === 'house-dakhal-kharij') {
-    return `<strong>${f.label}:</strong> בית ${f.houseNum} — ${f.dakhalKharijHebrew || ''}${srcNote}.`;
+    return `<strong>${f.label}:</strong> בית ${f.houseNum} — ${f.dakhalKharijHebrew || ''}.`;
   }
-  return `<strong>${f.label}:</strong> ${f.summary || f.dakhalKharijHebrew || f.qualityHebrew || '—'}${srcNote}.`;
+  return `<strong>${f.label}:</strong> ${f.summary || f.dakhalKharijHebrew || f.qualityHebrew || '—'}.`;
 }
 
 function writeSupportingPara(reading) {
