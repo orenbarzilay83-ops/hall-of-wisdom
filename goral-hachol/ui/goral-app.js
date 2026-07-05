@@ -329,10 +329,9 @@ const HAWI_QUESTION_BANK = [
   { id: 'hawi-q-authority-rival',  categoryId: 'authorityState', topicId: 'authorityState', label: 'מי יגבר — אני או המתחרה?',  desc: 'תחרות על תפקיד או עמדת השפעה' },
 
   // ילדים והריון
-  { id: 'hawi-q-pregnancy',        categoryId: 'childrenPregnancy', topicId: 'childrenPregnancy', label: 'האם תיכנס להריון?',         desc: 'שאלה על הריון ופוריות' },
-  { id: 'hawi-q-child-gender',     categoryId: 'childrenPregnancy', topicId: 'childrenPregnancy', label: 'האם הוולד זכר או נקבה?',    desc: 'קביעת מין הוולד' },
-  { id: 'hawi-q-child-health',     categoryId: 'childrenPregnancy', topicId: 'childrenPregnancy', label: 'האם ההריון יהיה תקין?',     desc: 'בריאות האם והוולד בהריון' },
-  { id: 'hawi-q-child-months',     categoryId: 'childrenPregnancy', topicId: 'childrenPregnancy', label: 'כמה חודשי הריון עברו?',     desc: 'ספירת חודשי הריון מהלוח' },
+  { id: 'hawi-q-child-born',        categoryId: 'childrenPregnancy', topicId: 'childrenPregnancy', label: 'האם יהיה לי ילד מאישה זו?', desc: 'השאלה הבסיסית בפרק — הל יכון לה ולד מן הדה אלמראה' },
+  { id: 'hawi-q-child-gender',     categoryId: 'childrenPregnancy', topicId: 'childrenPregnancy', label: 'האם הוולד זכר או נקבה?',     desc: 'קביעת מין הוולד לפי הצורות בלוח' },
+  { id: 'hawi-q-child-months',     categoryId: 'childrenPregnancy', topicId: 'childrenPregnancy', label: 'כמה חודשי הריון עברו?',      desc: 'ספירת חודשי הריון לפי שיטת הספר' },
 
   // אבחון רוחני
   { id: 'hawi-q-spirit-evil-eye',  categoryId: 'spiritualDiagnostics', topicId: 'spiritualDiagnostics', label: 'האם יש עין הרע?',         desc: 'בדיקת עין הרע וקנאה' },
