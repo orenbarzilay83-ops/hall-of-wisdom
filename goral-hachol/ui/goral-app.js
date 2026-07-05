@@ -466,12 +466,14 @@ function _renderKashfQuestionScreen() {
   }
 
   const filtered = _activeHouseFilter === null
-    ? bank
+    ? []
     : bank.filter(q => q.houseId === _activeHouseFilter);
 
   const gridEl = document.getElementById('qcardGrid');
   if (gridEl) {
-    if (filtered.length === 0) {
+    if (_activeHouseFilter === null) {
+      gridEl.innerHTML = `<div class="qcard-empty">לחץ על אחד מ-12 הבתים למעלה כדי לראות את השאלות הרלוונטיות</div>`;
+    } else if (filtered.length === 0) {
       gridEl.innerHTML = `<div class="qcard-empty">אין שאלות לבית זה</div>`;
     } else {
       gridEl.innerHTML = filtered.map(q => {
