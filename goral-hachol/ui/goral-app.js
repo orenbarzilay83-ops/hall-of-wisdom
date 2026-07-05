@@ -466,12 +466,14 @@ function _renderKashfQuestionScreen() {
   }
 
   const filtered = _activeHouseFilter === null
-    ? bank
+    ? []
     : bank.filter(q => q.houseId === _activeHouseFilter);
 
   const gridEl = document.getElementById('qcardGrid');
   if (gridEl) {
-    if (filtered.length === 0) {
+    if (_activeHouseFilter === null) {
+      gridEl.innerHTML = `<div class="qcard-empty">לחץ על אחד מ-12 הבתים למעלה כדי לראות את השאלות הרלוונטיות</div>`;
+    } else if (filtered.length === 0) {
       gridEl.innerHTML = `<div class="qcard-empty">אין שאלות לבית זה</div>`;
     } else {
       gridEl.innerHTML = filtered.map(q => {
@@ -2046,13 +2048,13 @@ function renderMethodsGuide() {
       <div class="guide-method-header">
         <span class="guide-method-icon">🔮</span>
         <div>
-          <div class="guide-method-name">שיטת כשף</div>
+          <div class="guide-method-name">חשיפת הסודות הנצורים (כשף אל-אסרר)</div>
           <div class="guide-method-book">ספר כשף אל-אסרר המצונה</div>
         </div>
       </div>
       <div class="guide-method-body">
         <p>
-          שיטת כשף היא שיטה <strong>נוסחתית, ממוקדת ומדויקת</strong>. במקום לקרוא את כל הלוח
+          חשיפת הסודות הנצורים (כשף אל-אסרר) היא שיטה <strong>נוסחתית, ממוקדת ומדויקת</strong>. במקום לקרוא את כל הלוח
           שורה אחר שורה, היא שולפת בתים ספציפיים, מחברת אותם לפי נוסחה מוגדרת, ומפיקה צורה
           תוצאתית אחת שמכילה את התשובה. כל שאלה — נוסחה אחת, תשובה אחת.
         </p>
