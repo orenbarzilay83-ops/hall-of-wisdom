@@ -835,15 +835,10 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
     const house5 = getHouseFromBoard(boardAnalysis, 5);
     const house5Desc = houseDescription(house5);
     const jumla = boardAnalysis?.jumlaAnalysis;
-    const kashfChild = boardAnalysis?.childrenPregnancyKashf;
     const parts = [];
 
     if (jumla?.childDiagnosis) {
       parts.push(jumla.childDiagnosis.outputHebrew);
-    }
-
-    if (kashfChild?.outputHebrew) {
-      parts.push(kashfChild.outputHebrew);
     }
 
     let base = 'לכן יש לבדוק את בית הילדים, העדים והדיין יחד, ורק אז להכריע לגבי אפשרות ההיריון או סימני זכר ונקבה.';
@@ -1250,12 +1245,9 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
   }
 
   if (topicId === 'loan') {
-    const loanKashf = boardAnalysis?.loanKashf;
     const lines = [];
 
-    if (loanKashf?.outputHebrew) {
-      lines.push(loanKashf.outputHebrew);
-    } else {
+    {
       const house7 = getHouseFromBoard(boardAnalysis, 7);
       const house8 = getHouseFromBoard(boardAnalysis, 8);
       if (grade === 'positive' || grade === 'cautiously-positive') {
@@ -1275,12 +1267,9 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
   }
 
   if (topicId === 'religion') {
-    const religionKashf = boardAnalysis?.religionKashf;
     const lines = [];
 
-    if (religionKashf?.outputHebrew) {
-      lines.push(religionKashf.outputHebrew);
-    } else {
+    {
       if (grade === 'positive' || grade === 'cautiously-positive') {
         lines.push('בית 3 ובית 9 מראים מיטיב — האדם בעל אמונה ויראת שמים.');
       } else if (grade === 'negative' || grade === 'cautiously-negative') {
@@ -1294,12 +1283,9 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
   }
 
   if (topicId === 'motherRules') {
-    const motherRulesKashf = boardAnalysis?.motherRulesKashf;
     const lines = [];
 
-    if (motherRulesKashf?.outputHebrew) {
-      lines.push(motherRulesKashf.outputHebrew);
-    } else {
+    {
       const house10 = getHouseFromBoard(boardAnalysis, 10);
       if (grade === 'positive' || grade === 'cautiously-positive') {
         lines.push('הלוח מראה טוב לאם — בית 10 מיטיב.');
@@ -1752,44 +1738,6 @@ function buildNarrativeByTopic(result) {
     const birthAnalysis = boardAnalysis?.birthNativityAnalysis;
     if (birthAnalysis?.outputHebrew) {
       push(`שאלת מולד — ניתוח בעל העולה:\n${birthAnalysis.outputHebrew}`);
-    }
-  }
-
-  // ── 8.6. ניתוח הלוואה — כשף פרק 8 ─────────────────────────────
-  if (topicId === 'loan') {
-    const loanKashf = boardAnalysis?.loanKashf;
-    if (loanKashf?.outputHebrew) {
-      push(scText(loanKashf.outputHebrew));
-    }
-  }
-
-  // ── 8.7. ניתוח דת ואמונה ─────────────────────────────────────
-  if (topicId === 'religion') {
-    const religionKashf = boardAnalysis?.religionKashf;
-    if (religionKashf?.outputHebrew) {
-      push(scText(religionKashf.outputHebrew));
-    }
-  }
-
-  // ── 8.8. דיני האם ────────────────────────────────────────────
-  if (topicId === 'motherRules') {
-    const motherRulesKashf = boardAnalysis?.motherRulesKashf;
-    if (motherRulesKashf?.outputHebrew) {
-      push(scText(motherRulesKashf.outputHebrew));
-    }
-  }
-
-  // ── 8.9. ניתוח ילדים/הריון ───────────────────────────────────
-  if (topicId === 'childrenPregnancy') {
-    const kashfChild = boardAnalysis?.childrenPregnancyKashf;
-    const pregnancyMonthsExists = !!boardAnalysis?.pregnancyMonths;
-    if (kashfChild?.outputHebrew) {
-      let text = scText(kashfChild.outputHebrew);
-      // Remove the pregnancy-months line if computePregnancyMonths renders it separately
-      if (pregnancyMonthsExists) {
-        text = text.split('\n').filter(l => !l.startsWith('חודשי הריון')).join('\n').trim();
-      }
-      if (text) push(text);
     }
   }
 
