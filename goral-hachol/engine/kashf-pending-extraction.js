@@ -18,6 +18,7 @@ import {
   getFigureDirection,
   chartHouse,
   FIGURE_PLANET_MAP,
+  ELEMENT_DIRECTION,
 } from './hawi-interpreter.js';
 import { HAWI_SOURCE } from '../data/sources/hawi/hawi-source.js';
 
@@ -636,4 +637,203 @@ export function computeFugitiveKashf(chart) {
     outputHebrew = `הסימנים מעורבים — ייתכן שיחזור עם מאמץ (כשף עמ׳ 240-241). ב4 (מיקום): ${h4?.hebrew}. ב15 (סוף): ${h15?.hebrew}.`;
   }
   return { verdict, outputHebrew };
+}
+
+// ── קבוצה 2c: גוף/גנבה/כיוון (כשף אל-אסרר) ────────────────────────────────
+
+// מקור: כשף אל-אסרר עמ׳ 199 — תסכין האיברים (שיבוץ איברי הגוף)
+// "התבונן בבית השישי ובצורה שנפלה בו — לפי הצורה תדע באיזה איבר החולי"
+const FIGURE_BODY_PART_KASHF = {
+  '2222': 'ראש',         // קהלה
+  '2112': 'ראש',         // חיבור
+  '2212': 'צוואר',       // לבן
+  '1211': 'חזה',         // בר הלחי
+  '1111': 'בטן',         // דרך
+  '1122': 'בטן',         // כבוד יוצא
+  '2122': 'אחוריים',     // אדום
+  '2211': 'איבר המין',   // כבוד נכנס
+  '1221': 'יד ימין',     // סוהר
+  '1212': 'כתף ימין',    // ממון יוצא
+  '2221': 'צד ימין',     // שפל ראש
+  '1121': 'ירך ימין',    // נלחם
+  '2121': 'כתף שמאל',    // ממון נכנס
+  '1112': 'צד שמאל',     // סף יוצא
+  '2111': 'ירך שמאל',    // סף נכנס
+  // '1222' (נשוא ראש): הספר מזכיר "תשמיר" (רגל ימין) ו"דגל השמחה" (רגל שמאל) — שמות מסורתיים
+};
+
+export function computeBodyPartDiagnosisKashf(chart) {
+  const h6 = chart.find((h) => Number(h.house) === 6);
+  if (!h6?.key) return null;
+  const bodyPart = FIGURE_BODY_PART_KASHF[h6.key];
+  const figHebrew = h6.hebrew || h6.key;
+  if (h6.key === '1222') {
+    return {
+      figureKey: h6.key, figureHebrew: figHebrew, bodyPartHebrew: 'רגל',
+      outputHebrew: `${figHebrew} בבית 6 — האיבר הכואב: רגל (כשף עמ׳ 199 — נשוא ראש מוזכר כ"תשמיר" ו"דגל השמחה")`,
+    };
+  }
+  if (!bodyPart) return {
+    figureKey: h6.key, figureHebrew: figHebrew, bodyPartHebrew: null,
+    outputHebrew: `${figHebrew} בבית 6 — האיבר הכואב: לא מופה (כשף עמ׳ 199)`,
+  };
+  return {
+    figureKey: h6.key, figureHebrew: figHebrew, bodyPartHebrew: bodyPart,
+    outputHebrew: `${figHebrew} בבית 6 — האיבר הכואב: ${bodyPart} (כשף עמ׳ 199)`,
+  };
+}
+
+// BATCH A: כיוון גיאוגרפי — כשף אל-אסרר עמ' 62
+// ELEMENT_DIRECTION מיובא מ-hawi-interpreter.js (משותף גם עם computeDiggingDirection החאווי)
+export function computeGeographicDirection(chart) {
+  const h1 = chart.find((h) => Number(h.house) === 1);
+  if (!h1?.key) return null;
+  const el = h1.element || h1.elementHebrew || '';
+  const dir = ELEMENT_DIRECTION[el];
+  if (!dir) return null;
+  return {
+    element: el, direction: dir,
+    outputHebrew: `${h1.hebrew || h1.key} בבית 1 (יסוד: ${el}) → כיוון גיאוגרפי: ${dir}`,
+  };
+}
+
+export function computeTravelDirection(chart) {
+  const h9 = chart.find((h) => Number(h.house) === 9);
+  if (!h9?.key) return null;
+  const el = h9.element || h9.elementHebrew || '';
+  const dir = ELEMENT_DIRECTION[el];
+  if (!dir) return null;
+  return {
+    element: el, direction: dir,
+    outputHebrew: `${h9.hebrew || h9.key} בבית 9 (יסוד: ${el}) → כיוון הנסיעה: ${dir}`,
+  };
+}
+
+// BATCH B: גנבה — קרבה, גיל, האם הגנוב יוחזר. מקור ראשי: כשף אל-אסרר עמ׳ 224, 229-234
+const THIEF_AGE_BY_FIGURE = {
+  '1211': 'צעיר', '1112': 'צעיר', '2212': 'צעיר',
+  '2222': 'ביניים', '1111': 'ביניים', '2111': 'ביניים',
+  '2221': 'זקן',   '1222': 'זקן',
+};
+
+// כשף אל-אסרר עמ׳ 224 — "אם הבית השביעי חוזר באחד הבתים, הוא מורה על סיבת הגניבה ועל מי שקשור בה"
+const THIEF_PROXIMITY_BY_HOUSE = {
+  1:  'עומד במקום בעל הדבר — הגנב ממעגל השואל הקרוב',
+  2:  'מן העוזרים / המכרים של בעל הדבר',
+  3:  'זה הגנב עצמו — גילויו ודאי (ב3 = הגנב)',
+  4:  'ממי שנכנס לבית הנשאל',
+  5:  'ממי שמתערב עם ילדי בעל הדבר',
+  6:  'הגנב יחלה בגלל הגניבה',
+  7:  'גילוי הגנב ודאי',
+  8:  'אדם רחוק / מחוץ להישג יד',
+  9:  'הדבר בא בגלל נסיעה — הגנב קשור לנסיעה',
+  10: 'ממי שקשור לבעלי השלטון',
+  11: 'קשור לאנשים שהגנב מתחבר עמם',
+  12: 'אויב נסתר',
+};
+
+// כשף אל-אסרר עמ׳ 231-234 — תיאור הגנב לפי הצורה בבית 7
+const THIEF_PHYSICAL_DESCRIPTION_KASHF = {
+  '1121': 'דמותו גבוהה, צבעו נוטה לאדמומיות, זקנו מייצג — ויש בו חריפות וגסות',
+  '1222': 'עד, סופר או מלמד — שלם במראהו, רחב חזה, עיניים גדולות, פנים עגולות, צבעו לבן ונאה',
+  '2111': 'אישה או דמות נקבית — לבנה, זריזת דיבור, ראשה גדול, כפות רגליה דקות; לחלופין: עירוני / מן אנשי המלאכה',
+  '2212': 'לבן, צוחק, נבון ומובחן — עוסק בכתיבה, נייר או תפירה',
+  '1211': 'נמשך אחר נשים, יש בו תחבולה ודעת; לחלופין: אישה או נער יפה-עיניים',
+  '1112': 'צבעו שחום, מבטו רע וריחו רע — מלאכות ניקוי, אשפה או בזויות',
+  '2122': 'צבעו דמי, קומה גבוהה, רגליים רחבות, סימן בפנים — עוסק בבישול, חריתה או אש; לעיתים רכיל',
+  '2221': 'צבעו שחור, שורש עבדות או שפלות — עוסק בעורות, אדמה או בהמות',
+  '1122': 'עגול-פנים, רחב רגליים, ניכר במעמדו ויופיו — עוסק בזהב, אבנים או חפצי ערך',
+  '1221': 'שחום, רחב בטן, גדול רגליים — עוסק בסנדלרות או עבודה גסה',
+  '2112': 'איש לשכה — כתיבה, חשבון, שיפוט, ספרים',
+  '2211': 'דמות לבנה, עגולת פנים, ראש גדול, קומה קטנה — עוסק בדין, הוראה או מעמד כבוד',
+  '1111': 'נער קטן, דק-גוף, מהיר בתנועה — שליחות, ריקוד, הליכה',
+  '1212': 'פנים לבנות או צהובות, ראש קטן, רגליים גדולות — עוסק ברפואה או חכמה',
+  '2222': 'גוף רחב, סנטר גדול, רגליים רחבות — בעל מנהיגות, ספנות, הנדסה',
+  '2121': 'קומה בינונית, פנים עגולות, ראש ורגליים גדולים, זקן עבה — עוסק בסחורה וקניין',
+};
+
+export function computeThiefAge(chart) {
+  const h7 = chart.find((h) => Number(h.house) === 7);
+  if (!h7?.key) return null;
+  const age = THIEF_AGE_BY_FIGURE[h7.key];
+  const figHebrew = h7.hebrew || h7.key;
+  if (!age) return {
+    figureKey: h7.key, figureHebrew: figHebrew, age: null,
+    outputHebrew: `${figHebrew} בבית 7 — גיל הגנב: לא מפורש במקור עבור צורה זו`,
+  };
+  return { figureKey: h7.key, figureHebrew: figHebrew, age,
+    outputHebrew: `${figHebrew} בבית 7 — גיל הגנב: ${age}`,
+  };
+}
+
+export function computeThiefPhysicalDescriptionKashf(chart) {
+  const h7 = chart.find((h) => Number(h.house) === 7);
+  if (!h7?.key) return null;
+  const desc = THIEF_PHYSICAL_DESCRIPTION_KASHF[h7.key];
+  const figHebrew = h7.hebrew || h7.key;
+  if (!desc) return {
+    figureKey: h7.key, figureHebrew: figHebrew,
+    outputHebrew: `${figHebrew} בבית 7 — תיאור הגנב: לא מפורש במקור (כשף עמ׳ 231-234)`,
+  };
+  return {
+    figureKey: h7.key, figureHebrew: figHebrew, description: desc,
+    outputHebrew: `${figHebrew} בבית 7 — ${desc}`,
+  };
+}
+
+export function computeThiefProximity(chart) {
+  const h7 = chart.find((h) => Number(h.house) === 7);
+  if (!h7?.key) return null;
+  const figHebrew = h7.hebrew || h7.key;
+  const appearances = chart
+    .filter((h) => Number(h.house) !== 7 && h.key === h7.key && Number(h.house) <= 12)
+    .map((h) => Number(h.house));
+  if (!appearances.length) {
+    return { figureKey: h7.key, figureHebrew: figHebrew, appearances: [],
+      outputHebrew: `${figHebrew} (ב7) — לא חוזר בבתים אחרים: הגנב זר, ממקום אחר`,
+    };
+  }
+  const lines = appearances.map((hn) => `${figHebrew} חוזר בבית ${hn} → ${THIEF_PROXIMITY_BY_HOUSE[hn] || `בית ${hn}`}`);
+  return { figureKey: h7.key, figureHebrew: figHebrew, appearances,
+    outputHebrew: lines.join('\n'),
+  };
+}
+
+export function computeStolenItemReturn(chart) {
+  const getH = (n) => chart.find((h) => Number(h.house) === n);
+  const h1 = getH(1); const h2 = getH(2);
+  const h7 = getH(7); const h8 = getH(8);
+  const h12 = getH(12); const h14 = getH(14);
+  if (!h1 || !h7) return null;
+  const isSaad = (h) => !!h && String(h.fortune || '').includes('מיטיב');
+  const isNahs = (h) => !!h && String(h.fortune || '').includes('מזיק');
+  const lines = [];
+  // כשף עמ׳ 229: "אם מצאת בראשון ובשני צורות מיטיבות, ובשביעי ובשמיני צורות מזיקות — הגניבה חוזרת לבעליה"
+  if (isSaad(h1) && isSaad(h2) && isNahs(h7) && isNahs(h8)) {
+    lines.push('בית 1+2 מיטיב + בית 7+8 מזיק → הגניבה חוזרת לבעליה (כשף עמ׳ 229)');
+  }
+  // כשף עמ׳ 229: "ואם בראשון ובשני צורות מזיקות, ובשביעי ובשמיני צורות מיטיבות — לא יחזור אליו דבר"
+  if (isNahs(h1) && isNahs(h2) && isSaad(h7) && isSaad(h8)) {
+    lines.push('⚠ בית 1+2 מזיק + בית 7+8 מיטיב → לא יחזור לבעליו (כשף עמ׳ 229)');
+  }
+  // כשף עמ׳ 229: "אם ראית את השמיני בשני, יחזור לבעל הדבר מה שאבד ממנו"
+  if (h8 && h2 && h8.key === h2.key) {
+    lines.push(`בית 8 ובית 2 אותה צורה (${h8.hebrew || h8.key}) → יחזור לבעל הדבר מה שאבד (כשף עמ׳ 229)`);
+  }
+  const h12Incoming = h12 && h12.direction === 'incoming';
+  const h12Outgoing = h12 && h12.direction === 'outgoing';
+  const h14Outgoing = h14 && h14.direction === 'outgoing';
+  if (h12Incoming) {
+    const ease = h12.movement === 'מתהפך' ? ' בקלות' : h12.movement === 'קבוע' ? ' בקושי' : '';
+    lines.push(`בית 12 נכנס → הגנבה תוחזר${ease}`);
+  }
+  if (h12Outgoing && h14Outgoing) {
+    lines.push('בית 12+14 יוצאים → הגנבה לא תוחזר');
+  }
+  if (!lines.length) {
+    if (isSaad(h1)) lines.push('בית 1 מיטיב — יש סיכוי להחזרה');
+    else if (isNahs(h1)) lines.push('בית 1 מזיק — סיכוי נמוך להחזרה');
+    else lines.push('לא נמצאו סימנים ברורים — ספק תוחזר');
+  }
+  return { outputHebrew: lines.join('\n') };
 }

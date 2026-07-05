@@ -460,16 +460,6 @@ function describeCoreHouses(analysis, topicId, question) {
     parts.push(`אבחון מחלה לפי יסוד (בלוג' אלאמל פרק 5):\n  ${illnessDiag.outputHebrew.replace(/\n/g, '\n  ')}`);
   }
 
-  const bodyPartDiag = analysis.bodyPartDiagnosis;
-  if (bodyPartDiag) {
-    parts.push(`מיקום המחלה בגוף (הקול הכולל עמ׳ 16):\n  ${bodyPartDiag.outputHebrew}`);
-  }
-
-  const bodyPartDiagKashf = analysis.bodyPartDiagnosisKashf;
-  if (bodyPartDiagKashf) {
-    parts.push(`מיקום המחלה בגוף (כשף אל-אסרר עמ׳ 199):\n  ${bodyPartDiagKashf.outputHebrew}`);
-  }
-
   const bodyPartDiagHawi = analysis.bodyPartDiagnosisHawi;
   if (bodyPartDiagHawi) {
     parts.push(`אזור הגוף הכואב (חאוי פרק 12 — שיטת היסודות):\n  ${bodyPartDiagHawi.outputHebrew}`);
@@ -478,51 +468,6 @@ function describeCoreHouses(analysis, topicId, question) {
   const thiefLoc = analysis.thiefLocationDetails;
   if (thiefLoc) {
     parts.push(`זיהוי הגנב (בלוג' אלאמל פרק 19):\n  ${thiefLoc.outputHebrew.replace(/\n/g, '\n  ')}`);
-  }
-
-  const thiefGenderAge = analysis.thiefGenderAge;
-  if (thiefGenderAge) {
-    parts.push(`מין הגנב וגילו (הקול הכולל עמ׳ 48):\n  ${thiefGenderAge.outputHebrew}`);
-  }
-
-  const thiefAge = analysis.thiefAge;
-  if (thiefAge) {
-    parts.push(`גיל הגנב (הקול הכולל עמ׳ 48):\n  ${thiefAge.outputHebrew}`);
-  }
-
-  const thiefProximity = analysis.thiefProximity;
-  if (thiefProximity) {
-    parts.push(`קרבת הגנב לשואל (כשף אל-אסרר עמ׳ 224):\n  ${thiefProximity.outputHebrew.replace(/\n/g, '\n  ')}`);
-  }
-
-  const stolenItemReturn = analysis.stolenItemReturn;
-  if (stolenItemReturn) {
-    parts.push(`האם הגנוב יוחזר (כשף אל-אסרר עמ׳ 229):\n  ${stolenItemReturn.outputHebrew.replace(/\n/g, '\n  ')}`);
-  }
-
-  const thiefPhysicalDescKashf = analysis.thiefPhysicalDescriptionKashf;
-  if (thiefPhysicalDescKashf) {
-    parts.push(`תיאור הגנב (כשף אל-אסרר עמ׳ 231-234):\n  ${thiefPhysicalDescKashf.outputHebrew}`);
-  }
-
-  const missingPersonLocation = analysis.missingPersonLocation;
-  if (missingPersonLocation) {
-    parts.push(`מיקום הנעדר (הקול הכולל עמ׳ 52, חאוי עמ׳ 59):\n  ${missingPersonLocation.outputHebrew.replace(/\n/g, '\n  ')}`);
-  }
-
-  const missingPersonReturn = analysis.missingPersonReturn;
-  if (missingPersonReturn) {
-    parts.push(`האם הנעדר יחזור (חאוי עמ׳ 59):\n  ${missingPersonReturn.outputHebrew.replace(/\n/g, '\n  ')}`);
-  }
-
-  const geographicDirection = analysis.geographicDirection;
-  if (geographicDirection) {
-    parts.push(`כיוון גיאוגרפי (הקול הכולל עמ׳ 30):\n  ${geographicDirection.outputHebrew}`);
-  }
-
-  const travelDirection = analysis.travelDirection;
-  if (travelDirection) {
-    parts.push(`כיוון הנסיעה (הקול הכולל פ׳ 10):\n  ${travelDirection.outputHebrew}`);
   }
 
   const deathRisk = analysis.deathRisk;
@@ -1873,46 +1818,6 @@ function buildNarrativeByTopic(result) {
     const sc  = scText;
     const ind = (s) => scText(s).replace(/\n/g, '\n  ');
     const is  = (...topics) => topics.includes(topicId);
-
-    if (is('illness','deathInheritance')) {
-      const bodyPartDiag = boardAnalysis.bodyPartDiagnosis;
-      if (bodyPartDiag) push(`מיקום המחלה בגוף:\n  ${sc(bodyPartDiag.outputHebrew)}`);
-      const bodyPartDiagKashf = boardAnalysis.bodyPartDiagnosisKashf;
-      if (bodyPartDiagKashf) push(`מיקום המחלה בגוף (כשף עמ׳ 199):\n  ${sc(bodyPartDiagKashf.outputHebrew)}`);
-    }
-
-    if (is('theft')) {
-      const thiefGenderAge = boardAnalysis.thiefGenderAge;
-      if (thiefGenderAge) push(`מין הגנב וגילו:\n  ${sc(thiefGenderAge.outputHebrew)}`);
-
-      const thiefAge = boardAnalysis.thiefAge;
-      if (thiefAge) push(`גיל הגנב:\n  ${sc(thiefAge.outputHebrew)}`);
-
-      const thiefPhysDescKashf = boardAnalysis.thiefPhysicalDescriptionKashf;
-      if (thiefPhysDescKashf) push(`תיאור הגנב (כשף עמ׳ 231-234):\n  ${sc(thiefPhysDescKashf.outputHebrew)}`);
-
-      const thiefProximity = boardAnalysis.thiefProximity;
-      if (thiefProximity) push(`קרבת הגנב (כשף עמ׳ 224):\n  ${ind(thiefProximity.outputHebrew)}`);
-
-      const stolenItemReturn = boardAnalysis.stolenItemReturn;
-      if (stolenItemReturn) push(`האם הגנוב יוחזר (כשף עמ׳ 229):\n  ${ind(stolenItemReturn.outputHebrew)}`);
-    }
-
-    if (is('missingPerson','seaVoyage')) {
-      const missingPersonLocation = boardAnalysis.missingPersonLocation;
-      if (missingPersonLocation) push(`מיקום הנעדר:\n  ${ind(missingPersonLocation.outputHebrew)}`);
-
-      const missingPersonReturn = boardAnalysis.missingPersonReturn;
-      if (missingPersonReturn) push(`האם הנעדר יחזור:\n  ${ind(missingPersonReturn.outputHebrew)}`);
-    }
-
-    if (is('missingPerson','travel','seaVoyage','hiddenTreasure')) {
-      const geographicDirection = boardAnalysis.geographicDirection;
-      if (geographicDirection) push(`כיוון גיאוגרפי:\n  ${sc(geographicDirection.outputHebrew)}`);
-
-      const travelDirection = boardAnalysis.travelDirection;
-      if (travelDirection) push(`כיוון הנסיעה:\n  ${sc(travelDirection.outputHebrew)}`);
-    }
 
     if (is('illness','deathInheritance','fear')) {
       const deathRisk = boardAnalysis.deathRisk;
