@@ -1528,14 +1528,6 @@ function buildNarrativeByTopic(result) {
     descW(w13, 'עד ראשון', 13);
     descW(w14, 'עד שני', 14);
 
-    const wt = boardAnalysis.witnessTestimony;
-    if (wt?.w13?.hebrewSummary) {
-      wLines.push(`עדות בית 13 (על בתים 1, 9): ${wt.w13.hebrewSummary}`);
-    }
-    if (wt?.w14?.hebrewSummary) {
-      wLines.push(`עדות בית 14 (על בתים 5, 6, 11): ${wt.w14.hebrewSummary}`);
-    }
-
     const w13t = hTone(w13), w14t = hTone(w14), jt = hTone(judge);
     if (w13 && w14 && jt !== 0) {
       const eitherOpp = (jt > 0 && (w13t < 0 || w14t < 0)) || (jt < 0 && (w13t > 0 || w14t > 0));
@@ -1568,25 +1560,6 @@ function buildNarrativeByTopic(result) {
   // ── 2.7. ELEMENT YES/NO (ספירת יסודות) ─────────────────────────
   if (result.elementYesNo) {
     push(`ספירת יסודות (כן/לא): ${result.elementYesNo.hebrewSummary}`);
-  }
-
-  // ── 2.8. FIGURE × HOUSE INTERACTIONS (מזל מחוזק/מוחלש) ─────────
-  {
-    const interactionLines = [];
-    for (const h of (boardAnalysis.houses || [])) {
-      const ix = h.figureHouseInteraction;
-      if (!ix) continue;
-      const num = Number(h.house);
-      if (num >= 13) continue; // witnesses/judge handled separately
-      const fig = hFig(h);
-      if (!fig) continue;
-      if (ix.code !== 'mixed' && ix.code !== 'neutral-good' && ix.code !== 'neutral-bad') {
-        interactionLines.push(`בית ${num} (${fig}): ${ix.hebrewLabel} — ${ix.note}`);
-      }
-    }
-    if (interactionLines.length) {
-      push('שילוב צורה × בית:\n' + interactionLines.join('\n'));
-    }
   }
 
   // ── 3. H1 — THE QUESTIONER ──────────────────────────────────────

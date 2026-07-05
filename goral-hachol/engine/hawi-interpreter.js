@@ -276,7 +276,7 @@ function isBadValue(value = '') {
     v.includes('nahs')
   );
 }
-function getFigureFortuneTone(house) {
+export function getFigureFortuneTone(house) {
   if (!house) return 0;
   const fortune = String(house.fortune || house.fortuneHebrew || '');
   if (!fortune) return 0;
@@ -3001,78 +3001,6 @@ function computeFoundationsDisplay() {
   };
 }
 
-// ── עדות ספציפית של בתים 13–14 (Task 6) ─────────────────────────────────────
-// מקור: כשף אל-אסראר — בית 13 מעיד על בית 1 ו-9; בית 14 מעיד על בית 5, 6 ו-11
-const WITNESS_13_HOUSES = [1, 9];
-const WITNESS_14_HOUSES = [5, 6, 11];
-
-const HOUSE_TOPIC_LABELS = {
-  1:  'השואל',
-  5:  'ילדים',
-  6:  'מחלה / משרתים',
-  9:  'מזל / נסיעה / דת',
-  11: 'חברים / תקוות',
-};
-
-function describeWitnessEffect(witnessHouse, targetHouseNumbers, chartHouses) {
-  if (!witnessHouse) return null;
-  const tone = getFigureFortuneTone(witnessHouse);
-
-  const targetSummaries = targetHouseNumbers.map((n) => {
-    const h = (chartHouses || []).find((ch) => Number(ch.house) === n);
-    const label = HOUSE_TOPIC_LABELS[n] || `בית ${n}`;
-    const figName = h?.hebrew || h?.figureHebrew || '';
-    const figFort = h?.fortune || '';
-    const targetTone = h ? getFigureFortuneTone({ fortune: figFort }) : 0;
-
-    let effect;
-    if (tone > 0 && targetTone > 0) {
-      effect = 'מחזק לטובה';
-    } else if (tone > 0 && targetTone < 0) {
-      effect = 'מנסה להקל — אך הצורה עצמה שלילית';
-    } else if (tone < 0 && targetTone > 0) {
-      effect = 'מחליש — עד שלילי על בית חיובי';
-    } else if (tone < 0 && targetTone < 0) {
-      effect = 'מחזק לרעה';
-    } else {
-      effect = 'ממוזג';
-    }
-    return `בית ${n} (${label}${figName ? ` — ${figName}` : ''}): ${effect}`;
-  });
-
-  const toneWord = tone > 0 ? 'מיטיב' : tone < 0 ? 'מזיק' : 'ממוזג';
-  return {
-    witnessHouseNum: Number(witnessHouse.house),
-    witnessPattern: witnessHouse.key,
-    witnessFortune: toneWord,
-    targetHouses: targetHouseNumbers,
-    targetSummaries,
-    hebrewSummary: targetSummaries.join('; '),
-  };
-}
-
-// ── שילוב צורה × בית (Task 7) ────────────────────────────────────────────────
-// מקור: כשף אל-אסראר — מזל הצורה + טבע הבית = הכרעת הקריאה
-function computeFigureHouseInteraction(figureTone, houseFortuneTone) {
-  const f = figureTone > 0 ? 'saad' : figureTone < 0 ? 'nahs' : 'mixed';
-  const h = houseFortuneTone > 0 ? 'good' : houseFortuneTone < 0 ? 'bad' : 'neutral';
-
-  if (f === 'saad' && h === 'good')    return { code: 'reinforced-good',   hebrewLabel: 'מחוזקת',           note: 'צורה טובה בבית טוב — הכוח הטוב מחוזק' };
-  if (f === 'saad' && h === 'bad')     return { code: 'mixed-good-in-bad', hebrewLabel: 'מעורבת',            note: 'צורה טובה בבית קשה — הכוח הטוב מוחלש' };
-  if (f === 'nahs' && h === 'bad')     return { code: 'reinforced-bad',    hebrewLabel: 'מחוזקת לרעה',      note: 'צורה רעה בבית קשה — הקושי מחוזק' };
-  if (f === 'nahs' && h === 'good')    return { code: 'weakened-bad',      hebrewLabel: 'מחלישה',           note: 'צורה רעה בבית טוב — מחלישה את הבית הטוב' };
-  if (f === 'saad' && h === 'neutral') return { code: 'neutral-good',      hebrewLabel: 'ניטרלי-חיובי',     note: 'צורה טובה בבית ניטרלי' };
-  if (f === 'nahs' && h === 'neutral') return { code: 'neutral-bad',       hebrewLabel: 'ניטרלי-שלילי',     note: 'צורה רעה בבית ניטרלי' };
-  return { code: 'mixed',              hebrewLabel: 'ממוזג',               note: 'צורה ממוזגת — הכיוון תלוי בעדים' };
-}
-
-function computeWitnessTestimony(witness13, witness14, chartHouses) {
-  return {
-    w13: witness13 ? describeWitnessEffect(witness13, WITNESS_13_HOUSES, chartHouses) : null,
-    w14: witness14 ? describeWitnessEffect(witness14, WITNESS_14_HOUSES, chartHouses) : null,
-    sourceRef: 'כשף אל-אסראר — בית 13 מעיד על בית 1 ו-9; בית 14 מעיד על בית 5, 6 ו-11',
-  };
-}
 
 // ============================================================
 // BATCH G: 8 פונקציות חדשות מכשף אל-אסרר (Task 15)
@@ -3790,10 +3718,6 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
         figureState: getFigureStateForHouse(house),
         houseState: getHouseStateColor(house.house),
         houseFortuneTone: getHouseFortuneTone(house.house),
-        figureHouseInteraction: computeFigureHouseInteraction(
-          getFigureFortuneTone({ fortune: house.fortune }),
-          getHouseFortuneTone(house.house)
-        ),
         isAdversarial: adversarialHouseNums.has(Number(house.house)),
         direction: dir,
         directionHebrew: getFigureDirectionHebrew(dir),
@@ -3816,7 +3740,6 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const witness14 = houses.find((h) => Number(h.house) === 14) || null;
   const judge15 = houses.find((h) => Number(h.house) === 15) || null;
   const sentence16 = houses.find((h) => Number(h.house) === 16) || null;
-  const witnessTestimony = computeWitnessTestimony(witness13, witness14, board.chart);
   const dhamirHouse = computeDhamirHouse(board);
   const dhamirByMizan = computeDhamirByMizanTracing(board.chart);
   const boardScore = computeBoardScore(board.chart);
@@ -4031,7 +3954,6 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     houses,
     focusHouse,
     witnesses: [witness13, witness14].filter(Boolean),
-    witnessTestimony,
     judge: judge15,
     sentence: sentence16,
     dhamirHouse,
