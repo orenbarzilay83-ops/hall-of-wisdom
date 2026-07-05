@@ -271,29 +271,102 @@ const SHORT_HOUSE_TITLES = {
 
 // קטגוריות נושא לשיטת חאוי — 12 בתים + תת-נושאים
 const HAWI_TOPIC_CATEGORIES = [
-  { id: 'foundations',      label: 'מצב כללי',       desc: 'שאלה כללית, בריאות, מצב נפשי',        icon: '⚡' },
-  { id: 'marriage',         label: 'זוגיות',          desc: 'נישואין, זוגיות, יחסים',               icon: '💍' },
-  { id: 'commerce',         label: 'פרנסה וממון',     desc: 'עסקים, רכוש, הכנסה',                   icon: '💰' },
-  { id: 'illness',          label: 'בריאות ומחלה',   desc: 'חולי, החלמה, אבחון',                    icon: '🏥' },
-  { id: 'travel',           label: 'נסיעה',           desc: 'יציאה לדרך, נסיעה, מסע',               icon: '✈️' },
-  { id: 'disputes',         label: 'סכסוך ותביעה',   desc: 'מריבה, בית משפט, יריב',                icon: '⚖️' },
-  { id: 'authorityState',   label: 'קריירה ושלטון',  desc: 'תפקיד, מינוי, עמדת כוח',               icon: '👑' },
-  { id: 'childrenPregnancy',label: 'ילדים והריון',    desc: 'לידה, הריון, ילדים',                    icon: '👶' },
-  { id: 'spiritualDiagnostics', label: 'אבחון רוחני', desc: 'עין הרע, כישוף, השפעה רוחנית',        icon: '🔮' },
-  { id: 'missingPerson',    label: 'נעדר / גנבה',    desc: 'חיפוש אדם, גנוב, מסתתר',               icon: '🔍' },
-  { id: 'deathInheritance', label: 'ירושה ומוות',    desc: 'עיזבון, ירושה, סוף עניין',             icon: '📜' },
-  { id: 'yearlyForecast',   label: 'תחזית שנתית',    desc: 'מה השנה תביא, מחירים, מזג אוויר',      icon: '📅' },
+  { id: 'foundations',          label: 'מצב כללי',       icon: '⚡' },
+  { id: 'marriage',             label: 'זוגיות',          icon: '💍' },
+  { id: 'commerce',             label: 'פרנסה וממון',     icon: '💰' },
+  { id: 'illness',              label: 'בריאות ומחלה',   icon: '🏥' },
+  { id: 'travel',               label: 'נסיעה',           icon: '✈️' },
+  { id: 'disputes',             label: 'סכסוך ותביעה',   icon: '⚖️' },
+  { id: 'authorityState',       label: 'קריירה ושלטון',  icon: '👑' },
+  { id: 'childrenPregnancy',    label: 'ילדים והריון',    icon: '👶' },
+  { id: 'spiritualDiagnostics', label: 'אבחון רוחני',    icon: '🔮' },
+  { id: 'missingPerson',        label: 'נעדר / גנבה',    icon: '🔍' },
+  { id: 'deathInheritance',     label: 'ירושה ומוות',    icon: '📜' },
+  { id: 'yearlyForecast',       label: 'תחזית שנתית',    icon: '📅' },
+];
+
+// בנק שאלות מפורטות לשיטת חאוי
+const HAWI_QUESTION_BANK = [
+  // מצב כללי
+  { id: 'hawi-q-general-state',    categoryId: 'foundations', topicId: 'foundations',    label: 'מה מצבי הכללי?',                  desc: 'ניתוח כוללני של מצב האדם כרגע' },
+  { id: 'hawi-q-general-future',   categoryId: 'foundations', topicId: 'foundations',    label: 'מה יהיה עתידי?',                  desc: 'שאלה פתוחה על העתיד הקרוב' },
+  { id: 'hawi-q-birth-nativity',   categoryId: 'foundations', topicId: 'birthNativity',  label: 'קרא את גורל הלידה שלי',           desc: 'לוח מולד — גורל האדם לפי שעת הלידה' },
+  { id: 'hawi-q-completion',       categoryId: 'foundations', topicId: 'completion',     label: 'האם העניין יושלם?',               desc: 'שאלה על הצלחה או כישלון של כוונה כלשהי' },
+
+  // זוגיות
+  { id: 'hawi-q-marriage-will',    categoryId: 'marriage', topicId: 'marriage',  label: 'האם אתחתן?',                         desc: 'סיכויי נישואין — מתי ועם מי' },
+  { id: 'hawi-q-marriage-serious', categoryId: 'marriage', topicId: 'marriage',  label: 'האם הוא/היא מתכוון/ת ברצינות?',     desc: 'בדיקת כוונות הצד השני בזוגיות' },
+  { id: 'hawi-q-marriage-state',   categoryId: 'marriage', topicId: 'marriage',  label: 'מה מצב הקשר בינינו?',               desc: 'קריאה כוללת על מצב הזוגיות' },
+  { id: 'hawi-q-marriage-divorce', categoryId: 'marriage', topicId: 'marriage',  label: 'האם הגירושין יתקיימו?',             desc: 'שאלה על תהליך פרידה וגירושין' },
+  { id: 'hawi-q-love-hate',        categoryId: 'marriage', topicId: 'loveHate',  label: 'האם יש אהבה בינינו?',               desc: 'אהבה, שנאה, רגשות הדדיים בין שני אנשים' },
+
+  // פרנסה וממון
+  { id: 'hawi-q-commerce-profit',  categoryId: 'commerce', topicId: 'commerce',     label: 'האם העסק ירוויח?',                desc: 'רווחיות עסק, מכירה, רכישה' },
+  { id: 'hawi-q-commerce-deal',    categoryId: 'commerce', topicId: 'commerce',     label: 'האם העסקה תצא לפועל?',           desc: 'ביצוע עסקה ספציפית — קנייה או מכירה' },
+  { id: 'hawi-q-loan',             categoryId: 'commerce', topicId: 'loan',         label: 'האם אקבל את ההלוואה בחזרה?',     desc: 'גביית חוב, החזרת הלוואה' },
+  { id: 'hawi-q-partnership',      categoryId: 'commerce', topicId: 'partnership',  label: 'האם השותפות תצליח?',             desc: 'בדיקת שותפות עסקית ועמידות החוזה' },
+
+  // בריאות ומחלה
+  { id: 'hawi-q-illness-recover',  categoryId: 'illness', topicId: 'illness', label: 'האם החולה יחלים?',           desc: 'שאלה על החלמה ממחלה ועל אורכה' },
+  { id: 'hawi-q-illness-origin',   categoryId: 'illness', topicId: 'illness', label: 'מה מקור המחלה?',             desc: 'זיהוי גורם המחלה — גוף, נפש, או השפעה חיצונית' },
+  { id: 'hawi-q-illness-danger',   categoryId: 'illness', topicId: 'illness', label: 'האם המחלה מסוכנת?',          desc: 'הערכת חומרת המחלה וסכנת חיים' },
+
+  // נסיעה
+  { id: 'hawi-q-travel-go',        categoryId: 'travel', topicId: 'travel',     label: 'האם הנסיעה תצא לפועל?',   desc: 'שאלה על יציאה לדרך' },
+  { id: 'hawi-q-travel-safe',      categoryId: 'travel', topicId: 'travel',     label: 'האם הנסיעה תהיה בטוחה?', desc: 'בטיחות בדרך — סכנה, בריאות, הצלחה' },
+  { id: 'hawi-q-sea-voyage',       categoryId: 'travel', topicId: 'seaVoyage',  label: 'נסיעת ים — האם תצליח?',  desc: 'שאלה ספציפית על מסע בים' },
+
+  // סכסוך ותביעה
+  { id: 'hawi-q-disputes-win',     categoryId: 'disputes', topicId: 'disputes', label: 'מי ינצח בסכסוך?',          desc: 'בדיקת עמדות הצדדים — מי גובר' },
+  { id: 'hawi-q-disputes-court',   categoryId: 'disputes', topicId: 'disputes', label: 'מה יהיה פסק הדין?',        desc: 'תוצאת הליך משפטי או גישור' },
+  { id: 'hawi-q-enemies',          categoryId: 'disputes', topicId: 'enemies',   label: 'מי האויב שמזיק לי?',       desc: 'זיהוי אויב נסתר או גורם מזיק' },
+  { id: 'hawi-q-prisoner',         categoryId: 'disputes', topicId: 'prisoner',  label: 'האם האסיר ישתחרר?',       desc: 'שאלה על שחרור ממאסר' },
+  { id: 'hawi-q-fear',             categoryId: 'disputes', topicId: 'fear',      label: 'האם הסכנה תעבור?',        desc: 'פחד, איום, סכנת חיים' },
+
+  // קריירה ושלטון
+  { id: 'hawi-q-authority-get',    categoryId: 'authorityState', topicId: 'authorityState', label: 'האם אקבל את התפקיד?',       desc: 'קבלת משרה, קידום, מינוי' },
+  { id: 'hawi-q-authority-keep',   categoryId: 'authorityState', topicId: 'authorityState', label: 'האם אשמור על תפקידי?',      desc: 'שמירה על עמדת כוח קיימת' },
+  { id: 'hawi-q-authority-rival',  categoryId: 'authorityState', topicId: 'authorityState', label: 'מי יגבר — אני או המתחרה?',  desc: 'תחרות על תפקיד או עמדת השפעה' },
+
+  // ילדים והריון
+  { id: 'hawi-q-child-born',        categoryId: 'childrenPregnancy', topicId: 'childrenPregnancy', label: 'האם יהיה לי ילד מאישה זו?', desc: 'השאלה הבסיסית בפרק — הל יכון לה ולד מן הדה אלמראה' },
+  { id: 'hawi-q-child-gender',     categoryId: 'childrenPregnancy', topicId: 'childrenPregnancy', label: 'האם הוולד זכר או נקבה?',     desc: 'קביעת מין הוולד לפי הצורות בלוח' },
+  { id: 'hawi-q-child-months',     categoryId: 'childrenPregnancy', topicId: 'childrenPregnancy', label: 'כמה חודשי הריון עברו?',      desc: 'ספירת חודשי הריון לפי שיטת הספר' },
+
+  // אבחון רוחני
+  { id: 'hawi-q-spirit-evil-eye',  categoryId: 'spiritualDiagnostics', topicId: 'spiritualDiagnostics', label: 'האם יש עין הרע?',         desc: 'בדיקת עין הרע וקנאה' },
+  { id: 'hawi-q-spirit-sorcery',   categoryId: 'spiritualDiagnostics', topicId: 'spiritualDiagnostics', label: 'האם יש כישוף?',           desc: 'בדיקת נזק ממין כישוף ואחיזה' },
+  { id: 'hawi-q-spirit-jinn',      categoryId: 'spiritualDiagnostics', topicId: 'spiritualDiagnostics', label: 'האם יש השפעת ג׳ין?',      desc: 'בדיקת אחיזה רוחנית' },
+  { id: 'hawi-q-spirit-general',   categoryId: 'spiritualDiagnostics', topicId: 'spiritualDiagnostics', label: 'אבחון רוחני כללי',        desc: 'זיהוי מקור הבעיה — כשף, עין, ג׳ין' },
+
+  // נעדר / גנבה
+  { id: 'hawi-q-missing-return',   categoryId: 'missingPerson', topicId: 'missingPerson',   label: 'האם הנעדר יחזור?',              desc: 'שאלה על חזרת נעדר' },
+  { id: 'hawi-q-missing-alive',    categoryId: 'missingPerson', topicId: 'missingPerson',   label: 'האם הנעדר חי?',                 desc: 'בדיקת מצב הנעדר — חי, מת, תקוע' },
+  { id: 'hawi-q-theft-who',        categoryId: 'missingPerson', topicId: 'theft',            label: 'מי הגנב?',                      desc: 'זיהוי הגנב — תיאורו ומיקומו' },
+  { id: 'hawi-q-theft-found',      categoryId: 'missingPerson', topicId: 'theft',            label: 'האם הגנוב יחזור?',              desc: 'סיכויי שחזור החפץ הגנוב' },
+  { id: 'hawi-q-hidden-treasure',  categoryId: 'missingPerson', topicId: 'hiddenTreasure',  label: 'האם יש אוצר נסתר?',            desc: 'חיפוש אוצר, כסף נסתר, מים תת-קרקעיים' },
+
+  // ירושה ומוות
+  { id: 'hawi-q-death-when',       categoryId: 'deathInheritance', topicId: 'deathInheritance', label: 'האם החולה בסכנת מוות?',      desc: 'שאלה רגישה על מצב החולה הקשה' },
+  { id: 'hawi-q-inheritance-who',  categoryId: 'deathInheritance', topicId: 'deathInheritance', label: 'מי יירש?',                   desc: 'חלוקת ירושה ועיזבון' },
+  { id: 'hawi-q-inheritance-amt',  categoryId: 'deathInheritance', topicId: 'deathInheritance', label: 'כמה ירושה יישאר?',          desc: 'גודל העיזבון שיישאר לאחר הפטירה' },
+
+  // תחזית שנתית
+  { id: 'hawi-q-yearly-general',   categoryId: 'yearlyForecast', topicId: 'yearlyForecast', label: 'מה השנה הקרובה תביא?',         desc: 'תחזית שנתית כוללת — בריאות, ממון, אירועים' },
+  { id: 'hawi-q-yearly-prices',    categoryId: 'yearlyForecast', topicId: 'yearlyForecast', label: 'מה יהיה עם המחירים?',          desc: 'עליית מחירים, יוקר המחיה, כלכלה' },
+  { id: 'hawi-q-yearly-weather',   categoryId: 'yearlyForecast', topicId: 'yearlyForecast', label: 'מה יהיה מזג האוויר?',          desc: 'תחזית גשם, בצורת, שפע' },
 ];
 
 // משתנה לשמירת נושא חאוי שנבחר במסך השאלה
 let _hawiSelectedTopic = null;
+let _hawiSelectedQuestion = null;
 
 function renderQuestionScreen() {
   // עדכן כותרת המסך לפי המצב הנוכחי
   const headerEl = document.querySelector('#screen-question .qscreen-header h2');
   const subtitleEl = document.querySelector('#screen-question .qscreen-subtitle');
   if (headerEl) headerEl.textContent = goralMode === 'hawi' ? 'גורל החול — שיטת חאוי' : 'גורל החול — שיטת כשף אל-אסרר';
-  if (subtitleEl) subtitleEl.textContent = goralMode === 'hawi' ? 'בחר נושא השאלה' : 'לחץ על בית לסינון';
+  if (subtitleEl) subtitleEl.textContent = goralMode === 'hawi' ? 'בחר קטגוריה ולאחר מכן שאלה ספציפית' : 'לחץ על בית לסינון';
 
   if (goralMode === 'hawi') {
     _renderHawiTopicScreen();
@@ -303,38 +376,65 @@ function renderQuestionScreen() {
 }
 
 function _renderHawiTopicScreen() {
+  // ── שורת קטגוריות (במקום כפתורי בתים) ──
   const houseEl = document.getElementById('qhouseGrid');
   if (houseEl) {
-    houseEl.innerHTML = `<div class="hawi-mode-badge">שיטת חאוי — ספר חאוי העג'איב</div>`;
-  }
-
-  const gridEl = document.getElementById('qcardGrid');
-  if (gridEl) {
-    gridEl.innerHTML = HAWI_TOPIC_CATEGORIES.map(cat => {
-      const isSelected = _hawiSelectedTopic === cat.id;
-      return `<button type="button"
-        class="qcard hawi-topic-card${isSelected ? ' selected' : ''}"
-        data-topicid="${cat.id}">
-        <div class="qcard-body">
-          <span class="hawi-topic-icon">${cat.icon}</span>
-          <span class="qcard-label">${escapeHtml(cat.label)}</span>
-          <span class="qcard-desc">${escapeHtml(cat.desc)}</span>
-        </div>
+    houseEl.className = 'qhouse-grid hawi-cat-grid';
+    houseEl.innerHTML = HAWI_TOPIC_CATEGORIES.map(cat => {
+      const isActive = _hawiSelectedTopic === cat.id;
+      return `<button type="button" class="qhouse-btn hawi-cat-btn${isActive ? ' active' : ''}" data-catid="${cat.id}">
+        <span class="qhouse-num">${cat.icon}</span>
+        <span class="qhouse-title">${escapeHtml(cat.label)}</span>
       </button>`;
     }).join('');
 
-    gridEl.querySelectorAll('.hawi-topic-card').forEach(btn => {
+    houseEl.querySelectorAll('.hawi-cat-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        _hawiSelectedTopic = btn.dataset.topicid;
+        const cid = btn.dataset.catid;
+        _hawiSelectedTopic = _hawiSelectedTopic === cid ? null : cid;
+        _hawiSelectedQuestion = null;
         _renderHawiTopicScreen();
       });
     });
   }
 
+  // ── רשימת שאלות לקטגוריה שנבחרה ──
+  const gridEl = document.getElementById('qcardGrid');
+  if (gridEl) {
+    if (!_hawiSelectedTopic) {
+      gridEl.innerHTML = `<div class="qcard-empty">בחר קטגוריה למעלה כדי לראות את השאלות</div>`;
+    } else {
+      const questions = HAWI_QUESTION_BANK.filter(q => q.categoryId === _hawiSelectedTopic);
+      if (questions.length === 0) {
+        gridEl.innerHTML = `<div class="qcard-empty">אין שאלות לקטגוריה זו</div>`;
+      } else {
+        gridEl.innerHTML = questions.map(q => {
+          const isSelected = _hawiSelectedQuestion && _hawiSelectedQuestion.id === q.id;
+          return `<button type="button"
+            class="qcard${isSelected ? ' selected' : ''}"
+            data-qid="${q.id}">
+            <div class="qcard-body">
+              <span class="qcard-label">${escapeHtml(q.label)}</span>
+              ${q.desc ? `<span class="qcard-desc">${escapeHtml(q.desc)}</span>` : ''}
+            </div>
+          </button>`;
+        }).join('');
+
+        gridEl.querySelectorAll('.qcard').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const qid = btn.dataset.qid;
+            _hawiSelectedQuestion = HAWI_QUESTION_BANK.find(q => q.id === qid) || null;
+            _renderHawiTopicScreen();
+          });
+        });
+      }
+    }
+  }
+
   const contBtn = document.getElementById('continueFromQuestionBtn');
   if (contBtn) {
-    contBtn.disabled = !_hawiSelectedTopic;
-    contBtn.textContent = _hawiSelectedTopic ? 'המשך ←' : 'בחר נושא תחילה';
+    contBtn.disabled = !_hawiSelectedQuestion;
+    contBtn.textContent = _hawiSelectedQuestion ? 'המשך ←' : 'בחר שאלה תחילה';
   }
 }
 
@@ -347,6 +447,7 @@ function _renderKashfQuestionScreen() {
   // ── כפתורי 12 בתים (2 שורות × 6) ──
   const houseEl = document.getElementById('qhouseGrid');
   if (houseEl) {
+    houseEl.className = 'qhouse-grid';
     houseEl.innerHTML = TOPIC_CARDS.map(card => {
       const isActive = _activeHouseFilter === card.house;
       return `<button type="button" class="qhouse-btn${isActive ? ' active' : ''}" data-house="${card.house}">
@@ -1133,6 +1234,7 @@ function clearForm() {
   selectedTopicId = null;
   selectedQuestion = null;
   _hawiSelectedTopic = null;
+  _hawiSelectedQuestion = null;
   profileState = { gender: null, marital: null, work: null, children: null };
   document.querySelectorAll('.profile-btn.selected').forEach(b => b.classList.remove('selected'));
   renderTopicGrid();
@@ -1514,9 +1616,8 @@ document.getElementById("backFromQuestionBtn").addEventListener("click", () => s
 
 document.getElementById("continueFromQuestionBtn").addEventListener("click", () => {
   if (goralMode === 'hawi') {
-    if (!_hawiSelectedTopic) return;
-    // הגדר נושא חאוי ועבור ישירות למסך הכניסה הפתוחה
-    selectedTopicId = _hawiSelectedTopic;
+    if (!_hawiSelectedQuestion) return;
+    selectedTopicId = _hawiSelectedQuestion.topicId;
     selectedHouseNum = null;
     forcedTopicId = null;
     selectedQuestion = null;
