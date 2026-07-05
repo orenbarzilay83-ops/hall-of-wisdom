@@ -324,9 +324,10 @@ function writeConclusionPara(reading) {
     primaryFormula, altFormula, keyHouseReadings,
   } = reading;
 
-  const name = c(clientContext?.name);
-  const fn   = firstName(name);
-  const h15  = keyHouseReadings?.find(h => h.houseNum === 15);
+  const name     = c(clientContext?.name);
+  const fn       = firstName(name);
+  const h15      = keyHouseReadings?.find(h => h.houseNum === 15);
+  const isFemale = clientContext?.gender === 'female' || clientContext?.gender === 'נקבה';
 
   const TOPIC_GUIDANCE = {
     illness: {
@@ -340,7 +341,7 @@ function writeConclusionPara(reading) {
       neutral:  'הלוח מעורב — יש סימנים טובים וגם מאתגרים. ההחלטה תלויה בנסיבות הפרטיות ובמה שכל צד מוכן לתת.',
     },
     travel: {
-      positive: 'הנסיעה מבורכת לפי הלוח. הדרך פתוחה ויש יותר תמיכה מאשר מכשולים. יכול לצאת לדרך בטוח.',
+      positive: `הנסיעה מבורכת לפי הלוח. הדרך פתוחה ויש יותר תמיכה מאשר מכשולים. ${isFemale ? 'יכולה' : 'יכול'} לצאת לדרך בטוח.`,
       negative: 'הלוח מורה על קשיים בנסיעה. כדאי לשקול עיכוב או שינוי תכנון. אם חייבים לנסוע — להיזהר במיוחד.',
       neutral:  'הנסיעה אפשרית אך יש לה מכשולים. יש לתכנן היטב, לא לצאת ללא הכנה, ולהיות מוכן לשינויים בדרך.',
     },
@@ -434,14 +435,18 @@ function writeConclusionPara(reading) {
     ? (() => {
         const fig = h15.figureName;
         if (h15.quality === 'saad') {
-          return overallPositive === false
-            ? ` אולם הדיין — הצורה ${fig} — מרמז על אפשרות שיפור בהמשך הדרך.`
-            : ` הדיין — הצורה ${fig} — מחזק את הכיוון החיובי.`;
+          if (overallPositive === false)
+            return ` אולם הדיין — הצורה ${fig} — מרמז על אפשרות שיפור בהמשך הדרך.`;
+          if (overallPositive === null)
+            return ` הדיין — הצורה ${fig} — מוסיף גוון חיובי להכרעה המורכבת.`;
+          return ` הדיין — הצורה ${fig} — מחזק את הכיוון החיובי.`;
         }
         if (h15.quality === 'nahs') {
-          return overallPositive === true
-            ? ` אולם הדיין — הצורה ${fig} — מזהיר מפני קשיים אפשריים בהמשך.`
-            : ` הדיין — הצורה ${fig} — מדגיש את הקושי שבמצב.`;
+          if (overallPositive === true)
+            return ` אולם הדיין — הצורה ${fig} — מזהיר מפני קשיים אפשריים בהמשך.`;
+          if (overallPositive === null)
+            return ` הדיין — הצורה ${fig} — מוסיף גוון שלילי להכרעה המורכבת.`;
+          return ` הדיין — הצורה ${fig} — מדגיש את הקושי שבמצב.`;
         }
         return ` הדיין — הצורה ${fig} — מוסיף מורכבות להכרעה.`;
       })()
