@@ -1175,7 +1175,7 @@ async function runReading() {
         reading.clientContext?.clientName || ""
       );
     }
-    if (window.HAWI_INTERPRETER?.interpretHawiQuestionInitial) {
+    if (goralMode !== 'kashf' && window.HAWI_INTERPRETER?.interpretHawiQuestionInitial) {
       reading._precomputedInsight = window.HAWI_INTERPRETER.interpretHawiQuestionInitial(reading.question, reading);
     }
 

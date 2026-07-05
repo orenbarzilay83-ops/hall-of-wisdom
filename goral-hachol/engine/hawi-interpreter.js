@@ -30,10 +30,6 @@ import {
   getHazzStrengthLabel,
 } from '../data/sources/hawi/foundations/hawi-hazz.js';
 
-import { getKashfVerdict }         from './kashf-verdict-engine.js';
-import { getKashfSupportAnalysis } from './kashf-support-analyzer.js';
-import { getKashfBookInsight }     from './kashf-book-reader.js';
-
 import {
   HAWI_FIGURE_NAMES_BY_ID,
 } from '../data/sources/hawi/foundations/hawi-figure-names.js';
@@ -5535,9 +5531,6 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     ? board.chart.find((h) => h.key === h1Seventh && Number(h.house) !== 1)
     : null;
 
-  // Task 10: תובנה מספר כשף אל-אסראר שער שישי (מחובר לנושא)
-  const kashfBookInsight = getKashfBookInsight(topicId);
-
   // Task 11: תפקידים ספציפיים של בתים לפי נושא (מהכשף)
   const houseRoles = TOPIC_HOUSE_ROLES[topicId] || {};
   const specificRolesHebrew = Object.entries(houseRoles).map(([hNum, role]) => {
@@ -5626,7 +5619,6 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     seventhOfHouse1: seventhOfHouse1Found
       ? { pattern: h1Seventh, foundInHouse: Number(seventhOfHouse1Found.house), figureHebrew: seventhOfHouse1Found.hebrew || h1Seventh }
       : null,
-    kashfBookInsight,
     specificRolesHebrew,
     dreamH9,
     lostAnimalReturn,
@@ -6006,9 +5998,6 @@ export function interpretHawiQuestionInitial(question, board = null) {
     relevantRules
   );
 
-  const kashfVerdict        = getKashfVerdict(route.topicId, board);
-  const kashfSupportAnalysis = kashfVerdict ? getKashfSupportAnalysis(board, kashfVerdict) : null;
-
   const boardValidation = board?.boardValidation || { isValid: true, hasCritical: false, warnings: [] };
   const elementYesNo = (board?.entries?.length > 0) ? countElementsForYesNo(board) : null;
 
@@ -6058,23 +6047,15 @@ export function interpretHawiQuestionInitial(question, board = null) {
       spiritualDiagnosis,
       relevantRules,
       judgeVerdict,
-      kashfVerdict,
-      kashfSupportAnalysis,
       elementYesNo,
     })),
     conclusionDraftHebrew: technicalConclusionHebrew,
-
-    // Layer 5-6: כשף-אל-אסראר verdict + support analysis (additive)
-    kashfVerdict,
-    kashfSupportAnalysis,
 
     // Short client-facing verdict (always-visible, topic-aware)
     shortClientVerdict: writeShortClientVerdict({
       topicId: route.topicId,
       boardAnalysis,
       judgeVerdict,
-      kashfVerdict,
-      kashfSupportAnalysis,
       clientContext,
     }),
 
@@ -6083,8 +6064,6 @@ export function interpretHawiQuestionInitial(question, board = null) {
       topicId: route.topicId,
       boardAnalysis,
       judgeVerdict,
-      kashfVerdict,
-      kashfSupportAnalysis,
       clientContext,
       boardScore,
       question,
