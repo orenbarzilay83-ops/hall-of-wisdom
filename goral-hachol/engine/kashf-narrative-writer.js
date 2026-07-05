@@ -163,7 +163,6 @@ function writeVerdictPara(reading) {
   if (resultDesc) parts.push(resultDesc + '.');
   if (verdictText) parts.push(`<strong>הפסיקה:</strong> ${verdictText}.`);
   if (srcShort) parts.push(`<em>לפי הספר: "${srcShort}"</em>`);
-  if (fn && verdictText) parts.push(`עבור ${fn} — ${verdictText}.`);
 
   return `<p class="kashf-prose-paragraph">${parts.join(' ')}</p>`;
 }
@@ -438,11 +437,20 @@ function writeConclusionPara(reading) {
     || (dir === 'positive' ? 'הכיוון הכללי טוב.' : dir === 'negative' ? 'הכיוון הכללי מאתגר.' : 'הכיוון הכללי מורכב.');
 
   const judgeNote = h15
-    ? ` ${
-        h15.quality === 'saad'  ? `הדיין — הצורה ${h15.figureName} — מחזק את הכיוון החיובי.` :
-        h15.quality === 'nahs'  ? `הדיין — הצורה ${h15.figureName} — מדגיש את הקושי שבמצב.` :
-                                   `הדיין — הצורה ${h15.figureName} — מוסיף מורכבות להכרעה.`
-      }`
+    ? (() => {
+        const fig = h15.figureName;
+        if (h15.quality === 'saad') {
+          return overallPositive === false
+            ? ` אולם הדיין — הצורה ${fig} — מרמז על אפשרות שיפור בהמשך הדרך.`
+            : ` הדיין — הצורה ${fig} — מחזק את הכיוון החיובי.`;
+        }
+        if (h15.quality === 'nahs') {
+          return overallPositive === true
+            ? ` אולם הדיין — הצורה ${fig} — מזהיר מפני קשיים אפשריים בהמשך.`
+            : ` הדיין — הצורה ${fig} — מדגיש את הקושי שבמצב.`;
+        }
+        return ` הדיין — הצורה ${fig} — מוסיף מורכבות להכרעה.`;
+      })()
     : '';
 
   const opening = fn ? `${fn} — ` : '';
