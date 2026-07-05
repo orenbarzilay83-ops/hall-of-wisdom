@@ -2046,13 +2046,13 @@ function renderMethodsGuide() {
       <div class="guide-method-header">
         <span class="guide-method-icon">🔮</span>
         <div>
-          <div class="guide-method-name">שיטת כשף</div>
+          <div class="guide-method-name">חשיפת הסודות הנצורים (כשף אל-אסרר)</div>
           <div class="guide-method-book">ספר כשף אל-אסרר המצונה</div>
         </div>
       </div>
       <div class="guide-method-body">
         <p>
-          שיטת כשף היא שיטה <strong>נוסחתית, ממוקדת ומדויקת</strong>. במקום לקרוא את כל הלוח
+          חשיפת הסודות הנצורים (כשף אל-אסרר) היא שיטה <strong>נוסחתית, ממוקדת ומדויקת</strong>. במקום לקרוא את כל הלוח
           שורה אחר שורה, היא שולפת בתים ספציפיים, מחברת אותם לפי נוסחה מוגדרת, ומפיקה צורה
           תוצאתית אחת שמכילה את התשובה. כל שאלה — נוסחה אחת, תשובה אחת.
         </p>

@@ -508,6 +508,67 @@ input, select, textarea {
 }
 .kashf-disclaimer { font-style: italic; margin-top: 4px; }
 
+/* ── Kashf prose paragraphs ── */
+.kashf-prose-paragraph {
+  color: #c8ddf0;
+  font-size: 14px;
+  line-height: 1.78;
+  margin: 0 0 10px;
+  text-align: right;
+}
+.kashf-prose-paragraph strong {
+  color: #e8d490;
+  font-weight: 700;
+}
+.kashf-prose-paragraph em {
+  color: #9ab4cc;
+  font-style: normal;
+}
+.kashf-supporting-section {
+  background: rgba(6,25,45,0.7);
+  border: 1px solid rgba(100,200,150,0.2);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+.kashf-supporting-title {
+  color: #7ad4a8;
+  font-size: 13px;
+  font-weight: 700;
+  margin: 0 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(100,200,150,0.2);
+  letter-spacing: 0.03em;
+}
+.kashf-supporting-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.kashf-supporting-item-prose {
+  color: #b8cfe8;
+  font-size: 13px;
+  line-height: 1.65;
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(232,212,144,0.06);
+  text-align: right;
+}
+.kashf-supporting-item-prose:last-child { border-bottom: none; }
+.kashf-supporting-item-prose strong { color: #e8d490; }
+.kashf-conclusion {
+  background: linear-gradient(135deg, rgba(6,25,45,0.9) 0%, rgba(10,35,60,0.9) 100%);
+  border: 1px solid rgba(232,212,144,0.4);
+  border-radius: 8px;
+  padding: 16px 18px;
+  color: #d8eaf8;
+  font-size: 14px;
+  line-height: 1.8;
+  text-align: right;
+}
+.kashf-conclusion strong {
+  color: #f0c040;
+  font-weight: 700;
+}
+
 #screen-prayer {
   position: fixed !important;
   inset: 0 !important;
@@ -2756,7 +2817,7 @@ body:has(#screen-open.active) .topbar { display: none !important; }
           <span class="menu-item-icon">✦</span>גורל החול — שיטת חאוי
         </button>
         <button class="menu-item" id="menuGoralKashfBtn">
-          <span class="menu-item-icon">◈</span>גורל החול — שיטת כשף
+          <span class="menu-item-icon">◈</span>חשיפת הסודות הנצורים
         </button>
         <button class="menu-item" id="menuJournalBtn">
           <span class="menu-item-icon">📋</span>יומן לקוחות
@@ -3051,12 +3112,12 @@ body:has(#screen-open.active) .topbar { display: none !important; }
     <section id="screen-kashf-goral" class="screen">
       <div class="screen-back-bar" style="padding:12px 16px;display:flex;align-items:center;gap:12px;background:#06192d;border-bottom:1px solid rgba(232,212,144,0.35);">
         <button class="btn gray" id="backFromKashfGoralBtn">← חזרה</button>
-        <h2 style="margin:0;color:#e8d490;font-size:18px;flex:1">◈ גורל החול — שיטת כשף</h2>
+        <h2 style="margin:0;color:#e8d490;font-size:18px;flex:1">◈ חשיפת הסודות הנצורים (כשף אל-אסרר)</h2>
       </div>
       <div class="kashf-goral-content">
         <div class="kashf-goral-card">
           <div class="kashf-goral-badge">בפיתוח</div>
-          <h3 class="kashf-goral-title">גורל החול לפי שיטת כשף אל-אסרר</h3>
+          <h3 class="kashf-goral-title">חשיפת הסודות הנצורים (כשף אל-אסרר)</h3>
           <p class="kashf-goral-desc">
             שיטת כשף אל-אסרר ("חשיפת הסודות הנצורים") בנויה על כללי פסיקה ייחודיים לכל נושא,
             הנגזרים ישירות מהספר — ולא על מטריצת צורה×בית.
@@ -3069,7 +3130,7 @@ body:has(#screen-open.active) .topbar { display: none !important; }
             <button class="btn primary" id="openKashfBookFromGoralBtn">📖 פתח ספר כשף לעיון</button>
           </div>
           <div class="kashf-goral-note">
-            בחירת שיטת כשף תפנה אתכם למסך שאלת הגורל עם מנוע כשף אל-אסרר.
+            בחירת שיטת חשיפת הסודות הנצורים תפנה אתכם למסך שאלת הגורל עם מנוע כשף אל-אסרר.
           </div>
         </div>
       </div>
@@ -3079,7 +3140,7 @@ body:has(#screen-open.active) .topbar { display: none !important; }
     <section id="screen-kashf-reading" class="screen">
       <div class="screen-back-bar" style="padding:12px 16px;display:flex;align-items:center;gap:12px;background:#06192d;border-bottom:1px solid #e8d490;">
         <button class="btn gray" id="backFromKashfReadingBtn">← חזרה</button>
-        <h2 style="margin:0;color:#f0c040;font-size:18px;flex:1">◈ גורל החול — שיטת כשף</h2>
+        <h2 style="margin:0;color:#f0c040;font-size:18px;flex:1">◈ חשיפת הסודות הנצורים (כשף אל-אסרר)</h2>
       </div>
       <div id="kashfReadingOutput" class="kashf-reading-scroll"></div>
     </section>
