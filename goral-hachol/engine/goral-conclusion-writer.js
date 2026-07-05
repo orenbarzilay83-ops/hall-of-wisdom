@@ -739,11 +739,6 @@ function describeCoreHouses(analysis, topicId, question) {
     parts.push(firstFigRep.outputHebrew);
   }
 
-  const timing = analysis.timingEstimate;
-  if (timing) {
-    parts.push(timing.outputHebrew);
-  }
-
   return parts.join('\n');
 }
 
@@ -1346,13 +1341,10 @@ function dhamirParagraph(boardAnalysis, judgeVerdict) {
   const dhamirHouseNum = dhamirMizan?.primaryHouseNumber || dhamirH?.houseNumber || '';
   const dhamirFigure = dhamirMizan?.primaryHebrew || dhamirH?.figureHebrew || '';
 
-  const timing = boardAnalysis?.timingEstimate;
-  const timingNote = timing ? ` עיתוי (האדד): ${timing.dotCount} נקודות → ${timing.dotCount} ${timing.unit} (${timing.tierHebrew || timing.timingUnits}).` : '';
-
   if (confirming) {
-    return `מחשבת השואל (בית ${dhamirHouseNum}${dhamirFigure ? ` — ${dhamirFigure}` : ''}): ${dhamirFort} — מאשרת את הדיין ומחזקת את הפסיקה. כשמחשבת השואל מסכימה עם הדיין, היא מוסיפה ודאות לתשובה.${timingNote}`;
+    return `מחשבת השואל (בית ${dhamirHouseNum}${dhamirFigure ? ` — ${dhamirFigure}` : ''}): ${dhamirFort} — מאשרת את הדיין ומחזקת את הפסיקה. כשמחשבת השואל מסכימה עם הדיין, היא מוסיפה ודאות לתשובה.`;
   } else {
-    return `מחשבת השואל (בית ${dhamirHouseNum}${dhamirFigure ? ` — ${dhamirFigure}` : ''}): ${dhamirFort} — סותרת את הדיין. כשמחשבת השואל מנוגדת לדיין, יש לקחת בחשבון שהמצב עשוי להשתנות, או שיש כוחות פנימיים שמעכבים את הגעת התשובה.${timingNote}`;
+    return `מחשבת השואל (בית ${dhamirHouseNum}${dhamirFigure ? ` — ${dhamirFigure}` : ''}): ${dhamirFort} — סותרת את הדיין. כשמחשבת השואל מנוגדת לדיין, יש לקחת בחשבון שהמצב עשוי להשתנות, או שיש כוחות פנימיים שמעכבים את הגעת התשובה.`;
   }
 }
 
@@ -2611,7 +2603,6 @@ export function writeClientReadingHebrew(result) {
   const name      = clean(clientContext?.clientName || '');
   const quesited  = clean(clientContext?.quesitedName || '');
   const grade     = result.boardScore?.grade || 'mixed';
-  const timing    = boardAnalysis.timingEstimate;
   const nameLetters   = boardAnalysis.nameLetters || [];
   const dirQ          = boardAnalysis.directionQuadrant;
   const treasureLoc   = boardAnalysis.treasureLocation;
@@ -3024,11 +3015,6 @@ export function writeClientReadingHebrew(result) {
       else push('הדיין ממוזג — הלוח לא נותן תשובה חד-משמעית.');
       break;
     }
-  }
-
-  // ── 5. תזמון ────────────────────────────────────────────────────
-  if (timing?.quantity) {
-    push(`מבחינת עיתוי — הלוח מצביע על כ-${timing.quantity}.`);
   }
 
   // ── 6. אות שם (נושאים שלא טופלו בסעיף 4) ───────────────────────

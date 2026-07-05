@@ -1185,3 +1185,117 @@ export function computeMotherRulesKashfAnalysis(chart) {
     primaryVerdict,
   };
 }
+
+// ── קבוצה 2e: עיתוי — שיטת המדד/האדד (כשף אל-אסרר) ─────────────────────────
+// computeTimingByMadad היה חשוף כפתור "⏱ עיתוי" נפרד במסך חאווי — הוסר משם
+// (goral-app.js, goral-hachol.html). מקבילה בכשף תיבנה בשלב 3.
+
+// ── שיטת האדד המלאה (Task 9) ─────────────────────────────────────────────────
+// מקור: כשף אל-אסראר — ספירת נקודות הצורה לחישוב מדויק של זמן
+// כל שורה '1' = נקודה אחת; כל שורה '2' = שתי נקודות
+// אמהות (ב1–4) = ימים | בנות (ב5–8) = שבועות | נכדות (ב9–12) = חודשים | עדים/דיין (ב13–16) = שנים
+export function countFigureDots(pattern) {
+  if (!pattern || pattern.length < 4) return 0;
+  return pattern.split('').reduce((sum, ch) => sum + (ch === '2' ? 2 : 1), 0);
+}
+
+// ── שיטת המדד — כשף אל-אסרר עמ' 119 ──────────────────────────────────────
+// "ספור את ארבע האמהות, זוג ופרד. הורד ב-(16,16). מה שנשאר — חלק לבתים
+//  מהבית הראשון, נקודה לכל בית. היכן שנפסק — זה בית העיתוי."
+// הסכמת כל בעלי האמנות: "هذا وجه العمل بهذا العلم وما أجمعوا عليه أهل هذا الفن"
+
+export function countSingleRows(pattern) {
+  if (!pattern || pattern.length < 4) return 1;
+  const singles = pattern.split('').filter(c => c === '1').length;
+  return singles || 2; // all-double figure (jamaa) → 2 as default
+}
+
+export function computeTimingByMadad(chart) {
+  if (!Array.isArray(chart) || chart.length < 4) return null;
+
+  // שלב 1: ספור נקודות ארבע האמהות (בתים 1–4 בלוח = צורות האמהות)
+  const motherPatterns = chart.slice(0, 4).map(h => h.key || '');
+  const totalDots = motherPatterns.reduce((sum, pat) => {
+    if (!pat || pat.length < 4) return sum;
+    return sum + pat.split('').reduce((s, c) => s + (c === '2' ? 2 : 1), 0);
+  }, 0);
+
+  // שלב 2: mod 16 (הורד ב-16 שוב ושוב)
+  let remainder = totalDots % 16;
+  if (remainder === 0) remainder = 16;
+
+  // שלב 3: הבית שנפסקת בו
+  const landingHouse = remainder;
+  const landingEntry = chart.find(h => Number(h.house) === landingHouse);
+  const figPattern   = landingEntry?.key || '';
+  const figHebrew    = landingEntry?.hebrew || '—';
+
+  // שלב 4: קבוצת הזמן לפי מיקום הבית
+  const n = landingHouse;
+  let tier, tierHebrew, unitShort, unitSingle;
+  if      (n <= 4)  { tier = 'mothers';   tierHebrew = 'שעות / ימים';      unitShort = 'ימים';    unitSingle = 'יום';     }
+  else if (n <= 8)  { tier = 'daughters'; tierHebrew = 'ימים / שבועות';    unitShort = 'שבועות';  unitSingle = 'שבוע';    }
+  else if (n <= 12) { tier = 'nieces';    tierHebrew = 'שבועות / חודשים';  unitShort = 'חודשים';  unitSingle = 'חודש';    }
+  else              { tier = 'witnesses'; tierHebrew = 'חודשים / שנים';    unitShort = 'שנים';    unitSingle = 'שנה';     }
+
+  // שלב 5: כמות — לפי ספירת שורות יחידות בצורה שנפסקת בה
+  const quantity = countSingleRows(figPattern);
+
+  const unitDisplay = quantity === 1 ? unitSingle : unitShort;
+
+  return {
+    totalDots,
+    remainder,
+    landingHouse,
+    figHebrew,
+    figPattern,
+    tier,
+    tierHebrew,
+    quantity,
+    unitShort,
+    unitSingle,
+    unitDisplay,
+    outputHebrew: [
+      `סה״כ נקודות 4 האמהות: ${totalDots}`,
+      `${totalDots} mod 16 = ${remainder} → הגעה לבית ${landingHouse}`,
+      `הצורה בבית ${landingHouse}: ${figHebrew}`,
+      `קבוצת הזמן: ${tierHebrew}`,
+      `תוצאה: ${quantity} ${unitDisplay}`,
+    ].join('\n'),
+    sourceRef: 'כשף אל-אסרר עמ׳ 119 — שיטת המדד',
+  };
+}
+
+export function getTimingUnit(houseNumber) {
+  const n = Number(houseNumber);
+  if (n >= 1  && n <= 4)  return { unit: 'ימים',    unitSingle: 'יום',    tier: 'mothers',       tierHebrew: 'אמהות (מהיר — ימים)' };
+  if (n >= 5  && n <= 8)  return { unit: 'שבועות',  unitSingle: 'שבוע',   tier: 'daughters',     tierHebrew: 'בנות (בינוני — שבועות)' };
+  if (n >= 9  && n <= 12) return { unit: 'חודשים',  unitSingle: 'חודש',   tier: 'granddaughters',tierHebrew: 'נכדות (ממושך — חודשים)' };
+  return                         { unit: 'שנים',     unitSingle: 'שנה',    tier: 'witnesses',     tierHebrew: 'עדים/דיין (ארוך — שנים)' };
+}
+
+export function computeTimingEstimate(chart, dhamirHouse, topicId) {
+  if (!dhamirHouse || !Array.isArray(chart)) return null;
+
+  const dh = Number(dhamirHouse.houseNumber || dhamirHouse.house);
+  const dhamirEntry = chart.find((h) => Number(h.house) === dh);
+  if (!dhamirEntry) return null;
+
+  const pattern = dhamirEntry.key || dhamirEntry.pattern || '';
+  const dotCount = countFigureDots(pattern);
+  const { unit, unitSingle, tier, tierHebrew } = getTimingUnit(dh);
+  const quantity = dotCount === 1 ? `${dotCount} ${unitSingle}` : `${dotCount} ${unit}`;
+
+  return {
+    dhamirHouse: dh,
+    dhamirFigure: dhamirEntry.hebrew || dhamirEntry.key,
+    pattern,
+    dotCount,
+    quantity,
+    unit,
+    tier,
+    timingUnits: tierHebrew,
+    outputHebrew: `עיתוי (האדד): מחשבת השואל בבית ${dh} (${dhamirEntry.hebrew || dhamirEntry.key}, ${dotCount} נקודות) → ${quantity}. סקאלה: ${tierHebrew}`,
+    sourceRef: 'כשף אל-אסראר — שיטת האדד: ספירת נקודות הצורה × עמדת הבית = תזמון',
+  };
+}
