@@ -384,7 +384,7 @@ input, select, textarea {
   display: inline-block;
   background: rgba(232,212,144,0.15);
   color: #e8d490;
-  font-size: 11px;
+  font-size: 12px;
   padding: 2px 10px;
   border-radius: 20px;
   margin-bottom: 8px;
@@ -417,7 +417,7 @@ input, select, textarea {
 .kashf-overall.negative  { background: rgba(220,70,70,0.18);  color: #e06060; border: 1px solid rgba(220,70,70,0.35); }
 .kashf-overall.neutral   { background: rgba(200,180,100,0.14); color: #d4b84a; border: 1px solid rgba(200,180,100,0.3); }
 .kashf-source-ref {
-  font-size: 11px;
+  font-size: 12px;
   color: #5a7a9a;
   margin-top: 8px;
 }
@@ -463,7 +463,7 @@ input, select, textarea {
   font-size: 12px;
   color: #e8d490;
 }
-.kashf-figure-tag code { font-size: 10px; color: #9ab4cc; }
+.kashf-figure-tag code { font-size: 12px; color: #9ab4cc; }
 .kashf-verdict-main, .kashf-verdict-alt { margin: 6px 0; }
 .kashf-verdict-text { color: #c8ddf0; font-size: 14px; margin: 4px 0 0; line-height: 1.55; }
 .kashf-source-quote {
@@ -496,14 +496,14 @@ input, select, textarea {
 .kashf-house-figure.saad  { color: #48c878; }
 .kashf-house-figure.nahs  { color: #e06060; }
 .kashf-house-figure.mixed { color: #d4b84a; }
-.kashf-house-meta { font-size: 11px; font-weight: 400; color: #7a9ab8; margin-right: 6px; }
+.kashf-house-meta { font-size: 12px; font-weight: 400; color: #7a9ab8; margin-right: 6px; }
 .kashf-board-warning { padding: 8px 12px; border-radius: 6px; font-size: 13px; margin-bottom: 6px; }
 .kashf-board-warning.critical { background: rgba(220,70,70,0.12); color: #e06060; border: 1px solid rgba(220,70,70,0.3); }
 .kashf-board-warning.warning  { background: rgba(200,150,50,0.12); color: #d4a84a; border: 1px solid rgba(200,150,50,0.3); }
 .kashf-reading-footer {
   text-align: center;
   color: #5a7a9a;
-  font-size: 11px;
+  font-size: 12px;
   padding: 12px 0;
 }
 .kashf-disclaimer { font-style: italic; margin-top: 4px; }
@@ -894,9 +894,9 @@ body:has(#screen-open.active) .topbar { display: none !important; }
     font-size: 0.72rem !important;
     padding: 2px 4px !important;
   }
-  /* כפתורי פעולה — פונט קטן + לא ישבור שורה */
+  /* כפתורי פעולה — לא ישבור שורה */
   #screen-open .open-form .btn {
-    font-size: 0.7rem !important;
+    font-size: 0.85rem !important;
     white-space: nowrap !important;
     padding: 2px 4px !important;
   }
@@ -1009,6 +1009,18 @@ body:has(#screen-open.active) .topbar { display: none !important; }
   .auto-close-btn {
     font-size: 14px !important;
     padding: 9px !important;
+  }
+
+  /* ── גריד בתים (שאלות כשף) — fluid במקום עמודות קבועות ── */
+  .qhouse-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 4px !important;
+  }
+  .qhouse-btn {
+    width: auto !important;
+    height: auto !important;
+    min-height: 52px !important;
+    padding: 4px 2px !important;
   }
 }
 
@@ -2288,6 +2300,11 @@ body:has(#screen-open.active) .topbar { display: none !important; }
       .figure-grid { grid-template-columns:repeat(2,1fr); }
       .board-row.r1 { grid-template-columns:repeat(4,1fr); }
       .final-row { grid-template-columns:1fr; }
+      .house { min-height:100px; }
+      .house-title { font-size:13px; }
+      .board .glyph { width:36px; grid-template-rows:repeat(4,8px); gap:4px; }
+      .board .glyph .one { width:6px; height:6px; }
+      .board .glyph .two { width:26px; height:5px; }
     }
     @media (max-width:400px) {
       .form-grid { grid-template-columns:1fr; }
