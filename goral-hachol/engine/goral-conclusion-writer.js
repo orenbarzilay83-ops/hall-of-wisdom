@@ -1733,9 +1733,6 @@ function buildNarrativeByTopic(result) {
 
       const querentSorceryCheck = boardAnalysis.querentSorceryCheck;
       if (querentSorceryCheck) push(`האם השואל מכושף:\n  ${sc(querentSorceryCheck.outputHebrew)}`);
-
-      const sorcererH9 = boardAnalysis.sorcererH9;
-      if (sorcererH9) push(`כישוף — כיוון המכשף:\n  ${ind(sorcererH9.outputHebrew)}`);
     }
 
     if (is('marriage','divorce','loveHate')) {
@@ -1756,50 +1753,14 @@ function buildNarrativeByTopic(result) {
       if (wishFulfillment) push(`האם ישיג מה שרוצה:\n  ${sc(wishFulfillment.outputHebrew)}`);
     }
 
-    if (is('travel','siblings','religion')) {
-      const h3Topics = boardAnalysis.h3Topics;
-      if (h3Topics) push(`בית 3 — תנועה / חלום / מסרים:\n  ${ind(h3Topics.outputHebrew)}`);
-    }
-
     if (is('hiddenTreasure')) {
       const diggingDirection = boardAnalysis.diggingDirection;
       if (diggingDirection) push(`כיוון לחפירה/חיפוש:\n  ${ind(diggingDirection.outputHebrew)}`);
-
-      const hiddenTreasureH2 = boardAnalysis.hiddenTreasureH2;
-      if (hiddenTreasureH2) push(`מטמון / כנוז תת-קרקעי:\n  ${ind(hiddenTreasureH2.outputHebrew)}`);
-    }
-
-    if (is('prisoner')) {
-      const prisonerGuilty = boardAnalysis.prisonerGuilty;
-      if (prisonerGuilty?.outputHebrew) push(`מי גרם לכליאה:\n  ${ind(prisonerGuilty.outputHebrew)}`);
-    }
-
-    if (is('commerce','partnership','loan','generalReading')) {
-      const debts = boardAnalysis.debts;
-      if (debts) push(`חובות:\n  ${ind(debts.outputHebrew)}`);
     }
 
     if (is('childrenPregnancy')) {
       const pregnancyMonths = boardAnalysis.pregnancyMonths;
       if (pregnancyMonths) push(`חודשי הריון:\n  ${sc(pregnancyMonths.outputHebrew)}`);
-    }
-
-    if (is('illness')) {
-      const illnessTypeIsqat = boardAnalysis.illnessTypeIsqat;
-      if (illnessTypeIsqat) push(`סוג המחלה (שיבוץ 7):\n  ${ind(illnessTypeIsqat.outputHebrew)}`);
-
-      const illnessCauseH4 = boardAnalysis.illnessCauseH4;
-      if (illnessCauseH4) push(`סיבת המחלה:\n  ${ind(illnessCauseH4.outputHebrew)}`);
-    }
-
-    if (is('hiddenTreasure','religion','generalReading')) {
-      const h4Secrets = boardAnalysis.h4Secrets;
-      if (h4Secrets) push(`נסתרות וסודות:\n  ${ind(h4Secrets.outputHebrew)}`);
-    }
-
-    if (is('marriage','childrenPregnancy','loveHate')) {
-      const celebrationsH5 = boardAnalysis.celebrationsH5;
-      if (celebrationsH5) push(`שמחות ואירועים:\n  ${ind(celebrationsH5.outputHebrew)}`);
     }
   }
 
@@ -2013,11 +1974,9 @@ function buildSpiritualNarrative(result) {
   // ── 9. DHAMIR ────────────────────────────────────────────────────
   push(dhamirParagraph(boardAnalysis, judgeVerdict));
 
-  // ── 10. SORCERER H9 + SIHR DETAILS ───────────────────────────────
+  // ── 10. SIHR DETAILS ──────────────────────────────────────────────
   {
     const ind = (s) => s.replace(/\n/g, '\n  ');
-    const sorcererH9 = boardAnalysis.sorcererH9;
-    if (sorcererH9) push(`כישוף — כיוון המכשף:\n  ${ind(sorcererH9.outputHebrew)}`);
     if (sd.sihrDetails?.length) {
       push(`פרטי הכישוף (לפי כללי המקור):\n  ${ind(sd.sihrDetails.join('\n'))}`);
     }
