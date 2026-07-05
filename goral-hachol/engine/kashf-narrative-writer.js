@@ -5,6 +5,8 @@
  * מקור יחיד: ספר כשף אל-אסרר — השער השישי (עמ׳ 166–276).
  */
 
+import { getFigureAppearance } from './kashf-figure-appearance.js';
+
 // ── עזרי טקסט ─────────────────────────────────────────────────────────────
 
 function c(val = '') { return String(val || '').trim(); }
@@ -215,8 +217,18 @@ function findingSentence(f) {
     return `<strong>${f.label}:</strong> ${res}.`;
   }
   if (f.checkType === 'house-figure-description') {
-    const dk = dakhalWord(f.classification?.dakhalKharij);
-    return `<strong>${f.label}:</strong> בית ${f.houseNum} הכיל <strong>${f.figureName || ''}</strong>${dk ? ` — ${dk}` : ''}.`;
+    const app = getFigureAppearance(f.pattern);
+    const fig = f.figureName || '';
+    let text = `<strong>${f.label}:</strong> הצורה <strong>${fig}</strong> בבית ${f.houseNum}`;
+    if (app) {
+      text += ` — ${app.appearance}`;
+      if (app.occupation) text += `; עיסוק: ${app.occupation}`;
+      if (app.nameLetters?.length) {
+        const letters = app.nameLetters.join(', ');
+        text += `. <em>אותיות השם: ${letters}</em>`;
+      }
+    }
+    return text + '.';
   }
   if (f.checkType === 'house-gender') {
     return `<strong>${f.label}:</strong> בית ${f.houseNum} — ${f.genderHebrew || ''}.`;
