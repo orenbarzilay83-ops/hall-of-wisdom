@@ -10,7 +10,7 @@ import {
   HAWI_FIGURE_NAMES_BY_ID,
   getHawiFigureCanonicalName,
   getHawiFigureHebrewName,
-} from './foundations/hawi-figure-names.js';
+} from '../kashf-al-asrar/kashf-figure-names.js';
 
 import {
   HAWI_QUESTION_RULES_LIST,

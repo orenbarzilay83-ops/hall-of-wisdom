@@ -28,11 +28,11 @@ import {
 import {
   calculateHazz,
   getHazzStrengthLabel,
-} from '../data/sources/hawi/foundations/hawi-hazz.js';
+} from '../data/sources/kashf-al-asrar/kashf-hazz.js';
 
 import {
   HAWI_FIGURE_NAMES_BY_ID,
-} from '../data/sources/hawi/foundations/hawi-figure-names.js';
+} from '../data/sources/kashf-al-asrar/kashf-figure-names.js';
 
 import {
   getHawiAspectsBetweenHouses,
@@ -3559,7 +3559,7 @@ function computeChildrenPregnancyKashfAnalysis(chart) {
 
   if (!h5) return null;
 
-  // Element per pattern (Kashf al-Asrar pp. 43-67, confirmed in hawi-figure-names.js)
+  // Element per pattern (Kashf al-Asrar pp. 43-67, confirmed in kashf-figure-names.js)
   const ELEMENT = {
     '1111':'מים','1112':'אש','1121':'אוויר','1122':'אש',
     '1211':'מים','1212':'אש','1221':'עפר','1222':'אש',

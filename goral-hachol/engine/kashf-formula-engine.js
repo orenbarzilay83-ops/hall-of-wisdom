@@ -10,7 +10,7 @@
 
 import { combineRamlPatterns } from './raml-figures.js';
 import { getDakhalKharij, getSaadNahs, classifyFigure } from './kashf-figure-classifier.js';
-import { HAWI_FIGURE_NAMES_BY_ID } from '../data/sources/hawi/foundations/hawi-figure-names.js';
+import { HAWI_FIGURE_NAMES_BY_ID } from '../data/sources/kashf-al-asrar/kashf-figure-names.js';
 
 // ── אינדקסי שורות ──────────────────────────────────────────────────────────
 export const ROW = { FIRE: 0, AIR: 1, WATER: 2, EARTH: 3 };

@@ -2,7 +2,7 @@ import {
   HAWI_FIGURE_NAMES,
   HAWI_FIGURE_NAMES_BY_ID,
   getHawiFigureCanonicalName,
-} from '../data/sources/hawi/foundations/hawi-figure-names.js';
+} from '../data/sources/kashf-al-asrar/kashf-figure-names.js';
 
 /**
  * מנוע חיבור / הולדת צורות רמל.

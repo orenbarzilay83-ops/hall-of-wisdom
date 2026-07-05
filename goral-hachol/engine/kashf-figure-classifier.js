@@ -11,7 +11,7 @@
  * קובץ זה אינו מחליף שום מנוע קיים — הוא שכבת סיווג נפרדת.
  */
 
-import { HAWI_FIGURE_NAMES_BY_ID } from '../data/sources/hawi/foundations/hawi-figure-names.js';
+import { HAWI_FIGURE_NAMES_BY_ID } from '../data/sources/kashf-al-asrar/kashf-figure-names.js';
 
 /**
  * מחזיר את סיווג יוצא/נכנס/אנדרוגינוס לפי הגדרת הספר.
