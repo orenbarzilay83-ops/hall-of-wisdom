@@ -906,29 +906,6 @@ function buildInterpretationHtml(reading) {
     ).join(' | ');
     boardInfoHtml += `<div class="board-info-row board-dhamir">🎯 הדמיר: ${traceText} — הדמיר העיקרי: בית ${dhamirMizanData.primaryHouseNumber}</div>`;
   }
-  const querentSubjectData = insight.boardAnalysis?.querentSubject || null;
-  if (querentSubjectData) {
-    boardInfoHtml += `<div class="board-info-row board-querent-subject">🔍 ${escapeHtml(querentSubjectData.outputHebrew)} — (ב6=${escapeHtml(querentSubjectData.house6Figure)}, ${escapeHtml(querentSubjectData.sourceRef)})</div>`;
-  }
-  const sodHaDhamirimData = insight.boardAnalysis?.sodHaDhamirim || null;
-  if (sodHaDhamirimData) {
-    boardInfoHtml += `<div class="board-info-row board-sod-dhamirim">⭐ ${escapeHtml(sodHaDhamirimData.outputHebrew)} — (${escapeHtml(sodHaDhamirimData.sourceRef)})</div>`;
-  }
-  const honestyData = insight.boardAnalysis?.querentHonestyCheck || null;
-  if (honestyData) {
-    const cls = honestyData.isHonest ? 'board-honesty-ok' : 'board-honesty-warn';
-    const icon = honestyData.isHonest ? '✅' : '⚠️';
-    boardInfoHtml += `<div class="board-info-row ${cls}">${icon} ${escapeHtml(honestyData.outputHebrew)} — (${escapeHtml(honestyData.sourceRef)})</div>`;
-  }
-  const timingThirdsData = insight.boardAnalysis?.timingByDhamirThirds || null;
-  if (timingThirdsData) {
-    boardInfoHtml += `<div class="board-info-row board-timing-thirds">⏱ ${escapeHtml(timingThirdsData.outputHebrew)} — (${escapeHtml(timingThirdsData.sourceRef)})</div>`;
-  }
-  const temperamentData = insight.boardAnalysis?.querentTemperament || null;
-  if (temperamentData) {
-    boardInfoHtml += `<div class="board-info-row board-temperament">🌡 ${escapeHtml(temperamentData.outputHebrew)} — (${escapeHtml(temperamentData.sourceRef)})</div>`;
-  }
-
   const topicId = insight.topicId || "";
 
   // Rewrite internal terminology for client-facing display
