@@ -688,3 +688,36 @@ export const SHIBUTZ_12_RAAD_ORDER = [
   { position: 15, pattern: null, hebrewName: null, patternNote: 'לא פתור: המקור תייג בטעות כסף יוצא (כפילות עם מקום 1). לפי היקש-השלמה זו סוהר או אדום, ללא דרך להכריע ביניהן.', candidatePatterns: ['1221', '2122'] },
   { position: 16, pattern: '2222', hebrewName: 'קהלה' },
 ];
+
+// ─────────────────────────────────────────────────────────────────────────
+// השיבוץ השלושה-עשר: (שם הסדר חסר במקור; הערת המקור: "במקור עמד 'לבן'")
+// (עמ' 149). ערכי יסוד: אש=1, אוויר=10, מים=100, עפר=1000. שיטת חישוב
+// כדרך שיבוץ יזד'ג (מספר מציאות פחות 16). טבלה נקייה, ללא כפילויות.
+// ─────────────────────────────────────────────────────────────────────────
+
+export const SHIBUTZ_13_ELEMENT_VALUES = { 'אש': 1, 'אוויר': 10, 'מים': 100, 'עפר': 1000 };
+
+export const SHIBUTZ_13_METHOD = {
+  descriptionHebrew: "דרך פעולתו כדרך שיבוץ יזד'ג (מספר המציאות פחות 16).",
+  sourceStatus: 'explicit-in-source',
+  sourceRef: "כשף אל-אסראר עמ' 149",
+};
+
+export const SHIBUTZ_13_ORDER = [
+  { position: 1,  pattern: '1222', hebrewName: 'נשוא ראש' },
+  { position: 2,  pattern: '2121', hebrewName: 'ממון נכנס' },
+  { position: 3,  pattern: '1121', hebrewName: 'נלחם' },
+  { position: 4,  pattern: '2212', hebrewName: 'לבן' },
+  { position: 5,  pattern: '1212', hebrewName: 'ממון יוצא' },
+  { position: 6,  pattern: '2111', hebrewName: 'סף נכנס' },
+  { position: 7,  pattern: '1111', hebrewName: 'דרך' },
+  { position: 8,  pattern: '2221', hebrewName: 'שפל ראש' },
+  { position: 9,  pattern: '1221', hebrewName: 'סוהר', altNameInPoem: "ת'קאף" },
+  { position: 10, pattern: '2122', hebrewName: 'אדום' },
+  { position: 11, pattern: '1122', hebrewName: 'כבוד יוצא' },
+  { position: 12, pattern: '2211', hebrewName: 'כבוד נכנס' },
+  { position: 13, pattern: '1211', hebrewName: 'בר הלחי' },
+  { position: 14, pattern: '2112', hebrewName: 'חיבור' },
+  { position: 15, pattern: '2222', hebrewName: 'קהלה' },
+  { position: 16, pattern: '1112', hebrewName: 'סף יוצא', altNameInPoem: 'ראיית אל-חזן' },
+];
