@@ -128,7 +128,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-dream',
-    category: 'general', houseId: 9, topicId: 'travel',
+    category: 'general', houseId: 9, topicId: 'dream',
     label: 'מה משמעות החלום?',
     desc: 'לחלום נבואי, דתי, שנחקק עמוק בזיכרון. לחלום יומיומי רגיל — בחר "חלום יומי" (בית 3)',
     clientFields: [F.dreamDesc],
@@ -380,7 +380,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-father',
-    category: 'family', houseId: 4, topicId: 'foundations',
+    category: 'family', houseId: 4, topicId: 'parentsProperty',
     label: 'מצב האב / הבית / הקרקע?',
     desc: 'לשאלות על האב, הבית, הנכס, קרקע — גם מצב האב בריאותית',
     clientFields: [{ id: 'fatherIssue', label: 'מה השאלה?', type: 'textarea', placeholder: 'בריאות האב / בית / קרקע...' }],
@@ -941,7 +941,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-dream-omen',
-    category: 'general', houseId: 9, topicId: 'travel',
+    category: 'general', houseId: 9, topicId: 'dream',
     label: 'חלום — האם הוא בשורה טובה?',
     desc: 'האם חלום ספציפי הוא בשורה טובה או רעה — לחלום שחקוק בזיכרון',
     clientFields: [F.dreamDesc],

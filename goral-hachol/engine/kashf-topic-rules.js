@@ -292,6 +292,57 @@ export const KASHF_TOPIC_RULES = {
   },
 
   // ────────────────────────────────────────────────────────────────────────
+  parentsProperty: {
+    topicId: 'parentsProperty',
+    topicHebrewName: 'הורים, נכסים וקרקע',
+    sourceRef: 'כשף אל-אסרר, עמ׳ 184 (הפרק הרביעי — הורים, נכסים ונסתרות)',
+    topicDescription: 'מצב ההורים, ודין הנכסים והקרקע (בית / גן).',
+    primaryFormula: {
+      type: 'house-quality',
+      houses: [4],
+      interpretBy: 'saad-nahs',
+      sourceText: 'וכן דין הנכסים: אם צורות הטובה שורות ברביעי של השואל, יהיה לו נכס וירכוש נכס. ואם הרביעי פנוי מן הצורות המיטיבות, הדבר מורה על העדר נכס ועל יציאתו מידו.',
+      verdictBySaadNahs: {
+        saad:  { text: 'יהיה לו נכס, וירכוש נכס', positive: true },
+        nahs:  { text: 'העדר נכס, או יציאתו מידו', positive: false },
+        mixed: { text: 'מצב הנכסים מעורב', positive: null },
+      },
+    },
+    altFormula: {
+      type: 'house-quality',
+      houses: [5],
+      interpretBy: 'saad-nahs',
+      sourceText: 'אם בחמישי יש בה צד מיטיב, יהיה לו ממון; ואם בו יש צד מזיק, אין לו ממון.',
+      verdictBySaadNahs: {
+        saad:  { text: 'יהיה לו ממון בזכות ההורים/הירושה', positive: true },
+        nahs:  { text: 'אין לו ממון מצד זה', positive: false },
+        mixed: { text: 'מצב הממון מעורב', positive: null },
+      },
+    },
+    supportingChecks: [
+      {
+        id: 'land-nature',
+        checkType: 'house-figure-description',
+        houses: [4],
+        label: 'תכונת הקרקע (בית/גן)',
+        sourceText: 'ואם השאלה על בית או גן, דע שהרביעי הוא תכונת הקרקע; העשירי — תכונת העצים שבו; השביעי — תעלות המים; השלישי — הירקות; והשני — החומה או הגדר המקיפה.',
+      },
+    ],
+    // זיהוי "צורת האב" (שמש-ביום/שבתאי-בלילה) ו"צורת האם" (נוגה-ביום/ירח-בלילה)
+    // דורש טבלת צורה↔כוכב (קיימת חלקית ב-SHIBUTZ_4_PLANETS ב-kashf-shibutzim.js,
+    // כולל הערת אי-ודאות אחת) ואבחנה יום/לילה, שאינן מקודדות עדיין במנוע זה.
+    additionalMethods: [
+      {
+        id: 'parent-figure-longevity',
+        label: 'אריכות ימי האב / מצב האם — לפי צורת הכוכב',
+        sourceStatus: 'explicit-in-source',
+        sourceText: 'לאב ביום — צורת השמש; ולאם — צורת נוגה. בלילה, לאב — צורת שבתאי; ולאם — צורת הירח. אם צורת האב בייתדות, וברביעי יש בה צד מיטיב, הדבר מורה על אריכות ימיו. ואם בבית הרביעי יש צד מזיק, וסימני האב בבתים הנופלים, הדבר מורה על דלותו. ואם צורות השמש והירח בבית הראשון, יהיה לו ממון, כבוד ומעמד.',
+      },
+    ],
+    keyHouses: [2, 3, 4, 5, 7, 10],
+  },
+
+  // ────────────────────────────────────────────────────────────────────────
   children: {
     topicId: 'children',
     topicHebrewName: 'ילדים והריון',
@@ -395,6 +446,47 @@ export const KASHF_TOPIC_RULES = {
       },
     ],
     keyHouses: [1, 6, 8, 15],
+  },
+
+  // ────────────────────────────────────────────────────────────────────────
+  lostAnimal: {
+    topicId: 'lostAnimal',
+    topicHebrewName: 'בהמה או חיה אבודה',
+    sourceRef: 'כשף אל-אסרר, עמ׳ 201-202 (הפרק השישי — החולה, האבוד והבהמות)',
+    topicDescription: 'האם הבהמה/החיה האבודה תחזור, ומהו סוגה.',
+    primaryFormula: {
+      type: 'count-quality',
+      houses: [6, 8],
+      interpretBy: 'count-quality',
+      sourceText: 'באבדה ובשיבתה: כוון אל הבית השמיני והשישי. אם נמצאו שם צורות מיטיבות פנימיות — האבדה תשוב; ואם לא — לא.',
+      verdictByCountQuality: {
+        allSaad:  { text: 'הבהמה/החיה תשוב', positive: true },
+        allNahs:  { text: 'הבהמה/החיה לא תשוב', positive: false },
+        mostSaad: { text: 'רוב הסימנים מורים על שיבה', positive: true },
+        mostNahs: { text: 'רוב הסימנים מורים שלא תשוב', positive: false },
+        mixed:    { text: 'התוצאה אינה ודאית', positive: null },
+      },
+    },
+    supportingChecks: [
+      {
+        id: 'animal-type',
+        checkType: 'house-figure-description',
+        houses: [6],
+        label: 'זיהוי סוג הבהמה',
+        sourceText: 'בבהמות: אדום[] בבית השישי מורה על כבשים; תַשמִיר מורה על שוורים; כבוד יוצא[] וסף יוצא[] מורים על סוסים; סוהר[] מורה על גמלים; שפל ראש[] מורה על חמורים וגם על גדיים ותיישים; ממון יוצא[] מורה על פרדות.',
+      },
+    ],
+    // בדיקת מום/פגיעה בבהמה (עמ׳ 202) דורשת "הרכבת שורת עפר" משתי קבוצות
+    // בתים — סוג נוסחה שאינו מקודד עדיין במנוע (יש רק הרכבת שורת-אש).
+    additionalMethods: [
+      {
+        id: 'animal-defect',
+        label: 'מום הבהמה',
+        sourceStatus: 'explicit-in-source',
+        sourceText: 'במום הבהמה: הוצא את עפר הבתים הראשון, התשיעי, השלושה־עשר והמאזן — ועמד ממנו צורה. אחר כך הוצא את עפר הבתים השמיני, השני, הרביעי והמאזן — ועמד ממנו צורה. לאחר מכן התבונן בטבע אותה צורה.',
+      },
+    ],
+    keyHouses: [6, 8],
   },
 
   // ────────────────────────────────────────────────────────────────────────
@@ -792,6 +884,26 @@ export const KASHF_TOPIC_RULES = {
       },
     ],
     keyHouses: [1, 3, 5, 7, 8, 9, 15],
+  },
+
+  // ────────────────────────────────────────────────────────────────────────
+  dream: {
+    topicId: 'dream',
+    topicHebrewName: 'משמעות החלום',
+    sourceRef: 'כשף אל-אסרר, עמ׳ 254 (השער התשיעי — ראיית חלום)',
+    topicDescription: 'האם החלום מבשר טוב או רע.',
+    primaryFormula: {
+      type: 'house-quality',
+      houses: [9],
+      interpretBy: 'saad-nahs',
+      sourceText: 'דין החלום נלמד מן הבית התשיעי. אם הצורה השוכנת בו מיטיבה — דון לטוב; ואם היא מזיקה — דון להפך.',
+      verdictBySaadNahs: {
+        saad:  { text: 'החלום מבשר טוב', positive: true },
+        nahs:  { text: 'החלום מבשר רע', positive: false },
+        mixed: { text: 'משמעות החלום מעורבת', positive: null },
+      },
+    },
+    keyHouses: [9],
   },
 
   // ────────────────────────────────────────────────────────────────────────
