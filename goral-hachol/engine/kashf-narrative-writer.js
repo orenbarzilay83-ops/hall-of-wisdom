@@ -310,13 +310,28 @@ function writeDhamirPara(reading) {
     ? `<span class="kashf-dhamir-agreement">${winner.agreementCount} משיטות ההכרעה הסכימו על בית זה (${winner.methodsAgreed.join(', ')})</span>`
     : `<span class="kashf-dhamir-agreement">לפי שיטת "${winner.methodHebrew}"</span>`;
 
+  const extras = reading.dhamirExtras || {};
+  const extraLines = [
+    extras.sodHaDhamirim,
+    extras.honestyCheck,
+    extras.querentSubject,
+    extras.timingByThirds,
+    extras.temperament,
+    extras.timingByMadad,
+    extras.timingEstimate,
+  ]
+    .filter((x) => x && x.outputHebrew && !x.error)
+    .map((x) => `<p class="kashf-dhamir-extra">${String(x.outputHebrew).split('\n').filter(Boolean).join('<br>')}</p>`)
+    .join('');
+
   return `<div class="kashf-reading-card dhamir">
     <h3 class="kashf-card-title">מחשבת השואל (הדמיר)</h3>
     <p class="kashf-dhamir-body">
       מחשבת השואל האמיתית מתגלה ב<strong>${houseLabel}</strong> — הצורה <strong>${winner.nameHebrew || ''}</strong> (${winner.pattern || ''})${q ? ` — ${q}` : ''}.
       ${agreementNote}
     </p>
-    <p class="kashf-dhamir-source">מקור: כשף אל-אסרר, השער הרביעי — עמ' 151-155 (גילוי הכוונה הנסתרת)</p>
+    ${extraLines}
+    <p class="kashf-dhamir-source">מקור: כשף אל-אסרר, השער הרביעי — עמ' 151-155 (גילוי הכוונה הנסתרת); שיטות עיתוי ואבחון נלוות — עמ' 35, 104, 112, 119, 124, 159</p>
   </div>`;
 }
 
@@ -342,6 +357,11 @@ function writeWitnessJudgePara(reading) {
       `${h13.figureName || ''} (${q13 || ''}); ` +
       `<strong>עד שני (בית 14)</strong> — ${h14.figureName || ''} (${q14 || ''}).`
     );
+    const wt = reading.witnessTestimony;
+    if (wt && !wt.error) {
+      if (wt.w13?.hebrewSummary) parts.push(`עדות עד ראשון (בית 13, על בית השואל ובית התשיעי): ${wt.w13.hebrewSummary}.`);
+      if (wt.w14?.hebrewSummary) parts.push(`עדות עד שני (בית 14, על בתי הילדים/מחלה/תקווה): ${wt.w14.hebrewSummary}.`);
+    }
   } else if (h13) {
     parts.push(`עד ראשון (בית 13): ${h13.figureName || ''} — ${qualityWord(h13.quality) || ''}.`);
   } else if (h14) {

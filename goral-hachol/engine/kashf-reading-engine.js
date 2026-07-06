@@ -58,7 +58,26 @@ import {
   computePromiseFulfillmentKashf,
   computeWhoLooksAtWhomKashf,
   computeWellDrillingKashf,
+  computeSodHaDhamirim,
+  computeQuerentHonestyCheck,
+  computeQuerentSubject,
+  computeTimingByDhamirThirds,
+  computeQuerentTemperament,
+  computeTimingByMadad,
+  computeTimingEstimate,
+  computeWitnessTestimony,
+  computeGeographicDirection,
+  countElementsForYesNo,
+  computeLostAnimalReturn,
 } from './kashf-pending-extraction.js';
+
+// countElementsForYesNo מצפה לפורמט board.entries[i].figure.elementHebrew (הפורמט
+// הישן של raml-board-generator.js) — עוטפים אותה כדי שתעבוד עם ה-chart המומר,
+// ומוסיפים outputHebrew לצורך רינדור אחיד עם שאר בדיקות ה-legacy-fn.
+function countElementsForYesNoWrapper(chart) {
+  const result = countElementsForYesNo({ entries: chart.map((h) => ({ figure: { elementHebrew: h.element } })) });
+  return { ...result, outputHebrew: result?.hebrewSummary || '' };
+}
 
 // רשימת פונקציות מותרות ל-checkType 'legacy-fn' — כל פונקציה שכבר אומתה
 // מול המקור בכשף אל-אסרר בעת ההוצאה מ-hawi-interpreter.js (ראה kashf-pending-extraction.js)
@@ -85,6 +104,9 @@ const LEGACY_FN_REGISTRY = {
   computePromiseFulfillmentKashf,
   computeWhoLooksAtWhomKashf,
   computeWellDrillingKashf,
+  computeGeographicDirection,
+  countElementsForYesNo: countElementsForYesNoWrapper,
+  computeLostAnimalReturn,
 };
 
 // ── תיאורי כיוונים לפי יסוד ────────────────────────────────────────────────
@@ -485,6 +507,36 @@ export function buildKashfReading(board, topicId, clientContext = {}) {
     dhamir = { candidates: [], winner: null, agreementCount: 0, error: err.message };
   }
 
+  // ── בדיקות תומכות נוספות לגילוי הכוונה — עצמאיות מנושא, תלויות בבית הדמיר
+  // המחושב לעיל (עמ' 104, 35, 112, 119, 124, 159; kashf-pending-extraction.js)
+  let dhamirExtras = null;
+  try {
+    const legacyChart = buildLegacyChart(board);
+    const dhamirHouseNum = dhamir?.winner?.houseNumber || null;
+    dhamirExtras = {
+      sodHaDhamirim: computeSodHaDhamirim(legacyChart),
+      honestyCheck: computeQuerentHonestyCheck(legacyChart),
+      querentSubject: computeQuerentSubject({ chart: legacyChart }),
+      timingByThirds: dhamirHouseNum ? computeTimingByDhamirThirds(legacyChart, dhamirHouseNum) : null,
+      temperament: dhamirHouseNum ? computeQuerentTemperament(legacyChart, dhamirHouseNum) : null,
+      timingByMadad: computeTimingByMadad(legacyChart),
+      timingEstimate: dhamir?.winner ? computeTimingEstimate(legacyChart, dhamir.winner, topicId) : null,
+    };
+  } catch (err) {
+    dhamirExtras = { error: err.message };
+  }
+
+  // ── עדות בתים 13-14 ──────────────────────────────────────────────────────
+  let witnessTestimony = null;
+  try {
+    const legacyChart = buildLegacyChart(board);
+    const w13 = legacyChart.find((h) => h.house === 13);
+    const w14 = legacyChart.find((h) => h.house === 14);
+    witnessTestimony = computeWitnessTestimony(w13, w14, legacyChart);
+  } catch (err) {
+    witnessTestimony = { error: err.message };
+  }
+
   return {
     valid: true,
     topicId,
@@ -519,6 +571,8 @@ export function buildKashfReading(board, topicId, clientContext = {}) {
     keyHouseReadings,
     boardValidation,
     dhamir,
+    dhamirExtras,
+    witnessTestimony,
 
     overallPositive: primaryVerdict?.positive,
   };
