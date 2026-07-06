@@ -390,7 +390,7 @@ function runSupportingCheck(board, check) {
 
 // ── תיאור בתים מרכזיים ───────────────────────────────────────────────────
 
-const HOUSE_NAMES = {
+export const HOUSE_NAMES = {
   1: 'בית ראשון — הנפש',
   2: 'בית שני — הממון',
   3: 'בית שלישי — האחים',

@@ -378,15 +378,15 @@ input, select, textarea {
   gap: 14px;
 }
 .kashf-reading-header {
-  background: linear-gradient(135deg, #06192d 0%, #0a2540 100%);
-  border: 1px solid #e8d490;
+  background: rgba(255,255,255,0.92);
+  border: 1px solid rgba(180,140,50,0.35);
   border-radius: 10px;
   padding: 20px 18px 16px;
 }
 .kashf-reading-badge {
   display: inline-block;
-  background: rgba(232,212,144,0.15);
-  color: #e8d490;
+  background: rgba(180,140,50,0.12);
+  color: #7a5c00;
   font-size: 12px;
   padding: 2px 10px;
   border-radius: 20px;
@@ -395,16 +395,16 @@ input, select, textarea {
 }
 .kashf-reading-header h2 {
   margin: 0 0 6px;
-  color: #f0c040;
+  color: #071b30;
   font-size: 20px;
 }
 .kashf-topic-desc {
-  color: #9ab4cc;
+  color: #444;
   font-size: 13px;
   margin: 0 0 10px;
 }
 .kashf-client-line, .kashf-question-line {
-  color: #c8ddf0;
+  color: #222;
   font-size: 13px;
   margin: 4px 0;
 }
@@ -416,30 +416,30 @@ input, select, textarea {
   font-size: 14px;
   font-weight: 600;
 }
-.kashf-overall.positive  { background: rgba(72,200,120,0.18); color: #48c878; border: 1px solid rgba(72,200,120,0.35); }
-.kashf-overall.negative  { background: rgba(220,70,70,0.18);  color: #e06060; border: 1px solid rgba(220,70,70,0.35); }
-.kashf-overall.neutral   { background: rgba(200,180,100,0.14); color: #d4b84a; border: 1px solid rgba(200,180,100,0.3); }
+.kashf-overall.positive  { background: rgba(72,200,120,0.15); color: #1b5e20; border: 1px solid rgba(72,200,120,0.4); }
+.kashf-overall.negative  { background: rgba(220,70,70,0.12);  color: #b71c1c; border: 1px solid rgba(220,70,70,0.4); }
+.kashf-overall.neutral   { background: rgba(200,180,100,0.15); color: #7a5c00; border: 1px solid rgba(200,180,100,0.4); }
 .kashf-source-ref {
   font-size: 12px;
-  color: #5a7a9a;
+  color: #666;
   margin-top: 8px;
 }
 .kashf-reading-card {
-  background: rgba(6,25,45,0.85);
-  border: 1px solid rgba(232,212,144,0.2);
+  background: rgba(255,255,255,0.92);
+  border: 1px solid rgba(0,0,0,0.12);
   border-radius: 8px;
   padding: 16px;
 }
-.kashf-reading-card.primary-verdict { border-color: rgba(232,212,144,0.45); }
-.kashf-reading-card.alt-verdict     { border-color: rgba(100,160,230,0.3); }
-.kashf-reading-card.supporting      { border-color: rgba(100,200,150,0.2); }
-.kashf-reading-card.board-warnings  { border-color: rgba(220,120,80,0.35); }
+.kashf-reading-card.primary-verdict { border-color: rgba(180,140,50,0.4); }
+.kashf-reading-card.alt-verdict     { border-color: rgba(70,110,180,0.3); }
+.kashf-reading-card.supporting      { border-color: rgba(60,140,100,0.3); }
+.kashf-reading-card.board-warnings  { border-color: rgba(200,100,60,0.4); }
 .kashf-card-title {
   font-size: 14px;
-  color: #e8d490;
+  color: #071b30;
   margin: 0 0 12px;
   padding-bottom: 8px;
-  border-bottom: 1px solid rgba(232,212,144,0.15);
+  border-bottom: 1px solid rgba(0,0,0,0.1);
 }
 .kashf-verdict-badge {
   display: inline-block;
@@ -449,63 +449,63 @@ input, select, textarea {
   font-weight: 700;
   margin-bottom: 8px;
 }
-.kashf-verdict-badge.positive { background: rgba(72,200,120,0.2);  color: #48c878; border: 1px solid rgba(72,200,120,0.4); }
-.kashf-verdict-badge.negative { background: rgba(220,70,70,0.2);   color: #e06060; border: 1px solid rgba(220,70,70,0.4); }
-.kashf-verdict-badge.neutral  { background: rgba(200,180,80,0.15); color: #d4b84a; border: 1px solid rgba(200,180,80,0.3); }
-.kashf-formula-desc  { color: #7a9ab8; font-size: 12px; margin: 0 0 6px; }
-.kashf-result-figure { color: #c8ddf0; font-size: 13px; margin: 0 0 4px; }
-.kashf-result-class  { color: #8aa4bc; font-size: 12px; margin: 0 0 8px; }
+.kashf-verdict-badge.positive { background: rgba(72,200,120,0.18);  color: #1b5e20; border: 1px solid rgba(72,200,120,0.45); }
+.kashf-verdict-badge.negative { background: rgba(220,70,70,0.15);   color: #b71c1c; border: 1px solid rgba(220,70,70,0.45); }
+.kashf-verdict-badge.neutral  { background: rgba(200,180,80,0.18); color: #7a5c00; border: 1px solid rgba(200,180,80,0.4); }
+.kashf-formula-desc  { color: #555; font-size: 12px; margin: 0 0 6px; }
+.kashf-result-figure { color: #1a1a1a; font-size: 13px; margin: 0 0 4px; }
+.kashf-result-class  { color: #555; font-size: 12px; margin: 0 0 8px; }
 .kashf-figure-tag {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: rgba(232,212,144,0.1);
-  border: 1px solid rgba(232,212,144,0.25);
+  background: rgba(180,140,50,0.1);
+  border: 1px solid rgba(180,140,50,0.3);
   border-radius: 4px;
   padding: 1px 7px;
   font-size: 12px;
-  color: #e8d490;
+  color: #7a5c00;
 }
-.kashf-figure-tag code { font-size: 12px; color: #9ab4cc; }
+.kashf-figure-tag code { font-size: 12px; color: #555; }
 .kashf-verdict-main, .kashf-verdict-alt { margin: 6px 0; }
-.kashf-verdict-text { color: #c8ddf0; font-size: 14px; margin: 4px 0 0; line-height: 1.55; }
+.kashf-verdict-text { color: #1a1a1a; font-size: 14px; margin: 4px 0 0; line-height: 1.55; }
 .kashf-source-quote {
   margin: 10px 0 0;
   padding: 8px 12px;
-  border-right: 3px solid rgba(232,212,144,0.3);
-  color: #8aa4bc;
+  border-right: 3px solid rgba(180,140,50,0.4);
+  color: #555;
   font-size: 12px;
   font-style: italic;
   line-height: 1.6;
 }
 .kashf-supporting-item {
   padding: 10px 0;
-  border-bottom: 1px solid rgba(232,212,144,0.08);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
 }
 .kashf-supporting-item:last-child { border-bottom: none; }
-.kashf-supporting-item.error .kashf-supporting-label { color: #e06060; }
-.kashf-supporting-label { color: #e8d490; font-size: 12px; font-weight: 600; margin-bottom: 3px; }
-.kashf-supporting-detail { color: #c8ddf0; font-size: 13px; }
+.kashf-supporting-item.error .kashf-supporting-label { color: #b71c1c; }
+.kashf-supporting-label { color: #7a5c00; font-size: 12px; font-weight: 600; margin-bottom: 3px; }
+.kashf-supporting-detail { color: #222; font-size: 13px; }
 .kashf-house-row {
   display: flex;
   align-items: flex-start;
   gap: 10px;
   padding: 7px 0;
-  border-bottom: 1px solid rgba(232,212,144,0.07);
+  border-bottom: 1px solid rgba(0,0,0,0.07);
 }
 .kashf-house-row:last-child { border-bottom: none; }
-.kashf-house-label { color: #9ab4cc; font-size: 12px; min-width: 140px; padding-top: 2px; }
-.kashf-house-figure { color: #c8ddf0; font-size: 13px; font-weight: 600; }
-.kashf-house-figure.saad  { color: #48c878; }
-.kashf-house-figure.nahs  { color: #e06060; }
-.kashf-house-figure.mixed { color: #d4b84a; }
-.kashf-house-meta { font-size: 12px; font-weight: 400; color: #7a9ab8; margin-right: 6px; }
+.kashf-house-label { color: #555; font-size: 12px; min-width: 140px; padding-top: 2px; }
+.kashf-house-figure { color: #1a1a1a; font-size: 13px; font-weight: 600; }
+.kashf-house-figure.saad  { color: #1b5e20; }
+.kashf-house-figure.nahs  { color: #b71c1c; }
+.kashf-house-figure.mixed { color: #7a5c00; }
+.kashf-house-meta { font-size: 12px; font-weight: 400; color: #666; margin-right: 6px; }
 .kashf-board-warning { padding: 8px 12px; border-radius: 6px; font-size: 13px; margin-bottom: 6px; }
-.kashf-board-warning.critical { background: rgba(220,70,70,0.12); color: #e06060; border: 1px solid rgba(220,70,70,0.3); }
-.kashf-board-warning.warning  { background: rgba(200,150,50,0.12); color: #d4a84a; border: 1px solid rgba(200,150,50,0.3); }
+.kashf-board-warning.critical { background: rgba(220,70,70,0.1); color: #8c2118; border: 1px solid rgba(220,70,70,0.35); }
+.kashf-board-warning.warning  { background: rgba(200,150,50,0.1); color: #6d4c00; border: 1px solid rgba(200,150,50,0.35); }
 .kashf-reading-footer {
   text-align: center;
-  color: #5a7a9a;
+  color: #666;
   font-size: 12px;
   padding: 12px 0;
 }
@@ -513,33 +513,33 @@ input, select, textarea {
 
 /* ── Kashf prose paragraphs ── */
 .kashf-prose-paragraph {
-  color: #c8ddf0;
+  color: #1a1a1a;
   font-size: 14px;
   line-height: 1.78;
   margin: 0 0 10px;
   text-align: right;
 }
 .kashf-prose-paragraph strong {
-  color: #e8d490;
+  color: #071b30;
   font-weight: 700;
 }
 .kashf-prose-paragraph em {
-  color: #9ab4cc;
+  color: #444;
   font-style: normal;
 }
 .kashf-supporting-section {
-  background: rgba(6,25,45,0.7);
-  border: 1px solid rgba(100,200,150,0.2);
+  background: rgba(255,255,255,0.92);
+  border: 1px solid rgba(60,140,100,0.3);
   border-radius: 8px;
   padding: 14px 16px;
 }
 .kashf-supporting-title {
-  color: #7ad4a8;
+  color: #1b5e20;
   font-size: 13px;
   font-weight: 700;
   margin: 0 0 10px;
   padding-bottom: 6px;
-  border-bottom: 1px solid rgba(100,200,150,0.2);
+  border-bottom: 1px solid rgba(60,140,100,0.25);
   letter-spacing: 0.03em;
 }
 .kashf-supporting-body {
@@ -548,27 +548,27 @@ input, select, textarea {
   gap: 6px;
 }
 .kashf-supporting-item-prose {
-  color: #b8cfe8;
+  color: #222;
   font-size: 13px;
   line-height: 1.65;
   padding: 4px 0;
-  border-bottom: 1px solid rgba(232,212,144,0.06);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
   text-align: right;
 }
 .kashf-supporting-item-prose:last-child { border-bottom: none; }
-.kashf-supporting-item-prose strong { color: #e8d490; }
+.kashf-supporting-item-prose strong { color: #071b30; }
 .kashf-conclusion {
-  background: linear-gradient(135deg, rgba(6,25,45,0.9) 0%, rgba(10,35,60,0.9) 100%);
-  border: 1px solid rgba(232,212,144,0.4);
+  background: rgba(255,255,255,0.92);
+  border: 1px solid rgba(180,140,50,0.4);
   border-radius: 8px;
   padding: 16px 18px;
-  color: #d8eaf8;
+  color: #1a1a1a;
   font-size: 14px;
   line-height: 1.8;
   text-align: right;
 }
 .kashf-conclusion strong {
-  color: #f0c040;
+  color: #7a5c00;
   font-weight: 700;
 }
 

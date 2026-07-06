@@ -7,6 +7,15 @@
 
 import { getFigureAppearance } from './kashf-figure-appearance.js';
 import { getSaadNahs } from './kashf-figure-classifier.js';
+import { HOUSE_NAMES } from './kashf-reading-engine.js';
+
+// שם הבית + נושאו (למשל "בית שני — הממון") — אותה טבלת בתים המשמשת בכל
+// האפליקציה (kashf-reading-engine.js), רק מציגים כאן את חלק הנושא בלבד.
+function houseTopicOnly(houseNum) {
+  const full = HOUSE_NAMES[houseNum] || '';
+  const idx = full.indexOf('—');
+  return idx === -1 ? full : full.slice(idx + 1).trim();
+}
 
 // ── עזרי טקסט ─────────────────────────────────────────────────────────────
 
@@ -317,6 +326,12 @@ function writeDhamirPara(reading) {
 
   const q = qualityWord(winner.pattern ? getSaadNahs(winner.pattern) : null);
   const houseLabel = `בית ${winner.houseNumber}`;
+  const houseTopic = houseTopicOnly(winner.houseNumber);
+  const meaningNote = houseTopic && winner.houseNumber !== 1
+    ? `<p class="kashf-dhamir-meaning">כלומר: מה שבאמת מעסיק את השואל הוא <strong>${houseTopic}</strong> — גם אם השאלה שנשאלה עסקה בנושא אחר.</p>`
+    : (winner.houseNumber === 1
+      ? `<p class="kashf-dhamir-meaning">כלומר: מה שבאמת מעסיק את השואל הוא מצבו האישי הכללי — בלי נושא צדדי נסתר.</p>`
+      : '');
   const agreementNote = winner.agreementCount > 1
     ? `<span class="kashf-dhamir-agreement">${winner.agreementCount} משיטות ההכרעה הסכימו על בית זה (${winner.methodsAgreed.join(', ')})</span>`
     : `<span class="kashf-dhamir-agreement">לפי שיטת "${winner.methodHebrew}"</span>`;
@@ -341,6 +356,7 @@ function writeDhamirPara(reading) {
       מחשבת השואל האמיתית מתגלה ב<strong>${houseLabel}</strong> — הצורה <strong>${winner.nameHebrew || ''}</strong> (${winner.pattern || ''})${q ? ` — ${q}` : ''}.
       ${agreementNote}
     </p>
+    ${meaningNote}
     ${extraLines}
     <p class="kashf-dhamir-source">מקור: כשף אל-אסרר, השער הרביעי — עמ' 151-155 (גילוי הכוונה הנסתרת); שיטות עיתוי ואבחון נלוות — עמ' 35, 104, 112, 119, 124, 159</p>
   </div>`;
@@ -403,16 +419,35 @@ function writeWitnessJudgePara(reading) {
 // אותה שפת עיצוב כמו לוח חאווי (verdict-box/verdict-label/verdict-answer/verdict-detail).
 
 function writeShortVerdictBox(reading) {
-  const { overallPositive, primaryFormula } = reading;
+  const { overallPositive, primaryFormula, clientContext } = reading;
+  const question = c(clientContext?.question);
   const verdictText = overallPositive === true ? 'כן' : overallPositive === false ? 'לא' : 'לא ודאי';
   const vClass = overallPositive === true ? 'verdict-yes' : overallPositive === false ? 'verdict-no' : 'verdict-maybe';
   const detail = stripInlineCitations(primaryFormula?.verdict?.text || '');
 
-  return `<div class="verdict-box ${vClass}">
+  const questionLine = question
+    ? `<p style="direction:rtl; text-align:center; font-size:14px; color:#444; margin:0 0 8px;">השאלה שנשאלה: <em>${question}</em></p>`
+    : '';
+
+  return `${questionLine}<div class="verdict-box ${vClass}">
     <div class="verdict-label">תשובה לשאלה</div>
     <div class="verdict-answer">${verdictText}</div>
     ${detail ? `<div class="verdict-detail">${detail}</div>` : ''}
   </div>`;
+}
+
+// ── עובדה מזהה מתוך הבדיקות התומכות (למשל "מי האויב", "תיאור הגנב") ─────────
+// כדי שהמסקנה הקצרה תיתן מידע קונקרטי ולא רק פסיקה כללית.
+
+function findKeyDescriptiveFact(reading) {
+  const findings = reading.supportingFindings || [];
+  const f = findings.find((x) => x.checkType === 'house-figure-description' && !x.error);
+  if (!f) return '';
+  const app = getFigureAppearance(f.pattern);
+  if (!app?.appearance) return '';
+  let text = app.appearance;
+  if (app.occupation) text += `; עיסוק: ${app.occupation}`;
+  return `<strong>${f.label}:</strong> ${text}.`;
 }
 
 // ── פסקת מסקנה (קרא ללקוח) ──────────────────────────────────────────────────
@@ -599,10 +634,14 @@ function writeConclusionPara(reading) {
 
   const opening = fn ? `${fn} — ` : '';
   const text = `${opening}${guidance}${judgeNote}`;
+  const keyFact = findKeyDescriptiveFact(reading);
 
   return `<div class="client-reading-panel" style="direction:rtl; margin:18px 0 10px; border:2px solid #b8860b; border-radius:8px; background:#fffef5; padding:18px 20px;">
     <div style="font-weight:700; font-size:13px; color:#7a5c00; letter-spacing:0.5px; margin-bottom:10px; border-bottom:1px solid #e8d080; padding-bottom:6px;">📖 קרא ללקוח</div>
-    <div style="font-size:16px; line-height:2; color:#2c2c2c;"><p style="margin:0;">${text}</p></div>
+    <div style="font-size:16px; line-height:2; color:#2c2c2c;">
+      <p style="margin:0;">${text}</p>
+      ${keyFact ? `<p style="margin:12px 0 0;">${keyFact}</p>` : ''}
+    </div>
   </div>`;
 }
 
