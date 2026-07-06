@@ -638,3 +638,53 @@ export const SHIBUTZ_11_YAZDAJ_ORDER = [
   { position: 15, pattern: '2121', hebrewName: 'ממון נכנס' },
   { position: 16, pattern: '2222', hebrewName: 'קהלה', altNameInPoem: 'אל-מסדוד' },
 ];
+
+// ─────────────────────────────────────────────────────────────────────────
+// השיבוץ השנים-עשר: שיבוץ כדוגמת אבּדח / רַע'ד (עמ' 148)
+// ערכי יסוד: אש=3, אוויר=6, מים=12, עפר=24. שיטת חישוב: מספר המציאות
+// פחות 16 פעמיים (16+16). מסורת אחרת מצוטטת (לא פסיקת המחבר): אש=7,
+// אוויר=14, מים=28, עפר=56 — "ציור המעגל שלו נעשה על דרך מעגל יזד'ג".
+// ─────────────────────────────────────────────────────────────────────────
+
+export const SHIBUTZ_12_RAAD_ELEMENT_VALUES = { 'אש': 3, 'אוויר': 6, 'מים': 12, 'עפר': 24 };
+
+export const SHIBUTZ_12_RAAD_ALTERNATIVE_CITED = {
+  attributedTo: 'מסורת אחרת (מצוטטת, לא פסיקת המחבר)',
+  values: { 'אש': 7, 'אוויר': 14, 'מים': 28, 'עפר': 56 },
+  note: "ציור המעגל שלו נעשה על דרך מעגל יזד'ג",
+};
+
+export const SHIBUTZ_12_RAAD_METHOD = {
+  descriptionHebrew: 'מספר המציאות של הצורה פחות 16, ופחות 16 שוב (16+16=32). הנשאר = מספר הבית.',
+  sourceStatus: 'explicit-in-source',
+  sourceRef: "כשף אל-אסראר עמ' 148",
+};
+
+/**
+ * טבלת התוצאה (עמ' 148). מקומות 1-12 מאומתים במלואם (תואמים את השיר
+ * מילה-במילה: כל אחד מהם נקרא בשם או בכינוי-קוד המתאים לסימן הרמל
+ * שלו). מקומות 14-15 בטבלת המקור תויגו (ככל הנראה בטעות תעתוק) באותם
+ * סימנים כמו מקומות 2 ו-1 בהתאמה — כפילות בלתי אפשרית. בהיקש-השלמה
+ * ברור ששני המקומות הללו צריכים להיות סוהר ואדום (שתי הצורות היחידות
+ * החסרות מלבד קהלה, שכבר מאומתת נכונה במקום 16) — אך אין במקור שום
+ * כינוי-קוד מבחין שיקבע איזה מהם שייך למקום 14 ואיזה למקום 15. נשאר
+ * לא-פתור, לא מנוחש.
+ */
+export const SHIBUTZ_12_RAAD_ORDER = [
+  { position: 1,  pattern: '1112', hebrewName: 'סף יוצא', altNameInPoem: 'ראיית אל-חזן' },
+  { position: 2,  pattern: '2111', hebrewName: 'סף נכנס', altNameInPoem: 'ראיית אל-אפרח' },
+  { position: 3,  pattern: '1212', hebrewName: 'ממון יוצא' },
+  { position: 4,  pattern: '2211', hebrewName: 'כבוד נכנס', altNameInPoem: 'תשמיר' },
+  { position: 5,  pattern: '1122', hebrewName: 'כבוד יוצא' },
+  { position: 6,  pattern: '2121', hebrewName: 'ממון נכנס' },
+  { position: 7,  pattern: '1222', hebrewName: 'נשוא ראש' },
+  { position: 8,  pattern: '2221', hebrewName: 'שפל ראש' },
+  { position: 9,  pattern: '1111', hebrewName: 'דרך' },
+  { position: 10, pattern: '2112', hebrewName: 'חיבור' },
+  { position: 11, pattern: '1211', hebrewName: 'בר הלחי' },
+  { position: 12, pattern: '2212', hebrewName: 'לבן' },
+  { position: 13, pattern: '1121', hebrewName: 'נלחם', altNameInPoem: 'השמחה הבהירה', patternNote: 'במקור תויג בטעות כסף נכנס (זהה למקום 2); זוהה לפי הכינוי החוזר "השמחה הבהירה" (=נלחם בשיבוץ 10).' },
+  { position: 14, pattern: null, hebrewName: null, patternNote: 'לא פתור: המקור תייג בטעות כסף נכנס (כפילות עם מקום 2). לפי היקש-השלמה זו סוהר או אדום, ללא דרך להכריע ביניהן.', candidatePatterns: ['1221', '2122'] },
+  { position: 15, pattern: null, hebrewName: null, patternNote: 'לא פתור: המקור תייג בטעות כסף יוצא (כפילות עם מקום 1). לפי היקש-השלמה זו סוהר או אדום, ללא דרך להכריע ביניהן.', candidatePatterns: ['1221', '2122'] },
+  { position: 16, pattern: '2222', hebrewName: 'קהלה' },
+];
