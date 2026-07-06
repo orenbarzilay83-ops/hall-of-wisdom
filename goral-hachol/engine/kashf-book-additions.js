@@ -103,3 +103,40 @@ export function computeStayOrMove(chart) {
   }
   return { verdict, outputHebrew };
 }
+
+// כשף אל-אסרר עמ' 204-205 — "בצניעות האישה"
+// "השלם את גורל החול על שמה. אם הצורה הראשונה טהורה — היא צנועה. אם היא
+//  תואמת את המאזן — היא צנועה לגמרי. וכן אם הצורה שבבית הראשון והבית
+//  השביעי טהורות — הרי היא צנועה. אם צורות הבית השביעי והתשיעי מיטיבות —
+//  היא יראת שמים וצנועה. ואם צורה מזיקה במאזן — היא פרוצה. אם הבית
+//  הראשון מיטיב וטהור, והבית התשיעי מזיק — יש חשש לפריצות. ואם הבית
+//  הראשון מזיק, אך התשיעי והמאזן טהורים — רוחה טהורה ואין חשש."
+// הערה: "טהורה/טמאה" בספר זהה למונח "מיטיבה/מזיקה" (סעד/נחס) — ראה
+// תיעוד השער השני בתוכנית ההפרדה.
+export function computeWomanModesty(chart) {
+  const getH = (n) => chart.find((h) => Number(h.house) === n);
+  const h1 = getH(1), h7 = getH(7), h9 = getH(9), h15 = getH(15);
+  if (!h1 || !h7 || !h9 || !h15) return null;
+
+  const isBenefic = (h) => {
+    const f = String(h?.fortune || '');
+    return f.includes('מיטיב') && !f.startsWith('ממוזג-מזיק');
+  };
+  const isMalefic = (h) => String(h?.fortune || '').includes('מזיק');
+
+  const lines = [];
+  if (isBenefic(h1)) lines.push('בית 1 מיטיב וטהור — סימן לצניעות.');
+  if (h1.key === h15.key) lines.push('בית 1 תואם את המאזן (בית 15) — צנועה לגמרי.');
+  if (isBenefic(h1) && isBenefic(h7)) lines.push('בית 1 ובית 7 שניהם מיטיבים — סימן לצניעות.');
+  if (isBenefic(h7) && isBenefic(h9)) lines.push('בית 7 ובית 9 שניהם מיטיבים — יראת שמים וצניעות.');
+  if (isMalefic(h15)) lines.push('⚠ המאזן (בית 15) מזיק — חשש שהיא פרוצה.');
+  if (isBenefic(h1) && isMalefic(h9)) lines.push('⚠ בית 1 מיטיב וטהור, אך בית 9 מזיק — יש חשש לפריצות.');
+  if (isMalefic(h1) && isBenefic(h9) && isBenefic(h15)) lines.push('בית 1 מזיק, אך בית 9 והמאזן טהורים — רוחה טהורה ואין חשש.');
+
+  if (!lines.length) {
+    return { verdict: 'mixed', outputHebrew: 'הסימנים מעורבים — אין הכרעה חד-משמעית על צניעותה מכלל זה.' };
+  }
+  const hasWarning = lines.some((l) => l.startsWith('⚠'));
+  const verdict = hasWarning ? 'concern' : 'modest';
+  return { verdict, outputHebrew: lines.join('\n') };
+}
