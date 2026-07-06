@@ -454,3 +454,149 @@ export const SHIBUTZ_6_ELEMENT_LETTERS_CITED = [
     'מים': ['ד', 'ח', 'ל', 'ע', "ח'", 'צ'],
   },
 ];
+
+// ─────────────────────────────────────────────────────────────────────────
+// שיבוצים 7-10: ארבעת סדרי-השיבוץ ה"חשבוניים" הראשונים (עמ' 142-146)
+// כולם נגזרים זה מזה ("מתוך סדרו של שיבוץ אבּדח יוצאים שלושה סדרי
+// שיבוץ נוספים: שיבוץ הרוחב, שיבוץ העומק ושיבוץ ההשבה"), וכולם ניתנו
+// בספר כטבלאות-סדר מפורשות (16 מקומות), לא רק כשיר — ולכן ברמת ביטחון
+// גבוהה בהרבה מהשיבוצים 5-6.
+// ─────────────────────────────────────────────────────────────────────────
+
+// השיבוץ השביעי: שיבוץ אבּדח (עמ' 142-143). שמות נוספים: שיבוץ האורך,
+// שיבוץ היחידים, שיבוץ דניאל של הלילה. ערכי יסוד: אש=1,אוויר=2,מים=4,
+// עפר=8 (= מסורת "אבו סעיד אל-טרבלסי" שכבר תועדה כדעה מצוטטת בשיבוץ 3
+// — כאן היא הבסיס הרשמי לשיבוץ העצמאי הזה, לא רק דעה חלופית).
+export const SHIBUTZ_7_ABDACH_ELEMENT_VALUES = { 'אש': 1, 'אוויר': 2, 'מים': 4, 'עפר': 8 };
+
+export const SHIBUTZ_7_ABDACH_ORDER = [
+  { position: 1,  pattern: '1222', hebrewName: 'נשוא ראש' },
+  { position: 2,  pattern: '2122', hebrewName: 'אדום' },
+  { position: 3,  pattern: '1122', hebrewName: 'כבוד יוצא' },
+  { position: 4,  pattern: '2212', hebrewName: 'לבן' },
+  { position: 5,  pattern: '1212', hebrewName: 'ממון יוצא' },
+  { position: 6,  pattern: '2112', hebrewName: 'חיבור' },
+  { position: 7,  pattern: '1112', hebrewName: 'סף יוצא' },
+  { position: 8,  pattern: '2221', hebrewName: 'שפל ראש' },
+  { position: 9,  pattern: '1221', hebrewName: 'סוהר' },
+  { position: 10, pattern: '2121', hebrewName: 'ממון נכנס' },
+  { position: 11, pattern: '1121', hebrewName: 'נלחם' },
+  { position: 12, pattern: '2211', hebrewName: 'כבוד נכנס' },
+  { position: 13, pattern: '1211', hebrewName: 'בר הלחי' },
+  { position: 14, pattern: '2111', hebrewName: 'סף נכנס' },
+  { position: 15, pattern: '1111', hebrewName: 'דרך' },
+  { position: 16, pattern: '2222', hebrewName: 'קהלה' },
+];
+
+/**
+ * שיטת החישוב (עמ' 143): לכל צורה חושבים "מציאות" ו"העדר" לפי ערכי
+ * היסודות שבה (SHIBUTZ_7_ABDACH_ELEMENT_VALUES), ומחברים. מפחיתים 17
+ * אם הסכום גדול מ-17; אם לא גדול מ-17, מפחיתים 1. הנשאר = מספר הבית.
+ * דוגמה מהמקור: כבוד נכנס — העדר=4, מציאות=2, סכום=18. 18-17=1 → בית 1.
+ */
+export const SHIBUTZ_8_ROCHAV_METHOD = {
+  descriptionHebrew:
+    'לכל צורה: מחברים ערכי-יסוד של המציאות וההעדר. אם הסכום > 17, ' +
+    'מפחיתים 17; אחרת מפחיתים 1. הנשאר = מספר הבית.',
+  exampleHebrew: 'כבוד נכנס: העדר=4, מציאות=2, סכום=18; 18-17=1 → בית 1.',
+  sourceStatus: 'explicit-in-source',
+  sourceRef: "כשף אל-אסראר עמ' 143",
+};
+
+// השיבוץ השמיני: שיבוץ הרוחב (עמ' 143-144) — טבלת התוצאה המלאה.
+export const SHIBUTZ_8_ROCHAV_ORDER = [
+  { position: 1,  pattern: '2211', hebrewName: 'כבוד נכנס' },
+  { position: 2,  pattern: '1121', hebrewName: 'נלחם' },
+  { position: 3,  pattern: '2121', hebrewName: 'ממון נכנס' },
+  { position: 4,  pattern: '2221', hebrewName: 'שפל ראש' },
+  { position: 5,  pattern: '1221', hebrewName: 'סוהר' },
+  { position: 6,  pattern: '1112', hebrewName: 'סף יוצא' },
+  { position: 7,  pattern: '2112', hebrewName: 'חיבור' },
+  { position: 8,  pattern: '2212', hebrewName: 'לבן' },
+  { position: 9,  pattern: '1222', hebrewName: 'נשוא ראש' },
+  { position: 10, pattern: '1111', hebrewName: 'דרך' },
+  // מקום 11 בטבלת המקור מתויג "כבוד" ללא סימן רמל מפורש (פער בתעתוק);
+  // נגזר בהיקש-השלמה (הצורה היחידה שלא הופיעה במקום אחר בטבלה).
+  { position: 11, pattern: '1122', hebrewName: 'כבוד יוצא', patternNote: 'נגזר בהיקש-השלמה, לא צוטט עם סימן מפורש במקור.' },
+  { position: 12, pattern: '1211', hebrewName: 'בר הלחי' },
+  { position: 13, pattern: '1212', hebrewName: 'ממון יוצא' },
+  { position: 14, pattern: '2122', hebrewName: 'אדום' },
+  { position: 15, pattern: '2222', hebrewName: 'קהלה' },
+  { position: 16, pattern: '2111', hebrewName: 'סף נכנס' },
+];
+
+/**
+ * שיטת החישוב (עמ' 144-145): מפחיתים 16 ממספרי ההעדר/מציאות (כשהם
+ * גדולים מ-16). הנשאר = מספר הבית. מן הבית ה-1 עד ה-8 המספר עולה,
+ * מן ה-8 עד ה-16 הוא פוחת. דוגמה: כבוד נכנס בבית 2 — מספרה 18;
+ * 18-16=2 → בית 2.
+ */
+export const SHIBUTZ_9_OMEK_METHOD = {
+  descriptionHebrew:
+    'מפחיתים 16 ממספר ההעדר/מציאות של הצורה (כשגדול מ-16). הנשאר = ' +
+    'מספר הבית. מבית 1 עד 8 המספר עולה; מ-8 עד 16 הוא פוחת.',
+  exampleHebrew: 'כבוד נכנס בבית 2: מספרה 18; 18-16=2 → בית 2.',
+  sourceStatus: 'explicit-in-source',
+  sourceRef: "כשף אל-אסראר עמ' 144-145",
+};
+
+// השיבוץ התשיעי: שיבוץ העומק (עמ' 144-145) — טבלת התוצאה המלאה.
+export const SHIBUTZ_9_OMEK_ORDER = [
+  { position: 1,  pattern: '1211', hebrewName: 'בר הלחי' },
+  { position: 2,  pattern: '2211', hebrewName: 'כבוד נכנס' },
+  { position: 3,  pattern: '1121', hebrewName: 'נלחם' },
+  { position: 4,  pattern: '2121', hebrewName: 'ממון נכנס' },
+  { position: 5,  pattern: '1221', hebrewName: 'סוהר' },
+  { position: 6,  pattern: '2221', hebrewName: 'שפל ראש' },
+  { position: 7,  pattern: '1112', hebrewName: 'סף יוצא' },
+  { position: 8,  pattern: '2112', hebrewName: 'חיבור' },
+  { position: 9,  pattern: '1212', hebrewName: 'ממון יוצא' },
+  { position: 10, pattern: '2212', hebrewName: 'לבן' },
+  { position: 11, pattern: '2122', hebrewName: 'אדום' },
+  { position: 12, pattern: '1222', hebrewName: 'נשוא ראש' },
+  { position: 13, pattern: '1122', hebrewName: 'כבוד יוצא' },
+  { position: 14, pattern: '2111', hebrewName: 'סף נכנס' },
+  { position: 15, pattern: '2222', hebrewName: 'קהלה' },
+  { position: 16, pattern: '1111', hebrewName: 'דרך' },
+];
+
+/**
+ * השיבוץ העשירי: שיבוץ ההשבה (עמ' 145-146) — "חוזרים ומצרפים את מה
+ * שקדם: האורך, הרוחב והעומק." מחשבים רק את ההעדר, לפי חשבון אבּדח.
+ * המחבר נותן גם דרך-קיצור (עמ' 146): קחו את מקום 14 משיבוץ אבּדח
+ * והתקדמו שמאלה כדי לקבל שיבוץ הרוחב; קחו את מקום 16 משיבוץ הרוחב
+ * ועשו אותו ראשון כדי לקבל שיבוץ העומק.
+ */
+export const SHIBUTZ_10_HASHAVA_METHOD = {
+  descriptionHebrew:
+    'מחשבים רק את ההעדר (לא המציאות) לפי חשבון אבּדח. דרך-קיצור: ' +
+    'התחילו ממקום 14 של שיבוץ אבּדח והתקדמו שמאלה לקבלת שיבוץ הרוחב; ' +
+    'התחילו ממקום 16 של שיבוץ הרוחב כראשון לקבלת שיבוץ העומק.',
+  sourceStatus: 'explicit-in-source',
+  sourceRef: "כשף אל-אסראר עמ' 145-146",
+};
+
+// השיבוץ העשירי: שיבוץ ההשבה (עמ' 145-146) — טבלת התוצאה המלאה.
+// שמות-קוד בשיר (לא בקוד): תשמיר=כבוד נכנס, סף הצער=סף יוצא,
+// אג'ליד=כבוד יוצא, סתום=קהלה.
+// הערה: מקום 4 בטבלת המקור תויג באותו סימן רמל כמו מקום 1 (סף נכנס) —
+// כפילות שגויה ככל הנראה (העתק-הדבק בתעתוק). בהיקש-השלמה (הצורה
+// היחידה החסרה מתוך 16) מקום 4 צריך להיות נלחם — מסומן כנגזר, לא צוטט.
+export const SHIBUTZ_10_HASHAVA_ORDER = [
+  { position: 1,  pattern: '2111', hebrewName: 'סף נכנס' },
+  { position: 2,  pattern: '1211', hebrewName: 'בר הלחי' },
+  { position: 3,  pattern: '2211', hebrewName: 'כבוד נכנס', altNameInPoem: 'תשמיר' },
+  { position: 4,  pattern: '1121', hebrewName: 'נלחם', altNameInPoem: 'השמחה הבהירה', patternNote: 'נגזר בהיקש-השלמה — במקור תויג בטעות באותו סימן כמו מקום 1.' },
+  { position: 5,  pattern: '2121', hebrewName: 'ממון נכנס' },
+  { position: 6,  pattern: '1221', hebrewName: 'סוהר' },
+  { position: 7,  pattern: '2221', hebrewName: 'שפל ראש' },
+  { position: 8,  pattern: '1112', hebrewName: 'סף יוצא', altNameInPoem: 'סף הצער' },
+  { position: 9,  pattern: '2112', hebrewName: 'חיבור' },
+  { position: 10, pattern: '1212', hebrewName: 'ממון יוצא' },
+  { position: 11, pattern: '2212', hebrewName: 'לבן' },
+  { position: 12, pattern: '1122', hebrewName: 'כבוד יוצא', altNameInPoem: "אג'ליד" },
+  { position: 13, pattern: '2122', hebrewName: 'אדום' },
+  { position: 14, pattern: '1222', hebrewName: 'נשוא ראש' },
+  { position: 15, pattern: '2222', hebrewName: 'קהלה', altNameInPoem: 'סתום' },
+  { position: 16, pattern: '1111', hebrewName: 'דרך' },
+];
