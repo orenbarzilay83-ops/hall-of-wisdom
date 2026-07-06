@@ -1597,7 +1597,7 @@ const PATTERN_TO_LETTERS = (function buildLetterMap() {
   return map;
 })();
 
-function computeNameLetters(chart, houseNumber, labelOverride) {
+export function computeNameLetters(chart, houseNumber, labelOverride) {
   if (!Array.isArray(chart) || !houseNumber) return null;
   const house = chart.find((h) => Number(h.house) === Number(houseNumber));
   if (!house || !house.key) return null;
@@ -2163,13 +2163,6 @@ function computeTrianglesEnrichment(chart) {
   if (!enriched.length) return null;
   return { enriched, outputHebrew: enriched.map((e) => e.hebrewNote).join('\n') };
 }
-const ELEMENT_ILLNESS_TYPE = {
-  'אש':    'מרה צהובה — חום, כבד, מרה, בעיות עיכול (חולי אש)',
-  'אוויר': 'דם — לחץ דם, עצבים, מחלות נשימה (חולי אוויר)',
-  'מים':   'כיח / ריר — ריאות, כליות, בעיות נוזלים (חולי מים)',
-  'עפר':   'מרה שחורה — עצבות, עייפות, מחלות כרוניות (חולי עפר)',
-};
-
 // מיפוי יסוד → אזור גוף לפי שיטת חאוי (פרק 12 — تسكين الاعضاء)
 // מקור: חאוי עמ׳ 12 — אזורי הגוף לפי יסוד הצורה
 // יסוד הצורה שנפלה בבית 6 (מחלה) מורה על אזור הגוף בו שוכן החולי
@@ -2255,122 +2248,6 @@ function computeGhalibMaghloub(chart) {
   };
 }
 
-function computeIllnessElementDiagnosis(chart) {
-  const counts = { 'אש': 0, 'אוויר': 0, 'מים': 0, 'עפר': 0 };
-  for (const h of chart) {
-    const el = h.element || h.elementHebrew || '';
-    if (counts[el] !== undefined) counts[el]++;
-  }
-  const h6 = chart.find((h) => Number(h.house) === 6);
-  const h8 = chart.find((h) => Number(h.house) === 8);
-  const h6El = h6?.element || h6?.elementHebrew || '';
-  const h8El = h8?.element || h8?.elementHebrew || '';
-
-  // בית 6 = מחלה, בית 8 = סכנה. בית 6 גובר.
-  const primaryEl = h6El || Object.entries(counts).sort(([,a],[,b]) => b - a)[0][0];
-  const illnessType = ELEMENT_ILLNESS_TYPE[primaryEl] || '';
-  const dangerType  = h8El ? ELEMENT_ILLNESS_TYPE[h8El] : null;
-
-  const lines = [`אלמנט בית 6 (מחלה): ${h6El || 'לא ידוע'} → ${illnessType}`];
-  if (dangerType && h8El !== h6El) {
-    lines.push(`אלמנט בית 8 (סכנה): ${h8El} → ${dangerType}`);
-  }
-
-  const specificSigns = [];
-  const h6Key = h6?.key || '';
-  const h1Key = chart.find((h) => Number(h.house) === 1)?.key || '';
-  if (h6Key === '2112') specificSigns.push('חיבור בבית 6 — מחלת בטן (כבד, טחול, שיעול)');
-  if (h6Key === '1111') specificSigns.push('דרך בבית 6 — חשד לרעל או אכילת מזיקה');
-  if (h6Key === '1221') specificSigns.push('סוהר בבית 6 — מחלה קשה, קבר פתוח — זהירות');
-  if (h6Key === '2212') specificSigns.push('לבן בבית 6 — המחלה לא תאריך ימים');
-  if (specificSigns.length) lines.push(...specificSigns);
-
-  return {
-    primaryElement: primaryEl,
-    illnessType,
-    dangerType,
-    elementCounts: counts,
-    specificSigns,
-    outputHebrew: lines.join('\n'),
-  };
-}
-function computeThiefLocationDetails(chart) {
-  const figureHouses = {};
-  for (const h of chart) {
-    const key = h.key;
-    if (!key) continue;
-    if (!figureHouses[key]) figureHouses[key] = [];
-    figureHouses[key].push({ house: Number(h.house), hebrew: h.hebrew || h.key });
-  }
-
-  const lines = [];
-  const findings = [];
-
-  for (const [key, entries] of Object.entries(figureHouses)) {
-    if (entries.length < 2) continue;
-    const houseNums = entries.map((e) => e.house);
-    const figHebrew = entries[0].hebrew;
-
-    const inMothers   = houseNums.some((n) => n >= 1 && n <= 4);
-    const inHouse5    = houseNums.includes(5);
-    const inHouse6    = houseNums.includes(6);
-    const afterSeven  = houseNums.filter((n) => n >= 7 && n <= 12);
-
-    let thiefType = '';
-    if (inMothers)        thiefType = 'הגנב מאנשי הבית / המשרתים';
-    else if (inHouse5)    thiefType = 'הגנב מהשכנים';
-    else if (inHouse6)    thiefType = 'הגנב מהיכרים / אוהבים של הבעלים';
-    else if (afterSeven.length >= 2) thiefType = `יש ${afterSeven.length} גנבים (צורה חוזרת אחרי בית 7)`;
-
-    if (thiefType) {
-      lines.push(`${figHebrew} חוזר בבתים ${houseNums.join(', ')} — ${thiefType}`);
-      findings.push({ figureKey: key, figureHebrew: figHebrew, houses: houseNums, thiefType });
-    }
-  }
-
-  const h8 = chart.find((h) => Number(h.house) === 8);
-  const h6 = chart.find((h) => Number(h.house) === 6);
-  if (h8) lines.push(`תיאור הגנב (בית 8 — ${h8.hebrew || h8.key}): ${h8.transit?.meaning || 'ראה פסיקת המעבר'}`);
-  if (h6) lines.push(`תיאור החפץ הגנוב (בית 6 — ${h6.hebrew || h6.key}): ${h6.transit?.meaning || 'ראה פסיקת המעבר'}`);
-
-  if (!lines.length) return null;
-  return { findings, outputHebrew: lines.join('\n') };
-}
-function computeEnemyInHousehold(chart) {
-  const MALEFIC = new Set(['1212','2122','2221','2222','1221']);
-  let openDots = 0;
-  for (const h of chart) {
-    if (!MALEFIC.has(h.key || '')) continue;
-    for (const ch of String(h.key || '')) {
-      if (ch === '1') openDots++;
-    }
-  }
-  if (openDots === 0) return { hasEnemy: false, outputHebrew: 'לא נמצאו סימנים לאויב בסביבה הקרובה.' };
-
-  const remainder = openDots % 5 || 5;
-  const targetHouse = chart.find((h) => Number(h.house) === remainder);
-  const targetFig = targetHouse?.key || '';
-  const isMalefic = MALEFIC.has(targetFig);
-  const isBenefic = ['1122','2211','2121','1222'].includes(targetFig);
-
-  let verdict = '';
-  if (isMalefic)       verdict = 'יש אויב בסביבה הקרובה';
-  else if (isBenefic)  verdict = 'אין אויב — מדובר בחבר או אדם ניטרלי';
-  else                 verdict = 'אדם מפוקפק בסביבה — לא אויב ברור אבל לא ידיד מוחלט';
-
-  const repetitions = chart.filter((h) => h.key === targetFig).length;
-  const enemyCount = repetitions > 1 ? ` (מספר האויבים: ${repetitions})` : '';
-
-  return {
-    hasEnemy: isMalefic,
-    openDots,
-    remainder,
-    targetHouse: remainder,
-    targetFigure: targetHouse?.hebrew || targetFig,
-    verdict,
-    outputHebrew: `גילוי אויב בסביבה (נוסחת הנקודות הפתוחות): נפל על בית ${remainder} — ${targetHouse?.hebrew || targetFig} — ${verdict}${enemyCount}`,
-  };
-}
 
 function computeJumlaAnalysis(chart, topicId) {
   if (!Array.isArray(chart)) return null;
@@ -2443,47 +2320,6 @@ function computeJumlaAnalysis(chart, topicId) {
 }
 
 
-const MARRIAGE_BY_DOMINANT_FIGURE = {
-  '1111': 'דרך שולטת — לא יתאחד עד לאחר זמן; האיחוד יבוא בעיכוב',
-  '1112': 'סף יוצא שולט — נישואין עם מכשולים ביציאה; יש עיכוב כבד',
-  '1121': 'נלחם שולט — ישמח בה; נישואין עם שמחה',
-  '1122': 'כבוד יוצא שולט — לא ינקה מנכד ורוגז; קושי בנישואין',
-  '1211': 'בר הלחי שולט — זיווג ושמחה מצד הנשים; הצלחה בשותפות',
-  '1212': 'ממון יוצא שולט — ייצא ממנה ולא יחזור; פרידה בסוף',
-  '1221': 'סוהר שולט — נישואין ישנו את מצבו לטובה',
-  '1222': 'נשוא ראש שולט — אין טוב לנישואין אלה; ריב ונכד',
-  '2111': 'סף נכנס שולט — יתחתן אבל יגרש לאחר מכן',
-  '2112': 'חיבור שולט — ישמח בה; נישואין טובים עם שמחה',
-  '2121': 'ממון נכנס שולט — קבלה עם קושי אך אחרית טובה; נישואין עם סבל שמסתיים בטוב',
-  '2122': 'אדום שולט — יפיק תועלת גדולה מהנישואין',
-  '2211': 'כבוד נכנס שולט — נישואין עם אהבה ביניהם; קשר חזק',
-  '2212': 'לבן שולט — אין טוב לו בנישואין אלה; לא מומלץ',
-  '2221': 'שפל ראש שולט — יש תנועה חיובית; נישואין אפשריים עם הסתייגות',
-  '2222': 'קהלה שולטת — קשיים ורב כיוון; ריב ונכד בנישואין',
-};
-
-function computeMarriageFigureForecast(chart) {
-  const counts = {};
-  for (const h of chart) {
-    const k = h.key || '';
-    if (k) counts[k] = (counts[k] || 0) + 1;
-  }
-  const dominant = Object.entries(counts).sort(([,a],[,b]) => b - a)[0];
-  if (!dominant) return null;
-
-  const [domKey, domCount] = dominant;
-  const meaning = MARRIAGE_BY_DOMINANT_FIGURE[domKey];
-  if (!meaning) return null;
-
-  const domHebrew = chart.find((h) => h.key === domKey)?.hebrew || domKey;
-  return {
-    dominantKey: domKey,
-    dominantHebrew: domHebrew,
-    count: domCount,
-    meaning,
-    outputHebrew: `פסיקת נישואין לפי צורה שולטת: "${domHebrew}" (${domCount}×) — ${meaning}`,
-  };
-}
 const FIRST_FIGURE_REPETITIONS = {
   // [1x, 2x, 3x, 4x]
   '1111': [
@@ -2608,193 +2444,6 @@ function computeFirstFigureRepetition(chart) {
     count,
     meaning,
     outputHebrew: `צורה ראשונה בלוח: "${firstHebrew}" (חוזרת ${count}×) — ${meaning}`,
-  };
-}
-const YEARLY_BY_DOMINANT_FIGURE = {
-  '1111': 'דרך שולטת — שנת תנועה ונדידה, ללא ברכה יציבה. טוב לנוסעים ולמסחר בדרכים',
-  '1112': 'סף יוצא שולט — שנת יציאות והוצאות; דברים יוצאים מהיד. זהירות מהפסדים',
-  '1121': 'נלחם שולט — שנת סכסוכים ומחלוקות; עמל רב, אך מי שיחזיק מעמד יצלח',
-  '1122': 'כבוד יוצא שולט — שנה עם כבוד ופרידות; יש כבוד אבל גם עזיבות ואובדן',
-  '1211': 'בר הלחי שולט — שנה טובה לנישואין ושמחה; שותפויות ואחרית טובה',
-  '1212': 'ממון יוצא שולט — שנת הפסד; כסף וחפצים יוצאים מהיד, זהירות מגנבות',
-  '1221': 'סוהר שולט — שנה כבדה; עיכובים, חסימות ומכשולים בכל דרך',
-  '1222': 'נשוא ראש שולט — שנת שלטון ומעמד; עסקים עם בעלי סמכות, ויכוחים גדולים',
-  '2111': 'סף נכנס שולט — שנת כניסה ורכישה; דברים חדשים נכנסים לחיים, הזדמנויות',
-  '2112': 'חיבור שולט — שנה שפופה; ריבוי עניינים ומועקה ללא הצלחה ברורה',
-  '2121': 'ממון נכנס שולט — שנת שפע; כסף נכנס, עסקים מצליחים, ברכה בממון',
-  '2122': 'אדום שולט — שנה עם מחלות ועימותים; זהירות בבריאות ובמריבות',
-  '2211': 'כבוד נכנס שולט — שנה מצוינת, שנה עם הרבה טוב; כבוד, הצלחה ושפע',
-  '2212': 'לבן שולט — שנת ניקיון ושלום; שנה יציבה ורגועה, ללא גדולות',
-  '2221': 'שפל ראש שולט — שנת ירידה; קשיים, עיכובים, הפסדים ורוע מזל',
-  '2222': 'קהלה שולטת — שנת ריבוי עניינים; הרבה אנשים ומחלוקות, קשה למצוא שקט',
-};
-
-function computeYearlyFigureForecast(chart) {
-  const counts = {};
-  for (const h of chart) {
-    const k = h.key || '';
-    if (k) counts[k] = (counts[k] || 0) + 1;
-  }
-  const dominant = Object.entries(counts).sort(([,a],[,b]) => b - a)[0];
-  if (!dominant) return null;
-
-  const [domKey, domCount] = dominant;
-  const meaning = YEARLY_BY_DOMINANT_FIGURE[domKey];
-  if (!meaning) return null;
-
-  const domHebrew = chart.find((h) => h.key === domKey)?.hebrew || domKey;
-  return {
-    dominantKey: domKey,
-    dominantHebrew: domHebrew,
-    count: domCount,
-    meaning,
-    outputHebrew: `תחזית שנתית לפי צורה שולטת: "${domHebrew}" (${domCount}×) — ${meaning}`,
-  };
-}
-function computeAlternativeNameExtraction(chart) {
-  const houseNums = [1, 4, 12];
-  const results = houseNums.map((n) => computeNameLetters(chart, n)).filter(Boolean);
-  if (!results.length) return null;
-
-  const keysSeen = {};
-  const withRepeat = results.map((r) => {
-    const k = r.figurePattern || '';
-    keysSeen[k] = (keysSeen[k] || 0) + 1;
-    return { ...r, repeatCount: keysSeen[k] };
-  });
-
-  const lines = withRepeat.map((r) =>
-    `  בית ${r.houseNumber} — ${r.figureHebrew}: ${r.outputHebrew}${r.repeatCount > 1 ? ' (צורה חוזרת — אותיות כפולות)' : ''}`
-  );
-
-  return {
-    houses: houseNums,
-    results: withRepeat,
-    outputHebrew: `שיטה 5 (בתים 1, 4, 12):\n${lines.join('\n')}`,
-  };
-}
-const FIGURE_PHYSICAL_DESCRIPTION = {
-  '1111': { height: 'בינוני', skin: 'חיוור / עור בהיר', hair: 'ישר ובינוני', eyes: 'עיניים אפורות / ירוקות', signs: 'מראה תנועתי, לא יושב בשקט', character: 'נוטה לנדידה, חברותי, חסר מנוחה' },
-  '1112': { height: 'נמוך ורזה', skin: 'עור בהיר', hair: 'דק וקצר', eyes: 'עיניים קטנות', signs: 'גוף דק, תנועות מהירות', character: 'שקוע במחשבות, נוטה לצאת ולברוח' },
-  '1121': { height: 'בינוני עם בטן בולטת', skin: 'עור כהה-בינוני', hair: 'סמיך ומסורבל', eyes: 'עיניים כהות', signs: 'שיער לסת, פנים חדות', character: 'עקשן, נוטה לסכסוכים, עמלן' },
-  '1122': { height: 'גבוה ורזה', skin: 'עור בהיר עם גוון', hair: 'ישר ומאורך', eyes: 'עיניים בהירות', signs: 'מראה אצילי, הליכה זקופה', character: 'מכובד, נוטה לעזוב, אוהב כבוד' },
-  '1211': { height: 'בינוני-נמוך', skin: 'עור נקי וצהבהב', hair: 'רך ומסודר', eyes: 'עיניים יפות', signs: 'לחיים נקיות ויפות, פנים נעימות', character: 'חברותי, אוהב נשים ושותפויות' },
-  '1212': { height: 'קצר ועבה', skin: 'עור כהה', hair: 'מסובך ולא מסודר', eyes: 'עיניים קטנות וחדות', signs: 'ידיים עסוקות, מבט חשדן', character: 'גנבן, עצלן, נוטה לאובדן' },
-  '1221': { height: 'גוף כבד ועצל', skin: 'עור כהה-שחרחר', hair: 'מסורבל', eyes: 'עיניים עמוקות', signs: 'תנועות עצלות, מסורבל', character: 'ממושקל, עצור, לא נוח לזוז' },
-  '1222': { height: 'גבוה ורחב', skin: 'עור בינוני', hair: 'ראש גדול, שיער כהה', eyes: 'עיניים גדולות ושלטוניות', signs: 'ראש גדול, מראה סמכותי', character: 'שלטוני, בעל מעמד, אוהב שליטה' },
-  '2111': { height: 'נמוך ורחב', skin: 'עור בינוני', hair: 'מסודר', eyes: 'עיניים רחבות', signs: 'גוף רחב ויציב', character: 'נוטה לכניסה ולהיאחז, אוהב לקבל' },
-  '2112': { height: 'עבה ורחב', skin: 'עור חיוור-צהבהב', hair: 'מסולסל', eyes: 'עיניים עגולות', signs: 'פנים עגולות, גוף מלא', character: 'חיבורי, אוהב קשרים, ידען' },
-  '2121': { height: 'בינוני', skin: 'עור בינוני', hair: 'ישר', eyes: 'עיניים ממוקדות ופקחות', signs: 'ידיים פתוחות, מראה של מקבל', character: 'ממוקד, עסקי, אוהב ממון' },
-  '2122': { height: 'גוף כבד', skin: 'עור אדמדם-כהה', hair: 'צבוע בגוון חם', eyes: 'עיניים אדומות / חמות', signs: 'פנים אדמדמות, סימני מחלה', character: 'חולני, נוטה לעימותים, עצבני' },
-  '2211': { height: 'גוף יפה ומאוזן', skin: 'עור בהיר ונקי', hair: 'מסודר ומכובד', eyes: 'עיניים בהירות ונעימות', signs: 'מראה של עושר וכבוד', character: 'מכובד, אוהב כבוד, נדיב' },
-  '2212': { height: 'גוף רזה ונמוך', skin: 'עור לבן מאוד', hair: 'שיער בהיר', eyes: 'עיניים בהירות', signs: 'מראה שקט ורגוע', character: 'שקט, נסוג, לא נוהר לקדמה' },
-  '2221': { height: 'גוף שפוף', skin: 'עור כהה', hair: 'שיער מדולדל', eyes: 'מבט מושפל', signs: 'ראש שפוף, כתפיים נמוכות', character: 'עצוב, מושפל, נוטה לירידה' },
-  '2222': { height: 'גוף גדול ומסיבי', skin: 'עור כהה', hair: 'עבות ומסורבל', eyes: 'עיניים גדולות', signs: 'מסה גדולה, קשה לפספוס', character: 'נמשך לקבוצות, בלגנאי, רבגוני' },
-};
-
-function computePhysicalDescriptionForHouse(chart, houseNumber) {
-  const house = chart.find((h) => Number(h.house) === Number(houseNumber));
-  if (!house?.key) return null;
-  const desc = FIGURE_PHYSICAL_DESCRIPTION[house.key];
-  if (!desc) return null;
-  const figHebrew = house.hebrew || house.key;
-  const bodyDesc = desc.height.startsWith('גוף') ? desc.height : `מבנה גוף ${desc.height}`;
-  const hairDesc = desc.hair.startsWith('שיער') ? desc.hair : `שיער ${desc.hair}`;
-  return {
-    houseNumber,
-    figureKey: house.key,
-    figureHebrew: figHebrew,
-    ...desc,
-    outputHebrew: `${figHebrew}: ${bodyDesc}, ${desc.skin}, ${hairDesc}, ${desc.eyes}. ${desc.signs}. אופי: ${desc.character}.`,
-  };
-}
-function computePrisonerAnalysis(chart) {
-  const h1  = chart.find((h) => Number(h.house) === 1);
-  const h4  = chart.find((h) => Number(h.house) === 4);
-  const h5  = chart.find((h) => Number(h.house) === 5);
-  const h12 = chart.find((h) => Number(h.house) === 12);
-  const h15 = chart.find((h) => Number(h.house) === 15);
-
-  if (!h1 || !h12) return null;
-
-  const lines = [];
-
-  const samePattern = h1.key && h1.key === h12.key;
-  if (samePattern) {
-    lines.push(`בית 1 = בית 12 (${h1.hebrew || h1.key}) — האסיר עדיין קשור לכלא`);
-  }
-
-  if (h5?.key === '1222') {
-    lines.push('נשוא ראש בבית 5 — האסיר ייצא ויקבל פיצוי (חאוי)');
-  }
-
-  if (h15?.key === '1221') {
-    lines.push('⚠ סוהר בבית 15 (הדיין) — סימן לאסיר שמאסרו יתמשך');
-  }
-
-  if (h4) {
-    const h4Fortune = h4.fortune || '';
-    lines.push(`בית 4 (מצב הכלא): ${h4.hebrew || h4.key} [${h4Fortune || 'לא ידוע'}]`);
-  }
-  if (h5) {
-    const h5Fortune = h5.fortune || '';
-    lines.push(`בית 5 (גורל האסיר): ${h5.hebrew || h5.key} [${h5Fortune || 'לא ידוע'}]`);
-  }
-
-  const judgeForAcquit = h15?.fortune?.includes('מיטיב');
-  const judgeForDetain = h15?.fortune?.includes('מזיק');
-  let exitVerdict = '';
-  if (judgeForAcquit) exitVerdict = 'הדיין מיטיב — יש סיכוי ליציאה';
-  else if (judgeForDetain) exitVerdict = 'הדיין מזיק — המאסר ממשיך';
-  if (exitVerdict) lines.push(exitVerdict);
-
-  return {
-    samePattern,
-    lines,
-    outputHebrew: lines.join('\n'),
-  };
-}
-function computeSeaVoyageRisks(chart) {
-  const h1  = chart.find((h) => Number(h.house) === 1);
-  const h8  = chart.find((h) => Number(h.house) === 8);
-  const h9  = chart.find((h) => Number(h.house) === 9);
-  const h12 = chart.find((h) => Number(h.house) === 12);
-
-  const lines = [];
-
-  if (h8?.key === '1222') {
-    lines.push('נשוא ראש בבית 8 — מציל מסכנה בים (מגן על הנוסע)');
-  }
-
-  const hasHamra = [h1,h8,h9,h12].some((h) => h?.key === '2122');
-  const hasRais   = [h1,h8,h9,h12].some((h) => h?.key === '1222');
-  if (hasHamra && hasRais) {
-    lines.push('⚠ אדום ונשוא ראש ביחד — סכנת טביעה בים; לשקול דחיית המסע');
-  }
-
-  if (h9?.key === '1221') {
-    lines.push('⚠ סוהר בבית 9 (המסע) — המסע ייתקע או יעוכב');
-  }
-
-  if (h9?.key === '1212') {
-    lines.push('ממון יוצא בבית 9 — הפסד כספי בדרך הים');
-  }
-
-  if (h9?.key === '1111') {
-    lines.push('דרך בבית 9 — מסע ים טוב ומבורך');
-  }
-
-  if (h12) {
-    const isMalefic = ['1212','2122','2221','2222','1221'].includes(h12.key || '');
-    if (isMalefic) {
-      lines.push(`⚠ ${h12.hebrew || h12.key} בבית 12 — סכנה נסתרת בים, להיזהר`);
-    }
-  }
-
-  if (!lines.length) return null;
-  return {
-    lines,
-    outputHebrew: `ניתוח מסע ים (בלוג' אלאמל עמ' 26):\n${lines.map((l) => `  ${l}`).join('\n')}`,
   };
 }
 
@@ -3063,20 +2712,11 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const directionQuadrant = (['travel', 'hiddenTreasure', 'missingPerson'].includes(topicId))
     ? computeDirectionQuadrant(board.chart) : null;
 
-  const illnessElementDiagnosis = (topicId === 'illness')
-    ? computeIllnessElementDiagnosis(board.chart) : null;
-
   const bodyPartDiagnosisHawi = (topicId === 'illness')
     ? computeBodyPartDiagnosisHawi(board.chart) : null;
 
   const ghalibMaghloub = (['disputes', 'enemies', 'partnership', 'theft'].includes(topicId))
     ? computeGhalibMaghloub(board.chart) : null;
-
-  const thiefLocationDetails = (['theft', 'enemies'].includes(topicId))
-    ? computeThiefLocationDetails(board.chart) : null;
-
-  const enemyInHousehold = (topicId === 'enemies')
-    ? computeEnemyInHousehold(board.chart) : null;
 
   const pregnancyMonths = (topicId === 'childrenPregnancy')
     ? computePregnancyMonths(board.chart) : null;
@@ -3086,27 +2726,6 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
 
   const jumlaAnalysis = (['spiritualDiagnostics', 'illness', 'childrenPregnancy', 'partnership'].includes(topicId))
     ? computeJumlaAnalysis(board.chart, topicId) : null;
-
-  const marriageFigureForecast = (topicId === 'marriage')
-    ? computeMarriageFigureForecast(board.chart) : null;
-
-  const yearlyFigureForecast = (topicId === 'yearlyForecast')
-    ? computeYearlyFigureForecast(board.chart) : null;
-
-  const alternativeNameExtraction = (['enemies', 'spiritualDiagnostics', 'missingPerson', 'prisoner', 'partnership', 'theft'].includes(topicId))
-    ? computeAlternativeNameExtraction(board.chart) : null;
-
-  const physicalDescriptionThief = (['enemies', 'disputes', 'theft'].includes(topicId))
-    ? computePhysicalDescriptionForHouse(board.chart, 7) : null;
-
-  const physicalDescriptionMissing = (topicId === 'missingPerson')
-    ? computePhysicalDescriptionForHouse(board.chart, 7) : null;
-
-  const prisonerAnalysis = (topicId === 'prisoner')
-    ? computePrisonerAnalysis(board.chart) : null;
-
-  const seaVoyageRisks = (topicId === 'seaVoyage')
-    ? computeSeaVoyageRisks(board.chart) : null;
 
   const firstFigureRepetition = computeFirstFigureRepetition(board.chart);
 
@@ -3186,19 +2805,9 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     spiritualDiagnosticsHouseIndex,
     trianglesEnrichment,
     directionQuadrant,
-    illnessElementDiagnosis,
     bodyPartDiagnosisHawi,
     ghalibMaghloub,
-    thiefLocationDetails,
-    enemyInHousehold,
     jumlaAnalysis,
-    marriageFigureForecast,
-    yearlyFigureForecast,
-    alternativeNameExtraction,
-    physicalDescriptionThief,
-    physicalDescriptionMissing,
-    prisonerAnalysis,
-    seaVoyageRisks,
     firstFigureRepetition,
     forcedTravelAnalysis,
     foundationsDisplay,

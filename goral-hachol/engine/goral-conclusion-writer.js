@@ -445,59 +445,9 @@ function describeCoreHouses(analysis, topicId, question) {
     parts.push(`ניתוח משולשים (שער המשולשים, חאוי עמ׳ 59):\n${triangles.outputHebrew}`);
   }
 
-  const illnessDiag = analysis.illnessElementDiagnosis;
-  if (illnessDiag) {
-    parts.push(`אבחון מחלה לפי יסוד (בלוג' אלאמל פרק 5):\n  ${illnessDiag.outputHebrew.replace(/\n/g, '\n  ')}`);
-  }
-
   const bodyPartDiagHawi = analysis.bodyPartDiagnosisHawi;
   if (bodyPartDiagHawi) {
     parts.push(`אזור הגוף הכואב (חאוי פרק 12 — שיטת היסודות):\n  ${bodyPartDiagHawi.outputHebrew}`);
-  }
-
-  const thiefLoc = analysis.thiefLocationDetails;
-  if (thiefLoc) {
-    parts.push(`זיהוי הגנב (בלוג' אלאמל פרק 19):\n  ${thiefLoc.outputHebrew.replace(/\n/g, '\n  ')}`);
-  }
-
-  const enemyHH = analysis.enemyInHousehold;
-  if (enemyHH) {
-    parts.push(`גילוי אויב בסביבה (בלוג' אלאמל עמ' 64):\n  ${enemyHH.outputHebrew}`);
-  }
-
-  const marriageForecast = analysis.marriageFigureForecast;
-  if (marriageForecast) {
-    parts.push(`פסיקת נישואין לפי צורה שולטת (בלוג' אלאמל פרק 33):\n  ${marriageForecast.outputHebrew}`);
-  }
-
-  const yearlyForecast = analysis.yearlyFigureForecast;
-  if (yearlyForecast) {
-    parts.push(`תחזית שנתית לפי צורה שולטת (בלוג' אלאמל עמ' 25):\n  ${yearlyForecast.outputHebrew}`);
-  }
-
-  const altName = analysis.alternativeNameExtraction;
-  if (altName) {
-    parts.push(`חילוץ שם — שיטה 5 (בלוג' אלאמל עמ' 13-15):\n${altName.outputHebrew}`);
-  }
-
-  const physThief = analysis.physicalDescriptionThief;
-  if (physThief) {
-    parts.push(`תיאור פיזי — הגנב / האויב (בלוג' אלאמל עמ' 65-71):\n  ${physThief.outputHebrew}`);
-  }
-
-  const physMissing = analysis.physicalDescriptionMissing;
-  if (physMissing) {
-    parts.push(`תיאור פיזי — הנעדר (בלוג' אלאמל עמ' 65-71):\n  ${physMissing.outputHebrew}`);
-  }
-
-  const prisoner = analysis.prisonerAnalysis;
-  if (prisoner) {
-    parts.push(`ניתוח אסיר/כלא (בלוג' אלאמל עמ' 28, 57):\n${prisoner.lines.map((l) => `  ${l}`).join('\n')}`);
-  }
-
-  const seaRisks = analysis.seaVoyageRisks;
-  if (seaRisks) {
-    parts.push(seaRisks.outputHebrew);
   }
 
   // HAWI_DHAMIR_DIRECTIONS_VALIDATION — נסיעה כפויה/רצונית
@@ -894,9 +844,7 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
     const house7 = getHouseFromBoard(boardAnalysis, 7);
     const house8 = getHouseFromBoard(boardAnalysis, 8);
     const house4 = getHouseFromBoard(boardAnalysis, 4);
-    const thiefLocation = boardAnalysis?.thiefLocationDetails;
     const nameLetters   = boardAnalysis?.nameLetters;
-    const altName       = boardAnalysis?.alternativeNameExtraction;
 
     const isOutgoing = house7?.directionHebrew === 'יוצא';
     const isIncoming = house7?.directionHebrew === 'נכנס';
@@ -923,13 +871,6 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
     }
     lines.push(returnVerdict);
 
-    if (thiefLocation?.findings?.length > 0) {
-      const uniqueTypes = [...new Set(thiefLocation.findings.map(f => f.thiefType))];
-      for (const type of uniqueTypes) {
-        lines.push(`לפי חזרת הצורות בלוח: ${type}.`);
-      }
-    }
-
     if (Array.isArray(nameLetters) && nameLetters.length > 0) {
       const h7Entry = nameLetters.find(n => n.houseNumber === 7);
       const h8Entry = nameLetters.find(n => n.houseNumber === 8);
@@ -941,12 +882,6 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
           lines.push(`שם הגנב: האות הראשונה — ${firstLetters}, האות השנייה — ${secondLetters} (שם מתחיל ב: ${combos})`);
         } else {
           lines.push(`שם הגנב: שמו מתחיל ב: ${firstLetters}`);
-        }
-      }
-      if (altName?.results?.length > 0) {
-        const altLetters = [...new Set(altName.results.flatMap(r => r.letters || []))];
-        if (altLetters.length > 0) {
-          lines.push(`שיטה משלימה (בתים 1, 4, 12): אותיות — ${altLetters.join(' / ')}`);
         }
       }
     }
@@ -1107,8 +1042,8 @@ function recommendationByTopic(topicId, grade, boardAnalysis, question) {
   }
 
   if (topicId === 'yearlyForecast') {
-    // describeCoreHouses already renders yearlyAnalysis.outputHebrew (element, planets, rain, region)
-    // and yearlyFigureForecast.outputHebrew. Add only the final verdict here.
+    // describeCoreHouses already renders yearlyAnalysis.outputHebrew (element, planets, rain, region).
+    // Add only the final verdict here.
     if (grade === 'positive' || grade === 'cautiously-positive') {
       return 'לכן השנה מבטיחה בכלל — הכיוון הכללי לטובה.';
     } else if (grade === 'negative' || grade === 'cautiously-negative') {
@@ -1661,10 +1596,6 @@ function buildNarrativeByTopic(result) {
     const yearlyAnalysis = boardAnalysis?.yearlyForecastAnalysis;
     if (yearlyAnalysis?.outputHebrew) {
       push(`ניתוח עולה השנה:\n${scText(yearlyAnalysis.outputHebrew)}`);
-    }
-    const figForecast = boardAnalysis?.yearlyFigureForecast;
-    if (figForecast?.outputHebrew) {
-      push(scText(figForecast.outputHebrew));
     }
   }
 
@@ -2417,7 +2348,6 @@ export function writeClientReadingHebrew(result) {
   const dirQ          = boardAnalysis.directionQuadrant;
   const treasureLoc   = boardAnalysis.treasureLocation;
   const missingPerson = boardAnalysis.missingPersonAnalysis;
-  const thiefLoc      = boardAnalysis.thiefLocationDetails;
 
   const judge    = boardAnalysis.judge    || getHouseFromBoard(boardAnalysis, 15);
   const sentence = boardAnalysis.sentence || getHouseFromBoard(boardAnalysis, 16);
@@ -2497,15 +2427,6 @@ export function writeClientReadingHebrew(result) {
         const firstL  = h7Letters.letters.join(' / ');
         const secondL = h8Letters?.letters?.length > 0 ? `, האות השנייה: ${h8Letters.letters.join(' / ')}` : '';
         push(`שם הגנב מתחיל ב: ${firstL}${secondL}.`);
-      }
-      if (thiefLoc?.findings?.length > 0) {
-        const types = [...new Set(thiefLoc.findings.map(f => f.thiefType))];
-        const typeText = types[0];
-        if (typeText && !typeText.startsWith('יש ')) {
-          push(`לפי הלוח, הגנב ${typeText}.`);
-        } else if (typeText) {
-          push(`לפי הלוח: ${typeText}.`);
-        }
       }
       if (h4) {
         const h4Ess = essenceOf(h4);
