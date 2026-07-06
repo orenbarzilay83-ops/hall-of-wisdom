@@ -52,6 +52,12 @@ import {
   computeMoneySourceKashf,
   computeLifespanKashf,
   computeLifespanByFigureShapes,
+  computeProfessionH9Kashf,
+  computeClothingLuckKashf,
+  computeClothingBestFiguresKashf,
+  computePromiseFulfillmentKashf,
+  computeWhoLooksAtWhomKashf,
+  computeWellDrillingKashf,
 } from './kashf-pending-extraction.js';
 
 // רשימת פונקציות מותרות ל-checkType 'legacy-fn' — כל פונקציה שכבר אומתה
@@ -73,6 +79,12 @@ const LEGACY_FN_REGISTRY = {
   computeMoneySourceKashf,
   computeLifespanKashf,
   computeLifespanByFigureShapes,
+  computeProfessionH9Kashf,
+  computeClothingLuckKashf,
+  computeClothingBestFiguresKashf,
+  computePromiseFulfillmentKashf,
+  computeWhoLooksAtWhomKashf,
+  computeWellDrillingKashf,
 };
 
 // ── תיאורי כיוונים לפי יסוד ────────────────────────────────────────────────
