@@ -70,6 +70,10 @@ import {
   countElementsForYesNo,
   computeLostAnimalReturn,
 } from './kashf-pending-extraction.js';
+import {
+  computeFearOfPunishment,
+  computePrisonerDurationDanger,
+} from './kashf-book-additions.js';
 
 // countElementsForYesNo מצפה לפורמט board.entries[i].figure.elementHebrew (הפורמט
 // הישן של raml-board-generator.js) — עוטפים אותה כדי שתעבוד עם ה-chart המומר,
@@ -79,8 +83,9 @@ function countElementsForYesNoWrapper(chart) {
   return { ...result, outputHebrew: result?.hebrewSummary || '' };
 }
 
-// רשימת פונקציות מותרות ל-checkType 'legacy-fn' — כל פונקציה שכבר אומתה
-// מול המקור בכשף אל-אסרר בעת ההוצאה מ-hawi-interpreter.js (ראה kashf-pending-extraction.js)
+// רשימת פונקציות מותרות ל-checkType 'legacy-fn' — פונקציות שאומתו מול המקור,
+// חלקן בעת ההוצאה מ-hawi-interpreter.js (kashf-pending-extraction.js), חלקן
+// נכתבו ישירות מאימות מול הספר (kashf-book-additions.js)
 const LEGACY_FN_REGISTRY = {
   computeThiefProximity,
   computeStolenItemReturn,
@@ -107,6 +112,8 @@ const LEGACY_FN_REGISTRY = {
   computeGeographicDirection,
   countElementsForYesNo: countElementsForYesNoWrapper,
   computeLostAnimalReturn,
+  computeFearOfPunishment,
+  computePrisonerDurationDanger,
 };
 
 // ── תיאורי כיוונים לפי יסוד ────────────────────────────────────────────────
