@@ -214,6 +214,84 @@ export const KASHF_TOPIC_RULES = {
   },
 
   // ────────────────────────────────────────────────────────────────────────
+  hiddenTreasure: {
+    topicId: 'hiddenTreasure',
+    topicHebrewName: 'מטמון ודבר נסתר',
+    sourceRef: 'כשף אל-אסרר, עמ׳ 184-190 (הפרק הרביעי — הורים, נכסים ונסתרות)',
+    topicDescription: 'האם יש מטמון/דבר נסתר, האם הוא במקומו, ומה טיבו.',
+    primaryFormula: {
+      type: 'count-quality',
+      houses: [1, 2, 4, 13, 14, 15],
+      interpretBy: 'count-quality',
+      sourceText: 'בדבר הנסתר — האם הוא במקומו או לא? התבונן בבית הראשון, בשני, בבית הדבר הנסתר — הוא הרביעי — ובשלושה־עשר, בארבעה־עשר ובחמישה־עשר. אם הצורות מיטיבות, הרי הדבר שם. ואם אינן מיטיבות — אינו שם.',
+      verdictByCountQuality: {
+        allSaad:  { text: 'הדבר הנסתר נמצא במקומו', positive: true },
+        allNahs:  { text: 'הדבר הנסתר אינו במקומו', positive: false },
+        mostSaad: { text: 'רוב הסימנים מורים שהדבר נמצא במקומו', positive: true },
+        mostNahs: { text: 'רוב הסימנים מורים שהדבר אינו במקומו', positive: false },
+        mixed:    { text: 'הסימנים מעורבים — אין ודאות למיקום', positive: null },
+      },
+    },
+    altFormula: {
+      type: 'house-quality',
+      houses: [4],
+      interpretBy: 'saad-nahs',
+      sourceText: 'בדיני הדברים הנסתרים: הבית הראשון הוא עצם הדבר הנסתר; והרביעי הוא מקומו. בכל מקום שתמצא בו צורות מיטיבות — דון בו לטובה; ובכל מקום שתמצא בו מזיקים — דון להפך.',
+      verdictBySaadNahs: {
+        saad:  { text: 'מקום הדבר הנסתר טוב ונגיש', positive: true },
+        nahs:  { text: 'יש קושי במציאת/הוצאת הדבר הנסתר', positive: false },
+        mixed: { text: 'מצב מקום הדבר הנסתר מעורב', positive: null },
+      },
+    },
+    supportingChecks: [
+      {
+        id: 'object-nature',
+        checkType: 'house-figure-description',
+        houses: [1],
+        label: 'טבע הדבר הנסתר',
+        sourceText: 'אם הבית הראשון מיסוד העפר — הדבר מן האדמה. אם הוא ממין הצומח — מן הירקות או הצמחים. ואם הוא בבית המורה על בעלי חיים — מן החי.',
+      },
+      {
+        id: 'recovery-chance',
+        checkType: 'count-quality',
+        houses: [6, 8],
+        label: 'שיבת האבדה',
+        sourceText: 'באבדה ובשיבתה: כוון אל הבית השמיני והשישי. אם נמצאו שם צורות מיטיבות פנימיות — האבדה תשוב; ואם לא — לא.',
+      },
+    ],
+    // שיטות חישוב ישיר לכיוון/עומק (עמ׳ 185-190) — מצוטטות מהמקור במלואן,
+    // אך אינן מקודדות עדיין כבדיקה אוטומטית: הן דורשות גימטריית שם השואל
+    // וחישוב מודולו-4 חוזר (חלוקת רבעים לרבעים), שאינם מתבצעים כרגע במנוע.
+    additionalMethods: [
+      {
+        id: 'quadrant-direction',
+        label: 'כיוון הדבר הנסתר — חלוקה לרבעים',
+        sourceStatus: 'explicit-in-source',
+        sourceText: 'קח את נקודות שורת יסוד האש של הבית עם מספר שם בעל הצורה, והפחת את הסכום בארבע ארבע. אם נשאר אחד — הוא בפינה המערבית; שניים — בפינה המזרחית; שלושה — בפינה הדרומית; ארבעה — בפינה הצפונית. כאשר הגעת אל אותו רבע, הוצא לו שוב אמהות וחזור על החלוקה, עד שתגיע אל ההכאה הרביעית.',
+      },
+      {
+        id: 'quadrant-direction-alt-tamtam',
+        label: 'כיוון לפי שיטת טמטם ההודי',
+        sourceStatus: 'explicit-in-source',
+        sourceText: 'עמוד באמצע המקום, ופניך אל הדרום. חשב את שם השואל, שם אמו והיום שבו אתה עומד לפי חשבון הגימטרייה הגדולה, והפחת בארבע. אם נשאר אחד — הטמון ברבע המזרחי. אם שניים — ברבע המערבי. אם שלושה — ברבע הדרומי. ואם ארבעה — ברבע הצפוני.',
+      },
+      {
+        id: 'depth-by-element',
+        label: 'עומק הדבר הנסתר / המים לפי היסוד',
+        sourceStatus: 'explicit-in-source',
+        sourceText: 'האש נמדדת באצבע, האוויר בשיבר, המים באמה, והעפר לפי עומק הקרקע והדבר הקבור. לפי היסוד השולט דון על עומק הדבר. (ובשיטת שיבוץ ההפכים: אורך כל צורה ביחידות משלה — למשל נשוא ראש=אצבע, כבוד יוצא=אצבע וטפח.)',
+      },
+      {
+        id: 'direction-by-element-h1',
+        label: 'כיוון לפי יסוד הבית הראשון',
+        sourceStatus: 'explicit-in-source',
+        sourceText: 'אם הצורה שבבית הראשון היא מיסוד האוויר — הכיוון הוא צפון; אם היא מיסוד האש — הכיוון הוא מזרח; אם היא מיסוד העפר — הכיוון הוא דרום; ואם היא מיסוד המים — הכיוון הוא מערב. שים לב: מיפוי יסוד-לכיוון זה (עמ׳ 191) שונה מזה המשמש בנושא "גניבה" (עמ׳ 224-230) — אין למזג בין השניים.',
+      },
+    ],
+    keyHouses: [1, 2, 4, 6, 8, 13, 14, 15],
+  },
+
+  // ────────────────────────────────────────────────────────────────────────
   children: {
     topicId: 'children',
     topicHebrewName: 'ילדים והריון',
@@ -383,9 +461,9 @@ export const KASHF_TOPIC_RULES = {
   // ────────────────────────────────────────────────────────────────────────
   disputes: {
     topicId: 'disputes',
-    topicHebrewName: 'מריבות, שותפות ומשפט',
+    topicHebrewName: 'מריבות ומשפט',
     sourceRef: 'כשף אל-אסרר, עמ׳ 212',
-    topicDescription: 'מי גובר במחלוקת? מה סיכוי השותפות?',
+    topicDescription: 'מי גובר במחלוקת? האם יש פיוס?',
     primaryFormula: {
       type: 'house-quality',
       houses: [1],
@@ -432,6 +510,55 @@ export const KASHF_TOPIC_RULES = {
       },
     ],
     keyHouses: [1, 2, 7, 8, 13, 14],
+  },
+
+  // ────────────────────────────────────────────────────────────────────────
+  enemies: {
+    topicId: 'enemies',
+    topicHebrewName: 'אויבים',
+    sourceRef: 'כשף אל-אסרר, עמ׳ 271-272 (הפרק השנים-עשר — אויבים ואסירים)',
+    topicDescription: 'האם יש לנשאל אויב, ומי גובר?',
+    primaryFormula: {
+      type: 'combine',
+      houses: [1, 12],
+      interpretBy: 'saad-nahs',
+      sourceText: 'אם שאל השואל אם יש לו אויב: אם בראשון ובשנים־עשר יש צורה מיטיבה, אין לו אויב. אם יש בהם מזיק, יש לו אויבים. אם בראשון מיטיב ובשנים־עשר מזיק, הוא גובר על אויביו. ואם בראשון מזיק ובשנים־עשר מיטיב, האויב גובר עליו.',
+      verdictBySaadNahs: {
+        saad:  { text: 'אין אויב ממשי, או שהנשאל גובר עליו', positive: true },
+        nahs:  { text: 'יש אויב, ויש חשש שהוא הגובר', positive: false },
+        mixed: { text: 'המצב מול האויב מעורב', positive: null },
+      },
+    },
+    altFormula: {
+      type: 'count-quality',
+      houses: [1, 7, 10, 12],
+      interpretBy: 'count-quality',
+      sourceText: 'נקודה בדין האויב: עשה את הראשון, השביעי, העשירי והשנים־עשר כאמהות, והשלם את מערך גורל החול. אם חוזרות שם צורות מיטיבות, הוא הנראה והמנצח.',
+      verdictByCountQuality: {
+        allSaad:  { text: 'הנשאל הוא הגובר והמנצח', positive: true },
+        allNahs:  { text: 'האויב הוא הגובר', positive: false },
+        mostSaad: { text: 'רוב הסימנים מורים שהנשאל גובר', positive: true },
+        mostNahs: { text: 'רוב הסימנים מורים שהאויב גובר', positive: false },
+        mixed:    { text: 'התוצאה אינה ודאית', positive: null },
+      },
+    },
+    supportingChecks: [
+      {
+        id: 'querent-vs-enemy',
+        checkType: 'house-quality',
+        houses: [1],
+        label: 'מצב הנשאל',
+        sourceText: 'אם בראשון מיטיב ובשנים־עשר מזיק — הוא גובר על אויביו. ואם בראשון מזיק ובשנים־עשר מיטיב — האויב גובר עליו.',
+      },
+      {
+        id: 'enemy-nature',
+        checkType: 'house-figure-description',
+        houses: [12],
+        label: 'טיב האויב',
+        sourceText: 'את טיב האויבים מכירים מן צורות הכוכבים השוכנות בבית השנים־עשר. אם הצורה שבבית השנים־עשר קבועה, אויביו עומדים באיבתם. ואם היא מתהפכת, אינם עומדים באיבתם לאורך זמן.',
+      },
+    ],
+    keyHouses: [1, 7, 10, 12],
   },
 
   // ────────────────────────────────────────────────────────────────────────
@@ -723,49 +850,100 @@ export const KASHF_TOPIC_RULES = {
   // ────────────────────────────────────────────────────────────────────────
   commerce: {
     topicId: 'commerce',
-    topicHebrewName: 'מסחר ועסקים',
-    sourceRef: 'כשף אל-אסרר, עמ׳ 179-182',
-    topicDescription: 'שאלה על מסחר, עסקאות, ורווח.',
+    topicHebrewName: 'מסחר ועסקים — מכירה וקנייה',
+    sourceRef: 'כשף אל-אסרר, עמ׳ 218, 223 (יוקר וזול, קנייה ומכירה)',
+    topicDescription: 'שאלה על עסקה, מכירה/קנייה ספציפית, והאם תושלם ברווח.',
     primaryFormula: {
-      type: 'combine',
-      houses: [2, 10],
-      interpretBy: 'saad-nahs',
-      sourceText: 'אם רצית לשאול על בית ממונך ופרנסתך: התבונן בבית השני ובעשירי שהוא בית הפרנסות.',
-      verdictBySaadNahs: {
-        saad:  { text: 'המסחר מבורך ורווחי', positive: true },
-        nahs:  { text: 'המסחר קשה, יש הפסדים', positive: false },
-        mixed: { text: 'המסחר בינוני', positive: null },
+      type: 'count-quality',
+      houses: [1, 2, 4, 7, 11, 15, 16],
+      interpretBy: 'count-quality',
+      sourceText: 'במכירה וקנייה: התבונן בראשון, ברביעי, בשני, בשביעי, באחד־עשר, בחמישה־עשר ובשישה־עשר. אם כולן, או רובן, צורות מיטיבות פנימיות — הקנייה תושלם בקלות, ואחרית הקונה תהיה טובה. עשה את הראשון והשני לקונה, את השמיני והשביעי למוכר, את העשירי למתווך, ואת החמישה־עשר לאחרית הדבר.',
+      verdictByCountQuality: {
+        allSaad:  { text: 'העסקה תושלם בקלות, ואחרית הקונה טובה', positive: true },
+        allNahs:  { text: 'העסקה תיתקל בקשיים ובעיכובים', positive: false },
+        mostSaad: { text: 'רוב הסימנים נוטים להשלמת העסקה בטוב', positive: true },
+        mostNahs: { text: 'רוב הסימנים נוטים לקושי בהשלמת העסקה', positive: false },
+        mixed:    { text: 'התוצאה אינה ודאית', positive: null },
       },
     },
     altFormula: {
-      type: 'assemble',
-      houses: [2, 4, 6, 8],
-      interpretBy: 'dakhal-kharij',
-      sourceText: 'קח את השני, הרביעי, השישי והשמיני, והעמד מהם צורה — זו מורה על כספי הנשאל עליו.',
-      verdictByDakhalKharij: {
-        kharij:          { text: 'הכסף יוצא, רווח נמוך', positive: false },
-        'mujassad-kharij': { text: 'הכסף נוטה לצאת', positive: false },
-        dakhil:          { text: 'הכסף נכנס, רווח טוב', positive: true },
-        'mujassad-dakhil': { text: 'הכסף נוטה להיכנס', positive: true },
+      type: 'house-quality',
+      houses: [15],
+      interpretBy: 'saad-nahs',
+      sourceText: 'ואת החמישה־עשר לאחרית הדבר — התבונן בו לדעת את סוף העסקה.',
+      verdictBySaadNahs: {
+        saad:  { text: 'אחרית העסקה טובה', positive: true },
+        nahs:  { text: 'אחרית העסקה קשה', positive: false },
+        mixed: { text: 'אחרית העסקה מעורבת', positive: null },
       },
     },
     supportingChecks: [
       {
-        id: 'money-house',
-        checkType: 'house-quality',
-        houses: [2],
-        label: 'בית הממון',
-        sourceText: 'התבונן בשני — בית הממון.',
+        id: 'buyer-vs-seller',
+        checkType: 'house-in-house-check',
+        mainHouse: 1,
+        targetHouse: 8,
+        label: 'קונה מול מוכר',
+        sourceText: 'אם הראשון בא בשמיני, הקונה טוב מן המוכר.',
       },
       {
-        id: 'livelihood',
-        checkType: 'house-quality',
-        houses: [10],
-        label: 'בית הפרנסה',
-        sourceText: 'התבונן בעשירי — בית הפרנסות.',
+        id: 'buyer-generosity',
+        checkType: 'house-in-house-check',
+        mainHouse: 1,
+        targetHouse: 10,
+        label: 'נדיבות הקונה',
+        sourceText: 'ואם הראשון בא בעשירי, הקונה נדיב מן המוכר.',
+      },
+      {
+        id: 'goods-profit-loss',
+        checkType: 'house-figure-description',
+        houses: [5],
+        label: 'סחורה — יוקר או רווח',
+        sourceText: 'אם קונה שואל על סחורה — האם תתייקר או תוזל: אם מצאת שהבית החמישי חוזר בתשיעי, בעשירי או בשלושה־עשר, בשר לו ברווחים רבים. ואם הוא חוזר בשישי או בשמיני, יפסיד בלא ספק.',
       },
     ],
-    keyHouses: [2, 6, 8, 10],
+    keyHouses: [1, 2, 4, 7, 8, 10, 11, 15, 16],
+  },
+
+  // ────────────────────────────────────────────────────────────────────────
+  partnership: {
+    topicId: 'partnership',
+    topicHebrewName: 'שותפות',
+    sourceRef: 'כשף אל-אסרר, עמ׳ 212-213 (המנצח והמנוצח — מריבות, שותפות)',
+    topicDescription: 'האם השותפות העסקית כדאית וטובה?',
+    primaryFormula: {
+      type: 'combine',
+      houses: [1, 7],
+      interpretBy: 'saad-nahs',
+      sourceText: 'וכן דון בשותף מן הראשון והשביעי, ומן החמישי והשביעי, מפני שהם בתי מזגם. מה שמיטיב — דון בו לטוב; ומה שמזיק — דון בו להפך.',
+      verdictBySaadNahs: {
+        saad:  { text: 'השותפות טובה', positive: true },
+        nahs:  { text: 'השותפות מזיקה', positive: false },
+        mixed: { text: 'השותפות מעורבת — יש בה מעלות וחסרונות', positive: null },
+      },
+    },
+    altFormula: {
+      type: 'combine',
+      houses: [5, 7],
+      interpretBy: 'saad-nahs',
+      sourceText: 'וכן דון בשותף... מן החמישי והשביעי, מפני שהם בתי מזגם.',
+      verdictBySaadNahs: {
+        saad:  { text: 'הבדיקה הנוספת מאשרת: שותפות טובה', positive: true },
+        nahs:  { text: 'הבדיקה הנוספת מאשרת: שותפות מזיקה', positive: false },
+        mixed: { text: 'הבדיקה הנוספת: מצב מעורב', positive: null },
+      },
+    },
+    // שיטת "חלוקה לשניים" (עמ׳ 213) דורשת סכימת נקודות גולמית של הלוח,
+    // שאינה נתמכת כרגע במנוע החישוב — מצוטטת במלואה, לא מקודדת אוטומטית.
+    additionalMethods: [
+      {
+        id: 'divide-by-two-parity',
+        label: 'בשותפות — האם יש בה טובה (חלוקה לשניים)',
+        sourceStatus: 'explicit-in-source',
+        sourceText: 'בשותפות — האם יש בה טובה? חלק את הסכום לשניים־שניים. אם נשאר אחד — אין בה טובה; ואם נשארו שניים — יש בה טוב והיא ראויה.',
+      },
+    ],
+    keyHouses: [1, 5, 7],
   },
 
   // ────────────────────────────────────────────────────────────────────────
