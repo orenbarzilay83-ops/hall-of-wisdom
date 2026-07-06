@@ -261,6 +261,24 @@ function runSupportingCheck(board, check) {
     };
   }
 
+  if (checkType === 'pattern-lookup') {
+    // Map the pattern currently in houses[0] through a fixed pattern→label table
+    const { lookupTable, notFoundLabel } = check;
+    const houseNum = houses[0];
+    const pattern = getHousePattern(board, houseNum);
+    const value = lookupTable[pattern] ?? null;
+    return {
+      id: check.id,
+      label,
+      checkType,
+      houseNum,
+      pattern,
+      value,
+      valueLabel: value ?? (notFoundLabel || 'לא מפורש במקור עבור צורה זו'),
+      sourceText,
+    };
+  }
+
   if (checkType === 'figure-in-house-group') {
     // Check whether any pattern from `patterns` sits in any house from `houses`
     const { patterns } = check;
