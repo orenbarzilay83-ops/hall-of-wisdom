@@ -600,3 +600,41 @@ export const SHIBUTZ_10_HASHAVA_ORDER = [
   { position: 15, pattern: '2222', hebrewName: 'קהלה', altNameInPoem: 'סתום' },
   { position: 16, pattern: '1111', hebrewName: 'דרך' },
 ];
+
+// ─────────────────────────────────────────────────────────────────────────
+// השיבוץ האחד-עשר: שיבוץ יזד'ג (עמ' 146-147)
+// ערכי יסוד: אש=2, אוויר=7, מים=4, עפר=8. שיטת חישוב: מספר המציאות
+// פחות 16 (אם קטן מ-16, המספר עצמו הוא הבית).
+// ─────────────────────────────────────────────────────────────────────────
+
+export const SHIBUTZ_11_YAZDAJ_ELEMENT_VALUES = { 'אש': 2, 'אוויר': 7, 'מים': 4, 'עפר': 8 };
+
+export const SHIBUTZ_11_YAZDAJ_METHOD = {
+  descriptionHebrew: 'מספר המציאות של הצורה פחות 16; אם קטן מ-16, המספר עצמו הוא מספר הבית.',
+  sourceStatus: 'explicit-in-source',
+  sourceRef: "כשף אל-אסראר עמ' 146-147",
+};
+
+// טבלת התוצאה (עמ' 147). שמות-קוד רבים בשיר, חלקם חדשים לשיבוץ הזה
+// (פרח דאחק, ראיית אל-אפרח, ת'קאף, ראיית אל-חזן, אל-מסדוד) וחלקם
+// חוזרים מהשיבוצים הקודמים (אבריד=דרך, אג'ליד=כבוד יוצא, תשמיר=כבוד
+// נכנס). מקומות 4 ו-12 בטבלת המקור לא נתנו סימן רמל מפורש (רק כינוי
+// טקסטואלי) — הושלמו בהיקש-השלמה.
+export const SHIBUTZ_11_YAZDAJ_ORDER = [
+  { position: 1,  pattern: '1222', hebrewName: 'נשוא ראש', altNameInPoem: 'פרח דאחק' },
+  { position: 2,  pattern: '2111', hebrewName: 'סף נכנס', altNameInPoem: 'ראיית אל-אפרח' },
+  { position: 3,  pattern: '2212', hebrewName: 'לבן' },
+  { position: 4,  pattern: '1111', hebrewName: 'דרך', altNameInPoem: 'אבריד', patternNote: 'לא ניתן סימן רמל מפורש במקור, רק הכינוי; זוהה לפי הכינוי החוזר משיבוצים קודמים.' },
+  { position: 5,  pattern: '1212', hebrewName: 'ממון יוצא' },
+  { position: 6,  pattern: '2122', hebrewName: 'אדום' },
+  { position: 7,  pattern: '2221', hebrewName: 'שפל ראש' },
+  { position: 8,  pattern: '1122', hebrewName: 'כבוד יוצא', altNameInPoem: "אג'ליד" },
+  { position: 9,  pattern: '1221', hebrewName: 'סוהר', altNameInPoem: "ת'קאף" },
+  { position: 10, pattern: '2112', hebrewName: 'חיבור' },
+  { position: 11, pattern: '2211', hebrewName: 'כבוד נכנס', altNameInPoem: 'תשמיר' },
+  { position: 12, pattern: '1121', hebrewName: 'נלחם', altNameInPoem: 'מיטיב המזלות', patternNote: 'לא ניתן סימן רמל מפורש במקור, רק הכינוי; נגזר בהיקש-השלמה (הצורה היחידה שחסרה מ-16).' },
+  { position: 13, pattern: '1112', hebrewName: 'סף יוצא', altNameInPoem: 'ראיית אל-חזן' },
+  { position: 14, pattern: '1211', hebrewName: 'בר הלחי' },
+  { position: 15, pattern: '2121', hebrewName: 'ממון נכנס' },
+  { position: 16, pattern: '2222', hebrewName: 'קהלה', altNameInPoem: 'אל-מסדוד' },
+];
