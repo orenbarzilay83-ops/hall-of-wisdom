@@ -73,6 +73,7 @@ import {
 import {
   computeFearOfPunishment,
   computePrisonerDurationDanger,
+  computeStayOrMove,
 } from './kashf-book-additions.js';
 
 // countElementsForYesNo מצפה לפורמט board.entries[i].figure.elementHebrew (הפורמט
@@ -114,6 +115,7 @@ const LEGACY_FN_REGISTRY = {
   computeLostAnimalReturn,
   computeFearOfPunishment,
   computePrisonerDurationDanger,
+  computeStayOrMove,
 };
 
 // ── תיאורי כיוונים לפי יסוד ────────────────────────────────────────────────

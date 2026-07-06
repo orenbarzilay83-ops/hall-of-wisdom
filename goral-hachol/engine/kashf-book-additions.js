@@ -75,3 +75,31 @@ export function computePrisonerDurationDanger(chart) {
   }
   return { verdict, outputHebrew };
 }
+
+// כשף אל-אסרר עמ' 177 — "האם טוב לאדם להישאר בעיר זו או לעבור ממנה?"
+// "השלם את ההכאה. אם יצאה בראשון צורה מיטיבה ובשני צורה מזיקה, המקום
+//  שבו הוא נמצא טוב לו. ואם יצא להפך — הדין להפך."
+export function computeStayOrMove(chart) {
+  const getH = (n) => chart.find((h) => Number(h.house) === n);
+  const h1 = getH(1), h2 = getH(2);
+  if (!h1 || !h2) return null;
+
+  const isBenefic = (h) => {
+    const f = String(h?.fortune || '');
+    return f.includes('מיטיב') && !f.startsWith('ממוזג-מזיק');
+  };
+  const isMalefic = (h) => String(h?.fortune || '').includes('מזיק');
+
+  let verdict, outputHebrew;
+  if (isBenefic(h1) && isMalefic(h2)) {
+    verdict = 'stay';
+    outputHebrew = `בית 1 (${h1.hebrew || h1.key}) מיטיב ובית 2 (${h2.hebrew || h2.key}) מזיק — המקום שבו הוא נמצא טוב לו; עדיף להישאר.`;
+  } else if (isMalefic(h1) && isBenefic(h2)) {
+    verdict = 'move';
+    outputHebrew = `בית 1 (${h1.hebrew || h1.key}) מזיק ובית 2 (${h2.hebrew || h2.key}) מיטיב — הדין הפוך; עדיף לעבור ממקום זה.`;
+  } else {
+    verdict = 'no-clear-signal';
+    outputHebrew = 'הכלל דורש בית 1 ובית 2 בקטבים הפוכים (אחד מיטיב, השני מזיק) — כאן שניהם דומים באופיים, ואין הכרעה מיוחדת מכלל זה.';
+  }
+  return { verdict, outputHebrew };
+}
