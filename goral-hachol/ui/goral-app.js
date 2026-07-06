@@ -815,9 +815,10 @@ function buildKundaliHtml(reading) {
   `;
 }
 
-function buildBoardHtml(reading) {
+function buildBoardHtml(reading, dhamirHouseOverride) {
   const h = n => reading.chart.find(x => Number(x.house) === Number(n));
-  const dhamirHouseNum = reading._precomputedInsight?.boardAnalysis?.dhamirByMizan?.primaryHouseNumber
+  const dhamirHouseNum = dhamirHouseOverride
+    ?? reading._precomputedInsight?.boardAnalysis?.dhamirByMizan?.primaryHouseNumber
     ?? reading._precomputedInsight?.boardAnalysis?.dhamirHouse?.houseNumber
     ?? null;
 
@@ -1155,7 +1156,7 @@ async function runReading() {
       const kashfHtml = window.KASHF_ENGINE.writeKashfReading(kashfReading);
 
       const outputEl = document.getElementById("kashfReadingOutput");
-      if (outputEl) outputEl.innerHTML = buildBoardHtml(reading) + kashfHtml;
+      if (outputEl) outputEl.innerHTML = buildBoardHtml(reading, kashfReading.dhamir?.winner?.houseNumber) + kashfHtml;
 
       window._lastReading = reading;
       window._lastKashfReading = kashfReading;

@@ -64,13 +64,16 @@ body {
   border: none !important;
   box-shadow: none !important;
 }
-#screen-board {
+#screen-board,
+#screen-kashf-reading {
   background-image: url('./board-bg.png') !important;
   background-size: cover !important;
   background-position: center top !important;
   background-repeat: no-repeat !important;
   background-attachment: fixed !important;
 }
+/* קריאת כשף אל-אסרר — אותה שפת עיצוב כמו לוח חאווי (verdict-box/client-reading-panel/details-toggle) */
+#kashfReadingOutput .kashf-reading-output { max-width: 860px; margin: 0 auto; }
 .btn.primary {
   background: linear-gradient(135deg, #d4b96a, #a87c2e) !important;
   color: #0a0602 !important; border: none !important;

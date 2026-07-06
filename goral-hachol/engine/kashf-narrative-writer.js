@@ -399,7 +399,24 @@ function writeWitnessJudgePara(reading) {
   return `<p class="kashf-prose-paragraph">${parts.join(' ')}</p>`;
 }
 
-// ── פסקת מסקנה ────────────────────────────────────────────────────────────
+// ── תיבת תשובה קצרה (כן/לא/לא ודאי) ─────────────────────────────────────────
+// אותה שפת עיצוב כמו לוח חאווי (verdict-box/verdict-label/verdict-answer/verdict-detail).
+
+function writeShortVerdictBox(reading) {
+  const { overallPositive, primaryFormula } = reading;
+  const verdictText = overallPositive === true ? 'כן' : overallPositive === false ? 'לא' : 'לא ודאי';
+  const vClass = overallPositive === true ? 'verdict-yes' : overallPositive === false ? 'verdict-no' : 'verdict-maybe';
+  const detail = stripInlineCitations(primaryFormula?.verdict?.text || '');
+
+  return `<div class="verdict-box ${vClass}">
+    <div class="verdict-label">תשובה לשאלה</div>
+    <div class="verdict-answer">${verdictText}</div>
+    ${detail ? `<div class="verdict-detail">${detail}</div>` : ''}
+  </div>`;
+}
+
+// ── פסקת מסקנה (קרא ללקוח) ──────────────────────────────────────────────────
+// אותה שפת עיצוב כמו לוח חאווי (client-reading-panel).
 
 function writeConclusionPara(reading) {
   const {
@@ -581,8 +598,12 @@ function writeConclusionPara(reading) {
     : '';
 
   const opening = fn ? `${fn} — ` : '';
+  const text = `${opening}${guidance}${judgeNote}`;
 
-  return `<p class="kashf-prose-paragraph kashf-conclusion"><strong>מסקנת הקריאה:</strong> ${opening}${guidance}${judgeNote}</p>`;
+  return `<div class="client-reading-panel" style="direction:rtl; margin:18px 0 10px; border:2px solid #b8860b; border-radius:8px; background:#fffef5; padding:18px 20px;">
+    <div style="font-weight:700; font-size:13px; color:#7a5c00; letter-spacing:0.5px; margin-bottom:10px; border-bottom:1px solid #e8d080; padding-bottom:6px;">📖 קרא ללקוח</div>
+    <div style="font-size:16px; line-height:2; color:#2c2c2c;"><p style="margin:0;">${text}</p></div>
+  </div>`;
 }
 
 // ── פונקציה ראשית ─────────────────────────────────────────────────────────
@@ -598,7 +619,12 @@ export function writeKashfReading(reading) {
     return `<div class="kashf-reading-error">שגיאה בקריאה: ${reading?.error || 'נתונים חסרים'}</div>`;
   }
 
-  const sections = [
+  // תשובה קצרה + קריאה ללקוח — תמיד גלויות, באותה שפת עיצוב כמו לוח חאווי
+  const shortVerdictHtml = writeShortVerdictBox(reading);
+  const clientReadingHtml = writeConclusionPara(reading);
+
+  // הפירוט הטכני המלא — מאחורי "קרא עוד" (כמו בלוח חאווי)
+  const detailSections = [
     writeHeader(reading),
     writeBoardWarnings(reading),
     writeOpeningPara(reading),
@@ -608,14 +634,20 @@ export function writeKashfReading(reading) {
     writeKeyHousesPara(reading),
     writeDhamirPara(reading),
     writeWitnessJudgePara(reading),
-    writeConclusionPara(reading),
-    `<div class="kashf-reading-footer">
+  ].filter(Boolean).join('\n');
+
+  const footerHtml = `<div class="kashf-reading-footer">
       <p>חשיפת הסודות הנצורים (כשף אל-אסרר) · ${reading.topicHebrewName} · ספר כשף אל-אסרר — השער השישי</p>
       <p class="kashf-disclaimer">הקריאה מבוססת אך ורק על ספר "כשף אל-אסרר" — השער השישי (עמ׳ 166–276). אין להסתמך עליה כהחלטה יחידה בעניינים חשובים.</p>
-    </div>`,
-  ];
+    </div>`;
 
-  return `<div class="kashf-reading-output">${sections.filter(Boolean).join('\n')}</div>`;
+  return `<div class="kashf-reading-output">
+    ${shortVerdictHtml}
+    ${clientReadingHtml}
+    <button class="details-toggle" onclick="const p=this.nextElementSibling;p.hidden=!p.hidden;this.textContent=p.hidden?'קרא עוד ▼':'סגור ▲'">קרא עוד ▼</button>
+    <div hidden><div class="details-panel">${detailSections}</div></div>
+    ${footerHtml}
+  </div>`;
 }
 
 export default { writeKashfReading };
