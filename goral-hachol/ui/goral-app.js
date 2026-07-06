@@ -108,8 +108,8 @@ const HAWI_TO_KASHF_TOPIC = {
   partnership:          'partnership',
   enemies:              'enemies',
   loveHate:             'marriage',
-  yearlyForecast:       'generalReading',
-  fear:                 'generalReading',
+  yearlyForecast:       'yearlyForecast',
+  fear:                 'fear',
   // זהות מלאה — אין שינוי:
   illness:              'illness',
   marriage:             'marriage',

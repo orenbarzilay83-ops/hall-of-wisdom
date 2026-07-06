@@ -1018,6 +1018,70 @@ export const KASHF_TOPIC_RULES = {
   },
 
   // ────────────────────────────────────────────────────────────────────────
+  yearlyForecast: {
+    topicId: 'yearlyForecast',
+    topicHebrewName: 'תחזית שנתית — יוקר וזול',
+    sourceRef: 'כשף אל-אסרר, עמ׳ 221-222 (יוקר וזול; מתוספת נזהת אל-עוקול)',
+    topicDescription: 'תחזית לשנה הקרובה — יוקר/זול, גשם ויבול.',
+    primaryFormula: {
+      type: 'combine',
+      houses: [1, 5],
+      interpretBy: 'saad-nahs',
+      sourceText: 'תחילת השנה נידונית מן הראשון והחמישי: אם יצאה צורה מיטיבה — יהיה זול; ואם יצאה צורה מזיקה — להפך.',
+      verdictBySaadNahs: {
+        saad:  { text: 'תחילת השנה זולה וטובה', positive: true },
+        nahs:  { text: 'תחילת השנה יקרה וקשה', positive: false },
+        mixed: { text: 'תחילת השנה מעורבת', positive: null },
+      },
+    },
+    altFormula: {
+      type: 'combine',
+      houses: [11, 15],
+      interpretBy: 'saad-nahs',
+      sourceText: 'אמצע השנה נידון מן האחד־עשר והחמישה־עשר.',
+      verdictBySaadNahs: {
+        saad:  { text: 'אמצע השנה טוב', positive: true },
+        nahs:  { text: 'אמצע השנה קשה', positive: false },
+        mixed: { text: 'אמצע השנה מעורב', positive: null },
+      },
+    },
+    supportingChecks: [
+      {
+        id: 'harvest',
+        checkType: 'house-quality',
+        houses: [4],
+        label: 'זריעה ויבול',
+        sourceText: 'התבונן בבית הרביעי. אם הוא צורה חזקה ומיטיבה, הדבר מורה על ריבוי זריעה וטוב. ואם הוא צורה מזיקה — להפך.',
+      },
+      {
+        id: 'rain-sign',
+        checkType: 'house-figure-description',
+        houses: [4],
+        label: 'סימני גשם',
+        sourceText: 'אם יצאו בבית הרביעי צורות מיסוד המים, השנה גשומה, ובפרט אם הופיעה קהלה[] בו וחזרה במערך. ואם יצאה בו צורה שהיא מיסוד האוויר או מיסוד האש, הדבר מורה על ארבה, יוקר ומיעוט גשמים.',
+      },
+    ],
+    // סוף השנה (בתים 7,16) ובדיקת מאזן נקודות יסוד-אש+אוויר מול מים+עפר
+    // מצוטטים במלואם אך אינם מקודדים — דורשים סוג נוסחה (איזון-יסודות) שאינו
+    // קיים עדיין במנוע (יש רק saad-nahs / dakhal-kharij / count-quality).
+    additionalMethods: [
+      {
+        id: 'end-of-year',
+        label: 'סוף השנה',
+        sourceStatus: 'explicit-in-source',
+        sourceText: 'סוף השנה — מן השביעי והשישה־עשר.',
+      },
+      {
+        id: 'element-balance-price',
+        label: 'יוקר/זול לפי איזון היסודות',
+        sourceStatus: 'explicit-in-source',
+        sourceText: 'קח את הבית השני, החמישי, העשירי והאחד־עשר ועשה אותם לאמהות; השלם מהם את המערך עד הבית השישה־עשר. אחר כך חבר את יסוד האש ויסוד האוויר לחוד, ואת יסוד המים ויסוד העפר לחוד. אם יסוד האש והאוויר מרובים אפילו בנקודה אחת, הדבר מורה על יוקר. ואם יסוד המים והעפר מרובים, הדבר מורה על זול.',
+      },
+    ],
+    keyHouses: [1, 4, 5, 7, 10, 11, 15, 16],
+  },
+
+  // ────────────────────────────────────────────────────────────────────────
   partnership: {
     topicId: 'partnership',
     topicHebrewName: 'שותפות',
@@ -1086,6 +1150,42 @@ export const KASHF_TOPIC_RULES = {
       },
     ],
     keyHouses: [1, 2, 6, 12],
+  },
+
+  // ────────────────────────────────────────────────────────────────────────
+  fear: {
+    topicId: 'fear',
+    topicHebrewName: 'פחד וסכנה',
+    sourceRef: 'כשף אל-אסרר, עמ׳ 236, 274',
+    topicDescription: 'האם יש סכנה ממשית, והאם הפחד יחלוף.',
+    primaryFormula: {
+      type: 'combine',
+      houses: [7, 8],
+      interpretBy: 'saad-nahs',
+      sourceText: 'והפחד נידון מן השביעי והשמיני: אם הדין מיטיב — הפחד בטל; ואם הוא מזיק — הפחד עומד במקומו.',
+      verdictBySaadNahs: {
+        saad:  { text: 'הפחד בטל, אין סכנה ממשית', positive: true },
+        nahs:  { text: 'הפחד קיים, יש חשש ממשי', positive: false },
+        mixed: { text: 'המצב מעורב — יש להיזהר בלי בהלה', positive: null },
+      },
+    },
+    supportingChecks: [
+      {
+        id: 'house8-quality',
+        checkType: 'house-quality',
+        houses: [8],
+        label: 'מזל בית השמיני',
+        sourceText: 'אם הצורה שבבית השמיני היא מזיקה ופנימית, הדבר מורה על פחד חזק, אך סופו של האדם בתשובה, שלום ופיוס. ואם היא מיטיבה ויוצאת, יינצל השואל מן הפחד, ייכנס בידו ממון, והסוף נוטה לטובה. ואם היא מזיקה ויוצאת, הפחד מרובה ואין ביטחון.',
+      },
+      {
+        id: 'house8-direction',
+        checkType: 'house-dakhal-kharij',
+        houses: [8],
+        label: 'כיוון בית השמיני',
+        sourceText: 'ראה גם אם צורת בית השמיני נכנסת או יוצאת — משפיע על אופי הפחד ועל אחריתו (ראה פירוט מלא בבדיקת "מזל בית השמיני").',
+      },
+    ],
+    keyHouses: [7, 8],
   },
 
   // ────────────────────────────────────────────────────────────────────────
