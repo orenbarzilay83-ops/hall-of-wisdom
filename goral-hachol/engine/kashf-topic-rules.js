@@ -992,6 +992,44 @@ export const KASHF_TOPIC_RULES = {
   },
 
   // ────────────────────────────────────────────────────────────────────────
+  motherRules: {
+    topicId: 'motherRules',
+    topicHebrewName: 'מצב האם',
+    sourceRef: 'כשף אל-אסרר, עמ׳ 257 (קיום השררה, דין האם ודין המלכות)',
+    topicDescription: 'מצב האם — בריאותה, מזלה ומצבה הכללי.',
+    primaryFormula: {
+      type: 'house-quality',
+      houses: [10],
+      interpretBy: 'saad-nahs',
+      sourceText: 'בדין האם: אם מן בית זה יוצא מזיק, דון לה לרע; ואם היא מיטיבה — לטוב.',
+      verdictBySaadNahs: {
+        saad:  { text: 'מצב האם טוב', positive: true },
+        nahs:  { text: 'מצב האם קשה', positive: false },
+        mixed: { text: 'מצב האם מעורב', positive: null },
+      },
+    },
+    supportingChecks: [
+      {
+        id: 'bayad-tariq-pillars',
+        checkType: 'figure-in-house-group',
+        houses: [1, 4, 7, 10],
+        patterns: ['2212', '1111'],
+        label: 'לבן/דרך ביתדות',
+        sourceText: 'אם לבן או דרך נמצאים באחד היתדות או במה שסמוך להן, דון לה לטוב ולתיקון.',
+      },
+      {
+        id: 'bayad-tariq-falling',
+        checkType: 'figure-in-house-group',
+        houses: [3, 6, 9, 12],
+        patterns: ['2212', '1111'],
+        label: 'לבן/דרך בבתים נופלים',
+        sourceText: 'אם הם בבתים הנופלים, דון לה לצרות.',
+      },
+    ],
+    keyHouses: [1, 3, 4, 6, 7, 9, 10, 12],
+  },
+
+  // ────────────────────────────────────────────────────────────────────────
   commerce: {
     topicId: 'commerce',
     topicHebrewName: 'מסחר ועסקים — מכירה וקנייה',

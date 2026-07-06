@@ -261,6 +261,22 @@ function runSupportingCheck(board, check) {
     };
   }
 
+  if (checkType === 'figure-in-house-group') {
+    // Check whether any pattern from `patterns` sits in any house from `houses`
+    const { patterns } = check;
+    const foundHouses = houses.filter((h) => patterns.includes(getHousePattern(board, h)));
+    return {
+      id: check.id,
+      label,
+      checkType,
+      houses,
+      patterns,
+      found: foundHouses.length > 0,
+      foundHouses,
+      sourceText,
+    };
+  }
+
   return { id: check.id, label, checkType, sourceText, note: 'סוג בדיקה לא מוכר' };
 }
 

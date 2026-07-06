@@ -129,6 +129,7 @@ const HAWI_TO_KASHF_TOPIC = {
   children:             'children',
   completion:           'completion',
   generalReading:       'generalReading',
+  motherRules:          'motherRules',
 };
 
 function hawiTopicToKashf(hawiTopicId) {
