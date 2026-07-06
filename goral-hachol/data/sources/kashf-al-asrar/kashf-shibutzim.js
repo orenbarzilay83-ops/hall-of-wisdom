@@ -721,3 +721,61 @@ export const SHIBUTZ_13_ORDER = [
   { position: 15, pattern: '2222', hebrewName: 'קהלה' },
   { position: 16, pattern: '1112', hebrewName: 'סף יוצא', altNameInPoem: 'ראיית אל-חזן' },
 ];
+
+// ─────────────────────────────────────────────────────────────────────────
+// השיבוץ הארבעה-עשר: שיבוץ "הדרך נופלת" / "אייקע אל-טאריק" (עמ' 150)
+// ערכי יסוד: אש=9, אוויר=200, מים=10, עפר=100. מיוסד על דרך יזד'ג.
+// טבלה נקייה, ללא כפילויות.
+// ─────────────────────────────────────────────────────────────────────────
+
+export const SHIBUTZ_14_ELEMENT_VALUES = { 'אש': 9, 'אוויר': 200, 'מים': 10, 'עפר': 100 };
+
+export const SHIBUTZ_14_METHOD = {
+  descriptionHebrew: "הסדר מיוסד על מה שנתבאר בדרך יזד'ג.",
+  sourceStatus: 'explicit-in-source',
+  sourceRef: "כשף אל-אסראר עמ' 150",
+};
+
+export const SHIBUTZ_14_ORDER = [
+  { position: 1,  pattern: '1122', hebrewName: 'כבוד יוצא', altNameInPoem: "אג'ליד" },
+  { position: 2,  pattern: '2112', hebrewName: 'חיבור' },
+  { position: 3,  pattern: '1212', hebrewName: 'ממון יוצא' },
+  { position: 4,  pattern: '2221', hebrewName: 'שפל ראש' },
+  { position: 5,  pattern: '1121', hebrewName: 'נלחם' },
+  { position: 6,  pattern: '2111', hebrewName: 'סף נכנס', altNameInPoem: 'ראיית אל-אפרח' },
+  { position: 7,  pattern: '1211', hebrewName: 'בר הלחי' },
+  { position: 8,  pattern: '2122', hebrewName: 'אדום' },
+  { position: 9,  pattern: '1222', hebrewName: 'נשוא ראש' },
+  { position: 10, pattern: '2212', hebrewName: 'לבן' },
+  { position: 11, pattern: '1112', hebrewName: 'סף יוצא', altNameInPoem: 'ראיית אל-חזן' },
+  { position: 12, pattern: '2121', hebrewName: 'ממון נכנס' },
+  { position: 13, pattern: '1221', hebrewName: 'סוהר', altNameInPoem: "ת'קאף" },
+  { position: 14, pattern: '2211', hebrewName: 'כבוד נכנס', altNameInPoem: 'תשמיר' },
+  { position: 15, pattern: '2222', hebrewName: 'קהלה' },
+  { position: 16, pattern: '1111', hebrewName: 'דרך' },
+];
+
+// ─────────────────────────────────────────────────────────────────────────
+// השיבוץ החמישה-עשר: שיבוץ בן-מחפוף אל-מונג'ם (עמ' 150)
+// "חותם את סדרי השיבוץ החשבוניים" — לא ניתן ערך-יסוד נפרד במקור שנקרא
+// כה (רק סדר הצורות). טבלה נקייה, ללא כפילויות.
+// ─────────────────────────────────────────────────────────────────────────
+
+export const SHIBUTZ_15_ORDER = [
+  { position: 1,  pattern: '1111', hebrewName: 'דרך' },
+  { position: 2,  pattern: '2111', hebrewName: 'סף נכנס', altNameInPoem: 'ראיית אל-אפרח' },
+  { position: 3,  pattern: '1211', hebrewName: 'בר הלחי' },
+  { position: 4,  pattern: '1121', hebrewName: 'נלחם' },
+  { position: 5,  pattern: '1112', hebrewName: 'סף יוצא', altNameInPoem: 'ראיית אל-חזן' },
+  { position: 6,  pattern: '2211', hebrewName: 'כבוד נכנס', altNameInPoem: 'תשמיר' },
+  { position: 7,  pattern: '1221', hebrewName: 'סוהר' },
+  { position: 8,  pattern: '1122', hebrewName: 'כבוד יוצא', altNameInPoem: "אג'ליד" },
+  { position: 9,  pattern: '2112', hebrewName: 'חיבור' },
+  { position: 10, pattern: '2121', hebrewName: 'ממון נכנס' },
+  { position: 11, pattern: '1212', hebrewName: 'ממון יוצא' },
+  { position: 12, pattern: '2221', hebrewName: 'שפל ראש' },
+  { position: 13, pattern: '1222', hebrewName: 'נשוא ראש' },
+  { position: 14, pattern: '2122', hebrewName: 'אדום', altNameInPoem: 'מטרוש' },
+  { position: 15, pattern: '2212', hebrewName: 'לבן' },
+  { position: 16, pattern: '2222', hebrewName: 'קהלה', altNameInPoem: 'מסדוד' },
+];
