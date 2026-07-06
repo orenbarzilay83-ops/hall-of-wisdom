@@ -14,6 +14,8 @@
  * ({house, key, hebrew, fortune, direction, movement}).
  */
 
+import { MALEFIC_FIGURE_PATTERNS } from './hawi-interpreter.js';
+
 // כשף אל-אסרר עמ' 272-273 — "כלל מעשי: אדם החושש מעונש"
 // "באדם החושש מעונש — ממאסר, ממלקות או מדבר אחר — אם בבית העשירי נמצאת
 //  כבוד נכנס, ובחמישי סף נכנס, ובראשון נשוא ראש, ... צריך שיהיה בבית
@@ -139,4 +141,43 @@ export function computeWomanModesty(chart) {
   const hasWarning = lines.some((l) => l.startsWith('⚠'));
   const verdict = hasWarning ? 'concern' : 'modest';
   return { verdict, outputHebrew: lines.join('\n') };
+}
+
+// כשף אל-אסרר עמ' 195 — "עיתוי טוב לשמחה/טיול/שעשוע"
+// "ובבחירת זמני שמחה, טיול ושעשוע, טוב שיהיה כבוד נכנס בחמישי ובראשון,
+//  או בתשיעי; ובראשון ובחמישי הוא טוב ומועיל יותר, והאל יודע את הנכון."
+export function computeJoyTimingKashf(chart) {
+  const getH = (n) => chart.find((h) => Number(h.house) === n);
+  const h1 = getH(1), h5 = getH(5), h9 = getH(9);
+  if (!h1 || !h5 || !h9) return null;
+
+  const isNusraDakhila = (h) => h.key === '2211';
+  let verdict, outputHebrew;
+  if (isNusraDakhila(h5) && isNusraDakhila(h1)) {
+    verdict = 'best-timing';
+    outputHebrew = 'כבוד נכנס נמצא בבית 1 ובבית 5 — העת טובה ומועילה ביותר לשמחה, טיול ושעשוע.';
+  } else if (isNusraDakhila(h5) && isNusraDakhila(h9)) {
+    verdict = 'good-timing';
+    outputHebrew = 'כבוד נכנס נמצא בבית 5 ובבית 9 — העת טובה לשמחה, טיול ושעשוע.';
+  } else {
+    verdict = 'no-clear-signal';
+    outputHebrew = 'לא נמצא כבוד נכנס בשילוב הבתים המיוחד לכך (1+5 או 5+9) — אין הכרעה מיוחדת מכלל זה על עיתוי השמחה.';
+  }
+  return { verdict, outputHebrew };
+}
+
+// כשף אל-אסרר עמ' 165 — "פרק כולל לסימנים רבים"
+// "ואם תרצה לדעת עניין עבד, קח מן השישי והשישה־עשר צורה."
+export function computeServantMatterKashf(chart) {
+  const getH = (n) => chart.find((h) => Number(h.house) === n);
+  const h6 = getH(6), h16 = getH(16);
+  if (!h6?.key || !h16?.key) return null;
+
+  const combined = h6.key.split('').map((c, i) => (c === h16.key[i] ? '2' : '1')).join('');
+  const isMalefic = MALEFIC_FIGURE_PATTERNS.has(combined);
+  const verdict = isMalefic ? 'unfavorable' : 'favorable';
+  const outputHebrew = isMalefic
+    ? `הצורה העולה מחיבור בית 6 ובית 16 (${combined}) מזיקה — מצב עניין העבד/המשרת אינו טוב.`
+    : `הצורה העולה מחיבור בית 6 ובית 16 (${combined}) מיטיבה — מצב עניין העבד/המשרת טוב.`;
+  return { verdict, outputHebrew };
 }

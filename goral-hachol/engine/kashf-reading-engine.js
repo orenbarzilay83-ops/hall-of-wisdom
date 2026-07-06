@@ -75,6 +75,8 @@ import {
   computePrisonerDurationDanger,
   computeStayOrMove,
   computeWomanModesty,
+  computeJoyTimingKashf,
+  computeServantMatterKashf,
 } from './kashf-book-additions.js';
 
 // countElementsForYesNo מצפה לפורמט board.entries[i].figure.elementHebrew (הפורמט
@@ -118,6 +120,8 @@ const LEGACY_FN_REGISTRY = {
   computePrisonerDurationDanger,
   computeStayOrMove,
   computeWomanModesty,
+  computeJoyTimingKashf,
+  computeServantMatterKashf,
 };
 
 // ── תיאורי כיוונים לפי יסוד ────────────────────────────────────────────────
