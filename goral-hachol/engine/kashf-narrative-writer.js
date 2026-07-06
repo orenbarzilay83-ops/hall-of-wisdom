@@ -6,6 +6,7 @@
  */
 
 import { getFigureAppearance } from './kashf-figure-appearance.js';
+import { getSaadNahs } from './kashf-figure-classifier.js';
 
 // ── עזרי טקסט ─────────────────────────────────────────────────────────────
 
@@ -280,6 +281,30 @@ function writeKeyHousesPara(reading) {
   </div>`;
 }
 
+// ── מחשבת השואל (דמיר) ────────────────────────────────────────────────────
+// השער הרביעי בכשף אל-אסרר, עמ' 151-155 — עצמאי מהנושא הנבחר.
+
+function writeDhamirPara(reading) {
+  const { dhamir } = reading;
+  const winner = dhamir?.winner;
+  if (!winner) return '';
+
+  const q = qualityWord(winner.pattern ? getSaadNahs(winner.pattern) : null);
+  const houseLabel = `בית ${winner.houseNumber}`;
+  const agreementNote = winner.agreementCount > 1
+    ? `<span class="kashf-dhamir-agreement">${winner.agreementCount} משיטות ההכרעה הסכימו על בית זה (${winner.methodsAgreed.join(', ')})</span>`
+    : `<span class="kashf-dhamir-agreement">לפי שיטת "${winner.methodHebrew}"</span>`;
+
+  return `<div class="kashf-reading-card dhamir">
+    <h3 class="kashf-card-title">מחשבת השואל (הדמיר)</h3>
+    <p class="kashf-dhamir-body">
+      מחשבת השואל האמיתית מתגלה ב<strong>${houseLabel}</strong> — הצורה <strong>${winner.nameHebrew || ''}</strong> (${winner.pattern || ''})${q ? ` — ${q}` : ''}.
+      ${agreementNote}
+    </p>
+    <p class="kashf-dhamir-source">מקור: כשף אל-אסרר, השער הרביעי — עמ' 151-155 (גילוי הכוונה הנסתרת)</p>
+  </div>`;
+}
+
 // ── פסקת עדים ודיין ───────────────────────────────────────────────────────
 
 function writeWitnessJudgePara(reading) {
@@ -490,6 +515,7 @@ export function writeKashfReading(reading) {
     writeAltPara(reading),
     writeSupportingPara(reading),
     writeKeyHousesPara(reading),
+    writeDhamirPara(reading),
     writeWitnessJudgePara(reading),
     writeConclusionPara(reading),
     `<div class="kashf-reading-footer">

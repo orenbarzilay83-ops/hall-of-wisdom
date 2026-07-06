@@ -33,6 +33,7 @@ import {
 
 import { getTopicRules } from './kashf-topic-rules.js';
 import { getDakhalKharij } from './kashf-figure-classifier.js';
+import { computeDhamirByMajority } from './kashf-dhamir.js';
 
 // ── תיאורי כיוונים לפי יסוד ────────────────────────────────────────────────
 const ELEMENT_DIRECTION = {
@@ -372,6 +373,16 @@ export function buildKashfReading(board, topicId, clientContext = {}) {
   // ── לוח שלמות ────────────────────────────────────────────────────────────
   const boardValidation = board.boardValidation || { isValid: true, warnings: [] };
 
+  // ── מחשבת השואל (דמיר) — השער הרביעי ────────────────────────────────────
+  // גילוי "מה השואל באמת רוצה" (כשף עמ' 151-155), עצמאי מהנושא שנבחר.
+  // ראו kashf-dhamir.js לרשימת השיטות המיושמות ומה שעדיין חסר בהן.
+  let dhamir = null;
+  try {
+    dhamir = computeDhamirByMajority(board);
+  } catch (err) {
+    dhamir = { candidates: [], winner: null, agreementCount: 0, error: err.message };
+  }
+
   return {
     valid: true,
     topicId,
@@ -405,6 +416,7 @@ export function buildKashfReading(board, topicId, clientContext = {}) {
     supportingFindings,
     keyHouseReadings,
     boardValidation,
+    dhamir,
 
     overallPositive: primaryVerdict?.positive,
   };
