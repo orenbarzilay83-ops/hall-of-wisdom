@@ -12,6 +12,17 @@ import { getSaadNahs } from './kashf-figure-classifier.js';
 
 function c(val = '') { return String(val || '').trim(); }
 
+// הפונקציות ב-kashf-pending-extraction.js אורגות ציטוט עמוד בסוגריים לתוך
+// ה-outputHebrew עצמו (למשל "...מתפייס (כשף עמ' 271)"). המקור נשאר מתועד
+// בקוד/ב-sourceText של הבדיקה — אך בטקסט שהלקוח קורא זה נשמע כמו הערת שוליים
+// אקדמית ולא כמו יועץ מדבר. מסירים את הציטוט המוסגר בעת התצוגה בלבד.
+function stripInlineCitations(text) {
+  return String(text || '')
+    .replace(/\s*[[(]כשף[^\])]*[\])]/g, '')
+    .replace(/[ \t]{2,}/g, ' ')
+    .trim();
+}
+
 function qualityWord(q) {
   return { saad: 'מיטיבה', nahs: 'מזיקה', mixed: 'ממוזגת' }[q] || '';
 }
@@ -249,7 +260,7 @@ function findingSentence(f) {
   }
   if (f.checkType === 'legacy-fn') {
     if (!f.outputHebrew) return null;
-    const body = String(f.outputHebrew).split('\n').filter(Boolean).join('<br>');
+    const body = stripInlineCitations(f.outputHebrew).split('\n').map(stripInlineCitations).filter(Boolean).join('<br>');
     return `<strong>${f.label}:</strong><br>${body}`;
   }
   return `<strong>${f.label}:</strong> ${f.summary || f.dakhalKharijHebrew || f.qualityHebrew || '—'}.`;
@@ -321,7 +332,7 @@ function writeDhamirPara(reading) {
     extras.timingEstimate,
   ]
     .filter((x) => x && x.outputHebrew && !x.error)
-    .map((x) => `<p class="kashf-dhamir-extra">${String(x.outputHebrew).split('\n').filter(Boolean).join('<br>')}</p>`)
+    .map((x) => `<p class="kashf-dhamir-extra">${stripInlineCitations(x.outputHebrew).split('\n').map(stripInlineCitations).filter(Boolean).join('<br>')}</p>`)
     .join('');
 
   return `<div class="kashf-reading-card dhamir">
@@ -359,8 +370,8 @@ function writeWitnessJudgePara(reading) {
     );
     const wt = reading.witnessTestimony;
     if (wt && !wt.error) {
-      if (wt.w13?.hebrewSummary) parts.push(`עדות עד ראשון (בית 13, על בית השואל ובית התשיעי): ${wt.w13.hebrewSummary}.`);
-      if (wt.w14?.hebrewSummary) parts.push(`עדות עד שני (בית 14, על בתי הילדים/מחלה/תקווה): ${wt.w14.hebrewSummary}.`);
+      if (wt.w13?.hebrewSummary) parts.push(`עדות עד ראשון (בית 13, על בית השואל ובית התשיעי): ${stripInlineCitations(wt.w13.hebrewSummary)}.`);
+      if (wt.w14?.hebrewSummary) parts.push(`עדות עד שני (בית 14, על בתי הילדים/מחלה/תקווה): ${stripInlineCitations(wt.w14.hebrewSummary)}.`);
     }
   } else if (h13) {
     parts.push(`עד ראשון (בית 13): ${h13.figureName || ''} — ${qualityWord(h13.quality) || ''}.`);
@@ -492,10 +503,55 @@ function writeConclusionPara(reading) {
       negative: 'הממון יוצא. כדאי לשמור ולא לבזבז.',
       neutral:  'מצב הממון מאוזן. אין ריווח גדול ואין הפסד גדול.',
     },
-    missingAnimal: {
-      positive: 'יש סיכוי לאיתור הבהמה. הלוח מצביע על אפשרות מציאה.',
-      negative: 'הסיכוי לאיתור נמוך לפי הלוח.',
-      neutral:  'מצב לא ודאי — יש לחפש באופן פעיל.',
+    lostAnimal: {
+      positive: 'יש סיכוי טוב שהבהמה תשוב. הלוח מצביע על אפשרות מציאה.',
+      negative: 'הסיכוי לאיתור נמוך לפי הלוח. כדאי להיערך לאפשרות שהיא לא תחזור.',
+      neutral:  'מצב לא ודאי — כדאי להמשיך לחפש באופן פעיל ולא להתייאש מוקדם מדי.',
+    },
+    enemies: {
+      positive: 'אין אויב ממשי, או שהשואל הוא הצד החזק במאבק. אין סיבה לפחד.',
+      negative: 'יש אויב ממשי, והלוח מורה שהוא הצד החזק כרגע. כדאי לנהוג בזהירות ולא לחשוף מהלכים.',
+      neutral:  'המצב מול האויב מעורב — לא הפסד ברור ולא ניצחון ברור. כדאי לשמור על ערנות מבלי להיגרר לעימות מיותר.',
+    },
+    fear: {
+      positive: 'הפחד גדול מהמציאות. אין בסיס ממשי לסכנה, ואפשר להירגע.',
+      negative: 'יש בסיס ממשי לחשש. כדאי לנהוג בזהירות ולא לזלזל בסימנים.',
+      neutral:  'המצב מעורב — יש לשים לב לסימנים מבלי להיכנס לבהלה.',
+    },
+    hiddenTreasure: {
+      positive: 'הדבר הנסתר נמצא במקומו ונגיש. יש סיכוי טוב למצוא אותו.',
+      negative: 'הדבר הנסתר אינו במקומו, או שהגישה אליו קשה. כדאי לא להשקיע מאמץ מיותר בחיפוש הזה.',
+      neutral:  'המצב אינו ודאי — ייתכן שהדבר קיים אך מציאתו תדרוש מאמץ נוסף.',
+    },
+    motherRules: {
+      positive: 'מצב האם טוב ויציב. אין סיבה לדאגה מיוחדת בעת הזאת.',
+      negative: 'מצב האם קשה. כדאי לתת תשומת לב ותמיכה בעת הזאת.',
+      neutral:  'מצב האם מעורב — יש גם טוב וגם קושי. כדאי לעקוב מקרוב.',
+    },
+    parentsProperty: {
+      positive: 'מצב ההורים והנכסים טוב. יש יציבות ואין סיבה לדאגה.',
+      negative: 'יש קושי במצב ההורים או בנכסים. כדאי לבדוק את המצב מקרוב ולא לדחות טיפול נדרש.',
+      neutral:  'המצב מעורב — יש יציבות בחלק אחד וקושי באחר.',
+    },
+    partnership: {
+      positive: 'השותפות טובה ומומלצת. יש בסיס טוב לשיתוף פעולה.',
+      negative: 'השותפות מזיקה או בעייתית. כדאי לחשוב פעמיים לפני שממשיכים בה.',
+      neutral:  'השותפות מעורבת — יש בה גם יתרונות וגם חסרונות. כדאי לבחון את התנאים לעומק לפני החלטה.',
+    },
+    spiritualDiagnostics: {
+      positive: 'אין סימנים לפעולה רוחנית שלילית. הקשיים נובעים מסיבות טבעיות ולא מכישוף או עין הרע.',
+      negative: 'יש סימנים לפעולה רוחנית שלילית. מומלץ לפנות לבעל ידע מתאים ולא להתמודד עם זה לבד.',
+      neutral:  'הסימנים אינם חד-משמעיים. כדאי לעקוב אחר הסימפטומים ולא למהר למסקנות.',
+    },
+    yearlyForecast: {
+      positive: 'התחזית לשנה טובה — יש סימני זול ושפע.',
+      negative: 'התחזית לשנה קשה — יש סימני יוקר ומחסור. כדאי להיערך מראש ולחסוך.',
+      neutral:  'התחזית מעורבת — חלק מהשנה טוב וחלק קשה יותר.',
+    },
+    dream: {
+      positive: 'החלום מבשר טוב. אין צורך לדאוג ממנו.',
+      negative: 'החלום מבשר רע. כדאי לשים לב לאזהרה שבו, אך לא להיבהל ממנה.',
+      neutral:  'משמעות החלום אינה חד-משמעית — ייתכן שהוא סתם חלום ולא בשורה.',
     },
   };
 
