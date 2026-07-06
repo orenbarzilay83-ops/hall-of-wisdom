@@ -3663,42 +3663,6 @@ function buildValidatedConclusion(boardValidation, conclusionText) {
   return parts.join('\n');
 }
 
-// ── ספירת יסודות לתשובה כן/לא (Task 5) ─────────────────────────────────────
-// מקור: כשף אל-אסראר — רוב זכרי (אש+אוויר) = חיובי; רוב נקבי (מים+עפר) = שלילי
-const MASCULINE_ELEMENTS = new Set(['אש', 'אוויר', 'רוח']);
-const FEMININE_ELEMENTS  = new Set(['מים', 'עפר']);
-
-function countElementsForYesNo(board) {
-  const entries = board?.entries || [];
-  let masculine = 0;
-  let feminine  = 0;
-
-  for (const entry of entries) {
-    const el = entry.figure?.elementHebrew || '';
-    if (MASCULINE_ELEMENTS.has(el)) masculine++;
-    else if (FEMININE_ELEMENTS.has(el)) feminine++;
-  }
-
-  const total = masculine + feminine;
-  let verdict, hebrewShort, hebrewSummary;
-
-  if (masculine > feminine) {
-    verdict     = 'positive';
-    hebrewShort = 'כן';
-    hebrewSummary = `רוב יסודות זכריים (${masculine} זכרי / ${feminine} נקבי מתוך ${total}) — הלוח נוטה לתשובה חיובית.`;
-  } else if (feminine > masculine) {
-    verdict     = 'negative';
-    hebrewShort = 'לא';
-    hebrewSummary = `רוב יסודות נקביים (${feminine} נקבי / ${masculine} זכרי מתוך ${total}) — הלוח נוטה לתשובה שלילית.`;
-  } else {
-    verdict     = 'neutral';
-    hebrewShort = 'שוויון';
-    hebrewSummary = `שוויון יסודות (${masculine} זכרי / ${feminine} נקבי) — אין הכרעה ביסודות; לסמוך על הדיין.`;
-  }
-
-  return { masculine, feminine, total, verdict, hebrewShort, hebrewSummary };
-}
-
 export function interpretHawiQuestionInitial(question, board = null) {
   const route = routeHawiQuestion(question);
   // Allow caller to supply a pre-resolved topicId (e.g. from a UI topic selector)
@@ -3726,7 +3690,6 @@ export function interpretHawiQuestionInitial(question, board = null) {
   );
 
   const boardValidation = board?.boardValidation || { isValid: true, hasCritical: false, warnings: [] };
-  const elementYesNo = (board?.entries?.length > 0) ? countElementsForYesNo(board) : null;
 
   return {
     id: 'goral-hachol-full-interpretation',
@@ -3760,7 +3723,6 @@ export function interpretHawiQuestionInitial(question, board = null) {
     boardAnalysis,
     boardScore,
     boardValidation,
-    elementYesNo,
     spiritualDiagnosis,
     technicalConclusionHebrew,
     finalConclusionHebrew: buildValidatedConclusion(boardValidation, writeHumanGoralConclusion({
@@ -3774,7 +3736,6 @@ export function interpretHawiQuestionInitial(question, board = null) {
       spiritualDiagnosis,
       relevantRules,
       judgeVerdict,
-      elementYesNo,
     })),
     conclusionDraftHebrew: technicalConclusionHebrew,
 

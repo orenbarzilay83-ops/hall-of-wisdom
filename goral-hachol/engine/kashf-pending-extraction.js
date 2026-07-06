@@ -1718,3 +1718,39 @@ export function computeParnasaLivelihood(chart) {
     outputHebrew: lines.join('\n'),
   };
 }
+
+// ── ספירת יסודות לתשובה כן/לא ────────────────────────────────────────────
+// מקור: כשף אל-אסראר — רוב זכרי (אש+אוויר) = חיובי; רוב נקבי (מים+עפר) = שלילי
+const MASCULINE_ELEMENTS = new Set(['אש', 'אוויר', 'רוח']);
+const FEMININE_ELEMENTS  = new Set(['מים', 'עפר']);
+
+export function countElementsForYesNo(board) {
+  const entries = board?.entries || [];
+  let masculine = 0;
+  let feminine  = 0;
+
+  for (const entry of entries) {
+    const el = entry.figure?.elementHebrew || '';
+    if (MASCULINE_ELEMENTS.has(el)) masculine++;
+    else if (FEMININE_ELEMENTS.has(el)) feminine++;
+  }
+
+  const total = masculine + feminine;
+  let verdict, hebrewShort, hebrewSummary;
+
+  if (masculine > feminine) {
+    verdict     = 'positive';
+    hebrewShort = 'כן';
+    hebrewSummary = `רוב יסודות זכריים (${masculine} זכרי / ${feminine} נקבי מתוך ${total}) — הלוח נוטה לתשובה חיובית.`;
+  } else if (feminine > masculine) {
+    verdict     = 'negative';
+    hebrewShort = 'לא';
+    hebrewSummary = `רוב יסודות נקביים (${feminine} נקבי / ${masculine} זכרי מתוך ${total}) — הלוח נוטה לתשובה שלילית.`;
+  } else {
+    verdict     = 'neutral';
+    hebrewShort = 'שוויון';
+    hebrewSummary = `שוויון יסודות (${masculine} זכרי / ${feminine} נקבי) — אין הכרעה ביסודות; לסמוך על הדיין.`;
+  }
+
+  return { masculine, feminine, total, verdict, hebrewShort, hebrewSummary };
+}
