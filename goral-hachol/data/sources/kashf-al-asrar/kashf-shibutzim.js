@@ -203,3 +203,94 @@ export const SHIBUTZ_2_ALZANATI_CITATION = {
   sourceStatus: 'explicit-in-source',
   sourceRef: "כשף אל-אסראר עמ' 113 — דברי אל-זנאתי במספר, דוגמאות מעשיות",
 };
+
+// ─────────────────────────────────────────────────────────────────────────
+// השיבוץ השלישי: שיבוץ היסודות (עמ' 121-125)
+//
+// סדר קנוני עצמאי נוסף (שונה גם משיבוץ 1 וגם משיבוץ 2), המשמש לניתוח
+// היסודות (אש/אוויר/מים/עפר) שבכל צורה.
+//
+// חשוב: התרגום העברי המקורי בקובץ kashf-al-asrar.html הכיל 3 שגיאות
+// תעתוק בטבלה הזו (עמ' 122) — מקום 2 היה מתויג "דרך" (כפילות שגויה עם
+// מקום 10), מקום 4 היה "אדום" (שגוי), ומקום 10 היה מתויג בטעות ככבוד
+// נכנס (כפילות עם מקום 16). תוקן ואומת ישירות מול הספר הערבי המקורי
+// (שיתוף המשתמש את הסדר המלא), ואומת אימות-צולב עצמאי: הטקסט מיד אחרי
+// הטבלה (עמ' 122) נותן דוגמאות ליסוד-בודד שמתאימות בדיוק למקומות 1-4
+// המתוקנים (ראה SHIBUTZ_3_SINGLE_ELEMENT_EXAMPLES להלן).
+// ─────────────────────────────────────────────────────────────────────────
+
+// מקור: כשף אל-אסראר עמ' 121-122 — השיבוץ השלישי: שיבוץ היסודות
+export const SHIBUTZ_3_CANONICAL_ORDER = [
+  { position: 1,  pattern: '1222', hebrewName: 'נשוא ראש' },
+  { position: 2,  pattern: '2122', hebrewName: 'אדום' },
+  { position: 3,  pattern: '2212', hebrewName: 'לבן' },
+  { position: 4,  pattern: '2221', hebrewName: 'שפל ראש' },
+  { position: 5,  pattern: '2112', hebrewName: 'חיבור' },
+  { position: 6,  pattern: '1112', hebrewName: 'סף יוצא' },
+  { position: 7,  pattern: '1121', hebrewName: 'נלחם' },
+  { position: 8,  pattern: '1211', hebrewName: 'בר הלחי' },
+  { position: 9,  pattern: '2111', hebrewName: 'סף נכנס' },
+  { position: 10, pattern: '1111', hebrewName: 'דרך', altNameInPoem: 'אבריד' },
+  { position: 11, pattern: '2222', hebrewName: 'קהלה' },
+  { position: 12, pattern: '1122', hebrewName: 'כבוד יוצא' },
+  { position: 13, pattern: '1212', hebrewName: 'ממון יוצא' },
+  { position: 14, pattern: '1221', hebrewName: 'סוהר' },
+  { position: 15, pattern: '2121', hebrewName: 'ממון נכנס' },
+  { position: 16, pattern: '2211', hebrewName: 'כבוד נכנס' },
+];
+
+// ערכי היסודות: אש=1, אוויר=2, מים=3, עפר=4 (עמ' 122). שורש היסודות
+// הוא דרך; סכום ארבעת הערכים = 10.
+export const SHIBUTZ_3_ELEMENT_VALUES = {
+  'אש': 1,
+  'אוויר': 2,
+  'מים': 3,
+  'עפר': 4,
+  sourceStatus: 'explicit-in-source',
+  sourceRef: "כשף אל-אסראר עמ' 122",
+};
+
+// דוגמאות מפורשות ליסוד-בודד (עמ' 122) — משמשות כאן גם לאימות-צולב של
+// הסדר הקנוני המתוקן: כל אחת מהצורות האלה מוצגת במקור כבעלת יסוד אחד
+// בלבד, והן תואמות בדיוק למקומות 1-4 בסדר הקנוני שלעיל.
+// מקור: כשף אל-אסראר עמ' 122
+export const SHIBUTZ_3_SINGLE_ELEMENT_EXAMPLES = [
+  { pattern: '1222', hebrewName: 'נשוא ראש', element: 'אש',   canonicalPosition: 1 },
+  { pattern: '2122', hebrewName: 'אדום',      element: 'אוויר', canonicalPosition: 2 },
+  { pattern: '2212', hebrewName: 'לבן',       element: 'מים',  canonicalPosition: 3 },
+  { pattern: '2221', hebrewName: 'שפל ראש',   element: 'עפר',  canonicalPosition: 4 },
+];
+
+/**
+ * כלל שילוב יסודות (עמ' 123): "אם נאספו בצורה אחת שני יסודות או
+ * שלושה, נוטלים לכל יסוד את המספר המיוחד לו... ולאחר מכן כל יסוד
+ * מוסיף עשרה על הקודם לו." כלומר לצורה עם כמה יסודות, כל יסוד נוסף
+ * (מעבר לראשון) תורם +10 לערכו הבסיסי.
+ *
+ * sourceStatus: 'not-yet-found-in-current-code-search' — הכלל המילולי
+ * מאומת, אך לא נבנה עדיין חישוב מלא/טבלה מלאה לכל 16 הצורות (המקור לא
+ * נותן טבלה מפורשת לצורות רב-יסודיות, רק את העיקרון).
+ */
+export const SHIBUTZ_3_COMBINATION_RULE = {
+  descriptionHebrew:
+    'לכל יסוד נוסף בצורה (מעבר לראשון), מוסיפים 10 לערכו הבסיסי ' +
+    '(אש=1, אוויר=2, מים=3, עפר=4) לפי סדר הופעת היסודות בצורה.',
+  sourceStatus: 'not-yet-found-in-current-code-search',
+  sourceRef: "כשף אל-אסראר עמ' 123",
+};
+
+/**
+ * שני סוגי נקודה (עמ' 123): מוחלטת (יחידה/פתורה/חיה/מצויה/קלה) לעומת
+ * קשורה (זוגית/נעדרת/מתה/כבדה). וכן שיוכי יסוד נוספים: אש=ראייה,
+ * אוויר=דיבור, מים=חיבור, עפר=פירוד; אש=מזרח/דרהם/שיבר/לבן/חד,
+ * אוויר=מערב/חצי-דרהם/אמה/ירוק/עדין, מים=צפון/רבע-דרהם/קומה/אדום/קל,
+ * עפר=דרום/שמינית-דرהם/פישוק-ידיים/שחור/עבה-ודחוס.
+ */
+export const SHIBUTZ_3_ELEMENT_CORRESPONDENCES = {
+  'אש':   { sense: 'ראייה', direction: 'מזרח', money: 'דרהם',           length: 'שיבר',        color: 'לבן',  texture: 'חד' },
+  'אוויר':{ sense: 'דיבור', direction: 'מערב', money: 'חצי דרהם',       length: 'אמה',         color: 'ירוק', texture: 'עדין' },
+  'מים':  { sense: 'חיבור', direction: 'צפון', money: 'רבע דרהם',       length: 'קומה',        color: 'אדום', texture: 'קל' },
+  'עפר':  { sense: 'פירוד', direction: 'דרום', money: 'שמינית דרהם',    length: 'פישוק ידיים', color: 'שחור', texture: 'עבה ודחוס' },
+  sourceStatus: 'explicit-in-source',
+  sourceRef: "כשף אל-אסראר עמ' 123",
+};
