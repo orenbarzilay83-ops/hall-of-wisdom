@@ -237,6 +237,21 @@ function findingSentence(f) {
   if (f.checkType === 'house-dakhal-kharij') {
     return `<strong>${f.label}:</strong> בית ${f.houseNum} — ${f.dakhalKharijHebrew || ''}.`;
   }
+  if (f.checkType === 'pattern-lookup') {
+    return `<strong>${f.label}:</strong> בית ${f.houseNum} — ${f.valueLabel || ''}.`;
+  }
+  if (f.checkType === 'figure-in-house-group') {
+    const housesStr = (f.houses || []).join(', ');
+    const res = f.found
+      ? `נמצאה באחד הבתים (${(f.foundHouses || []).join(', ')} מתוך ${housesStr})`
+      : `לא נמצאה באף אחד מהבתים (${housesStr})`;
+    return `<strong>${f.label}:</strong> ${res}.`;
+  }
+  if (f.checkType === 'legacy-fn') {
+    if (!f.outputHebrew) return null;
+    const body = String(f.outputHebrew).split('\n').filter(Boolean).join('<br>');
+    return `<strong>${f.label}:</strong><br>${body}`;
+  }
   return `<strong>${f.label}:</strong> ${f.summary || f.dakhalKharijHebrew || f.qualityHebrew || '—'}.`;
 }
 

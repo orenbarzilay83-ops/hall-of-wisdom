@@ -34,6 +34,38 @@ import {
 import { getTopicRules } from './kashf-topic-rules.js';
 import { getDakhalKharij } from './kashf-figure-classifier.js';
 import { computeDhamirByMajority } from './kashf-dhamir.js';
+import { buildLegacyChart } from './kashf-legacy-chart-adapter.js';
+import {
+  computeThiefProximity,
+  computeStolenItemReturn,
+  computeEnemyPresenceCheck,
+  computePrisonerReleaseCheck,
+  computeParnasaLivelihood,
+  computeChildrenPregnancyKashfAnalysis,
+  computeLoanKashfAnalysis,
+  computeFugitiveKashf,
+  computeTravelTimingKashf,
+  computeAuthorityDurationKashf,
+  computeReturnToOfficeKashf,
+  computeStateStabilityKashf,
+} from './kashf-pending-extraction.js';
+
+// רשימת פונקציות מותרות ל-checkType 'legacy-fn' — כל פונקציה שכבר אומתה
+// מול המקור בכשף אל-אסרר בעת ההוצאה מ-hawi-interpreter.js (ראה kashf-pending-extraction.js)
+const LEGACY_FN_REGISTRY = {
+  computeThiefProximity,
+  computeStolenItemReturn,
+  computeEnemyPresenceCheck,
+  computePrisonerReleaseCheck,
+  computeParnasaLivelihood,
+  computeChildrenPregnancyKashfAnalysis,
+  computeLoanKashfAnalysis,
+  computeFugitiveKashf,
+  computeTravelTimingKashf,
+  computeAuthorityDurationKashf,
+  computeReturnToOfficeKashf,
+  computeStateStabilityKashf,
+};
 
 // ── תיאורי כיוונים לפי יסוד ────────────────────────────────────────────────
 const ELEMENT_DIRECTION = {
@@ -277,6 +309,22 @@ function runSupportingCheck(board, check) {
       valueLabel: value ?? (notFoundLabel || 'לא מפורש במקור עבור צורה זו'),
       sourceText,
     };
+  }
+
+  if (checkType === 'legacy-fn') {
+    const { fnName } = check;
+    const fn = LEGACY_FN_REGISTRY[fnName];
+    if (typeof fn !== 'function') {
+      return { id: check.id, label, checkType, error: `פונקציה לא רשומה: ${fnName}`, sourceText };
+    }
+    const chart = buildLegacyChart(board);
+    let result;
+    try {
+      result = fn(chart);
+    } catch (err) {
+      result = { outputHebrew: `שגיאה בהרצת ${fnName}: ${err.message}` };
+    }
+    return { id: check.id, label, checkType, fnName, ...(result || {}), sourceText };
   }
 
   if (checkType === 'figure-in-house-group') {
