@@ -2181,148 +2181,6 @@ const ELEMENT_BODY_REGION_HAWI = {
 };
 
 
-// ============================================================
-// BATCH D: מחלה — האם ימות + סוג הג׳ין (PDF1 p.41-42, p.57-58)
-// ============================================================
-const DEATH_RISK_FIGURES = new Set(['2121','2122','2222','2112','1221','1212','1111']);
-const LIFE_SAVING_FIGURES = new Set(['1122','2211','1222','2212']);
-
-function computeDeathRisk(chart) {
-  const getH = (n) => chart.find((h) => Number(h.house) === n);
-  const h4  = getH(4);
-  const h6  = getH(6);
-  const h8  = getH(8);
-  const h12 = getH(12);
-  const h14 = getH(14);
-  const lines = [];
-  let riskLevel = 0;
-  if (h6?.key === '2122' && h8?.key === '2221') {
-    lines.push('⚠⚠ אדום בבית 6 + שפל ראש בבית 8 — "הגלב עליהם המוות", סכנת מוות גבוהה מאוד');
-    riskLevel += 3;
-  }
-  for (const h of [h4, h12, h14].filter(Boolean)) {
-    if (DEATH_RISK_FIGURES.has(h.key || '')) {
-      lines.push(`⚠ ${h.hebrew || h.key} בבית ${h.house} — צורה מסוכנת`);
-      riskLevel += 1;
-    }
-  }
-  if (h14 && String(h14.fortune || '').includes('מזיק')) {
-    lines.push('בית 14 (אחרית) מזיק — תוצאה שלילית');
-    riskLevel += 1;
-  }
-  for (const h of [h6, h8].filter((h) => h && LIFE_SAVING_FIGURES.has(h.key || ''))) {
-    lines.push(`${h.hebrew || h.key} בבית ${h.house} — צורה מגנה, סיכוי החלמה`);
-    riskLevel -= 1;
-  }
-  const verdict = riskLevel >= 3 ? 'סכנת מוות גבוהה מאוד — יש להיזהר'
-    : riskLevel >= 2 ? 'סכנה גבוהה — מצב קשה'
-    : riskLevel >= 1 ? 'סכנה בינונית — יש לעקוב'
-    : 'לא נמצאו סימני מוות חזקים';
-  lines.push(`\nמסקנה: ${verdict}`);
-  return { riskLevel, verdict, outputHebrew: lines.join('\n') };
-}
-
-function computeJinnType(chart) {
-  const h15 = chart.find((h) => Number(h.house) === 15);
-  const h6  = chart.find((h) => Number(h.house) === 6);
-  if (!h15?.key) return null;
-  let dots = 0;
-  for (const ch of (h15.key || '')) {
-    if (ch === '1') dots += 1;
-    else if (ch === '2') dots += 2;
-  }
-  const product = dots * 4;
-  const rem = product % 3 || 3;
-  const JINN_MAP = { 1: 'ג׳ין רוחני', 2: 'חסד / עין רעה', 3: 'כישוף מאדם' };
-  const ELEMENT_JINN = {
-    'אש': 'ג׳ין אש', 'עפר': 'ג׳ין אדמה',
-    'מים': 'ג׳ין טייר — מים', 'אוויר': 'ג׳ין טייר — אוויר',
-  };
-  const h6El = h6?.element || h6?.elementHebrew || '';
-  const lines = [];
-  if (JINN_MAP[rem]) lines.push(`שיטת נקודות (ב15=${dots}×4=${product}, שארית ${rem}): ${JINN_MAP[rem]}`);
-  if (ELEMENT_JINN[h6El]) lines.push(`לפי יסוד ב6 (${h6El}): ${ELEMENT_JINN[h6El]}`);
-  return { dots, product, remainder: rem, outputHebrew: lines.join('\n') };
-}
-
-// ============================================================
-// BATCH E: נישואין — גרושה/בעולה / בתולה + צניעות (PDF1 p.43-44)
-// ============================================================
-function computeWifeVirginityStatus(chart) {
-  const h7  = chart.find((h) => Number(h.house) === 7);
-  const h13 = chart.find((h) => Number(h.house) === 13);
-  if (!h7?.key || !h13?.key) return null;
-  const derive = (p1, p2) => {
-    if (!p1 || !p2 || p1.length !== 4 || p2.length !== 4) return null;
-    return p1.split('').map((c, i) => c === p2[i] ? '2' : '1').join('');
-  };
-  const derived = derive(h13.key, h7.key);
-  if (!derived) return null;
-  const isVirgin = derived.startsWith('2');
-  const status = isVirgin ? 'בתולה' : 'גרושה/בעולה — לא בתולה';
-  return {
-    derivedKey: derived, isVirgin,
-    outputHebrew: `גזירת ב13×ב7 → ${derived}: ${status} (הקול הכולל עמ׳ 44)`,
-  };
-}
-
-function computeWifeChastity(chart) {
-  const getH = (n) => chart.find((h) => Number(h.house) === n);
-  const h4 = getH(4); const h7 = getH(7);
-  const MARS_FIGURES = new Set(['2122','1121','2221']);
-  const lines = [];
-  if (MARS_FIGURES.has(h7?.key || '') && MARS_FIGURES.has(h4?.key || '')) {
-    lines.push(`⚠ צורת מאדים (${h7?.hebrew || h7?.key}) בבית 7 + (${h4?.hebrew || h4?.key}) בבית 4 — ספק בצניעות האישה (PDF1 עמ׳ 44)`);
-  }
-  if (h4?.key === '2212') lines.push('לבן בבית 4 — ספק נוסף (PDF1 עמ׳ 44)');
-  if (!lines.length) lines.push('לא נמצאו סימנים לפגמים בצניעות');
-  return { outputHebrew: lines.join('\n') };
-}
-
-// ============================================================
-// BATCH F: שאר הנושאים
-// ============================================================
-function computeMarketPrices(chart) {
-  const elCounts = { 'אש': 0, 'אוויר': 0, 'מים': 0, 'עפר': 0 };
-  for (const h of chart) {
-    const el = h.element || h.elementHebrew || '';
-    if (elCounts[el] !== undefined) elCounts[el]++;
-  }
-  const hotDry = (elCounts['אש'] || 0) + (elCounts['אוויר'] || 0);
-  const coldWet = (elCounts['מים'] || 0) + (elCounts['עפר'] || 0);
-  const verdict = hotDry > coldWet
-    ? `אש+אוויר (${hotDry}) > מים+עפר (${coldWet}) → מחירים גבוהים (יוקר)`
-    : hotDry < coldWet
-    ? `מים+עפר (${coldWet}) > אש+אוויר (${hotDry}) → מחירים נמוכים (זול)`
-    : 'שיווי משקל — מחירים יציבים';
-  return { hotDry, coldWet, isExpensive: hotDry > coldWet, verdict, outputHebrew: verdict };
-}
-
-function computeWishFulfillment(chart) {
-  const getH = (n) => chart.find((h) => Number(h.house) === n);
-  const h1 = getH(1); const h11 = getH(11); const h15 = getH(15);
-  if (!h1 || !h11 || !h15) return null;
-  const isPos = (h) => !!h && String(h.fortune || '').includes('מיטיב');
-  const all = isPos(h1) && isPos(h11) && isPos(h15);
-  const any = isPos(h1) || isPos(h11) || isPos(h15);
-  let verdict = '';
-  if (all)      verdict = 'בית 1+11+15 כולם מיטיב — יצליח להשיג מה שרוצה';
-  else if (any) verdict = 'חלק מהבתים מיטיב — הצלחה חלקית או עם עיכוב';
-  else          verdict = 'בית 1+11+15 שליליים — לא ישיג מה שרוצה בזמן זה';
-  return { all, any, outputHebrew: verdict };
-}
-
-function computeQuerentSorceryCheck(chart) {
-  const h10 = chart.find((h) => Number(h.house) === 10);
-  if (!h10) return null;
-  const isSorcered = h10.key === '1222';
-  return {
-    isSorcered,
-    outputHebrew: isSorcered
-      ? '⚠ נשוא ראש בבית 10 — סימן לכישוף על השואל (הקול הכולל עמ׳ 56)'
-      : `${h10.hebrew || h10.key} בבית 10 — לפי ספר זה, הסימן הספציפי (נשוא ראש) אינו בבית הכבוד; ראה אבחון הכולל לעיל`,
-  };
-}
 
 
 function computeBodyPartDiagnosisHawi(chart) {
@@ -3214,29 +3072,8 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const ghalibMaghloub = (['disputes', 'enemies', 'partnership', 'theft'].includes(topicId))
     ? computeGhalibMaghloub(board.chart) : null;
 
-  const deathRisk = (topicId === 'illness')
-    ? computeDeathRisk(board.chart) : null;
-
-  const jinnType = (['spiritualDiagnostics'].includes(topicId))
-    ? computeJinnType(board.chart) : null;
-
   const thiefLocationDetails = (['theft', 'enemies'].includes(topicId))
     ? computeThiefLocationDetails(board.chart) : null;
-
-  const wifeVirginityStatus = (topicId === 'marriage')
-    ? computeWifeVirginityStatus(board.chart) : null;
-
-  const wifeChastity = (topicId === 'marriage')
-    ? computeWifeChastity(board.chart) : null;
-
-  const marketPrices = (['commerce', 'yearlyForecast', 'authorityState'].includes(topicId))
-    ? computeMarketPrices(board.chart) : null;
-
-  const wishFulfillment = (['completion', 'loveHate'].includes(topicId))
-    ? computeWishFulfillment(board.chart) : null;
-
-  const querentSorceryCheck = (['spiritualDiagnostics', 'authorityState'].includes(topicId))
-    ? computeQuerentSorceryCheck(board.chart) : null;
 
   const enemyInHousehold = (topicId === 'enemies')
     ? computeEnemyInHousehold(board.chart) : null;
@@ -3352,14 +3189,7 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     illnessElementDiagnosis,
     bodyPartDiagnosisHawi,
     ghalibMaghloub,
-    deathRisk,
-    jinnType,
     thiefLocationDetails,
-    wifeVirginityStatus,
-    wifeChastity,
-    marketPrices,
-    wishFulfillment,
-    querentSorceryCheck,
     enemyInHousehold,
     jumlaAnalysis,
     marriageFigureForecast,

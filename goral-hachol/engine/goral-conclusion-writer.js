@@ -460,41 +460,6 @@ function describeCoreHouses(analysis, topicId, question) {
     parts.push(`זיהוי הגנב (בלוג' אלאמל פרק 19):\n  ${thiefLoc.outputHebrew.replace(/\n/g, '\n  ')}`);
   }
 
-  const deathRisk = analysis.deathRisk;
-  if (deathRisk) {
-    parts.push(`סיכון מוות (הקול הכולל עמ׳ 41-42):\n  ${deathRisk.outputHebrew.replace(/\n/g, '\n  ')}`);
-  }
-
-  const jinnType = analysis.jinnType;
-  if (jinnType) {
-    parts.push(`סוג הג׳ין (הקול הכולל עמ׳ 57-58):\n  ${jinnType.outputHebrew.replace(/\n/g, '\n  ')}`);
-  }
-
-  const wifeVirginityStatus = analysis.wifeVirginityStatus;
-  if (wifeVirginityStatus) {
-    parts.push(`גרושה/בעולה / בתולה (הקול הכולל עמ׳ 44):\n  ${wifeVirginityStatus.outputHebrew}`);
-  }
-
-  const wifeChastity = analysis.wifeChastity;
-  if (wifeChastity) {
-    parts.push(`צניעות האישה (הקול הכולל עמ׳ 43-44):\n  ${wifeChastity.outputHebrew.replace(/\n/g, '\n  ')}`);
-  }
-
-  const marketPrices = analysis.marketPrices;
-  if (marketPrices) {
-    parts.push(`יוקר / זול — מחירי שוק (הקול הכולל עמ׳ 25):\n  ${marketPrices.outputHebrew}`);
-  }
-
-  const wishFulfillment = analysis.wishFulfillment;
-  if (wishFulfillment) {
-    parts.push(`האם ישיג מה שרוצה (הקול הכולל עמ׳ 51-52):\n  ${wishFulfillment.outputHebrew}`);
-  }
-
-  const querentSorceryCheck = analysis.querentSorceryCheck;
-  if (querentSorceryCheck) {
-    parts.push(`האם השואל מכושף (הקול הכולל עמ׳ 56-57):\n  ${querentSorceryCheck.outputHebrew}`);
-  }
-
   const enemyHH = analysis.enemyInHousehold;
   if (enemyHH) {
     parts.push(`גילוי אויב בסביבה (בלוג' אלאמל עמ' 64):\n  ${enemyHH.outputHebrew}`);
@@ -1717,37 +1682,6 @@ function buildNarrativeByTopic(result) {
     const ind = (s) => scText(s).replace(/\n/g, '\n  ');
     const is  = (...topics) => topics.includes(topicId);
 
-    if (is('illness','deathInheritance','fear')) {
-      const deathRisk = boardAnalysis.deathRisk;
-      if (deathRisk) push(`סיכון מוות:\n  ${ind(deathRisk.outputHebrew)}`);
-    }
-
-    if (is('spiritualDiagnostics')) {
-      const jinnType = boardAnalysis.jinnType;
-      if (jinnType) push(`סוג הג׳ין:\n  ${ind(jinnType.outputHebrew)}`);
-
-      const querentSorceryCheck = boardAnalysis.querentSorceryCheck;
-      if (querentSorceryCheck) push(`האם השואל מכושף:\n  ${sc(querentSorceryCheck.outputHebrew)}`);
-    }
-
-    if (is('marriage','divorce','loveHate')) {
-      const wifeVirginityStatus = boardAnalysis.wifeVirginityStatus;
-      if (wifeVirginityStatus) push(`גרושה/בעולה / בתולה:\n  ${sc(wifeVirginityStatus.outputHebrew)}`);
-
-      const wifeChastity = boardAnalysis.wifeChastity;
-      if (wifeChastity) push(`צניעות האישה:\n  ${ind(wifeChastity.outputHebrew)}`);
-    }
-
-    if (is('yearlyForecast','commerce','partnership')) {
-      const marketPrices = boardAnalysis.marketPrices;
-      if (marketPrices) push(`יוקר / זול — מחירי שוק:\n  ${sc(marketPrices.outputHebrew)}`);
-    }
-
-    if (is('completion','foundations','generalReading','commerce','partnership','loveHate')) {
-      const wishFulfillment = boardAnalysis.wishFulfillment;
-      if (wishFulfillment) push(`האם ישיג מה שרוצה:\n  ${sc(wishFulfillment.outputHebrew)}`);
-    }
-
     if (is('hiddenTreasure')) {
       const diggingDirection = boardAnalysis.diggingDirection;
       if (diggingDirection) push(`כיוון לחפירה/חיפוש:\n  ${ind(diggingDirection.outputHebrew)}`);
@@ -1975,8 +1909,6 @@ function buildSpiritualNarrative(result) {
     if (sd.sihrDetails?.length) {
       push(`פרטי הכישוף (לפי כללי המקור):\n  ${ind(sd.sihrDetails.join('\n'))}`);
     }
-    const querentSorceryCheck = boardAnalysis.querentSorceryCheck;
-    if (querentSorceryCheck) push(`האם השואל מכושף (הקול הכולל עמ׳ 56-57):\n  ${querentSorceryCheck.outputHebrew}`);
   }
 
   // ── 11. REMAINING MATCHES (not yet shown in spiritual houses) ────
