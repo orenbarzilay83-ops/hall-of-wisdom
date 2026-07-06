@@ -100,7 +100,7 @@ const HAWI_TO_KASHF_TOPIC = {
   birthNativity:        'generalReading',
   hiddenTreasure:       'hiddenTreasure',
   childrenPregnancy:    'children',
-  spiritualDiagnostics: 'generalReading',
+  spiritualDiagnostics: 'spiritualDiagnostics',
   lostAnimal:           'lostAnimal',
   parentsProperty:      'parentsProperty',
   dream:                'dream',

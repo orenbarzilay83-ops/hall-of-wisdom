@@ -12,7 +12,9 @@
  */
 
 import {
+  ROW,
   combineHouses,
+  assembleFromRow,
   assembleFromFireRows,
   assembleFromAllRows,
   assessHouseQuality,
@@ -57,6 +59,8 @@ const ILLNESS_BY_ELEMENT = {
 
 // ── ביצוע נוסחאות ────────────────────────────────────────────────────────
 
+const ROW_BY_NAME = { fire: ROW.FIRE, air: ROW.AIR, water: ROW.WATER, earth: ROW.EARTH };
+
 function executeFormula(board, formula) {
   let resultPattern;
   const { type, houses } = formula;
@@ -64,6 +68,9 @@ function executeFormula(board, formula) {
   switch (type) {
     case 'fire-row-assemble':
       resultPattern = assembleFromFireRows(board, houses);
+      break;
+    case 'row-assemble':
+      resultPattern = assembleFromRow(board, houses, ROW_BY_NAME[formula.row]);
       break;
     case 'assemble':
       resultPattern = assembleFromAllRows(board, houses);
