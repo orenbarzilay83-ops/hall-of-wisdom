@@ -192,6 +192,7 @@ function renderTopicGrid() {
     forcedTopicId = generalActive ? null : 'generalReading';
     selectedHouseNum = null;
     selectedTopicId = null;
+    selectedQuestion = null; // אין לתת ל-kashfTopicId משאלה קודמת לדלוף לבחירת-נושא-בכוח
     renderTopicGrid();
   });
 
@@ -199,6 +200,7 @@ function renderTopicGrid() {
     forcedTopicId = spiritualActive ? null : 'spiritualDiagnostics';
     selectedHouseNum = null;
     selectedTopicId = null;
+    selectedQuestion = null; // אין לתת ל-kashfTopicId משאלה קודמת לדלוף לבחירת-נושא-בכוח
     renderTopicGrid();
   });
 
@@ -206,6 +208,7 @@ function renderTopicGrid() {
     btn.addEventListener("click", () => {
       forcedTopicId = null;
       selectedTopicId = null;  // איפוס תת-נושא בעת בחירת בית חדש
+      selectedQuestion = null;
       selectedHouseNum = Number(btn.dataset.house);
       renderTopicGrid();
     });
@@ -1136,8 +1139,11 @@ async function runReading() {
         throw new Error("מנוע כשף אל-אסרר לא נטען. נסה לרענן את הדף.");
       }
 
+      // Phase 4: כשנבחרה שאלה מבנק השאלות, יש לה kashfTopicId עצמאי
+      // (question-bank.js) — לא תלוי בתרגום HAWI_TO_KASHF_TOPIC. משמש
+      // רק כברירת מחדל כשאין שאלה נבחרת (למשל בחירת-נושא-בכוח כללית).
       const hawiTopicId = resolvedTopicId ?? 'generalReading';
-      const kashfTopicId = hawiTopicToKashf(hawiTopicId);
+      const kashfTopicId = selectedQuestion?.kashfTopicId || hawiTopicToKashf(hawiTopicId);
 
       // reading.chart already has {houseNumber, pattern, hebrewName} in house-order
       const kashfBoard = {
