@@ -142,7 +142,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-move-city',
-    category: 'general', houseId: 3, topicId: 'siblings',
+    category: 'general', houseId: 3, topicId: 'relocation',
     label: 'האם כדאי לעבור מקום?',
     desc: 'להחלטת מעבר לעיר/מקום חדש — האם שם יהיה טוב יותר. לשתי ערים ספציפיות — בחר "איזו עיר עדיפה"',
     clientFields: [{ id: 'newCity', label: 'לאן שוקלים לעבור?', type: 'text', placeholder: 'עיר / מקום' }],
@@ -701,7 +701,7 @@ window.QUESTION_BANK = [
   // בית 3/4 — מעבר ונכסים
   {
     id: 'q-move-home',
-    category: 'general', houseId: 3, topicId: 'siblings',
+    category: 'general', houseId: 3, topicId: 'relocation',
     label: 'האם לעבור דירה / בית?',
     desc: 'לדירה/בית ספציפי — האם כדאי לעבור. לשינוי עיר — בחר "האם כדאי לעבור מקום"',
     clientFields: [
@@ -795,7 +795,7 @@ window.QUESTION_BANK = [
   // בית 3 — אחים / מקום
   {
     id: 'q-stay-place',
-    category: 'general', houseId: 3, topicId: 'siblings',
+    category: 'general', houseId: 3, topicId: 'relocation',
     label: 'האם כדאי להישאר במקום זה?',
     desc: 'להחלטה האם להישאר (עיר, מדינה, מקום עבודה) — לא מעבר אחר',
     clientFields: [{ id: 'stayPlace', label: 'המקום / הנסיבות', type: 'text', placeholder: 'עיר / מדינה / בית / עבודה...' }],
