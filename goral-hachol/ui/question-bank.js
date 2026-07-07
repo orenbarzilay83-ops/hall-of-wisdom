@@ -149,7 +149,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-best-city',
-    category: 'general', houseId: 3, topicId: 'siblings',
+    category: 'general', houseId: 3, topicId: 'relocation',
     label: 'איזו עיר עדיפה?',
     desc: 'כשמתלבטים בין שתי ערים מוגדרות — השוואה ישירה',
     clientFields: [
@@ -212,14 +212,14 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-lifespan',
-    category: 'health', houseId: 1, topicId: 'foundations',
+    category: 'health', houseId: 1, topicId: 'deathInheritance',
     label: 'האם יחיה חיים ארוכים?',
     desc: 'שאלה כללית על אורך חיים — לא מיועדת לחירום רפואי',
     clientFields: [],
   },
   {
     id: 'q-lifespan-stages',
-    category: 'health', houseId: 11, topicId: 'foundations',
+    category: 'health', houseId: 11, topicId: 'deathInheritance',
     label: 'שלבי חיים — ראשית, אמצע וסוף',
     desc: 'ניתוח שלושת שלבי החיים: ילדות, בגרות, זקנה — מה כל שלב מביא',
     clientFields: [],
@@ -830,7 +830,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-dream-daily',
-    category: 'general', houseId: 3, topicId: 'siblings',
+    category: 'general', houseId: 3, topicId: 'dream',
     label: 'חלום יומי — האם הוא בשורה?',
     desc: 'לחלום רגיל/יומיומי. לחלום נבואי/דתי שנחקק — בחר "מה משמעות החלום" (בית 9)',
     clientFields: [F.dreamDesc],
@@ -959,7 +959,7 @@ window.QUESTION_BANK = [
   // בית 11 — פרנסה
   {
     id: 'q-livelihood-arrive',
-    category: 'money', houseId: 11, topicId: 'commerce',
+    category: 'money', houseId: 11, topicId: 'money',
     label: 'האם הפרנסה תגיע?',
     desc: 'לפרנסה ספציפית שמצופה: שכר, עסק, הכנסה — האם תגיע',
     clientFields: [F.matter],
@@ -995,7 +995,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-missing-money',
-    category: 'money', houseId: 2, topicId: 'commerce',
+    category: 'money', houseId: 2, topicId: 'money',
     label: 'האם הכסף / הרכוש שנעלם יחזור?',
     desc: 'לכסף שנעלם, הושקע ולא חזר, או נגנב — האם יוחזר. לגילוי הגנב — בחר "מי גנב"',
     clientFields: [F.debtAmount, { id: 'lostMoneyContext', label: 'הקשר', type: 'textarea', placeholder: 'כסף שניתן / הושקע / נגנב...' }],
