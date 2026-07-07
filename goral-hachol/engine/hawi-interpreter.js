@@ -25,14 +25,15 @@ import {
   FIGURE_LETTER_EXTRACTION,
 } from '../data/sources/hawi/foundations/hawi-figure-letter-extraction.js';
 
-import {
-  calculateHazz,
-  getHazzStrengthLabel,
-} from '../data/sources/kashf-al-asrar/kashf-hazz.js';
-
-import {
-  HAWI_FIGURE_NAMES_BY_ID,
-} from '../data/sources/kashf-al-asrar/kashf-figure-names.js';
+// calculateHazz/getHazzStrengthLabel (kashf-hazz.js, מקור: כשף אל-אסרר עמ'
+// 43-68, "חַ'ט/حظوظ الأشكال") ו-HAWI_FIGURE_NAMES_BY_ID (kashf-figure-names.js,
+// שדות zodiacHebrew/ichchhaHebrew/seekerSoughtHebrew, sourceStatus:
+// explicit-in-source לכשף) הוסרו מכאן (סבב חמישי, 2026-07-07) — היו מיובאים
+// ומוצגים בכל בית בכל קריאת חאווי (עוצמת "הַ'ז", מזל, אופי, "מצב השואל/הנדרש")
+// תחת התווית "חאוי:" הצמודה, ללא כל אבחנה שמקורם למעשה כשף אל-אסרר. הן
+// כבר מחוברות כראוי למנוע כשף עצמו (kashf-figure-classifier.js,
+// kashf-formula-engine.js, kashf-legacy-chart-adapter.js) — אין צורך בהעברה
+// נוספת, רק בהסרת נקודת הקריאה הבלתי-נכונה כאן.
 
 import {
   getHawiAspectsBetweenHouses,
@@ -2455,8 +2456,8 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     .filter(Boolean)
     .map((house) => {
       const dir = getFigureDirection(house.key || null);
-      const figureFull = HAWI_FIGURE_NAMES_BY_ID[house.key] || null;
-      const hazz = figureFull ? calculateHazz(figureFull, house.house) : null;
+      // hazz/seekerSought/zodiac/ichchha (מקור: כשף אל-אסרר) הוסרו מכאן —
+      // ראה הערה למעלה ליד ה-imports שהוסרו.
       return {
         house: house.house,
         houseHebrew: house.houseHebrew || null,
@@ -2476,13 +2477,6 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
         isNaturalFigure: !!(house.key && NATURAL_HOUSE_FIGURES[house.house] === house.key),
         seventhFigure: getSeventhFigure(house.key || null),
         quadrant: HOUSE_QUADRANT(house.house),
-        hazz,
-        hazzCount: hazz?.count ?? 0,
-        hazzStrength: hazz ? getHazzStrengthLabel(hazz.count) : null,
-        seekerSoughtHebrew: figureFull?.seekerSoughtHebrew || null,
-        seekerStatus: figureFull?.seekerStatus || null,
-        zodiacHebrew: figureFull?.zodiacHebrew || null,
-        ichchhaHebrew: figureFull?.ichchhaHebrew || null,
       };
     });
 
