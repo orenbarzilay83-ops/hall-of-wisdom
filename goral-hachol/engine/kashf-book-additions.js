@@ -15,6 +15,10 @@
  */
 
 import { MALEFIC_FIGURE_PATTERNS } from './hawi-interpreter.js';
+import {
+  computeHiddenDepthByOpposites,
+  computeRequesterCircleHouse,
+} from '../data/sources/kashf-al-asrar/kashf-shibutzim.js';
 
 // כשף אל-אסרר עמ' 272-273 — "כלל מעשי: אדם החושש מעונש"
 // "באדם החושש מעונש — ממאסר, ממלקות או מדבר אחר — אם בבית העשירי נמצאת
@@ -328,5 +332,56 @@ export function computeGoodsProfitLossKashf(chart) {
     verdict: 'no-clear-signal',
     outputHebrew: `הצורה בבית 5 (${figureName}) אינה חוזרת בבתים 9, 10, 13, 6 או 8 — אין הכרעה מיוחדת מכלל זה (כשף עמ׳ 222).`,
     profitHouses, lossHouses,
+  };
+}
+
+// כשף אל-אסרר עמ' 189 — "שיבוץ ההפכים": עומק דבר נסתר/מים לפי היסודות
+// הפתוחים בצורה שהובילה אליה השאלה (ראה kashf-shibutzim.js לתיעוד מלא).
+export function computeHiddenDepthKashf(chart) {
+  const h1 = chart.find((h) => Number(h.house) === 1);
+  if (!h1?.key) return null;
+  const measures = computeHiddenDepthByOpposites(h1.key);
+  const figureName = h1.hebrew || h1.key;
+  if (!measures.length) {
+    return {
+      verdict: 'no-open-elements',
+      outputHebrew: `הצורה בבית 1 (${figureName}) — לא נמצאו שורות-יסוד פתוחות; אין נתון עומק לפי שיבוץ ההפכים (כשף עמ׳ 189).`,
+    };
+  }
+  return {
+    verdict: 'depth-computed',
+    outputHebrew: `הצורה בבית 1 (${figureName}) — עומק/מרחק הדבר הנסתר, לפי שיבוץ ההפכים: ${measures.join(' + ')} (כשף עמ׳ 189).`,
+    measures,
+  };
+}
+
+// כשף אל-אסרר עמ' 218-219 — "המבקש במעגל": כוח המבקש/הבקשה, לפי בית
+// הכבוד של הצורה שבבית 1 (ראה kashf-shibutzim.js לתיעוד מלא ולהסתייגות
+// שהטבלה מאומתת ל-3 צורות בלבד).
+const PILLAR_HOUSES_FOR_CIRCLE = new Set([1, 4, 7, 10]);
+const SUCCEDENT_HOUSES_FOR_CIRCLE = new Set([2, 5, 8, 11]);
+const CADENT_HOUSES_FOR_CIRCLE = new Set([3, 6, 9, 12]);
+
+export function computeRequesterCircleStrengthKashf(chart) {
+  const h1 = chart.find((h) => Number(h.house) === 1);
+  if (!h1?.key) return null;
+  const figureName = h1.hebrew || h1.key;
+  const result = computeRequesterCircleHouse(h1.key);
+  if (!result) {
+    return {
+      verdict: 'undefined-in-source',
+      outputHebrew: `הצורה בבית 1 (${figureName}) — בית הכבוד שלה בכלל "המבקש במעגל" אינו מאומת במקור שנקרא (רק 2 מתוך 16 הצורות מתועדות, כשף עמ׳ 218-219); לא מחושב.`,
+    };
+  }
+  const { honorHouse, count, landingHouse } = result;
+  let houseTypeHebrew;
+  if (PILLAR_HOUSES_FOR_CIRCLE.has(landingHouse)) houseTypeHebrew = 'יתד';
+  else if (SUCCEDENT_HOUSES_FOR_CIRCLE.has(landingHouse)) houseTypeHebrew = 'נוטה מן היתד';
+  else if (CADENT_HOUSES_FOR_CIRCLE.has(landingHouse)) houseTypeHebrew = 'נופל מן היתד';
+  else houseTypeHebrew = 'מאזן/יתרה';
+  return {
+    verdict: 'landing-computed',
+    outputHebrew: `הצורה בבית 1 (${figureName}) — בית כבודה ${honorHouse}; ספירה מעגלית עד הבית הראשון: ${count}; נחיתה בבית ${landingHouse} (${houseTypeHebrew}). לפי הכלל: נחיתה ביתד או בבית טוב — המבקש חזק בבקשתו; נחיתה בבית מזיק — חלש (כשף עמ׳ 218-219).`,
+    honorHouse, count, landingHouse, houseTypeHebrew,
   };
 }
