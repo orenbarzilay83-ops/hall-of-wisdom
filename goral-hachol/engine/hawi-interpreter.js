@@ -2320,121 +2320,10 @@ function computeJumlaAnalysis(chart, topicId) {
 }
 
 
-const FIRST_FIGURE_REPETITIONS = {
-  // [1x, 2x, 3x, 4x]
-  '1111': [
-    'שואל על נסיעה בשותפות עם אחרים — נסיעה מבורכת',
-    'ניוד — העברת דבר ממקום למקום',
-    'החפצים מושגים, תנועות מוצלחות',
-    'כמו שלוש — תנועה וקיום הצרכים',
-  ],
-  '2222': [
-    'שואל על אישה שיש ריב ביניהם ורוצה להתפייס',
-    'כנ"ל — עם תמיכה לאחד מהצדדים',
-    'שואל על נסיעה עם קבוצה — לא כדאי לנסוע',
-    'שואל על שיירה גדולה עם פחד — אין לזוז בכלל',
-  ],
-  '2211': [
-    'שואל על חולה שמצבו קשה אך יחלים בסוף',
-    'שואל על נעדר שמת לפי הסימנים',
-    'שואל על אסיר שמאסרו יתמשך',
-    'שואל על חולה שימות מן המחלה',
-  ],
-  '1122': [
-    'שואל על נסיעה — מסע מבורך עם עתיד טוב',
-    'שואל על ניוד דבר ממקום למקום',
-    'החוסר יושלם',
-    'יגיע דבר מרחוק',
-  ],
-  '1222': [
-    'שואל על אדם חשוב — חכם, עשיר, שופט, בעל מעמד',
-    'שואל על שניים — עניין כפול',
-    'שואל על נושא כבד ומסובך',
-    'שואל על בית משפט / עניין שלטוני',
-  ],
-  '2122': [
-    'שואל על רופא או חולה במחלה קשה עם ירידת כבוד',
-    'כנ"ל — עם כפל משמעות',
-    'שואל על מחלה קשה ומתמשכת',
-    'שואל על אדם שחולה בקשיים כפולים',
-  ],
-  '2221': [
-    'שואל על אדם בעל יחס של עבדות, עיוורים, נכים — או הארב מהמסתר',
-    'שואל על שניים בעלי מגבלה',
-    'שואל על ריבוי קשיים',
-    'שואל על ריבוי מזיקים',
-  ],
-  '2112': [
-    'שואל על חכמה, ידע, דיבור, כתיבה',
-    'שואל על ידע שמתרבה',
-    'שואל על חיבור חיובי',
-    'שואל על חיבור חזק מאוד',
-  ],
-  '2121': [
-    'שואל על קבלת כסף או נכס',
-    'שואל על הכנסה כפולה',
-    'שואל על הכנסות מרובות',
-    'שואל על עושר גדול שמגיע',
-  ],
-  '1221': [
-    'שואל על עניין עצור, מדינה נצורה, פרנסה חסומה',
-    'שואל על נשים מתאספות ובוכות, פחד חזק',
-    'שואל על מוות או ארון קבורה',
-    'שואל על פחד חזק ונשים יחד בוכות',
-  ],
-  '1212': [
-    'שואל על תקלה, גנבה, דבר אבוד',
-    'שואל על גנבה כפולה',
-    'שואל על גנבה ואובדן מרובה',
-    'שואל על אובדן גדול',
-  ],
-  '1211': [
-    'שואל על נישואין, שמחה מצד נשים, שותפות',
-    'שואל על שני קשרים',
-    'שואל על קשרים מרובים',
-    'שואל על עסקת קשר גדולה',
-  ],
-  '2111': [
-    'שואל על כוח בקשרים, רווח, תנועה קדימה',
-    'שואל על תנועה כפולה',
-    'שואל על נסיעה מרובה',
-    'שואל על תנועה גדולה',
-  ],
-  '1112': [
-    'שואל על יציאה — דבר שיוצא מידיו',
-    'יציאה כפולה — שתי פעולות יוצאות',
-    'ריבוי יציאות',
-    'תנועה גדולה החוצה',
-  ],
-  // '2212' (לבן) ו-'1121' (נלחם) הוצאו מטבלה זו — מצוטטים במקור עצמו
-  // כ"הקול הכולל" (ص29, ص47), לא חאווי. ראה FIRST_FIGURE_REPETITIONS_NON_HAWI
-  // ב-other-sources-pending-extraction.js.
-};
-
-function computeFirstFigureRepetition(chart) {
-  const h1Figure = chart.find((h) => Number(h.house) === 1);
-  if (!h1Figure) return null;
-
-  const firstKey = h1Figure.key || '';
-  const firstHebrew = h1Figure.hebrew || h1Figure.key;
-
-  const allOccurrences = chart.filter((h) => h.key === firstKey);
-  const count = allOccurrences.length;
-
-  const meanings = FIRST_FIGURE_REPETITIONS[firstKey];
-  const countIndex = Math.min(count - 1, 3);
-  const meaning = meanings ? meanings[countIndex] : null;
-
-  if (!meaning) return null;
-
-  return {
-    figureKey: firstKey,
-    figureHebrew: firstHebrew,
-    count,
-    meaning,
-    outputHebrew: `צורה ראשונה בלוח: "${firstHebrew}" (חוזרת ${count}×) — ${meaning}`,
-  };
-}
+// FIRST_FIGURE_REPETITIONS + computeFirstFigureRepetition הוצאו מכאן —
+// הן מצוטטות במקור (goral-conclusion-writer.js הישן) כ- "بلوغ الامل" פ' 17,
+// לא חאווי, והוצגו בעבר עבור כל נושא ללא כל אבחנה. ראה
+// other-sources-pending-extraction.js::computeFirstFigureRepetitionOther.
 
 // HAWI_DHAMIR_DIRECTIONS_VALIDATION.forcedOrChosenTravelRules (חאוי עמ׳ 33)
 function computeForcedTravelAnalysis(chart) {
@@ -2716,8 +2605,6 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const jumlaAnalysis = (['spiritualDiagnostics', 'illness', 'childrenPregnancy', 'partnership'].includes(topicId))
     ? computeJumlaAnalysis(board.chart, topicId) : null;
 
-  const firstFigureRepetition = computeFirstFigureRepetition(board.chart);
-
   // HAWI_DHAMIR_DIRECTIONS_VALIDATION — נסיעה כפויה/רצונית (חאוי עמ׳ 33)
   const forcedTravelAnalysis = (topicId === 'travel')
     ? computeForcedTravelAnalysis(board.chart) : null;
@@ -2797,7 +2684,6 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     bodyPartDiagnosisHawi,
     ghalibMaghloub,
     jumlaAnalysis,
-    firstFigureRepetition,
     forcedTravelAnalysis,
     foundationsDisplay,
     sourceQuality,

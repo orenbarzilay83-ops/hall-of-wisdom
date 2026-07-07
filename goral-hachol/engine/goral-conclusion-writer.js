@@ -638,11 +638,8 @@ function describeCoreHouses(analysis, topicId, question) {
     }
   }
 
-  // מה בלב השואל — מוצג לכל נושא לפי שיטת חזרת הצורה הראשונה (بلوغ الامل פ׳ 17)
-  const firstFigRep = analysis.firstFigureRepetition;
-  if (firstFigRep) {
-    parts.push(firstFigRep.outputHebrew);
-  }
+  // "מה בלב השואל" (שיטת חזרת הצורה הראשונה, بلوغ الامل פ' 17) הוסר מכאן —
+  // אינו חאווי, ראה other-sources-pending-extraction.js.
 
   return parts.join('\n');
 }
