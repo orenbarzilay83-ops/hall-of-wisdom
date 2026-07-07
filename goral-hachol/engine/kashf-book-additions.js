@@ -20,6 +20,11 @@ import {
   computeRequesterCircleHouse,
 } from '../data/sources/kashf-al-asrar/kashf-shibutzim.js';
 import { FIGURE_WHEEL_POSITION } from '../data/sources/kashf-al-asrar/kashf-figure-classification-gate2.js';
+import {
+  DEREKH_HOUSE_RULES,
+  FIGURE_DESIRE_FULFILLMENT_NOTES,
+} from '../data/sources/kashf-al-asrar/kashf-gate5-foundational-figures.js';
+import { getDakhalKharij } from './kashf-figure-classifier.js';
 
 // כשף אל-אסרר עמ' 272-273 — "כלל מעשי: אדם החושש מעונש"
 // "באדם החושש מעונש — ממאסר, ממלקות או מדבר אחר — אם בבית העשירי נמצאת
@@ -427,5 +432,71 @@ export function computeWheelPositionStrengthKashf(chart) {
     verdict: 'wheel-match',
     outputHebrew: `הדין חזק: ${details} (כשף עמ׳ 60-61).`,
     totalMatches, matchedGroups,
+  };
+}
+
+// כשף אל-אסרר עמ' 161-163 — שער חמישי, "דיני דרך בבתים" (9-16). כאשר צורת
+// דרך (1111) שורה באחד מבתי-העדות/הדין (9-16), הפסיקה נגזרת ממזג
+// (פנימי/חיצוני) שני "בתי-ההורים" שממנו נגזר אותו בית — תואם בדיוק את
+// מבנה הגזירה הקיים ב-raml-board-generator.js (house9=1+2, 10=3+4, 11=5+6,
+// 12=7+8, 13=9+10, 14=11+12, 15=13+14, 16=15+1).
+function internalExternalKey(pattern) {
+  const dk = getDakhalKharij(pattern);
+  return dk === 'dakhil' || dk === 'mujassad-dakhil' ? 'dakhil' : 'kharij';
+}
+
+export function computeDerekhHouseRuleKashf(chart) {
+  const getH = (n) => chart.find((h) => Number(h.house) === n);
+
+  const derekhHouse = [9, 10, 11, 12, 13, 14, 15, 16].find((n) => getH(n)?.key === '1111');
+  if (!derekhHouse) {
+    return {
+      verdict: 'no-derekh-in-witness-houses',
+      outputHebrew: 'צורת דרך אינה שורה באף אחד מבתי העדות/הדין (9-16) — אין לכלל זה תחולה בקריאה זו (כשף עמ׳ 161-163).',
+    };
+  }
+
+  const rule = DEREKH_HOUSE_RULES[derekhHouse];
+  const [p1, p2] = rule.parentHouses;
+  const k1 = getH(p1)?.key, k2 = getH(p2)?.key;
+  if (!k1 || !k2) return null;
+
+  const comboKey = `${internalExternalKey(k1)}-${internalExternalKey(k2)}`;
+  const verdict = rule.verdictsByParentCombo[comboKey];
+  if (!verdict) {
+    return {
+      verdict: 'combo-not-specified-in-source',
+      outputHebrew: `דרך שורה בבית ${derekhHouse}, אך שילוב המזג של בתים ${p1}/${p2} (${comboKey}) אינו מפורש בספר עבור בית זה — נותר ללא פסיקה (כשף עמ׳ 161-163).`,
+      derekhHouse,
+    };
+  }
+
+  return {
+    verdict: 'derekh-house-rule-found',
+    outputHebrew: `דרך שורה בבית ${derekhHouse}${rule.baseTopic ? ` (${rule.baseTopic})` : ''}: ${verdict.textHebrew} (${verdict.sourceRef}).`,
+    derekhHouse,
+    comboKey,
+  };
+}
+
+// כשף אל-אסרר עמ' 163 — שער חמישי, "דיני מקצת הצורות": מתי צורה נותנת את
+// תאוותיה. בודק את צורת בית 1 (השואל) מול הטבלה — לא נבנה מבנה נתונים
+// חדש, רק לוקח בחשבון ישירות את הטקסט לגבי הצורה הספציפית בבית השואל.
+export function computeFigureDesireFulfillmentKashf(chart) {
+  const getH = (n) => chart.find((h) => Number(h.house) === n);
+  const h1 = getH(1);
+  if (!h1?.key) return null;
+
+  const note = FIGURE_DESIRE_FULFILLMENT_NOTES[h1.key];
+  if (!note) {
+    return {
+      verdict: 'no-note-for-this-figure',
+      outputHebrew: 'לא נמצאה הערה מיוחדת לצורת בית 1 בפרק "דיני מקצת הצורות" (כשף עמ׳ 163) — אין לכלל זה תחולה בקריאה זו.',
+    };
+  }
+  return {
+    verdict: 'note-found',
+    outputHebrew: `צורת השואל (${note.nameHebrew}): ${note.textHebrew} (כשף עמ׳ 163).`,
+    figureKey: h1.key,
   };
 }
