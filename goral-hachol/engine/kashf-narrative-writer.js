@@ -31,6 +31,8 @@ function stripInlineCitations(text) {
   return String(text || '')
     .replace(/\s*[[(][^\])]*עמ['׳״][^\])]*[\])]/g, '')
     .replace(/[؀-ۿ]+/g, '')
+    .replace(/\s*\(\s*\d+\s*נקודות\s*\)/g, '')
+    .replace(/\s*→\s*/g, ' — ')
     .replace(/[ \t]{2,}/g, ' ')
     .trim();
 }
@@ -357,31 +359,9 @@ function writeDhamirPara(reading) {
 }
 
 // ── שער 4 סוג 4: משלים חיצוני (לא כשף אל-אסרר) ───────────────────────────
-// מוצג בבלוק נפרד ומסומן במפורש בכל הופעה — ראו kashf-dhamir-type4-external.js.
-
-function writeDhamirType4ExternalPara(reading) {
-  const t4 = reading.dhamirType4External;
-  if (!t4 || t4.error || !t4.primaryMethod) return '';
-
-  const pm = t4.primaryMethod;
-  const lines = [];
-  if (pm.status === 'ok' && pm.outputHebrew) {
-    lines.push(`<p class="kashf-dhamir-extra">${stripInlineCitations(pm.outputHebrew)}</p>`);
-  } else if (pm.status === 'needs_verification_multi_letter') {
-    lines.push(`<p class="kashf-dhamir-extra">סכום נקודות הלוח (${t4.totalPoints}) מתפרק ליותר משתי אותיות — לפי המקור המשלים, שילוב כזה דורש אימות נוסף ואינו מוצג כתוצאה סופית.</p>`);
-  }
-  const sm = t4.secondaryMethod;
-  if (sm?.status === 'ok' && sm.outputHebrew) {
-    lines.push(`<p class="kashf-dhamir-extra">${stripInlineCitations(sm.outputHebrew)}</p>`);
-  }
-  if (!lines.length) return '';
-
-  return `<div class="kashf-reading-card dhamir dhamir-external">
-    <h3 class="kashf-card-title">⚠ תוצאה עם מקור חיצוני (לא כשף אל-אסרר)</h3>
-    <p class="kashf-dhamir-disclosure"><strong>גילוי:</strong> ${t4.disclosureHebrew}</p>
-    ${lines.join('')}
-  </div>`;
-}
+// חושב ב-kashf-reading-engine.js (reading.dhamirType4External) אך אינו
+// מוצג בקריאה — כל תוכנו הוא שרשור חישוב-מספר-לאות שאין דרך להציג ללקוח
+// בלי לחשוף את החישוב עצמו. נשאר זמין לשימוש פנימי בלבד.
 
 // ── פסקת עדים ודיין ───────────────────────────────────────────────────────
 
@@ -693,7 +673,6 @@ export function writeKashfReading(reading) {
     writeSupportingPara(reading),
     writeKeyHousesPara(reading),
     writeDhamirPara(reading),
-    writeDhamirType4ExternalPara(reading),
     writeWitnessJudgePara(reading),
   ].filter(Boolean).join('\n');
 

@@ -163,12 +163,10 @@ export function computeTimingByDhamirThirds(chart, dhamirHouseNum) {
   const timePos = houseNum ? (TIME_POSITION[houseNum] || null) : null;
   const figRec = (HAWI_SOURCE.figureNames?.list || []).find(f => f.pattern === resultPattern);
   const resultHebrew = resultEntry?.hebrew || figRec?.hebrewName || resultPattern;
-  let outputHebrew;
+  let outputHebrew = null;
   if (houseNum && timing) {
     const timeStr = `${timing.value} ${timing.value === 1 ? timing.unitSingle : timing.unit}`;
-    outputHebrew = `לשון-האמר: ${resultHebrew} בבית ${houseNum} → ${timeStr}${timePos ? ` (${timePos})` : ''}`;
-  } else {
-    outputHebrew = `לשון-האמר: ${resultHebrew} — לא נמצאת בלוח`;
+    outputHebrew = `עיתוי צפוי: תוך ${timeStr}${timePos ? ` (${timePos})` : ''}`;
   }
   return {
     sourceRef: 'כשף עמ׳ 112',
@@ -212,7 +210,7 @@ export function computeQuerentTemperament(chart, dhamirHouseNum) {
     dhamirFigure: figureHebrew,
     element,
     temperamentDesc,
-    outputHebrew: `טבע השואל: ${figureHebrew} (בית ${dhamirHouseNum}) → יסוד ${element} — ${temperamentDesc}`,
+    outputHebrew: `טבע השואל: ${temperamentDesc}`,
   };
 }
 
@@ -521,7 +519,7 @@ export function computeMoneySourceKashf(chart) {
   const moneyNote = foundMoney ? 'ימצא כסף גדול' : 'אינו מוצא כסף';
   return {
     verdict: foundMoney ? `money-found-${rem7}` : 'no-money',
-    outputHebrew: `סך נקודות הלוח: ${total} — ${moneyNote}. מקור הכסף (שארית ÷7=${rem7 || 7}): ${source} (כשף עמ׳ 181).`,
+    outputHebrew: `${moneyNote}. מקור הכסף: ${source}.`,
     total, foundMoney, source,
   };
 }
@@ -1297,13 +1295,7 @@ export function computeTimingByMadad(chart) {
     unitShort,
     unitSingle,
     unitDisplay,
-    outputHebrew: [
-      `סה״כ נקודות 4 האמהות: ${totalDots}`,
-      `לאחר הפחתה בשש-עשרה, השארית ${remainder} — הגעה לבית ${landingHouse}`,
-      `הצורה בבית ${landingHouse}: ${figHebrew}`,
-      `קבוצת הזמן: ${tierHebrew}`,
-      `תוצאה: ${quantity} ${unitDisplay}`,
-    ].join('\n'),
+    outputHebrew: `עיתוי משוער: ${quantity} ${unitDisplay}`,
     sourceRef: 'כשף אל-אסרר עמ׳ 119 — שיטת המדד',
   };
 }
@@ -1337,7 +1329,7 @@ export function computeTimingEstimate(chart, dhamirHouse, topicId) {
     unit,
     tier,
     timingUnits: tierHebrew,
-    outputHebrew: `עיתוי (האדד): מחשבת השואל בבית ${dh} (${dhamirEntry.hebrew || dhamirEntry.key}, ${dotCount} נקודות) → ${quantity}. סקאלה: ${tierHebrew}`,
+    outputHebrew: `עיתוי משוער נוסף: ${quantity}`,
     sourceRef: 'כשף אל-אסראר — שיטת האדד: ספירת נקודות הצורה × עמדת הבית = תזמון',
   };
 }
