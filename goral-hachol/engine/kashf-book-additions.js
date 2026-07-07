@@ -181,3 +181,111 @@ export function computeServantMatterKashf(chart) {
     : `הצורה העולה מחיבור בית 6 ובית 16 (${combined}) מיטיבה — מצב עניין העבד/המשרת טוב.`;
   return { verdict, outputHebrew };
 }
+
+// כשף אל-אסרר עמ' 105 — "תמונת שיבוץ המספר ומשך-הזמן: המספר המצטבר לכל צורה"
+// (מאומת ישירות מול הטבלה בעמ' 104-106, 109, 114: נלחם=1, נשוא ראש=3,
+// סף נכנס=6, לבן=10, בר הלחי=15, סף יוצא=21, אדום=28, שפל ראש=36,
+// ממון נכנס=45, סוהר=55, חיבור=66, דרך=78, כבוד נכנס=91, ממון יוצא=105,
+// קהלה=120, כבוד יוצא=136 — טור זה שונה ונפרד מ"מספרי התכונה" האישיים
+// שכל צורה מקבלת בפרק שלה בשער השני, ואין לערבב ביניהם).
+const FIGURE_DURATION_NUMBERS = {
+  '1121': 1,   // נלחם
+  '1222': 3,   // נשוא ראש
+  '2111': 6,   // סף נכנס
+  '2212': 10,  // לבן
+  '1211': 15,  // בר הלחי
+  '1112': 21,  // סף יוצא
+  '2122': 28,  // אדום
+  '2221': 36,  // שפל ראש
+  '2121': 45,  // ממון נכנס
+  '1221': 55,  // סוהר
+  '2112': 66,  // חיבור
+  '1111': 78,  // דרך
+  '2211': 91,  // כבוד נכנס
+  '1212': 105, // ממון יוצא
+  '2222': 120, // קהלה
+  '1122': 136, // כבוד יוצא
+};
+
+const PILLAR_HOUSES_SET = new Set([1, 4, 7, 10]);
+const SUCCEDENT_HOUSES_SET = new Set([2, 5, 8, 11]);
+const CADENT_HOUSES_SET = new Set([3, 6, 9, 12]);
+
+function totalBoardPoints(chart) {
+  let total = 0;
+  for (const h of chart) {
+    const key = h.key || '';
+    for (const c of key) total += c === '1' ? 1 : 2;
+  }
+  return total;
+}
+
+// שלב משותף לשתי הנוסחאות (עמ' 177, 182): סוכמים את כל נקודות הלוח,
+// מפחיתים ב-16 (שארית 0 → 16), וההולכה היא ישירה מבית 1 עד מספר השארית
+// (אותה קונבנציית "הליכה מבית 1 קדימה" המשמשת כבר ב-computeDhamirJawharayn
+// ובחישוב מקור הכסף הקיים — לא מוגדרת כאן במפורש בטקסט המצוטט עצמו).
+function walkToDurationHouse(chart) {
+  const total = totalBoardPoints(chart);
+  let remainder = total % 16;
+  if (remainder === 0) remainder = 16;
+  const landing = chart.find((h) => Number(h.house) === remainder);
+  if (!landing?.key) return null;
+
+  let houseType;
+  if (PILLAR_HOUSES_SET.has(remainder)) houseType = 'pillar';
+  else if (SUCCEDENT_HOUSES_SET.has(remainder)) houseType = 'succedent';
+  else if (CADENT_HOUSES_SET.has(remainder)) houseType = 'cadent';
+  else houseType = null; // בתים 13-16 — לא מכוסים בטקסט המצוטט
+
+  const durationNumber = FIGURE_DURATION_NUMBERS[landing.key];
+  return { total, remainder, landingHouse: remainder, landing, houseType, durationNumber };
+}
+
+// כשף אל-אסרר עמ' 177 — "כיצד אדע את שנותיי?"
+// "הסר את הגורל, ואסוף את כל היסודות... הפחת אותם בשש-עשרה, ומה שנותר
+//  הולך על פני הבתים. במקום שבו יסתיים החשבון, התבונן בצורה שעליה עמד:
+//  איזו צורה היא, ומה מספרה באותו בית. לדוגמה: אם לאחר ההפחתה נותר מן
+//  היתדות... מספרה הוא מספר השנים. אם היא מן הנטויים, מספרה הוא חודשים.
+//  ואם היא מן הנופלים, מספרה הוא ימים."
+export function computeLifeYearsKashf(chart) {
+  const result = walkToDurationHouse(chart);
+  if (!result || result.durationNumber == null) return null;
+  const { landingHouse, landing, houseType, durationNumber } = result;
+  const figureName = landing.hebrew || landing.key;
+
+  if (!houseType) {
+    return {
+      verdict: 'out-of-scope',
+      outputHebrew: `החשבון נחת בבית ${landingHouse} (${figureName}) — בית זה אינו מכוסה בכלל המצוטט (המתייחס רק ליתדות/נטויים/נופלים, בתים 1-12).`,
+    };
+  }
+  const unitHebrew = { pillar: 'שנים', succedent: 'חודשים', cadent: 'ימים' }[houseType];
+  return {
+    verdict: 'life-years',
+    outputHebrew: `החשבון נחת בבית ${landingHouse} (${figureName}) — ${durationNumber} ${unitHebrew} (כשף עמ׳ 177).`,
+    landingHouse, figureName, durationNumber, unitHebrew,
+  };
+}
+
+// כשף אל-אסרר עמ' 182 — "אשר למספר הממון — דון בו כדין מספר השנים:
+//  הצורות המורות על שנים הן אלפים, החודשים מאות, והימים עשרות."
+export function computeMoneyMagnitudeKashf(chart) {
+  const result = walkToDurationHouse(chart);
+  if (!result || result.durationNumber == null) return null;
+  const { landingHouse, landing, houseType, durationNumber } = result;
+  const figureName = landing.hebrew || landing.key;
+
+  if (!houseType) {
+    return {
+      verdict: 'out-of-scope',
+      outputHebrew: `החשבון נחת בבית ${landingHouse} (${figureName}) — בית זה אינו מכוסה בכלל המצוטט (המתייחס רק ליתדות/נטויים/נופלים, בתים 1-12).`,
+    };
+  }
+  const scale = { pillar: 1000, succedent: 100, cadent: 10 }[houseType];
+  const amount = durationNumber * scale;
+  return {
+    verdict: 'money-magnitude',
+    outputHebrew: `החשבון נחת בבית ${landingHouse} (${figureName}) — לפי דין מספר השנים, סדר הגודל המוערך: כ-${amount} (כשף עמ׳ 182).`,
+    landingHouse, figureName, durationNumber, amount,
+  };
+}
