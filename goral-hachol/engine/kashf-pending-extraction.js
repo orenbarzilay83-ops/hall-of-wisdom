@@ -1266,7 +1266,7 @@ export function computeTimingByMadad(chart) {
     unitDisplay,
     outputHebrew: [
       `סה״כ נקודות 4 האמהות: ${totalDots}`,
-      `${totalDots} mod 16 = ${remainder} → הגעה לבית ${landingHouse}`,
+      `לאחר הפחתה בשש-עשרה, השארית ${remainder} — הגעה לבית ${landingHouse}`,
       `הצורה בבית ${landingHouse}: ${figHebrew}`,
       `קבוצת הזמן: ${tierHebrew}`,
       `תוצאה: ${quantity} ${unitDisplay}`,

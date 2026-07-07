@@ -216,9 +216,9 @@ export const KASHF_TOPIC_RULES = {
       interpretBy: 'saad-nahs',
       sourceText: 'וכן מן החמישי והשלישי, ומן החמישי והשלושה-עשר — הולד צורה ודון על פיה.',
       verdictBySaadNahs: {
-        saad:  { text: 'הבדיקה הנוספת מאשרת: יחסים טובים', positive: true },
-        nahs:  { text: 'הבדיקה הנוספת מאשרת: קשיים ביחסים', positive: false },
-        mixed: { text: 'הבדיקה הנוספת: מצב מעורב', positive: null },
+        saad:  { text: 'יחסים טובים', positive: true },
+        nahs:  { text: 'קשיים ביחסים', positive: false },
+        mixed: { text: 'מצב מעורב', positive: null },
       },
     },
     supportingChecks: [
@@ -664,9 +664,9 @@ export const KASHF_TOPIC_RULES = {
       interpretBy: 'saad-nahs',
       sourceText: 'הצורה הנולדת מן הבתים הראשון, השביעי והתשיעי: אם היא מיטיבה — תבוא ממנה תועלת; ואם מזיקה — להפך.',
       verdictBySaadNahs: {
-        saad:  { text: 'הצורה מן א-ז-ט מיטיבה — תוצאה טובה', positive: true },
-        nahs:  { text: 'הצורה מן א-ז-ט מזיקה — קשיים צפויים', positive: false },
-        mixed: { text: 'הצורה מן א-ז-ט ממוזגת', positive: null },
+        saad:  { text: 'הצורה מבתים 1, 7 ו-9 מיטיבה — תוצאה טובה', positive: true },
+        nahs:  { text: 'הצורה מבתים 1, 7 ו-9 מזיקה — קשיים צפויים', positive: false },
+        mixed: { text: 'הצורה מבתים 1, 7 ו-9 ממוזגת', positive: null },
       },
     },
     supportingChecks: [
@@ -1491,9 +1491,9 @@ export const KASHF_TOPIC_RULES = {
       interpretBy: 'saad-nahs',
       sourceText: 'וכן דון בשותף... מן החמישי והשביעי, מפני שהם בתי מזגם.',
       verdictBySaadNahs: {
-        saad:  { text: 'הבדיקה הנוספת מאשרת: שותפות טובה', positive: true },
-        nahs:  { text: 'הבדיקה הנוספת מאשרת: שותפות מזיקה', positive: false },
-        mixed: { text: 'הבדיקה הנוספת: מצב מעורב', positive: null },
+        saad:  { text: 'שותפות טובה', positive: true },
+        nahs:  { text: 'שותפות מזיקה', positive: false },
+        mixed: { text: 'מצב מעורב', positive: null },
       },
     },
     // שיטת "חלוקה לשניים" (עמ׳ 213) דורשת סכימת נקודות גולמית של הלוח,
