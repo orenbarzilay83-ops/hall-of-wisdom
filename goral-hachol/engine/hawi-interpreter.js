@@ -184,32 +184,11 @@ const TOPIC_QUESITED_HOUSE = {
   motherRules:         10,  // בית האם / הסמכות
 };
 
-// ── תפקידים ספציפיים של בתים לפי נושא (כשף אל-אסראר שער שישי) ──────────────
-// מקור: כשף אל-אסראר, שער שישי + פסקה כוללת עמ' 166
-const TOPIC_HOUSE_ROLES = {
-  illness:          { 6: 'טבע המחלה', 2: 'הרפואה / הדרך לריפוי', 8: 'פרוגנוזה: מוות או החלמה' },
-  marriage:         { 7: 'בן/בת הזוג', 13: 'עד — מצב השואל', 14: 'עד — מצב הזוג' },
-  travel:           { 9: 'מצב הנסיעה', 4: 'היעד / הסיום', 12: 'מכשולים / סכנות בדרך' },
-  missingPerson:    { 1: 'מצב הנעדר', 4: 'מיקום הנעדר', 12: 'מה מונע את חזרתו' },
-  theft:            { 2: 'החפץ הגנוב', 12: 'הגנב / מי גנב', 4: 'מיקום החפץ' },
-  authorityState:   { 10: 'השלטון / התפקיד', 1: 'השואל ביחס לשלטון', 11: 'הסיכויים / תקוות' },
-  commerce:         { 2: 'הממון / הסחורה', 7: 'הצד השני (קונה/מוכר)', 10: 'הרווח / מוניטין' },
-  prisoner:         { 1: 'מצב האסיר', 6: 'האסיר עצמו (בית ו׳)', 10: 'הסמכות המשחררת', 12: 'הכלא / מה מחזיק אותו' },
-  childrenPregnancy:{ 5: 'הילד / ההריון', 4: 'מצב האב/הבית', 11: 'תקוות / אם יתממש' },
-  hiddenTreasure:   { 4: 'מיקום המטמון (קרקע)', 2: 'שווי המטמון', 12: 'מה מסתיר / מה מונע' },
-  enemies:          { 7: 'האויב / מצבו', 12: 'מה שמסתיר האויב', 9: 'תנועת האויב / כוונותיו' },
-  disputes:         { 7: 'היריב', 1: 'השואל בסכסוך', 15: 'ההכרעה הסופית' },
-  deathInheritance: { 8: 'המוות / הסכנה', 2: 'הירושה / הממון', 1: 'מצב השואל' },
-  seaVoyage:        { 9: 'הנסיעה', 8: 'סכנת ים / מוות', 12: 'מכשולים בדרך' },
-  fear:             { 12: 'מקור הפחד / הסכנה', 1: 'מצב השואל', 4: 'מה יקרה' },
-  loan:             { 1: 'השואל / המלווה', 7: 'הלווה', 8: 'ממון ההלוואה / ההחזרה' },
-  religion:         { 3: 'שורש האמונה', 9: 'בית הדת — עומק האמונה' },
-  motherRules:      { 10: 'האם (פסיקה)', 1: 'מצב השואל', 4: 'הבית / הביסוס' },
-  partnership:      { 1: 'הצד הראשון (השואל)', 7: 'השותף / הצד השני', 2: 'הממון המשותף', 10: 'תוצאת השותפות' },
-  loveHate:         { 1: 'השואל', 7: 'האהוב / השנוא', 5: 'הנאה / עומק הקשר', 11: 'תקוות הקשר' },
-  completion:       { 1: 'השואל / מי שמבצע', 5: 'מה ייצא / התוצאה', 9: 'מסע / עתיד הדבר' },
-  siblings:         { 1: 'השואל', 3: 'האח / השכן', 7: 'הצד שכנגד / מקור הסכסוך' },
-};
+// TOPIC_HOUSE_ROLES (תפקידי בתים לפי נושא) הוצא מכאן — מקורו המצוטט היה
+// "כשף אל-אסראר, שער שישי + פסקה כוללת עמ' 166" ולא חאווי. בפועל היה קוד
+// מת (topicRole/specificRolesHebrew לא נצרכו בשום מקום ב-goral-conclusion-writer
+// או ב-UI), אך תוכן שמקורו כשף לא אמור לשבת בקובץ חאווי כלל. הועבר בשלמותו
+// (לא נמחק) ל-kashf-pending-extraction.js::TOPIC_HOUSE_ROLES_KASHF.
 
 // כשף עמ' 62: מיפוי יסוד → כיוון גיאוגרפי. שותף בין פונקציות חאווי
 // (computeDiggingDirection) לפונקציות אחרות שעדיין לא הופרדו.
@@ -845,13 +824,20 @@ export function chartHouse(chart, houseNum) {
   return chart.find((h) => Number(h.house) === Number(houseNum)) || null;
 }
 
+// מקור: חאוי — hawi-dhamir-directions-validation.js, planetaryFigureMap (עמ' 34,
+// "وكيفية الشكال على الكواكب"), פוענח ישירות מהצורות המקוריות בערבית (0='1', |='2').
+// תוקן: הגרסה הקודמת כאן ציטטה כשף אל-אסרר עמ' 133 והחליפה בטעות בין נלחם (1121)
+// לבר הלחי (1211) בין מאדים לנוגה — לא תואם למקור חאוי עצמו שכבר קיים באפליקציה.
 const PLANETARY_FIGURES = [
   { hebrew: 'שמש',    figures: ['1122', '2121'] },
   { hebrew: 'לבנה',   figures: ['2212', '1111'] },
-  { hebrew: 'מאדים',  figures: ['2122', '1211'] },   // כשף עמ' 133: אדום ובר הלחי; נלחם→נוגה
-  { hebrew: 'כוכב',   figures: ['2222', '2112'] },   // כשף עמ' 133: קהלה וחיבור (כוכב חמה)
+  { hebrew: 'מאדים',  figures: ['2122', '1121'] },   // אדום ונלחם (חאוי עמ' 34)
+  // כוכב חמה: הצורה השנייה משובשת/קצרה במקור חאוי עצמו (ראה reviewNoteHebrew
+  // ב-hawi-dhamir-directions-validation.js) — לא אומתה. הערך '2112' נשמר כאן
+  // כפי שהיה (מקורו בפועל כשף אל-אסרר עמ' 133), עד שהמקור החאוי יוברר חזותית.
+  { hebrew: 'כוכב',   figures: ['2222', '2112'] },   // לא-מאומת: השני מכשף עמ' 133 (מילוי פער)
   { hebrew: 'שבתאי',  figures: ['2221', '1221'] },
-  { hebrew: 'נוגה',   figures: ['2211', '1121'] },   // כשף עמ' 133: כבוד נכנס ונלחם
+  { hebrew: 'נוגה',   figures: ['2211', '1211'] },   // כבוד נכנס ובר הלחי (חאוי עמ' 34)
   { hebrew: 'צדק',    figures: ['1222', '2111'] },
 ];
 
@@ -1777,18 +1763,25 @@ function computeAuthorityStateAnalysis(chart, authoritySource) {
 }
 
 
-// Planetary mapping per כשף אל-אסרר עמ' 133 (שיבוץ המזג).
-// Corrected from prior mapping (חאוי planetary-correspondences):
-//   נלחם (1121): מאדים → נוגה; בר הלחי (1211): נוגה → מאדים; חיבור (2112): added to כוכב/מרקורי.
+// מקור: חאוי — hawi-dhamir-directions-validation.js, planetaryFigureMap (עמ' 34).
+// תוקן (סבב חמישי, 2026-07-07): גרסה קודמת כאן ציטטה במפורש כשף אל-אסרר עמ' 133
+// והחליפה בכוונה את מיקום נלחם (1121) ובר הלחי (1211) בין מאדים לנוגה, בסתירה
+// למקור החאוי עצמו (שכבר קיים באפליקציה, עם ציטוט ערבי מקורי + מספר עמוד). זהו
+// באג אמיתי: computeYearlyForecastAnalysis (יוקר/גשם לפי כוכב) קיבל שיוך כוכב
+// שגוי לצורות אלה כשהן יושבות ביתד. תוקן לפי פענוח ישיר של הצורות המקוריות
+// בערבית מהמקור החאוי (0='1', |='2').
 export const FIGURE_PLANET_MAP = (function () {
   const m = {};
   for (const p of [
     { hebrew: 'שמש',            figures: ['1122', '2121'] },
     { hebrew: 'לבנה',           figures: ['2212', '1111'] },
-    { hebrew: 'מאדים',          figures: ['2122', '1211'] },   // כשף עמ' 133: אדום ובר הלחי
-    { hebrew: 'כוכב / מרקורי', figures: ['2222', '2112'] },   // כשף עמ' 133: קהלה וחיבור
+    { hebrew: 'מאדים',          figures: ['2122', '1121'] },   // אדום ונלחם (חאוי עמ' 34)
+    // כוכב חמה: הצורה השנייה משובשת במקור החאוי עצמו (ראה reviewNoteHebrew
+    // ב-hawi-dhamir-directions-validation.js) — לא אומתה מול חאוי. '2112' נשמר
+    // כפי שהיה, אך מקורו בפועל כשף עמ' 133 — מילוי פער, לא תוכן חאוי מאומת.
+    { hebrew: 'כוכב / מרקורי', figures: ['2222', '2112'] },
     { hebrew: 'שבתאי',          figures: ['2221', '1221'] },
-    { hebrew: 'נוגה',           figures: ['2211', '1121'] },   // כשף עמ' 133: כבוד נכנס ונלחם
+    { hebrew: 'נוגה',           figures: ['2211', '1211'] },   // כבוד נכנס ובר הלחי (חאוי עמ' 34)
     { hebrew: 'צדק',            figures: ['1222', '2111'] },
   ]) { for (const f of p.figures) m[f] = p.hebrew; }
   return m;
@@ -2258,76 +2251,12 @@ function computeGhalibMaghloub(chart) {
 }
 
 
-function computeJumlaAnalysis(chart, topicId) {
-  if (!Array.isArray(chart)) return null;
-
-  // جملة = sum of all dot values: فرد (pattern '1') = 1 dot, زوج (pattern '2') = 2 dots
-  let jumla = 0;
-  for (const house of chart) {
-    for (const ch of String(house.key || '')) {
-      if (ch === '1') jumla += 1;
-      else if (ch === '2') jumla += 2;
-    }
-  }
-
-  // Islamic modular arithmetic: remainder 0 is treated as the divisor value (e.g. mod4=0 → 4)
-  const mod4 = (jumla % 4) || 4;
-  const mod3 = (jumla % 3) || 3;
-  const mod4ForFriendship = mod4; // same divisor, different table
-
-  const ILLNESS_MAP = {
-    1: { hebrewLabel: 'חום / קדחת',           isSorcery: false },
-    2: { hebrewLabel: 'רוחות / ריאות / קור', isSorcery: false },
-    3: { hebrewLabel: 'כישוף (סיהר)',         isSorcery: true  },
-    4: { hebrewLabel: 'רוחות וחום',          isSorcery: false },
-  };
-
-  const CHILDREN_MAP = {
-    1: 'ייוולד זכר (בן)',
-    2: 'תיוולד נקבה (בת)',
-    3: 'הפלה / לא ייוולד ילד בעת הזו',
-  };
-
-  const FRIENDSHIP_MAP = {
-    1: 'שונא אותו',
-    2: 'אוהב אותו',
-    3: 'אוהב אותו לכאורה בלבד',
-    4: 'אין בו טוב',
-  };
-
-  const result = { jumla, mod4, mod3 };
-
-  if (topicId === 'spiritualDiagnostics' || topicId === 'illness') {
-    const entry = ILLNESS_MAP[mod4];
-    result.illnessDiagnosis = {
-      remainder: mod4,
-      hebrewLabel: entry.hebrewLabel,
-      isSorcery: entry.isSorcery,
-      outputHebrew: `ג׳ומלה לאבחון מחלה (${jumla} ÷ 4, שארית ${mod4}): ${entry.hebrewLabel}`,
-    };
-  }
-
-  if (topicId === 'childrenPregnancy') {
-    const outcome = CHILDREN_MAP[mod3];
-    result.childDiagnosis = {
-      remainder: mod3,
-      outcome,
-      outputHebrew: `ג׳ומלה לשאלת ילדים (${jumla} ÷ 3, שארית ${mod3}): ${outcome}`,
-    };
-  }
-
-  if (topicId === 'partnership' || topicId === 'friendship') {
-    const outcome = FRIENDSHIP_MAP[mod4ForFriendship];
-    result.friendshipDiagnosis = {
-      remainder: mod4ForFriendship,
-      outcome,
-      outputHebrew: `ג׳ומלה לשאלת ידידות/שותפות (${jumla} ÷ 4, שארית ${mod4ForFriendship}): ${outcome}`,
-    };
-  }
-
-  return result;
-}
-
+// computeJumlaAnalysis + ILLNESS_MAP/CHILDREN_MAP/FRIENDSHIP_MAP הוצאו מכאן —
+// hawi-topic-index.js (topicId: 'spiritual-diagnostics-expanded') מתעד במפורש
+// שהשיטה הזו ("ג׳ומלה — סכום נקודות") מקורה בספר "بلوغ الامل في علم الرمل"
+// עמ' 62-63 (raml-jumla-method.js: sourceBook), לא חאווי, ובכל זאת הוצגה בעבר
+// לנושאי illness/spiritualDiagnostics/childrenPregnancy/partnership תחת קריאת
+// חאווי ללא כל אבחנה. ראה other-sources-pending-extraction.js::computeJumlaAnalysisOther.
 
 // FIRST_FIGURE_REPETITIONS + computeFirstFigureRepetition הוצאו מכאן —
 // הן מצוטטות במקור (goral-conclusion-writer.js הישן) כ- "بلوغ الامل" פ' 17,
@@ -2554,7 +2483,6 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
         seekerStatus: figureFull?.seekerStatus || null,
         zodiacHebrew: figureFull?.zodiacHebrew || null,
         ichchhaHebrew: figureFull?.ichchhaHebrew || null,
-        topicRole: (TOPIC_HOUSE_ROLES[topicId] || {})[Number(house.house)] || null,
       };
     });
 
@@ -2611,8 +2539,9 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
   const diggingDirection = (topicId === 'hiddenTreasure')
     ? computeDiggingDirection(board.chart) : null;
 
-  const jumlaAnalysis = (['spiritualDiagnostics', 'illness', 'childrenPregnancy', 'partnership'].includes(topicId))
-    ? computeJumlaAnalysis(board.chart, topicId) : null;
+  // jumlaAnalysis (שיטת ה"ג׳ומלה") הוסר — מקורו בלוג' אל-אמל, לא חאווי.
+  // ראה other-sources-pending-extraction.js::computeJumlaAnalysisOther.
+  const jumlaAnalysis = null;
 
   // HAWI_DHAMIR_DIRECTIONS_VALIDATION — נסיעה כפויה/רצונית (חאוי עמ׳ 33)
   const forcedTravelAnalysis = (topicId === 'travel')
@@ -2653,16 +2582,8 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     ? board.chart.find((h) => h.key === h1Seventh && Number(h.house) !== 1)
     : null;
 
-  // Task 11: תפקידים ספציפיים של בתים לפי נושא (מהכשף)
-  const houseRoles = TOPIC_HOUSE_ROLES[topicId] || {};
-  const specificRolesHebrew = Object.entries(houseRoles).map(([hNum, role]) => {
-    const h = houses.find((x) => Number(x.house) === Number(hNum));
-    if (!h) return null;
-    const fig = h.figureHebrew || h.figureKey || '';
-    const fort = h.fortune || '';
-    const transit = h.transit?.meaning || '';
-    return `${role}: ${fig}${fort ? ` (${fort})` : ''}${transit ? ` — ${transit}` : ''}`;
-  }).filter(Boolean);
+  // Task 11 (תפקידים ספציפיים של בתים לפי נושא, מקורו כשף) הוסר —
+  // ראה kashf-pending-extraction.js::TOPIC_HOUSE_ROLES_KASHF.
 
   return {
     hasBoard: true,
@@ -2699,7 +2620,6 @@ function buildBoardAnalysis(board, topicId, mainHouses) {
     seventhOfHouse1: seventhOfHouse1Found
       ? { pattern: h1Seventh, foundInHouse: Number(seventhOfHouse1Found.house), figureHebrew: seventhOfHouse1Found.hebrew || h1Seventh }
       : null,
-    specificRolesHebrew,
     pregnancyMonths,
     diggingDirection,
   };

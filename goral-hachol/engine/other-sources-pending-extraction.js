@@ -997,6 +997,81 @@ export const FIRST_FIGURE_REPETITIONS_OTHER = {
   ],
 };
 
+// ── 20. computeJumlaAnalysisOther — שיטת הג׳ומלה (סכום נקודות) ──────────────
+// מקור: بلوغ الامل في علم الرمل (Balugh al-Amal), עמ' 62-63.
+// תועד במפורש כ"בלוג' אל-אמל" ב-hawi-topic-index.js (topicId:
+// 'spiritual-diagnostics-expanded') וב-raml-jumla-method.js (sourceBook),
+// אך הפונקציה עצמה (computeJumlaAnalysis) ישבה בפועל בתוך hawi-interpreter.js
+// והוצגה לנושאי illness/spiritualDiagnostics/childrenPregnancy/partnership
+// כחלק מקריאת חאווי, ללא כל אבחנה שמדובר בספר אחר. הוצאה בשלמותה (לא נמחקה).
+// ג׳ומלה = סכום כל הנקודות בלוח (נקודה יחידה='1'→1, זוג='2'→2) על פני 16
+// הבתים × 4 שורות; מחלקים ב-N ולוקחים את השארית (שארית 0 = הערך המחלק עצמו).
+const JUMLA_ILLNESS_MAP = {
+  1: { hebrewLabel: 'חום / קדחת',           isSorcery: false }, // فمرضه من الحمى
+  2: { hebrewLabel: 'רוחות / ריאות / קור', isSorcery: false }, // فمرضه من الرياح
+  3: { hebrewLabel: 'כישוף (סיהר)',         isSorcery: true  }, // فمرضه من السحر
+  4: { hebrewLabel: 'רוחות וחום',          isSorcery: false }, // فمرضه من الرياح والحمى
+};
+const JUMLA_CHILDREN_MAP = {
+  1: 'ייוולד זכר (בן)',                        // يولد له غلام
+  2: 'תיוולד נקבה (בת)',                       // يولد له جارية
+  3: 'הפלה / לא ייוולד ילד בעת הזו',           // تسقط الولد
+};
+const JUMLA_FRIENDSHIP_MAP = {
+  1: 'שונא אותו',                              // فإنه يبغضه
+  2: 'אוהב אותו',                              // فإنه يحبه
+  3: 'אוהב אותו לכאורה בלבד',                  // فإنه يحبه ظاهراً
+  4: 'אין בו טוב',                             // فليس فيه خير
+};
+
+export function computeJumlaAnalysisOther(chart, topicId) {
+  if (!Array.isArray(chart)) return null;
+
+  let jumla = 0;
+  for (const house of chart) {
+    for (const ch of String(house.key || '')) {
+      if (ch === '1') jumla += 1;
+      else if (ch === '2') jumla += 2;
+    }
+  }
+
+  const mod4 = (jumla % 4) || 4;
+  const mod3 = (jumla % 3) || 3;
+  const mod4ForFriendship = mod4;
+
+  const result = { jumla, mod4, mod3 };
+
+  if (topicId === 'spiritualDiagnostics' || topicId === 'illness') {
+    const entry = JUMLA_ILLNESS_MAP[mod4];
+    result.illnessDiagnosis = {
+      remainder: mod4,
+      hebrewLabel: entry.hebrewLabel,
+      isSorcery: entry.isSorcery,
+      outputHebrew: `ג׳ומלה לאבחון מחלה (${jumla} ÷ 4, שארית ${mod4}): ${entry.hebrewLabel} (בלוג' אל-אמל עמ' 62-63)`,
+    };
+  }
+
+  if (topicId === 'childrenPregnancy') {
+    const outcome = JUMLA_CHILDREN_MAP[mod3];
+    result.childDiagnosis = {
+      remainder: mod3,
+      outcome,
+      outputHebrew: `ג׳ומלה לשאלת ילדים (${jumla} ÷ 3, שארית ${mod3}): ${outcome} (בלוג' אל-אמל עמ' 62-63)`,
+    };
+  }
+
+  if (topicId === 'partnership' || topicId === 'friendship') {
+    const outcome = JUMLA_FRIENDSHIP_MAP[mod4ForFriendship];
+    result.friendshipDiagnosis = {
+      remainder: mod4ForFriendship,
+      outcome,
+      outputHebrew: `ג׳ומלה לשאלת ידידות/שותפות (${jumla} ÷ 4, שארית ${mod4ForFriendship}): ${outcome} (בלוג' אל-אמל עמ' 62-63)`,
+    };
+  }
+
+  return result;
+}
+
 export function computeFirstFigureRepetitionOther(chart) {
   const h1Figure = chart.find((h) => Number(h.house) === 1);
   if (!h1Figure) return null;
