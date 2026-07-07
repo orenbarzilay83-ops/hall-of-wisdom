@@ -98,16 +98,18 @@ const HOUSE_TOPIC_KEYWORDS = {
 const HAWI_TO_KASHF_TOPIC = {
   foundations:          'generalReading',
   birthNativity:        'generalReading',
-  hiddenTreasure:       'relocation',
+  hiddenTreasure:       'hiddenTreasure',
   childrenPregnancy:    'children',
-  spiritualDiagnostics: 'generalReading',
-  lostAnimal:           'generalReading',
+  spiritualDiagnostics: 'spiritualDiagnostics',
+  lostAnimal:           'lostAnimal',
+  parentsProperty:      'parentsProperty',
+  dream:                'dream',
   seaVoyage:            'travel',
-  partnership:          'commerce',
-  enemies:              'disputes',
+  partnership:          'partnership',
+  enemies:              'enemies',
   loveHate:             'marriage',
-  yearlyForecast:       'generalReading',
-  fear:                 'generalReading',
+  yearlyForecast:       'yearlyForecast',
+  fear:                 'fear',
   // זהות מלאה — אין שינוי:
   illness:              'illness',
   marriage:             'marriage',
@@ -127,6 +129,8 @@ const HAWI_TO_KASHF_TOPIC = {
   children:             'children',
   completion:           'completion',
   generalReading:       'generalReading',
+  motherRules:          'motherRules',
+  friendsHope:          'friendsHope',
 };
 
 function hawiTopicToKashf(hawiTopicId) {
@@ -188,6 +192,7 @@ function renderTopicGrid() {
     forcedTopicId = generalActive ? null : 'generalReading';
     selectedHouseNum = null;
     selectedTopicId = null;
+    selectedQuestion = null; // אין לתת ל-kashfTopicId משאלה קודמת לדלוף לבחירת-נושא-בכוח
     renderTopicGrid();
   });
 
@@ -195,6 +200,7 @@ function renderTopicGrid() {
     forcedTopicId = spiritualActive ? null : 'spiritualDiagnostics';
     selectedHouseNum = null;
     selectedTopicId = null;
+    selectedQuestion = null; // אין לתת ל-kashfTopicId משאלה קודמת לדלוף לבחירת-נושא-בכוח
     renderTopicGrid();
   });
 
@@ -202,6 +208,7 @@ function renderTopicGrid() {
     btn.addEventListener("click", () => {
       forcedTopicId = null;
       selectedTopicId = null;  // איפוס תת-נושא בעת בחירת בית חדש
+      selectedQuestion = null;
       selectedHouseNum = Number(btn.dataset.house);
       renderTopicGrid();
     });
@@ -812,9 +819,10 @@ function buildKundaliHtml(reading) {
   `;
 }
 
-function buildBoardHtml(reading) {
+function buildBoardHtml(reading, dhamirHouseOverride) {
   const h = n => reading.chart.find(x => Number(x.house) === Number(n));
-  const dhamirHouseNum = reading._precomputedInsight?.boardAnalysis?.dhamirByMizan?.primaryHouseNumber
+  const dhamirHouseNum = dhamirHouseOverride
+    ?? reading._precomputedInsight?.boardAnalysis?.dhamirByMizan?.primaryHouseNumber
     ?? reading._precomputedInsight?.boardAnalysis?.dhamirHouse?.houseNumber
     ?? null;
 
@@ -906,29 +914,6 @@ function buildInterpretationHtml(reading) {
     ).join(' | ');
     boardInfoHtml += `<div class="board-info-row board-dhamir">🎯 הדמיר: ${traceText} — הדמיר העיקרי: בית ${dhamirMizanData.primaryHouseNumber}</div>`;
   }
-  const querentSubjectData = insight.boardAnalysis?.querentSubject || null;
-  if (querentSubjectData) {
-    boardInfoHtml += `<div class="board-info-row board-querent-subject">🔍 ${escapeHtml(querentSubjectData.outputHebrew)} — (ב6=${escapeHtml(querentSubjectData.house6Figure)}, ${escapeHtml(querentSubjectData.sourceRef)})</div>`;
-  }
-  const sodHaDhamirimData = insight.boardAnalysis?.sodHaDhamirim || null;
-  if (sodHaDhamirimData) {
-    boardInfoHtml += `<div class="board-info-row board-sod-dhamirim">⭐ ${escapeHtml(sodHaDhamirimData.outputHebrew)} — (${escapeHtml(sodHaDhamirimData.sourceRef)})</div>`;
-  }
-  const honestyData = insight.boardAnalysis?.querentHonestyCheck || null;
-  if (honestyData) {
-    const cls = honestyData.isHonest ? 'board-honesty-ok' : 'board-honesty-warn';
-    const icon = honestyData.isHonest ? '✅' : '⚠️';
-    boardInfoHtml += `<div class="board-info-row ${cls}">${icon} ${escapeHtml(honestyData.outputHebrew)} — (${escapeHtml(honestyData.sourceRef)})</div>`;
-  }
-  const timingThirdsData = insight.boardAnalysis?.timingByDhamirThirds || null;
-  if (timingThirdsData) {
-    boardInfoHtml += `<div class="board-info-row board-timing-thirds">⏱ ${escapeHtml(timingThirdsData.outputHebrew)} — (${escapeHtml(timingThirdsData.sourceRef)})</div>`;
-  }
-  const temperamentData = insight.boardAnalysis?.querentTemperament || null;
-  if (temperamentData) {
-    boardInfoHtml += `<div class="board-info-row board-temperament">🌡 ${escapeHtml(temperamentData.outputHebrew)} — (${escapeHtml(temperamentData.sourceRef)})</div>`;
-  }
-
   const topicId = insight.topicId || "";
 
   // Rewrite internal terminology for client-facing display
@@ -1054,7 +1039,6 @@ function buildInterpretationHtml(reading) {
     <button class="details-toggle" onclick="const p=this.nextElementSibling;p.hidden=!p.hidden;this.textContent=p.hidden?'קרא עוד ▼':'סגור ▲'">קרא עוד ▼</button>
     <div hidden>${detailsContent}</div>
     <div class="board-tools-row" style="margin-top:14px; display:flex; gap:8px; flex-wrap:wrap; direction:rtl; align-items:center;">
-      <button type="button" onclick="window.showTimingTool(this)" style="background:#1a3a5c; color:#f0d060; border:none; border-radius:6px; padding:8px 16px; font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; white-space:nowrap;">⏱ עיתוי</button>
       <button type="button" onclick="window.showBoardCompleteness(this)" style="background:#1a3a5c; color:#f0d060; border:none; border-radius:6px; padding:8px 16px; font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; white-space:nowrap;">📊 שלמות הלוח</button>
       <button type="button" onclick="window.boardGoBack()" class="btn gray" style="font-size:13px; padding:8px 14px; white-space:nowrap; color:#111 !important;">חזרה לבחירת אמהות</button>
       <button type="button" onclick="window.boardOpenArchive()" class="btn primary" style="font-size:13px; padding:8px 14px; white-space:nowrap; color:#111 !important;">ארכיון קריאות</button>
@@ -1062,40 +1046,9 @@ function buildInterpretationHtml(reading) {
       <button type="button" onclick="window.boardClearArchive()" class="btn gray" style="font-size:13px; padding:8px 14px; white-space:nowrap; color:#111 !important;">נקה ארכיון</button>
       <button type="button" onclick="window.boardToggleKundali(this)" class="btn gray" style="font-size:13px; padding:8px 14px; white-space:nowrap; color:#111 !important;">♐ לוח קונדלי</button>
     </div>
-    <div id="timingToolPanel" hidden style="direction:rtl; margin-top:10px; background:#f5f8ff; border:1px solid #1a3a5c; border-radius:8px; padding:16px 18px; font-size:14px; line-height:1.9;"></div>
     <div id="boardCompletenessPanel" hidden style="direction:rtl; margin-top:10px; background:#f5f8ff; border:1px solid #1a3a5c; border-radius:8px; padding:16px 18px; font-size:14px; line-height:1.9;"></div>
   `;
 }
-
-window.showTimingTool = function(btn) {
-  const panel = document.getElementById('timingToolPanel');
-  if (!panel) return;
-  if (!panel.hidden) { panel.hidden = true; btn.textContent = '⏱ עיתוי'; return; }
-
-  const reading = window.__LAST_GORAL_READING;
-  if (!reading || !Array.isArray(reading.chart) || reading.chart.length < 4) {
-    panel.innerHTML = '<em>אין לוח פעיל לחישוב עיתוי.</em>';
-    panel.hidden = false;
-    return;
-  }
-
-  const result = window.HAWI_INTERPRETER?.computeTimingByMadad?.(reading.chart);
-  if (!result) {
-    panel.innerHTML = '<em>לא ניתן לחשב עיתוי מלוח זה.</em>';
-    panel.hidden = false;
-    return;
-  }
-
-  const lines = result.outputHebrew.split('\n').map(l => `<div>${escapeHtml(l)}</div>`).join('');
-  panel.innerHTML = `
-    <div style="font-weight:700; font-size:13px; color:#1a3a5c; margin-bottom:10px; border-bottom:1px solid #c8d8f0; padding-bottom:6px;">⏱ מתי יקרה הדבר? — שיטת המדד</div>
-    <div style="font-size:15px; font-weight:700; color:#1a3a5c; margin-bottom:8px;">${escapeHtml(result.quantity)} ${escapeHtml(result.unitDisplay || result.unitShort)}</div>
-    <div style="font-size:12px; color:#555; line-height:1.7;">${lines}</div>
-    <div style="margin-top:10px; font-size:11px; color:#999; border-top:1px solid #e0e8f5; padding-top:6px;">מקור: ${escapeHtml(result.sourceRef)}</div>
-  `;
-  panel.hidden = false;
-  btn.textContent = '⏱ עיתוי ▲';
-};
 
 window.showBoardCompleteness = function(btn) {
   const panel = document.getElementById('boardCompletenessPanel');
@@ -1175,7 +1128,7 @@ async function runReading() {
         reading.clientContext?.clientName || ""
       );
     }
-    if (window.HAWI_INTERPRETER?.interpretHawiQuestionInitial) {
+    if (goralMode !== 'kashf' && window.HAWI_INTERPRETER?.interpretHawiQuestionInitial) {
       reading._precomputedInsight = window.HAWI_INTERPRETER.interpretHawiQuestionInitial(reading.question, reading);
     }
 
@@ -1186,8 +1139,11 @@ async function runReading() {
         throw new Error("מנוע כשף אל-אסרר לא נטען. נסה לרענן את הדף.");
       }
 
+      // Phase 4: כשנבחרה שאלה מבנק השאלות, יש לה kashfTopicId עצמאי
+      // (question-bank.js) — לא תלוי בתרגום HAWI_TO_KASHF_TOPIC. משמש
+      // רק כברירת מחדל כשאין שאלה נבחרת (למשל בחירת-נושא-בכוח כללית).
       const hawiTopicId = resolvedTopicId ?? 'generalReading';
-      const kashfTopicId = hawiTopicToKashf(hawiTopicId);
+      const kashfTopicId = selectedQuestion?.kashfTopicId || hawiTopicToKashf(hawiTopicId);
 
       // reading.chart already has {houseNumber, pattern, hebrewName} in house-order
       const kashfBoard = {
@@ -1207,7 +1163,7 @@ async function runReading() {
       const kashfHtml = window.KASHF_ENGINE.writeKashfReading(kashfReading);
 
       const outputEl = document.getElementById("kashfReadingOutput");
-      if (outputEl) outputEl.innerHTML = buildBoardHtml(reading) + kashfHtml;
+      if (outputEl) outputEl.innerHTML = buildBoardHtml(reading, kashfReading.dhamir?.winner?.houseNumber) + kashfHtml;
 
       window._lastReading = reading;
       window._lastKashfReading = kashfReading;

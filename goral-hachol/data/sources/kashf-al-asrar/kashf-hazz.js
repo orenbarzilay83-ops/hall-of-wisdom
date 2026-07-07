@@ -19,7 +19,7 @@
 //   7 כוכבים מאומתים (עמוד 133-134): שמש,נוגה,ירח,כוכב,שבתאי,מאדים,צדק — explicit-in-source
 //   צמתי הגלגל (ראש/זנב) — לא נכללים במחזור הבתים, לא מחושבים בתסכין-כוכב
 
-import { FIGURE_LETTER_EXTRACTION } from './hawi-figure-letter-extraction.js';
+import { FIGURE_LETTER_EXTRACTION } from '../hawi/foundations/hawi-figure-letter-extraction.js';
 
 // בנה מפה: pattern → מיקום אות (1-16) לפי סדר תסקין עבדוה
 const FIGURE_LETTER_HOUSE = Object.fromEntries(

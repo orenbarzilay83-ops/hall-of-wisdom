@@ -6,10 +6,31 @@
  */
 
 import { getFigureAppearance } from './kashf-figure-appearance.js';
+import { getSaadNahs } from './kashf-figure-classifier.js';
+import { HOUSE_NAMES } from './kashf-reading-engine.js';
+
+// שם הבית + נושאו (למשל "בית שני — הממון") — אותה טבלת בתים המשמשת בכל
+// האפליקציה (kashf-reading-engine.js), רק מציגים כאן את חלק הנושא בלבד.
+function houseTopicOnly(houseNum) {
+  const full = HOUSE_NAMES[houseNum] || '';
+  const idx = full.indexOf('—');
+  return idx === -1 ? full : full.slice(idx + 1).trim();
+}
 
 // ── עזרי טקסט ─────────────────────────────────────────────────────────────
 
 function c(val = '') { return String(val || '').trim(); }
+
+// הפונקציות ב-kashf-pending-extraction.js אורגות ציטוט עמוד בסוגריים לתוך
+// ה-outputHebrew עצמו (למשל "...מתפייס (כשף עמ' 271)"). המקור נשאר מתועד
+// בקוד/ב-sourceText של הבדיקה — אך בטקסט שהלקוח קורא זה נשמע כמו הערת שוליים
+// אקדמית ולא כמו יועץ מדבר. מסירים את הציטוט המוסגר בעת התצוגה בלבד.
+function stripInlineCitations(text) {
+  return String(text || '')
+    .replace(/\s*[[(]כשף[^\])]*[\])]/g, '')
+    .replace(/[ \t]{2,}/g, ' ')
+    .trim();
+}
 
 function qualityWord(q) {
   return { saad: 'מיטיבה', nahs: 'מזיקה', mixed: 'ממוזגת' }[q] || '';
@@ -236,6 +257,21 @@ function findingSentence(f) {
   if (f.checkType === 'house-dakhal-kharij') {
     return `<strong>${f.label}:</strong> בית ${f.houseNum} — ${f.dakhalKharijHebrew || ''}.`;
   }
+  if (f.checkType === 'pattern-lookup') {
+    return `<strong>${f.label}:</strong> בית ${f.houseNum} — ${f.valueLabel || ''}.`;
+  }
+  if (f.checkType === 'figure-in-house-group') {
+    const housesStr = (f.houses || []).join(', ');
+    const res = f.found
+      ? `נמצאה באחד הבתים (${(f.foundHouses || []).join(', ')} מתוך ${housesStr})`
+      : `לא נמצאה באף אחד מהבתים (${housesStr})`;
+    return `<strong>${f.label}:</strong> ${res}.`;
+  }
+  if (f.checkType === 'legacy-fn') {
+    if (!f.outputHebrew) return null;
+    const body = stripInlineCitations(f.outputHebrew).split('\n').map(stripInlineCitations).filter(Boolean).join('<br>');
+    return `<strong>${f.label}:</strong><br>${body}`;
+  }
   return `<strong>${f.label}:</strong> ${f.summary || f.dakhalKharijHebrew || f.qualityHebrew || '—'}.`;
 }
 
@@ -280,6 +316,80 @@ function writeKeyHousesPara(reading) {
   </div>`;
 }
 
+// ── מחשבת השואל (דמיר) ────────────────────────────────────────────────────
+// השער הרביעי בכשף אל-אסרר, עמ' 151-155 — עצמאי מהנושא הנבחר.
+
+function writeDhamirPara(reading) {
+  const { dhamir } = reading;
+  const winner = dhamir?.winner;
+  if (!winner) return '';
+
+  const q = qualityWord(winner.pattern ? getSaadNahs(winner.pattern) : null);
+  const houseLabel = `בית ${winner.houseNumber}`;
+  const houseTopic = houseTopicOnly(winner.houseNumber);
+  const meaningNote = houseTopic && winner.houseNumber !== 1
+    ? `<p class="kashf-dhamir-meaning">כלומר: מה שבאמת מעסיק את השואל הוא <strong>${houseTopic}</strong> — גם אם השאלה שנשאלה עסקה בנושא אחר.</p>`
+    : (winner.houseNumber === 1
+      ? `<p class="kashf-dhamir-meaning">כלומר: מה שבאמת מעסיק את השואל הוא מצבו האישי הכללי — בלי נושא צדדי נסתר.</p>`
+      : '');
+  const agreementNote = winner.agreementCount > 1
+    ? `<span class="kashf-dhamir-agreement">${winner.agreementCount} משיטות ההכרעה הסכימו על בית זה (${winner.methodsAgreed.join(', ')})</span>`
+    : `<span class="kashf-dhamir-agreement">לפי שיטת "${winner.methodHebrew}"</span>`;
+
+  const extras = reading.dhamirExtras || {};
+  const extraLines = [
+    extras.sodHaDhamirim,
+    extras.honestyCheck,
+    extras.querentSubject,
+    extras.timingByThirds,
+    extras.temperament,
+    extras.timingByMadad,
+    extras.timingEstimate,
+  ]
+    .filter((x) => x && x.outputHebrew && !x.error)
+    .map((x) => `<p class="kashf-dhamir-extra">${stripInlineCitations(x.outputHebrew).split('\n').map(stripInlineCitations).filter(Boolean).join('<br>')}</p>`)
+    .join('');
+
+  return `<div class="kashf-reading-card dhamir">
+    <h3 class="kashf-card-title">מחשבת השואל (הדמיר)</h3>
+    <p class="kashf-dhamir-body">
+      מחשבת השואל האמיתית מתגלה ב<strong>${houseLabel}</strong> — הצורה <strong>${winner.nameHebrew || ''}</strong> (${winner.pattern || ''})${q ? ` — ${q}` : ''}.
+      ${agreementNote}
+    </p>
+    ${meaningNote}
+    ${extraLines}
+    <p class="kashf-dhamir-source">מקור: כשף אל-אסרר, השער הרביעי — עמ' 151-155 (גילוי הכוונה הנסתרת); שיטות עיתוי ואבחון נלוות — עמ' 35, 104, 112, 119, 124, 159</p>
+  </div>`;
+}
+
+// ── שער 4 סוג 4: משלים חיצוני (לא כשף אל-אסרר) ───────────────────────────
+// מוצג בבלוק נפרד ומסומן במפורש בכל הופעה — ראו kashf-dhamir-type4-external.js.
+
+function writeDhamirType4ExternalPara(reading) {
+  const t4 = reading.dhamirType4External;
+  if (!t4 || t4.error || !t4.primaryMethod) return '';
+
+  const pm = t4.primaryMethod;
+  const lines = [];
+  if (pm.status === 'ok' && pm.outputHebrew) {
+    lines.push(`<p class="kashf-dhamir-extra">${stripInlineCitations(pm.outputHebrew)}</p>`);
+  } else if (pm.status === 'needs_verification_multi_letter') {
+    lines.push(`<p class="kashf-dhamir-extra">סכום נקודות הלוח (${t4.totalPoints}) מתפרק ליותר משתי אותיות — לפי המקור המשלים, שילוב כזה דורש אימות נוסף ואינו מוצג כתוצאה סופית.</p>`);
+  }
+  const sm = t4.secondaryMethod;
+  if (sm?.status === 'ok' && sm.outputHebrew) {
+    lines.push(`<p class="kashf-dhamir-extra">${stripInlineCitations(sm.outputHebrew)}</p>`);
+  }
+  if (!lines.length) return '';
+
+  return `<div class="kashf-reading-card dhamir dhamir-external">
+    <h3 class="kashf-card-title">⚠ שער 4 סוג 4 — תוצאה עם מקור חיצוני (לא כשף אל-אסרר)</h3>
+    <p class="kashf-dhamir-disclosure"><strong>גילוי:</strong> ${t4.disclosureHebrew}</p>
+    ${lines.join('')}
+    <p class="kashf-dhamir-source">מקור הכלל: כשף אל-אסרר עמ' 153-155. מקור פעולת ההמרה (מספר→אות): ${t4.sourceBook} — לא כשף אל-אסרר.</p>
+  </div>`;
+}
+
 // ── פסקת עדים ודיין ───────────────────────────────────────────────────────
 
 function writeWitnessJudgePara(reading) {
@@ -302,6 +412,11 @@ function writeWitnessJudgePara(reading) {
       `${h13.figureName || ''} (${q13 || ''}); ` +
       `<strong>עד שני (בית 14)</strong> — ${h14.figureName || ''} (${q14 || ''}).`
     );
+    const wt = reading.witnessTestimony;
+    if (wt && !wt.error) {
+      if (wt.w13?.hebrewSummary) parts.push(`עדות עד ראשון (בית 13, על בית השואל ובית התשיעי): ${stripInlineCitations(wt.w13.hebrewSummary)}.`);
+      if (wt.w14?.hebrewSummary) parts.push(`עדות עד שני (בית 14, על בתי הילדים/מחלה/תקווה): ${stripInlineCitations(wt.w14.hebrewSummary)}.`);
+    }
   } else if (h13) {
     parts.push(`עד ראשון (בית 13): ${h13.figureName || ''} — ${qualityWord(h13.quality) || ''}.`);
   } else if (h14) {
@@ -328,7 +443,43 @@ function writeWitnessJudgePara(reading) {
   return `<p class="kashf-prose-paragraph">${parts.join(' ')}</p>`;
 }
 
-// ── פסקת מסקנה ────────────────────────────────────────────────────────────
+// ── תיבת תשובה קצרה (כן/לא/לא ודאי) ─────────────────────────────────────────
+// אותה שפת עיצוב כמו לוח חאווי (verdict-box/verdict-label/verdict-answer/verdict-detail).
+
+function writeShortVerdictBox(reading) {
+  const { overallPositive, primaryFormula, clientContext } = reading;
+  const question = c(clientContext?.question);
+  const verdictText = overallPositive === true ? 'כן' : overallPositive === false ? 'לא' : 'לא ודאי';
+  const vClass = overallPositive === true ? 'verdict-yes' : overallPositive === false ? 'verdict-no' : 'verdict-maybe';
+  const detail = stripInlineCitations(primaryFormula?.verdict?.text || '');
+
+  const questionLine = question
+    ? `<p style="direction:rtl; text-align:center; font-size:14px; color:#444; margin:0 0 8px;">השאלה שנשאלה: <em>${question}</em></p>`
+    : '';
+
+  return `${questionLine}<div class="verdict-box ${vClass}">
+    <div class="verdict-label">תשובה לשאלה</div>
+    <div class="verdict-answer">${verdictText}</div>
+    ${detail ? `<div class="verdict-detail">${detail}</div>` : ''}
+  </div>`;
+}
+
+// ── עובדה מזהה מתוך הבדיקות התומכות (למשל "מי האויב", "תיאור הגנב") ─────────
+// כדי שהמסקנה הקצרה תיתן מידע קונקרטי ולא רק פסיקה כללית.
+
+function findKeyDescriptiveFact(reading) {
+  const findings = reading.supportingFindings || [];
+  const f = findings.find((x) => x.checkType === 'house-figure-description' && !x.error);
+  if (!f) return '';
+  const app = getFigureAppearance(f.pattern);
+  if (!app?.appearance) return '';
+  let text = app.appearance;
+  if (app.occupation) text += `; עיסוק: ${app.occupation}`;
+  return `<strong>${f.label}:</strong> ${text}.`;
+}
+
+// ── פסקת מסקנה (קרא ללקוח) ──────────────────────────────────────────────────
+// אותה שפת עיצוב כמו לוח חאווי (client-reading-panel).
 
 function writeConclusionPara(reading) {
   const {
@@ -432,10 +583,55 @@ function writeConclusionPara(reading) {
       negative: 'הממון יוצא. כדאי לשמור ולא לבזבז.',
       neutral:  'מצב הממון מאוזן. אין ריווח גדול ואין הפסד גדול.',
     },
-    missingAnimal: {
-      positive: 'יש סיכוי לאיתור הבהמה. הלוח מצביע על אפשרות מציאה.',
-      negative: 'הסיכוי לאיתור נמוך לפי הלוח.',
-      neutral:  'מצב לא ודאי — יש לחפש באופן פעיל.',
+    lostAnimal: {
+      positive: 'יש סיכוי טוב שהבהמה תשוב. הלוח מצביע על אפשרות מציאה.',
+      negative: 'הסיכוי לאיתור נמוך לפי הלוח. כדאי להיערך לאפשרות שהיא לא תחזור.',
+      neutral:  'מצב לא ודאי — כדאי להמשיך לחפש באופן פעיל ולא להתייאש מוקדם מדי.',
+    },
+    enemies: {
+      positive: 'אין אויב ממשי, או שהשואל הוא הצד החזק במאבק. אין סיבה לפחד.',
+      negative: 'יש אויב ממשי, והלוח מורה שהוא הצד החזק כרגע. כדאי לנהוג בזהירות ולא לחשוף מהלכים.',
+      neutral:  'המצב מול האויב מעורב — לא הפסד ברור ולא ניצחון ברור. כדאי לשמור על ערנות מבלי להיגרר לעימות מיותר.',
+    },
+    fear: {
+      positive: 'הפחד גדול מהמציאות. אין בסיס ממשי לסכנה, ואפשר להירגע.',
+      negative: 'יש בסיס ממשי לחשש. כדאי לנהוג בזהירות ולא לזלזל בסימנים.',
+      neutral:  'המצב מעורב — יש לשים לב לסימנים מבלי להיכנס לבהלה.',
+    },
+    hiddenTreasure: {
+      positive: 'הדבר הנסתר נמצא במקומו ונגיש. יש סיכוי טוב למצוא אותו.',
+      negative: 'הדבר הנסתר אינו במקומו, או שהגישה אליו קשה. כדאי לא להשקיע מאמץ מיותר בחיפוש הזה.',
+      neutral:  'המצב אינו ודאי — ייתכן שהדבר קיים אך מציאתו תדרוש מאמץ נוסף.',
+    },
+    motherRules: {
+      positive: 'מצב האם טוב ויציב. אין סיבה לדאגה מיוחדת בעת הזאת.',
+      negative: 'מצב האם קשה. כדאי לתת תשומת לב ותמיכה בעת הזאת.',
+      neutral:  'מצב האם מעורב — יש גם טוב וגם קושי. כדאי לעקוב מקרוב.',
+    },
+    parentsProperty: {
+      positive: 'מצב ההורים והנכסים טוב. יש יציבות ואין סיבה לדאגה.',
+      negative: 'יש קושי במצב ההורים או בנכסים. כדאי לבדוק את המצב מקרוב ולא לדחות טיפול נדרש.',
+      neutral:  'המצב מעורב — יש יציבות בחלק אחד וקושי באחר.',
+    },
+    partnership: {
+      positive: 'השותפות טובה ומומלצת. יש בסיס טוב לשיתוף פעולה.',
+      negative: 'השותפות מזיקה או בעייתית. כדאי לחשוב פעמיים לפני שממשיכים בה.',
+      neutral:  'השותפות מעורבת — יש בה גם יתרונות וגם חסרונות. כדאי לבחון את התנאים לעומק לפני החלטה.',
+    },
+    spiritualDiagnostics: {
+      positive: 'אין סימנים לפעולה רוחנית שלילית. הקשיים נובעים מסיבות טבעיות ולא מכישוף או עין הרע.',
+      negative: 'יש סימנים לפעולה רוחנית שלילית. מומלץ לפנות לבעל ידע מתאים ולא להתמודד עם זה לבד.',
+      neutral:  'הסימנים אינם חד-משמעיים. כדאי לעקוב אחר הסימפטומים ולא למהר למסקנות.',
+    },
+    yearlyForecast: {
+      positive: 'התחזית לשנה טובה — יש סימני זול ושפע.',
+      negative: 'התחזית לשנה קשה — יש סימני יוקר ומחסור. כדאי להיערך מראש ולחסוך.',
+      neutral:  'התחזית מעורבת — חלק מהשנה טוב וחלק קשה יותר.',
+    },
+    dream: {
+      positive: 'החלום מבשר טוב. אין צורך לדאוג ממנו.',
+      negative: 'החלום מבשר רע. כדאי לשים לב לאזהרה שבו, אך לא להיבהל ממנה.',
+      neutral:  'משמעות החלום אינה חד-משמעית — ייתכן שהוא סתם חלום ולא בשורה.',
     },
   };
 
@@ -465,8 +661,16 @@ function writeConclusionPara(reading) {
     : '';
 
   const opening = fn ? `${fn} — ` : '';
+  const text = `${opening}${guidance}${judgeNote}`;
+  const keyFact = findKeyDescriptiveFact(reading);
 
-  return `<p class="kashf-prose-paragraph kashf-conclusion"><strong>מסקנת הקריאה:</strong> ${opening}${guidance}${judgeNote}</p>`;
+  return `<div class="client-reading-panel" style="direction:rtl; margin:18px 0 10px; border:2px solid #b8860b; border-radius:8px; background:#fffef5; padding:18px 20px;">
+    <div style="font-weight:700; font-size:13px; color:#7a5c00; letter-spacing:0.5px; margin-bottom:10px; border-bottom:1px solid #e8d080; padding-bottom:6px;">📖 קרא ללקוח</div>
+    <div style="font-size:16px; line-height:2; color:#2c2c2c;">
+      <p style="margin:0;">${text}</p>
+      ${keyFact ? `<p style="margin:12px 0 0;">${keyFact}</p>` : ''}
+    </div>
+  </div>`;
 }
 
 // ── פונקציה ראשית ─────────────────────────────────────────────────────────
@@ -482,7 +686,12 @@ export function writeKashfReading(reading) {
     return `<div class="kashf-reading-error">שגיאה בקריאה: ${reading?.error || 'נתונים חסרים'}</div>`;
   }
 
-  const sections = [
+  // תשובה קצרה + קריאה ללקוח — תמיד גלויות, באותה שפת עיצוב כמו לוח חאווי
+  const shortVerdictHtml = writeShortVerdictBox(reading);
+  const clientReadingHtml = writeConclusionPara(reading);
+
+  // הפירוט הטכני המלא — מאחורי "קרא עוד" (כמו בלוח חאווי)
+  const detailSections = [
     writeHeader(reading),
     writeBoardWarnings(reading),
     writeOpeningPara(reading),
@@ -490,15 +699,23 @@ export function writeKashfReading(reading) {
     writeAltPara(reading),
     writeSupportingPara(reading),
     writeKeyHousesPara(reading),
+    writeDhamirPara(reading),
+    writeDhamirType4ExternalPara(reading),
     writeWitnessJudgePara(reading),
-    writeConclusionPara(reading),
-    `<div class="kashf-reading-footer">
+  ].filter(Boolean).join('\n');
+
+  const footerHtml = `<div class="kashf-reading-footer">
       <p>חשיפת הסודות הנצורים (כשף אל-אסרר) · ${reading.topicHebrewName} · ספר כשף אל-אסרר — השער השישי</p>
       <p class="kashf-disclaimer">הקריאה מבוססת אך ורק על ספר "כשף אל-אסרר" — השער השישי (עמ׳ 166–276). אין להסתמך עליה כהחלטה יחידה בעניינים חשובים.</p>
-    </div>`,
-  ];
+    </div>`;
 
-  return `<div class="kashf-reading-output">${sections.filter(Boolean).join('\n')}</div>`;
+  return `<div class="kashf-reading-output">
+    ${shortVerdictHtml}
+    ${clientReadingHtml}
+    <button class="details-toggle" onclick="const p=this.nextElementSibling;p.hidden=!p.hidden;this.textContent=p.hidden?'קרא עוד ▼':'סגור ▲'">קרא עוד ▼</button>
+    <div hidden><div class="details-panel">${detailSections}</div></div>
+    ${footerHtml}
+  </div>`;
 }
 
 export default { writeKashfReading };

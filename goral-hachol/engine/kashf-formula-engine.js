@@ -10,7 +10,7 @@
 
 import { combineRamlPatterns } from './raml-figures.js';
 import { getDakhalKharij, getSaadNahs, classifyFigure } from './kashf-figure-classifier.js';
-import { HAWI_FIGURE_NAMES_BY_ID } from '../data/sources/hawi/foundations/hawi-figure-names.js';
+import { HAWI_FIGURE_NAMES_BY_ID } from '../data/sources/kashf-al-asrar/kashf-figure-names.js';
 
 // ── אינדקסי שורות ──────────────────────────────────────────────────────────
 export const ROW = { FIRE: 0, AIR: 1, WATER: 2, EARTH: 3 };
@@ -59,6 +59,27 @@ export function combineHouses(board, houseNums) {
 }
 
 /**
+ * הרכבת צורה משורה אחת (אש/אוויר/מים/עפר) של בדיוק 4 בתים.
+ * השורה הנבחרת של כל בית הופכת לשורה אחת בצורה החדשה, לפי סדר הבתים.
+ *
+ * מקור: כשף אל-אסרר עמ׳ 173 (שורת אש), עמ׳ 167 (שורת אוויר —
+ * "קח את אוויר הרביעי, אוויר השישי, אוויר השמיני ואוויר המאזן")
+ *
+ * @param {object} board
+ * @param {number[]} houseNums - בדיוק 4 בתים
+ * @param {number} row - אינדקס השורה (ROW.FIRE/AIR/WATER/EARTH)
+ * @returns {string} תבנית צורה 4-תווים
+ */
+export function assembleFromRow(board, houseNums, row) {
+  if (houseNums.length !== 4) {
+    throw new Error('assembleFromRow דורש בדיוק 4 מספרי בתים');
+  }
+  return houseNums
+    .map(h => getHousePattern(board, h)[row])
+    .join('');
+}
+
+/**
  * הרכבת צורה מ"ראש" (שורת אש) של בדיוק 4 בתים.
  * שורת האש של כל בית הופכת לשורה אחת בצורה החדשה:
  *   אש-h1 → שורת אש החדשה
@@ -74,12 +95,7 @@ export function combineHouses(board, houseNums) {
  * @returns {string} תבנית צורה 4-תווים
  */
 export function assembleFromFireRows(board, houseNums) {
-  if (houseNums.length !== 4) {
-    throw new Error('assembleFromFireRows דורש בדיוק 4 מספרי בתים');
-  }
-  return houseNums
-    .map(h => getHousePattern(board, h)[ROW.FIRE])
-    .join('');
+  return assembleFromRow(board, houseNums, ROW.FIRE);
 }
 
 /**
@@ -98,6 +114,24 @@ export function assembleFromFireRows(board, houseNums) {
 export function assembleFromAllRows(board, houseNums) {
   // מתמטית זהה ל-combineHouses
   return combineHouses(board, houseNums);
+}
+
+/**
+ * הרכבת צורה משורת-יסוד של 4 בתים (שלב 1), ואז חיבורה עם צורת בית נוסף (שלב 2).
+ *
+ * מקור: כשף אל-אסרר עמ׳ 166 — "קח את שורת יסוד המים... העמד מהם צורה,
+ * והכה אותה עם המאזן"
+ *
+ * @param {object} board
+ * @param {number[]} assembleHouseNums - בדיוק 4 בתים לשלב ההרכבה
+ * @param {number} row - אינדקס השורה (ROW.FIRE/AIR/WATER/EARTH)
+ * @param {number} combineHouseNum - בית שאיתו מחברים את תוצאת שלב 1
+ * @returns {string} תבנית צורה סופית
+ */
+export function assembleRowThenCombine(board, assembleHouseNums, row, combineHouseNum) {
+  const stage1Pattern = assembleFromRow(board, assembleHouseNums, row);
+  const stage2Pattern = getHousePattern(board, combineHouseNum);
+  return combineRamlPatterns(stage1Pattern, stage2Pattern);
 }
 
 // ── הערכת איכות ────────────────────────────────────────────────────────────
@@ -194,8 +228,10 @@ export default {
   getHousePattern,
   getHouseEntry,
   combineHouses,
+  assembleFromRow,
   assembleFromFireRows,
   assembleFromAllRows,
+  assembleRowThenCombine,
   assessHouseQuality,
   classifyHouse,
   classifyPattern,

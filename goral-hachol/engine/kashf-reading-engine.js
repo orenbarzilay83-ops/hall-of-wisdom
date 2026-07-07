@@ -12,9 +12,12 @@
  */
 
 import {
+  ROW,
   combineHouses,
+  assembleFromRow,
   assembleFromFireRows,
   assembleFromAllRows,
+  assembleRowThenCombine,
   assessHouseQuality,
   classifyHouse,
   classifyPattern,
@@ -31,6 +34,115 @@ import {
 
 import { getTopicRules } from './kashf-topic-rules.js';
 import { getDakhalKharij } from './kashf-figure-classifier.js';
+import { computeDhamirByMajority } from './kashf-dhamir.js';
+import { computeDhamirType4External } from './kashf-dhamir-type4-external.js';
+import { buildLegacyChart } from './kashf-legacy-chart-adapter.js';
+import {
+  computeThiefProximity,
+  computeStolenItemReturn,
+  computeEnemyPresenceCheck,
+  computePrisonerReleaseCheck,
+  computeParnasaLivelihood,
+  computeChildrenPregnancyKashfAnalysis,
+  computeLoanKashfAnalysis,
+  computeFugitiveKashf,
+  computeTravelTimingKashf,
+  computeAuthorityDurationKashf,
+  computeReturnToOfficeKashf,
+  computeStateStabilityKashf,
+  computeBodyPartDiagnosisKashf,
+  computeMoneySourceKashf,
+  computeLifespanKashf,
+  computeLifespanByFigureShapes,
+  computeProfessionH9Kashf,
+  computeClothingLuckKashf,
+  computeClothingBestFiguresKashf,
+  computePromiseFulfillmentKashf,
+  computeWhoLooksAtWhomKashf,
+  computeWellDrillingKashf,
+  computeSodHaDhamirim,
+  computeQuerentHonestyCheck,
+  computeQuerentSubject,
+  computeTimingByDhamirThirds,
+  computeQuerentTemperament,
+  computeTimingByMadad,
+  computeTimingEstimate,
+  computeWitnessTestimony,
+  computeGeographicDirection,
+  countElementsForYesNo,
+  computeLostAnimalReturn,
+} from './kashf-pending-extraction.js';
+import {
+  computeFearOfPunishment,
+  computePrisonerDurationDanger,
+  computeStayOrMove,
+  computeWomanModesty,
+  computeJoyTimingKashf,
+  computeServantMatterKashf,
+  computeLifeYearsKashf,
+  computeMoneyMagnitudeKashf,
+  computeGoodsProfitLossKashf,
+  computeHiddenDepthKashf,
+  computeRequesterCircleStrengthKashf,
+  computeWheelPositionStrengthKashf,
+  computeDerekhHouseRuleKashf,
+  computeFigureDesireFulfillmentKashf,
+  computeFriendTypeByHouse11Kashf,
+} from './kashf-book-additions.js';
+
+// countElementsForYesNo מצפה לפורמט board.entries[i].figure.elementHebrew (הפורמט
+// הישן של raml-board-generator.js) — עוטפים אותה כדי שתעבוד עם ה-chart המומר,
+// ומוסיפים outputHebrew לצורך רינדור אחיד עם שאר בדיקות ה-legacy-fn.
+function countElementsForYesNoWrapper(chart) {
+  const result = countElementsForYesNo({ entries: chart.map((h) => ({ figure: { elementHebrew: h.element } })) });
+  return { ...result, outputHebrew: result?.hebrewSummary || '' };
+}
+
+// רשימת פונקציות מותרות ל-checkType 'legacy-fn' — פונקציות שאומתו מול המקור,
+// חלקן בעת ההוצאה מ-hawi-interpreter.js (kashf-pending-extraction.js), חלקן
+// נכתבו ישירות מאימות מול הספר (kashf-book-additions.js)
+const LEGACY_FN_REGISTRY = {
+  computeThiefProximity,
+  computeStolenItemReturn,
+  computeEnemyPresenceCheck,
+  computePrisonerReleaseCheck,
+  computeParnasaLivelihood,
+  computeChildrenPregnancyKashfAnalysis,
+  computeLoanKashfAnalysis,
+  computeFugitiveKashf,
+  computeTravelTimingKashf,
+  computeAuthorityDurationKashf,
+  computeReturnToOfficeKashf,
+  computeStateStabilityKashf,
+  computeBodyPartDiagnosisKashf,
+  computeMoneySourceKashf,
+  computeLifespanKashf,
+  computeLifespanByFigureShapes,
+  computeProfessionH9Kashf,
+  computeClothingLuckKashf,
+  computeClothingBestFiguresKashf,
+  computePromiseFulfillmentKashf,
+  computeWhoLooksAtWhomKashf,
+  computeWellDrillingKashf,
+  computeGeographicDirection,
+  countElementsForYesNo: countElementsForYesNoWrapper,
+  computeLostAnimalReturn,
+  computeFearOfPunishment,
+  computePrisonerDurationDanger,
+  computeStayOrMove,
+  computeWomanModesty,
+  computeJoyTimingKashf,
+  computeServantMatterKashf,
+  computeLifeYearsKashf,
+  computeMoneyMagnitudeKashf,
+  computeGoodsProfitLossKashf,
+  computeHiddenDepthKashf,
+  computeRequesterCircleStrengthKashf,
+  computeWheelPositionStrengthKashf,
+  computeDerekhHouseRuleKashf,
+  computeFigureDesireFulfillmentKashf,
+  computeFriendTypeByHouse11Kashf,
+};
 
 // ── תיאורי כיוונים לפי יסוד ────────────────────────────────────────────────
 const ELEMENT_DIRECTION = {
@@ -57,6 +169,8 @@ const ILLNESS_BY_ELEMENT = {
 
 // ── ביצוע נוסחאות ────────────────────────────────────────────────────────
 
+const ROW_BY_NAME = { fire: ROW.FIRE, air: ROW.AIR, water: ROW.WATER, earth: ROW.EARTH };
+
 function executeFormula(board, formula) {
   let resultPattern;
   const { type, houses } = formula;
@@ -64,6 +178,9 @@ function executeFormula(board, formula) {
   switch (type) {
     case 'fire-row-assemble':
       resultPattern = assembleFromFireRows(board, houses);
+      break;
+    case 'row-assemble':
+      resultPattern = assembleFromRow(board, houses, ROW_BY_NAME[formula.row]);
       break;
     case 'assemble':
       resultPattern = assembleFromAllRows(board, houses);
@@ -175,6 +292,23 @@ function runSupportingCheck(board, check) {
     };
   }
 
+  if (checkType === 'row-assemble-then-combine-dakhal-kharij') {
+    const { assembleHouses, row, combineHouse } = check;
+    const resultPattern = assembleRowThenCombine(board, assembleHouses, ROW_BY_NAME[row], combineHouse);
+    const cls = classifyPattern(resultPattern);
+    return {
+      id: check.id,
+      label,
+      checkType,
+      houses,
+      resultPattern,
+      resultFigureName: getFigureHebrewName(resultPattern),
+      dakhalKharij: cls.dakhalKharij,
+      dakhalKharijHebrew: cls.dakhalKharijHebrew,
+      sourceText,
+    };
+  }
+
   if (checkType === 'house-gender') {
     const houseNum = houses[0];
     const isMasc = isHouseMasculine(board, houseNum);
@@ -253,12 +387,62 @@ function runSupportingCheck(board, check) {
     };
   }
 
+  if (checkType === 'pattern-lookup') {
+    // Map the pattern currently in houses[0] through a fixed pattern→label table
+    const { lookupTable, notFoundLabel } = check;
+    const houseNum = houses[0];
+    const pattern = getHousePattern(board, houseNum);
+    const value = lookupTable[pattern] ?? null;
+    return {
+      id: check.id,
+      label,
+      checkType,
+      houseNum,
+      pattern,
+      value,
+      valueLabel: value ?? (notFoundLabel || 'לא מפורש במקור עבור צורה זו'),
+      sourceText,
+    };
+  }
+
+  if (checkType === 'legacy-fn') {
+    const { fnName } = check;
+    const fn = LEGACY_FN_REGISTRY[fnName];
+    if (typeof fn !== 'function') {
+      return { id: check.id, label, checkType, error: `פונקציה לא רשומה: ${fnName}`, sourceText };
+    }
+    const chart = buildLegacyChart(board);
+    let result;
+    try {
+      result = fn(chart);
+    } catch (err) {
+      result = { outputHebrew: `שגיאה בהרצת ${fnName}: ${err.message}` };
+    }
+    return { id: check.id, label, checkType, fnName, ...(result || {}), sourceText };
+  }
+
+  if (checkType === 'figure-in-house-group') {
+    // Check whether any pattern from `patterns` sits in any house from `houses`
+    const { patterns } = check;
+    const foundHouses = houses.filter((h) => patterns.includes(getHousePattern(board, h)));
+    return {
+      id: check.id,
+      label,
+      checkType,
+      houses,
+      patterns,
+      found: foundHouses.length > 0,
+      foundHouses,
+      sourceText,
+    };
+  }
+
   return { id: check.id, label, checkType, sourceText, note: 'סוג בדיקה לא מוכר' };
 }
 
 // ── תיאור בתים מרכזיים ───────────────────────────────────────────────────
 
-const HOUSE_NAMES = {
+export const HOUSE_NAMES = {
   1: 'בית ראשון — הנפש',
   2: 'בית שני — הממון',
   3: 'בית שלישי — האחים',
@@ -365,6 +549,57 @@ export function buildKashfReading(board, topicId, clientContext = {}) {
   // ── לוח שלמות ────────────────────────────────────────────────────────────
   const boardValidation = board.boardValidation || { isValid: true, warnings: [] };
 
+  // ── מחשבת השואל (דמיר) — השער הרביעי ────────────────────────────────────
+  // גילוי "מה השואל באמת רוצה" (כשף עמ' 151-155), עצמאי מהנושא שנבחר.
+  // ראו kashf-dhamir.js לרשימת השיטות המיושמות ומה שעדיין חסר בהן.
+  let dhamir = null;
+  try {
+    dhamir = computeDhamirByMajority(board);
+  } catch (err) {
+    dhamir = { candidates: [], winner: null, agreementCount: 0, error: err.message };
+  }
+
+  // ── שער 4 סוג 4 — משלים חיצוני (לא כשף אל-אסראר) ────────────────────────
+  // שדה נפרד ומסומן במפורש — אינו נכנס להצבעת הרוב של computeDhamirByMajority
+  // (5 השיטות שם מאומתות ישירות מכשף עצמו). מחושב ומוצג רק בגילוי מלא —
+  // ראו kashf-dhamir-type4-external.js לפרטי המקור.
+  let dhamirType4External = null;
+  try {
+    dhamirType4External = computeDhamirType4External(board);
+  } catch (err) {
+    dhamirType4External = { error: err.message };
+  }
+
+  // ── בדיקות תומכות נוספות לגילוי הכוונה — עצמאיות מנושא, תלויות בבית הדמיר
+  // המחושב לעיל (עמ' 104, 35, 112, 119, 124, 159; kashf-pending-extraction.js)
+  let dhamirExtras = null;
+  try {
+    const legacyChart = buildLegacyChart(board);
+    const dhamirHouseNum = dhamir?.winner?.houseNumber || null;
+    dhamirExtras = {
+      sodHaDhamirim: computeSodHaDhamirim(legacyChart),
+      honestyCheck: computeQuerentHonestyCheck(legacyChart),
+      querentSubject: computeQuerentSubject({ chart: legacyChart }),
+      timingByThirds: dhamirHouseNum ? computeTimingByDhamirThirds(legacyChart, dhamirHouseNum) : null,
+      temperament: dhamirHouseNum ? computeQuerentTemperament(legacyChart, dhamirHouseNum) : null,
+      timingByMadad: computeTimingByMadad(legacyChart),
+      timingEstimate: dhamir?.winner ? computeTimingEstimate(legacyChart, dhamir.winner, topicId) : null,
+    };
+  } catch (err) {
+    dhamirExtras = { error: err.message };
+  }
+
+  // ── עדות בתים 13-14 ──────────────────────────────────────────────────────
+  let witnessTestimony = null;
+  try {
+    const legacyChart = buildLegacyChart(board);
+    const w13 = legacyChart.find((h) => h.house === 13);
+    const w14 = legacyChart.find((h) => h.house === 14);
+    witnessTestimony = computeWitnessTestimony(w13, w14, legacyChart);
+  } catch (err) {
+    witnessTestimony = { error: err.message };
+  }
+
   return {
     valid: true,
     topicId,
@@ -398,6 +633,10 @@ export function buildKashfReading(board, topicId, clientContext = {}) {
     supportingFindings,
     keyHouseReadings,
     boardValidation,
+    dhamir,
+    dhamirType4External,
+    dhamirExtras,
+    witnessTestimony,
 
     overallPositive: primaryVerdict?.positive,
   };

@@ -6,7 +6,7 @@ import {
 
 import {
   HAWI_FIGURE_NAMES_BY_ID,
-} from '../data/sources/hawi/foundations/hawi-figure-names.js';
+} from '../data/sources/kashf-al-asrar/kashf-figure-names.js';
 
 import {
   createRamlBoard,

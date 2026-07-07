@@ -29,7 +29,7 @@ export const HAWI_TOPIC_INDEX = {
       topicId: 'figure-names',
       hebrewTitle: 'שמות הצורות',
       coverageStatus: 'complete-current-layer',
-      existingFiles: ['goral-hachol/data/sources/hawi/foundations/hawi-figure-names.js'],
+      existingFiles: ['goral-hachol/data/sources/kashf-al-asrar/kashf-figure-names.js'],
     },
     {
       topicId: 'houses-16',
