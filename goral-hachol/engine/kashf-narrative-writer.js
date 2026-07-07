@@ -21,13 +21,16 @@ function houseTopicOnly(houseNum) {
 
 function c(val = '') { return String(val || '').trim(); }
 
-// הפונקציות ב-kashf-pending-extraction.js אורגות ציטוט עמוד בסוגריים לתוך
-// ה-outputHebrew עצמו (למשל "...מתפייס (כשף עמ' 271)"). המקור נשאר מתועד
-// בקוד/ב-sourceText של הבדיקה — אך בטקסט שהלקוח קורא זה נשמע כמו הערת שוליים
-// אקדמית ולא כמו יועץ מדבר. מסירים את הציטוט המוסגר בעת התצוגה בלבד.
+// הלקוח לא אמור לראות ציטוטי עמוד, "מקור:", או מילים בערבית בתוך הקריאה —
+// אלו שייכים לקוד/למקורות בלבד. כמה פונקציות ב-kashf-pending-extraction.js
+// אורגות ציטוט עמוד בסוגריים לתוך ה-outputHebrew עצמו (למשל "...מתפייס
+// (כשף עמ' 271)"); המקור נשאר מתועד בקוד/ב-sourceText של הבדיקה. מסירים כל
+// סוגריים/מרובעים שמכילים ציטוט עמוד (לא רק "כשף עמ'"), וכל טקסט ערבי, בעת
+// התצוגה בלבד.
 function stripInlineCitations(text) {
   return String(text || '')
-    .replace(/\s*[[(]כשף[^\])]*[\])]/g, '')
+    .replace(/\s*[[(][^\])]*עמ['׳״][^\])]*[\])]/g, '')
+    .replace(/[؀-ۿ]+/g, '')
     .replace(/[ \t]{2,}/g, ' ')
     .trim();
 }
@@ -109,7 +112,6 @@ function writeHeader(reading) {
     <div class="kashf-reading-title">${badge}${h2}${desc}</div>
     ${clientLine}${qLine}
     <div class="kashf-overall ${cls}">${overallText}</div>
-    <div class="kashf-source-ref">מקור: ספר כשף אל-אסרר — השער השישי (עמ׳ 166–276)</div>
   </div>`;
 }
 
@@ -170,16 +172,12 @@ function writeVerdictPara(reading) {
   const { primaryFormula, clientContext } = reading;
   if (!primaryFormula?.verdict) return '';
 
-  const { type, houses, result, verdict, sourceText } = primaryFormula;
+  const { type, houses, result, verdict } = primaryFormula;
   const fn = firstName(c(clientContext?.name));
 
   const formulaDesc = describeFormulaType(type, houses);
   const resultDesc  = describeFormulaResult(result);
-  const verdictText = verdict?.text || '';
-
-  const srcShort = sourceText
-    ? (sourceText.length > 140 ? sourceText.slice(0, 137) + '...' : sourceText)
-    : '';
+  const verdictText = stripInlineCitations(verdict?.text || '');
 
   const parts = [];
   parts.push(`לפי כללי ספר כשף אל-אסרר, ${formulaDesc}.`);
@@ -195,13 +193,10 @@ function writeAltPara(reading) {
   const { altFormula } = reading;
   if (!altFormula?.verdict) return '';
 
-  const { type, houses, result, verdict, sourceText } = altFormula;
+  const { type, houses, result, verdict } = altFormula;
   const formulaDesc = describeFormulaType(type, houses);
   const resultDesc  = describeFormulaResult(result);
-  const verdictText = verdict?.text || '';
-  const srcShort    = sourceText
-    ? (sourceText.length > 120 ? sourceText.slice(0, 117) + '...' : sourceText)
-    : '';
+  const verdictText = stripInlineCitations(verdict?.text || '');
 
   const parts = [`<strong>בדיקת אימות נוספת:</strong> ${formulaDesc}.`];
   if (resultDesc) parts.push(resultDesc + '.');
@@ -358,7 +353,6 @@ function writeDhamirPara(reading) {
     </p>
     ${meaningNote}
     ${extraLines}
-    <p class="kashf-dhamir-source">מקור: כשף אל-אסרר, השער הרביעי — עמ' 151-155 (גילוי הכוונה הנסתרת); שיטות עיתוי ואבחון נלוות — עמ' 35, 104, 112, 119, 124, 159</p>
   </div>`;
 }
 
@@ -383,10 +377,9 @@ function writeDhamirType4ExternalPara(reading) {
   if (!lines.length) return '';
 
   return `<div class="kashf-reading-card dhamir dhamir-external">
-    <h3 class="kashf-card-title">⚠ שער 4 סוג 4 — תוצאה עם מקור חיצוני (לא כשף אל-אסרר)</h3>
+    <h3 class="kashf-card-title">⚠ תוצאה עם מקור חיצוני (לא כשף אל-אסרר)</h3>
     <p class="kashf-dhamir-disclosure"><strong>גילוי:</strong> ${t4.disclosureHebrew}</p>
     ${lines.join('')}
-    <p class="kashf-dhamir-source">מקור הכלל: כשף אל-אסרר עמ' 153-155. מקור פעולת ההמרה (מספר→אות): ${t4.sourceBook} — לא כשף אל-אסרר.</p>
   </div>`;
 }
 
@@ -705,8 +698,8 @@ export function writeKashfReading(reading) {
   ].filter(Boolean).join('\n');
 
   const footerHtml = `<div class="kashf-reading-footer">
-      <p>חשיפת הסודות הנצורים (כשף אל-אסרר) · ${reading.topicHebrewName} · ספר כשף אל-אסרר — השער השישי</p>
-      <p class="kashf-disclaimer">הקריאה מבוססת אך ורק על ספר "כשף אל-אסרר" — השער השישי (עמ׳ 166–276). אין להסתמך עליה כהחלטה יחידה בעניינים חשובים.</p>
+      <p>חשיפת הסודות הנצורים (כשף אל-אסרר) · ${reading.topicHebrewName}</p>
+      <p class="kashf-disclaimer">הקריאה מבוססת אך ורק על ספר "כשף אל-אסרר". אין להסתמך עליה כהחלטה יחידה בעניינים חשובים.</p>
     </div>`;
 
   return `<div class="kashf-reading-output">
