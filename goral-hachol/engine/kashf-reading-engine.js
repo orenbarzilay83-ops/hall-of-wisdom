@@ -17,6 +17,7 @@ import {
   assembleFromRow,
   assembleFromFireRows,
   assembleFromAllRows,
+  assembleRowThenCombine,
   assessHouseQuality,
   classifyHouse,
   classifyPattern,
@@ -266,6 +267,23 @@ function runSupportingCheck(board, check) {
       label,
       checkType,
       houseNum,
+      dakhalKharij: cls.dakhalKharij,
+      dakhalKharijHebrew: cls.dakhalKharijHebrew,
+      sourceText,
+    };
+  }
+
+  if (checkType === 'row-assemble-then-combine-dakhal-kharij') {
+    const { assembleHouses, row, combineHouse } = check;
+    const resultPattern = assembleRowThenCombine(board, assembleHouses, ROW_BY_NAME[row], combineHouse);
+    const cls = classifyPattern(resultPattern);
+    return {
+      id: check.id,
+      label,
+      checkType,
+      houses,
+      resultPattern,
+      resultFigureName: getFigureHebrewName(resultPattern),
       dakhalKharij: cls.dakhalKharij,
       dakhalKharijHebrew: cls.dakhalKharijHebrew,
       sourceText,

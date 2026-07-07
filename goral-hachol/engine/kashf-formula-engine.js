@@ -116,6 +116,24 @@ export function assembleFromAllRows(board, houseNums) {
   return combineHouses(board, houseNums);
 }
 
+/**
+ * הרכבת צורה משורת-יסוד של 4 בתים (שלב 1), ואז חיבורה עם צורת בית נוסף (שלב 2).
+ *
+ * מקור: כשף אל-אסרר עמ׳ 166 — "קח את שורת יסוד המים... העמד מהם צורה,
+ * והכה אותה עם המאזן"
+ *
+ * @param {object} board
+ * @param {number[]} assembleHouseNums - בדיוק 4 בתים לשלב ההרכבה
+ * @param {number} row - אינדקס השורה (ROW.FIRE/AIR/WATER/EARTH)
+ * @param {number} combineHouseNum - בית שאיתו מחברים את תוצאת שלב 1
+ * @returns {string} תבנית צורה סופית
+ */
+export function assembleRowThenCombine(board, assembleHouseNums, row, combineHouseNum) {
+  const stage1Pattern = assembleFromRow(board, assembleHouseNums, row);
+  const stage2Pattern = getHousePattern(board, combineHouseNum);
+  return combineRamlPatterns(stage1Pattern, stage2Pattern);
+}
+
 // ── הערכת איכות ────────────────────────────────────────────────────────────
 
 /**
@@ -213,6 +231,7 @@ export default {
   assembleFromRow,
   assembleFromFireRows,
   assembleFromAllRows,
+  assembleRowThenCombine,
   assessHouseQuality,
   classifyHouse,
   classifyPattern,

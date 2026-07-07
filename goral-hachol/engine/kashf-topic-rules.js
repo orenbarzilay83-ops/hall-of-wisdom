@@ -98,18 +98,19 @@ export const KASHF_TOPIC_RULES = {
         mixed: { text: 'התוצאה אינה ודאית', positive: null },
       },
     },
-    // "מי יוזם את התנועה" (עמ' 166) דורש הרכבת שורת-מים מ-4 בתים ואז חיבור
-    // התוצאה עם המאזן בשלב שני — שרשור assemble+combine שאינו נתמך כרגע
-    // כטיפוס נוסחה יחיד במנוע (רק assemble-לבד או combine-לבד).
-    additionalMethods: [
+    supportingChecks: [
       {
         id: 'movement-initiator',
+        checkType: 'row-assemble-then-combine-dakhal-kharij',
+        row: 'water',
+        assembleHouses: [4, 7, 13, 14],
+        combineHouse: 15,
+        houses: [4, 7, 13, 14, 15],
         label: 'מי יוזם את התנועה — השואל או הנשאל עליו',
-        sourceStatus: 'explicit-in-source',
         sourceText: 'קח את שורת יסוד המים בבית הרביעי, את מי השביעי, ואת מי השלושה־עשר, ואת מי הארבעה־עשר. העמד מהם צורה, והכה אותה עם המאזן. אם יצאה צורה חיצונית — התנועה מן השואל. ואם יצאה צורה פנימית — התנועה מן הנשאל עליו (כשף עמ׳ 166).',
       },
     ],
-    keyHouses: [1, 4, 6, 8, 15],
+    keyHouses: [1, 4, 6, 7, 8, 13, 14, 15],
   },
 
   // ────────────────────────────────────────────────────────────────────────
