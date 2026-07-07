@@ -1442,7 +1442,7 @@ export const KASHF_TOPIC_RULES = {
       },
       {
         id: 'rain-sign',
-        checkType: 'house-figure-description',
+        checkType: 'house-element',
         houses: [4],
         label: 'סימני גשם',
         sourceText: 'אם יצאו בבית הרביעי צורות מיסוד המים, השנה גשומה, ובפרט אם הופיעה קהלה[] בו וחזרה במערך. ואם יצאה בו צורה שהיא מיסוד האוויר או מיסוד האש, הדבר מורה על ארבה, יוקר ומיעוט גשמים.',
