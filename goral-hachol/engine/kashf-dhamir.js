@@ -47,6 +47,7 @@ import {
   SHIBUTZ_1_MOSHAV,
   SHIBUTZ_3_ELEMENT_VALUES,
 } from '../data/sources/kashf-al-asrar/kashf-shibutzim.js';
+import { FIGURE_DIGNITIES } from '../data/sources/kashf-al-asrar/kashf-figure-attributes-gate2.js';
 
 // היפוך SHIBUTZ_1_MOSHAV (בית→צורה) לחיפוש הפוך (צורה→בית), לשימוש
 // בסוג 2 בלבד (ראו computeDhamirElementPrevalence).
@@ -61,23 +62,12 @@ for (const [houseNum, pattern] of Object.entries(SHIBUTZ_1_MOSHAV)) {
 // חסרה 2 מתוך 16 צורות (חיבור, דרך אינן מוזכרות כלל בפרק זה) — לא הומצא
 // עבורן ערך; ומכילה כפילות אמתית במקור עצמו (גם סוהר וגם כבוד נכנס
 // מצוטטים כ"מעלתו/מעלתה בתשיעי").
-const FIGURE_MAALA_HOUSE = {
-  '1121': 1,  // נלחם — עמ' 96
-  '1222': 2,  // נשוא ראש — עמ' 96
-  '2111': 3,  // סף נכנס — עמ' 96-97
-  '2212': 4,  // לבן — עמ' 97
-  '1211': 5,  // בר הלחי — עמ' 97
-  '1112': 6,  // סף יוצא — עמ' 97
-  '2122': 7,  // אדום — עמ' 97
-  '2221': 8,  // שפל ראש — עמ' 97
-  '1221': 9,  // סוהר — עמ' 98
-  '2211': 9,  // כבוד נכנס — עמ' 98 (כפילות מהמקור עצמו — אינה שגיאת תעתיק)
-  '1122': 12, // כבוד יוצא — עמ' 98
-  '2121': 13, // ממון נכנס — עמ' 98
-  '1212': 14, // ממון יוצא — עמ' 98
-  '2222': 16, // קהלה — עמ' 98
-  // '2112' (חיבור) ו-'1111' (דרך) — אין להם "מעלה" מוצהרת בפרק הזה במקור.
-};
+// נגזר מ-FIGURE_DIGNITIES (kashf-figure-attributes-gate2.js) — מקור יחיד
+// לטבלת המעלה, כדי למנוע סטייה בין שני עותקים. חיבור/דרך חסרים במקור
+// עצמו ונשארים undefined בהתאם.
+const FIGURE_MAALA_HOUSE = Object.fromEntries(
+  Object.entries(FIGURE_DIGNITIES).map(([pattern, attrs]) => [pattern, attrs.maalaHouse])
+);
 
 const PARENT_PAIRS = {
   9:  [1, 2],
