@@ -237,21 +237,21 @@ window.QUESTION_BANK = [
   // ════════════════════════════════════════════════════════════════
   {
     id: 'q-money-state',
-    category: 'money', houseId: 2, topicId: 'commerce',
+    category: 'money', houseId: 2, topicId: 'money',
     label: 'מה מצב הממון?',
     desc: 'מצב הכסף כרגע — שאלה כללית. לעסקה ספציפית מול מישהו — בחר "האם העסקה תצליח"',
     clientFields: [F.matter],
   },
   {
     id: 'q-money-source',
-    category: 'money', houseId: 2, topicId: 'commerce',
+    category: 'money', houseId: 2, topicId: 'money',
     label: 'מאיפה יגיע הכסף?',
     desc: 'כשצפוי כסף אך לא ידוע המקור — ממי, מאיפה, מאיזה ערוץ',
     clientFields: [],
   },
   {
     id: 'q-livelihood',
-    category: 'money', houseId: 2, topicId: 'commerce',
+    category: 'money', houseId: 2, topicId: 'money',
     label: 'מה מצב הפרנסה?',
     desc: 'מצב הפרנסה השוטפת — האם מייצרת, האם תשתפר, מה מקורותיה',
     clientFields: [],
