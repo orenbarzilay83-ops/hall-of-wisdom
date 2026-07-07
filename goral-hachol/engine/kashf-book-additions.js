@@ -19,6 +19,7 @@ import {
   computeHiddenDepthByOpposites,
   computeRequesterCircleHouse,
 } from '../data/sources/kashf-al-asrar/kashf-shibutzim.js';
+import { FIGURE_WHEEL_POSITION } from '../data/sources/kashf-al-asrar/kashf-figure-classification-gate2.js';
 
 // כשף אל-אסרר עמ' 272-273 — "כלל מעשי: אדם החושש מעונש"
 // "באדם החושש מעונש — ממאסר, ממלקות או מדבר אחר — אם בבית העשירי נמצאת
@@ -383,5 +384,48 @@ export function computeRequesterCircleStrengthKashf(chart) {
     verdict: 'landing-computed',
     outputHebrew: `הצורה בבית 1 (${figureName}) — בית כבודה ${honorHouse}; ספירה מעגלית עד הבית הראשון: ${count}; נחיתה בבית ${landingHouse} (${houseTypeHebrew}). לפי הכלל: נחיתה ביתד או בבית טוב — המבקש חזק בבקשתו; נחיתה בבית מזיק — חלש (כשף עמ׳ 218-219).`,
     honorHouse, count, landingHouse, houseTypeHebrew,
+  };
+}
+
+// כשף אל-אסרר עמ' 60-61 — "בלוח הגורל הנערך, האמהות נקראות עולות. אם
+// נמצאה בהן צורה מצורות העולות בגלגל — הדין חזק" (וכן בהתאמה לבנות/
+// שוקעות, נולדות/מתרוממות, מאזנים/יורדים). בודק אם צורות-בפועל בלוח
+// (אמהות=1-4, בנות=5-8, נולדות=9-12, מאזנים=13-16) שייכות גם לקבוצת
+// הגלגל התיאורטית המקבילה (FIGURE_WHEEL_POSITION).
+const WHEEL_GROUPS = [
+  { houses: [1, 2, 3, 4], wheelKey: 'rising', groupHebrew: 'אמהות', wheelHebrew: 'עולות' },
+  { houses: [5, 6, 7, 8], wheelKey: 'setting', groupHebrew: 'בנות', wheelHebrew: 'שוקעות' },
+  { houses: [9, 10, 11, 12], wheelKey: 'ascending', groupHebrew: 'נולדות', wheelHebrew: 'מתרוממות' },
+  { houses: [13, 14, 15, 16], wheelKey: 'descending', groupHebrew: 'מאזנים', wheelHebrew: 'יורדות' },
+];
+
+export function computeWheelPositionStrengthKashf(chart) {
+  const getH = (n) => chart.find((h) => Number(h.house) === n);
+  const matchedGroups = [];
+  let totalMatches = 0;
+
+  for (const { houses, wheelKey, groupHebrew, wheelHebrew } of WHEEL_GROUPS) {
+    const wheelSet = FIGURE_WHEEL_POSITION[wheelKey];
+    const matchedHouses = houses.filter((n) => wheelSet.includes(getH(n)?.key));
+    if (matchedHouses.length) {
+      matchedGroups.push({ groupHebrew, wheelHebrew, matchedHouses });
+      totalMatches += matchedHouses.length;
+    }
+  }
+
+  if (!totalMatches) {
+    return {
+      verdict: 'no-wheel-match',
+      outputHebrew: 'אף אחת מקבוצות הבתים (אמהות/בנות/נולדות/מאזנים) אינה מכילה צורה השייכת לקבוצת הגלגל התיאורטית המקבילה — אין חיזוק מיוחד מכלל זה (כשף עמ׳ 60-61).',
+      totalMatches, matchedGroups,
+    };
+  }
+  const details = matchedGroups
+    .map((g) => `${g.groupHebrew} (${g.matchedHouses.length > 1 ? 'בתים' : 'בית'} ${g.matchedHouses.join(', ')}) תואמות את קבוצת ה-${g.wheelHebrew} בגלגל`)
+    .join('; ');
+  return {
+    verdict: 'wheel-match',
+    outputHebrew: `הדין חזק: ${details} (כשף עמ׳ 60-61).`,
+    totalMatches, matchedGroups,
   };
 }

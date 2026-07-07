@@ -83,6 +83,7 @@ import {
   computeGoodsProfitLossKashf,
   computeHiddenDepthKashf,
   computeRequesterCircleStrengthKashf,
+  computeWheelPositionStrengthKashf,
 } from './kashf-book-additions.js';
 
 // countElementsForYesNo מצפה לפורמט board.entries[i].figure.elementHebrew (הפורמט
@@ -133,6 +134,7 @@ const LEGACY_FN_REGISTRY = {
   computeGoodsProfitLossKashf,
   computeHiddenDepthKashf,
   computeRequesterCircleStrengthKashf,
+  computeWheelPositionStrengthKashf,
 };
 
 // ── תיאורי כיוונים לפי יסוד ────────────────────────────────────────────────
