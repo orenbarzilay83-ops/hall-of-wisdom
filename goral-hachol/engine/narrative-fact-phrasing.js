@@ -31,6 +31,30 @@ export function essenceOf(figureHebrew) {
   return FIGURE_ESSENCE[figureHebrew] || '';
 }
 
+// קונוטציה לשונית של טקסט-המהות עצמו (לא סיווג גורלי — הסיווג נשאר
+// fortuneHebrew מהמקור). משמש אך ורק לבדיקת-לכידות של המשפט: אם המהות
+// נשמעת שלילית אבל הפסיקה מהמקור מיטיבה (למשל "נלחם" = מאבק ולחץ אך
+// ממוזג-מיטיב בטבלת הספר) — המשפט חייב לבטא את המתח במפורש ("אך"),
+// לא להדביק את שני החלקים כאילו הם מסכימים.
+const ESSENCE_CONNOTATION = {
+  'כבוד נכנס': 1, 'ממון נכנס': 1, 'לבן': 1, 'חיבור': 1, 'דרך': 1,
+  'סף נכנס': 1, 'נשוא ראש': 1,
+  'קהלה': 0, 'סף יוצא': 0,
+  'שפל ראש': -1, 'אדום': -1, 'בר הלחי': -1, 'נלחם': -1, 'סוהר': -1,
+  'כבוד יוצא': -1, 'ממון יוצא': -1,
+};
+
+/**
+ * מפרק מחרוזת-פסיקה מהמקור לטון + האם ממוזגת.
+ * @param {string} fortune - למשל "מיטיב", "ממוזג-מיטיב", "מזיק"
+ */
+export function fortuneToneParts(fortune) {
+  const f = String(fortune || '');
+  const mixed = f.includes('ממוזג');
+  const tone = f.includes('מיטיב') ? 1 : f.includes('מזיק') ? -1 : 0;
+  return { tone, mixed };
+}
+
 /**
  * בונה גזרת-תיאור לבית ספציפי: שם הצורה + מהותה (לא רק "טוב"/"רע").
  * @param {string} figureHebrew
@@ -41,6 +65,46 @@ export function phraseHouseFact(figureHebrew, frameLabel) {
   if (!figureHebrew) return '';
   const essence = essenceOf(figureHebrew);
   return essence ? `${frameLabel} מראה ${figureHebrew} — ${essence}` : `${frameLabel} מראה ${figureHebrew}`;
+}
+
+/**
+ * בונה גזרה לכידה: צורה + מהות + השלכה, תוך יישוב מפורש כשמהות-השם
+ * והפסיקה מהמקור מושכות לכיוונים הפוכים, וציון "ממוזגת" במפורש כשזה
+ * הסיווג — במקום להציג פסיקה ממוזגת כאילו היא חד-משמעית.
+ * @param {string} figureHebrew
+ * @param {string} frameLabel - למשל "בית הממון"
+ * @param {string} fortune - הפסיקה מהמקור ("מיטיב"/"ממוזג-מיטיב"/"מזיק"...)
+ * @param {{positive: string, negative: string, mixed: string}} implications - נוסחי-השלכה לפי כיוון, ספציפיים לנושא
+ * @returns {{ text: string, tone: number }}
+ */
+export function phraseHouseFactCoherent(figureHebrew, frameLabel, fortune, implications) {
+  if (!figureHebrew) return { text: '', tone: 0 };
+  const essence = essenceOf(figureHebrew);
+  const essTone = ESSENCE_CONNOTATION[figureHebrew] ?? 0;
+  const { tone, mixed } = fortuneToneParts(fortune);
+
+  const implication = tone > 0 ? implications.positive
+    : tone < 0 ? implications.negative
+    : implications.mixed;
+
+  const rulingWord = tone > 0 ? (mixed ? 'ממוזגת-מיטיבה' : 'מיטיבה')
+    : tone < 0 ? (mixed ? 'ממוזגת-מזיקה' : 'מזיקה')
+    : 'ממוזגת';
+
+  const conflict = (essTone < 0 && tone > 0) || (essTone > 0 && tone < 0);
+
+  let text;
+  if (!essence) {
+    text = `${frameLabel} מראה ${figureHebrew} — פסיקה ${rulingWord}: ${implication}`;
+  } else if (conflict) {
+    // מהות ופסיקה מנוגדות — מציגים את שתיהן ואת היחס ביניהן במפורש
+    text = `${frameLabel} מראה ${figureHebrew} — מהותה ${essence}, אך פסיקתה ${rulingWord}: ${implication}`;
+  } else if (mixed) {
+    text = `${frameLabel} מראה ${figureHebrew} — ${essence} — פסיקה ${rulingWord}: ${implication}`;
+  } else {
+    text = `${frameLabel} מראה ${figureHebrew} — ${essence} — ${implication}`;
+  }
+  return { text, tone };
 }
 
 /**

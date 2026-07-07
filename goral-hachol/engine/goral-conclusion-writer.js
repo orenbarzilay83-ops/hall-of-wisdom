@@ -1,4 +1,4 @@
-import { phraseHouseFact, connectClauses } from './narrative-fact-phrasing.js';
+import { phraseHouseFactCoherent, connectClauses } from './narrative-fact-phrasing.js';
 
 function clean(value = '') {
   return String(value || '').trim();
@@ -2583,25 +2583,28 @@ export function writeClientReadingHebrew(result) {
     }
 
     case 'commerce': {
-      // כל גזרה נבנית מהצורה הספציפית שיצאה (שם + מהות), לא רק מ"טוב/רע" —
-      // ראו narrative-fact-phrasing.js. חיבור הגזרות לפי יחס-הטונים ביניהן
+      // כל גזרה נבנית מהצורה הספציפית שיצאה (שם + מהות + פסיקת המקור המלאה,
+      // כולל "ממוזג" מפורש וכולל יישוב מהות-מול-פסיקה) — ראו
+      // narrative-fact-phrasing.js. חיבור הגזרות לפי יחס-הטונים ביניהן
       // (הסכמה/סתירה/תוספת), לא שרשור עיוור.
       let moneyClause = null, moneyTone = 0;
       if (h2?.figureHebrew) {
-        moneyTone = figureFortuneTone(h2.fortune);
-        const implication = moneyTone > 0 ? 'ההשקעה נושאת פנים חיוביות'
-          : moneyTone < 0 ? 'כדאי לבחון מחדש לפני שממשיכים'
-          : 'לא הפסד ולא רווח ברור';
-        moneyClause = `${phraseHouseFact(h2.figureHebrew, 'בית הממון')} — ${implication}`;
+        const r = phraseHouseFactCoherent(h2.figureHebrew, 'בית הממון', h2.fortune, {
+          positive: 'ההשקעה נושאת פנים חיוביות',
+          negative: 'כדאי לבחון מחדש לפני שממשיכים',
+          mixed:    'לא הפסד ולא רווח ברור',
+        });
+        moneyClause = r.text; moneyTone = r.tone;
       }
 
       let outcomeClause = null, outcomeTone = 0;
       if (h10?.figureHebrew) {
-        outcomeTone = figureFortuneTone(h10.fortune);
-        const implication = outcomeTone > 0 ? 'יש נטייה לרווח ולהצלחה'
-          : outcomeTone < 0 ? 'כדאי לנהל זהירות ותכנון מוקדם'
-          : 'התוצאה לא ברורה — לשמור על גמישות';
-        outcomeClause = `${phraseHouseFact(h10.figureHebrew, 'בית התוצאה העסקית')} — ${implication}`;
+        const r = phraseHouseFactCoherent(h10.figureHebrew, 'בית התוצאה העסקית', h10.fortune, {
+          positive: 'יש נטייה לרווח',
+          negative: 'כדאי לנהל זהירות ותכנון מוקדם',
+          mixed:    'התוצאה לא ברורה — לשמור על גמישות',
+        });
+        outcomeClause = r.text; outcomeTone = r.tone;
       }
 
       let combinedText = null, combinedTone = 0, internalDisagreement = false;
