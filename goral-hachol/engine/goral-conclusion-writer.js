@@ -1,3 +1,5 @@
+import { phraseHouseFact, connectClauses } from './narrative-fact-phrasing.js';
+
 function clean(value = '') {
   return String(value || '').trim();
 }
@@ -2581,20 +2583,46 @@ export function writeClientReadingHebrew(result) {
     }
 
     case 'commerce': {
-      if (h2) {
-        const h2Fort = fortToWord(h2?.fortune);
-        pushHouse(h2Fort === 'טוב' ? true : h2Fort === 'קשה' ? false : null,
-          'הממון בלוח נראה טוב — ההשקעה נושאת פנים חיוביות.',
-          'הממון בלוח מצביע על סכנת הפסד — כדאי לבחון מחדש.',
-          'הממון מעורב — לא הפסד ולא ריווח ברור.');
+      // כל גזרה נבנית מהצורה הספציפית שיצאה (שם + מהות), לא רק מ"טוב/רע" —
+      // ראו narrative-fact-phrasing.js. חיבור הגזרות לפי יחס-הטונים ביניהן
+      // (הסכמה/סתירה/תוספת), לא שרשור עיוור.
+      let moneyClause = null, moneyTone = 0;
+      if (h2?.figureHebrew) {
+        moneyTone = figureFortuneTone(h2.fortune);
+        const implication = moneyTone > 0 ? 'ההשקעה נושאת פנים חיוביות'
+          : moneyTone < 0 ? 'כדאי לבחון מחדש לפני שממשיכים'
+          : 'לא הפסד ולא רווח ברור';
+        moneyClause = `${phraseHouseFact(h2.figureHebrew, 'בית הממון')} — ${implication}`;
       }
-      if (h10) {
-        const h10Fort = fortToWord(h10?.fortune);
-        pushHouse(h10Fort === 'טוב' ? true : h10Fort === 'קשה' ? false : null,
-          'תוצאת העסק נראית חיובית — יש נטייה לרווח ולהצלחה.',
-          'תוצאת העסק עלולה להיות מאכזבת — כדאי לנהל זהירות ותכנון מוקדם.',
-          'תוצאת העסק לא ברורה — לשמור על גמישות.');
+
+      let outcomeClause = null, outcomeTone = 0;
+      if (h10?.figureHebrew) {
+        outcomeTone = figureFortuneTone(h10.fortune);
+        const implication = outcomeTone > 0 ? 'יש נטייה לרווח ולהצלחה'
+          : outcomeTone < 0 ? 'כדאי לנהל זהירות ותכנון מוקדם'
+          : 'התוצאה לא ברורה — לשמור על גמישות';
+        outcomeClause = `${phraseHouseFact(h10.figureHebrew, 'בית התוצאה העסקית')} — ${implication}`;
       }
+
+      let combinedText = null, combinedTone = 0, internalDisagreement = false;
+      if (moneyClause && outcomeClause) {
+        const joined = connectClauses(moneyClause, moneyTone, outcomeClause, outcomeTone);
+        combinedText = joined.text;
+        internalDisagreement = joined.disagreed;
+        combinedTone = moneyTone || outcomeTone;
+      } else if (moneyClause) {
+        combinedText = moneyClause; combinedTone = moneyTone;
+      } else if (outcomeClause) {
+        combinedText = outcomeClause; combinedTone = outcomeTone;
+      }
+      // אם הגזרה המשולבת (ממון+תוצאה) סותרת את פסיקת הדיין הכוללת — לציין זאת
+      // (אותו עקרון כמו pushHouse). אם כבר יש "יחד עם זאת" פנימי (ממון מול
+      // תוצאה חלוקים ביניהם) — לא מכפילים את מילת-המעבר.
+      if (combinedText) {
+        const contradictsOverall = !internalDisagreement && ((combinedTone < 0 && isPositive) || (combinedTone > 0 && isNegative));
+        push((contradictsOverall ? `יחד עם זאת, ${combinedText}` : combinedText) + '.');
+      }
+
       if (isPositive || (!isNegative && jTone > 0)) push('הדיין תומך בעסק — מומלץ להמשיך.');
       else if (isNegative || jTone < 0) push('הדיין מתנגד לעסק — כדאי לחכות או לשנות תנאים.');
       break;
