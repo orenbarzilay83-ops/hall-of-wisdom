@@ -2378,6 +2378,31 @@ export function writeClientReadingHebrew(result) {
   const isPositive = _gradePos;
   const isNegative = _gradeNeg;
 
+  // הדיין (בית 15) הוא הפסיקה הראשית לפי חאווי — אך בתים נוספים (למשל ממון,
+  // תוצאת עסק) הם ממצאים עצמאיים שיכולים לחלוק עליו באופן לגיטימי. push()
+  // רגיל משמש למשפטים שתמיד עקביים עם הדיין (פתיחה/סיום). pushHouse משמש
+  // לממצא-בית שיש לו פולריות עצמאית משלו — אם היא סותרת את פסיקת הדיין,
+  // מתווספת מילת-מעבר במקום הצגת סתירה שקטה.
+  const pushHouse = (housePositive, textIfPositive, textIfNegative, textIfMixed) => {
+    let text, ownPolarity;
+    if (housePositive === true)      { text = textIfPositive; ownPolarity = 'positive'; }
+    else if (housePositive === false) { text = textIfNegative; ownPolarity = 'negative'; }
+    else                               { text = textIfMixed;   ownPolarity = null; }
+    if (!text) return;
+    const contradicts = (ownPolarity === 'negative' && isPositive) || (ownPolarity === 'positive' && isNegative);
+    push(contradicts ? `יחד עם זאת, ${text}` : text);
+  };
+
+  // askerOpeningLine מתאר את בית 1 (עמדת השואל עצמו) לפי הטון שלו בלבד —
+  // ממצא עצמאי מהדיין, אותה בעיה כמו pushHouse.
+  const pushAskerOpening = () => {
+    if (!h1) return;
+    const t = figureFortuneTone(h1?.fortune);
+    const text = askerOpeningLine(h1?.fortune, '');
+    const housePositive = t > 0 ? true : t < 0 ? false : null;
+    pushHouse(housePositive, text, text, text);
+  };
+
   // ── 5. נרטיב לפי נושא ──────────────────────────────────────────
 
   switch (topicId) {
@@ -2387,18 +2412,20 @@ export function writeClientReadingHebrew(result) {
       const qName  = quesited || 'הצד השני';
       if (h7) {
         const h7Transit = firstSentence(h7.transit?.meaning);
-        push(h7Fort === 'טוב'
-          ? `${qName} מופיע בלוח בסימן טוב${h7Transit ? ` — ${h7Transit}` : ''}.`
-          : h7Fort === 'קשה'
-          ? `${qName} מופיע בלוח בסימן קשה${h7Transit ? ` — ${h7Transit}` : ''} — יש סימנים שמחייבים בחינה נוספת.`
-          : `${qName} מופיע בלוח בסימן מעורב — הלוח אינו חד-משמעי לגביו.`);
+        pushHouse(h7Fort === 'טוב' ? true : h7Fort === 'קשה' ? false : null,
+          `${qName} מופיע בלוח בסימן טוב${h7Transit ? ` — ${h7Transit}` : ''}.`,
+          `${qName} מופיע בלוח בסימן קשה${h7Transit ? ` — ${h7Transit}` : ''} — יש סימנים שמחייבים בחינה נוספת.`,
+          `${qName} מופיע בלוח בסימן מעורב — הלוח אינו חד-משמעי לגביו.`);
       }
       if (jTone > 0) push('הדיין נוטה לחיוב: הזיווג יכול להצליח.');
       else if (jTone < 0) push('הדיין פוסק לשלילה: הלוח אינו תומך בנישואין אלו בשלב זה.');
       else push('הדיין ממוזג: התוצאה תלויה בהחלטות ובמאמץ שיושקעו.');
       if (h8) {
         const h8Fort = fortToWord(h8?.fortune);
-        push(`מצב הממון והמשפחה של הצד השני: ${h8Fort === 'טוב' ? 'נראה יציב ומבטיח' : h8Fort === 'קשה' ? 'יש סימנים לקשיים כלכליים' : 'מעורב'}.`);
+        pushHouse(h8Fort === 'טוב' ? true : h8Fort === 'קשה' ? false : null,
+          'מצב הממון והמשפחה של הצד השני: נראה יציב ומבטיח.',
+          'מצב הממון והמשפחה של הצד השני: יש סימנים לקשיים כלכליים.',
+          'מצב הממון והמשפחה של הצד השני: מעורב.');
       }
       break;
     }
@@ -2442,16 +2469,17 @@ export function writeClientReadingHebrew(result) {
       }
       if (h8) {
         const h8Fort = fortToWord(h8?.fortune);
-        if (!isNegative && (h8Fort === 'טוב' || isPositive))
-          push('הפרוגנוזה חיובית — הלוח מראה כיוון של החלמה.');
-        else if (!isPositive && (isNegative || h8Fort === 'קשה'))
-          push('הפרוגנוזה מדאיגה — הלוח מצביע על מצב חמור שדורש תשומת לב רפואית דחופה.');
-        else
-          push('הפרוגנוזה מעורבת — ייתכן שיפור הדרגתי, אך לא החלמה מהירה.');
+        pushHouse(h8Fort === 'טוב' ? true : h8Fort === 'קשה' ? false : null,
+          'הפרוגנוזה חיובית — הלוח מראה כיוון של החלמה.',
+          'הפרוגנוזה מדאיגה — הלוח מצביע על מצב חמור שדורש תשומת לב רפואית דחופה.',
+          'הפרוגנוזה מעורבת — ייתכן שיפור הדרגתי, אך לא החלמה מהירה.');
       }
       if (h2) {
         const h2Fort = fortToWord(h2?.fortune);
-        push(`מבחינת הטיפול והרפואה: ${h2Fort === 'טוב' ? 'יש סיכוי טוב שהטיפול יצליח' : h2Fort === 'קשה' ? 'הטיפול עלול להיות קשה או יקר' : 'הטיפול יידרש סבלנות'}.`);
+        pushHouse(h2Fort === 'טוב' ? true : h2Fort === 'קשה' ? false : null,
+          'מבחינת הטיפול והרפואה: יש סיכוי טוב שהטיפול יצליח.',
+          'מבחינת הטיפול והרפואה: הטיפול עלול להיות קשה או יקר.',
+          'מבחינת הטיפול והרפואה: הטיפול יידרש סבלנות.');
       }
       break;
     }
@@ -2463,9 +2491,10 @@ export function writeClientReadingHebrew(result) {
       else if (h7) {
         // h7 = הנעדר עצמו (לא h1 שהוא השואל)
         const h7Fort = fortToWord(h7?.fortune);
-        push(h7Fort === 'טוב'
-          ? 'הלוח מצביע על כך שהנעדר בסדר.'
-          : 'הלוח מצביע על כך שהנעדר במצב קשה.');
+        pushHouse(h7Fort === 'טוב' ? true : h7Fort === 'קשה' ? false : null,
+          'הלוח מצביע על כך שהנעדר בסדר.',
+          'הלוח מצביע על כך שהנעדר במצב קשה.',
+          'הלוח מצביע על כך שהנעדר במצב קשה.');
       }
       if (dirQ?.dominantHebrew && (dirQ.dominant?.incomingBenefic ?? 0) > 0) {
         push(`הכיוון שכדאי לחפש: ${dirQ.dominantHebrew}.`);
@@ -2484,12 +2513,10 @@ export function writeClientReadingHebrew(result) {
     case 'travel': {
       if (h9) {
         const h9Fort = fortToWord(h9?.fortune);
-        const travelPos = isPositive || (!isNegative && h9Fort === 'טוב');
-        push(travelPos
-          ? 'הלוח מראה שהנסיעה מובילה לכיוון טוב — יש פתיחה ברורה.'
-          : (h9Fort === 'קשה' || isNegative)
-          ? 'הלוח מראה מכשולים בנסיעה — כדאי לשקול מחדש את העיתוי.'
-          : 'הלוח מעורב לגבי הנסיעה — לא כל הדרכים פתוחות.');
+        pushHouse(h9Fort === 'טוב' ? true : h9Fort === 'קשה' ? false : null,
+          'הלוח מראה שהנסיעה מובילה לכיוון טוב — יש פתיחה ברורה.',
+          'הלוח מראה מכשולים בנסיעה — כדאי לשקול מחדש את העיתוי.',
+          'הלוח מעורב לגבי הנסיעה — לא כל הדרכים פתוחות.');
       }
       if (dirQ?.dominantHebrew && (dirQ.dominant?.incomingBenefic ?? 0) > 0) {
         push(`הכיוון המומלץ לנסיעה: ${dirQ.dominantHebrew}.`);
@@ -2506,9 +2533,10 @@ export function writeClientReadingHebrew(result) {
     case 'seaVoyage': {
       if (h9) {
         const h9Fort = fortToWord(h9?.fortune);
-        if (!isNegative && h9Fort === 'טוב') push('הלוח מראה שהמסע הימי בטוח ויצלח.');
-        else if (isNegative || h9Fort === 'קשה') push('הלוח מצביע על סכנה בים — מומלץ לשקול ברצינות את הנסיעה.');
-        else push('הלוח מעורב לגבי בטיחות המסע.');
+        pushHouse(h9Fort === 'טוב' ? true : h9Fort === 'קשה' ? false : null,
+          'הלוח מראה שהמסע הימי בטוח ויצלח.',
+          'הלוח מצביע על סכנה בים — מומלץ לשקול ברצינות את הנסיעה.',
+          'הלוח מעורב לגבי בטיחות המסע.');
       }
       if (h8) {
         const h8Fort = fortToWord(h8?.fortune);
@@ -2535,16 +2563,14 @@ export function writeClientReadingHebrew(result) {
     case 'prisoner': {
       const h12Fort = fortToWord(h12?.fortune);
       const h6Fort  = fortToWord(h6?.fortune);
-      push(h12Fort === 'קשה'
-        ? 'הלוח מראה שמצב הכלא כבד — הנסיבות לא קלות לשחרור.'
-        : 'הלוח מראה שהמאסר אינו בעוצמה מלאה.');
-      push(h6Fort === 'טוב' && !isNegative
-        ? 'מצב האסיר עצמו (בית 6) — יש כוח בצד האסיר, הסימנים תומכים ביציאה.'
-        : h6Fort === 'טוב' && isNegative
-        ? 'יש כמה סימנים חיוביים באסיר, אך הלוח מצביע על עיכוב בשחרור.'
-        : h6Fort === 'קשה'
-        ? 'מצב האסיר קשה — הסיכוי לשחרור מהיר קטן.'
-        : 'מצב האסיר מעורב — שחרור אפשרי, אך לא ודאי.');
+      pushHouse(h12Fort === 'קשה' ? false : null,
+        null,
+        'הלוח מראה שמצב הכלא כבד — הנסיבות לא קלות לשחרור.',
+        'הלוח מראה שהמאסר אינו בעוצמה מלאה.');
+      pushHouse(h6Fort === 'טוב' ? true : h6Fort === 'קשה' ? false : null,
+        'מצב האסיר עצמו (בית 6) — יש כוח בצד האסיר, הסימנים תומכים ביציאה.',
+        'מצב האסיר קשה — הסיכוי לשחרור מהיר קטן.',
+        'מצב האסיר מעורב — שחרור אפשרי, אך לא ודאי.');
       const nlPrisoner = nameLetters.find(n => n.houseNumber === 12);
       if (nlPrisoner?.letters?.length > 0) {
         push(`הגורם שמחזיק אותו בכלא — שמו מתחיל ב: ${nlPrisoner.letters.join(' / ')}.`);
@@ -2557,19 +2583,17 @@ export function writeClientReadingHebrew(result) {
     case 'commerce': {
       if (h2) {
         const h2Fort = fortToWord(h2?.fortune);
-        push((!isNegative && h2Fort === 'טוב')
-          ? 'הממון בלוח נראה טוב — ההשקעה נושאת פנים חיוביות.'
-          : (isNegative || h2Fort === 'קשה')
-          ? 'הממון בלוח מצביע על סכנת הפסד — כדאי לבחון מחדש.'
-          : 'הממון מעורב — לא הפסד ולא ריווח ברור.');
+        pushHouse(h2Fort === 'טוב' ? true : h2Fort === 'קשה' ? false : null,
+          'הממון בלוח נראה טוב — ההשקעה נושאת פנים חיוביות.',
+          'הממון בלוח מצביע על סכנת הפסד — כדאי לבחון מחדש.',
+          'הממון מעורב — לא הפסד ולא ריווח ברור.');
       }
       if (h10) {
         const h10Fort = fortToWord(h10?.fortune);
-        push((!isNegative && h10Fort === 'טוב')
-          ? 'תוצאת העסק נראית חיובית — יש נטייה לרווח ולהצלחה.'
-          : (isNegative || h10Fort === 'קשה')
-          ? 'תוצאת העסק עלולה להיות מאכזבת — כדאי לנהל זהירות ותכנון מוקדם.'
-          : 'תוצאת העסק לא ברורה — לשמור על גמישות.');
+        pushHouse(h10Fort === 'טוב' ? true : h10Fort === 'קשה' ? false : null,
+          'תוצאת העסק נראית חיובית — יש נטייה לרווח ולהצלחה.',
+          'תוצאת העסק עלולה להיות מאכזבת — כדאי לנהל זהירות ותכנון מוקדם.',
+          'תוצאת העסק לא ברורה — לשמור על גמישות.');
       }
       if (isPositive || (!isNegative && jTone > 0)) push('הדיין תומך בעסק — מומלץ להמשיך.');
       else if (isNegative || jTone < 0) push('הדיין מתנגד לעסק — כדאי לחכות או לשנות תנאים.');
@@ -2579,15 +2603,17 @@ export function writeClientReadingHebrew(result) {
     case 'childrenPregnancy': {
       if (h5) {
         const h5Fort = fortToWord(h5?.fortune);
-        if (!isNegative && h5Fort === 'טוב') push('הלוח מראה פתיחה חיובית בנושא הילדים/ההריון — יש סימן טוב.');
-        else if (isNegative || h5Fort === 'קשה') push('הלוח מצביע על קשיים בנושא זה — ייתכן שיידרש טיפול רפואי.');
-        else push('הלוח מעורב — יש אפשרות, אך לא ודאות.');
+        pushHouse(h5Fort === 'טוב' ? true : h5Fort === 'קשה' ? false : null,
+          'הלוח מראה פתיחה חיובית בנושא הילדים/ההריון — יש סימן טוב.',
+          'הלוח מצביע על קשיים בנושא זה — ייתכן שיידרש טיפול רפואי.',
+          'הלוח מעורב — יש אפשרות, אך לא ודאות.');
       }
       if (h11) {
         const h11Fort = fortToWord(h11?.fortune);
-        if (!isNegative && h11Fort === 'טוב') push('הסיכויים להגשמת התקווה טובים.');
-        else if (isNegative || h11Fort === 'קשה') push('התקוות מאתגרות — ייתכן שיידרש סבלנות ועמידה.');
-        else push('התקוות אפשריות אך תלויות בגורמים נוספים.');
+        pushHouse(h11Fort === 'טוב' ? true : h11Fort === 'קשה' ? false : null,
+          'הסיכויים להגשמת התקווה טובים.',
+          'התקוות מאתגרות — ייתכן שיידרש סבלנות ועמידה.',
+          'התקוות אפשריות אך תלויות בגורמים נוספים.');
       }
       if (!isNegative && jTone > 0) push('הדיין פוסק לחיוב — יש סיכוי ממשי.');
       else if (isNegative || jTone < 0) push('הדיין לא תומך בשלב זה — אולי עוד לא הזמן הנכון.');
@@ -2646,9 +2672,10 @@ export function writeClientReadingHebrew(result) {
     case 'authorityState': {
       if (h10) {
         const h10Fort = fortToWord(h10?.fortune);
-        if (!isNegative && h10Fort === 'טוב') push('עמדת השלטון/התפקיד נראית יציבה ומחוזקת.');
-        else if (isNegative || h10Fort === 'קשה') push('עמדת השלטון/התפקיד מאוימת — יש כוחות שמנסים לערער אותה.');
-        else push('מצב השלטון/התפקיד תלוי בהתפתחויות.');
+        pushHouse(h10Fort === 'טוב' ? true : h10Fort === 'קשה' ? false : null,
+          'עמדת השלטון/התפקיד נראית יציבה ומחוזקת.',
+          'עמדת השלטון/התפקיד מאוימת — יש כוחות שמנסים לערער אותה.',
+          'מצב השלטון/התפקיד תלוי בהתפתחויות.');
       }
       if (isPositive || (!isNegative && jTone > 0)) push('הדיין מצביע על המשך ויציבות.');
       else if (isNegative || jTone < 0) push('הדיין מצביע על שינוי — ייתכן שחרור מהתפקיד.');
@@ -2658,16 +2685,17 @@ export function writeClientReadingHebrew(result) {
     case 'yearlyForecast': {
       if (h1) {
         const h1Fort = fortToWord(h1?.fortune);
-        if (!isNegative && h1Fort === 'טוב')
-          push('השנה הקרובה מתחילה בסימן חיובי עבורך.');
-        else if (isNegative || h1Fort === 'קשה')
-          push('השנה הקרובה צפויה להיות מאתגרת — כדאי להתכונן ולתכנן.');
-        else
-          push('השנה הקרובה מעורבת — יהיו עליות וירידות.');
+        pushHouse(h1Fort === 'טוב' ? true : h1Fort === 'קשה' ? false : null,
+          'השנה הקרובה מתחילה בסימן חיובי עבורך.',
+          'השנה הקרובה צפויה להיות מאתגרת — כדאי להתכונן ולתכנן.',
+          'השנה הקרובה מעורבת — יהיו עליות וירידות.');
       }
       if (h2) {
         const h2Fort = fortToWord(h2?.fortune);
-        push(`מצב הפרנסה: ${!isNegative && h2Fort === 'טוב' ? 'צפויה שנה טובה מבחינה כלכלית' : isNegative || h2Fort === 'קשה' ? 'כדאי לשמור על כסף ולא לסכן השקעות' : 'הכנסה לא קבועה — שנה מעורבת כלכלית'}.`);
+        pushHouse(h2Fort === 'טוב' ? true : h2Fort === 'קשה' ? false : null,
+          'מצב הפרנסה: צפויה שנה טובה מבחינה כלכלית.',
+          'מצב הפרנסה: כדאי לשמור על כסף ולא לסכן השקעות.',
+          'מצב הפרנסה: הכנסה לא קבועה — שנה מעורבת כלכלית.');
       }
       break;
     }
@@ -2708,7 +2736,7 @@ export function writeClientReadingHebrew(result) {
     }
 
     case 'generalReading': {
-      if (h1) push(askerOpeningLine(h1?.fortune, ''));
+      pushAskerOpening();
       if (isPositive || (!isNegative && jTone > 0)) push('הדיין פוסק לחיוב — הכיוון הכללי תומך.');
       else if (isNegative || jTone < 0) push('הדיין פוסק לשלילה — כדאי לחכות לזמן טוב יותר.');
       else push('הדיין ממוזג — יש לנהוג בזהירות.');
@@ -2716,7 +2744,7 @@ export function writeClientReadingHebrew(result) {
     }
 
     case 'birthNativity': {
-      if (h1) push(askerOpeningLine(h1?.fortune, ''));
+      pushAskerOpening();
       const birthAnalysis = boardAnalysis?.birthNativityAnalysis;
       if (birthAnalysis?.outputHebrew) push(birthAnalysis.outputHebrew);
       if (!isNegative && jTone > 0) push('הדיין פוסק לחיוב — הכיוון הכללי תומך.');
@@ -2728,7 +2756,7 @@ export function writeClientReadingHebrew(result) {
     case 'foundations':
     case 'completion':
     case 'partnership': {
-      if (h1) push(askerOpeningLine(h1?.fortune, ''));
+      pushAskerOpening();
       // משתמשים ב-jTone (הדיין בפועל) ולא ב-isNegative שמחושב מציון כולל
       if (jTone > 0) push('הדיין פוסק לחיוב — הכיוון הכללי תומך.');
       else if (jTone < 0) push('הדיין פוסק לשלילה — כדאי לחכות לזמן טוב יותר.');
@@ -2737,7 +2765,7 @@ export function writeClientReadingHebrew(result) {
     }
 
     default: {
-      if (h1) push(askerOpeningLine(h1?.fortune, ''));
+      pushAskerOpening();
       if (isPositive || (!isNegative && jTone > 0)) push('הדיין פוסק לחיוב.');
       else if (isNegative || jTone < 0) push('הדיין פוסק לשלילה.');
       else push('הדיין ממוזג — הלוח לא נותן תשובה חד-משמעית.');
