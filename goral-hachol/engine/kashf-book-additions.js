@@ -25,6 +25,12 @@ import {
   FIGURE_DESIRE_FULFILLMENT_NOTES,
 } from '../data/sources/kashf-al-asrar/kashf-gate5-foundational-figures.js';
 import { getDakhalKharij } from './kashf-figure-classifier.js';
+import { FIGURE_PLANET_MAP } from '../data/sources/kashf-al-asrar/kashf-hazz.js';
+import { FRIEND_TYPE_BY_PLANET } from '../data/sources/kashf-al-asrar/kashf-topic-house11-friends-hope.js';
+
+const PATTERN_TO_PLANET_LOCAL = Object.fromEntries(
+  FIGURE_PLANET_MAP.flatMap((entry) => entry.patterns.map((p) => [p, entry.planet]))
+);
 
 // כשף אל-אסרר עמ' 272-273 — "כלל מעשי: אדם החושש מעונש"
 // "באדם החושש מעונש — ממאסר, ממלקות או מדבר אחר — אם בבית העשירי נמצאת
@@ -498,5 +504,29 @@ export function computeFigureDesireFulfillmentKashf(chart) {
     verdict: 'note-found',
     outputHebrew: `צורת השואל (${note.nameHebrew}): ${note.textHebrew} (כשף עמ׳ 163).`,
     figureKey: h1.key,
+  };
+}
+
+// כשף אל-אסרר עמ' 262-263 — "הצורה / הכוכב בבית האחד-עשר → סוג החברים".
+// מיפוי צורה→כוכב לקוח מהטבלה הקיימת (FIGURE_PLANET_MAP, kashf-hazz.js,
+// עמ' 133-134) — לא נבנה מיפוי חדש. נלחם/סוהר (משוערים כצמתי ראש/זנב)
+// אינם משויכים לכוכב בטבלה הקיימת — אין דין עבורם.
+export function computeFriendTypeByHouse11Kashf(chart) {
+  const getH = (n) => chart.find((h) => Number(h.house) === n);
+  const h11 = getH(11);
+  if (!h11?.key) return null;
+
+  const planet = PATTERN_TO_PLANET_LOCAL[h11.key];
+  if (!planet) {
+    return {
+      verdict: 'no-planet-mapping',
+      outputHebrew: 'צורת בית 11 אינה משויכת לאחד משבעת הכוכבים המאומתים (ככל הנראה מצומתי ראש/זנב) — אין דין מוגדר לסוג החברים (כשף עמ׳ 262-263).',
+    };
+  }
+  const friendType = FRIEND_TYPE_BY_PLANET[planet];
+  return {
+    verdict: 'friend-type-found',
+    outputHebrew: `צורת בית 11 (${h11.hebrew || h11.key}) שייכת לכוכב ${planet} — סוג החברים: ${friendType} (כשף עמ׳ 262-263).`,
+    planet,
   };
 }

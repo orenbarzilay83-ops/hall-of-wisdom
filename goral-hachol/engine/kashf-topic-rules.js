@@ -11,6 +11,7 @@
  */
 
 import { FIGURE_SEEKING_SOUGHT } from '../data/sources/kashf-al-asrar/kashf-figure-classification-gate2.js';
+import { NEED_FULFILLMENT_BY_FIRST_FIGURE } from '../data/sources/kashf-al-asrar/kashf-topic-house11-friends-hope.js';
 
 // טבלה שטוחה pattern→תיאור, משולבת מ-FIGURE_SEEKING_SOUGHT (שער 2, עמ' 64-65) —
 // מכסה את כל 16 הצורות (8 מבקשות + 8 מבוקשות). הנקודה הסופית מוסרת כי
@@ -18,6 +19,14 @@ import { FIGURE_SEEKING_SOUGHT } from '../data/sources/kashf-al-asrar/kashf-figu
 const SEEKING_SOUGHT_LOOKUP = Object.fromEntries(
   Object.entries({ ...FIGURE_SEEKING_SOUGHT.seeking, ...FIGURE_SEEKING_SOUGHT.sought })
     .map(([pattern, text]) => [pattern, text.replace(/\.$/, '')])
+);
+
+// טבלה שטוחה pattern→תיאור, משולבת מ-NEED_FULFILLMENT_BY_FIRST_FIGURE (עמ' 267-268) —
+// מסננת מפתחות שאינם pattern בני 4 ספרות (sourceRef/sourceStatus/note).
+const NEED_FULFILLMENT_LOOKUP = Object.fromEntries(
+  Object.entries(NEED_FULFILLMENT_BY_FIRST_FIGURE)
+    .filter(([key]) => /^[12]{4}$/.test(key))
+    .map(([pattern, entry]) => [pattern, entry.textHebrew])
 );
 
 // ── סוגי נוסחאות ─────────────────────────────────────────────────────────
@@ -1677,6 +1686,86 @@ export const KASHF_TOPIC_RULES = {
       },
     ],
     keyHouses: [3, 9],
+  },
+
+  // ────────────────────────────────────────────────────────────────────────
+  friendsHope: {
+    topicId: 'friendsHope',
+    topicHebrewName: 'חברים ותקווה',
+    sourceRef: "כשף אל-אסרר, עמ' 262-270",
+    topicDescription: 'שאלות על חברים, ברית וקשרים, ותקווה/משאלה (בית אחד-עשר).',
+    primaryFormula: {
+      type: 'combine',
+      houses: [1, 11],
+      interpretBy: 'saad-nahs',
+      sourceText: 'בדין החברים ראה את הבית הראשון והבית האחד-עשר: אם שניהם צורות מיטיבות, כל אחד מהם נהנה מחברו; ואם שניהם צורות מזיקות, כל אחד מזיק לחברו. כך גם הצורה הנולדת מן הראשון והאחד-עשר: אם היא מיטיבה, דון לטובה ביניהם; ואם מזיק, להפך (כשף עמ׳ 262-263).',
+      verdictBySaadNahs: {
+        saad:  { text: 'הצורה הנולדת מבית 1+11 מיטיבה — יחסי החברות/הברית לטובה', positive: true },
+        nahs:  { text: 'הצורה הנולדת מבית 1+11 מזיקה — יחסי החברות/הברית לרעה', positive: false },
+        mixed: { text: 'הצורה הנולדת מבית 1+11 ממוזגת — יחסים מעורבים', positive: null },
+      },
+    },
+    altFormula: {
+      type: 'combine',
+      houses: [1, 9, 13, 15, 2, 8, 11, 14],
+      interpretBy: 'saad-nahs',
+      sourceText: 'שיטה נוספת: ערוך את מערך גורל החול בשלמותו, וקח מן הראשון, התשיעי, השלושה-עשר והחמישה-עשר צורה אחת; וקח מן השני, השמיני, האחד-עשר והארבעה-עשר צורה אחת. הולד משתי הצורות צורה שלישית, וראה אם היא מיטיבה או מזיק (כשף עמ׳ 268-269).',
+      verdictBySaadNahs: {
+        saad:  { text: 'הצורה השלישית (משתי הקבוצות) מיטיבה — הצורך מתקיים', positive: true },
+        nahs:  { text: 'הצורה השלישית (משתי הקבוצות) מזיקה — הצורך אינו מתקיים', positive: false },
+        mixed: { text: 'הצורה השלישית ממוזגת — תוצאה לא ודאית', positive: null },
+      },
+    },
+    supportingChecks: [
+      {
+        id: 'need-fulfillment',
+        checkType: 'pattern-lookup',
+        houses: [1],
+        label: 'האם הצורך יתקיים (לפי הצורה הראשונה בהכאה — בית 1)',
+        lookupTable: NEED_FULFILLMENT_LOOKUP,
+        sourceText: 'הצורה שעלתה בתחילת ההכאה — דין הצורך: ממון נכנס — הצורך מצליח; קהלה — מתקרב אך פחות ממה שבנפש; לבן/דרך — אינו מתקיים; בר הלחי — טרחה אך בסוף מתקיים; אדום — מבטיחים אך אתה עוזב; חיבור — מתקיים לאחר טרחה; ממון יוצא — משיג רצונו; כבוד יוצא — נתבע לקיימו; שפל ראש — לא טוב ולא רע; כבוד נכנס — מתקיים שלא בדרך המבוקשת; סף יוצא — מתקיים לאחר תיקון; סוהר — עומד ועצור (כשף עמ׳ 267-268).',
+      },
+      {
+        id: 'friend-type-by-house11',
+        checkType: 'legacy-fn',
+        fnName: 'computeFriendTypeByHouse11Kashf',
+        houses: [11],
+        label: 'סוג החברים לפי כוכב הצורה בבית 11',
+        sourceText: 'הצורה/הכוכב בבית האחד-עשר: צורות השמש — בני מלכים וגדולים; צורות נוגה — נערים וצעירים יפים; כוכב (עטארד) — חשבונאים וסופרים; צורות הירח — שרים ומי שנלווים אליהם; שבתאי — חקלאים; צדק — דיינים ופרושים; מאדים — נפחים ואנשי מלאכה (כשף עמ׳ 262-263).',
+      },
+      {
+        id: 'hope-wish',
+        checkType: 'count-quality',
+        houses: [1, 2, 3, 5, 12],
+        label: 'תקווה ומשאלה',
+        sourceText: 'ראה את הראשון, השני, החמישי, השלישי והשנים-עשר. אם מצטיירות בהם צורות מיטיבות נכנסות, והאחד-עשר חוזר — הרי הוא זוכה במה שהוא מקווה לו. אם להפך, אינו זוכה, אלא אם בבית התקווה עצמו (האחד-עשר) יש צורה מיטיבה (כשף עמ׳ 266).',
+      },
+      {
+        id: 'hold-onto-thing',
+        checkType: 'house-quality',
+        houses: [11],
+        label: 'מי שרוצה להחזיק בדבר',
+        sourceText: 'ראה את הבית האחד-עשר. אם הוא מעיד, הדבר חזק יותר. אחר כך ראה את היתדות (כשף עמ׳ 266).',
+      },
+    ],
+    // הוחרג במפורש — מיוחס בספר עצמו למקור אחר (אותו עיקרון שהוחל על
+    // "תוספת נֻזְהַת אל־עֻקוּל" ב-authorityState, ראה גם
+    // kashf-topic-house11-friends-hope.js::EXCLUDED_OTHER_SOURCE_EXCERPTS).
+    additionalMethods: [
+      {
+        id: 'nuzhat-al-uqul-parnasa',
+        label: 'בקשת פרנסה (מתוך נֻזְהַת אל־עֻקוּל)',
+        sourceStatus: 'not-explicit-in-source',
+        sourceText: 'לבקשת פרנסה יש לכוון אל הבית המתאים מן הטבעים. אם עולה אחת מן הצורות: נשוא ראש, ממון נכנס, סף יוצא או אדום — הפרנסה מרובה. אם עלו שפל ראש, דרך, סוהר או סף יוצא — הפרנסה מועטה (כשף עמ׳ 266-267, מפורש כ"מתוך נֻזְהַת אל־עֻקוּל").',
+      },
+      {
+        id: 'al-multaqat-hope-parnasa-aharit',
+        label: 'תקווה, פרנסה, אחרית ובקשה (מן אל-מֻלְתַקַט פי עִלְם א-נֻקַט)',
+        sourceStatus: 'not-explicit-in-source',
+        sourceText: 'בתקווה ובמשאלה: ראה את הבית האחד-עשר... בשאלה אם הפרנסה תגיע: הוצא צורה מן העשירי והאחד-עשר... בדין האחרית: ראה את הצורה שבבית הראשון, הרביעי והשמיני... בתקווה ובבקשה: קח את החמישי והאחד-עשר והכה אותם בראשון (כשף עמ׳ 269-270, מפורש כ"מן אל-מֻלְתַקַט פי עִלְם א-נֻקַט").',
+      },
+    ],
+    keyHouses: [1, 11],
   },
 
   // ────────────────────────────────────────────────────────────────────────
