@@ -692,7 +692,7 @@ window.QUESTION_BANK = [
   // בית 2 — ממון
   {
     id: 'q-money-halal',
-    category: 'money', houseId: 2, topicId: 'commerce',
+    category: 'money', houseId: 2, topicId: 'money',
     label: 'האם הממון מותר או אסור?',
     desc: 'לבדיקה האם מקור ממון כשר — לאדם שמתלבט על כשרות הכסף שמגיע',
     clientFields: [F.matter],
@@ -851,14 +851,14 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-knowledge-success',
-    category: 'general', houseId: 3, topicId: 'siblings',
+    category: 'general', houseId: 3, topicId: 'completion',
     label: 'האם הלמידה / הידע יצלחו?',
     desc: 'לרכישת ידע/מיומנות עצמאית — האם הלמידה תניב הצלחה',
     clientFields: [{ id: 'studyTopic', label: 'נושא הלמידה / הידע', type: 'text', placeholder: 'לימודים / מקצוע / מיומנות...' }],
   },
   {
     id: 'q-spiritual-path',
-    category: 'spiritual', houseId: 3, topicId: 'siblings',
+    category: 'spiritual', houseId: 3, topicId: 'completion',
     label: 'האם הדרך הרוחנית / הלימוד הפנימי יצלחו?',
     desc: 'לבדיקת התקדמות ברוחניות — האם המסע הפנימי יניב פרי',
     clientFields: [F.matter],
@@ -988,7 +988,7 @@ window.QUESTION_BANK = [
   // ── בית 2 — ממון: "העוזרים, ביאת הנעדר, כתבי השלטון, מחלוקות הנשים" ──
   {
     id: 'q-helpers',
-    category: 'general', houseId: 2, topicId: 'commerce',
+    category: 'general', houseId: 2, topicId: 'completion',
     label: 'האם אמצא עוזר / עזרה?',
     desc: 'כשצריך מישהו לסייע — האם יימצא מי שיעזור',
     clientFields: [F.matter],
@@ -1002,7 +1002,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-official-docs',
-    category: 'money', houseId: 2, topicId: 'commerce',
+    category: 'money', houseId: 2, topicId: 'authorityState',
     label: 'האם האישורים / המסמכים יתקבלו?',
     desc: 'לאישורים רשמיים: ויזה, רישיון, חוזה — האם יאושרו',
     clientFields: [{ id: 'docType', label: 'סוג המסמך', type: 'text', placeholder: 'רישיון / אישור / ויזה / חוזה...' }],
@@ -1041,14 +1041,14 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-gift',
-    category: 'general', houseId: 5, topicId: 'loveHate',
+    category: 'general', houseId: 5, topicId: 'completion',
     label: 'האם אקבל מתנה / חסד?',
     desc: 'האם יגיע חסד, מתנה, או טובה ממישהו',
     clientFields: [{ id: 'giftFrom', label: 'ממי?', type: 'text', placeholder: 'שם / קשר' }],
   },
   {
     id: 'q-neighbor',
-    category: 'family', houseId: 5, topicId: 'loveHate',
+    category: 'family', houseId: 5, topicId: 'siblings',
     label: 'מצב השכן / השכנות?',
     desc: 'מצב השכן, האם השכנות תקינה, האם יש בעיות',
     clientFields: [{ id: 'neighborIssue', label: 'מה השאלה?', type: 'textarea', placeholder: 'רעש / גדר / קשרים / עזרה...' }],
@@ -1137,14 +1137,14 @@ window.QUESTION_BANK = [
   // ── בית 11 — תקווה: "ניצחון, פשרה, הבטחות" ──
   {
     id: 'q-compromise',
-    category: 'conflict', houseId: 11, topicId: 'loveHate',
+    category: 'conflict', houseId: 11, topicId: 'disputes',
     label: 'האם תהיה פשרה / הסדר?',
     desc: 'האם ייוצר הסדר בין הצדדים — כשרוצים פשרה ולא ניצחון',
     clientFields: [F.opponent, F.disputeIssue],
   },
   {
     id: 'q-victory-goal',
-    category: 'conflict', houseId: 11, topicId: 'loveHate',
+    category: 'conflict', houseId: 11, topicId: 'disputes',
     label: 'האם אנצח / אצליח בעניין?',
     desc: 'כשיש מאבק/מטרה ורוצים לנצח — האם יצליח',
     clientFields: [F.matter],
