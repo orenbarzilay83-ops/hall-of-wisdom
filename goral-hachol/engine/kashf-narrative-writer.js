@@ -420,11 +420,16 @@ function writeWitnessJudgePara(reading) {
 // אותה שפת עיצוב כמו לוח חאווי (verdict-box/verdict-label/verdict-answer/verdict-detail).
 
 function writeShortVerdictBox(reading) {
-  const { overallPositive, primaryFormula, clientContext } = reading;
+  const { overallPositive, primaryFormula, altFormula, clientContext } = reading;
   const question = c(clientContext?.question);
   const verdictText = overallPositive === true ? 'כן' : overallPositive === false ? 'לא' : 'לא ודאי';
   const vClass = overallPositive === true ? 'verdict-yes' : overallPositive === false ? 'verdict-no' : 'verdict-maybe';
   const detail = stripInlineCitations(primaryFormula?.verdict?.text || '');
+
+  const altPositive = altFormula?.verdict?.positive;
+  const disagreement = (typeof altPositive === 'boolean' && typeof overallPositive === 'boolean' && altPositive !== overallPositive)
+    ? '<div class="verdict-detail" style="color:#8c2118;">⚠ בדיקת אימות נוספת על הלוח נתנה כיוון הפוך — ראו הרחבה למטה.</div>'
+    : '';
 
   const questionLine = question
     ? `<p style="direction:rtl; text-align:center; font-size:14px; color:#444; margin:0 0 8px;">השאלה שנשאלה: <em>${question}</em></p>`
@@ -434,6 +439,7 @@ function writeShortVerdictBox(reading) {
     <div class="verdict-label">תשובה לשאלה</div>
     <div class="verdict-answer">${verdictText}</div>
     ${detail ? `<div class="verdict-detail">${detail}</div>` : ''}
+    ${disagreement}
   </div>`;
 }
 
@@ -633,8 +639,13 @@ function writeConclusionPara(reading) {
       })()
     : '';
 
+  const altPositive = altFormula?.verdict?.positive;
+  const altNote = (typeof altPositive === 'boolean' && typeof overallPositive === 'boolean' && altPositive !== overallPositive)
+    ? ' יש לציין: בדיקת אימות נוספת על הלוח נתנה כיוון הפוך — כדאי להתייחס לתשובה זו בזהירות ולא כוודאות מוחלטת.'
+    : '';
+
   const opening = fn ? `${fn} — ` : '';
-  const text = `${opening}${guidance}${judgeNote}`;
+  const text = `${opening}${guidance}${judgeNote}${altNote}`;
   const keyFact = findKeyDescriptiveFact(reading);
 
   return `<div class="client-reading-panel" style="direction:rtl; margin:18px 0 10px; border:2px solid #b8860b; border-radius:8px; background:#fffef5; padding:18px 20px;">
