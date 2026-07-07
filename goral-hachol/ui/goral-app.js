@@ -130,6 +130,7 @@ const HAWI_TO_KASHF_TOPIC = {
   completion:           'completion',
   generalReading:       'generalReading',
   motherRules:          'motherRules',
+  friendsHope:          'friendsHope',
 };
 
 function hawiTopicToKashf(hawiTopicId) {

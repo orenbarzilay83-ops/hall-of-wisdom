@@ -447,7 +447,7 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-friends',
-    category: 'love', houseId: 11, topicId: 'loveHate',
+    category: 'love', houseId: 11, topicId: 'friendsHope',
     label: 'האם החברים נאמנים?',
     desc: 'לבדיקת כנות הידידות — האם הידידים נאמנים ואפשר לסמוך עליהם',
     clientFields: [{ id: 'friendName', label: 'שם / תיאור הידיד', type: 'text', placeholder: 'שם' }],
