@@ -10,6 +10,16 @@
  *   כל טקסט מקורי מתורגם / מצוטט ישירות מהספר.
  */
 
+import { FIGURE_SEEKING_SOUGHT } from '../data/sources/kashf-al-asrar/kashf-figure-classification-gate2.js';
+
+// טבלה שטוחה pattern→תיאור, משולבת מ-FIGURE_SEEKING_SOUGHT (שער 2, עמ' 64-65) —
+// מכסה את כל 16 הצורות (8 מבקשות + 8 מבוקשות). הנקודה הסופית מוסרת כי
+// הרינדור (kashf-narrative-writer.js) כבר מוסיף "." בעצמו אחרי valueLabel.
+const SEEKING_SOUGHT_LOOKUP = Object.fromEntries(
+  Object.entries({ ...FIGURE_SEEKING_SOUGHT.seeking, ...FIGURE_SEEKING_SOUGHT.sought })
+    .map(([pattern, text]) => [pattern, text.replace(/\.$/, '')])
+);
+
 // ── סוגי נוסחאות ─────────────────────────────────────────────────────────
 // 'fire-row-assemble': קח ראש (שורת-אש) מ-4 בתים → צורה חדשה → חיצונית/פנימית
 // 'combine':           חיבור רמל של N בתים → צורה חדשה → מיטיב/מזיק או חיצונית/פנימית
@@ -1198,6 +1208,14 @@ export const KASHF_TOPIC_RULES = {
         houses: [1, 4, 6, 7, 10, 15],
         label: 'עקיבה אחר הבורח',
         sourceText: 'בבורח: התבונן בראשון (בעל הדבר), בשביעי (הבורח), ברביעי (מקומו), בעשירי (כוונתו) ובחמישה־עשר (אחרית הדבר). אם הראשון והשישי פנימיים, וכל הבתים הראשיים מיטיבים, והאחרית טובה — הבורח לא התרחק ועתיד לשוב (כשף עמ׳ 240-241).',
+      },
+      {
+        id: 'seeking-sought-disposition',
+        checkType: 'pattern-lookup',
+        houses: [7],
+        lookupTable: SEEKING_SOUGHT_LOOKUP,
+        label: 'אופי הנעדר (מבקש/מבוקש)',
+        sourceText: 'הצורות המבקשות (חיצוניות/מתהפכות) והמבוקשות (פנימיות/קבועות) — תיאור-אופי מפורט לכל צורה, לפי טבעה כמבקשת או כמבוקשת (כשף עמ׳ 64-65).',
       },
     ],
     keyHouses: [1, 3, 5, 7, 8, 9, 15],
