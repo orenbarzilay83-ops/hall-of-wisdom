@@ -25,9 +25,12 @@
  *   - סוג 3 — אומת ופוענח: "تعد... تضرب في مثلهم... تزيد عليهم مثلهم...
  *     تقسم نصفين" = n·n + n·n, לחלק ל-2 = n² בדיוק (הניסוח המפותל רק
  *     מסתיר חשבון פשוט). מיושם.
- *   - סוג 2 — אומת בערבית, אך "ما قوي فيه من العناصر" (היסוד ה"חזק")
- *     בצורה בודדת של 4 שורות עדיין דורש הכרעה: ערך-חוזק לפי שיטת
- *     אבּדח (עפר8>מים4>אוויר2>אש1), או לפי סדר-קדימות אחר? לא מיושם.
+ *   - סוג 2 — מיושם (computeDhamirElementPrevalence). "היסוד שהתגבר"
+ *     זוהה לפי SHIBUTZ_3_ELEMENT_VALUES (עמ' 122, שיטת המחבר עצמו: אש=1,
+ *     אוויר=2, מים=3, עפר=4) — לא לפי שיטת אבּדח (עפר8>מים4>אוויר2>אש1),
+ *     המצוטטת בעמ' 126 כדעת חכם אחר (אבו סעיד אל-טרבלסי). "מעלה" נבדקה
+ *     מול טבלה חדשה מעמ' 96-98 (חסרה במקור עצמו עבור חיבור ודרך —
+ *     לא הומצא ערך); ההחזרה למושב לפי SHIBUTZ_1_MOSHAV (עמ' 104-105).
  *   - סוג 4 — חסום: תלוי במיפוי אות↔צורה החסר/סותר (SHIBUTZ_6).
  *   - סוג 5 — אומת מבנה כללי (הליכה איטרטיבית על תוצאת פנים-1 עד
  *     שנסגר מעגל/חוזר על עצמו), אך כלל-הצעד החוזר לא מוגדר מספיק
@@ -36,10 +39,45 @@
  * מקור: כשף אל-אסראר המצונה, השער הרביעי — עמ' 151-155
  */
 
-import { getHousePattern, getHouseEntry, getFigureHebrewName } from './kashf-formula-engine.js';
+import { getHousePattern, getHouseEntry, getFigureHebrewName, ROW } from './kashf-formula-engine.js';
 import { combineRamlPatterns } from './raml-figures.js';
 import { NATURAL_HOUSE_FIGURES } from './hawi-interpreter.js';
-import { SHIBUTZ_2_CANONICAL_NUMBER } from '../data/sources/kashf-al-asrar/kashf-shibutzim.js';
+import {
+  SHIBUTZ_2_CANONICAL_NUMBER,
+  SHIBUTZ_1_MOSHAV,
+  SHIBUTZ_3_ELEMENT_VALUES,
+} from '../data/sources/kashf-al-asrar/kashf-shibutzim.js';
+
+// היפוך SHIBUTZ_1_MOSHAV (בית→צורה) לחיפוש הפוך (צורה→בית), לשימוש
+// בסוג 2 בלבד (ראו computeDhamirElementPrevalence).
+const MOSHAV_HOUSE_BY_PATTERN = {};
+for (const [houseNum, pattern] of Object.entries(SHIBUTZ_1_MOSHAV)) {
+  if (houseNum === 'sourceStatus' || houseNum === 'sourceRef') continue;
+  MOSHAV_HOUSE_BY_PATTERN[pattern] = Number(houseNum);
+}
+
+// טבלת "מעלה" לכל צורה (כשף עמ' 96-98, "פרק במעלת הצורות, מושבן, מזגן
+// ופניהן") — נפרדת מ-SHIBUTZ_1_MOSHAV (עמ' 104-105). הטבלה במקור עצמו
+// חסרה 2 מתוך 16 צורות (חיבור, דרך אינן מוזכרות כלל בפרק זה) — לא הומצא
+// עבורן ערך; ומכילה כפילות אמתית במקור עצמו (גם סוהר וגם כבוד נכנס
+// מצוטטים כ"מעלתו/מעלתה בתשיעי").
+const FIGURE_MAALA_HOUSE = {
+  '1121': 1,  // נלחם — עמ' 96
+  '1222': 2,  // נשוא ראש — עמ' 96
+  '2111': 3,  // סף נכנס — עמ' 96-97
+  '2212': 4,  // לבן — עמ' 97
+  '1211': 5,  // בר הלחי — עמ' 97
+  '1112': 6,  // סף יוצא — עמ' 97
+  '2122': 7,  // אדום — עמ' 97
+  '2221': 8,  // שפל ראש — עמ' 97
+  '1221': 9,  // סוהר — עמ' 98
+  '2211': 9,  // כבוד נכנס — עמ' 98 (כפילות מהמקור עצמו — אינה שגיאת תעתיק)
+  '1122': 12, // כבוד יוצא — עמ' 98
+  '2121': 13, // ממון נכנס — עמ' 98
+  '1212': 14, // ממון יוצא — עמ' 98
+  '2222': 16, // קהלה — עמ' 98
+  // '2112' (חיבור) ו-'1111' (דרך) — אין להם "מעלה" מוצהרת בפרק הזה במקור.
+};
 
 const PARENT_PAIRS = {
   9:  [1, 2],
@@ -321,13 +359,86 @@ export function computeDhamirDoubledSquare(board) {
 }
 
 /**
+ * הסוג השני (עמ' 152-153). "מתבוננים בצורת המאזן וביסוד שהתגבר בה,
+ * ומוליכים אותו עד המקום שבו הוא עומד. אם הבית שבו עמד יש לו מעלה בו,
+ * או שהצורה בעלת מעלה בו, הרי שם מתגלה מחשבת השואל. ואם לא — מחזירים
+ * אותו אל ביתו לפי סדר שיבוץ המושב."
+ *
+ * "היסוד שהתגבר" (השורה הפתוחה בעלת הערך הגבוה ביותר בין השורות
+ * הפתוחות) וגם מרחק ההליכה — לפי SHIBUTZ_3_ELEMENT_VALUES (עמ' 122:
+ * אש=1, אוויר=2, מים=3, עפר=4 — השיטה שהמחבר עצמו מדגים בדוגמאותיו,
+ * לא אחת משתי השיטות המצוטטות מחכמים אחרים באותו עמוד). ההליכה מתחילה
+ * מבית 1 קדימה (קונבנציית ברירת המחדל הקיימת כבר בקובץ זה ובמנוע —
+ * אינה מוגדרת כאן במפורש בטקסט המצוטט עצמו).
+ *
+ * "יש לו מעלה" נבדק מול FIGURE_MAALA_HOUSE (עמ' 96-98): האם בית הנחיתה
+ * שווה למעלת הצורה שיושבת בו. אם לא (או אם לצורה אין מעלה מוצהרת במקור
+ * — חיבור/דרך) — חוזרים למושבה הטבעי לפי SHIBUTZ_1_MOSHAV (עמ' 104-105,
+ * "שיבוץ המושב" — הנקרא במפורש בשמו בטקסט המצוטט).
+ */
+export function computeDhamirElementPrevalence(board) {
+  const mizanPattern = getHousePattern(board, 15);
+  if (!mizanPattern) return null;
+
+  const ELEMENT_ROWS = [
+    { row: ROW.FIRE, name: 'אש' },
+    { row: ROW.AIR, name: 'אוויר' },
+    { row: ROW.WATER, name: 'מים' },
+    { row: ROW.EARTH, name: 'עפר' },
+  ];
+  const openElements = ELEMENT_ROWS.filter(({ row }) => mizanPattern[row] === '1');
+  if (!openElements.length) return null;
+
+  let prevailing = openElements[0];
+  for (const el of openElements) {
+    if (SHIBUTZ_3_ELEMENT_VALUES[el.name] > SHIBUTZ_3_ELEMENT_VALUES[prevailing.name]) prevailing = el;
+  }
+  const walkValue = SHIBUTZ_3_ELEMENT_VALUES[prevailing.name];
+
+  const landingHouse = walkValue; // הליכה מבית 1 קדימה, ב-walkValue צעדים
+  const landingEntry = getHouseEntry(board, landingHouse);
+  if (!landingEntry?.pattern) return null;
+
+  const maalaHouse = FIGURE_MAALA_HOUSE[landingEntry.pattern];
+  if (maalaHouse === landingHouse) {
+    return {
+      method: 'element-prevalence',
+      methodHebrew: 'יסוד שהתגבר במאזן (הסוג השני)',
+      sourceRef: 'כשף אל-אסראר עמ׳ 152-153, 96-98 — הסוג השני',
+      prevailingElement: prevailing.name,
+      walkValue,
+      pattern: landingEntry.pattern,
+      houseNumber: landingHouse,
+      nameHebrew: getFigureHebrewName(landingEntry.pattern),
+      confirmedByMaala: true,
+    };
+  }
+
+  const moshavHouse = MOSHAV_HOUSE_BY_PATTERN[landingEntry.pattern];
+  if (!moshavHouse) return null;
+  const moshavEntry = getHouseEntry(board, moshavHouse);
+  return {
+    method: 'element-prevalence',
+    methodHebrew: 'יסוד שהתגבר במאזן (הסוג השני, הוחזר למושב)',
+    sourceRef: 'כשף אל-אסראר עמ׳ 152-153, 104-105 — הסוג השני',
+    prevailingElement: prevailing.name,
+    walkValue,
+    pattern: moshavEntry?.pattern || landingEntry.pattern,
+    houseNumber: moshavHouse,
+    nameHebrew: getFigureHebrewName(moshavEntry?.pattern || landingEntry.pattern),
+    confirmedByMaala: false,
+    landedHouse: landingHouse,
+  };
+}
+
+/**
  * מריץ את השיטות המיושמות ומכריע לפי הרוב (עמ' 155: "תאסוף... ותכריע
  * לפי הרוב"). מחזיר גם את כל המועמדים וגם את ההכרעה, כדי שנתיב ההצגה
  * יוכל להראות את כל הראיות ולא רק את המסקנה.
  *
  * הערה: זו הכרעה חלקית — הספר עצמו קורא לאסוף את כל 5 ה"סוגים"
  * (עמ' 151-155). כאן מיושמים: סוג 1 (פנים 1,2,4 — חסרה פנים 3, "תנועת
- * העומק") וסוג 3. סוגים 2, 4, 5 אינם מיושמים — ראו הערה בתחתית הקובץ.
+ * העומק"), סוג 2 וסוג 3. סוגים 4, 5 אינם מיושמים — ראו הערה בתחתית הקובץ.
  */
 export function computeDhamirByMajority(board) {
   const candidates = [
@@ -335,6 +446,7 @@ export function computeDhamirByMajority(board) {
     computeDhamirHarkatAlArd(board),
     computeDhamirJawharayn(board),
     computeDhamirDoubledSquare(board),
+    computeDhamirElementPrevalence(board),
   ].filter(Boolean);
 
   if (!candidates.length) {
@@ -371,13 +483,12 @@ export function computeDhamirByMajority(board) {
 // מופשט — לא ברור איך מכלילים אותה לכל מקרה (איזו צורה משמשת "צורה
 // שמינית", מאיפה מתחילים לספור באופן כללי).
 //
-// הסוג השני (עמ' 153, מאומת בערבית: "تنظر إلى شكل الميزان، وما قوي
-// فيه من العناصر، فسيره إلى حيث يقف... وإلا فارجع به إلى بيته من
-// تسكين السكنى") — "السكنى" = "המושב", כלומר משתמש ב-SHIBUTZ_1_MOSHAV
-// (kashf-shibutzim.js) בדיוק כמו שכבר שיערנו. אבל "ما قوي... من
-// العناصر" (היסוד ה"חזק") בצורה בודדת של 4 שורות עדיין דורש הכרעה
-// בין שתי אפשרויות: ערך-חוזק לפי שיטת אבּדח (עפר8>מים4>אוויר2>אש1),
-// או משהו אחר. ברגע שיתבהר, יש כבר את כל שאר הנתונים הדרושים.
+// הסוג השני — מיושם (computeDhamirElementPrevalence). "היסוד שהתגבר"
+// זוהה לפי SHIBUTZ_3_ELEMENT_VALUES (עמ' 122, שיטת המחבר עצמו: אש=1,
+// אוויר=2, מים=3, עפר=4) — לא לפי שיטת אבּדח (עפר8>מים4>אוויר2>אש1),
+// שמצוטטת בספר (עמ' 126) כדעת חכם אחר (אבו סעיד אל-טרבלסי), לא כהכרעת
+// המחבר. "יש לו מעלה" נבדק מול טבלת עמ' 96-98; החזרה למושב (במקרה
+// שאין מעלה) לפי SHIBUTZ_1_MOSHAV, בדיוק כפי שהטקסט קורא לה בשמה.
 //
 // הסוג הרביעי (עמ' 153-155, מאומת בערבית: "تعد مساحة الرمل... وتنظر
 // ذلك العدد بمن هو من الحروف، وتنظر الحروف لمن هي من الأشكال") —
@@ -403,5 +514,6 @@ export default {
   computeDhamirHarkatAlArd,
   computeDhamirJawharayn,
   computeDhamirDoubledSquare,
+  computeDhamirElementPrevalence,
   computeDhamirByMajority,
 };
