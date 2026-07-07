@@ -362,6 +362,34 @@ function writeDhamirPara(reading) {
   </div>`;
 }
 
+// ── שער 4 סוג 4: משלים חיצוני (לא כשף אל-אסרר) ───────────────────────────
+// מוצג בבלוק נפרד ומסומן במפורש בכל הופעה — ראו kashf-dhamir-type4-external.js.
+
+function writeDhamirType4ExternalPara(reading) {
+  const t4 = reading.dhamirType4External;
+  if (!t4 || t4.error || !t4.primaryMethod) return '';
+
+  const pm = t4.primaryMethod;
+  const lines = [];
+  if (pm.status === 'ok' && pm.outputHebrew) {
+    lines.push(`<p class="kashf-dhamir-extra">${stripInlineCitations(pm.outputHebrew)}</p>`);
+  } else if (pm.status === 'needs_verification_multi_letter') {
+    lines.push(`<p class="kashf-dhamir-extra">סכום נקודות הלוח (${t4.totalPoints}) מתפרק ליותר משתי אותיות — לפי המקור המשלים, שילוב כזה דורש אימות נוסף ואינו מוצג כתוצאה סופית.</p>`);
+  }
+  const sm = t4.secondaryMethod;
+  if (sm?.status === 'ok' && sm.outputHebrew) {
+    lines.push(`<p class="kashf-dhamir-extra">${stripInlineCitations(sm.outputHebrew)}</p>`);
+  }
+  if (!lines.length) return '';
+
+  return `<div class="kashf-reading-card dhamir dhamir-external">
+    <h3 class="kashf-card-title">⚠ שער 4 סוג 4 — תוצאה עם מקור חיצוני (לא כשף אל-אסרר)</h3>
+    <p class="kashf-dhamir-disclosure"><strong>גילוי:</strong> ${t4.disclosureHebrew}</p>
+    ${lines.join('')}
+    <p class="kashf-dhamir-source">מקור הכלל: כשף אל-אסרר עמ' 153-155. מקור פעולת ההמרה (מספר→אות): ${t4.sourceBook} — לא כשף אל-אסרר.</p>
+  </div>`;
+}
+
 // ── פסקת עדים ודיין ───────────────────────────────────────────────────────
 
 function writeWitnessJudgePara(reading) {
@@ -672,6 +700,7 @@ export function writeKashfReading(reading) {
     writeSupportingPara(reading),
     writeKeyHousesPara(reading),
     writeDhamirPara(reading),
+    writeDhamirType4ExternalPara(reading),
     writeWitnessJudgePara(reading),
   ].filter(Boolean).join('\n');
 

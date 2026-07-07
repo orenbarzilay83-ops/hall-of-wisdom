@@ -463,11 +463,18 @@ export const SHIBUTZ_6_LETTER_TABLE_META = {
   sourceRef: "כשף אל-אסראר עמ' 138 (\"תמונת שיבוץ האותיות\")",
 };
 
-/** מפה הפוכה: אות (ראשית או משנית) → הצורה שאליה היא שייכת. */
+/**
+ * מפה הפוכה: אות (ראשית או משנית) → הצורה שאליה היא שייכת.
+ * הערה: האות "ד" מופיעה בטבלת המקור פעמיים — כאות ראשית של "לבן"
+ * (עמודה 13) וכאות משנית של "נלחם" (עמודה 8, בעקבות "ד" נמצא בהמשך
+ * לטור סוג המספר במקור). לא נפתר בוודאות מהמקור עצמו; הפונקציה מעדיפה
+ * התאמת אות-ראשית על פני אות-משנית (עדיפות סבירה — אות ראשית מוגדרת
+ * במפורש לכל 16 הצורות, ומתאימה גם לדוגמה המספרית המתועדת באל-פלק
+ * אל-משחון, ראה kashf-dhamir-type4-external.js).
+ */
 export function getFigureByLetter(letter) {
-  const entry = SHIBUTZ_6_LETTER_TABLE.find(
-    (e) => e.primaryLetter === letter || e.secondaryLetter === letter
-  );
+  const byPrimary = SHIBUTZ_6_LETTER_TABLE.find((e) => e.primaryLetter === letter);
+  const entry = byPrimary || SHIBUTZ_6_LETTER_TABLE.find((e) => e.secondaryLetter === letter);
   return entry ? { pattern: entry.pattern, hebrewName: entry.hebrewName } : null;
 }
 

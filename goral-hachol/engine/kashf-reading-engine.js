@@ -35,6 +35,7 @@ import {
 import { getTopicRules } from './kashf-topic-rules.js';
 import { getDakhalKharij } from './kashf-figure-classifier.js';
 import { computeDhamirByMajority } from './kashf-dhamir.js';
+import { computeDhamirType4External } from './kashf-dhamir-type4-external.js';
 import { buildLegacyChart } from './kashf-legacy-chart-adapter.js';
 import {
   computeThiefProximity,
@@ -558,6 +559,17 @@ export function buildKashfReading(board, topicId, clientContext = {}) {
     dhamir = { candidates: [], winner: null, agreementCount: 0, error: err.message };
   }
 
+  // ── שער 4 סוג 4 — משלים חיצוני (לא כשף אל-אסראר) ────────────────────────
+  // שדה נפרד ומסומן במפורש — אינו נכנס להצבעת הרוב של computeDhamirByMajority
+  // (5 השיטות שם מאומתות ישירות מכשף עצמו). מחושב ומוצג רק בגילוי מלא —
+  // ראו kashf-dhamir-type4-external.js לפרטי המקור.
+  let dhamirType4External = null;
+  try {
+    dhamirType4External = computeDhamirType4External(board);
+  } catch (err) {
+    dhamirType4External = { error: err.message };
+  }
+
   // ── בדיקות תומכות נוספות לגילוי הכוונה — עצמאיות מנושא, תלויות בבית הדמיר
   // המחושב לעיל (עמ' 104, 35, 112, 119, 124, 159; kashf-pending-extraction.js)
   let dhamirExtras = null;
@@ -622,6 +634,7 @@ export function buildKashfReading(board, topicId, clientContext = {}) {
     keyHouseReadings,
     boardValidation,
     dhamir,
+    dhamirType4External,
     dhamirExtras,
     witnessTestimony,
 
