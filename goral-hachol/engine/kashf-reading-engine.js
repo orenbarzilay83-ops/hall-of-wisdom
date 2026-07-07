@@ -80,6 +80,7 @@ import {
   computeServantMatterKashf,
   computeLifeYearsKashf,
   computeMoneyMagnitudeKashf,
+  computeGoodsProfitLossKashf,
 } from './kashf-book-additions.js';
 
 // countElementsForYesNo מצפה לפורמט board.entries[i].figure.elementHebrew (הפורמט
@@ -127,6 +128,7 @@ const LEGACY_FN_REGISTRY = {
   computeServantMatterKashf,
   computeLifeYearsKashf,
   computeMoneyMagnitudeKashf,
+  computeGoodsProfitLossKashf,
 };
 
 // ── תיאורי כיוונים לפי יסוד ────────────────────────────────────────────────

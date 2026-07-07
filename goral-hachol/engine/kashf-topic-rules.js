@@ -338,7 +338,7 @@ export const KASHF_TOPIC_RULES = {
     supportingChecks: [
       {
         id: 'object-nature',
-        checkType: 'house-figure-description',
+        checkType: 'house-element',
         houses: [1],
         label: 'טבע הדבר הנסתר',
         sourceText: 'אם הבית הראשון מיסוד העפר — הדבר מן האדמה. אם הוא ממין הצומח — מן הירקות או הצמחים. ואם הוא בבית המורה על בעלי חיים — מן החי.',
@@ -428,7 +428,7 @@ export const KASHF_TOPIC_RULES = {
     supportingChecks: [
       {
         id: 'land-nature',
-        checkType: 'house-figure-description',
+        checkType: 'house-quality',
         houses: [4],
         label: 'תכונת הקרקע (בית/גן)',
         sourceText: 'ואם השאלה על בית או גן, דע שהרביעי הוא תכונת הקרקע; העשירי — תכונת העצים שבו; השביעי — תעלות המים; השלישי — הירקות; והשני — החומה או הגדר המקיפה.',
@@ -1395,10 +1395,11 @@ export const KASHF_TOPIC_RULES = {
       },
       {
         id: 'goods-profit-loss',
-        checkType: 'house-figure-description',
-        houses: [5],
+        checkType: 'legacy-fn',
+        fnName: 'computeGoodsProfitLossKashf',
+        houses: [5, 6, 8, 9, 10, 13],
         label: 'סחורה — יוקר או רווח',
-        sourceText: 'אם קונה שואל על סחורה — האם תתייקר או תוזל: אם מצאת שהבית החמישי חוזר בתשיעי, בעשירי או בשלושה־עשר, בשר לו ברווחים רבים. ואם הוא חוזר בשישי או בשמיני, יפסיד בלא ספק.',
+        sourceText: 'אם קונה שואל על סחורה — האם תתייקר או תוזל: אם מצאת שהבית החמישי חוזר בתשיעי, בעשירי או בשלושה־עשר, בשר לו ברווחים רבים. ואם הוא חוזר בשישי או בשמיני, יפסיד בלא ספק (כשף עמ׳ 222).',
       },
     ],
     keyHouses: [1, 2, 4, 7, 8, 10, 11, 15, 16],

@@ -289,3 +289,44 @@ export function computeMoneyMagnitudeKashf(chart) {
     landingHouse, figureName, durationNumber, amount,
   };
 }
+
+// כשף אל-אסרר עמ' 222 — "אם קונה שואל על סחורה, האם תתייקר או תוזל:
+// אם מצאת שהבית החמישי חוזר בתשיעי, בעשירי או בשלושה־עשר, בשר לו
+// ברווחים רבים. ואם הוא חוזר בשישי או בשמיני, יפסיד בלא ספק."
+// "חוזר" = הצורה בבית החמישי זהה (אותו pattern) לצורה שבבית ההוא.
+export function computeGoodsProfitLossKashf(chart) {
+  const getH = (n) => chart.find((h) => Number(h.house) === n);
+  const h5 = getH(5);
+  if (!h5?.key) return null;
+
+  const profitHouses = [9, 10, 13].filter((n) => getH(n)?.key === h5.key);
+  const lossHouses = [6, 8].filter((n) => getH(n)?.key === h5.key);
+  const figureName = h5.hebrew || h5.key;
+
+  if (profitHouses.length && lossHouses.length) {
+    return {
+      verdict: 'mixed',
+      outputHebrew: `הצורה בבית 5 (${figureName}) חוזרת גם בבית${profitHouses.length > 1 ? 'ים' : ''} ${profitHouses.join(', ')} (רווח) וגם בבית${lossHouses.length > 1 ? 'ים' : ''} ${lossHouses.join(', ')} (הפסד) — הסימנים מעורבים (כשף עמ׳ 222).`,
+      profitHouses, lossHouses,
+    };
+  }
+  if (profitHouses.length) {
+    return {
+      verdict: 'profit',
+      outputHebrew: `הצורה בבית 5 (${figureName}) חוזרת בבית${profitHouses.length > 1 ? 'ים' : ''} ${profitHouses.join(', ')} — הסחורה תתייקר, בשורת רווחים רבים (כשף עמ׳ 222).`,
+      profitHouses, lossHouses,
+    };
+  }
+  if (lossHouses.length) {
+    return {
+      verdict: 'loss',
+      outputHebrew: `הצורה בבית 5 (${figureName}) חוזרת בבית${lossHouses.length > 1 ? 'ים' : ''} ${lossHouses.join(', ')} — הסחורה תוזל, הפסד בלא ספק (כשף עמ׳ 222).`,
+      profitHouses, lossHouses,
+    };
+  }
+  return {
+    verdict: 'no-clear-signal',
+    outputHebrew: `הצורה בבית 5 (${figureName}) אינה חוזרת בבתים 9, 10, 13, 6 או 8 — אין הכרעה מיוחדת מכלל זה (כשף עמ׳ 222).`,
+    profitHouses, lossHouses,
+  };
+}
