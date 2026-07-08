@@ -613,6 +613,15 @@ export function buildKashfReading(board, topicId, clientContext = {}) {
       question: clientContext.question || '',
       age: clientContext.age || '',
       gender: clientContext.gender || '',
+      // שדות-הקשר נוספים — נשמרים כאן לשימוש עתידי בלבד. narrative-writer
+      // לא קורא אותם עדיין (ראו KASHF_CONTEXT_COLLECTOR_IMPLEMENTATION_PLAN.md §6/§9).
+      maritalStatus: clientContext.maritalStatus || null,
+      workStatus: clientContext.workStatus || null,
+      hasChildren: clientContext.hasChildren || null,
+      parentName: clientContext.parentName || '',
+      quesitedName: clientContext.quesitedName || '',
+      phone: clientContext.phone || '',
+      dynFields: clientContext.dynFields || {},
     },
 
     primaryFormula: {

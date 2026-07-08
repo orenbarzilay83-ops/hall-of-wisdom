@@ -1152,11 +1152,31 @@ async function runReading() {
       };
 
       const _ctx = getClientContext(resolvedTopicId ?? reading.topicId);
+
+      // שדות דינמיים לפי-נושא (matter/symptoms/duration/וכו') — מקובצים ל-dynFields
+      // כדי שלא יתנגשו בשמות עתידיים. מועברים בשלב הזה בלבד — לא נעשה בהם שימוש
+      // ב-narrative. ראו KASHF_CONTEXT_COLLECTOR_IMPLEMENTATION_PLAN.md §6.
+      const dynFields = {};
+      if (selectedQuestion && Array.isArray(selectedQuestion.clientFields)) {
+        for (const field of selectedQuestion.clientFields) {
+          if (field?.id && _ctx[field.id] !== undefined) {
+            dynFields[field.id] = _ctx[field.id];
+          }
+        }
+      }
+
       const clientCtx = {
-        name:     _ctx.clientName || '',
-        question: question,
-        age:      _ctx.age || '',
-        gender:   _ctx.gender || '',
+        name:          _ctx.clientName || '',
+        question:      question,
+        age:           _ctx.age || '',
+        gender:        _ctx.gender || '',
+        maritalStatus: _ctx.maritalStatus || null,
+        workStatus:    _ctx.workStatus || null,
+        hasChildren:   _ctx.hasChildren || null,
+        parentName:    _ctx.parentName || '',
+        quesitedName:  _ctx.quesitedName || '',
+        phone:         _ctx.phone || '',
+        dynFields,
       };
 
       const kashfReading = window.KASHF_ENGINE.buildKashfReading(kashfBoard, kashfTopicId, clientCtx);
