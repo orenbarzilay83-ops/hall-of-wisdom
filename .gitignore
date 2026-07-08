@@ -9,3 +9,17 @@ backup-goral-core-before-ui-rebuild.tar.gz
 # Claude Code local settings — worktrees ו-local בלבד
 .claude/worktrees/
 .claude/settings.local.json
+
+# ── מיזוג "המצפן הפנימי" (merge-inner-compass) ──
+# הגנת סודות — לעולם לא לקמט מפתחות/סביבה
+.env
+.env.*
+!.env.example
+# שאריות build/וונדור שאסור שייכנסו לריפו הסטטי
+node_modules/
+.next/
+# ארכיוני snapshot כבדים
+*.zip
+# גיבויים של המצפן (לא מפורטים לוונילה)
+*.bak
+backup_*/
