@@ -13,14 +13,17 @@
 cards.html                    ← נקודת כניסה (טרם נוצרה — שלב 3)
 cartomancy/
   ui/        → cards-app.js   (בקר UI וונילה — שלב 3)
-  engine/    → פורט lib/*     (שלב 1)
-  data/      → knowledge/*     (שלב 1)
+  engine/    → פורט lib/*     (שלב 1) — כולל engine/knowledge/** ו-engine/spreads/**
   assets/cards/ → 52 SVG       (שלב 1)
+  _test_cartomancy.mjs         ← מבחן מנוע (node)
 ```
+
+### סטייה מהתוכנית המקורית (מתועדת)
+בתוכנית דיברנו על הפרדת `data/` מ-`engine/`. בפועל שוכפל מבנה `lib/` **במלואו** תחת `cartomancy/engine/` (כולל `knowledge/` ו-`spreads/`). **סיבה:** שמירה 1:1 על נתיבי ה-import היחסיים של המקור (`./knowledge`, `../../types` וכו') → הפורט מכני, אפס שכתוב-נתיבים ידני, סיכון-שגיאה מינימלי. הפרדת data/engine נשארת אפשרות לעתיד אם תרצה.
 
 ## סטטוס שלבים
 - [x] **שלב 0 — אבטחה + הכנת עץ יעד + מיזוג .gitignore** ← הושלם
-- [ ] שלב 1 — פורט מנועים (TS→ES modules)
+- [x] **שלב 1 — פורט מנועים (TS→ES modules)** ← הושלם (41 מודולים, 52 SVG, מבחן עובר)
 - [ ] שלב 2 — Backend AI (Supabase Edge Function)
 - [ ] שלב 3 — UI וונילה (cards.html + cards-app.js)
 - [ ] שלב 4 — אינטגרציה בדשבורד
