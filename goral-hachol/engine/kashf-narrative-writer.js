@@ -615,8 +615,18 @@ function writeConclusionPara(reading) {
   };
 
   const dir = overallPositive === true ? 'positive' : overallPositive === false ? 'negative' : 'neutral';
-  const guidance = TOPIC_GUIDANCE[topicId]?.[dir]
+  let guidance = TOPIC_GUIDANCE[topicId]?.[dir]
     || (dir === 'positive' ? 'הכיוון הכללי טוב.' : dir === 'negative' ? 'הכיוון הכללי מאתגר.' : 'הכיוון הכללי מורכב.');
+
+  // שכבת-מסקנה חכמה — כרגע רק לנושא מסחר (כשף), הוכחת-היתכנות ל-Kashf
+  // Architecture Advisor Brain. נופלת-חזרה לניסוח-הקבוע למעלה (TOPIC_GUIDANCE)
+  // אם השכבה החכמה חסרה/נכשלה — לא נוגעת בשום נושא אחר.
+  if (topicId === 'commerce' && reading.commerceSmartLayer?.clientWording) {
+    guidance = reading.commerceSmartLayer.clientWording;
+    if (reading.commerceSmartLayer.practicalGuidance) {
+      guidance += ` ${reading.commerceSmartLayer.practicalGuidance}`;
+    }
+  }
 
   const judgeNote = h15
     ? (() => {

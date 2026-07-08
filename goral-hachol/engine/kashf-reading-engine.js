@@ -33,6 +33,7 @@ import {
 } from './kashf-formula-engine.js';
 
 import { getTopicRules } from './kashf-topic-rules.js';
+import { computeCommerceSmartLayer } from './kashf-commerce-smart-layer.js';
 import { getDakhalKharij } from './kashf-figure-classifier.js';
 import { computeDhamirByMajority } from './kashf-dhamir.js';
 import { computeDhamirType4External } from './kashf-dhamir-type4-external.js';
@@ -600,7 +601,7 @@ export function buildKashfReading(board, topicId, clientContext = {}) {
     witnessTestimony = { error: err.message };
   }
 
-  return {
+  const reading = {
     valid: true,
     topicId,
     topicHebrewName: rules.topicHebrewName,
@@ -640,6 +641,18 @@ export function buildKashfReading(board, topicId, clientContext = {}) {
 
     overallPositive: primaryVerdict?.positive,
   };
+
+  // שכבת-מסקנה חכמה — כרגע רק לנושא מסחר, הוכחת-היתכנות ל-Kashf
+  // Architecture Advisor Brain (ראו KASHF_FIRST_TOPIC_SMART_REWRITE_PROPOSAL.md).
+  // בכל כשל — reading.commerceSmartLayer נשאר null, וה-narrative-writer
+  // נופל-חזרה לניסוח הקבוע הישן (TOPIC_GUIDANCE.commerce) ללא שינוי.
+  try {
+    reading.commerceSmartLayer = computeCommerceSmartLayer(reading);
+  } catch (err) {
+    reading.commerceSmartLayer = null;
+  }
+
+  return reading;
 }
 
 export default { buildKashfReading };
