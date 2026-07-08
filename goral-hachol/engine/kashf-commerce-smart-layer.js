@@ -14,6 +14,7 @@
  */
 
 import { HAWI_FIGURE_NAMES_BY_ID } from '../data/sources/kashf-al-asrar/kashf-figure-names.js';
+import { sanitizeKashfClientContext } from './kashf-context-sanitizer.js';
 
 // משקל לפי חלוקת-התפקידים שהספר עצמו קובע (כשף עמ' 218, מצוטט כבר
 // כ-sourceText בבלוק commerce של kashf-topic-rules.js):
@@ -170,6 +171,34 @@ export function computeCommerceSmartLayer(reading) {
     practicalGuidance = null;
   }
 
+  // ── context-aware wording (Context Sanitizer) ───────────────────────────
+  // context מתאים טון/זהירות/רלוונטיות בלבד — לעולם לא-קובע-את-המסקנה
+  // עצמה. overallPositive/certaintyLevel/contradictions למעלה מחושבים
+  // מהלוח בלבד, בלי-תלות ב-clientContext. ראו
+  // KASHF_SAFE_CONTEXT_USAGE_FOR_COMMERCE_PLAN.md. שום שדה גולמי
+  // (clientContext) לא נגיש כאן — רק תוצאת ה-sanitizer המסונן.
+  const sanitizedContext = sanitizeKashfClientContext(reading);
+  const contextAdjustments = sanitizedContext.clientWordingAdjustments;
+  advisorDiagnosis.contextAdjustments = contextAdjustments;
+  advisorDiagnosis.contextRelevance = sanitizedContext.contextRelevance;
+
+  // סתירה כבר-מייצרת את ההמלצה-החד-משמעית-היחידה (למעלה) — לא-מוסיפים
+  // עליה עוד-משפט-הקשר, כדי לא-לדלל את האזהרה הקיימת.
+  let contextGuidanceClause = '';
+  if (practicalGuidance && !hasContradiction) {
+    if (contextAdjustments.some((a) => a.type === 'business-context-allowed')) {
+      contextGuidanceClause = ' מאחר שמדובר בפעילות עצמאית שלך, כדאי להתייחס גם למצב התזרים והלקוחות הקיימים.';
+    } else if (contextAdjustments.some((a) => a.type === 'caution-financial-risk')) {
+      contextGuidanceClause = ' מאחר שאין כרגע הכנסה קבועה, מומלץ להיות זהיר-במיוחד לפני כל התחייבות כספית.';
+    }
+    // caution-no-business-assumption (employed) — בכוונה לא-מוסיף-משפט:
+    // המניעה מ"לכתוב כאילו הלקוח בעל-עסק" היא באי-הוספת-ניסוח-עסקי,
+    // לא בהוספת-משפט-חדש.
+  }
+  const practicalGuidanceFinal = practicalGuidance
+    ? `${practicalGuidance}${contextGuidanceClause}`
+    : practicalGuidance;
+
   return {
     weightedHouses,
     certaintyLevel,
@@ -178,7 +207,7 @@ export function computeCommerceSmartLayer(reading) {
     contradictions,
     advisorDiagnosis,
     clientWording,
-    practicalGuidance,
+    practicalGuidance: practicalGuidanceFinal,
   };
 }
 

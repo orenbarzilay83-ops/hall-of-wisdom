@@ -117,16 +117,19 @@ console.log('\n--- 9. טוהר הפונקציה ---');
   assert(JSON.stringify(input) === inputSnapshotBefore, 'ה-input עצמו לא-שונה (אין side effects/mutation)');
 }
 
-// ── 10+11. אין שינוי-פלט בפועל + כל בדיקות-הרגרסיה הקודמות עדיין עוברות ──
-console.log('\n--- 10+11. אין חיבור בפועל + רגרסיה ---');
+// ── 10+11. חיבור-נכון-בהיקף-המצומצם + כל בדיקות-הרגרסיה הקודמות עדיין עוברות ──
+// עודכן: kashf-commerce-smart-layer.js כן-מייבא את ה-sanitizer (שלב-החיבור
+// המאושר, ראו commit נפרד) — narrative-writer.js/goral-app.js עדיין-לא,
+// כפי שהיקף-השלב הזה דורש (commerce בלבד, לא narrative כללי, לא UI).
+console.log('\n--- 10+11. חיבור-מצומצם-לcommerce-בלבד + רגרסיה ---');
 {
   const fs = await import('node:fs');
   const narrativeWriterSrc = fs.readFileSync('./goral-hachol/engine/kashf-narrative-writer.js', 'utf8');
   const commerceLayerSrc = fs.readFileSync('./goral-hachol/engine/kashf-commerce-smart-layer.js', 'utf8');
   const goralAppSrc = fs.readFileSync('./goral-hachol/ui/goral-app.js', 'utf8');
-  assert(!narrativeWriterSrc.includes('kashf-context-sanitizer'), 'kashf-narrative-writer.js לא-מייבא את ה-sanitizer');
-  assert(!commerceLayerSrc.includes('kashf-context-sanitizer'), 'kashf-commerce-smart-layer.js לא-מייבא את ה-sanitizer');
-  assert(!goralAppSrc.includes('kashf-context-sanitizer'), 'goral-app.js לא-מייבא את ה-sanitizer — לא-מחובר בפועל');
+  assert(!narrativeWriterSrc.includes('kashf-context-sanitizer'), 'kashf-narrative-writer.js לא-מייבא את ה-sanitizer (narrative כללי לא-נגע)');
+  assert(commerceLayerSrc.includes('kashf-context-sanitizer'), 'kashf-commerce-smart-layer.js כן-מייבא את ה-sanitizer (חיבור מאושר, commerce בלבד)');
+  assert(!goralAppSrc.includes('kashf-context-sanitizer'), 'goral-app.js לא-מייבא את ה-sanitizer — אין חיבור-UI/caller ישיר');
 }
 
 console.log('');
@@ -134,4 +137,4 @@ if (failures > 0) {
   console.error(`${failures} בדיקות נכשלו.`);
   process.exit(1);
 }
-console.log('כל הבדיקות עברו. kashf-context-sanitizer.js טהורה, phone/dynFields/maritalStatus/hasChildren חסומים כנדרש, workStatus/quesitedName רלוונטיים-בתנאי, אינה מחוברת לשום פלט בפועל.');
+console.log('כל הבדיקות עברו. kashf-context-sanitizer.js טהורה, phone/dynFields/maritalStatus/hasChildren חסומים כנדרש, workStatus/quesitedName רלוונטיים-בתנאי, מחוברת ל-commerce בלבד (לא ל-narrative-writer/goral-app.js).');
