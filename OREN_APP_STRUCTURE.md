@@ -36,8 +36,14 @@
 ### 2.4 דוחות / מסקנות (השכבה שבבנייה מחדש)
 ראו סעיף 4 — זרימת הנתונים.
 
-### 2.5 מודול קלפים (Cartomancy)
-**לא קיים בקוד הנוכחי.** אם מתוכנן — יש להוסיף כמודול חדש באישור אורן משה, לא לתעד אותו כקיים.
+### 2.5 מודול קלפים (Cartomancy) — "המצפן הפנימי"
+**קיים** (מוזג מפרויקט `inner-compass` בענף `merge-inner-compass`, גישת "פורט לוונילה"). נקודת כניסה: `cards.html` (מקושרת מתפריט `calculator.html`).
+- **מנוע:** `cartomancy/engine/*.js` — פורט מ-`lib/*.ts` של המצפן ל-ES modules טהורים (esbuild type-strip, ללא build/framework). כולל `engine/knowledge/**` (מאגר ידע עברי) ו-`engine/spreads/**`.
+- **UI:** `cartomancy/ui/cards-app.js` (בקר וונילה, סגנון Navy/Gold ממודר תחת `.cards-root`). שומר Supabase כמו שאר העמודים.
+- **נכסים:** `cartomancy/assets/cards/*.svg` (52 קלפים).
+- **שיטות:** פריסת 3 קלפים (שאלה ממוקדת) ו-עבר/הווה/עתיד (32 קלפים, כללית). מסקנה דטרמיניסטית מהמנוע; שכבת AI (Anthropic) נדחתה ומיועדת ל-Supabase Edge Function.
+- **מקור-ידע:** ספר הקרטומנסי ("The Forgotten Art of Cartomancy"). ⚠️ יש לאמת כיסוי-מקור מול כלל "אין נתונים מומצאים" לפני שימוש חי.
+- תיעוד מלא של המיזוג: `MERGE_INNER_COMPASS.md`.
 
 ## 3. מנועים קיימים
 
