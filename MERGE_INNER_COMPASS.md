@@ -24,10 +24,15 @@ cartomancy/
 ## סטטוס שלבים
 - [x] **שלב 0 — אבטחה + הכנת עץ יעד + מיזוג .gitignore** ← הושלם
 - [x] **שלב 1 — פורט מנועים (TS→ES modules)** ← הושלם (41 מודולים, 52 SVG, מבחן עובר)
-- [ ] שלב 2 — Backend AI (Supabase Edge Function)
-- [ ] שלב 3 — UI וונילה (cards.html + cards-app.js)
+- [~] **שלב 2 — Backend AI** ← **נדחה בהחלטת המשתמש**: מנוע בלבד כרגע, בלי שרת. מסקנה דטרמיניסטית מהמנוע; PPF דרך `buildPPFEngineConclusion` (אופליין). חוזרים ל-AI בסוף עם המפתח המרוטט.
+- [x] **שלב 3 — UI וונילה (cards.html + cards-app.js)** ← הושלם. מסכים: תפריט/קריאה-חדשה/תוצאה/ארכיון/לימוד. שומר Supabase כמו שאר העמודים. תמה Navy/Gold ממודרת תחת `.cards-root` (לא דולפת). מנוע three-card + PPF מחווטים; מסקנת-לקוח + אבחון-יועץ בשכבות נפרדות; דוח הדפסה B/W.
 - [ ] שלב 4 — אינטגרציה בדשבורד
 - [ ] שלב 5 — ניקוי + תיעוד + אימות
+
+### אימות שלב 3
+- `node --check` נקי · DOM-shim: הטעינה + render של התפריט בלי קריסה · חיווט מנוע three-card+PPF מפיק פלט · הגשה סטטית `python3 -m http.server` → 200 לכל הנכסים.
+- **תיקון:** `buildPPFEngineConclusion`/`detectGroups` מקבלים את מבנה החלוקה הגולמי `{code, reversed}` ישירות (לא אובייקטי-קלף) — תוקן ב-`doReadPPF`.
+- ⚠️ **בדיקת דפדפן אמיתית (Playwright, כנדרש ב-AGENTS.md) — ממתינה:** Playwright/chromium אינם מותקנים בסביבה הזו. צעדים ידניים: התחבר דרך `index.html` → נווט ל-`cards.html` → הנח 3 קלפים → "קרא את הפריסה" → ודא מסקנה עברית + "הפק דוח".
 
 ## 🔴 הוראות רוטציה + ניקוי למפתח Anthropic המודלף
 המפתח `sk-ant-api03-...` נמצא ב-`inner-compass/.env.local` והוא git-tracked (מקומיט). לביצוע בריפו `inner-compass`:

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>המצפן הפנימי — קריאת קלפים | היכל החכמה</title>
+  <!-- login guard: same pattern as goral-hachol.html -->
+  <script>if (!sessionStorage.getItem('userId')) window.location.replace('/index.html');</script>
+  <style>
+    @font-face { font-family:'STAM'; src:url('./fonts/STAM.TTF') format('truetype'); font-display:swap; }
+
+    /* ── theme scoped under .cards-root (Navy/Gold, RTL) — does NOT leak globally ── */
+    .cards-root{
+      --navy:#1a1a2e; --navy2:#16213e; --navy3:#0f3460;
+      --gold:#e0c97f; --gold-dim:#c8a84b; --gold-dark:#8a6a1a;
+      --ink:#f3ecd8; --muted:#b9ad8c; --line:rgba(224,201,127,.22);
+      --red:#c65b5b; --ok:#7fb08a;
+      --radius:16px; --radius-sm:10px;
+      font-family:'STAM','Helvetica Neue',Arial,sans-serif;
+      color:var(--ink); direction:rtl; min-height:100vh;
+      background:radial-gradient(1200px 800px at 50% -10%,#243a63 0%,var(--navy) 55%,#0b0f1e 100%);
+    }
+    .cards-root *{ box-sizing:border-box; }
+    .cards-wrap{ max-width:1000px; margin:0 auto; padding:18px 16px 60px; }
+
+    .cards-topbar{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 4px 18px; }
+    .cards-title{ font-size:1.5rem; color:var(--gold); letter-spacing:.5px; }
+    .cards-sub{ color:var(--muted); font-size:.85rem; }
+    .cards-btn{ font-family:inherit; cursor:pointer; border:1px solid var(--gold-dim); background:linear-gradient(180deg,var(--navy3),var(--navy2));
+      color:var(--gold); padding:10px 16px; border-radius:var(--radius-sm); font-size:.95rem; transition:.15s; }
+    .cards-btn:hover{ background:var(--navy3); box-shadow:0 0 0 2px var(--line); }
+    .cards-btn.primary{ background:linear-gradient(180deg,var(--gold),var(--gold-dim)); color:#241d05; border-color:var(--gold); font-weight:bold; }
+    .cards-btn.ghost{ background:transparent; }
+    .cards-btn.small{ padding:6px 10px; font-size:.82rem; }
+
+    .cards-panel{ background:linear-gradient(180deg,rgba(22,33,62,.9),rgba(15,20,40,.9)); border:1px solid var(--line);
+      border-radius:var(--radius); padding:18px; margin-bottom:16px; box-shadow:0 8px 30px rgba(0,0,0,.35); }
+    .cards-panel h2{ color:var(--gold); font-size:1.15rem; margin:0 0 12px; border-bottom:1px solid var(--line); padding-bottom:8px; }
+    .cards-panel h3{ color:var(--gold-dim); font-size:1rem; margin:14px 0 6px; }
+
+    .cards-menu{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; }
+    .cards-tile{ text-align:center; padding:26px 16px; cursor:pointer; font-size:1.1rem; }
+    .cards-tile .ico{ font-size:2rem; display:block; margin-bottom:8px; }
+
+    .cards-field{ margin-bottom:14px; }
+    .cards-field label{ display:block; color:var(--muted); margin-bottom:6px; font-size:.9rem; }
+    .cards-field input, .cards-field textarea, .cards-field select{
+      width:100%; font-family:inherit; font-size:1rem; padding:10px 12px; border-radius:var(--radius-sm);
+      background:rgba(10,14,28,.7); border:1px solid var(--line); color:var(--ink); direction:rtl; }
+    .cards-field textarea{ min-height:70px; resize:vertical; }
+    .cards-chips{ display:flex; flex-wrap:wrap; gap:8px; }
+    .cards-chip{ cursor:pointer; padding:7px 14px; border-radius:999px; border:1px solid var(--line); background:transparent; color:var(--ink); font-family:inherit; }
+    .cards-chip.on{ background:var(--gold); color:#241d05; border-color:var(--gold); font-weight:bold; }
+    .cards-row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+    /* slots + deck */
+    .cards-slots{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin:8px 0 4px; }
+    .cards-slot{ width:110px; }
+    .cards-slot .slot-label{ text-align:center; color:var(--gold-dim); font-size:.85rem; margin-bottom:6px; }
+    .cards-slot .slot-box{ height:150px; border:2px dashed var(--line); border-radius:12px; display:flex; align-items:center; justify-content:center;
+      background:rgba(10,14,28,.5); overflow:hidden; position:relative; cursor:pointer; }
+    .cards-slot .slot-box.filled{ border-style:solid; border-color:var(--gold-dim); }
+    .cards-slot img{ width:100%; height:100%; object-fit:contain; }
+    .cards-slot img.rev{ transform:rotate(180deg); }
+    .cards-slot .slot-place{ color:var(--muted); font-size:.8rem; padding:6px; text-align:center; }
+
+    .deck-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(58px,1fr)); gap:6px; max-height:340px; overflow:auto; padding:6px; border:1px solid var(--line); border-radius:10px; background:rgba(10,14,28,.4); }
+    .deck-card{ cursor:pointer; border:1px solid transparent; border-radius:8px; padding:2px; transition:.1s; }
+    .deck-card:hover{ border-color:var(--gold); transform:translateY(-2px); }
+    .deck-card.used{ opacity:.28; pointer-events:none; }
+    .deck-card img{ width:100%; display:block; }
+
+    .concl{ white-space:pre-wrap; line-height:1.7; }
+    .verdict{ font-size:1.05rem; color:var(--gold); background:rgba(224,201,127,.08); border:1px solid var(--line); border-radius:12px; padding:14px; margin-bottom:12px; }
+    details.advisor{ margin-top:12px; border:1px dashed var(--line); border-radius:10px; padding:8px 12px; }
+    details.advisor summary{ cursor:pointer; color:var(--gold-dim); }
+    .tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+    .tag{ font-size:.8rem; padding:4px 10px; border-radius:999px; background:rgba(224,201,127,.1); border:1px solid var(--line); color:var(--muted); }
+    .warn{ color:var(--red); }
+    .archive-item{ display:flex; justify-content:space-between; gap:10px; align-items:center; padding:10px 12px; border:1px solid var(--line); border-radius:10px; margin-bottom:8px; }
+    .archive-item .meta{ font-size:.82rem; color:var(--muted); }
+    .study-block{ margin-bottom:10px; }
+    .empty{ color:var(--muted); text-align:center; padding:20px; }
+
+    /* print — client report only (B/W), consistent with ramal/kashf pages */
+    @media print{
+      body *{ visibility:hidden !important; }
+      #cardsPrintArea, #cardsPrintArea *{ visibility:visible !important; }
+      #cardsPrintArea{ position:absolute; inset:0; margin:0; padding:24px; color:#000; background:#fff; direction:rtl; font-family:'STAM',serif; white-space:pre-wrap; line-height:1.7; }
+      @page{ size:A4; margin:16mm 18mm; }
+    }
+    #cardsPrintArea{ display:none; }
+  </style>
+</head>
+<body>
+  <div class="cards-root">
+    <div class="cards-wrap">
+      <div class="cards-topbar">
+        <div>
+          <div class="cards-title">🃏 המצפן הפנימי</div>
+          <div class="cards-sub">קריאת קלפים · אבחון והכוונה · אורן משה ברזילי</div>
+        </div>
+        <div class="cards-row">
+          <button class="cards-btn ghost small" onclick="location.href='calculator.html'">→ לדשבורד</button>
+          <button class="cards-btn ghost small" id="menuSignOutBtn">התנתקות</button>
+        </div>
+      </div>
+      <div id="cardsApp"><!-- rendered by cards-app.js --></div>
+    </div>
+  </div>
+
+  <!-- client report print target -->
+  <div id="cardsPrintArea"></div>
+
+  <!-- app controller (ES module) -->
+  <script type="module" src="./cartomancy/ui/cards-app.js?v=1"></script>
+
+  <!-- auth + signout: same pattern as the other protected pages -->
+  <script type="module">
+    import { supabase } from '/supabase-client.js';
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) { sessionStorage.clear(); window.location.replace('/index.html'); }
+    else {
+      sessionStorage.setItem('userId', session.user.id);
+      sessionStorage.setItem('userEmail', session.user.email);
+    }
+    window.__supabase = supabase;
+    window.doSignOut = async () => {
+      await supabase.auth.signOut();
+      sessionStorage.clear();
+      window.location.replace('/index.html');
+    };
+    document.getElementById('menuSignOutBtn')?.addEventListener('click', () => window.doSignOut());
+  </script>
+</body>
+</html>
