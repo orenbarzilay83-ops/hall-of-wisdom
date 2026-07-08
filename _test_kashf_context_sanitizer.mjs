@@ -118,10 +118,13 @@ console.log('\n--- 9. טוהר הפונקציה ---');
 }
 
 // ── 10+11. חיבור-נכון-בהיקף-המצומצם + כל בדיקות-הרגרסיה הקודמות עדיין עוברות ──
-// עודכן: kashf-commerce-smart-layer.js כן-מייבא את ה-sanitizer (שלב-החיבור
-// המאושר, ראו commit נפרד) — narrative-writer.js/goral-app.js עדיין-לא,
-// כפי שהיקף-השלב הזה דורש (commerce בלבד, לא narrative כללי, לא UI).
-console.log('\n--- 10+11. חיבור-מצומצם-לcommerce-בלבד + רגרסיה ---');
+// עודכן (שלב Oren Smart Advisor Brain, פאנל-UI-מוקאפי): kashf-commerce-smart-layer.js
+// כן-מייבא את ה-sanitizer (חיבור-commerce המאושר, כמו-קודם) — narrative-writer.js
+// עדיין-לא (הפלט-ללקוח לא-נוגע). goral-app.js **כן** מייבא-עכשיו את ה-sanitizer,
+// אבל **רק בתוך buildMockOrenAdvisorBrainOutput** — שכבת-הפאנל-הפנימי-ליועץ
+// (MOCK, advisor-only) — ולא בתוך-בניית-ה-HTML-ללקוח (kashfHtml/outputEl.innerHTML,
+// שממשיכה-להיבנות-אך-ורק מ-writeKashfReading, בלי-נגיעה-בסניטייזר כלל).
+console.log('\n--- 10+11. חיבור-מצומצם-לcommerce-בלבד + Advisor-Panel-MOCK-בלבד + רגרסיה ---');
 {
   const fs = await import('node:fs');
   const narrativeWriterSrc = fs.readFileSync('./goral-hachol/engine/kashf-narrative-writer.js', 'utf8');
@@ -129,7 +132,20 @@ console.log('\n--- 10+11. חיבור-מצומצם-לcommerce-בלבד + רגרס
   const goralAppSrc = fs.readFileSync('./goral-hachol/ui/goral-app.js', 'utf8');
   assert(!narrativeWriterSrc.includes('kashf-context-sanitizer'), 'kashf-narrative-writer.js לא-מייבא את ה-sanitizer (narrative כללי לא-נגע)');
   assert(commerceLayerSrc.includes('kashf-context-sanitizer'), 'kashf-commerce-smart-layer.js כן-מייבא את ה-sanitizer (חיבור מאושר, commerce בלבד)');
-  assert(!goralAppSrc.includes('kashf-context-sanitizer'), 'goral-app.js לא-מייבא את ה-sanitizer — אין חיבור-UI/caller ישיר');
+
+  // ── שימוש-אסור: sanitizer בתוך בניית-הפלט-הרגיל-ללקוח (kashfHtml/outputEl) ──
+  const clientOutputLineIdx = goralAppSrc.indexOf('outputEl.innerHTML = buildBoardHtml(reading');
+  assert(clientOutputLineIdx > -1, 'נמצאה שורת-בניית-הפלט-הרגיל-ללקוח (outputEl.innerHTML) ב-goral-app.js');
+  const beforeClientOutput = goralAppSrc.slice(0, clientOutputLineIdx);
+  assert(!beforeClientOutput.includes('kashf-context-sanitizer'), 'שימוש-אסור: ה-sanitizer לא-מיובא/נקרא בשום-מקום *לפני* בניית-ה-HTML-הרגיל-ללקוח — הפלט-ללקוח נשאר בלתי-תלוי-בו');
+
+  // ── שימוש-מותר: sanitizer רק בתוך buildMockOrenAdvisorBrainOutput (Advisor Panel, MOCK) ──
+  const mockFnStart = goralAppSrc.indexOf('async function buildMockOrenAdvisorBrainOutput');
+  const mockFnEnd = goralAppSrc.indexOf('function renderOrenAdvisorPanel');
+  assert(mockFnStart > -1 && mockFnEnd > mockFnStart, 'נמצאו buildMockOrenAdvisorBrainOutput ו-renderOrenAdvisorPanel (שכבת-הפאנל-הפנימי) ב-goral-app.js');
+  const sanitizerUsagePos = goralAppSrc.indexOf('kashf-context-sanitizer', clientOutputLineIdx);
+  assert(sanitizerUsagePos > mockFnStart && sanitizerUsagePos < mockFnEnd, 'שימוש-מותר: כל שימוש ב-sanitizer ב-goral-app.js ממוקם אך-ורק בתוך buildMockOrenAdvisorBrainOutput (לוח-היועץ-הפנימי, MOCK)');
+  assert(goralAppSrc.includes('MOCK') && mockFnStart < goralAppSrc.indexOf('MOCK', mockFnStart) && goralAppSrc.indexOf('MOCK', mockFnStart) < mockFnEnd, 'הפונקציה שמשתמשת ב-sanitizer מתויגת-בבירור כ-MOCK בקוד-עצמו');
 }
 
 console.log('');
@@ -137,4 +153,4 @@ if (failures > 0) {
   console.error(`${failures} בדיקות נכשלו.`);
   process.exit(1);
 }
-console.log('כל הבדיקות עברו. kashf-context-sanitizer.js טהורה, phone/dynFields/maritalStatus/hasChildren חסומים כנדרש, workStatus/quesitedName רלוונטיים-בתנאי, מחוברת ל-commerce בלבד (לא ל-narrative-writer/goral-app.js).');
+console.log('כל הבדיקות עברו. kashf-context-sanitizer.js טהורה, phone/dynFields/maritalStatus/hasChildren חסומים כנדרש, workStatus/quesitedName רלוונטיים-בתנאי. מחוברת ל-commerce בלבד (לא ל-narrative-writer). ב-goral-app.js מחוברת אך ורק בתוך buildMockOrenAdvisorBrainOutput (לוח-היועץ-הפנימי, MOCK) — לא בבניית פלט-הלקוח הרגיל.');

@@ -578,6 +578,65 @@ input, select, textarea {
 }
 .kashf-disclaimer { font-style: italic; margin-top: 4px; }
 
+/* ── Oren Smart Advisor Brain — לוח יועץ פנימי, MOCK בלבד ──
+   סכימה-ויזואלית נבדלת-בכוונה מהניווט-הלקוחי (Navy/Gold) — ראו
+   OREN_SMART_ADVISOR_PANEL_PLACEMENT_DECISION.md §1/§7. */
+.oren-advisor-panel {
+  max-width: 860px;
+  margin: 18px auto 0;
+  border: 2px solid #7a1f1f;
+  border-radius: 10px;
+  background: #1a0808;
+  font-family: 'STAM', sans-serif;
+  direction: rtl;
+}
+.oren-advisor-panel:empty { display: none; }
+.oren-advisor-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  user-select: none;
+}
+.oren-advisor-lock { font-size: 16px; }
+.oren-advisor-title { color: #f0a0a0; font-weight: 700; font-size: 14px; flex: 1; }
+.oren-advisor-badge {
+  background: #7a1f1f;
+  color: #fff0e0;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.oren-advisor-caret { color: #c47a7a; transition: transform 0.15s ease; }
+.oren-advisor-header.expanded .oren-advisor-caret { transform: rotate(180deg); }
+.oren-advisor-body { border-top: 1px solid #4a1414; padding: 12px 14px 16px; }
+.oren-advisor-body[hidden] { display: none; }
+.oren-advisor-disclaimer {
+  color: #e0a0a0;
+  font-size: 12px;
+  background: rgba(122,31,31,0.15);
+  border: 1px solid rgba(122,31,31,0.4);
+  border-radius: 6px;
+  padding: 6px 10px;
+  margin-bottom: 10px;
+}
+.oren-advisor-section { margin-bottom: 12px; }
+.oren-advisor-section h4 { color: #e0b0b0; font-size: 13px; margin: 0 0 4px; }
+.oren-advisor-section p, .oren-advisor-section li { color: #d8c0c0; font-size: 13px; line-height: 1.6; }
+.oren-advisor-section ul { margin: 4px 0; padding-inline-start: 18px; }
+.oren-advisor-meta { color: #a08080; font-size: 12px; }
+.oren-advisor-empty { color: #8a6a6a; font-style: italic; }
+.oren-advisor-copy-btn {
+  margin-top: 6px;
+  font-size: 12px !important;
+  padding: 5px 10px !important;
+  background: rgba(122,31,31,0.3) !important;
+  border: 1px solid rgba(224,160,160,0.35) !important;
+  color: #f0c0c0 !important;
+}
+
 /* ── Kashf prose paragraphs ── */
 .kashf-prose-paragraph {
   color: #1a1a1a;
@@ -3213,6 +3272,7 @@ body:has(#screen-open.active) .topbar { display: none !important; }
         <h2 style="margin:0;color:#f0c040;font-size:18px;flex:1">◈ חשיפת הסודות הנצורים (כשף אל-אסרר)</h2>
       </div>
       <div id="kashfReadingOutput" class="kashf-reading-scroll"></div>
+      <div id="orenAdvisorPanel" class="oren-advisor-panel"></div>
     </section>
 
     <!-- ─── ספר קומילה — אסטרולוגיה וֶדית ──────────────────────── -->
