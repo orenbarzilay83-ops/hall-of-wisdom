@@ -9,3 +9,13 @@ backup-goral-core-before-ui-rebuild.tar.gz
 # Claude Code local settings — worktrees ו-local בלבד
 .claude/worktrees/
 .claude/settings.local.json
+
+# סודות — אין להעלות מפתחות/משתני-סביבה לגיט לעולם (ראו OREN_EXISTING_AI_API_AUDIT.md)
+.env
+.env.*
+*.local
+!*.example.local
+
+# קבצי גיבוי/ארכיון זמניים שעלולים להכיל סודות
+*.zip
+*.tar.gz
