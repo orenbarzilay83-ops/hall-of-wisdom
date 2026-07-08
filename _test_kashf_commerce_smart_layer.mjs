@@ -57,17 +57,41 @@ console.log('\n--- מקרה 3: סימנים סותרים (primary≠alt) ---');
   assert(!!layer, 'commerceSmartLayer חושב בהצלחה');
   assert(layer.contradictions.length === 1, `contradictions מזהה סתירה אחת (בפועל: ${layer?.contradictions?.length})`);
   assert(layer.contradictions[0].primary !== layer.contradictions[0].alt, 'primary ו-alt אכן חלוקים');
+  assert(!layer.practicalGuidance.includes('זמן טוב להתקדם'), 'practicalGuidance לא מכיל "זמן טוב להתקדם" כשיש סתירה');
+  assert(layer.practicalGuidance.includes('סתירה'), 'practicalGuidance מזכיר במפורש "סתירה" כשיש contradictions');
   const html = writeKashfReading(reading);
   assert(html.includes('בדיקת אימות נוספת'), 'גילוי-הסתירה הכללי (WORKPLAN #18) עדיין מופיע בפלט, לא נדרס');
+  assert(!html.includes('זה זמן טוב להתקדם'), 'הפלט הסופי (HTML) לא מכיל "זה זמן טוב להתקדם" ליד הסתירה');
   console.log('   contradictions:', JSON.stringify(layer.contradictions));
+  console.log('   practicalGuidance:', layer.practicalGuidance);
 }
 
-// ── 4. מקרה עם ודאות נמוכה ────────────────────────────────────────────────
-console.log('\n--- מקרה 4: ודאות נמוכה ---');
+// ── 3ב. מקרה נוסף שנתפס בביקורת (KASHF_COMMERCE_SMART_LAYER_REVIEW.md §4):
+// overallPositive=true עם supportRatio גבוה, אך primary/alt חלוקים — בדיוק
+// התרחיש שבו נמצא הבאג המקורי (practicalGuidance התעלם מ-contradictions).
+console.log('\n--- מקרה 3ב: הדוגמה-מהביקורת שחשפה את הבאג המקורי ---');
 {
-  const reading = commerceReading(['1211', '1112', '1121', '1122']);
+  const reading = commerceReading(['1122', '1222', '1111', '2111']);
   const layer = reading.commerceSmartLayer;
   assert(!!layer, 'commerceSmartLayer חושב בהצלחה');
+  assert(layer.contradictions.length === 1, `contradictions מזהה סתירה (בפועל: ${layer?.contradictions?.length})`);
+  assert(layer.certaintyLevel !== 'high', `certaintyLevel לא 'high' כשיש סתירה (בפועל: ${layer?.certaintyLevel})`);
+  assert(!layer.clientWording.includes('זמן טוב'), 'clientWording לא מרמז-להתקדמות-בטוחה');
+  assert(!layer.practicalGuidance.includes('זמן טוב להתקדם'), 'practicalGuidance לא "זמן טוב להתקדם"');
+  const html = writeKashfReading(reading);
+  assert(!html.includes('זה זמן טוב להתקדם'), 'הפלט הסופי לא מכיל את הניסוח-החיובי-מדי לצד הסתירה (הבאג המקורי תוקן)');
+  console.log('   certaintyLevel:', layer.certaintyLevel);
+  console.log('   clientWording:', layer.clientWording);
+  console.log('   practicalGuidance:', layer.practicalGuidance);
+}
+
+// ── 4. מקרה עם ודאות נמוכה (בלי contradiction — נבדל במפורש ממקרה 3/3ב) ───
+console.log('\n--- מקרה 4: ודאות נמוכה (בלי סתירה) ---');
+{
+  const reading = commerceReading(['2112', '2122', '1112', '1222']);
+  const layer = reading.commerceSmartLayer;
+  assert(!!layer, 'commerceSmartLayer חושב בהצלחה');
+  assert(layer.contradictions.length === 0, `נבחר-בכוונה לוח בלי contradiction, כדי לבודד את מקרה-הודאות-הנמוכה (בפועל: ${layer?.contradictions?.length})`);
   assert(layer.certaintyLevel === 'low', `certaintyLevel === 'low' (בפועל: ${layer?.certaintyLevel})`);
   assert(layer.clientWording.includes('אי-ודאות של ממש'), 'הניסוח-החדש מזהיר-במפורש מפני אי-ודאות');
   assert(layer.practicalGuidance.includes('לבדוק שוב'), 'ההמלצה-המעשית משקפת זהירות, לא ודאות מזויפת');
