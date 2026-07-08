@@ -1162,6 +1162,17 @@ async function runReading() {
       const kashfReading = window.KASHF_ENGINE.buildKashfReading(kashfBoard, kashfTopicId, clientCtx);
       const kashfHtml = window.KASHF_ENGINE.writeKashfReading(kashfReading);
 
+      // שמירה לארכיון הלקוח (method: "kashf") — best-effort, לא חוסם את הקריאה עצמה
+      // אם נכשל. לא נוגע בחישוב/ניסוח הכשף. ראו KASHF_CONTEXT_COLLECTOR_IMPLEMENTATION_PLAN.md §4/§9.
+      try {
+        const archiveMod = await import('/goral-hachol/engine/goral-client-archive.js');
+        if (archiveMod?.saveKashfReadingToArchive) {
+          archiveMod.saveKashfReadingToArchive(kashfReading);
+        }
+      } catch (err) {
+        // שמירת ארכיון היא best-effort — כישלון כאן לא אמור לשבור את הקריאה
+      }
+
       const outputEl = document.getElementById("kashfReadingOutput");
       if (outputEl) outputEl.innerHTML = buildBoardHtml(reading, kashfReading.dhamir?.winner?.houseNumber) + kashfHtml;
 
