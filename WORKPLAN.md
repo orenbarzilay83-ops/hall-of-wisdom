@@ -352,7 +352,30 @@
 - [✅] אורן משה אישר את כיוון הארכיטקטורה: גישה A (שימוש-חוזר בדפוס Anthropic הקיים) בתוך מבנה C (שכבת-adapter מבודדת) — `ai/provider/anthropic-provider.js` + קבצי-prompt נפרדים למודול (`cartomancy-runtime.md`, `hawi-runtime.md`, `kashf-runtime.md`). קלפים (cartomancy) ייבחר כמימוש-Runtime-AI ראשון.
 
 ### פתוח
-- [ ] תוכנית-עבודה מפורטת שלב-שלב למימוש Runtime AI (קלפים ראשון) — בהכנה, ממתינה לאישור אורן משה לפני כל מימוש-קוד.
+- [x] ~~תוכנית-עבודה מפורטת שלב-שלב למימוש Runtime AI (קלפים ראשון)~~ — **הוכנה ואושרה, שלבים 1-4 בוצעו — ראו #28 למטה.**
 - [ ] המשך גלגול שכבת-הסינתזה (#26 למעלה) — ממתין בנפרד, לא תלוי בזה.
 
 **אימות שבוצע:** אין שינוי-קוד בשלב זה (תיעוד בלבד) — node --check/סריקת-שיבוש לא רלוונטיים. שני המסמכים נדחפו ישירות (לא ל-main, אין מיזוג — לפי הוראה מפורשת של אורן משה "לא לפרוס").
+
+---
+
+## #28 — תשתית Runtime AI, שלבים 1–4: adapter + prompts + שלד Edge Function + mock (2026-07-08, לא נפרס, לא מוזג ל-main)
+
+**הקשר:** המשך ישיר מ-#27. אורן משה אישר את כיוון הארכיטקטורה (גישה A בתוך מבנה C) ובחר במפורש שהשלב הראשון ייבנה ויאומת **רק** בתוך `hall-of-wisdom`, בלי לגעת ב-`inner-compass`, בלי מפתח אמיתי, בלי deploy, בלי חיבור-AI חי. תוכנית מפורטת נכתבה (plan mode, `/root/.claude/plans/happy-marinating-babbage.md`) ואושרה לפני מימוש; המימוש עצמו אושר שלב-שלב (עד שלב 4 בלבד), עם קומיטים מקומיים ועצירה מחייבת לפני כל push.
+
+### בוצע ✅
+- [✅] **שלב 0** — חיזוק `.gitignore`: נוספו `.env`, `.env.*`, `*.local`, קבצי-גיבוי זמניים (`*.zip`/`*.tar.gz`) — מניעה-מונעת לפני שיש בכלל קובץ-סוד ב-hall-of-wisdom. אומת עם קובץ-בדיקה זמני (`git check-ignore`). נדחף מיד (`e782a04`).
+- [✅] **שלב 1** — `ai/provider/anthropic-provider.js` (חדש): `callAnthropic()` — fetch גולמי ל-Anthropic Messages API, **בלי SDK** (הריפו ללא package.json/node_modules בכוונה), מודל ומפתח תמיד פרמטרים נכנסים (לא מקובעים בקוד, בניגוד לדפוס שנמצא ב-inner-compass), **לעולם לא זורקת חריגה** — מחזירה `{ok:false, error}` נקי בכל כשל כדי לאפשר fallback.
+- [✅] **שלב 2** — `ai/prompts/`: `cartomancy-runtime.md` (system-prompt מלא לקלפים, נכתב מחדש — לא הועתק — אוכף "תאר, אל תמציא, אל תייעץ", מפנה ל-`OREN_CONCLUSION_STYLE_SPEC.md`); `hawi-runtime.md`/`kashf-runtime.md` (stub מפורש בלבד — כתיבת תוכן אמיתי דורשת הצעה נפרדת לפי `OREN_AI_SUPERVISOR_SPEC.md`, נוגעת בשכבת-המסקנות).
+- [✅] **שלב 3** — `supabase/functions/oren-smart-ai/index.ts` (שלד Deno, **לא נפרס**): קורא `module`+`engineConclusion` מה-body (המנוע הדטרמיניסטי הוא מקור-האמת), טוען prompt, דוחה מודולים-stub בבירור, קורא ל-`callAnthropic` עם מפתח מ-`Deno.env.get`. בכל כשל (מפתח חסר/stub/רשת) מחזיר `{ok:false, fallback:true, conclusion:engineConclusion}` (סטטוס 200) — לעולם לא שגיאה ריקה ללקוח. הערת-TODO מתועדת בקוד: לפני deploy אמיתי, `ai/provider`+`ai/prompts` צריכים להיות מסונכרנים אל `supabase/functions/_shared/` (Supabase לא תומך ביבוא מחוץ לתיקיית-הפונקציה).
+- [✅] **שלב 4** — `ai/provider/_test-anthropic-provider.mjs` (בהשראת `_test_engine.mjs` הקיים): 12 בדיקות-mock (הצלחה, כשל-HTTP, כשל-רשת, מפתח-חסר, קריאת-prompt) — `fetch` מוחלף זמנית, **אין קריאת-רשת אמיתית ואין מפתח אמיתי בשום מסלול**. כל 12 עברו.
+- [✅] אושר ונדחף אך ורק לענף העבודה (4 קומיטים, `28c6571`…`0422965`) — **לא מוזג ל-main**, לא בוצע `supabase functions deploy`, לא נוסף מפתח אמיתי, לא נגע ב-`inner-compass`, לא נערך שום קובץ-HTML ראשי ולא שום מנוע (חאווי/כשף/עשיריות/קלפים).
+- [✅] תוקן committer על 4 הקומיטים (`rebase --exec ... --reset-author`) בעקבות stop-hook — כולם `Claude <noreply@anthropic.com>`, חתומים (SSH signing, `commit.gpgsign=true`).
+
+### פתוח — ממתין לאישור נפרד לכל צעד
+- [ ] פתרון סנכרון `ai/provider`+`ai/prompts` אל `supabase/functions/_shared/` (הערה מאורן משה — נדרשת הצעה נפרדת לפני כל deploy אמיתי).
+- [ ] `supabase functions deploy` בפועל + סבב-מפתח חדש + `supabase secrets set` — רק אחרי אישור מפורש.
+- [ ] כתיבת תוכן prompt אמיתי ל-`hawi-runtime.md`/`kashf-runtime.md` — דורש הצעה נפרדת (נוגע בשכבת-מסקנות).
+- [ ] כל נגיעה ב-`inner-compass` (כולל שכתוב `app/api/reading` לשימוש בשכבת-adapter החדשה) — לא בתחום שאושר עד כה.
+
+**אימות שבוצע:** `node --check` על `anthropic-provider.js`+`_test-anthropic-provider.mjs` — OK (index.ts הוא Deno-בלבד, לא נבדק ע"י node, כצפוי). סריקת-שיבוש עברית/ערבית/קירילית על כל הקבצים החדשים — נקי. הרצת בדיקת-ה-mock — 12/12 עברו. `grep` ל-`sk-ant-`/`ANTHROPIC_API_KEY *=` על `ai/`+`supabase/` — רק אזכורי-בדיקה/תיעוד, אין מפתח אמיתי. `git diff --stat` מול `main`/`origin` — קבצי-האתר הראשיים וכל מנועי `goral-hachol/engine/` ריקים לחלוטין מהשוואה. `git fetch` נבדק לפני כל commit — אין סטייה.
