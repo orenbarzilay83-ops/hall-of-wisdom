@@ -24,6 +24,14 @@
 //   supabase secrets set ALLOWED_OREN_UID=<UID אמיתי של אורן משה>
 //   supabase secrets set ANTHROPIC_API_KEY=<בעתיד, כשה-mock AI יוחלף בקריאה אמיתית>
 
+// module:"goralQA" — בינת היכל החכמה: Goral QA Evaluator (MOCK בלבד, ראו
+// HALL_WISDOM_GORAL_QA_EDGE_MOCK_PRECOMMIT_REPORT.md). ייבוא מ-adapter
+// מקומי בתוך תיקיית-הפונקציה עצמה (goral_qa_mock_evaluator.ts) — לא ייבוא
+// חוצה-ריפו — כדי שה-Edge Function תהיה deploy-safe ולא תלויה בבנדלינג
+// שעלול לא-לתמוך בייבוא-מחוץ-לתיקיית-הפונקציה. ה-runner המקומי ממשיך
+// להשתמש ב-goral-hachol/qa/goral-qa-ai-evaluator-mock.js (לא שונה).
+import { evaluateQaRunMockEdge } from './goral_qa_mock_evaluator.ts';
+
 declare const Deno: any;
 
 function getEnv(key: string): string | undefined {
@@ -138,8 +146,41 @@ export async function handleAdvisorRequest(
     return jsonResponse(403, { ok: false, errorCode: 'forbidden', message: SAFE_MESSAGES.forbidden });
   }
 
-  // 6. הרשאה אושרה — רק-עכשיו נבנה/מוחזר פלט (mock, לא-AI-אמיתי)
-  return jsonResponse(200, { ok: true, advisorBrainOutput: mockAdvisorBrainOutput() });
+  // 6. הרשאה אושרה — רק-עכשיו קוראים body ומנתבים לפי module. עד-כאן
+  // שום payload/module לא-נקרא בכלל — ה-fail-closed-checks (1-5) לעולם
+  // לא-תלויים בתוכן-הבקשה.
+  let body: Record<string, unknown> = {};
+  try {
+    const rawBody = await req.text();
+    body = rawBody ? JSON.parse(rawBody) : {};
+  } catch {
+    return jsonResponse(400, { ok: false, errorCode: 'invalid_json', message: 'Request body is not valid JSON.' });
+  }
+
+  const moduleName = body?.module;
+
+  // תאימות-לאחור: בקשה-בלי-module כלל (או module:"kashf" מפורש) — ההתנהגות
+  // הישנה שכבר-נבדקה (mockAdvisorBrainOutput תמיד).
+  if (moduleName === undefined || moduleName === 'kashf') {
+    return jsonResponse(200, { ok: true, advisorBrainOutput: mockAdvisorBrainOutput() });
+  }
+
+  // module:"goralQA" — בינת היכל החכמה: Goral QA Evaluator (MOCK בלבד).
+  if (moduleName === 'goralQA') {
+    const qaPayload = body?.payload as { scenarios?: unknown; collectedOutputs?: unknown } | undefined;
+    if (!qaPayload || !Array.isArray(qaPayload.scenarios) || !Array.isArray(qaPayload.collectedOutputs)) {
+      return jsonResponse(400, {
+        ok: false,
+        errorCode: 'invalid_payload',
+        message: 'module "goralQA" requires payload.scenarios and payload.collectedOutputs (arrays).',
+      });
+    }
+    const evaluatorOutput = evaluateQaRunMockEdge(qaPayload as never);
+    return jsonResponse(200, { ok: true, module: 'goralQA', evaluatorOutput });
+  }
+
+  // module לא-מוכר — אין fallback מסוכן.
+  return jsonResponse(422, { ok: false, errorCode: 'unknown_module', message: `Unknown module: ${String(moduleName)}` });
 }
 
 if (typeof Deno !== 'undefined' && typeof Deno.serve === 'function') {
