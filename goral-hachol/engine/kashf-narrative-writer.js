@@ -8,6 +8,7 @@
 import { getFigureAppearance } from './kashf-figure-appearance.js';
 import { getSaadNahs } from './kashf-figure-classifier.js';
 import { HOUSE_NAMES } from './kashf-reading-engine.js';
+import { getSectionVisibility } from './goral-rule-applicability.js';
 
 // שם הבית + נושאו (למשל "בית שני — הממון") — אותה טבלת בתים המשמשת בכל
 // האפליקציה (kashf-reading-engine.js), רק מציגים כאן את חלק הנושא בלבד.
@@ -673,12 +674,24 @@ function writeConclusionPara(reading) {
  * מפיק HTML מלא עבור קריאת חשיפת הסודות הנצורים (כשף אל-אסרר).
  *
  * @param {object} reading - תוצר buildKashfReading
+ * @param {object} [options]
+ * @param {'client'|'advisor'} [options.mode='client'] - 'advisor' מציג גם
+ *   sections שמוגדרים advisor-only (כרגע: דמיר/מחשבת השואל). ראו
+ *   goral-rule-applicability.js ו-GORAL_RULE_APPLICABILITY_AUDIT.md.
  * @returns {string} HTML
  */
-export function writeKashfReading(reading) {
+export function writeKashfReading(reading, options = {}) {
   if (!reading || !reading.valid) {
     return `<div class="kashf-reading-error">שגיאה בקריאה: ${reading?.error || 'נתונים חסרים'}</div>`;
   }
+
+  const mode = options.mode === 'advisor' ? 'advisor' : 'client';
+  const dhamirVisibility = getSectionVisibility({
+    method: 'kashf',
+    topicId: reading.topicId,
+    sectionId: 'dhamir',
+    mode,
+  });
 
   // תשובה קצרה + קריאה ללקוח — תמיד גלויות, באותה שפת עיצוב כמו לוח חאווי
   const shortVerdictHtml = writeShortVerdictBox(reading);
@@ -693,7 +706,7 @@ export function writeKashfReading(reading) {
     writeAltPara(reading),
     writeSupportingPara(reading),
     writeKeyHousesPara(reading),
-    writeDhamirPara(reading),
+    dhamirVisibility.showToClient ? writeDhamirPara(reading) : '',
     writeWitnessJudgePara(reading),
   ].filter(Boolean).join('\n');
 
