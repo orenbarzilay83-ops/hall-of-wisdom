@@ -462,12 +462,42 @@ export const HOUSE_NAMES = {
   16: 'בית שישה-עשר — אחרית הדיין',
 };
 
-function describeHouse(board, houseNum) {
+// בית שמופיע ב-keyHouses רק בגלל שהוא רכיב-חישוב בנוסחה (primaryFormula/
+// altFormula) ואף supportingCheck לא מתייחס אליו ספציפית — כלומר אין לו
+// פרשנות-תוכן עצמאית בנושא הזה — לא אמור להיות מוצג ללקוח עם הכותרת
+// הנושאית הקבועה שלו (HOUSE_NAMES, למשל "בית תשיעי — הדת והנסיעה"), כי זה
+// עלול לגרום ללקוח לחשוב שהקריאה עוסקת בנושא הזה בפועל. נגזר אוטומטית
+// מנתוני-הנושא הקיימים ב-kashf-topic-rules.js — לא מיון ידני חדש לכל נושא.
+// בתים 1 ו-13-16 (השואל/עדים/דיין) לא נכללים — אין להם שם-נושאי מטעה.
+function getFormulaOnlyHouseNumbers(rules) {
+  const formulaHouses = new Set([
+    ...(rules?.primaryFormula?.houses || []),
+    ...(rules?.altFormula?.houses || []),
+  ]);
+  const supportedHouses = new Set();
+  for (const check of rules?.supportingChecks || []) {
+    (check.houses || []).forEach((h) => supportedHouses.add(h));
+    if (check.mainHouse != null) supportedHouses.add(check.mainHouse);
+    if (check.targetHouse != null) supportedHouses.add(check.targetHouse);
+    (check.assembleHouses || []).forEach((h) => supportedHouses.add(h));
+    if (check.combineHouse != null) supportedHouses.add(check.combineHouse);
+  }
+  const result = new Set();
+  for (const h of formulaHouses) {
+    if (h <= 1 || h >= 13) continue;
+    if (!supportedHouses.has(h)) result.add(h);
+  }
+  return result;
+}
+
+function describeHouse(board, houseNum, formulaOnlyHouseNumbers = null) {
   const entry = getHouseEntry(board, houseNum);
   const cls = classifyHouse(board, houseNum);
+  const isFormulaOnly = !!formulaOnlyHouseNumbers?.has(houseNum);
   return {
     houseNum,
-    houseName: HOUSE_NAMES[houseNum] || `בית ${houseNum}`,
+    houseName: isFormulaOnly ? `בית ${houseNum} — מרכיב בנוסחת ההכרעה` : (HOUSE_NAMES[houseNum] || `בית ${houseNum}`),
+    isFormulaOnly,
     pattern: entry.pattern,
     figureName: entry.hebrewName || getFigureHebrewName(entry.pattern),
     quality: cls.saadNahs,
@@ -539,9 +569,10 @@ export function buildKashfReading(board, topicId, clientContext = {}) {
   });
 
   // ── תיאור בתים מרכזיים ───────────────────────────────────────────────────
+  const formulaOnlyHouseNumbers = getFormulaOnlyHouseNumbers(rules);
   const keyHouseReadings = (rules.keyHouses || []).map(h => {
     try {
-      return describeHouse(board, h);
+      return describeHouse(board, h, formulaOnlyHouseNumbers);
     } catch (err) {
       return { houseNum: h, error: err.message };
     }

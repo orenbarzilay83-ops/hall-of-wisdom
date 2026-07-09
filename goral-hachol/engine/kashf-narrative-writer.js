@@ -267,6 +267,9 @@ function findingSentence(f) {
   }
   if (f.checkType === 'legacy-fn') {
     if (!f.outputHebrew) return null;
+    // כלל שאין לו תחולה בקריאה הזו (לדוגמה "מתן התאוות") — לא מציגים ללקוח
+    // סעיף ריק/לא-רלוונטי. עדיין נשאר ב-supportingFindings המלא (advisor-only).
+    if (f.outputHebrew.includes('אין לכלל זה תחולה')) return null;
     const body = stripInlineCitations(f.outputHebrew).split('\n').map(stripInlineCitations).filter(Boolean).join('<br>');
     return `<strong>${f.label}:</strong><br>${body}`;
   }
