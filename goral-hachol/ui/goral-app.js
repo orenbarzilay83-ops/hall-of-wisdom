@@ -2789,7 +2789,7 @@ function renderOrenAdvisorPanel(mockOutput) {
   container.innerHTML = `
     <div class="oren-advisor-header" id="orenAdvisorToggle">
       <span class="oren-advisor-lock">🔒</span>
-      <span class="oren-advisor-title">בינת אורן — לוח יועץ פנימי</span>
+      <span class="oren-advisor-title">בינת היכל החכמה — לוח יועץ פנימי</span>
       <span class="oren-advisor-badge">מצב בדיקה / MOCK — לא AI חי</span>
       <span class="oren-advisor-caret">▾</span>
     </div>

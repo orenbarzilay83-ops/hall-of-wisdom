@@ -145,7 +145,7 @@ console.log('\n--- 2. מכווץ כברירת-מחדל ---');
   const bodyHidden = await page.$eval('#orenAdvisorBody', (el) => el.hidden);
   assert(bodyHidden === true, 'orenAdvisorBody מכווץ (hidden) מיד-אחרי-render, בלי-לחיצה');
   const panelHtml = await page.$eval('#orenAdvisorPanel', (el) => el.innerHTML);
-  assert(panelHtml.includes('🔒') && panelHtml.includes('בינת אורן — לוח יועץ פנימי'), 'הכותרת המדויקת מופיעה, כולל 🔒');
+  assert(panelHtml.includes('🔒') && panelHtml.includes('בינת היכל החכמה — לוח יועץ פנימי'), 'הכותרת המדויקת מופיעה (בינת היכל החכמה), כולל 🔒');
   assert(panelHtml.includes('מצב בדיקה / MOCK — לא AI חי'), 'ה-badge המדויק מופיע');
 }
 
