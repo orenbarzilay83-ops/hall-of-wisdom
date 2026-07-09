@@ -15,7 +15,15 @@ backup-goral-core-before-ui-rebuild.tar.gz
 .env.*
 *.local
 !*.example.local
+!.env.example
+
+# ── מיזוג "המצפן הפנימי" (merge-inner-compass) ──
+# שאריות build/וונדור שאסור שייכנסו לריפו הסטטי
+node_modules/
+.next/
 
 # קבצי גיבוי/ארכיון זמניים שעלולים להכיל סודות
 *.zip
 *.tar.gz
+*.bak
+backup_*/
