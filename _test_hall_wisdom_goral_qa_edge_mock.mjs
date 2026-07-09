@@ -166,13 +166,15 @@ console.log('\n--- 8. אין AI חי / callAnthropic / ANTHROPIC_API_KEY ---');
 {
   const fs = await import('node:fs');
   const src = fs.readFileSync('./supabase/functions/oren-smart-advisor/index.ts', 'utf8');
-  assert(!/callAnthropic\s*\(/.test(src), 'אין קריאה בפועל ל-callAnthropic');
-  // ANTHROPIC_API_KEY מוזכר בהערת-deploy-עתידית בראש הקובץ ("בעתיד, כשה-mock
-  // AI יוחלף") — זו תיעוד-מכוון-לעתיד, לא-שימוש-בפועל. בודקים שאין קריאה
-  // אמיתית אליו (getEnv/Deno.env.get/process.env), לא בדיקת-מחרוזת-גורפת.
-  assert(!/getEnv\(\s*['"]ANTHROPIC_API_KEY['"]\s*\)/.test(src) && !/env\.get\(\s*['"]ANTHROPIC_API_KEY['"]\s*\)/.test(src), 'אין קריאה בפועל ל-ANTHROPIC_API_KEY (getEnv/Deno.env.get)');
+  assert(!/callAnthropic\s*\(/.test(src), 'אין קריאה בפועל ל-callAnthropic הישן (רק callAnthropicEdge, שם שונה במפורש)');
+  // ANTHROPIC_API_KEY כן נקרא עכשיו דרך getEnv (כחלק משרשרת-התנאים ל-live-ready
+  // — ראו HALL_WISDOM_GORAL_QA_LIVE_AI_READY_PRECOMMIT_REPORT.md) — זו קריאה
+  // לגיטימית-ומגודרת, לא סוד-מוטמע. בודקים שאין ערך-מפתח קשיח בקוד (לא
+  // בדיקת-אי-קריאה-בכלל, שהייתה נכונה רק בשלב-ה-MOCK-הבלעדי הקודם).
+  assert(!/sk-ant-[a-zA-Z0-9-]+/.test(src), 'אין מחרוזת שנראית כמו מפתח-Anthropic אמיתי מוטמע בקוד');
+  assert(!/ANTHROPIC_API_KEY\s*=\s*['"][^'"]+['"]/.test(src), 'אין השמה של ערך-מחרוזת-קבוע ל-ANTHROPIC_API_KEY בקוד');
   assert(!src.includes('api.openai.com') && !src.includes('OPENAI'), 'אין הפניה ל-OpenAI');
-  assert(fetchCallCount === 0, `אין קריאת-fetch חיצונית מלבד Supabase Auth (deps.verifyToken חסם הכל) — בפועל: ${fetchCallCount} קריאות`);
+  assert(fetchCallCount === 0, `אין קריאת-fetch חיצונית מלבד Supabase Auth (deps.verifyToken חסם הכל; תרחישי-הבדיקה-הזו לא-מבקשים mode:'live') — בפועל: ${fetchCallCount} קריאות`);
 }
 
 console.log('\n--- 9. אין דליפת phone/sourceText-לא-מסונן/clientHistorySummary/dynFields ---');

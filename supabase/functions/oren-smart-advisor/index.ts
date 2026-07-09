@@ -23,14 +23,21 @@
 //   supabase secrets set SUPABASE_ANON_KEY=<מפתח-anon של הפרויקט>
 //   supabase secrets set ALLOWED_OREN_UID=<UID אמיתי של אורן משה>
 //   supabase secrets set ANTHROPIC_API_KEY=<בעתיד, כשה-mock AI יוחלף בקריאה אמיתית>
+//   supabase secrets set ANTHROPIC_MODEL=<בעתיד — שם-מודל, לא-מקובע בקוד; אין החלטה כרגע>
+//   supabase secrets set HALL_WISDOM_AI_MODE=live   <בעתיד — מתג-שרת ל-module:"goralQA" live-ready, ברירת-מחדל היעדר-הגדרה = mock>
 
-// module:"goralQA" — בינת היכל החכמה: Goral QA Evaluator (MOCK בלבד, ראו
-// HALL_WISDOM_GORAL_QA_EDGE_MOCK_PRECOMMIT_REPORT.md). ייבוא מ-adapter
-// מקומי בתוך תיקיית-הפונקציה עצמה (goral_qa_mock_evaluator.ts) — לא ייבוא
-// חוצה-ריפו — כדי שה-Edge Function תהיה deploy-safe ולא תלויה בבנדלינג
-// שעלול לא-לתמוך בייבוא-מחוץ-לתיקיית-הפונקציה. ה-runner המקומי ממשיך
-// להשתמש ב-goral-hachol/qa/goral-qa-ai-evaluator-mock.js (לא שונה).
+// module:"goralQA" — בינת היכל החכמה: Goral QA Evaluator. כל הקבצים
+// הבאים חיים בתוך תיקיית-הפונקציה עצמה בלבד (deploy-safety — ראו
+// HALL_WISDOM_GORAL_QA_LIVE_AI_INTEGRATION_PLAN.md) — שום ייבוא חוצה-ריפו:
+//   - goral_qa_mock_evaluator.ts    — MOCK תמיד-זמין, ברירת-המחדל
+//   - anthropic-provider-edge.ts    — פורט מקומי, live-ready, לא-קורא-לרשת
+//     אלא-אם apiKey מסופק בפועל (לא קורה כאן — ראו §"מצב live" למטה)
+//   - goral-qa-evaluator-prompt.ts  — prompt קבוע, מקומי
+//   - goral_qa_payload_sanitizer.ts — סניטציה שרתית לפני כל שליחה ל-AI
 import { evaluateQaRunMockEdge } from './goral_qa_mock_evaluator.ts';
+import { callAnthropicEdge } from './anthropic-provider-edge.ts';
+import { GORAL_QA_EVALUATOR_PROMPT } from './goral-qa-evaluator-prompt.ts';
+import { sanitizeGoralQaPayloadForAi } from './goral_qa_payload_sanitizer.ts';
 
 declare const Deno: any;
 
@@ -165,7 +172,17 @@ export async function handleAdvisorRequest(
     return jsonResponse(200, { ok: true, advisorBrainOutput: mockAdvisorBrainOutput() });
   }
 
-  // module:"goralQA" — בינת היכל החכמה: Goral QA Evaluator (MOCK בלבד).
+  // module:"goralQA" — בינת היכל החכמה: Goral QA Evaluator.
+  // ברירת-מחדל: MOCK תמיד. live-ready רק אם כל 5 התנאים הבאים מתקיימים
+  // יחד — auth כבר-אושר-למעלה (שלבים 1-5); כאן ממשיכים לבדוק:
+  //   (א) הבקשה מבקשת live במפורש (body.mode === 'live')
+  //   (ב) מתג-השרת HALL_WISDOM_AI_MODE === 'live'
+  //   (ג) ANTHROPIC_API_KEY קיים בסביבה
+  //   (ד) ANTHROPIC_MODEL קיים בסביבה (לא-מקובע-בקוד — אין החלטה על מודל)
+  //   (ה) ה-payload עובר סניטציה שרתית (defense-in-depth)
+  // כל תנאי-חסר → fallback ל-MOCK עם liveModeUnavailableReason ברור,
+  // לא-שקט. שום קריאה ל-callAnthropicEdge לא-מתבצעת לפני שכל 5 התנאים
+  // אושרו במפורש.
   if (moduleName === 'goralQA') {
     const qaPayload = body?.payload as { scenarios?: unknown; collectedOutputs?: unknown } | undefined;
     if (!qaPayload || !Array.isArray(qaPayload.scenarios) || !Array.isArray(qaPayload.collectedOutputs)) {
@@ -175,8 +192,81 @@ export async function handleAdvisorRequest(
         message: 'module "goralQA" requires payload.scenarios and payload.collectedOutputs (arrays).',
       });
     }
-    const evaluatorOutput = evaluateQaRunMockEdge(qaPayload as never);
-    return jsonResponse(200, { ok: true, module: 'goralQA', evaluatorOutput });
+
+    const mockFallback = (reason: string) =>
+      jsonResponse(200, {
+        ok: true,
+        module: 'goralQA',
+        evaluatorMode: 'mock',
+        liveModeUnavailableReason: reason,
+        evaluatorOutput: evaluateQaRunMockEdge(qaPayload as never),
+      });
+
+    const requestWantsLive = body?.mode === 'live';
+    if (!requestWantsLive) {
+      // המצב הרגיל/ברירת-המחדל — לא ביקשו live בכלל, אין "סיבה" להסביר.
+      return jsonResponse(200, {
+        ok: true,
+        module: 'goralQA',
+        evaluatorMode: 'mock',
+        evaluatorOutput: evaluateQaRunMockEdge(qaPayload as never),
+      });
+    }
+
+    if (getEnv('HALL_WISDOM_AI_MODE') !== 'live') {
+      return mockFallback('mode-not-live');
+    }
+
+    const apiKey = getEnv('ANTHROPIC_API_KEY');
+    if (!apiKey) {
+      return mockFallback('missing-api-key');
+    }
+
+    const model = getEnv('ANTHROPIC_MODEL');
+    if (!model) {
+      return mockFallback('missing-model');
+    }
+
+    const sanitization = sanitizeGoralQaPayloadForAi(qaPayload);
+    if (!sanitization.ok) {
+      return mockFallback(sanitization.reason || 'sanitization-failed');
+    }
+
+    const aiResult = await callAnthropicEdge({
+      apiKey,
+      model,
+      system: GORAL_QA_EVALUATOR_PROMPT,
+      userMessage: JSON.stringify(qaPayload),
+    });
+    if (!aiResult.ok || !aiResult.text) {
+      return mockFallback('anthropic-error');
+    }
+
+    let parsedOutput: Record<string, unknown>;
+    try {
+      parsedOutput = JSON.parse(aiResult.text);
+    } catch {
+      // תגובת-Anthropic לא-הייתה JSON תקין — לא-מחזירים טקסט-גולמי-לא-מאומת.
+      return mockFallback('anthropic-error');
+    }
+
+    const REQUIRED_OUTPUT_KEYS = [
+      'overallDiagnosis', 'scenarioFindings', 'detectedProblems', 'severity',
+      'irrelevantSections', 'missingRelevantSections', 'advisorOnlyLeaks',
+      'clientOutputProblems', 'sourceRuleConcerns', 'recommendedFixes',
+      'codeInstructionForClaude', 'testsToAdd', 'needsOrenDecision', 'confidence',
+    ];
+    const hasAllKeys = REQUIRED_OUTPUT_KEYS.every((k) => k in parsedOutput);
+    if (!hasAllKeys) {
+      return mockFallback('anthropic-error');
+    }
+
+    return jsonResponse(200, {
+      ok: true,
+      module: 'goralQA',
+      evaluatorMode: 'live',
+      evaluatorOutput: parsedOutput,
+    });
   }
 
   // module לא-מוכר — אין fallback מסוכן.
