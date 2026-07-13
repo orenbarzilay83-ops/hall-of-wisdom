@@ -15,6 +15,7 @@ import { buildKashfReading } from '../engine/kashf-reading-engine.js';
 import { writeKashfReading } from '../engine/kashf-narrative-writer.js';
 import { interpretHawiQuestionInitial } from '../engine/hawi-interpreter.js';
 import { getSectionVisibility } from '../engine/goral-rule-applicability.js';
+import { evaluateReading } from '../brain/goral-decision-brain.js';
 
 function collectKashf(scenario, board) {
   const reading = buildKashfReading(board, scenario.topicId, { question: scenario.question });
@@ -82,13 +83,35 @@ function collectHawi(scenario, board) {
 }
 
 /**
+ * מוסיף brainEvaluation (Phase 4 Decision Brain) לפלט שכבר נאסף — קריאה-בלבד
+ * על נתונים שכבר קיימים ב-collected, לא קורא לשום מנוע נוסף ולא משנה שום
+ * שדה קיים.
+ */
+function attachBrainEvaluation(collected) {
+  collected.brainEvaluation = evaluateReading({
+    method: collected.method,
+    topicId: collected.topicId,
+    question: collected.question,
+    engineReading: collected.raw,
+    clientOutput: collected.clientOutputHtml,
+    advisorData: collected.advisorOnlyOutput,
+    sectionsShown: collected.sectionsShown,
+    sectionsHidden: collected.sectionsHidden,
+    sourceRulesApplied: collected.sourceRulesApplied,
+    warnings: collected.warnings,
+  });
+  return collected;
+}
+
+/**
  * @param {object} scenario - פריט מ-GORAL_QA_SCENARIOS
- * @returns {object} פלט מובנה אחיד (ראו OREN_SMART_ADVISOR_GORAL_QA_BRAIN_PLAN.md §B)
+ * @returns {object} פלט מובנה אחיד (ראו OREN_SMART_ADVISOR_GORAL_QA_BRAIN_PLAN.md §B),
+ *                    כולל brainEvaluation (Phase 4)
  */
 export function collectScenarioOutput(scenario) {
   const board = buildRamlBoardFromMothers(scenario.mothers);
-  if (scenario.method === 'kashf') return collectKashf(scenario, board);
-  if (scenario.method === 'hawi') return collectHawi(scenario, board);
+  if (scenario.method === 'kashf') return attachBrainEvaluation(collectKashf(scenario, board));
+  if (scenario.method === 'hawi') return attachBrainEvaluation(collectHawi(scenario, board));
   throw new Error(`method לא מוכר: ${scenario.method}`);
 }
 

@@ -6,11 +6,70 @@
  * לא שינוי-מנוע. אוכפת הפרדת-פרטיות: phone/dynFields-גולמי/clientHistorySummary
  * לעולם לא נכנסים ל-payload, גם אם ישנם בעתיד בתרחיש (kashf-context-sanitizer.js
  * הוא התקדים לעיקרון הזה בקוד הקיים — כאן נאכף באופן דומה, ברמת ה-payload).
+ *
+ * Phase 4: כולל גם ground-truth מ-Decision Brain (goral-hachol/brain/) —
+ * classifiedQuestionType/applicableRuleMatrix/decisionBrainFindings/rubricScores/
+ * missingKnowledgeReferences/sourceEvidencePointers — כדי שה-AI evaluator העתידי
+ * יקבל עובדות מחושבות-מראש במקום לגזור אותן-לבד מ-HTML גולמי.
  */
+
+import { RULE_CATEGORIES, getApplicability } from '../brain/goral-rule-applicability-matrix.js';
+import {
+  getRegistryEntriesForTopic,
+  KASHF_RULES_WITHOUT_PAGE_MAP,
+  KASHF_PAGE_MAP_WITHOUT_RULES,
+} from '../brain/goral-knowledge-registry.js';
 
 const SENSITIVE_KEYS = ['phone', 'dynFields', 'clientHistorySummary'];
 
+function buildApplicableRuleMatrix(questionTypeId, method) {
+  if (!questionTypeId) return null;
+  const row = {};
+  for (const category of RULE_CATEGORIES) {
+    row[category] = getApplicability(questionTypeId, method, category);
+  }
+  return row;
+}
+
+function buildMissingKnowledgeReferences(method, topicId) {
+  const refs = [];
+  if (method === 'kashf' && KASHF_RULES_WITHOUT_PAGE_MAP.includes(topicId)) {
+    refs.push(`kashf:${topicId} — יש כלל מנוע אך אין רשומת-עמוד ב-KASHF_TOPIC_PAGE_MAP`);
+  }
+  if (method === 'kashf' && KASHF_PAGE_MAP_WITHOUT_RULES.includes(topicId)) {
+    refs.push(`kashf:${topicId} — יש עמוד ממופה אך אין כלל מנוע תואם ב-KASHF_TOPIC_RULES`);
+  }
+  return refs;
+}
+
+function buildSourceEvidencePointers(method, topicId) {
+  return getRegistryEntriesForTopic(method, topicId).map((entry) => ({
+    ruleId: entry.ruleId,
+    file: entry.evidenceLocation.file,
+    exportOrFunction: entry.evidenceLocation.exportOrFunction,
+    confidence: entry.confidence,
+  }));
+}
+
+function buildDecisionBrainFindings(brain) {
+  if (!brain) return null;
+  return {
+    missingRequiredRules: brain.missingRequiredRules,
+    irrelevantAppliedRules: brain.irrelevantAppliedRules,
+    advisorOnlyLeaks: brain.advisorOnlyLeaks,
+    forbiddenClientSections: brain.forbiddenClientSections,
+    formulaRoleLabelProblems: brain.formulaRoleLabelProblems,
+    contradictionProblems: brain.contradictionProblems,
+    uncertaintyProblems: brain.uncertaintyProblems,
+    privacyProblems: brain.privacyProblems,
+    overallSeverity: brain.overallSeverity,
+    recommendedFixes: brain.recommendedFixes,
+    needsAiReview: brain.needsAiReview,
+  };
+}
+
 function sanitizeForAi(collected) {
+  const brain = collected.brainEvaluation || null;
   return {
     scenarioId: collected.scenarioId,
     method: collected.method,
@@ -24,6 +83,12 @@ function sanitizeForAi(collected) {
     sourceRulesApplied: collected.sourceRulesApplied || [],
     // board/advisorOnlyOutput/raw במפורש לא-נכללים — הם לא נחוצים לשיפוט
     // client-output, ועלולים לשאת בעתיד clientContext עשיר (phone/dynFields).
+    classifiedQuestionType: brain?.questionType || null,
+    applicableRuleMatrix: buildApplicableRuleMatrix(brain?.questionType, collected.method),
+    decisionBrainFindings: buildDecisionBrainFindings(brain),
+    rubricScores: brain?.rubricScores || null,
+    missingKnowledgeReferences: buildMissingKnowledgeReferences(collected.method, collected.topicId),
+    sourceEvidencePointers: buildSourceEvidencePointers(collected.method, collected.topicId),
   };
 }
 
