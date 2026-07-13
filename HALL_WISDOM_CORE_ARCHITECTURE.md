@@ -3,6 +3,47 @@
 > **מסמך ארכיטקטורה בלבד. אין קוד. אין שינוי קבצים קיימים. אין commit. אין deploy. אין merge.**
 > זהו מסמך-האב המחייב של כל מערכת היכל החכמה — Core Constitution + Architecture + Roadmap + Controlled Learning Loop (Future).
 > תאריך: 2026-07-13. ענף: `claude/app-cleanup-organization-mia9b2`.
+> **עודכן** — לאחר מימוש-התשתית הראשון של Reading Strategy Builder: (1) עודכן ה-Pipeline הסופי (חלק יא) עם שלב `Knowledge Decision Pipeline` חדש בין Reading Strategy ל-Reading Plan; (2) נוספה הפרדה רשמית בין **Reading Intelligence** ל-**Site Intelligence** (חלק יד); (3) נוסף עיקרון **AI Usage Boundary** (חלק טו).
+> **עודכן שוב** — נוספה שכבת-העל **Hall of Wisdom Platform** (חלק 0, לפני חלק א), נוסף **Cost & Usage Intelligence** תחת Site Intelligence (הרחבת חלק יד), הורחב **AI Usage Boundary** עם רשימת-Platform-Services דטרמיניסטיים (חלק טו), ונוסף עיקרון **AI is an Assistant, Hall of Wisdom Core is the Decision Maker** (חלק טז). עדכון-תכנון בלבד — לא בוצע שינוי-קוד.
+
+---
+
+## חלק 0 — Hall of Wisdom Platform (שכבת-העל של המערכת)
+
+**Hall of Wisdom Core הוא לב המערכת. Hall of Wisdom Platform היא כל המערכת.**
+
+Platform הוא השם-המקיף לכל מה שהאתר כולל — לא רק Core (מוח-הקריאה) ו-Intelligence (שכבת-הבינה), אלא גם האפליקציות עצמן ושירותי-התשתית שסביבן. **כל מודול עתידי שיתווסף ואינו Core** (למשל: מודול-תשלומים, מודול-דוחות-PDF, אינטגרציה חיצונית) **שייך ל-Platform**, לא ל-Core — Core נשאר מצומצם-בכוונה למוח-הקריאה-וה-Intelligence בלבד.
+
+```
+Hall of Wisdom Platform
+│
+├── Hall of Wisdom Core
+│
+├── Hall of Wisdom Intelligence
+│   ├── Reading Intelligence
+│   └── Site Intelligence
+│
+├── Applications
+│   ├── Goral HaChol
+│   ├── Cards
+│   ├── Future Modules
+│   └── Advisor Tools
+│
+├── Platform Services
+│   ├── Authentication
+│   ├── Users
+│   ├── Client Archive
+│   ├── Reports
+│   ├── PDF
+│   ├── API
+│   ├── Payments (Future)
+│   ├── Notifications (Future)
+│   └── Integrations (Future)
+│
+└── AI Runtime
+```
+
+**⚠️ שכבת-העל הזו היא תיעוד-מבנה/שמות בלבד.** שום Platform Service (Authentication, Users, Reports, PDF, API, Payments, Notifications, Integrations) לא ממומש או משתנה בשלב זה — רובם כבר קיימים באתר כפי שהוא (למשל אימות דרך `supabase-client.js`), חלקם עתידיים-בלבד (מסומנים "Future"). המטרה כאן היא רק לקבוע **איפה** כל דבר-עתידי ישתייך מבחינה-מושגית, לא לבנות אותו.
 
 ---
 
@@ -503,6 +544,8 @@ Intent Analysis
 ↓
 Reading Strategy
 ↓
+Knowledge Decision Pipeline
+↓
 Reading Plan
 ↓
 Rule Decisions
@@ -529,6 +572,17 @@ AI Runtime לפי צורך
 ```
 
 **הבדל מהותי מה-pipeline הקודם (Reading Intelligence):** נוספו 3 שלבים חדשים באמצע-הזרימה — **Intent Analysis** (אחרי Question Classification, לפני Reading Strategy), **Structured Reasoning** (אחרי Verification, לפני ה-Narrative Builders), ו-**AI Runtime** מוזז לסוף-מוחלט, מסומן **"לפי צורך"** — כלומר לא כל קריאה חייבת לעבור דרכו, בניגוד לכל שאר-השלבים שהם חובה.
+
+**עודכן (לאחר מימוש-תשתית Reading Strategy Builder) — נוסף שלב `Knowledge Decision Pipeline` בין Reading Strategy ל-Reading Plan:** זהו **לא רכיב-חדש בפני עצמו**, אלא כינוי-זרימה לשלב שבו Knowledge Memory / Rule Applicability Matrix / Knowledge Registry (הרכיבים שכבר מתועדים בחלקים ג+ז+יב) מספקים ל-Reading Planner את מרחב-הידע, ההתאמות והמגבלות הזמינים בפועל — **לפני** שה-Plan עצמו נבנה. אחריות-הרכיבים לאורך השלב הזה מוגדרת במפורש כדי למנוע חפיפה:
+
+- **Reading Strategy Builder** — קובע מדיניות ומגבלות (`strategyConstraints`), **לא בוחר Rule IDs סופיים**.
+- **Knowledge Decision Pipeline** — מספק ידע, התאמות ומגבלות מתוך Knowledge Memory/Matrix/Registry (מה קיים, מה מכוסה-מקור, מה זמין ל-method הנתון) — עדיין לא מכריע איזה חוק-ספציפי יופעל.
+- **Reading Planner** — בונה תוכנית-קריאה (`ReadingPlan`) מתוך Strategy + Knowledge Decision Pipeline output.
+- **Rule Decision Engine** — מקבל החלטות סופיות לכל חוק-מועמד (זהה ל-"Rule Decisions" הקיים בפייפליין).
+- **Engine Execution Coordinator** — מפעיל רק את המנועים שנבחרו בפועל על-ידי Rule Decision Engine.
+- **Client Narrative Builder / Advisor Narrative Builder** — בונים פלטים **נפרדים** ללקוח וליועץ (זהה ל-"Client Narrative"/"Advisor Narrative" הקיימים בפייפליין).
+
+**⚠️ שום דבר מהאמור למעלה אינו ממומש בשלב הנוכחי, מלבד Intent Analyzer ו-Reading Strategy Builder (תשתית-בלבד, ללא חיבור למנועים/ל-Knowledge Decision Pipeline האמיתי).** זהו עדכון-תכנון של ה-Pipeline בלבד.
 
 ---
 
@@ -643,9 +697,155 @@ Verified Release
 
 ---
 
+## חלק יד — הפרדה רשמית: Reading Intelligence מול Site Intelligence
+
+**זהו עדכון-מבנה תחת "Hall of Wisdom Intelligence"** (חלק י, סעיף 2) — מגדיר שני Domains נפרדים-בבירור בתוך אותה תת-קבוצה, כדי שרכיבי-קריאה (Intent Analyzer, Reading Strategy Builder, וכו') לא יתערבבו-מושגית עם כלי-תחזוקה עתידיים של האתר עצמו.
+
+```
+Hall of Wisdom Intelligence
+│
+├── Reading Intelligence
+│   ├── Goral HaChol
+│   │   ├── Kashf
+│   │   └── Hawi
+│   └── Cards
+│
+└── Site Intelligence
+    ├── Site Health Checks
+    ├── Regression Detection
+    ├── UI and Navigation Checks
+    ├── Auth and Database Checks
+    ├── Deployment Health
+    ├── Broken Imports and Missing Files
+    ├── Security and Privacy Checks
+    ├── Cost & Usage Intelligence
+    ├── QA Supervisor
+    └── Claude Repair Planner
+```
+
+### Reading Intelligence
+
+- פועלת **רק** עבור פריסות הקלפים ומערכת גורל החול (Kashf/Hawi).
+- מבינה שאלה, Intent, Strategy, חוקים, מנועים ופלט מקצועי — זהו כל מה שתועד עד כה בחלקים ג-יג של המסמך הזה (Intent Analyzer, Reading Strategy Builder, Reading Planner, Rule Decision Engine, וכו').
+- **אינה נדרשת** עבור כלים דטרמיניסטיים שכבר עובדים ללא AI (למשל: מחשבון-נומרולוגיה, תהילים, יומן-לקוחות — כלים ב-`calculator.html` שאינם קריאות-גורל).
+
+### Site Intelligence
+
+- בודקת את **כל האתר**, בלי קשר לקריאות — Domain נפרד-לגמרי מ-Reading Intelligence, לא תת-רכיב שלה.
+- פועלת כ**איש-תחזוקה פנימי**: אוספת תוצאות מבדיקות דטרמיניסטיות (Playwright, HTTP, console, imports, Supabase, Vercel) — לא מבצעת קריאה-גורל ולא נוגעת בלוגיקת-הפרשנות.
+- AI (כשיגיע, לפי Roadmap שלב 13) משמש בה **רק** לניתוח-ממצאים, תעדוף-בעיות, ויצירת-הוראות לקלוד — **לעולם לא** למשמעות דתית/פרשנית/גורלית.
+- **אינה משנה קוד ואינה מבצעת Deploy/Merge אוטומטי** — בדומה לכל שאר Hall of Wisdom Core, כל שינוי-קוד עובר דרך Claude Instruction Generator ואישור-אורן, לא אוטומציה עצמאית.
+
+#### Cost & Usage Intelligence (תת-רכיב חדש תחת Site Intelligence)
+
+**אחריות:**
+- מעקב אחר שימוש ב-AI.
+- מעקב אחר עלויות.
+- זיהוי שימוש חריג.
+- ניתוח מגמות-שימוש.
+- המלצה על מודל מתאים (לא בחירה-אוטומטית — המלצה בלבד).
+- התרעה על חריגה מתקציב.
+- ניתוח שימוש לפי: כלי, משתמש, יועץ, קריאה, בדיקת-תחזוקה.
+
+**מקור-הנתונים:** רשומות-המטא-דאטה שכל קריאת-AI **חייבת** לשאת (ר' חלק טו — `scope, tool, operation, actorType, provider, model, inputTokens, outputTokens, estimatedCost, readingIdOrCheckId, createdAt`). Cost & Usage Intelligence **קורא ומצטבר** את הרשומות האלה — הוא לא מגדיר אותן ולא יוצר אותן בעצמו.
+
+**הבהרה קשיחה — זהו רכיב-בקרה בלבד:**
+- **אינו מבצע חיוב** (billing) — אין אינטגרציית-תשלום.
+- **אינו משנה מודל** — לא מחליף `model` בקריאה שכבר מתבצעת.
+- **אינו מחליט על תמחור** — לא קובע מחיר, רק מציג עלות-מוערכת שכבר חושבה במקום אחר.
+- **אינו מפעיל AI בעצמו** — הוא צרכן-נתונים, לא scope רביעי מותר-לקריאת-AI (רשימת-3-ה-scopes בחלק טו נשארת סגורה).
+
+**⚠️ אף אחד מרכיבי Site Intelligence — כולל Cost & Usage Intelligence — לא ממומש כלל בשלב זה.** זהו תכנון-מבנה/מיפוי-שמות בלבד, כדי שרכיבים עתידיים (כמו QA Supervisor, Claude Repair Planner, או Cost & Usage Intelligence) לא ייבנו בטעות כתת-רכיבים של Reading Intelligence.
+
+---
+
+## חלק טו — AI Usage Boundary (עיקרון ארכיטקטוני בלבד)
+
+**AI Runtime מופעל רק באחד משלושה scopes מוגדרים-מראש:**
+
+1. `reading.cards`
+2. `reading.goralHachol`
+3. `siteMaintenance`
+
+**שאר הכלים באתר (מחשבון-נומרולוגיה, תהילים, יומן-לקוחות, וכל כלי דטרמיניסטי אחר) נשארים דטרמיניסטיים לחלוטין ואינם יוצרים קריאת-AI או עלות-AI בשום נסיבה.** זהו אותו עיקרון-יסוד שכבר קיים ב-Core Constitution (חלק ב, §2: Deterministic Engines) — מורחב כאן במפורש ל-scope-ים מותרים לקריאת-AI, לא רק ל"מנועים".
+
+**(הורחב) כל יתר ה-Platform Services (חלק 0) נשאר דטרמיניסטי, ללא יוצא מן הכלל:**
+
+```
+✔ Authentication    ✔ Users           ✔ Reports        ✔ Archive
+✔ PDF               ✔ Payments        ✔ Notifications  ✔ Settings
+✔ Calculator         ✔ Navigation
+```
+
+אף אחד מהשירותים למעלה **אינו מפעיל AI כברירת-מחדל** — רק שלושת ה-scopes המפורשים למעלה (`reading.cards`/`reading.goralHachol`/`siteMaintenance`) רשאים בכלל לקרוא ל-AI Runtime. הרחבת-scope עתידית (רביעי ומעלה) דורשת עדכון-מסמך מפורש + אישור-אורן, לא הוספה שקטה.
+
+### מבנה-חובה לכל קריאת-AI עתידית
+
+כל קריאת-AI עתידית (בכל אחד משלושת ה-scopes) **חייבת** להיות מסומנת עם רשומת-מטא-דאטה במבנה הבא:
+
+```js
+{
+  scope,               // 'reading.cards' | 'reading.goralHachol' | 'siteMaintenance'
+  tool,
+  operation,
+  actorType,
+  provider,
+  model,
+  inputTokens,
+  outputTokens,
+  estimatedCost,
+  readingIdOrCheckId,
+  createdAt,
+}
+```
+
+**⚠️ זהו עיקרון ארכיטקטוני בלבד. לא ממומש Usage Metering בשלב הנוכחי** — אין קוד, אין schema-קובץ, אין persistence. המבנה מתועד כאן כדי שכל מימוש-AI עתידי (Roadmap שלב 13 ואילך) ייבנה נכון-מההתחלה, במקום להתווסף כ-afterthought.
+
+---
+
+## חלק טז — Architecture Principle: AI is an Assistant, Hall of Wisdom Core is the Decision Maker
+
+**AI is an Assistant. Hall of Wisdom Core is the Decision Maker.**
+
+זהו עיקרון-על שחוצה את כל המסמך הזה — ריכוז-מפורש של מה שכבר מרומז ב-Core Constitution (חלק ב, §1: Source Before AI; §2: Deterministic Engines; §3: Intelligence as Meta Layer) וב-Reasoning Layer (חלק ט: "ה-AI הוא מנסח-מחדש, לא קובע-עובדות"), למשפט-יסוד אחד וברור:
+
+- **כל החלטה מקצועית מתקבלת ב-Core** — לא ב-AI Runtime.
+- **AI מסביר** (מנסח את מה שה-Reasoning Layer כבר קבע).
+- **AI מבקר** (בהקשר Site Intelligence — מנתח ממצאי-בדיקה, לא קובע מה תקין).
+- **AI מציע** (Mentor Module — המלצה בלבד, לא כלל מחייב, לפי §12 בחלק יג).
+- **AI מסכם.**
+- **AI אינו מחליף את מנועי הידע** (Kashf/Hawi/Cards) — אלה נשארים דטרמיניסטיים-לחלוטין, כפי שכבר נקבע ב-Core Constitution §2.
+- **AI אינו מחליף את הספרים** — כל ידע מקצועי מגיע ממקור-מאושר בלבד (§1: Source Before AI), AI אינו רשאי להמציא חוק/פירוש/התאמה.
+- **AI אינו מחליף את החלטת אורן** — כל מקום שבו נקבע `needsOrenDecision`/`requiresClarification` לאורך המסמך הזה (Intent Analyzer, Reading Strategy Builder, Mentor Module, Controlled Learning Loop) ממשיך לחייב החלטת-אדם, לא AI.
+
+**זהו עיקרון-בדיקה שימושי לכל רכיב עתידי:** אם רכיב חדש-כלשהו (ב-Core, ב-Intelligence, או ב-Platform) מתחיל "להחליט" במקום "להסביר/לבקר/להציע/לסכם" — זו סטייה מהעיקרון הזה, ודורשת אישור-מפורש-נפרד לפני מימוש, בדיוק כמו כל סטייה אחרת מ-Core Constitution.
+
+---
+
 ## סיכום היקף הסבב הזה
 
 ✅ עדכון מסמך ארכיטקטורה זה (`HALL_WISDOM_CORE_ARCHITECTURE.md`) — הוספת Core Constitution, Knowledge Graph, Reasoning Layer, הפרדת-שמות רשמית, Pipeline מעודכן, Roadmap מעודכן, **Controlled Learning Loop (Future)** (חלק יג)
 ✅ עדכון `CORE_ARCHITECTURE_REVIEW_REPORT.md` (קובץ נפרד)
 
 ❌ שום קוד. שום שינוי-קובץ-קיים (מעבר לשני קבצי-הארכיטקטורה עצמם). שום commit. שום deploy. שום merge.
+
+---
+
+## עדכון סבב נוסף — לאחר מימוש-תשתית Reading Strategy Builder
+
+✅ `Knowledge Decision Pipeline` נוסף ל-Pipeline הסופי (חלק יא), עם חלוקת-אחריות מפורשת מול Reading Strategy Builder/Reading Planner/Rule Decision Engine/Engine Execution Coordinator/Narrative Builders.
+✅ הפרדה רשמית בין **Reading Intelligence** ל-**Site Intelligence** (חלק יד, עץ-Domains מלא + הגדרות).
+✅ עיקרון **AI Usage Boundary** — 3 scopes מותרים לקריאת-AI + מבנה-מטא-דאטה עקרוני (חלק טו).
+
+❌ שום קוד. ❌ שום שינוי בקובץ קוד קיים (כולל Reading Strategy Builder עצמו — נשאר בדיוק כפי שהיה). ❌ שום Test חדש/משונה. ❌ שום AI חי. ❌ שום Deploy. ❌ שום Merge ל-main.
+
+---
+
+## עדכון סבב נוסף (שני עדכוני-ארכיטקטורה אחרונים) — Platform Layer + Cost & Usage Intelligence
+
+✅ נוספה שכבת-העל **Hall of Wisdom Platform** (חלק 0, לפני חלק א) — עץ-מבנה מלא: Core, Intelligence (Reading+Site), Applications, Platform Services, AI Runtime. הובהר במפורש ש-Core הוא לב-המערכת ו-Platform היא כל-המערכת, וש-כל מודול-עתידי-שאינו-Core שייך ל-Platform.
+✅ נוסף **Cost & Usage Intelligence** כתת-רכיב תחת Site Intelligence (הרחבת חלק יד) — מעקב-שימוש/עלויות/חריגות/מגמות/המלצת-מודל/התרעת-תקציב, מפורש כרכיב-בקרה-בלבד (אינו מבצע חיוב, אינו משנה מודל, אינו קובע תמחור, אינו מפעיל AI בעצמו).
+✅ **AI Usage Boundary הורחב** (חלק טו) — נוספה רשימת-Platform-Services מפורשת (Authentication/Users/Reports/Archive/PDF/Payments/Notifications/Settings/Calculator/Navigation) שכולם דטרמיניסטיים-ללא-AI-כברירת-מחדל.
+✅ נוסף עיקרון-ארכיטקטוני חדש (חלק טז): **"AI is an Assistant, Hall of Wisdom Core is the Decision Maker"** — AI מסביר/מבקר/מציע/מסכם בלבד; לעולם אינו מחליף מנועי-ידע, ספרים, או החלטת-אורן.
+
+❌ שום קוד. ❌ שום שינוי בקובץ קוד קיים (כולל Reading Strategy Builder עצמו). ❌ שום Test חדש/משונה. ❌ שום מנוע/QA/UI/קלפים/Supabase נגוע. ❌ שום AI חי. ❌ שום Deploy. ❌ שום Merge ל-main.
