@@ -14,7 +14,9 @@ import { UNKNOWN_INTENT_ID, isIntentId } from './goral-hachol/intelligence/inten
 import {
   buildReadingStrategy, validateStrategyInput, validateStrategyResult, STRATEGY_VERSION,
 } from './goral-hachol/intelligence/reading-strategy-builder.js';
-import { STRATEGY_CONSTRAINT_CATEGORIES, CONSTRAINT_FIELD_NAMES } from './goral-hachol/intelligence/reading-strategy-types.js';
+import {
+  STRATEGY_CONSTRAINT_CATEGORIES, CONSTRAINT_FIELD_NAMES, READING_DOMAINS, METHOD_BY_DOMAIN,
+} from './goral-hachol/intelligence/reading-strategy-types.js';
 
 let passed = 0;
 let failed = 0;
@@ -34,7 +36,7 @@ function build(question, method, extra = {}) {
 }
 
 const OUTPUT_CONTRACT_FIELDS = [
-  'strategyId', 'strategyVersion', 'method', 'questionType', 'primaryIntent', 'secondaryIntents',
+  'strategyId', 'strategyVersion', 'readingDomain', 'method', 'spreadId', 'questionType', 'primaryIntent', 'secondaryIntents',
   'goal', 'primaryEvidence', 'secondaryEvidence', 'verificationPolicy', 'contradictionPolicy',
   'clientDepth', 'advisorDepth', 'hiddenSectionsPolicy', 'timingPolicy', 'spiritualPolicy',
   'confidencePolicy', 'strategyConstraints', 'strategyReason', 'confidence', 'requiresClarification',
@@ -325,6 +327,7 @@ function isNonEmptyClarification(strategy) {
   for (const file of filesToCheck) {
     const content = fs.readFileSync(new URL(file, import.meta.url), 'utf8');
     assert(!/from ['"].*\/engine\//.test(content), `${file}: no import from goral-hachol/engine/`);
+    assert(!/from ['"].*cartomancy\//.test(content), `${file}: no import from cartomancy/ (cards engine/UI)`);
     assert(!/from ['"].*goral-rule-applicability-matrix/.test(content), `${file}: no import from goral-rule-applicability-matrix.js (not yet connected — foundation phase)`);
     assert(!/from ['"].*goral-knowledge-registry/.test(content), `${file}: no import from goral-knowledge-registry.js (not yet connected — foundation phase)`);
     assert(!/\bfetch\s*\(/.test(content), `${file}: no fetch() call`);
@@ -332,6 +335,143 @@ function isNonEmptyClarification(strategy) {
     assert(!/ANTHROPIC_API_KEY/.test(content), `${file}: no ANTHROPIC_API_KEY reference`);
     assert(!/from ['"].*supabase/i.test(content) && !/createClient\s*\(/.test(content), `${file}: no Supabase import/usage`);
   }
+}
+
+// --- Cards Domain Support (readingDomain:'cards', method:'cartomancy') -------
+//
+// No card meanings, spread names, Rule IDs, or interpretive content are
+// introduced anywhere below — only structural domain/category plumbing.
+
+{
+  const intentResult = analyzeIntent({ question: 'האם הקשר הזה יכול להתפתח?' });
+  const strategy = buildReadingStrategy({
+    intentResult, readingDomain: 'cards', method: 'cartomancy', spreadId: 'test-relationship-spread',
+    questionType: intentResult.questionType,
+  });
+  assert(strategy.readingDomain === 'cards', 'Cards: readingDomain=cards carried through');
+  assert(strategy.method === 'cartomancy', 'Cards: method=cartomancy carried through');
+  assert(strategy.spreadId === 'test-relationship-spread', 'Cards: spreadId carried through as context, unchanged');
+  assert(strategy.strategyId.endsWith('-cards'), 'Cards: strategyId carries a -cards suffix');
+  assert(!strategy.strategyConstraints.advisorOnly.includes('dhamir'), 'Cards: dhamir (goralHachol-exclusive) never appears for cards, even for hiddenThoughtIntent-flavored questions');
+  assert(strategy.strategyConstraints.advisorOnly.every((c) => c !== 'technicalFormulaDetails'), 'Cards: technicalFormulaDetails (goralHachol name) not used for cards');
+  const v = validateStrategyResult(strategy);
+  assert(v.valid, `Cards: strategy validates cleanly: ${v.errors.join('; ')}`);
+}
+
+// --- Integration Test: Intent -> Strategy -> Planner, Cards domain -----------
+
+{
+  const { buildReadingPlan } = await import('./goral-hachol/intelligence/reading-planner.js');
+  const { validatePlannerResult } = await import('./goral-hachol/intelligence/reading-planner-validators.js');
+
+  const question = 'האם הקשר הזה יכול להתפתח?';
+  const intentResult = analyzeIntent({ question });
+  const strategy = buildReadingStrategy({
+    intentResult, readingDomain: 'cards', method: 'cartomancy', spreadId: 'test-relationship-spread',
+    questionType: intentResult.questionType,
+  });
+  const plannerInput = {
+    question, readingDomain: 'cards', method: 'cartomancy', spreadId: 'test-relationship-spread',
+    questionType: strategy.questionType, intentResult, readingStrategy: strategy,
+  };
+  const plan = buildReadingPlan(plannerInput);
+
+  assert(intentResult && typeof intentResult === 'object', 'Integration/Cards: Intent Result produced');
+  assert(strategy && typeof strategy === 'object', 'Integration/Cards: Strategy Result produced');
+  assert(strategy.readingDomain === 'cards', 'Integration/Cards: readingDomain stays "cards" end-to-end');
+  assert(strategy.method === 'cartomancy', 'Integration/Cards: method stays "cartomancy" end-to-end');
+  assert(strategy.spreadId === 'test-relationship-spread', 'Integration/Cards: spreadId preserved end-to-end');
+  assert(plan && typeof plan === 'object', 'Integration/Cards: Planner Result produced');
+  const planValidation = validatePlannerResult(plan);
+  assert(planValidation.valid, `Integration/Cards: Planner Result validates cleanly (stop or full plan): ${planValidation.errors.join('; ')}`);
+  assert(!JSON.stringify(strategy).includes('kashf') && !JSON.stringify(strategy).includes('hawi'), 'Integration/Cards: no use of kashf/hawi anywhere in the cards strategy');
+
+  // Note: "האם הקשר הזה יכול להתפתח?" does not match any pattern in Intent
+  // Analyzer's existing (unmodified) rule set (goral-hachol/intelligence/
+  // intent-analyzer-hebrew-rules.js), so it correctly resolves to
+  // primaryIntent='unknown' and the chain correctly stops at Reading Planner
+  // — this is itself a valid, tested outcome (Stop Result validates cleanly
+  // end-to-end for the cards domain too, not just goralHachol). A second,
+  // separate scenario below re-confirms the full-plan path with a question
+  // that DOES match an existing Intent Analyzer pattern (compatibility).
+  if (plan.stopped) {
+    assert(plan.requiresClarification === true, 'Integration/Cards (ambiguous case): requiresClarification=true');
+    assert(plan.needsOrenDecision === true, 'Integration/Cards (ambiguous case): needsOrenDecision=true');
+  } else {
+    assert(!(plan.primaryDecisionCategories.includes('hiddenThought')), 'Integration/Cards: hiddenThought not activated (Intent was not hiddenThoughtIntent)');
+    assert(!(plan.primaryDecisionCategories.includes('timing')), 'Integration/Cards: timing not activated (question was not a timingRequest)');
+    assert(strategy.strategyConstraints.mustExclude.includes('spiritualDiagnostics') || strategy.strategyConstraints.forbiddenWithoutQuestion.includes('spiritualDiagnostics'), 'Integration/Cards: spiritualDiagnostics blocked by default');
+  }
+}
+
+// --- Integration Test (full-plan path): Cards + a question that DOES match --
+// an existing, unmodified Intent Analyzer pattern (compatibility).
+
+{
+  const { buildReadingPlan } = await import('./goral-hachol/intelligence/reading-planner.js');
+  const { validatePlannerResult } = await import('./goral-hachol/intelligence/reading-planner-validators.js');
+
+  const question = 'האם אנחנו מתאימים?';
+  const intentResult = analyzeIntent({ question });
+  assert(intentResult.primaryIntent === 'compatibility', `Integration/Cards (full-plan): sanity — "${question}" still classifies as compatibility, got ${intentResult.primaryIntent}`);
+  const strategy = buildReadingStrategy({
+    intentResult, readingDomain: 'cards', method: 'cartomancy', spreadId: 'test-relationship-spread',
+    questionType: intentResult.questionType,
+  });
+  const plan = buildReadingPlan({
+    question, readingDomain: 'cards', method: 'cartomancy', spreadId: 'test-relationship-spread',
+    questionType: strategy.questionType, intentResult, readingStrategy: strategy,
+  });
+
+  assert(!plan.stopped, 'Integration/Cards (full-plan): reaches a full plan, no stop');
+  assert(validatePlannerResult(plan).valid, `Integration/Cards (full-plan): Planner Result validates cleanly: ${validatePlannerResult(plan).errors.join('; ')}`);
+  assert(!plan.primaryDecisionCategories.includes('hiddenThought'), 'Integration/Cards (full-plan): hiddenThought not activated (Intent was compatibility, not hiddenThoughtIntent)');
+  assert(!plan.primaryDecisionCategories.includes('timing'), 'Integration/Cards (full-plan): timing not activated (question was not a timingRequest)');
+  assert(plan.forbiddenCategories.includes('spiritualDiagnostics') || strategy.strategyConstraints.forbiddenWithoutQuestion.includes('spiritualDiagnostics'), 'Integration/Cards (full-plan): spiritualDiagnostics blocked by default');
+  assert(!JSON.stringify(plan).includes('kashf') && !JSON.stringify(plan).includes('hawi'), 'Integration/Cards (full-plan): no use of kashf/hawi anywhere in the plan');
+  assert(plan.readingDomain === 'cards' && plan.method === 'cartomancy' && plan.spreadId === 'test-relationship-spread', 'Integration/Cards (full-plan): readingDomain/method/spreadId preserved end-to-end');
+}
+
+// --- Negative Tests: domain/method mismatch, cross-domain knowledgeContext ---
+
+{
+  const intentResult = analyzeIntent({ question: 'האם העסק החדש יצליח?' });
+
+  const cardsKashf = buildReadingStrategy({ intentResult, readingDomain: 'cards', method: 'kashf', questionType: intentResult.questionType });
+  assert(!validateStrategyResult(cardsKashf).valid, 'Negative: cards + kashf fails validation');
+  assert(!validateStrategyInput({ intentResult, readingDomain: 'cards', method: 'kashf' }).valid, 'Negative: cards + kashf fails input validation');
+
+  const cardsHawi = buildReadingStrategy({ intentResult, readingDomain: 'cards', method: 'hawi', questionType: intentResult.questionType });
+  assert(!validateStrategyResult(cardsHawi).valid, 'Negative: cards + hawi fails validation');
+  assert(!validateStrategyInput({ intentResult, readingDomain: 'cards', method: 'hawi' }).valid, 'Negative: cards + hawi fails input validation');
+
+  const goralHacholCartomancy = buildReadingStrategy({ intentResult, readingDomain: 'goralHachol', method: 'cartomancy', questionType: intentResult.questionType });
+  assert(!validateStrategyResult(goralHacholCartomancy).valid, 'Negative: goralHachol + cartomancy fails validation');
+  assert(!validateStrategyInput({ intentResult, readingDomain: 'goralHachol', method: 'cartomancy' }).valid, 'Negative: goralHachol + cartomancy fails input validation');
+
+  assert(!validateStrategyInput({ intentResult, readingDomain: 'cards', method: 'cartomancy', knowledgeContext: { readingDomain: 'goralHachol' } }).valid, 'Negative: cards with a goralHachol-tagged knowledgeContext is rejected');
+  assert(!validateStrategyInput({ intentResult, readingDomain: 'goralHachol', method: 'hawi', knowledgeContext: { readingDomain: 'cards' } }).valid, 'Negative: goralHachol with a cards-tagged knowledgeContext is rejected');
+
+  // spreadId alone must not silently pick a different strategy
+  const withSpread = buildReadingStrategy({ intentResult, readingDomain: 'cards', method: 'cartomancy', spreadId: 'spread-a', questionType: intentResult.questionType });
+  const withOtherSpread = buildReadingStrategy({ intentResult, readingDomain: 'cards', method: 'cartomancy', spreadId: 'spread-b', questionType: intentResult.questionType });
+  assert(withSpread.primaryIntent === withOtherSpread.primaryIntent, 'Negative: spreadId alone does not change primaryIntent');
+  assert(JSON.stringify(withSpread.strategyConstraints) === JSON.stringify(withOtherSpread.strategyConstraints), 'Negative: spreadId alone does not change strategyConstraints');
+
+  // structural: no engine import, no cartomancy import, already covered by
+  // the structural-guards block above — re-affirmed here in the cards context
+  const fs = await import('node:fs');
+  const content = fs.readFileSync(new URL('./goral-hachol/intelligence/reading-strategy-builder.js', import.meta.url), 'utf8');
+  assert(!/from ['"].*\/engine\//.test(content), 'Negative: Strategy Builder does not import any engine, including cards engine');
+  assert(!content.includes('cartomancy-data') && !content.includes('spread-policy-engine'), 'Negative: Strategy Builder does not import cards engine modules by name');
+}
+
+// --- Domain/Method mapping sanity (official values) --------------------------
+
+{
+  assert(READING_DOMAINS.length === 2 && READING_DOMAINS.includes('goralHachol') && READING_DOMAINS.includes('cards'), 'Domain mapping: exactly goralHachol+cards');
+  assert(METHOD_BY_DOMAIN.goralHachol.includes('kashf') && METHOD_BY_DOMAIN.goralHachol.includes('hawi'), 'Domain mapping: goralHachol -> kashf/hawi');
+  assert(METHOD_BY_DOMAIN.cards.length === 1 && METHOD_BY_DOMAIN.cards[0] === 'cartomancy', 'Domain mapping: cards -> cartomancy only');
 }
 
 // --- summary -----------------------------------------------------------------

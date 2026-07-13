@@ -26,14 +26,22 @@
 import { getIntentDefinition, isPrimaryIntentValue, UNKNOWN_INTENT_ID } from './intent-types.js';
 import { validateIntentResult } from './intent-analyzer.js';
 import {
-  isMethod, isNonEmptyString, isStringArray, isContradictionPolicy,
+  isNonEmptyString, isStringArray, isContradictionPolicy,
 } from './reading-intelligence-types.js';
 import {
   STRATEGY_VERSION, CONSTRAINT_FIELD_NAMES, CATEGORY_HEBREW_LABELS, ENGLISH_INTENT_LABELS,
-  HINT_TO_MAY_INCLUDE_CATEGORY, PRIMARY_EVIDENCE_CATEGORIES_BY_INTENT,
+  HINT_TO_MAY_INCLUDE_CATEGORY, PRIMARY_EVIDENCE_CATEGORIES_BY_INTENT, PRIMARY_EVIDENCE_CATEGORIES_BY_INTENT_CARDS,
+  spiritualCategoryForDomain, isReadingDomain, isMethodForDomain, isKnownConstraintCategoryForDomain,
   isVerificationPolicy, isClientDepth, isAdvisorDepth, isHiddenSectionsPolicy,
-  isTimingPolicy, isSpiritualPolicy, isConfidencePolicy, isKnownConstraintCategory,
+  isTimingPolicy, isSpiritualPolicy, isConfidencePolicy,
 } from './reading-strategy-types.js';
+
+// readingDomain defaults to 'goralHachol' wherever omitted, both here and in
+// the validators below — preserves 100% backward compatibility for every
+// existing kashf/hawi call site (Intent Analyzer, Reading Planner, and all
+// pre-existing tests never pass readingDomain and must keep working
+// unchanged) while adding explicit 'cards' support for new callers.
+const DEFAULT_READING_DOMAIN = 'goralHachol';
 
 export { STRATEGY_VERSION };
 
@@ -124,7 +132,14 @@ function conservativeStrategyValues() {
 // 3. Constraints Resolver
 // ---------------------------------------------------------------------------
 
-function resolveConstraints({ primaryIntentId, intentDef, secondaryIntentIds, questionType, isUnknown }) {
+function resolveConstraints({ primaryIntentId, intentDef, secondaryIntentIds, questionType, isUnknown, readingDomain }) {
+  // The domain-appropriate spelling of the spiritual-gating category —
+  // goralHachol keeps 'spiritual' (unchanged, since intent-types.js already
+  // emits it and Intent Analyzer is not touched here); cards uses its own
+  // domain-exclusive 'spiritualDiagnostics' name (see CATEGORY_DOMAINS).
+  const spiritualCategory = spiritualCategoryForDomain(readingDomain);
+  const advisorOnlyTechnicalCategory = readingDomain === 'cards' ? 'technicalSpreadDetails' : 'technicalFormulaDetails';
+
   if (isUnknown) {
     // Conservative-by-default: forbid everything sensitive, require nothing
     // automatically, include nothing automatically — until a real Intent (or
@@ -133,25 +148,35 @@ function resolveConstraints({ primaryIntentId, intentDef, secondaryIntentIds, qu
     return {
       mustInclude: [],
       mayInclude: [],
-      mustExclude: ['hiddenThought', 'characterNature', 'timing', 'spiritual', 'absoluteOutcomeClaims'],
-      advisorOnly: ['technicalFormulaDetails'],
+      mustExclude: ['hiddenThought', 'characterNature', 'timing', spiritualCategory, 'absoluteOutcomeClaims'],
+      advisorOnly: [advisorOnlyTechnicalCategory],
       requiresEvidence: [],
-      forbiddenWithoutQuestion: ['timing', 'spiritual'],
+      forbiddenWithoutQuestion: ['timing', spiritualCategory],
     };
   }
 
-  const mustInclude = [...(PRIMARY_EVIDENCE_CATEGORIES_BY_INTENT[primaryIntentId] || [])];
+  const evidenceMap = readingDomain === 'cards' ? PRIMARY_EVIDENCE_CATEGORIES_BY_INTENT_CARDS : PRIMARY_EVIDENCE_CATEGORIES_BY_INTENT;
+  const mustInclude = [...(evidenceMap[primaryIntentId] || [])];
 
+  // mayInclude candidates are derived from domain-agnostic Intent hints, so
+  // they are filtered down to categories actually legal for this domain
+  // (e.g. 'supportingRules' is goralHachol-exclusive and must not leak into
+  // a cards strategy even if the hint that would normally produce it fires).
   const mayInclude = [...new Set(
     intentDef.defaultStrategyHints
       .map((hint) => HINT_TO_MAY_INCLUDE_CATEGORY[hint])
       .filter(Boolean)
-  )];
+  )].filter((cat) => isKnownConstraintCategoryForDomain(cat, readingDomain));
 
-  const mustExclude = intentDef.forbiddenDefaultRuleCategories.slice();
+  // forbiddenDefaultRuleCategories (from intent-types.js, domain-agnostic)
+  // only ever contains shared cross-cutting categories plus the literal
+  // string 'spiritual' — translated here to the domain-appropriate spelling.
+  const mustExclude = intentDef.forbiddenDefaultRuleCategories.map((cat) => (cat === 'spiritual' ? spiritualCategory : cat));
 
-  const advisorOnly = ['technicalFormulaDetails'];
-  if (primaryIntentId === 'hiddenThoughtIntent') advisorOnly.push('dhamir');
+  const advisorOnly = [advisorOnlyTechnicalCategory];
+  // 'dhamir' is a goralHachol-exclusive concept (RAML hidden/shadow house) —
+  // it has no cards equivalent and is never added for readingDomain:'cards'.
+  if (readingDomain === 'goralHachol' && primaryIntentId === 'hiddenThoughtIntent') advisorOnly.push('dhamir');
 
   const requiresEvidence = ['contradictionResolution'];
 
@@ -163,7 +188,7 @@ function resolveConstraints({ primaryIntentId, intentDef, secondaryIntentIds, qu
   const timingWasAsked = primaryIntentId === 'timingRequest' || secondaryIntentIds.includes('timingRequest');
   if (!timingWasAsked) forbiddenWithoutQuestion.push('timing');
   const spiritualWasAsked = questionType === 'spiritual';
-  if (!spiritualWasAsked) forbiddenWithoutQuestion.push('spiritual');
+  if (!spiritualWasAsked) forbiddenWithoutQuestion.push(spiritualCategory);
 
   return { mustInclude, mayInclude, mustExclude, advisorOnly, requiresEvidence, forbiddenWithoutQuestion };
 }
@@ -204,13 +229,16 @@ function buildStrategyReason({ isUnknown, intentDef, primaryIntentId, constraint
 /**
  * @param {object} input
  * @param {object} input.intentResult - full output of intent-analyzer.js::analyzeIntent()
- * @param {'kashf'|'hawi'} input.method
+ * @param {'goralHachol'|'cards'} [input.readingDomain] - defaults to 'goralHachol' if omitted
+ * @param {'kashf'|'hawi'|'cartomancy'} input.method
+ * @param {string} [input.spreadId] - cards spread context; Strategy Builder never chooses one
  * @param {string} [input.questionType] - overrides intentResult.questionType if provided
  * @param {string} [input.topicId]
  * @returns {object} ReadingStrategy
  */
 export function buildReadingStrategy(input) {
-  const { intentResult, method, questionType: questionTypeOverride } = input || {};
+  const { intentResult, method, questionType: questionTypeOverride, readingDomain: readingDomainInput, spreadId } = input || {};
+  const readingDomain = readingDomainInput || DEFAULT_READING_DOMAIN;
 
   const questionType = questionTypeOverride || intentResult?.questionType || null;
   const primaryIntentId = intentResult?.primaryIntent;
@@ -219,20 +247,23 @@ export function buildReadingStrategy(input) {
   const secondaryIntentIds = Array.isArray(intentResult?.secondaryIntents) ? intentResult.secondaryIntents.slice() : [];
 
   const strategyValues = isUnknown ? conservativeStrategyValues() : resolveStrategyValues(intentDef, questionType);
-  const constraints = resolveConstraints({ primaryIntentId, intentDef, secondaryIntentIds, questionType, isUnknown });
+  const constraints = resolveConstraints({ primaryIntentId, intentDef, secondaryIntentIds, questionType, isUnknown, readingDomain });
   const strategyReason = buildStrategyReason({ isUnknown, intentDef, primaryIntentId, constraints, intentResult });
 
+  const evidenceMap = readingDomain === 'cards' ? PRIMARY_EVIDENCE_CATEGORIES_BY_INTENT_CARDS : PRIMARY_EVIDENCE_CATEGORIES_BY_INTENT;
   const secondaryEvidence = isUnknown ? [] : [...new Set([
     ...constraints.mayInclude,
-    ...secondaryIntentIds.flatMap((id) => PRIMARY_EVIDENCE_CATEGORIES_BY_INTENT[id] || []),
+    ...secondaryIntentIds.flatMap((id) => evidenceMap[id] || []),
   ])];
 
-  const strategyId = `strat-${primaryIntentId}-${questionType || 'unknownQuestionType'}`;
+  const strategyId = `strat-${primaryIntentId}-${questionType || 'unknownQuestionType'}${readingDomain === 'cards' ? '-cards' : ''}`;
 
   return {
     strategyId,
     strategyVersion: STRATEGY_VERSION,
+    readingDomain,
     method,
+    spreadId: spreadId ?? null,
     questionType,
     primaryIntent: primaryIntentId,
     secondaryIntents: secondaryIntentIds,
@@ -273,8 +304,16 @@ export function validateStrategyInput(input) {
     errors.push(...intentValidation.errors.map((e) => `intentResult: ${e}`));
   }
 
-  if (!isMethod(input.method)) {
-    errors.push(`method must be 'kashf' or 'hawi' (got ${JSON.stringify(input.method)})`);
+  // readingDomain defaults to 'goralHachol' when omitted (backward
+  // compatibility, see DEFAULT_READING_DOMAIN) — only validated for
+  // correctness when it IS provided and non-default.
+  if (input.readingDomain !== undefined && !isReadingDomain(input.readingDomain)) {
+    errors.push(`readingDomain must be 'goralHachol' or 'cards' if provided (got ${JSON.stringify(input.readingDomain)})`);
+  } else {
+    const readingDomain = input.readingDomain || DEFAULT_READING_DOMAIN;
+    if (!isMethodForDomain(input.method, readingDomain)) {
+      errors.push(`method "${input.method}" is not valid for readingDomain "${readingDomain}"`);
+    }
   }
 
   if (input.questionType !== undefined && !isNonEmptyString(input.questionType)) {
@@ -283,6 +322,25 @@ export function validateStrategyInput(input) {
 
   if (input.topicId !== undefined && typeof input.topicId !== 'string') {
     errors.push('topicId must be a string if provided');
+  }
+
+  if (input.spreadId !== undefined && input.spreadId !== null && typeof input.spreadId !== 'string') {
+    errors.push('spreadId must be a string if provided');
+  }
+
+  // Domain separation: a Domain's Knowledge Context must never be handed to
+  // another Domain. knowledgeContext is not yet deeply consumed (no live
+  // Knowledge Decision Pipeline exists), but this cross-check is enforced
+  // now so future wiring cannot silently mix Domains.
+  if (input.knowledgeContext !== undefined) {
+    if (typeof input.knowledgeContext !== 'object' || input.knowledgeContext === null) {
+      errors.push('knowledgeContext must be an object if provided');
+    } else {
+      const readingDomain = input.readingDomain || DEFAULT_READING_DOMAIN;
+      if (input.knowledgeContext.readingDomain !== undefined && input.knowledgeContext.readingDomain !== readingDomain) {
+        errors.push(`knowledgeContext.readingDomain ("${input.knowledgeContext.readingDomain}") does not match input.readingDomain ("${readingDomain}") — a Domain's Knowledge Context must not be passed to another Domain`);
+      }
+    }
   }
 
   return { valid: errors.length === 0, errors };
@@ -297,7 +355,7 @@ export function validateStrategyResult(strategy) {
   if (!strategy || typeof strategy !== 'object') return { valid: false, errors: ['strategy result must be an object'] };
 
   const requiredFields = [
-    'strategyId', 'strategyVersion', 'method', 'questionType', 'primaryIntent', 'secondaryIntents',
+    'strategyId', 'strategyVersion', 'readingDomain', 'method', 'spreadId', 'questionType', 'primaryIntent', 'secondaryIntents',
     'goal', 'primaryEvidence', 'secondaryEvidence', 'verificationPolicy', 'contradictionPolicy',
     'clientDepth', 'advisorDepth', 'hiddenSectionsPolicy', 'timingPolicy', 'spiritualPolicy',
     'confidencePolicy', 'strategyConstraints', 'strategyReason', 'confidence', 'requiresClarification',
@@ -308,7 +366,17 @@ export function validateStrategyResult(strategy) {
   }
 
   if (!isNonEmptyString(strategy.strategyVersion)) errors.push('strategyVersion is required and must be a non-empty string');
-  if (!isMethod(strategy.method)) errors.push(`method must be 'kashf' or 'hawi' (got ${JSON.stringify(strategy.method)})`);
+
+  if (!isReadingDomain(strategy.readingDomain)) {
+    errors.push(`readingDomain must be 'goralHachol' or 'cards' (got ${JSON.stringify(strategy.readingDomain)})`);
+  } else if (!isMethodForDomain(strategy.method, strategy.readingDomain)) {
+    errors.push(`method "${strategy.method}" is not valid for readingDomain "${strategy.readingDomain}"`);
+  }
+
+  if (strategy.spreadId !== undefined && strategy.spreadId !== null && typeof strategy.spreadId !== 'string') {
+    errors.push('spreadId must be a string or null');
+  }
+
   if (!isPrimaryIntentValue(strategy.primaryIntent)) errors.push(`primaryIntent must be a known intent or '${UNKNOWN_INTENT_ID}' (got ${JSON.stringify(strategy.primaryIntent)})`);
   if (!Array.isArray(strategy.secondaryIntents)) errors.push('secondaryIntents must be an array');
   if (!isNonEmptyString(strategy.goal)) errors.push('goal is required and must be a non-empty string');
@@ -349,7 +417,9 @@ export function validateStrategyResult(strategy) {
     }
     const allValues = CONSTRAINT_FIELD_NAMES.flatMap((field) => (Array.isArray(sc[field]) ? sc[field] : []));
     for (const value of allValues) {
-      if (!isKnownConstraintCategory(value)) errors.push(`strategyConstraints contains unknown category "${value}"`);
+      if (!isKnownConstraintCategoryForDomain(value, strategy.readingDomain)) {
+        errors.push(`strategyConstraints contains category "${value}" not valid for readingDomain "${strategy.readingDomain}" (unknown, or exclusive to another Domain)`);
+      }
     }
 
     const mustInclude = sc.mustInclude || [];
