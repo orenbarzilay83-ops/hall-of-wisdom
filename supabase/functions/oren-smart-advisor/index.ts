@@ -38,6 +38,13 @@ import { evaluateQaRunMockEdge } from './goral_qa_mock_evaluator.ts';
 import { callAnthropicEdge } from './anthropic-provider-edge.ts';
 import { GORAL_QA_EVALUATOR_PROMPT } from './goral-qa-evaluator-prompt.ts';
 import { sanitizeGoralQaPayloadForAi } from './goral_qa_payload_sanitizer.ts';
+// module:"kashf" עם payload אמיתי — אותו דפוס בדיוק כמו goralQA לעיל,
+// דרך AI Context Package גנרי (Shared Core, לא-Domain-ספציפי — ר'
+// HALL_WISDOM_LIVE_INTELLIGENCE_FIRST_USABLE_VERSION_PLAN.md §9/הבהרת-מוצר):
+import { OREN_SMART_ADVISOR_BRAIN_PROMPT, OREN_SMART_ADVISOR_BRAIN_PROMPT_VERSION } from './oren-smart-advisor-brain-prompt.ts';
+import { sanitizeKashfReadingPayloadForAi } from './kashf_reading_payload_sanitizer.ts';
+import { isValidAiContextPackageEnvelope, type AiContextPackage } from './ai-context-package.ts';
+import { buildAiInvocationLogEntry, logAiInvocation } from './ai-invocation-log.ts';
 
 declare const Deno: any;
 
@@ -166,10 +173,116 @@ export async function handleAdvisorRequest(
 
   const moduleName = body?.module;
 
-  // תאימות-לאחור: בקשה-בלי-module כלל (או module:"kashf" מפורש) — ההתנהגות
-  // הישנה שכבר-נבדקה (mockAdvisorBrainOutput תמיד).
+  // module:"kashf" (או ללא module כלל — ר' תאימות-לאחור למטה).
+  //
+  // תאימות-לאחור: בקשה-בלי-module כלל, או module:"kashf" בלי AI Context
+  // Package תקין — ההתנהגות הישנה שכבר-נבדקה (mockAdvisorBrainOutput
+  // תמיד), ללא-שינוי. אם סופקה מעטפה תקינה (payloadVersion/domain/method/
+  // readingContext, ר' ai-context-package.ts) עם readingContext.question/
+  // board/engineOutput — נכנסים לשער-5-התנאים, **בדיוק** כמו-module:"goralQA".
   if (moduleName === undefined || moduleName === 'kashf') {
-    return jsonResponse(200, { ok: true, advisorBrainOutput: mockAdvisorBrainOutput() });
+    const contextPackage = body?.payload as AiContextPackage | undefined;
+
+    const readingContext = contextPackage?.readingContext as {
+      question?: unknown;
+      board?: unknown;
+      engineOutput?: unknown;
+      activatedRuleIds?: unknown;
+      rejectedRuleIds?: unknown;
+      sourceEvidence?: unknown;
+    } | undefined;
+
+    const hasRealReadingPayload =
+      isValidAiContextPackageEnvelope(contextPackage) &&
+      contextPackage.domain === 'reading.goralHachol' &&
+      typeof readingContext?.question === 'string' &&
+      readingContext.question.length > 0 &&
+      readingContext.board !== undefined &&
+      readingContext.engineOutput !== undefined;
+
+    if (!hasRealReadingPayload) {
+      return jsonResponse(200, { ok: true, advisorBrainOutput: mockAdvisorBrainOutput() });
+    }
+
+    const mockFallback = (reason: string) =>
+      jsonResponse(200, {
+        ok: true,
+        advisorBrainOutput: mockAdvisorBrainOutput(),
+        evaluatorMode: 'mock',
+        liveModeUnavailableReason: reason,
+      });
+
+    const requestWantsLive = body?.mode === 'live';
+    if (!requestWantsLive) {
+      return jsonResponse(200, { ok: true, advisorBrainOutput: mockAdvisorBrainOutput(), evaluatorMode: 'mock' });
+    }
+
+    if (getEnv('HALL_WISDOM_AI_MODE') !== 'live') {
+      return mockFallback('mode-not-live');
+    }
+
+    const apiKey = getEnv('ANTHROPIC_API_KEY');
+    if (!apiKey) {
+      return mockFallback('missing-api-key');
+    }
+
+    const model = getEnv('ANTHROPIC_MODEL');
+    if (!model) {
+      return mockFallback('missing-model');
+    }
+
+    const sanitization = sanitizeKashfReadingPayloadForAi(contextPackage);
+    if (!sanitization.ok) {
+      return mockFallback(sanitization.reason || 'sanitization-failed');
+    }
+
+    // AI Context Package המלא (envelope + readingContext) נשלח כפי-שהוא —
+    // readingStrategy/readingPlan/decisionSummary/questionType/primaryIntent
+    // כבר-נכללים-בו, ללא-עיבוד-נוסף כאן (Core לא-מחשב-מחדש).
+    const startedAt = Date.now();
+    const aiResult = await callAnthropicEdge({
+      apiKey,
+      model,
+      system: OREN_SMART_ADVISOR_BRAIN_PROMPT,
+      userMessage: JSON.stringify(contextPackage),
+    });
+    const latencyMs = Date.now() - startedAt;
+
+    const logBase = {
+      readingId: contextPackage.readingId,
+      payloadVersion: contextPackage.payloadVersion,
+      promptVersion: OREN_SMART_ADVISOR_BRAIN_PROMPT_VERSION,
+      model,
+      latencyMs,
+      tokens: aiResult.usage ? { input: aiResult.usage.inputTokens, output: aiResult.usage.outputTokens } : null,
+    };
+
+    if (!aiResult.ok || !aiResult.text) {
+      logAiInvocation(buildAiInvocationLogEntry({ ...logBase, success: false, error: aiResult.error || 'anthropic-error' }));
+      return mockFallback('anthropic-error');
+    }
+
+    let parsedOutput: Record<string, unknown>;
+    try {
+      parsedOutput = JSON.parse(aiResult.text);
+    } catch {
+      logAiInvocation(buildAiInvocationLogEntry({ ...logBase, success: false, error: 'invalid-json-response' }));
+      return mockFallback('anthropic-error');
+    }
+
+    const REQUIRED_ADVISOR_KEYS = [
+      'module', 'advisorDiagnosis', 'clientAnswerDraft', 'engineCritique', 'missingKnowledgeOrRules',
+      'recommendedFix', 'codeInstructionForClaude', 'safetyNotes', 'privacyBlockedFields',
+      'nextBestAction', 'confidence', 'needsOrenDecision',
+    ];
+    const hasAllAdvisorKeys = REQUIRED_ADVISOR_KEYS.every((k) => k in parsedOutput);
+    if (!hasAllAdvisorKeys) {
+      logAiInvocation(buildAiInvocationLogEntry({ ...logBase, success: false, error: 'missing-required-keys' }));
+      return mockFallback('anthropic-error');
+    }
+
+    logAiInvocation(buildAiInvocationLogEntry({ ...logBase, success: true }));
+    return jsonResponse(200, { ok: true, advisorBrainOutput: parsedOutput, evaluatorMode: 'live' });
   }
 
   // module:"goralQA" — בינת היכל החכמה: Goral QA Evaluator.

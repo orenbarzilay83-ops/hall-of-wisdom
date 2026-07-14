@@ -25,6 +25,7 @@ export interface CallAnthropicEdgeResult {
   ok: boolean;
   text?: string;
   error?: string;
+  usage?: { inputTokens: number; outputTokens: number };
 }
 
 export async function callAnthropicEdge(params: CallAnthropicEdgeParams): Promise<CallAnthropicEdgeResult> {
@@ -61,7 +62,14 @@ export async function callAnthropicEdge(params: CallAnthropicEdgeParams): Promis
     const text = block?.text;
 
     if (!text) return { ok: false, error: 'empty-response' };
-    return { ok: true, text };
+
+    const inputTokens = data?.usage?.input_tokens;
+    const outputTokens = data?.usage?.output_tokens;
+    const usage = (typeof inputTokens === 'number' && typeof outputTokens === 'number')
+      ? { inputTokens, outputTokens }
+      : undefined;
+
+    return { ok: true, text, usage };
   } catch {
     // לא-מחזירים err.message הגולמי — עלול (בתיאוריה, בהתאם ל-runtime)
     // לכלול פרטי-בקשה. סוג-שגיאה כללי בלבד.
