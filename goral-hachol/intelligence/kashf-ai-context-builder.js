@@ -53,7 +53,7 @@ import { analyzeIntent } from './intent-analyzer.js';
 import { buildReadingStrategy } from './reading-strategy-builder.js';
 import { buildReadingPlan } from './reading-planner.js';
 
-export const KASHF_AI_CONTEXT_BUILDER_VERSION = 'kashf-ai-context-builder-v2';
+export const KASHF_AI_CONTEXT_BUILDER_VERSION = 'kashf-ai-context-builder-v3';
 
 // Top-level engineOutput fields that are professional/engine-computed —
 // deliberately excludes `clientContext` (the only top-level source of
@@ -117,6 +117,101 @@ export function buildAiSafeKashfEngineOutput(engineOutput) {
   return projected;
 }
 
+// ---------------------------------------------------------------------------
+// AI-safe Board Projection
+// ---------------------------------------------------------------------------
+// buildRamlBoardFromMothers()'s real return value is NOT shaped for an AI
+// prompt as-is: measured on a real reading (see
+// HALL_WISDOM_KASHF_LIVE_PILOT_CONTEXT_SIZE_AND_JSON_AUDIT_REPORT.md),
+// `board.houses` and `board.housesByNumber` serialize the exact same 16
+// positions twice, and every position's `figure` sub-object embeds that
+// figure's FULL 16-house transit table (source text for all 16 houses it
+// could ever occupy), even though only the 1 entry matching that position's
+// own house number is relevant. That nested table alone was confirmed
+// byte-identical to the position's own top-level `figureHouseMeaning` field
+// — so nothing is lost by dropping it.
+//
+// buildAiSafeKashfBoard() applies the same allowlist-projection pattern as
+// buildAiSafeKashfEngineOutput() above: never mutates the original board
+// (raml-board-generator.js and the live board display are untouched), and
+// copies only named fields into a new object — no delete/blacklist step.
+//
+// Canonical representation: `houses` (array) only — `housesByNumber` (the
+// confirmed duplicate) is dropped entirely, not projected under a new name.
+// `entries` and `generation` (mothers/daughters/granddaughters/witnesses/
+// judge derivation history) are dropped as separate top-level structures —
+// their one piece of content not already present in `houses[i]`, namely
+// each position's figure-state/classification fields (fortune/movement/
+// element/gender/zodiac/seeker-status — Kashf's own classification layer,
+// `kashf-figure-names.js`), is folded into `houses[i].figureState` instead,
+// keyed by house number. `sourceReview` (book-audit provenance notes about
+// how houses 5-8/15-16 were derived) is dropped — it documents the
+// generation *process*, not this reading's interpretation.
+
+const BOARD_TOP_LEVEL_ALLOWED_KEYS = [
+  'id', 'source', 'boardHebrewName', 'inputMode', 'displayDirection', 'boardValidation',
+];
+
+// Figure identity only — deliberately excludes sourcePages/extractionStatus/
+// auditStatus/section/sourceBook/next/noteHebrew/houses (book-audit metadata
+// and the full 16-house transit table; the latter is redundant with the
+// position's own figureHouseMeaning, per the note above).
+const POSITION_FIGURE_IDENTITY_KEYS = ['id', 'hebrewName', 'arabicName'];
+
+// Kashf's own figure-classification layer (kashf-figure-names.js), matched
+// per-position via board.entries — genuinely new content, not present
+// anywhere else in `houses[i]`.
+const POSITION_FIGURE_STATE_KEYS = [
+  'fortuneHebrew', 'movementHebrew', 'elementHebrew', 'compassDirection',
+  'genderHebrew', 'timeHebrew', 'weightHebrew', 'purityHebrew',
+  'zodiacPosition', 'zodiacHebrew', 'ichchhaHebrew', 'seekerStatus',
+  'seekerSoughtArabic', 'seekerSoughtHebrew',
+];
+
+/**
+ * Layer 1 (payload-construction-time) — pure function, does not mutate its
+ * input. Returns a NEW object: one canonical `houses` array (no
+ * `housesByNumber` duplicate), each position carrying only its own
+ * figure identity, figure-state/classification, house-generic meaning,
+ * and this-figure-in-this-house transit meaning — never the figure's full
+ * 16-house transit table.
+ *
+ * @param {object} board - real, unmodified return value of buildRamlBoardFromMothers()
+ * @returns {object} AI-safe projection
+ */
+export function buildAiSafeKashfBoard(board) {
+  if (!board || typeof board !== 'object') return board;
+
+  const stateByHouse = new Map();
+  if (Array.isArray(board.entries)) {
+    for (const entry of board.entries) {
+      if (entry && typeof entry.house === 'number' && entry.figure && typeof entry.figure === 'object') {
+        stateByHouse.set(entry.house, entry.figure);
+      }
+    }
+  }
+
+  const houses = Array.isArray(board.houses) ? board.houses.map((position) => {
+    const stateFigure = stateByHouse.get(position?.house);
+    return {
+      house: position.house,
+      houseNumber: position.houseNumber,
+      figureId: position.figureId,
+      figure: position.figure && typeof position.figure === 'object'
+        ? projectAllowlist(position.figure, POSITION_FIGURE_IDENTITY_KEYS)
+        : null,
+      figureState: stateFigure ? projectAllowlist(stateFigure, POSITION_FIGURE_STATE_KEYS) : null,
+      houseMeaning: position.houseMeaning ?? null,
+      figureHouseMeaning: position.figureHouseMeaning ?? null,
+      sourceStatus: position.sourceStatus,
+    };
+  }) : [];
+
+  const projected = projectAllowlist(board, BOARD_TOP_LEVEL_ALLOWED_KEYS);
+  projected.houses = houses;
+  return projected;
+}
+
 /**
  * @param {object} input
  * @param {string[]} input.mothers - real 4-figure array (e.g. ['2222','2211','2121','2221'])
@@ -143,6 +238,7 @@ export function buildKashfAiContextPackage(input = {}) {
   const board = buildRamlBoardFromMothers(mothers);
   const rawEngineOutput = buildKashfReading(board, topicId, { name: clientName || '', question });
   const aiSafeEngineOutput = buildAiSafeKashfEngineOutput(rawEngineOutput);
+  const aiSafeBoard = buildAiSafeKashfBoard(board);
 
   const intentResult = analyzeIntent({ question, method: 'kashf', topicId });
   const readingStrategy = buildReadingStrategy({ intentResult, method: 'kashf', topicId });
@@ -179,7 +275,7 @@ export function buildKashfAiContextPackage(input = {}) {
     readingPlan,
     readingContext: {
       question,
-      board,
+      board: aiSafeBoard,
       engineOutput: aiSafeEngineOutput,
       activatedRuleIds: [],
       rejectedRuleIds: [],
@@ -190,4 +286,4 @@ export function buildKashfAiContextPackage(input = {}) {
   return { contextPackage, completeness: missingFields.length === 0 ? 'complete' : 'partial', missingFields, intentResult };
 }
 
-export default { buildKashfAiContextPackage, buildAiSafeKashfEngineOutput, KASHF_AI_CONTEXT_BUILDER_VERSION };
+export default { buildKashfAiContextPackage, buildAiSafeKashfEngineOutput, buildAiSafeKashfBoard, KASHF_AI_CONTEXT_BUILDER_VERSION };

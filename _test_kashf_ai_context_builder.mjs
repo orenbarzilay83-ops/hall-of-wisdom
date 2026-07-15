@@ -22,6 +22,7 @@ import { buildReadingPlan } from './goral-hachol/intelligence/reading-planner.js
 import {
   buildKashfAiContextPackage,
   buildAiSafeKashfEngineOutput,
+  buildAiSafeKashfBoard,
   KASHF_AI_CONTEXT_BUILDER_VERSION,
 } from './goral-hachol/intelligence/kashf-ai-context-builder.js';
 import { sanitizeKashfReadingPayloadForAi } from './supabase/functions/oren-smart-advisor/kashf_reading_payload_sanitizer.ts';
@@ -165,10 +166,12 @@ console.log('\n--- 12. No unnecessary personal data ---');
   }
 }
 
-// ── Board/intent/strategy/plan genuineness (carried over from v1) ────────
+// ── Board/intent/strategy/plan genuineness (carried over from v1; board
+//    assertion updated for v3 — the payload board is now the AI-safe
+//    projection, not the raw board deep-equal, per the context-size fix ──
 console.log('\n--- Board/Intent/Strategy/Plan genuineness (regression from v1) ---');
 {
-  assert(JSON.stringify(contextPackage.readingContext.board) === JSON.stringify(directBoard), 'board deep-equals a direct buildRamlBoardFromMothers(MOTHERS) call');
+  assert(JSON.stringify(contextPackage.readingContext.board) !== JSON.stringify(directBoard), 'board is now the AI-safe projection, deliberately NOT deep-equal to the raw buildRamlBoardFromMothers(MOTHERS) return value');
   const directIntent = analyzeIntent({ question: QUESTION, method: 'kashf', topicId: TOPIC_ID });
   assert(JSON.stringify(intentResult) === JSON.stringify(directIntent), 'intentResult deep-equals a direct analyzeIntent() call');
   const directStrategy = buildReadingStrategy({ intentResult: directIntent, method: 'kashf', topicId: TOPIC_ID });
@@ -178,6 +181,58 @@ console.log('\n--- Board/Intent/Strategy/Plan genuineness (regression from v1) -
     questionType: directIntent.questionType, intentResult: directIntent, readingStrategy: directStrategy,
   });
   assert(JSON.stringify(contextPackage.readingPlan) === JSON.stringify(directPlan), 'readingPlan deep-equals a direct buildReadingPlan() call');
+}
+
+// ── 13. AI-safe Board Projection (context-size fix, new in v3) ───────────
+console.log('\n--- 13. AI-safe Board Projection ---');
+{
+  const beforeRaw = JSON.stringify(directBoard);
+  const safeBoard = buildAiSafeKashfBoard(directBoard);
+  const afterRaw = JSON.stringify(directBoard);
+  assert(beforeRaw === afterRaw, '(1) the original board is byte-for-byte unchanged after buildAiSafeKashfBoard() — no mutation');
+  assert('housesByNumber' in directBoard, 'raw board still has housesByNumber (buildRamlBoardFromMothers itself untouched)');
+
+  assert('houses' in safeBoard && !('housesByNumber' in safeBoard), '(2) projected board has "houses" but not "housesByNumber" — no dual representation');
+  assert(Array.isArray(safeBoard.houses) && safeBoard.houses.length === 16, '(3) projected board has exactly 16 positions');
+
+  for (const position of safeBoard.houses) {
+    assert(position.figureHouseMeaning == null || position.figureHouseMeaning.house === position.house,
+      `(4) house ${position.house}: figureHouseMeaning.house matches this position's own house (only the relevant transit entry is present)`);
+    assert(!position.figure || !('houses' in position.figure),
+      `(5) house ${position.house}: figure sub-object does not carry the full 16-house transit table`);
+  }
+
+  const safeBoardJson = JSON.stringify(safeBoard);
+  for (const droppedKey of ['entries', 'generation', 'sourceReview']) {
+    assert(!(droppedKey in safeBoard), `(6) no full "${droppedKey}" registry/derivation-history structure at board top level`);
+  }
+  for (const key of FORBIDDEN_KEYS) {
+    assert(!safeBoardJson.includes(`"${key}"`), `(7) projected board contains no forbidden personal-data key "${key}"`);
+  }
+
+  for (const position of safeBoard.houses) {
+    assert(position.figure !== null && position.figureId, `(8) house ${position.house}: no empty/placeholder figure identity`);
+    assert(position.houseMeaning !== undefined && position.figureHouseMeaning !== undefined, `(8) house ${position.house}: no missing (undefined) meaning fields`);
+  }
+
+  const identifiableHouses = new Set(safeBoard.houses.map((p) => p.house));
+  const identifiableFigures = safeBoard.houses.every((p) => typeof p.figure?.hebrewName === 'string' && p.figure.hebrewName.length > 0);
+  assert(identifiableHouses.size === 16, '(9) all 16 house numbers are still individually identifiable');
+  assert(identifiableFigures, '(9) every position still identifies its figure by Hebrew name');
+
+  const packagedSanitized = sanitizeKashfReadingPayloadForAi(contextPackage);
+  assert(packagedSanitized.ok === true, `(10) full payload with the projected board still passes the real, unmodified sanitizer (got: ${JSON.stringify(packagedSanitized)})`);
+
+  const rawBoardBytes = Buffer.byteLength(JSON.stringify(directBoard), 'utf8');
+  const safeBoardBytes = Buffer.byteLength(safeBoardJson, 'utf8');
+  const reductionPct = 100 - (safeBoardBytes / rawBoardBytes) * 100;
+  assert(reductionPct >= 73.1, `(11) board size reduction (${reductionPct.toFixed(1)}%) meets or beats the 73.1% simulated in the audit report`);
+  console.log(`  (12) board bytes: ${rawBoardBytes} -> ${safeBoardBytes} (${reductionPct.toFixed(1)}% reduction)`);
+  const fullPayloadBytes = Buffer.byteLength(JSON.stringify(contextPackage), 'utf8');
+  console.log(`  (12) full payload bytes: ${fullPayloadBytes} (readingId: ${contextPackage.readingId})`);
+
+  const builderSrc = (await import('node:fs')).readFileSync('./goral-hachol/intelligence/kashf-ai-context-builder.js', 'utf8');
+  assert(!/\bfetch\s*\(/.test(builderSrc) && !/anthropic/i.test(builderSrc), '(13) no fetch/AI reference introduced by the board projection code');
 }
 
 // ── Structural compatibility with the live Runner / Edge Function gate ───

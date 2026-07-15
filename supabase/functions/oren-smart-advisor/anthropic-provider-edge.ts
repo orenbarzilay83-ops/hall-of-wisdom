@@ -107,4 +107,132 @@ export async function callAnthropicEdge(params: CallAnthropicEdgeParams): Promis
   }
 }
 
-export default { callAnthropicEdge };
+// ---------------------------------------------------------------------------
+// Forced structured-output path (module:"kashf" only)
+// ---------------------------------------------------------------------------
+// callAnthropicEdge() above (free-text JSON) is left completely unchanged —
+// module:"goralQA" and any other future text-based module still use it.
+// callAnthropicEdgeWithForcedTool() is a separate function for the one
+// module that needs guaranteed-structured output: it defines a single tool
+// and forces the model to answer through it (`tool_choice`), so the answer
+// arrives as a `tool_use` content block's `.input` — never as free text that
+// needs JSON.parse. See HALL_WISDOM_KASHF_LIVE_PILOT_CONTEXT_SIZE_AND_JSON_AUDIT_REPORT.md
+// for why: a real live pilot call finished generating (not a max_tokens
+// cutoff) and produced text that failed JSON.parse despite an explicit
+// "JSON only" prompt instruction.
+//
+// Never does JSON.parse on any text block. Never accepts a text-only
+// response as success. Never extracts JSON from markdown. Never "repairs"
+// a malformed tool call. Never invents a missing field — that is the
+// caller's (index.ts + oren-smart-advisor-brain-tool-schema.ts) job via
+// zero-trust re-validation of tool_use.input, not this function's.
+
+export interface AnthropicToolDefinition {
+  name: string;
+  description?: string;
+  input_schema: Record<string, unknown>;
+  strict?: boolean;
+}
+
+export interface CallAnthropicEdgeWithToolParams {
+  apiKey: string;
+  model: string;
+  system: string;
+  userMessage: string;
+  tool: AnthropicToolDefinition;
+  maxTokens?: number;
+  effort?: string;
+}
+
+export interface CallAnthropicEdgeToolDiagnostics {
+  stopReason: string;
+  contentBlockTypes: string;
+  textBlockCount: number;
+  toolUseBlockCount: number;
+  receivedToolNames: string;
+}
+
+export interface CallAnthropicEdgeToolResult {
+  ok: boolean;
+  toolInput?: Record<string, unknown>;
+  error?: string;
+  usage?: { inputTokens: number; outputTokens: number };
+  diagnostics?: CallAnthropicEdgeToolDiagnostics;
+}
+
+interface AnthropicToolUseBlock {
+  type?: string;
+  name?: string;
+  input?: unknown;
+}
+
+export async function callAnthropicEdgeWithForcedTool(params: CallAnthropicEdgeWithToolParams): Promise<CallAnthropicEdgeToolResult> {
+  const { apiKey, model, system, userMessage, tool, maxTokens = 12000, effort = 'medium' } = params;
+
+  if (!apiKey) return { ok: false, error: 'missing-api-key' };
+  if (!model) return { ok: false, error: 'missing-model' };
+  if (!userMessage) return { ok: false, error: 'missing-user-message' };
+  if (!tool?.name || !tool?.input_schema) return { ok: false, error: 'missing-tool-definition' };
+
+  try {
+    const response = await fetch(ANTHROPIC_API_URL, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': ANTHROPIC_VERSION,
+      },
+      body: JSON.stringify({
+        model,
+        max_tokens: maxTokens,
+        system: system || '',
+        messages: [{ role: 'user', content: userMessage }],
+        output_config: { effort },
+        tools: [tool],
+        tool_choice: { type: 'tool', name: tool.name },
+      }),
+    });
+
+    if (!response.ok) {
+      return { ok: false, error: `http-${response.status}` };
+    }
+
+    const data = await response.json();
+    const contentBlocks: AnthropicToolUseBlock[] = Array.isArray(data?.content) ? data.content : [];
+
+    const textBlockCount = contentBlocks.filter((b) => b?.type === 'text').length;
+    const toolUseBlocks = contentBlocks.filter((b) => b?.type === 'tool_use');
+    const matchingToolUseBlocks = toolUseBlocks.filter((b) => b?.name === tool.name);
+
+    const inputTokens = data?.usage?.input_tokens;
+    const outputTokens = data?.usage?.output_tokens;
+    const usage = (typeof inputTokens === 'number' && typeof outputTokens === 'number')
+      ? { inputTokens, outputTokens }
+      : undefined;
+
+    const diagnostics: CallAnthropicEdgeToolDiagnostics = {
+      stopReason: typeof data?.stop_reason === 'string' ? data.stop_reason : 'unknown',
+      contentBlockTypes: contentBlocks.length > 0
+        ? contentBlocks.map((b) => (typeof b?.type === 'string' ? b.type : 'unknown')).join(',')
+        : 'none',
+      textBlockCount,
+      toolUseBlockCount: toolUseBlocks.length,
+      receivedToolNames: toolUseBlocks.length > 0
+        ? toolUseBlocks.map((b) => (typeof b?.name === 'string' ? b.name : 'unknown')).join(',')
+        : 'none',
+    };
+
+    // Exactly one matching tool_use block, with an object input, is the only
+    // accepted shape. Zero matches, more than one, or a non-object input are
+    // all rejected here — never repaired, never guessed.
+    if (matchingToolUseBlocks.length !== 1 || typeof matchingToolUseBlocks[0]?.input !== 'object' || matchingToolUseBlocks[0]?.input === null) {
+      return { ok: false, error: 'no-single-matching-tool-use', usage, diagnostics };
+    }
+
+    return { ok: true, toolInput: matchingToolUseBlocks[0].input as Record<string, unknown>, usage, diagnostics };
+  } catch {
+    return { ok: false, error: 'network-error' };
+  }
+}
+
+export default { callAnthropicEdge, callAnthropicEdgeWithForcedTool };

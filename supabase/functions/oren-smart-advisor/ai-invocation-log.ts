@@ -17,6 +17,15 @@ export interface AiInvocationLogEntry {
   estimatedCost: number | null;
   success: boolean;
   error?: string;
+  // Structured-output diagnostics (module:"kashf" forced-tool path only) —
+  // classified/counted values only, never raw tool input, text, or thinking
+  // content. See oren-smart-advisor-brain-tool-schema.ts.
+  stopReason?: string;
+  contentBlockTypes?: string;
+  textBlockCount?: number;
+  toolUseBlockCount?: number;
+  receivedToolNames?: string;
+  schemaValidationErrorCategory?: string;
 }
 
 const LOG_TAG = '[AI_INVOCATION_LOG]';
@@ -37,6 +46,12 @@ export function buildAiInvocationLogEntry(params: {
   latencyMs: number;
   success: boolean;
   error?: string;
+  stopReason?: string;
+  contentBlockTypes?: string;
+  textBlockCount?: number;
+  toolUseBlockCount?: number;
+  receivedToolNames?: string;
+  schemaValidationErrorCategory?: string;
 }): AiInvocationLogEntry {
   return {
     readingId: params.readingId,
@@ -48,6 +63,12 @@ export function buildAiInvocationLogEntry(params: {
     estimatedCost: estimateCostUsd(params.model, params.tokens),
     success: params.success,
     error: params.error,
+    stopReason: params.stopReason,
+    contentBlockTypes: params.contentBlockTypes,
+    textBlockCount: params.textBlockCount,
+    toolUseBlockCount: params.toolUseBlockCount,
+    receivedToolNames: params.receivedToolNames,
+    schemaValidationErrorCategory: params.schemaValidationErrorCategory,
   };
 }
 

@@ -35,13 +35,16 @@
 //   - goral-qa-evaluator-prompt.ts  — prompt קבוע, מקומי
 //   - goral_qa_payload_sanitizer.ts — סניטציה שרתית לפני כל שליחה ל-AI
 import { evaluateQaRunMockEdge } from './goral_qa_mock_evaluator.ts';
-import { callAnthropicEdge } from './anthropic-provider-edge.ts';
+import { callAnthropicEdge, callAnthropicEdgeWithForcedTool } from './anthropic-provider-edge.ts';
 import { GORAL_QA_EVALUATOR_PROMPT } from './goral-qa-evaluator-prompt.ts';
 import { sanitizeGoralQaPayloadForAi } from './goral_qa_payload_sanitizer.ts';
 // module:"kashf" עם payload אמיתי — אותו דפוס בדיוק כמו goralQA לעיל,
 // דרך AI Context Package גנרי (Shared Core, לא-Domain-ספציפי — ר'
-// HALL_WISDOM_LIVE_INTELLIGENCE_FIRST_USABLE_VERSION_PLAN.md §9/הבהרת-מוצר):
+// HALL_WISDOM_LIVE_INTELLIGENCE_FIRST_USABLE_VERSION_PLAN.md §9/הבהרת-מוצר).
+// הפלט עצמו נאכף כעת דרך forced tool_choice (structured output), לא
+// JSON.parse על טקסט חופשי — ר' HALL_WISDOM_KASHF_LIVE_PILOT_CONTEXT_SIZE_AND_JSON_AUDIT_REPORT.md:
 import { OREN_SMART_ADVISOR_BRAIN_PROMPT, OREN_SMART_ADVISOR_BRAIN_PROMPT_VERSION } from './oren-smart-advisor-brain-prompt.ts';
+import { KASHF_ADVISOR_TOOL_DEFINITION, validateKashfAdvisorOutput } from './oren-smart-advisor-brain-tool-schema.ts';
 import { sanitizeKashfReadingPayloadForAi } from './kashf_reading_payload_sanitizer.ts';
 import { isValidAiContextPackageEnvelope, type AiContextPackage } from './ai-context-package.ts';
 import { buildAiInvocationLogEntry, logAiInvocation } from './ai-invocation-log.ts';
@@ -238,13 +241,17 @@ export async function handleAdvisorRequest(
 
     // AI Context Package המלא (envelope + readingContext) נשלח כפי-שהוא —
     // readingStrategy/readingPlan/decisionSummary/questionType/primaryIntent
-    // כבר-נכללים-בו, ללא-עיבוד-נוסף כאן (Core לא-מחשב-מחדש).
+    // כבר-נכללים-בו, ללא-עיבוד-נוסף כאן (Core לא-מחשב-מחדש). הפלט נאכף
+    // דרך forced tool_choice — אין JSON.parse על טקסט חופשי, אין קבלת
+    // text כהצלחה חלופית, אין חילוץ-JSON ממארקדאון, אין "תיקון" פלט שבור,
+    // ואין round-trip שני (tool_use.input נקרא ישירות, לא מבוצע בפועל).
     const startedAt = Date.now();
-    const aiResult = await callAnthropicEdge({
+    const aiResult = await callAnthropicEdgeWithForcedTool({
       apiKey,
       model,
       system: OREN_SMART_ADVISOR_BRAIN_PROMPT,
       userMessage: JSON.stringify(contextPackage),
+      tool: KASHF_ADVISOR_TOOL_DEFINITION,
     });
     const latencyMs = Date.now() - startedAt;
 
@@ -255,34 +262,33 @@ export async function handleAdvisorRequest(
       model,
       latencyMs,
       tokens: aiResult.usage ? { input: aiResult.usage.inputTokens, output: aiResult.usage.outputTokens } : null,
+      ...(aiResult.diagnostics
+        ? {
+            stopReason: aiResult.diagnostics.stopReason,
+            contentBlockTypes: aiResult.diagnostics.contentBlockTypes,
+            textBlockCount: aiResult.diagnostics.textBlockCount,
+            toolUseBlockCount: aiResult.diagnostics.toolUseBlockCount,
+            receivedToolNames: aiResult.diagnostics.receivedToolNames,
+          }
+        : {}),
     };
 
-    if (!aiResult.ok || !aiResult.text) {
+    if (!aiResult.ok || !aiResult.toolInput) {
       logAiInvocation(buildAiInvocationLogEntry({ ...logBase, success: false, error: aiResult.error || 'anthropic-error' }));
       return mockFallback('anthropic-error');
     }
 
-    let parsedOutput: Record<string, unknown>;
-    try {
-      parsedOutput = JSON.parse(aiResult.text);
-    } catch {
-      logAiInvocation(buildAiInvocationLogEntry({ ...logBase, success: false, error: 'invalid-json-response' }));
-      return mockFallback('anthropic-error');
-    }
-
-    const REQUIRED_ADVISOR_KEYS = [
-      'module', 'advisorDiagnosis', 'clientAnswerDraft', 'engineCritique', 'missingKnowledgeOrRules',
-      'recommendedFix', 'codeInstructionForClaude', 'safetyNotes', 'privacyBlockedFields',
-      'nextBestAction', 'confidence', 'needsOrenDecision',
-    ];
-    const hasAllAdvisorKeys = REQUIRED_ADVISOR_KEYS.every((k) => k in parsedOutput);
-    if (!hasAllAdvisorKeys) {
-      logAiInvocation(buildAiInvocationLogEntry({ ...logBase, success: false, error: 'missing-required-keys' }));
+    // Zero-trust re-validation of tool_use.input — never assumes the API's
+    // strict:true schema enforcement was sufficient on its own. A missing
+    // field, wrong type, or extra field is a rejection, never a repair.
+    const validation = validateKashfAdvisorOutput(aiResult.toolInput);
+    if (!validation.ok || !validation.value) {
+      logAiInvocation(buildAiInvocationLogEntry({ ...logBase, success: false, error: 'schema-validation-failed', schemaValidationErrorCategory: validation.category || 'unknown' }));
       return mockFallback('anthropic-error');
     }
 
     logAiInvocation(buildAiInvocationLogEntry({ ...logBase, success: true }));
-    return jsonResponse(200, { ok: true, advisorBrainOutput: parsedOutput, evaluatorMode: 'live' });
+    return jsonResponse(200, { ok: true, advisorBrainOutput: validation.value, evaluatorMode: 'live' });
   }
 
   // module:"goralQA" — בינת היכל החכמה: Goral QA Evaluator.
