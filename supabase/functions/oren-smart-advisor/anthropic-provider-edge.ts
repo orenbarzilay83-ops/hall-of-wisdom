@@ -29,7 +29,7 @@ export interface CallAnthropicEdgeResult {
 }
 
 export async function callAnthropicEdge(params: CallAnthropicEdgeParams): Promise<CallAnthropicEdgeResult> {
-  const { apiKey, model, system, userMessage, maxTokens = 1200 } = params;
+  const { apiKey, model, system, userMessage, maxTokens = 4096 } = params;
 
   if (!apiKey) return { ok: false, error: 'missing-api-key' };
   if (!model) return { ok: false, error: 'missing-model' };
