@@ -61,7 +61,13 @@ export async function callAnthropicEdge(params: CallAnthropicEdgeParams): Promis
     const block = Array.isArray(data?.content) ? data.content.find((c: { type?: string }) => c?.type === 'text') : null;
     const text = block?.text;
 
-    if (!text) return { ok: false, error: 'empty-response' };
+    if (!text) {
+      // stop_reason הוא enum קצר (end_turn/max_tokens/stop_sequence/refusal/
+      // tool_use) — לא-תוכן-גולמי, לא chain-of-thought — בטוח-לצירוף ל-error
+      // כדי-לאבחן בלי-לחשוף שום דבר מעבר-לזה.
+      const stopReason = typeof data?.stop_reason === 'string' ? data.stop_reason : 'unknown';
+      return { ok: false, error: `empty-response:${stopReason}` };
+    }
 
     const inputTokens = data?.usage?.input_tokens;
     const outputTokens = data?.usage?.output_tokens;
