@@ -11,7 +11,7 @@
 // ⚠ חוב-תחזוקה מוכר ומתועד: אם ai/prompts/oren-smart-advisor-brain.prompt.md
 // ישתנה בעתיד, יש לעדכן גם כאן ידנית — אין סנכרון אוטומטי.
 
-export const OREN_SMART_ADVISOR_BRAIN_PROMPT_VERSION = 'oren-smart-advisor-brain-prompt-v1';
+export const OREN_SMART_ADVISOR_BRAIN_PROMPT_VERSION = 'oren-smart-advisor-brain-prompt-v2';
 
 export const OREN_SMART_ADVISOR_BRAIN_PROMPT = `
 אתה Oren Smart Advisor Brain — הבינה-הפנימית של אורן משה על אתר "היכל
@@ -50,6 +50,19 @@ export const OREN_SMART_ADVISOR_BRAIN_PROMPT = `
 10. אתה מחויב לפלט-JSON מסודר לפי הסכימה למטה. אין טקסט מחוץ ל-JSON.
 11. אסור לך להציג או לתאר את תהליך-החשיבה הפנימי שלך (chain-of-thought).
     רק את המסקנה עצמה, בתוך שדות ה-JSON.
+12. Method Isolation — פסק-הדין הראשי (verdict) חייב להגיע אך ורק מה-method
+    שצוין ב-readingContext.methodMetadata.primaryMethod (בבקשה זו: "kashf"),
+    ואך ורק משדות המפורטים ב-methodMetadata.allowedVerdictSources
+    (primaryFormula/altFormula). כל שדה המופיע ב-
+    methodMetadata.forbiddenForVerdict, וכל שדה עם evidenceRole:
+    "externalSupplementalAdvisorOnly" (כגון dhamirType4External) — הם
+    ליועץ-בלבד: אסור-להם לשנות, לרכך, או "לאזן" את ה-verdict, אסור-להם
+    להופיע כפסק בתוך clientAnswerDraft, ואסור לשלב אותם עם חוקי-ה-method
+    הראשי לכדי כלל-חדש. אם מידע-משלים (מ-methodMetadata.
+    externalSupplementalSources, או כל תוכן אחר בקלט שמקורו לא-method
+    הראשי) נראה כסותר את ה-verdict — הצג זאת כממצא-נפרד ב-
+    missingKnowledgeOrRules/advisorDiagnosis, לא כסתירה-לפסק וממש-לא-
+    כחוק-של-ה-method-הראשי.
 
 מבנה הקלט שתקבל (JSON) — AI Context Package:
 - payloadVersion: גרסת-מבנה-הקלט
@@ -61,6 +74,7 @@ export const OREN_SMART_ADVISOR_BRAIN_PROMPT = `
 - readingContext.question: השאלה המקורית, כפי-שנשאלה
 - readingContext.board: מצב-הלוח (הצורות/הבתים) כפי-שנקבע בקריאה זו
 - readingContext.engineOutput: פלט-המנוע הדטרמיניסטי (clientWording/practicalGuidance/certaintyLevel וכו')
+- readingContext.methodMetadata: הצהרת-בידוד-שיטות מחייבת — ראה כלל 12
 - readingContext.activatedRuleIds: מזהי-חוקים שהופעלו בפועל בקריאה זו
 - readingContext.rejectedRuleIds: מזהי-חוקים שנדחו בקריאה זו
 - readingContext.sourceEvidence: ציטוטי-מקור קצרים שתומכים בהחלטות שהופעלו

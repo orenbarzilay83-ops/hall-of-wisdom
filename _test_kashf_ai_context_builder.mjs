@@ -196,8 +196,13 @@ console.log('\n--- 13. AI-safe Board Projection ---');
   assert(Array.isArray(safeBoard.houses) && safeBoard.houses.length === 16, '(3) projected board has exactly 16 positions');
 
   for (const position of safeBoard.houses) {
-    assert(position.figureHouseMeaning == null || position.figureHouseMeaning.house === position.house,
-      `(4) house ${position.house}: figureHouseMeaning.house matches this position's own house (only the relevant transit entry is present)`);
+    // (4) updated for Method Isolation (HALL_WISDOM_KASHF_HAWI_METHOD_ISOLATION
+    // precommit): houseMeaning/figureHouseMeaning (Hawi-native interpretive
+    // prose, per raml-board.js::getHawiFigureHouseMeaning) are no longer
+    // projected at all — not trimmed-to-one-entry, entirely absent.
+    assert(!('houseMeaning' in position), `(4) house ${position.house}: no "houseMeaning" key (Hawi-native, excluded per Method Isolation)`);
+    assert(!('figureHouseMeaning' in position), `(4) house ${position.house}: no "figureHouseMeaning" key (Hawi-native, excluded per Method Isolation)`);
+    assert(typeof position.pattern === 'string' && /^[12]{4}$/.test(position.pattern), `(4) house ${position.house}: bare figure pattern present and well-formed (${position.pattern})`);
     assert(!position.figure || !('houses' in position.figure),
       `(5) house ${position.house}: figure sub-object does not carry the full 16-house transit table`);
   }
@@ -212,7 +217,7 @@ console.log('\n--- 13. AI-safe Board Projection ---');
 
   for (const position of safeBoard.houses) {
     assert(position.figure !== null && position.figureId, `(8) house ${position.house}: no empty/placeholder figure identity`);
-    assert(position.houseMeaning !== undefined && position.figureHouseMeaning !== undefined, `(8) house ${position.house}: no missing (undefined) meaning fields`);
+    assert(position.figureState !== undefined, `(8) house ${position.house}: no missing (undefined) figureState field`);
   }
 
   const identifiableHouses = new Set(safeBoard.houses.map((p) => p.house));

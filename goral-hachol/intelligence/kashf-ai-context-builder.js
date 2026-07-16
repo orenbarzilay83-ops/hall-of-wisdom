@@ -53,7 +53,7 @@ import { analyzeIntent } from './intent-analyzer.js';
 import { buildReadingStrategy } from './reading-strategy-builder.js';
 import { buildReadingPlan } from './reading-planner.js';
 
-export const KASHF_AI_CONTEXT_BUILDER_VERSION = 'kashf-ai-context-builder-v3';
+export const KASHF_AI_CONTEXT_BUILDER_VERSION = 'kashf-ai-context-builder-v4';
 
 // Top-level engineOutput fields that are professional/engine-computed —
 // deliberately excludes `clientContext` (the only top-level source of
@@ -82,6 +82,20 @@ const ADVISOR_DIAGNOSIS_ALLOWED_KEYS = [
   'certaintyLevel', 'supportRatio', 'contextAdjustments',
 ];
 
+// Method Isolation metadata (readingContext.methodMetadata) — a static,
+// method-level declaration of which readingContext.engineOutput fields the
+// AI is allowed to base a verdict on, vs. which are external/advisor-only
+// and must never override or soften the primary verdict. Lives inside
+// readingContext (already the documented Domain-specific bag, per
+// ai-context-package.ts) rather than the generic envelope — no change to
+// the shared AiContextPackage contract.
+export const KASHF_METHOD_METADATA = {
+  primaryMethod: 'kashf',
+  allowedVerdictSources: ['kashf.primaryFormula', 'kashf.altFormula'],
+  externalSupplementalSources: ['dhamirType4External'],
+  forbiddenForVerdict: ['hawi.houseMeaning', 'hawi.figureHouseMeaning', 'externalSupplementalAdvisorOnly'],
+};
+
 function projectAllowlist(obj, allowedKeys) {
   const out = {};
   for (const key of allowedKeys) {
@@ -104,6 +118,19 @@ export function buildAiSafeKashfEngineOutput(engineOutput) {
   if (!engineOutput || typeof engineOutput !== 'object') return engineOutput;
 
   const projected = projectAllowlist(engineOutput, ENGINE_OUTPUT_ALLOWED_KEYS);
+
+  // Method Isolation: dhamirType4External is already self-disclosing
+  // (isExternalSource/sourceBook/disclosureHebrew, computed by the engine
+  // itself, untouched here) — this adds an explicit machine-readable role
+  // tag at the AI-projection layer only (never written back onto the
+  // engine's own return value), so the prompt/AI can key off a single
+  // field name rather than re-deriving "is this advisor-only" from prose.
+  if (projected.dhamirType4External && typeof projected.dhamirType4External === 'object') {
+    projected.dhamirType4External = {
+      ...projected.dhamirType4External,
+      evidenceRole: 'externalSupplementalAdvisorOnly',
+    };
+  }
 
   const csl = engineOutput.commerceSmartLayer;
   if (csl && typeof csl === 'object') {
@@ -143,10 +170,21 @@ export function buildAiSafeKashfEngineOutput(engineOutput) {
 // their one piece of content not already present in `houses[i]`, namely
 // each position's figure-state/classification fields (fortune/movement/
 // element/gender/zodiac/seeker-status — Kashf's own classification layer,
-// `kashf-figure-names.js`), is folded into `houses[i].figureState` instead,
-// keyed by house number. `sourceReview` (book-audit provenance notes about
-// how houses 5-8/15-16 were derived) is dropped — it documents the
-// generation *process*, not this reading's interpretation.
+// `kashf-figure-names.js`) and its bare pattern, is folded into
+// `houses[i].figureState`/`houses[i].pattern` instead, keyed by house
+// number. `sourceReview` (book-audit provenance notes about how houses
+// 5-8/15-16 were derived) is dropped — it documents the generation
+// *process*, not this reading's interpretation.
+//
+// Method Isolation (HALL_WISDOM_KASHF_HAWI_METHOD_ISOLATION_PRECOMMIT_REPORT.md):
+// `houseMeaning`/`figureHouseMeaning` are DELIBERATELY EXCLUDED — confirmed
+// (raml-board.js:42-43) that both come from HAWI_SOURCE/getHawiFigureHouseMeaning,
+// i.e. Hawi's own interpretive figure-in-house prose, unconditionally
+// attached to every board regardless of which method (kashf/hawi) requests
+// it. `board.houses[i].figure` (bare id/hebrewName/arabicName) is kept —
+// that is objective figure-naming (the 16 figures have the same names
+// under either book), not interpretive judgment, and was already
+// deliberately kept in the prior round.
 
 const BOARD_TOP_LEVEL_ALLOWED_KEYS = [
   'id', 'source', 'boardHebrewName', 'inputMode', 'displayDirection', 'boardValidation',
@@ -171,10 +209,11 @@ const POSITION_FIGURE_STATE_KEYS = [
 /**
  * Layer 1 (payload-construction-time) — pure function, does not mutate its
  * input. Returns a NEW object: one canonical `houses` array (no
- * `housesByNumber` duplicate), each position carrying only its own
- * figure identity, figure-state/classification, house-generic meaning,
- * and this-figure-in-this-house transit meaning — never the figure's full
- * 16-house transit table.
+ * `housesByNumber` duplicate), each position carrying only its own figure
+ * identity/pattern and figure-state/classification (both Kashf-safe,
+ * structural/objective) — never Hawi's own house-meaning/figure-in-house
+ * interpretive prose (`houseMeaning`/`figureHouseMeaning`), and never the
+ * figure's full 16-house transit table.
  *
  * @param {object} board - real, unmodified return value of buildRamlBoardFromMothers()
  * @returns {object} AI-safe projection
@@ -182,28 +221,25 @@ const POSITION_FIGURE_STATE_KEYS = [
 export function buildAiSafeKashfBoard(board) {
   if (!board || typeof board !== 'object') return board;
 
-  const stateByHouse = new Map();
+  const entryByHouse = new Map();
   if (Array.isArray(board.entries)) {
     for (const entry of board.entries) {
-      if (entry && typeof entry.house === 'number' && entry.figure && typeof entry.figure === 'object') {
-        stateByHouse.set(entry.house, entry.figure);
-      }
+      if (entry && typeof entry.house === 'number') entryByHouse.set(entry.house, entry);
     }
   }
 
   const houses = Array.isArray(board.houses) ? board.houses.map((position) => {
-    const stateFigure = stateByHouse.get(position?.house);
+    const entry = entryByHouse.get(position?.house);
+    const stateFigure = entry && entry.figure && typeof entry.figure === 'object' ? entry.figure : null;
     return {
       house: position.house,
       houseNumber: position.houseNumber,
       figureId: position.figureId,
+      pattern: typeof entry?.pattern === 'string' ? entry.pattern : null,
       figure: position.figure && typeof position.figure === 'object'
         ? projectAllowlist(position.figure, POSITION_FIGURE_IDENTITY_KEYS)
         : null,
       figureState: stateFigure ? projectAllowlist(stateFigure, POSITION_FIGURE_STATE_KEYS) : null,
-      houseMeaning: position.houseMeaning ?? null,
-      figureHouseMeaning: position.figureHouseMeaning ?? null,
-      sourceStatus: position.sourceStatus,
     };
   }) : [];
 
@@ -277,6 +313,7 @@ export function buildKashfAiContextPackage(input = {}) {
       question,
       board: aiSafeBoard,
       engineOutput: aiSafeEngineOutput,
+      methodMetadata: KASHF_METHOD_METADATA,
       activatedRuleIds: [],
       rejectedRuleIds: [],
       sourceEvidence: [],
@@ -286,4 +323,4 @@ export function buildKashfAiContextPackage(input = {}) {
   return { contextPackage, completeness: missingFields.length === 0 ? 'complete' : 'partial', missingFields, intentResult };
 }
 
-export default { buildKashfAiContextPackage, buildAiSafeKashfEngineOutput, buildAiSafeKashfBoard, KASHF_AI_CONTEXT_BUILDER_VERSION };
+export default { buildKashfAiContextPackage, buildAiSafeKashfEngineOutput, buildAiSafeKashfBoard, KASHF_METHOD_METADATA, KASHF_AI_CONTEXT_BUILDER_VERSION };
