@@ -49,11 +49,12 @@
 
 import { buildRamlBoardFromMothers } from '../engine/raml-board-generator.js';
 import { buildKashfReading } from '../engine/kashf-reading-engine.js';
+import { selectApplicableBookRules } from '../engine/kashf-book-rule-selector.js';
 import { analyzeIntent } from './intent-analyzer.js';
 import { buildReadingStrategy } from './reading-strategy-builder.js';
 import { buildReadingPlan } from './reading-planner.js';
 
-export const KASHF_AI_CONTEXT_BUILDER_VERSION = 'kashf-ai-context-builder-v4';
+export const KASHF_AI_CONTEXT_BUILDER_VERSION = 'kashf-ai-context-builder-v5';
 
 // Top-level engineOutput fields that are professional/engine-computed —
 // deliberately excludes `clientContext` (the only top-level source of
@@ -95,6 +96,67 @@ export const KASHF_METHOD_METADATA = {
   externalSupplementalSources: ['dhamirType4External'],
   forbiddenForVerdict: ['hawi.houseMeaning', 'hawi.figureHouseMeaning', 'externalSupplementalAdvisorOnly'],
 };
+
+function ruleIdentifier(rule) {
+  return rule.ruleKey || rule.methodKey || 'unknown';
+}
+
+/**
+ * readingContext.ruleCoverageStatus — built from the Book Rule Catalog
+ * selector (kashf-book-rule-selector.js), per
+ * HALL_WISDOM_KASHF_BOOK_RULE_CATALOG_PRECOMMIT_REPORT.md. Never claims
+ * "complete" unless there are genuinely zero missing/unresolved relevant
+ * rules — for spiritualDiagnostics today that is never the case (2
+ * unresolved witness schemes + 4 unimplemented dhamir/rule entries), so
+ * completeness is honestly "partial".
+ *
+ * @param {string} topicId
+ * @returns {object}
+ */
+export function buildRuleCoverageStatus(topicId) {
+  const selection = selectApplicableBookRules({ method: 'kashf', topicId });
+
+  const implementedRelevantRules = [
+    ...selection.verdictRules, ...selection.supportingRules,
+    ...selection.generalWitnessRules, ...selection.dhamirRules,
+  ]
+    .filter((r) => r.implementationStatus === 'implemented')
+    .map(ruleIdentifier);
+
+  const missingRelevantRules = selection.unavailableRules.map(ruleIdentifier);
+  const unresolvedRuleKeys = selection.unresolvedRules.map(ruleIdentifier);
+
+  const completeness = (missingRelevantRules.length === 0 && unresolvedRuleKeys.length === 0)
+    ? 'complete'
+    : 'partial';
+
+  return {
+    completeness,
+    implementedRelevantRules,
+    missingRelevantRules,
+    unresolvedRules: unresolvedRuleKeys,
+    sourceCoverage: {
+      verdictRules: selection.verdictRules.length,
+      supportingRules: selection.supportingRules.length,
+      generalWitnessRules: selection.generalWitnessRules.length,
+      dhamirRules: {
+        total: selection.dhamirRules.length,
+        implemented: selection.dhamirRules.filter((r) => r.implementationStatus === 'implemented').length,
+        missing: selection.dhamirRules.filter((r) => r.implementationStatus !== 'implemented').length,
+      },
+      // The book's own 8 sub-methods only (excludes the separate p.155
+      // majority-decision aggregation rule counted above) — kept distinct
+      // so "5/8 dhamir methods implemented" is never blurred by also
+      // counting the aggregation rule itself as an "implemented method".
+      dhamirMethodsOnly: {
+        total: selection.dhamirRules.filter((r) => r.ruleCategory === 'dhamirMethod').length,
+        implemented: selection.dhamirRules.filter((r) => r.ruleCategory === 'dhamirMethod' && r.implementationStatus === 'implemented').length,
+        missing: selection.dhamirRules.filter((r) => r.ruleCategory === 'dhamirMethod' && r.implementationStatus !== 'implemented').length,
+      },
+      unresolvedWitnessSchemes: selection.unresolvedRules.filter((r) => r.ruleCategory === 'witnessScheme').length,
+    },
+  };
+}
 
 function projectAllowlist(obj, allowedKeys) {
   const out = {};
@@ -314,6 +376,7 @@ export function buildKashfAiContextPackage(input = {}) {
       board: aiSafeBoard,
       engineOutput: aiSafeEngineOutput,
       methodMetadata: KASHF_METHOD_METADATA,
+      ruleCoverageStatus: buildRuleCoverageStatus(topicId),
       activatedRuleIds: [],
       rejectedRuleIds: [],
       sourceEvidence: [],
@@ -323,4 +386,4 @@ export function buildKashfAiContextPackage(input = {}) {
   return { contextPackage, completeness: missingFields.length === 0 ? 'complete' : 'partial', missingFields, intentResult };
 }
 
-export default { buildKashfAiContextPackage, buildAiSafeKashfEngineOutput, buildAiSafeKashfBoard, KASHF_METHOD_METADATA, KASHF_AI_CONTEXT_BUILDER_VERSION };
+export default { buildKashfAiContextPackage, buildAiSafeKashfEngineOutput, buildAiSafeKashfBoard, buildRuleCoverageStatus, KASHF_METHOD_METADATA, KASHF_AI_CONTEXT_BUILDER_VERSION };
