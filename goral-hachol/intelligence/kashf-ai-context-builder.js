@@ -50,11 +50,26 @@
 import { buildRamlBoardFromMothers } from '../engine/raml-board-generator.js';
 import { buildKashfReading } from '../engine/kashf-reading-engine.js';
 import { selectApplicableBookRules } from '../engine/kashf-book-rule-selector.js';
+import { KASHF_BOOK_RULE_CATALOG, KASHF_BOOK_RULE_CATALOG_VERSION } from '../data/sources/kashf-al-asrar/kashf-book-rule-catalog.js';
 import { analyzeIntent } from './intent-analyzer.js';
 import { buildReadingStrategy } from './reading-strategy-builder.js';
 import { buildReadingPlan } from './reading-planner.js';
 
-export const KASHF_AI_CONTEXT_BUILDER_VERSION = 'kashf-ai-context-builder-v5';
+export const KASHF_AI_CONTEXT_BUILDER_VERSION = 'kashf-ai-context-builder-v7';
+
+// The five distinct "עד/עדים" (witness) systems documented in
+// HALL_WISDOM_KASHF_EXHAUSTIVE_WITNESS_AND_SPIRITUAL_RULES_AUDIT.md
+// (lettered A-E there) — kept as a fixed, explicit list so
+// witnessSystemsCoverage always reports on exactly these five, regardless
+// of catalog ordering, and so a future catalog edit cannot silently drop
+// one without this list also being updated.
+const WITNESS_SYSTEM_RULE_KEYS = [
+  'kashf-p41-six-pillars-witnesses-general',
+  'kashf-p45-trine-witness-scheme',
+  'kashf-p53-witness-scheme-basic',
+  'kashf-p101-witness-scheme-extended',
+  'kashf-p130-five-witnesses-scoring-technique',
+];
 
 // Top-level engineOutput fields that are professional/engine-computed —
 // deliberately excludes `clientContext` (the only top-level source of
@@ -103,12 +118,19 @@ function ruleIdentifier(rule) {
 
 /**
  * readingContext.ruleCoverageStatus — built from the Book Rule Catalog
- * selector (kashf-book-rule-selector.js), per
- * HALL_WISDOM_KASHF_BOOK_RULE_CATALOG_PRECOMMIT_REPORT.md. Never claims
- * "complete" unless there are genuinely zero missing/unresolved relevant
- * rules — for spiritualDiagnostics today that is never the case (2
- * unresolved witness schemes + 4 unimplemented dhamir/rule entries), so
- * completeness is honestly "partial".
+ * selector (kashf-book-rule-selector.js v3), per
+ * HALL_WISDOM_KASHF_SPIRITUAL_RULE_CATALOG_EXPANSION_PRECOMMIT_REPORT.md.
+ *
+ * v3 correction: `appliedBookRules` is now built from the selector's
+ * evidence-based bucket (runtimeEvidence-proven), NOT from
+ * `implementationStatus === 'implemented'` alone — see
+ * kashf-book-rule-selector.js's header comment for why that conflation was
+ * wrong (it previously reported kashf-p49-house6-sorcery-domain as
+ * "applied" despite no independent runtime object existing for it).
+ *
+ * Never claims "complete" unless there are genuinely zero
+ * missing/unresolved/unavailable relevant rules — for spiritualDiagnostics
+ * today that is never the case, so completeness is honestly "partial".
  *
  * @param {string} topicId
  * @returns {object}
@@ -116,44 +138,96 @@ function ruleIdentifier(rule) {
 export function buildRuleCoverageStatus(topicId) {
   const selection = selectApplicableBookRules({ method: 'kashf', topicId });
 
-  const implementedRelevantRules = [
-    ...selection.verdictRules, ...selection.supportingRules,
-    ...selection.generalWitnessRules, ...selection.dhamirRules,
-  ]
-    .filter((r) => r.implementationStatus === 'implemented')
-    .map(ruleIdentifier);
+  const dedupIds = (rules) => Array.from(new Set(rules.map(ruleIdentifier)));
 
-  const missingRelevantRules = selection.unavailableRules.map(ruleIdentifier);
-  const unresolvedRuleKeys = selection.unresolvedRules.map(ruleIdentifier);
+  const directVerdictRules = dedupIds(selection.directVerdictRules);
+  const implementedAvailableRules = dedupIds(selection.implementedAvailableRules);
+  const selectedRules = dedupIds(selection.selectedRules);
+  const evaluatedRules = dedupIds(selection.evaluatedRules);
+  const appliedBookRules = dedupIds(selection.appliedBookRules);
+  const missingVerifiedRelevantRules = dedupIds(selection.missingVerifiedRelevantRules);
+  const unresolvedApplicabilityRules = dedupIds(selection.unresolvedApplicabilityRules);
+  const unresolvedSourceRelationshipRules = dedupIds(selection.unresolvedSourceRelationshipRules);
+  const requiresFullContextReviewRules = dedupIds(selection.requiresFullContextReviewRules);
+  const unavailableBookRules = dedupIds(selection.unavailableBookRules);
 
-  const completeness = (missingRelevantRules.length === 0 && unresolvedRuleKeys.length === 0)
-    ? 'complete'
-    : 'partial';
+  const completeness = (
+    missingVerifiedRelevantRules.length === 0
+    && unresolvedApplicabilityRules.length === 0
+    && requiresFullContextReviewRules.length === 0
+    && unavailableBookRules.length === 0
+  ) ? 'complete' : 'partial';
+
+  const dhamirSubMethods = selection.candidateDhamirRules.filter((r) => r.ruleCategory === 'dhamirMethod');
+  const dhamirSubMethodsEvaluated = dhamirSubMethods.filter((r) => selection.evaluatedRules.includes(r));
+  const dhamirSubMethodsApplied = dhamirSubMethods.filter((r) => selection.appliedBookRules.includes(r));
+
+  // witnessSystemsCoverage: ruleOperationalStatus (does the code run?) is
+  // kept explicitly separate from relationshipResolutionStatus (is this
+  // rule's relationship to a sibling rule unresolved?) — the two are
+  // independent facts, most visibly for kashf-p53-witness-scheme-basic
+  // (operationally implemented AND applied, while its relationship to
+  // kashf-p101-witness-scheme-extended remains unresolved).
+  const witnessSystemsCoverage = WITNESS_SYSTEM_RULE_KEYS.map((ruleKey) => {
+    const rule = KASHF_BOOK_RULE_CATALOG.find((r) => r.ruleKey === ruleKey);
+    if (!rule) return { ruleKey, found: false };
+    return {
+      ruleKey: rule.ruleKey,
+      sourcePage: rule.sourcePage,
+      ruleOperationalStatus: rule.implementationStatus,
+      applicabilityStatus: rule.applicabilityStatus,
+      relationshipResolutionStatus: rule.resolutionStatus,
+      appliedThisRound: selection.appliedBookRules.some((r) => r.ruleKey === ruleKey),
+    };
+  });
 
   return {
     completeness,
-    implementedRelevantRules,
-    missingRelevantRules,
-    unresolvedRules: unresolvedRuleKeys,
+    catalogVersion: KASHF_BOOK_RULE_CATALOG_VERSION,
+    directVerdictRules,
+    implementedAvailableRules,
+    selectedRules,
+    evaluatedRules,
+    appliedBookRules,
+    missingVerifiedRelevantRules,
+    unresolvedApplicabilityRules,
+    unresolvedSourceRelationshipRules,
+    requiresFullContextReviewRules,
+    unavailableBookRules,
+    dhamirCoverage: {
+      catalogued: dhamirSubMethods.length,
+      implemented: dhamirSubMethods.filter((r) => r.implementationStatus === 'implemented').length,
+      missing: dhamirSubMethods.filter((r) => r.implementationStatus !== 'implemented').length,
+      selected: dhamirSubMethods.length,
+      evaluated: dhamirSubMethodsEvaluated.length,
+      applied: dhamirSubMethodsApplied.length,
+      majorityDecisionRuleImplemented: KASHF_BOOK_RULE_CATALOG.some(
+        (r) => r.ruleKey === 'kashf-p155-dhamir-majority-decision' && r.implementationStatus === 'implemented'
+      ),
+      majorityDecisionRuleApplied: selection.appliedBookRules.some(
+        (r) => r.ruleKey === 'kashf-p155-dhamir-majority-decision'
+      ),
+    },
+    witnessSystemsCoverage,
     sourceCoverage: {
-      verdictRules: selection.verdictRules.length,
-      supportingRules: selection.supportingRules.length,
+      directVerdictRules: selection.directVerdictRules.length,
+      supportingCalculationRules: selection.supportingCalculationRules.length,
       generalWitnessRules: selection.generalWitnessRules.length,
-      dhamirRules: {
-        total: selection.dhamirRules.length,
-        implemented: selection.dhamirRules.filter((r) => r.implementationStatus === 'implemented').length,
-        missing: selection.dhamirRules.filter((r) => r.implementationStatus !== 'implemented').length,
+      candidateDhamirRules: {
+        total: selection.candidateDhamirRules.length,
+        implemented: selection.candidateDhamirRules.filter((r) => r.implementationStatus === 'implemented').length,
+        missing: selection.candidateDhamirRules.filter((r) => r.implementationStatus !== 'implemented').length,
       },
       // The book's own 8 sub-methods only (excludes the separate p.155
       // majority-decision aggregation rule counted above) — kept distinct
       // so "5/8 dhamir methods implemented" is never blurred by also
       // counting the aggregation rule itself as an "implemented method".
       dhamirMethodsOnly: {
-        total: selection.dhamirRules.filter((r) => r.ruleCategory === 'dhamirMethod').length,
-        implemented: selection.dhamirRules.filter((r) => r.ruleCategory === 'dhamirMethod' && r.implementationStatus === 'implemented').length,
-        missing: selection.dhamirRules.filter((r) => r.ruleCategory === 'dhamirMethod' && r.implementationStatus !== 'implemented').length,
+        total: dhamirSubMethods.length,
+        implemented: dhamirSubMethods.filter((r) => r.implementationStatus === 'implemented').length,
+        missing: dhamirSubMethods.filter((r) => r.implementationStatus !== 'implemented').length,
       },
-      unresolvedWitnessSchemes: selection.unresolvedRules.filter((r) => r.ruleCategory === 'witnessScheme').length,
+      irrelevantRules: selection.irrelevantRules.length,
     },
   };
 }
