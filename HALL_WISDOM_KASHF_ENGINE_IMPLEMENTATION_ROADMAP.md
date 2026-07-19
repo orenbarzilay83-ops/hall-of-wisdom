@@ -22,16 +22,20 @@ the actual sequencing recommendation.
 | B — Trine (+square/sextile) | p.43, 45 | Yes | none | Aspect-detection between figures | Evidence | Not stated | Low — content itself only partially re-verified | Square/sextile taxonomy not content-checked in any round | **No** — verify full aspect taxonomy first (targeted re-read, not implementation) |
 | C — Basic house 13/14/15 testimony | p.53 | Yes | Board construction (L1.1) | Always active (structural) | Evidence | Not stated relative to D, E, F | Already structurally present | None | N/A — already exists structurally, nothing new to implement |
 | D — Extended house-testimony | p.101-102 | Yes | Board construction (L1.1) | Always active (structural) | Evidence | Not stated relative to C, E, F — C and D appear to be two different-scope house-testimony schemes with no stated reconciliation | Already structurally present | Relationship to C unresolved (long-standing, flagged in prior rounds) | N/A — already exists structurally |
-| E — Five Witnesses (degree-scoring) | p.130-131 | No — depends on Essential Dignities Table (L0.3) | L0.3, L0.6, L1.1 | Unspecified which topics invoke it | Scored evidence (1-15 scale) | Counter-tradition rejects the whole apparatus; not reconciled | Medium — high value, blocked by a real missing dependency | Active-tier-disagreement case not addressed; counter-tradition not reconciled | **Not yet** — L0.3 must exist first |
+| E — Five Witnesses (degree-scoring) | p.130-131 | No — depends on Essential Dignities Table (L0.3) | L0.3 (**status corrected: already implemented and source-verified as `FIGURE_DIGNITIES`, see the essential-dignities verification report — not a blocking gap anymore**), L0.6, L1.1 | Unspecified which topics invoke it | Scored evidence (1-15 scale) | Counter-tradition rejects the whole apparatus; not reconciled | Medium — high value, dependency now available, only E's own routing remains to be built | Active-tier-disagreement case not addressed; counter-tradition not reconciled | **Not yet** — no engine implementation authorized this round for ANY system, E included; but L0.3 is no longer the blocker |
 | F — Seven Witnesses of Wisdom | p.164 | Yes | Board construction (L1.1), figure classification (L0.1) | Majority-rule over houses 9-15(+16) | Direct majority verdict/evidence | Not stated relative to A-E | High on pure independence/simplicity — but see document 4 for why "simple" is not treated as the deciding factor | None — fully specified | **Not yet** — no engine implementation authorized this round for ANY system, F included |
 
 **Explicit compliance note**: this table does **not** rank F above E
-because F is easier. F is independent and E is dependency-blocked — that
-is a factual, not a preference-based, distinction. Whether F should be
-built before, after, or instead of completing L0.3 (which would unblock
-both E and the trade-pricing technique L2.4) is a sequencing question
-resolved in document 4, not here, and using multiple criteria, not
-complexity alone.
+because F is easier. F is independent; E's data dependency (L0.3) is now
+confirmed already implemented and source-verified (a later verification
+round found `FIGURE_DIGNITIES` already exists, is 100%-source-accurate,
+and is already consumed by Dhamir Type 2 — see
+`HALL_WISDOM_KASHF_ESSENTIAL_DIGNITIES_EXISTING_DATA_VERIFICATION_REPORT.md`).
+E's own routing/implementation as a witness scorer is still unbuilt, but
+it is no longer blocked on a missing data table. Whether F or E (or the
+trade-pricing technique L2.4, which can now also draw on L0.3) should be
+built first is a sequencing question re-ranked in document 4, not here,
+using multiple criteria, not complexity alone.
 
 ---
 
@@ -118,12 +122,12 @@ decided, and explicitly not ranked by ease alone.
 | 13 | parentsPropertyHidden | L0.8 | topicIds exist | ~8-method hidden-object sub-system, water-depth table not verified | None | Yes, multiple worked examples | Unknown | Medium — large, dense sub-system |
 | 14 | marriageSeekerSought | none beyond L1.1 (though figure-character rules reference dignities informally) | topicId exists | ~15 formulas not verified against code | None flagged this round | Yes | Unknown | Medium — dense chapter |
 | 15 | winnerLoser | none beyond L1.1 | topicId exists | Dual-board army-comparison, city-conquest table not verified | None | Yes | Unknown | Medium |
-| 16 | tradeBuySellPricing | L2.4, L0.3, L0.5 | topicId exists (`commerce`) | מבקש/מבוקש-במעגל technique entirely dependent on unimplemented L0.3/L0.5 | None on the technique itself | Yes, fully worked | Low until L0.3/L0.5 exist | **High if attempted before L0.3/L0.5** |
+| 16 | tradeBuySellPricing | L2.4, L0.3, L0.5 | topicId exists (`commerce`) | מבקש/מבוקש-במעגל technique dependent on unimplemented L2.4/L0.5; **L0.3 is now confirmed already implemented and no longer a blocker** | None on the technique itself | Yes, fully worked | Medium — one of two remaining dependencies (L0.5) still missing; L0.3 no longer blocks this | **Still risky if L2.4 is attempted before L0.5 exists — but L0.3 is resolved** |
 | 17 | friendsHopeLifeLove | L2.3 | topicId `friendsHope` confirmed to already exist | Livelihood-oracle, friend-type, clothing-color tables not verified | **קהלה double-entry in livelihood table — source-level ambiguity** | Yes | Unknown, capped by the ambiguity | Medium-high — the table itself needs a targeted re-check before any digitization, independent of code work |
 | 18 | childrenPregnancy | none beyond L1.1 | topicId exists | Gender-determination sub-rules not verified | **4-5 competing gender methods, not reconciled by the book** | Yes | Unknown, capped by the ambiguity | **High** — implementing any ONE gender method without user guidance risks silently picking a side the book itself didn't pick |
 | 19 | decisionOracleSixteenFigure | L2.3 | Not a `kashf-topic-rules.js` topicId — general-purpose pattern, not topic-bound | Entire pattern unimplemented | קהלה double-entry affects one of its 3 known table instances (p.267-269) | Yes, 3 full tables | 0% | Low complexity, but same table-ambiguity caveat for one of its 3 instances |
 | 20 | authority sub-board pattern (shared with #11, #12) | L1.5 | — | Entire pattern unimplemented | Whether it generalizes beyond the 2 confirmed instances is unstated | 2 procedural instances, not fully numerically worked | 0% | Building it topic-specifically (inside #11 or #12 alone) risks the same "premature specificity" issue noted for those rows |
-| 21 | marriage-adjacent dignity techniques (feeds #14, #16 partially) | L0.3 | — | Entirely unimplemented | None on the table itself | — | 0% | Foundational — see document 4 |
+| 21 | marriage-adjacent dignity techniques (feeds #14, #16 partially) | L0.3 | **Already implemented and source-verified** (`FIGURE_DIGNITIES`, `kashf-figure-attributes-gate2.js`) — corrected, was previously listed as entirely unimplemented | The table itself is done; its consumers (L2.4, L3.E) are not yet wired to it | None on the table itself | GT-10 exists and passes | ~100% for the table itself, 0% for its consumers | Foundational, and now available — see document 4's re-ranking |
 
 ### Completion-order rationale (not "easiest first")
 
@@ -150,8 +154,11 @@ decided, and explicitly not ranked by ease alone.
    this is a "do not implement yet" flag, not a low-priority ranking.
 6. **Downstream unlock value**: family 21 (dignities table, which is
    really L0.3 from the Dependency Graph, not a question family in its
-   own right) unlocks both family 16 (trade) and witness system E — see
-   document 4 for the full cross-comparison.
+   own right) is **now confirmed already implemented and source-verified**
+   — it already unlocks both family 16 (trade) and witness system E as
+   buildable (their remaining blockers are L0.5 and their own routing
+   work respectively, not L0.3) — see document 4 for the re-ranked
+   cross-comparison.
 
 This ordering is a **planning input**, not an implementation schedule —
 no phase below is authorized to start without separate approval.
@@ -224,23 +231,36 @@ and not with a single witness engine.
 - **Deploy needed?** No. **Live AI pilot needed?** No.
 
 ### Phase 1 — Layer 0 foundational data entry (no verdict logic)
-- **Objective**: Digitize the Essential Dignities Table (L0.3) and,
-  if approved separately, the Figure-to-Lunar-Month Table (L0.4) as pure
-  data — no computation, no verdict wiring.
-- **Engines included**: L0.3, optionally L0.4.
+> **STATUS UPDATE (post-verification round): L0.3 is COMPLETE.**
+> Executing this phase's L0.3 objective led to discovering that the
+> table already existed as `FIGURE_DIGNITIES` in
+> `goral-hachol/data/sources/kashf-al-asrar/kashf-figure-attributes-gate2.js`
+> — 14 of 16 figures with fully source-verified data (98/98 values
+> matched against a fresh independent re-extraction), the other 2
+> (דרך, חיבור) correctly and explicitly documented as absent from the
+> source itself, not a digitization gap. No new file was created. GT-10
+> (`_test_kashf_essential_dignities_table.mjs`) exists and passes
+> 196/196. Full detail:
+> `HALL_WISDOM_KASHF_ESSENTIAL_DIGNITIES_EXISTING_DATA_VERIFICATION_REPORT.md`.
+> L0.4 (Figure-to-Lunar-Month Table) remains unaddressed — this phase's
+> original L0.4 objective is still open for a future round.
+- **Objective (original, now superseded for L0.3)**: Digitize the
+  Essential Dignities Table (L0.3) and, if approved separately, the
+  Figure-to-Lunar-Month Table (L0.4) as pure data — no computation, no
+  verdict wiring.
+- **Engines included**: L0.3 (done), optionally L0.4 (still open).
 - **Dependencies**: Phase 0 not required for these two (no ambiguity
   flagged on their content).
-- **Files likely involved**: a new data file under
-  `goral-hachol/data/sources/kashf-al-asrar/` (exact path/naming not
-  decided here — a naming decision for the approval step, not this
-  document).
-- **Source pages**: 97-99, 100.
-- **Tests required**: a table-fidelity Golden Test (verify all 16
-  figures' 7 dignity fields against the source text) — see document 3.
-- **Completion criteria**: data file exists, matches source exactly,
-  is NOT yet wired into any verdict-producing code path.
-- **Regression risk**: near-zero — pure new data, no existing code path
-  touches it yet.
+- **Files likely involved**: L0.3 required no new file. L0.4, if
+  pursued, would still need a naming decision at approval time.
+- **Source pages**: 97-99 (L0.3, done), 100 (L0.4, open).
+- **Tests required**: L0.3's table-fidelity Golden Test exists and
+  passes (GT-10). L0.4 would need its own.
+- **Completion criteria (L0.3)**: met — data verified to match source
+  exactly, confirmed NOT fully routed into verdict-producing code yet
+  (only Dhamir Type 2 consumes it today).
+- **Regression risk**: none incurred — no existing file was modified;
+  only one new test file was added.
 - **Deploy needed?** No. **Live AI pilot needed?** No.
 
 ### Phase 2 — Layer 1 board-construction traceability verification
@@ -320,13 +340,15 @@ and not with a single witness engine.
   in this phase.
 - **Deploy needed?** No. **Live AI pilot needed?** No.
 
-### Phase 6 — Trade-pricing technique (L2.4) + Witness E, contingent on Phases 1 and 5
-- **Objective**: With L0.3 (Phase 1) and L0.5 (Phase 5) both in place,
+### Phase 6 — Trade-pricing technique (L2.4) + Witness E, contingent on Phase 5 (Phase 1's L0.3 is already satisfied)
+- **Objective**: With L0.3 (already implemented and source-verified —
+  see Phase 1's status update above) and L0.5 (Phase 5) both in place,
   implement L2.4 (מבקש/מבוקש במעגל) and, separately, L3.E (Five
   Witnesses) — each independently testable against their respective
   worked examples.
 - **Engines included**: L2.4, L3.E.
-- **Dependencies**: Phase 1, Phase 5.
+- **Dependencies**: Phase 5 (L0.5) only — Phase 1's L0.3 objective is
+  already met.
 - **Files likely involved**: new functions, files TBD.
 - **Source pages**: 218-220 (L2.4), 130-131 (L3.E).
 - **Tests required**: L2.4 has a fully-worked source example (p.219-220)

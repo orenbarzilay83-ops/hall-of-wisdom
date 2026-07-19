@@ -36,7 +36,7 @@ here, not a completeness claim.
 Layer 0 — נתוני יסוד וסיווגים (foundational data & classification)
   L0.1 Figure Taxonomy & Classification
   L0.2 House Table (16 houses)
-  L0.3 Essential Dignities Table            [missing]
+  L0.3 Essential Dignities Table            [implemented, not fully routed — corrected, see verification report]
   L0.4 Figure-to-Lunar-Month Table          [missing]
   L0.5 Sixteen Placement Orders (1-16)      [missing/ambiguous]
   L0.6 Element Point-Counting Base System(s)
@@ -141,6 +141,15 @@ below nothing and above everything rather than being folded into Layer 1.
 | Unresolved source issues | House 15's third name "מראת הרמל" (mirror of the sand) newly confirmed this round, not previously documented in code comments — a documentation gap, not a data gap |
 
 ### L0.3 — Essential Dignities Table
+> **Status corrected in a later verification round** (see
+> `HALL_WISDOM_KASHF_ESSENTIAL_DIGNITIES_EXISTING_DATA_VERIFICATION_REPORT.md`):
+> this table was already implemented, as `FIGURE_DIGNITIES` in
+> `goral-hachol/data/sources/kashf-al-asrar/kashf-figure-attributes-gate2.js`,
+> at the time this document was first written — the `missing` status
+> below was a mapping-round research gap, not an accurate code-state
+> finding. Corrected fields are marked below; the rest of this node's
+> original content is left as originally written.
+
 | Field | Value |
 |---|---|
 | Professional purpose | Per-figure exaltation/domicile/bound/face/joy/fall/temperament-pairing, expressed as house numbers |
@@ -148,13 +157,13 @@ below nothing and above everything rather than being folded into Layer 1.
 | Required inputs | Figure identity |
 | Produced outputs | 7 house-number values per figure |
 | Depends on | none |
-| Depended on by | L3.E (Five Witnesses), L2.4 (מבקש/מבוקש במעגל) |
-| Relevant question families | Indirectly, whichever families use L3.E or L2.4 (currently none, since neither is implemented) |
+| Depended on by | L3.E (Five Witnesses) — not yet wired; L2.4 (מבקש/מבוקש במעגל) — not yet wired; **Dhamir Type 2 (element-prevalence) — already wired**, via `FIGURE_MAALA_HOUSE` derived from this table in `kashf-dhamir.js` |
+| Relevant question families | Indirectly, whichever families use L3.E or L2.4 (still not implemented); directly, dhamir-general (already consumed) |
 | Verdict role | Indirect infrastructure |
-| Current implementation status | `missing` |
-| Current tests | none (nothing to test) |
-| Source traceability | `sourced` (fully read this round) but not yet catalogued or coded |
-| Unresolved source issues | None on the table's own content; its downstream consumers (E, מבקש/מבוקש) are themselves not fully verified against it |
+| Current implementation status | **`implemented` + `source-verified`** — 14 of 16 figures have full dignity data (100%-verified against the source, 98/98 values, see the verification report); the other 2 (דרך, חיבור) are correctly documented as absent from the source itself, not a digitization gap. **Currently consumed by Dhamir Type 2; not yet routed to L3.E or L2.4** — `implemented-but-not-fully-routed`, not `missing` |
+| Current tests | `_test_kashf_essential_dignities_table.mjs` (GT-10) — 196/196 assertions passing |
+| Source traceability | `sourced`, fully verified (this table's own content, independently re-extracted and diffed 98/98 exact match) |
+| Unresolved source issues | None on the table's own content; its NOT-YET-WIRED downstream consumers (E, מבקש/מבוקש) remain unimplemented — that is a routing gap in those two engines, not in L0.3 itself |
 
 ### L0.4 — Figure-to-Lunar-Month Table
 | Field | Value |
@@ -564,7 +573,7 @@ proposed anywhere in this document.
 | L4.10 | illnessLostAnimals | 196-204 | L1.1 | Direct verdict + 2 lookup tables (body-part, animal-type) | `partially-implemented` | `sourced` |
 | L4.11 | marriageSeekerSought | 204-212 | L1.1, L0.3(indirect via marriage figure-character rules) | Direct verdict | `partially-implemented` | `sourced` |
 | L4.12 | winnerLoser | 212-217 | L1.1 | Direct verdict | `partially-implemented` | `sourced` |
-| L4.13 | tradeBuySellPricing | 217-224 | L1.1, L2.4, L0.3, L0.5 | Direct verdict | `partially-implemented` — dependency chain (L2.4→L0.3) itself unimplemented | `sourced`, fully worked example present |
+| L4.13 | tradeBuySellPricing | 217-224 | L1.1, L2.4, L0.3, L0.5 | Direct verdict | `partially-implemented` — L2.4 itself unimplemented; L0.3 is now implemented (corrected) but L2.4 does not yet consume it | `sourced`, fully worked example present |
 | L4.14 | theftAndLoan | 224-237 | L1.1 | Direct verdict + description table | `partially-implemented` | `sourced` |
 | L4.15 | travel | 237-247 | L1.1 | Direct verdict + ship-damage table | `partially-implemented` (topicId "likely catalogued," not verified this round) | `sourced` |
 | L4.16 | missingPerson | 248-253 | L1.1, L1.5, L2.3 | Direct verdict | `partially-implemented`; sub-board-recast and decision-oracle dependencies unimplemented | `sourced` |

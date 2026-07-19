@@ -7,6 +7,21 @@
 > evaluated on equal footing with the other options below, not
 > pre-selected.
 
+> **STATUS UPDATE — Option 3 (Essential Dignities Table / L0.3), this
+> document's original recommended first slice, is now CONFIRMED ALREADY
+> IMPLEMENTED.** A later verification round discovered `FIGURE_DIGNITIES`
+> already exists in `kashf-figure-attributes-gate2.js`, is 100%
+> source-verified (98/98 values), and is already consumed by Dhamir Type
+> 2. No new data file was created. See
+> `HALL_WISDOM_KASHF_ESSENTIAL_DIGNITIES_EXISTING_DATA_VERIFICATION_REPORT.md`
+> for full detail. **The original analysis below (Options 1-4 and the
+> "Recommendation" section) is left in place as the historical record of
+> that round's reasoning — it is not deleted or rewritten.** A **new
+> re-ranking**, reflecting this corrected status and covering the
+> options you specified, appears in the new final section, "Re-Ranking
+> After L0.3 Status Correction," below. No new slice has been chosen or
+> started — the re-ranking is analysis only, per instruction.
+
 ---
 
 ## Candidates compared
@@ -156,3 +171,53 @@ standing instruction governing this entire effort, no code will be
 written, no file will be created inside
 `goral-hachol/data/sources/kashf-al-asrar/`, and no commit will occur
 until the user explicitly approves starting Roadmap Phase 1.
+
+---
+
+## Re-Ranking After L0.3 Status Correction
+
+**No new slice is chosen here. This is a re-ranking of already-analyzed
+options, reflecting L0.3's corrected status, as requested.** No
+implementation is started by this section.
+
+Five options are re-ranked: the 3 required (Seven Witnesses of Wisdom;
+missing Dhamir methods; the L2.4 מבקש/מבוקש-במעגל circle technique),
+plus the Five Witnesses system (L3.E) and one further dependent engine
+that L0.3's now-confirmed existence opens up (L0.5, Sixteen Placement
+Orders — still the other half of L2.4's dependency chain).
+
+| Option | Dependency readiness | Source certainty | Missing dependencies | Golden Test availability | Complexity | Professional value | Regression risk |
+|---|---|---|---|---|---|---|---|
+| **Seven Witnesses of Wisdom (L3.F)** | Fully ready — depends only on L0.1, L1.1, both already implemented | High — fully specified, no competing tradition | None | No source-worked numeric example found; would need a hand-constructed test, clearly labeled non-source | Low — single majority-count function | Adds a 6th witness-evidence source; still a leaf (unlocks nothing else) | Low — new standalone function |
+| **Missing Dhamir methods (Face-3/Type-5 core gaps, +9 additional)** | Partially ready — Face-3/Type-5 have no data dependency; the 9 additional techniques have mixed dependencies (some need L0.5, some need L1.4) | Mixed — core gaps fully specified; several of the 9 additional carry an "esoteric, not for everyone" framing (p.158) and the majority-vote's scope (8 vs 8+9) is source-unresolved | None for Face-3/Type-5 verification; L0.5 for the letters+10 variant among the 9 | No source-worked numeric example isolated for any of these | Low for Face-3/Type-5 verification; low-medium per additional technique | Closes the largest numerically-disclosed gap in the whole mapping, but with no downstream unlock | **Medium** — touches `kashf-dhamir.js`, already wired into a live aggregator; could shift existing verdicts |
+| **L2.4 — מבקש/מבוקש במעגל (trade-pricing circle technique)** | **Improved — L0.3 dependency now satisfied.** Still depends on L0.5 (Order 1 seat-placement), which remains unbuilt | High — fully specified, with a confirmed fully-worked source example (p.219-220) | **Only L0.5 remains** (previously blocked on both L0.3 and L0.5) | **Yes — the strongest candidate in the whole mapping** (GT-3, p.219-220, exact worked numbers) | Medium — the technique itself is a moderate positional-counting algorithm; blocked until L0.5 exists | High — closes a real question-family gap (tradeBuySellPricing) with a verifiable, source-worked verdict | Low-medium — new function, first real verdict-facing consumer of L0.3 |
+| **Five Witnesses (L3.E)** | **Improved — L0.3 dependency now satisfied.** No other missing dependency (L0.6 already implemented; L1.1 already implemented) | High for the mechanism itself; counter-tradition (בעלי הטבעים) rejects the whole apparatus and is not reconciled | None remaining | No source-worked numeric example found; a hand-constructed test would be needed | Medium-high — a 5-tier scored mechanism with conditional escalation logic, more intricate than F | Adds the fullest-mechanism witness system in the book; still a leaf (nothing else depends on it existing) | Low-medium — new standalone function |
+| **L0.5 — Sixteen Placement Orders module** | Not ready — 2 of its 16 orders have confirmed, unresolved source gaps (Order 15 base-values; p.128-129 element-order pairings) | **Blocked** until Phase 0 (source clarification) resolves or explicitly documents those 2 gaps as permanent | Phase 0 completion | Table-fidelity Golden Tests possible for the 14 unblocked orders now; full 16 blocked on Phase 0 | Medium-high — 16 distinct sub-tables, several with internal arithmetic derivation | High — feeds L2.1, L2.2, and directly unblocks L2.4 (the only remaining blocker on GT-3, the strongest Golden Test in the mapping) | Low — new data, not wired to verdict logic |
+
+### Reading of the re-ranking
+
+- **L2.4 moved from "blocked by 2 dependencies" to "blocked by 1
+  dependency" (L0.5 only)** — this is the single most consequential
+  change from L0.3's status correction. It is now the option with the
+  clearest path to unlocking the strongest Golden Test in the entire
+  mapping (GT-3), contingent only on L0.5.
+- **L3.E (Five Witnesses) is now fully dependency-ready** for the first
+  time — no missing data blocks it anymore. It remains a leaf (nothing
+  else in the map depends on it), same structural weakness as F, but it
+  is now the more source-rich of the two "fully ready" witness options.
+- **L0.5 is the one remaining structural blocker** shared by both L2.4
+  and (to a lesser extent) the timing/money-magnitude infrastructure —
+  but it is itself gated behind Phase 0's unresolved source gaps, so it
+  cannot be honestly called "fully ready" the way F or E now are.
+- **Dhamir gap-completion remains the only option with a non-low
+  regression-risk rating**, unchanged by L0.3's status correction, since
+  its risk comes from touching an already-wired aggregator, not from any
+  data dependency.
+- **F (Seven Witnesses) is unchanged** — L0.3's correction does not
+  affect it either way, since it never depended on L0.3.
+
+This re-ranking does not select a slice. It updates the readiness
+picture so that a future, separately-authorized decision can be made
+with accurate information — including the option of formally revisiting
+the "first implementation slice" question now that its original answer
+(L0.3) turned out to already be done.

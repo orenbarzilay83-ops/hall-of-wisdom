@@ -121,21 +121,25 @@ performed this round.
 
 ## 6. Essential Dignities Table (מעלה/מושב/גבול/פנים/שמחה/צער/מזג per figure)
 
+> **STATUS CORRECTED** in a later verification round — this table was
+> already implemented at the time this document was first written. See
+> `HALL_WISDOM_KASHF_ESSENTIAL_DIGNITIES_EXISTING_DATA_VERIFICATION_REPORT.md`.
+
 | Field | Value |
 |---|---|
 | Concept | Classical-astrology-style per-figure dignity table: exaltation, domicile, bound, face, joy, fall, temperament-pairing, each as a house number |
-| Purpose | Supplies positional data consumed by the Five Witnesses system (§9 below) and the "מבקש/מבוקש במעגל" technique (§14 below) |
+| Purpose | Supplies positional data consumed by the Five Witnesses system (§9 below) and the "מבקש/מבוקש במעגל" technique (§14 below); **also, discovered this round: already consumed by Dhamir Type 2 (element-prevalence) for its "root" check** |
 | Activation | On demand |
 | Inputs | Figure identity |
 | Calculation | Table lookup |
-| Outputs | 7 house-number values per figure |
+| Outputs | 7 house-number values per figure — **14 of 16 figures have data; the other 2 (דרך, חיבור) are correctly documented as absent from the source itself in this page range, not a digitization gap** |
 | Verdict effect | Indirect, via consuming techniques |
 | Dependencies | None (foundational table) |
-| Precedence | Feeds §9 and §14 |
+| Precedence | Feeds §9 and §14 (not yet wired to either); already feeds Dhamir Type 2 (wired) |
 | Source pages | 97-99 |
 | Examples | None isolated this round |
-| Current code path | Not identified — NOT in `kashf-figure-classifier.js` per this round's inspection (that file covers benefic/malefic/internal-external/fixed-mutable taxonomy only, not dignities) |
-| Status | `missing` |
+| Current code path | **`FIGURE_DIGNITIES` in `goral-hachol/data/sources/kashf-al-asrar/kashf-figure-attributes-gate2.js`** (corrected — this round's original inspection of only `kashf-figure-classifier.js` missed this sibling file) |
+| Status | **`implemented` + `source-verified`, `implemented-but-not-fully-routed`** (not `missing`) — 98/98 values confirmed exact against a fresh independent re-extraction; GT-10 (`_test_kashf_essential_dignities_table.mjs`) passes 196/196 |
 
 ## 7. Figure-to-Lunar-Month Correspondence Table
 
@@ -185,12 +189,12 @@ performed this round.
 | Calculation | Fire+Earth points mod 12 → pole-point walk → tier-by-tier conditional scoring |
 | Outputs | Cumulative score 1-15, with "N witnesses stronger than N-1" escalation language |
 | Verdict effect | Strengthens/weakens whatever verdict it is attached to |
-| Dependencies | Essential Dignities Table (§6) |
+| Dependencies | Essential Dignities Table (§6) — **corrected: this dependency is now satisfied** (§6 confirmed already implemented and source-verified); E itself still has no routing/implementation of its own |
 | Precedence | A counter-tradition (בעלי הטבעים) rejects the whole apparatus and proposes a simpler element-counting equivalent (yet a 4th distinct element-value set) — not reconciled by the book |
 | Source pages | 130-131 |
 | Examples | None isolated this round |
 | Current code path | None — this system was previously catalogued only as "unresolved, no house numbers" (existing `kashf-book-rule-catalog.js` witnessScheme entries do not include this mechanism) |
-| Status | `missing` |
+| Status | `missing` (E's own scoring engine is still unbuilt; only its former blocking dependency, §6, is resolved) |
 
 ## 10. Basic House-Testimony Witness Scheme (מערכת C)
 
@@ -357,12 +361,12 @@ performed this round.
 | Calculation | Positional count + lookup, see source |
 | Outputs | Target house → quality verdict |
 | Verdict effect | Direct |
-| Dependencies | Essential Dignities Table (§6), Placement Order 1 (§8) |
+| Dependencies | Essential Dignities Table (§6) — **corrected: now satisfied**; Placement Order 1 (§8) — still `missing`/`ambiguous`, remains the sole blocker |
 | Precedence | Not stated |
 | Source pages | 218-220 |
 | Examples | Yes, fully worked (p.219-220) |
 | Current code path | None identified |
-| Status | `missing` |
+| Status | `missing` (blocked on §8 only, not §6, now that §6 is resolved) |
 
 ## 25. Lookup-Table Sub-Engines (concrete, self-contained, low-ambiguity)
 
@@ -447,5 +451,5 @@ performed this round.
 ## Summary count
 
 - **Sub-engines identified**: 31 (numbered above; several §10-§14 are witness-system variants of one conceptual category, and §15-§21 are dhamir-method variants of one conceptual category — see the Session Report for the consolidated tallies requested there).
-- **Status breakdown** (counting each numbered engine once): `implemented` — 6 (§10 catalog-level, §11 catalog-level, §12 catalog-level, §15 partial/3-of-4, §16, §18, §20 partial). `implemented-without-source-traceability` — 5 (§1, §5, §27, §28, and §16's refinement clause). `ambiguous` — 6 (§2, §3, §13, §17, §19, §31). `missing` — remainder (§4, §6, §7, §8, §9, §14, §21 [9 sub-items], §22, §23, §24, §25, §26, §29, §30).
+- **Status breakdown** (counting each numbered engine once; **corrected** in a later verification round — §6 moved from `missing` to `implemented`, see the note under §6 above): `implemented` — 7 (§6 [corrected], §10 catalog-level, §11 catalog-level, §12 catalog-level, §15 partial/3-of-4, §16, §18, §20 partial). `implemented-without-source-traceability` — 5 (§1, §5, §27, §28, and §16's refinement clause). `ambiguous` — 6 (§2, §3, §13, §17, §19, §31). `missing` — remainder (§4, §7, §8, §9, §14, §21 [9 sub-items], §22, §23, §24, §25, §26, §29, §30).
 - This counting is **approximate and structural**, not a certified audit — see `HALL_WISDOM_KASHF_BOOK_TO_CODE_COVERAGE_AUDIT.md` for the required catalogued/implemented/selected/evaluated/applied/exposed/sourced status breakdown, which is a stricter, separate classification.

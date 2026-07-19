@@ -123,12 +123,15 @@ principle).
 ## Number currently implemented
 
 Per the Sub-Engine Inventory's status breakdown (counting each of the 31
-numbered engines once): **6 marked `implemented`** (at least partially —
-3 of 4 dhamir Type-1 faces, Type-2, Type-4, and the majority-decision
-rule; the 4 witness schemes A/C/D structurally-present-but-not-discrete
-functions are counted separately below). Witness systems C and D are
-`implemented` only in the weak structural sense (they exist because
-houses 13-15 exist on every board) — not as discrete scoring functions.
+numbered engines once, **corrected in a later verification round**):
+**7 marked `implemented`** (at least partially — the Essential Dignities
+Table [moved here from "missing" after verification confirmed it already
+exists as `FIGURE_DIGNITIES`], 3 of 4 dhamir Type-1 faces, Type-2,
+Type-4, and the majority-decision rule; the 4 witness schemes A/C/D
+structurally-present-but-not-discrete functions are counted separately
+below). Witness systems C and D are `implemented` only in the weak
+structural sense (they exist because houses 13-15 exist on every board)
+— not as discrete scoring functions.
 
 ## Number partial
 
@@ -143,8 +146,9 @@ and the general כוח-העדים modulation principle).
 
 ## Number missing
 
-**14 of the 31 sub-engines are marked `missing` outright** (קוטרי/צלעי
-dhamir-specific classification, essential dignities table, lunar-month
+**13 of the 31 sub-engines are marked `missing` outright** (קוטרי/צלעי
+dhamir-specific classification, ~~essential dignities table~~ [corrected
+— confirmed already implemented, removed from this count], lunar-month
 table, the 16-placement-orders module as a unified system, Five
 Witnesses E, Seven Witnesses of Wisdom F, all 9 additional dhamir
 techniques as their own inventory line, the decision-oracle pattern, the
@@ -199,9 +203,12 @@ topicIds provide reasonable topical scaffolding across all 12 Gate-6
 chapters. However, this round's full read establishes that: (a) 2 of 6
 witness systems (E, F) have zero code presence despite being fully
 specified in the source; (b) at least 9 of 17 dhamir techniques have zero
-code presence; (c) several general-purpose infrastructure patterns
-(decision-oracle, sub-board-recast, essential-dignities table) that
-multiple topic chapters depend on are entirely unimplemented; (d) formula-
+code presence; (c) two of three general-purpose infrastructure patterns
+(decision-oracle, sub-board-recast) that multiple topic chapters depend
+on are entirely unimplemented — **the third, the essential-dignities
+table, was found in a later verification round to already be
+implemented and source-verified as `FIGURE_DIGNITIES`**, correcting this
+original claim; (d) formula-
 level completeness for 10 of the 12 Gate-6 chapters (all but Money, which
 is confirmed well-covered, and Self/Chapter-1, which is confirmed 5-of-
 ~25-covered) was not verified against actual code bodies this round and
@@ -219,13 +226,24 @@ patterns, or Gate 6's remaining 11 chapters' granular formulas).
 
 ## Which domains are entirely missing
 
+> **Correction (later verification round)**: the Essential Dignities
+> Table, listed first below at the time this report was written, is
+> **not** actually missing — it was discovered already implemented as
+> `FIGURE_DIGNITIES` in `kashf-figure-attributes-gate2.js`, source-
+> verified, and already consumed by Dhamir Type 2. See
+> `HALL_WISDOM_KASHF_ESSENTIAL_DIGNITIES_EXISTING_DATA_VERIFICATION_REPORT.md`.
+> The list below is left as originally written (13 genuinely-missing
+> items remain, not 14) for an accurate historical record, rather than
+> silently renumbering.
+
 See `HALL_WISDOM_KASHF_BOOK_TO_CODE_COVERAGE_AUDIT.md` Part 5 for the
-full 14-item list. Summarized: the Essential Dignities Table, the lunar-
-month correspondence table, witness systems E and F, the 9 additional
-dhamir techniques, the decision-oracle pattern, the sub-board-recast
-pattern, the מבקש/מבוקש-במעגל technique, the 16-placement-orders module,
+full list. Originally summarized as 14 items: ~~the Essential Dignities
+Table~~ (corrected — implemented), the lunar-month correspondence table,
+witness systems E and F, the 9 additional dhamir techniques, the
+decision-oracle pattern, the sub-board-recast pattern, the
+מבקש/מבוקש-במעגל technique, the 16-placement-orders module,
 timing/duration scaling, the distance-measurement system, and the
-Dalail-al-Fasl alternate table.
+Dalail-al-Fasl alternate table — **13 items remain genuinely missing**.
 
 ## Recommended first domain to complete
 
@@ -233,11 +251,15 @@ Dalail-al-Fasl alternate table.
 and unambiguously specified by the source (a plain benefic/malefic
 majority count over houses 9-15, with house 16 added for dhamir
 purposes), has no dependency on any other currently-unimplemented
-sub-engine (unlike system E, which depends on the not-yet-implemented
-Essential Dignities Table), and has zero code presence today. Completing
-it would be the lowest-complexity, highest-clarity next step among all
-14 entirely-missing domains. This is a recommendation only — no
-implementation is authorized by this report.
+sub-engine, and has zero code presence today. **System E's former
+blocker — the Essential Dignities Table — is now confirmed already
+implemented and source-verified**, so E is a closer second step than
+originally stated here, not gated behind building a still-missing
+table. Completing F remains the lowest-complexity, highest-clarity next
+step among the (now 13, not 14) remaining entirely-missing domains. This
+is a recommendation only — no implementation is authorized by this
+report; see the First-Implementation-Slice document's post-correction
+re-ranking for an updated cross-comparison across more options.
 
 ## Recommended Next Step (exactly one)
 

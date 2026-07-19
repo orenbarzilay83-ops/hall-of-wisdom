@@ -102,7 +102,17 @@ None of these axes were re-verified by running the application this round (prohi
 
 These have **no topicId, no catalog entry, and no identified implementation** at all, per this round's inspection:
 
-1. Essential Dignities Table (p.97-99) — feeds two other techniques, zero code presence.
+> **Correction (later verification round)**: item 1 below, the Essential
+> Dignities Table, is **not** actually missing — it already exists as
+> `FIGURE_DIGNITIES` in `kashf-figure-attributes-gate2.js`, is source-
+> verified, and is already consumed by Dhamir Type 2. This round's
+> original inspection missed that sibling data file. See
+> `HALL_WISDOM_KASHF_ESSENTIAL_DIGNITIES_EXISTING_DATA_VERIFICATION_REPORT.md`.
+> Left in the numbered list below (struck through) for an accurate
+> historical record of the original 14-item count, rather than silently
+> renumbering to 13.
+
+1. ~~Essential Dignities Table (p.97-99) — feeds two other techniques, zero code presence.~~ **Corrected: implemented, source-verified, 14 of 16 figures have data (the other 2 correctly absent from the source itself); not fully routed to its two intended downstream consumers (E, מבקש/מבוקש), but already consumed by Dhamir Type 2.**
 2. Figure-to-lunar-month table (p.100) — matches CLAUDE.md's own documented gap.
 3. Five Witnesses system E (p.130-131) — fully specified, zero code presence.
 4. Seven Witnesses of Wisdom system F (p.164) — fully specified, zero code presence.
@@ -121,4 +131,4 @@ These have **no topicId, no catalog entry, and no identified implementation** at
 
 ## Part 6 — Recommended first domain to complete
 
-Per the Sub-Engine Inventory's summary and this audit's Part 3, **witness system F (Seven Witnesses of Wisdom, p.164)** is the recommended first domain: it is fully and unambiguously specified by the source (a plain majority count over 7 fixed houses, no dependency on the still-unimplemented Essential Dignities Table), has zero code presence today, and would immediately extend witness coverage from 4 systems (A/C/D at structural-implementation level, B partial) to 5, closing the largest single gap identified in Part 3 at the lowest implementation complexity. System E (Five Witnesses) is higher-value but higher-complexity, since it depends on the not-yet-implemented Essential Dignities Table (§6 of the Sub-Engine Inventory) as a prerequisite — a natural second step after F and the Dignities Table itself. This recommendation is not a decision to act on it — no implementation is authorized by this document.
+Per the Sub-Engine Inventory's summary and this audit's Part 3, **witness system F (Seven Witnesses of Wisdom, p.164)** is the recommended first domain: it is fully and unambiguously specified by the source (a plain majority count over 7 fixed houses), has zero code presence today, and would immediately extend witness coverage from 4 systems (A/C/D at structural-implementation level, B partial) to 5, closing the largest single gap identified in Part 3 at the lowest implementation complexity. System E (Five Witnesses) is higher-complexity regardless (a 5-tier scored mechanism vs. F's plain majority count) — **but its former blocking dependency, the Essential Dignities Table, is now confirmed already implemented and source-verified** (see the essential-dignities verification report), so E is a natural, now-unblocked second step, not gated behind building the Dignities Table first as originally stated here. This recommendation is not a decision to act on it — no implementation is authorized by this document; see the First-Implementation-Slice document's post-correction re-ranking for an updated cross-comparison.

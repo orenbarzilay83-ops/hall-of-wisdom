@@ -51,9 +51,9 @@ an engineer's independent judgment of what the "right" answer should be.
 | Expected witnesses/dhamir | None stated for this technique specifically |
 | Expected verdict | Trade/price outcome per the target house's quality |
 | Exact textual evidence | Full worked example confirmed present at p.219-220 by this round's reading |
-| Current reproduction status | `fail` — engine (L2.4) does not exist; dependencies L0.3 and L0.5 Order-1 also do not exist |
-| Missing implementation | L0.3, L0.5 (Order 1 at minimum), L2.4 |
-| Why highest-priority | This is the **only** technique in the entire mapping with (a) a confirmed fully-worked numeric example, (b) a clean, traceable dependency chain (L0.3 → L0.5 → L2.4), and (c) no unresolved source ambiguity blocking it |
+| Current reproduction status | `fail` — engine (L2.4) does not exist; dependency L0.5 Order-1 also does not exist. **Corrected: L0.3 is no longer missing** — it is already implemented and source-verified, see GT-10 below |
+| Missing implementation | L0.5 (Order 1 at minimum), L2.4 — **L0.3 removed from this list, corrected** |
+| Why highest-priority | This is the **only** technique in the entire mapping with (a) a confirmed fully-worked numeric example, (b) a now-shorter dependency chain (L0.5 → L2.4, since L0.3 is resolved), and (c) no unresolved source ambiguity blocking it |
 
 ### GT-4 — "שאילת הכרעה" (Decision-Request) 16-figure verdict table
 | Field | Value |
@@ -125,15 +125,24 @@ an engineer's independent judgment of what the "right" answer should be.
 | Missing implementation | Confirm presence in code first |
 
 ### GT-10 — Essential Dignities Table fidelity (data-only test)
+> **IMPLEMENTED, in a later round.** L0.3 was discovered already
+> existing as `FIGURE_DIGNITIES` in `kashf-figure-attributes-gate2.js`
+> — no new file was created. This test now exists as
+> `_test_kashf_essential_dignities_table.mjs` (repo root) and passes
+> 196/196 assertions. See
+> `HALL_WISDOM_KASHF_ESSENTIAL_DIGNITIES_EXISTING_DATA_VERIFICATION_REPORT.md`
+> for full detail. Fields below are left as originally planned, for the
+> historical record of this document's original proposal.
+
 | Field | Value |
 |---|---|
 | Source pages | 97-99 |
-| Question | Not a verdict test — a pure data-fidelity test: does the digitized table match the source's 16×7 grid exactly? |
+| Question | Not a verdict test — a pure data-fidelity test: does the digitized table match the source's 14×7 grid (14 of 16 figures have data; 2 are correctly absent from the source) exactly? |
 | Inputs | None — static comparison |
 | Expected output | Exact match, field-by-field, figure-by-figure |
 | Exact textual evidence | Full table, confirmed this round |
-| Current reproduction status | `fail` — L0.3 itself doesn't exist yet |
-| Missing implementation | L0.3 |
+| Current reproduction status | **`exact`** — 196/196 assertions pass, including a 98/98 exact-value cross-check against a fresh independent re-extraction |
+| Missing implementation | None — implemented |
 | Why included despite being "not a verdict test" | This is the model for how any purely-tabular Layer-0 engine should be tested — fidelity first, verdict-consumption second (see GT-3, which depends on this table being correct) |
 
 ### GT-11 — Money-source mod-7 oracle
@@ -161,13 +170,16 @@ an engineer's independent judgment of what the "right" answer should be.
 ## Proposed prioritization for a future round
 
 1. **Regression-lock tier (protect what's already correct)**: GT-11,
-   GT-12. These require no new engine work — only formalizing existing
+   GT-12, **and now GT-10 (implemented and passing — moved here from
+   the gap-closing tier below, corrected in a later round)**. These
+   require no new engine work — only formalizing existing
    confirmed-correct behavior into a test, so future changes can't
    silently break it.
-2. **Highest-value gap-closing tier**: GT-3 (מבקש/מבוקש-במעגל) and GT-10
-   (Dignities Table fidelity) — GT-10 is a prerequisite for GT-3, and
-   together they're the cleanest fully-worked, fully-traceable,
-   dependency-clear pair in the entire mapping.
+2. **Highest-value gap-closing tier**: GT-3 (מבקש/מבוקש-במעגל) — its
+   dependency chain is now shorter (L0.5 → L2.4 only, since GT-10's
+   underlying table, L0.3, is done) — the strongest remaining
+   fully-worked, fully-traceable Golden Test candidate in the entire
+   mapping.
 3. **Table-fidelity tier (once code presence is confirmed or built)**:
    GT-7, GT-8, GT-9 — concrete, low-ambiguity, good "second wave" tests.
 4. **Blocked tier — do not write yet**: GT-6, pending Phase 0's
