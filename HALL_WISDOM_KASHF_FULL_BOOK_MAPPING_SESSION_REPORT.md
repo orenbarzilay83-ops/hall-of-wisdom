@@ -236,14 +236,31 @@ patterns, or Gate 6's remaining 11 chapters' granular formulas).
 > items remain, not 14) for an accurate historical record, rather than
 > silently renumbering.
 
+> **Third correction (a later round)**: ~~the מבקש/מבוקש-במעגל
+> technique~~ and ~~the 16-placement-orders module~~ below are also not
+> actually missing. The 16-placement-orders module exists as
+> `kashf-shibutzim.js` (15 of 16 orders, source-verified). The
+> מבקש/מבוקש-במעגל technique is split: its Requester half (p.219) is
+> implemented, routed, and exposed; only its Requested half (p.220)
+> remains genuinely unresolved, and even that is blocked by a
+> source-level arithmetic inconsistency, not a missing-code gap. See
+> `HALL_WISDOM_KASHF_L0_5_SIXTEEN_PLACEMENT_ORDERS_AUDIT.md`.
+
 See `HALL_WISDOM_KASHF_BOOK_TO_CODE_COVERAGE_AUDIT.md` Part 5 for the
 full list. Originally summarized as 14 items: ~~the Essential Dignities
 Table~~ (corrected — implemented), the lunar-month correspondence table,
 witness systems E and F, the 9 additional dhamir techniques, the
-decision-oracle pattern, the sub-board-recast pattern, the
-מבקש/מבוקש-במעגל technique, the 16-placement-orders module,
+decision-oracle pattern, the sub-board-recast pattern, ~~the
+מבקש/מבוקש-במעגל technique~~ (corrected — Requester half implemented;
+only the Requested half remains unresolved), ~~the 16-placement-orders
+module~~ (corrected — implemented, 15 of 16 orders),
 timing/duration scaling, the distance-measurement system, and the
-Dalail-al-Fasl alternate table — **13 items remain genuinely missing**.
+Dalail-al-Fasl alternate table — **11 items remain genuinely missing**
+(the lunar-month table, witness E, witness F, the 9 additional dhamir
+techniques as their own line, the decision-oracle pattern, the
+sub-board-recast pattern, the Requested-circle half of מבקש/מבוקש,
+Order 15's method / the p.189 16th-order question, timing/duration
+scaling, the distance-measurement system, and the Dalail-al-Fasl table).
 
 ## Recommended first domain to complete
 

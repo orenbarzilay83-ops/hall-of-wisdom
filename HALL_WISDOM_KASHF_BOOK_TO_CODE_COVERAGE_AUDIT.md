@@ -89,7 +89,7 @@ None of these axes were re-verified by running the application this round (prohi
 | Ch.4 Parents/Property/Hidden (p.184-196) | `parentsProperty`, `hiddenTreasure` | no | topicIds exist; the elaborate ~8-method hidden-object-location sub-system (quadrant-reduction, Tamtam al-Hindi, iterative-quadrant-subdivision, Dalail-al-Fasl depth-measurement, water-depth table) not verified against `hiddenTreasure`'s actual formula body this round | conditional | conditional | medium-high | targeted formula-level cross-check; the water-depth-by-figure table (p.189-190) is a concrete, high-value digitization candidate if not already present |
 | Ch.5 Children/Pregnancy (p.191-196) | `children` | no | topicId exists; the 4-5 competing gender-determination methods (ambiguous in source itself, see Precedence Map §10.3) not verified against code | conditional | **ambiguous at the source level**, coverage-status itself therefore also ambiguous | medium | do not resolve the source's own gender-method plurality without user guidance; if `children`'s code currently picks ONE gender method, flag which one and confirm it's a deliberate choice, not an oversight |
 | Ch.6 Illness/Lost/Animals (p.196-204) | `illness`, `lostAnimal` | no | topicIds exist; the body-part-by-figure table (16 entries, p.199) and animal-type-by-figure table not verified against code | conditional | conditional | medium | targeted cross-check; these are concrete lookup tables, good digitization candidates |
-| Ch.7 Marriage/Winner-Loser/Trade (p.204-224) | `marriage`, `disputes`, `commerce` | no | topicIds exist; this is the single densest chapter (~35 formulas including the "מבקש/מבוקש במעגל" dignity-dependent technique) — not verified against code this round | conditional | conditional | medium-high (largest single chapter, least-verified) | highest-value target for a future dedicated cross-check round given its size |
+| Ch.7 Marriage/Winner-Loser/Trade (p.204-224) | `marriage`, `disputes`, `commerce` | no | topicIds exist; this is the single densest chapter (~35 formulas); **corrected in a later round — the "מבקש/מבוקש במעגל" technique's Requester half is now confirmed implemented, routed, and exposed** (`id: 'requester-circle-strength'`, `commerce` topic); the remaining ~34 formulas and the Requested half are still not verified against code | conditional | conditional | medium-high (largest single chapter, mostly still unverified) | highest-value target for a future dedicated cross-check round given its size |
 | Ch.8 Theft/Loan (p.224-237) | `theft`, `loan` | no | topicIds exist; the thief physical/occupational description table (16 figures, p.232-234) and kinship-mapping table not verified against code | conditional | conditional | medium | targeted cross-check; thief-description table is concrete and high-value |
 | Ch.9 Travel/Missing/Dream/Debt (p.237-255) | `travel`, `missingPerson`, `dream` | no (though `travel` and `missingPerson` are "existing, likely catalogued" per the Question/Formula Matrix's own caveat — cross-ref not verified) | topicIds exist; the "sub-board recast" (Al-Zanati missing-person variant, houses 13-15 as mothers) and ship-damage-by-figure table not verified against code | conditional | conditional | medium | the sub-board-recast pattern (§23 of Sub-Engine Inventory) is architecturally novel and almost certainly not implemented — recommend explicit future check |
 | Ch.10 Authority (p.256-264) | `authorityState`, `motherRules` | no | topicIds exist; the ruler's-12-house-landing table and dynasty-continuation sub-board-recast not verified against code | conditional | conditional | medium | same sub-board-recast note as Ch.9 |
@@ -112,6 +112,16 @@ These have **no topicId, no catalog entry, and no identified implementation** at
 > historical record of the original 14-item count, rather than silently
 > renumbering to 13.
 
+> **Second correction (a later round)**: items 8 and 9 below are also
+> **not** actually missing. Item 9 (Sixteen Placement Orders) exists as
+> `kashf-shibutzim.js` — 15 of 16 orders, source-verified. Item 8
+> (מבקש/מבוקש במעגל) is split: its Requester half is already
+> implemented, routed, and exposed; only its Requested half remains
+> genuinely unresolved (blocked on a source-level arithmetic
+> inconsistency, not an implementation gap). See
+> `HALL_WISDOM_KASHF_L0_5_SIXTEEN_PLACEMENT_ORDERS_AUDIT.md`. Both left
+> struck through below for an accurate historical record.
+
 1. ~~Essential Dignities Table (p.97-99) — feeds two other techniques, zero code presence.~~ **Corrected: implemented, source-verified, 14 of 16 figures have data (the other 2 correctly absent from the source itself); not fully routed to its two intended downstream consumers (E, מבקש/מבוקש), but already consumed by Dhamir Type 2.**
 2. Figure-to-lunar-month table (p.100) — matches CLAUDE.md's own documented gap.
 3. Five Witnesses system E (p.130-131) — fully specified, zero code presence.
@@ -119,8 +129,8 @@ These have **no topicId, no catalog entry, and no identified implementation** at
 5. The 9 additional dhamir techniques beyond the core 8 (p.156-160).
 6. Decision-oracle general-purpose pattern (p.170-171, 248-253, 267-269).
 7. Sub-board-recast general-purpose pattern (p.253, ~262).
-8. "מבקש/מבוקש במעגל" trade-pricing technique (p.218-220).
-9. Sixteen Placement Orders as a unified lookup module (p.104-151) — components may exist ad hoc inside individual functions, not verified.
+8. ~~"מבקש/מבוקש במעגל" trade-pricing technique (p.218-220).~~ **Corrected: SPLIT — the Requester half (p.219) is implemented, routed (under the `commerce` topic, `id: 'requester-circle-strength'`), and exposed via `kashf-reading-engine.js`, confirmed by direct execution to reproduce both worked examples exactly. Only the Requested half (p.220) remains genuinely unresolved — its own worked example's arithmetic does not verify under any interpretation tried.**
+9. ~~Sixteen Placement Orders as a unified lookup module (p.104-151) — components may exist ad hoc inside individual functions, not verified.~~ **Corrected: implemented as `kashf-shibutzim.js` — 15 of 16 claimed orders exist, each with an explicit `sourceStatus`/`sourceRef`. Order 15 confirmed to genuinely lack a stated method in the source (not a digitization gap); the book's own "16 orders" claim is not resolved by Gate 3's own body text (only 15 headed sections found).**
 10. Timing/duration scaling table (p.110, 118).
 11. Distance-measurement system (p.121).
 12. Dalail al-Fasl alternate length/width/depth table (p.114-116).

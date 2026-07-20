@@ -221,3 +221,47 @@ picture so that a future, separately-authorized decision can be made
 with accurate information — including the option of formally revisiting
 the "first implementation slice" question now that its original answer
 (L0.3) turned out to already be done.
+
+---
+
+## Second Re-Ranking (post-L0.5 audit) — the table above is now also stale
+
+> **STATUS UPDATE**: the re-ranking table immediately above (built after
+> the L0.3 correction) assumed L2.4 was "blocked by L0.5 only" and that
+> L0.5 itself was "not ready." Both assumptions are now corrected by
+> `HALL_WISDOM_KASHF_L0_5_SIXTEEN_PLACEMENT_ORDERS_AUDIT.md`:
+> **L0.5 already exists (15/16 orders, source-verified) and L2.4's
+> Requester half is already implemented, routed, and exposed.** The
+> table above is left in place as the historical record of the prior
+> round's reasoning; the table below reflects today's corrected
+> understanding. **No new slice is selected here either** — this is a
+> second readiness update, not a decision.
+
+| Option | Source certainty | Implementation already present | Missing work | Dependency value | Regression risk | Golden Test readiness | Professional value |
+|---|---|---|---|---|---|---|---|
+| **GT-3A regression-lock (Requester circle, p.219)** | High — both worked examples exactly reproduced | **Fully present** — `computeRequesterCircleHouse`, `computeRequesterCircleStrengthKashf`, routed under `commerce`, exposed via the reading engine | None for the code itself; only the test needs writing | N/A — this is a test-writing task on top of already-working code | **Near-zero** — writing a test around already-correct, already-live behavior | **Ready today** | Protects already-shipped, already-correct behavior from silent future regression |
+| **Requested circle (מבוקש, p.220) resolution/implementation** | **Blocked** — the source's own worked example does not verify under any interpretation tried | None | Targeted re-verification of p.220 against the original book (possibly requiring the physical/photographed source, not just this HTML digitization) before any code is written | Would complete L2.4 and unblock GT-3B | Low, once unblocked (new function, not touching L2.4A) | Not possible until the source ambiguity is resolved | Would close the one remaining gap in a question family (`tradeBuySellPricing`) that is otherwise the best-covered chapter after Money |
+| **The 16th placement order (p.189 candidate)** | **Unresolved** — the book claims 16 orders, only 15 are headed in Gate 3's own body; the p.189 candidate is the closest completion found but not confirmed as "the" 16th | `SHIBUTZ_16_OPPOSITES_DEPTH_MEASURES` and `computeHiddenDepthByOpposites` already exist and are already routed (via `kashf-book-additions.js`) for their own purpose (hidden-object depth), independent of whether they are "the" missing 16th order | Confirming or refuting whether p.189 is genuinely the intended 16th, or whether a true 16th order exists elsewhere entirely undigitized | Low — nothing else in the map is currently known to depend on resolving this specific numbering question | None — no code change implied either way | N/A — a numbering/provenance question, not a testable mechanism | Low-medium — a completeness/accuracy question more than a functional gap |
+| **Five Witnesses (L3.E)** | High for the mechanism; counter-tradition not reconciled | None — still fully unbuilt | The scoring engine itself, from scratch | Both its known dependencies (L0.3, L0.6) are now satisfied | Low-medium — new standalone function | No source-worked numeric example — a hand-constructed test would be needed | Adds the fullest-mechanism witness system in the book; still a leaf, unlocks nothing else |
+| **Missing Dhamir methods** | Mixed — core gaps fully specified; several of the 9 additional carry esoteric framing; majority-vote scope unresolved | 7 of 17 methods already implemented | Face-3/Type-5 core gaps (verification first); 9 additional techniques (mixed complexity) | Low — no downstream engine depends on completing this | **Medium** — touches an already-wired live aggregator | No source-worked numeric example for any of the missing methods | Closes the largest numerically-disclosed gap in the whole mapping, but with no downstream unlock |
+| **Another dependent engine (L2.1 "לשון העניין")** | Mixed — the literal description is verified, but the exact mechanical formula is explicitly flagged in `kashf-shibutzim.js` itself as "not verified against worked examples" | A first attempt exists (`kashf-leshon-hainyan.js`) but is **not consumed anywhere in the repo** (confirmed by `grep`) | Either verify the existing attempt against a worked example, or confirm it needs rework | Feeds money-magnitude and duration verdicts across several topics | Low — currently unwired, so no regression risk from further work | No isolated worked numeric example confirmed this round | Medium — a genuinely load-bearing timing mechanism once verified, but currently inert |
+
+### Reading of the second re-ranking
+
+- **GT-3A is now the single lowest-risk, highest-certainty action
+  available anywhere in this whole project** — not because it's "easy,"
+  but because the engineering work is already done and verified; only a
+  regression-lock test remains to be written.
+- **The Requested-circle (p.220) and 16th-order questions are both
+  source-verification problems, not implementation problems** — neither
+  should be "implemented" via a guess. Both require either the original
+  photographed/physical source or a much more targeted re-read of the
+  existing HTML than this round performed.
+- **Five Witnesses (L3.E) remains the most straightforward genuinely-new
+  engine to build**, now that both L0.3 and L0.6 are confirmed available
+  — unchanged from the prior re-ranking's conclusion on this point.
+- **Dhamir completion remains the highest-regression-risk option**,
+  unchanged.
+
+No slice is selected by this section either — per instruction, this
+remains analysis only.

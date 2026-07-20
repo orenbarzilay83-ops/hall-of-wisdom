@@ -161,9 +161,16 @@ performed this round.
 
 ## 8. Sixteen Placement Orders (Gate 3, Orders 1-16)
 
+> **STATUS CORRECTED** in a later verification round — see
+> `HALL_WISDOM_KASHF_L0_5_SIXTEEN_PLACEMENT_ORDERS_AUDIT.md`. A
+> 934-line existing file, `kashf-shibutzim.js`, already contains 15 of
+> the 16 claimed orders as rigorously source-cited exports. This
+> round's original "current code path: not individually identified"
+> finding was a research gap, not an accurate code-state finding.
+
 | Field | Value |
 |---|---|
-| Concept | 16 distinct fixed figure↔position/value permutations (seat, number/duration ×3 sub-methods, elements ×4 traditions, temperament/planets, zodiac, letters ×2 traditions, abjad, width, depth, return, yazdaj, abjad-pattern, decimal, "path-falls," ibn-mahfuf) |
+| Concept | 16 distinct fixed figure↔position/value permutations (seat, number/duration ×3 sub-methods, elements ×4 traditions, temperament/planets, zodiac, letters ×2 traditions, abjad, width, depth, return, yazdaj, abjad-pattern, decimal, "path-falls," ibn-mahfuf) — **15 confirmed within Gate 3 itself; the book's own "16" claim is not resolved by Gate 3's body text (only 15 headings found by exhaustive grep); a candidate 16th ("שיבוץ ההפכים") exists at p.189 in a different chapter, unconfirmed** |
 | Purpose | Toolkit/correspondence infrastructure consumed by naming, timing, letter-magic, distance-measurement, and money-magnitude techniques elsewhere in the book |
 | Activation | On demand by consuming techniques |
 | Inputs | Figure identity (per order) |
@@ -172,11 +179,11 @@ performed this round.
 | Verdict effect | None directly — infrastructure only |
 | Dependencies | Order 7 is the seed for Orders 8-12 |
 | Precedence | Several orders have explicitly disputed/alternate versions within the source itself (Order 1 mother-seat dispute; Order 2's 3-way method dispute; Order 3's 4 competing element-value traditions; Order 12's doubled alternate; Order 6's 2-tradition letter table) — **the book does not always resolve these**, see the Precedence & Conflict Map |
-| Source pages | 104-151 |
-| Examples | Al-Zanati's worked numeric example (p.113) for Order 2; love-divination worked example (p.140) for Order 6 |
-| Current code path | Not individually identified this round; possibly partially embedded inside `kashf-dhamir.js`'s internal helpers (unverified) |
-| Status | `missing` (as a named, general-purpose lookup module); components may be duplicated ad hoc inside individual functions elsewhere — `ambiguous` |
-| Note | Order 15's base element-values were not found restated in the read excerpt — flagged in the Structure Map as a possible source gap, not resolved here |
+| Source pages | 104-151 (15 confirmed orders); 189 (candidate 16th) |
+| Examples | Al-Zanati's worked numeric example (p.113) for Order 2 (flagged internally inconsistent, see the L0.5 audit); love-divination worked example (p.140) for Order 6; Order 1's casting mechanism independently reproduced this round via live code execution (see §24 below) |
+| Current code path | **`kashf-shibutzim.js`** (`goral-hachol/data/sources/kashf-al-asrar/`) — `SHIBUTZ_1_MOSHAV` through `SHIBUTZ_15_ORDER`, plus `SHIBUTZ_16_OPPOSITES_DEPTH_MEASURES` for the p.189 candidate. Orders 1, 2 (canonical number), 3 (element values) already consumed by `kashf-dhamir.js`; Order 1 already consumed by the L2.4A Requester function (§24) |
+| Status | **`implemented-data-layer` + `source-verified-for-15-orders` + `one-order-unresolved` + not-fully-routed-to-all-dependent-engines** — NOT `missing`. Order 15 confirmed (not merely suspected) to lack any stated element base-values or reduction method in the source itself — a genuine content gap, not an implementation gap |
+| Note | Order 15's base element-values are confirmed absent from the source (re-verified this round via direct reading, not just the extraction excerpt) — this is a source-level gap, not a digitization gap. No new data file should be created; `kashf-shibutzim.js` is the correct, existing home for this data |
 
 ## 9. Five Witnesses (מערכת E) — degree-scoring witness system
 
@@ -352,21 +359,49 @@ performed this round.
 
 ## 24. "מבקש/מבוקש במעגל" (Seeker/Sought via the Circle)
 
+> **STATUS CORRECTED AND SPLIT** in a later verification round — see
+> `HALL_WISDOM_KASHF_L0_5_SIXTEEN_PLACEMENT_ORDERS_AUDIT.md`. This is
+> two distinct rules (§24A Requester, §24B Requested), not one. §24A is
+> already implemented, routed, and exposed. The casting step is
+> confirmed, by exact source wording, to use **Order 1 (§8)** — not the
+> Essential Dignities Table (§6) as previously assumed for this step;
+> the starting "house of honor" count uses a separate, only-2-of-16-
+> verified table, conceptually but not numerically identical to §6's
+> `maalaHouse` field (1 of 2 checked cases matches, 1 contradicts).
+
+**§24A — Requester (מבקש), p.219**
 | Field | Value |
 |---|---|
-| Concept | Count from a figure's own "house of honor" (Essential Dignities Table, §6) back to its current position; use that count via Order-1 seat-placement (§8) to find a target house; judge by that house's quality |
-| Purpose | Trade/pricing verdict technique, dependency-heavy |
-| Activation | Topic-specific (trade/buy-sell) |
-| Inputs | Figure identity, Essential Dignities Table, Order-1 table |
-| Calculation | Positional count + lookup, see source |
+| Concept | Count from a figure's "house of honor" to house 1 (inclusive, forward, wraparound); cast that count from house 1 via Order 1's sequence (§8); judge seeker-strength by the landed house |
+| Purpose | Trade/pricing verdict technique |
+| Activation | Topic-specific (trade/buy-sell, `commerce` topic) |
+| Inputs | Figure identity, `REQUEST_CIRCLE_HONOR_HOUSES` (2 of 16 figures), Order-1 table (§8) |
+| Calculation | Positional count + Order-1 lookup — confirmed exact by direct code execution this round |
 | Outputs | Target house → quality verdict |
 | Verdict effect | Direct |
-| Dependencies | Essential Dignities Table (§6) — **corrected: now satisfied**; Placement Order 1 (§8) — still `missing`/`ambiguous`, remains the sole blocker |
+| Dependencies | Placement Order 1 (§8) — **satisfied, already consumed**; the "house of honor" table — separately verified for only 2 figures |
 | Precedence | Not stated |
-| Source pages | 218-220 |
-| Examples | Yes, fully worked (p.219-220) |
-| Current code path | None identified |
-| Status | `missing` (blocked on §8 only, not §6, now that §6 is resolved) |
+| Source pages | 219 |
+| Examples | Yes, both worked examples exactly reproduced by existing code (שפל ראש: 8→10→house10; כבוד נכנס: 12→6→house6) |
+| Current code path | `computeRequesterCircleHouse` + `REQUEST_CIRCLE_HONOR_HOUSES` (`kashf-shibutzim.js`); wrapped by `computeRequesterCircleStrengthKashf` (`kashf-book-additions.js`); registered as `id: 'requester-circle-strength'` in `kashf-topic-rules.js`; dispatched via `kashf-reading-engine.js` |
+| Status | **`implemented` + `routed` + `exposed` + `source-example-reproduced`** — not `missing` |
+
+**§24B — Requested (מבוקש), p.220**
+| Field | Value |
+|---|---|
+| Concept | A related but distinct rule judging whether the sought thing will be attained |
+| Purpose | Trade/pricing verdict technique (companion to §24A) |
+| Activation | Topic-specific (trade/buy-sell) |
+| Inputs | Figure identity; a "house of honor" concept that may or may not be the same table as §24A's |
+| Calculation | Unclear — the one worked example's arithmetic (ממון יוצא, "house of honor"=4) does not resolve under any counting interpretation tried |
+| Outputs | Attainment verdict, if the mechanism could be reproduced |
+| Verdict effect | Direct, if resolved |
+| Dependencies | Unclear pending source resolution |
+| Precedence | Not stated |
+| Source pages | 220 |
+| Examples | Present in source but does not verify — a genuine source-level inconsistency, not an extraction error |
+| Current code path | None found anywhere in the repo (confirmed by `grep`) |
+| Status | `unverified` / `unresolved` / `missing` — this half genuinely has no implementation and cannot be responsibly built until the source ambiguity is resolved |
 
 ## 25. Lookup-Table Sub-Engines (concrete, self-contained, low-ambiguity)
 
@@ -451,5 +486,5 @@ performed this round.
 ## Summary count
 
 - **Sub-engines identified**: 31 (numbered above; several §10-§14 are witness-system variants of one conceptual category, and §15-§21 are dhamir-method variants of one conceptual category — see the Session Report for the consolidated tallies requested there).
-- **Status breakdown** (counting each numbered engine once; **corrected** in a later verification round — §6 moved from `missing` to `implemented`, see the note under §6 above): `implemented` — 7 (§6 [corrected], §10 catalog-level, §11 catalog-level, §12 catalog-level, §15 partial/3-of-4, §16, §18, §20 partial). `implemented-without-source-traceability` — 5 (§1, §5, §27, §28, and §16's refinement clause). `ambiguous` — 6 (§2, §3, §13, §17, §19, §31). `missing` — remainder (§4, §7, §8, §9, §14, §21 [9 sub-items], §22, §23, §24, §25, §26, §29, §30).
+- **Status breakdown** (counting each numbered engine once; **corrected twice** across later verification rounds — §6 moved from `missing` to `implemented`; §8 moved from `missing` to `implemented-data-layer` (15/16 orders); §24 split into §24A `implemented`+`routed`+`exposed` and §24B still `missing`/`unresolved` — see the notes under §6, §8, §24 above): `implemented` — 9 (§6, §8 [corrected, data-layer], §10 catalog-level, §11 catalog-level, §12 catalog-level, §15 partial/3-of-4, §16, §18, §20 partial, §24A [Requester half]). `implemented-without-source-traceability` — 5 (§1, §5, §27, §28, and §16's refinement clause). `ambiguous` — 6 (§2, §3, §13, §17, §19, §31). `missing` — remainder (§4, §7, §9, §14, §21 [9 sub-items], §22, §23, §24B [Sought half only], §25, §26, §29, §30).
 - This counting is **approximate and structural**, not a certified audit — see `HALL_WISDOM_KASHF_BOOK_TO_CODE_COVERAGE_AUDIT.md` for the required catalogued/implemented/selected/evaluated/applied/exposed/sourced status breakdown, which is a stricter, separate classification.

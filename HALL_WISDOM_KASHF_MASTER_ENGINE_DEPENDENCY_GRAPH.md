@@ -38,7 +38,7 @@ Layer 0 — נתוני יסוד וסיווגים (foundational data & classifica
   L0.2 House Table (16 houses)
   L0.3 Essential Dignities Table            [implemented, not fully routed — corrected, see verification report]
   L0.4 Figure-to-Lunar-Month Table          [missing]
-  L0.5 Sixteen Placement Orders (1-16)      [missing/ambiguous]
+  L0.5 Sixteen Placement Orders (1-16)      [implemented, 15/16, corrected — see audit report]
   L0.6 Element Point-Counting Base System(s)
   L0.7 Distance-Measurement System          [missing]
   L0.8 Dalail al-Fasl Alt. L/W/D Table      [missing]
@@ -58,7 +58,7 @@ Layer 2 — חישובים כלליים (general-purpose calculations)
   L2.1 לשון העניין (Tongue of the Matter) Timing
   L2.2 Money-Magnitude Table Application
   L2.3 Decision-Oracle General Pattern      [missing]
-  L2.4 מבקש/מבוקש במעגל General Technique   [missing]
+  L2.4 מבקש/מבוקש במעגל General Technique   [split — Requester(p.219) implemented+routed+exposed; Sought(p.220) unverified/missing]
         │
         ▼
 Layer 3 — מנועי עדים ודמיר (witness & dhamir engines)
@@ -182,20 +182,28 @@ below nothing and above everything rather than being folded into Layer 1.
 | Unresolved source issues | None on content; its intended consumer within the book was not identified this round |
 
 ### L0.5 — Sixteen Placement Orders (1-16)
+> **STATUS CORRECTED** in a later verification round (see
+> `HALL_WISDOM_KASHF_L0_5_SIXTEEN_PLACEMENT_ORDERS_AUDIT.md`): a
+> 934-line existing file, `kashf-shibutzim.js`, already contains 15 of
+> the claimed 16 orders, each with explicit source citations — this was
+> not found when this document was first written. No new data file is
+> needed. The `missing` status below was a research gap, not an
+> accurate code-state finding.
+
 | Field | Value |
 |---|---|
 | Professional purpose | 16 distinct figure↔position/value permutations feeding naming, timing, letter-magic, distance, money-magnitude techniques |
-| Source pages | 104-151 |
+| Source pages | 104-151 (15 confirmed orders); 189 (candidate 16th, different chapter, unresolved) |
 | Required inputs | Figure identity (per order) |
 | Produced outputs | Position/value per order |
 | Depends on | Order 7 seeds Orders 8-12 (internal dependency within this node) |
-| Depended on by | L2.1 (לשון העניין, uses Order-6 letters), L2.2 (money-magnitude, Order 2's alternate column), L2.4 (Order 1 seat-placement) |
+| Depended on by | L2.1 (לשון העניין, uses Order-6 letters), L2.2 (money-magnitude, Order 2's alternate column), L2.4 (Order 1 seat-placement — **confirmed by exact source wording, not assumed**) |
 | Relevant question families | Money (indirectly), any timing/naming-adjacent family |
 | Verdict role | Infrastructure only |
-| Current implementation status | `missing` as a unified module; individual components may exist ad hoc inside other functions — `ambiguous` for those |
-| Current tests | none |
-| Source traceability | `sourced`, with one gap: Order 15's base element-values not found restated in the extraction, and 2 of 3 element-order traditions at p.128-129 have unresolved exact figure↔value pairings |
-| Unresolved source issues | Order 15 base-values gap; p.128-129 pairing gap; Order 3's 4-way element-value dispute (see L5.4) |
+| Current implementation status | **`implemented-data-layer` + `source-verified-for-15-orders` + `one-order-unresolved` + not-fully-routed-to-all-dependent-engines** (not `missing`) — 15 of 16 orders exist as `kashf-shibutzim.js` exports, each with `sourceStatus`/`sourceRef`; Orders 1, 2 (canonical number), 3 (element values) are already live in Dhamir Type 2; Order 1 is already live, routed, and exposed inside a working fragment of L2.4 (see L2.4 node below) |
+| Current tests | None dedicated to L0.5 as a whole; local read/execution checks performed this round (see the L0.5 audit and precommit report) confirm `SHIBUTZ_1_MOSHAV` reproduces the p.219 worked examples exactly via `computeRequesterCircleHouse` |
+| Source traceability | `sourced` for 15 orders, each independently cross-verified this round against a fresh raw-HTML re-extraction (Order 1 confirmed exact match). Order 15 confirmed (not merely suspected) to have no stated element base-values or reduction method anywhere in the source — a genuine content gap, not an extraction gap |
+| Unresolved source issues | Order 15's missing method; the book's own "16 orders" claim vs. only 15 headed within Gate 3 (a p.189 candidate 16th exists in a different chapter, unconfirmed); p.128-129 pairing gap; Order 3's 4-way element-value dispute (see L5.4); **newly found**: Order 1 is confirmed to be a different book tradition from `FIGURE_DIGNITIES.moshavHouse` (7 of 14 comparable figures disagree) — the two must never be merged |
 
 ### L0.6 — Element Point-Counting Base System(s)
 | Field | Value |
@@ -370,16 +378,39 @@ below nothing and above everything rather than being folded into Layer 1.
 | Unresolved source issues | קהלה double-entry (p.267-269); relationship to topic-formulas when both apply to the same question is not stated (see L5.4) |
 
 ### L2.4 — מבקש/מבוקש במעגל (Seeker/Sought via the Circle) General Technique
+> **STATUS CORRECTED and SPLIT** in a later verification round (see
+> `HALL_WISDOM_KASHF_L0_5_SIXTEEN_PLACEMENT_ORDERS_AUDIT.md`). This is
+> two distinct rules, not one — a "מבקש" (Requester) rule (p.219) and a
+> "מבוקש" (Requested) rule (p.220) — with genuinely different
+> implementation status. Also corrected: the counting/casting step uses
+> **Order 1 by name, confirmed via exact source wording** ("על פי סדר
+> השיבוץ של המושב"), not the Essential Dignities Table's מושב field —
+> the "Depends on L0.3" line below was an unverified assumption, now
+> replaced.
+
+**L2.4A — Requester (מבקש), p.219**
 | Field | Value |
 |---|---|
-| Professional purpose | Count from a figure's house-of-honor back to its current position; use the count via Order-1 seat-placement to find a target house; judge by that house |
-| Source pages | 218-220 |
-| Depends on | L0.3 (Essential Dignities Table), L0.5 (Order 1) |
-| Depended on by | L4.13 (tradeBuySellPricing family) |
-| Verdict role | Direct, topic-specific in its only confirmed use |
-| Current implementation status | `missing` |
-| Source traceability | `sourced`, fully worked example present (p.219-220) |
-| Unresolved source issues | Whether this technique is meant to be general-purpose (its name/framing suggests broader applicability) or is confirmed only for trade-pricing is not settled by the pages read |
+| Professional purpose | Count from a figure's "house of honor" to house 1; cast that count from house 1 via Order 1's sequence; judge the seeker's strength by the landed house |
+| Source pages | 219 |
+| Depends on | L0.5 (Order 1, for the casting step — confirmed); a distinct, only-2-of-16-figures-verified "house of honor" table (`REQUEST_CIRCLE_HONOR_HOUSES`) for the starting count — **conceptually linked to, but numerically inconsistent with, `FIGURE_DIGNITIES.maalaHouse` in 1 of 2 checked cases** |
+| Depended on by | L4.13 (tradeBuySellPricing family, via the `commerce` topic) |
+| Verdict role | Direct, topic-specific |
+| Current implementation status | **`implemented` + `routed` + `exposed` + `source-example-reproduced`** — `computeRequesterCircleHouse` / `computeRequesterCircleStrengthKashf` (`kashf-shibutzim.js` / `kashf-book-additions.js`), registered under the `commerce` topic in `kashf-topic-rules.js` (`id: 'requester-circle-strength'`), dispatched via `kashf-reading-engine.js`'s function table. Confirmed by direct execution this round to reproduce both p.219 worked examples exactly (8→10→house10; 12→6→house6). Correctly returns `null`, not a guess, for the other 14 house-1 figures |
+| Source traceability | `sourced`, both worked examples independently reproduced |
+| Unresolved source issues | `REQUEST_CIRCLE_HONOR_HOUSES` covers only 2 of 16 figures; extending it requires resolving the "house of honor" vs. `maalaHouse` numeric inconsistency (not resolved) |
+
+**L2.4B — Requested (מבוקש), p.220**
+| Field | Value |
+|---|---|
+| Professional purpose | Judge whether the sought thing/person will be attained, via a related but distinct circle-counting rule |
+| Source pages | 220 |
+| Depends on | Unclear — the one worked example's arithmetic (ממון יוצא, "house of honor"=4) does not resolve under any counting interpretation tried, by either this round or a prior one |
+| Depended on by | Not confirmed to feed any implemented family |
+| Verdict role | Direct, if it could be reproduced |
+| Current implementation status | **`unverified` / `unresolved` / `missing`** — no implementation anywhere in the repo (confirmed by `grep`); not merely unbuilt but genuinely blocked, since even the source's own example does not check out |
+| Source traceability | `sourced` in the sense of being quoted, but not `verified` — its own arithmetic is internally inconsistent |
+| Unresolved source issues | The worked example's numbers do not resolve; this is a source-level problem, not an implementation gap closeable by more careful coding |
 
 ---
 
@@ -573,7 +604,7 @@ proposed anywhere in this document.
 | L4.10 | illnessLostAnimals | 196-204 | L1.1 | Direct verdict + 2 lookup tables (body-part, animal-type) | `partially-implemented` | `sourced` |
 | L4.11 | marriageSeekerSought | 204-212 | L1.1, L0.3(indirect via marriage figure-character rules) | Direct verdict | `partially-implemented` | `sourced` |
 | L4.12 | winnerLoser | 212-217 | L1.1 | Direct verdict | `partially-implemented` | `sourced` |
-| L4.13 | tradeBuySellPricing | 217-224 | L1.1, L2.4, L0.3, L0.5 | Direct verdict | `partially-implemented` — L2.4 itself unimplemented; L0.3 is now implemented (corrected) but L2.4 does not yet consume it | `sourced`, fully worked example present |
+| L4.13 | tradeBuySellPricing | 217-224 | L1.1, L2.4A (implemented, routed, exposed — corrected), L2.4B (unresolved), L0.5 | Direct verdict | `partially-implemented` — the Requester (L2.4A) half is already live and reachable via the `commerce` topic; the Requested (L2.4B) half is unresolved at the source level, not just unbuilt | `sourced`, p.219 fully reproduced; p.220 does not verify |
 | L4.14 | theftAndLoan | 224-237 | L1.1 | Direct verdict + description table | `partially-implemented` | `sourced` |
 | L4.15 | travel | 237-247 | L1.1 | Direct verdict + ship-damage table | `partially-implemented` (topicId "likely catalogued," not verified this round) | `sourced` |
 | L4.16 | missingPerson | 248-253 | L1.1, L1.5, L2.3 | Direct verdict | `partially-implemented`; sub-board-recast and decision-oracle dependencies unimplemented | `sourced` |

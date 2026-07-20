@@ -258,6 +258,17 @@ honest historical record rather than silently erased.
 
 ### 11a. Re-ranking summary (full detail in the First-Implementation-Slice document)
 
+> **Correction (a later round)**: this summary's claims about L0.5 and
+> L2.4 below are superseded by
+> `HALL_WISDOM_KASHF_L0_5_SIXTEEN_PLACEMENT_ORDERS_AUDIT.md`. L0.5 is
+> **not** "gated behind Phase 0" — it already exists as
+> `kashf-shibutzim.js` (15 of 16 orders, source-verified). L2.4 is
+> **not** simply "blocked by 1 dependency" — its Requester half (p.219)
+> is already implemented, routed, and exposed; only its Requested half
+> (p.220) remains unresolved, and that is a source-level ambiguity, not
+> a missing dependency. Left below as the historical record of this
+> round's own reasoning at the time.
+
 With L0.3 no longer a blocker, L2.4 (מבקש/מבוקש במעגל) moved from
 "blocked by 2 dependencies" to "blocked by 1" (L0.5 only), making it the
 option with the clearest path to the strongest Golden Test in the

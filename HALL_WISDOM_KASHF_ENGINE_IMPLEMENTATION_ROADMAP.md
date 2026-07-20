@@ -57,7 +57,7 @@ using multiple criteria, not complexity alone.
 | 2. דרך המעגל (circle-way) | 157 | `missing` | L1.1 | Figure in house 1 | Examine that figure's own 7th-house content | House/theme | Alternate reveal | dhamir-general | Illustrative case given | Low-medium | Distinct from Type 5 — must not be conflated in code naming |
 | 3a. קוטרי branch | 157-158 | `missing` | L1.4, L0.6 | Board (diametric) | Water+earth points mod 9, cast from house 1 | House landing | Alternate reveal | dhamir-general | Not isolated | Low | None |
 | 3b. צלעי branch | 157-158 | `missing` | L1.4, L0.6 | Board (lateral) | Water+air points mod 12, cast from house 1 | House landing | Alternate reveal | dhamir-general | Not isolated | Low | None |
-| 4. Letters+10 mod 12 | 158 | `missing` | L1.1, L0.5 (Order 6) | 4 mothers | Sum letter-roots, +10, mod 12, cast | House landing | Alternate reveal | dhamir-general | Not isolated | Medium — depends on unimplemented L0.5 | "Not revealed to everyone" (esoteric framing) — implementation-worthiness itself unclear |
+| 4. Letters+10 mod 12 | 158 | `missing` | L1.1, L0.5 (Order 6 — **corrected: `SHIBUTZ_6_LETTER_TABLE` already exists and is source-verified**, no longer a blocker) | 4 mothers | Sum letter-roots, +10, mod 12, cast | House landing | Alternate reveal | dhamir-general | Not isolated | Low-medium — dependency now available | "Not revealed to everyone" (esoteric framing) — implementation-worthiness itself unclear |
 | 5. House-1/15 repetition check | 158 | `missing` | L1.1 | Board | Pattern-match: does house1 or house15 figure recur elsewhere? | Boolean + location | Alternate reveal | dhamir-general | Not isolated | Low — simplest of the 9 | None |
 | 6. Angular-points derived-figure | 158 | `missing` | L1.1 | Houses 1,4,7,10 | Combine into 1 new figure, locate it | House landing | Alternate reveal | dhamir-general | Not isolated | Medium | None |
 | 7. Houses 9-12 heads+feet combination | 159 | `missing` | L1.1 | Houses 9-12 | Combine "heads" → 1 figure, "feet" → 1 figure, combine again | House landing | Alternate reveal | dhamir-general | "Correct and tested way" (source's own framing) | Medium-high | None |
@@ -122,7 +122,7 @@ decided, and explicitly not ranked by ease alone.
 | 13 | parentsPropertyHidden | L0.8 | topicIds exist | ~8-method hidden-object sub-system, water-depth table not verified | None | Yes, multiple worked examples | Unknown | Medium — large, dense sub-system |
 | 14 | marriageSeekerSought | none beyond L1.1 (though figure-character rules reference dignities informally) | topicId exists | ~15 formulas not verified against code | None flagged this round | Yes | Unknown | Medium — dense chapter |
 | 15 | winnerLoser | none beyond L1.1 | topicId exists | Dual-board army-comparison, city-conquest table not verified | None | Yes | Unknown | Medium |
-| 16 | tradeBuySellPricing | L2.4, L0.3, L0.5 | topicId exists (`commerce`) | מבקש/מבוקש-במעגל technique dependent on unimplemented L2.4/L0.5; **L0.3 is now confirmed already implemented and no longer a blocker** | None on the technique itself | Yes, fully worked | Medium — one of two remaining dependencies (L0.5) still missing; L0.3 no longer blocks this | **Still risky if L2.4 is attempted before L0.5 exists — but L0.3 is resolved** |
+| 16 | tradeBuySellPricing | L2.4A (implemented, routed, exposed), L2.4B (unresolved), L0.5 (implemented, 15/16 orders) | topicId exists (`commerce`); **the Requester half of מבקש/מבוקש-במעגל is already live** (`computeRequesterCircleStrengthKashf`, registered as `id: 'requester-circle-strength'`) | The Requester half is done for 2 of 16 house-1 figures; the Requested half (p.220) is source-unresolved, not just unbuilt | קהלה-adjacent none; the p.220 arithmetic itself does not verify — a source ambiguity, not an implementation gap | Yes for p.219 (already reproduced); p.220 does not reproduce under any interpretation tried | Low for extending the Requester table further (source-verification work, not blind coding); not applicable for the Requested half until the source ambiguity is resolved | **Extending `REQUEST_CIRCLE_HONOR_HOUSES` beyond its 2 verified figures without further source proof would repeat the exact mistake this whole project has tried to avoid — do not guess the remaining 14** |
 | 17 | friendsHopeLifeLove | L2.3 | topicId `friendsHope` confirmed to already exist | Livelihood-oracle, friend-type, clothing-color tables not verified | **קהלה double-entry in livelihood table — source-level ambiguity** | Yes | Unknown, capped by the ambiguity | Medium-high — the table itself needs a targeted re-check before any digitization, independent of code work |
 | 18 | childrenPregnancy | none beyond L1.1 | topicId exists | Gender-determination sub-rules not verified | **4-5 competing gender methods, not reconciled by the book** | Yes | Unknown, capped by the ambiguity | **High** — implementing any ONE gender method without user guidance risks silently picking a side the book itself didn't pick |
 | 19 | decisionOracleSixteenFigure | L2.3 | Not a `kashf-topic-rules.js` topicId — general-purpose pattern, not topic-bound | Entire pattern unimplemented | קהלה double-entry affects one of its 3 known table instances (p.267-269) | Yes, 3 full tables | 0% | Low complexity, but same table-ambiguity caveat for one of its 3 instances |
@@ -323,43 +323,70 @@ and not with a single witness engine.
 - **Deploy needed?** No. **Live AI pilot needed?** No.
 
 ### Phase 5 — Layer 0 completion: Sixteen Placement Orders module
-- **Objective**: Build the 16-placement-orders lookup module (L0.5) as
-  a unified, reusable data+lookup layer, resolving the Order-15 and
-  p.128-129 gaps from Phase 0 first.
-- **Engines included**: L0.5.
-- **Dependencies**: Phase 0 (must resolve Order 15 / p.128-129 gaps
-  first, or explicitly document them as permanently unresolved).
-- **Files likely involved**: new data module (path TBD at approval time).
-- **Source pages**: 104-151.
-- **Tests required**: table-fidelity Golden Tests for each of the 16
-  orders.
-- **Completion criteria**: all 16 orders digitized and independently
-  verifiable against source; 2 known gaps either closed or explicitly
-  documented as permanent.
-- **Regression risk**: near-zero — pure data, not wired to verdict logic
-  in this phase.
+> **STATUS UPDATE (post-verification round): L0.5 is substantially
+> COMPLETE, not to be rebuilt.** Executing this phase's objective led to
+> discovering that 15 of 16 orders already exist as rigorously
+> source-verified exports in `kashf-shibutzim.js` — no new data module
+> was created. Order 15's method gap and the p.189 candidate-16th-order
+> question remain genuinely open (see the L0.5 audit report), but the
+> module itself does not need building. This phase's remaining scope is
+> narrower: (a) targeted source re-verification of Order 15 and the
+> p.189 candidate, and (b) nothing else — the 15 verified orders require
+> no further data work.
+- **Objective (original, superseded)**: Build the 16-placement-orders
+  lookup module (L0.5) as a unified, reusable data+lookup layer.
+- **Engines included**: L0.5 (verification only now, not construction).
+- **Dependencies**: none for the 15 already-verified orders; Phase 0
+  (source clarification) still applies to Order 15 and the p.189
+  candidate specifically.
+- **Files likely involved**: `kashf-shibutzim.js` (read-only
+  verification of Order 15 / p.189, if pursued further — no new file).
+- **Source pages**: 104-151 (done), 189 (candidate, unresolved).
+- **Tests required**: a table-fidelity Golden Test could still be built
+  against the existing 15 orders (regression-lock, not gap-closing).
+- **Completion criteria**: unchanged in spirit — Order 15's method and
+  the p.189 candidate's status resolved or explicitly documented as
+  permanent; the other 15 orders already meet this bar today.
+- **Regression risk**: near-zero — the existing data is not wired to
+  verdict logic beyond what's already live (Dhamir Type 2, L2.4A).
 - **Deploy needed?** No. **Live AI pilot needed?** No.
 
-### Phase 6 — Trade-pricing technique (L2.4) + Witness E, contingent on Phase 5 (Phase 1's L0.3 is already satisfied)
-- **Objective**: With L0.3 (already implemented and source-verified —
-  see Phase 1's status update above) and L0.5 (Phase 5) both in place,
-  implement L2.4 (מבקש/מבוקש במעגל) and, separately, L3.E (Five
-  Witnesses) — each independently testable against their respective
-  worked examples.
-- **Engines included**: L2.4, L3.E.
-- **Dependencies**: Phase 5 (L0.5) only — Phase 1's L0.3 objective is
-  already met.
-- **Files likely involved**: new functions, files TBD.
-- **Source pages**: 218-220 (L2.4), 130-131 (L3.E).
-- **Tests required**: L2.4 has a fully-worked source example (p.219-220)
-  — a strong Golden Test candidate. L3.E has no isolated worked numeric
-  example found this round — a hand-constructed test would be needed,
-  clearly labeled as engineering-constructed, not source-worked.
-- **Completion criteria**: L2.4 reproduces the p.219-220 worked example
-  exactly; L3.E produces internally consistent scores on constructed
-  test boards.
-- **Regression risk**: low-medium — first real consumers of L0.3/L0.5,
-  so any latent error in those data layers surfaces here.
+### Phase 6 — Trade-pricing technique (L2.4) + Witness E
+> **STATUS UPDATE: L2.4's Requester half (L2.4A, p.219) is already
+> implemented, routed, and exposed** — this phase's L2.4 objective is
+> already partially met. Remaining scope: the Requested half (L2.4B,
+> p.220), which is blocked on an unresolved source ambiguity (the
+> worked example's own arithmetic does not check out), not on missing
+> code; and extending `REQUEST_CIRCLE_HONOR_HOUSES` beyond its 2
+> currently-verified figures, which requires further source
+> verification, not implementation. L3.E (Five Witnesses) remains
+> unbuilt, now with its data dependency (L0.3) satisfied.
+- **Objective**: With L0.3 (already implemented) and L0.5 Order 1
+  (already implemented and already partially consumed by L2.4A), close
+  the remaining gaps: L2.4B (blocked on source ambiguity, not ready to
+  implement), broader `REQUEST_CIRCLE_HONOR_HOUSES` coverage (needs
+  source work first), and L3.E (Five Witnesses, unbuilt, dependency-ready).
+- **Engines included**: L2.4B (source-verification, not coding, until
+  resolved), L3.E.
+- **Dependencies**: none blocking for L3.E; L2.4B is blocked on source
+  ambiguity resolution, not on any other engine.
+- **Files likely involved**: `kashf-shibutzim.js` (read-only, pending
+  further source work), new function for L3.E (file TBD).
+- **Source pages**: 219 (L2.4A, done), 220 (L2.4B, blocked), 130-131 (L3.E).
+- **Tests required**: GT-3A (Requester, p.219) is ready to write today
+  as a regression-lock — see the Golden Test Strategy correction. GT-3B
+  (Requested, p.220) should not be written until the source ambiguity
+  is resolved. L3.E has no isolated worked numeric example — a
+  hand-constructed test would be needed, clearly labeled as
+  engineering-constructed, not source-worked.
+- **Completion criteria**: GT-3A written and passing (regression-lock
+  for already-working code); L2.4B and broader `REQUEST_CIRCLE_HONOR_
+  HOUSES` coverage explicitly deferred pending source work, not silently
+  dropped; L3.E produces internally consistent scores on constructed
+  test boards, if pursued.
+- **Regression risk**: low — L2.4A already works and only needs a test
+  written around it, not new code; L3.E remains a net-new, unwired
+  addition.
 - **Deploy needed?** No. **Live AI pilot needed?** No.
 
 ### Phase 7 — Question-family formula-level verification sweep

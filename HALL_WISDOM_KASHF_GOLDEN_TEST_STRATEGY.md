@@ -25,8 +25,8 @@ an engineer's independent judgment of what the "right" answer should be.
 | Expected witnesses/dhamir | None involved |
 | Expected verdict | A monetary sum |
 | Exact textual evidence | Present in source, not verbatim-quoted in the working notes (flagged — would need a targeted re-read of p.113 before this test can be written) |
-| Current reproduction status | `not-tested` — L0.5 (placement orders module) is `missing`, so this cannot be reproduced at all today |
-| Missing implementation | L0.5 (Sixteen Placement Orders), specifically Order 2 |
+| Current reproduction status | `not-tested` — **corrected: L0.5 is implemented as `kashf-shibutzim.js` (Order 2 = `SHIBUTZ_2_CANONICAL_NUMBER`, already source-verified); this test is not written yet, but the blocking claim was wrong** — the actual blocker is that this specific worked example's exact figure/house values were never re-extracted verbatim (see Inputs row) |
+| Missing implementation | None in L0.5 itself — only the missing verbatim re-extraction of this specific example's numbers |
 
 ### GT-2 — Love-divination letter-magic example (Order 6)
 | Field | Value |
@@ -37,23 +37,49 @@ an engineer's independent judgment of what the "right" answer should be.
 | Expected intermediate calculations | Not fully re-quoted in this round's notes |
 | Expected verdict | Not isolated in this round's notes |
 | Exact textual evidence | Present in source at p.140, not verbatim-quoted here |
-| Current reproduction status | `not-tested` — L0.5 missing |
-| Missing implementation | L0.5, specifically Order 6 |
+| Current reproduction status | `not-tested` — **corrected: L0.5 Order 6 (`SHIBUTZ_6_LETTER_TABLE`) is implemented and source-verified**; not written yet, but not blocked by a missing table |
+| Missing implementation | None in L0.5 itself — only the test has not been written |
 
-### GT-3 — מבקש/מבוקש במעגל fully-worked trade example ★ highest-priority candidate
+### GT-3 — SPLIT into GT-3A and GT-3B (a later verification round)
+
+> **Correction**: GT-3 as originally scoped bundled p.219 and p.220
+> together as "a fully-worked trade example." A later round found these
+> are two distinct rules with genuinely different verification status —
+> p.219 (Requester) is already reproduced exactly by existing code;
+> p.220 (Requested) is a separate rule whose own arithmetic does not
+> verify under any interpretation tried. They must not be tested
+> together. See
+> `HALL_WISDOM_KASHF_L0_5_SIXTEEN_PLACEMENT_ORDERS_AUDIT.md`.
+
+### GT-3A — Requester circle (מבקש), p.219 — ★ regression-lock candidate, ready to write today
 | Field | Value |
 |---|---|
-| Source pages | 218-220 |
-| Question | Trade/pricing — Seeker/Sought via the Circle |
-| Inputs | A figure's own house-of-honor (Essential Dignities Table, L0.3), current board position |
-| Expected intermediate calculations | Count from house-of-honor back to current position; apply that count via Order-1 seat-placement (L0.5) to find target house |
-| Expected figures | Per the worked example (not re-quoted verbatim in this document — flagged for exact-text extraction at test-writing time) |
+| Source page | 219 |
+| Question | Trade/pricing — Seeker (Requester) strength via the Circle |
+| Inputs | A figure's own "house of honor" (`REQUEST_CIRCLE_HONOR_HOUSES`, `kashf-shibutzim.js` — verified for exactly 2 of 16 figures), current board position (house 1) |
+| Expected intermediate calculations | Count inclusive-forward-wraparound from house-of-honor to house 1; cast that count from house 1 via Order 1's sequence (`SHIBUTZ_1_MOSHAV`) |
+| Expected figures | שפל ראש (house-of-honor 8) and כבוד נכנס (house-of-honor 12) — the only 2 verified cases |
 | Expected witnesses/dhamir | None stated for this technique specifically |
-| Expected verdict | Trade/price outcome per the target house's quality |
-| Exact textual evidence | Full worked example confirmed present at p.219-220 by this round's reading |
-| Current reproduction status | `fail` — engine (L2.4) does not exist; dependency L0.5 Order-1 also does not exist. **Corrected: L0.3 is no longer missing** — it is already implemented and source-verified, see GT-10 below |
-| Missing implementation | L0.5 (Order 1 at minimum), L2.4 — **L0.3 removed from this list, corrected** |
-| Why highest-priority | This is the **only** technique in the entire mapping with (a) a confirmed fully-worked numeric example, (b) a now-shorter dependency chain (L0.5 → L2.4, since L0.3 is resolved), and (c) no unresolved source ambiguity blocking it |
+| Expected verdict | שפל ראש: count 10, lands house 10 (authority/status — benefic). כבוד נכנס: count 6, lands house 6 (illness/worry house, but supplementary reasoning still yields hope) |
+| Exact textual evidence | Both examples quoted directly, p.219 |
+| Current reproduction status | **`exact`** — confirmed this round by direct code execution: `computeRequesterCircleHouse('2221')` → `{honorHouse:8, count:10, landingHouse:10}`; `computeRequesterCircleHouse('2211')` → `{honorHouse:12, count:6, landingHouse:6}`. Both match the source exactly |
+| Missing implementation | **None** — `computeRequesterCircleHouse`, `computeRequesterCircleStrengthKashf` already implemented, routed under the `commerce` topic (`id: 'requester-circle-strength'`), and exposed via `kashf-reading-engine.js` |
+| Why ready now | This is a **regression-lock candidate, not a gap-closer** — the code already works; writing this test only formalizes already-correct, already-verified behavior so future changes can't silently break it. No new engine work is required to write it |
+
+### GT-3B — Requested circle (מבוקש), p.220 — blocked
+| Field | Value |
+|---|---|
+| Source page | 220 |
+| Question | Trade/pricing — whether the sought thing will be attained |
+| Inputs | A figure's "house of honor" (possibly the same table as GT-3A, possibly not — unconfirmed) and its actual board position |
+| Expected intermediate calculations | Unclear — the source's own example (ממון יוצא, house-of-honor stated as 4) does not resolve to the stated result (7) under any counting interpretation tried this round or in a prior round |
+| Expected figures | ממון יוצא (the only example given) |
+| Expected witnesses/dhamir | None stated |
+| Expected verdict | Cannot be determined until the arithmetic is resolved |
+| Exact textual evidence | Present in source but internally inconsistent — not usable as a Golden Test reference as written |
+| Current reproduction status | `blocked` — not `fail` in the sense of "code doesn't exist yet"; this is `blocked-by-source-ambiguity`, since even a correct implementation could not reproduce the source's own stated result |
+| Missing implementation | No code exists, but writing code would not help until the source ambiguity is resolved |
+| Why blocked | **Do not write an expected verdict for this test until the source itself is re-verified.** Picking any single interpretation to make the test pass would mean inventing a resolution the book does not provide — exactly what this whole project's discipline forbids |
 
 ### GT-4 — "שאילת הכרעה" (Decision-Request) 16-figure verdict table
 | Field | Value |
@@ -170,22 +196,22 @@ an engineer's independent judgment of what the "right" answer should be.
 ## Proposed prioritization for a future round
 
 1. **Regression-lock tier (protect what's already correct)**: GT-11,
-   GT-12, **and now GT-10 (implemented and passing — moved here from
-   the gap-closing tier below, corrected in a later round)**. These
-   require no new engine work — only formalizing existing
+   GT-12, GT-10 (implemented and passing), **and now GT-3A (Requester
+   circle, p.219) — moved here from the gap-closing tier below,
+   corrected in a later round, since it too is already implemented,
+   routed, and exposed, reproducing both source examples exactly**.
+   These require no new engine work — only formalizing existing
    confirmed-correct behavior into a test, so future changes can't
    silently break it.
-2. **Highest-value gap-closing tier**: GT-3 (מבקש/מבוקש-במעגל) — its
-   dependency chain is now shorter (L0.5 → L2.4 only, since GT-10's
-   underlying table, L0.3, is done) — the strongest remaining
-   fully-worked, fully-traceable Golden Test candidate in the entire
-   mapping.
-3. **Table-fidelity tier (once code presence is confirmed or built)**:
+2. **Table-fidelity tier (once code presence is confirmed or built)**:
    GT-7, GT-8, GT-9 — concrete, low-ambiguity, good "second wave" tests.
-4. **Blocked tier — do not write yet**: GT-6, pending Phase 0's
-   resolution (or documented non-resolution) of the קהלה double-entry.
-   Writing this test today would force an arbitrary choice the source
-   itself doesn't make.
+3. **Blocked tier — do not write yet**: GT-6, pending Phase 0's
+   resolution (or documented non-resolution) of the קהלה double-entry;
+   **and now GT-3B (Requested circle, p.220), corrected in a later
+   round from "highest-value gap-closing" to blocked — its own source
+   example does not verify under any interpretation tried, so this
+   cannot be closed by more implementation work.** Writing either test
+   today would force an arbitrary choice the source itself doesn't make.
 5. **Needs re-extraction before writeable**: GT-1, GT-2 — this round's
    working notes recorded that these examples exist and roughly what
    they demonstrate, but not the exact source numbers needed to write a
