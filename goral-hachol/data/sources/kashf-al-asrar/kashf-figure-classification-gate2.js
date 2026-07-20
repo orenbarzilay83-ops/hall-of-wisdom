@@ -49,6 +49,16 @@ export const FIGURE_DEGREES = {
 export const FIGURE_FORTUNE_NUANCED = {
   sourceStatus: 'explicit-in-source',
   sourceRef: "כשף אל-אסראר עמ' 55-57",
+  provenance: {
+    workId: 'kashf-al-asrar',
+    editionId: 'kashf-hebrew-v56',
+    sourceLayer: 'author_main_text',
+    authorityType: 'primary',
+    traditionId: 'fortune-four-way',
+    authorResponse: 'reported-neutrally',
+    defaultEligible: false,
+    conflictGroupId: 'fortune-classification-system',
+  },
 
   // "הצורות המיטיבות הן חמש" (עמ' 55)
   pureBenefic: ['2211', '2121', '2111', '1122', '1222'], // כבוד נכנס, ממון נכנס, סף נכנס, כבוד יוצא, נשוא ראש
@@ -71,6 +81,16 @@ export const FIGURE_FORTUNE_NUANCED = {
   alternativeThreeWaySystem: {
     sourceRef: "כשף אל-אסראר עמ' 57",
     note: 'המקור עצמו מציג שתי שיטות מתחרות ואינו מכריע ביניהן — שתיהן מצוטטות.',
+    provenance: {
+      workId: 'kashf-al-asrar',
+      editionId: 'kashf-hebrew-v56',
+      sourceLayer: 'author_alternative_view',
+      authorityType: 'primary-alternative',
+      traditionId: 'fortune-three-way',
+      authorResponse: 'reported-neutrally',
+      defaultEligible: false,
+      conflictGroupId: 'fortune-classification-system',
+    },
     '1121': 'מיטיבה (נלחם)',
     '1211': 'מזיקה (בר הלחי)',
     '2212': 'ממוזגת (לבן)',
