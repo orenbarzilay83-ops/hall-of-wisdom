@@ -374,6 +374,68 @@ export const HOUSE_TESTIMONY = {
 export const FIGURE_ALTERNATE_NAMES = {
   sourceStatus: 'explicit-in-source',
   sourceRef: "כשף אל-אסראר עמ' 101-102",
+  provenance: {
+    workId: 'kashf-al-asrar',
+    editionId: 'kashf-hebrew-v56',
+    sourceLayer: 'author_main_text',
+    authorityType: 'primary',
+    traditionId: 'figure-source-aliases',
+    authorResponse: 'reported_neutrally',
+    defaultEligible: false,
+    conflictGroupId: null,
+    editorialOrigin: null,
+  },
+
+  certainty: {
+    status: 'explicit_in_source',
+    confidence: 'high',
+    ambiguity: true,
+    visualDependency: 'none',
+  },
+
+  usagePolicy: {
+    role: 'source_documentation_only',
+    canonicalNamesOnlyForDisplay: true,
+    mayAppearInClientOutput: false,
+    mayAppearInSystemGeneratedText: false,
+    mayReplaceCanonicalName: false,
+    mayBeUsedAsAutomaticSynonym: false,
+    mayBeUsedAsAutomaticSearchKey: false,
+    mayBeUsedForRuleMatchingAutomatically: false,
+    requiresManualSourceReviewForUse: true,
+    mustPreserveOriginalSpelling: true,
+    mustNotTranslateAutomatically: true,
+    mustNotNormalizeAutomatically: true,
+  },
+
+  canonicalDisplayNames: {
+    '1222': 'נשוא ראש',
+    '2121': 'ממון נכנס',
+    '1212': 'ממון יוצא',
+    '2222': 'קהלה',
+    '1121': 'נלחם',
+    '1221': 'סוהר',
+    '2221': 'שפל ראש',
+    '2122': 'אדום',
+    '2212': 'לבן',
+    '1122': 'כבוד יוצא',
+    '2211': 'כבוד נכנס',
+    '1112': 'סף יוצא',
+    '1111': 'דרך',
+    '2111': 'סף נכנס',
+    '2112': 'חיבור',
+    '1211': 'בר הלחי',
+  },
+
+  completenessPolicy: {
+    sourceAliasSetIsPartial: true,
+    omittedFigurePattern: '1211',
+    omittedFigureCanonicalName: 'בר הלחי',
+    omittedAliasStatus: 'unresolved_in_source',
+    mustNotInferMissingAlias: true,
+    mustNotInventMissingAlias: true,
+  },
+
   '1222': ['הצוחקת', 'איש גדול-ההימה'],       // נשוא ראש
   '2121': ['אכמוס'],                          // ממון נכנס
   '1212': ["אל-מע"],                          // ממון יוצא
