@@ -27,6 +27,85 @@
 // עצמו כחוסר-פירוט, לא רק חוסר-תיעוד שלנו).
 // ─────────────────────────────────────────────────────────────────────────
 
+export const FIGURE_DIGNITIES_METADATA = {
+  provenance: {
+    workId: 'kashf-al-asrar',
+    editionId: 'kashf-hebrew-v56',
+    sourceLayer: 'author_main_text',
+    authorityType: 'primary',
+    traditionId: 'dignity-table-main',
+    authorResponse: 'reported_neutrally',
+    defaultEligible: true,
+    conflictGroupId: null,
+    editorialOrigin: null,
+  },
+
+  certainty: {
+    status: 'explicit_in_source',
+    confidence: 'high',
+    ambiguity: false,
+    visualDependency: 'none',
+  },
+
+  columns: {
+    maalaHouse: {
+      sourceStatus: 'explicit_in_source',
+      originStatus: 'identified_by_author',
+      originDescription: 'ממעגל נציר א-דין',
+    },
+    moshavHouse: {
+      sourceStatus: 'explicit_in_source',
+      originStatus: 'identified_by_author',
+      originDescription: 'ממעגל המושבות',
+    },
+    gvulHouse: {
+      sourceStatus: 'explicit_in_source',
+      originStatus: 'identified_by_author',
+      originDescription: 'ממעגל המספר',
+    },
+    panimHouse: {
+      sourceStatus: 'explicit_in_source',
+      originStatus: 'identified_by_author',
+      originDescription: 'ממעגל אבג"ד',
+    },
+    simchaHouse: {
+      sourceStatus: 'explicit_in_source',
+      originStatus: 'author_does_not_know',
+      originDescription: null,
+    },
+    tzaarHouse: {
+      sourceStatus: 'explicit_in_source',
+      originStatus: 'author_does_not_know',
+      originDescription: null,
+    },
+    mezegHouse: {
+      sourceStatus: 'explicit_in_source',
+      originStatus: 'author_does_not_know',
+      originDescription: null,
+    },
+  },
+
+  nullSemantics: {
+    meaning: 'not_stated_in_source',
+    mustNotInfer: true,
+    mustNotFillFromOtherTradition: true,
+    mustNotConvertToZero: true,
+  },
+
+  omittedFigures: {
+    '2112': {
+      nameHebrew: 'חיבור',
+      status: 'not_stated_in_source',
+    },
+    '1111': {
+      nameHebrew: 'דרך',
+      status: 'not_stated_in_source',
+    },
+  },
+
+  sourceRef: "כשף אל-אסראר עמ' 96-99",
+};
+
 export const FIGURE_DIGNITIES = {
   '1121': { // נלחם
     maalaHouse: 1, moshavHouse: 5, gvulHouse: 9, panimHouse: 11,
