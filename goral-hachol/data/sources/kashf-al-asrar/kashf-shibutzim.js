@@ -41,6 +41,63 @@
 // ─────────────────────────────────────────────────────────────────────────
 
 export const SHIBUTZ_1_MOSHAV = {
+  provenance: {
+    workId: 'kashf-al-asrar',
+    editionId: 'kashf-hebrew-v56',
+    sourceLayer: 'author_main_text',
+    authorityType: 'primary',
+    traditionId: 'placement-order-1-main',
+    authorResponse: 'accepted',
+    defaultEligible: true,
+    conflictGroupId: 'placement-order-1-system',
+    editorialOrigin: null,
+  },
+
+  certainty: {
+    status: 'explicit_in_source',
+    confidence: 'high',
+    ambiguity: false,
+    visualDependency: 'none',
+  },
+
+  usagePolicy: {
+    role: 'live_primary_placement_table',
+    mayDriveEngineCalculation: true,
+    mayBeSelectedByDefault: true,
+    mustPreserveExistingPlacements: true,
+    mustNotMergeRejectedAlternative: true,
+    mustNotInferUnstatedPlacements: true,
+    requiresTraceWhenUsed: true,
+  },
+
+  sourceDecision: {
+    acceptedMethod: {
+      sourceLayer: 'author_main_text',
+      authorityType: 'primary',
+      authorResponse: 'accepted',
+      traditionId: 'placement-order-1-main',
+      defaultEligible: true,
+      sourceRef: "כשף אל-אסראר עמ' 104-105",
+    },
+
+    rejectedAlternatives: [
+      {
+        sourceLayer: 'anonymous_variant',
+        authorityType: 'secondary_unnamed',
+        authorResponse: 'rejected',
+        traditionId: 'placement-order-1-rejected-variant',
+        defaultEligible: false,
+        sourceRef: "כשף אל-אסראר עמ' 104",
+        proposedPlacements: {
+          '1211': 13,
+          '1111': 16,
+        },
+        noteHebrew:
+          'המחבר מביא דעה שלפיה בר הלחי בבית 13 ודרך בבית 16, אך קובע שהשיבוץ הראשון נכון יותר.',
+      },
+    ],
+  },
+
   1: '1222',  // נשוא ראש
   2: '2121',  // ממון נכנס
   3: '1212',  // ממון יוצא

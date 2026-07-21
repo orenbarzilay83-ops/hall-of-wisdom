@@ -64,8 +64,11 @@ import { FIGURE_DIGNITIES } from '../data/sources/kashf-al-asrar/kashf-figure-at
 // בסוג 2 בלבד (ראו computeDhamirElementPrevalence).
 const MOSHAV_HOUSE_BY_PATTERN = {};
 for (const [houseNum, pattern] of Object.entries(SHIBUTZ_1_MOSHAV)) {
-  if (houseNum === 'sourceStatus' || houseNum === 'sourceRef') continue;
-  MOSHAV_HOUSE_BY_PATTERN[pattern] = Number(houseNum);
+  const numericHouse = Number(houseNum);
+  if (!Number.isInteger(numericHouse) || numericHouse < 1 || numericHouse > 16) {
+    continue;
+  }
+  MOSHAV_HOUSE_BY_PATTERN[pattern] = numericHouse;
 }
 
 // טבלת "מעלה" לכל צורה (כשף עמ' 96-98, "פרק במעלת הצורות, מושבן, מזגן
