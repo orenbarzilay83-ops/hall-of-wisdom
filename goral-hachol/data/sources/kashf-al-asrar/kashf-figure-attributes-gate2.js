@@ -241,6 +241,34 @@ export const FIGURE_JOY_GRIEF_SUPPLEMENTARY_NOTE = {
 export const FIGURE_MONTHS = {
   sourceStatus: 'explicit-in-source',
   sourceRef: "כשף אל-אסראר עמ' 99-100",
+  provenance: {
+    workId: 'kashf-al-asrar',
+    editionId: 'kashf-hebrew-v56',
+    sourceLayer: 'author_main_text',
+    authorityType: 'primary',
+    traditionId: 'figure-month-associations',
+    authorResponse: 'reported_neutrally',
+    defaultEligible: true,
+    conflictGroupId: null,
+    editorialOrigin: null,
+  },
+
+  certainty: {
+    status: 'explicit_in_source',
+    confidence: 'high',
+    ambiguity: false,
+    visualDependency: 'none',
+  },
+
+  completenessPolicy: {
+    sourceIsPartial: true,
+    missingMonthMeaning: 'not_stated_in_source',
+    unassignedFigureMeaning: 'not_stated_in_source',
+    mustNotInferMissingAssignments: true,
+    mustNotDistributeFiguresAcrossMonths: true,
+    mustNotFillFromOtherTradition: true,
+  },
+
   byMonth: {
     'רמדאן':          ['1222'],         // נשוא ראש
     "ג'ומאדא הראשונה": ['2121', '1112'], // ממון נכנס, סף יוצא
