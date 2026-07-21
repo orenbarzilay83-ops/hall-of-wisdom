@@ -14,6 +14,7 @@
 import {
   ROW,
   combineHouses,
+  combineSharedHousePair,
   assembleFromRow,
   assembleFromFireRows,
   assembleFromAllRows,
@@ -176,6 +177,43 @@ function executeFormula(board, formula) {
   let resultPattern;
   const { type, houses } = formula;
 
+  if (type === 'parallel-combine') {
+    // שתי הולדות מקבילות ובלתי-תלויות, החולקות בית משותף אחד — ללא חיבור
+    // בין שתי התוצאות. מקור: כשף אל-אסרר עמ' 182 (KDF-009). אינה כותבת ללוח.
+    const { sharedHouse, firstHouse, secondHouse } = formula;
+    const parallel = combineSharedHousePair(board, sharedHouse, firstHouse, secondHouse);
+    const classificationA = classifyPattern(parallel.resultAPattern);
+    const classificationB = classifyPattern(parallel.resultBPattern);
+    return {
+      type: 'parallel-combine',
+      houses,
+      ruleId: 'KDF-009',
+      operationType: 'parallel_local_derivations',
+      inputs: {
+        shared: { type: 'house', house: sharedHouse, pattern: parallel.sharedPattern },
+        first: { type: 'house', house: firstHouse, pattern: parallel.firstPattern },
+        second: { type: 'house', house: secondHouse, pattern: parallel.secondPattern },
+      },
+      results: [
+        {
+          id: 'resultA',
+          sourceHouses: [sharedHouse, firstHouse],
+          resultPattern: parallel.resultAPattern,
+          resultCanonicalName: getFigureHebrewName(parallel.resultAPattern),
+          classification: classificationA,
+        },
+        {
+          id: 'resultB',
+          sourceHouses: [sharedHouse, secondHouse],
+          resultPattern: parallel.resultBPattern,
+          resultCanonicalName: getFigureHebrewName(parallel.resultBPattern),
+          classification: classificationB,
+        },
+      ],
+      writeBackToBoard: false,
+    };
+  }
+
   switch (type) {
     case 'fire-row-assemble':
       resultPattern = assembleFromFireRows(board, houses);
@@ -223,6 +261,30 @@ function getFormulaPrimaryVerdict(formulaResult, formula, interpretBy) {
     const key = classification?.saadNahs;
     const map = formula.verdictBySaadNahs || {};
     return map[key] || { text: classification?.saadNahsHebrew || '—', positive: null };
+  }
+
+  if (interpretBy === 'saad-nahs-parallel') {
+    // שתי הולדות בלתי-תלויות (KDF-009) נשפטות כל אחת בנפרד לפי אותו כלל
+    // מיטיב/מזיק — אין מיזוג גיאומנטי בין התוצאות. מוצג טקסט משולב כדי
+    // שאף אחת מהתוצאות לא תוסתר; positive מוסכם רק כששתי התוצאות מסכימות
+    // (אותה מוסכמה כמו verdictBySaadNahs.mixed המשמשת בכל שאר הכללים).
+    const map = formula.verdictBySaadNahs || {};
+    const verdictFor = (result) => {
+      const key = result.classification?.saadNahs;
+      return map[key] || { text: result.classification?.saadNahsHebrew || '—', positive: null };
+    };
+    const [resultA, resultB] = formulaResult.results || [];
+    const vA = verdictFor(resultA);
+    const vB = verdictFor(resultB);
+    const positive = vA.positive === vB.positive ? vA.positive : null;
+    // mixed: true מסמן במפורש "שתי תוצאות אמיתיות שאינן מסכימות" — לא
+    // "אין תוצאה"/"שגיאה"/"לא ידוע". positive:null נשאר ללא שינוי משמעות;
+    // mixed הוא שדה-עזר תיעודי בלבד, לא הכרעה כוללת חדשה שאינה במקור.
+    return {
+      text: `בית ${resultA.sourceHouses.join('+')}: ${vA.text}; בית ${resultB.sourceHouses.join('+')}: ${vB.text}`,
+      positive,
+      mixed: vA.positive !== vB.positive,
+    };
   }
 
   if (interpretBy === 'benefic-planet') {
@@ -549,6 +611,14 @@ export function buildKashfReading(board, topicId, clientContext = {}) {
   if (rules.altFormula) {
     try {
       altResult = executeFormula(board, rules.altFormula);
+      if (altResult?.type === 'parallel-combine') {
+        // עקיבות מקומית ל-KDF-009 — מועבר מרמת ה-topic rule הקיימת
+        // (rules.sourceRef), לא מומצא ולא משוכפל. ראו KASHF-TASK-011.
+        altResult.sourceRef = rules.sourceRef;
+        altResult.sourceVerificationStatus = 'verified_exact';
+        altResult.chainDepthRequired = 1;
+        altResult.chainDepthImplemented = 1;
+      }
       altVerdict = getFormulaPrimaryVerdict(
         altResult,
         rules.altFormula,

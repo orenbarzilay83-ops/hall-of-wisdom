@@ -134,6 +134,33 @@ export function assembleRowThenCombine(board, assembleHouseNums, row, combineHou
   return combineRamlPatterns(stage1Pattern, stage2Pattern);
 }
 
+/**
+ * שתי הולדות מקבילות ובלתי-תלויות, החולקות בית משותף אחד: (shared+first)
+ * ו-(shared+second) בנפרד — ללא חיבור בין שתי התוצאות. אינה כותבת ללוח.
+ *
+ * מקור: כשף אל-אסרר עמ' 182 — "וכן מן החמישי והשלישי, ומן החמישי
+ * והשלושה-עשר — הולד צורה ודון על פיה" (KDF-009). כל זוג נשפט בנפרד,
+ * לפי אותו כלל מיטיב/מזיק שכבר הוצג לזוג הראשון/שלישי הסמוך בטקסט.
+ *
+ * @param {object} board
+ * @param {number} sharedHouseNum
+ * @param {number} firstHouseNum
+ * @param {number} secondHouseNum
+ * @returns {{sharedHouseNum, firstHouseNum, secondHouseNum, sharedPattern, firstPattern, secondPattern, resultAPattern, resultBPattern}}
+ */
+export function combineSharedHousePair(board, sharedHouseNum, firstHouseNum, secondHouseNum) {
+  return {
+    sharedHouseNum,
+    firstHouseNum,
+    secondHouseNum,
+    sharedPattern: getHousePattern(board, sharedHouseNum),
+    firstPattern: getHousePattern(board, firstHouseNum),
+    secondPattern: getHousePattern(board, secondHouseNum),
+    resultAPattern: combineHouses(board, [sharedHouseNum, firstHouseNum]),
+    resultBPattern: combineHouses(board, [sharedHouseNum, secondHouseNum]),
+  };
+}
+
 // ── הערכת איכות ────────────────────────────────────────────────────────────
 
 /**
@@ -228,6 +255,7 @@ export default {
   getHousePattern,
   getHouseEntry,
   combineHouses,
+  combineSharedHousePair,
   assembleFromRow,
   assembleFromFireRows,
   assembleFromAllRows,
