@@ -184,6 +184,33 @@ export const FIGURE_DIGNITIES = {
 export const FIGURE_JOY_GRIEF_SUPPLEMENTARY_NOTE = {
   sourceStatus: 'explicit-in-source',
   sourceRef: "כשף אל-אסראר עמ' 99",
+  provenance: {
+    workId: 'kashf-al-asrar',
+    editionId: 'kashf-hebrew-v56',
+    sourceLayer: 'author_alternative_view',
+    authorityType: 'primary_supplementary',
+    traditionId: 'joy-grief-supplementary',
+    authorResponse: 'reported_neutrally',
+    defaultEligible: false,
+    conflictGroupId: 'joy-grief-source-traditions',
+    editorialOrigin: null,
+  },
+
+  certainty: {
+    status: 'explicit_in_source',
+    confidence: 'mixed',
+    ambiguity: true,
+    visualDependency: 'none',
+  },
+
+  usagePolicy: {
+    maySupplementMainDignityTable: true,
+    mayOverwriteMainDignityTable: false,
+    mayFillNullValuesAutomatically: false,
+    requiresExplicitTraditionSelection: true,
+    ambiguousGroupMustRemainUnresolved: true,
+  },
+
   planetJoyByHouse: {
     'שבתאי (דרך צדק)': 11,
     'מאדים': 16,
