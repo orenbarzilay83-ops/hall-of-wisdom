@@ -295,6 +295,33 @@ export const FIGURE_MONTHS = {
 export const HOUSE_PARTNERS = {
   sourceStatus: 'explicit-in-source',
   sourceRef: "כשף אל-אסראר עמ' 100",
+  provenance: {
+    workId: 'kashf-al-asrar',
+    editionId: 'kashf-hebrew-v56',
+    sourceLayer: 'author_main_text',
+    authorityType: 'primary',
+    traditionId: 'house-partnership-relations',
+    authorResponse: 'reported_neutrally',
+    defaultEligible: true,
+    conflictGroupId: null,
+    editorialOrigin: null,
+  },
+
+  certainty: {
+    status: 'explicit_in_source',
+    confidence: 'high',
+    ambiguity: false,
+    visualDependency: 'none',
+  },
+
+  usagePolicy: {
+    relationType: 'structural_house_partnership',
+    mustNotTreatAsFigureRelation: true,
+    mustNotTreatAsHawiWitnessRule: true,
+    mustNotInferReverseRelation: true,
+    mustNotExpandBeyondSource: true,
+  },
+
   // "הצורה השלושה-עשר היא שותפו של הבית הראשון..." וכו'
   13: 1,
   14: 7,
@@ -305,6 +332,33 @@ export const HOUSE_PARTNERS = {
 export const HOUSE_TESTIMONY = {
   sourceStatus: 'explicit-in-source',
   sourceRef: "כשף אל-אסראר עמ' 100",
+  provenance: {
+    workId: 'kashf-al-asrar',
+    editionId: 'kashf-hebrew-v56',
+    sourceLayer: 'author_main_text',
+    authorityType: 'primary',
+    traditionId: 'house-testimony-relations',
+    authorResponse: 'reported_neutrally',
+    defaultEligible: true,
+    conflictGroupId: null,
+    editorialOrigin: null,
+  },
+
+  certainty: {
+    status: 'explicit_in_source',
+    confidence: 'high',
+    ambiguity: false,
+    visualDependency: 'none',
+  },
+
+  usagePolicy: {
+    relationType: 'structural_house_testimony',
+    mustNotTreatAsFigureRelation: true,
+    mustNotTreatAsHawiWitnessRule: true,
+    mustNotInferReverseRelation: true,
+    mustNotExpandBeyondSource: true,
+  },
+
   // "הצורה התשיעית מעידה על הראשון, על החמישי ועל השביעי..." וכו'
   9:  [1, 5, 7],
   14: [2, 6, 10],
