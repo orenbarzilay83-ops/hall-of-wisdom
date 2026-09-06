@@ -1,4 +1,5 @@
 import { phraseHouseFactCoherent, connectClauses } from './narrative-fact-phrasing.js';
+import { getSectionVisibility } from './goral-rule-applicability.js';
 
 function clean(value = '') {
   return String(value || '').trim();
@@ -1580,7 +1581,14 @@ function buildNarrativeByTopic(result) {
   }
 
   // ── 8. DHAMIR ────────────────────────────────────────────────────
-  push(dhamirParagraph(boardAnalysis, judgeVerdict));
+  // client-facing רק אם הנושא מאושר לכך (ראו GORAL_RULE_APPLICABILITY_AUDIT.md).
+  // החישוב עצמו לא נוגע — רק ההצגה ללקוח.
+  {
+    const dhamirVisibility = getSectionVisibility({ method: 'hawi', topicId, sectionId: 'dhamir', mode: 'client' });
+    if (dhamirVisibility.showToClient) {
+      push(dhamirParagraph(boardAnalysis, judgeVerdict));
+    }
+  }
 
   // ── 8.5. שאלת מולד — ניתוח בעל העולה ──────────────────────────
   if (topicId === 'birthNativity') {
@@ -2246,11 +2254,12 @@ export function writeHumanGoralConclusion(result) {
     verdictParagraph = result.boardScore.hebrew;
   }
 
+  const fallbackDhamirVisibility = getSectionVisibility({ method: 'hawi', topicId, sectionId: 'dhamir', mode: 'client' });
   const paragraphs = [
     clientContextParagraph(result.clientContext, question),
     clientHistoryParagraph(result.clientHistorySummary),
     verdictParagraph,
-    dhamirParagraph(result.boardAnalysis, judgeVerdict),
+    fallbackDhamirVisibility.showToClient ? dhamirParagraph(result.boardAnalysis, judgeVerdict) : '',
     tahasilParagraph(result.boardAnalysis),
     topicOpening(topicId, topicHebrew),
     questionFocusParagraph(topicId, result.clientContext),

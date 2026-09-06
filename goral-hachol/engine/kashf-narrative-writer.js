@@ -8,6 +8,7 @@
 import { getFigureAppearance } from './kashf-figure-appearance.js';
 import { getSaadNahs } from './kashf-figure-classifier.js';
 import { HOUSE_NAMES } from './kashf-reading-engine.js';
+import { getSectionVisibility } from './goral-rule-applicability.js';
 
 // שם הבית + נושאו (למשל "בית שני — הממון") — אותה טבלת בתים המשמשת בכל
 // האפליקציה (kashf-reading-engine.js), רק מציגים כאן את חלק הנושא בלבד.
@@ -266,6 +267,9 @@ function findingSentence(f) {
   }
   if (f.checkType === 'legacy-fn') {
     if (!f.outputHebrew) return null;
+    // כלל שאין לו תחולה בקריאה הזו (לדוגמה "מתן התאוות") — לא מציגים ללקוח
+    // סעיף ריק/לא-רלוונטי. עדיין נשאר ב-supportingFindings המלא (advisor-only).
+    if (f.outputHebrew.includes('אין לכלל זה תחולה')) return null;
     const body = stripInlineCitations(f.outputHebrew).split('\n').map(stripInlineCitations).filter(Boolean).join('<br>');
     return `<strong>${f.label}:</strong><br>${body}`;
   }
@@ -615,8 +619,18 @@ function writeConclusionPara(reading) {
   };
 
   const dir = overallPositive === true ? 'positive' : overallPositive === false ? 'negative' : 'neutral';
-  const guidance = TOPIC_GUIDANCE[topicId]?.[dir]
+  let guidance = TOPIC_GUIDANCE[topicId]?.[dir]
     || (dir === 'positive' ? 'הכיוון הכללי טוב.' : dir === 'negative' ? 'הכיוון הכללי מאתגר.' : 'הכיוון הכללי מורכב.');
+
+  // שכבת-מסקנה חכמה — כרגע רק לנושא מסחר (כשף), הוכחת-היתכנות ל-Kashf
+  // Architecture Advisor Brain. נופלת-חזרה לניסוח-הקבוע למעלה (TOPIC_GUIDANCE)
+  // אם השכבה החכמה חסרה/נכשלה — לא נוגעת בשום נושא אחר.
+  if (topicId === 'commerce' && reading.commerceSmartLayer?.clientWording) {
+    guidance = reading.commerceSmartLayer.clientWording;
+    if (reading.commerceSmartLayer.practicalGuidance) {
+      guidance += ` ${reading.commerceSmartLayer.practicalGuidance}`;
+    }
+  }
 
   const judgeNote = h15
     ? (() => {
@@ -663,12 +677,24 @@ function writeConclusionPara(reading) {
  * מפיק HTML מלא עבור קריאת חשיפת הסודות הנצורים (כשף אל-אסרר).
  *
  * @param {object} reading - תוצר buildKashfReading
+ * @param {object} [options]
+ * @param {'client'|'advisor'} [options.mode='client'] - 'advisor' מציג גם
+ *   sections שמוגדרים advisor-only (כרגע: דמיר/מחשבת השואל). ראו
+ *   goral-rule-applicability.js ו-GORAL_RULE_APPLICABILITY_AUDIT.md.
  * @returns {string} HTML
  */
-export function writeKashfReading(reading) {
+export function writeKashfReading(reading, options = {}) {
   if (!reading || !reading.valid) {
     return `<div class="kashf-reading-error">שגיאה בקריאה: ${reading?.error || 'נתונים חסרים'}</div>`;
   }
+
+  const mode = options.mode === 'advisor' ? 'advisor' : 'client';
+  const dhamirVisibility = getSectionVisibility({
+    method: 'kashf',
+    topicId: reading.topicId,
+    sectionId: 'dhamir',
+    mode,
+  });
 
   // תשובה קצרה + קריאה ללקוח — תמיד גלויות, באותה שפת עיצוב כמו לוח חאווי
   const shortVerdictHtml = writeShortVerdictBox(reading);
@@ -683,7 +709,7 @@ export function writeKashfReading(reading) {
     writeAltPara(reading),
     writeSupportingPara(reading),
     writeKeyHousesPara(reading),
-    writeDhamirPara(reading),
+    dhamirVisibility.showToClient ? writeDhamirPara(reading) : '',
     writeWitnessJudgePara(reading),
   ].filter(Boolean).join('\n');
 

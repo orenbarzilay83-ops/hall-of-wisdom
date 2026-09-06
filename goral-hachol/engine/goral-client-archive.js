@@ -18,7 +18,7 @@ function makeId() {
 }
 
 function normalizeClientName(clientContext = {}) {
-  return String(clientContext.clientName || '').trim() || 'לקוח ללא שם';
+  return String(clientContext.clientName || clientContext.name || '').trim() || 'לקוח ללא שם';
 }
 
 export function getGoralArchive() {
@@ -41,6 +41,7 @@ export function saveGoralReadingToArchive(reading, interpretation) {
   const record = {
     id: makeId(),
     createdAt: nowIso(),
+    method: 'hawi',
     clientName: normalizeClientName(clientContext),
     clientContext,
     question: reading?.question || '',
@@ -52,6 +53,43 @@ export function saveGoralReadingToArchive(reading, interpretation) {
     boardScore: interpretation?.boardScore || null,
     chart: reading?.chart || [],
     interpretation,
+  };
+
+  archive.unshift(record);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(archive));
+
+  return { ok: true, record, total: archive.length };
+}
+
+// שמירת קריאת כשף אל-אסרר לארכיון (מקבילה ל-saveGoralReadingToArchive, אך
+// מותאמת למבנה-השונה-לגמרי של kashfReading — ראו KASHF_CONTEXT_COLLECTOR_IMPLEMENTATION_PLAN.md §4).
+// לא נוגעת בחישוב הכשף עצמו — רק קוראת מהתוצאה הקיימת ושומרת תמצית.
+export function saveKashfReadingToArchive(kashfReading) {
+  if (typeof localStorage === 'undefined') {
+    return { ok: false, reason: 'localStorage unavailable' };
+  }
+  if (!kashfReading || !kashfReading.valid) {
+    return { ok: false, reason: 'invalid kashf reading' };
+  }
+
+  const archive = getGoralArchive();
+  const clientContext = kashfReading.clientContext || {};
+
+  const record = {
+    id: makeId(),
+    createdAt: nowIso(),
+    method: 'kashf',
+    clientName: normalizeClientName(clientContext),
+    clientContext,
+    question: clientContext.question || '',
+    topicHebrew: kashfReading.topicHebrewName || '',
+    topicId: kashfReading.topicId || '',
+    focusHouseNumber: null,
+    conclusion: kashfReading.commerceSmartLayer?.clientWording || kashfReading.primaryFormula?.verdict?.text || '',
+    spiritualDiagnosis: null,
+    boardScore: null,
+    chart: [],
+    interpretation: null,
   };
 
   archive.unshift(record);
@@ -77,18 +115,26 @@ export function clearGoralArchive() {
   return { ok: true };
 }
 
-export function getGoralClientHistory(clientName) {
+// method: undefined/'hawi' (ברירת-מחדל, שומר על ההתנהגות הקיימת של חאווי
+// ומתעלם משקט מקריאות-כשף כדי לא לשנות את הנרטיב הקיים), 'kashf', או 'all'.
+// רשומות ישנות בלי method מטופלות כ-'hawi' (fallback).
+export function getGoralClientHistory(clientName, method) {
   const name = String(clientName || '').trim();
 
   if (!name) return [];
 
-  return getGoralArchive().filter((item) =>
+  const matches = getGoralArchive().filter((item) =>
     String(item.clientName || '').trim() === name
   );
+
+  if (method === 'all') return matches;
+
+  const wantMethod = method || 'hawi';
+  return matches.filter((item) => (item.method || 'hawi') === wantMethod);
 }
 
-export function summarizeGoralClientHistory(clientName) {
-  const history = getGoralClientHistory(clientName);
+export function summarizeGoralClientHistory(clientName, method) {
+  const history = getGoralClientHistory(clientName, method);
 
   if (!history.length) {
     return {
@@ -137,6 +183,7 @@ export function summarizeGoralClientHistory(clientName) {
 export default {
   getGoralArchive,
   saveGoralReadingToArchive,
+  saveKashfReadingToArchive,
   deleteGoralArchiveRecord,
   clearGoralArchive,
   getGoralClientHistory,
@@ -147,6 +194,7 @@ if (typeof module !== 'undefined') {
   module.exports = {
     getGoralArchive,
     saveGoralReadingToArchive,
+    saveKashfReadingToArchive,
     deleteGoralArchiveRecord,
     clearGoralArchive,
     getGoralClientHistory,

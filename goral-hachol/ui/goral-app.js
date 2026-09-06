@@ -1152,18 +1152,59 @@ async function runReading() {
       };
 
       const _ctx = getClientContext(resolvedTopicId ?? reading.topicId);
+
+      // שדות דינמיים לפי-נושא (matter/symptoms/duration/וכו') — מקובצים ל-dynFields
+      // כדי שלא יתנגשו בשמות עתידיים. מועברים בשלב הזה בלבד — לא נעשה בהם שימוש
+      // ב-narrative. ראו KASHF_CONTEXT_COLLECTOR_IMPLEMENTATION_PLAN.md §6.
+      const dynFields = {};
+      if (selectedQuestion && Array.isArray(selectedQuestion.clientFields)) {
+        for (const field of selectedQuestion.clientFields) {
+          if (field?.id && _ctx[field.id] !== undefined) {
+            dynFields[field.id] = _ctx[field.id];
+          }
+        }
+      }
+
       const clientCtx = {
-        name:     _ctx.clientName || '',
-        question: question,
-        age:      _ctx.age || '',
-        gender:   _ctx.gender || '',
+        name:          _ctx.clientName || '',
+        question:      question,
+        age:           _ctx.age || '',
+        gender:        _ctx.gender || '',
+        maritalStatus: _ctx.maritalStatus || null,
+        workStatus:    _ctx.workStatus || null,
+        hasChildren:   _ctx.hasChildren || null,
+        parentName:    _ctx.parentName || '',
+        quesitedName:  _ctx.quesitedName || '',
+        phone:         _ctx.phone || '',
+        dynFields,
       };
 
       const kashfReading = window.KASHF_ENGINE.buildKashfReading(kashfBoard, kashfTopicId, clientCtx);
       const kashfHtml = window.KASHF_ENGINE.writeKashfReading(kashfReading);
 
+      // שמירה לארכיון הלקוח (method: "kashf") — best-effort, לא חוסם את הקריאה עצמה
+      // אם נכשל. לא נוגע בחישוב/ניסוח הכשף. ראו KASHF_CONTEXT_COLLECTOR_IMPLEMENTATION_PLAN.md §4/§9.
+      try {
+        const archiveMod = await import('/goral-hachol/engine/goral-client-archive.js');
+        if (archiveMod?.saveKashfReadingToArchive) {
+          archiveMod.saveKashfReadingToArchive(kashfReading);
+        }
+      } catch (err) {
+        // שמירת ארכיון היא best-effort — כישלון כאן לא אמור לשבור את הקריאה
+      }
+
       const outputEl = document.getElementById("kashfReadingOutput");
       if (outputEl) outputEl.innerHTML = buildBoardHtml(reading, kashfReading.dhamir?.winner?.houseNumber) + kashfHtml;
+
+      // Oren Smart Advisor Brain — לוח-יועץ-פנימי, MOCK בלבד (אין AI חי,
+      // אין קריאת-רשת). ראו OREN_SMART_ADVISOR_PANEL_PLACEMENT_DECISION.md.
+      // כישלון כאן לא-אמור-לשבור את הקריאה עצמה.
+      try {
+        const mockAdvisorOutput = await buildMockOrenAdvisorBrainOutput(kashfReading);
+        renderOrenAdvisorPanel(mockAdvisorOutput);
+      } catch (err) {
+        // best-effort — לא חוסם את הקריאה
+      }
 
       window._lastReading = reading;
       window._lastKashfReading = kashfReading;
@@ -2692,3 +2733,141 @@ function fillCurrentDateTime() {
   updateCastingTimeAlert();
 }
 fillCurrentDateTime();
+
+// ── Oren Smart Advisor Brain — לוח-יועץ-פנימי, MOCK בלבד ────────────────
+// אין AI חי, אין קריאת-רשת, אין secret. ראו
+// OREN_SMART_ADVISOR_PANEL_PLACEMENT_DECISION.md. advisor-only — לעולם
+// לא-מוצג-אוטומטית ללקוח, לא-משנה את פלט-הקריאה שמעליו (kashfReadingOutput).
+async function buildMockOrenAdvisorBrainOutput(kashfReading) {
+  let blockedFields = [];
+  try {
+    const sanitizerMod = await import('/goral-hachol/engine/kashf-context-sanitizer.js');
+    if (sanitizerMod?.sanitizeKashfClientContext) {
+      blockedFields = sanitizerMod.sanitizeKashfClientContext(kashfReading).blockedContextFields || [];
+    }
+  } catch (err) {
+    // best-effort — לא חוסם את הפאנל אם הסינון נכשל
+  }
+
+  const layer = kashfReading.commerceSmartLayer || null;
+  const hasQuesitedNotUsed = !!kashfReading.clientContext?.quesitedName && kashfReading.topicId === 'commerce';
+
+  return {
+    module: 'kashf',
+    advisorDiagnosis: 'MOCK — לוח-בדיקה בלבד. במצב-חי יופיע כאן ניתוח-פנימי מבוסס-לוח (דיין/עדים/דהמיר) ליועץ בלבד.',
+    clientAnswerDraft: (layer?.clientWording && layer?.practicalGuidance)
+      ? `${layer.clientWording} ${layer.practicalGuidance}`
+      : 'MOCK — טיוטת-ניסוח-ללקוח תופיע כאן במצב-חי. לא נשלחת ללקוח אוטומטית.',
+    engineCritique: hasQuesitedNotUsed
+      ? { hasProblem: true, problems: ['quesitedName מגיע בהקשר-הלקוח אך אינו נצרך היום בניסוח (MOCK, לצורך-הדגמה בלבד)'], severity: 'minor' }
+      : { hasProblem: false, problems: [], severity: 'none' },
+    missingKnowledgeOrRules: hasQuesitedNotUsed ? ['clientSafeContext.quesitedName לא-נצרך היום בשכבת-הניסוח (MOCK)'] : [],
+    recommendedFix: hasQuesitedNotUsed ? 'להרחיב את שכבת-הניסוח כך שתתייחס לתפקיד-הנישאל כשהוא רלוונטי (MOCK)' : '',
+    codeInstructionForClaude: hasQuesitedNotUsed
+      ? {
+          needed: true,
+          instruction: 'MOCK — דוגמת-הוראה: הרחב את kashf-commerce-smart-layer.js כך ש-quesitedName ישפיע על clientWordingAdjustments',
+          filesToInspect: ['goral-hachol/engine/kashf-commerce-smart-layer.js'],
+          filesNotToTouch: ['goral-hachol/engine/kashf-reading-engine.js', 'goral-hachol/engine/kashf-narrative-writer.js'],
+          testsToRun: ['_test_kashf_commerce_context_aware.mjs'],
+        }
+      : { needed: false, instruction: '', filesToInspect: [], filesNotToTouch: [], testsToRun: [] },
+    safetyNotes: blockedFields.length ? [`שדות שנחסמו-מהפלט-ללקוח: ${blockedFields.join(', ')}`] : [],
+    privacyBlockedFields: blockedFields,
+    nextBestAction: hasQuesitedNotUsed ? 'sendInstructionToClaude' : 'approveOutput',
+    confidence: layer?.certaintyLevel || 'low',
+    needsOrenDecision: hasQuesitedNotUsed,
+  };
+}
+
+function renderOrenAdvisorPanel(mockOutput) {
+  const container = document.getElementById('orenAdvisorPanel');
+  if (!container) return;
+  const c = mockOutput.codeInstructionForClaude;
+  const needsCode = !!c?.needed;
+
+  container.innerHTML = `
+    <div class="oren-advisor-header" id="orenAdvisorToggle">
+      <span class="oren-advisor-lock">🔒</span>
+      <span class="oren-advisor-title">בינת היכל החכמה — לוח יועץ פנימי</span>
+      <span class="oren-advisor-badge">מצב בדיקה / MOCK — לא AI חי</span>
+      <span class="oren-advisor-caret">▾</span>
+    </div>
+    <div class="oren-advisor-body" id="orenAdvisorBody" hidden>
+      <div class="oren-advisor-disclaimer">⚠ לוח זה פנימי ליועץ בלבד. אינו מוצג ללקוח, ואינו משנה את הקריאה שמעליו.</div>
+      <div class="oren-advisor-section">
+        <h4>1. אבחון ליועץ</h4>
+        <p>${escapeHtml(mockOutput.advisorDiagnosis)}</p>
+        <p class="oren-advisor-meta">module: ${escapeHtml(mockOutput.module)} | confidence: ${escapeHtml(mockOutput.confidence)}</p>
+      </div>
+      <div class="oren-advisor-section">
+        <h4>2. טיוטת תשובה ללקוח (advisor-only, לא נשלח אוטומטית)</h4>
+        <p>${escapeHtml(mockOutput.clientAnswerDraft)}</p>
+      </div>
+      <div class="oren-advisor-section">
+        <h4>3. ביקורת מנוע</h4>
+        <p>hasProblem: ${mockOutput.engineCritique.hasProblem ? 'כן' : 'לא'} | severity: ${escapeHtml(mockOutput.engineCritique.severity)}</p>
+        ${mockOutput.engineCritique.problems.length
+          ? `<ul>${mockOutput.engineCritique.problems.map((p) => `<li>${escapeHtml(p)}</li>`).join('')}</ul>`
+          : '<p class="oren-advisor-empty">אין ממצאים.</p>'}
+      </div>
+      <div class="oren-advisor-section">
+        <h4>4. חוקים/ידע חסרים</h4>
+        ${mockOutput.missingKnowledgeOrRules.length
+          ? `<ul>${mockOutput.missingKnowledgeOrRules.map((m) => `<li>${escapeHtml(m)}</li>`).join('')}</ul>`
+          : '<p class="oren-advisor-empty">אין ממצאים.</p>'}
+        ${mockOutput.recommendedFix ? `<p><strong>המלצה:</strong> ${escapeHtml(mockOutput.recommendedFix)}</p>` : ''}
+      </div>
+      <div class="oren-advisor-section">
+        <h4>5. הוראה לקלוד קוד</h4>
+        ${needsCode ? `
+          <p>${escapeHtml(c.instruction)}</p>
+          <p class="oren-advisor-meta">קבצים לבדיקה: ${escapeHtml(c.filesToInspect.join(', '))}</p>
+          <p class="oren-advisor-meta">אין לגעת ב: ${escapeHtml(c.filesNotToTouch.join(', '))}</p>
+          <p class="oren-advisor-meta">בדיקות להריץ: ${escapeHtml(c.testsToRun.join(', '))}</p>
+          <button type="button" class="btn gray oren-advisor-copy-btn" id="orenAdvisorCopyBtn">📋 העתק הוראה לקלוד קוד</button>
+        ` : '<p class="oren-advisor-empty">אין הוראה נדרשת כרגע.</p>'}
+      </div>
+      <div class="oren-advisor-section">
+        <h4>6. בטיחות ופרטיות</h4>
+        ${mockOutput.safetyNotes.length
+          ? `<ul>${mockOutput.safetyNotes.map((s) => `<li>${escapeHtml(s)}</li>`).join('')}</ul>`
+          : '<p class="oren-advisor-empty">אין הערות.</p>'}
+        <p class="oren-advisor-meta">שדות חסומים מהלקוח: ${mockOutput.privacyBlockedFields.length ? escapeHtml(mockOutput.privacyBlockedFields.join(', ')) : 'אין'}</p>
+      </div>
+      <div class="oren-advisor-section">
+        <h4>7. פעולה מומלצת</h4>
+        <p>nextBestAction: <strong>${escapeHtml(mockOutput.nextBestAction)}</strong></p>
+        <p>needsOrenDecision: <strong>${mockOutput.needsOrenDecision ? 'כן' : 'לא'}</strong></p>
+      </div>
+    </div>
+  `;
+
+  const toggle = document.getElementById('orenAdvisorToggle');
+  const body = document.getElementById('orenAdvisorBody');
+  if (toggle && body) {
+    toggle.addEventListener('click', () => {
+      body.hidden = !body.hidden;
+      toggle.classList.toggle('expanded', !body.hidden);
+    });
+  }
+
+  const copyBtn = document.getElementById('orenAdvisorCopyBtn');
+  if (copyBtn && needsCode) {
+    copyBtn.addEventListener('click', async () => {
+      const text = [
+        `הוראה: ${c.instruction}`,
+        `קבצים לבדיקה: ${c.filesToInspect.join(', ')}`,
+        `אין לגעת ב: ${c.filesNotToTouch.join(', ')}`,
+        `בדיקות להריץ: ${c.testsToRun.join(', ')}`,
+      ].join('\n');
+      try {
+        await navigator.clipboard.writeText(text);
+        copyBtn.textContent = '✓ הועתק';
+        setTimeout(() => { copyBtn.textContent = '📋 העתק הוראה לקלוד קוד'; }, 1500);
+      } catch (err) {
+        copyBtn.textContent = '⚠ העתקה נכשלה';
+      }
+    });
+  }
+}

@@ -1,0 +1,40 @@
+function generateProfessionalConclusion(positiveScore, negativeScore, language) {
+  const result = positiveScore > negativeScore ? "positive" : negativeScore > positiveScore ? "negative" : "caution";
+  if (language === "he") {
+    if (result === "positive") {
+      return {
+        title: "\u05E1\u05D9\u05DB\u05D5\u05DD \u05D4\u05E7\u05E8\u05D9\u05D0\u05D4",
+        text: "\u05D4\u05DE\u05E6\u05D1 \u05E0\u05E8\u05D0\u05D4 \u05D7\u05D9\u05D5\u05D1\u05D9 \u05E2\u05D1\u05D5\u05E8\u05DA. \u05D0\u05E0\u05D9 \u05E8\u05D5\u05D0\u05D4 \u05E4\u05D5\u05D8\u05E0\u05E6\u05D9\u05D0\u05DC \u05DC\u05D4\u05EA\u05E4\u05EA\u05D7\u05D5\u05EA \u05D5\u05DC\u05D4\u05EA\u05E7\u05D3\u05DE\u05D5\u05EA \u05D1\u05E0\u05D5\u05E9\u05D0 \u05D6\u05D4. \u05E2\u05DD \u05D6\u05D0\u05EA, \u05D7\u05E9\u05D5\u05D1 \u05DC\u05E4\u05E2\u05D5\u05DC \u05D1\u05E6\u05D5\u05E8\u05D4 \u05E9\u05E7\u05D5\u05DC\u05D4 \u05D5\u05DC\u05D1\u05D7\u05D5\u05DF \u05D4\u05D9\u05D8\u05D1 \u05D0\u05EA \u05D4\u05E4\u05E8\u05D8\u05D9\u05DD \u05DC\u05E4\u05E0\u05D9 \u05E7\u05D1\u05DC\u05EA \u05D4\u05D7\u05DC\u05D8\u05D4 \u05E1\u05D5\u05E4\u05D9\u05EA."
+      };
+    }
+    if (result === "negative") {
+      return {
+        title: "\u05E1\u05D9\u05DB\u05D5\u05DD \u05D4\u05E7\u05E8\u05D9\u05D0\u05D4",
+        text: "\u05D4\u05DE\u05E6\u05D1 \u05D0\u05D9\u05E0\u05D5 \u05E0\u05E8\u05D0\u05D4 \u05D7\u05D9\u05D5\u05D1\u05D9 \u05E2\u05D1\u05D5\u05E8\u05DA. \u05E7\u05D9\u05D9\u05DE\u05D9\u05DD \u05E1\u05D9\u05DE\u05E0\u05D9\u05DD \u05D4\u05E2\u05DC\u05D5\u05DC\u05D9\u05DD \u05DC\u05D4\u05D5\u05D1\u05D9\u05DC \u05DC\u05E7\u05E9\u05D9\u05D9\u05DD \u05D0\u05D5 \u05D1\u05E2\u05D9\u05D5\u05EA \u05D1\u05E2\u05EA\u05D9\u05D3. \u05DE\u05D5\u05DE\u05DC\u05E5 \u05DC\u05E9\u05E7\u05D5\u05DC \u05D4\u05D9\u05D8\u05D1 \u05D0\u05EA \u05D4\u05E6\u05E2\u05D3 \u05D4\u05D1\u05D0 \u05D5\u05DC\u05E0\u05D4\u05D5\u05D2 \u05D1\u05D6\u05D4\u05D9\u05E8\u05D5\u05EA \u05DC\u05E4\u05E0\u05D9 \u05E7\u05D1\u05DC\u05EA \u05D4\u05D7\u05DC\u05D8\u05D4."
+      };
+    }
+    return {
+      title: "\u05E1\u05D9\u05DB\u05D5\u05DD \u05D4\u05E7\u05E8\u05D9\u05D0\u05D4",
+      text: "\u05D4\u05EA\u05DE\u05D5\u05E0\u05D4 \u05DE\u05E6\u05D1\u05D9\u05E2\u05D4 \u05E2\u05DC \u05DE\u05E6\u05D1 \u05DE\u05E2\u05D5\u05E8\u05D1. \u05E7\u05D9\u05D9\u05DE\u05D9\u05DD \u05D2\u05DD \u05D2\u05D5\u05E8\u05DE\u05D9\u05DD \u05D7\u05D9\u05D5\u05D1\u05D9\u05D9\u05DD \u05D5\u05D2\u05DD \u05E1\u05D9\u05DE\u05E0\u05D9\u05DD \u05D4\u05DE\u05D7\u05D9\u05D9\u05D1\u05D9\u05DD \u05D6\u05D4\u05D9\u05E8\u05D5\u05EA. \u05DE\u05D5\u05DE\u05DC\u05E5 \u05DC\u05D1\u05D3\u05D5\u05E7 \u05D4\u05D9\u05D8\u05D1 \u05D0\u05EA \u05D4\u05E4\u05E8\u05D8\u05D9\u05DD \u05D5\u05DC\u05D4\u05EA\u05E7\u05D3\u05DD \u05D1\u05E6\u05D5\u05E8\u05D4 \u05DE\u05D7\u05D5\u05E9\u05D1\u05EA."
+    };
+  }
+  if (result === "positive") {
+    return {
+      title: "Reading Conclusion",
+      text: "The situation appears positive for you. There is potential for progress and development in this matter. However, it is still wise to move forward carefully and review all details before making a final commitment."
+    };
+  }
+  if (result === "negative") {
+    return {
+      title: "Reading Conclusion",
+      text: "The situation does not appear favorable. There are indications that this path may lead to complications or difficulties in the future. It would be wise to reconsider and proceed with caution."
+    };
+  }
+  return {
+    title: "Reading Conclusion",
+    text: "The situation appears mixed. There are both positive elements and signs that suggest caution. It would be wise to examine the details carefully before moving forward."
+  };
+}
+export {
+  generateProfessionalConclusion
+};

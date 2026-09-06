@@ -238,9 +238,14 @@ export const KASHF_TOPIC_RULES = {
       },
     },
     altFormula: {
-      type: 'combine',
-      houses: [3, 13],
-      interpretBy: 'saad-nahs',
+      // KDF-009: המקור מציין שני זוגות נפרדים החולקים בית משותף (5) — לא
+      // חיבור-שטוח של 3+13 (זוג שאינו מופיע במקור כלל). ראו KASHF-TASK-011.
+      type: 'parallel-combine',
+      sharedHouse: 5,
+      firstHouse: 3,
+      secondHouse: 13,
+      houses: [5, 3, 13],
+      interpretBy: 'saad-nahs-parallel',
       sourceText: 'וכן מן החמישי והשלישי, ומן החמישי והשלושה-עשר — הולד צורה ודון על פיה.',
       verdictBySaadNahs: {
         saad:  { text: 'יחסים טובים', positive: true },
@@ -268,7 +273,7 @@ export const KASHF_TOPIC_RULES = {
         sourceText: 'הצורה קהלה מורה על הגדולים, ובייחוד הגדולים מצד האב. וכן שפל ראש (כשף עמ׳ 181).',
       },
     ],
-    keyHouses: [3, 13],
+    keyHouses: [3, 5, 13],
   },
 
   // ────────────────────────────────────────────────────────────────────────

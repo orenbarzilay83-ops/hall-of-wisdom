@@ -183,7 +183,7 @@ export function computeTimingByDhamirThirds(chart, dhamirHouseNum) {
 }
 
 // כשף עמ' 124: "ينظر إلى بيت الضمير، وإلى الشكل الذي فيه، فيحكم به الطبع"
-const FIGURE_ELEMENTS_MAP = {
+export const FIGURE_ELEMENTS_MAP = {
   '1111': 'מים', '1112': 'אש',  '1121': 'רוח', '1122': 'אש',
   '1211': 'מים', '1212': 'אש',  '1221': 'עפר', '1222': 'אש',
   '2111': 'רוח', '2112': 'רוח', '2121': 'עפר', '2122': 'רוח',

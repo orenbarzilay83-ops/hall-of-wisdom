@@ -27,6 +27,85 @@
 // עצמו כחוסר-פירוט, לא רק חוסר-תיעוד שלנו).
 // ─────────────────────────────────────────────────────────────────────────
 
+export const FIGURE_DIGNITIES_METADATA = {
+  provenance: {
+    workId: 'kashf-al-asrar',
+    editionId: 'kashf-hebrew-v56',
+    sourceLayer: 'author_main_text',
+    authorityType: 'primary',
+    traditionId: 'dignity-table-main',
+    authorResponse: 'reported_neutrally',
+    defaultEligible: true,
+    conflictGroupId: null,
+    editorialOrigin: null,
+  },
+
+  certainty: {
+    status: 'explicit_in_source',
+    confidence: 'high',
+    ambiguity: false,
+    visualDependency: 'none',
+  },
+
+  columns: {
+    maalaHouse: {
+      sourceStatus: 'explicit_in_source',
+      originStatus: 'identified_by_author',
+      originDescription: 'ממעגל נציר א-דין',
+    },
+    moshavHouse: {
+      sourceStatus: 'explicit_in_source',
+      originStatus: 'identified_by_author',
+      originDescription: 'ממעגל המושבות',
+    },
+    gvulHouse: {
+      sourceStatus: 'explicit_in_source',
+      originStatus: 'identified_by_author',
+      originDescription: 'ממעגל המספר',
+    },
+    panimHouse: {
+      sourceStatus: 'explicit_in_source',
+      originStatus: 'identified_by_author',
+      originDescription: 'ממעגל אבג"ד',
+    },
+    simchaHouse: {
+      sourceStatus: 'explicit_in_source',
+      originStatus: 'author_does_not_know',
+      originDescription: null,
+    },
+    tzaarHouse: {
+      sourceStatus: 'explicit_in_source',
+      originStatus: 'author_does_not_know',
+      originDescription: null,
+    },
+    mezegHouse: {
+      sourceStatus: 'explicit_in_source',
+      originStatus: 'author_does_not_know',
+      originDescription: null,
+    },
+  },
+
+  nullSemantics: {
+    meaning: 'not_stated_in_source',
+    mustNotInfer: true,
+    mustNotFillFromOtherTradition: true,
+    mustNotConvertToZero: true,
+  },
+
+  omittedFigures: {
+    '2112': {
+      nameHebrew: 'חיבור',
+      status: 'not_stated_in_source',
+    },
+    '1111': {
+      nameHebrew: 'דרך',
+      status: 'not_stated_in_source',
+    },
+  },
+
+  sourceRef: "כשף אל-אסראר עמ' 96-99",
+};
+
 export const FIGURE_DIGNITIES = {
   '1121': { // נלחם
     maalaHouse: 1, moshavHouse: 5, gvulHouse: 9, panimHouse: 11,
@@ -105,6 +184,33 @@ export const FIGURE_DIGNITIES = {
 export const FIGURE_JOY_GRIEF_SUPPLEMENTARY_NOTE = {
   sourceStatus: 'explicit-in-source',
   sourceRef: "כשף אל-אסראר עמ' 99",
+  provenance: {
+    workId: 'kashf-al-asrar',
+    editionId: 'kashf-hebrew-v56',
+    sourceLayer: 'author_alternative_view',
+    authorityType: 'primary_supplementary',
+    traditionId: 'joy-grief-supplementary',
+    authorResponse: 'reported_neutrally',
+    defaultEligible: false,
+    conflictGroupId: 'joy-grief-source-traditions',
+    editorialOrigin: null,
+  },
+
+  certainty: {
+    status: 'explicit_in_source',
+    confidence: 'mixed',
+    ambiguity: true,
+    visualDependency: 'none',
+  },
+
+  usagePolicy: {
+    maySupplementMainDignityTable: true,
+    mayOverwriteMainDignityTable: false,
+    mayFillNullValuesAutomatically: false,
+    requiresExplicitTraditionSelection: true,
+    ambiguousGroupMustRemainUnresolved: true,
+  },
+
   planetJoyByHouse: {
     'שבתאי (דרך צדק)': 11,
     'מאדים': 16,
@@ -135,6 +241,34 @@ export const FIGURE_JOY_GRIEF_SUPPLEMENTARY_NOTE = {
 export const FIGURE_MONTHS = {
   sourceStatus: 'explicit-in-source',
   sourceRef: "כשף אל-אסראר עמ' 99-100",
+  provenance: {
+    workId: 'kashf-al-asrar',
+    editionId: 'kashf-hebrew-v56',
+    sourceLayer: 'author_main_text',
+    authorityType: 'primary',
+    traditionId: 'figure-month-associations',
+    authorResponse: 'reported_neutrally',
+    defaultEligible: true,
+    conflictGroupId: null,
+    editorialOrigin: null,
+  },
+
+  certainty: {
+    status: 'explicit_in_source',
+    confidence: 'high',
+    ambiguity: false,
+    visualDependency: 'none',
+  },
+
+  completenessPolicy: {
+    sourceIsPartial: true,
+    missingMonthMeaning: 'not_stated_in_source',
+    unassignedFigureMeaning: 'not_stated_in_source',
+    mustNotInferMissingAssignments: true,
+    mustNotDistributeFiguresAcrossMonths: true,
+    mustNotFillFromOtherTradition: true,
+  },
+
   byMonth: {
     'רמדאן':          ['1222'],         // נשוא ראש
     "ג'ומאדא הראשונה": ['2121', '1112'], // ממון נכנס, סף יוצא
@@ -161,6 +295,33 @@ export const FIGURE_MONTHS = {
 export const HOUSE_PARTNERS = {
   sourceStatus: 'explicit-in-source',
   sourceRef: "כשף אל-אסראר עמ' 100",
+  provenance: {
+    workId: 'kashf-al-asrar',
+    editionId: 'kashf-hebrew-v56',
+    sourceLayer: 'author_main_text',
+    authorityType: 'primary',
+    traditionId: 'house-partnership-relations',
+    authorResponse: 'reported_neutrally',
+    defaultEligible: true,
+    conflictGroupId: null,
+    editorialOrigin: null,
+  },
+
+  certainty: {
+    status: 'explicit_in_source',
+    confidence: 'high',
+    ambiguity: false,
+    visualDependency: 'none',
+  },
+
+  usagePolicy: {
+    relationType: 'structural_house_partnership',
+    mustNotTreatAsFigureRelation: true,
+    mustNotTreatAsHawiWitnessRule: true,
+    mustNotInferReverseRelation: true,
+    mustNotExpandBeyondSource: true,
+  },
+
   // "הצורה השלושה-עשר היא שותפו של הבית הראשון..." וכו'
   13: 1,
   14: 7,
@@ -171,6 +332,33 @@ export const HOUSE_PARTNERS = {
 export const HOUSE_TESTIMONY = {
   sourceStatus: 'explicit-in-source',
   sourceRef: "כשף אל-אסראר עמ' 100",
+  provenance: {
+    workId: 'kashf-al-asrar',
+    editionId: 'kashf-hebrew-v56',
+    sourceLayer: 'author_main_text',
+    authorityType: 'primary',
+    traditionId: 'house-testimony-relations',
+    authorResponse: 'reported_neutrally',
+    defaultEligible: true,
+    conflictGroupId: null,
+    editorialOrigin: null,
+  },
+
+  certainty: {
+    status: 'explicit_in_source',
+    confidence: 'high',
+    ambiguity: false,
+    visualDependency: 'none',
+  },
+
+  usagePolicy: {
+    relationType: 'structural_house_testimony',
+    mustNotTreatAsFigureRelation: true,
+    mustNotTreatAsHawiWitnessRule: true,
+    mustNotInferReverseRelation: true,
+    mustNotExpandBeyondSource: true,
+  },
+
   // "הצורה התשיעית מעידה על הראשון, על החמישי ועל השביעי..." וכו'
   9:  [1, 5, 7],
   14: [2, 6, 10],
@@ -186,6 +374,68 @@ export const HOUSE_TESTIMONY = {
 export const FIGURE_ALTERNATE_NAMES = {
   sourceStatus: 'explicit-in-source',
   sourceRef: "כשף אל-אסראר עמ' 101-102",
+  provenance: {
+    workId: 'kashf-al-asrar',
+    editionId: 'kashf-hebrew-v56',
+    sourceLayer: 'author_main_text',
+    authorityType: 'primary',
+    traditionId: 'figure-source-aliases',
+    authorResponse: 'reported_neutrally',
+    defaultEligible: false,
+    conflictGroupId: null,
+    editorialOrigin: null,
+  },
+
+  certainty: {
+    status: 'explicit_in_source',
+    confidence: 'high',
+    ambiguity: true,
+    visualDependency: 'none',
+  },
+
+  usagePolicy: {
+    role: 'source_documentation_only',
+    canonicalNamesOnlyForDisplay: true,
+    mayAppearInClientOutput: false,
+    mayAppearInSystemGeneratedText: false,
+    mayReplaceCanonicalName: false,
+    mayBeUsedAsAutomaticSynonym: false,
+    mayBeUsedAsAutomaticSearchKey: false,
+    mayBeUsedForRuleMatchingAutomatically: false,
+    requiresManualSourceReviewForUse: true,
+    mustPreserveOriginalSpelling: true,
+    mustNotTranslateAutomatically: true,
+    mustNotNormalizeAutomatically: true,
+  },
+
+  canonicalDisplayNames: {
+    '1222': 'נשוא ראש',
+    '2121': 'ממון נכנס',
+    '1212': 'ממון יוצא',
+    '2222': 'קהלה',
+    '1121': 'נלחם',
+    '1221': 'סוהר',
+    '2221': 'שפל ראש',
+    '2122': 'אדום',
+    '2212': 'לבן',
+    '1122': 'כבוד יוצא',
+    '2211': 'כבוד נכנס',
+    '1112': 'סף יוצא',
+    '1111': 'דרך',
+    '2111': 'סף נכנס',
+    '2112': 'חיבור',
+    '1211': 'בר הלחי',
+  },
+
+  completenessPolicy: {
+    sourceAliasSetIsPartial: true,
+    omittedFigurePattern: '1211',
+    omittedFigureCanonicalName: 'בר הלחי',
+    omittedAliasStatus: 'unresolved_in_source',
+    mustNotInferMissingAlias: true,
+    mustNotInventMissingAlias: true,
+  },
+
   '1222': ['הצוחקת', 'איש גדול-ההימה'],       // נשוא ראש
   '2121': ['אכמוס'],                          // ממון נכנס
   '1212': ["אל-מע"],                          // ממון יוצא
