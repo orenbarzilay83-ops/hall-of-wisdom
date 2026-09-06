@@ -12,7 +12,9 @@ on:
       - 'goral-hachol/engine/kashf-topic-rules.js'
       - 'goral-hachol/engine/kashf-formula-engine.js'
       - 'goral-hachol/engine/raml-board-generator.js'
+      - 'goral-hachol/ui/question-bank.js'
       - '_test_kashf_canonical_routing.mjs'
+      - '_audit_kashf_question_route_coverage.mjs'
       - '.github/workflows/kashf-canonical-routing-tests.yml'
   workflow_dispatch:
 
@@ -34,3 +36,6 @@ jobs:
 
       - name: Run Kashf canonical routing contract
         run: node _test_kashf_canonical_routing.mjs
+
+      - name: Audit Question Bank route coverage
+        run: node _audit_kashf_question_route_coverage.mjs
