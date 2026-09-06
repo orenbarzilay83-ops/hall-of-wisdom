@@ -73,10 +73,12 @@ const method = ({
 });
 
 /**
- * P0 registry.
+ * Canonical-method registry.
  *
- * This first slice intentionally records both runnable and non-runnable
- * methods so the router can block unsafe questions BEFORE an engine runs.
+ * A method may be source-ready while its new canonical executor is still
+ * pending. Only records with runtimeAllowed=true AND executorStatus=ready may
+ * execute. This prevents source confidence from being confused with code
+ * readiness.
  */
 export const KASHF_CANONICAL_METHODS = Object.freeze({
   // ── READY + EXECUTOR READY pilot slice --------------------------------
@@ -107,7 +109,120 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     legacyFormulaSlot: 'primaryFormula',
   }),
 
-  // Source method is ready, but the canonical executor is not yet wired.
+  'siblings.p182.h1h3': method({
+    kashfMethodId: 'siblings.p182.h1h3',
+    kashfIntentId: 'siblings.relationship',
+    topicId: 'siblings',
+    sourcePages: [182],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: true,
+    executionKind: 'formula',
+    executorStatus: 'ready',
+    legacyTopicId: 'siblings',
+    legacyFormulaSlot: 'primaryFormula',
+  }),
+
+  'travel.p238.assemble1359': method({
+    kashfMethodId: 'travel.p238.assemble1359',
+    kashfIntentId: 'travel.success',
+    topicId: 'travel',
+    sourcePages: [238],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: true,
+    executionKind: 'formula',
+    executorStatus: 'ready',
+    legacyTopicId: 'travel',
+    legacyFormulaSlot: 'primaryFormula',
+  }),
+
+  // ── SOURCE READY; CANONICAL EXECUTOR PENDING ---------------------------
+  'general.p174.h1h2h4h7h10h15': method({
+    kashfMethodId: 'general.p174.h1h2h4h7h10h15',
+    kashfIntentId: 'general.state',
+    topicId: 'generalReading',
+    sourcePages: [174],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'pending',
+    legacyTopicId: 'generalReading',
+    notes: 'Body-source general-state method. Must not execute the broad generalReading topic bundle.',
+  }),
+
+  'messenger.p176.recast14511': method({
+    kashfMethodId: 'messenger.p176.recast14511',
+    kashfIntentId: 'messenger.outcome',
+    topicId: 'siblings',
+    sourcePages: [176],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'recast-board',
+    executorStatus: 'pending',
+    notes: 'Houses 1,4,5,11 become new mothers; complete a new board and judge the method-specific houses.',
+  }),
+
+  'clothing.p264-265.luck': method({
+    kashfMethodId: 'clothing.p264-265.luck',
+    kashfIntentId: 'clothing.luck',
+    topicId: 'generalReading',
+    sourcePages: [264, 265],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'legacy-function',
+    executorStatus: 'pending',
+    legacyTopicId: 'generalReading',
+    notes: 'Existing clothing helper may be reused only after method-scoped executor wiring.',
+  }),
+
+  'matter.p172.h17_h1011_thenCombine': method({
+    kashfMethodId: 'matter.p172.h17_h1011_thenCombine',
+    kashfIntentId: 'matter.outcome',
+    topicId: 'generalReading',
+    sourcePages: [172],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'pending',
+    notes: 'Combine 1+7, combine 10+11, then combine the two results. Distinct from completion p173.',
+  }),
+
+  'joy.p196.recast14511': method({
+    kashfMethodId: 'joy.p196.recast14511',
+    kashfIntentId: 'joy.occurrence',
+    topicId: 'completion',
+    sourcePages: [196],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'recast-board',
+    executorStatus: 'pending',
+    notes: 'Houses 1,4,5,11 become new mothers; this is occurrence of joy/event, not joy timing.',
+  }),
+
+  'relocation.p183.currentVsNewPlace': method({
+    kashfMethodId: 'relocation.p183.currentVsNewPlace',
+    kashfIntentId: 'relocation.isThisPlaceGood',
+    topicId: 'relocation',
+    sourcePages: [183],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'pending',
+    notes: 'Body-source comparison of current-place pair 1+4 with new-place pair 7+10.',
+  }),
+
+  'relocation.p183.stayMoveH1H2': method({
+    kashfMethodId: 'relocation.p183.stayMoveH1H2',
+    kashfIntentId: 'relocation.stayOrMove',
+    topicId: 'relocation',
+    sourcePages: [178, 183],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'legacy-function',
+    executorStatus: 'pending',
+    legacyTopicId: 'relocation',
+    notes: 'Existing stay/move helper needs isolated canonical wiring and traceability cleanup.',
+  }),
+
   'illness.p196.outcomeH15': method({
     kashfMethodId: 'illness.p196.outcomeH15',
     kashfIntentId: 'illness.recovery',
@@ -146,19 +261,6 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     legacyTopicId: 'children',
   }),
 
-  'siblings.p182.h1h3': method({
-    kashfMethodId: 'siblings.p182.h1h3',
-    kashfIntentId: 'siblings.relationship',
-    topicId: 'siblings',
-    sourcePages: [182],
-    kashfRuntimeStatus: 'ready',
-    runtimeAllowed: true,
-    executionKind: 'formula',
-    executorStatus: 'ready',
-    legacyTopicId: 'siblings',
-    legacyFormulaSlot: 'primaryFormula',
-  }),
-
   'siblings.p182.seniority': method({
     kashfMethodId: 'siblings.p182.seniority',
     kashfIntentId: 'siblings.seniority',
@@ -183,20 +285,31 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     legacyTopicId: 'marriage',
   }),
 
-  'travel.p238.assemble1359': method({
-    kashfMethodId: 'travel.p238.assemble1359',
-    kashfIntentId: 'travel.success',
-    topicId: 'travel',
-    sourcePages: [238],
-    kashfRuntimeStatus: 'ready',
-    runtimeAllowed: true,
-    executionKind: 'formula',
-    executorStatus: 'ready',
-    legacyTopicId: 'travel',
-    legacyFormulaSlot: 'primaryFormula',
+  // ── REPAIR REQUIRED ----------------------------------------------------
+  'hope.p267.fulfillment': method({
+    kashfMethodId: 'hope.p267.fulfillment',
+    kashfIntentId: 'hope.fulfillment',
+    topicId: 'friendsHope',
+    sourcePages: [267],
+    kashfRuntimeStatus: 'repair-required',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'pending',
+    notes: 'Canonical hope method requires incoming conditions, H11 recurrence, nature matching and fallback; current count-quality implementation is not source-equivalent.',
   }),
 
-  // ── REPAIR REQUIRED ----------------------------------------------------
+  'dream.p254.h9AndTransit': method({
+    kashfMethodId: 'dream.p254.h9AndTransit',
+    kashfIntentId: 'dream.meaning',
+    topicId: 'dream',
+    sourcePages: [254],
+    kashfRuntimeStatus: 'repair-required',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'pending',
+    notes: 'Must judge H9 and then where the H9 figure moved; current implementation is partial.',
+  }),
+
   'friends.p263.h1h11': method({
     kashfMethodId: 'friends.p263.h1h11',
     kashfIntentId: 'friends.relationship',
@@ -250,6 +363,31 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
   }),
 
   // ── BLOCKED BY SOURCE --------------------------------------------------
+  'relocation.p183.compare12vs78': method({
+    kashfMethodId: 'relocation.p183.compare12vs78',
+    kashfIntentId: 'relocation.compareTwoCities',
+    topicId: 'relocation',
+    sourcePages: [183],
+    kashfRuntimeStatus: 'blocked-by-source',
+    runtimeAllowed: false,
+    executionKind: null,
+    executorStatus: 'not-applicable',
+    notes: 'Source comparison is identified, but the exact strength semantics must be closed before implementation.',
+  }),
+
+  'gift.sourceInputUnclear': method({
+    kashfMethodId: 'gift.sourceInputUnclear',
+    kashfIntentId: 'gift.receive',
+    topicId: 'children',
+    sourcePages: [193],
+    methodRole: 'unresolved',
+    kashfRuntimeStatus: 'blocked-by-source',
+    runtimeAllowed: false,
+    executionKind: null,
+    executorStatus: 'not-applicable',
+    notes: 'Gift verdict polarity is stated, but the exact house/input to which it applies is not sufficiently explicit.',
+  }),
+
   'travel.p242.vehicleSafety': method({
     kashfMethodId: 'travel.p242.vehicleSafety',
     kashfIntentId: 'travel.vehicleSafety',
@@ -291,6 +429,21 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     notes: 'Knowledge-only. Must never feed verdict.',
   }),
 
+  'yearly.external.p221-223': method({
+    kashfMethodId: 'yearly.external.p221-223',
+    kashfIntentId: 'yearly.forecast',
+    topicId: 'yearlyForecast',
+    sourcePages: [221, 222, 223],
+    sourceLayer: 'non-body-addition',
+    attributedSourceBook: 'other',
+    methodRole: 'educational-only',
+    kashfRuntimeStatus: 'educational-only',
+    runtimeAllowed: false,
+    executionKind: null,
+    executorStatus: 'not-applicable',
+    notes: 'Mapped material in this range belongs to non-body/Nuzhat additions; retained for learning only by default.',
+  }),
+
   'fear.external.p274.h7h8': method({
     kashfMethodId: 'fear.external.p274.h7h8',
     kashfIntentId: 'fear.general',
@@ -306,7 +459,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     notes: 'Post-ومن غير الكتاب material; knowledge-only by default.',
   }),
 
-  // ── UNSUPPORTED QUESTION INTENTS --------------------------------------
+  // ── LEGACY UNSUPPORTED PLACEHOLDER (kept only for old P0 route history) -
   'spiritual.affectedBySorcery.unsupported': method({
     kashfMethodId: 'spiritual.affectedBySorcery.unsupported',
     kashfIntentId: 'spiritual.affectedBySorcery',
@@ -317,7 +470,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     runtimeAllowed: false,
     executionKind: null,
     executorStatus: 'not-applicable',
-    notes: 'p167 asks whether the querent acts by sorcery on the quesited person; it does not answer whether the querent is affected by sorcery/evil eye/jinn.',
+    notes: 'Compatibility placeholder only. p167 asks whether the querent acts by sorcery on the quesited person; it does not answer whether the querent is affected by sorcery/evil eye/jinn.',
   }),
 });
 
