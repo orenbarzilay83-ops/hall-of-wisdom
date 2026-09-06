@@ -4506,4 +4506,36 @@ export const KASHF_AL_ASRAR_PAGES = [
   }
 ];
 
-export default { KASHF_AL_ASRAR_PAGES };
+/**
+ * תוכן העניינים לצפייה בספר (goral-app.js::showKashfToc).
+ * חולץ מ-22 אשכולות-הנושא של אינדקס v57 (page_start + title), מאומת
+ * תכנותית שהם מכסים ברציפות ובלי חפיפה את כל 256 עמודי הספר (21-276) —
+ * ראה WORKPLAN.md. אינו כולל את עמודים 277-280 (תוכן-עניינים/סיום
+ * שנשמרו מגרסה קודמת, לא חלק מ-22 האשכולות של v57).
+ */
+export const KASHF_AL_ASRAR_TOC = [
+  { page: 21, hebrewTitle: `פתיחה: מבוא לחכמת גורל החול` },
+  { page: 23, hebrewTitle: `שיטת ההכאה: איך עורכים גורל חול` },
+  { page: 28, hebrewTitle: `הפקת ההכאה והולדת 16 הצורות` },
+  { page: 37, hebrewTitle: `מדידה וחשבון הצורות` },
+  { page: 43, hebrewTitle: `השער הראשון: 12 הבתים — תכונות וסדר` },
+  { page: 54, hebrewTitle: `השער השני: 16 הצורות — טבע, שמות ותיאור` },
+  { page: 104, hebrewTitle: `השער השלישי: 16 סדרי השיבוץ (טכניקות חישוב)` },
+  { page: 151, hebrewTitle: `השער הרביעי: גילוי מחשבת השואל` },
+  { page: 161, hebrewTitle: `השער החמישי: ארבע צורות היסוד ודינים נבחרים` },
+  { page: 166, hebrewTitle: `השער השישי: דיני 12 הבתים — פרק ראשון (נפש)` },
+  { page: 179, hebrewTitle: `פרק שני: דיני הממון` },
+  { page: 182, hebrewTitle: `פרק שלישי: אחים ומעבר` },
+  { page: 184, hebrewTitle: `פרק רביעי: הורים, נכסים ודברים נסתרים` },
+  { page: 191, hebrewTitle: `פרק חמישי: ילדים והריון` },
+  { page: 196, hebrewTitle: `פרק שישי: חולה, אבדה ובהמות` },
+  { page: 204, hebrewTitle: `פרק שביעי: נישואין, מבקש ומבוקש` },
+  { page: 224, hebrewTitle: `פרק שמיני: גניבה והלוואה` },
+  { page: 237, hebrewTitle: `השער התשיעי: מסע, נעדר, אבדה, חלום וחוב` },
+  { page: 256, hebrewTitle: `פרק עשירי: כבוד, שררה ומינוי` },
+  { page: 263, hebrewTitle: `פרק אחד־עשר: חברים, תקווה, אורך חיים ואהבה` },
+  { page: 271, hebrewTitle: `פרק שנים־עשר: אויבים ואסירים` },
+  { page: 276, hebrewTitle: `סיום גוף הספר` },
+];
+
+export default { KASHF_AL_ASRAR_PAGES, KASHF_AL_ASRAR_TOC };
