@@ -18,11 +18,6 @@ const USER_MESSAGE_BY_STATUS = Object.freeze({
   unsupported: 'לא נמצא כרגע חוק כשף אופרטיבי מאומת לשאלה זו.',
 });
 
-// P0 intentionally enables only the isolated formula executor. Other source-
-// verified execution kinds stay visible in the registry but cannot run until
-// their dedicated canonical executor is connected.
-const P0_ENABLED_EXECUTION_KINDS = Object.freeze(['formula']);
-
 export function resolveKashfRouteByQuestionId(questionId) {
   if (typeof questionId !== 'string' || questionId.trim().length === 0) {
     return {
@@ -33,7 +28,7 @@ export function resolveKashfRouteByQuestionId(questionId) {
       kashfMethodId: null,
       kashfRuntimeStatus: 'unsupported',
       runtimeAllowed: false,
-      executorEnabled: false,
+      executorStatus: 'not-applicable',
       disposition: 'BLOCK',
       reason: 'invalid-question-id',
       userMessage: 'לא נבחרה שאלת כשף תקפה.',
@@ -50,7 +45,7 @@ export function resolveKashfRouteByQuestionId(questionId) {
       kashfMethodId: null,
       kashfRuntimeStatus: 'unsupported',
       runtimeAllowed: false,
-      executorEnabled: false,
+      executorStatus: 'not-applicable',
       disposition: 'BLOCK',
       reason: 'unmapped-question-id',
       userMessage: 'השאלה עדיין לא מופתה לשיטת כשף קנונית. אין fallback לנושא כללי.',
@@ -67,7 +62,7 @@ export function resolveKashfRouteByQuestionId(questionId) {
       kashfMethodId: route.kashfMethodId,
       kashfRuntimeStatus: route.kashfRuntimeStatus,
       runtimeAllowed: false,
-      executorEnabled: false,
+      executorStatus: 'not-applicable',
       disposition: route.disposition,
       aliasOf: route.aliasOf,
       reason: 'method-not-found',
@@ -84,7 +79,7 @@ export function resolveKashfRouteByQuestionId(questionId) {
       kashfMethodId: route.kashfMethodId,
       kashfRuntimeStatus: route.kashfRuntimeStatus,
       runtimeAllowed: false,
-      executorEnabled: false,
+      executorStatus: method.executorStatus,
       disposition: route.disposition,
       aliasOf: route.aliasOf,
       reason: 'route-method-intent-mismatch',
@@ -101,7 +96,7 @@ export function resolveKashfRouteByQuestionId(questionId) {
       kashfMethodId: route.kashfMethodId,
       kashfRuntimeStatus: route.kashfRuntimeStatus,
       runtimeAllowed: false,
-      executorEnabled: false,
+      executorStatus: method.executorStatus,
       disposition: route.disposition,
       aliasOf: route.aliasOf,
       reason: 'route-method-status-mismatch',
@@ -109,21 +104,20 @@ export function resolveKashfRouteByQuestionId(questionId) {
     };
   }
 
-  const executorEnabled = P0_ENABLED_EXECUTION_KINDS.includes(method.executionKind);
-  const sourceAndPolicyAllowRun = method.methodRole === 'canonical-operational'
-    && method.runtimeAllowed === true
-    && method.kashfRuntimeStatus === 'ready';
-  const canRunKashf = sourceAndPolicyAllowRun && executorEnabled;
+  const canRunKashf = method.methodRole === 'canonical-operational'
+    && method.kashfRuntimeStatus === 'ready'
+    && method.executorStatus === 'ready'
+    && method.runtimeAllowed === true;
 
   const reason = canRunKashf
     ? 'ready'
-    : sourceAndPolicyAllowRun && !executorEnabled
-      ? 'canonical-executor-not-enabled'
+    : method.kashfRuntimeStatus === 'ready' && method.executorStatus !== 'ready'
+      ? 'executor-pending'
       : method.kashfRuntimeStatus;
 
   const userMessage = canRunKashf
     ? null
-    : sourceAndPolicyAllowRun && !executorEnabled
+    : reason === 'executor-pending'
       ? 'השיטה מאומתת במקור, אך המבצע הקנוני שלה עדיין לא חובר לנתיב החדש.'
       : (USER_MESSAGE_BY_STATUS[method.kashfRuntimeStatus] ?? 'שיטת כשף אינה זמינה כרגע להפעלה.');
 
@@ -135,7 +129,7 @@ export function resolveKashfRouteByQuestionId(questionId) {
     kashfMethodId: route.kashfMethodId,
     kashfRuntimeStatus: route.kashfRuntimeStatus,
     runtimeAllowed: method.runtimeAllowed,
-    executorEnabled,
+    executorStatus: method.executorStatus,
     disposition: route.disposition,
     aliasOf: route.aliasOf,
     methodRole: method.methodRole,
