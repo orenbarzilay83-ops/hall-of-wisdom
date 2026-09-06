@@ -74,6 +74,7 @@ assertRoute('q-travel-safe', {
   kashfIntentId: 'travel.success',
   kashfMethodId: 'travel.p238.assemble1359',
   kashfRuntimeStatus: 'ready',
+  executorStatus: 'ready',
 });
 
 // ── Acceptance test 2: alias resolves to same exact method ---------------
@@ -91,6 +92,7 @@ assertRoute('q-promise', {
   kashfIntentId: 'promise.fulfillment',
   kashfRuntimeStatus: 'educational-only',
   runtimeAllowed: false,
+  executorStatus: 'not-applicable',
 });
 assert(!canRunKashfMethod('promise.external.p255'), 'educational promise method can never run');
 
@@ -101,6 +103,7 @@ const sorcery = assertRoute('q-sorcery', {
   kashfIntentId: 'spiritual.affectedBySorcery',
   kashfRuntimeStatus: 'unsupported',
   runtimeAllowed: false,
+  executorStatus: 'not-applicable',
 });
 assert(sorcery.kashfMethodId !== 'spiritual.p167.querentActsBySorcery', 'q-sorcery is not mapped to the p167 querent-acts-by-sorcery method');
 
@@ -132,8 +135,21 @@ assertRoute('q-missing-alive', {
   kashfRuntimeStatus: 'repair-required',
 });
 
+// ── Source-ready is NOT the same as executor-ready -----------------------
+const illnessRecovery = assertRoute('q-illness-heal', {
+  ok: true,
+  canRunKashf: false,
+  kashfIntentId: 'illness.recovery',
+  kashfMethodId: 'illness.p196.outcomeH15',
+  kashfRuntimeStatus: 'ready',
+  executorStatus: 'pending',
+  runtimeAllowed: false,
+  reason: 'executor-pending',
+});
+assert(!canRunKashfMethod(illnessRecovery.kashfMethodId), 'source-ready method with pending executor cannot run');
+
 // ── Acceptance test 8: runtimeAllowed=false is a hard stop ---------------
-for (const qid of ['q-promise', 'q-fear', 'q-sorcery', 'q-sea-voyage', 'q-prisoner', 'q-friends', 'q-stability', 'q-missing-alive']) {
+for (const qid of ['q-promise', 'q-fear', 'q-sorcery', 'q-sea-voyage', 'q-prisoner', 'q-friends', 'q-stability', 'q-missing-alive', 'q-illness-heal']) {
   const route = resolveKashfRouteByQuestionId(qid);
   assert(route.canRunKashf === false, `${qid}: blocked/non-ready route cannot run`);
   let threw = false;
@@ -156,6 +172,7 @@ assert(unmapped.kashfMethodId === null, 'unmapped question does not invent a met
 assert(canRunKashfMethod('travel.p238.assemble1359') === true, 'ready canonical travel method can run');
 assert(canRunKashfMethod('state.p265.h1h2h9h15') === false, 'repair-required method cannot run');
 assert(canRunKashfMethod('travel.p242.vehicleSafety') === false, 'blocked-by-source method cannot run');
+assert(canRunKashfMethod('illness.p196.outcomeH15') === false, 'pending executor cannot run even when source status is ready');
 
 // ── Canonical execution isolation ----------------------------------------
 for (const qid of ['q-success', 'q-travel-safe', 'q-short-travel', 'q-move-city', 'q-siblings']) {
@@ -167,6 +184,13 @@ for (const qid of ['q-success', 'q-travel-safe', 'q-short-travel', 'q-move-city'
   assert(reading.canonicalExecution?.topicSupportingChecksExecuted === false, `${qid}: topic supporting checks did not execute`);
   assert(reading.canonicalExecution?.topicBundleExecuted === false, `${qid}: topic bundle did not execute`);
   assert(reading.overallPositive === reading.verdict?.positive, `${qid}: overall verdict is only the canonical method verdict`);
+
+  // Existing writer compatibility shape — intentionally empty alternatives.
+  assert(reading.primaryFormula?.verdict === reading.verdict, `${qid}: renderer-compatible primaryFormula points to canonical verdict`);
+  assert(reading.altFormula === null, `${qid}: renderer-compatible altFormula is explicitly null`);
+  assert(Array.isArray(reading.supportingFindings) && reading.supportingFindings.length === 0, `${qid}: renderer-compatible supportingFindings is empty`);
+  assert(Array.isArray(reading.keyHouseReadings) && reading.keyHouseReadings.length === 0, `${qid}: no broad topic houses leak into canonical reading`);
+  assert(typeof reading.topicHebrewName === 'string' && reading.topicHebrewName.length > 0, `${qid}: renderer-compatible topicHebrewName is present`);
 }
 
 const blockedPromiseReading = buildKashfReadingByQuestionId(PILOT_BOARD, 'q-promise');
@@ -174,6 +198,10 @@ assert(blockedPromiseReading.canRunKashf === false || blockedPromiseReading.vali
 
 const blockedSorceryReading = buildKashfReadingByQuestionId(PILOT_BOARD, 'q-sorcery');
 assert(blockedSorceryReading.canRunKashf === false || blockedSorceryReading.valid === false, 'unsupported q-sorcery never reaches p167 executor');
+
+const blockedIllnessReading = buildKashfReadingByQuestionId(PILOT_BOARD, 'q-illness-heal');
+assert(blockedIllnessReading.valid === false, 'source-ready but executor-pending illness reading is blocked');
+assert(blockedIllnessReading.reason === 'executor-pending', 'executor-pending reason is preserved to reading output');
 
 console.log(`Kashf canonical routing tests: ${passed} passed, ${failed} failed`);
 if (failed > 0) process.exit(1);
