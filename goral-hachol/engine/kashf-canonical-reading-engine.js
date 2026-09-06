@@ -304,7 +304,18 @@ export function buildKashfReadingByQuestionId(board, questionId, clientContext =
   try {
     route = requireRunnableKashfRoute(questionId);
   } catch (err) {
-    return err?.route || blockedResult({
+    const blockedRoute = err?.route;
+    if (blockedRoute) {
+      return blockedResult({
+        kashfMethodId: blockedRoute.kashfMethodId,
+        kashfIntentId: blockedRoute.kashfIntentId,
+        status: blockedRoute.kashfRuntimeStatus,
+        executorStatus: blockedRoute.executorStatus,
+        reason: blockedRoute.reason,
+        userMessage: blockedRoute.userMessage,
+      });
+    }
+    return blockedResult({
       kashfMethodId: null,
       reason: 'route-blocked',
       userMessage: err instanceof Error ? err.message : String(err),
