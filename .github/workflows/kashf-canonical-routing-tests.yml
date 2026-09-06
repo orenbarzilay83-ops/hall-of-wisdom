@@ -8,6 +8,7 @@ on:
       - 'goral-hachol/registry/kashf-question-route-registry.js'
       - 'goral-hachol/engine/kashf-method-router.js'
       - 'goral-hachol/engine/kashf-canonical-reading-engine.js'
+      - 'goral-hachol/engine/kashf-canonical-narrative-writer.js'
       - 'goral-hachol/engine/kashf-topic-rules.js'
       - 'goral-hachol/engine/kashf-formula-engine.js'
       - 'goral-hachol/engine/raml-board-generator.js'
@@ -29,7 +30,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Run Kashf canonical routing contract
         run: node _test_kashf_canonical_routing.mjs
