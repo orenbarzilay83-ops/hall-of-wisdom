@@ -22,6 +22,7 @@ import {
 import {
   buildKashfReadingByQuestionId,
 } from './goral-hachol/engine/kashf-canonical-reading-engine.js';
+import { writeCanonicalKashfReading } from './goral-hachol/engine/kashf-canonical-narrative-writer.js';
 import { buildRamlBoardFromMothers } from './goral-hachol/engine/raml-board-generator.js';
 
 let passed = 0;
@@ -191,17 +192,41 @@ for (const qid of ['q-success', 'q-travel-safe', 'q-short-travel', 'q-move-city'
   assert(Array.isArray(reading.supportingFindings) && reading.supportingFindings.length === 0, `${qid}: renderer-compatible supportingFindings is empty`);
   assert(Array.isArray(reading.keyHouseReadings) && reading.keyHouseReadings.length === 0, `${qid}: no broad topic houses leak into canonical reading`);
   assert(typeof reading.topicHebrewName === 'string' && reading.topicHebrewName.length > 0, `${qid}: renderer-compatible topicHebrewName is present`);
+
+  // Canonical writer must render ONLY executed method evidence.
+  const html = writeCanonicalKashfReading(reading);
+  assert(html.includes('השיטה הקנונית'), `${qid}: canonical writer shows method-scoped details`);
+  assert(html.includes(reading.kashfMethodId), `${qid}: canonical writer identifies the exact method`);
+  assert(!html.includes('בדיקת אימות נוספת'), `${qid}: canonical writer does not invent/render alt formula`);
+  assert(!html.includes('ניתוח תומך לפי ספר'), `${qid}: canonical writer does not render broad topic supporting checks`);
+  assert(!html.includes('מחשבת השואל (הדמיר)'), `${qid}: canonical writer does not render Dhamir automatically`);
+  assert(!html.includes('עדים ודיין'), `${qid}: canonical writer does not render witness/judge bundle automatically`);
 }
 
 const blockedPromiseReading = buildKashfReadingByQuestionId(PILOT_BOARD, 'q-promise');
 assert(blockedPromiseReading.canRunKashf === false || blockedPromiseReading.valid === false, 'educational q-promise never reaches canonical executor');
+const blockedPromiseHtml = writeCanonicalKashfReading(blockedPromiseReading);
+assert(blockedPromiseHtml.includes('ספריית הלימוד'), 'educational q-promise renders an explanatory block instead of a verdict');
+assert(!blockedPromiseHtml.includes('הפסיקה:'), 'educational q-promise HTML contains no verdict');
 
 const blockedSorceryReading = buildKashfReadingByQuestionId(PILOT_BOARD, 'q-sorcery');
 assert(blockedSorceryReading.canRunKashf === false || blockedSorceryReading.valid === false, 'unsupported q-sorcery never reaches p167 executor');
+const blockedSorceryHtml = writeCanonicalKashfReading(blockedSorceryReading);
+assert(!blockedSorceryHtml.includes('הפסיקה:'), 'unsupported q-sorcery HTML contains no verdict');
 
 const blockedIllnessReading = buildKashfReadingByQuestionId(PILOT_BOARD, 'q-illness-heal');
 assert(blockedIllnessReading.valid === false, 'source-ready but executor-pending illness reading is blocked');
 assert(blockedIllnessReading.reason === 'executor-pending', 'executor-pending reason is preserved to reading output');
+
+// HTML escaping is mandatory because client question/name are user input.
+const escapedReading = buildKashfReadingByQuestionId(PILOT_BOARD, 'q-success', {
+  name: '<script>alert(1)</script>',
+  question: '<img src=x onerror=alert(1)>',
+});
+const escapedHtml = writeCanonicalKashfReading(escapedReading);
+assert(!escapedHtml.includes('<script>alert(1)</script>'), 'canonical writer escapes client name HTML');
+assert(!escapedHtml.includes('<img src=x onerror=alert(1)>'), 'canonical writer escapes client question HTML');
+assert(escapedHtml.includes('&lt;script&gt;'), 'escaped client name remains visible as text');
 
 console.log(`Kashf canonical routing tests: ${passed} passed, ${failed} failed`);
 if (failed > 0) process.exit(1);
