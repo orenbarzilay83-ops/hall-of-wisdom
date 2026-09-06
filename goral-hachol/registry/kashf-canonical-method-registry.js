@@ -9,6 +9,8 @@
  *   timingRequest, ...). This file uses `kashfIntentId` only.
  * - `runtimeAllowed:false` is a hard stop. Callers must never silently fall
  *   back to topic-level execution.
+ * - `kashfRuntimeStatus` describes source/method readiness; `executorStatus`
+ *   independently describes whether the new canonical runtime can execute it.
  * - Educational / external methods may remain available to the knowledge
  *   layer but must never feed a live Kashf verdict.
  */
@@ -29,6 +31,12 @@ export const KASHF_METHOD_ROLES = Object.freeze([
   'unresolved',
 ]);
 
+export const KASHF_EXECUTOR_STATUSES = Object.freeze([
+  'ready',
+  'pending',
+  'not-applicable',
+]);
+
 const method = ({
   kashfMethodId,
   kashfIntentId,
@@ -41,6 +49,7 @@ const method = ({
   kashfRuntimeStatus,
   runtimeAllowed,
   executionKind = null,
+  executorStatus = executionKind ? 'pending' : 'not-applicable',
   legacyTopicId = null,
   legacyFormulaSlot = null,
   notes = null,
@@ -57,6 +66,7 @@ const method = ({
   attributedSourceBook,
   sourceConfidence,
   executionKind,
+  executorStatus,
   legacyTopicId,
   legacyFormulaSlot,
   notes,
@@ -69,7 +79,7 @@ const method = ({
  * methods so the router can block unsafe questions BEFORE an engine runs.
  */
 export const KASHF_CANONICAL_METHODS = Object.freeze({
-  // ── READY pilot slice ---------------------------------------------------
+  // ── READY + EXECUTOR READY pilot slice --------------------------------
   'completion.p173.fireRows15910': method({
     kashfMethodId: 'completion.p173.fireRows15910',
     kashfIntentId: 'completion.willComplete',
@@ -78,6 +88,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfRuntimeStatus: 'ready',
     runtimeAllowed: true,
     executionKind: 'formula',
+    executorStatus: 'ready',
     legacyTopicId: 'completion',
     legacyFormulaSlot: 'primaryFormula',
     notes: 'Canonical p173 method. Legacy alt 1+16 is not part of this verdict.',
@@ -91,18 +102,21 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfRuntimeStatus: 'ready',
     runtimeAllowed: true,
     executionKind: 'formula',
+    executorStatus: 'ready',
     legacyTopicId: 'relocation',
     legacyFormulaSlot: 'primaryFormula',
   }),
 
+  // Source method is ready, but the canonical executor is not yet wired.
   'illness.p196.outcomeH15': method({
     kashfMethodId: 'illness.p196.outcomeH15',
     kashfIntentId: 'illness.recovery',
     topicId: 'illness',
     sourcePages: [196],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: true,
+    runtimeAllowed: false,
     executionKind: 'custom-engine',
+    executorStatus: 'pending',
     legacyTopicId: 'illness',
     notes: 'Canonical recovery intent is the H15 benefic/malefic rule; topic bundle contains additional illness intents and must not be used as a substitute.',
   }),
@@ -113,10 +127,11 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'illness',
     sourcePages: [199],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: true,
+    runtimeAllowed: false,
     executionKind: 'legacy-function',
+    executorStatus: 'pending',
     legacyTopicId: 'illness',
-    notes: 'Use the verified H6 figure → body-part mapping only.',
+    notes: 'Use the verified H6 figure → body-part mapping only; canonical legacy-function executor is not wired yet.',
   }),
 
   'pregnancy.p191.genderH5': method({
@@ -125,8 +140,9 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'children',
     sourcePages: [191],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: true,
+    runtimeAllowed: false,
     executionKind: 'custom-engine',
+    executorStatus: 'pending',
     legacyTopicId: 'children',
   }),
 
@@ -138,6 +154,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfRuntimeStatus: 'ready',
     runtimeAllowed: true,
     executionKind: 'formula',
+    executorStatus: 'ready',
     legacyTopicId: 'siblings',
     legacyFormulaSlot: 'primaryFormula',
   }),
@@ -148,8 +165,9 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'siblings',
     sourcePages: [182],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: true,
+    runtimeAllowed: false,
     executionKind: 'custom-engine',
+    executorStatus: 'pending',
     legacyTopicId: 'siblings',
   }),
 
@@ -159,8 +177,9 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'marriage',
     sourcePages: [204],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: true,
+    runtimeAllowed: false,
     executionKind: 'custom-engine',
+    executorStatus: 'pending',
     legacyTopicId: 'marriage',
   }),
 
@@ -172,6 +191,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfRuntimeStatus: 'ready',
     runtimeAllowed: true,
     executionKind: 'formula',
+    executorStatus: 'ready',
     legacyTopicId: 'travel',
     legacyFormulaSlot: 'primaryFormula',
   }),
@@ -185,6 +205,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfRuntimeStatus: 'repair-required',
     runtimeAllowed: false,
     executionKind: 'formula',
+    executorStatus: 'pending',
     legacyTopicId: 'friendsHope',
     notes: 'Core friendship formula is usable only after removing unrelated hope/Nuzhat bundle execution.',
   }),
@@ -197,6 +218,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfRuntimeStatus: 'repair-required',
     runtimeAllowed: false,
     executionKind: 'legacy-function',
+    executorStatus: 'pending',
     legacyTopicId: 'authorityState',
     notes: 'Existing helper must be isolated from the authorityState topic bundle.',
   }),
@@ -209,6 +231,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfRuntimeStatus: 'repair-required',
     runtimeAllowed: false,
     executionKind: 'custom-engine',
+    executorStatus: 'pending',
     legacyTopicId: 'missingPerson',
     notes: 'Must use houses 3,5,9 plus recurrence in 8/6/12; current topic bundle uses other mechanisms.',
   }),
@@ -221,6 +244,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfRuntimeStatus: 'repair-required',
     runtimeAllowed: false,
     executionKind: 'legacy-function',
+    executorStatus: 'pending',
     legacyTopicId: 'enemies',
     notes: 'computeEnemyPresenceCheck matches the direct four-case source rule; legacy primary combine(1,12) must be bypassed.',
   }),
@@ -234,6 +258,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfRuntimeStatus: 'blocked-by-source',
     runtimeAllowed: false,
     executionKind: null,
+    executorStatus: 'not-applicable',
     notes: 'Source contradiction: house 12 appears in conflicting outcome groups. No code until textual resolution.',
   }),
 
@@ -246,6 +271,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfRuntimeStatus: 'blocked-by-source',
     runtimeAllowed: false,
     executionKind: null,
+    executorStatus: 'not-applicable',
     notes: 'No canonical body method selected that yields release timing. Do not infer timing from outcome/exit rules.',
   }),
 
@@ -261,6 +287,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfRuntimeStatus: 'educational-only',
     runtimeAllowed: false,
     executionKind: 'legacy-function',
+    executorStatus: 'not-applicable',
     notes: 'Knowledge-only. Must never feed verdict.',
   }),
 
@@ -275,6 +302,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfRuntimeStatus: 'educational-only',
     runtimeAllowed: false,
     executionKind: 'formula',
+    executorStatus: 'not-applicable',
     notes: 'Post-ومن غير الكتاب material; knowledge-only by default.',
   }),
 
@@ -288,6 +316,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfRuntimeStatus: 'unsupported',
     runtimeAllowed: false,
     executionKind: null,
+    executorStatus: 'not-applicable',
     notes: 'p167 asks whether the querent acts by sorcery on the quesited person; it does not answer whether the querent is affected by sorcery/evil eye/jinn.',
   }),
 });
@@ -309,7 +338,11 @@ export function getCanonicalKashfMethodForIntent(kashfIntentId) {
 
 export function canRunKashfMethod(kashfMethodId) {
   const entry = getKashfMethod(kashfMethodId);
-  return !!entry && entry.methodRole === 'canonical-operational' && entry.runtimeAllowed === true;
+  return !!entry
+    && entry.methodRole === 'canonical-operational'
+    && entry.kashfRuntimeStatus === 'ready'
+    && entry.executorStatus === 'ready'
+    && entry.runtimeAllowed === true;
 }
 
 export function validateKashfMethodRegistry() {
@@ -333,11 +366,17 @@ export function validateKashfMethodRegistry() {
     if (!KASHF_METHOD_ROLES.includes(entry.methodRole)) {
       errors.push(`${key}: invalid methodRole ${entry.methodRole}`);
     }
+    if (!KASHF_EXECUTOR_STATUSES.includes(entry.executorStatus)) {
+      errors.push(`${key}: invalid executorStatus ${entry.executorStatus}`);
+    }
     if (entry.runtimeAllowed && entry.kashfRuntimeStatus !== 'ready') {
       errors.push(`${key}: runtimeAllowed=true requires status=ready`);
     }
     if (entry.runtimeAllowed && entry.methodRole !== 'canonical-operational') {
       errors.push(`${key}: runtimeAllowed=true requires canonical-operational role`);
+    }
+    if (entry.runtimeAllowed && entry.executorStatus !== 'ready') {
+      errors.push(`${key}: runtimeAllowed=true requires executorStatus=ready`);
     }
 
     if (entry.methodRole === 'canonical-operational') {
@@ -356,6 +395,7 @@ export function validateKashfMethodRegistry() {
 export default {
   KASHF_RUNTIME_STATUSES,
   KASHF_METHOD_ROLES,
+  KASHF_EXECUTOR_STATUSES,
   KASHF_CANONICAL_METHODS,
   getKashfMethod,
   getKashfMethodsForIntent,
