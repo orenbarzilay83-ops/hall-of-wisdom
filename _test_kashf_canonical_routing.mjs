@@ -3,7 +3,7 @@
  * _test_kashf_canonical_routing.mjs
  *
  * P0 contract tests for Question -> Kashf Intent -> ONE Canonical Method.
- * Pure registry/router tests: no AI, no network, no board calculation.
+ * No AI, no network. Includes a small deterministic board-execution slice.
  */
 
 import {
@@ -19,6 +19,10 @@ import {
   resolveKashfRouteByQuestionId,
   requireRunnableKashfRoute,
 } from './goral-hachol/engine/kashf-method-router.js';
+import {
+  buildKashfReadingByQuestionId,
+} from './goral-hachol/engine/kashf-canonical-reading-engine.js';
+import { buildRamlBoardFromMothers } from './goral-hachol/engine/raml-board-generator.js';
 
 let passed = 0;
 let failed = 0;
@@ -39,6 +43,10 @@ function assertRoute(questionId, expected) {
   }
   return route;
 }
+
+// Reused, previously validated mother combination from the repository QA set.
+const PILOT_MOTHERS = ['1112', '2122', '1121', '2211'];
+const PILOT_BOARD = buildRamlBoardFromMothers(PILOT_MOTHERS);
 
 // ── Registry invariants ---------------------------------------------------
 {
@@ -148,6 +156,24 @@ assert(unmapped.kashfMethodId === null, 'unmapped question does not invent a met
 assert(canRunKashfMethod('travel.p238.assemble1359') === true, 'ready canonical travel method can run');
 assert(canRunKashfMethod('state.p265.h1h2h9h15') === false, 'repair-required method cannot run');
 assert(canRunKashfMethod('travel.p242.vehicleSafety') === false, 'blocked-by-source method cannot run');
+
+// ── Canonical execution isolation ----------------------------------------
+for (const qid of ['q-success', 'q-travel-safe', 'q-short-travel', 'q-move-city', 'q-siblings']) {
+  const reading = buildKashfReadingByQuestionId(PILOT_BOARD, qid, { question: qid });
+  assert(reading.valid === true, `${qid}: canonical pilot reading executes successfully`);
+  assert(Array.isArray(reading.canonicalExecution?.methodsExecuted), `${qid}: execution evidence contains methodsExecuted`);
+  assert(reading.canonicalExecution?.methodsExecuted.length === 1, `${qid}: exactly one method executed`);
+  assert(reading.canonicalExecution?.altFormulaExecuted === false, `${qid}: alt formula did not execute`);
+  assert(reading.canonicalExecution?.topicSupportingChecksExecuted === false, `${qid}: topic supporting checks did not execute`);
+  assert(reading.canonicalExecution?.topicBundleExecuted === false, `${qid}: topic bundle did not execute`);
+  assert(reading.overallPositive === reading.verdict?.positive, `${qid}: overall verdict is only the canonical method verdict`);
+}
+
+const blockedPromiseReading = buildKashfReadingByQuestionId(PILOT_BOARD, 'q-promise');
+assert(blockedPromiseReading.canRunKashf === false || blockedPromiseReading.valid === false, 'educational q-promise never reaches canonical executor');
+
+const blockedSorceryReading = buildKashfReadingByQuestionId(PILOT_BOARD, 'q-sorcery');
+assert(blockedSorceryReading.canRunKashf === false || blockedSorceryReading.valid === false, 'unsupported q-sorcery never reaches p167 executor');
 
 console.log(`Kashf canonical routing tests: ${passed} passed, ${failed} failed`);
 if (failed > 0) process.exit(1);
