@@ -147,7 +147,139 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfRuntimeStatus: 'ready',
   }),
 
+  // ── AUDITED GENERAL / RELOCATION SLICE --------------------------------
+  // Source-ready records below remain hard-stopped until their canonical
+  // executorStatus becomes ready in the method registry.
+  'q-general-state': route({
+    questionId: 'q-general-state',
+    disposition: 'KEEP',
+    kashfIntentId: 'general.state',
+    kashfMethodId: 'general.p174.h1h2h4h7h10h15',
+    kashfRuntimeStatus: 'ready',
+  }),
+
+  'q-best-city': route({
+    questionId: 'q-best-city',
+    disposition: 'BLOCK',
+    kashfIntentId: 'relocation.compareTwoCities',
+    kashfMethodId: 'relocation.p183.compare12vs78',
+    kashfRuntimeStatus: 'blocked-by-source',
+    note: 'Exact source meaning of comparative strength must be closed before execution.',
+  }),
+
+  'q-move-home': route({
+    questionId: 'q-move-home',
+    disposition: 'KEEP',
+    kashfIntentId: 'relocation.isThisPlaceGood',
+    kashfMethodId: 'relocation.p183.currentVsNewPlace',
+    kashfRuntimeStatus: 'ready',
+  }),
+
+  'q-stay-place': route({
+    questionId: 'q-stay-place',
+    disposition: 'KEEP',
+    kashfIntentId: 'relocation.stayOrMove',
+    kashfMethodId: 'relocation.p183.stayMoveH1H2',
+    kashfRuntimeStatus: 'ready',
+  }),
+
+  'q-message': route({
+    questionId: 'q-message',
+    disposition: 'KEEP',
+    kashfIntentId: 'messenger.outcome',
+    kashfMethodId: 'messenger.p176.recast14511',
+    kashfRuntimeStatus: 'ready',
+  }),
+
+  'q-news-arrive': route({
+    questionId: 'q-news-arrive',
+    disposition: 'ALIAS',
+    aliasOf: 'q-message',
+    kashfIntentId: 'messenger.outcome',
+    kashfMethodId: 'messenger.p176.recast14511',
+    kashfRuntimeStatus: 'ready',
+    note: 'Alias only when the question means a message/news item arriving from a sender; generic future news remains outside this method.',
+  }),
+
+  'q-clothing-lucky': route({
+    questionId: 'q-clothing-lucky',
+    disposition: 'RENAME',
+    kashfIntentId: 'clothing.luck',
+    kashfMethodId: 'clothing.p264-265.luck',
+    kashfRuntimeStatus: 'ready',
+    note: 'Keep within the source clothing judgment; do not promise an unsourced universal lucky-color system.',
+  }),
+
+  'q-matter-end': route({
+    questionId: 'q-matter-end',
+    disposition: 'KEEP',
+    kashfIntentId: 'matter.outcome',
+    kashfMethodId: 'matter.p172.h17_h1011_thenCombine',
+    kashfRuntimeStatus: 'ready',
+  }),
+
+  'q-celebrations': route({
+    questionId: 'q-celebrations',
+    disposition: 'KEEP',
+    kashfIntentId: 'joy.occurrence',
+    kashfMethodId: 'joy.p196.recast14511',
+    kashfRuntimeStatus: 'ready',
+  }),
+
+  'q-joy-coming': route({
+    questionId: 'q-joy-coming',
+    disposition: 'ALIAS',
+    aliasOf: 'q-celebrations',
+    kashfIntentId: 'joy.occurrence',
+    kashfMethodId: 'joy.p196.recast14511',
+    kashfRuntimeStatus: 'ready',
+  }),
+
+  'q-gift': route({
+    questionId: 'q-gift',
+    disposition: 'BLOCK',
+    kashfIntentId: 'gift.receive',
+    kashfMethodId: 'gift.sourceInputUnclear',
+    kashfRuntimeStatus: 'blocked-by-source',
+    note: 'Gift polarity is stated, but the exact source input/house is not closed.',
+  }),
+
   // ── REPAIR REQUIRED: explicit hard stop until fixed -------------------
+  'q-wish': route({
+    questionId: 'q-wish',
+    disposition: 'KEEP',
+    kashfIntentId: 'hope.fulfillment',
+    kashfMethodId: 'hope.p267.fulfillment',
+    kashfRuntimeStatus: 'repair-required',
+    note: 'Must route to the dedicated p267 hope method, not completion p173.',
+  }),
+
+  'q-dream': route({
+    questionId: 'q-dream',
+    disposition: 'KEEP',
+    kashfIntentId: 'dream.meaning',
+    kashfMethodId: 'dream.p254.h9AndTransit',
+    kashfRuntimeStatus: 'repair-required',
+  }),
+
+  'q-dream-daily': route({
+    questionId: 'q-dream-daily',
+    disposition: 'ALIAS',
+    aliasOf: 'q-dream',
+    kashfIntentId: 'dream.meaning',
+    kashfMethodId: 'dream.p254.h9AndTransit',
+    kashfRuntimeStatus: 'repair-required',
+  }),
+
+  'q-dream-omen': route({
+    questionId: 'q-dream-omen',
+    disposition: 'ALIAS',
+    aliasOf: 'q-dream',
+    kashfIntentId: 'dream.meaning',
+    kashfMethodId: 'dream.p254.h9AndTransit',
+    kashfRuntimeStatus: 'repair-required',
+  }),
+
   'q-friends': route({
     questionId: 'q-friends',
     disposition: 'RENAME',
@@ -227,6 +359,15 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfIntentId: 'promise.fulfillment',
     kashfMethodId: 'promise.external.p255',
     kashfRuntimeStatus: 'educational-only',
+  }),
+
+  'q-yearly-forecast': route({
+    questionId: 'q-yearly-forecast',
+    disposition: 'EDUCATIONAL',
+    kashfIntentId: 'yearly.forecast',
+    kashfMethodId: 'yearly.external.p221-223',
+    kashfRuntimeStatus: 'educational-only',
+    note: 'Mapped yearly methods in this range belong to non-body/Nuzhat additions, so they remain learning-only by default.',
   }),
 
   'q-fear': route({
