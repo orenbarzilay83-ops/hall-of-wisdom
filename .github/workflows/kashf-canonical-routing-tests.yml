@@ -1,0 +1,35 @@
+name: Kashf Canonical Routing Tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'goral-hachol/registry/kashf-canonical-method-registry.js'
+      - 'goral-hachol/registry/kashf-question-route-registry.js'
+      - 'goral-hachol/engine/kashf-method-router.js'
+      - 'goral-hachol/engine/kashf-canonical-reading-engine.js'
+      - 'goral-hachol/engine/kashf-topic-rules.js'
+      - 'goral-hachol/engine/kashf-formula-engine.js'
+      - 'goral-hachol/engine/raml-board-generator.js'
+      - '_test_kashf_canonical_routing.mjs'
+      - '.github/workflows/kashf-canonical-routing-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  canonical-routing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Kashf canonical routing contract
+        run: node _test_kashf_canonical_routing.mjs
