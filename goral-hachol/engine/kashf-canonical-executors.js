@@ -1172,6 +1172,237 @@ function computeWomanFavorP206(chart) {
   };
 }
 
+// Kashf v57 p191 — child/fetal safety.
+function computeChildSafetyP191(chart) {
+  if (!Array.isArray(chart)) return null;
+  const housesUsed = [1, 6, 8];
+  const rows = housesUsed.map((houseNumber) => {
+    const entry = findCanonicalHouse(chart, houseNumber);
+    const pattern = entry?.key || entry?.pattern || null;
+    if (!pattern) return null;
+    const classification = classifyCanonicalFigure(pattern);
+    return {
+      houseNumber,
+      pattern,
+      figureHebrew: classification.figureHebrew || entry?.hebrew || entry?.hebrewName || pattern,
+      classification,
+    };
+  });
+  if (rows.some((item) => !item)) return null;
+
+  const byHouse = Object.fromEntries(rows.map((item) => [item.houseNumber, item]));
+  const h1Class = byHouse[1].classification.saadNahs;
+  const severeCondition = byHouse[6].classification.saadNahs === 'nahs' && byHouse[8].classification.saadNahs === 'nahs';
+  const h1Safety = h1Class === 'saad';
+  const h1Fear = h1Class === 'nahs';
+
+  let sourceOutcome = 'unresolved';
+  let sourceOutcomeHebrew = 'הכלל אינו מכריע בבירור';
+  if (severeCondition) {
+    sourceOutcome = 'severe-risk';
+    sourceOutcomeHebrew = 'אזהרת מקור חמורה: שני הבתים 6 ו־8 מזיקים';
+  } else if (h1Safety) {
+    sourceOutcome = 'safety';
+    sourceOutcomeHebrew = 'עדות לשלום הוולד';
+  } else if (h1Fear) {
+    sourceOutcome = 'fear';
+    sourceOutcomeHebrew = 'יש לחשוש על הוולד';
+  }
+
+  let outputHebrew;
+  if (severeCondition) {
+    outputHebrew = 'לפי חשיפת הסודות הנצורים v57 עמ׳ 191, בית 6 ובית 8 שניהם מזיקים. המקור מוסר שבמצב זה הוולד עלול לצאת מת. זהו ניסוח של סיכון במקור, לא פסק ודאי של מוות.';
+  } else if (h1Safety) {
+    outputHebrew = 'בית 1 מיטיב. לפי חשיפת הסודות הנצורים v57 עמ׳ 191, הדבר מורה שהוולד יינצל ויהיה בשלום. בתי 6 ו־8 אינם עומדים יחד בתנאי האזהרה החמורה.';
+  } else if (h1Fear) {
+    outputHebrew = 'בית 1 מזיק. לפי חשיפת הסודות הנצורים v57 עמ׳ 191, יש לחשוש על הוולד. בתי 6 ו־8 אינם עומדים יחד בתנאי האזהרה החמורה.';
+  } else {
+    outputHebrew = 'בית 1 אינו מיטיב טהור ואינו מזיק טהור לפי הסיווג הקנוני. כלל עמ׳ 191 אינו נותן כאן הכרעה חד־משמעית, ובתי 6 ו־8 אינם עומדים יחד בתנאי האזהרה החמורה.';
+  }
+
+  return {
+    sourceRef: 'חשיפת הסודות הנצורים v57 עמ׳ 191',
+    sourceText: 'אם בבית הראשון נמצאת צורה מיטיבה, הוולד יינצל ויהיה בשלום. ואם נמצאת בו צורה מזיקה, יש לחשוש עליו. ואם בשישי ובשמיני נמצאות צורות מזיקות, הוולד עלול לצאת מת.',
+    housesUsed,
+    houseResults: rows,
+    h1Safety,
+    h1Fear,
+    severeCondition,
+    sourceOutcome,
+    sourceOutcomeHebrew,
+    positive: h1Safety && !severeCondition ? true : null,
+    verdictType: 'child-safety',
+    outputHebrew,
+  };
+}
+
+// Kashf v57 p264 — beginning/middle/end of life by planetary figure.
+function computeLifespanStagesP264(chart) {
+  if (!Array.isArray(chart)) return null;
+  const stageDefs = [
+    { houseNumber: 11, stage: 'beginning', stageHebrew: 'ראשית החיים' },
+    { houseNumber: 9, stage: 'middle', stageHebrew: 'אמצע החיים' },
+    { houseNumber: 7, stage: 'end', stageHebrew: 'סוף החיים' },
+  ];
+
+  const stages = stageDefs.map((def) => {
+    const entry = findCanonicalHouse(chart, def.houseNumber);
+    const pattern = entry?.key || entry?.pattern || null;
+    if (!pattern) return null;
+    const planetRecord = FIGURE_PLANET_MAP.find((record) => Array.isArray(record.patterns) && record.patterns.includes(pattern)) || null;
+    return {
+      ...def,
+      pattern,
+      figureHebrew: entry?.hebrew || entry?.hebrewName || classifyCanonicalFigure(pattern).figureHebrew || pattern,
+      planetHebrew: planetRecord?.planet || null,
+      planetArabic: planetRecord?.arabicName || null,
+      planetSourceStatus: planetRecord?.sourceStatus || null,
+      planetResolved: Boolean(planetRecord),
+    };
+  });
+  if (stages.some((item) => !item)) return null;
+
+  const detail = stages.map((item) => {
+    const planet = item.planetResolved ? item.planetHebrew : 'שיוך כוכבי לא מוכרע במפה המאומתת';
+    return item.stageHebrew + ': ' + item.figureHebrew + ' (' + item.pattern + ') — ' + planet;
+  }).join('; ');
+
+  return {
+    sourceRef: 'חשיפת הסודות הנצורים v57 עמ׳ 264; שיוכי כוכבים עמ׳ 133–134',
+    sourceText: 'בדין החיים: הבית האחד־עשר מורה על ראשית החיים; התשיעי על האמצע; והשביעי על הסוף. דון לפי צורות הכוכבים המופיעות בבתים.',
+    housesUsed: [11, 9, 7],
+    stages,
+    aggregationRule: 'none-source-explicit',
+    positive: null,
+    verdictType: 'lifespan-stages',
+    outputHebrew: 'לפי חשיפת הסודות הנצורים v57 עמ׳ 264: ' + detail + '. שיטה זו מתארת שלושה שלבים לפי הכוכב של הצורה בכל בית; היא אינה מחשבת את מספר שנות החיים.',
+  };
+}
+
+// Kashf v57 p244 — traveler return.
+function computeTravelerReturnP244(chart) {
+  if (!Array.isArray(chart)) return null;
+  const housesUsed = [1, 2, 9];
+  const rows = housesUsed.map((houseNumber) => {
+    const entry = findCanonicalHouse(chart, houseNumber);
+    const pattern = entry?.key || entry?.pattern || null;
+    if (!pattern) return null;
+    const classification = classifyCanonicalFigure(pattern);
+    return {
+      houseNumber,
+      pattern,
+      figureHebrew: classification.figureHebrew || entry?.hebrew || entry?.hebrewName || pattern,
+      classification,
+      beneficIncoming: classification.saadNahs === 'saad' && classification.dakhalKharij === 'dakhil',
+      pureMalefic: classification.saadNahs === 'nahs',
+    };
+  });
+  if (rows.some((item) => !item)) return null;
+
+  const allBeneficIncoming = rows.every((item) => item.beneficIncoming);
+  const allPureMalefic = rows.every((item) => item.pureMalefic);
+  let sourceOutcome = 'unresolved';
+  let outputHebrew;
+  if (allBeneficIncoming) {
+    sourceOutcome = 'good-return';
+    outputHebrew = 'בתים 1, 2 ו־9 כולם נושאים צורות מיטיבות פנימיות. לפי חשיפת הסודות הנצורים v57 עמ׳ 244, הדבר תומך בכך שהנוסע ישוב אל ארצו בטוב ובשמחה.';
+  } else if (allPureMalefic) {
+    sourceOutcome = 'hardship-possible-no-return';
+    outputHebrew = 'בתים 1, 2 ו־9 כולם מזיקים. לפי חשיפת הסודות הנצורים v57 עמ׳ 244, הנוסע יתייגע במסעו ולעיתים לא ישוב. המקור אינו הופך את הענף הזה לפסק ודאי של אי־חזרה.';
+  } else {
+    outputHebrew = 'העדות בבתים 1, 2 ו־9 מפוצלת או ממוזגת. כדי לא להמציא כלל רוב שאינו במקור, שיטת עמ׳ 244 נשארת כאן ללא הכרעה חד־משמעית.';
+  }
+
+  return {
+    sourceRef: 'חשיפת הסודות הנצורים v57 עמ׳ 244',
+    sourceText: 'כלל לנוסע: התבונן בראשון, בשני ובתשיעי. אם נמצאו בהם צורות מיטיבות המורות על כניסה, ובפרט במקומות הראויים, ישוב אל ארצו בטוב ובשמחה. ואם נמצאו בהם צורות מזיקות, יתייגע במסעו, ולעיתים לא ישוב.',
+    housesUsed,
+    houseResults: rows,
+    allBeneficIncoming,
+    allPureMalefic,
+    sourceOutcome,
+    returnIndicated: allBeneficIncoming ? true : null,
+    positive: allBeneficIncoming ? true : null,
+    verdictType: 'traveler-return',
+    outputHebrew,
+  };
+}
+
+// Kashf v57 pp210-211 — general marriage judgment.
+function computeMarriageSuitabilityP210(chart) {
+  if (!Array.isArray(chart)) return null;
+  const housesUsed = [1, 2, 5, 7, 8, 10, 15];
+  const patterns = {};
+  const houseResults = housesUsed.map((houseNumber) => {
+    const entry = findCanonicalHouse(chart, houseNumber);
+    const pattern = entry?.key || entry?.pattern || null;
+    if (!pattern) return null;
+    patterns[houseNumber] = pattern;
+    const classification = classifyCanonicalFigure(pattern);
+    return {
+      houseNumber,
+      pattern,
+      figureHebrew: classification.figureHebrew || entry?.hebrew || entry?.hebrewName || pattern,
+      classification,
+    };
+  });
+  if (houseResults.some((item) => !item)) return null;
+
+  const byHouse = Object.fromEntries(houseResults.map((item) => [item.houseNumber, item]));
+  const manGoodToWoman = byHouse[1].classification.saadNahs === 'saad' ? true : null;
+  const womanBetterThanMan = byHouse[1].classification.saadNahs === 'nahs' && byHouse[7].classification.saadNahs === 'saad' ? true : null;
+  const judgeGood = byHouse[15].classification.saadNahs === 'saad' ? true : null;
+
+  const derived = combineRamlFigures(patterns[1], patterns[5]);
+  const finalPattern = derived.resultPattern;
+  const finalClassification = classifyCanonicalFigure(finalPattern);
+  const finalOutcome = finalClassification.saadNahs === 'saad'
+    ? 'good'
+    : finalClassification.saadNahs === 'nahs'
+      ? 'opposite-bad'
+      : 'unresolved';
+  const positive = finalOutcome === 'good' ? true : finalOutcome === 'opposite-bad' ? false : null;
+
+  const sourceSignals = [];
+  if (manGoodToWoman) sourceSignals.push('בית 1 מיטיב — האיש טוב לה ומיטיב עמה');
+  if (womanBetterThanMan) sourceSignals.push('בית 1 מזיק ובית 7 מיטיב — היא טובה ממנו לפי לשון המקור');
+  if (judgeGood) sourceSignals.push('בית 15 מיטיב — אחרית עניינם טובה, יפה ושמחה');
+  sourceSignals.push('חיבור בית 1 ובית 5 יצר ' + (finalClassification.figureHebrew || finalPattern) + ' (' + finalPattern + ') — ' + (finalClassification.saadNahsHebrew || 'ללא סיווג'));
+
+  let outputHebrew = 'לפי חשיפת הסודות הנצורים v57 עמ׳ 210–211: ' + sourceSignals.join('; ') + '. ';
+  if (finalOutcome === 'good') {
+    outputHebrew += 'הצורה שנולדה מן הראשון והחמישי מיטיבה, ולכן הדין הסופי של ההולדה הוא לטוב.';
+  } else if (finalOutcome === 'opposite-bad') {
+    outputHebrew += 'הצורה שנולדה מן הראשון והחמישי מזיקה, ולכן הדין הסופי הוא להפך מן הטוב.';
+  } else {
+    outputHebrew += 'הצורה שנולדה מן הראשון והחמישי ממוזגת או בלתי מוכרעת; אין לכפות עליה פסק טוב/רע חד־משמעי.';
+  }
+
+  return {
+    sourceRef: 'חשיפת הסודות הנצורים v57 עמ׳ 210–211',
+    sourceText: 'עשה את הבית הראשון והשני לסימני האיש והנישואין, ואת הבית השביעי והשמיני לסימני האישה. הבית העשירי מורה על מה שיתרחש ביניהם, והדיין מורה על אחרית עניינם. אם הראשון מיטיב, האיש טוב לה ומיטיב עמה. אם הראשון מזיק והשביעי מיטיב, הרי היא טובה ממנו. אם המכריע מיטיב, אחרית עניינם טובה, יפה ושמחה. לאחר מכן הוצא צורה מן הראשון והחמישי, ודון במה שיצא, לטוב או להפך.',
+    housesUsed,
+    houseResults,
+    roles: {
+      manAndMarriage: [1, 2],
+      woman: [7, 8],
+      betweenThem: 10,
+      judge: 15,
+      finalDerivation: [1, 5],
+    },
+    manGoodToWoman,
+    womanBetterThanMan,
+    judgeGood,
+    finalPattern,
+    finalFigureHebrew: finalClassification.figureHebrew || null,
+    finalClassification,
+    finalOutcome,
+    positive,
+    verdictType: 'marriage-suitability',
+    outputHebrew,
+  };
+}
+
 const P174_GENERAL_STATE_HOUSE_ROLES = Object.freeze({
   1: Object.freeze({ titleHebrew: 'בית הנפש', roleHebrew: 'מצב האדם והתחלת כל דבר' }),
   2: Object.freeze({ titleHebrew: 'בית הממון', roleHebrew: 'ממונו של השואל' }),
@@ -1377,6 +1608,10 @@ function computeHiddenActionP167(chart) {
 }
 
 const CUSTOM_EXECUTORS = Object.freeze({
+  'pregnancy.p191.childSafetyH1H6H8': computeChildSafetyP191,
+  'lifespan.p264.stagesH11H9H7': computeLifespanStagesP264,
+  'travel.p244.returnH1H2H9': computeTravelerReturnP244,
+  'marriage.p210.generalMarriageH1H2H7H8H10Judge': computeMarriageSuitabilityP210,
   'general.p174.h1h2h4h7h10h15': computeGeneralStateP174,
   'money.p179.sourceByIncomingHonorHouse': computeMoneySourceP179,
   'spiritual.p167.hiddenActionAirRows46815': computeHiddenActionP167,

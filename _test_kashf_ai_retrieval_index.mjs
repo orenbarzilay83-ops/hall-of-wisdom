@@ -66,6 +66,10 @@ expectTop('האם המטמון במקומו', 'hidden.p188.isStillThere');
 expectTop('מה תוצאת העניין', 'matter.p172.h17_h1011_thenCombine');
 expectTop('האם העניין יושלם', 'completion.p173.fireRows15910');
 expectTop('מה מצבי הכללי', 'general.p174.h1h2h4h7h10h15');
+expectTop('האם הוולד יהיה בשלום', 'pregnancy.p191.childSafetyH1H6H8');
+expectTop('שלבי החיים', 'lifespan.p264.stagesH11H9H7');
+expectTop('האם הנוסע יחזור', 'travel.p244.returnH1H2H9');
+expectTop('האם השידוך מתאים', 'marriage.p210.generalMarriageH1H2H7H8H10Judge');
 expectTop('האם יש פעולה מאחורי הדבר', 'spiritual.p167.hiddenActionAirRows46815');
 expectTop('מאיפה יגיע הכסף', 'money.p179.sourceByIncomingHonorHouse');
 
@@ -106,6 +110,18 @@ assert(generalStateRecord?.questionIds.includes('q-general-state'), 'p174 retrie
 assert(generalStateRecord?.runtimeAllowed === true && generalStateRecord?.executorStatus === 'ready', 'p174 retrieval exposes runnable state');
 assert(JSON.stringify(generalStateRecord?.houses) === JSON.stringify([1,2,4,7,10,15]), 'p174 retrieval exposes only the six source-named houses');
 assert(generalStateRecord?.doNotMixWith.includes('completion.p173.fireRows15910'), 'p174 retrieval stays separate from completion verdict');
+
+for (const [methodId, questionId, houses] of [
+  ['pregnancy.p191.childSafetyH1H6H8', 'q-child-survive', [1,6,8]],
+  ['lifespan.p264.stagesH11H9H7', 'q-lifespan-stages', [11,9,7]],
+  ['travel.p244.returnH1H2H9', 'q-traveler-return', [1,2,9]],
+  ['marriage.p210.generalMarriageH1H2H7H8H10Judge', 'q-marriage-fit', [1,2,5,7,8,10,15]],
+]) {
+  const record = getKashfAiRetrievalRecord(methodId);
+  assert(record?.questionIds.includes(questionId), methodId + ' retrieval links ' + questionId);
+  assert(record?.runtimeAllowed === true && record?.executorStatus === 'ready', methodId + ' retrieval exposes runnable state');
+  assert(JSON.stringify(record?.houses) === JSON.stringify(houses), methodId + ' retrieval exposes exact operational houses');
+}
 
 const sourceReadyPendingResults = searchKashfAiRetrievalIndex('בריאות הוולד', { sourceReadyOnly: true, limit: 20 });
 assert(sourceReadyPendingResults.some((item) => item.kashfMethodId === 'child.p194.healthTrajectoryH6H8' || item.kashfMethodId === 'pregnancy.p191.childSafetyH1H6H8'), 'source-ready pending methods are retrievable as knowledge');

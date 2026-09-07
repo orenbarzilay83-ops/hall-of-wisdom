@@ -1553,6 +1553,57 @@ assert(p174GeneralReading.primaryFormula?.sourceText === getKashfV57Knowledge('g
 assert(p174GeneralReading.canonicalExecution?.methodsExecuted?.length === 1 && p174GeneralReading.canonicalExecution.methodsExecuted[0] === 'general.p174.h1h2h4h7h10h15', 'p174 executes only its exact canonical method');
 assert(p174GeneralReading.dhamir === null && p174GeneralReading.canonicalExecution?.topicBundleExecuted === false && p174GeneralReading.canonicalExecution?.altFormulaExecuted === false, 'p174 runs no Dhamir/topic bundle/alternative');
 
+// ── Easy batch 01: p191 child safety, p264 stages, p244 return, p210 marriage ---
+for (const [methodId, questionId] of [
+  ['pregnancy.p191.childSafetyH1H6H8', 'q-child-survive'],
+  ['lifespan.p264.stagesH11H9H7', 'q-lifespan-stages'],
+  ['travel.p244.returnH1H2H9', 'q-traveler-return'],
+  ['marriage.p210.generalMarriageH1H2H7H8H10Judge', 'q-marriage-fit'],
+]) {
+  const method = getKashfMethod(methodId);
+  assert(method?.runtimeAllowed === true && method?.executorStatus === 'ready', methodId + ' is runnable');
+  assert(canRunKashfMethod(methodId) === true, methodId + ' canRunKashfMethod is true');
+  const route = resolveKashfRouteByQuestionId(questionId);
+  assert(route?.canRunKashf === true && route?.kashfMethodId === methodId, questionId + ' routes to its exact runnable method');
+}
+
+const p191Safety = buildKashfReadingByQuestionId(makeP204Board({ 1: '1222', 6: '1222', 8: '1222' }), 'q-child-survive');
+const p191SafetyExec = p191Safety.primaryFormula?.result?.executorResult;
+assert(p191SafetyExec?.sourceOutcome === 'safety' && p191SafetyExec?.positive === true, 'p191 pure-benefic H1 gives source safety testimony');
+assert(p191Safety.primaryFormula?.sourceText === getKashfV57Knowledge('pregnancy.p191.childSafetyH1H6H8')?.v57?.hebrewRule, 'p191 runtime sourceText comes from Hebrew v57');
+const p191Severe = buildKashfReadingByQuestionId(makeP204Board({ 1: '1222', 6: '1112', 8: '1112' }), 'q-child-survive');
+assert(p191Severe.primaryFormula?.result?.executorResult?.severeCondition === true, 'p191 H6+H8 pure malefic activates the severe source warning');
+assert(p191Severe.primaryFormula?.result?.executorResult?.positive === null, 'p191 severe warning is not converted into a certain death verdict');
+const p191Fear = buildKashfReadingByQuestionId(makeP204Board({ 1: '1112', 6: '1222', 8: '1222' }), 'q-child-survive');
+assert(p191Fear.primaryFormula?.result?.executorResult?.sourceOutcome === 'fear', 'p191 pure-malefic H1 gives fear/concern branch');
+
+const p264Stages = buildKashfReadingByQuestionId(makeP204Board({ 11: '2211', 9: '1222', 7: '2122' }), 'q-lifespan-stages');
+const p264Exec = p264Stages.primaryFormula?.result?.executorResult;
+assert(JSON.stringify(p264Exec?.housesUsed) === JSON.stringify([11,9,7]), 'p264 uses H11/H9/H7 in source order');
+assert(p264Exec?.stages?.length === 3 && p264Exec.stages.every((stage) => stage.planetResolved === true), 'p264 resolves verified planetary attribution for each fixture stage');
+assert(p264Exec?.positive === null && p264Stages.overallPositive === null, 'p264 remains descriptive and does not invent a lifespan yes/no score');
+assert(p264Stages.primaryFormula?.sourceText === getKashfV57Knowledge('lifespan.p264.stagesH11H9H7')?.v57?.hebrewRule, 'p264 runtime sourceText comes from Hebrew v57');
+
+const p244Return = buildKashfReadingByQuestionId(makeP204Board({ 1: '2211', 2: '2211', 9: '2211' }), 'q-traveler-return');
+const p244Exec = p244Return.primaryFormula?.result?.executorResult;
+assert(p244Exec?.allBeneficIncoming === true && p244Exec?.sourceOutcome === 'good-return' && p244Exec?.positive === true, 'p244 all pure-benefic internal houses support good return');
+const p244Hard = buildKashfReadingByQuestionId(makeP204Board({ 1: '1112', 2: '1112', 9: '1112' }), 'q-traveler-return');
+assert(p244Hard.primaryFormula?.result?.executorResult?.sourceOutcome === 'hardship-possible-no-return', 'p244 all pure-malefic houses expose hardship/possible non-return branch');
+assert(p244Hard.primaryFormula?.result?.executorResult?.positive === null, 'p244 hardship branch is not converted into certain no-return');
+assert(p244Return.primaryFormula?.sourceText === getKashfV57Knowledge('travel.p244.returnH1H2H9')?.v57?.hebrewRule, 'p244 runtime sourceText comes from Hebrew v57');
+
+const p210Marriage = buildKashfReadingByQuestionId(makeP204Board({ 1: '1111', 5: '2111', 7: '1222', 15: '1222' }), 'q-marriage-fit');
+const p210Exec = p210Marriage.primaryFormula?.result?.executorResult;
+assert(p210Exec?.finalPattern === '1222', 'p210 H1+H5 fixture derives expected final figure');
+assert(p210Exec?.finalOutcome === 'good' && p210Exec?.positive === true, 'p210 benefic H1+H5 result gives good final judgment');
+assert(p210Exec?.judgeGood === true, 'p210 benefic judge exposes the explicit good-outcome testimony');
+assert(p210Marriage.primaryFormula?.sourceText === getKashfV57Knowledge('marriage.p210.generalMarriageH1H2H7H8H10Judge')?.v57?.hebrewRule, 'p210 runtime sourceText comes from Hebrew v57');
+
+for (const reading of [p191Safety, p264Stages, p244Return, p210Marriage]) {
+  assert(reading.canonicalExecution?.methodsExecuted?.length === 1, 'easy batch reading executes exactly one canonical method');
+  assert(reading.dhamir === null && reading.canonicalExecution?.topicBundleExecuted === false && reading.canonicalExecution?.altFormulaExecuted === false, 'easy batch reading runs no Dhamir/topic bundle/alternative');
+}
+
 console.log(`Kashf canonical routing tests: ${passed} passed, ${failed} failed`);
 if (failed > 0) {
   process.exit(1);

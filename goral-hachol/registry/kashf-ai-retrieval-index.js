@@ -39,6 +39,26 @@ const STOPWORDS = new Set([
  * executable rules.
  */
 const RETRIEVAL_OVERRIDES = Object.freeze({
+  'pregnancy.p191.childSafetyH1H6H8': {
+    aliases: ['האם הוולד יהיה בשלום', 'האם יש חשש לוולד', 'מה מצב שלום הוולד', 'האם הוולד יחיה', 'בטיחות הוולד'],
+    doNotMixWith: ['pregnancy.p191.existsH5SilentEmpty', 'pregnancy.p191.genderH5', 'pregnancy.p191.deliveryDifficultyH1H5H15', 'child.p194.healthTrajectoryH6H8'],
+    houses: [1, 6, 8],
+  },
+  'lifespan.p264.stagesH11H9H7': {
+    aliases: ['שלבי החיים', 'ראשית אמצע וסוף החיים', 'איך יהיו שלבי החיים', 'ילדות בגרות זקנה', 'מה מצב שלבי החיים'],
+    doNotMixWith: ['lifespan.p178.elementCountToHouse', 'general.p174.h1h2h4h7h10h15'],
+    houses: [11, 9, 7],
+  },
+  'travel.p244.returnH1H2H9': {
+    aliases: ['האם הנוסע יחזור', 'האם ישוב מהמסע', 'חזרת הנוסע', 'האם יחזור הביתה מהנסיעה', 'האם ישוב לארצו'],
+    doNotMixWith: ['travel.p238.assemble1359', 'travel.p238.timeSelectionH9H4', 'missing.p249.returnAnglesJudge'],
+    houses: [1, 2, 9],
+  },
+  'marriage.p210.generalMarriageH1H2H7H8H10Judge': {
+    aliases: ['האם השידוך מתאים', 'האם הזוגיות מתאימה', 'מה יהיה בנישואין', 'התאמת נישואין', 'סיכויי הנישואין'],
+    doNotMixWith: ['marriage.p204.previousStatusH7inH10', 'marriage.p204.dowryH8', 'love.p206.womanFavorH7H11ThenH5', 'desire.p206.querentWantsH7H11ThenH5'],
+    houses: [1, 2, 5, 7, 8, 10, 15],
+  },
   'general.p174.h1h2h4h7h10h15': {
     aliases: ['מה מצבי הכללי', 'מצב כללי', 'מה מצבו הכללי', 'סקירה כללית', 'כלל ענייניו של השואל', 'מה המצב הכללי שלי'],
     doNotMixWith: ['matter.p172.h17_h1011_thenCombine', 'completion.p173.fireRows15910', 'lifespan.p178.elementCountToHouse', 'lifespan.p264.stagesH11H9H7'],

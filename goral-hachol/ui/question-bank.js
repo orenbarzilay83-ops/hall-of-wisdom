@@ -221,7 +221,7 @@ window.QUESTION_BANK = [
     id: 'q-lifespan-stages',
     category: 'health', houseId: 11, topicId: 'deathInheritance', kashfTopicId: 'deathInheritance',
     label: 'שלבי חיים — ראשית, אמצע וסוף',
-    desc: 'ניתוח שלושת שלבי החיים: ילדות, בגרות, זקנה — מה כל שלב מביא',
+    desc: 'כשף עמ׳ 264: בית 11 לראשית החיים, 9 לאמצע ו־7 לסוף; הדין לפי הכוכב של הצורה בכל בית — לא חישוב שנות חיים',
     clientFields: [],
   },
   {
@@ -414,7 +414,7 @@ window.QUESTION_BANK = [
     id: 'q-marriage-fit',
     category: 'love', houseId: 7, topicId: 'marriage', kashfTopicId: 'marriage',
     label: 'האם השידוך / הזוגיות יתאים?',
-    desc: 'לבדיקת שידוך: האם הזוג מתאים, מה סיכויי הנישואין',
+    desc: 'דין הנישואין של כשף עמ׳ 210–211: בתי האיש, האישה, מה שביניהם, הדיין והולדת 1+5 לפסק הסופי',
     clientFields: [F.candidate, F.candidateAge, F.obstacle],
   },
   {
@@ -876,7 +876,7 @@ window.QUESTION_BANK = [
     id: 'q-child-survive',
     category: 'family', houseId: 5, topicId: 'childrenPregnancy', kashfTopicId: 'children',
     label: 'האם הוולד יחיה / יהיה בריא?',
-    desc: 'לשאלת הישרדות ובריאות הנולד בשלב מיד לאחר הלידה',
+    desc: 'דין כשף עמ׳ 191: בית 1 לשלום/חשש על הוולד; בתי 6 ו־8 יחד נותנים את אזהרת המקור החמורה',
     clientFields: [F.pregnancyConcern, F.pregnancyMonths],
   },
 
@@ -936,7 +936,7 @@ window.QUESTION_BANK = [
     id: 'q-traveler-return',
     category: 'travel', houseId: 9, topicId: 'travel', kashfTopicId: 'travel',
     label: 'האם הנוסע יחזור?',
-    desc: 'לנוסע שכבר יצא לדרך — האם ישוב הביתה',
+    desc: 'כשף עמ׳ 244: חזרת נוסע שכבר יצא לדרך לפי בתים 1, 2 ו־9; השיטה אינה מחשבת מועד חזרה',
     clientFields: [F.destination, F.travelDate],
   },
   {

@@ -281,10 +281,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'children',
     sourcePages: [191],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'H1 benefic indicates safety; H1 malefic indicates fear; H6+H8 malefic is the severe/dead-birth condition. These are supporting conditions of the same safety intent, not separate methods.',
+    executorStatus: 'ready',
+    notes: 'Canonical p191 child-safety executor is wired. H1 pure benefic gives the source safety testimony; H1 pure malefic gives fear/concern. H6+H8 both pure malefic activate the separate severe source warning that the fetus/child may emerge dead. Mixed figures are not collapsed. The severe clause is treated as a risk statement, not as a certain death verdict.',
   }),
 
   'pregnancy.p191.deliveryDifficultyH1H5H15': method({
@@ -329,10 +329,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'friendsHope',
     sourcePages: [264],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Distinct non-numeric intent: H11 beginning of life, H9 middle, H7 end. Must never answer lifespan duration.',
+    executorStatus: 'ready',
+    notes: 'Canonical p264 life-stages executor is wired as a descriptive three-stage profile only: H11 beginning of life, H9 middle, H7 end. Each stage exposes the figure and the verified p133-134 planetary attribution. It does not calculate lifespan duration and does not invent an aggregate good/bad score.',
   }),
 
   'mother.p257.statusDayNight': method({
@@ -439,10 +439,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'marriage',
     sourcePages: [210, 211],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Canonical general-marriage judgment: H1/H2 represent the man and marriage, H7/H8 the woman, H10 what occurs between them, and the judge the final outcome; the passage then derives H1+H5 for a final good/bad judgment. This supersedes the earlier mistaken assumption that the p206 desire formula was the marriage-suitability method.',
+    executorStatus: 'ready',
+    notes: 'Canonical pp210-211 general-marriage executor is wired. It preserves the source roles of H1/H2 for the man and marriage, H7/H8 for the woman, H10 for what occurs between them and H15 for the outcome; it then performs the explicit H1+H5 derivation for the final good/opposite judgment. Only source-explicit branches are asserted, and mixed testimony remains unresolved.',
   }),
 
   'love.p205.directLoveH1PlacementH15': method({
@@ -609,10 +609,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'travel',
     sourcePages: [244],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Body-source traveler-return rule: H1/H2/H9 benefic incoming figures support a good return; malefics indicate hardship and sometimes no return. H5 is the dedicated return house in the companion rule.',
+    executorStatus: 'ready',
+    notes: 'Canonical p244 traveler-return executor is wired conservatively. H1/H2/H9 all pure benefic and strictly internal support return in goodness and joy. H1/H2/H9 all pure malefic expose the source hardship / possible non-return branch, but are not converted into a certain no-return verdict. Split or mixed testimony remains unresolved. The separate H5 companion rule is not imported.',
   }),
 
   'missing.p249.returnAnglesJudge': method({
