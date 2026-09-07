@@ -71,7 +71,7 @@ jobs:
       - name: Audit question-route coverage
         run: node _audit_kashf_question_route_coverage.mjs
 
-      - name: Commit canonical AI live bridge
+      - name: Commit canonical AI live bridge core
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -80,8 +80,7 @@ jobs:
             goral-hachol/intelligence/kashf-ai-context-builder.js \
             goral-hachol/ui/goral-app.js \
             supabase/functions/oren-smart-advisor/kashf_reading_payload_sanitizer.ts \
-            supabase/functions/oren-smart-advisor/oren-smart-advisor-brain-prompt.ts \
-            .github/workflows/kashf-ai-retrieval-index-tests.yml
+            supabase/functions/oren-smart-advisor/oren-smart-advisor-brain-prompt.ts
           if git diff --cached --quiet; then
             echo "No core changes to commit"
             exit 1
