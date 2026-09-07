@@ -868,7 +868,63 @@ function computeReligionQualityP253(chart) {
   };
 }
 
+
+// Kashf v57 p212 — reconciliation in disputes.
+// Generate one figure from H1+H7. The source explicitly states only the
+// benefic branch: if the generated figure is benefic, the two sides reconcile.
+// The converse is not silently invented. Mediator identity rules are not part
+// of this yes/no executor.
+function computeDisputeReconciliationP212(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h1 = findCanonicalHouse(chart, 1);
+  const h7 = findCanonicalHouse(chart, 7);
+  const h1Pattern = h1?.key || h1?.pattern || null;
+  const h7Pattern = h7?.key || h7?.pattern || null;
+  if (!h1Pattern || !h7Pattern) return null;
+
+  const combined = combineRamlFigures(h1Pattern, h7Pattern);
+  const resultPattern = combined.resultPattern;
+  const classification = classifyCanonicalFigure(resultPattern);
+  const isBenefic = classification.saadNahs === 'saad';
+
+  let sourceOutcome = 'unresolved';
+  let sourceOutcomeHebrew = 'לא הוכרע אם יהיה פיוס לפי כלל זה';
+  let positive = null;
+  let outputHebrew;
+
+  if (isBenefic) {
+    sourceOutcome = 'reconciliation';
+    sourceOutcomeHebrew = 'שני הצדדים יתפייסו';
+    positive = true;
+    outputHebrew = 'לפי חשיפת הסודות הנצורים v57 עמ׳ 212, מן הבית הראשון והשביעי נולדה צורה מיטיבה. לפי לשון הכלל: שני הצדדים יתפייסו.';
+  } else if (classification.saadNahs === 'mixed') {
+    outputHebrew = 'בעמ׳ 212 נמסר במפורש ענף לפיוס כאשר הצורה הנולדת מן הראשון והשביעי מיטיבה. כאן הצורה ממוזגת, ולכן אין להפוך את נטייתה בכוח למיטיבה ואין הכרעת פיוס לפי כלל זה.';
+  } else if (classification.saadNahs === 'nahs') {
+    outputHebrew = 'בעמ׳ 212 נמסר במפורש ענף לפיוס כאשר הצורה הנולדת מן הראשון והשביעי מיטיבה. כאן הצורה מזיקה, אך סעיף זה אינו אומר במפורש שההפך מוכיח אי־פיוס; לכן אין להשלים דין כזה מן הדעת.';
+  } else {
+    outputHebrew = 'הצורה נולדה מן הבית הראשון והשביעי לפי עמ׳ 212, אך סיווגה אינו זמין; לכן אין הכרעה לפי כלל זה.';
+  }
+
+  return {
+    sourceRef: 'חשיפת הסודות הנצורים v57 עמ׳ 212',
+    sourceText: 'אם מן הראשון והשביעי נולדת צורה מיטיבה, שניהם יתפייסו על ידי מי שמורה עליו הבית שבו שוכנת הצורה. אם בראשון צורת השמש — הפיוס בא מן השלטון; ואם בעשירי צורת צדק — מן הדיין; ואם בראשון צורה של נציב או ממונה — מן המושל.',
+    housesUsed: [1, 7],
+    h1Pattern,
+    h7Pattern,
+    resultPattern,
+    resultFigureHebrew: classification.figureHebrew || null,
+    classification,
+    reconciliation: isBenefic ? true : null,
+    sourceOutcome,
+    sourceOutcomeHebrew,
+    positive,
+    mediatorResolved: false,
+    outputHebrew,
+  };
+}
+
 const CUSTOM_EXECUTORS = Object.freeze({
+  'dispute.p212.reconciliationH1H7': computeDisputeReconciliationP212,
   'religion.p253.h3h9Quality': computeReligionQualityP253,
   'matter.p172.h17_h1011_thenCombine': computeMatterOutcomeP172,
   'relocation.p183.currentVsNewPlace': computeRelocationCurrentVsNewP183,

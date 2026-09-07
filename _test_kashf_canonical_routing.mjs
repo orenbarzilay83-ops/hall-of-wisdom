@@ -217,11 +217,12 @@ assert(womenDispute.aliasOf === 'q-dispute', 'women-dispute alias is explicit');
 
 const reconciliation = assertRoute('q-reconciliation', {
   ok: true,
-  canRunKashf: false,
+  canRunKashf: true,
   kashfIntentId: 'dispute.reconciliation',
   kashfMethodId: 'dispute.p212.reconciliationH1H7',
   kashfRuntimeStatus: 'ready',
-  executorStatus: 'pending',
+  executorStatus: 'ready',
+  runtimeAllowed: true,
 });
 const compromise = resolveKashfRouteByQuestionId('q-compromise');
 assert(compromise.kashfMethodId === reconciliation.kashfMethodId, 'compromise and reconciliation use one exact canonical method');
@@ -653,6 +654,59 @@ assert(authorityAppointmentNo.overallPositive === false, 'p257 negative branch i
 
 
 
+
+
+// ── P15 p212 dispute reconciliation source contract ----------------------
+assert(canRunKashfMethod('dispute.p212.reconciliationH1H7'), 'p212 reconciliation method is explicitly runnable');
+const p212Knowledge = getKashfV57Knowledge('dispute.p212.reconciliationH1H7');
+assert(p212Knowledge?.v57?.hebrewRule.includes('מן הראשון והשביעי'), 'p212 v57 knowledge preserves H1+H7 generation');
+assert(p212Knowledge?.v57?.hebrewRule.includes('שניהם יתפייסו'), 'p212 v57 knowledge preserves explicit reconciliation branch');
+
+const p212Benefic = buildKashfReadingByQuestionId(
+  makeP204Board({ 1: '1111', 7: '2211' }),
+  'q-reconciliation',
+  { question: 'האם יהיה פיוס בין הצדדים?' }
+);
+assert(p212Benefic.valid === true && p212Benefic.canRunKashf === true, 'p212 benefic fixture executes canonically');
+assert(JSON.stringify(p212Benefic.primaryFormula?.houses) === JSON.stringify([1, 7]), 'p212 traces H1+H7 only');
+assert(p212Benefic.primaryFormula?.result?.executorResult?.resultPattern === '1122', 'p212 generated H1+H7 figure is correct');
+assert(p212Benefic.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'saad', 'p212 generated pure benefic stays saad');
+assert(p212Benefic.primaryFormula?.result?.executorResult?.sourceOutcome === 'reconciliation', 'p212 explicit benefic branch yields reconciliation');
+assert(p212Benefic.primaryFormula?.result?.executorResult?.reconciliation === true, 'p212 reconciliation flag is true only for explicit benefic branch');
+assert(p212Benefic.overallPositive === true, 'p212 explicit reconciliation branch is positive');
+assert(p212Benefic.altFormula === null, 'p212 does not aggregate dispute alternatives');
+assert(p212Benefic.canonicalExecution?.topicBundleExecuted === false, 'p212 does not execute broad disputes bundle');
+assert(p212Benefic.dhamir === null, 'p212 does not auto-run Dhamir');
+assert(p212Benefic.primaryFormula?.result?.executorResult?.mediatorResolved === false, 'p212 yes/no executor does not invent mediator identity');
+
+const p212Malefic = buildKashfReadingByQuestionId(
+  makeP204Board({ 1: '1111', 7: '2221' }),
+  'q-reconciliation',
+  { question: 'האם יהיה פיוס בין הצדדים?' }
+);
+assert(p212Malefic.primaryFormula?.result?.executorResult?.resultPattern === '1112', 'p212 malefic fixture generates expected figure');
+assert(p212Malefic.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'nahs', 'p212 generated pure malefic stays nahs');
+assert(p212Malefic.primaryFormula?.result?.executorResult?.sourceOutcome === 'unresolved', 'p212 does not invent no-reconciliation converse');
+assert(p212Malefic.primaryFormula?.result?.executorResult?.reconciliation === null, 'p212 malefic branch remains unresolved');
+assert(p212Malefic.overallPositive === null, 'p212 malefic branch is not collapsed into an unsourced negative verdict');
+
+const p212Mixed = buildKashfReadingByQuestionId(
+  makeP204Board({ 1: '1111', 7: '1121' }),
+  'q-reconciliation',
+  { question: 'האם יהיה פיוס בין הצדדים?' }
+);
+assert(p212Mixed.primaryFormula?.result?.executorResult?.resultPattern === '2212', 'p212 mixed fixture generates expected figure');
+assert(p212Mixed.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'mixed', 'p212 preserves mixed source class');
+assert(p212Mixed.primaryFormula?.result?.executorResult?.sourceOutcome === 'unresolved', 'p212 mixed branch remains unresolved');
+assert(p212Mixed.overallPositive === null, 'p212 mixed result is not promoted by inclination');
+
+const compromiseAfterP212 = resolveKashfRouteByQuestionId('q-compromise');
+assert(compromiseAfterP212.canRunKashf === true, 'q-compromise alias becomes runnable through the same p212 method');
+assert(compromiseAfterP212.kashfMethodId === 'dispute.p212.reconciliationH1H7', 'q-compromise still resolves to the exact p212 method');
+
+const p212Html = writeCanonicalKashfReading(p212Benefic);
+assert(p212Html.includes('dispute.p212.reconciliationH1H7'), 'p212 narrative exposes exact method id');
+assert(p212Html.includes('שני הצדדים יתפייסו'), 'p212 narrative preserves Hebrew source verdict');
 
 // ── P14 p253 religion/righteousness source contract ----------------------
 assert(canRunKashfMethod('religion.p253.h3h9Quality'), 'p253 religion/righteousness method is explicitly runnable');

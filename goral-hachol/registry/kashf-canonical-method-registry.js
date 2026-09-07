@@ -781,10 +781,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'disputes',
     sourcePages: [212],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Body-source reconciliation rule: derive H1+H7; a benefic result indicates reconciliation, and the house in which that result resides can indicate the mediator. These are parts of one method, not separate votes.',
+    executorStatus: 'ready',
+    notes: 'Canonical p212 reconciliation executor is wired. Generate one figure from H1+H7. A pure benefic generated figure gives the explicit source verdict that the two sides reconcile. Pure malefic, mixed, or unknown generated figures remain unresolved because p212 does not state the converse in this clause. Mediator identity clauses remain outside this yes/no executor.',
   }),
 
   'dispute.p213.winnerStrengthUnresolved': method({
