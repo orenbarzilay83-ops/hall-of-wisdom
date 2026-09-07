@@ -180,10 +180,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'generalReading',
     sourcePages: [172],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Combine 1+7, combine 10+11, then combine the two results. Distinct from completion p173.',
+    executorStatus: 'ready',
+    notes: 'Canonical p172 matter-outcome executor is wired: combine H1+H7, combine H10+H11, then combine those two generated figures. The final figure alone is the source result for good/bad. Pure benefic => good, pure malefic => bad, and mixed remains mixed/unresolved rather than being collapsed. Distinct from completion p173.',
   }),
 
   'joy.p196.recast14511': method({

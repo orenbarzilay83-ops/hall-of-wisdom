@@ -734,7 +734,76 @@ function computeRelocationCurrentVsNewP183(chart) {
   };
 }
 
+
+// Kashf v57 p172: derive one figure from H1+H7, another from H10+H11,
+// then combine those generated figures. The final figure is the result of the
+// querent's matter "for good or bad". Canonical source-safe fortune classes
+// are preserved: mixed is not collapsed into benefic or malefic.
+function computeMatterOutcomeP172(chart) {
+  if (!Array.isArray(chart)) return null;
+  const houseNumbers = [1, 7, 10, 11];
+  const patterns = {};
+
+  for (const houseNumber of houseNumbers) {
+    const entry = findCanonicalHouse(chart, houseNumber);
+    const pattern = entry?.key || entry?.pattern || null;
+    if (!pattern) return null;
+    patterns[houseNumber] = pattern;
+  }
+
+  const firstSeventh = combineRamlFigures(patterns[1], patterns[7]);
+  const tenthEleventh = combineRamlFigures(patterns[10], patterns[11]);
+  const finalCombination = combineRamlFigures(firstSeventh.resultPattern, tenthEleventh.resultPattern);
+  const resultPattern = finalCombination.resultPattern;
+  const classification = classifyCanonicalFigure(resultPattern);
+
+  let sourceOutcome = 'unresolved';
+  let sourceOutcomeHebrew = 'לא הוכרע לטוב או לרע בכלל זה';
+  let positive = null;
+
+  if (classification.saadNahs === 'saad') {
+    sourceOutcome = 'good';
+    sourceOutcomeHebrew = 'תוצאת העניין לטוב';
+    positive = true;
+  } else if (classification.saadNahs === 'nahs') {
+    sourceOutcome = 'bad';
+    sourceOutcomeHebrew = 'תוצאת העניין לרע';
+    positive = false;
+  } else if (classification.saadNahs === 'mixed') {
+    sourceOutcome = 'mixed';
+    sourceOutcomeHebrew = classification.mixedTendencyHebrew
+      ? 'תוצאת העניין ממוזגת — ' + classification.mixedTendencyHebrew
+      : 'תוצאת העניין ממוזגת';
+  }
+
+  const finalFigureLabel = classification.figureHebrew || resultPattern;
+  const outputHebrew = classification.saadNahs === 'saad'
+    ? 'לפי כשף v57 עמ׳ 172: חיבור 1+7 וחיבור 10+11 נצרפו שוב, והצורה הסופית היא ' + finalFigureLabel + ' — מיטיבה. לכן תוצאת עניינו של השואל נידונה לטוב.'
+    : classification.saadNahs === 'nahs'
+      ? 'לפי כשף v57 עמ׳ 172: חיבור 1+7 וחיבור 10+11 נצרפו שוב, והצורה הסופית היא ' + finalFigureLabel + ' — מזיקה. לכן תוצאת עניינו של השואל נידונה לרע.'
+      : classification.saadNahs === 'mixed'
+        ? 'לפי כשף v57 עמ׳ 172: חיבור 1+7 וחיבור 10+11 נצרפו שוב, והצורה הסופית היא ' + finalFigureLabel + ' — ממוזגת. אין להפוך צורה ממוזגת בכוח להכרעת טוב או רע חד־משמעית.'
+        : 'הצורה הסופית נוצרה לפי חיבורי עמ׳ 172, אך סיווג הטוב/הרע שלה אינו זמין; לכן אין הכרעה לפי כלל זה.';
+
+  return {
+    sourceRef: 'חשיפת הסודות הנצורים v57 עמ׳ 172',
+    sourceText: 'לדעת את תוצאת עניינו של השואל, הוצא צורה מן הבית הראשון והשביעי, וצורה נוספת מן העשירי והאחד־עשר. אחר כך צרף אותן; הצורה היוצאת מהן היא תוצאת עניינו של השואל — לטוב או לרע.',
+    housesUsed: houseNumbers,
+    housePatterns: patterns,
+    firstSeventhPattern: firstSeventh.resultPattern,
+    tenthEleventhPattern: tenthEleventh.resultPattern,
+    resultPattern,
+    resultFigureHebrew: classification.figureHebrew || null,
+    classification,
+    sourceOutcome,
+    sourceOutcomeHebrew,
+    positive,
+    outputHebrew,
+  };
+}
+
 const CUSTOM_EXECUTORS = Object.freeze({
+  'matter.p172.h17_h1011_thenCombine': computeMatterOutcomeP172,
   'relocation.p183.currentVsNewPlace': computeRelocationCurrentVsNewP183,
   'illness.p196.outcomeH15': computeIllnessRecoveryP196,
   'hidden.p188.isStillThere': computeHiddenStillThereP188,
