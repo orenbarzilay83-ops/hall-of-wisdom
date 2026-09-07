@@ -753,6 +753,125 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     note: 'p256 judges the condition/strength of honor, rank and reputation by the planetary figure in H10. It does not directly promise “will I become famous?”. Rename to a source-safe honor/reputation condition question.',
   }),
 
+  // ── AUDITED CONFLICT + THEFT SLICE -----------------------------------
+  'q-theft-return': route({
+    questionId: 'q-theft-return',
+    disposition: 'KEEP',
+    kashfIntentId: 'theft.recovery',
+    kashfMethodId: 'theft.p224.recoveryH8',
+    kashfRuntimeStatus: 'repair-required',
+    note: 'Use the body p224 H8 binary recovery rule. Current legacy logic adds unsupported soft/mixed outcomes and remains blocked.',
+  }),
+
+  'q-thief-near': route({
+    questionId: 'q-thief-near',
+    disposition: 'RENAME',
+    kashfIntentId: 'theft.thiefRelationship',
+    kashfMethodId: 'theft.p224.relationshipH7Recurrence',
+    kashfRuntimeStatus: 'ready',
+    note: 'Source-safe scope is the thief’s relationship/connection indicated by the house where the H7 figure recurs. It is not a numeric distance meter.',
+  }),
+
+  'q-theft-who': route({
+    questionId: 'q-theft-who',
+    disposition: 'RENAME',
+    kashfIntentId: 'theft.thiefDescription',
+    kashfMethodId: 'theft.p225.thiefDescriptionH7',
+    kashfRuntimeStatus: 'ready',
+    note: 'Rename from “who stole?” to a source-safe descriptive profile of the thief. The method does not prove a named person’s identity and must not be used to accuse a specific suspect.',
+  }),
+
+  'q-dispute': route({
+    questionId: 'q-dispute',
+    disposition: 'BLOCK',
+    kashfIntentId: 'dispute.whoWins',
+    kashfMethodId: 'dispute.p213.winnerStrengthUnresolved',
+    kashfRuntimeStatus: 'blocked-by-source',
+    note: 'The body winner/loser method is identified, but exact “strength” semantics are not closed. Do not fall back to post-marker non-body winner rules.',
+  }),
+
+  'q-women-dispute': route({
+    questionId: 'q-women-dispute',
+    disposition: 'ALIAS',
+    aliasOf: 'q-dispute',
+    kashfIntentId: 'dispute.whoWins',
+    kashfMethodId: 'dispute.p213.winnerStrengthUnresolved',
+    kashfRuntimeStatus: 'blocked-by-source',
+    note: 'No separate canonical winner method by opponent gender was found in the audited body passage.',
+  }),
+
+  'q-reconciliation': route({
+    questionId: 'q-reconciliation',
+    disposition: 'KEEP',
+    kashfIntentId: 'dispute.reconciliation',
+    kashfMethodId: 'dispute.p212.reconciliationH1H7',
+    kashfRuntimeStatus: 'ready',
+  }),
+
+  'q-compromise': route({
+    questionId: 'q-compromise',
+    disposition: 'ALIAS',
+    aliasOf: 'q-reconciliation',
+    kashfIntentId: 'dispute.reconciliation',
+    kashfMethodId: 'dispute.p212.reconciliationH1H7',
+    kashfRuntimeStatus: 'ready',
+    note: 'Treat as the same reconciliation/settlement intent, not as a separate voting method.',
+  }),
+
+  'q-partnership': route({
+    questionId: 'q-partnership',
+    disposition: 'BLOCK',
+    kashfIntentId: 'partnership.goodOrBad',
+    kashfMethodId: 'partnership.p212.operationUnresolved',
+    kashfRuntimeStatus: 'blocked-by-source',
+    note: 'The source variants and the operand of the 2-by-2 remainder rule are not closed. No aggregation or inferred operand.',
+  }),
+
+  'q-war': route({
+    questionId: 'q-war',
+    disposition: 'EDUCATIONAL',
+    kashfIntentId: 'war.outcome',
+    kashfMethodId: 'war.external.p213-217.nonBody',
+    kashfRuntimeStatus: 'educational-only',
+    note: 'The audited war/city rules follow the explicit ومن غير الكتاب marker and remain knowledge-only by default.',
+  }),
+
+  'q-fear-punishment': route({
+    questionId: 'q-fear-punishment',
+    disposition: 'KEEP',
+    kashfIntentId: 'fear.punishment',
+    kashfMethodId: 'fear.p273.punishmentSigns',
+    kashfRuntimeStatus: 'repair-required',
+    note: 'Body method exists, but the current helper omits the source’s alternative enemy-house condition and cannot run unchanged.',
+  }),
+
+  'q-prisoner-guilty': route({
+    questionId: 'q-prisoner-guilty',
+    disposition: 'BLOCK',
+    kashfIntentId: 'prisoner.causeOfImprisonment',
+    kashfMethodId: 'prisoner.causeOfImprisonment.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+    note: 'The body prisoner rules do not identify who caused the imprisonment. Do not infer culpability from general house meanings.',
+  }),
+
+  'q-victory-goal': route({
+    questionId: 'q-victory-goal',
+    disposition: 'SPLIT',
+    kashfIntentId: 'conflict.victoryGoalMixedScope',
+    kashfMethodId: 'conflict.victoryGoalMixedScope.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+    note: 'Split opponent-victory from personal-goal fulfillment. The former belongs to dispute.whoWins; the latter to hope.fulfillment.',
+  }),
+
+  'q-who-looks-biz': route({
+    questionId: 'q-who-looks-biz',
+    disposition: 'BLOCK',
+    kashfIntentId: 'business.otherPartyAttention',
+    kashfMethodId: 'business.attention.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+    note: 'No body-source business-attention method selected. Do not reuse the p204 love-attention formula for commerce.',
+  }),
+
   // ── REPAIR REQUIRED: explicit hard stop until fixed -------------------
   'q-wish': route({
     questionId: 'q-wish',

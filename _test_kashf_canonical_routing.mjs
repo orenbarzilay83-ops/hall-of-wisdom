@@ -136,6 +136,86 @@ assertRoute('q-missing-alive', {
   kashfRuntimeStatus: 'ready',
 });
 
+// ── Conflict/theft source-intent separation -----------------------------
+assertRoute('q-theft-return', {
+  ok: true,
+  canRunKashf: false,
+  kashfIntentId: 'theft.recovery',
+  kashfMethodId: 'theft.p224.recoveryH8',
+  kashfRuntimeStatus: 'repair-required',
+});
+assertRoute('q-thief-near', {
+  ok: true,
+  canRunKashf: false,
+  kashfIntentId: 'theft.thiefRelationship',
+  kashfMethodId: 'theft.p224.relationshipH7Recurrence',
+  kashfRuntimeStatus: 'ready',
+  executorStatus: 'pending',
+});
+assertRoute('q-theft-who', {
+  ok: true,
+  canRunKashf: false,
+  kashfIntentId: 'theft.thiefDescription',
+  kashfMethodId: 'theft.p225.thiefDescriptionH7',
+  kashfRuntimeStatus: 'ready',
+  executorStatus: 'pending',
+});
+
+const dispute = assertRoute('q-dispute', {
+  ok: true,
+  canRunKashf: false,
+  kashfIntentId: 'dispute.whoWins',
+  kashfRuntimeStatus: 'blocked-by-source',
+});
+const womenDispute = resolveKashfRouteByQuestionId('q-women-dispute');
+assert(womenDispute.kashfMethodId === dispute.kashfMethodId, 'women-dispute does not invent a gender-specific winner method');
+assert(womenDispute.aliasOf === 'q-dispute', 'women-dispute alias is explicit');
+
+const reconciliation = assertRoute('q-reconciliation', {
+  ok: true,
+  canRunKashf: false,
+  kashfIntentId: 'dispute.reconciliation',
+  kashfMethodId: 'dispute.p212.reconciliationH1H7',
+  kashfRuntimeStatus: 'ready',
+  executorStatus: 'pending',
+});
+const compromise = resolveKashfRouteByQuestionId('q-compromise');
+assert(compromise.kashfMethodId === reconciliation.kashfMethodId, 'compromise and reconciliation use one exact canonical method');
+
+assertRoute('q-war', {
+  ok: true,
+  canRunKashf: false,
+  kashfIntentId: 'war.outcome',
+  kashfRuntimeStatus: 'educational-only',
+  runtimeAllowed: false,
+});
+assertRoute('q-fear-punishment', {
+  ok: true,
+  canRunKashf: false,
+  kashfIntentId: 'fear.punishment',
+  kashfRuntimeStatus: 'repair-required',
+});
+assertRoute('q-prisoner-guilty', {
+  ok: true,
+  canRunKashf: false,
+  kashfRuntimeStatus: 'unsupported',
+});
+assertRoute('q-partnership', {
+  ok: true,
+  canRunKashf: false,
+  kashfRuntimeStatus: 'blocked-by-source',
+});
+assertRoute('q-victory-goal', {
+  ok: true,
+  canRunKashf: false,
+  kashfRuntimeStatus: 'unsupported',
+});
+assertRoute('q-who-looks-biz', {
+  ok: true,
+  canRunKashf: false,
+  kashfRuntimeStatus: 'unsupported',
+});
+
 // ── Source-ready is NOT the same as executor-ready -----------------------
 const illnessRecovery = assertRoute('q-illness-heal', {
   ok: true,
