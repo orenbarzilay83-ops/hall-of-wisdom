@@ -26,6 +26,26 @@ jobs:
         with:
           node-version: '24'
 
+      - name: Fix one-time patcher nested template literals
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('_apply_kashf_final_route_coverage.mjs')
+          s = p.read_text()
+          replacements = {
+            "assert(r.ok === true, `${qid}: has an explicit route`);": "assert(r.ok === true, qid + ': has an explicit route');",
+            "assert(r.canRunKashf === false, `${qid}: house signification/unsupported question cannot run`);": "assert(r.canRunKashf === false, qid + ': house signification/unsupported question cannot run');",
+            "assert(r.kashfRuntimeStatus === 'unsupported', `${qid}: remains explicitly unsupported`);": "assert(r.kashfRuntimeStatus === 'unsupported', qid + ': remains explicitly unsupported');",
+            "assert(r.ok === true && r.disposition === 'SPLIT', `${qid}: mixed-scope question is explicitly split`);": "assert(r.ok === true && r.disposition === 'SPLIT', qid + ': mixed-scope question is explicitly split');",
+            "assert(r.canRunKashf === false, `${qid}: mixed-scope question cannot run before split`);": "assert(r.canRunKashf === false, qid + ': mixed-scope question cannot run before split');",
+          }
+          for old, new in replacements.items():
+              if old not in s:
+                  raise SystemExit(f'patcher test pattern not found: {old}')
+              s = s.replace(old, new)
+          p.write_text(s)
+          PY
+
       - name: Apply final explicit routing coverage and run hard gate
         run: node _apply_kashf_final_route_coverage.mjs
 
