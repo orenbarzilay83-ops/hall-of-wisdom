@@ -24,6 +24,7 @@ import {
 } from './goral-hachol/engine/kashf-canonical-reading-engine.js';
 import { writeCanonicalKashfReading } from './goral-hachol/engine/kashf-canonical-narrative-writer.js';
 import { buildRamlBoardFromMothers } from './goral-hachol/engine/raml-board-generator.js';
+import { getCanonicalSaadNahsDetail } from './goral-hachol/engine/kashf-canonical-figure-classifier.js';
 
 let passed = 0;
 let failed = 0;
@@ -653,6 +654,74 @@ assert(previousStatusUnresolved.primaryFormula?.result?.executorResult?.h7Patter
 assert(previousStatusUnresolved.primaryFormula?.result?.executorResult?.figureClass === 'other-source-class', 'p204 keeps incoming/outgoing figure outside mutable/fixed classes');
 assert(previousStatusUnresolved.primaryFormula?.result?.executorResult?.previousStatus === null, 'p204 unresolved branch does not force a status');
 assert(previousStatusUnresolved.overallPositive === null, 'p204 unresolved branch does not invent a verdict');
+
+// ── P9 source-safe mixed classification --------------------------------
+const canonicalMixedFigures = [
+  ['1111', 'nahs'], // דרך — ממוזג-מזיק
+  ['1121', 'saad'], // נלחם — ממוזג-מיטיב
+  ['1211', 'saad'], // בר הלחי — ממוזג-מיטיב
+  ['2112', 'nahs'], // חיבור — ממוזג-מזיק
+  ['2212', 'saad'], // לבן — ממוזג-מיטיב
+  ['2222', 'nahs'], // קהלה — ממוזג-מזיק
+];
+for (const [pattern, tendency] of canonicalMixedFigures) {
+  const detail = getCanonicalSaadNahsDetail(pattern);
+  assert(detail.saadNahs === 'mixed', 'canonical mixed classifier preserves mixed for ' + pattern);
+  assert(detail.mixedTendency === tendency, 'canonical mixed classifier preserves tendency metadata for ' + pattern);
+}
+assert(getCanonicalSaadNahsDetail('1122').saadNahs === 'saad', 'canonical classifier preserves pure benefic figure');
+assert(getCanonicalSaadNahsDetail('1112').saadNahs === 'nahs', 'canonical classifier preserves pure malefic figure');
+
+function makeP9Board(overrides = {}) {
+  return {
+    entries: Array.from({ length: 16 }, (_, index) => {
+      const house = index + 1;
+      const pattern = overrides[house] || '2222';
+      return { house, houseNumber: house, pattern, key: pattern, hebrewName: pattern };
+    }),
+    boardValidation: { isValid: true, warnings: [] },
+  };
+}
+
+const relocationMixedBoard = makeP9Board({ 4: '1111', 15: '2222' });
+const relocationMixedReading = buildKashfReadingByQuestionId(relocationMixedBoard, 'q-move-city', { question: 'האם כדאי לעבור מקום?' });
+assert(relocationMixedReading.valid === true, 'relocation mixed regression executes canonically');
+assert(relocationMixedReading.primaryFormula?.result?.resultPattern === '1111', 'relocation mixed fixture produces Road');
+assert(relocationMixedReading.primaryFormula?.result?.classification?.saadNahs === 'mixed', 'relocation canonical formula exposes mixed instead of collapsing it to nahs');
+assert(relocationMixedReading.primaryFormula?.result?.classification?.mixedTendency === 'nahs', 'relocation mixed tendency remains metadata only');
+assert(relocationMixedReading.verdict?.text === 'המקום ממוצע — לא מצוין אך לא מזיק', 'relocation reaches its explicit mixed verdict branch');
+assert(relocationMixedReading.overallPositive === null, 'relocation mixed branch remains non-binary');
+
+assertRoute('q-ruler-status', {
+  ok: true,
+  canRunKashf: true,
+  kashfIntentId: 'authority.rulerCondition',
+  kashfMethodId: 'authority.p257.rulerConditionH7H10',
+  kashfRuntimeStatus: 'ready',
+  executorStatus: 'ready',
+  runtimeAllowed: true,
+});
+assert(canRunKashfMethod('authority.p257.rulerConditionH7H10') === true, 'p257 ruler-condition method is explicitly runnable');
+
+const rulerGood = buildKashfReadingByQuestionId(makeP9Board({ 7: '1122', 10: '2222' }), 'q-ruler-status', { question: 'מה מצב בעל השררה?' });
+assert(rulerGood.valid === true, 'p257 ruler good fixture executes canonically');
+assert(rulerGood.canonicalExecution?.methodsExecuted?.length === 1, 'p257 ruler executes exactly one method');
+assert(rulerGood.canonicalExecution?.methodsExecuted?.[0] === 'authority.p257.rulerConditionH7H10', 'p257 ruler executes exact canonical method');
+assert(JSON.stringify(rulerGood.primaryFormula?.houses) === JSON.stringify([7, 10]), 'p257 ruler traces H7+H10 only');
+assert(rulerGood.primaryFormula?.result?.executorResult?.resultPattern === '1122', 'p257 ruler good fixture produces 1122');
+assert(rulerGood.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'saad', 'p257 ruler good result is benefic');
+assert(rulerGood.overallPositive === true, 'p257 ruler benefic result is positive');
+assert(rulerGood.canonicalExecution?.topicBundleExecuted === false, 'p257 ruler does not execute broad authority bundle');
+assert(rulerGood.dhamir == null, 'p257 ruler does not auto-run Dhamir');
+
+const rulerBad = buildKashfReadingByQuestionId(makeP9Board({ 7: '1112', 10: '2222' }), 'q-ruler-status', { question: 'מה מצב בעל השררה?' });
+assert(rulerBad.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'nahs', 'p257 ruler bad result is malefic');
+assert(rulerBad.overallPositive === false, 'p257 ruler malefic result is negative');
+
+const rulerMixed = buildKashfReadingByQuestionId(makeP9Board({ 7: '1111', 10: '2222' }), 'q-ruler-status', { question: 'מה מצב בעל השררה?' });
+assert(rulerMixed.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'mixed', 'p257 ruler mixed result stays mixed');
+assert(rulerMixed.primaryFormula?.result?.executorResult?.rulerCondition === null, 'p257 ruler mixed branch remains unresolved by this source rule');
+assert(rulerMixed.overallPositive === null, 'p257 ruler mixed branch does not invent positive or negative verdict');
 
 // ── Canonical execution isolation ----------------------------------------
 for (const qid of ['q-success', 'q-travel-safe', 'q-short-travel', 'q-move-city', 'q-siblings']) {

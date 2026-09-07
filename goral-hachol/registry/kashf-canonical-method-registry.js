@@ -705,10 +705,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'authorityState',
     sourcePages: [257],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Body-source ruler-condition rule: derive a figure from H7+H10; benefic gives a good condition and malefic gives a bad condition. This is distinct from whether an appointment remains.',
+    executorStatus: 'ready',
+    notes: 'Canonical p257 ruler-condition executor combines H7+H10. Source-explicit benefic => good and malefic => bad. Canonical mixed classification stays unresolved because this rule does not state a mixed branch. This is distinct from appointment persistence.',
   }),
 
   'career.p266.returnToOffice': method({

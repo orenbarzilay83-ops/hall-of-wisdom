@@ -199,3 +199,8 @@
 - `computeServantMatterKashf` — citation error; the local passage specifies figure derivation only, with no stated fortune-interpretation rule to implement or correct against.
 
 No code, test, or other existing file was modified in the production of this document.
+
+
+## Canonical mixed-classification closure (P9)
+
+The canonical runtime now preserves the source's third fortune class, ممتزج / ממוזג, instead of collapsing mixed-benefic to سعد or mixed-malefic to نحس. The legacy classifier remains unchanged for compatibility. Canonical formula execution uses a separate source-safe classifier and carries a mixed tendency only as metadata; it does not convert that tendency into a binary verdict. Therefore methods whose source states only سعد/نحس must leave mixed results unresolved unless that specific source rule supplies a mixed branch. The p183 relocation rule is the regression anchor because its source explicitly supplies all three branches and its mixed branch is now reachable.

@@ -16,10 +16,10 @@ import {
   assembleFromRow,
   assembleFromFireRows,
   assembleFromAllRows,
-  classifyPattern,
   getFigureHebrewName,
   getHousePattern,
 } from './kashf-formula-engine.js';
+import { classifyCanonicalFigure } from './kashf-canonical-figure-classifier.js';
 import { getTopicRules } from './kashf-topic-rules.js';
 import { getKashfMethod } from '../registry/kashf-canonical-method-registry.js';
 import { requireRunnableKashfRoute } from './kashf-method-router.js';
@@ -91,7 +91,7 @@ function executeFormula(board, formula) {
       throw new Error(`Canonical formula type is not enabled in P0: ${type}`);
   }
 
-  const classification = classifyPattern(resultPattern);
+  const classification = classifyCanonicalFigure(resultPattern);
   return {
     type,
     houses: [...houses],

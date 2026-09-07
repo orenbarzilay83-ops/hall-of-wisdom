@@ -17,6 +17,7 @@ import {
 
 import { combineRamlFigures } from './raml-figures.js';
 import { FIGURE_PLANET_MAP } from '../data/sources/kashf-al-asrar/kashf-hazz.js';
+import { classifyCanonicalFigure } from './kashf-canonical-figure-classifier.js';
 
 const LEGACY_EXECUTORS = Object.freeze({
   'profession.p254.h9Planet': computeProfessionH9Kashf,
@@ -393,6 +394,57 @@ function computeMarriagePreviousStatusP204(chart) {
   };
 }
 
+
+function computeRulerConditionP257(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h7 = chart.find((entry) => Number(entry?.house ?? entry?.houseNumber) === 7) || chart[6] || null;
+  const h10 = chart.find((entry) => Number(entry?.house ?? entry?.houseNumber) === 10) || chart[9] || null;
+  const h7Pattern = h7?.key || h7?.pattern || null;
+  const h10Pattern = h10?.key || h10?.pattern || null;
+  if (!h7Pattern || !h10Pattern) return null;
+
+  const combined = combineRamlFigures(h7Pattern, h10Pattern);
+  const resultPattern = combined.resultPattern;
+  const resultFigureHebrew = combined.result?.hebrewName || resultPattern;
+  const classification = classifyCanonicalFigure(resultPattern);
+
+  let rulerCondition = null;
+  let rulerConditionHebrew = 'לא הוכרע בכלל זה';
+  let positive = null;
+  let outputHebrew;
+
+  if (classification.saadNahs === 'saad') {
+    rulerCondition = 'good';
+    rulerConditionHebrew = 'טוב';
+    positive = true;
+    outputHebrew = 'הולד צורה מבית 7 (' + h7Pattern + ') ומבית 10 (' + h10Pattern + '): ' + resultFigureHebrew + ' (' + resultPattern + ') — מיטיבה. לפי כשף עמ׳ 257: מצב בעל השררה טוב.';
+  } else if (classification.saadNahs === 'nahs') {
+    rulerCondition = 'bad';
+    rulerConditionHebrew = 'רע';
+    positive = false;
+    outputHebrew = 'הולד צורה מבית 7 (' + h7Pattern + ') ומבית 10 (' + h10Pattern + '): ' + resultFigureHebrew + ' (' + resultPattern + ') — מזיקה. לפי כשף עמ׳ 257: מצב בעל השררה רע.';
+  } else if (classification.saadNahs === 'mixed') {
+    outputHebrew = 'הולד צורה מבית 7 (' + h7Pattern + ') ומבית 10 (' + h10Pattern + '): ' + resultFigureHebrew + ' (' + resultPattern + ') — ממוזגת. כלל עמ׳ 257 מוסר דין מפורש למיטיב ולמזיק בלבד; אין להפוך צורה ממוזגת אוטומטית לטובה או לרעה.';
+  } else {
+    outputHebrew = 'לא ניתן לסווג את הצורה שנולדה מבית 7 ובית 10 לפי סיווג המיטיב/מזיק/ממוזג הקנוני; אין להשלים דין מן הדעת.';
+  }
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 257',
+    sourceText: 'הולד מן השביעי והעשירי צורה; אם יצאה מיטיבה — דון לו בטוב, ואם מזיקה — דון לו ברע.',
+    housesUsed: [7, 10],
+    h7Pattern,
+    h10Pattern,
+    resultPattern,
+    resultFigureHebrew,
+    classification,
+    rulerCondition,
+    rulerConditionHebrew,
+    positive,
+    outputHebrew,
+  };
+}
+
 const CUSTOM_EXECUTORS = Object.freeze({
   'marriage.p204.previousStatusH7': computeMarriagePreviousStatusP204,
   'theft.p225.thiefDescriptionH7': computeThiefPhysicalDescriptionKashf,
@@ -401,6 +453,7 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'theft.p224.relationshipH7Recurrence': computeThiefRelationshipP224,
   'authority.p256.honorConditionH10Planet': computeHonorConditionP256,
   'authority.p257.appointmentH1H10Planet': computeAppointmentCompletionP257,
+  'authority.p257.rulerConditionH7H10': computeRulerConditionP257,
 });
 
 function toLegacyChart(board) {
