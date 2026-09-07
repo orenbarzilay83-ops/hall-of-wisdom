@@ -9,18 +9,33 @@
  * use.
  */
 
-import { computeProfessionH9Kashf } from './kashf-pending-extraction.js';
+import {
+  computeProfessionH9Kashf,
+  computeBodyPartDiagnosisKashf,
+} from './kashf-pending-extraction.js';
 
 const LEGACY_EXECUTORS = Object.freeze({
   'profession.p254.h9Planet': computeProfessionH9Kashf,
+  'illness.bodyPart.h6Figure': computeBodyPartDiagnosisKashf,
 });
 
 function toLegacyChart(board) {
-  if (Array.isArray(board)) return board;
-  if (Array.isArray(board?.entries)) return board.entries;
-  const error = new Error('Canonical legacy executor requires a board entries array');
-  error.code = 'KASHF_CANONICAL_BOARD_ADAPTER_FAILED';
-  throw error;
+  const entries = Array.isArray(board)
+    ? board
+    : Array.isArray(board?.entries)
+      ? board.entries
+      : null;
+  if (!entries) {
+    const error = new Error('Canonical legacy executor requires a board entries array');
+    error.code = 'KASHF_CANONICAL_BOARD_ADAPTER_FAILED';
+    throw error;
+  }
+
+  return entries.map((entry) => {
+    const key = entry?.key || entry?.pattern || entry?.figure?.pattern || null;
+    const hebrew = entry?.hebrew || entry?.hebrewName || entry?.figure?.hebrewName || key;
+    return { ...entry, key, hebrew };
+  });
 }
 
 export function hasCanonicalLegacyExecutor(kashfMethodId) {

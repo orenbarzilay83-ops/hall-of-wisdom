@@ -146,7 +146,11 @@ function buildLegacyFunctionReading(board, method, clientContext = {}) {
       positive: null,
     };
     const topicRules = method.legacyTopicId ? getTopicRules(method.legacyTopicId) : null;
-    const houses = method.kashfMethodId === 'profession.p254.h9Planet' ? [9, 10, 11] : [];
+    const houses = method.kashfMethodId === 'profession.p254.h9Planet'
+      ? [9, 10, 11]
+      : method.kashfMethodId === 'illness.bodyPart.h6Figure'
+        ? [6]
+        : [];
     const result = {
       type: 'legacy-function',
       legacyResult,

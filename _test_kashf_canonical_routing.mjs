@@ -334,6 +334,33 @@ assert(!professionHtml.includes('בדיקת אימות נוספת'), 'profession
 assert(!professionHtml.includes('ניתוח תומך לפי ספר'), 'profession writer contains no broad topic support section');
 assert(!professionHtml.includes('מחשבת השואל (הדמיר)'), 'profession writer contains no automatic Dhamir');
 assert(!professionHtml.includes('עדים ודיין'), 'profession writer contains no witness/judge bundle');
+// ── P2 illness body-part method-scoped legacy executor -----------------
+const bodyPartRoute = assertRoute('q-illness-bodypart', {
+  ok: true,
+  canRunKashf: true,
+  kashfIntentId: 'illness.bodyPart',
+  kashfMethodId: 'illness.bodyPart.h6Figure',
+  kashfRuntimeStatus: 'ready',
+  executorStatus: 'ready',
+  runtimeAllowed: true,
+});
+assert(canRunKashfMethod(bodyPartRoute.kashfMethodId) === true, 'illness body-part canonical method is explicitly runnable');
+const bodyPartReading = buildKashfReadingByQuestionId(PILOT_BOARD, 'q-illness-bodypart', { question: 'באיזה איבר נאחז החולי?' });
+assert(bodyPartReading.valid === true, 'q-illness-bodypart executes through canonical legacy allowlist');
+assert(bodyPartReading.canonicalExecution?.methodsExecuted?.length === 1, 'q-illness-bodypart executes exactly one method');
+assert(bodyPartReading.canonicalExecution?.methodsExecuted?.[0] === 'illness.bodyPart.h6Figure', 'q-illness-bodypart executes the exact H6 method only');
+assert(bodyPartReading.primaryFormula?.houses?.length === 1 && bodyPartReading.primaryFormula.houses[0] === 6, 'q-illness-bodypart traceability records H6 only');
+assert(bodyPartReading.primaryFormula?.result?.legacyResult?.figureKey === '1112', 'pilot board H6 is passed to the legacy helper as canonical pattern key');
+assert(bodyPartReading.primaryFormula?.result?.legacyResult?.bodyPartHebrew === 'הרגל השמאלית', 'H6=1112 resolves to the source-table body part');
+assert(bodyPartReading.canonicalExecution?.altFormulaExecuted === false, 'q-illness-bodypart does not execute alt formula');
+assert(bodyPartReading.canonicalExecution?.topicSupportingChecksExecuted === false, 'q-illness-bodypart does not execute illness supporting checks');
+assert(bodyPartReading.canonicalExecution?.topicBundleExecuted === false, 'q-illness-bodypart does not execute illness topic bundle');
+assert(bodyPartReading.overallPositive === null, 'body-part lookup does not invent a positive/negative verdict');
+const bodyPartHtml = writeCanonicalKashfReading(bodyPartReading);
+assert(bodyPartHtml.includes('illness.bodyPart.h6Figure'), 'body-part writer identifies exact canonical method');
+assert(bodyPartHtml.includes('הרגל השמאלית'), 'body-part writer renders the source-table result');
+assert(!bodyPartHtml.includes('ניתוח תומך לפי ספר'), 'body-part writer contains no broad illness support section');
+assert(!bodyPartHtml.includes('מחשבת השואל (הדמיר)'), 'body-part writer contains no automatic Dhamir');
 // ── Canonical execution isolation ----------------------------------------
 for (const qid of ['q-success', 'q-travel-safe', 'q-short-travel', 'q-move-city', 'q-siblings']) {
   const reading = buildKashfReadingByQuestionId(PILOT_BOARD, qid, { question: qid });
