@@ -222,7 +222,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     disposition: 'KEEP',
     kashfIntentId: 'joy.occurrence',
     kashfMethodId: 'joy.p196.recast14511',
-    kashfRuntimeStatus: 'ready',
+    kashfRuntimeStatus: 'blocked-by-source',
   }),
 
   'q-joy-coming': route({
@@ -231,7 +231,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     aliasOf: 'q-celebrations',
     kashfIntentId: 'joy.occurrence',
     kashfMethodId: 'joy.p196.recast14511',
-    kashfRuntimeStatus: 'ready',
+    kashfRuntimeStatus: 'blocked-by-source',
   }),
 
   'q-gift': route({
@@ -616,7 +616,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     disposition: 'KEEP',
     kashfIntentId: 'travel.seaOrLand',
     kashfMethodId: 'travel.p239.seaOrLandByElement',
-    kashfRuntimeStatus: 'ready',
+    kashfRuntimeStatus: 'blocked-by-source',
   }),
 
   'q-travel-profit': route({
@@ -624,7 +624,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     disposition: 'KEEP',
     kashfIntentId: 'travel.profit',
     kashfMethodId: 'travel.p239.profitEarthRowH2',
-    kashfRuntimeStatus: 'ready',
+    kashfRuntimeStatus: 'blocked-by-source',
   }),
 
   'q-travel-danger': route({
@@ -1158,7 +1158,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfIntentId: 'missing.aliveOrDead',
     kashfMethodId: 'missing.p248-249.lifeH1H4H9Outcome',
     kashfRuntimeStatus: 'ready',
-    note: 'Provenance correction: the prior 3/5/9 recurrence method is in the later al-Multaqat addition. This route now points to the selected body-source life/death method from p248-p249.',
+    note: 'v57 provenance correction: the prior 3/5/9 recurrence method is in the later al-Multaqat addition. The selected body-source life/death material is on pp250-251; the historical method id is retained for compatibility.',
   }),
 
   'q-enemy-exists': route({

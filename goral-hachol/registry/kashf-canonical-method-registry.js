@@ -191,11 +191,11 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfIntentId: 'joy.occurrence',
     topicId: 'completion',
     sourcePages: [196],
-    kashfRuntimeStatus: 'ready',
+    kashfRuntimeStatus: 'blocked-by-source',
     runtimeAllowed: false,
     executionKind: 'recast-board',
     executorStatus: 'pending',
-    notes: 'Houses 1,4,5,11 become new mothers; this is occurrence of joy/event, not joy timing.',
+    notes: 'v57 p196 is the illness/lost-item/animals chapter and does not contain the 1,4,5,11 joy/event recast. The known celebrations helper is sourced from an external PDF, not Kashf. Do not execute or backfill it as a Kashf method until a real v57 source method is identified.',
   }),
 
   'relocation.p183.currentVsNewPlace': method({
@@ -561,11 +561,11 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfIntentId: 'travel.profit',
     topicId: 'travel',
     sourcePages: [239],
-    kashfRuntimeStatus: 'ready',
+    kashfRuntimeStatus: 'blocked-by-source',
     runtimeAllowed: false,
     executionKind: 'custom-engine',
     executorStatus: 'pending',
-    notes: 'Body-source travel-profit method: derive the stated earth-row result and combine/judge it with H2; benefic = profit, mixed = modest pleasant profit, malefic = no good.',
+    notes: 'v57 preserves the profit rule, but the exact source input denoted by the earth row of the point/area is not sufficiently resolved for canonical construction. Hebrew knowledge is indexed; runtime remains source-blocked until the input is closed.',
   }),
 
   'travel.p239.seaOrLandByElement': method({
@@ -573,11 +573,11 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfIntentId: 'travel.seaOrLand',
     topicId: 'travel',
     sourcePages: [239],
-    kashfRuntimeStatus: 'ready',
+    kashfRuntimeStatus: 'blocked-by-source',
     runtimeAllowed: false,
     executionKind: 'custom-engine',
     executorStatus: 'pending',
-    notes: 'Primary Arabic source (printed p237; working HTML p239) judges the figure produced from the preceding two figures: fire = go by land and return by sea; air = sea out / land back; water = sea / sea; earth = land / land. The preceding construction begins with “تراب المنطقة” and H2, but “المنطقة” is not defined elsewhere in the audited source. Executor therefore remains pending until that input is resolved. Do not use the Hebrew working-text omission of the fire return leg as runtime authority.',
+    notes: 'v57 preserves the sea/land element mapping, but the preceding two-figure construction is unresolved and the Hebrew fire branch omits the Arabic return-by-sea clause. Runtime remains source-blocked until v57 is explicitly corrected/closed.',
   }),
 
   'travel.p242.roadDangerH7Element': method({
@@ -1301,12 +1301,12 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfMethodId: 'missing.p248-249.lifeH1H4H9Outcome',
     kashfIntentId: 'missing.aliveOrDead',
     topicId: 'missingPerson',
-    sourcePages: [248, 249],
+    sourcePages: [250, 251],
     kashfRuntimeStatus: 'ready',
     runtimeAllowed: false,
     executionKind: 'custom-engine',
     executorStatus: 'pending',
-    notes: 'Body-source method selected after provenance review: H1, H4, H9 and the outcome/judge are used for the life/death judgment, with the named death-sign figures in H6/H7/H8/outcome. The previously mapped 3/5/9 recurrence rule belongs to the later al-Multaqat addition and must not be used as the canonical runtime method.',
+    notes: 'v57 audit correction: the selected body-source life/death rule is operationally located on pp250-251. The historical method id is retained for compatibility. H1/H4/H9/outcome support life; the named severe/death-sign conditions occur in H6/H7/H8/outcome. Do not use the later al-Multaqat 3/5/9 recurrence method.',
   }),
 
   'enemy.p271.h1vsH12': method({

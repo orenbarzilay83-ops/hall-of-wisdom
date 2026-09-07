@@ -25,6 +25,7 @@ function knowledge({
   detailPages = [],
   supportingPages = [],
   arabicVerificationPages = [],
+  verificationNotes = null,
   notes = null,
 }) {
   return Object.freeze({
@@ -46,6 +47,7 @@ function knowledge({
     arabicVerification: Object.freeze({
       role: 'verification-only',
       pages: Object.freeze([...arabicVerificationPages]),
+      notes: verificationNotes,
     }),
     notes,
   });
@@ -234,6 +236,368 @@ export const KASHF_V57_KNOWLEDGE = Object.freeze({
     notes: 'זהו תיאור קשר/סיבה לפי בית החזרה, לא זיהוי ודאי של אדם מסוים ולא מד מרחק.',
   }),
 
+
+
+  'career.p266.returnToOffice': knowledge({
+    kashfMethodId: 'career.p266.returnToOffice',
+    page: 266,
+    topic: 'הפרק האחד־עשר — חברים, תקווה, אורך חיים ואהבה',
+    heading: 'קיום המצב; מי שהודח משירות',
+    hebrewRule: 'מי שהודח משירות — האם יחזור? ראה את הראשון. אם הוא מיטיב נכנס, ומצטייר בעשירי או בבתים החזקים, והאחרית מעידה על כך — הוא חוזר למקומו. ואם הצורה מזיקה, הדין להפך. לפי אותו קו דנים מי שהוסר מדרגה, יצא מביתו או נפרד מאשתו.',
+    supportingPages: [54, 57, 58, 59, 60],
+    arabicVerificationPages: [266],
+    notes: 'הידע העברי מוכן; המבצע נשאר חסום עד חיבור סיווג מיטיב/מזיק ופנימי/חיצוני באופן שיטתי לשיטה זו.',
+  }),
+
+  'child.p194.healthTrajectoryH6H8': knowledge({
+    kashfMethodId: 'child.p194.healthTrajectoryH6H8',
+    page: 194,
+    topic: 'הפרק החמישי — ילדים והריון',
+    heading: 'טבע הראשון והחמישי / ודיני בריאות הוולד',
+    hebrewRule: 'אם באה הצורה ריקה, התבונן בבית השישי, שהוא בית המחלות. אם נמצאת בו צורה מזיקה, הדבר מורה על ריבוי מכאובים בילדותו. אחר כך התבונן בבית השמיני, שהוא בית המוות והאבדון. אם נמצאת בו צורה מזיקה, התקווה בו מועטה. ואם נמצאת בו צורה מיטיבה, כל כמה שיגדל — ימעט חוליו וישתפר מצבו.',
+    supportingPages: [54, 57, 58, 59, 60],
+    arabicVerificationPages: [194],
+    notes: 'זהו מסלול בריאות הילד לאורך הזמן, לא מנוע החלמה מחולי נוכחי.',
+  }),
+
+  'clothing.p264-265.luck': knowledge({
+    kashfMethodId: 'clothing.p264-265.luck',
+    page: 265,
+    topic: 'הפרק האחד־עשר — חברים, תקווה, אורך חיים ואהבה',
+    heading: 'דין הלבוש וקיום המצב',
+    hebrewRule: 'אם בחמישי ובאחד־עשר יש צורות מיטיבות, יש לו מזל בלבושים. אם בעשירי מזיק, אין לו מזל בלבוש המלכים או בכיבוד הבא מצד בעלי מעלה. אם בשני הבתים צורות מזיקות, אין לו מזל בלבוש, והבגד נשאר עליו עד שיקרע. אם הצורה מתהפכת, אינו עומד על לבוש אחד.',
+    detailPages: [264, 265],
+    supportingPages: [54, 57, 58, 59, 60],
+    arabicVerificationPages: [264, 265],
+  }),
+
+  'desire.p206.querentWantsH7H11ThenH5': knowledge({
+    kashfMethodId: 'desire.p206.querentWantsH7H11ThenH5',
+    page: 206,
+    topic: 'הפרק השביעי — נישואין, המבקש והמבוקש, המנצח והמנוצח, מכירה וקנייה',
+    heading: 'רצון השואל בדבר',
+    hebrewRule: 'אם רצית לדעת אם השואל רוצה בדבר או לא: הכה את השביעי והאחד־עשר, ואת היוצא מהם הכה עם החמישי. אם יצאה צורה מיטיבה — הוא רוצה. ואם יצאה צורה מזיקה — להפך.',
+    supportingPages: [54, 57, 58, 59, 60],
+    arabicVerificationPages: [206],
+    notes: 'הכלל בודק את רצון השואל בדבר; אין להמירו בבדיקת התאמה זוגית או משיכה הדדית.',
+  }),
+
+  'dispute.p212.reconciliationH1H7': knowledge({
+    kashfMethodId: 'dispute.p212.reconciliationH1H7',
+    page: 212,
+    topic: 'הפרק השביעי — נישואין, המבקש והמבוקש, המנצח והמנוצח, מכירה וקנייה',
+    heading: 'חזרת השביעי בבתים — מריבות, שותפות ומנצח ומנוצח',
+    hebrewRule: 'אם מן הראשון והשביעי נולדת צורה מיטיבה, שניהם יתפייסו על ידי מי שמורה עליו הבית שבו שוכנת הצורה. אם בראשון צורת השמש — הפיוס בא מן השלטון; ואם בעשירי צורת צדק — מן הדיין; ואם בראשון צורה של נציב או ממונה — מן המושל.',
+    supportingPages: [54, 57, 58, 59, 60, 133, 134],
+    arabicVerificationPages: [212],
+  }),
+
+  'general.p174.h1h2h4h7h10h15': knowledge({
+    kashfMethodId: 'general.p174.h1h2h4h7h10h15',
+    page: 174,
+    topic: 'השער השישי — דיני שנים־עשר הבתים; הפרק הראשון — הנפש',
+    heading: 'היתדות, התקווה ובית ראשון האדם',
+    hebrewRule: 'בבית הראשון האדם: אם שאלך אדם על הבית הראשון שלו, על אחריתו, על ממונו, על מסעותיו או על כלל ענייניו, התבונן לאחר השלמת ההכאה בבית הראשון — בית הנפש, שהוא התחלת כל דבר. אחר כך התבונן בשני — בית הממון; ברביעי — בית אחריתו ומקומו; בשביעי — בית כוונותיו ומבוקשיו; בעשירי — בית טובו ומעמדו; ובחמישה־עשר — בית אחרית עניינו.',
+    arabicVerificationPages: [174],
+    notes: 'זהו כלל מצב כללי תחום; אין להפעיל במקומו את כל חבילת generalReading הישנה.',
+  }),
+
+  'hidden.p188.quarterDirection': knowledge({
+    kashfMethodId: 'hidden.p188.quarterDirection',
+    page: 188,
+    topic: 'הפרק הרביעי — הורים, נכסים ודברים נסתרים',
+    heading: 'כיוון הדבר הנסתר',
+    hebrewRule: 'לכיוון: חלק את המקום החשוד לארבעה חלקים, וערוך לכל כיוון צורה. אם יצאה צורה פנימית ומיטיבה — אותו מקום חשוד. ואם יצאה צורה מזיקה וחיצונית — אין באותו מקום דבר, עד שתשלים ארבע צורות.',
+    supportingPages: [54, 57, 58, 59, 60],
+    arabicVerificationPages: [188],
+    notes: 'השיטה מחייבת ארבע הטלות/צורות נוספות לפי ארבעת חלקי המקום; אין להסיק אותן מן הלוח הקיים.',
+  }),
+
+  'inheritance.p180.elementComposite': knowledge({
+    kashfMethodId: 'inheritance.p180.elementComposite',
+    page: 180,
+    topic: 'הפרק השני — דיני הממון',
+    heading: 'כספי הנשאל והשואל / ירושה ומחיה',
+    hebrewRule: 'קח את אש החמישי, אוויר השישי, מי השביעי ועפר השני, והוצא מהם צורה. התבונן בצורה: אם היא מחלקו של השואל — אמור לו: אתה יורש אותו. ואם היא מחלקו של הנשאל עליו — אמור: הוא יורש אותך, והאל יודע.',
+    supportingPages: [121, 122, 123, 124, 125, 126, 127, 128, 129],
+    arabicVerificationPages: [180],
+    notes: 'השיטה קובעת איזה צד יורש את האחר; היא אינה מחשבת חלקי ירושה או סכומים.',
+  }),
+
+  'lifespan.p178.elementCountToHouse': knowledge({
+    kashfMethodId: 'lifespan.p178.elementCountToHouse',
+    page: 178,
+    topic: 'השער השישי — דיני שנים־עשר הבתים; הפרק הראשון — הנפש',
+    heading: 'אורך חיי האדם / ומקום או מעבר',
+    hebrewRule: 'כיצד אדע את שנותיי? הסר את הגורל, ואסוף את כל היסודות — אש, אוויר, מים ועפר. הפחת אותם בשש־עשרה, ומה שנותר הולך על פני הבתים. במקום שבו יסתיים החשבון, התבונן בצורה שעליה עמד: איזו צורה היא, ומה מספרה באותו בית. אם היא מן היתדות, מספרה הוא מספר השנים; אם היא מן הנטויים, מספרה הוא חודשים; ואם היא מן הנופלים, מספרה הוא ימים.',
+    supportingPages: [43, 44, 45, 121, 122],
+    arabicVerificationPages: [178],
+  }),
+
+  'lifespan.p264.stagesH11H9H7': knowledge({
+    kashfMethodId: 'lifespan.p264.stagesH11H9H7',
+    page: 264,
+    topic: 'הפרק האחד־עשר — חברים, תקווה, אורך חיים ואהבה',
+    heading: 'חברים, אהבה וחשק',
+    hebrewRule: 'בדין החיים: הבית האחד־עשר מורה על ראשית החיים; התשיעי על האמצע; והשביעי על הסוף. דון לפי צורות הכוכבים המופיעות בבתים.',
+    supportingPages: [133, 134],
+    arabicVerificationPages: [264],
+    notes: 'זהו דין שלבי החיים ואינו מחזיר מספר שנות חיים.',
+  }),
+
+  'love.p204.attentionFireRows1713': knowledge({
+    kashfMethodId: 'love.p204.attentionFireRows1713',
+    page: 204,
+    topic: 'הפרק השביעי — נישואין, המבקש והמבוקש, המנצח והמנוצח, מכירה וקנייה',
+    heading: 'פתיחת דיני הנישואין — האם אדם זה מביט אליך או אל אחר?',
+    hebrewRule: 'האם אדם זה מביט אליך או אל אחר? אם אש הבית הראשון פתוחה, ואש הבית השביעי פתוחה, וגם אש הבית השלושה־עשר מתחברת — שניהם מביטים זה בזה וגם באחרים.',
+    supportingPages: [54, 61],
+    arabicVerificationPages: [204],
+    notes: 'זהו כלל תשומת לב/מבט; הוא אינו שקול לשאלת אהבה.',
+  }),
+
+  'love.p205.directLoveH1PlacementH15': knowledge({
+    kashfMethodId: 'love.p205.directLoveH1PlacementH15',
+    page: 205,
+    topic: 'הפרק השביעי — נישואין, המבקש והמבוקש, המנצח והמנוצח, מכירה וקנייה',
+    heading: 'האם אדם זה אוהב אותך?',
+    hebrewRule: 'האם אדם זה אוהב אותך? אם הצורה שבבית הראשון נמצאת ביתדות, יש לו רצון בך. אם היא בבתים הנופלים, הוא מתרחק ומבקש אחר. התבונן גם בבית החמישה־עשר ביחס לצורת הבית הראשון: אם היחס רע, אין בו אהבה; ואם הוא תחת ידך, הדבר קרוב יותר.',
+    supportingPages: [43, 44, 45],
+    arabicVerificationPages: [205],
+  }),
+
+  'marriage.p210.generalMarriageH1H2H7H8H10Judge': knowledge({
+    kashfMethodId: 'marriage.p210.generalMarriageH1H2H7H8H10Judge',
+    page: 210,
+    topic: 'הפרק השביעי — נישואין, המבקש והמבוקש, המנצח והמנוצח, מכירה וקנייה',
+    heading: 'כלל מעשי בנישואין',
+    hebrewRule: 'עשה את הבית הראשון והשני לסימני האיש והנישואין, ואת הבית השביעי והשמיני לסימני האישה. הבית העשירי מורה על מה שיתרחש ביניהם, והדיין מורה על אחרית עניינם. אם הראשון מיטיב, האיש טוב לה ומיטיב עמה. אם הראשון מזיק והשביעי מיטיב, הרי היא טובה ממנו. אם המכריע מיטיב, אחרית עניינם טובה, יפה ושמחה. לאחר מכן הוצא צורה מן הראשון והחמישי, ודון במה שיצא, לטוב או להפך.',
+    detailPages: [211],
+    supportingPages: [54, 57, 58, 59, 60],
+    arabicVerificationPages: [210, 211],
+    notes: 'זהו דין הנישואין הכללי; אין להחליפו בנוסחת הרצון שבעמוד 206.',
+  }),
+
+  'marriage.p211.dissolutionH7StateMatrix': knowledge({
+    kashfMethodId: 'marriage.p211.dissolutionH7StateMatrix',
+    page: 211,
+    topic: 'הפרק השביעי — נישואין, המבקש והמבוקש, המנצח והמנוצח, מכירה וקנייה',
+    heading: 'אופני הבית השביעי — פנימי, חיצוני, קבוע ומתַהפך',
+    hebrewRule: 'בבית השביעי: אם שכנו בו צורות פנימיות, הדבר מורה על יישוב הדעת ועל קיום מצב הנישואין. צורה מזיקה פנימית מורה על עגמת נפש ומריבה, אבל החלק קבוע. צורה מיטיבה חיצונית מורה על נישואין טובים אך אפשר שייפרד ממנה, מפני שהחלק אינו קבוע. צורה מזיקה חיצונית מורה שאין כאן נישואין ראויים, ואם כבר היו — החלק נחתך ונפסק. צורה מיטיבה וקבועה מורה על תיקון בית המשכב.',
+    detailPages: [210, 211],
+    supportingPages: [57, 58, 59, 60],
+    arabicVerificationPages: [210, 211],
+    notes: 'יש לשמר את מטריצת מצב הצורה ולא לצמצם אותה למיטיב/מזיק בלבד.',
+  }),
+
+  'matter.p172.h17_h1011_thenCombine': knowledge({
+    kashfMethodId: 'matter.p172.h17_h1011_thenCombine',
+    page: 172,
+    topic: 'השער השישי — דיני שנים־עשר הבתים; הפרק הראשון — הנפש',
+    heading: 'תוצאת עניין השואל / ובתי היחיד והזוג',
+    hebrewRule: 'הוצא צורה מן הבית הראשון והשביעי, וצורה נוספת מן העשירי והאחד־עשר. אחר כך צרף אותן; הצורה היוצאת מהן היא תוצאת עניינו של השואל — לטוב או לרע.',
+    supportingPages: [54, 57, 58, 59, 60],
+    arabicVerificationPages: [172],
+    notes: 'שיטה זו נפרדת משיטת השלמת העניין בעמוד 173.',
+  }),
+
+  'messenger.p176.recast14511': knowledge({
+    kashfMethodId: 'messenger.p176.recast14511',
+    page: 176,
+    topic: 'השער השישי — דיני שנים־עשר הבתים; הפרק הראשון — הנפש',
+    heading: 'בית השנים־עשר, משרתים / ושליחות',
+    hebrewRule: 'באחרית שליחים: העמד את הראשון, הרביעי, החמישי והאחד־עשר כאמהות, והשלים את גורל החול. הסתמך על החמישי ועל היתדות; אם הן מיטיבות, הבקשה תיענה, ואם לא — לא.',
+    supportingPages: [28, 29, 30, 31, 32, 33, 34, 35, 36, 54, 57, 58, 59, 60],
+    arabicVerificationPages: [176],
+    notes: 'זהו כלל שליחות. אין להעתיק אותו לשאלת שמחה/אירוע ללא מקור.',
+  }),
+
+  'missing.p248-249.lifeH1H4H9Outcome': knowledge({
+    kashfMethodId: 'missing.p248-249.lifeH1H4H9Outcome',
+    page: 251,
+    topic: 'הפרק התשיעי — מסע, נעדר, אבדה, חלום וחוב',
+    heading: 'הגעת הנעדר ושובו',
+    hebrewRule: 'אם הראשון, הרביעי, התשיעי והסוף מיטיבים, הרי הנעדר חי. אם נמצאו בשישי, בשביעי, בשמיני ובסוף צורות המוות המנויות במקור — קהלה, חיבור, דרך, סוהר, שפל ראש, אדום או לבן — הדבר משמש עדות קשה בדין חייו של הנעדר.',
+    detailPages: [250, 251],
+    supportingPages: [54, 57, 58, 59, 60],
+    arabicVerificationPages: [250, 251],
+    notes: 'מזהה השיטה נשמר לשם תאימות לאחור, אך ביקורת v57 תיקנה את עקיבות העמודים: הכלל התפעולי הזה נמצא בעמודים 250–251, לא 248–249.',
+  }),
+
+  'missing.p249.returnAnglesJudge': knowledge({
+    kashfMethodId: 'missing.p249.returnAnglesJudge',
+    page: 249,
+    topic: 'הפרק התשיעי — מסע, נעדר, אבדה, חלום וחוב',
+    heading: 'מצב הנעדר ומרחקו',
+    hebrewRule: 'אם בבתים היתדיים נמצאו צורות מיטיבות פנימיות בעניין נעדר, בורח, אבדה או גניבה — הדבר מורה על חזרת הזכרים, כאשר גם המכריע מעיד לכך.',
+    supportingPages: [43, 44, 45, 54, 57, 58, 59, 60],
+    arabicVerificationPages: [249],
+    notes: 'הכלל עוסק בשיבה כאשר היתדות והכרעת הסוף מעידות לכך; הוא אינו מחשב מועד חזרה.',
+  }),
+
+  'money.p179.sourceByIncomingHonorHouse': knowledge({
+    kashfMethodId: 'money.p179.sourceByIncomingHonorHouse',
+    page: 179,
+    topic: 'הפרק השני — דיני הממון',
+    heading: 'הפרק השני — דיני הממון',
+    hebrewRule: 'אם בשני יש בה צד מיטיב, בקש את כבוד נכנס; במקום שבו הוא נמצא, הממון יגיע מטבע אותו בית שבו הוא שורה. ואם עלתה צורת ממון נכנס בבית הממון, כל בית שבו נמצאת הצורה הזאת ייתן דין על השגת הממון.',
+    supportingPages: [43, 46, 47, 54, 57, 58, 59, 60],
+    arabicVerificationPages: [179],
+  }),
+
+  'money.p180.livelihoodH10Invert': knowledge({
+    kashfMethodId: 'money.p180.livelihoodH10Invert',
+    page: 180,
+    topic: 'הפרק השני — דיני הממון',
+    heading: 'כספי הנשאל והשואל / ירושה ומחיה',
+    hebrewRule: 'במחיה: התבונן בעשירי. כל מה שבצורותיו פתוח — סתום; וכל מה שסתום — פתח. התבונן איזו צורה יוצאת. אם הצורה עוברת לבית יתד והיא צורה מיטיבה, המחיה מתרחבת; ואם היא נופלת, אינה טובה.',
+    supportingPages: [43, 44, 45, 54, 57, 58, 59, 60],
+    arabicVerificationPages: [180],
+  }),
+
+  'money.p181.recast25811': knowledge({
+    kashfMethodId: 'money.p181.recast25811',
+    page: 181,
+    topic: 'הפרק השני — דיני הממון',
+    heading: 'ממון — האם יושג? / ומקור נוסף על צד הממון',
+    hebrewRule: 'בדין הממון: העמד את השני, החמישי, השמיני והאחד־עשר כאמהות, והשלים את גורל החול. אם ראית שהיתדות והבית השני פנימיים, הממון יושג.',
+    supportingPages: [28, 29, 30, 31, 32, 33, 34, 35, 36, 57, 58, 59, 60],
+    arabicVerificationPages: [181],
+    notes: 'שיטת 2/5/8/11 היא שיטת לוח חדש; שיטת הזוג/יחיד של 2/6/8/10 באותו עמוד היא חלופה נפרדת ואינה מצביעה יחד איתה.',
+  }),
+
+  'mother.p257.statusDayNight': knowledge({
+    kashfMethodId: 'mother.p257.statusDayNight',
+    page: 257,
+    topic: 'הפרק העשירי — כבוד, שררה ומינוי',
+    heading: 'קיום השררה, דין האם ודין המלכות',
+    hebrewRule: 'בדין האם: אם מן בית זה יוצא מזיק, דון לה לרע; ואם היא מיטיבה — לטוב. אם לבן או דרך נמצאים באחד היתדות או במה שסמוך להן, דון לה לטוב ולתיקון. אם הן בבתים הנופלים, דון לה לצרות. דין זה נאמר כשזמן השאלה בלילה; ואם ביום — ראה את צורות נוגה ודון על פיהן.',
+    supportingPages: [43, 44, 45, 54, 57, 58, 59, 60, 133, 134],
+    arabicVerificationPages: [257],
+    notes: 'נשמר ניסוח v57 “בית זה” בלי להמציא בית שלא ננקב בקטע; המבצע יישאר ממתין עד שסגירת ההקשר תושלם.',
+  }),
+
+  'pregnancy.p191.childSafetyH1H6H8': knowledge({
+    kashfMethodId: 'pregnancy.p191.childSafetyH1H6H8',
+    page: 191,
+    topic: 'הפרק החמישי — ילדים והריון',
+    heading: 'פתיחת דיני הילדים וההריון',
+    hebrewRule: 'אם בבית הראשון נמצאת צורה מיטיבה, הוולד יינצל ויהיה בשלום. ואם נמצאת בו צורה מזיקה, יש לחשוש עליו. ואם בשישי ובשמיני נמצאות צורות מזיקות, הוולד עלול לצאת מת.',
+    supportingPages: [54, 57, 58, 59, 60],
+    arabicVerificationPages: [191],
+    notes: 'H1 הוא עדות הבטיחות הבסיסית; H6+H8 המזיקים הם תנאי החומרה. אין לספור אותם כהצבעות בלתי תלויות.',
+  }),
+
+  'pregnancy.p191.deliveryDifficultyH1H5H15': knowledge({
+    kashfMethodId: 'pregnancy.p191.deliveryDifficultyH1H5H15',
+    page: 191,
+    topic: 'הפרק החמישי — ילדים והריון',
+    heading: 'פתיחת דיני הילדים וההריון — קלות וקושי הלידה',
+    hebrewRule: 'אם הראשון והחמישי זכריים, הוולד זכר והלידה קלה ליולדת, בפרט אם הצורות מתהפכות. אם החמישי צורה קבועה, הלידה קשה ואינה נשלמת בקלות, לפי עדות הראשון והחמישה־עשר.',
+    detailPages: [194],
+    supportingPages: [57, 58, 59, 60],
+    arabicVerificationPages: [191, 194],
+    notes: 'עמוד 194 מספק חומר מאשש על כובד/טובת H5; הוא אינו שיטת הצבעה חלופית.',
+  }),
+
+  'religion.p253.h3h9Quality': knowledge({
+    kashfMethodId: 'religion.p253.h3h9Quality',
+    page: 253,
+    topic: 'הפרק התשיעי — מסע, נעדר, אבדה, חלום וחוב',
+    heading: 'הנעדר לפי אל־זנאתי; דת וצדקות',
+    hebrewRule: 'בדין הדת והצדקות: אם בבית השלישי והתשיעי יש צורה מזיקה — הוא מועט בדת. ואם יש שם צורה מיטיבה — הוא בעל דת ויראת אלוהים.',
+    supportingPages: [54, 57, 58, 59, 60],
+    arabicVerificationPages: [253],
+    notes: 'זהו דין מצומצם על הדת/הצדקות לפי H3 ו-H9, לא מענה לשאלות אמונה או ייעוץ רוחני כללי.',
+  }),
+
+  'relocation.p183.currentVsNewPlace': knowledge({
+    kashfMethodId: 'relocation.p183.currentVsNewPlace',
+    page: 183,
+    topic: 'הפרק השלישי — אחים ומעבר',
+    heading: 'מעבר ממקום למקום',
+    hebrewRule: 'במעבר — האם מקום זה טוב לי או לא? התבונן בראשון וברביעי. אם שניהם מיטיבים, דון בטובת המגורים. ואם השביעי והעשירי צורות מיטיבות, דון בטובת המעבר.',
+    supportingPages: [43, 46, 47, 54, 57, 58, 59, 60],
+    arabicVerificationPages: [183],
+    notes: 'H1+H4 מייצגים את המקום הנוכחי ו-H7+H10 את המקום שאליו עוברים; אין להפוך זאת להצבעה כללית של ארבעה בתים.',
+  }),
+
+  'relocation.p183.stayMoveH1H2': knowledge({
+    kashfMethodId: 'relocation.p183.stayMoveH1H2',
+    page: 183,
+    topic: 'הפרק השלישי — אחים ומעבר',
+    heading: 'מעבר ממקום למקום — הישיבה במקום או המעבר ממנו',
+    hebrewRule: 'אם שאלך אדם האם הישיבה בעיר זו טובה לו או המעבר ממנה, השלם את לוח הגורל. אם בראשון יצאה צורה מיטיבה ובשני צורה מזיקה — המקום שבו הוא נמצא טוב לו. אם בראשון מזיק ובשני מיטיב — הדין להפך.',
+    supportingPages: [178],
+    arabicVerificationPages: [178, 183],
+  }),
+
+  'siblings.p182.seniority': knowledge({
+    kashfMethodId: 'siblings.p182.seniority',
+    page: 182,
+    topic: 'הפרק השלישי — אחים ומעבר',
+    heading: 'הפרק השלישי — באחים ובמעבר',
+    hebrewRule: 'הצורה קהלה מורה על הגדולים, ובייחוד הגדולים מצד האב. וכן שפל ראש.',
+    arabicVerificationPages: [182],
+    notes: 'זהו דין ותק/בכורה בין האחים, והוא נפרד מדין הסכמה או קלקול היחסים בין אחים.',
+  }),
+
+  'spiritual.p167.hiddenActionAirRows46815': knowledge({
+    kashfMethodId: 'spiritual.p167.hiddenActionAirRows46815',
+    page: 167,
+    topic: 'השער השישי — דיני שנים־עשר הבתים; הפרק הראשון — הנפש',
+    heading: 'כלל מעשי: האם יש פעולה מאחורי הדבר?',
+    hebrewRule: 'אם אמר לך השואל: האם מאחורי הדבר יש פעולה או לא? קח את אוויר הרביעי, אוויר השישי, אוויר השמיני ואוויר המאזן; העמד מהם צורה. אם יצאה צורה מזיקה, הרי הפעולה מאחוריו; ואם לא — לא.',
+    supportingPages: [54, 61],
+    arabicVerificationPages: [167],
+    notes: '“המאזן” הוא בית הדין/המאזן בהקשר הלוח. השיטה בודקת פעולה נסתרת מאחורי המצב; היא אינה כשלעצמה אבחנת כישוף, ג׳ין או עין הרע.',
+  }),
+
+  'travel.p239.profitEarthRowH2': knowledge({
+    kashfMethodId: 'travel.p239.profitEarthRowH2',
+    page: 239,
+    topic: 'הפרק התשיעי — מסע, נעדר, אבדה, חלום וחוב',
+    heading: 'רווח במסע — ים או יבשה',
+    hebrewRule: 'אם נשאלת אם הנוסע ירוויח במסעו, קח את שורת יסוד העפר של הנקודה, והכה אותה עם הבית השני. אם יצאה צורה מיטיבה — ירוויח במסעו; אם יצאה ממוזגת — ירוויח רווח מועט ונעים; ואם יצאה צורה מזיקה — אין בו טובה.',
+    supportingPages: [54, 61],
+    arabicVerificationPages: [239],
+    verificationNotes: 'הביטוי המגדיר את קלט “עפר הנקודה/האזור” אינו סגור דיו לביצוע קנוני. הידע העברי נשמר, אך השיטה אינה source-ready להפעלה עד סגירת הקלט המדויק.',
+    notes: 'אין להמציא איזו נקודה נלקחת; המבצע נשאר חסום.',
+  }),
+
+  'travel.p239.seaOrLandByElement': knowledge({
+    kashfMethodId: 'travel.p239.seaOrLandByElement',
+    page: 239,
+    topic: 'הפרק התשיעי — מסע, נעדר, אבדה, חלום וחוב',
+    heading: 'רווח במסע — ים או יבשה',
+    hebrewRule: 'אם נשאלת אם המסע יהיה בים או ביבשה, התבונן בצורה היוצאת משתי הצורות: אם היא מיסוד האש — אמור שילך ביבשה; אם היא מיסוד האוויר — אמור שילך בים וישוב ביבשה; אם היא מיסוד המים — ילך בים וישוב בים; ואם היא מיסוד העפר — ילך ביבשה וישוב ביבשה.',
+    supportingPages: [61, 62],
+    arabicVerificationPages: [239],
+    verificationNotes: 'פער נוסח פעיל: v57 העברי אומר באש רק “ילך ביבשה”, ואילו המקור הערבי המאומת מוסיף חזרה בים. בנוסף בניית “שתי הצורות” תלויה בקלט הקודם שאינו סגור. אין להפעיל עד תיקון/הכרעה מפורשים ב-v57.',
+    notes: 'העברית נשמרת בדיוק כשכבת הידע; הפער מול הערבית מסומן ולא מתוקן בשקט.',
+  }),
+
+  'travel.p244.returnH1H2H9': knowledge({
+    kashfMethodId: 'travel.p244.returnH1H2H9',
+    page: 244,
+    topic: 'הפרק התשיעי — מסע, נעדר, אבדה, חלום וחוב',
+    heading: 'סימני פגם במרכבה והחזרה מן המסע',
+    hebrewRule: 'כלל לנוסע: התבונן בראשון, בשני ובתשיעי. אם נמצאו בהם צורות מיטיבות המורות על כניסה, ובפרט במקומות הראויים, ישוב אל ארצו בטוב ובשמחה. ואם נמצאו בהם צורות מזיקות, יתייגע במסעו, ולעיתים לא ישוב.',
+    supportingPages: [54, 57, 58, 59, 60],
+    arabicVerificationPages: [244],
+  }),
+
+  'well.p188.recast1468': knowledge({
+    kashfMethodId: 'well.p188.recast1468',
+    page: 188,
+    topic: 'הפרק הרביעי — הורים, נכסים ודברים נסתרים',
+    heading: 'האם הדבר במקומו? / חפירת בארות ועומק המים',
+    hebrewRule: 'בחפירת בארות ותעלות: עשה את הראשון, הרביעי, השישי והשמיני לאמהות, והשלים את גורל החול. אם הרביעי והיתדות מיטיבים ופנימיים — המבוקש מתקבל.',
+    supportingPages: [28, 29, 30, 31, 32, 33, 34, 35, 36, 54, 57, 58, 59, 60],
+    arabicVerificationPages: [188],
+    notes: 'יש לבנות לוח חדש מן H1/H4/H6/H8. חישוב עומק המים הוא כוונה נפרדת ואינו חלק מפסק זה.',
+  }),
+
   'theft.p225.thiefDescriptionH7': knowledge({
     kashfMethodId: 'theft.p225.thiefDescriptionH7',
     page: 225,
@@ -276,14 +640,13 @@ export function validateKashfV57KnowledgeEntry(entry) {
 
 export function validateKashfV57KnowledgeCoverage(methodRegistry) {
   const errors = [];
-  const runnable = Object.values(methodRegistry || {}).filter((method) =>
+  const sourceReady = Object.values(methodRegistry || {}).filter((method) =>
     method?.methodRole === 'canonical-operational'
       && method?.kashfRuntimeStatus === 'ready'
-      && method?.runtimeAllowed === true
-      && method?.executorStatus === 'ready'
   );
+  const runnable = sourceReady.filter((method) => method?.runtimeAllowed === true && method?.executorStatus === 'ready');
 
-  for (const method of runnable) {
+  for (const method of sourceReady) {
     const entry = getKashfV57Knowledge(method.kashfMethodId);
     if (!entry) {
       errors.push(`Runnable method missing v57 Hebrew knowledge: ${method.kashfMethodId}`);
@@ -296,8 +659,9 @@ export function validateKashfV57KnowledgeCoverage(methodRegistry) {
   return {
     valid: errors.length === 0,
     errors,
+    sourceReadyCount: sourceReady.length,
     runnableCount: runnable.length,
-    coveredCount: runnable.filter((method) => hasKashfV57Knowledge(method.kashfMethodId)).length,
+    coveredCount: sourceReady.filter((method) => hasKashfV57Knowledge(method.kashfMethodId)).length,
   };
 }
 

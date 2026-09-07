@@ -67,9 +67,10 @@ const PILOT_BOARD = buildRamlBoardFromMothers(PILOT_MOTHERS);
 }
 {
   const result = validateKashfV57KnowledgeCoverage(KASHF_CANONICAL_METHODS);
-  assert(result.valid, `every runnable canonical method has v57 Hebrew knowledge: ${result.errors.join('; ')}`);
-  assert(result.coveredCount === result.runnableCount, `v57 runnable coverage ${result.coveredCount}/${result.runnableCount}`);
-  assert(result.runnableCount > 0, 'v57 coverage gate sees runnable canonical methods');
+  assert(result.valid, `every source-ready canonical method has v57 Hebrew knowledge: ${result.errors.join('; ')}`);
+  assert(result.coveredCount === result.sourceReadyCount, `v57 source-ready coverage ${result.coveredCount}/${result.sourceReadyCount}`);
+  assert(result.sourceReadyCount > 0, 'v57 coverage gate sees source-ready canonical methods');
+  assert(result.runnableCount > 0, 'v57 coverage gate still sees runnable canonical methods');
 }
 for (const [methodId, entry] of Object.entries(KASHF_V57_KNOWLEDGE)) {
   assert(entry.knowledgeLanguage === 'he', `${methodId} v57 knowledge language is Hebrew`);
@@ -79,6 +80,16 @@ for (const [methodId, entry] of Object.entries(KASHF_V57_KNOWLEDGE)) {
   assert(entry.v57?.draftFile === 'kashf-v57-draft.html', `${methodId} points to v57 Hebrew draft`);
   assert(typeof entry.v57?.hebrewRule === 'string' && entry.v57.hebrewRule.length > 0, `${methodId} has Hebrew operational rule text`);
 }
+
+const p239SeaLandV57 = getKashfV57Knowledge('travel.p239.seaOrLandByElement');
+assert(p239SeaLandV57?.knowledgeLanguage === 'he', 'p239 sea/land has Hebrew v57 knowledge despite runtime source block');
+assert(p239SeaLandV57?.arabicVerification?.notes?.includes('פער נוסח'), 'p239 sea/land records Hebrew/Arabic source discrepancy');
+assert(getKashfMethod('travel.p239.seaOrLandByElement')?.kashfRuntimeStatus === 'blocked-by-source', 'p239 sea/land is not mislabeled source-ready while derivation/discrepancy remain open');
+assert(getKashfMethod('travel.p239.profitEarthRowH2')?.kashfRuntimeStatus === 'blocked-by-source', 'p239 profit is not mislabeled source-ready while earth-row input remains unresolved');
+assert(getKashfMethod('joy.p196.recast14511')?.kashfRuntimeStatus === 'blocked-by-source', 'joy p196 false source mapping is blocked');
+assert(getKashfV57Knowledge('joy.p196.recast14511') === null, 'false p196 joy mapping is not fabricated into v57 Hebrew knowledge');
+assert(JSON.stringify(getKashfMethod('missing.p248-249.lifeH1H4H9Outcome')?.sourcePages) === JSON.stringify([250, 251]), 'missing-person life/death source pages corrected to v57 pp250-251');
+
 const professionV57 = getKashfV57Knowledge('profession.p254.h9Planet');
 assert(professionV57?.v57?.hebrewRule.includes('כישוף, נפלאות ואצטגנינות'), 'profession p254 v57 knowledge preserves Mercury magic/wonders/astrology rule');
 assert(!professionV57?.v57?.hebrewRule.includes('כתיבה וחשבונות'), 'profession p254 v57 knowledge does not retain stale Mercury writing/accounts rule');
