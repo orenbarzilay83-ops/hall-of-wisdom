@@ -1,11 +1,20 @@
 name: Deploy Supabase Edge Functions
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/functions/oren-smart-advisor/**'
+      - '.github/workflows/deploy-supabase-functions.yml'
   workflow_dispatch: {}
+
+permissions:
+  contents: read
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
