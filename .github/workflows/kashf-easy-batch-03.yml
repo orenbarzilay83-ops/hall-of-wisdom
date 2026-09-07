@@ -26,6 +26,18 @@ jobs:
         run: node --check _patch_kashf_easy_batch_03.mjs
       - name: Apply easy batch 03
         run: node _patch_kashf_easy_batch_03.mjs
+      - name: Fix unresolved missing-person fixture
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('_test_kashf_canonical_routing.mjs')
+          s = path.read_text()
+          old = "makeP204Board({ 1: '1222', 4: '1112', 9: '1222', 15: '2112' }), 'q-missing-alive'"
+          new = "makeP204Board({ 1: '1222', 4: '1112', 6: '1222', 7: '1222', 8: '1222', 9: '1222', 15: '2112' }), 'q-missing-alive'"
+          if old not in s:
+              raise SystemExit('Missing unresolved fixture anchor')
+          path.write_text(s.replace(old, new, 1))
+          PY
       - name: Validate canonical executor syntax
         run: node --check goral-hachol/engine/kashf-canonical-executors.js
       - name: Run canonical routing contract
