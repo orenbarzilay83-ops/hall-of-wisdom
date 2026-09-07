@@ -821,6 +821,47 @@ const lostAnimalReading = buildKashfReadingByQuestionId(makeP9Board({ 6: '2111',
 assert(lostAnimalReading.primaryFormula?.result?.executorResult?.returns === true, 'q-lost-animal alias reaches the same exact p202 executor');
 assert(lostAnimalReading.canonicalExecution?.methodsExecuted?.length === 1, 'q-lost-animal alias still executes one method only');
 
+// ── P12 hidden-item p188 executor --------------------------------------
+assertRoute('q-treasure', {
+  ok: true,
+  canRunKashf: true,
+  kashfIntentId: 'hidden.isStillThere',
+  kashfMethodId: 'hidden.p188.isStillThere',
+  kashfRuntimeStatus: 'ready',
+  executorStatus: 'ready',
+  runtimeAllowed: true,
+});
+assert(canRunKashfMethod('hidden.p188.isStillThere') === true, 'p188 hidden-item method is explicitly runnable');
+
+const hiddenYes = buildKashfReadingByQuestionId(makeP9Board({
+  1: '1122', 2: '1222', 4: '2111', 13: '2121', 14: '2211', 15: '1122',
+}), 'q-treasure', { question: 'האם הדבר הנסתר עדיין במקום?' });
+assert(hiddenYes.valid === true && hiddenYes.canRunKashf === true, 'p188 hidden positive fixture executes canonically');
+assert(hiddenYes.canonicalExecution?.methodsExecuted?.length === 1, 'p188 hidden executes exactly one method');
+assert(hiddenYes.canonicalExecution?.methodsExecuted?.[0] === 'hidden.p188.isStillThere', 'p188 hidden executes exact canonical method');
+assert(JSON.stringify(hiddenYes.primaryFormula?.houses) === JSON.stringify([1, 2, 4, 13, 14, 15]), 'p188 hidden traces exactly six source houses');
+assert(hiddenYes.primaryFormula?.result?.executorResult?.houseResults?.every((item) => item.classification.saadNahs === 'saad'), 'p188 positive fixture has all six houses explicitly benefic');
+assert(hiddenYes.primaryFormula?.result?.executorResult?.presentInPlace === true, 'p188 all-benefic branch means hidden thing is in place');
+assert(hiddenYes.overallPositive === true, 'p188 in-place branch is positive');
+assert(hiddenYes.verdict?.text.includes('נמצא עדיין במקום'), 'p188 verdict states still in tested place');
+assert(hiddenYes.canonicalExecution?.topicBundleExecuted === false, 'p188 hidden does not execute broad hidden-treasure bundle');
+assert(hiddenYes.altFormula === null, 'p188 hidden does not execute direction/recast alternatives');
+assert(hiddenYes.dhamir === null, 'p188 hidden does not auto-run Dhamir');
+
+const hiddenNo = buildKashfReadingByQuestionId(makeP9Board({
+  1: '1122', 2: '1222', 4: '1112', 13: '2121', 14: '2211', 15: '1122',
+}), 'q-treasure', { question: 'האם הדבר הנסתר עדיין במקום?' });
+assert(hiddenNo.primaryFormula?.result?.executorResult?.houseResults?.find((item) => item.houseNumber === 4)?.classification?.saadNahs === 'nahs', 'p188 negative fixture has H4 explicitly malefic');
+assert(hiddenNo.primaryFormula?.result?.executorResult?.presentInPlace === false, 'p188 one non-benefic source house fails all-benefic condition');
+assert(hiddenNo.overallPositive === false, 'p188 source otherwise-not-there branch is negative');
+assert(hiddenNo.verdict?.text.includes('אינו במקום הנבדק'), 'p188 negative verdict says not in tested place');
+
+const hiddenMixedNo = buildKashfReadingByQuestionId(makeP9Board({
+  1: '1122', 2: '1222', 4: '2212', 13: '2121', 14: '2211', 15: '1122',
+}), 'q-treasure', { question: 'האם הדבר הנסתר עדיין במקום?' });
+assert(hiddenMixedNo.primaryFormula?.result?.executorResult?.houseResults?.find((item) => item.houseNumber === 4)?.classification?.saadNahs === 'mixed', 'p188 mixed figure remains mixed');
+assert(hiddenMixedNo.primaryFormula?.result?.executorResult?.presentInPlace === false, 'p188 mixed tendency is not promoted to benefic');
+
 // ── Canonical execution isolation ----------------------------------------
 for (const qid of ['q-success', 'q-travel-safe', 'q-short-travel', 'q-move-city', 'q-siblings']) {
   const reading = buildKashfReadingByQuestionId(PILOT_BOARD, qid, { question: qid });

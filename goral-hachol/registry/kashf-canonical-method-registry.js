@@ -353,10 +353,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'hiddenTreasure',
     sourcePages: [188],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Check H1,H2,H4,H13,H14,H15. Source is binary: if the required figures are benefic, the hidden thing is there; otherwise it is not. No majority rule.',
+    executorStatus: 'ready',
+    notes: 'Canonical p188 executor is wired: H1,H2,H4,H13,H14,H15 must all be explicitly benefic (saad) for the hidden thing to be in the tested place; otherwise the source says it is not there. No majority rule and no promotion of mixed tendency to benefic. This does not prove an unspecified treasure exists from nothing.',
   }),
 
   'hidden.p188.quarterDirection': method({

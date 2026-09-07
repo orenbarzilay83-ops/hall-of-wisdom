@@ -300,8 +300,8 @@ window.QUESTION_BANK = [
   {
     id: 'q-treasure',
     category: 'money', houseId: 2, topicId: 'hiddenTreasure', kashfTopicId: 'hiddenTreasure',
-    label: 'האם יש מטמון נסתר?',
-    desc: 'חיפוש כסף/חפצים טמונים כשיש רמז או מקום מסוים',
+    label: 'האם הדבר הנסתר עדיין במקומו?',
+    desc: 'לדבר נסתר או טמון שכבר ידוע או נחשד במקום מסוים — האם הוא עדיין שם. השיטה אינה מוכיחה קיום מטמון לא ידוע.',
     clientFields: [F.treasureDesc, F.treasureLoc],
   },
   {

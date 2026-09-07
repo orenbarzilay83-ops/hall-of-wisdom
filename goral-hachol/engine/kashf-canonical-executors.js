@@ -529,7 +529,48 @@ function computeLostItemReturnP202(chart) {
   };
 }
 
+
+function computeHiddenStillThereP188(chart) {
+  if (!Array.isArray(chart)) return null;
+  const housesUsed = [1, 2, 4, 13, 14, 15];
+  const houseResults = housesUsed.map((houseNumber) => {
+    const entry = findCanonicalHouse(chart, houseNumber);
+    const pattern = entry?.key || entry?.pattern || null;
+    if (!pattern) return null;
+    return {
+      houseNumber,
+      pattern,
+      figureHebrew: entry?.hebrew || entry?.hebrewName || pattern,
+      classification: classifyCanonicalFigure(pattern),
+    };
+  });
+  if (houseResults.some((item) => !item)) return null;
+
+  const allBenefic = houseResults.every((item) => item.classification.saadNahs === 'saad');
+  const presentInPlace = allBenefic;
+  const nonBeneficHouses = houseResults
+    .filter((item) => item.classification.saadNahs !== 'saad')
+    .map((item) => item.houseNumber);
+
+  const outputHebrew = presentInPlace
+    ? 'בבתים 1, 2, 4, 13, 14 ו־15 נמצאו צורות מיטיבות. לפי כשף עמ׳ 188: הדבר הנסתר נמצא עדיין במקום הנבדק.'
+    : 'לא כל הצורות בבתים 1, 2, 4, 13, 14 ו־15 מיטיבות (הבתים שאינם מיטיבים במפורש: ' + nonBeneficHouses.join(', ') + '). לפי כשף עמ׳ 188: הדבר הנסתר אינו במקום הנבדק. כלל זה עוסק בדבר נסתר שכבר נשאל עליו ובמקומו; הוא אינו מוכיח מעצמו שקיים מטמון לא ידוע.';
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 188',
+    sourceText: 'בדבר הנסתר — האם הוא במקומו או לא? התבונן בראשון, בשני, בבית הדבר הנסתר — הרביעי — ובשלושה־עשר, בארבעה־עשר ובחמישה־עשר. אם הצורות מיטיבות, הרי הוא שם; ואם אינן מיטיבות, אינו שם.',
+    housesUsed,
+    houseResults,
+    allBenefic,
+    nonBeneficHouses,
+    presentInPlace,
+    positive: presentInPlace,
+    outputHebrew,
+  };
+}
+
 const CUSTOM_EXECUTORS = Object.freeze({
+  'hidden.p188.isStillThere': computeHiddenStillThereP188,
   'lostItem.p202.returnH6H8': computeLostItemReturnP202,
   'marriage.p204.previousStatusH7inH10': computeMarriagePreviousStatusP204,
   'marriage.p204.dowryH8': computeDowryH8P204,
