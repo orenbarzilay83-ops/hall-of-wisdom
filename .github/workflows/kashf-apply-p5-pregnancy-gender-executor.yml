@@ -1,0 +1,42 @@
+name: Apply Kashf P5 Pregnancy-Gender Executor
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '_apply_kashf_p5_pregnancy_gender_executor.mjs'
+      - '.github/workflows/kashf-apply-p5-pregnancy-gender-executor.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-pregnancy-gender-executor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Apply pregnancy-gender canonical executor and run contracts
+        run: node _apply_kashf_p5_pregnancy_gender_executor.mjs
+
+      - name: Commit canonical executor cutover
+        run: |
+          if git diff --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add goral-hachol/engine/kashf-canonical-executors.js goral-hachol/engine/kashf-canonical-reading-engine.js goral-hachol/registry/kashf-canonical-method-registry.js _test_kashf_canonical_routing.mjs
+          git commit -m "feat(kashf): enable pregnancy-gender canonical executor"
+          git push
