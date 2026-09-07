@@ -48,6 +48,8 @@ expectTop('בן או בת', 'pregnancy.p191.genderH5');
 expectTop('בתולה או גרושה', 'marriage.p204.previousStatusH7inH10');
 expectTop('מה גודל המוהר', 'marriage.p204.dowryH8');
 expectTop('אל מי מופנה המבט', 'love.p204.attentionFireRows1713');
+expectTop('האם האישה תמצא חן בעיניו', 'love.p206.womanFavorH7H11ThenH5');
+expectTop('האם השואל רוצה בדבר', 'desire.p206.querentWantsH7H11ThenH5');
 expectTop('להישאר במקום או לעבור', 'relocation.p183.stayMoveH1H2');
 expectTop('מקום נוכחי מול מקום חדש', 'relocation.p183.currentVsNewPlace');
 expectTop('מעבר ממקום למקום', 'relocation.p183.h4h15');

@@ -1070,7 +1070,59 @@ function computeClothingLuckP265(chart) {
   };
 }
 
+// Kashf v57 p206 — whether a woman finds favor in the querent's eyes.
+// Derive H7+H11, then combine that generated figure with H5.
+// This is distinct from the adjacent querent-desire clause despite using
+// the same derivation, and distinct from mutual love/attention methods.
+function computeWomanFavorP206(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h7 = findCanonicalHouse(chart, 7);
+  const h11 = findCanonicalHouse(chart, 11);
+  const h5 = findCanonicalHouse(chart, 5);
+  const h7Pattern = h7?.key || h7?.pattern || null;
+  const h11Pattern = h11?.key || h11?.pattern || null;
+  const h5Pattern = h5?.key || h5?.pattern || null;
+  if (!h7Pattern || !h11Pattern || !h5Pattern) return null;
+
+  const firstDerived = combineRamlFigures(h7Pattern, h11Pattern);
+  const finalDerived = combineRamlFigures(firstDerived.resultPattern, h5Pattern);
+  const finalPattern = finalDerived.resultPattern;
+  const classification = classifyCanonicalFigure(finalPattern);
+  const finalFigureHebrew = finalDerived.result?.hebrewName || classification.figureHebrew || finalPattern;
+
+  let findsFavor = null;
+  if (classification.saadNahs === 'saad') findsFavor = true;
+  else if (classification.saadNahs === 'nahs') findsFavor = false;
+
+  let outputHebrew;
+  if (findsFavor === true) {
+    outputHebrew = 'נולדה צורה מן הבית השביעי והאחד־עשר, ולאחר מכן חוברה עם הבית החמישי. התוצאה היא ' + finalFigureHebrew + ' (' + finalPattern + ') — צורה מיטיבה. לפי כשף עמ׳ 206: היא תמצא חן בעיניו.';
+  } else if (findsFavor === false) {
+    outputHebrew = 'נולדה צורה מן הבית השביעי והאחד־עשר, ולאחר מכן חוברה עם הבית החמישי. התוצאה היא ' + finalFigureHebrew + ' (' + finalPattern + ') — צורה מזיקה. לפי כשף עמ׳ 206: היא לא תמצא חן בעיניו.';
+  } else {
+    outputHebrew = 'נולדה צורה מן הבית השביעי והאחד־עשר, ולאחר מכן חוברה עם הבית החמישי. התוצאה היא ' + finalFigureHebrew + ' (' + finalPattern + ') — ' + (classification.saadNahsHebrew || 'ללא סיווג מכריע') + '. כלל עמ׳ 206 מוסר הכרעה מפורשת למיטיב או מזיק בלבד; תוצאה ממוזגת נשארת ללא הכרעה.';
+  }
+
+  return {
+    sourceRef: 'כשף אל-אסרר v57 עמ׳ 206',
+    sourceText: 'אם שאל השואל על אישה — האם היא תמצא חן בעיני? קח צורה מן השביעי והאחד־עשר, ואת היוצא הכה עם החמישי. אם יצאה צורה מיטיבה, היא תמצא חן בעיניו. ואם יצאה צורה מזיקה, לא תמצא חן בעיניו.',
+    housesUsed: [7, 11, 5],
+    h7Pattern,
+    h11Pattern,
+    h5Pattern,
+    firstDerivedPattern: firstDerived.resultPattern,
+    firstDerivedFigureHebrew: firstDerived.result?.hebrewName || firstDerived.resultPattern,
+    finalPattern,
+    finalFigureHebrew,
+    classification,
+    findsFavor,
+    positive: findsFavor,
+    outputHebrew,
+  };
+}
+
 const CUSTOM_EXECUTORS = Object.freeze({
+  'love.p206.womanFavorH7H11ThenH5': computeWomanFavorP206,
   'clothing.p264-265.luck': computeClothingLuckP265,
   'relocation.p183.stayMoveH1H2': computeRelocationStayMoveH1H2,
   'dispute.p212.reconciliationH1H7': computeDisputeReconciliationP212,

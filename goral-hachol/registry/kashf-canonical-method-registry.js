@@ -469,6 +469,17 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     notes: 'Canonical p204 attention/look executor is wired. It uses only the explicit p204 condition: fire row of H1 open + fire row of H7 open + fire row of H13 joined/closed => both look at each other and also at others. Other row combinations remain unresolved by this exact method. The similar p170 practical rule is not blended into this verdict, and this method does not answer whether love exists.',
   }),
 
+  'love.p206.womanFavorH7H11ThenH5': method({
+    kashfMethodId: 'love.p206.womanFavorH7H11ThenH5',
+    kashfIntentId: 'love.womanFindsFavor',
+    topicId: 'marriage',
+    sourcePages: [206],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: true,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
+    notes: 'Canonical p206 woman-favor clause. Combine H7+H11, then combine that result with H5. Pure benefic means the woman finds favor in his eyes; pure malefic means she does not; mixed remains unresolved. This is one-directional favor, not mutual chemistry or a general love verdict.',
+  }),
   'desire.p206.querentWantsH7H11ThenH5': method({
     kashfMethodId: 'desire.p206.querentWantsH7H11ThenH5',
     kashfIntentId: 'desire.querentWantsMatter',
@@ -478,7 +489,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     runtimeAllowed: false,
     executionKind: 'custom-engine',
     executorStatus: 'pending',
-    notes: 'Combine H7+H11, then combine that result with H5. A benefic result means the querent wants the matter. The source does NOT say this method tests whether a woman will please a man or whether chemistry is mutual.',
+    notes: 'Combine H7+H11, then combine that result with H5. Pure benefic means the querent wants the matter; pure malefic means the opposite; mixed remains unresolved. A separate explicit p206 clause uses the same derivation for whether a woman finds favor in his eyes, and is mapped under its own canonical method id; the two intents must not be merged.',
   }),
 
   'marriage.p211.dissolutionH7StateMatrix': method({

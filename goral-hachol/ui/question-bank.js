@@ -899,7 +899,7 @@ window.QUESTION_BANK = [
     id: 'q-woman-grace',
     category: 'love', houseId: 7, topicId: 'marriage', kashfTopicId: 'marriage',
     label: 'האם האישה תמצא חן בעיני האיש?',
-    desc: 'לפני שידוך — האם יהיה כימיה הדדית ומשיכה',
+    desc: 'לפני שידוך — האם האישה תמצא חן בעיני האיש; הכלל אינו בודק כימיה או משיכה הדדית',
     clientFields: [F.candidate, F.candidateAge],
   },
   {

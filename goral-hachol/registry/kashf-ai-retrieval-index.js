@@ -152,6 +152,16 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
     aliases: ['האם יהיה פיוס', 'האם הצדדים יתפייסו', 'פשרה בין הצדדים', 'שלום אחרי סכסוך', 'גישור ופיוס'],
     houses: [1, 7],
   },
+  'desire.p206.querentWantsH7H11ThenH5': {
+    aliases: ['האם השואל רוצה בדבר', 'האם אני רוצה בזה', 'רצון השואל בדבר', 'האם הוא רוצה בעניין'],
+    doNotMixWith: ['love.p206.womanFavorH7H11ThenH5'],
+    houses: [7, 11, 5],
+  },
+  'love.p206.womanFavorH7H11ThenH5': {
+    aliases: ['האם האישה תמצא חן בעיניו', 'האם היא תמצא חן בעיניו', 'האם האישה מוצאת חן בעיני האיש', 'האם היא מוצאת חן בעיניי'],
+    doNotMixWith: ['desire.p206.querentWantsH7H11ThenH5', 'love.p204.attentionFireRows1713'],
+    houses: [7, 11, 5],
+  },
   'clothing.p264-265.luck': {
     aliases: ['מה מזלי בלבוש', 'האם יש מזל בבגדים', 'מזל בלבושים', 'מזל בבגד', 'לבוש מלכים'],
     doNotMixWith: ['clothing.color', 'clothing.fixedMutable'],

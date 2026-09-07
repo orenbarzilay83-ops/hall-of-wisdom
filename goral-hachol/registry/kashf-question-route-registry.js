@@ -585,11 +585,11 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
 
   'q-woman-grace': route({
     questionId: 'q-woman-grace',
-    disposition: 'RENAME',
-    kashfIntentId: 'desire.querentWantsMatter',
-    kashfMethodId: 'desire.p206.querentWantsH7H11ThenH5',
+    disposition: 'KEEP',
+    kashfIntentId: 'love.womanFindsFavor',
+    kashfMethodId: 'love.p206.womanFavorH7H11ThenH5',
     kashfRuntimeStatus: 'ready',
-    note: 'The p206 formula answers whether the querent wants the matter. It does not answer whether the woman will please the man or whether chemistry is mutual; the UI wording must be corrected before cutover.',
+    note: 'v57 p206 explicitly asks whether the woman will find favor in his eyes. This route is one-directional favor only; it must not be expanded into mutual chemistry, mutual attraction, or the neighboring querent-desire rule.',
   }),
 
   // ── AUDITED TRAVEL + MISSING SLICE -----------------------------------

@@ -1399,6 +1399,46 @@ assert(clothingMixed.primaryFormula?.result?.executorResult?.h5Quality === 'mixe
 assert(clothingMixed.primaryFormula?.result?.executorResult?.clothingLuck === null, 'p265 mixed figure is not promoted by tendency');
 assert(clothingMixed.overallPositive === null, 'p265 mixed result remains unresolved');
 
+// ── P206 exact woman-favor source method --------------------------------
+const womanFavorRoute = assertRoute('q-woman-grace', {
+  ok: true,
+  canRunKashf: true,
+  kashfIntentId: 'love.womanFindsFavor',
+  kashfMethodId: 'love.p206.womanFavorH7H11ThenH5',
+  kashfRuntimeStatus: 'ready',
+  executorStatus: 'ready',
+  runtimeAllowed: true,
+});
+assert(canRunKashfMethod(womanFavorRoute.kashfMethodId) === true, 'p206 woman-favor method is explicitly runnable');
+assert(getKashfMethod('desire.p206.querentWantsH7H11ThenH5')?.kashfIntentId === 'desire.querentWantsMatter', 'neighboring p206 querent-desire clause remains a separate intent');
+
+const womanFavorBeneficBoard = makeP204Board({ 5: '2211', 7: '2222', 11: '2222' });
+const womanFavorBenefic = buildKashfReadingByQuestionId(womanFavorBeneficBoard, 'q-woman-grace', { question: 'האם האישה תמצא חן בעיני האיש?' });
+assert(womanFavorBenefic.valid === true, 'p206 woman-favor benefic fixture executes');
+assert(womanFavorBenefic.primaryFormula?.result?.executorResult?.firstDerivedPattern === '2222', 'p206 derives H7+H11 first');
+assert(womanFavorBenefic.primaryFormula?.result?.executorResult?.finalPattern === '2211', 'p206 then combines derived result with H5');
+assert(womanFavorBenefic.primaryFormula?.result?.executorResult?.findsFavor === true, 'p206 pure benefic final means she finds favor');
+assert(womanFavorBenefic.overallPositive === true, 'p206 benefic final exposes positive true');
+assert(JSON.stringify(womanFavorBenefic.primaryFormula?.houses) === JSON.stringify([7, 11, 5]), 'p206 trace uses exactly H7,H11,H5');
+assert(womanFavorBenefic.primaryFormula?.sourceText === getKashfV57Knowledge('love.p206.womanFavorH7H11ThenH5')?.v57?.hebrewRule, 'p206 operational sourceText comes from Hebrew v57');
+assert(womanFavorBenefic.canonicalExecution?.methodsExecuted?.length === 1 && womanFavorBenefic.canonicalExecution.methodsExecuted[0] === 'love.p206.womanFavorH7H11ThenH5', 'p206 executes exactly the woman-favor method');
+assert(womanFavorBenefic.canonicalExecution?.altFormulaExecuted === false, 'p206 does not execute an alternative formula');
+assert(womanFavorBenefic.canonicalExecution?.topicBundleExecuted === false, 'p206 does not execute a broad marriage/love topic bundle');
+assert(womanFavorBenefic.dhamir === null, 'p206 does not run Dhamir');
+assert(!womanFavorBenefic.verdict?.text?.includes('כימיה הדדית'), 'p206 does not invent mutual chemistry');
+
+const womanFavorMaleficBoard = makeP204Board({ 5: '1212', 7: '2222', 11: '2222' });
+const womanFavorMalefic = buildKashfReadingByQuestionId(womanFavorMaleficBoard, 'q-woman-grace', { question: 'האם האישה תמצא חן בעיני האיש?' });
+assert(womanFavorMalefic.primaryFormula?.result?.executorResult?.finalPattern === '1212', 'p206 malefic fixture reaches pure malefic final');
+assert(womanFavorMalefic.primaryFormula?.result?.executorResult?.findsFavor === false, 'p206 pure malefic final means she does not find favor');
+assert(womanFavorMalefic.overallPositive === false, 'p206 malefic final exposes positive false');
+
+const womanFavorMixedBoard = makeP204Board({ 5: '2222', 7: '2222', 11: '2222' });
+const womanFavorMixed = buildKashfReadingByQuestionId(womanFavorMixedBoard, 'q-woman-grace', { question: 'האם האישה תמצא חן בעיני האיש?' });
+assert(womanFavorMixed.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'mixed', 'p206 mixed fixture preserves mixed classification');
+assert(womanFavorMixed.primaryFormula?.result?.executorResult?.findsFavor === null, 'p206 mixed final stays unresolved');
+assert(womanFavorMixed.overallPositive === null, 'p206 mixed final does not become a yes/no verdict');
+
 console.log(`Kashf canonical routing tests: ${passed} passed, ${failed} failed`);
 if (failed > 0) {
   process.exit(1);
