@@ -392,7 +392,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     runtimeAllowed: true,
     executionKind: 'custom-engine',
     executorStatus: 'ready',
-    notes: 'Canonical p202 executor is wired: H6 and H8 must both be explicitly benefic (saad) AND explicitly internal (dakhil) for return; otherwise the source says it does not return. Mixed tendency is not promoted to benefic, and fixed/mutable/outgoing movement is not promoted to internal.',
+    notes: 'Canonical p202 executor is wired: BOTH H6 and H8 must each be pure benefic (saad) and strictly internal (dakhil). The source says otherwise it does not return. Mixed figures and mujassad/fixed/mutable movement classes are not coerced into benefic+internal. This method is shared by lost-item and lost-animal routes and is not a theft-attribution rule.',
   }),
 
   'marriage.p204.dowryH8': method({
