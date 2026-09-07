@@ -5,9 +5,9 @@
  * Executes exactly ONE method selected by kashfMethodId. It intentionally
  * does NOT execute topic altFormula/supportingChecks/dhamir extras.
  *
- * This first implementation supports the formula-based pilot slice only.
- * Other execution kinds stay hard-stopped until their dedicated executor is
- * implemented and explicitly enabled in the method registry.
+ * Formula methods and explicitly allowlisted method-scoped executors may run.
+ * Every other execution kind stays hard-stopped until its exact executor is
+ * implemented, source-audited, allowlisted, and enabled in the method registry.
  */
 
 import {
@@ -26,6 +26,8 @@ import { requireRunnableKashfRoute } from './kashf-method-router.js';
 import {
   hasCanonicalLegacyExecutor,
   executeCanonicalLegacyMethod,
+  hasCanonicalCustomExecutor,
+  executeCanonicalCustomMethod,
 } from './kashf-canonical-executors.js';
 
 const ROW_BY_NAME = Object.freeze({
@@ -124,25 +126,35 @@ function interpretFormula(result, formula) {
 }
 
 function buildLegacyFunctionReading(board, method, clientContext = {}) {
-  if (!hasCanonicalLegacyExecutor(method.kashfMethodId)) {
+  const isLegacyExecutor = method.executionKind === 'legacy-function';
+  const isCustomExecutor = method.executionKind === 'custom-engine';
+  const executorApproved = isLegacyExecutor
+    ? hasCanonicalLegacyExecutor(method.kashfMethodId)
+    : isCustomExecutor
+      ? hasCanonicalCustomExecutor(method.kashfMethodId)
+      : false;
+
+  if (!executorApproved) {
     return blockedResult({
       kashfMethodId: method.kashfMethodId,
       kashfIntentId: method.kashfIntentId,
       status: method.kashfRuntimeStatus,
       executorStatus: method.executorStatus,
-      reason: 'canonical-legacy-executor-not-approved',
-      userMessage: 'המבצע הישן של שיטה זו לא אושר במפורש לנתיב הקנוני.',
+      reason: isCustomExecutor ? 'canonical-custom-executor-not-approved' : 'canonical-legacy-executor-not-approved',
+      userMessage: 'המבצע המדויק של שיטה זו לא אושר במפורש לנתיב הקנוני.',
     });
   }
 
   try {
-    const legacyResult = executeCanonicalLegacyMethod(method.kashfMethodId, board);
-    if (!legacyResult || typeof legacyResult !== 'object') {
-      throw new Error('Approved canonical legacy executor returned no result');
+    const executorResult = isCustomExecutor
+      ? executeCanonicalCustomMethod(method.kashfMethodId, board)
+      : executeCanonicalLegacyMethod(method.kashfMethodId, board);
+    if (!executorResult || typeof executorResult !== 'object') {
+      throw new Error('Approved canonical method-scoped executor returned no result');
     }
 
     const verdict = {
-      text: legacyResult.outputHebrew || 'ללא הכרעה מפורשת',
+      text: executorResult.outputHebrew || 'ללא הכרעה מפורשת',
       positive: null,
     };
     const topicRules = method.legacyTopicId ? getTopicRules(method.legacyTopicId) : null;
@@ -150,13 +162,16 @@ function buildLegacyFunctionReading(board, method, clientContext = {}) {
       ? [9, 10, 11]
       : method.kashfMethodId === 'illness.bodyPart.h6Figure'
         ? [6]
-        : [];
+        : method.kashfMethodId === 'theft.p225.thiefDescriptionH7'
+          ? [7]
+          : [];
     const result = {
-      type: 'legacy-function',
-      legacyResult,
+      type: method.executionKind,
+      executorResult,
+      ...(isLegacyExecutor ? { legacyResult: executorResult } : {}),
     };
     const primaryFormula = {
-      type: 'legacy-function',
+      type: method.executionKind,
       houses,
       result,
       verdict,
@@ -206,7 +221,7 @@ function buildLegacyFunctionReading(board, method, clientContext = {}) {
         dynFields: clientContext.dynFields || {},
       },
       formula: {
-        type: 'legacy-function',
+        type: method.executionKind,
         houses,
         sourceText: '',
         result,
@@ -282,7 +297,8 @@ export function buildKashfReadingByMethod(board, kashfMethodId, clientContext = 
     });
   }
 
-  if (method.executionKind === 'legacy-function') {
+  if (method.executionKind === 'legacy-function'
+      || (method.executionKind === 'custom-engine' && hasCanonicalCustomExecutor(method.kashfMethodId))) {
     return buildLegacyFunctionReading(board, method, clientContext);
   }
   if (method.executionKind !== 'formula') {

@@ -767,9 +767,9 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'theft',
     sourcePages: [224, 225],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
+    executorStatus: 'ready',
     notes: 'Body-source instruction takes the thief description from H7 and its figure, with H10 used for location/context. This yields a descriptive profile/letters, not a certain real-world identity or accusation.',
   }),
 

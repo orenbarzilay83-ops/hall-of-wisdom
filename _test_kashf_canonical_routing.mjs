@@ -154,11 +154,12 @@ assertRoute('q-thief-near', {
 });
 assertRoute('q-theft-who', {
   ok: true,
-  canRunKashf: false,
+  canRunKashf: true,
   kashfIntentId: 'theft.thiefDescription',
   kashfMethodId: 'theft.p225.thiefDescriptionH7',
   kashfRuntimeStatus: 'ready',
-  executorStatus: 'pending',
+  executorStatus: 'ready',
+  runtimeAllowed: true,
 });
 
 const dispute = assertRoute('q-dispute', {
@@ -361,6 +362,34 @@ assert(bodyPartHtml.includes('illness.bodyPart.h6Figure'), 'body-part writer ide
 assert(bodyPartHtml.includes('הרגל השמאלית'), 'body-part writer renders the source-table result');
 assert(!bodyPartHtml.includes('ניתוח תומך לפי ספר'), 'body-part writer contains no broad illness support section');
 assert(!bodyPartHtml.includes('מחשבת השואל (הדמיר)'), 'body-part writer contains no automatic Dhamir');
+// ── P3 thief-description method-scoped custom executor ----------------
+const thiefDescriptionRoute = assertRoute('q-theft-who', {
+  ok: true,
+  canRunKashf: true,
+  kashfIntentId: 'theft.thiefDescription',
+  kashfMethodId: 'theft.p225.thiefDescriptionH7',
+  kashfRuntimeStatus: 'ready',
+  executorStatus: 'ready',
+  runtimeAllowed: true,
+});
+assert(canRunKashfMethod(thiefDescriptionRoute.kashfMethodId) === true, 'thief-description canonical method is explicitly runnable');
+const thiefDescriptionReading = buildKashfReadingByQuestionId(PILOT_BOARD, 'q-theft-who', { question: 'מהו תיאור הגנב?' });
+assert(thiefDescriptionReading.valid === true, 'q-theft-who executes through canonical custom allowlist');
+assert(thiefDescriptionReading.canonicalExecution?.methodsExecuted?.length === 1, 'q-theft-who executes exactly one method');
+assert(thiefDescriptionReading.canonicalExecution?.methodsExecuted?.[0] === 'theft.p225.thiefDescriptionH7', 'q-theft-who executes the exact H7 description method only');
+assert(thiefDescriptionReading.primaryFormula?.houses?.length === 1 && thiefDescriptionReading.primaryFormula.houses[0] === 7, 'q-theft-who traceability records H7 only');
+assert(thiefDescriptionReading.primaryFormula?.result?.executorResult?.figureKey === '1221', 'pilot board H7 is passed as the canonical figure key');
+assert(String(thiefDescriptionReading.primaryFormula?.result?.executorResult?.description || '').includes('רחב בטן'), 'H7=1221 resolves to the source description table');
+assert(thiefDescriptionReading.canonicalExecution?.altFormulaExecuted === false, 'q-theft-who does not execute alt formula');
+assert(thiefDescriptionReading.canonicalExecution?.topicSupportingChecksExecuted === false, 'q-theft-who does not execute theft supporting checks');
+assert(thiefDescriptionReading.canonicalExecution?.topicBundleExecuted === false, 'q-theft-who does not execute theft topic bundle');
+assert(thiefDescriptionReading.overallPositive === null, 'descriptive thief profile does not invent a positive/negative verdict');
+assert(String(thiefDescriptionReading.verdict?.text || '').includes('רחב בטן'), 'thief-description verdict renders the source descriptive profile');
+const thiefDescriptionHtml = writeCanonicalKashfReading(thiefDescriptionReading);
+assert(thiefDescriptionHtml.includes('theft.p225.thiefDescriptionH7'), 'thief-description writer identifies exact canonical method');
+assert(thiefDescriptionHtml.includes('רחב בטן'), 'thief-description writer renders the source-table description');
+assert(!thiefDescriptionHtml.includes('ניתוח תומך לפי ספר'), 'thief-description writer contains no broad theft support section');
+assert(!thiefDescriptionHtml.includes('מחשבת השואל (הדמיר)'), 'thief-description writer contains no automatic Dhamir');
 // ── Canonical execution isolation ----------------------------------------
 for (const qid of ['q-success', 'q-travel-safe', 'q-short-travel', 'q-move-city', 'q-siblings']) {
   const reading = buildKashfReadingByQuestionId(PILOT_BOARD, qid, { question: qid });

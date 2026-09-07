@@ -12,11 +12,16 @@
 import {
   computeProfessionH9Kashf,
   computeBodyPartDiagnosisKashf,
+  computeThiefPhysicalDescriptionKashf,
 } from './kashf-pending-extraction.js';
 
 const LEGACY_EXECUTORS = Object.freeze({
   'profession.p254.h9Planet': computeProfessionH9Kashf,
   'illness.bodyPart.h6Figure': computeBodyPartDiagnosisKashf,
+});
+
+const CUSTOM_EXECUTORS = Object.freeze({
+  'theft.p225.thiefDescriptionH7': computeThiefPhysicalDescriptionKashf,
 });
 
 function toLegacyChart(board) {
@@ -53,6 +58,22 @@ export function executeCanonicalLegacyMethod(kashfMethodId, board) {
   return executor(toLegacyChart(board));
 }
 
+
+export function hasCanonicalCustomExecutor(kashfMethodId) {
+  return typeof CUSTOM_EXECUTORS[kashfMethodId] === 'function';
+}
+
+export function executeCanonicalCustomMethod(kashfMethodId, board) {
+  const executor = CUSTOM_EXECUTORS[kashfMethodId];
+  if (typeof executor !== 'function') {
+    const error = new Error(`No approved canonical custom executor for ${kashfMethodId}`);
+    error.code = 'KASHF_CANONICAL_CUSTOM_EXECUTOR_NOT_APPROVED';
+    throw error;
+  }
+
+  return executor(toLegacyChart(board));
+}
+
 export function listApprovedCanonicalLegacyExecutors() {
   return Object.keys(LEGACY_EXECUTORS);
 }
@@ -60,5 +81,7 @@ export function listApprovedCanonicalLegacyExecutors() {
 export default {
   hasCanonicalLegacyExecutor,
   executeCanonicalLegacyMethod,
+  hasCanonicalCustomExecutor,
+  executeCanonicalCustomMethod,
   listApprovedCanonicalLegacyExecutors,
 };
