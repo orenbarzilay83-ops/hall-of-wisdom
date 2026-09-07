@@ -420,8 +420,8 @@ window.QUESTION_BANK = [
   {
     id: 'q-marriage-thayib',
     category: 'love', houseId: 7, topicId: 'marriage', kashfTopicId: 'marriage',
-    label: 'האם האישה בתולה או גרושה / אלמנה?',
-    desc: 'לבחינת עבר האישה — האם נישאה בעבר. שאלה עדינה הדורשת הקשר מתאים',
+    label: 'האם האישה בתולה או גרושה?',
+    desc: 'כלל כשף עמ׳ 204: רק כאשר צורת בית 7 חוזרת בבית 10 — מתהפכת מורה גרושה וקבועה מורה בתולה. הכלל אינו מבחין באלמנה.',
     clientFields: [F.candidate],
   },
   {
@@ -1097,8 +1097,8 @@ window.QUESTION_BANK = [
   {
     id: 'q-dowry',
     category: 'family', houseId: 8, topicId: 'marriage', kashfTopicId: 'marriage',
-    label: 'מה גובה הנדוניה / המוהר?',
-    desc: 'לגובה המוהר ותנאי הנישואין — לשדכנות ומשא ומתן',
+    label: 'האם המוהר גדול?',
+    desc: 'כלל כשף עמ׳ 204: צורה מיטיבה בבית 8 מורה על מוהר גדול. המקור אינו נותן כאן סכום מספרי ואינו קובע שמזיק פירושו מוהר קטן.',
     clientFields: [F.candidate, { id: 'dowryContext', label: 'הקשר', type: 'text', placeholder: 'חתן / כלה / שדכנות...' }],
   },
   {

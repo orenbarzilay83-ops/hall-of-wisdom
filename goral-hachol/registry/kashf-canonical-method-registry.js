@@ -401,10 +401,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'marriage',
     sourcePages: [204],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'H8 benefic indicates a large mahr; the paired malefic statement indicates lowness. Keep separate from H10 family-status judgment.',
+    executorStatus: 'ready',
+    notes: 'Canonical p204 H8 executor: an explicitly benefic figure indicates a large mahr. The immediately following benefic/malefic clause belongs to H10 family status, so H8 malefic or mixed does NOT authorize a small-mahr verdict. Those branches remain unresolved.',
   }),
 
   'siblings.p182.seniority': method({
@@ -419,8 +419,8 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     legacyTopicId: 'siblings',
   }),
 
-  'marriage.p204.previousStatusH7': method({
-    kashfMethodId: 'marriage.p204.previousStatusH7',
+  'marriage.p204.previousStatusH7inH10': method({
+    kashfMethodId: 'marriage.p204.previousStatusH7inH10',
     kashfIntentId: 'marriage.previousStatus',
     topicId: 'marriage',
     sourcePages: [204],
@@ -429,7 +429,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     executionKind: 'custom-engine',
     executorStatus: 'ready',
     legacyTopicId: 'marriage',
-    notes: 'Primary Arabic scan p204: if H7 is mutable (منقلب) => thayyib; if fixed (ثابت) => virgin. Canonical executor therefore uses only the four source-defined mutable and four source-defined fixed figures; the other eight remain unresolved. Thayyib does not distinguish divorced from widowed. Source erratum: the primary scan says H1 recurring in H7 => female slave/servant (أمة), while H7 recurring in H10 => free woman (حرة); the working Hebrew text conflated these clauses.',
+    notes: 'Corrected against primary Arabic p204: the H7 figure must occur in H10. If that repeated figure is mutable (منقلب) => divorced (مطلقة); if fixed (ثابت) => virgin (بكر). If H7 does not recur in H10, or the repeated figure is outside the four source-defined mutable/four fixed classes, this rule remains unresolved. It does not distinguish widowhood.',
   }),
 
   // ── LOVE + MARRIAGE canonical slice -----------------------------------

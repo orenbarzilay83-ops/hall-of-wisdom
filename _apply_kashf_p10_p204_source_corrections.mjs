@@ -35,7 +35,7 @@ const newMethodId = 'marriage.p204.previousStatusH7inH10';
 // Replace the current executor body: p204 requires the H7 figure to occur in H10.
 const previousFnStart = executors.indexOf('function computeMarriagePreviousStatusP204(chart) {');
 if (previousFnStart < 0) throw new Error('p204 previous-status executor not found');
-const previousFnEnd = executors.indexOf('\n}\n\nconst CUSTOM_EXECUTORS', previousFnStart);
+const previousFnEnd = executors.indexOf('\n}\n\n\nfunction computeRulerConditionP257', previousFnStart);
 if (previousFnEnd < 0) throw new Error('p204 previous-status executor end not found');
 
 const correctedPreviousFn = String.raw`function computeMarriagePreviousStatusP204(chart) {
@@ -287,7 +287,6 @@ assert(dowryMixed.overallPositive === null, 'p204 mixed H8 remains unresolved');
 
 `;
 tests = tests.slice(0, testStart) + correctedTests + tests.slice(testEnd);
-tests = tests.replaceAll(oldMethodId, newMethodId);
 
 fs.writeFileSync(executorsPath, executors);
 fs.writeFileSync(registryPath, registry);

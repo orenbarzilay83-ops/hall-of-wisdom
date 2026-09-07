@@ -356,39 +356,49 @@ const P204_FIXED_PATTERNS = new Set([
 
 function computeMarriagePreviousStatusP204(chart) {
   if (!Array.isArray(chart)) return null;
-  const h7 = chart.find((entry) => Number(entry?.house ?? entry?.houseNumber) === 7)
-    || chart[6]
-    || null;
-  const pattern = h7?.key || h7?.pattern || null;
-  if (!pattern) return null;
+  const h7 = chart.find((entry) => Number(entry?.house ?? entry?.houseNumber) === 7) || chart[6] || null;
+  const h10 = chart.find((entry) => Number(entry?.house ?? entry?.houseNumber) === 10) || chart[9] || null;
+  const h7Pattern = h7?.key || h7?.pattern || null;
+  const h10Pattern = h10?.key || h10?.pattern || null;
+  if (!h7Pattern || !h10Pattern) return null;
 
-  const figureHebrew = h7?.hebrew || h7?.hebrewName || pattern;
-  const isMutable = P204_MUTABLE_PATTERNS.has(pattern);
-  const isFixed = P204_FIXED_PATTERNS.has(pattern);
-  const status = isMutable ? 'thayyib' : isFixed ? 'virgin' : null;
-  const statusHebrew = isMutable ? 'ת׳יִּבּ / בעולה או מי שנישאה בעבר' : isFixed ? 'בתולה' : 'לא הוכרע בכלל זה';
-  const figureClass = isMutable ? 'mutable' : isFixed ? 'fixed' : 'other-source-class';
-  const figureClassHebrew = isMutable ? 'מתהפכת' : isFixed ? 'קבועה' : 'אינה מארבע המתהפכות ואינה מארבע הקבועות';
+  const figureHebrew = h7?.hebrew || h7?.hebrewName || h7Pattern;
+  const recursInH10 = h7Pattern === h10Pattern;
+  const isMutable = P204_MUTABLE_PATTERNS.has(h7Pattern);
+  const isFixed = P204_FIXED_PATTERNS.has(h7Pattern);
 
+  let previousStatus = null;
+  let previousStatusHebrew = 'לא הוכרע בכלל זה';
+  let figureClass = isMutable ? 'mutable' : isFixed ? 'fixed' : 'other-source-class';
+  let figureClassHebrew = isMutable ? 'מתהפכת' : isFixed ? 'קבועה' : 'אינה מארבע המתהפכות ואינה מארבע הקבועות';
   let outputHebrew;
-  if (isMutable) {
-    outputHebrew = 'בית 7: ' + figureHebrew + ' (' + pattern + ') — צורה מתהפכת. לפי כשף עמ׳ 204: היא ת׳יִּבּ (בעולה / מי שנישאה בעבר). המקור אינו מבחין כאן בין גרושה לאלמנה.';
+
+  if (!recursInH10) {
+    outputHebrew = 'צורת בית 7 (' + figureHebrew + ', ' + h7Pattern + ') אינה נמצאת בבית 10. כלל כשף עמ׳ 204 קושר את דין גרושה/בתולה למצב שבו השביעי נמצא בעשירי; לכן כלל זה לבדו אינו מכריע כאן.';
+  } else if (isMutable) {
+    previousStatus = 'divorced';
+    previousStatusHebrew = 'גרושה';
+    outputHebrew = 'צורת בית 7 (' + figureHebrew + ', ' + h7Pattern + ') חוזרת בבית 10 והיא מתהפכת. לפי כשף עמ׳ 204: גרושה.';
   } else if (isFixed) {
-    outputHebrew = 'בית 7: ' + figureHebrew + ' (' + pattern + ') — צורה קבועה. לפי כשף עמ׳ 204: היא בתולה.';
+    previousStatus = 'virgin';
+    previousStatusHebrew = 'בתולה';
+    outputHebrew = 'צורת בית 7 (' + figureHebrew + ', ' + h7Pattern + ') חוזרת בבית 10 והיא קבועה. לפי כשף עמ׳ 204: בתולה.';
   } else {
-    outputHebrew = 'בית 7: ' + figureHebrew + ' (' + pattern + ') — הצורה אינה אחת מארבע המתהפכות ואינה אחת מארבע הקבועות שנקבעו במקור. כלל עמ׳ 204 לבדו אינו מכריע כאן בתולה לעומת ת׳יִּבּ; אין להשלים מן הדעת.';
+    outputHebrew = 'צורת בית 7 (' + figureHebrew + ', ' + h7Pattern + ') חוזרת בבית 10, אך היא אינה אחת מארבע המתהפכות ואינה אחת מארבע הקבועות שנקבעו בסיווג המקור. כלל עמ׳ 204 לבדו אינו מכריע גרושה לעומת בתולה; אין להשלים מן הדעת.';
   }
 
   return {
     sourceRef: 'כשף אל-אסרר עמ׳ 204; סיווג מתהפך/קבוע עמ׳ 57–60',
-    sourceText: 'אם השביעי מתהפך — היא ת׳יִּבּ; ואם הוא קבוע — היא בתולה.',
-    housesUsed: [7],
-    h7Pattern: pattern,
+    sourceText: 'אם השביעי נמצא בעשירי: אם הוא מתהפך — גרושה; ואם הוא קבוע — בתולה.',
+    housesUsed: [7, 10],
+    h7Pattern,
+    h10Pattern,
     h7FigureHebrew: figureHebrew,
+    recursInH10,
     figureClass,
     figureClassHebrew,
-    previousStatus: status,
-    previousStatusHebrew: statusHebrew,
+    previousStatus,
+    previousStatusHebrew,
     positive: null,
     outputHebrew,
   };
@@ -445,8 +455,44 @@ function computeRulerConditionP257(chart) {
   };
 }
 
+
+function computeDowryH8P204(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h8 = chart.find((entry) => Number(entry?.house ?? entry?.houseNumber) === 8) || chart[7] || null;
+  const h8Pattern = h8?.key || h8?.pattern || null;
+  if (!h8Pattern) return null;
+
+  const h8FigureHebrew = h8?.hebrew || h8?.hebrewName || h8Pattern;
+  const classification = classifyCanonicalFigure(h8Pattern);
+  const isLarge = classification.saadNahs === 'saad' ? true : null;
+
+  let outputHebrew;
+  if (isLarge === true) {
+    outputHebrew = 'בית 8: ' + h8FigureHebrew + ' (' + h8Pattern + ') — צורה מיטיבה. לפי כשף עמ׳ 204: המוהר גדול.';
+  } else if (classification.saadNahs === 'nahs') {
+    outputHebrew = 'בית 8: ' + h8FigureHebrew + ' (' + h8Pattern + ') — צורה מזיקה. עמ׳ 204 קובע במפורש רק שמיטיב בבית 8 מורה על מוהר גדול; משפט המזיק הסמוך שייך לדין המשפחה בבית 10. לכן אין להסיק מכאן מוהר קטן.';
+  } else if (classification.saadNahs === 'mixed') {
+    outputHebrew = 'בית 8: ' + h8FigureHebrew + ' (' + h8Pattern + ') — צורה ממוזגת. עמ׳ 204 אינו נותן כאן דין מפורש לגודל המוהר בצורת ממוזג, ולכן אין להשלים מן הדעת.';
+  } else {
+    outputHebrew = 'לא ניתן לסווג את צורת בית 8 לפי סיווג המיטיב/מזיק/ממוזג הקנוני; אין להכריע את גודל המוהר.';
+  }
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 204',
+    sourceText: 'צורה מיטיבה בבית השמיני מורה על מוהר גדול.',
+    housesUsed: [8],
+    h8Pattern,
+    h8FigureHebrew,
+    classification,
+    isLargeDowry: isLarge,
+    positive: null,
+    outputHebrew,
+  };
+}
+
 const CUSTOM_EXECUTORS = Object.freeze({
-  'marriage.p204.previousStatusH7': computeMarriagePreviousStatusP204,
+  'marriage.p204.previousStatusH7inH10': computeMarriagePreviousStatusP204,
+  'marriage.p204.dowryH8': computeDowryH8P204,
   'theft.p225.thiefDescriptionH7': computeThiefPhysicalDescriptionKashf,
   'pregnancy.p191.existsH5SilentEmpty': computePregnancyExistenceP191,
   'pregnancy.p191.genderH5': computePregnancyGenderP191,

@@ -609,51 +609,95 @@ assert(authorityAppointmentNo.primaryFormula?.result?.executorResult?.planetHebr
 assert(authorityAppointmentNo.primaryFormula?.result?.executorResult?.appointmentCompletes === false, 'p257 non-luminary/non-benefic planet means the appointment does not complete');
 assert(authorityAppointmentNo.overallPositive === false, 'p257 negative branch is negative');
 
-// ── P8 marriage previous-status p204 executor --------------------------
+// ── P10 corrected marriage p204 source contracts -----------------------
+function makeP204Board(overrides = {}) {
+  return {
+    entries: Array.from({ length: 16 }, (_, index) => {
+      const house = index + 1;
+      const pattern = overrides[house] || '2222';
+      return { house, houseNumber: house, pattern, key: pattern, hebrewName: pattern };
+    }),
+    boardValidation: { isValid: true, warnings: [] },
+  };
+}
+
 assertRoute('q-marriage-thayib', {
   ok: true,
   canRunKashf: true,
   kashfIntentId: 'marriage.previousStatus',
-  kashfMethodId: 'marriage.p204.previousStatusH7',
+  kashfMethodId: 'marriage.p204.previousStatusH7inH10',
   kashfRuntimeStatus: 'ready',
   executorStatus: 'ready',
   runtimeAllowed: true,
 });
-assert(canRunKashfMethod('marriage.p204.previousStatusH7'), 'p204 previous-status method is explicitly runnable');
+assert(canRunKashfMethod('marriage.p204.previousStatusH7inH10'), 'corrected p204 previous-status method is explicitly runnable');
+assert(!getKashfMethod('marriage.p204.previousStatusH7'), 'misleading old p204 H7-only method id no longer exists');
 
-// All four mothers 1111 => daughter H7 = 1111 (Road), one of the four source-defined mutable figures.
-const P204_MUTABLE_BOARD = buildRamlBoardFromMothers(['1111', '1111', '1111', '1111']);
-const previousStatusMutable = buildKashfReadingByQuestionId(P204_MUTABLE_BOARD, 'q-marriage-thayib', { question: 'בתולה או ת׳יִּבּ?' });
-assert(previousStatusMutable.valid === true && previousStatusMutable.canRunKashf === true, 'p204 mutable H7 executes canonically');
-assert(previousStatusMutable.kashfMethodId === 'marriage.p204.previousStatusH7', 'p204 executes only exact previous-status method');
-assert(JSON.stringify(previousStatusMutable.primaryFormula?.houses) === JSON.stringify([7]), 'p204 traces only H7');
-assert(previousStatusMutable.primaryFormula?.result?.executorResult?.h7Pattern === '1111', 'p204 mutable fixture has H7=1111');
-assert(previousStatusMutable.primaryFormula?.result?.executorResult?.figureClass === 'mutable', 'p204 classifies Road as source-defined mutable');
-assert(previousStatusMutable.primaryFormula?.result?.executorResult?.previousStatus === 'thayyib', 'p204 mutable branch returns thayyib');
-assert(previousStatusMutable.overallPositive === null, 'p204 previous status is descriptive, not positive/negative');
-assert(previousStatusMutable.altFormula === null, 'p204 does not aggregate marriage alternatives');
-assert(previousStatusMutable.canonicalExecution?.topicBundleExecuted === false, 'p204 does not execute broad marriage bundle');
-assert(previousStatusMutable.dhamir === null, 'p204 does not auto-run Dhamir');
-const previousStatusMutableHtml = writeCanonicalKashfReading(previousStatusMutable);
-assert(previousStatusMutableHtml.includes('marriage.p204.previousStatusH7'), 'p204 narrative exposes exact canonical method id');
-assert(previousStatusMutableHtml.includes('ת׳יִּבּ'), 'p204 narrative preserves the source thayyib category');
-assert(previousStatusMutableHtml.includes('אינו מבחין כאן בין גרושה לאלמנה'), 'p204 narrative does not invent divorced-vs-widowed distinction');
+const previousStatusDivorced = buildKashfReadingByQuestionId(makeP204Board({ 7: '1121', 10: '1121' }), 'q-marriage-thayib', { question: 'האם האישה בתולה או גרושה?' });
+assert(previousStatusDivorced.valid === true && previousStatusDivorced.canRunKashf === true, 'p204 repeated mutable H7 executes canonically');
+assert(previousStatusDivorced.kashfMethodId === 'marriage.p204.previousStatusH7inH10', 'p204 executes corrected H7-in-H10 method id');
+assert(JSON.stringify(previousStatusDivorced.primaryFormula?.houses) === JSON.stringify([7, 10]), 'p204 previous-status traces H7+H10');
+assert(previousStatusDivorced.primaryFormula?.result?.executorResult?.recursInH10 === true, 'p204 verifies H7 recurrence in H10 before judging status');
+assert(previousStatusDivorced.primaryFormula?.result?.executorResult?.figureClass === 'mutable', 'p204 repeated 1121 is source-defined mutable');
+assert(previousStatusDivorced.primaryFormula?.result?.executorResult?.previousStatus === 'divorced', 'p204 mutable recurrence returns divorced exactly');
+assert(previousStatusDivorced.primaryFormula?.result?.executorResult?.previousStatusHebrew === 'גרושה', 'p204 renders source category גרושה');
+assert(previousStatusDivorced.overallPositive === null, 'p204 previous status remains descriptive, not positive/negative');
+assert(previousStatusDivorced.altFormula === null, 'p204 previous-status does not aggregate marriage alternatives');
+assert(previousStatusDivorced.canonicalExecution?.topicBundleExecuted === false, 'p204 previous-status does not execute broad marriage bundle');
+assert(previousStatusDivorced.dhamir === null, 'p204 previous-status does not auto-run Dhamir');
+const previousStatusDivorcedHtml = writeCanonicalKashfReading(previousStatusDivorced);
+assert(previousStatusDivorcedHtml.includes('marriage.p204.previousStatusH7inH10'), 'p204 narrative exposes corrected method id');
+assert(previousStatusDivorcedHtml.includes('גרושה'), 'p204 narrative preserves explicit divorced result');
+assert(!previousStatusDivorcedHtml.includes('אלמנה'), 'p204 runtime does not invent widow result');
 
-// Four mothers with water row=2 => daughter H7=2222 (Community), one of the four source-defined fixed figures.
-const P204_FIXED_BOARD = buildRamlBoardFromMothers(['1121', '1121', '1121', '1121']);
-const previousStatusFixed = buildKashfReadingByQuestionId(P204_FIXED_BOARD, 'q-marriage-thayib', { question: 'בתולה או ת׳יִּבּ?' });
-assert(previousStatusFixed.primaryFormula?.result?.executorResult?.h7Pattern === '2222', 'p204 fixed fixture has H7=2222');
-assert(previousStatusFixed.primaryFormula?.result?.executorResult?.figureClass === 'fixed', 'p204 classifies Community as source-defined fixed');
-assert(previousStatusFixed.primaryFormula?.result?.executorResult?.previousStatus === 'virgin', 'p204 fixed branch returns virgin');
-assert(previousStatusFixed.primaryFormula?.result?.executorResult?.previousStatusHebrew === 'בתולה', 'p204 fixed branch renders exact Hebrew category');
+const previousStatusVirgin = buildKashfReadingByQuestionId(makeP204Board({ 7: '2222', 10: '2222' }), 'q-marriage-thayib', { question: 'האם האישה בתולה או גרושה?' });
+assert(previousStatusVirgin.primaryFormula?.result?.executorResult?.recursInH10 === true, 'p204 fixed fixture also requires recurrence');
+assert(previousStatusVirgin.primaryFormula?.result?.executorResult?.figureClass === 'fixed', 'p204 repeated 2222 is source-defined fixed');
+assert(previousStatusVirgin.primaryFormula?.result?.executorResult?.previousStatus === 'virgin', 'p204 fixed recurrence returns virgin');
+assert(previousStatusVirgin.primaryFormula?.result?.executorResult?.previousStatusHebrew === 'בתולה', 'p204 renders exact virgin result');
 
-// H7=2121 (Incoming Money) is neither one of the four mutable nor four fixed figures.
-const P204_UNRESOLVED_BOARD = buildRamlBoardFromMothers(['1121', '1111', '1121', '1111']);
-const previousStatusUnresolved = buildKashfReadingByQuestionId(P204_UNRESOLVED_BOARD, 'q-marriage-thayib', { question: 'בתולה או ת׳יִּבּ?' });
-assert(previousStatusUnresolved.primaryFormula?.result?.executorResult?.h7Pattern === '2121', 'p204 unresolved fixture has H7=2121');
-assert(previousStatusUnresolved.primaryFormula?.result?.executorResult?.figureClass === 'other-source-class', 'p204 keeps incoming/outgoing figure outside mutable/fixed classes');
-assert(previousStatusUnresolved.primaryFormula?.result?.executorResult?.previousStatus === null, 'p204 unresolved branch does not force a status');
-assert(previousStatusUnresolved.overallPositive === null, 'p204 unresolved branch does not invent a verdict');
+const previousStatusNoRecurrence = buildKashfReadingByQuestionId(makeP204Board({ 7: '1121', 10: '2222' }), 'q-marriage-thayib', { question: 'האם האישה בתולה או גרושה?' });
+assert(previousStatusNoRecurrence.primaryFormula?.result?.executorResult?.recursInH10 === false, 'p204 detects when H7 does not recur in H10');
+assert(previousStatusNoRecurrence.primaryFormula?.result?.executorResult?.previousStatus === null, 'p204 does not judge status without H7 recurrence in H10');
+assert(previousStatusNoRecurrence.overallPositive === null, 'p204 no-recurrence branch stays unresolved');
+
+const previousStatusOtherClass = buildKashfReadingByQuestionId(makeP204Board({ 7: '1112', 10: '1112' }), 'q-marriage-thayib', { question: 'האם האישה בתולה או גרושה?' });
+assert(previousStatusOtherClass.primaryFormula?.result?.executorResult?.recursInH10 === true, 'p204 other-class fixture has required recurrence');
+assert(previousStatusOtherClass.primaryFormula?.result?.executorResult?.figureClass === 'other-source-class', 'p204 keeps outgoing/incoming figure outside fixed/mutable source classes');
+assert(previousStatusOtherClass.primaryFormula?.result?.executorResult?.previousStatus === null, 'p204 repeated other-class figure remains unresolved');
+
+assertRoute('q-dowry', {
+  ok: true,
+  canRunKashf: true,
+  kashfIntentId: 'marriage.dowryAmount',
+  kashfMethodId: 'marriage.p204.dowryH8',
+  kashfRuntimeStatus: 'ready',
+  executorStatus: 'ready',
+  runtimeAllowed: true,
+});
+assert(canRunKashfMethod('marriage.p204.dowryH8'), 'p204 H8 dowry method is explicitly runnable');
+
+const dowryLarge = buildKashfReadingByQuestionId(makeP204Board({ 8: '1122' }), 'q-dowry', { question: 'האם המוהר גדול?' });
+assert(dowryLarge.valid === true, 'p204 dowry benefic fixture executes canonically');
+assert(JSON.stringify(dowryLarge.primaryFormula?.houses) === JSON.stringify([8]), 'p204 dowry traces only H8');
+assert(dowryLarge.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'saad', 'p204 dowry fixture has pure benefic H8');
+assert(dowryLarge.primaryFormula?.result?.executorResult?.isLargeDowry === true, 'p204 benefic H8 explicitly yields large mahr');
+assert(dowryLarge.overallPositive === null, 'dowry size is descriptive rather than normative positive/negative');
+assert(dowryLarge.canonicalExecution?.topicBundleExecuted === false, 'p204 dowry does not execute broad marriage bundle');
+assert(dowryLarge.dhamir === null, 'p204 dowry does not auto-run Dhamir');
+const dowryLargeHtml = writeCanonicalKashfReading(dowryLarge);
+assert(dowryLargeHtml.includes('marriage.p204.dowryH8'), 'p204 dowry narrative exposes exact method id');
+assert(dowryLargeHtml.includes('המוהר גדול'), 'p204 dowry narrative preserves exact large-mahr statement');
+
+const dowryMalefic = buildKashfReadingByQuestionId(makeP204Board({ 8: '1112' }), 'q-dowry', { question: 'האם המוהר גדול?' });
+assert(dowryMalefic.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'nahs', 'p204 dowry malefic fixture is classified as malefic');
+assert(dowryMalefic.primaryFormula?.result?.executorResult?.isLargeDowry === null, 'p204 does not turn malefic H8 into an unsourced small-mahr verdict');
+assert(dowryMalefic.overallPositive === null, 'p204 malefic H8 stays unresolved for mahr size');
+
+const dowryMixed = buildKashfReadingByQuestionId(makeP204Board({ 8: '2212' }), 'q-dowry', { question: 'האם המוהר גדול?' });
+assert(dowryMixed.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'mixed', 'p204 dowry preserves mixed H8');
+assert(dowryMixed.primaryFormula?.result?.executorResult?.isLargeDowry === null, 'p204 mixed H8 does not invent a dowry-size verdict');
+assert(dowryMixed.overallPositive === null, 'p204 mixed H8 remains unresolved');
 
 // ── P9 source-safe mixed classification --------------------------------
 const canonicalMixedFigures = [

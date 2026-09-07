@@ -126,8 +126,9 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     questionId: 'q-marriage-thayib',
     disposition: 'KEEP',
     kashfIntentId: 'marriage.previousStatus',
-    kashfMethodId: 'marriage.p204.previousStatusH7',
+    kashfMethodId: 'marriage.p204.previousStatusH7inH10',
     kashfRuntimeStatus: 'ready',
+    note: 'Source-safe p204 question is divorced vs virgin, and only when the H7 figure recurs in H10. The source does not provide widow as a third result in this rule.',
   }),
 
   'q-travel-safe': route({
