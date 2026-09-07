@@ -463,10 +463,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'marriage',
     sourcePages: [204],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Body-source method for whether the other person looks toward the querent or elsewhere, using the fire rows of H1, H7 and H13. This is a distinct intent from love itself.',
+    executorStatus: 'ready',
+    notes: 'Canonical p204 attention/look executor is wired. It uses only the explicit p204 condition: fire row of H1 open + fire row of H7 open + fire row of H13 joined/closed => both look at each other and also at others. Other row combinations remain unresolved by this exact method. The similar p170 practical rule is not blended into this verdict, and this method does not answer whether love exists.',
   }),
 
   'desire.p206.querentWantsH7H11ThenH5': method({

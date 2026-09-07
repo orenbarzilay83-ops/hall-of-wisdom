@@ -649,6 +649,53 @@ assert(authorityAppointmentNo.primaryFormula?.result?.executorResult?.planetHebr
 assert(authorityAppointmentNo.primaryFormula?.result?.executorResult?.appointmentCompletes === false, 'p257 non-luminary/non-benefic planet means the appointment does not complete');
 assert(authorityAppointmentNo.overallPositive === false, 'p257 negative branch is negative');
 
+
+// ── P11 p204 attention/look source contract ------------------------------
+assertRoute('q-who-looks-love', {
+  ok: true,
+  canRunKashf: true,
+  kashfIntentId: 'love.attention',
+  kashfMethodId: 'love.p204.attentionFireRows1713',
+  kashfRuntimeStatus: 'ready',
+  executorStatus: 'ready',
+  runtimeAllowed: true,
+});
+assert(canRunKashfMethod('love.p204.attentionFireRows1713'), 'p204 attention method is explicitly runnable');
+
+const p204Attention = buildKashfReadingByQuestionId(
+  makeP204Board({ 1: '1111', 7: '1121', 13: '2222' }),
+  'q-who-looks-love',
+  { question: 'האם אדם זה מביט אלי או אל אחר?' }
+);
+assert(p204Attention.valid === true && p204Attention.canRunKashf === true, 'p204 attention source condition executes canonically');
+assert(p204Attention.kashfMethodId === 'love.p204.attentionFireRows1713', 'p204 attention uses exact canonical method id');
+assert(JSON.stringify(p204Attention.primaryFormula?.houses) === JSON.stringify([1, 7, 13]), 'p204 attention traces H1+H7+H13 only');
+assert(p204Attention.primaryFormula?.result?.executorResult?.fireRows?.h1 === 'open', 'p204 attention reads one-point H1 fire as open');
+assert(p204Attention.primaryFormula?.result?.executorResult?.fireRows?.h7 === 'open', 'p204 attention reads one-point H7 fire as open');
+assert(p204Attention.primaryFormula?.result?.executorResult?.fireRows?.h13 === 'joined', 'p204 attention reads two-point H13 fire as joined/closed');
+assert(p204Attention.primaryFormula?.result?.executorResult?.sourceConditionMet === true, 'p204 attention exact three-row source condition is met');
+assert(p204Attention.primaryFormula?.result?.executorResult?.attention === 'mutual-and-others', 'p204 attention returns only the explicit mutual-and-others source result');
+assert(p204Attention.primaryFormula?.result?.executorResult?.attentionHebrew === 'שניהם מביטים זה בזה וגם באחרים', 'p204 attention preserves exact Hebrew result');
+assert(p204Attention.overallPositive === null, 'p204 attention is descriptive rather than positive/negative');
+assert(p204Attention.altFormula === null, 'p204 attention does not aggregate alternate marriage/love formulas');
+assert(p204Attention.canonicalExecution?.topicBundleExecuted === false, 'p204 attention does not execute broad marriage bundle');
+assert(p204Attention.dhamir === null, 'p204 attention does not auto-run Dhamir');
+assert(!p204Attention.primaryFormula?.result?.executorResult?.outputHebrew.includes('אוהב'), 'p204 attention does not convert gaze/attention into a love verdict');
+
+const p204AttentionOtherCombination = buildKashfReadingByQuestionId(
+  makeP204Board({ 1: '1111', 7: '1121', 13: '1111' }),
+  'q-who-looks-love',
+  { question: 'האם אדם זה מביט אלי או אל אחר?' }
+);
+assert(p204AttentionOtherCombination.primaryFormula?.result?.executorResult?.fireRows?.h13 === 'open', 'p204 attention guard fixture has H13 fire open');
+assert(p204AttentionOtherCombination.primaryFormula?.result?.executorResult?.sourceConditionMet === false, 'p204 attention rejects a row combination not stated in the p204 clause');
+assert(p204AttentionOtherCombination.primaryFormula?.result?.executorResult?.attention === null, 'p204 attention does not import the p170 other-person branch');
+assert(p204AttentionOtherCombination.overallPositive === null, 'p204 attention unresolved branch remains non-sentiment');
+
+const p204AttentionHtml = writeCanonicalKashfReading(p204Attention);
+assert(p204AttentionHtml.includes('love.p204.attentionFireRows1713'), 'p204 attention narrative exposes exact method id');
+assert(p204AttentionHtml.includes('שניהם מביטים זה בזה וגם באחרים'), 'p204 attention narrative preserves v57 p204 result');
+
 // ── P10 corrected marriage p204 source contracts -----------------------
 function makeP204Board(overrides = {}) {
   return {

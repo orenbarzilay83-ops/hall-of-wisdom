@@ -337,6 +337,60 @@ function computeAppointmentCompletionP257(chart) {
 }
 
 
+// Kashf p204 attention/look rule. In the canonical figure encoding, a row
+// with one point ('1') is open/unbound and a row with two points ('2') is
+// joined/closed. This is also consistent with the source definition of the
+// four mutable figures: their fire and earth rows are both open.
+//
+// IMPORTANT: this executor is deliberately limited to the explicit p204
+// clause. A similar practical rule appears at p170 with additional branches;
+// those branches are not imported into this p204 method.
+function getCanonicalRowState(pattern, rowIndex) {
+  if (typeof pattern !== 'string' || pattern.length !== 4) return null;
+  if (pattern[rowIndex] === '1') return 'open';
+  if (pattern[rowIndex] === '2') return 'joined';
+  return null;
+}
+
+function computeLoveAttentionP204(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h1 = findCanonicalHouse(chart, 1);
+  const h7 = findCanonicalHouse(chart, 7);
+  const h13 = findCanonicalHouse(chart, 13);
+  const h1Pattern = h1?.key || h1?.pattern || null;
+  const h7Pattern = h7?.key || h7?.pattern || null;
+  const h13Pattern = h13?.key || h13?.pattern || null;
+  if (!h1Pattern || !h7Pattern || !h13Pattern) return null;
+
+  const h1Fire = getCanonicalRowState(h1Pattern, 0);
+  const h7Fire = getCanonicalRowState(h7Pattern, 0);
+  const h13Fire = getCanonicalRowState(h13Pattern, 0);
+  if (!h1Fire || !h7Fire || !h13Fire) return null;
+
+  const sourceConditionMet = h1Fire === 'open' && h7Fire === 'open' && h13Fire === 'joined';
+  const attention = sourceConditionMet ? 'mutual-and-others' : null;
+  const attentionHebrew = sourceConditionMet ? 'שניהם מביטים זה בזה וגם באחרים' : 'לא הוכרע בכלל זה';
+
+  const outputHebrew = sourceConditionMet
+    ? 'שורת האש בבית 1 פתוחה, שורת האש בבית 7 פתוחה, ושורת האש בבית 13 מתחברת (שתי נקודות). לפי כשף עמ׳ 204: שניהם מביטים זה בזה וגם באחרים.'
+    : 'תנאי עמ׳ 204 אינו מתקיים במלואו: הוא דורש אש פתוחה בבית 1, אש פתוחה בבית 7 ואש מתחברת בבית 13. לכן כלל זה לבדו אינו מכריע לאן מופנה המבט. אין לייבא לכאן את הענפים הנוספים של הכלל הדומה בעמ׳ 170, ואין להסיק מכאן אם קיימת אהבה.';
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 204; מצב שורה פתוחה/מתחברת לפי כללי הצורות',
+    sourceText: 'האם אדם זה מביט אליך או אל אחר? אם אש הבית הראשון פתוחה, ואש הבית השביעי פתוחה, וגם אש הבית השלושה־עשר מתחברת — שניהם מביטים זה בזה וגם באחרים.',
+    housesUsed: [1, 7, 13],
+    h1Pattern,
+    h7Pattern,
+    h13Pattern,
+    fireRows: { h1: h1Fire, h7: h7Fire, h13: h13Fire },
+    sourceConditionMet,
+    attention,
+    attentionHebrew,
+    positive: null,
+    outputHebrew,
+  };
+}
+
 // p204 uses the source's explicit "mutable" and "fixed" figure classes.
 // Source classification (working pp. 57-60): four mutable + four fixed only.
 // The other eight incoming/outgoing figures are NOT silently forced into either class.
@@ -622,6 +676,7 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'hidden.p188.isStillThere': computeHiddenStillThereP188,
   'lostItem.p202.returnH6H8': computeLostItemReturnP202,
   'marriage.p204.previousStatusH7inH10': computeMarriagePreviousStatusP204,
+  'love.p204.attentionFireRows1713': computeLoveAttentionP204,
   'marriage.p204.dowryH8': computeDowryH8P204,
   'theft.p225.thiefDescriptionH7': computeThiefPhysicalDescriptionKashf,
   'pregnancy.p191.existsH5SilentEmpty': computePregnancyExistenceP191,
