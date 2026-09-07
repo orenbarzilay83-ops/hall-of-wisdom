@@ -26,3 +26,31 @@ jobs:
         run: supabase functions deploy oren-smart-advisor --project-ref hfdsoudhelzayimjwqkp
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+      - name: Verify required live AI secret names
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          supabase secrets list --project-ref hfdsoudhelzayimjwqkp --output json > /tmp/supabase-secrets.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path('/tmp/supabase-secrets.json').read_text())
+          names = set()
+          def walk(value):
+              if isinstance(value, dict):
+                  for key, item in value.items():
+                      if key.lower() in {'name', 'key'} and isinstance(item, str):
+                          names.add(item)
+                      walk(item)
+              elif isinstance(value, list):
+                  for item in value:
+                      walk(item)
+          walk(data)
+          required = ['ALLOWED_OREN_UID', 'ANTHROPIC_API_KEY', 'ANTHROPIC_MODEL', 'HALL_WISDOM_AI_MODE']
+          missing = [name for name in required if name not in names]
+          if missing:
+              print('Missing required live AI secret names: ' + ','.join(missing))
+              raise SystemExit(1)
+          print('Live AI secret-name gate: PASS')
+          PY
