@@ -591,6 +591,102 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     note: 'The p206 formula answers whether the querent wants the matter. It does not answer whether the woman will please the man or whether chemistry is mutual; the UI wording must be corrected before cutover.',
   }),
 
+  // ── AUDITED TRAVEL + MISSING SLICE -----------------------------------
+  'q-travel-timing': route({
+    questionId: 'q-travel-timing',
+    disposition: 'RENAME',
+    kashfIntentId: 'travel.timeSelection',
+    kashfMethodId: 'travel.p238.timeSelectionH9H4',
+    kashfRuntimeStatus: 'repair-required',
+    note: 'Source-safe wording is whether a proposed departure time is favorable. p238 does not calculate an arbitrary future date; the existing timing table also requires repair.',
+  }),
+
+  'q-travel-direction': route({
+    questionId: 'q-travel-direction',
+    disposition: 'EDUCATIONAL',
+    kashfIntentId: 'travel.direction',
+    kashfMethodId: 'travel.external.p246.directionNuzhat',
+    kashfRuntimeStatus: 'educational-only',
+    note: 'The explicit dominant-element direction method is attributed to Nuzhat al-Uqul. No body-source canonical direction method is selected for runtime.',
+  }),
+
+  'q-sea-or-land': route({
+    questionId: 'q-sea-or-land',
+    disposition: 'KEEP',
+    kashfIntentId: 'travel.seaOrLand',
+    kashfMethodId: 'travel.p239.seaOrLandByElement',
+    kashfRuntimeStatus: 'ready',
+  }),
+
+  'q-travel-profit': route({
+    questionId: 'q-travel-profit',
+    disposition: 'KEEP',
+    kashfIntentId: 'travel.profit',
+    kashfMethodId: 'travel.p239.profitEarthRowH2',
+    kashfRuntimeStatus: 'ready',
+  }),
+
+  'q-travel-danger': route({
+    questionId: 'q-travel-danger',
+    disposition: 'KEEP',
+    kashfIntentId: 'travel.roadDanger',
+    kashfMethodId: 'travel.p242.roadDangerH7Element',
+    kashfRuntimeStatus: 'repair-required',
+    note: 'The source method is clear, but the current generic element resolver must be verified before canonical execution.',
+  }),
+
+  'q-traveler-return': route({
+    questionId: 'q-traveler-return',
+    disposition: 'KEEP',
+    kashfIntentId: 'travel.return',
+    kashfMethodId: 'travel.p244.returnH1H2H9',
+    kashfRuntimeStatus: 'ready',
+  }),
+
+  'q-missing-location': route({
+    questionId: 'q-missing-location',
+    disposition: 'BLOCK',
+    kashfIntentId: 'missing.location',
+    kashfMethodId: 'missing.p249.locationDirectionUnresolved',
+    kashfRuntimeStatus: 'blocked-by-source',
+    note: 'The body source supports in-city/outside-city evidence, but the exact directional operation is not closed. Do not borrow the later Nuzhat fugitive-direction rule.',
+  }),
+
+  'q-missing-return': route({
+    questionId: 'q-missing-return',
+    disposition: 'RENAME',
+    kashfIntentId: 'missing.return',
+    kashfMethodId: 'missing.p249.returnAnglesJudge',
+    kashfRuntimeStatus: 'ready',
+    note: 'The selected body method answers whether the absent person returns. The current description also promises WHEN; timing must be removed or handled by a separate verified intent.',
+  }),
+
+  'q-fugitive': route({
+    questionId: 'q-fugitive',
+    disposition: 'EDUCATIONAL',
+    kashfIntentId: 'fugitive.capture',
+    kashfMethodId: 'fugitive.external.p250.nuzhat',
+    kashfRuntimeStatus: 'educational-only',
+  }),
+
+  'q-lost-animal': route({
+    questionId: 'q-lost-animal',
+    disposition: 'ALIAS',
+    aliasOf: 'q-lost-item',
+    kashfIntentId: 'lostItem.return',
+    kashfMethodId: 'lostItem.p202.returnH6H8',
+    kashfRuntimeStatus: 'ready',
+    note: 'p202 is a general lost-thing return rule and can cover a lost animal when the intent is simply whether it returns.',
+  }),
+
+  'q-two-trips': route({
+    questionId: 'q-two-trips',
+    disposition: 'EDUCATIONAL',
+    kashfIntentId: 'travel.compareTwoTrips',
+    kashfMethodId: 'travel.external.p247.compareTwoTrips',
+    kashfRuntimeStatus: 'educational-only',
+  }),
+
   // ── REPAIR REQUIRED: explicit hard stop until fixed -------------------
   'q-wish': route({
     questionId: 'q-wish',
@@ -648,9 +744,9 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     questionId: 'q-missing-alive',
     disposition: 'KEEP',
     kashfIntentId: 'missing.aliveOrDead',
-    kashfMethodId: 'missing.p248.aliveOrDead',
-    kashfRuntimeStatus: 'repair-required',
-    note: 'Current missingPerson topic bundle is not source-safe for this question.',
+    kashfMethodId: 'missing.p248-249.lifeH1H4H9Outcome',
+    kashfRuntimeStatus: 'ready',
+    note: 'Provenance correction: the prior 3/5/9 recurrence method is in the later al-Multaqat addition. This route now points to the selected body-source life/death method from p248-p249.',
   }),
 
   'q-enemy-exists': route({

@@ -132,8 +132,8 @@ assertRoute('q-missing-alive', {
   ok: true,
   canRunKashf: false,
   kashfIntentId: 'missing.aliveOrDead',
-  kashfMethodId: 'missing.p248.aliveOrDead',
-  kashfRuntimeStatus: 'repair-required',
+  kashfMethodId: 'missing.p248-249.lifeH1H4H9Outcome',
+  kashfRuntimeStatus: 'ready',
 });
 
 // ── Source-ready is NOT the same as executor-ready -----------------------
