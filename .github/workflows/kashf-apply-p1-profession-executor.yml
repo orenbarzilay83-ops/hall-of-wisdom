@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - '_apply_kashf_p1_profession_executor.mjs'
+      - '_apply_kashf_p1_profession_executor_v2.mjs'
       - '.github/workflows/kashf-apply-p1-profession-executor.yml'
   workflow_dispatch:
 
@@ -26,25 +26,8 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Repair temporary patch-script quoting
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          p = Path('_apply_kashf_p1_profession_executor.mjs')
-          lines = p.read_text().splitlines()
-          changed = False
-          for i, line in enumerate(lines):
-              if 'sourceRef:' in line and "method.sourcePages.join('–')" in line:
-                  lines[i] = "      sourceRef: 'כשף אל-אסרר, עמ׳ ' + method.sourcePages.join('–'),\\n"
-                  changed = True
-                  break
-          if not changed:
-              raise SystemExit('temporary sourceRef line not found')
-          p.write_text('\n'.join(lines) + '\n')
-          PY
-
       - name: Apply profession canonical executor and run contracts
-        run: node _apply_kashf_p1_profession_executor.mjs
+        run: node _apply_kashf_p1_profession_executor_v2.mjs
 
       - name: Commit canonical executor cutover
         run: |
