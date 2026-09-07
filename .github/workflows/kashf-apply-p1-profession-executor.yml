@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - '_apply_kashf_p1_profession_executor_v2.mjs'
+      - 'goral-hachol/engine/kashf-canonical-executors.js'
       - '.github/workflows/kashf-apply-p1-profession-executor.yml'
   workflow_dispatch:
 
