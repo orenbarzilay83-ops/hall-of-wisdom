@@ -148,8 +148,6 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
   }),
 
   // ── AUDITED GENERAL / RELOCATION SLICE --------------------------------
-  // Source-ready records below remain hard-stopped until their canonical
-  // executorStatus becomes ready in the method registry.
   'q-general-state': route({
     questionId: 'q-general-state',
     disposition: 'KEEP',
@@ -384,6 +382,139 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfMethodId: 'well.p188.recast1468',
     kashfRuntimeStatus: 'ready',
     note: 'This canonical route answers whether the drilling/water objective is obtained. The current Question Bank wording also asks depth; depth is a separate intent and must be split rather than silently merged.',
+  }),
+
+  // ── AUDITED MONEY + ECONOMY SLICE -------------------------------------
+  'q-money-state': route({
+    questionId: 'q-money-state',
+    disposition: 'KEEP',
+    kashfIntentId: 'money.generalCondition',
+    kashfMethodId: 'money.p180.elementComparison',
+    kashfRuntimeStatus: 'repair-required',
+    note: 'Current runtime mechanism is not source-equivalent: p180 requires two derived money figures and element comparison, not incoming/outgoing judgment.',
+  }),
+
+  'q-money-source': route({
+    questionId: 'q-money-source',
+    disposition: 'KEEP',
+    kashfIntentId: 'money.source',
+    kashfMethodId: 'money.p179.sourceByIncomingHonorHouse',
+    kashfRuntimeStatus: 'ready',
+  }),
+
+  'q-livelihood': route({
+    questionId: 'q-livelihood',
+    disposition: 'KEEP',
+    kashfIntentId: 'money.livelihood',
+    kashfMethodId: 'money.p180.livelihoodH10Invert',
+    kashfRuntimeStatus: 'ready',
+  }),
+
+  'q-livelihood-arrive': route({
+    questionId: 'q-livelihood-arrive',
+    disposition: 'KEEP',
+    kashfIntentId: 'money.acquire',
+    kashfMethodId: 'money.p181.recast25811',
+    kashfRuntimeStatus: 'ready',
+    note: 'Expected/specific income is a distinct intent from general livelihood condition.',
+  }),
+
+  'q-money-halal': route({
+    questionId: 'q-money-halal',
+    disposition: 'BLOCK',
+    kashfIntentId: 'money.lawfulness',
+    kashfMethodId: 'money.lawfulness.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+    note: 'A fresh audit of p179-p182 did not locate an explicit body-source lawful/unlawful money method. Do not map this to an assumed H9+H11 rule without a source passage.',
+  }),
+
+  'q-inheritance': route({
+    questionId: 'q-inheritance',
+    disposition: 'RENAME',
+    kashfIntentId: 'inheritance.whoInheritsWhom',
+    kashfMethodId: 'inheritance.p180.elementComposite',
+    kashfRuntimeStatus: 'ready',
+    note: 'Source-safe scope: which side inherits the other. The method does not calculate shares, amounts, or whether there will be a dispute.',
+  }),
+
+  'q-loan': route({
+    questionId: 'q-loan',
+    disposition: 'EDUCATIONAL',
+    kashfIntentId: 'loan.repayment',
+    kashfMethodId: 'loan.external.p234.repayment',
+    kashfRuntimeStatus: 'educational-only',
+    note: 'The loan repayment method is inside the non-body block beginning at p228.',
+  }),
+
+  'q-loan-return': route({
+    questionId: 'q-loan-return',
+    disposition: 'ALIAS',
+    aliasOf: 'q-loan',
+    kashfIntentId: 'loan.repayment',
+    kashfMethodId: 'loan.external.p234.repayment',
+    kashfRuntimeStatus: 'educational-only',
+  }),
+
+  'q-loan-give': route({
+    questionId: 'q-loan-give',
+    disposition: 'EDUCATIONAL',
+    kashfIntentId: 'loan.shouldGive',
+    kashfMethodId: 'loan.external.p234.shouldGive',
+    kashfRuntimeStatus: 'educational-only',
+  }),
+
+  'q-debts': route({
+    questionId: 'q-debts',
+    disposition: 'BLOCK',
+    kashfIntentId: 'debt.outcome',
+    kashfMethodId: 'debt.outcome.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+    note: 'The broad old-debt question is not assigned a canonical body method. p179 financial-claim material is not generalized automatically.',
+  }),
+
+  'q-trade': route({
+    questionId: 'q-trade',
+    disposition: 'EDUCATIONAL',
+    kashfIntentId: 'commerce.buySell',
+    kashfMethodId: 'commerce.external.p218.buySell',
+    kashfRuntimeStatus: 'educational-only',
+    note: 'p218 buy/sell begins after an explicit ومن غير الكتاب marker.',
+  }),
+
+  'q-buy-sell': route({
+    questionId: 'q-buy-sell',
+    disposition: 'ALIAS',
+    aliasOf: 'q-trade',
+    kashfIntentId: 'commerce.buySell',
+    kashfMethodId: 'commerce.external.p218.buySell',
+    kashfRuntimeStatus: 'educational-only',
+  }),
+
+  'q-market-price': route({
+    questionId: 'q-market-price',
+    disposition: 'EDUCATIONAL',
+    kashfIntentId: 'market.price',
+    kashfMethodId: 'market.external.p218-223.price',
+    kashfRuntimeStatus: 'educational-only',
+    note: 'Dearness/cheapness material in this range belongs to non-body/Nuzhat additions.',
+  }),
+
+  'q-sell-property': route({
+    questionId: 'q-sell-property',
+    disposition: 'BLOCK',
+    kashfIntentId: 'property.sale',
+    kashfMethodId: 'property.sale.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+    note: 'No audited body-source canonical method has been selected for sale of a specific property; do not fall back to p218 commerce.',
+  }),
+
+  'q-missing-money': route({
+    questionId: 'q-missing-money',
+    disposition: 'SPLIT',
+    kashfIntentId: 'money.missingMixedScope',
+    kashfMethodId: 'money.missingMixedScope.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+    note: 'Current wording mixes physically lost money, theft, unpaid debt and investment. Split into distinct questions before routing.',
   }),
 
   // ── REPAIR REQUIRED: explicit hard stop until fixed -------------------
