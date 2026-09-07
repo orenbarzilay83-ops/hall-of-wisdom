@@ -106,6 +106,12 @@ function replaceOnce(text, needle, replacement, label) {
 {
   const path = '_test_kashf_canonical_routing.mjs';
   let s = read(path);
+  s = replaceOnce(
+    s,
+    "import {\n  buildKashfReadingByQuestionId,\n} from './goral-hachol/engine/kashf-canonical-reading-engine.js';",
+    "import {\n  buildKashfReadingByQuestionId,\n  buildKashfReadingByMethod,\n} from './goral-hachol/engine/kashf-canonical-reading-engine.js';",
+    'canonical test method-builder import'
+  );
   const summary = "console.log(`Kashf canonical routing tests: ${passed} passed, ${failed} failed`);";
   const tests = [
     "// ── P206 querent-desire exact method ------------------------------------",
