@@ -27,6 +27,7 @@ import {
 } from './goral-hachol/engine/kashf-method-router.js';
 import {
   buildKashfReadingByQuestionId,
+  buildKashfReadingByMethod,
 } from './goral-hachol/engine/kashf-canonical-reading-engine.js';
 import { writeCanonicalKashfReading } from './goral-hachol/engine/kashf-canonical-narrative-writer.js';
 import { buildRamlBoardFromMothers } from './goral-hachol/engine/raml-board-generator.js';
@@ -1438,6 +1439,31 @@ const womanFavorMixed = buildKashfReadingByQuestionId(womanFavorMixedBoard, 'q-w
 assert(womanFavorMixed.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'mixed', 'p206 mixed fixture preserves mixed classification');
 assert(womanFavorMixed.primaryFormula?.result?.executorResult?.findsFavor === null, 'p206 mixed final stays unresolved');
 assert(womanFavorMixed.overallPositive === null, 'p206 mixed final does not become a yes/no verdict');
+
+// ── P206 querent-desire exact method ------------------------------------
+const p206DesireMethod = getKashfMethod('desire.p206.querentWantsH7H11ThenH5');
+assert(p206DesireMethod?.executorStatus === 'ready' && p206DesireMethod?.runtimeAllowed === true, 'p206 querent-desire method is runnable');
+assert(canRunKashfMethod('desire.p206.querentWantsH7H11ThenH5') === true, 'p206 querent-desire canRunKashfMethod is true');
+
+const p206DesireBenefic = buildKashfReadingByMethod(makeP204Board({ 5: '2211', 7: '2222', 11: '2222' }), 'desire.p206.querentWantsH7H11ThenH5', { question: 'האם השואל רוצה בדבר?' });
+assert(p206DesireBenefic.valid === true, 'p206 querent-desire benefic fixture executes');
+assert(p206DesireBenefic.primaryFormula?.result?.executorResult?.firstDerivedPattern === '2222', 'p206 desire derives H7+H11 first');
+assert(p206DesireBenefic.primaryFormula?.result?.executorResult?.finalPattern === '2211', 'p206 desire then combines with H5');
+assert(p206DesireBenefic.primaryFormula?.result?.executorResult?.wantsMatter === true, 'p206 desire pure benefic means querent wants matter');
+assert(p206DesireBenefic.overallPositive === true, 'p206 desire benefic is positive true');
+assert(JSON.stringify(p206DesireBenefic.primaryFormula?.houses) === JSON.stringify([7, 11, 5]), 'p206 desire uses exactly H7,H11,H5');
+assert(p206DesireBenefic.primaryFormula?.sourceText === getKashfV57Knowledge('desire.p206.querentWantsH7H11ThenH5')?.v57?.hebrewRule, 'p206 desire sourceText comes from Hebrew v57');
+assert(p206DesireBenefic.canonicalExecution?.methodsExecuted?.length === 1 && p206DesireBenefic.canonicalExecution.methodsExecuted[0] === 'desire.p206.querentWantsH7H11ThenH5', 'p206 desire executes only its exact method');
+assert(p206DesireBenefic.dhamir === null && p206DesireBenefic.canonicalExecution?.topicBundleExecuted === false && p206DesireBenefic.canonicalExecution?.altFormulaExecuted === false, 'p206 desire runs no Dhamir/topic bundle/alternative');
+assert(!p206DesireBenefic.verdict?.text?.includes('תמצא חן'), 'p206 desire does not leak woman-favor semantics');
+
+const p206DesireMalefic = buildKashfReadingByMethod(makeP204Board({ 5: '1212', 7: '2222', 11: '2222' }), 'desire.p206.querentWantsH7H11ThenH5');
+assert(p206DesireMalefic.primaryFormula?.result?.executorResult?.wantsMatter === false, 'p206 desire pure malefic means opposite / does not want matter');
+assert(p206DesireMalefic.overallPositive === false, 'p206 desire malefic is positive false');
+
+const p206DesireMixed = buildKashfReadingByMethod(makeP204Board({ 5: '2222', 7: '2222', 11: '2222' }), 'desire.p206.querentWantsH7H11ThenH5');
+assert(p206DesireMixed.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'mixed', 'p206 desire preserves mixed classification');
+assert(p206DesireMixed.primaryFormula?.result?.executorResult?.wantsMatter === null && p206DesireMixed.overallPositive === null, 'p206 desire mixed remains unresolved');
 
 console.log(`Kashf canonical routing tests: ${passed} passed, ${failed} failed`);
 if (failed > 0) {

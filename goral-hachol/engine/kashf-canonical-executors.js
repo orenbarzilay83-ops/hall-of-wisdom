@@ -1070,6 +1070,57 @@ function computeClothingLuckP265(chart) {
   };
 }
 
+// Kashf v57 p206 — whether the querent wants the matter.
+// Derive H7+H11, then combine that generated figure with H5.
+// This uses the same geometry as the neighboring woman-favor clause,
+// but the semantic intent and output remain strictly separate.
+function computeQuerentWantsMatterP206(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h7 = findCanonicalHouse(chart, 7);
+  const h11 = findCanonicalHouse(chart, 11);
+  const h5 = findCanonicalHouse(chart, 5);
+  const h7Pattern = h7?.key || h7?.pattern || null;
+  const h11Pattern = h11?.key || h11?.pattern || null;
+  const h5Pattern = h5?.key || h5?.pattern || null;
+  if (!h7Pattern || !h11Pattern || !h5Pattern) return null;
+
+  const firstDerived = combineRamlFigures(h7Pattern, h11Pattern);
+  const finalDerived = combineRamlFigures(firstDerived.resultPattern, h5Pattern);
+  const finalPattern = finalDerived.resultPattern;
+  const classification = classifyCanonicalFigure(finalPattern);
+  const finalFigureHebrew = finalDerived.result?.hebrewName || classification.figureHebrew || finalPattern;
+
+  let wantsMatter = null;
+  if (classification.saadNahs === 'saad') wantsMatter = true;
+  else if (classification.saadNahs === 'nahs') wantsMatter = false;
+
+  let outputHebrew;
+  if (wantsMatter === true) {
+    outputHebrew = 'נולדה צורה מן הבית השביעי והאחד־עשר, ולאחר מכן חוברה עם הבית החמישי. התוצאה היא ' + finalFigureHebrew + ' (' + finalPattern + ') — צורה מיטיבה. לפי כשף עמ׳ 206: השואל רוצה בדבר.';
+  } else if (wantsMatter === false) {
+    outputHebrew = 'נולדה צורה מן הבית השביעי והאחד־עשר, ולאחר מכן חוברה עם הבית החמישי. התוצאה היא ' + finalFigureHebrew + ' (' + finalPattern + ') — צורה מזיקה. לפי כשף עמ׳ 206: הדין להפך — השואל אינו רוצה בדבר.';
+  } else {
+    outputHebrew = 'נולדה צורה מן הבית השביעי והאחד־עשר, ולאחר מכן חוברה עם הבית החמישי. התוצאה היא ' + finalFigureHebrew + ' (' + finalPattern + ') — ' + (classification.saadNahsHebrew || 'ללא סיווג מכריע') + '. כלל עמ׳ 206 מוסר הכרעה מפורשת למיטיב או מזיק בלבד; תוצאה ממוזגת נשארת ללא הכרעה.';
+  }
+
+  return {
+    sourceRef: 'כשף אל-אסרר v57 עמ׳ 206',
+    sourceText: 'אם רצית לדעת אם השואל רוצה בדבר או לא: הכה את השביעי והאחד־עשר, ואת היוצא מהם הכה עם החמישי. אם יצאה צורה מיטיבה — הוא רוצה. ואם יצאה צורה מזיקה — להפך.',
+    housesUsed: [7, 11, 5],
+    h7Pattern,
+    h11Pattern,
+    h5Pattern,
+    firstDerivedPattern: firstDerived.resultPattern,
+    firstDerivedFigureHebrew: firstDerived.result?.hebrewName || firstDerived.resultPattern,
+    finalPattern,
+    finalFigureHebrew,
+    classification,
+    wantsMatter,
+    positive: wantsMatter,
+    outputHebrew,
+  };
+}
+
 // Kashf v57 p206 — whether a woman finds favor in the querent's eyes.
 // Derive H7+H11, then combine that generated figure with H5.
 // This is distinct from the adjacent querent-desire clause despite using
@@ -1123,6 +1174,7 @@ function computeWomanFavorP206(chart) {
 
 const CUSTOM_EXECUTORS = Object.freeze({
   'love.p206.womanFavorH7H11ThenH5': computeWomanFavorP206,
+  'desire.p206.querentWantsH7H11ThenH5': computeQuerentWantsMatterP206,
   'clothing.p264-265.luck': computeClothingLuckP265,
   'relocation.p183.stayMoveH1H2': computeRelocationStayMoveH1H2,
   'dispute.p212.reconciliationH1H7': computeDisputeReconciliationP212,

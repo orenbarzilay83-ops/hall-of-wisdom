@@ -486,10 +486,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'marriage',
     sourcePages: [206],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Combine H7+H11, then combine that result with H5. Pure benefic means the querent wants the matter; pure malefic means the opposite; mixed remains unresolved. A separate explicit p206 clause uses the same derivation for whether a woman finds favor in his eyes, and is mapped under its own canonical method id; the two intents must not be merged.',
+    executorStatus: 'ready',
+    notes: 'Canonical p206 querent-desire executor is wired. Combine H7+H11, then combine that generated figure with H5. Pure benefic means the querent wants the matter; pure malefic means the opposite; mixed remains unresolved. The separate p206 woman-favor clause uses the same derivation but remains a different method/intent and never votes into this result.',
   }),
 
   'marriage.p211.dissolutionH7StateMatrix': method({
