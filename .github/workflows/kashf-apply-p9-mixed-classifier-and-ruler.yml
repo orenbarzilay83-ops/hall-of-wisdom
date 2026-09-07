@@ -1,0 +1,37 @@
+name: Apply Kashf P9 Mixed Classifier and Ruler Executor
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '_apply_kashf_p9_mixed_classifier_and_ruler.mjs'
+      - '.github/workflows/kashf-apply-p9-mixed-classifier-and-ruler.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply-p9:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Apply P9 repair and canonical executor
+        run: node _apply_kashf_p9_mixed_classifier_and_ruler.mjs
+      - name: Commit P9 canonical changes
+        run: |
+          if git diff --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add goral-hachol/engine/kashf-canonical-reading-engine.js goral-hachol/engine/kashf-canonical-executors.js goral-hachol/registry/kashf-canonical-method-registry.js _test_kashf_canonical_routing.mjs HALL_WISDOM_KASHF_SOURCE_LOCAL_CLASSIFICATION_AUDIT.md
+          git commit -m "feat(kashf): preserve mixed class and enable ruler condition"
+          git push
