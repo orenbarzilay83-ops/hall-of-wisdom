@@ -5,7 +5,18 @@ on:
     branches: [main]
     paths:
       - 'goral-hachol/registry/kashf-ai-retrieval-index.js'
+      - 'goral-hachol/intelligence/kashf-canonical-ai-bridge.js'
+      - 'goral-hachol/intelligence/kashf-ai-context-builder.js'
+      - 'goral-hachol/ui/goral-app.js'
+      - 'supabase/functions/oren-smart-advisor/kashf_reading_payload_sanitizer.ts'
+      - 'supabase/functions/oren-smart-advisor/oren-smart-advisor-brain-prompt.ts'
+      - 'supabase/functions/oren-smart-advisor/index.ts'
       - '_test_kashf_ai_retrieval_index.mjs'
+      - '_test_kashf_ai_retrieval_live_bridge.mjs'
+      - '_test_kashf_ai_context_builder.mjs'
+      - '_test_oren_smart_advisor_kashf_reading_payload.mjs'
+      - '_test_kashf_canonical_routing.mjs'
+      - '_audit_kashf_question_route_coverage.mjs'
       - '.github/workflows/kashf-ai-retrieval-index-tests.yml'
   workflow_dispatch:
 
@@ -15,7 +26,7 @@ permissions:
 jobs:
   retrieval-contract:
     runs-on: ubuntu-latest
-    timeout-minutes: 6
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -23,6 +34,12 @@ jobs:
           node-version: '24'
       - name: Run AI retrieval index contract
         run: node _test_kashf_ai_retrieval_index.mjs
+      - name: Run canonical live AI bridge contract
+        run: node _test_kashf_ai_retrieval_live_bridge.mjs
+      - name: Run AI context builder regression
+        run: node _test_kashf_ai_context_builder.mjs
+      - name: Run Edge Kashf payload regression
+        run: node _test_oren_smart_advisor_kashf_reading_payload.mjs
       - name: Run canonical routing contract
         run: node _test_kashf_canonical_routing.mjs
       - name: Audit question-route coverage
