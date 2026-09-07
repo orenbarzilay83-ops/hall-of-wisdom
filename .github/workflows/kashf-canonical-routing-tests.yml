@@ -9,6 +9,8 @@ on:
       - 'goral-hachol/registry/kashf-question-route-registry.js'
       - 'goral-hachol/engine/kashf-method-router.js'
       - 'goral-hachol/engine/kashf-canonical-reading-engine.js'
+      - 'goral-hachol/engine/kashf-canonical-executors.js'
+      - 'goral-hachol/engine/kashf-canonical-figure-classifier.js'
       - 'goral-hachol/engine/kashf-canonical-narrative-writer.js'
       - 'goral-hachol/engine/kashf-topic-rules.js'
       - 'goral-hachol/engine/kashf-formula-engine.js'
