@@ -58,7 +58,7 @@ function computeIllnessRecoveryP196(chart) {
     outputHebrew = 'בית 15: ' + h15FigureHebrew + ' (' + h15Pattern + ') — צורה מיטיבה. לפי כשף עמ׳ 196: החולה יתרפא.';
   } else if (classification.saadNahs === 'nahs') {
     recoveryStatus = 'prolonged-illness';
-    outputHebrew = 'בית 15: ' + h15FigureHebrew + ' (' + h15Pattern + ') — צורה מזיקה. לפי כשף עמ׳ 196: המחלה תתארך. המקור אינו אומר כאן שהחולה לא יתרפא לעולם ואינו נותן כאן דין מוות.';
+    outputHebrew = 'בית 15: ' + h15FigureHebrew + ' (' + h15Pattern + ') — צורה מזיקה. לפי כשף עמ׳ 196: המחלה תתארך. המקור אינו שולל כאן החלמה עתידית ואינו נותן כאן דין מוות.';
   } else if (classification.saadNahs === 'mixed') {
     outputHebrew = 'בית 15: ' + h15FigureHebrew + ' (' + h15Pattern + ') — צורה ממוזגת. כלל כשף עמ׳ 196 נותן דין מפורש למיטיב ולמזיק בלבד; אין להמיר את הנטייה של צורה ממוזגת אוטומטית להחלמה או להתארכות.';
   } else {
@@ -108,6 +108,17 @@ if (!tests.includes(newRouteBlock)) {
 
 const oldBlocked = `const blockedIllnessReading = buildKashfReadingByQuestionId(PILOT_BOARD, 'q-illness-heal');\nassert(blockedIllnessReading.valid === false, 'source-ready but executor-pending illness reading is blocked');\nassert(blockedIllnessReading.reason === 'executor-pending', 'executor-pending reason is preserved to reading output');\n`;
 if (tests.includes(oldBlocked)) tests = tests.replace(oldBlocked, '');
+
+
+// q-illness-heal is no longer part of the generic hard-stop regression list.
+tests = tests.replace(
+  "for (const qid of ['q-promise', 'q-fear', 'q-sorcery', 'q-sea-voyage', 'q-prisoner', 'q-friends', 'q-stability', 'q-missing-alive', 'q-illness-heal']) {",
+  "for (const qid of ['q-promise', 'q-fear', 'q-sorcery', 'q-sea-voyage', 'q-prisoner', 'q-friends', 'q-stability', 'q-missing-alive']) {"
+);
+tests = tests.replace(
+  "assert(canRunKashfMethod('illness.p196.outcomeH15') === false, 'pending executor cannot run even when source status is ready');",
+  "assert(canRunKashfMethod('illness.p196.outcomeH15') === true, 'p196 H15 executor can run after explicit canonical cutover');"
+);
 
 if (!tests.includes('// ── P12 illness recovery p196 H15 executor')) {
   const marker = '// ── Canonical execution isolation ----------------------------------------';

@@ -229,11 +229,11 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'illness',
     sourcePages: [196],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
+    executorStatus: 'ready',
     legacyTopicId: 'illness',
-    notes: 'Canonical recovery intent is the H15 benefic/malefic rule; topic bundle contains additional illness intents and must not be used as a substitute.',
+    notes: 'Canonical p196 H15 executor is wired. Pure benefic => recovery; pure malefic => illness is prolonged. A malefic H15 is NOT promoted to a death/no-recovery verdict, because the source does not say that here. Mixed remains unresolved. Only H15 is executed for this intent; the broader illness bundle stays outside the verdict.',
   }),
 
   'illness.bodyPart.h6Figure': method({

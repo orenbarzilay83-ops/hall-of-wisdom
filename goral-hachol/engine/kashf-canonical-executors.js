@@ -569,7 +569,56 @@ function computeHiddenStillThereP188(chart) {
   };
 }
 
+
+// Kashf p196: H15 alone gives the primary recovery/prolongation indication.
+// Benefic => the patient recovers. Malefic => the illness is prolonged.
+// The malefic clause does NOT say that recovery is impossible or that the
+// patient dies, so canonical output must not turn prolongation into a false
+// yes/no "will never recover" verdict. Mixed remains unresolved by this rule.
+function computeIllnessRecoveryP196(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h15 = findCanonicalHouse(chart, 15);
+  const h15Pattern = h15?.key || h15?.pattern || null;
+  if (!h15Pattern) return null;
+
+  const h15FigureHebrew = h15?.hebrew || h15?.hebrewName || h15Pattern;
+  const classification = classifyCanonicalFigure(h15Pattern);
+
+  let recoveryStatus = 'unresolved';
+  let recovers = null;
+  let positive = null;
+  let outputHebrew;
+
+  if (classification.saadNahs === 'saad') {
+    recoveryStatus = 'recovers';
+    recovers = true;
+    positive = true;
+    outputHebrew = 'בית 15: ' + h15FigureHebrew + ' (' + h15Pattern + ') — צורה מיטיבה. לפי כשף עמ׳ 196: החולה יתרפא.';
+  } else if (classification.saadNahs === 'nahs') {
+    recoveryStatus = 'prolonged-illness';
+    outputHebrew = 'בית 15: ' + h15FigureHebrew + ' (' + h15Pattern + ') — צורה מזיקה. לפי כשף עמ׳ 196: המחלה תתארך. המקור אינו שולל כאן החלמה עתידית ואינו נותן כאן דין מוות.';
+  } else if (classification.saadNahs === 'mixed') {
+    outputHebrew = 'בית 15: ' + h15FigureHebrew + ' (' + h15Pattern + ') — צורה ממוזגת. כלל כשף עמ׳ 196 נותן דין מפורש למיטיב ולמזיק בלבד; אין להמיר את הנטייה של צורה ממוזגת אוטומטית להחלמה או להתארכות.';
+  } else {
+    outputHebrew = 'לא ניתן לסווג את צורת בית 15 לפי סיווג מיטיב/מזיק/ממוזג הקנוני; אין להכריע את דין ההחלמה מן הכלל הזה.';
+  }
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 196',
+    sourceText: 'אם בחמישה־עשר צורה מיטיבה, הוא יתרפא; ואם היא מזיקה, המחלה תתארך.',
+    housesUsed: [15],
+    h15Pattern,
+    h15FigureHebrew,
+    classification,
+    recoveryStatus,
+    recovers,
+    positive,
+    outputHebrew,
+  };
+}
+
 const CUSTOM_EXECUTORS = Object.freeze({
+  'illness.p196.outcomeH15': computeIllnessRecoveryP196,
   'hidden.p188.isStillThere': computeHiddenStillThereP188,
   'lostItem.p202.returnH6H8': computeLostItemReturnP202,
   'marriage.p204.previousStatusH7inH10': computeMarriagePreviousStatusP204,

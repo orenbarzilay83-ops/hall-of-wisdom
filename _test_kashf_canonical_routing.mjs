@@ -219,18 +219,17 @@ assertRoute('q-who-looks-biz', {
   kashfRuntimeStatus: 'unsupported',
 });
 
-// ── Source-ready is NOT the same as executor-ready -----------------------
+// ── Exact illness recovery method is now executor-ready -------------------
 const illnessRecovery = assertRoute('q-illness-heal', {
   ok: true,
-  canRunKashf: false,
+  canRunKashf: true,
   kashfIntentId: 'illness.recovery',
   kashfMethodId: 'illness.p196.outcomeH15',
   kashfRuntimeStatus: 'ready',
-  executorStatus: 'pending',
-  runtimeAllowed: false,
-  reason: 'executor-pending',
+  executorStatus: 'ready',
+  runtimeAllowed: true,
 });
-assert(!canRunKashfMethod(illnessRecovery.kashfMethodId), 'source-ready method with pending executor cannot run');
+assert(canRunKashfMethod(illnessRecovery.kashfMethodId), 'p196 H15 recovery method is explicitly runnable');
 
 // ── Spiritual/misc source-boundary checks -------------------------------
 assertRoute('q-hidden-action', {
@@ -286,7 +285,7 @@ assertRoute('q-stranger-desc', {
 });
 
 // ── Acceptance test 8: runtimeAllowed=false is a hard stop ---------------
-for (const qid of ['q-promise', 'q-fear', 'q-sorcery', 'q-sea-voyage', 'q-prisoner', 'q-friends', 'q-stability', 'q-missing-alive', 'q-illness-heal']) {
+for (const qid of ['q-promise', 'q-fear', 'q-sorcery', 'q-sea-voyage', 'q-prisoner', 'q-friends', 'q-stability', 'q-missing-alive']) {
   const route = resolveKashfRouteByQuestionId(qid);
   assert(route.canRunKashf === false, `${qid}: blocked/non-ready route cannot run`);
   let threw = false;
@@ -309,7 +308,7 @@ assert(unmapped.kashfMethodId === null, 'unmapped question does not invent a met
 assert(canRunKashfMethod('travel.p238.assemble1359') === true, 'ready canonical travel method can run');
 assert(canRunKashfMethod('state.p265.h1h2h9h15') === false, 'repair-required method cannot run');
 assert(canRunKashfMethod('travel.p242.vehicleSafety') === false, 'blocked-by-source method cannot run');
-assert(canRunKashfMethod('illness.p196.outcomeH15') === false, 'pending executor cannot run even when source status is ready');
+assert(canRunKashfMethod('illness.p196.outcomeH15') === true, 'p196 H15 executor can run after explicit canonical cutover');
 
 // ── P1 profession method-scoped legacy executor -------------------------
 const professionRoute = assertRoute('q-profession', {
@@ -862,6 +861,38 @@ const hiddenMixedNo = buildKashfReadingByQuestionId(makeP9Board({
 assert(hiddenMixedNo.primaryFormula?.result?.executorResult?.houseResults?.find((item) => item.houseNumber === 4)?.classification?.saadNahs === 'mixed', 'p188 mixed figure remains mixed');
 assert(hiddenMixedNo.primaryFormula?.result?.executorResult?.presentInPlace === false, 'p188 mixed tendency is not promoted to benefic');
 
+// ── P12 illness recovery p196 H15 executor ----------------------------
+const illnessRecovers = buildKashfReadingByQuestionId(makeP9Board({ 15: '1122' }), 'q-illness-heal', { question: 'האם החולה יחלים?' });
+assert(illnessRecovers.valid === true, 'p196 benefic H15 executes canonically');
+assert(JSON.stringify(illnessRecovers.primaryFormula?.houses) === JSON.stringify([15]), 'p196 traces H15 only');
+assert(illnessRecovers.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'saad', 'p196 positive fixture is pure benefic');
+assert(illnessRecovers.primaryFormula?.result?.executorResult?.recoveryStatus === 'recovers', 'p196 benefic H15 gives recovery');
+assert(illnessRecovers.primaryFormula?.result?.executorResult?.recovers === true, 'p196 benefic H15 records explicit recovery');
+assert(illnessRecovers.overallPositive === true, 'p196 benefic branch is positive');
+assert(illnessRecovers.canonicalExecution?.methodsExecuted?.length === 1, 'p196 executes exactly one method');
+assert(illnessRecovers.canonicalExecution?.topicBundleExecuted === false, 'p196 does not execute broad illness bundle');
+assert(illnessRecovers.dhamir == null, 'p196 does not auto-run Dhamir');
+
+const illnessProlonged = buildKashfReadingByQuestionId(makeP9Board({ 15: '1112' }), 'q-illness-heal', { question: 'האם החולה יחלים?' });
+assert(illnessProlonged.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'nahs', 'p196 prolonged fixture is pure malefic');
+assert(illnessProlonged.primaryFormula?.result?.executorResult?.recoveryStatus === 'prolonged-illness', 'p196 malefic H15 means prolonged illness');
+assert(illnessProlonged.primaryFormula?.result?.executorResult?.recovers === null, 'p196 malefic H15 does not invent a categorical no-recovery verdict');
+assert(illnessProlonged.overallPositive === null, 'p196 prolongation remains non-binary');
+assert(illnessProlonged.verdict?.text?.includes('המחלה תתארך'), 'p196 prolonged branch preserves exact source sense');
+assert(!illnessProlonged.verdict?.text?.includes('ימות'), 'p196 H15 malefic branch does not invent death');
+assert(!illnessProlonged.verdict?.text?.includes('לא יתרפא'), 'p196 H15 malefic branch does not invent permanent non-recovery');
+
+const illnessMixed = buildKashfReadingByQuestionId(makeP9Board({ 15: '1111' }), 'q-illness-heal', { question: 'האם החולה יחלים?' });
+assert(illnessMixed.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'mixed', 'p196 mixed fixture stays mixed');
+assert(illnessMixed.primaryFormula?.result?.executorResult?.recoveryStatus === 'unresolved', 'p196 mixed branch remains unresolved');
+assert(illnessMixed.primaryFormula?.result?.executorResult?.recovers === null, 'p196 mixed branch does not invent recovery');
+assert(illnessMixed.overallPositive === null, 'p196 mixed branch remains non-binary');
+
+const illnessHtml = writeCanonicalKashfReading(illnessRecovers);
+assert(illnessHtml.includes('illness.p196.outcomeH15'), 'p196 narrative exposes exact canonical method id');
+assert(illnessHtml.includes('החולה יתרפא'), 'p196 narrative preserves recovery wording');
+assert(!illnessHtml.includes('עדים ודיין'), 'p196 narrative does not aggregate broader illness witnesses/judge');
+
 // ── Canonical execution isolation ----------------------------------------
 for (const qid of ['q-success', 'q-travel-safe', 'q-short-travel', 'q-move-city', 'q-siblings']) {
   const reading = buildKashfReadingByQuestionId(PILOT_BOARD, qid, { question: qid });
@@ -901,9 +932,6 @@ assert(blockedSorceryReading.canRunKashf === false || blockedSorceryReading.vali
 const blockedSorceryHtml = writeCanonicalKashfReading(blockedSorceryReading);
 assert(!blockedSorceryHtml.includes('הפסיקה:'), 'unsupported q-sorcery HTML contains no verdict');
 
-const blockedIllnessReading = buildKashfReadingByQuestionId(PILOT_BOARD, 'q-illness-heal');
-assert(blockedIllnessReading.valid === false, 'source-ready but executor-pending illness reading is blocked');
-assert(blockedIllnessReading.reason === 'executor-pending', 'executor-pending reason is preserved to reading output');
 
 // HTML escaping is mandatory because client question/name are user input.
 const escapedReading = buildKashfReadingByQuestionId(PILOT_BOARD, 'q-success', {
