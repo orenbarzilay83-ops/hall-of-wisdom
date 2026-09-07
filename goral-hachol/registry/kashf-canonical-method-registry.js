@@ -293,10 +293,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'children',
     sourcePages: [191, 194],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Canonical delivery judgment centers H1+H5 and H15 testimony: mutable/masculine supports ease; fixed H5 supports difficulty. p194 H5 heavy/benefic is corroborating body material, not an alternative vote.',
+    executorStatus: 'ready',
+    notes: 'Canonical p191 delivery-difficulty executor is wired. H1+H5 both masculine give the explicit ease sign, with the source noting greater force when both are mutable. A fixed H5 gives the explicit difficulty sign, with H1 and H15 exposed as testimony rather than converted into an invented vote. If ease and difficulty signs coexist, the executor reports conflicting source signs instead of choosing one silently.',
   }),
 
   'child.p194.healthTrajectoryH6H8': method({
@@ -524,10 +524,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'money',
     sourcePages: [180],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Invert the open/closed rows of H10, identify the resulting figure, then judge its movement: benefic in an angle expands livelihood; cadent placement is unfavorable.',
+    executorStatus: 'ready',
+    notes: 'Canonical p180 livelihood executor is wired. It inverts every open/closed row of H10, identifies the resulting figure, and traces its recurrence in houses 1-12. A pure-benefic result placed in an angle supports expanded livelihood; cadent placement is unfavorable. If the result occurs in both angle and cadent houses, or only in an unstated placement, the method remains unresolved rather than inventing a priority rule.',
   }),
 
   'money.p181.recast25811': method({
@@ -1315,10 +1315,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'missingPerson',
     sourcePages: [250, 251],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'v57 audit correction: the selected body-source life/death rule is operationally located on pp250-251. The historical method id is retained for compatibility. H1/H4/H9/outcome support life; the named severe/death-sign conditions occur in H6/H7/H8/outcome. Do not use the later al-Multaqat 3/5/9 recurrence method.',
+    executorStatus: 'ready',
+    notes: 'Canonical pp250-251 missing-person life-status executor is wired from the corrected v57 provenance. H1+H4+H9+H15 all pure benefic expose the explicit alive sign. H6+H7+H8+H15 all drawn from the seven source-listed death figures expose the separate severe testimony. Neither absence of the alive sign nor the severe pattern is silently converted into a certain death/alive verdict; mixed or incomplete testimony remains unresolved.',
   }),
 
   'enemy.p271.h1vsH12': method({

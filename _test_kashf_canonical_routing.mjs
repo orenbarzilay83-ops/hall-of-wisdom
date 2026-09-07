@@ -173,10 +173,12 @@ assert(stability.legacyTopicId === 'authorityState', 'legacy topic retained only
 // ── Acceptance test 7: missing alive/dead is isolated --------------------
 assertRoute('q-missing-alive', {
   ok: true,
-  canRunKashf: false,
+  canRunKashf: true,
   kashfIntentId: 'missing.aliveOrDead',
   kashfMethodId: 'missing.p248-249.lifeH1H4H9Outcome',
   kashfRuntimeStatus: 'ready',
+  executorStatus: 'ready',
+  runtimeAllowed: true,
 });
 
 // ── Conflict/theft source-intent separation -----------------------------
@@ -329,7 +331,7 @@ assertRoute('q-stranger-desc', {
 });
 
 // ── Acceptance test 8: runtimeAllowed=false is a hard stop ---------------
-for (const qid of ['q-promise', 'q-fear', 'q-sorcery', 'q-sea-voyage', 'q-prisoner', 'q-friends', 'q-stability', 'q-missing-alive']) {
+for (const qid of ['q-promise', 'q-fear', 'q-sorcery', 'q-sea-voyage', 'q-prisoner', 'q-friends', 'q-stability']) {
   const route = resolveKashfRouteByQuestionId(qid);
   assert(route.canRunKashf === false, `${qid}: blocked/non-ready route cannot run`);
   let threw = false;
@@ -1658,6 +1660,56 @@ assert(p249Return.primaryFormula?.sourceText === getKashfV57Knowledge('missing.p
 for (const reading of [p194Child, p182Jamaa, p211Stable, p249Return]) {
   assert(reading.canonicalExecution?.methodsExecuted?.length === 1, 'easy batch 02 reading executes exactly one canonical method');
   assert(reading.dhamir === null && reading.canonicalExecution?.topicBundleExecuted === false && reading.canonicalExecution?.altFormulaExecuted === false, 'easy batch 02 reading runs no Dhamir/topic bundle/alternative');
+}
+
+// ── Easy batch 03: p191 delivery, p180 livelihood, pp250-251 missing life status ---
+for (const [methodId, questionId] of [
+  ['pregnancy.p191.deliveryDifficultyH1H5H15', 'q-birth-ease'],
+  ['money.p180.livelihoodH10Invert', 'q-livelihood'],
+  ['missing.p248-249.lifeH1H4H9Outcome', 'q-missing-alive'],
+]) {
+  const method = getKashfMethod(methodId);
+  assert(method?.runtimeAllowed === true && method?.executorStatus === 'ready', methodId + ' is runnable');
+  assert(canRunKashfMethod(methodId) === true, methodId + ' canRunKashfMethod is true');
+  const route = resolveKashfRouteByQuestionId(questionId);
+  assert(route?.canRunKashf === true && route?.kashfMethodId === methodId, questionId + ' routes to its exact runnable method');
+}
+
+const p191Ease = buildKashfReadingByQuestionId(makeP204Board({ 1: '1222', 5: '1122', 15: '2211' }), 'q-birth-ease');
+const p191EaseExec = p191Ease.primaryFormula?.result?.executorResult;
+assert(p191EaseExec?.easeSign === true && p191EaseExec?.sourceOutcome === 'easy' && p191EaseExec?.positive === true, 'p191 masculine H1+H5 gives easy-delivery source sign');
+const p191MutableEase = buildKashfReadingByQuestionId(makeP204Board({ 1: '1121', 5: '1121', 15: '2211' }), 'q-birth-ease');
+assert(p191MutableEase.primaryFormula?.result?.executorResult?.bothMutable === true, 'p191 mutable H1+H5 records the source strengthening clause');
+const p191Difficulty = buildKashfReadingByQuestionId(makeP204Board({ 1: '2211', 5: '2212', 15: '2211' }), 'q-birth-ease');
+assert(p191Difficulty.primaryFormula?.result?.executorResult?.difficultySign === true && p191Difficulty.primaryFormula?.result?.executorResult?.sourceOutcome === 'difficult', 'p191 fixed H5 gives difficulty source sign');
+const p191Conflict = buildKashfReadingByQuestionId(makeP204Board({ 1: '1222', 5: '2122', 15: '2211' }), 'q-birth-ease');
+assert(p191Conflict.primaryFormula?.result?.executorResult?.sourceOutcome === 'conflicting-source-signs', 'p191 does not silently rank simultaneous ease/difficulty signs');
+assert(p191Ease.primaryFormula?.sourceText === getKashfV57Knowledge('pregnancy.p191.deliveryDifficultyH1H5H15')?.v57?.hebrewRule, 'p191 delivery runtime sourceText comes from Hebrew v57');
+
+const p180Expanded = buildKashfReadingByQuestionId(makeP204Board({ 1: '1222', 10: '2111' }), 'q-livelihood');
+const p180ExpandedExec = p180Expanded.primaryFormula?.result?.executorResult;
+assert(p180ExpandedExec?.resultPattern === '1222', 'p180 inversion 2111 -> 1222 is exact');
+assert(JSON.stringify(p180ExpandedExec?.anglePlacements) === JSON.stringify([1]), 'p180 finds derived figure in H1 angle');
+assert(p180ExpandedExec?.sourceOutcome === 'expanded-livelihood' && p180ExpandedExec?.positive === true, 'p180 pure-benefic derived figure in angle expands livelihood');
+const p180Cadent = buildKashfReadingByQuestionId(makeP204Board({ 3: '1222', 10: '2111' }), 'q-livelihood');
+assert(p180Cadent.primaryFormula?.result?.executorResult?.sourceOutcome === 'unfavorable-livelihood', 'p180 derived figure in cadent house gives unfavorable branch');
+const p180Conflict = buildKashfReadingByQuestionId(makeP204Board({ 1: '1222', 3: '1222', 10: '2111' }), 'q-livelihood');
+assert(p180Conflict.primaryFormula?.result?.executorResult?.sourceOutcome === 'conflicting-placement', 'p180 angle+cadent recurrence remains unresolved instead of inventing priority');
+assert(p180Expanded.primaryFormula?.sourceText === getKashfV57Knowledge('money.p180.livelihoodH10Invert')?.v57?.hebrewRule, 'p180 livelihood runtime sourceText comes from Hebrew v57');
+
+const p250Alive = buildKashfReadingByQuestionId(makeP204Board({ 1: '2211', 4: '2211', 9: '2211', 15: '2211' }), 'q-missing-alive');
+const p250AliveExec = p250Alive.primaryFormula?.result?.executorResult;
+assert(p250AliveExec?.aliveIndicated === true && p250AliveExec?.sourceOutcome === 'alive-indicated', 'pp250-251 four pure-benefic life houses give alive sign');
+const p250Severe = buildKashfReadingByQuestionId(makeP204Board({ 6: '2221', 7: '2221', 8: '2221', 15: '2221' }), 'q-missing-alive');
+assert(p250Severe.primaryFormula?.result?.executorResult?.severeDeathTestimony === true && p250Severe.primaryFormula?.result?.executorResult?.sourceOutcome === 'severe-death-testimony', 'pp250-251 four source-listed death figures expose severe testimony');
+assert(p250Severe.primaryFormula?.result?.executorResult?.positive === null, 'severe missing-person testimony is not converted to a generic certain-death boolean');
+const p250Unresolved = buildKashfReadingByQuestionId(makeP204Board({ 1: '1222', 4: '1112', 6: '1222', 7: '1222', 8: '1222', 9: '1222', 15: '2112' }), 'q-missing-alive');
+assert(p250Unresolved.primaryFormula?.result?.executorResult?.sourceOutcome === 'unresolved', 'incomplete missing-person conditions are not inverted into an unsourced verdict');
+assert(p250Alive.primaryFormula?.sourceText === getKashfV57Knowledge('missing.p248-249.lifeH1H4H9Outcome')?.v57?.hebrewRule, 'pp250-251 missing-life runtime sourceText comes from Hebrew v57');
+
+for (const reading of [p191Ease, p180Expanded, p250Alive]) {
+  assert(reading.canonicalExecution?.methodsExecuted?.length === 1, 'easy batch 03 reading executes exactly one canonical method');
+  assert(reading.dhamir === null && reading.canonicalExecution?.topicBundleExecuted === false && reading.canonicalExecution?.altFormulaExecuted === false, 'easy batch 03 reading runs no Dhamir/topic bundle/alternative');
 }
 
 console.log(`Kashf canonical routing tests: ${passed} passed, ${failed} failed`);

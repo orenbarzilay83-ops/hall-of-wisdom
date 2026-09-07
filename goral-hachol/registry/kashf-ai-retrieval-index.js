@@ -39,6 +39,21 @@ const STOPWORDS = new Set([
  * executable rules.
  */
 const RETRIEVAL_OVERRIDES = Object.freeze({
+  'pregnancy.p191.deliveryDifficultyH1H5H15': {
+    aliases: ['לידה קלה או קשה', 'האם הלידה תהיה קלה', 'האם הלידה תהיה קשה', 'קלות וקושי הלידה'],
+    doNotMixWith: ['pregnancy.p191.existsH5SilentEmpty', 'pregnancy.p191.genderH5', 'pregnancy.p191.childSafetyH1H6H8'],
+    houses: [1, 5, 15],
+  },
+  'money.p180.livelihoodH10Invert': {
+    aliases: ['מה מצב הפרנסה', 'האם הפרנסה תתרחב', 'מצב המחיה', 'התרחבות הפרנסה', 'דין הפרנסה השוטפת'],
+    doNotMixWith: ['money.p179.sourceByIncomingHonorHouse', 'money.p181.recast25811', 'inheritance.p180.elementComposite'],
+    houses: [1,2,3,4,5,6,7,8,9,10,11,12],
+  },
+  'missing.p248-249.lifeH1H4H9Outcome': {
+    aliases: ['הנעדר חי או מת', 'האם הנעדר חי', 'מצב חייו של הנעדר', 'האם הנעדר בחיים'],
+    doNotMixWith: ['missing.p249.returnAnglesJudge', 'missing.p249.locationDirectionUnresolved', 'travel.p244.returnH1H2H9'],
+    houses: [1,4,6,7,8,9,15],
+  },
   'child.p194.healthTrajectoryH6H8': {
     aliases: ['בריאות הילד לאורך הזמן', 'בריאות הילד כשיגדל', 'מכאובים בילדות ובריאות בהמשך', 'מצב בריאות הילד לאורך השנים'],
     doNotMixWith: ['pregnancy.p191.childSafetyH1H6H8', 'illness.p196.outcomeH15'],

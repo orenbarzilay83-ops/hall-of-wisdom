@@ -253,7 +253,7 @@ window.QUESTION_BANK = [
     id: 'q-livelihood',
     category: 'money', houseId: 2, topicId: 'money', kashfTopicId: 'money',
     label: 'מה מצב הפרנסה?',
-    desc: 'מצב הפרנסה השוטפת — האם מייצרת, האם תשתפר, מה מקורותיה',
+    desc: 'דין עמ׳ 180: הופכים פתוח/סתום בבית 10, מזהים את הצורה שנוצרה ובודקים אם היא מיטיבה ביתד או נופלת; השיטה אינה מזהה מקור הכנסה',
     clientFields: [],
   },
   {
@@ -354,14 +354,14 @@ window.QUESTION_BANK = [
     id: 'q-birth-ease',
     category: 'family', houseId: 5, topicId: 'childrenPregnancy', kashfTopicId: 'children',
     label: 'לידה קלה או קשה?',
-    desc: 'מה צפוי בלידה עצמה — קלה ומהירה, או מסובכת',
+    desc: 'לפי כשף עמ׳ 191: קלות/קושי לפי בתים 1, 5 ו־15; השיטה אינה מחשבת מהירות לידה או סיבוכים רפואיים',
     clientFields: [F.pregnancyMonths],
   },
   {
     id: 'q-child-health',
     category: 'family', houseId: 5, topicId: 'childrenPregnancy', kashfTopicId: 'children',
     label: 'מצב בריאות הילד?',
-    desc: 'לבדיקת מצב בריאות ילד — האם יחלים, מה צפוי',
+    desc: 'לפי כשף עמ׳ 194: מכאובים בילדות ומגמת הבריאות ככל שהילד גדל; לא דין החלמה ממחלה נוכחית',
     clientFields: [{ id: 'childAge', label: 'גיל הילד', type: 'number', placeholder: 'שנים' }, F.symptoms],
   },
   {
@@ -527,7 +527,7 @@ window.QUESTION_BANK = [
     id: 'q-missing-alive',
     category: 'travel', houseId: 9, topicId: 'missingPerson', kashfTopicId: 'missingPerson',
     label: 'הנעדר — חי או מת?',
-    desc: 'השאלה הדחופה ביותר על נעדר — האם בחיים',
+    desc: 'דין עמ׳ 250–251: סימן חיים מבתים 1, 4, 9 והסוף מול עדות צורות המוות ב־6, 7, 8 והסוף; זו פסיקת מקור ולא אימות עובדתי',
     clientFields: [F.missingName, F.missingGender, F.missingAge, F.missingWhen, F.missingWhere],
   },
   {
@@ -541,7 +541,7 @@ window.QUESTION_BANK = [
     id: 'q-missing-return',
     category: 'travel', houseId: 9, topicId: 'missingPerson', kashfTopicId: 'missingPerson',
     label: 'האם הנעדר יחזור?',
-    desc: 'לאחר אישור שחי — האם ומתי יחזור הביתה',
+    desc: 'סימן חזרה לפי היתדות והמכריע בעמ׳ 249; הסעיף החיובי במקור נאמר במפורש על חזרת זכרים ואינו מחשב זמן',
     clientFields: [F.missingName, F.missingWhen],
   },
   {

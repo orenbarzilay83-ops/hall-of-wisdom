@@ -74,6 +74,9 @@ expectTop('בריאות הילד לאורך הזמן', 'child.p194.healthTraject
 expectTop('מי הגדול בין האחים', 'siblings.p182.seniority');
 expectTop('האם תהיה פרידה בנישואין', 'marriage.p211.dissolutionH7StateMatrix');
 expectTop('האם הנעדר יחזור', 'missing.p249.returnAnglesJudge');
+expectTop('לידה קלה או קשה', 'pregnancy.p191.deliveryDifficultyH1H5H15');
+expectTop('מה מצב הפרנסה', 'money.p180.livelihoodH10Invert');
+expectTop('הנעדר חי או מת', 'missing.p248-249.lifeH1H4H9Outcome');
 expectTop('האם יש פעולה מאחורי הדבר', 'spiritual.p167.hiddenActionAirRows46815');
 expectTop('מאיפה יגיע הכסף', 'money.p179.sourceByIncomingHonorHouse');
 
@@ -139,7 +142,18 @@ for (const [methodId, questionId, houses] of [
   assert(JSON.stringify(record?.houses) === JSON.stringify(houses), methodId + ' retrieval exposes exact operational houses');
 }
 
-const pendingKnowledgeRecord = getKashfAiRetrievalRecord('pregnancy.p191.deliveryDifficultyH1H5H15');
+for (const [methodId, questionId, houses] of [
+  ['pregnancy.p191.deliveryDifficultyH1H5H15', 'q-birth-ease', [1,5,15]],
+  ['money.p180.livelihoodH10Invert', 'q-livelihood', [1,2,3,4,5,6,7,8,9,10,11,12]],
+  ['missing.p248-249.lifeH1H4H9Outcome', 'q-missing-alive', [1,4,6,7,8,9,15]],
+]) {
+  const record = getKashfAiRetrievalRecord(methodId);
+  assert(record?.questionIds.includes(questionId), methodId + ' retrieval links ' + questionId);
+  assert(record?.runtimeAllowed === true && record?.executorStatus === 'ready', methodId + ' retrieval exposes runnable state');
+  assert(JSON.stringify(record?.houses) === JSON.stringify(houses), methodId + ' retrieval exposes exact operational houses');
+}
+
+const pendingKnowledgeRecord = getKashfAiRetrievalRecord('mother.p257.statusDayNight');
 assert(pendingKnowledgeRecord?.runtimeAllowed === false && pendingKnowledgeRecord?.executorStatus === 'pending', 'a source-ready pending method remains knowledge-visible without runtime authorization');
 
 const runnableOnly = searchKashfAiRetrievalIndex('הריון', { runnableOnly: true, limit: 20 });

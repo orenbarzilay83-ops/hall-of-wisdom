@@ -1592,6 +1592,200 @@ function computeMissingReturnP249(chart) {
   };
 }
 
+// Kashf v57 p191 — ease/difficulty of delivery.
+function computeDeliveryDifficultyP191(chart) {
+  if (!Array.isArray(chart)) return null;
+  const housesUsed = [1, 5, 15];
+  const rows = housesUsed.map((houseNumber) => {
+    const entry = findCanonicalHouse(chart, houseNumber);
+    const pattern = entry?.key || entry?.pattern || null;
+    if (!pattern) return null;
+    return {
+      houseNumber,
+      pattern,
+      figureHebrew: classifyCanonicalFigure(pattern).figureHebrew || entry?.hebrew || entry?.hebrewName || pattern,
+      classification: classifyCanonicalFigure(pattern),
+      masculine: P191_MASCULINE_PATTERNS.has(pattern),
+      mutable: P204_MUTABLE_PATTERNS.has(pattern),
+      fixed: P204_FIXED_PATTERNS.has(pattern),
+    };
+  });
+  if (rows.some((item) => !item)) return null;
+  const byHouse = Object.fromEntries(rows.map((item) => [item.houseNumber, item]));
+
+  const easeSign = byHouse[1].masculine && byHouse[5].masculine;
+  const bothMutable = byHouse[1].mutable && byHouse[5].mutable;
+  const difficultySign = byHouse[5].fixed;
+  let sourceOutcome = 'unresolved';
+  let sourceOutcomeHebrew = 'לא הוכרע בכלל זה';
+  if (easeSign && difficultySign) {
+    sourceOutcome = 'conflicting-source-signs';
+    sourceOutcomeHebrew = 'סימן הקלות וסימן הקושי מופיעים יחד';
+  } else if (easeSign) {
+    sourceOutcome = 'easy';
+    sourceOutcomeHebrew = bothMutable ? 'לידה קלה — עם חיזוק מפני ששתי הצורות מתהפכות' : 'לידה קלה';
+  } else if (difficultySign) {
+    sourceOutcome = 'difficult';
+    sourceOutcomeHebrew = 'לידה קשה ואינה נשלמת בקלות';
+  }
+
+  const outputHebrew = sourceOutcome === 'unresolved'
+    ? 'לפי כשף v57 עמ׳ 191, סימן הקלות דורש שהראשון והחמישי יהיו זכריים, וסימן הקושי המפורש הוא צורה קבועה בחמישי. אף אחד מן התנאים המפורשים אינו מכריע כאן; עדות בית 1 ובית 15 נשמרת ואינה נהפכת להצבעת רוב.'
+    : sourceOutcome === 'conflicting-source-signs'
+      ? 'בית 1 ובית 5 זכריים ולכן מופיע סימן הקלות, אך בית 5 גם קבוע ולכן מופיע סימן הקושי. המקור אינו נותן כאן כלל קדימות בין שני הסימנים; לכן אין לבחור אחד מהם מן הדעת. בית 15 נשמר כעדות נוספת בלבד.'
+      : 'לפי כשף v57 עמ׳ 191: ' + sourceOutcomeHebrew + '. בית 15 מוצג כעדות המקור ואינו משמש להצבעת רוב שלא נמסרה.';
+
+  return {
+    sourceRef: 'חשיפת הסודות הנצורים v57 עמ׳ 191; פירוט משלים עמ׳ 194',
+    sourceText: 'אם הראשון והחמישי זכריים, הוולד זכר והלידה קלה ליולדת, בפרט אם הצורות מתהפכות. אם החמישי צורה קבועה, הלידה קשה ואינה נשלמת בקלות, לפי עדות הראשון והחמישה־עשר.',
+    housesUsed,
+    houseResults: rows,
+    easeSign,
+    bothMutable,
+    difficultySign,
+    h15Testimony: byHouse[15],
+    sourceOutcome,
+    sourceOutcomeHebrew,
+    positive: sourceOutcome === 'easy' ? true : sourceOutcome === 'difficult' ? false : null,
+    verdictType: 'delivery-difficulty',
+    outputHebrew,
+  };
+}
+
+// Kashf v57 p180 — invert H10 rows and judge the resulting figure's placement.
+function computeLivelihoodP180(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h10 = findCanonicalHouse(chart, 10);
+  const h10Pattern = h10?.key || h10?.pattern || null;
+  if (!h10Pattern || h10Pattern.length !== 4) return null;
+  const resultPattern = [...h10Pattern].map((row) => row === '1' ? '2' : row === '2' ? '1' : '').join('');
+  if (resultPattern.length !== 4) return null;
+  const classification = classifyCanonicalFigure(resultPattern);
+  const resultFigureHebrew = classification.figureHebrew || resultPattern;
+
+  const placements = [];
+  for (let houseNumber = 1; houseNumber <= 12; houseNumber += 1) {
+    const entry = findCanonicalHouse(chart, houseNumber);
+    const pattern = entry?.key || entry?.pattern || null;
+    if (pattern === resultPattern) placements.push(houseNumber);
+  }
+  const angleSet = new Set([1, 4, 7, 10]);
+  const cadentSet = new Set([3, 6, 9, 12]);
+  const succedentSet = new Set([2, 5, 8, 11]);
+  const anglePlacements = placements.filter((houseNumber) => angleSet.has(houseNumber));
+  const cadentPlacements = placements.filter((houseNumber) => cadentSet.has(houseNumber));
+  const succedentPlacements = placements.filter((houseNumber) => succedentSet.has(houseNumber));
+  const hasAnglePlacement = anglePlacements.length > 0;
+  const hasCadentPlacement = cadentPlacements.length > 0;
+
+  let sourceOutcome = 'unresolved';
+  let positive = null;
+  if (hasAnglePlacement && hasCadentPlacement) {
+    sourceOutcome = 'conflicting-placement';
+  } else if (hasAnglePlacement && classification.saadNahs === 'saad') {
+    sourceOutcome = 'expanded-livelihood';
+    positive = true;
+  } else if (hasCadentPlacement) {
+    sourceOutcome = 'unfavorable-livelihood';
+    positive = false;
+  }
+
+  let outputHebrew;
+  if (sourceOutcome === 'expanded-livelihood') {
+    outputHebrew = 'היפוך שורות בית 10 יצר את ' + resultFigureHebrew + ' (' + resultPattern + '), צורה מיטיבה, והיא נמצאת בבית/בתי יתד ' + anglePlacements.join(', ') + '. לפי כשף v57 עמ׳ 180: המחיה מתרחבת.';
+  } else if (sourceOutcome === 'unfavorable-livelihood') {
+    outputHebrew = 'היפוך שורות בית 10 יצר את ' + resultFigureHebrew + ' (' + resultPattern + '), והיא נמצאת בבית/בתים נופלים ' + cadentPlacements.join(', ') + '. לפי כשף v57 עמ׳ 180: מצב זה אינו טוב למחיה.';
+  } else if (sourceOutcome === 'conflicting-placement') {
+    outputHebrew = 'הצורה שנוצרה מהיפוך בית 10 נמצאת גם ביתד (' + anglePlacements.join(', ') + ') וגם בבית נופל (' + cadentPlacements.join(', ') + '). המקור אינו נותן כלל קדימות למצב כפול כזה, ולכן אין להכריע מן הדעת.';
+  } else {
+    const where = placements.length ? placements.join(', ') : 'ללא חזרה בבתים 1–12';
+    outputHebrew = 'היפוך שורות בית 10 יצר את ' + resultFigureHebrew + ' (' + resultPattern + '). מיקומיה בלוח: ' + where + '. התנאי המפורש של צורה מיטיבה ביתד אינו מתקיים באופן חד־משמעי, וגם אין עדות נופלת יחידה שמכריעה; לכן כלל עמ׳ 180 נשאר ללא הכרעה.';
+  }
+
+  return {
+    sourceRef: 'חשיפת הסודות הנצורים v57 עמ׳ 180',
+    sourceText: 'במחיה: התבונן בעשירי. כל מה שבצורותיו פתוח — סתום; וכל מה שסתום — פתח. התבונן איזו צורה יוצאת. אם הצורה עוברת לבית יתד והיא צורה מיטיבה, המחיה מתרחבת; ואם היא נופלת, אינה טובה.',
+    housesUsed: [1,2,3,4,5,6,7,8,9,10,11,12],
+    h10Pattern,
+    resultPattern,
+    resultFigureHebrew,
+    classification,
+    placements,
+    anglePlacements,
+    succedentPlacements,
+    cadentPlacements,
+    sourceOutcome,
+    positive,
+    verdictType: 'livelihood',
+    outputHebrew,
+  };
+}
+
+const P250_251_MISSING_DEATH_PATTERNS = new Set([
+  '2222', // קהלה
+  '2112', // חיבור
+  '1111', // דרך
+  '1221', // סוהר
+  '2221', // שפל ראש
+  '2122', // אדום
+  '2212', // לבן
+]);
+
+// Kashf v57 pp250-251 — life-status testimony for a missing person.
+function computeMissingLifeStatusP250P251(chart) {
+  if (!Array.isArray(chart)) return null;
+  const lifeHouses = [1, 4, 9, 15];
+  const severeHouses = [6, 7, 8, 15];
+  const readHouse = (houseNumber) => {
+    const entry = findCanonicalHouse(chart, houseNumber);
+    const pattern = entry?.key || entry?.pattern || null;
+    if (!pattern) return null;
+    return {
+      houseNumber,
+      pattern,
+      figureHebrew: classifyCanonicalFigure(pattern).figureHebrew || entry?.hebrew || entry?.hebrewName || pattern,
+      classification: classifyCanonicalFigure(pattern),
+    };
+  };
+  const lifeResults = lifeHouses.map(readHouse);
+  const severeResults = severeHouses.map(readHouse);
+  if (lifeResults.some((item) => !item) || severeResults.some((item) => !item)) return null;
+
+  const aliveIndicated = lifeResults.every((item) => item.classification.saadNahs === 'saad');
+  const severeDeathTestimony = severeResults.every((item) => P250_251_MISSING_DEATH_PATTERNS.has(item.pattern));
+  let sourceOutcome = 'unresolved';
+  if (aliveIndicated && severeDeathTestimony) sourceOutcome = 'conflicting-source-signs';
+  else if (aliveIndicated) sourceOutcome = 'alive-indicated';
+  else if (severeDeathTestimony) sourceOutcome = 'severe-death-testimony';
+
+  let outputHebrew;
+  if (sourceOutcome === 'alive-indicated') {
+    outputHebrew = 'בתים 1, 4, 9 ו־15 כולם מיטיבים. לפי כשף v57 עמ׳ 250–251: זהו סימן שהנעדר חי.';
+  } else if (sourceOutcome === 'severe-death-testimony') {
+    outputHebrew = 'בבתים 6, 7, 8 ו־15 נמצאות כולן צורות מן הרשימה הקשה שמונה המקור: קהלה, חיבור, דרך, סוהר, שפל ראש, אדום או לבן. זהו לפי v57 עמ׳ 250–251 סימן קשה בדין חייו של הנעדר; הפלט אינו הופך עדות זו לבדו לאישור עובדתי ודאי של מוות.';
+  } else if (sourceOutcome === 'conflicting-source-signs') {
+    outputHebrew = 'בלוח מתקיימים יחד סימן החיים וסימן המוות הקשה שנמסרו בעמ׳ 250–251. המקור אינו נותן כאן כלל קדימות בין העדויות, ולכן אין לבחור אחת מהן מן הדעת.';
+  } else {
+    outputHebrew = 'לא הושלם סימן החיים של בתים 1, 4, 9 ו־15, וגם לא הושלם צירוף ארבעת בתי עדות המוות 6, 7, 8 ו־15. אין להסיק מאי־קיום אחד התנאים את היפוכו; כלל זה נשאר ללא הכרעה.';
+  }
+
+  return {
+    sourceRef: 'חשיפת הסודות הנצורים v57 עמ׳ 250–251',
+    sourceText: 'אם הראשון, הרביעי, התשיעי והסוף מיטיבים, הרי הנעדר חי. אם נמצאו בשישי, בשביעי, בשמיני ובסוף צורות המוות המנויות במקור — קהלה, חיבור, דרך, סוהר, שפל ראש, אדום או לבן — הדבר משמש עדות קשה בדין חייו של הנעדר.',
+    housesUsed: [1,4,6,7,8,9,15],
+    lifeHouses,
+    severeHouses,
+    lifeResults,
+    severeResults,
+    aliveIndicated,
+    severeDeathTestimony,
+    sourceOutcome,
+    positive: sourceOutcome === 'alive-indicated' ? true : null,
+    verdictType: 'missing-life-status',
+    outputHebrew,
+  };
+}
+
 const P174_GENERAL_STATE_HOUSE_ROLES = Object.freeze({
   1: Object.freeze({ titleHebrew: 'בית הנפש', roleHebrew: 'מצב האדם והתחלת כל דבר' }),
   2: Object.freeze({ titleHebrew: 'בית הממון', roleHebrew: 'ממונו של השואל' }),
@@ -1797,6 +1991,9 @@ function computeHiddenActionP167(chart) {
 }
 
 const CUSTOM_EXECUTORS = Object.freeze({
+  'pregnancy.p191.deliveryDifficultyH1H5H15': computeDeliveryDifficultyP191,
+  'money.p180.livelihoodH10Invert': computeLivelihoodP180,
+  'missing.p248-249.lifeH1H4H9Outcome': computeMissingLifeStatusP250P251,
   'child.p194.healthTrajectoryH6H8': computeChildHealthTrajectoryP194,
   'siblings.p182.seniority': computeSiblingSeniorityP182,
   'marriage.p211.dissolutionH7StateMatrix': computeMarriageDissolutionP211,
