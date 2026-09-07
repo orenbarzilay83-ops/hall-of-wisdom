@@ -123,5 +123,21 @@ assert(appSource.includes('questionId: selectedQuestion?.id'), 'production UI se
 assert(appSource.includes("mode: 'live'"), 'production UI explicitly requests live AI mode');
 assert(appSource.includes('evaluatorMode'), 'production UI renders server-reported live/mock mode');
 
+// 9. Money-source wording resolves the exact p179 method and stays canonical.
+const moneySourceFreeText = buildKashfCanonicalAiBridge({
+  questionText: 'מאיפה יגיע הכסף',
+  board: BOARD,
+});
+assert(moneySourceFreeText.resolution.kashfMethodId === 'money.p179.sourceByIncomingHonorHouse', 'money-source free text resolves exact p179 method');
+assert(moneySourceFreeText.resolution.resolutionSource === 'retrieval-index', 'money-source free text resolves through AI retrieval index');
+const moneySourceLocked = buildKashfCanonicalAiBridge({
+  questionId: 'q-money-source',
+  questionText: 'מה מצב המחיה?',
+  board: BOARD,
+});
+assert(moneySourceLocked.resolution.kashfMethodId === 'money.p179.sourceByIncomingHonorHouse', 'explicit q-money-source remains authoritative over competing wording');
+assert(moneySourceLocked.resolution.resolutionSource === 'question-route', 'q-money-source uses authoritative question route');
+assert(moneySourceLocked.canonicalRetrieval?.knowledgeLanguage === 'he', 'p179 bridge exposes Hebrew operational knowledge');
+
 console.log(`Kashf AI retrieval live bridge tests: ${passed} passed, ${failed} failed`);
 if (failed > 0) process.exit(1);

@@ -162,6 +162,11 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
     doNotMixWith: ['desire.p206.querentWantsH7H11ThenH5', 'love.p204.attentionFireRows1713'],
     houses: [7, 11, 5],
   },
+  'money.p179.sourceByIncomingHonorHouse': {
+    aliases: ['מאיפה יגיע הכסף', 'מה מקור הכסף', 'מאיזה מקום יבוא הכסף', 'מאיזה ערוץ יגיע הממון', 'מקור הממון'],
+    doNotMixWith: ['money.p180.livelihoodH10Invert', 'money.p181.recast25811', 'inheritance.p180.elementComposite'],
+    houses: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+  },
   'spiritual.p167.hiddenActionAirRows46815': {
     aliases: ['האם יש פעולה מאחורי הדבר', 'פעולה נסתרת מאחורי הדבר', 'האם יש פעולה סמויה מאחורי העניין', 'פעולה נסתרת מאחורי העניין'],
     doNotMixWith: ['spiritual.affectedBySorcery.unsupported', 'spiritual.sorcererIdentity.unsupported', 'spiritual.jinnType.unsupported'],

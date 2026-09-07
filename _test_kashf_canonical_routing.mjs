@@ -1494,6 +1494,42 @@ assert(p167HiddenMixed.primaryFormula?.result?.executorResult?.classification?.s
 assert(p167HiddenMixed.primaryFormula?.result?.executorResult?.hiddenAction === false && p167HiddenMixed.overallPositive === false, 'p167 mixed still follows source explicit otherwise-no branch rather than being promoted to malefic');
 assert(resolveKashfRouteByQuestionId('q-sorcery').kashfMethodId !== 'spiritual.p167.hiddenActionAirRows46815', 'p167 hidden-action remains separated from q-sorcery after activation');
 
+// ── P179 money-source executor ------------------------------------------
+const p179MoneySourceMethod = getKashfMethod('money.p179.sourceByIncomingHonorHouse');
+assert(p179MoneySourceMethod?.runtimeAllowed === true && p179MoneySourceMethod?.executorStatus === 'ready', 'p179 money-source method is runnable');
+assert(canRunKashfMethod('money.p179.sourceByIncomingHonorHouse') === true, 'p179 money-source canRunKashfMethod is true');
+const p179Route = resolveKashfRouteByQuestionId('q-money-source');
+assert(p179Route?.canRunKashf === true && p179Route?.kashfMethodId === 'money.p179.sourceByIncomingHonorHouse', 'q-money-source routes to the exact runnable p179 method');
+
+const p179H10 = buildKashfReadingByQuestionId(makeP204Board({ 2: '1222', 10: '2211' }), 'q-money-source', { question: 'מאיפה יגיע הכסף?' });
+assert(p179H10.valid === true && p179H10.canRunKashf === true, 'p179 H10 fixture executes canonically');
+assert(p179H10.primaryFormula?.result?.executorResult?.beneficGateMet === true, 'p179 pure benefic H2 opens the source gate');
+assert(JSON.stringify(p179H10.primaryFormula?.result?.executorResult?.sourceHouseNumbers) === JSON.stringify([10]), 'p179 Incoming Honor in H10 gives H10 as the source house');
+assert(p179H10.primaryFormula?.result?.executorResult?.sourceCandidates?.[0]?.houseNatureHebrew?.includes('שלטון'), 'p179 H10 source label preserves authority/work nature');
+assert(p179H10.primaryFormula?.result?.executorResult?.sourceResolved === true, 'p179 H10 source is resolved');
+assert(p179H10.overallPositive === null, 'p179 source method remains descriptive rather than forced yes/no');
+assert(p179H10.primaryFormula?.sourceText === getKashfV57Knowledge('money.p179.sourceByIncomingHonorHouse')?.v57?.hebrewRule, 'p179 runtime sourceText comes from Hebrew v57');
+assert(p179H10.canonicalExecution?.methodsExecuted?.length === 1 && p179H10.canonicalExecution.methodsExecuted[0] === 'money.p179.sourceByIncomingHonorHouse', 'p179 executes only its exact canonical method');
+assert(p179H10.dhamir === null && p179H10.canonicalExecution?.topicBundleExecuted === false && p179H10.canonicalExecution?.altFormulaExecuted === false, 'p179 runs no Dhamir/topic bundle/alternative');
+
+const p179Multiple = buildKashfReadingByQuestionId(makeP204Board({ 2: '1222', 3: '2211', 10: '2211' }), 'q-money-source');
+assert(JSON.stringify(p179Multiple.primaryFormula?.result?.executorResult?.sourceHouseNumbers) === JSON.stringify([3, 10]), 'p179 preserves multiple Incoming Honor source houses');
+assert(p179Multiple.primaryFormula?.result?.executorResult?.multipleSourceChannels === true, 'p179 multiple source channels are explicit and unranked');
+
+const p179MixedGate = buildKashfReadingByQuestionId(makeP204Board({ 2: '2222', 10: '2211' }), 'q-money-source');
+assert(p179MixedGate.primaryFormula?.result?.executorResult?.h2Classification?.saadNahs === 'mixed', 'p179 mixed H2 remains mixed');
+assert(p179MixedGate.primaryFormula?.result?.executorResult?.beneficGateMet === false, 'p179 mixed H2 does not get promoted to benefic gate');
+assert(p179MixedGate.primaryFormula?.result?.executorResult?.sourceResolved === false, 'p179 mixed gate leaves source unresolved even if Incoming Honor appears');
+
+const p179MoneyIncoming = buildKashfReadingByQuestionId(makeP204Board({ 2: '2121', 9: '2121', 10: '2211' }), 'q-money-source');
+assert(p179MoneyIncoming.primaryFormula?.result?.executorResult?.moneyIncomingInH2 === true, 'p179 detects Money Incoming in H2');
+assert(JSON.stringify(p179MoneyIncoming.primaryFormula?.result?.executorResult?.moneyIncomingJudgmentHouses) === JSON.stringify([2, 9]), 'p179 traces Money Incoming recurrences separately');
+assert(JSON.stringify(p179MoneyIncoming.primaryFormula?.result?.executorResult?.sourceHouseNumbers) === JSON.stringify([10]), 'p179 Money Incoming recurrence does not replace Incoming Honor source house');
+
+const p179WitnessOnly = buildKashfReadingByQuestionId(makeP204Board({ 2: '1222', 13: '2211' }), 'q-money-source');
+assert(JSON.stringify(p179WitnessOnly.primaryFormula?.result?.executorResult?.incomingHonorNonTopicalPositions) === JSON.stringify([13]), 'p179 traces Incoming Honor in witness positions');
+assert(p179WitnessOnly.primaryFormula?.result?.executorResult?.sourceResolved === false, 'p179 does not invent a financial channel from non-topical witness/judge positions');
+
 console.log(`Kashf canonical routing tests: ${passed} passed, ${failed} failed`);
 if (failed > 0) {
   process.exit(1);

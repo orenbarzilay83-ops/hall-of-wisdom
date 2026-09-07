@@ -246,7 +246,7 @@ window.QUESTION_BANK = [
     id: 'q-money-source',
     category: 'money', houseId: 2, topicId: 'money', kashfTopicId: 'money',
     label: 'מאיפה יגיע הכסף?',
-    desc: 'כשצפוי כסף אך לא ידוע המקור — ממי, מאיפה, מאיזה ערוץ',
+    desc: 'דין עמ׳ 179: כאשר בית הממון מיטיב, מאתרים את כבוד נכנס ומפרשים את מקור הכסף לפי טבע הבית שבו הוא נמצא',
     clientFields: [],
   },
   {

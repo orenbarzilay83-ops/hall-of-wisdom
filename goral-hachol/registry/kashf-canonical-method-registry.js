@@ -511,10 +511,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'money',
     sourcePages: [179],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'If H2 is benefic, locate Incoming Honor and judge the source by the nature of the house where it appears. If Money Incoming is in H2, its recurrences contribute to acquisition judgment. Do not use the p181 “from another source” modulo method.',
+    executorStatus: 'ready',
+    notes: 'Canonical p179 money-source executor is wired. If H2 is pure benefic, locate Incoming Honor (2211) in the twelve topical houses and report the source by the nature/title of the house or houses where it appears. Multiple occurrences remain multiple source channels; none are ranked. If Money Incoming (2121) itself is in H2, its topical recurrences are exposed separately as acquisition-judgment testimony and are not silently merged into the Incoming-Honor source rule. Mixed/non-benefic H2 does not activate this source clause. The distinct p179 malefic-H2 exceptions and p181 alternate/modulo method are not imported.',
   }),
 
   'money.p180.livelihoodH10Invert': method({

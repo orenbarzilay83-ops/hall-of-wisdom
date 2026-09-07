@@ -1172,6 +1172,102 @@ function computeWomanFavorP206(chart) {
   };
 }
 
+const P179_MONEY_SOURCE_HOUSE_LABELS = Object.freeze({
+  1: 'בית הנפש / השואל',
+  2: 'בית הממון',
+  3: 'בית האחים והקרובים',
+  4: 'בית האב, הבית והקרקע',
+  5: 'בית הילדים והשמחה',
+  6: 'בית המחלות והמשרתים',
+  7: 'בית הזוגיות והצד שמול השואל',
+  8: 'בית המוות והירושה',
+  9: 'בית המסע והדת',
+  10: 'בית הכבוד, השלטון והמלאכה',
+  11: 'בית התקווה, החברים והסיוע',
+  12: 'בית האויבים, המאסר והעיכוב',
+});
+
+// Kashf v57 p179 — source of money by the house occupied by Incoming Honor.
+// The source first requires H2 to be benefic. We therefore do NOT promote a
+// mixed H2 into the gate. Incoming Honor is searched only in the twelve topical
+// houses because the rule asks for the nature of the house; witness/judge
+// positions are traced separately but not interpreted as financial channels.
+function computeMoneySourceP179(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h2 = findCanonicalHouse(chart, 2);
+  const h2Pattern = h2?.key || h2?.pattern || null;
+  if (!h2Pattern) return null;
+
+  const h2Classification = classifyCanonicalFigure(h2Pattern);
+  const beneficGateMet = h2Classification.saadNahs === 'saad';
+  const allPositions = Array.from({ length: 16 }, (_, i) => i + 1);
+  const topicalHouses = Array.from({ length: 12 }, (_, i) => i + 1);
+
+  const incomingHonorOccurrences = allPositions.filter((houseNumber) => {
+    const entry = findCanonicalHouse(chart, houseNumber);
+    return (entry?.key || entry?.pattern || null) === '2211';
+  });
+  const incomingHonorTopicalHouses = incomingHonorOccurrences.filter((houseNumber) => houseNumber <= 12);
+  const incomingHonorNonTopicalPositions = incomingHonorOccurrences.filter((houseNumber) => houseNumber > 12);
+
+  const sourceCandidates = beneficGateMet
+    ? incomingHonorTopicalHouses.map((houseNumber) => ({
+        houseNumber,
+        houseNatureHebrew: P179_MONEY_SOURCE_HOUSE_LABELS[houseNumber] || ('בית ' + houseNumber),
+      }))
+    : [];
+
+  const moneyIncomingInH2 = h2Pattern === '2121';
+  const moneyIncomingJudgmentHouses = moneyIncomingInH2
+    ? topicalHouses.filter((houseNumber) => {
+        const entry = findCanonicalHouse(chart, houseNumber);
+        return (entry?.key || entry?.pattern || null) === '2121';
+      })
+    : [];
+
+  const sourceResolved = beneficGateMet && sourceCandidates.length > 0;
+  let outputHebrew;
+  if (!beneficGateMet) {
+    outputHebrew = 'בית 2 אינו מסווג כאן כצורה מיטיבה טהורה. לכן כלל מקור הממון של כשף v57 עמ׳ 179 — חיפוש כבוד נכנס — אינו מופעל. אין להסיק מכך לבדו שאין כסף, ואין להפעיל כאן את ענפי העמוד האחרים שלא שייכים לשיטה הזאת.';
+  } else if (!sourceCandidates.length) {
+    outputHebrew = 'בית 2 מיטיב, אך כבוד נכנס (2211) אינו נמצא באחד משנים־עשר בתי הנושא. לכן כלל עמ׳ 179 אינו נותן כאן מקור ביתי מוגדר לממון.';
+  } else {
+    const channels = sourceCandidates.map((item) => 'בית ' + item.houseNumber + ' — ' + item.houseNatureHebrew).join('; ');
+    outputHebrew = 'בית 2 מיטיב. כבוד נכנס (2211) נמצא ב' + channels + '. לפי כשף v57 עמ׳ 179, הממון מתקבל מטבע הבית או הבתים שבהם כבוד נכנס שורה. אם יש יותר מהופעה אחת, המקור נותן יותר מערוץ אחד ואינו מדרג ביניהם.';
+  }
+
+  if (moneyIncomingInH2) {
+    const recurrenceText = moneyIncomingJudgmentHouses.length
+      ? moneyIncomingJudgmentHouses.map((n) => 'בית ' + n).join(', ')
+      : 'ללא חזרה נוספת';
+    outputHebrew += ' בנוסף, ממון נכנס (2121) עצמו נמצא בבית 2; הופעותיו ב' + recurrenceText + ' נותנות לפי אותו עמוד עדות נפרדת על השגת הממון. עדות זו אינה מוחלפת או מוזגת עם כלל מקור הממון של כבוד נכנס.';
+  }
+
+  return {
+    sourceRef: 'כשף אל-אסרר v57 עמ׳ 179',
+    sourceText: 'אם בשני יש בה צד מיטיב, בקש את כבוד נכנס; במקום שבו הוא נמצא, הממון יגיע מטבע אותו בית שבו הוא שורה. ואם עלתה צורת ממון נכנס בבית הממון, כל בית שבו נמצאת הצורה הזאת ייתן דין על השגת הממון.',
+    housesUsed: topicalHouses,
+    positionsScanned: allPositions,
+    h2Pattern,
+    h2Classification,
+    beneficGateMet,
+    incomingHonorPattern: '2211',
+    incomingHonorOccurrences,
+    incomingHonorTopicalHouses,
+    incomingHonorNonTopicalPositions,
+    sourceCandidates,
+    sourceHouseNumbers: sourceCandidates.map((item) => item.houseNumber),
+    sourceResolved,
+    multipleSourceChannels: sourceCandidates.length > 1,
+    moneyIncomingPattern: '2121',
+    moneyIncomingInH2,
+    moneyIncomingJudgmentHouses,
+    positive: null,
+    verdictType: 'money-source',
+    outputHebrew,
+  };
+}
+
 // Kashf v57 p167 — hidden/covert action behind the matter.
 // Source construction: AIR row only from H4, H6, H8 and H15 (the balance/judge),
 // assembled in that order into one four-row figure. This is intentionally NOT
@@ -1224,6 +1320,7 @@ function computeHiddenActionP167(chart) {
 }
 
 const CUSTOM_EXECUTORS = Object.freeze({
+  'money.p179.sourceByIncomingHonorHouse': computeMoneySourceP179,
   'spiritual.p167.hiddenActionAirRows46815': computeHiddenActionP167,
   'love.p206.womanFavorH7H11ThenH5': computeWomanFavorP206,
   'desire.p206.querentWantsH7H11ThenH5': computeQuerentWantsMatterP206,

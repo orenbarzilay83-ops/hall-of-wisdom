@@ -66,6 +66,7 @@ expectTop('האם המטמון במקומו', 'hidden.p188.isStillThere');
 expectTop('מה תוצאת העניין', 'matter.p172.h17_h1011_thenCombine');
 expectTop('האם העניין יושלם', 'completion.p173.fireRows15910');
 expectTop('האם יש פעולה מאחורי הדבר', 'spiritual.p167.hiddenActionAirRows46815');
+expectTop('מאיפה יגיע הכסף', 'money.p179.sourceByIncomingHonorHouse');
 
 const exactQuestion = resolveBestKashfAiRetrievalHit('q-clothing-lucky');
 assert(exactQuestion.resolved === true, 'exact question id resolves');
@@ -92,6 +93,12 @@ const hiddenActionRecord = getKashfAiRetrievalRecord('spiritual.p167.hiddenActio
 assert(JSON.stringify(hiddenActionRecord?.houses) === JSON.stringify([4, 6, 8, 15]), 'p167 retrieval record exposes exact houses');
 assert(hiddenActionRecord?.doNotMixWith.includes('spiritual.affectedBySorcery.unsupported'), 'p167 retrieval warns against sorcery conflation');
 assert(hiddenActionRecord?.runtimeAllowed === true && hiddenActionRecord?.executorStatus === 'ready', 'p167 retrieval exposes runnable state');
+
+const moneySourceRecord = getKashfAiRetrievalRecord('money.p179.sourceByIncomingHonorHouse');
+assert(moneySourceRecord?.questionIds.includes('q-money-source'), 'p179 retrieval links q-money-source');
+assert(moneySourceRecord?.runtimeAllowed === true && moneySourceRecord?.executorStatus === 'ready', 'p179 retrieval exposes runnable state');
+assert(moneySourceRecord?.doNotMixWith.includes('money.p180.livelihoodH10Invert'), 'p179 retrieval separates source from livelihood');
+assert(JSON.stringify(moneySourceRecord?.houses) === JSON.stringify([1,2,3,4,5,6,7,8,9,10,11,12]), 'p179 retrieval exposes the twelve topical houses scanned by the source rule');
 
 const sourceReadyPendingResults = searchKashfAiRetrievalIndex('בריאות הוולד', { sourceReadyOnly: true, limit: 20 });
 assert(sourceReadyPendingResults.some((item) => item.kashfMethodId === 'child.p194.healthTrajectoryH6H8' || item.kashfMethodId === 'pregnancy.p191.childSafetyH1H6H8'), 'source-ready pending methods are retrievable as knowledge');
