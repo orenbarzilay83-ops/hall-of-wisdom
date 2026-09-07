@@ -1,0 +1,51 @@
+name: Kashf P13 p172 Matter Outcome
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/kashf-p13-matter-outcome.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-test-commit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Apply p172 matter-outcome patch
+        run: node _patch_kashf_p13_matter_outcome.mjs
+
+      - name: Run Kashf canonical routing contract
+        run: node _test_kashf_canonical_routing.mjs
+
+      - name: Audit Question Bank route coverage
+        run: node _audit_kashf_question_route_coverage.mjs
+
+      - name: Commit source-safe p172 matter-outcome executor
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            goral-hachol/registry/kashf-canonical-method-registry.js \
+            goral-hachol/registry/kashf-v57-knowledge-registry.js \
+            goral-hachol/engine/kashf-canonical-executors.js \
+            _test_kashf_canonical_routing.mjs
+          if git diff --cached --quiet; then
+            echo "No core changes to commit"
+            exit 1
+          fi
+          git commit -m "feat(kashf): implement p172 matter outcome executor"
+          git push origin HEAD:main
