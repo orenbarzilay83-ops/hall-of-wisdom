@@ -517,6 +517,80 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     note: 'Current wording mixes physically lost money, theft, unpaid debt and investment. Split into distinct questions before routing.',
   }),
 
+  // ── AUDITED LOVE + MARRIAGE SLICE -------------------------------------
+  'q-marriage-fit': route({
+    questionId: 'q-marriage-fit',
+    disposition: 'KEEP',
+    kashfIntentId: 'marriage.suitability',
+    kashfMethodId: 'marriage.p210.generalMarriageH1H2H7H8H10Judge',
+    kashfRuntimeStatus: 'ready',
+    note: 'Fresh source review selects the dedicated p210 general-marriage judgment. Do not use the p206 H7+H11→H5 desire formula as a marriage-suitability test.',
+  }),
+
+  'q-marriage-chastity': route({
+    questionId: 'q-marriage-chastity',
+    disposition: 'RENAME',
+    kashfIntentId: 'marriage.modesty',
+    kashfMethodId: 'marriage.p205.modestyPurity',
+    kashfRuntimeStatus: 'repair-required',
+    note: 'Source question concerns modesty/chastity and explicit pure/impure classifications. Current wording also implies “past/loyalty”; do not overstate beyond the source.',
+  }),
+
+  'q-love': route({
+    questionId: 'q-love',
+    disposition: 'KEEP',
+    kashfIntentId: 'love.doesPersonLoveMe',
+    kashfMethodId: 'love.p205.directLoveH1PlacementH15',
+    kashfRuntimeStatus: 'ready',
+    note: 'Dedicated body-source p205 love question. Keep separate from p264 friendship/love material.',
+  }),
+
+  'q-love-desire': route({
+    questionId: 'q-love-desire',
+    disposition: 'ALIAS',
+    aliasOf: 'q-love',
+    kashfIntentId: 'love.doesPersonLoveMe',
+    kashfMethodId: 'love.p205.directLoveH1PlacementH15',
+    kashfRuntimeStatus: 'ready',
+    note: 'Alias only after wording is made directional to match the source question “does this person love you?”.',
+  }),
+
+  'q-who-looks-love': route({
+    questionId: 'q-who-looks-love',
+    disposition: 'KEEP',
+    kashfIntentId: 'love.attention',
+    kashfMethodId: 'love.p204.attentionFireRows1713',
+    kashfRuntimeStatus: 'ready',
+    note: 'This is a distinct source intent: where the other person’s attention/look is directed, not whether love exists.',
+  }),
+
+  'q-divorce': route({
+    questionId: 'q-divorce',
+    disposition: 'KEEP',
+    kashfIntentId: 'marriage.dissolution',
+    kashfMethodId: 'marriage.p211.dissolutionH7StateMatrix',
+    kashfRuntimeStatus: 'ready',
+    note: 'Use the H7 quality × internal/external/fixed/mutable matrix; do not reduce divorce risk to simple benefic/malefic.',
+  }),
+
+  'q-adultery': route({
+    questionId: 'q-adultery',
+    disposition: 'BLOCK',
+    kashfIntentId: 'marriage.adulterySigns',
+    kashfMethodId: 'marriage.p207-208.adulterySignsUnresolved',
+    kashfRuntimeStatus: 'blocked-by-source',
+    note: 'The source gives specific warning signs, but not a complete symmetric yes/no verdict for all figures. Partial signs must not become a universal accusation.',
+  }),
+
+  'q-woman-grace': route({
+    questionId: 'q-woman-grace',
+    disposition: 'RENAME',
+    kashfIntentId: 'desire.querentWantsMatter',
+    kashfMethodId: 'desire.p206.querentWantsH7H11ThenH5',
+    kashfRuntimeStatus: 'ready',
+    note: 'The p206 formula answers whether the querent wants the matter. It does not answer whether the woman will please the man or whether chemistry is mutual; the UI wording must be corrected before cutover.',
+  }),
+
   // ── REPAIR REQUIRED: explicit hard stop until fixed -------------------
   'q-wish': route({
     questionId: 'q-wish',
