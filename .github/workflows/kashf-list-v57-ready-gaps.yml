@@ -28,6 +28,7 @@ jobs:
             .filter((m) => m.kashfRuntimeStatus === 'ready' && m.methodRole === 'canonical-operational')
             .sort((a,b)=>a.kashfMethodId.localeCompare(b.kashfMethodId));
           const missing = ready.filter((m) => !KASHF_V57_KNOWLEDGE[m.kashfMethodId]);
+          console.log('POST_BACKFILL_VERIFICATION=1');
           console.log('SOURCE_READY_COUNT=' + ready.length);
           console.log('V57_READY_COVERED=' + (ready.length - missing.length));
           console.log('V57_READY_MISSING=' + missing.length);
