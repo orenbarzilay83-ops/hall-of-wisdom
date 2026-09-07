@@ -1172,6 +1172,63 @@ function computeWomanFavorP206(chart) {
   };
 }
 
+const P174_GENERAL_STATE_HOUSE_ROLES = Object.freeze({
+  1: Object.freeze({ titleHebrew: 'בית הנפש', roleHebrew: 'מצב האדם והתחלת כל דבר' }),
+  2: Object.freeze({ titleHebrew: 'בית הממון', roleHebrew: 'ממונו של השואל' }),
+  4: Object.freeze({ titleHebrew: 'בית האחרית והמקום', roleHebrew: 'אחריתו ומקומו' }),
+  7: Object.freeze({ titleHebrew: 'בית הכוונות והמבוקש', roleHebrew: 'כוונותיו ומבוקשיו' }),
+  10: Object.freeze({ titleHebrew: 'בית הטוב והמעמד', roleHebrew: 'טובו ומעמדו' }),
+  15: Object.freeze({ titleHebrew: 'בית אחרית העניין', roleHebrew: 'אחרית עניינו' }),
+});
+
+// Kashf v57 p174 — bounded general-state reading.
+// The source tells the reader which houses to inspect. It does NOT give a
+// majority rule or a single aggregate yes/no formula, so every house remains
+// an independent source witness and the executor deliberately returns
+// positive:null.
+function computeGeneralStateP174(chart) {
+  if (!Array.isArray(chart)) return null;
+  const housesUsed = [1, 2, 4, 7, 10, 15];
+  const houseResults = housesUsed.map((houseNumber) => {
+    const entry = findCanonicalHouse(chart, houseNumber);
+    const pattern = entry?.key || entry?.pattern || null;
+    if (!pattern) return null;
+    const classification = classifyCanonicalFigure(pattern);
+    const role = P174_GENERAL_STATE_HOUSE_ROLES[houseNumber];
+    return {
+      houseNumber,
+      titleHebrew: role?.titleHebrew || ('בית ' + houseNumber),
+      roleHebrew: role?.roleHebrew || null,
+      pattern,
+      figureHebrew: classification.figureHebrew || entry?.hebrew || entry?.hebrewName || pattern,
+      classification,
+      fortuneClass: classification.saadNahs,
+      fortuneClassHebrew: classification.saadNahsHebrew || 'ללא סיווג קנוני זמין',
+    };
+  });
+  if (houseResults.some((item) => !item)) return null;
+
+  const detail = houseResults.map((item) =>
+    'בית ' + item.houseNumber + ' — ' + item.titleHebrew + ' (' + item.roleHebrew + '): ' +
+    item.figureHebrew + ' (' + item.pattern + '), ' + item.fortuneClassHebrew
+  ).join('; ');
+
+  const outputHebrew = 'לפי חשיפת הסודות הנצורים v57 עמ׳ 174, הקריאה הכללית נעשית בשישה מוקדים נפרדים: ' +
+    detail + '. המקור מורה להתבונן בכל אחד מן הבתים האלה לפי תפקידו; הוא אינו מוסר כאן נוסחת רוב, שקלול בין הבתים או פסק כן/לא יחיד, ולכן אין ליצור הכרעה מצטברת שלא נאמרה במקור.';
+
+  return {
+    sourceRef: 'חשיפת הסודות הנצורים v57 עמ׳ 174',
+    sourceText: 'בבית הראשון האדם: אם שאלך אדם על הבית הראשון שלו, על אחריתו, על ממונו, על מסעותיו או על כלל ענייניו, התבונן לאחר השלמת ההכאה בבית הראשון — בית הנפש, שהוא התחלת כל דבר. אחר כך התבונן בשני — בית הממון; ברביעי — בית אחריתו ומקומו; בשביעי — בית כוונותיו ומבוקשיו; בעשירי — בית טובו ומעמדו; ובחמישה־עשר — בית אחרית עניינו.',
+    housesUsed,
+    houseResults,
+    aggregationRule: 'none-source-explicit',
+    aggregateVerdict: null,
+    verdictType: 'general-state-profile',
+    positive: null,
+    outputHebrew,
+  };
+}
+
 const P179_MONEY_SOURCE_HOUSE_LABELS = Object.freeze({
   1: 'בית הנפש / השואל',
   2: 'בית הממון',
@@ -1320,6 +1377,7 @@ function computeHiddenActionP167(chart) {
 }
 
 const CUSTOM_EXECUTORS = Object.freeze({
+  'general.p174.h1h2h4h7h10h15': computeGeneralStateP174,
   'money.p179.sourceByIncomingHonorHouse': computeMoneySourceP179,
   'spiritual.p167.hiddenActionAirRows46815': computeHiddenActionP167,
   'love.p206.womanFavorH7H11ThenH5': computeWomanFavorP206,

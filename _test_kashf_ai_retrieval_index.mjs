@@ -65,6 +65,7 @@ expectTop('האם האבדה תחזור', 'lostItem.p202.returnH6H8');
 expectTop('האם המטמון במקומו', 'hidden.p188.isStillThere');
 expectTop('מה תוצאת העניין', 'matter.p172.h17_h1011_thenCombine');
 expectTop('האם העניין יושלם', 'completion.p173.fireRows15910');
+expectTop('מה מצבי הכללי', 'general.p174.h1h2h4h7h10h15');
 expectTop('האם יש פעולה מאחורי הדבר', 'spiritual.p167.hiddenActionAirRows46815');
 expectTop('מאיפה יגיע הכסף', 'money.p179.sourceByIncomingHonorHouse');
 
@@ -99,6 +100,12 @@ assert(moneySourceRecord?.questionIds.includes('q-money-source'), 'p179 retrieva
 assert(moneySourceRecord?.runtimeAllowed === true && moneySourceRecord?.executorStatus === 'ready', 'p179 retrieval exposes runnable state');
 assert(moneySourceRecord?.doNotMixWith.includes('money.p180.livelihoodH10Invert'), 'p179 retrieval separates source from livelihood');
 assert(JSON.stringify(moneySourceRecord?.houses) === JSON.stringify([1,2,3,4,5,6,7,8,9,10,11,12]), 'p179 retrieval exposes the twelve topical houses scanned by the source rule');
+
+const generalStateRecord = getKashfAiRetrievalRecord('general.p174.h1h2h4h7h10h15');
+assert(generalStateRecord?.questionIds.includes('q-general-state'), 'p174 retrieval links q-general-state');
+assert(generalStateRecord?.runtimeAllowed === true && generalStateRecord?.executorStatus === 'ready', 'p174 retrieval exposes runnable state');
+assert(JSON.stringify(generalStateRecord?.houses) === JSON.stringify([1,2,4,7,10,15]), 'p174 retrieval exposes only the six source-named houses');
+assert(generalStateRecord?.doNotMixWith.includes('completion.p173.fireRows15910'), 'p174 retrieval stays separate from completion verdict');
 
 const sourceReadyPendingResults = searchKashfAiRetrievalIndex('בריאות הוולד', { sourceReadyOnly: true, limit: 20 });
 assert(sourceReadyPendingResults.some((item) => item.kashfMethodId === 'child.p194.healthTrajectoryH6H8' || item.kashfMethodId === 'pregnancy.p191.childSafetyH1H6H8'), 'source-ready pending methods are retrievable as knowledge');

@@ -39,6 +39,11 @@ const STOPWORDS = new Set([
  * executable rules.
  */
 const RETRIEVAL_OVERRIDES = Object.freeze({
+  'general.p174.h1h2h4h7h10h15': {
+    aliases: ['מה מצבי הכללי', 'מצב כללי', 'מה מצבו הכללי', 'סקירה כללית', 'כלל ענייניו של השואל', 'מה המצב הכללי שלי'],
+    doNotMixWith: ['matter.p172.h17_h1011_thenCombine', 'completion.p173.fireRows15910', 'lifespan.p178.elementCountToHouse', 'lifespan.p264.stagesH11H9H7'],
+    houses: [1, 2, 4, 7, 10, 15],
+  },
   'completion.p173.fireRows15910': {
     aliases: ['האם העניין יושלם', 'האם הדבר יצליח', 'האם אצליח', 'השלמת העניין', 'הצלחת העניין'],
     doNotMixWith: ['matter.p172.h17_h1011_thenCombine'],

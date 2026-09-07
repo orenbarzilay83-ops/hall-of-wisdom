@@ -95,7 +95,7 @@ window.QUESTION_BANK = [
     id: 'q-general-state',
     category: 'general', houseId: 1, topicId: 'foundations', kashfTopicId: 'generalReading',
     label: 'מה מצבי הכללי?',
-    desc: 'לניתוח כוללני של מצב האדם כרגע. בחר כאן כשאין שאלה ספציפית אחת',
+    desc: 'סקירה כללית לפי כשף עמ׳ 174 בלבד: בית 1 (הנפש), 2 (ממון), 4 (אחרית ומקום), 7 (כוונות ומבוקש), 10 (טוב ומעמד), 15 (אחרית העניין)',
     clientFields: [F.matter],
   },
   {

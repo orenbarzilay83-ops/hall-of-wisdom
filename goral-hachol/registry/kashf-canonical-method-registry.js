@@ -142,11 +142,11 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'generalReading',
     sourcePages: [174],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
+    executorStatus: 'ready',
     legacyTopicId: 'generalReading',
-    notes: 'Body-source general-state method. Must not execute the broad generalReading topic bundle.',
+    notes: 'Canonical p174 general-state executor is wired. It reads only H1,H2,H4,H7,H10,H15 separately according to their explicit v57 roles. It does not execute the broad legacy generalReading bundle, does not average or majority-vote the six houses, and does not collapse them into one yes/no verdict. Each house exposes its figure and canonical fortune class for a bounded general-state reading.',
   }),
 
   'messenger.p176.recast14511': method({

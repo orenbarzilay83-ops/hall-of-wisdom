@@ -139,5 +139,21 @@ assert(moneySourceLocked.resolution.kashfMethodId === 'money.p179.sourceByIncomi
 assert(moneySourceLocked.resolution.resolutionSource === 'question-route', 'q-money-source uses authoritative question route');
 assert(moneySourceLocked.canonicalRetrieval?.knowledgeLanguage === 'he', 'p179 bridge exposes Hebrew operational knowledge');
 
+// 10. General-state wording resolves the bounded p174 method and explicit route stays authoritative.
+const generalStateFreeText = buildKashfCanonicalAiBridge({
+  questionText: 'מה מצבי הכללי',
+  board: BOARD,
+});
+assert(generalStateFreeText.resolution.kashfMethodId === 'general.p174.h1h2h4h7h10h15', 'general-state free text resolves exact p174 method');
+assert(generalStateFreeText.resolution.resolutionSource === 'retrieval-index', 'general-state free text resolves through AI retrieval index');
+const generalStateLocked = buildKashfCanonicalAiBridge({
+  questionId: 'q-general-state',
+  questionText: 'האם העניין יושלם?',
+  board: BOARD,
+});
+assert(generalStateLocked.resolution.kashfMethodId === 'general.p174.h1h2h4h7h10h15', 'explicit q-general-state remains authoritative over competing wording');
+assert(generalStateLocked.resolution.resolutionSource === 'question-route', 'q-general-state uses authoritative question route');
+assert(generalStateLocked.canonicalRetrieval?.knowledgeLanguage === 'he', 'p174 bridge exposes Hebrew operational knowledge');
+
 console.log(`Kashf AI retrieval live bridge tests: ${passed} passed, ${failed} failed`);
 if (failed > 0) process.exit(1);

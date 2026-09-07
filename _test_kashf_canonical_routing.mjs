@@ -1530,6 +1530,29 @@ const p179WitnessOnly = buildKashfReadingByQuestionId(makeP204Board({ 2: '1222',
 assert(JSON.stringify(p179WitnessOnly.primaryFormula?.result?.executorResult?.incomingHonorNonTopicalPositions) === JSON.stringify([13]), 'p179 traces Incoming Honor in witness positions');
 assert(p179WitnessOnly.primaryFormula?.result?.executorResult?.sourceResolved === false, 'p179 does not invent a financial channel from non-topical witness/judge positions');
 
+// ── P174 bounded general-state executor ---------------------------------
+const p174GeneralMethod = getKashfMethod('general.p174.h1h2h4h7h10h15');
+assert(p174GeneralMethod?.runtimeAllowed === true && p174GeneralMethod?.executorStatus === 'ready', 'p174 general-state method is runnable');
+assert(canRunKashfMethod('general.p174.h1h2h4h7h10h15') === true, 'p174 general-state canRunKashfMethod is true');
+const p174GeneralRoute = resolveKashfRouteByQuestionId('q-general-state');
+assert(p174GeneralRoute?.canRunKashf === true && p174GeneralRoute?.kashfMethodId === 'general.p174.h1h2h4h7h10h15', 'q-general-state routes to the exact runnable p174 method');
+
+const p174GeneralReading = buildKashfReadingByQuestionId(
+  makeP204Board({ 1: '1222', 2: '1222', 4: '1222', 7: '1222', 10: '1222', 15: '1222' }),
+  'q-general-state',
+  { question: 'מה מצבי הכללי?' }
+);
+assert(p174GeneralReading.valid === true && p174GeneralReading.canRunKashf === true, 'p174 general-state fixture executes canonically');
+const p174GeneralExec = p174GeneralReading.primaryFormula?.result?.executorResult;
+assert(JSON.stringify(p174GeneralExec?.housesUsed) === JSON.stringify([1,2,4,7,10,15]), 'p174 uses only the six source-named houses');
+assert(p174GeneralExec?.houseResults?.length === 6, 'p174 returns one independent result for each source-named house');
+assert(p174GeneralExec?.houseResults?.every((item) => item?.classification?.saadNahs === 'saad'), 'p174 fixture preserves canonical fortune class per house');
+assert(p174GeneralExec?.aggregationRule === 'none-source-explicit' && p174GeneralExec?.aggregateVerdict === null, 'p174 invents no majority or aggregate verdict');
+assert(p174GeneralExec?.positive === null && p174GeneralReading.overallPositive === null, 'p174 remains descriptive rather than forced yes/no');
+assert(p174GeneralReading.primaryFormula?.sourceText === getKashfV57Knowledge('general.p174.h1h2h4h7h10h15')?.v57?.hebrewRule, 'p174 runtime sourceText comes from Hebrew v57');
+assert(p174GeneralReading.canonicalExecution?.methodsExecuted?.length === 1 && p174GeneralReading.canonicalExecution.methodsExecuted[0] === 'general.p174.h1h2h4h7h10h15', 'p174 executes only its exact canonical method');
+assert(p174GeneralReading.dhamir === null && p174GeneralReading.canonicalExecution?.topicBundleExecuted === false && p174GeneralReading.canonicalExecution?.altFormulaExecuted === false, 'p174 runs no Dhamir/topic bundle/alternative');
+
 console.log(`Kashf canonical routing tests: ${passed} passed, ${failed} failed`);
 if (failed > 0) {
   process.exit(1);
