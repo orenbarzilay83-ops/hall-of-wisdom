@@ -1,0 +1,37 @@
+name: Repair Kashf v57 Hebrew Active-Method Backfill
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '_repair_kashf_v57_active_method_backfill.mjs'
+      - '.github/workflows/kashf-repair-v57-active-method-backfill.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  repair-v57-backfill:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Repair wording, apply backfill and run contracts
+        run: node _repair_kashf_v57_active_method_backfill.mjs
+      - name: Commit v57 Hebrew runtime changes
+        run: |
+          if git diff --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add goral-hachol/registry/kashf-v57-knowledge-registry.js goral-hachol/engine/kashf-canonical-reading-engine.js goral-hachol/engine/kashf-pending-extraction.js goral-hachol/engine/kashf-topic-rules.js _test_kashf_canonical_routing.mjs HALL_WISDOM_KASHF_V57_ACTIVE_METHOD_BACKFILL.md
+          git commit -m "feat(kashf): require v57 Hebrew knowledge for canonical runtime"
+          git push
