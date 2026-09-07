@@ -204,10 +204,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'relocation',
     sourcePages: [183],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Body-source comparison of current-place pair 1+4 with new-place pair 7+10.',
+    executorStatus: 'ready',
+    notes: 'Canonical p183 place/move executor is wired. H1+H4 both pure benefic => good residence in the current place; H7+H10 both pure benefic => good move/relocation. The source does not say that failure of either pair proves the opposite, and it does not compare which option is better when both pairs qualify. Mixed figures are not promoted to pure benefic.',
   }),
 
   'relocation.p183.stayMoveH1H2': method({

@@ -671,7 +671,71 @@ function computeIllnessRecoveryP196(chart) {
   };
 }
 
+
+// Kashf v57 p183: current-place evidence is H1+H4, and move evidence is
+// H7+H10. The source gives positive clauses only. Absence of the positive
+// condition is not silently inverted into a negative verdict, and the method
+// does not rank the two options when both qualify.
+function computeRelocationCurrentVsNewP183(chart) {
+  if (!Array.isArray(chart)) return null;
+  const houseNumbers = [1, 4, 7, 10];
+  const rows = houseNumbers.map((houseNumber) => {
+    const entry = findCanonicalHouse(chart, houseNumber);
+    const pattern = entry?.key || entry?.pattern || null;
+    if (!pattern) return null;
+    return {
+      houseNumber,
+      pattern,
+      figureHebrew: entry?.hebrew || entry?.hebrewName || pattern,
+      classification: classifyCanonicalFigure(pattern),
+    };
+  });
+  if (rows.some((item) => !item)) return null;
+
+  const byHouse = Object.fromEntries(rows.map((item) => [item.houseNumber, item]));
+  const isPureBenefic = (houseNumber) => byHouse[houseNumber].classification.saadNahs === 'saad';
+  const currentPlaceGood = isPureBenefic(1) && isPureBenefic(4);
+  const moveGood = isPureBenefic(7) && isPureBenefic(10);
+
+  let sourceOutcome = 'unresolved';
+  let sourceOutcomeHebrew = 'הכלל אינו מכריע בין האפשרויות';
+  let outputHebrew;
+
+  if (currentPlaceGood && moveGood) {
+    sourceOutcome = 'both-good';
+    sourceOutcomeHebrew = 'גם המגורים במקום הנוכחי וגם המעבר מקבלים עדות טובה';
+    outputHebrew = 'בית 1 ובית 4 מיטיבים, ולכן לפי כשף עמ׳ 183 יש טובה במגורים במקום הנוכחי. גם בית 7 ובית 10 מיטיבים, ולכן יש טובה במעבר. המקור אינו מדרג בין שתי האפשרויות כאשר שני הזוגות עומדים בתנאי.';
+  } else if (currentPlaceGood) {
+    sourceOutcome = 'current-place-good';
+    sourceOutcomeHebrew = 'טובת המגורים במקום הנוכחי';
+    outputHebrew = 'בית 1 ובית 4 שניהם מיטיבים. לפי כשף עמ׳ 183: דון בטובת המגורים במקום הנוכחי. הזוג 7+10 אינו עומד כאן בתנאי החיובי המפורש למעבר; אין להפוך זאת לבדו לדין שהמעבר רע.';
+  } else if (moveGood) {
+    sourceOutcome = 'move-good';
+    sourceOutcomeHebrew = 'טובת המעבר';
+    outputHebrew = 'בית 7 ובית 10 שניהם מיטיבים. לפי כשף עמ׳ 183: דון בטובת המעבר. הזוג 1+4 אינו עומד כאן בתנאי החיובי המפורש למגורים; אין להסיק מכך לבדו דין שלילי על המקום הנוכחי.';
+  } else {
+    const mixedHouses = rows.filter((item) => item.classification.saadNahs === 'mixed').map((item) => item.houseNumber);
+    outputHebrew = 'בעמ׳ 183 נמסרו שני תנאים חיוביים: 1+4 מיטיבים לטובת המגורים, ו־7+10 מיטיבים לטובת המעבר. אף אחד משני הזוגות אינו כולו מיטיב כאן, ולכן הכלל לבדו אינו נותן הכרעה חיובית לאחד הצדדים ואין להשלים דין שלילי מן הדעת.' + (mixedHouses.length ? ' צורה ממוזגת נמצאה בבית/בתים ' + mixedHouses.join(', ') + ' ואינה מקודמת למיטיבה.' : '');
+  }
+
+  return {
+    sourceRef: 'חשיפת הסודות הנצורים v57 עמ׳ 183',
+    sourceText: 'במעבר — האם מקום זה טוב לי או לא? התבונן בראשון וברביעי. אם שניהם מיטיבים, דון בטובת המגורים. ואם השביעי והעשירי צורות מיטיבות, דון בטובת המעבר.',
+    housesUsed: houseNumbers,
+    houseResults: rows,
+    currentPlacePair: [1, 4],
+    movePair: [7, 10],
+    currentPlaceGood,
+    moveGood,
+    sourceOutcome,
+    sourceOutcomeHebrew,
+    positive: null,
+    outputHebrew,
+  };
+}
+
 const CUSTOM_EXECUTORS = Object.freeze({
+  'relocation.p183.currentVsNewPlace': computeRelocationCurrentVsNewP183,
   'illness.p196.outcomeH15': computeIllnessRecoveryP196,
   'hidden.p188.isStillThere': computeHiddenStillThereP188,
   'lostItem.p202.returnH6H8': computeLostItemReturnP202,

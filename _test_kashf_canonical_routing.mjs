@@ -650,6 +650,65 @@ assert(authorityAppointmentNo.primaryFormula?.result?.executorResult?.appointmen
 assert(authorityAppointmentNo.overallPositive === false, 'p257 negative branch is negative');
 
 
+
+// ── P12 p183 current place vs relocation source contract -----------------
+assertRoute('q-move-home', {
+  ok: true,
+  canRunKashf: true,
+  kashfIntentId: 'relocation.isThisPlaceGood',
+  kashfMethodId: 'relocation.p183.currentVsNewPlace',
+  kashfRuntimeStatus: 'ready',
+  executorStatus: 'ready',
+  runtimeAllowed: true,
+});
+assert(canRunKashfMethod('relocation.p183.currentVsNewPlace'), 'p183 current-vs-new relocation method is explicitly runnable');
+
+const p183CurrentGood = buildKashfReadingByQuestionId(
+  makeP204Board({ 1: '1122', 4: '1122', 7: '1112', 10: '1112' }),
+  'q-move-home',
+  { question: 'האם טוב לי להישאר כאן או לעבור?' }
+);
+assert(p183CurrentGood.valid === true && p183CurrentGood.canRunKashf === true, 'p183 current-place fixture executes canonically');
+assert(JSON.stringify(p183CurrentGood.primaryFormula?.houses) === JSON.stringify([1, 4, 7, 10]), 'p183 traces exactly H1+H4+H7+H10');
+assert(p183CurrentGood.primaryFormula?.result?.executorResult?.currentPlaceGood === true, 'p183 pure-benefic H1+H4 supports good residence');
+assert(p183CurrentGood.primaryFormula?.result?.executorResult?.moveGood === false, 'p183 non-benefic H7+H10 does not satisfy positive move clause');
+assert(p183CurrentGood.primaryFormula?.result?.executorResult?.sourceOutcome === 'current-place-good', 'p183 current-only source outcome is explicit');
+assert(p183CurrentGood.overallPositive === null, 'p183 comparison remains descriptive rather than collapsing to sentiment');
+assert(p183CurrentGood.altFormula === null, 'p183 does not aggregate alternate relocation formulas');
+assert(p183CurrentGood.canonicalExecution?.topicBundleExecuted === false, 'p183 does not execute broad relocation bundle');
+assert(p183CurrentGood.dhamir === null, 'p183 does not auto-run Dhamir');
+
+const p183MoveGood = buildKashfReadingByQuestionId(
+  makeP204Board({ 1: '1112', 4: '1112', 7: '1122', 10: '1122' }),
+  'q-move-home',
+  { question: 'האם טוב לי להישאר כאן או לעבור?' }
+);
+assert(p183MoveGood.primaryFormula?.result?.executorResult?.currentPlaceGood === false, 'p183 non-benefic H1+H4 does not satisfy positive residence clause');
+assert(p183MoveGood.primaryFormula?.result?.executorResult?.moveGood === true, 'p183 pure-benefic H7+H10 supports good move');
+assert(p183MoveGood.primaryFormula?.result?.executorResult?.sourceOutcome === 'move-good', 'p183 move-only source outcome is explicit');
+assert(!p183MoveGood.primaryFormula?.result?.executorResult?.outputHebrew.includes('המקום הנוכחי רע'), 'p183 does not invent negative current-place clause');
+
+const p183BothGood = buildKashfReadingByQuestionId(
+  makeP204Board({ 1: '1122', 4: '1122', 7: '1122', 10: '1122' }),
+  'q-move-home',
+  { question: 'האם טוב לי להישאר כאן או לעבור?' }
+);
+assert(p183BothGood.primaryFormula?.result?.executorResult?.sourceOutcome === 'both-good', 'p183 preserves both positive source clauses when both pairs qualify');
+assert(!p183BothGood.primaryFormula?.result?.executorResult?.outputHebrew.includes('טובה יותר'), 'p183 does not invent a ranking when both options qualify');
+
+const p183MixedGuard = buildKashfReadingByQuestionId(
+  makeP204Board({ 1: '2212', 4: '1122', 7: '1112', 10: '1112' }),
+  'q-move-home',
+  { question: 'האם טוב לי להישאר כאן או לעבור?' }
+);
+assert(p183MixedGuard.primaryFormula?.result?.executorResult?.houseResults?.find((x) => x.houseNumber === 1)?.classification?.saadNahs === 'mixed', 'p183 mixed guard sees canonical mixed H1');
+assert(p183MixedGuard.primaryFormula?.result?.executorResult?.currentPlaceGood === false, 'p183 mixed H1 is not promoted to pure benefic');
+assert(p183MixedGuard.primaryFormula?.result?.executorResult?.sourceOutcome === 'unresolved', 'p183 no-positive-pair case remains unresolved rather than invented negative');
+
+const p183Html = writeCanonicalKashfReading(p183CurrentGood);
+assert(p183Html.includes('relocation.p183.currentVsNewPlace'), 'p183 narrative exposes exact method id');
+assert(p183Html.includes('טובת המגורים'), 'p183 narrative preserves v57 Hebrew residence wording');
+
 // ── P11 p204 attention/look source contract ------------------------------
 assertRoute('q-who-looks-love', {
   ok: true,
