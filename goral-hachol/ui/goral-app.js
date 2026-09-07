@@ -1196,14 +1196,21 @@ async function runReading() {
       const outputEl = document.getElementById("kashfReadingOutput");
       if (outputEl) outputEl.innerHTML = buildBoardHtml(reading, kashfReading.dhamir?.winner?.houseNumber) + kashfHtml;
 
-      // Oren Smart Advisor Brain — לוח-יועץ-פנימי, MOCK בלבד (אין AI חי,
-      // אין קריאת-רשת). ראו OREN_SMART_ADVISOR_PANEL_PLACEMENT_DECISION.md.
-      // כישלון כאן לא-אמור-לשבור את הקריאה עצמה.
+      // בינת היכל החכמה — הנתיב החי מקבל רק AI Context Package קנוני.
+      // השאלה שנבחרה בבנק נועלת את ה-kashfMethodId; ה-AI אינו רשאי לבחור
+      // שיטה אחרת. כשל/מצב שרת לא-live נופל במפורש ל-MOCK ולא שובר קריאה.
       try {
-        const mockAdvisorOutput = await buildMockOrenAdvisorBrainOutput(kashfReading);
-        renderOrenAdvisorPanel(mockAdvisorOutput);
+        window._lastKashfReading = kashfReading;
+        const advisorResult = await buildLiveOrenAdvisorBrainOutput({
+          mothers: selectedMothers.map((m) => m.key),
+          topicId: kashfTopicId,
+          question: question || selectedQuestion?.label || '',
+          questionId: selectedQuestion?.id || null,
+        });
+        renderOrenAdvisorPanel(advisorResult.output, advisorResult);
       } catch (err) {
-        // best-effort — לא חוסם את הקריאה
+        const mockAdvisorOutput = await buildMockOrenAdvisorBrainOutput(kashfReading);
+        renderOrenAdvisorPanel(mockAdvisorOutput, { evaluatorMode: 'mock', liveModeUnavailableReason: 'advisor-client-error' });
       }
 
       window._lastReading = reading;
@@ -2734,10 +2741,11 @@ function fillCurrentDateTime() {
 }
 fillCurrentDateTime();
 
-// ── Oren Smart Advisor Brain — לוח-יועץ-פנימי, MOCK בלבד ────────────────
-// אין AI חי, אין קריאת-רשת, אין secret. ראו
-// OREN_SMART_ADVISOR_PANEL_PLACEMENT_DECISION.md. advisor-only — לעולם
-// לא-מוצג-אוטומטית ללקוח, לא-משנה את פלט-הקריאה שמעליו (kashfReadingOutput).
+// ── Oren Smart Advisor Brain — לוח יועץ פנימי ──────────────────────────
+// הנתיב החי משתמש ב-AI Context Package קנוני: Question Bank -> exact Kashf
+// method -> v57 Hebrew -> canonical executor -> authorized Edge Function.
+// אם live אינו זמין, השרת/לקוח נופלים במפורש ל-MOCK. advisor-only — לעולם
+// לא מוצג אוטומטית ללקוח ולא משנה את פלט הקריאה שמעליו.
 async function buildMockOrenAdvisorBrainOutput(kashfReading) {
   let blockedFields = [];
   try {
@@ -2780,17 +2788,74 @@ async function buildMockOrenAdvisorBrainOutput(kashfReading) {
   };
 }
 
-function renderOrenAdvisorPanel(mockOutput) {
+
+async function buildLiveOrenAdvisorBrainOutput({ mothers, topicId, question, questionId }) {
+  const localFallback = async (reason) => ({
+    output: await buildMockOrenAdvisorBrainOutput(window._lastKashfReading || {}),
+    evaluatorMode: 'mock',
+    liveModeUnavailableReason: reason,
+    canonicalMethodId: null,
+  });
+
+  try {
+    const builderMod = await import('/goral-hachol/intelligence/kashf-ai-context-builder.js');
+    if (!builderMod?.buildKashfAiContextPackage) return localFallback('context-builder-unavailable');
+
+    const built = builderMod.buildKashfAiContextPackage({
+      mothers,
+      topicId,
+      question,
+      questionId,
+      useCanonicalRetrieval: !questionId,
+      readingId: 'kashf-' + Date.now(),
+    });
+    if (!built?.contextPackage) return localFallback('canonical-context-unavailable');
+
+    const supabase = window.__supabase;
+    if (!supabase?.functions?.invoke) return localFallback('supabase-client-unavailable');
+
+    const { data, error } = await supabase.functions.invoke('oren-smart-advisor', {
+      body: {
+        module: 'kashf',
+        mode: 'live',
+        payload: built.contextPackage,
+      },
+    });
+    if (error || !data?.advisorBrainOutput) {
+      return localFallback(error?.message ? 'edge-error:' + error.message : 'edge-response-invalid');
+    }
+
+    return {
+      output: data.advisorBrainOutput,
+      evaluatorMode: data.evaluatorMode || 'mock',
+      liveModeUnavailableReason: data.liveModeUnavailableReason || null,
+      canonicalMethodId: built.contextPackage?.readingContext?.canonicalResolution?.kashfMethodId || null,
+      canonicalIntentId: built.contextPackage?.readingContext?.canonicalResolution?.kashfIntentId || null,
+      aiVerdictAllowed: built.contextPackage?.readingContext?.aiVerdictAllowed === true,
+    };
+  } catch (err) {
+    return localFallback(err instanceof Error ? 'client-error:' + err.message : 'client-error');
+  }
+}
+
+function renderOrenAdvisorPanel(mockOutput, runtimeMeta = {}) {
   const container = document.getElementById('orenAdvisorPanel');
   if (!container) return;
   const c = mockOutput.codeInstructionForClaude;
   const needsCode = !!c?.needed;
+  const evaluatorMode = runtimeMeta.evaluatorMode || 'mock';
+  const isLive = evaluatorMode === 'live';
+  const modeBadge = isLive
+    ? 'AI חי — נתיב קנוני v57'
+    : runtimeMeta.liveModeUnavailableReason
+      ? `MOCK — live לא זמין: ${runtimeMeta.liveModeUnavailableReason}`
+      : 'מצב בדיקה / MOCK — לא AI חי';
 
   container.innerHTML = `
     <div class="oren-advisor-header" id="orenAdvisorToggle">
       <span class="oren-advisor-lock">🔒</span>
       <span class="oren-advisor-title">בינת היכל החכמה — לוח יועץ פנימי</span>
-      <span class="oren-advisor-badge">מצב בדיקה / MOCK — לא AI חי</span>
+      <span class="oren-advisor-badge">${escapeHtml(modeBadge)}</span>
       <span class="oren-advisor-caret">▾</span>
     </div>
     <div class="oren-advisor-body" id="orenAdvisorBody" hidden>
@@ -2798,7 +2863,7 @@ function renderOrenAdvisorPanel(mockOutput) {
       <div class="oren-advisor-section">
         <h4>1. אבחון ליועץ</h4>
         <p>${escapeHtml(mockOutput.advisorDiagnosis)}</p>
-        <p class="oren-advisor-meta">module: ${escapeHtml(mockOutput.module)} | confidence: ${escapeHtml(mockOutput.confidence)}</p>
+        <p class="oren-advisor-meta">module: ${escapeHtml(mockOutput.module)} | confidence: ${escapeHtml(mockOutput.confidence)} | mode: ${escapeHtml(evaluatorMode)}${runtimeMeta.canonicalMethodId ? ` | method: ${escapeHtml(runtimeMeta.canonicalMethodId)}` : ''}</p>
       </div>
       <div class="oren-advisor-section">
         <h4>2. טיוטת תשובה ללקוח (advisor-only, לא נשלח אוטומטית)</h4>

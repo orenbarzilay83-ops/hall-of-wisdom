@@ -54,8 +54,9 @@ import { KASHF_BOOK_RULE_CATALOG, KASHF_BOOK_RULE_CATALOG_VERSION } from '../dat
 import { analyzeIntent } from './intent-analyzer.js';
 import { buildReadingStrategy } from './reading-strategy-builder.js';
 import { buildReadingPlan } from './reading-planner.js';
+import { buildKashfCanonicalAiBridge } from './kashf-canonical-ai-bridge.js';
 
-export const KASHF_AI_CONTEXT_BUILDER_VERSION = 'kashf-ai-context-builder-v7';
+export const KASHF_AI_CONTEXT_BUILDER_VERSION = 'kashf-ai-context-builder-v8';
 
 // The five distinct "עד/עדים" (witness) systems documented in
 // HALL_WISDOM_KASHF_EXHAUSTIVE_WITNESS_AND_SPIRITUAL_RULES_AUDIT.md
@@ -280,6 +281,57 @@ export function buildAiSafeKashfEngineOutput(engineOutput) {
   return projected;
 }
 
+// Canonical engine output projection. This is separate from the legacy
+// projection above because the canonical runtime has a different contract:
+// exact method/intent ids, Hebrew v57 knowledge, source roles and explicit
+// isolation evidence. clientContext is intentionally absent.
+const CANONICAL_ENGINE_OUTPUT_ALLOWED_KEYS = [
+  'valid', 'status', 'canRunKashf', 'kashfIntentId', 'kashfMethodId',
+  'kashfRuntimeStatus', 'executorStatus', 'methodRole', 'knowledgeLanguage',
+  'hebrewKnowledge', 'topicId', 'topicHebrewName', 'topicDescription',
+  'sourceRef', 'primaryFormula', 'formula', 'verdict', 'overallPositive',
+  'canonicalExecution', 'source', 'reason', 'userMessage', 'error',
+];
+
+export function buildAiSafeCanonicalKashfEngineOutput(engineOutput) {
+  if (!engineOutput || typeof engineOutput !== 'object') return engineOutput;
+  return projectAllowlist(engineOutput, CANONICAL_ENGINE_OUTPUT_ALLOWED_KEYS);
+}
+
+function buildCanonicalMethodMetadata(bridge) {
+  const resolution = bridge?.resolution || {};
+  const retrieval = bridge?.canonicalRetrieval || null;
+  return {
+    primaryMethod: resolution.kashfMethodId || null,
+    kashfIntentId: resolution.kashfIntentId || null,
+    authority: resolution.resolutionSource || null,
+    authoritativeQuestionRoute: resolution.authoritative === true,
+    aiVerdictAllowed: bridge?.aiVerdictAllowed === true,
+    allowedVerdictSources: ['readingContext.engineOutput.verdict', 'readingContext.engineOutput.primaryFormula'],
+    forbiddenForVerdict: [
+      'readingContext.retrievalCandidates',
+      'readingContext.canonicalRetrieval.doNotMixWith',
+      'readingContext.canonicalRetrieval.arabicVerification',
+      'legacyTopicBundle',
+      'dhamir',
+      'alternateMethods',
+    ],
+    doNotMixWith: Array.isArray(retrieval?.doNotMixWith) ? [...retrieval.doNotMixWith] : [],
+    operationalKnowledge: retrieval?.v57 ? {
+      language: 'he',
+      role: 'operational-primary',
+      version: retrieval.v57.version,
+      page: retrieval.v57.page,
+      anchor: retrieval.v57.anchor,
+    } : null,
+    verificationKnowledge: retrieval?.arabicVerification ? {
+      language: 'ar',
+      role: 'verification-only',
+      pages: [...(retrieval.arabicVerification.pages || [])],
+    } : null,
+  };
+}
+
 // ---------------------------------------------------------------------------
 // AI-safe Board Projection
 // ---------------------------------------------------------------------------
@@ -391,10 +443,12 @@ export function buildAiSafeKashfBoard(board) {
  * @param {string} input.question - the real question asked
  * @param {string} [input.readingId]
  * @param {string} [input.clientName]
- * @returns {{ contextPackage: object|null, completeness: 'complete'|'partial', missingFields: string[], intentResult: object|null }}
+ * @param {string} [input.questionId] - authoritative Question Bank id when selected
+ * @param {boolean} [input.useCanonicalRetrieval] - allow free-text canonical retrieval when no questionId exists
+ * @returns {{ contextPackage: object|null, completeness: 'complete'|'partial', missingFields: string[], intentResult: object|null, canonicalBridge?: object|null }}
  */
 export function buildKashfAiContextPackage(input = {}) {
-  const { mothers, topicId, question, readingId, clientName } = input;
+  const { mothers, topicId, question, readingId, clientName, questionId, useCanonicalRetrieval = false } = input;
   const missingFields = [];
 
   if (!Array.isArray(mothers) || mothers.length !== 4) {
@@ -408,8 +462,21 @@ export function buildKashfAiContextPackage(input = {}) {
   }
 
   const board = buildRamlBoardFromMothers(mothers);
-  const rawEngineOutput = buildKashfReading(board, topicId, { name: clientName || '', question });
-  const aiSafeEngineOutput = buildAiSafeKashfEngineOutput(rawEngineOutput);
+  const canonicalMode = Boolean(questionId || useCanonicalRetrieval === true);
+  const canonicalBridge = canonicalMode
+    ? buildKashfCanonicalAiBridge({
+        questionId: questionId || null,
+        questionText: question,
+        board,
+        clientContext: { name: clientName || '', question },
+      })
+    : null;
+  const rawEngineOutput = canonicalBridge
+    ? canonicalBridge.canonicalReading
+    : buildKashfReading(board, topicId, { name: clientName || '', question });
+  const aiSafeEngineOutput = canonicalBridge
+    ? buildAiSafeCanonicalKashfEngineOutput(rawEngineOutput)
+    : buildAiSafeKashfEngineOutput(rawEngineOutput);
   const aiSafeBoard = buildAiSafeKashfBoard(board);
 
   const intentResult = analyzeIntent({ question, method: 'kashf', topicId });
@@ -426,7 +493,9 @@ export function buildKashfAiContextPackage(input = {}) {
 
   missingFields.push('readingContext.activatedRuleIds — no per-rule ruleDefinitions source is wired for Kashf yet (rule-decision-engine.js has no real loader; goral-knowledge-registry.js entries are topic-level, not rule-level)');
   missingFields.push('readingContext.rejectedRuleIds — same missing source as activatedRuleIds');
-  missingFields.push('readingContext.sourceEvidence — same missing source (per-rule sourceEvidence snippets, distinct from topic-level evidenceLocation pointers)');
+  if (!canonicalBridge?.canonicalRetrieval?.v57?.hebrewRule) {
+    missingFields.push('readingContext.sourceEvidence — no canonical v57 Hebrew rule was resolved for this request');
+  }
   missingFields.push('decisionSummary — normally produced by runRuleDecisionEngine, which did not run (see activatedRuleIds above)');
 
   if (readingPlan?.stopped) {
@@ -436,28 +505,37 @@ export function buildKashfAiContextPackage(input = {}) {
     missingFields.push(`intentResult.requiresClarification — ${intentResult.clarificationQuestion || 'question intent was not confidently classified'}`);
   }
 
+  const canonicalSourceEvidence = canonicalBridge?.canonicalRetrieval?.v57?.hebrewRule
+    ? [`v57 עמ׳ ${canonicalBridge.canonicalRetrieval.v57.page}: ${canonicalBridge.canonicalRetrieval.v57.hebrewRule}`]
+    : [];
+
   const contextPackage = {
     payloadVersion: 'ai-context-package-v1',
     readingId: readingId || null,
     domain: 'reading.goralHachol',
     method: 'kashf',
     questionType: intentResult.questionType,
-    primaryIntent: intentResult.primaryIntent,
+    primaryIntent: canonicalBridge?.resolution?.kashfIntentId || intentResult.primaryIntent,
     readingStrategy,
     readingPlan,
     readingContext: {
       question,
       board: aiSafeBoard,
       engineOutput: aiSafeEngineOutput,
-      methodMetadata: KASHF_METHOD_METADATA,
+      canonicalBridgeVersion: canonicalBridge?.bridgeVersion || null,
+      canonicalResolution: canonicalBridge?.resolution || null,
+      canonicalRetrieval: canonicalBridge?.canonicalRetrieval || null,
+      retrievalCandidates: canonicalBridge?.candidates || [],
+      aiVerdictAllowed: canonicalBridge ? canonicalBridge.aiVerdictAllowed === true : null,
+      methodMetadata: canonicalBridge ? buildCanonicalMethodMetadata(canonicalBridge) : KASHF_METHOD_METADATA,
       ruleCoverageStatus: buildRuleCoverageStatus(topicId),
       activatedRuleIds: [],
       rejectedRuleIds: [],
-      sourceEvidence: [],
+      sourceEvidence: canonicalSourceEvidence,
     },
   };
 
-  return { contextPackage, completeness: missingFields.length === 0 ? 'complete' : 'partial', missingFields, intentResult };
+  return { contextPackage, completeness: missingFields.length === 0 ? 'complete' : 'partial', missingFields, intentResult, canonicalBridge };
 }
 
-export default { buildKashfAiContextPackage, buildAiSafeKashfEngineOutput, buildAiSafeKashfBoard, buildRuleCoverageStatus, KASHF_METHOD_METADATA, KASHF_AI_CONTEXT_BUILDER_VERSION };
+export default { buildKashfAiContextPackage, buildAiSafeKashfEngineOutput, buildAiSafeCanonicalKashfEngineOutput, buildAiSafeKashfBoard, buildRuleCoverageStatus, KASHF_METHOD_METADATA, KASHF_AI_CONTEXT_BUILDER_VERSION };

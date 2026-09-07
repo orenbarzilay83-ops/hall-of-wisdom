@@ -366,7 +366,8 @@ export function resolveBestKashfAiRetrievalHit(query, options = {}) {
   // margin so ambiguous natural language does not silently choose a method.
   const hasExactReason = best.retrievalReasons.some((reason) => reason.startsWith('exact-'));
   const margin = second ? best.retrievalScore - second.retrievalScore : best.retrievalScore;
-  const resolved = hasExactReason || (best.retrievalScore >= 45 && margin >= 12);
+  const singleTokenNaturalQuery = !hasExactReason && tokenizeKashfRetrievalText(query).length <= 1 && Boolean(second);
+  const resolved = hasExactReason || (!singleTokenNaturalQuery && best.retrievalScore >= 45 && margin >= 12);
 
   return Object.freeze({
     resolved,
