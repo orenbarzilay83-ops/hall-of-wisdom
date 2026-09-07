@@ -22,6 +22,7 @@ import {
 import { classifyCanonicalFigure } from './kashf-canonical-figure-classifier.js';
 import { getTopicRules } from './kashf-topic-rules.js';
 import { getKashfMethod } from '../registry/kashf-canonical-method-registry.js';
+import { getKashfV57Knowledge } from '../registry/kashf-v57-knowledge-registry.js';
 import { requireRunnableKashfRoute } from './kashf-method-router.js';
 import {
   hasCanonicalLegacyExecutor,
@@ -125,7 +126,7 @@ function interpretFormula(result, formula) {
   throw new Error(`Canonical interpretBy is not enabled in P0: ${formula.interpretBy}`);
 }
 
-function buildLegacyFunctionReading(board, method, clientContext = {}) {
+function buildLegacyFunctionReading(board, method, clientContext = {}, v57Knowledge) {
   const isLegacyExecutor = method.executionKind === 'legacy-function';
   const isCustomExecutor = method.executionKind === 'custom-engine';
   const executorApproved = isLegacyExecutor
@@ -181,7 +182,7 @@ function buildLegacyFunctionReading(board, method, clientContext = {}) {
       houses,
       result,
       verdict,
-      sourceText: executorResult.sourceText || '',
+      sourceText: v57Knowledge.v57.hebrewRule,
     };
 
     return {
@@ -193,10 +194,13 @@ function buildLegacyFunctionReading(board, method, clientContext = {}) {
       kashfRuntimeStatus: method.kashfRuntimeStatus,
       executorStatus: method.executorStatus,
       methodRole: method.methodRole,
+      knowledgeLanguage: 'he',
+      hebrewKnowledge: v57Knowledge.v57,
+      v57Knowledge,
       topicId: method.topicId || method.legacyTopicId,
       topicHebrewName: topicRules?.topicHebrewName || method.kashfIntentId,
       topicDescription: topicRules?.topicDescription || '',
-      sourceRef: 'כשף אל-אסרר, עמ׳ ' + method.sourcePages.join('–'),
+      sourceRef: 'חשיפת הסודות הנצורים v57, עמ׳ ' + v57Knowledge.v57.page,
       primaryFormula,
       altFormula: null,
       supportingFindings: [],
@@ -212,6 +216,20 @@ function buildLegacyFunctionReading(board, method, clientContext = {}) {
         sourceLayer: method.sourceLayer,
         attributedSourceBook: method.attributedSourceBook,
         sourceConfidence: method.sourceConfidence,
+        operationalKnowledge: {
+          language: 'he',
+          role: 'operational-primary',
+          version: v57Knowledge.v57.version,
+          indexFile: v57Knowledge.v57.indexFile,
+          draftFile: v57Knowledge.v57.draftFile,
+          page: v57Knowledge.v57.page,
+          anchor: v57Knowledge.v57.anchor,
+        },
+        verificationSource: {
+          language: 'ar',
+          role: v57Knowledge.arabicVerification.role,
+          pages: [...v57Knowledge.arabicVerification.pages],
+        },
       },
       clientContext: {
         name: clientContext.name || '',
@@ -229,7 +247,7 @@ function buildLegacyFunctionReading(board, method, clientContext = {}) {
       formula: {
         type: method.executionKind,
         houses,
-        sourceText: executorResult.sourceText || '',
+        sourceText: v57Knowledge.v57.hebrewRule,
         result,
       },
       verdict,
@@ -303,9 +321,21 @@ export function buildKashfReadingByMethod(board, kashfMethodId, clientContext = 
     });
   }
 
+  const v57Knowledge = getKashfV57Knowledge(method.kashfMethodId);
+  if (!v57Knowledge) {
+    return blockedResult({
+      kashfMethodId: method.kashfMethodId,
+      kashfIntentId: method.kashfIntentId,
+      status: method.kashfRuntimeStatus,
+      executorStatus: method.executorStatus,
+      reason: 'v57-knowledge-missing',
+      userMessage: 'השיטה מוכנה לחישוב אך חסר לה עוגן ידע עברי v57; ההפעלה נחסמה כדי שה-AI לא יסתמך על מקור שאינו שכבת הידע העברית הקנונית.',
+    });
+  }
+
   if (method.executionKind === 'legacy-function'
       || (method.executionKind === 'custom-engine' && hasCanonicalCustomExecutor(method.kashfMethodId))) {
-    return buildLegacyFunctionReading(board, method, clientContext);
+    return buildLegacyFunctionReading(board, method, clientContext, v57Knowledge);
   }
   if (method.executionKind !== 'formula') {
     return blockedResult({
@@ -350,7 +380,7 @@ export function buildKashfReadingByMethod(board, kashfMethodId, clientContext = 
       houses: [...(formula.houses || [])],
       result,
       verdict,
-      sourceText: formula.sourceText || '',
+      sourceText: v57Knowledge.v57.hebrewRule,
     };
 
     return {
@@ -362,6 +392,9 @@ export function buildKashfReadingByMethod(board, kashfMethodId, clientContext = 
       kashfRuntimeStatus: method.kashfRuntimeStatus,
       executorStatus: method.executorStatus,
       methodRole: method.methodRole,
+      knowledgeLanguage: 'he',
+      hebrewKnowledge: v57Knowledge.v57,
+      v57Knowledge,
 
       // Legacy-renderer compatibility fields. They contain ONLY the selected
       // canonical method; alternative/topic-bundle fields are deliberately
@@ -369,7 +402,7 @@ export function buildKashfReadingByMethod(board, kashfMethodId, clientContext = 
       topicId: method.topicId || method.legacyTopicId,
       topicHebrewName: topicRules.topicHebrewName || method.kashfIntentId,
       topicDescription: topicRules.topicDescription || '',
-      sourceRef: `כשף אל-אסרר, עמ׳ ${method.sourcePages.join('–')}`,
+      sourceRef: `חשיפת הסודות הנצורים v57, עמ׳ ${v57Knowledge.v57.page}` ,
       primaryFormula,
       altFormula: null,
       supportingFindings: [],
@@ -386,6 +419,20 @@ export function buildKashfReadingByMethod(board, kashfMethodId, clientContext = 
         sourceLayer: method.sourceLayer,
         attributedSourceBook: method.attributedSourceBook,
         sourceConfidence: method.sourceConfidence,
+        operationalKnowledge: {
+          language: 'he',
+          role: 'operational-primary',
+          version: v57Knowledge.v57.version,
+          indexFile: v57Knowledge.v57.indexFile,
+          draftFile: v57Knowledge.v57.draftFile,
+          page: v57Knowledge.v57.page,
+          anchor: v57Knowledge.v57.anchor,
+        },
+        verificationSource: {
+          language: 'ar',
+          role: v57Knowledge.arabicVerification.role,
+          pages: [...v57Knowledge.arabicVerification.pages],
+        },
       },
       clientContext: {
         name: clientContext.name || '',
@@ -405,7 +452,7 @@ export function buildKashfReadingByMethod(board, kashfMethodId, clientContext = 
       formula: {
         type: formula.type,
         houses: [...(formula.houses || [])],
-        sourceText: formula.sourceText || '',
+        sourceText: v57Knowledge.v57.hebrewRule,
         result,
       },
       verdict,

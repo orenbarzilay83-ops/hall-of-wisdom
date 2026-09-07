@@ -11,7 +11,13 @@ import {
   getCanonicalKashfMethodForIntent,
   canRunKashfMethod,
   validateKashfMethodRegistry,
+  KASHF_CANONICAL_METHODS,
 } from './goral-hachol/registry/kashf-canonical-method-registry.js';
+import {
+  KASHF_V57_KNOWLEDGE,
+  getKashfV57Knowledge,
+  validateKashfV57KnowledgeCoverage,
+} from './goral-hachol/registry/kashf-v57-knowledge-registry.js';
 import {
   validateKashfQuestionRoutes,
 } from './goral-hachol/registry/kashf-question-route-registry.js';
@@ -59,6 +65,30 @@ const PILOT_BOARD = buildRamlBoardFromMothers(PILOT_MOTHERS);
   const result = validateKashfQuestionRoutes(getKashfMethod);
   assert(result.valid, `question route registry valid: ${result.errors.join('; ')}`);
 }
+{
+  const result = validateKashfV57KnowledgeCoverage(KASHF_CANONICAL_METHODS);
+  assert(result.valid, `every runnable canonical method has v57 Hebrew knowledge: ${result.errors.join('; ')}`);
+  assert(result.coveredCount === result.runnableCount, `v57 runnable coverage ${result.coveredCount}/${result.runnableCount}`);
+  assert(result.runnableCount > 0, 'v57 coverage gate sees runnable canonical methods');
+}
+for (const [methodId, entry] of Object.entries(KASHF_V57_KNOWLEDGE)) {
+  assert(entry.knowledgeLanguage === 'he', `${methodId} v57 knowledge language is Hebrew`);
+  assert(entry.knowledgeRole === 'operational-primary', `${methodId} v57 knowledge is operational-primary`);
+  assert(entry.arabicVerification?.role === 'verification-only', `${methodId} Arabic source is verification-only`);
+  assert(entry.v57?.indexFile === 'kashf-v57-topic-index.html', `${methodId} points to v57 topic index`);
+  assert(entry.v57?.draftFile === 'kashf-v57-draft.html', `${methodId} points to v57 Hebrew draft`);
+  assert(typeof entry.v57?.hebrewRule === 'string' && entry.v57.hebrewRule.length > 0, `${methodId} has Hebrew operational rule text`);
+}
+const professionV57 = getKashfV57Knowledge('profession.p254.h9Planet');
+assert(professionV57?.v57?.hebrewRule.includes('כישוף, נפלאות ואצטגנינות'), 'profession p254 v57 knowledge preserves Mercury magic/wonders/astrology rule');
+assert(!professionV57?.v57?.hebrewRule.includes('כתיבה וחשבונות'), 'profession p254 v57 knowledge does not retain stale Mercury writing/accounts rule');
+
+const v57ProbeReading = buildKashfReadingByQuestionId(PILOT_BOARD, 'q-pregnancy', { question: 'האם יש הריון?' });
+assert(v57ProbeReading.knowledgeLanguage === 'he', 'runnable reading exposes Hebrew as operational knowledge language');
+assert(v57ProbeReading.hebrewKnowledge?.version === 'v57', 'runnable reading exposes v57 Hebrew knowledge payload');
+assert(v57ProbeReading.source?.operationalKnowledge?.role === 'operational-primary', 'reading source marks v57 as operational-primary');
+assert(v57ProbeReading.source?.verificationSource?.role === 'verification-only', 'reading source marks Arabic as verification-only');
+assert(v57ProbeReading.primaryFormula?.sourceText === getKashfV57Knowledge('pregnancy.p191.existsH5SilentEmpty')?.v57?.hebrewRule, 'reading primary sourceText comes from v57 Hebrew knowledge');
 
 assert(
   getCanonicalKashfMethodForIntent('travel.success')?.kashfMethodId === 'travel.p238.assemble1359',
