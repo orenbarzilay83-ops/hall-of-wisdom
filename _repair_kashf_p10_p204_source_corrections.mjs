@@ -5,10 +5,15 @@ import { spawnSync } from 'node:child_process';
 const patcherPath = '_apply_kashf_p10_p204_source_corrections.mjs';
 let source = fs.readFileSync(patcherPath, 'utf8');
 
-const broken = "const previousFnEnd = executors.indexOf('\\n}\\n\\nconst CUSTOM_EXECUTORS', previousFnStart);";
-const fixed = "const previousFnEnd = executors.indexOf('\\n}\\n\\n\\nfunction computeRulerConditionP257', previousFnStart);";
-if (!source.includes(broken)) throw new Error('Expected P10 previous-function end marker not found');
-source = source.replace(broken, fixed);
+const brokenBoundary = "const previousFnEnd = executors.indexOf('\\n}\\n\\nconst CUSTOM_EXECUTORS', previousFnStart);";
+const fixedBoundary = "const previousFnEnd = executors.indexOf('\\n}\\n\\n\\nfunction computeRulerConditionP257', previousFnStart);";
+if (!source.includes(brokenBoundary)) throw new Error('Expected P10 previous-function end marker not found');
+source = source.replace(brokenBoundary, fixedBoundary);
+
+const harmfulGlobalTestRename = 'tests = tests.replaceAll(oldMethodId, newMethodId);\n';
+if (!source.includes(harmfulGlobalTestRename)) throw new Error('Expected harmful global P8 test rename not found');
+source = source.replace(harmfulGlobalTestRename, '');
+
 fs.writeFileSync(patcherPath, source);
 
 const check = spawnSync('node', ['--check', patcherPath], { stdio: 'inherit' });
