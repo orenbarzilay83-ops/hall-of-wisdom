@@ -244,6 +244,148 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     note: 'Gift polarity is stated, but the exact source input/house is not closed.',
   }),
 
+  // ── AUDITED FAMILY + HEALTH SLICE -------------------------------------
+  'q-pregnancy': route({
+    questionId: 'q-pregnancy',
+    disposition: 'KEEP',
+    kashfIntentId: 'pregnancy.exists',
+    kashfMethodId: 'pregnancy.p191.existsH5SilentEmpty',
+    kashfRuntimeStatus: 'ready',
+    note: 'Use silent/empty classification of H5. Never replace with benefic/malefic.',
+  }),
+
+  'q-miscarriage': route({
+    questionId: 'q-miscarriage',
+    disposition: 'BLOCK',
+    kashfIntentId: 'pregnancy.miscarriageRisk',
+    kashfMethodId: 'pregnancy.miscarriageRisk.unresolved',
+    kashfRuntimeStatus: 'blocked-by-source',
+    note: 'p192-p193 contain several miscarriage/fetus-risk conditions. One canonical method has not yet been formally selected; no aggregation is allowed.',
+  }),
+
+  'q-birth-ease': route({
+    questionId: 'q-birth-ease',
+    disposition: 'KEEP',
+    kashfIntentId: 'pregnancy.deliveryDifficulty',
+    kashfMethodId: 'pregnancy.p191.deliveryDifficultyH1H5H15',
+    kashfRuntimeStatus: 'ready',
+  }),
+
+  'q-child-health': route({
+    questionId: 'q-child-health',
+    disposition: 'RENAME',
+    kashfIntentId: 'child.healthTrajectory',
+    kashfMethodId: 'child.p194.healthTrajectoryH6H8',
+    kashfRuntimeStatus: 'ready',
+    note: 'Source scope is childhood pains and health trajectory as the child grows, not a generic current-illness recovery prognosis.',
+  }),
+
+  'q-child-survive': route({
+    questionId: 'q-child-survive',
+    disposition: 'KEEP',
+    kashfIntentId: 'pregnancy.childSafety',
+    kashfMethodId: 'pregnancy.p191.childSafetyH1H6H8',
+    kashfRuntimeStatus: 'ready',
+  }),
+
+  'q-child-lifespan': route({
+    questionId: 'q-child-lifespan',
+    disposition: 'BLOCK',
+    kashfIntentId: 'child.lifespan',
+    kashfMethodId: 'child.lifespan.p195.provenanceUnresolved',
+    kashfRuntimeStatus: 'blocked-by-source',
+    note: 'The child-lifespan paragraph sits adjacent to al-Zanati material on p195. Passage-level provenance must be closed before runtime use.',
+  }),
+
+  'q-lifespan': route({
+    questionId: 'q-lifespan',
+    disposition: 'RENAME',
+    kashfIntentId: 'lifespan.duration',
+    kashfMethodId: 'lifespan.p178.elementCountToHouse',
+    kashfRuntimeStatus: 'ready',
+    note: 'The canonical p178 method calculates lifespan duration; do not substitute p264 life-stage houses.',
+  }),
+
+  'q-lifespan-remaining': route({
+    questionId: 'q-lifespan-remaining',
+    disposition: 'ALIAS',
+    aliasOf: 'q-lifespan',
+    kashfIntentId: 'lifespan.duration',
+    kashfMethodId: 'lifespan.p178.elementCountToHouse',
+    kashfRuntimeStatus: 'ready',
+  }),
+
+  'q-lifespan-stages': route({
+    questionId: 'q-lifespan-stages',
+    disposition: 'KEEP',
+    kashfIntentId: 'lifespan.stages',
+    kashfMethodId: 'lifespan.p264.stagesH11H9H7',
+    kashfRuntimeStatus: 'ready',
+    note: 'Distinct intent: beginning/middle/end of life, not duration.',
+  }),
+
+  'q-mother': route({
+    questionId: 'q-mother',
+    disposition: 'KEEP',
+    kashfIntentId: 'mother.status',
+    kashfMethodId: 'mother.p257.statusDayNight',
+    kashfRuntimeStatus: 'ready',
+    note: 'Must preserve day/night distinction and angles+succedents vs cadents; current broad mother helper is not sufficient.',
+  }),
+
+  'q-lost-item': route({
+    questionId: 'q-lost-item',
+    disposition: 'KEEP',
+    kashfIntentId: 'lostItem.return',
+    kashfMethodId: 'lostItem.p202.returnH6H8',
+    kashfRuntimeStatus: 'ready',
+    note: 'H6+H8 must be benefic and internal for return. This route is for a lost object, not theft attribution.',
+  }),
+
+  'q-treasure': route({
+    questionId: 'q-treasure',
+    disposition: 'RENAME',
+    kashfIntentId: 'hidden.isStillThere',
+    kashfMethodId: 'hidden.p188.isStillThere',
+    kashfRuntimeStatus: 'ready',
+    note: 'Source-safe wording is whether a suspected hidden thing is still in the place; it does not prove the existence of an unspecified treasure from nothing.',
+  }),
+
+  'q-secrets': route({
+    questionId: 'q-secrets',
+    disposition: 'BLOCK',
+    kashfIntentId: 'hidden.abstractSecret',
+    kashfMethodId: 'hidden.abstractSecret.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+    note: 'Audited hidden-object rules concern physical hidden things, not abstract secrets or unspoken truths.',
+  }),
+
+  'q-dowry': route({
+    questionId: 'q-dowry',
+    disposition: 'KEEP',
+    kashfIntentId: 'marriage.dowryAmount',
+    kashfMethodId: 'marriage.p204.dowryH8',
+    kashfRuntimeStatus: 'ready',
+  }),
+
+  'q-dig-direction': route({
+    questionId: 'q-dig-direction',
+    disposition: 'KEEP',
+    kashfIntentId: 'hidden.direction',
+    kashfMethodId: 'hidden.p188.quarterDirection',
+    kashfRuntimeStatus: 'ready',
+    note: 'Requires a dedicated four-quarter casting flow; it cannot be inferred from the ordinary board.',
+  }),
+
+  'q-well-drilling': route({
+    questionId: 'q-well-drilling',
+    disposition: 'RENAME',
+    kashfIntentId: 'well.result',
+    kashfMethodId: 'well.p188.recast1468',
+    kashfRuntimeStatus: 'ready',
+    note: 'This canonical route answers whether the drilling/water objective is obtained. The current Question Bank wording also asks depth; depth is a separate intent and must be split rather than silently merged.',
+  }),
+
   // ── REPAIR REQUIRED: explicit hard stop until fixed -------------------
   'q-wish': route({
     questionId: 'q-wish',
