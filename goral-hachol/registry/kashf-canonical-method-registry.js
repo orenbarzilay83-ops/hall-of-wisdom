@@ -430,6 +430,67 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     legacyTopicId: 'marriage',
   }),
 
+  // ── LOVE + MARRIAGE canonical slice -----------------------------------
+  'marriage.p210.generalMarriageH1H2H7H8H10Judge': method({
+    kashfMethodId: 'marriage.p210.generalMarriageH1H2H7H8H10Judge',
+    kashfIntentId: 'marriage.suitability',
+    topicId: 'marriage',
+    sourcePages: [210, 211],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'pending',
+    notes: 'Canonical general-marriage judgment: H1/H2 represent the man and marriage, H7/H8 the woman, H10 what occurs between them, and the judge the final outcome; the passage then derives H1+H5 for a final good/bad judgment. This supersedes the earlier mistaken assumption that the p206 desire formula was the marriage-suitability method.',
+  }),
+
+  'love.p205.directLoveH1PlacementH15': method({
+    kashfMethodId: 'love.p205.directLoveH1PlacementH15',
+    kashfIntentId: 'love.doesPersonLoveMe',
+    topicId: 'marriage',
+    sourcePages: [205],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'pending',
+    notes: 'Direct body-source love question. Judge the H1 figure by its placement in angles vs cadents and inspect H15 in relation to H1. Do not substitute the p264 friendship/love method.',
+  }),
+
+  'love.p204.attentionFireRows1713': method({
+    kashfMethodId: 'love.p204.attentionFireRows1713',
+    kashfIntentId: 'love.attention',
+    topicId: 'marriage',
+    sourcePages: [204],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'pending',
+    notes: 'Body-source method for whether the other person looks toward the querent or elsewhere, using the fire rows of H1, H7 and H13. This is a distinct intent from love itself.',
+  }),
+
+  'desire.p206.querentWantsH7H11ThenH5': method({
+    kashfMethodId: 'desire.p206.querentWantsH7H11ThenH5',
+    kashfIntentId: 'desire.querentWantsMatter',
+    topicId: 'marriage',
+    sourcePages: [206],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'pending',
+    notes: 'Combine H7+H11, then combine that result with H5. A benefic result means the querent wants the matter. The source does NOT say this method tests whether a woman will please a man or whether chemistry is mutual.',
+  }),
+
+  'marriage.p211.dissolutionH7StateMatrix': method({
+    kashfMethodId: 'marriage.p211.dissolutionH7StateMatrix',
+    kashfIntentId: 'marriage.dissolution',
+    topicId: 'marriage',
+    sourcePages: [210, 211],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'pending',
+    notes: 'Canonical dissolution/stability judgment uses H7 quality together with internal/external/fixed/mutable state. It distinguishes stable marriage, quarrel, possible separation and breakdown; do not collapse it to benefic/malefic alone.',
+  }),
+
   // ── MONEY + ECONOMY canonical slice -----------------------------------
   'money.p179.sourceByIncomingHonorHouse': method({
     kashfMethodId: 'money.p179.sourceByIncomingHonorHouse',
@@ -491,6 +552,19 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     executorStatus: 'pending',
     legacyTopicId: 'money',
     notes: 'Canonical source derives queried-person money from H2/H4/H6/H8 and querent money from H1/H3/H5/H7, then compares their elements (fire=1, air=2, water=3, earth=4). Current legacy mechanism judges figures by incoming/outgoing and is not source-equivalent.',
+  }),
+
+  'marriage.p205.modestyPurity': method({
+    kashfMethodId: 'marriage.p205.modestyPurity',
+    kashfIntentId: 'marriage.modesty',
+    topicId: 'marriage',
+    sourcePages: [205, 206],
+    kashfRuntimeStatus: 'repair-required',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'pending',
+    legacyTopicId: 'marriage',
+    notes: 'Canonical source uses the explicit pure/impure figure classification, including H1/H7/H9 and the balance/judge conditions. Current code incorrectly substitutes benefic/malefic for pure/impure, so it must be repaired before runtime use.',
   }),
 
   'hope.p267.fulfillment': method({
@@ -619,6 +693,19 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     executionKind: null,
     executorStatus: 'not-applicable',
     notes: 'p195 contains child-lifespan material adjacent to al-Zanati material. Passage-level provenance must be closed before this can be selected operationally.',
+  }),
+
+  'marriage.p207-208.adulterySignsUnresolved': method({
+    kashfMethodId: 'marriage.p207-208.adulterySignsUnresolved',
+    kashfIntentId: 'marriage.adulterySigns',
+    topicId: 'marriage',
+    sourcePages: [207, 208],
+    methodRole: 'unresolved',
+    kashfRuntimeStatus: 'blocked-by-source',
+    runtimeAllowed: false,
+    executionKind: null,
+    executorStatus: 'not-applicable',
+    notes: 'The body text supplies specific warning signs associated with sexual misconduct or another attachment, but the audited passage does not provide a complete symmetric yes/no method for all figures. Do not turn partial signs into a universal adultery verdict.',
   }),
 
   'travel.p242.vehicleSafety': method({
