@@ -20,8 +20,65 @@ const LEGACY_EXECUTORS = Object.freeze({
   'illness.bodyPart.h6Figure': computeBodyPartDiagnosisKashf,
 });
 
+
+const P191_SILENT_PATTERNS = new Set([
+  '1211', // בר הלחי / نقي الخد
+  '2111', // סף נכנס / عتبة داخلة
+  '2121', // ממון נכנס / القبض الداخل
+  '2211', // כבוד נכנס / نصرة داخلة
+  '2212', // לבן / البياض
+  '2221', // שפל ראש / الأنكيس
+]);
+
+const P191_EMPTY_PATTERNS = new Set([
+  '1112', // סף יוצא / عتبة خارجة
+  '1122', // כבוד יוצא / نصرة خارجة
+  '1212', // ממון יוצא / القبض الخارج
+  '1222', // נשוא ראש / الأحيان
+]);
+
+function computePregnancyExistenceP191(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h5 = chart.find((entry) => Number(entry?.house) === 5)
+    || chart.find((entry) => Number(entry?.houseNumber) === 5)
+    || chart[4]
+    || null;
+  const pattern = h5?.key || h5?.pattern || null;
+  if (!pattern) return null;
+
+  const figureHebrew = h5?.hebrew || h5?.hebrewName || pattern;
+  const isSilent = P191_SILENT_PATTERNS.has(pattern);
+  const isEmpty = P191_EMPTY_PATTERNS.has(pattern);
+  const pregnancyExists = isSilent ? true : isEmpty ? false : null;
+  const classification = isSilent ? 'silent' : isEmpty ? 'empty' : 'unresolved';
+  const classificationHebrew = isSilent ? 'שותקת' : isEmpty ? 'ריקה' : 'לא הוכרעה בכלל זה';
+
+  let outputHebrew;
+  if (pregnancyExists === true) {
+    outputHebrew = `בית 5: ${figureHebrew} (${pattern}) — צורה שותקת. לפי כשף עמ׳ 191: ההריון נכון.`;
+  } else if (pregnancyExists === false) {
+    outputHebrew = `בית 5: ${figureHebrew} (${pattern}) — צורה ריקה. לפי כשף עמ׳ 191: ההריון בטל.`;
+  } else {
+    outputHebrew = `בית 5: ${figureHebrew} (${pattern}) — הצורה אינה מן השותקות ואינה מן הריקות שנקבעו בכלל זה. כשף עמ׳ 191 לבדו אינו מכריע אם ההריון נכון או בטל.`;
+  }
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 191; סיווגי הצורות עמ׳ 57–60',
+    sourceText: 'אם בבית החמישי נמצאת צורה שותקת — ההריון נכון; ואם נמצאת בו צורה ריקה — ההריון בטל.',
+    houseNumber: 5,
+    h5Pattern: pattern,
+    h5FigureHebrew: figureHebrew,
+    classification,
+    classificationHebrew,
+    pregnancyExists,
+    positive: pregnancyExists,
+    outputHebrew,
+  };
+}
+
 const CUSTOM_EXECUTORS = Object.freeze({
   'theft.p225.thiefDescriptionH7': computeThiefPhysicalDescriptionKashf,
+  'pregnancy.p191.existsH5SilentEmpty': computePregnancyExistenceP191,
 });
 
 function toLegacyChart(board) {

@@ -246,7 +246,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     executionKind: 'legacy-function',
     executorStatus: 'ready',
     legacyTopicId: 'illness',
-    notes: 'Use the verified H6 figure → body-part mapping only; canonical legacy-function executor is not wired yet.',
+    notes: 'Use the verified H6 figure → body-part mapping only; method-scoped canonical legacy executor is wired and isolated from the broad illness bundle.',
   }),
 
   'pregnancy.p191.genderH5': method({
@@ -268,10 +268,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'children',
     sourcePages: [191],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Canonical body rule: H5 silent => pregnancy true; H5 empty => pregnancy false. Do not substitute benefic/malefic.',
+    executorStatus: 'ready',
+    notes: 'Canonical body rule: H5 silent => pregnancy true; H5 empty => pregnancy false. Figures that are neither silent nor empty remain unresolved by this rule. Do not substitute benefic/malefic.',
   }),
 
   'pregnancy.p191.childSafetyH1H6H8': method({

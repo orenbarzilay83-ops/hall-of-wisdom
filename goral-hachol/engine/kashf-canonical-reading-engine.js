@@ -155,7 +155,7 @@ function buildLegacyFunctionReading(board, method, clientContext = {}) {
 
     const verdict = {
       text: executorResult.outputHebrew || 'ללא הכרעה מפורשת',
-      positive: null,
+      positive: typeof executorResult.positive === 'boolean' ? executorResult.positive : null,
     };
     const topicRules = method.legacyTopicId ? getTopicRules(method.legacyTopicId) : null;
     const houses = method.kashfMethodId === 'profession.p254.h9Planet'
@@ -164,7 +164,9 @@ function buildLegacyFunctionReading(board, method, clientContext = {}) {
         ? [6]
         : method.kashfMethodId === 'theft.p225.thiefDescriptionH7'
           ? [7]
-          : [];
+          : method.kashfMethodId === 'pregnancy.p191.existsH5SilentEmpty'
+            ? [5]
+            : [];
     const result = {
       type: method.executionKind,
       executorResult,
@@ -175,7 +177,7 @@ function buildLegacyFunctionReading(board, method, clientContext = {}) {
       houses,
       result,
       verdict,
-      sourceText: '',
+      sourceText: executorResult.sourceText || '',
     };
 
     return {
@@ -223,11 +225,11 @@ function buildLegacyFunctionReading(board, method, clientContext = {}) {
       formula: {
         type: method.executionKind,
         houses,
-        sourceText: '',
+        sourceText: executorResult.sourceText || '',
         result,
       },
       verdict,
-      overallPositive: null,
+      overallPositive: verdict.positive,
       canonicalExecution: {
         methodsExecuted: [method.kashfMethodId],
         altFormulaExecuted: false,

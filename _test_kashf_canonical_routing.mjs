@@ -390,6 +390,54 @@ assert(thiefDescriptionHtml.includes('theft.p225.thiefDescriptionH7'), 'thief-de
 assert(thiefDescriptionHtml.includes('רחב בטן'), 'thief-description writer renders the source-table description');
 assert(!thiefDescriptionHtml.includes('ניתוח תומך לפי ספר'), 'thief-description writer contains no broad theft support section');
 assert(!thiefDescriptionHtml.includes('מחשבת השואל (הדמיר)'), 'thief-description writer contains no automatic Dhamir');
+// ── P4 pregnancy-exists p191 custom executor -------------------------
+const pregnancyRoute = assertRoute('q-pregnancy', {
+  ok: true,
+  canRunKashf: true,
+  kashfIntentId: 'pregnancy.exists',
+  kashfMethodId: 'pregnancy.p191.existsH5SilentEmpty',
+  kashfRuntimeStatus: 'ready',
+  executorStatus: 'ready',
+  runtimeAllowed: true,
+});
+assert(canRunKashfMethod(pregnancyRoute.kashfMethodId) === true, 'pregnancy-exists canonical method is explicitly runnable');
+const pregnancyReading = buildKashfReadingByQuestionId(PILOT_BOARD, 'q-pregnancy', { question: 'האם יש הריון?' });
+assert(pregnancyReading.valid === true, 'q-pregnancy executes through canonical custom allowlist');
+assert(pregnancyReading.canonicalExecution?.methodsExecuted?.length === 1, 'q-pregnancy executes exactly one method');
+assert(pregnancyReading.canonicalExecution?.methodsExecuted?.[0] === 'pregnancy.p191.existsH5SilentEmpty', 'q-pregnancy executes the exact p191 method only');
+assert(pregnancyReading.primaryFormula?.houses?.length === 1 && pregnancyReading.primaryFormula.houses[0] === 5, 'q-pregnancy traceability records H5 only');
+assert(pregnancyReading.primaryFormula?.result?.executorResult?.h5Pattern === '1212', 'pilot board H5 is ממון יוצא / 1212');
+assert(pregnancyReading.primaryFormula?.result?.executorResult?.classification === 'empty', 'H5=1212 is source-classified as empty');
+assert(pregnancyReading.primaryFormula?.result?.executorResult?.pregnancyExists === false, 'empty H5 yields pregnancy false by p191');
+assert(pregnancyReading.verdict?.positive === false && pregnancyReading.overallPositive === false, 'binary p191 verdict is propagated without topic voting');
+assert(String(pregnancyReading.verdict?.text || '').includes('ההריון בטל'), 'empty H5 renders the exact p191 negative rule');
+assert(pregnancyReading.canonicalExecution?.altFormulaExecuted === false, 'q-pregnancy does not execute alt formula');
+assert(pregnancyReading.canonicalExecution?.topicSupportingChecksExecuted === false, 'q-pregnancy does not execute children supporting checks');
+assert(pregnancyReading.canonicalExecution?.topicBundleExecuted === false, 'q-pregnancy does not execute children topic bundle');
+const pregnancyHtml = writeCanonicalKashfReading(pregnancyReading);
+assert(pregnancyHtml.includes('pregnancy.p191.existsH5SilentEmpty'), 'pregnancy writer identifies exact canonical method');
+assert(pregnancyHtml.includes('ההריון בטל'), 'pregnancy writer renders the p191 result');
+assert(pregnancyHtml.includes('אם בבית החמישי נמצאת צורה שותקת'), 'pregnancy writer exposes the exact source rule');
+assert(!pregnancyHtml.includes('ניתוח תומך לפי ספר'), 'pregnancy writer contains no broad children support section');
+assert(!pregnancyHtml.includes('מחשבת השואל (הדמיר)'), 'pregnancy writer contains no automatic Dhamir');
+
+// Positive-path source guard: H5=2111 is סף נכנס, one of the six silent figures.
+const PREGNANCY_SILENT_BOARD = buildRamlBoardFromMothers(['2122', '1112', '1121', '1211']);
+const pregnancySilentReading = buildKashfReadingByQuestionId(PREGNANCY_SILENT_BOARD, 'q-pregnancy', { question: 'האם יש הריון?' });
+assert(pregnancySilentReading.primaryFormula?.result?.executorResult?.h5Pattern === '2111', 'silent guard board produces H5=2111');
+assert(pregnancySilentReading.primaryFormula?.result?.executorResult?.classification === 'silent', 'H5=2111 is source-classified as silent');
+assert(pregnancySilentReading.primaryFormula?.result?.executorResult?.pregnancyExists === true, 'silent H5 yields pregnancy true by p191');
+assert(pregnancySilentReading.verdict?.positive === true && pregnancySilentReading.overallPositive === true, 'silent H5 positive verdict is propagated');
+assert(String(pregnancySilentReading.verdict?.text || '').includes('ההריון נכון'), 'silent H5 renders the exact p191 positive rule');
+
+// Non-invention guard: p191 does not say every other figure means no pregnancy.
+const PREGNANCY_UNRESOLVED_BOARD = buildRamlBoardFromMothers(['1112', '1121', '1211', '1221']);
+const pregnancyUnresolvedReading = buildKashfReadingByQuestionId(PREGNANCY_UNRESOLVED_BOARD, 'q-pregnancy', { question: 'האם יש הריון?' });
+assert(pregnancyUnresolvedReading.primaryFormula?.result?.executorResult?.h5Pattern === '1111', 'unresolved guard board produces H5=1111 / דרך');
+assert(pregnancyUnresolvedReading.primaryFormula?.result?.executorResult?.classification === 'unresolved', 'H5=1111 is neither silent nor empty for this p191 rule');
+assert(pregnancyUnresolvedReading.primaryFormula?.result?.executorResult?.pregnancyExists === null, 'unclassified p191 figure does not invent a no-pregnancy verdict');
+assert(pregnancyUnresolvedReading.verdict?.positive === null && pregnancyUnresolvedReading.overallPositive === null, 'unresolved p191 figure remains neutral');
+assert(String(pregnancyUnresolvedReading.verdict?.text || '').includes('אינו מכריע'), 'unresolved p191 result is explicit rather than fabricated');
 // ── Canonical execution isolation ----------------------------------------
 for (const qid of ['q-success', 'q-travel-safe', 'q-short-travel', 'q-move-city', 'q-siblings']) {
   const reading = buildKashfReadingByQuestionId(PILOT_BOARD, qid, { question: qid });
