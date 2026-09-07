@@ -438,6 +438,46 @@ assert(pregnancyUnresolvedReading.primaryFormula?.result?.executorResult?.classi
 assert(pregnancyUnresolvedReading.primaryFormula?.result?.executorResult?.pregnancyExists === null, 'unclassified p191 figure does not invent a no-pregnancy verdict');
 assert(pregnancyUnresolvedReading.verdict?.positive === null && pregnancyUnresolvedReading.overallPositive === null, 'unresolved p191 figure remains neutral');
 assert(String(pregnancyUnresolvedReading.verdict?.text || '').includes('אינו מכריע'), 'unresolved p191 result is explicit rather than fabricated');
+// ── P5 pregnancy-gender p191 custom executor -------------------------
+const pregnancyGenderRoute = assertRoute('q-gender', {
+  ok: true,
+  canRunKashf: true,
+  kashfIntentId: 'pregnancy.gender',
+  kashfMethodId: 'pregnancy.p191.genderH5',
+  kashfRuntimeStatus: 'ready',
+  executorStatus: 'ready',
+  runtimeAllowed: true,
+});
+assert(canRunKashfMethod(pregnancyGenderRoute.kashfMethodId) === true, 'pregnancy-gender canonical method is explicitly runnable');
+const pregnancyGenderReading = buildKashfReadingByQuestionId(PILOT_BOARD, 'q-gender', { question: 'מה מין הוולד?' });
+assert(pregnancyGenderReading.valid === true, 'q-gender executes through canonical custom allowlist');
+assert(pregnancyGenderReading.canonicalExecution?.methodsExecuted?.length === 1, 'q-gender executes exactly one method');
+assert(pregnancyGenderReading.canonicalExecution?.methodsExecuted?.[0] === 'pregnancy.p191.genderH5', 'q-gender executes the exact p191 H5 gender method only');
+assert(pregnancyGenderReading.primaryFormula?.houses?.length === 1 && pregnancyGenderReading.primaryFormula.houses[0] === 5, 'q-gender traceability records H5 only');
+assert(pregnancyGenderReading.primaryFormula?.result?.executorResult?.h5Pattern === '1212', 'pilot board H5 remains ממון יוצא / 1212');
+assert(pregnancyGenderReading.primaryFormula?.result?.executorResult?.gender === 'male', 'H5=1212 is masculine and yields male by p191');
+assert(pregnancyGenderReading.verdict?.positive === null && pregnancyGenderReading.overallPositive === null, 'gender lookup does not invent positive/negative sentiment');
+assert(String(pregnancyGenderReading.verdict?.text || '').includes('הוולד זכר'), 'masculine H5 renders the exact p191 male rule');
+assert(pregnancyGenderReading.canonicalExecution?.altFormulaExecuted === false, 'q-gender does not execute alternate gender formula');
+assert(pregnancyGenderReading.canonicalExecution?.topicSupportingChecksExecuted === false, 'q-gender does not execute children supporting checks');
+assert(pregnancyGenderReading.canonicalExecution?.topicBundleExecuted === false, 'q-gender does not execute children topic bundle');
+const pregnancyGenderHtml = writeCanonicalKashfReading(pregnancyGenderReading);
+assert(pregnancyGenderHtml.includes('pregnancy.p191.genderH5'), 'pregnancy-gender writer identifies exact canonical method');
+assert(pregnancyGenderHtml.includes('הוולד זכר'), 'pregnancy-gender writer renders the p191 result');
+assert(pregnancyGenderHtml.includes('אם הצורה זכרית'), 'pregnancy-gender writer exposes the exact source rule');
+
+// Feminine-path source guard: H5=2111 / סף נכנס is one of the six feminine figures.
+const pregnancyGenderFemaleReading = buildKashfReadingByQuestionId(PREGNANCY_SILENT_BOARD, 'q-gender', { question: 'מה מין הוולד?' });
+assert(pregnancyGenderFemaleReading.primaryFormula?.result?.executorResult?.h5Pattern === '2111', 'female guard board produces H5=2111');
+assert(pregnancyGenderFemaleReading.primaryFormula?.result?.executorResult?.gender === 'female', 'H5=2111 is feminine and yields female by p191');
+assert(String(pregnancyGenderFemaleReading.verdict?.text || '').includes('הוולד נקבה'), 'feminine H5 renders the exact p191 female rule');
+
+// Non-invention guard: the four androgynous figures are not forced to male/female.
+const pregnancyGenderUnresolvedReading = buildKashfReadingByQuestionId(PREGNANCY_UNRESOLVED_BOARD, 'q-gender', { question: 'מה מין הוולד?' });
+assert(pregnancyGenderUnresolvedReading.primaryFormula?.result?.executorResult?.h5Pattern === '1111', 'gender unresolved guard board produces H5=1111 / דרך');
+assert(pregnancyGenderUnresolvedReading.primaryFormula?.result?.executorResult?.gender === null, 'H5=1111 remains unresolved by the p191 masculine/feminine rule');
+assert(pregnancyGenderUnresolvedReading.verdict?.positive === null && pregnancyGenderUnresolvedReading.overallPositive === null, 'androgynous H5 remains neutral');
+assert(String(pregnancyGenderUnresolvedReading.verdict?.text || '').includes('אינו מכריע'), 'androgynous p191 result is explicit rather than fabricated');
 // ── Canonical execution isolation ----------------------------------------
 for (const qid of ['q-success', 'q-travel-safe', 'q-short-travel', 'q-move-city', 'q-siblings']) {
   const reading = buildKashfReadingByQuestionId(PILOT_BOARD, qid, { question: qid });

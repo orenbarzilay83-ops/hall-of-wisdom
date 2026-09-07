@@ -255,10 +255,11 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'children',
     sourcePages: [191],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
+    executorStatus: 'ready',
     legacyTopicId: 'children',
+    notes: 'Canonical p191 method: read the sex from the masculine/feminine classification of H5 only. The four androgynous figures remain unresolved. Do not blend the alternative p192-p194 gender procedures into this verdict.',
   }),
 
   // ── FAMILY + HEALTH canonical slice -----------------------------------

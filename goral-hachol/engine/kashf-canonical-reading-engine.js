@@ -166,7 +166,9 @@ function buildLegacyFunctionReading(board, method, clientContext = {}) {
           ? [7]
           : method.kashfMethodId === 'pregnancy.p191.existsH5SilentEmpty'
             ? [5]
-            : [];
+            : method.kashfMethodId === 'pregnancy.p191.genderH5'
+              ? [5]
+              : [];
     const result = {
       type: method.executionKind,
       executorResult,

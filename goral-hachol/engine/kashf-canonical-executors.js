@@ -76,9 +76,66 @@ function computePregnancyExistenceP191(chart) {
   };
 }
 
+
+const P191_MASCULINE_PATTERNS = new Set([
+  '1112', // סף יוצא / عتبة خارجة
+  '1121', // נלחם / جودلة
+  '1122', // כבוד יוצא / نصرة خارجة
+  '1212', // ממון יוצא / القبض الخارج
+  '1222', // נשוא ראש / الأحيان
+  '2122', // אדום / الحمرة
+]);
+
+const P191_FEMININE_PATTERNS = new Set([
+  '1211', // בר הלחי / نقي الخد
+  '2111', // סף נכנס / عتبة داخلة
+  '2121', // ממון נכנס / القبض الداخل
+  '2211', // כבוד נכנס / نصرة داخلة
+  '2212', // לבן / البياض
+  '2221', // שפל ראש / الأنكيس
+]);
+
+function computePregnancyGenderP191(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h5 = chart.find((entry) => Number(entry?.house) === 5)
+    || chart.find((entry) => Number(entry?.houseNumber) === 5)
+    || chart[4]
+    || null;
+  const pattern = h5?.key || h5?.pattern || null;
+  if (!pattern) return null;
+
+  const figureHebrew = h5?.hebrew || h5?.hebrewName || pattern;
+  const isMasculine = P191_MASCULINE_PATTERNS.has(pattern);
+  const isFeminine = P191_FEMININE_PATTERNS.has(pattern);
+  const gender = isMasculine ? 'male' : isFeminine ? 'female' : null;
+  const genderHebrew = isMasculine ? 'זכר' : isFeminine ? 'נקבה' : 'לא הוכרע בכלל זה';
+
+  let outputHebrew;
+  if (gender === 'male') {
+    outputHebrew = `בית 5: ${figureHebrew} (${pattern}) — צורה זכרית. לפי כשף עמ׳ 191: הוולד זכר.`;
+  } else if (gender === 'female') {
+    outputHebrew = `בית 5: ${figureHebrew} (${pattern}) — צורה נקבית. לפי כשף עמ׳ 191: הוולד נקבה.`;
+  } else {
+    outputHebrew = `בית 5: ${figureHebrew} (${pattern}) — הצורה אינה זכרית ואינה נקבית לפי סיווג עמ׳ 59–60. כלל עמ׳ 191 לבדו אינו מכריע את מין הוולד.`;
+  }
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 191; סיווגי זכר/נקבה עמ׳ 59–60',
+    sourceText: 'אם הצורה זכרית — הוולד זכר; ואם היא נקבית — הוולד נקבה.',
+    houseNumber: 5,
+    h5Pattern: pattern,
+    h5FigureHebrew: figureHebrew,
+    gender,
+    genderHebrew,
+    positive: null,
+    outputHebrew,
+  };
+}
+
 const CUSTOM_EXECUTORS = Object.freeze({
   'theft.p225.thiefDescriptionH7': computeThiefPhysicalDescriptionKashf,
   'pregnancy.p191.existsH5SilentEmpty': computePregnancyExistenceP191,
+  'pregnancy.p191.genderH5': computePregnancyGenderP191,
 });
 
 function toLegacyChart(board) {
