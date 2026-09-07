@@ -45,6 +45,19 @@ jobs:
       - name: Apply canonical AI live bridge patch
         run: node _patch_kashf_ai_live_bridge.mjs
 
+      - name: Harden one-token natural-language ambiguity
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('goral-hachol/registry/kashf-ai-retrieval-index.js')
+          s = p.read_text()
+          old = "  const resolved = hasExactReason || (best.retrievalScore >= 45 && margin >= 12);"
+          new = "  const singleTokenNaturalQuery = !hasExactReason && tokenizeKashfRetrievalText(query).length <= 1 && Boolean(second);\n  const resolved = hasExactReason || (!singleTokenNaturalQuery && best.retrievalScore >= 45 && margin >= 12);"
+          if old not in s:
+            raise SystemExit('Missing retrieval resolution anchor')
+          p.write_text(s.replace(old, new, 1))
+          PY
+
       - name: Run retrieval index contract
         run: node _test_kashf_ai_retrieval_index.mjs
       - name: Run canonical live AI bridge contract
@@ -63,6 +76,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add \
+            goral-hachol/registry/kashf-ai-retrieval-index.js \
             goral-hachol/intelligence/kashf-ai-context-builder.js \
             goral-hachol/ui/goral-app.js \
             supabase/functions/oren-smart-advisor/kashf_reading_payload_sanitizer.ts \
