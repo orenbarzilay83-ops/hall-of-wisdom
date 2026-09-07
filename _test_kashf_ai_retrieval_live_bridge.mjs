@@ -64,6 +64,19 @@ assert(pending.canonicalRetrieval?.knowledgeLanguage === 'he', 'pending method m
 assert(pending.aiVerdictAllowed === false, 'retrieval cannot promote pending executor to runnable');
 assert(pending.canonicalReading.canRunKashf === false, 'canonical runtime stays blocked for pending executor');
 
+// 4b. Newly activated p167 route is available to the live AI only through its
+// exact hidden-action method and retains the anti-mixing boundary.
+const hiddenActionLive = buildKashfCanonicalAiBridge({
+  questionId: 'q-hidden-action',
+  questionText: 'האם יש פעולה מאחורי הדבר?',
+  board: BOARD,
+});
+assert(hiddenActionLive.resolution.kashfMethodId === 'spiritual.p167.hiddenActionAirRows46815', 'p167 live bridge resolves exact hidden-action method');
+assert(hiddenActionLive.resolution.executorStatus === 'ready', 'p167 live bridge sees ready executor');
+assert(hiddenActionLive.aiVerdictAllowed === true, 'p167 live bridge allows AI to explain canonical verdict');
+assert(hiddenActionLive.canonicalRetrieval?.doNotMixWith?.includes('spiritual.affectedBySorcery.unsupported'), 'p167 live bridge carries anti-sorcery doNotMixWith guard');
+assert(hiddenActionLive.canonicalReading?.canonicalExecution?.topicBundleExecuted === false, 'p167 live bridge does not execute spiritual topic bundle');
+
 // 5. Context builder canonical mode carries the bridge into the actual live AI
 // envelope and sourceEvidence comes from v57 Hebrew, not invented rule prose.
 const built = buildKashfAiContextPackage({

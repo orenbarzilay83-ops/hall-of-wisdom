@@ -162,6 +162,11 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
     doNotMixWith: ['desire.p206.querentWantsH7H11ThenH5', 'love.p204.attentionFireRows1713'],
     houses: [7, 11, 5],
   },
+  'spiritual.p167.hiddenActionAirRows46815': {
+    aliases: ['האם יש פעולה מאחורי הדבר', 'פעולה נסתרת מאחורי הדבר', 'האם יש פעולה סמויה מאחורי העניין', 'פעולה נסתרת מאחורי העניין'],
+    doNotMixWith: ['spiritual.affectedBySorcery.unsupported', 'spiritual.sorcererIdentity.unsupported', 'spiritual.jinnType.unsupported'],
+    houses: [4, 6, 8, 15],
+  },
   'clothing.p264-265.luck': {
     aliases: ['מה מזלי בלבוש', 'האם יש מזל בבגדים', 'מזל בלבושים', 'מזל בבגד', 'לבוש מלכים'],
     doNotMixWith: ['clothing.color', 'clothing.fixedMutable'],

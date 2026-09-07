@@ -775,7 +775,7 @@ window.QUESTION_BANK = [
     id: 'q-hidden-action',
     category: 'spiritual', houseId: 6, topicId: 'spiritualDiagnostics', kashfTopicId: 'spiritualDiagnostics',
     label: 'האם יש פעולה נסתרת מאחורי הדבר?',
-    desc: 'האם מישהו פועל בנסתר נגד העניין — לא בדרך רוחנית, אלא בפעולה סמויה',
+    desc: 'בדיקת כלל עמ׳ 167: האם יש פעולה נסתרת מאחורי הדבר. אין בכך אבחון של כישוף, ג׳ין או עין הרע',
     clientFields: [F.matter, F.spiritSymptoms],
   },
 

@@ -65,6 +65,7 @@ expectTop('האם האבדה תחזור', 'lostItem.p202.returnH6H8');
 expectTop('האם המטמון במקומו', 'hidden.p188.isStillThere');
 expectTop('מה תוצאת העניין', 'matter.p172.h17_h1011_thenCombine');
 expectTop('האם העניין יושלם', 'completion.p173.fireRows15910');
+expectTop('האם יש פעולה מאחורי הדבר', 'spiritual.p167.hiddenActionAirRows46815');
 
 const exactQuestion = resolveBestKashfAiRetrievalHit('q-clothing-lucky');
 assert(exactQuestion.resolved === true, 'exact question id resolves');
@@ -86,6 +87,11 @@ assert(stayMove?.pages.includes(178) && stayMove?.pages.includes(183), 'stay/mov
 
 const pregnancy = getKashfAiRetrievalRecord('pregnancy.p191.existsH5SilentEmpty');
 assert(pregnancy?.doNotMixWith.includes('pregnancy.p191.genderH5'), 'pregnancy existence separated from gender');
+
+const hiddenActionRecord = getKashfAiRetrievalRecord('spiritual.p167.hiddenActionAirRows46815');
+assert(JSON.stringify(hiddenActionRecord?.houses) === JSON.stringify([4, 6, 8, 15]), 'p167 retrieval record exposes exact houses');
+assert(hiddenActionRecord?.doNotMixWith.includes('spiritual.affectedBySorcery.unsupported'), 'p167 retrieval warns against sorcery conflation');
+assert(hiddenActionRecord?.runtimeAllowed === true && hiddenActionRecord?.executorStatus === 'ready', 'p167 retrieval exposes runnable state');
 
 const sourceReadyPendingResults = searchKashfAiRetrievalIndex('בריאות הוולד', { sourceReadyOnly: true, limit: 20 });
 assert(sourceReadyPendingResults.some((item) => item.kashfMethodId === 'child.p194.healthTrajectoryH6H8' || item.kashfMethodId === 'pregnancy.p191.childSafetyH1H6H8'), 'source-ready pending methods are retrievable as knowledge');

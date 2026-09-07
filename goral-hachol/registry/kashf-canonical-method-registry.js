@@ -898,10 +898,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'spiritualDiagnostics',
     sourcePages: [167],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Body-source p167 asks whether there is an action behind the matter: take the air rows of H4,H6,H8 and the balance/judge, form one figure; malefic => an action is behind it, otherwise not. This is covert/hidden action, not a diagnosis that the querent is affected by sorcery, jinn or evil eye.',
+    executorStatus: 'ready',
+    notes: 'Canonical p167 hidden-action executor is wired. Take ONLY the AIR row of H4, H6, H8 and H15 (the balance/judge) and assemble one four-row figure. Pure malefic => an action is behind the matter; every other source classification follows the explicit source complement “otherwise no”. This is covert/hidden action only and must never be promoted to sorcery, jinn, evil-eye or sorcerer identification.',
   }),
 
   'religion.p253.h3h9Quality': method({

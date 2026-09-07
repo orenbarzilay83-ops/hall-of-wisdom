@@ -1172,7 +1172,59 @@ function computeWomanFavorP206(chart) {
   };
 }
 
+// Kashf v57 p167 — hidden/covert action behind the matter.
+// Source construction: AIR row only from H4, H6, H8 and H15 (the balance/judge),
+// assembled in that order into one four-row figure. This is intentionally NOT
+// the neighboring fire-row sorcery rule and does not diagnose sorcery/jinn/evil eye.
+function computeHiddenActionP167(chart) {
+  if (!Array.isArray(chart)) return null;
+  const housesUsed = [4, 6, 8, 15];
+  const airRows = housesUsed.map((houseNumber) => {
+    const entry = findCanonicalHouse(chart, houseNumber);
+    const pattern = entry?.key || entry?.pattern || null;
+    const value = typeof pattern === 'string' && pattern.length === 4 ? pattern[1] : null;
+    return {
+      houseNumber,
+      pattern,
+      figureHebrew: entry?.hebrew || entry?.hebrewName || pattern,
+      airRowValue: value,
+      airRowState: getCanonicalRowState(pattern, 1),
+    };
+  });
+  if (airRows.some((row) => row.airRowValue !== '1' && row.airRowValue !== '2')) return null;
+
+  const derivedPattern = airRows.map((row) => row.airRowValue).join('');
+  const classification = classifyCanonicalFigure(derivedPattern);
+  const derivedFigureHebrew = classification.figureHebrew || derivedPattern;
+  const hiddenAction = classification.saadNahs === 'nahs';
+
+  let outputHebrew;
+  if (hiddenAction) {
+    outputHebrew = 'שורות האוויר של בתים 4, 6, 8 ו־15 יצרו את הצורה ' + derivedFigureHebrew + ' (' + derivedPattern + ') — צורה מזיקה. לפי כשף v57 עמ׳ 167: יש פעולה מאחורי הדבר. כלל זה אינו קובע שמדובר בכישוף, ג׳ין או עין הרע ואינו מזהה אדם.';
+  } else {
+    outputHebrew = 'שורות האוויר של בתים 4, 6, 8 ו־15 יצרו את הצורה ' + derivedFigureHebrew + ' (' + derivedPattern + ') — ' + (classification.saadNahsHebrew || classification.saadNahs || 'ללא סיווג') + '. לפי לשון כשף v57 עמ׳ 167: אם התוצאה אינה מזיקה — אין פעולה מאחורי הדבר לפי כלל זה.';
+  }
+
+  return {
+    sourceRef: 'כשף אל-אסרר v57 עמ׳ 167',
+    sourceText: 'אם אמר לך השואל: האם מאחורי הדבר יש פעולה או לא? קח את אוויר הרביעי, אוויר השישי, אוויר השמיני ואוויר המאזן; העמד מהם צורה. אם יצאה צורה מזיקה, הרי הפעולה מאחוריו; ואם לא — לא.',
+    housesUsed,
+    rowUsed: 'air',
+    rowIndex: 1,
+    airRows,
+    derivedPattern,
+    derivedFigureHebrew,
+    classification,
+    hiddenAction,
+    sourceConditionMet: hiddenAction,
+    positive: hiddenAction,
+    diagnosisScope: 'hidden-action-only',
+    outputHebrew,
+  };
+}
+
 const CUSTOM_EXECUTORS = Object.freeze({
+  'spiritual.p167.hiddenActionAirRows46815': computeHiddenActionP167,
   'love.p206.womanFavorH7H11ThenH5': computeWomanFavorP206,
   'desire.p206.querentWantsH7H11ThenH5': computeQuerentWantsMatterP206,
   'clothing.p264-265.luck': computeClothingLuckP265,

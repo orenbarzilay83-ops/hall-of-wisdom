@@ -277,11 +277,11 @@ assert(canRunKashfMethod(illnessRecovery.kashfMethodId), 'p196 H15 recovery meth
 // ── Spiritual/misc source-boundary checks -------------------------------
 assertRoute('q-hidden-action', {
   ok: true,
-  canRunKashf: false,
+  canRunKashf: true,
   kashfIntentId: 'spiritual.hiddenAction',
   kashfMethodId: 'spiritual.p167.hiddenActionAirRows46815',
   kashfRuntimeStatus: 'ready',
-  executorStatus: 'pending',
+  executorStatus: 'ready',
 });
 assertRoute('q-religion', {
   ok: true,
@@ -1464,6 +1464,35 @@ assert(p206DesireMalefic.overallPositive === false, 'p206 desire malefic is posi
 const p206DesireMixed = buildKashfReadingByMethod(makeP204Board({ 5: '2222', 7: '2222', 11: '2222' }), 'desire.p206.querentWantsH7H11ThenH5');
 assert(p206DesireMixed.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'mixed', 'p206 desire preserves mixed classification');
 assert(p206DesireMixed.primaryFormula?.result?.executorResult?.wantsMatter === null && p206DesireMixed.overallPositive === null, 'p206 desire mixed remains unresolved');
+
+// ── P167 hidden-action AIR-row executor ---------------------------------
+const p167HiddenMethod = getKashfMethod('spiritual.p167.hiddenActionAirRows46815');
+assert(p167HiddenMethod?.runtimeAllowed === true && p167HiddenMethod?.executorStatus === 'ready', 'p167 hidden-action method is runnable');
+assert(canRunKashfMethod('spiritual.p167.hiddenActionAirRows46815') === true, 'p167 hidden-action canRunKashfMethod is true');
+
+const p167HiddenMalefic = buildKashfReadingByQuestionId(makeP204Board({ 4: '1111', 6: '2222', 8: '1111', 15: '2222' }), 'q-hidden-action', { question: 'האם יש פעולה מאחורי הדבר?' });
+assert(p167HiddenMalefic.valid === true && p167HiddenMalefic.canRunKashf === true, 'p167 hidden-action malefic fixture executes');
+assert(p167HiddenMalefic.primaryFormula?.result?.executorResult?.derivedPattern === '1212', 'p167 assembles only AIR rows H4,H6,H8,H15 in order');
+assert(p167HiddenMalefic.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'nahs', 'p167 malefic derived figure is classified as pure malefic');
+assert(p167HiddenMalefic.primaryFormula?.result?.executorResult?.hiddenAction === true, 'p167 pure malefic means action is behind the matter');
+assert(p167HiddenMalefic.overallPositive === true, 'p167 affirmative hidden-action answer is represented as positive=true');
+assert(JSON.stringify(p167HiddenMalefic.primaryFormula?.houses) === JSON.stringify([4, 6, 8, 15]), 'p167 trace uses exactly H4,H6,H8,H15');
+assert(JSON.stringify(p167HiddenMalefic.primaryFormula?.result?.executorResult?.airRows?.map((r) => r.airRowValue)) === JSON.stringify(['1','2','1','2']), 'p167 trace exposes the four AIR-row values');
+assert(p167HiddenMalefic.primaryFormula?.sourceText === getKashfV57Knowledge('spiritual.p167.hiddenActionAirRows46815')?.v57?.hebrewRule, 'p167 runtime sourceText comes from Hebrew v57');
+assert(p167HiddenMalefic.canonicalExecution?.methodsExecuted?.length === 1 && p167HiddenMalefic.canonicalExecution.methodsExecuted[0] === 'spiritual.p167.hiddenActionAirRows46815', 'p167 executes only its exact canonical method');
+assert(p167HiddenMalefic.dhamir === null && p167HiddenMalefic.canonicalExecution?.topicBundleExecuted === false && p167HiddenMalefic.canonicalExecution?.altFormulaExecuted === false, 'p167 runs no Dhamir/topic bundle/alternative');
+assert(p167HiddenMalefic.primaryFormula?.result?.executorResult?.diagnosisScope === 'hidden-action-only', 'p167 result is explicitly scoped to hidden action only');
+
+const p167HiddenBenefic = buildKashfReadingByQuestionId(makeP204Board({ 4: '2222', 6: '2222', 8: '1111', 15: '1111' }), 'q-hidden-action');
+assert(p167HiddenBenefic.primaryFormula?.result?.executorResult?.derivedPattern === '2211', 'p167 benefic fixture derives 2211');
+assert(p167HiddenBenefic.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'saad', 'p167 benefic fixture is pure benefic');
+assert(p167HiddenBenefic.primaryFormula?.result?.executorResult?.hiddenAction === false && p167HiddenBenefic.overallPositive === false, 'p167 non-malefic result follows explicit otherwise-no branch');
+
+const p167HiddenMixed = buildKashfReadingByQuestionId(makeP204Board({ 4: '2222', 6: '2222', 8: '2222', 15: '2222' }), 'q-hidden-action');
+assert(p167HiddenMixed.primaryFormula?.result?.executorResult?.derivedPattern === '2222', 'p167 mixed fixture derives 2222');
+assert(p167HiddenMixed.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'mixed', 'p167 preserves mixed classification metadata');
+assert(p167HiddenMixed.primaryFormula?.result?.executorResult?.hiddenAction === false && p167HiddenMixed.overallPositive === false, 'p167 mixed still follows source explicit otherwise-no branch rather than being promoted to malefic');
+assert(resolveKashfRouteByQuestionId('q-sorcery').kashfMethodId !== 'spiritual.p167.hiddenActionAirRows46815', 'p167 hidden-action remains separated from q-sorcery after activation');
 
 console.log(`Kashf canonical routing tests: ${passed} passed, ${failed} failed`);
 if (failed > 0) {
