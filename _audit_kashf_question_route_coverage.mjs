@@ -2,18 +2,16 @@
 /**
  * _audit_kashf_question_route_coverage.mjs
  *
- * Transitional P0 coverage audit.
+ * P0 coverage gate.
  * Reads the classic-script Question Bank as source text, extracts every
  * q-* Question ID, and compares it with the explicit Kashf route registry.
  *
- * While P0 migration is incomplete, unmapped questions are REPORTED but do
- * not fail CI. Structural defects DO fail CI:
+ * Coverage reached 100% on 2026-09-07. From this point forward, ANY new or
+ * existing Question ID without an explicit Kashf route is a CI failure.
+ * Structural defects also fail CI:
  * - duplicate Question IDs in the bank
  * - route IDs that do not exist in the bank
  * - malformed/non-q route IDs
- *
- * Once coverage reaches 100%, this audit should be tightened so any future
- * unmapped Question ID fails CI immediately.
  */
 
 import fs from 'node:fs';
@@ -65,8 +63,8 @@ console.log(`Disposition counts: ${JSON.stringify(dispositionCounts)}`);
 console.log(`Runtime status counts: ${JSON.stringify(runtimeStatusCounts)}`);
 
 if (unmapped.length) {
-  console.log('\nUNMAPPED QUESTION IDS (transitional report; not yet a CI failure):');
-  for (const id of unmapped) console.log(`- ${id}`);
+  console.error('\nUNMAPPED QUESTION IDS — HARD CI FAILURE:');
+  for (const id of unmapped) console.error(`- ${id}`);
 }
 
 const errors = [];
@@ -74,16 +72,12 @@ if (uniqueQuestionIds.length === 0) errors.push('No q-* Question IDs were extrac
 if (duplicates.length) errors.push(`Duplicate Question IDs: ${duplicates.join(', ')}`);
 if (orphanRoutes.length) errors.push(`Route IDs not present in Question Bank: ${orphanRoutes.join(', ')}`);
 if (malformedRoutes.length) errors.push(`Malformed route IDs: ${malformedRoutes.join(', ')}`);
+if (unmapped.length) errors.push(`Unmapped Question IDs are forbidden after P0 reached 100% coverage: ${unmapped.join(', ')}`);
 
 if (errors.length) {
-  console.error('\nSTRUCTURAL COVERAGE ERRORS:');
+  console.error('\nQUESTION ROUTE COVERAGE ERRORS:');
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
 
-console.log('\nStructural coverage audit: PASS');
-if (unmapped.length) {
-  console.log('Migration coverage gate: REPORT-ONLY until explicit routing reaches 100%.');
-} else {
-  console.log('Migration coverage gate: 100% — safe to tighten future CI to reject unmapped questions.');
-}
+console.log('\nQuestion route coverage gate: PASS (100% explicit routing enforced)');
