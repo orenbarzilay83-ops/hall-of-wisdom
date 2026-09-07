@@ -26,6 +26,12 @@ jobs:
         with:
           node-version: '24'
 
+      - name: Avoid existing test variable name collision
+        run: |
+          sed -i "s/const compromise =/const compromiseRoute =/" _apply_kashf_conflict_theft_slice.mjs
+          sed -i "s/compromise\.kashfMethodId/compromiseRoute.kashfMethodId/" _apply_kashf_conflict_theft_slice.mjs
+          sed -i "s/compromise\.aliasOf/compromiseRoute.aliasOf/" _apply_kashf_conflict_theft_slice.mjs
+
       - name: Apply canonical conflict/theft patch and run tests
         run: node _apply_kashf_conflict_theft_slice.mjs
 
