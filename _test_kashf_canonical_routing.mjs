@@ -821,6 +821,75 @@ const p172Html = writeCanonicalKashfReading(p172Good);
 assert(p172Html.includes('matter.p172.h17_h1011_thenCombine'), 'p172 narrative exposes exact method id');
 assert(p172Html.includes('תוצאת עניינו של השואל'), 'p172 narrative preserves v57 Hebrew rule context');
 
+
+// ── P16 pp178/183 stay-or-move source contract ---------------------------
+assertRoute('q-stay-place', {
+  ok: true,
+  canRunKashf: true,
+  kashfIntentId: 'relocation.stayOrMove',
+  kashfMethodId: 'relocation.p183.stayMoveH1H2',
+  kashfRuntimeStatus: 'ready',
+  executorStatus: 'ready',
+  runtimeAllowed: true,
+});
+assert(canRunKashfMethod('relocation.p183.stayMoveH1H2'), 'stay/move H1/H2 method is explicitly runnable');
+const stayMoveV57 = getKashfV57Knowledge('relocation.p183.stayMoveH1H2');
+assert(stayMoveV57?.v57?.page === 178, 'stay/move primary v57 anchor is p178');
+assert(JSON.stringify(stayMoveV57?.v57?.detailPages) === JSON.stringify([178, 183]), 'stay/move v57 records repeated rule on pp178 and 183');
+assert(stayMoveV57?.v57?.hebrewRule.includes('המקום שבו הוא נמצא טוב לו'), 'stay/move v57 preserves the explicit current-place branch');
+assert(stayMoveV57?.v57?.hebrewRule.includes('הדין להפך'), 'stay/move v57 preserves the explicit reverse branch');
+
+const p178Stay = buildKashfReadingByQuestionId(
+  makeP204Board({ 1: '1122', 2: '1112' }),
+  'q-stay-place',
+  { question: 'האם כדאי להישאר במקום זה או לעבור?' }
+);
+assert(p178Stay.valid === true && p178Stay.canRunKashf === true, 'stay/move stay fixture executes canonically');
+assert(JSON.stringify(p178Stay.primaryFormula?.houses) === JSON.stringify([1, 2]), 'stay/move traces H1+H2 only');
+assert(p178Stay.primaryFormula?.result?.executorResult?.h1Quality === 'saad', 'stay/move stay fixture H1 is pure benefic');
+assert(p178Stay.primaryFormula?.result?.executorResult?.h2Quality === 'nahs', 'stay/move stay fixture H2 is pure malefic');
+assert(p178Stay.primaryFormula?.result?.executorResult?.decision === 'stay', 'stay/move explicit first branch chooses stay');
+assert(p178Stay.primaryFormula?.result?.executorResult?.currentPlaceBetter === true, 'stay/move marks current place better in explicit stay branch');
+assert(p178Stay.primaryFormula?.result?.executorResult?.moveBetter === false, 'stay/move marks moving not preferred in explicit stay branch');
+assert(p178Stay.overallPositive === null, 'stay/move directional decision is not collapsed into positive/negative sentiment');
+assert(p178Stay.altFormula === null, 'stay/move does not aggregate relocation alternatives');
+assert(p178Stay.canonicalExecution?.topicBundleExecuted === false, 'stay/move does not execute broad relocation bundle');
+assert(p178Stay.dhamir === null, 'stay/move does not auto-run Dhamir');
+
+const p178Move = buildKashfReadingByQuestionId(
+  makeP204Board({ 1: '1112', 2: '1122' }),
+  'q-stay-place',
+  { question: 'האם כדאי להישאר במקום זה או לעבור?' }
+);
+assert(p178Move.primaryFormula?.result?.executorResult?.h1Quality === 'nahs', 'stay/move reverse fixture H1 is pure malefic');
+assert(p178Move.primaryFormula?.result?.executorResult?.h2Quality === 'saad', 'stay/move reverse fixture H2 is pure benefic');
+assert(p178Move.primaryFormula?.result?.executorResult?.decision === 'move', 'stay/move explicit reverse branch chooses move');
+assert(p178Move.primaryFormula?.result?.executorResult?.currentPlaceBetter === false, 'stay/move reverse branch marks current place not preferred');
+assert(p178Move.primaryFormula?.result?.executorResult?.moveBetter === true, 'stay/move reverse branch marks move preferred');
+assert(p178Move.overallPositive === null, 'stay/move reverse directional decision is not a sentiment verdict');
+
+const p178Same = buildKashfReadingByQuestionId(
+  makeP204Board({ 1: '1122', 2: '2211' }),
+  'q-stay-place',
+  { question: 'האם כדאי להישאר במקום זה או לעבור?' }
+);
+assert(p178Same.primaryFormula?.result?.executorResult?.h1Quality === 'saad' && p178Same.primaryFormula?.result?.executorResult?.h2Quality === 'saad', 'stay/move same-class fixture has two pure benefics');
+assert(p178Same.primaryFormula?.result?.executorResult?.decision === 'unresolved', 'stay/move does not invent a same-class branch');
+assert(p178Same.primaryFormula?.result?.executorResult?.currentPlaceBetter === null && p178Same.primaryFormula?.result?.executorResult?.moveBetter === null, 'stay/move same-class branch remains unresolved');
+
+const p178Mixed = buildKashfReadingByQuestionId(
+  makeP204Board({ 1: '2212', 2: '1112' }),
+  'q-stay-place',
+  { question: 'האם כדאי להישאר במקום זה או לעבור?' }
+);
+assert(p178Mixed.primaryFormula?.result?.executorResult?.h1Quality === 'mixed', 'stay/move preserves mixed H1 class');
+assert(p178Mixed.primaryFormula?.result?.executorResult?.decision === 'unresolved', 'stay/move mixed testimony remains unresolved');
+assert(p178Mixed.primaryFormula?.result?.executorResult?.currentPlaceBetter === null, 'stay/move does not promote mixed inclination to stay');
+
+const p178Html = writeCanonicalKashfReading(p178Stay);
+assert(p178Html.includes('relocation.p183.stayMoveH1H2'), 'stay/move narrative exposes exact method id');
+assert(p178Html.includes('המקום שבו הוא נמצא טוב לו'), 'stay/move narrative preserves v57 Hebrew result');
+
 // ── P12 p183 current place vs relocation source contract -----------------
 assertRoute('q-move-home', {
   ok: true,

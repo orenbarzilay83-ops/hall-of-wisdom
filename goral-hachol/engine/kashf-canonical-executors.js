@@ -923,7 +923,69 @@ function computeDisputeReconciliationP212(chart) {
   };
 }
 
+
+// Kashf v57 pp178/183 — stay in the current place or move away.
+// The source gives exactly two opposite H1/H2 combinations. We do not infer
+// a verdict for same-class testimony or for mixed figures.
+function computeRelocationStayMoveH1H2(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h1 = findCanonicalHouse(chart, 1);
+  const h2 = findCanonicalHouse(chart, 2);
+  const h1Pattern = h1?.key || h1?.pattern || null;
+  const h2Pattern = h2?.key || h2?.pattern || null;
+  if (!h1Pattern || !h2Pattern) return null;
+
+  const h1Classification = classifyCanonicalFigure(h1Pattern);
+  const h2Classification = classifyCanonicalFigure(h2Pattern);
+  const h1Quality = h1Classification.saadNahs;
+  const h2Quality = h2Classification.saadNahs;
+
+  let decision = 'unresolved';
+  let decisionHebrew = 'לא הוכרע אם עדיף להישאר או לעבור לפי כלל זה';
+  let currentPlaceBetter = null;
+  let moveBetter = null;
+  let outputHebrew;
+
+  if (h1Quality === 'saad' && h2Quality === 'nahs') {
+    decision = 'stay';
+    decisionHebrew = 'המקום שבו הוא נמצא טוב לו — עדיף להישאר';
+    currentPlaceBetter = true;
+    moveBetter = false;
+    outputHebrew = 'לפי חשיפת הסודות הנצורים v57 עמ׳ 178 (והכלל החוזר בעמ׳ 183), בבית הראשון צורה מיטיבה ובבית השני צורה מזיקה. לכן המקום שבו הוא נמצא טוב לו, והדין נוטה להישארות.';
+  } else if (h1Quality === 'nahs' && h2Quality === 'saad') {
+    decision = 'move';
+    decisionHebrew = 'הדין להפך — המעבר מן המקום הנוכחי עדיף';
+    currentPlaceBetter = false;
+    moveBetter = true;
+    outputHebrew = 'לפי חשיפת הסודות הנצורים v57 עמ׳ 178 (והכלל החוזר בעמ׳ 183), בבית הראשון צורה מזיקה ובבית השני צורה מיטיבה. המקור אומר שבמצב ההפוך הדין להפך, ולכן המעבר מן המקום הנוכחי עדיף.';
+  } else {
+    const hasMixed = h1Quality === 'mixed' || h2Quality === 'mixed';
+    outputHebrew = hasMixed
+      ? 'כלל v57 להישארות או מעבר דורש צירוף מפורש של מיטיב מול מזיק בשני הבתים. כאן לפחות אחד מהם ממוזג, ולכן אין להפוך את נטייתו בכוח להכרעה ואין פסק לפי כלל זה.'
+      : 'בית 1 ובית 2 אינם יוצרים כאן אחד משני הצירופים ההפוכים שהמקור מגדיר במפורש. לכן אין להשלים מן הדעת אם עדיף להישאר או לעבור.';
+  }
+
+  return {
+    sourceRef: 'חשיפת הסודות הנצורים v57 עמ׳ 178; חזרה בעמ׳ 183',
+    sourceText: 'האם טוב לאדם להישאר בעיר זו או לעבור ממנה? השלם את ההכאה. אם יצאה בראשון צורה מיטיבה ובשני צורה מזיקה, המקום שבו הוא נמצא טוב לו. ואם יצא להפך — הדין להפך.',
+    housesUsed: [1, 2],
+    h1Pattern,
+    h2Pattern,
+    h1Classification,
+    h2Classification,
+    h1Quality,
+    h2Quality,
+    decision,
+    decisionHebrew,
+    currentPlaceBetter,
+    moveBetter,
+    positive: null,
+    outputHebrew,
+  };
+}
+
 const CUSTOM_EXECUTORS = Object.freeze({
+  'relocation.p183.stayMoveH1H2': computeRelocationStayMoveH1H2,
   'dispute.p212.reconciliationH1H7': computeDisputeReconciliationP212,
   'religion.p253.h3h9Quality': computeReligionQualityP253,
   'matter.p172.h17_h1011_thenCombine': computeMatterOutcomeP172,

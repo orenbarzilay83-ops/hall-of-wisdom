@@ -796,8 +796,8 @@ window.QUESTION_BANK = [
   {
     id: 'q-stay-place',
     category: 'general', houseId: 3, topicId: 'relocation', kashfTopicId: 'relocation',
-    label: 'האם כדאי להישאר במקום זה?',
-    desc: 'להחלטה האם להישאר (עיר, מדינה, מקום עבודה) — לא מעבר אחר',
+    label: 'האם כדאי להישאר במקום זה או לעבור?',
+    desc: 'להחלטה בין הישארות במקום הנוכחי לבין מעבר ממנו, לפי דין בתים 1 ו־2 של v57',
     clientFields: [{ id: 'stayPlace', label: 'המקום / הנסיבות', type: 'text', placeholder: 'עיר / מדינה / בית / עבודה...' }],
   },
   {

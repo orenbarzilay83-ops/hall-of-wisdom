@@ -216,11 +216,11 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'relocation',
     sourcePages: [178, 183],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
-    executionKind: 'legacy-function',
-    executorStatus: 'pending',
+    runtimeAllowed: true,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
     legacyTopicId: 'relocation',
-    notes: 'Existing stay/move helper needs isolated canonical wiring and traceability cleanup.',
+    notes: 'Canonical H1/H2 stay-or-move executor is wired from the repeated v57 rule on pp178 and 183. H1 pure benefic + H2 pure malefic => the current place is better / stay. H1 pure malefic + H2 pure benefic => the reverse / moving away is better. Same-class, mixed or unknown testimony remains unresolved; no broad relocation helper is executed.',
   }),
 
   'illness.p196.outcomeH15': method({
