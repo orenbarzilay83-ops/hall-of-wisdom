@@ -672,6 +672,69 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     notes: 'Fugitive material after the return marker is explicitly from Nuzhat al-Uqul. It must not be executed as body-source Kashf runtime.',
   }),
 
+  // ── CAREER + AUTHORITY canonical slice --------------------------------
+  'authority.p256.honorConditionH10Planet': method({
+    kashfMethodId: 'authority.p256.honorConditionH10Planet',
+    kashfIntentId: 'authority.honorCondition',
+    topicId: 'authorityState',
+    sourcePages: [256],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'pending',
+    notes: 'Body-source honor/status rule: judge the figure in the house of honor/authority by its planetary attribution. Sun figures indicate strength of honor/rank; Jupiter or Venus indicate good/completion; Saturn indicates lack of benefit, gloom and distress. This is a condition-of-honor method, not a binary fame prediction.',
+  }),
+
+  'authority.p257.appointmentH1H10Planet': method({
+    kashfMethodId: 'authority.p257.appointmentH1H10Planet',
+    kashfIntentId: 'authority.appointmentStays',
+    topicId: 'authorityState',
+    sourcePages: [257],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'pending',
+    notes: 'Body-source question “does the appointment/authority remain?”: derive one figure from H1+H10. If it belongs to the two luminaries (Sun/Moon) or the two benefics (Jupiter/Venus), the appointment remains; otherwise it does not. Must use actual planetary attribution, not a benefic/malefic proxy. It does not calculate a number of months/years.',
+  }),
+
+  'authority.p257.rulerConditionH7H10': method({
+    kashfMethodId: 'authority.p257.rulerConditionH7H10',
+    kashfIntentId: 'authority.rulerCondition',
+    topicId: 'authorityState',
+    sourcePages: [257],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'pending',
+    notes: 'Body-source ruler-condition rule: derive a figure from H7+H10; benefic gives a good condition and malefic gives a bad condition. This is distinct from whether an appointment remains.',
+  }),
+
+  'career.p266.returnToOffice': method({
+    kashfMethodId: 'career.p266.returnToOffice',
+    kashfIntentId: 'career.returnToOffice',
+    topicId: 'authorityState',
+    sourcePages: [266],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'legacy-function',
+    executorStatus: 'pending',
+    legacyTopicId: 'authorityState',
+    notes: 'Body-source rule for one dismissed from service: H1 must be benefic+incoming and connect/appear in H10 or strong houses, with the outcome supporting return. Existing computeReturnToOfficeKashf is only provisionally reusable after the general benefic/malefic classification boundary is closed; it must not run as a broad authorityState supporting check.',
+  }),
+
+  'profession.p254.h9Planet': method({
+    kashfMethodId: 'profession.p254.h9Planet',
+    kashfIntentId: 'profession.type',
+    topicId: 'authorityState',
+    sourcePages: [254],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'legacy-function',
+    executorStatus: 'pending',
+    legacyTopicId: 'authorityState',
+    notes: 'Body-source profession/craft rule: profession itself is judged by the planetary figure in H9; H10/H11 benefic is only a separate ease-of-work qualifier. Existing computeProfessionH9Kashf already follows this split and may be reused after method-scoped wiring. Source does not claim to optimize a modern “best career fit” from personal preference.',
+  }),
+
   // ── REPAIR REQUIRED ----------------------------------------------------
   'money.p180.elementComparison': method({
     kashfMethodId: 'money.p180.elementComparison',

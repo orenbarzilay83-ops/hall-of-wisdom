@@ -687,6 +687,72 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfRuntimeStatus: 'educational-only',
   }),
 
+  // ── AUDITED CAREER + AUTHORITY SLICE ----------------------------------
+  'q-career-state': route({
+    questionId: 'q-career-state',
+    disposition: 'RENAME',
+    aliasOf: 'q-stability',
+    kashfIntentId: 'state.stability',
+    kashfMethodId: 'state.p265.h1h2h9h15',
+    kashfRuntimeStatus: 'repair-required',
+    note: 'The current wording mixes broad career condition with trend. Source-safe scope is whether the current professional/role state remains stable; route it to the dedicated state-stability method rather than the authorityState bundle.',
+  }),
+
+  'q-position-keep': route({
+    questionId: 'q-position-keep',
+    disposition: 'KEEP',
+    kashfIntentId: 'authority.appointmentStays',
+    kashfMethodId: 'authority.p257.appointmentH1H10Planet',
+    kashfRuntimeStatus: 'ready',
+    note: 'Dedicated p257 body-source question: does the appointment/authority remain? Uses H1+H10 and actual planetary attribution.',
+  }),
+
+  'q-career-duration': route({
+    questionId: 'q-career-duration',
+    disposition: 'RENAME',
+    aliasOf: 'q-position-keep',
+    kashfIntentId: 'authority.appointmentStays',
+    kashfMethodId: 'authority.p257.appointmentH1H10Planet',
+    kashfRuntimeStatus: 'ready',
+    note: 'The source method answers whether the post continues or ends; it does not calculate how many months/years remain. Rename the UI accordingly.',
+  }),
+
+  'q-career-return': route({
+    questionId: 'q-career-return',
+    disposition: 'KEEP',
+    kashfIntentId: 'career.returnToOffice',
+    kashfMethodId: 'career.p266.returnToOffice',
+    kashfRuntimeStatus: 'ready',
+    note: 'Distinct body-source p266 intent for a person dismissed from service. Do not treat it as an alternative vote inside authorityState.',
+  }),
+
+  'q-profession': route({
+    questionId: 'q-profession',
+    disposition: 'RENAME',
+    kashfIntentId: 'profession.type',
+    kashfMethodId: 'profession.p254.h9Planet',
+    kashfRuntimeStatus: 'ready',
+    note: 'Source-safe wording concerns the craft/profession indicated by H9 planetary attribution. The current “best profession for me” wording should not imply a modern optimization system.',
+  }),
+
+  'q-ruler-status': route({
+    questionId: 'q-ruler-status',
+    disposition: 'RENAME',
+    kashfIntentId: 'authority.rulerCondition',
+    kashfMethodId: 'authority.p257.rulerConditionH7H10',
+    kashfRuntimeStatus: 'ready',
+    note: 'Keep only “what is the ruler/authority-holder condition?”. The current description also asks whether they remain in office, which is a separate appointment-stability intent.',
+  }),
+
+  'q-fame': route({
+    questionId: 'q-fame',
+    disposition: 'RENAME',
+    kashfIntentId: 'authority.honorCondition',
+    kashfMethodId: 'authority.p256.honorConditionH10Planet',
+    kashfRuntimeStatus: 'ready',
+    note: 'p256 judges the condition/strength of honor, rank and reputation by the planetary figure in H10. It does not directly promise “will I become famous?”. Rename to a source-safe honor/reputation condition question.',
+  }),
+
   // ── REPAIR REQUIRED: explicit hard stop until fixed -------------------
   'q-wish': route({
     questionId: 'q-wish',
