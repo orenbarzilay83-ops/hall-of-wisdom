@@ -257,6 +257,31 @@ assert(securityH8.kashfRuntimeStatus === 'educational-only', 'q-security-h8 rema
 assert(securityH8.canRunKashf === false, 'q-security-h8 cannot feed live Kashf verdict');
 assert(resolveKashfRouteByQuestionId('q-sorcery').kashfMethodId !== 'spiritual.p167.hiddenActionAirRows46815', 'q-sorcery cannot fall into p167 hidden-action method');
 
+// ── Final question-bank coverage checks ---------------------------------
+assertRoute('q-illness-type', {
+  ok: true,
+  canRunKashf: false,
+  kashfIntentId: 'illness.humor',
+  kashfMethodId: 'illness.p197.h1h8ElementHumor',
+  kashfRuntimeStatus: 'repair-required',
+});
+for (const qid of [
+  'q-agriculture','q-father','q-geo-direction','q-helpers','q-illness-cause',
+  'q-lose-fortune','q-nativity','q-neighbor','q-official-docs','q-past-events',
+  'q-relative-state','q-separation','q-separation-loved','q-stalled'
+]) {
+  const r = resolveKashfRouteByQuestionId(qid);
+  assert(r.ok === true, qid + ': explicit final-coverage route exists');
+  assert(r.canRunKashf === false, qid + ': unsupported/mixed scope hard-stops');
+  assert(r.kashfRuntimeStatus === 'unsupported', qid + ': unsupported status is explicit');
+}
+assertRoute('q-stranger-desc', {
+  ok: true,
+  canRunKashf: false,
+  kashfRuntimeStatus: 'blocked-by-source',
+  kashfMethodId: 'stranger.description.unresolved',
+});
+
 // ── Acceptance test 8: runtimeAllowed=false is a hard stop ---------------
 for (const qid of ['q-promise', 'q-fear', 'q-sorcery', 'q-sea-voyage', 'q-prisoner', 'q-friends', 'q-stability', 'q-missing-alive', 'q-illness-heal']) {
   const route = resolveKashfRouteByQuestionId(qid);

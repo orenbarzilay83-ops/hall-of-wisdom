@@ -959,6 +959,145 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfRuntimeStatus: 'unsupported',
   }),
 
+  // ── FINAL AUDITED QUESTION-BANK COVERAGE SLICE -----------------------
+  'q-agriculture': route({
+    questionId: 'q-agriculture',
+    disposition: 'SPLIT',
+    kashfIntentId: 'agriculture.mixedScope',
+    kashfMethodId: 'agriculture.mixedScope.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+    note: 'Split crop/yield, irrigation and land ownership. The source uses different layers/methods for these and the agriculture-year material is Nuzhat.',
+  }),
+
+  'q-father': route({
+    questionId: 'q-father',
+    disposition: 'SPLIT',
+    kashfIntentId: 'family.fatherPropertyMixedScope',
+    kashfMethodId: 'family.fatherPropertyMixedScope.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+    note: 'p184 separates father condition from property/house/land. The current combined question cannot have one canonical verdict.',
+  }),
+
+  'q-geo-direction': route({
+    questionId: 'q-geo-direction',
+    disposition: 'BLOCK',
+    kashfIntentId: 'direction.generic',
+    kashfMethodId: 'direction.generic.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+    note: 'No single generic direction method covers every intent; direction must remain method/domain specific.',
+  }),
+
+  'q-helpers': route({
+    questionId: 'q-helpers',
+    disposition: 'BLOCK',
+    kashfIntentId: 'helpers.findHelp',
+    kashfMethodId: 'helpers.generic.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+    note: 'Do not generalize servant/service material into a universal helper-finding verdict.',
+  }),
+
+  'q-illness-cause': route({
+    questionId: 'q-illness-cause',
+    disposition: 'BLOCK',
+    kashfIntentId: 'illness.causeMixedScope',
+    kashfMethodId: 'illness.causeMixedScope.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+    note: 'The source humor rule is not a physical/emotional/environmental diagnostic classifier.',
+  }),
+
+  'q-illness-type': route({
+    questionId: 'q-illness-type',
+    disposition: 'KEEP',
+    kashfIntentId: 'illness.humor',
+    kashfMethodId: 'illness.p197.h1h8ElementHumor',
+    kashfRuntimeStatus: 'repair-required',
+    note: 'Use the p197 H1+H8 elemental/humoral classification only. It does not itself prescribe treatment.',
+  }),
+
+  'q-lose-fortune': route({
+    questionId: 'q-lose-fortune',
+    disposition: 'BLOCK',
+    kashfIntentId: 'money.loseFortune',
+    kashfMethodId: 'money.loseFortune.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+  }),
+
+  'q-nativity': route({
+    questionId: 'q-nativity',
+    disposition: 'BLOCK',
+    kashfIntentId: 'nativity.birthDate',
+    kashfMethodId: 'nativity.birthDate.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+  }),
+
+  'q-neighbor': route({
+    questionId: 'q-neighbor',
+    disposition: 'BLOCK',
+    kashfIntentId: 'social.neighborState',
+    kashfMethodId: 'social.neighbor.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+    note: 'Do not reuse the p182 sibling method for a neighbor.',
+  }),
+
+  'q-official-docs': route({
+    questionId: 'q-official-docs',
+    disposition: 'BLOCK',
+    kashfIntentId: 'authority.officialDocs',
+    kashfMethodId: 'authority.officialDocs.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+  }),
+
+  'q-past-events': route({
+    questionId: 'q-past-events',
+    disposition: 'BLOCK',
+    kashfIntentId: 'general.pastEvents',
+    kashfMethodId: 'general.pastEvents.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+  }),
+
+  'q-relative-state': route({
+    questionId: 'q-relative-state',
+    disposition: 'BLOCK',
+    kashfIntentId: 'family.relativeState',
+    kashfMethodId: 'family.relativeState.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+    note: 'Do not expand the siblings method to arbitrary relatives/in-laws.',
+  }),
+
+  'q-separation': route({
+    questionId: 'q-separation',
+    disposition: 'SPLIT',
+    kashfIntentId: 'separation.mixedScope',
+    kashfMethodId: 'separation.mixedScope.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+    note: 'Split person/relationship separation from place/relocation; no universal separation method.',
+  }),
+
+  'q-separation-loved': route({
+    questionId: 'q-separation-loved',
+    disposition: 'BLOCK',
+    kashfIntentId: 'separation.lovedPerson',
+    kashfMethodId: 'separation.loved.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+  }),
+
+  'q-stalled': route({
+    questionId: 'q-stalled',
+    disposition: 'BLOCK',
+    kashfIntentId: 'stalled.cause',
+    kashfMethodId: 'stalled.cause.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+  }),
+
+  'q-stranger-desc': route({
+    questionId: 'q-stranger-desc',
+    disposition: 'BLOCK',
+    kashfIntentId: 'stranger.description',
+    kashfMethodId: 'stranger.description.unresolved',
+    kashfRuntimeStatus: 'blocked-by-source',
+    note: 'Figure descriptions exist, but the operational selector for an arbitrary stranger is not source-closed.',
+  }),
+
   // ── REPAIR REQUIRED: explicit hard stop until fixed -------------------
   'q-wish': route({
     questionId: 'q-wish',
