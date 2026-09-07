@@ -5,8 +5,14 @@ on:
     branches: [main]
     paths:
       - 'goral-hachol/registry/kashf-ai-retrieval-index.js'
+      - 'goral-hachol/registry/kashf-canonical-method-registry.js'
+      - 'goral-hachol/registry/kashf-v57-knowledge-registry.js'
+      - 'goral-hachol/registry/kashf-question-route-registry.js'
+      - 'goral-hachol/engine/kashf-canonical-executors.js'
+      - 'goral-hachol/engine/kashf-canonical-figure-classifier.js'
       - 'goral-hachol/intelligence/kashf-canonical-ai-bridge.js'
       - 'goral-hachol/intelligence/kashf-ai-context-builder.js'
+      - 'goral-hachol/ui/question-bank.js'
       - 'goral-hachol/ui/goral-app.js'
       - 'supabase/functions/oren-smart-advisor/kashf_reading_payload_sanitizer.ts'
       - 'supabase/functions/oren-smart-advisor/oren-smart-advisor-brain-prompt.ts'
