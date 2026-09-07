@@ -15,6 +15,14 @@ const LEGACY_EXECUTORS = Object.freeze({
   'profession.p254.h9Planet': computeProfessionH9Kashf,
 });
 
+function toLegacyChart(board) {
+  if (Array.isArray(board)) return board;
+  if (Array.isArray(board?.entries)) return board.entries;
+  const error = new Error('Canonical legacy executor requires a board entries array');
+  error.code = 'KASHF_CANONICAL_BOARD_ADAPTER_FAILED';
+  throw error;
+}
+
 export function hasCanonicalLegacyExecutor(kashfMethodId) {
   return typeof LEGACY_EXECUTORS[kashfMethodId] === 'function';
 }
@@ -27,7 +35,7 @@ export function executeCanonicalLegacyMethod(kashfMethodId, board) {
     throw error;
   }
 
-  return executor(board);
+  return executor(toLegacyChart(board));
 }
 
 export function listApprovedCanonicalLegacyExecutors() {
