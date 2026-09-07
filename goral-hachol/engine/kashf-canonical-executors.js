@@ -335,7 +335,66 @@ function computeAppointmentCompletionP257(chart) {
   };
 }
 
+
+// p204 uses the source's explicit "mutable" and "fixed" figure classes.
+// Source classification (working pp. 57-60): four mutable + four fixed only.
+// The other eight incoming/outgoing figures are NOT silently forced into either class.
+const P204_MUTABLE_PATTERNS = new Set([
+  '1121', // נלחם / الجودلة
+  '1211', // בר הלחי / نقي الخد
+  '1221', // סוהר / العقلة
+  '1111', // דרך / الطريق
+]);
+
+const P204_FIXED_PATTERNS = new Set([
+  '2222', // קהלה / الجماعة
+  '2112', // חיבור / الاجتماع
+  '2122', // אדום / الحمرة
+  '2212', // לבן / البياض
+]);
+
+function computeMarriagePreviousStatusP204(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h7 = chart.find((entry) => Number(entry?.house ?? entry?.houseNumber) === 7)
+    || chart[6]
+    || null;
+  const pattern = h7?.key || h7?.pattern || null;
+  if (!pattern) return null;
+
+  const figureHebrew = h7?.hebrew || h7?.hebrewName || pattern;
+  const isMutable = P204_MUTABLE_PATTERNS.has(pattern);
+  const isFixed = P204_FIXED_PATTERNS.has(pattern);
+  const status = isMutable ? 'thayyib' : isFixed ? 'virgin' : null;
+  const statusHebrew = isMutable ? 'ת׳יִּבּ / בעולה או מי שנישאה בעבר' : isFixed ? 'בתולה' : 'לא הוכרע בכלל זה';
+  const figureClass = isMutable ? 'mutable' : isFixed ? 'fixed' : 'other-source-class';
+  const figureClassHebrew = isMutable ? 'מתהפכת' : isFixed ? 'קבועה' : 'אינה מארבע המתהפכות ואינה מארבע הקבועות';
+
+  let outputHebrew;
+  if (isMutable) {
+    outputHebrew = 'בית 7: ' + figureHebrew + ' (' + pattern + ') — צורה מתהפכת. לפי כשף עמ׳ 204: היא ת׳יִּבּ (בעולה / מי שנישאה בעבר). המקור אינו מבחין כאן בין גרושה לאלמנה.';
+  } else if (isFixed) {
+    outputHebrew = 'בית 7: ' + figureHebrew + ' (' + pattern + ') — צורה קבועה. לפי כשף עמ׳ 204: היא בתולה.';
+  } else {
+    outputHebrew = 'בית 7: ' + figureHebrew + ' (' + pattern + ') — הצורה אינה אחת מארבע המתהפכות ואינה אחת מארבע הקבועות שנקבעו במקור. כלל עמ׳ 204 לבדו אינו מכריע כאן בתולה לעומת ת׳יִּבּ; אין להשלים מן הדעת.';
+  }
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 204; סיווג מתהפך/קבוע עמ׳ 57–60',
+    sourceText: 'אם השביעי מתהפך — היא ת׳יִּבּ; ואם הוא קבוע — היא בתולה.',
+    housesUsed: [7],
+    h7Pattern: pattern,
+    h7FigureHebrew: figureHebrew,
+    figureClass,
+    figureClassHebrew,
+    previousStatus: status,
+    previousStatusHebrew: statusHebrew,
+    positive: null,
+    outputHebrew,
+  };
+}
+
 const CUSTOM_EXECUTORS = Object.freeze({
+  'marriage.p204.previousStatusH7': computeMarriagePreviousStatusP204,
   'theft.p225.thiefDescriptionH7': computeThiefPhysicalDescriptionKashf,
   'pregnancy.p191.existsH5SilentEmpty': computePregnancyExistenceP191,
   'pregnancy.p191.genderH5': computePregnancyGenderP191,

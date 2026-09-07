@@ -246,7 +246,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     executionKind: 'legacy-function',
     executorStatus: 'ready',
     legacyTopicId: 'illness',
-    notes: 'Use the verified H6 figure → body-part mapping only; method-scoped canonical legacy executor is wired and isolated from the broad illness bundle.',
+    notes: 'Use only the verified H6 figure → body-part mapping from p199. Canonical method-scoped legacy executor is wired and tested; missing source entries remain unresolved rather than invented.',
   }),
 
   'pregnancy.p191.genderH5': method({
@@ -425,10 +425,11 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'marriage',
     sourcePages: [204],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
+    executorStatus: 'ready',
     legacyTopicId: 'marriage',
+    notes: 'Primary Arabic scan p204: if H7 is mutable (منقلب) => thayyib; if fixed (ثابت) => virgin. Canonical executor therefore uses only the four source-defined mutable and four source-defined fixed figures; the other eight remain unresolved. Thayyib does not distinguish divorced from widowed. Source erratum: the primary scan says H1 recurring in H7 => female slave/servant (أمة), while H7 recurring in H10 => free woman (حرة); the working Hebrew text conflated these clauses.',
   }),
 
   // ── LOVE + MARRIAGE canonical slice -----------------------------------

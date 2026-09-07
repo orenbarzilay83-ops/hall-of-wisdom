@@ -608,6 +608,52 @@ assert(authorityAppointmentNo.primaryFormula?.result?.executorResult?.planetHebr
 assert(authorityAppointmentNo.primaryFormula?.result?.executorResult?.appointmentCompletes === false, 'p257 non-luminary/non-benefic planet means the appointment does not complete');
 assert(authorityAppointmentNo.overallPositive === false, 'p257 negative branch is negative');
 
+// ── P8 marriage previous-status p204 executor --------------------------
+assertRoute('q-marriage-thayib', {
+  ok: true,
+  canRunKashf: true,
+  kashfIntentId: 'marriage.previousStatus',
+  kashfMethodId: 'marriage.p204.previousStatusH7',
+  kashfRuntimeStatus: 'ready',
+  executorStatus: 'ready',
+  runtimeAllowed: true,
+});
+assert(canRunKashfMethod('marriage.p204.previousStatusH7'), 'p204 previous-status method is explicitly runnable');
+
+// All four mothers 1111 => daughter H7 = 1111 (Road), one of the four source-defined mutable figures.
+const P204_MUTABLE_BOARD = buildRamlBoardFromMothers(['1111', '1111', '1111', '1111']);
+const previousStatusMutable = buildKashfReadingByQuestionId(P204_MUTABLE_BOARD, 'q-marriage-thayib', { question: 'בתולה או ת׳יִּבּ?' });
+assert(previousStatusMutable.valid === true && previousStatusMutable.canRunKashf === true, 'p204 mutable H7 executes canonically');
+assert(previousStatusMutable.kashfMethodId === 'marriage.p204.previousStatusH7', 'p204 executes only exact previous-status method');
+assert(JSON.stringify(previousStatusMutable.primaryFormula?.houses) === JSON.stringify([7]), 'p204 traces only H7');
+assert(previousStatusMutable.primaryFormula?.result?.executorResult?.h7Pattern === '1111', 'p204 mutable fixture has H7=1111');
+assert(previousStatusMutable.primaryFormula?.result?.executorResult?.figureClass === 'mutable', 'p204 classifies Road as source-defined mutable');
+assert(previousStatusMutable.primaryFormula?.result?.executorResult?.previousStatus === 'thayyib', 'p204 mutable branch returns thayyib');
+assert(previousStatusMutable.overallPositive === null, 'p204 previous status is descriptive, not positive/negative');
+assert(previousStatusMutable.altFormula === null, 'p204 does not aggregate marriage alternatives');
+assert(previousStatusMutable.canonicalExecution?.topicBundleExecuted === false, 'p204 does not execute broad marriage bundle');
+assert(previousStatusMutable.dhamir === null, 'p204 does not auto-run Dhamir');
+const previousStatusMutableHtml = writeCanonicalKashfReading(previousStatusMutable);
+assert(previousStatusMutableHtml.includes('marriage.p204.previousStatusH7'), 'p204 narrative exposes exact canonical method id');
+assert(previousStatusMutableHtml.includes('ת׳יִּבּ'), 'p204 narrative preserves the source thayyib category');
+assert(previousStatusMutableHtml.includes('אינו מבחין כאן בין גרושה לאלמנה'), 'p204 narrative does not invent divorced-vs-widowed distinction');
+
+// Four mothers with water row=2 => daughter H7=2222 (Community), one of the four source-defined fixed figures.
+const P204_FIXED_BOARD = buildRamlBoardFromMothers(['1121', '1121', '1121', '1121']);
+const previousStatusFixed = buildKashfReadingByQuestionId(P204_FIXED_BOARD, 'q-marriage-thayib', { question: 'בתולה או ת׳יִּבּ?' });
+assert(previousStatusFixed.primaryFormula?.result?.executorResult?.h7Pattern === '2222', 'p204 fixed fixture has H7=2222');
+assert(previousStatusFixed.primaryFormula?.result?.executorResult?.figureClass === 'fixed', 'p204 classifies Community as source-defined fixed');
+assert(previousStatusFixed.primaryFormula?.result?.executorResult?.previousStatus === 'virgin', 'p204 fixed branch returns virgin');
+assert(previousStatusFixed.primaryFormula?.result?.executorResult?.previousStatusHebrew === 'בתולה', 'p204 fixed branch renders exact Hebrew category');
+
+// H7=2121 (Incoming Money) is neither one of the four mutable nor four fixed figures.
+const P204_UNRESOLVED_BOARD = buildRamlBoardFromMothers(['1121', '1111', '1121', '1111']);
+const previousStatusUnresolved = buildKashfReadingByQuestionId(P204_UNRESOLVED_BOARD, 'q-marriage-thayib', { question: 'בתולה או ת׳יִּבּ?' });
+assert(previousStatusUnresolved.primaryFormula?.result?.executorResult?.h7Pattern === '2121', 'p204 unresolved fixture has H7=2121');
+assert(previousStatusUnresolved.primaryFormula?.result?.executorResult?.figureClass === 'other-source-class', 'p204 keeps incoming/outgoing figure outside mutable/fixed classes');
+assert(previousStatusUnresolved.primaryFormula?.result?.executorResult?.previousStatus === null, 'p204 unresolved branch does not force a status');
+assert(previousStatusUnresolved.overallPositive === null, 'p204 unresolved branch does not invent a verdict');
+
 // ── Canonical execution isolation ----------------------------------------
 for (const qid of ['q-success', 'q-travel-safe', 'q-short-travel', 'q-move-city', 'q-siblings']) {
   const reading = buildKashfReadingByQuestionId(PILOT_BOARD, qid, { question: qid });
