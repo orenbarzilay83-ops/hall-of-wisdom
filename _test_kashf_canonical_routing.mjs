@@ -283,11 +283,12 @@ assertRoute('q-hidden-action', {
 });
 assertRoute('q-religion', {
   ok: true,
-  canRunKashf: false,
+  canRunKashf: true,
   kashfIntentId: 'religion.religiosity',
   kashfMethodId: 'religion.p253.h3h9Quality',
   kashfRuntimeStatus: 'ready',
-  executorStatus: 'pending',
+  executorStatus: 'ready',
+  runtimeAllowed: true,
 });
 for (const qid of ['q-jinn-type', 'q-sorcerer', 'q-obsession', 'q-slander', 'q-two-faced', 'q-wronged', 'q-isolation']) {
   const r = resolveKashfRouteByQuestionId(qid);
@@ -651,6 +652,63 @@ assert(authorityAppointmentNo.overallPositive === false, 'p257 negative branch i
 
 
 
+
+
+// ── P14 p253 religion/righteousness source contract ----------------------
+assert(canRunKashfMethod('religion.p253.h3h9Quality'), 'p253 religion/righteousness method is explicitly runnable');
+const religionV57 = getKashfV57Knowledge('religion.p253.h3h9Quality');
+assert(religionV57?.v57?.heading === 'הנעדר לפי הזנאטי; דת וצדקות', 'p253 v57 heading matches the Hebrew draft');
+assert(religionV57?.v57?.hebrewRule.includes('הוא מועט בדת'), 'p253 v57 knowledge preserves the malefic branch');
+assert(religionV57?.v57?.hebrewRule.includes('הוא בעל דת ויראת אלוהים'), 'p253 v57 knowledge preserves the benefic branch');
+
+const p253Benefic = buildKashfReadingByQuestionId(
+  makeP204Board({ 3: '1122', 9: '2211' }),
+  'q-religion',
+  { question: 'מה מצב דתו וצדקותו של האדם?' }
+);
+assert(p253Benefic.valid === true && p253Benefic.canRunKashf === true, 'p253 benefic fixture executes canonically');
+assert(JSON.stringify(p253Benefic.primaryFormula?.houses) === JSON.stringify([3, 9]), 'p253 traces H3+H9 only');
+assert(p253Benefic.primaryFormula?.result?.executorResult?.h3Quality === 'saad', 'p253 H3 pure benefic remains saad');
+assert(p253Benefic.primaryFormula?.result?.executorResult?.h9Quality === 'saad', 'p253 H9 pure benefic remains saad');
+assert(p253Benefic.primaryFormula?.result?.executorResult?.sourceOutcome === 'religious-and-god-fearing', 'p253 two benefics return exact positive source branch');
+assert(p253Benefic.primaryFormula?.result?.executorResult?.sourceOutcomeHebrew === 'בעל דת ויראת אלוהים', 'p253 positive Hebrew result matches v57');
+assert(p253Benefic.overallPositive === true, 'p253 positive source branch is positive');
+assert(p253Benefic.altFormula === null, 'p253 does not aggregate alternative religion formulas');
+assert(p253Benefic.canonicalExecution?.topicBundleExecuted === false, 'p253 does not execute broad religion bundle');
+assert(p253Benefic.dhamir === null, 'p253 does not auto-run Dhamir');
+
+const p253Malefic = buildKashfReadingByQuestionId(
+  makeP204Board({ 3: '1112', 9: '1221' }),
+  'q-religion',
+  { question: 'מה מצב דתו וצדקותו של האדם?' }
+);
+assert(p253Malefic.primaryFormula?.result?.executorResult?.h3Quality === 'nahs', 'p253 H3 pure malefic remains nahs');
+assert(p253Malefic.primaryFormula?.result?.executorResult?.h9Quality === 'nahs', 'p253 H9 pure malefic remains nahs');
+assert(p253Malefic.primaryFormula?.result?.executorResult?.sourceOutcome === 'little-religion', 'p253 two malefics return exact negative source branch');
+assert(p253Malefic.primaryFormula?.result?.executorResult?.sourceOutcomeHebrew === 'מועט בדת', 'p253 negative Hebrew result matches v57');
+assert(p253Malefic.overallPositive === false, 'p253 negative source branch is negative');
+
+const p253Mixed = buildKashfReadingByQuestionId(
+  makeP204Board({ 3: '2212', 9: '1122' }),
+  'q-religion',
+  { question: 'מה מצב דתו וצדקותו של האדם?' }
+);
+assert(p253Mixed.primaryFormula?.result?.executorResult?.h3Quality === 'mixed', 'p253 sees canonical mixed H3');
+assert(p253Mixed.primaryFormula?.result?.executorResult?.sourceOutcome === 'unresolved', 'p253 mixed evidence remains unresolved');
+assert(p253Mixed.overallPositive === null, 'p253 mixed evidence is not collapsed to a binary moral judgment');
+
+const p253Split = buildKashfReadingByQuestionId(
+  makeP204Board({ 3: '1112', 9: '1122' }),
+  'q-religion',
+  { question: 'מה מצב דתו וצדקותו של האדם?' }
+);
+assert(p253Split.primaryFormula?.result?.executorResult?.h3Quality === 'nahs' && p253Split.primaryFormula?.result?.executorResult?.h9Quality === 'saad', 'p253 split fixture has one malefic and one benefic');
+assert(p253Split.primaryFormula?.result?.executorResult?.sourceOutcome === 'unresolved', 'p253 split testimony remains unresolved because the source gives no split branch');
+assert(p253Split.overallPositive === null, 'p253 split testimony is not forced into a verdict');
+
+const p253Html = writeCanonicalKashfReading(p253Benefic);
+assert(p253Html.includes('religion.p253.h3h9Quality'), 'p253 narrative exposes exact method id');
+assert(p253Html.includes('בעל דת ויראת אלוהים'), 'p253 narrative preserves the v57 Hebrew result');
 
 // ── P13 p172 matter-outcome source contract -------------------------------
 assertRoute('q-matter-end', {

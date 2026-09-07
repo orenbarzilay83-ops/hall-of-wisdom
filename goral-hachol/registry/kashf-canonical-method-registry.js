@@ -899,10 +899,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'religion',
     sourcePages: [253],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Body-source religion/righteousness rule: malefic figures in H3 and H9 indicate little religion; benefic figures there indicate religiosity and fear of God. It does not answer broad theological, spiritual-practice or faith-advice questions.',
+    executorStatus: 'ready',
+    notes: 'Canonical p253 religion/righteousness executor is wired. Both H3 and H9 pure malefic => little religion; both pure benefic => religious and God-fearing according to the source wording. Mixed figures and split H3/H9 testimony remain unresolved rather than being forced into a binary judgment. It does not answer broad theological, spiritual-practice or faith-advice questions.',
   }),
 
   'spiritual.jinnType.unsupported': method({

@@ -487,8 +487,8 @@ window.QUESTION_BANK = [
   {
     id: 'q-religion',
     category: 'spiritual', houseId: 9, topicId: 'religion', kashfTopicId: 'religion',
-    label: 'שאלה בעניין דת / אמונה',
-    desc: 'לשאלות על אמונה, קשר לה׳, פרקטיקה דתית, לימוד',
+    label: 'מה מצב דתו וצדקותו של האדם?',
+    desc: 'דין מצומצם לפי בתים 3 ו־9 על מידת הדת והצדקות; לא ייעוץ אמונה, קשר לה׳, פרקטיקה דתית או לימוד',
     clientFields: [F.matter],
   },
 

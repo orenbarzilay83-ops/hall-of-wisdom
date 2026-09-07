@@ -802,7 +802,74 @@ function computeMatterOutcomeP172(chart) {
   };
 }
 
+
+// Kashf v57 p253 — religion/righteousness. The source names H3 and H9
+// together and gives only two explicit branches: malefic -> little religion;
+// benefic -> religious and God-fearing. Canonical execution therefore requires
+// both houses to agree in the same pure class. Mixed or split testimony is
+// preserved as unresolved rather than invented into a third source verdict.
+function computeReligionQualityP253(chart) {
+  if (!Array.isArray(chart)) return null;
+  const housesUsed = [3, 9];
+  const houseResults = housesUsed.map((houseNumber) => {
+    const entry = findCanonicalHouse(chart, houseNumber);
+    const pattern = entry?.key || entry?.pattern || null;
+    if (!pattern) return null;
+    return {
+      houseNumber,
+      pattern,
+      figureHebrew: entry?.hebrew || entry?.hebrewName || pattern,
+      classification: classifyCanonicalFigure(pattern),
+    };
+  });
+  if (houseResults.some((item) => !item)) return null;
+
+  const [h3, h9] = houseResults;
+  const h3Quality = h3.classification.saadNahs;
+  const h9Quality = h9.classification.saadNahs;
+  const bothBenefic = h3Quality === 'saad' && h9Quality === 'saad';
+  const bothMalefic = h3Quality === 'nahs' && h9Quality === 'nahs';
+
+  let sourceOutcome = 'unresolved';
+  let sourceOutcomeHebrew = 'לא הוכרע לפי כלל זה';
+  let positive = null;
+  let outputHebrew;
+
+  if (bothBenefic) {
+    sourceOutcome = 'religious-and-god-fearing';
+    sourceOutcomeHebrew = 'בעל דת ויראת אלוהים';
+    positive = true;
+    outputHebrew = 'לפי חשיפת הסודות הנצורים v57 עמ׳ 253, בבית השלישי ובבית התשיעי נמצאות צורות מיטיבות. לפי לשון הכלל: הוא בעל דת ויראת אלוהים.';
+  } else if (bothMalefic) {
+    sourceOutcome = 'little-religion';
+    sourceOutcomeHebrew = 'מועט בדת';
+    positive = false;
+    outputHebrew = 'לפי חשיפת הסודות הנצורים v57 עמ׳ 253, בבית השלישי ובבית התשיעי נמצאות צורות מזיקות. לפי לשון הכלל: הוא מועט בדת.';
+  } else {
+    const hasMixed = h3Quality === 'mixed' || h9Quality === 'mixed';
+    outputHebrew = hasMixed
+      ? 'כלל v57 עמ׳ 253 נותן הכרעה כאשר השלישי והתשיעי נידונים כמיטיבים או כמזיקים. כאן לפחות אחד משני הבתים ממוזג, ולכן אין להפוך את הנטייה שלו בכוח למיטיבה או למזיקה ואין הכרעה לפי כלל זה.'
+      : 'בית 3 ובית 9 אינם נותנים כאן עדות אחידה של שני מיטיבים או שני מזיקים. המקור אינו מוסר ענף מפורש לעדות מפוצלת, ולכן אין הכרעה לפי כלל זה.';
+  }
+
+  return {
+    sourceRef: 'חשיפת הסודות הנצורים v57 עמ׳ 253',
+    sourceText: 'בדין הדת והצדקות: אם בבית השלישי והתשיעי יש צורה מזיקה — הוא מועט בדת. ואם יש שם צורה מיטיבה — הוא בעל דת ויראת אלוהים.',
+    housesUsed,
+    houseResults,
+    h3Quality,
+    h9Quality,
+    bothBenefic,
+    bothMalefic,
+    sourceOutcome,
+    sourceOutcomeHebrew,
+    positive,
+    outputHebrew,
+  };
+}
+
 const CUSTOM_EXECUTORS = Object.freeze({
+  'religion.p253.h3h9Quality': computeReligionQualityP253,
   'matter.p172.h17_h1011_thenCombine': computeMatterOutcomeP172,
   'relocation.p183.currentVsNewPlace': computeRelocationCurrentVsNewP183,
   'illness.p196.outcomeH15': computeIllnessRecoveryP196,
