@@ -1,0 +1,37 @@
+name: Apply Kashf P11 Lost Item Return Executor
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '_apply_kashf_p11_lost_item_return_executor.mjs'
+      - '.github/workflows/kashf-apply-p11-lost-item-return.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply-p11:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Apply P11 lost-item return cutover
+        run: node _apply_kashf_p11_lost_item_return_executor.mjs
+      - name: Commit P11 canonical changes
+        run: |
+          if git diff --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add goral-hachol/engine/kashf-canonical-executors.js goral-hachol/registry/kashf-canonical-method-registry.js _test_kashf_canonical_routing.mjs HALL_WISDOM_KASHF_P202_LOST_ITEM_RETURN_AUDIT.md
+          git commit -m "feat(kashf): enable p202 lost-item return executor"
+          git push
