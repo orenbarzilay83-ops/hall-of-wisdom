@@ -54,11 +54,11 @@ if (ambiguous.resolution.state !== 'resolved') {
 // 4. A source-ready method whose executor is pending remains blocked even when
 // it is selected explicitly and has Hebrew v57 knowledge.
 const pending = buildKashfCanonicalAiBridge({
-  questionId: 'q-child-health',
-  questionText: 'מה מצב בריאות הילד לאורך הזמן?',
+  questionId: 'q-birth-ease',
+  questionText: 'האם הלידה תהיה קשה?',
   board: BOARD,
 });
-assert(pending.resolution.kashfMethodId === 'child.p194.healthTrajectoryH6H8', 'pending route resolves to exact source-ready method');
+assert(pending.resolution.kashfMethodId === 'pregnancy.p191.deliveryDifficultyH1H5H15', 'pending route resolves to exact source-ready method');
 assert(pending.resolution.executorStatus === 'pending', 'pending executor status is preserved');
 assert(pending.canonicalRetrieval?.knowledgeLanguage === 'he', 'pending method may still expose Hebrew knowledge');
 assert(pending.aiVerdictAllowed === false, 'retrieval cannot promote pending executor to runnable');
@@ -169,6 +169,23 @@ for (const [questionText, questionId, methodId] of [
   assert(locked.resolution.kashfMethodId === methodId, questionId + ' remains authoritative over competing wording');
   assert(locked.resolution.resolutionSource === 'question-route', questionId + ' resolves through authoritative question route');
   assert(locked.canonicalRetrieval?.knowledgeLanguage === 'he', methodId + ' bridge exposes Hebrew operational knowledge');
+}
+
+// 12. Easy batch 02 free-text retrieval and authoritative question routes.
+for (const [questionText, questionId, methodId] of [
+  ['בריאות הילד לאורך הזמן', 'q-child-health', 'child.p194.healthTrajectoryH6H8'],
+  ['מי הגדול בין האחים', 'q-sibling-eldest', 'siblings.p182.seniority'],
+  ['האם תהיה פרידה בנישואין', 'q-divorce', 'marriage.p211.dissolutionH7StateMatrix'],
+  ['האם הנעדר יחזור', 'q-missing-return', 'missing.p249.returnAnglesJudge'],
+]) {
+  const freeText = buildKashfCanonicalAiBridge({ questionText, board: BOARD });
+  assert(freeText.resolution.kashfMethodId === methodId, questionText + ' resolves exact method');
+  assert(freeText.resolution.resolutionSource === 'retrieval-index', questionText + ' resolves through retrieval index');
+  const locked = buildKashfCanonicalAiBridge({ questionId, questionText: 'מה מצבי הכללי?', board: BOARD });
+  assert(locked.resolution.kashfMethodId === methodId, questionId + ' remains authoritative over competing wording');
+  assert(locked.resolution.resolutionSource === 'question-route', questionId + ' resolves through authoritative question route');
+  assert(locked.canonicalRetrieval?.knowledgeLanguage === 'he', methodId + ' bridge exposes Hebrew operational knowledge');
+  assert(locked.aiVerdictAllowed === true, methodId + ' is executable through the live bridge');
 }
 
 console.log(`Kashf AI retrieval live bridge tests: ${passed} passed, ${failed} failed`);

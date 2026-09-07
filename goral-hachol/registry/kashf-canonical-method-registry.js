@@ -305,10 +305,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'children',
     sourcePages: [194],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Source judges childhood pains from H6 and longer-term health trajectory from H8. It is not a generic current-illness recovery engine.',
+    executorStatus: 'ready',
+    notes: 'Canonical p194 child-health trajectory executor is wired as two separate source witnesses: pure malefic H6 gives the explicit childhood-pains warning; H8 pure malefic gives low hope, while H8 pure benefic gives improvement as the child grows. Mixed or unmentioned branches remain unresolved. This method is not current-illness recovery and does not aggregate H6+H8 into one invented score.',
   }),
 
   'lifespan.p178.elementCountToHouse': method({
@@ -413,10 +413,11 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'siblings',
     sourcePages: [182],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
+    executorStatus: 'ready',
     legacyTopicId: 'siblings',
+    notes: 'Canonical p182 sibling-seniority executor is wired to H3 only. Jamaa/קהלה (2222) is the source sign for elders, especially paternal elders; Nakis/שפל ראש (2221) also indicates elders. Other H3 figures remain unresolved by this exact rule. The method does not identify a named sibling or infer that an unlisted figure means younger.',
   }),
 
   'marriage.p204.previousStatusH7inH10': method({
@@ -498,10 +499,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'marriage',
     sourcePages: [210, 211],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Canonical dissolution/stability judgment uses H7 quality together with internal/external/fixed/mutable state. It distinguishes stable marriage, quarrel, possible separation and breakdown; do not collapse it to benefic/malefic alone.',
+    executorStatus: 'ready',
+    notes: 'Canonical p211 marriage stability/dissolution executor is wired from H7 quality plus state. Internal figures support continuation; internal malefic adds quarrel while preserving continuity. External pure benefic gives a good marriage with possible separation; external pure malefic gives the explicit breakdown/cut-off branch. Pure benefic fixed gives the stated repair condition. Unstated mixed/mutable combinations remain unresolved.',
   }),
 
   // ── MONEY + ECONOMY canonical slice -----------------------------------
@@ -621,10 +622,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'missingPerson',
     sourcePages: [249],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Body-source return rule: benefic incoming figures in the angles indicate return when the judge/outcome also testifies. This answers whether the absent person returns; it is not a timing calculator.',
+    executorStatus: 'ready',
+    notes: 'Canonical p249 missing-return executor is wired conservatively. The four angles H1/H4/H7/H10 must all be pure benefic and strictly internal, and H15 must give the same benefic/internal supporting testimony before the source return sign is exposed. Failure of the positive condition is not inverted into non-return. The Hebrew source clause explicitly speaks of return of males, so the executor preserves that scope and does not silently generalize it to every missing-person case.',
   }),
 
   'missing.p249.locationDirectionUnresolved': method({

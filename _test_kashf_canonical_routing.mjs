@@ -1604,6 +1604,62 @@ for (const reading of [p191Safety, p264Stages, p244Return, p210Marriage]) {
   assert(reading.dhamir === null && reading.canonicalExecution?.topicBundleExecuted === false && reading.canonicalExecution?.altFormulaExecuted === false, 'easy batch reading runs no Dhamir/topic bundle/alternative');
 }
 
+// ── Easy batch 02: p194 child health, p182 seniority, p211 dissolution, p249 missing return ---
+for (const [methodId, questionId] of [
+  ['child.p194.healthTrajectoryH6H8', 'q-child-health'],
+  ['siblings.p182.seniority', 'q-sibling-eldest'],
+  ['marriage.p211.dissolutionH7StateMatrix', 'q-divorce'],
+  ['missing.p249.returnAnglesJudge', 'q-missing-return'],
+]) {
+  const method = getKashfMethod(methodId);
+  assert(method?.runtimeAllowed === true && method?.executorStatus === 'ready', methodId + ' is runnable');
+  assert(canRunKashfMethod(methodId) === true, methodId + ' canRunKashfMethod is true');
+  const route = resolveKashfRouteByQuestionId(questionId);
+  assert(route?.canRunKashf === true && route?.kashfMethodId === methodId, questionId + ' routes to its exact runnable method');
+}
+
+const p194Child = buildKashfReadingByQuestionId(makeP204Board({ 6: '1112', 8: '1222' }), 'q-child-health');
+const p194Exec = p194Child.primaryFormula?.result?.executorResult;
+assert(p194Exec?.childhoodPains === true, 'p194 pure-malefic H6 exposes childhood-pains warning');
+assert(p194Exec?.longTermOutcome === 'improves-with-age', 'p194 pure-benefic H8 exposes improvement-with-age branch');
+assert(p194Exec?.positive === null && p194Child.overallPositive === null, 'p194 keeps H6/H8 as separate descriptive witnesses');
+assert(p194Child.primaryFormula?.sourceText === getKashfV57Knowledge('child.p194.healthTrajectoryH6H8')?.v57?.hebrewRule, 'p194 runtime sourceText comes from Hebrew v57');
+const p194LowHope = buildKashfReadingByQuestionId(makeP204Board({ 6: '1222', 8: '1112' }), 'q-child-health');
+assert(p194LowHope.primaryFormula?.result?.executorResult?.longTermOutcome === 'low-hope', 'p194 pure-malefic H8 exposes low-hope branch');
+
+const p182Jamaa = buildKashfReadingByQuestionId(makeP204Board({ 3: '2222' }), 'q-sibling-eldest');
+assert(p182Jamaa.primaryFormula?.result?.executorResult?.senioritySignal === 'older-paternal-emphasis', 'p182 Jamaa in H3 indicates elders with paternal emphasis');
+const p182Nakis = buildKashfReadingByQuestionId(makeP204Board({ 3: '2221' }), 'q-sibling-eldest');
+assert(p182Nakis.primaryFormula?.result?.executorResult?.senioritySignal === 'older', 'p182 Nakis in H3 indicates elders');
+const p182Other = buildKashfReadingByQuestionId(makeP204Board({ 3: '1222' }), 'q-sibling-eldest');
+assert(p182Other.primaryFormula?.result?.executorResult?.senioritySignal === 'unresolved', 'p182 unlisted H3 figure is not inverted into younger');
+assert(p182Jamaa.primaryFormula?.sourceText === getKashfV57Knowledge('siblings.p182.seniority')?.v57?.hebrewRule, 'p182 runtime sourceText comes from Hebrew v57');
+
+const p211Stable = buildKashfReadingByQuestionId(makeP204Board({ 7: '2211' }), 'q-divorce');
+assert(p211Stable.primaryFormula?.result?.executorResult?.sourceOutcome === 'stable', 'p211 pure-benefic internal H7 supports continuation');
+const p211Quarrel = buildKashfReadingByQuestionId(makeP204Board({ 7: '2221' }), 'q-divorce');
+assert(p211Quarrel.primaryFormula?.result?.executorResult?.sourceOutcome === 'stable-with-quarrel', 'p211 malefic internal H7 gives quarrel but continuity');
+const p211PossibleSeparation = buildKashfReadingByQuestionId(makeP204Board({ 7: '1222' }), 'q-divorce');
+assert(p211PossibleSeparation.primaryFormula?.result?.executorResult?.sourceOutcome === 'good-but-separation-possible', 'p211 benefic external H7 gives good marriage with possible separation');
+const p211Breakdown = buildKashfReadingByQuestionId(makeP204Board({ 7: '1112' }), 'q-divorce');
+assert(p211Breakdown.primaryFormula?.result?.executorResult?.sourceOutcome === 'breakdown-if-existing', 'p211 malefic external H7 gives source breakdown branch');
+assert(p211Stable.primaryFormula?.result?.executorResult?.positive === null && p211Stable.overallPositive === null, 'p211 does not reduce the source matrix to a forced yes/no');
+assert(p211Stable.primaryFormula?.sourceText === getKashfV57Knowledge('marriage.p211.dissolutionH7StateMatrix')?.v57?.hebrewRule, 'p211 runtime sourceText comes from Hebrew v57');
+
+const p249Return = buildKashfReadingByQuestionId(makeP204Board({ 1: '2211', 4: '2211', 7: '2211', 10: '2211', 15: '2211' }), 'q-missing-return');
+const p249Exec = p249Return.primaryFormula?.result?.executorResult;
+assert(p249Exec?.allAnglesSupportReturn === true && p249Exec?.judgeSupportsReturn === true, 'p249 fixture satisfies angle and judge return testimony');
+assert(p249Exec?.returnIndicatedForMale === true && p249Exec?.sourceOutcome === 'male-return-indicated', 'p249 exposes source-scoped male-return sign');
+assert(p249Exec?.positive === null && p249Return.overallPositive === null, 'p249 does not generalize the male clause into a universal yes/no');
+const p249Incomplete = buildKashfReadingByQuestionId(makeP204Board({ 1: '1222', 4: '2211', 7: '2211', 10: '2211', 15: '2211' }), 'q-missing-return');
+assert(p249Incomplete.primaryFormula?.result?.executorResult?.sourceOutcome === 'unresolved', 'p249 incomplete positive condition is not inverted into non-return');
+assert(p249Return.primaryFormula?.sourceText === getKashfV57Knowledge('missing.p249.returnAnglesJudge')?.v57?.hebrewRule, 'p249 runtime sourceText comes from Hebrew v57');
+
+for (const reading of [p194Child, p182Jamaa, p211Stable, p249Return]) {
+  assert(reading.canonicalExecution?.methodsExecuted?.length === 1, 'easy batch 02 reading executes exactly one canonical method');
+  assert(reading.dhamir === null && reading.canonicalExecution?.topicBundleExecuted === false && reading.canonicalExecution?.altFormulaExecuted === false, 'easy batch 02 reading runs no Dhamir/topic bundle/alternative');
+}
+
 console.log(`Kashf canonical routing tests: ${passed} passed, ${failed} failed`);
 if (failed > 0) {
   process.exit(1);

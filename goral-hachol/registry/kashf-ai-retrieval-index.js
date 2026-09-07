@@ -39,6 +39,26 @@ const STOPWORDS = new Set([
  * executable rules.
  */
 const RETRIEVAL_OVERRIDES = Object.freeze({
+  'child.p194.healthTrajectoryH6H8': {
+    aliases: ['בריאות הילד לאורך הזמן', 'בריאות הילד כשיגדל', 'מכאובים בילדות ובריאות בהמשך', 'מצב בריאות הילד לאורך השנים'],
+    doNotMixWith: ['pregnancy.p191.childSafetyH1H6H8', 'illness.p196.outcomeH15'],
+    houses: [6, 8],
+  },
+  'siblings.p182.seniority': {
+    aliases: ['מי הגדול בין האחים', 'מי הבכור בין האחים', 'סימן לאחים גדולים', 'מי הראשי בין האחים'],
+    doNotMixWith: ['siblings.p182.h1h3'],
+    houses: [3],
+  },
+  'marriage.p211.dissolutionH7StateMatrix': {
+    aliases: ['האם תהיה פרידה בנישואין', 'האם הזוג יתגרש', 'יציבות הנישואין', 'פירוק הנישואין', 'האם הנישואין יישארו קיימים'],
+    doNotMixWith: ['marriage.p210.generalMarriageH1H2H7H8H10Judge', 'love.p205.directLoveH1PlacementH15'],
+    houses: [7],
+  },
+  'missing.p249.returnAnglesJudge': {
+    aliases: ['האם הנעדר יחזור', 'האם הנעדר ישוב', 'חזרת הנעדר', 'האם הבורח יחזור'],
+    doNotMixWith: ['travel.p244.returnH1H2H9', 'missing.p248-249.lifeH1H4H9Outcome', 'missing.p249.locationDirectionUnresolved'],
+    houses: [1, 4, 7, 10, 15],
+  },
   'pregnancy.p191.childSafetyH1H6H8': {
     aliases: ['האם הוולד יהיה בשלום', 'האם יש חשש לוולד', 'מה מצב שלום הוולד', 'האם הוולד יחיה', 'בטיחות הוולד'],
     doNotMixWith: ['pregnancy.p191.existsH5SilentEmpty', 'pregnancy.p191.genderH5', 'pregnancy.p191.deliveryDifficultyH1H5H15', 'child.p194.healthTrajectoryH6H8'],

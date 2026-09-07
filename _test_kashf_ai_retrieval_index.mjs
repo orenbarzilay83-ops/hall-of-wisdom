@@ -70,6 +70,10 @@ expectTop('האם הוולד יהיה בשלום', 'pregnancy.p191.childSafetyH1
 expectTop('שלבי החיים', 'lifespan.p264.stagesH11H9H7');
 expectTop('האם הנוסע יחזור', 'travel.p244.returnH1H2H9');
 expectTop('האם השידוך מתאים', 'marriage.p210.generalMarriageH1H2H7H8H10Judge');
+expectTop('בריאות הילד לאורך הזמן', 'child.p194.healthTrajectoryH6H8');
+expectTop('מי הגדול בין האחים', 'siblings.p182.seniority');
+expectTop('האם תהיה פרידה בנישואין', 'marriage.p211.dissolutionH7StateMatrix');
+expectTop('האם הנעדר יחזור', 'missing.p249.returnAnglesJudge');
 expectTop('האם יש פעולה מאחורי הדבר', 'spiritual.p167.hiddenActionAirRows46815');
 expectTop('מאיפה יגיע הכסף', 'money.p179.sourceByIncomingHonorHouse');
 
@@ -123,8 +127,20 @@ for (const [methodId, questionId, houses] of [
   assert(JSON.stringify(record?.houses) === JSON.stringify(houses), methodId + ' retrieval exposes exact operational houses');
 }
 
-const sourceReadyPendingResults = searchKashfAiRetrievalIndex('בריאות הוולד', { sourceReadyOnly: true, limit: 20 });
-assert(sourceReadyPendingResults.some((item) => item.kashfMethodId === 'child.p194.healthTrajectoryH6H8' || item.kashfMethodId === 'pregnancy.p191.childSafetyH1H6H8'), 'source-ready pending methods are retrievable as knowledge');
+for (const [methodId, questionId, houses] of [
+  ['child.p194.healthTrajectoryH6H8', 'q-child-health', [6,8]],
+  ['siblings.p182.seniority', 'q-sibling-eldest', [3]],
+  ['marriage.p211.dissolutionH7StateMatrix', 'q-divorce', [7]],
+  ['missing.p249.returnAnglesJudge', 'q-missing-return', [1,4,7,10,15]],
+]) {
+  const record = getKashfAiRetrievalRecord(methodId);
+  assert(record?.questionIds.includes(questionId), methodId + ' retrieval links ' + questionId);
+  assert(record?.runtimeAllowed === true && record?.executorStatus === 'ready', methodId + ' retrieval exposes runnable state');
+  assert(JSON.stringify(record?.houses) === JSON.stringify(houses), methodId + ' retrieval exposes exact operational houses');
+}
+
+const pendingKnowledgeRecord = getKashfAiRetrievalRecord('pregnancy.p191.deliveryDifficultyH1H5H15');
+assert(pendingKnowledgeRecord?.runtimeAllowed === false && pendingKnowledgeRecord?.executorStatus === 'pending', 'a source-ready pending method remains knowledge-visible without runtime authorization');
 
 const runnableOnly = searchKashfAiRetrievalIndex('הריון', { runnableOnly: true, limit: 20 });
 assert(runnableOnly.every((item) => item.runtimeAllowed === true && item.executorStatus === 'ready'), 'runnableOnly filter never returns pending executor');

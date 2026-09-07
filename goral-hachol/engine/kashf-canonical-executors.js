@@ -1403,6 +1403,195 @@ function computeMarriageSuitabilityP210(chart) {
   };
 }
 
+// Kashf v57 p194 — childhood pains and longer-term health trajectory.
+function computeChildHealthTrajectoryP194(chart) {
+  if (!Array.isArray(chart)) return null;
+  const housesUsed = [6, 8];
+  const rows = housesUsed.map((houseNumber) => {
+    const entry = findCanonicalHouse(chart, houseNumber);
+    const pattern = entry?.key || entry?.pattern || null;
+    if (!pattern) return null;
+    const classification = classifyCanonicalFigure(pattern);
+    return {
+      houseNumber,
+      pattern,
+      figureHebrew: classification.figureHebrew || entry?.hebrew || entry?.hebrewName || pattern,
+      classification,
+    };
+  });
+  if (rows.some((item) => !item)) return null;
+
+  const byHouse = Object.fromEntries(rows.map((item) => [item.houseNumber, item]));
+  const h6Malefic = byHouse[6].classification.saadNahs === 'nahs';
+  const h8Class = byHouse[8].classification.saadNahs;
+  const childhoodPains = h6Malefic ? true : null;
+  const longTermOutcome = h8Class === 'nahs'
+    ? 'low-hope'
+    : h8Class === 'saad'
+      ? 'improves-with-age'
+      : 'unresolved';
+
+  const h6Text = h6Malefic
+    ? 'בית 6 מזיק — המקור מורה על ריבוי מכאובים בילדות.'
+    : 'בית 6 אינו מזיק טהור — כלל עמ׳ 194 אינו מוסר מכאן לבדו את ההפך, ולכן אין לקבוע שאין מכאובים.';
+  const h8Text = h8Class === 'nahs'
+    ? 'בית 8 מזיק — התקווה בו מועטה לפי המקור.'
+    : h8Class === 'saad'
+      ? 'בית 8 מיטיב — ככל שיגדל ימעט חוליו וישתפר מצבו לפי המקור.'
+      : 'בית 8 ממוזג או לא מסווג לענף מפורש — מגמת הבריאות בהמשך אינה מוכרעת בכלל זה.';
+
+  return {
+    sourceRef: 'חשיפת הסודות הנצורים v57 עמ׳ 194',
+    sourceText: 'אם באה הצורה ריקה, התבונן בבית השישי, שהוא בית המחלות. אם נמצאת בו צורה מזיקה, הדבר מורה על ריבוי מכאובים בילדותו. אחר כך התבונן בבית השמיני, שהוא בית המוות והאבדון. אם נמצאת בו צורה מזיקה, התקווה בו מועטה. ואם נמצאת בו צורה מיטיבה, כל כמה שיגדל — ימעט חוליו וישתפר מצבו.',
+    housesUsed,
+    houseResults: rows,
+    childhoodPains,
+    longTermOutcome,
+    positive: null,
+    verdictType: 'child-health-trajectory',
+    outputHebrew: h6Text + ' ' + h8Text + ' שתי העדויות נשמרות בנפרד; אין ליצור מהן ציון בריאות כולל שלא נמסר במקור.',
+  };
+}
+
+// Kashf v57 p182 — sign of elder/senior siblings from H3.
+function computeSiblingSeniorityP182(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h3 = findCanonicalHouse(chart, 3);
+  const pattern = h3?.key || h3?.pattern || null;
+  if (!pattern) return null;
+
+  let senioritySignal = 'unresolved';
+  let seniorityHebrew = 'אין סימן מפורש לגדולים בכלל זה';
+  if (pattern === '2222') {
+    senioritySignal = 'older-paternal-emphasis';
+    seniorityHebrew = 'סימן לגדולים, ובייחוד לגדולים מצד האב';
+  } else if (pattern === '2221') {
+    senioritySignal = 'older';
+    seniorityHebrew = 'סימן לגדולים';
+  }
+
+  const figureHebrew = classifyCanonicalFigure(pattern).figureHebrew || h3?.hebrew || h3?.hebrewName || pattern;
+  const outputHebrew = senioritySignal === 'unresolved'
+    ? 'בית 3 מכיל ' + figureHebrew + ' (' + pattern + '). כלל כשף v57 עמ׳ 182 נותן סימן מפורש לגדולים רק לקהלה (2222) ולשפל ראש (2221); אין להסיק מן הצורה הנוכחית שהאח צעיר יותר ואין לזהות אח מסוים מן הדעת.'
+    : 'בית 3 מכיל ' + figureHebrew + ' (' + pattern + ') — ' + seniorityHebrew + '. זהו סימן ותק/בכורה בלבד, לא זיהוי של אח מסוים בשם.';
+
+  return {
+    sourceRef: 'חשיפת הסודות הנצורים v57 עמ׳ 182',
+    sourceText: 'הצורה קהלה מורה על הגדולים, ובייחוד הגדולים מצד האב. וכן שפל ראש.',
+    housesUsed: [3],
+    h3Pattern: pattern,
+    h3FigureHebrew: figureHebrew,
+    senioritySignal,
+    seniorityHebrew,
+    positive: null,
+    verdictType: 'sibling-seniority-sign',
+    outputHebrew,
+  };
+}
+
+// Kashf v57 p211 — H7 marriage stability/dissolution matrix.
+function computeMarriageDissolutionP211(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h7 = findCanonicalHouse(chart, 7);
+  const pattern = h7?.key || h7?.pattern || null;
+  if (!pattern) return null;
+  const classification = classifyCanonicalFigure(pattern);
+  const fortune = classification.saadNahs;
+  const state = classification.dakhalKharij;
+
+  let sourceOutcome = 'unresolved';
+  let sourceOutcomeHebrew = 'הצירוף אינו מקבל ענף מפורש בכלל זה';
+
+  if (state === 'dakhil') {
+    if (fortune === 'nahs') {
+      sourceOutcome = 'stable-with-quarrel';
+      sourceOutcomeHebrew = 'עגמת נפש ומריבה, אבל מצב הנישואין קבוע';
+    } else {
+      sourceOutcome = 'stable';
+      sourceOutcomeHebrew = 'יישוב הדעת וקיום מצב הנישואין';
+    }
+  } else if (state === 'kharij' && fortune === 'saad') {
+    sourceOutcome = 'good-but-separation-possible';
+    sourceOutcomeHebrew = 'נישואין טובים, אך פרידה אפשרית מפני שהחלק אינו קבוע';
+  } else if (state === 'kharij' && fortune === 'nahs') {
+    sourceOutcome = 'breakdown-if-existing';
+    sourceOutcomeHebrew = 'אין כאן נישואין ראויים; ואם כבר היו — החלק נחתך ונפסק';
+  } else if (state === 'mujassad-dakhil' && fortune === 'saad') {
+    sourceOutcome = 'fixed-benefic-repair';
+    sourceOutcomeHebrew = 'צורה מיטיבה וקבועה — תיקון בית המשכב';
+  }
+
+  const figureHebrew = classification.figureHebrew || h7?.hebrew || h7?.hebrewName || pattern;
+  const unresolvedNote = sourceOutcome === 'unresolved'
+    ? ' המקור אינו נותן בקטע זה דין מפורש לצירוף הנוכחי, ולכן אין להשלים גירושין או יציבות מן הדעת.'
+    : '';
+
+  return {
+    sourceRef: 'חשיפת הסודות הנצורים v57 עמ׳ 211',
+    sourceText: 'בבית השביעי: אם שכנו בו צורות פנימיות, הדבר מורה על יישוב הדעת ועל קיום מצב הנישואין. צורה מזיקה פנימית מורה על עגמת נפש ומריבה, אבל החלק קבוע. צורה מיטיבה חיצונית מורה על נישואין טובים אך אפשר שייפרד ממנה, מפני שהחלק אינו קבוע. צורה מזיקה חיצונית מורה שאין כאן נישואין ראויים, ואם כבר היו — החלק נחתך ונפסק. צורה מיטיבה וקבועה מורה על תיקון בית המשכב.',
+    housesUsed: [7],
+    h7Pattern: pattern,
+    h7FigureHebrew: figureHebrew,
+    classification,
+    sourceOutcome,
+    sourceOutcomeHebrew,
+    positive: null,
+    verdictType: 'marriage-stability-dissolution',
+    outputHebrew: 'בית 7: ' + figureHebrew + ' (' + pattern + ') — ' + (classification.saadNahsHebrew || fortune || 'ללא סיווג') + ', ' + (classification.dakhalKharijHebrew || state || 'ללא מצב') + '. לפי כשף v57 עמ׳ 211: ' + sourceOutcomeHebrew + '.' + unresolvedNote,
+  };
+}
+
+// Kashf v57 p249 — return sign for a missing/absent male from angles + judge.
+function computeMissingReturnP249(chart) {
+  if (!Array.isArray(chart)) return null;
+  const angleHouses = [1, 4, 7, 10];
+  const angleResults = angleHouses.map((houseNumber) => {
+    const entry = findCanonicalHouse(chart, houseNumber);
+    const pattern = entry?.key || entry?.pattern || null;
+    if (!pattern) return null;
+    const classification = classifyCanonicalFigure(pattern);
+    return {
+      houseNumber,
+      pattern,
+      figureHebrew: classification.figureHebrew || entry?.hebrew || entry?.hebrewName || pattern,
+      classification,
+      returnQuality: classification.saadNahs === 'saad' && classification.dakhalKharij === 'dakhil',
+    };
+  });
+  if (angleResults.some((item) => !item)) return null;
+
+  const judge = findCanonicalHouse(chart, 15);
+  const judgePattern = judge?.key || judge?.pattern || null;
+  if (!judgePattern) return null;
+  const judgeClassification = classifyCanonicalFigure(judgePattern);
+  const judgeSupportsReturn = judgeClassification.saadNahs === 'saad' && judgeClassification.dakhalKharij === 'dakhil';
+  const allAnglesSupportReturn = angleResults.every((item) => item.returnQuality);
+  const returnIndicatedForMale = allAnglesSupportReturn && judgeSupportsReturn;
+
+  const outputHebrew = returnIndicatedForMale
+    ? 'ארבעת היתדות — בתים 1, 4, 7 ו־10 — כולם מיטיבים פנימיים, וגם בית 15 נותן אותה עדות תומכת. לפי כשף v57 עמ׳ 249 זהו סימן לחזרת הזכרים. לשון המקור כאן מצומצמת לזכרים, ולכן אין להרחיב את הפסק אוטומטית למקרה אחר.'
+    : 'תנאי החזרה החיובי של עמ׳ 249 אינו שלם: לא כל ארבעת היתדות מיטיבים פנימיים ו/או בית 15 אינו נותן אותה עדות תומכת. המקור אינו מוסר כאן שהעדר התנאי מוכיח אי־חזרה, ולכן התוצאה נשארת ללא הכרעה שלילית.';
+
+  return {
+    sourceRef: 'חשיפת הסודות הנצורים v57 עמ׳ 249',
+    sourceText: 'אם בבתים היתדיים נמצאו צורות מיטיבות פנימיות בעניין נעדר, בורח, אבדה או גניבה — הדבר מורה על חזרת הזכרים, כאשר גם המכריע מעיד לכך.',
+    housesUsed: [1, 4, 7, 10, 15],
+    angleHouses,
+    angleResults,
+    allAnglesSupportReturn,
+    judgePattern,
+    judgeFigureHebrew: judgeClassification.figureHebrew || judge?.hebrew || judge?.hebrewName || judgePattern,
+    judgeClassification,
+    judgeSupportsReturn,
+    returnIndicatedForMale,
+    sourceOutcome: returnIndicatedForMale ? 'male-return-indicated' : 'unresolved',
+    sourceScope: 'male-return-clause',
+    positive: null,
+    verdictType: 'missing-return',
+    outputHebrew,
+  };
+}
+
 const P174_GENERAL_STATE_HOUSE_ROLES = Object.freeze({
   1: Object.freeze({ titleHebrew: 'בית הנפש', roleHebrew: 'מצב האדם והתחלת כל דבר' }),
   2: Object.freeze({ titleHebrew: 'בית הממון', roleHebrew: 'ממונו של השואל' }),
@@ -1608,6 +1797,10 @@ function computeHiddenActionP167(chart) {
 }
 
 const CUSTOM_EXECUTORS = Object.freeze({
+  'child.p194.healthTrajectoryH6H8': computeChildHealthTrajectoryP194,
+  'siblings.p182.seniority': computeSiblingSeniorityP182,
+  'marriage.p211.dissolutionH7StateMatrix': computeMarriageDissolutionP211,
+  'missing.p249.returnAnglesJudge': computeMissingReturnP249,
   'pregnancy.p191.childSafetyH1H6H8': computeChildSafetyP191,
   'lifespan.p264.stagesH11H9H7': computeLifespanStagesP264,
   'travel.p244.returnH1H2H9': computeTravelerReturnP244,
