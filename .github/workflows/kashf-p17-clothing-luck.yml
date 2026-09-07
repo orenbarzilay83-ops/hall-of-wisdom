@@ -23,6 +23,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - name: Normalize test footer for one-time patch anchor
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const path = '_test_kashf_canonical_routing.mjs';
+          let text = fs.readFileSync(path, 'utf8');
+          const old = 'if (failed > 0) process.exit(1);';
+          const replacement = 'if (failed > 0) {\n  process.exit(1);\n}';
+          if (!text.includes(old) && !text.includes(replacement)) throw new Error('Missing test footer');
+          if (text.includes(old)) text = text.replace(old, replacement);
+          fs.writeFileSync(path, text);
+          NODE
       - name: Apply clothing patch
         run: node _patch_kashf_p17_clothing_luck.mjs
       - name: Run Kashf canonical routing contract
