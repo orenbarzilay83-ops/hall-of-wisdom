@@ -490,7 +490,47 @@ function computeDowryH8P204(chart) {
   };
 }
 
+
+function computeLostItemReturnP202(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h6 = findCanonicalHouse(chart, 6);
+  const h8 = findCanonicalHouse(chart, 8);
+  const h6Pattern = h6?.key || h6?.pattern || null;
+  const h8Pattern = h8?.key || h8?.pattern || null;
+  if (!h6Pattern || !h8Pattern) return null;
+
+  const h6Classification = classifyCanonicalFigure(h6Pattern);
+  const h8Classification = classifyCanonicalFigure(h8Pattern);
+  const h6Qualifies = h6Classification.saadNahs === 'saad' && h6Classification.dakhalKharij === 'dakhil';
+  const h8Qualifies = h8Classification.saadNahs === 'saad' && h8Classification.dakhalKharij === 'dakhil';
+  const returns = h6Qualifies && h8Qualifies;
+
+  const h6FigureHebrew = h6?.hebrew || h6?.hebrewName || h6Pattern;
+  const h8FigureHebrew = h8?.hebrew || h8?.hebrewName || h8Pattern;
+  const outputHebrew = returns
+    ? 'בית 6: ' + h6FigureHebrew + ' (' + h6Pattern + ') ובית 8: ' + h8FigureHebrew + ' (' + h8Pattern + ') — שתיהן צורות מיטיבות פנימיות. לפי כשף עמ׳ 202: האבדה תשוב.'
+    : 'לפי כשף עמ׳ 202, חזרת האבדה דורשת שגם בית 6 וגם בית 8 יהיו צורות מיטיבות פנימיות. התנאי אינו מתקיים בשני הבתים יחד; לכן לפי כלל זה האבדה אינה שבה. אין להפוך צורה ממוזגת למיטיבה, ואין להחשיב צורה קבועה/מתהפכת/חיצונית כפנימית.';
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 202',
+    sourceText: 'בעניין האבדה ושיבתה: כוון אל הבית השמיני והשישי; אם היו הצורות מיטיבות פנימיות — שבה, ואם לא — לא.',
+    housesUsed: [6, 8],
+    h6Pattern,
+    h8Pattern,
+    h6FigureHebrew,
+    h8FigureHebrew,
+    h6Classification,
+    h8Classification,
+    h6Qualifies,
+    h8Qualifies,
+    returns,
+    positive: returns,
+    outputHebrew,
+  };
+}
+
 const CUSTOM_EXECUTORS = Object.freeze({
+  'lostItem.p202.returnH6H8': computeLostItemReturnP202,
   'marriage.p204.previousStatusH7inH10': computeMarriagePreviousStatusP204,
   'marriage.p204.dowryH8': computeDowryH8P204,
   'theft.p225.thiefDescriptionH7': computeThiefPhysicalDescriptionKashf,

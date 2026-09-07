@@ -389,10 +389,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'lostAnimal',
     sourcePages: [202],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Canonical body rule for the lost thing: H6 and H8 must be benefic AND internal for return; otherwise it does not return. Do not add an unsourced middle branch.',
+    executorStatus: 'ready',
+    notes: 'Canonical p202 executor is wired: H6 and H8 must both be explicitly benefic (saad) AND explicitly internal (dakhil) for return; otherwise the source says it does not return. Mixed tendency is not promoted to benefic, and fixed/mutable/outgoing movement is not promoted to internal.',
   }),
 
   'marriage.p204.dowryH8': method({

@@ -767,6 +767,60 @@ assert(rulerMixed.primaryFormula?.result?.executorResult?.classification?.saadNa
 assert(rulerMixed.primaryFormula?.result?.executorResult?.rulerCondition === null, 'p257 ruler mixed branch remains unresolved by this source rule');
 assert(rulerMixed.overallPositive === null, 'p257 ruler mixed branch does not invent positive or negative verdict');
 
+// ── P11 lost-item return p202 executor ---------------------------------
+assertRoute('q-lost-item', {
+  ok: true,
+  canRunKashf: true,
+  kashfIntentId: 'lostItem.return',
+  kashfMethodId: 'lostItem.p202.returnH6H8',
+  kashfRuntimeStatus: 'ready',
+  executorStatus: 'ready',
+  runtimeAllowed: true,
+});
+assert(canRunKashfMethod('lostItem.p202.returnH6H8') === true, 'p202 lost-item return method is explicitly runnable');
+
+const lostReturnYes = buildKashfReadingByQuestionId(makeP9Board({ 6: '2111', 8: '2121' }), 'q-lost-item', { question: 'האם האבדה תשוב?' });
+assert(lostReturnYes.valid === true && lostReturnYes.canRunKashf === true, 'p202 lost-item positive fixture executes canonically');
+assert(lostReturnYes.canonicalExecution?.methodsExecuted?.length === 1, 'p202 lost-item executes exactly one method');
+assert(lostReturnYes.canonicalExecution?.methodsExecuted?.[0] === 'lostItem.p202.returnH6H8', 'p202 lost-item executes exact canonical method');
+assert(JSON.stringify(lostReturnYes.primaryFormula?.houses) === JSON.stringify([6, 8]), 'p202 lost-item traces H6+H8 only');
+assert(lostReturnYes.primaryFormula?.result?.executorResult?.h6Classification?.saadNahs === 'saad', 'p202 H6 positive fixture is benefic');
+assert(lostReturnYes.primaryFormula?.result?.executorResult?.h6Classification?.dakhalKharij === 'dakhil', 'p202 H6 positive fixture is internal');
+assert(lostReturnYes.primaryFormula?.result?.executorResult?.h8Classification?.saadNahs === 'saad', 'p202 H8 positive fixture is benefic');
+assert(lostReturnYes.primaryFormula?.result?.executorResult?.h8Classification?.dakhalKharij === 'dakhil', 'p202 H8 positive fixture is internal');
+assert(lostReturnYes.primaryFormula?.result?.executorResult?.returns === true, 'p202 both benefic+internal houses mean return');
+assert(lostReturnYes.overallPositive === true, 'p202 return branch is positive');
+assert(lostReturnYes.verdict?.text.includes('האבדה תשוב'), 'p202 return verdict preserves source meaning');
+assert(lostReturnYes.altFormula === null, 'p202 does not aggregate lost-item alternatives');
+assert(lostReturnYes.canonicalExecution?.topicBundleExecuted === false, 'p202 does not execute broad lost-animal/theft bundle');
+assert(lostReturnYes.dhamir === null, 'p202 does not auto-run Dhamir');
+
+const lostReturnMixedNo = buildKashfReadingByQuestionId(makeP9Board({ 6: '2212', 8: '2111' }), 'q-lost-item', { question: 'האם האבדה תשוב?' });
+assert(lostReturnMixedNo.primaryFormula?.result?.executorResult?.h6Classification?.saadNahs === 'mixed', 'p202 mixed-benefic tendency remains mixed');
+assert(lostReturnMixedNo.primaryFormula?.result?.executorResult?.h6Qualifies === false, 'p202 mixed figure is not promoted to explicit benefic+internal');
+assert(lostReturnMixedNo.primaryFormula?.result?.executorResult?.returns === false, 'p202 mixed H6 fails exact return condition');
+assert(lostReturnMixedNo.overallPositive === false, 'p202 source otherwise-no branch is negative');
+
+const lostReturnOutgoingNo = buildKashfReadingByQuestionId(makeP9Board({ 6: '2111', 8: '1122' }), 'q-lost-item', { question: 'האם האבדה תשוב?' });
+assert(lostReturnOutgoingNo.primaryFormula?.result?.executorResult?.h8Classification?.saadNahs === 'saad', 'p202 outgoing negative fixture remains benefic in quality');
+assert(lostReturnOutgoingNo.primaryFormula?.result?.executorResult?.h8Classification?.dakhalKharij === 'kharij', 'p202 outgoing negative fixture is explicitly external');
+assert(lostReturnOutgoingNo.primaryFormula?.result?.executorResult?.h8Qualifies === false, 'p202 benefic but outgoing H8 fails internal condition');
+assert(lostReturnOutgoingNo.primaryFormula?.result?.executorResult?.returns === false, 'p202 benefic-but-outgoing branch does not return');
+
+const lostAnimalRoute = assertRoute('q-lost-animal', {
+  ok: true,
+  canRunKashf: true,
+  kashfIntentId: 'lostItem.return',
+  kashfMethodId: 'lostItem.p202.returnH6H8',
+  kashfRuntimeStatus: 'ready',
+  executorStatus: 'ready',
+  runtimeAllowed: true,
+});
+assert(lostAnimalRoute.aliasOf === 'q-lost-item', 'q-lost-animal remains an explicit alias of the same p202 return method');
+const lostAnimalReading = buildKashfReadingByQuestionId(makeP9Board({ 6: '2111', 8: '2121' }), 'q-lost-animal', { question: 'האם החיה האבודה תחזור?' });
+assert(lostAnimalReading.primaryFormula?.result?.executorResult?.returns === true, 'q-lost-animal alias reaches the same exact p202 executor');
+assert(lostAnimalReading.canonicalExecution?.methodsExecuted?.length === 1, 'q-lost-animal alias still executes one method only');
+
 // ── Canonical execution isolation ----------------------------------------
 for (const qid of ['q-success', 'q-travel-safe', 'q-short-travel', 'q-move-city', 'q-siblings']) {
   const reading = buildKashfReadingByQuestionId(PILOT_BOARD, qid, { question: qid });
