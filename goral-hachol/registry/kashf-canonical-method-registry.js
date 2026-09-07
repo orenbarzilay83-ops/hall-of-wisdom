@@ -261,6 +261,151 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     legacyTopicId: 'children',
   }),
 
+  // ── FAMILY + HEALTH canonical slice -----------------------------------
+  'pregnancy.p191.existsH5SilentEmpty': method({
+    kashfMethodId: 'pregnancy.p191.existsH5SilentEmpty',
+    kashfIntentId: 'pregnancy.exists',
+    topicId: 'children',
+    sourcePages: [191],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'pending',
+    notes: 'Canonical body rule: H5 silent => pregnancy true; H5 empty => pregnancy false. Do not substitute benefic/malefic.',
+  }),
+
+  'pregnancy.p191.childSafetyH1H6H8': method({
+    kashfMethodId: 'pregnancy.p191.childSafetyH1H6H8',
+    kashfIntentId: 'pregnancy.childSafety',
+    topicId: 'children',
+    sourcePages: [191],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'pending',
+    notes: 'H1 benefic indicates safety; H1 malefic indicates fear; H6+H8 malefic is the severe/dead-birth condition. These are supporting conditions of the same safety intent, not separate methods.',
+  }),
+
+  'pregnancy.p191.deliveryDifficultyH1H5H15': method({
+    kashfMethodId: 'pregnancy.p191.deliveryDifficultyH1H5H15',
+    kashfIntentId: 'pregnancy.deliveryDifficulty',
+    topicId: 'children',
+    sourcePages: [191, 194],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'pending',
+    notes: 'Canonical delivery judgment centers H1+H5 and H15 testimony: mutable/masculine supports ease; fixed H5 supports difficulty. p194 H5 heavy/benefic is corroborating body material, not an alternative vote.',
+  }),
+
+  'child.p194.healthTrajectoryH6H8': method({
+    kashfMethodId: 'child.p194.healthTrajectoryH6H8',
+    kashfIntentId: 'child.healthTrajectory',
+    topicId: 'children',
+    sourcePages: [194],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'pending',
+    notes: 'Source judges childhood pains from H6 and longer-term health trajectory from H8. It is not a generic current-illness recovery engine.',
+  }),
+
+  'lifespan.p178.elementCountToHouse': method({
+    kashfMethodId: 'lifespan.p178.elementCountToHouse',
+    kashfIntentId: 'lifespan.duration',
+    topicId: 'generalReading',
+    sourcePages: [178],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'pending',
+    notes: 'Canonical numeric lifespan/duration method: aggregate elements, reduce by 16, walk houses, then interpret the landing house class as years/months/days. Do not replace with p264 life stages.',
+  }),
+
+  'lifespan.p264.stagesH11H9H7': method({
+    kashfMethodId: 'lifespan.p264.stagesH11H9H7',
+    kashfIntentId: 'lifespan.stages',
+    topicId: 'friendsHope',
+    sourcePages: [264],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'pending',
+    notes: 'Distinct non-numeric intent: H11 beginning of life, H9 middle, H7 end. Must never answer lifespan duration.',
+  }),
+
+  'mother.p257.statusDayNight': method({
+    kashfMethodId: 'mother.p257.statusDayNight',
+    kashfIntentId: 'mother.status',
+    topicId: 'motherRules',
+    sourcePages: [257],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'pending',
+    notes: 'Body-source mother rule. Night: house quality plus White/Road in angles or succedents vs cadents. Day: judge by Venus figures. Existing helper is incomplete and must not be reused unchanged.',
+  }),
+
+  'hidden.p188.isStillThere': method({
+    kashfMethodId: 'hidden.p188.isStillThere',
+    kashfIntentId: 'hidden.isStillThere',
+    topicId: 'hiddenTreasure',
+    sourcePages: [188],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'pending',
+    notes: 'Check H1,H2,H4,H13,H14,H15. Source is binary: if the required figures are benefic, the hidden thing is there; otherwise it is not. No majority rule.',
+  }),
+
+  'hidden.p188.quarterDirection': method({
+    kashfMethodId: 'hidden.p188.quarterDirection',
+    kashfIntentId: 'hidden.direction',
+    topicId: 'hiddenTreasure',
+    sourcePages: [188],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'additional-cast',
+    executorStatus: 'pending',
+    notes: 'Divide the suspected place into four quarters and cast one figure per direction. This requires method-specific additional input/casting and cannot be inferred from the existing board.',
+  }),
+
+  'well.p188.recast1468': method({
+    kashfMethodId: 'well.p188.recast1468',
+    kashfIntentId: 'well.result',
+    topicId: 'hiddenTreasure',
+    sourcePages: [188],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'recast-board',
+    executorStatus: 'pending',
+    notes: 'Make H1,H4,H6,H8 the new mothers, complete a new board, then judge H4 and angles as benefic+internal. Existing legacy helper using original houses is not source-equivalent. Depth is a separate intent.',
+  }),
+
+  'lostItem.p202.returnH6H8': method({
+    kashfMethodId: 'lostItem.p202.returnH6H8',
+    kashfIntentId: 'lostItem.return',
+    topicId: 'lostAnimal',
+    sourcePages: [202],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'pending',
+    notes: 'Canonical body rule for the lost thing: H6 and H8 must be benefic AND internal for return; otherwise it does not return. Do not add an unsourced middle branch.',
+  }),
+
+  'marriage.p204.dowryH8': method({
+    kashfMethodId: 'marriage.p204.dowryH8',
+    kashfIntentId: 'marriage.dowryAmount',
+    topicId: 'marriage',
+    sourcePages: [204],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'pending',
+    notes: 'H8 benefic indicates a large mahr; the paired malefic statement indicates lowness. Keep separate from H10 family-status judgment.',
+  }),
+
   'siblings.p182.seniority': method({
     kashfMethodId: 'siblings.p182.seniority',
     kashfIntentId: 'siblings.seniority',
@@ -388,6 +533,32 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     notes: 'Gift verdict polarity is stated, but the exact house/input to which it applies is not sufficiently explicit.',
   }),
 
+  'pregnancy.miscarriageRisk.unresolved': method({
+    kashfMethodId: 'pregnancy.miscarriageRisk.unresolved',
+    kashfIntentId: 'pregnancy.miscarriageRisk',
+    topicId: 'children',
+    sourcePages: [192, 193],
+    methodRole: 'unresolved',
+    kashfRuntimeStatus: 'blocked-by-source',
+    runtimeAllowed: false,
+    executionKind: null,
+    executorStatus: 'not-applicable',
+    notes: 'Several body-source miscarriage/fetus-risk conditions exist across p192-p193. Canonical method selection has not yet been formally closed; do not merge them or vote across them.',
+  }),
+
+  'child.lifespan.p195.provenanceUnresolved': method({
+    kashfMethodId: 'child.lifespan.p195.provenanceUnresolved',
+    kashfIntentId: 'child.lifespan',
+    topicId: 'children',
+    sourcePages: [195],
+    methodRole: 'unresolved',
+    kashfRuntimeStatus: 'blocked-by-source',
+    runtimeAllowed: false,
+    executionKind: null,
+    executorStatus: 'not-applicable',
+    notes: 'p195 contains child-lifespan material adjacent to al-Zanati material. Passage-level provenance must be closed before this can be selected operationally.',
+  }),
+
   'travel.p242.vehicleSafety': method({
     kashfMethodId: 'travel.p242.vehicleSafety',
     kashfIntentId: 'travel.vehicleSafety',
@@ -457,6 +628,20 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     executionKind: 'formula',
     executorStatus: 'not-applicable',
     notes: 'Post-ومن غير الكتاب material; knowledge-only by default.',
+  }),
+
+  // ── UNSUPPORTED / ABSTRACT INTENTS ------------------------------------
+  'hidden.abstractSecret.unsupported': method({
+    kashfMethodId: 'hidden.abstractSecret.unsupported',
+    kashfIntentId: 'hidden.abstractSecret',
+    topicId: 'hiddenTreasure',
+    sourcePages: [184, 188],
+    methodRole: 'unresolved',
+    kashfRuntimeStatus: 'unsupported',
+    runtimeAllowed: false,
+    executionKind: null,
+    executorStatus: 'not-applicable',
+    notes: 'The audited body rules address physical hidden things/locations. They do not provide a verified canonical method for “what secret/truth is being hidden?”.',
   }),
 
   // ── LEGACY UNSUPPORTED PLACEHOLDER (kept only for old P0 route history) -
