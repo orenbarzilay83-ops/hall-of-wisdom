@@ -756,9 +756,9 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'theft',
     sourcePages: [224, 225],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
+    executorStatus: 'ready',
     notes: 'Body-source relationship/proximity method follows where the H7 figure recurs and judges the connection by that house. It can classify relation/proximity; it does not identify a named thief.',
   }),
 

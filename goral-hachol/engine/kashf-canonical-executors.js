@@ -132,10 +132,90 @@ function computePregnancyGenderP191(chart) {
   };
 }
 
+
+const P224_H7_RECURRENCE_CONNECTIONS = Object.freeze({
+  1: 'אדם העומד במקום בעל הדבר',
+  2: 'אחד מעוזריו של בעל הדבר',
+  3: 'הגנב עצמו',
+  4: 'מי שנכנס לביתו של בעל הדבר',
+  5: 'מי שמתערב עם ילדיו של בעל הדבר',
+  6: 'המקור מוסר שבעל הדבר יחלה בגלל הגניבה; אין כאן זיהוי קשר אישי',
+  9: 'הקשר בא מחמת נסיעה',
+  10: 'אדם הקשור לבעלי השלטון',
+  11: 'אדם הקשור לאנשים שהגנב מתחבר עמם',
+});
+
+const P225_KINSHIP_ROOTS = Object.freeze({
+  1: 'סב מצד האם',
+  4: 'אב',
+  5: 'בן',
+  6: 'דוד',
+  8: 'אחים',
+  10: 'אם ובני הדוד',
+  11: 'חברים',
+  12: 'בני הדוד מצד האם',
+});
+
+function computeThiefRelationshipP224(chart) {
+  if (!Array.isArray(chart)) return null;
+  const normalized = chart.map((entry, index) => ({
+    ...entry,
+    houseNumber: Number(entry?.house ?? entry?.houseNumber ?? (index + 1)),
+    pattern: entry?.key || entry?.pattern || null,
+  }));
+  const h7 = normalized.find((entry) => entry.houseNumber === 7) || normalized[6] || null;
+  const h7Pattern = h7?.pattern || null;
+  if (!h7Pattern) return null;
+
+  // The original H7 occurrence is the reference point, not a recurrence.
+  const recurrenceHouses = normalized
+    .filter((entry) => entry.houseNumber !== 7 && entry.pattern === h7Pattern)
+    .map((entry) => entry.houseNumber)
+    .filter((house) => Number.isInteger(house) && house >= 1 && house <= 16)
+    .sort((a, b) => a - b);
+
+  const indications = recurrenceHouses.map((house) => ({
+    house,
+    p224Connection: P224_H7_RECURRENCE_CONNECTIONS[house] || null,
+    p225KinshipRoot: P225_KINSHIP_ROOTS[house] || null,
+  }));
+  const sourceSupported = indications.filter((item) => item.p224Connection || item.p225KinshipRoot);
+
+  let outputHebrew;
+  if (recurrenceHouses.length === 0) {
+    outputHebrew = `צורת בית 7 (${h7Pattern}) אינה חוזרת בבית אחר בלוח. לפי כלל עמ׳ 224 אין כאן בית חזרה שממנו ניתן לקבוע את הקשר; הכלל גם אינו מודד מרחק מספרי.`;
+  } else if (sourceSupported.length === 0) {
+    outputHebrew = `צורת בית 7 (${h7Pattern}) חוזרת בבית/בתים ${recurrenceHouses.join(', ')}, אך במקטע המקור עמ׳ 224–225 לא נמסרה הוראת קשר מפורשת לבתים אלה. אין להשלים קשר מן הדעת.`;
+  } else {
+    const parts = sourceSupported.map((item) => {
+      const layers = [];
+      if (item.p224Connection) layers.push(`עמ׳ 224: ${item.p224Connection}`);
+      if (item.p225KinshipRoot) layers.push(`עמ׳ 225 — שורש קרבה: ${item.p225KinshipRoot}`);
+      return `בית ${item.house} — ${layers.join('; ')}`;
+    });
+    outputHebrew = `צורת בית 7 (${h7Pattern}) חוזרת בבית/בתים ${recurrenceHouses.join(', ')}. ${parts.join(' | ')}. זהו תיאור קשר לפי הבית שבו הצורה חוזרת, לא זיהוי של אדם מסוים ולא מדידת מרחק.`;
+  }
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 224–225',
+    sourceText: 'הבית השביעי, אם צורתו חוזרת בבית מן הבתים, מורה על סיבת הגניבה ועל מי שקשור בה; הדין לפי הבית שבו חזרה הצורה.',
+    h7Pattern,
+    h7FigureHebrew: h7?.hebrew || h7?.hebrewName || h7Pattern,
+    recurrenceHouses,
+    housesUsed: [7, ...recurrenceHouses],
+    indications,
+    sourceSupportedIndications: sourceSupported,
+    relationResolved: sourceSupported.length > 0,
+    positive: null,
+    outputHebrew,
+  };
+}
+
 const CUSTOM_EXECUTORS = Object.freeze({
   'theft.p225.thiefDescriptionH7': computeThiefPhysicalDescriptionKashf,
   'pregnancy.p191.existsH5SilentEmpty': computePregnancyExistenceP191,
   'pregnancy.p191.genderH5': computePregnancyGenderP191,
+  'theft.p224.relationshipH7Recurrence': computeThiefRelationshipP224,
 });
 
 function toLegacyChart(board) {

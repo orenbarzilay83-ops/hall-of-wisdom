@@ -158,17 +158,19 @@ function buildLegacyFunctionReading(board, method, clientContext = {}) {
       positive: typeof executorResult.positive === 'boolean' ? executorResult.positive : null,
     };
     const topicRules = method.legacyTopicId ? getTopicRules(method.legacyTopicId) : null;
-    const houses = method.kashfMethodId === 'profession.p254.h9Planet'
-      ? [9, 10, 11]
-      : method.kashfMethodId === 'illness.bodyPart.h6Figure'
-        ? [6]
-        : method.kashfMethodId === 'theft.p225.thiefDescriptionH7'
-          ? [7]
-          : method.kashfMethodId === 'pregnancy.p191.existsH5SilentEmpty'
-            ? [5]
-            : method.kashfMethodId === 'pregnancy.p191.genderH5'
+    const houses = Array.isArray(executorResult.housesUsed)
+      ? [...executorResult.housesUsed]
+      : method.kashfMethodId === 'profession.p254.h9Planet'
+        ? [9, 10, 11]
+        : method.kashfMethodId === 'illness.bodyPart.h6Figure'
+          ? [6]
+          : method.kashfMethodId === 'theft.p225.thiefDescriptionH7'
+            ? [7]
+            : method.kashfMethodId === 'pregnancy.p191.existsH5SilentEmpty'
               ? [5]
-              : [];
+              : method.kashfMethodId === 'pregnancy.p191.genderH5'
+                ? [5]
+                : [];
     const result = {
       type: method.executionKind,
       executorResult,

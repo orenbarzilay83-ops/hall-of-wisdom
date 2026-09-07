@@ -146,11 +146,12 @@ assertRoute('q-theft-return', {
 });
 assertRoute('q-thief-near', {
   ok: true,
-  canRunKashf: false,
+  canRunKashf: true,
   kashfIntentId: 'theft.thiefRelationship',
   kashfMethodId: 'theft.p224.relationshipH7Recurrence',
   kashfRuntimeStatus: 'ready',
-  executorStatus: 'pending',
+  executorStatus: 'ready',
+  runtimeAllowed: true,
 });
 assertRoute('q-theft-who', {
   ok: true,
@@ -478,6 +479,57 @@ assert(pregnancyGenderUnresolvedReading.primaryFormula?.result?.executorResult?.
 assert(pregnancyGenderUnresolvedReading.primaryFormula?.result?.executorResult?.gender === null, 'H5=1111 remains unresolved by the p191 masculine/feminine rule');
 assert(pregnancyGenderUnresolvedReading.verdict?.positive === null && pregnancyGenderUnresolvedReading.overallPositive === null, 'androgynous H5 remains neutral');
 assert(String(pregnancyGenderUnresolvedReading.verdict?.text || '').includes('אינו מכריע'), 'androgynous p191 result is explicit rather than fabricated');
+// ── P6 theft-relationship H7 recurrence executor ---------------------
+const thiefRelationshipRoute = assertRoute('q-thief-near', {
+  ok: true,
+  canRunKashf: true,
+  kashfIntentId: 'theft.thiefRelationship',
+  kashfMethodId: 'theft.p224.relationshipH7Recurrence',
+  kashfRuntimeStatus: 'ready',
+  executorStatus: 'ready',
+  runtimeAllowed: true,
+});
+assert(canRunKashfMethod(thiefRelationshipRoute.kashfMethodId) === true, 'theft-relationship canonical method is explicitly runnable');
+
+// No-recurrence guard: the normal pilot board has H7=1221 only at H7.
+const thiefRelationshipNoRecurrence = buildKashfReadingByQuestionId(PILOT_BOARD, 'q-thief-near', { question: 'מה הקשר של הגנב לבעל הדבר?' });
+assert(thiefRelationshipNoRecurrence.valid === true, 'q-thief-near executes through canonical custom allowlist');
+assert(thiefRelationshipNoRecurrence.canonicalExecution?.methodsExecuted?.length === 1, 'q-thief-near executes exactly one method');
+assert(thiefRelationshipNoRecurrence.canonicalExecution?.methodsExecuted?.[0] === 'theft.p224.relationshipH7Recurrence', 'q-thief-near executes the exact p224 recurrence method only');
+assert(thiefRelationshipNoRecurrence.primaryFormula?.result?.executorResult?.h7Pattern === '1221', 'pilot board H7 remains 1221');
+assert(thiefRelationshipNoRecurrence.primaryFormula?.result?.executorResult?.recurrenceHouses?.length === 0, 'pilot board has no H7 recurrence outside H7');
+assert(thiefRelationshipNoRecurrence.primaryFormula?.houses?.length === 1 && thiefRelationshipNoRecurrence.primaryFormula.houses[0] === 7, 'no-recurrence traceability records only reference H7');
+assert(thiefRelationshipNoRecurrence.primaryFormula?.result?.executorResult?.relationResolved === false, 'no recurrence does not invent a relationship');
+assert(String(thiefRelationshipNoRecurrence.verdict?.text || '').includes('אינה חוזרת בבית אחר'), 'no-recurrence result is explicit');
+assert(String(thiefRelationshipNoRecurrence.verdict?.text || '').includes('אינו מודד מרחק מספרי'), 'renamed route does not masquerade as a distance meter');
+
+// Exact recurrence guard: this board has H7=1112 recurring only in H2.
+const THIEF_H2_RECURRENCE_BOARD = buildRamlBoardFromMothers(['1111', '1112', '1111', '1121']);
+const thiefRelationshipH2 = buildKashfReadingByQuestionId(THIEF_H2_RECURRENCE_BOARD, 'q-thief-near', { question: 'מה הקשר של הגנב לבעל הדבר?' });
+assert(thiefRelationshipH2.primaryFormula?.result?.executorResult?.h7Pattern === '1112', 'recurrence guard board produces H7=1112');
+assert(JSON.stringify(thiefRelationshipH2.primaryFormula?.result?.executorResult?.recurrenceHouses) === JSON.stringify([2]), 'H7=1112 recurs only in H2');
+assert(JSON.stringify(thiefRelationshipH2.primaryFormula?.houses) === JSON.stringify([7, 2]), 'dynamic traceability records H7 reference plus H2 recurrence');
+assert(thiefRelationshipH2.primaryFormula?.result?.executorResult?.sourceSupportedIndications?.[0]?.p224Connection === 'אחד מעוזריו של בעל הדבר', 'H2 recurrence resolves to the exact p224 helper connection');
+assert(String(thiefRelationshipH2.verdict?.text || '').includes('אחד מעוזריו של בעל הדבר'), 'H2 recurrence renders the source connection');
+assert(thiefRelationshipH2.verdict?.positive === null && thiefRelationshipH2.overallPositive === null, 'relationship lookup does not invent positive/negative sentiment');
+
+// Dual-layer source guard: H4 recurrence preserves p224 and p225 as separate evidence.
+const THIEF_H4_RECURRENCE_BOARD = buildRamlBoardFromMothers(['1111', '1111', '1121', '1122']);
+const thiefRelationshipH4 = buildKashfReadingByQuestionId(THIEF_H4_RECURRENCE_BOARD, 'q-thief-near', { question: 'מה הקשר של הגנב לבעל הדבר?' });
+assert(thiefRelationshipH4.primaryFormula?.result?.executorResult?.recurrenceHouses?.includes(4) === true, 'H4 guard board includes the source-relevant H4 recurrence');
+assert(thiefRelationshipH4.primaryFormula?.result?.executorResult?.sourceSupportedIndications?.[0]?.p224Connection === 'מי שנכנס לביתו של בעל הדבר', 'p224 layer is preserved at H4');
+assert(thiefRelationshipH4.primaryFormula?.result?.executorResult?.sourceSupportedIndications?.[0]?.p225KinshipRoot === 'אב', 'p225 kinship layer is preserved separately at H4');
+assert(String(thiefRelationshipH4.verdict?.text || '').includes('עמ׳ 224') && String(thiefRelationshipH4.verdict?.text || '').includes('עמ׳ 225'), 'writer text does not silently merge the two source layers');
+
+assert(thiefRelationshipH2.canonicalExecution?.altFormulaExecuted === false, 'q-thief-near does not execute alt formula');
+assert(thiefRelationshipH2.canonicalExecution?.topicSupportingChecksExecuted === false, 'q-thief-near does not execute theft supporting checks');
+assert(thiefRelationshipH2.canonicalExecution?.topicBundleExecuted === false, 'q-thief-near does not execute theft topic bundle');
+const thiefRelationshipHtml = writeCanonicalKashfReading(thiefRelationshipH2);
+assert(thiefRelationshipHtml.includes('theft.p224.relationshipH7Recurrence'), 'theft-relationship writer identifies exact canonical method');
+assert(thiefRelationshipHtml.includes('אחד מעוזריו של בעל הדבר'), 'theft-relationship writer renders source connection');
+assert(thiefRelationshipHtml.includes('הבית השביעי'), 'theft-relationship writer exposes the source rule');
+assert(!thiefRelationshipHtml.includes('ניתוח תומך לפי ספר'), 'theft-relationship writer contains no broad theft support section');
+assert(!thiefRelationshipHtml.includes('מחשבת השואל (הדמיר)'), 'theft-relationship writer contains no automatic Dhamir');
 // ── Canonical execution isolation ----------------------------------------
 for (const qid of ['q-success', 'q-travel-safe', 'q-short-travel', 'q-move-city', 'q-siblings']) {
   const reading = buildKashfReadingByQuestionId(PILOT_BOARD, qid, { question: qid });
