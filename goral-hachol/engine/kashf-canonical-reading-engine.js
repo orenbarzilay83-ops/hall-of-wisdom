@@ -23,6 +23,10 @@ import {
 import { getTopicRules } from './kashf-topic-rules.js';
 import { getKashfMethod } from '../registry/kashf-canonical-method-registry.js';
 import { requireRunnableKashfRoute } from './kashf-method-router.js';
+import {
+  hasCanonicalLegacyExecutor,
+  executeCanonicalLegacyMethod,
+} from './kashf-canonical-executors.js';
 
 const ROW_BY_NAME = Object.freeze({
   fire: ROW.FIRE,
@@ -119,6 +123,115 @@ function interpretFormula(result, formula) {
   throw new Error(`Canonical interpretBy is not enabled in P0: ${formula.interpretBy}`);
 }
 
+function buildLegacyFunctionReading(board, method, clientContext = {}) {
+  if (!hasCanonicalLegacyExecutor(method.kashfMethodId)) {
+    return blockedResult({
+      kashfMethodId: method.kashfMethodId,
+      kashfIntentId: method.kashfIntentId,
+      status: method.kashfRuntimeStatus,
+      executorStatus: method.executorStatus,
+      reason: 'canonical-legacy-executor-not-approved',
+      userMessage: 'המבצע הישן של שיטה זו לא אושר במפורש לנתיב הקנוני.',
+    });
+  }
+
+  try {
+    const legacyResult = executeCanonicalLegacyMethod(method.kashfMethodId, board);
+    if (!legacyResult || typeof legacyResult !== 'object') {
+      throw new Error('Approved canonical legacy executor returned no result');
+    }
+
+    const verdict = {
+      text: legacyResult.outputHebrew || 'ללא הכרעה מפורשת',
+      positive: null,
+    };
+    const topicRules = method.legacyTopicId ? getTopicRules(method.legacyTopicId) : null;
+    const houses = method.kashfMethodId === 'profession.p254.h9Planet' ? [9, 10, 11] : [];
+    const result = {
+      type: 'legacy-function',
+      legacyResult,
+    };
+    const primaryFormula = {
+      type: 'legacy-function',
+      houses,
+      result,
+      verdict,
+      sourceText: '',
+    };
+
+    return {
+      valid: true,
+      status: 'ok',
+      canRunKashf: true,
+      kashfIntentId: method.kashfIntentId,
+      kashfMethodId: method.kashfMethodId,
+      kashfRuntimeStatus: method.kashfRuntimeStatus,
+      executorStatus: method.executorStatus,
+      methodRole: method.methodRole,
+      topicId: method.topicId || method.legacyTopicId,
+      topicHebrewName: topicRules?.topicHebrewName || method.kashfIntentId,
+      topicDescription: topicRules?.topicDescription || '',
+      sourceRef: 'כשף אל-אסרר, עמ׳ ' + method.sourcePages.join('–'),
+      primaryFormula,
+      altFormula: null,
+      supportingFindings: [],
+      keyHouseReadings: [],
+      boardValidation: board?.boardValidation || { isValid: true, warnings: [] },
+      dhamir: null,
+      dhamirType4External: null,
+      dhamirExtras: null,
+      witnessTestimony: null,
+      source: {
+        sourceVolume: method.sourceVolume,
+        sourcePages: method.sourcePages,
+        sourceLayer: method.sourceLayer,
+        attributedSourceBook: method.attributedSourceBook,
+        sourceConfidence: method.sourceConfidence,
+      },
+      clientContext: {
+        name: clientContext.name || '',
+        question: clientContext.question || '',
+        age: clientContext.age || '',
+        gender: clientContext.gender || '',
+        maritalStatus: clientContext.maritalStatus || null,
+        workStatus: clientContext.workStatus || null,
+        hasChildren: clientContext.hasChildren || null,
+        parentName: clientContext.parentName || '',
+        quesitedName: clientContext.quesitedName || '',
+        phone: clientContext.phone || '',
+        dynFields: clientContext.dynFields || {},
+      },
+      formula: {
+        type: 'legacy-function',
+        houses,
+        sourceText: '',
+        result,
+      },
+      verdict,
+      overallPositive: null,
+      canonicalExecution: {
+        methodsExecuted: [method.kashfMethodId],
+        altFormulaExecuted: false,
+        topicSupportingChecksExecuted: false,
+        topicBundleExecuted: false,
+      },
+    };
+  } catch (err) {
+    return {
+      valid: false,
+      status: 'error',
+      canRunKashf: false,
+      kashfIntentId: method.kashfIntentId,
+      kashfMethodId: method.kashfMethodId,
+      kashfRuntimeStatus: method.kashfRuntimeStatus,
+      executorStatus: method.executorStatus,
+      verdict: null,
+      overallPositive: null,
+      reason: 'canonical-execution-error',
+      error: err instanceof Error ? err.message : String(err),
+    };
+  }
+}
 /**
  * Executes ONE explicitly selected canonical Kashf method.
  * No topic fallback, no alt formula, no supporting bundle.
@@ -165,6 +278,9 @@ export function buildKashfReadingByMethod(board, kashfMethodId, clientContext = 
     });
   }
 
+  if (method.executionKind === 'legacy-function') {
+    return buildLegacyFunctionReading(board, method, clientContext);
+  }
   if (method.executionKind !== 'formula') {
     return blockedResult({
       kashfMethodId,

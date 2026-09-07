@@ -308,6 +308,32 @@ assert(canRunKashfMethod('state.p265.h1h2h9h15') === false, 'repair-required met
 assert(canRunKashfMethod('travel.p242.vehicleSafety') === false, 'blocked-by-source method cannot run');
 assert(canRunKashfMethod('illness.p196.outcomeH15') === false, 'pending executor cannot run even when source status is ready');
 
+// ── P1 profession method-scoped legacy executor -------------------------
+const professionRoute = assertRoute('q-profession', {
+  ok: true,
+  canRunKashf: true,
+  kashfIntentId: 'profession.type',
+  kashfMethodId: 'profession.p254.h9Planet',
+  kashfRuntimeStatus: 'ready',
+  executorStatus: 'ready',
+  runtimeAllowed: true,
+});
+assert(canRunKashfMethod(professionRoute.kashfMethodId) === true, 'profession canonical method is explicitly runnable');
+const professionReading = buildKashfReadingByQuestionId(PILOT_BOARD, 'q-profession', { question: 'מה המלאכה המורה עלי?' });
+assert(professionReading.valid === true, 'q-profession executes through canonical legacy allowlist');
+assert(professionReading.canonicalExecution?.methodsExecuted?.length === 1, 'q-profession executes exactly one method');
+assert(professionReading.canonicalExecution?.methodsExecuted?.[0] === 'profession.p254.h9Planet', 'q-profession executes the exact p254 method only');
+assert(professionReading.canonicalExecution?.altFormulaExecuted === false, 'q-profession does not execute alt formula');
+assert(professionReading.canonicalExecution?.topicSupportingChecksExecuted === false, 'q-profession does not execute authorityState supporting checks');
+assert(professionReading.canonicalExecution?.topicBundleExecuted === false, 'q-profession does not execute authorityState bundle');
+assert(typeof professionReading.verdict?.text === 'string' && professionReading.verdict.text.length > 0, 'q-profession exposes profession result text');
+assert(professionReading.overallPositive === null, 'profession method does not invent a binary positive/negative verdict');
+const professionHtml = writeCanonicalKashfReading(professionReading);
+assert(professionHtml.includes('profession.p254.h9Planet'), 'profession writer identifies exact canonical method');
+assert(!professionHtml.includes('בדיקת אימות נוספת'), 'profession writer contains no alt-formula section');
+assert(!professionHtml.includes('ניתוח תומך לפי ספר'), 'profession writer contains no broad topic support section');
+assert(!professionHtml.includes('מחשבת השואל (הדמיר)'), 'profession writer contains no automatic Dhamir');
+assert(!professionHtml.includes('עדים ודיין'), 'profession writer contains no witness/judge bundle');
 // ── Canonical execution isolation ----------------------------------------
 for (const qid of ['q-success', 'q-travel-safe', 'q-short-travel', 'q-move-city', 'q-siblings']) {
   const reading = buildKashfReadingByQuestionId(PILOT_BOARD, qid, { question: qid });
