@@ -37,7 +37,6 @@ jobs:
                   goral-hachol/registry/kashf-canonical-method-registry.js \
                   goral-hachol/registry/kashf-question-route-registry.js \
                   _test_kashf_canonical_routing.mjs \
-                  .github/workflows/kashf-canonical-routing-tests.yml \
                   HALL_WISDOM_KASHF_V57_READY_METHOD_BACKFILL.md
           git commit -m "feat(kashf): backfill v57 Hebrew for source-ready methods"
           git push
