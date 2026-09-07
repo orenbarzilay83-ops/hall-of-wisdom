@@ -26,7 +26,15 @@ jobs:
           node-version: '24'
 
       - name: Apply p204 attention patch
-        run: node _patch_kashf_p11_love_attention.mjs
+        run: |
+          set +e
+          node _patch_kashf_p11_love_attention.mjs
+          PATCH_STATUS=$?
+          set -e
+          if [ "$PATCH_STATUS" -ne 0 ]; then
+            echo "Primary patcher hit its known executor anchor issue; applying narrow repair."
+            node _repair_kashf_p11_love_attention.mjs
+          fi
 
       - name: Run Kashf canonical routing contract
         run: node _test_kashf_canonical_routing.mjs
