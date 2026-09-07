@@ -872,6 +872,93 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     note: 'No body-source business-attention method selected. Do not reuse the p204 love-attention formula for commerce.',
   }),
 
+  // ── AUDITED SPIRITUAL + MISC SLICE ----------------------------------
+  'q-hidden-action': route({
+    questionId: 'q-hidden-action',
+    disposition: 'KEEP',
+    kashfIntentId: 'spiritual.hiddenAction',
+    kashfMethodId: 'spiritual.p167.hiddenActionAirRows46815',
+    kashfRuntimeStatus: 'ready',
+    note: 'Use only the p167 hidden/covert-action question. This route does not diagnose sorcery, jinn or evil eye.',
+  }),
+
+  'q-religion': route({
+    questionId: 'q-religion',
+    disposition: 'RENAME',
+    kashfIntentId: 'religion.religiosity',
+    kashfMethodId: 'religion.p253.h3h9Quality',
+    kashfRuntimeStatus: 'ready',
+    note: 'Source-safe wording is the person’s religiosity/righteousness condition. p253 does not answer broad theology, practice advice or spiritual-study questions.',
+  }),
+
+  'q-jinn-type': route({
+    questionId: 'q-jinn-type',
+    disposition: 'BLOCK',
+    kashfIntentId: 'spiritual.jinnType',
+    kashfMethodId: 'spiritual.jinnType.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+    note: 'No audited Kashf body method classifies jinn vs eye vs human sorcery.',
+  }),
+
+  'q-sorcerer': route({
+    questionId: 'q-sorcerer',
+    disposition: 'BLOCK',
+    kashfIntentId: 'spiritual.sorcererIdentity',
+    kashfMethodId: 'spiritual.sorcererIdentity.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+    note: 'Do not turn p167 “does the querent act by sorcery on the quesited?” into an identity-finding method.',
+  }),
+
+  'q-obsession': route({
+    questionId: 'q-obsession',
+    disposition: 'BLOCK',
+    kashfIntentId: 'spiritual.obsessionCause',
+    kashfMethodId: 'spiritual.obsessionCause.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+    note: 'No source-safe Kashf method distinguishes spiritual from psychological causes of anxiety/intrusive thoughts.',
+  }),
+
+  'q-security-h8': route({
+    questionId: 'q-security-h8',
+    disposition: 'EDUCATIONAL',
+    kashfIntentId: 'security.general',
+    kashfMethodId: 'security.external.p235.h8',
+    kashfRuntimeStatus: 'educational-only',
+    note: 'The mapped H8 security/fear material is explicitly from the added al-Multaqat/collected point-lore layer.',
+  }),
+
+  'q-slander': route({
+    questionId: 'q-slander',
+    disposition: 'BLOCK',
+    kashfIntentId: 'social.slander',
+    kashfMethodId: 'social.slander.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+  }),
+
+  'q-two-faced': route({
+    questionId: 'q-two-faced',
+    disposition: 'BLOCK',
+    kashfIntentId: 'social.twoFaced',
+    kashfMethodId: 'social.twoFaced.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+  }),
+
+  'q-wronged': route({
+    questionId: 'q-wronged',
+    disposition: 'BLOCK',
+    kashfIntentId: 'wronged.status',
+    kashfMethodId: 'wronged.status.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+  }),
+
+  'q-isolation': route({
+    questionId: 'q-isolation',
+    disposition: 'BLOCK',
+    kashfIntentId: 'isolation.status',
+    kashfMethodId: 'isolation.status.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+  }),
+
   // ── REPAIR REQUIRED: explicit hard stop until fixed -------------------
   'q-wish': route({
     questionId: 'q-wish',

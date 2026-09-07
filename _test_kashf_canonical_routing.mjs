@@ -229,6 +229,34 @@ const illnessRecovery = assertRoute('q-illness-heal', {
 });
 assert(!canRunKashfMethod(illnessRecovery.kashfMethodId), 'source-ready method with pending executor cannot run');
 
+// ── Spiritual/misc source-boundary checks -------------------------------
+assertRoute('q-hidden-action', {
+  ok: true,
+  canRunKashf: false,
+  kashfIntentId: 'spiritual.hiddenAction',
+  kashfMethodId: 'spiritual.p167.hiddenActionAirRows46815',
+  kashfRuntimeStatus: 'ready',
+  executorStatus: 'pending',
+});
+assertRoute('q-religion', {
+  ok: true,
+  canRunKashf: false,
+  kashfIntentId: 'religion.religiosity',
+  kashfMethodId: 'religion.p253.h3h9Quality',
+  kashfRuntimeStatus: 'ready',
+  executorStatus: 'pending',
+});
+for (const qid of ['q-jinn-type', 'q-sorcerer', 'q-obsession', 'q-slander', 'q-two-faced', 'q-wronged', 'q-isolation']) {
+  const r = resolveKashfRouteByQuestionId(qid);
+  assert(r.ok === true, qid + ': explicit route exists');
+  assert(r.canRunKashf === false, qid + ': unsupported source scope cannot run');
+  assert(r.kashfRuntimeStatus === 'unsupported', qid + ': explicitly marked unsupported');
+}
+const securityH8 = resolveKashfRouteByQuestionId('q-security-h8');
+assert(securityH8.kashfRuntimeStatus === 'educational-only', 'q-security-h8 remains external/educational');
+assert(securityH8.canRunKashf === false, 'q-security-h8 cannot feed live Kashf verdict');
+assert(resolveKashfRouteByQuestionId('q-sorcery').kashfMethodId !== 'spiritual.p167.hiddenActionAirRows46815', 'q-sorcery cannot fall into p167 hidden-action method');
+
 // ── Acceptance test 8: runtimeAllowed=false is a hard stop ---------------
 for (const qid of ['q-promise', 'q-fear', 'q-sorcery', 'q-sea-voyage', 'q-prisoner', 'q-friends', 'q-stability', 'q-missing-alive', 'q-illness-heal']) {
   const route = resolveKashfRouteByQuestionId(qid);
