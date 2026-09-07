@@ -15,6 +15,9 @@ import {
   computeThiefPhysicalDescriptionKashf,
 } from './kashf-pending-extraction.js';
 
+import { combineRamlFigures } from './raml-figures.js';
+import { FIGURE_PLANET_MAP } from '../data/sources/kashf-al-asrar/kashf-hazz.js';
+
 const LEGACY_EXECUTORS = Object.freeze({
   'profession.p254.h9Planet': computeProfessionH9Kashf,
   'illness.bodyPart.h6Figure': computeBodyPartDiagnosisKashf,
@@ -211,11 +214,134 @@ function computeThiefRelationshipP224(chart) {
   };
 }
 
+
+const P256_HONOR_POSITIVE_PLANETS = new Set(['שמש', 'צדק', 'נוגה']);
+const P257_APPOINTMENT_COMPLETION_PLANETS = new Set(['שמש', 'ירח', 'צדק', 'נוגה']);
+
+function findCanonicalHouse(chart, houseNumber) {
+  if (!Array.isArray(chart)) return null;
+  return chart.find((entry) => Number(entry?.house ?? entry?.houseNumber) === houseNumber)
+    || chart[houseNumber - 1]
+    || null;
+}
+
+function getVerifiedPlanetForPattern(pattern) {
+  if (!pattern) return null;
+  const record = FIGURE_PLANET_MAP.find((entry) => Array.isArray(entry.patterns) && entry.patterns.includes(pattern));
+  if (!record) return null;
+  return {
+    planetHebrew: record.planet,
+    planetArabic: record.arabicName,
+    sourceStatus: record.sourceStatus,
+  };
+}
+
+function computeHonorConditionP256(chart) {
+  const h10 = findCanonicalHouse(chart, 10);
+  const pattern = h10?.key || h10?.pattern || null;
+  if (!pattern) return null;
+
+  const figureHebrew = h10?.hebrew || h10?.hebrewName || pattern;
+  const planet = getVerifiedPlanetForPattern(pattern);
+  const planetHebrew = planet?.planetHebrew || null;
+
+  let condition = 'unresolved-by-source';
+  let conditionHebrew = 'לא הוכרע בכלל זה';
+  let positive = null;
+  let outputHebrew;
+
+  if (planetHebrew === 'שמש') {
+    condition = 'strong-honor-and-rank';
+    conditionHebrew = 'כוח בכבוד ובמעלה';
+    positive = true;
+    outputHebrew = `בית 10: ${figureHebrew} (${pattern}) — מצורות השמש. לפי כשף עמ׳ 256 הדבר מורה על כוח הכבוד והמעלה ועל שלווה לבעלי השררה.`;
+  } else if (planetHebrew === 'צדק' || planetHebrew === 'נוגה') {
+    condition = 'good-and-complete';
+    conditionHebrew = 'טוב ושלמות';
+    positive = true;
+    outputHebrew = `בית 10: ${figureHebrew} (${pattern}) — מצורות ${planetHebrew}. לפי כשף עמ׳ 256 הדבר מורה על טוב ושלמות.`;
+  } else if (planetHebrew === 'שבתאי') {
+    condition = 'no-benefit-gloom-distress';
+    conditionHebrew = 'חוסר תועלת, קדרות וצער';
+    positive = false;
+    outputHebrew = `בית 10: ${figureHebrew} (${pattern}) — מצורות שבתאי. לפי כשף עמ׳ 256 הדבר מורה על חוסר תועלת, קדרות וצער.`;
+  } else if (planetHebrew) {
+    outputHebrew = `בית 10: ${figureHebrew} (${pattern}) — מצורות ${planetHebrew}. במקטע כשף עמ׳ 256 נמסרה הוראה מפורשת לשמש, לצדק/נוגה ולשבתאי בלבד; אין להשלים מכאן דין לפרסום או למעמד עבור כוכב זה.`;
+  } else {
+    outputHebrew = `בית 10: ${figureHebrew} (${pattern}) — לא נמצא שיוך כוכבי מאומת במפת כשף עמ׳ 133–134, ולכן אין להכריע את מצב הכבוד לפי כלל עמ׳ 256.`;
+  }
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 256; שיוכי כוכבים עמ׳ 133–134',
+    sourceText: 'בבית הכבוד והשררה: צורות השמש מורות על כוח הכבוד והמעלה; צדק או נוגה על טוב ושלמות; שבתאי על חוסר תועלת, קדרות וצער.',
+    housesUsed: [10],
+    h10Pattern: pattern,
+    h10FigureHebrew: figureHebrew,
+    planetHebrew,
+    planetArabic: planet?.planetArabic || null,
+    planetSourceStatus: planet?.sourceStatus || null,
+    condition,
+    conditionHebrew,
+    positive,
+    outputHebrew,
+  };
+}
+
+function computeAppointmentCompletionP257(chart) {
+  const h1 = findCanonicalHouse(chart, 1);
+  const h10 = findCanonicalHouse(chart, 10);
+  const h1Pattern = h1?.key || h1?.pattern || null;
+  const h10Pattern = h10?.key || h10?.pattern || null;
+  if (!h1Pattern || !h10Pattern) return null;
+
+  const combined = combineRamlFigures(h1Pattern, h10Pattern);
+  const resultPattern = combined.resultPattern;
+  const resultFigureHebrew = combined.result?.hebrewName || resultPattern;
+  const planet = getVerifiedPlanetForPattern(resultPattern);
+  const planetHebrew = planet?.planetHebrew || null;
+  const appointmentCompletes = planetHebrew
+    ? P257_APPOINTMENT_COMPLETION_PLANETS.has(planetHebrew)
+    : null;
+
+  let sourceClass = null;
+  if (planetHebrew === 'שמש' || planetHebrew === 'ירח') sourceClass = 'luminary';
+  if (planetHebrew === 'צדק' || planetHebrew === 'נוגה') sourceClass = 'benefic-planet';
+
+  let outputHebrew;
+  if (appointmentCompletes === true) {
+    const classHebrew = sourceClass === 'luminary' ? 'משני המאורות' : 'משני הכוכבים המיטיבים';
+    outputHebrew = `הולד צורה מבית 1 (${h1Pattern}) ומבית 10 (${h10Pattern}): ${resultFigureHebrew} (${resultPattern}), שיוכה ${planetHebrew}. היא ${classHebrew}; לפי כשף עמ׳ 257 השררה / המינוי מתקיימים.`;
+  } else if (appointmentCompletes === false) {
+    outputHebrew = `הולד צורה מבית 1 (${h1Pattern}) ומבית 10 (${h10Pattern}): ${resultFigureHebrew} (${resultPattern}), שיוכה ${planetHebrew}. היא אינה מצורות השמש/הירח ואינה מצורות צדק/נוגה; לפי כשף עמ׳ 257 השררה / המינוי אינם מתקיימים.`;
+  } else {
+    outputHebrew = `הולד צורה מבית 1 (${h1Pattern}) ומבית 10 (${h10Pattern}): ${resultFigureHebrew} (${resultPattern}), אך אין לה שיוך כוכבי מאומת במפת כשף עמ׳ 133–134. אין להחליף את החסר בסיווג מיטיב/מזיק.`;
+  }
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 257; שיוכי כוכבים עמ׳ 133–134',
+    sourceText: 'הולד צורה מן הראשון והעשירי: אם היא מצורות שני המאורות, השמש והירח, או משני הכוכבים המיטיבים, צדק ונוגה — השררה מתקיימת; ואם לא — אינה מתקיימת.',
+    housesUsed: [1, 10],
+    h1Pattern,
+    h10Pattern,
+    resultPattern,
+    resultFigureHebrew,
+    planetHebrew,
+    planetArabic: planet?.planetArabic || null,
+    planetSourceStatus: planet?.sourceStatus || null,
+    sourceClass,
+    appointmentCompletes,
+    positive: appointmentCompletes,
+    outputHebrew,
+  };
+}
+
 const CUSTOM_EXECUTORS = Object.freeze({
   'theft.p225.thiefDescriptionH7': computeThiefPhysicalDescriptionKashf,
   'pregnancy.p191.existsH5SilentEmpty': computePregnancyExistenceP191,
   'pregnancy.p191.genderH5': computePregnancyGenderP191,
   'theft.p224.relationshipH7Recurrence': computeThiefRelationshipP224,
+  'authority.p256.honorConditionH10Planet': computeHonorConditionP256,
+  'authority.p257.appointmentH1H10Planet': computeAppointmentCompletionP257,
 });
 
 function toLegacyChart(board) {

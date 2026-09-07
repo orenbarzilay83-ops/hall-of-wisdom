@@ -530,6 +530,84 @@ assert(thiefRelationshipHtml.includes('אחד מעוזריו של בעל הדב�
 assert(thiefRelationshipHtml.includes('הבית השביעי'), 'theft-relationship writer exposes the source rule');
 assert(!thiefRelationshipHtml.includes('ניתוח תומך לפי ספר'), 'theft-relationship writer contains no broad theft support section');
 assert(!thiefRelationshipHtml.includes('מחשבת השואל (הדמיר)'), 'theft-relationship writer contains no automatic Dhamir');
+// ── P7 authority planetary executors -----------------------------------
+assertRoute('q-fame', {
+  ok: true,
+  canRunKashf: true,
+  kashfIntentId: 'authority.honorCondition',
+  kashfMethodId: 'authority.p256.honorConditionH10Planet',
+  kashfRuntimeStatus: 'ready',
+  executorStatus: 'ready',
+  runtimeAllowed: true,
+});
+assert(canRunKashfMethod('authority.p256.honorConditionH10Planet'), 'p256 honor-condition method is runnable only through its exact canonical executor');
+
+const AUTHORITY_P256_SUN_BOARD = buildRamlBoardFromMothers(['1111', '1111', '1111', '2211']);
+const authoritySun = buildKashfReadingByQuestionId(AUTHORITY_P256_SUN_BOARD, 'q-fame', { question: 'מצב הכבוד והמעמד' });
+assert(authoritySun.valid === true && authoritySun.canRunKashf === true, 'p256 Sun board executes canonically');
+assert(authoritySun.kashfMethodId === 'authority.p256.honorConditionH10Planet', 'p256 executes only the exact honor-condition method');
+assert(JSON.stringify(authoritySun.primaryFormula?.houses) === JSON.stringify([10]), 'p256 traces only H10');
+assert(authoritySun.primaryFormula?.result?.executorResult?.h10Pattern === '1122', 'p256 positive fixture has H10=1122');
+assert(authoritySun.primaryFormula?.result?.executorResult?.planetHebrew === 'שמש', 'p256 resolves H10=1122 to Sun using the audited planet map');
+assert(authoritySun.primaryFormula?.result?.executorResult?.condition === 'strong-honor-and-rank', 'p256 Sun branch preserves source-specific honor/rank meaning');
+assert(authoritySun.overallPositive === true, 'p256 Sun branch is positive');
+assert(authoritySun.canonicalExecution?.topicBundleExecuted === false, 'p256 does not execute broad authorityState bundle');
+assert(authoritySun.dhamir === null, 'p256 does not auto-run Dhamir');
+const authoritySunHtml = writeCanonicalKashfReading(authoritySun);
+assert(authoritySunHtml.includes('authority.p256.honorConditionH10Planet'), 'p256 narrative exposes exact canonical method id');
+assert(authoritySunHtml.includes('מצורות השמש'), 'p256 narrative preserves the Sun condition instead of promising fame');
+
+const AUTHORITY_P256_SATURN_BOARD = buildRamlBoardFromMothers(['1111', '1111', '1111', '2221']);
+const authoritySaturn = buildKashfReadingByQuestionId(AUTHORITY_P256_SATURN_BOARD, 'q-fame', { question: 'מצב הכבוד והמעמד' });
+assert(authoritySaturn.primaryFormula?.result?.executorResult?.h10Pattern === '1112', 'p256 negative fixture has H10=1112');
+assert(authoritySaturn.primaryFormula?.result?.executorResult?.planetHebrew === 'שבתאי', 'p256 resolves H10=1112 to Saturn');
+assert(authoritySaturn.primaryFormula?.result?.executorResult?.condition === 'no-benefit-gloom-distress', 'p256 Saturn branch preserves the source-specific adverse condition');
+assert(authoritySaturn.overallPositive === false, 'p256 Saturn branch is negative');
+
+const AUTHORITY_P256_UNRESOLVED_BOARD = buildRamlBoardFromMothers(['1111', '1111', '1111', '1111']);
+const authorityMercury = buildKashfReadingByQuestionId(AUTHORITY_P256_UNRESOLVED_BOARD, 'q-fame', { question: 'מצב הכבוד והמעמד' });
+assert(authorityMercury.primaryFormula?.result?.executorResult?.h10Pattern === '2222', 'p256 unresolved fixture has H10=2222');
+assert(authorityMercury.primaryFormula?.result?.executorResult?.planetHebrew === 'כוכב', 'p256 unresolved fixture maps H10=2222 to Mercury');
+assert(authorityMercury.primaryFormula?.result?.executorResult?.condition === 'unresolved-by-source', 'p256 leaves Mercury unresolved because p256 excerpt gives no explicit judgment');
+assert(authorityMercury.overallPositive === null, 'p256 unresolved branch does not invent a binary fame verdict');
+
+assertRoute('q-position-keep', {
+  ok: true,
+  canRunKashf: true,
+  kashfIntentId: 'authority.appointmentStays',
+  kashfMethodId: 'authority.p257.appointmentH1H10Planet',
+  kashfRuntimeStatus: 'ready',
+  executorStatus: 'ready',
+  runtimeAllowed: true,
+});
+assert(canRunKashfMethod('authority.p257.appointmentH1H10Planet'), 'p257 appointment method is runnable only through its exact canonical executor');
+
+const AUTHORITY_P257_POSITIVE_BOARD = buildRamlBoardFromMothers(['1111', '1111', '1111', '1111']);
+const authorityAppointmentYes = buildKashfReadingByQuestionId(AUTHORITY_P257_POSITIVE_BOARD, 'q-position-keep', { question: 'האם המינוי יתקיים' });
+assert(authorityAppointmentYes.valid === true && authorityAppointmentYes.canRunKashf === true, 'p257 positive board executes canonically');
+assert(authorityAppointmentYes.kashfMethodId === 'authority.p257.appointmentH1H10Planet', 'p257 executes only the exact appointment method');
+assert(JSON.stringify(authorityAppointmentYes.primaryFormula?.houses) === JSON.stringify([1, 10]), 'p257 traces H1+H10');
+assert(authorityAppointmentYes.primaryFormula?.result?.executorResult?.h1Pattern === '1111', 'p257 positive fixture carries H1=1111');
+assert(authorityAppointmentYes.primaryFormula?.result?.executorResult?.h10Pattern === '2222', 'p257 positive fixture carries H10=2222');
+assert(authorityAppointmentYes.primaryFormula?.result?.executorResult?.resultPattern === '1111', 'p257 combines H1+H10 into 1111');
+assert(authorityAppointmentYes.primaryFormula?.result?.executorResult?.planetHebrew === 'ירח', 'p257 resolves combined 1111 to Moon');
+assert(authorityAppointmentYes.primaryFormula?.result?.executorResult?.sourceClass === 'luminary', 'p257 identifies Moon as one of the two luminaries');
+assert(authorityAppointmentYes.primaryFormula?.result?.executorResult?.appointmentCompletes === true, 'p257 luminary result completes the appointment');
+assert(authorityAppointmentYes.overallPositive === true, 'p257 positive branch is positive');
+assert(authorityAppointmentYes.altFormula === null, 'p257 does not aggregate another authority formula');
+assert(authorityAppointmentYes.canonicalExecution?.topicBundleExecuted === false, 'p257 does not execute broad authorityState bundle');
+assert(authorityAppointmentYes.dhamir === null, 'p257 does not auto-run Dhamir');
+const authorityAppointmentHtml = writeCanonicalKashfReading(authorityAppointmentYes);
+assert(authorityAppointmentHtml.includes('authority.p257.appointmentH1H10Planet'), 'p257 narrative exposes exact canonical method id');
+assert(authorityAppointmentHtml.includes('משני המאורות'), 'p257 narrative preserves the luminary rule');
+
+const AUTHORITY_P257_NEGATIVE_BOARD = buildRamlBoardFromMothers(['1111', '1111', '1111', '1112']);
+const authorityAppointmentNo = buildKashfReadingByQuestionId(AUTHORITY_P257_NEGATIVE_BOARD, 'q-position-keep', { question: 'האם המינוי יתקיים' });
+assert(authorityAppointmentNo.primaryFormula?.result?.executorResult?.resultPattern === '1112', 'p257 negative fixture combines to 1112');
+assert(authorityAppointmentNo.primaryFormula?.result?.executorResult?.planetHebrew === 'שבתאי', 'p257 negative fixture resolves to Saturn');
+assert(authorityAppointmentNo.primaryFormula?.result?.executorResult?.appointmentCompletes === false, 'p257 non-luminary/non-benefic planet means the appointment does not complete');
+assert(authorityAppointmentNo.overallPositive === false, 'p257 negative branch is negative');
+
 // ── Canonical execution isolation ----------------------------------------
 for (const qid of ['q-success', 'q-travel-safe', 'q-short-travel', 'q-move-city', 'q-siblings']) {
   const reading = buildKashfReadingByQuestionId(PILOT_BOARD, qid, { question: qid });

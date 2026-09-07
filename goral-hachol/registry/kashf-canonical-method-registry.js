@@ -576,7 +576,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     runtimeAllowed: false,
     executionKind: 'custom-engine',
     executorStatus: 'pending',
-    notes: 'Body-source mode-of-travel method. Fire => land; air => outbound by sea and return by land; water => sea both ways; earth => land both ways.',
+    notes: 'Primary Arabic source (printed p237; working HTML p239) judges the figure produced from the preceding two figures: fire = go by land and return by sea; air = sea out / land back; water = sea / sea; earth = land / land. The preceding construction begins with “تراب المنطقة” and H2, but “المنطقة” is not defined elsewhere in the audited source. Executor therefore remains pending until that input is resolved. Do not use the Hebrew working-text omission of the fire return leg as runtime authority.',
   }),
 
   'travel.p242.roadDangerH7Element': method({
@@ -680,10 +680,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'authorityState',
     sourcePages: [256],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Body-source honor/status rule: judge the figure in the house of honor/authority by its planetary attribution. Sun figures indicate strength of honor/rank; Jupiter or Venus indicate good/completion; Saturn indicates lack of benefit, gloom and distress. This is a condition-of-honor method, not a binary fame prediction.',
+    executorStatus: 'ready',
+    notes: 'Canonical p256 H10-planet executor is wired to the source-verified p133-134 planetary map. Sun => strength of honor/rank; Jupiter or Venus => good/completion; Saturn => lack of benefit, gloom and distress. Moon, Mercury and Mars remain unresolved by this p256 excerpt; do not turn this into a binary fame prediction.',
   }),
 
   'authority.p257.appointmentH1H10Planet': method({
@@ -692,10 +692,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'authorityState',
     sourcePages: [257],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Body-source question “does the appointment/authority remain?”: derive one figure from H1+H10. If it belongs to the two luminaries (Sun/Moon) or the two benefics (Jupiter/Venus), the appointment remains; otherwise it does not. Must use actual planetary attribution, not a benefic/malefic proxy. It does not calculate a number of months/years.',
+    executorStatus: 'ready',
+    notes: 'Canonical p257 executor combines H1+H10 and judges the resulting figure by the source-verified planetary attribution. Sun/Moon or Jupiter/Venus => the appointment/authority completes; every other verified planet => it does not. Never substitute a benefic/malefic proxy for the planetary rule.',
   }),
 
   'authority.p257.rulerConditionH7H10': method({

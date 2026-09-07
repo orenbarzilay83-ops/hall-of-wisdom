@@ -56,7 +56,7 @@ if (!executors.includes('function computeHonorConditionP256')) {
   const anchor = 'const CUSTOM_EXECUTORS = Object.freeze({';
   if (!executors.includes(anchor)) throw new Error('Could not find custom executor anchor');
 
-  const block = String.raw`
+  const block = `
 const P256_HONOR_POSITIVE_PLANETS = new Set(['שמש', 'צדק', 'נוגה']);
 const P257_APPOINTMENT_COMPLETION_PLANETS = new Set(['שמש', 'ירח', 'צדק', 'נוגה']);
 
@@ -96,21 +96,21 @@ function computeHonorConditionP256(chart) {
     condition = 'strong-honor-and-rank';
     conditionHebrew = 'כוח בכבוד ובמעלה';
     positive = true;
-    outputHebrew = `בית 10: ${figureHebrew} (${pattern}) — מצורות השמש. לפי כשף עמ׳ 256 הדבר מורה על כוח הכבוד והמעלה ועל שלווה לבעלי השררה.`;
+    outputHebrew = \`בית 10: \${figureHebrew} (\${pattern}) — מצורות השמש. לפי כשף עמ׳ 256 הדבר מורה על כוח הכבוד והמעלה ועל שלווה לבעלי השררה.\`;
   } else if (planetHebrew === 'צדק' || planetHebrew === 'נוגה') {
     condition = 'good-and-complete';
     conditionHebrew = 'טוב ושלמות';
     positive = true;
-    outputHebrew = `בית 10: ${figureHebrew} (${pattern}) — מצורות ${planetHebrew}. לפי כשף עמ׳ 256 הדבר מורה על טוב ושלמות.`;
+    outputHebrew = \`בית 10: \${figureHebrew} (\${pattern}) — מצורות \${planetHebrew}. לפי כשף עמ׳ 256 הדבר מורה על טוב ושלמות.\`;
   } else if (planetHebrew === 'שבתאי') {
     condition = 'no-benefit-gloom-distress';
     conditionHebrew = 'חוסר תועלת, קדרות וצער';
     positive = false;
-    outputHebrew = `בית 10: ${figureHebrew} (${pattern}) — מצורות שבתאי. לפי כשף עמ׳ 256 הדבר מורה על חוסר תועלת, קדרות וצער.`;
+    outputHebrew = \`בית 10: \${figureHebrew} (\${pattern}) — מצורות שבתאי. לפי כשף עמ׳ 256 הדבר מורה על חוסר תועלת, קדרות וצער.\`;
   } else if (planetHebrew) {
-    outputHebrew = `בית 10: ${figureHebrew} (${pattern}) — מצורות ${planetHebrew}. במקטע כשף עמ׳ 256 נמסרה הוראה מפורשת לשמש, לצדק/נוגה ולשבתאי בלבד; אין להשלים מכאן דין לפרסום או למעמד עבור כוכב זה.`;
+    outputHebrew = \`בית 10: \${figureHebrew} (\${pattern}) — מצורות \${planetHebrew}. במקטע כשף עמ׳ 256 נמסרה הוראה מפורשת לשמש, לצדק/נוגה ולשבתאי בלבד; אין להשלים מכאן דין לפרסום או למעמד עבור כוכב זה.\`;
   } else {
-    outputHebrew = `בית 10: ${figureHebrew} (${pattern}) — לא נמצא שיוך כוכבי מאומת במפת כשף עמ׳ 133–134, ולכן אין להכריע את מצב הכבוד לפי כלל עמ׳ 256.`;
+    outputHebrew = \`בית 10: \${figureHebrew} (\${pattern}) — לא נמצא שיוך כוכבי מאומת במפת כשף עמ׳ 133–134, ולכן אין להכריע את מצב הכבוד לפי כלל עמ׳ 256.\`;
   }
 
   return {
@@ -152,11 +152,11 @@ function computeAppointmentCompletionP257(chart) {
   let outputHebrew;
   if (appointmentCompletes === true) {
     const classHebrew = sourceClass === 'luminary' ? 'משני המאורות' : 'משני הכוכבים המיטיבים';
-    outputHebrew = `הולד צורה מבית 1 (${h1Pattern}) ומבית 10 (${h10Pattern}): ${resultFigureHebrew} (${resultPattern}), שיוכה ${planetHebrew}. היא ${classHebrew}; לפי כשף עמ׳ 257 השררה / המינוי מתקיימים.`;
+    outputHebrew = \`הולד צורה מבית 1 (\${h1Pattern}) ומבית 10 (\${h10Pattern}): \${resultFigureHebrew} (\${resultPattern}), שיוכה \${planetHebrew}. היא \${classHebrew}; לפי כשף עמ׳ 257 השררה / המינוי מתקיימים.\`;
   } else if (appointmentCompletes === false) {
-    outputHebrew = `הולד צורה מבית 1 (${h1Pattern}) ומבית 10 (${h10Pattern}): ${resultFigureHebrew} (${resultPattern}), שיוכה ${planetHebrew}. היא אינה מצורות השמש/הירח ואינה מצורות צדק/נוגה; לפי כשף עמ׳ 257 השררה / המינוי אינם מתקיימים.`;
+    outputHebrew = \`הולד צורה מבית 1 (\${h1Pattern}) ומבית 10 (\${h10Pattern}): \${resultFigureHebrew} (\${resultPattern}), שיוכה \${planetHebrew}. היא אינה מצורות השמש/הירח ואינה מצורות צדק/נוגה; לפי כשף עמ׳ 257 השררה / המינוי אינם מתקיימים.\`;
   } else {
-    outputHebrew = `הולד צורה מבית 1 (${h1Pattern}) ומבית 10 (${h10Pattern}): ${resultFigureHebrew} (${resultPattern}), אך אין לה שיוך כוכבי מאומת במפת כשף עמ׳ 133–134. אין להחליף את החסר בסיווג מיטיב/מזיק.`;
+    outputHebrew = \`הולד צורה מבית 1 (\${h1Pattern}) ומבית 10 (\${h10Pattern}): \${resultFigureHebrew} (\${resultPattern}), אך אין לה שיוך כוכבי מאומת במפת כשף עמ׳ 133–134. אין להחליף את החסר בסיווג מיטיב/מזיק.\`;
   }
 
   return {
@@ -224,7 +224,7 @@ assertRoute('q-fame', {
 assert(canRunKashfMethod('authority.p256.honorConditionH10Planet'), 'p256 honor-condition method is runnable only through its exact canonical executor');
 
 const AUTHORITY_P256_SUN_BOARD = buildRamlBoardFromMothers(['1111', '1111', '1111', '2211']);
-const authoritySun = buildKashfReadingByQuestionId('q-fame', AUTHORITY_P256_SUN_BOARD, { question: 'מצב הכבוד והמעמד' });
+const authoritySun = buildKashfReadingByQuestionId(AUTHORITY_P256_SUN_BOARD, 'q-fame', { question: 'מצב הכבוד והמעמד' });
 assert(authoritySun.valid === true && authoritySun.canRunKashf === true, 'p256 Sun board executes canonically');
 assert(authoritySun.kashfMethodId === 'authority.p256.honorConditionH10Planet', 'p256 executes only the exact honor-condition method');
 assert(JSON.stringify(authoritySun.primaryFormula?.houses) === JSON.stringify([10]), 'p256 traces only H10');
@@ -239,14 +239,14 @@ assert(authoritySunHtml.includes('authority.p256.honorConditionH10Planet'), 'p25
 assert(authoritySunHtml.includes('מצורות השמש'), 'p256 narrative preserves the Sun condition instead of promising fame');
 
 const AUTHORITY_P256_SATURN_BOARD = buildRamlBoardFromMothers(['1111', '1111', '1111', '2221']);
-const authoritySaturn = buildKashfReadingByQuestionId('q-fame', AUTHORITY_P256_SATURN_BOARD, { question: 'מצב הכבוד והמעמד' });
+const authoritySaturn = buildKashfReadingByQuestionId(AUTHORITY_P256_SATURN_BOARD, 'q-fame', { question: 'מצב הכבוד והמעמד' });
 assert(authoritySaturn.primaryFormula?.result?.executorResult?.h10Pattern === '1112', 'p256 negative fixture has H10=1112');
 assert(authoritySaturn.primaryFormula?.result?.executorResult?.planetHebrew === 'שבתאי', 'p256 resolves H10=1112 to Saturn');
 assert(authoritySaturn.primaryFormula?.result?.executorResult?.condition === 'no-benefit-gloom-distress', 'p256 Saturn branch preserves the source-specific adverse condition');
 assert(authoritySaturn.overallPositive === false, 'p256 Saturn branch is negative');
 
 const AUTHORITY_P256_UNRESOLVED_BOARD = buildRamlBoardFromMothers(['1111', '1111', '1111', '1111']);
-const authorityMercury = buildKashfReadingByQuestionId('q-fame', AUTHORITY_P256_UNRESOLVED_BOARD, { question: 'מצב הכבוד והמעמד' });
+const authorityMercury = buildKashfReadingByQuestionId(AUTHORITY_P256_UNRESOLVED_BOARD, 'q-fame', { question: 'מצב הכבוד והמעמד' });
 assert(authorityMercury.primaryFormula?.result?.executorResult?.h10Pattern === '2222', 'p256 unresolved fixture has H10=2222');
 assert(authorityMercury.primaryFormula?.result?.executorResult?.planetHebrew === 'כוכב', 'p256 unresolved fixture maps H10=2222 to Mercury');
 assert(authorityMercury.primaryFormula?.result?.executorResult?.condition === 'unresolved-by-source', 'p256 leaves Mercury unresolved because p256 excerpt gives no explicit judgment');
@@ -264,7 +264,7 @@ assertRoute('q-position-keep', {
 assert(canRunKashfMethod('authority.p257.appointmentH1H10Planet'), 'p257 appointment method is runnable only through its exact canonical executor');
 
 const AUTHORITY_P257_POSITIVE_BOARD = buildRamlBoardFromMothers(['1111', '1111', '1111', '1111']);
-const authorityAppointmentYes = buildKashfReadingByQuestionId('q-position-keep', AUTHORITY_P257_POSITIVE_BOARD, { question: 'האם המינוי יתקיים' });
+const authorityAppointmentYes = buildKashfReadingByQuestionId(AUTHORITY_P257_POSITIVE_BOARD, 'q-position-keep', { question: 'האם המינוי יתקיים' });
 assert(authorityAppointmentYes.valid === true && authorityAppointmentYes.canRunKashf === true, 'p257 positive board executes canonically');
 assert(authorityAppointmentYes.kashfMethodId === 'authority.p257.appointmentH1H10Planet', 'p257 executes only the exact appointment method');
 assert(JSON.stringify(authorityAppointmentYes.primaryFormula?.houses) === JSON.stringify([1, 10]), 'p257 traces H1+H10');
@@ -283,7 +283,7 @@ assert(authorityAppointmentHtml.includes('authority.p257.appointmentH1H10Planet'
 assert(authorityAppointmentHtml.includes('משני המאורות'), 'p257 narrative preserves the luminary rule');
 
 const AUTHORITY_P257_NEGATIVE_BOARD = buildRamlBoardFromMothers(['1111', '1111', '1111', '1112']);
-const authorityAppointmentNo = buildKashfReadingByQuestionId('q-position-keep', AUTHORITY_P257_NEGATIVE_BOARD, { question: 'האם המינוי יתקיים' });
+const authorityAppointmentNo = buildKashfReadingByQuestionId(AUTHORITY_P257_NEGATIVE_BOARD, 'q-position-keep', { question: 'האם המינוי יתקיים' });
 assert(authorityAppointmentNo.primaryFormula?.result?.executorResult?.resultPattern === '1112', 'p257 negative fixture combines to 1112');
 assert(authorityAppointmentNo.primaryFormula?.result?.executorResult?.planetHebrew === 'שבתאי', 'p257 negative fixture resolves to Saturn');
 assert(authorityAppointmentNo.primaryFormula?.result?.executorResult?.appointmentCompletes === false, 'p257 non-luminary/non-benefic planet means the appointment does not complete');
