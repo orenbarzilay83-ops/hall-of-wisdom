@@ -77,6 +77,8 @@ expectTop('האם הנעדר יחזור', 'missing.p249.returnAnglesJudge');
 expectTop('לידה קלה או קשה', 'pregnancy.p191.deliveryDifficultyH1H5H15');
 expectTop('מה מצב הפרנסה', 'money.p180.livelihoodH10Invert');
 expectTop('הנעדר חי או מת', 'missing.p248-249.lifeH1H4H9Outcome');
+expectTop('האם הממון יושג', 'money.p181.recast25811');
+expectTop('האם אחזור לתפקיד', 'career.p266.returnToOffice');
 expectTop('האם יש פעולה מאחורי הדבר', 'spiritual.p167.hiddenActionAirRows46815');
 expectTop('מאיפה יגיע הכסף', 'money.p179.sourceByIncomingHonorHouse');
 
@@ -151,6 +153,17 @@ for (const [methodId, questionId, houses] of [
   assert(record?.questionIds.includes(questionId), methodId + ' retrieval links ' + questionId);
   assert(record?.runtimeAllowed === true && record?.executorStatus === 'ready', methodId + ' retrieval exposes runnable state');
   assert(JSON.stringify(record?.houses) === JSON.stringify(houses), methodId + ' retrieval exposes exact operational houses');
+}
+
+for (const [methodId, questionId, houses, separation] of [
+  ['money.p181.recast25811', 'q-livelihood-arrive', [2,5,8,11], 'money.p180.livelihoodH10Invert'],
+  ['career.p266.returnToOffice', 'q-career-return', [1,4,7,10,16], 'authority.p257.appointmentH1H10Planet'],
+]) {
+  const record = getKashfAiRetrievalRecord(methodId);
+  assert(record?.questionIds.includes(questionId), methodId + ' retrieval links ' + questionId);
+  assert(record?.runtimeAllowed === true && record?.executorStatus === 'ready', methodId + ' retrieval exposes runnable state');
+  assert(JSON.stringify(record?.houses) === JSON.stringify(houses), methodId + ' retrieval exposes exact operational input/scope houses');
+  assert(record?.doNotMixWith.includes(separation), methodId + ' retrieval preserves neighboring-method separation');
 }
 
 const pendingKnowledgeRecord = getKashfAiRetrievalRecord('mother.p257.statusDayNight');

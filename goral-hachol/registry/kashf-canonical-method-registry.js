@@ -536,10 +536,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'money',
     sourcePages: [181],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
-    executionKind: 'recast-board',
-    executorStatus: 'pending',
-    notes: 'Make H2,H5,H8,H11 the new mothers and complete a new board. If the angles and H2 are internal, the expected money is obtained. The preceding p181 2/6/8/10 parity method remains a separate alternative and is not aggregated.',
+    runtimeAllowed: true,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
+    notes: 'Canonical p181 secondary-board executor is wired: original H2,H5,H8,H11 become the four mothers of a fresh board. In that recast board H1,H2,H4,H7,H10 must each be strictly internal (dakhil); when all qualify, the source says the money is obtained. Failure of the positive condition remains unresolved because this exact clause does not state the inverse. The preceding p181 2/6/8/10 parity method remains a separate alternative and is not aggregated.',
   }),
 
   'inheritance.p180.elementComposite': method({
@@ -729,11 +729,11 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'authorityState',
     sourcePages: [266],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
-    executionKind: 'legacy-function',
-    executorStatus: 'pending',
+    runtimeAllowed: true,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
     legacyTopicId: 'authorityState',
-    notes: 'Body-source rule for one dismissed from service: H1 must be benefic+incoming and connect/appear in H10 or strong houses, with the outcome supporting return. Existing computeReturnToOfficeKashf is only provisionally reusable after the general benefic/malefic classification boundary is closed; it must not run as a broad authorityState supporting check.',
+    notes: 'Canonical p266 return-to-office executor is wired directly from the body-source clause rather than the broad authorityState helper. H1 must be pure benefic and strictly internal, its same figure must recur in another strong/angle house (H4/H7/H10; H10 is explicitly named), and H16 / al-aqiba must be pure benefic to support the return. Pure-malefic H1 activates the explicit opposite branch. Mixed H1 or incomplete positive testimony remains unresolved. The original H1 occurrence is not counted as a recurrence.',
   }),
 
   'profession.p254.h9Planet': method({

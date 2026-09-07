@@ -1712,6 +1712,55 @@ for (const reading of [p191Ease, p180Expanded, p250Alive]) {
   assert(reading.dhamir === null && reading.canonicalExecution?.topicBundleExecuted === false && reading.canonicalExecution?.altFormulaExecuted === false, 'easy batch 03 reading runs no Dhamir/topic bundle/alternative');
 }
 
+// ── Easy batch 04: p181 recast money + p266 return to office ----------
+assertRoute('q-livelihood-arrive', {
+  ok: true,
+  canRunKashf: true,
+  kashfIntentId: 'money.acquire',
+  kashfMethodId: 'money.p181.recast25811',
+  kashfRuntimeStatus: 'ready',
+  executorStatus: 'ready',
+  runtimeAllowed: true,
+});
+assertRoute('q-career-return', {
+  ok: true,
+  canRunKashf: true,
+  kashfIntentId: 'career.returnToOffice',
+  kashfMethodId: 'career.p266.returnToOffice',
+  kashfRuntimeStatus: 'ready',
+  executorStatus: 'ready',
+  runtimeAllowed: true,
+});
+assert(canRunKashfMethod('money.p181.recast25811') === true, 'p181 recast money method is explicitly runnable');
+assert(canRunKashfMethod('career.p266.returnToOffice') === true, 'p266 return-to-office method is explicitly runnable');
+
+const p181PositiveBoard = buildRamlBoardFromMothers(['2212', '2121', '1211', '1212']);
+const p181Positive = buildKashfReadingByQuestionId(p181PositiveBoard, 'q-livelihood-arrive');
+const p181Result = p181Positive.primaryFormula?.result?.executorResult;
+assert(p181Result?.sourceOutcome === 'money-obtained', 'p181 secondary-board positive condition yields money-obtained');
+assert(JSON.stringify(p181Result?.sourceMotherHouses) === JSON.stringify([2,5,8,11]), 'p181 uses only original H2/H5/H8/H11 as recast mothers');
+assert(JSON.stringify(p181Result?.recastMotherPatterns) === JSON.stringify(['2121','2211','2112','2111']), 'p181 builds the expected secondary mothers from a real board');
+assert(p181Result?.recastConditionResults?.every((item) => item.strictlyInternal) === true, 'p181 requires all recast angles plus H2 to be strictly internal');
+assert(p181Positive.primaryFormula?.sourceText === getKashfV57Knowledge('money.p181.recast25811')?.v57?.hebrewRule, 'p181 runtime sourceText comes from Hebrew v57');
+
+const p266Positive = buildKashfReadingByQuestionId(
+  makeP204Board({ 1: '2211', 10: '2211', 16: '1122' }),
+  'q-career-return'
+);
+const p266PositiveResult = p266Positive.primaryFormula?.result?.executorResult;
+assert(p266PositiveResult?.sourceOutcome === 'returns', 'p266 positive source condition yields return');
+assert(p266PositiveResult?.strongRecurrenceHouses?.includes(10), 'p266 requires H1 figure recurrence in H10/another strong house');
+assert(p266PositiveResult?.outcomeHouse === 16 && p266PositiveResult?.outcomeSupportsReturn === true, 'p266 uses H16 as al-aqiba/outcome testimony');
+const p266Negative = buildKashfReadingByQuestionId(makeP204Board({ 1: '1112', 16: '1122' }), 'q-career-return');
+assert(p266Negative.primaryFormula?.result?.executorResult?.sourceOutcome === 'does-not-return', 'p266 pure-malefic H1 activates the explicit opposite branch');
+const p266Unresolved = buildKashfReadingByQuestionId(makeP204Board({ 1: '2211', 16: '1122' }), 'q-career-return');
+assert(p266Unresolved.primaryFormula?.result?.executorResult?.sourceOutcome === 'unresolved', 'p266 benefic incoming H1 without a strong-house recurrence is not over-read as a return');
+
+for (const reading of [p181Positive, p266Positive, p266Negative, p266Unresolved]) {
+  assert(reading.canonicalExecution?.methodsExecuted?.length === 1, 'easy batch 04 reading executes exactly one canonical method');
+  assert(reading.dhamir === null && reading.canonicalExecution?.topicBundleExecuted === false && reading.canonicalExecution?.altFormulaExecuted === false, 'easy batch 04 reading runs no Dhamir/topic bundle/alternative');
+}
+
 console.log(`Kashf canonical routing tests: ${passed} passed, ${failed} failed`);
 if (failed > 0) {
   process.exit(1);

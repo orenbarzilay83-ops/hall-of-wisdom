@@ -49,6 +49,16 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
     doNotMixWith: ['money.p179.sourceByIncomingHonorHouse', 'money.p181.recast25811', 'inheritance.p180.elementComposite'],
     houses: [1,2,3,4,5,6,7,8,9,10,11,12],
   },
+  'money.p181.recast25811': {
+    aliases: ['האם הממון יושג', 'האם הכסף יגיע לידי', 'השגת ממון', 'האם אקבל את הכסף', 'ממון צפוי'],
+    doNotMixWith: ['money.p179.sourceByIncomingHonorHouse', 'money.p180.livelihoodH10Invert', 'inheritance.p180.elementComposite'],
+    houses: [2, 5, 8, 11],
+  },
+  'career.p266.returnToOffice': {
+    aliases: ['האם אחזור לתפקיד', 'האם יחזור לתפקידו', 'חזרה למשרה לאחר הדחה', 'האם אשוב למקום העבודה', 'מי שהודח משירות האם יחזור'],
+    doNotMixWith: ['state.p265.h1h2h9h15', 'authority.p257.appointmentH1H10Planet', 'authority.p256.honorConditionH10Planet'],
+    houses: [1, 4, 7, 10, 16],
+  },
   'missing.p248-249.lifeH1H4H9Outcome': {
     aliases: ['הנעדר חי או מת', 'האם הנעדר חי', 'מצב חייו של הנעדר', 'האם הנעדר בחיים'],
     doNotMixWith: ['missing.p249.returnAnglesJudge', 'missing.p249.locationDirectionUnresolved', 'travel.p244.returnH1H2H9'],

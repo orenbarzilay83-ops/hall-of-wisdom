@@ -16,6 +16,7 @@ import {
 } from './kashf-pending-extraction.js';
 
 import { combineRamlFigures } from './raml-figures.js';
+import { buildRamlBoardFromMothers } from './raml-board-generator.js';
 import { FIGURE_PLANET_MAP } from '../data/sources/kashf-al-asrar/kashf-hazz.js';
 import { classifyCanonicalFigure } from './kashf-canonical-figure-classifier.js';
 
@@ -1652,6 +1653,131 @@ function computeDeliveryDifficultyP191(chart) {
   };
 }
 
+// Kashf v57 p181 — rebuild a secondary board from H2/H5/H8/H11.
+function computeMoneyAcquireP181(chart) {
+  if (!Array.isArray(chart)) return null;
+  const sourceMotherHouses = [2, 5, 8, 11];
+  const sourceMothers = sourceMotherHouses.map((houseNumber) => {
+    const entry = findCanonicalHouse(chart, houseNumber);
+    const pattern = entry?.key || entry?.pattern || null;
+    return pattern ? { houseNumber, pattern, figureHebrew: entry?.hebrew || entry?.hebrewName || pattern } : null;
+  });
+  if (sourceMothers.some((item) => !item)) return null;
+
+  const recastMotherPatterns = sourceMothers.map((item) => item.pattern);
+  const recastBoard = buildRamlBoardFromMothers(recastMotherPatterns);
+  const recastChart = recastBoard?.entries || [];
+  if (recastChart.length !== 16) return null;
+
+  const conditionHouses = [1, 2, 4, 7, 10];
+  const conditionResults = conditionHouses.map((houseNumber) => {
+    const entry = findCanonicalHouse(recastChart, houseNumber);
+    const pattern = entry?.key || entry?.pattern || null;
+    if (!pattern) return null;
+    const classification = classifyCanonicalFigure(pattern);
+    return {
+      houseNumber,
+      pattern,
+      figureHebrew: classification.figureHebrew || entry?.hebrew || entry?.hebrewName || pattern,
+      classification,
+      strictlyInternal: classification.dakhalKharij === 'dakhil',
+    };
+  });
+  if (conditionResults.some((item) => !item)) return null;
+
+  const allRequiredInternal = conditionResults.every((item) => item.strictlyInternal);
+  const moneyObtained = allRequiredInternal ? true : null;
+  const failingHouses = conditionResults.filter((item) => !item.strictlyInternal).map((item) => item.houseNumber);
+  const outputHebrew = allRequiredInternal
+    ? 'הבתים 2, 5, 8 ו־11 מן הלוח המקורי הועמדו כאמהות ונבנה מהם לוח חדש. בלוח החדש ארבעת היתדות — 1, 4, 7, 10 — וגם בית 2 הם צורות פנימיות ממש. לפי כשף v57 עמ׳ 181: הממון יושג.'
+    : 'הבתים 2, 5, 8 ו־11 מן הלוח המקורי הועמדו כאמהות ונבנה מהם לוח חדש. תנאי עמ׳ 181 דורש שבארבעת היתדות ובבית 2 בלוח החדש יהיו צורות פנימיות; התנאי אינו שלם בבתים ' + failingHouses.join(', ') + '. הקטע הזה אינו מוסר במפורש שהעדר התנאי מוכיח שהממון לא יושג, ולכן התוצאה נשארת ללא הכרעה שלילית. אין לצרף לכאן את שיטת הזוג/יחיד החלופית שבאותו עמוד.';
+
+  return {
+    sourceRef: 'חשיפת הסודות הנצורים v57 עמ׳ 181',
+    sourceText: 'בדין הממון: העמד את השני, החמישי, השמיני והאחד־עשר כאמהות, והשלים את גורל החול. אם ראית שהיתדות והבית השני פנימיים, הממון יושג.',
+    housesUsed: sourceMotherHouses,
+    sourceMotherHouses,
+    sourceMothers,
+    recastMotherPatterns,
+    recastBoardValid: recastBoard?.boardValidation?.isValid !== false,
+    recastBoardWarnings: recastBoard?.boardValidation?.warnings || [],
+    recastConditionHouses: conditionHouses,
+    recastConditionResults: conditionResults,
+    allRequiredInternal,
+    failingHouses,
+    moneyObtained,
+    sourceOutcome: allRequiredInternal ? 'money-obtained' : 'unresolved',
+    positive: moneyObtained,
+    verdictType: 'money-acquire-recast',
+    outputHebrew,
+  };
+}
+
+// Kashf v57 p266 — whether a person dismissed from service returns.
+function computeReturnToOfficeP266(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h1 = findCanonicalHouse(chart, 1);
+  const h16 = findCanonicalHouse(chart, 16);
+  const h1Pattern = h1?.key || h1?.pattern || null;
+  const h16Pattern = h16?.key || h16?.pattern || null;
+  if (!h1Pattern || !h16Pattern) return null;
+
+  const h1Classification = classifyCanonicalFigure(h1Pattern);
+  const h16Classification = classifyCanonicalFigure(h16Pattern);
+  const h1BeneficIncoming = h1Classification.saadNahs === 'saad' && h1Classification.dakhalKharij === 'dakhil';
+  const h1PureMalefic = h1Classification.saadNahs === 'nahs';
+
+  const strongRecurrenceHouses = [4, 7, 10].filter((houseNumber) => {
+    const entry = findCanonicalHouse(chart, houseNumber);
+    return (entry?.key || entry?.pattern || null) === h1Pattern;
+  });
+  const appearsInStrongHouse = strongRecurrenceHouses.length > 0;
+  const appearsInH10 = strongRecurrenceHouses.includes(10);
+  const outcomeSupportsReturn = h16Classification.saadNahs === 'saad';
+  const returnIndicated = h1BeneficIncoming && appearsInStrongHouse && outcomeSupportsReturn;
+
+  let sourceOutcome = 'unresolved';
+  let positive = null;
+  let outputHebrew;
+  if (returnIndicated) {
+    sourceOutcome = 'returns';
+    positive = true;
+    outputHebrew = 'בית 1 הוא צורה מיטיבה פנימית, אותה צורה חוזרת בבית חזק נוסף (' + strongRecurrenceHouses.join(', ') + '), ובית 16 — אחרית הדבר — מיטיב ותומך. לפי כשף v57 עמ׳ 266: מי שהודח מן השירות חוזר למקומו.';
+  } else if (h1PureMalefic) {
+    sourceOutcome = 'does-not-return';
+    positive = false;
+    outputHebrew = 'בית 1 הוא צורה מזיקה טהורה. המקור בעמ׳ 266 אומר במפורש שבמקרה שהצורה הנזכרת מזיקה הדין להפך; לפי כלל זה אין חזרה למקום השירות. אין צורך להמציא הצבעת רוב מן הבתים האחרים.';
+  } else {
+    const missing = [];
+    if (!h1BeneficIncoming) missing.push('בית 1 אינו מיטיב־פנימי במלוא התנאי');
+    if (!appearsInStrongHouse) missing.push('צורת בית 1 אינה חוזרת בבית חזק נוסף');
+    if (!outcomeSupportsReturn) missing.push('בית 16 אינו נותן עדות מיטיבה תומכת');
+    outputHebrew = 'תנאי החזרה החיובי של כשף v57 עמ׳ 266 אינו שלם: ' + missing.join('; ') + '. מאחר שבית 1 גם אינו מזיק טהור בענף ההפוך המפורש, אין להשלים פסק מן הדעת והתוצאה נשארת ללא הכרעה.';
+  }
+
+  return {
+    sourceRef: 'חשיפת הסודות הנצורים v57 עמ׳ 266',
+    sourceText: 'מי שהודח משירות — האם יחזור? ראה את הראשון. אם הוא מיטיב נכנס, ומצטייר בעשירי או בבתים החזקים, והאחרית מעידה על כך — הוא חוזר למקומו. ואם הצורה מזיקה, הדין להפך.',
+    housesUsed: [1, 4, 7, 10, 16],
+    h1Pattern,
+    h1FigureHebrew: h1Classification.figureHebrew || h1?.hebrew || h1?.hebrewName || h1Pattern,
+    h1Classification,
+    h1BeneficIncoming,
+    strongRecurrenceHouses,
+    appearsInStrongHouse,
+    appearsInH10,
+    outcomeHouse: 16,
+    h16Pattern,
+    h16FigureHebrew: h16Classification.figureHebrew || h16?.hebrew || h16?.hebrewName || h16Pattern,
+    h16Classification,
+    outcomeSupportsReturn,
+    sourceOutcome,
+    positive,
+    verdictType: 'return-to-office',
+    outputHebrew,
+  };
+}
+
 // Kashf v57 p180 — invert H10 rows and judge the resulting figure's placement.
 function computeLivelihoodP180(chart) {
   if (!Array.isArray(chart)) return null;
@@ -1993,6 +2119,8 @@ function computeHiddenActionP167(chart) {
 const CUSTOM_EXECUTORS = Object.freeze({
   'pregnancy.p191.deliveryDifficultyH1H5H15': computeDeliveryDifficultyP191,
   'money.p180.livelihoodH10Invert': computeLivelihoodP180,
+  'money.p181.recast25811': computeMoneyAcquireP181,
+  'career.p266.returnToOffice': computeReturnToOfficeP266,
   'missing.p248-249.lifeH1H4H9Outcome': computeMissingLifeStatusP250P251,
   'child.p194.healthTrajectoryH6H8': computeChildHealthTrajectoryP194,
   'siblings.p182.seniority': computeSiblingSeniorityP182,

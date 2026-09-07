@@ -204,5 +204,21 @@ for (const [questionText, questionId, methodId] of [
   assert(locked.aiVerdictAllowed === true, methodId + ' is executable through the live bridge');
 }
 
+// 14. Easy batch 04 live retrieval + authoritative routes.
+for (const [questionText, questionId, methodId] of [
+  ['האם הממון יושג', 'q-livelihood-arrive', 'money.p181.recast25811'],
+  ['האם אחזור לתפקיד', 'q-career-return', 'career.p266.returnToOffice'],
+]) {
+  const freeText = buildKashfCanonicalAiBridge({ questionText, board: BOARD });
+  assert(freeText.resolution.kashfMethodId === methodId, questionText + ' resolves exact batch 04 method');
+  assert(freeText.resolution.resolutionSource === 'retrieval-index', questionText + ' resolves through retrieval index');
+  const locked = buildKashfCanonicalAiBridge({ questionId, questionText: 'מה מצבי הכללי?', board: BOARD });
+  assert(locked.resolution.kashfMethodId === methodId, questionId + ' remains authoritative over competing wording');
+  assert(locked.resolution.resolutionSource === 'question-route', questionId + ' resolves through authoritative question route');
+  assert(locked.canonicalRetrieval?.knowledgeLanguage === 'he', methodId + ' bridge exposes Hebrew operational knowledge');
+  assert(locked.aiVerdictAllowed === true, methodId + ' is executable through the live bridge');
+  assert(locked.canonicalReading?.canonicalExecution?.topicBundleExecuted === false, methodId + ' live bridge does not execute a broad topic bundle');
+}
+
 console.log(`Kashf AI retrieval live bridge tests: ${passed} passed, ${failed} failed`);
 if (failed > 0) process.exit(1);
