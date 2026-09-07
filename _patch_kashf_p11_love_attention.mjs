@@ -1,0 +1,58 @@
+#!/usr/bin/env node
+import fs from 'node:fs';
+
+function read(path) { return fs.readFileSync(path, 'utf8'); }
+function write(path, value) { fs.writeFileSync(path, value); }
+function replaceOnce(text, needle, replacement, label) {
+  const first = text.indexOf(needle);
+  if (first < 0) throw new Error(`Missing patch anchor: ${label}`);
+  if (text.indexOf(needle, first + needle.length) >= 0) throw new Error(`Non-unique patch anchor: ${label}`);
+  return text.slice(0, first) + replacement + text.slice(first + needle.length);
+}
+
+const registryPath = 'goral-hachol/registry/kashf-canonical-method-registry.js';
+let registry = read(registryPath);
+const oldMethod = `  'love.p204.attentionFireRows1713': method({\n    kashfMethodId: 'love.p204.attentionFireRows1713',\n    kashfIntentId: 'love.attention',\n    topicId: 'marriage',\n    sourcePages: [204],\n    kashfRuntimeStatus: 'ready',\n    runtimeAllowed: false,\n    executionKind: 'custom-engine',\n    executorStatus: 'pending',\n    notes: 'Body-source method for whether the other person looks toward the querent or elsewhere, using the fire rows of H1, H7 and H13. This is a distinct intent from love itself.',\n  }),`;
+const newMethod = `  'love.p204.attentionFireRows1713': method({\n    kashfMethodId: 'love.p204.attentionFireRows1713',\n    kashfIntentId: 'love.attention',\n    topicId: 'marriage',\n    sourcePages: [204],\n    kashfRuntimeStatus: 'ready',\n    runtimeAllowed: true,\n    executionKind: 'custom-engine',\n    executorStatus: 'ready',\n    notes: 'Canonical p204 attention/look executor is wired. It uses only the explicit p204 condition: fire row of H1 open + fire row of H7 open + fire row of H13 joined/closed => both look at each other and also at others. Other row combinations remain unresolved by this exact method. The similar p170 practical rule is not blended into this verdict, and this method does not answer whether love exists.',\n  }),`;
+registry = replaceOnce(registry, oldMethod, newMethod, 'p204 attention registry method');
+write(registryPath, registry);
+
+const knowledgePath = 'goral-hachol/registry/kashf-v57-knowledge-registry.js';
+let knowledge = read(knowledgePath);
+knowledge = replaceOnce(
+  knowledge,
+  `    notes: 'זהו כלל תשומת לב/מבט; הוא אינו שקול לשאלת אהבה.',`,
+  `    notes: 'זהו כלל תשומת לב/מבט; הוא אינו שקול לשאלת אהבה. הכלל הדומה שבעמ׳ 170 נשאר שיטה/נוסח נפרד ואינו מוזג אוטומטית לפסק הקנוני של עמ׳ 204.',`,
+  'p204 attention v57 boundary note'
+);
+write(knowledgePath, knowledge);
+
+const executorsPath = 'goral-hachol/engine/kashf-canonical-executors.js';
+let executors = read(executorsPath);
+const executorInsertion = `\n\n// Kashf p204 attention/look rule. In the canonical figure encoding, a row\n// with one point ('1') is open/unbound and a row with two points ('2') is\n// joined/closed. This is also consistent with the source definition of the\n// four mutable figures: their fire and earth rows are both open.\n//\n// IMPORTANT: this executor is deliberately limited to the explicit p204\n// clause. A similar practical rule appears at p170 with additional branches;\n// those branches are not imported into this p204 method.\nfunction getCanonicalRowState(pattern, rowIndex) {\n  if (typeof pattern !== 'string' || pattern.length !== 4) return null;\n  if (pattern[rowIndex] === '1') return 'open';\n  if (pattern[rowIndex] === '2') return 'joined';\n  return null;\n}\n\nfunction computeLoveAttentionP204(chart) {\n  if (!Array.isArray(chart)) return null;\n  const h1 = findCanonicalHouse(chart, 1);\n  const h7 = findCanonicalHouse(chart, 7);\n  const h13 = findCanonicalHouse(chart, 13);\n  const h1Pattern = h1?.key || h1?.pattern || null;\n  const h7Pattern = h7?.key || h7?.pattern || null;\n  const h13Pattern = h13?.key || h13?.pattern || null;\n  if (!h1Pattern || !h7Pattern || !h13Pattern) return null;\n\n  const h1Fire = getCanonicalRowState(h1Pattern, 0);\n  const h7Fire = getCanonicalRowState(h7Pattern, 0);\n  const h13Fire = getCanonicalRowState(h13Pattern, 0);\n  if (!h1Fire || !h7Fire || !h13Fire) return null;\n\n  const sourceConditionMet = h1Fire === 'open' && h7Fire === 'open' && h13Fire === 'joined';\n  const attention = sourceConditionMet ? 'mutual-and-others' : null;\n  const attentionHebrew = sourceConditionMet ? 'שניהם מביטים זה בזה וגם באחרים' : 'לא הוכרע בכלל זה';\n\n  const outputHebrew = sourceConditionMet\n    ? 'שורת האש בבית 1 פתוחה, שורת האש בבית 7 פתוחה, ושורת האש בבית 13 מתחברת (שתי נקודות). לפי כשף עמ׳ 204: שניהם מביטים זה בזה וגם באחרים.'\n    : 'תנאי עמ׳ 204 אינו מתקיים במלואו: הוא דורש אש פתוחה בבית 1, אש פתוחה בבית 7 ואש מתחברת בבית 13. לכן כלל זה לבדו אינו מכריע לאן מופנה המבט. אין לייבא לכאן את הענפים הנוספים של הכלל הדומה בעמ׳ 170, ואין להסיק מכאן אם קיימת אהבה.';\n\n  return {\n    sourceRef: 'כשף אל-אסרר עמ׳ 204; מצב שורה פתוחה/מתחברת לפי כללי הצורות',\n    sourceText: 'האם אדם זה מביט אליך או אל אחר? אם אש הבית הראשון פתוחה, ואש הבית השביעי פתוחה, וגם אש הבית השלושה־עשר מתחברת — שניהם מביטים זה בזה וגם באחרים.',\n    housesUsed: [1, 7, 13],\n    h1Pattern,\n    h7Pattern,\n    h13Pattern,\n    fireRows: { h1: h1Fire, h7: h7Fire, h13: h13Fire },\n    sourceConditionMet,\n    attention,\n    attentionHebrew,\n    positive: null,\n    outputHebrew,\n  };\n}\n`;
+executors = replaceOnce(
+  executors,
+  `\n\n// p204 uses the source's explicit \\"mutable\\" and \\"fixed\\" figure classes.`,
+  `${executorInsertion}\n// p204 uses the source's explicit \\"mutable\\" and \\"fixed\\" figure classes.`,
+  'p204 executor insertion point'
+);
+executors = replaceOnce(
+  executors,
+  `  'marriage.p204.previousStatusH7inH10': computeMarriagePreviousStatusP204,`,
+  `  'marriage.p204.previousStatusH7inH10': computeMarriagePreviousStatusP204,\n  'love.p204.attentionFireRows1713': computeLoveAttentionP204,`,
+  'p204 attention custom allowlist'
+);
+write(executorsPath, executors);
+
+const testsPath = '_test_kashf_canonical_routing.mjs';
+let tests = read(testsPath);
+const testBlock = `\n// ── P11 p204 attention/look source contract ------------------------------\nassertRoute('q-who-looks-love', {\n  ok: true,\n  canRunKashf: true,\n  kashfIntentId: 'love.attention',\n  kashfMethodId: 'love.p204.attentionFireRows1713',\n  kashfRuntimeStatus: 'ready',\n  executorStatus: 'ready',\n  runtimeAllowed: true,\n});\nassert(canRunKashfMethod('love.p204.attentionFireRows1713'), 'p204 attention method is explicitly runnable');\n\nconst p204Attention = buildKashfReadingByQuestionId(\n  makeP204Board({ 1: '1111', 7: '1121', 13: '2222' }),\n  'q-who-looks-love',\n  { question: 'האם אדם זה מביט אלי או אל אחר?' }\n);\nassert(p204Attention.valid === true && p204Attention.canRunKashf === true, 'p204 attention source condition executes canonically');\nassert(p204Attention.kashfMethodId === 'love.p204.attentionFireRows1713', 'p204 attention uses exact canonical method id');\nassert(JSON.stringify(p204Attention.primaryFormula?.houses) === JSON.stringify([1, 7, 13]), 'p204 attention traces H1+H7+H13 only');\nassert(p204Attention.primaryFormula?.result?.executorResult?.fireRows?.h1 === 'open', 'p204 attention reads one-point H1 fire as open');\nassert(p204Attention.primaryFormula?.result?.executorResult?.fireRows?.h7 === 'open', 'p204 attention reads one-point H7 fire as open');\nassert(p204Attention.primaryFormula?.result?.executorResult?.fireRows?.h13 === 'joined', 'p204 attention reads two-point H13 fire as joined/closed');\nassert(p204Attention.primaryFormula?.result?.executorResult?.sourceConditionMet === true, 'p204 attention exact three-row source condition is met');\nassert(p204Attention.primaryFormula?.result?.executorResult?.attention === 'mutual-and-others', 'p204 attention returns only the explicit mutual-and-others source result');\nassert(p204Attention.primaryFormula?.result?.executorResult?.attentionHebrew === 'שניהם מביטים זה בזה וגם באחרים', 'p204 attention preserves exact Hebrew result');\nassert(p204Attention.overallPositive === null, 'p204 attention is descriptive rather than positive/negative');\nassert(p204Attention.altFormula === null, 'p204 attention does not aggregate alternate marriage/love formulas');\nassert(p204Attention.canonicalExecution?.topicBundleExecuted === false, 'p204 attention does not execute broad marriage bundle');\nassert(p204Attention.dhamir === null, 'p204 attention does not auto-run Dhamir');\nassert(!p204Attention.primaryFormula?.result?.executorResult?.outputHebrew.includes('אוהב'), 'p204 attention does not convert gaze/attention into a love verdict');\n\nconst p204AttentionOtherCombination = buildKashfReadingByQuestionId(\n  makeP204Board({ 1: '1111', 7: '1121', 13: '1111' }),\n  'q-who-looks-love',\n  { question: 'האם אדם זה מביט אלי או אל אחר?' }\n);\nassert(p204AttentionOtherCombination.primaryFormula?.result?.executorResult?.fireRows?.h13 === 'open', 'p204 attention guard fixture has H13 fire open');\nassert(p204AttentionOtherCombination.primaryFormula?.result?.executorResult?.sourceConditionMet === false, 'p204 attention rejects a row combination not stated in the p204 clause');\nassert(p204AttentionOtherCombination.primaryFormula?.result?.executorResult?.attention === null, 'p204 attention does not import the p170 other-person branch');\nassert(p204AttentionOtherCombination.overallPositive === null, 'p204 attention unresolved branch remains non-sentiment');\n\nconst p204AttentionHtml = writeCanonicalKashfReading(p204Attention);\nassert(p204AttentionHtml.includes('love.p204.attentionFireRows1713'), 'p204 attention narrative exposes exact method id');\nassert(p204AttentionHtml.includes('שניהם מביטים זה בזה וגם באחרים'), 'p204 attention narrative preserves v57 p204 result');\n`;
+tests = replaceOnce(
+  tests,
+  `// ── P10 corrected marriage p204 source contracts -----------------------`,
+  `${testBlock}\n// ── P10 corrected marriage p204 source contracts -----------------------`,
+  'p204 test insertion point'
+);
+write(testsPath, tests);
+
+console.log('Applied p204 love-attention canonical implementation patch.');
