@@ -25,6 +25,21 @@ const escaped = inner
 
 const replacement = '  const block = `' + escaped + '\n`;';
 source = source.slice(0, start) + replacement + source.slice(end + '\n`;'.length);
+
+// The canonical reading entry point is (board, questionId, clientContext).
+// Repair the staged P7 contracts which were authored with the first two args reversed.
+const callRepairs = [
+  ["buildKashfReadingByQuestionId('q-fame', AUTHORITY_P256_SUN_BOARD,", "buildKashfReadingByQuestionId(AUTHORITY_P256_SUN_BOARD, 'q-fame',"],
+  ["buildKashfReadingByQuestionId('q-fame', AUTHORITY_P256_SATURN_BOARD,", "buildKashfReadingByQuestionId(AUTHORITY_P256_SATURN_BOARD, 'q-fame',"],
+  ["buildKashfReadingByQuestionId('q-fame', AUTHORITY_P256_UNRESOLVED_BOARD,", "buildKashfReadingByQuestionId(AUTHORITY_P256_UNRESOLVED_BOARD, 'q-fame',"],
+  ["buildKashfReadingByQuestionId('q-position-keep', AUTHORITY_P257_POSITIVE_BOARD,", "buildKashfReadingByQuestionId(AUTHORITY_P257_POSITIVE_BOARD, 'q-position-keep',"],
+  ["buildKashfReadingByQuestionId('q-position-keep', AUTHORITY_P257_NEGATIVE_BOARD,", "buildKashfReadingByQuestionId(AUTHORITY_P257_NEGATIVE_BOARD, 'q-position-keep',"],
+];
+for (const [from, to] of callRepairs) {
+  if (!source.includes(from)) throw new Error(`P7 test call not found for repair: ${from}`);
+  source = source.replace(from, to);
+}
+
 fs.writeFileSync(patcherPath, source);
 
 const check = spawnSync('node', ['--check', patcherPath], { stdio: 'inherit' });
