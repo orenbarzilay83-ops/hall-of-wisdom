@@ -1330,4 +1330,76 @@ assert(!escapedHtml.includes('<img src=x onerror=alert(1)>'), 'canonical writer 
 assert(escapedHtml.includes('&lt;script&gt;'), 'escaped client name remains visible as text');
 
 console.log(`Kashf canonical routing tests: ${passed} passed, ${failed} failed`);
-if (failed > 0) process.exit(1);
+
+// ── P17 pp264-265 clothing-luck source contract --------------------------
+assertRoute('q-clothing-lucky', {
+  ok: true,
+  canRunKashf: true,
+  kashfIntentId: 'clothing.luck',
+  kashfMethodId: 'clothing.p264-265.luck',
+  kashfRuntimeStatus: 'ready',
+  executorStatus: 'ready',
+  runtimeAllowed: true,
+});
+assert(canRunKashfMethod('clothing.p264-265.luck'), 'p265 clothing-luck method is explicitly runnable');
+const clothingV57 = getKashfV57Knowledge('clothing.p264-265.luck');
+assert(clothingV57?.v57?.hebrewRule.includes('בחמישי ובאחד־עשר'), 'p265 clothing knowledge preserves H5+H11 rule');
+assert(clothingV57?.v57?.hebrewRule.includes('בעשירי צורה מזיקה'), 'p265 clothing knowledge preserves separate H10 royal-clothing clause');
+assert(clothingV57?.arabicVerification?.notes?.includes('צורה קבועה'), 'p265 verification records fixed/mutable translation boundary');
+
+const clothingGood = buildKashfReadingByQuestionId(
+  makeP204Board({ 5: '1122', 10: '2211', 11: '2111' }),
+  'q-clothing-lucky',
+  { question: 'מה מזלי בלבוש?' }
+);
+assert(clothingGood.valid === true && clothingGood.canRunKashf === true, 'p265 clothing benefic fixture executes canonically');
+assert(JSON.stringify(clothingGood.primaryFormula?.houses) === JSON.stringify([5, 10, 11]), 'p265 clothing traces H5 H10 H11 only');
+assert(clothingGood.primaryFormula?.result?.executorResult?.clothingLuck === true, 'p265 H5+H11 pure benefic yields clothing luck');
+assert(clothingGood.primaryFormula?.result?.executorResult?.sourceOutcome === 'clothing-luck', 'p265 positive source branch is explicit');
+assert(clothingGood.overallPositive === true, 'p265 clothing-luck branch is positive');
+assert(clothingGood.primaryFormula?.result?.executorResult?.royalClothingNoLuck === false, 'p265 non-malefic H10 does not trigger royal-clothing no-luck clause');
+assert(clothingGood.primaryFormula?.result?.executorResult?.colorSubruleExecuted === false, 'p265 color table does not vote into clothing luck');
+assert(clothingGood.primaryFormula?.result?.executorResult?.fixedMutableSubruleExecuted === false, 'p265 fixed/mutable subrule stays outside luck verdict');
+assert(clothingGood.altFormula === null, 'p265 clothing does not aggregate alternatives');
+assert(clothingGood.canonicalExecution?.topicBundleExecuted === false, 'p265 clothing does not execute broad generalReading bundle');
+assert(clothingGood.dhamir === null, 'p265 clothing does not auto-run Dhamir');
+
+const clothingBad = buildKashfReadingByQuestionId(
+  makeP204Board({ 5: '1112', 10: '1122', 11: '1212' }),
+  'q-clothing-lucky',
+  { question: 'מה מזלי בלבוש?' }
+);
+assert(clothingBad.primaryFormula?.result?.executorResult?.clothingLuck === false, 'p265 H5+H11 pure malefic yields no clothing luck');
+assert(clothingBad.primaryFormula?.result?.executorResult?.sourceOutcome === 'no-clothing-luck', 'p265 negative source branch is explicit');
+assert(clothingBad.overallPositive === false, 'p265 no-clothing-luck branch is negative');
+
+const clothingRoyal = buildKashfReadingByQuestionId(
+  makeP204Board({ 5: '1122', 10: '1112', 11: '2111' }),
+  'q-clothing-lucky',
+  { question: 'מה מזלי בלבוש?' }
+);
+assert(clothingRoyal.primaryFormula?.result?.executorResult?.clothingLuck === true, 'p265 general clothing luck can remain true with malefic H10');
+assert(clothingRoyal.primaryFormula?.result?.executorResult?.royalClothingNoLuck === true, 'p265 malefic H10 triggers separate royal-clothing no-luck clause');
+assert(clothingRoyal.primaryFormula?.result?.executorResult?.royalClothingOutcome.includes('לבוש המלכים'), 'p265 royal-clothing qualifier preserves source wording');
+
+const clothingSplit = buildKashfReadingByQuestionId(
+  makeP204Board({ 5: '1122', 10: '2211', 11: '1112' }),
+  'q-clothing-lucky',
+  { question: 'מה מזלי בלבוש?' }
+);
+assert(clothingSplit.primaryFormula?.result?.executorResult?.clothingLuck === null, 'p265 split H5/H11 testimony remains unresolved');
+assert(clothingSplit.primaryFormula?.result?.executorResult?.sourceOutcome === 'unresolved', 'p265 split testimony does not invent partial luck');
+assert(clothingSplit.overallPositive === null, 'p265 split testimony is not collapsed into a verdict');
+
+const clothingMixed = buildKashfReadingByQuestionId(
+  makeP204Board({ 5: '1121', 10: '2211', 11: '2111' }),
+  'q-clothing-lucky',
+  { question: 'מה מזלי בלבוש?' }
+);
+assert(clothingMixed.primaryFormula?.result?.executorResult?.h5Quality === 'mixed', 'p265 mixed H5 preserves source class');
+assert(clothingMixed.primaryFormula?.result?.executorResult?.clothingLuck === null, 'p265 mixed figure is not promoted by tendency');
+assert(clothingMixed.overallPositive === null, 'p265 mixed result remains unresolved');
+
+if (failed > 0) {
+  process.exit(1);
+}

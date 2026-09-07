@@ -167,11 +167,11 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'generalReading',
     sourcePages: [264, 265],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
-    executionKind: 'legacy-function',
-    executorStatus: 'pending',
+    runtimeAllowed: true,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
     legacyTopicId: 'generalReading',
-    notes: 'Existing clothing helper may be reused only after method-scoped executor wiring.',
+    notes: 'Canonical clothing-luck executor is wired from v57 pp264-265 using only the explicit fortune clauses: H5+H11 both pure benefic => luck in clothing; both pure malefic => no luck in clothing; pure malefic H10 separately indicates no luck in royal clothing/honor from superiors. Mixed/split testimony remains unresolved. The legacy helper is not reused because it collapses mixed figures and invents a partial branch. Fixed/mutable persistence and clothing-color subrules are excluded from this luck verdict.',
   }),
 
   'matter.p172.h17_h1011_thenCombine': method({

@@ -175,7 +175,7 @@ window.QUESTION_BANK = [
     id: 'q-clothing-lucky',
     category: 'general', houseId: 11, topicId: 'foundations', kashfTopicId: 'generalReading',
     label: 'מה מזלי בלבוש?',
-    desc: 'לקוח הרוצה לדעת איזה צבע/סוג לבוש מביא לו מזל',
+    desc: 'לבדיקת מזל בלבושים לפי בתים 5 ו־11, עם עדות נפרדת של בית 10 לגבי לבוש מלכים וכיבוד מבעלי מעלה',
     clientFields: [],
   },
 

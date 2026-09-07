@@ -984,7 +984,94 @@ function computeRelocationStayMoveH1H2(chart) {
   };
 }
 
+
+// Kashf v57 pp264-265 — clothing luck.
+// This executor is intentionally narrower than the old legacy helper:
+// - H5+H11 both pure saad => luck in clothing.
+// - H5+H11 both pure nahs => no luck in clothing.
+// - H10 pure nahs => separate no-luck indication for royal clothing/honor.
+// - Mixed or split H5/H11 testimony remains unresolved.
+// Fixed/mutable garment persistence and color indications are knowledge-only
+// here; they are not converted into the clothing-luck verdict.
+function computeClothingLuckP265(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h5 = findCanonicalHouse(chart, 5);
+  const h10 = findCanonicalHouse(chart, 10);
+  const h11 = findCanonicalHouse(chart, 11);
+  const h5Pattern = h5?.key || h5?.pattern || null;
+  const h10Pattern = h10?.key || h10?.pattern || null;
+  const h11Pattern = h11?.key || h11?.pattern || null;
+  if (!h5Pattern || !h10Pattern || !h11Pattern) return null;
+
+  const h5Classification = classifyCanonicalFigure(h5Pattern);
+  const h10Classification = classifyCanonicalFigure(h10Pattern);
+  const h11Classification = classifyCanonicalFigure(h11Pattern);
+  const h5Quality = h5Classification.saadNahs;
+  const h10Quality = h10Classification.saadNahs;
+  const h11Quality = h11Classification.saadNahs;
+
+  const bothBenefic = h5Quality === 'saad' && h11Quality === 'saad';
+  const bothMalefic = h5Quality === 'nahs' && h11Quality === 'nahs';
+  const royalClothingNoLuck = h10Quality === 'nahs';
+
+  let clothingLuck = null;
+  let sourceOutcome = 'unresolved';
+  let sourceOutcomeHebrew = 'לא הוכרע מזל הלבוש לפי כלל זה';
+  let positive = null;
+  let outputHebrew;
+
+  if (bothBenefic) {
+    clothingLuck = true;
+    sourceOutcome = 'clothing-luck';
+    sourceOutcomeHebrew = 'יש לו מזל בלבושים';
+    positive = true;
+    outputHebrew = 'לפי חשיפת הסודות הנצורים v57 עמ׳ 264–265, בבית החמישי ובבית האחד־עשר נמצאות צורות מיטיבות טהורות. לפי לשון הכלל: יש לו מזל בלבושים.';
+  } else if (bothMalefic) {
+    clothingLuck = false;
+    sourceOutcome = 'no-clothing-luck';
+    sourceOutcomeHebrew = 'אין לו מזל בלבוש';
+    positive = false;
+    outputHebrew = 'לפי חשיפת הסודות הנצורים v57 עמ׳ 264–265, בבית החמישי ובבית האחד־עשר נמצאות צורות מזיקות טהורות. לפי לשון הכלל: אין לו מזל בלבוש.';
+  } else {
+    const hasMixed = h5Quality === 'mixed' || h11Quality === 'mixed';
+    outputHebrew = hasMixed
+      ? 'דין v57 על מזל בלבוש נותן ענף מפורש כאשר הבית החמישי והאחד־עשר מיטיבים יחד או מזיקים יחד. כאן לפחות אחד מהם ממוזג, ולכן אין להעלות את נטייתו בכוח למיטיב או למזיק ואין הכרעה לפי כלל זה.'
+      : 'הבית החמישי והאחד־עשר נותנים כאן עדות מפוצלת ולא את אחד משני המצבים המפורשים במקור. לכן אין להשלים מן הדעת דין של מזל חלקי.';
+  }
+
+  const royalClothingOutcome = royalClothingNoLuck
+    ? 'בית 10 מזיק: אין לו מזל בלבוש המלכים או בכיבוד הבא מצד בעלי מעלה.'
+    : 'בית 10 אינו נותן כאן את ענף המזיק המפורש; אין להסיק מכך לבדו מזל חיובי בלבוש מלכים.';
+
+  return {
+    sourceRef: 'חשיפת הסודות הנצורים v57 עמ׳ 264–265',
+    sourceText: 'בדין מזל הלבוש: אם בחמישי ובאחד־עשר יש צורות מיטיבות, יש לו מזל בלבושים. אם בעשירי צורה מזיקה, אין לו מזל בלבוש המלכים או בכיבוד הבא מצד בעלי מעלה. אם בחמישי ובאחד־עשר צורות מזיקות, אין לו מזל בלבוש.',
+    housesUsed: [5, 10, 11],
+    h5Pattern,
+    h10Pattern,
+    h11Pattern,
+    h5Classification,
+    h10Classification,
+    h11Classification,
+    h5Quality,
+    h10Quality,
+    h11Quality,
+    bothBenefic,
+    bothMalefic,
+    clothingLuck,
+    royalClothingNoLuck,
+    royalClothingOutcome,
+    sourceOutcome,
+    sourceOutcomeHebrew,
+    fixedMutableSubruleExecuted: false,
+    colorSubruleExecuted: false,
+    positive,
+    outputHebrew: outputHebrew + ' ' + royalClothingOutcome,
+  };
+}
+
 const CUSTOM_EXECUTORS = Object.freeze({
+  'clothing.p264-265.luck': computeClothingLuckP265,
   'relocation.p183.stayMoveH1H2': computeRelocationStayMoveH1H2,
   'dispute.p212.reconciliationH1H7': computeDisputeReconciliationP212,
   'religion.p253.h3h9Quality': computeReligionQualityP253,
