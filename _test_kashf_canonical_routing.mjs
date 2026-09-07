@@ -1329,7 +1329,6 @@ assert(!escapedHtml.includes('<script>alert(1)</script>'), 'canonical writer esc
 assert(!escapedHtml.includes('<img src=x onerror=alert(1)>'), 'canonical writer escapes client question HTML');
 assert(escapedHtml.includes('&lt;script&gt;'), 'escaped client name remains visible as text');
 
-console.log(`Kashf canonical routing tests: ${passed} passed, ${failed} failed`);
 
 // ── P17 pp264-265 clothing-luck source contract --------------------------
 assertRoute('q-clothing-lucky', {
@@ -1400,6 +1399,7 @@ assert(clothingMixed.primaryFormula?.result?.executorResult?.h5Quality === 'mixe
 assert(clothingMixed.primaryFormula?.result?.executorResult?.clothingLuck === null, 'p265 mixed figure is not promoted by tendency');
 assert(clothingMixed.overallPositive === null, 'p265 mixed result remains unresolved');
 
+console.log(`Kashf canonical routing tests: ${passed} passed, ${failed} failed`);
 if (failed > 0) {
   process.exit(1);
 }
