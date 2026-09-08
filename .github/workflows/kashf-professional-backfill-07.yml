@@ -1,0 +1,65 @@
+name: Kashf Professional Backfill 07
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/kashf-professional-backfill-07.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-test-commit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Validate patcher
+        run: node --check _patch_kashf_professional_backfill_07.mjs
+      - name: Apply professional backfill batch 07
+        run: node _patch_kashf_professional_backfill_07.mjs
+      - name: Syntax checks
+        run: |
+          node --check goral-hachol/intelligence/kashf-professional-verdict-safety.js
+          node --check _test_kashf_professional_verdict_safety.mjs
+      - name: Professional Verdict Safety backfill tests
+        run: node _test_kashf_professional_verdict_safety.mjs
+      - name: Canonical routing regression
+        run: node _test_kashf_canonical_routing.mjs
+      - name: Question route coverage
+        run: node _audit_kashf_question_route_coverage.mjs
+      - name: AI retrieval regression
+        run: node _test_kashf_ai_retrieval_index.mjs
+      - name: Canonical AI live bridge regression
+        run: node _test_kashf_ai_retrieval_live_bridge.mjs
+      - name: AI context builder regression
+        run: node _test_kashf_ai_context_builder.mjs
+      - name: Method isolation regression
+        run: node _test_kashf_hawi_method_isolation.mjs
+      - name: Structured output regression
+        run: node _test_kashf_structured_tool_output.mjs
+      - name: Advisor payload regression
+        run: node _test_oren_smart_advisor_kashf_reading_payload.mjs
+
+      - name: Commit professional backfill batch 07
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            goral-hachol/intelligence/kashf-professional-verdict-safety.js \
+            _test_kashf_professional_verdict_safety.mjs \
+            HALL_WISDOM_KASHF_PROFESSIONAL_VERDICT_BACKFILL_STATUS.md
+          if git diff --cached --quiet; then
+            echo "No backfill changes to commit"
+            exit 1
+          fi
+          git commit -m "feat(kashf): certify professional backfill batch 07"
+          git push origin HEAD:main
