@@ -44,7 +44,7 @@ import { sanitizeGoralQaPayloadForAi } from './goral_qa_payload_sanitizer.ts';
 // הפלט עצמו נאכף כעת דרך forced tool_choice (structured output), לא
 // JSON.parse על טקסט חופשי — ר' HALL_WISDOM_KASHF_LIVE_PILOT_CONTEXT_SIZE_AND_JSON_AUDIT_REPORT.md:
 import { OREN_SMART_ADVISOR_BRAIN_PROMPT, OREN_SMART_ADVISOR_BRAIN_PROMPT_VERSION } from './oren-smart-advisor-brain-prompt.ts';
-import { KASHF_ADVISOR_TOOL_DEFINITION, validateKashfAdvisorOutput } from './oren-smart-advisor-brain-tool-schema.ts';
+import { KASHF_ADVISOR_TOOL_DEFINITION, validateKashfAdvisorOutput, validateKashfAdvisorVerdictAlignment } from './oren-smart-advisor-brain-tool-schema.ts';
 import { sanitizeKashfReadingPayloadForAi } from './kashf_reading_payload_sanitizer.ts';
 import { isValidAiContextPackageEnvelope, type AiContextPackage } from './ai-context-package.ts';
 import { buildAiInvocationLogEntry, logAiInvocation } from './ai-invocation-log.ts';
@@ -116,6 +116,15 @@ function mockAdvisorBrainOutput() {
     nextBestAction: 'approveOutput',
     confidence: 'low',
     needsOrenDecision: false,
+    verdictAudit: {
+      methodId: 'mock',
+      engineVerdictPolarity: 'blocked',
+      clientDraftPolarity: 'none',
+      usedOnlyAuthorizedVerdictSource: true,
+      inventedInverseRule: false,
+      mixedUnselectedMethod: false,
+      unsupportedClientClaims: [] as string[],
+    },
   };
 }
 
@@ -193,6 +202,7 @@ export async function handleAdvisorRequest(
       activatedRuleIds?: unknown;
       rejectedRuleIds?: unknown;
       sourceEvidence?: unknown;
+      professionalVerdictSafety?: unknown;
     } | undefined;
 
     const hasRealReadingPayload =
@@ -285,6 +295,15 @@ export async function handleAdvisorRequest(
     if (!validation.ok || !validation.value) {
       logAiInvocation(buildAiInvocationLogEntry({ ...logBase, success: false, error: 'schema-validation-failed', schemaValidationErrorCategory: validation.category || 'unknown' }));
       return mockFallback('anthropic-error');
+    }
+
+    const verdictAlignment = validateKashfAdvisorVerdictAlignment(
+      validation.value,
+      readingContext?.professionalVerdictSafety,
+    );
+    if (!verdictAlignment.ok) {
+      logAiInvocation(buildAiInvocationLogEntry({ ...logBase, success: false, error: 'verdict-alignment-failed', schemaValidationErrorCategory: verdictAlignment.category || 'unknown' }));
+      return mockFallback('professional-verdict-safety-failed');
     }
 
     logAiInvocation(buildAiInvocationLogEntry({ ...logBase, success: true }));

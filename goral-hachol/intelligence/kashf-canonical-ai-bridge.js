@@ -24,8 +24,9 @@ import {
   resolveBestKashfAiRetrievalHit,
   searchKashfAiRetrievalIndex,
 } from '../registry/kashf-ai-retrieval-index.js';
+import { buildKashfProfessionalVerdictSafety } from './kashf-professional-verdict-safety.js';
 
-export const KASHF_CANONICAL_AI_BRIDGE_VERSION = 'kashf-canonical-ai-bridge-v1';
+export const KASHF_CANONICAL_AI_BRIDGE_VERSION = 'kashf-canonical-ai-bridge-v2';
 
 function freezeArray(values = []) {
   return Object.freeze([...(Array.isArray(values) ? values : [])]);
@@ -253,18 +254,28 @@ export function buildKashfCanonicalAiBridge(input = {}) {
     });
   }
 
+  const baseAiVerdictAllowed = Boolean(
+    resolution.state === 'resolved'
+    && canonicalReading?.valid === true
+    && canonicalReading?.canRunKashf === true
+    && canonicalReading?.kashfMethodId === resolution.kashfMethodId
+  );
+  const professionalVerdictSafety = buildKashfProfessionalVerdictSafety({
+    resolution,
+    canonicalReading,
+    canonicalRetrieval,
+    baseAiVerdictAllowed,
+  });
+  const aiVerdictAllowed = Boolean(baseAiVerdictAllowed && professionalVerdictSafety.isSafe);
+
   return Object.freeze({
     bridgeVersion: KASHF_CANONICAL_AI_BRIDGE_VERSION,
     resolution,
     canonicalRetrieval,
     candidates: freezeArray(candidates),
     canonicalReading,
-    aiVerdictAllowed: Boolean(
-      resolution.state === 'resolved'
-      && canonicalReading?.valid === true
-      && canonicalReading?.canRunKashf === true
-      && canonicalReading?.kashfMethodId === resolution.kashfMethodId
-    ),
+    professionalVerdictSafety,
+    aiVerdictAllowed,
   });
 }
 

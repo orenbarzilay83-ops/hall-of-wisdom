@@ -106,7 +106,7 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
   },
   'marriage.p210.generalMarriageH1H2H7H8H10Judge': {
     aliases: ['האם השידוך מתאים', 'האם הזוגיות מתאימה', 'מה יהיה בנישואין', 'התאמת נישואין', 'סיכויי הנישואין'],
-    doNotMixWith: ['marriage.p204.previousStatusH7inH10', 'marriage.p204.dowryH8', 'love.p206.womanFavorH7H11ThenH5', 'desire.p206.querentWantsH7H11ThenH5'],
+    doNotMixWith: ['marriage.p204.previousStatusH7inH10', 'marriage.p204.dowryH8', 'marriage.p211.dissolutionH7StateMatrix', 'love.p206.womanFavorH7H11ThenH5', 'desire.p206.querentWantsH7H11ThenH5'],
     houses: [1, 2, 5, 7, 8, 10, 15],
   },
   'general.p174.h1h2h4h7h10h15': {

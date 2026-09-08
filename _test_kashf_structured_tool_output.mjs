@@ -44,6 +44,15 @@ const VALID_ADVISOR_OUTPUT = {
   nextBestAction: 'none',
   confidence: 'high',
   needsOrenDecision: false,
+  verdictAudit: {
+    methodId: 'test.method',
+    engineVerdictPolarity: 'non-binary',
+    clientDraftPolarity: 'none',
+    usedOnlyAuthorizedVerdictSource: true,
+    inventedInverseRule: false,
+    mixedUnselectedMethod: false,
+    unsupportedClientClaims: [],
+  },
 };
 
 console.log('\n--- 1/2/3. request body: single tool, full input_schema, strict:true, tool_choice forces exact name ---');
@@ -57,7 +66,7 @@ console.log('\n--- 1/2/3. request body: single tool, full input_schema, strict:t
   const body = getBody();
   assert(Array.isArray(body.tools) && body.tools.length === 1, '(1) request sends exactly one tool');
   assert(body.tools[0].name === KASHF_ADVISOR_TOOL_NAME, '(1) tool name matches KASHF_ADVISOR_TOOL_NAME');
-  assert(body.tools[0].input_schema && body.tools[0].input_schema.required.length === 12, '(1) tool input_schema carries the full 12-field required list');
+  assert(body.tools[0].input_schema && body.tools[0].input_schema.required.length === 13, '(1) tool input_schema carries the full 13-field required list');
   assert(body.tools[0].strict === true, '(2) tool definition sets strict:true');
   assert(body.tool_choice?.type === 'tool' && body.tool_choice?.name === KASHF_ADVISOR_TOOL_NAME, '(3) tool_choice forces the exact tool name');
 }

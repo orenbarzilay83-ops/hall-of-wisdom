@@ -22,6 +22,7 @@ interface KashfReadingPayloadLike {
     canonicalResolution?: unknown;
     canonicalRetrieval?: unknown;
     aiVerdictAllowed?: unknown;
+    professionalVerdictSafety?: unknown;
   };
 }
 
@@ -66,6 +67,20 @@ function validateCanonicalBlock(payload: KashfReadingPayloadLike): boolean {
   if (resolution.kashfIntentId !== retrieval.kashfIntentId) return false;
   if (!['question-route', 'retrieval-index'].includes(String(resolution.resolutionSource || ''))) return false;
   if (typeof rc?.aiVerdictAllowed !== 'boolean') return false;
+
+  const safety = rc?.professionalVerdictSafety as Record<string, unknown> | null | undefined;
+  if (!safety || typeof safety !== 'object') return false;
+  if (!isShortString(safety.policyVersion, 120)) return false;
+  if (safety.kashfMethodId !== retrieval.kashfMethodId) return false;
+  if (!['positive', 'negative', 'non-binary', 'blocked'].includes(String(safety.authoritativePolarity || ''))) return false;
+  if (typeof safety.isSafe !== 'boolean') return false;
+  if (typeof safety.binaryClientVerdictAllowed !== 'boolean') return false;
+  if (safety.noInverseRule !== true || safety.noUnstatedAggregation !== true || safety.selectedMethodOnly !== true) return false;
+  if (!isStringArray(safety.allowedVerdictSources, 10, 300)) return false;
+  if (!isStringArray(safety.forbiddenVerdictSources, 60, 500)) return false;
+  if (rc.aiVerdictAllowed === true && safety.isSafe !== true) return false;
+  if (safety.authoritativePolarity === 'non-binary' && safety.binaryClientVerdictAllowed !== false) return false;
+  if (safety.authoritativePolarity === 'blocked' && rc.aiVerdictAllowed === true) return false;
 
   // A blocked/pending method may be retrievable knowledge, but the payload
   // must never claim the AI is allowed to present a computed verdict for it.

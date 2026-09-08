@@ -26,7 +26,7 @@ export const KASHF_ADVISOR_TOOL_NAME = 'submit_hall_wisdom_kashf_analysis';
 export const KASHF_ADVISOR_TOOL_DEFINITION = {
   name: KASHF_ADVISOR_TOOL_NAME,
   description:
-    'Submit the structured advisor-only critique of a single already-computed Kashf reading. Never client-facing. Must be called exactly once, with every field present.',
+    'Submit the structured advisor-only critique of a single already-computed Kashf reading. Never client-facing. Must be called exactly once, with every field present, including the professional verdict audit.',
   input_schema: {
     type: 'object',
     properties: {
@@ -62,11 +62,25 @@ export const KASHF_ADVISOR_TOOL_DEFINITION = {
       nextBestAction: { type: 'string' },
       confidence: { type: 'string', enum: ['low', 'medium', 'high'] },
       needsOrenDecision: { type: 'boolean' },
+      verdictAudit: {
+        type: 'object',
+        properties: {
+          methodId: { type: 'string' },
+          engineVerdictPolarity: { type: 'string', enum: ['positive', 'negative', 'non-binary', 'blocked'] },
+          clientDraftPolarity: { type: 'string', enum: ['positive', 'negative', 'non-binary', 'none'] },
+          usedOnlyAuthorizedVerdictSource: { type: 'boolean' },
+          inventedInverseRule: { type: 'boolean' },
+          mixedUnselectedMethod: { type: 'boolean' },
+          unsupportedClientClaims: { type: 'array', items: { type: 'string' } },
+        },
+        required: ['methodId', 'engineVerdictPolarity', 'clientDraftPolarity', 'usedOnlyAuthorizedVerdictSource', 'inventedInverseRule', 'mixedUnselectedMethod', 'unsupportedClientClaims'],
+        additionalProperties: false,
+      },
     },
     required: [
       'module', 'advisorDiagnosis', 'clientAnswerDraft', 'engineCritique',
       'missingKnowledgeOrRules', 'recommendedFix', 'codeInstructionForClaude',
-      'safetyNotes', 'privacyBlockedFields', 'nextBestAction', 'confidence', 'needsOrenDecision',
+      'safetyNotes', 'privacyBlockedFields', 'nextBestAction', 'confidence', 'needsOrenDecision', 'verdictAudit',
     ],
     additionalProperties: false,
   },
@@ -92,6 +106,15 @@ export interface KashfAdvisorOutput {
   nextBestAction: string;
   confidence: 'low' | 'medium' | 'high';
   needsOrenDecision: boolean;
+  verdictAudit: {
+    methodId: string;
+    engineVerdictPolarity: 'positive' | 'negative' | 'non-binary' | 'blocked';
+    clientDraftPolarity: 'positive' | 'negative' | 'non-binary' | 'none';
+    usedOnlyAuthorizedVerdictSource: boolean;
+    inventedInverseRule: boolean;
+    mixedUnselectedMethod: boolean;
+    unsupportedClientClaims: string[];
+  };
 }
 
 export interface ValidationResult {
@@ -146,6 +169,17 @@ export function validateKashfAdvisorOutput(input: unknown): ValidationResult {
   if (!['low', 'medium', 'high'].includes(obj.confidence as string)) return { ok: false, category: 'wrong-type:confidence' };
   if (typeof obj.needsOrenDecision !== 'boolean') return { ok: false, category: 'wrong-type:needsOrenDecision' };
 
+  const va = obj.verdictAudit;
+  if (!va || typeof va !== 'object' || Array.isArray(va)) return { ok: false, category: 'missing-or-wrong-type:verdictAudit' };
+  const vaObj = va as Record<string, unknown>;
+  if (typeof vaObj.methodId !== 'string' || !vaObj.methodId) return { ok: false, category: 'wrong-type:verdictAudit.methodId' };
+  if (!['positive', 'negative', 'non-binary', 'blocked'].includes(vaObj.engineVerdictPolarity as string)) return { ok: false, category: 'wrong-type:verdictAudit.engineVerdictPolarity' };
+  if (!['positive', 'negative', 'non-binary', 'none'].includes(vaObj.clientDraftPolarity as string)) return { ok: false, category: 'wrong-type:verdictAudit.clientDraftPolarity' };
+  if (typeof vaObj.usedOnlyAuthorizedVerdictSource !== 'boolean') return { ok: false, category: 'wrong-type:verdictAudit.usedOnlyAuthorizedVerdictSource' };
+  if (typeof vaObj.inventedInverseRule !== 'boolean') return { ok: false, category: 'wrong-type:verdictAudit.inventedInverseRule' };
+  if (typeof vaObj.mixedUnselectedMethod !== 'boolean') return { ok: false, category: 'wrong-type:verdictAudit.mixedUnselectedMethod' };
+  if (!isStringArray(vaObj.unsupportedClientClaims)) return { ok: false, category: 'wrong-type:verdictAudit.unsupportedClientClaims' };
+
   return {
     ok: true,
     value: {
@@ -171,8 +205,54 @@ export function validateKashfAdvisorOutput(input: unknown): ValidationResult {
       nextBestAction: obj.nextBestAction,
       confidence: obj.confidence as 'low' | 'medium' | 'high',
       needsOrenDecision: obj.needsOrenDecision,
+      verdictAudit: {
+        methodId: vaObj.methodId as string,
+        engineVerdictPolarity: vaObj.engineVerdictPolarity as 'positive' | 'negative' | 'non-binary' | 'blocked',
+        clientDraftPolarity: vaObj.clientDraftPolarity as 'positive' | 'negative' | 'non-binary' | 'none',
+        usedOnlyAuthorizedVerdictSource: vaObj.usedOnlyAuthorizedVerdictSource as boolean,
+        inventedInverseRule: vaObj.inventedInverseRule as boolean,
+        mixedUnselectedMethod: vaObj.mixedUnselectedMethod as boolean,
+        unsupportedClientClaims: vaObj.unsupportedClientClaims as string[],
+      },
     },
   };
 }
 
-export default { KASHF_ADVISOR_TOOL_NAME, KASHF_ADVISOR_TOOL_DEFINITION, validateKashfAdvisorOutput };
+export interface VerdictAlignmentResult { ok: boolean; category?: string }
+
+/**
+ * Deterministic post-AI semantic gate. The model must explicitly audit the
+ * polarity it used, and the server compares that audit to the engine-created
+ * Professional Verdict Safety block. Any mismatch fails closed.
+ */
+export function validateKashfAdvisorVerdictAlignment(
+  output: KashfAdvisorOutput | undefined,
+  safety: unknown,
+): VerdictAlignmentResult {
+  if (!output) return { ok: false, category: 'missing-advisor-output' };
+  if (!safety || typeof safety !== 'object' || Array.isArray(safety)) return { ok: false, category: 'missing-professional-verdict-safety' };
+  const s = safety as Record<string, unknown>;
+  const audit = output.verdictAudit;
+  if (s.isSafe !== true) return { ok: false, category: 'professional-verdict-safety-not-safe' };
+  if (typeof s.kashfMethodId !== 'string' || audit.methodId !== s.kashfMethodId) return { ok: false, category: 'verdict-method-mismatch' };
+  if (audit.engineVerdictPolarity !== s.authoritativePolarity) return { ok: false, category: 'engine-polarity-mismatch' };
+  if (audit.usedOnlyAuthorizedVerdictSource !== true) return { ok: false, category: 'unauthorized-verdict-source-used' };
+  if (audit.inventedInverseRule !== false) return { ok: false, category: 'invented-inverse-rule' };
+  if (audit.mixedUnselectedMethod !== false) return { ok: false, category: 'mixed-unselected-method' };
+  if (audit.unsupportedClientClaims.length !== 0) return { ok: false, category: 'unsupported-client-claim' };
+
+  const polarity = String(s.authoritativePolarity || 'blocked');
+  const hasDraft = output.clientAnswerDraft !== null && output.clientAnswerDraft.trim().length > 0;
+  if (polarity === 'positive' || polarity === 'negative') {
+    if (s.binaryClientVerdictAllowed !== true) return { ok: false, category: 'binary-client-verdict-not-allowed' };
+    if (hasDraft && audit.clientDraftPolarity !== polarity) return { ok: false, category: 'client-draft-polarity-mismatch' };
+    if (!hasDraft && audit.clientDraftPolarity !== 'none') return { ok: false, category: 'client-draft-polarity-without-draft' };
+  } else if (polarity === 'non-binary') {
+    if (audit.clientDraftPolarity === 'positive' || audit.clientDraftPolarity === 'negative') return { ok: false, category: 'invented-binary-client-verdict' };
+  } else {
+    if (hasDraft || audit.clientDraftPolarity !== 'none') return { ok: false, category: 'blocked-method-client-draft' };
+  }
+  return { ok: true };
+}
+
+export default { KASHF_ADVISOR_TOOL_NAME, KASHF_ADVISOR_TOOL_DEFINITION, validateKashfAdvisorOutput, validateKashfAdvisorVerdictAlignment };

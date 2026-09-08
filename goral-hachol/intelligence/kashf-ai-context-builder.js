@@ -56,7 +56,7 @@ import { buildReadingStrategy } from './reading-strategy-builder.js';
 import { buildReadingPlan } from './reading-planner.js';
 import { buildKashfCanonicalAiBridge } from './kashf-canonical-ai-bridge.js';
 
-export const KASHF_AI_CONTEXT_BUILDER_VERSION = 'kashf-ai-context-builder-v8';
+export const KASHF_AI_CONTEXT_BUILDER_VERSION = 'kashf-ai-context-builder-v9';
 
 // The five distinct "עד/עדים" (witness) systems documented in
 // HALL_WISDOM_KASHF_EXHAUSTIVE_WITNESS_AND_SPIRITUAL_RULES_AUDIT.md
@@ -307,14 +307,25 @@ function buildCanonicalMethodMetadata(bridge) {
     authority: resolution.resolutionSource || null,
     authoritativeQuestionRoute: resolution.authoritative === true,
     aiVerdictAllowed: bridge?.aiVerdictAllowed === true,
-    allowedVerdictSources: ['readingContext.engineOutput.verdict', 'readingContext.engineOutput.primaryFormula'],
+    professionalVerdictSafetyVersion: bridge?.professionalVerdictSafety?.policyVersion || null,
+    allowedVerdictSources: [
+      'readingContext.engineOutput.overallPositive',
+      'readingContext.engineOutput.verdict',
+    ],
+    explanationOnlySources: [
+      'readingContext.engineOutput.primaryFormula',
+      'readingContext.canonicalRetrieval.v57',
+    ],
     forbiddenForVerdict: [
+      'readingContext.board',
+      'readingContext.board.houses[*].figureState',
       'readingContext.retrievalCandidates',
       'readingContext.canonicalRetrieval.doNotMixWith',
       'readingContext.canonicalRetrieval.arabicVerification',
       'legacyTopicBundle',
       'dhamir',
       'alternateMethods',
+      'genericFigureOrHouseMeaningOutsideSelectedMethod',
     ],
     doNotMixWith: Array.isArray(retrieval?.doNotMixWith) ? [...retrieval.doNotMixWith] : [],
     operationalKnowledge: retrieval?.v57 ? {
@@ -527,6 +538,7 @@ export function buildKashfAiContextPackage(input = {}) {
       canonicalRetrieval: canonicalBridge?.canonicalRetrieval || null,
       retrievalCandidates: canonicalBridge?.candidates || [],
       aiVerdictAllowed: canonicalBridge ? canonicalBridge.aiVerdictAllowed === true : null,
+      professionalVerdictSafety: canonicalBridge?.professionalVerdictSafety || null,
       methodMetadata: canonicalBridge ? buildCanonicalMethodMetadata(canonicalBridge) : KASHF_METHOD_METADATA,
       ruleCoverageStatus: buildRuleCoverageStatus(topicId),
       activatedRuleIds: [],
