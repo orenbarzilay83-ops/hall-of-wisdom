@@ -17,7 +17,7 @@
  * allowed, but they NEVER create, reverse, soften or aggregate the verdict.
  */
 
-export const KASHF_PROFESSIONAL_VERDICT_SAFETY_VERSION = 'kashf-professional-verdict-safety-v8';
+export const KASHF_PROFESSIONAL_VERDICT_SAFETY_VERSION = 'kashf-professional-verdict-safety-v9';
 
 const P174_GENERAL_METHOD = 'general.p174.h1h2h4h7h10h15';
 const P182_SIBLING_SENIORITY_METHOD = 'siblings.p182.seniority';
@@ -57,6 +57,7 @@ const P199_BODY_PART_METHOD = 'illness.bodyPart.h6Figure';
 const P191_CHILD_SAFETY_METHOD = 'pregnancy.p191.childSafetyH1H6H8';
 const P191_DELIVERY_DIFFICULTY_METHOD = 'pregnancy.p191.deliveryDifficultyH1H5H15';
 const P167_HIDDEN_ACTION_METHOD = 'spiritual.p167.hiddenActionAirRows46815';
+const P179_MONEY_SOURCE_METHOD = 'money.p179.sourceByIncomingHonorHouse';
 
 function freezeArray(values = []) {
   return Object.freeze([...(Array.isArray(values) ? values : [])]);
@@ -911,6 +912,41 @@ function p266ReturnToOfficePolicy() {
   });
 }
 
+
+function p179MoneySourcePolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-08',
+    goldenCaseIds: freezeArray(['PV-BF08-P179-H10', 'PV-BF08-P179-MULTI', 'PV-BF08-P179-MIXED-GATE']),
+    policyId: 'p179-money-source-incoming-honor-v1',
+    questionScopeHebrew: 'מקור הממון לפי H2 וכבוד נכנס, כשף עמ׳ 179',
+    decisiveRuleHebrew: 'אימות הסריקה הערבית אומר במפורש «وإن كان في الثاني سعد»: רק H2 מיטיב טהור פותח את השער. אז מחפשים כבוד נכנס (2211), וטבע הבית או הבתים שבהם הוא שורה מורה על מקור הממון. ממון נכנס ב-H2 הוא עדות נפרדת באותו עמוד.',
+    oneWayBranches: freezeArray([
+      'H2 מיטיב טהור + כבוד נכנס בבית נושא => מקור הממון לפי טבע אותו בית',
+      'כבוד נכנס בכמה בתי נושא => נשמרים כמה ערוצי מקור; המקור אינו מדרג ביניהם',
+      'ממון נכנס ב-H2 => הופעותיו נותנות עדות נפרדת על השגת הממון',
+    ]),
+    forbiddenInversions: freezeArray([
+      'H2 ממוזג או מזיק אינו נחשב מיטיב לצורך השער, אך גם אינו מוכיח שאין כסף.',
+      'היעדר כבוד נכנס בשנים-עשר בתי הנושא אינו מוכיח שלא יגיע כסף.',
+      'אין לבחור ערוץ אחד כעיקרי כאשר כבוד נכנס מופיע ביותר מבית נושא אחד.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'money.p180.livelihoodH10Invert — מצב המחיה הוא דין נפרד.',
+      'money.p181.recast25811 — עצם השגת הממון היא דין נפרד.',
+      'סכום הממון, מועד קבלתו, חוקיותו/איסורו ושיטות כסף אחרות אינם חלק משיטת מקור הממון הזאת.',
+      'עמדות 13–16 אינן מקבלות פירוש של ערוץ כספי בשיטה הזאת; המבצע רק מתעד אותן.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'הכסף בוודאות יגיע',
+      'הכסף בוודאות לא יגיע',
+      'סכום הכסף או מועד קבלתו',
+      'ערוץ אחד הוא המקור העיקרי כאשר המקור מציג כמה הופעות',
+      'מקור כספי שאינו נובע מטבע הבית שבו כבוד נכנס שורה',
+    ]),
+  });
+}
+
 function p204AttentionPolicy() {
   return Object.freeze({
     certificationStatus: 'certified',
@@ -1213,6 +1249,7 @@ const METHOD_POLICIES = Object.freeze({
   [P191_CHILD_SAFETY_METHOD]: p191ChildSafetyPolicy(),
   [P191_DELIVERY_DIFFICULTY_METHOD]: p191DeliveryDifficultyPolicy(),
   [P167_HIDDEN_ACTION_METHOD]: p167HiddenActionPolicy(),
+  [P179_MONEY_SOURCE_METHOD]: p179MoneySourcePolicy(),
 });
 
 export const KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS = Object.freeze(

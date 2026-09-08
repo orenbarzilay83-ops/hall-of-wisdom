@@ -1984,9 +1984,9 @@ const P179_MONEY_SOURCE_HOUSE_LABELS = Object.freeze({
   12: 'בית האויבים, המאסר והעיכוב',
 });
 
-// Kashf v57 p179 — source of money by the house occupied by Incoming Honor.
-// The source first requires H2 to be benefic. We therefore do NOT promote a
-// mixed H2 into the gate. Incoming Honor is searched only in the twelve topical
+// Kashf p179 — source of money by the house occupied by Incoming Honor.
+// Raw-scan verification closes the gate wording as explicit سعد: «وإن كان في
+// الثاني سعد». Therefore H2 must be pure benefic; mixed H2 is not promoted. Incoming Honor is searched only in the twelve topical
 // houses because the rule asks for the nature of the house; witness/judge
 // positions are traced separately but not interpreted as financial channels.
 function computeMoneySourceP179(chart) {
@@ -2042,7 +2042,7 @@ function computeMoneySourceP179(chart) {
 
   return {
     sourceRef: 'כשף אל-אסרר v57 עמ׳ 179',
-    sourceText: 'אם בשני יש בה צד מיטיב, בקש את כבוד נכנס; במקום שבו הוא נמצא, הממון יגיע מטבע אותו בית שבו הוא שורה. ואם עלתה צורת ממון נכנס בבית הממון, כל בית שבו נמצאת הצורה הזאת ייתן דין על השגת הממון.',
+    sourceText: 'אם בבית השני צורה מיטיבה, בקש את כבוד נכנס; במקום שבו הוא נמצא, הממון יגיע מטבע אותו בית שבו הוא שורה. ואם עלתה צורת ממון נכנס בבית הממון, כל בית שבו נמצאת הצורה הזאת ייתן דין על השגת הממון.',
     housesUsed: topicalHouses,
     positionsScanned: allPositions,
     h2Pattern,

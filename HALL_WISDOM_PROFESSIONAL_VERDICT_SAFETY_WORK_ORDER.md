@@ -117,7 +117,7 @@ H1 1222 + H5 1111 => 2111 סף נכנס
 - מותר ל-AI לנתח אותו ליועץ לצורכי ביקורת, אך `clientAnswerDraft` חייב להיות `null`.
 - רק מנוע שעבר Source/Scope/No-Inverse/No-Aggregation/Isolation/Golden-Case מקבל `certified`.
 - Batch 01 הסמיך את p174, p182, p244, p249; p210 כבר הוסמך כ-Golden Case 001.
-- p179 נבדק אך לא הוסמך: נוסח v57 "יש בה צד מיטיב" דורש סגירת-מקור מול שער ה-pure-benefic הקיים לפני אישור client-facing.
+- Batch 08 סגר את p179 מול הסריקה הערבית: המקור אומר במפורש «وإن كان في الثاني سعد», ולכן שער pure-benefic הקיים אושר והמתודה הוסמכה client-facing ללא קידום צורות ממוזגות.
 
 ## 7. עדכון Backfill — Batch 02
 

@@ -189,7 +189,7 @@ function auditOutputForSafety(safetyBlock, { draft = null, draftPolarity = 'none
   };
 }
 
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 37, 'certification registry contains thirty-seven professionally certified methods');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 38, 'certification registry contains thirty-eight professionally certified methods');
 for (const id of [
   'marriage.p210.generalMarriageH1H2H7H8H10Judge',
   'general.p174.h1h2h4h7h10h15',
@@ -228,6 +228,7 @@ for (const id of [
   'pregnancy.p191.childSafetyH1H6H8',
   'pregnancy.p191.deliveryDifficultyH1H5H15',
   'spiritual.p167.hiddenActionAirRows46815',
+  'money.p179.sourceByIncomingHonorHouse',
 ]) {
   assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes(id), id + ' is explicitly professionally certified');
 }
@@ -268,18 +269,7 @@ assert(p249.canonicalReading?.overallPositive === null, 'p249 does not generaliz
 assert(p249.professionalVerdictSafety?.certificationStatus === 'certified', 'p249 passed professional backfill');
 assert(p249.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenInversions?.some((x) => x.includes('לא יחזור')), 'p249 policy forbids inverse non-return claim');
 
-// p179 is intentionally NOT rubber-stamped: v57 says "יש בה צד מיטיב" while
-// the current executor gate is pure saad. Until scan-level wording is closed,
-// it stays runnable for advisor inspection but client-facing drafting is blocked.
-const p179Pending = buildKashfCanonicalAiBridge({ questionId: 'q-money-source', questionText: 'מאיפה יגיע הכסף?', board: makeBoard({ 2:'2111', 10:'2211' }) });
-assert(p179Pending.canonicalReading?.valid === true && p179Pending.canonicalReading?.canRunKashf === true, 'p179 engine remains runnable while professional wording audit is open');
-assert(p179Pending.professionalVerdictSafety?.certificationStatus === 'pending-backfill', 'p179 is explicitly pending professional backfill, not silently certified');
-assert(p179Pending.professionalVerdictSafety?.clientFacingCertified === false, 'p179 cannot produce client-facing draft before source wording closes');
-const p179Draft = validateKashfAdvisorOutput(auditOutputForSafety(p179Pending.professionalVerdictSafety, { draft: 'מקור הכסף הוא מן השלטון.', draftPolarity: 'non-binary' }));
-const p179DraftAlignment = validateKashfAdvisorVerdictAlignment(p179Draft.value, p179Pending.professionalVerdictSafety);
-assert(p179DraftAlignment.ok === false && p179DraftAlignment.category === 'uncertified-client-draft', 'server hard-blocks p179 client draft while backfill certification is pending');
-const p179AdvisorOnly = validateKashfAdvisorOutput(auditOutputForSafety(p179Pending.professionalVerdictSafety));
-assert(validateKashfAdvisorVerdictAlignment(p179AdvisorOnly.value, p179Pending.professionalVerdictSafety).ok === true, 'p179 may still be analyzed advisor-only with clientAnswerDraft:null');
+// p179 scan-level wording was closed and is tested in professional backfill batch 08 below.
 
 
 
@@ -774,9 +764,35 @@ assert(p167None.canonicalReading?.primaryFormula?.result?.executorResult?.derive
 assert(p167None.canonicalReading?.overallPositive === false, 'p167 non-malefic derived figure activates explicit no-action complement');
 assert(p167Hidden.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenClientClaimsWithoutExplicitSelectedMethodBranch?.some((x) => x.includes('כישוף')), 'p167 policy forbids expanding hidden action into sorcery');
 
-// Six runnable methods remain intentionally uncertified after source/implementation audit.
+
+console.log('\n--- Professional backfill batch 08 ---');
+
+// PV-BF08-P179-* — raw scan p179 explicitly says سعد in H2, closing the pure-benefic gate.
+const p179H10Certified = buildKashfCanonicalAiBridge({ questionId: 'q-money-source', questionText: 'מאיפה יגיע הכסף?', board: makeBoard({ 2:'1222', 10:'2211' }) });
+const p179H10Exec = p179H10Certified.canonicalReading?.primaryFormula?.result?.executorResult;
+assert(p179H10Certified.resolution?.kashfMethodId === 'money.p179.sourceByIncomingHonorHouse', 'p179 exact money-source route selected');
+assert(p179H10Exec?.beneficGateMet === true, 'p179 raw-scan سعد wording opens only on pure-benefic H2');
+assert(JSON.stringify(p179H10Exec?.sourceHouseNumbers) === JSON.stringify([10]), 'p179 Incoming Honor in H10 yields the authority/work source channel');
+assert(p179H10Exec?.sourceCandidates?.[0]?.houseNatureHebrew?.includes('שלטון'), 'p179 H10 source preserves authority/work house nature');
+assert(p179H10Certified.professionalVerdictSafety?.certificationStatus === 'certified', 'p179 passed professional backfill after raw-scan closure');
+assert(p179H10Certified.professionalVerdictSafety?.authoritativePolarity === 'non-binary', 'p179 remains descriptive/non-binary rather than yes/no');
+assert(p179H10Certified.professionalVerdictSafety?.methodSpecificPolicy?.decisiveRuleHebrew?.includes('سعد'), 'p179 policy records the decisive raw Arabic سعد wording');
+const p179ExactDraft = validateKashfAdvisorOutput(auditOutputForSafety(p179H10Certified.professionalVerdictSafety, { draft: p179H10Certified.professionalVerdictSafety.authoritativeClientDraftHebrew, draftPolarity: 'non-binary' }));
+assert(validateKashfAdvisorVerdictAlignment(p179ExactDraft.value, p179H10Certified.professionalVerdictSafety).ok === true, 'p179 exact deterministic client explanation passes server alignment');
+
+const p179Multi = buildKashfCanonicalAiBridge({ questionId: 'q-money-source', questionText: 'מאיפה יגיע הכסף?', board: makeBoard({ 2:'1222', 4:'2211', 10:'2211' }) });
+assert(JSON.stringify(p179Multi.canonicalReading?.primaryFormula?.result?.executorResult?.sourceHouseNumbers) === JSON.stringify([4,10]), 'p179 preserves multiple source channels without ranking them');
+assert(p179Multi.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenInversions?.some((x) => x.includes('עיקרי')), 'p179 policy forbids inventing a primary channel when several occur');
+
+const p179MixedGate = buildKashfCanonicalAiBridge({ questionId: 'q-money-source', questionText: 'מאיפה יגיע הכסף?', board: makeBoard({ 2:'2222', 10:'2211' }) });
+const p179MixedExec = p179MixedGate.canonicalReading?.primaryFormula?.result?.executorResult;
+assert(p179MixedExec?.h2Classification?.saadNahs === 'mixed', 'p179 counterfixture uses a genuinely mixed H2');
+assert(p179MixedExec?.beneficGateMet === false, 'p179 mixed H2 is not promoted into the raw-source سعد gate');
+assert(p179MixedExec?.sourceResolved === false, 'p179 mixed gate does not yield an invented money source');
+assert(p179MixedGate.professionalVerdictSafety?.clientFacingCertified === true, 'p179 unresolved branch is still professionally certified for exact non-binary explanation');
+
+// Five runnable methods remain intentionally uncertified after source/implementation audit.
 for (const id of [
-  'money.p179.sourceByIncomingHonorHouse',
   'marriage.p211.dissolutionH7StateMatrix',
   'profession.p254.h9Planet',
   'theft.p225.thiefDescriptionH7',
