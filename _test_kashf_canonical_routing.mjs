@@ -448,16 +448,16 @@ assert(thiefDescriptionReading.valid === true, 'q-theft-who executes through can
 assert(thiefDescriptionReading.canonicalExecution?.methodsExecuted?.length === 1, 'q-theft-who executes exactly one method');
 assert(thiefDescriptionReading.canonicalExecution?.methodsExecuted?.[0] === 'theft.p225.thiefDescriptionH7', 'q-theft-who executes the exact H7 description method only');
 assert(thiefDescriptionReading.primaryFormula?.houses?.length === 1 && thiefDescriptionReading.primaryFormula.houses[0] === 7, 'q-theft-who traceability records H7 only');
-assert(thiefDescriptionReading.primaryFormula?.result?.executorResult?.figureKey === '1221', 'pilot board H7 is passed as the canonical figure key');
-assert(String(thiefDescriptionReading.primaryFormula?.result?.executorResult?.description || '').includes('רחב בטן'), 'H7=1221 resolves to the source description table');
+assert(thiefDescriptionReading.primaryFormula?.result?.executorResult?.h7Pattern === '1221', 'pilot board H7 is passed as the canonical H7 pattern');
+assert(String(thiefDescriptionReading.primaryFormula?.result?.executorResult?.description || '').includes('בטנו רחבה'), 'H7=1221 resolves to the source description table');
 assert(thiefDescriptionReading.canonicalExecution?.altFormulaExecuted === false, 'q-theft-who does not execute alt formula');
 assert(thiefDescriptionReading.canonicalExecution?.topicSupportingChecksExecuted === false, 'q-theft-who does not execute theft supporting checks');
 assert(thiefDescriptionReading.canonicalExecution?.topicBundleExecuted === false, 'q-theft-who does not execute theft topic bundle');
 assert(thiefDescriptionReading.overallPositive === null, 'descriptive thief profile does not invent a positive/negative verdict');
-assert(String(thiefDescriptionReading.verdict?.text || '').includes('רחב בטן'), 'thief-description verdict renders the source descriptive profile');
+assert(String(thiefDescriptionReading.verdict?.text || '').includes('בטנו רחבה'), 'thief-description verdict renders the source descriptive profile');
 const thiefDescriptionHtml = writeCanonicalKashfReading(thiefDescriptionReading);
 assert(thiefDescriptionHtml.includes('theft.p225.thiefDescriptionH7'), 'thief-description writer identifies exact canonical method');
-assert(thiefDescriptionHtml.includes('רחב בטן'), 'thief-description writer renders the source-table description');
+assert(thiefDescriptionHtml.includes('בטנו רחבה'), 'thief-description writer renders the source-table description');
 assert(!thiefDescriptionHtml.includes('ניתוח תומך לפי ספר'), 'thief-description writer contains no broad theft support section');
 assert(!thiefDescriptionHtml.includes('מחשבת השואל (הדמיר)'), 'thief-description writer contains no automatic Dhamir');
 // ── P4 pregnancy-exists p191 custom executor -------------------------

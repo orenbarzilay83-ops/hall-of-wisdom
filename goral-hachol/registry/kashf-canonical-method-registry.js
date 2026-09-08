@@ -767,7 +767,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfMethodId: 'theft.p224.relationshipH7Recurrence',
     kashfIntentId: 'theft.thiefRelationship',
     topicId: 'theft',
-    sourcePages: [224, 225],
+    sourcePages: [225, 231, 232, 233],
     kashfRuntimeStatus: 'ready',
     runtimeAllowed: true,
     executionKind: 'custom-engine',
@@ -784,7 +784,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     runtimeAllowed: true,
     executionKind: 'custom-engine',
     executorStatus: 'ready',
-    notes: 'Body-source instruction takes the thief description from H7 and its figure, with H10 used for location/context. This yields a descriptive profile/letters, not a certain real-world identity or accusation.',
+    notes: 'Canonical thief-profile executor uses the p225 instruction to read H7 and the complete p231–233 sixteen-figure description table. It is descriptive only: no named-person identification, guilt proof or name-letter generation is inferred.',
   }),
 
   'dispute.p212.reconciliationH1H7': method({

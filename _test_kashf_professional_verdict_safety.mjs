@@ -189,7 +189,7 @@ function auditOutputForSafety(safetyBlock, { draft = null, draftPolarity = 'none
   };
 }
 
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 38, 'certification registry contains thirty-eight professionally certified methods');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 39, 'certification registry contains thirty-nine professionally certified methods');
 for (const id of [
   'marriage.p210.generalMarriageH1H2H7H8H10Judge',
   'general.p174.h1h2h4h7h10h15',
@@ -795,12 +795,44 @@ assert(p179MixedGate.professionalVerdictSafety?.clientFacingCertified === true, 
 for (const id of [
   'marriage.p211.dissolutionH7StateMatrix',
   'profession.p254.h9Planet',
-  'theft.p225.thiefDescriptionH7',
   'child.p194.healthTrajectoryH6H8',
   'missing.p248-249.lifeH1H4H9Outcome',
 ]) {
   assert(!KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes(id), id + ' remains pending professional source closure');
 }
+
+
+
+console.log('\n--- Professional backfill batch 09 — p225 thief source profile ---');
+
+const p225Joudala = buildKashfCanonicalAiBridge({ questionId: 'q-theft-who', questionText: 'תיאור הגנב', board: makeBoard({ 7:'1121' }) });
+const p225JoudalaExec = p225Joudala.canonicalReading?.primaryFormula?.result?.executorResult;
+assert(p225Joudala.resolution?.kashfMethodId === 'theft.p225.thiefDescriptionH7', 'p225 description route selects exact method');
+assert(p225JoudalaExec?.profileResolved === true, 'p225 Joudala profile resolves from H7');
+assert(String(p225JoudalaExec?.description || '').includes('זקנו דליל'), 'p225 Joudala preserves the source light/sparse beard wording');
+assert(!String(p225JoudalaExec?.description || '').includes('מייצג'), 'p225 Joudala no longer contains the stale mistranscription');
+assert(String(p225JoudalaExec?.sourceRef || '').includes('231–233'), 'p225 executor points to the actual detailed table pages 231-233');
+assert(p225JoudalaExec?.identityResolved === false && p225JoudalaExec?.guiltProven === false, 'p225 descriptive profile never resolves identity or guilt');
+assert(p225Joudala.professionalVerdictSafety?.certificationStatus === 'certified', 'p225 thief description passed professional backfill');
+assert(p225Joudala.professionalVerdictSafety?.authoritativePolarity === 'non-binary', 'p225 profile remains descriptive/non-binary');
+
+const p225NusraIn = buildKashfCanonicalAiBridge({ questionId: 'q-theft-who', questionText: 'איך הגנב נראה', board: makeBoard({ 7:'2211' }) });
+const p225NusraInExec = p225NusraIn.canonicalReading?.primaryFormula?.result?.executorResult;
+assert(String(p225NusraInExec?.description || '').includes('כפות רגליה קטנות'), 'p225 Nusra Dakhila preserves small feet from the source');
+assert(!String(p225NusraInExec?.description || '').includes('קומה קטנה'), 'p225 Nusra Dakhila removes the stale small-stature substitution');
+assert(p225NusraInExec?.nameLettersResolved === false, 'p225 does not pretend to calculate name letters');
+assert(p225NusraIn.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenClientClaimsWithoutExplicitSelectedMethodBranch?.includes('פלוני הוא הגנב'), 'p225 safety policy explicitly blocks named-person accusation');
+
+const p225Exact = validateKashfAdvisorOutput(auditOutputForSafety(p225Joudala.professionalVerdictSafety, {
+  draft: p225Joudala.professionalVerdictSafety.authoritativeClientDraftHebrew,
+  draftPolarity: 'non-binary',
+}));
+assert(validateKashfAdvisorVerdictAlignment(p225Exact.value, p225Joudala.professionalVerdictSafety).ok === true, 'p225 exact deterministic client draft passes');
+const p225InventedIdentity = validateKashfAdvisorOutput(auditOutputForSafety(p225Joudala.professionalVerdictSafety, {
+  draft: 'לפי התיאור, פלוני הוא הגנב.',
+  draftPolarity: 'non-binary',
+}));
+assert(validateKashfAdvisorVerdictAlignment(p225InventedIdentity.value, p225Joudala.professionalVerdictSafety).ok === false, 'p225 server gate blocks replacing source profile with a named-person accusation');
 
 console.log(`\nKashf professional verdict safety tests: ${passed} passed, ${failed} failed`);
 if (failed) process.exit(1);

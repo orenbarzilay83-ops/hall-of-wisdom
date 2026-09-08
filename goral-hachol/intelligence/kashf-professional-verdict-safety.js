@@ -17,7 +17,7 @@
  * allowed, but they NEVER create, reverse, soften or aggregate the verdict.
  */
 
-export const KASHF_PROFESSIONAL_VERDICT_SAFETY_VERSION = 'kashf-professional-verdict-safety-v9';
+export const KASHF_PROFESSIONAL_VERDICT_SAFETY_VERSION = 'kashf-professional-verdict-safety-v10';
 
 const P174_GENERAL_METHOD = 'general.p174.h1h2h4h7h10h15';
 const P182_SIBLING_SENIORITY_METHOD = 'siblings.p182.seniority';
@@ -58,6 +58,7 @@ const P191_CHILD_SAFETY_METHOD = 'pregnancy.p191.childSafetyH1H6H8';
 const P191_DELIVERY_DIFFICULTY_METHOD = 'pregnancy.p191.deliveryDifficultyH1H5H15';
 const P167_HIDDEN_ACTION_METHOD = 'spiritual.p167.hiddenActionAirRows46815';
 const P179_MONEY_SOURCE_METHOD = 'money.p179.sourceByIncomingHonorHouse';
+const P225_THIEF_DESCRIPTION_METHOD = 'theft.p225.thiefDescriptionH7';
 
 function freezeArray(values = []) {
   return Object.freeze([...(Array.isArray(values) ? values : [])]);
@@ -1211,6 +1212,38 @@ function p167HiddenActionPolicy() {
   });
 }
 
+
+
+function p225ThiefDescriptionPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-09',
+    goldenCaseIds: freezeArray(['PV-BF09-P225-JOUDALA', 'PV-BF09-P225-NUSRA-IN', 'PV-BF09-P225-EXACT-DRAFT']),
+    policyId: 'p225-thief-description-h7-source-table-v1',
+    questionScopeHebrew: 'פרופיל תיאורי של הגנב לפי הצורה שב-H7: הוראת עמ׳ 225 וטבלת עמ׳ 231–233',
+    decisiveRuleHebrew: 'קרא את צורת H7 והחזר רק את שורת התיאור המתאימה לה בטבלת המקור. אין לצרף חזרות בתים, משמעות כללית של הצורה או שיטת זיהוי אחרת.',
+    oneWayBranches: freezeArray([
+      'צורת H7 בעלת שורה בטבלה => החזר את הפרופיל המודפס של אותה צורה בלבד',
+    ]),
+    forbiddenInversions: freezeArray([
+      'תיאור דומה לאדם מוכר אינו מוכיח שאותו אדם הוא הגנב.',
+      'אין להפוך תכונת מראה, מלאכה או מגדר לזהות ודאית.',
+      'אין להשלים אותיות שם משום שעמ׳ 225 מזכיר אותן אך המבצע הזה אינו כולל שיטת אותיות.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'theft.p224.relationshipH7Recurrence — קשר/קרבה לפי חזרת H7 הוא דין נפרד.',
+      'מיקום הגניבה, החזרת האבדה, מספר הגנבים, גיל הגנב או אשמת חשוד מסוים.',
+      'תיאור כללי של צורה ממקור אחר או משיטת חאווי.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'פלוני הוא הגנב',
+      'הפרופיל מוכיח אשמה',
+      'אותיות שמו של הגנב הן',
+      'זהותו של הגנב ודאית',
+    ]),
+  });
+}
+
 const METHOD_POLICIES = Object.freeze({
   [P174_GENERAL_METHOD]: p174Policy(),
   [P182_SIBLING_SENIORITY_METHOD]: p182Policy(),
@@ -1250,6 +1283,7 @@ const METHOD_POLICIES = Object.freeze({
   [P191_DELIVERY_DIFFICULTY_METHOD]: p191DeliveryDifficultyPolicy(),
   [P167_HIDDEN_ACTION_METHOD]: p167HiddenActionPolicy(),
   [P179_MONEY_SOURCE_METHOD]: p179MoneySourcePolicy(),
+  [P225_THIEF_DESCRIPTION_METHOD]: p225ThiefDescriptionPolicy(),
 });
 
 export const KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS = Object.freeze(

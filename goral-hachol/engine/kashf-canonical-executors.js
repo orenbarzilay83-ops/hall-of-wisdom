@@ -12,7 +12,6 @@
 import {
   computeProfessionH9Kashf,
   computeBodyPartDiagnosisKashf,
-  computeThiefPhysicalDescriptionKashf,
 } from './kashf-pending-extraction.js';
 
 import { combineRamlFigures } from './raml-figures.js';
@@ -137,6 +136,63 @@ function computePregnancyGenderP191(chart) {
   };
 }
 
+
+
+
+// Kashf p225 gives the routing rule: take the thief's description from H7.
+// The detailed sixteen-figure profile table begins on p231 and continues
+// through pp232-233.  This canonical copy is deliberately source-bounded:
+// it returns the printed profile for the H7 figure and nothing more.  It does
+// NOT identify a real person, prove guilt, calculate name letters, or import
+// the separate p224 recurrence/relationship rule.
+const P225_THIEF_DESCRIPTION_BY_PATTERN = Object.freeze({
+  '1121': 'בהיר־שיער/בלונדיני, גבוה, וזקנו דליל. בנוסח אחר: בעל מראה נשי או אנדרוגיני, סריס, או חסר זקן.',
+  '1222': 'עד, סופר או מלמד. בנוסח אחר: שלם במבנהו, חזהו רחב, פניו עגולות, עיניו גדולות, תוארו נאה, צבעו לבן, בהיר־שיער ובעל זקן גדול.',
+  '2111': 'אישה לבנת־צבע, מהירת דיבור, ראשה גדול וכפות רגליה דקות. בנוסח אחר: סאסאנית או עירונית.',
+  '2212': 'אדם לבן, מחייך ומובחן, ודיבורו נעים. בנוסח אחר: עוסק בנייר/כתיבה, בחייטות או בהלבנת בדים.',
+  '1211': 'אדם הנמשך אחר נשים ונחשב לבעל דעת רבה; מלאכתו סייף/מוציא־להורג או קשת. בנוסח אחר: אישה או נער יפה־עיניים.',
+  '1112': 'שחום־עור. בנוסח אחר: ראייתו רעה, ריחו רע, ועיסוקו באשפה או במלאכה ירודה מן הסוג המתואר במקור.',
+  '2122': 'צבעו דמי, קומתו גבוהה, כפות רגליו רחבות ויש סימן בפניו; עיסוקו טבח, עובד חום/אש, או רכיל פרוץ.',
+  '2221': 'צבעו שחור; בלשון המקור מיוחס לו שורש של עבדות. עיסוקו בעיבוד עורות, בעבודת אדמה, בקריאה/כריזה או בהובלת בהמות.',
+  '1122': 'פניו עגולות, כפות רגליו רחבות והוא בעל הדר ומעמד; עיסוקו בזהב או באבני חן.',
+  '1221': 'שחום־עור, בטנו רחבה וכפות רגליו גדולות; עיסוקו סנדלר.',
+  '2112': 'איש לשכה/דיוואן, מעתיק כתבים, שופט או אסטרולוג, ועוסק במכירת ספרים; קומתו גבוהה, זקנו גדול וראשו קטן.',
+  '2211': 'אישה לבנת־צבע, עגולת פנים, ראשה גדול וכפות רגליה קטנות. בנוסח אחר: שופט או פוסק־הלכה בעל מעלה וידע.',
+  '1111': 'נער קטן, גבוה ודק־גוף; רקדן, או מי שעיסוקו בהליכה ובריצה.',
+  '1212': 'אדם לבן או צהבהב, כפות רגליו גדולות וראשו קטן; עיסוקו ברפואה.',
+  '2222': 'גופו רחב, ובניסוח המקור אופיו רע; סנטרו גדול וכפות רגליו רחבות. עיסוקו ספנות, הנדסה או ראשות מלאכה.',
+  '2121': 'קומתו בינונית, צבעו חיטה, פניו עגולות, ראשו וכפות רגליו גדולים וזקנו עבה; עיסוקו בסחורה וברווחים עבור אחרים.',
+});
+
+function computeThiefDescriptionP225(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h7 = findCanonicalHouse(chart, 7);
+  const pattern = h7?.key || h7?.pattern || null;
+  if (!pattern) return null;
+  const classification = classifyCanonicalFigure(pattern);
+  const figureHebrew = classification.figureHebrew || h7?.hebrew || h7?.hebrewName || pattern;
+  const description = P225_THIEF_DESCRIPTION_BY_PATTERN[pattern] || null;
+
+  const outputHebrew = description
+    ? 'בית 7: ' + figureHebrew + ' (' + pattern + '). לפי הוראת כשף עמ׳ 225 וטבלת התיאור בעמ׳ 231–233: ' + description + ' זהו פרופיל תיאורי מן המקור בלבד; הוא אינו מזהה אדם מסוים ואינו מוכיח אשמה.'
+    : 'בית 7: ' + figureHebrew + ' (' + pattern + '). לא נמצא עבור הצורה הזאת תיאור בטבלת כשף עמ׳ 231–233; אין להשלים תיאור מן הדעת.';
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 225; טבלת תיאור הגנב עמ׳ 231–233',
+    sourceText: 'מן הבית השביעי נלקחת صفة السارق; תיאורי שש־עשרה הצורות מפורטים בעמ׳ 231–233.',
+    housesUsed: [7],
+    h7Pattern: pattern,
+    h7FigureHebrew: figureHebrew,
+    description,
+    profileResolved: Boolean(description),
+    identityResolved: false,
+    guiltProven: false,
+    nameLettersResolved: false,
+    positive: null,
+    verdictType: 'thief-source-profile',
+    outputHebrew,
+  };
+}
 
 const P224_H7_RECURRENCE_CONNECTIONS = Object.freeze({
   1: 'אדם העומד במקום בעל הדבר',
@@ -2147,7 +2203,7 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'marriage.p204.previousStatusH7inH10': computeMarriagePreviousStatusP204,
   'love.p204.attentionFireRows1713': computeLoveAttentionP204,
   'marriage.p204.dowryH8': computeDowryH8P204,
-  'theft.p225.thiefDescriptionH7': computeThiefPhysicalDescriptionKashf,
+  'theft.p225.thiefDescriptionH7': computeThiefDescriptionP225,
   'pregnancy.p191.existsH5SilentEmpty': computePregnancyExistenceP191,
   'pregnancy.p191.genderH5': computePregnancyGenderP191,
   'theft.p224.relationshipH7Recurrence': computeThiefRelationshipP224,

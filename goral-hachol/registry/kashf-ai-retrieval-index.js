@@ -215,7 +215,7 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
     houses: [7],
   },
   'theft.p225.thiefDescriptionH7': {
-    aliases: ['תיאור הגנב', 'איך הגנב נראה', 'מראה הגנב', 'אותיות שם הגנב'],
+    aliases: ['תיאור הגנב', 'איך הגנב נראה', 'מראה הגנב', 'פרופיל הגנב'],
     doNotMixWith: ['theft.p224.relationshipH7Recurrence'],
     houses: [7],
   },
