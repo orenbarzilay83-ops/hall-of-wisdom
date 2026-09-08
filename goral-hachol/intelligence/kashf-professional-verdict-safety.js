@@ -17,7 +17,7 @@
  * allowed, but they NEVER create, reverse, soften or aggregate the verdict.
  */
 
-export const KASHF_PROFESSIONAL_VERDICT_SAFETY_VERSION = 'kashf-professional-verdict-safety-v7';
+export const KASHF_PROFESSIONAL_VERDICT_SAFETY_VERSION = 'kashf-professional-verdict-safety-v8';
 
 const P174_GENERAL_METHOD = 'general.p174.h1h2h4h7h10h15';
 const P182_SIBLING_SENIORITY_METHOD = 'siblings.p182.seniority';
@@ -49,6 +49,14 @@ const P180_LIVELIHOOD_METHOD = 'money.p180.livelihoodH10Invert';
 const P181_MONEY_ACQUIRE_METHOD = 'money.p181.recast25811';
 const P266_RETURN_TO_OFFICE_METHOD = 'career.p266.returnToOffice';
 const P204_ATTENTION_METHOD = 'love.p204.attentionFireRows1713';
+const P173_COMPLETION_METHOD = 'completion.p173.fireRows15910';
+const P183_PLACE_TO_PLACE_METHOD = 'relocation.p183.h4h15';
+const P182_SIBLING_RELATIONSHIP_METHOD = 'siblings.p182.h1h3';
+const P238_TRAVEL_SUCCESS_METHOD = 'travel.p238.assemble1359';
+const P199_BODY_PART_METHOD = 'illness.bodyPart.h6Figure';
+const P191_CHILD_SAFETY_METHOD = 'pregnancy.p191.childSafetyH1H6H8';
+const P191_DELIVERY_DIFFICULTY_METHOD = 'pregnancy.p191.deliveryDifficultyH1H5H15';
+const P167_HIDDEN_ACTION_METHOD = 'spiritual.p167.hiddenActionAirRows46815';
 
 function freezeArray(values = []) {
   return Object.freeze([...(Array.isArray(values) ? values : [])]);
@@ -932,6 +940,241 @@ function p204AttentionPolicy() {
   });
 }
 
+
+function p173CompletionPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-07',
+    goldenCaseIds: freezeArray(['PV-BF07-P173-COMPLETE', 'PV-BF07-P173-NOT-COMPLETE', 'PV-BF07-P173-MUJASSAD']),
+    policyId: 'p173-completion-fire-rows-15910-v1',
+    questionScopeHebrew: 'האם העניין יושלם לפי ראשי H1,H5,H9,H10, עמ׳ 173',
+    decisiveRuleHebrew: 'מרכיבים צורה משורת האש של H1,H5,H9,H10. חיצונית => העניין לא יושלם; פנימית => יושלם. גוף כפול/קבוע אינו מקבל ענף שלא נמסר.',
+    oneWayBranches: freezeArray([
+      'תוצאה חיצונית => העניין לא יושלם',
+      'תוצאה פנימית => העניין יושלם',
+    ]),
+    forbiddenInversions: freezeArray([
+      'תוצאה גוף-כפול אינה נדחפת בכוח לפנימית או לחיצונית.',
+      'אין להשתמש בשיטת H1+H16 החלופית כדי לשנות את פסק השיטה שנבחרה.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'matter.p172.h17_h1011_thenCombine — תוצאת העניין היא שיטה נפרדת.',
+      'החלופה H1+H16 המופיעה לאחר הכלל הראשי בעמ׳ 173.',
+      'דמיר, H15, רוב בתים או משמעות כללית של הצורה.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'מתי העניין יושלם',
+      'למה העניין יושלם או ייכשל',
+      'תוצאה ממוזגת מוכיחה הצלחה חלקית',
+    ]),
+  });
+}
+
+function p183PlaceToPlacePolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-07',
+    goldenCaseIds: freezeArray(['PV-BF07-P183-PLACE-GOOD', 'PV-BF07-P183-PLACE-BAD', 'PV-BF07-P183-PLACE-MIXED']),
+    policyId: 'p183-place-to-place-h4h15-v1',
+    questionScopeHebrew: 'טיב המקום שאליו עוברים לפי הולדת H4+H15, עמ׳ 183',
+    decisiveRuleHebrew: 'הולד H4+H15: מיטיב => המקום טוב ומבורך; מזיק => מזיק המקום, קושי ועמל; ממוזג => המקום ממוצע.',
+    oneWayBranches: freezeArray([
+      'תוצאת H4+H15 מיטיבה => המקום טוב ומבורך',
+      'תוצאת H4+H15 מזיקה => קושי ועמל במקום',
+      'תוצאת H4+H15 ממוזגת => המקום ממוצע',
+    ]),
+    forbiddenInversions: freezeArray([]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'relocation.p183.currentVsNewPlace — השוואת המקום הנוכחי למעבר היא שיטה נפרדת.',
+      'relocation.p183.stayMoveH1H2 — האם להישאר או לעבור היא שיטה נפרדת.',
+      'משמעות כללית של H4/H15 מעבר להולדה המפורשת.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'עדיף לעבור מאשר להישאר',
+      'עדיף להישאר במקום הנוכחי',
+      'המקום בטוח או מסוכן במובן עובדתי',
+    ]),
+  });
+}
+
+function p182SiblingRelationshipPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-07',
+    goldenCaseIds: freezeArray(['PV-BF07-P182-REL-GOOD', 'PV-BF07-P182-REL-BAD', 'PV-BF07-P182-REL-MIXED']),
+    policyId: 'p182-sibling-relationship-h1h3-v1',
+    questionScopeHebrew: 'הסכמה או קלקול ביחסי אחים לפי הולדת H1+H3, עמ׳ 182',
+    decisiveRuleHebrew: 'הולד H1+H3: מיטיב => הסכמה; מזיק => קלקול מידותיהם. ממוזג נשאר ללא הכרעה בשיטה הזאת.',
+    oneWayBranches: freezeArray([
+      'תוצאת H1+H3 מיטיבה => הסכמה בין האחים',
+      'תוצאת H1+H3 מזיקה => קלקול ביחסים/במידותיהם',
+    ]),
+    forbiddenInversions: freezeArray([
+      'תוצאה ממוזגת אינה הופכת אוטומטית להסכמה חלקית או למריבה חלקית.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'siblings.p182.seniority — דין מי הגדול/בכור הוא שיטה נפרדת.',
+      'הולדות H5+H3 ו-H5+H13 הנזכרות בהמשך המקור אינן מצביעות לתוך השיטה הקנונית הזאת.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'מי מן האחים אשם',
+      'מי מן האחים גדול יותר',
+      'הקשר יישאר כך לצמיתות',
+    ]),
+  });
+}
+
+function p238TravelSuccessPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-07',
+    goldenCaseIds: freezeArray(['PV-BF07-P238-TRAVEL-GOOD', 'PV-BF07-P238-TRAVEL-BAD', 'PV-BF07-P238-TRAVEL-MIXED']),
+    policyId: 'p238-travel-success-assemble-1359-v1',
+    questionScopeHebrew: 'טיב/הצלחת המסע לפי הרכבת ארבעת היסודות מ-H1,H3,H5,H9, עמ׳ 238',
+    decisiveRuleHebrew: 'מרכיבים צורה מכל ארבע שורות היסוד של H1,H3,H5,H9. מיטיבה => המסע נאה; מזיקה => יש להיזהר מן המסע; ממוזגת אינה מוכרעת בינארית בכלל זה.',
+    oneWayBranches: freezeArray([
+      'הצורה המורכבת מיטיבה => המסע נאה',
+      'הצורה המורכבת מזיקה => יש להיזהר מן המסע',
+    ]),
+    forbiddenInversions: freezeArray([
+      'צורה ממוזגת אינה מקודמת לפי נטייתה להצלחה או לכישלון.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'travel.p238.timeSelectionH9H4 — בחירת זמן לפי צורות נקובות היא דין נפרד.',
+      'travel.p244.returnH1H2H9 — חזרת הנוסע היא דין נפרד.',
+      'כיוון, זמן, מועד חזרה או סכנה מסוימת שאינם חלק מן הכלל.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'הנוסע יחזור או לא יחזור',
+      'מועד הנסיעה או החזרה',
+      'תתרחש תאונה או סכנה מסוימת',
+    ]),
+  });
+}
+
+function p199BodyPartPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-07',
+    goldenCaseIds: freezeArray(['PV-BF07-P199-MAPPED', 'PV-BF07-P199-UNLISTED']),
+    policyId: 'p199-body-part-h6-source-table-v1',
+    questionScopeHebrew: 'שיבוץ איבר החולי לפי הצורה שב-H6 וטבלת עמ׳ 199',
+    decisiveRuleHebrew: 'קוראים את צורת H6 ומחזירים רק את האיבר המופיע מולה בטבלת המקור. נלחם (1121) אינו מופיע בטבלה ולכן נשאר ללא איבר מוכרע.',
+    oneWayBranches: freezeArray([
+      'צורת H6 שמופיעה בטבלת עמ׳ 199 => מחזירים בדיוק את האיבר המשויך לה בטבלה',
+      'צורה שאינה מופיעה בטבלה => אין מיפוי איבר מן המקור',
+    ]),
+    forbiddenInversions: freezeArray([
+      'חוסר מיפוי לצורה אינו מתיר לנחש איבר לפי יסוד, כוכב או משמעות כללית.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'אבחנה רפואית, סיבת מחלה, חומרת מחלה, טיפול או פרוגנוזה רפואית.',
+      'illness.p196.outcomeH15 — החלמה/התארכות המחלה היא שיטה נפרדת.',
+      'משמעות גוף כללית ממקורות אחרים או משיטות אחרות.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'זהו אבחון רפואי',
+      'זה האיבר הפגוע בוודאות מבחינה רפואית',
+      'יש מחלה מסוימת באיבר',
+      'יש צורך בטיפול מסוים',
+    ]),
+  });
+}
+
+function p191ChildSafetyPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-07',
+    goldenCaseIds: freezeArray(['PV-BF07-P191-CHILD-SAFE', 'PV-BF07-P191-CHILD-FEAR', 'PV-BF07-P191-CHILD-SEVERE']),
+    policyId: 'p191-child-safety-h1h6h8-v1',
+    questionScopeHebrew: 'שלום הוולד לפי H1 ובדיקת האזהרה הנפרדת H6+H8, עמ׳ 191',
+    decisiveRuleHebrew: 'H1 מיטיב => עדות לשלום הוולד; H1 מזיק => יש לחשוש עליו. H6+H8 שניהם מזיקים => אזהרת מקור חמורה שהוולד עלול לצאת מת. האזהרה היא לשון סיכון ולא ודאות מוות.',
+    oneWayBranches: freezeArray([
+      'H1 מיטיב, בלי תנאי האזהרה H6+H8 => עדות לשלום הוולד',
+      'H1 מזיק => יש לחשוש על הוולד',
+      'H6+H8 שניהם מזיקים => אזהרת מקור חמורה',
+    ]),
+    forbiddenInversions: freezeArray([
+      'חשש אינו פסק שהוולד לא ישרוד.',
+      'אזהרת H6+H8 אינה הופכת לאישור ודאי של מוות.',
+      'ממוזג אינו מקודם לפי נטייתו למיטיב או למזיק.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'pregnancy.p191.existsH5SilentEmpty — עצם קיום ההריון הוא דין נפרד.',
+      'pregnancy.p191.genderH5 — מין הוולד הוא דין נפרד.',
+      'pregnancy.p191.deliveryDifficultyH1H5H15 — קלות הלידה היא דין נפרד.',
+      'child.p194.healthTrajectoryH6H8 — מסלול בריאות הילד הוא דין נפרד.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'הוולד ימות בוודאות',
+      'הוולד יחיה בוודאות בעולם הממשי',
+      'מין הוולד',
+      'הלידה תהיה קלה או קשה',
+    ]),
+  });
+}
+
+function p191DeliveryDifficultyPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-07',
+    goldenCaseIds: freezeArray(['PV-BF07-P191-DELIVERY-EASY', 'PV-BF07-P191-DELIVERY-DIFFICULT', 'PV-BF07-P191-DELIVERY-CONFLICT']),
+    policyId: 'p191-delivery-difficulty-h1h5h15-v1',
+    questionScopeHebrew: 'קלות או קושי הלידה לפי H1,H5 ועדות H15, עמ׳ 191/194',
+    decisiveRuleHebrew: 'H1+H5 זכריים => סימן ללידה קלה, במיוחד אם שניהם מתהפכים. H5 קבוע => סימן ללידה קשה. אם שני הסימנים מתקיימים יחד, אין במקור כלל קדימות ולכן נשמרת סתירה.',
+    oneWayBranches: freezeArray([
+      'H1+H5 זכריים וללא סימן קושי מתנגש => לידה קלה',
+      'H5 קבוע וללא סימן קלות מתנגש => לידה קשה',
+      'סימן קלות וסימן קושי יחד => סתירת מקור, ללא הכרעה בכוח',
+    ]),
+    forbiddenInversions: freezeArray([
+      'העדר זכריות בשני הבתים אינו לבדו מוכיח לידה קשה.',
+      'העדר H5 קבוע אינו לבדו מוכיח לידה קלה.',
+      'H15 אינו משמש הצבעת רוב או שובר שוויון שלא נמסר.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'pregnancy.p191.existsH5SilentEmpty — קיום ההריון.',
+      'pregnancy.p191.genderH5 — מין הוולד.',
+      'pregnancy.p191.childSafetyH1H6H8 — שלום הוולד.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'מין הוולד',
+      'הוולד יהיה בריא או לא',
+      'מועד הלידה',
+      'תוצאה רפואית ודאית של הלידה',
+    ]),
+  });
+}
+
+function p167HiddenActionPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-07',
+    goldenCaseIds: freezeArray(['PV-BF07-P167-HIDDEN-ACTION', 'PV-BF07-P167-NO-HIDDEN-ACTION']),
+    policyId: 'p167-hidden-action-air-rows-46815-v1',
+    questionScopeHebrew: 'האם מאחורי הדבר יש פעולה נסתרת לפי אוויר H4,H6,H8,H15, עמ׳ 167',
+    decisiveRuleHebrew: 'מרכיבים צורה משורת האוויר של H4,H6,H8 והמאזן H15. אם התוצאה מזיקה => יש פעולה מאחורי הדבר; ואם לא => אין פעולה לפי כלל זה.',
+    oneWayBranches: freezeArray([
+      'הצורה המורכבת מזיקה => יש פעולה מאחורי הדבר',
+      'הצורה המורכבת אינה מזיקה => אין פעולה מאחורי הדבר לפי הכלל',
+    ]),
+    forbiddenInversions: freezeArray([]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'כישוף, ג׳ין, עין הרע, קללה או סוג פעולה רוחנית מסוים.',
+      'זהות אדם שעשה פעולה.',
+      'spiritual.jinnType.unsupported ו-spiritual.sorcererIdentity.unsupported.',
+      'כל שורת יסוד שאינה אוויר וכל בית שאינו H4,H6,H8,H15.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'יש כישוף',
+      'יש ג׳ין',
+      'יש עין הרע',
+      'פלוני עשה את הפעולה',
+      'אין שום השפעה רוחנית מכל סוג',
+    ]),
+  });
+}
+
 const METHOD_POLICIES = Object.freeze({
   [P174_GENERAL_METHOD]: p174Policy(),
   [P182_SIBLING_SENIORITY_METHOD]: p182Policy(),
@@ -962,6 +1205,14 @@ const METHOD_POLICIES = Object.freeze({
   [P181_MONEY_ACQUIRE_METHOD]: p181MoneyAcquirePolicy(),
   [P266_RETURN_TO_OFFICE_METHOD]: p266ReturnToOfficePolicy(),
   [P204_ATTENTION_METHOD]: p204AttentionPolicy(),
+  [P173_COMPLETION_METHOD]: p173CompletionPolicy(),
+  [P183_PLACE_TO_PLACE_METHOD]: p183PlaceToPlacePolicy(),
+  [P182_SIBLING_RELATIONSHIP_METHOD]: p182SiblingRelationshipPolicy(),
+  [P238_TRAVEL_SUCCESS_METHOD]: p238TravelSuccessPolicy(),
+  [P199_BODY_PART_METHOD]: p199BodyPartPolicy(),
+  [P191_CHILD_SAFETY_METHOD]: p191ChildSafetyPolicy(),
+  [P191_DELIVERY_DIFFICULTY_METHOD]: p191DeliveryDifficultyPolicy(),
+  [P167_HIDDEN_ACTION_METHOD]: p167HiddenActionPolicy(),
 });
 
 export const KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS = Object.freeze(

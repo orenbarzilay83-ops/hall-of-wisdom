@@ -189,7 +189,7 @@ function auditOutputForSafety(safetyBlock, { draft = null, draftPolarity = 'none
   };
 }
 
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 29, 'certification registry contains twenty-nine professionally certified methods');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 37, 'certification registry contains thirty-seven professionally certified methods');
 for (const id of [
   'marriage.p210.generalMarriageH1H2H7H8H10Judge',
   'general.p174.h1h2h4h7h10h15',
@@ -220,6 +220,14 @@ for (const id of [
   'money.p181.recast25811',
   'career.p266.returnToOffice',
   'love.p204.attentionFireRows1713',
+  'completion.p173.fireRows15910',
+  'relocation.p183.h4h15',
+  'siblings.p182.h1h3',
+  'travel.p238.assemble1359',
+  'illness.bodyPart.h6Figure',
+  'pregnancy.p191.childSafetyH1H6H8',
+  'pregnancy.p191.deliveryDifficultyH1H5H15',
+  'spiritual.p167.hiddenActionAirRows46815',
 ]) {
   assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes(id), id + ' is explicitly professionally certified');
 }
@@ -674,6 +682,109 @@ const p204AttentionNoMatch = buildKashfCanonicalAiBridge({
 assert(p204AttentionNoMatch.canonicalReading?.primaryFormula?.result?.executorResult?.sourceConditionMet === false, 'p204 counterfixture fails the exact H13 joined condition');
 assert(p204AttentionNoMatch.canonicalReading?.primaryFormula?.result?.executorResult?.attention === null, 'p204 failed condition stays unresolved rather than inverted');
 assert(p204AttentionNoMatch.canonicalReading?.overallPositive === null, 'p204 failed condition remains non-binary');
+
+
+console.log('\n--- Professional backfill batch 07 ---');
+
+// PV-BF07-P173-* — exact fire-row completion method; no H1+H16 alternate vote.
+const p173Complete = buildKashfCanonicalAiBridge({ questionId: 'q-success', questionText: 'האם העניין יושלם', board: makeBoard({ 1:'2111', 5:'1112', 9:'1112', 10:'1112' }) });
+assert(p173Complete.resolution?.kashfMethodId === 'completion.p173.fireRows15910', 'p173 exact completion route selected');
+assert(p173Complete.canonicalReading?.primaryFormula?.result?.resultPattern === '2111', 'p173 fire-row fixture builds 2111');
+assert(p173Complete.canonicalReading?.overallPositive === true, 'p173 internal result gives explicit completion');
+assert(p173Complete.professionalVerdictSafety?.certificationStatus === 'certified', 'p173 completion passed professional backfill');
+assert(p173Complete.professionalVerdictSafety?.methodSpecificPolicy?.excludedFromPrimaryVerdict?.some((x) => x.includes('H1+H16')), 'p173 policy excludes alternate H1+H16 method');
+const p173No = buildKashfCanonicalAiBridge({ questionId: 'q-success', questionText: 'האם העניין יושלם', board: makeBoard({ 1:'1112', 5:'1112', 9:'1112', 10:'2111' }) });
+assert(p173No.canonicalReading?.primaryFormula?.result?.resultPattern === '1112', 'p173 external fixture builds 1112');
+assert(p173No.canonicalReading?.overallPositive === false, 'p173 external result gives explicit non-completion');
+
+// PV-BF07-P183-PLACE-* — H4+H15 has explicit good/bad/mixed branches.
+const p183PlaceGood = buildKashfCanonicalAiBridge({ questionId: 'q-move-city', questionText: 'מעבר ממקום למקום', board: makeBoard({ 4:'1111', 15:'2211' }) });
+assert(p183PlaceGood.resolution?.kashfMethodId === 'relocation.p183.h4h15', 'p183 place-to-place exact route selected');
+assert(p183PlaceGood.canonicalReading?.primaryFormula?.result?.resultPattern === '1122', 'p183 good fixture derives 1122');
+assert(p183PlaceGood.canonicalReading?.overallPositive === true, 'p183 benefic H4+H15 gives good/blessed place');
+assert(p183PlaceGood.professionalVerdictSafety?.certificationStatus === 'certified', 'p183 place-to-place passed professional backfill');
+const p183PlaceBad = buildKashfCanonicalAiBridge({ questionId: 'q-move-city', questionText: 'מעבר ממקום למקום', board: makeBoard({ 4:'1111', 15:'2221' }) });
+assert(p183PlaceBad.canonicalReading?.primaryFormula?.result?.resultPattern === '1112', 'p183 bad fixture derives 1112');
+assert(p183PlaceBad.canonicalReading?.overallPositive === false, 'p183 malefic H4+H15 gives hardship branch');
+const p183PlaceMixed = buildKashfCanonicalAiBridge({ questionId: 'q-move-city', questionText: 'מעבר ממקום למקום', board: makeBoard({ 4:'2222', 15:'2222' }) });
+assert(p183PlaceMixed.canonicalReading?.primaryFormula?.result?.classification?.saadNahs === 'mixed', 'p183 mixed fixture preserves mixed classification');
+assert(p183PlaceMixed.canonicalReading?.overallPositive === null, 'p183 mixed place remains non-binary');
+
+// PV-BF07-P182-REL-* — H1+H3 only; seniority and other sibling variants remain separate.
+const p182RelGood = buildKashfCanonicalAiBridge({ questionId: 'q-siblings', questionText: 'יחסים בין אחים', board: makeBoard({ 1:'1111', 3:'2211' }) });
+assert(p182RelGood.resolution?.kashfMethodId === 'siblings.p182.h1h3', 'p182 sibling relationship exact route selected');
+assert(p182RelGood.canonicalReading?.overallPositive === true, 'p182 benefic H1+H3 gives agreement');
+assert(p182RelGood.professionalVerdictSafety?.certificationStatus === 'certified', 'p182 sibling relationship passed professional backfill');
+const p182RelBad = buildKashfCanonicalAiBridge({ questionId: 'q-siblings', questionText: 'יחסים בין אחים', board: makeBoard({ 1:'1111', 3:'2221' }) });
+assert(p182RelBad.canonicalReading?.overallPositive === false, 'p182 malefic H1+H3 gives corruption/dispute branch');
+assert(p182RelGood.professionalVerdictSafety?.methodSpecificPolicy?.excludedFromPrimaryVerdict?.some((x) => x.includes('seniority')), 'p182 relationship policy isolates sibling-seniority method');
+
+// PV-BF07-P238-TRAVEL-* — exact four-house all-row assembly.
+const p238Good = buildKashfCanonicalAiBridge({ questionId: 'q-travel-safe', questionText: 'האם המסע טוב', board: makeBoard({ 1:'1122', 3:'2222', 5:'2222', 9:'2222' }) });
+assert(p238Good.resolution?.kashfMethodId === 'travel.p238.assemble1359', 'p238 travel success exact route selected');
+assert(p238Good.canonicalReading?.primaryFormula?.result?.resultPattern === '1122', 'p238 assembly preserves benefic fixture');
+assert(p238Good.canonicalReading?.overallPositive === true, 'p238 benefic assembly gives good travel');
+assert(p238Good.professionalVerdictSafety?.certificationStatus === 'certified', 'p238 travel success passed professional backfill');
+const p238Bad = buildKashfCanonicalAiBridge({ questionId: 'q-travel-safe', questionText: 'האם המסע טוב', board: makeBoard({ 1:'1112', 3:'2222', 5:'2222', 9:'2222' }) });
+assert(p238Bad.canonicalReading?.primaryFormula?.result?.resultPattern === '1112', 'p238 assembly preserves malefic fixture');
+assert(p238Bad.canonicalReading?.overallPositive === false, 'p238 malefic assembly gives caution branch');
+assert(p238Good.professionalVerdictSafety?.methodSpecificPolicy?.excludedFromPrimaryVerdict?.some((x) => x.includes('timeSelection')), 'p238 success policy isolates named-figure time-selection method');
+
+// PV-BF07-P199-* — H6 source table only; missing table row remains unresolved.
+const p199Mapped = buildKashfCanonicalAiBridge({ questionText: 'איפה בגוף החולי', board: makeBoard({ 6:'1112' }) });
+assert(p199Mapped.resolution?.kashfMethodId === 'illness.bodyPart.h6Figure', 'p199 body-part free text resolves exact method');
+assert(p199Mapped.canonicalReading?.primaryFormula?.result?.executorResult?.bodyPartHebrew === 'הרגל השמאלית', 'p199 source table maps 1112 to left leg');
+assert(p199Mapped.professionalVerdictSafety?.certificationStatus === 'certified', 'p199 body-part method passed professional backfill');
+assert(p199Mapped.professionalVerdictSafety?.authoritativePolarity === 'non-binary', 'p199 body-part result stays categorical/non-binary');
+const p199Unlisted = buildKashfCanonicalAiBridge({ questionText: 'איפה בגוף החולי', board: makeBoard({ 6:'1121' }) });
+assert(p199Unlisted.canonicalReading?.primaryFormula?.result?.executorResult?.bodyPartHebrew === null, 'p199 unlisted 1121 does not invent a body part');
+assert(p199Mapped.professionalVerdictSafety?.methodSpecificPolicy?.excludedFromPrimaryVerdict?.some((x) => x.includes('אבחנה רפואית')), 'p199 policy blocks medical-diagnosis expansion');
+
+// PV-BF07-P191-CHILD-* — safety, fear, and severe-risk wording stay distinct.
+const p191ChildSafe = buildKashfCanonicalAiBridge({ questionId: 'q-child-survive', questionText: 'האם הוולד יהיה בשלום', board: makeBoard({ 1:'2111', 6:'2222', 8:'2222' }) });
+assert(p191ChildSafe.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'safety', 'p191 H1 benefic gives safety testimony');
+assert(p191ChildSafe.canonicalReading?.overallPositive === true, 'p191 safety branch is positive');
+assert(p191ChildSafe.professionalVerdictSafety?.certificationStatus === 'certified', 'p191 child-safety method passed professional backfill');
+const p191ChildFear = buildKashfCanonicalAiBridge({ questionId: 'q-child-survive', questionText: 'האם הוולד יהיה בשלום', board: makeBoard({ 1:'1112', 6:'2222', 8:'2222' }) });
+assert(p191ChildFear.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'fear', 'p191 H1 malefic preserves fear branch');
+assert(p191ChildFear.canonicalReading?.overallPositive === null, 'p191 fear is not inverted into certain non-survival');
+const p191ChildSevere = buildKashfCanonicalAiBridge({ questionId: 'q-child-survive', questionText: 'האם הוולד יהיה בשלום', board: makeBoard({ 1:'2111', 6:'1112', 8:'1112' }) });
+assert(p191ChildSevere.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'severe-risk', 'p191 H6+H8 malefic activates severe source warning');
+assert(p191ChildSevere.canonicalReading?.overallPositive === null, 'p191 severe warning is not converted into certain death');
+assert(p191ChildSafe.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenInversions?.some((x) => x.includes('ודאי')), 'p191 child-safety policy blocks certainty inflation');
+
+// PV-BF07-P191-DELIVERY-* — exact ease/difficulty signs, no H15 vote.
+const p191DeliveryEasy = buildKashfCanonicalAiBridge({ questionId: 'q-birth-ease', questionText: 'לידה קלה או קשה', board: makeBoard({ 1:'1112', 5:'1112', 15:'2222' }) });
+assert(p191DeliveryEasy.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'easy', 'p191 masculine H1+H5 gives ease sign');
+assert(p191DeliveryEasy.canonicalReading?.overallPositive === true, 'p191 easy-delivery branch is positive');
+assert(p191DeliveryEasy.professionalVerdictSafety?.certificationStatus === 'certified', 'p191 delivery-difficulty method passed professional backfill');
+const p191DeliveryHard = buildKashfCanonicalAiBridge({ questionId: 'q-birth-ease', questionText: 'לידה קלה או קשה', board: makeBoard({ 1:'2222', 5:'2222', 15:'2111' }) });
+assert(p191DeliveryHard.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'difficult', 'p191 fixed H5 gives difficulty sign');
+assert(p191DeliveryHard.canonicalReading?.overallPositive === false, 'p191 difficult-delivery branch is negative');
+assert(p191DeliveryEasy.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenInversions?.some((x) => x.includes('H15')), 'p191 delivery policy forbids an invented H15 vote');
+
+// PV-BF07-P167-* — hidden action only; no sorcery/jinn/evil-eye promotion.
+const p167Hidden = buildKashfCanonicalAiBridge({ questionText: 'האם יש פעולה מאחורי הדבר', board: makeBoard({ 4:'1111', 6:'1111', 8:'1111', 15:'1211' }) });
+assert(p167Hidden.resolution?.kashfMethodId === 'spiritual.p167.hiddenActionAirRows46815', 'p167 hidden-action free text resolves exact method');
+assert(p167Hidden.canonicalReading?.primaryFormula?.result?.executorResult?.derivedPattern === '1112', 'p167 air rows derive the malefic fixture 1112');
+assert(p167Hidden.canonicalReading?.overallPositive === true, 'p167 malefic derived figure means hidden action exists');
+assert(p167Hidden.professionalVerdictSafety?.certificationStatus === 'certified', 'p167 hidden-action method passed professional backfill');
+const p167None = buildKashfCanonicalAiBridge({ questionText: 'האם יש פעולה מאחורי הדבר', board: makeBoard({ 4:'1111', 6:'1111', 8:'1211', 15:'1211' }) });
+assert(p167None.canonicalReading?.primaryFormula?.result?.executorResult?.derivedPattern === '1122', 'p167 air rows derive benefic fixture 1122');
+assert(p167None.canonicalReading?.overallPositive === false, 'p167 non-malefic derived figure activates explicit no-action complement');
+assert(p167Hidden.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenClientClaimsWithoutExplicitSelectedMethodBranch?.some((x) => x.includes('כישוף')), 'p167 policy forbids expanding hidden action into sorcery');
+
+// Six runnable methods remain intentionally uncertified after source/implementation audit.
+for (const id of [
+  'money.p179.sourceByIncomingHonorHouse',
+  'marriage.p211.dissolutionH7StateMatrix',
+  'profession.p254.h9Planet',
+  'theft.p225.thiefDescriptionH7',
+  'child.p194.healthTrajectoryH6H8',
+  'missing.p248-249.lifeH1H4H9Outcome',
+]) {
+  assert(!KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes(id), id + ' remains pending professional source closure');
+}
 
 console.log(`\nKashf professional verdict safety tests: ${passed} passed, ${failed} failed`);
 if (failed) process.exit(1);
