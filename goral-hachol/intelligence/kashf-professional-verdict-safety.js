@@ -17,7 +17,7 @@
  * allowed, but they NEVER create, reverse, soften or aggregate the verdict.
  */
 
-export const KASHF_PROFESSIONAL_VERDICT_SAFETY_VERSION = 'kashf-professional-verdict-safety-v5';
+export const KASHF_PROFESSIONAL_VERDICT_SAFETY_VERSION = 'kashf-professional-verdict-safety-v6';
 
 const P174_GENERAL_METHOD = 'general.p174.h1h2h4h7h10h15';
 const P182_SIBLING_SENIORITY_METHOD = 'siblings.p182.seniority';
@@ -39,6 +39,11 @@ const P191_PREGNANCY_GENDER_METHOD = 'pregnancy.p191.genderH5';
 const P196_ILLNESS_RECOVERY_METHOD = 'illness.p196.outcomeH15';
 const P188_HIDDEN_STILL_THERE_METHOD = 'hidden.p188.isStillThere';
 const P224_THIEF_RELATIONSHIP_METHOD = 'theft.p224.relationshipH7Recurrence';
+const P172_MATTER_OUTCOME_METHOD = 'matter.p172.h17_h1011_thenCombine';
+const P183_CURRENT_VS_NEW_METHOD = 'relocation.p183.currentVsNewPlace';
+const P256_HONOR_CONDITION_METHOD = 'authority.p256.honorConditionH10Planet';
+const P257_APPOINTMENT_METHOD = 'authority.p257.appointmentH1H10Planet';
+const P257_RULER_CONDITION_METHOD = 'authority.p257.rulerConditionH7H10';
 
 function freezeArray(values = []) {
   return Object.freeze([...(Array.isArray(values) ? values : [])]);
@@ -617,6 +622,163 @@ function p224ThiefRelationshipPolicy() {
   });
 }
 
+
+function p172MatterOutcomePolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-05',
+    goldenCaseIds: freezeArray(['PV-BF05-P172-GOOD', 'PV-BF05-P172-BAD', 'PV-BF05-P172-MIXED']),
+    policyId: 'p172-matter-outcome-final-generated-figure-v1',
+    questionScopeHebrew: 'תוצאת עניינו של השואל לטוב או לרע לפי עמ׳ 172',
+    decisiveRuleHebrew: 'הולד H1+H7, הולד H10+H11, ואז הולד משתי התוצאות. הצורה הסופית לבדה היא תוצאת העניין: מיטיבה => לטוב; מזיקה => לרע; ממוזגת נשארת ללא הכרעה בינארית.',
+    oneWayBranches: freezeArray([
+      'הצורה הסופית מיטיבה => תוצאת העניין לטוב',
+      'הצורה הסופית מזיקה => תוצאת העניין לרע',
+    ]),
+    forbiddenInversions: freezeArray([
+      'צורה סופית ממוזגת אינה מקודמת לפי נטייתה לטוב או לרע.',
+      'אין להחליף את הצורה הסופית באחד משני תוצרי הביניים או ברוב של ארבעת בתי הקלט.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'completion.p173.fireRows15910 — האם העניין יושלם היא שיטה נפרדת בעמ׳ 173.',
+      'משמעות כללית של H1,H7,H10,H11 או של תוצרי הביניים מעבר לחישוב המפורש.',
+      'דמיר, H15/H16 וכל שיטת תוצאה אחרת שלא נבחרה.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'העניין בוודאות יושלם',
+      'העניין בוודאות לא יושלם',
+      'מועד השלמת העניין',
+      'סיבת ההצלחה או הכישלון מעבר למה שהכלל עצמו אומר',
+    ]),
+  });
+}
+
+function p183CurrentVsNewPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-05',
+    goldenCaseIds: freezeArray(['PV-BF05-P183-CURRENT', 'PV-BF05-P183-MOVE', 'PV-BF05-P183-BOTH', 'PV-BF05-P183-UNRESOLVED']),
+    policyId: 'p183-current-vs-new-positive-pairs-v1',
+    questionScopeHebrew: 'טובת המגורים במקום הנוכחי לעומת עדות טובה למעבר לפי עמ׳ 183',
+    decisiveRuleHebrew: 'H1+H4 שניהם מיטיבים => עדות טובה למגורים במקום הנוכחי. H7+H10 שניהם מיטיבים => עדות טובה למעבר. המקור אינו הופך כישלון של זוג לעדות שלילית ואינו מדרג בין האפשרויות אם שתיהן חיוביות.',
+    oneWayBranches: freezeArray([
+      'H1+H4 שניהם מיטיבים => דון בטובת המגורים במקום הנוכחי',
+      'H7+H10 שניהם מיטיבים => דון בטובת המעבר',
+      'שני הזוגות עומדים בתנאי => שתי העדויות החיוביות נשמרות יחד ללא דירוג',
+    ]),
+    forbiddenInversions: freezeArray([
+      'כישלון H1+H4 אינו מוכיח שהמקום הנוכחי רע.',
+      'כישלון H7+H10 אינו מוכיח שהמעבר רע.',
+      'אין לבחור איזו אפשרות טובה יותר כאשר שני הזוגות עומדים בתנאי.',
+      'צורה ממוזגת אינה מקודמת למיטיבה לפי הנטייה שלה.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'relocation.p183.stayMoveH1H2 — דין להישאר/לעבור לפי H1/H2 הוא שיטה נפרדת.',
+      'relocation.p183.h4h15 — דין טיב המקום החדש לפי H4+H15 הוא שיטה נפרדת.',
+      'שיטות השוואה אחרות בעמ׳ 183–184 וכל משמעות כללית של בתי המעבר.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'המקום הנוכחי רע',
+      'המעבר רע',
+      'עדיף לעבור',
+      'עדיף להישאר',
+      'אפשרות אחת טובה יותר מן השנייה',
+    ]),
+  });
+}
+
+function p256HonorConditionPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-05',
+    goldenCaseIds: freezeArray(['PV-BF05-P256-SUN', 'PV-BF05-P256-SATURN', 'PV-BF05-P256-UNRESOLVED']),
+    policyId: 'p256-honor-condition-h10-planet-v1',
+    questionScopeHebrew: 'מצב הכבוד, המעלה והשררה לפי הכוכב של צורת H10, עמ׳ 256',
+    decisiveRuleHebrew: 'צורת שמש ב-H10 => כוח הכבוד והמעלה ושלווה; צדק או נוגה => טוב ושלמות; שבתאי => חוסר תועלת, קדרות וצער. לכוכבים אחרים אין במקטע זה ענף מפורש.',
+    oneWayBranches: freezeArray([
+      'H10 מצורות השמש => כוח בכבוד ובמעלה ושלווה לבעלי השררה',
+      'H10 מצורות צדק או נוגה => טוב ושלמות',
+      'H10 מצורות שבתאי => חוסר תועלת, קדרות וצער',
+    ]),
+    forbiddenInversions: freezeArray([
+      'כוכב שאינו שמש/צדק/נוגה/שבתאי אינו מקבל דין טוב או רע מן הדעת.',
+      'אין להחליף את סיווג הכוכב בסיווג מיטיב/מזיק של הצורה.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'authority.p257.appointmentH1H10Planet — קיום המינוי הוא דין נפרד.',
+      'authority.p257.rulerConditionH7H10 — מצב בעל השררה הוא דין נפרד.',
+      'דיני משך המלכות, הדחה, מוות או ירידת השליט בעמ׳ 257.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'האדם יהיה מפורסם',
+      'המינוי יתקיים או לא יתקיים',
+      'השליט יישאר בשלטון או יודח',
+      'משך הכבוד או המשרה',
+    ]),
+  });
+}
+
+function p257AppointmentPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-05',
+    goldenCaseIds: freezeArray(['PV-BF05-P257-APPOINTMENT-YES', 'PV-BF05-P257-APPOINTMENT-NO']),
+    policyId: 'p257-appointment-h1h10-planet-class-v1',
+    questionScopeHebrew: 'האם השררה/המינוי מתקיימים לפי הולדת H1+H10 והכוכב של התוצאה, עמ׳ 257',
+    decisiveRuleHebrew: 'הולד H1+H10. אם התוצאה מצורות השמש/הירח או צדק/נוגה — המינוי מתקיים; ואם היא מכוכב אחר בעל שיוך מאומת — אינו מתקיים. בלי שיוך כוכבי מאומת אין להשלים דין.',
+    oneWayBranches: freezeArray([
+      'תוצאת H1+H10 מן השמש או הירח => המינוי מתקיים',
+      'תוצאת H1+H10 מן צדק או נוגה => המינוי מתקיים',
+      'תוצאה בעלת שיוך כוכבי מאומת שאינה מארבעת אלה => המינוי אינו מתקיים',
+    ]),
+    forbiddenInversions: freezeArray([
+      'חסר בשיוך הכוכבי אינו הופך אוטומטית לאי-קיום המינוי.',
+      'אין להחליף את מבחן הכוכבים בסיווג מיטיב/מזיק של הצורה.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'authority.p256.honorConditionH10Planet — כבוד ומעמד לפי H10 הוא דין נפרד.',
+      'authority.p257.rulerConditionH7H10 — מצב בעל השררה הוא דין נפרד.',
+      'דיני משך מלכות, הדחה, מוות, ירידה או סיבת המינוי.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'האדם יהיה מפורסם או מכובד',
+      'בעל השררה טוב או רע',
+      'המינוי יימשך זמן מסוים',
+      'סיבת קיום או אי-קיום המינוי',
+    ]),
+  });
+}
+
+function p257RulerConditionPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-05',
+    goldenCaseIds: freezeArray(['PV-BF05-P257-RULER-GOOD', 'PV-BF05-P257-RULER-BAD', 'PV-BF05-P257-RULER-MIXED']),
+    policyId: 'p257-ruler-condition-h7h10-v1',
+    questionScopeHebrew: 'מצב בעל השררה לפי הצורה הנולדת מ-H7+H10, עמ׳ 257',
+    decisiveRuleHebrew: 'הולד H7+H10. תוצאה מיטיבה => דון לו בטוב; תוצאה מזיקה => דון לו ברע; ממוזגת נשארת ללא הכרעה בכלל זה.',
+    oneWayBranches: freezeArray([
+      'תוצאת H7+H10 מיטיבה => מצב בעל השררה טוב',
+      'תוצאת H7+H10 מזיקה => מצב בעל השררה רע',
+    ]),
+    forbiddenInversions: freezeArray([
+      'תוצאה ממוזגת אינה מקודמת לפי נטייתה לטוב או לרע.',
+      'אין להשתמש ב-H7 או H10 בנפרד כדי לדרוס את הצורה שנולדה מהם.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'authority.p256.honorConditionH10Planet — מצב הכבוד והמעלה הוא דין נפרד.',
+      'authority.p257.appointmentH1H10Planet — קיום המינוי הוא דין נפרד.',
+      'דיני משך המלכות, הדחה, יציאה מן השלטון, מוות או ירידה הסמוכים בעמ׳ 257.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'השליט יישאר בשלטון',
+      'השליט יודח',
+      'המינוי יתקיים או לא יתקיים',
+      'האדם יהיה מפורסם',
+    ]),
+  });
+}
+
 const METHOD_POLICIES = Object.freeze({
   [P174_GENERAL_METHOD]: p174Policy(),
   [P182_SIBLING_SENIORITY_METHOD]: p182Policy(),
@@ -637,6 +799,11 @@ const METHOD_POLICIES = Object.freeze({
   [P196_ILLNESS_RECOVERY_METHOD]: p196IllnessRecoveryPolicy(),
   [P188_HIDDEN_STILL_THERE_METHOD]: p188HiddenStillTherePolicy(),
   [P224_THIEF_RELATIONSHIP_METHOD]: p224ThiefRelationshipPolicy(),
+  [P172_MATTER_OUTCOME_METHOD]: p172MatterOutcomePolicy(),
+  [P183_CURRENT_VS_NEW_METHOD]: p183CurrentVsNewPolicy(),
+  [P256_HONOR_CONDITION_METHOD]: p256HonorConditionPolicy(),
+  [P257_APPOINTMENT_METHOD]: p257AppointmentPolicy(),
+  [P257_RULER_CONDITION_METHOD]: p257RulerConditionPolicy(),
 });
 
 export const KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS = Object.freeze(

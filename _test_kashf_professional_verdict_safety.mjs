@@ -189,7 +189,7 @@ function auditOutputForSafety(safetyBlock, { draft = null, draftPolarity = 'none
   };
 }
 
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 19, 'certification registry contains nineteen professionally certified methods');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 24, 'certification registry contains twenty-four professionally certified methods');
 for (const id of [
   'marriage.p210.generalMarriageH1H2H7H8H10Judge',
   'general.p174.h1h2h4h7h10h15',
@@ -210,6 +210,11 @@ for (const id of [
   'illness.p196.outcomeH15',
   'hidden.p188.isStillThere',
   'theft.p224.relationshipH7Recurrence',
+  'matter.p172.h17_h1011_thenCombine',
+  'relocation.p183.currentVsNewPlace',
+  'authority.p256.honorConditionH10Planet',
+  'authority.p257.appointmentH1H10Planet',
+  'authority.p257.rulerConditionH7H10',
 ]) {
   assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes(id), id + ' is explicitly professionally certified');
 }
@@ -461,6 +466,109 @@ assert(p224Relation.professionalVerdictSafety?.methodSpecificPolicy?.excludedFro
 const p224NoRecurrence = buildKashfCanonicalAiBridge({ questionId: 'q-thief-near', questionText: 'מה הקשר של הגנב לבעל הדבר?', board: makeBoard({ 7:'1121' }) });
 assert(p224NoRecurrence.canonicalReading?.primaryFormula?.result?.executorResult?.relationResolved === false, 'p224 no H7 recurrence remains unresolved');
 assert(p224NoRecurrence.canonicalReading?.overallPositive === null, 'p224 no recurrence does not invent stranger/near/far polarity');
+
+
+
+console.log('\n--- Professional backfill batch 05 ---');
+
+// PV-BF05-P172 — only the final generated figure decides good/bad; mixed stays mixed.
+const p172BfGood = buildKashfCanonicalAiBridge({
+  questionId: 'q-matter-end',
+  questionText: 'מה תהיה תוצאת העניין?',
+  board: makeBoard({ 1:'1111', 7:'2222', 10:'1111', 11:'1122' }),
+});
+const p172BfGoodExec = p172BfGood.canonicalReading?.primaryFormula?.result?.executorResult;
+assert(p172BfGoodExec?.firstSeventhPattern === '1111' && p172BfGoodExec?.tenthEleventhPattern === '2211', 'p172 builds the two exact intermediate figures');
+assert(p172BfGoodExec?.resultPattern === '1122' && p172BfGoodExec?.sourceOutcome === 'good', 'p172 final pure-benefic figure gives good outcome');
+assert(p172BfGood.canonicalReading?.overallPositive === true, 'p172 good branch is positive');
+assert(p172BfGood.professionalVerdictSafety?.certificationStatus === 'certified', 'p172 matter outcome passed professional backfill');
+assert(p172BfGood.professionalVerdictSafety?.methodSpecificPolicy?.excludedFromPrimaryVerdict?.some((x) => x.includes('completion.p173')), 'p172 safety policy isolates the separate p173 completion method');
+const p172BfBad = buildKashfCanonicalAiBridge({
+  questionId: 'q-matter-end', questionText: 'מה תהיה תוצאת העניין?',
+  board: makeBoard({ 1:'1111', 7:'2222', 10:'1111', 11:'1112' }),
+});
+assert(p172BfBad.canonicalReading?.primaryFormula?.result?.executorResult?.resultPattern === '1112', 'p172 bad fixture generates the expected final figure');
+assert(p172BfBad.canonicalReading?.overallPositive === false, 'p172 pure-malefic final figure gives bad outcome');
+const p172BfMixed = buildKashfCanonicalAiBridge({
+  questionId: 'q-matter-end', questionText: 'מה תהיה תוצאת העניין?',
+  board: makeBoard({ 1:'1111', 7:'2222', 10:'1111', 11:'2212' }),
+});
+assert(p172BfMixed.canonicalReading?.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'mixed', 'p172 mixed final preserves the mixed class');
+assert(p172BfMixed.canonicalReading?.overallPositive === null, 'p172 mixed final cannot become binary good/bad');
+
+// PV-BF05-P183 — two independent positive pairs; no inverse and no ranking.
+const p183BfCurrent = buildKashfCanonicalAiBridge({
+  questionId: 'q-move-home', questionText: 'מקום נוכחי מול מקום חדש',
+  board: makeBoard({ 1:'1122', 4:'1122', 7:'1112', 10:'1112' }),
+});
+const p183BfCurrentExec = p183BfCurrent.canonicalReading?.primaryFormula?.result?.executorResult;
+assert(p183BfCurrentExec?.sourceOutcome === 'current-place-good', 'p183 H1+H4 benefic pair gives the current-place positive clause');
+assert(p183BfCurrentExec?.moveGood === false && p183BfCurrentExec?.sourceOutcome === 'current-place-good' && p183BfCurrent.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenInversions?.some((x) => x.includes('H7+H10')), 'p183 failed move pair stays non-positive and the safety policy explicitly forbids inversion into a bad move');
+assert(p183BfCurrent.canonicalReading?.overallPositive === null, 'p183 comparison stays descriptive/non-binary');
+assert(p183BfCurrent.professionalVerdictSafety?.certificationStatus === 'certified', 'p183 current-vs-new passed professional backfill');
+const p183BfMove = buildKashfCanonicalAiBridge({
+  questionId: 'q-move-home', questionText: 'מקום נוכחי מול מקום חדש',
+  board: makeBoard({ 1:'1112', 4:'1112', 7:'1122', 10:'1122' }),
+});
+assert(p183BfMove.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'move-good', 'p183 H7+H10 benefic pair gives the move positive clause');
+assert(!String(p183BfMove.canonicalReading?.primaryFormula?.result?.executorResult?.outputHebrew || '').includes('המקום הנוכחי רע'), 'p183 failed current pair is not inverted into a bad current place');
+const p183BfBoth = buildKashfCanonicalAiBridge({
+  questionId: 'q-move-home', questionText: 'מקום נוכחי מול מקום חדש',
+  board: makeBoard({ 1:'1122', 4:'1122', 7:'1122', 10:'1122' }),
+});
+assert(p183BfBoth.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'both-good', 'p183 preserves both positive clauses together');
+assert(!String(p183BfBoth.canonicalReading?.primaryFormula?.result?.executorResult?.outputHebrew || '').includes('טובה יותר'), 'p183 does not invent a ranking when both options qualify');
+const p183BfMixed = buildKashfCanonicalAiBridge({
+  questionId: 'q-move-home', questionText: 'מקום נוכחי מול מקום חדש',
+  board: makeBoard({ 1:'2212', 4:'1122', 7:'1112', 10:'1112' }),
+});
+assert(p183BfMixed.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'unresolved', 'p183 mixed/nonqualifying evidence remains unresolved');
+
+// PV-BF05-P256 — H10 planetary branch only; no fame or appointment inference.
+const p256BfSun = buildKashfCanonicalAiBridge({ questionId: 'q-fame', questionText: 'מה מצב הכבוד והמעמד?', board: makeBoard({ 10:'1122' }) });
+const p256BfSunExec = p256BfSun.canonicalReading?.primaryFormula?.result?.executorResult;
+assert(p256BfSunExec?.planetHebrew === 'שמש' && p256BfSunExec?.condition === 'strong-honor-and-rank', 'p256 Sun branch preserves strength of honor/rank');
+assert(p256BfSun.canonicalReading?.overallPositive === true, 'p256 Sun branch is positive');
+assert(p256BfSun.professionalVerdictSafety?.certificationStatus === 'certified', 'p256 honor condition passed professional backfill');
+assert(p256BfSun.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenClientClaimsWithoutExplicitSelectedMethodBranch?.includes('האדם יהיה מפורסם'), 'p256 policy blocks expansion into fame prediction');
+const p256BfSaturn = buildKashfCanonicalAiBridge({ questionId: 'q-fame', questionText: 'מה מצב הכבוד והמעמד?', board: makeBoard({ 10:'1112' }) });
+assert(p256BfSaturn.canonicalReading?.primaryFormula?.result?.executorResult?.planetHebrew === 'שבתאי', 'p256 Saturn fixture resolves the exact planet');
+assert(p256BfSaturn.canonicalReading?.overallPositive === false, 'p256 Saturn branch is negative');
+const p256BfOther = buildKashfCanonicalAiBridge({ questionId: 'q-fame', questionText: 'מה מצב הכבוד והמעמד?', board: makeBoard({ 10:'2222' }) });
+assert(p256BfOther.canonicalReading?.primaryFormula?.result?.executorResult?.condition === 'unresolved-by-source', 'p256 unlisted planet remains source-unresolved');
+assert(p256BfOther.canonicalReading?.overallPositive === null, 'p256 unlisted planet is not invented into positive/negative');
+
+// PV-BF05-P257 appointment — exact planet-class test, with explicit else.
+const p257AppointmentYes = buildKashfCanonicalAiBridge({
+  questionId: 'q-position-keep', questionText: 'האם המינוי יתקיים?',
+  board: makeBoard({ 1:'1111', 10:'2222' }),
+});
+const p257AppointmentYesExec = p257AppointmentYes.canonicalReading?.primaryFormula?.result?.executorResult;
+assert(p257AppointmentYesExec?.resultPattern === '1111' && p257AppointmentYesExec?.planetHebrew === 'ירח', 'p257 appointment positive fixture resolves to Moon');
+assert(p257AppointmentYesExec?.appointmentCompletes === true && p257AppointmentYes.canonicalReading?.overallPositive === true, 'p257 luminary result completes the appointment');
+assert(p257AppointmentYes.professionalVerdictSafety?.certificationStatus === 'certified', 'p257 appointment passed professional backfill');
+assert(p257AppointmentYes.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenInversions?.some((x) => x.includes('מיטיב/מזיק')), 'p257 appointment policy forbids fortune-class substitution');
+const p257AppointmentNo = buildKashfCanonicalAiBridge({
+  questionId: 'q-position-keep', questionText: 'האם המינוי יתקיים?',
+  board: makeBoard({ 1:'1111', 10:'2221' }),
+});
+const p257AppointmentNoExec = p257AppointmentNo.canonicalReading?.primaryFormula?.result?.executorResult;
+assert(p257AppointmentNoExec?.resultPattern === '1112' && p257AppointmentNoExec?.planetHebrew === 'שבתאי', 'p257 appointment negative fixture resolves to Saturn');
+assert(p257AppointmentNoExec?.appointmentCompletes === false && p257AppointmentNo.canonicalReading?.overallPositive === false, 'p257 verified non-luminary/non-benefic planet activates the explicit no branch');
+
+// PV-BF05-P257 ruler condition — derived H7+H10 only; mixed stays unresolved.
+const p257RulerGood = buildKashfCanonicalAiBridge({ questionId: 'q-ruler-status', questionText: 'מה מצב בעל השררה?', board: makeBoard({ 7:'1122', 10:'2222' }) });
+const p257RulerGoodExec = p257RulerGood.canonicalReading?.primaryFormula?.result?.executorResult;
+assert(p257RulerGoodExec?.resultPattern === '1122' && p257RulerGoodExec?.rulerCondition === 'good', 'p257 ruler benefic derivation gives good condition');
+assert(p257RulerGood.canonicalReading?.overallPositive === true, 'p257 ruler good branch is positive');
+assert(p257RulerGood.professionalVerdictSafety?.certificationStatus === 'certified', 'p257 ruler condition passed professional backfill');
+const p257RulerBad = buildKashfCanonicalAiBridge({ questionId: 'q-ruler-status', questionText: 'מה מצב בעל השררה?', board: makeBoard({ 7:'1112', 10:'2222' }) });
+assert(p257RulerBad.canonicalReading?.primaryFormula?.result?.executorResult?.rulerCondition === 'bad', 'p257 ruler malefic derivation gives bad condition');
+assert(p257RulerBad.canonicalReading?.overallPositive === false, 'p257 ruler bad branch is negative');
+const p257RulerMixed = buildKashfCanonicalAiBridge({ questionId: 'q-ruler-status', questionText: 'מה מצב בעל השררה?', board: makeBoard({ 7:'1111', 10:'2222' }) });
+assert(p257RulerMixed.canonicalReading?.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'mixed', 'p257 ruler mixed fixture preserves mixed classification');
+assert(p257RulerMixed.canonicalReading?.overallPositive === null, 'p257 ruler mixed result remains non-binary');
+assert(p257RulerMixed.professionalVerdictSafety?.methodSpecificPolicy?.excludedFromPrimaryVerdict?.some((x) => x.includes('משך המלכות')), 'p257 ruler policy isolates kingship-duration/removal rules');
 
 console.log(`\nKashf professional verdict safety tests: ${passed} passed, ${failed} failed`);
 if (failed) process.exit(1);
