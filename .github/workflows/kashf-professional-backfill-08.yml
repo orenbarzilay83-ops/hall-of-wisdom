@@ -18,6 +18,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - name: Repair patcher syntax
+        run: |
+          node --check _repair_kashf_professional_backfill_08_patcher.mjs
+          node _repair_kashf_professional_backfill_08_patcher.mjs
       - name: Validate patcher
         run: node --check _patch_kashf_professional_backfill_08.mjs
       - name: Apply professional backfill batch 08
