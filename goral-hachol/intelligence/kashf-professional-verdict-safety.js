@@ -17,7 +17,7 @@
  * allowed, but they NEVER create, reverse, soften or aggregate the verdict.
  */
 
-export const KASHF_PROFESSIONAL_VERDICT_SAFETY_VERSION = 'kashf-professional-verdict-safety-v2';
+export const KASHF_PROFESSIONAL_VERDICT_SAFETY_VERSION = 'kashf-professional-verdict-safety-v3';
 
 const P174_GENERAL_METHOD = 'general.p174.h1h2h4h7h10h15';
 const P182_SIBLING_SENIORITY_METHOD = 'siblings.p182.seniority';
@@ -25,6 +25,10 @@ const P244_TRAVELER_RETURN_METHOD = 'travel.p244.returnH1H2H9';
 const P249_MISSING_RETURN_METHOD = 'missing.p249.returnAnglesJudge';
 const P210_MARRIAGE_METHOD = 'marriage.p210.generalMarriageH1H2H7H8H10Judge';
 const P211_DISSOLUTION_METHOD = 'marriage.p211.dissolutionH7StateMatrix';
+const P204_PREVIOUS_STATUS_METHOD = 'marriage.p204.previousStatusH7inH10';
+const P204_DOWRY_METHOD = 'marriage.p204.dowryH8';
+const P206_WOMAN_FAVOR_METHOD = 'love.p206.womanFavorH7H11ThenH5';
+const P206_QUERENT_DESIRE_METHOD = 'desire.p206.querentWantsH7H11ThenH5';
 
 function freezeArray(values = []) {
   return Object.freeze([...(Array.isArray(values) ? values : [])]);
@@ -192,12 +196,131 @@ function p210Policy() {
   });
 }
 
+
+function p204PreviousStatusPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-02',
+    goldenCaseIds: freezeArray(['PV-BF02-P204-PREVIOUS-MUTABLE', 'PV-BF02-P204-PREVIOUS-FIXED', 'PV-BF02-P204-PREVIOUS-NORECURRENCE']),
+    policyId: 'p204-previous-status-recurrence-scope-v1',
+    questionScopeHebrew: 'גרושה לעומת בתולה לפי חזרת צורת H7 ב-H10, עמ׳ 204',
+    decisiveRuleHebrew: 'רק כאשר צורת H7 נמצאת גם ב-H10: צורה מתהפכת => גרושה; צורה קבועה => בתולה. ללא החזרה או בסיווג אחר אין הכרעה בכלל זה.',
+    oneWayBranches: freezeArray([
+      'H7 חוזר ב-H10 + הצורה מתהפכת => גרושה',
+      'H7 חוזר ב-H10 + הצורה קבועה => בתולה',
+    ]),
+    forbiddenInversions: freezeArray([
+      'אי-חזרת H7 ב-H10 אינה מוכיחה שום מצב קודם.',
+      'צורה שאינה באחת מארבע המתהפכות או מארבע הקבועות אינה מתירה לנחש קטגוריה.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'דין עמ׳ 207 של בעולה/בתולה לפי שורת המים — שיטה סמוכה ונפרדת.',
+      'marriage.p204.dowryH8, love.p204.attentionFireRows1713 ושאר דיני הנישואין.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'אלמנה',
+      'מצב נישואין נוכחי מעבר לקטגוריות גרושה/בתולה של הכלל',
+      'אין חזרה ולכן היא בתולה או גרושה',
+    ]),
+  });
+}
+
+function p204DowryPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-02',
+    goldenCaseIds: freezeArray(['PV-BF02-P204-DOWRY-LARGE', 'PV-BF02-P204-DOWRY-NOINVERSE']),
+    policyId: 'p204-dowry-h8-no-inverse-v1',
+    questionScopeHebrew: 'גודל המוהר לפי H8 בעמ׳ 204',
+    decisiveRuleHebrew: 'צורה מיטיבה ב-H8 מורה על מוהר גדול. המקור אינו נותן כאן היפוך שלפיו צורה מזיקה מורה על מוהר קטן.',
+    oneWayBranches: freezeArray([
+      'H8 מיטיב => מוהר גדול',
+    ]),
+    forbiddenInversions: freezeArray([
+      'H8 מזיק אינו מוכיח מוהר קטן.',
+      'H8 ממוזג אינו מוכיח מוהר בינוני.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'marriage.p210.generalMarriageH1H2H7H8H10Judge — דין התאמת נישואין נפרד.',
+      'כל משמעות כללית של בית 8 שאינה חלק מדין המוהר.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'המוהר קטן',
+      'המוהר בינוני',
+      'הנישואין טובים או רעים בגלל H8 בלבד',
+    ]),
+  });
+}
+
+function p206WomanFavorPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-02',
+    goldenCaseIds: freezeArray(['PV-BF02-P206-WOMAN-FAVOR-POSITIVE', 'PV-BF02-P206-WOMAN-FAVOR-NEGATIVE', 'PV-BF02-P206-WOMAN-FAVOR-MIXED']),
+    policyId: 'p206-woman-favor-exact-semantics-v1',
+    questionScopeHebrew: 'האם האישה תמצא חן בעיני השואל/האיש לפי עמ׳ 206',
+    decisiveRuleHebrew: 'הולד H7+H11, ואת התוצאה הכה עם H5. תוצאה מיטיבה => היא תמצא חן בעיניו; מזיקה => לא תמצא חן; ממוזגת => אין הכרעה בינארית.',
+    oneWayBranches: freezeArray([
+      'תוצאת H7+H11 ואז +H5 מיטיבה => היא תמצא חן בעיניו',
+      'התוצאה מזיקה => היא לא תמצא חן בעיניו',
+    ]),
+    forbiddenInversions: freezeArray([
+      'תוצאה ממוזגת אינה הופכת לכן או לא.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'desire.p206.querentWantsH7H11ThenH5 — אותה מכניקה אך שאלה סמנטית אחרת.',
+      'love.p205.directLoveH1PlacementH5Relation — אהבה ישירה, כרגע repair-required.',
+      'marriage.p210.generalMarriageH1H2H7H8H10Judge — התאמת נישואין.',
+      'love.p204.attentionFireRows1713 — למי מופנה המבט.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'הוא אוהב אותה',
+      'יש ביניהם כימיה הדדית',
+      'יש משיכה הדדית',
+      'הקשר מתאים לנישואין',
+    ]),
+  });
+}
+
+function p206QuerentDesirePolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-02',
+    goldenCaseIds: freezeArray(['PV-BF02-P206-DESIRE-POSITIVE', 'PV-BF02-P206-DESIRE-NEGATIVE', 'PV-BF02-P206-DESIRE-MIXED']),
+    policyId: 'p206-querent-desire-exact-semantics-v1',
+    questionScopeHebrew: 'האם השואל רוצה בדבר לפי עמ׳ 206',
+    decisiveRuleHebrew: 'הולד H7+H11, ואת התוצאה הכה עם H5. תוצאה מיטיבה => השואל רוצה בדבר; מזיקה => להפך; ממוזגת => אין הכרעה בינארית.',
+    oneWayBranches: freezeArray([
+      'תוצאת H7+H11 ואז +H5 מיטיבה => השואל רוצה בדבר',
+      'התוצאה מזיקה => השואל אינו רוצה בדבר',
+    ]),
+    forbiddenInversions: freezeArray([
+      'תוצאה ממוזגת אינה הופכת לרצון או אי-רצון.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'love.p206.womanFavorH7H11ThenH5 — אותה מכניקה אך שאלה אחרת.',
+      'love.p205.directLoveH1PlacementH5Relation — אהבת אדם אחר.',
+      'marriage.p210.generalMarriageH1H2H7H8H10Judge — התאמת נישואין.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'האישה מוצאת חן בעיניו',
+      'אדם אחר אוהב את השואל',
+      'הקשר מתאים',
+      'הנישואין יצליחו',
+    ]),
+  });
+}
+
 const METHOD_POLICIES = Object.freeze({
   [P174_GENERAL_METHOD]: p174Policy(),
   [P182_SIBLING_SENIORITY_METHOD]: p182Policy(),
   [P244_TRAVELER_RETURN_METHOD]: p244Policy(),
   [P249_MISSING_RETURN_METHOD]: p249Policy(),
   [P210_MARRIAGE_METHOD]: p210Policy(),
+  [P204_PREVIOUS_STATUS_METHOD]: p204PreviousStatusPolicy(),
+  [P204_DOWRY_METHOD]: p204DowryPolicy(),
+  [P206_WOMAN_FAVOR_METHOD]: p206WomanFavorPolicy(),
+  [P206_QUERENT_DESIRE_METHOD]: p206QuerentDesirePolicy(),
 });
 
 export const KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS = Object.freeze(
