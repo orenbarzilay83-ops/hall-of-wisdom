@@ -89,7 +89,7 @@ assert(getKashfMethod('travel.p239.seaOrLandByElement')?.kashfRuntimeStatus === 
 assert(getKashfMethod('travel.p239.profitEarthRowH2')?.kashfRuntimeStatus === 'blocked-by-source', 'p239 profit is not mislabeled source-ready while earth-row input remains unresolved');
 assert(getKashfMethod('joy.p196.recast14511')?.kashfRuntimeStatus === 'blocked-by-source', 'joy p196 false source mapping is blocked');
 assert(getKashfV57Knowledge('joy.p196.recast14511') === null, 'false p196 joy mapping is not fabricated into v57 Hebrew knowledge');
-assert(JSON.stringify(getKashfMethod('missing.p248-249.lifeH1H4H9Outcome')?.sourcePages) === JSON.stringify([250, 251]), 'missing-person life/death source pages corrected to v57 pp250-251');
+assert(JSON.stringify(getKashfMethod('missing.p248-249.lifeH1H4H9Outcome')?.sourcePages) === JSON.stringify([248, 249]), 'missing-person life/death method points to original-scan pp248-249');
 
 // ── p205 direct-love source repair: H5, not H15; runtime hard stop -----
 const p205LoveMethod = getKashfMethod('love.p205.directLoveH1PlacementH5Relation');
@@ -1722,13 +1722,15 @@ assert(p180Expanded.primaryFormula?.sourceText === getKashfV57Knowledge('money.p
 
 const p250Alive = buildKashfReadingByQuestionId(makeP204Board({ 1: '2211', 4: '2211', 9: '2211', 15: '2211' }), 'q-missing-alive');
 const p250AliveExec = p250Alive.primaryFormula?.result?.executorResult;
-assert(p250AliveExec?.aliveIndicated === true && p250AliveExec?.sourceOutcome === 'alive-indicated', 'pp250-251 four pure-benefic life houses give alive sign');
-const p250Severe = buildKashfReadingByQuestionId(makeP204Board({ 6: '2221', 7: '2221', 8: '2221', 15: '2221' }), 'q-missing-alive');
-assert(p250Severe.primaryFormula?.result?.executorResult?.severeDeathTestimony === true && p250Severe.primaryFormula?.result?.executorResult?.sourceOutcome === 'severe-death-testimony', 'pp250-251 four source-listed death figures expose severe testimony');
+assert(p250AliveExec?.aliveIndicated === true && p250AliveExec?.sourceOutcome === 'alive-indicated', 'pp248-249 four pure-benefic life houses expose explicit alive sign');
+const p250Severe = buildKashfReadingByQuestionId(makeP204Board({ 6: '2222', 7: '2222', 8: '2222', 15: '2222' }), 'q-missing-alive');
+assert(p250Severe.primaryFormula?.result?.executorResult?.severeDeathTestimony === true && p250Severe.primaryFormula?.result?.executorResult?.sourceOutcome === 'severe-death-testimony', 'pp248-249 exact five-figure list exposes the severe source testimony');
 assert(p250Severe.primaryFormula?.result?.executorResult?.positive === null, 'severe missing-person testimony is not converted to a generic certain-death boolean');
+const p248NeighborExcluded = buildKashfReadingByQuestionId(makeP204Board({ 6: '2221', 7: '2221', 8: '2221', 15: '2221' }), 'q-missing-alive');
+assert(p248NeighborExcluded.primaryFormula?.result?.executorResult?.severeDeathTestimony === false, 'p248-249 excludes Ankis from the five-figure death list');
 const p250Unresolved = buildKashfReadingByQuestionId(makeP204Board({ 1: '1222', 4: '1112', 6: '1222', 7: '1222', 8: '1222', 9: '1222', 15: '2112' }), 'q-missing-alive');
 assert(p250Unresolved.primaryFormula?.result?.executorResult?.sourceOutcome === 'unresolved', 'incomplete missing-person conditions are not inverted into an unsourced verdict');
-assert(p250Alive.primaryFormula?.sourceText === getKashfV57Knowledge('missing.p248-249.lifeH1H4H9Outcome')?.v57?.hebrewRule, 'pp250-251 missing-life runtime sourceText comes from Hebrew v57');
+assert(p250Alive.primaryFormula?.sourceText === getKashfV57Knowledge('missing.p248-249.lifeH1H4H9Outcome')?.v57?.hebrewRule, 'pp248-249 missing-life runtime sourceText comes from Hebrew v57');
 
 for (const reading of [p191Ease, p180Expanded, p250Alive]) {
   assert(reading.canonicalExecution?.methodsExecuted?.length === 1, 'easy batch 03 reading executes exactly one canonical method');

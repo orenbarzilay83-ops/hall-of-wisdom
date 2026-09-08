@@ -8,7 +8,7 @@ Extend the v57 Hebrew operational-primary knowledge layer from runnable methods 
 1. **joy.p196.recast14511 was falsely source-ready.** v57 p196 belongs to the illness/lost-item/animals chapter and does not contain the 1/4/5/11 joy/event recast. The known celebrations helper is external, so the Kashf route is now blocked-by-source rather than fabricating a v57 entry.
 2. **travel.p239.profitEarthRowH2 was falsely source-ready.** The Hebrew rule is indexed, but the exact earth-row input is unresolved; it is now blocked-by-source.
 3. **travel.p239.seaOrLandByElement was falsely source-ready.** The preceding two-figure construction is unresolved, and v57 omits the Arabic fire-branch return-by-sea clause. The Hebrew text is preserved with explicit verification metadata and the method is blocked-by-source.
-4. **missing-person life/death page traceability was stale.** The selected operational rule is in v57 pp250-251; the historical method id is retained for compatibility, but sourcePages are corrected.
+4. **Historical provenance note superseded by Batch 10 raw-scan re-audit.** This backfill originally placed the selected missing-person life/death rule on pp250-251. Reinspection of the original scan restored the exact body-source rule to printed pp248-249 and separated its five named death figures from the neighboring rule. See the Professional Verdict Safety Batch 10 status record.
 
 ## Permanent contract
 

@@ -1313,12 +1313,12 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfMethodId: 'missing.p248-249.lifeH1H4H9Outcome',
     kashfIntentId: 'missing.aliveOrDead',
     topicId: 'missingPerson',
-    sourcePages: [250, 251],
+    sourcePages: [248, 249],
     kashfRuntimeStatus: 'ready',
     runtimeAllowed: true,
     executionKind: 'custom-engine',
     executorStatus: 'ready',
-    notes: 'Canonical pp250-251 missing-person life-status executor is wired from the corrected v57 provenance. H1+H4+H9+H15 all pure benefic expose the explicit alive sign. H6+H7+H8+H15 all drawn from the seven source-listed death figures expose the separate severe testimony. Neither absence of the alive sign nor the severe pattern is silently converted into a certain death/alive verdict; mixed or incomplete testimony remains unresolved.',
+    notes: 'Canonical pp248-249 missing-person life-status executor is wired from the original-scan provenance. H1+H15+H4+H9 all pure benefic expose the explicit alive sign. H6+H7+H8+H15 all drawn from the exact five named figures — קהלה, חיבור, דרך, לבן, אדום — expose the separate death testimony. סוהר ושפל ראש belong to a neighboring rule and are excluded. Neither absence of the alive sign nor the named-figure condition is inverted into the opposite verdict.',
   }),
 
   'enemy.p271.h1vsH12': method({

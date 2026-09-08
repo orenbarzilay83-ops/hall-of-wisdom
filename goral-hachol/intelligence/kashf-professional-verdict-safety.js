@@ -17,7 +17,7 @@
  * allowed, but they NEVER create, reverse, soften or aggregate the verdict.
  */
 
-export const KASHF_PROFESSIONAL_VERDICT_SAFETY_VERSION = 'kashf-professional-verdict-safety-v10';
+export const KASHF_PROFESSIONAL_VERDICT_SAFETY_VERSION = 'kashf-professional-verdict-safety-v11';
 
 const P174_GENERAL_METHOD = 'general.p174.h1h2h4h7h10h15';
 const P182_SIBLING_SENIORITY_METHOD = 'siblings.p182.seniority';
@@ -59,6 +59,8 @@ const P191_DELIVERY_DIFFICULTY_METHOD = 'pregnancy.p191.deliveryDifficultyH1H5H1
 const P167_HIDDEN_ACTION_METHOD = 'spiritual.p167.hiddenActionAirRows46815';
 const P179_MONEY_SOURCE_METHOD = 'money.p179.sourceByIncomingHonorHouse';
 const P225_THIEF_DESCRIPTION_METHOD = 'theft.p225.thiefDescriptionH7';
+const P194_CHILD_HEALTH_METHOD = 'child.p194.healthTrajectoryH6H8';
+const P248_249_MISSING_LIFE_METHOD = 'missing.p248-249.lifeH1H4H9Outcome';
 
 function freezeArray(values = []) {
   return Object.freeze([...(Array.isArray(values) ? values : [])]);
@@ -1244,6 +1246,69 @@ function p225ThiefDescriptionPolicy() {
   });
 }
 
+
+function p194ChildHealthPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-10',
+    goldenCaseIds: freezeArray(['PV-BF10-P194-H6', 'PV-BF10-P194-H8-BENEFIC', 'PV-BF10-P194-H8-MALEFIC', 'PV-BF10-P194-EXACT-DRAFT']),
+    policyId: 'p194-child-health-h6-h8-scan-corrected-v1',
+    questionScopeHebrew: 'מסלול בריאות הילד לאורך הזמן לפי עמ׳ 194',
+    decisiveRuleHebrew: 'H6 מזיק טהור => ריבוי מכאובים בילדות. H8 מזיק טהור => התקווה בו מועטה. H8 מיטיב טהור => ככל שיגדל ימעט חוליו וישתפר מצבו. הסעיף הקודם על H5 שאינה זכרית/נקבית ומתַהפכת שייך לריקות הבטן ואינו שער להפעלת H6/H8.',
+    oneWayBranches: freezeArray([
+      'H6 מזיק טהור => ריבוי מכאובים בילדות',
+      'H8 מזיק טהור => התקווה בו מועטה',
+      'H8 מיטיב טהור => ככל שיגדל ימעט חוליו וישתפר מצבו',
+    ]),
+    forbiddenInversions: freezeArray([
+      'H6 שאינו מזיק טהור אינו מוכיח שלא יהיו מכאובים.',
+      'H8 ממוזג אינו מקודם למיטיב או למזיק.',
+      'אין להפוך את סעיף ריקות הבטן של H5 לתנאי סף לבריאות H6/H8.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'pregnancy.p191.existsH5SilentEmpty — קיום הריון הוא דין נפרד.',
+      'pregnancy.p191.genderH5 — מין הוולד הוא דין נפרד.',
+      'pregnancy.p191.deliveryDifficultyH1H5H15 — קלות הלידה היא דין נפרד.',
+      'illness.p196.outcomeH15 — החלמת חולה נוכחי היא דין נפרד.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'אבחנה רפואית של מחלה מסוימת',
+      'ודאות שהילד ימות או לא יחלים',
+      'אין שום בעיית בריאות משום ש-H6 אינו מזיק',
+    ]),
+  });
+}
+
+function p248249MissingLifePolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-10',
+    goldenCaseIds: freezeArray(['PV-BF10-P248-ALIVE', 'PV-BF10-P248-DEATH-SIGN', 'PV-BF10-P248-NEIGHBOR-EXCLUSION', 'PV-BF10-P248-EXACT-DRAFT']),
+    policyId: 'p248-249-missing-life-exact-five-figures-v1',
+    questionScopeHebrew: 'חיי הנעדר ועדות למותו לפי עמ׳ 248–249',
+    decisiveRuleHebrew: 'H1+H15+H4+H9 כולם מיטיבים טהורים => סימן שהנעדר חי. H6+H7+H8+H15 כולם אחת מחמש הצורות המפורשות קהלה/חיבור/דרך/לבן/אדום => סימן המקור למותו.',
+    oneWayBranches: freezeArray([
+      'H1+H15+H4+H9 כולם מיטיבים טהורים => הנעדר חי לפי השיטה',
+      'H6+H7+H8+H15 כולם מן {קהלה, חיבור, דרך, לבן, אדום} => סימן המקור למותו',
+    ]),
+    forbiddenInversions: freezeArray([
+      'כישלון סימן החיים אינו מוכיח מוות.',
+      'כישלון רשימת חמש הצורות אינו מוכיח חיים.',
+      'סוהר ושפל ראש אינם רשאים להיכנס לרשימת חמש הצורות של עמ׳ 248–249.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'רשימות מוות מן הכלל הסמוך בעמוד הקודם.',
+      'missing.p249.returnAnglesJudge — דין חזרת נעדר הוא שיטה נפרדת.',
+      'שיטות מיקום/כיוון של נעדר.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'אימות עובדתי חיצוני של מותו של אדם',
+      'הנעדר מת משום שלא התקיים סימן החיים',
+      'הנעדר חי משום שלא התקיימה רשימת חמש הצורות',
+    ]),
+  });
+}
+
 const METHOD_POLICIES = Object.freeze({
   [P174_GENERAL_METHOD]: p174Policy(),
   [P182_SIBLING_SENIORITY_METHOD]: p182Policy(),
@@ -1284,6 +1349,8 @@ const METHOD_POLICIES = Object.freeze({
   [P167_HIDDEN_ACTION_METHOD]: p167HiddenActionPolicy(),
   [P179_MONEY_SOURCE_METHOD]: p179MoneySourcePolicy(),
   [P225_THIEF_DESCRIPTION_METHOD]: p225ThiefDescriptionPolicy(),
+  [P194_CHILD_HEALTH_METHOD]: p194ChildHealthPolicy(),
+  [P248_249_MISSING_LIFE_METHOD]: p248249MissingLifePolicy(),
 });
 
 export const KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS = Object.freeze(

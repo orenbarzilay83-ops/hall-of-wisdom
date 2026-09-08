@@ -1158,7 +1158,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfIntentId: 'missing.aliveOrDead',
     kashfMethodId: 'missing.p248-249.lifeH1H4H9Outcome',
     kashfRuntimeStatus: 'ready',
-    note: 'v57 provenance correction: the prior 3/5/9 recurrence method is in the later al-Multaqat addition. The selected body-source life/death material is on pp250-251; the historical method id is retained for compatibility.',
+    note: 'Original-scan re-audit: the selected body-source life/death rule is on printed pp248-249. The prior 3/5/9 recurrence method is in the later al-Multaqat addition. Keep this route isolated from the separate return rule on p249 and from neighboring death-sign lists.',
   }),
 
   'q-enemy-exists': route({

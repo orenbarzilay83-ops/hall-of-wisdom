@@ -189,7 +189,7 @@ function auditOutputForSafety(safetyBlock, { draft = null, draftPolarity = 'none
   };
 }
 
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 39, 'certification registry contains thirty-nine professionally certified methods');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 41, 'certification registry contains forty-one professionally certified methods');
 for (const id of [
   'marriage.p210.generalMarriageH1H2H7H8H10Judge',
   'general.p174.h1h2h4h7h10h15',
@@ -791,12 +791,10 @@ assert(p179MixedExec?.beneficGateMet === false, 'p179 mixed H2 is not promoted i
 assert(p179MixedExec?.sourceResolved === false, 'p179 mixed gate does not yield an invented money source');
 assert(p179MixedGate.professionalVerdictSafety?.clientFacingCertified === true, 'p179 unresolved branch is still professionally certified for exact non-binary explanation');
 
-// Five runnable methods remain intentionally uncertified after source/implementation audit.
+// Two runnable methods remain intentionally uncertified after source/implementation audit.
 for (const id of [
   'marriage.p211.dissolutionH7StateMatrix',
   'profession.p254.h9Planet',
-  'child.p194.healthTrajectoryH6H8',
-  'missing.p248-249.lifeH1H4H9Outcome',
 ]) {
   assert(!KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes(id), id + ' remains pending professional source closure');
 }
@@ -833,6 +831,52 @@ const p225InventedIdentity = validateKashfAdvisorOutput(auditOutputForSafety(p22
   draftPolarity: 'non-binary',
 }));
 assert(validateKashfAdvisorVerdictAlignment(p225InventedIdentity.value, p225Joudala.professionalVerdictSafety).ok === false, 'p225 server gate blocks replacing source profile with a named-person accusation');
+
+
+console.log('\n--- Professional backfill batch 10 — p194 scan correction + p248-249 source separation ---');
+
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes('child.p194.healthTrajectoryH6H8'), 'p194 child-health method is explicitly professionally certified');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes('missing.p248-249.lifeH1H4H9Outcome'), 'p248-249 missing-life method is explicitly professionally certified');
+
+const p194PainImprove = buildKashfCanonicalAiBridge({ questionId: 'q-child-health', questionText: 'בריאות הילד לאורך הזמן', board: makeBoard({ 6:'1112', 8:'2211' }) });
+const p194PainImproveExec = p194PainImprove.canonicalReading?.primaryFormula?.result?.executorResult;
+assert(JSON.stringify(p194PainImproveExec?.housesUsed) === JSON.stringify([6,8]), 'p194 executes H6/H8 only: no invented H5 empty-figure gate');
+assert(p194PainImproveExec?.childhoodPains === true, 'p194 pure-malefic H6 gives the explicit childhood-pains testimony');
+assert(p194PainImproveExec?.longTermOutcome === 'improves-with-age', 'p194 pure-benefic H8 gives improvement with age');
+assert(p194PainImprove.professionalVerdictSafety?.certificationStatus === 'certified', 'p194 passed professional backfill after raw-scan antecedent correction');
+assert(p194PainImprove.professionalVerdictSafety?.clientFacingCertified === true, 'p194 exact source-bounded client explanation is certified');
+assert(p194PainImprove.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenInversions?.some((x) => x.includes('ריקות הבטן')), 'p194 safety policy blocks reintroducing the stale empty-womb gate');
+const p194LowHope = buildKashfCanonicalAiBridge({ questionId: 'q-child-health', questionText: 'בריאות הילד לאורך הזמן', board: makeBoard({ 6:'2211', 8:'1112' }) });
+assert(p194LowHope.canonicalReading?.primaryFormula?.result?.executorResult?.longTermOutcome === 'low-hope', 'p194 pure-malefic H8 preserves the low-hope source branch');
+const p194MixedH8 = buildKashfCanonicalAiBridge({ questionId: 'q-child-health', questionText: 'בריאות הילד לאורך הזמן', board: makeBoard({ 8:'1121' }) });
+assert(p194MixedH8.canonicalReading?.primaryFormula?.result?.executorResult?.longTermOutcome === 'unresolved', 'p194 mixed H8 is not promoted to benefic or malefic');
+const p194Exact = validateKashfAdvisorOutput(auditOutputForSafety(p194PainImprove.professionalVerdictSafety, {
+  draft: p194PainImprove.professionalVerdictSafety.authoritativeClientDraftHebrew,
+  draftPolarity: 'non-binary',
+}));
+assert(validateKashfAdvisorVerdictAlignment(p194Exact.value, p194PainImprove.professionalVerdictSafety).ok === true, 'p194 exact deterministic client draft passes');
+
+const p248Alive = buildKashfCanonicalAiBridge({ questionId: 'q-missing-alive', questionText: 'הנעדר חי או מת', board: makeBoard({ 1:'2111', 4:'2111', 9:'2111', 15:'2111' }) });
+const p248AliveExec = p248Alive.canonicalReading?.primaryFormula?.result?.executorResult;
+assert(p248AliveExec?.aliveIndicated === true && p248AliveExec?.sourceOutcome === 'alive-indicated', 'p248-249 four pure-benefic life houses give the explicit alive sign');
+assert(p248Alive.professionalVerdictSafety?.certificationStatus === 'certified', 'p248-249 missing-life method passed professional backfill');
+assert(p248Alive.professionalVerdictSafety?.authoritativePolarity === 'positive', 'p248-249 explicit alive branch keeps the engine-authored positive polarity');
+
+const p248Severe = buildKashfCanonicalAiBridge({ questionId: 'q-missing-alive', questionText: 'הנעדר חי או מת', board: makeBoard({ 6:'2222', 7:'2222', 8:'2222', 15:'2222' }) });
+const p248SevereExec = p248Severe.canonicalReading?.primaryFormula?.result?.executorResult;
+assert(p248SevereExec?.severeDeathTestimony === true && p248SevereExec?.sourceOutcome === 'severe-death-testimony', 'p248-249 exact named figure Jamaa is accepted in all four death-testimony houses');
+assert(String(p248SevereExec?.sourceText || '').includes('קהלה, חיבור, דרך, לבן או אדום'), 'p248-249 executor carries exactly the five source-listed figures');
+assert(!String(p248SevereExec?.sourceText || '').includes('סוהר') && !String(p248SevereExec?.sourceText || '').includes('שפל ראש'), 'p248-249 executor excludes Aqla/Ankis bleed from the neighboring rule');
+const p248NeighborBleed = buildKashfCanonicalAiBridge({ questionId: 'q-missing-alive', questionText: 'הנעדר חי או מת', board: makeBoard({ 6:'2221', 7:'2221', 8:'2221', 15:'2221' }) });
+assert(p248NeighborBleed.canonicalReading?.primaryFormula?.result?.executorResult?.severeDeathTestimony === false, 'p248-249 Ankis no longer falsely triggers the death testimony');
+const p248AqlaBleed = buildKashfCanonicalAiBridge({ questionId: 'q-missing-alive', questionText: 'הנעדר חי או מת', board: makeBoard({ 6:'1221', 7:'1221', 8:'1221', 15:'1221' }) });
+assert(p248AqlaBleed.canonicalReading?.primaryFormula?.result?.executorResult?.severeDeathTestimony === false, 'p248-249 Aqla no longer falsely triggers the death testimony');
+assert(p248Severe.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenInversions?.some((x) => x.includes('סוהר ושפל ראש')), 'p248-249 safety policy locks the neighboring-rule exclusion');
+const p248Exact = validateKashfAdvisorOutput(auditOutputForSafety(p248Severe.professionalVerdictSafety, {
+  draft: p248Severe.professionalVerdictSafety.authoritativeClientDraftHebrew,
+  draftPolarity: 'non-binary',
+}));
+assert(validateKashfAdvisorVerdictAlignment(p248Exact.value, p248Severe.professionalVerdictSafety).ok === true, 'p248-249 exact deterministic client draft passes');
 
 console.log(`\nKashf professional verdict safety tests: ${passed} passed, ${failed} failed`);
 if (failed) process.exit(1);

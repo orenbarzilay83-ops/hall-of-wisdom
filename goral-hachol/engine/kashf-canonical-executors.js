@@ -1499,7 +1499,7 @@ function computeChildHealthTrajectoryP194(chart) {
 
   return {
     sourceRef: 'חשיפת הסודות הנצורים v57 עמ׳ 194',
-    sourceText: 'אם באה הצורה ריקה, התבונן בבית השישי, שהוא בית המחלות. אם נמצאת בו צורה מזיקה, הדבר מורה על ריבוי מכאובים בילדותו. אחר כך התבונן בבית השמיני, שהוא בית המוות והאבדון. אם נמצאת בו צורה מזיקה, התקווה בו מועטה. ואם נמצאת בו צורה מיטיבה, כל כמה שיגדל — ימעט חוליו וישתפר מצבו.',
+    sourceText: 'בדין בריאות הילד: התבונן בבית השישי, שהוא בית המחלות. אם נמצאת בו צורה מזיקה, הדבר מורה על ריבוי מכאובים בילדותו. אחר כך התבונן בבית השמיני, שהוא בית המוות והאבדון. אם נמצאת בו צורה מזיקה, התקווה בו מועטה. ואם נמצאת בו צורה מיטיבה, כל כמה שיגדל — ימעט חוליו וישתפר מצבו. המשפט הקודם על צורה שאינה זכרית או נקבית ומתַהפכת שייך לדין ריקות הבטן ואינו תנאי להפעלת H6/H8.',
     housesUsed,
     houseResults: rows,
     childhoodPains,
@@ -1903,18 +1903,16 @@ function computeLivelihoodP180(chart) {
   };
 }
 
-const P250_251_MISSING_DEATH_PATTERNS = new Set([
-  '2222', // קהלה
-  '2112', // חיבור
-  '1111', // דרך
-  '1221', // סוהר
-  '2221', // שפל ראש
-  '2122', // אדום
-  '2212', // לבן
+const P248_249_MISSING_DEATH_PATTERNS = new Set([
+  '2222', // קהלה / الجماعة
+  '2112', // חיבור / الاجتماع
+  '1111', // דרך / الطريق
+  '2212', // לבן / البياض
+  '2122', // אדום / الحمرة
 ]);
 
-// Kashf v57 pp250-251 — life-status testimony for a missing person.
-function computeMissingLifeStatusP250P251(chart) {
+// Kashf v57 pp248-249 — life-status testimony for a missing person.
+function computeMissingLifeStatusP248P249(chart) {
   if (!Array.isArray(chart)) return null;
   const lifeHouses = [1, 4, 9, 15];
   const severeHouses = [6, 7, 8, 15];
@@ -1934,7 +1932,7 @@ function computeMissingLifeStatusP250P251(chart) {
   if (lifeResults.some((item) => !item) || severeResults.some((item) => !item)) return null;
 
   const aliveIndicated = lifeResults.every((item) => item.classification.saadNahs === 'saad');
-  const severeDeathTestimony = severeResults.every((item) => P250_251_MISSING_DEATH_PATTERNS.has(item.pattern));
+  const severeDeathTestimony = severeResults.every((item) => P248_249_MISSING_DEATH_PATTERNS.has(item.pattern));
   let sourceOutcome = 'unresolved';
   if (aliveIndicated && severeDeathTestimony) sourceOutcome = 'conflicting-source-signs';
   else if (aliveIndicated) sourceOutcome = 'alive-indicated';
@@ -1942,18 +1940,18 @@ function computeMissingLifeStatusP250P251(chart) {
 
   let outputHebrew;
   if (sourceOutcome === 'alive-indicated') {
-    outputHebrew = 'בתים 1, 4, 9 ו־15 כולם מיטיבים. לפי כשף v57 עמ׳ 250–251: זהו סימן שהנעדר חי.';
+    outputHebrew = 'בתים 1, 4, 9 ו־15 כולם מיטיבים. לפי כשף v57 עמ׳ 248–249: זהו סימן שהנעדר חי.';
   } else if (sourceOutcome === 'severe-death-testimony') {
-    outputHebrew = 'בבתים 6, 7, 8 ו־15 נמצאות כולן צורות מן הרשימה הקשה שמונה המקור: קהלה, חיבור, דרך, סוהר, שפל ראש, אדום או לבן. זהו לפי v57 עמ׳ 250–251 סימן קשה בדין חייו של הנעדר; הפלט אינו הופך עדות זו לבדו לאישור עובדתי ודאי של מוות.';
+    outputHebrew = 'בבתים 6, 7, 8 ו־15 נמצאות כולן צורות מן הרשימה המפורשת בעמ׳ 248–249: קהלה, חיבור, דרך, לבן או אדום. זהו סימן מקור המורה על מותו של הנעדר; הפלט שומר אותו כעדות של שיטת הספר ואינו מציג אותו כאימות עובדתי חיצוני של מוות.';
   } else if (sourceOutcome === 'conflicting-source-signs') {
-    outputHebrew = 'בלוח מתקיימים יחד סימן החיים וסימן המוות הקשה שנמסרו בעמ׳ 250–251. המקור אינו נותן כאן כלל קדימות בין העדויות, ולכן אין לבחור אחת מהן מן הדעת.';
+    outputHebrew = 'בלוח מתקיימים יחד סימן החיים וסימן המוות שנמסרו בעמ׳ 248–249. המקור אינו נותן כאן כלל קדימות בין העדויות, ולכן אין לבחור אחת מהן מן הדעת.';
   } else {
     outputHebrew = 'לא הושלם סימן החיים של בתים 1, 4, 9 ו־15, וגם לא הושלם צירוף ארבעת בתי עדות המוות 6, 7, 8 ו־15. אין להסיק מאי־קיום אחד התנאים את היפוכו; כלל זה נשאר ללא הכרעה.';
   }
 
   return {
-    sourceRef: 'חשיפת הסודות הנצורים v57 עמ׳ 250–251',
-    sourceText: 'אם הראשון, הרביעי, התשיעי והסוף מיטיבים, הרי הנעדר חי. אם נמצאו בשישי, בשביעי, בשמיני ובסוף צורות המוות המנויות במקור — קהלה, חיבור, דרך, סוהר, שפל ראש, אדום או לבן — הדבר משמש עדות קשה בדין חייו של הנעדר.',
+    sourceRef: 'חשיפת הסודות הנצורים v57 עמ׳ 248–249',
+    sourceText: 'אם הראשון, הסוף, הרביעי והתשיעי מיטיבים — הנעדר חי. ואם בשישי, בשביעי, בשמיני ובסוף נמצאות מן הצורות האלה: קהלה, חיבור, דרך, לבן או אדום — הדבר מורה על מותו.',
     housesUsed: [1,4,6,7,8,9,15],
     lifeHouses,
     severeHouses,
@@ -2177,7 +2175,7 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'money.p180.livelihoodH10Invert': computeLivelihoodP180,
   'money.p181.recast25811': computeMoneyAcquireP181,
   'career.p266.returnToOffice': computeReturnToOfficeP266,
-  'missing.p248-249.lifeH1H4H9Outcome': computeMissingLifeStatusP250P251,
+  'missing.p248-249.lifeH1H4H9Outcome': computeMissingLifeStatusP248P249,
   'child.p194.healthTrajectoryH6H8': computeChildHealthTrajectoryP194,
   'siblings.p182.seniority': computeSiblingSeniorityP182,
   'marriage.p211.dissolutionH7StateMatrix': computeMarriageDissolutionP211,
