@@ -17,7 +17,7 @@
  * allowed, but they NEVER create, reverse, soften or aggregate the verdict.
  */
 
-export const KASHF_PROFESSIONAL_VERDICT_SAFETY_VERSION = 'kashf-professional-verdict-safety-v6';
+export const KASHF_PROFESSIONAL_VERDICT_SAFETY_VERSION = 'kashf-professional-verdict-safety-v7';
 
 const P174_GENERAL_METHOD = 'general.p174.h1h2h4h7h10h15';
 const P182_SIBLING_SENIORITY_METHOD = 'siblings.p182.seniority';
@@ -44,6 +44,11 @@ const P183_CURRENT_VS_NEW_METHOD = 'relocation.p183.currentVsNewPlace';
 const P256_HONOR_CONDITION_METHOD = 'authority.p256.honorConditionH10Planet';
 const P257_APPOINTMENT_METHOD = 'authority.p257.appointmentH1H10Planet';
 const P257_RULER_CONDITION_METHOD = 'authority.p257.rulerConditionH7H10';
+const P264_LIFESPAN_STAGES_METHOD = 'lifespan.p264.stagesH11H9H7';
+const P180_LIVELIHOOD_METHOD = 'money.p180.livelihoodH10Invert';
+const P181_MONEY_ACQUIRE_METHOD = 'money.p181.recast25811';
+const P266_RETURN_TO_OFFICE_METHOD = 'career.p266.returnToOffice';
+const P204_ATTENTION_METHOD = 'love.p204.attentionFireRows1713';
 
 function freezeArray(values = []) {
   return Object.freeze([...(Array.isArray(values) ? values : [])]);
@@ -779,6 +784,154 @@ function p257RulerConditionPolicy() {
   });
 }
 
+
+function p264LifespanStagesPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-06',
+    goldenCaseIds: freezeArray(['PV-BF06-P264-STAGES']),
+    policyId: 'p264-lifespan-stages-planet-profile-v1',
+    questionScopeHebrew: 'ראשית, אמצע וסוף החיים לפי צורות הכוכבים ב-H11,H9,H7, עמ׳ 264',
+    decisiveRuleHebrew: 'H11 מתאר את ראשית החיים, H9 את אמצע החיים, ו-H7 את סוף החיים. כל שלב מתואר לפי הכוכב של הצורה באותו בית; אין במקור נוסחת רוב או חישוב שנות חיים.',
+    oneWayBranches: freezeArray([]),
+    forbiddenInversions: freezeArray([
+      'אין להפוך שלושה תיאורי שלב לפסק מצטבר של חיים טובים או רעים.',
+      'אין להסיק אורך חיים, שנות חיים שנותרו או מועד מוות מן שלושת הבתים.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'lifespan.p178.elementCountToHouse — משך החיים הוא שיטה נפרדת.',
+      'general.p174.h1h2h4h7h10h15 — קריאה כללית היא שיטה נפרדת.',
+      'סיווג מיטיב/מזיק כתחליף לשיוך הכוכבי שהמקור דורש כאן.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'כמה שנים יחיה האדם',
+      'כמה שנים נשארו לו',
+      'מתי ימות',
+      'חייו יהיו טובים או רעים בסך הכול',
+    ]),
+  });
+}
+
+function p180LivelihoodPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-06',
+    goldenCaseIds: freezeArray(['PV-BF06-P180-ANGLE', 'PV-BF06-P180-CADENT', 'PV-BF06-P180-CONFLICT']),
+    policyId: 'p180-livelihood-invert-h10-placement-v1',
+    questionScopeHebrew: 'מצב המחיה/הפרנסה לפי היפוך שורות H10 ומיקום הצורה שנוצרה, עמ׳ 180',
+    decisiveRuleHebrew: 'הפוך כל שורה ב-H10. אם הצורה שנוצרה מיטיבה ונמצאת ביתד — המחיה מתרחבת. אם היא נמצאת בבית נופל — אינה טובה. הופעה גם ביתד וגם בנופל נשארת ללא הכרעת קדימות.',
+    oneWayBranches: freezeArray([
+      'תוצאת היפוך H10 מיטיבה ומופיעה ביתד => המחיה מתרחבת',
+      'תוצאת היפוך H10 מופיעה בבית נופל => מצב שאינו טוב למחיה',
+    ]),
+    forbiddenInversions: freezeArray([
+      'היעדר הופעה ביתד אינו מוכיח לבדו שהמחיה רעה.',
+      'הופעה בבית סמוך/עוקב בלבד אינה מקבלת דין טוב או רע שלא נמסר.',
+      'כאשר אותה צורה מופיעה גם ביתד וגם בנופל אין לבחור צד או לבצע רוב.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'money.p179.sourceByIncomingHonorHouse — מקור הממון הוא דין נפרד.',
+      'money.p181.recast25811 — השגת ממון מסוים היא דין נפרד.',
+      'inheritance.p180.elementComposite — ירושה היא דין נפרד.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'מאין יגיע הכסף',
+      'כמה כסף יגיע',
+      'מתי יגיע הכסף',
+      'כסף מסוים יתקבל משום שהמחיה מתרחבת',
+    ]),
+  });
+}
+
+function p181MoneyAcquirePolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-06',
+    goldenCaseIds: freezeArray(['PV-BF06-P181-YES', 'PV-BF06-P181-UNRESOLVED']),
+    policyId: 'p181-money-acquire-recast-internal-v1',
+    questionScopeHebrew: 'האם ממון מסוים יושג לפי לוח משני שנבנה מ-H2,H5,H8,H11, עמ׳ 181',
+    decisiveRuleHebrew: 'העמד את H2,H5,H8,H11 כאמהות ללוח חדש. אם H1,H2,H4,H7,H10 בלוח החדש כולם פנימיים ממש — הממון יושג. המקור אינו מוסר כאן את ההיפך אם התנאי נכשל.',
+    oneWayBranches: freezeArray([
+      'כל H1,H2,H4,H7,H10 בלוח המשני פנימיים => הממון יושג',
+    ]),
+    forbiddenInversions: freezeArray([
+      'כישלון אחד או יותר מחמשת הבתים אינו מוכיח שהממון לא יושג.',
+      'קבועה/מתהפכת הנוטה פנימה אינה מוחלפת ב-p181 ב"פנימית ממש".',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'השיטה החלופית של זוג/יחיד באותו עמוד.',
+      'money.p179.sourceByIncomingHonorHouse — מקור הממון.',
+      'money.p180.livelihoodH10Invert — מצב המחיה השוטפת.',
+      'inheritance.p180.elementComposite — ירושה.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'הממון לא יושג משום שאחד התנאים נכשל',
+      'מאין יגיע הכסף',
+      'מתי יגיע הכסף',
+      'מה יהיה סכום הכסף',
+    ]),
+  });
+}
+
+function p266ReturnToOfficePolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-06',
+    goldenCaseIds: freezeArray(['PV-BF06-P266-RETURN', 'PV-BF06-P266-NO', 'PV-BF06-P266-UNRESOLVED']),
+    policyId: 'p266-return-to-office-h1-recurrence-outcome-v1',
+    questionScopeHebrew: 'האם מי שהודח משירות יחזור למקומו לפי עמ׳ 266',
+    decisiveRuleHebrew: 'H1 מיטיב ופנימי, אותה צורה חוזרת בבית חזק נוסף H4/H7/H10, ו-H16 מיטיב => חוזר למקומו. H1 מזיק טהור מפעיל את ענף "הדין להפך" => אינו חוזר. מצבים אחרים נשארים ללא הכרעה.',
+    oneWayBranches: freezeArray([
+      'H1 מיטיב-פנימי + חזרה בבית חזק + H16 מיטיב => חוזר למקום השירות',
+      'H1 מזיק טהור => הדין להפך, אינו חוזר לפי כלל זה',
+    ]),
+    forbiddenInversions: freezeArray([
+      'חסר באחד מתנאי הענף החיובי אינו מוכיח אי-חזרה אלא אם H1 עצמו מזיק טהור.',
+      'אין לבצע הצבעת רוב בין H1,H4,H7,H10,H16.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'authority.p256.honorConditionH10Planet — כבוד ומעמד.',
+      'authority.p257.appointmentH1H10Planet — קיום מינוי.',
+      'authority.p257.rulerConditionH7H10 — מצב בעל השררה.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'מתי יחזור לתפקיד',
+      'מדוע הודח',
+      'יקבל קידום',
+      'יצליח בתפקיד לאחר החזרה',
+    ]),
+  });
+}
+
+function p204AttentionPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-06',
+    goldenCaseIds: freezeArray(['PV-BF06-P204-ATTENTION-MATCH', 'PV-BF06-P204-ATTENTION-NO-MATCH']),
+    policyId: 'p204-attention-fire-rows-1713-v1',
+    questionScopeHebrew: 'לאן מופנה המבט לפי מצב שורת האש ב-H1,H7,H13, עמ׳ 204',
+    decisiveRuleHebrew: 'אש H1 פתוחה + אש H7 פתוחה + אש H13 מתחברת => שניהם מביטים זה בזה וגם באחרים. אם התנאי אינו שלם, כלל זה לבדו אינו מכריע.',
+    oneWayBranches: freezeArray([
+      'אש H1 פתוחה + אש H7 פתוחה + אש H13 מתחברת => שניהם מביטים זה בזה וגם באחרים',
+    ]),
+    forbiddenInversions: freezeArray([
+      'כישלון התנאי אינו מוכיח שאינם מביטים זה בזה.',
+      'אין לייבא את ענפי הכלל הדומה בעמ׳ 170 כדי להשלים תוצאה.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'love.p205.directLoveH1PlacementH5Relation — שאלת אהבה היא שיטה נפרדת וחסומה כרגע.',
+      'love.p206.womanFavorH7H11ThenH5 — מציאת חן היא שיטה נפרדת.',
+      'marriage.p210.generalMarriageH1H2H7H8H10Judge — התאמת נישואין היא שיטה נפרדת.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'הוא אוהב אותך',
+      'הוא נאמן או בלעדי',
+      'יש התאמה לנישואין',
+      'אין לו עניין באנשים אחרים',
+    ]),
+  });
+}
+
 const METHOD_POLICIES = Object.freeze({
   [P174_GENERAL_METHOD]: p174Policy(),
   [P182_SIBLING_SENIORITY_METHOD]: p182Policy(),
@@ -804,6 +957,11 @@ const METHOD_POLICIES = Object.freeze({
   [P256_HONOR_CONDITION_METHOD]: p256HonorConditionPolicy(),
   [P257_APPOINTMENT_METHOD]: p257AppointmentPolicy(),
   [P257_RULER_CONDITION_METHOD]: p257RulerConditionPolicy(),
+  [P264_LIFESPAN_STAGES_METHOD]: p264LifespanStagesPolicy(),
+  [P180_LIVELIHOOD_METHOD]: p180LivelihoodPolicy(),
+  [P181_MONEY_ACQUIRE_METHOD]: p181MoneyAcquirePolicy(),
+  [P266_RETURN_TO_OFFICE_METHOD]: p266ReturnToOfficePolicy(),
+  [P204_ATTENTION_METHOD]: p204AttentionPolicy(),
 });
 
 export const KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS = Object.freeze(

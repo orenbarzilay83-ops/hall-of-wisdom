@@ -189,7 +189,7 @@ function auditOutputForSafety(safetyBlock, { draft = null, draftPolarity = 'none
   };
 }
 
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 24, 'certification registry contains twenty-four professionally certified methods');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 29, 'certification registry contains twenty-nine professionally certified methods');
 for (const id of [
   'marriage.p210.generalMarriageH1H2H7H8H10Judge',
   'general.p174.h1h2h4h7h10h15',
@@ -215,6 +215,11 @@ for (const id of [
   'authority.p256.honorConditionH10Planet',
   'authority.p257.appointmentH1H10Planet',
   'authority.p257.rulerConditionH7H10',
+  'lifespan.p264.stagesH11H9H7',
+  'money.p180.livelihoodH10Invert',
+  'money.p181.recast25811',
+  'career.p266.returnToOffice',
+  'love.p204.attentionFireRows1713',
 ]) {
   assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes(id), id + ' is explicitly professionally certified');
 }
@@ -569,6 +574,106 @@ const p257RulerMixed = buildKashfCanonicalAiBridge({ questionId: 'q-ruler-status
 assert(p257RulerMixed.canonicalReading?.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'mixed', 'p257 ruler mixed fixture preserves mixed classification');
 assert(p257RulerMixed.canonicalReading?.overallPositive === null, 'p257 ruler mixed result remains non-binary');
 assert(p257RulerMixed.professionalVerdictSafety?.methodSpecificPolicy?.excludedFromPrimaryVerdict?.some((x) => x.includes('משך המלכות')), 'p257 ruler policy isolates kingship-duration/removal rules');
+
+
+
+console.log('\n--- Professional backfill batch 06 ---');
+
+// PV-BF06-P264 — descriptive planetary life stages only; no lifespan duration/aggregate verdict.
+const p264StagesBf = buildKashfCanonicalAiBridge({
+  questionId: 'q-lifespan-stages', questionText: 'ראשית אמצע וסוף החיים',
+  board: makeBoard({ 11:'1122', 9:'1111', 7:'1112' }),
+});
+const p264StagesExec = p264StagesBf.canonicalReading?.primaryFormula?.result?.executorResult;
+assert(JSON.stringify(p264StagesExec?.housesUsed) === JSON.stringify([11,9,7]), 'p264 stages reads exactly H11,H9,H7');
+assert(p264StagesExec?.stages?.map((x) => x.stage).join(',') === 'beginning,middle,end', 'p264 stages preserves beginning/middle/end order');
+assert(p264StagesExec?.stages?.[0]?.planetHebrew === 'שמש', 'p264 H11 fixture resolves the verified Sun attribution');
+assert(p264StagesExec?.stages?.[1]?.planetHebrew === 'ירח', 'p264 H9 fixture resolves the verified Moon attribution');
+assert(p264StagesExec?.stages?.[2]?.planetHebrew === 'שבתאי', 'p264 H7 fixture resolves the verified Saturn attribution');
+assert(p264StagesBf.canonicalReading?.overallPositive === null, 'p264 life stages remains descriptive/non-binary');
+assert(p264StagesBf.professionalVerdictSafety?.certificationStatus === 'certified', 'p264 life stages passed professional backfill');
+assert(p264StagesBf.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenClientClaimsWithoutExplicitSelectedMethodBranch?.includes('כמה שנים יחיה האדם'), 'p264 policy blocks lifespan-duration expansion');
+
+// PV-BF06-P180 — H10 inversion: angle+benefic positive, cadent negative, conflict unresolved.
+const p180Angle = buildKashfCanonicalAiBridge({
+  questionId: 'q-livelihood', questionText: 'מה מצב הפרנסה?',
+  board: makeBoard({ 10:'2211', 1:'1122' }),
+});
+const p180AngleExec = p180Angle.canonicalReading?.primaryFormula?.result?.executorResult;
+assert(p180AngleExec?.resultPattern === '1122', 'p180 inversion fixture produces 1122');
+assert(p180AngleExec?.sourceOutcome === 'expanded-livelihood' && p180Angle.canonicalReading?.overallPositive === true, 'p180 benefic result in an angle gives expanded livelihood');
+assert(p180Angle.professionalVerdictSafety?.certificationStatus === 'certified', 'p180 livelihood passed professional backfill');
+const p180Cadent = buildKashfCanonicalAiBridge({
+  questionId: 'q-livelihood', questionText: 'מה מצב הפרנסה?',
+  board: makeBoard({ 10:'2211', 3:'1122' }),
+});
+assert(p180Cadent.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'unfavorable-livelihood', 'p180 cadent placement activates the explicit unfavorable branch');
+assert(p180Cadent.canonicalReading?.overallPositive === false, 'p180 cadent branch is negative');
+const p180Conflict = buildKashfCanonicalAiBridge({
+  questionId: 'q-livelihood', questionText: 'מה מצב הפרנסה?',
+  board: makeBoard({ 10:'2211', 1:'1122', 3:'1122' }),
+});
+assert(p180Conflict.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'conflicting-placement', 'p180 angle+cadent duplicate preserves source conflict');
+assert(p180Conflict.canonicalReading?.overallPositive === null, 'p180 conflicting placement is not resolved by invented priority');
+
+// PV-BF06-P181 — reconstructed board positive condition is one-way only.
+const p181Yes = buildKashfCanonicalAiBridge({
+  questionId: 'q-livelihood-arrive', questionText: 'האם הממון יושג?',
+  board: makeBoard({ 2:'2121', 5:'2111', 8:'2112', 11:'2111' }),
+});
+const p181YesExec = p181Yes.canonicalReading?.primaryFormula?.result?.executorResult;
+assert(p181YesExec?.recastMotherPatterns?.join(',') === '2121,2111,2112,2111', 'p181 uses original H2,H5,H8,H11 as the four recast mothers');
+assert(p181YesExec?.allRequiredInternal === true && p181YesExec?.moneyObtained === true, 'p181 all required recast houses strictly internal => money obtained');
+assert(p181Yes.canonicalReading?.overallPositive === true, 'p181 explicit money-obtained branch is positive');
+assert(p181Yes.professionalVerdictSafety?.certificationStatus === 'certified', 'p181 money acquisition passed professional backfill');
+const p181Unresolved = buildKashfCanonicalAiBridge({
+  questionId: 'q-livelihood-arrive', questionText: 'האם הממון יושג?',
+  board: makeBoard({ 2:'2121', 5:'2111', 8:'2112', 11:'2222' }),
+});
+assert(p181Unresolved.canonicalReading?.primaryFormula?.result?.executorResult?.allRequiredInternal === false, 'p181 counterfixture fails the all-internal condition');
+assert(p181Unresolved.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'unresolved', 'p181 failed positive condition stays unresolved');
+assert(p181Unresolved.canonicalReading?.overallPositive === null, 'p181 failed condition is not inverted into no-money');
+assert(p181Unresolved.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenInversions?.some((x) => x.includes('אינו מוכיח')), 'p181 policy explicitly locks the no-inverse rule');
+
+// PV-BF06-P266 — exact return-to-office positive/opposite branches and unresolved middle.
+const p266Return = buildKashfCanonicalAiBridge({
+  questionId: 'q-career-return', questionText: 'האם אחזור לתפקיד?',
+  board: makeBoard({ 1:'2121', 4:'2121', 16:'1122' }),
+});
+const p266ReturnExec = p266Return.canonicalReading?.primaryFormula?.result?.executorResult;
+assert(p266ReturnExec?.h1BeneficIncoming === true && p266ReturnExec?.appearsInStrongHouse === true && p266ReturnExec?.outcomeSupportsReturn === true && p266ReturnExec?.sourceOutcome === 'returns', 'p266 benefic-internal H1 + strong recurrence + benefic H16 gives return');
+assert(p266Return.canonicalReading?.overallPositive === true, 'p266 return branch is positive');
+assert(p266Return.professionalVerdictSafety?.certificationStatus === 'certified', 'p266 return-to-office passed professional backfill');
+const p266No = buildKashfCanonicalAiBridge({
+  questionId: 'q-career-return', questionText: 'האם אחזור לתפקיד?',
+  board: makeBoard({ 1:'1112' }),
+});
+assert(p266No.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'does-not-return', 'p266 pure-malefic H1 activates the explicit opposite branch');
+assert(p266No.canonicalReading?.overallPositive === false, 'p266 explicit opposite branch is negative');
+const p266Unresolved = buildKashfCanonicalAiBridge({
+  questionId: 'q-career-return', questionText: 'האם אחזור לתפקיד?',
+  board: makeBoard({ 1:'2121', 16:'1112' }),
+});
+assert(p266Unresolved.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'unresolved', 'p266 incomplete positive testimony without pure-malefic H1 remains unresolved');
+assert(p266Unresolved.canonicalReading?.overallPositive === null, 'p266 incomplete positive testimony is not inverted into no-return');
+
+// PV-BF06-P204 attention — one explicit row-state condition; never promote it to love/exclusivity.
+const p204AttentionMatch = buildKashfCanonicalAiBridge({
+  questionId: 'q-who-looks-love', questionText: 'האם אדם זה מביט אלי או אל אחר?',
+  board: makeBoard({ 1:'1111', 7:'1121', 13:'2222' }),
+});
+const p204AttentionMatchExec = p204AttentionMatch.canonicalReading?.primaryFormula?.result?.executorResult;
+assert(p204AttentionMatchExec?.sourceConditionMet === true && p204AttentionMatchExec?.attention === 'mutual-and-others', 'p204 exact fire-row condition yields mutual-and-others attention');
+assert(p204AttentionMatch.canonicalReading?.overallPositive === null, 'p204 attention is categorical/non-binary, not sentiment polarity');
+assert(p204AttentionMatch.professionalVerdictSafety?.certificationStatus === 'certified', 'p204 attention passed professional backfill');
+assert(p204AttentionMatch.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenClientClaimsWithoutExplicitSelectedMethodBranch?.includes('הוא אוהב אותך'), 'p204 attention policy forbids expansion into love');
+const p204AttentionNoMatch = buildKashfCanonicalAiBridge({
+  questionId: 'q-who-looks-love', questionText: 'האם אדם זה מביט אלי או אל אחר?',
+  board: makeBoard({ 1:'1111', 7:'1121', 13:'1111' }),
+});
+assert(p204AttentionNoMatch.canonicalReading?.primaryFormula?.result?.executorResult?.sourceConditionMet === false, 'p204 counterfixture fails the exact H13 joined condition');
+assert(p204AttentionNoMatch.canonicalReading?.primaryFormula?.result?.executorResult?.attention === null, 'p204 failed condition stays unresolved rather than inverted');
+assert(p204AttentionNoMatch.canonicalReading?.overallPositive === null, 'p204 failed condition remains non-binary');
 
 console.log(`\nKashf professional verdict safety tests: ${passed} passed, ${failed} failed`);
 if (failed) process.exit(1);
