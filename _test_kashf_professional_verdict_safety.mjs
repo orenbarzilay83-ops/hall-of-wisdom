@@ -4,6 +4,7 @@ import { buildKashfAiContextPackage } from './goral-hachol/intelligence/kashf-ai
 import {
   buildKashfProfessionalVerdictSafety,
   KASHF_PROFESSIONAL_VERDICT_SAFETY_VERSION,
+  KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS,
 } from './goral-hachol/intelligence/kashf-professional-verdict-safety.js';
 import {
   validateKashfAdvisorOutput,
@@ -142,6 +143,105 @@ const nonBinarySafety = buildKashfProfessionalVerdictSafety({
 });
 assert(nonBinarySafety.authoritativePolarity === 'non-binary', 'null engine polarity is classified non-binary');
 assert(nonBinarySafety.binaryClientVerdictAllowed === false, 'non-binary engine result cannot authorize a yes/no client verdict');
+
+
+console.log('\n--- Professional backfill batch 01 ---');
+
+function makeBoard(overrides = {}) {
+  return {
+    entries: Array.from({ length: 16 }, (_, index) => {
+      const house = index + 1;
+      const pattern = overrides[house] || '2222';
+      return { house, houseNumber: house, pattern, key: pattern, hebrewName: pattern };
+    }),
+  };
+}
+
+function auditOutputForSafety(safetyBlock, { draft = null, draftPolarity = 'none' } = {}) {
+  return {
+    module: 'kashf',
+    advisorDiagnosis: 'בדיקת backfill מקצועית.',
+    clientAnswerDraft: draft,
+    engineCritique: { hasProblem: false, problems: [], severity: 'none' },
+    missingKnowledgeOrRules: [],
+    recommendedFix: '',
+    codeInstructionForClaude: { needed: false, instruction: '', filesToInspect: [], filesNotToTouch: [], testsToRun: [] },
+    safetyNotes: [],
+    privacyBlockedFields: [],
+    nextBestAction: 'בדיקת backfill.',
+    confidence: 'high',
+    needsOrenDecision: false,
+    verdictAudit: {
+      methodId: safetyBlock.kashfMethodId,
+      engineVerdictPolarity: safetyBlock.authoritativePolarity,
+      clientDraftPolarity: draftPolarity,
+      usedOnlyAuthorizedVerdictSource: true,
+      inventedInverseRule: false,
+      mixedUnselectedMethod: false,
+      unsupportedClientClaims: [],
+    },
+  };
+}
+
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 5, 'certification registry starts with p210 + four backfilled methods');
+for (const id of [
+  'marriage.p210.generalMarriageH1H2H7H8H10Judge',
+  'general.p174.h1h2h4h7h10h15',
+  'siblings.p182.seniority',
+  'travel.p244.returnH1H2H9',
+  'missing.p249.returnAnglesJudge',
+]) {
+  assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes(id), id + ' is explicitly professionally certified');
+}
+
+// PV-BF01-P174 — six-house profile remains non-binary; no majority is allowed.
+const p174 = buildKashfCanonicalAiBridge({ questionId: 'q-general-state', questionText: 'מה מצבי הכללי?', board: makeBoard({ 1:'2111', 2:'1112', 4:'2111', 7:'1112', 10:'2111', 15:'1112' }) });
+assert(p174.canonicalReading?.overallPositive === null, 'p174 remains non-binary even with a deliberately split 3/3 board');
+assert(p174.professionalVerdictSafety?.certificationStatus === 'certified', 'p174 passed professional backfill');
+assert(p174.professionalVerdictSafety?.clientFacingCertified === true, 'p174 client-facing explanation is certified');
+assert(p174.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'p174 cannot become yes/no');
+assert(p174.professionalVerdictSafety?.methodSpecificPolicy?.excludedFromPrimaryVerdict?.some((x) => x.includes('רוב')), 'p174 policy explicitly forbids majority aggregation');
+
+// PV-BF01-P182 — named figures indicate seniority; every other H3 figure stays unresolved.
+const p182Named = buildKashfCanonicalAiBridge({ questionId: 'q-sibling-eldest', questionText: 'מי הגדול בין האחים?', board: makeBoard({ 3:'2222' }) });
+const p182NamedExec = p182Named.canonicalReading?.primaryFormula?.result?.executorResult;
+assert(p182NamedExec?.senioritySignal === 'older-paternal-emphasis', 'p182 Jamaa branch preserves older/paternal emphasis');
+assert(p182Named.professionalVerdictSafety?.certificationStatus === 'certified', 'p182 passed professional backfill');
+const p182Other = buildKashfCanonicalAiBridge({ questionId: 'q-sibling-eldest', questionText: 'מי הגדול בין האחים?', board: makeBoard({ 3:'2111' }) });
+assert(p182Other.canonicalReading?.primaryFormula?.result?.executorResult?.senioritySignal === 'unresolved', 'p182 unlisted H3 figure is not inverted into younger');
+assert(p182Other.canonicalReading?.overallPositive === null, 'p182 unlisted branch does not invent binary polarity');
+
+// PV-BF01-P244 — positive branch is binary; hardship branch is not a certain no-return.
+const p244Good = buildKashfCanonicalAiBridge({ questionId: 'q-traveler-return', questionText: 'האם הנוסע יחזור?', board: makeBoard({ 1:'2111', 2:'2111', 9:'2111' }) });
+assert(p244Good.canonicalReading?.overallPositive === true, 'p244 all-benefic/internal fixture gives the explicit positive return branch');
+assert(p244Good.professionalVerdictSafety?.certificationStatus === 'certified', 'p244 passed professional backfill');
+assert(p244Good.professionalVerdictSafety?.binaryClientVerdictAllowed === true, 'p244 explicit positive branch may be stated positively');
+const p244Hard = buildKashfCanonicalAiBridge({ questionId: 'q-traveler-return', questionText: 'האם הנוסע יחזור?', board: makeBoard({ 1:'1112', 2:'1112', 9:'1112' }) });
+assert(p244Hard.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'hardship-possible-no-return', 'p244 malefic fixture exposes hardship/possible non-return only');
+assert(p244Hard.canonicalReading?.overallPositive === null, 'p244 hardship branch is not inverted into a certain negative verdict');
+const p244WrongNegative = validateKashfAdvisorOutput(auditOutputForSafety(p244Hard.professionalVerdictSafety, { draft: 'הנוסע לא יחזור.', draftPolarity: 'negative' }));
+assert(validateKashfAdvisorVerdictAlignment(p244WrongNegative.value, p244Hard.professionalVerdictSafety).ok === false, 'server rejects certain negative client verdict for p244 hardship/non-binary branch');
+
+// PV-BF01-P249 — return sign is explicitly male-scoped and remains non-binary globally.
+const p249 = buildKashfCanonicalAiBridge({ questionId: 'q-missing-return', questionText: 'האם הנעדר יחזור?', board: makeBoard({ 1:'2111', 4:'2111', 7:'2111', 10:'2111', 15:'2111' }) });
+const p249Exec = p249.canonicalReading?.primaryFormula?.result?.executorResult;
+assert(p249Exec?.returnIndicatedForMale === true, 'p249 exact angle+judge fixture exposes the male-return sign');
+assert(p249.canonicalReading?.overallPositive === null, 'p249 does not generalize male-return sign into universal yes/no');
+assert(p249.professionalVerdictSafety?.certificationStatus === 'certified', 'p249 passed professional backfill');
+assert(p249.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenInversions?.some((x) => x.includes('לא יחזור')), 'p249 policy forbids inverse non-return claim');
+
+// p179 is intentionally NOT rubber-stamped: v57 says "יש בה צד מיטיב" while
+// the current executor gate is pure saad. Until scan-level wording is closed,
+// it stays runnable for advisor inspection but client-facing drafting is blocked.
+const p179Pending = buildKashfCanonicalAiBridge({ questionId: 'q-money-source', questionText: 'מאיפה יגיע הכסף?', board: makeBoard({ 2:'2111', 10:'2211' }) });
+assert(p179Pending.canonicalReading?.valid === true && p179Pending.canonicalReading?.canRunKashf === true, 'p179 engine remains runnable while professional wording audit is open');
+assert(p179Pending.professionalVerdictSafety?.certificationStatus === 'pending-backfill', 'p179 is explicitly pending professional backfill, not silently certified');
+assert(p179Pending.professionalVerdictSafety?.clientFacingCertified === false, 'p179 cannot produce client-facing draft before source wording closes');
+const p179Draft = validateKashfAdvisorOutput(auditOutputForSafety(p179Pending.professionalVerdictSafety, { draft: 'מקור הכסף הוא מן השלטון.', draftPolarity: 'non-binary' }));
+const p179DraftAlignment = validateKashfAdvisorVerdictAlignment(p179Draft.value, p179Pending.professionalVerdictSafety);
+assert(p179DraftAlignment.ok === false && p179DraftAlignment.category === 'uncertified-client-draft', 'server hard-blocks p179 client draft while backfill certification is pending');
+const p179AdvisorOnly = validateKashfAdvisorOutput(auditOutputForSafety(p179Pending.professionalVerdictSafety));
+assert(validateKashfAdvisorVerdictAlignment(p179AdvisorOnly.value, p179Pending.professionalVerdictSafety).ok === true, 'p179 may still be analyzed advisor-only with clientAnswerDraft:null');
 
 console.log(`\nKashf professional verdict safety tests: ${passed} passed, ${failed} failed`);
 if (failed) process.exit(1);

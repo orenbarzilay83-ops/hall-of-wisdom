@@ -106,3 +106,14 @@ H1 1222 + H5 1111 => 2111 סף נכנס
 ## 6. סטטוס ששת המנועים שנותרו
 
 סגירתם **מושהית זמנית** עד שהשכבה `Professional Verdict Safety` וה-Golden Case לעיל עוברים את כל הבדיקות. לאחר מכן חוזרים לששת המנועים, אחד/קבוצה קטנה לפי רמת סיכון, תחת סדר העבודה החדש בלבד.
+
+
+## 7. Backfill למנועים שכבר היו Ready
+
+התקן החדש חל רטרואקטיבית על כל המנועים הפעילים, לא רק על ששת המנועים שטרם מומשו. `ready` הוא סטטוס חישובי/מקורי ואינו מהווה עוד לבדו אישור לניסוח ללקוח.
+
+- מנוע שלא עבר Backfill מקבל `certificationStatus: pending-backfill` ו-`clientFacingCertified:false`.
+- מותר ל-AI לנתח אותו ליועץ לצורכי ביקורת, אך `clientAnswerDraft` חייב להיות `null`.
+- רק מנוע שעבר Source/Scope/No-Inverse/No-Aggregation/Isolation/Golden-Case מקבל `certified`.
+- Batch 01 הסמיך את p174, p182, p244, p249; p210 כבר הוסמך כ-Golden Case 001.
+- p179 נבדק אך לא הוסמך: נוסח v57 "יש בה צד מיטיב" דורש סגירת-מקור מול שער ה-pure-benefic הקיים לפני אישור client-facing.

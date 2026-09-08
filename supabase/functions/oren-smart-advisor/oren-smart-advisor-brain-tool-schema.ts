@@ -243,10 +243,12 @@ export function validateKashfAdvisorVerdictAlignment(
 
   const polarity = String(s.authoritativePolarity || 'blocked');
   const hasDraft = output.clientAnswerDraft !== null && output.clientAnswerDraft.trim().length > 0;
+  const clientFacingCertified = s.certificationStatus === 'certified' && s.clientFacingCertified === true;
+  if (!hasDraft && audit.clientDraftPolarity !== 'none') return { ok: false, category: 'client-draft-polarity-without-draft' };
+  if (!clientFacingCertified && hasDraft) return { ok: false, category: 'uncertified-client-draft' };
   if (polarity === 'positive' || polarity === 'negative') {
-    if (s.binaryClientVerdictAllowed !== true) return { ok: false, category: 'binary-client-verdict-not-allowed' };
+    if (hasDraft && s.binaryClientVerdictAllowed !== true) return { ok: false, category: 'binary-client-verdict-not-allowed' };
     if (hasDraft && audit.clientDraftPolarity !== polarity) return { ok: false, category: 'client-draft-polarity-mismatch' };
-    if (!hasDraft && audit.clientDraftPolarity !== 'none') return { ok: false, category: 'client-draft-polarity-without-draft' };
   } else if (polarity === 'non-binary') {
     if (audit.clientDraftPolarity === 'positive' || audit.clientDraftPolarity === 'negative') return { ok: false, category: 'invented-binary-client-verdict' };
   } else {
