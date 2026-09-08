@@ -17,7 +17,7 @@
  * allowed, but they NEVER create, reverse, soften or aggregate the verdict.
  */
 
-export const KASHF_PROFESSIONAL_VERDICT_SAFETY_VERSION = 'kashf-professional-verdict-safety-v4';
+export const KASHF_PROFESSIONAL_VERDICT_SAFETY_VERSION = 'kashf-professional-verdict-safety-v5';
 
 const P174_GENERAL_METHOD = 'general.p174.h1h2h4h7h10h15';
 const P182_SIBLING_SENIORITY_METHOD = 'siblings.p182.seniority';
@@ -34,6 +34,11 @@ const P212_RECONCILIATION_METHOD = 'dispute.p212.reconciliationH1H7';
 const P253_RELIGION_METHOD = 'religion.p253.h3h9Quality';
 const P202_LOST_RETURN_METHOD = 'lostItem.p202.returnH6H8';
 const P265_CLOTHING_LUCK_METHOD = 'clothing.p264-265.luck';
+const P191_PREGNANCY_EXISTS_METHOD = 'pregnancy.p191.existsH5SilentEmpty';
+const P191_PREGNANCY_GENDER_METHOD = 'pregnancy.p191.genderH5';
+const P196_ILLNESS_RECOVERY_METHOD = 'illness.p196.outcomeH15';
+const P188_HIDDEN_STILL_THERE_METHOD = 'hidden.p188.isStillThere';
+const P224_THIEF_RELATIONSHIP_METHOD = 'theft.p224.relationshipH7Recurrence';
 
 function freezeArray(values = []) {
   return Object.freeze([...(Array.isArray(values) ? values : [])]);
@@ -466,6 +471,152 @@ function p265ClothingLuckPolicy() {
   });
 }
 
+
+function p191PregnancyExistsPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-04',
+    goldenCaseIds: freezeArray(['PV-BF04-P191-EXISTS-SILENT', 'PV-BF04-P191-EXISTS-EMPTY', 'PV-BF04-P191-EXISTS-UNRESOLVED']),
+    policyId: 'p191-pregnancy-existence-silent-empty-v1',
+    questionScopeHebrew: 'עצם קיום ההריון לפי סיווג שותקת/ריקה של H5, עמ׳ 191',
+    decisiveRuleHebrew: 'H5 שותקת => ההריון נכון; H5 ריקה => ההריון בטל. צורה שאינה באחת משתי הקבוצות נשארת ללא הכרעה בכלל זה.',
+    oneWayBranches: freezeArray([
+      'H5 שותקת => ההריון נכון',
+      'H5 ריקה => ההריון בטל',
+    ]),
+    forbiddenInversions: freezeArray([
+      'אין להחליף את סיווג שותקת/ריקה בסיווג מיטיב/מזיק.',
+      'צורה שאינה שותקת ואינה ריקה אינה מוכיחה הריון או היעדר הריון.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'pregnancy.p191.genderH5 — מין הוולד הוא דין נפרד.',
+      'pregnancy.p191.childSafetyH1H6H8 — שלום הוולד הוא דין נפרד.',
+      'pregnancy.p191.deliveryDifficultyH1H5H15 ושאר דיני לידה/בריאות.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'מין הוולד',
+      'שלום הוולד או בריאותו',
+      'קלות או קושי הלידה',
+      'מועד הלידה',
+    ]),
+  });
+}
+
+function p191PregnancyGenderPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-04',
+    goldenCaseIds: freezeArray(['PV-BF04-P191-GENDER-MALE', 'PV-BF04-P191-GENDER-FEMALE', 'PV-BF04-P191-GENDER-UNRESOLVED']),
+    policyId: 'p191-pregnancy-gender-h5-v1',
+    questionScopeHebrew: 'מין הוולד לפי הסיווג הזכרי/נקבי של H5, עמ׳ 191',
+    decisiveRuleHebrew: 'H5 זכרית => הוולד זכר; H5 נקבית => הוולד נקבה. צורה שאינה מוכרעת בסיווג זה נשארת ללא הכרעה.',
+    oneWayBranches: freezeArray([
+      'H5 זכרית => הוולד זכר',
+      'H5 נקבית => הוולד נקבה',
+    ]),
+    forbiddenInversions: freezeArray([
+      'צורה שאינה מסווגת זכרית אינה הופכת אוטומטית לנקבית, ולהפך.',
+      'שיטת המין אינה מוכיחה שעצם ההריון קיים.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'pregnancy.p191.existsH5SilentEmpty — קיום ההריון הוא דין נפרד.',
+      'pregnancy.p191.childSafetyH1H6H8 — שלום הוולד הוא דין נפרד.',
+      'שיטות מין נוספות בעמודים הבאים אינן מצביעות בתוך השיטה הזאת.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'יש הריון משום שהצורה זכרית או נקבית',
+      'הוולד בריא או בטוח',
+      'הלידה תהיה קלה או קשה',
+    ]),
+  });
+}
+
+function p196IllnessRecoveryPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-04',
+    goldenCaseIds: freezeArray(['PV-BF04-P196-RECOVERS', 'PV-BF04-P196-PROLONGED', 'PV-BF04-P196-MIXED']),
+    policyId: 'p196-illness-recovery-h15-v1',
+    questionScopeHebrew: 'החלמת החולה/התארכות המחלה לפי H15, עמ׳ 196',
+    decisiveRuleHebrew: 'H15 מיטיב => החולה יתרפא. H15 מזיק => המחלה תתארך. ממוזג אינו מוכרע בכלל זה.',
+    oneWayBranches: freezeArray([
+      'H15 מיטיב => החולה יתרפא',
+      'H15 מזיק => המחלה תתארך',
+    ]),
+    forbiddenInversions: freezeArray([
+      'התארכות המחלה אינה פסק שהחולה לעולם לא יחלים.',
+      'H15 מזיק אינו דין מוות.',
+      'צורה ממוזגת אינה מקודמת לפי נטייתה להחלמה או להתארכות.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'illness.bodyPart.h6Figure — מיקום החולי בגוף הוא דין נפרד.',
+      'דיני חיים/מוות, רפואה, סיבת המחלה ושאר כללי החולה בעמ׳ 196–202.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'החולה ימות',
+      'החולה לעולם לא יחלים',
+      'משך המחלה במספר ימים/שבועות/חודשים',
+      'האיבר החולה בגוף',
+    ]),
+  });
+}
+
+function p188HiddenStillTherePolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-04',
+    goldenCaseIds: freezeArray(['PV-BF04-P188-PRESENT', 'PV-BF04-P188-NOT-PRESENT', 'PV-BF04-P188-NO-MAJORITY']),
+    policyId: 'p188-hidden-still-there-all-six-v1',
+    questionScopeHebrew: 'האם דבר נסתר שכבר נשאל עליו עדיין נמצא במקום הנבדק, עמ׳ 188',
+    decisiveRuleHebrew: 'H1,H2,H4,H13,H14,H15 כולם חייבים להיות מיטיבים טהורים => הדבר שם; אם התנאי אינו מתקיים => אינו שם. אין כלל רוב.',
+    oneWayBranches: freezeArray([
+      'כל H1,H2,H4,H13,H14,H15 מיטיבים => הדבר שם',
+      'אחד או יותר מן הבתים הנדרשים אינו מיטיב => הדבר אינו שם לפי הכלל',
+    ]),
+    forbiddenInversions: freezeArray([]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'עצם קיומו של מטמון שלא הונח בשאלה.',
+      'מיקום מדויק, כיוון, עומק, שווי או זהות מי שהסתיר.',
+      'hidden.p188.quarterDirection ושיטות כיוון/עומק נפרדות.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'יש מטמון במקום משום שהשיטה יצאה חיובית',
+      'הדבר נמצא בכיוון מסוים או בעומק מסוים',
+      'חמישה מתוך שישה בתים מיטיבים ולכן הדבר כנראה שם',
+    ]),
+  });
+}
+
+function p224ThiefRelationshipPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-04',
+    goldenCaseIds: freezeArray(['PV-BF04-P224-RECURRENCE-H4', 'PV-BF04-P224-NO-RECURRENCE']),
+    policyId: 'p224-thief-relationship-h7-recurrence-v1',
+    questionScopeHebrew: 'הקשר/הזיקה של הגנב לפי הבית שבו צורת H7 חוזרת, עמ׳ 224–225',
+    decisiveRuleHebrew: 'צורת H7 היא נקודת הייחוס. רק חזרתה בבית אחר מפעילה את תיאור הקשר שנמסר לאותו בית; ללא חזרה או ללא הוראת מקור לאותו בית אין להשלים קשר מן הדעת.',
+    oneWayBranches: freezeArray([
+      'חזרת צורת H7 בבית בעל הוראת מקור => מתארים רק את הקשר שנמסר לאותו בית',
+      'אין חזרת H7 בבית אחר => אין קשר מוכרע בכלל זה',
+    ]),
+    forbiddenInversions: freezeArray([
+      'אי-חזרה אינה מוכיחה שהגנב זר.',
+      'בית שאין לו הוראת מקור מפורשת אינו מקבל משמעות כללית מן הדעת.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'theft.p225.thiefDescriptionH7 — תיאור פיזי של הגנב הוא דין נפרד.',
+      'זהות של אדם מסוים, שם, גיל, מרחק מספרי או מיקום החפץ.',
+      'lostItem.p202.returnH6H8 ושאר דיני אבדה אינם חלק משיטת הקשר.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'פלוני הוא הגנב',
+      'הגנב נמצא במרחק מסוים',
+      'כך נראה הגנב',
+      'החפץ נמצא במקום מסוים',
+    ]),
+  });
+}
+
 const METHOD_POLICIES = Object.freeze({
   [P174_GENERAL_METHOD]: p174Policy(),
   [P182_SIBLING_SENIORITY_METHOD]: p182Policy(),
@@ -481,6 +632,11 @@ const METHOD_POLICIES = Object.freeze({
   [P253_RELIGION_METHOD]: p253ReligionPolicy(),
   [P202_LOST_RETURN_METHOD]: p202LostReturnPolicy(),
   [P265_CLOTHING_LUCK_METHOD]: p265ClothingLuckPolicy(),
+  [P191_PREGNANCY_EXISTS_METHOD]: p191PregnancyExistsPolicy(),
+  [P191_PREGNANCY_GENDER_METHOD]: p191PregnancyGenderPolicy(),
+  [P196_ILLNESS_RECOVERY_METHOD]: p196IllnessRecoveryPolicy(),
+  [P188_HIDDEN_STILL_THERE_METHOD]: p188HiddenStillTherePolicy(),
+  [P224_THIEF_RELATIONSHIP_METHOD]: p224ThiefRelationshipPolicy(),
 });
 
 export const KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS = Object.freeze(

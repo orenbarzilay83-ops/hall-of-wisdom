@@ -189,7 +189,7 @@ function auditOutputForSafety(safetyBlock, { draft = null, draftPolarity = 'none
   };
 }
 
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 14, 'certification registry contains fourteen professionally certified methods');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 19, 'certification registry contains nineteen professionally certified methods');
 for (const id of [
   'marriage.p210.generalMarriageH1H2H7H8H10Judge',
   'general.p174.h1h2h4h7h10h15',
@@ -205,6 +205,11 @@ for (const id of [
   'religion.p253.h3h9Quality',
   'lostItem.p202.returnH6H8',
   'clothing.p264-265.luck',
+  'pregnancy.p191.existsH5SilentEmpty',
+  'pregnancy.p191.genderH5',
+  'illness.p196.outcomeH15',
+  'hidden.p188.isStillThere',
+  'theft.p224.relationshipH7Recurrence',
 ]) {
   assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes(id), id + ' is explicitly professionally certified');
 }
@@ -389,6 +394,73 @@ assert(p265Royal.canonicalReading?.primaryFormula?.result?.executorResult?.royal
 assert(p265Royal.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenClientClaimsWithoutExplicitSelectedMethodBranch?.some((x) => x.includes('מבטל')), 'p265 policy forbids H10 from silently cancelling the general branch');
 const p265Mixed = buildKashfCanonicalAiBridge({ questionId: 'q-clothing-lucky', questionText: 'מה מזלי בלבוש?', board: makeBoard({ 5:'2212', 10:'1122', 11:'2111' }) });
 assert(p265Mixed.canonicalReading?.overallPositive === null, 'p265 mixed/split H5-H11 evidence remains unresolved');
+
+
+
+console.log('\n--- Professional backfill batch 04 ---');
+
+// PV-BF04-P191 existence — use silent/empty only; never substitute fortune.
+const p191ExistsYes = buildKashfCanonicalAiBridge({ questionId: 'q-pregnancy', questionText: 'האם יש הריון?', board: makeBoard({ 5:'2111' }) });
+assert(p191ExistsYes.canonicalReading?.primaryFormula?.result?.executorResult?.classification === 'silent', 'p191 existence silent H5 uses the exact silent class');
+assert(p191ExistsYes.canonicalReading?.overallPositive === true, 'p191 silent H5 gives the explicit pregnancy-exists branch');
+assert(p191ExistsYes.professionalVerdictSafety?.certificationStatus === 'certified', 'p191 pregnancy existence passed professional backfill');
+assert(p191ExistsYes.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenInversions?.some((x) => x.includes('מיטיב/מזיק')), 'p191 existence policy forbids replacing silent/empty with benefic/malefic');
+const p191ExistsNo = buildKashfCanonicalAiBridge({ questionId: 'q-pregnancy', questionText: 'האם יש הריון?', board: makeBoard({ 5:'1112' }) });
+assert(p191ExistsNo.canonicalReading?.primaryFormula?.result?.executorResult?.classification === 'empty', 'p191 existence empty H5 uses the exact empty class');
+assert(p191ExistsNo.canonicalReading?.overallPositive === false, 'p191 empty H5 gives the explicit pregnancy-nullified branch');
+const p191ExistsUnresolved = buildKashfCanonicalAiBridge({ questionId: 'q-pregnancy', questionText: 'האם יש הריון?', board: makeBoard({ 5:'1111' }) });
+assert(p191ExistsUnresolved.canonicalReading?.overallPositive === null, 'p191 H5 outside silent/empty remains unresolved');
+
+// PV-BF04-P191 gender — categorical male/female needs exact-draft protection.
+const p191GenderMale = buildKashfCanonicalAiBridge({ questionId: 'q-gender', questionText: 'מה מין הוולד?', board: makeBoard({ 5:'1112' }) });
+assert(p191GenderMale.canonicalReading?.primaryFormula?.result?.executorResult?.gender === 'male', 'p191 masculine H5 gives male');
+assert(p191GenderMale.canonicalReading?.overallPositive === null, 'p191 gender remains categorical/non-binary polarity');
+assert(p191GenderMale.professionalVerdictSafety?.certificationStatus === 'certified', 'p191 gender passed professional backfill');
+const p191GenderExact = validateKashfAdvisorOutput(auditOutputForSafety(p191GenderMale.professionalVerdictSafety, { draft: p191GenderMale.professionalVerdictSafety.authoritativeClientDraftHebrew, draftPolarity: 'non-binary' }));
+assert(validateKashfAdvisorVerdictAlignment(p191GenderExact.value, p191GenderMale.professionalVerdictSafety).ok === true, 'p191 exact male category text passes server gate');
+const p191GenderWrong = validateKashfAdvisorOutput(auditOutputForSafety(p191GenderMale.professionalVerdictSafety, { draft: 'לפי כשף עמ׳ 191: הוולד נקבה.', draftPolarity: 'non-binary' }));
+const p191GenderWrongAlignment = validateKashfAdvisorVerdictAlignment(p191GenderWrong.value, p191GenderMale.professionalVerdictSafety);
+assert(p191GenderWrongAlignment.ok === false && p191GenderWrongAlignment.category === 'client-draft-not-exact-engine-text', 'server blocks male→female category replacement even though both are non-binary');
+const p191GenderFemale = buildKashfCanonicalAiBridge({ questionId: 'q-gender', questionText: 'מה מין הוולד?', board: makeBoard({ 5:'2111' }) });
+assert(p191GenderFemale.canonicalReading?.primaryFormula?.result?.executorResult?.gender === 'female', 'p191 feminine H5 gives female');
+const p191GenderUnresolved = buildKashfCanonicalAiBridge({ questionId: 'q-gender', questionText: 'מה מין הוולד?', board: makeBoard({ 5:'1111' }) });
+assert(p191GenderUnresolved.canonicalReading?.primaryFormula?.result?.executorResult?.gender === null, 'p191 unclassified H5 does not invent a gender');
+
+// PV-BF04-P196 illness — malefic means prolongation, not death or permanent non-recovery.
+const p196Recovery = buildKashfCanonicalAiBridge({ questionId: 'q-illness-heal', questionText: 'האם החולה יחלים?', board: makeBoard({ 15:'1122' }) });
+assert(p196Recovery.canonicalReading?.primaryFormula?.result?.executorResult?.recoveryStatus === 'recovers', 'p196 benefic H15 gives explicit recovery');
+assert(p196Recovery.canonicalReading?.overallPositive === true, 'p196 recovery branch is positive');
+assert(p196Recovery.professionalVerdictSafety?.certificationStatus === 'certified', 'p196 illness recovery passed professional backfill');
+const p196Prolonged = buildKashfCanonicalAiBridge({ questionId: 'q-illness-heal', questionText: 'האם החולה יחלים?', board: makeBoard({ 15:'1112' }) });
+assert(p196Prolonged.canonicalReading?.primaryFormula?.result?.executorResult?.recoveryStatus === 'prolonged-illness', 'p196 malefic H15 means prolonged illness');
+assert(p196Prolonged.canonicalReading?.primaryFormula?.result?.executorResult?.recovers === null && p196Prolonged.canonicalReading?.overallPositive === null, 'p196 prolongation is not inverted into categorical no-recovery');
+assert(p196Prolonged.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenClientClaimsWithoutExplicitSelectedMethodBranch?.includes('החולה ימות'), 'p196 policy explicitly forbids inventing death');
+const p196Mixed = buildKashfCanonicalAiBridge({ questionId: 'q-illness-heal', questionText: 'האם החולה יחלים?', board: makeBoard({ 15:'2212' }) });
+assert(p196Mixed.canonicalReading?.overallPositive === null, 'p196 mixed H15 remains unresolved');
+
+// PV-BF04-P188 hidden thing — all six required houses, no majority.
+const p188Present = buildKashfCanonicalAiBridge({ questionId: 'q-treasure', questionText: 'האם הדבר הנסתר עדיין במקומו?', board: makeBoard({ 1:'1122', 2:'1122', 4:'1122', 13:'1122', 14:'1122', 15:'1122' }) });
+assert(p188Present.canonicalReading?.primaryFormula?.result?.executorResult?.allBenefic === true, 'p188 all six required houses are pure benefic');
+assert(p188Present.canonicalReading?.overallPositive === true, 'p188 all-six condition gives present-in-place');
+assert(p188Present.professionalVerdictSafety?.certificationStatus === 'certified', 'p188 hidden-item method passed professional backfill');
+const p188Absent = buildKashfCanonicalAiBridge({ questionId: 'q-treasure', questionText: 'האם הדבר הנסתר עדיין במקומו?', board: makeBoard({ 1:'1122', 2:'1122', 4:'1122', 13:'1122', 14:'1112', 15:'1122' }) });
+assert(p188Absent.canonicalReading?.primaryFormula?.result?.executorResult?.nonBeneficHouses?.includes(14), 'p188 identifies the single failing required house');
+assert(p188Absent.canonicalReading?.overallPositive === false, 'p188 one failing house triggers the explicit not-there branch');
+assert(p188Absent.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenClientClaimsWithoutExplicitSelectedMethodBranch?.some((x) => x.includes('חמישה מתוך שישה')), 'p188 policy explicitly forbids invented 5/6 majority');
+
+// PV-BF04-P224 thief relationship — recurrence describes a source-bounded relation, not identity.
+const p224Relation = buildKashfCanonicalAiBridge({ questionId: 'q-thief-near', questionText: 'מה הקשר של הגנב לבעל הדבר?', board: makeBoard({ 4:'1121', 7:'1121' }) });
+const p224RelationExec = p224Relation.canonicalReading?.primaryFormula?.result?.executorResult;
+assert(p224RelationExec?.relationResolved === true, 'p224 H7 recurrence in H4 resolves a source-supported relation');
+assert(JSON.stringify(p224RelationExec?.recurrenceHouses) === JSON.stringify([4]), 'p224 reference H7 itself is excluded and only H4 recurrence is used');
+assert(String(p224RelationExec?.outputHebrew || '').includes('מי שנכנס לביתו'), 'p224 H4 recurrence preserves the p224 relationship text');
+assert(String(p224RelationExec?.outputHebrew || '').includes('שורש קרבה: אב'), 'p224 H4 recurrence preserves the p225 kinship-root layer');
+assert(p224Relation.canonicalReading?.overallPositive === null, 'p224 relationship is descriptive/non-binary');
+assert(p224Relation.professionalVerdictSafety?.certificationStatus === 'certified', 'p224 thief relationship passed professional backfill');
+assert(p224Relation.professionalVerdictSafety?.methodSpecificPolicy?.excludedFromPrimaryVerdict?.some((x) => x.includes('זהות של אדם מסוים')), 'p224 policy blocks named-person identification');
+const p224NoRecurrence = buildKashfCanonicalAiBridge({ questionId: 'q-thief-near', questionText: 'מה הקשר של הגנב לבעל הדבר?', board: makeBoard({ 7:'1121' }) });
+assert(p224NoRecurrence.canonicalReading?.primaryFormula?.result?.executorResult?.relationResolved === false, 'p224 no H7 recurrence remains unresolved');
+assert(p224NoRecurrence.canonicalReading?.overallPositive === null, 'p224 no recurrence does not invent stranger/near/far polarity');
 
 console.log(`\nKashf professional verdict safety tests: ${passed} passed, ${failed} failed`);
 if (failed) process.exit(1);
