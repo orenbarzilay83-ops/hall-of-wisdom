@@ -166,6 +166,15 @@ for (const [methodId, questionId, houses, separation] of [
   assert(record?.doNotMixWith.includes(separation), methodId + ' retrieval preserves neighboring-method separation');
 }
 
+const p205RepairRecord = getKashfAiRetrievalRecord('love.p205.directLoveH1PlacementH5Relation');
+assert(p205RepairRecord != null, 'repaired p205 direct-love remains indexed for knowledge retrieval');
+assert(getKashfAiRetrievalRecord('love.p205.directLoveH1PlacementH15') == null, 'obsolete H15 p205 retrieval id is absent');
+assert(p205RepairRecord?.kashfRuntimeStatus === 'repair-required', 'p205 retrieval exposes repair-required source status');
+assert(p205RepairRecord?.runtimeAllowed === false && p205RepairRecord?.executorStatus === 'pending', 'p205 retrieval cannot promote the blocked executor');
+assert(p205RepairRecord?.questionIds.includes('q-love'), 'p205 retrieval stays linked to q-love');
+assert(JSON.stringify(p205RepairRecord?.houses) === JSON.stringify([1,5]), 'p205 retrieval exposes H1 and corrected H5 as the primary source scope');
+assert(p205RepairRecord?.v57?.hebrewRule.includes('בבית החמישי'), 'p205 retrieval carries corrected H5 Hebrew knowledge');
+
 const pendingKnowledgeRecord = getKashfAiRetrievalRecord('mother.p257.statusDayNight');
 assert(pendingKnowledgeRecord?.runtimeAllowed === false && pendingKnowledgeRecord?.executorStatus === 'pending', 'a source-ready pending method remains knowledge-visible without runtime authorization');
 

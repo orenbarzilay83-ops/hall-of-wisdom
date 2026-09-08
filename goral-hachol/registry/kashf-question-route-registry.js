@@ -541,8 +541,8 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     questionId: 'q-love',
     disposition: 'KEEP',
     kashfIntentId: 'love.doesPersonLoveMe',
-    kashfMethodId: 'love.p205.directLoveH1PlacementH15',
-    kashfRuntimeStatus: 'ready',
+    kashfMethodId: 'love.p205.directLoveH1PlacementH5Relation',
+    kashfRuntimeStatus: 'repair-required',
     note: 'Dedicated body-source p205 love question. Keep separate from p264 friendship/love material.',
   }),
 
@@ -551,8 +551,8 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     disposition: 'ALIAS',
     aliasOf: 'q-love',
     kashfIntentId: 'love.doesPersonLoveMe',
-    kashfMethodId: 'love.p205.directLoveH1PlacementH15',
-    kashfRuntimeStatus: 'ready',
+    kashfMethodId: 'love.p205.directLoveH1PlacementH5Relation',
+    kashfRuntimeStatus: 'repair-required',
     note: 'Alias only after wording is made directional to match the source question “does this person love you?”.',
   }),
 

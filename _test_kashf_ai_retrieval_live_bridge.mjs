@@ -64,6 +64,19 @@ assert(pending.canonicalRetrieval?.knowledgeLanguage === 'he', 'pending method m
 assert(pending.aiVerdictAllowed === false, 'retrieval cannot promote pending executor to runnable');
 assert(pending.canonicalReading.canRunKashf === false, 'canonical runtime stays blocked for pending executor');
 
+// 4a. p205 source repair is visible to the live bridge but cannot execute.
+const p205RepairLive = buildKashfCanonicalAiBridge({
+  questionId: 'q-love',
+  questionText: 'האם הוא אוהב אותי?',
+  board: BOARD,
+});
+assert(p205RepairLive.resolution.kashfMethodId === 'love.p205.directLoveH1PlacementH5Relation', 'q-love resolves the corrected p205 H5-relation method id');
+assert(p205RepairLive.resolution.kashfRuntimeStatus === 'repair-required', 'q-love bridge exposes repair-required status');
+assert(p205RepairLive.resolution.executorStatus === 'pending', 'q-love bridge preserves pending executor state');
+assert(p205RepairLive.aiVerdictAllowed === false, 'AI cannot issue a p205 love verdict while source semantics remain unresolved');
+assert(p205RepairLive.canonicalReading.canRunKashf === false, 'canonical p205 runtime remains hard-stopped');
+assert(p205RepairLive.canonicalRetrieval?.v57?.hebrewRule?.includes('בבית החמישי'), 'live p205 retrieval exposes corrected H5 knowledge');
+
 // 4b. Newly activated p167 route is available to the live AI only through its
 // exact hidden-action method and retains the anti-mixing boundary.
 const hiddenActionLive = buildKashfCanonicalAiBridge({

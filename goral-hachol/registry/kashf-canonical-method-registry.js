@@ -446,16 +446,16 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     notes: 'Canonical pp210-211 general-marriage executor is wired. It preserves the source roles of H1/H2 for the man and marriage, H7/H8 for the woman, H10 for what occurs between them and H15 for the outcome; it then performs the explicit H1+H5 derivation for the final good/opposite judgment. Only source-explicit branches are asserted, and mixed testimony remains unresolved.',
   }),
 
-  'love.p205.directLoveH1PlacementH15': method({
-    kashfMethodId: 'love.p205.directLoveH1PlacementH15',
+  'love.p205.directLoveH1PlacementH5Relation': method({
+    kashfMethodId: 'love.p205.directLoveH1PlacementH5Relation',
     kashfIntentId: 'love.doesPersonLoveMe',
     topicId: 'marriage',
     sourcePages: [205],
-    kashfRuntimeStatus: 'ready',
+    kashfRuntimeStatus: 'repair-required',
     runtimeAllowed: false,
     executionKind: 'custom-engine',
     executorStatus: 'pending',
-    notes: 'Direct body-source love question. Judge the H1 figure by its placement in angles vs cadents and inspect H15 in relation to H1. Do not substitute the p264 friendship/love method.',
+    notes: 'Primary scan p205 reads H5 (الخامس المطلوب), not H15. The H1 figure is judged by its recurrence/placement, but the printed negative list names 6,8,3,12 while the standard cadents are 3,6,9,12. The source then says to inspect H5, called the sought, relative to the ascendant; a bad relation means aversion, while the final phrase "وإن كان في قبضتك" is not mechanically closed. Runtime remains blocked until the placement anomaly, نسبة relation and قبضتك clause are source-closed. Do not substitute p204 attention or p264 friendship/love.',
   }),
 
   'love.p204.attentionFireRows1713': method({

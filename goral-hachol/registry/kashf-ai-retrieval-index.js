@@ -74,9 +74,14 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
     doNotMixWith: ['siblings.p182.h1h3'],
     houses: [3],
   },
+  'love.p205.directLoveH1PlacementH5Relation': {
+    aliases: ['האם הוא אוהב אותי', 'האם אדם זה אוהב אותי', 'האם הוא אוהב אותך', 'אהבה ישירה', 'האם יש לו רצון בי'],
+    doNotMixWith: ['love.p204.attentionFireRows1713', 'love.p206.womanFavorH7H11ThenH5', 'marriage.p211.dissolutionH7StateMatrix'],
+    houses: [1, 5],
+  },
   'marriage.p211.dissolutionH7StateMatrix': {
     aliases: ['האם תהיה פרידה בנישואין', 'האם הזוג יתגרש', 'יציבות הנישואין', 'פירוק הנישואין', 'האם הנישואין יישארו קיימים'],
-    doNotMixWith: ['marriage.p210.generalMarriageH1H2H7H8H10Judge', 'love.p205.directLoveH1PlacementH15'],
+    doNotMixWith: ['marriage.p210.generalMarriageH1H2H7H8H10Judge', 'love.p205.directLoveH1PlacementH5Relation'],
     houses: [7],
   },
   'missing.p249.returnAnglesJudge': {

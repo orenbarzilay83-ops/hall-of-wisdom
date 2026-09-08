@@ -91,6 +91,29 @@ assert(getKashfMethod('joy.p196.recast14511')?.kashfRuntimeStatus === 'blocked-b
 assert(getKashfV57Knowledge('joy.p196.recast14511') === null, 'false p196 joy mapping is not fabricated into v57 Hebrew knowledge');
 assert(JSON.stringify(getKashfMethod('missing.p248-249.lifeH1H4H9Outcome')?.sourcePages) === JSON.stringify([250, 251]), 'missing-person life/death source pages corrected to v57 pp250-251');
 
+// ── p205 direct-love source repair: H5, not H15; runtime hard stop -----
+const p205LoveMethod = getKashfMethod('love.p205.directLoveH1PlacementH5Relation');
+assert(p205LoveMethod?.kashfRuntimeStatus === 'repair-required', 'p205 direct-love is repair-required after scan verification');
+assert(p205LoveMethod?.runtimeAllowed === false && p205LoveMethod?.executorStatus === 'pending', 'p205 direct-love cannot run while relation semantics are unresolved');
+assert(getKashfMethod('love.p205.directLoveH1PlacementH15') == null, 'obsolete H15 p205 method id is removed');
+assertRoute('q-love', {
+  ok: true,
+  canRunKashf: false,
+  kashfIntentId: 'love.doesPersonLoveMe',
+  kashfMethodId: 'love.p205.directLoveH1PlacementH5Relation',
+  kashfRuntimeStatus: 'repair-required',
+  runtimeAllowed: false,
+  executorStatus: 'pending',
+});
+const p205LoveAlias = resolveKashfRouteByQuestionId('q-love-desire');
+assert(p205LoveAlias.aliasOf === 'q-love', 'q-love-desire remains an explicit alias of q-love');
+assert(p205LoveAlias.kashfMethodId === 'love.p205.directLoveH1PlacementH5Relation' && p205LoveAlias.canRunKashf === false, 'q-love-desire inherits the repaired p205 hard stop');
+const p205LoveV57 = getKashfV57Knowledge('love.p205.directLoveH1PlacementH5Relation');
+assert(p205LoveV57?.v57?.hebrewRule.includes('בבית החמישי'), 'p205 Hebrew operational knowledge now records H5 from the primary scan');
+assert(!p205LoveV57?.v57?.hebrewRule.includes('בבית החמישה־עשר'), 'p205 Hebrew operational knowledge no longer states H15');
+assert(p205LoveV57?.arabicVerification?.notes?.includes('6,8,3,12'), 'p205 verification notes preserve the printed 6,8,3,12 anomaly');
+assert(p205LoveV57?.arabicVerification?.notes?.includes('3,6,9,12'), 'p205 verification notes preserve the standard-cadent comparison instead of silently normalizing');
+
 const professionV57 = getKashfV57Knowledge('profession.p254.h9Planet');
 assert(professionV57?.v57?.hebrewRule.includes('כישוף, נפלאות ואצטגנינות'), 'profession p254 v57 knowledge preserves Mercury magic/wonders/astrology rule');
 assert(!professionV57?.v57?.hebrewRule.includes('כתיבה וחשבונות'), 'profession p254 v57 knowledge does not retain stale Mercury writing/accounts rule');
