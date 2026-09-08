@@ -1,4 +1,5 @@
 name: Kashf Professional Backfill 08
+# bootstrap-retry: 2
 
 on:
   push:
