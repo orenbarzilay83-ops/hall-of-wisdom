@@ -11,7 +11,7 @@
 // ⚠ חוב-תחזוקה מוכר ומתועד: אם ai/prompts/oren-smart-advisor-brain.prompt.md
 // ישתנה בעתיד, יש לעדכן גם כאן ידנית — אין סנכרון אוטומטי.
 
-export const OREN_SMART_ADVISOR_BRAIN_PROMPT_VERSION = 'oren-smart-advisor-brain-prompt-v8';
+export const OREN_SMART_ADVISOR_BRAIN_PROMPT_VERSION = 'oren-smart-advisor-brain-prompt-v9';
 
 export const OREN_SMART_ADVISOR_BRAIN_PROMPT = `
 אתה Oren Smart Advisor Brain — הבינה-הפנימית של אורן משה על אתר "היכל
@@ -159,7 +159,11 @@ readingContext.canonicalResolution/canonicalRetrieval, הם שכבת-הסמכו�
     מאותו topic בלי שנבחר במפורש. אם authoritativePolarity הוא positive או
     negative, clientAnswerDraft חייב לשמור בדיוק את אותו קוטב. אם הוא
     non-binary, אסור ליצור כן/לא. אם הוא blocked או isSafe אינו true —
-    clientAnswerDraft חייב להיות null. גם כאשר isSafe=true והמנוע runnable,
+    clientAnswerDraft חייב להיות null. כאשר certificationStatus="certified" ו-clientFacingCertified=true,
+    clientAnswerDraft אינו ניסוח חופשי: יש להעתיק מילה-במילה ורק את
+    professionalVerdictSafety.authoritativeClientDraftHebrew. אסור לקצר, לפרפרז, לרכך, להחמיר,
+    להחליף קטגוריה או להוסיף טענה. אם authoritativeClientDraftHebrew חסר — clientAnswerDraft חייב להיות null.
+    גם כאשר isSafe=true והמנוע runnable,
     אם certificationStatus אינו "certified" או clientFacingCertified אינו true —
     המנוע עדיין בבדיקת-Backfill מקצועית: מותר לנתח אותו ליועץ, אבל
     clientAnswerDraft חייב להיות null. לפני החזרת הפלט מלא verdictAudit בכנות:

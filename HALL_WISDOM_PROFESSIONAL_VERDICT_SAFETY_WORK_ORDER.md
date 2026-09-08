@@ -92,8 +92,9 @@ H1 1222 + H5 1111 => 2111 סף נכנס
 9. **Real-Case Golden Tests** — לפחות מקרה אמיתי/קצה שמנסה לפתות את ה-AI לערבב חוק אחר או משמעות כללית.
 10. **Professional Verdict Safety Gate** — ה-AI מקבל `overallPositive/verdict` כסמכות לפסק; raw board ו-generic metadata אינם מקורות פסק.
 11. **Structured Output Alignment** — ה-AI חייב להצהיר על קוטב הפסק והשרת משווה אותו דטרמיניסטית לפסק המנוע.
-12. **Full Regression** — routing + retrieval + live bridge + context builder + sanitizer + structured output + Professional Verdict Safety.
-13. **Deploy/Status** — רק לאחר שכל השערים עברו אפשר לסמן `ready` ולהמשיך למנוע הבא.
+12. **Exact Client Draft Lock** — מנוע certified מספק `authoritativeClientDraftHebrew`; טיוטת הלקוח חייבת להיות העתק מילה-במילה. אין פרפרזה, החלפת קטגוריה או תוספת AI. אם הטקסט חסר — `clientAnswerDraft:null`.
+13. **Full Regression** — routing + retrieval + live bridge + context builder + sanitizer + structured output + Professional Verdict Safety.
+14. **Deploy/Status** — רק לאחר שכל השערים עברו אפשר לסמן `ready` ולהמשיך למנוע הבא.
 
 ## 5. הפרדת שיטות — קבועה
 
@@ -126,3 +127,8 @@ H1 1222 + H5 1111 => 2111 סף נכנס
 
 מצב לאחר Batch 02: 9 מתוך 43 מנועים runnable מוסמכים מקצועית; 34 ממתינים ל-Backfill. גילוי פער ב-Backfill אינו כישלון של התהליך אלא מטרתו: מנוע לא מקבל certified עד שהפסק, גבולותיו וכל ענפי המקור הנדרשים סגורים.
 
+
+
+## 8. חיזוק Batch 03 — קוטב אינו מספיק
+
+במהלך ההסמכה הרטרואקטיבית התברר ששער שבודק רק positive/negative/non-binary אינו יכול לזהות החלפת קטגוריה בתוך non-binary. לדוגמה: מנוע שמחזיר "גרושה" וטיוטת AI שמחזירה "בתולה" חולקים אותו קוטב non-binary, וכך גם "להישאר" מול "לעבור". לכן client-facing של מנוע certified אינו עוד ניסוח AI חופשי: השרת מקבל רק העתק מדויק של הטקסט הדטרמיניסטי שהמנוע יצר. הבינה נשארת חופשית לנתח ב-advisorDiagnosis, אך אינה רשאית לנסח מחדש את הפסק ללקוח.

@@ -78,6 +78,10 @@ function validateCanonicalBlock(payload: KashfReadingPayloadLike): boolean {
   if (!['certified', 'pending-backfill', 'not-applicable'].includes(String(safety.certificationStatus || ''))) return false;
   if (typeof safety.clientFacingCertified !== 'boolean') return false;
   if ((safety.certificationStatus === 'certified') !== (safety.clientFacingCertified === true)) return false;
+  if (typeof safety.clientDraftExactMatchRequired !== 'boolean') return false;
+  if (safety.clientFacingCertified === true && safety.clientDraftExactMatchRequired !== true) return false;
+  if (safety.authoritativeClientDraftHebrew !== null && !isShortString(safety.authoritativeClientDraftHebrew, 6000)) return false;
+  if (safety.clientFacingCertified === true && !isShortString(safety.authoritativeClientDraftHebrew, 6000)) return false;
   if (safety.binaryClientVerdictAllowed === true && safety.clientFacingCertified !== true) return false;
   if (safety.noInverseRule !== true || safety.noUnstatedAggregation !== true || safety.selectedMethodOnly !== true) return false;
   if (!isStringArray(safety.allowedVerdictSources, 10, 300)) return false;

@@ -55,6 +55,8 @@ assert(safety?.policyVersion === KASHF_PROFESSIONAL_VERDICT_SAFETY_VERSION, 'bri
 assert(safety?.isSafe === true, 'real p210 reading passes deterministic professional safety prerequisites');
 assert(safety?.authoritativePolarity === 'positive', 'safety gate locks authoritative polarity to positive');
 assert(safety?.binaryClientVerdictAllowed === true, 'positive binary client verdict is allowed because the engine itself is binary');
+assert(safety?.clientDraftExactMatchRequired === true, 'certified p210 requires exact deterministic client draft');
+assert(safety?.authoritativeClientDraftHebrew === executor?.outputHebrew, 'p210 authoritative client draft is the executor source-bounded text');
 assert(safety?.noInverseRule === true && safety?.noUnstatedAggregation === true, 'safety contract forbids invented inverse rules and unstated aggregation');
 assert(safety?.genericFigureMetadataRole === 'context-only-never-overrides-verdict', 'generic figure metadata is explicitly context-only');
 assert(safety?.forbiddenVerdictSources?.some((x) => x.includes('H16')), 'p210 safety contract explicitly forbids H16 as a verdict source');
@@ -93,7 +95,7 @@ function advisorOutput(overrides = {}) {
   return {
     module: 'kashf',
     advisorDiagnosis: 'הפסק הקנוני חיובי לפי p210.',
-    clientAnswerDraft: 'לפי דין הנישואין שנבחר, התשובה חיובית.',
+    clientAnswerDraft: safety.authoritativeClientDraftHebrew,
     engineCritique: { hasProblem: false, problems: [], severity: 'none' },
     missingKnowledgeOrRules: [],
     recommendedFix: '',
@@ -111,7 +113,11 @@ function advisorOutput(overrides = {}) {
 const goodOutput = advisorOutput();
 const schemaGood = validateKashfAdvisorOutput(goodOutput);
 assert(schemaGood.ok === true, 'structured advisor output with verdictAudit passes schema validation');
-assert(validateKashfAdvisorVerdictAlignment(schemaGood.value, rc.professionalVerdictSafety).ok === true, 'matching positive AI draft passes deterministic server alignment');
+assert(validateKashfAdvisorVerdictAlignment(schemaGood.value, rc.professionalVerdictSafety).ok === true, 'matching exact positive engine draft passes deterministic server alignment');
+
+const paraphrasedSamePolarity = validateKashfAdvisorOutput(advisorOutput({ clientAnswerDraft: 'לפי הדין התשובה חיובית.' }));
+const paraphrasedAlignment = validateKashfAdvisorVerdictAlignment(paraphrasedSamePolarity.value, rc.professionalVerdictSafety);
+assert(paraphrasedAlignment.ok === false && paraphrasedAlignment.category === 'client-draft-not-exact-engine-text', 'server rejects same-polarity paraphrase: client text is deterministic, not AI-authored');
 
 const wrongPolarity = validateKashfAdvisorOutput(advisorOutput({ verdictAudit: { clientDraftPolarity: 'negative' } }));
 assert(wrongPolarity.ok === true, 'wrong-polarity fixture is schema-valid before semantic safety check');
@@ -183,7 +189,7 @@ function auditOutputForSafety(safetyBlock, { draft = null, draftPolarity = 'none
   };
 }
 
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 9, 'certification registry contains p210 plus eight professionally backfilled methods');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 14, 'certification registry contains fourteen professionally certified methods');
 for (const id of [
   'marriage.p210.generalMarriageH1H2H7H8H10Judge',
   'general.p174.h1h2h4h7h10h15',
@@ -194,6 +200,11 @@ for (const id of [
   'marriage.p204.dowryH8',
   'love.p206.womanFavorH7H11ThenH5',
   'desire.p206.querentWantsH7H11ThenH5',
+  'relocation.p183.stayMoveH1H2',
+  'dispute.p212.reconciliationH1H7',
+  'religion.p253.h3h9Quality',
+  'lostItem.p202.returnH6H8',
+  'clothing.p264-265.luck',
 ]) {
   assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes(id), id + ' is explicitly professionally certified');
 }
@@ -304,6 +315,80 @@ assert(p211Pending.professionalVerdictSafety?.clientFacingCertified === false, '
 assert(p211Pending.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'p211 has no binary client-verdict permission while uncertified');
 const p211UnsafeDraft = validateKashfAdvisorOutput(auditOutputForSafety(p211Pending.professionalVerdictSafety, { draft: 'הנישואין יישארו יציבים.', draftPolarity: p211Pending.professionalVerdictSafety.authoritativePolarity === 'positive' ? 'positive' : 'non-binary' }));
 assert(validateKashfAdvisorVerdictAlignment(p211UnsafeDraft.value, p211Pending.professionalVerdictSafety).ok === false, 'server blocks a p211 client draft while professional certification is pending');
+
+
+
+console.log('\n--- Professional backfill batch 03 + exact client-draft lock ---');
+
+// The exact draft gate must protect categorical/non-binary methods too.
+const p204CategoryLock = buildKashfCanonicalAiBridge({ questionId: 'q-marriage-thayib', questionText: 'בתולה או גרושה?', board: makeBoard({ 7:'1121', 10:'1121' }) });
+assert(p204CategoryLock.canonicalReading?.primaryFormula?.result?.executorResult?.previousStatus === 'divorced', 'category-lock fixture engine says divorced');
+assert(p204CategoryLock.professionalVerdictSafety?.authoritativePolarity === 'non-binary', 'category-lock fixture is non-binary by polarity');
+assert(p204CategoryLock.professionalVerdictSafety?.clientDraftExactMatchRequired === true, 'categorical certified method requires exact client text');
+const p204ExactDraft = validateKashfAdvisorOutput(auditOutputForSafety(p204CategoryLock.professionalVerdictSafety, { draft: p204CategoryLock.professionalVerdictSafety.authoritativeClientDraftHebrew, draftPolarity: 'non-binary' }));
+assert(validateKashfAdvisorVerdictAlignment(p204ExactDraft.value, p204CategoryLock.professionalVerdictSafety).ok === true, 'exact categorical engine text is accepted');
+const p204WrongCategory = validateKashfAdvisorOutput(auditOutputForSafety(p204CategoryLock.professionalVerdictSafety, { draft: 'בתולה', draftPolarity: 'non-binary' }));
+const p204WrongCategoryAlignment = validateKashfAdvisorVerdictAlignment(p204WrongCategory.value, p204CategoryLock.professionalVerdictSafety);
+assert(p204WrongCategoryAlignment.ok === false && p204WrongCategoryAlignment.category === 'client-draft-not-exact-engine-text', 'server rejects divorced→virgin category inversion even though both are non-binary');
+
+// PV-BF03-P183-* — two exact opposite branches; same-class remains unresolved.
+const p183Stay = buildKashfCanonicalAiBridge({ questionId: 'q-stay-place', questionText: 'האם כדאי להישאר במקום זה או לעבור?', board: makeBoard({ 1:'1122', 2:'1112' }) });
+assert(p183Stay.canonicalReading?.primaryFormula?.result?.executorResult?.decision === 'stay', 'p183 H1 benefic + H2 malefic chooses stay');
+assert(p183Stay.professionalVerdictSafety?.certificationStatus === 'certified', 'p183 passed professional backfill');
+assert(p183Stay.professionalVerdictSafety?.authoritativePolarity === 'non-binary', 'p183 directional decision remains non-binary polarity');
+const p183StayExact = validateKashfAdvisorOutput(auditOutputForSafety(p183Stay.professionalVerdictSafety, { draft: p183Stay.professionalVerdictSafety.authoritativeClientDraftHebrew, draftPolarity: 'non-binary' }));
+assert(validateKashfAdvisorVerdictAlignment(p183StayExact.value, p183Stay.professionalVerdictSafety).ok === true, 'p183 exact stay text passes server gate');
+const p183WrongMove = validateKashfAdvisorOutput(auditOutputForSafety(p183Stay.professionalVerdictSafety, { draft: 'המעבר עדיף.', draftPolarity: 'non-binary' }));
+assert(validateKashfAdvisorVerdictAlignment(p183WrongMove.value, p183Stay.professionalVerdictSafety).ok === false, 'p183 server blocks stay→move category reversal');
+const p183Move = buildKashfCanonicalAiBridge({ questionId: 'q-stay-place', questionText: 'האם כדאי להישאר במקום זה או לעבור?', board: makeBoard({ 1:'1112', 2:'1122' }) });
+assert(p183Move.canonicalReading?.primaryFormula?.result?.executorResult?.decision === 'move', 'p183 reverse explicit branch chooses move');
+const p183Same = buildKashfCanonicalAiBridge({ questionId: 'q-stay-place', questionText: 'האם כדאי להישאר במקום זה או לעבור?', board: makeBoard({ 1:'1122', 2:'2211' }) });
+assert(p183Same.canonicalReading?.primaryFormula?.result?.executorResult?.decision === 'unresolved', 'p183 same-class testimony remains unresolved');
+
+// PV-BF03-P212-* — only the benefic result is an explicit reconciliation verdict.
+const p212Good = buildKashfCanonicalAiBridge({ questionId: 'q-reconciliation', questionText: 'האם יהיה פיוס בין הצדדים?', board: makeBoard({ 1:'1111', 7:'2211' }) });
+assert(p212Good.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'reconciliation', 'p212 benefic generated figure yields explicit reconciliation');
+assert(p212Good.canonicalReading?.overallPositive === true, 'p212 explicit reconciliation branch is positive');
+assert(p212Good.professionalVerdictSafety?.certificationStatus === 'certified', 'p212 passed professional backfill');
+const p212Bad = buildKashfCanonicalAiBridge({ questionId: 'q-reconciliation', questionText: 'האם יהיה פיוס בין הצדדים?', board: makeBoard({ 1:'1111', 7:'2221' }) });
+assert(p212Bad.canonicalReading?.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'nahs', 'p212 counterfixture generates a malefic result');
+assert(p212Bad.canonicalReading?.overallPositive === null, 'p212 malefic result is not inverted into explicit no-reconciliation');
+assert(p212Bad.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenInversions?.some((x) => x.includes('מזיקה')), 'p212 policy records the no-inverse rule');
+
+// PV-BF03-P253-* — H3/H9 must agree in the same pure source class.
+const p253Good = buildKashfCanonicalAiBridge({ questionId: 'q-religion', questionText: 'מה מצב דתו וצדקותו של האדם?', board: makeBoard({ 3:'1122', 9:'2211' }) });
+assert(p253Good.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'religious-and-god-fearing', 'p253 two benefics yield the exact positive source branch');
+assert(p253Good.canonicalReading?.overallPositive === true, 'p253 benefic branch is positive');
+assert(p253Good.professionalVerdictSafety?.certificationStatus === 'certified', 'p253 passed professional backfill');
+const p253Bad = buildKashfCanonicalAiBridge({ questionId: 'q-religion', questionText: 'מה מצב דתו וצדקותו של האדם?', board: makeBoard({ 3:'1112', 9:'1221' }) });
+assert(p253Bad.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'little-religion', 'p253 two malefics yield little-religion source branch');
+assert(p253Bad.canonicalReading?.overallPositive === false, 'p253 malefic branch is negative');
+const p253Split = buildKashfCanonicalAiBridge({ questionId: 'q-religion', questionText: 'מה מצב דתו וצדקותו של האדם?', board: makeBoard({ 3:'1112', 9:'1122' }) });
+assert(p253Split.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'unresolved', 'p253 split testimony remains unresolved');
+assert(p253Split.canonicalReading?.overallPositive === null, 'p253 split testimony does not become an invented middle verdict');
+
+// PV-BF03-P202-* — source has an explicit else branch.
+const p202Yes = buildKashfCanonicalAiBridge({ questionId: 'q-lost-item', questionText: 'האם האבדה תשוב?', board: makeBoard({ 6:'2111', 8:'2121' }) });
+assert(p202Yes.canonicalReading?.overallPositive === true, 'p202 H6/H8 benefic+internal condition yields return');
+assert(p202Yes.professionalVerdictSafety?.certificationStatus === 'certified', 'p202 passed professional backfill');
+const p202No = buildKashfCanonicalAiBridge({ questionId: 'q-lost-item', questionText: 'האם האבדה תשוב?', board: makeBoard({ 6:'1112', 8:'2121' }) });
+assert(p202No.canonicalReading?.overallPositive === false, 'p202 failure of explicit H6/H8 condition yields the source else/no branch');
+assert(p202No.professionalVerdictSafety?.methodSpecificPolicy?.excludedFromPrimaryVerdict?.some((x) => x.includes('גנב')), 'p202 policy blocks theft-attribution expansion');
+
+// PV-BF03-P265-* — general clothing luck and H10 royal-clothing qualifier remain separate.
+const p265Good = buildKashfCanonicalAiBridge({ questionId: 'q-clothing-lucky', questionText: 'מה מזלי בלבוש?', board: makeBoard({ 5:'1122', 10:'2211', 11:'2111' }) });
+assert(p265Good.canonicalReading?.primaryFormula?.result?.executorResult?.clothingLuck === true, 'p265 H5/H11 benefic branch gives general clothing luck');
+assert(p265Good.canonicalReading?.overallPositive === true, 'p265 good clothing-luck branch is positive');
+assert(p265Good.professionalVerdictSafety?.certificationStatus === 'certified', 'p265 passed professional backfill');
+const p265Bad = buildKashfCanonicalAiBridge({ questionId: 'q-clothing-lucky', questionText: 'מה מזלי בלבוש?', board: makeBoard({ 5:'1112', 10:'1122', 11:'1212' }) });
+assert(p265Bad.canonicalReading?.primaryFormula?.result?.executorResult?.clothingLuck === false, 'p265 H5/H11 malefic branch gives no general clothing luck');
+assert(p265Bad.canonicalReading?.overallPositive === false, 'p265 bad clothing-luck branch is negative');
+const p265Royal = buildKashfCanonicalAiBridge({ questionId: 'q-clothing-lucky', questionText: 'מה מזלי בלבוש?', board: makeBoard({ 5:'1122', 10:'1112', 11:'2111' }) });
+assert(p265Royal.canonicalReading?.primaryFormula?.result?.executorResult?.clothingLuck === true, 'p265 general clothing luck remains positive when H5/H11 are benefic');
+assert(p265Royal.canonicalReading?.primaryFormula?.result?.executorResult?.royalClothingNoLuck === true, 'p265 malefic H10 remains a separate royal-clothing qualifier');
+assert(p265Royal.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenClientClaimsWithoutExplicitSelectedMethodBranch?.some((x) => x.includes('מבטל')), 'p265 policy forbids H10 from silently cancelling the general branch');
+const p265Mixed = buildKashfCanonicalAiBridge({ questionId: 'q-clothing-lucky', questionText: 'מה מזלי בלבוש?', board: makeBoard({ 5:'2212', 10:'1122', 11:'2111' }) });
+assert(p265Mixed.canonicalReading?.overallPositive === null, 'p265 mixed/split H5-H11 evidence remains unresolved');
 
 console.log(`\nKashf professional verdict safety tests: ${passed} passed, ${failed} failed`);
 if (failed) process.exit(1);

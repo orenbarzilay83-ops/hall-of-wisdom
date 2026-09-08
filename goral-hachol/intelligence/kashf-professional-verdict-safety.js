@@ -17,7 +17,7 @@
  * allowed, but they NEVER create, reverse, soften or aggregate the verdict.
  */
 
-export const KASHF_PROFESSIONAL_VERDICT_SAFETY_VERSION = 'kashf-professional-verdict-safety-v3';
+export const KASHF_PROFESSIONAL_VERDICT_SAFETY_VERSION = 'kashf-professional-verdict-safety-v4';
 
 const P174_GENERAL_METHOD = 'general.p174.h1h2h4h7h10h15';
 const P182_SIBLING_SENIORITY_METHOD = 'siblings.p182.seniority';
@@ -29,6 +29,11 @@ const P204_PREVIOUS_STATUS_METHOD = 'marriage.p204.previousStatusH7inH10';
 const P204_DOWRY_METHOD = 'marriage.p204.dowryH8';
 const P206_WOMAN_FAVOR_METHOD = 'love.p206.womanFavorH7H11ThenH5';
 const P206_QUERENT_DESIRE_METHOD = 'desire.p206.querentWantsH7H11ThenH5';
+const P183_STAY_MOVE_METHOD = 'relocation.p183.stayMoveH1H2';
+const P212_RECONCILIATION_METHOD = 'dispute.p212.reconciliationH1H7';
+const P253_RELIGION_METHOD = 'religion.p253.h3h9Quality';
+const P202_LOST_RETURN_METHOD = 'lostItem.p202.returnH6H8';
+const P265_CLOTHING_LUCK_METHOD = 'clothing.p264-265.luck';
 
 function freezeArray(values = []) {
   return Object.freeze([...(Array.isArray(values) ? values : [])]);
@@ -39,6 +44,14 @@ function polarityFromReading(reading) {
   if (reading.overallPositive === true) return 'positive';
   if (reading.overallPositive === false) return 'negative';
   return 'non-binary';
+}
+
+function authoritativeClientDraftFromReading(reading) {
+  const executorText = reading?.primaryFormula?.result?.executorResult?.outputHebrew;
+  if (typeof executorText === 'string' && executorText.trim().length > 0) return executorText.trim();
+  const verdictText = reading?.verdict?.text;
+  if (typeof verdictText === 'string' && verdictText.trim().length > 0) return verdictText.trim();
+  return null;
 }
 
 function clientInstruction(polarity) {
@@ -311,6 +324,148 @@ function p206QuerentDesirePolicy() {
   });
 }
 
+
+function p183StayMovePolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-03',
+    goldenCaseIds: freezeArray(['PV-BF03-P183-STAY', 'PV-BF03-P183-MOVE', 'PV-BF03-P183-UNRESOLVED']),
+    policyId: 'p183-stay-move-exact-opposites-v1',
+    questionScopeHebrew: 'האם טוב להישאר במקום הנוכחי או לעבור ממנו לפי H1/H2, עמ׳ 178/183',
+    decisiveRuleHebrew: 'H1 מיטיב + H2 מזיק => המקום הנוכחי טוב לו. H1 מזיק + H2 מיטיב => הדין להפך, המעבר עדיף. כל צירוף אחר אינו מוכרע בכלל זה.',
+    oneWayBranches: freezeArray([
+      'H1 מיטיב + H2 מזיק => להישאר; המקום הנוכחי טוב לו',
+      'H1 מזיק + H2 מיטיב => הדין להפך; המעבר עדיף',
+    ]),
+    forbiddenInversions: freezeArray([
+      'שני בתים מיטיבים, שני בתים מזיקים, עדות מפוצלת שאינה שתי הצורות המפורשות או צורה ממוזגת אינם יוצרים ענף שלישי.',
+      'אין להסיק סיבת כדאיות — כסף, זוגיות, בריאות או עבודה — מן הכלל הזה.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'relocation.p183.currentVsNewPlace — שיטת השוואת מקום נוכחי/חדש נפרדת.',
+      'relocation.p183.h4h15 ושיטות המעבר הסמוכות בעמ׳ 183–184.',
+      'משמעות כללית של בית 1 או בית 2 מעבר לצירוף המפורש.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'כדאי לעבור משום שהעבודה תהיה טובה יותר',
+      'כדאי להישאר משום שהזוגיות תהיה טובה יותר',
+      'שני הבתים מיטיבים ולכן בוודאות עדיף להישאר',
+    ]),
+  });
+}
+
+function p212ReconciliationPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-03',
+    goldenCaseIds: freezeArray(['PV-BF03-P212-RECONCILIATION', 'PV-BF03-P212-NOINVERSE']),
+    policyId: 'p212-reconciliation-benefic-one-way-v1',
+    questionScopeHebrew: 'עצם הפיוס בין שני צדדים לפי הולדת H1+H7, עמ׳ 212',
+    decisiveRuleHebrew: 'אם מן H1+H7 נולדת צורה מיטיבה — שני הצדדים יתפייסו. המקור אינו נותן בענף זה היפוך מפורש של מזיק => לא יתפייסו.',
+    oneWayBranches: freezeArray([
+      'תוצאת H1+H7 מיטיבה => שניהם יתפייסו',
+    ]),
+    forbiddenInversions: freezeArray([
+      'תוצאה מזיקה אינה מתירה לקבוע שלא יהיה פיוס.',
+      'תוצאה ממוזגת אינה מתירה לקבוע כן או לא.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'סעיפי זהות המפשר/המתווך — חומר הסבר נפרד שאינו יוצר את פסק כן/לא.',
+      'שיטות מנצח/מנוצח, אויבים או משפט אינן חלק מפסק הפיוס הזה.',
+      'Al-Falak או כל שיטת פיוס השוואתית אחרת.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'לא יהיה פיוס משום שהתוצאה מזיקה',
+      'פלוני יהיה המתווך בלי שהסעיף המפורש של המקור הופעל',
+      'צד מסוים ינצח בסכסוך',
+    ]),
+  });
+}
+
+function p253ReligionPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-03',
+    goldenCaseIds: freezeArray(['PV-BF03-P253-BENEFIC', 'PV-BF03-P253-MALEFIC', 'PV-BF03-P253-SPLIT']),
+    policyId: 'p253-religion-two-house-agreement-v1',
+    questionScopeHebrew: 'מצב הדת והצדקות לפי H3/H9, עמ׳ 253',
+    decisiveRuleHebrew: 'H3 ו-H9 יחד במיטיב טהור => בעל דת ויראת אלוהים; שניהם במזיק טהור => מועט בדת. עדות מפוצלת או ממוזגת נשארת בלתי מוכרעת.',
+    oneWayBranches: freezeArray([
+      'H3+H9 שניהם מיטיבים טהורים => בעל דת ויראת אלוהים',
+      'H3+H9 שניהם מזיקים טהורים => מועט בדת',
+    ]),
+    forbiddenInversions: freezeArray([
+      'בית מיטיב אחד ובית מזיק אחד אינם מוכרעים באמצעות רוב או העדפת בית.',
+      'צורה ממוזגת אינה מקודמת בכוח לצד הנטייה שלה.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'מוסר כללי, יושר, אמינות, השתייכות דתית או זהות אישית שאינם כתובים בכלל.',
+      'משמעות כללית של H3/H9 מעבר לכלל המקומי.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'האדם שקרן או לא מוסרי',
+      'האדם שייך לדת או לזרם מסוים',
+      'עדות מפוצלת מוכיחה שהוא דתי במידה בינונית',
+    ]),
+  });
+}
+
+function p202LostReturnPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-03',
+    goldenCaseIds: freezeArray(['PV-BF03-P202-RETURN', 'PV-BF03-P202-NORETURN']),
+    policyId: 'p202-lost-item-return-exact-else-v1',
+    questionScopeHebrew: 'שיבת אבדה/דבר אבוד לפי H6/H8, עמ׳ 202',
+    decisiveRuleHebrew: 'אם ב-H6 וב-H8 צורות מיטיבות פנימיות — האבדה תשוב; ואם לא — לא. זהו ענף else מפורש במקור.',
+    oneWayBranches: freezeArray([
+      'H6+H8 שניהם מיטיבים ופנימיים => האבדה תשוב',
+      'התנאי אינו מתקיים => האבדה לא תשוב לפי כלל זה',
+    ]),
+    forbiddenInversions: freezeArray([]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'זיהוי גנב, סיבת גניבה, מיקום מדויק או תיאור אדם.',
+      'theft.p224.relationshipH7Recurrence ושאר דיני גניבה.',
+      'שיטות אבדה אחרות שאינן H6/H8.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'פלוני גנב את האבדה',
+      'האבדה נמצאת במקום מסוים',
+      'האבדה תחזור בתוך פרק זמן מסוים',
+    ]),
+  });
+}
+
+function p265ClothingLuckPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-03',
+    goldenCaseIds: freezeArray(['PV-BF03-P265-GOOD', 'PV-BF03-P265-BAD', 'PV-BF03-P265-ROYAL-QUALIFIER', 'PV-BF03-P265-MIXED']),
+    policyId: 'p265-clothing-luck-layered-branches-v1',
+    questionScopeHebrew: 'מזל בלבוש לפי H5/H11 והסייג הנפרד של H10, עמ׳ 264–265',
+    decisiveRuleHebrew: 'H5+H11 מיטיבים טהורים => יש מזל בלבושים; שניהם מזיקים טהורים => אין מזל בלבוש. H10 מזיק הוא סייג נפרד על לבוש מלכים/כיבוד מבעלי מעלה ואינו מבטל אוטומטית מזל כללי חיובי.',
+    oneWayBranches: freezeArray([
+      'H5+H11 שניהם מיטיבים => יש מזל בלבושים',
+      'H5+H11 שניהם מזיקים => אין מזל בלבוש',
+      'H10 מזיק => אין מזל בלבוש המלכים או בכיבוד הבא מצד בעלי מעלה',
+    ]),
+    forbiddenInversions: freezeArray([
+      'H10 מיטיב אינו יוצר לבדו הבטחת מזל כללי בלבוש.',
+      'עדות H5/H11 מפוצלת או ממוזגת אינה מוכרעת באמצעות רוב/נטייה.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'clothing.color — צבעי לבוש הם ידע/כוונה נפרדים.',
+      'clothing.fixedMutable — קביעות/החלפת לבוש אינן פסק המזל הכללי.',
+      'משמעות כללית של H10 שאינה סעיף לבוש-המלכים המפורש.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'צבע מסוים יביא מזל',
+      'H10 מזיק מבטל את המזל הכללי אף כאשר H5/H11 מיטיבים',
+      'צורה ממוזגת מוכיחה מזל חלקי',
+    ]),
+  });
+}
+
 const METHOD_POLICIES = Object.freeze({
   [P174_GENERAL_METHOD]: p174Policy(),
   [P182_SIBLING_SENIORITY_METHOD]: p182Policy(),
@@ -321,6 +476,11 @@ const METHOD_POLICIES = Object.freeze({
   [P204_DOWRY_METHOD]: p204DowryPolicy(),
   [P206_WOMAN_FAVOR_METHOD]: p206WomanFavorPolicy(),
   [P206_QUERENT_DESIRE_METHOD]: p206QuerentDesirePolicy(),
+  [P183_STAY_MOVE_METHOD]: p183StayMovePolicy(),
+  [P212_RECONCILIATION_METHOD]: p212ReconciliationPolicy(),
+  [P253_RELIGION_METHOD]: p253ReligionPolicy(),
+  [P202_LOST_RETURN_METHOD]: p202LostReturnPolicy(),
+  [P265_CLOTHING_LUCK_METHOD]: p265ClothingLuckPolicy(),
 });
 
 export const KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS = Object.freeze(
@@ -371,6 +531,7 @@ export function buildKashfProfessionalVerdictSafety({
   );
 
   const methodSpecificPolicy = METHOD_POLICIES[methodId] || null;
+  const authoritativeClientDraftHebrew = authoritativeClientDraftFromReading(canonicalReading);
   const certificationStatus = methodSpecificPolicy?.certificationStatus === 'certified'
     ? 'certified'
     : (sourceReady && readingReady ? 'pending-backfill' : 'not-applicable');
@@ -406,6 +567,9 @@ export function buildKashfProfessionalVerdictSafety({
     requiresExactPolarityMatch: true,
     certificationStatus,
     clientFacingCertified,
+    clientDraftExactMatchRequired: Boolean(clientFacingCertified),
+    authoritativeClientDraftHebrew,
+    authoritativeClientDraftSourcePath: authoritativeClientDraftHebrew ? 'readingContext.engineOutput.primaryFormula.result.executorResult.outputHebrew|verdict.text' : null,
     certificationBatch: methodSpecificPolicy?.certificationBatch || null,
     goldenCaseIds: freezeArray(methodSpecificPolicy?.goldenCaseIds || []),
     binaryClientVerdictAllowed: Boolean(isSafe && clientFacingCertified && (polarity === 'positive' || polarity === 'negative')),
