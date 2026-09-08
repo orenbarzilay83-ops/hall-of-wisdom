@@ -22,6 +22,8 @@ jobs:
         with:
           node-version: '24'
 
+      - name: Repair patcher markdown anchor
+        run: node _repair_kashf_professional_backfill_03_patcher.mjs
       - name: Validate patcher
         run: node --check _patch_kashf_professional_backfill_03.mjs
       - name: Apply professional backfill batch 03
