@@ -1,0 +1,78 @@
+name: Kashf AI Master Index Batch03 P68-97
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/kashf-ai-master-index-batch03-p68-97.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply-validate-commit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate patcher
+        run: node --check _patch_kashf_ai_master_index_batch03_p68_97.mjs
+      - name: Apply Batch03
+        run: node _patch_kashf_ai_master_index_batch03_p68_97.mjs
+      - name: Validate AI master index
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const text=fs.readFileSync('kashf-v57-ai-master-index.html','utf8');
+          const m=text.match(/<script id="kashf-ai-master-index-data" type="application\/json">\s*([\s\S]*?)\s*<\/script>/);
+          if(!m) throw new Error('master index JSON block missing');
+          const data=JSON.parse(m[1]);
+          const assert=(c,msg)=>{if(!c) throw new Error(msg)};
+          assert(data.schemaVersion==='1.4.0','schema mismatch');
+          assert(data.records.length===54,`expected 54 records got ${data.records.length}`);
+          assert(new Set(data.records.map(r=>r.entryId)).size===54,'duplicate entryIds');
+          const counts=Object.fromEntries(['VERIFIED','INDEXED','REVIEW_REQUIRED','UNRESOLVED'].map(s=>[s,data.records.filter(r=>r.verificationStatus===s).length]));
+          assert(counts.VERIFIED===49 && counts.INDEXED===0 && counts.REVIEW_REQUIRED===5 && counts.UNRESOLVED===0,`unexpected counts ${JSON.stringify(counts)}`);
+          assert(data.coverage.bookEndPage===97 && data.coverage.scanPdfEndPage===99,'coverage mismatch');
+          assert(data.records.find(r=>r.entryId==='context.p23-24.comparative-divination')?.verificationStatus==='VERIFIED','p24 regression');
+
+          const profiles=data.records.filter(r=>r.entryType==='figure-profile' && r.ordinal>=1 && r.ordinal<=16);
+          assert(profiles.length===16,`expected 16 profiles got ${profiles.length}`);
+          profiles.sort((a,b)=>a.ordinal-b.ordinal);
+          const expected=['1222','2121','1212','2222','1121','1221','2221','2122','2212','1122','2211','1112','1111','2111','2112','1211'];
+          assert(JSON.stringify(profiles.map(r=>r.pattern))===JSON.stringify(expected),'profile source order mismatch');
+          assert(new Set(profiles.map(r=>r.pattern)).size===16,'profile pattern duplication');
+          assert(profiles.every(r=>r.verificationStatus==='VERIFIED' && r.sourceVerification?.printedScanChecked===true),'profile verification incomplete');
+
+          const byPattern=Object.fromEntries(profiles.map(r=>[r.pattern,r]));
+          assert(byPattern['2222'].localProfileAttributes.gender==='נקבה','Jamaa local female lost');
+          assert(byPattern['2222'].localProfileAttributes.movement.includes('לא פנימי'),'Jamaa movement scope lost');
+          assert(byPattern['1121'].localProfileAttributes.elementPrimary==='אוויר' && byPattern['1121'].localProfileAttributes.elementSecondaryPrinted==='מים','Joudala dual element lost');
+          assert(byPattern['2212'].localProfileAttributes.time==='יומי' && byPattern['2212'].localProfileAttributes.movement==='פנימי','Bayad local profile lost');
+          assert(byPattern['1111'].localProfileAttributes.gender==='נקבה','Tariq local female lost');
+          assert(byPattern['2112'].localProfileAttributes.contextuality.includes('מיטיב/מזיק'),'Ijtima contextual polarity lost');
+          assert(byPattern['1211'].localProfileAttributes.movement==='פנימי','Naqi local internal lost');
+
+          const approx=data.records.find(r=>r.entryId==='figures.p95-97.approximate-natures');
+          assert(approx?.verificationStatus==='VERIFIED' && approx?.sourceVerification?.visualLineByLineChecked===true,'approximate natures not visually verified');
+          assert(approx.oppositePairs?.length===8,'expected 8 opposite pairs');
+          const pairPatterns=approx.oppositePairs.flatMap(x=>[x.a,x.b]).sort();
+          assert(JSON.stringify(pairPatterns)===JSON.stringify([...expected].sort()),'opposite pairs do not cover all 16 exactly');
+          assert(approx.oppositePairs.find(x=>x.a==='2111')?.aRaw.includes('متحرك، جامد'),'source contradiction in Ataba Dakhila was normalized away');
+          assert(approx.oppositePairs.find(x=>x.a==='2212')?.bRaw.includes('جامد، متحرك'),'source contradiction in Humra was normalized away');
+          assert((data.downstreamCorrectionQueue||[]).length===9,'expected 9 downstream queue items');
+          console.log('Batch03 validation PASS',counts,'profiles',profiles.length,'downstreamQueue',data.downstreamCorrectionQueue.length);
+          NODE
+      - name: Commit Batch03 index
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add kashf-v57-ai-master-index.html
+          if git diff --cached --quiet; then echo 'No index changes'; exit 1; fi
+          git commit -m "feat(kashf): index and verify figure profiles pages 68-97"
+          git push origin HEAD:main
