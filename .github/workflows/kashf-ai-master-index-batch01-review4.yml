@@ -1,0 +1,63 @@
+name: Kashf AI Master Index Batch01 Review4
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/kashf-ai-master-index-batch01-review4.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply-validate-commit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate patcher
+        run: node --check _patch_kashf_ai_master_index_batch01_review4.mjs
+      - name: Apply Batch01 review4
+        run: node _patch_kashf_ai_master_index_batch01_review4.mjs
+      - name: Validate master index
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const text=fs.readFileSync('kashf-v57-ai-master-index.html','utf8');
+          const m=text.match(/<script id="kashf-ai-master-index-data" type="application\/json">\s*([\s\S]*?)\s*<\/script>/);
+          if(!m) throw new Error('master index JSON block missing');
+          const data=JSON.parse(m[1]);
+          if(data.schemaVersion!=='1.2.0') throw new Error('schema mismatch');
+          if(data.records.length!==23) throw new Error(`expected 23 records, got ${data.records.length}`);
+          const counts=Object.fromEntries(['VERIFIED','INDEXED','REVIEW_REQUIRED','UNRESOLVED'].map(s=>[s,data.records.filter(r=>r.verificationStatus===s).length]));
+          if(counts.VERIFIED!==19 || counts.INDEXED!==0 || counts.REVIEW_REQUIRED!==4 || counts.UNRESOLVED!==0) throw new Error(`unexpected counts ${JSON.stringify(counts)}`);
+          const p25=data.records.find(r=>r.entryId==='forms.p25.structure-odd-even');
+          if(p25?.verificationStatus!=='VERIFIED'||p25?.sourceVerification?.printedScanChecked!==true) throw new Error('p25 not verified');
+          const placement=data.records.find(r=>r.entryId==='placement.p41-42.house-letter-binary');
+          if(placement?.verificationStatus!=='VERIFIED'||placement?.placementMap?.length!==16) throw new Error('placement map incomplete');
+          const expected=['1222','2122','1122','2212','1212','2112','1112','2221','1221','2121','1121','2211','1211','2111','1111','2222'];
+          if(placement.placementMap.some((x,i)=>x.house!==i+1||x.pattern!==expected[i])) throw new Error('placement pattern order mismatch');
+          const context=data.records.find(r=>r.entryId==='context.p23-24.comparative-divination');
+          if(context?.verificationStatus!=='REVIEW_REQUIRED'||context?.sourceCorrectionRequired?.arabic!=='علم الكتف') throw new Error('p24 katif blocker missing');
+          const tax=data.records.find(r=>r.entryId==='houses.p43-44.taxonomy');
+          if(tax?.verificationStatus!=='REVIEW_REQUIRED'||tax?.sourceTaxonomy?.find(x=>x.arabic==='الساقط')?.houses?.join(',')!=='6,12') throw new Error('taxonomy blocker missing');
+          const p45=data.records.find(r=>r.entryId==='houses.p45.aspects-and-gender');
+          if(!p45?.sourceExactSextileArabic?.includes('والثاني')) throw new Error('p45 source anomaly missing');
+          const profiles=data.records.find(r=>r.entryId==='houses.p46-53.profiles');
+          if(profiles?.houseProfiles?.find(h=>h.house===3)?.requiredCorrection?.includes('המים')!==true) throw new Error('H3 correction missing');
+          if(data.v57CorrectionQueue?.length!==5) throw new Error('expected 5 v57 correction items');
+          console.log('Batch01 review4 PASS',counts,'corrections',data.v57CorrectionQueue.length);
+          NODE
+      - name: Commit review4
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add kashf-v57-ai-master-index.html
+          if git diff --cached --quiet; then echo 'No index changes'; exit 1; fi
+          git commit -m "feat(kashf): close two Batch01 index blockers and isolate v57 corrections"
+          git push origin HEAD:main
