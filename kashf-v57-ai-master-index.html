@@ -5,122 +5,67 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>אינדקס AI ראשי — חשיפת הסודות הנצורים v57</title>
 <style>
-body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#241d16;margin:0;line-height:1.55}main{max-width:1050px;margin:auto;padding:24px}header{background:#30261b;color:#fff;padding:24px;border-radius:12px;margin-bottom:18px}.notice{background:#fff7da;border:1px solid #d9bc64;border-radius:10px;padding:14px;margin:12px 0}.card{background:#fff;border:1px solid #d9ccb3;border-radius:10px;margin:10px 0;padding:16px}.meta{font-size:13px;color:#6d512d}.tag{display:inline-block;background:#eee2cc;border-radius:999px;padding:2px 8px;margin:2px;font-size:12px}code{direction:ltr;unicode-bidi:isolate;background:#f0ece4;padding:1px 4px;border-radius:4px}.status{font-weight:bold}.ok{color:#216b34}.pending{color:#8a5b00}table{width:100%;border-collapse:collapse;background:#fff}th,td{border:1px solid #ddd0b7;padding:8px;vertical-align:top}th{background:#eee2cc}.small{font-size:13px;color:#5d564e}</style>
+body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#241d16;margin:0;line-height:1.55}main{max-width:1120px;margin:auto;padding:24px}header{background:#30261b;color:#fff;padding:24px;border-radius:12px;margin-bottom:18px}.notice{background:#fff7da;border:1px solid #d9bc64;border-radius:10px;padding:14px;margin:12px 0}.card{background:#fff;border:1px solid #d9ccb3;border-radius:10px;margin:10px 0;padding:16px}.meta{font-size:13px;color:#6d512d}.tag{display:inline-block;background:#eee2cc;border-radius:999px;padding:2px 8px;margin:2px;font-size:12px}code{direction:ltr;unicode-bidi:isolate;background:#f0ece4;padding:1px 4px;border-radius:4px}.status{font-weight:bold}.verified{color:#216b34}.review{color:#9a3d19}.indexed{color:#8a5b00}.unresolved{color:#7d2530}table{width:100%;border-collapse:collapse;background:#fff}th,td{border:1px solid #ddd0b7;padding:8px;vertical-align:top}th{background:#eee2cc}.small{font-size:13px;color:#5d564e}.facts{margin:.55em 0}.facts li{margin:.25em 0}.warn{border-right:4px solid #b65a2a;padding-right:10px}
+</style>
 </head>
 <body><main>
-<header>
-<h1>אינדקס AI ראשי — v57</h1>
-<p>אינדקס מקור־תחילה עבור ״חשיפת הסודות הנצורים״. מיועד לניווט, retrieval, בקרת מקור ומניעת זליגה של טעויות אל המנועים.</p>
-</header>
-<div class="notice"><strong>מדיניות מחייבת:</strong> האינדקס הזה אינו נגזר מהמנועים או מן ה־Canonical Registry. האמת נבנית בכיוון: <b>v57 עברי → אימות מול הסריקה הערבית → רשומת אינדקס → ורק אחר כך מנוע/Tests</b>. במקרה של סתירה הרשומה מסומנת <code>REVIEW_REQUIRED</code> ואינה מוסמכת לביצוע.</div>
-
-<section class="card">
-<h2>סכמת הרשומה</h2>
-<table><tr><th>שדה</th><th>תפקיד</th></tr>
-<tr><td><code>entryId</code></td><td>מזהה יציב שאינו תלוי בשם מנוע קיים.</td></tr>
-<tr><td><code>entryType</code></td><td>מבוא / הגדרה / טבלה / כלל / שיטה / אלגוריתם / פרופיל בית / פרופיל צורה / חומר לימודי.</td></tr>
-<tr><td><code>pages</code> + <code>v57Anchors</code></td><td>עמודים וקישורים מדויקים ל־v57.</td></tr>
-<tr><td><code>topic</code>, <code>subtopic</code>, <code>keywords</code>, <code>aliases</code></td><td>ניווט וחיפוש בשפת המשתמש.</td></tr>
-<tr><td><code>questionIntents</code></td><td>אילו שאלות הרשומה באמת עונה עליהן; ריק כאשר מדובר בחומר יסוד ולא בשיטת פסק.</td></tr>
-<tr><td><code>houses</code>, <code>figures</code>, <code>rows</code>, <code>elements</code></td><td>כל ישות קריטית מפורשת; מספרי בתים נשמרים כמספרים ולא רק בטקסט.</td></tr>
-<tr><td><code>inputs</code>, <code>preconditions</code>, <code>procedure</code>, <code>branches</code>, <code>outputScope</code></td><td>חוזה תפעולי מלא לפי סדר המקור.</td></tr>
-<tr><td><code>doNotInfer</code>, <code>doNotMixWith</code></td><td>מה אסור להשלים ומה אסור לערבב.</td></tr>
-<tr><td><code>sourceChain</code></td><td>v57 + עמודי אימות בערבית + הערת פער אם קיימת.</td></tr>
-<tr><td><code>verificationStatus</code></td><td><code>INDEXED</code> / <code>VERIFIED</code> / <code>REVIEW_REQUIRED</code> / <code>UNRESOLVED</code>.</td></tr>
-</table>
-</section>
-
-<section class="card"><h2>Batch 01 — תחילת הספר, עמ׳ 21–53</h2><p class="small">השלד נבנה לפי אינדקס v57 הקיים, והפרטים התפעוליים יועלו רק כאשר הם נמצאו ב־v57 ונבדקו מול המקור. אין קידום אוטומטי מ־INDEXED ל־VERIFIED.</p></section>
-<div id="records"></div>
-
+<header><h1>אינדקס AI ראשי — v57</h1><p>אינדקס מקור־תחילה עבור ״חשיפת הסודות הנצורים״. מיועד לניווט, retrieval, בקרת מקור ומניעת זליגה של טעויות אל המנועים.</p></header>
+<div class="notice"><strong>מדיניות מחייבת:</strong> האינדקס אינו נגזר מהמנועים או מן ה־Canonical Registry. הכיוון הוא <b>v57 עברי → אימות מול הסריקה הערבית המודפסת → רשומת אינדקס → ורק אחר כך מנוע/Tests</b>. סתירה אינה מתוקנת בשקט: היא נרשמת כ־<code>REVIEW_REQUIRED</code>.</div>
+<section class="card"><h2>כלל מספור המקור</h2><p>האינדקס מפריד בין <b>עמוד הספר המודפס</b> לבין <b>העמוד הפיזי בקובץ הסריקה</b>. ב־Batch 01 בלבד, עמ׳ ספר 21–53 נמצאים בעמ׳ PDF 23–55 בהתאמה. אין להחיל את ההיסט הזה אוטומטית על שאר הספר בלי בדיקה.</p></section>
+<section class="card"><h2>סכמת הרשומה</h2><table><tr><th>שדה</th><th>תפקיד</th></tr><tr><td><code>entryId</code></td><td>מזהה יציב שאינו תלוי בשם מנוע קיים.</td></tr><tr><td><code>entryType</code></td><td>מבוא / הגדרה / כלל / אלגוריתם / טבלה / פרופיל בית / חומר לימודי.</td></tr><tr><td><code>bookPages</code>, <code>scanPdfPages</code>, <code>v57Anchors</code></td><td>הפרדה מפורשת בין מספור הספר, מספור הסריקה והעוגנים בעברית.</td></tr><tr><td><code>criticalFacts</code></td><td>עובדות שה־AI רשאי לאחזר ישירות.</td></tr><tr><td><code>procedure</code>, <code>branches</code>, <code>preconditions</code></td><td>סדר פעולה ותנאים רק כאשר המקור מנסח אותם.</td></tr><tr><td><code>sourceDiscrepancies</code></td><td>סתירה, חסר, תרגום בעייתי או גרפיקה שטרם נסגרה.</td></tr><tr><td><code>doNotInfer</code></td><td>גבולות שאסור ל־AI להשלים מהראש.</td></tr><tr><td><code>verificationStatus</code></td><td><code>VERIFIED</code> / <code>INDEXED</code> / <code>REVIEW_REQUIRED</code> / <code>UNRESOLVED</code>.</td></tr></table></section>
+<section class="card"><h2>Batch 01 — עמ׳ ספר 21–53</h2><p class="small">גרסה זו מפרקת את השלד הראשוני ליחידות ידע קטנות. VERIFIED ניתן רק ליחידות שבהן נמצא נוסח מתאים ב־v57 ונבדק מול הסריקה המודפסת; בעיות ידועות נשארות גלויות.</p></section>
+<div id="summary" class="card"></div><div id="records"></div>
 <script id="kashf-ai-master-index-data" type="application/json">
 {
-  "schemaVersion":"1.0.0",
+  "schemaVersion":"1.1.0",
   "book":"חשיפת הסודות הנצורים",
   "version":"v57",
-  "sourcePolicy":{"operationalPrimary":"kashf-v57-draft.html","navigationLegacy":"kashf-v57-topic-index.html","highestVerificationAuthority":"Arabic printed scan","engineDerivedTruth":false},
-  "coverage":{"startPage":21,"endPage":53,"status":"IN_PROGRESS"},
+  "sourcePolicy":{"operationalPrimary":"kashf-v57-draft.html","navigationLegacy":"kashf-v57-topic-index.html","highestVerificationAuthority":"printed Arabic scan: كشف الأسرار المصونة في إخراج الضمائر المخزونة","engineDerivedTruth":false,"silentReconciliation":false},
+  "coverage":{"bookStartPage":21,"bookEndPage":53,"scanPdfStartPage":23,"scanPdfEndPage":55,"status":"DETAILED_AUDIT_IN_PROGRESS"},
   "records":[
-    {
-      "entryId":"foundation.p21.introduction",
-      "entryType":"introduction",
-      "pages":[21,22],
-      "v57Anchors":["kashf-v57-draft.html#p21"],
-      "topic":"פתיחה: מבוא לחכמת גורל החול",
-      "subtopic":"הקדמה",
-      "keywords":["מבוא","הקדמה","מקור החכמה","דניאל הנביא"],
-      "aliases":[],"questionIntents":[],"houses":[],"figures":[],"rows":[],"elements":[],
-      "inputs":[],"preconditions":[],"procedure":[],"branches":[],"outputScope":"חומר מבוא; אינו שיטת פסק בפני עצמו.",
-      "doNotInfer":["אין ליצור ממנו מנוע או תשובת כן/לא"],"doNotMixWith":[],
-      "sourceChain":{"v57":"located","arabicScan":"pending-detailed-audit"},"verificationStatus":"INDEXED"
-    },
-    {
-      "entryId":"casting.p23-27.line-striking",
-      "entryType":"procedure",
-      "pages":[23,24,25,26,27],
-      "v57Anchors":["kashf-v57-draft.html#p23","kashf-v57-draft.html#p25"],
-      "topic":"שיטת ההכאה",
-      "subtopic":"הכאת הקו, זמנים, טהרה ופתיחה",
-      "keywords":["הכאה","הכאת הקו","זמנים מומלצים","זמנים אסורים","טהרה","פתיחה בתפילה","חותם"],
-      "aliases":["איך מתחילים גורל חול","איך מכים את הקו","מתי מותר לערוך גורל חול"],
-      "questionIntents":[],"houses":[],"figures":[],"rows":["fire","air","water","earth"],"elements":["אש","אוויר","מים","עפר"],
-      "inputs":["פעולת הטלה/הכאה ידנית"],"preconditions":["יש לשמר את תנאי הזמן וההכנה בדיוק מן המקור; טרם הועלו כאן כטבלת תנאים מלאה"],
-      "procedure":[],"branches":[],"outputScope":"כללי הכנה והכאה; לא פסק על שאלת לקוח.",
-      "doNotInfer":["אין לצמצם את תנאי הזמן/טהרה לרשימת defaults ללא בדיקת העמודים"],"doNotMixWith":["casting.p28-36.generate-board"],
-      "sourceChain":{"v57":"located","arabicScan":"pending-detailed-audit"},"verificationStatus":"INDEXED"
-    },
-    {
-      "entryId":"casting.p28-36.generate-board",
-      "entryType":"algorithm",
-      "pages":[28,29,30,31,32,33,34,35,36],
-      "v57Anchors":["kashf-v57-draft.html#p28"],
-      "topic":"הפקת ההכאה והולדת 16 הצורות",
-      "subtopic":"אמהות, בנות, נכדות והשלמת הלוח",
-      "keywords":["מחיקת נקודות","אמהות","בנות","נכדות","16 צורות","הולדה"],
-      "aliases":["איך בונים את 16 הצורות","איך נולד לוח הגורל"],
-      "questionIntents":[],"houses":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],"figures":[],"rows":["fire","air","water","earth"],"elements":["אש","אוויר","מים","עפר"],
-      "inputs":["ארבע שורות הכאה לכל אם, ללא מניין מראש"],
-      "preconditions":[],
-      "procedure":["המקור מתחיל בארבע שורות הכאה בלא מניין; פירוט מלא של הפקת האמהות וההולדות יועלה רשומה־רשומה לאחר אימות עמודי 28–36."],
-      "branches":[],"outputScope":"בניית לוח של 16 צורות.",
-      "doNotInfer":["אין להשתמש ב-helper קיים כהוכחת מקור","אין לשנות סדר אמהות/בנות/נכדות לפי קוד קיים"],"doNotMixWith":["casting.p23-27.line-striking"],
-      "sourceChain":{"v57":"located","arabicScan":"pending-detailed-audit"},"verificationStatus":"INDEXED"
-    },
-    {
-      "entryId":"foundation.p37-42.measurement",
-      "entryType":"calculation-rule",
-      "pages":[37,38,39,40,41,42],
-      "v57Anchors":["kashf-v57-draft.html#p37"],
-      "topic":"מדידה וחשבון הצורות",
-      "subtopic":"96 ו־128 נקודות",
-      "keywords":["מספרי נקודות","96","128","ארבע","שש־עשרה","דרך","קהלה"],
-      "aliases":["למה יש 96 נקודות","למה יש 128 נקודות","חשבון בסיסי של הצורות"],
-      "questionIntents":[],"houses":[],"figures":[{"name":"דרך","pattern":"1111"},{"name":"קהלה","pattern":"2222"}],"rows":[],"elements":[],
-      "inputs":[],"preconditions":[],
-      "procedure":["שורש גורל החול הוא 4","4×4 = 16","16×6 = 96 — מניין נקודותיהן של 16 הצורות לפי קטע v57","דרך 1111 מולידה עם עצמה את קהלה 2222","קהלה בכלל 16 הצורות נותנת 128"],
-      "branches":[],"outputScope":"כלל יסוד חשבוני; אינו לבדו שיטת תשובה ללקוח.",
-      "doNotInfer":["אין לערבב בין 96 ל־128 כאילו הם אותו מדד"],"doNotMixWith":[],
-      "sourceChain":{"v57":"detailed-text-located","arabicScan":"pending-line-by-line-confirmation"},"verificationStatus":"INDEXED"
-    },
-    {
-      "entryId":"houses.p43-53.framework",
-      "entryType":"house-framework",
-      "pages":[43,44,45,46,47,48,49,50,51,52,53],
-      "v57Anchors":["kashf-v57-draft.html#p43"],
-      "topic":"השער הראשון — הבתים, תכונותיהם, טבעם וסדרם",
-      "subtopic":"מערכת הבתים",
-      "keywords":["12 בתים","16 בתים","אמהות","בנות","נולדות","מאזנים","יתדות","נוטים","נופלים","מזרח","מערב","צפון","דרום"],
-      "aliases":["משמעות הבתים","מה מייצג כל בית","סדר הבתים"],
-      "questionIntents":[],"houses":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],"figures":[],"rows":[],"elements":["אש","אוויר","מים","עפר"],
-      "inputs":[],"preconditions":[],"procedure":[],"branches":[],
-      "outputScope":"מסגרת הייחוסים של הבתים; כל בית יקבל רשומת child נפרדת עם תחומים, יסוד, מין, מצב יתד/נוטה/נופל, גוף ויחסי בתים.",
-      "doNotInfer":["אין לצמצם את הבית למילת מפתח יחידה","אין להשתמש ברשימת תחומים חלקית במקום פרופיל הבית המלא"],"doNotMixWith":[],
-      "sourceChain":{"v57":"detailed-text-located","arabicScan":"pending-detailed-audit"},"verificationStatus":"INDEXED"
-    }
+    {"entryId":"foundation.p21-22.introduction","entryType":"introduction","bookPages":[21,22],"scanPdfPages":[23,24],"v57Anchors":["kashf-v57-draft.html#p21","kashf-v57-draft.html#p22"],"topic":"מבוא לחכמת גורל החול ודניאל הנביא","keywords":["מבוא","דניאל הנביא","96 נקודות","מקור החכמה"],"criticalFacts":["החכמה מתוארת כחכמה המגלה עניינים נסתרים","מספר נקודותיה נמסר כ־96, זוגות ויחידים","מספר שמו של דניאל מובא גם הוא כ־96 כחלק מסיפור המקור"],"outputScope":"חומר מבוא והיסטוריית המסורת; לא שיטת פסק.","doNotInfer":["אין להפוך את סיפור המקור לאלגוריתם"],"sourceDiscrepancies":[],"verificationStatus":"VERIFIED"},
+    {"entryId":"context.p23-24.comparative-divination","entryType":"background","bookPages":[23,24],"scanPdfPages":[25,26],"v57Anchors":["kashf-v57-draft.html#p23","kashf-v57-draft.html#p24"],"topic":"דרכי גילוי נסתר אצל עמים שונים ופתיחת יסוד שש־עשרה הצורות","keywords":["הודו","נוביה","ברברים","חכמת הקו","16 צורות"],"criticalFacts":["המחבר מונה דרכי גילוי נסתר שונות לפני הצגת חכמת גורל החול","בסוף הרצף עובר אל יסוד החכמה בשש־עשרה צורות"],"outputScope":"רקע; אינו מנוע.","doNotInfer":["אין להפיק כללי הטלה משיטות העמים האחרות"],"sourceDiscrepancies":["הכותרת העברית בעמ׳ 23 והמעבר בסוף העמוד דורשים בדיקה לשונית נוספת מול נוסח המקור, ולכן הרשומה אינה VERIFIED"],"verificationStatus":"REVIEW_REQUIRED"},
+    {"entryId":"forms.p25.structure-odd-even","entryType":"definition","bookPages":[25],"scanPdfPages":[27],"v57Anchors":["kashf-v57-draft.html#p25"],"topic":"מבנה הצורה: ארבע מדרגות, יחיד וזוג","keywords":["ארבע מדרגות","יחיד","זוג","נקודה","שתי נקודות"],"criticalFacts":["כל צורה בנויה מארבע מדרגות","זוג הוא שתי נקודות ויחיד הוא נקודה אחת","אין להוסיף או לגרוע נקודה או צורה מן המבנה שנמסר"],"doNotInfer":["אין לשנות pattern כדי להתאים למנוע קיים"],"sourceDiscrepancies":["הניסוח העברי על שורש החכמה והכותרת בעמוד טעונים עוד בדיקת צמידות למקור"],"verificationStatus":"REVIEW_REQUIRED"},
+    {"entryId":"casting.p25-27.preconditions-times","entryType":"procedure","bookPages":[25,26,27],"scanPdfPages":[27,28,29],"v57Anchors":["kashf-v57-draft.html#p25","kashf-v57-draft.html#p26","kashf-v57-draft.html#p27"],"topic":"תנאי ההכאה, זמנים, טהרה וכוונה","keywords":["זמנים","טהרה","כוונה","קיבלה","ליצנות","פחד","מצוקה"],"preconditions":["מקום וחומר מתאימים לפי המקור","הימנעות מהכאה בליצנות או לשם בחינה בלבד","כוונה נוכחת וריכוז","מצבי טהרה והגבלות כפי שמנוסחים בעמ׳ 26–27"],"criticalFacts":["המקור מבחין בין זמנים ראויים לזמנים בלתי ראויים","מוזכרת עדיפות לפנייה לקיבלה","מי שאינו בטהרה יכול למנות אחר במקומו"],"doNotInfer":["אין להפוך את תנאי הזמן לרשימת defaults מקוצרת לפני השלמת אימות כל שעות היום"],"sourceDiscrepancies":[],"verificationStatus":"INDEXED"},
+    {"entryId":"casting.p27.repetition-limit","entryType":"operational-rule","bookPages":[27],"scanPdfPages":[29],"v57Anchors":["kashf-v57-draft.html#p27"],"topic":"מגבלת מספר שאלות וחזרה על אותה שאלה","keywords":["שלוש שאלות","שלוש פעמים","הפעם השלישית","רעב","צמא"],"criticalFacts":["אין להכות ליותר משלוש שאלות אלא בשעת צורך","בנוסחה אחרת: לא יותר משלוש שאלות בלילה או ביום","בעניין מסוים אין לחזור יותר משלוש פעמים","כאשר נעשו שלוש הכאות, ההכרעה לפי הפעם השלישית","אין להכות כשהמכה רעב, צמא או טרוד בלבו"],"doNotInfer":["אין להסיק שהמקור מחייב שלוש הכאות; הוא מגביל עד שלוש"],"sourceDiscrepancies":[],"verificationStatus":"VERIFIED"},
+    {"entryId":"casting.p28.four-lines-and-recitation","entryType":"procedure","bookPages":[28],"scanPdfPages":[30],"v57Anchors":["kashf-v57-draft.html#p28"],"topic":"פתיחת ההכאה וארבע שורות ללא מניין","keywords":["ארבע שורות","ללא מניין","שתים־עשרה נקודות","אל־פאתחה","פסוק הכיסא"],"criticalFacts":["מכים ארבע שורות בלא מניין","כל שורה על פי אומדן וראוי שתהיה יתרה על שתים־עשרה נקודות","השורה השנייה רבה מן הראשונה, השלישית מן השנייה והרביעית מן השלישית","המקור מצמיד קריאות שונות לשלבים"],"doNotInfer":["אין לספור מראש את מספר הנקודות"],"sourceDiscrepancies":[],"verificationStatus":"VERIFIED"},
+    {"entryId":"casting.p29.direction-finger-time-shape","entryType":"procedure","bookPages":[29],"scanPdfPages":[31],"v57Anchors":["kashf-v57-draft.html#p29"],"topic":"כיוון ההכאה, האצבע וצורת הקווים לפי הזמן","keywords":["מזרח למערב","קמיצה","יד ימין","בוקר","אחר הצהריים"],"criticalFacts":["ההכאה נעשית מן המזרח אל המערב","המכה משתמש באצבע הקמיצה של יד ימין","המקור מתאר שתי צורות גרפיות שונות להכאה לפי זמן היום"],"doNotInfer":["אין לתרגם את התרשימים לערכי 1/2 בלי השוואה חזותית"],"sourceDiscrepancies":[],"verificationStatus":"VERIFIED"},
+    {"entryId":"casting.p30.pair-reduction","entryType":"algorithm","bookPages":[30],"scanPdfPages":[32],"v57Anchors":["kashf-v57-draft.html#p30"],"topic":"מחיקת הנקודות בזוגות והפקת שארית יחיד או זוג","keywords":["מחיקת נקודות","זוגות","שארית","יחיד","זוג"],"procedure":["עוברים על כל שורת נקודות בזוגות","השארית היא נקודה אחת או שתי נקודות והיא ערך המדרגה"],"doNotInfer":["אין להשתמש במספר הנקודות המקורי לאחר ההפחתה במקום השארית"],"sourceDiscrepancies":[],"verificationStatus":"INDEXED"},
+    {"entryId":"casting.p30-33.generate-sixteen","entryType":"algorithm","bookPages":[30,31,32,33],"scanPdfPages":[32,33,34,35],"v57Anchors":["kashf-v57-draft.html#p30","kashf-v57-draft.html#p31","kashf-v57-draft.html#p32","kashf-v57-draft.html#p33"],"topic":"הולדת 16 הצורות","keywords":["אמהות","בנות","נכדות","עדים","דין","אחרית האחרית"],"houses":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],"procedure":["H1–H4 הן ארבע האמהות","H5–H8 נבנות משורות האש, האוויר, המים והעפר של ארבע האמהות לפי הסדר","H9=H1+H2","H10=H3+H4","H11=H5+H6","H12=H7+H8","H13=H9+H10","H14=H11+H12","H15=H13+H14","H16=H15+H1"],"criticalFacts":["H15 נקרא המכריע/הדין של השאלה","H16 נקרא אחרית האחרית"],"doNotInfer":["אין לשנות את זוגות ההולדה לפי helper קיים"],"sourceDiscrepancies":[],"verificationStatus":"VERIFIED"},
+    {"entryId":"reading.p34.temporal-thirds","entryType":"reading-framework","bookPages":[34],"scanPdfPages":[36],"v57Anchors":["kashf-v57-draft.html#p34"],"topic":"חלוקת ההכאה לעבר, הווה ועתיד","keywords":["עבר","הווה","עתיד","שלושה חלקים"],"criticalFacts":["החלק הראשון מורה על מה שהיה בעבר","החלק השני מורה על המצב הנוכחי","החלק השלישי מורה על מה שעתיד לבוא באחרית הדבר"],"doNotInfer":["אין להחליף חלוקה זו בציון ממוצע של כל הבתים"],"sourceDiscrepancies":[],"verificationStatus":"VERIFIED"},
+    {"entryId":"casting.p34-35.validity","entryType":"validation-rule","bookPages":[34,35],"scanPdfPages":[36,37],"v57Anchors":["kashf-v57-draft.html#p34","kashf-v57-draft.html#p35"],"topic":"בדיקות תקינות ההכאה","keywords":["בית 15","זוג","תקינות","אמהות","בנות"],"criticalFacts":["המקור כולל בדיקת תקינות הקשורה לזוגיות H15","המקור משווה שורות מקבילות בין האמהות לבנות כתנאי נוסף"],"doNotInfer":["אין להכריע שגיאת לוח לפי תנאי חלקי בלבד"],"sourceDiscrepancies":[],"verificationStatus":"INDEXED"},
+    {"entryId":"casting.p35.absent-four-figures","entryType":"validation-rule","bookPages":[35],"scanPdfPages":[37],"v57Anchors":["kashf-v57-draft.html#p35"],"topic":"היעדר ארבע צורות מן ההכאה","keywords":["דרך","סוהר","חיבור","קהלה","רמאי","שקר"],"figures":[{"name":"דרך","pattern":"1111"},{"name":"סוהר","arabicName":"العقلة","pattern":"1221"},{"name":"חיבור","pattern":"2112"},{"name":"קהלה","pattern":"2222"}],"criticalFacts":["המקור קושר היעדר כל ארבע הצורות המנויות מן ההכאה לדין של בעל הכוונה/הדמיר כרמאי או שקרן"],"doNotInfer":["אין להשתמש בכלל זה אם לא הוכח שהכוונה היא להיעדר כל ארבע הצורות יחד","אין להרחיב את הדין לזיהוי אדם ממשי"],"sourceDiscrepancies":[],"verificationStatus":"INDEXED"},
+    {"entryId":"theory.p36.timing-rationale","entryType":"educational","bookPages":[36],"scanPdfPages":[38],"v57Anchors":["kashf-v57-draft.html#p36"],"topic":"טעמי הזמנים והמצבים בהכאה","keywords":["לילה","עננים","רוח","זמנים"],"outputScope":"הסבר מסורתי לתנאי ההכאה; אינו שיטת פסק.","doNotInfer":["אין ליצור ממנו תנאי תוכנה חדש שלא נאמר במפורש"],"sourceDiscrepancies":[],"verificationStatus":"INDEXED"},
+    {"entryId":"arithmetic.p37.core-96-128","entryType":"calculation-rule","bookPages":[37],"scanPdfPages":[39],"v57Anchors":["kashf-v57-draft.html#p37"],"topic":"שורש ארבע, 16 צורות, 96 ו־128","keywords":["4","16","96","128","דרך","קהלה"],"figures":[{"name":"דרך","pattern":"1111"},{"name":"קהלה","pattern":"2222"}],"criticalFacts":["המקור קושר את שורש החכמה למספר 4 ולשש־עשרה הצורות","נמסר מניין 96 לנקודות 16 הצורות","דרך עם עצמה מולידה קהלה","נמסר גם מניין 128 בהקשר קהלה ו־16 הצורות"],"doNotInfer":["אין לאחד את 96 ו־128 למדד אחד"],"sourceDiscrepancies":[],"verificationStatus":"INDEXED"},
+    {"entryId":"arithmetic.p38-39.form-measurement","entryType":"calculation-rule","bookPages":[38,39],"scanPdfPages":[40,41],"v57Anchors":["kashf-v57-draft.html#p38","kashf-v57-draft.html#p39"],"topic":"מדידת הצורות לפי יחיד/זוג ושורות היסודות","keywords":["מדידה","אש","אוויר","מים","עפר","יחיד","זוג"],"doNotInfer":["אין לצמצם את שיטות המדידה לנוסחה אחת לפני מיפוי כל הדוגמאות"],"sourceDiscrepancies":[],"verificationStatus":"INDEXED"},
+    {"entryId":"relations.p40.definitions","entryType":"definition-set","bookPages":[40],"scanPdfPages":[42],"v57Anchors":["kashf-v57-draft.html#p40"],"topic":"מזג, מיזוג, השתתפות, חיבור, מבט ועדים","keywords":["מזג","מיזוג","השתתפות","חיבור","מבט","עדים"],"criticalFacts":["המזג מתאר דמיון טבע בין שתי צורות","המיזוג קשור להולדה","ההשתתפות מתוארת כהשתתפות צד בין צורות","החיבור, המבט והעדים מובאים כמושגים נפרדים"],"doNotInfer":["אין להחליף בין ששת המושגים"],"sourceDiscrepancies":[],"verificationStatus":"INDEXED"},
+    {"entryId":"reverse.p40-41.reconstruct-mothers-daughters","entryType":"algorithm","bookPages":[40,41],"scanPdfPages":[42,43],"v57Anchors":["kashf-v57-draft.html#p40","kashf-v57-draft.html#p41"],"topic":"שחזור האמהות/הבנות מן הבתים 9–12","keywords":["שחזור","9","10","11","12","אמהות","בנות"],"criticalFacts":["המקור מורה להוציא את הבנות מן 9 ו־10 כשם שהאמהות הוצאו מן 11 ו־12","v57 משמר כעת במפורש את 11 ו־12 ולא רק את 11"],"doNotInfer":["אין למחוק את 12 מן ההוראה"],"sourceDiscrepancies":[],"verificationStatus":"VERIFIED"},
+    {"entryId":"foundation.p41.six-causes-and-ranks","entryType":"definition-set","bookPages":[41],"scanPdfPages":[43],"v57Anchors":["kashf-v57-draft.html#p41"],"topic":"ששת יסודות הדין וחמש המדרגות","keywords":["מדרגות","עדים","חיבור","השתתפות","מזג","מיזוג"],"criticalFacts":["ששת יסודות הדין הנמסרים: מדרגות, עדים, חיבור, השתתפות, מזג, מיזוג","חמש המדרגות: רביעית, חמישית, שישית, שביעית ושמינית"],"sourceDiscrepancies":[],"verificationStatus":"VERIFIED"},
+    {"entryId":"placement.p41-42.house-letter-binary","entryType":"table-and-rule","bookPages":[41,42],"scanPdfPages":[43,44],"v57Anchors":["kashf-v57-draft.html#p41","kashf-v57-draft.html#p42"],"topic":"טבלת בתים/אותיות ומשקלי 1-2-4-8","keywords":["טבלת בתים","אותיות","אש 1","אוויר 2","מים 4","עפר 8"],"criticalFacts":["לנקודה היחידית בשורת האש ניתן משקל 1, באוויר 2, במים 4 ובעפר 8","המקור משתמש בסכום כדי לשכן צורה בבית המתאים מתוך 16"],"doNotInfer":["התרשים והצורות בטבלה הם חלק מן המקור ואסור להחליפם במלל בלבד"],"sourceDiscrepancies":["הטבלאות והדוגמאות הגרפיות דורשות השוואה חזותית מלאה לפני VERIFIED"],"verificationStatus":"REVIEW_REQUIRED"},
+    {"entryId":"houses.p43-44.taxonomy","entryType":"house-framework","bookPages":[43,44],"scanPdfPages":[45,46],"v57Anchors":["kashf-v57-draft.html#p43","kashf-v57-draft.html#p44"],"topic":"חלוקת 16 הבתים ותכונותיהם","keywords":["אמהות","בנות","נולדות","יתרות","יתדות","נוטים","נופלים","מזרח","מערב","דרום","צפון"],"criticalFacts":["אמהות H1–H4; בנות H5–H8; נולדות H9–H12; יתרות H13–H16","יתדות H1,H4,H7,H10 מורות על ההווה","H2,H5,H8,H11 מוגדרים כמائل האותאד ומורים על העתיד","H3,H6,H9,H12 מוגדרים במקור במונח נפרד ומורים על העבר"],"doNotInfer":["אין לאחד מונחים ערביים שונים תחת תווית עברית אחת בלי הערת נוסח"],"sourceDiscrepancies":["v57 משתמש ב׳נופלי היתדות׳ עבור H3,H6,H9,H12, בעוד המקור מבחין בין מائل الأوتاد, زائل الأوتاد ובמקום נוסף גם الساقط; יש לשמר את ההבחנה לפני קיבוע taxonomy"],"verificationStatus":"REVIEW_REQUIRED"},
+    {"entryId":"houses.p45.aspects-and-gender","entryType":"relation-framework","bookPages":[45],"scanPdfPages":[47],"v57Anchors":["kashf-v57-draft.html#p45"],"topic":"שילוש, ריבוע, סקסטיל, ימין/שמאל וזכר/נקבה","keywords":["שילוש","ריבוע","סקסטיל","עדים","יתדות","ימין","שמאל","זכר","נקבה"],"criticalFacts":["השילוש: 1→3, 3→5, 5→7, 7→9, 9→11 ונקרא בעדים","הריבוע: 1→4, 4→7, 7→10 ונקרא ביתדות","הסקסטיל כולל 1→3, 9→11, 4→8 לפי נוסח v57","המקור קובע לסירוגין בית זכר ובית נקבה"],"doNotInfer":["אין להשלים חוליה חסרה בסקסטיל לפי אסטרולוגיה כללית"],"sourceDiscrepancies":["בסריקה המודפסת מופיעה לאחר רצף הסקסטיל המילה המבודדת ׳والثاني׳ שאינה משוקפת ב־v57; משמעותה המבנית טרם נסגרה"],"verificationStatus":"REVIEW_REQUIRED"},
+    {"entryId":"houses.p46.relative-roles-and-labels","entryType":"house-framework","bookPages":[46],"scanPdfPages":[48],"v57Anchors":["kashf-v57-draft.html#p46"],"topic":"כיווני הבתים, יחסי בית וסדר שמות 16 הבתים","keywords":["רוחב","עד","אחרית קטנה","מורה","סוד","מבוקש","חיים","קניין","דין"],"criticalFacts":["לכל בית: השני ממנו הוא רוחבו, השלישי עדו, הרביעי אחריתו הקטנה, החמישי מורהו, השישי סודו והשביעי מבוקשו","שמות 16 המקומות: חיים, קניין, אחווה, הורה, שמחה, עצב, משכב, בעל הקבר, מסע, שלטון, רווחה, מצוקה, השואל, הנשאל, דין, אחרית הדבר"],"sourceDiscrepancies":[],"verificationStatus":"VERIFIED"},
+    {"entryId":"houses.p46-53.profiles","entryType":"house-profile-set","bookPages":[46,47,48,49,50,51,52,53],"scanPdfPages":[48,49,50,51,52,53,54,55],"v57Anchors":["kashf-v57-draft.html#p46","kashf-v57-draft.html#p47","kashf-v57-draft.html#p48","kashf-v57-draft.html#p49","kashf-v57-draft.html#p50","kashf-v57-draft.html#p51","kashf-v57-draft.html#p52","kashf-v57-draft.html#p53"],"topic":"פרופילי הבתים 1–15","houseProfiles":[
+      {"house":1,"name":"חיים","class":"אם","direction":"מזרחי","motion":"עולה","strength":"יתד","element":"אש","function":"ראייה","gender":"זכר","fullness":"ריק","elementOfElement":"אש האש","bodyParts":["עין","ראש","פנים"],"domainKeywords":["נפש","חיים","גוף","התחלות","מנוחה","אורך חיים","כוח","ניצחון על אויבים","מסייעים"],"verificationStatus":"VERIFIED"},
+      {"house":2,"name":"קניין","class":"אם","direction":"מזרחי","motion":"עולה","strength":"נוטה מן היתד","element":"אוויר","function":"דיבור","gender":"נקבה","fullness":"מלא","elementOfElement":"אוויר האוויר","bodyParts":["עין","גרון","צוואר"],"domainKeywords":["ממון","עוזרים","פרנסה","מזונות","כניסה ויציאה","עסקאות","עושר ועוני","ביאת נעדר","כתבי שלטון","שותפויות"],"verificationStatus":"REVIEW_REQUIRED","sourceDiscrepancy":"הביטוי הערבי ما يستقبل رضاعه من الأولاد מצריך תיקון/דיוק מעבר לניסוח v57 הקיים."},
+      {"house":3,"name":"אחווה","class":"אם","direction":"מזרחי","motion":"עולה","strength":"נופל מן היתד","element":"מים","function":"חיבור","gender":"זכר","fullness":"ריק","elementOfElement":"מי המים","bodyParts":["זרועות","ידיים"],"domainKeywords":["אחים ואחיות","תנועות קרובות","מעבר","משפחה","קרובים","דעת","עבודה רוחנית","חלום","שליחים","חדשות"],"verificationStatus":"REVIEW_REQUIRED","sourceDiscrepancy":"v57 אומר ׳זהו בית המים, האחים...׳; המילה ׳המים׳ כתיאור תחום אינה נמצאת במקור הערבי ונראית תוספת."},
+      {"house":4,"name":"הורה","class":"אם","direction":"מזרחי","motion":"עולה","strength":"יתד","element":"עפר","function":"פירוד","elementOfElement":"עפר העפר","bodyParts":["צלעות","ריאות","חזה"],"domainKeywords":["אבות ואמהות","אחרית קטנה","קרקע","אדמות","מבנים","חקלאות","מגורים","אוצרות","מטמונים","בארות","בתי סוהר"],"verificationStatus":"VERIFIED"},
+      {"house":5,"name":"שמחה","direction":"מערבי","motion":"שוקע","strength":"נוטה מן היתד","element":"אש","function":"ראייה","gender":"זכר","fullness":"ריק","elementOfElement":"אש האש","bodyParts":["קיבה","לב"],"domainKeywords":["ילדים","שמחות","מלבושים","הריון","אהבה","חשק","מתנות","מזל","ספרים","ניחוחות","תכשיטים","מוזיקה"],"verificationStatus":"VERIFIED"},
+      {"house":6,"name":"עצב","direction":"מערבי","motion":"שוקע","strength":"נופל מן היתד; ויש אומרים נופל ממש","element":"אוויר","function":"דיבור","fullness":"מלא","bodyParts":["בטן","טבור","מעיים"],"domainKeywords":["מחלות","סוהר","עבדים","בהמות בעלות פרסות","תחלואים","פרידת אהובים","קנאה","כישוף ואחיזות","דבר אובד","דבר נסתר"],"verificationStatus":"VERIFIED"},
+      {"house":7,"name":"משכב","direction":"מערבי","motion":"שוקע","strength":"יתד","element":"מים","function":"חיבור","gender":"זכר","fullness":"ריק","elementOfElement":"מי המים","bodyParts":["מן הטבור ועד הערווה"],"domainKeywords":["נשים ורעיות","נישואין","שותף","גובר ונכנע","מריבה","ניצחון","אדם לא מוכר","מכירה וקנייה","ציד","מלחמה","גנב","כל מבוקש"],"verificationStatus":"VERIFIED"},
+      {"house":8,"name":"בעל הקבר","direction":"מערבי","motion":"שוקע","strength":"נוטה מן היתד","element":"עפר","function":"פירוד","gender":"נקבה","fullness":"מלא","elementOfElement":"עפר העפר","bodyParts":["מי הגב / הזרע"],"domainKeywords":["פחד","מוות","אבדון","ירושות","הלוואה","נדוניה","מטמונים","מעבר מטוב לרע","רעלים","מקומות חרבים"],"verificationStatus":"VERIFIED"},
+      {"house":9,"name":"מסע","direction":"דרומי","motion":"מתרומם","strength":"נופל מן היתדות","element":"אש","function":"ראייה","gender":"זכר","fullness":"ריק","elementOfElement":"אש האש","bodyParts":["ירכיים"],"domainKeywords":["נסיעות","נעדרים","דת","מלוכה","פירוש חלומות","עבודה רוחנית","מדעים","פילוסופיה","שירה","מינוי","דיני כוכבים","חשבון"],"inheritsJudgmentFrom":[1,2],"verificationStatus":"VERIFIED"},
+      {"house":10,"name":"שלטון","direction":"דרומי","motion":"מתרומם","strength":"יתד","element":"אוויר","function":"דיבור","gender":"נקבה","fullness":"מלא","elementOfElement":"אוויר האוויר","bodyParts":["ברכיים"],"domainKeywords":["כבוד","שלטון","ראשות","רוממות","שם טוב","מעמד","מלאכות","שופטים","מושלים","הגעה למבוקש","אמצע החיים","יכולת","ניהול"],"inheritsJudgmentFrom":[3,4],"verificationStatus":"VERIFIED"},
+      {"house":11,"name":"רווחה","direction":"דרומי","strength":"נוטה","element":"מים","function":"חיבור","gender":"זכר","fullness":"ריק","elementOfElement":"מי המים","bodyParts":["שוקיים"],"domainKeywords":["תקווה","ציפייה","אושר","אוהבים","תודה","אהבה","עוזרים","תועלת","הבטחות","ניצחון","פיוס","נדיבות","מסחר","מנוחה"],"inheritsJudgmentFrom":[5,6],"verificationStatus":"VERIFIED"},
+      {"house":12,"name":"מצוקה","direction":"דרומי","motion":"מתרומם","strength":"נופל","element":"עפר","function":"פירוד","gender":"נקבה","fullness":"מלא","elementOfElement":"עפר העפר","bodyParts":["כפות רגליים"],"domainKeywords":["אויבים","סוסים ובעלי פרסות","אומללות","דאגה","יגון","קנאה","לשון הרע","עיכוב","סיבוך","סוהר","כבלים","חשכה","בדידות","בלבול השכל"],"inheritsJudgmentFrom":[7,8],"verificationStatus":"VERIFIED"},
+      {"house":13,"name":"השואל","class":"יתרה","direction":"צפוני","motion":"יורד","element":"אש","function":"ראייה","gender":"זכר","fullness":"ריק","elementOfElement":"אש האש","witnesses":[1,9],"verificationStatus":"VERIFIED"},
+      {"house":14,"name":"הנשאל","class":"יתרה","direction":"צפוני","motion":"יורד","element":"אוויר","function":"דיבור","gender":"נקבה","fullness":"מלא","elementOfElement":"אוויר האוויר","witnesses":[5,6,11],"verificationStatus":"VERIFIED"},
+      {"house":15,"name":"דין","class":"מאזן גורל החול","direction":"צפוני","motion":"יורד","element":"מים","function":"חיבור","gender":"זכר","fullness":"ריק","elementOfElement":"מי המים","witnesses":[3,7,10,11],"aliases":["מראת גורל החול","דיין","מאזן גורל החול"],"verificationStatus":"VERIFIED"}
+    ],"criticalFacts":["עמ׳ 53 קובע ששנים־עשר הבתים הם שורש גורל החול והגלגל שעליו נסמכים הדינים","בגורל החול ממשיכים גם לבתים 13–16; יש מחברים שאינם מזכירים H16"],"doNotInfer":["H16 מתחיל בעמ׳ 54 ולכן הפרופיל המלא שלו שייך ל־Batch 02","אין לתקן תרגום של H2/H3 בתוך האינדקס בלי לעדכן גם את v57 בתהליך מקור מסודר"],"sourceDiscrepancies":["H2 ו־H3 מסומנים REVIEW_REQUIRED בתוך houseProfiles"],"verificationStatus":"REVIEW_REQUIRED"}
   ]
 }
 </script>
 <script>
-const data=JSON.parse(document.getElementById('kashf-ai-master-index-data').textContent);const root=document.getElementById('records');for(const r of data.records){const el=document.createElement('section');el.className='card';el.innerHTML=`<h3>${r.entryId}</h3><div class="meta">עמ׳ ${r.pages[0]}–${r.pages[r.pages.length-1]} · <span class="status ${r.verificationStatus==='VERIFIED'?'ok':'pending'}">${r.verificationStatus}</span></div><p><b>${r.topic}</b>${r.subtopic?' — '+r.subtopic:''}</p><div>${r.keywords.map(x=>`<span class="tag">${x}</span>`).join('')}</div><p><b>היקף:</b> ${r.outputScope}</p><p><b>אסור להסיק:</b> ${(r.doNotInfer||[]).join(' • ')||'—'}</p>`;root.appendChild(el)}
+const data=JSON.parse(document.getElementById('kashf-ai-master-index-data').textContent);const counts=data.records.reduce((a,r)=>(a[r.verificationStatus]=(a[r.verificationStatus]||0)+1,a),{});document.getElementById('summary').innerHTML=`<b>מצב Batch 01:</b> ${data.records.length} יחידות ידע · VERIFIED ${counts.VERIFIED||0} · INDEXED ${counts.INDEXED||0} · REVIEW_REQUIRED ${counts.REVIEW_REQUIRED||0} · UNRESOLVED ${counts.UNRESOLVED||0}`;const root=document.getElementById('records');for(const r of data.records){const cls=r.verificationStatus==='VERIFIED'?'verified':r.verificationStatus==='REVIEW_REQUIRED'?'review':r.verificationStatus==='UNRESOLVED'?'unresolved':'indexed';const el=document.createElement('section');el.className='card';const facts=(r.criticalFacts||[]).map(x=>`<li>${x}</li>`).join('');const probs=(r.sourceDiscrepancies||[]).map(x=>`<li>${x}</li>`).join('');el.innerHTML=`<h3>${r.entryId}</h3><div class="meta">עמ׳ ספר ${(r.bookPages||[]).join(', ')} · עמ׳ סריקה ${(r.scanPdfPages||[]).join(', ')} · <span class="status ${cls}">${r.verificationStatus}</span></div><p><b>${r.topic}</b></p>${facts?`<ul class="facts">${facts}</ul>`:''}${probs?`<div class="warn"><b>פערי מקור:</b><ul>${probs}</ul></div>`:''}`;root.appendChild(el)}
 </script>
 </main></body></html>
