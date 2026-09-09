@@ -25,11 +25,13 @@ jobs:
           node --check _patch_kashf_professional_backfill_12_part1.mjs
           node --check _patch_kashf_professional_backfill_12_part2.mjs
           node --check _patch_kashf_professional_backfill_12_part3.mjs
+          node --check _patch_kashf_professional_backfill_12_part4.mjs
       - name: Apply professional backfill batch 12
         run: |
           node _patch_kashf_professional_backfill_12_part1.mjs
           node _patch_kashf_professional_backfill_12_part2.mjs
           node _patch_kashf_professional_backfill_12_part3.mjs
+          node _patch_kashf_professional_backfill_12_part4.mjs
       - name: Syntax checks
         run: |
           node --check goral-hachol/engine/kashf-canonical-executors.js
