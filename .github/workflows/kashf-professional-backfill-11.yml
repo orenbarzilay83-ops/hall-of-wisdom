@@ -1,0 +1,88 @@
+name: Kashf Professional Backfill 11
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/kashf-professional-backfill-11.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply-test-commit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate patchers
+        run: |
+          node --check _patch_kashf_professional_backfill_11_part1.mjs
+          node --check _patch_kashf_professional_backfill_11_part2.mjs
+          node --check _patch_kashf_professional_backfill_11_part3.mjs
+      - name: Apply professional backfill batch 11
+        run: |
+          node _patch_kashf_professional_backfill_11_part1.mjs
+          node _patch_kashf_professional_backfill_11_part2.mjs
+          node _patch_kashf_professional_backfill_11_part3.mjs
+      - name: Syntax checks
+        run: |
+          node --check goral-hachol/data/sources/kashf-al-asrar/kashf-hazz.js
+          node --check goral-hachol/engine/kashf-canonical-executors.js
+          node --check goral-hachol/registry/kashf-canonical-method-registry.js
+          node --check goral-hachol/registry/kashf-v57-knowledge-registry.js
+          node --check goral-hachol/intelligence/kashf-professional-verdict-safety.js
+          node --check _test_kashf_professional_verdict_safety.mjs
+          node --check _test_kashf_canonical_routing.mjs
+      - name: Source-map audit
+        run: |
+          node --input-type=module <<'NODE'
+          import { FIGURE_PLANET_MAP } from './goral-hachol/data/sources/kashf-al-asrar/kashf-hazz.js';
+          const byPattern = Object.fromEntries(FIGURE_PLANET_MAP.flatMap(x => x.patterns.map(p => [p, x.planet])));
+          const expected = { '1121':'נוגה','2211':'נוגה','1221':'שבתאי','2221':'שבתאי','1212':'ראש התלי','1112':'זנב התלי' };
+          if (Object.keys(byPattern).length !== 16 || new Set(Object.keys(byPattern)).size !== 16) throw new Error('p133-134 map is not a complete 16-pattern partition');
+          for (const [p, planet] of Object.entries(expected)) if (byPattern[p] !== planet) throw new Error(`${p} expected ${planet}, got ${byPattern[p]}`);
+          console.log('p133-134 attribution map: 16/16 exact');
+          NODE
+      - name: Professional Verdict Safety tests
+        run: node _test_kashf_professional_verdict_safety.mjs
+      - name: Canonical routing regression
+        run: node _test_kashf_canonical_routing.mjs
+      - name: Question route coverage
+        run: node _audit_kashf_question_route_coverage.mjs
+      - name: AI retrieval regression
+        run: node _test_kashf_ai_retrieval_index.mjs
+      - name: Canonical AI live bridge regression
+        run: node _test_kashf_ai_retrieval_live_bridge.mjs
+      - name: AI context builder regression
+        run: node _test_kashf_ai_context_builder.mjs
+      - name: Method isolation regression
+        run: node _test_kashf_hawi_method_isolation.mjs
+      - name: Structured output regression
+        run: node _test_kashf_structured_tool_output.mjs
+      - name: Advisor payload regression
+        run: node _test_oren_smart_advisor_kashf_reading_payload.mjs
+      - name: Commit batch 11
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            goral-hachol/data/sources/kashf-al-asrar/kashf-hazz.js \
+            goral-hachol/engine/kashf-canonical-executors.js \
+            goral-hachol/registry/kashf-canonical-method-registry.js \
+            goral-hachol/registry/kashf-v57-knowledge-registry.js \
+            goral-hachol/intelligence/kashf-professional-verdict-safety.js \
+            _test_kashf_professional_verdict_safety.mjs \
+            _test_kashf_canonical_routing.mjs \
+            HALL_WISDOM_KASHF_PROFESSIONAL_VERDICT_BACKFILL_STATUS.md
+          if git diff --cached --quiet; then
+            echo "No batch 11 changes to commit"
+            exit 1
+          fi
+          git commit -m "feat(kashf): certify p254 profession source closure"
+          git push origin HEAD:main
