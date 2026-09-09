@@ -70,12 +70,12 @@ const p205RepairLive = buildKashfCanonicalAiBridge({
   questionText: 'האם הוא אוהב אותי?',
   board: BOARD,
 });
-assert(p205RepairLive.resolution.kashfMethodId === 'love.p205.directLoveH1PlacementH5Relation', 'q-love resolves the corrected p205 H5-relation method id');
+assert(p205RepairLive.resolution.kashfMethodId === 'love.p205.directLoveH1PlacementH15', 'q-love resolves the visually verified p205 H15-relation method id');
 assert(p205RepairLive.resolution.kashfRuntimeStatus === 'repair-required', 'q-love bridge exposes repair-required status');
 assert(p205RepairLive.resolution.executorStatus === 'pending', 'q-love bridge preserves pending executor state');
 assert(p205RepairLive.aiVerdictAllowed === false, 'AI cannot issue a p205 love verdict while source semantics remain unresolved');
 assert(p205RepairLive.canonicalReading.canRunKashf === false, 'canonical p205 runtime remains hard-stopped');
-assert(p205RepairLive.canonicalRetrieval?.v57?.hebrewRule?.includes('בבית החמישי'), 'live p205 retrieval exposes corrected H5 knowledge');
+assert(p205RepairLive.canonicalRetrieval?.v57?.hebrewRule?.includes('בבית החמישה־עשר'), 'live p205 retrieval exposes visually verified H15 knowledge');
 
 // 4b. Newly activated p167 route is available to the live AI only through its
 // exact hidden-action method and retains the anti-mixing boundary.

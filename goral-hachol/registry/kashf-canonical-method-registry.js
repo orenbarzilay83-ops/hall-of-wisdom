@@ -446,8 +446,8 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     notes: 'Canonical pp210-211 general-marriage executor is wired. It preserves the source roles of H1/H2 for the man and marriage, H7/H8 for the woman, H10 for what occurs between them and H15 for the outcome; it then performs the explicit H1+H5 derivation for the final good/opposite judgment. Only source-explicit branches are asserted, and mixed testimony remains unresolved.',
   }),
 
-  'love.p205.directLoveH1PlacementH5Relation': method({
-    kashfMethodId: 'love.p205.directLoveH1PlacementH5Relation',
+  'love.p205.directLoveH1PlacementH15': method({
+    kashfMethodId: 'love.p205.directLoveH1PlacementH15',
     kashfIntentId: 'love.doesPersonLoveMe',
     topicId: 'marriage',
     sourcePages: [205],
@@ -455,7 +455,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     runtimeAllowed: false,
     executionKind: 'custom-engine',
     executorStatus: 'pending',
-    notes: 'Primary scan p205 reads H5 (الخامس المطلوب), not H15. The H1 figure is judged by its recurrence/placement, but the printed negative list names 6,8,3,12 while the standard cadents are 3,6,9,12. The source then says to inspect H5, called the sought, relative to the ascendant; a bad relation means aversion, while the final phrase "وإن كان في قبضتك" is not mechanically closed. Runtime remains blocked until the placement anomaly, نسبة relation and قبضتك clause are source-closed. Do not substitute p204 attention or p264 friendship/love.',
+    notes: 'Visual recheck of the printed p205 scan confirms H15: انظر البيت الخامس عشر بالنسبة إلى الطالع. The prior H5 repair was based on a text-layer misread and is reversed. The H1/ascendant figure is judged by recurrence/placement; the printed negative list still names 6,8,3,12 while the standard cadents are 3,6,9,12. Runtime remains blocked until that placement anomaly, the H15↔ascendant نسبة relation, and the final وإن كان في قبضتك clause are source-closed. Do not substitute p204 attention or p206 favor/desire.',
   }),
 
   'love.p204.attentionFireRows1713': method({

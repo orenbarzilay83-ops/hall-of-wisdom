@@ -310,7 +310,7 @@ function p206WomanFavorPolicy() {
     ]),
     excludedFromPrimaryVerdict: freezeArray([
       'desire.p206.querentWantsH7H11ThenH5 — אותה מכניקה אך שאלה סמנטית אחרת.',
-      'love.p205.directLoveH1PlacementH5Relation — אהבה ישירה, כרגע repair-required.',
+      'love.p205.directLoveH1PlacementH15 — אהבה ישירה, כרגע repair-required.',
       'marriage.p210.generalMarriageH1H2H7H8H10Judge — התאמת נישואין.',
       'love.p204.attentionFireRows1713 — למי מופנה המבט.',
     ]),
@@ -340,7 +340,7 @@ function p206QuerentDesirePolicy() {
     ]),
     excludedFromPrimaryVerdict: freezeArray([
       'love.p206.womanFavorH7H11ThenH5 — אותה מכניקה אך שאלה אחרת.',
-      'love.p205.directLoveH1PlacementH5Relation — אהבת אדם אחר.',
+      'love.p205.directLoveH1PlacementH15 — אהבת אדם אחר.',
       'marriage.p210.generalMarriageH1H2H7H8H10Judge — התאמת נישואין.',
     ]),
     forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
@@ -967,7 +967,7 @@ function p204AttentionPolicy() {
       'אין לייבא את ענפי הכלל הדומה בעמ׳ 170 כדי להשלים תוצאה.',
     ]),
     excludedFromPrimaryVerdict: freezeArray([
-      'love.p205.directLoveH1PlacementH5Relation — שאלת אהבה היא שיטה נפרדת וחסומה כרגע.',
+      'love.p205.directLoveH1PlacementH15 — שאלת אהבה היא שיטה נפרדת וחסומה כרגע.',
       'love.p206.womanFavorH7H11ThenH5 — מציאת חן היא שיטה נפרדת.',
       'marriage.p210.generalMarriageH1H2H7H8H10Judge — התאמת נישואין היא שיטה נפרדת.',
     ]),
