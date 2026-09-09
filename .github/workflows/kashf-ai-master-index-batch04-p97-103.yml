@@ -1,0 +1,89 @@
+name: Kashf AI Master Index Batch04 P97-103
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/kashf-ai-master-index-batch04-p97-103.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply-validate-commit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate patcher
+        run: node --check _patch_kashf_ai_master_index_batch04_p97_103.mjs
+      - name: Apply Batch04
+        run: node _patch_kashf_ai_master_index_batch04_p97_103.mjs
+      - name: Validate AI master index
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const text=fs.readFileSync('kashf-v57-ai-master-index.html','utf8');
+          const m=text.match(/<script id="kashf-ai-master-index-data" type="application\/json">\s*([\s\S]*?)\s*<\/script>/);
+          if(!m) throw new Error('master index JSON block missing');
+          const data=JSON.parse(m[1]);
+          const assert=(c,msg)=>{if(!c) throw new Error(msg)};
+          assert(data.schemaVersion==='1.5.0','schema mismatch');
+          assert(data.records.length===59,`expected 59 records got ${data.records.length}`);
+          assert(new Set(data.records.map(r=>r.entryId)).size===59,'duplicate entryIds');
+          const counts=Object.fromEntries(['VERIFIED','INDEXED','REVIEW_REQUIRED','UNRESOLVED'].map(s=>[s,data.records.filter(r=>r.verificationStatus===s).length]));
+          assert(counts.VERIFIED===50 && counts.INDEXED===0 && counts.REVIEW_REQUIRED===9 && counts.UNRESOLVED===0,`unexpected counts ${JSON.stringify(counts)}`);
+          assert(data.coverage.bookEndPage===103 && data.coverage.scanPdfEndPage===105,'coverage mismatch');
+          assert(data.records.find(r=>r.entryId==='context.p23-24.comparative-divination')?.verificationStatus==='VERIFIED','p24 regression');
+
+          const d=data.records.find(r=>r.entryId==='figures.p97-99.dignities-source-table');
+          assert(d?.verificationStatus==='REVIEW_REQUIRED','dignity record must remain review while v57 differs');
+          assert(d.sourceVerification?.visualLineByLineChecked===true,'dignity visual verification missing');
+          assert(d.dignityRows.length===14,'printed dignity row count must be 14');
+          assert(d.omittedFromPrintedTable.map(x=>x.pattern).sort().join(',')==='1221,2121','omitted dignity figures mismatch');
+          const by=Object.fromEntries(d.dignityRows.map(x=>[x.pattern,x]));
+          assert(by['1112'].panim===7 && by['1112'].simcha===6,'Ataba Kharija source values lost');
+          assert(by['2211'].simcha===12,'Nusra Dakhila joy lost');
+          assert(by['2112'].maala===11 && by['2112'].moshav===15 && by['2112'].gvul===15 && by['2112'].panim===6 && by['2112'].simcha===15 && by['2112'].mezeg===3,'Ijtima dignity source values lost');
+          assert(by['1122'].panim===12 && by['1122'].mezeg===6,'Nusra Kharija source values lost');
+          assert(by['1111'].maala===13 && by['1111'].moshav===13 && by['1111'].gvul===16 && by['1111'].panim===15 && by['1111'].simcha===13 && by['1111'].burj===7 && by['1111'].mezeg===5,'Tariq dignity source values lost');
+          assert(by['1212'].panim===5 && by['1212'].simcha===10,'Qabd Kharij source values lost');
+
+          const joy=data.records.find(r=>r.entryId==='figures.p100.joy-grief-supplement');
+          assert(joy.planetJoy.find(x=>x.entity==='צורות נוגה')?.house===5,'Venus joy H5 missing');
+          assert(joy.verificationStatus==='REVIEW_REQUIRED','joy record must remain review while v57 differs');
+
+          const months=data.records.find(r=>r.entryId==='figures.p100-101.month-associations');
+          const month=(name)=>months.monthAssociations.find(x=>x.month===name)?.figures||[];
+          assert(month('שוואל').includes('2222') && month('שוואל').includes('2212'),'Shawwal dual mapping lost');
+          assert(month('מוחרם').includes('2212'),'Muharram Bayad mapping lost');
+          assert(month('רביע האחרון').includes('1121') && month('רביע האחרון').includes('2111'),'Rabi II dual mapping lost');
+          assert(month('ד׳ו אל־חג׳ה').sort().join(',')==='1111,2112','Dhu al-Hijja mapping lost');
+
+          const w=data.records.find(r=>r.entryId==='houses.p101-102.partners-witnesses');
+          assert(w?.verificationStatus==='REVIEW_REQUIRED','witness record must remain review while v57 differs');
+          const w5=w.witnessMap.find(x=>x.witnessFigure===5);
+          assert(JSON.stringify(w5?.houses)==='[3,7,11]','critical figure-5 witness map lost');
+          assert(!w.witnessMap.some(x=>x.witnessFigure===15),'figure 15 must not be source witness in p101 map');
+
+          const aliases=data.records.find(r=>r.entryId==='figures.p102-103.alternative-names');
+          assert(aliases?.verificationStatus==='VERIFIED' && aliases.aliasRows.length===16,'alias table verification failed');
+          assert(aliases.aliasRows.find(x=>x.ordinal===16)?.aliasesRaw.length===0,'source blank alias must stay blank');
+
+          assert((data.v57CorrectionQueue||[]).length===10,'expected 10 v57 correction items');
+          assert((data.downstreamCorrectionQueue||[]).length===13,'expected 13 downstream correction items');
+          console.log('Batch04 validation PASS',counts,'v57Queue',data.v57CorrectionQueue.length,'downstreamQueue',data.downstreamCorrectionQueue.length);
+          NODE
+      - name: Commit Batch04 index
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add kashf-v57-ai-master-index.html
+          if git diff --cached --quiet; then echo 'No index changes'; exit 1; fi
+          git commit -m "feat(kashf): index and verify source pages 97-103"
+          git push origin HEAD:main
