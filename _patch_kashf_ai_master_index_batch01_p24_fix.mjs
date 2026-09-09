@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+import fs from 'node:fs';
+const path='kashf-v57-ai-master-index.html';
+let text=fs.readFileSync(path,'utf8');
+const re=/<script id="kashf-ai-master-index-data" type="application\/json">\s*([\s\S]*?)\s*<\/script>/;
+const m=text.match(re); if(!m) throw new Error('master index JSON block missing');
+const data=JSON.parse(m[1]);
+const r=data.records.find(x=>x.entryId==='context.p23-24.comparative-divination');
+if(!r) throw new Error('p23-24 record missing');
+r.verificationStatus='VERIFIED';
+r.sourceDiscrepancies=[];
+delete r.sourceCorrectionRequired;
+r.sourceVerification={printedBookPages:[23,24],scanPdfPages:[25,26],v57Checked:true,printedScanChecked:true,note:'Re-read from the enlarged printed scan: the source says علم الكف, not علم الكتف. Therefore v57 palm/hand wording is source-consistent. The earlier scapula correction was erroneous and has been removed.'};
+if(Array.isArray(data.v57CorrectionQueue)) data.v57CorrectionQueue=data.v57CorrectionQueue.filter(x=>x.id!=='B01-P24-KATIF');
+data.schemaVersion='1.2.1';
+data.coverage.status='BATCH01_THREE_REVIEW_BLOCKERS_REMAIN';
+const json=JSON.stringify(data,null,2);
+text=text.replace(re,`<script id="kashf-ai-master-index-data" type="application/json">\n${json}\n</script>`);
+fs.writeFileSync(path,text,'utf8');
+const counts=Object.fromEntries(['VERIFIED','INDEXED','REVIEW_REQUIRED','UNRESOLVED'].map(s=>[s,data.records.filter(r=>r.verificationStatus===s).length]));
+console.log('p24 correction applied',counts,'queue',data.v57CorrectionQueue?.length||0);
