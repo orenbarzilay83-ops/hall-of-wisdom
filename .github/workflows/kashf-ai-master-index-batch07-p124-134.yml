@@ -1,0 +1,97 @@
+name: Kashf AI Master Index Batch07 P124-134
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/kashf-ai-master-index-batch07-p124-134.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply-validate-commit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate patcher
+        run: node --check _patch_kashf_ai_master_index_batch07_p124_134.mjs
+      - name: Apply Batch07
+        run: node _patch_kashf_ai_master_index_batch07_p124_134.mjs
+      - name: Validate AI master index
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const text=fs.readFileSync('kashf-v57-ai-master-index.html','utf8');
+          const m=text.match(/<script id="kashf-ai-master-index-data" type="application\/json">\s*([\s\S]*?)\s*<\/script>/);
+          if(!m) throw new Error('master index JSON block missing');
+          const data=JSON.parse(m[1]);
+          const assert=(c,msg)=>{if(!c) throw new Error(msg)};
+          assert(data.schemaVersion==='1.8.0','schema mismatch');
+          assert(data.records.length===91,`expected 91 records got ${data.records.length}`);
+          assert(new Set(data.records.map(r=>r.entryId)).size===91,'duplicate entryIds');
+          const counts=Object.fromEntries(['VERIFIED','INDEXED','REVIEW_REQUIRED','UNRESOLVED'].map(s=>[s,data.records.filter(r=>r.verificationStatus===s).length]));
+          assert(counts.VERIFIED===72 && counts.REVIEW_REQUIRED===19 && counts.INDEXED===0 && counts.UNRESOLVED===0,`unexpected counts ${JSON.stringify(counts)}`);
+          assert(data.coverage.bookEndPage===134 && data.coverage.scanPdfEndPage===136,'coverage mismatch');
+          assert(data.methodSelectionPolicy?.principle==='ONE_PRIMARY_METHOD_PER_QUESTION_INTENT','primary method policy missing');
+          assert(data.methodSelectionPolicy?.operationalSelection==='NEED_DRIVEN','need-driven policy missing');
+          assert(data.methodSelectionPolicy?.noMultiMethodAggregation===true,'multi-method aggregation guard missing');
+          assert(data.methodSelectionPolicy?.legacyFiveMethodMajorityRuntimeAllowed===false,'legacy five-method majority must be disabled');
+
+          const p125=data.records.find(r=>r.entryId==='shibutz.p124-125.questioner-target-nature');
+          assert(p125?.methodStatus==='AUTHOR_PREFERRED' && p125.runtimeEligible===false,'p125 author preference must not auto-enable runtime');
+          assert(p125.alternatives?.find(x=>x.id==='bayt-al-damir-letter-combination')?.status==='AUTHOR_PREFERRED','p125 preferred third approach lost');
+
+          const p126=data.records.find(r=>r.entryId==='shibutz.p126.three-element-traditions');
+          const z=p126.traditions.find(x=>x.authority==='אל־זנאתי')?.values;
+          const t=p126.traditions.find(x=>x.authority==='אבו סעיד אל־טרבלסי')?.values;
+          const a=p126.traditions.find(x=>x.authority==='בעלי הטבעים')?.values;
+          assert(z.fire===9 && z.air===11 && z.water===14 && z.earth===16,'p126 Zanati values mismatch');
+          assert(t.fire===1 && t.air===2 && t.water===4 && t.earth===8,'p126 Trabulsi values mismatch');
+          assert(a.fire===1 && a.air===2 && a.water===3 && a.earth===4,'p126 Ahl al-Tabai values mismatch');
+          assert(p126.runtimeEligible===false,'p126 alternatives must not be runtime-enabled');
+
+          const p128=data.records.find(r=>r.entryId==='dhamir.p128.comparison-judge');
+          assert(p128?.methodStatus==='PRIMARY_CANDIDATE' && p128.runtimeEligible===false,'p128 candidate must remain runtime-disabled');
+          assert(p128.houses.includes(15),'p128 H15 judge lost');
+
+          const w=data.records.find(r=>r.entryId==='reference.p130-131.weighted-five-evidences');
+          assert(w?.baseWeights?.house===5 && w.baseWeights?.face===1 && w.baseWeights?.total===15,'p130-131 weights mismatch');
+          assert(w.runtimeEligible===false,'weighted evidence method must stay reference-only');
+
+          const p132=data.records.find(r=>r.entryId==='foundation.p132.element-values-properties');
+          assert(p132?.verificationStatus==='REVIEW_REQUIRED','p132 source conflict must remain review');
+          assert(p132.p132LiteralValues?.ahlAlTabaiLines?.fire===8 && p132.p132LiteralValues?.zanati?.fire===1,'p132 literal conflict data lost');
+          assert((data.sourceConflictQueue||[]).some(x=>x.id==='B07-SOURCE-P126-P132-ELEMENT-ATTRIBUTION'),'p126/p132 source conflict queue missing');
+
+          const mazag=data.records.find(r=>r.entryId==='shibutz.p133-134.mazag-planet-map');
+          assert(mazag?.verificationStatus==='REVIEW_REQUIRED','p133-134 must remain review until v57 table is completed');
+          const flat=mazag.planetMap.flatMap(x=>x.patterns);
+          assert(flat.length===16 && new Set(flat).size===16,'p134 must partition exactly 16 patterns');
+          const byPlanet=(p)=>mazag.planetMap.find(x=>x.planet===p)?.patterns||[];
+          assert(JSON.stringify(byPlanet('נוגה'))===JSON.stringify(['1121','2211']),'Venus mapping mismatch');
+          assert(JSON.stringify(byPlanet('שבתאי'))===JSON.stringify(['2221','1221']),'Saturn mapping mismatch');
+          assert(JSON.stringify(byPlanet('צדק'))===JSON.stringify(['2111','1222']),'Jupiter mapping mismatch');
+          assert(JSON.stringify(byPlanet('מאדים'))===JSON.stringify(['2122','1211']),'Mars mapping mismatch');
+          assert(JSON.stringify(byPlanet('ראש התלי'))===JSON.stringify(['1212']),'Head mapping mismatch');
+          assert(JSON.stringify(byPlanet('זנב התלי'))===JSON.stringify(['1112']),'Tail mapping mismatch');
+
+          assert((data.v57CorrectionQueue||[]).length===20,'expected 20 v57 correction items');
+          assert((data.downstreamCorrectionQueue||[]).length===19,'expected 19 downstream correction items');
+          assert(data.downstreamCorrectionQueue.some(x=>x.id==='B07-DHAMIR-NEED-DRIVEN-SELECTION'),'need-driven downstream guard missing');
+          console.log('Batch07 validation PASS',counts,'v57Queue',data.v57CorrectionQueue.length,'downstreamQueue',data.downstreamCorrectionQueue.length,'sourceConflicts',data.sourceConflictQueue.length);
+          NODE
+      - name: Commit Batch07 index
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add kashf-v57-ai-master-index.html
+          if git diff --cached --quiet; then echo 'No index changes'; exit 1; fi
+          git commit -m "feat(kashf): index and verify source pages 124-134"
+          git push origin HEAD:main
