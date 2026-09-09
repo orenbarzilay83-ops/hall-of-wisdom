@@ -1,0 +1,84 @@
+name: Kashf AI Master Index Batch09 P151-161
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/kashf-ai-master-index-batch09-p151-161.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply-validate-commit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate patcher
+        run: node --check _patch_kashf_ai_master_index_batch09_p151_161.mjs
+      - name: Apply Batch09
+        run: node _patch_kashf_ai_master_index_batch09_p151_161.mjs
+      - name: Validate AI master index
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const text=fs.readFileSync('kashf-v57-ai-master-index.html','utf8');
+          const m=text.match(/<script id="kashf-ai-master-index-data" type="application\/json">\s*([\s\S]*?)\s*<\/script>/);
+          if(!m) throw new Error('master index JSON block missing');
+          const data=JSON.parse(m[1]);
+          const assert=(c,msg)=>{if(!c) throw new Error(msg)};
+          assert(data.schemaVersion==='2.0.0','schema mismatch');
+          assert(data.records.length===121,`expected 121 records got ${data.records.length}`);
+          assert(new Set(data.records.map(r=>r.entryId)).size===121,'duplicate entryIds');
+          const counts=Object.fromEntries(['VERIFIED','INDEXED','REVIEW_REQUIRED','UNRESOLVED'].map(s=>[s,data.records.filter(r=>r.verificationStatus===s).length]));
+          assert(counts.VERIFIED===94 && counts.REVIEW_REQUIRED===27 && counts.INDEXED===0 && counts.UNRESOLVED===0,`unexpected counts ${JSON.stringify(counts)}`);
+          assert(data.coverage.bookEndPage===161 && data.coverage.scanPdfEndPage===163,'coverage mismatch');
+          assert(data.coverage.completedBatches.includes('BATCH09_P151_161'),'batch marker missing');
+          assert(data.methodSelectionPolicy?.principle==='ONE_PRIMARY_METHOD_PER_QUESTION_INTENT','one-primary policy missing');
+          assert(data.methodSelectionPolicy?.operationalSelection==='NEED_DRIVEN','need-driven policy missing');
+          assert(data.methodSelectionPolicy?.noMultiMethodAggregation===true,'multi-method aggregation guard missing');
+          assert(data.methodSelectionPolicy?.legacyFiveMethodMajorityRuntimeAllowed===false,'legacy five-method majority must remain disabled');
+          assert(data.gateStatus?.gate4Dhamir?.sourceCoreTypes===5,'Gate4 five source types missing');
+          assert(data.gateStatus?.gate4Dhamir?.type1Faces===4,'Type1 four faces missing');
+          assert(data.gateStatus?.gate4Dhamir?.sourceMajorityRulePresent===true,'source majority rule must be preserved');
+          assert(data.gateStatus?.gate4Dhamir?.sourceMajorityRuleRuntimeAllowed===false,'source majority must not be runtime-enabled');
+
+          const maj=data.records.find(r=>r.entryId==='dhamir.p155.additional-and-majority');
+          assert(maj?.projectRuntimePolicy==='EXPLICITLY_DISABLED' && maj.runtimeEligible===false,'p155 majority runtime guard lost');
+          const t1=data.records.find(r=>r.entryId==='dhamir.p151-153.type1-four-faces');
+          assert(t1?.verificationStatus==='REVIEW_REQUIRED','jawharayn translation review must remain open');
+          assert(t1.criticalFacts.some(x=>x.includes('H15')&&x.includes('H16')),'Type1 Face4 H15/H16 boundary lost');
+          const h6=data.records.find(r=>r.entryId==='dhamir.p159.heads-and-subject');
+          assert(h6?.primaryCandidate?.questionIntent==='identify-person-behind-hidden-question','H6 subject-identification candidate missing');
+          assert(h6.primaryCandidate.house===6 && h6.primaryCandidate.runtimeEligible===false,'H6 candidate must stay runtime-disabled');
+          const alt=data.records.find(r=>r.entryId==='dhamir.p157-158.alt-qutri-dali');
+          assert(alt?.verificationStatus==='REVIEW_REQUIRED','mixed parity branch review guard missing');
+          const zan=data.records.find(r=>r.entryId==='dhamir.p156-157.zanati-mixture-circle');
+          assert(zan?.methodStatus==='QUOTED_ALTERNATIVE' && zan.runtimeEligible===false,'Zanati must remain quoted alternative');
+          assert(zan.pairPatterns?.length===8,'Zanati eight pairs missing');
+          assert(data.dhamirSelectionMap?.policy==='NEED_DRIVEN_ONE_PRIMARY_ROUTE','dhamir selection map missing');
+          assert(data.dhamirSelectionMap?.sourceMajorityRule?.runtimeAllowed===false,'selection map majority guard lost');
+          assert(data.dhamirSelectionMap.routes.find(x=>x.questionIntent==='hidden-intent-inner-thought')?.status==='PRIMARY_ROUTE_NOT_YET_SELECTED','general hidden-intent route must remain unselected');
+          assert((data.v57CorrectionQueue||[]).length===23,`expected 23 v57 corrections got ${data.v57CorrectionQueue?.length}`);
+          assert((data.downstreamCorrectionQueue||[]).length===22,`expected 22 downstream corrections got ${data.downstreamCorrectionQueue?.length}`);
+          assert((data.sourceConflictQueue||[]).length===4,`expected 4 source conflicts got ${data.sourceConflictQueue?.length}`);
+          assert(data.v57CorrectionQueue.some(x=>x.id==='B09-P153-JAWHARAYN-TERM'),'jawharayn correction missing');
+          assert(data.downstreamCorrectionQueue.some(x=>x.id==='B09-DHAMIR-MAJORITY-RUNTIME-DISABLED'),'majority downstream guard missing');
+          assert(data.downstreamCorrectionQueue.some(x=>x.id==='B09-DHAMIR-H6-SUBJECT-ID-CANDIDATE'),'H6 downstream candidate missing');
+          assert(data.sourceConflictQueue.some(x=>x.id==='B09-SOURCE-P157-158-MIXED-PARITY-BRANCH'),'mixed parity source conflict missing');
+          console.log('Batch09 validation PASS',counts,'records',data.records.length,'v57Queue',data.v57CorrectionQueue.length,'downstreamQueue',data.downstreamCorrectionQueue.length,'sourceConflicts',data.sourceConflictQueue.length);
+          NODE
+      - name: Commit Batch09 index
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add kashf-v57-ai-master-index.html
+          if git diff --cached --quiet; then echo 'No index changes'; exit 1; fi
+          git commit -m "feat(kashf): index Gate 4 dhamir pages 151-161"
+          git push origin HEAD:main
