@@ -502,7 +502,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     runtimeAllowed: true,
     executionKind: 'custom-engine',
     executorStatus: 'ready',
-    notes: 'Canonical p211 marriage stability/dissolution executor is wired from H7 quality plus state. Internal figures support continuation; internal malefic adds quarrel while preserving continuity. External pure benefic gives a good marriage with possible separation; external pure malefic gives the explicit breakdown/cut-off branch. Pure benefic fixed gives the stated repair condition. Unstated mixed/mutable combinations remain unresolved.',
+    notes: 'Canonical p211 H7 matrix is source-closed against scan p211. Internal, external, fixed and mutable branches are all implemented. Internal/external figures use their pure source fortune. Fixed/mutable figures require the catalogue mixed tendency to realize the explicit سعد/نحس split in the source; that promotion is method-local to p211 and must not leak to other methods. Benefic-external remains only possible separation, not certain separation; the adverse mutable source phrase that leaving is preferable is preserved as source wording, not converted into independent advisor advice.',
   }),
 
   // ── MONEY + ECONOMY canonical slice -----------------------------------

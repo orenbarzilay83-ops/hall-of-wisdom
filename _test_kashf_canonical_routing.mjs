@@ -1787,6 +1787,27 @@ for (const reading of [p181Positive, p266Positive, p266Negative, p266Unresolved]
   assert(reading.dhamir === null && reading.canonicalExecution?.topicBundleExecuted === false && reading.canonicalExecution?.altFormulaExecuted === false, 'easy batch 04 reading runs no Dhamir/topic bundle/alternative');
 }
 
+
+// ── Batch 12: p211 complete H7 marriage matrix ---------------------------
+const p211FixedBenefic = buildKashfReadingByQuestionId(makeP204Board({ 7: '2212' }), 'q-divorce');
+const p211FixedMalefic = buildKashfReadingByQuestionId(makeP204Board({ 7: '2222' }), 'q-divorce');
+const p211MutableBenefic = buildKashfReadingByQuestionId(makeP204Board({ 7: '1121' }), 'q-divorce');
+const p211MutableMalefic = buildKashfReadingByQuestionId(makeP204Board({ 7: '1111' }), 'q-divorce');
+
+assert(p211FixedBenefic.primaryFormula?.result?.executorResult?.sourceOutcome === 'fixed-benefic-repair', 'p211 fixed mixed-benefic H7 reaches the source repair branch');
+assert(p211FixedBenefic.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'mixed', 'p211 fixed-benefic fixture remains canonically mixed');
+assert(p211FixedBenefic.primaryFormula?.result?.executorResult?.sourceValence === 'saad', 'p211 fixed-benefic uses its source tendency only inside p211');
+assert(p211FixedMalefic.primaryFormula?.result?.executorResult?.sourceOutcome === 'fixed-malefic-distress-origin-man', 'p211 fixed mixed-malefic H7 reaches the missing adverse fixed branch');
+assert(p211FixedMalefic.primaryFormula?.result?.executorResult?.sourceValence === 'nahs', 'p211 fixed-malefic uses source tendency without changing canonical mixed class');
+assert(p211MutableBenefic.primaryFormula?.result?.executorResult?.sourceOutcome === 'mutable-benefic-joy-love-wealth', 'p211 mutable mixed-benefic H7 reaches the source joy/love/wealth branch');
+assert(p211MutableBenefic.primaryFormula?.result?.executorResult?.sourceValence === 'saad', 'p211 mutable-benefic source valence is method-local');
+assert(p211MutableMalefic.primaryFormula?.result?.executorResult?.sourceOutcome === 'mutable-malefic-breakdown-separation', 'p211 mutable mixed-malefic H7 reaches the source separation branch');
+assert(p211MutableMalefic.primaryFormula?.result?.executorResult?.sourceValence === 'nahs', 'p211 mutable-malefic source valence is method-local');
+assert(String(p211MutableMalefic.primaryFormula?.result?.executorResult?.outputHebrew || '').includes('בלשון המקור: העזיבה עדיפה'), 'p211 preserves the adverse mutable advice explicitly as source wording');
+assert(p211FixedBenefic.primaryFormula?.sourceText === getKashfV57Knowledge('marriage.p211.dissolutionH7StateMatrix')?.v57?.hebrewRule, 'p211 full runtime sourceText is the promoted Hebrew v57 matrix');
+assert([p211Stable,p211Quarrel,p211PossibleSeparation,p211Breakdown,p211FixedBenefic,p211FixedMalefic,p211MutableBenefic,p211MutableMalefic].every((r) => r.primaryFormula?.result?.executorResult?.sourceOutcome !== 'unresolved'), 'p211 all eight source state/valence branches resolve without fallback');
+assert([p211FixedBenefic,p211FixedMalefic,p211MutableBenefic,p211MutableMalefic].every((r) => r.primaryFormula?.result?.executorResult?.sourceValenceBasis === 'mixed-tendency-for-p211-only'), 'p211 fixed/mutable mixed-tendency exception stays explicitly scoped');
+
 console.log(`Kashf canonical routing tests: ${passed} passed, ${failed} failed`);
 if (failed > 0) {
   process.exit(1);

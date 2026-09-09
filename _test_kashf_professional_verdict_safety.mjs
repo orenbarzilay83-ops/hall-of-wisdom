@@ -189,9 +189,10 @@ function auditOutputForSafety(safetyBlock, { draft = null, draftPolarity = 'none
   };
 }
 
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 42, 'certification registry contains forty-two professionally certified methods');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 43, 'certification registry contains forty-three professionally certified methods');
 for (const id of [
   'marriage.p210.generalMarriageH1H2H7H8H10Judge',
+  'marriage.p211.dissolutionH7StateMatrix',
   'general.p174.h1h2h4h7h10h15',
   'siblings.p182.seniority',
   'travel.p244.returnH1H2H9',
@@ -319,17 +320,6 @@ assert(p206DesireBad.canonicalReading?.overallPositive === false, 'p206 desire m
 const p206DesireMixed = buildKashfCanonicalAiBridge({ questionText: 'האם השואל רוצה בדבר', board: makeBoard({ 5:'2222', 7:'2222', 11:'2222' }) });
 assert(p206DesireMixed.canonicalReading?.overallPositive === null, 'p206 desire mixed final remains unresolved');
 assert(p206DesireGood.professionalVerdictSafety?.methodSpecificPolicy?.excludedFromPrimaryVerdict?.some((x) => x.includes('womanFavor')), 'p206 desire policy explicitly isolates the identical-arithmetic woman-favor method');
-
-// p211 is deliberately NOT certified: Arabic verification shows branches absent from current operational v57 knowledge/executor.
-assert(!KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes('marriage.p211.dissolutionH7StateMatrix'), 'p211 dissolution is held from certification pending source-coverage repair');
-const p211Pending = buildKashfCanonicalAiBridge({ questionId: 'q-divorce', questionText: 'האם תהיה פרידה בנישואין?', board: makeBoard({ 7:'2111' }) });
-assert(p211Pending.professionalVerdictSafety?.certificationStatus === 'pending-backfill', 'p211 remains pending-backfill despite being computationally runnable');
-assert(p211Pending.professionalVerdictSafety?.clientFacingCertified === false, 'p211 cannot issue client-facing advice before source coverage is repaired');
-assert(p211Pending.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'p211 has no binary client-verdict permission while uncertified');
-const p211UnsafeDraft = validateKashfAdvisorOutput(auditOutputForSafety(p211Pending.professionalVerdictSafety, { draft: 'הנישואין יישארו יציבים.', draftPolarity: p211Pending.professionalVerdictSafety.authoritativePolarity === 'positive' ? 'positive' : 'non-binary' }));
-assert(validateKashfAdvisorVerdictAlignment(p211UnsafeDraft.value, p211Pending.professionalVerdictSafety).ok === false, 'server blocks a p211 client draft while professional certification is pending');
-
-
 
 console.log('\n--- Professional backfill batch 03 + exact client-draft lock ---');
 
@@ -827,12 +817,8 @@ assert(p254Venus.professionalVerdictSafety?.authoritativePolarity === 'non-binar
 assert(p254Venus.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'p254 cannot be converted into a yes/no verdict');
 assert(p254Venus.professionalVerdictSafety?.authoritativeClientDraftHebrew === p254VenusExec?.outputHebrew, 'p254 safety gate locks the exact source-bounded executor draft');
 assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes('profession.p254.h9Planet'), 'p254 profession method is explicitly professionally certified');
-// One runnable method remains intentionally uncertified after source/implementation audit.
-for (const id of [
-  'marriage.p211.dissolutionH7StateMatrix',
-]) {
-  assert(!KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes(id), id + ' remains pending professional source closure');
-}
+// All 43 source-ready runnable methods are professionally certified after Batch 12.
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 43, 'no runnable backfill method remains uncertified after batch 12');
 
 
 
@@ -912,6 +898,56 @@ const p248Exact = validateKashfAdvisorOutput(auditOutputForSafety(p248Severe.pro
   draftPolarity: 'non-binary',
 }));
 assert(validateKashfAdvisorVerdictAlignment(p248Exact.value, p248Severe.professionalVerdictSafety).ok === true, 'p248-249 exact deterministic client draft passes');
+
+
+console.log('\n--- Professional backfill batch 12 — p211 complete marriage H7 matrix ---');
+
+const p211InternalGood = buildKashfCanonicalAiBridge({ questionId: 'q-divorce', questionText: 'האם תהיה פרידה בנישואין?', board: makeBoard({ 7:'2211' }) });
+const p211InternalBad = buildKashfCanonicalAiBridge({ questionId: 'q-divorce', questionText: 'האם תהיה פרידה בנישואין?', board: makeBoard({ 7:'2221' }) });
+const p211ExternalGood = buildKashfCanonicalAiBridge({ questionId: 'q-divorce', questionText: 'האם תהיה פרידה בנישואין?', board: makeBoard({ 7:'1122' }) });
+const p211ExternalBad = buildKashfCanonicalAiBridge({ questionId: 'q-divorce', questionText: 'האם תהיה פרידה בנישואין?', board: makeBoard({ 7:'1112' }) });
+const p211FixedGood = buildKashfCanonicalAiBridge({ questionId: 'q-divorce', questionText: 'האם תהיה פרידה בנישואין?', board: makeBoard({ 7:'2212' }) });
+const p211FixedBad = buildKashfCanonicalAiBridge({ questionId: 'q-divorce', questionText: 'האם תהיה פרידה בנישואין?', board: makeBoard({ 7:'2222' }) });
+const p211MutableGood = buildKashfCanonicalAiBridge({ questionId: 'q-divorce', questionText: 'האם תהיה פרידה בנישואין?', board: makeBoard({ 7:'1121' }) });
+const p211MutableBad = buildKashfCanonicalAiBridge({ questionId: 'q-divorce', questionText: 'האם תהיה פרידה בנישואין?', board: makeBoard({ 7:'1111' }) });
+
+const p211Exec = (reading) => reading.canonicalReading?.primaryFormula?.result?.executorResult;
+assert(p211InternalGood.resolution?.kashfMethodId === 'marriage.p211.dissolutionH7StateMatrix', 'p211 q-divorce selects only the exact dissolution method');
+assert(p211Exec(p211InternalGood)?.sourceOutcome === 'stable', 'p211 internal benefic branch preserves marriage stability');
+assert(p211Exec(p211InternalBad)?.sourceOutcome === 'stable-with-quarrel', 'p211 internal malefic branch preserves quarrel plus stability');
+assert(p211Exec(p211ExternalGood)?.sourceOutcome === 'good-but-separation-possible', 'p211 external benefic preserves possible, not certain, separation');
+assert(String(p211Exec(p211ExternalGood)?.outputHebrew || '').includes('פרידה אפשרית'), 'p211 external benefic client draft states possibility rather than certainty');
+assert(p211Exec(p211ExternalBad)?.sourceOutcome === 'breakdown-if-existing', 'p211 external malefic preserves explicit cut-off branch');
+assert(p211Exec(p211FixedGood)?.sourceOutcome === 'fixed-benefic-repair', 'p211 fixed benefic branch is now source-complete');
+assert(p211Exec(p211FixedBad)?.sourceOutcome === 'fixed-malefic-distress-origin-man', 'p211 fixed malefic branch is now source-complete');
+assert(p211Exec(p211MutableGood)?.sourceOutcome === 'mutable-benefic-joy-love-wealth', 'p211 mutable benefic branch is now source-complete');
+assert(p211Exec(p211MutableBad)?.sourceOutcome === 'mutable-malefic-breakdown-separation', 'p211 mutable malefic branch is now source-complete');
+
+for (const reading of [p211FixedGood, p211FixedBad, p211MutableGood, p211MutableBad]) {
+  assert(p211Exec(reading)?.classification?.saadNahs === 'mixed', 'p211 fixed/mutable Golden fixtures preserve canonical mixed classification');
+  assert(p211Exec(reading)?.sourceValenceBasis === 'mixed-tendency-for-p211-only', 'p211 fixed/mutable source valence is explicitly method-local');
+}
+assert(p211Exec(p211FixedGood)?.sourceValence === 'saad' && p211Exec(p211MutableGood)?.sourceValence === 'saad', 'p211 mixed-benefic fixed/mutable figures reach source سعد branches');
+assert(p211Exec(p211FixedBad)?.sourceValence === 'nahs' && p211Exec(p211MutableBad)?.sourceValence === 'nahs', 'p211 mixed-malefic fixed/mutable figures reach source نحس branches');
+assert([p211InternalGood,p211InternalBad,p211ExternalGood,p211ExternalBad,p211FixedGood,p211FixedBad,p211MutableGood,p211MutableBad].every((r) => p211Exec(r)?.sourceOutcome !== 'unresolved'), 'p211 source matrix covers all eight H7 state/valence branches');
+
+assert(p211InternalGood.professionalVerdictSafety?.certificationStatus === 'certified', 'p211 passed Professional Verdict Safety source closure');
+assert(p211InternalGood.professionalVerdictSafety?.clientFacingCertified === true, 'p211 client-facing exact source draft is certified');
+assert(p211InternalGood.professionalVerdictSafety?.authoritativePolarity === 'non-binary', 'p211 remains categorical/non-binary rather than a forced yes/no');
+assert(p211InternalGood.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'p211 cannot be turned into a binary divorce verdict');
+assert(p211InternalGood.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenInversions?.some((x) => x.includes('חריג מקומי') || x.includes('p211 בלבד')), 'p211 policy prevents mixed-tendency leakage into other methods');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes('marriage.p211.dissolutionH7StateMatrix'), 'p211 method is explicitly professionally certified');
+
+const p211Exact = validateKashfAdvisorOutput(auditOutputForSafety(p211MutableBad.professionalVerdictSafety, {
+  draft: p211MutableBad.professionalVerdictSafety.authoritativeClientDraftHebrew,
+  draftPolarity: 'non-binary',
+}));
+assert(validateKashfAdvisorVerdictAlignment(p211Exact.value, p211MutableBad.professionalVerdictSafety).ok === true, 'p211 exact deterministic client draft passes');
+const p211CertainSeparation = validateKashfAdvisorOutput(auditOutputForSafety(p211ExternalGood.professionalVerdictSafety, {
+  draft: 'ודאי תהיה פרידה.',
+  draftPolarity: 'non-binary',
+}));
+assert(validateKashfAdvisorVerdictAlignment(p211CertainSeparation.value, p211ExternalGood.professionalVerdictSafety).ok === false, 'p211 server gate blocks possible-separation becoming certain separation');
 
 console.log(`\nKashf professional verdict safety tests: ${passed} passed, ${failed} failed`);
 if (failed) process.exit(1);

@@ -17,7 +17,7 @@
  * allowed, but they NEVER create, reverse, soften or aggregate the verdict.
  */
 
-export const KASHF_PROFESSIONAL_VERDICT_SAFETY_VERSION = 'kashf-professional-verdict-safety-v12';
+export const KASHF_PROFESSIONAL_VERDICT_SAFETY_VERSION = 'kashf-professional-verdict-safety-v13';
 
 const P174_GENERAL_METHOD = 'general.p174.h1h2h4h7h10h15';
 const P182_SIBLING_SENIORITY_METHOD = 'siblings.p182.seniority';
@@ -1310,6 +1310,57 @@ function p248249MissingLifePolicy() {
   });
 }
 
+function p211DissolutionPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-12',
+    goldenCaseIds: freezeArray([
+      'PV-BF12-P211-INTERNAL-BENEFIC',
+      'PV-BF12-P211-INTERNAL-MALEFIC',
+      'PV-BF12-P211-EXTERNAL-BENEFIC',
+      'PV-BF12-P211-EXTERNAL-MALEFIC',
+      'PV-BF12-P211-FIXED-BENEFIC',
+      'PV-BF12-P211-FIXED-MALEFIC',
+      'PV-BF12-P211-MUTABLE-BENEFIC',
+      'PV-BF12-P211-MUTABLE-MALEFIC',
+      'PV-BF12-P211-EXACT-DRAFT',
+    ]),
+    policyId: 'p211-marriage-h7-complete-state-matrix-v1',
+    questionScopeHebrew: 'יציבות/פירוק הנישואין לפי מטריצת H7 המלאה בעמ׳ 211 בלבד',
+    decisiveRuleHebrew: 'H7 נקרא לפי שני צירים יחד: פנימי/חיצוני/קבוע/מתהפך ומיטיב/מזיק. המקור נותן ענפים מפורשים לכל ארבעת המצבים. בענפי קבוע ומתַהפך בלבד, צורות ממוזגות משתמשות בנטיית המיטיב/מזיק הרשומה בקטלוג כדי לממש את זוג הענפים سعد/نحس של עמ׳ 211.',
+    oneWayBranches: freezeArray([
+      'פנימי מיטיב => יישוב הדעת וקיום מצב הנישואין',
+      'פנימי מזיק => עגמת נפש ומריבה, אך המצב קבוע',
+      'חיצוני מיטיב => נישואין טובים, אך פרידה אפשרית משום שהחלק אינו קבוע',
+      'חיצוני מזיק => אין נישואין ראויים; ואם כבר היו, החלק נחתך ונפסק',
+      'קבוע מיטיב => תיקון בית המשכב',
+      'קבוע מזיק => אין תיקון לבית המשכב; רוע בין בני הזוג ומקורו מן האיש',
+      'מתהפך מיטיב => יישוב, שמחה וששון בבית המשכב, אהבה, עושר ועונג',
+      'מתהפך מזיק => אין נישואין; הדבר הולך לרעה ולפירוד; המקור מוסר שהעזיבה עדיפה',
+    ]),
+    forbiddenInversions: freezeArray([
+      'חיצוני מיטיב אומר שפרידה אפשרית, לא שפרידה ודאית.',
+      'אסור לצמצם את p211 למיטיב/מזיק בלבד ולהתעלם ממצב פנימי/חיצוני/קבוע/מתהפך.',
+      'השימוש ב-mixedTendency בענפי קבוע/מתהפך הוא חריג מקומי ל-p211 בלבד; אסור לקדם צורה ממוזגת בשיטות אחרות.',
+      'לשון המקור שהעזיבה עדיפה בענף מתהפך-מזיק אינה היתר להוסיף עצת קשר עצמאית מעבר לטקסט המקור.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'marriage.p210.generalMarriageH1H2H7H8H10Judge — דין הנישואין הכללי הוא שיטה נפרדת.',
+      'marriage.p204.previousStatusH7inH10 — מעמד קודם הוא שיטה נפרדת.',
+      'marriage.p204.dowryH8 — מוהר הוא שיטה נפרדת.',
+      'love.p206.womanFavorH7H11ThenH5 ו-desire.p206.querentWantsH7H11ThenH5 — רצון/מציאת חן הם שיטות נפרדות.',
+      'H15/H16 ומשמעות כללית של צורות/בתים מחוץ למטריצת H7 של p211.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'ודאי תהיה פרידה',
+      'ודאי יהיה גירושין',
+      'המקור מוכיח בגידה',
+      'האיש אשם בכל בעיות הנישואין',
+      'אני ממליץ לעזוב את הקשר',
+    ]),
+  });
+}
+
 function p254ProfessionPolicy() {
   return Object.freeze({
     certificationStatus: 'certified',
@@ -1382,6 +1433,7 @@ const METHOD_POLICIES = Object.freeze({
   [P225_THIEF_DESCRIPTION_METHOD]: p225ThiefDescriptionPolicy(),
   [P194_CHILD_HEALTH_METHOD]: p194ChildHealthPolicy(),
   [P248_249_MISSING_LIFE_METHOD]: p248249MissingLifePolicy(),
+  [P211_DISSOLUTION_METHOD]: p211DissolutionPolicy(),
   [P254_PROFESSION_METHOD]: p254ProfessionPolicy(),
 });
 

@@ -1611,7 +1611,14 @@ function computeSiblingSeniorityP182(chart) {
   };
 }
 
-// Kashf v57 p211 — H7 marriage stability/dissolution matrix.
+// Kashf v57 p211 — complete H7 marriage stability/dissolution matrix.
+// The scan gives all internal/external/fixed/mutable branches. Fixed and mutable
+// figures include Kashf source classes recorded in the catalogue as mixed-benefic
+// or mixed-malefic; for THIS matrix only, their explicit source tendency supplies
+// the سعد/نحس side of the printed branch. This local rule must not leak into
+// methods where mixed figures are intentionally unresolved.
+const P211_SOURCE_HEBREW_RUNTIME = "בבית השביעי: אם שכנו בו צורות פנימיות, הדבר מורה על יישוב הדעת ועל קיום מצב הנישואין. צורה מזיקה פנימית מורה על עגמת נפש ומריבה, אבל החלק קבוע. צורה מיטיבה חיצונית מורה על נישואין טובים, אך אפשר שתהיה פרידה מפני שהחלק אינו קבוע. צורה מזיקה חיצונית מורה שאין כאן נישואין ראויים, ואם כבר היו — החלק נחתך ונפסק ואין בו טוב. צורה מיטיבה וקבועה מורה על תיקון בית המשכב. צורה מזיקה וקבועה מורה שאין תיקון לבית המשכב, שנמשך רוע בין בני הזוג, ומקורו מן האיש. צורה מיטיבה ומתַהפכת מורה על יישוב, שמחה וששון בבית המשכב, על אהבת אחד מהם לאחר, ועל עושר ועונג. צורה מזיקה ומתַהפכת מורה שאין כאן נישואין, שהדבר הולך לרעה ולפירוד; ובלשון המקור: העזיבה עדיפה.";
+
 function computeMarriageDissolutionP211(chart) {
   if (!Array.isArray(chart)) return null;
   const h7 = findCanonicalHouse(chart, 7);
@@ -1620,27 +1627,46 @@ function computeMarriageDissolutionP211(chart) {
   const classification = classifyCanonicalFigure(pattern);
   const fortune = classification.saadNahs;
   const state = classification.dakhalKharij;
+  const sourceValence = fortune === 'saad'
+    ? 'saad'
+    : fortune === 'nahs'
+      ? 'nahs'
+      : classification.mixedTendency === 'saad'
+        ? 'saad'
+        : classification.mixedTendency === 'nahs'
+          ? 'nahs'
+          : null;
+  const sourceValenceBasis = fortune === 'mixed' ? 'mixed-tendency-for-p211-only' : 'pure-fortune';
 
   let sourceOutcome = 'unresolved';
   let sourceOutcomeHebrew = 'הצירוף אינו מקבל ענף מפורש בכלל זה';
 
   if (state === 'dakhil') {
-    if (fortune === 'nahs') {
+    if (sourceValence === 'nahs') {
       sourceOutcome = 'stable-with-quarrel';
       sourceOutcomeHebrew = 'עגמת נפש ומריבה, אבל מצב הנישואין קבוע';
-    } else {
+    } else if (sourceValence === 'saad') {
       sourceOutcome = 'stable';
       sourceOutcomeHebrew = 'יישוב הדעת וקיום מצב הנישואין';
     }
-  } else if (state === 'kharij' && fortune === 'saad') {
+  } else if (state === 'kharij' && sourceValence === 'saad') {
     sourceOutcome = 'good-but-separation-possible';
     sourceOutcomeHebrew = 'נישואין טובים, אך פרידה אפשרית מפני שהחלק אינו קבוע';
-  } else if (state === 'kharij' && fortune === 'nahs') {
+  } else if (state === 'kharij' && sourceValence === 'nahs') {
     sourceOutcome = 'breakdown-if-existing';
-    sourceOutcomeHebrew = 'אין כאן נישואין ראויים; ואם כבר היו — החלק נחתך ונפסק';
-  } else if (state === 'mujassad-dakhil' && fortune === 'saad') {
+    sourceOutcomeHebrew = 'אין כאן נישואין ראויים; ואם כבר היו — החלק נחתך ונפסק ואין בו טוב';
+  } else if (state === 'mujassad-dakhil' && sourceValence === 'saad') {
     sourceOutcome = 'fixed-benefic-repair';
     sourceOutcomeHebrew = 'צורה מיטיבה וקבועה — תיקון בית המשכב';
+  } else if (state === 'mujassad-dakhil' && sourceValence === 'nahs') {
+    sourceOutcome = 'fixed-malefic-distress-origin-man';
+    sourceOutcomeHebrew = 'צורה מזיקה וקבועה — אין תיקון לבית המשכב; נמשך רוע בין בני הזוג, ומקורו מן האיש';
+  } else if (state === 'mujassad-kharij' && sourceValence === 'saad') {
+    sourceOutcome = 'mutable-benefic-joy-love-wealth';
+    sourceOutcomeHebrew = 'צורה מיטיבה ומתַהפכת — יישוב, שמחה וששון בבית המשכב; אהבת אחד מהם לאחר; ועושר ועונג';
+  } else if (state === 'mujassad-kharij' && sourceValence === 'nahs') {
+    sourceOutcome = 'mutable-malefic-breakdown-separation';
+    sourceOutcomeHebrew = 'צורה מזיקה ומתַהפכת — אין כאן נישואין; הדבר הולך לרעה ולפירוד; ובלשון המקור: העזיבה עדיפה';
   }
 
   const figureHebrew = classification.figureHebrew || h7?.hebrew || h7?.hebrewName || pattern;
@@ -1649,12 +1675,14 @@ function computeMarriageDissolutionP211(chart) {
     : '';
 
   return {
-    sourceRef: 'חשיפת הסודות הנצורים v57 עמ׳ 211',
-    sourceText: 'בבית השביעי: אם שכנו בו צורות פנימיות, הדבר מורה על יישוב הדעת ועל קיום מצב הנישואין. צורה מזיקה פנימית מורה על עגמת נפש ומריבה, אבל החלק קבוע. צורה מיטיבה חיצונית מורה על נישואין טובים אך אפשר שייפרד ממנה, מפני שהחלק אינו קבוע. צורה מזיקה חיצונית מורה שאין כאן נישואין ראויים, ואם כבר היו — החלק נחתך ונפסק. צורה מיטיבה וקבועה מורה על תיקון בית המשכב.',
+    sourceRef: 'חשיפת הסודות הנצורים v57 עמ׳ 211; אימות מול הסריקה הערבית עמ׳ 211',
+    sourceText: P211_SOURCE_HEBREW_RUNTIME,
     housesUsed: [7],
     h7Pattern: pattern,
     h7FigureHebrew: figureHebrew,
     classification,
+    sourceValence,
+    sourceValenceBasis,
     sourceOutcome,
     sourceOutcomeHebrew,
     positive: null,
