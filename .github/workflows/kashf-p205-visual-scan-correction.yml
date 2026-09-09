@@ -24,10 +24,12 @@ jobs:
         run: |
           node --check _patch_kashf_p205_scan_correction.mjs
           node --check _patch_kashf_p205_scan_correction_tests.mjs
+          node --check _patch_kashf_p205_scan_correction_live_test.mjs
       - name: Apply p205 visual-scan correction
         run: |
           node _patch_kashf_p205_scan_correction.mjs
           node _patch_kashf_p205_scan_correction_tests.mjs
+          node _patch_kashf_p205_scan_correction_live_test.mjs
       - name: Syntax checks
         run: |
           node --check goral-hachol/registry/kashf-v57-knowledge-registry.js
