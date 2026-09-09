@@ -1,0 +1,104 @@
+name: Kashf Professional Backfill 12
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/kashf-professional-backfill-12.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply-test-commit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate patchers
+        run: |
+          node --check _patch_kashf_professional_backfill_12_part1.mjs
+          node --check _patch_kashf_professional_backfill_12_part2.mjs
+          node --check _patch_kashf_professional_backfill_12_part3.mjs
+      - name: Apply professional backfill batch 12
+        run: |
+          node _patch_kashf_professional_backfill_12_part1.mjs
+          node _patch_kashf_professional_backfill_12_part2.mjs
+          node _patch_kashf_professional_backfill_12_part3.mjs
+      - name: Syntax checks
+        run: |
+          node --check goral-hachol/engine/kashf-canonical-executors.js
+          node --check goral-hachol/registry/kashf-v57-knowledge-registry.js
+          node --check goral-hachol/registry/kashf-canonical-method-registry.js
+          node --check goral-hachol/intelligence/kashf-professional-verdict-safety.js
+          node --check _test_kashf_professional_verdict_safety.mjs
+          node --check _test_kashf_canonical_routing.mjs
+      - name: P211 source matrix audit
+        run: |
+          node --input-type=module <<'NODE'
+          import { classifyCanonicalFigure } from './goral-hachol/engine/kashf-canonical-figure-classifier.js';
+          import { getKashfV57Knowledge } from './goral-hachol/registry/kashf-v57-knowledge-registry.js';
+          const cases = {
+            '2211': ['dakhil', 'saad'],
+            '2221': ['dakhil', 'nahs'],
+            '1122': ['kharij', 'saad'],
+            '1112': ['kharij', 'nahs'],
+            '2212': ['mujassad-dakhil', 'saad'],
+            '2222': ['mujassad-dakhil', 'nahs'],
+            '1121': ['mujassad-kharij', 'saad'],
+            '1111': ['mujassad-kharij', 'nahs'],
+          };
+          for (const [pattern, [state, valence]] of Object.entries(cases)) {
+            const c = classifyCanonicalFigure(pattern);
+            const sourceValence = c.saadNahs === 'saad' ? 'saad' : c.saadNahs === 'nahs' ? 'nahs' : c.mixedTendency;
+            if (c.dakhalKharij !== state || sourceValence !== valence) {
+              throw new Error(`${pattern}: expected ${state}/${valence}, got ${c.dakhalKharij}/${sourceValence}`);
+            }
+          }
+          const rule = getKashfV57Knowledge('marriage.p211.dissolutionH7StateMatrix')?.v57?.hebrewRule || '';
+          for (const phrase of ['צורה מזיקה וקבועה', 'צורה מיטיבה ומתַהפכת', 'צורה מזיקה ומתַהפכת']) {
+            if (!rule.includes(phrase)) throw new Error(`p211 v57 missing promoted source branch: ${phrase}`);
+          }
+          console.log('p211 H7 source matrix audit: 8/8 exact');
+          NODE
+      - name: Professional Verdict Safety tests
+        run: node _test_kashf_professional_verdict_safety.mjs
+      - name: Canonical routing regression
+        run: node _test_kashf_canonical_routing.mjs
+      - name: Question route coverage
+        run: node _audit_kashf_question_route_coverage.mjs
+      - name: AI retrieval regression
+        run: node _test_kashf_ai_retrieval_index.mjs
+      - name: Canonical AI live bridge regression
+        run: node _test_kashf_ai_retrieval_live_bridge.mjs
+      - name: AI context builder regression
+        run: node _test_kashf_ai_context_builder.mjs
+      - name: Method isolation regression
+        run: node _test_kashf_hawi_method_isolation.mjs
+      - name: Structured output regression
+        run: node _test_kashf_structured_tool_output.mjs
+      - name: Advisor payload regression
+        run: node _test_oren_smart_advisor_kashf_reading_payload.mjs
+      - name: Commit batch 12
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            goral-hachol/engine/kashf-canonical-executors.js \
+            goral-hachol/registry/kashf-v57-knowledge-registry.js \
+            goral-hachol/registry/kashf-canonical-method-registry.js \
+            goral-hachol/intelligence/kashf-professional-verdict-safety.js \
+            _test_kashf_professional_verdict_safety.mjs \
+            _test_kashf_canonical_routing.mjs \
+            HALL_WISDOM_KASHF_PROFESSIONAL_VERDICT_BACKFILL_STATUS.md
+          if git diff --cached --quiet; then
+            echo "No batch 12 changes to commit"
+            exit 1
+          fi
+          git commit -m "feat(kashf): certify p211 complete marriage matrix"
+          git push origin HEAD:main
