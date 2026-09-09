@@ -17,7 +17,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
 <div id="summary" class="card"></div><div id="records"></div>
 <script id="kashf-ai-master-index-data" type="application/json">
 {
-  "schemaVersion": "1.2.0",
+  "schemaVersion": "1.2.1",
   "book": "חשיפת הסודות הנצורים",
   "version": "v57",
   "sourcePolicy": {
@@ -32,7 +32,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
     "bookEndPage": 53,
     "scanPdfStartPage": 23,
     "scanPdfEndPage": 55,
-    "status": "BATCH01_V57_CORRECTIONS_REQUIRED"
+    "status": "BATCH01_THREE_REVIEW_BLOCKERS_REMAIN"
   },
   "records": [
     {
@@ -100,18 +100,8 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "doNotInfer": [
         "אין להפיק כללי הטלה משיטות העמים האחרות"
       ],
-      "sourceDiscrepancies": [
-        "Printed p24 says علم الكتف and describes stripping meat from the object before inspecting it like a mirror: this is shoulder-blade/scapula divination, not palmistry. v57 currently renders it as ״חכמת כף היד״ and therefore requires correction.",
-        "The index must not use the v57 palmistry wording as a source fact. Until v57 is corrected, this record stays REVIEW_REQUIRED."
-      ],
-      "verificationStatus": "REVIEW_REQUIRED",
-      "sourceCorrectionRequired": {
-        "bookPage": 24,
-        "scanPdfPage": 26,
-        "arabic": "علم الكتف",
-        "currentV57": "חכמת כף היד",
-        "requiredHebrew": "חכמת עצם השכמה / בדיקה בעצם השכמה (ניסוח סופי לפי תרגום v57 המאושר)"
-      },
+      "sourceDiscrepancies": [],
+      "verificationStatus": "VERIFIED",
       "sourceVerification": {
         "printedBookPages": [
           23,
@@ -123,7 +113,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         ],
         "v57Checked": true,
         "printedScanChecked": true,
-        "note": "Comparison exposed a real translation mismatch at علم الكتف; no silent reconciliation was made."
+        "note": "Re-read from the enlarged printed scan: the source says علم الكف, not علم الكتف. Therefore v57 palm/hand wording is source-consistent. The earlier scapula correction was erroneous and has been removed."
       }
     },
     {
@@ -1659,13 +1649,6 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
     }
   ],
   "v57CorrectionQueue": [
-    {
-      "id": "B01-P24-KATIF",
-      "entryId": "context.p23-24.comparative-divination",
-      "page": 24,
-      "status": "OPEN",
-      "summary": "Correct علم الكتف: current v57 says palmistry; printed source describes shoulder-blade/scapula divination."
-    },
     {
       "id": "B01-P44-TAXONOMY",
       "entryId": "houses.p43-44.taxonomy",
