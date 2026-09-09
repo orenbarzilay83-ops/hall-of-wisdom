@@ -189,7 +189,7 @@ function auditOutputForSafety(safetyBlock, { draft = null, draftPolarity = 'none
   };
 }
 
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 41, 'certification registry contains forty-one professionally certified methods');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 42, 'certification registry contains forty-two professionally certified methods');
 for (const id of [
   'marriage.p210.generalMarriageH1H2H7H8H10Judge',
   'general.p174.h1h2h4h7h10h15',
@@ -534,7 +534,7 @@ assert(p256BfSunExec?.planetHebrew === 'שמש' && p256BfSunExec?.condition === 
 assert(p256BfSun.canonicalReading?.overallPositive === true, 'p256 Sun branch is positive');
 assert(p256BfSun.professionalVerdictSafety?.certificationStatus === 'certified', 'p256 honor condition passed professional backfill');
 assert(p256BfSun.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenClientClaimsWithoutExplicitSelectedMethodBranch?.includes('האדם יהיה מפורסם'), 'p256 policy blocks expansion into fame prediction');
-const p256BfSaturn = buildKashfCanonicalAiBridge({ questionId: 'q-fame', questionText: 'מה מצב הכבוד והמעמד?', board: makeBoard({ 10:'1112' }) });
+const p256BfSaturn = buildKashfCanonicalAiBridge({ questionId: 'q-fame', questionText: 'מה מצב הכבוד והמעמד?', board: makeBoard({ 10:'1221' }) });
 assert(p256BfSaturn.canonicalReading?.primaryFormula?.result?.executorResult?.planetHebrew === 'שבתאי', 'p256 Saturn fixture resolves the exact planet');
 assert(p256BfSaturn.canonicalReading?.overallPositive === false, 'p256 Saturn branch is negative');
 const p256BfOther = buildKashfCanonicalAiBridge({ questionId: 'q-fame', questionText: 'מה מצב הכבוד והמעמד?', board: makeBoard({ 10:'2222' }) });
@@ -553,10 +553,10 @@ assert(p257AppointmentYes.professionalVerdictSafety?.certificationStatus === 'ce
 assert(p257AppointmentYes.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenInversions?.some((x) => x.includes('מיטיב/מזיק')), 'p257 appointment policy forbids fortune-class substitution');
 const p257AppointmentNo = buildKashfCanonicalAiBridge({
   questionId: 'q-position-keep', questionText: 'האם המינוי יתקיים?',
-  board: makeBoard({ 1:'1111', 10:'2221' }),
+  board: makeBoard({ 1:'1111', 10:'2112' }),
 });
 const p257AppointmentNoExec = p257AppointmentNo.canonicalReading?.primaryFormula?.result?.executorResult;
-assert(p257AppointmentNoExec?.resultPattern === '1112' && p257AppointmentNoExec?.planetHebrew === 'שבתאי', 'p257 appointment negative fixture resolves to Saturn');
+assert(p257AppointmentNoExec?.resultPattern === '1221' && p257AppointmentNoExec?.planetHebrew === 'שבתאי', 'p257 appointment negative fixture resolves to Saturn');
 assert(p257AppointmentNoExec?.appointmentCompletes === false && p257AppointmentNo.canonicalReading?.overallPositive === false, 'p257 verified non-luminary/non-benefic planet activates the explicit no branch');
 
 // PV-BF05-P257 ruler condition — derived H7+H10 only; mixed stays unresolved.
@@ -580,7 +580,7 @@ console.log('\n--- Professional backfill batch 06 ---');
 // PV-BF06-P264 — descriptive planetary life stages only; no lifespan duration/aggregate verdict.
 const p264StagesBf = buildKashfCanonicalAiBridge({
   questionId: 'q-lifespan-stages', questionText: 'ראשית אמצע וסוף החיים',
-  board: makeBoard({ 11:'1122', 9:'1111', 7:'1112' }),
+  board: makeBoard({ 11:'1122', 9:'1111', 7:'1221' }),
 });
 const p264StagesExec = p264StagesBf.canonicalReading?.primaryFormula?.result?.executorResult;
 assert(JSON.stringify(p264StagesExec?.housesUsed) === JSON.stringify([11,9,7]), 'p264 stages reads exactly H11,H9,H7');
@@ -791,10 +791,45 @@ assert(p179MixedExec?.beneficGateMet === false, 'p179 mixed H2 is not promoted i
 assert(p179MixedExec?.sourceResolved === false, 'p179 mixed gate does not yield an invented money source');
 assert(p179MixedGate.professionalVerdictSafety?.clientFacingCertified === true, 'p179 unresolved branch is still professionally certified for exact non-binary explanation');
 
-// Two runnable methods remain intentionally uncertified after source/implementation audit.
+console.log('\n--- Professional backfill batch 11 — p254 profession source closure ---');
+
+const p254Venus = buildKashfCanonicalAiBridge({ questionId: 'q-profession', questionText: 'מה המקצוע שלי לפי השיטה?', board: makeBoard({ 9:'1121', 10:'2111', 11:'2111' }) });
+const p254VenusExec = p254Venus.canonicalReading?.primaryFormula?.result?.executorResult;
+assert(p254Venus.resolution?.kashfMethodId === 'profession.p254.h9Planet', 'p254 profession route selects the exact method');
+assert(p254VenusExec?.attributionHebrew === 'נוגה', 'p254 maps Joudala 1121 to Venus from the corrected p133-134 source table');
+assert(String(p254VenusExec?.profession || '').includes('דברי הימים'), 'p254 Venus branch returns histories/music craft');
+assert(p254VenusExec?.easeOfWorkIndicated === true, 'p254 pure-benefic H10+H11 activates the one-way ease-of-work clause');
+assert(String(p254VenusExec?.outputHebrew || '').includes('מלאכתו מעטה בטרחה'), 'p254 ease clause is preserved in the exact executor draft');
+
+const p254Saturn = buildKashfCanonicalAiBridge({ questionId: 'q-profession', questionText: 'מה המלאכה?', board: makeBoard({ 9:'1221', 10:'2111', 11:'2111' }) });
+const p254SaturnExec = p254Saturn.canonicalReading?.primaryFormula?.result?.executorResult;
+assert(p254SaturnExec?.attributionHebrew === 'שבתאי', 'p254 maps Aqla/Sohar 1221 to Saturn, not to an unresolved node');
+assert(String(p254SaturnExec?.profession || '').includes('חקלאות'), 'p254 Saturn branch returns agriculture/earth work');
+
+const p254Head = buildKashfCanonicalAiBridge({ questionId: 'q-profession', questionText: 'מה המלאכה?', board: makeBoard({ 9:'1212' }) });
+const p254Tail = buildKashfCanonicalAiBridge({ questionId: 'q-profession', questionText: 'מה המלאכה?', board: makeBoard({ 9:'1112' }) });
+const p254HeadExec = p254Head.canonicalReading?.primaryFormula?.result?.executorResult;
+const p254TailExec = p254Tail.canonicalReading?.primaryFormula?.result?.executorResult;
+assert(p254HeadExec?.attributionHebrew === 'ראש התלי' && String(p254HeadExec?.profession || '').includes('דתות'), 'p254 distinguishes Head 1212 and returns the religions/hidden-knowledge branch');
+assert(p254TailExec?.attributionHebrew === 'זנב התלי' && String(p254TailExec?.profession || '').includes('בורות'), 'p254 distinguishes Tail 1112 and returns the ignorance/treachery branch');
+assert(p254HeadExec?.profession !== p254TailExec?.profession, 'p254 no longer collapses Head and Tail into one ambiguous fallback');
+
+const p254MixedEase = buildKashfCanonicalAiBridge({ questionId: 'q-profession', questionText: 'מה המלאכה?', board: makeBoard({ 9:'1122', 10:'1121', 11:'2111' }) });
+const p254MixedEaseExec = p254MixedEase.canonicalReading?.primaryFormula?.result?.executorResult;
+assert(p254MixedEaseExec?.h10Quality === 'mixed', 'p254 Golden case exposes H10 mixed classification');
+assert(p254MixedEaseExec?.easeOfWorkIndicated === null, 'p254 mixed H10 does not activate the pure-saad ease clause');
+assert(!String(p254MixedEaseExec?.outputHebrew || '').includes('מלאכתו מעטה בטרחה'), 'p254 does not promote mixed testimony into the ease-of-work source branch');
+assert(!String(p254MixedEaseExec?.outputHebrew || '').includes('מלאכתו קשה'), 'p254 does not invent the inverse hard-work claim');
+
+assert(p254Venus.professionalVerdictSafety?.certificationStatus === 'certified', 'p254 passed Professional Verdict Safety source closure');
+assert(p254Venus.professionalVerdictSafety?.clientFacingCertified === true, 'p254 exact client-facing explanation is certified');
+assert(p254Venus.professionalVerdictSafety?.authoritativePolarity === 'non-binary', 'p254 remains categorical/non-binary rather than becoming yes/no');
+assert(p254Venus.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'p254 cannot be converted into a yes/no verdict');
+assert(p254Venus.professionalVerdictSafety?.authoritativeClientDraftHebrew === p254VenusExec?.outputHebrew, 'p254 safety gate locks the exact source-bounded executor draft');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes('profession.p254.h9Planet'), 'p254 profession method is explicitly professionally certified');
+// One runnable method remains intentionally uncertified after source/implementation audit.
 for (const id of [
   'marriage.p211.dissolutionH7StateMatrix',
-  'profession.p254.h9Planet',
 ]) {
   assert(!KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes(id), id + ' remains pending professional source closure');
 }

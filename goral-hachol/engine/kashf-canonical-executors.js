@@ -10,7 +10,6 @@
  */
 
 import {
-  computeProfessionH9Kashf,
   computeBodyPartDiagnosisKashf,
 } from './kashf-pending-extraction.js';
 
@@ -20,7 +19,6 @@ import { FIGURE_PLANET_MAP } from '../data/sources/kashf-al-asrar/kashf-hazz.js'
 import { classifyCanonicalFigure } from './kashf-canonical-figure-classifier.js';
 
 const LEGACY_EXECUTORS = Object.freeze({
-  'profession.p254.h9Planet': computeProfessionH9Kashf,
   'illness.bodyPart.h6Figure': computeBodyPartDiagnosisKashf,
 });
 
@@ -273,6 +271,73 @@ function computeThiefRelationshipP224(chart) {
 }
 
 
+// Kashf p254 — profession/craft from the p133-134 figure attribution in H9.
+// H10/H11 are a separate one-way ease-of-work qualifier only: both must be
+// pure سعد. Mixed figures are not promoted, and failure of the condition
+// never creates the inverse claim that the work is difficult.
+const P254_PROFESSION_BY_ATTRIBUTION = Object.freeze({
+  'שבתאי': 'חקלאות ועבודת אדמה',
+  'צדק': 'בקשת חכמות ולימודים',
+  'מאדים': 'רפואה ורפואת בהמות',
+  'שמש': 'הנדסה ומדידות',
+  'נוגה': 'דברי הימים, לחנים וניגונים',
+  'כוכב': 'כישוף, נפלאות ואצטגנינות',
+  'ירח': 'ענייני עניים וצדיקים',
+  'ראש התלי': 'ידיעת הדתות ואפשר ידיעה בחלק ממדע הנסתר',
+  'זנב התלי': 'בורות, בגידה וקלקול',
+});
+
+function computeProfessionP254(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h9 = findCanonicalHouse(chart, 9);
+  const h10 = findCanonicalHouse(chart, 10);
+  const h11 = findCanonicalHouse(chart, 11);
+  const h9Pattern = h9?.key || h9?.pattern || null;
+  if (!h9Pattern) return null;
+
+  const attribution = getVerifiedPlanetForPattern(h9Pattern);
+  const attributionHebrew = attribution?.planetHebrew || null;
+  const profession = attributionHebrew ? (P254_PROFESSION_BY_ATTRIBUTION[attributionHebrew] || null) : null;
+  const h10Pattern = h10?.key || h10?.pattern || null;
+  const h11Pattern = h11?.key || h11?.pattern || null;
+  const h10Classification = h10Pattern ? classifyCanonicalFigure(h10Pattern) : null;
+  const h11Classification = h11Pattern ? classifyCanonicalFigure(h11Pattern) : null;
+  const h10PureSaad = h10Classification?.saadNahs === 'saad';
+  const h11PureSaad = h11Classification?.saadNahs === 'saad';
+  const easeOfWorkIndicated = h10PureSaad && h11PureSaad ? true : null;
+
+  const h9FigureHebrew = h9?.hebrew || h9?.hebrewName || h9Pattern;
+  const parts = [];
+  if (easeOfWorkIndicated === true) {
+    parts.push('בתים 10 ו־11 שניהם מיטיבים טהורים. לפי כשף עמ׳ 254: מלאכתו מעטה בטרחה והוא מוצא בה מנוחה.');
+  }
+  if (attributionHebrew && profession) {
+    parts.push(`בית 9: ${h9FigureHebrew} (${h9Pattern}) — ${attributionHebrew}: ${profession}.`);
+  } else {
+    parts.push(`בית 9: ${h9FigureHebrew} (${h9Pattern}) — ייחוס הצורה אינו מוכרע בטבלת עמ׳ 133–134, ולכן עמ׳ 254 אינו מאפשר לקבוע את סוג המלאכה.`);
+  }
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 254; טבלת ייחוס הצורות עמ׳ 133–134',
+    sourceText: 'אם בבית העשירי ובאחד־עשר יש צורה מיטיבה, מלאכתו מעטה בטרחה והוא מוצא בה מנוחה. את סוג המלאכה דנים לפי ייחוס הצורה בבית התשיעי.',
+    housesUsed: [9, 10, 11],
+    h9Pattern,
+    h9FigureHebrew,
+    attributionHebrew,
+    attributionArabic: attribution?.planetArabic || null,
+    planet9: attributionHebrew,
+    profession,
+    h10Pattern,
+    h11Pattern,
+    h10Quality: h10Classification?.saadNahs || null,
+    h11Quality: h11Classification?.saadNahs || null,
+    easeOfWorkIndicated,
+    lightWork: easeOfWorkIndicated === true,
+    positive: null,
+    verdictType: 'profession-by-h9-attribution',
+    outputHebrew: parts.join(' '),
+  };
+}
 const P256_HONOR_POSITIVE_PLANETS = new Set(['שמש', 'צדק', 'נוגה']);
 const P257_APPOINTMENT_COMPLETION_PLANETS = new Set(['שמש', 'ירח', 'צדק', 'נוגה']);
 
@@ -2171,6 +2236,7 @@ function computeHiddenActionP167(chart) {
 }
 
 const CUSTOM_EXECUTORS = Object.freeze({
+  'profession.p254.h9Planet': computeProfessionP254,
   'pregnancy.p191.deliveryDifficultyH1H5H15': computeDeliveryDifficultyP191,
   'money.p180.livelihoodH10Invert': computeLivelihoodP180,
   'money.p181.recast25811': computeMoneyAcquireP181,

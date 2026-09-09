@@ -740,13 +740,13 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfMethodId: 'profession.p254.h9Planet',
     kashfIntentId: 'profession.type',
     topicId: 'authorityState',
-    sourcePages: [254],
+    sourcePages: [133, 134, 254],
     kashfRuntimeStatus: 'ready',
     runtimeAllowed: true,
-    executionKind: 'legacy-function',
+    executionKind: 'custom-engine',
     executorStatus: 'ready',
     legacyTopicId: 'authorityState',
-    notes: 'Body-source profession/craft rule: profession itself is judged by the planetary figure in H9; H10/H11 benefic is only a separate ease-of-work qualifier. Existing computeProfessionH9Kashf already follows this split and may be reused after method-scoped wiring. Source does not claim to optimize a modern “best career fit” from personal preference.',
+    notes: 'Canonical p254 profession executor is wired directly from the source. H9 uses the complete p133-134 attribution table for all 16 figures, including Head=1212 and Tail=1112. H10/H11 are only a separate one-way ease-of-work qualifier and both must be pure saad; mixed testimony is not promoted and a failed qualifier is not inverted into hard work. The method reports the source craft/profession, not a modern best-career recommendation.',
   }),
 
   // ── CONFLICT + THEFT canonical slice --------------------------------

@@ -379,7 +379,7 @@ assert(canRunKashfMethod('state.p265.h1h2h9h15') === false, 'repair-required met
 assert(canRunKashfMethod('travel.p242.vehicleSafety') === false, 'blocked-by-source method cannot run');
 assert(canRunKashfMethod('illness.p196.outcomeH15') === true, 'p196 H15 executor can run after explicit canonical cutover');
 
-// ── P1 profession method-scoped legacy executor -------------------------
+// ── P1 profession source-closed canonical executor ----------------------
 const professionRoute = assertRoute('q-profession', {
   ok: true,
   canRunKashf: true,
@@ -391,7 +391,8 @@ const professionRoute = assertRoute('q-profession', {
 });
 assert(canRunKashfMethod(professionRoute.kashfMethodId) === true, 'profession canonical method is explicitly runnable');
 const professionReading = buildKashfReadingByQuestionId(PILOT_BOARD, 'q-profession', { question: 'מה המלאכה המורה עלי?' });
-assert(professionReading.valid === true, 'q-profession executes through canonical legacy allowlist');
+assert(professionReading.valid === true, 'q-profession executes through the source-closed canonical p254 executor');
+assert(getKashfMethod('profession.p254.h9Planet')?.executionKind === 'custom-engine', 'p254 no longer depends on the legacy profession helper');
 assert(professionReading.canonicalExecution?.methodsExecuted?.length === 1, 'q-profession executes exactly one method');
 assert(professionReading.canonicalExecution?.methodsExecuted?.[0] === 'profession.p254.h9Planet', 'q-profession executes the exact p254 method only');
 assert(professionReading.canonicalExecution?.altFormulaExecuted === false, 'q-profession does not execute alt formula');
@@ -626,10 +627,10 @@ const authoritySunHtml = writeCanonicalKashfReading(authoritySun);
 assert(authoritySunHtml.includes('authority.p256.honorConditionH10Planet'), 'p256 narrative exposes exact canonical method id');
 assert(authoritySunHtml.includes('מצורות השמש'), 'p256 narrative preserves the Sun condition instead of promising fame');
 
-const AUTHORITY_P256_SATURN_BOARD = buildRamlBoardFromMothers(['1111', '1111', '1111', '2221']);
+const AUTHORITY_P256_SATURN_BOARD = buildRamlBoardFromMothers(['1111', '1111', '1111', '2112']);
 const authoritySaturn = buildKashfReadingByQuestionId(AUTHORITY_P256_SATURN_BOARD, 'q-fame', { question: 'מצב הכבוד והמעמד' });
-assert(authoritySaturn.primaryFormula?.result?.executorResult?.h10Pattern === '1112', 'p256 negative fixture has H10=1112');
-assert(authoritySaturn.primaryFormula?.result?.executorResult?.planetHebrew === 'שבתאי', 'p256 resolves H10=1112 to Saturn');
+assert(authoritySaturn.primaryFormula?.result?.executorResult?.h10Pattern === '1221', 'p256 negative fixture has source-correct Saturn H10=1221');
+assert(authoritySaturn.primaryFormula?.result?.executorResult?.planetHebrew === 'שבתאי', 'p256 resolves source-correct H10=1221 to Saturn');
 assert(authoritySaturn.primaryFormula?.result?.executorResult?.condition === 'no-benefit-gloom-distress', 'p256 Saturn branch preserves the source-specific adverse condition');
 assert(authoritySaturn.overallPositive === false, 'p256 Saturn branch is negative');
 
@@ -670,9 +671,9 @@ const authorityAppointmentHtml = writeCanonicalKashfReading(authorityAppointment
 assert(authorityAppointmentHtml.includes('authority.p257.appointmentH1H10Planet'), 'p257 narrative exposes exact canonical method id');
 assert(authorityAppointmentHtml.includes('משני המאורות'), 'p257 narrative preserves the luminary rule');
 
-const AUTHORITY_P257_NEGATIVE_BOARD = buildRamlBoardFromMothers(['1111', '1111', '1111', '1112']);
+const AUTHORITY_P257_NEGATIVE_BOARD = buildRamlBoardFromMothers(['1111', '1111', '1111', '1221']);
 const authorityAppointmentNo = buildKashfReadingByQuestionId(AUTHORITY_P257_NEGATIVE_BOARD, 'q-position-keep', { question: 'האם המינוי יתקיים' });
-assert(authorityAppointmentNo.primaryFormula?.result?.executorResult?.resultPattern === '1112', 'p257 negative fixture combines to 1112');
+assert(authorityAppointmentNo.primaryFormula?.result?.executorResult?.resultPattern === '1221', 'p257 negative fixture combines to source-correct Saturn 1221');
 assert(authorityAppointmentNo.primaryFormula?.result?.executorResult?.planetHebrew === 'שבתאי', 'p257 negative fixture resolves to Saturn');
 assert(authorityAppointmentNo.primaryFormula?.result?.executorResult?.appointmentCompletes === false, 'p257 non-luminary/non-benefic planet means the appointment does not complete');
 assert(authorityAppointmentNo.overallPositive === false, 'p257 negative branch is negative');

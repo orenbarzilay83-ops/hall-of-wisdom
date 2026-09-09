@@ -17,7 +17,7 @@
 // תסכין-כוכב (عمود 133-134, التسكين الرابع):
 //   כוכב הצורה = כוכב הבית (מחזור: שבתאי,צדק,מאדים,שמש,נוגה,כוכב,ירח × 16 בתים)
 //   7 כוכבים מאומתים (עמוד 133-134): שמש,נוגה,ירח,כוכב,שבתאי,מאדים,צדק — explicit-in-source
-//   צמתי הגלגל (ראש/זנב) — לא נכללים במחזור הבתים, לא מחושבים בתסכין-כוכב
+//   טבלת עמ׳ 134 כוללת גם ראש/זנב התלי ומשלימה שיוך מפורש לכל 16 הצורות; הצמתים אינם חלק ממחזור שבעת כוכבי הבתים.
 
 import { FIGURE_LETTER_EXTRACTION } from '../hawi/foundations/hawi-figure-letter-extraction.js';
 
@@ -27,24 +27,22 @@ const FIGURE_LETTER_HOUSE = Object.fromEntries(
 );
 
 // ── תסכין-כוכב ────────────────────────────────────────────────────────────────
-// מיפוי כוכב → צורות (עמוד 133-134)
-// עמוד 133: שמש, נוגה, ירח — מאומת
-// עמוד 134 (שיר): כוכב/עטארד, שבתאי/זחל, מאדים/מריח', צדק/משתרי — מאומת
-// צמתים (ראש/זנב) — ממתין לאימות
+// מיפוי ייחוס מזג/כוכב → צורות (עמ׳ 133-134)
+// הטקסט בעמ׳ 133-134 והטבלה המודפסת בעמ׳ 134 נקראים יחד:
+// - נלחם / ג׳ודלה (1121) שייך לנוגה; בר הלחי (1211) למאדים.
+// - סוהר / עקלה (1221) שייך לשבתאי.
+// - ראש התלי = ממון יוצא (1212); זנב התלי = סף יוצא (1112).
+// כך מתקבלת חלוקה מלאה וחד-ערכית של כל 16 הצורות.
 export const FIGURE_PLANET_MAP = [
-  // ── מאומת מעמוד 133 ──────────────────────────────────
-  { planet: 'שמש',   arabicName: 'الشمس',   patterns: ['2121', '1122'], sourceStatus: 'explicit-in-source' },
-  { planet: 'נוגה',  arabicName: 'الزهرة',  patterns: ['1212', '2211'], sourceStatus: 'explicit-in-source' },
-  { planet: 'ירח',   arabicName: 'القمر',   patterns: ['2212', '1111'], sourceStatus: 'explicit-in-source' },
-  // ── מאומת מעמוד 134 ──────────────────────────────────
-  // "والإجتماع ثم والجماعة عطارد أتاها طباعه"
-  { planet: 'כוכב',  arabicName: 'عطارد',   patterns: ['2112', '2222'], sourceStatus: 'explicit-in-source' },
-  // "وإنما الأنكيس والثقاف لزحل ما فيهما خلاف"
-  { planet: 'שבתאי', arabicName: 'زحل',     patterns: ['2221', '1112'], sourceStatus: 'explicit-in-source' },
-  // "وحمرة كذا نقي الخد لكوكب المريخ فيما عندي"
-  { planet: 'מאדים', arabicName: 'المريخ',  patterns: ['2122', '1211'], sourceStatus: 'explicit-in-source' },
-  // "وعتبة داخلة وضاحكه للمشتري ومن يعاند هالك"
-  { planet: 'צדק',   arabicName: 'المشتري', patterns: ['2111', '1222'], sourceStatus: 'explicit-in-source' },
+  { planet: 'שמש',       arabicName: 'الشمس',   patterns: ['2121', '1122'], sourceStatus: 'explicit-in-source' },
+  { planet: 'נוגה',      arabicName: 'الزهرة',  patterns: ['1121', '2211'], sourceStatus: 'explicit-in-source' },
+  { planet: 'ירח',       arabicName: 'القمر',   patterns: ['2212', '1111'], sourceStatus: 'explicit-in-source' },
+  { planet: 'כוכב',      arabicName: 'عطارد',   patterns: ['2112', '2222'], sourceStatus: 'explicit-in-source' },
+  { planet: 'שבתאי',     arabicName: 'زحل',     patterns: ['2221', '1221'], sourceStatus: 'explicit-in-source' },
+  { planet: 'מאדים',     arabicName: 'المريخ',  patterns: ['2122', '1211'], sourceStatus: 'explicit-in-source' },
+  { planet: 'צדק',       arabicName: 'المشتري', patterns: ['2111', '1222'], sourceStatus: 'explicit-in-source' },
+  { planet: 'ראש התלי', arabicName: 'الرأس',   patterns: ['1212'], sourceStatus: 'explicit-in-source' },
+  { planet: 'זנב התלי', arabicName: 'الذنب',   patterns: ['1112'], sourceStatus: 'explicit-in-source' },
 ];
 
 // מפה הפוכה: pattern → כוכב

@@ -17,7 +17,7 @@
  * allowed, but they NEVER create, reverse, soften or aggregate the verdict.
  */
 
-export const KASHF_PROFESSIONAL_VERDICT_SAFETY_VERSION = 'kashf-professional-verdict-safety-v11';
+export const KASHF_PROFESSIONAL_VERDICT_SAFETY_VERSION = 'kashf-professional-verdict-safety-v12';
 
 const P174_GENERAL_METHOD = 'general.p174.h1h2h4h7h10h15';
 const P182_SIBLING_SENIORITY_METHOD = 'siblings.p182.seniority';
@@ -61,6 +61,7 @@ const P179_MONEY_SOURCE_METHOD = 'money.p179.sourceByIncomingHonorHouse';
 const P225_THIEF_DESCRIPTION_METHOD = 'theft.p225.thiefDescriptionH7';
 const P194_CHILD_HEALTH_METHOD = 'child.p194.healthTrajectoryH6H8';
 const P248_249_MISSING_LIFE_METHOD = 'missing.p248-249.lifeH1H4H9Outcome';
+const P254_PROFESSION_METHOD = 'profession.p254.h9Planet';
 
 function freezeArray(values = []) {
   return Object.freeze([...(Array.isArray(values) ? values : [])]);
@@ -1309,6 +1310,36 @@ function p248249MissingLifePolicy() {
   });
 }
 
+function p254ProfessionPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-11',
+    goldenCaseIds: freezeArray(['PV-BF11-P254-VENUS', 'PV-BF11-P254-SATURN', 'PV-BF11-P254-HEAD-TAIL', 'PV-BF11-P254-MIXED-EASE', 'PV-BF11-P254-EXACT-DRAFT']),
+    policyId: 'p254-profession-h9-attribution-pure-saad-ease-v1',
+    questionScopeHebrew: 'סוג המלאכה לפי ייחוס הצורה ב-H9; H10/H11 הם רק סייג נפרד של קלות המלאכה',
+    decisiveRuleHebrew: 'סוג המלאכה נקבע לפי ייחוס H9 בטבלת עמ׳ 133–134 והפירוש בעמ׳ 254. רק אם H10 וגם H11 מיטיבים טהורים נאמר שמלאכתו מעטה בטרחה ומוצא בה מנוחה.',
+    oneWayBranches: freezeArray([
+      'H9 משויך לשמש/נוגה/עֻטַארִד/ירח/שבתאי/צדק/מאדים/ראש/זנב => החזרת המלאכה המפורשת של אותו ייחוס בעמ׳ 254',
+      'H10+H11 שניהם pure saad => מלאכתו מעטה בטרחה והוא מוצא בה מנוחה',
+    ]),
+    forbiddenInversions: freezeArray([
+      'כישלון תנאי H10/H11 אינו מוכיח שהמלאכה קשה או מרובת טרחה.',
+      'צורה ממוזגת ב-H10 או H11 אינה מקודמת למיטיב טהור.',
+      'אין לאחד ראש וזנב התלי לענף מעורפל אחד; לכל אחד דין שונה בעמ׳ 254.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'H10/H11 אינם קובעים את סוג המקצוע.',
+      'משמעות כללית של H9 או של הצורה מחוץ לטבלת הייחוס והפירוש של p254.',
+      'שיטות משרה, כבוד, חזרה לתפקיד או המלצת קריירה מודרנית.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'זה המקצוע שהכי מתאים לך בחיים',
+      'יהיה לך קשה במקצוע משום שתנאי H10/H11 לא התקיים',
+      'ראש התלי וזנב התלי נותנים אותה תוצאה',
+      'המקור מוכיח הצלחה כלכלית במקצוע',
+    ]),
+  });
+}
 const METHOD_POLICIES = Object.freeze({
   [P174_GENERAL_METHOD]: p174Policy(),
   [P182_SIBLING_SENIORITY_METHOD]: p182Policy(),
@@ -1351,6 +1382,7 @@ const METHOD_POLICIES = Object.freeze({
   [P225_THIEF_DESCRIPTION_METHOD]: p225ThiefDescriptionPolicy(),
   [P194_CHILD_HEALTH_METHOD]: p194ChildHealthPolicy(),
   [P248_249_MISSING_LIFE_METHOD]: p248249MissingLifePolicy(),
+  [P254_PROFESSION_METHOD]: p254ProfessionPolicy(),
 });
 
 export const KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS = Object.freeze(
