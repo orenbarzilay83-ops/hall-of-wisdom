@@ -29,12 +29,12 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
   },
   "coverage": {
     "bookStartPage": 21,
-    "bookEndPage": 204,
+    "bookEndPage": 212,
     "scanPdfStartPage": 23,
-    "scanPdfEndPage": 206,
+    "scanPdfEndPage": 214,
     "boundaryContinuationBookPage": null,
     "boundaryContinuationScanPdfPage": null,
-    "status": "BATCH16_P197_204_INDEXED_CH6_CLOSED_CH7_OPENED",
+    "status": "BATCH17_P205_212_INDEXED_CH7_CONTINUED",
     "completedBatches": [
       "BATCH02_P54_67",
       "BATCH03_P68_97",
@@ -50,7 +50,8 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "BATCH13_P180_184",
       "BATCH14_P185_191",
       "BATCH15_P191_196",
-      "BATCH16_P197_204"
+      "BATCH16_P197_204",
+      "BATCH17_P205_212"
     ]
   },
   "records": [
@@ -16797,7 +16798,100 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "doNotInfer": ["אין להפוך את H1-in-H7 ל'חופשייה'; אין להחליף בין מתהפך/קבוע."],
       "sourceDiscrepancies": ["v57 משבש את ענף H1 ב-H7 ומציג אותו כחופשייה, משמיט את H7 ב-H10, ומחליף את ענפי מתהפך/קבוע."],
       "sourceVerification": {"printedBookPages": [204], "scanPdfPages": [206], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "The page seam, house numbers, figure statuses and marriage-status branches were checked against the enlarged scan."}, "verificationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "entryId": "gate6.house7.p205.love-and-chastity",
+      "entryType": "love-and-chastity-rule-set",
+      "bookPages": [205], "scanPdfPages": [207], "v57Anchors": ["kashf-v57-draft.html#p205"],
+      "topic": "אהבה, ריחוק וצניעות האישה",
+      "keywords": ["אהבה", "H1", "H5", "H15", "צניעות", "מאזן", "H7", "H9"],
+      "criticalFacts": ["H1 ביתדות מורה על רצון; H1 בבתים נופלים, ובפרט H6/H8/H3/H12, מורה לריחוק ולבקשת אחר.", "היחס של H5 ל-H1 קובע שנאה או קירבה לפי יחס רע או הימצאות בכפיפה.", "צורה ראשונה טהורה, מאזן טהור, או H1/H7 טהורים — מורים על צניעות; H7/H9 מיטיבים מורים על יראת שמים, ומזיקים על פריצות."],
+      "procedure": ["בדוק H1, יחס H5/H1, ואת H7/H9 והמאזן."],
+      "branches": [{"condition": "H1-in-stakes", "outcome": "desire"}, {"condition": "H1-in-cadent", "outcome": "distance"}, {"condition": "benefic-H7-H9", "outcome": "chaste"}, {"condition": "malefic-H7-H9", "outcome": "unchaste"}],
+      "preconditions": ["שאלת אהבה או צניעות."], "questionIntents": ["love", "woman-chastity"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין להפוך חשד או צניעות למסקנה רפואית או עובדתית ללא הקשר."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [205], "scanPdfPages": [207], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "House numbers and purity branches checked."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house7.p206.intent-odor-marriage-appeal",
+      "entryType": "marriage-intent-and-odor-rule-set",
+      "bookPages": [206], "scanPdfPages": [208], "v57Anchors": ["kashf-v57-draft.html#p206"],
+      "topic": "רצון השואל, ריח האישה, הצלחת נישואין וחן האישה",
+      "keywords": ["H7", "H11", "H5", "ריח", "בתולה", "H13"],
+      "criticalFacts": ["להערכת רצון השואל מכים H7 עם H11 ואת התוצאה עם H5; מיטיב = רוצה.", "בסריקה ריח לא נעים נקבע כאשר H1/H7 מכילים عتبة خارجة או الأنكيس; v57 מציג במקום זאת סף יוצא או שפל ראש.", "לשאלת הצלחת נישואין מפיקים H1/H7 ומכים עם H5; לחן האישה מפיקים H7/H11 ומכים עם H5.", "בתולה/בעולה נקבעות מן H7/H13 לפי מים סגורים/פתוחים; אהבה מלאה H3/H11, איבה מלאה H9/H14, וחצאים H3/H9 ו-H10/H13."],
+      "procedure": ["בצע את ההכאות לפי intent נפרד."],
+      "branches": [{"condition": "benefic-desire-result", "outcome": "querent-wants"}, {"condition": "malefic-desire-result", "outcome": "querent-does-not-want"}, {"condition": "closed-water-H7-H13", "outcome": "virgin"}, {"condition": "open-water-H7-H13", "outcome": "previously-married"}],
+      "preconditions": ["שאלת רצון, ריח, נישואין, חן או מעמד מיני."], "questionIntents": ["querent-desire", "woman-odor", "marriage-success", "woman-appeal", "woman-virginity-status"], "methodStatus": "SOURCE_RULE_SET_WITH_V57_MISMATCH", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין להחליף את צורות הריח לפי תרגום או דמיון חזותי."], "sourceDiscrepancies": ["v57 אינו משמר את צורות הריח המודפסות בעמ׳ 206."],
+      "sourceVerification": {"printedBookPages": [206], "scanPdfPages": [208], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "House numbers checked; odor figures remain discrepancy."}, "verificationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "entryId": "gate6.house7.p207.marriage-love-and-house-model",
+      "entryType": "marriage-love-and-house-model",
+      "bookPages": [207], "scanPdfPages": [209], "v57Anchors": ["kashf-v57-draft.html#p207"],
+      "topic": "ארבעת בתי האיש והאישה והצלחת הנישואין",
+      "keywords": ["H1", "H2", "H7", "H8", "אהבה", "נישואין"],
+      "criticalFacts": ["H1/H2 מייצגים את האיש ו-H7/H8 את האישה; אם הצורות בארבעת הבתים מתחברות, או H1 מתחבר ל-H7, העניין מתקיים.", "צורות מיטיבות ב-H1 מאפשרות להתקדם; צורות מזיקות מחייבות עצירה וזהירות."],
+      "procedure": ["השלם את המערך, בדוק את ארבעת הבתים ואת החיבורים."],
+      "branches": [{"condition": "four-house-benefic-connection", "outcome": "marriage-proceeds"}, {"condition": "H1-malefic", "outcome": "stop-and-caution"}],
+      "preconditions": ["שאלת נישואין."], "questionIntents": ["marriage-success"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין להפוך דעות חלופיות למיזוג שיטות."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [207], "scanPdfPages": [209], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Four marriage houses checked."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house7.p208.marriage-house-figure-meanings",
+      "entryType": "marriage-house-figure-meaning-set",
+      "bookPages": [208], "scanPdfPages": [210], "v57Anchors": ["kashf-v57-draft.html#p208"],
+      "topic": "צורות בית הנישואין, מצב האישה וגילה",
+      "keywords": ["H5", "H7", "H9", "נוגה", "מאדים", "צדק", "שבתאי"],
+      "criticalFacts": ["המקור מייחס לבית הנישואין צורות שונות להצלחה, שעבוד, בגידה, מעמד, ממון ויופי; יש לקרוא כל צורה בשם המקורי.", "גיל נקבע מן H7: מאדים/נוגה/ירח קטנים; שמש/צדק/כוכב בינוניים; שבתאי/ראש/זנב זקנים.", "H5 עם צורות מיטיבות פנימיות מורה על אישה טובה ויציבה; צורות מזיקות במאזן או בבית הרביעי פוגעות באחרית."],
+      "procedure": ["זהה את הצורה המדויקת בבית הנישואין וב-H7.", "סווג לפי קבוצת הגיל והעדויות."],
+      "branches": [{"condition": "small-planet-group-in-H7", "outcome": "young"}, {"condition": "medium-planet-group-in-H7", "outcome": "middle-aged"}, {"condition": "old-planet-group-in-H7", "outcome": "older"}],
+      "preconditions": ["שאלת נישואין, גיל או מעמד."], "questionIntents": ["woman-age", "woman-wealth", "marriage-success"], "methodStatus": "SOURCE_RULE_SET_WITH_V57_FIGURE_DRIFT", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין להחליף שמות צורות לפי רשומה עברית שאינה תואמת את הסריקה."], "sourceDiscrepancies": ["v57 מחליף כמה צורות מודפסות בבית הנישואין בשמות עבריים אחרים."],
+      "sourceVerification": {"printedBookPages": [208], "scanPdfPages": [210], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Age groups and H5/H7/H9 conditions checked; figure-name drift queued."}, "verificationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "entryId": "gate6.house7.p209.woman-by-mans-houses",
+      "entryType": "woman-by-mans-house-rule-set",
+      "bookPages": [209], "scanPdfPages": [211], "v57Anchors": ["kashf-v57-draft.html#p209"],
+      "topic": "האישה לפי בתי חיי האיש",
+      "keywords": ["בית החיים", "בית הממון", "בית האחים", "בית האבות", "בית השמחות", "בית החולי", "בית המיטה", "בית המלכות", "בית האויבים"],
+      "criticalFacts": ["מיקום האישה ביחס לבתי האיש קובע אם הקשר מביא מריבה, ממון, ברכה, מחלה, התאמה, פגיעה או התרחקות.", "בית הממון, בית השמחות ובית המיטה מיטיבים; בית החיים, האבות, החולי, המלכות והאויבים נושאים אזהרות שונות; בית האחים מורה על תוכחה מתמשכת."],
+      "procedure": ["זהה את הבית שבו נמצאת האישה ביחס למפת בתי האיש.", "החזר את ענף המקור המתאים לבית, ללא הכללה."],
+      "branches": [{"condition": "woman-in-money-house", "outcome": "wealth-and-blessing"}, {"condition": "woman-in-joy-or-bed-house", "outcome": "beneficence"}, {"condition": "woman-in-enemy-house", "outcome": "avoid"}],
+      "preconditions": ["שאלת נישואין ויחס בתי האיש."], "questionIntents": ["marriage-compatibility", "woman-benefit"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין לצמצם את תשעת הבתים לתווית טוב/רע אחת."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [209], "scanPdfPages": [211], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "All house branches through the seam were checked."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house7.p210-211.marriage-house-states",
+      "entryType": "marriage-house-state-rule-set",
+      "bookPages": [210, 211], "scanPdfPages": [212, 213], "v57Anchors": ["kashf-v57-draft.html#p210", "kashf-v57-draft.html#p211"],
+      "topic": "מצב הבית השביעי: פנימי, חיצוני, קבוע ומתַהפך",
+      "keywords": ["H7", "פנימי", "חיצוני", "קבוע", "מתהפך", "נישואין", "מיטה"],
+      "criticalFacts": ["H7 פנימי מורה על התיישבות; פנימי מזיק על מריבה אך חלק קבוע; חיצוני מיטיב על נישואין טובים אך אפשרות פרידה; חיצוני מזיק על אי־נישואין.", "קבוע מיטיב מורה על תיקון בית המיטה; קבוע מזיק על קלקול; מתהפך מיטיב על שמחה ועושר; מתהפך מזיק על פירוד."],
+      "procedure": ["סווג את צורת H7 לפי פנימי/חיצוני/קבוע/מתהפך ולפי סעד/נחס."],
+      "branches": [{"condition": "internal-benefic", "outcome": "stable-marriage"}, {"condition": "external-malefic", "outcome": "no-valid-marriage"}, {"condition": "fixed-benefic", "outcome": "bedroom-repair"}, {"condition": "mutable-malefic", "outcome": "separation"}],
+      "preconditions": ["שאלת נישואין; נדרש סיווג H7."], "questionIntents": ["marriage-success", "marriage-stability", "separation"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין להשליך מענף אחד על כל סוגי החיצוני/הקבוע/המתהפך."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [210, 211], "scanPdfPages": [212, 213], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "All state/polarity branches checked."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house7.p211-212.marriage-witnesses-and-repeated-seventh",
+      "entryType": "marriage-witness-and-recurrence-rule-set",
+      "bookPages": [211, 212], "scanPdfPages": [213, 214], "v57Anchors": ["kashf-v57-draft.html#p211", "kashf-v57-draft.html#p212"],
+      "topic": "עדויות בית הנישואין, חזרת השביעי ומריבות",
+      "keywords": ["H5", "H11", "H7", "H6", "H8", "H12", "עדויות", "מריבה"],
+      "criticalFacts": ["סעד ב-H7 וצורות מיטיבות המביטות אליו ועדות טובה מורים על נישואין טובים; סעד פנימי ב-H5/H11 וצורה מיטיבה פנימית מן H1/H5 הם שיא התיקון.", "אם ההפך — נישואין שנואים, מריבה, פגיעה ופרידה; נחס ב-H7 מורה על קלקול האישה, וסעד הנולד ממנו על תיקון מאוחר.", "חזרת H7 ב-H6/H8/H12 מורה על קלקול האישה לפי טבע הבית; חזרה בבתים מיטיבים נידונה לפי משמעותם."],
+      "procedure": ["בדוק בית הנישואין, H5/H11, והצורה הנולדת.", "אחר כך בדוק את בתי חזרת H7 וסווג לפי טבע כל בית."],
+      "branches": [{"condition": "benefic-witnesses-and-derived-benefic", "outcome": "excellent-marriage"}, {"condition": "H7-repeats-in-malefic-houses", "outcome": "woman-corruption-by-house"}],
+      "preconditions": ["שאלת נישואין או מריבה זוגית."], "questionIntents": ["marriage-success", "marriage-conflict", "woman-benefit"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין להפוך את העדות והרוב למנוע כללי מחוץ לשיטת הנישואין."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [211, 212], "scanPdfPages": [213, 214], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "H5/H11 witness clause and H7 recurrence checked across seam."}, "verificationStatus": "VERIFIED"
     }
+  ],
+  "v57CorrectionQueue": [
   ],
   "v57CorrectionQueue": [
     {
@@ -17253,6 +17347,20 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "page": 204,
       "status": "OPEN",
       "summary": "Restore source-faithful status branches: H1 in H7 means slave, H7 in H10 means free, mutable H7 means previously married, fixed H7 means virgin."
+    },
+    {
+      "id": "B17-P206-ODOR-FIGURES",
+      "entryId": "gate6.house7.p206.intent-odor-marriage-appeal",
+      "page": 206,
+      "status": "OPEN",
+      "summary": "Restore the printed odor figures عتبة خارجة and الأنكيس; v57 currently substitutes different figures."
+    },
+    {
+      "id": "B17-P208-MARRIAGE-FIGURE-NAMES",
+      "entryId": "gate6.house7.p208.marriage-house-figure-meanings",
+      "page": 208,
+      "status": "OPEN",
+      "summary": "Recheck the printed marriage-house figure names and mappings; v57 drifts from the scan in several critical rows."
     }
   ],
   "downstreamCorrectionQueue": [
@@ -18007,6 +18115,24 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "onePrimaryRoutePerQuestionIntent": true,
       "chapterClosedAtPage": 204,
       "nextFullSourcePage": 205
+    },
+    "gate6House7": {
+      "pagesIndexed": [
+        204,
+        205,
+        206,
+        207,
+        208,
+        209,
+        210,
+        211,
+        212
+      ],
+      "indexedThroughPage": 212,
+      "status": "SOURCE_INDEX_CONTINUING_WITH_OPEN_REVIEW_ITEMS",
+      "runtimeOperationalizationDeferred": true,
+      "onePrimaryRoutePerQuestionIntent": true,
+      "nextFullSourcePage": 213
     }
   },
   "dhamirSelectionMap": {
