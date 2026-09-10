@@ -29,12 +29,12 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
   },
   "coverage": {
     "bookStartPage": 21,
-    "bookEndPage": 271,
+    "bookEndPage": 276,
     "scanPdfStartPage": 23,
-    "scanPdfEndPage": 273,
+    "scanPdfEndPage": 278,
     "boundaryContinuationBookPage": null,
     "boundaryContinuationScanPdfPage": null,
-    "status": "BATCH24_P263_271_INDEXED_CH10_CLOSED_CH11_CLOSED_CH12_OPENED",
+    "status": "BATCH25_P272_276_INDEXED_CH12_CLOSED_BOOK_BODY_CLOSED",
     "completedBatches": [
       "BATCH02_P54_67",
       "BATCH03_P68_97",
@@ -58,7 +58,8 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "BATCH21_P237_244",
       "BATCH22_P245_252",
       "BATCH23_P253_262",
-      "BATCH24_P263_271"
+      "BATCH24_P263_271",
+      "BATCH25_P272_276"
     ]
   },
   "records": [
@@ -17387,9 +17388,100 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "preconditions": ["שאלת צורך כללית או פתיחת שאלת אויב."], "questionIntents": ["general-affairs-review", "enemy-existence", "enemy-victory"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
       "doNotInfer": ["אין לנתק את תיאור טבע האויב מן ההמשך בעמ׳ 272; אין לערבב את דין הצורך עם דין האויב."], "sourceDiscrepancies": [],
       "sourceVerification": {"printedBookPages": [271], "scanPdfPages": [273], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Chapter boundary and all four H1/H12 enemy branches checked."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId":"gate12.enemies-prisoners.p272.enemy-nature-and-core-prisoner-rules",
+      "entryType":"enemy-and-prisoner-rule-set",
+      "bookPages":[271,272], "scanPdfPages":[273,274], "v57Anchors":["kashf-v57-draft.html#p271","kashf-v57-draft.html#p272"],
+      "topic":"שער 12: טבע האויב ודיני האסיר",
+      "keywords":["H1","H2","H3","H4","H5","H7","H9","H10","H11","H12","אויב","אסיר","مجسد","متقلب"],
+      "criticalFacts":["צורה קבועה ב-H12 מורה שאויביו מתמידים באיבתם; אם הצורה مجسد, הם אויבים פעם ומשלימים עמו פעם אחרת; ואם היא متقلب, אינם מתמידים באיבתם.","בדין על האויב מציבים את H1,H7,H10,H12 כאמהות ומשלימים את המערך; הדפוס שומר חלופת נוסח בין يكون לבין ׳ובנוסח אחר: تكرر׳ ביחס למיטיבות, ומסיים: فهو الظاهر.","באסיר: מזיק ב-H2/H3/H5/H9/H10 מורה יציאה שלא מבחירת صاحب البلد; מיטיב באחד מבתים אלה מורה יציאה בבחירתו; H12 מיטיב מורה יציאה בשלום.","בהמשך אותו דין הדפוס שומר שוב חלופת נוסח تكون/تكرر ביחס למיטיב ב-H12/H3/H4/H5/H9, ולאחריה פתיחת המאסר והיציאה.","מפיקים צורה מ-H1+H4: מזיקה מורה שאחרית האסיר לרעה, מיטיבה מורה שאחריתו לטובה. בסוף העמוד מתחיל כלל כבוד נכנס / نصرة داخلة ב-H11, המושלם בעמ׳ 273."],
+      "procedure":["בשאלת טבע האויב, קרא את מצב הצורה ב-H12 בלי לנרמל את מונחי המקור.","בדין האויב המורחב, הצב H1,H7,H10,H12 כאמהות והשלם את המערך.","בדין האסיר, בדוק את בתי המקור ורק אחר כך את H1+H4 לאחרית."],
+      "branches":[{"condition":"malefic-in-H2-H3-H5-H9-H10","outcome":"release-not-by-ruler-choice"},{"condition":"benefic-in-one-of-H2-H3-H5-H9-H10","outcome":"release-by-ruler-choice"},{"condition":"benefic-H12","outcome":"release-in-safety"},{"condition":"malefic-H1-plus-H4-result","outcome":"bad-prisoner-outcome"},{"condition":"benefic-H1-plus-H4-result","outcome":"good-prisoner-outcome"}],
+      "preconditions":["שאלת אויב או אסיר לפי הפרק השנים־עשר."], "questionIntents":["enemy-nature","enemy-judgment","prisoner-release","prisoner-outcome"],
+      "methodStatus":"SOURCE_RULE_SET_WITH_PRINTED_VARIANTS", "operationalRole":"PRIMARY_CANDIDATE", "runtimeEligible":false,
+      "doNotInfer":["אין להכריע בין يكون לבין נוסח תكرر שמביא הדפוס.","אין להמיר את مجسد או متقلب למונח חישובי שלא הוגדר מן המקור.","אין לפרש صاحب البلد מעבר ללשון המקור."],
+      "sourceDiscrepancies":[],
+      "sourceVerification":{"printedBookPages":[271,272],"scanPdfPages":[273,274],"v57Checked":true,"printedScanChecked":true,"visualLineByLineChecked":true,"note":"Printed pp271-272 were re-read visually as one source unit through the page seam. Both explicit variant readings in braces were preserved rather than reconciled."}, "verificationStatus":"VERIFIED"
+    },
+    {
+      "entryId":"gate12.prisoners.p272-273.quick-release-and-punishment-fear",
+      "entryType":"prisoner-release-and-punishment-fear-rule-set",
+      "bookPages":[272,273], "scanPdfPages":[274,275], "v57Anchors":["kashf-v57-draft.html#p272","kashf-v57-draft.html#p273"],
+      "topic":"אסיר: יציאה מהירה ופחד מן העונש",
+      "keywords":["H1","H4","H5","H10","H11","כבוד נכנס","שפל ראש","סף נכנס","נשוא ראש","עונש","מאסר"],
+      "criticalFacts":["כבוד נכנס / نصرة داخلة ב-H11 בשאלת אסיר מורה שהוא יוצא במהירות מן המאסר; אם ב-H5 נמצא שפל ראש / الأنكيس, יש לחשוש שמא לא יצא ממנו.","בשאלת אדם החושש מעונש, מאסר, מכות וכדומה, המקור מצרף כבוד נכנס ב-H10, סף נכנס / عتبة داخلة ב-H5, נשוא ראש / الأحيان ב-H1 או בבית האויבים, ובנוסף דורש צורה מיטיבה ב-H4; אז אין לחשוש עליו."],
+      "procedure":["חבר את שורת הסיום של עמ׳ 272 לפתיחת עמ׳ 273 לפני מתן הדין.","בדין הפחד שמור את כל תנאי הבתים והצורות, לרבות H4 המיטיב."],
+      "branches":[{"condition":"Nusra-Dakhila-in-H11-prisoner-question","outcome":"quick-release"},{"condition":"Ankis-in-H5-in-that-context","outcome":"fear-of-non-release"},{"condition":"punishment-fear-combination-with-benefic-H4","outcome":"no-fear-for-him"}],
+      "preconditions":["שאלת אסיר או אדם החושש מעונש."], "questionIntents":["prisoner-quick-release","punishment-fear"],
+      "methodStatus":"SOURCE_RULE_SET", "operationalRole":"PRIMARY_CANDIDATE", "runtimeEligible":false,
+      "doNotInfer":["אין להשמיט את H4 המיטיב מן תנאי דין הפחד.","אין לנתק את H5 שפל ראש מן הכלל שהתחיל בעמ׳ 272."],
+      "sourceDiscrepancies":[],
+      "sourceVerification":{"printedBookPages":[272,273],"scanPdfPages":[274,275],"v57Checked":true,"printedScanChecked":true,"visualLineByLineChecked":true,"note":"The Nusra Dakhila rule was verified as one cross-page source unit; the punishment/fear combination was then checked line by line on printed p273."}, "verificationStatus":"VERIFIED"
+    },
+    {
+      "entryId":"gate12.prisoners.p273-274.external-release-duration-and-fear",
+      "entryType":"external-prisoner-release-duration-rule-set",
+      "bookPages":[273,274], "scanPdfPages":[275,276], "v57Anchors":["kashf-v57-draft.html#p273","kashf-v57-draft.html#p274"],
+      "topic":"מן מחוץ לספר: פדיון אסיר, משך המאסר, סכנה ופחד",
+      "keywords":["ومن غير الكتاب","H1","H7","H8","H12","H13","H16","פדיון אסיר","מיטיב נכנס","מזיק יוצא","אדום","שפיכות דמים"],
+      "criticalFacts":["בפדיון אסיר מפיקים צורה מ-H1+H13: יוצאת מורה שיינצל, נכנסת מורה עיכוב.","במסجون בודקים H16 ו-H12: אם שניהם מיטיבים ויוצאים, האסיר נחלץ; אם שניהם מיטיבים ונכנסים, הוא משלים תקופה ארוכה במאסר.","אם H16 ו-H12 שניהם מזיקים ויוצאים, המזיקים מעידים להם ורבתה אדום / الحمرة במערך, המקור אומר שהדבר מגיע לשפיכות דמים.","אם שניהם — כפי הערת הדפוס: כנראה שני מזיקים — נכנסים, הוא חולה ומת.","בדין הפחד הממשיך לעמ׳ 274 נבדקים H7 ו-H8: אם הדין מיטיב הפחד בטל, ואם מזיק הפחד עומד."],
+      "procedure":["שמור את הכותרת ومن غير الكتاب כמסגרת מקור חיצונית.","בדוק H16/H12 לפי מיטיב/מזיק ולפי יוצא/נכנס בלי להזיז את הקטבים בין הענפים.","חבר את משפט הפחד H7/H8 הממשיך בראש עמ׳ 274."],
+      "branches":[{"condition":"benefic-outgoing-H16-and-H12","outcome":"prisoner-released"},{"condition":"benefic-incoming-H16-and-H12","outcome":"long-imprisonment"},{"condition":"malefic-outgoing-H16-and-H12-with-malefic-witnesses-and-much-Humra","outcome":"bloodshed-risk"},{"condition":"malefic-incoming-H16-and-H12","outcome":"illness-and-death"},{"condition":"benefic-H7-H8-fear-judgment","outcome":"fear-falls"},{"condition":"malefic-H7-H8-fear-judgment","outcome":"fear-remains"}],
+      "preconditions":["חומר שהדפוס מסמן במפורש ׳ומן מחוץ לספר׳."], "questionIntents":["prisoner-release","prisoner-duration","prisoner-danger","prisoner-fear"],
+      "methodStatus":"EXTERNAL_PRINTED_ADDENDUM_WITH_V57_POLARITY_CONFLICT", "operationalRole":"REFERENCE_ONLY", "runtimeEligible":false,
+      "doNotInfer":["אין לתקן את הסריקה לפי v57 או לפי טקסט OCR עזר.","אין למזג את שני ענפי המזיק הנכנס/יוצא; מקור הדפוס מבדיל ביניהם."],
+      "sourceDiscrepancies":["הסריקה המודפסת בעמ׳ 273 אומרת במפורש: שני מיטיבים נכנסים = תקופה ארוכה; שני מזיקים יוצאים + עדות מזיקים + ריבוי אדום = שפיכות דמים. v57 מעביר את התקופה הארוכה לשני מזיקים יוצאים, ואת תנאי שפיכות הדמים לשני מזיקים נכנסים, ובכך גם יוצר חפיפה עם ענף המחלה והמוות."],
+      "sourceVerification":{"printedBookPages":[273,274],"scanPdfPages":[275,276],"v57Checked":true,"printedScanChecked":true,"visualLineByLineChecked":true,"note":"Critical benefic/malefic and incoming/outgoing words were re-read directly from the high-quality printed scan. The printed scan is the highest verification authority; the conflicting v57/OCR-helper polarity is not silently reconciled."}, "verificationStatus":"REVIEW_REQUIRED"
+    },
+    {
+      "entryId":"gate12.prisoners.p274-275.nuzhat-prisoner-combinations",
+      "entryType":"quoted-prisoner-combination-rule-set",
+      "bookPages":[274,275], "scanPdfPages":[276,277], "v57Anchors":["kashf-v57-draft.html#p274","kashf-v57-draft.html#p275"],
+      "topic":"תוספת נֻזְהַת אל־עֻקוּל: צירופי אסיר וזמן היציאה",
+      "keywords":["נזהת אלעקול","H1","H5","H6","נלחם","נקי הלחי","ממון יוצא","ממון נכנס","אדום","דרך","סף יוצא","סף נכנס","קהלה","לבן","חיבור","כבוד נכנס","כבוד יוצא"],
+      "criticalFacts":["מפיקים צורה מ-H1+H5: יוצאת מורה יציאה מן המאסר; נכנסת מורה שהייה וכניסה.","הדפוס נותן צירופים מפורשים: الجودلة+نقي الخد מורים מיתה במאסר; قبض خارج+قبض داخل+حمرة מורים עונש במאסר.","הדרך + סף יוצא + סף נכנס מורים מאסר ממושך, ולאחר מכן שחרור בזכות התערבות/השתדלות של אחד האנשים; קהלה + לבן מורים מחלה במאסר עם אפשרות החלמה ושחרור.","בענף חיבור / الاجتماع נוסח הדפוס עצמו שומר חלופה עריכתית בתוך סוגריים סביב סיבת העונש; סופו ברור: הוא נענש ואחר כך משתחרר.","כבוד נכנס + כבוד יוצא מורים שיישא בתשלום/קנס כלשהו וישוחרר.","לאחר מכן נלקחות נקודות H5 ו-H6: זוגי מורה עיכוב, יחיד מורה שחרור מהיר."],
+      "procedure":["שמור את התוספת תחת ייחוס נזהת אל־עקול ולא כחלק אוטומטי מן המסלול הראשי.","בצירופי הצורות אל תחליף זהויות או תנאים לפי סימטריה.","לזמן היציאה חשב רק את זוגיות נקודות H5+H6 כפי שנמסר."],
+      "preconditions":["תוספת מצוטטת מנזהת אל־עקול בדיני אסיר."], "questionIntents":["prisoner-combination-outcome","prisoner-release-timing"],
+      "methodStatus":"QUOTED_ALTERNATIVE_WITH_PRINTED_EDITORIAL_VARIANTS", "operationalRole":"REFERENCE_ONLY", "runtimeEligible":false,
+      "doNotInfer":["אין להכריע לצורך runtime בין נוסחי הסוגריים המודפסים وطرحت (لعله: خرجت).","אין להכריע לצורך runtime בין خشي على نفسه לבין הערת הדפוס (لعله: جنى جناية)."],
+      "sourceDiscrepancies":[],
+      "sourceVerification":{"printedBookPages":[274,275],"scanPdfPages":[276,277],"v57Checked":true,"printedScanChecked":true,"visualLineByLineChecked":true,"note":"All named-figure combinations were checked visually across the p274→p275 seam. The editor's parenthetical alternative readings are preserved as printed and not resolved."}, "verificationStatus":"VERIFIED"
+    },
+    {
+      "entryId":"gate12.prisoners.p275.multaqat-release-and-outcome",
+      "entryType":"quoted-prisoner-release-and-outcome-rule-set",
+      "bookPages":[275], "scanPdfPages":[277], "v57Anchors":["kashf-v57-draft.html#p275"],
+      "topic":"תוספת אל־מֻלְתַקַט פי עִלְם א־נֻקַט: יציאה, בריחה ואחרית האסיר",
+      "keywords":["אל־מלתקט","H1","H2","H3","H4","H5","H9","H10","H11","H12","H13","חזרה","בריחה","לבוש כבוד"],
+      "criticalFacts":["אם H13 חוזר ב-H3/H5/H9 והוא מזיק יוצא, וב-H10 צורה מיטיבה, יציאתו של האסיר היא בבחירתו.","H12 מיטיב ויוצא מורה יציאה מהירה, בטוב ובשלום.","אם אותה צורה שב-H2 וב-H10 חוזרת ב-H4, H3, H9 או H5 והיא מזיקה יוצאת, פותחים את המאסר והאסירים בורחים; אם היא ב-H11, אינם נמצאים.","אם הצורה ב-H12 מיטיבה, או ב-H2, או ב-H5, או ב-H11, המקור אומר שהאסיר לובש לבוש כבוד ונעשה עמו חסד.","מפיקים צורה מ-H12+H3 וצורה מ-H4+H1, ואז צורה משתי התוצאות: מזיקה מורה אחרית לרעה, מיטיבה מורה אחרית לטובה. המשפט נחתם בעמ׳ 276."],
+      "procedure":["שמור את ארבעת בתי החזרה H4/H3/H9/H5 במלואם.","שמור את H11 כחלופה עצמאית ברשימת H12/H2/H5/H11.","בצע שתי הפקות ביניים בלבד: H12+H3 ו-H4+H1; אחר כך הפק מהן את צורת ההכרעה."],
+      "branches":[{"condition":"malefic-outgoing-H13-repeat-in-H3-H5-H9-and-benefic-H10","outcome":"voluntary-release"},{"condition":"benefic-outgoing-H12","outcome":"quick-safe-release"},{"condition":"same-H2-H10-figure-repeats-in-H4-H3-H9-H5-and-is-malefic-outgoing","outcome":"prison-opened-and-escape"},{"condition":"same-figure-in-H11","outcome":"not-found"},{"condition":"final-derived-malefic","outcome":"bad-end"},{"condition":"final-derived-benefic","outcome":"good-end"}],
+      "preconditions":["תוספת מצוטטת מאל־מלתקט פי עלם א־נקט."], "questionIntents":["prisoner-voluntary-release","prisoner-escape","prisoner-honor","prisoner-final-outcome"],
+      "methodStatus":"QUOTED_ALTERNATIVE_WITH_V57_OMISSIONS", "operationalRole":"REFERENCE_ONLY", "runtimeEligible":false,
+      "doNotInfer":["אין להשמיט H5 מרשימת בתי החזרה.","אין להפוך את H11 לתנאי משלים של ׳שמחה וכבוד׳; במקור הוא חלופה ברשימת הבתים."],
+      "sourceDiscrepancies":["v57 משמיט H5 מרשימת המקומות שבהם אותה צורה של H2/H10 חוזרת לצורך פתיחת המאסר והבריחה.","v57 משנה את חלופת H11 במשפט H12/H2/H5/H11 לתנאי חדש של ׳ובאחד־עשר נראית שמחה וכבוד׳; נוסח זה אינו נמצא בסריקה המודפסת."],
+      "sourceVerification":{"printedBookPages":[275],"scanPdfPages":[277],"v57Checked":true,"printedScanChecked":true,"visualLineByLineChecked":true,"note":"Printed p275 was checked visually. H5 in the recurrence list and H11 as a standalone alternative are both source-clear; the H12+H3 and H4+H1 derivation chain is also source-clear."}, "verificationStatus":"REVIEW_REQUIRED"
+    },
+    {
+      "entryId":"gate12.book-end.p276.repetition-and-explicit-ending",
+      "entryType":"book-closing-note",
+      "bookPages":[276], "scanPdfPages":[278], "v57Anchors":["kashf-v57-draft.html#p276"],
+      "topic":"סיום גוף המקור: החזרה וסוף הספר המפורש",
+      "keywords":["חזרה","التكرار","سبب خروجه وعدمه","انتهى الكتاب","סיום הספר"],
+      "criticalFacts":["המקור אומר: التكرار يعلم سبب خروجه وعدمه — החזרה מלמדת את סיבת יציאתו ואת אי־יציאתו/העדרה.","המשפט המפורש החותם את גוף הספר הוא: انتهى الكتاب."],
+      "preconditions":["סיום תוספת אל־מלתקט והספר המודפס."], "questionIntents":["source-book-ending"],
+      "methodStatus":"SOURCE_CLOSING_TEXT_WITH_V57_EXPANSION", "operationalRole":"REFERENCE_ONLY", "runtimeEligible":false,
+      "doNotInfer":["אין להחליף את وعدمه בעיכוב בלי הערת תרגום מפורשת.","אין לייחס למקור נוסח דתי נוסף שאינו מודפס בשורת הסיום."],
+      "sourceDiscrepancies":["v57 מתרגם את وعدمه כ׳סיבת עיכובו, אם יש עיכוב׳ במקום לשמר את ניגוד היציאה/אי־היציאה.","לאחר ׳כאן מסתיים גוף הספר׳ v57 מוסיף ׳תם הספר, בעזרת האל׳; הסריקה המודפסת חותמת רק במילים انتهى الكتاب ואינה כוללת ׳בעזרת האל׳ בשורת הסיום."],
+      "sourceVerification":{"printedBookPages":[276],"scanPdfPages":[278],"v57Checked":true,"printedScanChecked":true,"visualLineByLineChecked":true,"note":"Printed p276 contains one closing sentence and the exact phrase انتهى الكتاب, followed by ornament. The ending was verified directly from the scan."}, "verificationStatus":"REVIEW_REQUIRED"
     }
   ],
   "v57CorrectionQueue": [
+    {"id":"B25-P273-PRISONER-POLARITY-SHIFT","entryId":"gate12.prisoners.p273-274.external-release-duration-and-fear","page":273,"status":"OPEN","summary":"Restore the printed polarity exactly: H16/H12 benefic incoming = long imprisonment; H16/H12 malefic outgoing + malefic witnesses + much Humra = bloodshed. v57 currently assigns long duration to malefic outgoing and bloodshed to malefic incoming."},
+    {"id":"B25-P275-MULTAQAT-H5-OMISSION","entryId":"gate12.prisoners.p275.multaqat-release-and-outcome","page":275,"status":"OPEN","summary":"Restore H5 in the printed H4/H3/H9/H5 recurrence list for the same H2/H10 figure in the prison-opening/escape branch."},
+    {"id":"B25-P275-H11-BLESSING-ALTERNATIVE","entryId":"gate12.prisoners.p275.multaqat-release-and-outcome","page":275,"status":"OPEN","summary":"Restore H11 as a standalone alternative in the printed H12/H2/H5/H11 robe-and-favor clause; remove the unsupported v57 condition 'ובאחד־עשר נראית שמחה וכבוד'."},
+    {"id":"B25-P276-BOOK-END-WORDING","entryId":"gate12.book-end.p276.repetition-and-explicit-ending","page":276,"status":"OPEN","summary":"Render سبب خروجه وعدمه، انتهى الكتاب source-faithfully: preserve exit versus non-exit/absence, and do not present 'בעזרת האל' as part of the printed closing sentence."},
     {"id":"B24-P263-JUDLA-FIGURE-ID","entryId":"gate11.friends.p263.friend-types-and-mutual-effect","page":263,"status":"OPEN","summary":"Resolve v57's קהלה against printed الجودلة in the H8 friends-of-thieves/bandits branch; the Hebrew helper instead says נלחם, so no identity is silently selected."},
     {"id":"B24-P267-HOPE-HOUSE-LIST","entryId":"gate11.hope.p267.hope-possession-livelihood","page":267,"status":"OPEN","summary":"Correct the hope-house list: printed source has H1,H2,H5,H13, while v57 has H1,H2,H5,H3,H12."},
     {"id":"B24-P269-ANKIS-FALSE-PROMISE-CLAUSE","entryId":"gate11.hope.p268-269.need-fulfilment-figures","page":269,"status":"OPEN","summary":"Restore the omitted false/untruthful-promise clause in the Shafal Ras/Ankis need-fulfilment branch before the no-good/no-evil conclusion."},
@@ -18696,13 +18788,15 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "nextFullSourcePage": null
     },
     "gate12EnemiesPrisoners": {
-      "pagesIndexed": [271],
-      "indexedThroughPage": 271,
-      "status": "SOURCE_INDEX_OPENED",
+      "pagesIndexed": [271, 272, 273, 274, 275, 276],
+      "indexedThroughPage": 276,
+      "status": "SOURCE_INDEX_COMPLETE_WITH_OPEN_REVIEW_ITEMS",
       "runtimeOperationalizationDeferred": true,
       "onePrimaryRoutePerQuestionIntent": true,
-      "chapterClosedAtPage": null,
-      "nextFullSourcePage": 272
+      "chapterClosedAtPage": 276,
+      "nextFullSourcePage": null,
+      "bookBodyEndedAtPage": 276,
+      "explicitSourceClosingPhrase": "انتهى الكتاب"
     }
   },
   "dhamirSelectionMap": {
