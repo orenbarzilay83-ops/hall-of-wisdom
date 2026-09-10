@@ -9,14 +9,14 @@
 - Repository: `orenbarzilay83-ops/hall-of-wisdom`
 - Authoritative branch: `main`
 - Working branch: `claude/app-cleanup-organization-mia9b2`
-- Latest indexed-content commit: `33bbe354d761b277f8e9a72ccfabd2db151403bd`
-- Last completed batch: `BATCH18_P213_220`
-- Book coverage: עמ׳ 21–220
-- Boundary capture: תפר עמ׳ 212–213 נלכד; דיני המנצח/המנוצח, העיר והמעגל נלכדו עד עמ׳ 220
-- Next full source page: עמ׳ 221 / עמ׳ סריקה 223
+- Latest indexed-content commit: `608fa03469b24ad9b6ca697126b6d234b8309653`
+- Last completed batch: `BATCH19_P221_228`
+- Book coverage: עמ׳ 21–228
+- Boundary capture: תפר עמ׳ 220–221 נלכד; פרק 7 נסגר ופרק 8 נפתח בעמ׳ 224
+- Next full source page: עמ׳ 229 / עמ׳ סריקה 231
 - Schema version: `2.1.0`
-- Records: 233
-- VERIFIED: 162
+- Records: 240
+- VERIFIED: 169
 - REVIEW_REQUIRED: 71
 - INDEXED: 0
 - UNRESOLVED: 0
@@ -29,11 +29,11 @@
 
 ## נקודת ההמשך
 
-Batch 18 הושלם מקומית ומכסה עמ׳ ספר 213–220 / עמ׳ סריקה 215–222.
+Batch 19 הושלם מקומית ומכסה עמ׳ ספר 221–228 / עמ׳ סריקה 223–230.
 
-המשך העבודה הוא Batch 19, החל מעמ׳ ספר 221 / עמ׳ סריקה 223.
+המשך העבודה הוא Batch 20, החל מעמ׳ ספר 229 / עמ׳ סריקה 231.
 
-שער 6, פרק 7 נמשך בדיני המנצח/המנוצח, העיר, המצור, המסחר והמעגל בעמ׳ 213–220. יש להתחיל מעמ׳ 221, בלי לאנדקס מחדש את כללי הפתיחה ובלי לדלג על שורה, טבלה, מספר, בית או תנאי.
+פרק 7 נסגר בעמ׳ 223; פרק 8 (גניבה והלוואה) נפתח בעמ׳ 224 ונמשך בעמ׳ 225–228. יש להתחיל מעמ׳ 229, בלי לאנדקס מחדש ובלי לדלג על שורה, טבלה, מספר, בית או תנאי.
 
 ## סדר האימות המחייב
 

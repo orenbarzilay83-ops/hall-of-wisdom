@@ -29,12 +29,12 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
   },
   "coverage": {
     "bookStartPage": 21,
-    "bookEndPage": 220,
+    "bookEndPage": 228,
     "scanPdfStartPage": 23,
-    "scanPdfEndPage": 222,
+    "scanPdfEndPage": 230,
     "boundaryContinuationBookPage": null,
     "boundaryContinuationScanPdfPage": null,
-    "status": "BATCH18_P213_220_INDEXED_CH7_CONTINUED",
+    "status": "BATCH19_P221_228_INDEXED_CH7_CLOSED_CH8_OPENED",
     "completedBatches": [
       "BATCH02_P54_67",
       "BATCH03_P68_97",
@@ -52,7 +52,8 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "BATCH15_P191_196",
       "BATCH16_P197_204",
       "BATCH17_P205_212",
-      "BATCH18_P213_220"
+      "BATCH18_P213_220",
+      "BATCH19_P221_228"
     ]
   },
   "records": [
@@ -16968,9 +16969,98 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "preconditions": ["שאלת מבוקש ושיטת המעגל."], "questionIntents": ["requested-object-attainment", "requested-object-strength"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
       "doNotInfer": ["אין להחליף את מעגל نصير الدين או את סדר הגלוי/נסתר."], "sourceDiscrepancies": [],
       "sourceVerification": {"printedBookPages": [220], "scanPdfPages": [222], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "The circular target, house-of-honor count and four attainment outcomes were checked."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house7.p221.hidden-request-and-year-rules",
+      "entryType": "hidden-request-and-year-rule-set",
+      "bookPages": [221], "scanPdfPages": [223], "v57Anchors": ["kashf-v57-draft.html#p221"],
+      "topic": "המבוקש הנסתר, יוקר וזול לאורך השנה וגשמי השנה",
+      "keywords": ["מבוקש נסתר", "H1", "נלחם", "יוקר", "זול", "גשם", "קהלה", "H4"],
+      "criticalFacts": ["מכים את צורת H1 עם נלחם וממשיכים עד גילוי המבוקש; בית מיטיב = השגה ובית מזיק = אי־השגה.", "תחילת השנה נידונית מ-H1/H5, אמצעה מ-H11/H15, סופה מ-H7/H16.", "צורות מים מורות על גשם; קהלה ב-H4 וחזרה מורה על גשמים מרובים; אוויר/אש ב-H4 מורים על ארבה, יוקר ומיעוט גשם."],
+      "procedure": ["חפש את המבוקש בגלוי ובנסתר לפי סדר ההכאות.", "לשנה בדוק את זוגות הבתים ואת יסודות המערך."],
+      "branches": [{"condition": "benefic-hidden-house", "outcome": "request-attained"}, {"condition": "malefic-hidden-house", "outcome": "request-fails"}, {"condition": "water-figures", "outcome": "rain"}],
+      "preconditions": ["שאלת מבוקש נסתר או תחזית שנתית."], "questionIntents": ["hidden-request-attainment", "year-rain", "year-price-level"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין להמציא שרשרת חיפוש מעבר לנוסח המקור."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [221], "scanPdfPages": [223], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Hidden search and yearly branches checked."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house7.p222.year-interpretation",
+      "entryType": "year-interpretation-rule-set",
+      "bookPages": [222], "scanPdfPages": [224], "v57Anchors": ["kashf-v57-draft.html#p222"],
+      "topic": "פירוש השנה: גשם, חום, רוחות, פוריות ויוקר",
+      "keywords": ["מים", "אש", "אוויר", "H4", "H10", "H11", "H15", "H16", "יוקר"],
+      "criticalFacts": ["ריבוי מים מורה על גשם ופוריות; אש על חום; אוויר על רוחות.", "H4 מיטיב וחזק מורה על זריעה וטוב; H10,H11,H15,H16 מוסיפים עדויות.", "ריבוי פנימיים מורה על יוקר; בנוסח אחר משווים נקודות אש+רוח למים+עפר."],
+      "procedure": ["ערוך מערך בראש השנה ובדוק יסודות, H4, H10,H11,H15,H16."],
+      "branches": [{"condition": "water-dominant", "outcome": "rain-and-fertility"}, {"condition": "fire-dominant", "outcome": "heat"}, {"condition": "air-dominant", "outcome": "winds"}],
+      "preconditions": ["שאלת פירוש שנה."], "questionIntents": ["year-weather", "year-agriculture", "year-price-level"], "methodStatus": "SOURCE_RULE_SET_WITH_ALTERNATE", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין למזג את שתי שיטות היוקר בלי לסמן נוסח חלופי."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [222], "scanPdfPages": [224], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Element and year-house branches checked."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house7.p223.price-goods-city",
+      "entryType": "price-goods-city-rule-set",
+      "bookPages": [223], "scanPdfPages": [225], "v57Anchors": ["kashf-v57-draft.html#p223"],
+      "topic": "יוקר וזול, סחורה, עיר ויישוב",
+      "keywords": ["סחורה", "H5", "H9", "H10", "H13", "H6", "H8", "עיר", "יישוב"],
+      "criticalFacts": ["חזרת H5 ב-H9/H10/H13 מורה רווחים; חזרה ב-H6/H8 מורה הפסד; חזרה ב-H18 מורה אובדן ממון.", "בעיר מוקפת מלחמה, ריבוי מיטיבות פותח; ריבוי מזיקות מאריך/מונע; ארבע היתדות פנימיות = יישוב, חיצוניות = חורבן, שתיים ושתיים = מצב מעורב."],
+      "procedure": ["בדוק את חזרת H5 ואת ארבע היתדות לפי השאלה."],
+      "branches": [{"condition": "H5-repeat-in-H9-H10-H13", "outcome": "profit"}, {"condition": "H5-repeat-in-H6-H8", "outcome": "loss"}, {"condition": "inward-stakes", "outcome": "inhabited"}, {"condition": "outward-stakes", "outcome": "ruined"}],
+      "preconditions": ["שאלת סחורה, עיר או יישוב."], "questionIntents": ["goods-price", "city-opening", "settlement-condition"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין לקצר את H18 או את ענף העיר בלי לשמר את המספרים."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [223], "scanPdfPages": [225], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "H5 recurrence, H18 and four-stake branches checked."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house8.p224.theft-core",
+      "entryType": "theft-core-house-rule-set",
+      "bookPages": [224], "scanPdfPages": [226], "v57Anchors": ["kashf-v57-draft.html#p224"],
+      "topic": "שער 8: דיני הגניבה — בעל הדבר, הגנב ומקום הגניבה",
+      "keywords": ["H1", "H2", "H4", "H7", "H8", "H10", "H12", "גניבה"],
+      "criticalFacts": ["H1 בעל הדבר; חזרת H7 ב-H1/H2/H3/H4/H5/H6/H8/H9/H10/H11/H12 מורה על קשר האדם לגניבה.", "H2 מתאר את הגניבה; H8 את המקום/מה שנפל ביד; H4 את מקום הגניבה; H10 מיטיב בתוך העיר ומזיק חיצוני מחוץ לעיר.", "H8 מיטיב מורה תפיסה; H8 מזיק מורה אי־תפיסה."],
+      "procedure": ["זהה את חזרת H7 ובית החזרה.", "בדוק H2,H8,H4,H10 להשלמת זהות, מקום ותוצאה."],
+      "branches": [{"condition": "H7-in-H3", "outcome": "thief"}, {"condition": "H7-in-H2", "outcome": "helper"}, {"condition": "benefic-H8", "outcome": "theft-recovered"}, {"condition": "malefic-H8", "outcome": "not-recovered"}],
+      "preconditions": ["שאלת גניבה."], "questionIntents": ["theft-identity", "theft-recovery", "theft-location"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין לקבוע זהות גנב מחזרת H7 בלבד בלי בית ההקשר."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [224], "scanPdfPages": [226], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Chapter opening, house roles and H7 recurrence checked."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house8.p225-226.theft-direction-place",
+      "entryType": "theft-direction-and-place-rule-set",
+      "bookPages": [225, 226], "scanPdfPages": [227, 228], "v57Anchors": ["kashf-v57-draft.html#p225", "kashf-v57-draft.html#p226"],
+      "topic": "כיוון הגניבה, תיאור הגנב ומקום הגניבה לפי היסוד",
+      "keywords": ["H4", "H7", "H10", "H13", "H14", "H5", "H6", "H8", "H12", "אש", "אוויר", "מים", "עפר"],
+      "criticalFacts": ["צורה מזרחית/מערבית/דרומית/צפונית ב-H4 נותנת כיוון; H10 מקום הגנב; H7 תיאור ואותיות שמו.", "H13 נעשה כבעל H1 ו-H14 כבעל H7; H4 אש = קרוב לאש, אוויר = מקום גבוה/תיבה, מים = באר/ים/מעיין, עפר = מקום נמוך/מחסן.", "H5 נותן תיאור, H6 חשודים, H8 מספר, H12 מקום הגניבה."],
+      "procedure": ["סווג H4 לכיוון ויסוד.", "בדוק H10/H7 ואת בתי התיאור H5/H6/H8/H12."],
+      "branches": [{"condition": "fire-H4", "outcome": "near-fire"}, {"condition": "air-H4", "outcome": "high-place"}, {"condition": "water-H4", "outcome": "near-water"}, {"condition": "earth-H4", "outcome": "low-storage-place"}],
+      "preconditions": ["שאלת מקום גניבה."], "questionIntents": ["theft-direction", "thief-description", "theft-location"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין להרחיב את רשימת המקומות מעבר ליסוד שנמצא בבית 4."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [225, 226], "scanPdfPages": [227, 228], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Directions, house roles and four-element place mapping checked across seam."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house8.p227.livestock-theft-return",
+      "entryType": "livestock-theft-return-rule-set",
+      "bookPages": [227], "scanPdfPages": [229], "v57Anchors": ["kashf-v57-draft.html#p227"],
+      "topic": "גניבת בהמות וחזרת בהמות",
+      "keywords": ["H1", "H2", "H4", "H6", "H12", "גמלים", "חמורים", "צאן", "עופות"],
+      "criticalFacts": ["מפיקים צורה מ-H6/H12 ומשווים לקבוצות גמלים/בהמות גדולות, חמורים, צאן ועופות.", "לחזרת סוסים/גמלים מפיקים H1/H12 ו-H4/H12; לחמורים/צאן H1/H6 ו-H4/H6; פנימי מורה חזרה וחיצוני לא."],
+      "procedure": ["זהה את סוג הבהמה מן הצורה המופקת.", "בצע את זוגות ההכאה המתאימים לסוג."],
+      "branches": [{"condition": "inward-return-result", "outcome": "animal-returns"}, {"condition": "outward-return-result", "outcome": "animal-does-not-return"}],
+      "preconditions": ["שאלת גניבת בהמה."], "questionIntents": ["livestock-type", "livestock-return"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין להעביר התאמות צורות מבעלי חיים אחרים ללא המקור."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [227], "scanPdfPages": [229], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Animal groups and return procedures checked."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house8.p228.surroundings-and-thief-addendum",
+      "entryType": "house-surroundings-and-thief-sign-rule-set",
+      "bookPages": [228], "scanPdfPages": [230], "v57Anchors": ["kashf-v57-draft.html#p228"],
+      "topic": "סביבת הבית, מסגד, טחנה ותוספת תיאור הגנב",
+      "keywords": ["H1", "H2", "H5", "H7", "H10", "H12", "מסגד", "טחנה", "בית נעול"],
+      "criticalFacts": ["H1/H5 קרובים לבית השואל; H10/H12 לבית הנשאל; H10 לימין ו-H12 לשמאל. נשוא ראש ב-H7 מורה על מסגד לפני הסמטה; סף יוצא ב-H2 על מדרגות מימין.", "אוויר פתוח באמהות מורה על טחנה; הטבעת המערך בעקלה, לפי דעת אל־המדאני, מורה על בית נעול.", "התוספת 'מן غير الكتاب' לתיאור הגנב נשמרת בנפרד ולא ממוזגת למסלול העיקרי."],
+      "procedure": ["בדוק את ארבעת בתי הסביבה ואת הצורות המצוינות.", "הפרד את התוספת החיצונית מן המסלול הראשי."],
+      "branches": [{"condition": "Ahyan-in-H7", "outcome": "mosque-before-alley"}, {"condition": "outward-threshold-in-H2", "outcome": "stairs-right"}, {"condition": "open-air-mothers", "outcome": "mill-near-home"}],
+      "preconditions": ["שאלת סביבת בית או סימן גנב."], "questionIntents": ["theft-surroundings", "thief-sign"], "methodStatus": "SOURCE_RULE_SET_WITH_EXTERNAL_ADDENDUM", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין למזג את התוספת החיצונית עם המסלול העיקרי."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [228], "scanPdfPages": [230], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Directions and external-addendum boundary checked."}, "verificationStatus": "VERIFIED"
     }
-  ],
-  "v57CorrectionQueue": [
   ],
   "v57CorrectionQueue": [
   ],
@@ -18215,13 +18305,25 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         217,
         218,
         219,
-        220
+        220,
+        221,
+        222,
+        223
       ],
-      "indexedThroughPage": 220,
-      "status": "SOURCE_INDEX_CONTINUING_WITH_OPEN_REVIEW_ITEMS",
+      "indexedThroughPage": 223,
+      "status": "SOURCE_INDEX_COMPLETE_WITH_OPEN_REVIEW_ITEMS",
       "runtimeOperationalizationDeferred": true,
       "onePrimaryRoutePerQuestionIntent": true,
-      "nextFullSourcePage": 221
+      "chapterClosedAtPage": 223,
+      "nextFullSourcePage": 224
+    },
+    "gate8Theft": {
+      "pagesIndexed": [224, 225, 226, 227, 228],
+      "indexedThroughPage": 228,
+      "status": "SOURCE_INDEX_CONTINUING",
+      "runtimeOperationalizationDeferred": true,
+      "onePrimaryRoutePerQuestionIntent": true,
+      "nextFullSourcePage": 229
     }
   },
   "dhamirSelectionMap": {
