@@ -29,12 +29,12 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
   },
   "coverage": {
     "bookStartPage": 21,
-    "bookEndPage": 212,
+    "bookEndPage": 220,
     "scanPdfStartPage": 23,
-    "scanPdfEndPage": 214,
+    "scanPdfEndPage": 222,
     "boundaryContinuationBookPage": null,
     "boundaryContinuationScanPdfPage": null,
-    "status": "BATCH17_P205_212_INDEXED_CH7_CONTINUED",
+    "status": "BATCH18_P213_220_INDEXED_CH7_CONTINUED",
     "completedBatches": [
       "BATCH02_P54_67",
       "BATCH03_P68_97",
@@ -51,7 +51,8 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "BATCH14_P185_191",
       "BATCH15_P191_196",
       "BATCH16_P197_204",
-      "BATCH17_P205_212"
+      "BATCH17_P205_212",
+      "BATCH18_P213_220"
     ]
   },
   "records": [
@@ -16889,7 +16890,87 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "preconditions": ["שאלת נישואין או מריבה זוגית."], "questionIntents": ["marriage-success", "marriage-conflict", "woman-benefit"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
       "doNotInfer": ["אין להפוך את העדות והרוב למנוע כללי מחוץ לשיטת הנישואין."], "sourceDiscrepancies": [],
       "sourceVerification": {"printedBookPages": [211, 212], "scanPdfPages": [213, 214], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "H5/H11 witness clause and H7 recurrence checked across seam."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house7.p213-214.winner-loser-core",
+      "entryType": "winner-loser-rule-set",
+      "bookPages": [213, 214], "scanPdfPages": [215, 216], "v57Anchors": ["kashf-v57-draft.html#p213", "kashf-v57-draft.html#p214"],
+      "topic": "המנצח והמנוצח, הצדדים והפחד מן היריב",
+      "keywords": ["H1", "H7", "H8", "H12", "H13", "H14", "H15", "H16", "מנצח", "מבוקש"],
+      "criticalFacts": ["בונים H13 והמאזן לצד השואל ו-H14 לצד הנשאל; אם יש שוויון, צד השואל כולל H1,H12,H3,H4,H9,H10 והצד הנשאל H5,H6,H7,H8,H13.", "בשביעי, לבן/אדום (לפי המקור) מורים על גבורת המבקש; שאר הצורות בשביעי מורות על כניעת המבוקש.", "ב-H8: ממון נכנס או סף נכנס מורים פחד על השואל; ממון יוצא מורה על כניעת היריב; כבוד נכנס/יוצא ובר הלחי מורים סכנה עם אחרית טובה."],
+      "procedure": ["השלם את המערך, השווה את שני הצדדים, ובשוויון בצע את חלוקת הבתים המקורית.", "בדוק H8 ואת העדים לפני מסקנה."],
+      "branches": [{"condition": "more-open-figures-on-seeker-side", "outcome": "seeker-wins"}, {"condition": "money-in-or-threshold-in-H8", "outcome": "seeker-fears"}, {"condition": "money-out-in-H8", "outcome": "opponent-submits"}],
+      "preconditions": ["שאלת תחרות/ניצחון."], "questionIntents": ["winner-loser", "opponent-outcome"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין להפוך את חלוקת השוויון להצבעת רוב כללית מחוץ לשאלה זו."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [213, 214], "scanPdfPages": [215, 216], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "House partitions and H8 outcomes checked across seam."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house7.p214-215.enemy-friends-and-two-armies",
+      "entryType": "conflict-allies-and-two-board-rule-set",
+      "bookPages": [214, 215], "scanPdfPages": [216, 217], "v57Anchors": ["kashf-v57-draft.html#p214", "kashf-v57-draft.html#p215"],
+      "topic": "הערכת האויב, האחים, החברים ושני לוחות",
+      "keywords": ["H12", "H13", "H14", "H15", "H16", "H3", "H5", "H7", "קהלה", "צבאות"],
+      "criticalFacts": ["אם H1 מביט ל-H12 השאלה על אויב; צורה מימית מיטיבה ב-H12 מורה על אויב חזק; H13 מיטיב מחזק את המבקש, H14 מיטיב את המבוקש.", "H15/H16 מיטיבים מורים פיוס; H3/H5 וחזרת היחס ל-H1/H12 מגדירים אחים, בית וחברים כבעד/נגד/נייטרליים.", "בשני לוחות: יותר חזרת קהלה מורה על קיבוץ; רוב צורות עליונות זוגיות מורה על גובר; משווים גם כבוד יוצא ונשוא ראש ובית עשירי."],
+      "procedure": ["בדוק את היחסים בין H1,H12,H13,H14,H15,H16.", "בשני לוחות בצע את ההשוואה בכל לוח בנפרד."],
+      "branches": [{"condition": "H13-benefic", "outcome": "seeker-stronger"}, {"condition": "H14-benefic", "outcome": "asked-stronger"}, {"condition": "H15-H16-benefic", "outcome": "reconciliation"}, {"condition": "more-assembly-or-paired-upper-lines", "outcome": "army-wins"}],
+      "preconditions": ["שאלת יריבים, בעלי ברית או שני מחנות."], "questionIntents": ["winner-loser", "allies", "two-armies"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין לערבב לוח אחד עם השני או להפעיל את שיטת שני הלוחות אוטומטית."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [214, 215], "scanPdfPages": [216, 217], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Witness houses, relations and two-board branches checked."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house7.p216-217.war-city-siege",
+      "entryType": "war-city-siege-rule-set",
+      "bookPages": [216, 217], "scanPdfPages": [218, 219], "v57Anchors": ["kashf-v57-draft.html#p216", "kashf-v57-draft.html#p217"],
+      "topic": "מלחמה, פתיחת עיר והסרת מצור",
+      "keywords": ["מלחמה", "עיר", "מצור", "ארבע יתדות", "מאדים", "שבתאי", "פיוס"],
+      "criticalFacts": ["צורה פנימית בבית הראשון מורה לא לצאת למלחמה; צורה חיצונית מורה על חולשת האויבים ויציאה לניצחון.", "ארבע היתדות מורות על מבצרים: מזיקות → העיר נפתחת; מיטיבות → אינה נפתחת; מעורבות → פתיחה בפיוס.", "במצור, צורות מיטיבות המורות יציאה מסירותו במהרה; צורות מזיקות מאריכות אותו. מאדים ביתדות מורה פתיחה בחרב ושבתאי בתחבולה."],
+      "procedure": ["בדוק H1 ואת ארבע היתדות.", "בדוק את מצב העיר, הירח, ראש העיר ומזלו, ואת עדות הכוכבים."],
+      "branches": [{"condition": "internal-H1", "outcome": "do-not-go-to-war"}, {"condition": "external-H1", "outcome": "go-to-war"}, {"condition": "malefic-stakes", "outcome": "city-opens"}, {"condition": "mixed-stakes", "outcome": "opens-by-reconciliation"}],
+      "preconditions": ["שאלת מלחמה/עיר/מצור."], "questionIntents": ["war-outcome", "city-capture", "siege-lifting"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין להסיק אופן פתיחה בלי לבדוק את מאדים/שבתאי והיתדות."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [216, 217], "scanPdfPages": [218, 219], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "War, city and siege conditions checked across seam."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house7.p218.trade-price-and-circular-seeker",
+      "entryType": "trade-price-and-circular-seeker-rule-set",
+      "bookPages": [218], "scanPdfPages": [220], "v57Anchors": ["kashf-v57-draft.html#p218"],
+      "topic": "יוקר וזול, קנייה ומכירה ומבקש במעגל",
+      "keywords": ["יוקר", "זול", "H2", "H5", "H10", "H11", "מכירה", "קנייה", "מעגל"],
+      "criticalFacts": ["עושים H2,H5,H10,H11 לאמהות; משווים אש+אוויר מול מים+עפר: הרוב הראשון מורה יוקר והשני זול.", "בקנייה/מכירה בודקים H1,H4,H2,H7,H11,H15,H16; H1/H2 לקונה, H8/H7 למוכר, H10 למתווך ו-H15 לאחרית.", "במעגל, לכל צורה ב-H1 סופרים מבית כבודה עד H1 ומפילים לפי סדר השיבוץ; נחיתה בבתים טובים מחזקת את המבקש."],
+      "procedure": ["בצע את שתי קבוצות היסודות.", "במסחר קבע את בתי הקונה/מוכר/מתווך/אחרית.", "במעגל בצע ספירה מבית הכבוד והפלת המספר."],
+      "branches": [{"condition": "fire-air-greater", "outcome": "high-prices"}, {"condition": "water-earth-greater", "outcome": "low-prices"}, {"condition": "mostly-inward-benefics-in-trade-houses", "outcome": "easy-sale"}, {"condition": "number-in-benefic-house", "outcome": "strong-seeker"}],
+      "preconditions": ["שאלת שוק/מסחר או מבקש במעגל."], "questionIntents": ["price-level", "buy-sell", "seeker-strength-circular"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין להחליף את ארבעת בתי האמהות או את בתי התפקידים במסחר."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [218], "scanPdfPages": [220], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "House lists and element comparison checked."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house7.p219.circular-examples",
+      "entryType": "circular-worked-examples",
+      "bookPages": [219], "scanPdfPages": [221], "v57Anchors": ["kashf-v57-draft.html#p219"],
+      "topic": "דוגמאות מעגליות בשפל ראש ובכבוד נכנס",
+      "keywords": ["שפל ראש", "נלחם", "כבוד יוצא", "כבוד נכנס", "סף יוצא", "H8", "H12"],
+      "criticalFacts": ["בדוגמת שפל ראש ב-H1 ובית כבודו H8, הספירה נותנת 10 ונוחתת בבית הכבוד והשלטון; המבקש מקבל כבוד, מעמד ותוספת.", "הכאת שפל ראש עם נלחם נותנת כבוד יוצא ומחזקת את בקשת הממון.", "בדוגמת כבוד נכנס ב-H1 ובית כבודו H12, הספירה נותנת 6; הכאתו עם נלחם נותנת סף יוצא, תקוות כבוד נכנס בבית 11."],
+      "procedure": ["שחזר את ספירת בית הכבוד ואת הפלת המספר.", "שחזר את ההכאה של הצורה עם בעל בית H1."],
+      "branches": [{"condition": "number-in-honor-house", "outcome": "honor-and-money"}, {"condition": "derived-threshold-in-H11", "outcome": "hope-of-honor"}],
+      "preconditions": ["שאלת מבקש במעגל; צורת H1 ידועה."], "questionIntents": ["seeker-strength-circular", "money-request-circular"], "methodStatus": "SOURCE_WORKED_EXAMPLE", "operationalRole": "REFERENCE_ONLY", "runtimeEligible": false,
+      "doNotInfer": ["אין להפוך את הדוגמאות לכלל כללי בלי לבצע את הספירה המקורית."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [219], "scanPdfPages": [221], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Both worked examples and their numbers were checked visually."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house7.p220.requested-object-circular-rule",
+      "entryType": "requested-object-circular-rule-set",
+      "bookPages": [220], "scanPdfPages": [222], "v57Anchors": ["kashf-v57-draft.html#p220"],
+      "topic": "המבוקש במעגל: כוחו והשגתו",
+      "keywords": ["מבוקש", "סיבוב نصير الدين", "גלוי", "נסתר", "H1", "H7", "פנימי", "חיצוני"],
+      "criticalFacts": ["מבוקשו של الشكل ב-H1 הוא השביעי שלו במעגל نصير الدين; אם המבוקש נמצא גלוי/נסתר, סופרים מבית כבודו עד מקומו.", "הגעה לבית טוב מורה על מזל וכוח; בית נחות מורה על חוסר כוח.", "בהכאת המבוקש עם בעל הבית: סעד פנימי = השגה מהירה; נחס פנימי = השגה בקושי; נחס חיצוני = לא יושג; סעד חיצוני = המבקש עוזב מרצונו."],
+      "procedure": ["זהה את המבוקש השביעי במעגל.", "בדוק אם הוא גלוי או נסתר, ספור מבית כבודו, והכה עם בעל הבית."],
+      "branches": [{"condition": "benefic-inward", "outcome": "quick-attainment"}, {"condition": "malefic-inward", "outcome": "difficult-attainment"}, {"condition": "malefic-outward", "outcome": "not-attained"}, {"condition": "benefic-outward", "outcome": "querent-abandons"}],
+      "preconditions": ["שאלת מבוקש ושיטת המעגל."], "questionIntents": ["requested-object-attainment", "requested-object-strength"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין להחליף את מעגל نصير الدين או את סדר הגלוי/נסתר."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [220], "scanPdfPages": [222], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "The circular target, house-of-honor count and four attainment outcomes were checked."}, "verificationStatus": "VERIFIED"
     }
+  ],
+  "v57CorrectionQueue": [
   ],
   "v57CorrectionQueue": [
   ],
@@ -18126,13 +18207,21 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         209,
         210,
         211,
-        212
+        212,
+        213,
+        214,
+        215,
+        216,
+        217,
+        218,
+        219,
+        220
       ],
-      "indexedThroughPage": 212,
+      "indexedThroughPage": 220,
       "status": "SOURCE_INDEX_CONTINUING_WITH_OPEN_REVIEW_ITEMS",
       "runtimeOperationalizationDeferred": true,
       "onePrimaryRoutePerQuestionIntent": true,
-      "nextFullSourcePage": 213
+      "nextFullSourcePage": 221
     }
   },
   "dhamirSelectionMap": {
