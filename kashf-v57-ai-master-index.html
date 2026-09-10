@@ -29,12 +29,12 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
   },
   "coverage": {
     "bookStartPage": 21,
-    "bookEndPage": 252,
+    "bookEndPage": 262,
     "scanPdfStartPage": 23,
-    "scanPdfEndPage": 254,
+    "scanPdfEndPage": 264,
     "boundaryContinuationBookPage": null,
     "boundaryContinuationScanPdfPage": null,
-    "status": "BATCH22_P245_252_INDEXED_CH9_CONTINUED",
+    "status": "BATCH23_P253_262_INDEXED_CH9_CLOSED_CH10_CONTINUED",
     "completedBatches": [
       "BATCH02_P54_67",
       "BATCH03_P68_97",
@@ -56,7 +56,8 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "BATCH19_P221_228",
       "BATCH20_P229_236",
       "BATCH21_P237_244",
-      "BATCH22_P245_252"
+      "BATCH22_P245_252",
+      "BATCH23_P253_262"
     ]
   },
   "records": [
@@ -17216,9 +17217,90 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "preconditions": ["שאלת הגעת נעדר, שובו, מפגש, מקום או מרחק."], "questionIntents": ["absent-return", "absent-meeting", "fugitive-location", "arrival-timing"], "methodStatus": "SOURCE_RULE_SET_WITH_ADDED_BOOKLET_MATERIAL", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
       "doNotInfer": ["אין לתקן את הסתירה הפנימית בנוסח H16 קרוב/רחוק; אין להפעיל אוטומטית את כלל הרוב או את מבחן השארית בלי תיעוד מקור מלא."], "sourceDiscrepancies": ["בעמ׳ 251 v57 מתאר את חזרת H5/H3/H9 ב-H6/H12 כ'מוכה באסון/בצרה/נגוע בפורענות', בעוד הסריקה מציגה 'منكوب' (מנוקב/פגוע או מוכה); התרגום והניסוח דורשים הכרעה מול המקור."],
       "sourceVerification": {"printedBookPages": [251, 252], "scanPdfPages": [253, 254], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Return, meeting, location, remainder and al-Multaqat additions checked against enlarged scan; wording discrepancy retained."}, "verificationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "entryId": "gate9.travel.p253.zanati-absent-and-religion",
+      "entryType": "absent-person-and-religion-rule-set",
+      "bookPages": [253], "scanPdfPages": [255], "v57Anchors": [],
+      "topic": "הנעדר לפי הזנאטי; דת וצדקות",
+      "keywords": ["H1", "H3", "H5", "H7", "H9", "H10", "H13", "H14", "H15", "H16", "זנאטי", "נעדר", "דת", "צדקות"],
+      "criticalFacts": ["המשך עמ׳ 252 קובע שאיכות הפגישה נבחנת גם בחזרת H16 בבית רע או טוב.", "בשיטת הזנאטי עושים את H13,H14,H15 כאמהות ומולידים מהן מערך שלם לבירור מצב הנעדר ובואו.", "עדי מצב הנעדר הם H1,H3,H5,H7,H9,H10,H16; כבוד יוצא, נשוא ראש (החייאן) ואדום מורים שאין לחשוש לו ושהנעדר חי וטוב; סף יוצא וסוהר מורים להפך; נלחם ולבן מורים על ידיעה רעה אך שהוא עדיין קיים.", "בדת וצדקות, מזיק ב-H3 וב-H9 מורה על מיעוט דת; מיטיב שם מורה על דת ויראת אלוהים."],
+      "procedure": ["סיים תחילה את כלל H16 שנפתח בעמ׳ 252.", "לשיטת הזנאטי, בנה מערך חדש משלושת הבתים הנוספים ורק בו בחן את רשימת העדים."],
+      "branches": [{"condition":"zanati-witnesses-with-outgoing-honor-or-hayyan-or-red","outcome":"absent-alive-and-well"},{"condition":"zanati-witnesses-with-outgoing-threshold-or-prison","outcome":"opposite-adverse-judgment"},{"condition":"H3-and-H9-malefic","outcome":"little-religion"},{"condition":"H3-and-H9-benefic","outcome":"religious-and-God-fearing"}],
+      "preconditions": ["שאלת נעדר בשיטת הזנאטי או שאלת דת וצדקות."], "questionIntents": ["absent-person-status-zanati", "religion-and-righteousness"], "methodStatus": "SOURCE_RULE_SET_MISSING_FROM_V57", "operationalRole": "REFERENCE_ONLY", "runtimeEligible": false,
+      "doNotInfer": ["אין להפעיל את שיטת הזנאטי כמסלול נוסף במקביל למסלולי הנעדר האחרים; אין להשלים את העמוד החסר ב-v57 בשקט."], "sourceDiscrepancies": ["כל עמ׳ 253 חסר בקובץ v57 הנוכחי, כולל המשך H16, שיטת הזנאטי ודין הדת והצדקות."],
+      "sourceVerification": {"printedBookPages": [253], "scanPdfPages": [255], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Entire printed page 253 was visually verified; v57 has no p253 anchor or content."}, "verificationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "entryId": "gate9.travel.p254.lineage-profession-dream",
+      "entryType": "lineage-profession-dream-rule-set",
+      "bookPages": [254], "scanPdfPages": [256], "v57Anchors": ["kashf-v57-draft.html#p254"],
+      "topic": "ייחוס, מלאכה וחלום",
+      "keywords": ["ייחוס", "מלאכה", "חלום", "H9", "H10", "H11", "שבתאי", "צדק", "מאדים", "שמש", "נוגה", "כוכב", "ירח"],
+      "criticalFacts": ["שורש הייחוס נבחן בהליכת נקודת המאזן אל המאזן; המקור עצמו מציין שהניסוח קצר.", "מיטיב ב-H10 וב-H11 מורה על מלאכה קלה יחסית; סוג המלאכה נקבע לפי הכוכב/צורה ב-H9.", "מפת המלאכות: שבתאי חקלאות; צדק לימודים; מאדים רפואה ורפואת בהמות; שמש הנדסה; נוגה דברי ימים ולחנים; عطارد כישוף/غرائم/אצטגנינות; ירח ענייני עניים וצדיקים; ראש התלי דתות וידע נסתר; זנב התלי בורות וקלקול.", "חלום נבחן מ-H9, מטיב/מזיק וממקום מעברו."],
+      "procedure": ["הפרד בין ייחוס, מלאכה וחלום.", "במלאכה קרא את H10/H11 לתנאי הטרחה ואת H9 לסוג המלאכה."],
+      "branches": [{"condition":"benefic-H9-dream","outcome":"good-dream"},{"condition":"malefic-H9-dream","outcome":"adverse-dream"}],
+      "preconditions": ["שאלת ייחוס, מלאכה או חלום."], "questionIntents": ["lineage-origin", "profession-traits", "dream-judgment"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין להרחיב את כלל הייחוס הקצר; אין להמיר את غرائم למונח מקצועי סופי בלי בדיקת מונחים נוספת."], "sourceDiscrepancies": ["המונח הערבי الغرايم/الغرائم במלאכת عطارد מתורגם ב-v57 כ'נפלאות'; המשמעות הטכנית המדויקת טרם אושרה ממקור נוסף."],
+      "sourceVerification": {"printedBookPages": [254], "scanPdfPages": [256], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Lineage, profession table and dream rule checked against printed Arabic; rare عطارد term preserved in Arabic pending terminology review."}, "verificationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "entryId": "gate9.travel.p255.promise-fulfilment",
+      "entryType": "promise-rule-set",
+      "bookPages": [255], "scanPdfPages": [257], "v57Anchors": ["kashf-v57-draft.html#p255"],
+      "topic": "דין הבטחה — אמת, קיום והפרה",
+      "keywords": ["הבטחה", "H1", "H2", "H3", "H8", "H9", "H10", "H11", "H15", "דרך", "לבן", "סוהר"],
+      "criticalFacts": ["לפי נزهת אל־עقول בוחנים H1,H3,H8,H9,H11,H15 ואת מזיגת הצורות: אמתיות/נכנסות/מיטיבות מורות על הבטחה אמתית וטובה; מזיקות ושקריות על אי־אמת ואי־השלמה.", "דרך בתחילת ההכאה מורה על ריבוי הבטחות ודברים בטלים; לבן מורה קיום לאחר סחבת; סוהר מורה הבטחה אמתית שעשויה להתקיים אך בעיכוב.", "לפי אל־מֻלתקַט בוחנים H2 ו-H9 לצורה מתהפכת בעלת שני גופים; מזיקים ב-H9/H3/H10 מורים על הפרה ומיטיבים על קיום."],
+      "procedure": ["בחר את אחת משתי המסורות לפי הכוונה והמקור, בלי לצרף אותן להצבעה.", "בשיטת נزهת אל־עقول בדוק את כל ששת הבתים והמזיגה; בשיטת אל־מֻלתקַט בדוק H2/H9 ועדויות H3/H10."],
+      "branches": [{"condition":"white-at-opening","outcome":"promise-after-delay"},{"condition":"prison","outcome":"true-promise-possibly-delayed"},{"condition":"malefics-H9-H3-H10","outcome":"promise-broken"},{"condition":"benefics-H9-H3-H10","outcome":"promise-fulfilled"}],
+      "preconditions": ["שאלה אם הבטחה אמתית או תתקיים."], "questionIntents": ["promise-truth", "promise-fulfilment"], "methodStatus": "QUOTED_SOURCE_METHODS", "operationalRole": "REFERENCE_ONLY", "runtimeEligible": false,
+      "doNotInfer": ["אין למזג את שתי השיטות או לבצע רוב ביניהן; אין להשמיט את ענף לבן המופיע בסריקה."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [255], "scanPdfPages": [257], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Promise branches including the white-figure delay clause were visually confirmed."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate10.authority.p256-257.honor-office-mother-rule",
+      "entryType": "authority-and-office-rule-set",
+      "bookPages": [256, 257], "scanPdfPages": [258, 259], "v57Anchors": ["kashf-v57-draft.html#p256", "kashf-v57-draft.html#p257"],
+      "topic": "פתיחת שער 10: כבוד, שררה, קיום מינוי, דין האם והמלכות",
+      "keywords": ["שער 10", "כבוד", "שררה", "מינוי", "מלכות", "H1", "H4", "H7", "H10", "H11", "H15"],
+      "criticalFacts": ["צורות השמש בבית הכבוד מורות כוח ומעלה; צדק/נוגה טוב ושלמות; שבתאי חוסר תועלת וקדרות.", "קיום מינוי נבחן מצורה המולדת מ-H1+H10: מאורות או שני המיטיבים מורים קיום.", "דין האם נבדק מטוב/רע בבית הרלוונטי, לבן/דרך ביתדות ובסמוכים להם, ובהבחנת לילה מול יום וצורות נוגה.", "דין השלטון מופק מ-H7+H10; לקיום מלכות עושים את ארבעת היתדות כאמהות ומשלימים עד H16, ואז בוחנים H1,H4,H10 והעד."],
+      "procedure": ["הפרד בין כבוד, קיום מינוי, דין האם, שלטון וקיום מלכות.", "אל תעביר כלל של בית אחד לכוונה אחרת בלי מקור מפורש."],
+      "branches": [{"condition":"malefic-H4-in-kingship-board","outcome":"near-loss-loss-of-kingship"},{"condition":"malefic-H15-with-malefic-witness","outcome":"death"},{"condition":"malefic-H10-and-H11","outcome":"ruler-descends-from-rank"}],
+      "preconditions": ["שאלת כבוד, מינוי, אם, שלטון או מלכות."], "questionIntents": ["honor-and-rank", "office-duration", "mother-condition", "government-quality", "kingship-continuity"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין לפרש את 'דין האם' כדין שלטון; הסריקה מדפיסה במפורש أحكام الأم."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [256, 257], "scanPdfPages": [258, 259], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Gate 10 heading, mother clause and kingship branches verified against scan."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate10.authority.p258-260.dismissal-and-appointment",
+      "entryType": "dismissal-appointment-rule-set",
+      "bookPages": [258, 259, 260], "scanPdfPages": [260, 261, 262], "v57Anchors": ["kashf-v57-draft.html#p258", "kashf-v57-draft.html#p259", "kashf-v57-draft.html#p260"],
+      "topic": "הדחה, חזרה למינוי, בקשת מינוי ויחס העם",
+      "keywords": ["הדחה", "מינוי", "H1", "H2", "H4", "H7", "H9", "H10", "H11", "H15", "נקי הלחי"],
+      "criticalFacts": ["שליט מודח חוזר כאשר צורות נכנסות מתחברות ל-H10/H11/H15; צורות יוצאות שם מורות שאין חזרה; אדום חוזר מורה שפיכות דמים.", "בנزهת אל־עقول שפל ראש, ממון יוצא, סף יוצא, נקי הלחי או לבן ב-H10 מורים הדחה; כבוד יוצא, ממון נכנס, דרך או קהלה מורים מינוי.", "במשך המינוי, H1/H10 קבועים מורים המשך ומתהפכים מורים הדחה; H11 מיטיב מורה אהבת העם ומזיק מורה שנאתו.", "הסריקה קובעת: מיטיב ב-H9 מורה צדק בדינים, מזיק ב-H9 מורה עוול; v57 הופך את שני המצבים לעוול."],
+      "procedure": ["הפרד בין חזרת מודח, פיטורין, בקשת מינוי, משך המינוי ויחס העם.", "ב-H9 השתמש בהבחנת מיטיב/מזיק של הסריקה בלבד לצורך תיעוד, והשאר runtime מושבת עד תיקון v57."],
+      "branches": [{"condition":"incoming-connected-H10-H11-H15","outcome":"dismissed-ruler-returns"},{"condition":"outgoing-H10-H11-H15","outcome":"no-return"},{"condition":"fixed-H1-and-H10","outcome":"office-continues"},{"condition":"turning-H1-and-H10","outcome":"dismissal"},{"condition":"benefic-H9","outcome":"just-judgments"},{"condition":"malefic-H9","outcome":"unjust-judgments"}],
+      "preconditions": ["שאלת הדחה, חזרה, קבלת מינוי או משכו."], "questionIntents": ["return-to-office", "dismissal-risk", "appointment-request", "office-duration", "public-support"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין לקבל את ניסוח v57 שלפיו גם H9 מיטיב וגם H9 מזיק מורים עוול; אין ליישב לפי סימטריה אלא לפי השורה המודפסת."], "sourceDiscrepancies": ["בעמ׳ 260 הסריקה אומרת H9 מיטיב = צדק בדינים ו-H9 מזיק = עוול; v57 אומר שבשני המצבים הוא נוטה לעוול."],
+      "sourceVerification": {"printedBookPages": [258, 259, 260], "scanPdfPages": [260, 261, 262], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Dismissal figures, clean-cheek token and H9 justice/injustice polarity re-read from enlarged scan."}, "verificationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "entryId": "gate10.authority.p260-262.ruler-state-by-H10",
+      "entryType": "ruler-house-transit-profile",
+      "bookPages": [260, 261, 262], "scanPdfPages": [262, 263, 264], "v57Anchors": ["kashf-v57-draft.html#p260", "kashf-v57-draft.html#p261", "kashf-v57-draft.html#p262"],
+      "topic": "מצב השליט לפי מקום הבית העשירי; חשש ממתנגד",
+      "keywords": ["H10", "שליט", "מלך", "מלכות", "נתינים", "אויב", "H4", "H8", "H11", "H12"],
+      "criticalFacts": ["מעבר H10 דרך H1–H12 משמש פרופיל למצבי כוח, ממון, צדק, נכסים, ילדים, חולשה, מלחמות, פחד, דת, עוצמה, אהדת העם והתדרדרות המלכות.", "H10 ב-H11 מורה ריבוי ממון, תועלת ואהדת הנתינים; H10 ב-H12 מורה קלקול המלכות, חולשה, בזבוז וצער.", "מלך החושש מאדם חיצוני נבדק בצורות השמש והירח וביתדות; H10 מיטיב/קבוע מחזק, מתהפך מעורר חשש, H4 מזיק מורה יציאת אויב, חזרת צורת H4 ב-H8 מורה מות האויב, ו-H10 מזיק לקיחת השלטון."],
+      "procedure": ["עקוב אחר הופעת צורת H10 בכל אחד מהבתים המפורטים בלי לדלג על בית מעבר.", "בשאלת אויב חיצוני הפרד בין כוח המלך, כוח האויב ומצב השלטון."],
+      "branches": [{"condition":"H10-in-H11","outcome":"wealth-helpfulness-and-popular-support"},{"condition":"H10-in-H12","outcome":"corrupted-weak-kingship"},{"condition":"H4-figure-repeats-in-H8","outcome":"enemy-dies"},{"condition":"malefic-H10","outcome":"rule-taken-away"}],
+      "preconditions": ["שאלת מצב שליט או חשש מאויב חיצוני."], "questionIntents": ["ruler-condition", "kingship-strength", "external-opponent-risk"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין להפוך את פרופיל המעברים לציון ממוצע; כל בית הוא ענף נפרד."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [260, 261, 262], "scanPdfPages": [262, 263, 264], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "H10 transit profile and external-opponent rule checked through the p262 closing line."}, "verificationStatus": "VERIFIED"
     }
   ],
   "v57CorrectionQueue": [
+    {"id":"B23-P253-WHOLE-PAGE-MISSING","entryId":"gate9.travel.p253.zanati-absent-and-religion","page":253,"status":"OPEN","summary":"Restore the entire printed p253 in v57: H16 meeting continuation, Zanati absent-person method, and religion/righteousness rule."},
+    {"id":"B23-P254-ATARID-GHARAIM-TERM","entryId":"gate9.travel.p254.lineage-profession-dream","page":254,"status":"OPEN","summary":"Verify the technical meaning of الغرايم/الغرائم in the عطارد profession line before retaining v57's 'נפלאות'."},
+    {"id":"B23-P260-H9-JUSTICE-POLARITY","entryId":"gate10.authority.p258-260.dismissal-and-appointment","page":260,"status":"OPEN","summary":"Correct v57 so benefic H9 means justice in judgments and malefic H9 means injustice, as printed."},
     {"id":"B22-P246-FIGURE-NAME-AND-DIRECTION","entryId":"gate9.travel.p246.condition-and-direction","page":246,"status":"OPEN","summary":"Resolve the p246 figure token נקי הלחי / Arabic source token and the air/water direction mapping against the enlarged scan."},
     {"id":"B22-P251-AL-MULTAQAT-WORDING","entryId":"gate9.travel.p251-252.absent-return-and-meeting","page":251,"status":"OPEN","summary":"Verify v57 wording for the al-Multaqat H6/H12 branch against the printed Arabic منكوب phrase."},
     {"id":"B21-P240-DIRECTION-MAP","entryId":"gate9.travel.p240.direction-source-discrepancy","page":240,"status":"OPEN","summary":"Resolve v57 air=west/water=sea against printed scan air=north/water=west."},
@@ -18482,13 +18564,31 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "nextFullSourcePage": 224
     },
     "gate8Theft": {
-      "pagesIndexed": [224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252],
-      "indexedThroughPage": 252,
+      "pagesIndexed": [224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236],
+      "indexedThroughPage": 236,
       "status": "SOURCE_INDEX_COMPLETE_WITH_OPEN_REVIEW_ITEMS",
       "runtimeOperationalizationDeferred": true,
       "onePrimaryRoutePerQuestionIntent": true,
-      "chapterClosedAtPage": 252,
-      "nextFullSourcePage": 253
+      "chapterClosedAtPage": 236,
+      "nextFullSourcePage": 237
+    },
+    "gate9Travel": {
+      "pagesIndexed": [237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255],
+      "indexedThroughPage": 255,
+      "status": "SOURCE_INDEX_COMPLETE_WITH_OPEN_REVIEW_ITEMS",
+      "runtimeOperationalizationDeferred": true,
+      "onePrimaryRoutePerQuestionIntent": true,
+      "chapterClosedAtPage": 255,
+      "nextFullSourcePage": 256
+    },
+    "gate10Authority": {
+      "pagesIndexed": [256, 257, 258, 259, 260, 261, 262],
+      "indexedThroughPage": 262,
+      "status": "SOURCE_INDEX_CONTINUED_WITH_OPEN_REVIEW_ITEMS",
+      "runtimeOperationalizationDeferred": true,
+      "onePrimaryRoutePerQuestionIntent": true,
+      "chapterClosedAtPage": null,
+      "nextFullSourcePage": 263
     }
   },
   "dhamirSelectionMap": {
