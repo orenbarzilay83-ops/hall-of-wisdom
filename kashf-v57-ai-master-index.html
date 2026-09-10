@@ -29,12 +29,12 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
   },
   "coverage": {
     "bookStartPage": 21,
-    "bookEndPage": 191,
+    "bookEndPage": 196,
     "scanPdfStartPage": 23,
-    "scanPdfEndPage": 193,
+    "scanPdfEndPage": 198,
     "boundaryContinuationBookPage": null,
     "boundaryContinuationScanPdfPage": null,
-    "status": "BATCH14_P185_191_INDEXED_CH4_CLOSED_CH5_OPENED",
+    "status": "BATCH15_P191_196_INDEXED_CH5_CLOSED_CH6_OPENED",
     "completedBatches": [
       "BATCH02_P54_67",
       "BATCH03_P68_97",
@@ -48,7 +48,8 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "BATCH11_P167_171",
       "BATCH12_P172_179",
       "BATCH13_P180_184",
-      "BATCH14_P185_191"
+      "BATCH14_P185_191",
+      "BATCH15_P191_196"
     ]
   },
   "records": [
@@ -15717,6 +15718,874 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         "note": "The Chapter 5 heading and every opening pregnancy branch were checked visually through the final line of p191."
       },
       "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house5.p191-192.miscarriage-seam-red-nakis",
+      "entryType": "cross-page-miscarriage-rule",
+      "bookPages": [
+        191,
+        192
+      ],
+      "scanPdfPages": [
+        193,
+        194
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p191",
+        "kashf-v57-draft.html#p192"
+      ],
+      "topic": "תפר כלל ההפלה — אדום בשביעי ונקיס בשמיני",
+      "keywords": [
+        "הריון",
+        "הפלה",
+        "אדום",
+        "נלחם",
+        "נקיס",
+        "H7",
+        "H8",
+        "תפר עמוד"
+      ],
+      "criticalFacts": [
+        "המשפט שנחתך בסוף עמ׳ 191 ונשלם בראש עמ׳ 192: כאשר אדום נמצא בבית השביעי ונקיס בבית השמיני — האישה ההרה מפילה.",
+        "זהו המשך ישיר של כלל ההפלה, ולא כלל חדש שניתן לנתק מן התפר."
+      ],
+      "procedure": [
+        "בדוק את אדום בבית 7 ואת נקיס בבית 8.",
+        "אם שני התנאים מתקיימים — סמן סכנת הפלה/הפלה לפי לשון המקור."
+      ],
+      "branches": [
+        {
+          "condition": "red-in-H7-and-nakis-in-H8",
+          "outcome": "miscarriage"
+        }
+      ],
+      "preconditions": [
+        "השאלה היא על הריון או הפלה."
+      ],
+      "questionIntents": [
+        "miscarriage-risk"
+      ],
+      "methodStatus": "SOURCE_RULE_WITH_V57_OMISSION",
+      "operationalRole": "PRIMARY_CANDIDATE",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין לצרף ענפים משאלות שונות להצבעת רוב או למסלול יחיד."
+      ],
+      "sourceDiscrepancies": [
+        "v57 אינו כולל את המשך המשפט מן סוף עמ׳ 191 לראש עמ׳ 192."
+      ],
+      "sourceVerification": {
+        "printedBookPages": [
+          191,
+          192
+        ],
+        "scanPdfPages": [
+          193,
+          194
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "The cross-page continuation ending with تسقط was checked visually at the bottom of scan p193 and top of scan p194."
+      },
+      "verificationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "entryId": "gate6.house5.p192.fetal-sex-and-miscarriage-signs",
+      "entryType": "pregnancy-rule-set",
+      "bookPages": [
+        192
+      ],
+      "scanPdfPages": [
+        194
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p192"
+      ],
+      "topic": "מין הוולד וסימני הפלה — מיטיבים חיצוניים/פנימיים, אדום, שפל ראש וסוהר",
+      "keywords": [
+        "הריון",
+        "מין הוולד",
+        "הפלה",
+        "אדום",
+        "שפל ראש",
+        "סוהר",
+        "H5",
+        "H8",
+        "H11"
+      ],
+      "criticalFacts": [
+        "צורות מיטיבות חיצוניות בחמישי ובאחד־עשר → זכר; צורות מיטיבות פנימיות שם → נקבה.",
+        "אדום או שפל ראש במקום זה מורים על חשש להפלה.",
+        "אדום בשמיני → האישה מפילה.",
+        "סוהר בשמיני → האישה והוולד בסכנה; אם האחד־עשר מיטיב פנימי, הוולד ניצל והאם בסכנה."
+      ],
+      "procedure": [
+        "בדוק H5 ו-H11 לפי פנימי/חיצוני ומיטיב/מזיק.",
+        "בדוק אדום ושפל ראש בענפי ההפלה.",
+        "בדוק אדום וסוהר בבית 8 ואת עדות H11."
+      ],
+      "branches": [
+        {
+          "condition": "H5-and-H11-benefic-external",
+          "outcome": "male-child"
+        },
+        {
+          "condition": "H5-and-H11-benefic-internal",
+          "outcome": "female-child"
+        },
+        {
+          "condition": "red-or-shallow-head-in-these-houses",
+          "outcome": "miscarriage-risk"
+        },
+        {
+          "condition": "red-in-H8",
+          "outcome": "miscarriage"
+        },
+        {
+          "condition": "carcer-in-H8-and-H11-not-inward-benefic",
+          "outcome": "mother-and-child-danger"
+        },
+        {
+          "condition": "carcer-in-H8-and-H11-inward-benefic",
+          "outcome": "child-safe-mother-danger"
+        }
+      ],
+      "preconditions": [
+        "השאלה היא על מין הוולד או על סכנת הפלה."
+      ],
+      "questionIntents": [
+        "child-sex",
+        "miscarriage-risk",
+        "fetal-safety"
+      ],
+      "methodStatus": "SOURCE_RULE_SET",
+      "operationalRole": "PRIMARY_CANDIDATE",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין לצרף ענפים משאלות שונות להצבעת רוב או למסלול יחיד."
+      ],
+      "sourceDiscrepancies": [],
+      "sourceVerification": {
+        "printedBookPages": [
+          192
+        ],
+        "scanPdfPages": [
+          194
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "The four branches and house numbers were checked visually in the printed scan."
+      },
+      "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house5.p192.pregnancy-stability-sex-parity-months",
+      "entryType": "pregnancy-procedure-set",
+      "bookPages": [
+        192
+      ],
+      "scanPdfPages": [
+        194
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p192"
+      ],
+      "topic": "קיום ההריון, הצלת היולדת, מין לפי זוג/פרד ומניין חודשי ההריון",
+      "keywords": [
+        "יתדות",
+        "H5",
+        "H6",
+        "H8",
+        "H12",
+        "H15",
+        "זוג",
+        "פרד",
+        "חודשים",
+        "מאזן"
+      ],
+      "criticalFacts": [
+        "יתדות, H5 ו-H15 מיטיבים → ההריון מתקיים; אחרת הדין להפך.",
+        "H6,H8,H12 מיטיבים → היולדת ניצלת.",
+        "מולידים מן H1,H6,H8,H12 לפי זוג/פרד: תוצאה יחידית → זכר; זוגית → נקבה.",
+        "לחודשי ההריון: מכים את השלישי בבית ההריון, מפחיתים תשע־תשע, והשארית היא מספר החודשים; לחלופין צורת המאזן מורה על מספר החודשים."
+      ],
+      "procedure": [
+        "בדוק יתדות, H5 ו-H15 לקיום ההריון.",
+        "בדוק H6,H8,H12 להצלת היולדת.",
+        "הפק צורה מן H1,H6,H8,H12 לפי זוג ופרד.",
+        "למניין חודשים השתמש בהפחתת תשע־תשע או בצורת המאזן."
+      ],
+      "branches": [
+        {
+          "condition": "stakes-H5-H15-benefic",
+          "outcome": "pregnancy-holds"
+        },
+        {
+          "condition": "H6-H8-H12-benefic",
+          "outcome": "mother-safe"
+        },
+        {
+          "condition": "derived-figure-odd",
+          "outcome": "male-child"
+        },
+        {
+          "condition": "derived-figure-even",
+          "outcome": "female-child"
+        }
+      ],
+      "preconditions": [
+        "יש להבחין בין אישור הריון, הצלת האם, מין הוולד ומניין חודשים."
+      ],
+      "questionIntents": [
+        "pregnancy-confirmation",
+        "maternal-safety",
+        "child-sex",
+        "pregnancy-month-count"
+      ],
+      "methodStatus": "SOURCE_PROCEDURE_SET",
+      "operationalRole": "PRIMARY_CANDIDATES",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין לצרף ענפים משאלות שונות להצבעת רוב או למסלול יחיד."
+      ],
+      "sourceDiscrepancies": [],
+      "sourceVerification": {
+        "printedBookPages": [
+          192
+        ],
+        "scanPdfPages": [
+          194
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "The stake set, four-house derivation, parity outcomes, and two month-count routes were checked visually."
+      },
+      "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house5.p193.children-welfare-and-derived-sex",
+      "entryType": "child-welfare-and-sex-method",
+      "bookPages": [
+        193
+      ],
+      "scanPdfPages": [
+        195
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p193"
+      ],
+      "topic": "תיקון הילדים וקלקולם, והפקת מין הוולד מן H6 ו-H5",
+      "keywords": [
+        "ילדים",
+        "מתנות",
+        "H5",
+        "H6",
+        "H1",
+        "H4",
+        "מין הוולד",
+        "הריון"
+      ],
+      "criticalFacts": [
+        "H5 מיטיב → מצב הילדים לטובה ולשלום; H5 מזיק → להפך.",
+        "H6 מיטיב → ממון ועוזרים לילדים; H6 מזיק → להפך. אותו יחס חל על מתנות ותשורות.",
+        "לוקחים את בית ההריון H6 ואת בית הילדים H5 ומולידים צורה: נקבית → נקבה, זכרית → זכר. דעה חלופית משתמשת ב-H1 וב-H4."
+      ],
+      "procedure": [
+        "בדוק H5 ו-H6 לפי מיטיב/מזיק.",
+        "למין הוולד הולד H6+H5.",
+        "שמור את H1+H4 כדרך חלופית מצוטטת."
+      ],
+      "branches": [
+        {
+          "condition": "H5-benefic",
+          "outcome": "children-good-and-safe"
+        },
+        {
+          "condition": "H6-benefic",
+          "outcome": "children-have-money-and-helpers"
+        },
+        {
+          "condition": "derived-H6-H5-feminine",
+          "outcome": "female-child"
+        },
+        {
+          "condition": "derived-H6-H5-masculine",
+          "outcome": "male-child"
+        }
+      ],
+      "preconditions": [
+        "השאלה היא על מצב הילדים, מתנות או מין הוולד."
+      ],
+      "questionIntents": [
+        "children-welfare",
+        "gifts-to-children",
+        "child-sex"
+      ],
+      "methodStatus": "SOURCE_METHOD_WITH_QUOTED_ALTERNATIVE",
+      "operationalRole": "PRIMARY_CANDIDATE",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין להפוך את H1+H4 המצוטט למסלול ראשי בלי הכרעת intent."
+      ],
+      "sourceDiscrepancies": [],
+      "sourceVerification": {
+        "printedBookPages": [
+          193
+        ],
+        "scanPdfPages": [
+          195
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "The H5/H6 welfare branches and H6+H5 derivation were checked visually."
+      },
+      "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house5.p193.pregnancy-and-fetal-safety",
+      "entryType": "pregnancy-confirmation-and-safety",
+      "bookPages": [
+        193
+      ],
+      "scanPdfPages": [
+        195
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p193"
+      ],
+      "topic": "אישור הריון, יסוד מין הוולד ובטיחות העובר",
+      "keywords": [
+        "הריון",
+        "סוהר",
+        "H5",
+        "H1",
+        "אש",
+        "אוויר",
+        "מים",
+        "עפר",
+        "H6",
+        "H8",
+        "H12"
+      ],
+      "criticalFacts": [
+        "H5 מיטיב פנימי יחד עם סוהר → האישה בהריון.",
+        "להבחנה בין זכר לנקבה מולידים מן H1 ו-H5: אש/אוויר → זכר; מים/עפר → נקבה.",
+        "צורות מזיקות ב-H5,H6,H8,H12 → חשש לוולד; צורות מיטיבות באותם בתים → שלומו."
+      ],
+      "procedure": [
+        "בדוק H5 כמיטיב פנימי יחד עם סוהר.",
+        "הולד H1+H5 וסווג לפי יסוד.",
+        "בדוק את H5,H6,H8,H12 לבטיחות העובר."
+      ],
+      "branches": [
+        {
+          "condition": "H5-inward-benefic-and-carcer",
+          "outcome": "pregnancy-confirmed"
+        },
+        {
+          "condition": "derived-element-fire-or-air",
+          "outcome": "male-pregnancy"
+        },
+        {
+          "condition": "derived-element-water-or-earth",
+          "outcome": "female-pregnancy"
+        },
+        {
+          "condition": "H5-H6-H8-H12-malefic",
+          "outcome": "fetal-danger"
+        },
+        {
+          "condition": "H5-H6-H8-H12-benefic",
+          "outcome": "fetal-safety"
+        }
+      ],
+      "preconditions": [
+        "אין לערבב אישור הריון, מין ובטיחות לעדות אחת."
+      ],
+      "questionIntents": [
+        "pregnancy-confirmation",
+        "child-sex",
+        "fetal-safety"
+      ],
+      "methodStatus": "SOURCE_METHOD",
+      "operationalRole": "PRIMARY_CANDIDATES",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין לצרף ענפים משאלות שונות להצבעת רוב או למסלול יחיד."
+      ],
+      "sourceDiscrepancies": [],
+      "sourceVerification": {
+        "printedBookPages": [
+          193
+        ],
+        "scanPdfPages": [
+          195
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "The inward-benefic H5 plus Carcer condition, element split, and four-house safety rule were checked visually."
+      },
+      "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house5.p194.child-nature-health-and-birth",
+      "entryType": "child-health-and-birth-rule-set",
+      "bookPages": [
+        194
+      ],
+      "scanPdfPages": [
+        196
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p194"
+      ],
+      "topic": "טבע הילד, בריאותו, מחלותיו וקלות הלידה",
+      "keywords": [
+        "H1",
+        "H5",
+        "H6",
+        "H8",
+        "ילד",
+        "בריאות",
+        "לידה",
+        "צורה הפוכה",
+        "צורה כבדה"
+      ],
+      "criticalFacts": [
+        "אם H1 מתאים ל-H5 בטבעו, הדבר מבשר ילד; את זכרותו/נקבותו לוקחים מן H5.",
+        "המקור מוסיף שאם הצורה אינה זכרית ואינה נקבית והיא מתהפכת — בטנה של האישה ריקה; v57 משמיט תנאי זה.",
+        "H6 מזיק → ריבוי מכאובים בילדותו; H8 מזיק → תקווה מועטה; H8 מיטיב → עם הגדילה המחלה פוחתת והמצב משתפר.",
+        "H5 כבדה → לידה כבדה; H5 מיטיבה, חיצונית או פנימית → לידה קלה."
+      ],
+      "procedure": [
+        "בדוק התאמת טבע H1 ל-H5.",
+        "אם מופיע הענף האנדרוגיני/המתהפך, שמור את תנאי הבטן הריקה.",
+        "בדוק H6,H8 לבריאות הילד.",
+        "בדוק H5 לכובד או קלות הלידה."
+      ],
+      "branches": [
+        {
+          "condition": "H1-nature-matches-H5",
+          "outcome": "child-indicated"
+        },
+        {
+          "condition": "figure-neither-male-nor-female-and-overturned",
+          "outcome": "empty-womb"
+        },
+        {
+          "condition": "H6-malefic",
+          "outcome": "many-childhood-pains"
+        },
+        {
+          "condition": "H8-malefic",
+          "outcome": "low-hope"
+        },
+        {
+          "condition": "H8-benefic",
+          "outcome": "health-improves-with-age"
+        },
+        {
+          "condition": "H5-heavy",
+          "outcome": "difficult-birth"
+        },
+        {
+          "condition": "H5-benefic-inward-or-outward",
+          "outcome": "easy-birth"
+        }
+      ],
+      "preconditions": [
+        "נדרשת הכרעה נפרדת בין עצם הוולד, בריאותו וקלות הלידה."
+      ],
+      "questionIntents": [
+        "child-existence",
+        "child-health",
+        "birth-difficulty"
+      ],
+      "methodStatus": "SOURCE_METHOD_WITH_V57_OMITTED_BRANCH",
+      "operationalRole": "PRIMARY_CANDIDATE",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין לצרף ענפים משאלות שונות להצבעת רוב או למסלול יחיד."
+      ],
+      "sourceDiscrepancies": [
+        "v57 משמיט את התנאי ״לא זכר ולא נקבה והצורה מתהפכת״ ואת תוצאת הבטן הריקה.",
+        "v57 אינו מציין במפורש את ענף ״והוא صغير״ של ריבוי הכאבים בילדותו."
+      ],
+      "sourceVerification": {
+        "printedBookPages": [
+          194
+        ],
+        "scanPdfPages": [
+          196
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "The gender-neutral overturned branch, H6/H8 health branches, and H5 birth branches were checked visually."
+      },
+      "verificationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "entryId": "gate6.house5.p194.wellbeing-and-majority-witness",
+      "entryType": "child-wellbeing-and-quoted-method",
+      "bookPages": [
+        194
+      ],
+      "scanPdfPages": [
+        196
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p194"
+      ],
+      "topic": "מזל הילד, מצבו וריבוי הממון — H5 ו-H16, ודעת הרוב מן H7 ו-H8",
+      "keywords": [
+        "H5",
+        "H16",
+        "ממון",
+        "מזל",
+        "H7",
+        "H8",
+        "H12",
+        "רוב",
+        "זכר",
+        "נקבה"
+      ],
+      "criticalFacts": [
+        "H5 ו-H16 מיטיבים → מזל טוב, שיפור המצב וריבוי ממון; שניהם מזיקים → מצב ירוד; אחד מיטיב ואחד מזיק → מצב בינוני.",
+        "שיטה מצוטטת: מולידים את H12 מן H7 ו-H8. אם H7 חיצוני, H8 פנימי, H12 חיצוני וזכרי — בן; אם נולד משתי צורות נקביות — בת; הדין הולך אחר הרוב."
+      ],
+      "procedure": [
+        "בדוק H5 ו-H16 כמדדי רווחה נפרדים.",
+        "לשיטה המצוטטת הולד H7+H8 ובדוק את H12 ואת רוב הזכרות/נקבות."
+      ],
+      "branches": [
+        {
+          "condition": "H5-and-H16-benefic",
+          "outcome": "good-fortune-and-money"
+        },
+        {
+          "condition": "H5-and-H16-malefic",
+          "outcome": "low-condition"
+        },
+        {
+          "condition": "one-benefic-one-malefic",
+          "outcome": "medium-condition"
+        },
+        {
+          "condition": "H7-external-H8-internal-H12-external-masculine",
+          "outcome": "male-child-by-majority"
+        },
+        {
+          "condition": "two-feminine-figures",
+          "outcome": "female-child-by-majority"
+        }
+      ],
+      "preconditions": [
+        "השיטה H7+H8 היא דעה מצוטטת ולא מסלול ראשי מאושר."
+      ],
+      "questionIntents": [
+        "child-wellbeing",
+        "child-sex"
+      ],
+      "methodStatus": "QUOTED_ALTERNATIVE",
+      "operationalRole": "REFERENCE_ONLY",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין לצרף ענפים משאלות שונות להצבעת רוב או למסלול יחיד."
+      ],
+      "sourceDiscrepancies": [],
+      "sourceVerification": {
+        "printedBookPages": [
+          194
+        ],
+        "scanPdfPages": [
+          196
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "The H5/H16 welfare branches and the quoted H7/H8/H12 majority method were checked visually."
+      },
+      "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house5.p195.al-zanati-male-female-rule",
+      "entryType": "quoted-author-rule",
+      "bookPages": [
+        195
+      ],
+      "scanPdfPages": [
+        197
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p195"
+      ],
+      "topic": "דברי אל־זנאתי — סף יוצא, בתי זכר/נקבה ומין הוולד",
+      "keywords": [
+        "אל־זנאתי",
+        "סף יוצא",
+        "H5",
+        "בית זכרי",
+        "בית נקבי",
+        "מין הוולד"
+      ],
+      "criticalFacts": [
+        "סף יוצא התלוי באוויר: אם הוא בחמישי עצמו — זכר.",
+        "אם סף יוצא בחמישי ובבית זכרי — זכר; אם הוא בבית נקבי ובחמישי צורה נקבית — נקבה.",
+        "צורה חיצונית בחמישי שאינה ניכרת במראה החיצוני של הלוח → ילד; זכרות החמישי קובעת זכר, ואם לא — נקבה."
+      ],
+      "procedure": [
+        "זהה סף יוצא התלוי באוויר.",
+        "בדוק בית 5 ובית זכרי/נקבי.",
+        "בענף הצורה החיצונית בדוק את עדות החמישי."
+      ],
+      "branches": [
+        {
+          "condition": "threshold-outward-in-H5",
+          "outcome": "male-child"
+        },
+        {
+          "condition": "threshold-outward-in-H5-and-masculine-house",
+          "outcome": "male-child"
+        },
+        {
+          "condition": "threshold-outward-in-feminine-house-and-feminine-H5",
+          "outcome": "female-child"
+        },
+        {
+          "condition": "external-unseen-figure-in-H5",
+          "outcome": "child-sex-by-H5"
+        }
+      ],
+      "preconditions": [
+        "השיטה מיוחסת לאל־זנאתי ונשמרת כציטוט נפרד."
+      ],
+      "questionIntents": [
+        "child-sex"
+      ],
+      "methodStatus": "QUOTED_SOURCE_METHOD",
+      "operationalRole": "REFERENCE_ONLY",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין לצרף ענפים משאלות שונות להצבעת רוב או למסלול יחיד."
+      ],
+      "sourceDiscrepancies": [],
+      "sourceVerification": {
+        "printedBookPages": [
+          195
+        ],
+        "scanPdfPages": [
+          197
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "The attribution, threshold figure, house gender branches, and external-unseen branch were checked visually."
+      },
+      "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house5.p195.pregnancy-and-lifespan-figures",
+      "entryType": "pregnancy-and-lifespan-rule-set",
+      "bookPages": [
+        195
+      ],
+      "scanPdfPages": [
+        197
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p195"
+      ],
+      "topic": "אישור הריון ואריכות חיי הוולד — פנימיות וסט הצורות הקצרות/הארוכות",
+      "keywords": [
+        "הריון",
+        "שפל ראש",
+        "אדום",
+        "דרך",
+        "נלחם",
+        "חיבור",
+        "קהלה",
+        "לבן",
+        "יתדות",
+        "אחרית",
+        "אורך חיים"
+      ],
+      "criticalFacts": [
+        "אדום בחמישי → האישה במחזור ולא בהריון; כך גם נקיס.",
+        "שפל ראש בחמישי, וצורות מיטיבות או מזיקות בחמישי, ביתדות ובאחרית — אם כולן פנימיות, האישה בהריון.",
+        "H1,H5,H11 זכריים → זכר, ולהפך.",
+        "צורות קצרות: אדום, שפל ראש, דרך, נלחם, חיבור. צורות ארוכות: קהלה ולבן. ריבוין בבתים מיטיבים שאינם ארבע היתדות מורה על אורך ימים, וכן הדין בצורות הקצרות."
+      ],
+      "procedure": [
+        "בדוק אדום/נקיס בחמישי.",
+        "בדוק פנימיות H5, היתדות והאחרית יחד עם שפל ראש.",
+        "למין הוולד בדוק H1,H5,H11.",
+        "ספור את ריבוי הצורות הקצרות/ארוכות בבתים המיטיבים שאינם ארבע היתדות."
+      ],
+      "branches": [
+        {
+          "condition": "red-or-nakis-in-H5",
+          "outcome": "menstruating-not-pregnant"
+        },
+        {
+          "condition": "shallow-head-and-all-inward-benefic-or-malefic-set",
+          "outcome": "pregnancy"
+        },
+        {
+          "condition": "H1-H5-H11-masculine",
+          "outcome": "male-child"
+        },
+        {
+          "condition": "short-figures-prevalent",
+          "outcome": "short-life"
+        },
+        {
+          "condition": "long-figures-prevalent",
+          "outcome": "long-life"
+        }
+      ],
+      "preconditions": [
+        "אין להפוך רשימת אורך חיים למסלול יחיד בלי תנאי ריבוי ומיקום."
+      ],
+      "questionIntents": [
+        "pregnancy-confirmation",
+        "child-sex",
+        "child-lifespan"
+      ],
+      "methodStatus": "SOURCE_RULE_SET",
+      "operationalRole": "PRIMARY_CANDIDATE",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין לצרף ענפים משאלות שונות להצבעת רוב או למסלול יחיד."
+      ],
+      "sourceDiscrepancies": [],
+      "sourceVerification": {
+        "printedBookPages": [
+          195
+        ],
+        "scanPdfPages": [
+          197
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "The menstruation/pregnancy branches and all named short/long figure patterns were checked visually."
+      },
+      "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house5.p196.children-clothing-and-chapter6-seam",
+      "entryType": "chapter-transition-and-rule-set",
+      "bookPages": [
+        196
+      ],
+      "scanPdfPages": [
+        198
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p196"
+      ],
+      "topic": "סיום דיני הילדים — שמחות ולבושים; פתיחת דיני החולה",
+      "keywords": [
+        "ילדים",
+        "שמחות",
+        "לבושים",
+        "H1",
+        "H4",
+        "H5",
+        "H11",
+        "כבוד נכנס",
+        "לבן",
+        "בר הלחי",
+        "חולה",
+        "H6",
+        "H8",
+        "H15",
+        "שבתאי",
+        "צדק"
+      ],
+      "criticalFacts": [
+        "לשאלות על ילדים, שמחות ולבושים עושים H1,H4,H5,H11 לאמהות ומשלימים את המערך; יתדות וחמישי מיטיבים → הבקשה נענית.",
+        "ללבוש/תפירה בחמישי טובים כבוד נכנס, לבן ובר הלחי. לזמני שמחה/טיול/שעשוע טוב כבוד נכנס בחמישי ובראשון או בתשיעי, ובפרט ראשון וחמישי.",
+        "בפתיחת פרק החולה: H1 בשישי → מחלה מתארכת; H15 מיטיב → ריפוי, מזיק → התארכות; H1 בשמיני → מחלה מתארכת וסכנה.",
+        "בדוגמת נשוא ראש ב-H8 המקור מוסיף H6 → עיוורון/חושך ראייה; v57 משמיט את ענף חושך הראייה. שבתאי וצדק ב-H6 או H8 → כובד השמיעה."
+      ],
+      "procedure": [
+        "לילדים/שמחות/לבושים בנה את האמהות H1,H4,H5,H11.",
+        "בדוק יתדות ו-H5.",
+        "לדין החולה בדוק H1,H6,H8,H15 ואת שבתאי/צדק."
+      ],
+      "branches": [
+        {
+          "condition": "stakes-and-H5-benefic",
+          "outcome": "request-granted"
+        },
+        {
+          "condition": "H1-in-H6",
+          "outcome": "long-illness"
+        },
+        {
+          "condition": "H15-benefic",
+          "outcome": "healing"
+        },
+        {
+          "condition": "H15-malefic",
+          "outcome": "long-illness"
+        },
+        {
+          "condition": "H1-in-H8",
+          "outcome": "long-illness-and-danger"
+        },
+        {
+          "condition": "ahyan-in-H8",
+          "outcome": "blindness"
+        },
+        {
+          "condition": "ahyan-in-H6",
+          "outcome": "dark-vision"
+        },
+        {
+          "condition": "saturn-or-jupiter-in-H6-or-H8",
+          "outcome": "heavy-hearing"
+        }
+      ],
+      "preconditions": [
+        "פרק 6 נפתח בעמ׳ 196; אין להרחיב כאן לדיני האבדה או הבהמות שבעמ׳ 197 ואילך."
+      ],
+      "questionIntents": [
+        "children-request",
+        "joy-and-outings",
+        "clothing",
+        "illness-duration",
+        "illness-recovery"
+      ],
+      "methodStatus": "SOURCE_TRANSITION_WITH_V57_OMISSION",
+      "operationalRole": "PRIMARY_CANDIDATES",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין לצרף ענפים משאלות שונות להצבעת רוב או למסלול יחיד."
+      ],
+      "sourceDiscrepancies": [
+        "v57 משמיט את ענף H1 בשישי בדוגמת נשוא ראש, המורה על חושך הראייה."
+      ],
+      "sourceVerification": {
+        "printedBookPages": [
+          196
+        ],
+        "scanPdfPages": [
+          198
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "The closing children rules and the full opening illness paragraph through the printed page end were checked visually."
+      },
+      "verificationStatus": "REVIEW_REQUIRED"
     }
   ],
   "v57CorrectionQueue": [
@@ -16138,6 +17007,27 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "page": "190-191",
       "status": "OPEN",
       "summary": "Do not render مثلثة as one ordinary figure until the technical operation is source-defined."
+    },
+    {
+      "id": "B15-P191-192-MISSED-SEAM",
+      "entryId": "gate6.house5.p191-192.miscarriage-seam-red-nakis",
+      "page": "191-192",
+      "status": "OPEN",
+      "summary": "Restore the cross-page rule: Humra in H7 and Nakis in H8 indicate miscarriage; v57 omits the continuation."
+    },
+    {
+      "id": "B15-P194-NEITHER-MALE-FEMALE-OMISSION",
+      "entryId": "gate6.house5.p194.child-nature-health-and-birth",
+      "page": 194,
+      "status": "OPEN",
+      "summary": "Restore the source branch where a figure that is neither male nor female and is overturned indicates an empty womb."
+    },
+    {
+      "id": "B15-P196-DARK-VISION-OMISSION",
+      "entryId": "gate6.house5.p196.children-clothing-and-chapter6-seam",
+      "page": 196,
+      "status": "OPEN",
+      "summary": "Restore the source branch that the first figure in H6, in the Ahyan example, indicates darkness of vision."
     }
   ],
   "downstreamCorrectionQueue": [
@@ -16520,6 +17410,30 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       ],
       "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
       "summary": "Pregnancy confirmation, sex, survival, birth difficulty and twins are distinct intents; do not aggregate their indicators."
+    },
+    {
+      "id": "B15-P192-INTENT-SEPARATION",
+      "pages": [
+        192
+      ],
+      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
+      "summary": "Route pregnancy confirmation, miscarriage risk, maternal safety, child sex, and month count as distinct intents."
+    },
+    {
+      "id": "B15-P194-CHILD-HEALTH-ROUTING",
+      "pages": [
+        194
+      ],
+      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
+      "summary": "Keep child existence, health, birth difficulty, and welfare as separate question routes."
+    },
+    {
+      "id": "B15-P196-ILLNESS-CHAPTER-OPENING",
+      "pages": [
+        196
+      ],
+      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
+      "summary": "The Chapter 6 illness opening is indexed as a separate route from the closing children rules."
     }
   ],
   "indexPolicyNotes": [
@@ -16823,13 +17737,29 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
     },
     "gate6House5": {
       "pagesIndexed": [
-        191
+        191,
+        192,
+        193,
+        194,
+        195,
+        196
       ],
-      "indexedThroughPage": 191,
+      "indexedThroughPage": 196,
+      "status": "SOURCE_INDEX_COMPLETE_WITH_OPEN_REVIEW_ITEMS",
+      "chapterClosedAtPage": 196,
+      "runtimeOperationalizationDeferred": true,
+      "onePrimaryRoutePerQuestionIntent": true,
+      "nextFullSourcePage": 197
+    },
+    "gate6House6": {
+      "pagesIndexed": [
+        196
+      ],
+      "indexedThroughPage": 196,
       "status": "CHAPTER_OPENED",
       "runtimeOperationalizationDeferred": true,
       "onePrimaryRoutePerQuestionIntent": true,
-      "nextFullSourcePage": 192
+      "nextFullSourcePage": 197
     }
   },
   "dhamirSelectionMap": {
