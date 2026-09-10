@@ -29,12 +29,12 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
   },
   "coverage": {
     "bookStartPage": 21,
-    "bookEndPage": 228,
+    "bookEndPage": 236,
     "scanPdfStartPage": 23,
-    "scanPdfEndPage": 230,
+    "scanPdfEndPage": 238,
     "boundaryContinuationBookPage": null,
     "boundaryContinuationScanPdfPage": null,
-    "status": "BATCH19_P221_228_INDEXED_CH7_CLOSED_CH8_OPENED",
+    "status": "BATCH20_P229_236_INDEXED_CH8_CONTINUED",
     "completedBatches": [
       "BATCH02_P54_67",
       "BATCH03_P68_97",
@@ -53,7 +53,8 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "BATCH16_P197_204",
       "BATCH17_P205_212",
       "BATCH18_P213_220",
-      "BATCH19_P221_228"
+      "BATCH19_P221_228",
+      "BATCH20_P229_236"
     ]
   },
   "records": [
@@ -17060,11 +17061,79 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "preconditions": ["שאלת סביבת בית או סימן גנב."], "questionIntents": ["theft-surroundings", "thief-sign"], "methodStatus": "SOURCE_RULE_SET_WITH_EXTERNAL_ADDENDUM", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
       "doNotInfer": ["אין למזג את התוספת החיצונית עם המסלול העיקרי."], "sourceDiscrepancies": [],
       "sourceVerification": {"printedBookPages": [228], "scanPdfPages": [230], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Directions and external-addendum boundary checked."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate8.theft.p229.comprehensive-recovery-rule",
+      "entryType": "theft-and-loss-comprehensive-rule-set",
+      "bookPages": [229], "scanPdfPages": [231], "v57Anchors": ["kashf-v57-draft.html#p229"],
+      "topic": "כלל מקיף בגניבה ובאבדה: בעלי הבתים, חזרת הגניבה, קרבה ומקום",
+      "keywords": ["H1", "H2", "H4", "H6", "H7", "H8", "H10", "גניבה", "אבדה", "עיר"],
+      "criticalFacts": ["H1 בעל הדבר; H2 בית הממון שממנו נגנב; H4 בית לקיחת החפץ; H6 החפץ; H7 הגנב; H10 בית הממון שאליו נכנסה הגניבה; H8 הבית שאליו נכנסה.", "מיטיבות ב-H1/H2 עם מזיקות ב-H7/H8 מורות על חזרת הגניבה; הצירוף ההפוך מורה שלא תחזור.", "H4 ב-H7 מורה על גנב מבני הבית/הקרובים; H7 ב-H9 על נסיעת הגנב; H8 ב-H2 על חזרת האבדה; H6 ב-H10 על יציאה מן העיר; H6+H4 פנימית = בעיר, חיצונית = מחוץ לעיר."],
+      "procedure": ["מפה את בתי הגניבה לפי התפקידים המקוריים.", "בדוק את זוגות המיטיבות/מזיקות ואת חזרת הצורות.", "הפק צורה מ-H6 ומ-H4 לבדיקת פנים/חוץ של העיר."],
+      "branches": [{"condition":"benefic-H1-H2-and-malefic-H7-H8","outcome":"theft-returns"},{"condition":"malefic-H1-H2-and-benefic-H7-H8","outcome":"does-not-return"},{"condition":"H4-in-H7","outcome":"thief-is-household-or-kin"},{"condition":"H8-in-H2","outcome":"lost-item-returns"},{"condition":"H6-in-H10","outcome":"theft-left-city"}],
+      "preconditions": ["שאלת גניבה או אבדה."], "questionIntents": ["theft-recovery", "thief-relationship", "theft-city-location"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין להחליף את תפקידי H8 ו-H10 או להשלים ענף שלא נמסר."], "sourceDiscrepancies": ["v57 אינו כולל את כל ענפי החזרה והעיר בניסוח זהה למקור הערבי; יש לשמר את מיפוי הבתים ואת תנאי הענפים מילולית."],
+      "sourceVerification": {"printedBookPages": [229], "scanPdfPages": [231], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "House-role and recovery branches re-read against enlarged scan; retained for review because v57 compresses the source branches."}, "verificationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "entryId": "gate8.theft.p230.return-and-discovery",
+      "entryType": "theft-return-discovery-rule-set",
+      "bookPages": [230], "scanPdfPages": [232], "v57Anchors": ["kashf-v57-draft.html#p230"],
+      "topic": "סיום דיני הגניבה והאבדה: תפיסה, חזרה וגילוי",
+      "keywords": ["H2", "H6", "H7", "H8", "H13", "H14", "H12", "סוהר", "חיבור", "דרך"],
+      "criticalFacts": ["המקור קושר H7 ב-H14 להמשך אי-תפיסה/מהירות נפילה, H6 הנכנס ב-H13 לאי-חזרת הגניבה, ו-H2 או בעל H8 ב-H7 לאובדן ממון.", "H1+H6 פנימית מורה על חזרת הולך/בורח; חיצונית — אי-חזרה.", "בגניבה: סוהר בראשון/שלישי/עשירי מגלה, חיבור מאסף ומגלה במהרה, דרך קבורה בדרך; צורות נוספות מורות על אי-חזרה או חזרה לאחר שיעור חודש."],
+      "procedure": ["בדוק את יחסי H7/H14, H6/H13 ו-H2/H7.", "הפרד בין ענף גניבה לענף אבדה ולענף הולך/בורח."],
+      "branches": [{"condition":"H7-in-H14","outcome":"source-specific-capture-timing"},{"condition":"H6-in-H13","outcome":"theft-does-not-return"},{"condition":"inward-H1-H6","outcome":"fugitive-returns"}],
+      "preconditions": ["שאלת גניבה, אבדה או בורח."], "questionIntents": ["theft-discovery", "lost-item-return", "fugitive-return"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין למחוק את ענף H7/H14 או להחליף את H13 ב-H14."], "sourceDiscrepancies": ["v57 השמיט את המשפט על H7 ב-H14 ואת ענף H6 הנכנס ב-H13; בנוסף הוסיף/שינה צורות בבית 12 לעומת הסריקה."],
+      "sourceVerification": {"printedBookPages": [230], "scanPdfPages": [232], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Omitted H14/H13 branches and house-12 figure wording identified by line-by-line scan read."}, "verificationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "entryId": "gate8.theft.p231.fugitive-and-lost-item",
+      "entryType": "fugitive-lost-item-rule-set",
+      "bookPages": [231], "scanPdfPages": [233], "v57Anchors": ["kashf-v57-draft.html#p231"],
+      "topic": "כלל מעשי בבורח ובאבדה",
+      "keywords": ["H1", "H2", "H4", "H7", "H8", "H10", "H15", "בורח", "אבדה"],
+      "criticalFacts": ["H1 בעל החפץ; H7 הבורח/האבדה; H10 בעל העניין; H4 המקום; H15 סוף הדבר.", "המקור מוסיף ענפים נפרדים לצורות יוצאות/פנימיות ב-H7/H8 וב-H1/H2, וכן בדיקת התאמת הצורות לקרבת הדבר לשואל."],
+      "procedure": ["הצב את הבתים לפי תפקידי המקור.", "בדוק מצב מיטיב/מזיק, חיצוני/פנימי והתאמת הצורות."],
+      "branches": [{"condition":"benefic-corners-and-good-outcome","outcome":"returns"},{"condition":"outward-seventh-eighth-and-inward-first-second","outcome":"returns"},{"condition":"reverse-polarity","outcome":"does-not-return"}],
+      "preconditions": ["שאלת בורח או אבדה."], "questionIntents": ["fugitive-return", "lost-item-return", "lost-item-proximity"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין לצמצם את ארבעת ענפי הקוטביות לענף אחד של צורות מיטיבות."], "sourceDiscrepancies": ["v57 השמיט את ענפי H7/H8 החיצוניים מול H1/H2 הפנימיים ואת הענף ההפוך; לכן אינו שלם מול הסריקה."],
+      "sourceVerification": {"printedBookPages": [231], "scanPdfPages": [233], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "All polarity branches were re-read in the scan; v57 contains only a compressed subset."}, "verificationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "entryId": "gate8.theft.p232-234.thief-description",
+      "entryType": "thief-description-figure-table",
+      "bookPages": [232, 233, 234], "scanPdfPages": [234, 235, 236], "v57Anchors": ["kashf-v57-draft.html#p232", "kashf-v57-draft.html#p233", "kashf-v57-draft.html#p234"],
+      "topic": "תיאור הגנב לפי צורת הבית השביעי והחלופות המצוטטות",
+      "keywords": ["H7", "נלחם", "נשוא ראש", "סף נכנס", "לבן", "בר לחי", "סף יוצא", "אדום", "שפל ראש", "כבוד יוצא", "סוהר", "חיבור", "כבוד נכנס", "דרך", "ממון"],
+      "criticalFacts": ["המקור מפיק את תיאור הגנב מן הצורה בבית השביעי, ומביא חלופות מפורשות כגון وصف الشخص الكامل, הסבר סאסאני/עירוני והמקצועות השונים.", "המקור מוסיף מסלול חלופי: תיאור מן H4+H12, נסיעה מן H7+H15 ומקום מגורים מן H11+H16; יציאה מן העיר נבדקת ב-H1+H4."],
+      "procedure": ["זהה את צורת H7.", "שמור בנפרד את הנוסח הראשי ואת גרסאות המקור האחרות.", "בדוק את מסלול H4/H12, H7/H15, H11/H16 רק כחלופה מצוטטת."],
+      "branches": [{"condition":"figure-in-H7","outcome":"source-specific-appearance-and-occupation"},{"condition":"outward-result-H1-H4","outcome":"left-city"},{"condition":"inward-fixed-result-H1-H4","outcome":"not-left-city"}],
+      "preconditions": ["שאלת זהות או תיאור גנב."], "questionIntents": ["thief-description", "thief-occupation", "thief-residence"], "methodStatus": "SOURCE_RULE_SET_WITH_QUOTED_VARIANTS", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין להחליף שמות צורות כגון قبض خارج/داخل בתרגום ממוני בלי אימות חזותי."], "sourceDiscrepancies": ["בעמ׳ 234 v57 מתרגם את قبض خارج/داخل כ'ממון יוצא/נכנס' ומאבד את זהות הצורה; v57 גם אינו משמר במלואן את החלופות והמקצועות שבעמ׳ 232–234."],
+      "sourceVerification": {"printedBookPages": [232, 233, 234], "scanPdfPages": [234, 235, 236], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Figure names, alternate witnesses and the qabd-kharij/qabd-dakhil tokens were checked against enlarged scan."}, "verificationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "entryId": "gate8.loan-inheritance.p235-236.rules",
+      "entryType": "loan-inheritance-fear-rule-set",
+      "bookPages": [235, 236], "scanPdfPages": [237, 238], "v57Anchors": ["kashf-v57-draft.html#p235", "kashf-v57-draft.html#p236"],
+      "topic": "דיני הלוואה, ירושה, פחד, מיתה ודאגה",
+      "keywords": ["H1", "H2", "H3", "H4", "H6", "H7", "H8", "H13", "H15", "הלוואה", "ירושה", "מיתה", "דאגה"],
+      "criticalFacts": ["הלוואה: המקור מפיק צורה מ-H1+H7 ומ-H2+H8 ואז צורה שלישית; מיטיבה = החזרת ההלוואה קלה, מזיקה = קושי.", "מתן הלוואה נבדק מ-H7+H8 או עם H3; בבית H8 מיטיבה יש ביטחון/אריכות ימים/ירושה/ממון נסתר, ובענפי H8 מזיקה פנימית/מיטיבה חיצונית/מזיקה חיצונית יש תוצאות שונות.", "במיתה/ירושה נבדקים H1,H8,H6,H4; H1 ב-H4 מורה מיתה בארץ, וב-H15 או H9 או H3 מיתה רחוקה. בדאגה נבדקים H6+H4 וכן התהפכות H6/H7."],
+      "procedure": ["בצע את צירופי הבתים בדיוק לפי השאלה.", "הפרד בין הלוואה, ביטחון/ירושה, מיתה ודאגה.", "שמור את עדות המאזן כחלק מהתנאי המקורי."],
+      "branches": [{"condition":"benefic-loan-result","outcome":"loan-repayable"},{"condition":"malefic-loan-result","outcome":"repayment-difficult"},{"condition":"benefic-H8","outcome":"security-and-hidden-inheritance"},{"condition":"H1-in-H4","outcome":"death-in-home-country"},{"condition":"H1-in-H15-or-H9-or-H3","outcome":"death-away-from-home"}],
+      "preconditions": ["שאלת הלוואה, ירושה, פחד, מיתה או דאגה."], "questionIntents": ["loan-repayment", "loan-decision", "inheritance", "death-condition", "grief-cause"], "methodStatus": "SOURCE_RULE_SET_WITH_ADDED_BOOKLET_MATERIAL", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין להחליף את H1+H7 של ההלוואה ב-H2+H8 בלבד; אין להשמיט את H9 בענף המיתה."], "sourceDiscrepancies": ["v57 בעמ׳ 235 משמיט את H1+H7 ומתחיל ב-H2+H8; בעמ׳ 236 מוסיף H2 לרשימת המיתה ומשמיט את H9; לכן הרשומה REVIEW_REQUIRED."],
+      "sourceVerification": {"printedBookPages": [235, 236], "scanPdfPages": [237, 238], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Loan house pairs and death-location houses were verified against enlarged scan; omissions in v57 recorded, not repaired."}, "verificationStatus": "REVIEW_REQUIRED"
     }
   ],
   "v57CorrectionQueue": [
-  ],
-  "v57CorrectionQueue": [
+    {"id":"B20-P230-OMITTED-H14-H13-BRANCHES","entryId":"gate8.theft.p230.return-and-discovery","page":230,"status":"OPEN","summary":"Restore the printed H7/H14 timing clause and H6-in-H13 non-return branch; recheck the H12 figure list against the scan."},
+    {"id":"B20-P231-FUGITIVE-LOST-BRANCHES","entryId":"gate8.theft.p231.fugitive-and-lost-item","page":231,"status":"OPEN","summary":"Restore the printed outward/inward polarity branches for H7/H8 versus H1/H2."},
+    {"id":"B20-P234-QABD-FIGURE-NAMES","entryId":"gate8.theft.p232-234.thief-description","page":234,"status":"OPEN","summary":"Verify and restore قبض خارج/قبض داخل as figure identities; v57 currently renders them as money-direction wording."},
+    {"id":"B20-P235-LOAN-HOUSE-PAIR","entryId":"gate8.loan-inheritance.p235-236.rules","page":235,"status":"OPEN","summary":"Restore H1+H7 as the first loan extraction before H2+H8 and the derived third figure."},
+    {"id":"B20-P236-DEATH-HOUSES","entryId":"gate8.loan-inheritance.p235-236.rules","page":236,"status":"OPEN","summary":"Remove the extra H2 from the death-house list and restore the printed H9 branch for death away from home."},
     {
       "id": "B01-P44-TAXONOMY",
       "entryId": "houses.p43-44.taxonomy",
@@ -18318,12 +18387,13 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "nextFullSourcePage": 224
     },
     "gate8Theft": {
-      "pagesIndexed": [224, 225, 226, 227, 228],
-      "indexedThroughPage": 228,
-      "status": "SOURCE_INDEX_CONTINUING",
+      "pagesIndexed": [224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236],
+      "indexedThroughPage": 236,
+      "status": "SOURCE_INDEX_COMPLETE_WITH_OPEN_REVIEW_ITEMS",
       "runtimeOperationalizationDeferred": true,
       "onePrimaryRoutePerQuestionIntent": true,
-      "nextFullSourcePage": 229
+      "chapterClosedAtPage": 236,
+      "nextFullSourcePage": 237
     }
   },
   "dhamirSelectionMap": {
