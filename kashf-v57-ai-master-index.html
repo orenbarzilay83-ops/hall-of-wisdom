@@ -29,12 +29,12 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
   },
   "coverage": {
     "bookStartPage": 21,
-    "bookEndPage": 244,
+    "bookEndPage": 252,
     "scanPdfStartPage": 23,
-    "scanPdfEndPage": 246,
+    "scanPdfEndPage": 254,
     "boundaryContinuationBookPage": null,
     "boundaryContinuationScanPdfPage": null,
-    "status": "BATCH21_P237_244_INDEXED_CH8_CLOSED",
+    "status": "BATCH22_P245_252_INDEXED_CH9_CONTINUED",
     "completedBatches": [
       "BATCH02_P54_67",
       "BATCH03_P68_97",
@@ -55,7 +55,8 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "BATCH18_P213_220",
       "BATCH19_P221_228",
       "BATCH20_P229_236",
-      "BATCH21_P237_244"
+      "BATCH21_P237_244",
+      "BATCH22_P245_252"
     ]
   },
   "records": [
@@ -17127,14 +17128,101 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "preconditions": ["שאלת הלוואה, ירושה, פחד, מיתה או דאגה."], "questionIntents": ["loan-repayment", "loan-decision", "inheritance", "death-condition", "grief-cause"], "methodStatus": "SOURCE_RULE_SET_WITH_ADDED_BOOKLET_MATERIAL", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
       "doNotInfer": ["אין להחליף את H1+H7 של ההלוואה ב-H2+H8 בלבד; אין להשמיט את H9 בענף המיתה."], "sourceDiscrepancies": ["v57 בעמ׳ 235 משמיט את H1+H7 ומתחיל ב-H2+H8; בעמ׳ 236 מוסיף H2 לרשימת המיתה ומשמיט את H9; לכן הרשומה REVIEW_REQUIRED."],
       "sourceVerification": {"printedBookPages": [235, 236], "scanPdfPages": [237, 238], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Loan house pairs and death-location houses were verified against enlarged scan; omissions in v57 recorded, not repaired."}, "verificationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "entryId": "gate9.travel.p237-239.travel-core-and-profit",
+      "entryType": "travel-rule-set",
+      "bookPages": [237, 238, 239], "scanPdfPages": [239, 240, 241], "v57Anchors": ["kashf-v57-draft.html#p237", "kashf-v57-draft.html#p238", "kashf-v57-draft.html#p239"],
+      "topic": "שער תשיעי: מסע, בתי מסע, זמן המסע ורווח בים או ביבשה",
+      "keywords": ["H3", "H5", "H9", "H13", "מסע", "ים", "יבשה", "רווח"],
+      "criticalFacts": ["H3/H5/H9 וצורות כוכבים מסוימות פותחות דין מסע; בתי מסע יבשתיים H9/H13 וימיים H3/H7/H11/H15.", "זמן מסע נבחן בצורות מיטיבות ב-H9/ראש המערך/בית השואל וב-H4.", "רווח נבדק מיסוד העפר של הנקודה עם H2; יסוד התוצאה קובע ים/יבשה וחזרה."],
+      "procedure": ["הפרד בין עצם קיום המסע, זמן המסע ורווח המסע.", "לכל כוונה שמור את צירוף הבתים והיסוד המקורי."],
+      "preconditions": ["שאלת מסע או רווח במסע."], "questionIntents": ["travel-occurrence", "travel-timing", "travel-profit", "sea-or-land"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין למזג את כללי הים/יבשה עם כלל הכיוון שבעמ׳ 240."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [237, 238, 239], "scanPdfPages": [239, 240, 241], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Travel gates, timing, profit and sea/land branches checked."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate9.travel.p240.direction-source-discrepancy",
+      "entryType": "travel-direction-rule-set",
+      "bookPages": [240], "scanPdfPages": [242], "v57Anchors": ["kashf-v57-draft.html#p240"],
+      "topic": "כיוון המסע לפי היסודות — סתירת v57 מול הסריקה",
+      "keywords": ["H1", "H5", "H6", "H11", "אש", "אוויר", "מים", "עפר", "כיוון"],
+      "criticalFacts": ["המקור מורה: אוויר = צפון, אש = מזרח, עפר = דרום, מים = מערב; תחילה יש להעביר כל יסוד על בתי היסוד שלו ולבחור לפי חוזק."],
+      "procedure": ["בדוק את בית 11 כמאזן בית 9; לאחר מכן את חוזק היסודות ואת מיפוי הכיוון."],
+      "preconditions": ["שאלת כיוון מסע."], "questionIntents": ["travel-direction"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין לבחור בין צפון/מערב או ים לפי סימטריה או קוד קיים."], "sourceDiscrepancies": ["v57 אומר אוויר = מערב ומים = ים; הסריקה המודפסת אומרת אוויר = צפון ומים = מערב."],
+      "sourceVerification": {"printedBookPages": [240], "scanPdfPages": [242], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Critical direction tokens re-read from enlarged scan; discrepancy left unresolved."}, "verificationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "entryId": "gate9.travel.p241-244.safety-and-return",
+      "entryType": "travel-safety-and-return-rule-set",
+      "bookPages": [241, 242, 243, 244], "scanPdfPages": [243, 244, 245, 246], "v57Anchors": ["kashf-v57-draft.html#p241", "kashf-v57-draft.html#p242", "kashf-v57-draft.html#p243", "kashf-v57-draft.html#p244"],
+      "topic": "מצב הנוסע, סכנות הדרך, רווח סוחרים, מרכבה והחזרה",
+      "keywords": ["H1", "H2", "H3", "H4", "H5", "H7", "H8", "H9", "H10", "H12", "H13", "H14", "H16", "מרכבה", "סוחרים"],
+      "criticalFacts": ["H1 מסמן רוח ונפש; H3 בית התנועה; H4 מקום היותו; H7 יעד; H9 המסע; H10 הדרך והצרכים.", "יסוד H7 מורה על סכנת ליסטים/בהמות/מים/מזיקים; מעבר H1 לבתים מסוימים מורה על שבר או הגעה בשלום.", "רווח סוחרים נבחן בחזרת H1/H2/H3 ובמעבר H5; בעמ׳ 244 נבחנים H1/H2/H9 להחזרה וכלל נוסף ממפה H1,H2,H10,H7,H8,H5."],
+      "procedure": ["הפרד בין מצב הנוסע, סכנות, רווח סוחרים ושלמות המרכבה.", "שמור את רשימות הבתים והצורות לכל ענף."],
+      "preconditions": ["שאלת בטיחות מסע, מרכבה, סוחרים או חזרה."], "questionIntents": ["traveler-condition", "travel-danger", "merchant-profit", "vehicle-safety", "traveler-return"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין להחליף את שם הצורה בר הלחי בעמ׳ 244 בשם נקי הלחי בלי הכרעה במקור."], "sourceDiscrepancies": ["בעמ׳ 244 v57 אומר נקי הלחי במקום בר הלחי כפי שנקרא בסריקה; הפער נשמר REVIEW_REQUIRED."],
+      "sourceVerification": {"printedBookPages": [241, 242, 243, 244], "scanPdfPages": [243, 244, 245, 246], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Travel safety and return rules checked; p244 figure-name discrepancy retained."}, "verificationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "entryId": "gate9.travel.p245.transit-and-road-request",
+      "entryType": "travel-transit-rule-set",
+      "bookPages": [245], "scanPdfPages": [247], "v57Anchors": ["kashf-v57-draft.html#p245"],
+      "topic": "מסע, העתקה ושאילת דרך",
+      "keywords": ["H1", "H7", "H10", "H15", "מסע", "העתקה", "דרך", "שפל ראש", "אדום", "ממון יוצא", "לבן"],
+      "criticalFacts": ["בשאלת מסע/העתקה: H1 הוא הנוסע, H10 הדרך, H7 העיר שאליה מגיעים, H15 סוף הדבר והחזרה.", "צורה מזיקה ב-H1 מכניסה לקושי; צורה מזיקה ב-H10 מורה על פגיעה בדרך: שפל ראש סכנת התהפכות/מוות אפשרי, אדום דם, ממון יוצא אובדן ממון, לבן נטייה לפרידה.", "מפיקים צורה מ-H1+H7 וצורה מ-H10+המכריע ומהן צורה נוספת; לבן בתוצאה מורה על פרידה."],
+      "procedure": ["הגדר את ארבעת בתי המסע לפי סוג השאלה.", "הפק את שני צירופי הבתים ואת הצורה השלישית, ושפוט לפי טבע הצורה ומקומה."],
+      "branches": [{"condition":"malefic-H1","outcome":"traveler-in-difficulty"},{"condition":"H10-shafal-ras","outcome":"overturn-or-possible-death"},{"condition":"H10-red","outcome":"blood-harm"},{"condition":"H10-outgoing-money","outcome":"loss-of-money"},{"condition":"H10-white","outcome":"separation"}],
+      "preconditions": ["שאלת מסע, העתקת מקום או דרך."], "questionIntents": ["travel-condition", "relocation", "road-request"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין להפעיל את כלל המסע בלי להבחין בין H1, H10, H7 ו-H15; אין להשלים פירוש לצורה שלא נזכרה."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [245], "scanPdfPages": [247], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Page 245 read against enlarged printed scan."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate9.travel.p246.condition-and-direction",
+      "entryType": "travel-condition-direction-rule-set",
+      "bookPages": [246], "scanPdfPages": [248], "v57Anchors": ["kashf-v57-draft.html#p246"],
+      "topic": "מצב המסע ושאלת הכיוון",
+      "keywords": ["H9", "דרך", "כבוד יוצא", "נשוא ראש", "ממון יוצא", "סף יוצא", "בר הלחי", "נקי הלחי", "כיוון", "יסודות"],
+      "criticalFacts": ["ב-H9 דרך/כבוד יוצא/נשוא ראש מורים על מסע נאה; ממון יוצא/סף יוצא/הצורה הנקראת בסריקה נקاف מורים על טורח ופחד, בפרט בים.", "ממון יוצא ב-H9 שובר מרכבה או ספינה; צורות פנימיות בבתים היתדיים או בבית המסע מונעות השלמת המסע; כבוד יוצא מביא גשם; כבוד נכנס מורה על חזרת הנוסע קודם היעד.", "כיוון נקבע לפי היסוד החזק יותר: אש מזרח, אוויר מערב ב-v57 (הסריקה דורשת בדיקה נפרדת), מים ים ב-v57 (הסריקה דורשת בדיקה נפרדת), עפר דרום."],
+      "procedure": ["בחן את H9 ואת תנאי המרכבה/הספינה.", "השווה את מיפוי היסודות לכיוון רק לאחר הכרעה בפער בין v57 לסריקה."],
+      "branches": [{"condition":"H9-outgoing-money","outcome":"vehicle-or-ship-breakage"},{"condition":"H9-outgoing-honor","outcome":"rain"},{"condition":"H9-incoming-honor","outcome":"return-before-destination"}],
+      "preconditions": ["שאלת מצב מסע או כיוון מסע."], "questionIntents": ["travel-condition", "travel-direction"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין להכריע בשם הצורה שבפער לפי דמיון חזותי או לפי v57 בלבד; אין למזג את מיפוי היסודות עם כלל כיוון אחר."], "sourceDiscrepancies": ["v57 משתמש ב'נקי הלחי', בעוד נוסח הסריקה בעמ׳ 248 מציג שם ערבי שטרם נסגר בתעתיק; בנוסף יש פער במיפוי יסוד המים/האוויר לכיוון בין נוסח v57 לעדות הסריקה."],
+      "sourceVerification": {"printedBookPages": [246], "scanPdfPages": [248], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Critical figure token and direction rule retained as review items."}, "verificationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "entryId": "gate9.travel.p247-250.absent-life-distance-witnesses",
+      "entryType": "absent-person-rule-set",
+      "bookPages": [247, 248, 249, 250], "scanPdfPages": [249, 250, 251, 252], "v57Anchors": ["kashf-v57-draft.html#p247", "kashf-v57-draft.html#p248", "kashf-v57-draft.html#p249", "kashf-v57-draft.html#p250"],
+      "topic": "שני מסעות ודיני הנעדר: חיים, מוות, מרחק ועדויות",
+      "keywords": ["H1", "H3", "H4", "H5", "H6", "H7", "H8", "H9", "H10", "H11", "H12", "H15", "נעדר", "חיים", "מוות", "מרחק"],
+      "criticalFacts": ["בשני מסעות משווים H9 ו-H7; תוצאה מיטיבה מורה על מסע טוב, מזיקה על קושי, בנות על מרחק ואמהות על קרבה.", "בדין הנעדר: חזרת צורה מ-H3/H5/H9 ב-H8 מורה מוות, חזרה ב-H6/H12 מצוקה או שבי, ובמקום אחר חיים; H9 ב-H10/H11 מורה על בואו, H1 חיצוני ב-H9/H3 על היותו בדרך.", "H7 הוא בית הנעדר: מיטיבה פנימית מורה על חזרה בשלום, קבועה על שהייה, מיטיבה חיצונית על יציאה מן העיר; H4/H8/H6/H12 על מחלה או סכנה.", "המקור מביא רוב עדויות, צירופי H1+H4/H5+H8, וצירופי H1+H4+H7+H10 או H1+H6/H8+H12 לבדיקת קיום, חיים ואובדן."],
+      "procedure": ["הפרד בין בחירת מסע לבין דין הנעדר.", "בדוק את בתי הנעדר, המרחק, מצב הבריאות והצירופים המופקים לפני מסקנה."],
+      "branches": [{"condition":"returned-in-H8","outcome":"dead"},{"condition":"returned-in-H6-or-H12","outcome":"distress-or-captivity"},{"condition":"benefic-H7-inward","outcome":"safe-return"},{"condition":"fixed-H7","outcome":"staying-in-place"},{"condition":"benefic-H7-outward","outcome":"left-city"}],
+      "preconditions": ["שאלת שני מסעות או שאלת נעדר."], "questionIntents": ["choose-between-travels", "absent-person-status", "absent-person-location", "absent-person-distance"], "methodStatus": "SOURCE_RULE_SET_WITH_MAJORITY_REFERENCE", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין להפוך את 'הדין אחר הרוב' למנוע רוב פעיל; אין להסיק חיים/מוות מצירוף יחיד בלי שאר העדויות."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [247, 248, 249, 250], "scanPdfPages": [249, 250, 251, 252], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Absent-person branches and majority reference checked; majority remains non-operational by project policy."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate9.travel.p251-252.absent-return-and-meeting",
+      "entryType": "absent-return-meeting-rule-set",
+      "bookPages": [251, 252], "scanPdfPages": [253, 254], "v57Anchors": ["kashf-v57-draft.html#p251", "kashf-v57-draft.html#p252"],
+      "topic": "הגעת הנעדר, שובו, מפגש, כיוון ומבחן זמן",
+      "keywords": ["H1", "H3", "H4", "H5", "H6", "H9", "H10", "H11", "H15", "H16", "נעדר", "מפגש", "בורח", "חלוקה בארבעה"],
+      "criticalFacts": ["H1/H4/H9 והסוף מיטיבים מורים על חי; צירופי קהלה/חיבור/דרך/לבן/אדום ב-H6/H7/H8 ובסוף מורים על מוות.", "דרך ב-H10 וב-H11 מורה מפגש באותו יום; דרך ב-H10 וחיבור ב-H11 מורים על מפגש קרוב; צורות מיטיבות פנימיות בבתים היתדיים מורות על חזרת נעדר/בורח/אבדה/גניבה כאשר המכריע מסכים.", "לבדיקת עיר משתמשים בראשי הבתים היתדיים; H16 חיצוני/פנימי משמש לשאלת מרחק; תוספת נزهת אל־עقول מוסיפה מיקום בורח לפי יסוד H6 ובית H5.", "במבחן הנקודות מחלקים את כלל הנקודות בארבעה: שארית 1 כליאה, 2 הגעה מהירה, 3 אי־הגעה, 4 הגעה לאחר זמן ארוך; תוספת אל־מֻלתקַט קובעת H5/H3/H9 חוזרים ב-H8 מוות וב-H6/H12 פגיעה/פורענות."],
+      "procedure": ["בדוק תחילה חיים/מוות, אחר כך עיר/מרחק, ואז סימן מפגש ומבחן השארית.", "שמור את תוספות נزهת אל־עقول ואל־מֻלתקַט כמקורות מצוטטים נפרדים מבחינת סמכות."],
+      "branches": [{"condition":"way-H10-and-H11","outcome":"same-day-meeting"},{"condition":"way-H10-plus-connection-H11","outcome":"near-meeting"},{"condition":"remainder-1","outcome":"confined"},{"condition":"remainder-2","outcome":"quick-arrival"},{"condition":"remainder-3","outcome":"no-arrival"},{"condition":"remainder-4","outcome":"delayed-arrival"}],
+      "preconditions": ["שאלת הגעת נעדר, שובו, מפגש, מקום או מרחק."], "questionIntents": ["absent-return", "absent-meeting", "fugitive-location", "arrival-timing"], "methodStatus": "SOURCE_RULE_SET_WITH_ADDED_BOOKLET_MATERIAL", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין לתקן את הסתירה הפנימית בנוסח H16 קרוב/רחוק; אין להפעיל אוטומטית את כלל הרוב או את מבחן השארית בלי תיעוד מקור מלא."], "sourceDiscrepancies": ["בעמ׳ 251 v57 מתאר את חזרת H5/H3/H9 ב-H6/H12 כ'מוכה באסון/בצרה/נגוע בפורענות', בעוד הסריקה מציגה 'منكوب' (מנוקב/פגוע או מוכה); התרגום והניסוח דורשים הכרעה מול המקור."],
+      "sourceVerification": {"printedBookPages": [251, 252], "scanPdfPages": [253, 254], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Return, meeting, location, remainder and al-Multaqat additions checked against enlarged scan; wording discrepancy retained."}, "verificationStatus": "REVIEW_REQUIRED"
     }
   ],
-    {"entryId":"gate9.travel.p237-239.travel-core-and-profit","entryType":"travel-rule-set","bookPages":[237,238,239],"scanPdfPages":[239,240,241],"v57Anchors":["kashf-v57-draft.html#p237","kashf-v57-draft.html#p238","kashf-v57-draft.html#p239"],"topic":"שער תשיעי: מסע, בתי מסע, זמן המסע ורווח בים או ביבשה","keywords":["H3","H5","H9","H13","מסע","ים","יבשה","רווח"],"criticalFacts":["H3/H5/H9 וצורות כוכבים מסוימות פותחות דין מסע; בתי מסע יבשתיים H9/H13 וימיים H3/H7/H11/H15.","זמן מסע נבחן בצורות מיטיבות ב-H9/ראש המערך/בית השואל וב-H4.","רווח נבדק מיסוד העפר של הנקודה עם H2; יסוד התוצאה קובע ים/יבשה וחזרה."],"procedure":["הפרד בין עצם קיום המסע, זמן המסע ורווח המסע.","לכל כוונה שמור את צירוף הבתים והיסוד המקורי."],"preconditions":["שאלת מסע או רווח במסע."],"questionIntents":["travel-occurrence","travel-timing","travel-profit","sea-or-land"],"methodStatus":"SOURCE_RULE_SET","operationalRole":"PRIMARY_CANDIDATE","runtimeEligible":false,"doNotInfer":["אין למזג את כללי הים/יבשה עם כלל הכיוון שבעמ׳ 240."],"sourceDiscrepancies":[],"sourceVerification":{"printedBookPages":[237,238,239],"scanPdfPages":[239,240,241],"v57Checked":true,"printedScanChecked":true,"visualLineByLineChecked":true,"note":"Travel gates, timing, profit and sea/land branches checked."},"verificationStatus":"VERIFIED"},
-    {"entryId":"gate9.travel.p240.direction-source-discrepancy","entryType":"travel-direction-rule-set","bookPages":[240],"scanPdfPages":[242],"v57Anchors":["kashf-v57-draft.html#p240"],"topic":"כיוון המסע לפי היסודות — סתירת v57 מול הסריקה","keywords":["H1","H5","H6","H11","אש","אוויר","מים","עפר","כיוון"],"criticalFacts":["המקור מורה: אוויר = צפון, אש = מזרח, עפר = דרום, מים = מערב; תחילה יש להעביר כל יסוד על בתי היסוד שלו ולבחור לפי חוזק."],"procedure":["בדוק את בית 11 כמאזן בית 9; לאחר מכן את חוזק היסודות ואת מיפוי הכיוון."],"preconditions":["שאלת כיוון מסע."],"questionIntents":["travel-direction"],"methodStatus":"SOURCE_RULE_SET","operationalRole":"PRIMARY_CANDIDATE","runtimeEligible":false,"doNotInfer":["אין לבחור בין צפון/מערב או ים לפי סימטריה או קוד קיים."],"sourceDiscrepancies":["v57 אומר אוויר = מערב ומים = ים; הסריקה המודפסת אומרת אוויר = צפון ומים = מערב."],"sourceVerification":{"printedBookPages":[240],"scanPdfPages":[242],"v57Checked":true,"printedScanChecked":true,"visualLineByLineChecked":true,"note":"Critical direction tokens re-read from enlarged scan; discrepancy left unresolved."},"verificationStatus":"REVIEW_REQUIRED"},
-    {"entryId":"gate9.travel.p241-244.safety-and-return","entryType":"travel-safety-and-return-rule-set","bookPages":[241,242,243,244],"scanPdfPages":[243,244,245,246],"v57Anchors":["kashf-v57-draft.html#p241","kashf-v57-draft.html#p242","kashf-v57-draft.html#p243","kashf-v57-draft.html#p244"],"topic":"מצב הנוסע, סכנות הדרך, רווח סוחרים, מרכבה והחזרה","keywords":["H1","H2","H3","H4","H5","H7","H8","H9","H10","H12","H13","H14","H16","מרכבה","סוחרים"],"criticalFacts":["H1 מסמן רוח ונפש; H3 בית התנועה; H4 מקום היותו; H7 יעד; H9 המסע; H10 הדרך והצרכים.","יסוד H7 מורה על סכנת ליסטים/בהמות/מים/מזיקים; מעבר H1 לבתים מסוימים מורה על שבר או הגעה בשלום.","רווח סוחרים נבחן בחזרת H1/H2/H3 ובמעבר H5; בעמ׳ 244 נבחנים H1/H2/H9 להחזרה וכלל נוסף ממפה H1,H2,H10,H7,H8,H5."],"procedure":["הפרד בין מצב הנוסע, סכנות, רווח סוחרים ושלמות המרכבה.","שמור את רשימות הבתים והצורות לכל ענף."],"preconditions":["שאלת בטיחות מסע, מרכבה, סוחרים או חזרה."],"questionIntents":["traveler-condition","travel-danger","merchant-profit","vehicle-safety","traveler-return"],"methodStatus":"SOURCE_RULE_SET","operationalRole":"PRIMARY_CANDIDATE","runtimeEligible":false,"doNotInfer":["אין להחליף את שם הצורה בר הלחי בעמ׳ 244 בשם נקי הלחי בלי הכרעה במקור."],"sourceDiscrepancies":["בעמ׳ 244 v57 אומר נקי הלחי במקום בר הלחי כפי שנקרא בסריקה; הפער נשמר REVIEW_REQUIRED."],"sourceVerification":{"printedBookPages":[241,242,243,244],"scanPdfPages":[243,244,245,246],"v57Checked":true,"printedScanChecked":true,"visualLineByLineChecked":true,"note":"Travel safety and return rules checked; p244 figure-name discrepancy retained."},"verificationStatus":"REVIEW_REQUIRED"},
+  "v57CorrectionQueue": [
+    {"id":"B22-P246-FIGURE-NAME-AND-DIRECTION","entryId":"gate9.travel.p246.condition-and-direction","page":246,"status":"OPEN","summary":"Resolve the p246 figure token נקי הלחי / Arabic source token and the air/water direction mapping against the enlarged scan."},
+    {"id":"B22-P251-AL-MULTAQAT-WORDING","entryId":"gate9.travel.p251-252.absent-return-and-meeting","page":251,"status":"OPEN","summary":"Verify v57 wording for the al-Multaqat H6/H12 branch against the printed Arabic منكوب phrase."},
     {"id":"B21-P240-DIRECTION-MAP","entryId":"gate9.travel.p240.direction-source-discrepancy","page":240,"status":"OPEN","summary":"Resolve v57 air=west/water=sea against printed scan air=north/water=west."},
     {"id":"B21-P244-BAR-LAHI-NAME","entryId":"gate9.travel.p241-244.safety-and-return","page":244,"status":"OPEN","summary":"Verify בר הלחי versus נקי הלחי in the vehicle-damage branch."},
-  "v57CorrectionQueue": [
     {"id":"B20-P230-OMITTED-H14-H13-BRANCHES","entryId":"gate8.theft.p230.return-and-discovery","page":230,"status":"OPEN","summary":"Restore the printed H7/H14 timing clause and H6-in-H13 non-return branch; recheck the H12 figure list against the scan."},
     {"id":"B20-P231-FUGITIVE-LOST-BRANCHES","entryId":"gate8.theft.p231.fugitive-and-lost-item","page":231,"status":"OPEN","summary":"Restore the printed outward/inward polarity branches for H7/H8 versus H1/H2."},
     {"id":"B20-P234-QABD-FIGURE-NAMES","entryId":"gate8.theft.p232-234.thief-description","page":234,"status":"OPEN","summary":"Verify and restore قبض خارج/قبض داخل as figure identities; v57 currently renders them as money-direction wording."},
@@ -18393,13 +18481,13 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "nextFullSourcePage": 224
     },
     "gate8Theft": {
-      "pagesIndexed": [224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244],
-      "indexedThroughPage": 244,
+      "pagesIndexed": [224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252],
+      "indexedThroughPage": 252,
       "status": "SOURCE_INDEX_COMPLETE_WITH_OPEN_REVIEW_ITEMS",
       "runtimeOperationalizationDeferred": true,
       "onePrimaryRoutePerQuestionIntent": true,
-      "chapterClosedAtPage": 244,
-      "nextFullSourcePage": 245
+      "chapterClosedAtPage": 252,
+      "nextFullSourcePage": 253
     }
   },
   "dhamirSelectionMap": {
@@ -18436,3 +18524,4 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
 const data=JSON.parse(document.getElementById('kashf-ai-master-index-data').textContent);const counts=data.records.reduce((a,r)=>(a[r.verificationStatus]=(a[r.verificationStatus]||0)+1,a),{});document.getElementById('summary').innerHTML=`<b>מצב האינדקס:</b> ${data.records.length} יחידות ידע · VERIFIED ${counts.VERIFIED||0} · INDEXED ${counts.INDEXED||0} · REVIEW_REQUIRED ${counts.REVIEW_REQUIRED||0} · UNRESOLVED ${counts.UNRESOLVED||0}`;const root=document.getElementById('records');for(const r of data.records){const cls=r.verificationStatus==='VERIFIED'?'verified':r.verificationStatus==='REVIEW_REQUIRED'?'review':r.verificationStatus==='UNRESOLVED'?'unresolved':'indexed';const el=document.createElement('section');el.className='card';const facts=(r.criticalFacts||[]).map(x=>`<li>${x}</li>`).join('');const probs=(r.sourceDiscrepancies||[]).map(x=>`<li>${x}</li>`).join('');el.innerHTML=`<h3>${r.entryId}</h3><div class="meta">עמ׳ ספר ${(r.bookPages||[]).join(', ')} · עמ׳ סריקה ${(r.scanPdfPages||[]).join(', ')} · <span class="status ${cls}">${r.verificationStatus}</span></div><p><b>${r.topic}</b></p>${facts?`<ul class="facts">${facts}</ul>`:''}${probs?`<div class="warn"><b>פערי מקור:</b><ul>${probs}</ul></div>`:''}`;root.appendChild(el)}
 </script>
 </main></body></html>
+
