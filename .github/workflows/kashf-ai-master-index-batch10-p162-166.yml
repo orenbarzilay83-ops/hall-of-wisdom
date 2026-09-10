@@ -1,0 +1,87 @@
+name: Kashf AI Master Index Batch10 P162-166
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/kashf-ai-master-index-batch10-p162-166.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply-validate-commit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate patcher
+        run: node --check _patch_kashf_ai_master_index_batch10_p162_166.mjs
+      - name: Apply Batch10
+        run: node _patch_kashf_ai_master_index_batch10_p162_166.mjs
+      - name: Validate AI master index
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const text=fs.readFileSync('kashf-v57-ai-master-index.html','utf8');
+          const m=text.match(/<script id="kashf-ai-master-index-data" type="application\/json">\s*([\s\S]*?)\s*<\/script>/);
+          if(!m) throw new Error('master index JSON block missing');
+          const d=JSON.parse(m[1]);
+          const A=(c,msg)=>{if(!c) throw new Error(msg)};
+          A(d.schemaVersion==='2.1.0','schema mismatch');
+          A(d.records.length===130,`expected 130 records got ${d.records.length}`);
+          A(new Set(d.records.map(r=>r.entryId)).size===130,'duplicate entryIds');
+          const counts=Object.fromEntries(['VERIFIED','INDEXED','REVIEW_REQUIRED','UNRESOLVED'].map(s=>[s,d.records.filter(r=>r.verificationStatus===s).length]));
+          A(counts.VERIFIED===101 && counts.REVIEW_REQUIRED===29 && counts.INDEXED===0 && counts.UNRESOLVED===0,`unexpected counts ${JSON.stringify(counts)}`);
+          A(d.coverage.bookEndPage===166 && d.coverage.scanPdfEndPage===168,'coverage mismatch');
+          A(d.coverage.completedBatches.includes('BATCH10_P162_166'),'batch marker missing');
+
+          const road=d.records.find(r=>r.entryId==='gate5.p162-163.derekh-house-rules');
+          A(road?.verificationStatus==='REVIEW_REQUIRED','Derekh v57 mismatch review guard lost');
+          A(road.criticalFacts.some(x=>x.includes('H9 פנימי + H10 חיצוני')&&x.includes('חזרה מהירה')),'printed quick-return polarity missing');
+          A(road.criticalFacts.some(x=>x.includes('H9 חיצוני + H10 פנימי')&&x.includes('עיכוב')),'printed delay polarity missing');
+          A(road.sourceDiscrepancies.some(x=>x.includes('v57')&&x.includes('הופך')),'v57 reversal discrepancy missing');
+
+          const w=d.records.find(r=>r.entryId==='gate5.p164.seven-witnesses');
+          A(JSON.stringify(w?.witnessHouses)===JSON.stringify([9,10,11,12,13,14,15]),'seven witnesses mismatch');
+          A(w.hiddenIntentionHouse===16,'H16 hidden-intent role missing');
+          A(w.runtimeEligible===false && w.operationalRole==='SUPPORTING_ONLY','seven witnesses must remain supporting/runtime-off');
+
+          const prox=d.records.find(r=>r.entryId==='gate5.p164.figure-proximity-core');
+          A(prox?.runtimeEligible===false,'proximity must remain runtime-off');
+          const prox165=d.records.find(r=>r.entryId==='gate5.p165.figure-proximity-extended');
+          A(prox165?.verificationStatus==='REVIEW_REQUIRED','p165 ambiguity guard lost');
+
+          const combos=d.records.find(r=>r.entryId==='gate5.p166.general-combination-indicators');
+          const q=i=>combos.questionIntentCandidates.find(x=>x.questionIntent===i);
+          A(JSON.stringify(q('stay-or-move')?.houses)===JSON.stringify([1,15]),'stay/move H1+H15 missing');
+          A(q('stay-or-move')?.polarity?.dakhil==='stays' && q('stay-or-move')?.polarity?.kharij==='travels','stay/move polarity mismatch');
+          A(JSON.stringify(q('traveler-state')?.houses)===JSON.stringify([1,9]),'traveler H1+H9 missing');
+          A(JSON.stringify(q('patient-state')?.houses)===JSON.stringify([1,8]),'patient H1+H8 missing');
+          A(JSON.stringify(q('absent-person-state')?.houses)===JSON.stringify([1,16]),'absent H1+H16 missing');
+          A(combos.criticalFacts.some(x=>x.includes('זכר או נקבה')&&x.includes('H1+H4')),'printed male/female H1+H4 rule missing');
+          A(combos.runtimeEligible===false,'p166 candidates must not auto-enable runtime');
+
+          A((d.v57CorrectionQueue||[]).length===24,`expected 24 v57 corrections got ${d.v57CorrectionQueue?.length}`);
+          A((d.downstreamCorrectionQueue||[]).length===25,`expected 25 downstream corrections got ${d.downstreamCorrectionQueue?.length}`);
+          A((d.sourceConflictQueue||[]).length===5,`expected 5 source conflicts got ${d.sourceConflictQueue?.length}`);
+          A(d.v57CorrectionQueue.some(x=>x.id==='B10-P163-DEREKH-H13-PARENT-POLARITY'),'p163 v57 correction missing');
+          A(d.downstreamCorrectionQueue.some(x=>x.id==='B10-DEREKH-H13-POLARITY-DOWNSTREAM'),'p163 downstream correction missing');
+          A(d.downstreamCorrectionQueue.some(x=>x.id==='B10-PROXIMITY-NO-RUNTIME-WITHOUT-DEFINITION'),'proximity runtime guard missing');
+          A(d.sourceConflictQueue.some(x=>x.id==='B10-SOURCE-P165-ANKIS-PATIENT-CLAUSE'),'p165 ambiguity record missing');
+          A(d.gateStatus?.gate5FoundationalFigures?.proximityRuntimeAllowed===false,'gate5 proximity runtime guard lost');
+          console.log('Batch10 validation PASS',counts,'records',d.records.length,'v57',d.v57CorrectionQueue.length,'downstream',d.downstreamCorrectionQueue.length,'conflicts',d.sourceConflictQueue.length);
+          NODE
+      - name: Commit Batch10 index
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add kashf-v57-ai-master-index.html
+          if git diff --cached --quiet; then echo 'No index changes'; exit 1; fi
+          git commit -m "feat(kashf): index Gate 5 source pages 162-166"
+          git push origin HEAD:main
