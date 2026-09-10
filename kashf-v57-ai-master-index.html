@@ -29,12 +29,12 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
   },
   "coverage": {
     "bookStartPage": 21,
-    "bookEndPage": 196,
+    "bookEndPage": 204,
     "scanPdfStartPage": 23,
-    "scanPdfEndPage": 198,
+    "scanPdfEndPage": 206,
     "boundaryContinuationBookPage": null,
     "boundaryContinuationScanPdfPage": null,
-    "status": "BATCH15_P191_196_INDEXED_CH5_CLOSED_CH6_OPENED",
+    "status": "BATCH16_P197_204_INDEXED_CH6_CLOSED_CH7_OPENED",
     "completedBatches": [
       "BATCH02_P54_67",
       "BATCH03_P68_97",
@@ -49,7 +49,8 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "BATCH12_P172_179",
       "BATCH13_P180_184",
       "BATCH14_P185_191",
-      "BATCH15_P191_196"
+      "BATCH15_P191_196",
+      "BATCH16_P197_204"
     ]
   },
   "records": [
@@ -16586,6 +16587,216 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         "note": "The closing children rules and the full opening illness paragraph through the printed page end were checked visually."
       },
       "verificationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "entryId": "gate6.house6.p197.body-location-and-humors",
+      "entryType": "illness-body-location-rule-set",
+      "bookPages": [197],
+      "scanPdfPages": [199],
+      "v57Anchors": ["kashf-v57-draft.html#p197"],
+      "topic": "דיני מקום החולי בגוף וליחות המחלה",
+      "keywords": ["חולה", "נחיר", "גרון", "לשון", "יסודות", "מרה"],
+      "criticalFacts": [
+        "אדום, נלחם או בר הלחי באחד משני הבתים מורים על נחיר ימין; הצורה הפועלת בצד האחר מורה על נחיר שמאל.",
+        "דרך מורה על הגרון; קהלה או חיבור מורים על הלשון.",
+        "צורות מים ב-H1 וב-H8 מורות על קור ולחות; עפר על מרה שחורה; אש על מרה צהובה; אוויר על רוחות שונות."
+      ],
+      "procedure": ["בדוק את H1/H8 ואת הצורות המופיעות בשני הבתים.", "מפה את הצורה לאיבר ולליחה לפי ענף המקור."],
+      "branches": [
+        {"condition": "red-fighting-cheek-bar-in-two-houses", "outcome": "right-nostril"},
+        {"condition": "active-figure-on-opposite-side", "outcome": "left-nostril"},
+        {"condition": "way", "outcome": "throat"},
+        {"condition": "assembly-or-union", "outcome": "tongue"}
+      ],
+      "preconditions": ["שאלת חולי ומערך מלא."],
+      "questionIntents": ["illness-body-location", "illness-humor"],
+      "methodStatus": "SOURCE_RULE_SET",
+      "operationalRole": "PRIMARY_CANDIDATE",
+      "runtimeEligible": false,
+      "doNotInfer": ["אין להחליף צד גוף או צורה לפי סימטריה."],
+      "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [197], "scanPdfPages": [199], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Names, figures, houses and body sides were checked against the enlarged scan."},
+      "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house6.p197.illness-danger-and-weak-patient",
+      "entryType": "illness-danger-and-weak-patient-rule-set",
+      "bookPages": [197],
+      "scanPdfPages": [199],
+      "v57Anchors": ["kashf-v57-draft.html#p197"],
+      "topic": "דין החולה, סכנה גדולה ובדיקת החולה החלוש",
+      "keywords": ["H1", "H6", "H8", "H12", "דרך", "לבן", "סוהר", "חיבור", "חולה חלוש"],
+      "criticalFacts": [
+        "עושים H1,H6,H8,H12 לאמהות; דרך, לבן, סוהר או חיבור ביניהן מורים על סכנה גדולה.",
+        "בחולה חלוש לוקחים את השישי בדרך המעגל ואת בית מחלותיו בדרך השיבוץ, מכים ומחפשים צורת חיים; אם נמצאה — מבשרים טוב."
+      ],
+      "procedure": ["בנה אמהות מארבעת הבתים.", "לחולה חלוש: השלם, הפק את שני הנתונים, הכה ובדוק אם הופיעה צורת חיים."],
+      "branches": [{"condition": "one-of-way-white-prison-union-in-mothers", "outcome": "great-danger"}, {"condition": "life-figure-in-derived-result", "outcome": "good-news"}],
+      "preconditions": ["שאלת חולה; בחולה חלוש נדרש חישוב המעגל והשיבוץ."],
+      "questionIntents": ["illness-danger", "illness-recovery"],
+      "methodStatus": "SOURCE_RULE_SET",
+      "operationalRole": "PRIMARY_CANDIDATE",
+      "runtimeEligible": false,
+      "doNotInfer": ["אין להפוך את רשימת ארבע הצורות לכלל מוות אוטומטי."],
+      "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [197], "scanPdfPages": [199], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "The four-house list and weak-patient procedure were checked line by line."},
+      "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house6.p197-198.paired-figures-recovery",
+      "entryType": "illness-paired-figures-rule",
+      "bookPages": [197, 198],
+      "scanPdfPages": [199, 200],
+      "v57Anchors": ["kashf-v57-draft.html#p197", "kashf-v57-draft.html#p198"],
+      "topic": "ארבע הכאות זוגיות ואוסף שתי צורות חיצוניות",
+      "keywords": ["H1-H5", "H2-H6", "H3-H7", "H4-H8", "חיצוניות", "מאזן"],
+      "criticalFacts": ["מוציאים צורות מן הזוגות H1/H5, H2/H6, H3/H7, H4/H8 ועושים אותן אמהות חדשות.", "אם התוצאה במאזן באה מאוסף של שתי צורות חיצוניות, החולה יוצא ממחלתו."],
+      "procedure": ["הפק ארבע צורות זוגיות.", "עשה אותן אמהות, השלם ובדוק את המאזן."],
+      "branches": [{"condition": "balance-from-two-external-figures", "outcome": "patient-recovers"}],
+      "preconditions": ["שאלת חולה."],
+      "questionIntents": ["illness-recovery"],
+      "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין להחליף את זוגות הבתים או להוסיף הצבעה."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [197, 198], "scanPdfPages": [199, 200], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "All four pairs and the external-pair outcome were visually checked."},
+      "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house6.p198.element-count-life-or-death",
+      "entryType": "illness-element-count-rule",
+      "bookPages": [198],
+      "scanPdfPages": [200],
+      "v57Anchors": ["kashf-v57-draft.html#p198"],
+      "topic": "ספירת יסודות והעמדת צורת חיים או מוות",
+      "keywords": ["אש", "אוויר", "מים", "עפר", "צורת החיים", "צורת המוות"],
+      "criticalFacts": ["סופרים את יסוד האש ועוקבים אחר פתוח/סתום ונקודות השארית; חוזרים על הפעולה באוויר, מים ועפר.", "מעמידים צורה מכל השאריות: טבע החיים מבשר תקווה, טבע המוות מחייב אזהרה."],
+      "procedure": ["ספור את היסוד, העבר את השארית עד סופה, שמור נקודה/שתיים.", "חזור בארבעת היסודות והעמד צורה מסכמת."],
+      "branches": [{"condition": "life-nature", "outcome": "hope"}, {"condition": "death-nature", "outcome": "warning"}],
+      "preconditions": ["מערך מלא וחישוב יסודות."],
+      "questionIntents": ["illness-recovery", "illness-danger"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין לקבוע יסוד דומיננטי בלי לבצע את פעולת השאריות."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [198], "scanPdfPages": [200], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "The four element walks and final life/death distinction were checked."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house6.p198-199.illness-impact-houses",
+      "entryType": "illness-impact-house-arithmetic",
+      "bookPages": [198, 199],
+      "scanPdfPages": [200, 201],
+      "v57Anchors": ["kashf-v57-draft.html#p198", "kashf-v57-draft.html#p199"],
+      "topic": "הכאת H6 ב-H8, שאריות 16/12 ותוצאת בתי החולי",
+      "keywords": ["H6", "H8", "16", "12", "בתים נופלים", "יתדות", "מחלה"],
+      "criticalFacts": ["מכים את צורת H6 בצורת H8, משמיטים 16 שוב ושוב, מוליכים את השארית על הבתים, ואז משמיטים 12 ושומרים את השארית.", "מכים את שתי הצורות: בבתים נופלים ריפוי מהיר; בבתים הסמוכים ליתדות חולשה מתארכת; ביתדות עצמן המחלה נאחזת עד המוות."],
+      "procedure": ["בצע את שתי פעולות השארית לפי המקור.", "בדוק את הבית שבו נחתה התוצאה הסופית."],
+      "branches": [{"condition": "cadent", "outcome": "quick-recovery"}, {"condition": "near-stake", "outcome": "prolonged-weakness"}, {"condition": "stake", "outcome": "illness-until-death"}],
+      "preconditions": ["שאלת חולה וחישוב מלא."], "questionIntents": ["illness-duration", "illness-recovery"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין לשנות את 16 או 12 למספר אחר."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [198, 199], "scanPdfPages": [200, 201], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "The numeric reductions and three house classes were checked against enlarged pages."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house6.p199.body-organ-table",
+      "entryType": "body-organ-figure-table",
+      "bookPages": [199],
+      "scanPdfPages": [201],
+      "v57Anchors": ["kashf-v57-draft.html#p199"],
+      "topic": "מיפוי צורת הבית השישי לאיבר החולה",
+      "keywords": ["בית שישי", "איברי הגוף", "ראש", "צוואר", "חזה", "בטן", "יד", "רגל"],
+      "criticalFacts": ["משלימים את המערך, בודקים את צורת הבית השישי, וממפים אותה לטבלת איברי הגוף.", "הטבלה כוללת 15 התאמות מקוריות, ובהן דרך→איבר המין, בר הלחי→יד ימין, אדום→צוואר, נשוא ראש→ראש, קהלה→צד שמאל וחיבור→צד ימין."],
+      "procedure": ["השלם את המערך.", "קרא את צורת H6 וחפש אותה בטבלת האיברים."],
+      "branches": [{"condition": "figure-in-body-table", "outcome": "mapped-organ"}],
+      "preconditions": ["שאלת מקום החולי; נדרש H6."], "questionIntents": ["illness-body-location"], "methodStatus": "SOURCE_TABLE", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין להחליף בין איברים ימניים ושמאליים או להשלים איבר שלא מופיע בטבלה."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [199], "scanPdfPages": [201], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "All 15 figure-organ cells were checked visually, including figure bit patterns."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house6.p200.patient-spirit-and-sixth-eighth",
+      "entryType": "illness-spirit-and-derived-figure-rules",
+      "bookPages": [200],
+      "scanPdfPages": [202],
+      "v57Anchors": ["kashf-v57-draft.html#p200"],
+      "topic": "רוח החולה, מיקום הצורה וסוג המחלה",
+      "keywords": ["אוויר האוויר", "רוח החולה", "נופלים", "יתדות", "מיילים", "H6", "H8"],
+      "criticalFacts": ["מעמידים צורה מאוויר האוויר, זוג או פרד; היא רוח החולה.", "בנופלים יש תקווה; ביתדות יש מקום לתקווה; בבתים הסמוכים ליתדות המחלה מתארכת; מבית סמוך לבית נופל אין תקווה; נופל שגם נמצא ביתד מביא ריפוי; אם אינו נראה — מוות.", "צורה מ-H6/H8: מזיקה ודם שולט בה → מוות; ממוזגת וכבדה → מחלה ארוכה; קלה ומיטיבה → הסתלקות מהירה."],
+      "procedure": ["הפק את צורת רוח החולה ומצא את הבית שלה.", "הפק צורה מ-H6/H8 וסווג לפי המזג והמשקל."],
+      "branches": [{"condition": "not-visible", "outcome": "death"}, {"condition": "cadent", "outcome": "hope"}, {"condition": "near-stake", "outcome": "long-illness"}, {"condition": "light-benefic-derived", "outcome": "rapid-recovery"}],
+      "preconditions": ["מערך מלא."], "questionIntents": ["illness-recovery", "illness-duration", "illness-danger"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין לפרש את המונח موائل מעבר לסיווג המקור של הבתים הסמוכים ליתדות."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [200], "scanPdfPages": [202], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "The spirit construction and all six location branches were checked."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house6.p200-201.prognosis-chain",
+      "entryType": "illness-house-prognosis-chain",
+      "bookPages": [200, 201],
+      "scanPdfPages": [202, 203],
+      "v57Anchors": ["kashf-v57-draft.html#p200", "kashf-v57-draft.html#p201"],
+      "topic": "שרשרת בתי הנפש, המחלות, האבדון והאחרית",
+      "keywords": ["H1", "H6", "H8", "H13", "H14", "חכם", "דיין", "מספר"],
+      "criticalFacts": ["H1 הוא בית הנפש; H6 בית המחלות; H8 בית האבדון. H6 מזיק מאריך מחלה.", "אם H6 ו-H8 מזיקים, פנימיים או חיצוניים, החולה מת. H13/H14 מיטיבים תומכים בריפוי; המכריע ואחרית האחרית מיטיבים בריפוי ומזיקים במוות.", "כאשר מופיע סימן מוות, המספר קובע את תום תקופת החולה."],
+      "procedure": ["בדוק את הבתים לפי סדר המקור ואת עדות המכריע.", "אם הצורות חלוקות, הכרֵע לפי הרוב כפי שנכתב במקור בלבד."],
+      "branches": [{"condition": "H6-and-H8-malefic", "outcome": "death"}, {"condition": "H13-H14-benefic", "outcome": "recovery"}, {"condition": "ruler-and-final-benefic", "outcome": "recovery"}, {"condition": "ruler-and-final-malefic", "outcome": "death"}],
+      "preconditions": ["שאלת חולה ומערך מלא."], "questionIntents": ["illness-recovery", "illness-duration", "illness-death-timing"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין להפוך את כלל הרוב למנוע רב־שיטות כללי; הוא ציטוט בתוך שיטת החולה."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [200, 201], "scanPdfPages": [202, 203], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "House numbers 1,6,8,13,14 and final ruler branches were checked visually."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house6.p201.animal-figure-mapping",
+      "entryType": "animal-figure-mapping",
+      "bookPages": [201],
+      "scanPdfPages": [203],
+      "v57Anchors": ["kashf-v57-draft.html#p201"],
+      "topic": "מיפוי צורות בבית השישי לסוגי בהמות",
+      "keywords": ["בהמות", "H6", "אדום", "סוהר", "שפל ראש", "ממון יוצא", "עדויות"],
+      "criticalFacts": ["המקור מונה התאמות נפרדות לבהמות בבית השישי ומחייב לשפוט לפי העדויות.", "הסריקה קוראת: אדום→כבשים/אילים; הצורה הבאה ברשימה→שוורים; נוסרת חיצונית→סוסים; סף חיצוני→גמלים; العقلة→חמורים; الأنكيس→גדיים ותיישים; قبض חיצוני→פרדות."],
+      "procedure": ["זהה את הצורה ב-H6.", "הצלב עם העדויות; אין להסתפק בהתאמה יחידה."],
+      "branches": [{"condition": "figure-in-H6", "outcome": "animal-kind-by-source-table"}],
+      "preconditions": ["שאלת בהמה/סוג בהמה."], "questionIntents": ["animal-kind"], "methodStatus": "SOURCE_TABLE_WITH_V57_MISMATCH", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין לתקן את שמות הצורות לפי דמיון עברי או סימטריה."],
+      "sourceDiscrepancies": ["v57 מחליף/מערבב כמה שמות צורות והתאמות בהמות לעומת הסריקה; נדרש תיקון נפרד."],
+      "sourceVerification": {"printedBookPages": [201], "scanPdfPages": [203], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "The animal names and figure glyphs were checked against the enlarged scan; two OCR-sensitive Arabic names remain queued for correction."}, "verificationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "entryId": "gate6.house6.p202.lost-animal-and-patient-loss-signs",
+      "entryType": "lost-animal-and-patient-loss-rule-set",
+      "bookPages": [202],
+      "scanPdfPages": [204],
+      "v57Anchors": ["kashf-v57-draft.html#p202"],
+      "topic": "השבת אבדה, מום בהמה וסימני אובדן החולה",
+      "keywords": ["אבדה", "H8", "H6", "מום בהמה", "H1", "H12", "לבן", "דרך", "חיבור", "סוהר"],
+      "criticalFacts": ["אבדה חוזרת אם H8/H6 מכילים צורות מיטיבות פנימיות.", "מום בהמה נגזר מעפר H1,H9,H13 והמאזן ומעפר H8,H2,H4 והמאזן; מכים את שתי הצורות ובודקים את טבען.", "לבן, דרך, חיבור או סוהר ב-H1/H8/H12 מורים על אובדן ודאי של החולה.", "היסוד המרובה קובע את הליחה: אש מרה צהובה, אוויר דם, מים ליחה, עפר מרה שחורה; לבן מן H1/H7 עם H10/המכריע ובפרט ב-H8 מורה על מוות."],
+      "procedure": ["לאבדה: בדוק H8 ו-H6.", "למום: הפק שתי צורות עפר והרכב אותן.", "לחולה: בדוק את ארבע צורות האובדן ואת כלל לבן."],
+      "branches": [{"condition": "benefic-in-H8-and-H6", "outcome": "lost-item-returns"}, {"condition": "loss-figure-in-H1-H8-H12", "outcome": "certain-loss"}, {"condition": "white-derived-in-H8", "outcome": "death"}],
+      "preconditions": ["שאלת אבדה, בהמה או חולה לפי הענף."], "questionIntents": ["lost-object-return", "animal-defect", "illness-death"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין לערבב את מסלול האבדה עם מסלול החולה."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [202], "scanPdfPages": [204], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "House numbers, four loss figures, element-to-humor mapping and white-figure branch were checked."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house6.p203.repeated-figure-danger",
+      "entryType": "repeated-figure-illness-danger-rule",
+      "bookPages": [203],
+      "scanPdfPages": [205],
+      "v57Anchors": ["kashf-v57-draft.html#p203"],
+      "topic": "טבע הבית השישי, חזרת הצורה וסימן הקבר",
+      "keywords": ["H6", "H1", "H8", "חיצוני", "מתהפך", "קבוע", "סף יוצא", "ממון נכנס", "ממון יוצא"],
+      "criticalFacts": ["H6 אש/אוויר/מים/עפר קובע בהתאמה מרה צהובה/דם/ליחה/מרה שחורה.", "חזרת H6 ב-H1 מורה על חולשת הגוף; חיצוני מורה על יציאה קלה; מתהפך מיטיב על בריאות; קבוע מיטיב על תקווה; קבוע מזיק על מוות.", "סף יוצא, ממון נכנס או ממון יוצא ב-H6 וחוזרים ב-H8 מסכנים את החולה; וכן לבן, סוהר, דרך, חיבור וקהלה. חזרה ב-H1 וב-H8 היא סימן קבר."],
+      "procedure": ["סווג את H6 לפי יסודו וסוגו.", "בדוק חזרת הצורה ב-H1/H8 ובפרט את רשימת המקור."],
+      "branches": [{"condition": "benefic-fixed", "outcome": "stable-hope"}, {"condition": "malefic-fixed", "outcome": "death"}, {"condition": "listed-figure-H6-and-repeat-H8", "outcome": "danger"}],
+      "preconditions": ["שאלת חולה; זיהוי פנימי/חיצוני/מתהפך/קבוע."], "questionIntents": ["illness-danger", "illness-recovery", "illness-death"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין להרחיב את רשימת הצורות מעבר למה שנקרא בסריקה."], "sourceDiscrepancies": [],
+      "sourceVerification": {"printedBookPages": [203], "scanPdfPages": [205], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Figure list, house recurrence and fixed/mutable branches were checked visually."}, "verificationStatus": "VERIFIED"
+    },
+    {
+      "entryId": "gate6.house6.p204.chapter7-seam-marriage-status",
+      "entryType": "chapter-transition-and-marriage-status-rule-set",
+      "bookPages": [204],
+      "scanPdfPages": [206],
+      "v57Anchors": ["kashf-v57-draft.html#p204"],
+      "topic": "חתימת דיני החולה ופתיחת דיני הנישואין — מעמד האישה",
+      "keywords": ["H2", "H4", "H5", "H16", "מעבר", "מיטת המת", "קהל המלווים", "נוגה", "צדק", "אמה", "חופשייה", "בעולה", "בתולה"],
+      "criticalFacts": ["H2 ב-H9 מורה על מעבר; H4 ב-H12 על מיטת המת; H5 ב-H16 על קהל המלווים.", "צורות נוגה ב-H1,H5,H9, וכן צורות צדק, מורות על הצלחת הנישואין.", "המקור אומר H1 ב-H7 → האישה אמה; H7 ב-H10 → חופשייה; H7 מתהפך → בעולה; H7 קבוע → בתולה.", "צורה מיטיבה ב-H8 מורה על מוהר רב; מיטיבה ב-H10 על בית טוב; מזיקה ב-H10 על פחיתות."],
+      "procedure": ["סגור תחילה את שלושת ענפי המעבר.", "לשאלת נישואין בדוק H1,H5,H9 ואת צורות צדק.", "למעמד האישה קרא את יחס H1/H7/H10 ואת מצב H7."],
+      "branches": [{"condition": "H2-in-H9", "outcome": "transition"}, {"condition": "H4-in-H12", "outcome": "dead-bed"}, {"condition": "H5-in-H16", "outcome": "funeral-followers"}, {"condition": "H1-in-H7", "outcome": "female-slave"}, {"condition": "H7-in-H10", "outcome": "free-woman"}, {"condition": "H7-mutable", "outcome": "previously-married"}, {"condition": "H7-fixed", "outcome": "virgin"}],
+      "preconditions": ["שאלת נישואין/מעמד אישה או סיום דיני החולה."], "questionIntents": ["marriage-success", "woman-status", "woman-virginity-status"], "methodStatus": "SOURCE_RULE_SET_WITH_V57_MISMATCH", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
+      "doNotInfer": ["אין להפוך את H1-in-H7 ל'חופשייה'; אין להחליף בין מתהפך/קבוע."],
+      "sourceDiscrepancies": ["v57 משבש את ענף H1 ב-H7 ומציג אותו כחופשייה, משמיט את H7 ב-H10, ומחליף את ענפי מתהפך/קבוע."],
+      "sourceVerification": {"printedBookPages": [204], "scanPdfPages": [206], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "The page seam, house numbers, figure statuses and marriage-status branches were checked against the enlarged scan."}, "verificationStatus": "REVIEW_REQUIRED"
     }
   ],
   "v57CorrectionQueue": [
@@ -17028,6 +17239,20 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "page": 196,
       "status": "OPEN",
       "summary": "Restore the source branch that the first figure in H6, in the Ahyan example, indicates darkness of vision."
+    },
+    {
+      "id": "B16-P201-ANIMAL-FIGURE-MISMATCH",
+      "entryId": "gate6.house6.p201.animal-figure-mapping",
+      "page": 201,
+      "status": "OPEN",
+      "summary": "Reconcile v57's animal/figure list with the printed scan; v57 currently substitutes several figure names and animal outcomes."
+    },
+    {
+      "id": "B16-P204-MARRIAGE-STATUS-REVERSAL",
+      "entryId": "gate6.house6.p204.chapter7-seam-marriage-status",
+      "page": 204,
+      "status": "OPEN",
+      "summary": "Restore source-faithful status branches: H1 in H7 means slave, H7 in H10 means free, mutable H7 means previously married, fixed H7 means virgin."
     }
   ],
   "downstreamCorrectionQueue": [
@@ -17456,6 +17681,13 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
     {
       "id": "B11-CROSS-PAGE-SOURCE-UNITS",
       "note": "A source rule is indexed across every printed page it occupies. Page breaks do not split the question/intent from its procedure or branches; the pp166-167 connection rule is the controlling example."
+    },
+    {
+      "id": "B16-DOWNSTREAM-ANIMAL-MAP",
+      "sourceEntryId": "gate6.house6.p201.animal-figure-mapping",
+      "status": "DEFER_UNTIL_INDEX_COMPLETE",
+      "target": "future Gate 6 animal-question registry/engine",
+      "summary": "Do not consume the current animal mapping until the printed p201 figure names and outcomes are repaired and separately certified."
     }
   ],
   "methodSelectionPolicy": {
@@ -17611,6 +17843,12 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       ],
       "status": "OPEN",
       "summary": "The inside-house localization method says اضرب لكل جهة مثلثة. The computational meaning of مثلثة is not defined in this passage; do not reduce it to one figure."
+    },
+    {
+      "id": "B16-SOURCE-P201-ANIMAL-NAMES",
+      "pages": [201],
+      "status": "OPEN",
+      "summary": "Two animal-table figure names in the printed scan are OCR/visual-sensitive (التشمير/الأنكيس family). Preserve the literal Arabic until a second visual read or source witness certifies the transliteration."
     }
   ],
   "gateStatus": {
@@ -17753,13 +17991,22 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
     },
     "gate6House6": {
       "pagesIndexed": [
-        196
+        196,
+        197,
+        198,
+        199,
+        200,
+        201,
+        202,
+        203,
+        204
       ],
-      "indexedThroughPage": 196,
-      "status": "CHAPTER_OPENED",
+      "indexedThroughPage": 204,
+      "status": "SOURCE_INDEX_COMPLETE_WITH_OPEN_REVIEW_ITEMS",
       "runtimeOperationalizationDeferred": true,
       "onePrimaryRoutePerQuestionIntent": true,
-      "nextFullSourcePage": 197
+      "chapterClosedAtPage": 204,
+      "nextFullSourcePage": 205
     }
   },
   "dhamirSelectionMap": {
