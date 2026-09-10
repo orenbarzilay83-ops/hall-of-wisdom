@@ -9,7 +9,7 @@
 - Repository: `orenbarzilay83-ops/hall-of-wisdom`
 - Authoritative branch: `main`
 - Working branch: `claude/app-cleanup-organization-mia9b2`
-- Latest indexed-content commit: `3d86b2edc42668aa92ad11e567784683df7bd397`
+- Latest indexed-content commit: `de64777dde16ad499df4211a874ca57ff4a6e655`
 - Last completed batch: `BATCH14_P185_191`
 - Book coverage: עמ׳ 21–191
 - Boundary capture: אין תפר פתוח; פרק 4 נסגר ופרק 5 נפתח בעמ׳ 191
