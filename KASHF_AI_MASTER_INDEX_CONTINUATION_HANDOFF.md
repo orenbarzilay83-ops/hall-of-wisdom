@@ -59,31 +59,33 @@ Super Audit Pass 1 כבר בוצע. הוא תיקן רק פגמים שהמקור
 
 השלב הפעיל הוא **Super Audit — Pass 2**.
 
-### מצב Pass 2 לאחר בדיקת עמ׳ 43–53
+### מצב Pass 2 לאחר בדיקת עמ׳ 43–66
 
-- `lastCompletedReviewEntry`: `houses.p46-53.profiles`
-- `lastCompletedPrintedRange`: **46–53**
-- `lastCompletedScanRange`: **48–55**
-- `nextReviewEntry`: `figures.p65.sought-hebrew-wording`
-- `nextReviewPrintedRange`: **65**
-- `reviewRequiredStatusCount`: **90** — שלוש הרשומות שנבדקו נשארו `REVIEW_REQUIRED` מסיבות מקור מתועדות; לא שונה סטטוס מלאכותית.
-- `pass2ReviewedEntries`: **3 / 90**
-- `pass2UnauditedReviewEntries`: **87**
+- `lastCompletedReviewEntry`: `figures.p65-66.house-gender-context`
+- `lastCompletedPrintedRange`: **65–66**
+- `lastCompletedScanRange`: **67–68**
+- `nextReviewEntry`: `figures.p97-99.dignities-source-table`
+- `nextReviewPrintedRange`: **97–99**
+- `reviewRequiredStatusCount`: **90** — חמש הרשומות שנבדקו עד כה נשארו `REVIEW_REQUIRED` רק כאשר נשאר blocker אמיתי; לא שונה סטטוס מלאכותית.
+- `pass2ReviewedEntries`: **5 / 90**
+- `pass2UnauditedReviewEntries`: **85**
 - `VERIFIED`: **181**
-- `PR #41 merge SHA`: `5f53b20933ea5e4087d974df165f8718713de707`
+- `PR #42 merge SHA`: `4462e1ac0fb41d6d5e1cbfbcf8ba5880c30bb4dc`
 
 הכרעות Pass 2 שכבר בוצעו:
 
 1. `houses.p43-44.taxonomy` — סיווג **B**: המקור המודפס ברור, אך v57 שגוי. הסריקה קובעת `زايد الأوتاد = H3/H6/H9` ומורה על העבר; `الساقط = H6/H12` הוא סיווג נפרד. האינדקס תוקן לשקף זאת, והרשומה נשארת `REVIEW_REQUIRED` עד תיקון v57.
 2. `houses.p45.aspects-and-gender` — סיווג **C**: המילה `والثاني` מודפסת בבירור לאחר שלושת זוגות ה־sextile, אך תפקידה התחבירי/מבני אינו סגור מן המקור. היא נשמרת כאנומליית מקור; נוסף `sourceConflictQueue` מתאים, ואין להמציא זוג רביעי.
-3. `houses.p46-53.profiles` — סיווג **B** ברוב הפערים, עם תת־מקרה **C** ב־H15: בדיקה חזותית רציפה של עמ׳ מודפס 46–53 חשפה פערי v57 נוספים ב־H1, H3, H5, H8, H9, H10, H12 ו־H15. האינדקס שומר את נוסח המקור והערבית הקשה במפורש; H15 נשאר גם ב־`sourceConflictQueue` משום שהמשפט המודפס עצמו פגום ואינו מכיל `خفيف`. הרשומה נשארת `REVIEW_REQUIRED`.
+3. `houses.p46-53.profiles` — סיווג **B** ברוב הפערים, עם תת־מקרה **C** ב־H15: בדיקה חזותית רציפה של עמ׳ מודפס 46–53 חשפה פערי v57 נוספים ב־H1, H3, H5, H8, H9, H10, H12 ו־H15. H15 נשאר גם ב־`sourceConflictQueue` משום שהמשפט המודפס עצמו פגום ואינו מכיל `خفيف`.
+4. `figures.p65.sought-hebrew-wording` — סיווג **B / translation-review**: טבלת הסמלים עצמה סגורה. v57 הנוכחי כבר תיקן את שורה 8 (`معدوم حد، مقصر`) ושיפר את שורה 6, אך שורה 2 עדיין מעלימה את המונח המודפס `منحضر` בתוך ״ממתינה״ ושורה 6 `بالرفق معدم` עדיין דורשת אישור ניסוח מקור־נאמן. הרשומה נשארת `REVIEW_REQUIRED`; לא משנים את מיפוי הסמלים.
+5. `figures.p65-66.house-gender-context` — סיווג **B**: ההליך לזכר/נקבה ברור במקור, אך המקור חוזר על `وله فرج حقيقي / ليس له فرج حقيقي` בעוד v57 מפרפרז כ־״סימן מין ממשי״. האינדקס משמר את הערבית ואינו מרחיב אנטומית; הרשומה נשארת `REVIEW_REQUIRED` עד תיקון/הערת v57 מקור־נאמנה.
 
 מכאן ממשיכים **לפי סדר העמודים בלבד** אל:
 
-`figures.p65.sought-hebrew-wording`
+`figures.p97-99.dignities-source-table`
 
-עמוד מקור: **65**  
-עמוד scan: **67**
+עמודי מקור: **97–99**  
+עמודי scan: **99–101**
 
 אין להתחיל מחדש מ־Batch 01, אין לדלג לרשומה מאוחרת משום שהיא קלה יותר, ואין להתחיל מ־p277.
 
