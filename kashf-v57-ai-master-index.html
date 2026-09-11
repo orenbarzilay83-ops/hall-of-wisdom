@@ -1012,7 +1012,8 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         "אמהות H1–H4; בנות H5–H8; נולדות H9–H12; יתרות H13–H16",
         "יתדות H1,H4,H7,H10 מורות על ההווה",
         "H2,H5,H8,H11 מוגדרים כמائل האותאד ומורים על העתיד",
-        "H3,H6,H9,H12 מוגדרים במקור במונח נפרד ומורים על העבר"
+        "زايد الأوتاد: H3,H6,H9 מורים על העבר; הסריקה המודפסת אינה כוללת כאן את H12.",
+        "الساقط: H6,H12 היא קטגוריה נפרדת המודפסת מיד לאחר מכן; אין למזג אותה עם زايد الأوتاد."
       ],
       "doNotInfer": [
         "אין לאחד מונחים ערביים שונים תחת תווית עברית אחת בלי הערת נוסח"
@@ -1074,7 +1075,8 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         ],
         "v57Checked": true,
         "printedScanChecked": true,
-        "note": "The printed taxonomy was re-read visually. The source distinction and H6 overlap are now recorded exactly; v57 still requires correction before certification."
+        "visualLineByLineChecked": true,
+        "note": "Pass 2 re-read printed pp43-44 directly from scan pp45-46. Printed p44 is explicit: زايد الأوتاد = H3/H6/H9 and indicates the past; الساقط = H6/H12 is a separate category. v57 still collapses H3/H6/H9/H12 into one Hebrew category, so this record remains REVIEW_REQUIRED until v57 is corrected."
       }
     },
     {
@@ -1125,7 +1127,8 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         ],
         "v57Checked": true,
         "printedScanChecked": true,
-        "note": "The anomaly is visually certain. The meaning of the isolated والثاني is not resolved, so the record intentionally remains REVIEW_REQUIRED."
+        "visualLineByLineChecked": true,
+        "note": "Pass 2 re-read printed p45 directly from scan p47. The isolated والثاني is visually certain, but its grammatical/structural function remains unresolved. The record therefore stays REVIEW_REQUIRED and must not be normalized into an inferred fourth sextile pair."
       }
     },
     {
@@ -18434,6 +18437,13 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
     "note": "A source may describe several methods, including majority/aggregation rules. The Hall of Wisdom AI does not run all of them by default. Operational selection is made by question intent and an explicitly approved primary route."
   },
   "sourceConflictQueue": [
+    {
+      "id": "PASS2-SOURCE-P45-WALTHANI",
+      "entryId": "houses.p45.aspects-and-gender",
+      "pages": [45],
+      "status": "OPEN",
+      "summary": "Printed p45 visibly contains the isolated token والثاني after the three sextile pairs and before ويخص كل تسديس وتدان. Its function is not secure from the source itself; preserve it literally and do not infer a fourth pair or silently delete it."
+    },
     {
       "id": "B07-SOURCE-P126-P132-ELEMENT-ATTRIBUTION",
       "pages": [
