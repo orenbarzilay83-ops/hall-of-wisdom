@@ -57,20 +57,31 @@ Super Audit Pass 1 כבר בוצע. הוא תיקן רק פגמים שהמקור
 
 ## 4. CONTINUATION POINTER — הנקודה המדויקת להמשך
 
-השלב הבא הוא **Super Audit — Pass 2**.
+השלב הפעיל הוא **Super Audit — Pass 2**.
 
-ה־Pass 2 מתחיל מהרשומה הראשונה לפי סדר עמודי הספר שעדיין מסומנת `REVIEW_REQUIRED`:
+### מצב Pass 2 לאחר בדיקת עמ׳ 43–45
 
-`houses.p43-44.taxonomy`
+- `lastCompletedReviewEntry`: `houses.p45.aspects-and-gender`
+- `lastCompletedPrintedRange`: **43–45**
+- `lastCompletedScanRange`: **45–47**
+- `nextReviewEntry`: `houses.p46-53.profiles`
+- `nextReviewPrintedRange`: **46–53**
+- `reviewRequiredStatusCount`: **90** — שתי הרשומות שנבדקו נשארו `REVIEW_REQUIRED` מסיבות מקור מתועדות; לא שונה סטטוס מלאכותית.
+- `pass2ReviewedEntries`: **2 / 90**
+- `pass2UnauditedReviewEntries`: **88**
+- `VERIFIED`: **181**
+- `Pass2 PR`: **#41** (יש להשלים merge SHA מיד לאחר המיזוג)
 
-עמודי מקור: **43–44**  
-עמודי scan: **45–46**
+הכרעות Pass 2 שכבר בוצעו:
 
-אחריה ממשיכים **לפי סדר העמודים בלבד**, בלי לדלג למקרים קלים יותר. הרשומה הבאה הידועה היא:
+1. `houses.p43-44.taxonomy` — סיווג **B**: המקור המודפס ברור, אך v57 שגוי. הסריקה קובעת `زايد الأوتاد = H3/H6/H9` ומורה על העבר; `الساقط = H6/H12` הוא סיווג נפרד. האינדקס תוקן לשקף זאת, והרשומה נשארת `REVIEW_REQUIRED` עד תיקון v57.
+2. `houses.p45.aspects-and-gender` — סיווג **C**: המילה `والثاني` מודפסת בבירור לאחר שלושת זוגות ה־sextile, אך תפקידה התחבירי/מבני אינו סגור מן המקור. היא נשמרת כאנומליית מקור; נוסף `sourceConflictQueue` מתאים, ואין להמציא זוג רביעי.
 
-`houses.p45.aspects-and-gender`
+מכאן ממשיכים **לפי סדר העמודים בלבד** אל:
 
-אין להתחיל מחדש מ־Batch 01, אין לחזור ולבנות אינדקס חדש, ואין להתחיל מ־p277.
+`houses.p46-53.profiles`
+
+אין להתחיל מחדש מ־Batch 01, אין לדלג לרשומה מאוחרת משום שהיא קלה יותר, ואין להתחיל מ־p277.
 
 ### כלל עדכון Pointer
 
