@@ -21,6 +21,8 @@
 
 קובץ הטקסט הערבי המלא / OCR / EPUB הוא **מקור עזר בלבד** ואינו גובר על הסריקה.
 
+הספר `الفلك المشحون في علم الرمل المصون` הוא **מקור עזר משווה מורשה** להבנת מונחים, שיטות וקטעים פגומים או עמומים. הוא אינו סמכות מעל הסריקה המודפסת של KASHF, ואסור להשתמש בו כדי למלא בשקט חסר ב־KASHF או לייחס ל־KASHF כלל שמופיע רק בו. אם נעזרים בו, יש לסמן זאת במפורש כ־supporting/comparative evidence; כל עמימות במקור הראשי נשארת `REVIEW_REQUIRED` עד הכרעה מתוך KASHF עצמו.
+
 ה־v57 הוא גרסת העבודה העברית שנבדקת מול המקור. אין להשתמש במנועים, ב־Canonical Registry, בקוד קיים או במסמכי implementation כדי „לתקן” את המקור או את ה־Master Index.
 
 כל סתירה, חוסר, מונח לא בטוח, מעבר עמוד בעייתי או תרגום שלא נסגר — נשמרים במפורש. **אין silent reconciliation ואין השלמה מהראש.**
@@ -59,18 +61,20 @@ Super Audit Pass 1 כבר בוצע. הוא תיקן רק פגמים שהמקור
 
 השלב הפעיל הוא **Super Audit — Pass 2**.
 
-### מצב Pass 2 לאחר בדיקת עמ׳ 43–66
+### מצב Pass 2 לאחר בדיקת עמ׳ 43–101
 
-- `lastCompletedReviewEntry`: `figures.p65-66.house-gender-context`
-- `lastCompletedPrintedRange`: **65–66**
-- `lastCompletedScanRange`: **67–68**
-- `nextReviewEntry`: `figures.p97-99.dignities-source-table`
-- `nextReviewPrintedRange`: **97–99**
-- `reviewRequiredStatusCount`: **90** — חמש הרשומות שנבדקו עד כה נשארו `REVIEW_REQUIRED` רק כאשר נשאר blocker אמיתי; לא שונה סטטוס מלאכותית.
-- `pass2ReviewedEntries`: **5 / 90**
-- `pass2UnauditedReviewEntries`: **85**
+- `lastCompletedReviewEntry`: `figures.p100-101.month-associations`
+- `lastCompletedPrintedRange`: **97–101**
+- `lastCompletedScanRange`: **99–103**
+- `nextReviewEntry`: `shibutz.p111.money-number-table`
+- `nextReviewPrintedRange`: **111**
+- `nextReviewScanRange`: **113**
+- `reviewRequiredStatusCount`: **90** — שמונה הרשומות שנבדקו עד כה נשארו `REVIEW_REQUIRED` רק כאשר נשאר blocker אמיתי; לא שונה סטטוס מלאכותית.
+- `pass2ReviewedEntries`: **8 / 90**
+- `pass2UnauditedReviewEntries`: **82**
 - `VERIFIED`: **181**
-- `PR #42 merge SHA`: `4462e1ac0fb41d6d5e1cbfbcf8ba5880c30bb4dc`
+- `latestMergedPass2PR`: **#43**
+- `PR #43 merge SHA`: `819a43f3d7c3b3630c11b6769650fe02b4d42a29`
 
 הכרעות Pass 2 שכבר בוצעו:
 
@@ -79,13 +83,16 @@ Super Audit Pass 1 כבר בוצע. הוא תיקן רק פגמים שהמקור
 3. `houses.p46-53.profiles` — סיווג **B** ברוב הפערים, עם תת־מקרה **C** ב־H15: בדיקה חזותית רציפה של עמ׳ מודפס 46–53 חשפה פערי v57 נוספים ב־H1, H3, H5, H8, H9, H10, H12 ו־H15. H15 נשאר גם ב־`sourceConflictQueue` משום שהמשפט המודפס עצמו פגום ואינו מכיל `خفيف`.
 4. `figures.p65.sought-hebrew-wording` — סיווג **B / translation-review**: טבלת הסמלים עצמה סגורה. v57 הנוכחי כבר תיקן את שורה 8 (`معدوم حد، مقصر`) ושיפר את שורה 6, אך שורה 2 עדיין מעלימה את המונח המודפס `منحضر` בתוך ״ממתינה״ ושורה 6 `بالرفق معدم` עדיין דורשת אישור ניסוח מקור־נאמן. הרשומה נשארת `REVIEW_REQUIRED`; לא משנים את מיפוי הסמלים.
 5. `figures.p65-66.house-gender-context` — סיווג **B**: ההליך לזכר/נקבה ברור במקור, אך המקור חוזר על `وله فرج حقيقي / ليس له فرج حقيقي` בעוד v57 מפרפרז כ־״סימן מין ממשי״. האינדקס משמר את הערבית ואינו מרחיב אנטומית; הרשומה נשארת `REVIEW_REQUIRED` עד תיקון/הערת v57 מקור־נאמנה.
+6. `figures.p97-99.dignities-source-table` — סיווג **B**: טבלת המקור ברורה ומכילה 14 צורות בלבד. v57 הנוכחי כבר תיקן כמה שגיאות ישנות, ולכן הוסרו מן discrepancy list; שלושת ה־blockers החיים הם הכנסת סוהר וממון נכנס שאינם בטבלה המודפסת, השמטת חיבור ודרך, ופנים 3 לממון יוצא במקום פנים 5 במקור.
+7. `figures.p100.joy-grief-supplement` — סיווג **B**: המקור המודפס ברור. v57 עדיין משמיט את שמחת נוגה בבית 5; מציג דרך+ממון יוצא כצער בבית 1 במקום לבן+דרך; ובסעיף ההסתייגות לשבתאי/מאדים משאיר רק סף יוצא במקום ממון יוצא+סף יוצא. הנוסח החריג `ترح الأشكال ... فرحها بالحادي عشر` נשמר ככתבו ואינו מתוקן מן ההיגיון.
+8. `figures.p100-101.month-associations` — סיווג **B**: צילום עמ׳ 101 מכריע את זרימת השורות שה־OCR עלול לבלבל. לבן משויך גם לשוואל וגם למוחרם, וסף נכנס משויך לרביע האחרון. v57 משמיט את שני השיוכים; אין להפוך את מפת החודשים ליחס אחד־לאחד.
 
 מכאן ממשיכים **לפי סדר העמודים בלבד** אל:
 
-`figures.p97-99.dignities-source-table`
+`shibutz.p111.money-number-table`
 
-עמודי מקור: **97–99**  
-עמודי scan: **99–101**
+עמוד מקור: **111**  
+עמוד scan: **113**
 
 אין להתחיל מחדש מ־Batch 01, אין לדלג לרשומה מאוחרת משום שהיא קלה יותר, ואין להתחיל מ־p277.
 
