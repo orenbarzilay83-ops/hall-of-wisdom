@@ -2675,7 +2675,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         }
       ]
     },
-    {
+        {
       "entryId": "figures.p65.sought-pattern-table",
       "entryType": "source-table",
       "bookPages": [
@@ -2711,8 +2711,9 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         ],
         "v57Checked": true,
         "printedScanChecked": true,
-        "note": "The p65 symbols were decoded directly from the printed table and match the symbol order present in v57. Wording nuances are tracked separately instead of contaminating the verified pattern map.",
-        "visualTableChecked": true
+        "note": "Pass 2 visually re-read printed p65 / scan p67 and rechecked the current v57 draft. The eight-symbol mapping remains source-verified. Row 8 v57 now preserves معدوم حد، مقصر as ״נעדר גבול; מקצר/חסר״, so the indexed Hebrew row is synchronized without changing the verified pattern map.",
+        "visualTableChecked": true,
+        "visualLineByLineChecked": true
       },
       "soughtRows": [
         {
@@ -2769,11 +2770,11 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
           "pattern": "2122",
           "name": "אדום",
           "arabic": "مطلوب جدا ، معدوم حد ، مقصر ، ناطق بذاته",
-          "hebrew": "מבוקשת מאוד; נעדרת עד הקצה; קצרה; מדברת מצד עצמה."
+          "hebrew": "מבוקשת מאוד; נעדר גבול; מקצר/חסר; מדברת מצד עצמה."
         }
       ]
     },
-    {
+        {
       "entryId": "figures.p65.sought-hebrew-wording",
       "entryType": "translation-review",
       "bookPages": [
@@ -2794,16 +2795,18 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         "معدوم حد"
       ],
       "criticalFacts": [
-        "המיפוי בין שמונה הסמלים לשורות סגור; הבדיקה כאן עוסקת רק בדיוק העברי של כמה ביטויים.",
-        "שורה 2 כוללת במקור את המילה منحضر; אין להעלים אותה בתוך \"ממתינה\" בלי הערת נוסח.",
-        "שורה 6: بالرفق معدم דורש ניסוח עברי זהיר; שורה 8: معدوم حد، مقصر אינה זהה בהכרח ל\"נעדרת עד הקצה; קצרה\"."
+        "המיפוי בין שמונה הסמלים לשורות סגור ומאומת; רשומה זו עוסקת רק בדיוק העברי של תיאורי השורות.",
+        "שורה 2 מודפסת בבירור: مطلوب ، منتظر ، معدوم ، منحضر ، باكي ، صامت. v57 מתרגם ״מצופה; נעדרת וממתינה״, אך ״ממתינה״ אינה שומרת במפורש את המונח منحضر; אין להחליף את המונח בלי הערת נוסח.",
+        "שורה 6 מודפסת בבירור: مطلوب ، بالرفق معدم ، أمن ، ناظر ، متحرك. v57 כבר שופר ל״מבוקשת; מבוקשת ברוך/בעדינות; נעדרת; בטוחה; צופה ומתנועעת״, אך הצירוף بالرفق معدم נשאר קומפקטי מבחינה לשונית ויש לשמור את הערבית עד ניסוח עברי מאושר.",
+        "שורה 8 מודפסת בבירור: مطلوب جدا ، معدوم حد ، مقصر ، ناطق بذاته. v57 הנוכחי כבר מתקן את הניסוח ל״מבוקשת מאוד; נעדר גבול; מקצר/חסר; מדברת מצד עצמה״; פער שורה 8 נסגר מבחינת v57 הנוכחי."
       ],
       "outputScope": "חומר יסוד לאחזור AI; אינו פסק עצמאי אלא אם המקור מנסח הליך מפורש.",
       "doNotInfer": [
-        "אין לשנות את מיפוי הסמלים בגלל פער תרגום בתיאור."
+        "אין לשנות את מיפוי הסמלים בגלל פער תרגום בתיאור.",
+        "אין לנחש תחליף עברי ל־منحضر או ליישב את بالرفق معدم לפי הקשר בלבד; יש לשמר את הערבית המדויקת עד אישור ניסוח."
       ],
       "sourceDiscrepancies": [
-        "v57 preserves the table and patterns, but rows 2, 6 and 8 contain Arabic wording whose current Hebrew rendering is narrower/unstable. Keep Arabic exact until the v57 wording is formally corrected."
+        "Current v57 already repairs row 8 and materially improves row 6, but row 2 still renders the separate printed token منحضر as ״ממתינה״ and row 6 remains translation-sensitive. Preserve the exact Arabic for rows 2 and 6 until the Hebrew wording is formally approved."
       ],
       "verificationStatus": "REVIEW_REQUIRED",
       "sourceVerification": {
@@ -2815,10 +2818,12 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         ],
         "v57Checked": true,
         "printedScanChecked": true,
-        "note": "Printed p65 and v57 were compared. The symbol mapping is secure; this separate review record deliberately keeps translation nuances open."
+        "visualLineByLineChecked": true,
+        "visualTableChecked": true,
+        "note": "Pass 2 visually re-read all eight rows on printed p65 / scan p67 and compared them with the current v57 draft. Row 8 is now source-aligned in v57; row 2 remains an explicit v57 wording defect and row 6 remains lexical translation-review. Record stays REVIEW_REQUIRED."
       }
     },
-    {
+        {
       "entryId": "figures.p65-66.house-gender-context",
       "entryType": "contextual-rule",
       "bookPages": [
@@ -2842,17 +2847,19 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         "עדים"
       ],
       "criticalFacts": [
-        "המקור אומר שצורה עשויה לקבל דין זכר או נקבה לפי הבית; בודקים עדים ויחסי בתים.",
+        "המקור אומר שצורה עשויה לקבל דין זכר או נקבה לפי הבית; בודקים עדים, יתדות, נוטים מן היתד, נופלים, שילוש, ריבוע וסקסטיל.",
         "נקודות האש והאוויר נחשבות זכריות; נקודות המים והעפר נקביות; רוב הנקודות מכריע בין זכר לנקבה.",
-        "כאשר המספרים שווים, המקור קושר זאת להעדר فرج حقيقي; יש לשמר את הביטוי הערבי עד סגירת התרגום.",
-        "מובאת גם דרך של הולדת צורה מצורת העניין והעד ובדיקת נקודותיה."
+        "המקור חוזר כמה פעמים על הצירופים وله فرج حقيقي / ليس له فرج حقيقي כתנאי המבדיל בתוך דין הזכר/נקבה; יש לשמר את הביטוי הערבי במפורש עד אישור תרגום עברי מקור־נאמן.",
+        "כאשר מספרי הנקודות משתווים, המקור קושר זאת ל־ليس له فرج حقيقي ומוסיף שהוא מן الأشياء الصامتة.",
+        "מובאת גם דרך חלופית: מולידים צורה מצורת הכוונה הנסתרת ומן העד, בוחנים את הנקודה שבה ודנים לפיה; בשקילות גמורה בכל הדוגמאות המקור שוב אומר ليس له فرج حقيقي."
       ],
       "outputScope": "חומר יסוד לאחזור AI; אינו פסק עצמאי אלא אם המקור מנסח הליך מפורש.",
       "doNotInfer": [
-        "אין לפרש فرج חقيقي באופן אנטומי או מיני מעבר למה שהמקור והתרגום המאושר יתמכו בו."
+        "אין להחליף את فرج حقيقي בפרפרזה עברית כאילו היא נוסח המקור; עד סגירת התרגום יש לשמר את הביטוי הערבי.",
+        "אין להרחיב את הביטוי מעבר לתפקידו המפורש בדין הזכר/נקבה בפרק זה."
       ],
       "sourceDiscrepancies": [
-        "v57 renders وله فرج حقيقي / no فرج حقيقي as \"סימן מין ממשי\". This may be interpretive/narrowing; preserve the Arabic phrase in the index until a source-faithful Hebrew wording is approved."
+        "Printed pp65-66 repeatedly use وله فرج حقيقي / ليس له فرج حقيقي. Current v57 consistently paraphrases this as ״סימן מין ממשי״. The operational rule is clear, but the Hebrew wording is interpretive rather than a source-preserving rendering, so the record remains REVIEW_REQUIRED until v57 is formally corrected or annotated."
       ],
       "verificationStatus": "REVIEW_REQUIRED",
       "sourceVerification": {
@@ -2866,7 +2873,8 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         ],
         "v57Checked": true,
         "printedScanChecked": true,
-        "note": "The operational rule is source-clear, but one critical Arabic expression is intentionally left translation-review rather than silently normalized."
+        "visualLineByLineChecked": true,
+        "note": "Pass 2 visually re-read printed pp65-66 / scan pp67-68. The procedural gender rule is source-clear and the page seam is sound. The only blocker is v57 treatment of the repeated phrase فرج حقيقي; no anatomical expansion or euphemistic normalization is inferred in the index."
       }
     },
     {
@@ -17627,14 +17635,14 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "entryId": "figures.p65.sought-hebrew-wording",
       "page": 65,
       "status": "OPEN",
-      "summary": "Review Hebrew wording of منحضر, بالرفق معدم, and معدوم حد، مقصر while preserving the verified p65 symbol mapping."
+      "summary": "Pass 2: current v57 has corrected row 8 and materially improved row 6. Keep this item OPEN for row 2 منحضر (still collapsed into ״ממתינה״) and for final source-faithful approval of the compact phrase بالرفق معدم; verified symbol mapping is unchanged."
     },
     {
       "id": "B02-P66-FARAJ-HAQIQI",
       "entryId": "figures.p65-66.house-gender-context",
       "page": 66,
       "status": "OPEN",
-      "summary": "Preserve and source-review the phrase فرج حقيقي; current v57 \"סימן מין ממשי\" may be narrower than the printed wording."
+      "summary": "Pass 2: printed pp65-66 repeatedly use وله فرج حقيقي / ليس له فرج حقيقي. Preserve that Arabic wording explicitly; current v57 ״סימן מין ממשי״ is an interpretive paraphrase and remains open for source-faithful correction/annotation."
     },
     {
       "id": "B04-P97-99-DIGNITIES",
