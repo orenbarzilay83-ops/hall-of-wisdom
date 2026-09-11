@@ -59,27 +59,31 @@ Super Audit Pass 1 כבר בוצע. הוא תיקן רק פגמים שהמקור
 
 השלב הפעיל הוא **Super Audit — Pass 2**.
 
-### מצב Pass 2 לאחר בדיקת עמ׳ 43–45
+### מצב Pass 2 לאחר בדיקת עמ׳ 43–53
 
-- `lastCompletedReviewEntry`: `houses.p45.aspects-and-gender`
-- `lastCompletedPrintedRange`: **43–45**
-- `lastCompletedScanRange`: **45–47**
-- `nextReviewEntry`: `houses.p46-53.profiles`
-- `nextReviewPrintedRange`: **46–53**
-- `reviewRequiredStatusCount`: **90** — שתי הרשומות שנבדקו נשארו `REVIEW_REQUIRED` מסיבות מקור מתועדות; לא שונה סטטוס מלאכותית.
-- `pass2ReviewedEntries`: **2 / 90**
-- `pass2UnauditedReviewEntries`: **88**
+- `lastCompletedReviewEntry`: `houses.p46-53.profiles`
+- `lastCompletedPrintedRange`: **46–53**
+- `lastCompletedScanRange`: **48–55**
+- `nextReviewEntry`: `figures.p65.sought-hebrew-wording`
+- `nextReviewPrintedRange`: **65**
+- `reviewRequiredStatusCount`: **90** — שלוש הרשומות שנבדקו נשארו `REVIEW_REQUIRED` מסיבות מקור מתועדות; לא שונה סטטוס מלאכותית.
+- `pass2ReviewedEntries`: **3 / 90**
+- `pass2UnauditedReviewEntries`: **87**
 - `VERIFIED`: **181**
-- `Pass2 PR`: **#41** (יש להשלים merge SHA מיד לאחר המיזוג)
+- `PR #41 merge SHA`: `5f53b20933ea5e4087d974df165f8718713de707`
 
 הכרעות Pass 2 שכבר בוצעו:
 
 1. `houses.p43-44.taxonomy` — סיווג **B**: המקור המודפס ברור, אך v57 שגוי. הסריקה קובעת `زايد الأوتاد = H3/H6/H9` ומורה על העבר; `الساقط = H6/H12` הוא סיווג נפרד. האינדקס תוקן לשקף זאת, והרשומה נשארת `REVIEW_REQUIRED` עד תיקון v57.
 2. `houses.p45.aspects-and-gender` — סיווג **C**: המילה `والثاني` מודפסת בבירור לאחר שלושת זוגות ה־sextile, אך תפקידה התחבירי/מבני אינו סגור מן המקור. היא נשמרת כאנומליית מקור; נוסף `sourceConflictQueue` מתאים, ואין להמציא זוג רביעי.
+3. `houses.p46-53.profiles` — סיווג **B** ברוב הפערים, עם תת־מקרה **C** ב־H15: בדיקה חזותית רציפה של עמ׳ מודפס 46–53 חשפה פערי v57 נוספים ב־H1, H3, H5, H8, H9, H10, H12 ו־H15. האינדקס שומר את נוסח המקור והערבית הקשה במפורש; H15 נשאר גם ב־`sourceConflictQueue` משום שהמשפט המודפס עצמו פגום ואינו מכיל `خفيف`. הרשומה נשארת `REVIEW_REQUIRED`.
 
 מכאן ממשיכים **לפי סדר העמודים בלבד** אל:
 
-`houses.p46-53.profiles`
+`figures.p65.sought-hebrew-wording`
+
+עמוד מקור: **65**  
+עמוד scan: **67**
 
 אין להתחיל מחדש מ־Batch 01, אין לדלג לרשומה מאוחרת משום שהיא קלה יותר, ואין להתחיל מ־p277.
 
