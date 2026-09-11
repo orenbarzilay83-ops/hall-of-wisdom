@@ -1,0 +1,24 @@
+name: Temporary Kashf Pass2 P97-101 Work
+on:
+  push:
+    branches:
+      - codex/kashf-super-audit-pass2-p97-101-work
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply source audit
+        run: python3 .github/scripts/temp_kashf_pass2_p97_101_patch.py
+      - name: Commit audit changes
+        run: |
+          git config user.name "orenbarzilay83-ops"
+          git config user.email "orenbarzilay83@gmail.com"
+          git add kashf-v57-ai-master-index.html KASHF_AI_MASTER_INDEX_CONTINUATION_HANDOFF.md
+          git diff --cached --quiet && exit 0
+          git commit -m "fix(kashf): audit review entries pages 97-101"
+          git push origin HEAD:codex/kashf-super-audit-pass2-p97-101-work
