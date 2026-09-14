@@ -6607,7 +6607,8 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "runtimeEligible": false,
       "outputScope": "חומר מקור לאחזור AI; עצם הופעתו בספר אינה הופכת אותו למנוע פעיל.",
       "doNotInfer": [
-        "אין לתקן את עמ׳ 117 לפי הסימטריה או לפי עמ׳ 115 בלי הערת נוסח."
+        "אין לתקן את עמ׳ 117 לפי הסימטריה או לפי עמ׳ 115 בלי הערת נוסח.",
+        "אין להוסיף את المنشآت/הנולדות למשפט הפותח בעמ׳ 117 רק כדי להשלים ארבע קבוצות סימטריות."
       ],
       "sourceDiscrepancies": [
         "v57 שינה את הבנות ל״מדרגות השבועות״ והוסיף את הנולדות כ״רבע הים / מדרגות החודשים״; זה מתאים למבנה שמופיע במקומות אחרים בספר אך אינו הנוסח המודפס של המשפט בעמ׳ 117."
@@ -6623,7 +6624,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         "v57Checked": true,
         "printedScanChecked": true,
         "visualLineByLineChecked": true,
-        "note": "v57 was compared with the printed Arabic scan; literal source anomalies were preserved rather than normalized."
+        "note": "Pass 2 visually re-read printed p117 / scan p119. The opening sentence clearly gives الأمهات = east = ranks of days; البنات = west = ranks of months; الموازين = qibla/south = ranks of years, and does not explicitly name المنشآت in that sentence. Current v57 regularizes this to daughters=weeks and inserts spawned=months; the printed wording remains authoritative."
       }
     },
     {
@@ -6781,16 +6782,19 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         "המקור נותן כללי הוספה/גריעה כאשר צורות של יחידת זמן אחת יושבות במדרגות של יחידת זמן אחרת.",
         "בדוגמה על ממון: קהלה=120, מוסיפים 6 של הבית הרביעי ומקבלים 126; מפחיתים 3.",
         "לאחר ההפחתה הספר המודפס כותב במילים: ألف ومائة وثلاثة وعشرون = 1123, אך מיד מפחית על 28 ומקבל שארית 11; שארית 11 מתאימה ל־123 ולא ל־1123.",
-        "האנומליה נשמרת כטעות/סתירת נוסח אפשרית ואינה מתוקנת בשקט."
+        "האנומליה נשמרת כטעות/סתירת נוסח אפשרית ואינה מתוקנת בשקט.",
+        "במעבר עמ׳ 117→118 המקור המודפס אומר במפורש: وإن كانت أشكال الشهور في مراتب السنين ، فالشهور زيادة على تلك السنين — צורות החודשים במדרגות השנים, והחודשים מתווספים על אותן שנים."
       ],
       "operationalRole": "PRIMARY_CANDIDATE",
       "runtimeEligible": false,
       "outputScope": "חומר מקור לאחזור AI; עצם הופעתו בספר אינה הופכת אותו למנוע פעיל.",
       "doNotInfer": [
-        "אין להחליט שהמחבר התכוון בוודאות ל־123 ללא הערת נוסח."
+        "אין להחליט שהמחבר התכוון בוודאות ל־123 ללא הערת נוסח.",
+        "אין לשנות את מרاتب السنين ל״מדרגות החודשים״ ואין להחליף את فالشهور בנושא אחר כדי ליישר את הכלל לסימטריה."
       ],
       "sourceDiscrepancies": [
-        "v57 מציג 123 ומעלים את ألف המודפס; האינדקס שומר גם את הנוסח המודפס וגם את הסתירה החשבונית."
+        "v57 מציג 123 ומעלים את ألف המודפס; האינדקס שומר גם את הנוסח המודפס וגם את הסתירה החשבונית.",
+        "v57 בעמ׳ 118 משנה את כלל המקור ״צורות החודשים במדרגות השנים → החודשים מתווספים על השנים״ ל״צורות החודשים במדרגות החודשים → הקיבוצים מתווספים על החודשים״; זהו שינוי מבני ולא רק ניסוח."
       ],
       "verificationStatus": "REVIEW_REQUIRED",
       "sourceVerification": {
@@ -6807,7 +6811,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         "v57Checked": true,
         "printedScanChecked": true,
         "visualLineByLineChecked": true,
-        "note": "v57 was compared with the printed Arabic scan; literal source anomalies were preserved rather than normalized."
+        "note": "Pass 2 visually re-read printed pp117-119. The p117→p118 seam explicitly says أشكال الشهور في مراتب السنين ... فالشهور زيادة على تلك السنين. Printed p118 also visibly reads ألف ومائة وثلاثة وعشرون after 126−3, while the following reduction by 28 gives remainder 11; both the literal 1123 and the arithmetic contradiction are preserved. OCR/helper normalization to 123 does not override the printed scan."
       },
       "arithmeticTrace": {
         "base": 120,
@@ -6857,7 +6861,9 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "runtimeEligible": false,
       "outputScope": "חומר מקור לאחזור AI; עצם הופעתו בספר אינה הופכת אותו למנוע פעיל.",
       "doNotInfer": [
-        "אין להפעיל את השיטה אוטומטית לכל שאלת זמן/מספר עד שתיבחר כנתיב הראשי המתאים."
+        "אין להפעיל את השיטה אוטומטית לכל שאלת זמן/מספר עד שתיבחר כנתיב הראשי המתאים.",
+        "אין להחליף את החזרה המודפסת השנייה של الأمهات ב־المنشآت/נולדות ללא הערת נוסח מפורשת, גם אם כך מתקבלת סימטריה רגילה יותר.",
+        "אין לצמצם את ألفا درهم ל־ألف درهم: צורת הזוגי ألفا פירושה אלפיים, והיא תואמת לערך 2 בדוגמת אדום."
       ],
       "sourceDiscrepancies": [
         "v57 מנרמל את החזרה השנייה של الأمهات בעמ׳ 119 לנולדות.",
@@ -6876,7 +6882,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         "v57Checked": true,
         "printedScanChecked": true,
         "visualLineByLineChecked": true,
-        "note": "v57 was compared with the printed Arabic scan; literal source anomalies were preserved rather than normalized."
+        "note": "Pass 2 visually re-read printed pp119-120 / scan pp121-122. Printed p119 visibly repeats الأمهات in the weeks/months branch; this is not an OCR substitution and must not be silently normalized to المنشآت. Printed p120 visibly says وفي محل السنين : ألفا درهم in the Humra example, i.e. 2000 dirhams; current v57 has 1000."
       },
       "structuralScale": {
         "mothers": "שעות/ימים",
@@ -18073,6 +18079,13 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "page": 208,
       "status": "OPEN",
       "summary": "Recheck the printed marriage-house figure names and mappings; v57 drifts from the scan in several critical rows."
+    },
+    {
+      "id": "PASS2-P118-MONTHS-IN-YEARS-V57",
+      "entryId": "shibutz.p117-119.add-subtract-example",
+      "page": 118,
+      "status": "OPEN",
+      "summary": "Restore the printed rule وإن كانت أشكال الشهور في مراتب السنين ، فالشهور زيادة على تلك السنين. Current v57 changes ranks of years to ranks of months and changes the subject from months to collections; preserve the source structure."
     }
   ],
   "downstreamCorrectionQueue": [
@@ -18683,6 +18696,15 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "pages": [201],
       "status": "OPEN",
       "summary": "Two animal-table figure names in the printed scan are OCR/visual-sensitive (التشمير/الأنكيس family). Preserve the literal Arabic until a second visual read or source witness certifies the transliteration."
+    },
+    {
+      "id": "PASS2-SOURCE-P118-1123-ARITHMETIC",
+      "pages": [
+        118
+      ],
+      "entryId": "shibutz.p117-119.add-subtract-example",
+      "status": "OPEN",
+      "summary": "Printed p118 visibly reads ألف ومائة وثلاثة وعشرون after 126−3, but arithmetic gives 123 and the next printed reduction by 28 yields remainder 11, which also fits 123. Preserve the printed 1123 and the contradiction; do not silently delete ألف."
     }
   ],
   "gateStatus": {

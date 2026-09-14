@@ -61,20 +61,20 @@ Super Audit Pass 1 כבר בוצע. הוא תיקן רק פגמים שהמקור
 
 השלב הפעיל הוא **Super Audit — Pass 2**.
 
-### מצב Pass 2 לאחר בדיקת עמ׳ 43–115
+### מצב Pass 2 לאחר בדיקת עמ׳ 43–120
 
-- `lastCompletedReviewEntry`: `shibutz.p114-115.dalail-al-fadl-table`
-- `lastCompletedPrintedRange`: **111–115**
-- `lastCompletedScanRange`: **113–117**
-- `nextReviewEntry`: `shibutz.p117-119.add-subtract-example`
-- `nextReviewPrintedRange`: **117–119**
-- `nextReviewScanRange`: **119–121**
-- `reviewRequiredStatusCount`: **90** — שתים־עשרה הרשומות שנבדקו עד כה נשארו `REVIEW_REQUIRED` רק כאשר נשאר blocker אמיתי; לא שונה סטטוס מלאכותית.
-- `pass2ReviewedEntries`: **12 / 90**
-- `pass2UnauditedReviewEntries`: **78**
+- `lastCompletedReviewEntry`: `shibutz.p119-120.duration-points-method`
+- `lastCompletedPrintedRange`: **117–120**
+- `lastCompletedScanRange`: **119–122**
+- `nextReviewEntry`: `foundation.p123.bound-point-element-associations`
+- `nextReviewPrintedRange`: **123**
+- `nextReviewScanRange`: **125**
+- `reviewRequiredStatusCount`: **90** — חמש־עשרה הרשומות שנבדקו עד כה נשארו `REVIEW_REQUIRED` רק כאשר נשאר blocker אמיתי; לא שונה סטטוס מלאכותית.
+- `pass2ReviewedEntries`: **15 / 90**
+- `pass2UnauditedReviewEntries`: **75**
 - `VERIFIED`: **181**
-- `latestMergedPass2PR`: **#44**
-- `PR #44 merge SHA`: `6226831a2777e58f68337099e82bc82c94ddf592`
+- `latestMergedPass2PR`: **#45**
+- `PR #45 merge SHA`: `d7d663331ffa5e05e39480c19db53b09ca9e4025`
 
 הכרעות Pass 2 שכבר בוצעו:
 
@@ -90,13 +90,16 @@ Super Audit Pass 1 כבר בוצע. הוא תיקן רק פגמים שהמקור
 10. `shibutz.p112.lisan-al-amr` — סיווג **B**: צילום המקור אומר במפורש `مائل الأوتاد` כטריגר המבני לענף העתיד. v57 מצמצם זאת למילה הסמנטית ״בעתיד״ ולכן הרשומה נשארת `REVIEW_REQUIRED`; ה־OCR העזר אינו גובר על הצילום.
 11. `shibutz.p113.al-zanati-examples` — סיווג **B** + תיקון seam: בדוגמת נשוא ראש המקור אומר `نقص من السنة، ثلاثة أيام` — להפחית שלושה ימים מן השנה. v57 משבש זאת. כלל אל־זנאתי ממשיך בפועל לפתיחת עמ׳ 114, ולכן טווח המקור הורחב לעמ׳ 113–114 / scan 115–116 בלי לשנות את מזהה הרשומה היציב.
 12. `shibutz.p114-115.dalail-al-fadl-table` — סיווג **B** עם תיקון מקור בתוך האינדקס: הטבלה המודפסת מיוחסת ל־`دلايل الفضل في علم الرمل` ומכילה ערכים חריגים שאסור לנרמל לפי כפל. Pass 2 תיקן גם את האינדקס עצמו: חיבור/`الإجتماع` מודפס באורך **600**, לא 60; v57 מציג 6. עומק שורה 1 נשאר ריק, ושאר ערכי 201/301/306 נשמרים כלשונם.
+13. `shibutz.p117-119.add-subtract-example` — סיווג **B/C**: המקור המודפס ברור בכלל המעבר p117→118 — `أشكال الشهور في مراتب السنين` והחודשים מתווספים על השנים — בעוד v57 משנה אותו למדרגות החודשים ולקיבוצים. בדוגמת הממון עמ׳ 118 הסריקה עצמה מדפיסה `ألف ومائة وثلاثة وعشرون` (=1123) לאחר 126−3, אך ההמשך נותן שארית 11 בחלוקה ל־28, התואמת 123. הסתירה הפנימית נשמרת ב־`sourceConflictQueue`; אין למחוק את `ألف` בשקט.
+14. `shibutz.p117.time-ranks-literal` — סיווג **B**: המשפט המודפס בעמ׳ 117 נותן אמהות=מזרח=ימים, בנות=מערב=חודשים, מאזנים=דרום/קיבלה=שנים, ואינו מזכיר במפורש `المنشآت` באותו משפט. v57 מסדר מחדש לבנות=שבועות ומוסיף נולדות=חודשים; האינדקס שומר את נוסח המקור ולא משלים מסימטריה.
+15. `shibutz.p119-120.duration-points-method` — סיווג **B**: צילום עמ׳ 119 חוזר בפועל על `الأمهات` גם בענף שבועות/חודשים; אין להחליף ל־`المنشآت` בלי הערת נוסח. בעמ׳ 120 מודפס `ألفا درهم` בדוגמת אדום, כלומר **2000** דרהם, בעוד v57 נותן 1000.
 
 מכאן ממשיכים **לפי סדר העמודים בלבד** אל:
 
-`shibutz.p117-119.add-subtract-example`
+`foundation.p123.bound-point-element-associations`
 
-עמודי מקור: **117–119**  
-עמודי scan: **119–121**
+עמוד מקור: **123**  
+עמוד scan: **125**
 
 אין להתחיל מחדש מ־Batch 01, אין לדלג לרשומה מאוחרת משום שהיא קלה יותר, ואין להתחיל מ־p277.
 
