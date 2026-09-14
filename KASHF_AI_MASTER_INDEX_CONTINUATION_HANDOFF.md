@@ -61,20 +61,20 @@ Super Audit Pass 1 כבר בוצע. הוא תיקן רק פגמים שהמקור
 
 השלב הפעיל הוא **Super Audit — Pass 2**.
 
-### מצב Pass 2 לאחר בדיקת עמ׳ 43–101
+### מצב Pass 2 לאחר בדיקת עמ׳ 43–115
 
-- `lastCompletedReviewEntry`: `figures.p100-101.month-associations`
-- `lastCompletedPrintedRange`: **97–101**
-- `lastCompletedScanRange`: **99–103**
-- `nextReviewEntry`: `shibutz.p111.money-number-table`
-- `nextReviewPrintedRange`: **111**
-- `nextReviewScanRange`: **113**
-- `reviewRequiredStatusCount`: **90** — שמונה הרשומות שנבדקו עד כה נשארו `REVIEW_REQUIRED` רק כאשר נשאר blocker אמיתי; לא שונה סטטוס מלאכותית.
-- `pass2ReviewedEntries`: **8 / 90**
-- `pass2UnauditedReviewEntries`: **82**
+- `lastCompletedReviewEntry`: `shibutz.p114-115.dalail-al-fadl-table`
+- `lastCompletedPrintedRange`: **111–115**
+- `lastCompletedScanRange`: **113–117**
+- `nextReviewEntry`: `shibutz.p117-119.add-subtract-example`
+- `nextReviewPrintedRange`: **117–119**
+- `nextReviewScanRange`: **119–121**
+- `reviewRequiredStatusCount`: **90** — שתים־עשרה הרשומות שנבדקו עד כה נשארו `REVIEW_REQUIRED` רק כאשר נשאר blocker אמיתי; לא שונה סטטוס מלאכותית.
+- `pass2ReviewedEntries`: **12 / 90**
+- `pass2UnauditedReviewEntries`: **78**
 - `VERIFIED`: **181**
-- `latestMergedPass2PR`: **#43**
-- `PR #43 merge SHA`: `819a43f3d7c3b3630c11b6769650fe02b4d42a29`
+- `latestMergedPass2PR`: **#44**
+- `PR #44 merge SHA`: `6226831a2777e58f68337099e82bc82c94ddf592`
 
 הכרעות Pass 2 שכבר בוצעו:
 
@@ -86,13 +86,17 @@ Super Audit Pass 1 כבר בוצע. הוא תיקן רק פגמים שהמקור
 6. `figures.p97-99.dignities-source-table` — סיווג **B**: טבלת המקור ברורה ומכילה 14 צורות בלבד. v57 הנוכחי כבר תיקן כמה שגיאות ישנות, ולכן הוסרו מן discrepancy list; שלושת ה־blockers החיים הם הכנסת סוהר וממון נכנס שאינם בטבלה המודפסת, השמטת חיבור ודרך, ופנים 3 לממון יוצא במקום פנים 5 במקור.
 7. `figures.p100.joy-grief-supplement` — סיווג **B**: המקור המודפס ברור. v57 עדיין משמיט את שמחת נוגה בבית 5; מציג דרך+ממון יוצא כצער בבית 1 במקום לבן+דרך; ובסעיף ההסתייגות לשבתאי/מאדים משאיר רק סף יוצא במקום ממון יוצא+סף יוצא. הנוסח החריג `ترح الأشكال ... فرحها بالحادي عشر` נשמר ככתבו ואינו מתוקן מן ההיגיון.
 8. `figures.p100-101.month-associations` — סיווג **B**: צילום עמ׳ 101 מכריע את זרימת השורות שה־OCR עלול לבלבל. לבן משויך גם לשוואל וגם למוחרם, וסף נכנס משויך לרביע האחרון. v57 משמיט את שני השיוכים; אין להפוך את מפת החודשים ליחס אחד־לאחד.
+9. `shibutz.p111.money-number-table` — סיווג **B**: המקור המודפס ברור. H7=29 כבר תוקן ב־v57 ולכן הוסר כ־blocker חי; נשארו רק החלופות H11=600 ו־H12=700, בעוד v57 מציג 760/770. אין לגעת בסדר הנפרד של עמ׳ 106 שבו position 7=28.
+10. `shibutz.p112.lisan-al-amr` — סיווג **B**: צילום המקור אומר במפורש `مائل الأوتاد` כטריגר המבני לענף העתיד. v57 מצמצם זאת למילה הסמנטית ״בעתיד״ ולכן הרשומה נשארת `REVIEW_REQUIRED`; ה־OCR העזר אינו גובר על הצילום.
+11. `shibutz.p113.al-zanati-examples` — סיווג **B** + תיקון seam: בדוגמת נשוא ראש המקור אומר `نقص من السنة، ثلاثة أيام` — להפחית שלושה ימים מן השנה. v57 משבש זאת. כלל אל־זנאתי ממשיך בפועל לפתיחת עמ׳ 114, ולכן טווח המקור הורחב לעמ׳ 113–114 / scan 115–116 בלי לשנות את מזהה הרשומה היציב.
+12. `shibutz.p114-115.dalail-al-fadl-table` — סיווג **B** עם תיקון מקור בתוך האינדקס: הטבלה המודפסת מיוחסת ל־`دلايل الفضل في علم الرمل` ומכילה ערכים חריגים שאסור לנרמל לפי כפל. Pass 2 תיקן גם את האינדקס עצמו: חיבור/`الإجتماع` מודפס באורך **600**, לא 60; v57 מציג 6. עומק שורה 1 נשאר ריק, ושאר ערכי 201/301/306 נשמרים כלשונם.
 
 מכאן ממשיכים **לפי סדר העמודים בלבד** אל:
 
-`shibutz.p111.money-number-table`
+`shibutz.p117-119.add-subtract-example`
 
-עמוד מקור: **111**  
-עמוד scan: **113**
+עמודי מקור: **117–119**  
+עמודי scan: **119–121**
 
 אין להתחיל מחדש מ־Batch 01, אין לדלג לרשומה מאוחרת משום שהיא קלה יותר, ואין להתחיל מ־p277.
 

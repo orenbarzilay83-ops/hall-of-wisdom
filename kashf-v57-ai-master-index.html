@@ -5927,7 +5927,6 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         "אין לתקן את עמ׳ 106 ל־29: עמ׳ 106 הוא סדר אחר ובו 28; הפער הוא מסורת מקומית של עמ׳ 111."
       ],
       "sourceDiscrepancies": [
-        "v57 הנוכחי מציג לבית 7 את הערך 28 במקום 29 בקטע עמ׳ 111.",
         "v57 הנוכחי מציג לבית 11 חלופה 760 במקום 600.",
         "v57 הנוכחי מציג לבית 12 חלופה 770 במקום 700."
       ],
@@ -5942,7 +5941,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         "v57Checked": true,
         "printedScanChecked": true,
         "visualLineByLineChecked": true,
-        "note": "Printed p111 was re-read number by number. The record remains REVIEW_REQUIRED only because v57 currently disagrees in three numeric fields."
+        "note": "Pass 2 re-read printed p111 number by number. Current v57 already has H7=29; the two live v57 blockers are H11 alternate 760→600 and H12 alternate 770→700. The distinct p106 sequence remains untouched at position 7=28."
       },
       "moneyByHouse": [
         {
@@ -6095,13 +6094,16 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "entryId": "shibutz.p113.al-zanati-examples",
       "entryType": "quoted-authority-examples",
       "bookPages": [
-        113
+        113,
+        114
       ],
       "scanPdfPages": [
-        115
+        115,
+        116
       ],
       "v57Anchors": [
-        "kashf-v57-draft.html#p113"
+        "kashf-v57-draft.html#p113",
+        "kashf-v57-draft.html#p114"
       ],
       "topic": "דברי אל־זנאתי במספר — דוגמאות מעשיות",
       "keywords": [
@@ -6119,7 +6121,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       ],
       "outputScope": "חומר מקור לאחזור AI; אינו הופך לבדו לפסק פעיל.",
       "doNotInfer": [
-        "אין להסמיך את כלל אל־זנאתי המלא לפני מיפוי המשכו בעמ׳ 114.",
+        "אין לנתק את סוף כלל אל־זנאתי שבעמ׳ 114 מן הדוגמאות שבעמ׳ 113.",
         "אין להפוך את ארבע הדוגמאות לפורמולה כללית מעבר למה שהמקור מוסר."
       ],
       "sourceDiscrepancies": [
@@ -6128,15 +6130,17 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "verificationStatus": "REVIEW_REQUIRED",
       "sourceVerification": {
         "printedBookPages": [
-          113
+          113,
+          114
         ],
         "scanPdfPages": [
-          115
+          115,
+          116
         ],
         "v57Checked": true,
         "printedScanChecked": true,
         "visualLineByLineChecked": true,
-        "note": "Printed p113 was checked line by line. The source example is clear; the record remains REVIEW_REQUIRED because v57 is wrong in the Ahyan example and the rule continues on p114."
+        "note": "Pass 2 checked printed p113 and the opening continuation on p114 line by line. The Ahyan example clearly says نقص من السنة، ثلاثة أيام; the general al-Zanati rule crosses the page seam and is therefore traced to pp113-114. REVIEW_REQUIRED remains because current v57 corrupts the Ahyan subtraction wording."
       },
       "examples": [
         {
@@ -6183,7 +6187,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
           "resultText": "מפחיתים מן השנה שלושה ימים ודנים בשארית"
         }
       ],
-      "continuationRequired": [
+      "continuationIncluded": [
         114
       ],
       "operationalRole": "REFERENCE_ONLY",
@@ -6259,7 +6263,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "criticalFacts": [
         "הספר מייחס את הטבלה במפורש לספר אחר: دلايل الفضل في علم الرمل.",
         "הסריקה המודפסת מכילה ערכים חריגים שאינם תמיד שווים למכפלת אורך×רוחב; הם נשמרים כפי שנדפסו.",
-        "דוגמאות קריטיות: סף נכנס עומק 3; נקי הלחי עומק 201; חיבור אורך 60; דרך עומק 4; כבוד נכנס עומק 201; ממון יוצא עומק 301; כבוד יוצא עומק 306."
+        "דוגמאות קריטיות: סף נכנס עומק 3; נקי הלחי עומק 201; חיבור אורך 600; דרך עומק 4; כבוד נכנס עומק 201; ממון יוצא עומק 301; כבוד יוצא עומק 306."
       ],
       "operationalRole": "REFERENCE_ONLY",
       "runtimeEligible": false,
@@ -6270,6 +6274,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       ],
       "sourceDiscrepancies": [
         "v57 מנרמל חלק גדול מערכי העומק לפי אורך×רוחב ומחליף בכך את המספרים המודפסים.",
+        "v57 מציג לחיבור אורך 6, בעוד צילום המקור בעמ׳ 115 מדפיס בבירור אורך 600; אין לנרמל את החריגה.",
         "בשורה הראשונה העומק מודפס כריק; אין להשלים אותו ל־28 בלי הערת נוסח מפורשת."
       ],
       "verificationStatus": "REVIEW_REQUIRED",
@@ -6382,7 +6387,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
           "position": 11,
           "pattern": "2112",
           "name": "חיבור",
-          "length": 60,
+          "length": 600,
           "width": 4,
           "depth": 24,
           "number": 500
@@ -17675,7 +17680,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "entryId": "shibutz.p111.money-number-table",
       "page": 111,
       "status": "OPEN",
-      "summary": "In the p111 from-another-source money/number table, restore H7=29, H11 alternate=600, H12 alternate=700. Do not alter the distinct p106 canonical sequence where position 7=28."
+      "summary": "Pass 2: current v57 already has H7=29. Restore only the two live p111 variants: H11 alternate=600 (not 760) and H12 alternate=700 (not 770). Do not alter the distinct p106 canonical sequence where position 7=28."
     },
     {
       "id": "B05-P112-MAIL-AWTAD",
@@ -17696,7 +17701,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "entryId": "shibutz.p114-115.dalail-al-fadl-table",
       "page": "114-115",
       "status": "OPEN",
-      "summary": "Restore the printed Dalail al-Fadl table literally; do not normalize depth/length values by multiplication."
+      "summary": "Restore the printed Dalail al-Fadl table literally; do not normalize depth/length values by multiplication. In particular preserve blank H1 depth, H11/Ijtima length=600, and the printed anomalous depths including 201/301/306."
     },
     {
       "id": "B06-P117-TIME-RANKS-LITERAL",
