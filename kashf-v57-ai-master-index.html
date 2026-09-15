@@ -8175,7 +8175,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         "v57Checked": true,
         "printedScanChecked": true,
         "visualLineByLineChecked": true,
-        "note": "Printed p135 table was visually checked cell-by-cell. The source table is closed; REVIEW_REQUIRED is only for the current v57 transcription mismatch."
+        "note": "Pass 2 visually re-read printed p135 / scan p137 cell-by-cell. Source table is closed: Sun ا ج س ت; Venus ب ط ع ث; Mercury ج ي ف ح; Moon د ك ص ذ; Saturn ه ل ق ص; Jupiter و م ز ط; Mars ز ن س ع. REVIEW_REQUIRED remains only for current v57 transcription mismatches."
       },
       "planetLetters": [
         {
@@ -8284,7 +8284,8 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       ],
       "criticalFacts": [
         "המקור מסדר צורות לפי כוכבים ומזלות ומביא שיר ולאחריו טבלת תשעה טורים: מאדים, נוגה, عطارد, ירח, שמש, צדק, שבתאי, ראש וזנב.",
-        "בעמ׳ 136 נאמר במפורש שממון יוצא / القبض الخارج חוזר למאדים, ושסף נכנס / العتبة الداخلة חוזר לשבתאי בתוך הקשר זה.",
+        "טבלת עמ׳ 136 מחלקת את כל 16 הצורות פעם אחת: מאדים=1211/בר הלחי+2122/אדום; נוגה=1121/נלחם+2211/כבוד נכנס; عطارد=2112/חיבור+2222/קהלה; ירח=1111/דרך+2212/לבן; שמש=1122/כבוד יוצא+2121/ממון נכנס; צדק=2111/סף נכנס+1222/נשוא ראש; שבתאי=1221/סוהר+2221/שפל ראש; ראש=1212/ממון יוצא; זנב=1112/סף יוצא.",
+        "בעמ׳ 136, מיד לאחר הטבלה, נאמר במפורש שממון יוצא / القبض الخارج חוזר למאדים, ושסף נכנס / العتبة الداخلة חוזר לשבתאי בתוך הקשר זה; לשון החזרה אינה משנה את תאי הטבלה.",
         "בעמ׳ 137 נאמר ששתי הצורות הנותרות מיוחסות לזנב ולראש: ממון יוצא / قبض خارج וסף יוצא / عتبة خارجة, וששתיהן חוזרות לשבתאי ולמאדים.",
         "זהו שיבוץ ייחוס תשתיתי; אינו הוראה להריץ אסטרולוגיה בכל שאלה."
       ],
@@ -8295,7 +8296,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       ],
       "sourceDiscrepancies": [
         "עמ׳ 136 מזכיר العتبة الداخلة בהחזרה לשבתאי, ואילו עמ׳ 137, בדיון בשתי הצורות הנותרות לראש/זנב, מזכיר العتبة الخارجة. אין לאחד את שתי האמירות בשקט.",
-        "זהות ראש/זנב נשמרת לפי טבלת שיבוץ המזג המפורשת בעמ׳ 134; אמירות ההחזרה בעמ׳ 136-137 נשמרות כשכבה נפרדת."
+        "v57 עמ׳ 136 מערבב את הטבלה עם לשון ההחזרה שאחריה: הוא מוסיף 1212/ממון יוצא לשורת מאדים אף שהטבלה המודפסת עצמה נותנת למאדים רק 1211/בר הלחי ו-2122/אדום; בשורת נוגה הוא מציג 1122/כבוד יוצא במקום 2211/כבוד נכנס; ובשורת הראש הוא מציג 2212/לבן במקום 1212/ממון יוצא. בנוסף הוא משתמש בשם ההיסטורי השגוי „נקי הלחי” ל-1211 במקום השם הקנוני בר הלחי."
       ],
       "verificationStatus": "REVIEW_REQUIRED",
       "sourceVerification": {
@@ -8312,11 +8313,47 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         "v57Checked": true,
         "printedScanChecked": true,
         "visualLineByLineChecked": true,
-        "note": "v57 was compared with the printed Arabic scan; source scope and disagreements are preserved explicitly."
+        "note": "Pass 2 visually re-read printed pp135-137 / scans137-139. The p136 nine-column glyph table was decoded directly from the scan and closes all 16 canonical patterns exactly once. The p136 العتبة الداخلة versus p137 العتبة الخارجة wording is preserved as an internal source conflict; v57 table conflations are separately queued."
       },
       "methodStatus": "SOURCE_MAP",
       "operationalRole": "FOUNDATION_KNOWLEDGE",
-      "runtimeEligible": false
+      "runtimeEligible": false,
+      "printedPlanetFigureMap": {
+        "מאדים": [
+          "1211",
+          "2122"
+        ],
+        "נוגה": [
+          "1121",
+          "2211"
+        ],
+        "عطارد": [
+          "2112",
+          "2222"
+        ],
+        "ירח": [
+          "1111",
+          "2212"
+        ],
+        "שמש": [
+          "1122",
+          "2121"
+        ],
+        "צדק": [
+          "2111",
+          "1222"
+        ],
+        "שבתאי": [
+          "1221",
+          "2221"
+        ],
+        "ראש": [
+          "1212"
+        ],
+        "זנב": [
+          "1112"
+        ]
+      }
     },
     {
       "entryId": "shibutz.p136-137.season-figure-groups",
@@ -8372,7 +8409,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         "v57Checked": true,
         "printedScanChecked": true,
         "visualLineByLineChecked": true,
-        "note": "Printed pp136-137 were visually inspected. Figure stacks were decoded row-by-row from dot/line glyphs; auxiliary OCR was not used to infer glyph counts."
+        "note": "Pass 2 visually re-read printed pp136-137 / scans138-139. Seasonal glyph stacks were decoded directly from the printed scan: Spring 6, Summer 5, Winter 3, Autumn 3, with intentional overlap; no OCR or elimination was used to complete a group."
       },
       "seasonGroups": [
         {
@@ -8445,10 +8482,12 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "entryId": "foundation.p137.season-letters-zodiac-elements",
       "entryType": "source-correspondence",
       "bookPages": [
-        137
+        137,
+        138
       ],
       "scanPdfPages": [
-        139
+        139,
+        140
       ],
       "v57Anchors": [
         "kashf-v57-draft.html#p137"
@@ -8464,32 +8503,36 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         "מים"
       ],
       "criticalFacts": [
-        "אביב: אבجد هوز; קיץ: حطي كلمن; סתיו: شعفص قرشت; חורף: ثنخذ ضظغ — נשמרת כתיבת המקור.",
+        "אביב: أبجد هوز; קיץ: حطي كلمن; סתיו: شعفص قرشت; חורף: تثخذ ضظغ — נשמרת כתיבת המקור המודפס.",
         "מזלות האש: טלה, אריה, קשת; העפר: שור, בתולה, גדי; האוויר: תאומים, מאזניים, דלי; המים: סרטן, עקרב, דגים.",
-        "המקור מציג קשרים אלו כחלק משיבוץ המזלות והעונות."
+        "רשימת יסודות המזלות מתחילה בעמ׳ 137 ונשלמת בשורה הראשונה של עמ׳ 138; טווח המקור נשמר כיחידה חוצת-עמוד."
       ],
       "outputScope": "חומר מקור לאחזור AI; אינו הופך לבדו לפסק פעיל.",
       "doNotInfer": [
         "אין לנרמל את רצפי האותיות לפי אבג׳ד חיצוני אם נוסח המקור שונה."
       ],
-      "sourceDiscrepancies": [],
-      "verificationStatus": "VERIFIED",
+      "sourceDiscrepancies": [
+        "v57 עמ׳ 137 מתעתק את אותיות החורף כ„תנכז׳ ד׳ט׳ג׳”, בעוד הסריקה המודפסת קוראת בבירור تثخذ ضظغ. יש לתקן את v57 לפי המקור."
+      ],
+      "verificationStatus": "REVIEW_REQUIRED",
       "sourceVerification": {
         "printedBookPages": [
-          137
+          137,
+          138
         ],
         "scanPdfPages": [
-          139
+          139,
+          140
         ],
         "v57Checked": true,
         "printedScanChecked": true,
         "visualLineByLineChecked": true,
-        "note": "v57 was compared with the printed Arabic scan; source scope and disagreements are preserved explicitly."
+        "note": "Pass 2 re-read the printed p137→p138 seam. Winter letters are visually تثخذ ضظغ, not the prior indexed ثنخذ ضظغ. The air clause ends p137 and the water signs continue at the top of p138; source range expanded accordingly. v57 mismatch keeps this record REVIEW_REQUIRED."
       },
       "seasonLetters": [
         {
           "season": "אביב",
-          "lettersArabic": "ابجد هوز"
+          "lettersArabic": "أبجد هوز"
         },
         {
           "season": "קיץ",
@@ -8497,7 +8540,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         },
         {
           "season": "חורף",
-          "lettersArabic": "ثنخذ ضظغ"
+          "lettersArabic": "تثخذ ضظغ"
         },
         {
           "season": "סתיו",
@@ -17548,6 +17591,20 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
     }
   ],
   "v57CorrectionQueue": [
+    {
+      "id": "B08-P137-SEASON-LETTERS-V57",
+      "entryId": "foundation.p137.season-letters-zodiac-elements",
+      "page": 137,
+      "status": "OPEN",
+      "summary": "Correct v57 winter-season letters to the printed تثخذ ضظغ; current v57 Hebrew transcription תנכז׳ ד׳ט׳ג׳ does not preserve the printed sequence."
+    },
+    {
+      "id": "B08-P136-ZODIAC-PLANET-TABLE-V57",
+      "entryId": "shibutz.p135-137.zodiac-planet-order",
+      "page": 136,
+      "status": "OPEN",
+      "summary": "Correct v57 p136 against the printed nine-column glyph table: Mars table cell is 1211/בר הלחי + 2122/אדום (1212 belongs to the following return-to-Mars sentence, not the cell); Venus is 1121/נלחם + 2211/כבוד נכנס, not 1122/כבוד יוצא; Head is 1212/ממון יוצא, not 2212/לבן. Keep Tail=1112/סף יוצא and use canonical בר הלחי for نقي الخد."
+    },
     {"id":"AUDIT-P165-PROXIMITY-EXTENDED-V57","entryId":"gate5.p165.figure-proximity-extended","page":165,"status":"OPEN","summary":"Restore printed p165 as its own proximity-rule unit: Ataba Kharija twice for a patient = هلك, followed by the Tariq, Jamaa, al-Thiqaf/Bayad and remaining pair rules. Do not fold p165 back into the p164 core record."},
     {"id":"AUDIT-P147-148-ORDER12-PAGINATION","entryId":"shibutz.p147-149.order12-like-abduh","page":"147-148","status":"OPEN","summary":"Traceability/page-boundary repair for v57: printed order 12 starts on p147 and continues on p148, while the current v57 artifact places the order-12 heading/content under p148. Preserve source pages independently from v57 anchor pagination."},
     {"id":"AUDIT-P148-149-ORDER13-PAGINATION","entryId":"shibutz.p149.order13-damaged-name","page":"148-149","status":"OPEN","summary":"Printed order 13 begins on p148 immediately after order 12 and continues on p149; current v57 begins the order at p149. Keep the damaged heading/editor note بياض في الأصل unresolved and repair the page traceability."},
@@ -18562,6 +18619,13 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
     "note": "A source may describe several methods, including majority/aggregation rules. The Hall of Wisdom AI does not run all of them by default. Operational selection is made by question intent and an explicitly approved primary route."
   },
   "sourceConflictQueue": [
+    {
+      "id": "PASS2-SOURCE-P136-137-ATABA-IN-OUT",
+      "entryId": "shibutz.p135-137.zodiac-planet-order",
+      "page": "136-137",
+      "status": "OPEN",
+      "summary": "Preserve the internal printed-source difference without reconciliation: p136 return-to-Saturn sentence says العتبة الداخلة, while p137 remaining Head/Tail sentence says عتبة خارجة."
+    },
     {
       "id": "PASS2-SOURCE-P53-H15-DEFECTIVE-SENTENCE",
       "pages": [53],
