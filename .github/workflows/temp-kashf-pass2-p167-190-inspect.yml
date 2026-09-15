@@ -1,0 +1,45 @@
+name: Temporary Kashf Pass2 P167-190 Inspect
+on:
+  push:
+    branches:
+      - codex/kashf-super-audit-pass2-p167-180
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect target records
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json,re
+          from pathlib import Path
+          text=Path('kashf-v57-ai-master-index.html').read_text()
+          m=re.search(r'<script id="kashf-ai-master-index-data" type="application/json">\s*(\{.*?\})\s*</script>', text, re.S)
+          d=json.loads(m.group(1))
+          rr=[r for r in d['records'] if r.get('verificationStatus')=='REVIEW_REQUIRED']
+          print('### RR ORDER 160-195')
+          for j,r in enumerate(rr):
+              pages=r.get('bookPages') or []
+              if any(160 <= p <= 195 for p in pages):
+                  print(j, r.get('entryId'), pages, r.get('scanPdfPages'))
+          print('\n### FULL RECORDS 167-190')
+          for i,r in enumerate(d['records']):
+              pages=r.get('bookPages') or []
+              if any(167 <= p <= 190 for p in pages):
+                  print('\n### INDEX',i,r.get('entryId'),r.get('verificationStatus'))
+                  print(json.dumps(r,ensure_ascii=False,indent=2))
+          print('\n### QUEUES 167-190')
+          for qname in ('v57CorrectionQueue','sourceConflictQueue','downstreamCorrectionQueue'):
+              for q in d.get(qname,[]):
+                  p=q.get('page')
+                  hit=False
+                  if isinstance(p,int) and 167<=p<=190: hit=True
+                  elif isinstance(p,str):
+                      nums=[int(x) for x in re.findall(r'\d+',p)]
+                      if any(167<=x<=190 for x in nums): hit=True
+                  if hit:
+                      print(qname,json.dumps(q,ensure_ascii=False))
+          PY
