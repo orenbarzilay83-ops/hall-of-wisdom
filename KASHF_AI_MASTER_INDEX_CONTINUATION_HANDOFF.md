@@ -67,20 +67,20 @@ Super Audit Pass 1 כבר בוצע. הוא תיקן רק פגמים שהמקור
 
 השלב הפעיל הוא **Super Audit — Pass 2**.
 
-### מצב Pass 2 לאחר בדיקת עמ׳ 43–178
+### מצב Pass 2 לאחר בדיקת עמ׳ 43–194
 
-- `lastCompletedReviewEntry`: `gate6.house1.p178.lifespan-element-count-walk`
-- `lastCompletedPrintedRange`: **167–178**
-- `lastCompletedScanRange`: **169–180**
-- `nextReviewEntry`: `gate6.house2.p179.creditor-debtor-money-movement`
-- `nextReviewPrintedRange`: **179**
-- `nextReviewScanRange`: **181**
-- `reviewRequiredStatusCount`: **89** — 18 רשומות REVIEW_REQUIRED ראשוניות בעמ׳ 167–178 נבדקו; `gate6.house1.p178.lifespan-element-count-walk` נסגרה ל־VERIFIED לאחר אימות שה-v57 הנוכחי כבר תיקן את דוגמת 10/H10, ו־17 האחרות נשארו REVIEW_REQUIRED בשל פערי v57 חיים או עמימות מקור.
-- `pass2ReviewedEntries`: **48 / 90**
-- `pass2UnauditedReviewEntries`: **42**
-- `VERIFIED`: **181**
-- `latestMergedPass2PR`: **#49**
-- `PR #49 merge SHA`: `8e08199c8916b3c798445a01d125eef83b7fb931`
+- `lastCompletedReviewEntry`: `gate6.house5.p194.child-nature-health-and-birth`
+- `lastCompletedPrintedRange`: **179–194**
+- `lastCompletedScanRange`: **181–196**
+- `nextReviewEntry`: `gate6.house5.p196.children-clothing-and-chapter6-seam`
+- `nextReviewPrintedRange`: **196**
+- `nextReviewScanRange`: **198**
+- `reviewRequiredStatusCount`: **89** — 18 רשומות REVIEW_REQUIRED נוספות בעמ׳ 179–194 נבדקו. כולן נשארו REVIEW_REQUIRED בשל פערי v57 חיים או עמימות מקור; לא בוצעה העלאת סטטוס מלאכותית.
+- `pass2ReviewedEntries`: **66 / 90**
+- `pass2UnauditedReviewEntries`: **24**
+- `VERIFIED`: **182**
+- `latestMergedPass2PR`: **#50**
+- `PR #50 merge SHA`: `8d6e5365b370a01b1bf0edf65561fa1a17c259ed`
 
 הכרעות Pass 2 שכבר בוצעו:
 
@@ -137,12 +137,31 @@ Super Audit Pass 1 כבר בוצע. הוא תיקן רק פגמים שהמקור
 47. `gate6.house1.p177.request-benefics-by-house-class` — סיווג **B**: המקור מבחין יתדות / `الموائل` הסמוכים ליתדות / נופלים. v57 מתרגם את המעמד האמצעי כ„ראשי הבתים”.
 48. `gate6.house1.p178.lifespan-element-count-walk` — סיווג **A / VERIFIED**: המקור המודפס נותן במפורש שארית 10 והגעה ל-H10. v57 הנוכחי כבר תוקן ותואם את המקור, ולכן פריט התיקון הישן הוסר והרשומה נסגרה ל-VERIFIED.
 
+49. `gate6.house2.p179.creditor-debtor-money-movement` — סיווג **B/C**: המקור מבדיל במפורש בין הליכת H1 שני בתים לבין שלושה, ומשמר `اليد`, `فرح` ו־`بكر` בלי נרמול. v57 עדיין מאחד ענפים ומפרש את המונחים; הרשומה נשארת פתוחה.
+50. `gate6.house2.p180.questioner-asked-money-element-comparison` — סיווג **B/C**: סדר שתי צורות הממון וערכי היסודות 1–4 ברורים, אך שלב המרת היסוד התחתון לסכום כסף אינו מושלם במקור. אין להמציא נוסחת סכום.
+51. `gate6.house2.p180.inheritance-three-stage-derivation` — סיווג **B**: המקור דורש שתי צורות ביניים ואז `وأخرج من الشكلين شكلا` — צורה שלישית. החזרה החריגה ל-H2 בשלב השני נשמרת כלשונה; v57 משמיט את ההולדה השלישית.
+52. `gate6.house2.p181.other-book-money-remainder-method` — סיווג **C**: מקור חיצוני בתוך הספר מורה תחילה הפחתה בזוגות, אך אחר כך מפרט שאריות 1–7. הסתירה הפנימית נשמרת ואין ליישבה מתמטית.
+53. `gate6.house3.p182-183.siblings-and-agreement` — סיווג **B**: H3 מיטיב מורה טוב/הסכמה והמקור מוסיף במפורש שמזיק הוא ההפך. v57 משמיט את ענף H3 המזיק.
+54. `gate6.house3.p183.which-city-better` — סיווג **B**: ההשוואה בין H1+H2 לבין H7+H8 מותנית במפורש בכך שהצורות מיטיבות; v57 משמיט את תנאי ההפעלה.
+55. `gate6.house4.p184-185.property-house-garden-map` — סיווג **B**: במקור H7=הבְּקוּל/צמחייה ו-H3=תעלות/אפיקים. v57 מחליף ביניהם.
+56. `gate6.house4.p185.hidden-object-essence-and-place` — סיווג **B/C**: המקור המודפס נותן בענף המימי `فمن البقول`, ניסוח חריג אך ברור חזותית. v57 מנרמל לקטגוריה צמחית כללית; אין להמציא ענף אש.
+57. `gate6.house4.p185.hidden-place-recursive-quarters` — סיווג **B/C**: המקור נותן 1=מזרח, 2=מערב, 3=דרום, 4=צפון ומדפיס בסוף `أربعة وتسعين بيتا` — 94 בתים. v57 הופך מזרח/מערב ומתקן בשקט ל-64; שתי האנומליות נשמרות.
+58. `gate6.house4.p186.gematria-quarter-by-qibla` — סיווג **B**: ההוראה היא `استقبل بوجهك القبلة` — לפנות לקיבלה, לא לדרום. מפת השאריות 1–4 נשארת מזרח/מערב/דרום/צפון.
+59. `gate6.house4.p186.tamtam-four-quarter-casts` — סיווג **B**: בענף 2 מיטיבות/2 מזיקות מודפס `استخرج منها شكلين` — שתי צורות ביניים, ומהן תוצאה. v57 מצמצם לצורה אחת.
+60. `gate6.house4.p187.hidden-kind-and-root-direction` — סיווג **B/C**: מוציאים שתי צורות מן היתדות ומהן שלישית. אמהות=מזרח, בנות=מערב, מאזנים=דרום; מילת הכיוון אחרי `المنشآت` אינה סגורה ואין להשלים צפון מסימטריה.
+61. `gate6.house4.p188-189.depth-elements-and-worked-example` — סיווג **B**: המקור דורש לבחון את `العناصر المفتوحة`, ובדוגמה מסכם במפורש `أصبعين وشبر` — שתי אצבעות ושיבר. v57 משתמש בכל ארבעת היסודות ומסכם אצבע אחת ושיבר.
+62. `gate6.house4.p189-190.tamtam-water-depth-table` — סיווג **B**: השרשרת היא H1+H12, אחר כך H12+H9, ואז תוצאה משתי צורות הביניים. שמות הצורות נשמרים קנונית, כולל `الجودلة`/נלחם ו-`نقي الخد`/בר הלחי; אין להמציא מספר לממון נכנס/יוצא.
+63. `gate6.house4.p190-191.near-far-and-element-direction` — סיווג **B**: ירח ומאדים=קרוב; כוכב חמה וצדק=דרך קשה עם פחד ובהלה; שבתאי ב-H1=דרך קוצנית; עפר מורה קיבלה, לא דרום. v57 סוטה בכל הענפים האלה.
+64. `gate6.house4.p190-191.hidden-inside-house-recursive-triangles` — סיווג **C**: המקור אומר `اضرب لكل جهة مثلثة`; המשמעות החישובית של `مثلثة` אינה מוגדרת בקטע. אין להפוך אותה אוטומטית לצורה רגילה אחת.
+65. `gate6.house5.p191-192.miscarriage-seam-red-nakis` — סיווג **B**: תפר העמוד משלים `الحمرة` ב-H7 + `الأنكيس`/שפל ראש ב-H8 → `تسقط`. v57 משמיט את ההמשך; השם העברי הקנוני שפל ראש נשמר.
+66. `gate6.house5.p194.child-nature-health-and-birth` — סיווג **B**: המקור כולל ענף „לא זכר ולא נקבה והצורה מתהפכת” → בטן האישה ריקה, וכן H6 מזיק בילדות, H8 לבריאות ו-H5 לכובד/קלות הלידה. v57 משמיט חלק מהענפים.
+
 מכאן ממשיכים **לפי סדר העמודים בלבד** אל:
 
-`gate6.house2.p179.creditor-debtor-money-movement`
+`gate6.house5.p196.children-clothing-and-chapter6-seam`
 
-עמודי מקור: **179**  
-עמודי scan: **181**
+עמודי מקור: **196**
+עמודי scan: **198**
 
 אין להתחיל מחדש מ־Batch 01, אין לדלג לרשומה מאוחרת משום שהיא קלה יותר, ואין להתחיל מ־p277.
 
