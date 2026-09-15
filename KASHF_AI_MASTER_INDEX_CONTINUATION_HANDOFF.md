@@ -42,8 +42,8 @@ Checkpoint לפני יצירת מסמך זה:
 - גוף הספר המהותי סגור בעמ׳ מודפס **276**; עמ׳ 277 ואילך מתחילים תוכן עניינים / אינדקס מודפס ואינם נחשבים אוטומטית ל־Batch חדש של חוקים.
 - Master Index מכסה עמ׳ מודפס **21–276** / PDF scan **23–278**.
 - מספר רשומות: **271**.
-- `VERIFIED`: **181**.
-- `REVIEW_REQUIRED`: **90**.
+- `VERIFIED`: **180**.
+- `REVIEW_REQUIRED`: **91**.
 - `INDEXED`: **0**.
 - `UNRESOLVED`: **0**.
 - duplicate `entryId`: **0**.
@@ -67,20 +67,20 @@ Super Audit Pass 1 כבר בוצע. הוא תיקן רק פגמים שהמקור
 
 השלב הפעיל הוא **Super Audit — Pass 2**.
 
-### מצב Pass 2 לאחר בדיקת עמ׳ 43–134
+### מצב Pass 2 לאחר בדיקת עמ׳ 43–138
 
-- `lastCompletedReviewEntry`: `shibutz.p133-134.mazag-planet-map`
-- `lastCompletedPrintedRange`: **123–134**
-- `lastCompletedScanRange`: **125–136**
-- `nextReviewEntry`: `shibutz.p135-137.zodiac-planet-order`
-- `nextReviewPrintedRange`: **135–137**
-- `nextReviewScanRange`: **137–139**
-- `reviewRequiredStatusCount`: **90** — שמונה־עשרה הרשומות שנבדקו עד כה נשארו `REVIEW_REQUIRED` רק כאשר נשאר blocker אמיתי; לא שונה סטטוס מלאכותית.
-- `pass2ReviewedEntries`: **18 / 90**
-- `pass2UnauditedReviewEntries`: **72**
-- `VERIFIED`: **181**
-- `latestMergedPass2PR`: **#46**
-- `PR #46 merge SHA`: `f262136c15c74b3c871ddc22e3ace7596704bf9a`
+- `lastCompletedReviewEntry`: `foundation.p137.season-letters-zodiac-elements`
+- `lastCompletedPrintedRange`: **135–138**
+- `lastCompletedScanRange`: **137–140**
+- `nextReviewEntry`: `shibutz.p149.order13-damaged-name`
+- `nextReviewPrintedRange`: **148–149**
+- `nextReviewScanRange`: **150–151**
+- `reviewRequiredStatusCount`: **91** — שלוש רשומות REVIEW_REQUIRED נוספות נבדקו בעמ׳ 135–137, ובמהלך הבדיקה התגלה פגם מקור ברשומה VERIFIED של עמ׳ 137→138; היא הועברה כדין ל־`REVIEW_REQUIRED` עד תיקון v57.
+- `pass2ReviewedEntries`: **22 / 91**
+- `pass2UnauditedReviewEntries`: **69**
+- `VERIFIED`: **180**
+- `latestMergedPass2PR`: **#47**
+- `PR #47 merge SHA`: `95b0a2d62f08c3444d7925e28da95fb8b4488305`
 
 הכרעות Pass 2 שכבר בוצעו:
 
@@ -103,12 +103,17 @@ Super Audit Pass 1 כבר בוצע. הוא תיקן רק פגמים שהמקור
 17. `foundation.p132.element-values-properties` — סיווג **C**: בדיקה חזותית של עמ׳ 126 ושל seam עמ׳ 131→132 מאשרת סתירת מקור פנימית אמיתית. עמ׳ 132 ממשיך את أهل الطبائع עם 8/4/2/1, ואז מייחס לאל־זנאתי 1/2/3/4 ואומר שאל־טרבלסי מסכים; עמ׳ 126 מייחס לשלוש האסכולות מערכות אחרות. אין ליישב.
 18. `shibutz.p133-134.mazag-planet-map` — סיווג **B**: המקור המודפס סוגר חלוקה של 16/16. v57 בעמ׳ 133 מחליף בטעות `الجودلة`/נלחם ב־קהלה בתיאור המחלוקת, ובעמ׳ 134 משמיט 2211 מנוגה, 1222 מצדק ואת שורות ראש 1212 וזנב 1112. מפת המקור עצמה נשארת סגורה וברורה.
 
+19. `shibutz.p135.planet-letters-utility` — סיווג **B**: טבלת המקור בעמ׳ 135 נסגרה חזותית אות־אות. שלושת פערי v57 נשארים פעילים: عطارد מסתיים `ح`, القمر מסתיים `ذ`, ו־زحل מסתיים `ص`. אין לנרמל אותיות דומות.
+20. `shibutz.p135-137.zodiac-planet-order` — סיווג **B/C**: טבלת תשעת הטורים בעמ׳ 136 נסגרה 16/16 ישירות מן הגליפים. v57 מערבב לתוכה את משפט ההחזרה שאחריה, משבש את נוגה ואת ראש, ומשתמש בשם הישן „נקי הלחי”; במקביל נשמרת סתירת מקור פנימית p136 `العتبة الداخلة` מול p137 `عتبة خارجة` בלי ליישב אותה.
+21. `shibutz.p136-137.season-figure-groups` — סיווג **B**: המקור מדפיס קבוצות צורות מפורשות וחופפות — אביב 6, קיץ 5, חורף 3, סתיו 3. v57 משמיט את קבוצות הגליפים ולכן נשאר blocker לתיקון.
+22. `foundation.p137.season-letters-zodiac-elements` — **תיקון Pass 2 לרשומה שהייתה VERIFIED**: הסריקה קוראת בחורף `تثخذ ضظغ`, לא `ثنخذ ضظغ`; בנוסף רשימת יסודות המזלות חוצה בפועל p137→p138. טווח המקור הורחב ל־137–138 / scan 139–140, והרשומה הועברה ל־`REVIEW_REQUIRED` משום ש־v57 מתעתק את רצף החורף באופן שגוי.
+
 מכאן ממשיכים **לפי סדר העמודים בלבד** אל:
 
-`shibutz.p135-137.zodiac-planet-order`
+`shibutz.p149.order13-damaged-name`
 
-עמודי מקור: **135–137**  
-עמודי scan: **137–139**
+עמודי מקור: **148–149**  
+עמודי scan: **150–151**
 
 אין להתחיל מחדש מ־Batch 01, אין לדלג לרשומה מאוחרת משום שהיא קלה יותר, ואין להתחיל מ־p277.
 
