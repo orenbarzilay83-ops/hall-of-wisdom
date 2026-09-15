@@ -91,10 +91,41 @@ Printed p53 reads exactly `فإذا جاء في الثالث عشر شكل ثق�
 
 Status: **SOURCE CONFLICT PRESERVED / PATCH STAGED / QUEUE REMAINS OPEN UNTIL APPLIED**.
 
-## Phase 4 progress after pp44–53
+## Batch 3 — printed pp65–66
 
-Source-order review completed through printed p53. Two current-v57 blockers in this range (H1 p46 and the structural H5 omission claim on pp48–49) appear already repaired in the File Library artifact and should not be rewritten redundantly. Seven p47–53 corrections plus the two p44–45 corrections are staged in patch files. No `v57CorrectionQueue` item is marked resolved yet because the exact v57 artifact has not been imported into the repository and patched in-place.
+### p65 — `B02-P65-SOUGHT-WORDING`
+
+The printed p65 table was visually checked from the authoritative scan. Two live wording issues remain in current v57:
+
+- row 2 prints `مطلوب ، منتظر ، معدوم ، منحضر ، باكي ، صامت`; current v57 renders the middle as `נעדרת וממתינה`, which suppresses the distinct printed token `منحضر`;
+- row 6 prints `مطلوب ، بالرفق معدم ، أمن ، ناظر ، متحرك`; current v57's `מבוקשת ברוך/בעדינות; נעדרת` is still an interpretive split of the compact source phrase `بالرفق معدم`.
+
+The staged patch preserves `منحضر` and `بالرفق معدم` explicitly rather than claiming a final Hebrew technical meaning.
+
+The old row-8 blocker is stale: current v57 already reads `נעדר גבול; מקצר/חסר`, matching the printed `معدوم حد، مقصر` materially. The earlier row-6 wording was also improved, but still needs source-token preservation as above.
+
+Status: **SOURCE VERIFIED / TWO TARGETED WORDING PATCHES STAGED / STALE ROW-8 PART CLOSED IN PRINCIPLE**.
+
+### pp65–66 — `figures.p65-66.house-gender-context`
+
+Printed p66 repeatedly uses the explicit source expressions `وله فرج حقيقي` and `ليس له فرج حقيقي` in the male/female and point-balance branches. Current v57 repeatedly replaces them with the interpretive phrase `סימן מין ממשי` and in the first branch even reshapes the syntax as `או על דבר שיש לו...`.
+
+The staged patch keeps the operational male/female logic but restores the exact Arabic expressions inline, without expanding them into an anatomical interpretation not authorized by the printed source.
+
+Status: **SOURCE VERIFIED / PATCH STAGED / QUEUE REMAINS OPEN UNTIL APPLIED**.
+
+## Phase 4 progress through p66
+
+Source-order review has now covered printed pp44–53 and pp65–66. The branch contains three staged v57 patch files:
+
+- `KASHF_PHASE4_V57_CORRECTIONS_P44_45.patch`
+- `KASHF_PHASE4_V57_CORRECTIONS_P47_53.patch`
+- `KASHF_PHASE4_V57_CORRECTIONS_P65_66.patch`
+
+Stale/currently satisfied portions were deliberately not reintroduced: H1 p46, the structural H5 omission claim on pp48–49, and p65 row 8 are already materially repaired in the current File Library v57 artifact.
+
+No `v57CorrectionQueue` item is marked resolved yet because the exact v57 artifact has not been imported into the repository and patched in-place.
 
 ## Next in page order
 
-Continue with printed p65 onward. Before each correction, compare the exact current File Library v57 wording to the printed scan and drop any stale queue item rather than reintroducing an old defect.
+Continue with the next open correction after p66, verifying the current File Library artifact before staging any change. Do not infer that an old queue item is still live merely because it remains listed in the Master Index.
