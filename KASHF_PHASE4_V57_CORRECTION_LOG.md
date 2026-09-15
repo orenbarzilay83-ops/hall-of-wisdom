@@ -4,11 +4,31 @@ Phase 4 starts from merged PR #53 / `main` SHA `c000899d75fa3e095e957c8712a7dbb6
 
 ## Operating rule
 
-The authoritative correction target is the exact current `kashf-v57-draft.html` working artifact from File Library. The repository still does not contain that artifact. Do **not** regenerate v57 from v56, do **not** substitute the Arabic-only helper PDF, and do **not** mark a `v57CorrectionQueue` item resolved merely because a proposed patch was written.
-
-Until the exact current v57 artifact can be committed at repository root as `kashf-v57-draft.html`, corrections are staged as source-verified patch files on the Phase 4 branch. Once the exact artifact is available to the repository workflow, it must be imported unchanged first, then the staged patches applied, then queue/status metadata updated only after diff + source verification.
+The authoritative correction target is the exact current `kashf-v57-draft.html` working artifact supplied by the user. Do **not** regenerate v57 from v56, do **not** substitute the Arabic-only helper PDF, and do **not** mark a `v57CorrectionQueue` item resolved merely because a proposed patch was written.
 
 Source authority remains the printed Arabic scan `كشف الأسرار المصونة في إخراج الضمائر المخزونة`; OCR/Arabic-only text is helper evidence only.
+
+## Imported artifact checkpoint — 2026-09-15
+
+The exact working v57 artifact was supplied in the active conversation as `kashf-v57-draft(1).html`. The `(1)` suffix is only the upload/download filename suffix.
+
+Input artifact QA:
+- bytes: `4,646,535`
+- SHA-256: `1939848fc5c1b2f773cc4851401c8f6455e1c7d428af14da8a18a8bd1359a295`
+- page anchors p21–p276: 256/256 present
+- duplicate page anchors: 0
+
+The source-verified staged corrections already prepared on this branch were applied to an exact local copy of that artifact. All 21 targeted old strings matched exactly once before replacement.
+
+Corrected local artifact:
+- filename: `kashf-v57-draft-phase4-batch1.html`
+- bytes: `4,649,358`
+- SHA-256: `a2a8bf35ee6270627045c3a39e2dfcecd2e23ed3da1639920d3acbb612e1b2e7`
+- page anchors p21–p276: 256/256 present
+- missing page anchors: 0
+- duplicate page anchors: 0
+
+Repository provenance and QA are also recorded in `KASHF_PHASE4_IMPORTED_ARTIFACT_MANIFEST.md`.
 
 ## Batch 1 — printed pp44–45
 
@@ -23,153 +43,137 @@ Printed scan p44 / PDF scan p46 was visually checked. The source distinguishes f
 
 Current v57 collapses H3/H6/H9/H12 into one Hebrew “נופלי היתדות” group. The staged correction restores the source distinction and deliberately retains the Arabic technical labels for the two potentially ambiguous Hebrew terms.
 
-Status: **SOURCE VERIFIED / PATCH STAGED / QUEUE REMAINS OPEN UNTIL APPLIED TO EXACT v57**.
+Status: **SOURCE VERIFIED / PATCH APPLIED TO EXACT LOCAL v57 COPY / QUEUE NOT YET CLOSED IN MASTER INDEX**.
 
 ### p45 — `B01-P45-WALTHANI`
 
 Printed scan p45 / PDF scan p47 was visually checked. After the three explicitly printed sextile relations, the source prints the isolated token `والثاني`, followed by `ويخص كل تسديس وتدان`. Its syntactic role is not determinable safely from the printed source.
 
-The staged v57 correction therefore does not invent a fourth sextile pair. It adds an explicit source note preserving `والثاني` and the uncertainty.
+The correction does not invent a fourth sextile pair. It adds an explicit source note preserving `والثاني` and the uncertainty.
 
-Status: **SOURCE CONFLICT PRESERVED / PATCH STAGED / QUEUE REMAINS OPEN UNTIL APPLIED TO EXACT v57**.
+Status: **SOURCE CONFLICT PRESERVED / PATCH APPLIED TO EXACT LOCAL v57 COPY**.
 
 ## Batch 2 — printed pp46–53 — `houses.p46-53.profiles`
 
 ### p46 — H1 / `PASS2-P46-H1-PROFILE-V57`
 
-Printed p46–47 includes `المعاونين` and the `العمر` age/lifespan sense. Current v57 now explicitly says `אורך החיים` and `במסייעים`. The old queue description is therefore stale for the current File Library artifact; no new v57 text patch is staged for H1.
+Printed p46–47 includes `المعاونين` and the `العمر` age/lifespan sense. Current v57 already explicitly says `אורך החיים` and `במסייעים`. The old queue description is stale; no rewrite was introduced.
 
-Status: **CURRENT v57 ALREADY SATISFIES THIS CORRECTION / QUEUE CLEANUP DEFERRED UNTIL EXACT v57 IS IMPORTED AND DIFFED**.
+Status: **CURRENT v57 ALREADY SATISFIES THIS CORRECTION / QUEUE CLEANUP PENDING MASTER-INDEX UPDATE**.
 
 ### p47 — H2 / `B01-P47-H2`
 
-Printed p47 reads `وعلى ما يستقبل رضاعه من الأولاد`. Current v57 narrows this to `מינקת הילדים`, which is not a safe one-to-one rendering. The staged patch removes the narrowing and preserves the exact Arabic phrase inline until its technical Hebrew wording is closed.
+Printed p47 reads `وعلى ما يستقبل رضاعه من الأولاد`. Current v57 narrows this to `מינקת הילדים`, which is not a safe one-to-one rendering. The correction removes the narrowing and preserves the exact Arabic phrase inline until its technical Hebrew wording is closed.
 
-Status: **SOURCE VERIFIED / PATCH STAGED / QUEUE REMAINS OPEN UNTIL APPLIED**.
+Status: **SOURCE VERIFIED / PATCH APPLIED**.
 
 ### p47 — H3 / `B01-P47-H3`
 
-Printed p47 begins the domain with brothers and sisters; it does not add `המים` as a domain noun. It also contains `وقلب البقاء وما لا يكون`, which current v57 omits. The staged patch removes the extra `המים` and restores the exact omitted Arabic clause inline rather than inventing a translation.
+Printed p47 begins the domain with brothers and sisters; it does not add `המים` as a domain noun. It also contains `وقلب البقاء وما لا يكون`, which current v57 omits. The correction removes the extra `המים` and restores the exact omitted Arabic clause inline rather than inventing a translation.
 
-Status: **SOURCE VERIFIED / PATCH STAGED / QUEUE REMAINS OPEN UNTIL APPLIED**.
+Status: **SOURCE VERIFIED / PATCH APPLIED**.
 
 ### pp48–49 — H5 / `PASS2-P48-49-H5-PROFILE-V57`
 
-The current v57 artifact now materially contains the items previously reported omitted: the list includes the equivalent working renderings for `الغنج`, `كسر الحواجب`, `المكاتب`, `القمر`, `الزنا`, `أموال الآباء الماضين`, and the `الجوار / المغاني` area. Therefore no structural-omission patch is staged for H5 in this batch.
+The current v57 artifact materially contains the items previously reported omitted: `الغنج`, `كسر الحواجب`, `المكاتب`, `القمر`, `الزنا`, `أموال الآباء الماضين`, and the `الجوار / المغاني` area. No structural-omission rewrite was introduced.
 
-Some difficult lexical choices may still merit terminology review, but they must not be converted into a wholesale rewrite when the source list is already materially present.
-
-Status: **STRUCTURAL BLOCKER APPEARS SATISFIED IN CURRENT v57 / TERMINOLOGY REVIEW ONLY / QUEUE CLEANUP DEFERRED UNTIL IMPORT+DIFF**.
+Status: **STRUCTURAL BLOCKER SATISFIED IN CURRENT v57 / TERMINOLOGY REVIEW ONLY / QUEUE CLEANUP PENDING**.
 
 ### p50 — H8 / `PASS2-P50-H8-NUWL-PHRASE-V57`
 
-Printed p50 clearly has `وعلى الشرك والنول بلا تثمين`. Current v57 still says `שותפות בלא תיקון`. The technical phrase is not securely translated by that wording. The staged patch preserves the exact Arabic source phrase inline and marks its technical rendering as unresolved rather than guessing.
+Printed p50 clearly has `وعلى الشرك والنول بلا تثمين`. Current v57 says `שותפות בלא תיקון`. The correction preserves the exact Arabic source phrase inline and marks its technical rendering as unresolved rather than guessing.
 
-Status: **SOURCE VERIFIED / PATCH STAGED / QUEUE REMAINS OPEN UNTIL APPLIED**.
+Status: **SOURCE VERIFIED / PATCH APPLIED**.
 
 ### p50 — H9 / `PASS2-P50-H9-HULI-TAISIYYA-V57`
 
-Printed p50 contains the unusual `الحلي التعيسية`. Current v57 reduces it to generic `תכשיטים`. The staged patch restores the exact Arabic token inline and leaves the technical Hebrew meaning open.
+Printed p50 contains the unusual `الحلي التعيسية`. Current v57 reduces it to generic `תכשיטים`. The correction restores the exact Arabic token inline and leaves the technical Hebrew meaning open.
 
-Status: **SOURCE VERIFIED / PATCH STAGED / QUEUE REMAINS OPEN UNTIL APPLIED**.
+Status: **SOURCE VERIFIED / PATCH APPLIED**.
 
 ### p51 — H10 / `PASS2-P51-H10-NAW-WA-DAW-V57`
 
-Printed p51 explicitly lists `النوء ، والضوء ، والملائكة ، وأمورهم`. Current v57 keeps only `האור, המלאכים וענייניהם`. The staged patch restores `النوء` as its own source token and explicitly ties `האור` to `الضوء`.
+Printed p51 explicitly lists `النوء ، والضوء ، والملائكة ، وأمورهم`. Current v57 keeps only `האור, המלאכים וענייניהם`. The correction restores `النوء` as its own source token and explicitly ties `האור` to `الضوء`.
 
-Status: **SOURCE VERIFIED / PATCH STAGED / QUEUE REMAINS OPEN UNTIL APPLIED**.
+Status: **SOURCE VERIFIED / PATCH APPLIED**.
 
 ### p52 — H12 / `PASS2-P52-H12-NAWAWIS-V57`
 
-Printed p52 uses `النواويس`. Current v57 has improved from the older generic `בתי הקברות` to `כוכי הקבורה ומבני הקבורה`, but it still suppresses the exact technical source token. The staged patch retains the current Hebrew wording and adds `النواويس` explicitly, avoiding a false claim that the lexical question is fully closed.
+Printed p52 uses `النواويس`. Current v57 has improved to `כוכי הקבורה ומבני הקבורה`, but suppresses the exact technical source token. The correction retains the Hebrew wording and adds `النواويس` explicitly.
 
-Status: **SOURCE VERIFIED / PATCH STAGED / QUEUE REMAINS OPEN UNTIL APPLIED**.
+Status: **SOURCE VERIFIED / PATCH APPLIED**.
 
 ### p53 — H15 / `PASS2-P53-H15-UNSUPPORTED-LIGHT-V57`
 
-Printed p53 reads exactly `فإذا جاء في الثالث عشر شكل ثقيل ، وفي الرابع عشر شكل يعلم أنه غلط`. No `خفيف` / “light” appears after H14, and the printed sentence is syntactically defective. Current v57 silently supplies `בארבעה־עשר צורה קלה`. The staged patch removes that invented symmetry and preserves the defective printed sentence explicitly.
+Printed p53 reads exactly `فإذا جاء في الثالث عشر شكل ثقيل ، وفي الرابع عشر شكل يعلم أنه غلط`. No `خفيف` / “light” appears after H14, and the printed sentence is syntactically defective. Current v57 silently supplies `בארבעה־עשר צורה קלה`. The correction removes that invented symmetry and preserves the defective printed sentence explicitly.
 
-Status: **SOURCE CONFLICT PRESERVED / PATCH STAGED / QUEUE REMAINS OPEN UNTIL APPLIED**.
+Status: **SOURCE CONFLICT PRESERVED / PATCH APPLIED**.
 
 ## Batch 3 — printed pp65–66
 
 ### p65 — `B02-P65-SOUGHT-WORDING`
 
-The printed p65 table was visually checked from the authoritative scan. Two live wording issues remain in current v57:
+Two live wording issues were corrected:
 
-- row 2 prints `مطلوب ، منتظر ، معدوم ، منحضر ، باكي ، صامت`; current v57 renders the middle as `נעדרת וממתינה`, which suppresses the distinct printed token `منحضر`;
-- row 6 prints `مطلوب ، بالرفق معدم ، أمن ، ناظر ، متحرك`; current v57's `מבוקשת ברוך/בעדינות; נעדרת` is still an interpretive split of the compact source phrase `بالرفق معدم`.
+- row 2 preserves the distinct printed token `منحضر` rather than collapsing it into `נעדרת וממתינה`;
+- row 6 preserves the compact source phrase `بالرفق معدم` rather than splitting it interpretively.
 
-The staged patch preserves `منحضر` and `بالرفق معدم` explicitly rather than claiming a final Hebrew technical meaning.
+The old row-8 blocker is stale: current v57 already reads `נעדר גבול; מקצר/חסר`, materially matching the printed `معدوم حد، مقصر`.
 
-The old row-8 blocker is stale: current v57 already reads `נעדר גבול; מקצר/חסר`, matching the printed `معدوم حد، مقصر` materially. The earlier row-6 wording was also improved, but still needs source-token preservation as above.
-
-Status: **SOURCE VERIFIED / TWO TARGETED WORDING PATCHES STAGED / STALE ROW-8 PART CLOSED IN PRINCIPLE**.
+Status: **SOURCE VERIFIED / TWO TARGETED PATCHES APPLIED / STALE ROW-8 PART CLOSED IN PRINCIPLE**.
 
 ### pp65–66 — `figures.p65-66.house-gender-context`
 
-Printed p66 repeatedly uses the explicit source expressions `وله فرج حقيقي` and `ليس له فرج حقيقي` in the male/female and point-balance branches. Current v57 repeatedly replaces them with the interpretive phrase `סימן מין ממשי` and in the first branch even reshapes the syntax as `או על דבר שיש לו...`.
+Printed p66 repeatedly uses `وله فرج حقيقي` and `ليس له فرج حقيقي`. The correction keeps the operational male/female logic but restores these exact Arabic expressions inline, without expanding them anatomically beyond the source.
 
-The staged patch keeps the operational male/female logic but restores the exact Arabic expressions inline, without expanding them into an anatomical interpretation not authorized by the printed source.
-
-Status: **SOURCE VERIFIED / PATCH STAGED / QUEUE REMAINS OPEN UNTIL APPLIED**.
+Status: **SOURCE VERIFIED / FOUR TARGETED PARAGRAPH PATCHES APPLIED**.
 
 ## Batch 4 — printed pp97–101
 
 ### pp97–99 — `B04-P97-99-DIGNITIES`
 
-The printed source table was visually checked against current v57. Three live defects remain and are staged in `KASHF_PHASE4_V57_CORRECTIONS_P97_99.patch`:
+Applied only the live current-v57 repairs established by the source review:
 
-- the current unsupported `סוהר / العقلة` row is replaced by the printed `חיבור / الاجتماع` row;
-- the current unsupported `ממון נכנס / قبض داخل` row is replaced by the printed `דרך / الطريق` row;
-- `ממון יוצא / قبض خارج` has face H5 in print, not H3.
+- replace unsupported Aqla row with the printed `اجتماع` / חיבור row;
+- replace unsupported Qabd-Dakhil row with the printed `الطريق` / דרך row;
+- correct Qabd Kharij face from 3 to printed face=5.
 
-Earlier defects for Ataba Kharija, Nusra Kharija and Nusra Dakhila are already materially repaired in the current v57 artifact and are not reintroduced.
+Earlier Ataba Kharija, Nusra Kharija and Nusra Dakhila defects were already repaired in current v57 and were not reintroduced.
 
-Status: **SOURCE VERIFIED / THREE TARGETED REPAIRS STAGED**.
+Status: **SOURCE VERIFIED / THREE TARGETED PATCHES APPLIED**.
 
 ### p100 — `B04-P100-VENUS-JOY`
 
-Printed p100 confirms the omitted Venus joy in H5. It also confirms the grief pair `البياض + الطريق` at H1 and keeps `قبض خارج + عتبة خارج` together under the source's tentative clause `لعله ملحوقات بزحل والمريخ`. The staged p100 patch restores exactly those distinctions without strengthening the source's tentative wording.
+Applied:
+- Venus joy restored at H5;
+- erroneous Tariq+Qabd-Kharij H1 grief pair corrected to Bayad+Tariq;
+- Qabd Kharij + Ataba Kharija both preserved in the tentative Saturn/Mars attachment clause, retaining the source's own uncertainty `لعله ملحوقات بزحل والمريخ`.
 
-Status: **SOURCE VERIFIED / PATCH STAGED**.
+Status: **SOURCE VERIFIED / PATCH APPLIED**.
 
 ### p101 — `B04-P100-101-MONTHS`
 
-Printed p101 was re-read visually after an apparent line-wrap ambiguity. The source clearly reads `شوال ، ومحرم له : البياض`, so Bayad/לבן belongs to both Shawwal and Muharram. Current v57 already has Bayad with Muharram but omits its additional Shawwal association; the staged patch correctly changes that clause to `לשוואל ולמוחרם שייכת לבן` while preserving the separate source association `שוואל → קהלה`.
+Current v57 already contains Ataba Dakhila with Rabi al-Akhir, so that old blocker is stale. The live omission was Bayad with Shawwal in addition to Muharram. The correction now states Shawwal + Muharram for Bayad.
 
-The second historical blocker in the queue is already stale in current v57: printed p101 has `ربيع الآخر له : عتبة داخلة`, and current v57 already includes `סף נכנס` with Rabi al-Akhir. No second patch is needed.
+Status: **SOURCE VERIFIED / ONE LIVE MONTH PATCH APPLIED / STALE SUB-BLOCKER IDENTIFIED**.
 
-Status: **SOURCE VERIFIED / ONE LIVE ASSOCIATION PATCH STAGED / ATABA-DAKHILA PART STALE**.
+## Batch 5 checkpoint — printed pp111–115
 
-## Batch 5 — printed pp111–115
+The p111 money table was rechecked against the printed scan before staging any change. The old queue wording that proposed changing H11/H12 alternates to 600/700 is not supported by the printed source currently under review. The supplied current v57 contains H11=760 and H12=770, matching the checked source reading used in this Phase 4 pass. No p111 patch was created.
 
-### p111 — `B05-P111-MONEY-NUMBERS`
+No additional live v57 correction item was established on pp112–115 in this checkpoint, so no speculative patch was added.
 
-This queue item was rechecked before staging any change and was found to be stale/wrong for the authoritative printed page and current v57.
+Status: **REVIEWED THROUGH p115 / NO NEW PATCH**.
 
-Printed p111 gives:
+## Phase 4 status after exact-artifact application
 
-- H7 primary = 29;
-- H11 primary = 66, alternate = 760;
-- H12 primary = 79, alternate = 770.
+- exact user-supplied v57 artifact received and fingerprinted
+- source-order review completed through printed p115
+- 21 targeted replacements applied to an exact local copy
+- structural anchor QA passed
+- stale queue claims were not reintroduced
+- Master Index queue statuses are intentionally not yet mutated until the corrected artifact is versioned and the repository diff is reviewable
 
-The exact current File Library v57 already has 29 / 760 / 770. Therefore the queue summary that asks for H11 alternate=600 and H12 alternate=700 must **not** be applied. No p111 correction patch is staged.
+## Next in page order
 
-Status: **CURRENT v57 MATCHES PRINTED SOURCE / QUEUE ITEM STALE / REMOVE ONLY AFTER EXACT v57 IMPORT+DIFF**.
-
-### pp112–115
-
-No `v57CorrectionQueue` item targets printed pp112, 113, 114 or 115. Their source unit was inspected only to preserve page-order continuity; Phase 4 does not create speculative changes where the Master Index records no demonstrated v57 defect.
-
-Status: **NO QUEUE ACTION IN THIS RANGE**.
-
-## Phase 4 progress through p115
-
-Source-order review has now covered all open correction points encountered through printed p115. The branch contains staged patch files for the live defects through p101; p111 was deliberately not patched because its queue instruction is stale.
-
-No `v57CorrectionQueue` item is marked resolved yet. The next required operation is no longer to accumulate more patches: it is to import the exact current `kashf-v57-draft.html` artifact unchanged at repository root, then apply the staged source-verified corrections, run diff/QA, and only then clean stale queue entries and update verification statuses.
-
-## Continuation pointer
-
-**BLOCKER BEFORE FURTHER CORRECTION EXECUTION:** obtain the exact current `kashf-v57-draft.html` artifact used during this audit and commit it unchanged to the Phase 4 branch. Do not recreate it from v56 and do not substitute another copy. Once imported, apply the staged patches in printed-page order and verify each change against the printed scan before closing any queue item.
+Continue from the next live `v57CorrectionQueue` item after p115. Before each correction, compare the exact supplied v57 wording to the printed scan and drop stale queue items rather than reintroducing old defects. Do not move to runtime / Registry / routing / Golden Tests yet.
