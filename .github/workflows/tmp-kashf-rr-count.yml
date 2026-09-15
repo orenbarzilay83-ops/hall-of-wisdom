@@ -1,0 +1,62 @@
+name: tmp-kashf-rr-count
+on:
+  push:
+    branches: [tmp/kashf-rr-count]
+permissions:
+  contents: read
+jobs:
+  count:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Count REVIEW_REQUIRED categories
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,re
+          txt=Path('kashf-v57-ai-master-index.html').read_text(encoding='utf-8')
+          m=re.search(r'<script id="kashf-ai-master-index-data" type="application/json">\s*(.*?)\s*</script>',txt,re.S)
+          d=json.loads(m.group(1))
+          rr=[r for r in d['records'] if r.get('verificationStatus')=='REVIEW_REQUIRED']
+          audited=[r for r in rr if min(r.get('bookPages',[9999]))<=194]
+          unaud=[r for r in rr if min(r.get('bookPages',[9999]))>=196]
+
+          # Source-conflict queue mapping: direct entry id if present, otherwise overlap by page.
+          sc=d.get('sourceConflictQueue',[])
+          conflict_ids=set()
+          for r in audited:
+              pages=set(r.get('bookPages',[]))
+              for q in sc:
+                  qref=q.get('entryId') or q.get('sourceEntryId')
+                  qpages=set(q.get('pages',[]) or ([] if q.get('page') is None else ([q['page']] if isinstance(q['page'],int) else [int(x) for x in re.findall(r'\d+',str(q['page']))])))
+                  if qref==r['entryId'] or (pages and qpages and pages & qpages):
+                      conflict_ids.add(r['entryId']); break
+
+          # Translation/terminology review: clear printed source but wording/term mapping remains open.
+          transl_ids=set()
+          for r in audited:
+              blob=json.dumps(r,ensure_ascii=False).lower()
+              if any(k in blob for k in ['translation-review','translation_review','wording','linguistic','terminology']) and r['entryId'] not in conflict_ids:
+                  transl_ids.add(r['entryId'])
+          # Explicit known wording/terminology records whose status text does not carry those tags uniformly.
+          for eid in ['figures.p65.sought-hebrew-wording','figures.p65-66.house-gender-context','foundation.p123.bound-point-element-associations']:
+              if any(r['entryId']==eid for r in audited) and eid not in conflict_ids:
+                  transl_ids.add(eid)
+
+          clear_ids={r['entryId'] for r in audited}-conflict_ids-transl_ids
+
+          print('TOTAL_RR',len(rr))
+          print('AUDITED_RR',len(audited))
+          print('UNAUDITED_RR',len(unaud))
+          print('AUDITED_CLEAR_V57_OR_DOWNSTREAM',len(clear_ids))
+          print('AUDITED_TRUE_SOURCE_CONFLICT_OR_AMBIGUITY',len(conflict_ids))
+          print('AUDITED_TRANSLATION_OR_TERMINOLOGY_REVIEW',len(transl_ids))
+          print('CHECK_SUM',len(clear_ids)+len(conflict_ids)+len(transl_ids))
+          print('\nCONFLICT_IDS')
+          for x in sorted(conflict_ids): print(x)
+          print('\nTRANSLATION_IDS')
+          for x in sorted(transl_ids): print(x)
+          print('\nUNAUDITED_IDS')
+          for r in unaud: print(r['entryId'],r.get('bookPages'))
+          PY
