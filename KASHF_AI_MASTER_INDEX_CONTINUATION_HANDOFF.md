@@ -89,7 +89,7 @@ Super Audit Pass 1 כבר בוצע. הוא תיקן רק פגמים שהמקור
 - `lastCompletedScanRange`: **backfill 103–104; final reviewed scan p278**
 - `nextReviewEntry`: **none — Pass 2 complete**
 - `finalQA`: **PASSED — כולל תיקון traceability לעמ׳ 246**
-- `nextPhase`: **merge PR #52 after approval; then v57 correction-queue remediation; no runtime implementation yet**
+- `nextPhase`: **Phase 3 complete; next is Phase 4 — v57 Correction Execution by printed-page order; no runtime implementation yet**
 - `reviewRequiredStatusCount`: **86**
 - `pass2ReviewedEntries`: **91 / 91**
 - `pass2UnauditedReviewEntries`: **0**
@@ -97,8 +97,8 @@ Super Audit Pass 1 כבר בוצע. הוא תיקן רק פגמים שהמקור
 - `INDEXED`: **0**
 - `UNRESOLVED`: **0**
 - `runtimeEligible:true`: **0**
-- `latestMergedPass2PR`: **#51**
-- `PR #51 merge SHA`: `2d16b1bbaa648b9fae195f660eae78e65c848018`
+- `latestMergedPass2PR`: **#52**
+- `PR #52 merge SHA`: `ff8af91a8e44e8da4a8396a5eac5999366a789de`
 
 הכרעות Pass 2 שכבר בוצעו:
 
@@ -289,14 +289,16 @@ Pass 2 הוא **מסלול יחיד רציף**, לא אוסף פרויקטים �
 
 ## 8. שלבי ההמשך אחרי Pass 2 — ורק לפי הסדר הזה
 
-### Phase 3 — Schema / Metadata Normalization
+### Phase 3 — Schema / Metadata Normalization — הושלם
 
-רק אחרי סיום כל 90 הבדיקות הסמנטיות:
+Phase 3 הושלם לאחר 91/91 הכרעות Pass 2 ו-Final QA:
 
-- להכריע מה עושים עם 68 הרשומות החסרות `runtimeEligible` מפורש; ברירת המחדל היא `false`, לא `true`.
-- להשלים את 9 רשומות `sourceVerification` רק לאחר בדיקת מקור אמיתית.
-- לבדוק אם `completedBatches` צריך לכלול Batch01 או שזה convention היסטורי מכוון.
-- לבצע QA מלא לכל queue references, source pages, scan pages, anchors ו־status counts.
+- כל 68 הרשומות שבהן `runtimeEligible` היה חסר קיבלו `runtimeEligible:false` מפורש. **לא הופעלה אף רשומה ל-runtime.**
+- כל 9 הרשומות שחסרו `sourceVerification` נבדקו מחדש מול עמודי הסריקה המודפסת ומול v57, וקיבלו metadata מלא של אימות.
+- `coverage.completedBatches` נורמל לכלול גם `BATCH01_P21_53`. ההיסטוריה מראה ש-Batch01 כבר הושלם ואומת לפני שהשדה `completedBatches` הוצג לראשונה בקומיט Batch02; לכן ההשמטה הייתה תוצר היסטורי של הכנסת השדה, לא סימן ש-Batch01 לא הושלם.
+- QA מבני מלא עבר: 271 רשומות; 185 `VERIFIED`; 86 `REVIEW_REQUIRED`; אפס `INDEXED`/`UNRESOLVED`; אפס `runtimeEligible:true`; אפס `entryId` כפולים; אפס חורי כיסוי 21–276; כל שלוש ה-queues ללא מזהים כפולים וללא references שבורים; source/scan ranges ועוגני v57 עברו בדיקת מבנה.
+
+**Continuation Pointer:** השלב הבא הוא Phase 4 בלבד — `v57CorrectionQueue` לפי סדר עמודי המקור המודפס. לפני תיקון repository-wide יש להכריע במפורש כיצד `kashf-v57-draft.html` נכנס לריפו. אין לעבור ל-runtime / Registry / routing / Golden Tests.
 
 ### Phase 4 — v57 Correction Execution
 
@@ -355,7 +357,7 @@ Pass 2 הוא **מסלול יחיד רציף**, לא אוסף פרויקטים �
 
 אם אורן משה אומר בצ׳אט חדש „תמשיך מאיפה שעצרנו”, יש לפרש זאת כך:
 
-> קרא את `KASHF_AI_MASTER_INDEX_CONTINUATION_HANDOFF.md`, בדוק את `main` ואת ה־Continuation Pointer, ואז המשך את Super Audit Pass 2 מהרשומה `nextReviewEntry` לפי סדר עמודי הספר. אל תפתח תכנית חדשה, אל תשנה מנועים ואל תדלג לשלב הבא לפני שהשלב הנוכחי הושלם ואושר.
+> קרא את `KASHF_AI_MASTER_INDEX_CONTINUATION_HANDOFF.md`, בדוק את `main` ואת ה־Continuation Pointer, ואז המשך מן השלב הפעיל. לאחר השלמת Phase 3, השלב הפעיל הוא Phase 4: טיפול ב־`v57CorrectionQueue` לפי סדר עמודי המקור המודפס, ורק לאחר הכרעה מפורשת כיצד v57 נכנס לריפו. אל תפתח תכנית חדשה, אל תשנה מנועים ואל תדלג ל־runtime/Registry/routing/Golden Tests.
 
 ---
 
