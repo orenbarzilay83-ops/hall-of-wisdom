@@ -1,0 +1,7 @@
+*** kashf-v57-draft.html	current-v57
+--- kashf-v57-draft.html	phase4-p101
+***************
+*** p101 current Bayad month association
+-למוחרם שייכת <span class="term">לבן</span> <span aria-label="2212" class="raml"><span class="br">[</span><span class="rfig"><span class="r two"></span><span class="r two"></span><span class="r one"></span><span class="r two"></span></span><span class="br">]</span></span>;
+--- p101 corrected Bayad month association
++לשוואל ולמוחרם שייכת <span class="term">לבן</span> <span aria-label="2212" class="raml"><span class="br">[</span><span class="rfig"><span class="r two"></span><span class="r two"></span><span class="r one"></span><span class="r two"></span></span><span class="br">]</span></span>;
