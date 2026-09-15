@@ -114,18 +114,62 @@ The staged patch keeps the operational male/female logic but restores the exact 
 
 Status: **SOURCE VERIFIED / PATCH STAGED / QUEUE REMAINS OPEN UNTIL APPLIED**.
 
-## Phase 4 progress through p66
+## Batch 4 — printed pp97–101
 
-Source-order review has now covered printed pp44–53 and pp65–66. The branch contains three staged v57 patch files:
+### pp97–99 — `B04-P97-99-DIGNITIES`
 
-- `KASHF_PHASE4_V57_CORRECTIONS_P44_45.patch`
-- `KASHF_PHASE4_V57_CORRECTIONS_P47_53.patch`
-- `KASHF_PHASE4_V57_CORRECTIONS_P65_66.patch`
+The printed source table was visually checked against current v57. Three live defects remain and are staged in `KASHF_PHASE4_V57_CORRECTIONS_P97_99.patch`:
 
-Stale/currently satisfied portions were deliberately not reintroduced: H1 p46, the structural H5 omission claim on pp48–49, and p65 row 8 are already materially repaired in the current File Library v57 artifact.
+- the current unsupported `סוהר / العقلة` row is replaced by the printed `חיבור / الاجتماع` row;
+- the current unsupported `ממון נכנס / قبض داخل` row is replaced by the printed `דרך / الطريق` row;
+- `ממון יוצא / قبض خارج` has face H5 in print, not H3.
 
-No `v57CorrectionQueue` item is marked resolved yet because the exact v57 artifact has not been imported into the repository and patched in-place.
+Earlier defects for Ataba Kharija, Nusra Kharija and Nusra Dakhila are already materially repaired in the current v57 artifact and are not reintroduced.
 
-## Next in page order
+Status: **SOURCE VERIFIED / THREE TARGETED REPAIRS STAGED**.
 
-Continue with the next open correction after p66, verifying the current File Library artifact before staging any change. Do not infer that an old queue item is still live merely because it remains listed in the Master Index.
+### p100 — `B04-P100-VENUS-JOY`
+
+Printed p100 confirms the omitted Venus joy in H5. It also confirms the grief pair `البياض + الطريق` at H1 and keeps `قبض خارج + عتبة خارج` together under the source's tentative clause `لعله ملحوقات بزحل والمريخ`. The staged p100 patch restores exactly those distinctions without strengthening the source's tentative wording.
+
+Status: **SOURCE VERIFIED / PATCH STAGED**.
+
+### p101 — `B04-P100-101-MONTHS`
+
+Printed p101 was re-read visually after an apparent line-wrap ambiguity. The source clearly reads `شوال ، ومحرم له : البياض`, so Bayad/לבן belongs to both Shawwal and Muharram. Current v57 already has Bayad with Muharram but omits its additional Shawwal association; the staged patch correctly changes that clause to `לשוואל ולמוחרם שייכת לבן` while preserving the separate source association `שוואל → קהלה`.
+
+The second historical blocker in the queue is already stale in current v57: printed p101 has `ربيع الآخر له : عتبة داخلة`, and current v57 already includes `סף נכנס` with Rabi al-Akhir. No second patch is needed.
+
+Status: **SOURCE VERIFIED / ONE LIVE ASSOCIATION PATCH STAGED / ATABA-DAKHILA PART STALE**.
+
+## Batch 5 — printed pp111–115
+
+### p111 — `B05-P111-MONEY-NUMBERS`
+
+This queue item was rechecked before staging any change and was found to be stale/wrong for the authoritative printed page and current v57.
+
+Printed p111 gives:
+
+- H7 primary = 29;
+- H11 primary = 66, alternate = 760;
+- H12 primary = 79, alternate = 770.
+
+The exact current File Library v57 already has 29 / 760 / 770. Therefore the queue summary that asks for H11 alternate=600 and H12 alternate=700 must **not** be applied. No p111 correction patch is staged.
+
+Status: **CURRENT v57 MATCHES PRINTED SOURCE / QUEUE ITEM STALE / REMOVE ONLY AFTER EXACT v57 IMPORT+DIFF**.
+
+### pp112–115
+
+No `v57CorrectionQueue` item targets printed pp112, 113, 114 or 115. Their source unit was inspected only to preserve page-order continuity; Phase 4 does not create speculative changes where the Master Index records no demonstrated v57 defect.
+
+Status: **NO QUEUE ACTION IN THIS RANGE**.
+
+## Phase 4 progress through p115
+
+Source-order review has now covered all open correction points encountered through printed p115. The branch contains staged patch files for the live defects through p101; p111 was deliberately not patched because its queue instruction is stale.
+
+No `v57CorrectionQueue` item is marked resolved yet. The next required operation is no longer to accumulate more patches: it is to import the exact current `kashf-v57-draft.html` artifact unchanged at repository root, then apply the staged source-verified corrections, run diff/QA, and only then clean stale queue entries and update verification statuses.
+
+## Continuation pointer
+
+**BLOCKER BEFORE FURTHER CORRECTION EXECUTION:** obtain the exact current `kashf-v57-draft.html` artifact used during this audit and commit it unchanged to the Phase 4 branch. Do not recreate it from v56 and do not substitute another copy. Once imported, apply the staged patches in printed-page order and verify each change against the printed scan before closing any queue item.
