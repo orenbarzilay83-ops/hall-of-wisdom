@@ -4930,11 +4930,8 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         "אין להחליף את הצורה החמישית בחמישה־עשר מטעמי סימטריה עם 9/14/16.",
         "אין להוסיף בית 6 לרשימת העדות של הצורה 5."
       ],
-      "sourceDiscrepancies": [
-        "v57 הנוכחי קורא את העד השלישי כ״הצורה החמישה־עשר״ ואף מוסיף את הבית 6; בסריקה המודפסת כתוב בבירור الشكل الخامس يشهد على الثالث، والسابع، والحادي عشر — הצורה החמישית מעידה על 3,7,11.",
-        "לכן אין להשתמש במיפוי H15→H3/H6/H7/H11 כמיפוי מקור של עמוד 101."
-      ],
-      "verificationStatus": "REVIEW_REQUIRED",
+      "sourceDiscrepancies": [],
+      "verificationStatus": "VERIFIED",
       "sourceVerification": {
         "printedBookPages": [
           101,
@@ -4946,9 +4943,10 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         ],
         "v57Checked": true,
         "printedScanChecked": true,
-        "note": "The printed Arabic scan was re-read visually; source wording is preserved without silent normalization.",
+        "note": "Pass 2 backfill visually rechecked printed pp101–102. Partners: 13→H1, 14→H7, 15→H10, 16→H4. Witnesses: 9→H1/H5/H7, 14→H2/H6/H10, 5→H3/H7/H11, 16→H4/H8/H12. Current v57 now preserves the critical figure-5 witness line and does not add H6, so the former blocker is stale.",
         "visualLineByLineChecked": true,
-        "criticalNumeralsDoubleChecked": true
+        "criticalNumeralsDoubleChecked": true,
+        "pass2Backfill": true
       },
       "partnerMap": [
         {
@@ -5001,7 +4999,8 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
             12
           ]
         }
-      ]
+      ],
+      "methodStatus": "SOURCE_OPERATIONAL_RULE"
     },
     {
       "entryId": "figures.p102-103.alternative-names",
@@ -16859,7 +16858,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         "v57Checked": true,
         "printedScanChecked": true,
         "visualLineByLineChecked": true,
-        "note": "The closing children rules and the full opening illness paragraph through the printed page end were checked visually."
+        "note": "Pass 2 visually reconfirmed printed p196 through the chapter seam. Children/joy/clothing rules are source-clear. In the illness opening, Ahyan in H8 indicates blindness and Ahyan in H6 indicates ظلمة البصر (dark/dim vision); current v57 still omits the H6 dark-vision branch."
       },
       "verificationStatus": "REVIEW_REQUIRED"
     },
@@ -17014,18 +17013,72 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
     {
       "entryId": "gate6.house6.p201.animal-figure-mapping",
       "entryType": "animal-figure-mapping",
-      "bookPages": [201],
-      "scanPdfPages": [203],
-      "v57Anchors": ["kashf-v57-draft.html#p201"],
+      "bookPages": [
+        201
+      ],
+      "scanPdfPages": [
+        203
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p201"
+      ],
       "topic": "מיפוי צורות בבית השישי לסוגי בהמות",
-      "keywords": ["בהמות", "H6", "אדום", "סוהר", "שפל ראש", "ממון יוצא", "עדויות"],
-      "criticalFacts": ["המקור מונה התאמות נפרדות לבהמות בבית השישי ומחייב לשפוט לפי העדויות.", "הסריקה קוראת: אדום→כבשים/אילים; הצורה הבאה ברשימה→שוורים; נוסרת חיצונית→סוסים; סף חיצוני→גמלים; العقلة→חמורים; الأنكيس→גדיים ותיישים; قبض חיצוני→פרדות."],
-      "procedure": ["זהה את הצורה ב-H6.", "הצלב עם העדויות; אין להסתפק בהתאמה יחידה."],
-      "branches": [{"condition": "figure-in-H6", "outcome": "animal-kind-by-source-table"}],
-      "preconditions": ["שאלת בהמה/סוג בהמה."], "questionIntents": ["animal-kind"], "methodStatus": "SOURCE_TABLE_WITH_V57_MISMATCH", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
-      "doNotInfer": ["אין לתקן את שמות הצורות לפי דמיון עברי או סימטריה."],
-      "sourceDiscrepancies": ["v57 מחליף/מערבב כמה שמות צורות והתאמות בהמות לעומת הסריקה; נדרש תיקון נפרד."],
-      "sourceVerification": {"printedBookPages": [201], "scanPdfPages": [203], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "The animal names and figure glyphs were checked against the enlarged scan; two OCR-sensitive Arabic names remain queued for correction."}, "verificationStatus": "REVIEW_REQUIRED"
+      "keywords": [
+        "בהמות",
+        "H6",
+        "אדום",
+        "סוהר",
+        "שפל ראש",
+        "ממון יוצא",
+        "עדויות"
+      ],
+      "criticalFacts": [
+        "המקור מונה התאמות נפרדות לבהמות בבית השישי ומחייב לשפוט לפי העדויות.",
+        "אדום (الحمرة) → אילים/כבשים (الكباش).",
+        "הכיתוב המודפס `التشمير` מלווה בגליף 2211; לפי המיפוי הקנוני של הפרויקט הגליף הוא כבוד נכנס, והטקסט המודפס עצמו נשמר ללא החלפה. שורה זו → שוורים (الثيران).",
+        "כבוד יוצא (النصرة الخارجة) → סוסים; סף יוצא (العتبة الخارجة) → גמלים.",
+        "סוהר (العقلة) → חמורים; שפל ראש (الأنكيس) → גדיים ותיישים; ממון יוצא (القبض الخارج) → פרדות."
+      ],
+      "procedure": [
+        "זהה את הצורה ב-H6.",
+        "הצלב עם העדויות; אין להסתפק בהתאמה יחידה."
+      ],
+      "branches": [
+        {
+          "condition": "figure-in-H6",
+          "outcome": "animal-kind-by-source-table"
+        }
+      ],
+      "preconditions": [
+        "שאלת בהמה/סוג בהמה."
+      ],
+      "questionIntents": [
+        "animal-kind"
+      ],
+      "methodStatus": "SOURCE_TABLE_WITH_V57_MISMATCH",
+      "operationalRole": "PRIMARY_CANDIDATE",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין לתקן את שמות הצורות לפי דמיון עברי או סימטריה."
+      ],
+      "sourceDiscrepancies": [
+        "v57 הנוכחי מצרף סף יוצא לסוסים במקום לייחד אותו לגמלים.",
+        "v57 הנוכחי נותן סוהר→גמלים, בעוד המקור המודפס נותן סוהר/العقلة→חמורים.",
+        "v57 הנוכחי נותן שפל ראש גם לחמורים וגם לגדיים/תיישים, בעוד המקור מייחד الأنكيس לגדיים ותיישים."
+      ],
+      "sourceVerification": {
+        "printedBookPages": [
+          201
+        ],
+        "scanPdfPages": [
+          203
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "Pass 2 full-resolution visual check of printed p201 confirmed the animal rows and glyphs. The printed token التشمير is preserved exactly beside glyph 2211; only the project canonical glyph mapping identifies 2211 as כבוד נכנס. The animal mappings are source-clear and current-v57 mismatches remain live."
+      },
+      "verificationStatus": "REVIEW_REQUIRED"
     },
     {
       "entryId": "gate6.house6.p202.lost-animal-and-patient-loss-signs",
@@ -17060,18 +17113,105 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
     {
       "entryId": "gate6.house6.p204.chapter7-seam-marriage-status",
       "entryType": "chapter-transition-and-marriage-status-rule-set",
-      "bookPages": [204],
-      "scanPdfPages": [206],
-      "v57Anchors": ["kashf-v57-draft.html#p204"],
+      "bookPages": [
+        204
+      ],
+      "scanPdfPages": [
+        206
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p204"
+      ],
       "topic": "חתימת דיני החולה ופתיחת דיני הנישואין — מעמד האישה",
-      "keywords": ["H2", "H4", "H5", "H16", "מעבר", "מיטת המת", "קהל המלווים", "נוגה", "צדק", "אמה", "חופשייה", "בעולה", "בתולה"],
-      "criticalFacts": ["H2 ב-H9 מורה על מעבר; H4 ב-H12 על מיטת המת; H5 ב-H16 על קהל המלווים.", "צורות נוגה ב-H1,H5,H9, וכן צורות צדק, מורות על הצלחת הנישואין.", "המקור אומר H1 ב-H7 → האישה אמה; H7 ב-H10 → חופשייה; H7 מתהפך → בעולה; H7 קבוע → בתולה.", "צורה מיטיבה ב-H8 מורה על מוהר רב; מיטיבה ב-H10 על בית טוב; מזיקה ב-H10 על פחיתות."],
-      "procedure": ["סגור תחילה את שלושת ענפי המעבר.", "לשאלת נישואין בדוק H1,H5,H9 ואת צורות צדק.", "למעמד האישה קרא את יחס H1/H7/H10 ואת מצב H7."],
-      "branches": [{"condition": "H2-in-H9", "outcome": "transition"}, {"condition": "H4-in-H12", "outcome": "dead-bed"}, {"condition": "H5-in-H16", "outcome": "funeral-followers"}, {"condition": "H1-in-H7", "outcome": "female-slave"}, {"condition": "H7-in-H10", "outcome": "free-woman"}, {"condition": "H7-mutable", "outcome": "previously-married"}, {"condition": "H7-fixed", "outcome": "virgin"}],
-      "preconditions": ["שאלת נישואין/מעמד אישה או סיום דיני החולה."], "questionIntents": ["marriage-success", "woman-status", "woman-virginity-status"], "methodStatus": "SOURCE_RULE_SET_WITH_V57_MISMATCH", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
-      "doNotInfer": ["אין להפוך את H1-in-H7 ל'חופשייה'; אין להחליף בין מתהפך/קבוע."],
-      "sourceDiscrepancies": ["v57 משבש את ענף H1 ב-H7 ומציג אותו כחופשייה, משמיט את H7 ב-H10, ומחליף את ענפי מתהפך/קבוע."],
-      "sourceVerification": {"printedBookPages": [204], "scanPdfPages": [206], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "The page seam, house numbers, figure statuses and marriage-status branches were checked against the enlarged scan."}, "verificationStatus": "REVIEW_REQUIRED"
+      "keywords": [
+        "H2",
+        "H4",
+        "H5",
+        "H16",
+        "מעבר",
+        "מיטת המת",
+        "קהל המלווים",
+        "נוגה",
+        "צדק",
+        "אמה",
+        "חופשייה",
+        "בעולה",
+        "בתולה"
+      ],
+      "criticalFacts": [
+        "H2 ב-H9 מורה על מעבר; H4 ב-H12 על מיטת המת; H5 ב-H16 על קהל המלווים.",
+        "צורות נוגה ב-H1,H5,H9, וכן צורות צדק, מורות על הצלחת הנישואין.",
+        "המקור אומר H1 ב-H7 → האישה אמה; H7 ב-H10 → חופשייה; H7 מתהפך → בעולה; H7 קבוע → בתולה.",
+        "צורה מיטיבה ב-H8 מורה על מוהר רב; מיטיבה ב-H10 על בית טוב; מזיקה ב-H10 על פחיתות."
+      ],
+      "procedure": [
+        "סגור תחילה את שלושת ענפי המעבר.",
+        "לשאלת נישואין בדוק H1,H5,H9 ואת צורות צדק.",
+        "למעמד האישה קרא את יחס H1/H7/H10 ואת מצב H7."
+      ],
+      "branches": [
+        {
+          "condition": "H2-in-H9",
+          "outcome": "transition"
+        },
+        {
+          "condition": "H4-in-H12",
+          "outcome": "dead-bed"
+        },
+        {
+          "condition": "H5-in-H16",
+          "outcome": "funeral-followers"
+        },
+        {
+          "condition": "H1-in-H7",
+          "outcome": "female-slave"
+        },
+        {
+          "condition": "H7-in-H10",
+          "outcome": "free-woman"
+        },
+        {
+          "condition": "H7-mutable",
+          "outcome": "previously-married"
+        },
+        {
+          "condition": "H7-fixed",
+          "outcome": "virgin"
+        }
+      ],
+      "preconditions": [
+        "שאלת נישואין/מעמד אישה או סיום דיני החולה."
+      ],
+      "questionIntents": [
+        "marriage-success",
+        "woman-status",
+        "woman-virginity-status"
+      ],
+      "methodStatus": "SOURCE_RULE_SET_WITH_V57_MISMATCH",
+      "operationalRole": "PRIMARY_CANDIDATE",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין להפוך את H1-in-H7 ל'חופשייה'; אין להחליף בין מתהפך/קבוע."
+      ],
+      "sourceDiscrepancies": [
+        "v57 מציג H1 ב-H7 כחופשייה, אך המקור אומר فالمرأة أمة — אמה/שפחה.",
+        "v57 משמיט את הענף העצמאי H7 ב-H10 → فهي حرة — חופשייה.",
+        "v57 מחבר את H7 ב-H10 עם מתהפכת ומתרגם ثيب כ״גרושה״; במקור אלה ענפים נפרדים, ו-ثيب פירושו שאינה בתולה/בעולה ולא בהכרח גרושה.",
+        "H7 קבוע → بكر — בתולה."
+      ],
+      "sourceVerification": {
+        "printedBookPages": [
+          204
+        ],
+        "scanPdfPages": [
+          206
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "Pass 2 visually rechecked printed p204. Four separate source-clear branches: H1-in-H7→أمة; H7-in-H10→حرة; mutable H7→ثيب; fixed H7→بكر. Current v57 still collapses/reverses them."
+      },
+      "verificationStatus": "REVIEW_REQUIRED"
     },
     {
       "entryId": "gate6.house7.p205.love-and-chastity",
@@ -17089,15 +17229,81 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
     {
       "entryId": "gate6.house7.p206.intent-odor-marriage-appeal",
       "entryType": "marriage-intent-and-odor-rule-set",
-      "bookPages": [206], "scanPdfPages": [208], "v57Anchors": ["kashf-v57-draft.html#p206"],
+      "bookPages": [
+        206
+      ],
+      "scanPdfPages": [
+        208
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p206"
+      ],
       "topic": "רצון השואל, ריח האישה, הצלחת נישואין וחן האישה",
-      "keywords": ["H7", "H11", "H5", "ריח", "בתולה", "H13"],
-      "criticalFacts": ["להערכת רצון השואל מכים H7 עם H11 ואת התוצאה עם H5; מיטיב = רוצה.", "בסריקה ריח לא נעים נקבע כאשר H1/H7 מכילים عتبة خارجة או الأنكيس; v57 מציג במקום זאת סף יוצא או שפל ראש.", "לשאלת הצלחת נישואין מפיקים H1/H7 ומכים עם H5; לחן האישה מפיקים H7/H11 ומכים עם H5.", "בתולה/בעולה נקבעות מן H7/H13 לפי מים סגורים/פתוחים; אהבה מלאה H3/H11, איבה מלאה H9/H14, וחצאים H3/H9 ו-H10/H13."],
-      "procedure": ["בצע את ההכאות לפי intent נפרד."],
-      "branches": [{"condition": "benefic-desire-result", "outcome": "querent-wants"}, {"condition": "malefic-desire-result", "outcome": "querent-does-not-want"}, {"condition": "closed-water-H7-H13", "outcome": "virgin"}, {"condition": "open-water-H7-H13", "outcome": "previously-married"}],
-      "preconditions": ["שאלת רצון, ריח, נישואין, חן או מעמד מיני."], "questionIntents": ["querent-desire", "woman-odor", "marriage-success", "woman-appeal", "woman-virginity-status"], "methodStatus": "SOURCE_RULE_SET_WITH_V57_MISMATCH", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
-      "doNotInfer": ["אין להחליף את צורות הריח לפי תרגום או דמיון חזותי."], "sourceDiscrepancies": ["v57 אינו משמר את צורות הריח המודפסות בעמ׳ 206."],
-      "sourceVerification": {"printedBookPages": [206], "scanPdfPages": [208], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "House numbers checked; odor figures remain discrepancy."}, "verificationStatus": "REVIEW_REQUIRED"
+      "keywords": [
+        "H7",
+        "H11",
+        "H5",
+        "ריח",
+        "בתולה",
+        "H13"
+      ],
+      "criticalFacts": [
+        "לרצון השואל: הכה H7 עם H11, ואת היוצא הכה עם H5; מיטיב → רוצה בדבר, מזיק → להפך.",
+        "בריח האישה: אם ב-H1 וב-H7 מופיעים סף יוצא (العتبة الخارجة) או שפל ראש (الأنكيس), המקור מורה שריחה אינו נעים.",
+        "לראויות הנישואין: הולד צורה מ-H1+H7 והכה אותה עם H5; דון לפי מיטיב/מזיק ופנימי/חיצוני.",
+        "לחן האישה בעיני השואל: הולד מ-H7+H11 והכה עם H5; תוצאה מיטיבה → תמצא חן בעיניו."
+      ],
+      "procedure": [
+        "בצע את ההכאות לפי intent נפרד."
+      ],
+      "branches": [
+        {
+          "condition": "benefic-desire-result",
+          "outcome": "querent-wants"
+        },
+        {
+          "condition": "malefic-desire-result",
+          "outcome": "querent-does-not-want"
+        },
+        {
+          "condition": "closed-water-H7-H13",
+          "outcome": "virgin"
+        },
+        {
+          "condition": "open-water-H7-H13",
+          "outcome": "previously-married"
+        }
+      ],
+      "preconditions": [
+        "שאלת רצון, ריח, נישואין, חן או מעמד מיני."
+      ],
+      "questionIntents": [
+        "querent-desire",
+        "woman-odor",
+        "marriage-success",
+        "woman-appeal",
+        "woman-virginity-status"
+      ],
+      "methodStatus": "SOURCE_PROCEDURE",
+      "operationalRole": "PRIMARY_CANDIDATE",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין להחליף את צורות הריח לפי תרגום או דמיון חזותי."
+      ],
+      "sourceDiscrepancies": [],
+      "sourceVerification": {
+        "printedBookPages": [
+          206
+        ],
+        "scanPdfPages": [
+          208
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "Pass 2 visually rechecked printed p206 and the p206→p207 seam. Current v57 now preserves the odor figures as סף יוצא and שפל ראש, matching العتبة الخارجة and الأنكيس. Virgin/non-virgin and full/half love-enmity continue on printed p207 and belong to the dedicated p207 record, so they were removed from p206."
+      },
+      "verificationStatus": "VERIFIED"
     },
     {
       "entryId": "gate6.house7.p207.marriage-love-and-house-model",
@@ -17115,15 +17321,78 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
     {
       "entryId": "gate6.house7.p208.marriage-house-figure-meanings",
       "entryType": "marriage-house-figure-meaning-set",
-      "bookPages": [208], "scanPdfPages": [210], "v57Anchors": ["kashf-v57-draft.html#p208"],
+      "bookPages": [
+        208
+      ],
+      "scanPdfPages": [
+        210
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p208"
+      ],
       "topic": "צורות בית הנישואין, מצב האישה וגילה",
-      "keywords": ["H5", "H7", "H9", "נוגה", "מאדים", "צדק", "שבתאי"],
-      "criticalFacts": ["המקור מייחס לבית הנישואין צורות שונות להצלחה, שעבוד, בגידה, מעמד, ממון ויופי; יש לקרוא כל צורה בשם המקורי.", "גיל נקבע מן H7: מאדים/נוגה/ירח קטנים; שמש/צדק/כוכב בינוניים; שבתאי/ראש/זנב זקנים.", "H5 עם צורות מיטיבות פנימיות מורה על אישה טובה ויציבה; צורות מזיקות במאזן או בבית הרביעי פוגעות באחרית."],
-      "procedure": ["זהה את הצורה המדויקת בבית הנישואין וב-H7.", "סווג לפי קבוצת הגיל והעדויות."],
-      "branches": [{"condition": "small-planet-group-in-H7", "outcome": "young"}, {"condition": "medium-planet-group-in-H7", "outcome": "middle-aged"}, {"condition": "old-planet-group-in-H7", "outcome": "older"}],
-      "preconditions": ["שאלת נישואין, גיל או מעמד."], "questionIntents": ["woman-age", "woman-wealth", "marriage-success"], "methodStatus": "SOURCE_RULE_SET_WITH_V57_FIGURE_DRIFT", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
-      "doNotInfer": ["אין להחליף שמות צורות לפי רשומה עברית שאינה תואמת את הסריקה."], "sourceDiscrepancies": ["v57 מחליף כמה צורות מודפסות בבית הנישואין בשמות עבריים אחרים."],
-      "sourceVerification": {"printedBookPages": [208], "scanPdfPages": [210], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Age groups and H5/H7/H9 conditions checked; figure-name drift queued."}, "verificationStatus": "REVIEW_REQUIRED"
+      "keywords": [
+        "H5",
+        "H7",
+        "H9",
+        "נוגה",
+        "מאדים",
+        "צדק",
+        "שבתאי"
+      ],
+      "criticalFacts": [
+        "המקור מייחס לבית הנישואין צורות שונות להצלחה, שעבוד, בגידה, מעמד, ממון ויופי; יש לקרוא כל צורה בשם המקורי.",
+        "גיל נקבע מן H7: מאדים/נוגה/ירח קטנים; שמש/צדק/כוכב בינוניים; שבתאי/ראש/זנב זקנים.",
+        "H5 עם צורות מיטיבות פנימיות מורה על אישה טובה ויציבה; צורות מזיקות במאזן או בבית הרביעי פוגעות באחרית."
+      ],
+      "procedure": [
+        "זהה את הצורה המדויקת בבית הנישואין וב-H7.",
+        "סווג לפי קבוצת הגיל והעדויות."
+      ],
+      "branches": [
+        {
+          "condition": "small-planet-group-in-H7",
+          "outcome": "young"
+        },
+        {
+          "condition": "medium-planet-group-in-H7",
+          "outcome": "middle-aged"
+        },
+        {
+          "condition": "old-planet-group-in-H7",
+          "outcome": "older"
+        }
+      ],
+      "preconditions": [
+        "שאלת נישואין, גיל או מעמד."
+      ],
+      "questionIntents": [
+        "woman-age",
+        "woman-wealth",
+        "marriage-success"
+      ],
+      "methodStatus": "SOURCE_RULE_SET_WITH_V57_FIGURE_DRIFT",
+      "operationalRole": "PRIMARY_CANDIDATE",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין להחליף שמות צורות לפי רשומה עברית שאינה תואמת את הסריקה."
+      ],
+      "sourceDiscrepancies": [
+        "v57 מחליף כמה צורות מודפסות בבית הנישואין בשמות עבריים אחרים."
+      ],
+      "sourceVerification": {
+        "printedBookPages": [
+          208
+        ],
+        "scanPdfPages": [
+          210
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "Pass 2 visually rechecked printed p208 through the page end and separated the p209 continuation. Source-clear p208 includes the enslaved/low-status cluster, age groups by planetary figures, H5 good/stable-woman figures, balance bad-ending figures, and H4 as an ending/consequence house. Full current-v57 mapping reconciliation is still open; no p209 material is imported."
+      },
+      "verificationStatus": "REVIEW_REQUIRED"
     },
     {
       "entryId": "gate6.house7.p209.woman-by-mans-houses",
@@ -17336,67 +17605,452 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
     {
       "entryId": "gate8.theft.p229.comprehensive-recovery-rule",
       "entryType": "theft-and-loss-comprehensive-rule-set",
-      "bookPages": [229, 230], "scanPdfPages": [231, 232], "v57Anchors": ["kashf-v57-draft.html#p229", "kashf-v57-draft.html#p230"],
+      "bookPages": [
+        229,
+        230
+      ],
+      "scanPdfPages": [
+        231,
+        232
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p229",
+        "kashf-v57-draft.html#p230"
+      ],
       "topic": "כלל מקיף בגניבה ובאבדה: בעלי הבתים, חזרת הגניבה, קרבה ומקום",
-      "keywords": ["H1", "H2", "H4", "H6", "H7", "H8", "H10", "גניבה", "אבדה", "עיר"],
-      "criticalFacts": ["H1 בעל הדבר; H2 בית הממון שממנו נגנב; H4 בית לקיחת החפץ; H6 החפץ; H7 הגנב; H10 בית הממון שאליו נכנסה הגניבה; H8 הבית שאליו נכנסה.", "מיטיבות ב-H1/H2 עם מזיקות ב-H7/H8 מורות על חזרת הגניבה; הצירוף ההפוך מורה שלא תחזור.", "H4 ב-H7 מורה על גנב מבני הבית/הקרובים; H7 ב-H9 על נסיעת הגנב; H8 ב-H2 על חזרת האבדה; H6 ב-H10 על יציאה מן העיר; H6+H4 פנימית = בעיר, חיצונית = מחוץ לעיר."],
-      "procedure": ["מפה את בתי הגניבה לפי התפקידים המקוריים.", "בדוק את זוגות המיטיבות/מזיקות ואת חזרת הצורות.", "הפק צורה מ-H6 ומ-H4 לבדיקת פנים/חוץ של העיר."],
-      "branches": [{"condition":"benefic-H1-H2-and-malefic-H7-H8","outcome":"theft-returns"},{"condition":"malefic-H1-H2-and-benefic-H7-H8","outcome":"does-not-return"},{"condition":"H4-in-H7","outcome":"thief-is-household-or-kin"},{"condition":"H8-in-H2","outcome":"lost-item-returns"},{"condition":"H6-in-H10","outcome":"theft-left-city"}],
-      "preconditions": ["שאלת גניבה או אבדה."], "questionIntents": ["theft-recovery", "thief-relationship", "theft-city-location"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
-      "doNotInfer": ["אין להחליף את תפקידי H8 ו-H10 או להשלים ענף שלא נמסר."], "sourceDiscrepancies": ["v57 אינו כולל את כל ענפי החזרה והעיר בניסוח זהה למקור הערבי; יש לשמר את מיפוי הבתים ואת תנאי הענפים מילולית.", "גבול המקור חוצה את עמ׳ 229→230: המשפט המסיים את p229 ממשיך ב-p230 עם ענף H7 ב-H14. הרשומה הורחבה לשני העמודים; הרשומה הייעודית של p230 נשמרת כחפיפה מכוונת."],
-      "sourceVerification": {"printedBookPages": [229, 230], "scanPdfPages": [231, 232], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "The comprehensive theft paragraph starts on printed p229 and crosses the page seam into the opening of p230 (H7 in H14). Both pages were checked as one uninterrupted source unit. The dedicated p230 record remains as an overlapping focused record."}, "verificationStatus": "REVIEW_REQUIRED"
+      "keywords": [
+        "H1",
+        "H2",
+        "H4",
+        "H6",
+        "H7",
+        "H8",
+        "H10",
+        "גניבה",
+        "אבדה",
+        "עיר"
+      ],
+      "criticalFacts": [
+        "H1 בעל הדבר; H2 בית הממון שממנו נגנב; H4 בית לקיחת החפץ; H6 החפץ; H7 הגנב; H10 בית הממון שאליו נכנסה הגניבה; H8 הבית שאליו נכנסה.",
+        "מיטיבות ב-H1/H2 עם מזיקות ב-H7/H8 מורות על חזרת הגניבה; הצירוף ההפוך מורה שלא תחזור.",
+        "H4 ב-H7 מורה על גנב מבני הבית/הקרובים; H7 ב-H9 על נסיעת הגנב; H8 ב-H2 על חזרת האבדה; H6 ב-H10 על יציאה מן העיר; H6+H4 פנימית = בעיר, חיצונית = מחוץ לעיר."
+      ],
+      "procedure": [
+        "מפה את בתי הגניבה לפי התפקידים המקוריים.",
+        "בדוק את זוגות המיטיבות/מזיקות ואת חזרת הצורות.",
+        "הפק צורה מ-H6 ומ-H4 לבדיקת פנים/חוץ של העיר."
+      ],
+      "branches": [
+        {
+          "condition": "benefic-H1-H2-and-malefic-H7-H8",
+          "outcome": "theft-returns"
+        },
+        {
+          "condition": "malefic-H1-H2-and-benefic-H7-H8",
+          "outcome": "does-not-return"
+        },
+        {
+          "condition": "H4-in-H7",
+          "outcome": "thief-is-household-or-kin"
+        },
+        {
+          "condition": "H8-in-H2",
+          "outcome": "lost-item-returns"
+        },
+        {
+          "condition": "H6-in-H10",
+          "outcome": "theft-left-city"
+        }
+      ],
+      "preconditions": [
+        "שאלת גניבה או אבדה."
+      ],
+      "questionIntents": [
+        "theft-recovery",
+        "thief-relationship",
+        "theft-city-location"
+      ],
+      "methodStatus": "SOURCE_RULE_SET",
+      "operationalRole": "PRIMARY_CANDIDATE",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין להחליף את תפקידי H8 ו-H10 או להשלים ענף שלא נמסר."
+      ],
+      "sourceDiscrepancies": [
+        "כלל הגניבה המודפס חוצה p229→p230; פתיחת p230 ממשיכה בענף H7 ב-H14, ולכן החפיפה עם רשומת p230 מכוונת.",
+        "v57 אינו משמר במלואם את ענף H7→H14 של זמן/תפיסה ואת H6 הנכנס ב-H13 שלפיו הגניבה אינה חוזרת."
+      ],
+      "sourceVerification": {
+        "printedBookPages": [
+          229,
+          230
+        ],
+        "scanPdfPages": [
+          231,
+          232
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "Pass 2 decision 73: printed pp229–230 / scans231–232 re-read as one uninterrupted source unit; H7→H14 and H6-in-H13 omissions remain live.",
+        "pass2Checked": true
+      },
+      "verificationStatus": "REVIEW_REQUIRED"
     },
     {
       "entryId": "gate8.theft.p230.return-and-discovery",
       "entryType": "theft-return-discovery-rule-set",
-      "bookPages": [230], "scanPdfPages": [232], "v57Anchors": ["kashf-v57-draft.html#p230"],
+      "bookPages": [
+        230
+      ],
+      "scanPdfPages": [
+        232
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p230"
+      ],
       "topic": "סיום דיני הגניבה והאבדה: תפיסה, חזרה וגילוי",
-      "keywords": ["H2", "H6", "H7", "H8", "H13", "H14", "H12", "סוהר", "חיבור", "דרך"],
-      "criticalFacts": ["המקור קושר H7 ב-H14 להמשך אי-תפיסה/מהירות נפילה, H6 הנכנס ב-H13 לאי-חזרת הגניבה, ו-H2 או בעל H8 ב-H7 לאובדן ממון.", "H1+H6 פנימית מורה על חזרת הולך/בורח; חיצונית — אי-חזרה.", "בגניבה: סוהר בראשון/שלישי/עשירי מגלה, חיבור מאסף ומגלה במהרה, דרך קבורה בדרך; צורות נוספות מורות על אי-חזרה או חזרה לאחר שיעור חודש."],
-      "procedure": ["בדוק את יחסי H7/H14, H6/H13 ו-H2/H7.", "הפרד בין ענף גניבה לענף אבדה ולענף הולך/בורח."],
-      "branches": [{"condition":"H7-in-H14","outcome":"source-specific-capture-timing"},{"condition":"H6-in-H13","outcome":"theft-does-not-return"},{"condition":"inward-H1-H6","outcome":"fugitive-returns"}],
-      "preconditions": ["שאלת גניבה, אבדה או בורח."], "questionIntents": ["theft-discovery", "lost-item-return", "fugitive-return"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
-      "doNotInfer": ["אין למחוק את ענף H7/H14 או להחליף את H13 ב-H14."], "sourceDiscrepancies": ["v57 השמיט את המשפט על H7 ב-H14 ואת ענף H6 הנכנס ב-H13; בנוסף הוסיף/שינה צורות בבית 12 לעומת הסריקה."],
-      "sourceVerification": {"printedBookPages": [230], "scanPdfPages": [232], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Omitted H14/H13 branches and house-12 figure wording identified by line-by-line scan read."}, "verificationStatus": "REVIEW_REQUIRED"
+      "keywords": [
+        "H2",
+        "H6",
+        "H7",
+        "H8",
+        "H13",
+        "H14",
+        "H12",
+        "סוהר",
+        "חיבור",
+        "דרך"
+      ],
+      "criticalFacts": [
+        "המקור קושר H7 ב-H14 להמשך אי-תפיסה/מהירות נפילה, H6 הנכנס ב-H13 לאי-חזרת הגניבה, ו-H2 או בעל H8 ב-H7 לאובדן ממון.",
+        "H1+H6 פנימית מורה על חזרת הולך/בורח; חיצונית — אי-חזרה.",
+        "בגניבה: סוהר בראשון/שלישי/עשירי מגלה, חיבור מאסף ומגלה במהרה, דרך קבורה בדרך; צורות נוספות מורות על אי-חזרה או חזרה לאחר שיעור חודש."
+      ],
+      "procedure": [
+        "בדוק את יחסי H7/H14, H6/H13 ו-H2/H7.",
+        "הפרד בין ענף גניבה לענף אבדה ולענף הולך/בורח."
+      ],
+      "branches": [
+        {
+          "condition": "H7-in-H14",
+          "outcome": "source-specific-capture-timing"
+        },
+        {
+          "condition": "H6-in-H13",
+          "outcome": "theft-does-not-return"
+        },
+        {
+          "condition": "inward-H1-H6",
+          "outcome": "fugitive-returns"
+        }
+      ],
+      "preconditions": [
+        "שאלת גניבה, אבדה או בורח."
+      ],
+      "questionIntents": [
+        "theft-discovery",
+        "lost-item-return",
+        "fugitive-return"
+      ],
+      "methodStatus": "SOURCE_RULE_SET",
+      "operationalRole": "PRIMARY_CANDIDATE",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין למחוק את ענף H7/H14 או להחליף את H13 ב-H14."
+      ],
+      "sourceDiscrepancies": [
+        "v57 משמיט את המשפט המודפס על H7 ב-H14 ואת ענף H6 הנכנס ב-H13; שני הענפים נבדקו ישירות בסריקה.",
+        "רשומה זו חופפת בכוונה לסיום יחידת p229→p230."
+      ],
+      "sourceVerification": {
+        "printedBookPages": [
+          230
+        ],
+        "scanPdfPages": [
+          232
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "Pass 2 decision 74: printed p230 / scan232 confirms the omitted H7/H14 continuation and H6-in-H13 non-return branch.",
+        "pass2Checked": true
+      },
+      "verificationStatus": "REVIEW_REQUIRED"
     },
     {
       "entryId": "gate8.theft.p231.fugitive-and-lost-item",
       "entryType": "fugitive-lost-item-rule-set",
-      "bookPages": [231], "scanPdfPages": [233], "v57Anchors": ["kashf-v57-draft.html#p231"],
+      "bookPages": [
+        231
+      ],
+      "scanPdfPages": [
+        233
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p231"
+      ],
       "topic": "כלל מעשי בבורח ובאבדה",
-      "keywords": ["H1", "H2", "H4", "H7", "H8", "H10", "H15", "בורח", "אבדה"],
-      "criticalFacts": ["H1 בעל החפץ; H7 הבורח/האבדה; H10 בעל העניין; H4 המקום; H15 סוף הדבר.", "המקור מוסיף ענפים נפרדים לצורות יוצאות/פנימיות ב-H7/H8 וב-H1/H2, וכן בדיקת התאמת הצורות לקרבת הדבר לשואל."],
-      "procedure": ["הצב את הבתים לפי תפקידי המקור.", "בדוק מצב מיטיב/מזיק, חיצוני/פנימי והתאמת הצורות."],
-      "branches": [{"condition":"benefic-corners-and-good-outcome","outcome":"returns"},{"condition":"outward-seventh-eighth-and-inward-first-second","outcome":"returns"},{"condition":"reverse-polarity","outcome":"does-not-return"}],
-      "preconditions": ["שאלת בורח או אבדה."], "questionIntents": ["fugitive-return", "lost-item-return", "lost-item-proximity"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
-      "doNotInfer": ["אין לצמצם את ארבעת ענפי הקוטביות לענף אחד של צורות מיטיבות."], "sourceDiscrepancies": ["v57 השמיט את ענפי H7/H8 החיצוניים מול H1/H2 הפנימיים ואת הענף ההפוך; לכן אינו שלם מול הסריקה."],
-      "sourceVerification": {"printedBookPages": [231], "scanPdfPages": [233], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "All polarity branches were re-read in the scan; v57 contains only a compressed subset."}, "verificationStatus": "REVIEW_REQUIRED"
+      "keywords": [
+        "H1",
+        "H2",
+        "H4",
+        "H7",
+        "H8",
+        "H10",
+        "H15",
+        "בורח",
+        "אבדה"
+      ],
+      "criticalFacts": [
+        "H1 בעל החפץ; H7 הבורח/האבדה; H10 בעל העניין; H4 המקום; H15 סוף הדבר.",
+        "המקור מוסיף ענפים נפרדים לצורות יוצאות/פנימיות ב-H7/H8 וב-H1/H2, וכן בדיקת התאמת הצורות לקרבת הדבר לשואל."
+      ],
+      "procedure": [
+        "הצב את הבתים לפי תפקידי המקור.",
+        "בדוק מצב מיטיב/מזיק, חיצוני/פנימי והתאמת הצורות."
+      ],
+      "branches": [
+        {
+          "condition": "benefic-corners-and-good-outcome",
+          "outcome": "returns"
+        },
+        {
+          "condition": "outward-seventh-eighth-and-inward-first-second",
+          "outcome": "returns"
+        },
+        {
+          "condition": "reverse-polarity",
+          "outcome": "does-not-return"
+        }
+      ],
+      "preconditions": [
+        "שאלת בורח או אבדה."
+      ],
+      "questionIntents": [
+        "fugitive-return",
+        "lost-item-return",
+        "lost-item-proximity"
+      ],
+      "methodStatus": "SOURCE_RULE_SET",
+      "operationalRole": "PRIMARY_CANDIDATE",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין לצמצם את ארבעת ענפי הקוטביות לענף אחד של צורות מיטיבות."
+      ],
+      "sourceDiscrepancies": [
+        "המקור שומר ענפים נפרדים של יוצא/פנימי ב-H7/H8 מול H1/H2 ואת הקוטביות ההפוכה; v57 עדיין מציג תת־קבוצה דחוסה."
+      ],
+      "sourceVerification": {
+        "printedBookPages": [
+          231
+        ],
+        "scanPdfPages": [
+          233
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "Pass 2 decision 75: printed p231 / scan233 re-read; full source polarity structure remains incomplete in current v57.",
+        "pass2Checked": true
+      },
+      "verificationStatus": "REVIEW_REQUIRED"
     },
     {
       "entryId": "gate8.theft.p232-234.thief-description",
       "entryType": "thief-description-figure-table",
-      "bookPages": [232, 233, 234], "scanPdfPages": [234, 235, 236], "v57Anchors": ["kashf-v57-draft.html#p232", "kashf-v57-draft.html#p233", "kashf-v57-draft.html#p234"],
+      "bookPages": [
+        232,
+        233,
+        234
+      ],
+      "scanPdfPages": [
+        234,
+        235,
+        236
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p232",
+        "kashf-v57-draft.html#p233",
+        "kashf-v57-draft.html#p234"
+      ],
       "topic": "תיאור הגנב לפי צורת הבית השביעי והחלופות המצוטטות",
-      "keywords": ["H7", "נלחם", "נשוא ראש", "סף נכנס", "לבן", "בר לחי", "סף יוצא", "אדום", "שפל ראש", "כבוד יוצא", "סוהר", "חיבור", "כבוד נכנס", "דרך", "ממון"],
-      "criticalFacts": ["המקור מפיק את תיאור הגנב מן הצורה בבית השביעי, ומביא חלופות מפורשות כגון وصف الشخص الكامل, הסבר סאסאני/עירוני והמקצועות השונים.", "המקור מוסיף מסלול חלופי: תיאור מן H4+H12, נסיעה מן H7+H15 ומקום מגורים מן H11+H16; יציאה מן העיר נבדקת ב-H1+H4."],
-      "procedure": ["זהה את צורת H7.", "שמור בנפרד את הנוסח הראשי ואת גרסאות המקור האחרות.", "בדוק את מסלול H4/H12, H7/H15, H11/H16 רק כחלופה מצוטטת."],
-      "branches": [{"condition":"figure-in-H7","outcome":"source-specific-appearance-and-occupation"},{"condition":"outward-result-H1-H4","outcome":"left-city"},{"condition":"inward-fixed-result-H1-H4","outcome":"not-left-city"}],
-      "preconditions": ["שאלת זהות או תיאור גנב."], "questionIntents": ["thief-description", "thief-occupation", "thief-residence"], "methodStatus": "SOURCE_RULE_SET_WITH_QUOTED_VARIANTS", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
-      "doNotInfer": ["אין להחליף שמות צורות כגון قبض خارج/داخل בתרגום ממוני בלי אימות חזותי."], "sourceDiscrepancies": ["בעמ׳ 234 v57 מתרגם את قبض خارج/داخل כ'ממון יוצא/נכנס' ומאבד את זהות הצורה; v57 גם אינו משמר במלואן את החלופות והמקצועות שבעמ׳ 232–234."],
-      "sourceVerification": {"printedBookPages": [232, 233, 234], "scanPdfPages": [234, 235, 236], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Figure names, alternate witnesses and the qabd-kharij/qabd-dakhil tokens were checked against enlarged scan."}, "verificationStatus": "REVIEW_REQUIRED"
+      "keywords": [
+        "H7",
+        "נלחם",
+        "נשוא ראש",
+        "סף נכנס",
+        "לבן",
+        "בר לחי",
+        "סף יוצא",
+        "אדום",
+        "שפל ראש",
+        "כבוד יוצא",
+        "סוהר",
+        "חיבור",
+        "כבוד נכנס",
+        "דרך",
+        "ממון"
+      ],
+      "criticalFacts": [
+        "המקור מפיק את תיאור הגנב מן הצורה בבית השביעי, ומביא חלופות מפורשות כגון وصف الشخص الكامل, הסבר סאסאני/עירוני והמקצועות השונים.",
+        "המקור מוסיף מסלול חלופי: תיאור מן H4+H12, נסיעה מן H7+H15 ומקום מגורים מן H11+H16; יציאה מן העיר נבדקת ב-H1+H4."
+      ],
+      "procedure": [
+        "זהה את צורת H7.",
+        "שמור בנפרד את הנוסח הראשי ואת גרסאות המקור האחרות.",
+        "בדוק את מסלול H4/H12, H7/H15, H11/H16 רק כחלופה מצוטטת."
+      ],
+      "branches": [
+        {
+          "condition": "figure-in-H7",
+          "outcome": "source-specific-appearance-and-occupation"
+        },
+        {
+          "condition": "outward-result-H1-H4",
+          "outcome": "left-city"
+        },
+        {
+          "condition": "inward-fixed-result-H1-H4",
+          "outcome": "not-left-city"
+        }
+      ],
+      "preconditions": [
+        "שאלת זהות או תיאור גנב."
+      ],
+      "questionIntents": [
+        "thief-description",
+        "thief-occupation",
+        "thief-residence"
+      ],
+      "methodStatus": "SOURCE_RULE_SET_WITH_QUOTED_VARIANTS",
+      "operationalRole": "PRIMARY_CANDIDATE",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין לפרש ממון יוצא/ממון נכנס כאיבוד זהות; זהו המיפוי הקנוני ל־قبض خارج/قبض داخل.",
+        "אין להשלים או למזג חלופות תיאור/מקצוע שלא אומתו אחד־לאחד."
+      ],
+      "sourceDiscrepancies": [
+        "המיפוי הקנוני ממון יוצא=قبض خارج וממון נכנס=قبض داخل תקין ואינו איבוד זהות. הפער החי הוא אי־השלמת התאמה אחד־לאחד של כל חלופות התיאור והמקצועות המודפסים בעמ׳ 232–234 מול v57."
+      ],
+      "sourceVerification": {
+        "printedBookPages": [
+          232,
+          233,
+          234
+        ],
+        "scanPdfPages": [
+          234,
+          235,
+          236
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "Pass 2 decision 76: Qabd naming blocker removed as false under canonical mapping; full printed variant/profession reconciliation remains open.",
+        "pass2Checked": true
+      },
+      "verificationStatus": "REVIEW_REQUIRED"
     },
     {
       "entryId": "gate8.loan-inheritance.p235-236.rules",
       "entryType": "loan-inheritance-fear-rule-set",
-      "bookPages": [235, 236], "scanPdfPages": [237, 238], "v57Anchors": ["kashf-v57-draft.html#p235", "kashf-v57-draft.html#p236"],
+      "bookPages": [
+        235,
+        236
+      ],
+      "scanPdfPages": [
+        237,
+        238
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p235",
+        "kashf-v57-draft.html#p236"
+      ],
       "topic": "דיני הלוואה, ירושה, פחד, מיתה ודאגה",
-      "keywords": ["H1", "H2", "H3", "H4", "H6", "H7", "H8", "H13", "H15", "הלוואה", "ירושה", "מיתה", "דאגה"],
-      "criticalFacts": ["הלוואה: המקור מפיק צורה מ-H1+H7 ומ-H2+H8 ואז צורה שלישית; מיטיבה = החזרת ההלוואה קלה, מזיקה = קושי.", "מתן הלוואה נבדק מ-H7+H8 או עם H3; בבית H8 מיטיבה יש ביטחון/אריכות ימים/ירושה/ממון נסתר, ובענפי H8 מזיקה פנימית/מיטיבה חיצונית/מזיקה חיצונית יש תוצאות שונות.", "במיתה/ירושה נבדקים H1,H8,H6,H4; H1 ב-H4 מורה מיתה בארץ, וב-H15 או H9 או H3 מיתה רחוקה. בדאגה נבדקים H6+H4 וכן התהפכות H6/H7."],
-      "procedure": ["בצע את צירופי הבתים בדיוק לפי השאלה.", "הפרד בין הלוואה, ביטחון/ירושה, מיתה ודאגה.", "שמור את עדות המאזן כחלק מהתנאי המקורי."],
-      "branches": [{"condition":"benefic-loan-result","outcome":"loan-repayable"},{"condition":"malefic-loan-result","outcome":"repayment-difficult"},{"condition":"benefic-H8","outcome":"security-and-hidden-inheritance"},{"condition":"H1-in-H4","outcome":"death-in-home-country"},{"condition":"H1-in-H15-or-H9-or-H3","outcome":"death-away-from-home"}],
-      "preconditions": ["שאלת הלוואה, ירושה, פחד, מיתה או דאגה."], "questionIntents": ["loan-repayment", "loan-decision", "inheritance", "death-condition", "grief-cause"], "methodStatus": "SOURCE_RULE_SET_WITH_ADDED_BOOKLET_MATERIAL", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
-      "doNotInfer": ["אין להחליף את H1+H7 של ההלוואה ב-H2+H8 בלבד; אין להשמיט את H9 בענף המיתה."], "sourceDiscrepancies": ["v57 בעמ׳ 235 משמיט את H1+H7 ומתחיל ב-H2+H8; בעמ׳ 236 מוסיף H2 לרשימת המיתה ומשמיט את H9; לכן הרשומה REVIEW_REQUIRED."],
-      "sourceVerification": {"printedBookPages": [235, 236], "scanPdfPages": [237, 238], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Loan house pairs and death-location houses were verified against enlarged scan; omissions in v57 recorded, not repaired."}, "verificationStatus": "REVIEW_REQUIRED"
+      "keywords": [
+        "H1",
+        "H2",
+        "H3",
+        "H4",
+        "H6",
+        "H7",
+        "H8",
+        "H13",
+        "H15",
+        "הלוואה",
+        "ירושה",
+        "מיתה",
+        "דאגה"
+      ],
+      "criticalFacts": [
+        "הלוואה: המקור מפיק צורה מ-H1+H7 ומ-H2+H8 ואז צורה שלישית; מיטיבה = החזרת ההלוואה קלה, מזיקה = קושי.",
+        "מתן הלוואה נבדק מ-H7+H8 או עם H3; בבית H8 מיטיבה יש ביטחון/אריכות ימים/ירושה/ממון נסתר, ובענפי H8 מזיקה פנימית/מיטיבה חיצונית/מזיקה חיצונית יש תוצאות שונות.",
+        "במיתה/ירושה נבדקים H1,H8,H6,H4; H1 ב-H4 מורה מיתה בארץ, וב-H15 או H9 או H3 מיתה רחוקה. בדאגה נבדקים H6+H4 וכן התהפכות H6/H7."
+      ],
+      "procedure": [
+        "בצע את צירופי הבתים בדיוק לפי השאלה.",
+        "הפרד בין הלוואה, ביטחון/ירושה, מיתה ודאגה.",
+        "שמור את עדות המאזן כחלק מהתנאי המקורי."
+      ],
+      "branches": [
+        {
+          "condition": "benefic-loan-result",
+          "outcome": "loan-repayable"
+        },
+        {
+          "condition": "malefic-loan-result",
+          "outcome": "repayment-difficult"
+        },
+        {
+          "condition": "benefic-H8",
+          "outcome": "security-and-hidden-inheritance"
+        },
+        {
+          "condition": "H1-in-H4",
+          "outcome": "death-in-home-country"
+        },
+        {
+          "condition": "H1-in-H15-or-H9-or-H3",
+          "outcome": "death-away-from-home"
+        }
+      ],
+      "preconditions": [
+        "שאלת הלוואה, ירושה, פחד, מיתה או דאגה."
+      ],
+      "questionIntents": [
+        "loan-repayment",
+        "loan-decision",
+        "inheritance",
+        "death-condition",
+        "grief-cause"
+      ],
+      "methodStatus": "SOURCE_RULE_SET_WITH_ADDED_BOOKLET_MATERIAL",
+      "operationalRole": "PRIMARY_CANDIDATE",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין להחליף את H1+H7 של ההלוואה ב-H2+H8 בלבד; אין להשמיט את H9 בענף המיתה."
+      ],
+      "sourceDiscrepancies": [
+        "בעמ׳ 235 המקור מתחיל H1+H7, אחר כך H2+H8, ואז צורה שלישית; v57 משמיט את H1+H7.",
+        "בדין המוות המקור בודק H1,H8,H6,H4 בלבד; v57 מוסיף H2. למוות בארץ זרה המקור מונה H15/H9/H3; v57 משמיט H9."
+      ],
+      "sourceVerification": {
+        "printedBookPages": [
+          235,
+          236
+        ],
+        "scanPdfPages": [
+          237,
+          238
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "Pass 2 decision 77: printed scan confirms H1+H7 loan extraction, death-house list H1/H8/H6/H4, and foreign-death alternatives H15/H9/H3.",
+        "pass2Checked": true
+      },
+      "verificationStatus": "REVIEW_REQUIRED"
     },
     {
       "entryId": "gate9.travel.p237-239.travel-core-and-profit",
@@ -17413,26 +18067,148 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
     {
       "entryId": "gate9.travel.p240.direction-source-discrepancy",
       "entryType": "travel-direction-rule-set",
-      "bookPages": [240], "scanPdfPages": [242], "v57Anchors": ["kashf-v57-draft.html#p240"],
-      "topic": "כיוון המסע לפי היסודות — סתירת v57 מול הסריקה",
-      "keywords": ["H1", "H5", "H6", "H11", "אש", "אוויר", "מים", "עפר", "כיוון"],
-      "criticalFacts": ["המקור מורה: אוויר = צפון, אש = מזרח, עפר = דרום, מים = מערב; תחילה יש להעביר כל יסוד על בתי היסוד שלו ולבחור לפי חוזק."],
-      "procedure": ["בדוק את בית 11 כמאזן בית 9; לאחר מכן את חוזק היסודות ואת מיפוי הכיוון."],
-      "preconditions": ["שאלת כיוון מסע."], "questionIntents": ["travel-direction"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
-      "doNotInfer": ["אין לבחור בין צפון/מערב או ים לפי סימטריה או קוד קיים."], "sourceDiscrepancies": ["v57 אומר אוויר = מערב ומים = ים; הסריקה המודפסת אומרת אוויר = צפון ומים = מערב."],
-      "sourceVerification": {"printedBookPages": [240], "scanPdfPages": [242], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Critical direction tokens re-read from enlarged scan; discrepancy left unresolved."}, "verificationStatus": "REVIEW_REQUIRED"
+      "bookPages": [
+        240
+      ],
+      "scanPdfPages": [
+        242
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p240"
+      ],
+      "topic": "כיוון המסע לפי היסודות",
+      "keywords": [
+        "H1",
+        "H5",
+        "H6",
+        "H11",
+        "אש",
+        "אוויר",
+        "מים",
+        "עפר",
+        "כיוון"
+      ],
+      "criticalFacts": [
+        "המקור המודפס מורה: אש=מזרח; אוויר=מערב; מים=ים; עפר=קִבְּלִי/דרום. תחילה מעבירים את היסודות על בתיהם ובוחרים לפי החוזק."
+      ],
+      "procedure": [
+        "בדוק את בית 11 כמאזן בית 9; לאחר מכן את חוזק היסודות ואת מיפוי הכיוון."
+      ],
+      "preconditions": [
+        "שאלת כיוון מסע."
+      ],
+      "questionIntents": [
+        "travel-direction"
+      ],
+      "methodStatus": "SOURCE_RULE_SET",
+      "operationalRole": "PRIMARY_CANDIDATE",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין לבחור בין צפון/מערב או ים לפי סימטריה או קוד קיים."
+      ],
+      "sourceDiscrepancies": [],
+      "sourceVerification": {
+        "printedBookPages": [
+          240
+        ],
+        "scanPdfPages": [
+          242
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "Pass 2 decision 78: stale blocker closed. Printed p240 says fire=east, air=west, water=sea, earth=qibli/south, matching current v57.",
+        "pass2Checked": true
+      },
+      "verificationStatus": "VERIFIED"
     },
     {
       "entryId": "gate9.travel.p241-244.safety-and-return",
       "entryType": "travel-safety-and-return-rule-set",
-      "bookPages": [241, 242, 243, 244], "scanPdfPages": [243, 244, 245, 246], "v57Anchors": ["kashf-v57-draft.html#p241", "kashf-v57-draft.html#p242", "kashf-v57-draft.html#p243", "kashf-v57-draft.html#p244"],
+      "bookPages": [
+        241,
+        242,
+        243,
+        244
+      ],
+      "scanPdfPages": [
+        243,
+        244,
+        245,
+        246
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p241",
+        "kashf-v57-draft.html#p242",
+        "kashf-v57-draft.html#p243",
+        "kashf-v57-draft.html#p244"
+      ],
       "topic": "מצב הנוסע, סכנות הדרך, רווח סוחרים, מרכבה והחזרה",
-      "keywords": ["H1", "H2", "H3", "H4", "H5", "H7", "H8", "H9", "H10", "H12", "H13", "H14", "H16", "מרכבה", "סוחרים"],
-      "criticalFacts": ["H1 מסמן רוח ונפש; H3 בית התנועה; H4 מקום היותו; H7 יעד; H9 המסע; H10 הדרך והצרכים.", "יסוד H7 מורה על סכנת ליסטים/בהמות/מים/מזיקים; מעבר H1 לבתים מסוימים מורה על שבר או הגעה בשלום.", "רווח סוחרים נבחן בחזרת H1/H2/H3 ובמעבר H5; בעמ׳ 244 נבחנים H1/H2/H9 להחזרה וכלל נוסף ממפה H1,H2,H10,H7,H8,H5."],
-      "procedure": ["הפרד בין מצב הנוסע, סכנות, רווח סוחרים ושלמות המרכבה.", "שמור את רשימות הבתים והצורות לכל ענף."],
-      "preconditions": ["שאלת בטיחות מסע, מרכבה, סוחרים או חזרה."], "questionIntents": ["traveler-condition", "travel-danger", "merchant-profit", "vehicle-safety", "traveler-return"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
-      "doNotInfer": ["אין להחליף את שם הצורה בר הלחי בעמ׳ 244 בשם „נקי הלחי” בלי הכרעה במקור."], "sourceDiscrepancies": ["בעמ׳ 244 v57 אומר „נקי הלחי” במקום בר הלחי כפי שנקרא בסריקה; הפער נשמר REVIEW_REQUIRED."],
-      "sourceVerification": {"printedBookPages": [241, 242, 243, 244], "scanPdfPages": [243, 244, 245, 246], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Travel safety and return rules checked; p244 figure-name discrepancy retained."}, "verificationStatus": "REVIEW_REQUIRED"
+      "keywords": [
+        "H1",
+        "H2",
+        "H3",
+        "H4",
+        "H5",
+        "H7",
+        "H8",
+        "H9",
+        "H10",
+        "H12",
+        "H13",
+        "H14",
+        "H16",
+        "מרכבה",
+        "סוחרים"
+      ],
+      "criticalFacts": [
+        "H1 מסמן רוח ונפש; H3 בית התנועה; H4 מקום היותו; H7 יעד; H9 המסע; H10 הדרך והצרכים.",
+        "יסוד H7 מורה על סכנת ליסטים/בהמות/מים/מזיקים; מעבר H1 לבתים מסוימים מורה על שבר או הגעה בשלום.",
+        "רווח סוחרים נבחן בחזרת H1/H2/H3 ובמעבר H5; בעמ׳ 244 נבחנים H1/H2/H9 להחזרה וכלל נוסף ממפה H1,H2,H10,H7,H8,H5."
+      ],
+      "procedure": [
+        "הפרד בין מצב הנוסע, סכנות, רווח סוחרים ושלמות המרכבה.",
+        "שמור את רשימות הבתים והצורות לכל ענף."
+      ],
+      "preconditions": [
+        "שאלת בטיחות מסע, מרכבה, סוחרים או חזרה."
+      ],
+      "questionIntents": [
+        "traveler-condition",
+        "travel-danger",
+        "merchant-profit",
+        "vehicle-safety",
+        "traveler-return"
+      ],
+      "methodStatus": "SOURCE_RULE_SET",
+      "operationalRole": "PRIMARY_CANDIDATE",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין להחליף את שם הצורה בר הלחי בעמ׳ 244 בשם „נקי הלחי” בלי הכרעה במקור."
+      ],
+      "sourceDiscrepancies": [
+        "בעמ׳ 244 המקור מדפיס نقي الخد; לפי מדיניות השמות הקנונית השם העברי הוא בר הלחי. v57 משתמש שם בתווית הישנה/לא־קנונית ״נקי הלחי״."
+      ],
+      "sourceVerification": {
+        "printedBookPages": [
+          241,
+          242,
+          243,
+          244
+        ],
+        "scanPdfPages": [
+          243,
+          244,
+          245,
+          246
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "Pass 2 decision 79: printed pp241–244 / scans243–246 rechecked; p244 token is نقي الخد, canonical Hebrew בר הלחי.",
+        "pass2Checked": true
+      },
+      "verificationStatus": "REVIEW_REQUIRED"
     },
     {
       "entryId": "gate9.travel.p245.transit-and-road-request",
@@ -17450,67 +18226,466 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
     {
       "entryId": "gate9.travel.p246.condition-and-direction",
       "entryType": "travel-condition-direction-rule-set",
-      "bookPages": [246], "scanPdfPages": [248], "v57Anchors": ["kashf-v57-draft.html#p246"],
-      "topic": "מצב המסע ושאלת הכיוון",
-      "keywords": ["H9", "דרך", "כבוד יוצא", "נשוא ראש", "ממון יוצא", "סף יוצא", "בר הלחי", "בר הלחי", "כיוון", "יסודות"],
-      "criticalFacts": ["ב-H9 דרך/כבוד יוצא/נשוא ראש מורים על מסע נאה; ממון יוצא/סף יוצא/הצורה הנקראת בסריקה נקاف מורים על טורח ופחד, בפרט בים.", "ממון יוצא ב-H9 שובר מרכבה או ספינה; צורות פנימיות בבתים היתדיים או בבית המסע מונעות השלמת המסע; כבוד יוצא מביא גשם; כבוד נכנס מורה על חזרת הנוסע קודם היעד.", "כיוון נקבע לפי היסוד החזק יותר: אש מזרח, אוויר מערב ב-v57 (הסריקה דורשת בדיקה נפרדת), מים ים ב-v57 (הסריקה דורשת בדיקה נפרדת), עפר דרום."],
-      "procedure": ["בחן את H9 ואת תנאי המרכבה/הספינה.", "השווה את מיפוי היסודות לכיוון רק לאחר הכרעה בפער בין v57 לסריקה."],
-      "branches": [{"condition":"H9-outgoing-money","outcome":"vehicle-or-ship-breakage"},{"condition":"H9-outgoing-honor","outcome":"rain"},{"condition":"H9-incoming-honor","outcome":"return-before-destination"}],
-      "preconditions": ["שאלת מצב מסע או כיוון מסע."], "questionIntents": ["travel-condition", "travel-direction"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
-      "doNotInfer": ["אין להכריע בשם הצורה שבפער לפי דמיון חזותי או לפי v57 בלבד; אין למזג את מיפוי היסודות עם כלל כיוון אחר."], "sourceDiscrepancies": ["v57 משתמש ב'נקי הלחי', בעוד נוסח הסריקה בעמ׳ 248 מציג שם ערבי שטרם נסגר בתעתיק; בנוסף יש פער במיפוי יסוד המים/האוויר לכיוון בין נוסח v57 לעדות הסריקה."],
-      "sourceVerification": {"printedBookPages": [246], "scanPdfPages": [248], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Critical figure token and direction rule retained as review items."}, "verificationStatus": "REVIEW_REQUIRED"
+      "bookPages": [
+        244
+      ],
+      "scanPdfPages": [
+        246
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p246"
+      ],
+      "topic": "תוספת נזהת אל־עֻקוּל: מצב המסע ושאלת הכיוון — מקור מודפס p244, עוגן v57 p246",
+      "keywords": [
+        "H9",
+        "דרך",
+        "כבוד יוצא",
+        "נשוא ראש",
+        "ממון יוצא",
+        "סף יוצא",
+        "בר הלחי",
+        "בר הלחי",
+        "כיוון",
+        "יסודות"
+      ],
+      "criticalFacts": [
+        "ב-H9 דרך/כבוד יוצא/נשוא ראש מורים על מסע נאה.",
+        "ב-H9 ממון יוצא/סף יוצא/الكوسج/نقي الخد מורים על טורח ופחד; الكوسج ו-نقي الخد מודפסים כשני טוקנים נפרדים.",
+        "ממון יוצא ב-H9 מורה קושי במרכבה/ספינה; פנימיים ביתדות או בבית המסע מונעים השלמה; כבוד יוצא מורה גשם; כבוד נכנס חזרה לפני היעד.",
+        "מיפוי הכיוון: אש=מזרח, אוויר=מערב, מים=ים, עפר=קִבְּלִי/דרום."
+      ],
+      "procedure": [
+        "בחן את H9 ואת תנאי המרכבה/הספינה.",
+        "השווה את מיפוי היסודות לכיוון רק לאחר הכרעה בפער בין v57 לסריקה."
+      ],
+      "branches": [
+        {
+          "condition": "H9-outgoing-money",
+          "outcome": "vehicle-or-ship-breakage"
+        },
+        {
+          "condition": "H9-outgoing-honor",
+          "outcome": "rain"
+        },
+        {
+          "condition": "H9-incoming-honor",
+          "outcome": "return-before-destination"
+        }
+      ],
+      "preconditions": [
+        "שאלת מצב מסע או כיוון מסע."
+      ],
+      "questionIntents": [
+        "travel-condition",
+        "travel-direction"
+      ],
+      "methodStatus": "SOURCE_RULE_SET",
+      "operationalRole": "PRIMARY_CANDIDATE",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין להכריע בשם הצורה שבפער לפי דמיון חזותי או לפי v57 בלבד; אין למזג את מיפוי היסודות עם כלל כיוון אחר."
+      ],
+      "sourceDiscrepancies": [
+        "תיקון traceability: יחידת המקור היא printed p244 / scan246, בעוד v57 מציב את החומר תחת #p246. אין להזיז את מספור המקור כדי להתאים לעוגן.",
+        "ברשימת הקושי המקור מדפיס الكوسج ו-نقي الخد בנפרד; v57 אינו משמר את שניהם אחד־לאחד."
+      ],
+      "sourceVerification": {
+        "printedBookPages": [
+          244
+        ],
+        "scanPdfPages": [
+          246
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "Pass 2 decision 80: footer/page visual check establishes printed p244 / scan246 despite v57 anchor #p246; الكوسج and نقي الخد are separate source tokens.",
+        "pass2Checked": true
+      },
+      "verificationStatus": "REVIEW_REQUIRED"
     },
     {
       "entryId": "gate9.travel.p247-250.absent-life-distance-witnesses",
       "entryType": "absent-person-rule-set",
-      "bookPages": [247, 248, 249, 250], "scanPdfPages": [249, 250, 251, 252], "v57Anchors": ["kashf-v57-draft.html#p247", "kashf-v57-draft.html#p248", "kashf-v57-draft.html#p249", "kashf-v57-draft.html#p250"],
+      "bookPages": [
+        246,
+        247,
+        248,
+        249,
+        250
+      ],
+      "scanPdfPages": [
+        248,
+        249,
+        250,
+        251,
+        252
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p247",
+        "kashf-v57-draft.html#p248",
+        "kashf-v57-draft.html#p249",
+        "kashf-v57-draft.html#p250"
+      ],
       "topic": "שני מסעות ודיני הנעדר: חיים, מוות, מרחק ועדויות",
-      "keywords": ["H1", "H3", "H4", "H5", "H6", "H7", "H8", "H9", "H10", "H11", "H12", "H15", "נעדר", "חיים", "מוות", "מרחק"],
-      "criticalFacts": ["בשני מסעות משווים H9 ו-H7; תוצאה מיטיבה מורה על מסע טוב, מזיקה על קושי, בנות על מרחק ואמהות על קרבה.", "בדין הנעדר: חזרת צורה מ-H3/H5/H9 ב-H8 מורה מוות, חזרה ב-H6/H12 מצוקה או שבי, ובמקום אחר חיים; H9 ב-H10/H11 מורה על בואו, H1 חיצוני ב-H9/H3 על היותו בדרך.", "H7 הוא בית הנעדר: מיטיבה פנימית מורה על חזרה בשלום, קבועה על שהייה, מיטיבה חיצונית על יציאה מן העיר; H4/H8/H6/H12 על מחלה או סכנה.", "המקור מביא רוב עדויות, צירופי H1+H4/H5+H8, וצירופי H1+H4+H7+H10 או H1+H6/H8+H12 לבדיקת קיום, חיים ואובדן."],
-      "procedure": ["הפרד בין בחירת מסע לבין דין הנעדר.", "בדוק את בתי הנעדר, המרחק, מצב הבריאות והצירופים המופקים לפני מסקנה."],
-      "branches": [{"condition":"returned-in-H8","outcome":"dead"},{"condition":"returned-in-H6-or-H12","outcome":"distress-or-captivity"},{"condition":"benefic-H7-inward","outcome":"safe-return"},{"condition":"fixed-H7","outcome":"staying-in-place"},{"condition":"benefic-H7-outward","outcome":"left-city"}],
-      "preconditions": ["שאלת שני מסעות או שאלת נעדר."], "questionIntents": ["choose-between-travels", "absent-person-status", "absent-person-location", "absent-person-distance"], "methodStatus": "SOURCE_RULE_SET_WITH_MAJORITY_REFERENCE", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
-      "doNotInfer": ["אין להפוך את 'הדין אחר הרוב' למנוע רוב פעיל; אין להסיק חיים/מוות מצירוף יחיד בלי שאר העדויות."], "sourceDiscrepancies": [],
-      "sourceVerification": {"printedBookPages": [247, 248, 249, 250], "scanPdfPages": [249, 250, 251, 252], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Absent-person branches and majority reference checked; majority remains non-operational by project policy."}, "verificationStatus": "VERIFIED"
+      "keywords": [
+        "H1",
+        "H3",
+        "H4",
+        "H5",
+        "H6",
+        "H7",
+        "H8",
+        "H9",
+        "H10",
+        "H11",
+        "H12",
+        "H15",
+        "נעדר",
+        "חיים",
+        "מוות",
+        "מרחק"
+      ],
+      "criticalFacts": [
+        "בשני מסעות משווים H9 ו-H7; תוצאה מיטיבה מורה על מסע טוב, מזיקה על קושי, בנות על מרחק ואמהות על קרבה.",
+        "בדין הנעדר שבעמ׳ 246: חזרת H3/H5/H9 ב-H8 מורה מוות; בענף H6/H12 הדפוס עצמו אומר فهو مكتوب. אין לנרמל את המילה مكتوب לפי נוסח מאוחר יותר; במקום אחר המקור מורה חיים ותקוות הגעה, ו-H9 ב-H10/H11 מורה על בואו.",
+        "H7 הוא בית הנעדר: מיטיבה פנימית מורה על חזרה בשלום, קבועה על שהייה, מיטיבה חיצונית על יציאה מן העיר; H4/H8/H6/H12 על מחלה או סכנה.",
+        "המקור מביא רוב עדויות, צירופי H1+H4/H5+H8, וצירופי H1+H4+H7+H10 או H1+H6/H8+H12 לבדיקת קיום, חיים ואובדן."
+      ],
+      "procedure": [
+        "הפרד בין בחירת מסע לבין דין הנעדר.",
+        "בדוק את בתי הנעדר, המרחק, מצב הבריאות והצירופים המופקים לפני מסקנה."
+      ],
+      "branches": [
+        {
+          "condition": "returned-in-H8",
+          "outcome": "dead"
+        },
+        {
+          "condition": "returned-in-H6-or-H12",
+          "outcome": "printed-maktub-source-anomaly"
+        },
+        {
+          "condition": "benefic-H7-inward",
+          "outcome": "safe-return"
+        },
+        {
+          "condition": "fixed-H7",
+          "outcome": "staying-in-place"
+        },
+        {
+          "condition": "benefic-H7-outward",
+          "outcome": "left-city"
+        }
+      ],
+      "preconditions": [
+        "שאלת שני מסעות או שאלת נעדר."
+      ],
+      "questionIntents": [
+        "choose-between-travels",
+        "absent-person-status",
+        "absent-person-location",
+        "absent-person-distance"
+      ],
+      "methodStatus": "SOURCE_RULE_SET_WITH_PRINTED_ANOMALY_AND_MAJORITY_REFERENCE",
+      "operationalRole": "PRIMARY_CANDIDATE",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין להפוך את 'הדין אחר הרוב' למנוע רוב פעיל; אין להסיק חיים/מוות מצירוף יחיד בלי שאר העדויות.",
+        "אין לתקן את فهو مكتوب שבעמ׳ 246 ל־منكوب על סמך החזרה המאוחרת בעמ׳ 251; יש לשמר את נוסח הדפוס ולהשאיר runtime כבוי."
+      ],
+      "sourceDiscrepancies": [
+        "תיקון Final QA: יחידת דיני הנעדר מתחילה כבר בעמ׳ מודפס 246 / scan248. בענף H6/H12 הדפוס קורא במפורש فهو مكتوب, בעוד v57 בעוגן p248 מפרש ״במצוקה או בשבי״. אין לתקן את مكتوب בשקט לפי החזרה המאוחרת בעמ׳ 251 שבה מודפס فهو منكوب."
+      ],
+      "sourceVerification": {
+        "printedBookPages": [
+          246,
+          247,
+          248,
+          249,
+          250
+        ],
+        "scanPdfPages": [
+          248,
+          249,
+          250,
+          251,
+          252
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "Final QA closed the p246 coverage hole created by correcting the p244/p246 traceability mismatch. Printed p246 / scan248 starts the absent-person unit and visibly reads فهو مكتوب in the H6/H12 branch; current v57 p248 differs. The later p251 فهو منكوب is preserved as a separate later source occurrence and is not used to silently repair p246.",
+        "finalQAChecked": true
+      },
+      "verificationStatus": "REVIEW_REQUIRED"
     },
     {
       "entryId": "gate9.travel.p251-252.absent-return-and-meeting",
       "entryType": "absent-return-meeting-rule-set",
-      "bookPages": [251, 252], "scanPdfPages": [253, 254], "v57Anchors": ["kashf-v57-draft.html#p251", "kashf-v57-draft.html#p252"],
+      "bookPages": [
+        251,
+        252
+      ],
+      "scanPdfPages": [
+        253,
+        254
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p251",
+        "kashf-v57-draft.html#p252"
+      ],
       "topic": "הגעת הנעדר, שובו, מפגש, כיוון ומבחן זמן",
-      "keywords": ["H1", "H3", "H4", "H5", "H6", "H9", "H10", "H11", "H15", "H16", "נעדר", "מפגש", "בורח", "חלוקה בארבעה"],
-      "criticalFacts": ["H1/H4/H9 והסוף מיטיבים מורים על חי; צירופי קהלה/חיבור/דרך/לבן/אדום ב-H6/H7/H8 ובסוף מורים על מוות.", "דרך ב-H10 וב-H11 מורה מפגש באותו יום; דרך ב-H10 וחיבור ב-H11 מורים על מפגש קרוב; צורות מיטיבות פנימיות בבתים היתדיים מורות על חזרת נעדר/בורח/אבדה/גניבה כאשר המכריע מסכים.", "לבדיקת עיר משתמשים בראשי הבתים היתדיים; H16 חיצוני/פנימי משמש לשאלת מרחק; תוספת נزهת אל־עقول מוסיפה מיקום בורח לפי יסוד H6 ובית H5.", "במבחן הנקודות מחלקים את כלל הנקודות בארבעה: שארית 1 כליאה, 2 הגעה מהירה, 3 אי־הגעה, 4 הגעה לאחר זמן ארוך; תוספת אל־מֻלתקַט קובעת H5/H3/H9 חוזרים ב-H8 מוות וב-H6/H12 פגיעה/פורענות."],
-      "procedure": ["בדוק תחילה חיים/מוות, אחר כך עיר/מרחק, ואז סימן מפגש ומבחן השארית.", "שמור את תוספות נزهת אל־עقول ואל־מֻלתקַט כמקורות מצוטטים נפרדים מבחינת סמכות."],
-      "branches": [{"condition":"way-H10-and-H11","outcome":"same-day-meeting"},{"condition":"way-H10-plus-connection-H11","outcome":"near-meeting"},{"condition":"remainder-1","outcome":"confined"},{"condition":"remainder-2","outcome":"quick-arrival"},{"condition":"remainder-3","outcome":"no-arrival"},{"condition":"remainder-4","outcome":"delayed-arrival"}],
-      "preconditions": ["שאלת הגעת נעדר, שובו, מפגש, מקום או מרחק."], "questionIntents": ["absent-return", "absent-meeting", "fugitive-location", "arrival-timing"], "methodStatus": "SOURCE_RULE_SET_WITH_ADDED_BOOKLET_MATERIAL", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
-      "doNotInfer": ["אין לתקן את הסתירה הפנימית בנוסח H16 קרוב/רחוק; אין להפעיל אוטומטית את כלל הרוב או את מבחן השארית בלי תיעוד מקור מלא."], "sourceDiscrepancies": ["בעמ׳ 251 v57 מתאר את חזרת H5/H3/H9 ב-H6/H12 כ'מוכה באסון/בצרה/נגוע בפורענות', בעוד הסריקה מציגה 'منكوب' (מנוקב/פגוע או מוכה); התרגום והניסוח דורשים הכרעה מול המקור."],
-      "sourceVerification": {"printedBookPages": [251, 252], "scanPdfPages": [253, 254], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Return, meeting, location, remainder and al-Multaqat additions checked against enlarged scan; wording discrepancy retained."}, "verificationStatus": "REVIEW_REQUIRED"
+      "keywords": [
+        "H1",
+        "H3",
+        "H4",
+        "H5",
+        "H6",
+        "H9",
+        "H10",
+        "H11",
+        "H15",
+        "H16",
+        "נעדר",
+        "מפגש",
+        "בורח",
+        "חלוקה בארבעה"
+      ],
+      "criticalFacts": [
+        "H1/H4/H9 והסוף מיטיבים מורים על חי; צירופי קהלה/חיבור/דרך/לבן/אדום ב-H6/H7/H8 ובסוף מורים על מוות.",
+        "דרך ב-H10 וב-H11 מורה מפגש באותו יום; דרך ב-H10 וחיבור ב-H11 מורים על מפגש קרוב; צורות מיטיבות פנימיות בבתים היתדיים מורות על חזרת נעדר/בורח/אבדה/גניבה כאשר המכריע מסכים.",
+        "לבדיקת עיר משתמשים בראשי הבתים היתדיים; H16 חיצוני/פנימי משמש לשאלת מרחק; תוספת נزهת אל־עقول מוסיפה מיקום בורח לפי יסוד H6 ובית H5.",
+        "במבחן הנקודות מחלקים את כלל הנקודות בארבעה: שארית 1 כליאה, 2 הגעה מהירה, 3 אי־הגעה, 4 הגעה לאחר זמן ארוך; תוספת אל־מֻלתקַט קובעת H5/H3/H9 חוזרים ב-H8 מוות וב-H6/H12 פגיעה/פורענות."
+      ],
+      "procedure": [
+        "בדוק תחילה חיים/מוות, אחר כך עיר/מרחק, ואז סימן מפגש ומבחן השארית.",
+        "שמור את תוספות נزهת אל־עقول ואל־מֻלתקַט כמקורות מצוטטים נפרדים מבחינת סמכות."
+      ],
+      "branches": [
+        {
+          "condition": "way-H10-and-H11",
+          "outcome": "same-day-meeting"
+        },
+        {
+          "condition": "way-H10-plus-connection-H11",
+          "outcome": "near-meeting"
+        },
+        {
+          "condition": "remainder-1",
+          "outcome": "confined"
+        },
+        {
+          "condition": "remainder-2",
+          "outcome": "quick-arrival"
+        },
+        {
+          "condition": "remainder-3",
+          "outcome": "no-arrival"
+        },
+        {
+          "condition": "remainder-4",
+          "outcome": "delayed-arrival"
+        }
+      ],
+      "preconditions": [
+        "שאלת הגעת נעדר, שובו, מפגש, מקום או מרחק."
+      ],
+      "questionIntents": [
+        "absent-return",
+        "absent-meeting",
+        "fugitive-location",
+        "arrival-timing"
+      ],
+      "methodStatus": "SOURCE_RULE_SET_WITH_ADDED_BOOKLET_MATERIAL",
+      "operationalRole": "PRIMARY_CANDIDATE",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין לתקן את הסתירה הפנימית בנוסח H16 קרוב/רחוק; אין להפעיל אוטומטית את כלל הרוב או את מבחן השארית בלי תיעוד מקור מלא."
+      ],
+      "sourceDiscrepancies": [
+        "בתוספת אל־מֻלתקט המקור אומר על חזרה ב-H6 או H12: فهو منكوب — פגוע/מוכה פורענות. v57 מרחיב ל״במצוקה או בשבי״; רכיב השבי אינו מודפס בענף זה."
+      ],
+      "sourceVerification": {
+        "printedBookPages": [
+          251,
+          252
+        ],
+        "scanPdfPages": [
+          253,
+          254
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "Pass 2 decision 81: printed pp251–252 / scans253–254 re-read; Al-Multaqat H6/H12 wording is فهو منكوب.",
+        "pass2Checked": true
+      },
+      "verificationStatus": "REVIEW_REQUIRED"
     },
     {
       "entryId": "gate9.travel.p253.zanati-absent-and-religion",
       "entryType": "absent-person-and-religion-rule-set",
-      "bookPages": [253], "scanPdfPages": [255], "v57Anchors": [],
+      "bookPages": [
+        253
+      ],
+      "scanPdfPages": [
+        255
+      ],
+      "v57Anchors": [],
       "topic": "הנעדר לפי הזנאטי; דת וצדקות",
-      "keywords": ["H1", "H3", "H5", "H7", "H9", "H10", "H13", "H14", "H15", "H16", "זנאטי", "נעדר", "דת", "צדקות"],
-      "criticalFacts": ["המשך עמ׳ 252 קובע שאיכות הפגישה נבחנת גם בחזרת H16 בבית רע או טוב.", "בשיטת הזנאטי עושים את H13,H14,H15 כאמהות ומולידים מהן מערך שלם לבירור מצב הנעדר ובואו.", "עדי מצב הנעדר הם H1,H3,H5,H7,H9,H10,H16; כבוד יוצא, נשוא ראש (החייאן) ואדום מורים שאין לחשוש לו ושהנעדר חי וטוב; סף יוצא וסוהר מורים להפך; נלחם ולבן מורים על ידיעה רעה אך שהוא עדיין קיים.", "בדת וצדקות, מזיק ב-H3 וב-H9 מורה על מיעוט דת; מיטיב שם מורה על דת ויראת אלוהים."],
-      "procedure": ["סיים תחילה את כלל H16 שנפתח בעמ׳ 252.", "לשיטת הזנאטי, בנה מערך חדש משלושת הבתים הנוספים ורק בו בחן את רשימת העדים."],
-      "branches": [{"condition":"zanati-witnesses-with-outgoing-honor-or-hayyan-or-red","outcome":"absent-alive-and-well"},{"condition":"zanati-witnesses-with-outgoing-threshold-or-prison","outcome":"opposite-adverse-judgment"},{"condition":"H3-and-H9-malefic","outcome":"little-religion"},{"condition":"H3-and-H9-benefic","outcome":"religious-and-God-fearing"}],
-      "preconditions": ["שאלת נעדר בשיטת הזנאטי או שאלת דת וצדקות."], "questionIntents": ["absent-person-status-zanati", "religion-and-righteousness"], "methodStatus": "SOURCE_RULE_SET_MISSING_FROM_V57", "operationalRole": "REFERENCE_ONLY", "runtimeEligible": false,
-      "doNotInfer": ["אין להפעיל את שיטת הזנאטי כמסלול נוסף במקביל למסלולי הנעדר האחרים; אין להשלים את העמוד החסר ב-v57 בשקט."], "sourceDiscrepancies": ["כל עמ׳ 253 חסר בקובץ v57 הנוכחי, כולל המשך H16, שיטת הזנאטי ודין הדת והצדקות."],
-      "sourceVerification": {"printedBookPages": [253], "scanPdfPages": [255], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Entire printed page 253 was visually verified; v57 has no p253 anchor or content."}, "verificationStatus": "REVIEW_REQUIRED"
+      "keywords": [
+        "H1",
+        "H3",
+        "H5",
+        "H7",
+        "H9",
+        "H10",
+        "H13",
+        "H14",
+        "H15",
+        "H16",
+        "זנאטי",
+        "נעדר",
+        "דת",
+        "צדקות"
+      ],
+      "criticalFacts": [
+        "המשך עמ׳ 252 קובע שאיכות הפגישה נבחנת גם בחזרת H16 בבית רע או טוב.",
+        "בשיטת הזנאטי עושים את H13,H14,H15 כאמהות ומולידים מהן מערך שלם לבירור מצב הנעדר ובואו.",
+        "עדי מצב הנעדר הם H1,H3,H5,H7,H9,H10,H16; כבוד יוצא, נשוא ראש (החייאן) ואדום מורים שאין לחשוש לו ושהנעדר חי וטוב; סף יוצא וסוהר מורים להפך; נלחם ולבן מורים על ידיעה רעה אך שהוא עדיין קיים.",
+        "בדת וצדקות, מזיק ב-H3 וב-H9 מורה על מיעוט דת; מיטיב שם מורה על דת ויראת אלוהים."
+      ],
+      "procedure": [
+        "סיים תחילה את כלל H16 שנפתח בעמ׳ 252.",
+        "לשיטת הזנאטי, בנה מערך חדש משלושת הבתים הנוספים ורק בו בחן את רשימת העדים."
+      ],
+      "branches": [
+        {
+          "condition": "zanati-witnesses-with-outgoing-honor-or-hayyan-or-red",
+          "outcome": "absent-alive-and-well"
+        },
+        {
+          "condition": "zanati-witnesses-with-outgoing-threshold-or-prison",
+          "outcome": "opposite-adverse-judgment"
+        },
+        {
+          "condition": "H3-and-H9-malefic",
+          "outcome": "little-religion"
+        },
+        {
+          "condition": "H3-and-H9-benefic",
+          "outcome": "religious-and-God-fearing"
+        }
+      ],
+      "preconditions": [
+        "שאלת נעדר בשיטת הזנאטי או שאלת דת וצדקות."
+      ],
+      "questionIntents": [
+        "absent-person-status-zanati",
+        "religion-and-righteousness"
+      ],
+      "methodStatus": "SOURCE_RULE_SET_MISSING_FROM_V57",
+      "operationalRole": "REFERENCE_ONLY",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין להפעיל את שיטת הזנאטי כמסלול נוסף במקביל למסלולי הנעדר האחרים; אין להשלים את העמוד החסר ב-v57 בשקט."
+      ],
+      "sourceDiscrepancies": [],
+      "sourceVerification": {
+        "printedBookPages": [
+          253
+        ],
+        "scanPdfPages": [
+          255
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "Pass 2 decision 82: printed p253 / scan255 matches current v57 for H16 meeting continuation, Zanati absent-person method, and religion/righteousness; old whole-page-missing blocker is stale.",
+        "pass2Checked": true
+      },
+      "verificationStatus": "VERIFIED"
     },
     {
       "entryId": "gate9.travel.p254.lineage-profession-dream",
       "entryType": "lineage-profession-dream-rule-set",
-      "bookPages": [254], "scanPdfPages": [256], "v57Anchors": ["kashf-v57-draft.html#p254"],
+      "bookPages": [
+        254
+      ],
+      "scanPdfPages": [
+        256
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p254"
+      ],
       "topic": "ייחוס, מלאכה וחלום",
-      "keywords": ["ייחוס", "מלאכה", "חלום", "H9", "H10", "H11", "שבתאי", "צדק", "מאדים", "שמש", "נוגה", "כוכב", "ירח"],
-      "criticalFacts": ["שורש הייחוס נבחן בהליכת נקודת המאזן אל המאזן; המקור עצמו מציין שהניסוח קצר.", "מיטיב ב-H10 וב-H11 מורה על מלאכה קלה יחסית; סוג המלאכה נקבע לפי הכוכב/צורה ב-H9.", "מפת המלאכות: שבתאי חקלאות; צדק לימודים; מאדים רפואה ורפואת בהמות; שמש הנדסה; נוגה דברי ימים ולחנים; عطارد כישוף/غرائم/אצטגנינות; ירח ענייני עניים וצדיקים; ראש התלי דתות וידע נסתר; זנב התלי בורות וקלקול.", "חלום נבחן מ-H9, מטיב/מזיק וממקום מעברו."],
-      "procedure": ["הפרד בין ייחוס, מלאכה וחלום.", "במלאכה קרא את H10/H11 לתנאי הטרחה ואת H9 לסוג המלאכה."],
-      "branches": [{"condition":"benefic-H9-dream","outcome":"good-dream"},{"condition":"malefic-H9-dream","outcome":"adverse-dream"}],
-      "preconditions": ["שאלת ייחוס, מלאכה או חלום."], "questionIntents": ["lineage-origin", "profession-traits", "dream-judgment"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
-      "doNotInfer": ["אין להרחיב את כלל הייחוס הקצר; אין להמיר את غرائم למונח מקצועי סופי בלי בדיקת מונחים נוספת."], "sourceDiscrepancies": ["המונח הערבי الغرايم/الغرائم במלאכת عطارد מתורגם ב-v57 כ'נפלאות'; המשמעות הטכנית המדויקת טרם אושרה ממקור נוסף."],
-      "sourceVerification": {"printedBookPages": [254], "scanPdfPages": [256], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Lineage, profession table and dream rule checked against printed Arabic; rare عطارد term preserved in Arabic pending terminology review."}, "verificationStatus": "REVIEW_REQUIRED"
+      "keywords": [
+        "ייחוס",
+        "מלאכה",
+        "חלום",
+        "H9",
+        "H10",
+        "H11",
+        "שבתאי",
+        "צדק",
+        "מאדים",
+        "שמש",
+        "נוגה",
+        "כוכב",
+        "ירח"
+      ],
+      "criticalFacts": [
+        "שורש הייחוס נבחן בהליכת נקודת המאזן אל המאזן; המקור עצמו מציין שהניסוח קצר.",
+        "מיטיב ב-H10 וב-H11 מורה על מלאכה קלה יחסית; סוג המלאכה נקבע לפי הכוכב/צורה ב-H9.",
+        "מפת המלאכות: שבתאי חקלאות; צדק לימודים; מאדים רפואה ורפואת בהמות; שמש הנדסה; נוגה דברי ימים ולחנים; عطارد כישוף/غرائم/אצטגנינות; ירח ענייני עניים וצדיקים; ראש התלי דתות וידע נסתר; זנב התלי בורות וקלקול.",
+        "חלום נבחן מ-H9, מטיב/מזיק וממקום מעברו."
+      ],
+      "procedure": [
+        "הפרד בין ייחוס, מלאכה וחלום.",
+        "במלאכה קרא את H10/H11 לתנאי הטרחה ואת H9 לסוג המלאכה."
+      ],
+      "branches": [
+        {
+          "condition": "benefic-H9-dream",
+          "outcome": "good-dream"
+        },
+        {
+          "condition": "malefic-H9-dream",
+          "outcome": "adverse-dream"
+        }
+      ],
+      "preconditions": [
+        "שאלת ייחוס, מלאכה או חלום."
+      ],
+      "questionIntents": [
+        "lineage-origin",
+        "profession-traits",
+        "dream-judgment"
+      ],
+      "methodStatus": "SOURCE_RULE_SET",
+      "operationalRole": "PRIMARY_CANDIDATE",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין להרחיב את כלל הייחוס הקצר; אין להמיר את غرائم למונח מקצועי סופי בלי בדיקת מונחים נוספת."
+      ],
+      "sourceDiscrepancies": [
+        "בשורת מלאכת عطارد הדפוס קורא מונח נדיר الغرايم/الغرائم; v57 בוחר ״נפלאות״. אין לנרמל ל־الغرائب או לקבע תרגום מקצועי בלי סגירת המונח."
+      ],
+      "sourceVerification": {
+        "printedBookPages": [
+          254
+        ],
+        "scanPdfPages": [
+          256
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "Pass 2 decision 83: printed p254 / scan256 rechecked; rare Mercury-profession token remains terminology-review and is preserved in Arabic.",
+        "pass2Checked": true
+      },
+      "verificationStatus": "REVIEW_REQUIRED"
     },
     {
       "entryId": "gate9.travel.p255.promise-fulfilment",
@@ -17541,15 +18716,108 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
     {
       "entryId": "gate10.authority.p258-260.dismissal-and-appointment",
       "entryType": "dismissal-appointment-rule-set",
-      "bookPages": [258, 259, 260], "scanPdfPages": [260, 261, 262], "v57Anchors": ["kashf-v57-draft.html#p258", "kashf-v57-draft.html#p259", "kashf-v57-draft.html#p260"],
+      "bookPages": [
+        258,
+        259,
+        260
+      ],
+      "scanPdfPages": [
+        260,
+        261,
+        262
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p258",
+        "kashf-v57-draft.html#p259",
+        "kashf-v57-draft.html#p260"
+      ],
       "topic": "הדחה, חזרה למינוי, בקשת מינוי ויחס העם",
-      "keywords": ["הדחה", "מינוי", "H1", "H2", "H4", "H7", "H9", "H10", "H11", "H15", "בר הלחי"],
-      "criticalFacts": ["שליט מודח חוזר כאשר צורות נכנסות מתחברות ל-H10/H11/H15; צורות יוצאות שם מורות שאין חזרה; אדום חוזר מורה שפיכות דמים.", "בנزهת אל־עقول שפל ראש, ממון יוצא, סף יוצא, בר הלחי או לבן ב-H10 מורים הדחה; כבוד יוצא, ממון נכנס, דרך או קהלה מורים מינוי.", "במשך המינוי, H1/H10 קבועים מורים המשך ומתהפכים מורים הדחה; H11 מיטיב מורה אהבת העם ומזיק מורה שנאתו.", "הסריקה קובעת: מיטיב ב-H9 מורה צדק בדינים, מזיק ב-H9 מורה עוול; v57 הופך את שני המצבים לעוול."],
-      "procedure": ["הפרד בין חזרת מודח, פיטורין, בקשת מינוי, משך המינוי ויחס העם.", "ב-H9 השתמש בהבחנת מיטיב/מזיק של הסריקה בלבד לצורך תיעוד, והשאר runtime מושבת עד תיקון v57."],
-      "branches": [{"condition":"incoming-connected-H10-H11-H15","outcome":"dismissed-ruler-returns"},{"condition":"outgoing-H10-H11-H15","outcome":"no-return"},{"condition":"fixed-H1-and-H10","outcome":"office-continues"},{"condition":"turning-H1-and-H10","outcome":"dismissal"},{"condition":"benefic-H9","outcome":"just-judgments"},{"condition":"malefic-H9","outcome":"unjust-judgments"}],
-      "preconditions": ["שאלת הדחה, חזרה, קבלת מינוי או משכו."], "questionIntents": ["return-to-office", "dismissal-risk", "appointment-request", "office-duration", "public-support"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
-      "doNotInfer": ["אין לקבל את ניסוח v57 שלפיו גם H9 מיטיב וגם H9 מזיק מורים עוול; אין ליישב לפי סימטריה אלא לפי השורה המודפסת."], "sourceDiscrepancies": ["בעמ׳ 260 הסריקה אומרת H9 מיטיב = צדק בדינים ו-H9 מזיק = עוול; v57 אומר שבשני המצבים הוא נוטה לעוול."],
-      "sourceVerification": {"printedBookPages": [258, 259, 260], "scanPdfPages": [260, 261, 262], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Dismissal figures, clean-cheek token and H9 justice/injustice polarity re-read from enlarged scan."}, "verificationStatus": "REVIEW_REQUIRED"
+      "keywords": [
+        "הדחה",
+        "מינוי",
+        "H1",
+        "H2",
+        "H4",
+        "H7",
+        "H9",
+        "H10",
+        "H11",
+        "H15",
+        "בר הלחי"
+      ],
+      "criticalFacts": [
+        "שליט מודח חוזר כאשר צורות נכנסות מתחברות ל-H10/H11/H15; צורות יוצאות שם מורות שאין חזרה; אדום חוזר מורה שפיכות דמים.",
+        "בנزهת אל־עقول שפל ראש, ממון יוצא, סף יוצא, בר הלחי או לבן ב-H10 מורים הדחה; כבוד יוצא, ממון נכנס, דרך או קהלה מורים מינוי.",
+        "במשך המינוי, H1/H10 קבועים מורים המשך ומתהפכים מורים הדחה; H11 מיטיב מורה אהבת העם ומזיק מורה שנאתו.",
+        "הסריקה קובעת: מיטיב ב-H9 מורה צדק בדינים, מזיק ב-H9 מורה עוול; v57 הופך את שני המצבים לעוול."
+      ],
+      "procedure": [
+        "הפרד בין חזרת מודח, פיטורין, בקשת מינוי, משך המינוי ויחס העם.",
+        "ב-H9 השתמש בהבחנת מיטיב/מזיק של הסריקה בלבד לצורך תיעוד, והשאר runtime מושבת עד תיקון v57."
+      ],
+      "branches": [
+        {
+          "condition": "incoming-connected-H10-H11-H15",
+          "outcome": "dismissed-ruler-returns"
+        },
+        {
+          "condition": "outgoing-H10-H11-H15",
+          "outcome": "no-return"
+        },
+        {
+          "condition": "fixed-H1-and-H10",
+          "outcome": "office-continues"
+        },
+        {
+          "condition": "turning-H1-and-H10",
+          "outcome": "dismissal"
+        },
+        {
+          "condition": "benefic-H9",
+          "outcome": "just-judgments"
+        },
+        {
+          "condition": "malefic-H9",
+          "outcome": "unjust-judgments"
+        }
+      ],
+      "preconditions": [
+        "שאלת הדחה, חזרה, קבלת מינוי או משכו."
+      ],
+      "questionIntents": [
+        "return-to-office",
+        "dismissal-risk",
+        "appointment-request",
+        "office-duration",
+        "public-support"
+      ],
+      "methodStatus": "SOURCE_RULE_SET",
+      "operationalRole": "PRIMARY_CANDIDATE",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין לקבל את ניסוח v57 שלפיו גם H9 מיטיב וגם H9 מזיק מורים עוול; אין ליישב לפי סימטריה אלא לפי השורה המודפסת."
+      ],
+      "sourceDiscrepancies": [
+        "בעמ׳ 260 המקור אומר: H9 מיטיב=צדק בדינים; H9 מזיק=עוול בדינים. v57 מציג את הקוטביות באופן שגוי."
+      ],
+      "sourceVerification": {
+        "printedBookPages": [
+          258,
+          259,
+          260
+        ],
+        "scanPdfPages": [
+          260,
+          261,
+          262
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "Pass 2 decision 84: printed p260 / scan262 directly reconfirms benefic H9=justice, malefic H9=injustice.",
+        "pass2Checked": true
+      },
+      "verificationStatus": "REVIEW_REQUIRED"
     },
     {
       "entryId": "gate10.authority.p260-262.ruler-state-by-H10",
@@ -17567,15 +18835,84 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
     {
       "entryId": "gate11.friends.p263.friend-types-and-mutual-effect",
       "entryType": "friends-rule-set",
-      "bookPages": [263], "scanPdfPages": [265], "v57Anchors": ["kashf-v57-draft.html#p263"],
+      "bookPages": [
+        263
+      ],
+      "scanPdfPages": [
+        265
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p263"
+      ],
       "topic": "סיום דיני מלכים ופתיחת שער 11: חברים וסוגיהם",
-      "keywords": ["H1", "H8", "H11", "חברים", "שמש", "נוגה", "כוכב", "ירח", "שבתאי", "צדק", "מאדים", "ג׳ודלה"],
-      "criticalFacts": ["שורת הסיום של שער 10: מזיק ב-H11 מורה שהעם שונא את המלך ואוהב את אויבו.", "בדין חברים בוחנים H1 ו-H11 ואת הצורה הנולדת מהם: מיטיבים מורים תועלת וטוב הדדי, ומזיקים מורים נזק והפך הטוב.", "הכוכב/צורה ב-H11 מגדירים סוג חברים: שמש בני מלכים וגדולים; נוגה נערים יפים; عطارد חשבונאים וכותבים; ירח שרים; שבתאי חקלאים; צדק דיינים ופרושים; מאדים נפחים ואומנים.", "הסריקה מייחסת גנבים, ליסטים ושודדי דרכים לג׳ודלה בבית H8."],
-      "procedure": ["סיים את שורת שער 10 לפני פתיחת שער 11.", "בדוק את H1,H11 ואת תוצאת חיבורם; לאחר מכן השתמש בפרופיל הכוכב ב-H11."],
-      "branches": [{"condition":"benefic-H1-and-H11","outcome":"mutual-benefit"},{"condition":"malefic-H1-and-H11","outcome":"mutual-harm"},{"condition":"judla-in-H8","outcome":"friends-are-thieves-and-bandits"}],
-      "preconditions": ["שאלת חברים או טיב החברה."], "questionIntents": ["friendship-quality", "friend-types"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
-      "doNotInfer": ["אין לזהות את הג׳ודלה עם קהלה לפי v57 בלי תיקון מקור מאושר."], "sourceDiscrepancies": ["בעמ׳ 263 הסריקה אומרת الجودلة בבית H8; v57 מציג קהלה. הקובץ העברי המסייע מציג נלחם, ולכן זהות הצורה נשמרת לבירור."],
-      "sourceVerification": {"printedBookPages": [263], "scanPdfPages": [265], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Gate boundary and critical الجودلة token checked against enlarged scan."}, "verificationStatus": "REVIEW_REQUIRED"
+      "keywords": [
+        "H1",
+        "H8",
+        "H11",
+        "חברים",
+        "שמש",
+        "נוגה",
+        "כוכב",
+        "ירח",
+        "שבתאי",
+        "צדק",
+        "מאדים",
+        "ג׳ודלה"
+      ],
+      "criticalFacts": [
+        "שורת הסיום של שער 10: מזיק ב-H11 מורה שהעם שונא את המלך ואוהב את אויבו.",
+        "בדין חברים בוחנים H1 ו-H11 ואת הצורה הנולדת מהם: מיטיבים מורים תועלת וטוב הדדי, ומזיקים מורים נזק והפך הטוב.",
+        "הכוכב/צורה ב-H11 מגדירים סוג חברים: שמש בני מלכים וגדולים; נוגה נערים יפים; عطارد חשבונאים וכותבים; ירח שרים; שבתאי חקלאים; צדק דיינים ופרושים; מאדים נפחים ואומנים.",
+        "הסריקה מייחסת גנבים, ליסטים ושודדי דרכים לג׳ודלה בבית H8."
+      ],
+      "procedure": [
+        "סיים את שורת שער 10 לפני פתיחת שער 11.",
+        "בדוק את H1,H11 ואת תוצאת חיבורם; לאחר מכן השתמש בפרופיל הכוכב ב-H11."
+      ],
+      "branches": [
+        {
+          "condition": "benefic-H1-and-H11",
+          "outcome": "mutual-benefit"
+        },
+        {
+          "condition": "malefic-H1-and-H11",
+          "outcome": "mutual-harm"
+        },
+        {
+          "condition": "judla-in-H8",
+          "outcome": "friends-are-thieves-and-bandits"
+        }
+      ],
+      "preconditions": [
+        "שאלת חברים או טיב החברה."
+      ],
+      "questionIntents": [
+        "friendship-quality",
+        "friend-types"
+      ],
+      "methodStatus": "SOURCE_RULE_SET",
+      "operationalRole": "PRIMARY_CANDIDATE",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין לזהות את הג׳ודלה עם קהלה לפי v57 בלי תיקון מקור מאושר."
+      ],
+      "sourceDiscrepancies": [
+        "בעמ׳ 263 המקור מדפיס الجودلة ב-H8 לענף חברים שהם גנבים וליסטים. v57 מציג קהלה ומקור־עזר עברי ישן מציג נלחם; אין לבחור זהות בשקט."
+      ],
+      "sourceVerification": {
+        "printedBookPages": [
+          263
+        ],
+        "scanPdfPages": [
+          265
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "Pass 2 decision 85: critical printed token الجودلة on p263 / scan265 visually reconfirmed; identity conflict remains.",
+        "pass2Checked": true
+      },
+      "verificationStatus": "REVIEW_REQUIRED"
     },
     {
       "entryId": "gate11.friends.p264.love-life-framework",
@@ -17606,41 +18943,262 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
     {
       "entryId": "gate11.hope.p267.hope-possession-livelihood",
       "entryType": "hope-possession-livelihood-rule-set",
-      "bookPages": [267], "scanPdfPages": [269], "v57Anchors": ["kashf-v57-draft.html#p267"],
+      "bookPages": [
+        267
+      ],
+      "scanPdfPages": [
+        269
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p267"
+      ],
       "topic": "תקווה, קניין ופתיחת דיני פרנסה",
-      "keywords": ["H1", "H2", "H5", "H11", "H13", "תקווה", "קניין", "פרנסה", "נשוא ראש", "ממון נכנס", "דגל השמחה", "אדום"],
-      "criticalFacts": ["הסריקה מורה לבדוק בתקווה את H1,H2,H5,H13, חזרת H11 והתאמת טבע הצורות לכניסה/יציאה.", "בית התקווה מיטיב יכול להביא זכייה גם כשהעדויות האחרות הפוכות; מזיק שם מורה אי־השלמה.", "בקניין נבדקים H11, עדות המכריע והיתדות; יתדות מיטיבות נכנסות מורות השגה, ותערובת יוצאות/נכנסות השגה חלקית.", "בפרנסה מרובה המקור מונה הצחוק/נשוא ראש, ממון נכנס, דגל השמחה ואדום; הרשימה ממשיכה בעמ׳ 268 לפרנסה מועטה."],
-      "procedure": ["בתקווה בדוק את ארבעת הבתים המודפסים, את H11 ואת טבע הדבר המקווה.", "הפרד בין תקווה, החזקת דבר ופרנסה."],
-      "branches": [{"condition":"benefic-in-hope-house-despite-opposite-other-signs","outcome":"attainment"},{"condition":"mixed-incoming-and-outgoing-angles","outcome":"partial-possession"}],
-      "preconditions": ["שאלת תקווה, השגת דבר או פרנסה."], "questionIntents": ["hope-attainment", "possession-acquisition", "livelihood-amount"], "methodStatus": "SOURCE_RULE_SET", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
-      "doNotInfer": ["אין להשתמש ברשימת H1,H2,H5,H3,H12 שב-v57; אין להפעיל את שמות הצורות לפני אישור המיפוי הקנוני."], "sourceDiscrepancies": ["בעמ׳ 267 הסריקה מונה H1,H2,H5,H13. v57 מונה H1,H2,H5,H3,H12 — תוספת H3/H12 והשמטת H13 משנות את הכלל."],
-      "sourceVerification": {"printedBookPages": [267], "scanPdfPages": [269], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Hope-house numerals re-read digit by digit; printed list is 1,2,5,13."}, "verificationStatus": "REVIEW_REQUIRED"
+      "keywords": [
+        "H1",
+        "H2",
+        "H5",
+        "H11",
+        "H13",
+        "תקווה",
+        "קניין",
+        "פרנסה",
+        "נשוא ראש",
+        "ממון נכנס",
+        "דגל השמחה",
+        "אדום"
+      ],
+      "criticalFacts": [
+        "הסריקה מורה לבדוק בתקווה את H1,H2,H5,H13, חזרת H11 והתאמת טבע הצורות לכניסה/יציאה.",
+        "בית התקווה מיטיב יכול להביא זכייה גם כשהעדויות האחרות הפוכות; מזיק שם מורה אי־השלמה.",
+        "בקניין נבדקים H11, עדות המכריע והיתדות; יתדות מיטיבות נכנסות מורות השגה, ותערובת יוצאות/נכנסות השגה חלקית.",
+        "בפרנסה מרובה המקור מונה הצחוק/נשוא ראש, ממון נכנס, דגל השמחה ואדום; הרשימה ממשיכה בעמ׳ 268 לפרנסה מועטה."
+      ],
+      "procedure": [
+        "בתקווה בדוק את ארבעת הבתים המודפסים, את H11 ואת טבע הדבר המקווה.",
+        "הפרד בין תקווה, החזקת דבר ופרנסה."
+      ],
+      "branches": [
+        {
+          "condition": "benefic-in-hope-house-despite-opposite-other-signs",
+          "outcome": "attainment"
+        },
+        {
+          "condition": "mixed-incoming-and-outgoing-angles",
+          "outcome": "partial-possession"
+        }
+      ],
+      "preconditions": [
+        "שאלת תקווה, השגת דבר או פרנסה."
+      ],
+      "questionIntents": [
+        "hope-attainment",
+        "possession-acquisition",
+        "livelihood-amount"
+      ],
+      "methodStatus": "SOURCE_RULE_SET",
+      "operationalRole": "PRIMARY_CANDIDATE",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין להשתמש ברשימת H1,H2,H5,H3,H12 שב-v57; אין להפעיל את שמות הצורות לפני אישור המיפוי הקנוני."
+      ],
+      "sourceDiscrepancies": [
+        "בדין התקווה המקור מונה H1,H2,H5,H13. v57 מונה H1,H2,H5,H3,H12."
+      ],
+      "sourceVerification": {
+        "printedBookPages": [
+          267
+        ],
+        "scanPdfPages": [
+          269
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "Pass 2 decision 86: printed p267 / scan269 confirms hope-house list H1/H2/H5/H13.",
+        "pass2Checked": true
+      },
+      "verificationStatus": "REVIEW_REQUIRED"
     },
     {
       "entryId": "gate11.hope.p268-269.need-fulfilment-figures",
       "entryType": "need-fulfilment-rule-set",
-      "bookPages": [268, 269], "scanPdfPages": [270, 271], "v57Anchors": ["kashf-v57-draft.html#p268", "kashf-v57-draft.html#p269"],
+      "bookPages": [
+        268,
+        269
+      ],
+      "scanPdfPages": [
+        270,
+        271
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p268",
+        "kashf-v57-draft.html#p269"
+      ],
       "topic": "פרנסה מועטה ודין קיום הצורך לפי הצורות",
-      "keywords": ["H1", "H11", "H15", "צורך", "פרנסה", "ממון נכנס", "קהלה", "לבן", "דרך", "בר הלחי", "אדום", "חיבור", "שפל ראש"],
-      "criticalFacts": ["פרנסה מועטה מיוחסת לשפל ראש, דרך, סוהר וסף יוצא.", "בקיום צורך נבדקים H1,H11,H15 לאחר בקשת הכוונה שש־עשרה פעמים וקריאה מן הקוראן.", "המקור מוסר ענף לכל אחת מצורות הפתיחה, ובהן ממון נכנס להצלחה, לבן/דרך לאי־קיום, בר הלחי לטרחה ואז קיום, חיבור לעיכוב, קהלה להעדר חלק, וממון יוצא להשגה ואחרית טובה.", "שפל ראש מורה גם הבטחה כוזבת ואחר כך שאין בה טוב או רע; v57 שומר רק את החלק האחרון.", "שיטה נוספת מפיקה שתי צורות מקבוצות H1,H9,H13,H15 ומ-H2,H8,H11,H14 ואז צורה שלישית."],
-      "procedure": ["קרא את ענפי הצורות ברצף מעמ׳ 268 אל 269.", "שמור את שיטת שתי הקבוצות כשיטה נפרדת ולא כשלב חובה של טבלת הצורות."],
-      "branches": [{"condition":"outgoing-money","outcome":"attainment-with-good-end"},{"condition":"incoming-honor","outcome":"fulfilled-from-another-direction"},{"condition":"outgoing-threshold","outcome":"fulfilled-after-voluntary-purification-or-correction"},{"condition":"prison","outcome":"need-stopped"}],
-      "preconditions": ["שאלה אם צורך יתקיים."], "questionIntents": ["need-fulfilment", "need-delay", "livelihood-amount"], "methodStatus": "SOURCE_RULE_SET_WITH_ALTERNATIVE", "operationalRole": "PRIMARY_CANDIDATE", "runtimeEligible": false,
-      "doNotInfer": ["אין למחוק את רכיב ההבטחה הכוזבת בענף שפל ראש; אין להריץ יחד את טבלת הצורות והשיטה הנוספת בלי בחירת מסלול."], "sourceDiscrepancies": ["בעמ׳ 269 v57 משמיט מענף שפל ראש את המשפט שהשואל הובטח הבטחה כוזבת ולא אמתית, ומשאיר רק 'אין בו לא טוב ולא רע'."],
-      "sourceVerification": {"printedBookPages": [268, 269], "scanPdfPages": [270, 271], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "All figure branches and both four-house groups checked across the page seam."}, "verificationStatus": "REVIEW_REQUIRED"
+      "keywords": [
+        "H1",
+        "H11",
+        "H15",
+        "צורך",
+        "פרנסה",
+        "ממון נכנס",
+        "קהלה",
+        "לבן",
+        "דרך",
+        "בר הלחי",
+        "אדום",
+        "חיבור",
+        "שפל ראש"
+      ],
+      "criticalFacts": [
+        "פרנסה מועטה מיוחסת לשפל ראש, דרך, סוהר וסף יוצא.",
+        "בקיום צורך נבדקים H1,H11,H15 לאחר בקשת הכוונה שש־עשרה פעמים וקריאה מן הקוראן.",
+        "המקור מוסר ענף לכל אחת מצורות הפתיחה, ובהן ממון נכנס להצלחה, לבן/דרך לאי־קיום, בר הלחי לטרחה ואז קיום, חיבור לעיכוב, קהלה להעדר חלק, וממון יוצא להשגה ואחרית טובה.",
+        "שפל ראש מורה גם הבטחה כוזבת ואחר כך שאין בה טוב או רע; v57 שומר רק את החלק האחרון.",
+        "שיטה נוספת מפיקה שתי צורות מקבוצות H1,H9,H13,H15 ומ-H2,H8,H11,H14 ואז צורה שלישית."
+      ],
+      "procedure": [
+        "קרא את ענפי הצורות ברצף מעמ׳ 268 אל 269.",
+        "שמור את שיטת שתי הקבוצות כשיטה נפרדת ולא כשלב חובה של טבלת הצורות."
+      ],
+      "branches": [
+        {
+          "condition": "outgoing-money",
+          "outcome": "attainment-with-good-end"
+        },
+        {
+          "condition": "incoming-honor",
+          "outcome": "fulfilled-from-another-direction"
+        },
+        {
+          "condition": "outgoing-threshold",
+          "outcome": "fulfilled-after-voluntary-purification-or-correction"
+        },
+        {
+          "condition": "prison",
+          "outcome": "need-stopped"
+        }
+      ],
+      "preconditions": [
+        "שאלה אם צורך יתקיים."
+      ],
+      "questionIntents": [
+        "need-fulfilment",
+        "need-delay",
+        "livelihood-amount"
+      ],
+      "methodStatus": "SOURCE_RULE_SET_WITH_ALTERNATIVE",
+      "operationalRole": "PRIMARY_CANDIDATE",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין למחוק את רכיב ההבטחה הכוזבת בענף שפל ראש; אין להריץ יחד את טבלת הצורות והשיטה הנוספת בלי בחירת מסלול."
+      ],
+      "sourceDiscrepancies": [
+        "בעמ׳ 269 בענף שפל ראש/الأنكيس המקור אומר שהשואל הובטח הבטחה כוזבת ולא אמתית, ואז מסיים שאין בה טוב או רע. v57 משמיט את ההבטחה הכוזבת."
+      ],
+      "sourceVerification": {
+        "printedBookPages": [
+          268,
+          269
+        ],
+        "scanPdfPages": [
+          270,
+          271
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "Pass 2 decision 87: printed p269 / scan271 confirms the omitted false/untruthful-promise clause.",
+        "pass2Checked": true
+      },
+      "verificationStatus": "REVIEW_REQUIRED"
     },
     {
       "entryId": "gate11.hope.p270.multaqat-hope-provision-request",
       "entryType": "quoted-hope-provision-rule-set",
-      "bookPages": [270], "scanPdfPages": [272], "v57Anchors": ["kashf-v57-draft.html#p270"],
+      "bookPages": [
+        270
+      ],
+      "scanPdfPages": [
+        272
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p270"
+      ],
       "topic": "אל־מֻלתקַט: תקווה, פרנסה, אחרית ובקשה",
-      "keywords": ["אל־מֻלתקַט", "H1", "H4", "H5", "H8", "H10", "H11", "תקווה", "פרנסה", "אחרית", "בקשה"],
-      "criticalFacts": ["בתקווה בוחנים H11 ואז מפיקים H1+H11: קבוע מורה שיהיה, ובעל שני גופים/מתהפך מורה שלא יהיה.", "בפרנסה מפיקים H10+H11; מיטיב הנוטה אל הראשון וחוזר בבית אי־זוגי מורה שהפרנסה תגיע.", "אחרית נבדקת ב-H1,H4,H8; מיטיבים מורים לטוב.", "בבקשה מפיקים שתי צורות מ-H5,H11 מול H1 ואז צורה שלישית: מיטיב נכנס קיום, מיטיב יוצא עיכוב ואז קיום, מזיק נכנס השגה בטרחה, מזיק יוצא עדיף לעזוב."],
-      "procedure": ["בחר את תת־השיטה לפי כוונת השאלה.", "בפרנסה שמור את הביטוי 'נוטה אל הראשון' ואת תנאי החזרה בבית אי־זוגי."],
-      "branches": [{"condition":"benefic-incoming-result","outcome":"need-fulfilled"},{"condition":"benefic-outgoing-result","outcome":"delayed-but-fulfilled"},{"condition":"malefic-incoming-result","outcome":"fulfilled-with-toil"},{"condition":"malefic-outgoing-result","outcome":"better-abandoned"}],
-      "preconditions": ["שאלת תקווה, פרנסה, אחרית או בקשה לפי אל־מֻלתקַט."], "questionIntents": ["hope-attainment", "livelihood-arrival", "outcome-quality", "request-fulfilment"], "methodStatus": "QUOTED_ALTERNATIVE", "operationalRole": "REFERENCE_ONLY", "runtimeEligible": false,
-      "doNotInfer": ["אין לפרש 'נוטה אל הראשון' כ'נוטה אל היחיד'; אין להפוך את כל ארבע תתי־השיטות למסלול משולב."], "sourceDiscrepancies": ["בעמ׳ 270 הסריקה אומרת مال إلى الأول — 'נוטה אל הראשון'; v57 מתרגם 'נוטה אל היחיד'."],
-      "sourceVerification": {"printedBookPages": [270], "scanPdfPages": [272], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Critical الأول token and odd-house condition verified in enlarged scan."}, "verificationStatus": "REVIEW_REQUIRED"
+      "keywords": [
+        "אל־מֻלתקַט",
+        "H1",
+        "H4",
+        "H5",
+        "H8",
+        "H10",
+        "H11",
+        "תקווה",
+        "פרנסה",
+        "אחרית",
+        "בקשה"
+      ],
+      "criticalFacts": [
+        "בתקווה בוחנים H11 ואז מפיקים H1+H11: קבוע מורה שיהיה, ובעל שני גופים/מתהפך מורה שלא יהיה.",
+        "בפרנסה מפיקים H10+H11; מיטיב הנוטה אל הראשון וחוזר בבית אי־זוגי מורה שהפרנסה תגיע.",
+        "אחרית נבדקת ב-H1,H4,H8; מיטיבים מורים לטוב.",
+        "בבקשה מפיקים שתי צורות מ-H5,H11 מול H1 ואז צורה שלישית: מיטיב נכנס קיום, מיטיב יוצא עיכוב ואז קיום, מזיק נכנס השגה בטרחה, מזיק יוצא עדיף לעזוב."
+      ],
+      "procedure": [
+        "בחר את תת־השיטה לפי כוונת השאלה.",
+        "בפרנסה שמור את הביטוי 'נוטה אל הראשון' ואת תנאי החזרה בבית אי־זוגי."
+      ],
+      "branches": [
+        {
+          "condition": "benefic-incoming-result",
+          "outcome": "need-fulfilled"
+        },
+        {
+          "condition": "benefic-outgoing-result",
+          "outcome": "delayed-but-fulfilled"
+        },
+        {
+          "condition": "malefic-incoming-result",
+          "outcome": "fulfilled-with-toil"
+        },
+        {
+          "condition": "malefic-outgoing-result",
+          "outcome": "better-abandoned"
+        }
+      ],
+      "preconditions": [
+        "שאלת תקווה, פרנסה, אחרית או בקשה לפי אל־מֻלתקַט."
+      ],
+      "questionIntents": [
+        "hope-attainment",
+        "livelihood-arrival",
+        "outcome-quality",
+        "request-fulfilment"
+      ],
+      "methodStatus": "QUOTED_ALTERNATIVE",
+      "operationalRole": "REFERENCE_ONLY",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין לפרש 'נוטה אל הראשון' כ'נוטה אל היחיד'; אין להפוך את כל ארבע תתי־השיטות למסלול משולב."
+      ],
+      "sourceDiscrepancies": [
+        "בעמ׳ 270 המקור אומר مال إلى الأول — ״נוטה אל הראשון״; v57 מתרגם ״נוטה אל היחיד״."
+      ],
+      "sourceVerification": {
+        "printedBookPages": [
+          270
+        ],
+        "scanPdfPages": [
+          272
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "Pass 2 decision 88: printed p270 / scan272 reconfirms الأول = the first, not the singular/one.",
+        "pass2Checked": true
+      },
+      "verificationStatus": "REVIEW_REQUIRED"
     },
     {
       "entryId": "gate11-12.p271.need-closure-and-enemies-opening",
@@ -17686,19 +19244,108 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "sourceVerification":{"printedBookPages":[272,273],"scanPdfPages":[274,275],"v57Checked":true,"printedScanChecked":true,"visualLineByLineChecked":true,"note":"The Nusra Dakhila rule was verified as one cross-page source unit; the punishment/fear combination was then checked line by line on printed p273."}, "verificationStatus":"VERIFIED"
     },
     {
-      "entryId":"gate12.prisoners.p273-274.external-release-duration-and-fear",
-      "entryType":"external-prisoner-release-duration-rule-set",
-      "bookPages":[273,274], "scanPdfPages":[275,276], "v57Anchors":["kashf-v57-draft.html#p273","kashf-v57-draft.html#p274"],
-      "topic":"מן מחוץ לספר: פדיון אסיר, משך המאסר, סכנה ופחד",
-      "keywords":["ومن غير الكتاب","H1","H7","H8","H12","H13","H16","פדיון אסיר","מיטיב נכנס","מזיק יוצא","אדום","שפיכות דמים"],
-      "criticalFacts":["בפדיון אסיר מפיקים צורה מ-H1+H13: יוצאת מורה שיינצל, נכנסת מורה עיכוב.","במסجون בודקים H16 ו-H12: אם שניהם מיטיבים ויוצאים, האסיר נחלץ; אם שניהם מיטיבים ונכנסים, הוא משלים תקופה ארוכה במאסר.","אם H16 ו-H12 שניהם מזיקים ויוצאים, המזיקים מעידים להם ורבתה אדום / الحمرة במערך, המקור אומר שהדבר מגיע לשפיכות דמים.","אם שניהם — כפי הערת הדפוס: כנראה שני מזיקים — נכנסים, הוא חולה ומת.","בדין הפחד הממשיך לעמ׳ 274 נבדקים H7 ו-H8: אם הדין מיטיב הפחד בטל, ואם מזיק הפחד עומד."],
-      "procedure":["שמור את הכותרת ومن غير الكتاب כמסגרת מקור חיצונית.","בדוק H16/H12 לפי מיטיב/מזיק ולפי יוצא/נכנס בלי להזיז את הקטבים בין הענפים.","חבר את משפט הפחד H7/H8 הממשיך בראש עמ׳ 274."],
-      "branches":[{"condition":"benefic-outgoing-H16-and-H12","outcome":"prisoner-released"},{"condition":"benefic-incoming-H16-and-H12","outcome":"long-imprisonment"},{"condition":"malefic-outgoing-H16-and-H12-with-malefic-witnesses-and-much-Humra","outcome":"bloodshed-risk"},{"condition":"malefic-incoming-H16-and-H12","outcome":"illness-and-death"},{"condition":"benefic-H7-H8-fear-judgment","outcome":"fear-falls"},{"condition":"malefic-H7-H8-fear-judgment","outcome":"fear-remains"}],
-      "preconditions":["חומר שהדפוס מסמן במפורש ׳ומן מחוץ לספר׳."], "questionIntents":["prisoner-release","prisoner-duration","prisoner-danger","prisoner-fear"],
-      "methodStatus":"EXTERNAL_PRINTED_ADDENDUM_WITH_V57_POLARITY_CONFLICT", "operationalRole":"REFERENCE_ONLY", "runtimeEligible":false,
-      "doNotInfer":["אין לתקן את הסריקה לפי v57 או לפי טקסט OCR עזר.","אין למזג את שני ענפי המזיק הנכנס/יוצא; מקור הדפוס מבדיל ביניהם."],
-      "sourceDiscrepancies":["הסריקה המודפסת בעמ׳ 273 אומרת במפורש: שני מיטיבים נכנסים = תקופה ארוכה; שני מזיקים יוצאים + עדות מזיקים + ריבוי אדום = שפיכות דמים. v57 מעביר את התקופה הארוכה לשני מזיקים יוצאים, ואת תנאי שפיכות הדמים לשני מזיקים נכנסים, ובכך גם יוצר חפיפה עם ענף המחלה והמוות."],
-      "sourceVerification":{"printedBookPages":[273,274],"scanPdfPages":[275,276],"v57Checked":true,"printedScanChecked":true,"visualLineByLineChecked":true,"note":"Critical benefic/malefic and incoming/outgoing words were re-read directly from the high-quality printed scan. The printed scan is the highest verification authority; the conflicting v57/OCR-helper polarity is not silently reconciled."}, "verificationStatus":"REVIEW_REQUIRED"
+      "entryId": "gate12.prisoners.p273-274.external-release-duration-and-fear",
+      "entryType": "external-prisoner-release-duration-rule-set",
+      "bookPages": [
+        273,
+        274
+      ],
+      "scanPdfPages": [
+        275,
+        276
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p273",
+        "kashf-v57-draft.html#p274"
+      ],
+      "topic": "מן מחוץ לספר: פדיון אסיר, משך המאסר, סכנה ופחד",
+      "keywords": [
+        "ومن غير الكتاب",
+        "H1",
+        "H7",
+        "H8",
+        "H12",
+        "H13",
+        "H16",
+        "פדיון אסיר",
+        "מיטיב נכנס",
+        "מזיק יוצא",
+        "אדום",
+        "שפיכות דמים"
+      ],
+      "criticalFacts": [
+        "בפדיון אסיר מפיקים צורה מ-H1+H13: יוצאת מורה שיינצל, נכנסת מורה עיכוב.",
+        "במסجون בודקים H16 ו-H12: אם שניהם מיטיבים ויוצאים, האסיר נחלץ; אם שניהם מיטיבים ונכנסים, הוא משלים תקופה ארוכה במאסר.",
+        "אם H16 ו-H12 שניהם מזיקים ויוצאים, המזיקים מעידים להם ורבתה אדום / الحمرة במערך, המקור אומר שהדבר מגיע לשפיכות דמים.",
+        "אם שניהם — כפי הערת הדפוס: כנראה שני מזיקים — נכנסים, הוא חולה ומת.",
+        "בדין הפחד הממשיך לעמ׳ 274 נבדקים H7 ו-H8: אם הדין מיטיב הפחד בטל, ואם מזיק הפחד עומד."
+      ],
+      "procedure": [
+        "שמור את הכותרת ومن غير الكتاب כמסגרת מקור חיצונית.",
+        "בדוק H16/H12 לפי מיטיב/מזיק ולפי יוצא/נכנס בלי להזיז את הקטבים בין הענפים.",
+        "חבר את משפט הפחד H7/H8 הממשיך בראש עמ׳ 274."
+      ],
+      "branches": [
+        {
+          "condition": "benefic-outgoing-H16-and-H12",
+          "outcome": "prisoner-released"
+        },
+        {
+          "condition": "benefic-incoming-H16-and-H12",
+          "outcome": "long-imprisonment"
+        },
+        {
+          "condition": "malefic-outgoing-H16-and-H12-with-malefic-witnesses-and-much-Humra",
+          "outcome": "bloodshed-risk"
+        },
+        {
+          "condition": "malefic-incoming-H16-and-H12",
+          "outcome": "illness-and-death"
+        },
+        {
+          "condition": "benefic-H7-H8-fear-judgment",
+          "outcome": "fear-falls"
+        },
+        {
+          "condition": "malefic-H7-H8-fear-judgment",
+          "outcome": "fear-remains"
+        }
+      ],
+      "preconditions": [
+        "חומר שהדפוס מסמן במפורש ׳ומן מחוץ לספר׳."
+      ],
+      "questionIntents": [
+        "prisoner-release",
+        "prisoner-duration",
+        "prisoner-danger",
+        "prisoner-fear"
+      ],
+      "methodStatus": "EXTERNAL_PRINTED_ADDENDUM_WITH_V57_POLARITY_CONFLICT",
+      "operationalRole": "REFERENCE_ONLY",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין לתקן את הסריקה לפי v57 או לפי טקסט OCR עזר.",
+        "אין למזג את שני ענפי המזיק הנכנס/יוצא; מקור הדפוס מבדיל ביניהם."
+      ],
+      "sourceDiscrepancies": [
+        "המקור בעמ׳ 273: H16/H12 מיטיבים נכנסים=מאסר ממושך; H16/H12 מזיקים יוצאים+עדי מזיקים+ריבוי אדום=שפיכות דמים. v57 מזיז את הקטבים בין הענפים."
+      ],
+      "sourceVerification": {
+        "printedBookPages": [
+          273,
+          274
+        ],
+        "scanPdfPages": [
+          275,
+          276
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "Pass 2 decision 89: printed p273 / scan275 critical polarity words visually reconfirmed; v57 conflict remains.",
+        "pass2Checked": true
+      },
+      "verificationStatus": "REVIEW_REQUIRED"
     },
     {
       "entryId":"gate12.prisoners.p274-275.nuzhat-prisoner-combinations",
@@ -17715,32 +19362,160 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "sourceVerification":{"printedBookPages":[274,275],"scanPdfPages":[276,277],"v57Checked":true,"printedScanChecked":true,"visualLineByLineChecked":true,"note":"All named-figure combinations were checked visually across the p274→p275 seam. The editor's parenthetical alternative readings are preserved as printed and not resolved."}, "verificationStatus":"VERIFIED"
     },
     {
-      "entryId":"gate12.prisoners.p275.multaqat-release-and-outcome",
-      "entryType":"quoted-prisoner-release-and-outcome-rule-set",
-      "bookPages":[275], "scanPdfPages":[277], "v57Anchors":["kashf-v57-draft.html#p275"],
-      "topic":"תוספת אל־מֻלְתַקַט פי עִלְם א־נֻקַט: יציאה, בריחה ואחרית האסיר",
-      "keywords":["אל־מלתקט","H1","H2","H3","H4","H5","H9","H10","H11","H12","H13","חזרה","בריחה","לבוש כבוד"],
-      "criticalFacts":["אם H13 חוזר ב-H3/H5/H9 והוא מזיק יוצא, וב-H10 צורה מיטיבה, יציאתו של האסיר היא בבחירתו.","H12 מיטיב ויוצא מורה יציאה מהירה, בטוב ובשלום.","אם אותה צורה שב-H2 וב-H10 חוזרת ב-H4, H3, H9 או H5 והיא מזיקה יוצאת, פותחים את המאסר והאסירים בורחים; אם היא ב-H11, אינם נמצאים.","אם הצורה ב-H12 מיטיבה, או ב-H2, או ב-H5, או ב-H11, המקור אומר שהאסיר לובש לבוש כבוד ונעשה עמו חסד.","מפיקים צורה מ-H12+H3 וצורה מ-H4+H1, ואז צורה משתי התוצאות: מזיקה מורה אחרית לרעה, מיטיבה מורה אחרית לטובה. המשפט נחתם בעמ׳ 276."],
-      "procedure":["שמור את ארבעת בתי החזרה H4/H3/H9/H5 במלואם.","שמור את H11 כחלופה עצמאית ברשימת H12/H2/H5/H11.","בצע שתי הפקות ביניים בלבד: H12+H3 ו-H4+H1; אחר כך הפק מהן את צורת ההכרעה."],
-      "branches":[{"condition":"malefic-outgoing-H13-repeat-in-H3-H5-H9-and-benefic-H10","outcome":"voluntary-release"},{"condition":"benefic-outgoing-H12","outcome":"quick-safe-release"},{"condition":"same-H2-H10-figure-repeats-in-H4-H3-H9-H5-and-is-malefic-outgoing","outcome":"prison-opened-and-escape"},{"condition":"same-figure-in-H11","outcome":"not-found"},{"condition":"final-derived-malefic","outcome":"bad-end"},{"condition":"final-derived-benefic","outcome":"good-end"}],
-      "preconditions":["תוספת מצוטטת מאל־מלתקט פי עלם א־נקט."], "questionIntents":["prisoner-voluntary-release","prisoner-escape","prisoner-honor","prisoner-final-outcome"],
-      "methodStatus":"QUOTED_ALTERNATIVE_WITH_V57_OMISSIONS", "operationalRole":"REFERENCE_ONLY", "runtimeEligible":false,
-      "doNotInfer":["אין להשמיט H5 מרשימת בתי החזרה.","אין להפוך את H11 לתנאי משלים של ׳שמחה וכבוד׳; במקור הוא חלופה ברשימת הבתים."],
-      "sourceDiscrepancies":["v57 משמיט H5 מרשימת המקומות שבהם אותה צורה של H2/H10 חוזרת לצורך פתיחת המאסר והבריחה.","v57 משנה את חלופת H11 במשפט H12/H2/H5/H11 לתנאי חדש של ׳ובאחד־עשר נראית שמחה וכבוד׳; נוסח זה אינו נמצא בסריקה המודפסת."],
-      "sourceVerification":{"printedBookPages":[275],"scanPdfPages":[277],"v57Checked":true,"printedScanChecked":true,"visualLineByLineChecked":true,"note":"Printed p275 was checked visually. H5 in the recurrence list and H11 as a standalone alternative are both source-clear; the H12+H3 and H4+H1 derivation chain is also source-clear."}, "verificationStatus":"REVIEW_REQUIRED"
+      "entryId": "gate12.prisoners.p275.multaqat-release-and-outcome",
+      "entryType": "quoted-prisoner-release-and-outcome-rule-set",
+      "bookPages": [
+        275
+      ],
+      "scanPdfPages": [
+        277
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p275"
+      ],
+      "topic": "תוספת אל־מֻלְתַקַט פי עִלְם א־נֻקַט: יציאה, בריחה ואחרית האסיר",
+      "keywords": [
+        "אל־מלתקט",
+        "H1",
+        "H2",
+        "H3",
+        "H4",
+        "H5",
+        "H9",
+        "H10",
+        "H11",
+        "H12",
+        "H13",
+        "חזרה",
+        "בריחה",
+        "לבוש כבוד"
+      ],
+      "criticalFacts": [
+        "אם H13 חוזר ב-H3/H5/H9 והוא מזיק יוצא, וב-H10 צורה מיטיבה, יציאתו של האסיר היא בבחירתו.",
+        "H12 מיטיב ויוצא מורה יציאה מהירה, בטוב ובשלום.",
+        "אם אותה צורה שב-H2 וב-H10 חוזרת ב-H4, H3, H9 או H5 והיא מזיקה יוצאת, פותחים את המאסר והאסירים בורחים; אם היא ב-H11, אינם נמצאים.",
+        "אם הצורה ב-H12 מיטיבה, או ב-H2, או ב-H5, או ב-H11, המקור אומר שהאסיר לובש לבוש כבוד ונעשה עמו חסד.",
+        "מפיקים צורה מ-H12+H3 וצורה מ-H4+H1, ואז צורה משתי התוצאות: מזיקה מורה אחרית לרעה, מיטיבה מורה אחרית לטובה. המשפט נחתם בעמ׳ 276."
+      ],
+      "procedure": [
+        "שמור את ארבעת בתי החזרה H4/H3/H9/H5 במלואם.",
+        "שמור את H11 כחלופה עצמאית ברשימת H12/H2/H5/H11.",
+        "בצע שתי הפקות ביניים בלבד: H12+H3 ו-H4+H1; אחר כך הפק מהן את צורת ההכרעה."
+      ],
+      "branches": [
+        {
+          "condition": "malefic-outgoing-H13-repeat-in-H3-H5-H9-and-benefic-H10",
+          "outcome": "voluntary-release"
+        },
+        {
+          "condition": "benefic-outgoing-H12",
+          "outcome": "quick-safe-release"
+        },
+        {
+          "condition": "same-H2-H10-figure-repeats-in-H4-H3-H9-H5-and-is-malefic-outgoing",
+          "outcome": "prison-opened-and-escape"
+        },
+        {
+          "condition": "same-figure-in-H11",
+          "outcome": "not-found"
+        },
+        {
+          "condition": "final-derived-malefic",
+          "outcome": "bad-end"
+        },
+        {
+          "condition": "final-derived-benefic",
+          "outcome": "good-end"
+        }
+      ],
+      "preconditions": [
+        "תוספת מצוטטת מאל־מלתקט פי עלם א־נקט."
+      ],
+      "questionIntents": [
+        "prisoner-voluntary-release",
+        "prisoner-escape",
+        "prisoner-honor",
+        "prisoner-final-outcome"
+      ],
+      "methodStatus": "QUOTED_ALTERNATIVE_WITH_V57_OMISSIONS",
+      "operationalRole": "REFERENCE_ONLY",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין להשמיט H5 מרשימת בתי החזרה.",
+        "אין להפוך את H11 לתנאי משלים של ׳שמחה וכבוד׳; במקור הוא חלופה ברשימת הבתים."
+      ],
+      "sourceDiscrepancies": [
+        "בדין לבוש הכבוד/החסד המקור נותן H12 מיטיב, או H2, או H5, או H11 כחלופות עצמאיות. v57 הופך H11 לתנאי נוסף של ״שמחה וכבוד״. ענף H13 החוזר ב-H3/H5/H9 כבר מתוקן ולכן אינו blocker."
+      ],
+      "sourceVerification": {
+        "printedBookPages": [
+          275
+        ],
+        "scanPdfPages": [
+          277
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "Pass 2 decision 90: p275 / scan277 rechecked. H5 is already present in current v57, so that stale blocker is removed; independent H11 alternative remains wrong.",
+        "pass2Checked": true
+      },
+      "verificationStatus": "REVIEW_REQUIRED"
     },
     {
-      "entryId":"gate12.book-end.p276.repetition-and-explicit-ending",
-      "entryType":"book-closing-note",
-      "bookPages":[276], "scanPdfPages":[278], "v57Anchors":["kashf-v57-draft.html#p276"],
-      "topic":"סיום גוף המקור: החזרה וסוף הספר המפורש",
-      "keywords":["חזרה","التكرار","سبب خروجه وعدمه","انتهى الكتاب","סיום הספר"],
-      "criticalFacts":["המקור אומר: التكرار يعلم سبب خروجه وعدمه — החזרה מלמדת את סיבת יציאתו ואת אי־יציאתו/העדרה.","המשפט המפורש החותם את גוף הספר הוא: انتهى الكتاب."],
-      "preconditions":["סיום תוספת אל־מלתקט והספר המודפס."], "questionIntents":["source-book-ending"],
-      "methodStatus":"SOURCE_CLOSING_TEXT_WITH_V57_EXPANSION", "operationalRole":"REFERENCE_ONLY", "runtimeEligible":false,
-      "doNotInfer":["אין להחליף את وعدمه בעיכוב בלי הערת תרגום מפורשת.","אין לייחס למקור נוסח דתי נוסף שאינו מודפס בשורת הסיום."],
-      "sourceDiscrepancies":["v57 מתרגם את وعدمه כ׳סיבת עיכובו, אם יש עיכוב׳ במקום לשמר את ניגוד היציאה/אי־היציאה.","לאחר ׳כאן מסתיים גוף הספר׳ v57 מוסיף ׳תם הספר, בעזרת האל׳; הסריקה המודפסת חותמת רק במילים انتهى الكتاب ואינה כוללת ׳בעזרת האל׳ בשורת הסיום."],
-      "sourceVerification":{"printedBookPages":[276],"scanPdfPages":[278],"v57Checked":true,"printedScanChecked":true,"visualLineByLineChecked":true,"note":"Printed p276 contains one closing sentence and the exact phrase انتهى الكتاب, followed by ornament. The ending was verified directly from the scan."}, "verificationStatus":"REVIEW_REQUIRED"
+      "entryId": "gate12.book-end.p276.repetition-and-explicit-ending",
+      "entryType": "book-closing-note",
+      "bookPages": [
+        276
+      ],
+      "scanPdfPages": [
+        278
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p276"
+      ],
+      "topic": "סיום גוף המקור: החזרה וסוף הספר המפורש",
+      "keywords": [
+        "חזרה",
+        "التكرار",
+        "سبب خروجه وعدمه",
+        "انتهى الكتاب",
+        "סיום הספר"
+      ],
+      "criticalFacts": [
+        "המקור אומר: التكرار يعلم سبب خروجه وعدمه — החזרה מלמדת את סיבת יציאתו ואת אי־יציאתו/העדרה.",
+        "המשפט המפורש החותם את גוף הספר הוא: انتهى الكتاب."
+      ],
+      "preconditions": [
+        "סיום תוספת אל־מלתקט והספר המודפס."
+      ],
+      "questionIntents": [
+        "source-book-ending"
+      ],
+      "methodStatus": "SOURCE_CLOSING_TEXT_WITH_V57_EXPANSION",
+      "operationalRole": "REFERENCE_ONLY",
+      "runtimeEligible": false,
+      "doNotInfer": [
+        "אין להחליף את وعدمه בעיכוב בלי הערת תרגום מפורשת.",
+        "אין לייחס למקור נוסח דתי נוסף שאינו מודפס בשורת הסיום."
+      ],
+      "sourceDiscrepancies": [
+        "הדפוס חותם: التكرار يعلم سبب خروجه وعدمه، انتهى الكتاب — סיבת יציאתו ואי־יציאתו/העדרה, ואז ״הסתיים הספר״. v57 ממיר وعدمه לעיכוב ומרחיב את שורת הסיום."
+      ],
+      "sourceVerification": {
+        "printedBookPages": [
+          276
+        ],
+        "scanPdfPages": [
+          278
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "Pass 2 decision 91: printed p276 / scan278 checked through final ornament; exact closing phrase remains a live v57 wording mismatch.",
+        "pass2Checked": true
+      },
+      "verificationStatus": "REVIEW_REQUIRED"
     }
   ],
   "v57CorrectionQueue": [
@@ -17764,23 +19539,41 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
     {"id":"AUDIT-P149-150-ORDER14-PAGINATION","entryId":"shibutz.p149-150.order14-aiqa-al-tariq","page":"149-150","status":"OPEN","summary":"Printed order 14 begins on p149 and continues on p150; current v57 places its heading/content at p150. Preserve the printed source range and the distinct v57 anchor."},
     {"id":"AUDIT-P229-230-THEFT-SOURCE-SEAM","entryId":"gate8.theft.p229.comprehensive-recovery-rule","page":"229-230","status":"OPEN","summary":"Treat the comprehensive theft paragraph as a cross-page source unit: printed p229 ends mid-sentence and p230 continues with H7 in H14. Keep the dedicated p230 recovery/discovery record as an intentional overlap."},
     {"id":"B25-P273-PRISONER-POLARITY-SHIFT","entryId":"gate12.prisoners.p273-274.external-release-duration-and-fear","page":273,"status":"OPEN","summary":"Restore the printed polarity exactly: H16/H12 benefic incoming = long imprisonment; H16/H12 malefic outgoing + malefic witnesses + much Humra = bloodshed. v57 currently assigns long duration to malefic outgoing and bloodshed to malefic incoming."},
-    {"id":"B25-P275-MULTAQAT-H5-OMISSION","entryId":"gate12.prisoners.p275.multaqat-release-and-outcome","page":275,"status":"OPEN","summary":"Restore H5 in the printed H4/H3/H9/H5 recurrence list for the same H2/H10 figure in the prison-opening/escape branch."},
+
     {"id":"B25-P275-H11-BLESSING-ALTERNATIVE","entryId":"gate12.prisoners.p275.multaqat-release-and-outcome","page":275,"status":"OPEN","summary":"Restore H11 as a standalone alternative in the printed H12/H2/H5/H11 robe-and-favor clause; remove the unsupported v57 condition 'ובאחד־עשר נראית שמחה וכבוד'."},
     {"id":"B25-P276-BOOK-END-WORDING","entryId":"gate12.book-end.p276.repetition-and-explicit-ending","page":276,"status":"OPEN","summary":"Render سبب خروجه وعدمه، انتهى الكتاب source-faithfully: preserve exit versus non-exit/absence, and do not present 'בעזרת האל' as part of the printed closing sentence."},
     {"id":"B24-P263-JUDLA-FIGURE-ID","entryId":"gate11.friends.p263.friend-types-and-mutual-effect","page":263,"status":"OPEN","summary":"Resolve v57's קהלה against printed الجودلة in the H8 friends-of-thieves/bandits branch; the Hebrew helper instead says נלחם, so no identity is silently selected."},
     {"id":"B24-P267-HOPE-HOUSE-LIST","entryId":"gate11.hope.p267.hope-possession-livelihood","page":267,"status":"OPEN","summary":"Correct the hope-house list: printed source has H1,H2,H5,H13, while v57 has H1,H2,H5,H3,H12."},
     {"id":"B24-P269-ANKIS-FALSE-PROMISE-CLAUSE","entryId":"gate11.hope.p268-269.need-fulfilment-figures","page":269,"status":"OPEN","summary":"Restore the omitted false/untruthful-promise clause in the Shafal Ras/Ankis need-fulfilment branch before the no-good/no-evil conclusion."},
     {"id":"B24-P270-AWWAL-VS-AHAD","entryId":"gate11.hope.p270.multaqat-hope-provision-request","page":270,"status":"OPEN","summary":"Correct v57's 'נוטה אל היחיד' to the printed مال إلى الأول, 'נוטה אל הראשון', in the livelihood rule."},
-    {"id":"B23-P253-WHOLE-PAGE-MISSING","entryId":"gate9.travel.p253.zanati-absent-and-religion","page":253,"status":"OPEN","summary":"Restore the entire printed p253 in v57: H16 meeting continuation, Zanati absent-person method, and religion/righteousness rule."},
+
     {"id":"B23-P254-ATARID-GHARAIM-TERM","entryId":"gate9.travel.p254.lineage-profession-dream","page":254,"status":"OPEN","summary":"Verify the technical meaning of الغرايم/الغرائم in the عطارد profession line before retaining v57's 'נפלאות'."},
     {"id":"B23-P260-H9-JUSTICE-POLARITY","entryId":"gate10.authority.p258-260.dismissal-and-appointment","page":260,"status":"OPEN","summary":"Correct v57 so benefic H9 means justice in judgments and malefic H9 means injustice, as printed."},
-    {"id":"B22-P246-FIGURE-NAME-AND-DIRECTION","entryId":"gate9.travel.p246.condition-and-direction","page":246,"status":"OPEN","summary":"Resolve the p246 figure token currently rendered in v57 as נקי הלחי against the Arabic source token; if the source is نقي الخد, the canonical Hebrew name is בר הלחי. Also resolve the air/water direction mapping against the enlarged scan."},
-    {"id":"B22-P251-AL-MULTAQAT-WORDING","entryId":"gate9.travel.p251-252.absent-return-and-meeting","page":251,"status":"OPEN","summary":"Verify v57 wording for the al-Multaqat H6/H12 branch against the printed Arabic منكوب phrase."},
-    {"id":"B21-P240-DIRECTION-MAP","entryId":"gate9.travel.p240.direction-source-discrepancy","page":240,"status":"OPEN","summary":"Resolve v57 air=west/water=sea against printed scan air=north/water=west."},
+    {
+      "id": "B22-P246-FIGURE-NAME-AND-DIRECTION",
+      "entryId": "gate9.travel.p246.condition-and-direction",
+      "page": 244,
+      "status": "OPEN",
+      "summary": "Traceability repair: printed source unit is p244 / scan246 although current v57 places it at #p246. Preserve الكوسج and نقي الخد as separate H9 tokens; use canonical בר הלחי for نقي الخد. Direction mapping is fire=east, air=west, water=sea, earth=qibli/south."
+    },
+    {
+      "id": "B22-P251-AL-MULTAQAT-WORDING",
+      "entryId": "gate9.travel.p251-252.absent-return-and-meeting",
+      "page": 251,
+      "status": "OPEN",
+      "summary": "Render printed H6/H12 clause source-faithfully: فهو منكوب (stricken/afflicted by calamity). Current v57 adds an unsupported captivity alternative."
+    },
+
     {"id":"B21-P244-BAR-LAHI-NAME","entryId":"gate9.travel.p241-244.safety-and-return","page":244,"status":"OPEN","summary":"Verify canonical בר הלחי against the erroneous v57 literal label נקי הלחי in the vehicle-damage branch."},
     {"id":"B20-P230-OMITTED-H14-H13-BRANCHES","entryId":"gate8.theft.p230.return-and-discovery","page":230,"status":"OPEN","summary":"Restore the printed H7/H14 timing clause and H6-in-H13 non-return branch; recheck the H12 figure list against the scan."},
     {"id":"B20-P231-FUGITIVE-LOST-BRANCHES","entryId":"gate8.theft.p231.fugitive-and-lost-item","page":231,"status":"OPEN","summary":"Restore the printed outward/inward polarity branches for H7/H8 versus H1/H2."},
-    {"id":"B20-P234-QABD-FIGURE-NAMES","entryId":"gate8.theft.p232-234.thief-description","page":234,"status":"OPEN","summary":"Verify and restore قبض خارج/قبض داخل as figure identities; v57 currently renders them as money-direction wording."},
+    {
+      "id": "B20-P234-QABD-FIGURE-NAMES",
+      "entryId": "gate8.theft.p232-234.thief-description",
+      "page": 234,
+      "status": "OPEN",
+      "summary": "Canonical Qabd identities are correct: قبض خارج=ממון יוצא and قبض داخل=ממון נכנס. Reconcile remaining p232–234 description/profession variants one-to-one; do not reopen canonical naming."
+    },
     {"id":"B20-P235-LOAN-HOUSE-PAIR","entryId":"gate8.loan-inheritance.p235-236.rules","page":235,"status":"OPEN","summary":"Restore H1+H7 as the first loan extraction before H2+H8 and the derived third figure."},
     {"id":"B20-P236-DEATH-HOUSES","entryId":"gate8.loan-inheritance.p235-236.rules","page":236,"status":"OPEN","summary":"Remove the extra H2 from the death-house list and restore the printed H9 branch for death away from home."},
     {
@@ -17894,13 +19687,6 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "page": 101,
       "status": "OPEN",
       "summary": "Restore the two visually confirmed printed associations omitted by current v57: Bayad with Muharram in addition to Shawwal, and Ataba Dakhila with Rabi al-Akhir. Do not normalize the source into a one-to-one month map."
-    },
-    {
-      "id": "B04-P101-WITNESS-5",
-      "entryId": "houses.p101-102.partners-witnesses",
-      "page": 101,
-      "status": "OPEN",
-      "summary": "Critical numeral correction: printed source says figure 5 witnesses houses 3,7,11; v57 currently says figure 15 and adds house 6."
     },
     {
       "id": "B05-P111-MONEY-NUMBERS",
@@ -18264,28 +20050,21 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "entryId": "gate6.house6.p201.animal-figure-mapping",
       "page": 201,
       "status": "OPEN",
-      "summary": "Reconcile v57's animal/figure list with the printed scan; v57 currently substitutes several figure names and animal outcomes."
+      "summary": "Restore printed p201 exactly: Humra→rams/sheep; printed التشمير beside glyph 2211 (canonical glyph name כבוד נכנס)→bulls; Nusra Kharija→horses; Ataba Kharija→camels; Aqla→donkeys; Ankis→kids/goats; Qabd Kharij→mules. Preserve the printed token and do not merge rows by analogy."
     },
     {
       "id": "B16-P204-MARRIAGE-STATUS-REVERSAL",
       "entryId": "gate6.house6.p204.chapter7-seam-marriage-status",
       "page": 204,
       "status": "OPEN",
-      "summary": "Restore source-faithful status branches: H1 in H7 means slave, H7 in H10 means free, mutable H7 means previously married, fixed H7 means virgin."
-    },
-    {
-      "id": "B17-P206-ODOR-FIGURES",
-      "entryId": "gate6.house7.p206.intent-odor-marriage-appeal",
-      "page": 206,
-      "status": "OPEN",
-      "summary": "Restore the printed odor figures عتبة خارجة and الأنكيس; v57 currently substitutes different figures."
+      "summary": "Restore four separate printed branches: H1 in H7 → أمة (bondwoman/female slave); H7 in H10 → حرة (free woman); mutable H7 → ثيب (non-virgin/previously married, not necessarily divorced); fixed H7 → بكر (virgin)."
     },
     {
       "id": "B17-P208-MARRIAGE-FIGURE-NAMES",
       "entryId": "gate6.house7.p208.marriage-house-figure-meanings",
       "page": 208,
       "status": "OPEN",
-      "summary": "Recheck the printed marriage-house figure names and mappings; v57 drifts from the scan in several critical rows."
+      "summary": "Reconcile current v57 against printed p208 only: preserve the enslaved/low-status cluster (Ankis/Qabd Kharij/Ataba Kharija plus Naqi al-Khadd clause), age groups by planets, H5 Nusra Dakhila/Nusra Kharija/Aqla good-stable branch, balance Qabd Kharij/Tariq/Ijtima bad-ending branch, and H4 as an ending/consequence house. Do not absorb p209 continuation."
     },
     {
       "id": "PASS2-P118-MONTHS-IN-YEARS-V57",
@@ -18294,7 +20073,14 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "status": "OPEN",
       "summary": "Restore the printed rule وإن كانت أشكال الشهور في مراتب السنين ، فالشهور زيادة على تلك السنين. Current v57 changes ranks of years to ranks of months and changes the subject from months to collections; preserve the source structure."
     }
-  ],
+  ,
+    {
+      "id": "FINALQA-P246-ABSENT-MAKTUB",
+      "entryId": "gate9.travel.p247-250.absent-life-distance-witnesses",
+      "page": 246,
+      "status": "OPEN",
+      "summary": "Restore source-faithful treatment of printed p246 H6/H12 clause: فهو مكتوب. Current v57 p248 renders distress/captivity. Do not silently normalize p246 to the later p251 wording فهو منكوب."
+    }],
   "downstreamCorrectionQueue": [
     {
       "id": "B02-DATA-P63-PURITY-OVERLAP",
@@ -18955,7 +20741,14 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "status": "OPEN",
       "summary": "Printed p118 visibly reads ألف ومائة وثلاثة وعشرون after 126−3, but arithmetic gives 123 and the next printed reduction by 28 yields remainder 11, which also fits 123. Preserve the printed 1123 and the contradiction; do not silently delete ألف."
     }
-  ],
+  ,
+    {
+      "id": "FINALQA-SOURCE-P246-MAKTUB-VS-P251-MANKUB",
+      "entryId": "gate9.travel.p247-250.absent-life-distance-witnesses",
+      "page": 246,
+      "status": "OPEN",
+      "summary": "Internal source repetition must remain explicit: printed p246 has فهو مكتوب in the H6/H12 absent-person branch, while the later Al-Multaqat passage on p251 has فهو منكوب. Do not reconcile the earlier reading by analogy, grammar, or the later parallel."
+    }],
   "gateStatus": {
     "gate3PlacementOrders": {
       "status": "SOURCE_INDEX_COMPLETE_WITH_OPEN_SOURCE_CONFLICTS",
