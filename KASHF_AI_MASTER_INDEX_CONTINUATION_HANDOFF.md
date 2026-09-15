@@ -82,20 +82,23 @@ Super Audit Pass 1 כבר בוצע. הוא תיקן רק פגמים שהמקור
 
 השלב הפעיל הוא **Super Audit — Pass 2**.
 
-### מצב Pass 2 לאחר בדיקת עמ׳ 43–194
+### מצב Pass 2 + Final QA — הושלם 91/91 עד עמ׳ 276
 
-- `lastCompletedReviewEntry`: `gate6.house5.p194.child-nature-health-and-birth`
-- `lastCompletedPrintedRange`: **179–194**
-- `lastCompletedScanRange`: **181–196**
-- `nextReviewEntry`: `houses.p101-102.partners-witnesses`
-- `nextReviewPrintedRange`: **101–102**
-- `nextReviewScanRange`: **103–104**
-- `reviewRequiredStatusCount`: **89** — לאחר ספירה מדויקת: 64 רשומות REVIEW_REQUIRED נוכחיות כבר עברו Pass 2, 25 עדיין ממתינות. אחת מהן, `houses.p101-102.partners-witnesses`, דולגה בעבר בטעות ויש להשלים אותה לפני החזרה לעמ׳ 196; 24 הנותרות נמצאות מעמ׳ 196 ואילך.
-- `pass2ReviewedEntries`: **66 / 91**
-- `pass2UnauditedReviewEntries`: **25**
-- `VERIFIED`: **182**
-- `latestMergedPass2PR`: **#50**
-- `PR #50 merge SHA`: `8d6e5365b370a01b1bf0edf65561fa1a17c259ed`
+- `lastCompletedReviewEntry`: `gate12.book-end.p276.repetition-and-explicit-ending`
+- `lastCompletedPrintedRange`: **backfill 101–102; review entries completed through printed p276**
+- `lastCompletedScanRange`: **backfill 103–104; final reviewed scan p278**
+- `nextReviewEntry`: **none — Pass 2 complete**
+- `finalQA`: **PASSED — כולל תיקון traceability לעמ׳ 246**
+- `nextPhase`: **merge PR #52 after approval; then v57 correction-queue remediation; no runtime implementation yet**
+- `reviewRequiredStatusCount`: **86**
+- `pass2ReviewedEntries`: **91 / 91**
+- `pass2UnauditedReviewEntries`: **0**
+- `VERIFIED`: **185**
+- `INDEXED`: **0**
+- `UNRESOLVED`: **0**
+- `runtimeEligible:true`: **0**
+- `latestMergedPass2PR`: **#51**
+- `PR #51 merge SHA`: `2d16b1bbaa648b9fae195f660eae78e65c848018`
 
 הכרעות Pass 2 שכבר בוצעו:
 
@@ -171,16 +174,38 @@ Super Audit Pass 1 כבר בוצע. הוא תיקן רק פגמים שהמקור
 65. `gate6.house5.p191-192.miscarriage-seam-red-nakis` — סיווג **B**: תפר העמוד משלים `الحمرة` ב-H7 + `الأنكيس`/שפל ראש ב-H8 → `تسقط`. v57 משמיט את ההמשך; השם העברי הקנוני שפל ראש נשמר.
 66. `gate6.house5.p194.child-nature-health-and-birth` — סיווג **B**: המקור כולל ענף „לא זכר ולא נקבה והצורה מתהפכת” → בטן האישה ריקה, וכן H6 מזיק בילדות, H8 לבריאות ו-H5 לכובד/קלות הלידה. v57 משמיט חלק מהענפים.
 
-מכאן ממשיכים **לפי סדר העמודים בלבד** אל:
+67. `houses.p101-102.partners-witnesses` — סיווג **A / VERIFIED**: המקור מאשר שותפים 13→H1, 14→H7, 15→H10, 16→H4; עדים 9→H1/H5/H7, 14→H2/H6/H10, 5→H3/H7/H11, 16→H4/H8/H12. v57 הנוכחי כבר תיקן את שורת צורה 5, ולכן blocker הישן הוסר.
+68. `gate6.house5.p196.children-clothing-and-chapter6-seam` — סיווג **B**: המקור ברור; v57 עדיין משמיט נשוא ראש ב-H6 → `ظلمة البصر` (חשכת/עמימות ראייה).
+69. `gate6.house6.p201.animal-figure-mapping` — סיווג **B**: אדום→אילים/כבשים; `التشمير` לצד גליף 2211 (קנונית: כבוד נכנס)→שוורים; כבוד יוצא→סוסים; סף יוצא→גמלים; סוהר→חמורים; שפל ראש→גדיים ותיישים; ממון יוצא→פרדות. v57 עדיין מערבב כמה שורות.
+70. `gate6.house6.p204.chapter7-seam-marriage-status` — סיווג **B**: H1 ב-H7→`أمة`; H7 ב-H10→`حرة`; H7 מתהפך→`ثيب`; H7 קבוע→`بكر`. v57 הופך/ממזג את הענפים ומצמצם `ثيب` ל״גרושה״.
+71. `gate6.house7.p206.intent-odor-marriage-appeal` — סיווג **A / VERIFIED**: v57 הנוכחי כבר משמר סף יוצא + שפל ראש בדין הריח. תוכן p207 הופרד לרשומה הייעודית שלו.
+72. `gate6.house7.p208.marriage-house-figure-meanings` — סיווג **B**: עמ׳ 208 נבדק עד סופו ונשמר נפרד מהמשך p209. המקור ברור, אך פיוס מלא של מיפויי v57 עדיין פתוח.
+73. `gate8.theft.p229.comprehensive-recovery-rule` — **B**: תפר p229→p230; H7→H14 ו-H6-in-H13 עדיין חסרים/לא־שלמים ב-v57. `REVIEW_REQUIRED`.
+74. `gate8.theft.p230.return-and-discovery` — **B**: ענפי H7/H14 ו-H6/H13 מודפסים וברורים אך חסרים ב-v57. `REVIEW_REQUIRED`.
+75. `gate8.theft.p231.fugitive-and-lost-item` — **B**: מבנה הקוטביות המלא H7/H8 מול H1/H2 עדיין דחוס ב-v57. `REVIEW_REQUIRED`.
+76. `gate8.theft.p232-234.thief-description` — **B**: ממון יוצא/נכנס הם המיפוי הקנוני התקין של قبض خارج/داخل; blocker השמות הוסר, אך פיוס כל חלופות התיאור/מקצוע נשאר פתוח. `REVIEW_REQUIRED`.
+77. `gate8.loan-inheritance.p235-236.rules` — **B**: חסר H1+H7; בדין המוות המקור H1/H8/H6/H4 ולמוות רחוק H15/H9/H3. `REVIEW_REQUIRED`.
+78. `gate9.travel.p240.direction-source-discrepancy` — **A / VERIFIED**: אש=מזרח, אוויר=מערב, מים=ים, עפר=קִבְּלִי/דרום; תואם v57 וה-blocker הישן הוסר.
+79. `gate9.travel.p241-244.safety-and-return` — **B**: `نقي الخد` דורש את השם הקנוני בר הלחי; v57 שומר תווית ישנה/לא־קנונית. `REVIEW_REQUIRED`.
+80. `gate9.travel.p246.condition-and-direction` — **B + traceability**: המקור הוא printed p244 / scan246 בעוד העוגן v57 הוא #p246; `الكوسج` ו-`نقي الخد` נפרדים. `REVIEW_REQUIRED`.
+81. `gate9.travel.p251-252.absent-return-and-meeting` — **B / wording**: המקור `فهو منكوب`; v57 מוסיף חלופת שבי שאינה מודפסת בענף. `REVIEW_REQUIRED`.
+82. `gate9.travel.p253.zanati-absent-and-religion` — **A / VERIFIED**: H16, שיטת הזנאתי ודין דת/צדקות קיימים כעת ב-v57; blocker העמוד החסר הוסר.
+83. `gate9.travel.p254.lineage-profession-dream` — **C/B terminology-review**: המונח הנדיר בשורת عطارد נשמר בערבית; אין לקבע ״נפלאות״ בלי סגירה. `REVIEW_REQUIRED`.
+84. `gate10.authority.p258-260.dismissal-and-appointment` — **B**: H9 מיטיב=צדק, H9 מזיק=עוול; v57 עדיין שגוי. `REVIEW_REQUIRED`.
+85. `gate11.friends.p263.friend-types-and-mutual-effect` — **C/B**: הדפוס `الجودلة`; זהות עברית סותרת בין המקורות, אין לבחור בשקט. `REVIEW_REQUIRED`.
+86. `gate11.hope.p267.hope-possession-livelihood` — **B**: בתי התקווה במקור H1/H2/H5/H13; v57 נותן רשימה אחרת. `REVIEW_REQUIRED`.
+87. `gate11.hope.p268-269.need-fulfilment-figures` — **B**: בענף `الأنكيس` חסרה ב-v57 ההבטחה הכוזבת. `REVIEW_REQUIRED`.
+88. `gate11.hope.p270.multaqat-hope-provision-request` — **B**: `مال إلى الأول` = נוטה אל הראשון, לא היחיד. `REVIEW_REQUIRED`.
+89. `gate12.prisoners.p273-274.external-release-duration-and-fear` — **B**: קטבי נכנס/יוצא הוזזו ב-v57 בענפי משך ושפיכות דמים. `REVIEW_REQUIRED`.
+90. `gate12.prisoners.p275.multaqat-release-and-outcome` — **B**: blocker H5 הישן הוסר; H11 צריך להיות חלופה עצמאית בדין לבוש הכבוד/החסד. `REVIEW_REQUIRED`.
+91. `gate12.book-end.p276.repetition-and-explicit-ending` — **B**: `وعدمه` אינו ״עיכוב״ ושורת הסיום המודפסת היא רק `انتهى الكتاب`. `REVIEW_REQUIRED`.
+Final QA-01. `gate9.travel.p247-250.absent-life-distance-witnesses` — **traceability + source anomaly**: source range extended backward to printed p246 / scan248. The printed H6/H12 clause is `فهو مكتوب`; v57 p248 differs, and the later p251 `فهو منكوب` must not be used to repair p246. Record moved to `REVIEW_REQUIRED`.
 
-`houses.p101-102.partners-witnesses`
+מכאן **Pass 2 הושלם במלואו — 91/91, וגם Final QA עבר**. אין `nextReviewEntry` נוסף.
 
-עמודי מקור: **101–102**
-עמודי scan: **103–104**
+השלב הבא הוא **מיזוג PR #52 לאחר אישור, ולאחריו טיפול מסודר ב־v57CorrectionQueue**. אין להתחיל מימוש מנועים, Registry, routing או Golden Tests לפני תיקון פערי v57 החיים.
 
-> Backfill מחייב שנחשף בספירת QA: רשומה זו עדיין `REVIEW_REQUIRED` אך לא קיבלה הכרעת Pass 2 ממוספרת. לאחר השלמתה חוזרים ל־`gate6.house5.p196.children-clothing-and-chapter6-seam`.
-
-אין להתחיל מחדש מ־Batch 01, אין לדלג לרשומה מאוחרת משום שהיא קלה יותר, ואין להתחיל מ־p277.
+אין להתחיל מחדש מ־Batch 01 ואין לדלג ישירות למימוש runtime.
 
 ### כלל עדכון Pointer
 
@@ -213,16 +238,16 @@ Super Audit Pass 1 כבר בוצע. הוא תיקן רק פגמים שהמקור
 
 ### סיווג מחייב לכל מקרה
 
-**A — Source clear + v57/index consistent**  
+**A — Source clear + v57/index consistent**
 ניתן לסגור את פער הבדיקה ולהעביר ל־`VERIFIED`, רק אם אין סתירה פתוחה אחרת.
 
-**B — Source clear, אבל v57 שגוי/חסר**  
+**B — Source clear, אבל v57 שגוי/חסר**
 האינדקס צריך לשמר את אמת המקור, אבל הרשומה נשארת `REVIEW_REQUIRED` כל עוד תיקון v57 פתוח. יש לשמור/ליצור פריט מתאים ב־`v57CorrectionQueue`.
 
-**C — המקור עצמו עמום/פגום/סותר את עצמו**  
+**C — המקור עצמו עמום/פגום/סותר את עצמו**
 נשאר `REVIEW_REQUIRED`. יש לשמר את הטקסט והאי־ודאות במפורש ולוודא פריט מתאים ב־`sourceConflictQueue`. אין להכריע לפי סימטריה, היגיון, ספר אחר או קוד קיים.
 
-**D — המקור וה־v57 סגורים, אבל downstream שגוי**  
+**D — המקור וה־v57 סגורים, אבל downstream שגוי**
 הרשומה יכולה להיות `VERIFIED`, בעוד התיקון נשאר ב־`downstreamCorrectionQueue`. אין לממש את תיקון ה־downstream בתוך Pass 2.
 
 ## 6. דרך העבודה בתוך Pass 2
