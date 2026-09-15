@@ -9,31 +9,36 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Count Pass2 decision classes
+      - name: Audit Pass2 numbering and current statuses
         shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
-          import re,collections,json
-          handoff=Path('KASHF_AI_MASTER_INDEX_CONTINUATION_HANDOFF.md').read_text(encoding='utf-8')
-          txt=Path('kashf-v57-ai-master-index.html').read_text(encoding='utf-8')
-          m=re.search(r'<script id="kashf-ai-master-index-data" type="application/json">\s*(.*?)\s*</script>',txt,re.S)
-          d=json.loads(m.group(1))
-          rr=[r for r in d['records'] if r.get('verificationStatus')=='REVIEW_REQUIRED']
-          decisions=[]
-          for line in handoff.splitlines():
-              mm=re.match(r'^(\d+)\. `([^`]+)` — סיווג \*\*(.+?)\*\*',line)
-              if mm and 1<=int(mm.group(1))<=66:
-                  decisions.append((int(mm.group(1)),mm.group(2),mm.group(3)))
-          print('DECISIONS',len(decisions))
-          c=collections.Counter(label for _,_,label in decisions)
-          for k,v in sorted(c.items()): print('LABEL',repr(k),v)
-          print('--- IDS BY LABEL ---')
-          for label in sorted(c):
-              print('\n',label)
-              for n,e,l in decisions:
-                  if l==label: print(n,e)
-          print('\nTOTAL_RR',len(rr))
-          print('UNAUDITED_BY_HANDOFF',24)
-          print('CURRENT_RR_AMONG_DECISIONS',sum(1 for _,eid,_ in decisions if any(r['entryId']==eid for r in rr)))
+          import re,json,collections
+          h=Path('KASHF_AI_MASTER_INDEX_CONTINUATION_HANDOFF.md').read_text(encoding='utf-8')
+          t=Path('kashf-v57-ai-master-index.html').read_text(encoding='utf-8')
+          d=json.loads(re.search(r'<script id="kashf-ai-master-index-data" type="application/json">\s*(.*?)\s*</script>',t,re.S).group(1))
+          status={r['entryId']:r['verificationStatus'] for r in d['records']}
+          rows=[]
+          for line in h.splitlines():
+              m=re.match(r'^(\d+)\. `([^`]+)` — (.*)$',line)
+              if m and 1<=int(m.group(1))<=66:
+                  n=int(m.group(1)); eid=m.group(2); tail=m.group(3)
+                  cm=re.search(r'סיווג \*\*(.+?)\*\*',tail)
+                  rows.append((n,eid,cm.group(1) if cm else 'NO_CLASS',status.get(eid,'MISSING')))
+          print('ROWS',len(rows))
+          nums={n for n,_,_,_ in rows}
+          print('MISSING_NUMBERS',[n for n in range(1,67) if n not in nums])
+          print('DUP_NUMBERS',[n for n,c in collections.Counter(n for n,_,_,_ in rows).items() if c>1])
+          print('CLASS_COUNTS',dict(collections.Counter(c for _,_,c,_ in rows)))
+          print('STATUS_COUNTS',dict(collections.Counter(s for *_,s in rows)))
+          print('NO_CLASS_ROWS')
+          for row in rows:
+              if row[2]=='NO_CLASS': print(row)
+          print('REVIEW_ROWS_BY_CLASS')
+          cc=collections.Counter(c for _,_,c,s in rows if s=='REVIEW_REQUIRED')
+          print(dict(cc))
+          print('REVIEW_ROWS_TOTAL',sum(cc.values()))
+          print('ALL_RR',sum(1 for s in status.values() if s=='REVIEW_REQUIRED'))
+          print('UNREVIEWED_RR',89-sum(cc.values()))
           PY
