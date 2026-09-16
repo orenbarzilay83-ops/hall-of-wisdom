@@ -1,0 +1,30 @@
+*** Begin Patch
+*** Update File: kashf-v57-ai-master-index.html
+@@
+     {
+       "entryId": "gate6.house6.p200.patient-spirit-and-sixth-eighth",
+       "entryType": "illness-spirit-and-derived-figure-rules",
+-      "bookPages": [200],
+-      "scanPdfPages": [202],
+-      "v57Anchors": ["kashf-v57-draft.html#p200"],
++      "bookPages": [199, 200],
++      "scanPdfPages": [201, 202],
++      "v57Anchors": ["kashf-v57-draft.html#p199", "kashf-v57-draft.html#p200"],
+@@
+-      "sourceVerification": {"printedBookPages": [200], "scanPdfPages": [202], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "The spirit construction and all six location branches were checked."}, "verificationStatus": "VERIFIED"
++      "sourceVerification": {"printedBookPages": [199, 200], "scanPdfPages": [201, 202], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "The spirit construction starts on printed p199 and continues onto p200; all six location branches and the H6/H8 derived-figure branch were checked. Phase 4 repaired the v57 boundary to the same p199-p200 span."}, "verificationStatus": "VERIFIED"
+     },
+     {
+       "entryId": "gate6.house6.p200-201.prognosis-chain",
+       "entryType": "illness-house-prognosis-chain",
+-      "bookPages": [200, 201],
+-      "scanPdfPages": [202, 203],
+-      "v57Anchors": ["kashf-v57-draft.html#p200", "kashf-v57-draft.html#p201"],
++      "bookPages": [200],
++      "scanPdfPages": [202],
++      "v57Anchors": ["kashf-v57-draft.html#p200"],
+@@
+-      "sourceVerification": {"printedBookPages": [200, 201], "scanPdfPages": [202, 203], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "House numbers 1,6,8,13,14 and final ruler branches were checked visually."}, "verificationStatus": "VERIFIED"
++      "sourceVerification": {"printedBookPages": [200], "scanPdfPages": [202], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "House numbers 1,6,8,13,14 and the final-ruler branches were checked visually. The complete prognosis chain is on printed p200; Phase 4 repaired v57 so it no longer spills into p201."}, "verificationStatus": "VERIFIED"
+     },
+*** End Patch
