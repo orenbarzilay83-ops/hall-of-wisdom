@@ -1,0 +1,24 @@
+*** Begin Patch
+*** Update File: kashf-v57-ai-master-index.html
+@@
+       "sourceDiscrepancies": [
+         "כלל הגניבה המודפס חוצה p229→p230; פתיחת p230 ממשיכה בענף H7 ב-H14, ולכן החפיפה עם רשומת p230 מכוונת.",
+-        "v57 אינו משמר במלואם את ענף H7→H14 של זמן/תפיסה ואת H6 הנכנס ב-H13 שלפיו הגניבה אינה חוזרת."
++        "לאחר תיקון גבולות Phase 4, v57 משמר את המשך H7→H14 בפתיחת p230; עם זאת, ענף H6 הנכנס ב-H13 שלפיו הגניבה אינה חוזרת עדיין חסר ודורש תיקון תוכן נפרד."
+       ],
+@@
+-        "note": "Pass 2 decision 73: printed pp229–230 / scans231–232 re-read as one uninterrupted source unit; H7→H14 and H6-in-H13 omissions remain live.",
++        "note": "Pass 2 decision 73: printed pp229–230 / scans231–232 re-read as one uninterrupted source unit. Phase 4 repaired the p229→p230 seam and restored the H7→H14 continuation to the correct v57 page unit; H6-in-H13 remains a live content omission.",
+         "pass2Checked": true
+       },
+@@
+-        "note": "Pass 2 decision 74: printed p230 / scan232 confirms the omitted H7/H14 continuation and H6-in-H13 non-return branch.",
++        "note": "Pass 2 decision 74: printed p230 / scan232 confirms both H7/H14 and H6-in-H13. Current corrected v57 now contains the H7/H14 continuation; H6-in-H13 remains omitted, so REVIEW_REQUIRED remains.",
+         "pass2Checked": true
+       },
+@@
+-    {"id":"AUDIT-P229-230-THEFT-SOURCE-SEAM","entryId":"gate8.theft.p229.comprehensive-recovery-rule","page":"229-230","status":"OPEN","summary":"Treat the comprehensive theft paragraph as a cross-page source unit: printed p229 ends mid-sentence and p230 continues with H7 in H14. Keep the dedicated p230 recovery/discovery record as an intentional overlap."},
+@@
+-    {"id":"B20-P230-OMITTED-H14-H13-BRANCHES","entryId":"gate8.theft.p230.return-and-discovery","page":230,"status":"OPEN","summary":"Restore the printed H7/H14 timing clause and H6-in-H13 non-return branch; recheck the H12 figure list against the scan."},
++    {"id":"B20-P230-OMITTED-H14-H13-BRANCHES","entryId":"gate8.theft.p230.return-and-discovery","page":230,"status":"OPEN","summary":"Phase 4 already restored the printed H7/H14 continuation at the p229→p230 seam. Remaining live work: restore the H6-in-H13 non-return branch and recheck the H12 figure list against the scan."},
+*** End Patch
