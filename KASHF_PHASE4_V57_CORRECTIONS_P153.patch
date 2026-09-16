@@ -1,0 +1,19 @@
+*** Begin Patch
+*** Update File: kashf-v57-draft.html
+@@
+-הפנים הרביעיות: סופרים את נקודות שני היסודות — הקל והכבד — מתוך המערך שנערך, מן הראשון עד החמישה־עשר, ואינם מכניסים בחשבון את השישה־עשר.
++הפנים הרביעיות: סופרים את נקודות שני הג׳והריין (الجوهرين) — כלומר, הקל והכבד — מתוך המערך שנערך, מן הראשון עד החמישה־עשר, ואינם מכניסים בחשבון את השישה־עשר.
+*** End Patch
+
+Source verification:
+- authoritative printed p153 / scan PDF p155 reads: `تعد نقط الجوهرين، أعني الخفيف والثقيل`.
+- `الجوهرين` is a technical term and must not be silently normalized to “שני היסודות”.
+- Preserve the source explanation `الخفيف والثقيل` = the light and the heavy.
+
+Local working artifact after this correction:
+- `kashf-v57-draft-phase4-content-batch09.html`
+- bytes: 4,644,709
+- SHA-256: `35b92d7f03d570617d416758cf074f8954e129fd8df9b86f04992e02a0a115c5`
+- p21–p276 anchors: 256/256; missing 0; duplicate 0.
+
+Queue item `B09-P153-JAWHARAYN-TERM` remains OPEN until the corrected HTML artifact itself is versioned and its repository diff is reviewed.
