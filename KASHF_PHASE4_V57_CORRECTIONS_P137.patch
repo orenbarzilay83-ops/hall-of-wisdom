@@ -1,0 +1,11 @@
+*** Begin Patch
+*** Update File: kashf-v57-draft.html
+@@
+-<tr><td>חורף</td><td>גדי, דלי, דגים</td><td>תנכז׳ ד׳ט׳ג׳</td></tr>
++<tr><td>חורף</td><td>גדי, דלי, דגים</td><td>تثخذ ضظغ</td></tr>
+*** End Patch
+
+Source verification:
+- authoritative printed p137 / scan PDF p139 was visually rechecked at high resolution;
+- the printed winter letter sequence is `تثخذ ضظغ`;
+- because this is a technical letter sequence, the correction preserves the exact Arabic sequence instead of inventing a Hebrew transliteration.
