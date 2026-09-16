@@ -1,0 +1,35 @@
+*** Begin Patch
+*** Update File: kashf-v57-ai-master-index.html
+@@
+     {
+       "entryId": "foundation.p137.season-letters-zodiac-elements",
+@@
+       "bookPages": [
+         137,
+         138
+       ],
+       "scanPdfPages": [
+         139,
+         140
+       ],
+       "v57Anchors": [
+-        "kashf-v57-draft.html#p137"
++        "kashf-v57-draft.html#p137",
++        "kashf-v57-draft.html#p138"
+       ],
+@@
+       "sourceVerification": {
+@@
+-        "note": "Pass 2 re-read the printed p137→p138 seam. Winter letters are visually تثخذ ضظغ, not the prior indexed ثنخذ ضظغ. The air clause ends p137 and the water signs continue at the top of p138; source range expanded accordingly. v57 mismatch keeps this record REVIEW_REQUIRED."
++        "note": "Pass 2 and Phase 4 boundary re-read: winter letters are visibly تثخذ ضظغ. The air-sign clause ends at printed p137 and completes at the head of p138 with هوائية followed by the water signs. The corrected Phase-4 working copy now preserves this true p137→p138 seam, so both v57 anchors are mandatory. Content/queue closure remains deferred until the corrected HTML is versioned and diff-reviewed."
+       },
+*** End Patch
+
+Traceability verification:
+- `shibutz.p133-134.mazag-planet-map` already carries printed [133,134] and v57 anchors [p133,p134]; no anchor change required.
+- `shibutz.p135.planet-letters-utility` already carries printed/anchor p135; no anchor change required.
+- `shibutz.p135-137.zodiac-planet-order` already carries anchors p135,p136,p137; the repaired first-verse seam now makes those anchors accurate.
+- `shibutz.p136-137.season-figure-groups` already carries p136,p137; the repaired Spring/Summer boundary now makes those anchors accurate.
+- `foundation.p137.season-letters-zodiac-elements` had the correct printed source range [137,138] but only v57 anchor p137 because the old HTML collapsed the p138 continuation backward. Add p138 after the Phase-4 boundary repair.
+
+No runtime change; no queue item is closed by this patch alone.
