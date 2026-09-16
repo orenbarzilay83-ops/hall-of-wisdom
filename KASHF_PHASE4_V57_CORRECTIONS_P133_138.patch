@@ -1,0 +1,109 @@
+*** Begin Patch
+*** Update File: kashf-v57-draft.html
+@@ printed p133→p134 boundary
+- Keep all seven Mazag verses and the الجودلة/نقي الخد disagreement on #p133.
++ #p133 ends after the third verse (Sun, Venus, Bayad/Tariq-Moon), matching printed p133.
++ Move the remaining four verses to the head of #p134 before the table:
++   - الاجتماع + الجماعة → Mercury
++   - الأنكيس + الثقاف → Saturn
++   - الحمرة + نقي الخد → Mars
++   - العتبة الداخلة + ضاحك/الأحيان → Jupiter
++ Move the printed disagreement to #p134 and render the project-canonical identities as:
++   الجودلة = נלחם (1121)
++   نقي الخد = בר הלחי (1211)
++ Do not use the historical v57 label "נקי הלחי" as a canonical figure name.
+
+@@ printed p134 Mazag table
+- Venus: נלחם only
++ Venus: נלחם (1121) + כבוד נכנס (2211)
+- Jupiter: סף נכנס only
++ Jupiter: סף נכנס (2111) + נשוא ראש (1222)
+- Mars: אדום + נקי הלחי
++ Mars: אדום (2122) + בר הלחי (1211)
++ Add Head: ממון יוצא (1212)
++ Add Tail: סף יוצא (1112)
++ The resulting source map is 16/16 figures.
+
+@@ printed p134→p135 boundary
+- Leave the paragraph beginning "כאשר צורה שוכנת בבית שלה..." on #p134.
++ Move that paragraph to the head of #p135; it corresponds to printed p135 after the p134 table/day-night material.
+
+@@ printed p135 planet-letter table
+- Mercury: ג י פ ע
+- Moon: ד כ צ ח
+- Saturn: ה ל ק ז׳
++ Mercury: ג י פ ח — preserve exact Arabic ج ي ف ح
++ Moon: ד כ צ ד׳ — preserve exact Arabic د ك ص ذ
++ Saturn: ה ל ק צ — preserve exact Arabic ه ل ق ص
++ Preserve the exact Arabic sequence for every planetary row inline:
++ Sun ا ج س ت; Venus ب ط ع ث; Mercury ج ي ف ح; Moon د ك ص ذ; Saturn ه ل ق ص; Jupiter و م ز ط; Mars ز ن س ع.
+
+@@ printed p135→p136 boundary
+- Start the zodiac poem wholly on #p136.
++ Printed p135 contains the first verse beginning غرب على زحل بدلو التيس; keep its Hebrew rendering at the end of #p135.
++ #p136 starts with the next printed verse.
+
+@@ printed p136 zodiac/planet table
+- Mars: ממון יוצא (1212) + אדום (2122) + נקי הלחי (1211)
+- Venus: נלחם (1121) + כבוד יוצא (1122)
+- Sun: ממון נכנס (2121) + כבוד נכנס (2211)
+- Head: generic/2212 placeholder
+- Tail: generic/1112 placeholder
++ Mars: בר הלחי (1211) + אדום (2122)
++ Venus: נלחם (1121) + כבוד נכנס (2211)
++ Mercury: חיבור (2112) + קהלה (2222)
++ Moon: דרך (1111) + לבן (2212)
++ Sun: ממון נכנס (2121) + כבוד יוצא (1122)
++ Jupiter: סף נכנס (2111) + נשוא ראש (1222)
++ Saturn: שפל ראש (2221) + סוהר (1221)
++ Head: ממון יוצא (1212)
++ Tail: סף יוצא (1112)
++ Keep the following printed return sentence separate: قبض خارج returns to Mars; العتبة الداخلة returns to Saturn.
++ Preserve the internal printed difference with p137, which later names عتبة خارجة; do not reconcile it silently.
+
+@@ printed p136→p137 seasonal boundary
+- Collapse all four seasons, their signs and letters into one #p137 table with no printed figure groups.
++ Printed p136 contains the season heading and Spring unit. Restore on #p136:
++   Spring / טלה-שור-תאומים = אדום 2122, בר הלחי 1211, כבוד נכנס 2211, נלחם 1121, קהלה 2222, חיבור 2112.
++ Printed p137 begins Summer and continues Winter + Autumn:
++   Summer / סרטן-אריה-בתולה = לבן 2212, דרך 1111, כבוד יוצא 1122, ממון נכנס 2121, חיבור 2112.
++   Winter / גדי-דלי-דגים = סוהר 1221, שפל ראש 2221, סף נכנס 2111.
++   Autumn / מאזניים-עקרב-קשת = נלחם 1121, כבוד נכנס 2211, נשוא ראש 1222.
++ Preserve the overlapping seasonal groups exactly as printed; do not force a one-figure/one-season normalization.
+
+@@ printed p137 season letters
+- Winter letters: תנכז׳ ד׳ט׳ג׳
++ Winter letters: تثخذ ضظغ
++ Preserve exact Arabic letter strings for all four seasons:
++   Spring أبجد هوز
++   Summer حطي كلمن
++   Autumn شعفص قرشت
++   Winter تثخذ ضظغ
+
+@@ printed p137→p138 zodiac-element boundary
+- Keep the entire four-element zodiac table on #p137.
++ #p137 ends mid-unit after: Fire signs; Earth signs; then "Gemini, Libra, Aquarius —".
++ #p138 begins with the printed continuation: Air; Cancer, Scorpio, Pisces — Water.
++ This source unit therefore requires both #p137 and #p138 for retrieval.
+
+@@ printed p138 heading placement
+- Editorial combined heading: "אזהרת המחבר / השיבוץ השישי"
++ Remove the unsupported editorial combined heading.
++ Keep the p137→p138 element continuation first, then the author's warning paragraph, then the genuine sixth-placement heading.
++ Canonicalize נقي الخد in the p138 poem to בר הלחי without altering the Arabic source name.
+*** End Patch
+
+Source verification:
+- authoritative printed pp133–138 = scan PDF pp135–140, visually re-read page by page.
+- p134 Mazag table and p136 zodiac/planet table each close a 16/16 figure map when read from the printed glyphs using the project convention 1=point, 2=line.
+- printed p137 explicitly gives overlapping season groups: Spring 6, Summer 5, Winter 3, Autumn 3.
+- printed p137 winter letters are visibly `تثخذ ضظغ`.
+- printed p137 ends the air-sign clause at the page edge; printed p138 begins `هوائية` and continues the water signs, so the zodiac-element rule is a true p137→p138 source unit.
+
+Local corrected working artifact:
+- `kashf-v57-draft-phase4-content-batch08-final.html`
+- bytes: 4,644,674
+- SHA-256: `a62c2e822f260fb7c62c2bd812cdb44ce3d888288468ceada847572dd5ee4585`
+- numbered anchors p21–p276: 256/256; missing 0; duplicate 0.
+
+Queue policy: these items remain OPEN in the Master Index until the corrected HTML artifact itself is versioned in the repository and its diff is reviewed.
