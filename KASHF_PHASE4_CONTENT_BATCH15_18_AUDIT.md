@@ -19,6 +19,16 @@ Dedicated local diff: `KASHF_PHASE4_V57_CORRECTIONS_P191_196.patch`.
 
 ## Batch 16 — printed pp201, 204, 208
 
+### Visual QA checkpoint — 2026-09-16
+
+The authoritative printed scan was rendered and visually rechecked at printed p201 / scan-PDF p203, printed p204 / scan-PDF p206, and printed p208 / scan-PDF p210. The scan images confirm the Batch-16 readings below. No OCR-only reading was promoted over the printed image.
+
+- p201 visibly prints `الحمرة` for sheep/rams; `التشمير` beside glyph 2211 for bulls; `النصرة الخارجة` for horses; `العتبة الخارجة` for camels; `العقلة` for donkeys; `الأنكيس` for kids/goats; and `القبض الخارج` for mules. The rows are indepent and must not be merged by analogy.
+- p204 visibly separates `الأول في السابع` → `أمة`, `السابع في العاشر` → `حرة`, mutable seventh → `ثيب`, and fixed seventh → `بكر`.
+- p208 visibly preserves separate `نقي الخد` and `الكوسج` clauses. The age-group sentence explicitly prints `عطارد` in the middle group, so the Hebrew must identify Mercury / כוכב חמה rather than a generic star.
+
+Visual QA result: **PASS** for the Batch-16 source readings. This pass verifies the source evidence only; it does not close queue items while the corrected HTML artifact remains unversioned.
+
 ### p201 — animal/figure map
 
 Restored the printed mapping exactly at the source-token level:
@@ -99,4 +109,4 @@ Result: **PASS**.
 
 ## Guard
 
-These corrections are source-layer work only. Do not modify runtime/Registry/routing/Golden Tests from this checkpoint, and do not mark Master-Index queue entries formally resolved until the corrected HTML artifact is versioned and its repository diff is reviewable.
+These corrections are source-layer work only. Do not modify runtime/Registry/routing/Golden Tests from this checkpoint, and do not mark Master-Index queue items formally resolved until the corrected HTML artifact is versioned and its repository diff is reviewable.
