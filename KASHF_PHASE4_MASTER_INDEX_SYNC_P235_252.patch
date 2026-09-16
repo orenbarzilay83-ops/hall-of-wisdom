@@ -1,0 +1,158 @@
+*** Begin Patch
+*** Update File: kashf-v57-ai-master-index.html
+@@
+     {
+       "entryId": "gate9.travel.p237-239.travel-core-and-profit",
+       "entryType": "travel-rule-set",
+-      "bookPages": [237, 238, 239], "scanPdfPages": [239, 240, 241], "v57Anchors": ["kashf-v57-draft.html#p237", "kashf-v57-draft.html#p238", "kashf-v57-draft.html#p239"],
++      "bookPages": [235, 236, 237, 238], "scanPdfPages": [237, 238, 239, 240], "v57Anchors": ["kashf-v57-draft.html#p235", "kashf-v57-draft.html#p236", "kashf-v57-draft.html#p237", "kashf-v57-draft.html#p238"],
+@@
+-      "sourceVerification": {"printedBookPages": [237, 238, 239], "scanPdfPages": [239, 240, 241], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Travel gates, timing, profit and sea/land branches checked."}, "verificationStatus": "VERIFIED"
++      "sourceVerification": {"printedBookPages": [235,236,237,238], "scanPdfPages": [237,238,239,240], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Phase 4 boundary re-read: Gate 9 opens within printed p235 after the Gate-8 closing rule; the opening travel-occurrence rule is on p235, core travel houses/timing on p236, profit on p237, and the sea/land continuation plus additional travel test on p238."}, "verificationStatus": "VERIFIED"
+@@
+     {
+       "entryId": "gate9.travel.p240.direction-source-discrepancy",
+@@
+-      "bookPages": [240],
+-      "scanPdfPages": [242],
+-      "v57Anchors": ["kashf-v57-draft.html#p240"],
++      "bookPages": [238, 239],
++      "scanPdfPages": [240, 241],
++      "v57Anchors": ["kashf-v57-draft.html#p238", "kashf-v57-draft.html#p239"],
+@@
+-        "printedBookPages": [240],
+-        "scanPdfPages": [242],
++        "printedBookPages": [238, 239],
++        "scanPdfPages": [240, 241],
+@@
+-        "note": "Pass 2 decision 78: stale blocker closed. Printed p240 says fire=east, air=west, water=sea, earth=qibli/south, matching current v57.",
++        "note": "Phase 4 boundary re-read places the direction procedure on printed p238→p239: the element-strength method and mapping are on p238, while the dangling H7/target-land continuation completes at the head of p239. The mapping remains fire=east, air=west, water=sea, earth=qibli/south.",
+@@
+     {
+       "entryId": "gate9.travel.p241-244.safety-and-return",
+@@
+-      "bookPages": [241, 242, 243, 244],
+-      "scanPdfPages": [243, 244, 245, 246],
+-      "v57Anchors": ["kashf-v57-draft.html#p241", "kashf-v57-draft.html#p242", "kashf-v57-draft.html#p243", "kashf-v57-draft.html#p244"],
++      "bookPages": [239, 240, 241, 242, 243],
++      "scanPdfPages": [241, 242, 243, 244, 245],
++      "v57Anchors": ["kashf-v57-draft.html#p239", "kashf-v57-draft.html#p240", "kashf-v57-draft.html#p241", "kashf-v57-draft.html#p242", "kashf-v57-draft.html#p243"],
+@@
+-        "בעמ׳ 244 המקור מדפיס نقي الخد; לפי מדיניות השמות הקנונית השם העברי הוא בר הלחי. v57 משתמש שם בתווית הישנה/לא־קנונית ״נקי הלחי״."
++        "בעמ׳ 242 המקור מדפיס نقي الخد; לפי מדיניות השמות הקנונית השם העברי הוא בר הלחי. ה־Phase-4 working copy כבר מציג בר הלחי, אך סגירת פריט התיקון מושהית עד versioned-artifact diff."
+@@
+-        "printedBookPages": [241, 242, 243, 244],
+-        "scanPdfPages": [243, 244, 245, 246],
++        "printedBookPages": [239, 240, 241, 242, 243],
++        "scanPdfPages": [241, 242, 243, 244, 245],
+@@
+-        "note": "Pass 2 decision 79: printed pp241–244 / scans243–246 rechecked; p244 token is نقي الخد, canonical Hebrew בר הלחי.",
++        "note": "Phase 4 boundary re-read: traveler state begins on p239, danger/vehicle and merchant branches span p240–p242, and the general travel-question sentence completes on the first line of p243 before the separate relocation rule. The printed نقي الخد occurrence in this unit is on p242.",
+@@
+     {
+       "entryId": "gate9.travel.p245.transit-and-road-request",
+@@
+-      "bookPages": [245], "scanPdfPages": [247], "v57Anchors": ["kashf-v57-draft.html#p245"],
++      "bookPages": [243], "scanPdfPages": [245], "v57Anchors": ["kashf-v57-draft.html#p243"],
+@@
+-      "sourceVerification": {"printedBookPages": [245], "scanPdfPages": [247], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Page 245 read against enlarged printed scan."}, "verificationStatus": "VERIFIED"
++      "sourceVerification": {"printedBookPages": [243], "scanPdfPages": [245], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Phase 4 boundary re-read places the travel/relocation road-request rule wholly on printed p243 / scan245 after the carry-over first line from the prior unit."}, "verificationStatus": "VERIFIED"
+@@
+     {
+       "entryId": "gate9.travel.p246.condition-and-direction",
+@@
+-      "v57Anchors": ["kashf-v57-draft.html#p246"],
+-      "topic": "תוספת נזהת אל־עֻקוּל: מצב המסע ושאלת הכיוון — מקור מודפס p244, עוגן v57 p246",
++      "v57Anchors": ["kashf-v57-draft.html#p244"],
++      "topic": "תוספת נזהת אל־עֻקוּל: מצב המסע ושאלת הכיוון — מקור מודפס p244 / עוגן v57 p244",
+@@
+       "sourceDiscrepancies": [
+-        "תיקון traceability: יחידת המקור היא printed p244 / scan246, בעוד v57 מציב את החומר תחת #p246. אין להזיז את מספור המקור כדי להתאים לעוגן.",
+         "ברשימת הקושי המקור מדפיס الكوسج ו-نقي الخد בנפרד; v57 אינו משמר את שניהם אחד־לאחד."
+       ],
+@@
+-        "note": "Pass 2 decision 80: footer/page visual check establishes printed p244 / scan246 despite v57 anchor #p246; الكوسج and نقي الخد are separate source tokens.",
++        "note": "Phase 4 boundary repair now aligns corrected v57 #p244 with printed p244 / scan246. The former pagination mismatch is gone; the separate-token issue الكوسج versus نقي الخد remains open.",
+@@
+     {
+       "entryId": "gate9.travel.p247-250.absent-life-distance-witnesses",
+@@
+-      "bookPages": [246, 247, 248, 249, 250],
+-      "scanPdfPages": [248, 249, 250, 251, 252],
+-      "v57Anchors": ["kashf-v57-draft.html#p247", "kashf-v57-draft.html#p248", "kashf-v57-draft.html#p249", "kashf-v57-draft.html#p250"],
++      "bookPages": [245, 246, 247, 248, 249, 250, 251],
++      "scanPdfPages": [247, 248, 249, 250, 251, 252, 253],
++      "v57Anchors": ["kashf-v57-draft.html#p245", "kashf-v57-draft.html#p246", "kashf-v57-draft.html#p247", "kashf-v57-draft.html#p248", "kashf-v57-draft.html#p249", "kashf-v57-draft.html#p250", "kashf-v57-draft.html#p251"],
+@@
+       "sourceDiscrepancies": [
+-        "תיקון Final QA: יחידת דיני הנעדר מתחילה כבר בעמ׳ מודפס 246 / scan248. בענף H6/H12 הדפוס קורא במפורש فهو مكتوب, בעוד v57 בעוגן p248 מפרש ״במצוקה או בשבי״. אין לתקן את مكتوب בשקט לפי החזרה המאוחרת בעמ׳ 251 שבה מודפס فهو منكوب."
++        "ה־Phase-4 corrected working copy משמר כעת במפורש את فهو مكتوب בענף H6/H12 שבעמ׳ 246. ההבדל הפנימי מול الحזרה המאוחרת בעמ׳ 251, שבה מודפס فهو منكوب, נשאר source-conflict מכוון ואסור לנרמל ביניהם."
+       ],
+@@
+-        "printedBookPages": [246, 247, 248, 249, 250],
+-        "scanPdfPages": [248, 249, 250, 251, 252],
++        "printedBookPages": [245, 246, 247, 248, 249, 250, 251],
++        "scanPdfPages": [247, 248, 249, 250, 251, 252, 253],
+@@
+-        "note": "Final QA closed the p246 coverage hole created by correcting the p244/p246 traceability mismatch. Printed p246 / scan248 starts the absent-person unit and visibly reads فهو مكتوب in the H6/H12 branch; current v57 p248 differs. The later p251 فهو منكوب is preserved as a separate later source occurrence and is not used to silently repair p246.",
++        "note": "Phase 4 boundary re-read: the two-journey selection starts on p245; the absent-person unit begins on p246 and continues through p250; the long-arrival continuation at the head of p251 still belongs to this distance/witness chain. Corrected working v57 preserves printed p246 فهو مكتوب; p251 فهو منكوب remains a distinct later occurrence.",
+@@
+     {
+       "entryId": "gate9.travel.p251-252.absent-return-and-meeting",
+@@
+-      "bookPages": [251, 252],
+-      "scanPdfPages": [253, 254],
+-      "v57Anchors": ["kashf-v57-draft.html#p251", "kashf-v57-draft.html#p252"],
++      "bookPages": [250, 251, 252, 253],
++      "scanPdfPages": [252, 253, 254, 255],
++      "v57Anchors": ["kashf-v57-draft.html#p250", "kashf-v57-draft.html#p251", "kashf-v57-draft.html#p252", "kashf-v57-draft.html#p253"],
+@@
+       "sourceDiscrepancies": [
+-        "בתוספת אל־מֻלתקט המקור אומר על חזרה ב-H6 או H12: فهو منكوب — פגוע/מוכה פורענות. v57 מרחיב ל״במצוקה או בשבי״; רכיב השבי אינו מודפס בענף זה."
++        "בתוספת אל־מֻלתקט המקור אומר על חזרה ב-H6 או H12: فهو منكوب — פגוע/מוכה פורענות. ה־Phase-4 corrected working copy כבר הסיר את חלופת השבי הבלתי־מודפסת; פריט התיקון נשאר פתוח עד review של artifact versioned."
+       ],
+@@
+-        "printedBookPages": [251, 252],
+-        "scanPdfPages": [253, 254],
++        "printedBookPages": [250, 251, 252, 253],
++        "scanPdfPages": [252, 253, 254, 255],
+@@
+-        "note": "Pass 2 decision 81: printed pp251–252 / scans253–254 re-read; Al-Multaqat H6/H12 wording is فهو منكوب.",
++        "note": "Phase 4 boundary re-read: the arrival-distance setup starts on p250, the point-remainder and Al-Multaqat rules occupy p251, the meeting rule occupies p252, and its final H16 quality-of-meeting continuation is the first line of p253. Intentional overlap with the dedicated p253 Zanati/religion record is preserved.",
+@@
+     {
+       "id": "B22-P246-FIGURE-NAME-AND-DIRECTION",
+@@
+-      "summary": "Traceability repair: printed source unit is p244 / scan246 although current v57 places it at #p246. Preserve الكوسج and نقي الخد as separate H9 tokens; use canonical בר הלחי for نقي الخد. Direction mapping is fire=east, air=west, water=sea, earth=qibli/south."
++      "summary": "Phase 4 boundary repair now aligns the source unit at printed p244 / scan246 / corrected-v57 #p244. Remaining content issue: preserve الكوسج and نقي الخد as separate H9 tokens and use canonical בר הלחי for نقي الخد. Direction mapping is fire=east, air=west, water=sea, earth=qibli/south."
+@@
+     {
+       "id": "B22-P251-AL-MULTAQAT-WORDING",
+@@
+-      "summary": "Render printed H6/H12 clause source-faithfully: فهو منكوب (stricken/afflicted by calamity). Current v57 adds an unsupported captivity alternative."
++      "summary": "Render printed H6/H12 clause source-faithfully: فهو منكوب (stricken/afflicted by calamity). The Phase-4 corrected working copy has removed the unsupported captivity alternative; keep OPEN until the corrected artifact is versioned and diff-reviewed."
+@@
+-    {"id":"B21-P244-BAR-LAHI-NAME","entryId":"gate9.travel.p241-244.safety-and-return","page":244,"status":"OPEN","summary":"Verify canonical בר הלחי against the erroneous v57 literal label נקי הלחי in the vehicle-damage branch."},
++    {"id":"B21-P244-BAR-LAHI-NAME","entryId":"gate9.travel.p241-244.safety-and-return","page":242,"status":"OPEN","summary":"Source location is printed p242. Canonical נقي الخد=בר הלחי; the Phase-4 corrected working copy already uses בר הלחי in the vehicle-damage branch, but keep OPEN until the corrected artifact is versioned and diff-reviewed."},
+@@
+     {
+       "id": "FINALQA-P246-ABSENT-MAKTUB",
+@@
+-      "summary": "Restore source-faithful treatment of printed p246 H6/H12 clause: فهو مكتوب. Current v57 p248 renders distress/captivity. Do not silently normalize p246 to the later p251 wording فهو منكوب."
++      "summary": "Printed p246 H6/H12 clause is فهو مكتوب and must remain distinct from later p251 فهو منكوب. The Phase-4 corrected working copy now preserves فهو مكتوب explicitly; keep this item OPEN only until the corrected artifact is versioned and diff-reviewed."
+@@
+     "gate8Theft": {
+-      "pagesIndexed": [224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236],
+-      "indexedThroughPage": 236,
++      "pagesIndexed": [224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235],
++      "indexedThroughPage": 235,
+@@
+-      "chapterClosedAtPage": 236,
+-      "nextFullSourcePage": 237
++      "chapterClosedAtPage": 235,
++      "nextFullSourcePage": 236
+     },
+     "gate9Travel": {
+-      "pagesIndexed": [237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255],
++      "pagesIndexed": [235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255],
+*** End Patch
