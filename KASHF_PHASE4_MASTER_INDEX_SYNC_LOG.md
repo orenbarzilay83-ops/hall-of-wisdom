@@ -83,6 +83,23 @@ Key traceability repairs:
 - `gate8Theft` gate status now closes at p235; `gate9Travel` includes p235 because Gate 9 begins on that mixed page.
 - The corrected working artifact already preserves p246 `فهو مكتوب`, p251 `فهو منكوب` without the unsupported captivity alternative, and canonical `בר הלחי` at the vehicle branch. Their queue entries remain OPEN until the corrected HTML artifact is versioned and its diff is reviewed.
 
+## pp253–276 — staged
+
+Patch: `KASHF_PHASE4_MASTER_INDEX_SYNC_P253_276.patch`
+
+The final body-of-book boundary pass is now staged:
+
+- The promise rule crosses p255→p256; Gate 9 therefore closes on the mixed page p256, where Gate 10 also begins. `gate9Travel` is staged through p256, with p257 as the next full Gate-10 source page.
+- The H10 ruler-state/external-opponent unit crosses p260→p263 because the loss-of-kingship sentence and H11 public-support clause complete at the head of p263 before Gate 11 opens.
+- The friend-types unit crosses p263→p264; the printed `الجودلة` branch begins on p263 and its thieves/bandits result continues on p264.
+- The clothing/status unit now includes the p264 lead-in and spans p264→p266.
+- The hope/possession/livelihood unit crosses p267→p268; the Nuzhat livelihood list begins at the foot of p267 and completes at the head of p268.
+- The Al-Multaqat hope/provision/request unit crosses p270→p271; its final malefic-outgoing request branch completes before Gate 12 opens on p271.
+- The Al-Multaqat prisoner-outcome unit crosses p275→p276 because the final `ודע כי` / `واعلم أن` continuation leads into the repetition/exit explanation on p276.
+- The p273 prisoner polarity and p276 closing wording now match the printed source in the corrected working artifact, but their `v57CorrectionQueue` entries remain OPEN until the corrected HTML is versioned and diff-reviewed.
+
+No unresolved content issue was silently closed: p254 `الغرائم`, p260 H9 justice polarity, p263 `الجودلة`, p267 hope-house list, p269 false-promise clause, p270 `الأول`, and p275 H11 remain live.
+
 ## Next checkpoint
 
-Continue in printed-page order with the remaining pp253–276 Master-Index synchronization. After that, run a whole-index traceability QA across the corrected p21–p276 anchor set before resuming normal `v57CorrectionQueue` execution.
+Run a whole-index traceability QA across the corrected p21–p276 anchor set and all staged Master-Index sync patches. Verify page coverage, intentional overlaps, gate opening/closing pages, scan-page offsets, and that no content-only blocker was accidentally closed. Only after that QA should normal `v57CorrectionQueue` execution resume.
