@@ -1,0 +1,156 @@
+*** Begin Patch
+*** Update File: kashf-v57-ai-master-index.html
+@@
+     {
+       "entryId": "gate6.house6.p204.chapter7-seam-marriage-status",
+@@
+       "verificationStatus": "REVIEW_REQUIRED"
+     },
++    {
++      "entryId": "gate6.house7.p204-205.mutual-gaze-fire-rows",
++      "entryType": "mutual-gaze-element-row-rule-set",
++      "bookPages": [204, 205],
++      "scanPdfPages": [206, 207],
++      "v57Anchors": ["kashf-v57-draft.html#p204", "kashf-v57-draft.html#p205"],
++      "topic": "הבטה הדדית לפי שורת האש — כלל חוצה p204→p205",
++      "keywords": ["H1", "H7", "H13", "אש", "מבט", "הבטה"],
++      "criticalFacts": [
++        "הכלל מתחיל בסוף p204 ונשלם בראש p205; אין לפצל את התנאי מן התוצאה בגלל מעבר העמוד.",
++        "אש H1 פתוחה + אש H7 פתוחה + אש H13 סתומה מורות שהוא מביט אל השואל והשואל מביט אליו.",
++        "אש H13 פתוחה + אש H1 סתומה + אש H7 פתוחה מורות שהוא מביט אל האחר והאחר מביט אליו."
++      ],
++      "procedure": ["בדוק את שורת יסוד האש ב-H1, H7 ו-H13 ושמור את שני הענפים כפי שנדפסו."],
++      "branches": [
++        {"condition":"fire-H1-open-H7-open-H13-closed","outcome":"mutual-gaze-between-person-and-querent"},
++        {"condition":"fire-H13-open-H1-closed-H7-open","outcome":"person-and-other-gaze-at-each-other"}
++      ],
++      "preconditions": ["שאלה על מי האדם מביט."],
++      "questionIntents": ["mutual-gaze"],
++      "methodStatus": "SOURCE_RULE_SET",
++      "operationalRole": "PRIMARY_CANDIDATE",
++      "runtimeEligible": false,
++      "doNotInfer": ["אין להשלים צירופי פתוח/סתום נוספים מסימטריה; אין לנתק את ראש p205 מסוף p204."],
++      "sourceDiscrepancies": [],
++      "sourceVerification": {"printedBookPages":[204,205],"scanPdfPages":[206,207],"v57Checked":true,"printedScanChecked":true,"visualLineByLineChecked":true,"note":"Phase 4 boundary audit rejoined the condition at the foot of printed p204 with its outcomes at the head of p205."},
++      "verificationStatus": "VERIFIED"
++    },
+     {
+       "entryId": "gate6.house7.p205.love-and-chastity",
+@@
+     {
+       "entryId": "gate6.house7.p206.intent-odor-marriage-appeal",
+@@
+-      "bookPages": [206],
+-      "scanPdfPages": [208],
+-      "v57Anchors": ["kashf-v57-draft.html#p206"],
++      "bookPages": [206, 207],
++      "scanPdfPages": [208, 209],
++      "v57Anchors": ["kashf-v57-draft.html#p206", "kashf-v57-draft.html#p207"],
+@@
+-        "printedBookPages": [206],
+-        "scanPdfPages": [208],
++        "printedBookPages": [206, 207],
++        "scanPdfPages": [208, 209],
+@@
+-        "note": "Pass 2 visually rechecked printed p206 and the p206→p207 seam. Current v57 now preserves the odor figures as סף יוצא and שפל ראש, matching العتبة الخارجة and الأنكيس. Virgin/non-virgin and full/half love-enmity continue on printed p207 and belong to the dedicated p207 record, so they were removed from p206."
++        "note": "Pass 2 and Phase 4 boundary re-read: the virgin/non-virgin water-row branch starts at the foot of printed p206 and resolves at the head of p207, so this record requires both pages/anchors. The later full/half love-enmity material remains on p207."
+@@
+     {
+       "entryId": "gate6.house7.p208.marriage-house-figure-meanings",
+@@
+-      "bookPages": [208],
+-      "scanPdfPages": [210],
+-      "v57Anchors": ["kashf-v57-draft.html#p208"],
++      "bookPages": [207, 208, 209],
++      "scanPdfPages": [209, 210, 211],
++      "v57Anchors": ["kashf-v57-draft.html#p207", "kashf-v57-draft.html#p208", "kashf-v57-draft.html#p209"],
+@@
+-        "printedBookPages": [208],
+-        "scanPdfPages": [210],
++        "printedBookPages": [207, 208, 209],
++        "scanPdfPages": [209, 210, 211],
+@@
+-        "note": "Pass 2 visually rechecked printed p208 through the page end and separated the p209 continuation. Source-clear p208 includes the enslaved/low-status cluster, age groups by planetary figures, H5 good/stable-woman figures, balance bad-ending figures, and H4 as an ending/consequence house. Full current-v57 mapping reconciliation is still open; no p209 material is imported."
++        "note": "Phase 4 boundary re-read: the marriage-house figure list starts on printed p207, occupies p208, and the final named-figure branches continue at the head of p209 before the separate house-of-the-man rule begins. Content reconciliation remains open."
+@@
+     {
+       "entryId": "gate6.house7.p209.woman-by-mans-houses",
+@@
+-      "bookPages": [209], "scanPdfPages": [211], "v57Anchors": ["kashf-v57-draft.html#p209"],
++      "bookPages": [209, 210], "scanPdfPages": [211, 212], "v57Anchors": ["kashf-v57-draft.html#p209", "kashf-v57-draft.html#p210"],
+@@
+-      "sourceVerification": {"printedBookPages": [209], "scanPdfPages": [211], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "All house branches through the seam were checked."}, "verificationStatus": "VERIFIED"
++      "sourceVerification": {"printedBookPages": [209,210], "scanPdfPages": [211,212], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "The house-of-the-man sequence starts on p209 and its bed/kingdom/enemy-house continuation occupies the head of p210; both anchors are required."}, "verificationStatus": "VERIFIED"
+@@
+     {
+       "entryId": "gate6.house7.p213-214.winner-loser-core",
+@@
+-      "bookPages": [213, 214], "scanPdfPages": [215, 216], "v57Anchors": ["kashf-v57-draft.html#p213", "kashf-v57-draft.html#p214"],
++      "bookPages": [212, 213, 214], "scanPdfPages": [214, 215, 216], "v57Anchors": ["kashf-v57-draft.html#p212", "kashf-v57-draft.html#p213", "kashf-v57-draft.html#p214"],
+@@
+-      "sourceVerification": {"printedBookPages": [213, 214], "scanPdfPages": [215, 216], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "House partitions and H8 outcomes checked across seam."}, "verificationStatus": "VERIFIED"
++      "sourceVerification": {"printedBookPages": [212,213,214], "scanPdfPages": [214,215,216], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "The winner/loser construction starts at the foot of p212, continues through p213 and reaches the H8 outcomes on p214; all three anchors are required."}, "verificationStatus": "VERIFIED"
+@@
+     {
+       "entryId": "gate6.house7.p214-215.enemy-friends-and-two-armies",
+@@
+-      "bookPages": [214, 215], "scanPdfPages": [216, 217], "v57Anchors": ["kashf-v57-draft.html#p214", "kashf-v57-draft.html#p215"],
++      "bookPages": [214, 215, 216], "scanPdfPages": [216, 217, 218], "v57Anchors": ["kashf-v57-draft.html#p214", "kashf-v57-draft.html#p215", "kashf-v57-draft.html#p216"],
+@@
+-      "sourceVerification": {"printedBookPages": [214, 215], "scanPdfPages": [216, 217], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Witness houses, relations and two-board branches checked."}, "verificationStatus": "VERIFIED"
++      "sourceVerification": {"printedBookPages": [214,215,216], "scanPdfPages": [216,217,218], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "The enemy/allies rule begins on p214; the two-board army comparison fills p215 and its final equal-benefic comparison continues at the head of p216 before the war rule begins."}, "verificationStatus": "VERIFIED"
+@@
+     {
+       "entryId": "gate6.house7.p218.trade-price-and-circular-seeker",
+@@
+-      "bookPages": [218], "scanPdfPages": [220], "v57Anchors": ["kashf-v57-draft.html#p218"],
++      "bookPages": [218, 219], "scanPdfPages": [220, 221], "v57Anchors": ["kashf-v57-draft.html#p218", "kashf-v57-draft.html#p219"],
+@@
+-      "sourceVerification": {"printedBookPages": [218], "scanPdfPages": [220], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "House lists and element comparison checked."}, "verificationStatus": "VERIFIED"
++      "sourceVerification": {"printedBookPages": [218,219], "scanPdfPages": [220,221], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "The circular-seeker base rule begins on p218 and its good-house landing clause completes at the head of p219 before the worked examples."}, "verificationStatus": "VERIFIED"
+@@
+     {
+       "entryId": "gate6.house7.p221.hidden-request-and-year-rules",
+@@
+-      "bookPages": [221], "scanPdfPages": [223], "v57Anchors": ["kashf-v57-draft.html#p221"],
++      "bookPages": [220, 221, 222], "scanPdfPages": [222, 223, 224], "v57Anchors": ["kashf-v57-draft.html#p220", "kashf-v57-draft.html#p221", "kashf-v57-draft.html#p222"],
+@@
+-      "sourceVerification": {"printedBookPages": [221], "scanPdfPages": [223], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Hidden search and yearly branches checked."}, "verificationStatus": "VERIFIED"
++      "sourceVerification": {"printedBookPages": [220,221,222], "scanPdfPages": [222,223,224], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "The hidden-request branch starts at the foot of p220 and resolves on p221; the rain-year branch begun on p221 has an explicit continuation at the head of p222. Both overlaps are intentional."}, "verificationStatus": "VERIFIED"
+@@
+     {
+       "entryId": "gate6.house7.p222.year-interpretation",
+@@
+-      "bookPages": [222], "scanPdfPages": [224], "v57Anchors": ["kashf-v57-draft.html#p222"],
++      "bookPages": [222, 223], "scanPdfPages": [224, 225], "v57Anchors": ["kashf-v57-draft.html#p222", "kashf-v57-draft.html#p223"],
+@@
+-      "sourceVerification": {"printedBookPages": [222], "scanPdfPages": [224], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Element and year-house branches checked."}, "verificationStatus": "VERIFIED"
++      "sourceVerification": {"printedBookPages": [222,223], "scanPdfPages": [224,225], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "The alternate price test starts on p222 and its water+earth=cheap outcome is the first line of p223; keep both anchors with the yearly interpretation unit."}, "verificationStatus": "VERIFIED"
+@@
+     {
+       "entryId": "gate6.house8.p225-226.theft-direction-place",
+@@
+-      "bookPages": [225, 226], "scanPdfPages": [227, 228], "v57Anchors": ["kashf-v57-draft.html#p225", "kashf-v57-draft.html#p226"],
++      "bookPages": [224, 225, 226], "scanPdfPages": [226, 227, 228], "v57Anchors": ["kashf-v57-draft.html#p224", "kashf-v57-draft.html#p225", "kashf-v57-draft.html#p226"],
+@@
+-      "sourceVerification": {"printedBookPages": [225, 226], "scanPdfPages": [227, 228], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Directions, house roles and four-element place mapping checked across seam."}, "verificationStatus": "VERIFIED"
++      "sourceVerification": {"printedBookPages": [224,225,226], "scanPdfPages": [226,227,228], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "The theft-direction sentence begins at the foot of p224, continues on p225, and the four-element place mapping continues through p226. All three anchors are required."}, "verificationStatus": "VERIFIED"
+@@
+     {
+       "entryId": "gate6.house8.p227.livestock-theft-return",
+@@
+-      "bookPages": [227], "scanPdfPages": [229], "v57Anchors": ["kashf-v57-draft.html#p227"],
++      "bookPages": [226, 227], "scanPdfPages": [228, 229], "v57Anchors": ["kashf-v57-draft.html#p226", "kashf-v57-draft.html#p227"],
+@@
+-      "sourceVerification": {"printedBookPages": [227], "scanPdfPages": [229], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Animal groups and return procedures checked."}, "verificationStatus": "VERIFIED"
++      "sourceVerification": {"printedBookPages": [226,227], "scanPdfPages": [228,229], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "The livestock-theft setup begins at the foot of p226 and the figure groups/return procedure occupy p227; both anchors are required."}, "verificationStatus": "VERIFIED"
+@@
+     {
+       "entryId": "gate6.house8.p228.surroundings-and-thief-addendum",
+@@
+-      "bookPages": [228], "scanPdfPages": [230], "v57Anchors": ["kashf-v57-draft.html#p228"],
++      "bookPages": [227, 228, 229], "scanPdfPages": [229, 230, 231], "v57Anchors": ["kashf-v57-draft.html#p227", "kashf-v57-draft.html#p228", "kashf-v57-draft.html#p229"],
+@@
+-      "sourceVerification": {"printedBookPages": [228], "scanPdfPages": [230], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Directions and external-addendum boundary checked."}, "verificationStatus": "VERIFIED"
++      "sourceVerification": {"printedBookPages": [227,228,229], "scanPdfPages": [229,230,231], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "The surroundings rule begins at the foot of p227, continues through p228, and the external thief-description addendum completes at the head of p229 before the comprehensive theft rule. Intentional overlap with the p229 record is preserved."}, "verificationStatus": "VERIFIED"
+*** End Patch
