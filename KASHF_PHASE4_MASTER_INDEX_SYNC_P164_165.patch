@@ -1,0 +1,31 @@
+*** Begin Patch
+*** Update File: kashf-v57-ai-master-index.html
+@@
+     {
+       "entryId": "gate5.p164.figure-proximity-core",
+@@
+-      "sourceDiscrepancies": [
+-        "הסריקה המודפסת מסיימת את עמ׳ 164 בשני כללים: חזרת בר הלחי פעמיים או שלוש מורה על פחד; קרבת ממון יוצא אליו מורה על فتنة ותנועה בפתנה מגונה. v57 משמיט אותם מעמ׳ 164 ובפתיחת עמ׳ 165 מחבר מחדש את שמות הצורות והענפים באופן שאינו תואם למקור."
+-      ],
+-      "verificationStatus": "REVIEW_REQUIRED",
++      "sourceDiscrepancies": [],
++      "verificationStatus": "VERIFIED",
+       "sourceVerification": {
+@@
+-        "note": "Pass 2 visually re-read printed p164 / scan166 through the page end. The final two clauses are source-clear: בר הלחי/نقي الخد repeated two or three times = fear; adjacent ממון יוצא/القبض الخارج = فتنة and movement in a blameworthy fitna. Current v57 still omits/reassigns these clauses, so REVIEW_REQUIRED remains."
++        "note": "Pass 2 visually re-read printed p164 / scan166 through the page end. The final two clauses are source-clear: בר הלחי/نقي الخد repeated two or three times = fear; adjacent ממון יוצא/القبض الخارج = فتنة and movement in a blameworthy fitna. After the Phase 4 page-boundary repair, current v57 p164 contains both clauses in the correct page unit."
+       },
+-      "methodStatus": "SOURCE_PROXIMITY_RULES_WITH_V57_OMISSION",
++      "methodStatus": "SOURCE_RULE",
+       "operationalRole": "REFERENCE_ONLY",
+       "runtimeEligible": false
+     },
+@@
+-    {
+-      "id": "B10-P164-165-PROXIMITY-CONTINUITY",
+-      "entryId": "gate5.p164.figure-proximity-core",
+-      "page": 164,
+-      "status": "OPEN",
+-      "summary": "Legacy queue id retained for stability, but scope narrowed to printed p164: restore the omitted Naqi al-Khadd repetition = fear and adjacent Qabd Kharij = fitna/movement-in-blameworthy-fitna clauses in v57. The distinct p165 continuation now has its own queue item."
+-    },
+*** End Patch
