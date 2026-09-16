@@ -67,18 +67,57 @@ Existing seams p210→211, p213→214, p216→217, p220→221, p222→223, p224�
 
 Genuine source headings preserved in this range include printed p204 Chapter 7, printed p221 `نزهة العقول` addition heading, and printed p224 Chapter 8.
 
-## Structural QA after the p228 checkpoint
+### Printed pp229–252
 
-The working artifact still contains all 256 page anchors `p21`–`p276`, with no duplicate page IDs. Every numbered page retains its text container and folio marker.
+The boundary pass then repaired the dense theft, loan/inheritance, travel and absent-person block. The working artifact for this checkpoint is `kashf-v57-draft-phase4-boundary-batch06.html`.
 
-This structural result does **not** by itself certify semantic correctness; it certifies that the page-boundary repairs have not broken the page skeleton.
+Important results include:
 
-## Open boundary work
+- the comprehensive theft rule is preserved as a true p229→p230 cross-page unit;
+- the thief-description sequence is restored to the printed p231–234 distribution instead of drifting one page forward;
+- the loan/inheritance material and the opening of Chapter 9 are restored to the printed p235 seam;
+- the travel and absent-person sequences are redistributed across printed pp236–252 rather than being retrieved from later HTML anchors;
+- printed p246 remains `فهو مكتوب`; the later p251 repetition `فهو منكوب` is not used to normalize p246 by analogy.
 
-Continue source-first from printed p229 through p276. Known seams/issues that must be preserved explicitly during this continuation include:
+All pages p229–252 changed in the boundary working copy because the prior drift was cumulative across the block.
 
-- printed p229→p230 comprehensive theft rule crosses the page boundary; the dedicated p230 knowledge unit remains an intentional overlapping retrieval unit;
-- printed p246 has `فهو مكتوب`, while the later p251 repetition has `فهو منكوب`; do not repair p246 from p251 by analogy;
-- the final printed p276 text includes `وعدمه` and explicit `انتهى الكتاب`.
+### Printed pp253–276 — CLOSED
 
-After p276 is closed, re-audit Master Index `bookPages` + `v57Anchors` against the corrected page distribution before ordinary `v57CorrectionQueue` work resumes.
+The final source-page pass was completed against rendered scans/PDF pages 255–278 and the scan's embedded text layer as helper evidence. The authoritative visual pages were checked before applying the repairs. The resulting working artifact is `kashf-v57-draft-phase4-boundary-batch07.html`.
+
+Source-clear seam repairs:
+
+- **p255→p256:** p255 stops where the printed promise rule stops; the ninth/third/tenth continuation now precedes Chapter 10 on p256, so the chapter heading no longer hides previous-rule content.
+- **p256→p257:** the printed office-seeking/duration rule is restored; the mutable-form dismissal breaks at the printed page edge and p257 begins with its continuation “quickly.”
+- **p258→p259:** p258 ends after “if the fourth figure rises—”; p259 begins “incoming — he is in office.”
+- **p260→p261:** restored the p261 opening continuation `واستمال الرعية إليه` before the H3 branch.
+- **p261→p262:** restored the justice clause across the actual page break; p262 begins with the continuation about justice, rejection of oppression/falsehood, and support for the righteous.
+- **p262→p263:** `تسلب دولته` is again a true cross-page sentence. Chapter 11 follows only after the continuation and `رجع إلى الكتاب`.
+- **p263→p264:** p263 ends at `حرامية`; p264 begins `لصوص، قطاع الطريق` — thieves are no longer collapsed with the next-page robbers/highwaymen phrase.
+- **p267→p268:** the high-livelihood figure set was moved from p267 to its printed location at the start of p268.
+- **p270→p271:** `وإن كان نحسا خارجا، تركها أصلح` is restored to the start of p271.
+- **p272→p273:** the dangling printed `وإن` / H5-Ankis continuation is explicitly preserved.
+- **p273→p274:** prisoner clauses that had leaked into p274 were restored to p273. This also source-closes the printed polarity here: benefic incoming = long stay; malefic outgoing + abundant Humra = bloodshed; malefic incoming = illness/death. p274 now starts with the H7/H8 fear continuation.
+- **p274→p275:** the Nusra Dakhila/Nusra Kharija fine-and-release sentence is split at the real page edge; p275 begins with its printed continuation and `والله أعلم`.
+- **p275→p276:** the final continuation into p276 is preserved.
+- **p276:** the final source line is restored as `التكرار يعلم سبب خروجه وعدمه، انتهى الكتاب`. In the Hebrew working copy `وعدمه` is treated as absence/non-exit, not “delay,” and the unsupported expanded ending was removed.
+
+The detailed final-range repair manifest is `KASHF_PHASE4_PAGE_BOUNDARY_P253_276.md`.
+
+## Structural QA after closing p276
+
+The boundary working artifact still contains exactly **256 unique numbered page anchors**, `p21` through `p276`, with no missing page IDs and no duplicates. Every numbered page retains its `article.text` container and folio marker.
+
+Boundary/source placement is now audited through the end of the printed book. This does **not** mean every terminology/content queue item is resolved: unresolved lexical readings, canonical figure naming, and other semantic corrections remain separate Phase 4 work.
+
+## Next mandatory step
+
+Before ordinary `v57CorrectionQueue` work resumes, re-audit the AI Master Index against the corrected page distribution:
+
+1. `bookPages` must describe the actual printed-source range;
+2. `v57Anchors` must point to every corrected HTML page needed to retrieve the complete rule;
+3. cross-page rules must retain all required anchors rather than being collapsed to a single page;
+4. headings that moved during the boundary repair must not leave stale topic/index anchors;
+5. source-overlap records such as p229→p230 must remain intentional and documented.
+
+Only after this synchronization is clean should normal Phase 4 content correction continue. Runtime/registry/routing/Golden-Test implementation remains out of scope until the source layer is closed.
