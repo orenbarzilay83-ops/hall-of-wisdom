@@ -20,7 +20,7 @@ Input artifact QA:
 
 The source-verified staged corrections already prepared on this branch were applied to an exact local copy of that artifact. All 21 targeted old strings matched exactly once before replacement.
 
-Corrected local artifact:
+Corrected local artifact after the initial text-correction batch:
 - filename: `kashf-v57-draft-phase4-batch1.html`
 - bytes: `4,649,358`
 - SHA-256: `a2a8bf35ee6270627045c3a39e2dfcecd2e23ed3da1639920d3acbb612e1b2e7`
@@ -157,23 +157,35 @@ Current v57 already contains Ataba Dakhila with Rabi al-Akhir, so that old block
 
 Status: **SOURCE VERIFIED / ONE LIVE MONTH PATCH APPLIED / STALE SUB-BLOCKER IDENTIFIED**.
 
-## Batch 5 checkpoint — printed pp111–115
+## Batch 5 checkpoint — printed pp111–115 — corrected after whole-index QA
 
-The p111 money table was rechecked against the printed scan before staging any change. The old queue wording that proposed changing H11/H12 alternates to 600/700 is not supported by the printed source currently under review. The supplied current v57 contains H11=760 and H12=770, matching the checked source reading used in this Phase 4 pass. No p111 patch was created.
+A later whole-index QA caught that the earlier Phase-4 note about p111 was wrong. The authoritative printed scan was re-rendered directly at printed p111 / PDF p113 and the page text layer was checked against the image.
 
-No additional live v57 correction item was established on pp112–115 in this checkpoint, so no speculative patch was added.
+The printed source is unambiguous:
 
-Status: **REVIEWED THROUGH p115 / NO NEW PATCH**.
+- H7 primary = 29 (`تسعة وعشرون`).
+- H11 primary = 66; alternate = **600** (`وفي نسخة: ستمائة`).
+- H12 primary = 79; alternate = **700** (`وفي نسخة: سبعمائة`).
+
+Therefore the original uploaded v57 values 760/770 are incorrect here, and the existing `B05-P111-MONEY-NUMBERS` queue instruction to restore 600/700 is valid. The distinct p106 canonical sequence where position 7 = 28 must remain untouched.
+
+The current corrected boundary working artifact (`kashf-v57-draft-phase4-boundary-batch03.html` onward, including batch07) already contains H11=600 and H12=700. A dedicated audit patch is now recorded as `KASHF_PHASE4_V57_CORRECTIONS_P111.patch` so this correction is explicit in the repository history rather than hidden inside boundary work.
+
+This section supersedes the earlier mistaken statement that 760/770 matched the printed scan.
+
+Status: **SOURCE RE-VERIFIED VISUALLY / 600+700 CONFIRMED / DEDICATED PATCH RECORDED / QUEUE MUST REMAIN OPEN UNTIL VERSIONED-ARTIFACT DIFF REVIEW**.
+
+No additional live v57 correction item was established on pp112–115 in this checkpoint, so no speculative correction was added there.
 
 ## Phase 4 status after exact-artifact application
 
 - exact user-supplied v57 artifact received and fingerprinted
-- source-order review completed through printed p115
-- 21 targeted replacements applied to an exact local copy
-- structural anchor QA passed
-- stale queue claims were not reintroduced
-- Master Index queue statuses are intentionally not yet mutated until the corrected artifact is versioned and the repository diff is reviewable
+- initial 21 source-verified targeted replacements applied to the exact local copy
+- later boundary-corrected working artifacts preserve 256/256 page anchors through p276
+- p111 600/700 correction is now separately documented and source-verified
+- stale or mistaken audit conclusions are corrected in the log rather than preserved as assumptions
+- Master Index queue statuses are intentionally not closed until the corrected artifact is versioned and the repository diff is reviewable
 
 ## Next in page order
 
-Continue from the next live `v57CorrectionQueue` item after p115. Before each correction, compare the exact supplied v57 wording to the printed scan and drop stale queue items rather than reintroducing old defects. Do not move to runtime / Registry / routing / Golden Tests yet.
+The page-boundary synchronization has now been staged through the book ending at p276. Run the whole-index traceability QA, preserve all live content blockers, and only then resume normal `v57CorrectionQueue` execution. Do not move to runtime / Registry / routing / Golden Tests yet.
