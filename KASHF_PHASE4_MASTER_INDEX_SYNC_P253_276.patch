@@ -1,0 +1,142 @@
+*** Begin Patch
+*** Update File: kashf-v57-ai-master-index.html
+@@
+     {
+       "entryId": "gate9.travel.p255.promise-fulfilment",
+       "entryType": "promise-rule-set",
+-      "bookPages": [255], "scanPdfPages": [257], "v57Anchors": ["kashf-v57-draft.html#p255"],
++      "bookPages": [255, 256], "scanPdfPages": [257, 258], "v57Anchors": ["kashf-v57-draft.html#p255", "kashf-v57-draft.html#p256"],
+@@
+-      "sourceVerification": {"printedBookPages": [255], "scanPdfPages": [257], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Promise branches including the white-figure delay clause were visually confirmed."}, "verificationStatus": "VERIFIED"
++      "sourceVerification": {"printedBookPages": [255,256], "scanPdfPages": [257,258], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Phase 4 boundary re-read: the Al-Multaqat promise test begins on p255 and its H9/H3/H10 fulfilment-versus-breach continuation is the first line of p256 before Gate 10 opens. Both anchors are required."}, "verificationStatus": "VERIFIED"
+@@
+     {
+       "entryId": "gate10.authority.p260-262.ruler-state-by-H10",
+       "entryType": "ruler-house-transit-profile",
+-      "bookPages": [260, 261, 262], "scanPdfPages": [262, 263, 264], "v57Anchors": ["kashf-v57-draft.html#p260", "kashf-v57-draft.html#p261", "kashf-v57-draft.html#p262"],
++      "bookPages": [260, 261, 262, 263], "scanPdfPages": [262, 263, 264, 265], "v57Anchors": ["kashf-v57-draft.html#p260", "kashf-v57-draft.html#p261", "kashf-v57-draft.html#p262", "kashf-v57-draft.html#p263"],
+@@
+-      "sourceVerification": {"printedBookPages": [260, 261, 262], "scanPdfPages": [262, 263, 264], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "H10 transit profile and external-opponent rule checked through the p262 closing line."}, "verificationStatus": "VERIFIED"
++      "sourceVerification": {"printedBookPages": [260,261,262,263], "scanPdfPages": [262,263,264,265], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Phase 4 boundary re-read: the external-opponent rule ends p262 mid-sentence and completes at the head of p263 with loss of kingship and the H11 public-support clause before Gate 11 opens."}, "verificationStatus": "VERIFIED"
+@@
+     {
+       "entryId": "gate11.friends.p263.friend-types-and-mutual-effect",
+@@
+-      "bookPages": [263],
+-      "scanPdfPages": [265],
+-      "v57Anchors": ["kashf-v57-draft.html#p263"],
++      "bookPages": [263, 264],
++      "scanPdfPages": [265, 266],
++      "v57Anchors": ["kashf-v57-draft.html#p263", "kashf-v57-draft.html#p264"],
+@@
+-        "printedBookPages": [263],
+-        "scanPdfPages": [265],
++        "printedBookPages": [263, 264],
++        "scanPdfPages": [265, 266],
+@@
+-        "note": "Pass 2 decision 85: critical printed token الجودلة on p263 / scan265 visually reconfirmed; identity conflict remains.",
++        "note": "Pass 2 and Phase 4 boundary re-read: critical printed token الجودلة is on p263 / scan265, while its thieves/bandits outcome continues at the head of p264. Identity conflict remains; both page anchors are required.",
+@@
+     {
+       "entryId": "gate11.friends.p265-266.clothing-state-and-return",
+       "entryType": "clothing-and-status-continuity-rule-set",
+-      "bookPages": [265, 266], "scanPdfPages": [267, 268], "v57Anchors": ["kashf-v57-draft.html#p265", "kashf-v57-draft.html#p266"],
++      "bookPages": [264, 265, 266], "scanPdfPages": [266, 267, 268], "v57Anchors": ["kashf-v57-draft.html#p264", "kashf-v57-draft.html#p265", "kashf-v57-draft.html#p266"],
+@@
+-      "sourceVerification": {"printedBookPages": [265, 266], "scanPdfPages": [267, 268], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "Color table, status branches, cross-reference and return rule checked."}, "verificationStatus": "VERIFIED"
++      "sourceVerification": {"printedBookPages": [264,265,266], "scanPdfPages": [266,267,268], "v57Checked": true, "printedScanChecked": true, "visualLineByLineChecked": true, "note": "The clothing rule begins with the H5/H11 instruction at the foot of p264, continues with the clothing/color and status rules on p265, and completes the status/return material on p266."}, "verificationStatus": "VERIFIED"
+@@
+     {
+       "entryId": "gate11.hope.p267.hope-possession-livelihood",
+@@
+-      "bookPages": [267],
+-      "scanPdfPages": [269],
+-      "v57Anchors": ["kashf-v57-draft.html#p267"],
++      "bookPages": [267, 268],
++      "scanPdfPages": [269, 270],
++      "v57Anchors": ["kashf-v57-draft.html#p267", "kashf-v57-draft.html#p268"],
+@@
+-        "printedBookPages": [267],
+-        "scanPdfPages": [269],
++        "printedBookPages": [267, 268],
++        "scanPdfPages": [269, 270],
+@@
+-        "note": "Pass 2 decision 86: printed p267 / scan269 confirms hope-house list H1/H2/H5/H13.",
++        "note": "Pass 2 and Phase 4 boundary re-read: printed p267 / scan269 confirms the hope-house list H1/H2/H5/H13, and the Nuzhat livelihood list begun at the foot of p267 completes at the head of p268. Both anchors are required.",
+@@
+     {
+       "entryId": "gate11.hope.p270.multaqat-hope-provision-request",
+@@
+-      "bookPages": [270],
+-      "scanPdfPages": [272],
+-      "v57Anchors": ["kashf-v57-draft.html#p270"],
++      "bookPages": [270, 271],
++      "scanPdfPages": [272, 273],
++      "v57Anchors": ["kashf-v57-draft.html#p270", "kashf-v57-draft.html#p271"],
+@@
+-        "printedBookPages": [270],
+-        "scanPdfPages": [272],
++        "printedBookPages": [270, 271],
++        "scanPdfPages": [272, 273],
+@@
+-        "note": "Pass 2 decision 88: printed p270 / scan272 reconfirms الأول = the first, not the singular/one.",
++        "note": "Pass 2 and Phase 4 boundary re-read: printed p270 / scan272 reconfirms الأول = the first, not the singular/one. The final malefic-outgoing request branch completes on the first line of p271 before Gate 12 opens.",
+@@
+     {
+       "entryId": "gate12.prisoners.p273-274.external-release-duration-and-fear",
+@@
+       "sourceDiscrepancies": [
+-        "המקור בעמ׳ 273: H16/H12 מיטיבים נכנסים=מאסר ממושך; H16/H12 מזיקים יוצאים+עדי מזיקים+ריבוי אדום=שפיכות דמים. v57 מזיז את הקטבים בין הענפים."
++        "המקור בעמ׳ 273: H16/H12 מיטיבים נכנסים=מאסר ממושך; H16/H12 מזיקים יוצאים+עדי מזיקים+ריבוי אדום=שפיכות דמים. ה־Phase-4 corrected working copy כבר מציג קוטביות זו כראוי; סגירת פריט התיקון מושהית עד versioned-artifact diff."
+       ],
+@@
+-        "note": "Pass 2 decision 89: printed p273 / scan275 critical polarity words visually reconfirmed; v57 conflict remains.",
++        "note": "Pass 2 decision 89 visually reconfirmed the printed polarity. Phase 4 working v57 now matches the source on benefic-incoming long imprisonment and malefic-outgoing bloodshed risk; artifact-level closure is deferred until the corrected HTML is versioned and diff-reviewed.",
+@@
+     {
+       "entryId": "gate12.prisoners.p275.multaqat-release-and-outcome",
+@@
+-      "bookPages": [275],
+-      "scanPdfPages": [277],
+-      "v57Anchors": ["kashf-v57-draft.html#p275"],
++      "bookPages": [275, 276],
++      "scanPdfPages": [277, 278],
++      "v57Anchors": ["kashf-v57-draft.html#p275", "kashf-v57-draft.html#p276"],
+@@
+-        "printedBookPages": [275],
+-        "scanPdfPages": [277],
++        "printedBookPages": [275, 276],
++        "scanPdfPages": [277, 278],
+@@
+-        "note": "Pass 2 decision 90: p275 / scan277 rechecked. H5 is already present in current v57, so that stale blocker is removed; independent H11 alternative remains wrong.",
++        "note": "Pass 2 and Phase 4 boundary re-read: p275 / scan277 contains the Al-Multaqat rule and the final derived outcome; the phrase ודע כי / واعلم أن at the foot of p275 continues into the repetition/exit explanation on p276. H11 remains a live content discrepancy.",
+@@
+     {
+       "entryId": "gate12.book-end.p276.repetition-and-explicit-ending",
+@@
+       "sourceDiscrepancies": [
+-        "הדפוס חותם: التكرار يعلم سبب خروجه وعدمه، انتهى الكتاب — סיבת יציאתו ואי־יציאתו/העדרה, ואז ״הסתיים הספר״. v57 ממיר وعدمه לעיכוב ומרחיב את שורת הסיום."
++        "הדפוס חותם: التكرار يعلم سبب خروجه وعدمه، انتهى الكتاب — סיבת יציאתו ואי־יציאתו/העדרה, ואז ״הסתיים הספר״. ה־Phase-4 corrected working copy כעת משמר ״אי־יציאתו״ ו״תם הספר״; סגירת פריט התיקון מושהית עד versioned-artifact diff."
+       ],
+@@
+-        "note": "Pass 2 decision 91: printed p276 / scan278 checked through final ornament; exact closing phrase remains a live v57 wording mismatch.",
++        "note": "Pass 2 decision 91 checked printed p276 / scan278 through the final ornament. Phase 4 working v57 now renders the non-exit/absence sense and the explicit book ending source-faithfully; artifact-level closure is deferred until versioned diff review.",
+@@
+-    {"id":"B25-P273-PRISONER-POLARITY-SHIFT","entryId":"gate12.prisoners.p273-274.external-release-duration-and-fear","page":273,"status":"OPEN","summary":"Restore the printed polarity exactly: H16/H12 benefic incoming = long imprisonment; H16/H12 malefic outgoing + malefic witnesses + much Humra = bloodshed. v57 currently assigns long duration to malefic outgoing and bloodshed to malefic incoming."},
++    {"id":"B25-P273-PRISONER-POLARITY-SHIFT","entryId":"gate12.prisoners.p273-274.external-release-duration-and-fear","page":273,"status":"OPEN","summary":"Printed polarity is H16/H12 benefic incoming = long imprisonment; H16/H12 malefic outgoing + malefic witnesses + much Humra = bloodshed. The Phase-4 corrected working copy now matches this; keep OPEN until the corrected HTML artifact is versioned and diff-reviewed."},
+@@
+-    {"id":"B25-P276-BOOK-END-WORDING","entryId":"gate12.book-end.p276.repetition-and-explicit-ending","page":276,"status":"OPEN","summary":"Render سبب خروجه وعدمه، انتهى الكتاب source-faithfully: preserve exit versus non-exit/absence, and do not present 'בעזרת האל' as part of the printed closing sentence."},
++    {"id":"B25-P276-BOOK-END-WORDING","entryId":"gate12.book-end.p276.repetition-and-explicit-ending","page":276,"status":"OPEN","summary":"Render سبب خروجه وعدمه، انتهى الكتاب source-faithfully: preserve exit versus non-exit/absence and the explicit ending. The Phase-4 corrected working copy now does so; keep OPEN until the corrected HTML artifact is versioned and diff-reviewed."},
+@@
+     "gate9Travel": {
+-      "pagesIndexed": [235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255],
+-      "indexedThroughPage": 255,
++      "pagesIndexed": [235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256],
++      "indexedThroughPage": 256,
+@@
+-      "chapterClosedAtPage": 255,
+-      "nextFullSourcePage": 256
++      "chapterClosedAtPage": 256,
++      "nextFullSourcePage": 257
+     },
+*** End Patch
