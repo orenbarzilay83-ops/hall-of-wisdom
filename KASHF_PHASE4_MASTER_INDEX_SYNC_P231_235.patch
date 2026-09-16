@@ -1,0 +1,120 @@
+*** Begin Patch
+*** Update File: kashf-v57-ai-master-index.html
+@@
+     {
+       "entryId": "gate8.theft.p232-234.thief-description",
+       "entryType": "thief-description-figure-table",
+       "bookPages": [
+-        232,
+-        233,
+-        234
++        231,
++        232,
++        233
+       ],
+       "scanPdfPages": [
+-        234,
+-        235,
+-        236
++        233,
++        234,
++        235
+       ],
+       "v57Anchors": [
++        "kashf-v57-draft.html#p231",
+         "kashf-v57-draft.html#p232",
+-        "kashf-v57-draft.html#p233",
+-        "kashf-v57-draft.html#p234"
++        "kashf-v57-draft.html#p233"
+       ],
+@@
+       "sourceDiscrepancies": [
+-        "המיפוי הקנוני ממון יוצא=قبض خارج וממון נכנס=قبض داخل תקין ואינו איבוד זהות. הפער החי הוא אי־השלמת התאמה אחד־לאחד של כל חלופות התיאור והמקצועות המודפסים בעמ׳ 232–234 מול v57."
++        "המיפוי הקנוני ממון יוצא=قبض خارج וממון נכנס=قبض داخل תקין ואינו איבוד זהות. הפער החי הוא אי־השלמת התאמה אחד־לאחד של כל חלופות התיאור והמקצועות המודפסים בעמ׳ 231–233 מול v57."
+       ],
+       "sourceVerification": {
+         "printedBookPages": [
+-          232,
+-          233,
+-          234
++          231,
++          232,
++          233
+         ],
+         "scanPdfPages": [
+-          234,
+-          235,
+-          236
++          233,
++          234,
++          235
+         ],
+@@
+-        "note": "Pass 2 decision 76: Qabd naming blocker removed as false under canonical mapping; full printed variant/profession reconciliation remains open.",
++        "note": "Pass 2 decision 76 plus Phase 4 boundary re-read: the thief-description unit begins mid printed p231 after the fugitive/lost-item rule, continues through p232, and ends on p233 before the loan rule. Qabd naming blocker remains false under canonical mapping; full printed variant/profession reconciliation remains open.",
+         "pass2Checked": true
+       },
+@@
+     {
+       "entryId": "gate8.loan-inheritance.p235-236.rules",
+       "entryType": "loan-inheritance-fear-rule-set",
+       "bookPages": [
+-        235,
+-        236
++        233,
++        234,
++        235
+       ],
+       "scanPdfPages": [
+-        237,
+-        238
++        235,
++        236,
++        237
+       ],
+       "v57Anchors": [
++        "kashf-v57-draft.html#p233",
++        "kashf-v57-draft.html#p234",
+         "kashf-v57-draft.html#p235",
+-        "kashf-v57-draft.html#p236"
+       ],
+@@
+       "sourceDiscrepancies": [
+-        "בעמ׳ 235 המקור מתחיל H1+H7, אחר כך H2+H8, ואז צורה שלישית; v57 משמיט את H1+H7.",
++        "בעמ׳ 233 המקור מתחיל H1+H7, אחר כך H2+H8, ואז צורה שלישית; v57 משמיט את H1+H7.",
+         "בדין המוות המקור בודק H1,H8,H6,H4 בלבד; v57 מוסיף H2. למוות בארץ זרה המקור מונה H15/H9/H3; v57 משמיט H9."
+       ],
+       "sourceVerification": {
+         "printedBookPages": [
+-          235,
+-          236
++          233,
++          234,
++          235
+         ],
+         "scanPdfPages": [
+-          237,
+-          238
++          235,
++          236,
++          237
+         ],
+@@
+-        "note": "Pass 2 decision 77: printed scan confirms H1+H7 loan extraction, death-house list H1/H8/H6/H4, and foreign-death alternatives H15/H9/H3.",
++        "note": "Pass 2 decision 77 plus Phase 4 boundary re-read: the loan rule begins at the foot of printed p233, continues through p234, and the inheritance/death/worry unit finishes on p235 before Gate 9 begins. The scan confirms H1+H7 loan extraction, death-house list H1/H8/H6/H4, and foreign-death alternatives H15/H9/H3.",
+         "pass2Checked": true
+       },
+@@
+       "id": "B20-P234-QABD-FIGURE-NAMES",
+       "entryId": "gate8.theft.p232-234.thief-description",
+-      "page": 234,
++      "page": 233,
+       "status": "OPEN",
+-      "summary": "Canonical Qabd identities are correct: قبض خارج=ממון יוצא and قبض داخل=ממון נכנס. Reconcile remaining p232–234 description/profession variants one-to-one; do not reopen canonical naming."
++      "summary": "Canonical Qabd identities are correct: قبض خارج=ממון יוצא and قبض داخل=ממון נכנס. Reconcile remaining p231–233 description/profession variants one-to-one; do not reopen canonical naming."
+     },
+-    {"id":"B20-P235-LOAN-HOUSE-PAIR","entryId":"gate8.loan-inheritance.p235-236.rules","page":235,"status":"OPEN","summary":"Restore H1+H7 as the first loan extraction before H2+H8 and the derived third figure."},
+-    {"id":"B20-P236-DEATH-HOUSES","entryId":"gate8.loan-inheritance.p235-236.rules","page":236,"status":"OPEN","summary":"Remove the extra H2 from the death-house list and restore the printed H9 branch for death away from home."},
++    {"id":"B20-P235-LOAN-HOUSE-PAIR","entryId":"gate8.loan-inheritance.p235-236.rules","page":233,"status":"OPEN","summary":"Restore H1+H7 as the first loan extraction before H2+H8 and the derived third figure."},
++    {"id":"B20-P236-DEATH-HOUSES","entryId":"gate8.loan-inheritance.p235-236.rules","page":235,"status":"OPEN","summary":"Remove the extra H2 from the death-house list and restore the printed H9 branch for death away from home."},
+*** End Patch
