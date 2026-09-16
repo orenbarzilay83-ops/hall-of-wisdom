@@ -1,0 +1,77 @@
+*** Begin Patch
+*** Update File: kashf-v57-ai-master-index.html
+@@
+     {
+       "entryId": "shibutz.p147-149.order12-like-abduh",
+       "entryType": "placement-order",
+       "bookPages": [
+         147,
+         148
+       ],
+       "scanPdfPages": [
+         149,
+         150
+       ],
+       "v57Anchors": [
+-        "kashf-v57-draft.html#p148"
++        "kashf-v57-draft.html#p147",
++        "kashf-v57-draft.html#p148"
+       ],
+@@
+-        "note": "Printed order 12 begins on p147 and continues on p148. The current v57 artifact places the order-12 heading/content on v57 p148; the legacy entryId is retained for stability, but source pages and v57 anchor are stored separately."
++        "note": "Printed order 12 begins on p147 and continues on p148. After the Phase 4 page-boundary repair, v57 also spans anchors p147-p148. The legacy entryId is retained for stability."
+       },
+@@
+     {
+       "entryId": "shibutz.p149.order13-damaged-name",
+       "entryType": "placement-order",
+       "bookPages": [
+         148,
+         149
+       ],
+       "scanPdfPages": [
+         150,
+         151
+       ],
+       "v57Anchors": [
+-        "kashf-v57-draft.html#p149"
++        "kashf-v57-draft.html#p148",
++        "kashf-v57-draft.html#p149"
+       ],
+@@
+       "sourceDiscrepancies": [
+         "כותרת הסדר חסרה במקור המודפס; אין לשחזר לה שם מן ההקשר או משיטה חיצונית.",
+-        "v57 מפרש את הערת המהדיר بياض في الأصل כ„שיבוץ לבן”. זו קריאה לא נתמכת: ההערה מציינת מקום ריק במקור, לא שם צורת גורל.",
+-        "גבול העמוד ב-v57 אינו תואם כאן למקור המודפס: סדר 13 מתחיל כבר בעמ׳ ספר 148 וממשיך בעמ׳ 149, בעוד v57 מציב את פתיחת הסדר בעוגן p149."
++        "v57 מפרש את הערת המהדיר بياض في الأصل כ„שיבוץ לבן”. זו קריאה לא נתמכת: ההערה מציינת מקום ריק במקור, לא שם צורת גורל."
+       ],
+@@
+-        "note": "Pass 2 visually re-read printed pp148-149 / scans150-151. The order-13 heading is physically blank after the colon and the footnote reads بياض في الأصل. This is an editorial statement that the original has a blank, not evidence for naming the order البياض/לבן. Numerical values and the Bzdj/Yzdj calculation reference are clear; v57 title and pagination remain correction items."
++        "note": "Pass 2 visually re-read printed pp148-149 / scans150-151. The order-13 heading is physically blank after the colon and the footnote reads بياض في الأصل. This is an editorial statement that the original has a blank, not evidence for naming the order البياض/לבן. Numerical values and the Bzdj/Yzdj calculation reference are clear. Phase 4 repaired the v57 page boundary to p148-p149; the unsupported v57 title remains a separate content-correction item."
+       },
+@@
+     {
+       "entryId": "shibutz.p149-150.order14-aiqa-al-tariq",
+       "entryType": "placement-order",
+       "bookPages": [
+         149,
+         150
+       ],
+       "scanPdfPages": [
+         151,
+         152
+       ],
+       "v57Anchors": [
+-        "kashf-v57-draft.html#p150"
++        "kashf-v57-draft.html#p149",
++        "kashf-v57-draft.html#p150"
+       ],
+@@
+-        "note": "Printed order 14 starts on p149 after the order-13 table and continues on p150. The current v57 artifact places the order-14 heading/content on v57 p150; source-page coverage remains [149,150] while the v57 anchor is p150."
++        "note": "Printed order 14 starts on p149 after the order-13 table and continues on p150. After the Phase 4 page-boundary repair, v57 also spans anchors p149-p150."
+       },
+@@
+-    {"id":"AUDIT-P147-148-ORDER12-PAGINATION","entryId":"shibutz.p147-149.order12-like-abduh","page":"147-148","status":"OPEN","summary":"Traceability/page-boundary repair for v57: printed order 12 starts on p147 and continues on p148, while the current v57 artifact places the order-12 heading/content under p148. Preserve source pages independently from v57 anchor pagination."},
+-    {"id":"AUDIT-P148-149-ORDER13-PAGINATION","entryId":"shibutz.p149.order13-damaged-name","page":"148-149","status":"OPEN","summary":"Printed order 13 begins on p148 immediately after order 12 and continues on p149. Its heading is blank and the footnote بياض في الأصل means the original contains a blank; current v57 incorrectly turns this editorial note into the title ‘שיבוץ לבן’ and also shifts the opening to p149. Remove the unsupported title and repair page traceability without inventing a replacement name."},
+-    {"id":"AUDIT-P149-150-ORDER14-PAGINATION","entryId":"shibutz.p149-150.order14-aiqa-al-tariq","page":"149-150","status":"OPEN","summary":"Printed order 14 begins on p149 and continues on p150; current v57 places its heading/content at p150. Preserve the printed source range and the distinct v57 anchor."},
+*** End Patch
