@@ -1,0 +1,13 @@
+*** Begin Patch
+*** Update File: kashf-v57-draft.html
+@@
+-<tr><td>11</td><td>שישים ושישה</td><td>שבע מאות ושישים</td></tr>
+-<tr><td>12</td><td>שבעים ותשעה</td><td>שבע מאות ושבעים</td></tr>
++<tr><td>11</td><td>שישים ושישה</td><td>שש מאות</td></tr>
++<tr><td>12</td><td>שבעים ותשעה</td><td>שבע מאות</td></tr>
+*** End Patch
+
+Source verification:
+- authoritative printed p111 / scan PDF p113: H11 primary 66, alternate 600 (`ستمائة`); H12 primary 79, alternate 700 (`سبعمائة`).
+- H7 remains 29.
+- Do not alter the distinct p106 canonical sequence where position 7 = 28.
