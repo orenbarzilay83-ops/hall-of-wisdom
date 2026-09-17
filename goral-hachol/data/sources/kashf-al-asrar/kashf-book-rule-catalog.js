@@ -100,7 +100,7 @@
  * @property {KashfRuleRuntimeEvidence} runtimeEvidence
  */
 
-export const KASHF_BOOK_RULE_CATALOG_VERSION = 'kashf-book-rule-catalog-v3';
+export const KASHF_BOOK_RULE_CATALOG_VERSION = 'kashf-book-rule-catalog-v4';
 
 /** @type {KashfBookRule[]} */
 export const KASHF_BOOK_RULE_CATALOG = [
@@ -353,9 +353,9 @@ export const KASHF_BOOK_RULE_CATALOG = [
     appliesToTopics: ['spiritualDiagnostics'],
     appliesToQuestionTypes: ['spiritual'],
     triggerConditions: [],
-    requiredHouses: [9, 13, 14, 15, 16],
+    requiredHouses: [5, 9, 13, 14, 15, 16],
     requiredFigures: null,
-    calculationType: 'partner-pairs (13↔1,14↔7,15↔10,16↔4) + testimony map: 9→[1,5,7], 14→[2,6,10], 15→[3,6,7,11], 16→[4,8,12]',
+    calculationType: 'partner-pairs (13↔1,14↔7,15↔10,16↔4) + testimony map: 9→[1,5,7], 14→[2,6,10], 5→[3,7,11], 16→[4,8,12]',
     verdictEffect: 'undetermined',
     precedence: null,
     conflictHandling: null,

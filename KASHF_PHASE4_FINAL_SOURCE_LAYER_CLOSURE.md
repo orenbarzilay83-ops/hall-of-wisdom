@@ -14,7 +14,7 @@
 - Pre-erratum canonical SHA-256: `1a78da8622c68fae51dbc987ed00adc099398fded620e02e3a04fd22c9a6d562`.
 - Final canonical SHA-256 after the isolated p99 duplicate-row correction: `b59f6e937992f5bd11e1451c255a4ef738c4f320b2b3e847bfb97f99f1db4785`.
 - Master Knowledge Index: `kashf-v57-ai-master-index.html`.
-- Current Master Index SHA-256 after DS-03 and the p99 erratum: `cbe0da6a3ab735e86978c390b156467b073fd58eda241174749babad16d4b438`.
+- Current Master Index SHA-256 after DS-04: `8ed1b2d2af010b44b75eac6ca843b39ecb8c8f0dc0003ff8de5af1cbad1bad67`.
 
 The post-Batch-30 canonical change normalized 50 remaining erroneous `נקי הלחי` labels to the mandatory Hebrew figure name `בר הלחי`. Final counts are zero obsolete labels and 74 canonical labels.
 
@@ -25,7 +25,7 @@ The post-Batch-30 canonical change normalized 50 remaining erroneous `נקי ה�
 - `runtimeEligible: true`: zero.
 - `v57CorrectionQueue`: 92 entries; all 92 `RESOLVED` after the isolated p99 duplicate-row erratum.
 - `sourceConflictQueue`: 48 entries, all `OPEN`; no contradiction was silently reconciled.
-- `downstreamCorrectionQueue`: 46 entries total; DS-01 through DS-03 resolved 12 entries, leaving 34 deferred.
+- `downstreamCorrectionQueue`: 46 entries total; DS-01 through DS-04 resolved 13 entries, leaving 33 deferred.
 
 Five obsolete pagination/traceability items were removed by the applied synchronization patches:
 
