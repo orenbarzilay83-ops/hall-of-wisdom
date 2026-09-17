@@ -70,9 +70,9 @@ export const HAWI_FIGURE_NAMES = [
     zodiacHebrew: 'מאזניים',
     ichchhaHebrew: 'מחזק',
     seekerStatus: 'טאלב',
-    // Book page 65-66: seeker #3 in app custom order
-    seekerSoughtArabic: 'طالب النذر ضعيف، والفتن موجودة، حتى بالوهم، ناظر، ناطق',
-    seekerSoughtHebrew: 'מחפש הנדר חלש, הפיתויים קיימים גם בדמיון, צופה, מדבר',
+    // Book page 64: seeker row 7
+    seekerSoughtArabic: 'طالب مفرط، معتدي، موجود، منفعل، ناظر، متحرك',
+    seekerSoughtHebrew: 'מבקשת מופרזת וחורגת מן המידה; מצויה, נפעלת, צופה ומתנועעת.',
     sourceStatus: 'explicit-in-source',
   },
   {
@@ -116,9 +116,9 @@ export const HAWI_FIGURE_NAMES = [
     zodiacHebrew: 'טלה',
     ichchhaHebrew: 'מחזק',
     seekerStatus: 'טאלב',
-    // Book page 65-66: seeker #7 in app custom order
-    seekerSoughtArabic: 'طالب مفرط، معتدي، موجود، منفعل، ناظر، متحرك',
-    seekerSoughtHebrew: 'מחפש מוגזם, פולשני, קיים, מגיב, צופה, נע',
+    // Book page 64: seeker row 3. The printed source reads الشر, not OCR النذر.
+    seekerSoughtArabic: 'طالب الشر ضعيف، والفتن موجودة، حتى بالوهم، ناظر، ناطق',
+    seekerSoughtHebrew: 'מבקשת את הרע; חלשה; והפיתויים מצויים, אף בדמיון; צופה ומדברת.',
     sourceStatus: 'explicit-in-source',
   },
   {
@@ -209,9 +209,9 @@ export const HAWI_FIGURE_NAMES = [
     zodiacHebrew: 'שור',
     ichchhaHebrew: 'מחזק',
     seekerStatus: 'מטלוב',
-    // Book page 65-66: sought #7 in app custom order
-    seekerSoughtArabic: 'مطلوب، مخيل، متراخي، بطيء، متصل بعد حين',
-    seekerSoughtHebrew: 'מבוקש, מדומיין, איטי, רפוי, מתחבר אחרי זמן',
+    // Book page 65: sought row 6
+    seekerSoughtArabic: 'مطلوب، بالرفق معدم، أمن، ناظر، متحرك',
+    seekerSoughtHebrew: 'מבוקשת; מבוקשת ברוך/בעדינות; נעדרת; בטוחה; צופה ומתנועעת.',
     sourceStatus: 'explicit-in-source',
   },
   {
@@ -232,9 +232,9 @@ export const HAWI_FIGURE_NAMES = [
     zodiacHebrew: 'תאומים',
     ichchhaHebrew: 'מחזק',
     seekerStatus: 'מטלוב',
-    // Book page 65-66: sought #8 in app custom order
-    seekerSoughtArabic: 'مطلوب جداً، معدوم حد، مقصر، ناطق بذاته',
-    seekerSoughtHebrew: 'מבוקש מאוד, נעדר לגמרי, מקצר, מדבר מעצמו',
+    // Book page 65: sought row 4
+    seekerSoughtArabic: 'مطلوب، موجود، ومطلوبه معدوم، مقصود',
+    seekerSoughtHebrew: 'מבוקשת; מצויה, אך המבוקש שלה נעדר; מכוונת.',
     sourceStatus: 'explicit-in-source',
   },
   {
@@ -255,9 +255,9 @@ export const HAWI_FIGURE_NAMES = [
     zodiacHebrew: 'אריה',
     ichchhaHebrew: 'מחזק',
     seekerStatus: 'מטלוב',
-    // Book page 65-66: sought #1 in app custom order
-    seekerSoughtArabic: 'مطلوب، معدوم، سالم، ناطق الاختبار، باكي، متحرك',
-    seekerSoughtHebrew: 'מבוקש, נעדר, שלם, מדבר ניסיון, בוכה, נע',
+    // Book page 65: sought row 5
+    seekerSoughtArabic: 'مطلوب، ملحوق بالشرف، ناطق',
+    seekerSoughtHebrew: 'מבוקשת; מחוברת אל הכבוד; מדברת.',
     sourceStatus: 'explicit-in-source',
   },
   {
@@ -273,15 +273,16 @@ export const HAWI_FIGURE_NAMES = [
     genderHebrew: 'זכר',
     timeHebrew: 'יומי',
     weightHebrew: 'קל',
-    // Book page 64: "منسوبة لنجاسة الجن والإنس" — impure from both jinn and humans
-    purityHebrew: 'טמא-שניהם',
+    // Book page 63 lists אדום among the pure figures and also attributes it
+    // to impurity from both jinn and humans. Preserve the source overlap.
+    purityHebrew: 'טהור וגם טמא-שניהם',
     zodiacPosition: 'שוקע',
     zodiacHebrew: 'עקרב',
     ichchhaHebrew: 'מחזק',
     seekerStatus: 'מטלוב',
-    // Book page 65-66: sought #4 in app custom order
-    seekerSoughtArabic: 'مطلوب، موجود، ومطلوبه معدوم، مقصود',
-    seekerSoughtHebrew: 'מבוקש, קיים, אך מבוקשו נעדר, מכוון',
+    // Book page 65: sought row 8
+    seekerSoughtArabic: 'مطلوب جدا، معدوم حد، مقصر، ناطق بذاته',
+    seekerSoughtHebrew: 'מבוקשת מאוד; נעדר גבול; מקצר/חסר; מדברת מצד עצמה.',
     sourceStatus: 'explicit-in-source',
   },
   {
@@ -302,9 +303,9 @@ export const HAWI_FIGURE_NAMES = [
     zodiacHebrew: 'דגים',
     ichchhaHebrew: 'מחזק',
     seekerStatus: 'מטלוב',
-    // Book page 65-66: sought #6 in app custom order
-    seekerSoughtArabic: 'مطلوب، بالرفق معدم، أمن، ناظر، متحرك',
-    seekerSoughtHebrew: 'מבוקש, נעדר בעדינות, בטוח, צופה, נע',
+    // Book page 65: sought row 3
+    seekerSoughtArabic: 'مطلوب، متكاثر، معدوم، متراخي، عدم كله',
+    seekerSoughtHebrew: 'מבוקשת; מתרבה; נעדרת; מתרחקת; העדר כולה.',
     sourceStatus: 'explicit-in-source',
   },
   {
@@ -325,9 +326,9 @@ export const HAWI_FIGURE_NAMES = [
     zodiacHebrew: 'סרטן',
     ichchhaHebrew: 'מזין',
     seekerStatus: 'מטלוב',
-    // Book page 65-66: sought #5 in app custom order
-    seekerSoughtArabic: 'مطلوب، ملحوق بالشرف، ناطق',
-    seekerSoughtHebrew: 'מבוקש, נלווה לכבוד, מדבר',
+    // Book page 65: sought row 7
+    seekerSoughtArabic: 'مطلوب، مخيل، متراخي، بطيء، متصل بعد حين',
+    seekerSoughtHebrew: 'מבוקשת; מדומה ומתאחרת; איטית; מתחברת לאחר זמן.',
     sourceStatus: 'explicit-in-source',
   },
   {
@@ -349,9 +350,9 @@ export const HAWI_FIGURE_NAMES = [
     zodiacHebrew: 'דלי',
     ichchhaHebrew: 'מחזק',
     seekerStatus: 'מטלוב',
-    // Book page 65-66: sought #3 in app custom order
-    seekerSoughtArabic: 'مطلوب متكاثر، معدوم، متراخي، عدم كله',
-    seekerSoughtHebrew: 'מבוקש שוב ושוב, נעדר, רפוי, העדר מוחלט',
+    // Book page 65: sought row 1
+    seekerSoughtArabic: 'مطلوب، معدوم، سالم، ناطق الاختبار، باكي، متحرك',
+    seekerSoughtHebrew: 'מבוקשת; נעדרת; שלמה; מדברת בבחינה; בוכה ומתנועעת.',
     sourceStatus: 'explicit-in-source',
   },
   {
@@ -372,9 +373,9 @@ export const HAWI_FIGURE_NAMES = [
     zodiacHebrew: 'בתולה',
     ichchhaHebrew: 'מחזק',
     seekerStatus: 'מטלוב',
-    // Book page 65-66: sought #2 in app custom order
+    // Book page 65: sought row 2
     seekerSoughtArabic: 'مطلوب، منتظر، معدوم، منحضر، باكي، صامت',
-    seekerSoughtHebrew: 'מבוקש, ממתין, נעדר, נוכח, בוכה, שותק',
+    seekerSoughtHebrew: 'מבוקשת; מצופה; נעדרת וממתינה; בוכה ושותקת.',
     sourceStatus: 'explicit-in-source',
   },
 ];
