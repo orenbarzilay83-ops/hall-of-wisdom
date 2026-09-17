@@ -49,9 +49,9 @@
 
 | ID | Evidence | Affected layer | Status | Required action |
 |---|---|---|---|---|
-| `DS03-P99-DUPLICATE-NUSRA-DAKHILA` | Printed p99 / PDF p101 proceeds from חיבור to כבוד יוצא; canonical p99 repeats כבוד נכנס | Canonical v57 HTML | Open | Remove only the duplicate paragraph in a separate source-layer erratum and rerun canonical SHA/structure QA |
+| `DS03-P99-DUPLICATE-NUSRA-DAKHILA` | Printed p99 / PDF p101 proceeds from חיבור to כבוד יוצא; canonical p99 repeated כבוד נכנס | Canonical v57 HTML | Resolved | Removed only the duplicate p99 paragraph; retained the verified p98 row and reran canonical structure QA |
 
-The unresolved HTML duplication was not copied into downstream data. It keeps `figures.p97-99.dignities-source-table` at `REVIEW_REQUIRED`; the two fully reconciled p100–101 records are now `VERIFIED`.
+The HTML duplication was never copied into downstream data. After the isolated source erratum, `figures.p97-99.dignities-source-table` and the two reconciled p100–101 records are all `VERIFIED`.
 
 ## Traceability and acceptance criteria
 
@@ -85,4 +85,4 @@ Focused Golden Test: `_test_kashf_downstream_ds03_p97_101.mjs`.
 - Cumulative downstream resolutions: 12/46.
 - Remaining downstream items: 34.
 - `runtimeEligible:true`: unchanged at zero.
-- Exact next source-ordered item: `B04-DATA-WITNESS-NUMERAL`, printed p101–102, after the isolated p99 source erratum is handled.
+- Exact next source-ordered item: `B04-DATA-WITNESS-NUMERAL`, printed p101–102.

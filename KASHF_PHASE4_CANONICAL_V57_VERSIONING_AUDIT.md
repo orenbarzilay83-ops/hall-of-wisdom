@@ -5,7 +5,8 @@
 - Canonical repository artifact: `kashf-v57-draft.html`.
 - Exact cumulative input artifact: `kashf-v57-draft-phase4-content-batch30.html`.
 - Batch 30 input SHA-256: `fc88c81c546bbffc3dd6aafb7498643ae8d77098460e8bdcdbc479b39048915e`.
-- Final canonical SHA-256 after the project-wide Hebrew figure-name normalization: `1a78da8622c68fae51dbc987ed00adc099398fded620e02e3a04fd22c9a6d562`.
+- Canonical SHA-256 after the project-wide Hebrew figure-name normalization: `1a78da8622c68fae51dbc987ed00adc099398fded620e02e3a04fd22c9a6d562`.
+- Final canonical SHA-256 after the isolated p99 duplicate-row erratum: `b59f6e937992f5bd11e1451c255a4ef738c4f320b2b3e847bfb97f99f1db4785`.
 - This is the cumulative Phase 4 corrected artifact through printed p276. It was not regenerated from v56. The only post-Batch-30 content change is replacement of all 50 remaining erroneous `נקי הלחי` labels with the mandatory canonical Hebrew name `בר הלחי`.
 - The authoritative content source remains the printed Arabic scan. The Arabic OCR PDF was used only as helper evidence.
 

@@ -4619,11 +4619,9 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         "אין להשלים ערכי ממון נכנס או סוהר מתוך סימטריה, מסורת חיצונית או קוד קיים.",
         "אין להמיר את ״כנגדו״ של צער ממון יוצא לבית מספרי בלי כלל מקור נפרד."
       ],
-      "sourceDiscrepancies": [
-        "ב־HTML הקנוני p99 נשארה שורת כבוד נכנס כפולה לאחר המשך שורת חיבור; הסריקה המודפסת עוברת שם ישירות לכבוד יוצא. הכפילות נשמרת כ־erratum פתוח נפרד ואינה מועתקת לשכבת הנתונים."
-      ],
+      "sourceDiscrepancies": [],
       "runtimeEligible": false,
-      "verificationStatus": "REVIEW_REQUIRED",
+      "verificationStatus": "VERIFIED",
       "sourceVerification": {
         "printedBookPages": [
           97,
@@ -4637,7 +4635,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         ],
         "v57Checked": true,
         "printedScanChecked": true,
-        "note": "DS-03 rechecked printed pp97–99 / scan pp99–101 line by line. The downstream data now matches all 14 printed rows and omits only ממון נכנס and סוהר. The canonical HTML values are corrected, but p99 still duplicates the כבוד נכנס row; therefore this source entry remains REVIEW_REQUIRED until that isolated erratum is fixed.",
+        "note": "DS-03 rechecked printed pp97–99 / scan pp99–101 line by line. The downstream data matches all 14 printed rows and omits only ממון נכנס and סוהר. The isolated duplicate כבוד נכנס paragraph on canonical p99 was removed in the subsequent source erratum pass.",
         "visualLineByLineChecked": true,
         "sourceTableRowCount": 14
       },
@@ -19748,8 +19746,9 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "id": "DS03-P99-DUPLICATE-NUSRA-DAKHILA",
       "entryId": "figures.p97-99.dignities-source-table",
       "page": 99,
-      "status": "OPEN",
-      "summary": "Canonical v57 p99 repeats the כבוד נכנס row after the continuation of חיבור. Printed p99 / scan p101 proceeds directly to כבוד יוצא. Remove only the duplicate paragraph in a separate source-layer erratum; downstream data must not reproduce it."
+      "status": "RESOLVED",
+      "summary": "Canonical v57 p99 repeated the כבוד נכנס row after the continuation of חיבור. Printed p99 / scan p101 proceeds directly to כבוד יוצא.",
+      "resolution": "Removed only the duplicated כבוד נכנס paragraph from canonical p99; the verified p98 row and all downstream data remain unchanged."
     },
     {
       "id": "B04-P100-VENUS-JOY",

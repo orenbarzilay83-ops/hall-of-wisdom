@@ -11,18 +11,19 @@
 
 - Canonical corrected Hebrew: `kashf-v57-draft.html`.
 - Batch 30 input SHA-256: `fc88c81c546bbffc3dd6aafb7498643ae8d77098460e8bdcdbc479b39048915e`.
-- Final canonical SHA-256: `1a78da8622c68fae51dbc987ed00adc099398fded620e02e3a04fd22c9a6d562`.
+- Pre-erratum canonical SHA-256: `1a78da8622c68fae51dbc987ed00adc099398fded620e02e3a04fd22c9a6d562`.
+- Final canonical SHA-256 after the isolated p99 duplicate-row correction: `b59f6e937992f5bd11e1451c255a4ef738c4f320b2b3e847bfb97f99f1db4785`.
 - Master Knowledge Index: `kashf-v57-ai-master-index.html`.
-- Current Master Index SHA-256 after Downstream Batch 02: `e2e1587d9e8552ba044fb9a102c29af36458171e52821ec691025b5ce8f6121d`.
+- Current Master Index SHA-256 after DS-03 and the p99 erratum: `cbe0da6a3ab735e86978c390b156467b073fd58eda241174749babad16d4b438`.
 
 The post-Batch-30 canonical change normalized 50 remaining erroneous `נקי הלחי` labels to the mandatory Hebrew figure name `בר הלחי`. Final counts are zero obsolete labels and 74 canonical labels.
 
 ## Master Index reconciliation
 
 - Records: 272.
-- Verification states after DS-03: 189 `VERIFIED`; 83 `REVIEW_REQUIRED`.
+- Verification states after the p99 source erratum: 190 `VERIFIED`; 82 `REVIEW_REQUIRED`.
 - `runtimeEligible: true`: zero.
-- `v57CorrectionQueue`: 92 entries after DS-03 visual recheck; 91 `RESOLVED` and one newly isolated `OPEN` p99 duplicate-row erratum.
+- `v57CorrectionQueue`: 92 entries; all 92 `RESOLVED` after the isolated p99 duplicate-row erratum.
 - `sourceConflictQueue`: 48 entries, all `OPEN`; no contradiction was silently reconciled.
 - `downstreamCorrectionQueue`: 46 entries total; DS-01 through DS-03 resolved 12 entries, leaving 34 deferred.
 
@@ -49,4 +50,4 @@ Five obsolete pagination/traceability items were removed by the applied synchron
 
 ## Closure decision
 
-The corrected Hebrew source and Master Knowledge Index remain traceable. DS-03 reopened one isolated source-layer erratum because canonical p99 repeats a כבוד נכנס paragraph absent from the printed scan; it is explicitly quarantined and not copied into downstream data. Downstream work remains separate, and engines remain paused pending the erratum and later readiness gates.
+The corrected Hebrew source and Master Knowledge Index remain traceable. The isolated p99 duplicate-row erratum discovered during DS-03 is resolved without changing the verified p98 row or downstream data. Downstream work remains separate, and engines remain paused pending later readiness gates.
