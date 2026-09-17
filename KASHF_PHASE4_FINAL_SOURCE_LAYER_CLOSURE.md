@@ -20,11 +20,11 @@ The post-Batch-30 canonical change normalized 50 remaining erroneous `נקי ה�
 ## Master Index reconciliation
 
 - Records: 272.
-- Verification states: 187 `VERIFIED`; 85 `REVIEW_REQUIRED`.
+- Verification states after DS-03: 189 `VERIFIED`; 83 `REVIEW_REQUIRED`.
 - `runtimeEligible: true`: zero.
-- `v57CorrectionQueue`: 91 entries, all `RESOLVED` after the corrected HTML itself was versioned and checked.
+- `v57CorrectionQueue`: 92 entries after DS-03 visual recheck; 91 `RESOLVED` and one newly isolated `OPEN` p99 duplicate-row erratum.
 - `sourceConflictQueue`: 48 entries, all `OPEN`; no contradiction was silently reconciled.
-- `downstreamCorrectionQueue`: 46 entries total; source-ordered Downstream Batches 01–02 resolved 9 entries, leaving 37 deferred.
+- `downstreamCorrectionQueue`: 46 entries total; DS-01 through DS-03 resolved 12 entries, leaving 34 deferred.
 
 Five obsolete pagination/traceability items were removed by the applied synchronization patches:
 
@@ -49,4 +49,4 @@ Five obsolete pagination/traceability items were removed by the applied synchron
 
 ## Closure decision
 
-The corrected Hebrew source and Master Knowledge Index are synchronized, traceable, and structurally valid. Remaining source contradictions are explicitly quarantined as `REVIEW_REQUIRED`/`sourceConflictQueue`, and downstream work remains separate. The source layer is ready for the separately authorized downstream and unsupported-resolution passes; engines remain paused.
+The corrected Hebrew source and Master Knowledge Index remain traceable. DS-03 reopened one isolated source-layer erratum because canonical p99 repeats a כבוד נכנס paragraph absent from the printed scan; it is explicitly quarantined and not copied into downstream data. Downstream work remains separate, and engines remain paused pending the erratum and later readiness gates.

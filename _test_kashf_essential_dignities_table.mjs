@@ -7,19 +7,19 @@
  * IMPORTANT: this test does NOT import a new data file. Per explicit user
  * decision, Roadmap Phase 1 uses the ALREADY-EXISTING `FIGURE_DIGNITIES`
  * object in `kashf-figure-attributes-gate2.js` — discovered during this
- * verification round to already contain exactly the pages-97-99 dignity
- * table, independently cross-checked field-by-field (98/98 values) against
- * a fresh re-extraction of kashf-hebrew-v56-clean-final.html and found to
- * be an exact match. No new data file, adapter, or re-export was created.
+ * table. Downstream Correction DS-03 rechecked it directly against the
+ * authoritative printed scan (printed pp.97-99 / scan pp.99-101) and
+ * corrected the earlier HTML-only reconstruction. No new data file,
+ * adapter, or re-export was created.
  *
  * Ground truth, verified this round (see
  * HALL_WISDOM_KASHF_ESSENTIAL_DIGNITIES_EXISTING_DATA_VERIFICATION_REPORT.md
  * for the full derivation):
  *   - FIGURE_DIGNITIES has exactly 14 keys (patterns), not 16. The source
  *     book's own "פרק במעלת הצורות, מושבן, מזגן ופניהן" (p.97-99) never
- *     assigns dignity values to פattern 1111 (דרך) or 2112 (חיבור) — this
- *     is confirmed by direct re-reading of the raw HTML, not assumed from
- *     the existing file's comments alone.
+ *     assigns dignity values to patterns 2121 (ממון נכנס) or 1221 (סוהר).
+ *     The printed scan does assign complete rows to 1111 (דרך) and 2112
+ *     (חיבור), which the former HTML-based test had incorrectly excluded.
  *   - All 14 present records carry all 7 required fields (maalaHouse,
  *     moshavHouse, gvulHouse, panimHouse, simchaHouse, tzaarHouse,
  *     mezegHouse) as own-properties, regardless of whether their value is
@@ -27,7 +27,7 @@
  *   - Every null in the table corresponds to an explicit "לא נתפרש
  *     במקור"/"לא נתפרשו כאן" statement (or an unresolved indirect
  *     reference, e.g. ממון יוצא's צער stated only as "כנגדו") found in the
- *     source text itself — never a silent gap.
+ *     printed source itself — never a silent gap.
  *
  * This test does not evaluate a board, does not call an engine, does not
  * touch verdict logic, does not fetch, and does not call any AI. It reads
@@ -51,8 +51,10 @@ function assert(condition, message) {
 }
 
 const REQUIRED_FIELDS = ['maalaHouse', 'moshavHouse', 'gvulHouse', 'panimHouse', 'simchaHouse', 'tzaarHouse', 'mezegHouse'];
-const KNOWN_ABSENT_PATTERNS = ['1111', '2112']; // דרך, חיבור — confirmed absent from p.97-99 itself, not an implementation gap
-const EXPECTED_KEY_ORDER = ['1112', '1121', '1122', '1211', '1212', '1221', '1222', '2111', '2121', '2122', '2211', '2212', '2221', '2222'];
+const KNOWN_ABSENT_PATTERNS = ['2121', '1221']; // ממון נכנס, סוהר — no rows in the printed p.97-99 table
+// Integer-like object keys are enumerated numerically by JavaScript,
+// regardless of their visual source order in the object literal.
+const EXPECTED_KEY_ORDER = ['1111', '1112', '1121', '1122', '1211', '1212', '1222', '2111', '2112', '2122', '2211', '2212', '2221', '2222'];
 
 console.log('\n--- 1. Registry baseline (16 canonical figures) ---');
 {
@@ -78,8 +80,8 @@ console.log('\n--- 3. Full 16-figure accounting: 14 present + 2 explicitly-known
   const missingFromFile = registryPatterns.filter((p) => !presentKeys.includes(p));
   assert(missingFromFile.length === 2, `(3a) exactly 2 registry patterns are absent from FIGURE_DIGNITIES (got: ${missingFromFile.length}: ${missingFromFile.join(',')})`);
   assert(
-    missingFromFile.length === 2 && missingFromFile.includes('1111') && missingFromFile.includes('2112'),
-    `(3b) the 2 absent patterns are exactly {1111 (דרך), 2112 (חיבור)} — a regression here means either a real record was accidentally deleted, or the source-verified absence list changed (got: ${missingFromFile.join(',')})`
+    missingFromFile.length === 2 && missingFromFile.includes('2121') && missingFromFile.includes('1221'),
+    `(3b) the 2 absent patterns are exactly {2121 (ממון נכנס), 1221 (סוהר)} — a regression here means either a real record was accidentally deleted, or the source-verified absence list changed (got: ${missingFromFile.join(',')})`
   );
   const accountedFor = new Set([...presentKeys, ...missingFromFile]);
   assert(accountedFor.size === 16, `(3c) present ∪ known-absent covers all 16 registry patterns with no gap and no double-count (got: ${accountedFor.size})`);
@@ -122,10 +124,9 @@ console.log('\n--- 6. No placeholder values anywhere in the source file ---');
 
 console.log('\n--- 7. Null positions match the source-verified expected-null map (no silent gaps, no silent extras) ---');
 {
-  // Built from the fresh, independent re-extraction of p.97-99 performed
-  // this round (see the verification report). Every position here was
-  // manually traced to an explicit "לא נתפרש" statement or an unresolved
-  // indirect reference ("כנגדו") in the source text.
+  // Built from the DS-03 visual recheck of printed pp.97-99 / scan pp.99-101.
+  // Every position here was traced to an explicit omission or unresolved
+  // relative wording ("כנגדו") in the printed source.
   const expectedNullFields = {
     '1121': ['mezegHouse'],
     '1222': ['tzaarHouse'],
@@ -135,10 +136,10 @@ console.log('\n--- 7. Null positions match the source-verified expected-null map
     '1112': ['tzaarHouse', 'mezegHouse'],
     '2122': ['simchaHouse', 'tzaarHouse', 'mezegHouse'],
     '2221': ['tzaarHouse'],
-    '1221': [],
-    '2211': ['simchaHouse', 'tzaarHouse', 'mezegHouse'],
-    '1122': ['simchaHouse', 'tzaarHouse', 'mezegHouse'],
-    '2121': ['panimHouse', 'tzaarHouse'],
+    '2211': ['tzaarHouse', 'mezegHouse'],
+    '2112': ['tzaarHouse'],
+    '1122': ['simchaHouse', 'tzaarHouse'],
+    '1111': ['tzaarHouse'],
     '1212': ['tzaarHouse'], // צערה = "כנגדו" — unresolved indirect reference, correctly left null
     '2222': ['tzaarHouse'],
   };
@@ -154,8 +155,8 @@ console.log('\n--- 7. Null positions match the source-verified expected-null map
 
 console.log('\n--- 8. Source-page citation present at module level (97-99 range referenced) ---');
 {
-  assert(/9[6-9]/.test(RAW_SOURCE) && /פרק במעלת הצורות/.test(RAW_SOURCE), '(8a) file documents the source chapter title and a page range in the 96-99 vicinity');
-  assert(/עמ['’]?\s*9[6-9]-9[7-9]/.test(RAW_SOURCE), '(8b) a page-range citation of the form "עמ\' 9X-9Y" is present');
+  assert(/97-99/.test(RAW_SOURCE) && /פרק במעלת הצורות/.test(RAW_SOURCE), '(8a) file documents the source chapter title and the printed p.97-99 range');
+  assert(/עמ['’]?\s*97-99/.test(RAW_SOURCE), '(8b) the exact printed-page citation p.97-99 is present');
   // Note: the file does NOT carry a per-record sourcePages field (design
   // choice — page citation lives once at module level, not duplicated 14
   // times). This is a structural difference from the originally-envisioned
@@ -204,4 +205,4 @@ if (failures > 0) {
   console.error(`${failures} בדיקות נכשלו.`);
   process.exit(1);
 }
-console.log('כל הבדיקות עברו (GT-10). FIGURE_DIGNITIES מאומת: 14 רשומות אמיתיות + 2 צורות (דרך, חיבור) המתועדות במפורש כנעדרות מהמקור עצמו בעמ׳ 97-99 — לא פער-מימוש. כל 7 השדות המקצועיים קיימים בכל רשומה. כל ה-null תואמים ל"לא נתפרש במקור" מפורש. אין placeholder, אין fetch, אין AI, אין צימוד למנוע. לא נוצר קובץ נתונים כפול.');
+console.log('כל הבדיקות עברו (GT-10). FIGURE_DIGNITIES מאומת מול הסריקה המודפסת: 14 רשומות אמיתיות + 2 צורות (ממון נכנס, סוהר) שאינן מקבלות שורה בטבלת עמ׳ 97-99. כל 7 השדות המקצועיים קיימים בכל רשומה. כל null תואם לחסר או לניסוח יחסי במקור. אין placeholder, אין fetch, אין AI, ואין צימוד חדש למנוע.');

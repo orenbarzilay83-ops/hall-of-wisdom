@@ -1,5 +1,14 @@
 # HALL_WISDOM_KASHF_ESSENTIAL_DIGNITIES_EXISTING_DATA_VERIFICATION_REPORT
 
+> **SUPERSEDED BY DS-03 (2026-09-17).** This report relied on the v56 HTML
+> reconstruction and is retained only as historical audit evidence. Direct
+> visual verification of the authoritative printed scan, pp.97-99 / scan
+> pp.99-101, proved that דרך (`1111`) and חיבור (`2112`) are present, while
+> ממון נכנס (`2121`) and סוהר (`1221`) do not receive rows. Do not use the
+> former 98/98 or absence conclusions below as current source truth; use
+> `KASHF_PHASE4_DOWNSTREAM_DS03_P97_101_AUDIT.md` and the corrected
+> `FIGURE_DIGNITIES` data instead.
+
 > Verification only. No code changed. No commit/push/deploy. No AI call.
 > No UI touched. No engine wiring. No new data file, adapter, or
 > re-export created — per explicit user decision, this round verifies

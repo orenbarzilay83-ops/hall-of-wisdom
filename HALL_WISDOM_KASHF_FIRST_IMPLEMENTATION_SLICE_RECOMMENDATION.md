@@ -11,7 +11,7 @@
 > document's original recommended first slice, is now CONFIRMED ALREADY
 > IMPLEMENTED.** A later verification round discovered `FIGURE_DIGNITIES`
 > already exists in `kashf-figure-attributes-gate2.js`, is 100%
-> source-verified (98/98 values), and is already consumed by Dhamir Type
+> source-verified against the printed scan after DS-03 (14×7 values), and is already consumed by Dhamir Type
 > 2. No new data file was created. See
 > `HALL_WISDOM_KASHF_ESSENTIAL_DIGNITIES_EXISTING_DATA_VERIFICATION_REPORT.md`
 > for full detail. **The original analysis below (Options 1-4 and the

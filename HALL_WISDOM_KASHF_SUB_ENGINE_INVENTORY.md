@@ -132,14 +132,14 @@ performed this round.
 | Activation | On demand |
 | Inputs | Figure identity |
 | Calculation | Table lookup |
-| Outputs | 7 house-number values per figure — **14 of 16 figures have data; the other 2 (דרך, חיבור) are correctly documented as absent from the source itself in this page range, not a digitization gap** |
+| Outputs | 7 dignity values per printed row — **14 of 16 figures have data; the two without rows are ממון נכנס (`2121`) and סוהר (`1221`). דרך and חיבור are present in the printed table (DS-03 correction).** |
 | Verdict effect | Indirect, via consuming techniques |
 | Dependencies | None (foundational table) |
 | Precedence | Feeds §9 and §14 (not yet wired to either); already feeds Dhamir Type 2 (wired) |
 | Source pages | 97-99 |
 | Examples | None isolated this round |
 | Current code path | **`FIGURE_DIGNITIES` in `goral-hachol/data/sources/kashf-al-asrar/kashf-figure-attributes-gate2.js`** (corrected — this round's original inspection of only `kashf-figure-classifier.js` missed this sibling file) |
-| Status | **`implemented` + `source-verified`, `implemented-but-not-fully-routed`** (not `missing`) — 98/98 values confirmed exact against a fresh independent re-extraction; GT-10 (`_test_kashf_essential_dignities_table.mjs`) passes 196/196 |
+| Status | **`implemented` + `source-verified`, `implemented-but-not-fully-routed`** (not `missing`) — all 14×7 values are checked against the printed scan by DS-03; GT-10 and `_test_kashf_downstream_ds03_p97_101.mjs` enforce the corrected table |
 
 ## 7. Figure-to-Lunar-Month Correspondence Table
 

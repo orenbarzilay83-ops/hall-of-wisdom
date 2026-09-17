@@ -167,7 +167,7 @@ an engineer's independent judgment of what the "right" answer should be.
 | Inputs | None — static comparison |
 | Expected output | Exact match, field-by-field, figure-by-figure |
 | Exact textual evidence | Full table, confirmed this round |
-| Current reproduction status | **`exact`** — 196/196 assertions pass, including a 98/98 exact-value cross-check against a fresh independent re-extraction |
+| Current reproduction status | **`exact` after DS-03 correction** — all 14×7 values are checked against printed pp.97–99 / scan pp.99–101; the omitted figures are ממון נכנס and סוהר, not דרך and חיבור |
 | Missing implementation | None — implemented |
 | Why included despite being "not a verdict test" | This is the model for how any purely-tabular Layer-0 engine should be tested — fidelity first, verdict-consumption second (see GT-3, which depends on this table being correct) |
 

@@ -23,7 +23,7 @@ Dedicated local diff: `KASHF_PHASE4_V57_CORRECTIONS_P191_196.patch`.
 
 The authoritative printed scan was rendered and visually rechecked at printed p201 / scan-PDF p203, printed p204 / scan-PDF p206, and printed p208 / scan-PDF p210. The scan images confirm the Batch-16 readings below. No OCR-only reading was promoted over the printed image.
 
-- p201 visibly prints `الحمرة` for sheep/rams; `التشمير` beside glyph 2211 for bulls; `النصرة الخارجة` for horses; `العتبة الخارجة` for camels; `العقلة` for donkeys; `الأنكيس` for kids/goats; and `القبض الخارج` for mules. The rows are indepent and must not be merged by analogy.
+- p201 visibly prints `الحمرة` for sheep/rams; `التشمير` beside glyph 2211 for bulls; `النصرة الخارجة` for horses; `العتبة الخارجة` for camels; `العقلة` for donkeys; `الأنكيس` for kids/goats; and `القبض الخارج` for mules. The rows are independent and must not be merged by analogy.
 - p204 visibly separates `الأول في السابع` → `أمة`, `السابع في العاشر` → `حرة`, mutable seventh → `ثيب`, and fixed seventh → `بكر`.
 - p208 visibly preserves separate `نقي الخد` and `الكوسج` clauses. The age-group sentence explicitly prints `عطارد` in the middle group, so the Hebrew must identify Mercury / כוכב חמה rather than a generic star.
 

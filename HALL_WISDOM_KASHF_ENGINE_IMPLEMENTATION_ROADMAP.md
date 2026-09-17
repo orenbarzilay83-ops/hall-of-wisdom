@@ -235,9 +235,9 @@ and not with a single witness engine.
 > Executing this phase's L0.3 objective led to discovering that the
 > table already existed as `FIGURE_DIGNITIES` in
 > `goral-hachol/data/sources/kashf-al-asrar/kashf-figure-attributes-gate2.js`
-> — 14 of 16 figures with fully source-verified data (98/98 values
+> — 14 of 16 figures with fully source-verified data (14×7 values
 > matched against a fresh independent re-extraction), the other 2
-> (דרך, חיבור) correctly and explicitly documented as absent from the
+> (ממון נכנס, סוהר) correctly and explicitly documented as absent from the
 > source itself, not a digitization gap. No new file was created. GT-10
 > (`_test_kashf_essential_dignities_table.mjs`) exists and passes
 > 196/196. Full detail:

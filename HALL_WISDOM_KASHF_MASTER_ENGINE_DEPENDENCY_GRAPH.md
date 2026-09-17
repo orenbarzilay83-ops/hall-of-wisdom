@@ -160,9 +160,9 @@ below nothing and above everything rather than being folded into Layer 1.
 | Depended on by | L3.E (Five Witnesses) — not yet wired; L2.4 (מבקש/מבוקש במעגל) — not yet wired; **Dhamir Type 2 (element-prevalence) — already wired**, via `FIGURE_MAALA_HOUSE` derived from this table in `kashf-dhamir.js` |
 | Relevant question families | Indirectly, whichever families use L3.E or L2.4 (still not implemented); directly, dhamir-general (already consumed) |
 | Verdict role | Indirect infrastructure |
-| Current implementation status | **`implemented` + `source-verified`** — 14 of 16 figures have full dignity data (100%-verified against the source, 98/98 values, see the verification report); the other 2 (דרך, חיבור) are correctly documented as absent from the source itself, not a digitization gap. **Currently consumed by Dhamir Type 2; not yet routed to L3.E or L2.4** — `implemented-but-not-fully-routed`, not `missing` |
+| Current implementation status | **`implemented` + `source-verified`** — 14 of 16 figures have full dignity data, checked against the printed scan by DS-03; the two without printed rows are ממון נכנס (`2121`) and סוהר (`1221`). דרך and חיבור are present. **Currently consumed by Dhamir Type 2; not yet routed to L3.E or L2.4** — `implemented-but-not-fully-routed`, not `missing` |
 | Current tests | `_test_kashf_essential_dignities_table.mjs` (GT-10) — 196/196 assertions passing |
-| Source traceability | `sourced`, fully verified (this table's own content, independently re-extracted and diffed 98/98 exact match) |
+| Source traceability | `sourced`, visually verified against printed pp.97–99 / scan pp.99–101; exact values locked by DS-03 tests |
 | Unresolved source issues | None on the table's own content; its NOT-YET-WIRED downstream consumers (E, מבקש/מבוקש) remain unimplemented — that is a routing gap in those two engines, not in L0.3 itself |
 
 ### L0.4 — Figure-to-Lunar-Month Table
