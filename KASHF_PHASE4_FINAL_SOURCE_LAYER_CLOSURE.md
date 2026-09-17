@@ -13,7 +13,7 @@
 - Batch 30 input SHA-256: `fc88c81c546bbffc3dd6aafb7498643ae8d77098460e8bdcdbc479b39048915e`.
 - Final canonical SHA-256: `1a78da8622c68fae51dbc987ed00adc099398fded620e02e3a04fd22c9a6d562`.
 - Master Knowledge Index: `kashf-v57-ai-master-index.html`.
-- Current Master Index SHA-256 after Downstream Batch 01: `b66c17697ac514cea47cffc3cbf632c0c08294fb24cf4b8c53cc80cd14b0fe90`.
+- Current Master Index SHA-256 after Downstream Batch 02: `e2e1587d9e8552ba044fb9a102c29af36458171e52821ec691025b5ce8f6121d`.
 
 The post-Batch-30 canonical change normalized 50 remaining erroneous `נקי הלחי` labels to the mandatory Hebrew figure name `בר הלחי`. Final counts are zero obsolete labels and 74 canonical labels.
 
@@ -24,7 +24,7 @@ The post-Batch-30 canonical change normalized 50 remaining erroneous `נקי ה�
 - `runtimeEligible: true`: zero.
 - `v57CorrectionQueue`: 91 entries, all `RESOLVED` after the corrected HTML itself was versioned and checked.
 - `sourceConflictQueue`: 48 entries, all `OPEN`; no contradiction was silently reconciled.
-- `downstreamCorrectionQueue`: 46 entries total; the first source-ordered downstream batch (p63–65) resolved 3 entries, leaving 43 deferred.
+- `downstreamCorrectionQueue`: 46 entries total; source-ordered Downstream Batches 01–02 resolved 9 entries, leaving 37 deferred.
 
 Five obsolete pagination/traceability items were removed by the applied synchronization patches:
 

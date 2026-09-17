@@ -78,6 +78,16 @@ export const FIGURE_DESCRIPTIONS = {
 
   '2222': { // קהלה
     sourcePages: '72-74',
+    profileScope: 'local-chapter-profile',
+    localProfileAttributes: {
+      element: 'עפר', direction: 'דרום', time: 'לילי', timeDetail: 'לפנות בוקר',
+      movement: 'לא פנימי ולא חיצוני לפי פרופיל זה', temperature: 'קר', moisture: 'יבש',
+      gender: 'נקבה', age: 'בינוני', fortune: 'ממוזג בכל המצבים',
+    },
+    crossChapterConflicts: [
+      'בעמ׳ 57–59 קהלה מסווגת קבועה; בפרופיל המקומי כאן נאמר שאינה פנימית ואינה חיצונית.',
+      'בעמ׳ 59–60 קהלה נכללת בארבע האנדרוגיניות; בפרופיל המקומי כאן היא נקבית.',
+    ],
     plants: 'עצי עפצים, אלון ודומיהם',
     fruits: 'תאנים צהובות ודומיהן',
     metalsOrStones: 'מה שצבעו משתנה, כגון בזאהר ומהא',
@@ -102,6 +112,15 @@ export const FIGURE_DESCRIPTIONS = {
 
   '1121': { // נלחם
     sourcePages: '74-76',
+    profileScope: 'local-chapter-profile',
+    localProfileAttributes: {
+      elementPrimary: 'אוויר', elementSecondaryPrinted: 'מים', direction: 'מזרח',
+      time: 'לילי', gender: 'זכר', movement: 'חיצוני', fortune: 'נוטה למיטיב',
+      stability: 'מתהפך', speech: 'מדבר',
+    },
+    crossChapterConflicts: [
+      'הפרופיל המודפס אומר גם אווירי וגם מימי; שתי הקביעות נשמרות ואין לבחור אחת מהן בשקט.',
+    ],
     personDescription: 'קצר קומה, כחול עיניים, רחב פה, גדול אף; בזרועו סימן שבר או פצע; צעיר בשנים, בנוי במידה, שחום גוף, קצר, מעט אהבה בו, קטן ראש, עגול פנים, צהוב גון או יפה תואר, מתוק דיבור. מקומה בבתי הזונות ובבתי המשחק.',
     colors: 'האדום (ממקור אחר)',
     metalsOrStones: 'הברזל (ממקור אחר)',
@@ -170,6 +189,15 @@ export const FIGURE_DESCRIPTIONS = {
 
   '2212': { // לבן
     sourcePages: '81-82',
+    profileScope: 'local-chapter-profile',
+    localProfileAttributes: {
+      fortune: 'ממוזג נוטה למיטיב', movement: 'פנימי', gender: 'נקבה',
+      time: 'יומי', direction: 'צפון', element: 'מים',
+    },
+    crossChapterConflicts: [
+      'בעמ׳ 57–59 לבן מסווג קבוע; בפרופיל המקומי כאן הוא פנימי.',
+      'בעמ׳ 59–60 קבוצת הנקבות מתוארת כלילית; בפרופיל המקומי של לבן הוא יומי.',
+    ],
     personDescription: 'שלם קומה, עגול פנים, שחור עיניים, גדול אף, שיניו הקדמיות מרווחות, בינוני קומה, על פניו סימן פצע, וצעיר בשנים.',
     note: 'תיאור זה מובא במקור בציון "ומספר אחר" (מקור נוסף), ומסתיים ב"כאן שב המחבר אל הספר" — כלשונו. אין במקור, לצורה זו, רשימה של צומח/פירות/מתכות/צבעים/טעמים/ריחות/חיות/עופות/איברים-פנימיים/ליחות/דין-כללי — המקור עצמו תמציתי כאן (תיאור אדם + שיר בלבד).',
     plainProseFacts: {
@@ -246,6 +274,16 @@ export const FIGURE_DESCRIPTIONS = {
 
   '1111': { // דרך
     sourcePages: '88-89',
+    profileScope: 'local-chapter-profile',
+    localProfileAttributes: {
+      element: 'מים', season: 'חורף', temperature: 'קר', moisture: 'לח',
+      temperament: 'ממוזג', humor: 'ליחתי', fortune: 'ממוזג בין מיטיב למזיק',
+      movement: 'פנימי וחיצוני לפי פרופיל זה', weight: 'קל', stability: 'מתהפך',
+      time: 'לילי', gender: 'נקבה', state: 'מתقاعد', bond: 'פתור', planetaryBanner: 'הירח',
+    },
+    crossChapterConflicts: [
+      'בעמ׳ 59–60 דרך נכללת בארבע האנדרוגיניות; בפרופיל המקומי כאן היא נקבית.',
+    ],
     plants: 'מה שהוא דק וצהוב, ומה שיש לו גרעין כגרעין האשחר',
     metalsOrStones: 'כסף וגביש',
     colors: 'לובן',
@@ -281,6 +319,16 @@ export const FIGURE_DESCRIPTIONS = {
 
   '2112': { // חיבור
     sourcePages: '91-93',
+    profileScope: 'local-chapter-profile',
+    localProfileAttributes: {
+      fortune: 'ממוזג', movement: 'פנימי', gender: 'זכר', time: 'לילי',
+      element: 'אוויר', direction: 'מערב', season: 'אביב', temperature: 'חם',
+      moisture: 'לח', temperament: 'ממוזג',
+      contextuality: 'הפרופיל כולל במפורש מיטיב/מזיק, פנימי/חיצוני, מתרומם/נופל, קל/כבד וקבוע/מתהפך.',
+    },
+    crossChapterConflicts: [
+      'סיווגי הבסיס המוקדמים ממוקדים יותר; הפרופיל המקומי מדגיש טווח מפורש של קטבים מנוגדים.',
+    ],
     plants: 'עצים שרוחם אינה נעימה',
     metalsOrStones: 'כל מה שצבעיו משתנים',
     colors: 'מה שמעט מן הצהוב והירוק גובר בו',
@@ -300,6 +348,14 @@ export const FIGURE_DESCRIPTIONS = {
 
   '1211': { // בר הלחי
     sourcePages: '93-95',
+    profileScope: 'local-chapter-profile',
+    localProfileAttributes: {
+      fortune: 'ממוזג נוטה למיטיב', movement: 'פנימי', gender: 'נקבה',
+      time: 'לילי', element: 'מים', direction: 'צפון',
+    },
+    crossChapterConflicts: [
+      'בעמ׳ 57–59 בר הלחי מסווג מתהפך; בפרופיל המקומי כאן הוא פנימי.',
+    ],
     plants: 'סיגלית, נרקיס וכיוצא בהם',
     fruits: 'בוסר צהוב ומשמש',
     metalsOrStones: 'יהלום ושוהם',
