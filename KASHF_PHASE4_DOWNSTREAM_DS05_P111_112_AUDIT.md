@@ -5,7 +5,7 @@
 - Highest authority: printed Arabic p111 / scan PDF p113, and printed p112 / scan PDF p114 — visually verified line-by-line and confirmed at the AI Master Index super-audit level.
 - p111: `H7 primary = 29` (`تسعة وعشرون`); `H11 primary = 66, alternate = 600` (`وفي نسخة: ستمائة`); `H12 primary = 79, alternate = 700` (`وفي نسخة: سبعمائة`). The previously-live code values (H7=28, H11 alt=760, H12 alt=770) do not match the printed scan.
 - p106 is a distinct, independent table (canonical figure-ranking, not house-indexed). Its position 7 = 28 is unrelated to p111's house-7 value and **must not be changed** — the two tables coexist by design (the source itself preserves alternate formulas without unifying them).
-- p112: the source separates house-triplicity into four groups, not three — `الأوتاد` (H1,4,7,10 → present), `مائل الأوتاد` (H2,5,8,11 → future), `زايد الأوتاد` (H3,6,9 → past), and `الساقط` (H6,12) as its own, separately-printed category. House 12 belongs to `الساقط`, not automatically to a generic "past" group with H3/H6/H9 — collapsing it there would misrepresent the printed source (this exact distinction is already documented and `RESOLVED` at `houses.p43-44.taxonomy` / `B01-P44-TAXONOMY`).
+- p112: the source separates its house-position taxonomy into four groups, not three — `الأوتاد` (H1,4,7,10 → present), `مائل الأوتاد` (H2,5,8,11 → future), `زايد الأوتاد` (H3,6,9 → past), and `الساقط` (H6,12) as its own, separately-printed category. House 12 belongs to `الساقط`, not automatically to a generic "past" group with H3/H6/H9 — collapsing it there would misrepresent the printed source. This distinction is documented at `houses.p43-44.taxonomy`; see the "Open item flagged, not touched" section below for the precise, unresolved state of that record.
 
 ## Corrected surfaces
 
@@ -39,7 +39,7 @@
 
 ## Open item flagged, not touched
 
-`houses.p43-44.taxonomy` (record and its `B01-P44-TAXONOMY` queue entry) still carries a `sourceDiscrepancies` note and `verificationStatus: REVIEW_REQUIRED` describing `kashf-v57-draft.html` as merging H3/H6/H9/H12 under one label — this appears stale relative to the queue item's own `RESOLVED` status and the `sourceTaxonomy` array already present on the same record (which does show the four groups distinctly, including the isolated `الساقط: H6,H12`). Per this round's explicit scope, this record was **not modified**; it needs its own separate downstream pass if the discrepancy note is confirmed stale.
+The `downstreamCorrectionQueue` item `B01-P44-TAXONOMY` is marked `RESOLVED`. The underlying record `houses.p43-44.taxonomy` itself, however, is still `verificationStatus: REVIEW_REQUIRED` and still carries a `sourceDiscrepancies` note describing `kashf-v57-draft.html` as merging H3/H6/H9/H12 under one label — a claim that looks stale next to the queue item's `RESOLVED` status and the `sourceTaxonomy` array already present on the same record (which does show the four groups distinctly, including the isolated `الساقط: H6,H12`). This contradiction between the queue item and the record is only **flagged here for a future pass**, not resolved in DS-05. Per this round's explicit scope, `houses.p43-44.taxonomy` was **not modified**.
 
 ## Verification results
 

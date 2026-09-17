@@ -20275,7 +20275,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "sourceEntryId": "shibutz.p111.money-number-table",
       "status": "RESOLVED",
       "target": "goral-hachol/data/sources/kashf-al-asrar/kashf-shibutzim.js",
-      "summary": "SHIBUTZ_2_MONEY_BY_HOUSE currently carries p111 H7=28 and alternate 760/770 for H11/H12; printed p111 is 29, 600, 700. Keep this scoped apart from p106 canonical values.",
+      "summary": "DS-05 synchronized SHIBUTZ_2_MONEY_BY_HOUSE with printed p111: H7=29, H11 alternate=600, H12 alternate=700. The distinct p106 canonical sequence remains separate with position 7=28.",
       "resolution": "DS-05 corrected SHIBUTZ_2_MONEY_BY_HOUSE in kashf-shibutzim.js: H7 value 28→29, H11 altValue 760→600, H12 altValue 770→700. SHIBUTZ_2_CANONICAL_NUMBER (p106) was not touched; position 7 remains number=28 there, kept as a structurally separate table from SHIBUTZ_2_MONEY_BY_HOUSE (p111)."
     },
     {
@@ -20284,7 +20284,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "status": "DEFERRED_UNTIL_ALGORITHM_VERIFIED",
       "target": "goral-hachol/engine/kashf-leshon-hainyan.js",
       "summary": "Review downstream logic for preserving the source structural state مائل الأوتاد as the trigger for future judgment rather than collapsing it to a semantic label.",
-      "deferralReason": "The structural expression مائل الأوتاد is preserved with transliteration in both the Master Index (shibutz.p112.lisan-al-amr) and kashf-v57-draft.html#p112 — that representation-level question is closed (DS-05). kashf-leshon-hainyan.js itself remains an unwired, unverified orphan (0 live importers, 0 tests) and is not modified by DS-05. A known structural risk persists in that module: it indexes SHIBUTZ_2_MONEY_BY_HOUSE (p111, house-indexed) using canonicalPositionOf() (p106, abstract canonical rank) — these are two distinct axes and must not be conflated when the algorithm is eventually implemented. Do not wire this module to Runtime/Registry/Router before the mechanical algorithm is reconstructed and source-verified. The p112 house triplicity itself is not a simple three-way split: زايد الأوتاد (houses 3,6,9) and الساقط (houses 6,12) are kept as separate, non-merged categories per p44 — house 12 must not be automatically folded into a generic 'past' group, and no such grouping constant was added in this batch."
+      "deferralReason": "The structural expression مائل الأوتاد is preserved with transliteration in both the Master Index (shibutz.p112.lisan-al-amr) and kashf-v57-draft.html#p112 — that representation-level question is closed (DS-05). kashf-leshon-hainyan.js itself remains an unwired, unverified orphan (0 live importers, 0 tests) and is not modified by DS-05. A known structural risk persists in that module: it indexes SHIBUTZ_2_MONEY_BY_HOUSE (p111, house-indexed) using canonicalPositionOf() (p106, abstract canonical rank) — these are two distinct axes and must not be conflated when the algorithm is eventually implemented. Do not wire this module to Runtime/Registry/Router before the mechanical algorithm is reconstructed and source-verified. The p112 house-position taxonomy itself is not a simple three-way split: زايد الأوتاد (houses 3,6,9) and الساقط (houses 6,12) are kept as separate, non-merged categories per p44 — house 12 must not be automatically folded into a generic 'past' group, and no such grouping constant was added in this batch."
     },
     {
       "id": "B06-OPS-ATTRIBUTED-METHODS",
