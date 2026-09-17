@@ -6133,12 +6133,9 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "doNotInfer": [
         "אין לתקן את עמ׳ 106 ל־29: עמ׳ 106 הוא סדר אחר ובו 28; הפער הוא מסורת מקומית של עמ׳ 111."
       ],
-      "sourceDiscrepancies": [
-        "v57 הנוכחי מציג לבית 11 חלופה 760 במקום 600.",
-        "v57 הנוכחי מציג לבית 12 חלופה 770 במקום 700."
-      ],
+      "sourceDiscrepancies": [],
       "runtimeEligible": false,
-      "verificationStatus": "REVIEW_REQUIRED",
+      "verificationStatus": "VERIFIED",
       "sourceVerification": {
         "printedBookPages": [
           111
@@ -6149,7 +6146,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         "v57Checked": true,
         "printedScanChecked": true,
         "visualLineByLineChecked": true,
-        "note": "Pass 2 re-read printed p111 number by number. Current v57 already has H7=29; the two live v57 blockers are H11 alternate 760→600 and H12 alternate 770→700. The distinct p106 sequence remains untouched at position 7=28."
+        "note": "DS-05: printed scan, v57 draft, and goral-hachol/data/sources/kashf-al-asrar/kashf-shibutzim.js are now synchronized — H7=29, H11 alternate=600, H12 alternate=700. The distinct p106 sequence remains untouched at position 7=28."
       },
       "moneyByHouse": [
         {
@@ -6267,11 +6264,9 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         "אין למחוק אחת משתי לשונות ההפקה של לשון העניין כדי ליישר את המקור.",
         "אין להחליף את מائل الأوتاد במילת זמן בלבד בתוך חוזה תפעולי."
       ],
-      "sourceDiscrepancies": [
-        "v57 הנוכחי מתרגם את ענף מائل الأوتاد כתוצאה סמנטית \"בעתיד\" בלי לשמר שהטריגר הוא סיווג בית מבני; הדבר עלול לגרום ל־AI לאבד את תנאי ההפעלה."
-      ],
+      "sourceDiscrepancies": [],
       "runtimeEligible": false,
-      "verificationStatus": "REVIEW_REQUIRED",
+      "verificationStatus": "VERIFIED",
       "sourceVerification": {
         "printedBookPages": [
           112
@@ -6282,7 +6277,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         "v57Checked": true,
         "printedScanChecked": true,
         "visualLineByLineChecked": true,
-        "note": "Printed p112 was read line by line; REVIEW_REQUIRED is caused by loss of the structural trigger in current v57, not by uncertainty in the Arabic wording."
+        "note": "DS-05: printed p112 read line by line; kashf-v57-draft.html#p112 preserves the structural term מائل الأوتاد explicitly (with transliteration), not reduced to a semantic \"future\" label. VERIFIED here covers source/HTML representation only — the mechanical algorithm and any house-number mapping remain unverified and are tracked separately under B05-P112-LISAN-STRUCTURE."
       },
       "structuralStates": [
         {
@@ -20278,16 +20273,18 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
     {
       "id": "B05-DATA-P111-MONEY-TABLE",
       "sourceEntryId": "shibutz.p111.money-number-table",
-      "status": "DEFER_UNTIL_INDEX_COMPLETE",
+      "status": "RESOLVED",
       "target": "goral-hachol/data/sources/kashf-al-asrar/kashf-shibutzim.js",
-      "summary": "SHIBUTZ_2_MONEY_BY_HOUSE currently carries p111 H7=28 and alternate 760/770 for H11/H12; printed p111 is 29, 600, 700. Keep this scoped apart from p106 canonical values."
+      "summary": "SHIBUTZ_2_MONEY_BY_HOUSE currently carries p111 H7=28 and alternate 760/770 for H11/H12; printed p111 is 29, 600, 700. Keep this scoped apart from p106 canonical values.",
+      "resolution": "DS-05 corrected SHIBUTZ_2_MONEY_BY_HOUSE in kashf-shibutzim.js: H7 value 28→29, H11 altValue 760→600, H12 altValue 770→700. SHIBUTZ_2_CANONICAL_NUMBER (p106) was not touched; position 7 remains number=28 there, kept as a structurally separate table from SHIBUTZ_2_MONEY_BY_HOUSE (p111)."
     },
     {
       "id": "B05-P112-LISAN-STRUCTURE",
       "sourceEntryId": "shibutz.p112.lisan-al-amr",
-      "status": "DEFER_UNTIL_INDEX_COMPLETE",
+      "status": "DEFERRED_UNTIL_ALGORITHM_VERIFIED",
       "target": "goral-hachol/engine/kashf-leshon-hainyan.js",
-      "summary": "Review downstream logic for preserving the source structural state מائل الأوتاد as the trigger for future judgment rather than collapsing it to a semantic label."
+      "summary": "Review downstream logic for preserving the source structural state مائل الأوتاد as the trigger for future judgment rather than collapsing it to a semantic label.",
+      "deferralReason": "The structural expression مائل الأوتاد is preserved with transliteration in both the Master Index (shibutz.p112.lisan-al-amr) and kashf-v57-draft.html#p112 — that representation-level question is closed (DS-05). kashf-leshon-hainyan.js itself remains an unwired, unverified orphan (0 live importers, 0 tests) and is not modified by DS-05. A known structural risk persists in that module: it indexes SHIBUTZ_2_MONEY_BY_HOUSE (p111, house-indexed) using canonicalPositionOf() (p106, abstract canonical rank) — these are two distinct axes and must not be conflated when the algorithm is eventually implemented. Do not wire this module to Runtime/Registry/Router before the mechanical algorithm is reconstructed and source-verified. The p112 house triplicity itself is not a simple three-way split: زايد الأوتاد (houses 3,6,9) and الساقط (houses 6,12) are kept as separate, non-merged categories per p44 — house 12 must not be automatically folded into a generic 'past' group, and no such grouping constant was added in this batch."
     },
     {
       "id": "B06-OPS-ATTRIBUTED-METHODS",
