@@ -51,18 +51,20 @@ if (ambiguous.resolution.state !== 'resolved') {
   assert(ambiguous.canonicalReading.canRunKashf === false, 'ambiguous retrieval does not execute');
 }
 
-// 4. A source-ready method whose executor is pending remains blocked even when
-// it is selected explicitly and has Hebrew v57 knowledge.
+// 4. Final Phase-5A source disposition: the mother-status method is
+// blocked-by-source and has no executable canonical executor. Retrieval may
+// still expose its Hebrew v57 knowledge, but must never promote it to runtime.
 const pending = buildKashfCanonicalAiBridge({
   questionId: 'q-mother',
   questionText: 'מה מצב האם?',
   board: BOARD,
 });
-assert(pending.resolution.kashfMethodId === 'mother.p257.statusDayNight', 'pending route resolves to exact source-ready method');
-assert(pending.resolution.executorStatus === 'pending', 'pending executor status is preserved');
-assert(pending.canonicalRetrieval?.knowledgeLanguage === 'he', 'pending method may still expose Hebrew knowledge');
-assert(pending.aiVerdictAllowed === false, 'retrieval cannot promote pending executor to runnable');
-assert(pending.canonicalReading.canRunKashf === false, 'canonical runtime stays blocked for pending executor');
+assert(pending.resolution.kashfMethodId === 'mother.p257.statusDayNight', 'blocked route resolves to exact mother-status method');
+assert(pending.resolution.kashfRuntimeStatus === 'blocked-by-source', 'final source blocker status is preserved');
+assert(pending.resolution.executorStatus === 'not-applicable', 'source-blocked method has no runnable canonical executor');
+assert(pending.canonicalRetrieval?.knowledgeLanguage === 'he', 'blocked method may still expose Hebrew knowledge');
+assert(pending.aiVerdictAllowed === false, 'retrieval cannot promote source-blocked method to runnable');
+assert(pending.canonicalReading.canRunKashf === false, 'canonical runtime stays blocked for source-blocked method');
 
 // 4a. p205 source repair is visible to the live bridge but cannot execute.
 const p205RepairLive = buildKashfCanonicalAiBridge({
