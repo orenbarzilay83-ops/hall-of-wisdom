@@ -70,6 +70,8 @@ assert.ok(p179.doNotInfer.some((x) => x.includes('H9')));
 
 const p185 = data.records.find((x) => x.entryId === 'gate6.house4.p185.hidden-place-recursive-quarters');
 assert.ok(p185.criticalFacts.some((x) => x.includes('1=מערב') && x.includes('2=מזרח')));
+assert.equal(p185.branches.find((x) => x.condition === 'remainder-1')?.outcome, 'west-quarter');
+assert.equal(p185.branches.find((x) => x.condition === 'remainder-2')?.outcome, 'east-quarter');
 assert.ok(p185.sourceDiscrepancies.some((x) => x.includes('94')));
 
 const p190 = data.records.find((x) => x.entryId === 'gate6.house4.p189-190.tamtam-water-depth-table');
