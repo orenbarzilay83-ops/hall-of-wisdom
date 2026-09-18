@@ -21,20 +21,22 @@ The canonical registries are structurally coherent:
 - Question routes pointing to a missing method: **0**
 - Route/method intent mismatches: **0**
 - Route/method runtime-status mismatches after this pass: **0**
-- Runnable question routes (source status + runtimeAllowed + executor ready): **50**
+- Runnable question routes (source status + runtimeAllowed + executor ready): **54**
 - Runnable routes missing v57 Hebrew knowledge: **0**
 - Runnable methods missing v57 Hebrew knowledge: **0**
 - Canonical methods unused by a Question-ID route: **1** — `desire.p206.querentWantsH7H11ThenH5`
 
 Canonical route statuses after the p178 alignment:
 
-- `ready`: 56
-- `blocked-by-source`: 18
-- `repair-required`: 19
+- `ready`: 54
+- `blocked-by-source`: 19
+- `repair-required`: 20
 - `educational-only`: 14
 - `unsupported`: 31
 
 A `ready` route is not automatically runnable: its method must also have `runtimeAllowed:true` and `executorStatus:'ready'`.
+
+Post-runtime-gap closure update: the eight-route pass moved four Question-ID routes into genuine runnable state (message/news share one method, plus well drilling and inheritance), and moved four question IDs to explicit blocked/repair states. The resulting counts above are the post-closure baseline; there are no `ready` routes with a non-runnable method.
 
 ## Critical integration finding — two routing authorities are still live
 
@@ -96,7 +98,7 @@ Phase 5B must migrate selected Question Bank readings to the canonical engine:
 3. Execute `buildKashfReadingByQuestionId()`.
 4. If the route/method is blocked, show the canonical blocked state; never fall back to a topic bundle.
 5. Keep free-topic/legacy execution only for explicit legacy/free-topic flows, not for a selected canonical Question ID.
-6. Verify the 50 currently runnable Question-ID routes and representative blocked/repair/educational routes.
+6. Verify the 54 currently runnable Question-ID routes and representative blocked/repair/educational routes.
 7. Only after this parity gate passes should the smart-advisor AI be expanded.
 
 ## Safety invariant
