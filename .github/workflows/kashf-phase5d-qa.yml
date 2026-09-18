@@ -1,0 +1,39 @@
+name: Kashf Phase 5D QA
+
+on:
+  push:
+    branches:
+      - chatgpt/kashf-phase5d-canonical-topic-authority
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax
+        run: |
+          node --check goral-hachol/engine/kashf-method-router.js
+          node --check goral-hachol/intelligence/kashf-canonical-ai-bridge.js
+          node --check goral-hachol/intelligence/kashf-ai-context-builder.js
+          node --check _test_kashf_phase5d_canonical_topic_authority.mjs
+      - name: Phase 5D canonical topic authority
+        run: node _test_kashf_phase5d_canonical_topic_authority.mjs
+      - name: Phase 5C client-AI parity
+        run: node _test_kashf_phase5c_client_ai_parity.mjs
+      - name: Phase 5B canonical client path
+        run: node _test_kashf_phase5b_canonical_client_path.mjs
+      - name: Phase 5A integration
+        run: node _test_kashf_phase5a_system_integration.mjs
+      - name: Canonical routing
+        run: node _test_kashf_canonical_routing.mjs
+      - name: AI context builder
+        run: node _test_kashf_ai_context_builder.mjs
+      - name: AI retrieval live bridge
+        run: node _test_kashf_ai_retrieval_live_bridge.mjs
+      - name: Route coverage
+        run: node _audit_kashf_question_route_coverage.mjs
+      - name: Eight runtime gaps
+        run: node _test_kashf_close_eight_runtime_gaps.mjs
