@@ -82,18 +82,18 @@ assert.equal(Object.keys(KASHF_QUESTION_ROUTES).length, 138, 'Question Bank cano
 assert.equal(runnable, 54, 'runnable route baseline');
 assert.equal(blocked, 84, 'non-runnable route baseline');
 
-// Architectural finding probe: the canonical builder still requires a broad
-// topicId even when Question ID is already authoritative. This is recorded as
-// a finding rather than "fixed" in the audit phase.
+// Phase 5D closure regression: an authoritative Question ID now supplies its
+// canonical topic metadata; no duplicate caller topicId is required.
 const topiclessProbe = buildKashfAiContextPackage({
   mothers: MOTHERS,
   question: 'האם הנסיעה תצליח?',
   questionId: 'q-travel-safe',
   readingId: 'phase5c-topicless-probe',
 });
-const topicDependencyPresent =
-  topiclessProbe.contextPackage === null &&
-  topiclessProbe.missingFields.some((x) => String(x).includes('topicId'));
+assert.ok(topiclessProbe.contextPackage, 'canonical Question ID builds AI context without caller topicId');
+assert.equal(topiclessProbe.topicResolution?.authority, 'canonical-method');
+assert.equal(topiclessProbe.topicResolution?.effectiveTopicId, 'travel');
+assert.equal(topiclessProbe.contextPackage.readingPlan?.topicId, 'travel');
 
 console.log('Phase 5C client↔AI canonical parity: PASS');
 console.log('Questions audited:', Object.keys(KASHF_QUESTION_ROUTES).length);
@@ -102,4 +102,4 @@ console.log('Runtime status counts:', JSON.stringify(statuses));
 console.log('Distinct canonical topicIds:', topicIds.size);
 console.log('AI verdict allowed among runnable:', aiVerdictAllowed);
 console.log('Runnable but AI verdict withheld by professional safety:', aiVerdictBlockedByProfessionalSafety);
-console.log('Finding — canonical AI builder still depends on external topicId:', topicDependencyPresent ? 'YES' : 'NO');
+console.log('Phase 5D closure — canonical AI builder requires external topicId:', 'NO');
