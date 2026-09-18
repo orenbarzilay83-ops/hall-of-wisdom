@@ -20293,8 +20293,9 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         114,
         121
       ],
-      "status": "DEFER_UNTIL_INDEX_COMPLETE",
-      "summary": "Al-Zanati, al-Layth and other attributed/variant methods are REFERENCE_ONLY by default; do not auto-run or vote them against the selected primary method."
+      "status": "RESOLVED",
+      "summary": "Al-Zanati, al-Layth and other attributed/variant methods are REFERENCE_ONLY by default; do not auto-run or vote them against the selected primary method.",
+      "resolution": "Wave 1 safety gate closes automatic execution: attributed/variant methods remain REFERENCE_ONLY and are not run or voted against a selected primary route."
     },
     {
       "id": "B06-DHAMIR-NEED-DRIVEN",
@@ -20303,8 +20304,9 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         122,
         123
       ],
-      "status": "DEFER_UNTIL_INDEX_COMPLETE",
-      "summary": "SHIBUTZ_3_ELEMENT_VALUES may support a needed dhamir intent, but its presence in code must not cause all dhamir types to run. Select only question-relevant operational types."
+      "status": "RESOLVED",
+      "summary": "SHIBUTZ_3_ELEMENT_VALUES may support a needed dhamir intent, but its presence in code must not cause all dhamir types to run. Select only question-relevant operational types.",
+      "resolution": "Wave 1 removed unconditional dhamir execution from buildKashfReading. No dhamir method now runs unless clientContext.dhamirMode is explicitly selected."
     },
     {
       "id": "B07-DATA-ELEMENT-TRADITIONS-RUNTIME-PRECEDENCE",
@@ -20314,8 +20316,9 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         126,
         132
       ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "Existing SHIBUTZ_3_ELEMENT_VALUES usage must not confer runtime authority. Select an element/dhamir method only by approved question intent after source precedence review."
+      "status": "RESOLVED",
+      "summary": "Existing SHIBUTZ_3_ELEMENT_VALUES usage must not confer runtime authority. Select an element/dhamir method only by approved question intent after source precedence review.",
+      "resolution": "Wave 1 prevents SHIBUTZ_3_ELEMENT_VALUES or any alternative element tradition from acquiring runtime precedence merely because code exists. Dhamir is disabled by default pending explicit routing."
     },
     {
       "id": "B07-DHAMIR-NEED-DRIVEN-SELECTION",
@@ -20326,8 +20329,9 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         130,
         131
       ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "Replace any legacy assumption that all dhamir types should run together. Operational dhamir mapping is need-driven: identify only types required for a concrete question intent and select one primary route."
+      "status": "RESOLVED",
+      "summary": "Replace any legacy assumption that all dhamir types should run together. Operational dhamir mapping is need-driven: identify only types required for a concrete question intent and select one primary route.",
+      "resolution": "Wave 1 establishes explicit-selection-only behavior. Legacy majority remains diagnostic-only under dhamirMode='legacy-majority-explicit'; default runtime runs no dhamir route."
     },
     {
       "id": "B08-SHIB-5-SEASON-MAP-SOURCE-CORRECTION",
@@ -20335,8 +20339,9 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         136,
         137
       ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "Correct SHIBUTZ_5_SEASONS and all consumers. Printed source gives Spring=[2122,1211,2211,1121,2222,2112], Summer=[2212,1111,1122,2121,2112], Winter=[1221,2221,2111], Autumn=[1121,1211,1222]. The old Spring-by-elimination partition is invalid; seasonal groups overlap."
+      "status": "RESOLVED",
+      "summary": "Correct SHIBUTZ_5_SEASONS and all consumers. Printed source gives Spring=[2122,1211,2211,1121,2222,2112], Summer=[2212,1111,1122,2121,2112], Winter=[1221,2221,2111], Autumn=[1121,1211,1222]. The old Spring-by-elimination partition is invalid; seasonal groups overlap.",
+      "resolution": "Wave 1 corrected SHIBUTZ_5_SEASONS to the printed overlapping groups. Spring is [2122,1211,2211,1121,2222,2112], Summer [2212,1111,1122,2121,2112], Winter [1221,2221,2111], Autumn [1121,1211,1222]. Elimination-based partitioning was removed."
     },
     {
       "id": "B09-DHAMIR-MAJORITY-RUNTIME-DISABLED",
@@ -20344,32 +20349,36 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         151,
         155
       ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "Source majority rule is preserved, but project runtime must select one need-driven primary dhamir route and must not run all five or 3/5 majority."
+      "status": "RESOLVED",
+      "summary": "Source majority rule is preserved, but project runtime must select one need-driven primary dhamir route and must not run all five or 3/5 majority.",
+      "resolution": "Wave 1 disables the 3/5-style majority path as an automatic runtime behavior. computeDhamirByMajority is preserved only behind explicit diagnostic mode and no longer runs on every reading."
     },
     {
       "id": "B09-DHAMIR-H6-SUBJECT-ID-CANDIDATE",
       "pages": [
         159
       ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "Evaluate the source-specific H6 rule as a primary route only for the question intent \"whom is the questioner asking about?\"."
+      "status": "RESOLVED",
+      "summary": "Evaluate the source-specific H6 rule as a primary route only for the question intent \"whom is the questioner asking about?\".",
+      "resolution": "Wave 1 isolates the p159 H6 subject-identification rule as an explicit candidate mode ('subject-h6'). It runs alone only when explicitly selected and never votes with other dhamir methods."
     },
     {
       "id": "B10-DEREKH-H13-POLARITY-DOWNSTREAM",
       "pages": [
         163
       ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "Audit any DEREKH_HOUSE_RULES/runtime data for the p163 H9/H10 parent-polarity reversal; printed scan is authoritative."
+      "status": "RESOLVED",
+      "summary": "Audit any DEREKH_HOUSE_RULES/runtime data for the p163 H9/H10 parent-polarity reversal; printed scan is authoritative.",
+      "resolution": "Wave 1 verified the printed p163 polarity and locked it in data: H9 kharij + H10 dakhil = quick return; H9 dakhil + H10 kharij = prolonged travel. Existing runtime lookup already followed this order; a verification marker was added to prevent reversal."
     },
     {
       "id": "B10-SEVEN-WITNESSES-SUPPORTING-ROLE",
       "pages": [
         164
       ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "Seven Witnesses H9-H15 are a supporting witness scheme; H16 is separate for dhamir. Do not auto-route as a primary method or merge with other witness systems."
+      "status": "RESOLVED",
+      "summary": "Seven Witnesses H9-H15 are a supporting witness scheme; H16 is separate for dhamir. Do not auto-route as a primary method or merge with other witness systems.",
+      "resolution": "Wave 1 marks the seven witnesses (H9-H15) as supporting-only with autoRoute=false; H16 remains separately identified for hidden intention. They are not a primary route and are not merged with other witness systems."
     },
     {
       "id": "B10-PROXIMITY-NO-RUNTIME-WITHOUT-DEFINITION",

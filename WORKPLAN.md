@@ -14,8 +14,16 @@
 - [✅] DS-04 עמ׳ 101–102 — תיקון כלל העדות ל־5→[3,7,11], ללא בית 6 וללא חיבור למערכת עמ׳ 53 (`B04-DATA-WITNESS-NUMERAL`).
 - [✅] DS-05 עמ׳ 111 — תיקון טבלת המספר/ממון ל־H7=29, H11 חלופה=600, H12 חלופה=700; עמ׳ 106 (position 7=28) נשאר נפרד וללא שינוי (`B05-DATA-P111-MONEY-TABLE`).
 - [◻️] DS-05 עמ׳ 112 — נשאר `DEFERRED_UNTIL_ALGORITHM_VERIFIED`: הביטוי המבני מائل الأوتاد מתועד ומאומת ברמת מקור/HTML בלבד; `kashf-leshon-hainyan.js` נשאר orphan מנותק מ-Runtime, האלגוריתם לא שוחזר ולא אומת (`B05-P112-LISAN-STRUCTURE`).
-- [ ] הפריט הבא: `B06-OPS-ATTRIBUTED-METHODS` — שיטות מיוחסות (אל-זנאתי ואחרים) נשארות REFERENCE_ONLY, לא מופעלות אוטומטית מול השיטה הראשית.
-- [ ] אחריו: `B06-DHAMIR-NEED-DRIVEN` — סקירת שיטות הדמיר לפי צורך בפועל, בלי חיבור מוקדם ל-Runtime.
+- [✅] Wave 1 — `B06-OPS-ATTRIBUTED-METHODS`: שיטות מיוחסות נשארות REFERENCE_ONLY ואינן מורצות/מצביעות אוטומטית.
+- [✅] Wave 1 — `B06-DHAMIR-NEED-DRIVEN`: ריצת דמיר אוטומטית הוסרה; נדרש `clientContext.dhamirMode` מפורש.
+- [✅] Wave 1 — `B07-DATA-ELEMENT-TRADITIONS-RUNTIME-PRECEDENCE`: עצם קיום טבלת יסודות אינו מעניק לה קדימות Runtime.
+- [✅] Wave 1 — `B07-DHAMIR-NEED-DRIVEN-SELECTION`: מסלול רוב ישן נשמר לאבחון בלבד תחת בחירה מפורשת.
+- [✅] Wave 1 — `B08-SHIB-5-SEASON-MAP-SOURCE-CORRECTION`: טבלת העונות תוקנה לקבוצות החופפות המודפסות; בוטל היקש-השלמה.
+- [✅] Wave 1 — `B09-DHAMIR-MAJORITY-RUNTIME-DISABLED`: רוב שיטות הדמיר אינו רץ עוד בכל קריאה.
+- [✅] Wave 1 — `B09-DHAMIR-H6-SUBJECT-ID-CANDIDATE`: כלל H6 מבודד כ-`subject-h6` ורץ רק בבחירה מפורשת.
+- [✅] Wave 1 — `B10-DEREKH-H13-POLARITY-DOWNSTREAM`: אומת וננעל סדר p163 — H9 חיצוני+H10 פנימי = חזרה מהירה; ההפך = התארכות.
+- [✅] Wave 1 — `B10-SEVEN-WITNESSES-SUPPORTING-ROLE`: H9-H15 מסומנים supporting-only; בית 16 נפרד לדמיר; אין auto-route.
+- [ ] הבא: Wave 2 — Routing (14 פריטים): מעבר מהנתיב הרחב הישן למסלול קנוני מדויק לפי כוונת השאלה.
 
 ---
 
