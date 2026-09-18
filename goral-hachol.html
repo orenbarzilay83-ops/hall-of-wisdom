@@ -3375,11 +3375,19 @@ body:has(#screen-open.active) .topbar { display: none !important; }
     window.__KASHF_MODULE_READY = Promise.all([
       import('./goral-hachol/engine/kashf-reading-engine.js'),
       import('./goral-hachol/engine/kashf-narrative-writer.js'),
+      import('./goral-hachol/engine/kashf-canonical-reading-engine.js'),
+      import('./goral-hachol/engine/kashf-canonical-narrative-writer.js'),
       import('./goral-hachol/engine/raml-board-generator.js'),
-    ]).then(([readingMod, narrativeMod, boardMod]) => {
+    ]).then(([readingMod, narrativeMod, canonicalReadingMod, canonicalNarrativeMod, boardMod]) => {
       window.KASHF_ENGINE = {
+        // Legacy/free-topic path — retained only when no explicit Question ID
+        // was selected.
         buildKashfReading: readingMod.buildKashfReading,
         writeKashfReading: narrativeMod.writeKashfReading,
+
+        // Phase 5B canonical client path — authoritative for Question Bank IDs.
+        buildKashfReadingByQuestionId: canonicalReadingMod.buildKashfReadingByQuestionId,
+        writeCanonicalKashfReading: canonicalNarrativeMod.writeCanonicalKashfReading,
         buildRamlBoardFromMothers: boardMod.buildRamlBoardFromMothers,
       };
     }).catch(err => {
