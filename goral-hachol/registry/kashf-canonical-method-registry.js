@@ -320,7 +320,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     runtimeAllowed: false,
     executionKind: 'custom-engine',
     executorStatus: 'not-applicable',
-    notes: 'Wave 3 closure is authoritative: the text gives aggregate/reduce/walk instructions, but the exact element aggregation and the figure-number-in-landing-house lookup are not mechanically closed. Keep blocked until a source-faithful algorithm and Golden Test exist; do not substitute p264 life stages.',
+    notes: 'Phase 4 final blocker B12-P178: the source procedure is preserved, but element aggregation, mod-16 walking and the figure-number-in-house lookup are not yet mechanically source-closed/Golden-Testable. Keep hard-blocked; do not reuse the legacy raw-board-point helper and do not replace with p264 life stages.',
   }),
 
   'lifespan.p264.stagesH11H9H7': method({

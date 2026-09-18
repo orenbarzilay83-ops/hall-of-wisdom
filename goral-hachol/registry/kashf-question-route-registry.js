@@ -298,21 +298,21 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
 
   'q-lifespan': route({
     questionId: 'q-lifespan',
-    disposition: 'BLOCK',
+    disposition: 'RENAME',
     kashfIntentId: 'lifespan.duration',
     kashfMethodId: 'lifespan.p178.elementCountToHouse',
     kashfRuntimeStatus: 'blocked-by-source',
-    note: 'Wave 3 left the p178 duration algorithm blocked: element aggregation and landing-house number lookup are not mechanically closed. Do not substitute the p264 life-stage method.',
+    note: 'Phase 4 B12-P178 keeps the p178 duration algorithm non-runtime until element aggregation, mod-16 walking and figure-number lookup are source-closed and Golden-Testable. Do not substitute p264 life-stage houses.',
   }),
 
   'q-lifespan-remaining': route({
     questionId: 'q-lifespan-remaining',
-    disposition: 'BLOCK',
+    disposition: 'ALIAS',
     aliasOf: 'q-lifespan',
     kashfIntentId: 'lifespan.duration',
     kashfMethodId: 'lifespan.p178.elementCountToHouse',
     kashfRuntimeStatus: 'blocked-by-source',
-    note: 'Same p178 blocker as q-lifespan; no numeric duration is emitted until the source algorithm is mechanically closed.',
+    note: 'Alias to the blocked p178 duration method; it must remain non-runtime until B12-P178 unlock criteria are satisfied.',
   }),
 
   'q-lifespan-stages': route({

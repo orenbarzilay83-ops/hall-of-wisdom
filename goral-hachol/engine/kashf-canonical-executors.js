@@ -2422,8 +2422,6 @@ function computeInheritanceDirectionP180(chart) {
   };
 }
 
-
-
 const CUSTOM_EXECUTORS = Object.freeze({
   'messenger.p176.recast14511': computeMessengerOutcomeP176,
   'well.p188.recast1468': computeWellResultP188,
