@@ -161,31 +161,31 @@ export const KASHF_CANONICAL_QUESTION_ROUTES = Object.freeze({
   // House 5 — pregnancy/children
   'q-pregnancy': {
     topicId: 'children',
-    routeKind: 'primary',
-    runPrimary: true,
+    routeKind: 'supporting-only',
+    runPrimary: false,
     runAlt: false,
-    supportingCheckIds: [],
+    supportingCheckIds: ['pregnancy-confirmation-exact'],
   },
   'q-gender': {
     topicId: 'children',
     routeKind: 'supporting-only',
     runPrimary: false,
     runAlt: false,
-    supportingCheckIds: ['gender-check'],
+    supportingCheckIds: ['pregnancy-gender-exact'],
   },
   'q-miscarriage': {
     topicId: 'children',
     routeKind: 'supporting-only',
     runPrimary: false,
     runAlt: false,
-    supportingCheckIds: ['danger', 'pregnancy-detailed'],
+    supportingCheckIds: ['pregnancy-miscarriage-exact'],
   },
   'q-birth-ease': {
     topicId: 'children',
     routeKind: 'supporting-only',
     runPrimary: false,
     runAlt: false,
-    supportingCheckIds: ['pregnancy-detailed'],
+    supportingCheckIds: ['pregnancy-birth-ease-exact'],
   },
   'q-child-survive': {
     topicId: 'children',
@@ -199,7 +199,14 @@ export const KASHF_CANONICAL_QUESTION_ROUTES = Object.freeze({
     routeKind: 'supporting-only',
     runPrimary: false,
     runAlt: false,
-    supportingCheckIds: ['pregnancy-detailed'],
+    supportingCheckIds: ['child-health-exact'],
+  },
+  'q-child-lifespan': {
+    topicId: 'children',
+    routeKind: 'supporting-only',
+    runPrimary: false,
+    runAlt: false,
+    supportingCheckIds: ['child-welfare-exact'],
   },
 
   // House 6 — illness intents
