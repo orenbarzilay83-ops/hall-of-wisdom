@@ -56,7 +56,7 @@ import { buildReadingStrategy } from './reading-strategy-builder.js';
 import { buildReadingPlan } from './reading-planner.js';
 import { buildKashfCanonicalAiBridge } from './kashf-canonical-ai-bridge.js';
 
-export const KASHF_AI_CONTEXT_BUILDER_VERSION = 'kashf-ai-context-builder-v9';
+export const KASHF_AI_CONTEXT_BUILDER_VERSION = 'kashf-ai-context-builder-v10';
 
 // The five distinct "עד/עדים" (witness) systems documented in
 // HALL_WISDOM_KASHF_EXHAUSTIVE_WITNESS_AND_SPIRITUAL_RULES_AUDIT.md
@@ -450,7 +450,7 @@ export function buildAiSafeKashfBoard(board) {
 /**
  * @param {object} input
  * @param {string[]} input.mothers - real 4-figure array (e.g. ['2222','2211','2121','2221'])
- * @param {string} input.topicId - real Kashf topic id (kashf-topic-rules.js)
+ * @param {string} [input.topicId] - caller topic id; required only for legacy/non-canonical flow. When a canonical method resolves, its registry topic is authoritative.
  * @param {string} input.question - the real question asked
  * @param {string} [input.readingId]
  * @param {string} [input.clientName]
@@ -464,9 +464,6 @@ export function buildKashfAiContextPackage(input = {}) {
 
   if (!Array.isArray(mothers) || mothers.length !== 4) {
     return { contextPackage: null, completeness: 'partial', missingFields: ['mothers — must be a real 4-figure array (e.g. from an actual cast), none was provided'], intentResult: null };
-  }
-  if (!topicId) {
-    return { contextPackage: null, completeness: 'partial', missingFields: ['topicId — required to run buildKashfReading, none was provided'], intentResult: null };
   }
   if (!question || typeof question !== 'string') {
     return { contextPackage: null, completeness: 'partial', missingFields: ['question — required for intent analysis and readingContext.question, none was provided'], intentResult: null };
@@ -482,21 +479,49 @@ export function buildKashfAiContextPackage(input = {}) {
         clientContext: { name: clientName || '', question },
       })
     : null;
+
+  // Phase 5D — single topic authority:
+  // once a canonical method is resolved, its registry topicId is authoritative.
+  // A caller-supplied topicId becomes diagnostic metadata only and can never
+  // steer AI strategy/rule-coverage away from the selected canonical method.
+  const canonicalTopicId = canonicalBridge?.resolution?.state === 'resolved'
+    ? (canonicalBridge.resolution.topicId || canonicalBridge.canonicalRetrieval?.topicId || null)
+    : null;
+  const effectiveTopicId = canonicalTopicId || topicId || null;
+  const topicResolution = Object.freeze({
+    effectiveTopicId,
+    callerTopicId: topicId || null,
+    canonicalTopicId,
+    authority: canonicalTopicId ? 'canonical-method' : (topicId ? 'caller' : 'none'),
+    callerConflict: Boolean(canonicalTopicId && topicId && canonicalTopicId !== topicId),
+  });
+
+  if (!effectiveTopicId) {
+    return {
+      contextPackage: null,
+      completeness: 'partial',
+      missingFields: ['topicId — required only when no canonical Kashf method resolves; none was available'],
+      intentResult: null,
+      canonicalBridge,
+      topicResolution,
+    };
+  }
+
   const rawEngineOutput = canonicalBridge
     ? canonicalBridge.canonicalReading
-    : buildKashfReading(board, topicId, { name: clientName || '', question });
+    : buildKashfReading(board, effectiveTopicId, { name: clientName || '', question });
   const aiSafeEngineOutput = canonicalBridge
     ? buildAiSafeCanonicalKashfEngineOutput(rawEngineOutput)
     : buildAiSafeKashfEngineOutput(rawEngineOutput);
   const aiSafeBoard = buildAiSafeKashfBoard(board);
 
-  const intentResult = analyzeIntent({ question, method: 'kashf', topicId });
-  const readingStrategy = buildReadingStrategy({ intentResult, method: 'kashf', topicId });
+  const intentResult = analyzeIntent({ question, method: 'kashf', topicId: effectiveTopicId });
+  const readingStrategy = buildReadingStrategy({ intentResult, method: 'kashf', topicId: effectiveTopicId });
   const readingPlan = buildReadingPlan({
     question,
     readingDomain: 'goralHachol',
     method: 'kashf',
-    topicId,
+    topicId: effectiveTopicId,
     questionType: intentResult.questionType,
     intentResult,
     readingStrategy,
@@ -535,19 +560,20 @@ export function buildKashfAiContextPackage(input = {}) {
       engineOutput: aiSafeEngineOutput,
       canonicalBridgeVersion: canonicalBridge?.bridgeVersion || null,
       canonicalResolution: canonicalBridge?.resolution || null,
+      topicResolution,
       canonicalRetrieval: canonicalBridge?.canonicalRetrieval || null,
       retrievalCandidates: canonicalBridge?.candidates || [],
       aiVerdictAllowed: canonicalBridge ? canonicalBridge.aiVerdictAllowed === true : null,
       professionalVerdictSafety: canonicalBridge?.professionalVerdictSafety || null,
       methodMetadata: canonicalBridge ? buildCanonicalMethodMetadata(canonicalBridge) : KASHF_METHOD_METADATA,
-      ruleCoverageStatus: buildRuleCoverageStatus(topicId),
+      ruleCoverageStatus: buildRuleCoverageStatus(effectiveTopicId),
       activatedRuleIds: [],
       rejectedRuleIds: [],
       sourceEvidence: canonicalSourceEvidence,
     },
   };
 
-  return { contextPackage, completeness: missingFields.length === 0 ? 'complete' : 'partial', missingFields, intentResult, canonicalBridge };
+  return { contextPackage, completeness: missingFields.length === 0 ? 'complete' : 'partial', missingFields, intentResult, canonicalBridge, topicResolution };
 }
 
 export default { buildKashfAiContextPackage, buildAiSafeKashfEngineOutput, buildAiSafeCanonicalKashfEngineOutput, buildAiSafeKashfBoard, buildRuleCoverageStatus, KASHF_METHOD_METADATA, KASHF_AI_CONTEXT_BUILDER_VERSION };
