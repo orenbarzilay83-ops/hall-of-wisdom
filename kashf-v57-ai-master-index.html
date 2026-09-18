@@ -20386,8 +20386,9 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         164,
         165
       ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "Do not wire figure-proximity rules until a source-faithful computational definition of proximity is established."
+      "status": "RESOLVED",
+      "summary": "Do not wire figure-proximity rules until a source-faithful computational definition of proximity is established.",
+      "resolution": "Wave 2 resolves the runtime risk by keeping figure-proximity completely out of canonical routes. No selected question can invoke it; unresolved proximity semantics remain knowledge-only rather than executable."
     },
     {
       "id": "B11-HOUSE1-INTENT-ROUTING-DEFERRED",
@@ -20397,8 +20398,9 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         169,
         170
       ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "House-1 need, connection, validity, gaze and spiritual-diagnostic rules answer different question intents. Do not aggregate or auto-run them; select one source-backed primary route only after the index is complete."
+      "status": "RESOLVED",
+      "summary": "House-1 need, connection, validity, gaze and spiritual-diagnostic rules answer different question intents. Do not aggregate or auto-run them; select one source-backed primary route only after the index is complete.",
+      "resolution": "Wave 2 adds question-id canonical routing so House-1/general questions no longer inherit the whole generalReading bundle. General state, geographic direction, clothing, completion and blocked lifespan paths are now separated by exact intent."
     },
     {
       "id": "B11-P168-169-LOCATION-PROCEDURE-BLOCKED",
@@ -20406,8 +20408,9 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         168,
         169
       ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "Do not implement the balance-point location/name/color procedure until walking, endpoint and second-figure selection are computationally defined from source."
+      "status": "RESOLVED",
+      "summary": "Do not implement the balance-point location/name/color procedure until walking, endpoint and second-figure selection are computationally defined from source.",
+      "resolution": "Wave 2 closes this as a routing decision: the balance-point location/name/color procedure is explicitly non-runtime until its walking/endpoint algorithm is verified. Canonical routing will not substitute another location method."
     },
     {
       "id": "B11-P170-171-ALTERNATE-ISTIKHARA-NO-RUNTIME",
@@ -20416,8 +20419,9 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         171,
         172
       ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "The istikhara figure table is explicitly from another book and remains an alternative method. Do not route it automatically or treat it as a vote against the selected primary method."
+      "status": "RESOLVED",
+      "summary": "The istikhara figure table is explicitly from another book and remains an alternative method. Do not route it automatically or treat it as a vote against the selected primary method.",
+      "resolution": "Wave 2 preserves the other-book istikhara table as non-runtime/reference-only. Canonical question routing never selects it and it cannot vote against a primary route."
     },
     {
       "id": "B12-HOUSE1-P172-178-INTENT-ROUTING-DEFERRED",
@@ -20430,16 +20434,18 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         177,
         178
       ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "The remaining House-1 rules cover distinct intents (outcome, friend, completion, ruler, messenger, meeting, lifespan and relocation). Do not aggregate them; choose one primary route per intent only after the index is complete."
+      "status": "RESOLVED",
+      "summary": "The remaining House-1 rules cover distinct intents (outcome, friend, completion, ruler, messenger, meeting, lifespan and relocation). Do not aggregate them; choose one primary route per intent only after the index is complete.",
+      "resolution": "Wave 2 separates House-1 outcomes into question-specific canonical routes. Broad topic membership no longer authorizes every outcome/friend/completion/lifespan/location rule to run together."
     },
     {
       "id": "B12-P176-SUBBOARD-RECAST-NO-RUNTIME",
       "pages": [
         176
       ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "The messengers rule creates a new board from H1/H4/H5/H11. Keep source and derived boards separate and do not route it beyond its explicit intent."
+      "status": "RESOLVED",
+      "summary": "The messengers rule creates a new board from H1/H4/H5/H11. Keep source and derived boards separate and do not route it beyond its explicit intent.",
+      "resolution": "Wave 2 keeps the H1/H4/H5/H11 messenger recast outside canonical runtime. No question route invokes the recast automatically, preserving source and derived boards as separate procedures."
     },
     {
       "id": "B12-P177-RELATIVE-THIRTEENTH-BLOCKED",
@@ -20472,8 +20478,9 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         181,
         182
       ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "Chapter 2 contains several money-attainment, source, amount, inheritance and livelihood methods. Route one source-backed method per exact intent; do not aggregate them."
+      "status": "RESOLVED",
+      "summary": "Chapter 2 contains several money-attainment, source, amount, inheritance and livelihood methods. Route one source-backed method per exact intent; do not aggregate them.",
+      "resolution": "Wave 2 locks money questions by exact intent: money state uses the money route, money source uses only money-source-total, and livelihood uses only livelihood/parnasa checks. These methods no longer aggregate or vote together."
     },
     {
       "id": "B13-P180-ELEMENT-AMOUNT-BLOCKED",
@@ -20497,8 +20504,9 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         183,
         184
       ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "The relocation chapter presents several distinct comparisons and indicators. Do not vote or aggregate them; select by the exact question intent."
+      "status": "RESOLVED",
+      "summary": "The relocation chapter presents several distinct comparisons and indicators. Do not vote or aggregate them; select by the exact question intent.",
+      "resolution": "Wave 2 separates relocation intents: move-to-place/home uses the relocation primary route; stay-vs-move uses only current-place; two-city comparison is explicitly blocked until its strength comparator is source-safe."
     },
     {
       "id": "B13-P184-PROPERTY-MAP-NO-RUNTIME",
@@ -20506,8 +20514,9 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         184,
         185
       ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "Do not wire the property/house/garden mapping until v57 H3/H7 is corrected and the applicable witness system is selected source-faithfully."
+      "status": "RESOLVED",
+      "summary": "Do not wire the property/house/garden mapping until v57 H3/H7 is corrected and the applicable witness system is selected source-faithfully.",
+      "resolution": "Wave 2 resolves the runtime exposure by blocking the mixed father/house/land UI fallback and keeping the p184 property map non-runtime until H3/H7 and witness selection are source-faithfully closed."
     },
     {
       "id": "B14-HIDDEN-LOCATION-NO-MULTIMETHOD",
@@ -20519,8 +20528,9 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         190,
         191
       ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "Chapter 4 presents several alternative location methods. Select one by exact intent and prerequisites; never aggregate or vote across them."
+      "status": "RESOLVED",
+      "summary": "Chapter 4 presents several alternative location methods. Select one by exact intent and prerequisites; never aggregate or vote across them.",
+      "resolution": "Wave 2 prevents hidden-location multimethod aggregation: known hidden-item presence uses one primary route; direction and well/depth questions are blocked pending their own verified algorithms; generic secrets do not fall back to the hidden-object bundle."
     },
     {
       "id": "B14-P185-RECURSIVE-QUARTERS-BLOCKED",
@@ -20553,32 +20563,36 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "pages": [
         191
       ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "Pregnancy confirmation, sex, survival, birth difficulty and twins are distinct intents; do not aggregate their indicators."
+      "status": "RESOLVED",
+      "summary": "Pregnancy confirmation, sex, survival, birth difficulty and twins are distinct intents; do not aggregate their indicators.",
+      "resolution": "Wave 2 replaces the broad pregnancy bundle with exact routes for pregnancy confirmation, fetal sex, miscarriage signals, birth ease, child survival, child health and child welfare. No question executes the full multi-intent pregnancy analysis by default."
     },
     {
       "id": "B15-P192-INTENT-SEPARATION",
       "pages": [
         192
       ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "Route pregnancy confirmation, miscarriage risk, maternal safety, child sex, and month count as distinct intents."
+      "status": "RESOLVED",
+      "summary": "Route pregnancy confirmation, miscarriage risk, maternal safety, child sex, and month count as distinct intents.",
+      "resolution": "Wave 2 enforces separate p192-era intents in runtime. Pregnancy confirmation, miscarriage risk and fetal sex now call dedicated source-scoped functions rather than a combined analysis; no unrelated pregnancy indicators are auto-run."
     },
     {
       "id": "B15-P194-CHILD-HEALTH-ROUTING",
       "pages": [
         194
       ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "Keep child existence, health, birth difficulty, and welfare as separate question routes."
+      "status": "RESOLVED",
+      "summary": "Keep child existence, health, birth difficulty, and welfare as separate question routes.",
+      "resolution": "Wave 2 isolates child health and child welfare into dedicated p194 checks. Birth difficulty, pregnancy confirmation and other child/pregnancy outputs are no longer bundled into those questions."
     },
     {
       "id": "B15-P196-ILLNESS-CHAPTER-OPENING",
       "pages": [
         196
       ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "The Chapter 6 illness opening is indexed as a separate route from the closing children rules."
+      "status": "RESOLVED",
+      "summary": "The Chapter 6 illness opening is indexed as a separate route from the closing children rules.",
+      "resolution": "Wave 2 isolates the illness chapter routes: recovery, body-part and illness-type questions have exact allow-lists, while the unsupported cause-of-illness fallback is blocked rather than borrowing the broad illness bundle."
     }
   ],
   "indexPolicyNotes": [
