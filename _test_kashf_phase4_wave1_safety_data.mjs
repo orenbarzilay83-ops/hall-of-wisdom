@@ -17,7 +17,11 @@ assert.match(shib, /patterns: \['2122', '1211', '2211', '1121', '2222', '2112'\]
 assert.match(shib, /patterns: \['2212', '1111', '1122', '2121', '2112'\]/);
 assert.match(shib, /patterns: \['1221', '2221', '2111'\]/);
 assert.match(shib, /patterns: \['1121', '1211', '1222'\]/);
-assert.doesNotMatch(shib, /נגזר בהיקש-השלמה/);
+const seasonStart = shib.indexOf('export const SHIBUTZ_5_SEASONS = [');
+const seasonEnd = shib.indexOf('// שיוך יסודות למזלות', seasonStart);
+const seasonBlock = shib.slice(seasonStart, seasonEnd);
+assert.doesNotMatch(seasonBlock, /נגזר בהיקש-השלמה/);
+assert.match(shib, /טבלת העונות המודפסת חופפת/);
 
 assert.match(gate5, /sourceVerification: 'printed-p163-verified-2026-09-18'/);
 assert.match(gate5, /'kharij-dakhil':[\s\S]*?בא במהירות מנסיעתו/);
