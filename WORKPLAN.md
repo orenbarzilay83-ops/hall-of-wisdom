@@ -32,6 +32,8 @@
 - [✅] Phase 5A runtime-gap closure — 8 השאלות שנמצאו בבדיקת ready↔executor נסגרו: זוג שאלות אורך-החיים כבר יושר לחסם p178; מסר/חדשות, באר/תעלה וירושה קיבלו Executor קנוני; מצב האם נחסם לפי פער מקור; כיוון חפירה מסומן repair-required עד קליטת 4 הטלות נוספות. אין עוד Route במצב ready שמצביע ל-runtimeAllowed=false או executor שאינו ready.
 - [✅] Phase 5A finding נסגר ב-Phase 5B — הקריאה הגלויה ללקוח אינה משתמשת עוד בנתיב הישן כאשר נבחר Question ID; פער 30/138 של ה-Router הישן נשאר רלוונטי רק למסלול legacy/free-topic מפורש.
 - [✅] Phase 5B — הקריאה הגלויה וה-AI חולקים אותה סמכות קנונית: Question ID → method יחיד → v57 → executor או חסימה מפורשת. כשנבחרה שאלה אין fallback לחבילת topic רחבה. QA מלא: 1535/0, כיסוי 138/138, שמירת 54 ready וכל חסמי Phase 4/5A.
+- [✅] Phase 5C — Client↔AI Canonical Parity Audit: כל 138/138 השאלות נבדקו מקצה לקצה מול אותו לוח; 54/54 מסלולים runnable מפיקים ל-AI את ההיטל הבטוח של אותה קריאה קנונית בדיוק, 84/84 מסלולים לא-runnable נשארים fail-closed, ו-54/54 ה-runnable עוברים Professional Verdict Safety. תוקנה בדיקת-regression ישנה של q-mother בלבד, ללא שינוי Runtime.
+- [⚠️] Phase 5C finding — `buildKashfAiContextPackage` עדיין דורש `topicId` חיצוני גם כאשר `questionId` כבר סמכותי. זהו dependency מיותר בשכבת-ה-AI metadata; השלב הבא המומלץ הוא Phase 5D: לגזור את topic metadata מן ה-method הקנוני ולא לדרוש authority כפולה.
 
 ---
 
