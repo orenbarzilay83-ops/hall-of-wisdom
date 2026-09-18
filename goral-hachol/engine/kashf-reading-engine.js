@@ -652,43 +652,57 @@ export function buildKashfReading(board, topicId, clientContext = {}) {
   const boardValidation = board.boardValidation || { isValid: true, warnings: [] };
 
   // ── מחשבת השואל (דמיר) — השער הרביעי ────────────────────────────────────
-  // גילוי "מה השואל באמת רוצה" (כשף עמ' 151-155), עצמאי מהנושא שנבחר.
-  // ראו kashf-dhamir.js לרשימת השיטות המיושמות ומה שעדיין חסר בהן.
+  // Wave 1 safety gate (2026-09-18): שיטות הדמיר אינן רצות עוד אוטומטית בכל
+  // קריאה. הן מופעלות רק כאשר נתיב השאלה בחר אותן במפורש דרך
+  // clientContext.dhamirMode. עד שגל ה-Routing ימפה כוונות מדויקות, ברירת
+  // המחדל היא לא להריץ שום שיטת דמיר ולא לבצע "הצבעת רוב" של כמה שיטות.
+  const dhamirMode = clientContext?.dhamirMode || null;
   let dhamir = null;
-  try {
-    dhamir = computeDhamirByMajority(board);
-  } catch (err) {
-    dhamir = { candidates: [], winner: null, agreementCount: 0, error: err.message };
-  }
-
-  // ── שער 4 סוג 4 — משלים חיצוני (לא כשף אל-אסראר) ────────────────────────
-  // שדה נפרד ומסומן במפורש — אינו נכנס להצבעת הרוב של computeDhamirByMajority
-  // (5 השיטות שם מאומתות ישירות מכשף עצמו). מחושב ומוצג רק בגילוי מלא —
-  // ראו kashf-dhamir-type4-external.js לפרטי המקור.
   let dhamirType4External = null;
-  try {
-    dhamirType4External = computeDhamirType4External(board);
-  } catch (err) {
-    dhamirType4External = { error: err.message };
-  }
-
-  // ── בדיקות תומכות נוספות לגילוי הכוונה — עצמאיות מנושא, תלויות בבית הדמיר
-  // המחושב לעיל (עמ' 104, 35, 112, 119, 124, 159; kashf-pending-extraction.js)
   let dhamirExtras = null;
-  try {
-    const legacyChart = buildLegacyChart(board);
-    const dhamirHouseNum = dhamir?.winner?.houseNumber || null;
-    dhamirExtras = {
-      sodHaDhamirim: computeSodHaDhamirim(legacyChart),
-      honestyCheck: computeQuerentHonestyCheck(legacyChart),
-      querentSubject: computeQuerentSubject({ chart: legacyChart }),
-      timingByThirds: dhamirHouseNum ? computeTimingByDhamirThirds(legacyChart, dhamirHouseNum) : null,
-      temperament: dhamirHouseNum ? computeQuerentTemperament(legacyChart, dhamirHouseNum) : null,
-      timingByMadad: computeTimingByMadad(legacyChart),
-      timingEstimate: dhamir?.winner ? computeTimingEstimate(legacyChart, dhamir.winner, topicId) : null,
-    };
-  } catch (err) {
-    dhamirExtras = { error: err.message };
+
+  if (dhamirMode === 'legacy-majority-explicit') {
+    // תאימות אבחונית בלבד: מסלול הרוב הישן נשמר לשימוש מפורש/בדיקות,
+    // אך אינו נתיב ברירת מחדל ואינו נבחר אוטומטית ב-Runtime.
+    try {
+      dhamir = computeDhamirByMajority(board);
+    } catch (err) {
+      dhamir = { candidates: [], winner: null, agreementCount: 0, error: err.message };
+    }
+
+    // גם השיטה החיצונית אינה רצה אלא בבחירה המפורשת של המסלול האבחוני.
+    try {
+      dhamirType4External = computeDhamirType4External(board);
+    } catch (err) {
+      dhamirType4External = { error: err.message };
+    }
+
+    try {
+      const legacyChart = buildLegacyChart(board);
+      const dhamirHouseNum = dhamir?.winner?.houseNumber || null;
+      dhamirExtras = {
+        sodHaDhamirim: computeSodHaDhamirim(legacyChart),
+        honestyCheck: computeQuerentHonestyCheck(legacyChart),
+        querentSubject: computeQuerentSubject({ chart: legacyChart }),
+        timingByThirds: dhamirHouseNum ? computeTimingByDhamirThirds(legacyChart, dhamirHouseNum) : null,
+        temperament: dhamirHouseNum ? computeQuerentTemperament(legacyChart, dhamirHouseNum) : null,
+        timingByMadad: computeTimingByMadad(legacyChart),
+        timingEstimate: dhamir?.winner ? computeTimingEstimate(legacyChart, dhamir.winner, topicId) : null,
+      };
+    } catch (err) {
+      dhamirExtras = { error: err.message };
+    }
+  } else if (dhamirMode === 'subject-h6') {
+    // עמ' 159: מועמד ממוקד לשאלה "על מי/מה השואל שואל?". אינו מצביע עם
+    // שיטות אחרות ואינו מופעל אלא כאשר ה-Router בוחר בדיוק בכוונה הזאת.
+    try {
+      const legacyChart = buildLegacyChart(board);
+      dhamirExtras = {
+        querentSubject: computeQuerentSubject({ chart: legacyChart }),
+      };
+    } catch (err) {
+      dhamirExtras = { error: err.message };
+    }
   }
 
   // ── עדות בתים 13-14 ──────────────────────────────────────────────────────
