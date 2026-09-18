@@ -105,7 +105,7 @@ export const KASHF_CANONICAL_QUESTION_ROUTES = Object.freeze({
   },
 
   // House 4 — hidden object / land
-  'q-hidden-place': {
+  'q-treasure': {
     topicId: 'hiddenTreasure',
     routeKind: 'primary',
     runPrimary: true,
@@ -114,10 +114,48 @@ export const KASHF_CANONICAL_QUESTION_ROUTES = Object.freeze({
   },
   'q-well-drilling': {
     topicId: 'hiddenTreasure',
-    routeKind: 'supporting-only',
+    routeKind: 'blocked-pending-algorithm',
+    routeStatus: 'BLOCKED',
+    blockReason: 'Depth/location computation belongs to the unresolved pp188-190 algorithm family; do not run until Golden-Testable.',
     runPrimary: false,
     runAlt: false,
-    supportingCheckIds: ['well-drilling'],
+    supportingCheckIds: [],
+  },
+  'q-dig-direction': {
+    topicId: 'hiddenTreasure',
+    routeKind: 'blocked-pending-algorithm',
+    routeStatus: 'BLOCKED',
+    blockReason: 'Hidden-location direction methods are alternatives with unresolved derivation details; no automatic method is selected.',
+    runPrimary: false,
+    runAlt: false,
+    supportingCheckIds: [],
+  },
+  'q-best-city': {
+    topicId: 'relocation',
+    routeKind: 'blocked-pending-rule',
+    routeStatus: 'BLOCKED',
+    blockReason: 'The two-city comparison text does not define a safe computational strength comparator; do not substitute the generic relocation route.',
+    runPrimary: false,
+    runAlt: false,
+    supportingCheckIds: [],
+  },
+  'q-lifespan-remaining': {
+    topicId: 'generalReading',
+    routeKind: 'blocked-pending-algorithm',
+    routeStatus: 'BLOCKED',
+    blockReason: 'The lifespan walking algorithm remains unresolved and Golden-Testable only after Wave 3 closure.',
+    runPrimary: false,
+    runAlt: false,
+    supportingCheckIds: [],
+  },
+  'q-debts': {
+    topicId: 'loan',
+    routeKind: 'blocked-pending-algorithm',
+    routeStatus: 'BLOCKED',
+    blockReason: 'The p179 debt walking procedure is not computationally closed; do not fall back to the ordinary loan route.',
+    runPrimary: false,
+    runAlt: false,
+    supportingCheckIds: [],
   },
 
   // House 5 — pregnancy/children
@@ -185,6 +223,15 @@ export const KASHF_CANONICAL_QUESTION_ROUTES = Object.freeze({
     runPrimary: false,
     runAlt: false,
     supportingCheckIds: ['illness-type'],
+  },
+  'q-illness-cause': {
+    topicId: 'illness',
+    routeKind: 'blocked-source-scope',
+    routeStatus: 'BLOCKED',
+    blockReason: 'This UI question does not have an approved p196 Kashf cause-of-illness route; do not run the broad illness bundle as a substitute.',
+    runPrimary: false,
+    runAlt: false,
+    supportingCheckIds: [],
   },
 });
 
