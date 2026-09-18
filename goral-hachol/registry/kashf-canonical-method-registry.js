@@ -155,10 +155,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'siblings',
     sourcePages: [176],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'recast-board',
-    executorStatus: 'pending',
-    notes: 'Houses 1,4,5,11 become new mothers; complete a new board and judge the method-specific houses.',
+    executorStatus: 'ready',
+    notes: 'Canonical recast executor is wired: original H1,H4,H5,H11 become the four mothers of a fresh board; new H5 plus angles H1,H4,H7,H10 are judged. All must be pure benefic for the source-positive outcome.',
   }),
 
   'clothing.p264-265.luck': method({
@@ -320,7 +320,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     runtimeAllowed: false,
     executionKind: 'custom-engine',
     executorStatus: 'not-applicable',
-    notes: 'Phase 4 final blocker B12-P178: the source procedure is preserved, but element aggregation, mod-16 walking and the figure-number-in-house lookup are not yet mechanically source-closed/Golden-Testable. Keep hard-blocked; do not reuse the legacy raw-board-point helper and do not replace with p264 life stages.',
+    notes: 'Wave 3 closure is authoritative: the text gives aggregate/reduce/walk instructions, but the exact element aggregation and the figure-number-in-landing-house lookup are not mechanically closed. Keep blocked until a source-faithful algorithm and Golden Test exist; do not substitute p264 life stages.',
   }),
 
   'lifespan.p264.stagesH11H9H7': method({
@@ -340,11 +340,11 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfIntentId: 'mother.status',
     topicId: 'motherRules',
     sourcePages: [257],
-    kashfRuntimeStatus: 'ready',
+    kashfRuntimeStatus: 'blocked-by-source',
     runtimeAllowed: false,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Body-source mother rule. Night: house quality plus White/Road in angles or succedents vs cadents. Day: judge by Venus figures. Existing helper is incomplete and must not be reused unchanged.',
+    executorStatus: 'not-applicable',
+    notes: 'The v57/source passage preserves “this house” without closing which house it denotes in context, and the daytime Venus branch is not mechanically complete. Runtime remains blocked rather than guessing a house or reusing the incomplete legacy helper.',
   }),
 
   'hidden.p188.isStillThere': method({
@@ -364,11 +364,11 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfIntentId: 'hidden.direction',
     topicId: 'hiddenTreasure',
     sourcePages: [188],
-    kashfRuntimeStatus: 'ready',
+    kashfRuntimeStatus: 'repair-required',
     runtimeAllowed: false,
     executionKind: 'additional-cast',
     executorStatus: 'pending',
-    notes: 'Divide the suspected place into four quarters and cast one figure per direction. This requires method-specific additional input/casting and cannot be inferred from the existing board.',
+    notes: 'The source method is clear, but the live UI/runtime does not yet collect the four additional directional casts required by p188. It is explicitly repair-required until that method-specific input flow exists; the ordinary board must never be substituted.',
   }),
 
   'well.p188.recast1468': method({
@@ -377,10 +377,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'hiddenTreasure',
     sourcePages: [188],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'recast-board',
-    executorStatus: 'pending',
-    notes: 'Make H1,H4,H6,H8 the new mothers, complete a new board, then judge H4 and angles as benefic+internal. Existing legacy helper using original houses is not source-equivalent. Depth is a separate intent.',
+    executorStatus: 'ready',
+    notes: 'Canonical recast executor is wired: original H1,H4,H6,H8 become new mothers; new angles H1,H4,H7,H10 are judged. The source-positive condition requires pure benefic + strictly internal; failure remains unresolved because the clause does not state the inverse. Depth stays a separate blocked intent.',
   }),
 
   'lostItem.p202.returnH6H8': method({
@@ -548,10 +548,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'deathInheritance',
     sourcePages: [180],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Body-source inheritance method determines which side inherits the other through the stated element-row composites. It does not calculate shares, amounts, or inheritance disputes.',
+    executorStatus: 'ready',
+    notes: 'Canonical p180 executor is wired to the printed two-stage procedure: derive one figure from earth(H1)+water(H2)+air(H3)+fire(H4), a second from fire(H5)+air(H6)+water(H7)+earth(H2), derive a final figure from those two, then use the explicit طالب/مطلوب division (pp64-66) to determine which side inherits. It does not calculate shares, amounts, or disputes.',
   }),
 
   // ── TRAVEL + MISSING canonical slice ----------------------------------
