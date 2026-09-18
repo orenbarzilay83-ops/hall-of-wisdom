@@ -1180,8 +1180,33 @@ async function runReading() {
         dynFields,
       };
 
-      const kashfReading = window.KASHF_ENGINE.buildKashfReading(kashfBoard, kashfTopicId, clientCtx);
-      const kashfHtml = window.KASHF_ENGINE.writeKashfReading(kashfReading);
+      let kashfReading;
+      let kashfHtml;
+
+      if (selectedQuestion?.id) {
+        if (!window.KASHF_ENGINE.buildKashfReadingByQuestionId || !window.KASHF_ENGINE.writeCanonicalKashfReading) {
+          throw new Error("הנתיב הקנוני של כשף לא נטען. נסה לרענן את הדף.");
+        }
+
+        // Phase 5B: Question ID is authoritative. Rebuild the canonical board
+        // directly from the four mothers, exactly as the AI context path does.
+        // A blocked canonical route stays blocked — never fall back to a broad
+        // topic bundle for a selected Question Bank item.
+        const canonicalBoard = window.KASHF_ENGINE.buildRamlBoardFromMothers(
+          selectedMothers.map((mother) => mother.key)
+        );
+        kashfReading = window.KASHF_ENGINE.buildKashfReadingByQuestionId(
+          canonicalBoard,
+          selectedQuestion.id,
+          clientCtx
+        );
+        kashfHtml = window.KASHF_ENGINE.writeCanonicalKashfReading(kashfReading);
+      } else {
+        // Explicit free-topic/legacy flow only. No selected Question ID exists,
+        // so this path cannot override a canonical Question Bank decision.
+        kashfReading = window.KASHF_ENGINE.buildKashfReading(kashfBoard, kashfTopicId, clientCtx);
+        kashfHtml = window.KASHF_ENGINE.writeKashfReading(kashfReading);
+      }
 
       // שמירה לארכיון הלקוח (method: "kashf") — best-effort, לא חוסם את הקריאה עצמה
       // אם נכשל. לא נוגע בחישוב/ניסוח הכשף. ראו KASHF_CONTEXT_COLLECTOR_IMPLEMENTATION_PLAN.md §4/§9.
