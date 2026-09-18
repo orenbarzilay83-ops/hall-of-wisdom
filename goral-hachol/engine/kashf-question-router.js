@@ -68,10 +68,12 @@ export const KASHF_CANONICAL_QUESTION_ROUTES = Object.freeze({
   },
   'q-money-source': {
     topicId: 'money',
-    routeKind: 'supporting-only',
+    routeKind: 'blocked-source-contradiction',
+    routeStatus: 'BLOCKED',
+    blockReason: 'The p181 source-of-money method is explicitly from another book and contradicts itself: reduction by two cannot produce the stated 1–7 remainder table.',
     runPrimary: false,
     runAlt: false,
-    supportingCheckIds: ['money-source-total'],
+    supportingCheckIds: [],
   },
   'q-livelihood': {
     topicId: 'money',
