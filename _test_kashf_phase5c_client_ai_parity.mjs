@@ -93,7 +93,7 @@ const topiclessProbe = buildKashfAiContextPackage({
 assert.ok(topiclessProbe.contextPackage, 'canonical Question ID builds AI context without caller topicId');
 assert.equal(topiclessProbe.topicResolution?.authority, 'canonical-method');
 assert.equal(topiclessProbe.topicResolution?.effectiveTopicId, 'travel');
-assert.equal(topiclessProbe.contextPackage.readingPlan?.topicId, 'travel');
+assert.equal(topiclessProbe.contextPackage.readingContext.topicResolution?.effectiveTopicId, 'travel');
 
 console.log('Phase 5C client↔AI canonical parity: PASS');
 console.log('Questions audited:', Object.keys(KASHF_QUESTION_ROUTES).length);
