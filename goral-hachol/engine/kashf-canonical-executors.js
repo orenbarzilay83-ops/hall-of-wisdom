@@ -16,6 +16,7 @@ import {
 import { combineRamlFigures } from './raml-figures.js';
 import { buildRamlBoardFromMothers } from './raml-board-generator.js';
 import { FIGURE_PLANET_MAP } from '../data/sources/kashf-al-asrar/kashf-hazz.js';
+import { HAWI_FIGURE_NAMES_BY_ID } from '../data/sources/kashf-al-asrar/kashf-figure-names.js';
 import { classifyCanonicalFigure } from './kashf-canonical-figure-classifier.js';
 
 const LEGACY_EXECUTORS = Object.freeze({
@@ -2263,7 +2264,168 @@ function computeHiddenActionP167(chart) {
   };
 }
 
+
+// ── 2026-09-18 closure of the eight route/executor gaps ────────────────────
+// These executors are intentionally method-scoped. They do not re-enable any
+// broad topic bundle and they use only the exact source procedure selected by
+// the canonical route.
+
+function recastChartFromHouses(chart, motherHouses) {
+  const mothers = motherHouses.map((houseNumber) => {
+    const entry = findCanonicalHouse(chart, houseNumber);
+    return entry?.key || entry?.pattern || null;
+  });
+  if (mothers.some((pattern) => !pattern)) return null;
+  const board = buildRamlBoardFromMothers(mothers);
+  return {
+    motherHouses: [...motherHouses],
+    motherPatterns: mothers,
+    chart: toLegacyChart(board),
+  };
+}
+
+function summarizeCanonicalHouse(chart, houseNumber) {
+  const entry = findCanonicalHouse(chart, houseNumber);
+  const pattern = entry?.key || entry?.pattern || null;
+  if (!pattern) return null;
+  const classification = classifyCanonicalFigure(pattern);
+  return {
+    houseNumber,
+    pattern,
+    figureHebrew: classification.figureHebrew || entry?.hebrew || entry?.hebrewName || pattern,
+    classification,
+  };
+}
+
+// Kashf p176 — messenger/message outcome by a fresh board whose mothers are
+// original H1,H4,H5,H11. The source then judges new H5 plus the angles.
+function computeMessengerOutcomeP176(chart) {
+  const recast = recastChartFromHouses(chart, [1, 4, 5, 11]);
+  if (!recast) return null;
+  const judgedHouses = [5, 1, 4, 7, 10];
+  const findings = judgedHouses.map((houseNumber) => summarizeCanonicalHouse(recast.chart, houseNumber));
+  if (findings.some((item) => !item)) return null;
+
+  const allBenefic = findings.every((item) => item.classification.saadNahs === 'saad');
+  const outputHebrew = allBenefic
+    ? 'בלוח החדש שנבנה מבתים 1, 4, 5 ו־11, הבית החמישי וכל היתדות מיטיבים. לפי כשף עמ׳ 176 — הבקשה/השליחות נענית.'
+    : 'בלוח החדש שנבנה מבתים 1, 4, 5 ו־11, הבית החמישי והיתדות אינם כולם מיטיבים. לפי לשון כשף עמ׳ 176 — הבקשה/השליחות אינה נענית.';
+
+  return {
+    sourceRef: 'חשיפת הסודות הנצורים v57 עמ׳ 176',
+    sourceText: 'העמד את הראשון, הרביעי, החמישי והאחד־עשר כאמהות, השלם לוח חדש, והסתמך על החמישי ועל היתדות.',
+    housesUsed: [1, 4, 5, 11],
+    recastMotherHouses: recast.motherHouses,
+    recastMotherPatterns: recast.motherPatterns,
+    judgedHouses,
+    findings,
+    allBenefic,
+    positive: allBenefic,
+    verdictType: 'messenger-outcome-recast',
+    outputHebrew,
+  };
+}
+
+// Kashf p188 — well/canal objective by a fresh board whose mothers are
+// original H1,H4,H6,H8. Only the stated positive condition is asserted:
+// angles benefic + internal => objective obtained. Failure does not create an
+// unsourced inverse verdict that no water exists.
+function computeWellResultP188(chart) {
+  const recast = recastChartFromHouses(chart, [1, 4, 6, 8]);
+  if (!recast) return null;
+  const angleHouses = [1, 4, 7, 10];
+  const findings = angleHouses.map((houseNumber) => summarizeCanonicalHouse(recast.chart, houseNumber));
+  if (findings.some((item) => !item)) return null;
+
+  const allBeneficInternal = findings.every((item) =>
+    item.classification.saadNahs === 'saad'
+    && item.classification.dakhalKharij === 'dakhil'
+  );
+
+  const outputHebrew = allBeneficInternal
+    ? 'בלוח החדש שנבנה מבתים 1, 4, 6 ו־8, היתדות מיטיבים ופנימיים. לפי כשף עמ׳ 188 — המבוקש בחפירת הבאר/התעלה מתקבל.'
+    : 'תנאי המקור בעמ׳ 188 — היתדות מיטיבים ופנימיים בלוח החדש — לא הושלם. המקור אינו נותן כאן דין הפוך מפורש, ולכן אין להסיק מכך לבדו שאין מים.';
+
+  return {
+    sourceRef: 'חשיפת הסודות הנצורים v57 עמ׳ 188',
+    sourceText: 'עשה את הראשון, הרביעי, השישי והשמיני לאמהות, השלם את לוח החול; אם הרביעי והיתדות מיטיבים ופנימיים — המבוקש מתקבל.',
+    housesUsed: [1, 4, 6, 8],
+    recastMotherHouses: recast.motherHouses,
+    recastMotherPatterns: recast.motherPatterns,
+    judgedHouses: angleHouses,
+    findings,
+    sourceConditionMet: allBeneficInternal,
+    positive: allBeneficInternal ? true : null,
+    verdictType: 'well-result-recast',
+    outputHebrew,
+  };
+}
+
+// Kashf p180 — inheritance direction. The printed source requires TWO
+// element-row composites and then a third figure derived from those two.
+// "Part of the questioner / part of the person asked about" is resolved by
+// the book's explicit طالب / مطلوب figure division (pp64-66).
+function computeInheritanceDirectionP180(chart) {
+  const h1 = findCanonicalHouse(chart, 1);
+  const h2 = findCanonicalHouse(chart, 2);
+  const h3 = findCanonicalHouse(chart, 3);
+  const h4 = findCanonicalHouse(chart, 4);
+  const h5 = findCanonicalHouse(chart, 5);
+  const h6 = findCanonicalHouse(chart, 6);
+  const h7 = findCanonicalHouse(chart, 7);
+  const patterns = [h1,h2,h3,h4,h5,h6,h7].map((h) => h?.key || h?.pattern || null);
+  if (patterns.some((pattern) => !pattern)) return null;
+
+  // First figure: earth(H1), water(H2), air(H3), fire(H4).
+  const firstPattern = [
+    patterns[0][3],
+    patterns[1][2],
+    patterns[2][1],
+    patterns[3][0],
+  ].join('');
+
+  // Second figure: fire(H5), air(H6), water(H7), earth(H2).
+  const secondPattern = [
+    patterns[4][0],
+    patterns[5][1],
+    patterns[6][2],
+    patterns[1][3],
+  ].join('');
+
+  const finalPattern = combineRamlFigures(firstPattern, secondPattern).resultPattern;
+  const figure = HAWI_FIGURE_NAMES_BY_ID?.[finalPattern] || null;
+  const side = figure?.seekerStatus === 'טאלב'
+    ? 'questioner'
+    : figure?.seekerStatus === 'מטלוב'
+      ? 'person-asked-about'
+      : null;
+
+  const outputHebrew = side === 'questioner'
+    ? 'הצורה הסופית שייכת לחלקו של השואל (טאלב). לפי כשף עמ׳ 180: השואל יורש את האדם שעליו שאל.'
+    : side === 'person-asked-about'
+      ? 'הצורה הסופית שייכת לחלקו של הנשאל עליו (מטלוב). לפי כשף עמ׳ 180: האדם שעליו נשאל יורש את השואל.'
+      : 'הצורה הסופית אינה מסווגת בטבלת טאלב/מטלוב המאומתת; אין להכריע את כיוון הירושה.';
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 180; חלוקת טאלב/מטלוב עמ׳ 64–66',
+    sourceText: 'הוצא צורה מעפר הראשון, מי השני, אוויר השלישי ואש הרביעי; וצורה מאש החמישי, אוויר השישי, מי השביעי ועפר השני; מן שתי הצורות הוצא צורה. אם היא מחלקו של השואל — אתה יורש אותו; אם מחלקו של הנשאל — הוא יורש אותך.',
+    housesUsed: [1, 2, 3, 4, 5, 6, 7],
+    firstPattern,
+    secondPattern,
+    finalPattern,
+    finalFigureHebrew: figure?.hebrewName || finalPattern,
+    seekerStatus: figure?.seekerStatus || null,
+    inheritanceDirection: side,
+    positive: null,
+    verdictType: 'inheritance-direction',
+    outputHebrew,
+  };
+}
+
 const CUSTOM_EXECUTORS = Object.freeze({
+  'messenger.p176.recast14511': computeMessengerOutcomeP176,
+  'well.p188.recast1468': computeWellResultP188,
+  'inheritance.p180.elementComposite': computeInheritanceDirectionP180,
   'profession.p254.h9Planet': computeProfessionP254,
   'pregnancy.p191.deliveryDifficultyH1H5H15': computeDeliveryDifficultyP191,
   'money.p180.livelihoodH10Invert': computeLivelihoodP180,
