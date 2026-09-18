@@ -8,7 +8,6 @@ import { KASHF_QUESTION_ROUTES } from './goral-hachol/registry/kashf-question-ro
 import {
   buildKashfAiContextPackage,
   buildAiSafeCanonicalKashfEngineOutput,
-  buildRuleCoverageStatus,
 } from './goral-hachol/intelligence/kashf-ai-context-builder.js';
 
 const MOTHERS = ['2222', '2211', '2121', '2221'];
@@ -123,12 +122,16 @@ assert.equal(
   'travel.p238.assemble1359',
   'authoritative Question ID protects the actual canonical method from wrong caller topic'
 );
-const wrongTopicCoverageApplied =
-  JSON.stringify(mismatchedTopicProbe.contextPackage.readingContext.ruleCoverageStatus) ===
-  JSON.stringify(buildRuleCoverageStatus('commerce'));
-const canonicalTravelCoverageApplied =
-  JSON.stringify(mismatchedTopicProbe.contextPackage.readingContext.ruleCoverageStatus) ===
-  JSON.stringify(buildRuleCoverageStatus('travel'));
-assert.equal(wrongTopicCoverageApplied, true, 'current audit baseline: caller topic still drives ruleCoverageStatus');
-assert.equal(canonicalTravelCoverageApplied, false, 'current audit baseline: canonical method topic does not yet override caller topic metadata');
-console.log('Finding — wrong caller topic can contaminate canonical AI metadata:', wrongTopicCoverageApplied ? 'YES' : 'NO');
+const wrongTopicMetadataApplied =
+  mismatchedTopicProbe.contextPackage.readingPlan?.topicId === 'commerce';
+assert.equal(
+  wrongTopicMetadataApplied,
+  true,
+  'current audit baseline: caller topic still survives inside canonical AI readingPlan metadata'
+);
+assert.notEqual(
+  mismatchedTopicProbe.contextPackage.readingPlan?.topicId,
+  'travel',
+  'current audit baseline: canonical method topic does not yet override caller topic metadata'
+);
+console.log('Finding — wrong caller topic can contaminate canonical AI metadata:', wrongTopicMetadataApplied ? 'YES' : 'NO');
