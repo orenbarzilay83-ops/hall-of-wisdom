@@ -211,7 +211,7 @@ function writeAltPara(reading) {
 // ── פסקת ניתוח תומך ───────────────────────────────────────────────────────
 
 function findingSentence(f) {
-  if (f.error) return null;
+  if (f.error || f.blocked || f.runtimeEligible === false) return null;
 
   if (f.checkType === 'house-quality') {
     const q = qualityWord(f.quality);
