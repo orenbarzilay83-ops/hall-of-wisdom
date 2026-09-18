@@ -301,8 +301,8 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     disposition: 'RENAME',
     kashfIntentId: 'lifespan.duration',
     kashfMethodId: 'lifespan.p178.elementCountToHouse',
-    kashfRuntimeStatus: 'ready',
-    note: 'The canonical p178 method calculates lifespan duration; do not substitute p264 life-stage houses.',
+    kashfRuntimeStatus: 'blocked-by-source',
+    note: 'Phase 4 B12-P178 keeps the p178 duration algorithm non-runtime until element aggregation, mod-16 walking and figure-number lookup are source-closed and Golden-Testable. Do not substitute p264 life-stage houses.',
   }),
 
   'q-lifespan-remaining': route({
@@ -311,7 +311,8 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     aliasOf: 'q-lifespan',
     kashfIntentId: 'lifespan.duration',
     kashfMethodId: 'lifespan.p178.elementCountToHouse',
-    kashfRuntimeStatus: 'ready',
+    kashfRuntimeStatus: 'blocked-by-source',
+    note: 'Alias to the blocked p178 duration method; it must remain non-runtime until B12-P178 unlock criteria are satisfied.',
   }),
 
   'q-lifespan-stages': route({
