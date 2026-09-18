@@ -103,7 +103,21 @@ assert.equal(lifespan?.executorStatus, 'not-applicable');
 assert.match(aiBuilder, /const canonicalMode = Boolean\(questionId \|\| useCanonicalRetrieval === true\)/);
 assert.match(aiBuilder, /buildKashfCanonicalAiBridge\(\{/);
 
+// Phase 5B migration: selected Question Bank items must use the canonical
+// Question-ID engine. The broad legacy reader remains only for explicit
+// free-topic flows with no selected Question ID.
+assert.match(app, /if \(selectedQuestion\?\.id\)/);
+assert.match(app, /buildKashfReadingByQuestionId\(/);
+assert.match(app, /writeCanonicalKashfReading\(/);
 assert.match(app, /window\.KASHF_ENGINE\.buildKashfReading\(kashfBoard, kashfTopicId, clientCtx\)/);
+
+const selectedBranchIndex = app.indexOf('if (selectedQuestion?.id)');
+const legacyElseIndex = app.indexOf('} else {', selectedBranchIndex);
+const canonicalCallIndex = app.indexOf('buildKashfReadingByQuestionId(', selectedBranchIndex);
+const legacyCallIndex = app.indexOf('window.KASHF_ENGINE.buildKashfReading(kashfBoard, kashfTopicId, clientCtx)', selectedBranchIndex);
+assert.ok(selectedBranchIndex >= 0 && legacyElseIndex > selectedBranchIndex);
+assert.ok(canonicalCallIndex > selectedBranchIndex && canonicalCallIndex < legacyElseIndex, 'selected Question ID must execute canonical reader');
+assert.ok(legacyCallIndex > legacyElseIndex, 'legacy broad topic reader must be confined to the no-question-id branch');
 
 const legacyExactRoutes = [...new Set([...legacyRouter.matchAll(/'(q-[^']+)'\s*:\s*\{/g)].map((m) => m[1]))];
 assert.equal(legacyExactRoutes.length, 30, 'legacy exact-router baseline changed; re-audit Phase 5B assumptions');
