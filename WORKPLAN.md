@@ -30,8 +30,8 @@
 - [✅] Phase 4 downstream pass — 32/32 פריטים קיבלו הכרעה: 23 RESOLVED + 8 BLOCKED + 1 DEFERRED_UNTIL_ALGORITHM_VERIFIED. אין עוד פריט downstream ללא disposition.
 - [✅] Phase 5A — System Integration Audit: 138/138 שאלות בבנק מכוסות ב-Router הקנוני; 0 הפניות לשיטה חסרה, 0 mismatch של intent/status, 54 מסלולי Question-ID ניתנים להרצה, ו-0 מסלולים ניתנים להרצה ללא ידע v57. סטטוס p178 אורך-חיים יושר לחסם Phase 4.
 - [✅] Phase 5A runtime-gap closure — 8 השאלות שנמצאו בבדיקת ready↔executor נסגרו: זוג שאלות אורך-החיים כבר יושר לחסם p178; מסר/חדשות, באר/תעלה וירושה קיבלו Executor קנוני; מצב האם נחסם לפי פער מקור; כיוון חפירה מסומן repair-required עד קליטת 4 הטלות נוספות. אין עוד Route במצב ready שמצביע ל-runtimeAllowed=false או executor שאינו ready.
-- [⚠️] Phase 5A finding — הנתיב ל-AI כבר קנוני, אבל הקריאה הגלויה ללקוח עדיין משתמשת ב-`buildKashfReading` הישן; ל-Router הישן יש 30/138 מסלולים מדויקים בלבד ולכן 108 שאלות עלולות ליפול לחבילת topic רחבה.
-- [ ] הבא: Phase 5B — לאחד את הקריאה הגלויה ואת ה-AI תחת אותה סמכות קנונית: Question ID → method יחיד → v57 → executor או חסימה מפורשת; ללא fallback לחבילת topic כשנבחרה שאלה.
+- [✅] Phase 5A finding נסגר ב-Phase 5B — הקריאה הגלויה ללקוח אינה משתמשת עוד בנתיב הישן כאשר נבחר Question ID; פער 30/138 של ה-Router הישן נשאר רלוונטי רק למסלול legacy/free-topic מפורש.
+- [✅] Phase 5B — הקריאה הגלויה וה-AI חולקים אותה סמכות קנונית: Question ID → method יחיד → v57 → executor או חסימה מפורשת. כשנבחרה שאלה אין fallback לחבילת topic רחבה. QA מלא: 1535/0, כיסוי 138/138, שמירת 54 ready וכל חסמי Phase 4/5A.
 
 ---
 
