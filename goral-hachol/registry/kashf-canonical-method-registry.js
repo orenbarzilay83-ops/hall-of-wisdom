@@ -316,11 +316,11 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfIntentId: 'lifespan.duration',
     topicId: 'generalReading',
     sourcePages: [178],
-    kashfRuntimeStatus: 'ready',
+    kashfRuntimeStatus: 'blocked-by-source',
     runtimeAllowed: false,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Canonical numeric lifespan/duration method: aggregate elements, reduce by 16, walk houses, then interpret the landing house class as years/months/days. Do not replace with p264 life stages.',
+    executorStatus: 'not-applicable',
+    notes: 'Phase 4 final blocker B12-P178: the source procedure is preserved, but element aggregation, mod-16 walking and the figure-number-in-house lookup are not yet mechanically source-closed/Golden-Testable. Keep hard-blocked; do not reuse the legacy raw-board-point helper and do not replace with p264 life stages.',
   }),
 
   'lifespan.p264.stagesH11H9H7': method({
