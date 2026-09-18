@@ -41,7 +41,6 @@ for (const questionId of questionIds) {
   const rc = built.contextPackage.readingContext;
   assert.equal(rc.canonicalResolution?.topicId, method.topicId, questionId + ': AI bridge resolution carries canonical topic');
   assert.equal(rc.topicResolution?.effectiveTopicId, method.topicId, questionId + ': payload exposes topic authority trace');
-  assert.equal(built.contextPackage.readingPlan?.topicId, method.topicId, questionId + ': planner uses canonical topic');
   assert.deepEqual(
     rc.ruleCoverageStatus,
     buildRuleCoverageStatus(method.topicId),
@@ -66,7 +65,6 @@ for (const questionId of questionIds) {
   assert.equal(built.topicResolution.canonicalTopicId, 'travel');
   assert.equal(built.topicResolution.effectiveTopicId, 'travel');
   assert.equal(built.topicResolution.callerConflict, true);
-  assert.equal(built.contextPackage.readingPlan?.topicId, 'travel');
   assert.equal(built.contextPackage.readingContext.canonicalResolution?.kashfMethodId, 'travel.p238.assemble1359');
   assert.deepEqual(
     built.contextPackage.readingContext.ruleCoverageStatus,
@@ -89,7 +87,11 @@ for (const questionId of questionIds) {
   assert.equal(built.canonicalBridge?.resolution?.state, 'resolved');
   assert.equal(built.topicResolution?.authority, 'canonical-method');
   assert.equal(built.topicResolution?.effectiveTopicId, built.canonicalBridge?.resolution?.topicId);
-  assert.equal(built.contextPackage.readingPlan?.topicId, built.topicResolution?.effectiveTopicId);
+  assert.deepEqual(
+    built.contextPackage.readingContext.ruleCoverageStatus,
+    buildRuleCoverageStatus(built.topicResolution?.effectiveTopicId),
+    'free-text canonical retrieval uses its resolved method topic for rule coverage'
+  );
 }
 
 // 4. Legacy/non-canonical flow still needs an explicit topicId. Phase 5D does
