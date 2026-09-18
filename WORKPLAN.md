@@ -28,6 +28,7 @@
 - [✅] Wave 3 — Blockers (9 פריטים): כל תשעת החסמים נבדקו מחדש מול המקור, קיבלו סיבת חסימה סופית, runtimeEligible=false וקריטריון פתיחה עתידי; לא הומצא אלגוריתם במקום מקור חסר/סותר.
 - [✅] Wave 3 source re-read — תוקנו שלוש הנחות אינדקס מסוכנות: עמ׳ 179 שומר ״השביעי והתשעה־עשר״ כטוקן מקור פתוח; עמ׳ 185 שומר 1=מערב, 2=מזרח ואת המספר המודפס 94; עמ׳ 189–190 שומר את רצף H12 המודפס בלי להמציא H12+H9.
 - [✅] Phase 4 downstream pass — 32/32 פריטים קיבלו הכרעה: 23 RESOLVED + 8 BLOCKED + 1 DEFERRED_UNTIL_ALGORITHM_VERIFIED. אין עוד פריט downstream ללא disposition.
+- [✅] Post-Phase-4 runtime consistency — נסגרו 8 שאלות שמסלול השאלה סימן כ-ready בעוד שה-Executor עוד היה pending: מסר/חדשות, אורך חיים (2), מצב האם, כיוון חפירה, באר/תעלה וירושה. מסר/חדשות + באר/תעלה + ירושה קיבלו Executor קנוני מאומת; אורך חיים + מצב האם נחסמו במפורש לפי פער מקור; כיוון חפירה הוגדר repair-required עד קליטת 4 הטלות נוספות. אין עוד route ready עם runtimeAllowed=false/executor pending.
 
 ---
 
