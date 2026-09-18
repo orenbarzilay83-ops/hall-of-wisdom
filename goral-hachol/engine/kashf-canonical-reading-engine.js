@@ -128,11 +128,11 @@ function interpretFormula(result, formula) {
 
 function buildLegacyFunctionReading(board, method, clientContext = {}, v57Knowledge) {
   const isLegacyExecutor = method.executionKind === 'legacy-function';
-  const isCustomExecutor = method.executionKind === 'custom-engine';
-  const executorApproved = isLegacyExecutor
-    ? hasCanonicalLegacyExecutor(method.kashfMethodId)
-    : isCustomExecutor
-      ? hasCanonicalCustomExecutor(method.kashfMethodId)
+  const isCustomExecutor = hasCanonicalCustomExecutor(method.kashfMethodId);
+  const executorApproved = isCustomExecutor
+    ? true
+    : isLegacyExecutor
+      ? hasCanonicalLegacyExecutor(method.kashfMethodId)
       : false;
 
   if (!executorApproved) {
@@ -334,7 +334,7 @@ export function buildKashfReadingByMethod(board, kashfMethodId, clientContext = 
   }
 
   if (method.executionKind === 'legacy-function'
-      || (method.executionKind === 'custom-engine' && hasCanonicalCustomExecutor(method.kashfMethodId))) {
+      || hasCanonicalCustomExecutor(method.kashfMethodId)) {
     return buildLegacyFunctionReading(board, method, clientContext, v57Knowledge);
   }
   if (method.executionKind !== 'formula') {

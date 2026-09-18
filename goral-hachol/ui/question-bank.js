@@ -290,8 +290,8 @@ window.QUESTION_BANK = [
   {
     id: 'q-inheritance',
     category: 'money', houseId: 2, topicId: 'deathInheritance', kashfTopicId: 'deathInheritance',
-    label: 'ירושה — מי יורש ומה?',
-    desc: 'לשאלות ירושה: מי יזכה, כמה, האם תהיה מחלוקת',
+    label: 'ירושה — מי יורש את מי?',
+    desc: 'כשף עמ׳ 180: קובע רק איזה צד יורש את האחר; אינו מחשב חלקים, סכומים או מחלוקת',
     clientFields: [
       { id: 'deceased', label: 'שם הנפטר / הקשר', type: 'text', placeholder: 'שם / אבא / סבא...' },
       { id: 'inheritConcern', label: 'מה השאלה?', type: 'textarea', placeholder: 'מחלוקת / חלוקה / זכות...' },
@@ -314,8 +314,8 @@ window.QUESTION_BANK = [
   {
     id: 'q-well-drilling',
     category: 'money', houseId: 4, topicId: 'hiddenTreasure', kashfTopicId: 'hiddenTreasure',
-    label: 'האם יש מים בקרקע?',
-    desc: 'לפני קידוח — האם שווה לנסות, ובאיזה עומק',
+    label: 'האם חפירת הבאר / התעלה תצליח?',
+    desc: 'כשף עמ׳ 188: פסק על השגת המבוקש לאחר לוח חדש מ־H1/H4/H6/H8; חישוב עומק הוא שאלה נפרדת ואינו מופעל כאן',
     clientFields: [F.wellLoc],
   },
   {

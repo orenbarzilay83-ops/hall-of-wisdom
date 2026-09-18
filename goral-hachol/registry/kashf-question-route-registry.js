@@ -326,11 +326,11 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
 
   'q-mother': route({
     questionId: 'q-mother',
-    disposition: 'KEEP',
+    disposition: 'BLOCK',
     kashfIntentId: 'mother.status',
     kashfMethodId: 'mother.p257.statusDayNight',
-    kashfRuntimeStatus: 'ready',
-    note: 'Must preserve day/night distinction and angles+succedents vs cadents; current broad mother helper is not sufficient.',
+    kashfRuntimeStatus: 'blocked-by-source',
+    note: 'The source leaves the immediate referent of “this house” unresolved in the preserved passage and the daytime Venus branch is not mechanically complete. No house is guessed.',
   }),
 
   'q-lost-item': route({
@@ -370,11 +370,11 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
 
   'q-dig-direction': route({
     questionId: 'q-dig-direction',
-    disposition: 'KEEP',
+    disposition: 'BLOCK',
     kashfIntentId: 'hidden.direction',
     kashfMethodId: 'hidden.p188.quarterDirection',
-    kashfRuntimeStatus: 'ready',
-    note: 'Requires a dedicated four-quarter casting flow; it cannot be inferred from the ordinary board.',
+    kashfRuntimeStatus: 'repair-required',
+    note: 'The source requires four additional directional casts. Until the UI collects them, this route is explicitly blocked and the ordinary board is never used as a substitute.',
   }),
 
   'q-well-drilling': route({
