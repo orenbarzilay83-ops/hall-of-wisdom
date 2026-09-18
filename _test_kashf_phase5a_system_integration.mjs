@@ -86,7 +86,7 @@ const runnableRoutes = routes.filter((route) => {
     && method?.runtimeAllowed === true
     && method?.executorStatus === 'ready';
 });
-assert.equal(runnableRoutes.length, 50, 'unexpected runnable canonical Question-ID route count');
+assert.equal(runnableRoutes.length, 54, 'unexpected runnable canonical Question-ID route count after eight-gap closure');
 for (const route of runnableRoutes) {
   assert.ok(knowledgeIds.has(route.methodId), 'runnable route missing v57 knowledge: ' + route.questionId);
 }
