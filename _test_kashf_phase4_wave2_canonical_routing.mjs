@@ -17,7 +17,7 @@ assert.match(engine, /if \(runPrimaryForRoute\)/);
 assert.match(engine, /rules\.altFormula && runAltForRoute/);
 assert.match(engine, /routedSupportingChecks\.map/);
 
-assert.match(router, /'q-money-source'[\s\S]*?supportingCheckIds: \['money-source-total'\]/);
+assert.match(router, /'q-money-source'[\s\S]*?routeStatus: 'BLOCKED'[\s\S]*?supportingCheckIds: \[\]/);
 assert.match(router, /'q-livelihood'[\s\S]*?supportingCheckIds: \['livelihood-house', 'parnasa-source'\]/);
 assert.match(router, /'q-stay-place'[\s\S]*?supportingCheckIds: \['current-place'\]/);
 assert.match(router, /'q-best-city'[\s\S]*?routeStatus: 'BLOCKED'/);
