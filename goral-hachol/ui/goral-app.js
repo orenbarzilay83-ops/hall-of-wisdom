@@ -1176,6 +1176,7 @@ async function runReading() {
         parentName:    _ctx.parentName || '',
         quesitedName:  _ctx.quesitedName || '',
         phone:         _ctx.phone || '',
+        questionId:    selectedQuestion?.id || null,
         dynFields,
       };
 
