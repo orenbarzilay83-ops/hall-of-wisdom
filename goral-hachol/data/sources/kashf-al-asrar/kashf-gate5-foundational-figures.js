@@ -158,6 +158,8 @@ export const DEREKH_HOUSE_RULES = {
   13: {
     houseNum: 13,
     parentHouses: [9, 10],
+    sourceVerification: 'printed-p163-verified-2026-09-18',
+    polarityRule: 'H9 kharij + H10 dakhil = quick return; H9 dakhil + H10 kharij = prolonged travel',
     verdictsByParentCombo: {
       'kharij-dakhil': { // התשיעי חיצוני, העשירי פנימי
         textHebrew: 'בא במהירות מנסיעתו.',
@@ -262,10 +264,13 @@ export const SEVEN_WISDOM_WITNESSES_NOTE = {
     'פנימית, הדבר מתקבל אך מתאחר.',
   sourceRef: "כשף אל-אסראר עמ' 163-164",
   sourceStatus: 'explicit-in-source',
+  runtimeRole: 'supporting-only',
+  autoRoute: false,
   note:
     'מבנה זהה למבנה בתי-העדים/הדין הכללי הקיים כבר באפליקציה ' +
     '(raml-interpreter.js, hawi-witnesses.js) — מובא כאן כאישור-מקור מצד ' +
-    'כשף אל-אסראר עצמו, לא נבנה כמבנה נתונים כפול.',
+    'כשף אל-אסראר עצמו. הוא תומך בפסיקה ואינו מסלול ראשי, אינו מופעל ' +
+    'אוטומטית ואינו מתאחד עם מערכות עדות אחרות.',
 };
 
 // ── 7. קרבת הצורות והשוואתן (עמ' 163-165) ─────────────────────────────────
