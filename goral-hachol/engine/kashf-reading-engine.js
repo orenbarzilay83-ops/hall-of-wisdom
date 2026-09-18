@@ -34,6 +34,10 @@ import {
 } from './kashf-formula-engine.js';
 
 import { getTopicRules } from './kashf-topic-rules.js';
+import {
+  resolveKashfQuestionRoute,
+  filterSupportingChecksForRoute,
+} from './kashf-question-router.js';
 import { computeCommerceSmartLayer } from './kashf-commerce-smart-layer.js';
 import { getDakhalKharij } from './kashf-figure-classifier.js';
 import { computeDhamirByMajority } from './kashf-dhamir.js';
@@ -589,26 +593,42 @@ export function buildKashfReading(board, topicId, clientContext = {}) {
     };
   }
 
+  // ── Wave 2: canonical route selected by exact user question ───────────────
+  const questionRoute = resolveKashfQuestionRoute(clientContext?.questionId || null, topicId);
+  if (questionRoute?.routeError) {
+    return {
+      valid: false,
+      error: questionRoute.routeError,
+      topicId,
+      questionId: clientContext?.questionId || null,
+    };
+  }
+  const runPrimaryForRoute = questionRoute ? questionRoute.runPrimary !== false : true;
+  const runAltForRoute = questionRoute ? questionRoute.runAlt === true : !!rules.altFormula;
+  const routedSupportingChecks = filterSupportingChecksForRoute(rules.supportingChecks || [], questionRoute);
+
   // ── נוסחה ראשית ─────────────────────────────────────────────────────────
   let primaryResult = null;
   let primaryVerdict = null;
 
-  try {
-    primaryResult = executeFormula(board, rules.primaryFormula);
-    primaryVerdict = getFormulaPrimaryVerdict(
-      primaryResult,
-      rules.primaryFormula,
-      rules.primaryFormula.interpretBy
-    );
-  } catch (err) {
-    primaryVerdict = { text: `שגיאה בחישוב: ${err.message}`, positive: null };
+  if (runPrimaryForRoute) {
+    try {
+      primaryResult = executeFormula(board, rules.primaryFormula);
+      primaryVerdict = getFormulaPrimaryVerdict(
+        primaryResult,
+        rules.primaryFormula,
+        rules.primaryFormula.interpretBy
+      );
+    } catch (err) {
+      primaryVerdict = { text: `שגיאה בחישוב: ${err.message}`, positive: null };
+    }
   }
 
   // ── נוסחה חלופית ─────────────────────────────────────────────────────────
   let altResult = null;
   let altVerdict = null;
 
-  if (rules.altFormula) {
+  if (rules.altFormula && runAltForRoute) {
     try {
       altResult = executeFormula(board, rules.altFormula);
       if (altResult?.type === 'parallel-combine') {
@@ -630,7 +650,7 @@ export function buildKashfReading(board, topicId, clientContext = {}) {
   }
 
   // ── בדיקות תומכות ────────────────────────────────────────────────────────
-  const supportingFindings = (rules.supportingChecks || []).map(check => {
+  const supportingFindings = routedSupportingChecks.map(check => {
     try {
       return runSupportingCheck(board, check);
     } catch (err) {
@@ -736,6 +756,7 @@ export function buildKashfReading(board, topicId, clientContext = {}) {
       parentName: clientContext.parentName || '',
       quesitedName: clientContext.quesitedName || '',
       phone: clientContext.phone || '',
+      questionId: clientContext.questionId || null,
       dynFields: clientContext.dynFields || {},
     },
 
@@ -756,6 +777,14 @@ export function buildKashfReading(board, topicId, clientContext = {}) {
     } : null,
 
     supportingFindings,
+    canonicalQuestionRoute: questionRoute ? {
+      questionId: clientContext.questionId || null,
+      topicId: questionRoute.topicId,
+      routeKind: questionRoute.routeKind,
+      runPrimary: questionRoute.runPrimary !== false,
+      runAlt: questionRoute.runAlt === true,
+      supportingCheckIds: [...(questionRoute.supportingCheckIds || [])],
+    } : null,
     keyHouseReadings,
     boardValidation,
     dhamir,
