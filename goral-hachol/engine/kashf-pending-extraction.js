@@ -868,6 +868,133 @@ export function computeStolenItemReturn(chart) {
 
 // ── קבוצה 2d: הריון/הלוואה/דת/דיני האם (כשף אל-אסרר) ──────────────────────
 
+// Wave 2 canonical intent functions — same source rules as the broad analysis below,
+// but each returns only the result required by one user intent. This prevents the UI
+// from exposing the whole pregnancy bundle when a single question was selected.
+const KASHF_CHILD_ELEMENT = {
+  '1111':'מים','1112':'אש','1121':'אוויר','1122':'אש',
+  '1211':'מים','1212':'אש','1221':'עפר','1222':'אש',
+  '2111':'אוויר','2112':'אוויר','2121':'עפר','2122':'אוויר',
+  '2211':'מים','2212':'מים','2221':'עפר','2222':'עפר',
+};
+const deriveKashfPattern = (p1, p2) => {
+  if (!p1 || !p2 || p1.length !== 4 || p2.length !== 4) return null;
+  return p1.split('').map((v, i) => v === p2[i] ? '2' : '1').join('');
+};
+const childHouse = (chart, n) => Array.isArray(chart) ? chart.find((h) => Number(h.house) === n) : null;
+const childIsBenefic = (h) => {
+  const f = String(h?.fortune || '');
+  return f.includes('מיטיב') && !f.startsWith('ממוזג-מזיק');
+};
+const childIsMalefic = (h) => String(h?.fortune || '').includes('מזיק');
+
+export function computePregnancyConfirmationKashf(chart) {
+  const h5 = childHouse(chart, 5);
+  if (!h5?.key) return null;
+  const pregnancyReal = h5.key.startsWith('2');
+  return {
+    sourceRef: 'כשף עמ׳ 191',
+    pregnancyReal,
+    house5Pattern: h5.key,
+    outputHebrew: pregnancyReal
+      ? `בית 5 מלא/שותק (${h5.hebrew || h5.key}) — ההריון מאושר לפי הכלל.`
+      : `בית 5 ריק (${h5.hebrew || h5.key}) — ההריון אינו מאושר לפי הכלל.`,
+  };
+}
+
+export function computePregnancyGenderKashf(chart) {
+  const h1 = childHouse(chart, 1);
+  const h5 = childHouse(chart, 5);
+  const pattern = deriveKashfPattern(h1?.key, h5?.key);
+  if (!pattern) return null;
+  const element = KASHF_CHILD_ELEMENT[pattern] || null;
+  const gender = (element === 'אש' || element === 'אוויר')
+    ? 'זכר'
+    : (element === 'מים' || element === 'עפר') ? 'נקבה' : null;
+  return {
+    sourceRef: 'כשף עמ׳ 193',
+    derivedPattern: pattern,
+    element,
+    gender,
+    outputHebrew: gender
+      ? `צורת 1+5 היא ${pattern}, מיסוד ${element} — מין הוולד: ${gender}.`
+      : 'לא ניתן להכריע את מין הוולד מן הצורה הנגזרת.',
+  };
+}
+
+export function computePregnancyMiscarriageRiskKashf(chart) {
+  const h7 = childHouse(chart, 7);
+  const h8 = childHouse(chart, 8);
+  const h11 = childHouse(chart, 11);
+  const findings = [];
+  if (['2122', '2221'].includes(h7?.key)) findings.push(`${h7.hebrew || h7.key} בבית 7 — סימן סכנת הפלה.`);
+  if (h8?.key === '2122') findings.push('אדום בבית 8 — סימן סכנת הפלה.');
+  if (h8?.key === '1221') {
+    findings.push(childIsBenefic(h11) && h11?.key?.startsWith('2')
+      ? 'סוהר בבית 8, אך בית 11 מיטיב-נכנס — המקור נותן סימן הצלה לוולד.'
+      : 'סוהר בבית 8 — המקור נותן אזהרה חמורה לאם ולוולד.');
+  }
+  return {
+    sourceRef: 'כשף עמ׳ 191–192',
+    hasRiskSignal: findings.length > 0,
+    findings,
+    outputHebrew: findings.length
+      ? findings.join('\n')
+      : 'לא נמצא אחד מסימני ההפלה המפורשים של עמ׳ 191–192 במסלול זה.',
+  };
+}
+
+export function computePregnancyBirthEaseKashf(chart) {
+  const h5 = childHouse(chart, 5);
+  if (!h5?.key) return null;
+  const lead = h5.key.slice(0, 2);
+  const verdict = lead === '22' ? 'קשה' : lead === '11' ? 'קלה' : 'לא מוכרע';
+  return {
+    sourceRef: 'כשף עמ׳ 191',
+    verdict,
+    house5Pattern: h5.key,
+    outputHebrew: verdict === 'קשה'
+      ? `בית 5 קבוע (${h5.hebrew || h5.key}) — הלידה קשה לפי הכלל.`
+      : verdict === 'קלה'
+        ? `בית 5 מתהפך (${h5.hebrew || h5.key}) — הלידה קלה לפי הכלל.`
+        : 'הכלל אינו מכריע קלות/קושי במסלול זה.',
+  };
+}
+
+export function computeChildHealthKashf(chart) {
+  const h6 = childHouse(chart, 6);
+  if (!h6) return null;
+  const status = childIsMalefic(h6) ? 'risk' : childIsBenefic(h6) ? 'good' : 'mixed';
+  return {
+    sourceRef: 'כשף עמ׳ 194',
+    status,
+    outputHebrew: status === 'risk'
+      ? `בית 6 מזיק (${h6.hebrew || h6.key}) — המקור מורה על ריבוי מכאובים בילדות.`
+      : status === 'good'
+        ? `בית 6 מיטיב (${h6.hebrew || h6.key}) — המקור מורה על בריאות טובה יותר.`
+        : `בית 6 ממוזג (${h6.hebrew || h6.key}) — אין הכרעה חדה במסלול בריאות הילד.`,
+  };
+}
+
+export function computeChildWelfareKashf(chart) {
+  const h5 = childHouse(chart, 5);
+  const h8 = childHouse(chart, 8);
+  const h16 = childHouse(chart, 16);
+  if (!h8) return null;
+  const lines = [];
+  if (childIsMalefic(h8)) lines.push(`בית 8 מזיק (${h8.hebrew || h8.key}) — המקור מתאר תקווה מועטה.`);
+  else if (childIsBenefic(h8)) lines.push(`בית 8 מיטיב (${h8.hebrew || h8.key}) — ככל שיגדל מצבו ישתפר.`);
+  if (h5 && h16) {
+    if (childIsBenefic(h5) && childIsBenefic(h16)) lines.push('בית 5 ובית 16 מיטיבים — אושר, מצב טוב ושפע.');
+    else if (childIsMalefic(h5) && childIsMalefic(h16)) lines.push('בית 5 ובית 16 מזיקים — מצב ירוד.');
+    else lines.push('בית 5 ובית 16 מעורבים — מצב בינוני.');
+  }
+  return {
+    sourceRef: 'כשף עמ׳ 194',
+    outputHebrew: lines.join('\n') || 'אין במסלול זה סימן מפורש נוסף.',
+  };
+}
+
 export function computeChildrenPregnancyKashfAnalysis(chart) {
   if (!Array.isArray(chart) || chart.length < 16) return null;
 
