@@ -1,0 +1,36 @@
+name: Kashf Phase 5B QA
+
+on:
+  push:
+    branches:
+      - chatgpt/kashf-phase5b-canonical-client-path-v2
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax
+        run: |
+          node --check goral-hachol/ui/goral-app.js
+          node --check goral-hachol/engine/kashf-canonical-reading-engine.js
+          node --check goral-hachol/engine/kashf-canonical-narrative-writer.js
+          node --check _test_kashf_phase5a_system_integration.mjs
+          node --check _test_kashf_phase5b_canonical_client_path.mjs
+      - name: Phase 5B canonical client path
+        run: node _test_kashf_phase5b_canonical_client_path.mjs
+      - name: Phase 5A integration
+        run: node _test_kashf_phase5a_system_integration.mjs
+      - name: Eight runtime gaps
+        run: node _test_kashf_close_eight_runtime_gaps.mjs
+      - name: Canonical routing
+        run: node _test_kashf_canonical_routing.mjs
+      - name: Route coverage
+        run: node _audit_kashf_question_route_coverage.mjs
+      - name: Phase 4 Wave 2
+        run: node _test_kashf_phase4_wave2_canonical_routing.mjs
+      - name: Phase 4 Wave 3
+        run: node _test_kashf_phase4_wave3_final_blockers.mjs
