@@ -329,6 +329,21 @@ function getFormulaPrimaryVerdict(formulaResult, formula, interpretBy) {
 function runSupportingCheck(board, check) {
   const { checkType, houses, label, sourceText } = check;
 
+  // Wave 3 safety boundary: source-preserved checks whose algorithm is still
+  // blocked may remain searchable in topic rules, but cannot execute merely
+  // because a legacy/broad topic route reaches them.
+  if (check.runtimeEligible === false) {
+    return {
+      id: check.id,
+      label,
+      checkType,
+      blocked: true,
+      runtimeEligible: false,
+      blockedReason: check.blockedReason || 'Source/algorithm not verified for runtime.',
+      sourceText,
+    };
+  }
+
   if (checkType === 'house-quality') {
     const houseNum = houses[0];
     const quality = assessHouseQuality(board, houseNum);
