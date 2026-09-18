@@ -8,6 +8,7 @@ import { KASHF_QUESTION_ROUTES } from './goral-hachol/registry/kashf-question-ro
 import {
   buildKashfAiContextPackage,
   buildAiSafeCanonicalKashfEngineOutput,
+  buildRuleCoverageStatus,
 } from './goral-hachol/intelligence/kashf-ai-context-builder.js';
 
 const MOTHERS = ['2222', '2211', '2121', '2221'];
@@ -103,3 +104,31 @@ console.log('Distinct canonical topicIds:', topicIds.size);
 console.log('AI verdict allowed among runnable:', aiVerdictAllowed);
 console.log('Runnable but AI verdict withheld by professional safety:', aiVerdictBlockedByProfessionalSafety);
 console.log('Finding — canonical AI builder still depends on external topicId:', topicDependencyPresent ? 'YES' : 'NO');
+
+// Second probe: even with an authoritative Question ID, a wrong caller-supplied
+// broad topicId currently affects topic-level AI metadata. It does NOT change
+// the canonical method/verdict, but it can contaminate readingStrategy /
+// ruleCoverageStatus with the wrong topic family. This is the next integration
+// gap to fix after this audit.
+const mismatchedTopicProbe = buildKashfAiContextPackage({
+  mothers: MOTHERS,
+  topicId: 'commerce',
+  question: 'האם הנסיעה תצליח?',
+  questionId: 'q-travel-safe',
+  readingId: 'phase5c-wrong-topic-probe',
+});
+assert.ok(mismatchedTopicProbe.contextPackage, 'wrong-topic probe still builds a package');
+assert.equal(
+  mismatchedTopicProbe.contextPackage.readingContext.canonicalResolution?.kashfMethodId,
+  'travel.p238.assemble1359',
+  'authoritative Question ID protects the actual canonical method from wrong caller topic'
+);
+const wrongTopicCoverageApplied =
+  JSON.stringify(mismatchedTopicProbe.contextPackage.readingContext.ruleCoverageStatus) ===
+  JSON.stringify(buildRuleCoverageStatus('commerce'));
+const canonicalTravelCoverageApplied =
+  JSON.stringify(mismatchedTopicProbe.contextPackage.readingContext.ruleCoverageStatus) ===
+  JSON.stringify(buildRuleCoverageStatus('travel'));
+assert.equal(wrongTopicCoverageApplied, true, 'current audit baseline: caller topic still drives ruleCoverageStatus');
+assert.equal(canonicalTravelCoverageApplied, false, 'current audit baseline: canonical method topic does not yet override caller topic metadata');
+console.log('Finding — wrong caller topic can contaminate canonical AI metadata:', wrongTopicCoverageApplied ? 'YES' : 'NO');
