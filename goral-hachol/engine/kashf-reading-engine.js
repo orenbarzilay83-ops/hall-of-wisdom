@@ -50,6 +50,12 @@ import {
   computePrisonerReleaseCheck,
   computeParnasaLivelihood,
   computeChildrenPregnancyKashfAnalysis,
+  computePregnancyConfirmationKashf,
+  computePregnancyGenderKashf,
+  computePregnancyMiscarriageRiskKashf,
+  computePregnancyBirthEaseKashf,
+  computeChildHealthKashf,
+  computeChildWelfareKashf,
   computeLoanKashfAnalysis,
   computeFugitiveKashf,
   computeTravelTimingKashf,
@@ -114,6 +120,12 @@ const LEGACY_FN_REGISTRY = {
   computePrisonerReleaseCheck,
   computeParnasaLivelihood,
   computeChildrenPregnancyKashfAnalysis,
+  computePregnancyConfirmationKashf,
+  computePregnancyGenderKashf,
+  computePregnancyMiscarriageRiskKashf,
+  computePregnancyBirthEaseKashf,
+  computeChildHealthKashf,
+  computeChildWelfareKashf,
   computeLoanKashfAnalysis,
   computeFugitiveKashf,
   computeTravelTimingKashf,
@@ -601,6 +613,16 @@ export function buildKashfReading(board, topicId, clientContext = {}) {
       error: questionRoute.routeError,
       topicId,
       questionId: clientContext?.questionId || null,
+    };
+  }
+  if (questionRoute?.routeStatus === 'BLOCKED') {
+    return {
+      valid: false,
+      blocked: true,
+      error: questionRoute.blockReason || 'This question route is blocked pending source/algorithm verification.',
+      topicId,
+      questionId: clientContext?.questionId || null,
+      canonicalQuestionRoute: questionRoute,
     };
   }
   const runPrimaryForRoute = questionRoute ? questionRoute.runPrimary !== false : true;
