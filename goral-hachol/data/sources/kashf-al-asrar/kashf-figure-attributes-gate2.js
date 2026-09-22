@@ -14,7 +14,7 @@
  */
 
 // ─────────────────────────────────────────────────────────────────────────
-// מעלה/מושב/גבול/פנים/שמחה/צער/מזג (עמ' 96-99, "פרק במעלת הצורות,
+// מעלה/מושב/גבול/פנים/שמחה/צער/מזג (עמ' 97-99, "פרק במעלת הצורות,
 // מושבן, מזגן ופניהן")
 //
 // הסבר המקור עצמו (עמ' 98) לגבי מקור כל טור: "המושב — ממעגל המושבות;
@@ -22,9 +22,9 @@
 // ואילו השמחה, הצער והמזג — איני יודע מאילו מעגלים נלקחו" (המחבר עצמו
 // מודה שאינו יודע את מקור 3 הטורים האחרונים).
 //
-// חיבור (2112) ודרך (1111) אינם מוזכרים כלל בפרק הזה במקור — לא הומצא
-// עבורם ערך. ערכי null מציינים "לא נתפרש במקור" (מצוין במפורש בטקסט
-// עצמו כחוסר-פירוט, לא רק חוסר-תיעוד שלנו).
+// ממון נכנס (2121) וסוהר (1221) אינם מוזכרים כלל בטבלת המקור המודפסת
+// בעמ׳ 97-99 — לא הומצא עבורם ערך. חיבור ודרך כן מופיעים במקור.
+// ערכי null מציינים נתון שלא נמסר במפורש באותה שורה; אין להשלים מסימטריה.
 // ─────────────────────────────────────────────────────────────────────────
 
 export const FIGURE_DIGNITIES_METADATA = {
@@ -93,81 +93,80 @@ export const FIGURE_DIGNITIES_METADATA = {
   },
 
   omittedFigures: {
-    '2112': {
-      nameHebrew: 'חיבור',
+    '2121': {
+      nameHebrew: 'ממון נכנס',
       status: 'not_stated_in_source',
     },
-    '1111': {
-      nameHebrew: 'דרך',
+    '1221': {
+      nameHebrew: 'סוהר',
       status: 'not_stated_in_source',
     },
   },
 
-  sourceRef: "כשף אל-אסראר עמ' 96-99",
+  sourceRef: "כשף אל-אסראר עמ' 97-99",
 };
 
 export const FIGURE_DIGNITIES = {
-  '1121': { // נלחם
+  '1121': { // נלחם / الجودلة
     maalaHouse: 1, moshavHouse: 5, gvulHouse: 9, panimHouse: 11,
     simchaHouse: 5, tzaarHouse: 7, mezegHouse: null,
-    note: 'צערו נאמר במקור כ"כנגדו" (מול בית השמחה) והוא בית 7 — לא נגזר על ידינו.',
+    note: 'צערו נאמר במקור כ"כנגדו, והוא שביעו".',
   },
-  '1222': { // נשוא ראש
+  '1222': { // נשוא ראש / الأحيان
     maalaHouse: 2, moshavHouse: 1, gvulHouse: 1, panimHouse: 1,
     simchaHouse: 11, tzaarHouse: null, mezegHouse: 6,
   },
-  '2111': { // סף נכנס
+  '2111': { // סף נכנס / عتبة داخلة
     maalaHouse: 3, moshavHouse: 14, gvulHouse: 7, panimHouse: 14,
     simchaHouse: 5, tzaarHouse: null, mezegHouse: 2,
   },
-  '2212': { // לבן
+  '2212': { // לבן / البياض
     maalaHouse: 4, moshavHouse: 9, gvulHouse: 4, panimHouse: 6,
     simchaHouse: 6, tzaarHouse: null, mezegHouse: null,
   },
-  '1211': { // בר הלחי
+  '1211': { // בר הלחי / نقي الخد
     maalaHouse: 5, moshavHouse: 16, gvulHouse: 9, panimHouse: 13,
     simchaHouse: null, tzaarHouse: null, mezegHouse: null,
   },
-  '1112': { // סף יוצא
-    maalaHouse: 6, moshavHouse: 13, gvulHouse: 8, panimHouse: 8,
-    simchaHouse: 7, tzaarHouse: null, mezegHouse: null,
-    note: 'המקור מציין שבמקום אחר בספר נמנית שמחתה בבית 6 (ניסוח נוסף/חלופי).',
+  '1112': { // סף יוצא / عتبة خارجة
+    maalaHouse: 6, moshavHouse: 13, gvulHouse: 8, panimHouse: 7,
+    simchaHouse: 6, tzaarHouse: null, mezegHouse: null,
   },
-  '2122': { // אדום
+  '2122': { // אדום / الحمرة
     maalaHouse: 7, moshavHouse: 9, gvulHouse: 3, panimHouse: 2,
     simchaHouse: null, tzaarHouse: null, mezegHouse: null,
   },
-  '2221': { // שפל ראש
+  '2221': { // שפל ראש / الأنكيس
     maalaHouse: 8, moshavHouse: 7, gvulHouse: 2, panimHouse: 8,
     simchaHouse: 12, tzaarHouse: null, mezegHouse: 5,
   },
-  '1221': { // סוהר
-    maalaHouse: 9, moshavHouse: 12, gvulHouse: 6, panimHouse: 11,
-    simchaHouse: 10, tzaarHouse: 4, mezegHouse: 15,
-  },
-  '2211': { // כבוד נכנס
+  '2211': { // כבוד נכנס / نصرة داخلة
     maalaHouse: 9, moshavHouse: 10, gvulHouse: 6, panimHouse: 3,
-    simchaHouse: null, tzaarHouse: null, mezegHouse: null,
-    note: 'מעלתה זהה למעלת סוהר (בית 9) — כפילות במקור עצמו, לא טעות תעתיק.',
+    simchaHouse: 12, tzaarHouse: null, mezegHouse: null,
   },
-  '1122': { // כבוד יוצא
-    maalaHouse: 12, moshavHouse: 11, gvulHouse: 5, panimHouse: 2,
-    simchaHouse: null, tzaarHouse: null, mezegHouse: null,
+  '2112': { // חיבור / الإجتماع
+    maalaHouse: 11, moshavHouse: 15, gvulHouse: 15, panimHouse: 6,
+    simchaHouse: 15, tzaarHouse: null, mezegHouse: 3,
   },
-  '2121': { // ממון נכנס
-    maalaHouse: 13, moshavHouse: 15, gvulHouse: 7, panimHouse: null,
+  '1122': { // כבוד יוצא / نصرة خارجة
+    maalaHouse: 12, moshavHouse: 11, gvulHouse: 5, panimHouse: 12,
+    simchaHouse: null, tzaarHouse: null, mezegHouse: 6,
+  },
+  '1111': { // דרך / الطريق
+    maalaHouse: 13, moshavHouse: 13, gvulHouse: 16, panimHouse: 15,
     simchaHouse: 13, tzaarHouse: null, mezegHouse: 5,
+    note: 'המקור מוסיף גם: בורג׳ 7.',
   },
-  '1212': { // ממון יוצא
-    maalaHouse: 14, moshavHouse: 3, gvulHouse: 12, panimHouse: 3,
+  '1212': { // ממון יוצא / قبض خارج
+    maalaHouse: 14, moshavHouse: 3, gvulHouse: 12, panimHouse: 5,
     simchaHouse: 10, tzaarHouse: null, mezegHouse: 3,
-    note: 'צערה נאמר במקור כ"כנגדו" (מול בית השמחה, 10) — לא נגזר על ידינו.',
+    note: 'צערה נאמר במקור כ"כנגדו" בלבד; אין להמיר זאת לבית מספרי בלי כלל מקור נפרד.',
   },
-  '2222': { // קהלה
+  '2222': { // קהלה / جماعة
     maalaHouse: 16, moshavHouse: 2, gvulHouse: 11, panimHouse: 10,
     simchaHouse: 10, tzaarHouse: null, mezegHouse: 9,
   },
-  // '2112' (חיבור) ו-'1111' (דרך) — אינן מופיעות כלל בפרק הזה במקור.
+  // '2121' (ממון נכנס) ו-'1221' (סוהר) אינן מופיעות כלל בטבלת המקור המודפסת עמ׳ 97-99.
 };
 
 // ─────────────────────────────────────────────────────────────────────────
