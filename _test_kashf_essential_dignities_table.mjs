@@ -1,44 +1,28 @@
 /**
  * _test_kashf_essential_dignities_table.mjs
  *
- * GT-10 — Golden Test for the Essential Dignities Table (מעלה/מושב/גבול/
- * פנים/שמחה/צער/מזג), Roadmap Phase 1 target.
+ * GT-10 — printed-source regression for the Essential Dignities table.
  *
- * IMPORTANT: this test does NOT import a new data file. Per explicit user
- * decision, Roadmap Phase 1 uses the ALREADY-EXISTING `FIGURE_DIGNITIES`
- * object in `kashf-figure-attributes-gate2.js` — discovered during this
- * verification round to already contain exactly the pages-97-99 dignity
- * table, independently cross-checked field-by-field (98/98 values) against
- * a fresh re-extraction of kashf-hebrew-v56-clean-final.html and found to
- * be an exact match. No new data file, adapter, or re-export was created.
+ * Ground truth:
+ *   printed KASHF pp97-99 / scan pp99-101
+ *   Master Index entry: figures.p97-99.dignities-source-table
  *
- * Ground truth, verified this round (see
- * HALL_WISDOM_KASHF_ESSENTIAL_DIGNITIES_EXISTING_DATA_VERIFICATION_REPORT.md
- * for the full derivation):
- *   - FIGURE_DIGNITIES has exactly 14 keys (patterns), not 16. The source
- *     book's own "פרק במעלת הצורות, מושבן, מזגן ופניהן" (p.97-99) never
- *     assigns dignity values to פattern 1111 (דרך) or 2112 (חיבור) — this
- *     is confirmed by direct re-reading of the raw HTML, not assumed from
- *     the existing file's comments alone.
- *   - All 14 present records carry all 7 required fields (maalaHouse,
- *     moshavHouse, gvulHouse, panimHouse, simchaHouse, tzaarHouse,
- *     mezegHouse) as own-properties, regardless of whether their value is
- *     a house number or null.
- *   - Every null in the table corresponds to an explicit "לא נתפרש
- *     במקור"/"לא נתפרשו כאן" statement (or an unresolved indirect
- *     reference, e.g. ממון יוצא's צער stated only as "כנגדו") found in the
- *     source text itself — never a silent gap.
- *
- * This test does not evaluate a board, does not call an engine, does not
- * touch verdict logic, does not fetch, and does not call any AI. It reads
- * two static data modules only.
+ * This supersedes the older v56-derived verification assumption. The printed
+ * table has 14 rows: ממון נכנס (2121) and סוהר (1221) are omitted; חיבור
+ * (2112) and דרך (1111) are explicitly present.
  */
 
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import { FIGURE_DIGNITIES } from './goral-hachol/data/sources/kashf-al-asrar/kashf-figure-attributes-gate2.js';
-import { HAWI_FIGURE_NAMES, HAWI_FIGURE_NAMES_BY_ID } from './goral-hachol/data/sources/kashf-al-asrar/kashf-figure-names.js';
+import {
+  FIGURE_DIGNITIES,
+  FIGURE_DIGNITIES_METADATA,
+} from './goral-hachol/data/sources/kashf-al-asrar/kashf-figure-attributes-gate2.js';
+import {
+  HAWI_FIGURE_NAMES,
+  HAWI_FIGURE_NAMES_BY_ID,
+} from './goral-hachol/data/sources/kashf-al-asrar/kashf-figure-names.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DATA_FILE_PATH = join(__dirname, 'goral-hachol/data/sources/kashf-al-asrar/kashf-figure-attributes-gate2.js');
@@ -46,162 +30,104 @@ const RAW_SOURCE = readFileSync(DATA_FILE_PATH, 'utf8');
 
 let failures = 0;
 function assert(condition, message) {
-  if (!condition) { failures++; console.error(`✗ ${message}`); }
-  else { console.log(`✓ ${message}`); }
-}
-
-const REQUIRED_FIELDS = ['maalaHouse', 'moshavHouse', 'gvulHouse', 'panimHouse', 'simchaHouse', 'tzaarHouse', 'mezegHouse'];
-const KNOWN_ABSENT_PATTERNS = ['1111', '2112']; // דרך, חיבור — confirmed absent from p.97-99 itself, not an implementation gap
-const EXPECTED_KEY_ORDER = ['1112', '1121', '1122', '1211', '1212', '1221', '1222', '2111', '2121', '2122', '2211', '2212', '2221', '2222'];
-
-console.log('\n--- 1. Registry baseline (16 canonical figures) ---');
-{
-  assert(HAWI_FIGURE_NAMES.length === 16, `(1a) registry (kashf-figure-names.js) has exactly 16 figures (got: ${HAWI_FIGURE_NAMES.length})`);
-  const registryPatterns = HAWI_FIGURE_NAMES.map((f) => f.pattern);
-  assert(new Set(registryPatterns).size === 16, '(1b) all 16 registry patterns are unique');
-}
-
-console.log('\n--- 2. FIGURE_DIGNITIES record count (true state, not assumed) ---');
-{
-  const keys = Object.keys(FIGURE_DIGNITIES);
-  assert(keys.length === 14, `(2a) FIGURE_DIGNITIES has exactly 14 keys today — this is the SOURCE-VERIFIED true count for p.97-99, not 16 (got: ${keys.length})`);
-  assert(new Set(keys).size === keys.length, '(2b) all keys (patterns) in FIGURE_DIGNITIES are unique');
-  for (const k of keys) {
-    assert(/^[12]{4}$/.test(k), `(2c) key "${k}" is a well-formed 4-line pattern`);
+  if (!condition) {
+    failures++;
+    console.error('✗ ' + message);
+  } else {
+    console.log('✓ ' + message);
   }
 }
 
-console.log('\n--- 3. Full 16-figure accounting: 14 present + 2 explicitly-known-absent ---');
-{
-  const presentKeys = Object.keys(FIGURE_DIGNITIES);
-  const registryPatterns = HAWI_FIGURE_NAMES.map((f) => f.pattern);
-  const missingFromFile = registryPatterns.filter((p) => !presentKeys.includes(p));
-  assert(missingFromFile.length === 2, `(3a) exactly 2 registry patterns are absent from FIGURE_DIGNITIES (got: ${missingFromFile.length}: ${missingFromFile.join(',')})`);
+const FIELDS = [
+  'maalaHouse',
+  'moshavHouse',
+  'gvulHouse',
+  'panimHouse',
+  'simchaHouse',
+  'tzaarHouse',
+  'mezegHouse',
+];
+
+const EXPECTED = {
+  '1121': { maalaHouse:1,  moshavHouse:5,  gvulHouse:9,  panimHouse:11, simchaHouse:5,  tzaarHouse:7,    mezegHouse:null },
+  '1222': { maalaHouse:2,  moshavHouse:1,  gvulHouse:1,  panimHouse:1,  simchaHouse:11, tzaarHouse:null, mezegHouse:6 },
+  '2111': { maalaHouse:3,  moshavHouse:14, gvulHouse:7,  panimHouse:14, simchaHouse:5,  tzaarHouse:null, mezegHouse:2 },
+  '2212': { maalaHouse:4,  moshavHouse:9,  gvulHouse:4,  panimHouse:6,  simchaHouse:6,  tzaarHouse:null, mezegHouse:null },
+  '1211': { maalaHouse:5,  moshavHouse:16, gvulHouse:9,  panimHouse:13, simchaHouse:null,tzaarHouse:null, mezegHouse:null },
+  '1112': { maalaHouse:6,  moshavHouse:13, gvulHouse:8,  panimHouse:7,  simchaHouse:6,  tzaarHouse:null, mezegHouse:null },
+  '2122': { maalaHouse:7,  moshavHouse:9,  gvulHouse:3,  panimHouse:2,  simchaHouse:null,tzaarHouse:null, mezegHouse:null },
+  '2221': { maalaHouse:8,  moshavHouse:7,  gvulHouse:2,  panimHouse:8,  simchaHouse:12, tzaarHouse:null, mezegHouse:5 },
+  '2211': { maalaHouse:9,  moshavHouse:10, gvulHouse:6,  panimHouse:3,  simchaHouse:12, tzaarHouse:null, mezegHouse:null },
+  '2112': { maalaHouse:11, moshavHouse:15, gvulHouse:15, panimHouse:6,  simchaHouse:15, tzaarHouse:null, mezegHouse:3 },
+  '1122': { maalaHouse:12, moshavHouse:11, gvulHouse:5,  panimHouse:12, simchaHouse:null,tzaarHouse:null, mezegHouse:6 },
+  '1111': { maalaHouse:13, moshavHouse:13, gvulHouse:16, panimHouse:15, simchaHouse:13, tzaarHouse:null, mezegHouse:5 },
+  '1212': { maalaHouse:14, moshavHouse:3,  gvulHouse:12, panimHouse:5,  simchaHouse:10, tzaarHouse:null, mezegHouse:3 },
+  '2222': { maalaHouse:16, moshavHouse:2,  gvulHouse:11, panimHouse:10, simchaHouse:10, tzaarHouse:null, mezegHouse:9 },
+};
+
+const EXPECTED_ORDER = Object.keys(EXPECTED);
+const OMITTED = ['2121', '1221'];
+
+console.log('\n--- 1. Canonical figure registry ---');
+assert(HAWI_FIGURE_NAMES.length === 16, 'registry has 16 canonical figures');
+assert(new Set(HAWI_FIGURE_NAMES.map((x) => x.pattern)).size === 16, 'registry patterns are unique');
+
+console.log('\n--- 2. Printed p97-99 row set ---');
+const keys = Object.keys(FIGURE_DIGNITIES);
+assert(keys.length === 14, 'FIGURE_DIGNITIES has exactly 14 printed rows');
+assert(JSON.stringify(keys) === JSON.stringify(EXPECTED_ORDER), 'row order follows the printed source sequence');
+for (const pattern of OMITTED) {
+  assert(!Object.prototype.hasOwnProperty.call(FIGURE_DIGNITIES, pattern), pattern + ' is not invented into the printed table');
+}
+assert(
+  JSON.stringify(Object.keys(FIGURE_DIGNITIES_METADATA.omittedFigures).sort()) === JSON.stringify(OMITTED.slice().sort()),
+  'metadata omittedFigures is exactly {2121 ממון נכנס, 1221 סוהר}'
+);
+
+console.log('\n--- 3. Exact 14-row source fidelity ---');
+for (const [pattern, expected] of Object.entries(EXPECTED)) {
+  const actual = FIGURE_DIGNITIES[pattern];
+  assert(!!actual, pattern + ': row exists');
+  const projected = Object.fromEntries(FIELDS.map((field) => [field, actual?.[field] ?? null]));
   assert(
-    missingFromFile.length === 2 && missingFromFile.includes('1111') && missingFromFile.includes('2112'),
-    `(3b) the 2 absent patterns are exactly {1111 (דרך), 2112 (חיבור)} — a regression here means either a real record was accidentally deleted, or the source-verified absence list changed (got: ${missingFromFile.join(',')})`
+    JSON.stringify(projected) === JSON.stringify(expected),
+    pattern + ': seven dignity fields match printed pp97-99'
   );
-  const accountedFor = new Set([...presentKeys, ...missingFromFile]);
-  assert(accountedFor.size === 16, `(3c) present ∪ known-absent covers all 16 registry patterns with no gap and no double-count (got: ${accountedFor.size})`);
-  assert(registryPatterns.every((p) => accountedFor.has(p)), '(3d) every registry pattern is accounted for one way or the other');
+
+  const registry = HAWI_FIGURE_NAMES_BY_ID[pattern];
+  assert(!!registry?.hebrewName, pattern + ': canonical Hebrew name resolves');
 }
 
-console.log('\n--- 4. Seven professional fields present on every record ---');
-{
-  for (const [pattern, record] of Object.entries(FIGURE_DIGNITIES)) {
-    for (const field of REQUIRED_FIELDS) {
-      assert(Object.prototype.hasOwnProperty.call(record, field), `(4) ${pattern}: has own-property "${field}"`);
-    }
-  }
+console.log('\n--- 4. Critical repaired rows ---');
+assert(FIGURE_DIGNITIES['1112'].panimHouse === 7 && FIGURE_DIGNITIES['1112'].simchaHouse === 6,
+  'סף יוצא: face=7, joy=6');
+assert(FIGURE_DIGNITIES['2211'].simchaHouse === 12,
+  'כבוד נכנס: joy=12');
+assert(FIGURE_DIGNITIES['2112'].maalaHouse === 11 && FIGURE_DIGNITIES['2112'].simchaHouse === 15,
+  'חיבור is present: exaltation=11, joy=15');
+assert(FIGURE_DIGNITIES['1122'].panimHouse === 12 && FIGURE_DIGNITIES['1122'].mezegHouse === 6,
+  'כבוד יוצא: face=12, temperament=6');
+assert(FIGURE_DIGNITIES['1111'].maalaHouse === 13 && FIGURE_DIGNITIES['1111'].panimHouse === 15,
+  'דרך is present: exaltation=13, face=15');
+assert(FIGURE_DIGNITIES['1212'].panimHouse === 5,
+  'ממון יוצא: face=5');
+assert(FIGURE_DIGNITIES['1212'].tzaarHouse === null,
+  'ממון יוצא sorrow remains unresolved; "opposite" is not converted to a house number');
+
+console.log('\n--- 5. Provenance / source guardrails ---');
+assert(FIGURE_DIGNITIES_METADATA.provenance.editionId === 'kashf-hebrew-v57', 'dignity-table provenance points to corrected v57');
+assert(/97-99/.test(FIGURE_DIGNITIES_METADATA.sourceRef), 'sourceRef is printed pp97-99');
+assert(FIGURE_DIGNITIES_METADATA.nullSemantics.mustNotInfer === true, 'nulls must not be inferred');
+assert(FIGURE_DIGNITIES_METADATA.nullSemantics.mustNotFillFromOtherTradition === true, 'other traditions may not fill missing rows');
+
+console.log('\n--- 6. Leaf-data safety ---');
+assert(!/^\s*import\s/m.test(RAW_SOURCE), 'data file has no imports');
+for (const token of ['TODO', 'FIXME', 'placeholder', 'fetch(', 'api.anthropic.com', 'ANTHROPIC_API_KEY']) {
+  assert(!RAW_SOURCE.toLowerCase().includes(token.toLowerCase()), 'data file excludes ' + token);
 }
 
-console.log('\n--- 5. Registry cross-check (pattern-level; identity fields live in kashf-figure-names.js by design) ---');
-{
-  for (const pattern of Object.keys(FIGURE_DIGNITIES)) {
-    const registryEntry = HAWI_FIGURE_NAMES_BY_ID[pattern];
-    assert(!!registryEntry, `(5a) ${pattern}: has a matching registry entry`);
-    assert(!!registryEntry?.hebrewName, `(5b) ${pattern}: registry entry has a hebrewName ("${registryEntry?.hebrewName}")`);
-    assert(!!registryEntry?.arabicName, `(5c) ${pattern}: registry entry has an arabicName ("${registryEntry?.arabicName}")`);
-  }
-  assert(
-    HAWI_FIGURE_NAMES_BY_ID['1121']?.hebrewName === 'נלחם' &&
-    HAWI_FIGURE_NAMES_BY_ID['1221']?.hebrewName === 'סוהר' &&
-    HAWI_FIGURE_NAMES_BY_ID['2222']?.hebrewName === 'קהלה',
-    '(5d) spot-check: 3 sampled patterns resolve to their expected canonical Hebrew names via the registry'
-  );
-}
-
-console.log('\n--- 6. No placeholder values anywhere in the source file ---');
-{
-  const banned = ['TODO', 'demo', 'sample', 'inferred', 'FIXME', 'XXX', 'placeholder'];
-  for (const word of banned) {
-    const re = new RegExp(word, 'i');
-    assert(!re.test(RAW_SOURCE), `(6) file does not contain the placeholder token "${word}"`);
-  }
-}
-
-console.log('\n--- 7. Null positions match the source-verified expected-null map (no silent gaps, no silent extras) ---');
-{
-  // Built from the fresh, independent re-extraction of p.97-99 performed
-  // this round (see the verification report). Every position here was
-  // manually traced to an explicit "לא נתפרש" statement or an unresolved
-  // indirect reference ("כנגדו") in the source text.
-  const expectedNullFields = {
-    '1121': ['mezegHouse'],
-    '1222': ['tzaarHouse'],
-    '2111': ['tzaarHouse'],
-    '2212': ['tzaarHouse', 'mezegHouse'],
-    '1211': ['simchaHouse', 'tzaarHouse', 'mezegHouse'],
-    '1112': ['tzaarHouse', 'mezegHouse'],
-    '2122': ['simchaHouse', 'tzaarHouse', 'mezegHouse'],
-    '2221': ['tzaarHouse'],
-    '1221': [],
-    '2211': ['simchaHouse', 'tzaarHouse', 'mezegHouse'],
-    '1122': ['simchaHouse', 'tzaarHouse', 'mezegHouse'],
-    '2121': ['panimHouse', 'tzaarHouse'],
-    '1212': ['tzaarHouse'], // צערה = "כנגדו" — unresolved indirect reference, correctly left null
-    '2222': ['tzaarHouse'],
-  };
-  for (const [pattern, record] of Object.entries(FIGURE_DIGNITIES)) {
-    const actualNulls = REQUIRED_FIELDS.filter((f) => record[f] === null).sort();
-    const expected = (expectedNullFields[pattern] || []).slice().sort();
-    assert(
-      JSON.stringify(actualNulls) === JSON.stringify(expected),
-      `(7) ${pattern}: null fields match source-verified expectation (expected [${expected.join(',')}], got [${actualNulls.join(',')}])`
-    );
-  }
-}
-
-console.log('\n--- 8. Source-page citation present at module level (97-99 range referenced) ---');
-{
-  assert(/9[6-9]/.test(RAW_SOURCE) && /פרק במעלת הצורות/.test(RAW_SOURCE), '(8a) file documents the source chapter title and a page range in the 96-99 vicinity');
-  assert(/עמ['’]?\s*9[6-9]-9[7-9]/.test(RAW_SOURCE), '(8b) a page-range citation of the form "עמ\' 9X-9Y" is present');
-  // Note: the file does NOT carry a per-record sourcePages field (design
-  // choice — page citation lives once at module level, not duplicated 14
-  // times). This is a structural difference from the originally-envisioned
-  // schema, disclosed in the verification report, not silently assumed here.
-}
-
-console.log('\n--- 9. Deterministic key order ---');
-{
-  const actualOrder = Object.keys(FIGURE_DIGNITIES);
-  assert(JSON.stringify(actualOrder) === JSON.stringify(EXPECTED_KEY_ORDER), `(9) FIGURE_DIGNITIES key order is fixed and deterministic (got: ${actualOrder.join(',')})`);
-}
-
-console.log('\n--- 10. No fetch, no AI, no network ---');
-{
-  const forbidden = ['fetch(', 'XMLHttpRequest', 'anthropic', 'api.anthropic.com', 'ANTHROPIC_API_KEY'];
-  for (const token of forbidden) {
-    assert(!RAW_SOURCE.toLowerCase().includes(token.toLowerCase()), `(10) file does not reference "${token}"`);
-  }
-}
-
-console.log('\n--- 11. No verdict/engine coupling — this is a leaf data file ---');
-{
-  assert(!/^\s*import\s/m.test(RAW_SOURCE), '(11a) kashf-figure-attributes-gate2.js has zero imports (confirmed leaf data file)');
-  // Note: the file's header comment (line 9) mentions kashf-dhamir.js by
-  // name — but only to disclose that kashf-dhamir.js CONSUMES this data
-  // (the reverse direction: engine imports data, not data imports engine).
-  // A bare substring search would false-positive on that honest disclosure
-  // comment, so this check is scoped to actual import-statement lines only
-  // — of which (11a) already proved there are zero.
-  const importLines = RAW_SOURCE.split('\n').filter((line) => /^\s*import\s/.test(line));
-  assert(importLines.length === 0, `(11b) zero import-statement lines found (confirms no engine coupling; got: ${importLines.length})`);
-  assert(typeof FIGURE_DIGNITIES === 'object' && FIGURE_DIGNITIES !== null && typeof FIGURE_DIGNITIES !== 'function', '(11c) FIGURE_DIGNITIES is plain data, not a callable/effectful export');
-}
-
-console.log('\n--- 12. No duplicate data file was created this round ---');
-{
-  // Structural note, not a runtime-enforceable claim: per explicit user
-  // decision, no new data file / adapter / re-export was created for
-  // Roadmap Phase 1. This test imports the ORIGINAL, pre-existing file
-  // path only — there is no second import path to compare against.
-  assert(true, '(12) this test imports exactly one data source (kashf-figure-attributes-gate2.js) — no duplicate file exists to reconcile');
-}
-
-console.log('');
-if (failures > 0) {
-  console.error(`${failures} בדיקות נכשלו.`);
+if (failures) {
+  console.error('\n' + failures + ' checks failed.');
   process.exit(1);
 }
-console.log('כל הבדיקות עברו (GT-10). FIGURE_DIGNITIES מאומת: 14 רשומות אמיתיות + 2 צורות (דרך, חיבור) המתועדות במפורש כנעדרות מהמקור עצמו בעמ׳ 97-99 — לא פער-מימוש. כל 7 השדות המקצועיים קיימים בכל רשומה. כל ה-null תואמים ל"לא נתפרש במקור" מפורש. אין placeholder, אין fetch, אין AI, אין צימוד למנוע. לא נוצר קובץ נתונים כפול.');
+console.log('\nGT-10 PASS — FIGURE_DIGNITIES now matches printed KASHF pp97-99: 14 rows, omitted {2121,1221}, no inferred completion.');
