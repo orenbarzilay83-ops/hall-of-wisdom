@@ -1,5 +1,14 @@
 # HALL_WISDOM_KASHF_ESSENTIAL_DIGNITIES_EXISTING_DATA_VERIFICATION_REPORT
 
+> **SUPERSEDED — Phase 4 Downstream Batch 03 (printed pp97-99).**
+> This historical report treated the then-existing v56-derived table as source-verified.
+> The later printed-scan audit proved that assumption wrong: the printed table omits
+> ממון נכנס (2121) and סוהר (1221), includes חיבור (2112) and דרך (1111),
+> and differs in several row values. The authoritative current regression is
+> `_test_kashf_essential_dignities_table.mjs` after Batch 03, grounded in the
+> printed scan and Master Index entry `figures.p97-99.dignities-source-table`.
+> Do not use the historical 98/98 claim below as current source truth.
+
 > Verification only. No code changed. No commit/push/deploy. No AI call.
 > No UI touched. No engine wiring. No new data file, adapter, or
 > re-export created — per explicit user decision, this round verifies
