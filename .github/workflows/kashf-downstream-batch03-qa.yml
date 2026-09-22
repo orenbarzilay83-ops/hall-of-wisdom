@@ -30,6 +30,12 @@ jobs:
         run: node _test_kashf_ai_context_builder.mjs
       - name: Professional verdict safety
         run: node _test_kashf_professional_verdict_safety.mjs
+      - name: Goral rule applicability
+        run: node _test_goral_rule_applicability.mjs
+      - name: Kashf book-rule catalog
+        run: node _test_kashf_book_rule_catalog.mjs
+      - name: Kashf/Hawi method isolation
+        run: node _test_kashf_hawi_method_isolation.mjs
       - name: Canonical routing
         run: node _test_kashf_canonical_routing.mjs
       - name: Route coverage
