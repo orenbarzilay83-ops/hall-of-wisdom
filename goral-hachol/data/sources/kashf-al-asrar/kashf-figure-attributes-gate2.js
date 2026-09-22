@@ -30,7 +30,7 @@
 export const FIGURE_DIGNITIES_METADATA = {
   provenance: {
     workId: 'kashf-al-asrar',
-    editionId: 'kashf-hebrew-v56',
+    editionId: 'kashf-hebrew-v57',
     sourceLayer: 'author_main_text',
     authorityType: 'primary',
     traditionId: 'dignity-table-main',
