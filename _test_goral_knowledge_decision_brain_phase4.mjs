@@ -12,6 +12,9 @@ import { evaluateReading } from './goral-hachol/brain/goral-decision-brain.js';
 import { run as runBrainEvaluation } from './goral-hachol/brain/goral-brain-evaluation-runner.mjs';
 import { run as runQaRunner } from './goral-hachol/qa/goral-qa-runner.mjs';
 import { buildQaEvaluatorPayload } from './goral-hachol/qa/goral-qa-ai-payload-builder.js';
+import { buildRamlBoardFromMothers } from './goral-hachol/engine/raml-board-generator.js';
+import { buildKashfReading } from './goral-hachol/engine/kashf-reading-engine.js';
+import { writeKashfReading } from './goral-hachol/engine/kashf-narrative-writer.js';
 import {
   GORAL_KNOWLEDGE_REGISTRY,
   getRegistryEntriesForMethod,
@@ -174,24 +177,31 @@ const ORIGINAL_20_SCENARIO_IDS = new Set([
   assert(anyHigh === 0, `no scenario (original or new) should reach "high" severity, got ${anyHigh}`);
 }
 
-// 2. Regression proof: real dhamir leak (advisor-mode HTML) must be caught as advisorOnlyLeak/high.
+// 2. Regression proof: an explicitly-computed advisor-only dhamir, if mislabeled
+// as client output, must still be caught as a leak. Default readings no longer
+// compute dhamir, so the fixture must request one explicitly.
 {
   const scenario = GORAL_QA_SCENARIOS.find((s) => s.method === 'kashf');
-  const collected = collectScenarioOutput(scenario);
-  const advisorHtml = collected.advisorOnlyOutput; // real advisor-mode HTML, known to contain dhamir text
+  const board = buildRamlBoardFromMothers(scenario.mothers);
+  const explicitReading = buildKashfReading(board, scenario.topicId, {
+    question: 'מה הוא באמת חושב?',
+    dhamirSelection: { intentId: 'hiddenThoughtIntent', methodId: 'harkat-al-ard' },
+  });
+  const advisorHtml = writeKashfReading(explicitReading, { mode: 'advisor' });
   const brain = evaluateReading({
-    method: collected.method,
-    topicId: collected.topicId,
-    question: collected.question,
-    engineReading: collected.raw,
+    method: scenario.method,
+    topicId: scenario.topicId,
+    question: scenario.question,
+    engineReading: explicitReading,
     clientOutput: advisorHtml, // deliberately mislabel advisor HTML as client output
-    advisorData: collected.advisorOnlyOutput,
+    advisorData: advisorHtml,
     sectionsShown: ['dhamir'],
     sectionsHidden: [],
-    sourceRulesApplied: collected.sourceRulesApplied,
-    warnings: collected.warnings,
+    sourceRulesApplied: [],
+    warnings: [],
   });
-  assert(brain.advisorOnlyLeaks.includes('dhamir'), 'real advisor-mode dhamir content is detected as an advisorOnlyLeak');
+  assert(advisorHtml.includes('מחשבת השואל'), 'explicit advisor fixture really contains dhamir text');
+  assert(brain.advisorOnlyLeaks.includes('dhamir'), 'explicit advisor-only dhamir content is detected as an advisorOnlyLeak');
   assert(brain.overallSeverity === 'high', 'dhamir leak drives overallSeverity to high');
 }
 
