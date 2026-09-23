@@ -1668,6 +1668,9 @@ export function validateKashfMethodRegistry() {
     if (entry.runtimeAllowed && entry.executorStatus !== 'ready') {
       errors.push(`${key}: runtimeAllowed=true requires executorStatus=ready`);
     }
+    if (entry.runtimeAllowed && (entry.attributedSourceBook !== 'Kashf' || entry.sourceLayer !== 'body')) {
+      errors.push(`${key}: attributed/external methods are reference-only and cannot be runtimeAllowed`);
+    }
 
     if (entry.methodRole === 'canonical-operational') {
       const existing = canonicalByIntent.get(entry.kashfIntentId);
