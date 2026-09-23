@@ -290,6 +290,19 @@ export function buildKashfReadingByMethod(board, kashfMethodId, clientContext = 
     });
   }
 
+  const attributedReferenceOnly = method.attributedSourceBook !== 'Kashf'
+    || method.sourceLayer !== 'body';
+  if (attributedReferenceOnly) {
+    return blockedResult({
+      kashfMethodId: method.kashfMethodId,
+      kashfIntentId: method.kashfIntentId,
+      status: 'educational-only',
+      executorStatus: method.executorStatus,
+      reason: 'attributed-reference-only',
+      userMessage: 'שיטה מיוחסת או חיצונית נשמרת לעיון בלבד ואינה משתתפת בפסיקה הקנונית.',
+    });
+  }
+
   // Source/method readiness and executor readiness are separate facts.
   // A source-ready method with no canonical executor must not masquerade as
   // runnable and must not fall back to its broad legacy topic bundle.
