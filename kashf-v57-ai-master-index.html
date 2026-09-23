@@ -20372,8 +20372,10 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "pages": [
         159
       ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "Evaluate the source-specific H6 rule as a primary route only for the question intent \"whom is the questioner asking about?\"."
+      "status": "RESOLVED",
+      "target": "kashf-canonical-executors.js + kashf-canonical-method-registry.js + kashf-v57-knowledge-registry.js + kashf-ai-retrieval-index.js",
+      "summary": "The p159 H6 recurrence rule is a dedicated primary method only for identifying whom/what the querent is asking about; it is not a generic hidden-thought method.",
+      "resolution": "Rechecked printed p159 directly. Added canonical method dhamir.p159.subjectByH6Recurrence with exact intent dhamir.identifyQuestionSubject. The executor reads H6 and searches only the topical houses H1-H12 for recurrence of the same figure. One recurrence resolves to that house owner/role; zero recurrences remains unresolved; multiple recurrences remain explicitly ambiguous because the source gives no precedence. Retrieval aliases are restricted to wording equivalent to 'whom is the questioner asking about'. Generic hidden-thought wording such as 'what is he thinking?' does not resolve to this method. No public Question Bank item was added, so the rule cannot silently replace existing user-facing Dhamir routes."
     },
     {
       "id": "B10-DEREKH-H13-POLARITY-DOWNSTREAM",
