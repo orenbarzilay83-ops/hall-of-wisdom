@@ -57,6 +57,7 @@ import {
   SHIBUTZ_2_CANONICAL_NUMBER,
   SHIBUTZ_1_MOSHAV,
   SHIBUTZ_3_ELEMENT_VALUES,
+  SHIBUTZ_3_ELEMENT_TRADITION_CATALOG,
 } from '../data/sources/kashf-al-asrar/kashf-shibutzim.js';
 import { FIGURE_DIGNITIES } from '../data/sources/kashf-al-asrar/kashf-figure-attributes-gate2.js';
 
@@ -378,7 +379,14 @@ export function computeDhamirDoubledSquare(board) {
  * — ממון נכנס/סוהר) — חוזרים למושבה הטבעי לפי SHIBUTZ_1_MOSHAV (עמ' 104-105,
  * "שיבוץ המושב" — הנקרא במפורש בשמו בטקסט המצוטט).
  */
-export function computeDhamirElementPrevalence(board) {
+export function computeDhamirElementPrevalence(
+  board,
+  { elementTraditionId = 'p122-author-working' } = {}
+) {
+  const tradition = SHIBUTZ_3_ELEMENT_TRADITION_CATALOG[elementTraditionId];
+  if (!tradition?.runtimeEligible || !tradition?.values) return null;
+  const elementValues = tradition.values;
+
   const mizanPattern = getHousePattern(board, 15);
   if (!mizanPattern) return null;
 
@@ -393,9 +401,9 @@ export function computeDhamirElementPrevalence(board) {
 
   let prevailing = openElements[0];
   for (const el of openElements) {
-    if (SHIBUTZ_3_ELEMENT_VALUES[el.name] > SHIBUTZ_3_ELEMENT_VALUES[prevailing.name]) prevailing = el;
+    if (elementValues[el.name] > elementValues[prevailing.name]) prevailing = el;
   }
-  const walkValue = SHIBUTZ_3_ELEMENT_VALUES[prevailing.name];
+  const walkValue = elementValues[prevailing.name];
 
   const landingHouse = walkValue; // הליכה מבית 1 קדימה, ב-walkValue צעדים
   const landingEntry = getHouseEntry(board, landingHouse);
@@ -409,6 +417,8 @@ export function computeDhamirElementPrevalence(board) {
       sourceRef: 'כשף אל-אסראר עמ׳ 152-153, 96-98 — הסוג השני',
       prevailingElement: prevailing.name,
       walkValue,
+      elementTraditionId,
+      elementTraditionSourceRef: tradition.sourceRef,
       pattern: landingEntry.pattern,
       houseNumber: landingHouse,
       nameHebrew: getFigureHebrewName(landingEntry.pattern),
@@ -425,6 +435,8 @@ export function computeDhamirElementPrevalence(board) {
     sourceRef: 'כשף אל-אסראר עמ׳ 152-153, 104-105 — הסוג השני',
     prevailingElement: prevailing.name,
     walkValue,
+    elementTraditionId,
+    elementTraditionSourceRef: tradition.sourceRef,
     pattern: moshavEntry?.pattern || landingEntry.pattern,
     houseNumber: moshavHouse,
     nameHebrew: getFigureHebrewName(moshavEntry?.pattern || landingEntry.pattern),
@@ -451,10 +463,13 @@ export const KASHF_DHAMIR_NEED_DRIVEN_POLICY = Object.freeze({
   autoSelectFromAvailableData: false,
   autoRunAllImplementedMethods: false,
   requireExplicitMethodId: true,
-  sourceDataPages: Object.freeze([121, 122, 123]),
+  requireApprovedIntentId: true,
+  approvedIntentIds: Object.freeze(['hiddenThoughtIntent']),
+  elementPrevalenceRequiresExplicitTradition: true,
+  sourceDataPages: Object.freeze([121, 122, 123, 124, 125, 128, 130, 131]),
   policyType: 'project-operational-boundary',
   note:
-    'SHIBUTZ_3_ELEMENT_VALUES הוא נתון-מקור זמין, לא טריגר. יש לבחור שיטת דמיר מפורשת לפני חישוב; אין להסיק מן הנתון שיש להריץ את כל השיטות.',
+    'נתוני שיבוץ/יסודות הם ידע-מקור, לא טריגר. runtime מפעיל שיטת דמיר אחת בלבד לאחר intent מאושר ובחירת methodId מפורשת; element-prevalence דורש גם מסורת יסודות מפורשת.',
 });
 
 export const KASHF_DHAMIR_IMPLEMENTED_METHOD_CATALOG = Object.freeze([
@@ -503,12 +518,29 @@ const DHAMIR_EXECUTOR_BY_METHOD_ID = Object.freeze({
  * אין fallback לרוב, אין הרצת חמש השיטות ואין בחירה על בסיס עצם זמינות
  * SHIBUTZ_3_ELEMENT_VALUES.
  */
-export function computeSelectedDhamirMethod(board, methodId) {
+export function computeSelectedDhamirMethod(
+  board,
+  methodId,
+  { intentId = null, elementTraditionId = null } = {}
+) {
+  if (!KASHF_DHAMIR_NEED_DRIVEN_POLICY.approvedIntentIds.includes(intentId)) {
+    return {
+      selected: false,
+      status: 'blocked',
+      reason: 'dhamir-intent-not-approved',
+      intentId,
+      methodId: typeof methodId === 'string' ? methodId.trim() || null : null,
+      methodsExecuted: [],
+      result: null,
+    };
+  }
+
   if (typeof methodId !== 'string' || methodId.trim() === '') {
     return {
       selected: false,
       status: 'blocked',
       reason: 'explicit-dhamir-method-required',
+      intentId,
       methodId: null,
       methodsExecuted: [],
       result: null,
@@ -522,18 +554,50 @@ export function computeSelectedDhamirMethod(board, methodId) {
       selected: false,
       status: 'blocked',
       reason: 'unknown-dhamir-method',
+      intentId,
       methodId: normalizedMethodId,
       methodsExecuted: [],
       result: null,
     };
   }
 
-  const result = executor(board);
+  let executorOptions = undefined;
+  if (normalizedMethodId === 'element-prevalence') {
+    if (!elementTraditionId) {
+      return {
+        selected: false,
+        status: 'blocked',
+        reason: 'explicit-element-tradition-required',
+        intentId,
+        methodId: normalizedMethodId,
+        methodsExecuted: [],
+        result: null,
+      };
+    }
+    const tradition = SHIBUTZ_3_ELEMENT_TRADITION_CATALOG[elementTraditionId];
+    if (!tradition?.runtimeEligible) {
+      return {
+        selected: false,
+        status: 'blocked',
+        reason: 'element-tradition-not-runtime-eligible',
+        intentId,
+        methodId: normalizedMethodId,
+        elementTraditionId,
+        methodsExecuted: [],
+        result: null,
+      };
+    }
+    executorOptions = { elementTraditionId };
+  }
+
+  const result = executor(board, executorOptions);
   return {
     selected: true,
     status: result ? 'ok' : 'no-result',
     reason: result ? 'explicit-method-executed' : 'explicit-method-returned-no-result',
+    intentId,
     methodId: normalizedMethodId,
+    elementTraditionId: normalizedMethodId === 'element-prevalence' ? elementTraditionId : null,
     methodsExecuted: [normalizedMethodId],
     result: result || null,
   };
@@ -554,7 +618,7 @@ export function computeDhamirByMajority(board) {
     computeDhamirHarkatAlArd(board),
     computeDhamirJawharayn(board),
     computeDhamirDoubledSquare(board),
-    computeDhamirElementPrevalence(board),
+    computeDhamirElementPrevalence(board, { elementTraditionId: 'p122-author-working' }),
   ].filter(Boolean);
 
   if (!candidates.length) {
