@@ -31,9 +31,8 @@ jobs:
           while IFS= read -r -d '' f; do
             node --check "$f" >/dev/null
             count=$((count+1))
-          done < <(find . -type f \( -name '*.js' -o -name '*.mjs' \) -not -path './.git/*' -not -path './node_modules/*' -not -name '_apply_*.mjs' -not -path './raml-data/raml-spiritual-diagnostics.js' -print0)
-          echo "Syntax OK: $count connected/general JS/MJS files"
-          echo "Known disconnected orphan-module raml-data/raml-spiritual-diagnostics.js excluded; engine registry marks runtimeRole:disconnected"
+          done < <(find . -type f \( -name '*.js' -o -name '*.mjs' \) -not -path './.git/*' -not -path './node_modules/*' -not -name '_apply_*.mjs' -print0)
+          echo "Syntax OK: $count JS/MJS files (excluding only one-time _apply_ patchers)"
           grep -q "Fix one-time patcher nested template literals" .github/workflows/kashf-apply-final-route-coverage.yml
           echo "Known _apply_kashf_final_route_coverage.mjs exception is explicitly patched by its one-time workflow before execution"
 
@@ -101,6 +100,11 @@ jobs:
           npm install --no-save playwright
           npx playwright install --with-deps chromium
 
+      - name: Install browser test dependency
+        run: |
+          npm install --no-save playwright@latest
+          npx playwright install chromium
+
       - name: Full local regression sweep
         shell: bash
         run: |
@@ -109,7 +113,7 @@ jobs:
           passed=0
           skipped=0
           echo "Skipping only _test_oren_smart_advisor_kashf_live_runner.mjs: it explicitly requires a real JWT + real payload and is not a repository-local CI test."
-          for f in _test_*.mjs _audit_*.mjs; do
+          for f in _test_*.mjs _audit_*.mjs cartomancy/_test_cartomancy.mjs tests/*.test.js; do
             [ -f "$f" ] || continue
             if [ "$f" = "_test_oren_smart_advisor_kashf_live_runner.mjs" ]; then
               skipped=$((skipped+1))
