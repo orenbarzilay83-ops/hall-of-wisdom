@@ -28,6 +28,47 @@
  * kashf-dhamir.js ו-kashf-book-additions.js).
  */
 
+export const KASHF_ATTRIBUTED_METHOD_RUNTIME_POLICY = Object.freeze({
+  operationalRole: 'REFERENCE_ONLY',
+  runtimeEligible: false,
+  defaultEligible: false,
+  mayAutoRun: false,
+  mayVoteAgainstPrimary: false,
+  requiresExplicitSelection: true,
+  note: 'שיטה מיוחסת/חלופית נשמרת לידע ולייחוס מקור בלבד. אין להריץ אותה אוטומטית, אין לצרף אותה כהצבעה מול המסלול הראשי, ואין להפוך אותה לברירת מחדל בלי בחירה תפעולית מפורשת ומיפוי נפרד.',
+});
+
+export const KASHF_SHIBUTZ_ATTRIBUTED_METHOD_CATALOG = Object.freeze([
+  Object.freeze({
+    id: 'shibutz2.al-zanati-number-duration',
+    sourcePages: Object.freeze([113, 114]),
+    attributedTo: 'אל-זנאתי',
+    sourceLayer: 'attributed-authority',
+    ...KASHF_ATTRIBUTED_METHOD_RUNTIME_POLICY,
+  }),
+  Object.freeze({
+    id: 'shibutz2.dalail-al-fadl-table',
+    sourcePages: Object.freeze([114, 115]),
+    attributedTo: 'דלאיל אל-פצל פי עלם אל-רמל',
+    sourceLayer: 'external-book',
+    ...KASHF_ATTRIBUTED_METHOD_RUNTIME_POLICY,
+  }),
+  Object.freeze({
+    id: 'shibutz2.al-zanati-distance',
+    sourcePages: Object.freeze([121]),
+    attributedTo: 'אל-זנאתי',
+    sourceLayer: 'variant-copy-attributed-authority',
+    ...KASHF_ATTRIBUTED_METHOD_RUNTIME_POLICY,
+  }),
+  Object.freeze({
+    id: 'shibutz2.al-layth-distance',
+    sourcePages: Object.freeze([121]),
+    attributedTo: 'אל-לית׳',
+    sourceLayer: 'variant-copy-attributed-authority',
+    ...KASHF_ATTRIBUTED_METHOD_RUNTIME_POLICY,
+  }),
+]);
+
 // ─────────────────────────────────────────────────────────────────────────
 // השיבוץ הראשון: שיבוץ המושב (עמ' 104-105)
 // "כל דבר שוכן בו בביתו: כבית המלך, בית השר..." — לכל צורה יש בית קבוע
@@ -253,6 +294,8 @@ export const SHIBUTZ_2_LESHON_HAINYAN_METHOD = {
  */
 export const SHIBUTZ_2_ALZANATI_CITATION = {
   attributedTo: 'אל-זנאתי (מצוטט, לא המחבר)',
+  sourceLayer: 'attributed-authority',
+  ...KASHF_ATTRIBUTED_METHOD_RUNTIME_POLICY,
   examples: [
     {
       pattern: '2221', hebrewName: 'שפל ראש', canonicalPosition: 8, ownNumber: 36,
@@ -273,6 +316,54 @@ export const SHIBUTZ_2_ALZANATI_CITATION = {
   sourceStatus: 'explicit-in-source',
   sourceRef: "כשף אל-אסראר עמ' 113 — דברי אל-זנאתי במספר, דוגמאות מעשיות",
 };
+
+/**
+ * עמ' 121 — שתי שיטות מרחק המובאות בתוך "ومن نسخة أخرى" ובשם חכמים
+ * אחרים. מיד לאחריהן המקור אומר "رجع إلى النسخة الأولى" וחוזר לנוסחה
+ * הראשונה. לכן הן נשמרות כ-REFERENCE_ONLY ואינן חלק מהמסלול הראשי.
+ */
+export const SHIBUTZ_2_P121_ATTRIBUTED_DISTANCE_METHODS = Object.freeze([
+  Object.freeze({
+    id: 'al-zanati-distance',
+    attributedTo: 'אל-זנאתי',
+    sourceMarkerArabic: 'ومن نسخة أخرى',
+    procedureHebrew:
+      'אוספים את כל היחידים מתוך הצורות ומחוץ להן מן הראשונה עד החמש־עשרה, מפחיתים 16 שוב ושוב, ומוליכים את השארית מן הבית הראשון עד מקום העצירה.',
+    unitByLandingGroup: Object.freeze({
+      mothers: 'שיבר',
+      daughters: 'אמה',
+      generated: 'באע',
+      balances: 'פרסה',
+    }),
+    sourceStatus: 'explicit-in-source',
+    sourceRef: "כשף אל-אסראר עמ' 121",
+    sourceLayer: 'variant-copy-attributed-authority',
+    ...KASHF_ATTRIBUTED_METHOD_RUNTIME_POLICY,
+  }),
+  Object.freeze({
+    id: 'al-layth-distance',
+    attributedTo: 'אל-לית׳',
+    sourceMarkerArabic: 'قال الليث',
+    procedureHebrew:
+      'עושים את אותו חישוב, ואז בוחנים את הצורה שבה נעצר המספר ואת קבוצת המקור שלה; קבוצת המקור קובעת את יחידת המידה.',
+    unitByFigureOriginGroup: Object.freeze({
+      mothers: 'שיבר',
+      daughters: 'אמה',
+      generated: 'באע',
+      balances: 'פרסה',
+    }),
+    sourceStatus: 'explicit-in-source',
+    sourceRef: "כשף אל-אסראר עמ' 121",
+    sourceLayer: 'variant-copy-attributed-authority',
+    ...KASHF_ATTRIBUTED_METHOD_RUNTIME_POLICY,
+  }),
+]);
+export const SHIBUTZ_2_P121_RETURN_TO_PRIMARY_COPY = Object.freeze({
+  arabic: 'رجع إلى النسخة الأولى',
+  meaningHebrew: 'חזרה לנוסחה הראשונה',
+  sourceRef: "כשף אל-אסראר עמ' 121",
+  sourceStatus: 'explicit-in-source',
+});
 
 // ─────────────────────────────────────────────────────────────────────────
 // השיבוץ השלישי: שיבוץ היסודות (עמ' 121-125)
