@@ -289,6 +289,7 @@ export const FIGURE_PROXIMITY_RUNTIME_POLICY = Object.freeze({
   mayAutoRun: false,
   mayFeedVerdict: false,
   computationalDefinitionStatus: 'UNRESOLVED',
+  knowledgeStatus: 'REVIEW_REQUIRED',
   blockedUntil: 'source-faithful proximity definition + Golden Tests',
   note:
     'עצם קיום כללי הקרבה בקובץ הידע אינו מגדיר מה נחשב קרוב על הלוח. ' +
