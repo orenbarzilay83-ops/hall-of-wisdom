@@ -20289,9 +20289,10 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
     {
       "id": "B05-P112-LISAN-STRUCTURE",
       "sourceEntryId": "shibutz.p112.lisan-al-amr",
-      "status": "DEFER_UNTIL_INDEX_COMPLETE",
+      "status": "RESOLVED",
       "target": "goral-hachol/engine/kashf-leshon-hainyan.js",
-      "summary": "Review downstream logic for preserving the source structural state מائل الأوتاد as the trigger for future judgment rather than collapsing it to a semantic label."
+      "summary": "Downstream Lisan al-Amr logic lacked the p112 structural house-state trigger and therefore could not preserve مائل الأوتاد as the source condition for future judgment.",
+      "resolution": "Rechecked printed p112 / scan p114 directly. Added explicit structural taxonomy to kashf-leshon-hainyan.js: الأوتاد H1/H4/H7/H10 → present, مائل الأوتاد H2/H5/H8/H11 → future, الزائل الساقط عن الوتد H3/H6/H9/H12 → past. computeLeshonHainyan now reports actual H1-H12 occurrences of the Lisan figure with these structural states, preserves multiple states without inventing precedence, and leaves the source fallback unimplemented when the figure is absent rather than guessing. No production routing was added to the still-disconnected Lisan module."
     },
     {
       "id": "B06-OPS-ATTRIBUTED-METHODS",
