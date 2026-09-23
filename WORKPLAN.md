@@ -17,8 +17,11 @@
 - [✅] p112 — Lisan al-Amr שומר עכשיו את הטריגר המבני של המקור: יתדות H1/H4/H7/H10→הווה; `مائل الأوتاد` H2/H5/H8/H11→עתיד; `الزائل الساقط عن الوتد` H3/H6/H9/H12→עבר. חזרות נשמרות בלי להמציא קדימות, ו-H13–H16 אינם מסווגים בהיקש. `B05-P112-LISAN-STRUCTURE` נסגר.
 - [✅] pp113–114/121 — שיטות מיוחסות/חלופיות (אל־זנאתי, אל־לית׳, דלאיל אל־פצל) קיבלו גבול תפעולי קשיח: REFERENCE_ONLY, ללא auto-run וללא הצבעה נגד המסלול הראשי; הנתיב הקנוני חוסם מקור מיוחס/חיצוני גם בקריאה ישירה. `B06-OPS-ATTRIBUTED-METHODS` נסגר.
 - [✅] pp121–123 — תשתית שיבוץ היסודות אינה עוד טריגר להרצת כל שיטות הדמיר: נוסף selector שמפעיל שיטת דמיר אחת בלבד לפי `methodId` מפורש; ללא בחירה אין חישוב, ו-Lisan al-Amr אינו מפעיל עוד majority בעצמו. `computeDhamirByMajority` נשמר כמנגנון מקור לטיפול בפריט runtime נפרד. `B06-DHAMIR-NEED-DRIVEN` נסגר.
-- [✅] מצב downstream לאחר Batch 10: **17/46 RESOLVED**, נותרו **29**.
-- [ ] הבא לפי סדר המקור: pp124–126/132 — להפריד בין מסורות ערכי-היסודות ולמנוע מעצם קיומה של מסורת בקוד להעניק לה קדימות runtime (`B07-DATA-ELEMENT-TRADITIONS-RUNTIME-PRECEDENCE`).
+- [✅] pp124–126/132 — מסורות ערכי-היסודות הופרדו: p122 נשמרת כמסורת עבודה שנבחרת רק במפורש; שלוש מסורות p126 הן REFERENCE_ONLY; סתירת p131→132 נשמרת כ-SOURCE_CONFLICT ואינה מתקנת/דורסת את p122/p126. `B07-DATA-ELEMENT-TRADITIONS-RUNTIME-PRECEDENCE` נסגר.
+- [✅] pp124–131 — דמיר הוא עכשיו need-driven בפועל: רק `hiddenThoughtIntent` מאושר להפעלה, נדרש `methodId` אחד מפורש, וב-element-prevalence נדרשת גם מסורת יסודות מפורשת. קריאה רגילה אינה מחשבת דמיר/Extras/Type4 חיצוני ברקע. `B07-DHAMIR-NEED-DRIVEN-SELECTION` נסגר.
+- [✅] pp151–155 — כלל הרוב נשמר כידע-מקור וכפונקציה, אך נותק מ-`buildKashfReading`: אין עוד auto-run של כל שיטות הדמיר ואין 3/5 majority אוטומטי. `B09-DHAMIR-MAJORITY-RUNTIME-DISABLED` נסגר.
+- [✅] מצב downstream לאחר Batch 11: **20/46 RESOLVED**, נותרו **26**.
+- [ ] הבא לפי סדר המקור: pp136–137 — לתקן את מפת העונות החופפת לפי הסריקה ולוודא שכל consumer מפסיק להניח partition בלעדי (`B08-SHIB-5-SEASON-MAP-SOURCE-CORRECTION`).
 
 ---
 
