@@ -5,7 +5,7 @@
 
 import { buildRamlBoardFromMothers } from './goral-hachol/engine/raml-board-generator.js';
 import { interpretHawiQuestionInitial } from './goral-hachol/engine/hawi-interpreter.js';
-import { HAWI_FIGURE_NAMES } from './goral-hachol/data/sources/hawi/foundations/hawi-figure-names.js';
+import { HAWI_FIGURE_NAMES } from './goral-hachol/data/sources/hawi/foundations/hawi-foundations.js';
 
 const NAMES_BY_ID = Object.fromEntries(HAWI_FIGURE_NAMES.map(f => [f.id, f]));
 
