@@ -136,6 +136,18 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
   }),
 
   // ── SOURCE READY; CANONICAL EXECUTOR PENDING ---------------------------
+  'dhamir.p159.subjectByH6Recurrence': method({
+    kashfMethodId: 'dhamir.p159.subjectByH6Recurrence',
+    kashfIntentId: 'dhamir.identifyQuestionSubject',
+    topicId: 'generalReading',
+    sourcePages: [159],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: true,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
+    notes: 'Dedicated p159 rule only for the exact intent “whom/what is the querent asking about?”. It reads H6 and the recurrence of the same figure in another topical house. It is not a generic hidden-thought/intent method and must not replace the selected Dhamir route for “what is the person thinking?”. Multiple recurrences remain ambiguous because the source gives no precedence.',
+  }),
+
   'general.p174.h1h2h4h7h10h15': method({
     kashfMethodId: 'general.p174.h1h2h4h7h10h15',
     kashfIntentId: 'general.state',
