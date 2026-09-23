@@ -20,10 +20,9 @@
  * with direct runtime evidence, never by blanket topic-independence
  * claims.
  *
- * No AI call. No fetch. No network. No UI. No change to any Kashf engine
- * file (kashf-reading-engine.js, kashf-dhamir.js, computeWitnessTestimony,
- * kashf-narrative-writer.js, etc.) or to raml-board-generator.js/
- * hawi-interpreter.js.
+ * No AI call. No fetch. No network. No UI. Runtime evidence reflects the
+ * current need-driven Dhamir contract: implemented methods are not treated
+ * as evaluated/applied unless an explicit Dhamir selection runs them.
  */
 
 import { KASHF_BOOK_RULE_CATALOG, KASHF_BOOK_RULE_CATALOG_VERSION, KASHF_DHAMIR_METHOD_COVERAGE } from './goral-hachol/data/sources/kashf-al-asrar/kashf-book-rule-catalog.js';
@@ -77,7 +76,7 @@ console.log('\n--- 4. evaluated does not automatically equal verdict-impacting -
   const evaluatedNotFeedingVerdict = selection.evaluatedRules.filter((r) => r.runtimeEvidence && r.runtimeEvidence.feedsOverallPositive !== true);
   assert(evaluatedNotFeedingVerdict.length > 0, `(4) at least one evaluated rule does not feed reading.overallPositive (got ${evaluatedNotFeedingVerdict.length}: ${evaluatedNotFeedingVerdict.map(key).join(', ')})`);
   assert(evaluatedNotFeedingVerdict.some((r) => key(r) === 'kashf-p53-witness-scheme-basic'), '(4) witnessTestimony is evaluated (computeWitnessTestimony runs) but does NOT feed the overallPositive scalar');
-  assert(evaluatedNotFeedingVerdict.some((r) => key(r) === 'type1-face1-mizan'), '(4) dhamir mizan is evaluated but does NOT feed the overallPositive scalar (advisor-only by design)');
+  assert(!has(selection.evaluatedRules, 'type1-face1-mizan'), '(4) dhamir mizan is implemented but not evaluated without an explicit need-driven selection');
 }
 
 console.log('\n--- 5. appliedBookRules contains only rules with real runtime evidence ---');
@@ -154,7 +153,7 @@ console.log('\n--- 11. completeness stays partial ---');
   assert(rcs.appliedBookRules.includes('kashf-p53-witness-scheme-basic'), '(11) real payload appliedBookRules includes kashf-p53-witness-scheme-basic');
   assert(!rcs.appliedBookRules.includes('kashf-p101-witness-scheme-extended'), '(11) real payload appliedBookRules excludes kashf-p101-witness-scheme-extended');
   assert(!rcs.appliedBookRules.includes('kashf-p49-house6-sorcery-domain'), '(11) real payload appliedBookRules excludes kashf-p49-house6-sorcery-domain');
-  assert(rcs.dhamirCoverage.evaluated === 5 && rcs.dhamirCoverage.applied === 5, `(11) dhamirCoverage reports 5 evaluated / 5 applied out of 8 catalogued (got: ${JSON.stringify(rcs.dhamirCoverage)})`);
+  assert(rcs.dhamirCoverage.evaluated === 0 && rcs.dhamirCoverage.applied === 0, `(11) default payload reports 0 evaluated / 0 applied dhamir methods until explicit selection (got: ${JSON.stringify(rcs.dhamirCoverage)})`);
 }
 
 console.log('\n--- 12. full AI payload passes the real, unmodified sanitizer ---');
@@ -214,4 +213,4 @@ if (failures > 0) {
   console.error(`${failures} בדיקות נכשלו.`);
   process.exit(1);
 }
-console.log('כל הבדיקות עברו. implemented/applicable/selected/evaluated/applied נשמרים כחמש עובדות נפרדות: house6 (implemented, לא-applied), עמ׳ 101-102 (selected, לא-evaluated, לעולם-לא-applied), שני חוקי-עמ׳-167 (unresolvedApplicability, לא-missingVerifiedRelevant). עמ׳ 53 מוכח applied ובו-זמנית מסומן unresolvedSourceRelationship — שתי עובדות בלתי-תלויות. 5/8 שיטות-דמיר evaluated+applied בפועל (לא כל 8, גם לא רק implemented). ה-verdict לא השתנה, הפלט עובר סניטייזר אמיתי, ואף קובץ-מנוע לא נגע.');
+console.log('כל הבדיקות עברו. implemented/applicable/selected/evaluated/applied נשמרים כחמש עובדות נפרדות: house6 (implemented, לא-applied), עמ׳ 101-102 (selected, לא-evaluated), עמ׳ 53 applied ובו-זמנית unresolvedSourceRelationship. שיטות הדמיר הממומשות נשארות available אך 0/8 evaluated/applied בקריאה רגילה עד בחירה need-driven מפורשת.');
