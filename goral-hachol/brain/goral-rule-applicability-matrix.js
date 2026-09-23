@@ -32,7 +32,7 @@ export const RULE_CATEGORIES = [
 export const APPLICABILITY_VALUES = RULE_DECISION_VALUES;
 
 const DEFAULT_ROW = {
-  dhamir: 'advisorOnly',
+  dhamir: 'forbidden',
   timing: 'forbidden',
   spiritual: 'forbidden',
   characterNature: 'forbidden',
@@ -45,7 +45,9 @@ const DEFAULT_ROW = {
 
 const METHOD_DEFAULT_OVERRIDES = {
   kashf: { verificationRules: 'required', formulaOnlyHouses: 'allowed' },
-  hawi: { witnessesJudge: 'required', formulaOnlyHouses: 'unavailable' },
+  // Hawi keeps its pre-existing advisor-only default; the Kashf runtime
+  // boundary below is method-specific and must not silently change Hawi.
+  hawi: { dhamir: 'advisorOnly', witnessesJudge: 'required', formulaOnlyHouses: 'unavailable' },
 };
 
 /**
@@ -69,11 +71,10 @@ const QUESTION_TYPE_OVERRIDES = {
       dhamir: {
         value: 'advisorOnly',
         evidence:
-          'DHAMIR_CLIENT_VISIBLE_TOPICS is empty for both methods (goral-rule-applicability.js) — ' +
-          'even for this questionType, current code still hides dhamir from the client. ' +
-          'Kept as advisorOnly (matching real behavior) rather than "required", with a gap flagged ' +
-          'in goral-question-taxonomy.js (hiddenThoughtIntent.gapNote). Needs explicit decision from Oren ' +
-          'before this can become client-visible.',
+          'Kashf Dhamir runtime is need-driven: hiddenThoughtIntent is the only approved direct intent, ' +
+          'and even here a concrete method must be selected explicitly. DHAMIR_CLIENT_VISIBLE_TOPICS remains ' +
+          'empty, so advisorOnly describes visibility after an explicit calculation; it is not permission ' +
+          'to auto-run Dhamir for unrelated questions.',
       },
     },
   },
