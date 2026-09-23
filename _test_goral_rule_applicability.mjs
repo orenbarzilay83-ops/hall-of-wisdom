@@ -1,6 +1,6 @@
 // בדיקת רגרסיה: Question-Aware Section Filter (goral-rule-applicability.js)
-// מוודאת שדמיר/מחשבת-השואל לא מוצגים ללקוח כברירת מחדל בכשף ובחאווי,
-// שהחישוב עצמו לא נמחק, ושפאנל בינת אורן + הקלפים לא נפגעו.
+// מוודאת שדמיר/מחשבת-השואל אינם מחושבים או מוצגים כברירת מחדל,
+// ושחישוב מפורש יחיד עדיין עובד במצב advisor.
 import { buildRamlBoardFromMothers } from './goral-hachol/engine/raml-board-generator.js';
 import { buildKashfReading } from './goral-hachol/engine/kashf-reading-engine.js';
 import { writeKashfReading } from './goral-hachol/engine/kashf-narrative-writer.js';
@@ -22,8 +22,9 @@ console.log('\n--- 1. כשף: שאלת עסק/הצלחה — ללא דמיר ---
   assert(!html.includes('מחשבת השואל'), 'אין "מחשבת השואל" בפלט הלקוח');
   assert(!html.includes('kashf-dhamir-body'), 'אין כרטיס-דמיר בפלט הלקוח');
   assert(!html.includes('kashf-dhamir-extra'), 'אין תוספות-דמיר (עיתוי/טבע-שואל) בפלט הלקוח');
-  assert(!!reading.dhamir && !!reading.dhamir.winner, 'reading.dhamir עדיין מחושב באובייקט (לא נמחק)');
-  assert(!!reading.dhamirExtras, 'reading.dhamirExtras עדיין מחושב באובייקט (לא נמחק)');
+  assert(reading.dhamir === null, 'commerce: דמיר אינו מחושב ללא בחירה מפורשת');
+  assert(reading.dhamirExtras === null, 'commerce: תוספות דמיר אינן מחושבות ללא opt-in');
+  assert(reading.dhamirType4External === null, 'commerce: משלים דמיר חיצוני אינו מחושב ללא opt-in');
 }
 
 console.log('\n--- 2. כשף: השלמת עניין — ללא דמיר כברירת מחדל ---');
@@ -31,14 +32,19 @@ console.log('\n--- 2. כשף: השלמת עניין — ללא דמיר כברי
   const reading = buildKashfReading(board, 'completion', { question: 'האם הדבר יצליח?' });
   const html = writeKashfReading(reading);
   assert(!html.includes('מחשבת השואל'), 'completion: אין דמיר בפלט הלקוח כברירת מחדל');
-  assert(!!reading.dhamir, 'completion: reading.dhamir עדיין מחושב');
+  assert(reading.dhamir === null, 'completion: reading.dhamir אינו מחושב כברירת מחדל');
 }
 
 console.log('\n--- 3. כשף: advisor mode — דמיר כן מוצג במפורש ---');
 {
-  const reading = buildKashfReading(board, 'commerce', { question: 'האם העסק יצליח?' });
+  const reading = buildKashfReading(board, 'commerce', {
+    question: 'מה הוא באמת חושב?',
+    dhamirSelection: { intentId: 'hiddenThoughtIntent', methodId: 'mizan' },
+  });
+  assert(reading.dhamir?.winner, 'advisor mode fixture: שיטת דמיר אחת חושבה במפורש');
+  assert(reading.dhamir.candidates.length === 1, 'advisor mode fixture: רק מועמד דמיר אחד רץ');
   const advisorHtml = writeKashfReading(reading, { mode: 'advisor' });
-  assert(advisorHtml.includes('מחשבת השואל'), 'advisor mode: דמיר מוצג כשמבקשים mode:"advisor"');
+  assert(advisorHtml.includes('מחשבת השואל'), 'advisor mode: דמיר מפורש מוצג ליועץ');
 }
 
 console.log('\n--- 4. כשף: מצב client (ברירת מחדל, ללא options) זהה למצב client מפורש ---');
@@ -81,5 +87,5 @@ console.log('\n--- 7. פאנל בינת אורן + קלפים עדיין קיי�
   assert(fs.existsSync(new URL('./cartomancy/ui/cards-app.js', import.meta.url)), 'cartomancy/ui/cards-app.js עדיין קיים');
 }
 
-console.log(failed ? `\n${failed} בדיקות נכשלו` : '\nכל הבדיקות עברו — דמיר מוסתר ללקוח כברירת מחדל בכשף ובחאווי, עדיין מחושב, ואבחון רוחני בחאווי לא נגע.');
+console.log(failed ? `\n${failed} בדיקות נכשלו` : '\nכל הבדיקות עברו — דמיר אינו רץ אוטומטית בכשף, חישוב מפורש יחיד זמין ליועץ, וחאווי לא נגע.');
 process.exitCode = failed ? 1 : 0;
