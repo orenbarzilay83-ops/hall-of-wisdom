@@ -183,7 +183,7 @@ export const FIGURE_DIGNITIES = {
 // ─────────────────────────────────────────────────────────────────────────
 export const FIGURE_JOY_GRIEF_SUPPLEMENTARY_NOTE = {
   sourceStatus: 'explicit-in-source',
-  sourceRef: "כשף אל-אסראר עמ' 100",
+  sourceRef: "כשף אל-אסראר עמ' 101-102",
   provenance: {
     workId: 'kashf-al-asrar',
     editionId: 'kashf-hebrew-v57',
@@ -320,16 +320,16 @@ export const FIGURE_MONTHS = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────
-// שותפות ועדות בין בתים (עמ' 100, "פרק בשותף ובעדות") — יחסים
+// שותפות ועדות בין בתים (עמ' 101-102, "פרק בשותף ובעדות") — יחסים
 // מבניים בין בתים (לא תלויי-צורה), שונה מ"עדי מגושמת"/witness-testimony
 // שכבר קיים במנוע — לבדוק חפיפה לפני חיבור.
 // ─────────────────────────────────────────────────────────────────────────
 export const HOUSE_PARTNERS = {
   sourceStatus: 'explicit-in-source',
-  sourceRef: "כשף אל-אסראר עמ' 100",
+  sourceRef: "כשף אל-אסראר עמ' 101-102",
   provenance: {
     workId: 'kashf-al-asrar',
-    editionId: 'kashf-hebrew-v56',
+    editionId: 'kashf-hebrew-v57',
     sourceLayer: 'author_main_text',
     authorityType: 'primary',
     traditionId: 'house-partnership-relations',
@@ -343,7 +343,7 @@ export const HOUSE_PARTNERS = {
     status: 'explicit_in_source',
     confidence: 'high',
     ambiguity: false,
-    visualDependency: 'none',
+    visualDependency: 'printed-scan-p103-104',
   },
 
   usagePolicy: {
@@ -363,10 +363,10 @@ export const HOUSE_PARTNERS = {
 
 export const HOUSE_TESTIMONY = {
   sourceStatus: 'explicit-in-source',
-  sourceRef: "כשף אל-אסראר עמ' 100",
+  sourceRef: "כשף אל-אסראר עמ' 101-102",
   provenance: {
     workId: 'kashf-al-asrar',
-    editionId: 'kashf-hebrew-v56',
+    editionId: 'kashf-hebrew-v57',
     sourceLayer: 'author_main_text',
     authorityType: 'primary',
     traditionId: 'house-testimony-relations',
@@ -380,7 +380,7 @@ export const HOUSE_TESTIMONY = {
     status: 'explicit_in_source',
     confidence: 'high',
     ambiguity: false,
-    visualDependency: 'none',
+    visualDependency: 'printed-scan-p103-104',
   },
 
   usagePolicy: {
@@ -394,7 +394,7 @@ export const HOUSE_TESTIMONY = {
   // "הצורה התשיעית מעידה על הראשון, על החמישי ועל השביעי..." וכו'
   9:  [1, 5, 7],
   14: [2, 6, 10],
-  15: [3, 6, 7, 11],
+  5:  [3, 7, 11],
   16: [4, 8, 12],
 };
 
