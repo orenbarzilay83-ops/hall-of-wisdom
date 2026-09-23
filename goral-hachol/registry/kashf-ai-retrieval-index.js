@@ -259,7 +259,7 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
     houses: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
   },
   'spiritual.p167.hiddenActionAirRows46815': {
-    aliases: ['האם יש פעולה מאחורי הדבר', 'פעולה נסתרת מאחורי הדבר', 'האם יש פעולה סמויה מאחורי העניין', 'פעולה נסתרת מאחורי העניין'],
+    aliases: ['האם יש פעולה מאחורי השואל', 'האם יש פעולה מאחוריי', 'פעולה נסתרת מאחורי השואל', 'האם יש פעולה סמויה מאחוריי'],
     doNotMixWith: ['spiritual.affectedBySorcery.unsupported', 'spiritual.sorcererIdentity.unsupported', 'spiritual.jinnType.unsupported'],
     houses: [4, 6, 8, 15],
   },
