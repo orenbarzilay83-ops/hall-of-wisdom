@@ -17,6 +17,7 @@ import { buildRamlBoardFromMothers } from './goral-hachol/engine/raml-board-gene
 import { buildKashfReading } from './goral-hachol/engine/kashf-reading-engine.js';
 import {
   buildKashfAiContextPackage,
+  buildAiSafeKashfEngineOutput,
   buildAiSafeKashfBoard,
   KASHF_METHOD_METADATA,
 } from './goral-hachol/intelligence/kashf-ai-context-builder.js';
@@ -89,13 +90,21 @@ console.log('\n--- 6. overallPositive (the deterministic verdict) unchanged ---'
   assert(rc.engineOutput.overallPositive === directRawEngineOutput.overallPositive, `(6) overallPositive matches the raw engine verdict (${directRawEngineOutput.overallPositive})`);
 }
 
-console.log('\n--- 7. dhamirType4External still tagged external/advisor-only ---');
+console.log('\n--- 7. external Dhamir is off by default; explicit opt-in stays tagged ---');
 {
-  const d4 = rc.engineOutput.dhamirType4External;
-  assert(d4 && d4.isExternalSource === true, '(7) dhamirType4External.isExternalSource === true (engine-computed, unchanged)');
-  assert(typeof d4?.sourceBook === 'string' && d4.sourceBook.length > 0, '(7) dhamirType4External.sourceBook is present');
-  assert(typeof d4?.disclosureHebrew === 'string' && d4.disclosureHebrew.length > 0, '(7) dhamirType4External.disclosureHebrew is present');
-  assert(d4?.evidenceRole === 'externalSupplementalAdvisorOnly', `(7) dhamirType4External.evidenceRole === "externalSupplementalAdvisorOnly" (new projection-layer tag, got: ${d4?.evidenceRole})`);
+  assert(rc.engineOutput.dhamirType4External === null, '(7) default Kashf AI payload does not auto-run external Dhamir Type 4');
+
+  const explicitExternal = buildKashfReading(directBoard, TOPIC_ID, {
+    name: '',
+    question: QUESTION,
+    enableExternalDhamirType4: true,
+  });
+  const projectedExternal = buildAiSafeKashfEngineOutput(explicitExternal);
+  const d4 = projectedExternal.dhamirType4External;
+  assert(d4 && d4.isExternalSource === true, '(7) explicit external Dhamir remains self-disclosing');
+  assert(typeof d4?.sourceBook === 'string' && d4.sourceBook.length > 0, '(7) explicit external Dhamir sourceBook is present');
+  assert(typeof d4?.disclosureHebrew === 'string' && d4.disclosureHebrew.length > 0, '(7) explicit external Dhamir disclosureHebrew is present');
+  assert(d4?.evidenceRole === 'externalSupplementalAdvisorOnly', `(7) explicit external Dhamir is tagged externalSupplementalAdvisorOnly (got: ${d4?.evidenceRole})`);
 }
 
 console.log('\n--- 8. Prompt contains explicit method-isolation instruction ---');
@@ -149,4 +158,4 @@ if (failures > 0) {
   console.error(`${failures} בדיקות נכשלו.`);
   process.exit(1);
 }
-console.log('כל הבדיקות עברו. Kashf AI payload אינו מכיל houseMeaning/figureHouseMeaning (Hawi-native), הלוח/מנוע המקוריים לא השתנו, primaryFormula/altFormula/overallPositive זהים לפלט המנוע הגולמי, dhamirType4External מתויג evidenceRole:"externalSupplementalAdvisorOnly", readingContext.methodMetadata מצהיר primaryMethod:"kashf" ללא מקורות-Hawi ב-allowedVerdictSources, ה-Prompt כולל הוראת Method Isolation מפורשת, הפלט עובר את הסניטייזר האמיתי, וגודלו קטן מהסבב הקודם.');
+console.log('כל הבדיקות עברו. Kashf AI payload מבודד מ-Hawi, הפסק הדטרמיניסטי נשמר, Dhamir חיצוני אינו רץ כברירת מחדל וב-opt-in מפורש נשאר מתויג externalSupplementalAdvisorOnly.');
