@@ -255,8 +255,8 @@ export const FIGURE_DESIRE_FULFILLMENT_NOTES = {
 };
 
 // ── 6. שבעת עדי החכמה (עמ' 163-164) — אישור-מקור בלבד ─────────────────────
-export const SEVEN_WISDOM_WITNESSES_NOTE = {
-  witnessHouses: [9, 10, 11, 12, 13, 14, 15],
+export const SEVEN_WISDOM_WITNESSES_NOTE = Object.freeze({
+  witnessHouses: Object.freeze([9, 10, 11, 12, 13, 14, 15]),
   hiddenIntentionHouse: 16,
   textHebrew:
     'עדי החכמה הם שבעה: התשיעי, העשירי, האחד-עשר, השנים-עשר, השלושה-עשר, ' +
@@ -266,15 +266,36 @@ export const SEVEN_WISDOM_WITNESSES_NOTE = {
     'פנימית, הדבר מתקבל אך מתאחר.',
   sourceRef: "כשף אל-אסראר עמ' 163-164",
   sourceStatus: 'explicit-in-source',
+
+  // גבול תפעולי של הפרויקט: עדי החכמה הם שכבת עדות מסייעת נפרדת.
+  // H16 אינו קול שמיני ואינו מצטרף לרוב; תפקידו בדמיר נפרד במקור.
+  operationalRole: 'SUPPORTING_ONLY',
+  runtimeEligibleAsPrimary: false,
+  mayAutoRoute: false,
+  mayMergeWithOtherWitnessSystems: false,
+  h16CountsAsWitness: false,
   note:
-    'מבנה זהה למבנה בתי-העדים/הדין הכללי הקיים כבר באפליקציה ' +
-    '(raml-interpreter.js, hawi-witnesses.js) — מובא כאן כאישור-מקור מצד ' +
-    'כשף אל-אסראר עצמו, לא נבנה כמבנה נתונים כפול.',
-};
+    'אין למזג את שבעת עדי החכמה עם H13/H14 testimony, Five Witnesses או ' +
+    'מערכת עדים אחרת רק בשל דמיון מבני. אין מסלול primary אוטומטי; H16 ' +
+    'נשמר נפרד לצורך הדמיר שהמקור מציין.',
+});
 
 // ── 7. קרבת הצורות והשוואתן (עמ' 163-165) ─────────────────────────────────
 // כללים איכותיים לפי סמיכות צורה-לצורה על הלוח. לא מחוברים למנוע — דורשים
 // מושג "קרבה/שכנות" (ימין/שמאל על הלוח) שאינו מחושב כיום באפליקציה.
+export const FIGURE_PROXIMITY_RUNTIME_POLICY = Object.freeze({
+  operationalRole: 'REFERENCE_ONLY',
+  runtimeEligible: false,
+  mayAutoRun: false,
+  mayFeedVerdict: false,
+  computationalDefinitionStatus: 'UNRESOLVED',
+  blockedUntil: 'source-faithful proximity definition + Golden Tests',
+  note:
+    'עצם קיום כללי הקרבה בקובץ הידע אינו מגדיר מה נחשב קרוב על הלוח. ' +
+    'עד להגדרה מקור־נאמנה של adjacency/proximity אין לייבא אותם למנוע, ' +
+    'אין להפעילם כתמיכה אוטומטית ואין להסיק מהם פסק.',
+});
+
 export const FIGURE_PROXIMITY_RULES = [
   {
     id: 'mars-venus',
