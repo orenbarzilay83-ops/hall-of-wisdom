@@ -3,8 +3,8 @@
  *
  * "לשון העניין" — הכרעת המחבר לשיבוץ השני (כשף אל-אסראר, עמ' 109, 112).
  * זו הפעלה של שיבוץ 2 (kashf-shibutzim.js) שמשתמשת ב"בית מחשבת השואל"
- * (הדמיר, kashf-dhamir.js) כקלט — לכן היא תלויה בשני הקבצים ומחוברת
- * ביניהם כאן, לא בתוך אף אחד מהם.
+ * (הדמיר) כקלט מפורש. המודול אינו בוחר שיטת דמיר בעצמו ואינו מפעיל
+ * הכרעת-רוב; בית הדמיר חייב להגיע מן הנתיב שבחר קודם שיטה רלוונטית.
  *
  * עיקרון (מצוטט כמעט מילולית מהמקור, עמ' 109, 112):
  * "כל צורה כשהיא יושבת בבית שלה לפי סדר [שיבוץ המושב] — אז המספר ומשך-
@@ -25,7 +25,6 @@
 
 import { getHousePattern } from './kashf-formula-engine.js';
 import { combineHouses } from './kashf-formula-engine.js';
-import { computeDhamirByMajority } from './kashf-dhamir.js';
 import {
   SHIBUTZ_1_MOSHAV,
   SHIBUTZ_2_CANONICAL_NUMBER,
@@ -103,19 +102,16 @@ function structuralTimingForPattern(board, pattern) {
  * מחשב את "לשון העניין" ואת המספר/משך-הזמן הנגזרים ממנה.
  *
  * @param {object} board - לוח הגורל
- * @param {number} [dhamirHouseNum] - בית מחשבת השואל, אם כבר חושב
- *   (למשל דרך computeDhamirByMajority(board).winner.houseNumber). אם
- *   לא מועבר, מחושב כאן פנימית באמצעות הרוב מ-kashf-dhamir.js.
+ * @param {number} [dhamirHouseNum] - בית מחשבת השואל שכבר נבחר
+ *   בשיטה מפורשת מחוץ למודול הזה. אין כאן fallback להרצת כל שיטות
+ *   הדמיר או להכרעת-רוב רק מפני שלשון העניין זקוקה לבית דמיר.
  */
 export function computeLeshonHainyan(board, dhamirHouseNum) {
-  let houseNum = dhamirHouseNum;
-  let dhamirSource = 'provided';
-  if (!houseNum) {
-    const dhamir = computeDhamirByMajority(board);
-    if (!dhamir?.winner?.houseNumber) return null;
-    houseNum = dhamir.winner.houseNumber;
-    dhamirSource = 'computed';
+  const houseNum = Number(dhamirHouseNum);
+  if (!Number.isInteger(houseNum) || houseNum < 1 || houseNum > 16) {
+    return null;
   }
+  const dhamirSource = 'provided-explicitly';
 
   const currentPattern = getHousePattern(board, houseNum);
   const moshavPattern = SHIBUTZ_1_MOSHAV[houseNum];
