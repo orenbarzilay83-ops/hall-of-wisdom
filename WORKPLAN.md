@@ -27,7 +27,10 @@
 - [✅] מצב downstream לאחר Batch 13: **22/46 RESOLVED**, נותרו **24**.
 - [✅] p163 — תוקן ה-downstream של דרך בבית 13 לפי הסריקה: H9 פנימי + H10 חיצוני → חזרה מהירה; H9 חיצוני + H10 פנימי → עיכוב/שהייה ממושכת. אין השלמה לענפי same-polarity שלא ניתנו במקור. `B10-DEREKH-H13-POLARITY-DOWNSTREAM` נסגר.
 - [✅] מצב downstream לאחר Batch 14: **23/46 RESOLVED**, נותרו **23**.
-- [ ] הבא לפי סדר המקור: p164 — לשמור את שבעת עדי החכמה H9–H15 כשכבת supporting בלבד, עם H16 נפרד לדמיר; ולאחריו pp164–165 לוודא שכללי קרבת הצורות נשארים מחוץ ל-runtime עד להגדרה חישובית מקור־נאמנה (`B10-SEVEN-WITNESSES-SUPPORTING-ROLE`, `B10-PROXIMITY-NO-RUNTIME-WITHOUT-DEFINITION`).
+- [✅] p164 — שבעת עדי החכמה נעולים כ-`SUPPORTING_ONLY`: H9–H15 בלבד; H16 נשמר בנפרד לדמיר ואינו "עד שמיני"; אין auto-route ואין מיזוג עם שיטות עדים אחרות. `B10-SEVEN-WITNESSES-SUPPORTING-ROLE` נסגר.
+- [✅] pp164–165 — כללי קרבת הצורות נשארים `REFERENCE_ONLY` ו-`REVIEW_REQUIRED`; אין runtime, אין auto-run ואין verdict עד שתהיה הגדרה חישובית מקור־נאמנה של "קרבה". Regression מוודא שהסימבול אינו מיובא במסלולי runtime. `B10-PROXIMITY-NO-RUNTIME-WITHOUT-DEFINITION` נסגר.
+- [✅] מצב downstream לאחר Batch 15: **25/46 RESOLVED**, נותרו **21**.
+- [ ] הבא לפי סדר המקור: pp167–170 — להפריד את כללי בית 1 לפי intent ולא לאגד צורך/קשר/תקפות/מבט/אבחון רוחני למסלול אחד (`B11-HOUSE1-INTENT-ROUTING-DEFERRED`), תוך השארת פרוצדורת המיקום pp168–169 חסומה כל עוד ה-walking/endpoint אינם מוגדרים (`B11-P168-169-LOCATION-PROCEDURE-BLOCKED`).
 
 ---
 
