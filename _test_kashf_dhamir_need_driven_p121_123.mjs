@@ -13,7 +13,7 @@ assert.equal(KASHF_DHAMIR_NEED_DRIVEN_POLICY.selectionMode, 'explicit-single-met
 assert.equal(KASHF_DHAMIR_NEED_DRIVEN_POLICY.autoSelectFromAvailableData, false);
 assert.equal(KASHF_DHAMIR_NEED_DRIVEN_POLICY.autoRunAllImplementedMethods, false);
 assert.equal(KASHF_DHAMIR_NEED_DRIVEN_POLICY.requireExplicitMethodId, true);
-assert.deepEqual(KASHF_DHAMIR_NEED_DRIVEN_POLICY.sourceDataPages, [121, 122, 123]);
+assert.deepEqual(KASHF_DHAMIR_NEED_DRIVEN_POLICY.sourceDataPages, [121, 122, 123, 124, 125, 128, 130, 131]);
 
 const catalogIds = KASHF_DHAMIR_IMPLEMENTED_METHOD_CATALOG.map((x) => x.methodId);
 assert.deepEqual(catalogIds, [
