@@ -135,6 +135,45 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
     doNotMixWith: ['matter.p172.h17_h1011_thenCombine'],
     houses: [1, 5, 9, 10],
   },
+  'matter.p172.locationH2H16': {
+    aliases: ['באיזה בית ענייני ורווחי', 'היכן מצוי עניינו של השואל', 'בית העניין והקניין'],
+    doNotMixWith: ['matter.p172.h17_h1011_thenCombine', 'money.p179.sourceByIncomingHonorHouse'],
+    houses: [2, 16],
+  },
+  'friend.p173.uniqueTariqBalance': {
+    aliases: ['האם הידיד אוהב אותי לפי דרך במאזן', 'דרך יחידה במאזן ידיד', 'האם הידיד פונה לאחר'],
+    doNotMixWith: ['love.p205.directLoveH1PlacementH15', 'love.p204.attentionFireRows1713'],
+    houses: [7, 15],
+  },
+  'hope.p174.h5h11ThroughH1': {
+    aliases: ['האם התקווה תתקיים לפי בתים חמש ואחת עשרה', 'תקווה לפי H5 H11 H1', 'בקשה תתקיים לפי שתי צורות ביניים'],
+    doNotMixWith: ['completion.p173.fireRows15910', 'hope.p267.fulfillment'],
+    houses: [1, 5, 11],
+  },
+  'authority.p175-176.needBeforeRulerChain': {
+    aliases: ['צורך אצל השלטון', 'בקשה מבעל סמכות לפי בית ראשון ועשירי', 'צורך לפני שליט'],
+    doNotMixWith: ['authority.p256.honorConditionH10Planet', 'authority.p257.rulerConditionH7H10', 'authority.p257.appointmentH1H10Planet'],
+    houses: [1, 2, 6, 8, 10, 11, 12],
+  },
+  'request.p176.h1h2GateThenH1H4': {
+    aliases: ['קיום בקשה לפי ראשון שני ורביעי', 'האם לעזוב את הבקשה', 'אחרית הבקשה H1 H2 H4'],
+    doNotMixWith: ['completion.p173.fireRows15910', 'hope.p174.h5h11ThroughH1', 'hope.p267.fulfillment'],
+    houses: [1, 2, 4],
+  },
+  'intent.p176.h7h10': {
+    aliases: ['כוונת אדם לפי בית שבע ועשר', 'מה כוונת האדם H7 H10', 'כוונה טובה או רעה לפי 7 ו 10'],
+    doNotMixWith: ['dhamir.p159.subjectByH6Recurrence'],
+    houses: [7, 10],
+  },
+  'meeting.p176.hopeHouseH1H13': {
+    aliases: ['האם אפגוש את האדם המבוקש', 'מפגש עם המבוקש לפי H1 H13', 'בית התקווה בראשון ובשלושה עשר'],
+    houses: [1, 13],
+  },
+  'person.p177.relativeThirteenth': {
+    aliases: ['הבית השלושה עשר היחסי', 'עולה האדם לפי עד קרוב', 'קריאה רקורסיבית בית שלושה עשר'],
+    doNotMixWith: ['general.p174.h1h2h4h7h10h15'],
+    houses: [1, 3, 13],
+  },
   'matter.p172.h17_h1011_thenCombine': {
     aliases: ['מה תוצאת העניין', 'תוצאת עניינו של השואל', 'האם העניין טוב או רע', 'תוצאת הדבר'],
     doNotMixWith: ['completion.p173.fireRows15910'],
