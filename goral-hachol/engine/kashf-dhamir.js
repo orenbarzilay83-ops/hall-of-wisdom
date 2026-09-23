@@ -434,6 +434,112 @@ export function computeDhamirElementPrevalence(board) {
 }
 
 /**
+ * גבול תפעולי של הפרויקט — לא כלל נוסף מן הספר.
+ *
+ * שיבוץ היסודות בעמ' 121-123 הוא תשתית-נתונים, ובפרט ערכי היסודות
+ * משמשים את computeDhamirElementPrevalence. עצם קיום התשתית בקוד אינו
+ * הרשאה להריץ את כל שיטות הדמיר יחד. נתיב חדש צריך לבחור שיטה אחת
+ * במפורש לפי צורך/כוונה שאושרו קודם; אין כאן מיפוי אוטומטי מומצא
+ * משאלת-משתמש לשיטת דמיר.
+ *
+ * computeDhamirByMajority נשמר למטה כפי שהוא, משום שהכרעת-הרוב עצמה
+ * מופיעה במקור בעמ' 155. שאלת הפעלתה האוטומטית ב-runtime נסגרת בפריט
+ * downstream נפרד; selector זה אינו קורא לה.
+ */
+export const KASHF_DHAMIR_NEED_DRIVEN_POLICY = Object.freeze({
+  selectionMode: 'explicit-single-method',
+  autoSelectFromAvailableData: false,
+  autoRunAllImplementedMethods: false,
+  requireExplicitMethodId: true,
+  sourceDataPages: Object.freeze([121, 122, 123]),
+  policyType: 'project-operational-boundary',
+  note:
+    'SHIBUTZ_3_ELEMENT_VALUES הוא נתון-מקור זמין, לא טריגר. יש לבחור שיטת דמיר מפורשת לפני חישוב; אין להסיק מן הנתון שיש להריץ את כל השיטות.',
+});
+
+export const KASHF_DHAMIR_IMPLEMENTED_METHOD_CATALOG = Object.freeze([
+  Object.freeze({
+    methodId: 'mizan',
+    executorName: 'computeDhamirMizan',
+    sourcePages: Object.freeze([151, 152]),
+    usesShibutz3ElementValues: false,
+  }),
+  Object.freeze({
+    methodId: 'harkat-al-ard',
+    executorName: 'computeDhamirHarkatAlArd',
+    sourcePages: Object.freeze([152]),
+    usesShibutz3ElementValues: false,
+  }),
+  Object.freeze({
+    methodId: 'jawharayn',
+    executorName: 'computeDhamirJawharayn',
+    sourcePages: Object.freeze([153]),
+    usesShibutz3ElementValues: false,
+  }),
+  Object.freeze({
+    methodId: 'doubled-square',
+    executorName: 'computeDhamirDoubledSquare',
+    sourcePages: Object.freeze([154]),
+    usesShibutz3ElementValues: false,
+  }),
+  Object.freeze({
+    methodId: 'element-prevalence',
+    executorName: 'computeDhamirElementPrevalence',
+    sourcePages: Object.freeze([122, 152, 153]),
+    usesShibutz3ElementValues: true,
+  }),
+]);
+
+const DHAMIR_EXECUTOR_BY_METHOD_ID = Object.freeze({
+  'mizan': computeDhamirMizan,
+  'harkat-al-ard': computeDhamirHarkatAlArd,
+  'jawharayn': computeDhamirJawharayn,
+  'doubled-square': computeDhamirDoubledSquare,
+  'element-prevalence': computeDhamirElementPrevalence,
+});
+
+/**
+ * מפעיל שיטת דמיר אחת בלבד שנבחרה במפורש.
+ * אין fallback לרוב, אין הרצת חמש השיטות ואין בחירה על בסיס עצם זמינות
+ * SHIBUTZ_3_ELEMENT_VALUES.
+ */
+export function computeSelectedDhamirMethod(board, methodId) {
+  if (typeof methodId !== 'string' || methodId.trim() === '') {
+    return {
+      selected: false,
+      status: 'blocked',
+      reason: 'explicit-dhamir-method-required',
+      methodId: null,
+      methodsExecuted: [],
+      result: null,
+    };
+  }
+
+  const normalizedMethodId = methodId.trim();
+  const executor = DHAMIR_EXECUTOR_BY_METHOD_ID[normalizedMethodId];
+  if (!executor) {
+    return {
+      selected: false,
+      status: 'blocked',
+      reason: 'unknown-dhamir-method',
+      methodId: normalizedMethodId,
+      methodsExecuted: [],
+      result: null,
+    };
+  }
+
+  const result = executor(board);
+  return {
+    selected: true,
+    status: result ? 'ok' : 'no-result',
+    reason: result ? 'explicit-method-executed' : 'explicit-method-returned-no-result',
+    methodId: normalizedMethodId,
+    methodsExecuted: [normalizedMethodId],
+    result: result || null,
+  };
+}
+
+/**
  * מריץ את השיטות המיושמות ומכריע לפי הרוב (עמ' 155: "תאסוף... ותכריע
  * לפי הרוב"). מחזיר גם את כל המועמדים וגם את ההכרעה, כדי שנתיב ההצגה
  * יוכל להראות את כל הראיות ולא רק את המסקנה.
@@ -532,5 +638,8 @@ export default {
   computeDhamirJawharayn,
   computeDhamirDoubledSquare,
   computeDhamirElementPrevalence,
+  computeSelectedDhamirMethod,
   computeDhamirByMajority,
+  KASHF_DHAMIR_NEED_DRIVEN_POLICY,
+  KASHF_DHAMIR_IMPLEMENTED_METHOD_CATALOG,
 };
