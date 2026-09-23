@@ -104,13 +104,19 @@ export function resolveKashfRouteByQuestionId(questionId) {
     };
   }
 
-  const canRunKashf = method.methodRole === 'canonical-operational'
+  const attributedReferenceOnly = method.attributedSourceBook !== 'Kashf'
+    || method.sourceLayer !== 'body';
+
+  const canRunKashf = !attributedReferenceOnly
+    && method.methodRole === 'canonical-operational'
     && method.kashfRuntimeStatus === 'ready'
     && method.executorStatus === 'ready'
     && method.runtimeAllowed === true;
 
   const reason = canRunKashf
     ? 'ready'
+    : attributedReferenceOnly
+      ? 'attributed-reference-only'
     : method.kashfRuntimeStatus === 'ready' && method.executorStatus !== 'ready'
       ? 'executor-pending'
       : method.kashfRuntimeStatus;
