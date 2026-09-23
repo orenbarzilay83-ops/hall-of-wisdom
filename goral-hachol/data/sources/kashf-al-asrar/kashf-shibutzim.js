@@ -600,29 +600,47 @@ export const SHIBUTZ_5_RAS_ZANAB = [
   { nodeHebrew: 'זנב התלי', pattern: '1112', hebrewName: 'סף יוצא',   revertsTo: 'מאדים' },
 ];
 
-// ארבע העונות ו-16 הצורות המשובצות אליהן (עמ' 137) — מאומת ישירות מול
-// הספר הערבי המקורי (שיתוף המשתמש). קבוצת האביב (3 צורות) נגזרת
-// בהיקש-השלמה (שלוש הצורות היחידות שלא שובצו לעונה אחרת מפורשת), לא
-// צוטטה במפורש מהמקור שנקרא כה — אך זו הדרך היחידה להשלים ל-16 הצורות.
-export const SHIBUTZ_5_SEASONS = [
-  {
-    seasonHebrew: 'אביב', zodiacSigns: ['טלה', 'שור', 'תאומים'],
-    patterns: ['2122', '2211', '2222'],
-    patternNote: 'נגזר בהיקש-השלמה (שלוש הצורות היחידות שלא שובצו לעונה אחרת מפורשת) — לא צוטט במפורש מהמקור שנקרא כה.',
-  },
-  {
-    seasonHebrew: 'קיץ', zodiacSigns: ['סרטן', 'אריה', 'בתולה'],
-    patterns: ['2212', '1111', '1122', '2121', '2112'],
-  },
-  {
-    seasonHebrew: 'סתיו', zodiacSigns: ['מאזניים', 'עקרב', 'קשת'],
-    patterns: ['1121', '1211', '1222'],
-  },
-  {
-    seasonHebrew: 'חורף', zodiacSigns: ['גדי', 'דלי', 'דגים'],
-    patterns: ['1221', '2221', '2111'],
-  },
-];
+// ארבע העונות וקבוצות-הצורות שלהן (עמ' 136-137) — מאומתות מול
+// הסריקה. חשוב: הקבוצות חופפות; אין כאן partition בלעדי של 16 הצורות.
+// בפרט 1121/1211 מופיעות גם באביב וגם בסתיו, ו-2112 מופיעה גם באביב
+// וגם בקיץ. אסור להשלים "צורות חסרות" בהיקש ואסור לבחור אוטומטית עונה
+// אחת כאשר המקור עצמו משייך את אותה צורה ליותר מעונה אחת.
+export const SHIBUTZ_5_SEASONS = Object.freeze([
+  Object.freeze({
+    seasonHebrew: 'אביב',
+    zodiacSigns: Object.freeze(['טלה', 'שור', 'תאומים']),
+    patterns: Object.freeze(['2122', '1211', '2211', '1121', '2222', '2112']),
+    sourceStatus: 'explicit-in-printed-source',
+    sourceRef: "כשף אל-אסראר עמ' 136-137",
+  }),
+  Object.freeze({
+    seasonHebrew: 'קיץ',
+    zodiacSigns: Object.freeze(['סרטן', 'אריה', 'בתולה']),
+    patterns: Object.freeze(['2212', '1111', '1122', '2121', '2112']),
+    sourceStatus: 'explicit-in-printed-source',
+    sourceRef: "כשף אל-אסראר עמ' 136-137",
+  }),
+  Object.freeze({
+    seasonHebrew: 'חורף',
+    zodiacSigns: Object.freeze(['גדי', 'דלי', 'דגים']),
+    patterns: Object.freeze(['1221', '2221', '2111']),
+    sourceStatus: 'explicit-in-printed-source',
+    sourceRef: "כשף אל-אסראר עמ' 137",
+  }),
+  Object.freeze({
+    seasonHebrew: 'סתיו',
+    zodiacSigns: Object.freeze(['מאזניים', 'עקרב', 'קשת']),
+    patterns: Object.freeze(['1121', '1211', '1222']),
+    sourceStatus: 'explicit-in-printed-source',
+    sourceRef: "כשף אל-אסראר עמ' 136-137",
+  }),
+]);
+
+export const SHIBUTZ_5_SEASON_OVERLAPS = Object.freeze({
+  '1121': Object.freeze(['אביב', 'סתיו']),
+  '1211': Object.freeze(['אביב', 'סתיו']),
+  '2112': Object.freeze(['אביב', 'קיץ']),
+});
 
 // שיוך יסודות למזלות (עמ' 137, שולף במקביל, לא תלוי בעונות)
 export const SHIBUTZ_5_ELEMENT_BY_ZODIAC = {
