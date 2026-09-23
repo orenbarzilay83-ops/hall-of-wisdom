@@ -101,7 +101,7 @@ export const KASHF_TOPIC_RULES = {
     topicId: 'spiritualDiagnostics',
     topicHebrewName: 'כישוף ופעולה נסתרת',
     sourceRef: 'כשף אל-אסרר, עמ׳ 167 (הפרק הראשון — הנפש — נקודות אחדות)',
-    topicDescription: 'האם יש כישוף מכוון, או פעולה נסתרת מאחורי העניין.',
+    topicDescription: 'כללי legacy לנושא רוחני. בנתיב Question Bank אין אגרגציה: כל שאלה מנותבת לשיטה קנונית אחת בלבד.',
     primaryFormula: {
       type: 'fire-row-assemble',
       houses: [1, 4, 6, 15],
@@ -118,10 +118,10 @@ export const KASHF_TOPIC_RULES = {
       row: 'air',
       houses: [4, 6, 8, 15],
       interpretBy: 'saad-nahs',
-      sourceText: 'כלל מעשי: האם יש פעולה מאחורי הדבר? קח את אוויר הרביעי, אוויר השישי, אוויר השמיני ואוויר המאזן (בית 15); העמד מהם צורה. אם יצאה צורה מזיקה, הרי הפעולה מאחוריו; ואם לא — לא.',
+      sourceText: 'כלל מעשי: האם יש פעולה מאחורי השואל? קח את אוויר הרביעי, אוויר השישי, אוויר השמיני ואוויר המאזן (בית 15); העמד מהם צורה. אם יצאה צורה מזיקה, הרי הפעולה מאחוריו; ואם לא — לא.',
       verdictBySaadNahs: {
-        saad:  { text: 'אין פעולה נסתרת מאחורי העניין', positive: true },
-        nahs:  { text: 'יש פעולה נסתרת מאחורי העניין', positive: false },
+        saad:  { text: 'אין פעולה נסתרת מאחורי השואל לפי כלל זה', positive: true },
+        nahs:  { text: 'יש פעולה נסתרת מאחורי השואל לפי כלל זה', positive: false },
         mixed: { text: 'התוצאה אינה ודאית', positive: null },
       },
     },
