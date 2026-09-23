@@ -109,6 +109,22 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
     doNotMixWith: ['marriage.p204.previousStatusH7inH10', 'marriage.p204.dowryH8', 'marriage.p211.dissolutionH7StateMatrix', 'love.p206.womanFavorH7H11ThenH5', 'desire.p206.querentWantsH7H11ThenH5'],
     houses: [1, 2, 5, 7, 8, 10, 15],
   },
+  'dhamir.p159.subjectByH6Recurrence': {
+    aliases: [
+      'על מי השואל שואל',
+      'על מי באמת נשאל',
+      'על מי נסובה השאלה',
+      'מי האדם שעליו השואל שואל',
+      'איזה בעל בית הוא נושא השאלה',
+      'זיהוי נושא השאלה לפי בית שש',
+    ],
+    doNotMixWith: [
+      'general.p174.h1h2h4h7h10h15',
+      'desire.p206.querentWantsH7H11ThenH5',
+      'spiritual.p167.hiddenActionAirRows46815',
+    ],
+    houses: [6],
+  },
   'general.p174.h1h2h4h7h10h15': {
     aliases: ['מה מצבי הכללי', 'מצב כללי', 'מה מצבו הכללי', 'סקירה כללית', 'כלל ענייניו של השואל', 'מה המצב הכללי שלי'],
     doNotMixWith: ['matter.p172.h17_h1011_thenCombine', 'completion.p173.fireRows15910', 'lifespan.p178.elementCountToHouse', 'lifespan.p264.stagesH11H9H7'],
