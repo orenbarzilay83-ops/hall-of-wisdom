@@ -20326,8 +20326,10 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         126,
         132
       ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "Existing SHIBUTZ_3_ELEMENT_VALUES usage must not confer runtime authority. Select an element/dhamir method only by approved question intent after source precedence review."
+      "status": "RESOLVED",
+      "target": "kashf-shibutzim.js + kashf-dhamir.js",
+      "summary": "Competing element-number traditions had to remain separate so imported data could not silently acquire runtime precedence.",
+      "resolution": "The p122 author-working 1/2/3/4 table is now a named runtime tradition that is available only after explicit selection. The three p126 traditions are separate REFERENCE_ONLY records and cannot auto-select or vote against the chosen tradition. The p131→132 8/4/2/1 and 1/2/3/4 attributions are preserved as SOURCE_CONFLICT and cannot override p122/p126. Element-prevalence now records its selected tradition and rejects reference-only traditions."
     },
     {
       "id": "B07-DHAMIR-NEED-DRIVEN-SELECTION",
@@ -20338,8 +20340,10 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         130,
         131
       ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "Replace any legacy assumption that all dhamir types should run together. Operational dhamir mapping is need-driven: identify only types required for a concrete question intent and select one primary route."
+      "status": "RESOLVED",
+      "target": "kashf-dhamir.js + kashf-reading-engine.js + goral-rule-applicability-matrix.js",
+      "summary": "Legacy runtime behavior computed Dhamir broadly even when the client question did not ask for hidden intent.",
+      "resolution": "Runtime Dhamir now requires the approved intent hiddenThoughtIntent and one explicit methodId. Element-prevalence additionally requires an explicit runtime-eligible element tradition. Ordinary Kashf readings no longer compute Dhamir, its external supplement, or Dhamir extras in the background. Applicability now marks Kashf Dhamir forbidden for unrelated question types and advisorOnly only for hiddenThoughtIntent."
     },
     {
       "id": "B08-SHIB-5-SEASON-MAP-SOURCE-CORRECTION",
@@ -20356,8 +20360,10 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         151,
         155
       ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "Source majority rule is preserved, but project runtime must select one need-driven primary dhamir route and must not run all five or 3/5 majority."
+      "status": "RESOLVED",
+      "target": "kashf-reading-engine.js + kashf-book-rule-catalog.js",
+      "summary": "The source majority rule is preserved, but it must not run automatically as a universal background mechanism.",
+      "resolution": "computeDhamirByMajority remains available as source-faithful reference code for p155, but buildKashfReading no longer imports or calls it. The book-rule catalog now records the majority rule and implemented Dhamir submethods as available-but-not-evaluated by default. A normal reading reports no Dhamir result until an explicit need-driven selection is supplied."
     },
     {
       "id": "B09-DHAMIR-H6-SUBJECT-ID-CANDIDATE",
