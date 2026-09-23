@@ -149,7 +149,7 @@ console.log('\n--- 11. completeness stays partial ---');
   const rcs = contextPackage.readingContext.ruleCoverageStatus;
   assert(rcs.completeness === 'partial', `(11) completeness is honestly "partial" (got: ${rcs.completeness})`);
   assert(rcs.catalogVersion === KASHF_BOOK_RULE_CATALOG_VERSION, `(11) ruleCoverageStatus.catalogVersion matches the catalog's exported version (got: ${rcs.catalogVersion})`);
-  assert(Array.isArray(rcs.appliedBookRules) && rcs.appliedBookRules.length === 10, `(11) appliedBookRules in the real payload has exactly the 10 evidence-backed rule ids (got: ${rcs.appliedBookRules.length})`);
+  assert(Array.isArray(rcs.appliedBookRules) && rcs.appliedBookRules.length === 4, `(11) default payload has exactly the 4 non-Dhamir evidence-backed applied rule ids after need-driven Dhamir isolation (got: ${rcs.appliedBookRules.length})`);
   assert(rcs.appliedBookRules.includes('kashf-p53-witness-scheme-basic'), '(11) real payload appliedBookRules includes kashf-p53-witness-scheme-basic');
   assert(!rcs.appliedBookRules.includes('kashf-p101-witness-scheme-extended'), '(11) real payload appliedBookRules excludes kashf-p101-witness-scheme-extended');
   assert(!rcs.appliedBookRules.includes('kashf-p49-house6-sorcery-domain'), '(11) real payload appliedBookRules excludes kashf-p49-house6-sorcery-domain');
