@@ -170,7 +170,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     runtimeAllowed: false,
     executionKind: 'recast-board',
     executorStatus: 'pending',
-    notes: 'Houses 1,4,5,11 become new mothers; complete a new board and judge the method-specific houses.',
+    notes: 'Source p176 requires a separate derived board: copy H1,H4,H5,H11 from the source board as the four new mothers, complete a NEW board, then judge derived-board H5 and the angles. The source board must remain immutable and must never be mixed with the derived positions. Source method is known, but runtime stays disabled until a dedicated recast-board executor and Golden Tests certify this separation.',
   }),
 
   'clothing.p264-265.luck': method({
@@ -186,6 +186,111 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     notes: 'Canonical clothing-luck executor is wired from v57 pp264-265 using only the explicit fortune clauses: H5+H11 both pure benefic => luck in clothing; both pure malefic => no luck in clothing; pure malefic H10 separately indicates no luck in royal clothing/honor from superiors. Mixed/split testimony remains unresolved. The legacy helper is not reused because it collapses mixed figures and invents a partial branch. Fixed/mutable persistence and clothing-color subrules are excluded from this luck verdict.',
   }),
 
+  // ── HOUSE 1 pp172-177 exact-intent boundaries ----------------------
+  'matter.p172.locationH2H16': method({
+    kashfMethodId: 'matter.p172.locationH2H16',
+    kashfIntentId: 'matter.locateMatterAndEarningsHouse',
+    topicId: 'generalReading',
+    sourcePages: [172],
+    methodRole: 'unresolved',
+    kashfRuntimeStatus: 'blocked-by-source',
+    runtimeAllowed: false,
+    executionKind: 'source-procedure',
+    executorStatus: 'pending',
+    notes: 'Source says combine H2+H16 to identify the house of the querent’s matter and earnings/acquisition, but this passage does not define the mapping from the resulting figure to a target house. Do not narrow the intent to money and do not infer the missing mapping from another table.',
+  }),
+
+  'friend.p173.uniqueTariqBalance': method({
+    kashfMethodId: 'friend.p173.uniqueTariqBalance',
+    kashfIntentId: 'friend.loveOrDirectedElsewhere',
+    topicId: 'friendsHope',
+    sourcePages: [173],
+    methodRole: 'unresolved',
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'pending',
+    notes: 'Specific p173 friend-love method only: after completing through H15, a unique Tariq/Derekh in the balance indicates the friend loves the subject; a matching Tariq in H7 indicates direction to another. It is not a generic love method and has no approved Question Bank route/executor.',
+  }),
+
+  'hope.p174.h5h11ThroughH1': method({
+    kashfMethodId: 'hope.p174.h5h11ThroughH1',
+    kashfIntentId: 'hope.fulfillmentP174',
+    topicId: 'friendsHope',
+    sourcePages: [174],
+    methodRole: 'unresolved',
+    kashfRuntimeStatus: 'repair-required',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'pending',
+    notes: 'Source requires TWO intermediate figures: H5 combined with H1, and H11 combined with H1; only then combine those intermediates and judge benefic/malefic plus internal/external. Current v57 collapses this procedure, so it cannot run and must not be merged with the separate p267 hope route.',
+  }),
+
+  'authority.p175-176.needBeforeRulerChain': method({
+    kashfMethodId: 'authority.p175-176.needBeforeRulerChain',
+    kashfIntentId: 'authority.needBeforeRuler',
+    topicId: 'authorityState',
+    sourcePages: [175, 176],
+    methodRole: 'unresolved',
+    kashfRuntimeStatus: 'repair-required',
+    runtimeAllowed: false,
+    executionKind: 'source-rule-set',
+    executorStatus: 'pending',
+    notes: 'One source framework for a need before a ruler: H1/H10 element+quality, H11 relative to H10, H2 money/goods branches, then H12/H6 and later houses. Current v57 still mistranslates the fixed-H2 goods/prosperity branch. Do not split these subclauses into universal background rules or invent an air/fire result.',
+  }),
+
+  'request.p176.h1h2GateThenH1H4': method({
+    kashfMethodId: 'request.p176.h1h2GateThenH1H4',
+    kashfIntentId: 'request.fulfillmentAndEnd',
+    topicId: 'completion',
+    sourcePages: [176],
+    methodRole: 'unresolved',
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'pending',
+    notes: 'Exact p176 request method: H1/H2 are a gate; if either is malefic the source says leave the request. Otherwise derive H1+H4 and judge benefic/malefic/mixed. Source is clear, but no canonical executor or approved public route is enabled yet.',
+  }),
+
+  'intent.p176.h7h10': method({
+    kashfMethodId: 'intent.p176.h7h10',
+    kashfIntentId: 'person.intent',
+    topicId: 'generalReading',
+    sourcePages: [176],
+    methodRole: 'unresolved',
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'pending',
+    notes: 'Exact p176 person-intent method: derive H7+H10; benefic means good intent and malefic means bad/malefic intent. This is not Gate-4 Dhamir and must not auto-run with hidden-thought methods.',
+  }),
+
+  'meeting.p176.hopeHouseH1H13': method({
+    kashfMethodId: 'meeting.p176.hopeHouseH1H13',
+    kashfIntentId: 'meeting.requestedPerson',
+    topicId: 'generalReading',
+    sourcePages: [176],
+    methodRole: 'unresolved',
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'source-rule',
+    executorStatus: 'pending',
+    notes: 'Exact p176 meeting rule only: the source requires the hope-house indication in both H1 and H13; otherwise no meeting. Runtime stays disabled until “hope house” is tied to a certified operational representation for this rule.',
+  }),
+
+  'person.p177.relativeThirteenth': method({
+    kashfMethodId: 'person.p177.relativeThirteenth',
+    kashfIntentId: 'person.relativeThirteenthReading',
+    topicId: 'generalReading',
+    sourcePages: [177],
+    methodRole: 'unresolved',
+    kashfRuntimeStatus: 'blocked-by-source',
+    runtimeAllowed: false,
+    executionKind: 'recursive-house-procedure',
+    executorStatus: 'pending',
+    notes: 'Reference-only p177 recursive procedure. Branch order is still corrupted in v57, source tokens معموم and ولا يحصل معارك remain unresolved, and a canonical per-house relative-thirteenth mapping is not certified. Do not infer the recursive mapping or normalize the difficult tokens.',
+  }),
+
   'matter.p172.h17_h1011_thenCombine': method({
     kashfMethodId: 'matter.p172.h17_h1011_thenCombine',
     kashfIntentId: 'matter.outcome',
@@ -195,7 +300,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     runtimeAllowed: true,
     executionKind: 'custom-engine',
     executorStatus: 'ready',
-    notes: 'Canonical p172 matter-outcome executor is wired: combine H1+H7, combine H10+H11, then combine those two generated figures. The final figure alone is the source result for good/bad. Pure benefic => good, pure malefic => bad, and mixed remains mixed/unresolved rather than being collapsed. Distinct from completion p173.',
+    notes: 'Canonical p172 matter-outcome executor is wired only after a complete 16-position board exists: the printed source first requires completing the line through H16, then combine H1+H7, combine H10+H11, and combine those two generated figures. The final figure alone is the source result for good/bad. Pure benefic => good, pure malefic => bad, and mixed remains mixed/unresolved rather than being collapsed. Distinct from completion p173.',
   }),
 
   'joy.p196.recast14511': method({
@@ -332,7 +437,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     runtimeAllowed: false,
     executionKind: 'custom-engine',
     executorStatus: 'pending',
-    notes: 'Canonical numeric lifespan/duration method: aggregate elements, reduce by 16, walk houses, then interpret the landing house class as years/months/days. Do not replace with p264 life stages.',
+    notes: 'Printed p178 source procedure is verified: aggregate the four elements, reduce by 16, walk the remainder over houses, then read the landing figure and its source number in that house; angle/inclined/cadent class converts that number to years/months/days. Runtime remains disabled because the exact “figure number in that house” lookup used by this procedure is not yet certified as a canonical operational table/consumer. Do not substitute dignity values, Hawi house-state values, or p264 life stages.',
   }),
 
   'lifespan.p264.stagesH11H9H7': method({
