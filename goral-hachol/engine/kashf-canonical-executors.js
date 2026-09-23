@@ -2284,7 +2284,7 @@ function computeQuestionSubjectByH6P159(chart) {
   };
 }
 
-// Kashf v57 p167 — hidden/covert action behind the matter.
+// Kashf p167 — hidden/covert action behind the querent.
 // Source construction: AIR row only from H4, H6, H8 and H15 (the balance/judge),
 // assembled in that order into one four-row figure. This is intentionally NOT
 // the neighboring fire-row sorcery rule and does not diagnose sorcery/jinn/evil eye.
@@ -2312,14 +2312,14 @@ function computeHiddenActionP167(chart) {
 
   let outputHebrew;
   if (hiddenAction) {
-    outputHebrew = 'שורות האוויר של בתים 4, 6, 8 ו־15 יצרו את הצורה ' + derivedFigureHebrew + ' (' + derivedPattern + ') — צורה מזיקה. לפי כשף v57 עמ׳ 167: יש פעולה מאחורי הדבר. כלל זה אינו קובע שמדובר בכישוף, ג׳ין או עין הרע ואינו מזהה אדם.';
+    outputHebrew = 'שורות האוויר של בתים 4, 6, 8 ו־15 יצרו את הצורה ' + derivedFigureHebrew + ' (' + derivedPattern + ') — צורה מזיקה. לפי כשף עמ׳ 167: יש פעולה מאחורי השואל. כלל זה אינו קובע שמדובר בכישוף, ג׳ין או עין הרע ואינו מזהה אדם.';
   } else {
-    outputHebrew = 'שורות האוויר של בתים 4, 6, 8 ו־15 יצרו את הצורה ' + derivedFigureHebrew + ' (' + derivedPattern + ') — ' + (classification.saadNahsHebrew || classification.saadNahs || 'ללא סיווג') + '. לפי לשון כשף v57 עמ׳ 167: אם התוצאה אינה מזיקה — אין פעולה מאחורי הדבר לפי כלל זה.';
+    outputHebrew = 'שורות האוויר של בתים 4, 6, 8 ו־15 יצרו את הצורה ' + derivedFigureHebrew + ' (' + derivedPattern + ') — ' + (classification.saadNahsHebrew || classification.saadNahs || 'ללא סיווג') + '. לפי לשון כשף עמ׳ 167: אם התוצאה אינה מזיקה — אין פעולה מאחורי השואל לפי כלל זה.';
   }
 
   return {
-    sourceRef: 'כשף אל-אסרר v57 עמ׳ 167',
-    sourceText: 'אם אמר לך השואל: האם מאחורי הדבר יש פעולה או לא? קח את אוויר הרביעי, אוויר השישי, אוויר השמיני ואוויר המאזן; העמד מהם צורה. אם יצאה צורה מזיקה, הרי הפעולה מאחוריו; ואם לא — לא.',
+    sourceRef: 'כשף אל-אסרר עמ׳ 167',
+    sourceText: 'אם אמר לך השואל: האם מאחוריי יש פעולה או לא? קח את אוויר הרביעי, אוויר השישי, אוויר השמיני ואוויר המאזן; העמד מהם צורה. אם יצאה צורה מזיקה, הרי הפעולה מאחוריו; ואם לא — לא.',
     housesUsed,
     rowUsed: 'air',
     rowIndex: 1,
