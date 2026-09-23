@@ -35,7 +35,12 @@
 - [✅] pp170–172 — טבלת האסתכארה שמסומנת במקור כחומר מחוץ לספר נעולה `external-tradition / educational-only`; אין runtime, auto-route או vote. `B11-P170-171-ALTERNATE-ISTIKHARA-NO-RUNTIME` נסגר.
 - [✅] P0-G הושלם: שאלות נבחרות מ-Question Bank במצב כשף מציגות מעתה את `buildKashfReadingByQuestionId` + `writeCanonicalKashfReading`; ה-topic bundle הישן נשאר רק למסלול תאימות ללא Question ID.
 - [✅] מצב downstream לאחר Batch 16: **28/46 RESOLVED**, נותרו **18**.
-- [ ] הבא לפי סדר המקור: pp172–178 — לסגור routing נפרד לתוצאת עניין, השלמה, מצב כללי, שליח/מסר, מפגש, אורך חיים ומעבר בלי aggregation (`B12-HOUSE1-P172-178-INTENT-ROUTING-DEFERRED`), ובאותו גל לטפל ב-`B12-P176-SUBBOARD-RECAST-NO-RUNTIME`, `B12-P177-RELATIVE-THIRTEENTH-BLOCKED` ו-`B12-P178-LIFESPAN-COMPUTATION-BLOCKED`.
+- [✅] pp172–178 — הופרדו מסלולי תוצאת עניין, השלמה, מצב כללי, ידיד/תקווה, צורך אצל שלטון, בקשה, כוונת אדם, מפגש, שליחים, אורך חיים ומעבר. p172 שומר במפורש את תנאי השלמת הלוח עד H16; אין aggregation בין השיטות. `B12-HOUSE1-P172-178-INTENT-ROUTING-DEFERRED` נסגר.
+- [✅] p176 — שיטת השליחים נשארת source-ready אך runtime חסום: H1/H4/H5/H11 הם אמהות ללוח נגזר חדש ונפרד; לוח המקור אינו משתנה. `B12-P176-SUBBOARD-RECAST-NO-RUNTIME` נסגר.
+- [✅] p177 — שיטת הבית השלושה־עשר היחסי רשומה כ-`blocked-by-source`; אין מיפוי יחסי מומצא ואין תיקון למונחים `معموم` / `ولا يحصل معارك`. `B12-P177-RELATIVE-THIRTEENTH-BLOCKED` נסגר.
+- [✅] p178 — שיטת אורך החיים נשארת source-verified אבל executor-pending: אין שימוש בטבלת כבוד/מושב או בנתוני חאווי במקום `מספר הצורה באותו בית` שטרם הוסמך תפעולית. `q-lifespan` נחסם נכון, בעוד `q-lifespan-stages` של p264 נשאר מסלול נפרד. `B12-P178-LIFESPAN-COMPUTATION-BLOCKED` נסגר.
+- [✅] מצב downstream לאחר Batch 17: **32/46 RESOLVED**, נותרו **14**.
+- [ ] הבא לפי סדר המקור: p179 — לסגור את שיטת תנועת החוב בלי להמציא walk-two/walk-three, “hand”, Farah או Bakr (`B12-P179-DEBT-WALKING-BLOCKED`), ואז לעבור לגל בית 2 pp180–182 (`B13-HOUSE2-ONE-PRIMARY-MONEY-ROUTE`, `B13-P180-ELEMENT-AMOUNT-BLOCKED`, `B13-P181-OTHER-BOOK-REMAINDER-BLOCKED`).
 
 ---
 
