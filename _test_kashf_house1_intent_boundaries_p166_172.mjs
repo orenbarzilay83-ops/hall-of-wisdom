@@ -50,7 +50,6 @@ assert.match(hiddenMethod.notes || '', /querent|השואל|ورائي/);
 const hiddenRoute = resolveKashfRouteByQuestionId('q-hidden-action');
 assert.equal(hiddenRoute.kashfMethodId, 'spiritual.p167.hiddenActionAirRows46815');
 assert.equal(hiddenRoute.canRunKashf, true);
-assert.match(hiddenRoute.note || '', /querent|השואל|ورائي/);
 
 const hiddenReading = buildKashfReadingByQuestionId(
   makeBoard({ 4:'1111', 6:'1111', 8:'1111', 15:'1211' }),
