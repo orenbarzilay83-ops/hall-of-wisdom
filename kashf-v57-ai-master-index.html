@@ -20313,8 +20313,10 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         122,
         123
       ],
-      "status": "DEFER_UNTIL_INDEX_COMPLETE",
-      "summary": "SHIBUTZ_3_ELEMENT_VALUES may support a needed dhamir intent, but its presence in code must not cause all dhamir types to run. Select only question-relevant operational types."
+      "status": "RESOLVED",
+      "target": "goral-hachol/engine/kashf-dhamir.js + goral-hachol/engine/kashf-leshon-hainyan.js",
+      "summary": "SHIBUTZ_3_ELEMENT_VALUES is source data used by the element-prevalence dhamir method; its availability must not act as a trigger for running all implemented dhamir methods.",
+      "resolution": "Rechecked printed pp121-123: p121 returns from attributed variants to the first copy, and pp122-123 establish the third placement order and element values. Added an explicit single-method dhamir selector with a project operational policy that forbids auto-selection from available data and forbids auto-running all implemented methods. The selector requires an explicit methodId and reports exactly the method executed. Removed Lisan al-Amr's implicit fallback to computeDhamirByMajority; it now requires an explicitly supplied dhamir house. The source majority function itself remains preserved for the later dedicated runtime/precedence queue item and was not rewritten here."
     },
     {
       "id": "B07-DATA-ELEMENT-TRADITIONS-RUNTIME-PRECEDENCE",
