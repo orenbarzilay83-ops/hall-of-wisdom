@@ -1179,8 +1179,30 @@ async function runReading() {
         dynFields,
       };
 
-      const kashfReading = window.KASHF_ENGINE.buildKashfReading(kashfBoard, kashfTopicId, clientCtx);
-      const kashfHtml = window.KASHF_ENGINE.writeKashfReading(kashfReading);
+      // P0-G cutover: a Question Bank selection is authoritative and MUST
+      // use the exact canonical route. No topic fallback is allowed for a known
+      // questionId; blocked/educational/repair-required routes render their
+      // explicit hard-stop message. Legacy topic mode remains only for the
+      // free-topic compatibility path where no Question Bank item was selected.
+      const hasCanonicalQuestion = Boolean(selectedQuestion?.id);
+      if (hasCanonicalQuestion && (
+        !window.KASHF_ENGINE?.buildKashfReadingByQuestionId
+        || !window.KASHF_ENGINE?.writeCanonicalKashfReading
+      )) {
+        throw new Error("נתיב הניתוב הקנוני של כשף לא נטען. נסה לרענן את הדף.");
+      }
+
+      const kashfReading = hasCanonicalQuestion
+        ? window.KASHF_ENGINE.buildKashfReadingByQuestionId(
+            kashfBoard,
+            selectedQuestion.id,
+            clientCtx
+          )
+        : window.KASHF_ENGINE.buildKashfReading(kashfBoard, kashfTopicId, clientCtx);
+
+      const kashfHtml = hasCanonicalQuestion
+        ? window.KASHF_ENGINE.writeCanonicalKashfReading(kashfReading)
+        : window.KASHF_ENGINE.writeKashfReading(kashfReading);
 
       // שמירה לארכיון הלקוח (method: "kashf") — best-effort, לא חוסם את הקריאה עצמה
       // אם נכשל. לא נוגע בחישוב/ניסוח הכשף. ראו KASHF_CONTEXT_COLLECTOR_IMPLEMENTATION_PLAN.md §4/§9.
