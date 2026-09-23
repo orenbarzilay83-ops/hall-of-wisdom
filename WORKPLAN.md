@@ -30,7 +30,12 @@
 - [✅] p164 — שבעת עדי החכמה נעולים כ-`SUPPORTING_ONLY`: H9–H15 בלבד; H16 נשמר בנפרד לדמיר ואינו "עד שמיני"; אין auto-route ואין מיזוג עם שיטות עדים אחרות. `B10-SEVEN-WITNESSES-SUPPORTING-ROLE` נסגר.
 - [✅] pp164–165 — כללי קרבת הצורות נשארים `REFERENCE_ONLY` ו-`REVIEW_REQUIRED`; אין runtime, אין auto-run ואין verdict עד שתהיה הגדרה חישובית מקור־נאמנה של "קרבה". Regression מוודא שהסימבול אינו מיובא במסלולי runtime. `B10-PROXIMITY-NO-RUNTIME-WITHOUT-DEFINITION` נסגר.
 - [✅] מצב downstream לאחר Batch 15: **25/46 RESOLVED**, נותרו **21**.
-- [ ] הבא לפי סדר המקור: pp167–170 — להפריד את כללי בית 1 לפי intent ולא לאגד צורך/קשר/תקפות/מבט/אבחון רוחני למסלול אחד (`B11-HOUSE1-INTENT-ROUTING-DEFERRED`), תוך השארת פרוצדורת המיקום pp168–169 חסומה כל עוד ה-walking/endpoint אינם מוגדרים (`B11-P168-169-LOCATION-PROCEDURE-BLOCKED`).
+- [✅] pp166–170 — כללי בית 1 הופרדו לפי intent: קשר/יוזם, פעולה מאחורי השואל, מיקום/שם/צבע, תקפות H6+H8, צורך ומבט. `q-hidden-action` תוקן לנוסח המקור האישי “האם יש פעולה מאחורי השואל”, ו-`q-who-looks-love` נשאר על p204 ולא הוחלף בכלל המבט של p170. `B11-HOUSE1-INTENT-ROUTING-DEFERRED` נסגר.
+- [✅] pp168–169 — פרוצדורת הולכת נקודת המאזן/מקום/שם/צבע נעולה `blocked-by-source`; אין walking, endpoint או second-figure מומצאים. `B11-P168-169-LOCATION-PROCEDURE-BLOCKED` נסגר.
+- [✅] pp170–172 — טבלת האסתכארה שמסומנת במקור כחומר מחוץ לספר נעולה `external-tradition / educational-only`; אין runtime, auto-route או vote. `B11-P170-171-ALTERNATE-ISTIKHARA-NO-RUNTIME` נסגר.
+- [✅] P0-G הושלם: שאלות נבחרות מ-Question Bank במצב כשף מציגות מעתה את `buildKashfReadingByQuestionId` + `writeCanonicalKashfReading`; ה-topic bundle הישן נשאר רק למסלול תאימות ללא Question ID.
+- [✅] מצב downstream לאחר Batch 16: **28/46 RESOLVED**, נותרו **18**.
+- [ ] הבא לפי סדר המקור: pp172–178 — לסגור routing נפרד לתוצאת עניין, השלמה, מצב כללי, שליח/מסר, מפגש, אורך חיים ומעבר בלי aggregation (`B12-HOUSE1-P172-178-INTENT-ROUTING-DEFERRED`), ובאותו גל לטפל ב-`B12-P176-SUBBOARD-RECAST-NO-RUNTIME`, `B12-P177-RELATIVE-THIRTEENTH-BLOCKED` ו-`B12-P178-LIFESPAN-COMPUTATION-BLOCKED`.
 
 ---
 
