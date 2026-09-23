@@ -880,7 +880,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfIntentId: 'spiritual.hiddenAction',
     kashfMethodId: 'spiritual.p167.hiddenActionAirRows46815',
     kashfRuntimeStatus: 'ready',
-    note: 'Use only the p167 hidden/covert-action question. This route does not diagnose sorcery, jinn or evil eye.',
+    note: 'Use only the p167 question whether an action is behind the querent (هل ورائي عمل). This route does not diagnose sorcery, jinn or evil eye.',
   }),
 
   'q-religion': route({
