@@ -173,11 +173,10 @@ export const SHIBUTZ_2_DURATION_BY_HOUSE = {
   sourceRef: "כשף אל-אסראר עמ' 110",
 };
 
-// ערך ממון לפי בית (עמ' 111). המקור עצמו מציין: "המקור מביא במספר
-// מקומות נוסחאות חלופיות, ולכן נשמר כאן ההבדל בין הערך העיקרי לבין
-// הנוסחה האחרת" — כלומר אי-ההתאמות הקטנות מול SHIBUTZ_2_CANONICAL_NUMBER
-// (למשל בית 12: 79 כאן מול 78 שם; בית 14: 110 כאן מול 105 שם) הן שימור
-// מכוון של נוסחאות חלופיות במקור, לא טעות תעתוק.
+// ערך ממון לפי בית (עמ' 111) — טבלה מקומית נפרדת מן הסדר הקנוני של
+// עמ' 106. לכן אין לאחד את המספרים בין שתי המסורות: למשל H7=29 כאן,
+// בעוד בעמ' 106 הערך הקנוני במיקום 7 נשאר 28. גם נוסחאות "ובנוסחה אחרת"
+// נשמרות בדיוק לפי עמ' 111 (H11=600, H12=700).
 export const SHIBUTZ_2_MONEY_BY_HOUSE = {
   1: { value: 1, altValue: null },
   2: { value: 3, altValue: null },
@@ -185,12 +184,12 @@ export const SHIBUTZ_2_MONEY_BY_HOUSE = {
   4: { value: 10, altValue: null },
   5: { value: 15, altValue: null },
   6: { value: 21, altValue: null },
-  7: { value: 28, altValue: null },
+  7: { value: 29, altValue: null },
   8: { value: 36, altValue: null },
   9: { value: 45, altValue: 70 },
   10: { value: 55, altValue: 300 },
-  11: { value: 66, altValue: 760 },
-  12: { value: 79, altValue: 770 },
+  11: { value: 66, altValue: 600 },
+  12: { value: 79, altValue: 700 },
   13: { value: 105, altValue: 3000 },
   14: { value: 110, altValue: 4000 },
   15: { value: 120, altValue: 6000 },
