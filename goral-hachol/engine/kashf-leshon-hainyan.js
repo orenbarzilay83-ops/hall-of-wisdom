@@ -37,6 +37,68 @@ function canonicalPositionOf(pattern) {
   return SHIBUTZ_2_CANONICAL_NUMBER.find((f) => f.pattern === pattern)?.position || null;
 }
 
+// עמ' 112: הטריגר לעבר/הווה/עתיד הוא מבני — סוג הבית שבו הצורה נמצאת.
+// אין להחליף את مائل الأوتاد במילה הסמנטית "עתיד" בתוך חוזה החישוב.
+export const LESHON_HAINYAN_STRUCTURAL_STATES = Object.freeze([
+  Object.freeze({
+    id: 'awtad',
+    arabic: 'الأوتاد',
+    houses: Object.freeze([1, 4, 7, 10]),
+    judgment: 'present',
+    judgmentHebrew: 'הווה/מצב נוכחי',
+  }),
+  Object.freeze({
+    id: 'mayil-al-awtad',
+    arabic: 'مائل الأوتاد',
+    houses: Object.freeze([2, 5, 8, 11]),
+    judgment: 'future',
+    judgmentHebrew: 'עתיד',
+  }),
+  Object.freeze({
+    id: 'zail-saqit-an-al-watad',
+    arabic: 'الزائل الساقط عن الوتد',
+    houses: Object.freeze([3, 6, 9, 12]),
+    judgment: 'past',
+    judgmentHebrew: 'עבר',
+  }),
+]);
+
+export function classifyLeshonHainyanHouse(houseNum) {
+  const n = Number(houseNum);
+  const state = LESHON_HAINYAN_STRUCTURAL_STATES.find((x) => x.houses.includes(n));
+  if (!state) return null;
+  return {
+    id: state.id,
+    arabic: state.arabic,
+    house: n,
+    judgment: state.judgment,
+    judgmentHebrew: state.judgmentHebrew,
+  };
+}
+
+function structuralTimingForPattern(board, pattern) {
+  const occurrences = [];
+  for (let house = 1; house <= 12; house += 1) {
+    if (getHousePattern(board, house) !== pattern) continue;
+    const state = classifyLeshonHainyanHouse(house);
+    if (state) occurrences.push(state);
+  }
+
+  const judgments = [...new Set(occurrences.map((x) => x.judgment))];
+  return {
+    sourceRef: 'כשף אל-אסראר עמ׳ 112',
+    sourceStatus: 'explicit-in-source',
+    trigger: 'house-structural-state',
+    occurrences,
+    judgments,
+    ambiguousAcrossStructuralStates: judgments.length > 1,
+    fallbackStatus: occurrences.length ? 'not-needed' : 'not-implemented',
+    note: occurrences.length
+      ? 'הזמן נגזר מסוג הבית שבו לשון העניין נמצאת: יתדות=הווה, מائل الأوتاد=עתיד, נופל מן היתד=עבר.'
+      : 'כאשר הצורה אינה נמצאת בלוח, המקור מפנה לשיבוצה; fallback זה אינו מיושם כאן ואין להשלים אותו בהיקש.',
+  };
+}
+
 /**
  * מחשב את "לשון העניין" ואת המספר/משך-הזמן הנגזרים ממנה.
  *
@@ -71,6 +133,7 @@ export function computeLeshonHainyan(board, dhamirHouseNum) {
       canonicalPosition: position,
       duration: position ? SHIBUTZ_2_DURATION_BY_HOUSE[position] : null,
       money: position ? SHIBUTZ_2_MONEY_BY_HOUSE[position] : null,
+      structuralTiming: structuralTimingForPattern(board, currentPattern),
     };
   }
 
@@ -87,7 +150,8 @@ export function computeLeshonHainyan(board, dhamirHouseNum) {
     canonicalPosition: position,
     duration: position ? SHIBUTZ_2_DURATION_BY_HOUSE[position] : null,
     money: position ? SHIBUTZ_2_MONEY_BY_HOUSE[position] : null,
+    structuralTiming: structuralTimingForPattern(board, leshonPattern),
   };
 }
 
-export default { computeLeshonHainyan };
+export default { computeLeshonHainyan, classifyLeshonHainyanHouse, LESHON_HAINYAN_STRUCTURAL_STATES };
