@@ -86,6 +86,21 @@ jobs:
             fi
           done
 
+      - name: Prepare legacy Hawi tests in runner only
+        shell: bash
+        run: |
+          set -euo pipefail
+          for f in _test_client_reading.mjs _test_complex_extraction.mjs _test_demo_reading.mjs _test_engine.mjs _test_full_topics.mjs _test_new_topics.mjs; do
+            sed -i "s#./goral-hachol/data/sources/hawi/foundations/hawi-figure-names.js#./goral-hachol/data/sources/hawi/hawi-source.js#g" "$f"
+          done
+          echo "Legacy test imports redirected in CI workspace only; repository files are not committed."
+
+      - name: Install Playwright Chromium for UI audit
+        shell: bash
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+
       - name: Full local regression sweep
         shell: bash
         run: |
