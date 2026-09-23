@@ -1496,7 +1496,7 @@ const p167HiddenMethod = getKashfMethod('spiritual.p167.hiddenActionAirRows46815
 assert(p167HiddenMethod?.runtimeAllowed === true && p167HiddenMethod?.executorStatus === 'ready', 'p167 hidden-action method is runnable');
 assert(canRunKashfMethod('spiritual.p167.hiddenActionAirRows46815') === true, 'p167 hidden-action canRunKashfMethod is true');
 
-const p167HiddenMalefic = buildKashfReadingByQuestionId(makeP204Board({ 4: '1111', 6: '2222', 8: '1111', 15: '2222' }), 'q-hidden-action', { question: 'האם יש פעולה מאחורי הדבר?' });
+const p167HiddenMalefic = buildKashfReadingByQuestionId(makeP204Board({ 4: '1111', 6: '2222', 8: '1111', 15: '2222' }), 'q-hidden-action', { question: 'האם יש פעולה מאחורי השואל?' });
 assert(p167HiddenMalefic.valid === true && p167HiddenMalefic.canRunKashf === true, 'p167 hidden-action malefic fixture executes');
 assert(p167HiddenMalefic.primaryFormula?.result?.executorResult?.derivedPattern === '1212', 'p167 assembles only AIR rows H4,H6,H8,H15 in order');
 assert(p167HiddenMalefic.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'nahs', 'p167 malefic derived figure is classified as pure malefic');
