@@ -1192,11 +1192,11 @@ function p167HiddenActionPolicy() {
     certificationBatch: 'professional-backfill-07',
     goldenCaseIds: freezeArray(['PV-BF07-P167-HIDDEN-ACTION', 'PV-BF07-P167-NO-HIDDEN-ACTION']),
     policyId: 'p167-hidden-action-air-rows-46815-v1',
-    questionScopeHebrew: 'האם מאחורי הדבר יש פעולה נסתרת לפי אוויר H4,H6,H8,H15, עמ׳ 167',
-    decisiveRuleHebrew: 'מרכיבים צורה משורת האוויר של H4,H6,H8 והמאזן H15. אם התוצאה מזיקה => יש פעולה מאחורי הדבר; ואם לא => אין פעולה לפי כלל זה.',
+    questionScopeHebrew: 'האם מאחורי השואל יש פעולה נסתרת לפי אוויר H4,H6,H8,H15, עמ׳ 167',
+    decisiveRuleHebrew: 'מרכיבים צורה משורת האוויר של H4,H6,H8 והמאזן H15. אם התוצאה מזיקה => יש פעולה מאחורי השואל; ואם לא => אין פעולה לפי כלל זה.',
     oneWayBranches: freezeArray([
-      'הצורה המורכבת מזיקה => יש פעולה מאחורי הדבר',
-      'הצורה המורכבת אינה מזיקה => אין פעולה מאחורי הדבר לפי הכלל',
+      'הצורה המורכבת מזיקה => יש פעולה מאחורי השואל',
+      'הצורה המורכבת אינה מזיקה => אין פעולה מאחורי השואל לפי הכלל',
     ]),
     forbiddenInversions: freezeArray([]),
     excludedFromPrimaryVerdict: freezeArray([
