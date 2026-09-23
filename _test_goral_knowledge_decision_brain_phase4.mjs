@@ -109,7 +109,8 @@ for (const qId of questionTypeIds) {
   }
 }
 
-assert(getApplicability('businessSuccess', 'kashf', 'dhamir') === 'advisorOnly', 'dhamir is advisorOnly (never client-required) for businessSuccess/kashf');
+assert(getApplicability('businessSuccess', 'kashf', 'dhamir') === 'forbidden', 'dhamir is forbidden for unrelated businessSuccess/kashf');
+assert(getApplicability('hiddenThoughtIntent', 'kashf', 'dhamir') === 'advisorOnly', 'dhamir is advisorOnly only for explicit hiddenThoughtIntent/kashf');
 assert(getApplicability('businessSuccess', 'kashf', 'timing') === 'forbidden', 'timing forbidden for businessSuccess/kashf (not asked)');
 assert(getApplicability('timing', 'kashf', 'timing') === 'allowed', 'timing allowed for timing questionType');
 assert(getApplicability('spiritual', 'kashf', 'spiritual') === 'required', 'spiritual required for spiritual questionType/kashf');
