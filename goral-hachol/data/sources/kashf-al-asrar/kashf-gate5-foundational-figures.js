@@ -159,16 +159,20 @@ export const DEREKH_HOUSE_RULES = {
     houseNum: 13,
     parentHouses: [9, 10],
     verdictsByParentCombo: {
-      'kharij-dakhil': { // התשיעי חיצוני, העשירי פנימי
-        textHebrew: 'בא במהירות מנסיעתו.',
-        sourceRef: "כשף אל-אסראר עמ' 162",
-      },
       'dakhil-kharij': { // התשיעי פנימי, העשירי חיצוני
-        textHebrew: 'יתעכב בנסיעתו זמן רב.',
-        sourceRef: "כשף אל-אסראר עמ' 162",
+        textHebrew: 'בא במהירות מנסיעתו.',
+        sourceRef: "כשף אל-אסראר עמ' 163",
+        sourceStatus: 'verified-against-printed-scan',
+      },
+      'kharij-dakhil': { // התשיעי חיצוני, העשירי פנימי
+        textHebrew: 'יתעכב בנסיעתו ויישאר זמן רב.',
+        sourceRef: "כשף אל-אסראר עמ' 163",
+        sourceStatus: 'verified-against-printed-scan',
       },
     },
-    baseTopic: 'נסיעה לשם עסק (שאלת בית 13)',
+    baseTopic: 'נסיעה בתוך נסיעה / עיסוק בתוך עיסוק (דרך בבית 13)',
+    sourceNote:
+      'עמ׳ 163 המודפס הוא הסמכות: H9 פנימי + H10 חיצוני = חזרה מהירה; H9 חיצוני + H10 פנימי = עיכוב/שהייה ממושכת. הנוסח ההפוך היה שגיאת downstream היסטורית.',
   },
   14: {
     houseNum: 14,
