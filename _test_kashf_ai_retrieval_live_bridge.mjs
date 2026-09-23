@@ -81,7 +81,7 @@ assert(p205RepairLive.canonicalRetrieval?.v57?.hebrewRule?.includes('בבית ה
 // exact hidden-action method and retains the anti-mixing boundary.
 const hiddenActionLive = buildKashfCanonicalAiBridge({
   questionId: 'q-hidden-action',
-  questionText: 'האם יש פעולה מאחורי הדבר?',
+  questionText: 'האם יש פעולה מאחורי השואל?',
   board: BOARD,
 });
 assert(hiddenActionLive.resolution.kashfMethodId === 'spiritual.p167.hiddenActionAirRows46815', 'p167 live bridge resolves exact hidden-action method');
