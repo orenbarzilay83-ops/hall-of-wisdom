@@ -20301,8 +20301,10 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         114,
         121
       ],
-      "status": "DEFER_UNTIL_INDEX_COMPLETE",
-      "summary": "Al-Zanati, al-Layth and other attributed/variant methods are REFERENCE_ONLY by default; do not auto-run or vote them against the selected primary method."
+      "status": "RESOLVED",
+      "target": "kashf-shibutzim.js + canonical Kashf route/execution guards",
+      "summary": "Attributed/variant methods needed an enforceable downstream boundary so they could not be auto-run or vote against the selected primary method.",
+      "resolution": "Rechecked printed pp113-114 and p121 directly. Al-Zanati number/duration, the external Dalail al-Fadl table, and the p121 Al-Zanati/Al-Layth distance methods are catalogued as REFERENCE_ONLY with runtimeEligible/defaultEligible/mayAutoRun/mayVoteAgainstPrimary=false. The canonical router and direct method executor now hard-stop any method whose attributedSourceBook is not Kashf or whose sourceLayer is not body; registry validation also rejects runtimeAllowed=true for such records."
     },
     {
       "id": "B06-DHAMIR-NEED-DRIVEN",
