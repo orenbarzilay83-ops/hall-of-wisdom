@@ -2212,6 +2212,78 @@ function computeMoneySourceP179(chart) {
   };
 }
 
+// Kashf p159 — dedicated rule for identifying whom/what the querent is
+// actually asking about. This is NOT a generic hidden-thought method.
+// Read H6, then look for the same figure in another topical house (H1-H12).
+// The source gives no precedence if the figure repeats in more than one house,
+// so multiple matches stay explicitly ambiguous.
+const P159_SUBJECT_HOUSE_ROLES = Object.freeze({
+  1: 'השואל עצמו',
+  2: 'ממון ורכוש',
+  3: 'אח/אחות, שכן או קרוב',
+  4: 'אב, בית או קרקע',
+  5: 'ילד/ילדה',
+  7: 'בן/בת זוג, שותף או יריב',
+  8: 'ירושה או ענייני מוות',
+  9: 'נסיעה, אדם רחוק או דת',
+  10: 'שלטון, מעמד או עבודה',
+  11: 'ידיד, תקווה או רצון',
+  12: 'אויב נסתר או מאסר',
+});
+
+function computeQuestionSubjectByH6P159(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h6 = findCanonicalHouse(chart, 6);
+  const h6Pattern = h6?.key || h6?.pattern || null;
+  if (!h6Pattern) return null;
+
+  const matches = [];
+  for (let houseNumber = 1; houseNumber <= 12; houseNumber += 1) {
+    if (houseNumber === 6) continue;
+    const entry = findCanonicalHouse(chart, houseNumber);
+    const pattern = entry?.key || entry?.pattern || null;
+    if (pattern !== h6Pattern) continue;
+    matches.push({
+      houseNumber,
+      houseRole: P159_SUBJECT_HOUSE_ROLES[houseNumber] || `בית ${houseNumber}`,
+      figurePattern: pattern,
+      figureHebrew: entry?.hebrew || entry?.hebrewName || pattern,
+    });
+  }
+
+  const resolvedHouseNumber = matches.length === 1 ? matches[0].houseNumber : null;
+  const resolvedHouseRole = matches.length === 1 ? matches[0].houseRole : null;
+  const status = matches.length === 1
+    ? 'resolved'
+    : matches.length === 0
+      ? 'no-recurrence'
+      : 'ambiguous-multiple-recurrences';
+
+  let outputHebrew;
+  if (matches.length === 1) {
+    outputHebrew = `צורת בית 6 (${h6?.hebrew || h6?.hebrewName || h6Pattern}, ${h6Pattern}) חוזרת בבית ${resolvedHouseNumber}. לפי כשף עמ׳ 159, השואל שואל על בעל בית זה: ${resolvedHouseRole}.`;
+  } else if (matches.length === 0) {
+    outputHebrew = `צורת בית 6 (${h6?.hebrew || h6?.hebrewName || h6Pattern}, ${h6Pattern}) אינה חוזרת בבית אחר מבתי 1–12. כלל עמ׳ 159 אינו נותן כאן זיהוי תפעולי נוסף.`;
+  } else {
+    outputHebrew = `צורת בית 6 (${h6?.hebrew || h6?.hebrewName || h6Pattern}, ${h6Pattern}) חוזרת ביותר מבית אחד: ${matches.map((m) => `בית ${m.houseNumber} — ${m.houseRole}`).join('; ')}. המקור אינו נותן כלל קדימות בין חזרות, ולכן אין לבחור אחת מהן בכוח.`;
+  }
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 159',
+    sourceText: 'כדי לדעת על מי שאל השואל: התבונן בשישי, וראה את דוגמתו באיזה בית; דע שהוא שואל על בעל אותו בית.',
+    housesUsed: [6, ...matches.map((m) => m.houseNumber)],
+    h6Pattern,
+    h6FigureHebrew: h6?.hebrew || h6?.hebrewName || h6Pattern,
+    matches,
+    status,
+    resolvedHouseNumber,
+    resolvedHouseRole,
+    positive: null,
+    verdictType: 'question-subject-identification',
+    outputHebrew,
+  };
+}
+
 // Kashf v57 p167 — hidden/covert action behind the matter.
 // Source construction: AIR row only from H4, H6, H8 and H15 (the balance/judge),
 // assembled in that order into one four-row figure. This is intentionally NOT
@@ -2280,6 +2352,7 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'marriage.p210.generalMarriageH1H2H7H8H10Judge': computeMarriageSuitabilityP210,
   'general.p174.h1h2h4h7h10h15': computeGeneralStateP174,
   'money.p179.sourceByIncomingHonorHouse': computeMoneySourceP179,
+  'dhamir.p159.subjectByH6Recurrence': computeQuestionSubjectByH6P159,
   'spiritual.p167.hiddenActionAirRows46815': computeHiddenActionP167,
   'love.p206.womanFavorH7H11ThenH5': computeWomanFavorP206,
   'desire.p206.querentWantsH7H11ThenH5': computeQuerentWantsMatterP206,
