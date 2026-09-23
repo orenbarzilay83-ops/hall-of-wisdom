@@ -79,7 +79,7 @@ expectTop('מה מצב הפרנסה', 'money.p180.livelihoodH10Invert');
 expectTop('הנעדר חי או מת', 'missing.p248-249.lifeH1H4H9Outcome');
 expectTop('האם הממון יושג', 'money.p181.recast25811');
 expectTop('האם אחזור לתפקיד', 'career.p266.returnToOffice');
-expectTop('האם יש פעולה מאחורי הדבר', 'spiritual.p167.hiddenActionAirRows46815');
+expectTop('האם יש פעולה מאחורי השואל', 'spiritual.p167.hiddenActionAirRows46815');
 expectTop('מאיפה יגיע הכסף', 'money.p179.sourceByIncomingHonorHouse');
 
 const exactQuestion = resolveBestKashfAiRetrievalHit('q-clothing-lucky');
