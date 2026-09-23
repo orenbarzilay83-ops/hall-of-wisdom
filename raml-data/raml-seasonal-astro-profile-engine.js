@@ -99,52 +99,60 @@ const SINGLE_ZODIAC_SIGN_OPEN = {
   value: null,
   status: "OPEN",
   reason:
-    "מקור כשף מספק קבוצת עונה בת שלושה מזלות, ולא שיוך חד-ערכי של צורה למזל אחד."
+    "מקור כשף מספק קבוצות עונה ומזלות-מועמדים, ובחלק מהצורות אף יותר מעונה אחת; אין כלל מקור שמכריע אוטומטית מזל בודד."
 };
 
-function findSeasonGroup(figureKey) {
+function findSeasonGroups(figureKey) {
   const seasons = KASHF_SHIBUTZIM.SHIBUTZ_5_SEASONS || [];
-  return seasons.find(
+  return seasons.filter(
     group => Array.isArray(group.patterns) && group.patterns.includes(figureKey)
-  ) || null;
+  );
 }
 
 function buildSeasonField(figureKey) {
-  const group = findSeasonGroup(figureKey);
+  const groups = findSeasonGroups(figureKey);
 
-  if (!group) {
+  if (!groups.length) {
     return {
       value: null,
+      values: [],
       status: "OPEN",
       provenance: {
         ...SEASON_PROVENANCE_BASE,
         status: "OPEN",
         note:
-          "צורה זו אינה משובצת לאף קבוצת-עונה ב-SHIBUTZ_5_SEASONS (מטופלת בנפרד כ-SHIBUTZ_5_RAS_ZANAB, ראש/זנב התלי)."
+          "צורה זו אינה משובצת לאף קבוצת-עונה מפורשת ב-SHIBUTZ_5_SEASONS."
       }
     };
   }
 
-  const isReconstructed = Boolean(group.patternNote);
-  const status = isReconstructed ? "RECONSTRUCTED" : "VERIFIED";
+  const values = groups.map(group => group.seasonHebrew);
+  const hasOverlap = values.length > 1;
+  const status = hasOverlap ? "VERIFIED_OVERLAP" : "VERIFIED";
 
   return {
-    value: group.seasonHebrew,
+    // תאימות-לאחור נשמרת רק כשיש עונה יחידה. במקרה חפיפה אסור לבחור
+    // את הקבוצה הראשונה לפי סדר המערך כאילו הייתה הכרעה מהמקור.
+    value: hasOverlap ? null : values[0],
+    values,
     status,
     provenance: {
       ...SEASON_PROVENANCE_BASE,
       status,
-      ...(isReconstructed ? { note: group.patternNote } : {})
+      ...(hasOverlap
+        ? { note: `המקור משייך את הצורה במפורש ליותר מעונה אחת: ${values.join(", ")}. אין לבחור עונה אחת אוטומטית.` }
+        : {})
     }
   };
 }
 
 function buildSeasonZodiacCandidatesField(figureKey) {
-  const group = findSeasonGroup(figureKey);
+  const groups = findSeasonGroups(figureKey);
 
-  if (!group) {
+  if (!groups.length) {
     return {
       values: [],
+      seasons: [],
       status: "OPEN",
       provenance: {
         ...SEASON_PROVENANCE_BASE,
@@ -154,19 +162,23 @@ function buildSeasonZodiacCandidatesField(figureKey) {
     };
   }
 
-  const isReconstructed = Boolean(group.patternNote);
-  // לפי דרישה מפורשת: גם כאשר קבוצת המזלות של העונה עצמה VERIFIED,
-  // אם השיוך של הצורה הספציפית לעונה הוא RECONSTRUCTED — הסטטוס כאן
-  // לא יכול להיות VERIFIED (לכל היותר RECONSTRUCTED).
-  const status = isReconstructed ? "RECONSTRUCTED" : "VERIFIED";
+  const seasons = groups.map(group => group.seasonHebrew);
+  const values = [...new Set(
+    groups.flatMap(group => Array.isArray(group.zodiacSigns) ? group.zodiacSigns : [])
+  )];
+  const hasOverlap = groups.length > 1;
+  const status = hasOverlap ? "VERIFIED_OVERLAP" : "VERIFIED";
 
   return {
-    values: Array.isArray(group.zodiacSigns) ? [...group.zodiacSigns] : [],
+    values,
+    seasons,
     status,
     provenance: {
       ...SEASON_PROVENANCE_BASE,
       status,
-      ...(isReconstructed ? { note: group.patternNote } : {})
+      ...(hasOverlap
+        ? { note: "מועמדי המזלות הם איחוד קבוצות-העונה החופפות מן המקור; אין מכאן הכרעה למזל יחיד." }
+        : {})
     }
   };
 }
@@ -387,8 +399,8 @@ function ramlBuildSeasonalAstroProfile(chart, options = {}) {
     overallStatus: anyResolved ? "PARTIAL" : "OPEN",
     warnings: [
       "מנוע זה אינו מחשב 'מזל עולה' אישי (Ascendant / الطالع) — לא נמצא במקור כלל תפעולי לכך.",
-      "singleZodiacSign מוחזר תמיד כ-OPEN: המקור מספק קבוצת-עונה של שלושה מזלות מועמדים, לא הכרעה בין השלושה.",
-      "אין להמיר singleZodiacSign/seasonZodiacCandidates להכרעה אוטומטית של מזל בודד.",
+      "singleZodiacSign מוחזר תמיד כ-OPEN: המקור מספק קבוצות-עונה ומזלות מועמדים, ובשלוש צורות גם חפיפת עונות.",
+      "אין להמיר season.value חסר במקרה חפיפה או seasonZodiacCandidates להכרעה אוטומטית של עונה/מזל בודד.",
       "זהו מנוע אפיון תומך (supporting evidence) בלבד — אינו מכריע לבדו שום מסקנה סופית."
     ]
   };
