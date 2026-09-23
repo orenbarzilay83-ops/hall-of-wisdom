@@ -183,7 +183,7 @@ export const FIGURE_DIGNITIES = {
 // ─────────────────────────────────────────────────────────────────────────
 export const FIGURE_JOY_GRIEF_SUPPLEMENTARY_NOTE = {
   sourceStatus: 'explicit-in-source',
-  sourceRef: "כשף אל-אסראר עמ' 101-102",
+  sourceRef: "כשף אל-אסראר עמ' 100",
   provenance: {
     workId: 'kashf-al-asrar',
     editionId: 'kashf-hebrew-v57',
