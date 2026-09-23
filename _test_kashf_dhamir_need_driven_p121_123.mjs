@@ -36,22 +36,20 @@ for (const entry of KASHF_DHAMIR_IMPLEMENTED_METHOD_CATALOG) {
 }
 
 // Missing/unknown selection blocks BEFORE touching the board.
-assert.deepEqual(computeSelectedDhamirMethod({}, null), {
-  selected: false,
-  status: 'blocked',
-  reason: 'explicit-dhamir-method-required',
-  methodId: null,
-  methodsExecuted: [],
-  result: null,
-});
-assert.deepEqual(computeSelectedDhamirMethod({}, 'not-a-real-method'), {
-  selected: false,
-  status: 'blocked',
-  reason: 'unknown-dhamir-method',
-  methodId: 'not-a-real-method',
-  methodsExecuted: [],
-  result: null,
-});
+assert.equal(
+  computeSelectedDhamirMethod({}, null).reason,
+  'dhamir-intent-not-approved',
+  'without an approved intent the selector blocks before method/board evaluation'
+);
+assert.equal(
+  computeSelectedDhamirMethod({}, null, { intentId: 'hiddenThoughtIntent' }).reason,
+  'explicit-dhamir-method-required',
+  'approved intent still requires an explicit method'
+);
+assert.equal(
+  computeSelectedDhamirMethod({}, 'not-a-real-method', { intentId: 'hiddenThoughtIntent' }).reason,
+  'unknown-dhamir-method'
+);
 
 // A complete synthetic board is enough to execute the selected source method.
 // H15=2112 has open air+water; with p122 values water(3) prevails over air(2).
@@ -68,7 +66,15 @@ const board = {
   })),
 };
 
-const selected = computeSelectedDhamirMethod(board, 'element-prevalence');
+assert.equal(
+  computeSelectedDhamirMethod(board, 'element-prevalence', { intentId: 'hiddenThoughtIntent' }).reason,
+  'explicit-element-tradition-required',
+  'element-prevalence cannot inherit a tradition merely because p122 data is imported'
+);
+const selected = computeSelectedDhamirMethod(board, 'element-prevalence', {
+  intentId: 'hiddenThoughtIntent',
+  elementTraditionId: 'p122-author-working',
+});
 assert.equal(selected.selected, true);
 assert.deepEqual(selected.methodsExecuted, ['element-prevalence']);
 assert.equal(selected.methodId, 'element-prevalence');
@@ -76,6 +82,7 @@ assert(selected.result);
 assert.equal(selected.result.method, 'element-prevalence');
 assert.equal(selected.result.prevailingElement, 'מים');
 assert.equal(selected.result.walkValue, 3);
+assert.equal(selected.result.elementTraditionId, 'p122-author-working');
 
 // Lisan al-Amr may consume an explicitly selected dhamir house, but it may
 // no longer trigger computeDhamirByMajority on its own.
