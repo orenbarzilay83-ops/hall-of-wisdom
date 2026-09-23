@@ -25,7 +25,9 @@
 - [✅] מצב downstream לאחר Batch 12: **21/46 RESOLVED**, נותרו **25**.
 - [✅] p159 — כלל H6 נסגר כמסלול קנוני ייעודי רק ל-`dhamir.identifyQuestionSubject`: קוראים את H6 ומחפשים את אותה צורה בבית אחר מבתי H1–H12; חזרה יחידה מזהה את בעל-הבית, אין חזרה נשאר לא-מוכרע, וריבוי חזרות נשמר כעמימות בלי קדימות מומצאת. ניסוחי "מה הוא חושב?" אינם מנותבים לשיטה זו. `B09-DHAMIR-H6-SUBJECT-ID-CANDIDATE` נסגר.
 - [✅] מצב downstream לאחר Batch 13: **22/46 RESOLVED**, נותרו **24**.
-- [ ] הבא לפי סדר המקור: p163 — לבקר ולתקן downstream של כלל דרך/H13 מול היפוך H9/H10 לפי הסריקה (`B10-DEREKH-H13-POLARITY-DOWNSTREAM`).
+- [✅] p163 — תוקן ה-downstream של דרך בבית 13 לפי הסריקה: H9 פנימי + H10 חיצוני → חזרה מהירה; H9 חיצוני + H10 פנימי → עיכוב/שהייה ממושכת. אין השלמה לענפי same-polarity שלא ניתנו במקור. `B10-DEREKH-H13-POLARITY-DOWNSTREAM` נסגר.
+- [✅] מצב downstream לאחר Batch 14: **23/46 RESOLVED**, נותרו **23**.
+- [ ] הבא לפי סדר המקור: p164 — לשמור את שבעת עדי החכמה H9–H15 כשכבת supporting בלבד, עם H16 נפרד לדמיר; ולאחריו pp164–165 לוודא שכללי קרבת הצורות נשארים מחוץ ל-runtime עד להגדרה חישובית מקור־נאמנה (`B10-SEVEN-WITNESSES-SUPPORTING-ROLE`, `B10-PROXIMITY-NO-RUNTIME-WITHOUT-DEFINITION`).
 
 ---
 
