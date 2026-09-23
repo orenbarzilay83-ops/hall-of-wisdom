@@ -744,12 +744,12 @@ assert(p191DeliveryHard.canonicalReading?.overallPositive === false, 'p191 diffi
 assert(p191DeliveryEasy.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenInversions?.some((x) => x.includes('H15')), 'p191 delivery policy forbids an invented H15 vote');
 
 // PV-BF07-P167-* — hidden action only; no sorcery/jinn/evil-eye promotion.
-const p167Hidden = buildKashfCanonicalAiBridge({ questionText: 'האם יש פעולה מאחורי הדבר', board: makeBoard({ 4:'1111', 6:'1111', 8:'1111', 15:'1211' }) });
+const p167Hidden = buildKashfCanonicalAiBridge({ questionText: 'האם יש פעולה מאחורי השואל', board: makeBoard({ 4:'1111', 6:'1111', 8:'1111', 15:'1211' }) });
 assert(p167Hidden.resolution?.kashfMethodId === 'spiritual.p167.hiddenActionAirRows46815', 'p167 hidden-action free text resolves exact method');
 assert(p167Hidden.canonicalReading?.primaryFormula?.result?.executorResult?.derivedPattern === '1112', 'p167 air rows derive the malefic fixture 1112');
 assert(p167Hidden.canonicalReading?.overallPositive === true, 'p167 malefic derived figure means hidden action exists');
 assert(p167Hidden.professionalVerdictSafety?.certificationStatus === 'certified', 'p167 hidden-action method passed professional backfill');
-const p167None = buildKashfCanonicalAiBridge({ questionText: 'האם יש פעולה מאחורי הדבר', board: makeBoard({ 4:'1111', 6:'1111', 8:'1211', 15:'1211' }) });
+const p167None = buildKashfCanonicalAiBridge({ questionText: 'האם יש פעולה מאחורי השואל', board: makeBoard({ 4:'1111', 6:'1111', 8:'1211', 15:'1211' }) });
 assert(p167None.canonicalReading?.primaryFormula?.result?.executorResult?.derivedPattern === '1122', 'p167 air rows derive benefic fixture 1122');
 assert(p167None.canonicalReading?.overallPositive === false, 'p167 non-malefic derived figure activates explicit no-action complement');
 assert(p167Hidden.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenClientClaimsWithoutExplicitSelectedMethodBranch?.some((x) => x.includes('כישוף')), 'p167 policy forbids expanding hidden action into sorcery');
