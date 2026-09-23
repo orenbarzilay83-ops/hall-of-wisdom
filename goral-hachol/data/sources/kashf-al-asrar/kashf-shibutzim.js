@@ -402,14 +402,17 @@ export const SHIBUTZ_3_CANONICAL_ORDER = [
 
 // ערכי היסודות: אש=1, אוויר=2, מים=3, עפר=4 (עמ' 122). שורש היסודות
 // הוא דרך; סכום ארבעת הערכים = 10.
-export const SHIBUTZ_3_ELEMENT_VALUES = {
+export const SHIBUTZ_3_ELEMENT_VALUES = Object.freeze({
   'אש': 1,
   'אוויר': 2,
   'מים': 3,
   'עפר': 4,
+  traditionId: 'p122-author-working',
   sourceStatus: 'explicit-in-source',
   sourceRef: "כשף אל-אסראר עמ' 122",
-};
+  runtimeAuthority: 'requires-explicit-method-and-tradition-selection',
+  note: 'טבלת מקור פעילה רק כאשר מסלול תפעולי בחר במפורש את שיטת היסודות ואת המסורת הזאת. עצם הייבוא בקוד אינו מקנה קדימות מול מסורות עמ׳ 126/132.',
+});
 
 // דוגמאות מפורשות ליסוד-בודד (עמ' 122) — משמשות כאן גם לאימות-צולב של
 // הסדר הקנוני המתוקן: כל אחת מהצורות האלה מוצגת במקור כבעלת יסוד אחד
@@ -463,11 +466,85 @@ export const SHIBUTZ_3_ELEMENT_CORRESPONDENCES = {
  * מצוטטות נפרדות, לא כחלק מהאלגוריתם הפעיל — "כל הסדרים... חוזרים אל
  * חוק אחד... אין כאן סתירה גמורה".
  */
-export const SHIBUTZ_3_ALTERNATIVE_ELEMENT_VALUES_CITED = [
-  { attributedTo: "אל-זנאתי", 'אש': 9, 'אוויר': 11, 'מים': 14, 'עפר': 16 },
-  { attributedTo: "אבו סעיד אל-טרבלסי", 'אש': 1, 'אוויר': 2, 'מים': 4, 'עפר': 8 },
-  { attributedTo: "בעלי הטבעים (= שיטת המחבר בפועל)", 'אש': 1, 'אוויר': 2, 'מים': 3, 'עפר': 4 },
-];
+export const SHIBUTZ_3_ALTERNATIVE_ELEMENT_VALUES_CITED = Object.freeze([
+  Object.freeze({
+    traditionId: 'p126-zanati',
+    attributedTo: 'אל-זנאתי',
+    values: Object.freeze({ 'אש': 9, 'אוויר': 11, 'מים': 14, 'עפר': 16 }),
+    sourceRef: "כשף אל-אסראר עמ' 126",
+    sourceLayer: 'quoted-variant-copy',
+    operationalRole: 'REFERENCE_ONLY',
+    runtimeEligible: false,
+    mayAutoSelect: false,
+    mayVoteAgainstSelectedTradition: false,
+  }),
+  Object.freeze({
+    traditionId: 'p126-trabulsi',
+    attributedTo: 'אבו סעיד אל-טרבלסי',
+    values: Object.freeze({ 'אש': 1, 'אוויר': 2, 'מים': 4, 'עפר': 8 }),
+    sourceRef: "כשף אל-אסראר עמ' 126",
+    sourceLayer: 'quoted-variant-copy',
+    operationalRole: 'REFERENCE_ONLY',
+    runtimeEligible: false,
+    mayAutoSelect: false,
+    mayVoteAgainstSelectedTradition: false,
+  }),
+  Object.freeze({
+    traditionId: 'p126-ahl-al-tabai',
+    attributedTo: 'בעלי הטבעים',
+    values: Object.freeze({ 'אש': 1, 'אוויר': 2, 'מים': 3, 'עפר': 4 }),
+    sourceRef: "כשף אל-אסראר עמ' 126",
+    sourceLayer: 'quoted-variant-copy',
+    operationalRole: 'REFERENCE_ONLY',
+    runtimeEligible: false,
+    mayAutoSelect: false,
+    mayVoteAgainstSelectedTradition: false,
+    note: 'הערכים זהים מספרית לטבלת העבודה בעמ׳ 122, אך הרשומה נשמרת בנפרד כי עמ׳ 126 מציג אותה כמסורת בתוך שלוש מסורות.',
+  }),
+]);
+
+// עמ׳ 131→132 מציג מערכת נוספת הסותרת את ייחוסי עמ׳ 126. היא נשמרת
+// כלשונה כ-SOURCE_CONFLICT ואסור להשתמש בה כדי "לתקן" או לנרמל את עמ׳ 122/126.
+export const SHIBUTZ_3_P132_ELEMENT_VALUE_CONFLICT = Object.freeze({
+  sourceRef: "כשף אל-אסראר עמ' 131-132",
+  sourceStatus: 'SOURCE_CONFLICT',
+  runtimeEligible: false,
+  mayAutoSelect: false,
+  mayOverrideP122: false,
+  mayOverrideP126: false,
+  ahlAlTabaiLines: Object.freeze({
+    values: Object.freeze({ 'אש': 8, 'אוויר': 4, 'מים': 2, 'עפר': 1 }),
+    total: 15,
+  }),
+  zanati: Object.freeze({
+    values: Object.freeze({ 'אש': 1, 'אוויר': 2, 'מים': 3, 'עפר': 4 }),
+  }),
+  trabulsiAgreementWithZanati: true,
+  conflictNote:
+    'עמ׳ 132 מייחס מספרים שאינם תואמים את ייחוסי עמ׳ 126. הסתירה פנימית במקור ונשמרת ללא הכרעה.',
+});
+
+export const SHIBUTZ_3_ELEMENT_TRADITION_CATALOG = Object.freeze({
+  'p122-author-working': Object.freeze({
+    traditionId: 'p122-author-working',
+    values: SHIBUTZ_3_ELEMENT_VALUES,
+    sourceRef: "כשף אל-אסראר עמ' 122",
+    status: 'AVAILABLE_ONLY_BY_EXPLICIT_SELECTION',
+    runtimeEligible: true,
+  }),
+  ...Object.fromEntries(
+    SHIBUTZ_3_ALTERNATIVE_ELEMENT_VALUES_CITED.map((entry) => [
+      entry.traditionId,
+      Object.freeze({
+        traditionId: entry.traditionId,
+        values: entry.values,
+        sourceRef: entry.sourceRef,
+        status: 'REFERENCE_ONLY',
+        runtimeEligible: false,
+      }),
+    ])
+  ),
+});
 
 // ─────────────────────────────────────────────────────────────────────────
 // השיבוץ הרביעי: שיבוץ המזג (עמ' 133-135)
