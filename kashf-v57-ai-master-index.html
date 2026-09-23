@@ -10537,7 +10537,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       ],
       "outputScope": "ידע מקור לאחזור AI; אינו הופך לבדו למסלול פסק פעיל.",
       "doNotInfer": [
-        "אין להשתמש בתעתיק v56 ההפוך לצורך runtime; יש לאשר את זהות קובץ v57 המתוקן לפני סגירת ה־queue.",
+        "אין להשתמש בתעתיק v56 ההפוך לצורך runtime; הסריקה המודפסת וה-v57 הנוכחי קובעים H9 פנימי + H10 חיצוני = חזרה מהירה, וההפך = עיכוב.",
         "אין להמציא את ענף הבסיס של H10 רק משום שהמקור אומר ״הדין מתהפך״."
       ],
       "sourceDiscrepancies": [],
@@ -10556,7 +10556,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         "visualLineByLineChecked": true,
         "note": "Pass 2 visually re-read printed pp162-163 / scans164-165 and re-checked the current v57 artifact. The H13 polarity is source-closed and current v57 is correct: H9 internal + H10 external = quick return; H9 external + H10 internal = delay/long stay. The reversed wording belongs to historical v56 only, so the old v57 correction blocker is resolved."
       },
-      "methodStatus": "SOURCE_RULE_WITH_V57_MISMATCH",
+      "methodStatus": "SOURCE_RULE",
       "operationalRole": "REFERENCE_ONLY",
       "runtimeEligible": false
     },
@@ -20382,8 +20382,10 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "pages": [
         163
       ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "Audit any DEREKH_HOUSE_RULES/runtime data for the p163 H9/H10 parent-polarity reversal; printed scan is authoritative."
+      "status": "RESOLVED",
+      "target": "kashf-gate5-foundational-figures.js + kashf-book-additions.js",
+      "summary": "The p163 H13 Derekh parent-polarity had remained reversed in downstream runtime data even though the current v57/source index was already corrected.",
+      "resolution": "Re-read the original printed scan at p163. Corrected DEREKH_HOUSE_RULES[13] so H9 internal + H10 external gives quick return from the journey, while H9 external + H10 internal gives delay and a long stay. Updated both branches to sourceRef p163 and added a source note preventing regression to the historical reversed wording. computeDerekhHouseRuleKashf requires no algorithm change because it already reads the data table directly; a focused regression now verifies both polarities and leaves undefined same-polarity branches unresolved."
     },
     {
       "id": "B10-SEVEN-WITNESSES-SUPPORTING-ROLE",
