@@ -20351,8 +20351,10 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         136,
         137
       ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "Correct SHIBUTZ_5_SEASONS and all consumers. Printed source gives Spring=[2122,1211,2211,1121,2222,2112], Summer=[2212,1111,1122,2121,2112], Winter=[1221,2221,2111], Autumn=[1121,1211,1222]. The old Spring-by-elimination partition is invalid; seasonal groups overlap."
+      "status": "RESOLVED",
+      "target": "kashf-shibutzim.js + raml-seasonal-astro-profile-engine.js",
+      "summary": "Correct SHIBUTZ_5_SEASONS and all consumers. Printed source gives Spring=[2122,1211,2211,1121,2222,2112], Summer=[2212,1111,1122,2121,2112], Winter=[1221,2221,2111], Autumn=[1121,1211,1222]. The old Spring-by-elimination partition is invalid; seasonal groups overlap.",
+      "resolution": "Replaced the old reconstructed 3-figure spring partition with the explicit printed overlapping groups. Added explicit overlap metadata for 1121, 1211 and 2112. The seasonal profile consumer now collects all matching season groups: a unique season preserves season.value, while an overlap returns season.value=null plus season.values and VERIFIED_OVERLAP, preventing array-order from becoming a false source priority. Zodiac candidates are unioned across overlapping source groups and singleZodiacSign remains OPEN. Regression tests cover unique spring/autumn and overlap behavior."
     },
     {
       "id": "B09-DHAMIR-MAJORITY-RUNTIME-DISABLED",
