@@ -191,7 +191,8 @@ const ORIGINAL_20_SCENARIO_IDS = new Set([
   const brain = evaluateReading({
     method: scenario.method,
     topicId: scenario.topicId,
-    question: scenario.question,
+    question: 'מה הוא באמת חושב?',
+    questionType: 'hiddenThoughtIntent',
     engineReading: explicitReading,
     clientOutput: advisorHtml, // deliberately mislabel advisor HTML as client output
     advisorData: advisorHtml,
