@@ -36,7 +36,7 @@ import {
 import { getTopicRules } from './kashf-topic-rules.js';
 import { computeCommerceSmartLayer } from './kashf-commerce-smart-layer.js';
 import { getDakhalKharij } from './kashf-figure-classifier.js';
-import { computeDhamirByMajority } from './kashf-dhamir.js';
+import { computeSelectedDhamirMethod } from './kashf-dhamir.js';
 import { computeDhamirType4External } from './kashf-dhamir-type4-external.js';
 import { buildLegacyChart } from './kashf-legacy-chart-adapter.js';
 import {
@@ -652,43 +652,91 @@ export function buildKashfReading(board, topicId, clientContext = {}) {
   const boardValidation = board.boardValidation || { isValid: true, warnings: [] };
 
   // ── מחשבת השואל (דמיר) — השער הרביעי ────────────────────────────────────
-  // גילוי "מה השואל באמת רוצה" (כשף עמ' 151-155), עצמאי מהנושא שנבחר.
-  // ראו kashf-dhamir.js לרשימת השיטות המיושמות ומה שעדיין חסר בהן.
+  // Runtime הוא need-driven: עצם קיום שיטות הדמיר בקוד אינו מפעיל אותן.
+  // כדי לחשב דמיר נדרש clientContext.dhamirSelection מפורש עם intentId
+  // מאושר + methodId אחד; element-prevalence דורש גם elementTraditionId.
+  // computeDhamirByMajority נשמר ב-kashf-dhamir.js כידע-מקור של עמ' 155,
+  // אך אינו נקרא עוד אוטומטית מכל קריאה.
   let dhamir = null;
-  try {
-    dhamir = computeDhamirByMajority(board);
-  } catch (err) {
-    dhamir = { candidates: [], winner: null, agreementCount: 0, error: err.message };
+  const requestedDhamirSelection = clientContext?.dhamirSelection || null;
+  if (requestedDhamirSelection) {
+    try {
+      const selected = computeSelectedDhamirMethod(
+        board,
+        requestedDhamirSelection.methodId,
+        {
+          intentId: requestedDhamirSelection.intentId,
+          elementTraditionId: requestedDhamirSelection.elementTraditionId || null,
+        }
+      );
+      if (selected.selected && selected.result) {
+        const winner = {
+          ...selected.result,
+          agreementCount: 1,
+          methodsAgreed: [selected.result.methodHebrew || selected.methodId],
+        };
+        dhamir = {
+          selection: selected,
+          candidates: [selected.result],
+          winner,
+          agreementCount: 1,
+        };
+      } else {
+        dhamir = {
+          selection: selected,
+          candidates: [],
+          winner: null,
+          agreementCount: 0,
+        };
+      }
+    } catch (err) {
+      dhamir = {
+        selection: {
+          selected: false,
+          status: 'error',
+          reason: 'dhamir-selection-error',
+          methodsExecuted: [],
+        },
+        candidates: [],
+        winner: null,
+        agreementCount: 0,
+        error: err.message,
+      };
+    }
   }
 
   // ── שער 4 סוג 4 — משלים חיצוני (לא כשף אל-אסראר) ────────────────────────
-  // שדה נפרד ומסומן במפורש — אינו נכנס להצבעת הרוב של computeDhamirByMajority
-  // (5 השיטות שם מאומתות ישירות מכשף עצמו). מחושב ומוצג רק בגילוי מלא —
-  // ראו kashf-dhamir-type4-external.js לפרטי המקור.
+  // אינו מחושב כברירת מחדל. רק בקשה תפעולית מפורשת יכולה להפעיל מקור
+  // חיצוני זה; הוא נשאר advisor-only ואינו נכנס לפסק הראשי.
   let dhamirType4External = null;
-  try {
-    dhamirType4External = computeDhamirType4External(board);
-  } catch (err) {
-    dhamirType4External = { error: err.message };
+  if (clientContext?.enableExternalDhamirType4 === true) {
+    try {
+      dhamirType4External = computeDhamirType4External(board);
+    } catch (err) {
+      dhamirType4External = { error: err.message };
+    }
   }
 
-  // ── בדיקות תומכות נוספות לגילוי הכוונה — עצמאיות מנושא, תלויות בבית הדמיר
-  // המחושב לעיל (עמ' 104, 35, 112, 119, 124, 159; kashf-pending-extraction.js)
+  // ── בדיקות תומכות נוספות לגילוי הכוונה ──────────────────────────────────
+  // גם הן אינן רצות אוטומטית. נדרש opt-in מפורש ובית דמיר שנבחר במסלול
+  // need-driven; כך חומר תשתיתי אינו הופך לשכבת-רקע כללית לכל שאלה.
   let dhamirExtras = null;
-  try {
-    const legacyChart = buildLegacyChart(board);
-    const dhamirHouseNum = dhamir?.winner?.houseNumber || null;
-    dhamirExtras = {
-      sodHaDhamirim: computeSodHaDhamirim(legacyChart),
-      honestyCheck: computeQuerentHonestyCheck(legacyChart),
-      querentSubject: computeQuerentSubject({ chart: legacyChart }),
-      timingByThirds: dhamirHouseNum ? computeTimingByDhamirThirds(legacyChart, dhamirHouseNum) : null,
-      temperament: dhamirHouseNum ? computeQuerentTemperament(legacyChart, dhamirHouseNum) : null,
-      timingByMadad: computeTimingByMadad(legacyChart),
-      timingEstimate: dhamir?.winner ? computeTimingEstimate(legacyChart, dhamir.winner, topicId) : null,
-    };
-  } catch (err) {
-    dhamirExtras = { error: err.message };
+  if (clientContext?.enableDhamirExtras === true && dhamir?.winner?.houseNumber) {
+    try {
+      const legacyChart = buildLegacyChart(board);
+      const dhamirHouseNum = dhamir.winner.houseNumber;
+      dhamirExtras = {
+        sodHaDhamirim: computeSodHaDhamirim(legacyChart),
+        honestyCheck: computeQuerentHonestyCheck(legacyChart),
+        querentSubject: computeQuerentSubject({ chart: legacyChart }),
+        timingByThirds: computeTimingByDhamirThirds(legacyChart, dhamirHouseNum),
+        temperament: computeQuerentTemperament(legacyChart, dhamirHouseNum),
+        timingByMadad: computeTimingByMadad(legacyChart),
+        timingEstimate: computeTimingEstimate(legacyChart, dhamir.winner, topicId),
+      };
+    } catch (err) {
+      dhamirExtras = { error: err.message };
+    }
   }
 
   // ── עדות בתים 13-14 ──────────────────────────────────────────────────────
