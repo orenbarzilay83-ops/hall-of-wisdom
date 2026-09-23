@@ -126,7 +126,7 @@ const explicitWithExtras = buildKashfReading(board, 'commerce', {
   question: 'מה הוא באמת חושב?',
   dhamirSelection: {
     intentId: 'hiddenThoughtIntent',
-    methodId: 'mizan',
+    methodId: 'harkat-al-ard',
   },
   enableDhamirExtras: true,
 });
