@@ -1,0 +1,14 @@
+name: Personal Psalm Full Export
+on:
+  push:
+    branches:
+      - chatgpt/personal-psalm-full-export
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: personal-psalm-calculator-full
+          path: personal-psalm-calculator-full.html
