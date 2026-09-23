@@ -21,7 +21,9 @@
 - [✅] pp124–131 — דמיר הוא עכשיו need-driven בפועל: רק `hiddenThoughtIntent` מאושר להפעלה, נדרש `methodId` אחד מפורש, וב-element-prevalence נדרשת גם מסורת יסודות מפורשת. קריאה רגילה אינה מחשבת דמיר/Extras/Type4 חיצוני ברקע. `B07-DHAMIR-NEED-DRIVEN-SELECTION` נסגר.
 - [✅] pp151–155 — כלל הרוב נשמר כידע-מקור וכפונקציה, אך נותק מ-`buildKashfReading`: אין עוד auto-run של כל שיטות הדמיר ואין 3/5 majority אוטומטי. `B09-DHAMIR-MAJORITY-RUNTIME-DISABLED` נסגר.
 - [✅] מצב downstream לאחר Batch 11: **20/46 RESOLVED**, נותרו **26**.
-- [ ] הבא לפי סדר המקור: pp136–137 — לתקן את מפת העונות החופפת לפי הסריקה ולוודא שכל consumer מפסיק להניח partition בלעדי (`B08-SHIB-5-SEASON-MAP-SOURCE-CORRECTION`).
+- [✅] pp136–137 — מפת העונות תוקנה לפי הסריקה: אביב 6, קיץ 5, חורף 3, סתיו 3; החפיפות 1121/1211/2112 נשמרות במפורש. consumer עונתי אינו בוחר עוד את הקבוצה הראשונה כאילו הייתה עונה יחידה; חפיפה מוחזרת כ-`VERIFIED_OVERLAP` ללא הכרעה מומצאת. `B08-SHIB-5-SEASON-MAP-SOURCE-CORRECTION` נסגר.
+- [✅] מצב downstream לאחר Batch 12: **21/46 RESOLVED**, נותרו **25**.
+- [ ] הבא לפי סדר המקור: p159 — לבדוק האם כלל H6 הוא primary route רק ל-intent הספציפי של זיהוי נושא מחשבת השואל, בלי להפוך אותו למסלול דמיר כללי (`B09-DHAMIR-H6-SUBJECT-ID-CANDIDATE`).
 
 ---
 
