@@ -38,9 +38,12 @@ console.log('\n--- 3. תרחישים גם ל-kashf וגם ל-hawi ---');
 console.log('\n--- 4. המערכת תופסת דמיר לא-רצוי כשהוא מופיע (real advisor-mode HTML) ---');
 {
   const board = buildRamlBoardFromMothers(['1112', '2122', '1121', '2211']);
-  const reading = buildKashfReading(board, 'commerce', { question: 'האם העסק יצליח?' });
-  const advisorHtml = writeKashfReading(reading, { mode: 'advisor' }); // מכיל דמיר באמת (ענף קיים במנוע)
-  assert(advisorHtml.includes('מחשבת השואל'), 'ודאות: HTML מצב-advisor אכן מכיל "מחשבת השואל" (לא בדיקת-שווא)');
+  const reading = buildKashfReading(board, 'commerce', {
+    question: 'מה הוא באמת חושב?',
+    dhamirSelection: { intentId: 'hiddenThoughtIntent', methodId: 'mizan' },
+  });
+  const advisorHtml = writeKashfReading(reading, { mode: 'advisor' }); // דמיר מפורש אחד בלבד
+  assert(advisorHtml.includes('מחשבת השואל'), 'ודאות: HTML מצב-advisor אכן מכיל דמיר שנבחר במפורש');
 
   const badCollected = {
     scenarioId: 'synthetic-bad-dhamir', category: 'commerce', method: 'kashf', topicId: 'commerce',
