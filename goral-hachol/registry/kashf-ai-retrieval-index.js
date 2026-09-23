@@ -260,6 +260,9 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
   },
   'spiritual.p167.hiddenActionAirRows46815': {
     aliases: ['האם יש פעולה מאחורי השואל', 'האם יש פעולה מאחוריי', 'פעולה נסתרת מאחורי השואל', 'האם יש פעולה סמויה מאחוריי'],
+    // The printed wording is personal (هل ورائي عمل). These older broad
+    // paraphrases must not silently select p167 from free text.
+    excludedPhrases: ['מאחורי הדבר', 'מאחורי העניין', 'מאחורי המצב'],
     doNotMixWith: ['spiritual.affectedBySorcery.unsupported', 'spiritual.sorcererIdentity.unsupported', 'spiritual.jinnType.unsupported'],
     houses: [4, 6, 8, 15],
   },
@@ -338,6 +341,7 @@ function buildRecord(methodId, knowledge) {
     routeAliases: Object.freeze(routeAliases),
     routeDispositions: Object.freeze(routeDispositions),
     aliases: Object.freeze(aliases),
+    excludedPhrases: Object.freeze([...(override.excludedPhrases || [])]),
     houses: Object.freeze([...(override.houses || [])]),
     doNotMixWith: Object.freeze([...(override.doNotMixWith || [])]),
     pages: Object.freeze(pages),
@@ -380,6 +384,14 @@ function scoreRecord(record, query, queryTokens) {
   const reasons = [];
 
   if (!normalizedQuery) return { score: 0, reasons };
+
+  const excludedPhrase = (record.excludedPhrases || [])
+    .map(normalizeKashfRetrievalText)
+    .find((phrase) => phrase && normalizedQuery.includes(phrase));
+  if (excludedPhrase) {
+    return { score: 0, reasons: [`excluded-phrase:${excludedPhrase}`] };
+  }
+
   if (normalizeKashfRetrievalText(record.kashfMethodId) === normalizedQuery) {
     score += 200;
     reasons.push('exact-method-id');
