@@ -30,30 +30,33 @@ function chartOf(figureAtHouse1, figureAtHouse7) {
   ];
 }
 
-// ── 1. Figure from a VERIFIED season group (autumn: 1121 נלחם) ────────────
-console.log('\n--- 1. Figure from a VERIFIED season group ---');
+// ── 1. Figure from one explicit season group (autumn-only: 1222) ──────────
+console.log('\n--- 1. Figure from one explicit season group ---');
 {
-  const profile = ramlBuildSeasonalAstroProfile(chartOf('1121', '2211'));
-  assert(profile.querent.season.value === 'סתיו', 'querent (1121) season is סתיו');
-  assert(profile.querent.season.status === 'VERIFIED', 'querent (1121) season status is VERIFIED');
-  assert(profile.querent.seasonZodiacCandidates.status === 'VERIFIED', 'querent (1121) seasonZodiacCandidates status is VERIFIED');
-  assert(
-    Array.isArray(profile.querent.seasonZodiacCandidates.values) && profile.querent.seasonZodiacCandidates.values.length === 3,
-    'querent (1121) seasonZodiacCandidates has exactly 3 candidate signs'
-  );
+  const profile = ramlBuildSeasonalAstroProfile(chartOf('1222', '2211'));
+  assert(profile.querent.season.value === 'סתיו', 'querent (1222) unique season is סתיו');
+  assert(Array.isArray(profile.querent.season.values) && profile.querent.season.values.length === 1, 'querent (1222) has one season candidate');
+  assert(profile.querent.season.status === 'VERIFIED', 'querent (1222) season status is VERIFIED');
+  assert(profile.querent.seasonZodiacCandidates.status === 'VERIFIED', 'querent (1222) zodiac candidates status is VERIFIED');
+  assert(profile.querent.seasonZodiacCandidates.values.length === 3, 'querent (1222) has exactly 3 zodiac candidates');
 }
 
-// ── 2. Figure from the RECONSTRUCTED spring group ──────────────────────────
-console.log('\n--- 2. Figure from the RECONSTRUCTED spring group ---');
+// ── 2. Spring is explicit; source-overlap must stay unresolved ──────────────
+console.log('\n--- 2. Explicit spring + overlapping season groups ---');
 {
-  const profile = ramlBuildSeasonalAstroProfile(chartOf('2211', '1121'));
-  assert(profile.querent.season.value === 'אביב', 'querent (2211) season is אביב');
-  assert(profile.querent.season.status === 'RECONSTRUCTED', 'querent (2211) season status is RECONSTRUCTED, not VERIFIED');
+  const springOnly = ramlBuildSeasonalAstroProfile(chartOf('2211', '1222'));
+  assert(springOnly.querent.season.value === 'אביב', 'querent (2211) unique season is אביב');
+  assert(springOnly.querent.season.status === 'VERIFIED', 'querent (2211) spring status is VERIFIED, not reconstructed');
+
+  const overlap = ramlBuildSeasonalAstroProfile(chartOf('1121', '2211'));
+  assert(overlap.querent.season.value === null, 'querent (1121) does not auto-pick one season from an overlap');
+  assert(overlap.querent.season.status === 'VERIFIED_OVERLAP', 'querent (1121) overlap is explicitly marked');
   assert(
-    profile.querent.seasonZodiacCandidates.status === 'RECONSTRUCTED',
-    'querent (2211) seasonZodiacCandidates status is capped at RECONSTRUCTED (never VERIFIED for the spring group)'
+    JSON.stringify(overlap.querent.season.values) === JSON.stringify(['אביב', 'סתיו']),
+    'querent (1121) preserves both explicit source seasons: אביב + סתיו'
   );
-  assert(profile.querent.overallStatus === 'PARTIAL', 'querent (2211) overallStatus is PARTIAL, never VERIFIED');
+  assert(overlap.querent.seasonZodiacCandidates.status === 'VERIFIED_OVERLAP', 'overlap propagates to zodiac candidates');
+  assert(overlap.querent.seasonZodiacCandidates.values.length === 6, 'overlap keeps the six zodiac candidates from both seasons');
 }
 
 // ── 3. Figure with a VERIFIED planet (1121 -> venus) ───────────────────────
@@ -75,13 +78,14 @@ console.log('\n--- 4. Figure with no resolved planet ---');
   assert(profile.querent.temperament.value === null, 'querent (2211) temperament.value is null when OPEN');
 }
 
-// ── 5. Querent and quesited differ correctly ────────────────────────────────
+// ── 5. Querent and quesited resolve independently, including overlap ─────────
 console.log('\n--- 5. Querent and quesited resolved independently ---');
 {
   const profile = ramlBuildSeasonalAstroProfile(chartOf('1121', '2211'));
   assert(profile.querent.figureKey === '1121', 'querent figureKey matches house 1');
   assert(profile.quesited.figureKey === '2211', 'quesited figureKey matches house 7');
-  assert(profile.querent.season.value !== profile.quesited.season.value, 'querent/quesited season groups differ for these two figures (סתיו vs אביב)');
+  assert(profile.querent.season.value === null, 'querent overlap is not collapsed');
+  assert(profile.quesited.season.value === 'אביב', 'quesited unique spring remains resolved');
 }
 
 // ── 6. Querent and quesited share the SAME element (both מים) ──────────────
@@ -153,16 +157,17 @@ console.log('\n--- 9. No use of zodiacHebrew (Ramal Shastra) anywhere in the eng
   );
 }
 
-// ── 10. No automatic conversion from 3 candidates to 1 sign ─────────────────
-console.log('\n--- 10. No automatic reduction of 3 candidates to 1 sign ---');
+// ── 10. No automatic conversion from candidates to one sign/season ──────────
+console.log('\n--- 10. No automatic reduction of seasonal candidates ---');
 {
-  const profile = ramlBuildSeasonalAstroProfile(chartOf('1121', '2211'));
-  const candidateCount = profile.querent.seasonZodiacCandidates.values.length;
-  assert(
-    candidateCount === 0 || candidateCount === 3,
-    `seasonZodiacCandidates.values length is 0 or 3, never reduced to 1 (got ${candidateCount})`
-  );
-  assert(profile.querent.singleZodiacSign.value === null, 'singleZodiacSign.value stays null even when 3 candidates are known');
+  const unique = ramlBuildSeasonalAstroProfile(chartOf('1222', '2211'));
+  assert(unique.querent.seasonZodiacCandidates.values.length === 3, 'unique season keeps 3 zodiac candidates');
+  assert(unique.querent.singleZodiacSign.value === null, 'singleZodiacSign stays null with 3 candidates');
+
+  const overlap = ramlBuildSeasonalAstroProfile(chartOf('1121', '2211'));
+  assert(overlap.querent.seasonZodiacCandidates.values.length === 6, 'overlap keeps all 6 zodiac candidates');
+  assert(overlap.querent.season.value === null, 'overlap does not reduce two seasons to one');
+  assert(overlap.querent.singleZodiacSign.value === null, 'singleZodiacSign stays null with overlapping seasons');
 }
 
 // ── 11. provenance present on every field ────────────────────────────────────
