@@ -36,6 +36,7 @@ const P202_LOST_RETURN_METHOD = 'lostItem.p202.returnH6H8';
 const P265_CLOTHING_LUCK_METHOD = 'clothing.p264-265.luck';
 const P191_PREGNANCY_EXISTS_METHOD = 'pregnancy.p191.existsH5SilentEmpty';
 const P191_PREGNANCY_GENDER_METHOD = 'pregnancy.p191.genderH5';
+const P191_192_MISCARRIAGE_METHOD = 'pregnancy.p191-192.miscarriageRedH7NakisH8';
 const P196_ILLNESS_RECOVERY_METHOD = 'illness.p196.outcomeH15';
 const P188_HIDDEN_STILL_THERE_METHOD = 'hidden.p188.isStillThere';
 const P224_THIEF_RELATIONSHIP_METHOD = 'theft.p224.relationshipH7Recurrence';
@@ -551,6 +552,37 @@ function p191PregnancyGenderPolicy() {
       'יש הריון משום שהצורה זכרית או נקבית',
       'הוולד בריא או בטוח',
       'הלידה תהיה קלה או קשה',
+    ]),
+  });
+}
+
+function p191192MiscarriagePolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'downstream-batch-21',
+    goldenCaseIds: freezeArray(['DS21-P191-192-MISCARRIAGE-SIGN', 'DS21-P191-192-MISCARRIAGE-ABSENT']),
+    policyId: 'p191-192-miscarriage-red-h7-nakis-h8-v1',
+    questionScopeHebrew: 'סימן ההפלה המפורש בתפר עמ׳ 191–192: אדום H7 + שפל ראש H8',
+    decisiveRuleHebrew: 'Humra/אדום (2122) ב-H7 יחד עם Ankis/שפל ראש (2221) ב-H8 => סימן ההפלה המפורש במקור. אם הצירוף אינו מתקיים, השיטה אינה מכריעה בטיחות.',
+    oneWayBranches: freezeArray([
+      'אדום H7 + שפל ראש H8 => סימן ההפלה המפורש במקור',
+      'הצירוף אינו מתקיים => ללא הכרעה; אין היפוך לבטיחות',
+    ]),
+    forbiddenInversions: freezeArray([
+      'היעדר הצירוף אינו מוכיח שלא תתרחש הפלה.',
+      'סימן המקור אינו הופך לוודאות רפואית שהפלה תתרחש.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'pregnancy.p191.childSafetyH1H6H8 — שלום הוולד הוא דין נפרד.',
+      'pregnancy.p192.maternalSafetyH6H8H12 — בטיחות האם היא דין נפרד.',
+      'ענפי הפלה/סיכון נוספים בעמ׳ 192–193 אינם מצביעים למסלול הנבחר.',
+      'אבחנה רפואית, בדיקות רפואיות או תחזית קלינית.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'ההפלה ודאית מבחינה רפואית',
+      'ההריון בטוח משום שהצירוף אינו קיים',
+      'האם או הוולד ימותו',
+      'זהו אבחון רפואי',
     ]),
   });
 }
@@ -1442,6 +1474,7 @@ const METHOD_POLICIES = Object.freeze({
   [P265_CLOTHING_LUCK_METHOD]: p265ClothingLuckPolicy(),
   [P191_PREGNANCY_EXISTS_METHOD]: p191PregnancyExistsPolicy(),
   [P191_PREGNANCY_GENDER_METHOD]: p191PregnancyGenderPolicy(),
+  [P191_192_MISCARRIAGE_METHOD]: p191192MiscarriagePolicy(),
   [P196_ILLNESS_RECOVERY_METHOD]: p196IllnessRecoveryPolicy(),
   [P188_HIDDEN_STILL_THERE_METHOD]: p188HiddenStillTherePolicy(),
   [P224_THIEF_RELATIONSHIP_METHOD]: p224ThiefRelationshipPolicy(),
