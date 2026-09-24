@@ -19461,9 +19461,9 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "bookPages": [275,276],
       "scanPdfPages": [277,278],
       "v57Anchors": ["kashf-v57-draft.html#p275","kashf-v57-draft.html#p276"],
-      "topic": "תוספת מן הספר המודפס المنقط في علم النقط: יציאה, בריחה ואחרית האסיר",
+      "topic": "תוספת אל־מֻלְתַקַט פי עִלְם א־נֻקַט: יציאה, בריחה ואחרית האסיר",
       "keywords": [
-        "المنقط في علم النقط",
+        "אל־מלתקט",
         "H1",
         "H2",
         "H3",
@@ -19517,7 +19517,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         }
       ],
       "preconditions": [
-        "תוספת מצוטטת מן המקור שכותרתו המודפסת المنقط في علم النقط."
+        "תוספת מצוטטת מאל־מלתקט פי עלם א־נקט."
       ],
       "questionIntents": [
         "prisoner-voluntary-release",
@@ -19533,8 +19533,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         "אין להפוך את H11 לתנאי משלים של ׳שמחה וכבוד׳; במקור הוא חלופה ברשימת הבתים."
       ],
       "sourceDiscrepancies": [
-        "בדין לבוש הכבוד/החסד המקור נותן H12 מיטיב, או H2, או H5, או H11 כחלופות עצמאיות. v57 הופך H11 לתנאי נוסף של ״שמחה וכבוד״. ענף H13 החוזר ב-H3/H5/H9 כבר מתוקן ולכן אינו blocker.",
-        "Source Freeze: כותרת המקור המודפסת היא المنقط في علم النقط; אין לנרמל אותה ל־الملتقط / al-Multaqat."
+        "בדין לבוש הכבוד/החסד המקור נותן H12 מיטיב, או H2, או H5, או H11 כחלופות עצמאיות. v57 הופך H11 לתנאי נוסף של ״שמחה וכבוד״. ענף H13 החוזר ב-H3/H5/H9 כבר מתוקן ולכן אינו blocker."
       ],
       "sourceVerification": {
         "printedBookPages": [275,276],
@@ -19542,7 +19541,7 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         "v57Checked": true,
         "printedScanChecked": true,
         "visualLineByLineChecked": true,
-        "note": "Source Freeze visual re-read confirms the printed p275 title المنقط في علم النقط. p275 / scan277 contains that quoted rule and the final derived outcome; the phrase ודע כי / واعلم أن at the foot of p275 continues into the repetition/exit explanation on p276. H11 remains a live content discrepancy.",
+        "note": "Pass 2 and Phase 4 boundary re-read: p275 / scan277 contains the Al-Multaqat rule and the final derived outcome; the phrase ודע כי / واعلم أن at the foot of p275 continues into the repetition/exit explanation on p276. H11 remains a live content discrepancy.",
         "pass2Checked": true
       },
       "verificationStatus": "REVIEW_REQUIRED"
@@ -20676,360 +20675,611 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
     "note": "A source may describe several methods, including majority/aggregation rules. The Hall of Wisdom AI does not run all of them by default. Operational selection is made by question intent and an explicitly approved primary route."
   },
   "sourceConflictQueue": [
+    {
+      "id": "PASS2-SOURCE-P165-ANKIS-PATIENT-SYNTAX",
+      "entryId": "gate5.p165.figure-proximity-extended",
+      "page": 165,
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "Preserve the printed syntactic defect in the Ankis/patient clause: وخرج المريض، طال مرضه، وإن كان خارجا، خيف عليه من الهلاك. The final outgoing-form fear-of-destruction branch is clear, but the preceding clause must not be repaired by grammar or symmetry."
+    },
+    {
+      "id": "PASS2-SOURCE-P159-RUUS-AWAIL-AWTAD",
+      "entryId": "dhamir.p159.heads-and-subject",
+      "page": 159,
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "The printed phrase رؤوس أوائل الأوتاد is visually clear but operationally under-specified in this passage. Preserve the phrase and do not infer a concrete house set or algorithmic decomposition."
+    },
+    {
+      "id": "PASS2-SOURCE-P157-158-MIXED-PARITY-UNSTATED",
+      "entryId": "dhamir.p157-158.alt-qutri-dali",
+      "page": "157-158",
+      "status": "RESOLVED",
+      "summary": "Kashf gives only H13/H14 both-odd (Qutri Asli) and both-even (Dali) branches; no mixed-parity branch is stated. Comparative sources may explain why mixed parity should not occur, but that explanation must not be attributed to Kashf."
+    },
+    {
+      "id": "PASS2-SOURCE-P151-SIXTEEN-VS-FIFTEEN",
+      "entryId": "reference.p151.sixteen-vs-fifteen-placement-count",
+      "page": 151,
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "Preserve the explicit printed contradiction: main text says there are sixteen placements, while the printed editor footnote states only fifteen placements were mentioned. Do not invent a sixteenth order."
+    },
+    {
+      "id": "PASS2-SOURCE-P148-ORDER13-BLANK-HEADING",
+      "entryId": "shibutz.p149.order13-damaged-name",
+      "page": "148-149",
+      "status": "RESOLVED",
+      "summary": "Order 13 has a physically blank heading in the printed source; editor footnote بياض في الأصل records that blank. Preserve the missing title and do not reinterpret بياض as the geomancy figure البياض/לבן."
+    },
+    {
+      "id": "PASS2-SOURCE-P136-137-ATABA-IN-OUT",
+      "entryId": "shibutz.p135-137.zodiac-planet-order",
+      "page": "136-137",
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "Preserve the internal printed-source difference without reconciliation: p136 return-to-Saturn sentence says العتبة الداخلة, while p137 remaining Head/Tail sentence says عتبة خارجة."
+    },
+    {
+      "id": "PASS2-SOURCE-P53-H15-DEFECTIVE-SENTENCE",
+      "pages": [
+        53
+      ],
+      "entryId": "houses.p46-53.profiles",
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "Printed H15 sentence reads فإذا جاء في الثالث عشر شكل ثقيل ، وفي الرابع عشر شكل يعلم أنه غلط. It contains no خفيف and is syntactically defective; do not reconstruct a light/heavy symmetry or resolve it from downstream code."
+    },
+    {
+      "id": "PASS2-SOURCE-P45-WALTHANI",
+      "entryId": "houses.p45.aspects-and-gender",
+      "pages": [
+        45
+      ],
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "Printed p45 visibly contains the isolated token والثاني after the three sextile pairs and before ويخص كل تسديس وتدان. Its function is not secure from the source itself; preserve it literally and do not infer a fourth pair or silently delete it."
+    },
+    {
+      "id": "B07-SOURCE-P126-P132-ELEMENT-ATTRIBUTION",
+      "pages": [
+        126,
+        132
+      ],
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "Printed p126 and p132 attribute incompatible element-number systems to al-Zanati, al-Trabulsi and Ahl al-Tabai. Preserve both literally; do not reconcile without additional source evidence."
+    },
+    {
+      "id": "B08-SOURCE-P136-P137-NODE-RETURN-WORDING",
+      "pages": [
+        136,
+        137
+      ],
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "p136 mentions Qabd Kharij→Mars and Ataba Dakhila→Saturn; p137 names the two remaining Head/Tail figures as Qabd Kharij and Ataba Kharija and says they return to Saturn/Mars. Keep statements separate; p134 remains authority for Head/Tail identity."
+    },
+    {
+      "id": "B08-SOURCE-P151-SIXTEEN-VS-FIFTEEN",
+      "pages": [
+        151
+      ],
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "Closing text says sixteen placement orders, while the printed footnote itself notes that only fifteen were mentioned. Do not invent or renumber an order to force closure."
+    },
+    {
+      "id": "B09-SOURCE-P157-158-MIXED-PARITY-BRANCH",
+      "pages": [
+        157,
+        158
+      ],
+      "status": "RESOLVED",
+      "summary": "Qutri/dal‘i alternate states both-odd and both-even H13/H14 cases, but no mixed-parity branch in the displayed source."
+    },
+    {
+      "id": "B10-SOURCE-P165-ANKIS-PATIENT-CLAUSE",
+      "pages": [
+        165
+      ],
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "Printed p165 Ankis/patient sentence contains a syntactically unclear middle clause. Preserve literal uncertainty; do not reconstruct by symmetry or from downstream code."
+    },
+    {
+      "id": "B11-SOURCE-P168-169-LOCATION-PROCEDURE-INCOMPLETE",
+      "pages": [
+        168,
+        169
+      ],
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "The displayed source does not fully define how the balance point is walked, its endpoint, or selection of the second air-ranked figure. Preserve as non-operational until further source evidence."
+    },
+    {
+      "id": "B12-SOURCE-P173-174-MIXED-ANGLE-CLAUSE",
+      "pages": [
+        173,
+        174
+      ],
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "The clause وإن كانا شكلين سعيدين ممتزجة is grammatically/quantitatively unclear between the all-benefic and 1-benefic/1-malefic/2-mixed branches. Preserve literally; do not normalize from symmetry."
+    },
+    {
+      "id": "B12-SOURCE-P177-RECURSIVE-ODD-TOKENS",
+      "pages": [
+        177
+      ],
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "The malefic-from-malefic passage contains difficult printed tokens معموم and ولا يحصل معارك. Their exact intended reading remains unresolved; do not infer a runtime branch."
+    },
+    {
+      "id": "B12-SOURCE-P179-DEBT-WALKING-TERMS",
+      "pages": [
+        179
+      ],
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "The debt rule uses walk-two/walk-three and the labels فرح and بكر without defining their canonical figure mapping in this passage. Preserve as unresolved operational terminology."
+    },
+    {
+      "id": "B13-SOURCE-P180-MONEY-ELEMENT-AMOUNT-INCOMPLETE",
+      "pages": [
+        180
+      ],
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "After assigning element weights 1–4, the source says to retain the lower element and work by its number but does not fully define the amount calculation in this passage. Do not reconstruct it."
+    },
+    {
+      "id": "B13-SOURCE-P181-MOD2-VS-REMAINDERS-1-7",
+      "pages": [
+        181
+      ],
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "The printed method explicitly reduces points by twos and gives attainment outcomes for remainders 1/2, then immediately assigns money sources to remainders 1–7. These instructions are internally incompatible as printed."
+    },
+    {
+      "id": "B14-SOURCE-P185-WATER-PLANTS-ODD-BRANCH",
+      "pages": [
+        185
+      ],
+      "status": "RESOLVED",
+      "summary": "The printed source explicitly links a watery first house to plants/vegetables. The semantic pairing is unusual; preserve it literally and seek another source witness."
+    },
+    {
+      "id": "B14-SOURCE-P185-94-VS-RECURSIVE-COUNT",
+      "pages": [
+        185
+      ],
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "The printed source says 16 places, each split into four, but concludes with أربعة وتسعين (94), not the arithmetically expected 64. Do not normalize."
+    },
+    {
+      "id": "B14-SOURCE-P187-MUNSHAAT-DIRECTION",
+      "pages": [
+        187
+      ],
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "The direction after المنشآت appears as ناحية الجاه in the scan and is not securely readable as north. Resolve from another edition/manuscript."
+    },
+    {
+      "id": "B14-SOURCE-P190-MUTHALLATHA-OPERATION",
+      "pages": [
+        190,
+        191
+      ],
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "The inside-house localization method says اضرب لكل جهة مثلثة. The computational meaning of مثلثة is not defined in this passage; do not reduce it to one figure."
+    },
+    {
+      "id": "B16-SOURCE-P201-ANIMAL-NAMES",
+      "pages": [
+        201
+      ],
+      "status": "RESOLVED",
+      "summary": "Two animal-table figure names in the printed scan are OCR/visual-sensitive (التشمير/الأنكيس family). Preserve the literal Arabic until a second visual read or source witness certifies the transliteration."
+    },
+    {
+      "id": "PASS2-SOURCE-P118-1123-ARITHMETIC",
+      "pages": [
+        118
+      ],
+      "entryId": "shibutz.p117-119.add-subtract-example",
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "Printed p118 visibly reads ألف ومائة وثلاثة وعشرون after 126−3, but arithmetic gives 123 and the next printed reduction by 28 yields remainder 11, which also fits 123. Preserve the printed 1123 and the contradiction; do not silently delete ألف."
+    },
+    {
+      "id": "FINALQA-SOURCE-P246-MAKTUB-VS-P251-MANKUB",
+      "entryId": "gate9.travel.p247-250.absent-life-distance-witnesses",
+      "page": 246,
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "Fresh source freeze confirms two distinct printed readings: the p246 body-source H6/H12 branch reads فهو مكتوب, while the later quoted al-Multaqat continuation reads فهو منكوب. Preserve both by provenance and do not normalize one from the other; the conflict remains non-operational for any unified runtime rule."
+    },
+    {
+      "id": "B23-SOURCE-P221-JUDLA-GLYPH",
+      "entryId": "gate6.house7.p221.hidden-request-and-year-rules",
+      "status": "RESOLVED",
+      "summary": "Fresh visual re-read confirms the printed token الجودلة beside glyph 1121 in the hidden-request sequence. Freeze the literal token+glyph pair; canonical identity may follow the approved 1121 glyph mapping, but no separate lexical identity is invented.",
+      "resolution": "The literal token and glyph are source-secure. Canonical identity may follow only the project-approved glyph map for 1121; no lexical identity is inferred from the token itself."
+    },
+    {
+      "id": "B23-SOURCE-P223-H18",
+      "entryId": "gate6.house7.p223.price-goods-city",
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "Fresh visual re-read confirms the print explicitly says the eighteenth house (الثامن عشر) although the operative geomantic board has sixteen houses. Preserve H18 literally; do not normalize it to H8/H16 or another house."
+    },
+    {
+      "id": "B25-SOURCE-P231-OCCUPATION-TOKENS",
+      "entryId": "gate8.theft.p232-234.thief-description",
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "Fresh visual re-read confirms the printed occupation tokens الكر, قحاسا and حرار in the thief-description table. Their lexical/professional meanings are not source-secure; preserve the Arabic verbatim and do not assign professions by conjecture."
+    },
+    {
+      "id": "B26-SOURCE-P237-TURAB-AL-MINTAQA",
+      "entryId": "gate9.travel.p237-239.travel-core-and-profit",
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "Fresh visual re-read confirms the literal p237 wording تراب المنطقة in خذ تراب المنطقة، وقيم منه شكلا، واضربه مع الثاني. The text is readable, but the passage does not define a runtime-safe technical procedure for deriving the required geomantic figure from that soil/dust input; preserve it literally and do not replace it with an abstract earth-element quantity."
+    },
+    {
+      "id": "B26-SOURCE-P240-AL-DHARAQIM",
+      "entryId": "gate9.travel.p241-244.safety-and-return",
+      "status": "RESOLVED",
+      "summary": "Fresh visual re-read corrects the earlier token: the printed road-danger line reads الأراقم (not الذراقم), in the sequence الأراقم والحيات والعقارب. Freeze الأراقم as the printed reading; no conjectural normalization is required.",
+      "resolution": "Resolved by direct visual reread of the printed scan. The earlier الذراقم transcription was a misread; the source visibly reads الأراقم. No conjectural normalization was used."
+    },
+    {
+      "id": "B26-SOURCE-P240-H12-SHIP-CONTRADICTION",
+      "entryId": "gate9.travel.p241-244.safety-and-return",
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "Fresh visual re-read confirms H12 is printed in both the vehicle/ship breaking list and the safe-arrival list on p240. Preserve both lists literally; the contradiction is not operationally resolvable from this passage."
+    },
+    {
+      "id": "B27-SOURCE-P244-AL-ZAML",
+      "entryId": "gate9.travel.p246.condition-and-direction",
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "Fresh visual re-read confirms the damaged-vessel phrase الدقل أو الزمل. The token الزمل is visually secure but its intended technical meaning in this passage remains unresolved; preserve it verbatim."
+    },
+    {
+      "id": "B27-SOURCE-P245-OVERLAPPING-13-13",
+      "entryId": "gate9.travel.p247-250.absent-life-distance-witnesses",
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "Fresh visual re-read confirms the printed pair (13,13), and the editor footnote explicitly says the original appears this way and that two questions seem to overlap. Preserve both print and footnote; do not operationalize or repair the pair."
+    },
+    {
+      "id": "B27-SOURCE-P248-DERIVATION-CORRUPT",
+      "entryId": "gate9.travel.p247-250.absent-life-distance-witnesses",
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "Fresh visual re-read confirms the printed p248 derivation is corrupt and the editor separately conjectures H1+H4. Keep the printed wording and the conjecture distinct; no canonical runtime formula is selected from the conjecture."
+    },
+    {
+      "id": "B27-SOURCE-P248-OR-VS-THIRD-DERIVATION",
+      "entryId": "gate9.travel.p247-250.absent-life-distance-witnesses",
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "Fresh visual re-read confirms the print uses أو between the H1+H6 and H8+H12 derivations, while the editor separately conjectures deriving a third figure from the two. Preserve both readings; no runtime formula is inferred."
+    },
+    {
+      "id": "B27-SOURCE-P249-HEADS-VS-ANGLES",
+      "entryId": "gate9.travel.p247-250.absent-life-distance-witnesses",
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "Fresh visual re-read confirms the print says خذ رؤوس الأشكال الأربعة while the editor parenthesis conjectures الأوتاد. Preserve printed 'heads of the four figures' and the editor conjecture separately; do not replace one with the other."
+    },
+    {
+      "id": "B27-SOURCE-P250-AL-JAH-DIRECTION",
+      "entryId": "gate9.travel.p247-250.absent-life-distance-witnesses",
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "Fresh visual re-read confirms two distinct direction wordings in the p249–250 seam: p249 has لأي الجهات هو and p250 continues خرج إلى تلك الجهة, but p250 also explicitly prints ففي القبلة إلى جانب الجاه. The token الجاه in that branch remains unresolved; do not equate it with north or another compass direction."
+    },
+    {
+      "id": "B28-SOURCE-P254-AL-TUWAYHIR",
+      "entryId": "gate9.travel.p254.lineage-profession-dream",
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "Fresh visual reread of printed p254 / scan256 confirms the literal token التويهر in the profession paragraph. The token is source-secure but is not securely identifiable as a canonical geomantic figure; do not normalize it to Dragon’s Tail or another figure by sequence/symmetry.",
+      "resolution": "Freeze the printed token التويهر exactly. Because its canonical figure identity is not defined by this passage or a second certified witness, any figure mapping remains non-operational."
+    },
+    {
+      "id": "B28-SOURCE-P254-AL-GHARAIM",
+      "entryId": "gate9.travel.p254.lineage-profession-dream",
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "Fresh visual reread of printed p254 / scan256 confirms the Mercury profession line literally reads الغرايم. Its technical lexical meaning is not securely established by the source passage; preserve the Arabic token and do not force v57’s 'נפלאות' or another normalization.",
+      "resolution": "Freeze الغرايم as the printed reading. Translation/technical identification remains non-operational until a certified source witness defines the term."
+    },
+    {
+      "id": "B28-SOURCE-P255-TARAKTAHU",
+      "entryId": "gate9.travel.p255.promise-fulfilment",
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "Fresh visual reread of printed p255 / scan257 confirms the clause وإن خرج لك أحد هذه الثلاثة الأشكال تركته. The referent/operation of 'these three figures' and تركته is not sufficiently defined by the passage; preserve it literally without conjectural completion.",
+      "resolution": "The printed wording is visually secure but operationally incomplete/unclear. No runtime branch may be reconstructed from grammar, symmetry, or adjacent promise rules."
+    },
+    {
+      "id": "B28-SOURCE-P256-DUPLICATED-SAAD",
+      "entryId": "gate10.authority.p256-257.honor-office-mother-rule",
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "Fresh visual reread of printed p256 / scan258 confirms the text repeats سعد in the second mixed group, while the printed editor parenthesis explicitly conjectures (لعله: نحس). Preserve the printed سعد and the editorial نحس conjecture as distinct evidence.",
+      "resolution": "The affected mixed-angles branch remains non-operational because the printed reading and editorial repair produce different rules. The conjecture is not promoted into the source text."
+    },
+    {
+      "id": "B28-SOURCE-P261-HARITHAN",
+      "entryId": "gate10.authority.p260-262.ruler-state-by-H10",
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "Fresh visual reread of printed p261 / scan263 confirms the literal token حارثا in the ninth-house ruler profile. Its intended lexical/profile meaning remains insufficiently secure for canonical interpretation.",
+      "resolution": "Freeze حارثا verbatim. Do not substitute a guessed adjective, occupation, or moral quality without another certified source witness."
+    },
+    {
+      "id": "B29-SOURCE-P265-KHILA-AL-MULUK",
+      "entryId": "gate11.friends.p265-266.clothing-state-and-return",
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "Fresh visual reread of printed p265 / scan267 confirms خلع الملوك immediately after the H10 clothing clause. The words are visually secure, but their exact syntactic/operational relation to 'no luck in clothing' is not defined well enough to merge into the clothing verdict.",
+      "resolution": "Preserve خلع الملوك as a separate literal source phrase. Do not turn it into an automatic H10 verdict or silently translate it as a specific royal-garment outcome."
+    },
+    {
+      "id": "B29-SOURCE-P272-FA-IN-YAKUN",
+      "entryId": "gate12.enemies-prisoners.p272.enemy-nature-and-core-prisoner-rules",
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "Fresh visual reread of printed p272 / scan274 confirms the defective construction فإن يكون in the enemy-judgment clause and the printed alternate-version note وفي نسخة أخرى: تكرر. The two readings are not collapsed into one runtime instruction.",
+      "resolution": "Freeze the defective main reading and the alternate-version wording separately. No grammatical repair or preferred branch is selected from this evidence."
+    },
+    {
+      "id": "B29-SOURCE-P273-INCOMING-CONJECTURE",
+      "entryId": "gate12.prisoners.p273-274.external-release-duration-and-fear",
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "Fresh visual reread of printed p273 / scan275 confirms the text gives the incoming pair, while the editor inserts (لعله: كانا نحسين) before داخلين. The illness/death outcome therefore depends on an editorial malefic insertion absent from the printed main text.",
+      "resolution": "Keep print and conjecture distinct. The fatal incoming branch is non-operational unless another certified source witness confirms the missing malefic qualifier."
+    },
+    {
+      "id": "B30-SOURCE-P274-KHASHIYA-CONJECTURE",
+      "entryId": "gate12.prisoners.p274-275.nuzhat-prisoner-combinations",
+      "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
+      "summary": "Fresh visual reread of printed p274 / scan276 confirms the main text خشي على نفسه and the editor’s parenthetical conjecture (لعله: جنى جناية). These are materially different readings and must remain separate.",
+      "resolution": "Freeze خشي على نفسه as the printed reading and جنى جناية only as editorial conjecture. Do not substitute one for the other in runtime."
+    },
+    {
+      "id": "B30-SOURCE-P275-AL-MUNAQQAT-TITLE",
+      "entryId": "gate12.prisoners.p275.multaqat-release-and-outcome",
+      "status": "RESOLVED",
+      "summary": "Fresh high-resolution visual reread of printed p275 / scan277 resolves the title: it reads الملتقط في علم النقط, not المنقط في علم النقط. The stable source-record ID is retained for traceability, but the source title is frozen as al-Multaqat.",
+      "resolution": "Resolved directly from the printed scan. The title visibly reads الملتقط في علم النقط; no normalization from context was needed."
+    }
+  ],
+  "gateStatus": {
+    "gate3PlacementOrders": {
+      "status": "SOURCE_INDEX_COMPLETE_WITH_OPEN_SOURCE_CONFLICTS",
+      "throughPage": 151,
+      "distinctOrdersEnumerated": 15,
+      "sourceClosingClaim": 16,
+      "operationalizationDeferred": true
+    },
+    "gate4Dhamir": {
+      "bookPages": [
+        151,
+        161
+      ],
+      "sourceCoreTypes": 5,
+      "type1Faces": 4,
+      "sourceMajorityRulePresent": true,
+      "sourceMajorityRuleRuntimeAllowed": false,
+      "runtimeSelectionPolicy": "NEED_DRIVEN_ONE_PRIMARY_ROUTE",
+      "generalHiddenIntentPrimaryRoute": "NOT_YET_SELECTED"
+    },
+    "gate5FoundationalFigures": {
+      "pages": [
+        161,
+        162,
+        163,
+        164,
+        165,
+        166
+      ],
+      "indexed": true,
+      "runtimeOperationalizationDeferred": true,
+      "sevenWitnesses": [
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "hiddenIntentionHouse": 16,
+      "proximityRuntimeAllowed": false,
+      "derekhP163V57PolarityMismatch": false,
+      "derekhP163V56PolarityMismatch": true,
+      "derekhP163V57ArtifactIdentityPending": true
+    },
+    "gate6House1": {
+      "pagesIndexed": [
+        166,
+        167,
+        168,
+        169,
+        170,
+        171,
+        172,
+        173,
+        174,
+        175,
+        176,
+        177,
+        178
+      ],
+      "indexedThroughPage": 178,
+      "sourceRulesIndexed": true,
+      "runtimeOperationalizationDeferred": true,
+      "onePrimaryRoutePerQuestionIntent": true,
+      "alternateIstikharaMethodRuntimeAllowed": false,
+      "openBoundaryContinuation": null,
+      "p172FirstLineCapturedForP171Rule": true,
+      "nextFullSourcePage": null,
+      "p166P167BoundaryRechecked": true,
+      "distinctP167SpiritualQuestionIntents": 2,
+      "status": "SOURCE_INDEX_COMPLETE_WITH_OPEN_REVIEW_ITEMS",
+      "chapterClosedAtPage": 178,
+      "p171P172BoundaryRechecked": true
+    },
+    "gate6House2": {
+      "pagesIndexed": [
+        179,
+        180,
+        181,
+        182
+      ],
+      "indexedThroughPage": 182,
+      "status": "SOURCE_INDEX_COMPLETE_WITH_OPEN_REVIEW_ITEMS",
+      "chapterClosedAtPage": 182,
+      "runtimeOperationalizationDeferred": true,
+      "onePrimaryRoutePerQuestionIntent": true,
+      "otherBookRemainderMethodRuntimeAllowed": false,
+      "nextFullSourcePage": null
+    },
+    "gate6House3": {
+      "pagesIndexed": [
+        182,
+        183,
+        184
+      ],
+      "indexedThroughPage": 184,
+      "status": "SOURCE_INDEX_COMPLETE_WITH_OPEN_REVIEW_ITEMS",
+      "chapterClosedAtPage": 184,
+      "runtimeOperationalizationDeferred": true,
+      "onePrimaryRoutePerQuestionIntent": true,
+      "nextFullSourcePage": null
+    },
+    "gate6House4": {
+      "pagesIndexed": [
+        184,
+        185,
+        186,
+        187,
+        188,
+        189,
+        190,
+        191
+      ],
+      "indexedThroughPage": 191,
+      "status": "SOURCE_INDEX_COMPLETE_WITH_OPEN_REVIEW_ITEMS",
+      "chapterClosedAtPage": 191,
+      "runtimeOperationalizationDeferred": true,
+      "onePrimaryRoutePerQuestionIntent": true,
+      "nextFullSourcePage": null
+    },
+    "gate6House5": {
+      "pagesIndexed": [
+        191,
+        192,
+        193,
+        194,
+        195,
+        196
+      ],
+      "indexedThroughPage": 196,
+      "status": "SOURCE_INDEX_COMPLETE_WITH_OPEN_REVIEW_ITEMS",
+      "chapterClosedAtPage": 196,
+      "runtimeOperationalizationDeferred": true,
+      "onePrimaryRoutePerQuestionIntent": true,
+      "nextFullSourcePage": 197
+    },
+    "gate6House6": {
+      "pagesIndexed": [
+        196,
+        197,
+        198,
+        199,
+        200,
+        201,
+        202,
+        203,
+        204
+      ],
+      "indexedThroughPage": 204,
+      "status": "SOURCE_INDEX_COMPLETE_WITH_OPEN_REVIEW_ITEMS",
+      "runtimeOperationalizationDeferred": true,
+      "onePrimaryRoutePerQuestionIntent": true,
+      "chapterClosedAtPage": 204,
+      "nextFullSourcePage": 205
+    },
+    "gate6House7": {
+      "pagesIndexed": [
+        204,
+        205,
+        206,
+        207,
+        208,
+        209,
+        210,
+        211,
+        212,
+        213,
+        214,
+        215,
+        216,
+        217,
+        218,
+        219,
+        220,
+        221,
+        222,
+        223
+      ],
+      "indexedThroughPage": 223,
+      "status": "SOURCE_INDEX_COMPLETE_WITH_OPEN_REVIEW_ITEMS",
+      "runtimeOperationalizationDeferred": true,
+      "onePrimaryRoutePerQuestionIntent": true,
+      "chapterClosedAtPage": 223,
+      "nextFullSourcePage": 224
+    },
+    "gate8Theft": {
+      "pagesIndexed": [224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235],
+      "indexedThroughPage": 235,
+      "status": "SOURCE_INDEX_COMPLETE_WITH_OPEN_REVIEW_ITEMS",
+      "runtimeOperationalizationDeferred": true,
+      "onePrimaryRoutePerQuestionIntent": true,
+      "chapterClosedAtPage": 235,
+      "nextFullSourcePage": 236
+    },
+    "gate9Travel": {
+      "pagesIndexed": [235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256],
+      "indexedThroughPage": 256,
+      "status": "SOURCE_INDEX_COMPLETE_WITH_OPEN_REVIEW_ITEMS",
+      "runtimeOperationalizationDeferred": true,
+      "onePrimaryRoutePerQuestionIntent": true,
+      "chapterClosedAtPage": 256,
+      "nextFullSourcePage": 257
+    },
+    "gate10Authority": {
+      "pagesIndexed": [256, 257, 258, 259, 260, 261, 262, 263],
+      "indexedThroughPage": 263,
+      "status": "SOURCE_INDEX_COMPLETE_WITH_OPEN_REVIEW_ITEMS",
+      "runtimeOperationalizationDeferred": true,
+      "onePrimaryRoutePerQuestionIntent": true,
+      "chapterClosedAtPage": 263,
+      "nextFullSourcePage": null
+    },
+    "gate11FriendsHope": {
+      "pagesIndexed": [263, 264, 265, 266, 267, 268, 269, 270, 271],
+      "indexedThroughPage": 271,
+      "status": "SOURCE_INDEX_COMPLETE_WITH_OPEN_REVIEW_ITEMS",
+      "runtimeOperationalizationDeferred": true,
+      "onePrimaryRoutePerQuestionIntent": true,
+      "chapterClosedAtPage": 271,
+      "nextFullSourcePage": null
+    },
+    "gate12EnemiesPrisoners": {
+      "pagesIndexed": [271, 272, 273, 274, 275, 276],
+      "indexedThroughPage": 276,
+      "status": "SOURCE_INDEX_COMPLETE_WITH_OPEN_REVIEW_ITEMS",
+      "runtimeOperationalizationDeferred": true,
+      "onePrimaryRoutePerQuestionIntent": true,
+      "chapterClosedAtPage": 276,
+      "nextFullSourcePage": null,
+      "bookBodyEndedAtPage": 276,
+      "explicitSourceClosingPhrase": "انتهى الكتاب"
+    }
+  },
+  "dhamirSelectionMap": {
+    "policy": "NEED_DRIVEN_ONE_PRIMARY_ROUTE",
+    "sourceMajorityRule": {
+      "present": true,
+      "page": 155,
+      "runtimeAllowed": false,
+      "recordId": "dhamir.p155.additional-and-majority"
+    },
+    "routes": [
       {
-          "id": "PASS2-SOURCE-P165-ANKIS-PATIENT-SYNTAX",
-          "entryId": "gate5.p165.figure-proximity-extended",
-          "page": 165,
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "Preserve the printed syntactic defect in the Ankis/patient clause: وخرج المريض، طال مرضه، وإن كان خارجا، خيف عليه من الهلاك. The final outgoing-form fear-of-destruction branch is clear, but the preceding clause must not be repaired by grammar or symmetry."
+        "questionIntent": "identify-person-behind-hidden-question",
+        "primaryCandidate": "dhamir.p159.heads-and-subject",
+        "subrule": "H6 repeated figure",
+        "status": "PRIMARY_CANDIDATE_NOT_RUNTIME_ENABLED"
       },
-      {
-          "id": "PASS2-SOURCE-P159-RUUS-AWAIL-AWTAD",
-          "entryId": "dhamir.p159.heads-and-subject",
-          "page": 159,
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "The printed phrase رؤوس أوائل الأوتاد is visually clear but operationally under-specified in this passage. Preserve the phrase and do not infer a concrete house set or algorithmic decomposition."
-      },
-      {
-          "id": "PASS2-SOURCE-P157-158-MIXED-PARITY-UNSTATED",
-          "entryId": "dhamir.p157-158.alt-qutri-dali",
-          "page": "157-158",
-          "status": "RESOLVED",
-          "summary": "Kashf gives only H13/H14 both-odd (Qutri Asli) and both-even (Dali) branches; no mixed-parity branch is stated. Comparative sources may explain why mixed parity should not occur, but that explanation must not be attributed to Kashf."
-      },
-      {
-          "id": "PASS2-SOURCE-P151-SIXTEEN-VS-FIFTEEN",
-          "entryId": "reference.p151.sixteen-vs-fifteen-placement-count",
-          "page": 151,
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "Preserve the explicit printed contradiction: main text says there are sixteen placements, while the printed editor footnote states only fifteen placements were mentioned. Do not invent a sixteenth order."
-      },
-      {
-          "id": "PASS2-SOURCE-P148-ORDER13-BLANK-HEADING",
-          "entryId": "shibutz.p149.order13-damaged-name",
-          "page": "148-149",
-          "status": "RESOLVED",
-          "summary": "Order 13 has a physically blank heading in the printed source; editor footnote بياض في الأصل records that blank. Preserve the missing title and do not reinterpret بياض as the geomancy figure البياض/לבן."
-      },
-      {
-          "id": "PASS2-SOURCE-P136-137-ATABA-IN-OUT",
-          "entryId": "shibutz.p135-137.zodiac-planet-order",
-          "page": "136-137",
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "Preserve the internal printed-source difference without reconciliation: p136 return-to-Saturn sentence says العتبة الداخلة, while p137 remaining Head/Tail sentence says عتبة خارجة."
-      },
-      {
-          "id": "PASS2-SOURCE-P53-H15-DEFECTIVE-SENTENCE",
-          "pages": [
-              53
-          ],
-          "entryId": "houses.p46-53.profiles",
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "Printed H15 sentence reads فإذا جاء في الثالث عشر شكل ثقيل ، وفي الرابع عشر شكل يعلم أنه غلط. It contains no خفيف and is syntactically defective; do not reconstruct a light/heavy symmetry or resolve it from downstream code."
-      },
-      {
-          "id": "PASS2-SOURCE-P45-WALTHANI",
-          "entryId": "houses.p45.aspects-and-gender",
-          "pages": [
-              45
-          ],
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "Printed p45 visibly contains the isolated token والثاني after the three sextile pairs and before ويخص كل تسديس وتدان. Its function is not secure from the source itself; preserve it literally and do not infer a fourth pair or silently delete it."
-      },
-      {
-          "id": "B07-SOURCE-P126-P132-ELEMENT-ATTRIBUTION",
-          "pages": [
-              126,
-              132
-          ],
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "Printed p126 and p132 attribute incompatible element-number systems to al-Zanati, al-Trabulsi and Ahl al-Tabai. Preserve both literally; do not reconcile without additional source evidence."
-      },
-      {
-          "id": "B08-SOURCE-P136-P137-NODE-RETURN-WORDING",
-          "pages": [
-              136,
-              137
-          ],
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "p136 mentions Qabd Kharij→Mars and Ataba Dakhila→Saturn; p137 names the two remaining Head/Tail figures as Qabd Kharij and Ataba Kharija and says they return to Saturn/Mars. Keep statements separate; p134 remains authority for Head/Tail identity."
-      },
-      {
-          "id": "B08-SOURCE-P151-SIXTEEN-VS-FIFTEEN",
-          "pages": [
-              151
-          ],
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "Closing text says sixteen placement orders, while the printed footnote itself notes that only fifteen were mentioned. Do not invent or renumber an order to force closure."
-      },
-      {
-          "id": "B09-SOURCE-P157-158-MIXED-PARITY-BRANCH",
-          "pages": [
-              157,
-              158
-          ],
-          "status": "RESOLVED",
-          "summary": "Qutri/dal‘i alternate states both-odd and both-even H13/H14 cases, but no mixed-parity branch in the displayed source."
-      },
-      {
-          "id": "B10-SOURCE-P165-ANKIS-PATIENT-CLAUSE",
-          "pages": [
-              165
-          ],
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "Printed p165 Ankis/patient sentence contains a syntactically unclear middle clause. Preserve literal uncertainty; do not reconstruct by symmetry or from downstream code."
-      },
-      {
-          "id": "B11-SOURCE-P168-169-LOCATION-PROCEDURE-INCOMPLETE",
-          "pages": [
-              168,
-              169
-          ],
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "The displayed source does not fully define how the balance point is walked, its endpoint, or selection of the second air-ranked figure. Preserve as non-operational until further source evidence."
-      },
-      {
-          "id": "B12-SOURCE-P173-174-MIXED-ANGLE-CLAUSE",
-          "pages": [
-              173,
-              174
-          ],
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "The clause وإن كانا شكلين سعيدين ممتزجة is grammatically/quantitatively unclear between the all-benefic and 1-benefic/1-malefic/2-mixed branches. Preserve literally; do not normalize from symmetry."
-      },
-      {
-          "id": "B12-SOURCE-P177-RECURSIVE-ODD-TOKENS",
-          "pages": [
-              177
-          ],
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "The malefic-from-malefic passage contains difficult printed tokens معموم and ولا يحصل معارك. Their exact intended reading remains unresolved; do not infer a runtime branch."
-      },
-      {
-          "id": "B12-SOURCE-P179-DEBT-WALKING-TERMS",
-          "pages": [
-              179
-          ],
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "The debt rule uses walk-two/walk-three and the labels فرح and بكر without defining their canonical figure mapping in this passage. Preserve as unresolved operational terminology."
-      },
-      {
-          "id": "B13-SOURCE-P180-MONEY-ELEMENT-AMOUNT-INCOMPLETE",
-          "pages": [
-              180
-          ],
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "After assigning element weights 1–4, the source says to retain the lower element and work by its number but does not fully define the amount calculation in this passage. Do not reconstruct it."
-      },
-      {
-          "id": "B13-SOURCE-P181-MOD2-VS-REMAINDERS-1-7",
-          "pages": [
-              181
-          ],
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "The printed method explicitly reduces points by twos and gives attainment outcomes for remainders 1/2, then immediately assigns money sources to remainders 1–7. These instructions are internally incompatible as printed."
-      },
-      {
-          "id": "B14-SOURCE-P185-WATER-PLANTS-ODD-BRANCH",
-          "pages": [
-              185
-          ],
-          "status": "RESOLVED",
-          "summary": "The printed source explicitly links a watery first house to plants/vegetables. The semantic pairing is unusual; preserve it literally and seek another source witness."
-      },
-      {
-          "id": "B14-SOURCE-P185-94-VS-RECURSIVE-COUNT",
-          "pages": [
-              185
-          ],
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "The printed source says 16 places, each split into four, but concludes with أربعة وتسعين (94), not the arithmetically expected 64. Do not normalize."
-      },
-      {
-          "id": "B14-SOURCE-P187-MUNSHAAT-DIRECTION",
-          "pages": [
-              187
-          ],
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "The direction after المنشآت appears as ناحية الجاه in the scan and is not securely readable as north. Resolve from another edition/manuscript."
-      },
-      {
-          "id": "B14-SOURCE-P190-MUTHALLATHA-OPERATION",
-          "pages": [
-              190,
-              191
-          ],
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "The inside-house localization method says اضرب لكل جهة مثلثة. The computational meaning of مثلثة is not defined in this passage; do not reduce it to one figure."
-      },
-      {
-          "id": "B16-SOURCE-P201-ANIMAL-NAMES",
-          "pages": [
-              201
-          ],
-          "status": "RESOLVED",
-          "summary": "Two animal-table figure names in the printed scan are OCR/visual-sensitive (التشمير/الأنكيس family). Preserve the literal Arabic until a second visual read or source witness certifies the transliteration."
-      },
-      {
-          "id": "PASS2-SOURCE-P118-1123-ARITHMETIC",
-          "pages": [
-              118
-          ],
-          "entryId": "shibutz.p117-119.add-subtract-example",
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "Printed p118 visibly reads ألف ومائة وثلاثة وعشرون after 126−3, but arithmetic gives 123 and the next printed reduction by 28 yields remainder 11, which also fits 123. Preserve the printed 1123 and the contradiction; do not silently delete ألف."
-      },
-      {
-          "id": "FINALQA-SOURCE-P246-MAKTUB-VS-P251-MANKUB",
-          "entryId": "gate9.travel.p247-250.absent-life-distance-witnesses",
-          "page": 246,
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "Fresh source freeze confirms two distinct printed readings: the p246 body-source H6/H12 branch reads فهو مكتوب, while the later quoted al-Multaqat continuation reads فهو منكوب. Preserve both by provenance and do not normalize one from the other; the conflict remains non-operational for any unified runtime rule."
-      },
-      {
-          "id": "B23-SOURCE-P221-JUDLA-GLYPH",
-          "entryId": "gate6.house7.p221.hidden-request-and-year-rules",
-          "status": "RESOLVED",
-          "summary": "Fresh visual re-read confirms the printed token الجودلة beside glyph 1121 in the hidden-request sequence. Freeze the literal token+glyph pair; canonical identity may follow the approved 1121 glyph mapping, but no separate lexical identity is invented.",
-          "resolution": "The literal token and glyph are source-secure. Canonical identity may follow only the project-approved glyph map for 1121; no lexical identity is inferred from the token itself."
-      },
-      {
-          "id": "B23-SOURCE-P223-H18",
-          "entryId": "gate6.house7.p223.price-goods-city",
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "Fresh visual re-read confirms the print explicitly says the eighteenth house (الثامن عشر) although the operative geomantic board has sixteen houses. Preserve H18 literally; do not normalize it to H8/H16 or another house."
-      },
-      {
-          "id": "B25-SOURCE-P231-OCCUPATION-TOKENS",
-          "entryId": "gate8.theft.p232-234.thief-description",
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "Fresh visual re-read confirms the printed occupation tokens الكر, قحاسا and حرار in the thief-description table. Their lexical/professional meanings are not source-secure; preserve the Arabic verbatim and do not assign professions by conjecture."
-      },
-      {
-          "id": "B26-SOURCE-P237-TURAB-AL-MINTAQA",
-          "entryId": "gate9.travel.p237-239.travel-core-and-profit",
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "Fresh visual re-read confirms the literal p237 wording تراب المنطقة in خذ تراب المنطقة، وقيم منه شكلا، واضربه مع الثاني. The text is readable, but the passage does not define a runtime-safe technical procedure for deriving the required geomantic figure from that soil/dust input; preserve it literally and do not replace it with an abstract earth-element quantity."
-      },
-      {
-          "id": "B26-SOURCE-P240-AL-DHARAQIM",
-          "entryId": "gate9.travel.p241-244.safety-and-return",
-          "status": "RESOLVED",
-          "summary": "Fresh visual re-read corrects the earlier token: the printed road-danger line reads الأراقم (not الذراقم), in the sequence الأراقم والحيات والعقارب. Freeze الأراقم as the printed reading; no conjectural normalization is required.",
-          "resolution": "Resolved by direct visual reread of the printed scan. The earlier الذراقم transcription was a misread; the source visibly reads الأراقم. No conjectural normalization was used."
-      },
-      {
-          "id": "B26-SOURCE-P240-H12-SHIP-CONTRADICTION",
-          "entryId": "gate9.travel.p241-244.safety-and-return",
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "Fresh visual re-read confirms H12 is printed in both the vehicle/ship breaking list and the safe-arrival list on p240. Preserve both lists literally; the contradiction is not operationally resolvable from this passage."
-      },
-      {
-          "id": "B27-SOURCE-P244-AL-ZAML",
-          "entryId": "gate9.travel.p246.condition-and-direction",
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "Fresh visual re-read confirms the damaged-vessel phrase الدقل أو الزمل. The token الزمل is visually secure but its intended technical meaning in this passage remains unresolved; preserve it verbatim."
-      },
-      {
-          "id": "B27-SOURCE-P245-OVERLAPPING-13-13",
-          "entryId": "gate9.travel.p247-250.absent-life-distance-witnesses",
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "Fresh visual re-read confirms the printed pair (13,13), and the editor footnote explicitly says the original appears this way and that two questions seem to overlap. Preserve both print and footnote; do not operationalize or repair the pair."
-      },
-      {
-          "id": "B27-SOURCE-P248-DERIVATION-CORRUPT",
-          "entryId": "gate9.travel.p247-250.absent-life-distance-witnesses",
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "Fresh visual re-read confirms the printed p248 derivation is corrupt and the editor separately conjectures H1+H4. Keep the printed wording and the conjecture distinct; no canonical runtime formula is selected from the conjecture."
-      },
-      {
-          "id": "B27-SOURCE-P248-OR-VS-THIRD-DERIVATION",
-          "entryId": "gate9.travel.p247-250.absent-life-distance-witnesses",
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "Fresh visual re-read confirms the print uses أو between the H1+H6 and H8+H12 derivations, while the editor separately conjectures deriving a third figure from the two. Preserve both readings; no runtime formula is inferred."
-      },
-      {
-          "id": "B27-SOURCE-P249-HEADS-VS-ANGLES",
-          "entryId": "gate9.travel.p247-250.absent-life-distance-witnesses",
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "Fresh visual re-read confirms the print says خذ رؤوس الأشكال الأربعة while the editor parenthesis conjectures الأوتاد. Preserve printed 'heads of the four figures' and the editor conjecture separately; do not replace one with the other."
-      },
-      {
-          "id": "B27-SOURCE-P250-AL-JAH-DIRECTION",
-          "entryId": "gate9.travel.p247-250.absent-life-distance-witnesses",
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "Fresh visual re-read confirms two distinct direction wordings in the p249–250 seam: p249 has لأي الجهات هو and p250 continues خرج إلى تلك الجهة, but p250 also explicitly prints ففي القبلة إلى جانب الجاه. The token الجاه in that branch remains unresolved; do not equate it with north or another compass direction."
-      },
-      {
-          "id": "B28-SOURCE-P254-AL-TUWAYHIR",
-          "entryId": "gate9.travel.p254.lineage-profession-dream",
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "Fresh visual reread of printed p254 / scan256 confirms the literal token التويهر in the profession paragraph. The token is source-secure but is not securely identifiable as a canonical geomantic figure; do not normalize it to Dragon’s Tail or another figure by sequence/symmetry.",
-          "resolution": "Freeze the printed token التويهر exactly. Because its canonical figure identity is not defined by this passage or a second certified witness, any figure mapping remains non-operational."
-      },
-      {
-          "id": "B28-SOURCE-P254-AL-GHARAIM",
-          "entryId": "gate9.travel.p254.lineage-profession-dream",
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "Fresh visual reread of printed p254 / scan256 confirms the Mercury profession line literally reads الغرايم. Its technical lexical meaning is not securely established by the source passage; preserve the Arabic token and do not force v57’s 'נפלאות' or another normalization.",
-          "resolution": "Freeze الغرايم as the printed reading. Translation/technical identification remains non-operational until a certified source witness defines the term."
-      },
-      {
-          "id": "B28-SOURCE-P255-TARAKTAHU",
-          "entryId": "gate9.travel.p255.promise-fulfilment",
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "Fresh visual reread of printed p255 / scan257 confirms the clause وإن خرج لك أحد هذه الثلاثة الأشكال تركته. The referent/operation of 'these three figures' and تركته is not sufficiently defined by the passage; preserve it literally without conjectural completion.",
-          "resolution": "The printed wording is visually secure but operationally incomplete/unclear. No runtime branch may be reconstructed from grammar, symmetry, or adjacent promise rules."
-      },
-      {
-          "id": "B28-SOURCE-P256-DUPLICATED-SAAD",
-          "entryId": "gate10.authority.p256-257.honor-office-mother-rule",
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "Fresh visual reread of printed p256 / scan258 confirms the text repeats سعد in the second mixed group, while the printed editor parenthesis explicitly conjectures (لعله: نحس). Preserve the printed سعد and the editorial نحس conjecture as distinct evidence.",
-          "resolution": "The affected mixed-angles branch remains non-operational because the printed reading and editorial repair produce different rules. The conjecture is not promoted into the source text."
-      },
-      {
-          "id": "B28-SOURCE-P261-HARITHAN",
-          "entryId": "gate10.authority.p260-262.ruler-state-by-H10",
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "Fresh visual reread of printed p261 / scan263 confirms the literal token حارثا in the ninth-house ruler profile. Its intended lexical/profile meaning remains insufficiently secure for canonical interpretation.",
-          "resolution": "Freeze حارثا verbatim. Do not substitute a guessed adjective, occupation, or moral quality without another certified source witness."
-      },
-      {
-          "id": "B29-SOURCE-P265-KHILA-AL-MULUK",
-          "entryId": "gate11.friends.p265-266.clothing-state-and-return",
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "Fresh visual reread of printed p265 / scan267 confirms خلع الملوك immediately after the H10 clothing clause. The words are visually secure, but their exact syntactic/operational relation to 'no luck in clothing' is not defined well enough to merge into the clothing verdict.",
-          "resolution": "Preserve خلع الملوك as a separate literal source phrase. Do not turn it into an automatic H10 verdict or silently translate it as a specific royal-garment outcome."
-      },
-      {
-          "id": "B29-SOURCE-P272-FA-IN-YAKUN",
-          "entryId": "gate12.enemies-prisoners.p272.enemy-nature-and-core-prisoner-rules",
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "Fresh visual reread of printed p272 / scan274 confirms the defective construction فإن يكون in the enemy-judgment clause and the printed alternate-version note وفي نسخة أخرى: تكرر. The two readings are not collapsed into one runtime instruction.",
-          "resolution": "Freeze the defective main reading and the alternate-version wording separately. No grammatical repair or preferred branch is selected from this evidence."
-      },
-      {
-          "id": "B29-SOURCE-P273-INCOMING-CONJECTURE",
-          "entryId": "gate12.prisoners.p273-274.external-release-duration-and-fear",
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "Fresh visual reread of printed p273 / scan275 confirms the text gives the incoming pair, while the editor inserts (لعله: كانا نحسين) before داخلين. The illness/death outcome therefore depends on an editorial malefic insertion absent from the printed main text.",
-          "resolution": "Keep print and conjecture distinct. The fatal incoming branch is non-operational unless another certified source witness confirms the missing malefic qualifier."
-      },
-      {
-          "id": "B30-SOURCE-P274-KHASHIYA-CONJECTURE",
-          "entryId": "gate12.prisoners.p274-275.nuzhat-prisoner-combinations",
-          "status": "SOURCE_CONFLICT/NON_OPERATIONAL",
-          "summary": "Fresh visual reread of printed p274 / scan276 confirms the main text خشي على نفسه and the editor’s parenthetical conjecture (لعله: جنى جناية). These are materially different readings and must remain separate.",
-          "resolution": "Freeze خشي على نفسه as the printed reading and جنى جناية only as editorial conjecture. Do not substitute one for the other in runtime."
-      },
-      {
-          "id": "B30-SOURCE-P275-AL-MUNAQQAT-TITLE",
-          "entryId": "gate12.prisoners.p275.multaqat-release-and-outcome",
-          "status": "RESOLVED",
-          "summary": "Fresh high-resolution visual reread of printed p275 / scan277 resolves the title: it reads الملتقط في علم النقط, not المنقط في علم النقط. The stable source-record ID is retained for traceability, but the source title is frozen as al-Multaqat.",
-          "resolution": "Resolved directly from the printed scan. The title visibly reads الملتقط في علم النقط; no normalization from context was needed."
-      }
       {
         "questionIntent": "hidden-intent-inner-thought",
         "primaryCandidate": null,
