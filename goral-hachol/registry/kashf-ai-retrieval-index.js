@@ -313,8 +313,8 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
     houses: [1, 3, 5, 9],
   },
   'illness.p196.outcomeH15': {
-    aliases: ['האם החולה יחלים', 'האם יתרפא', 'החלמה ממחלה', 'האם המחלה תתארך', 'תוצאת החולי'],
-    doNotMixWith: ['illness.bodyPart.h6Figure'],
+    aliases: ['האם החולה יחלים', 'האם יתרפא', 'החלמה ממחלה', 'האם המחלה תתארך', 'תוצאת החולי', 'H15 מיטיב יתרפא', 'H15 מזיק המחלה תתארך'],
+    doNotMixWith: ['illness.p196.h1RecurrenceDurationRisk', 'illness.p196.sensorySignsH6H8', 'illness.bodyPart.h6Figure', 'illness.p197.h1h8ElementHumor'],
     houses: [15],
   },
   'illness.bodyPart.h6Figure': {
