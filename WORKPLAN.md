@@ -68,8 +68,9 @@
 - [✅] מצב Source Freeze לאחר Wave 02: **25/48 frozen** — **5 RESOLVED**, **20 SOURCE_CONFLICT/NON_OPERATIONAL**, נותרו **23 OPEN**.
 - [✅] Source Freeze Wave 03 — p221–251: `الجودلة`+glyph 1121 אושר בקריאה חזותית; p240 תוקן בקריאת מקור ישירה מ-`الذراقم` השגוי ל-`الأراقم`; H18, טוקני המקצועות, `تراب المنطقة`, סתירת H12 בספינה, `الزمل`, זוג 13/13, p246 `مكتوب` מול p251 `منكوب`, נגזרות p248, رؤوس מול الأوتاد ו-`الجاه` הוקפאו כ-SOURCE_CONFLICT/NON_OPERATIONAL בלי נרמול.
 - [✅] מצב Source Freeze לאחר Wave 03: **38/48 frozen** — **7 RESOLVED**, **31 SOURCE_CONFLICT/NON_OPERATIONAL**, נותרו **10 OPEN**.
-- [ ] הבא לפי סדר המקור — Wave 04 הסופי p254–275: `B28-SOURCE-P254-AL-TUWAYHIR`, `B28-SOURCE-P254-AL-GHARAIM`, `B28-SOURCE-P255-TARAKTAHU`, `B28-SOURCE-P256-DUPLICATED-SAAD`, `B28-SOURCE-P261-HARITHAN`, `B29-SOURCE-P265-KHILA-AL-MULUK`, `B29-SOURCE-P272-FA-IN-YAKUN`, `B29-SOURCE-P273-INCOMING-CONJECTURE`, `B30-SOURCE-P274-KHASHIYA-CONJECTURE`, `B30-SOURCE-P275-AL-MUNAQQAT-TITLE`.
-- [ ] לאחר Source Freeze מלא: Rule Decision payload (`activatedRuleIds`, `rejectedRuleIds`, `decisionSummary`) → Golden/E2E → Clean Chat Knowledge Pack → Live deployment verification.
+- [✅] Source Freeze Wave 04 הסופי — p254–275: `التويهر`, `الغرايم`, `تركته`, כפילות `سعد` מול השערת העורך `نحس`, `حارثا`, `خلع الملوك`, `فإن يكون`, השלמת `كانا نحسين`, ו-`خشي على نفسه` מול `جنى جناية` הוקפאו כ-SOURCE_CONFLICT/NON_OPERATIONAL ללא תיקון מן הדעת. בקריאה חזותית מוגדלת של p275 הוכרע שם המקור כ-`الملتقط في علم النقط` ולא `المنقط`.
+- [✅] **SOURCE FREEZE COMPLETE — 48/48 frozen**: **8 RESOLVED**, **40 SOURCE_CONFLICT/NON_OPERATIONAL**, **0 OPEN**.
+- [ ] השלב הבא: Rule Decision payload (`activatedRuleIds`, `rejectedRuleIds`, `decisionSummary`) → Golden/E2E → Clean Chat Knowledge Pack → Live deployment verification.
 
 ---
 
