@@ -108,6 +108,19 @@ The server-side `kashf_reading_payload_sanitizer.ts` was also hardened after the
 
 This prevents a malformed/tampered Rule Decision payload from crossing the live Smart Advisor boundary.
 
+## Server-side boundary hardening
+The live Kashf payload sanitizer now validates the canonical Rule Decision contract rather than merely accepting the fields:
+
+- canonical payload must carry `kashf-canonical-rule-decision-v1`
+- `activatedRuleIds` and `rejectedRuleIds` must be deduplicated and disjoint
+- every selected retrieval `doNotMixWith` method must appear in `rejectedRuleIds`
+- when `aiVerdictAllowed === true`, exactly one activated rule is allowed and it must equal the resolved `kashfMethodId`
+- when the AI verdict is not allowed, no rule may be activated and the selected blocked method is explicitly rejected
+- canonical `decisionSummary` is mandatory
+- activated canonical payloads must carry the exact v57 Hebrew source-evidence string for the selected retrieval rule
+
+The regression also tampers with each of those fields and confirms the server-side sanitizer rejects the modified payload.
+
 ## Regression
 Added:
 
@@ -132,6 +145,8 @@ Final GitHub Actions run `35986172739` — **PASS**.
 Passed:
 - canonical Rule Decision payload regression
 - AI Context Builder regression
+- Smart Advisor Kashf payload regression
+- server-side Rule Decision tamper rejection
 - generic Hall of Wisdom Rule Decision Engine regression
 - Batch21 pregnancy/illness boundary regression
 - canonical routing: **1751 / 0**
