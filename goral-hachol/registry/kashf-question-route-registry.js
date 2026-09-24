@@ -70,6 +70,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfIntentId: 'relocation.placeToPlace',
     kashfMethodId: 'relocation.p183.h4h15',
     kashfRuntimeStatus: 'ready',
+    note: 'Exact p183 destination-quality route: H4+H15 only. Do not add the legacy H1+H15 alternative, H1/H2 stay-or-move, H1/H4 vs H7/H10, or two-city comparison as supporting votes.',
   }),
 
   'q-illness-heal': route({
@@ -163,7 +164,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfIntentId: 'relocation.compareTwoCities',
     kashfMethodId: 'relocation.p183.compare12vs78',
     kashfRuntimeStatus: 'blocked-by-source',
-    note: 'Exact source meaning of comparative strength must be closed before execution.',
+    note: 'Printed p183 benefic precondition and H1/H2 vs H7/H8 comparison are preserved, but the exact source meaning of comparative strength is not operationally defined; fail closed.',
   }),
 
   'q-move-home': route({
@@ -172,6 +173,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfIntentId: 'relocation.isThisPlaceGood',
     kashfMethodId: 'relocation.p183.currentVsNewPlace',
     kashfRuntimeStatus: 'ready',
+    note: 'Exact p183 place-quality route: H1+H4 for current residence and H7+H10 for the move. No converse or ranking is invented when the source conditions do not decide.',
   }),
 
   'q-stay-place': route({
@@ -180,6 +182,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfIntentId: 'relocation.stayOrMove',
     kashfMethodId: 'relocation.p183.stayMoveH1H2',
     kashfRuntimeStatus: 'ready',
+    note: 'Exact repeated pp178/183 H1/H2 polarity rule only. The separate p184 multi-indicator passage is not aggregated or used as a fallback.',
   }),
 
   'q-message': route({

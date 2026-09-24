@@ -205,19 +205,34 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
     houses: [1, 7, 10, 11],
   },
   'relocation.p183.h4h15': {
-    aliases: ['מעבר ממקום למקום', 'איך יהיה המקום החדש', 'מה טיב המקום שאליו עוברים', 'מקום חדש'],
-    doNotMixWith: ['relocation.p183.currentVsNewPlace', 'relocation.p183.stayMoveH1H2'],
+    aliases: ['מעבר ממקום למקום', 'איך יהיה המקום החדש', 'מה טיב המקום שאליו עוברים', 'מקום חדש', 'טיב יעד המעבר'],
+    doNotMixWith: ['relocation.p183.currentVsNewPlace', 'relocation.p183.stayMoveH1H2', 'relocation.p183.compare12vs78', 'relocation.p184.multiIndicatorStayMove'],
     houses: [4, 15],
   },
   'relocation.p183.currentVsNewPlace': {
     aliases: ['האם המקום הנוכחי טוב', 'האם המעבר טוב', 'מקום נוכחי מול מקום חדש', 'השוואת מגורים ומעבר'],
-    doNotMixWith: ['relocation.p183.h4h15', 'relocation.p183.stayMoveH1H2'],
+    doNotMixWith: ['relocation.p183.h4h15', 'relocation.p183.stayMoveH1H2', 'relocation.p183.compare12vs78', 'relocation.p184.multiIndicatorStayMove'],
     houses: [1, 4, 7, 10],
   },
   'relocation.p183.stayMoveH1H2': {
     aliases: ['להישאר במקום או לעבור', 'האם כדאי להישאר כאן', 'האם כדאי לעבור מכאן', 'להישאר בעיר או לעזוב', 'להישאר או לעבור'],
-    doNotMixWith: ['relocation.p183.h4h15', 'relocation.p183.currentVsNewPlace'],
+    doNotMixWith: ['relocation.p183.h4h15', 'relocation.p183.currentVsNewPlace', 'relocation.p183.compare12vs78', 'relocation.p184.multiIndicatorStayMove'],
     houses: [1, 2],
+  },
+  'relocation.p183.compare12vs78': {
+    aliases: ['איזו עיר עדיפה', 'איזו משתי ערים טובה יותר', 'השוואת שתי ערים', 'חוזק ראשון ושני מול שביעי ושמיני'],
+    doNotMixWith: ['relocation.p183.h4h15', 'relocation.p183.currentVsNewPlace', 'relocation.p183.stayMoveH1H2', 'relocation.p184.multiIndicatorStayMove'],
+    houses: [1, 2, 7, 8, 9, 15],
+  },
+  'relocation.p184.multiIndicatorStayMove': {
+    aliases: ['סימנים נוספים לשהייה או מעבר', 'שישי שביעי ראשון שנים עשר מעבר', 'בית שני פנימי להישאר', 'דין מעבר עמ 184'],
+    doNotMixWith: ['relocation.p183.h4h15', 'relocation.p183.currentVsNewPlace', 'relocation.p183.stayMoveH1H2', 'relocation.p183.compare12vs78'],
+    houses: [1, 2, 6, 7, 12],
+  },
+  'property.p184-185.houseGardenMap': {
+    aliases: ['מפת בית וגן', 'מצב הבית והגן', 'קרקע עצים צמחים תעלות חומה', 'נכסים בית וגן עמ 184', 'השביעי צמחים השלישי תעלות מים'],
+    doNotMixWith: ['property.sale.unsupported', 'hidden.p188.isStillThere'],
+    houses: [2, 3, 4, 7, 10],
   },
   'siblings.p182.h1h3': {
     aliases: ['יחסים בין אחים', 'הסכמה בין אחים', 'מצב האחים', 'האם האחים מסתדרים'],

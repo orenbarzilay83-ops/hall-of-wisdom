@@ -143,15 +143,15 @@ window.QUESTION_BANK = [
   {
     id: 'q-move-city',
     category: 'general', houseId: 3, topicId: 'relocation', kashfTopicId: 'relocation',
-    label: 'האם כדאי לעבור מקום?',
-    desc: 'להחלטת מעבר לעיר/מקום חדש — האם שם יהיה טוב יותר. לשתי ערים ספציפיות — בחר "איזו עיר עדיפה"',
+    label: 'מה טיב המקום שאליו אני שוקל לעבור?',
+    desc: 'לבחינת המקום החדש עצמו לפי דין עמ׳ 183. להשוואה ישירה בין שתי ערים — בחר "איזו עיר עדיפה"',
     clientFields: [{ id: 'newCity', label: 'לאן שוקלים לעבור?', type: 'text', placeholder: 'עיר / מקום' }],
   },
   {
     id: 'q-best-city',
     category: 'general', houseId: 3, topicId: 'relocation', kashfTopicId: 'relocation',
     label: 'איזו עיר עדיפה?',
-    desc: 'כשמתלבטים בין שתי ערים מוגדרות — השוואה ישירה',
+    desc: 'השוואה בין שתי ערים לפי דין עמ׳ 183; אם המקור אינו מגדיר כיצד למדוד את החוזק הנדרש, המערכת אינה משלימה הכרעה מן הדעת',
     clientFields: [
       { id: 'city1', label: 'עיר ראשונה', type: 'text', placeholder: 'שם העיר' },
       { id: 'city2', label: 'עיר שנייה', type: 'text', placeholder: 'שם העיר' },
@@ -703,7 +703,7 @@ window.QUESTION_BANK = [
     id: 'q-move-home',
     category: 'general', houseId: 3, topicId: 'relocation', kashfTopicId: 'relocation',
     label: 'האם לעבור דירה / בית?',
-    desc: 'לדירה/בית ספציפי — האם כדאי לעבור. לשינוי עיר — בחר "האם כדאי לעבור מקום"',
+    desc: 'השוואת עדות הטובה למגורים במקום הנוכחי מול עדות הטובה למעבר לפי עמ׳ 183; אם שני הצדדים טובים או שהכלל אינו מכריע, אין דירוג מומצא',
     clientFields: [
       { id: 'currentHome', label: 'כתובת נוכחית / שכונה', type: 'text', placeholder: 'עיר / שכונה' },
       { id: 'newHome', label: 'לאן שוקלים לעבור?', type: 'text', placeholder: 'כתובת / שכונה / עיר' },

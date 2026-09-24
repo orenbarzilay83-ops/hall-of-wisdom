@@ -107,6 +107,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     executorStatus: 'ready',
     legacyTopicId: 'relocation',
     legacyFormulaSlot: 'primaryFormula',
+    notes: 'Exact p183 destination-quality method only: derive H4+H15 and judge the resulting figure by benefic/malefic/mixed. It does not execute the legacy H1+H15 alt formula, the H1/H2 stay-or-move rule, the H1/H4 vs H7/H10 place-quality rule, or the two-city strength comparison.',
   }),
 
   'siblings.p182.h1h3': method({
@@ -1591,9 +1592,33 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     sourcePages: [183],
     kashfRuntimeStatus: 'blocked-by-source',
     runtimeAllowed: false,
-    executionKind: null,
-    executorStatus: 'not-applicable',
-    notes: 'Source comparison is identified, but the exact strength semantics must be closed before implementation.',
+    executionKind: 'source-procedure',
+    executorStatus: 'pending',
+    notes: 'Printed p183 asks which of two cities is better, first requires benefic figures, then inspects H1/H2/H7/H8/H9 and the outcome: if H1+H2 are stronger the current place is better; if H7+H8 are stronger the move is better. The passage does not define an operational strength metric or how H9/outcome participates in that comparison. Preserve the benefic precondition and all named houses, but do not invent a strength score from dignity, element, recurrence, Hawi, or the legacy topic bundle.',
+  }),
+
+  'relocation.p184.multiIndicatorStayMove': method({
+    kashfMethodId: 'relocation.p184.multiIndicatorStayMove',
+    kashfIntentId: 'relocation.p184SupportingIndicators',
+    topicId: 'relocation',
+    sourcePages: [184],
+    kashfRuntimeStatus: 'blocked-by-source',
+    runtimeAllowed: false,
+    executionKind: 'source-procedure',
+    executorStatus: 'pending',
+    notes: 'Printed p184 gives several additional relocation indicators: benefic testimony through H6/H7 supports staying in the current place; benefic H1/H12 supports moving to the desired place; an internal figure in H2 supports staying. The passage gives no precedence or conflict-resolution rule when these indicators disagree. Keep this as a distinct source procedure and never aggregate, vote, or use it as a fallback for the selected p183 route.',
+  }),
+
+  'property.p184-185.houseGardenMap': method({
+    kashfMethodId: 'property.p184-185.houseGardenMap',
+    kashfIntentId: 'property.houseGardenCondition',
+    topicId: 'property',
+    sourcePages: [184, 185],
+    kashfRuntimeStatus: 'blocked-by-source',
+    runtimeAllowed: false,
+    executionKind: 'source-procedure',
+    executorStatus: 'pending',
+    notes: 'Printed pp184-185 map H4=land/ground, H10=trees, H7=vegetables/plants (البقول), H3=water channels (السواقي), and H2=the surrounding wall. Benefics in a mapped place are judged good and malefics the opposite, but the continuation says reliance is on “the witnesses” without defining which witness system applies here. The H7/H3 mapping is fixed from the printed source; runtime remains blocked until the applicable witness system is source-certified. Do not borrow a witness scheme from another chapter or infer one by symmetry.',
   }),
 
   'gift.sourceInputUnclear': method({
