@@ -12,15 +12,14 @@
 //   intentResult -> buildReadingStrategy (reading-strategy-builder.js) -> readingStrategy
 //   intentResult + readingStrategy -> buildReadingPlan (reading-planner.js) -> readingPlan
 //
-// NOT wired (reported via missingFields, never invented):
-//   activatedRuleIds / rejectedRuleIds / sourceEvidence / decisionSummary —
-//   these are runRuleDecisionEngine's output (rule-decision-engine.js), which
-//   requires per-rule `ruleDefinitions` with real sourceEvidence arrays. No
-//   such loader exists for Kashf: goral-knowledge-registry.js only has
-//   topic-level entries (evidenceLocation pointers, not sourceEvidence[]),
-//   and rule-decision-engine.js has no real ruleDefinitions source wired
-//   anywhere outside its own unit test fixtures. Building that loader is a
-//   separate, reviewable decision — not made here.
+// Rule-decision payload:
+//   In canonical Kashf mode, activatedRuleIds / rejectedRuleIds /
+//   sourceEvidence / decisionSummary are projected by
+//   kashf-canonical-rule-decision.js from the already-authoritative route,
+//   canonical retrieval, canonical reading and professional-safety gates.
+//   This deliberately does NOT fabricate generic Rule Definitions for the
+//   Hall-wide rule-decision-engine.js. Legacy non-canonical mode still reports
+//   these fields as missing rather than inventing IDs.
 //
 // ---------------------------------------------------------------------------
 // AI-safe Engine Output Projection — two layers of defense
@@ -55,8 +54,9 @@ import { analyzeIntent } from './intent-analyzer.js';
 import { buildReadingStrategy } from './reading-strategy-builder.js';
 import { buildReadingPlan } from './reading-planner.js';
 import { buildKashfCanonicalAiBridge } from './kashf-canonical-ai-bridge.js';
+import { buildKashfCanonicalRuleDecisionPayload } from './kashf-canonical-rule-decision.js';
 
-export const KASHF_AI_CONTEXT_BUILDER_VERSION = 'kashf-ai-context-builder-v9';
+export const KASHF_AI_CONTEXT_BUILDER_VERSION = 'kashf-ai-context-builder-v10';
 
 // The five distinct "עד/עדים" (witness) systems documented in
 // HALL_WISDOM_KASHF_EXHAUSTIVE_WITNESS_AND_SPIRITUAL_RULES_AUDIT.md
@@ -482,6 +482,9 @@ export function buildKashfAiContextPackage(input = {}) {
         clientContext: { name: clientName || '', question },
       })
     : null;
+  const canonicalRuleDecision = canonicalBridge
+    ? buildKashfCanonicalRuleDecisionPayload(canonicalBridge)
+    : null;
   const rawEngineOutput = canonicalBridge
     ? canonicalBridge.canonicalReading
     : buildKashfReading(board, topicId, { name: clientName || '', question });
@@ -502,12 +505,14 @@ export function buildKashfAiContextPackage(input = {}) {
     readingStrategy,
   });
 
-  missingFields.push('readingContext.activatedRuleIds — no per-rule ruleDefinitions source is wired for Kashf yet (rule-decision-engine.js has no real loader; goral-knowledge-registry.js entries are topic-level, not rule-level)');
-  missingFields.push('readingContext.rejectedRuleIds — same missing source as activatedRuleIds');
-  if (!canonicalBridge?.canonicalRetrieval?.v57?.hebrewRule) {
-    missingFields.push('readingContext.sourceEvidence — no canonical v57 Hebrew rule was resolved for this request');
+  if (!canonicalRuleDecision) {
+    missingFields.push('readingContext.activatedRuleIds — legacy non-canonical mode has no canonical rule-decision payload');
+    missingFields.push('readingContext.rejectedRuleIds — legacy non-canonical mode has no canonical rule-decision payload');
+    missingFields.push('readingContext.sourceEvidence — legacy non-canonical mode has no canonical v57 rule evidence');
+    missingFields.push('decisionSummary — legacy non-canonical mode has no canonical rule-decision payload');
+  } else if (canonicalRuleDecision.sourceEvidence.length === 0) {
+    missingFields.push('readingContext.sourceEvidence — canonical method resolved without a v57 Hebrew source rule');
   }
-  missingFields.push('decisionSummary — normally produced by runRuleDecisionEngine, which did not run (see activatedRuleIds above)');
 
   if (readingPlan?.stopped) {
     missingFields.push(`readingPlan.stopped — ${readingPlan.stopReason}`);
@@ -516,9 +521,7 @@ export function buildKashfAiContextPackage(input = {}) {
     missingFields.push(`intentResult.requiresClarification — ${intentResult.clarificationQuestion || 'question intent was not confidently classified'}`);
   }
 
-  const canonicalSourceEvidence = canonicalBridge?.canonicalRetrieval?.v57?.hebrewRule
-    ? [`v57 עמ׳ ${canonicalBridge.canonicalRetrieval.v57.page}: ${canonicalBridge.canonicalRetrieval.v57.hebrewRule}`]
-    : [];
+  const canonicalSourceEvidence = canonicalRuleDecision?.sourceEvidence || [];
 
   const contextPackage = {
     payloadVersion: 'ai-context-package-v1',
@@ -529,6 +532,7 @@ export function buildKashfAiContextPackage(input = {}) {
     primaryIntent: canonicalBridge?.resolution?.kashfIntentId || intentResult.primaryIntent,
     readingStrategy,
     readingPlan,
+    ...(canonicalRuleDecision ? { decisionSummary: canonicalRuleDecision.decisionSummary } : {}),
     readingContext: {
       question,
       board: aiSafeBoard,
@@ -541,13 +545,21 @@ export function buildKashfAiContextPackage(input = {}) {
       professionalVerdictSafety: canonicalBridge?.professionalVerdictSafety || null,
       methodMetadata: canonicalBridge ? buildCanonicalMethodMetadata(canonicalBridge) : KASHF_METHOD_METADATA,
       ruleCoverageStatus: buildRuleCoverageStatus(topicId),
-      activatedRuleIds: [],
-      rejectedRuleIds: [],
+      canonicalRuleDecisionVersion: canonicalRuleDecision?.version || null,
+      activatedRuleIds: canonicalRuleDecision?.activatedRuleIds || [],
+      rejectedRuleIds: canonicalRuleDecision?.rejectedRuleIds || [],
       sourceEvidence: canonicalSourceEvidence,
     },
   };
 
-  return { contextPackage, completeness: missingFields.length === 0 ? 'complete' : 'partial', missingFields, intentResult, canonicalBridge };
+  return {
+    contextPackage,
+    completeness: missingFields.length === 0 ? 'complete' : 'partial',
+    missingFields,
+    intentResult,
+    canonicalBridge,
+    canonicalRuleDecision,
+  };
 }
 
 export default { buildKashfAiContextPackage, buildAiSafeKashfEngineOutput, buildAiSafeCanonicalKashfEngineOutput, buildAiSafeKashfBoard, buildRuleCoverageStatus, KASHF_METHOD_METADATA, KASHF_AI_CONTEXT_BUILDER_VERSION };
