@@ -185,8 +185,8 @@ window.QUESTION_BANK = [
   {
     id: 'q-illness-heal',
     category: 'health', houseId: 6, topicId: 'illness', kashfTopicId: 'illness',
-    label: 'האם החולה יחלים?',
-    desc: 'הפרוגנוזה: האם המחלה תחלוף והחולה יבריא',
+    label: 'האם החולה יחלים לפי דין H15?',
+    desc: 'דין עמ׳ 196 בלבד: H15 מיטיב מורה על ריפוי; H15 מזיק על התארכות המחלה; ממוזג נשאר ללא הכרעה. הכלל אינו פסק מוות ואינו אבחון רפואי',
     clientFields: [F.symptoms, F.duration, F.treatment],
   },
   {
@@ -333,21 +333,21 @@ window.QUESTION_BANK = [
     id: 'q-pregnancy',
     category: 'family', houseId: 5, topicId: 'childrenPregnancy', kashfTopicId: 'children',
     label: 'האם יש הריון?',
-    desc: 'בדיקה ישירה: האם יש הריון כרגע',
+    desc: 'דין עמ׳ 191 בלבד: H5 שותקת מורה שההריון נכון; H5 ריקה מורה שההריון בטל. שיטות אישור הריון נוספות בעמודים הבאים אינן מצביעות למסלול זה',
     clientFields: [F.pregnancyConcern],
   },
   {
     id: 'q-gender',
     category: 'family', houseId: 5, topicId: 'childrenPregnancy', kashfTopicId: 'children',
     label: 'זכר או נקבה?',
-    desc: 'לקביעת מין העובר — לאחר אישור הריון',
+    desc: 'דין עמ׳ 191 בלבד: מין הוולד לפי הסיווג הזכרי/נקבי של H5. שיטות המין החלופיות בעמ׳ 192–195 אינן מצביעות למסלול זה',
     clientFields: [F.pregnancyMonths],
   },
   {
     id: 'q-miscarriage',
     category: 'family', houseId: 5, topicId: 'childrenPregnancy', kashfTopicId: 'children',
-    label: 'חשש להפלה?',
-    desc: 'כשיש חשש מפגיעה בהריון — האם הסיכון ממשי',
+    label: 'האם מופיע סימן ההפלה של עמ׳ 191–192?',
+    desc: 'בדיקה מצומצמת: אדום/חֻמְרַה בבית 7 יחד עם שפל ראש/אַנְכִּיס בבית 8. היעדר הצירוף אינו מוכיח שההריון בטוח, וזה אינו אבחון רפואי',
     clientFields: [F.pregnancyMonths, F.symptoms],
   },
   {
