@@ -20589,42 +20589,32 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
     },
     {
       "id": "B14-HOUSE5-PREGNANCY-ROUTING-DEFERRED",
-      "pages": [
-        191
-      ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "Pregnancy confirmation, sex, survival, birth difficulty and twins are distinct intents; do not aggregate their indicators."
+      "pages": [191],
+      "status": "RESOLVED",
+      "summary": "The p191 pregnancy opening is now separated by exact intent: pregnancy existence, sex, fetal safety, delivery difficulty and twins are independent source methods and never aggregate.",
+      "resolution": "q-pregnancy remains the p191 H5 silent/empty rule only; q-gender remains the p191 H5 masculine/feminine rule only; q-child-survive remains the p191 H1 plus severe H6+H8 safety rule; q-birth-ease remains the p191 H1/H5/H15 delivery rule. The p191 twins statement is registered separately as pregnancy.p191.twinsMujassad but runtime is blocked because the printed term مجسدا is not silently equated with one or both canonical mujassad movement classes."
     },
     {
       "id": "B15-P192-INTENT-SEPARATION",
-      "pages": [
-        192
-      ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "Route pregnancy confirmation, miscarriage risk, maternal safety, child sex, and month count as distinct intents."
+      "pages": [192],
+      "status": "RESOLVED",
+      "summary": "The p192 pregnancy branches are now separated into miscarriage risk, maternal safety, alternate fetal-sex methods and pregnancy-month count; no multi-method vote is permitted.",
+      "resolution": "q-miscarriage now selects only the exact cross-page p191→p192 Humra/Red H7 + Nakis/Shallow-Head H8 sign. Its absence remains unresolved rather than being inverted to safety, and its professional output is explicitly non-medical/non-certain. p192 H5/H11 internal-external sex and H1/H6/H8/H12 parity sex remain reference-only alternatives; H6/H8/H12 maternal safety is its own non-runtime intent; pregnancy-month count is blocked until the printed 'third in the pregnancy house' operation and the precedence between its two month-count routes are computationally closed."
     },
     {
       "id": "B15-P194-CHILD-HEALTH-ROUTING",
-      "pages": [
-        194
-      ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "Keep child existence, health, birth difficulty, and welfare as separate question routes."
+      "pages": [194],
+      "status": "RESOLVED",
+      "summary": "Child existence, long-term health trajectory, delivery indications and child wellbeing on p194 are now separate source methods; the health route executes only H6/H8.",
+      "resolution": "q-child-health remains child.p194.healthTrajectoryH6H8: H6 malefic gives the childhood-pains testimony; H8 malefic gives low hope; H8 benefic gives improvement with age. The preceding H1/H5 nature-match and neither-male-nor-female mutable empty-womb clause is a distinct child-existence method and is not a health gate. H5 delivery weight/benefic statements are reference-only and do not vote with q-birth-ease. H5/H16 wellbeing is a separate non-runtime intent."
     },
     {
       "id": "B15-P196-ILLNESS-CHAPTER-OPENING",
-      "pages": [
-        196
-      ],
-      "status": "DEFERRED_UNTIL_INDEX_COMPLETE",
-      "summary": "The Chapter 6 illness opening is indexed as a separate route from the closing children rules."
+      "pages": [196],
+      "status": "RESOLVED",
+      "summary": "The p196 Chapter-6 illness opening is now separated into H15 recovery, H1-recurrence duration/risk, and sensory-sign source procedures, without leaking the closing children rules or p197+ illness methods into the recovery verdict.",
+      "resolution": "q-illness-heal uses only illness.p196.outcomeH15: benefic H15 => recovery; malefic H15 => illness prolonged; mixed => unresolved. A malefic H15 is not converted to death or permanent non-recovery. H1 recurring in H6/H8 is modeled as a distinct non-runtime duration/risk intent, and p196 vision/hearing signs are separate source knowledge only. No p197 humors/body-location rule or broad illness topic bundle votes into q-illness-heal."
     }
-  ],
-  "indexPolicyNotes": [
-    {
-      "id": "B03-PROFILE-SCOPE",
-      "note": "Individual-profile statements on pp68–95 are stored as localProfileAttributes. When they conflict with earlier classification tables, both are preserved; no silent global normalization."
-    },
     {
       "id": "B04-NUMERAL-GATE",
       "note": "For house/figure numerals, certification requires visual numeral re-read from the printed scan; no symmetry-based correction is allowed."
