@@ -100,7 +100,8 @@ assert.match(p187.notes || '', /not source-secure as “north”/i);
 const wellRoute = resolveKashfRouteByQuestionId('q-well-drilling');
 assert.equal(wellRoute.kashfMethodId, 'well.p188.recast1468');
 assert.equal(wellRoute.canRunKashf, false);
-assert.match(wellRoute.note || '', /depth is a separate intent|Water depth is a separate intent/i);
+const wellMethod = getKashfMethod('well.p188.recast1468');
+assert.match(wellMethod.notes || '', /depth is a separate intent|water depth is a separate intent/i);
 
 const openDepth = getKashfMethod('hiddenDepth.p188-189.openElementLengths');
 const tamtamDepth = getKashfMethod('waterDepth.p189-190.tamtamTable');
