@@ -40,7 +40,14 @@
 - [✅] p177 — שיטת הבית השלושה־עשר היחסי רשומה כ-`blocked-by-source`; אין מיפוי יחסי מומצא ואין תיקון למונחים `معموم` / `ولا يحصل معارك`. `B12-P177-RELATIVE-THIRTEENTH-BLOCKED` נסגר.
 - [✅] p178 — שיטת אורך החיים נשארת source-verified אבל executor-pending: אין שימוש בטבלת כבוד/מושב או בנתוני חאווי במקום `מספר הצורה באותו בית` שטרם הוסמך תפעולית. `q-lifespan` נחסם נכון, בעוד `q-lifespan-stages` של p264 נשאר מסלול נפרד. `B12-P178-LIFESPAN-COMPUTATION-BLOCKED` נסגר.
 - [✅] מצב downstream לאחר Batch 17: **32/46 RESOLVED**, נותרו **14**.
-- [ ] הבא לפי סדר המקור: p179 — לסגור את שיטת תנועת החוב בלי להמציא walk-two/walk-three, “hand”, Farah או Bakr (`B12-P179-DEBT-WALKING-BLOCKED`), ואז לעבור לגל בית 2 pp180–182 (`B13-HOUSE2-ONE-PRIMARY-MONEY-ROUTE`, `B13-P180-ELEMENT-AMOUNT-BLOCKED`, `B13-P181-OTHER-BOOK-REMAINDER-BLOCKED`).
+- [✅] p179 — שיטת תנועת החוב נסגרה כ-`blocked-by-source`: `q-loan` / `q-loan-return` מצביעות על `debt.p179.creditorDebtorWalking`, אך runtime חסום בלי להמציא walk-two/walk-three, “hand”, Farah או Bakr. שיטת p234 החיצונית אינה fallback. `B12-P179-DEBT-WALKING-BLOCKED` נסגר.
+- [✅] בית 2 pp180–182 — לכל intent יש primary route יחיד: מקור ממון p179; מחיה p180; השגת ממון p181 recast; מצב ממון כללי p182 H2+H10. אין topic-bundle, supportingChecks, הצבעת רוב או ערבוב שיטות במסלול Question Bank. `B13-HOUSE2-ONE-PRIMARY-MONEY-ROUTE` נסגר.
+- [✅] p180 — השוואת ממון השואל/נשאל נשמרה תחת intent נפרד וננעלה `blocked-by-source`; אין המרה מומצאת מן היסוד התחתון ומספרו לכמות ממון. `B13-P180-ELEMENT-AMOUNT-BLOCKED` נסגר.
+- [✅] p181 — השיטה המפורשת `ومن غير الكتاب` נרשמה `educational-only / source-conflict`; הפחתה בשניים מול טבלת שאריות 1–7 נשמרת כסתירת מקור ואין runtime או vote. `B13-P181-OTHER-BOOK-REMAINDER-BLOCKED` נסגר.
+- [✅] p182 — `q-money-state` הועבר למסלול המקור H2+H10 (`money.p182.h2h10Outlook`) עם Professional Verdict Safety; `q-money-halal` הוכר כמבוסס-מקור H9+H11 אך נשאר `blocked-by-source` עד שהמקור יגדיר תפעולית את “נטיית” הצורה.
+- [✅] QA רחב Batch 18 עבר PASS מלא לאחר תיקון מונה ההסמכות מ-43 ל-44: routing 1619/0, retrieval 618/0, live bridge 145/0, professional safety 424/0, 100% Question Route Coverage, וכן בדיקות Batch16/17, catalog, applicability ו-Kashf/Hawi isolation.
+- [✅] מצב downstream לאחר Batch 18: **36/46 RESOLVED**, נותרו **10**.
+- [ ] הבא לפי סדר המקור: `B13-HOUSE3-RELOCATION-ROUTING-DEFERRED` יחד עם `B13-P184-PROPERTY-MAP-NO-RUNTIME`; אחריהם גל בית 4: `B14-HIDDEN-LOCATION-NO-MULTIMETHOD`, `B14-P185-RECURSIVE-QUARTERS-BLOCKED`, `B14-P187-KIND-DIRECTION-BLOCKED`, `B14-P188-190-DEPTH-METHODS-BLOCKED`; ואז בית 5/מחלה: `B14-HOUSE5-PREGNANCY-ROUTING-DEFERRED`, `B15-P192-INTENT-SEPARATION`, `B15-P194-CHILD-HEALTH-ROUTING`, `B15-P196-ILLNESS-CHAPTER-OPENING`.
 
 ---
 
