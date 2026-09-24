@@ -147,6 +147,29 @@ Source Freeze is a provenance/finality layer only. It does not activate:
 - majority voting
 - Hawi substitutes
 
+## QA
+GitHub Actions run `35985364183` — **PASS**.
+
+Validated:
+- Master Index embedded JSON parses
+- downstream queue: **46/46 RESOLVED**
+- Source Freeze queue: **48/48 frozen**
+- **9 RESOLVED / 39 SOURCE_CONFLICT/NON_OPERATIONAL / 0 OPEN**
+- p254 `التويهر` remains NON_OPERATIONAL
+- p274 preserves `خشي على نفسه` with the editor conjecture kept separate
+- p275 source title is `الملتقط في علم النقط`
+- Batch21 and Batch20 regressions
+- canonical routing: **1751 passed / 0 failed**
+- AI retrieval: **772 passed / 0 failed**
+- source-ready retrieval coverage: **60/60**
+- runnable retrieval coverage: **46/46**
+- AI retrieval live bridge: **145 passed / 0 failed**
+- professional verdict safety: **425 passed / 0 failed**
+- book-rule catalog
+- rule applicability
+- Kashf/Hawi isolation
+- Question Route Coverage: **138/138 = 100%**
+
 ## Final result
 **SOURCE FREEZE COMPLETE — 48/48 frozen**
 - **9 RESOLVED**
