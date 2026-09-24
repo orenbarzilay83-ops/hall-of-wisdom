@@ -17,12 +17,16 @@ export interface SanitizationResult {
 }
 
 interface KashfReadingPayloadLike {
+  decisionSummary?: unknown;
   readingContext?: {
     sourceEvidence?: unknown;
     canonicalResolution?: unknown;
     canonicalRetrieval?: unknown;
     aiVerdictAllowed?: unknown;
     professionalVerdictSafety?: unknown;
+    canonicalRuleDecisionVersion?: unknown;
+    activatedRuleIds?: unknown;
+    rejectedRuleIds?: unknown;
   };
 }
 
@@ -96,6 +100,35 @@ function validateCanonicalBlock(payload: KashfReadingPayloadLike): boolean {
   const executorReady = retrieval.executorStatus === 'ready';
   const sourceReady = retrieval.kashfRuntimeStatus === 'ready';
   if (rc.aiVerdictAllowed === true && !(runtimeAllowed && executorReady && sourceReady)) return false;
+
+  // Canonical Rule Decision payload — once the canonical block exists, the
+  // live AI contract must carry the exact deterministic method activation and
+  // isolation boundary produced by kashf-canonical-rule-decision.js.
+  if (rc.canonicalRuleDecisionVersion !== 'kashf-canonical-rule-decision-v1') return false;
+  if (!isStringArray(rc.activatedRuleIds, 1, 200)) return false;
+  if (!isStringArray(rc.rejectedRuleIds, 60, 200)) return false;
+  if (!isShortString(payload.decisionSummary, 2000)) return false;
+
+  const activatedRuleIds = rc.activatedRuleIds as string[];
+  const rejectedRuleIds = rc.rejectedRuleIds as string[];
+  if (new Set(activatedRuleIds).size !== activatedRuleIds.length) return false;
+  if (new Set(rejectedRuleIds).size !== rejectedRuleIds.length) return false;
+  if (activatedRuleIds.some((ruleId) => rejectedRuleIds.includes(ruleId))) return false;
+
+  const selectedMethodId = String(resolution.kashfMethodId || '');
+  const doNotMixWith = retrieval.doNotMixWith as string[];
+  if (!doNotMixWith.every((ruleId) => rejectedRuleIds.includes(ruleId))) return false;
+
+  if (rc.aiVerdictAllowed === true) {
+    if (activatedRuleIds.length !== 1 || activatedRuleIds[0] !== selectedMethodId) return false;
+    const sourceEvidence = rc.sourceEvidence;
+    if (!Array.isArray(sourceEvidence) || sourceEvidence.length === 0) return false;
+    const expectedEvidence = `v57 עמ׳ ${String(v57.page)}: ${String(v57.hebrewRule)}`;
+    if (!sourceEvidence.includes(expectedEvidence)) return false;
+  } else {
+    if (activatedRuleIds.length !== 0) return false;
+    if (selectedMethodId && !rejectedRuleIds.includes(selectedMethodId)) return false;
+  }
 
   return true;
 }
