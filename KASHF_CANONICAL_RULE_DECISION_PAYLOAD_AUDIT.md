@@ -97,6 +97,17 @@ The duplicates were consolidated and removed. The final retrieval object now has
 
 This is why the first temporary QA run failed and the final run passed; no source rule was weakened to satisfy the test.
 
+## Live payload boundary hardening
+The server-side `kashf_reading_payload_sanitizer.ts` was also hardened after the adapter was wired. In canonical mode it now verifies:
+- the Rule Decision payload version
+- at most one activated rule
+- no overlap between activated and rejected IDs
+- every canonical `doNotMixWith` entry is present in `rejectedRuleIds`
+- when `aiVerdictAllowed=true`, the sole activated ID equals the selected canonical method and matching v57 source evidence is present
+- when `aiVerdictAllowed=false`, no rule is activated and a selected blocked method is rejected
+
+This prevents a malformed/tampered Rule Decision payload from crossing the live Smart Advisor boundary.
+
 ## Regression
 Added:
 
@@ -116,7 +127,7 @@ Coverage includes:
 - legacy context path remains honest and partial
 
 ## QA
-Final GitHub Actions run `35986026389` — **PASS**.
+Final GitHub Actions run `35986172739` — **PASS**.
 
 Passed:
 - canonical Rule Decision payload regression
