@@ -66,7 +66,9 @@
 - [✅] מצב Source Freeze לאחר Wave 01: **20/48 frozen**, נותרו **28 SOURCE-OPEN**.
 - [✅] Source Freeze Wave 02 — p185–201: ענף ״מים→צמחים/ירקות״ בעמ׳ 185 הוקפא כקריאה מקורית מפורשת ולא כטעות; 94 מול 16×4 נשאר SOURCE_CONFLICT/NON_OPERATIONAL; `ناحية الجاه` בעמ׳ 187 ו-`مثلثة` בעמ׳ 190 נשארו NON_OPERATIONAL; בעמ׳ 201 בוצעה קריאה חזותית שנייה ואושרו הטוקנים המודפסים `التشمير` ו-`الأنكيس` כפי שהם.
 - [✅] מצב Source Freeze לאחר Wave 02: **25/48 frozen** — **5 RESOLVED**, **20 SOURCE_CONFLICT/NON_OPERATIONAL**, נותרו **23 OPEN**.
-- [ ] הבא לפי סדר המקור: p221–250 — Judla/glyph, H18, occupation tokens, travel technical tokens/contradictions, p244–250 damaged derivations and direction token; לאחר מכן p254–275.
+- [✅] Source Freeze Wave 03 — p221–251: `الجودلة`+glyph 1121 אושר בקריאה חזותית; p240 תוקן בקריאת מקור ישירה מ-`الذراقم` השגוי ל-`الأراقم`; H18, טוקני המקצועות, `تراب المنطقة`, סתירת H12 בספינה, `الزمل`, זוג 13/13, p246 `مكتوب` מול p251 `منكوب`, נגזרות p248, رؤوس מול الأوتاد ו-`الجاه` הוקפאו כ-SOURCE_CONFLICT/NON_OPERATIONAL בלי נרמול.
+- [✅] מצב Source Freeze לאחר Wave 03: **38/48 frozen** — **7 RESOLVED**, **31 SOURCE_CONFLICT/NON_OPERATIONAL**, נותרו **10 OPEN**.
+- [ ] הבא לפי סדר המקור — Wave 04 הסופי p254–275: `B28-SOURCE-P254-AL-TUWAYHIR`, `B28-SOURCE-P254-AL-GHARAIM`, `B28-SOURCE-P255-TARAKTAHU`, `B28-SOURCE-P256-DUPLICATED-SAAD`, `B28-SOURCE-P261-HARITHAN`, `B29-SOURCE-P265-KHILA-AL-MULUK`, `B29-SOURCE-P272-FA-IN-YAKUN`, `B29-SOURCE-P273-INCOMING-CONJECTURE`, `B30-SOURCE-P274-KHASHIYA-CONJECTURE`, `B30-SOURCE-P275-AL-MUNAQQAT-TITLE`.
 - [ ] לאחר Source Freeze מלא: Rule Decision payload (`activatedRuleIds`, `rejectedRuleIds`, `decisionSummary`) → Golden/E2E → Clean Chat Knowledge Pack → Live deployment verification.
 
 ---
