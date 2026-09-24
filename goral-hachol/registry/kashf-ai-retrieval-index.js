@@ -40,13 +40,13 @@ const STOPWORDS = new Set([
  */
 const RETRIEVAL_OVERRIDES = Object.freeze({
   'pregnancy.p191.existsH5SilentEmpty': {
-    aliases: ['האם יש הריון', 'האם ההריון קיים', 'H5 שותקת ריקה הריון', 'פתיחת דין הריון עמ 191'],
-    doNotMixWith: ['pregnancy.p191.genderH5', 'pregnancy.p191-192.miscarriageRedH7NakisH8', 'pregnancy.p192.maternalSafetyH6H8H12', 'pregnancy.p192.monthCount'],
+    aliases: ['האם יש הריון', 'האם ההריון קיים', 'האם ההריון נכון', 'האם היא בהריון', 'קיום הריון', 'H5 שותקת ריקה הריון', 'פתיחת דין הריון עמ 191'],
+    doNotMixWith: ['pregnancy.p191.genderH5', 'pregnancy.p191.childSafetyH1H6H8', 'pregnancy.p191.deliveryDifficultyH1H5H15', 'pregnancy.p191-192.miscarriageRedH7NakisH8', 'pregnancy.p192.maternalSafetyH6H8H12', 'pregnancy.p192.monthCount'],
     houses: [5],
   },
   'pregnancy.p191.genderH5': {
-    aliases: ['זכר או נקבה', 'מין הוולד לפי H5', 'צורה זכרית נקבית בית חמישי', 'מין העובר עמ 191'],
-    doNotMixWith: ['pregnancy.p192.genderH5H11InOut', 'pregnancy.p192.genderParityH1H6H8H12', 'pregnancy.p191.existsH5SilentEmpty', 'pregnancy.p191.childSafetyH1H6H8'],
+    aliases: ['זכר או נקבה', 'מין הוולד', 'בן או בת', 'זכר או נקבה בהריון', 'מה מין התינוק', 'מין הוולד לפי H5', 'צורה זכרית נקבית בית חמישי', 'מין העובר עמ 191'],
+    doNotMixWith: ['pregnancy.p192.genderH5H11InOut', 'pregnancy.p192.genderParityH1H6H8H12', 'pregnancy.p191.existsH5SilentEmpty', 'pregnancy.p191.childSafetyH1H6H8', 'pregnancy.p191.deliveryDifficultyH1H5H15'],
     houses: [5],
   },
   'pregnancy.p191.twinsMujassad': {
@@ -160,7 +160,7 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
     houses: [6, 8],
   },
   'illness.p196.outcomeH15': {
-    aliases: ['האם החולה יחלים', 'H15 מיטיב יתרפא', 'H15 מזיק המחלה תתארך', 'תוצאת החולי עמ 196'],
+    aliases: ['האם החולה יחלים', 'האם יתרפא', 'החלמה ממחלה', 'האם המחלה תתארך', 'תוצאת החולי', 'H15 מיטיב יתרפא', 'H15 מזיק המחלה תתארך', 'תוצאת החולי עמ 196'],
     doNotMixWith: ['illness.p196.h1RecurrenceDurationRisk', 'illness.p196.sensorySignsH6H8', 'illness.bodyPart.h6Figure', 'illness.p197.h1h8ElementHumor'],
     houses: [15],
   },
@@ -312,25 +312,10 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
     aliases: ['האם המסע טוב', 'האם הנסיעה מוצלחת', 'האם כדאי לצאת למסע', 'הצלחת הנסיעה', 'בטיחות והצלחת המסע'],
     houses: [1, 3, 5, 9],
   },
-  'illness.p196.outcomeH15': {
-    aliases: ['האם החולה יחלים', 'האם יתרפא', 'החלמה ממחלה', 'האם המחלה תתארך', 'תוצאת החולי', 'H15 מיטיב יתרפא', 'H15 מזיק המחלה תתארך'],
-    doNotMixWith: ['illness.p196.h1RecurrenceDurationRisk', 'illness.p196.sensorySignsH6H8', 'illness.bodyPart.h6Figure', 'illness.p197.h1h8ElementHumor'],
-    houses: [15],
-  },
   'illness.bodyPart.h6Figure': {
     aliases: ['איפה בגוף החולי', 'איזה איבר חולה', 'מקום המחלה בגוף', 'איבר הגוף החולה'],
     doNotMixWith: ['illness.p196.outcomeH15'],
     houses: [6],
-  },
-  'pregnancy.p191.existsH5SilentEmpty': {
-    aliases: ['האם יש הריון', 'האם ההריון נכון', 'האם היא בהריון', 'קיום הריון'],
-    doNotMixWith: ['pregnancy.p191.genderH5', 'pregnancy.p191.childSafetyH1H6H8', 'pregnancy.p191.deliveryDifficultyH1H5H15'],
-    houses: [5],
-  },
-  'pregnancy.p191.genderH5': {
-    aliases: ['מין הוולד', 'בן או בת', 'זכר או נקבה בהריון', 'מה מין התינוק'],
-    doNotMixWith: ['pregnancy.p191.existsH5SilentEmpty', 'pregnancy.p191.childSafetyH1H6H8', 'pregnancy.p191.deliveryDifficultyH1H5H15'],
-    houses: [5],
   },
   'hidden.p185.recursiveQuarterFireAir': {
     aliases: ['איתור רקורסיבי אש ואוויר עמ 185', '16 מקומות ארבעה חלקים 94', 'שארית ארבע מזרח מערב דרום צפון עמ 185', 'ארבעה ותשעים מקום נסתר'],
