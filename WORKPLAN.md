@@ -62,7 +62,10 @@
 - [✅] p196 — `q-illness-heal` נשאר H15 בלבד; חזרת H1 ב-H6/H8 וסימני הראייה/שמיעה הם intents נפרדים ולא מצביעים לפסק ההחלמה. אין זליגה של p197+ לתוך פתיחת הפרק.
 - [✅] QA רחב Batch 21 עבר PASS מלא: routing 1751/0; retrieval 772/0 (88 records, source-ready 60/60, runnable 46/46); live bridge 145/0; professional safety 425/0; 100% Question Route Coverage (138/138); וכן Batch16–20, catalog, applicability ו-Kashf/Hawi isolation.
 - [✅] **DOWNSTREAM COMPLETE — 46/46 RESOLVED, נותרו 0.**
-- [ ] השלב הבא לפי ה-roadmap: **Source Freeze** לכל רשומות `SOURCE-OPEN` — כל אחת תיסגר רק כ-`RESOLVED` או כ-`SOURCE_CONFLICT/NON_OPERATIONAL`; אין להשתמש ב-SOURCE-OPEN כדי לשנות בדיעבד את סגירת ה-downstream בלי ראיית מקור חדשה.
+- [✅] Source Freeze Wave 01 — רשומות המקור המוקדמות p45–181 נבדקו מחדש מול הסריקה ורשומות האימות: **20/48** SOURCE-OPEN נסגרו; מתוכן **3 RESOLVED** ו-**17 SOURCE_CONFLICT/NON_OPERATIONAL**. נשמרו במפורש הסתירות/החוסרים p45, p53, p118, p126/132, p136/137, p151, p159, p165, p168–169, p173–174, p177, p179, p180, p181; p148 נסגר ככותרת ריקה מקורית, ו-p157–158 נסגר בכך שאין בכשף ענף mixed-parity מפורש.
+- [✅] מצב Source Freeze לאחר Wave 01: **20/48 frozen**, נותרו **28 SOURCE-OPEN**.
+- [ ] הבא לפי סדר המקור: p185–201 — `B14-SOURCE-P185-WATER-PLANTS-ODD-BRANCH`, `B14-SOURCE-P185-94-VS-RECURSIVE-COUNT`, `B14-SOURCE-P187-MUNSHAAT-DIRECTION`, `B14-SOURCE-P190-MUTHALLATHA-OPERATION`, `B16-SOURCE-P201-ANIMAL-NAMES`; לאחר מכן p221 ואילך.
+- [ ] לאחר Source Freeze מלא: Rule Decision payload (`activatedRuleIds`, `rejectedRuleIds`, `decisionSummary`) → Golden/E2E → Clean Chat Knowledge Pack → Live deployment verification.
 
 ---
 
