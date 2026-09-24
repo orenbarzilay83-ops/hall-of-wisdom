@@ -465,6 +465,54 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     notes: 'Body-source mother rule. Night: house quality plus White/Road in angles or succedents vs cadents. Day: judge by Venus figures. Existing helper is incomplete and must not be reused unchanged.',
   }),
 
+  'hidden.p185.recursiveQuarterFireAir': method({
+    kashfMethodId: 'hidden.p185.recursiveQuarterFireAir',
+    kashfIntentId: 'hidden.locationRecursiveQuarterP185',
+    topicId: 'hiddenTreasure',
+    sourcePages: [185],
+    kashfRuntimeStatus: 'blocked-by-source',
+    runtimeAllowed: false,
+    executionKind: 'source-procedure',
+    executorStatus: 'pending',
+    notes: 'Printed p185 first combines fire-point count with the relevant name/owner-name count, reduces by fours to choose east/west/south/north, then repeats inside the selected quarter using air points and the name, recursively narrowing the location. The same printed passage says there are sixteen places, each divided into four, yet concludes with أربعة وتسعين (94). Preserve the printed 94 and the apparent 16×4 conflict; do not normalize it to 64, infer a missing subdivision rule, or execute this method until the conflict is source-resolved.',
+  }),
+
+  'hidden.p186.nameDayAbjadQuarter': method({
+    kashfMethodId: 'hidden.p186.nameDayAbjadQuarter',
+    kashfIntentId: 'hidden.directionNameDayQuarterP186',
+    topicId: 'hiddenTreasure',
+    sourcePages: [186],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'source-procedure',
+    executorStatus: 'pending',
+    notes: 'Printed p186 is a separate directional procedure: stand in the middle of the place facing the qibla, total the querent name, mother name and current day by the large abjad, reduce by four, then map remainder 1=east, 2=west, 3=south, 4=north. It requires dedicated name/day inputs and abjad calculation; it is not inferred from the ordinary geomantic board and is not a supporting vote for the p188 quarter-cast route.',
+  }),
+
+  'hidden.p186.tamtamFourQuarterCasts': method({
+    kashfMethodId: 'hidden.p186.tamtamFourQuarterCasts',
+    kashfIntentId: 'hidden.directionTamtamQuarterP186',
+    topicId: 'hiddenTreasure',
+    sourcePages: [186],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'additional-cast',
+    executorStatus: 'pending',
+    notes: 'Printed p186 Tamtam method divides the place into four directions and casts one figure for each. Internal benefic indicates the object in that quarter; external malefic indicates nothing there. The special 2-benefic/2-malefic branch explicitly derives TWO intermediate figures and then combines them for the final figure. This needs a dedicated four-cast flow and must not be collapsed into, aggregated with, or used as fallback for p188 hidden.p188.quarterDirection.',
+  }),
+
+  'hidden.p187.kindRootDirection': method({
+    kashfMethodId: 'hidden.p187.kindRootDirection',
+    kashfIntentId: 'hidden.kindAndRootDirectionP187',
+    topicId: 'hiddenTreasure',
+    sourcePages: [187],
+    kashfRuntimeStatus: 'blocked-by-source',
+    runtimeAllowed: false,
+    executionKind: 'source-procedure',
+    executorStatus: 'pending',
+    notes: 'Printed p187 requires extracting TWO figures from the angles and then a third figure from those two. Its element gives the hidden thing context: fire=near fire, air=suspended/in air, water=near water, earth=buried in earth. Root placement then maps mothers=east, daughters=west and balances=south, while the munshaat branch prints the difficult token ناحية الجاه. That token is not source-secure as “north”; runtime is blocked and no north or other direction may be inferred from symmetry, Hawi, or another chapter.',
+  }),
+
   'hidden.p188.isStillThere': method({
     kashfMethodId: 'hidden.p188.isStillThere',
     kashfIntentId: 'hidden.isStillThere',
@@ -486,7 +534,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     runtimeAllowed: false,
     executionKind: 'additional-cast',
     executorStatus: 'pending',
-    notes: 'Divide the suspected place into four quarters and cast one figure per direction. This requires method-specific additional input/casting and cannot be inferred from the existing board.',
+    notes: 'Printed p188 divides the suspected place into four quarters and casts one figure per direction: internal benefic indicates the suspected quarter; external malefic indicates nothing there, until four figures are completed. This requires a dedicated four-cast input flow and cannot be inferred from the existing board. It is the single selected q-dig-direction route; the p185 recursive arithmetic, p186 name/day and Tamtam methods, p187 root method and p190 recursive-triangle method are separate alternatives and never vote with it.',
   }),
 
   'well.p188.recast1468': method({
@@ -498,7 +546,55 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     runtimeAllowed: false,
     executionKind: 'recast-board',
     executorStatus: 'pending',
-    notes: 'Make H1,H4,H6,H8 the new mothers, complete a new board, then judge H4 and angles as benefic+internal. Existing legacy helper using original houses is not source-equivalent. Depth is a separate intent.',
+    notes: 'Make H1,H4,H6,H8 the new mothers, complete a new board, then judge H4 and angles as benefic+internal. Existing legacy helper using original houses is not source-equivalent. This method answers attainment of the drilling/water objective only; water depth is a separate intent and must never be silently appended.',
+  }),
+
+  'hiddenDepth.p188-189.openElementLengths': method({
+    kashfMethodId: 'hiddenDepth.p188-189.openElementLengths',
+    kashfIntentId: 'hidden.depthByOpenElements',
+    topicId: 'hiddenTreasure',
+    sourcePages: [188, 189],
+    kashfRuntimeStatus: 'blocked-by-source',
+    runtimeAllowed: false,
+    executionKind: 'source-procedure',
+    executorStatus: 'pending',
+    notes: 'Printed pp188-189 gives the element-length scale fire=one finger, air=one span, water=one cubit, earth=one stature, then instructs using the indicator figure’s OPEN elements with a letter/opposites arrangement. The worked example totals two fingers and one span. Runtime remains blocked until the exact open-element extraction, figure/letter ordering and measurement accumulation are Golden-Testable from the source; do not substitute ordinary element classification or the Tamtam depth table.',
+  }),
+
+  'waterDepth.p189-190.tamtamTable': method({
+    kashfMethodId: 'waterDepth.p189-190.tamtamTable',
+    kashfIntentId: 'well.waterDepthTamtam',
+    topicId: 'hiddenTreasure',
+    sourcePages: [189, 190],
+    kashfRuntimeStatus: 'blocked-by-source',
+    runtimeAllowed: false,
+    executionKind: 'source-procedure',
+    executorStatus: 'pending',
+    notes: 'Printed Tamtam water-depth procedure derives one figure from H1+H12, a second from H12+H9, then derives a third from those two and applies the p189-190 figure-specific depth table. Keep this method separate from the open-element length framework. Runtime is blocked until the complete figure identities/table measurements and derivation chain are captured in a Golden-Testable executor; do not merge table values with the element-length scale.',
+  }),
+
+  'hidden.p190.nearFarElementDirection': method({
+    kashfMethodId: 'hidden.p190.nearFarElementDirection',
+    kashfIntentId: 'hidden.nearFarAndElementDirection',
+    topicId: 'hiddenTreasure',
+    sourcePages: [190, 191],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'source-procedure',
+    executorStatus: 'pending',
+    notes: 'Printed pp190-191 give a separate near/far/path-and-direction rule: Moon and Mars indicate near; Mercury and Jupiter indicate a rough road/fear; Saturn in H1 indicates a thorny road. H1 element gives direction: air=north, fire=east, earth=qibla, water=west. This is a distinct procedure with its own planetary/element prerequisites and is not a supporting vote for q-dig-direction or the depth methods.',
+  }),
+
+  'hidden.p190-191.recursiveHouseTriangles': method({
+    kashfMethodId: 'hidden.p190-191.recursiveHouseTriangles',
+    kashfIntentId: 'hidden.locationRecursiveHouseTriangles',
+    topicId: 'hiddenTreasure',
+    sourcePages: [190, 191],
+    kashfRuntimeStatus: 'blocked-by-source',
+    runtimeAllowed: false,
+    executionKind: 'source-procedure',
+    executorStatus: 'pending',
+    notes: 'Printed pp190-191 say that when the hidden thing is inside a house, divide the house into four directions and اضرب لكل جهة مثلثة, use empty/full results to choose the quarter, subdivide that quarter again, and repeat until the exact spot remains. The technical operation مثلثة is not defined in this passage. Runtime is blocked; do not reduce مثلثة to one ordinary figure and do not replace this method with the p185 or p188 quarter procedures.',
   }),
 
   'lostItem.p202.returnH6H8': method({

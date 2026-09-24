@@ -307,15 +307,15 @@ window.QUESTION_BANK = [
   {
     id: 'q-dig-direction',
     category: 'money', houseId: 4, topicId: 'hiddenTreasure', kashfTopicId: 'hiddenTreasure',
-    label: 'לאיזה כיוון לחפור?',
-    desc: 'לכיוון חיפוש בלבד — מזרח/מערב/צפון/דרום',
+    label: 'לאיזה כיוון לחפש / לחפור?',
+    desc: 'מסלול עמ׳ 188 בלבד: ארבעה רבעים וארבע הטלות ייעודיות. אין לצרף אליו שיטות כיוון אחרות ואין להסיק את ארבע ההטלות מן הלוח הרגיל.',
     clientFields: [F.treasureLoc],
   },
   {
     id: 'q-well-drilling',
     category: 'money', houseId: 4, topicId: 'hiddenTreasure', kashfTopicId: 'hiddenTreasure',
-    label: 'האם יש מים בקרקע?',
-    desc: 'לפני קידוח — האם שווה לנסות, ובאיזה עומק',
+    label: 'האם קידוח הבאר / התעלה ישיג את המבוקש?',
+    desc: 'דין עמ׳ 188 בונה לוח חדש מ־H1/H4/H6/H8 ובוחן אם המבוקש מתקבל. עומק המים הוא דין נפרד ואינו מחושב במסלול זה.',
     clientFields: [F.wellLoc],
   },
   {

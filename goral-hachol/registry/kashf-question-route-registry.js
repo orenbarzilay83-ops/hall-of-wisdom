@@ -376,7 +376,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfIntentId: 'hidden.direction',
     kashfMethodId: 'hidden.p188.quarterDirection',
     kashfRuntimeStatus: 'ready',
-    note: 'Requires a dedicated four-quarter casting flow; it cannot be inferred from the ordinary board.',
+    note: 'Select only the printed p188 four-quarter cast. It requires a dedicated four-cast input flow and cannot be inferred from the ordinary board. The p185, p186, p187 and p190 location methods are separate alternatives and are never aggregated, voted or used as automatic fallbacks.',
   }),
 
   'q-well-drilling': route({
@@ -385,7 +385,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfIntentId: 'well.result',
     kashfMethodId: 'well.p188.recast1468',
     kashfRuntimeStatus: 'ready',
-    note: 'This canonical route answers whether the drilling/water objective is obtained. The current Question Bank wording also asks depth; depth is a separate intent and must be split rather than silently merged.',
+    note: 'This canonical route answers only whether the drilling/water objective is obtained by the p188 H1/H4/H6/H8 recast. Water depth is a separate intent; neither p188-189 element lengths nor the p189-190 Tamtam table may be silently merged into this route.',
   }),
 
   // ── AUDITED MONEY + ECONOMY SLICE -------------------------------------

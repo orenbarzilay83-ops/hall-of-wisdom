@@ -262,9 +262,60 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
     doNotMixWith: ['pregnancy.p191.existsH5SilentEmpty', 'pregnancy.p191.childSafetyH1H6H8', 'pregnancy.p191.deliveryDifficultyH1H5H15'],
     houses: [5],
   },
+  'hidden.p185.recursiveQuarterFireAir': {
+    aliases: ['איתור רקורסיבי אש ואוויר עמ 185', '16 מקומות ארבעה חלקים 94', 'שארית ארבע מזרח מערב דרום צפון עמ 185', 'ארבעה ותשעים מקום נסתר'],
+    doNotMixWith: ['hidden.p186.nameDayAbjadQuarter', 'hidden.p186.tamtamFourQuarterCasts', 'hidden.p187.kindRootDirection', 'hidden.p188.quarterDirection', 'hidden.p190-191.recursiveHouseTriangles'],
+    houses: [],
+  },
+  'hidden.p186.nameDayAbjadQuarter': {
+    aliases: ['כיוון לפי שם האם והיום', 'פנה לקיבלה שם האם יום שארית ארבע', 'אבגד גדול כיוון הדבר הנסתר', 'שם שואל שם אמו והיום עמ 186'],
+    doNotMixWith: ['hidden.p185.recursiveQuarterFireAir', 'hidden.p186.tamtamFourQuarterCasts', 'hidden.p187.kindRootDirection', 'hidden.p188.quarterDirection'],
+    houses: [],
+  },
+  'hidden.p186.tamtamFourQuarterCasts': {
+    aliases: ['טמטם ארבעה רבעים עמ 186', 'שתי צורות ביניים שני מיטיבים שני מזיקים', 'ארבע הטלות כיוון טמטם', 'שלושה רבעים ריקים אחד פנימי מיטיב'],
+    doNotMixWith: ['hidden.p185.recursiveQuarterFireAir', 'hidden.p186.nameDayAbjadQuarter', 'hidden.p187.kindRootDirection', 'hidden.p188.quarterDirection'],
+    houses: [],
+  },
+  'hidden.p187.kindRootDirection': {
+    aliases: ['שתי צורות מן היתדות והשלישית משתיהן', 'מין הדבר הנסתר וכיוון השורש', 'מונשאת ناحية الجاه', 'אמהות מזרח בנות מערב מאזנים דרום'],
+    doNotMixWith: ['hidden.p185.recursiveQuarterFireAir', 'hidden.p186.nameDayAbjadQuarter', 'hidden.p186.tamtamFourQuarterCasts', 'hidden.p188.quarterDirection'],
+    houses: [1, 4, 7, 10],
+  },
   'hidden.p188.isStillThere': {
     aliases: ['האם הדבר הנסתר עדיין שם', 'האם המטמון במקומו', 'האם החפץ המוסתר עדיין במקום', 'דבר נסתר במקומו'],
+    doNotMixWith: ['hidden.p188.quarterDirection', 'hiddenDepth.p188-189.openElementLengths', 'waterDepth.p189-190.tamtamTable'],
     houses: [1, 2, 4, 13, 14, 15],
+  },
+  'hidden.p188.quarterDirection': {
+    aliases: ['ארבעה רבעים כיוון הדבר הנסתר עמ 188', 'צורה לכל כיוון פנימית מיטיבה', 'לאיזה כיוון לחפור ארבע הטלות', 'כיוון חיפוש ארבע צורות'],
+    doNotMixWith: ['hidden.p185.recursiveQuarterFireAir', 'hidden.p186.nameDayAbjadQuarter', 'hidden.p186.tamtamFourQuarterCasts', 'hidden.p187.kindRootDirection', 'hidden.p190.nearFarElementDirection', 'hidden.p190-191.recursiveHouseTriangles'],
+    houses: [],
+  },
+  'hiddenDepth.p188-189.openElementLengths': {
+    aliases: ['עומק לפי יסודות פתוחים', 'אש אצבע אוויר שעל מים אמה עפר קומה', 'שתי אצבעות ושעל אחד', 'עומק דבר נסתר עמ 188 189'],
+    doNotMixWith: ['waterDepth.p189-190.tamtamTable', 'well.p188.recast1468', 'hidden.p188.quarterDirection'],
+    houses: [],
+  },
+  'waterDepth.p189-190.tamtamTable': {
+    aliases: ['טמטם עומק מים', 'H1 H12 H12 H9 עומק מים', 'טבלת עומק המים עמ 189 190', 'צורה שלישית משתי תוצאות עומק'],
+    doNotMixWith: ['hiddenDepth.p188-189.openElementLengths', 'well.p188.recast1468'],
+    houses: [1, 9, 12],
+  },
+  'hidden.p190.nearFarElementDirection': {
+    aliases: ['ירח מאדים קרוב שבתאי דרך קוצנית', 'קרוב או רחוק הדבר הנסתר', 'אוויר צפון אש מזרח עפר קיבלה מים מערב', 'כיוון לפי יסוד בית ראשון עמ 190'],
+    doNotMixWith: ['hidden.p188.quarterDirection', 'hidden.p190-191.recursiveHouseTriangles', 'hiddenDepth.p188-189.openElementLengths'],
+    houses: [1],
+  },
+  'hidden.p190-191.recursiveHouseTriangles': {
+    aliases: ['مثلثة ארבעה כיוונים בתוך הבית', 'צמצום רקורסיבי בתוך הבית עמ 190 191', 'צורות ריקות מלאות לחלק שוב לארבעה', 'מיקום מדויק مثلثة'],
+    doNotMixWith: ['hidden.p185.recursiveQuarterFireAir', 'hidden.p186.tamtamFourQuarterCasts', 'hidden.p188.quarterDirection', 'hidden.p190.nearFarElementDirection'],
+    houses: [],
+  },
+  'well.p188.recast1468': {
+    aliases: ['האם קידוח הבאר ישיג את המבוקש', 'באר H1 H4 H6 H8 אמהות', 'חפירת בארות ותעלות עמ 188', 'רביעי ויתדות מיטיבים פנימיים'],
+    doNotMixWith: ['hiddenDepth.p188-189.openElementLengths', 'waterDepth.p189-190.tamtamTable'],
+    houses: [1, 4, 6, 8],
   },
   'lostItem.p202.returnH6H8': {
     aliases: ['האם האבדה תחזור', 'האם החפץ האבוד ישוב', 'האם אמצא את האבדה', 'שיבת האבדה', 'חיה אבודה תחזור'],
