@@ -56,7 +56,13 @@
 - [✅] pp188–190 — `hiddenDepth.p188-189.openElementLengths` ו-`waterDepth.p189-190.tamtamTable` הופרדו: סולם אצבע/שעל/אמה/קומה + דוגמת שתי אצבעות ושעל מול שרשרת טמטם H1+H12, H12+H9 ואז תוצאה שלישית. שניהם חסומים עד Golden-Testable; `q-well-drilling` אינו מבטיח עוד עומק. p190–191 recursion חסום על `مثلثة`.
 - [✅] QA רחב Batch 20 עבר PASS מלא לאחר תיקון assertion של regression שבדק שדה route-note שאינו מוחזר ע״י router: routing 1685/0; retrieval 695/0 (77 records, source-ready 54/54, runnable 45/45); live bridge 145/0; professional safety 424/0; 100% Question Route Coverage (138/138); וכן Batch16–19, catalog, applicability ו-Kashf/Hawi isolation.
 - [✅] מצב downstream לאחר Batch 20: **42/46 RESOLVED**, נותרו **4**.
-- [ ] הבא לפי סדר המקור: גל בית 5/פתיחת בית 6 — `B14-HOUSE5-PREGNANCY-ROUTING-DEFERRED`, `B15-P192-INTENT-SEPARATION`, `B15-P194-CHILD-HEALTH-ROUTING`, `B15-P196-ILLNESS-CHAPTER-OPENING`.
+- [✅] Batch 21 — בית 5/פתיחת בית 6 pp191–196: קיום הריון, מין הוולד, שלום הוולד, קושי הלידה ותאומים הופרדו; `q-miscarriage` הועבר לכלל התפר המודפס p191→192 אדום H7 + שפל ראש H8 בלבד, ללא היפוך מלאכותי לבטיחות וללא הצבעת שיטות נוספות.
+- [✅] p192 — בטיחות האם, שתי שיטות מין חלופיות ומניין חודשי ההריון נשמרו כ-intents נפרדים. שיטות המין החלופיות reference-only; בטיחות האם אינה בטיחות הוולד; מניין החודשים חסום עד שסדר הפעולה ושתי דרכי המקור יהיו Golden-Testable.
+- [✅] p194 — `q-child-health` נשאר H6/H8 בלבד. דין עצם הוולד H1/H5, סעיף הבטן הריקה, דין H5 על הלידה ודין H5/H16 על רווחת הילד נשמרו בנפרד ואינם מצביעים למסלול הבריאות.
+- [✅] p196 — `q-illness-heal` נשאר H15 בלבד; חזרת H1 ב-H6/H8 וסימני הראייה/שמיעה הם intents נפרדים ולא מצביעים לפסק ההחלמה. אין זליגה של p197+ לתוך פתיחת הפרק.
+- [✅] QA רחב Batch 21 עבר PASS מלא: routing 1751/0; retrieval 772/0 (88 records, source-ready 60/60, runnable 46/46); live bridge 145/0; professional safety 425/0; 100% Question Route Coverage (138/138); וכן Batch16–20, catalog, applicability ו-Kashf/Hawi isolation.
+- [✅] **DOWNSTREAM COMPLETE — 46/46 RESOLVED, נותרו 0.**
+- [ ] השלב הבא לפי ה-roadmap: **Source Freeze** לכל רשומות `SOURCE-OPEN` — כל אחת תיסגר רק כ-`RESOLVED` או כ-`SOURCE_CONFLICT/NON_OPERATIONAL`; אין להשתמש ב-SOURCE-OPEN כדי לשנות בדיעבד את סגירת ה-downstream בלי ראיית מקור חדשה.
 
 ---
 
