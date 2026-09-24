@@ -189,7 +189,7 @@ function auditOutputForSafety(safetyBlock, { draft = null, draftPolarity = 'none
   };
 }
 
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 43, 'certification registry contains forty-three professionally certified methods');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 44, 'certification registry contains forty-four professionally certified methods');
 for (const id of [
   'marriage.p210.generalMarriageH1H2H7H8H10Judge',
   'marriage.p211.dissolutionH7StateMatrix',
@@ -209,6 +209,7 @@ for (const id of [
   'pregnancy.p191.existsH5SilentEmpty',
   'pregnancy.p191.genderH5',
   'illness.p196.outcomeH15',
+  'money.p182.h2h10Outlook',
   'hidden.p188.isStillThere',
   'theft.p224.relationshipH7Recurrence',
   'matter.p172.h17_h1011_thenCombine',
@@ -817,8 +818,8 @@ assert(p254Venus.professionalVerdictSafety?.authoritativePolarity === 'non-binar
 assert(p254Venus.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'p254 cannot be converted into a yes/no verdict');
 assert(p254Venus.professionalVerdictSafety?.authoritativeClientDraftHebrew === p254VenusExec?.outputHebrew, 'p254 safety gate locks the exact source-bounded executor draft');
 assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes('profession.p254.h9Planet'), 'p254 profession method is explicitly professionally certified');
-// All 43 source-ready runnable methods are professionally certified after Batch 12.
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 43, 'no runnable backfill method remains uncertified after batch 12');
+// All 44 source-ready runnable methods are professionally certified after Batch 18.
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 44, 'no runnable backfill method remains uncertified after batch 18');
 
 
 
