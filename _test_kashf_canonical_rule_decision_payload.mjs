@@ -119,6 +119,31 @@ console.log('\n--- Canonical Kashf Rule Decision payload ---');
 
   const sanitized = sanitizeKashfReadingPayloadForAi(built.contextPackage);
   assert.equal(sanitized.ok, true, JSON.stringify(sanitized));
+
+  // Server-side defense-in-depth must reject any tampering with the
+  // deterministic rule-decision boundary.
+  const clone = () => JSON.parse(JSON.stringify(built.contextPackage));
+
+  const wrongActivated = clone();
+  wrongActivated.readingContext.activatedRuleIds = ['pregnancy.p192.genderH5H11InOut'];
+  assert.equal(sanitizeKashfReadingPayloadForAi(wrongActivated).ok, false, 'wrong activated method is rejected');
+
+  const overlap = clone();
+  overlap.readingContext.rejectedRuleIds.push('pregnancy.p191.genderH5');
+  assert.equal(sanitizeKashfReadingPayloadForAi(overlap).ok, false, 'activated/rejected overlap is rejected');
+
+  const missingIsolation = clone();
+  missingIsolation.readingContext.rejectedRuleIds =
+    missingIsolation.readingContext.rejectedRuleIds.filter((id) => id !== 'pregnancy.p192.genderH5H11InOut');
+  assert.equal(sanitizeKashfReadingPayloadForAi(missingIsolation).ok, false, 'missing doNotMixWith rejection is rejected');
+
+  const missingSummary = clone();
+  delete missingSummary.decisionSummary;
+  assert.equal(sanitizeKashfReadingPayloadForAi(missingSummary).ok, false, 'canonical payload without decisionSummary is rejected');
+
+  const wrongEvidence = clone();
+  wrongEvidence.readingContext.sourceEvidence = ['v57: טקסט שאינו כלל המקור הקנוני'];
+  assert.equal(sanitizeKashfReadingPayloadForAi(wrongEvidence).ok, false, 'fabricated canonical sourceEvidence is rejected');
 }
 
 // 9. Legacy/non-canonical builder path remains honest: no fabricated rule decision.
