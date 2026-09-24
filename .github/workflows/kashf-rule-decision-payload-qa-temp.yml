@@ -23,6 +23,8 @@ jobs:
         run: node _test_kashf_canonical_rule_decision_payload.mjs
       - name: AI context builder
         run: node _test_kashf_ai_context_builder.mjs
+      - name: Smart Advisor Kashf payload
+        run: node _test_oren_smart_advisor_kashf_reading_payload.mjs
       - name: Generic Rule Decision Engine
         run: node _test_hall_wisdom_rule_decision_engine.mjs
       - name: Batch21 pregnancy illness boundaries
