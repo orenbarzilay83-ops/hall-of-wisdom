@@ -70,6 +70,7 @@
 - [✅] מצב Source Freeze לאחר Wave 03: **38/48 frozen** — **7 RESOLVED**, **31 SOURCE_CONFLICT/NON_OPERATIONAL**, נותרו **10 OPEN**.
 - [✅] Source Freeze Wave 04 הסופי — p254–275: `التويهر`, `الغرايم`, `تركته`, כפילות `سعد` מול השערת העורך `نحس`, `حارثا`, `خلع الملوك`, `فإن يكون` והשלמת `كانا نحسين` הוקפאו כ-SOURCE_CONFLICT/NON_OPERATIONAL ללא תיקון מן הדעת. p274 נסגר כ-RESOLVED משום שהדפוס עצמו קורא בבירור `خشي على نفسه` והקריאה `جنى جناية` נשמרת במפורש כהשערת עורך בלבד. בקריאה חזותית מוגדלת של p275 הוכרע שם המקור כ-`الملتقط في علم النقط`.
 - [✅] **SOURCE FREEZE COMPLETE — 48/48 frozen**: **9 RESOLVED**, **39 SOURCE_CONFLICT/NON_OPERATIONAL**, **0 OPEN**.
+- [✅] QA סופי Source Freeze עבר PASS: Master Index JSON תקין; downstream 46/46; routing 1751/0; retrieval 772/0 (source-ready 60/60, runnable 46/46); live bridge 145/0; professional safety 425/0; route coverage 138/138; Kashf/Hawi isolation PASS.
 - [ ] השלב הבא: Rule Decision payload (`activatedRuleIds`, `rejectedRuleIds`, `decisionSummary`) → Golden/E2E → Clean Chat Knowledge Pack → Live deployment verification.
 
 ---
