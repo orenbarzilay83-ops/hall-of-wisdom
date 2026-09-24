@@ -73,7 +73,7 @@
 - [✅] QA סופי Source Freeze עבר PASS: Master Index JSON תקין; downstream 46/46; routing 1751/0; retrieval 772/0 (source-ready 60/60, runnable 46/46); live bridge 145/0; professional safety 425/0; route coverage 138/138; Kashf/Hawi isolation PASS.
 - [✅] Rule Decision payload — הושלם לנתיב Kashf הקנוני: נוסף adapter דטרמיניסטי שאינו ממציא Rule Definitions; בכל קריאה קנונית ניתן להפעיל לכל היותר `kashfMethodId` אחד, `rejectedRuleIds` נבנה מ-`doNotMixWith` וממועמדי retrieval שלא נבחרו, `sourceEvidence` מגיע מכלל v57 הקנוני, ו-`decisionSummary` אינו מכיל PII ואוסר fallback/הצבעת רוב.
 - [✅] AI Context Builder v10 מחבר בפועל `activatedRuleIds`, `rejectedRuleIds`, `sourceEvidence` ו-`decisionSummary` ב-canonical mode; legacy non-canonical נשאר partial ואינו ממציא IDs.
-- [✅] QA Rule Decision סופי עבר PASS בריצה `35986026389`: regression חדש PASS; AI Context Builder + generic Rule Decision Engine PASS; routing 1751/0; retrieval 772/0; live bridge 145/0; professional safety 425/0; route coverage 138/138; Source Freeze 48/48.
+- [✅] QA Rule Decision סופי עבר PASS בריצה `35986172739`: regression חדש PASS; AI Context Builder + generic Rule Decision Engine PASS; routing 1751/0; retrieval 772/0; live bridge 145/0; professional safety 425/0; route coverage 138/138; Source Freeze 48/48.
 - [ ] השלב הבא: **Golden/E2E** — question → intent → method → engine → source retrieval → Rule Decision payload → AI context → advisor output; לאחריו Clean Chat Knowledge Pack → Live deployment verification.
 
 ---
