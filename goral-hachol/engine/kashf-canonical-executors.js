@@ -97,6 +97,46 @@ const P191_FEMININE_PATTERNS = new Set([
   '2221', // שפל ראש / الأنكيس
 ]);
 
+function computeMiscarriageRedH7NakisH8P191P192(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h7 = chart.find((entry) => Number(entry?.house) === 7)
+    || chart.find((entry) => Number(entry?.houseNumber) === 7)
+    || chart[6] || null;
+  const h8 = chart.find((entry) => Number(entry?.house) === 8)
+    || chart.find((entry) => Number(entry?.houseNumber) === 8)
+    || chart[7] || null;
+  const h7Pattern = h7?.key || h7?.pattern || null;
+  const h8Pattern = h8?.key || h8?.pattern || null;
+  if (!h7Pattern || !h8Pattern) return null;
+
+  const humraInH7 = h7Pattern === '2122';
+  const nakisInH8 = h8Pattern === '2221';
+  const miscarriageSign = humraInH7 && nakisInH8;
+  const sourceOutcome = miscarriageSign ? 'miscarriage-sign' : 'unresolved';
+  const h7FigureHebrew = h7?.hebrew || h7?.hebrewName || classifyCanonicalFigure(h7Pattern).figureHebrew || h7Pattern;
+  const h8FigureHebrew = h8?.hebrew || h8?.hebrewName || classifyCanonicalFigure(h8Pattern).figureHebrew || h8Pattern;
+  const outputHebrew = miscarriageSign
+    ? 'בית 7 הוא אדום/חֻמְרַה (2122) ובית 8 הוא שפל ראש/אַנְכִּיס (2221). לפי הכלל החוצה את עמ׳ 191–192 בכשף, זהו סימן ההפלה המפורש במקור. זהו פסק של שיטת גורל החול בלבד ואינו אבחון או ודאות רפואית.'
+    : 'הצירוף המפורש של עמ׳ 191–192 — אדום בבית 7 יחד עם שפל ראש בבית 8 — אינו מתקיים. המקור אינו אומר שהיעדר הצירוף מוכיח שההריון בטוח או שלא תתרחש הפלה, ולכן שיטה זו נשארת ללא הכרעה.';
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 191–192',
+    sourceText: 'כאשר אדום נמצא בבית השביעי ושפל ראש בבית השמיני — האישה ההרה מפילה.',
+    housesUsed: [7, 8],
+    h7Pattern,
+    h8Pattern,
+    h7FigureHebrew,
+    h8FigureHebrew,
+    humraInH7,
+    nakisInH8,
+    miscarriageSign,
+    sourceOutcome,
+    positive: null,
+    verdictType: 'miscarriage-source-sign',
+    outputHebrew,
+  };
+}
+
 function computePregnancyGenderP191(chart) {
   if (!Array.isArray(chart)) return null;
   const h5 = chart.find((entry) => Number(entry?.house) === 5)
@@ -2380,6 +2420,7 @@ function computeHiddenActionP167(chart) {
 
 const CUSTOM_EXECUTORS = Object.freeze({
   'profession.p254.h9Planet': computeProfessionP254,
+  'pregnancy.p191-192.miscarriageRedH7NakisH8': computeMiscarriageRedH7NakisH8P191P192,
   'pregnancy.p191.deliveryDifficultyH1H5H15': computeDeliveryDifficultyP191,
   'money.p182.h2h10Outlook': computeMoneyGeneralConditionP182,
   'money.p180.livelihoodH10Invert': computeLivelihoodP180,
