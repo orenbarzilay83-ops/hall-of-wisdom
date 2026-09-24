@@ -4,137 +4,162 @@
 Final ten SOURCE-OPEN records.
 
 Starting after Wave 03:
-- 38/48 frozen
-- 10 OPEN
+- **38/48 frozen**
+- **10 OPEN**
 
 Wave 04 closes all ten:
-- 1 → RESOLVED
-- 9 → SOURCE_CONFLICT/NON_OPERATIONAL
+- **2 → RESOLVED**
+- **8 → SOURCE_CONFLICT/NON_OPERATIONAL**
 
-## RESOLVED
+Final Source Freeze:
+- **48/48 frozen**
+- **9 RESOLVED**
+- **39 SOURCE_CONFLICT/NON_OPERATIONAL**
+- **0 OPEN**
 
-### B30-SOURCE-P275-AL-MUNAQQAT-TITLE
-High-resolution visual reread of printed p275 / scan277 resolves the source title.
-
-The scan visibly reads:
-
-`الملتقط في علم النقط`
-
-not:
-
-`المنقط في علم النقط`
-
-Freeze decision:
-- source title is frozen as **al-Multaqat / الملتقط**;
-- the existing source-record ID is retained only for traceability;
-- this is a direct visual correction, not normalization from context.
+The printed Arabic scan remains the highest verification authority. No symmetry, grammar repair, expected figure order, legacy code, Hawi, or external source was used to repair Kashf.
 
 ## SOURCE_CONFLICT/NON_OPERATIONAL
 
 ### B28-SOURCE-P254-AL-TUWAYHIR
-Printed p254 / scan256 visibly reads `التويهر`.
+Printed p254 visibly contains `التويهر` in the H9 profession profile.
 
 Freeze:
-- literal token is secure;
-- canonical figure identity is not secure;
-- do not normalize it to Dragon’s Tail or another figure from sequence/symmetry.
-
-The p254 Master Index record was also corrected so its profession map no longer silently states “Dragon’s Tail” for this printed token.
+- literal token is source-secure;
+- canonical geomantic identity is not;
+- do not normalize it to Dragon’s Tail or another figure by expected sequence.
 
 ### B28-SOURCE-P254-AL-GHARAIM
-Printed p254 / scan256 visibly reads `الغرايم` in the Mercury profession line.
+Printed Mercury profession line visibly reads:
+`فالسحر والغرايم والتنجيم`
 
 Freeze:
 - preserve `الغرايم` literally;
-- technical/lexical meaning remains unresolved;
-- do not force v57’s “נפלאות” or normalize to another Arabic term.
+- exact technical/professional meaning is not closed by the passage;
+- do not normalize it to `الغرائب` or another term.
 
 ### B28-SOURCE-P255-TARAKTAHU
-Printed p255 / scan257 visibly contains:
-
-`وإن خرج لك أحد هذه الثلاثة الأشكال تركته`
+Printed p255 contains the isolated/incomplete `تركته` clause in the promise material.
 
 Freeze:
-- literal wording preserved;
-- referent of “these three figures” and operational force of `تركته` are not sufficiently defined;
-- no reconstructed runtime branch.
+- preserve the fragment;
+- do not reconstruct a missing outcome or grammar from neighboring branches.
 
 ### B28-SOURCE-P256-DUPLICATED-SAAD
-Printed p256 / scan258 repeats `سعد`.
-The printed editor parenthesis conjectures:
+Printed p256 reads:
+`بعضها سعد وبعضها سعد`
 
+The printed editor parenthesis separately conjectures:
 `لعله: نحس`
 
 Freeze:
-- printed `سعد` and editorial `نحس` remain distinct;
-- conjecture is not promoted to source text;
-- affected mixed branch remains non-operational.
+- repeated `سعد` remains the printed text;
+- `نحس` remains an editorial conjecture;
+- the affected branch is non-operational because the two readings produce different rules.
 
 ### B28-SOURCE-P261-HARITHAN
-Printed p261 / scan263 visibly reads `حارثا` in the ninth-house ruler profile.
+Printed p261 visibly contains `حارثا` in the ninth-house ruler profile.
 
 Freeze:
-- preserve the literal token;
-- no guessed adjective, occupation or moral interpretation without another certified witness.
+- token preserved verbatim;
+- intended lexical/profile meaning remains insufficiently secure;
+- no guessed adjective, occupation or moral quality is assigned.
 
 ### B29-SOURCE-P265-KHILA-AL-MULUK
-Printed p265 / scan267 clearly contains `خلع الملوك` immediately after the H10 clothing clause.
+Printed p265 visibly includes `خلع الملوك` after the H10 clothing clause.
 
 Freeze:
-- words are visually secure;
-- exact syntactic/operational relation remains unclear;
-- do not fold it automatically into the clothing verdict.
+- phrase preserved as printed;
+- exact syntactic attachment to the clothing judgment remains unclear;
+- no automatic H10 branch is manufactured.
 
 ### B29-SOURCE-P272-FA-IN-YAKUN
-Printed p272 / scan274 preserves the defective `فإن يكون` construction and gives an alternate-version note:
-
+Printed main enemy-judgment clause has `فإن يكون`.
+The source also prints an explicit alternate version:
 `وفي نسخة أخرى: تكرر`
 
 Freeze:
-- main reading and alternate version remain separate;
-- no grammatical repair selected for runtime.
+- main defective reading and alternate version remain distinct;
+- neither is promoted to the single runtime formula.
 
 ### B29-SOURCE-P273-INCOMING-CONJECTURE
-Printed p273 / scan275 gives the incoming branch while the editor inserts:
+Printed p273 has:
+`وإن كانا داخلين`
 
+The editor separately inserts:
 `لعله: كانا نحسين`
 
+The illness/death outcome depends on that conjectural malefic qualifier.
+
 Freeze:
-- the illness/death branch depends on an editorial malefic insertion;
-- no fatal runtime rule may be activated from the printed main text alone.
+- print and conjecture remain separate;
+- fatal incoming branch is non-operational without another certified source witness.
+
+## RESOLVED
 
 ### B30-SOURCE-P274-KHASHIYA-CONJECTURE
-Printed p274 / scan276 reads:
-
+Printed p274 clearly reads:
 `خشي على نفسه`
 
-The editor conjectures:
-
+The editor separately conjectures:
 `لعله: جنى جناية`
 
-Freeze:
-- preserve both readings separately;
-- no substitution in runtime.
+Freeze decision:
+- the printed reading itself is visually secure and remains authoritative;
+- the editor alternative is explicitly preserved as conjecture;
+- no substitution is made.
+
+Status: **RESOLVED**.
+
+### B30-SOURCE-P275-AL-MUNAQQAT-TITLE
+A fresh high-resolution visual read of printed p275 / scan277 confirms the heading:
+`الملتقط في علم النقط`
+
+Freeze decision:
+- preserve that title literally;
+- do not replace it with `المنقط في علم النقط`;
+- historical stable IDs containing `multaqat` remain unchanged for traceability.
+
+The associated source record now reflects the printed title in its topic, keyword, precondition, verification note and discrepancy note.
+
+Status: **RESOLVED**.
+
+## Structural integrity recovery
+During final-wave editing, one intermediate commit damaged the tail of the embedded Master Index JSON. The file was restored from the last structurally valid parent and the Wave-04 source decisions were reapplied.
+
+The restored Master Index parses successfully and preserves:
+- all source records
+- all correction queues
+- **46/46 downstream RESOLVED**
+- all 48 Source Freeze records
+- gate-status and Dhamir-selection structures
+
+No source decision was recovered by inference; only the damaged container structure was restored.
 
 ## Runtime effect
-No new source-conflict rule was activated.
+None.
 
-This wave freezes source status only, except for one source-index correction:
-- p254 no longer silently normalizes `التويهر` to Dragon’s Tail.
+Source Freeze is a provenance/finality layer only. It does not activate:
+- SOURCE_CONFLICT/NON_OPERATIONAL methods
+- quoted/reference-only methods
+- educational alternatives
+- broad topic bundles
+- majority voting
+- Hawi substitutes
 
-## Final Source Freeze result
-- **48/48 frozen**
-- **8 RESOLVED**
-- **40 SOURCE_CONFLICT/NON_OPERATIONAL**
+## Final result
+**SOURCE FREEZE COMPLETE — 48/48 frozen**
+- **9 RESOLVED**
+- **39 SOURCE_CONFLICT/NON_OPERATIONAL**
 - **0 OPEN**
 
 ## Next roadmap phase
-Rule Decision payload:
+Build the Rule Decision payload:
 - `activatedRuleIds`
 - `rejectedRuleIds`
 - `decisionSummary`
 
 Then:
-1. Golden/E2E
+1. Golden/E2E: question → intent → method → engine → source retrieval → AI context → advisor output
 2. Clean Chat Knowledge Pack
-3. Live deployment verification
+3. Live deployment verification, including the AI Edge Function
