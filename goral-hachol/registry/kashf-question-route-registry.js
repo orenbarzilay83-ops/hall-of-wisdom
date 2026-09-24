@@ -390,9 +390,9 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     questionId: 'q-money-state',
     disposition: 'KEEP',
     kashfIntentId: 'money.generalCondition',
-    kashfMethodId: 'money.p180.elementComparison',
-    kashfRuntimeStatus: 'repair-required',
-    note: 'Current runtime mechanism is not source-equivalent: p180 requires two derived money figures and element comparison, not incoming/outgoing judgment.',
+    kashfMethodId: 'money.p182.h2h10Outlook',
+    kashfRuntimeStatus: 'ready',
+    note: 'Exact general money/livelihood route from printed p182: combine H2 with H10. The distinct p180 two-person element/amount comparison stays source-blocked and is not used as a generic money-state fallback.',
   }),
 
   'q-money-source': route({
@@ -424,9 +424,9 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     questionId: 'q-money-halal',
     disposition: 'BLOCK',
     kashfIntentId: 'money.lawfulness',
-    kashfMethodId: 'money.lawfulness.unsupported',
-    kashfRuntimeStatus: 'unsupported',
-    note: 'A fresh audit of p179-p182 did not locate an explicit body-source lawful/unlawful money method. Do not map this to an assumed H9+H11 rule without a source passage.',
+    kashfMethodId: 'money.p182.lawfulnessInclination',
+    kashfRuntimeStatus: 'blocked-by-source',
+    note: 'Printed p182 does contain the H9+H11 lawful/unlawful rule. Runtime remains blocked only because the source does not operationally define what it means for the resulting figure to “incline” to H9 or H11.',
   }),
 
   'q-inheritance': route({
@@ -440,11 +440,11 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
 
   'q-loan': route({
     questionId: 'q-loan',
-    disposition: 'EDUCATIONAL',
+    disposition: 'BLOCK',
     kashfIntentId: 'loan.repayment',
-    kashfMethodId: 'loan.external.p234.repayment',
-    kashfRuntimeStatus: 'educational-only',
-    note: 'The loan repayment method is inside the non-body block beginning at p228.',
+    kashfMethodId: 'debt.p179.creditorDebtorWalking',
+    kashfRuntimeStatus: 'blocked-by-source',
+    note: 'The body-source p179 creditor/debtor procedure is the exact primary source boundary for this repayment question, but its walk-two/walk-three, hand, Farah and Bakr computations are unresolved. Fail closed; do not fall back to the external p234 method.',
   }),
 
   'q-loan-return': route({
@@ -452,8 +452,8 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     disposition: 'ALIAS',
     aliasOf: 'q-loan',
     kashfIntentId: 'loan.repayment',
-    kashfMethodId: 'loan.external.p234.repayment',
-    kashfRuntimeStatus: 'educational-only',
+    kashfMethodId: 'debt.p179.creditorDebtorWalking',
+    kashfRuntimeStatus: 'blocked-by-source',
   }),
 
   'q-loan-give': route({

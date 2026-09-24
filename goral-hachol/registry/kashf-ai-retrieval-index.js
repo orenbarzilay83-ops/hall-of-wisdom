@@ -44,6 +44,31 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
     doNotMixWith: ['pregnancy.p191.existsH5SilentEmpty', 'pregnancy.p191.genderH5', 'pregnancy.p191.childSafetyH1H6H8'],
     houses: [1, 5, 15],
   },
+  'debt.p179.creditorDebtorWalking': {
+    aliases: ['האם החייב יחזיר את הכסף', 'האם החוב יוחזר', 'תביעת חוב בין נושה לחייב', 'בעל החוב והחייב עמ 179'],
+    doNotMixWith: ['loan.external.p234.repayment', 'debt.outcome.unsupported', 'money.p181.recast25811'],
+    houses: [1, 2, 7, 9, 12],
+  },
+  'money.p180.elementComparison': {
+    aliases: ['השוואת ממון השואל והנשאל', 'למי יש יותר ממון לפי היסודות', 'ממון הנשאל מול ממון השואל', 'יסוד תחתון סכום הממון עמ 180'],
+    doNotMixWith: ['money.p182.h2h10Outlook', 'money.p180.livelihoodH10Invert', 'money.p181.recast25811', 'money.p179.sourceByIncomingHonorHouse'],
+    houses: [1, 2, 3, 4, 5, 6, 7, 8],
+  },
+  'money.p181.otherBookRemainder': {
+    aliases: ['מן ספר אחר שארית הממון', 'שארית שתיים ממון רב', 'טבלת 1 עד 7 מקור הממון', 'שיטת השארית החיצונית עמ 181'],
+    doNotMixWith: ['money.p181.recast25811', 'money.p179.sourceByIncomingHonorHouse'],
+    houses: [],
+  },
+  'money.p182.h2h10Outlook': {
+    aliases: ['מה מצב הממון', 'מצב הכסף כרגע', 'בית הממון והפרנסה', 'מצב ממוני הכללי', 'דין H2 H10 לממון'],
+    doNotMixWith: ['money.p180.elementComparison', 'money.p180.livelihoodH10Invert', 'money.p181.recast25811', 'money.p179.sourceByIncomingHonorHouse', 'money.p182.lawfulnessInclination'],
+    houses: [2, 10],
+  },
+  'money.p182.lawfulnessInclination': {
+    aliases: ['האם הממון מותר או אסור', 'האם הכסף כשר', 'ממון חלאל או חראם', 'חוקיות הממון לפי בית תשע ואחת עשרה'],
+    doNotMixWith: ['money.p182.h2h10Outlook', 'money.p179.sourceByIncomingHonorHouse'],
+    houses: [9, 11],
+  },
   'money.p180.livelihoodH10Invert': {
     aliases: ['מה מצב הפרנסה', 'האם הפרנסה תתרחב', 'מצב המחיה', 'התרחבות הפרנסה', 'דין הפרנסה השוטפת'],
     doNotMixWith: ['money.p179.sourceByIncomingHonorHouse', 'money.p181.recast25811', 'inheritance.p180.elementComposite'],

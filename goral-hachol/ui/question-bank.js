@@ -239,7 +239,7 @@ window.QUESTION_BANK = [
     id: 'q-money-state',
     category: 'money', houseId: 2, topicId: 'money', kashfTopicId: 'money',
     label: 'מה מצב הממון?',
-    desc: 'מצב הכסף כרגע — שאלה כללית. לעסקה ספציפית מול מישהו — בחר "האם העסקה תצליח"',
+    desc: 'דין עמ׳ 182 למצב הכללי של הממון והפרנסה: מולידים צורה מבית 2 ומבית 10. לעסקה ספציפית מול צד שני — בחר "האם העסקה תצליח"',
     clientFields: [F.matter],
   },
   {
@@ -290,8 +290,8 @@ window.QUESTION_BANK = [
   {
     id: 'q-inheritance',
     category: 'money', houseId: 2, topicId: 'deathInheritance', kashfTopicId: 'deathInheritance',
-    label: 'ירושה — מי יורש ומה?',
-    desc: 'לשאלות ירושה: מי יזכה, כמה, האם תהיה מחלוקת',
+    label: 'ירושה — מי יורש את מי?',
+    desc: 'דין עמ׳ 180 עונה רק איזה צד יורש את האחר. הוא אינו מחשב חלקים, סכומים או מחלוקת ירושה.',
     clientFields: [
       { id: 'deceased', label: 'שם הנפטר / הקשר', type: 'text', placeholder: 'שם / אבא / סבא...' },
       { id: 'inheritConcern', label: 'מה השאלה?', type: 'textarea', placeholder: 'מחלוקת / חלוקה / זכות...' },

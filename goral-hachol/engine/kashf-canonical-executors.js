@@ -1927,6 +1927,49 @@ function computeReturnToOfficeP266(chart) {
   };
 }
 
+// Kashf v57 p182 — general money/livelihood outlook from H2 + H10.
+function computeMoneyGeneralConditionP182(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h2 = findCanonicalHouse(chart, 2);
+  const h10 = findCanonicalHouse(chart, 10);
+  const h2Pattern = h2?.key || h2?.pattern || null;
+  const h10Pattern = h10?.key || h10?.pattern || null;
+  if (!h2Pattern || !h10Pattern) return null;
+
+  const combined = combineRamlFigures(h2Pattern, h10Pattern);
+  const resultPattern = combined.resultPattern;
+  const classification = classifyCanonicalFigure(resultPattern);
+  const resultFigureHebrew = combined.result?.hebrewName || classification.figureHebrew || resultPattern;
+
+  let sourceOutcome = 'mixed-or-unresolved';
+  let positive = null;
+  let outcomeHebrew = 'הצורה ממוזגת או אינה שייכת לענף מיטיב/מזיק טהור; הכלל אינו נותן כאן פסק בינארי.';
+  if (classification.saadNahs === 'saad') {
+    sourceOutcome = 'good';
+    positive = true;
+    outcomeHebrew = 'הצורה מיטיבה — עדות לטוב בעניין הממון והפרנסה.';
+  } else if (classification.saadNahs === 'nahs') {
+    sourceOutcome = 'bad';
+    positive = false;
+    outcomeHebrew = 'הצורה מזיקה — עדות לרע בעניין הממון והפרנסה.';
+  }
+
+  return {
+    sourceRef: 'חשיפת הסודות הנצורים v57 עמ׳ 182',
+    sourceText: 'אם רצית לשאול על בית ממונך ופרנסתך, התבונן בבית השני ובעשירי — בית הפרנסה — והעמד מהם צורה; היא מודיעה את כל הטוב והרע בעניין.',
+    housesUsed: [2, 10],
+    h2Pattern,
+    h10Pattern,
+    resultPattern,
+    resultFigureHebrew,
+    classification,
+    sourceOutcome,
+    positive,
+    verdictType: 'money-general-condition-h2h10',
+    outputHebrew: 'בית 2 (' + h2Pattern + ') ובית 10 (' + h10Pattern + ') הולידו את ' + resultFigureHebrew + ' (' + resultPattern + '). ' + outcomeHebrew + ' זהו דין המצב הכללי בלבד; מקור הכסף, השגת ממון מסוים, סכום, חוקיות ושיטות חלופיות אינם מצטרפים לפסק זה.',
+  };
+}
+
 // Kashf v57 p180 — invert H10 rows and judge the resulting figure's placement.
 function computeLivelihoodP180(chart) {
   if (!Array.isArray(chart)) return null;
@@ -2338,6 +2381,7 @@ function computeHiddenActionP167(chart) {
 const CUSTOM_EXECUTORS = Object.freeze({
   'profession.p254.h9Planet': computeProfessionP254,
   'pregnancy.p191.deliveryDifficultyH1H5H15': computeDeliveryDifficultyP191,
+  'money.p182.h2h10Outlook': computeMoneyGeneralConditionP182,
   'money.p180.livelihoodH10Invert': computeLivelihoodP180,
   'money.p181.recast25811': computeMoneyAcquireP181,
   'career.p266.returnToOffice': computeReturnToOfficeP266,

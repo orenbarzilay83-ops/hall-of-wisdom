@@ -47,6 +47,7 @@ const P257_RULER_CONDITION_METHOD = 'authority.p257.rulerConditionH7H10';
 const P264_LIFESPAN_STAGES_METHOD = 'lifespan.p264.stagesH11H9H7';
 const P180_LIVELIHOOD_METHOD = 'money.p180.livelihoodH10Invert';
 const P181_MONEY_ACQUIRE_METHOD = 'money.p181.recast25811';
+const P182_MONEY_OUTLOOK_METHOD = 'money.p182.h2h10Outlook';
 const P266_RETURN_TO_OFFICE_METHOD = 'career.p266.returnToOffice';
 const P204_ATTENTION_METHOD = 'love.p204.attentionFireRows1713';
 const P173_COMPLETION_METHOD = 'completion.p173.fireRows15910';
@@ -886,6 +887,39 @@ function p181MoneyAcquirePolicy() {
   });
 }
 
+function p182MoneyOutlookPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'downstream-batch-18',
+    goldenCaseIds: freezeArray(['PV-B18-P182-GOOD', 'PV-B18-P182-BAD', 'PV-B18-P182-MIXED']),
+    policyId: 'p182-money-outlook-h2h10-single-route-v1',
+    questionScopeHebrew: 'מצב כללי של הממון והפרנסה לפי הולדת H2+H10, עמ׳ 182',
+    decisiveRuleHebrew: 'מולידים צורה מ-H2 ומ-H10. צורה מיטיבה מורה על טוב בעניין; מזיקה מורה על רע. צורה ממוזגת נשארת ללא פסק בינארי.',
+    oneWayBranches: freezeArray([
+      'תוצאת H2+H10 מיטיבה => טוב בעניין הממון והפרנסה',
+      'תוצאת H2+H10 מזיקה => רע בעניין הממון והפרנסה',
+    ]),
+    forbiddenInversions: freezeArray([
+      'צורה ממוזגת אינה נהפכת אוטומטית לטוב או לרע לפי נטייה.',
+      'אין להסיק מן התוצאה מקור כסף, סכום, זמן קבלה או חוקיות.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'money.p180.elementComparison — השוואת ממון בין שני אנשים, חסומה.',
+      'money.p180.livelihoodH10Invert — מצב המחיה בשיטה נפרדת.',
+      'money.p181.recast25811 — השגת ממון מסוים בשיטה נפרדת.',
+      'money.p181.otherBookRemainder — תוספת מספר אחר עם סתירת מקור.',
+      'money.p179.sourceByIncomingHonorHouse — מקור הממון בשיטה נפרדת.',
+      'כל supportingChecks של topic money הישן.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'הכסף יגיע ממקור מסוים',
+      'סכום הכסף יהיה מסוים',
+      'הממון מותר או אסור',
+      'ממון מסוים יתקבל בוודאות',
+    ]),
+  });
+}
+
 function p266ReturnToOfficePolicy() {
   return Object.freeze({
     certificationStatus: 'certified',
@@ -1419,6 +1453,7 @@ const METHOD_POLICIES = Object.freeze({
   [P264_LIFESPAN_STAGES_METHOD]: p264LifespanStagesPolicy(),
   [P180_LIVELIHOOD_METHOD]: p180LivelihoodPolicy(),
   [P181_MONEY_ACQUIRE_METHOD]: p181MoneyAcquirePolicy(),
+  [P182_MONEY_OUTLOOK_METHOD]: p182MoneyOutlookPolicy(),
   [P266_RETURN_TO_OFFICE_METHOD]: p266ReturnToOfficePolicy(),
   [P204_ATTENTION_METHOD]: p204AttentionPolicy(),
   [P173_COMPLETION_METHOD]: p173CompletionPolicy(),

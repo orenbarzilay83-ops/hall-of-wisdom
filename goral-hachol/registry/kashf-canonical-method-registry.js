@@ -623,6 +623,18 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
   }),
 
   // ── MONEY + ECONOMY canonical slice -----------------------------------
+  'debt.p179.creditorDebtorWalking': method({
+    kashfMethodId: 'debt.p179.creditorDebtorWalking',
+    kashfIntentId: 'loan.repayment',
+    topicId: 'loan',
+    sourcePages: [179],
+    kashfRuntimeStatus: 'blocked-by-source',
+    runtimeAllowed: false,
+    executionKind: 'source-procedure',
+    executorStatus: 'pending',
+    notes: 'Printed p179 assigns H1 to the creditor, derives the debtor from H7+H9 and the money from H2+H12, then branches on “walked two / walked three”, absence from “the hand”, and the named tokens Farah and Bakr. The scan does not define those computational terms sufficiently for canonical execution. Do not identify Farah/Bakr with modern figure names, do not reinterpret hand as the current chart array, and do not invent walk arithmetic. The exact debt/repayment UI route must fail closed here rather than fall back to the external p234 method.',
+  }),
+
   'money.p179.sourceByIncomingHonorHouse': method({
     kashfMethodId: 'money.p179.sourceByIncomingHonorHouse',
     kashfIntentId: 'money.source',
@@ -657,6 +669,46 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     executionKind: 'custom-engine',
     executorStatus: 'ready',
     notes: 'Canonical p181 secondary-board executor is wired: original H2,H5,H8,H11 become the four mothers of a fresh board. In that recast board H1,H2,H4,H7,H10 must each be strictly internal (dakhil); when all qualify, the source says the money is obtained. Failure of the positive condition remains unresolved because this exact clause does not state the inverse. The preceding p181 2/6/8/10 parity method remains a separate alternative and is not aggregated.',
+  }),
+
+  'money.p181.otherBookRemainder': method({
+    kashfMethodId: 'money.p181.otherBookRemainder',
+    kashfIntentId: 'money.externalRemainderOracle',
+    topicId: 'money',
+    sourcePages: [181],
+    sourceLayer: 'non-body-addition',
+    attributedSourceBook: 'other',
+    sourceConfidence: 'source-conflict',
+    methodRole: 'educational-only',
+    kashfRuntimeStatus: 'blocked-by-source',
+    runtimeAllowed: false,
+    executionKind: null,
+    executorStatus: 'not-applicable',
+    notes: 'The passage is explicitly introduced by ومن غير الكتاب. It says to total the sixteen figures and reduce “two by two”, where remainder 1 means no money and remainder 2 means abundant money, then immediately gives a 1–7 remainder table for the source of money. The printed source is internally incompatible as an executable remainder system. Preserve it for source review only; do not silently change the divisor to seven, suppress branches, or let it vote with the selected p181 recast method.',
+  }),
+
+  'money.p182.h2h10Outlook': method({
+    kashfMethodId: 'money.p182.h2h10Outlook',
+    kashfIntentId: 'money.generalCondition',
+    topicId: 'money',
+    sourcePages: [182],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: true,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
+    notes: 'Canonical p182 general money/livelihood route. Combine H2 (money) with H10 (livelihood); judge only the resulting figure’s canonical benefic/malefic class. Mixed remains non-binary. This route does not execute p180 person-to-person amount comparison, p181 attainment alternatives, p179 source-of-money, p182 magnitude, or any legacy topic supporting bundle.',
+  }),
+
+  'money.p182.lawfulnessInclination': method({
+    kashfMethodId: 'money.p182.lawfulnessInclination',
+    kashfIntentId: 'money.lawfulness',
+    topicId: 'money',
+    sourcePages: [182],
+    kashfRuntimeStatus: 'blocked-by-source',
+    runtimeAllowed: false,
+    executionKind: 'source-procedure',
+    executorStatus: 'pending',
+    notes: 'Printed p182 explicitly derives a figure from H9+H11 and says: if the resulting figure “inclines to” H9 the money is lawful, and if it inclines to H11 it is unlawful. The passage does not define the operational meaning of that inclination. Preserve the rule as source-backed knowledge but do not invent a house-affinity, recurrence, dignity, element, or movement test for “inclines”.',
   }),
 
   'inheritance.p180.elementComposite': method({
@@ -1433,15 +1485,14 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
   // ── REPAIR REQUIRED ----------------------------------------------------
   'money.p180.elementComparison': method({
     kashfMethodId: 'money.p180.elementComparison',
-    kashfIntentId: 'money.generalCondition',
+    kashfIntentId: 'money.compareQuestionerAsked',
     topicId: 'money',
     sourcePages: [180],
-    kashfRuntimeStatus: 'repair-required',
+    kashfRuntimeStatus: 'blocked-by-source',
     runtimeAllowed: false,
-    executionKind: 'custom-engine',
+    executionKind: 'source-procedure',
     executorStatus: 'pending',
-    legacyTopicId: 'money',
-    notes: 'Canonical source derives queried-person money from H2/H4/H6/H8 and querent money from H1/H3/H5/H7, then compares their elements (fire=1, air=2, water=3, earth=4). Current legacy mechanism judges figures by incoming/outgoing and is not source-equivalent.',
+    notes: 'Printed p180 derives the queried-person money figure from H2/H4/H6/H8 and the querent money figure from H1/H3/H5/H7, then compares their elements using fire=1, air=2, water=3, earth=4. The final instruction says to keep the lower element and work by that number “so it is the money”, but it does not define a source-safe conversion from the retained element/number into a monetary amount. Runtime is therefore blocked. Do not substitute incoming/outgoing classification, a dignity table, the p182 lifespan-scale amount rule, or any external tradition.',
   }),
 
   'marriage.p205.modestyPurity': method({
@@ -1742,6 +1793,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     notes: 'The audited body rules address physical hidden things/locations. They do not provide a verified canonical method for “what secret/truth is being hidden?”.',
   }),
 
+  // Compatibility placeholder retained for historical route references only.
   'money.lawfulness.unsupported': method({
     kashfMethodId: 'money.lawfulness.unsupported',
     kashfIntentId: 'money.lawfulness',
