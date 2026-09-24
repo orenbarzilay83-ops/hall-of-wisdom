@@ -51,7 +51,12 @@
 - [✅] pp184–185 — מפת בית/גן נשמרה לפי הדפוס: H4=קרקע, H10=עצים, H7=צמחים/ירקות, H3=תעלות מים, H2=חומה. ה-runtime חסום רק בנקודת מערכת ה״עדים״ שאינה מוגדרת בקטע; לא הושאלה מערכת עדים מפרק אחר. `q-sell-property` נשאר intent נפרד ולא הוסב לכלל הנכס.
 - [✅] QA רחב Batch 19 עבר PASS מלא: regression ייעודי; routing 1637/0; retrieval 639/0 (69 records, source-ready 51/51, runnable 45/45); live bridge 145/0; professional safety 424/0; 100% Question Route Coverage (138/138); וכן Batch16–18, catalog, applicability ו-Kashf/Hawi isolation.
 - [✅] מצב downstream לאחר Batch 19: **38/46 RESOLVED**, נותרו **8**.
-- [ ] הבא לפי סדר המקור: גל בית 4 — `B14-HIDDEN-LOCATION-NO-MULTIMETHOD`, `B14-P185-RECURSIVE-QUARTERS-BLOCKED`, `B14-P187-KIND-DIRECTION-BLOCKED`, `B14-P188-190-DEPTH-METHODS-BLOCKED`; אחריו בית 5/מחלה — `B14-HOUSE5-PREGNANCY-ROUTING-DEFERRED`, `B15-P192-INTENT-SEPARATION`, `B15-P194-CHILD-HEALTH-ROUTING`, `B15-P196-ILLNESS-CHAPTER-OPENING`.
+- [✅] Batch 20 — בית 4 pp185–191: שיטות איתור הדבר הנסתר הופרדו למסלולים עצמאיים לפי מקור ותנאי הפעלה. `q-treasure` נשאר p188 presence בלבד; `q-dig-direction` בוחר p188 four-quarter cast בלבד; p185 recursion, שתי שיטות p186, p187 kind/root, p190 near/far ו-p190–191 recursive-house אינם מצביעים, אינם fallback ואינם מתערבבים.
+- [✅] p185 — `hidden.p185.recursiveQuarterFireAir` חסום בדיוק בסתירת 94 מול 16×4; לא תוקן ל־64. p187 — שתי צורות מן היתדות ואז שלישית נשמרו, ו-`ناحية الجاه` אינו הומר לצפון. SOURCE-OPEN המקבילים נשארו OPEN למסלול Source Freeze.
+- [✅] pp188–190 — `hiddenDepth.p188-189.openElementLengths` ו-`waterDepth.p189-190.tamtamTable` הופרדו: סולם אצבע/שעל/אמה/קומה + דוגמת שתי אצבעות ושעל מול שרשרת טמטם H1+H12, H12+H9 ואז תוצאה שלישית. שניהם חסומים עד Golden-Testable; `q-well-drilling` אינו מבטיח עוד עומק. p190–191 recursion חסום על `مثلثة`.
+- [✅] QA רחב Batch 20 עבר PASS מלא לאחר תיקון assertion של regression שבדק שדה route-note שאינו מוחזר ע״י router: routing 1685/0; retrieval 695/0 (77 records, source-ready 54/54, runnable 45/45); live bridge 145/0; professional safety 424/0; 100% Question Route Coverage (138/138); וכן Batch16–19, catalog, applicability ו-Kashf/Hawi isolation.
+- [✅] מצב downstream לאחר Batch 20: **42/46 RESOLVED**, נותרו **4**.
+- [ ] הבא לפי סדר המקור: גל בית 5/פתיחת בית 6 — `B14-HOUSE5-PREGNANCY-ROUTING-DEFERRED`, `B15-P192-INTENT-SEPARATION`, `B15-P194-CHILD-HEALTH-ROUTING`, `B15-P196-ILLNESS-CHAPTER-OPENING`.
 
 ---
 
