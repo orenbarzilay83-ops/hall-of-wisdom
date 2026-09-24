@@ -351,7 +351,31 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     executionKind: 'custom-engine',
     executorStatus: 'ready',
     legacyTopicId: 'illness',
-    notes: 'Canonical p196 H15 executor is wired. Pure benefic => recovery; pure malefic => illness is prolonged. A malefic H15 is NOT promoted to a death/no-recovery verdict, because the source does not say that here. Mixed remains unresolved. Only H15 is executed for this intent; the broader illness bundle stays outside the verdict.',
+    notes: 'Canonical p196 H15 executor is wired. Pure benefic => recovery; pure malefic => illness is prolonged. A malefic H15 is NOT promoted to a death/no-recovery verdict, because the source does not say that here. Mixed remains unresolved. Only H15 is executed for this intent; H1 recurrence, sensory signs, p197 humors/body-location and the broader illness bundle stay outside the verdict.',
+  }),
+
+  'illness.p196.h1RecurrenceDurationRisk': method({
+    kashfMethodId: 'illness.p196.h1RecurrenceDurationRisk',
+    kashfIntentId: 'illness.durationRisk',
+    topicId: 'illness',
+    sourcePages: [196],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'source-procedure',
+    executorStatus: 'pending',
+    notes: 'Printed p196 opening gives a separate recurrence rule: the H1 figure occurring in H6 indicates prolonged illness; the H1 figure occurring in H8 indicates prolonged illness plus fear/danger. This is not the H15 recovery route and does not provide a numeric duration. No UI runtime is enabled until the recurrence wording and client-safe risk phrasing are separately certified.',
+  }),
+
+  'illness.p196.sensorySignsH6H8': method({
+    kashfMethodId: 'illness.p196.sensorySignsH6H8',
+    kashfIntentId: 'illness.sensorySigns',
+    topicId: 'illness',
+    sourcePages: [196],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'source-procedure',
+    executorStatus: 'pending',
+    notes: 'Printed p196 sensory branches are separate from recovery: the Ahyan example in H8 indicates blindness, Ahyan in H6 indicates dark/dim vision, and Saturn/Jupiter figures in H6 or H8 indicate heaviness of hearing. Preserve as source knowledge only; do not use these signs as medical diagnosis and do not mix them into q-illness-heal.',
   }),
 
   'illness.bodyPart.h6Figure': method({
@@ -381,6 +405,18 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
   }),
 
   // ── FAMILY + HEALTH canonical slice -----------------------------------
+  'pregnancy.p191.twinsMujassad': method({
+    kashfMethodId: 'pregnancy.p191.twinsMujassad',
+    kashfIntentId: 'pregnancy.twins',
+    topicId: 'children',
+    sourcePages: [191],
+    kashfRuntimeStatus: 'blocked-by-source',
+    runtimeAllowed: false,
+    executionKind: 'source-procedure',
+    executorStatus: 'pending',
+    notes: 'Printed p191 states that a مجسدا figure indicates twins. The canonical classifier exposes mujassad-dakhil (fixed) and mujassad-kharij (mutable), but this passage does not define whether مجسدا means either class, both classes, or a distinct source taxonomy. Do not equate it with fixed/mutable by name similarity; keep runtime blocked until the exact source mapping is certified.',
+  }),
+
   'pregnancy.p191.existsH5SilentEmpty': method({
     kashfMethodId: 'pregnancy.p191.existsH5SilentEmpty',
     kashfIntentId: 'pregnancy.exists',
@@ -415,6 +451,105 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     executionKind: 'custom-engine',
     executorStatus: 'ready',
     notes: 'Canonical p191 delivery-difficulty executor is wired. H1+H5 both masculine give the explicit ease sign, with the source noting greater force when both are mutable. A fixed H5 gives the explicit difficulty sign, with H1 and H15 exposed as testimony rather than converted into an invented vote. If ease and difficulty signs coexist, the executor reports conflicting source signs instead of choosing one silently.',
+  }),
+
+  'pregnancy.p191-192.miscarriageRedH7NakisH8': method({
+    kashfMethodId: 'pregnancy.p191-192.miscarriageRedH7NakisH8',
+    kashfIntentId: 'pregnancy.miscarriageRisk',
+    topicId: 'children',
+    sourcePages: [191, 192],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: true,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
+    notes: 'Canonical miscarriage-risk route uses only the cross-page printed seam: Humra/Red (2122) in H7 together with Ankis/Nakis/Shallow Head (2221) in H8 is the explicit miscarriage sign. Absence of this exact pair does NOT prove safety and does not invert the rule. Other p192-p193 fetus-risk branches remain separate source methods and do not vote with this route.',
+  }),
+
+  'pregnancy.p192.genderH5H11InOut': method({
+    kashfMethodId: 'pregnancy.p192.genderH5H11InOut',
+    kashfIntentId: 'pregnancy.genderAlternativeP192',
+    topicId: 'children',
+    sourcePages: [192],
+    methodRole: 'educational-only',
+    kashfRuntimeStatus: 'educational-only',
+    runtimeAllowed: false,
+    executionKind: null,
+    executorStatus: 'not-applicable',
+    notes: 'Body-source alternative gender method: benefic external figures in H5 and H11 indicate male; benefic internal figures there indicate female. It remains reference-only and never votes against the selected p191 H5 gender route.',
+  }),
+
+  'pregnancy.p192.genderParityH1H6H8H12': method({
+    kashfMethodId: 'pregnancy.p192.genderParityH1H6H8H12',
+    kashfIntentId: 'pregnancy.genderParityAlternativeP192',
+    topicId: 'children',
+    sourcePages: [192],
+    methodRole: 'educational-only',
+    kashfRuntimeStatus: 'educational-only',
+    runtimeAllowed: false,
+    executionKind: null,
+    executorStatus: 'not-applicable',
+    notes: 'Body-source alternative gender procedure derives from H1,H6,H8,H12 and judges the resulting odd/even outcome as male/female. Keep as reference-only unless explicitly promoted after a separate executor audit; it does not participate in q-gender.',
+  }),
+
+  'pregnancy.p192.maternalSafetyH6H8H12': method({
+    kashfMethodId: 'pregnancy.p192.maternalSafetyH6H8H12',
+    kashfIntentId: 'pregnancy.maternalSafety',
+    topicId: 'children',
+    sourcePages: [192],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'source-procedure',
+    executorStatus: 'pending',
+    notes: 'Printed p192 gives a distinct maternal-safety branch: H6,H8,H12 benefic indicate that the mother is saved/safe. This is not fetal safety, miscarriage risk, gender, or delivery difficulty. No inverse medical verdict is authorized merely because one house fails the positive condition. No UI route is enabled until a dedicated client-safe executor/policy is approved.',
+  }),
+
+  'pregnancy.p192.monthCount': method({
+    kashfMethodId: 'pregnancy.p192.monthCount',
+    kashfIntentId: 'pregnancy.monthCount',
+    topicId: 'children',
+    sourcePages: [192],
+    kashfRuntimeStatus: 'blocked-by-source',
+    runtimeAllowed: false,
+    executionKind: 'source-procedure',
+    executorStatus: 'pending',
+    notes: 'Printed p192 gives two month-count routes: strike the “third” in the pregnancy house and reduce nine-by-nine, with the remainder as months; alternatively use the balance figure as the month count. The exact computational meaning of the “third” operation and the precedence/reconciliation between the two routes are not closed for runtime. Preserve both; do not invent arithmetic or choose one silently.',
+  }),
+
+  'child.p194.existenceH1H5Nature': method({
+    kashfMethodId: 'child.p194.existenceH1H5Nature',
+    kashfIntentId: 'child.existence',
+    topicId: 'children',
+    sourcePages: [194],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'source-procedure',
+    executorStatus: 'pending',
+    notes: 'Printed p194 treats H1 matching H5 in nature as a child indication, then gives a separate branch: a figure that is neither male nor female and is overturned/mutable indicates an empty womb. This is a child-existence intent, not a gate for the H6/H8 health trajectory. Runtime stays pending until “matches in nature” is bound to one source-certified taxonomy.',
+  }),
+
+  'child.p194.wellbeingH5H16': method({
+    kashfMethodId: 'child.p194.wellbeingH5H16',
+    kashfIntentId: 'child.wellbeing',
+    topicId: 'children',
+    sourcePages: [194],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'source-procedure',
+    executorStatus: 'pending',
+    notes: 'Printed p194 wellbeing branch is distinct from health: H5+H16 both benefic => good fortune/improved condition/much money; both malefic => low condition; one benefic and one malefic => medium condition. Keep separate from H6/H8 health and from current-illness recovery.',
+  }),
+
+  'pregnancy.p194.deliveryH5Weight': method({
+    kashfMethodId: 'pregnancy.p194.deliveryH5Weight',
+    kashfIntentId: 'pregnancy.deliveryAlternativeP194',
+    topicId: 'children',
+    sourcePages: [194],
+    methodRole: 'educational-only',
+    kashfRuntimeStatus: 'educational-only',
+    runtimeAllowed: false,
+    executionKind: null,
+    executorStatus: 'not-applicable',
+    notes: 'Body-source p194 alternative/supporting delivery statements: heavy H5 indicates difficult birth; benefic H5 (external or internal) indicates easy birth. Reference-only in the canonical app: q-birth-ease remains on the selected p191 H1/H5/H15 method and does not vote with this passage.',
   }),
 
   'child.p194.healthTrajectoryH6H8': method({
@@ -1732,15 +1867,15 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
 
   'pregnancy.miscarriageRisk.unresolved': method({
     kashfMethodId: 'pregnancy.miscarriageRisk.unresolved',
-    kashfIntentId: 'pregnancy.miscarriageRisk',
+    kashfIntentId: 'pregnancy.miscarriageRiskLegacyPlaceholder',
     topicId: 'children',
     sourcePages: [192, 193],
     methodRole: 'unresolved',
-    kashfRuntimeStatus: 'blocked-by-source',
+    kashfRuntimeStatus: 'unsupported',
     runtimeAllowed: false,
     executionKind: null,
     executorStatus: 'not-applicable',
-    notes: 'Several body-source miscarriage/fetus-risk conditions exist across p192-p193. Canonical method selection has not yet been formally closed; do not merge them or vote across them.',
+    notes: 'Compatibility placeholder from before Batch21. q-miscarriage no longer routes here. The selected canonical route is the exact p191-192 Humra-H7 + Nakis-H8 cross-page rule; other p192-p193 risk branches remain separate and do not aggregate.',
   }),
 
   'child.lifespan.p195.provenanceUnresolved': method({
