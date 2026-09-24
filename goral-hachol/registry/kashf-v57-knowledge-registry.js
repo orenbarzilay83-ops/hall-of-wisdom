@@ -95,6 +95,26 @@ export const KASHF_V57_KNOWLEDGE = Object.freeze({
     arabicVerificationPages: [238],
   }),
 
+  'illness.p196.h1RecurrenceDurationRisk': knowledge({
+    kashfMethodId: 'illness.p196.h1RecurrenceDurationRisk',
+    page: 196,
+    topic: 'הפרק השישי — החולה, האבדה והבהמות',
+    heading: 'פתיחת דין החולה — חזרת צורת H1',
+    hebrewRule: 'אם צורת הבית הראשון נמצאת בשישי — המחלה מתארכת. אם צורת הבית הראשון נמצאת בשמיני — המחלה מתארכת ויש חשש/סכנה.',
+    arabicVerificationPages: [196],
+    notes: 'זהו מסלול משך/סיכון נפרד שאינו נותן מספר ימים/חודשים ואינו מצביע לתוך דין ההחלמה של H15.',
+  }),
+
+  'illness.p196.sensorySignsH6H8': knowledge({
+    kashfMethodId: 'illness.p196.sensorySignsH6H8',
+    page: 196,
+    topic: 'הפרק השישי — החולה, האבדה והבהמות',
+    heading: 'פתיחת דין החולה — סימני ראייה ושמיעה',
+    hebrewRule: 'בדוגמת נשוא ראש/אחיאן: הופעתו ב-H8 מורה על עיוורון, וב-H6 על חושך/עמימות הראייה. צורות שבתאי או צדק ב-H6 או H8 מורות על כובד השמיעה.',
+    arabicVerificationPages: [196],
+    notes: 'חומר סימני־מקור נפרד מהחלמה. אין להשתמש בו כאבחנה רפואית או כתחליף לדין H15.',
+  }),
+
   'illness.p196.outcomeH15': knowledge({
     kashfMethodId: 'illness.p196.outcomeH15',
     page: 196,
@@ -126,6 +146,16 @@ export const KASHF_V57_KNOWLEDGE = Object.freeze({
     supportingPages: [59, 60],
     arabicVerificationPages: [191],
     notes: 'צורות שאינן מוכרעות בזכר/נקבה לפי הסיווג המשמש בכלל זה נשארות ללא הכרעה; שיטות מין נוספות בעמודים הבאים אינן מצביעות לתוך שיטה זו.',
+  }),
+
+  'pregnancy.p191.twinsMujassad': knowledge({
+    kashfMethodId: 'pregnancy.p191.twinsMujassad',
+    page: 191,
+    topic: 'הפרק החמישי — ילדים והריון',
+    heading: 'סימן תאומים',
+    hebrewRule: 'אם הצורה היא مجسدا — הדבר מורה על תאומים.',
+    arabicVerificationPages: [191],
+    notes: 'הקטע אינו מגדיר כאן אם مجسدا זהה לאחת משתי מחלקות mujassad של המסווג הקנוני או לשתיהן. לכן אין למפות אוטומטית קבוע/מתהפך לתאומים.',
   }),
 
   'pregnancy.p191.existsH5SilentEmpty': knowledge({
@@ -288,6 +318,87 @@ export const KASHF_V57_KNOWLEDGE = Object.freeze({
     supportingPages: [54, 57, 58, 59, 60],
     arabicVerificationPages: [266],
     notes: 'הידע העברי מוכן; המבצע נשאר חסום עד חיבור סיווג מיטיב/מזיק ופנימי/חיצוני באופן שיטתי לשיטה זו.',
+  }),
+
+  'pregnancy.p191-192.miscarriageRedH7NakisH8': knowledge({
+    kashfMethodId: 'pregnancy.p191-192.miscarriageRedH7NakisH8',
+    page: 191,
+    topic: 'הפרק החמישי — ילדים והריון',
+    heading: 'תפר עמ׳ 191–192 — סימן הפלה',
+    hebrewRule: 'המשפט שנחתך בסוף עמ׳ 191 ונשלם בראש עמ׳ 192 קובע: אדום/חֻמְרַה בבית 7 יחד עם שפל ראש/אַנְכִּיס בבית 8 — האישה ההרה מפילה.',
+    detailPages: [192],
+    arabicVerificationPages: [191, 192],
+    notes: 'זהו המסלול הקנוני המצומצם לשאלת חשש להפלה. העדר הצירוף אינו מוכיח בטיחות. אין לצרף אליו את ענפי הסיכון האחרים בעמ׳ 192–193 להצבעת רוב.',
+  }),
+
+  'pregnancy.p192.genderH5H11InOut': knowledge({
+    kashfMethodId: 'pregnancy.p192.genderH5H11InOut',
+    page: 192,
+    topic: 'הפרק החמישי — ילדים והריון',
+    heading: 'שיטת מין חלופית — H5 ו-H11',
+    hebrewRule: 'צורות מיטיבות חיצוניות בחמישי ובאחד־עשר מורות על זכר; צורות מיטיבות פנימיות שם מורות על נקבה.',
+    arabicVerificationPages: [192],
+    notes: 'שיטה חלופית בגוף הספר; נשמרת ללימוד/אחזור ואינה מצטרפת למסלול q-gender שנבחר מעמ׳ 191.',
+  }),
+
+  'pregnancy.p192.genderParityH1H6H8H12': knowledge({
+    kashfMethodId: 'pregnancy.p192.genderParityH1H6H8H12',
+    page: 192,
+    topic: 'הפרק החמישי — ילדים והריון',
+    heading: 'שיטת מין חלופית — זוג/פרד',
+    hebrewRule: 'מולידים מן H1,H6,H8,H12 לפי זוג/פרד; תוצאה יחידית מורה על זכר ותוצאה זוגית על נקבה.',
+    arabicVerificationPages: [192],
+    notes: 'שיטה חלופית נפרדת; אינה מצביעה עם שיטת H5 מעמ׳ 191.',
+  }),
+
+  'pregnancy.p192.maternalSafetyH6H8H12': knowledge({
+    kashfMethodId: 'pregnancy.p192.maternalSafetyH6H8H12',
+    page: 192,
+    topic: 'הפרק החמישי — ילדים והריון',
+    heading: 'בטיחות היולדת',
+    hebrewRule: 'אם בבתים 6, 8 ו־12 נמצאות צורות מיטיבות — היולדת ניצלת.',
+    arabicVerificationPages: [192],
+    notes: 'זהו intent של בטיחות האם בלבד. העדר התנאי החיובי אינו מתהפך אוטומטית לפסק סכנה או מוות, והוא אינו חלק מבטיחות הוולד.',
+  }),
+
+  'pregnancy.p192.monthCount': knowledge({
+    kashfMethodId: 'pregnancy.p192.monthCount',
+    page: 192,
+    topic: 'הפרק החמישי — ילדים והריון',
+    heading: 'מניין חודשי ההריון',
+    hebrewRule: 'למניין חודשי ההריון המקור מורה להכות את השלישי בבית ההריון, להפחית תשע־תשע, והשארית היא מספר החודשים; הוא מוסיף דרך חלופית שלפיה צורת המאזן מורה על מספר החודשים.',
+    arabicVerificationPages: [192],
+    notes: 'הפעולה המדויקת של ״השלישי בבית ההריון״ והיחס בין שתי הדרכים אינם סגורים לחישוב קנוני; אין להשלים מן הדעת.',
+  }),
+
+  'child.p194.existenceH1H5Nature': knowledge({
+    kashfMethodId: 'child.p194.existenceH1H5Nature',
+    page: 194,
+    topic: 'הפרק החמישי — ילדים והריון',
+    heading: 'עצם הוולד — התאמת טבע H1 ו-H5',
+    hebrewRule: 'אם טבע הראשון מתאים לטבע החמישי, הדבר מורה על ילד. ואם הצורה אינה זכרית ואינה נקבית והיא מתהפכת — בטנה של האישה ריקה.',
+    arabicVerificationPages: [194],
+    notes: 'זהו דין עצם הוולד, לא תנאי סף לדין בריאות הילד ב-H6/H8. runtime ממתין עד שסוג ״התאמת הטבע״ ייקשר לטקסונומיה מקורית אחת.',
+  }),
+
+  'child.p194.wellbeingH5H16': knowledge({
+    kashfMethodId: 'child.p194.wellbeingH5H16',
+    page: 194,
+    topic: 'הפרק החמישי — ילדים והריון',
+    heading: 'מזל ומצב הילד',
+    hebrewRule: 'אם H5 ו-H16 מיטיבים — מזלו טוב, מצבו משתפר וממונו רב; אם שניהם מזיקים — מצבו ירוד; ואם אחד מיטיב ואחד מזיק — מצבו בינוני.',
+    arabicVerificationPages: [194],
+    notes: 'דין רווחה/מזל נפרד מדין הבריאות H6/H8 ומדין החלמת חולה בפרק 6.',
+  }),
+
+  'pregnancy.p194.deliveryH5Weight': knowledge({
+    kashfMethodId: 'pregnancy.p194.deliveryH5Weight',
+    page: 194,
+    topic: 'הפרק החמישי — ילדים והריון',
+    heading: 'כובד/קלות הלידה לפי H5 — חומר משלים',
+    hebrewRule: 'H5 כבדה מורה על לידה כבדה; H5 מיטיבה — חיצונית או פנימית — מורה על לידה קלה.',
+    arabicVerificationPages: [194],
+    notes: 'נשמר כחומר מקור משלים בלבד; q-birth-ease ממשיך במסלול p191 שנבחר ואינו מצרף הצבעה מעמ׳ 194.',
   }),
 
   'child.p194.healthTrajectoryH6H8': knowledge({
