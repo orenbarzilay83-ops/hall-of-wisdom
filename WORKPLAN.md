@@ -64,7 +64,9 @@
 - [✅] **DOWNSTREAM COMPLETE — 46/46 RESOLVED, נותרו 0.**
 - [✅] Source Freeze Wave 01 — רשומות המקור המוקדמות p45–181 נבדקו מחדש מול הסריקה ורשומות האימות: **20/48** SOURCE-OPEN נסגרו; מתוכן **3 RESOLVED** ו-**17 SOURCE_CONFLICT/NON_OPERATIONAL**. נשמרו במפורש הסתירות/החוסרים p45, p53, p118, p126/132, p136/137, p151, p159, p165, p168–169, p173–174, p177, p179, p180, p181; p148 נסגר ככותרת ריקה מקורית, ו-p157–158 נסגר בכך שאין בכשף ענף mixed-parity מפורש.
 - [✅] מצב Source Freeze לאחר Wave 01: **20/48 frozen**, נותרו **28 SOURCE-OPEN**.
-- [ ] הבא לפי סדר המקור: p185–201 — `B14-SOURCE-P185-WATER-PLANTS-ODD-BRANCH`, `B14-SOURCE-P185-94-VS-RECURSIVE-COUNT`, `B14-SOURCE-P187-MUNSHAAT-DIRECTION`, `B14-SOURCE-P190-MUTHALLATHA-OPERATION`, `B16-SOURCE-P201-ANIMAL-NAMES`; לאחר מכן p221 ואילך.
+- [✅] Source Freeze Wave 02 — p185–201: ענף ״מים→צמחים/ירקות״ בעמ׳ 185 הוקפא כקריאה מקורית מפורשת ולא כטעות; 94 מול 16×4 נשאר SOURCE_CONFLICT/NON_OPERATIONAL; `ناحية الجاه` בעמ׳ 187 ו-`مثلثة` בעמ׳ 190 נשארו NON_OPERATIONAL; בעמ׳ 201 בוצעה קריאה חזותית שנייה ואושרו הטוקנים המודפסים `التشمير` ו-`الأنكيس` כפי שהם.
+- [✅] מצב Source Freeze לאחר Wave 02: **25/48 frozen** — **5 RESOLVED**, **20 SOURCE_CONFLICT/NON_OPERATIONAL**, נותרו **23 OPEN**.
+- [ ] הבא לפי סדר המקור: p221–250 — Judla/glyph, H18, occupation tokens, travel technical tokens/contradictions, p244–250 damaged derivations and direction token; לאחר מכן p254–275.
 - [ ] לאחר Source Freeze מלא: Rule Decision payload (`activatedRuleIds`, `rejectedRuleIds`, `decisionSummary`) → Golden/E2E → Clean Chat Knowledge Pack → Live deployment verification.
 
 ---
