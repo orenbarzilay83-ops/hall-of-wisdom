@@ -79,6 +79,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfIntentId: 'illness.recovery',
     kashfMethodId: 'illness.p196.outcomeH15',
     kashfRuntimeStatus: 'ready',
+    note: 'Exact p196 recovery route uses H15 only: benefic => recovery; malefic => illness prolonged; mixed => unresolved. H1 recurrence, sensory signs and p197+ illness methods are separate intents and do not vote.',
   }),
 
   'q-illness-bodypart': route({
@@ -95,6 +96,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfIntentId: 'pregnancy.gender',
     kashfMethodId: 'pregnancy.p191.genderH5',
     kashfRuntimeStatus: 'ready',
+    note: 'Use only the p191 masculine/feminine classification of H5. The distinct p192-p195 gender procedures remain reference-only and never vote with this route.',
   }),
 
   'q-siblings': route({
@@ -253,16 +255,16 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfIntentId: 'pregnancy.exists',
     kashfMethodId: 'pregnancy.p191.existsH5SilentEmpty',
     kashfRuntimeStatus: 'ready',
-    note: 'Use silent/empty classification of H5. Never replace with benefic/malefic.',
+    note: 'Use only the p191 silent/empty classification of H5. Do not aggregate p192/p193/p195 pregnancy-confirmation alternatives and never replace silent/empty with benefic/malefic.',
   }),
 
   'q-miscarriage': route({
     questionId: 'q-miscarriage',
-    disposition: 'BLOCK',
+    disposition: 'KEEP',
     kashfIntentId: 'pregnancy.miscarriageRisk',
-    kashfMethodId: 'pregnancy.miscarriageRisk.unresolved',
-    kashfRuntimeStatus: 'blocked-by-source',
-    note: 'p192-p193 contain several miscarriage/fetus-risk conditions. One canonical method has not yet been formally selected; no aggregation is allowed.',
+    kashfMethodId: 'pregnancy.p191-192.miscarriageRedH7NakisH8',
+    kashfRuntimeStatus: 'ready',
+    note: 'Use only the explicit p191→p192 cross-page seam: Humra/Red in H7 together with Nakis/Shallow Head in H8 is the source miscarriage sign. Absence of the pair does not prove safety. Other p192-p193 risk clauses are not votes or fallbacks.',
   }),
 
   'q-birth-ease': route({
@@ -271,6 +273,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfIntentId: 'pregnancy.deliveryDifficulty',
     kashfMethodId: 'pregnancy.p191.deliveryDifficultyH1H5H15',
     kashfRuntimeStatus: 'ready',
+    note: 'Use only the selected p191 H1/H5/H15 delivery method. The p194 H5-heavy/benefic statements are reference-only and do not vote with it.',
   }),
 
   'q-child-health': route({
@@ -288,6 +291,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfIntentId: 'pregnancy.childSafety',
     kashfMethodId: 'pregnancy.p191.childSafetyH1H6H8',
     kashfRuntimeStatus: 'ready',
+    note: 'Use only p191 H1 plus the separate severe H6+H8 condition. Maternal safety, miscarriage signs and p193 fetal-safety alternatives do not vote into this route.',
   }),
 
   'q-child-lifespan': route({
