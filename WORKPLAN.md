@@ -47,7 +47,11 @@
 - [✅] p182 — `q-money-state` הועבר למסלול המקור H2+H10 (`money.p182.h2h10Outlook`) עם Professional Verdict Safety; `q-money-halal` הוכר כמבוסס-מקור H9+H11 אך נשאר `blocked-by-source` עד שהמקור יגדיר תפעולית את “נטיית” הצורה.
 - [✅] QA רחב Batch 18 עבר PASS מלא לאחר תיקון מונה ההסמכות מ-43 ל-44: routing 1619/0, retrieval 618/0, live bridge 145/0, professional safety 424/0, 100% Question Route Coverage, וכן בדיקות Batch16/17, catalog, applicability ו-Kashf/Hawi isolation.
 - [✅] מצב downstream לאחר Batch 18: **36/46 RESOLVED**, נותרו **10**.
-- [ ] הבא לפי סדר המקור: `B13-HOUSE3-RELOCATION-ROUTING-DEFERRED` יחד עם `B13-P184-PROPERTY-MAP-NO-RUNTIME`; אחריהם גל בית 4: `B14-HIDDEN-LOCATION-NO-MULTIMETHOD`, `B14-P185-RECURSIVE-QUARTERS-BLOCKED`, `B14-P187-KIND-DIRECTION-BLOCKED`, `B14-P188-190-DEPTH-METHODS-BLOCKED`; ואז בית 5/מחלה: `B14-HOUSE5-PREGNANCY-ROUTING-DEFERRED`, `B15-P192-INTENT-SEPARATION`, `B15-P194-CHILD-HEALTH-ROUTING`, `B15-P196-ILLNESS-CHAPTER-OPENING`.
+- [✅] Batch 19 — בית 3/פתיחת בית 4 pp183–185: ארבעת מסלולי המעבר הופרדו לפי intent ללא aggregation; `q-move-city` נשאר H4+H15 בלבד, `q-move-home` H1+H4 מול H7+H10 בלבד, `q-stay-place` H1/H2 בלבד, ו-`q-best-city` חסום בנקודת ״חזק יותר״ שאינה מוגדרת תפעולית. סימני p184 נשמרו כפרוצדורה נפרדת וחסומה ללא הצבעה או fallback.
+- [✅] pp184–185 — מפת בית/גן נשמרה לפי הדפוס: H4=קרקע, H10=עצים, H7=צמחים/ירקות, H3=תעלות מים, H2=חומה. ה-runtime חסום רק בנקודת מערכת ה״עדים״ שאינה מוגדרת בקטע; לא הושאלה מערכת עדים מפרק אחר. `q-sell-property` נשאר intent נפרד ולא הוסב לכלל הנכס.
+- [✅] QA רחב Batch 19 עבר PASS מלא: regression ייעודי; routing 1637/0; retrieval 639/0 (69 records, source-ready 51/51, runnable 45/45); live bridge 145/0; professional safety 424/0; 100% Question Route Coverage (138/138); וכן Batch16–18, catalog, applicability ו-Kashf/Hawi isolation.
+- [✅] מצב downstream לאחר Batch 19: **38/46 RESOLVED**, נותרו **8**.
+- [ ] הבא לפי סדר המקור: גל בית 4 — `B14-HIDDEN-LOCATION-NO-MULTIMETHOD`, `B14-P185-RECURSIVE-QUARTERS-BLOCKED`, `B14-P187-KIND-DIRECTION-BLOCKED`, `B14-P188-190-DEPTH-METHODS-BLOCKED`; אחריו בית 5/מחלה — `B14-HOUSE5-PREGNANCY-ROUTING-DEFERRED`, `B15-P192-INTENT-SEPARATION`, `B15-P194-CHILD-HEALTH-ROUTING`, `B15-P196-ILLNESS-CHAPTER-OPENING`.
 
 ---
 
