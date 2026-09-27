@@ -146,7 +146,7 @@ try {
     if (!routedByMethod.has(route.kashfMethodId)) routedByMethod.set(route.kashfMethodId, route);
   }
 
-  ok(routedByMethod.size === 44, \`44 distinct runnable methods have an explicit Question Bank route (got \${routedByMethod.size})\`);
+  ok(routedByMethod.size === 44, `44 distinct runnable methods have an explicit Question Bank route (got ${routedByMethod.size})`);
 
   let liveRoutedSuccess = 0;
   for (const [methodId, route] of routedByMethod.entries()) {
@@ -157,7 +157,7 @@ try {
       topicId: method.topicId,
       question,
       questionId: route.questionId,
-      readingId: \`golden-route-\${route.questionId}\`,
+      readingId: `golden-route-${route.questionId}`,
     });
 
     const pkg = built.contextPackage;
@@ -165,31 +165,31 @@ try {
     const bridge = built.canonicalBridge;
     const decision = built.canonicalRuleDecision;
 
-    ok(Boolean(pkg), \`\${route.questionId}: AI context built\`);
-    ok(bridge?.resolution?.resolutionSource === 'question-route', \`\${route.questionId}: Question Bank route is authoritative\`);
-    ok(bridge?.resolution?.kashfIntentId === route.kashfIntentId, \`\${route.questionId}: question -> exact intent\`);
-    ok(bridge?.resolution?.kashfMethodId === methodId, \`\${route.questionId}: intent -> exact method\`);
-    ok(bridge?.canonicalReading?.kashfMethodId === methodId, \`\${route.questionId}: engine executes selected method\`);
-    ok(bridge?.canonicalReading?.valid === true && bridge?.canonicalReading?.canRunKashf === true, \`\${route.questionId}: canonical reading runnable\`);
-    ok(bridge?.canonicalRetrieval?.kashfMethodId === methodId, \`\${route.questionId}: source retrieval aligned to selected method\`);
-    ok(typeof bridge?.canonicalRetrieval?.v57?.hebrewRule === 'string' && bridge.canonicalRetrieval.v57.hebrewRule.length > 0, \`\${route.questionId}: v57 operational source rule present\`);
-    ok(bridge?.aiVerdictAllowed === true, \`\${route.questionId}: professional AI verdict gate passed\`);
-    ok(decision?.activatedRuleIds?.length === 1 && decision.activatedRuleIds[0] === methodId, \`\${route.questionId}: exactly one rule activated\`);
-    ok(!decision?.rejectedRuleIds?.includes(methodId), \`\${route.questionId}: selected rule not rejected\`);
-    ok((bridge?.canonicalRetrieval?.doNotMixWith || []).every((id) => decision.rejectedRuleIds.includes(id)), \`\${route.questionId}: all explicit doNotMixWith methods rejected\`);
-    ok(Array.isArray(rc?.sourceEvidence) && rc.sourceEvidence.length > 0, \`\${route.questionId}: source evidence propagated to AI context\`);
-    ok(rc?.activatedRuleIds?.[0] === methodId, \`\${route.questionId}: Rule Decision survives AI context packaging\`);
-    ok(typeof pkg?.decisionSummary === 'string' && pkg.decisionSummary.includes(methodId), \`\${route.questionId}: deterministic decision summary present\`);
+    ok(Boolean(pkg), `${route.questionId}: AI context built`);
+    ok(bridge?.resolution?.resolutionSource === 'question-route', `${route.questionId}: Question Bank route is authoritative`);
+    ok(bridge?.resolution?.kashfIntentId === route.kashfIntentId, `${route.questionId}: question -> exact intent`);
+    ok(bridge?.resolution?.kashfMethodId === methodId, `${route.questionId}: intent -> exact method`);
+    ok(bridge?.canonicalReading?.kashfMethodId === methodId, `${route.questionId}: engine executes selected method`);
+    ok(bridge?.canonicalReading?.valid === true && bridge?.canonicalReading?.canRunKashf === true, `${route.questionId}: canonical reading runnable`);
+    ok(bridge?.canonicalRetrieval?.kashfMethodId === methodId, `${route.questionId}: source retrieval aligned to selected method`);
+    ok(typeof bridge?.canonicalRetrieval?.v57?.hebrewRule === 'string' && bridge.canonicalRetrieval.v57.hebrewRule.length > 0, `${route.questionId}: v57 operational source rule present`);
+    ok(bridge?.aiVerdictAllowed === true, `${route.questionId}: professional AI verdict gate passed`);
+    ok(decision?.activatedRuleIds?.length === 1 && decision.activatedRuleIds[0] === methodId, `${route.questionId}: exactly one rule activated`);
+    ok(!decision?.rejectedRuleIds?.includes(methodId), `${route.questionId}: selected rule not rejected`);
+    ok((bridge?.canonicalRetrieval?.doNotMixWith || []).every((id) => decision.rejectedRuleIds.includes(id)), `${route.questionId}: all explicit doNotMixWith methods rejected`);
+    ok(Array.isArray(rc?.sourceEvidence) && rc.sourceEvidence.length > 0, `${route.questionId}: source evidence propagated to AI context`);
+    ok(rc?.activatedRuleIds?.[0] === methodId, `${route.questionId}: Rule Decision survives AI context packaging`);
+    ok(typeof pkg?.decisionSummary === 'string' && pkg.decisionSummary.includes(methodId), `${route.questionId}: deterministic decision summary present`);
 
     const res = await handleAdvisorRequest(makeLiveRequest(pkg), { verifyToken: goldenVerifier });
     const body = await res.json();
-    ok(res.status === 200 && body?.evaluatorMode === 'live', \`\${route.questionId}: full Edge path returns live structured output\`);
-    ok(body?.advisorBrainOutput?.verdictAudit?.methodId === methodId, \`\${route.questionId}: advisor output audited against same method\`);
-    ok(body?.advisorBrainOutput?.verdictAudit?.engineVerdictPolarity === rc?.professionalVerdictSafety?.authoritativePolarity, \`\${route.questionId}: advisor polarity equals engine polarity\`);
+    ok(res.status === 200 && body?.evaluatorMode === 'live', `${route.questionId}: full Edge path returns live structured output`);
+    ok(body?.advisorBrainOutput?.verdictAudit?.methodId === methodId, `${route.questionId}: advisor output audited against same method`);
+    ok(body?.advisorBrainOutput?.verdictAudit?.engineVerdictPolarity === rc?.professionalVerdictSafety?.authoritativePolarity, `${route.questionId}: advisor polarity equals engine polarity`);
     if (body?.advisorBrainOutput?.clientAnswerDraft != null) {
       ok(
         body.advisorBrainOutput.clientAnswerDraft.trim() === String(rc?.professionalVerdictSafety?.authoritativeClientDraftHebrew || '').trim(),
-        \`\${route.questionId}: client draft is exact authoritative engine text\`
+        `${route.questionId}: client draft is exact authoritative engine text`
       );
     }
     liveRoutedSuccess += 1;
@@ -235,7 +235,7 @@ try {
   }
 
   const allRunnable = new Set([...routedByMethod.keys(), 'desire.p206.querentWantsH7H11ThenH5', 'dhamir.p159.subjectByH6Recurrence']);
-  ok(allRunnable.size === 46, \`Golden/E2E matrix accounts for all 46 runnable methods (got \${allRunnable.size})\`);
+  ok(allRunnable.size === 46, `Golden/E2E matrix accounts for all 46 runnable methods (got ${allRunnable.size})`);
 
   console.log('\n--- Golden/E2E Tier B: source-derived fixed cases ---');
 
@@ -290,7 +290,7 @@ try {
 
   for (const gt of sourceCases) {
     const board = buildRamlBoardFromMothers(gt.mothers);
-    ok(board.boardValidation?.isValid === true, \`\${gt.id}: source fixture produces a valid board\`);
+    ok(board.boardValidation?.isValid === true, `${gt.id}: source fixture produces a valid board`);
 
     const built = buildKashfAiContextPackage({
       mothers: gt.mothers,
@@ -302,26 +302,26 @@ try {
     const bridge = built.canonicalBridge;
     const executorResult = bridge?.canonicalReading?.primaryFormula?.result?.executorResult;
 
-    ok(bridge?.resolution?.kashfMethodId === gt.methodId, \`\${gt.id}: exact source method selected\`);
-    ok(bridge?.canonicalRetrieval?.v57?.page === gt.sourcePage, \`\${gt.id}: exact v57 source page retrieved\`);
-    ok(gt.expected(executorResult), \`\${gt.id}: \${gt.description}\`);
-    ok(built.canonicalRuleDecision?.activatedRuleIds?.[0] === gt.methodId, \`\${gt.id}: source method is sole activated rule\`);
+    ok(bridge?.resolution?.kashfMethodId === gt.methodId, `${gt.id}: exact source method selected`);
+    ok(bridge?.canonicalRetrieval?.v57?.page === gt.sourcePage, `${gt.id}: exact v57 source page retrieved`);
+    ok(gt.expected(executorResult), `${gt.id}: ${gt.description}`);
+    ok(built.canonicalRuleDecision?.activatedRuleIds?.[0] === gt.methodId, `${gt.id}: source method is sole activated rule`);
     ok(
-      built.contextPackage?.readingContext?.sourceEvidence?.some((e) => e.includes(\`עמ׳ \${gt.sourcePage}\`)),
-      \`\${gt.id}: source page survives into AI context\`
+      built.contextPackage?.readingContext?.sourceEvidence?.some((e) => e.includes(`עמ׳ ${gt.sourcePage}`)),
+      `${gt.id}: source page survives into AI context`
     );
     if ('expectedOverallPositive' in gt) {
-      ok(bridge?.canonicalReading?.overallPositive === gt.expectedOverallPositive, \`\${gt.id}: source polarity/non-binary contract preserved\`);
+      ok(bridge?.canonicalReading?.overallPositive === gt.expectedOverallPositive, `${gt.id}: source polarity/non-binary contract preserved`);
     }
 
     const res = await handleAdvisorRequest(makeLiveRequest(built.contextPackage), { verifyToken: goldenVerifier });
     const body = await res.json();
-    ok(body?.evaluatorMode === 'live', \`\${gt.id}: source-derived case completes Advisor path\`);
-    ok(body?.advisorBrainOutput?.verdictAudit?.methodId === gt.methodId, \`\${gt.id}: Advisor remains on exact source method\`);
+    ok(body?.evaluatorMode === 'live', `${gt.id}: source-derived case completes Advisor path`);
+    ok(body?.advisorBrainOutput?.verdictAudit?.methodId === gt.methodId, `${gt.id}: Advisor remains on exact source method`);
   }
 
-  console.log(\`\\nGolden/E2E assertions: \${assertions} passed\`);
-  console.log(\`Mocked Anthropic tool calls: \${anthropicCalls}\`);
+  console.log(`\\nGolden/E2E assertions: ${assertions} passed`);
+  console.log(`Mocked Anthropic tool calls: ${anthropicCalls}`);
   console.log('Runnable canonical methods covered: 46/46');
   console.log('Professionally live-advisor-safe methods covered: 45/45');
   console.log('Intentionally client-verdict-blocked runnable method: 1/1 (p159 Dhamir)');
