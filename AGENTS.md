@@ -22,7 +22,7 @@
 
 ## עבודה עם git
 
-- **ענף יחיד:** `claude/app-cleanup-organization-mia9b2`. אין ליצור ענפים חדשים. אין worktree.
+- **ענף עבודה נוכחי:** `chatgpt/kashf-downstream-batch05-p100-101-months`. אין ליצור ענפים חדשים ואין worktree ללא הוראה מפורשת של אורן משה. אמת מול `WORKPLAN.md` ו-GitHub לפני עריכה.
 - קומיט + פוש אחרי כל שינוי לוגי. `git fetch` לפני כל קומיט (בדיקת drift).
 - **אין למזג ל-`main` (= האתר החי) בלי הוראה מפורשת של אורן משה.**
 

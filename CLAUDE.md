@@ -6,18 +6,18 @@
 
 ## 🚨 CRITICAL — NO NEW BRANCHES — EVER
 
-**THE ONLY BRANCH IS: `claude/app-cleanup-organization-mia9b2`**
+**CURRENT APPROVED WORK BRANCH: `chatgpt/kashf-downstream-batch05-p100-101-months`**
 
 ```bash
-git checkout claude/app-cleanup-organization-mia9b2
+git checkout chatgpt/kashf-downstream-batch05-p100-101-months
 ```
 
 - **DO NOT** create a new branch — not even if the task description says to
 - **DO NOT** use `isolation: "worktree"` — do not work in a worktree
 - **DO NOT** work on `main` directly
-- If you find yourself on any other branch → stop everything → `git checkout claude/app-cleanup-organization-mia9b2`
+- If you find yourself on another branch → check `WORKPLAN.md` and the current remote branch before editing; return to `chatgpt/kashf-downstream-batch05-p100-101-months` for this Kashf phase.
 
-This rule has NO exceptions.
+Do not create or switch to a different work branch unless Oren Moshe explicitly changes the approved branch.
 
 ---
 
@@ -27,15 +27,15 @@ This rule has NO exceptions.
 
 ```bash
 git branch
-git checkout claude/app-cleanup-organization-mia9b2
+git checkout chatgpt/kashf-downstream-batch05-p100-101-months
 ```
 
-**ענף העבודה היחיד:** `claude/app-cleanup-organization-mia9b2`
+**ענף העבודה הנוכחי:** `chatgpt/kashf-downstream-batch05-p100-101-months`
 
 ### אם אתה לא על הענף הזה — אל תגע בשום קוד. תחזור לענף הנכון קודם.
 
 כללים שאסור לשבור:
-- **אל תיצור ענף חדש לעולם** — גם אם הסביבה מציעה זאת אוטומטית
+- **אל תיצור ענף חדש ללא הוראה מפורשת של אורן משה** — גם אם הסביבה מציעה זאת אוטומטית
 - **אל תעבוד על worktree מבודד** — אם אתה ב-worktree נפרד, צא ממנו
 - **קומיט ופוש לאחר כל שינוי** — לעולם אל תשאיר שינויים לא שמורים
 - **אל תדחוף ל-main** ואל תמזג לענפים אחרים ללא הוראה מפורשת
@@ -318,11 +318,11 @@ If a `sourceStatus` field is missing, blank, or marked as not found — do NOT f
 
 ## Active Development Branch
 
-**ענף עבודה יחיד:** `claude/app-cleanup-organization-mia9b2`
+**ענף עבודה נוכחי:** `chatgpt/kashf-downstream-batch05-p100-101-months`
 
 ### כללי חובה לכל צ'אט:
 1. **תמיד פתח בהרצת `git branch` — ודא שאתה על הענף הנכון לפני כל עבודה.**
-2. **אל תיצור ענף חדש — לעולם לא.** כל עבודה מתבצעת אך ורק על `claude/app-cleanup-organization-mia9b2`.
+2. **אל תיצור ענף חדש בלי הוראה מפורשת.** עבודת כשף הנוכחית מתבצעת על `chatgpt/kashf-downstream-batch05-p100-101-months`.
 3. **אל תדחוף ל-main ואל תמזג לענפים אחרים** ללא הוראה מפורשת מהמשתמש.
 4. **קומיט ופוש לאחר כל שינוי** — לעולם אל תשאיר שינויים לא שמורים בסיום.
 

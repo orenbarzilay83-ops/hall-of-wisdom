@@ -1,7 +1,7 @@
 # תוכנית עבודה — גורל החול
 > **הוראה חשובה:** כשמשימה הושלמה — סמן ✅ ליד הפריט וקומיט. לא למחוק את הרשימה — היא לצורך מעקב.
 
-> ענף: `claude/app-cleanup-organization-mia9b2` | עודכן: 2026-07-07 (סבב רביעי)
+> ענף עבודה נוכחי: `chatgpt/kashf-downstream-batch05-p100-101-months` | עודכן: 2026-09-27
 
 ## KASHF Phase 4 — downstream resolution pass (2026-09-17)
 
@@ -75,12 +75,13 @@
 - [✅] AI Context Builder v10 מחבר בפועל `activatedRuleIds`, `rejectedRuleIds`, `sourceEvidence` ו-`decisionSummary` ב-canonical mode; legacy non-canonical נשאר partial ואינו ממציא IDs.
 - [✅] QA Rule Decision סופי עבר PASS בריצה `35986172739`: regression ייעודי PASS; AI Context Builder + Smart Advisor payload + generic Rule Decision Engine PASS; השרת דוחה tampering ב-`activatedRuleIds`/`rejectedRuleIds`/`decisionSummary`/`sourceEvidence`; routing 1751/0; retrieval 772/0; live bridge 145/0; professional safety 425/0; route coverage 138/138; Source Freeze 48/48.
 - [✅] **Golden/E2E COMPLETE** — הרצף question → intent → method → engine → source retrieval → Rule Decision payload → AI context → Smart Advisor נבדק על 46/46 שיטות runnable (44 דרך Question Bank ושתי שיטות נוספות דרך retrieval), ובארבעה מקרי מקור קבועים מעמ׳ 191–192 ו־196. QA ריצה `36313304583`: 886 assertions PASS; routing 1751/0; retrieval 772/0; bridge 145/0; Source Freeze 48/48. תגובת Anthropic הודמתה; לא בוצע deploy או AI חי. ראו `KASHF_GOLDEN_E2E_AUDIT.md`.
-- [ ] השלב הבא: **Clean Chat Knowledge Pack**; אחריו **Live deployment verification** באישור נפרד וללא עקיפת שערי מקור/בטיחות.
+- [✅] **Clean Chat Knowledge Pack — export and local QA**: `kashf-chat-pack/kashf-chat-pack.zip` מכיל הוראות לפרויקט ChatGPT מבודד, 46 כללי v57 תפעוליים, 138 מסלולי שאלה, אינדקס עזר של 272 רשומות, ארבע דוגמאות מקור וכלי Node סגור שמריץ את המנוע הקנוני. בדיקת חבילה מקומית: 46/46, ארבעת מקרי המקור, שאלות חסומות ו-p159 ליועץ בלבד — PASS. לא בוצעה העלאה ל-ChatGPT Project או בדיקת GPT חי. ראו `KASHF_CHAT_PACK_AUDIT.md`.
+- [ ] השלב הבא: **בדיקת החבילה בפרויקט ChatGPT מבודד** עם יכולת הרצה של Node וארבע דוגמאות מקור; אחריה **Live deployment verification** של האפליקציה באישור נפרד.
 
 ---
 
 ## הנחיות לצ'אטים חדשים
-- **ענף עבודה:** `claude/app-cleanup-organization-mia9b2` בלבד
+- **ענף עבודה:** `chatgpt/kashf-downstream-batch05-p100-101-months` בלבד; ודא מול GitHub לפני עריכה
 - **לפני כל עבודה:** בדוק `git branch` ו-`git status`
 - **אין להמציא נתונים** — אם מקור חסר, השאר ריק עם sourceStatus: "not-yet-found"
 - **אחרי כל מימוש:** עדכן סטטוס ב-kashf-topics-per-house.js ל-`implemented: true` + topicId
