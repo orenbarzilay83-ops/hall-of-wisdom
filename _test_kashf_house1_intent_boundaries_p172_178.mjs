@@ -98,13 +98,14 @@ const messengerMethod = getKashfMethod('messenger.p176.recast14511');
 assert.equal(messengerMethod.runtimeAllowed, false);
 assert.equal(messengerMethod.executionKind, 'recast-board');
 assert.equal(messengerMethod.executorStatus, 'pending');
+assert.equal(messengerMethod.kashfRuntimeStatus, 'repair-required');
 assert.match(messengerMethod.notes || '', /separate derived board|NEW board|Source board/i);
 const messengerRoute = resolveKashfRouteByQuestionId('q-message');
 assert.equal(messengerRoute.kashfMethodId, 'messenger.p176.recast14511');
 assert.equal(messengerRoute.canRunKashf, false);
 const messenger = buildKashfReadingByQuestionId(board, 'q-message', { question: 'האם המסר יגיע?' });
 assert.equal(messenger.valid, false);
-assert.equal(messenger.reason, 'executor-pending');
+assert.equal(messenger.reason, 'repair-required');
 
 // p177 recursive relative-thirteenth remains source-blocked, with no inferred mapping.
 const p177 = getKashfMethod('person.p177.relativeThirteenth');

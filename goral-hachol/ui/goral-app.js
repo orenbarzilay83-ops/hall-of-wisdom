@@ -1192,6 +1192,34 @@ async function runReading() {
         throw new Error("נתיב הניתוב הקנוני של כשף לא נטען. נסה לרענן את הדף.");
       }
 
+      // The old free-topic spiritual bundle conflates the two separate p167
+      // questions and can imply harm to the querent. It is not a Kashf
+      // diagnostic route. A selected Question ID still uses its exact method.
+      if (!hasCanonicalQuestion && kashfTopicId === 'spiritualDiagnostics') {
+        const blockedSpiritualReading = {
+          valid: false,
+          status: 'blocked',
+          canRunKashf: false,
+          verdict: null,
+          overallPositive: null,
+          userMessage: 'לבדיקה רוחנית בשיטת כשף יש לבחור שאלה מדויקת מבנק השאלות. כלל עמ׳ 167 על פעולה מאחורי השואל אינו קובע כישוף, עין הרע או ג׳ין; שאלות אלה אינן מוכרעות במסלול הנושא החופשי.',
+        };
+        const outputEl = document.getElementById("kashfReadingOutput");
+        if (outputEl) {
+          outputEl.innerHTML = buildBoardHtml(reading)
+            + window.KASHF_ENGINE.writeCanonicalKashfReading(blockedSpiritualReading);
+        }
+        const advisorPanel = document.getElementById('orenAdvisorPanel');
+        if (advisorPanel) {
+          advisorPanel.innerHTML = '';
+          advisorPanel.hidden = true;
+        }
+        window._lastReading = reading;
+        window._lastKashfReading = blockedSpiritualReading;
+        showScreen("kashf-reading");
+        return;
+      }
+
       const kashfReading = hasCanonicalQuestion
         ? window.KASHF_ENGINE.buildKashfReadingByQuestionId(
             kashfBoard,

@@ -101,6 +101,8 @@ const wellRoute = resolveKashfRouteByQuestionId('q-well-drilling');
 assert.equal(wellRoute.kashfMethodId, 'well.p188.recast1468');
 assert.equal(wellRoute.canRunKashf, false);
 const wellMethod = getKashfMethod('well.p188.recast1468');
+assert.equal(wellMethod.kashfRuntimeStatus, 'blocked-by-source');
+assert.match(wellMethod.notes || '', /65,536/);
 assert.match(wellMethod.notes || '', /depth is a separate intent|water depth is a separate intent/i);
 
 const openDepth = getKashfMethod('hiddenDepth.p188-189.openElementLengths');

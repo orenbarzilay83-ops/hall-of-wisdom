@@ -192,7 +192,8 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     disposition: 'KEEP',
     kashfIntentId: 'messenger.outcome',
     kashfMethodId: 'messenger.p176.recast14511',
-    kashfRuntimeStatus: 'ready',
+    kashfRuntimeStatus: 'repair-required',
+    note: 'Printed p176 tests the outcome of messengers and fulfillment of a request; the current arrival-of-a-letter label is not equivalent. Repair question scope before runtime.',
   }),
 
   'q-news-arrive': route({
@@ -201,8 +202,8 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     aliasOf: 'q-message',
     kashfIntentId: 'messenger.outcome',
     kashfMethodId: 'messenger.p176.recast14511',
-    kashfRuntimeStatus: 'ready',
-    note: 'Alias only when the question means a message/news item arriving from a sender; generic future news remains outside this method.',
+    kashfRuntimeStatus: 'repair-required',
+    note: 'Arrival of generic news is not the printed p176 outcome-of-messengers/request-fulfilled intent. Do not treat this as an alias until the question scope is repaired.',
   }),
 
   'q-clothing-lucky': route({
@@ -388,8 +389,8 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     disposition: 'RENAME',
     kashfIntentId: 'well.result',
     kashfMethodId: 'well.p188.recast1468',
-    kashfRuntimeStatus: 'ready',
-    note: 'This canonical route answers only whether the drilling/water objective is obtained by the p188 H1/H4/H6/H8 recast. Water depth is a separate intent; neither p188-189 element lengths nor the p189-190 Tamtam table may be silently merged into this route.',
+    kashfRuntimeStatus: 'blocked-by-source',
+    note: 'The p188 H1/H4/H6/H8 recast is explicit, but the derived H4+angles inward condition is unreachable under the current strict dakhil classification over all 65,536 source boards. Clarify source meaning before runtime. Water depth is a separate intent.',
   }),
 
   // ── AUDITED MONEY + ECONOMY SLICE -------------------------------------

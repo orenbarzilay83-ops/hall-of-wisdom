@@ -12759,7 +12759,8 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "runtimeEligible": false,
       "doNotInfer": [
         "אין לערבב את הלוח הנגזר עם הלוח המקורי.",
-        "אין להרחיב את השיטה לכל שאלה רק משום שהיא משתמשת ב-recast."
+        "אין להרחיב את השיטה לכל שאלה רק משום שהיא משתמשת ב-recast.",
+        "אחרית שליחות והיענות לבקשה אינן זהות בהכרח להגעת מכתב או חדשות; נדרש תיקון ניסוח השאלות."
       ],
       "sourceDiscrepancies": [],
       "sourceVerification": {
@@ -15687,8 +15688,15 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "operationalRole": "PRIMARY_CANDIDATE",
       "runtimeEligible": false,
       "doNotInfer": [
-        "אין להחליף את קבוצת האמהות."
+        "אין להחליף את קבוצת האמהות.",
+        "אין להרחיב את המונח دواخلا אל קבועות או ממוזגות בלי עדות מקור: לפי סיווג פנימית־ממש הקיים התנאי אינו ניתן להשגה בלוח הנגזר."
       ],
+      "operationalAudit": {
+        "status": "BLOCKED_PENDING_SOURCE_INTERPRETATION",
+        "scope": "all 65,536 combinations of four original mother figures under the current board generator and strict dakhil classifier",
+        "finding": "No derived board formed from original H1,H4,H6,H8 has derived H1,H4,H7,H10 all strictly dakhil; the maximum count of inward-benefic required houses is three.",
+        "limitation": "This is an operational contradiction under the current classification, not a textual correction to the printed Arabic. Do not activate by guessing that fixed or mixed figures count as inward."
+      },
       "sourceDiscrepancies": [],
       "sourceVerification": {
         "printedBookPages": [

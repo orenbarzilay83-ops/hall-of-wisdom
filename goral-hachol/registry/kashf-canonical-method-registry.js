@@ -167,11 +167,11 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfIntentId: 'messenger.outcome',
     topicId: 'siblings',
     sourcePages: [176],
-    kashfRuntimeStatus: 'ready',
+    kashfRuntimeStatus: 'repair-required',
     runtimeAllowed: false,
     executionKind: 'recast-board',
     executorStatus: 'pending',
-    notes: 'Source p176 requires a separate derived board: copy H1,H4,H5,H11 from the source board as the four new mothers, complete a NEW board, then judge derived-board H5 and the angles. The source board must remain immutable and must never be mixed with the derived positions. Source method is known, but runtime stays disabled until a dedicated recast-board executor and Golden Tests certify this separation.',
+    notes: 'Printed p176 asks about the outcome of messengers and whether the request is fulfilled. Current q-message/q-news-arrive labels instead ask whether a letter/news arrives; that intent is not identical. Source p176 requires a separate derived board: copy H1,H4,H5,H11 from the source board as the four new mothers, complete a NEW board, then judge derived-board H5 and the angles. The source board must remain immutable. Repair the route intent before any executor and Golden Tests.',
   }),
 
   'clothing.p264-265.luck': method({
@@ -677,11 +677,11 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfIntentId: 'well.result',
     topicId: 'hiddenTreasure',
     sourcePages: [188],
-    kashfRuntimeStatus: 'ready',
+    kashfRuntimeStatus: 'blocked-by-source',
     runtimeAllowed: false,
     executionKind: 'recast-board',
     executorStatus: 'pending',
-    notes: 'Make H1,H4,H6,H8 the new mothers, complete a new board, then judge H4 and angles as benefic+internal. Existing legacy helper using original houses is not source-equivalent. This method answers attainment of the drilling/water objective only; water depth is a separate intent and must never be silently appended.',
+    notes: 'Printed p188 says to make H1,H4,H6,H8 the new mothers and judge derived H4 and angles as benefic+internal. Under the current strict dakhil classifier the inward condition is unreachable: exhaustive enumeration of all 65,536 valid source-mother combinations found 0 with derived H1,H4,H7,H10 all dakhil (maximum 3 inward-benefic). Do not broaden inward to fixed/mixed without source evidence. Existing legacy helper using original houses is not equivalent. This method answers attainment only; water depth is a separate intent.',
   }),
 
   'hiddenDepth.p188-189.openElementLengths': method({
