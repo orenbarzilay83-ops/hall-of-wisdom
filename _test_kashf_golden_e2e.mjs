@@ -224,14 +224,15 @@ try {
   });
   ok(dhamirBuilt.canonicalBridge?.resolution?.kashfMethodId === 'dhamir.p159.subjectByH6Recurrence', 'free text selects exact p159 Dhamir subject-identification method');
   ok(dhamirBuilt.canonicalBridge?.canonicalReading?.valid === true, 'p159 Dhamir executor itself is runnable');
-  ok(dhamirBuilt.canonicalBridge?.aiVerdictAllowed === false, 'p159 Dhamir is intentionally not authorized for client verdict');
-  ok(dhamirBuilt.canonicalRuleDecision?.activatedRuleIds?.length === 0, 'p159 Dhamir activates zero client-verdict rules');
-  ok(dhamirBuilt.canonicalRuleDecision?.rejectedRuleIds?.includes('dhamir.p159.subjectByH6Recurrence'), 'p159 Dhamir selected method is explicitly rejected for client verdict');
+  ok(dhamirBuilt.canonicalBridge?.aiVerdictAllowed === true, 'p159 Dhamir source and executor gates permit advisor analysis');
+  ok(dhamirBuilt.canonicalRuleDecision?.activatedRuleIds?.[0] === 'dhamir.p159.subjectByH6Recurrence', 'p159 Dhamir is the sole selected analysis rule');
+  ok(dhamirBuilt.canonicalBridge?.professionalVerdictSafety?.certificationStatus === 'pending-backfill', 'p159 is not certified for a client draft');
+  ok(dhamirBuilt.canonicalBridge?.professionalVerdictSafety?.clientFacingCertified === false, 'p159 client-facing certification remains off');
   {
     const res = await handleAdvisorRequest(makeLiveRequest(dhamirBuilt.contextPackage), { verifyToken: goldenVerifier });
     const body = await res.json();
-    ok(body?.evaluatorMode === 'mock', 'p159 Dhamir cannot cross the professional live verdict gate');
-    ok(body?.liveModeUnavailableReason === 'professional-verdict-safety-failed', 'p159 Dhamir fails closed at professional verdict safety');
+    ok(body?.evaluatorMode === 'live', 'p159 can reach advisor analysis with the exact selected method');
+    ok(body?.advisorBrainOutput?.clientAnswerDraft === null, 'p159 cannot produce a client-facing draft without certification');
   }
 
   const allRunnable = new Set([...routedByMethod.keys(), 'desire.p206.querentWantsH7H11ThenH5', 'dhamir.p159.subjectByH6Recurrence']);
@@ -324,7 +325,7 @@ try {
   console.log(`Mocked Anthropic tool calls: ${anthropicCalls}`);
   console.log('Runnable canonical methods covered: 46/46');
   console.log('Professionally live-advisor-safe methods covered: 45/45');
-  console.log('Intentionally client-verdict-blocked runnable method: 1/1 (p159 Dhamir)');
+  console.log('Advisor-only, uncertified client draft: 1/1 (p159 Dhamir)');
   console.log('Source-derived fixed Golden cases: 4/4');
   console.log('Kashf Golden/E2E: PASS');
 } finally {
