@@ -55,7 +55,8 @@ async function goldenVerifier(token) {
 
 function advisorOutputForSafety(safety) {
   const authoritativePolarity = String(safety?.authoritativePolarity || 'blocked');
-  const authoritativeDraft = typeof safety?.authoritativeClientDraftHebrew === 'string'
+  const authoritativeDraft = safety?.clientFacingCertified === true
+    && typeof safety?.authoritativeClientDraftHebrew === 'string'
     && safety.authoritativeClientDraftHebrew.trim().length > 0
       ? safety.authoritativeClientDraftHebrew
       : null;
