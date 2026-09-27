@@ -41,6 +41,17 @@ expect(index.sourceConflictQueue.length === 48 && count(index.sourceConflictQueu
   && count(index.sourceConflictQueue, 'SOURCE_CONFLICT/NON_OPERATIONAL') === 39, 'Source Freeze status changed');
 expect(routes.length === 138 && runnable.length === 46, 'route/runnable inventory changed');
 expect(routes.every(route => questionBank.has(route.questionId)), 'Question Bank labels missing');
+const spiritualCoverage = index.spiritualQuestionCoverage;
+expect(spiritualCoverage?.questionRoutes?.length === 8 && spiritualCoverage?.sourceMentions?.length === 8,
+  'spiritual source coverage missing');
+for (const item of spiritualCoverage.questionRoutes) {
+  const resolved = resolveKashfRouteByQuestionId(item.questionId);
+  expect(questionBank.has(item.questionId), `spiritual question missing: ${item.questionId}`);
+  expect(Boolean(resolved.canRunKashf) === (item.runtimeStatus === 'READY'),
+    `spiritual runtime drift: ${item.questionId}`);
+  for (const entryId of [item.entryId, ...(item.contextEntryIds || [])].filter(Boolean))
+    expect(index.records.some(record => record.entryId === entryId), `spiritual source entry missing: ${entryId}`);
+}
 
 fs.rmSync(output, { recursive: true, force: true });
 fs.mkdirSync(output, { recursive: true });
@@ -81,7 +92,8 @@ write('QUESTION_ROUTES.json', { role: 'exact-question-id-routing', count: routes
       note: route.note || null, blockedReason: resolved.canRunKashf ? null : resolved.userMessage };
   }) });
 write('SOURCE_INDEX.json', { role: 'source-map-reference-only-never-activates-methods', version: index.version,
-  coverage: index.coverage, records: index.records, sourceFreeze: index.sourceConflictQueue.map(item => ({
+  coverage: index.coverage, spiritualQuestionCoverage: spiritualCoverage,
+  records: index.records, sourceFreeze: index.sourceConflictQueue.map(item => ({
     id: item.id, entryId: item.entryId, page: item.page, status: item.status, summary: item.summary,
   })), inactiveMethods: methods.filter(method => !runnable.includes(method)).map(method => ({
     methodId: method.kashfMethodId, sourcePages: method.sourcePages, runtimeStatus: method.kashfRuntimeStatus,

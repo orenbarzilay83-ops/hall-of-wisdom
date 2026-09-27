@@ -16,6 +16,12 @@ assert.equal(methods.filter(item => item.clientFacingCertified).length, 45);
 assert.equal(routes.length, 138);
 assert(routes.every(item => typeof item.label === 'string' && item.label.trim() && typeof item.description === 'string'));
 assert.equal(source.records.length, 272);
+assert.equal(source.spiritualQuestionCoverage.questionRoutes.length, 8);
+assert.equal(source.spiritualQuestionCoverage.sourceMentions.length, 8);
+for (const item of source.spiritualQuestionCoverage.questionRoutes) {
+  assert.equal(routes.find(route => route.questionId === item.questionId)?.canRunKashf,
+    item.runtimeStatus === 'READY', item.questionId);
+}
 assert.equal(source.sourceFreeze.filter(item => item.status === 'SOURCE_CONFLICT/NON_OPERATIONAL').length, 39);
 const hiddenActionSource = source.records.find(item => item.entryId === 'gate6.house1.p167.hidden-work-diagnostic');
 assert.equal(hiddenActionSource?.verificationStatus, 'VERIFIED');
