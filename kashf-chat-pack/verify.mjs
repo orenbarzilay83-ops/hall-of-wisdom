@@ -17,6 +17,13 @@ assert.equal(routes.length, 138);
 assert(routes.every(item => typeof item.label === 'string' && item.label.trim() && typeof item.description === 'string'));
 assert.equal(source.records.length, 272);
 assert.equal(source.sourceFreeze.filter(item => item.status === 'SOURCE_CONFLICT/NON_OPERATIONAL').length, 39);
+const hiddenActionSource = source.records.find(item => item.entryId === 'gate6.house1.p167.hidden-work-diagnostic');
+assert.equal(hiddenActionSource?.verificationStatus, 'VERIFIED');
+assert.deepEqual(hiddenActionSource?.sourceDiscrepancies, []);
+assert.equal(routes.find(item => item.questionId === 'q-hidden-action')?.canRunKashf, true);
+for (const id of ['q-sorcery', 'q-sorcery-h10', 'q-jinn-type', 'q-sorcerer', 'q-obsession']) {
+  assert.equal(routes.find(item => item.questionId === id)?.canRunKashf, false, id);
+}
 assert.equal(new Set(methods.map(item => item.methodId)).size, 46);
 assert(methods.every(item => item.v57.hebrewRule && item.sourcePages.length));
 assert(routes.every(item => item.canRunKashf !== true || methods.some(method => method.methodId === item.methodId)));

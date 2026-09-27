@@ -44,7 +44,7 @@ expect(routes.every(route => questionBank.has(route.questionId)), 'Question Bank
 
 fs.rmSync(output, { recursive: true, force: true });
 fs.mkdirSync(output, { recursive: true });
-for (const name of ['README.md', 'PROJECT_INSTRUCTIONS.md', 'run.mjs']) {
+for (const name of ['README.md', 'PROJECT_INSTRUCTIONS.md', 'SPIRITUAL_SCOPE.md', 'run.mjs']) {
   fs.copyFileSync(path.join(pack, name), path.join(output, name));
 }
 fs.writeFileSync(path.join(output, 'package.json'), '{"type":"module","private":true}\n');
