@@ -14,6 +14,7 @@ const source = read('SOURCE_INDEX.json');
 assert.equal(methods.length, 46);
 assert.equal(methods.filter(item => item.clientFacingCertified).length, 45);
 assert.equal(routes.length, 138);
+assert(routes.every(item => typeof item.label === 'string' && item.label.trim() && typeof item.description === 'string'));
 assert.equal(source.records.length, 272);
 assert.equal(source.sourceFreeze.filter(item => item.status === 'SOURCE_CONFLICT/NON_OPERATIONAL').length, 39);
 assert.equal(new Set(methods.map(item => item.methodId)).size, 46);

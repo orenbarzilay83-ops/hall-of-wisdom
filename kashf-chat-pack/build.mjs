@@ -3,6 +3,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import vm from 'node:vm';
 
 import { KASHF_CANONICAL_METHODS } from '../goral-hachol/registry/kashf-canonical-method-registry.js';
 import { KASHF_QUESTION_ROUTES } from '../goral-hachol/registry/kashf-question-route-registry.js';
@@ -28,6 +29,10 @@ const runnable = methods.filter(method => method.methodRole === 'canonical-opera
   && method.sourceLayer === 'body' && method.kashfRuntimeStatus === 'ready'
   && method.runtimeAllowed === true && method.executorStatus === 'ready');
 const routes = Object.values(KASHF_QUESTION_ROUTES);
+const questionContext = { window: {} };
+vm.runInNewContext(fs.readFileSync(path.join(root, 'goral-hachol/ui/question-bank.js'), 'utf8'), questionContext,
+  { filename: 'goral-hachol/ui/question-bank.js', timeout: 1000 });
+const questionBank = new Map(questionContext.window.QUESTION_BANK.map(item => [item.id, item]));
 const count = (items, status) => items.filter(item => item.status === status).length;
 expect(index.records.length === 272, 'Master Index record count changed');
 expect(index.v57CorrectionQueue.length === 91 && count(index.v57CorrectionQueue, 'RESOLVED') === 91, 'v57 queue not closed');
@@ -35,6 +40,7 @@ expect(index.downstreamCorrectionQueue.length === 46 && count(index.downstreamCo
 expect(index.sourceConflictQueue.length === 48 && count(index.sourceConflictQueue, 'RESOLVED') === 9
   && count(index.sourceConflictQueue, 'SOURCE_CONFLICT/NON_OPERATIONAL') === 39, 'Source Freeze status changed');
 expect(routes.length === 138 && runnable.length === 46, 'route/runnable inventory changed');
+expect(routes.every(route => questionBank.has(route.questionId)), 'Question Bank labels missing');
 
 fs.rmSync(output, { recursive: true, force: true });
 fs.mkdirSync(output, { recursive: true });
@@ -67,7 +73,9 @@ write('CANONICAL_METHODS.json', { role: 'operational-primary-v57', count: method
 write('QUESTION_ROUTES.json', { role: 'exact-question-id-routing', count: routes.length,
   routes: routes.map(route => {
     const resolved = resolveKashfRouteByQuestionId(route.questionId);
-    return { questionId: route.questionId, intentId: route.kashfIntentId, methodId: route.kashfMethodId,
+    const question = questionBank.get(route.questionId);
+    return { questionId: route.questionId, label: question.label, description: question.desc,
+      category: question.category, intentId: route.kashfIntentId, methodId: route.kashfMethodId,
       disposition: route.disposition, aliasOf: route.aliasOf, canRunKashf: resolved.canRunKashf,
       runtimeStatus: resolved.kashfRuntimeStatus, executorStatus: resolved.executorStatus,
       note: route.note || null, blockedReason: resolved.canRunKashf ? null : resolved.userMessage };
@@ -117,6 +125,7 @@ const provenance = {
   sourceBranch: execFileSync('git', ['branch', '--show-current'], { cwd: root, encoding: 'utf8' }).trim(),
   masterIndexSha256: sha(path.join(root, 'kashf-v57-ai-master-index.html')),
   knowledgeRegistrySha256: sha(path.join(root, 'goral-hachol/registry/kashf-v57-knowledge-registry.js')),
+  questionBankSha256: sha(path.join(root, 'goral-hachol/ui/question-bank.js')),
   counts: { indexRecords: 272, v57Corrections: 91, downstream: 46, frozenSourceItems: 48,
     nonOperationalSourceItems: 39, questionRoutes: 138, runnableMethods: 46, clientCertifiedMethods: 45,
     runtimeDependencies: found.size },
