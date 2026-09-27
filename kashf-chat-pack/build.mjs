@@ -11,6 +11,7 @@ import { KASHF_V57_KNOWLEDGE } from '../goral-hachol/registry/kashf-v57-knowledg
 import { getKashfAiRetrievalRecord } from '../goral-hachol/registry/kashf-ai-retrieval-index.js';
 import { resolveKashfRouteByQuestionId } from '../goral-hachol/engine/kashf-method-router.js';
 import { isKashfMethodProfessionallyCertified } from '../goral-hachol/intelligence/kashf-professional-verdict-safety.js';
+import { RAML_SPIRITUAL_DIAGNOSTICS_SIHR_MASS_HASAD as QAWL } from '../goral-hachol/data/sources/approved-raml/spiritual-diagnostics/raml-spiritual-diagnostics-sihr-mass-hasad.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const pack = path.join(root, 'kashf-chat-pack');
@@ -85,12 +86,37 @@ write('QUESTION_ROUTES.json', { role: 'exact-question-id-routing', count: routes
   routes: routes.map(route => {
     const resolved = resolveKashfRouteByQuestionId(route.questionId);
     const question = questionBank.get(route.questionId);
+    const supplemental = spiritualCoverage.questionRoutes.find(item => item.questionId === route.questionId);
     return { questionId: route.questionId, label: question.label, description: question.desc,
       category: question.category, intentId: route.kashfIntentId, methodId: route.kashfMethodId,
       disposition: route.disposition, aliasOf: route.aliasOf, canRunKashf: resolved.canRunKashf,
       runtimeStatus: resolved.kashfRuntimeStatus, executorStatus: resolved.executorStatus,
-      note: route.note || null, blockedReason: resolved.canRunKashf ? null : resolved.userMessage };
+      note: route.note || null, blockedReason: resolved.canRunKashf ? null : resolved.userMessage,
+      supplementalRuntime: supplemental?.supplementalRuntime || null,
+      supplementalSourcePages: supplemental?.supplementalSourcePages || null };
   }) });
+const directIds = ['ankis-house6-buried-magic-in-grave', 'jawdala-house6-drunk-magic',
+  'jawdala-house12-bound-from-wife', 'qabd-dakhil-house6-bound-from-women',
+  'hayyan-house10-also-bewitched', 'aqla-house13-bound-magic-sprinkled',
+  'aqla-house14-house-or-place-has-magic', 'jamaa-house6-umm-sibyan-blocks-marriage-pregnancy-children',
+  'jamaa-from-two-humra-strong-envy', 'jamaa-from-two-ankis-two-buried-magics-renewed'];
+const directRules = directIds.map(id => {
+  const rule = QAWL.figureHouseRules.find(item => item.id === id);
+  expect(rule?.sourcePage === 57, `Qawl rule missing: ${id}`);
+  return { id, sourcePage: 57, figure: rule.figure, house: rule.house ?? null,
+    hebrewRule: rule.hebrewTranslation.join(' ') };
+});
+write('QAWL_SPIRITUAL_METHOD.json', {
+  role: 'independent-supplemental-source-not-kashf', sourceBook: QAWL.sourceBookArabic,
+  sourceAuthor: QAWL.sourceAuthorArabic, chapter: QAWL.sourceTitleArabic, printedPages: [56, 57, 58],
+  questionIds: ['q-sorcery', 'q-sorcery-h10', 'q-jinn-type'],
+  directRules, openPoints: { sourcePage: 58, method: 'count 1 in all 16 houses; reduce by seven',
+    results: QAWL.isqatSevenRules.results.map(({ remainder, hebrew }) => ({ remainder, hebrew })) },
+  conditionalJinnType: { sourcePage: 58, condition: 'only remainder 1', parents: [15, 4],
+    results: QAWL.jinnTypeRules.filter(item => item.element).map(({ id, element, resultHebrew }) => ({ id, element, resultHebrew })) },
+  excluded: QAWL.printedEditionAudit.excludedRuntimeUnits,
+  note: 'Each matching printed rule is independent evidence; no invented aggregate verdict, sorcerer identity, or location.',
+});
 write('SOURCE_INDEX.json', { role: 'source-map-reference-only-never-activates-methods', version: index.version,
   coverage: index.coverage, spiritualQuestionCoverage: spiritualCoverage,
   records: index.records, sourceFreeze: index.sourceConflictQueue.map(item => ({
@@ -109,7 +135,7 @@ write('GOLDEN_CASES.json', { role: 'fixed-source-evidence-cases', note: 'Four pr
 
 // Copy only the static dependency closure of the canonical runner. Keep it
 // sealed under runtime/: it is executable code, never GPT source knowledge.
-const roots = ['goral-hachol/engine/raml-board-generator.js', 'goral-hachol/intelligence/kashf-canonical-ai-bridge.js',
+const roots = ['goral-hachol/engine/raml-board-generator.js', 'goral-hachol/engine/qawl-spiritual-kashf-bridge.js', 'goral-hachol/intelligence/kashf-canonical-ai-bridge.js',
   'goral-hachol/engine/kashf-canonical-reading-engine.js', 'goral-hachol/registry/kashf-canonical-method-registry.js',
   'goral-hachol/registry/kashf-ai-retrieval-index.js', 'goral-hachol/intelligence/kashf-professional-verdict-safety.js'];
 const found = new Set();

@@ -27,8 +27,8 @@ const DIRECT_RULE_IDS = new Set([
 const DERIVED_RULES = Object.freeze([
   { parents: [9, 10], witness: 13, pattern: '2122', id: 'jamaa-from-two-humra-strong-envy' },
   { parents: [11, 12], witness: 14, pattern: '2122', id: 'jamaa-from-two-humra-strong-envy' },
-  { parents: [9, 10], witness: 13, pattern: '2221', id: 'jamaa-from-two-ankis-two-buried-magics-renewed-periodically' },
-  { parents: [11, 12], witness: 14, pattern: '2221', id: 'jamaa-from-two-ankis-two-buried-magics-renewed-periodically' },
+  { parents: [9, 10], witness: 13, pattern: '2221', id: 'jamaa-from-two-ankis-two-buried-magics-renewed' },
+  { parents: [11, 12], witness: 14, pattern: '2221', id: 'jamaa-from-two-ankis-two-buried-magics-renewed' },
 ]);
 
 function normalizeEntries(board) {

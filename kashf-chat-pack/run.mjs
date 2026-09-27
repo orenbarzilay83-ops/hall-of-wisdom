@@ -5,6 +5,7 @@ import { buildKashfReadingByMethod } from './runtime/goral-hachol/engine/kashf-c
 import { getKashfMethod } from './runtime/goral-hachol/registry/kashf-canonical-method-registry.js';
 import { getKashfAiRetrievalRecord } from './runtime/goral-hachol/registry/kashf-ai-retrieval-index.js';
 import { buildKashfProfessionalVerdictSafety } from './runtime/goral-hachol/intelligence/kashf-professional-verdict-safety.js';
+import { buildQawlSpiritualReading, QAWL_SPIRITUAL_QUESTION_IDS } from './runtime/goral-hachol/engine/qawl-spiritual-kashf-bridge.js';
 
 function blocked(reason) {
   return { status: 'blocked', reason, verdict: null, clientAnswerDraft: null };
@@ -23,6 +24,21 @@ export function runKashfPack(input) {
   const houses = board.entries.map(({ houseNumber, pattern, hebrewName }) => ({ houseNumber, pattern, hebrewName }));
   const boardOutput = { houses, boardValidation: board.boardValidation };
   if (board.boardValidation?.isValid !== true) return { ...blocked('הלוח נפסל לפי בדיקת התקינות.'), ...boardOutput };
+
+  if (QAWL_SPIRITUAL_QUESTION_IDS.includes(questionId)) {
+    const reading = buildQawlSpiritualReading(board, questionId, { gender: input.gender });
+    if (!reading.valid) return { ...blocked(reading.message || 'כלל המקור המשלים אינו מכריע בלוח זה.'), ...boardOutput,
+      questionId, sourceVolume: 'al-qawl-al-jami', sourceBook: 'القول الجامع في علم الرمل' };
+    return {
+      status: 'ok', reason: null, ...boardOutput, questionId, methodId: null,
+      sourceVolume: reading.sourceVolume, sourceBook: reading.sourceBook, sourcePages: [57, 58],
+      openCount: reading.openCount, remainder: reading.remainder,
+      isqatEvidence: reading.isqatEvidence, directEvidence: reading.directEvidence,
+      jinnTypeEvidence: reading.jinnTypeEvidence, sourceEvidence: reading.evidence,
+      verdict: null, overallPositive: null, clientAnswerDraft: null,
+      safety: { isSafe: true, certificationStatus: 'source-evidence-only', clientFacingCertified: false },
+    };
+  }
 
   let resolution, canonicalReading, canonicalRetrieval, safety;
   if (questionId) {
