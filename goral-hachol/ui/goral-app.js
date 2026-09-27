@@ -1185,29 +1185,24 @@ async function runReading() {
       // explicit hard-stop message. Legacy topic mode remains only for the
       // free-topic compatibility path where no Question Bank item was selected.
       const hasCanonicalQuestion = Boolean(selectedQuestion?.id);
-      if (hasCanonicalQuestion && (
-        !window.KASHF_ENGINE?.buildKashfReadingByQuestionId
-        || !window.KASHF_ENGINE?.writeCanonicalKashfReading
-      )) {
-        throw new Error("נתיב הניתוב הקנוני של כשף לא נטען. נסה לרענן את הדף.");
-      }
-
-      // The old free-topic spiritual bundle conflates the two separate p167
-      // questions and can imply harm to the querent. It is not a Kashf
-      // diagnostic route. A selected Question ID still uses its exact method.
-      if (!hasCanonicalQuestion && kashfTopicId === 'spiritualDiagnostics') {
-        const blockedSpiritualReading = {
-          valid: false,
-          status: 'blocked',
-          canRunKashf: false,
-          verdict: null,
-          overallPositive: null,
-          userMessage: 'לבדיקה רוחנית בשיטת כשף יש לבחור שאלה מדויקת מבנק השאלות. כלל עמ׳ 167 על פעולה מאחורי השואל אינו קובע כישוף, עין הרע או ג׳ין; שאלות אלה אינן מוכרעות במסלול הנושא החופשי.',
-        };
+      // The supplemental spiritual method belongs to al-Qawl al-Jami', not
+      // Kashf. Keep the Kashf canonical registry and its p167 rule intact.
+      // Never send this reading to the Kashf-only AI context/legacy topic path.
+      const qawlQuestionIds = ['q-sorcery', 'q-sorcery-h10', 'q-jinn-type'];
+      const useQawlSpiritual = qawlQuestionIds.includes(selectedQuestion?.id)
+        || (!hasCanonicalQuestion && kashfTopicId === 'spiritualDiagnostics');
+      if (useQawlSpiritual) {
+        const { buildQawlSpiritualReading, writeQawlSpiritualReading } =
+          await import('/goral-hachol/engine/qawl-spiritual-kashf-bridge.js');
+        const externalReading = buildQawlSpiritualReading(
+          kashfBoard,
+          selectedQuestion?.id || 'q-sorcery',
+          clientCtx
+        );
         const outputEl = document.getElementById("kashfReadingOutput");
         if (outputEl) {
           outputEl.innerHTML = buildBoardHtml(reading)
-            + window.KASHF_ENGINE.writeCanonicalKashfReading(blockedSpiritualReading);
+            + writeQawlSpiritualReading(externalReading);
         }
         const advisorPanel = document.getElementById('orenAdvisorPanel');
         if (advisorPanel) {
@@ -1215,9 +1210,16 @@ async function runReading() {
           advisorPanel.hidden = true;
         }
         window._lastReading = reading;
-        window._lastKashfReading = blockedSpiritualReading;
+        window._lastKashfReading = externalReading;
         showScreen("kashf-reading");
         return;
+      }
+
+      if (hasCanonicalQuestion && (
+        !window.KASHF_ENGINE?.buildKashfReadingByQuestionId
+        || !window.KASHF_ENGINE?.writeCanonicalKashfReading
+      )) {
+        throw new Error("נתיב הניתוב הקנוני של כשף לא נטען. נסה לרענן את הדף.");
       }
 
       const kashfReading = hasCanonicalQuestion

@@ -460,14 +460,14 @@ window.QUESTION_BANK = [
     id: 'q-sorcery',
     category: 'spiritual', houseId: 6, topicId: 'spiritualDiagnostics', kashfTopicId: 'spiritualDiagnostics',
     label: 'האם יש עלי כישוף / עין?',
-    desc: 'אבחון ראשוני: האם יש השפעה רוחנית כלשהי — כישוף, עין, ג׳ין',
+    desc: 'בדיקה לפי אל־קול אל־ג׳אמיע כמקור משלים: כישוף, עין, קנאה ומס ג׳ין',
     clientFields: [F.spiritSymptoms, F.spiritWhen, F.spiritSuspect],
   },
   {
     id: 'q-jinn-type',
     category: 'spiritual', houseId: 6, topicId: 'spiritualDiagnostics', kashfTopicId: 'spiritualDiagnostics',
     label: 'מה סוג הג׳ין / ההשפעה?',
-    desc: 'לאחר שנמצאה השפעה — לזיהוי הסוג: ג׳ין, עין, או כישוף אדם',
+    desc: 'לאחר ששיטת 7×7 מצביעה על מס ג׳ין: חישוב 15×4 לסוג ההשפעה',
     clientFields: [F.spiritSymptoms, F.spiritWhen],
   },
   {
@@ -481,7 +481,7 @@ window.QUESTION_BANK = [
     id: 'q-sorcery-h10',
     category: 'spiritual', houseId: 10, topicId: 'spiritualDiagnostics', kashfTopicId: 'spiritualDiagnostics',
     label: 'האם השואל מכושף?',
-    desc: 'בדיקה ישירה: האם הלקוח עצמו מכושף — כשיש תסמינים ספציפיים',
+    desc: 'בדיקת שארית 7×7 וכללי צורה ובית מספר אל־קול אל־ג׳אמיע',
     clientFields: [F.spiritSymptoms],
   },
   {

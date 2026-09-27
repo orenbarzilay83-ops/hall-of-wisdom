@@ -1,12 +1,20 @@
 export const RAML_SPIRITUAL_DIAGNOSTICS_SIHR_MASS_HASAD = {
   id: "raml-spiritual-diagnostics-sihr-mass-hasad",
   sourceGroup: "approved-raml-sources",
+  sourceBookArabic: "القول الجامع في علم الرمل",
+  sourceAuthorArabic: "محمد ساس",
   sourceStatus: "user-approved-screenshot-source",
   sourceTitleArabic: "أحكام السحر والمس والحسد في علم الرمل",
  sourceTitleHebrew: "דיני כישוף, מס/אחיזה וקנאה במדע הרמל",
-  visiblePages: [56, 57],
+  visiblePages: [56, 57, 58],
  knowledgeDomain: "spiritual-diagnostics",
  extractionStatus: "visual-source-extracted-needs-final-review",
+  printedEditionAudit: {
+    sourceBook: "القول الجامع في علم الرمل",
+    verifiedPages: [56, 57, 58],
+    verifiedRuntimeUnits: ["figure-house-p57", "derived-jamaa-p57", "open-points-7x7-p58", "jinn-type-15x4-p58"],
+    excludedRuntimeUnits: ["organ-8x6-incomplete", "three-unlocated-p58-entries", "generic-risk-score", "sorcerer-name-and-location"],
+  },
   purposeHebrew:
  "שכבת ידע לאבחון רוחני בגורל החול: כישוף, מס/אחיזה, קנאה/עין, ג׳ין, קשרים, סוגי מחלה לפי יסודות, ותפקידי הבתים בשאלת חולי/כישוף.",
 
@@ -394,7 +402,7 @@ export const RAML_SPIRITUAL_DIAGNOSTICS_SIHR_MASS_HASAD = {
   jinnTypeRules: [
     {
       id: "jinn-type-by-15x4",
-      sourcePage: 57,
+      sourcePage: 58,
       arabicText: [
         "نوعية الجن التي تؤذي المريض وتسلط عليه 15×4"
       ],
@@ -406,7 +414,7 @@ export const RAML_SPIRITUAL_DIAGNOSTICS_SIHR_MASS_HASAD = {
     },
     {
  id: "fire-figure-red-jinn",
-      sourcePage: 57,
+      sourcePage: 58,
       conditionArabic: "لو كان شكل ناري",
       resultArabic: "فهو من الجن الأحمر",
  conditionHebrew: "אם הצורה אשית",
@@ -416,7 +424,7 @@ export const RAML_SPIRITUAL_DIAGNOSTICS_SIHR_MASS_HASAD = {
     },
     {
  id: "earth-figure-earthly-or-lower-mass",
-      sourcePage: 57,
+      sourcePage: 58,
       conditionArabic: "ولو ترابي",
       resultArabic: "فهو لمسه أرضيه أو مس سفلي",
  conditionHebrew: "אם הצורה עפרית",
@@ -426,7 +434,7 @@ export const RAML_SPIRITUAL_DIAGNOSTICS_SIHR_MASS_HASAD = {
     },
     {
  id: "air-figure-flying-jinn",
-      sourcePage: 57,
+      sourcePage: 58,
       conditionArabic: "ولو هوائي",
       resultArabic: "فهو مس طيار / من جن طيار",
  conditionHebrew: "אם הצורה אווירית",
@@ -436,7 +444,7 @@ export const RAML_SPIRITUAL_DIAGNOSTICS_SIHR_MASS_HASAD = {
     },
     {
  id: "water-figure-diving-jinn",
-      sourcePage: 57,
+      sourcePage: 58,
       conditionArabic: "ولو مائي",
       resultArabic: "فهو من جن غواص",
  conditionHebrew: "אם הצורה מימית",
@@ -446,7 +454,7 @@ export const RAML_SPIRITUAL_DIAGNOSTICS_SIHR_MASS_HASAD = {
     },
     {
  id: "same-fourth-figure-jamaa-in-mizan-qarin",
-      sourcePage: 57,
+      sourcePage: 58,
       conditionArabic: "ولو كان ضرب 15×4 هو نفسه الشكل الرابع يعني جاءت جماعة في الميزان",
       resultArabic: "فهو أذى من القرين",
  conditionHebrew: "אם תוצאת 15×4 היא אותה צורה רביעית, כלומר קהלה באה במאזן",
@@ -458,7 +466,7 @@ export const RAML_SPIRITUAL_DIAGNOSTICS_SIHR_MASS_HASAD = {
 
   isqatSevenRules: {
     id: "isqat-7-7-spiritual-diagnosis",
-    sourcePage: 57,
+    sourcePage: 58,
     arabicText: [
       "بقواعد الإسقاطات تعد مفتوح الرمل وتسقطه 7-7"
     ],
