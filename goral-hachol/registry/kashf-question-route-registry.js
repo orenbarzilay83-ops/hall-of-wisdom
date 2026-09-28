@@ -639,9 +639,9 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     questionId: 'q-travel-danger',
     disposition: 'KEEP',
     kashfIntentId: 'travel.roadDanger',
-    kashfMethodId: 'travel.p242.roadDangerH7Element',
-    kashfRuntimeStatus: 'repair-required',
-    note: 'The source method is clear, but the current generic element resolver must be verified before canonical execution.',
+    kashfMethodId: 'travel.p240.roadCautionsH9H7',
+    kashfRuntimeStatus: 'ready',
+    note: 'Printed p240 H9 quality and H7 elemental cautions; no factual prediction that an event will occur.',
   }),
 
   'q-traveler-return': route({
@@ -850,8 +850,8 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     disposition: 'KEEP',
     kashfIntentId: 'fear.punishment',
     kashfMethodId: 'fear.p273.punishmentSigns',
-    kashfRuntimeStatus: 'repair-required',
-    note: 'Body method exists, but the current helper omits the source’s alternative enemy-house condition and cannot run unchanged.',
+    kashfRuntimeStatus: 'ready',
+    note: 'Use only the p273 one-way no-fear condition, including Ahyan in H1 or H12. Failure is not evidence that punishment occurs.',
   }),
 
   'q-prisoner-guilty': route({

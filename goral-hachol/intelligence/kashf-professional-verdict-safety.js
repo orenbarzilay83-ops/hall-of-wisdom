@@ -44,6 +44,8 @@ const P224_THEFT_RECOVERY_METHOD = 'theft.p224.recoveryH8';
 const P271_ENEMY_METHOD = 'enemy.p271.h1vsH12';
 const P197_ILLNESS_HUMOR_METHOD = 'illness.p197.h1h8ElementHumor';
 const P263_FRIENDSHIP_METHOD = 'friends.p263.h1h11';
+const P273_PUNISHMENT_METHOD = 'fear.p273.punishmentSigns';
+const P240_TRAVEL_CAUTION_METHOD = 'travel.p240.roadCautionsH9H7';
 const P172_MATTER_OUTCOME_METHOD = 'matter.p172.h17_h1011_thenCombine';
 const P183_CURRENT_VS_NEW_METHOD = 'relocation.p183.currentVsNewPlace';
 const P256_HONOR_CONDITION_METHOD = 'authority.p256.honorConditionH10Planet';
@@ -361,6 +363,32 @@ function p263FriendshipPolicy() {
     forbiddenInversions: freezeArray(['אין פסק כולל כאשר העדויות שונות או כשהסעיף שותק על צורה ממוזגת.']),
     excludedFromPrimaryVerdict: freezeArray(['כנות פנימית, נאמנות מוחלטת, תקווה ושאלת אהבה ממקורות אחרים.']),
     forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray(['החבר משקר', 'החבר בוגד', 'האדם אינו נאמן']),
+  });
+}
+
+function p273PunishmentPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified', certificationBatch: 'professional-backfill-13',
+    goldenCaseIds: freezeArray(['PV-BF13-P273-H1', 'PV-BF13-P273-H12', 'PV-BF13-P273-MISSING', 'PV-BF13-P273-MIXED']),
+    policyId: 'p273-punishment-one-way-v1', questionScopeHebrew: 'היעדר חשש מעונש לפי סימני בתי 10, 5, 1 או 12, ו־4',
+    decisiveRuleHebrew: 'H10 כבוד נכנס, H5 סף נכנס, נשוא ראש H1 או H12, ו־H4 מיטיב טהור => אין לחשוש. אחרת אין דין הפוך.',
+    oneWayBranches: freezeArray(['כל התנאים יחד => אין לחשוש מן העונש']),
+    forbiddenInversions: freezeArray(['אי־קיום התנאי אינו מוכיח שהעונש יוטל.', 'H4 ממוזג אינו מיטיב טהור.']),
+    excludedFromPrimaryVerdict: freezeArray(['עיתוי ענישה, זיכוי משפטי ושחרור אסיר.']),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray(['העונש ודאי יוטל', 'בית משפט יזכה אותך', 'אין צורך בייעוץ משפטי']),
+  });
+}
+
+function p240TravelCautionPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified', certificationBatch: 'professional-backfill-13',
+    goldenCaseIds: freezeArray(['PV-BF13-P240-FIRE', 'PV-BF13-P240-AIR', 'PV-BF13-P240-WATER', 'PV-BF13-P240-EARTH']),
+    policyId: 'p240-travel-cautions-h9-h7-v1', questionScopeHebrew: 'טיב הדרך בבית 9 וסוג האזהרה לפי יסוד בית 7',
+    decisiveRuleHebrew: 'H9 מיטיב => טוב; מזיק => להיזהר. H7 אש/אוויר/מים/עפר => אזהרות הליסטים/בהמות/טביעה גנבה ולחימה/נחשים ועקרבים.',
+    oneWayBranches: freezeArray(['דין H9 לפי מיטיב/מזיק טהור', 'דין סוג האזהרה לפי יסוד H7']),
+    forbiddenInversions: freezeArray(['H9 ממוזג אינו מוכרע בדין זה.', 'אזהרת H7 אינה קביעה שאירוע יקרה.']),
+    excludedFromPrimaryVerdict: freezeArray(['בטיחות כלי שיט, מועד חזרה, סכנת חיים מוכחת.']),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray(['ודאי תיפגע בדרך', 'הדרך בטוחה בוודאות', 'תתרחש גנבה']),
   });
 }
 
@@ -1551,6 +1579,8 @@ const METHOD_POLICIES = Object.freeze({
   [P271_ENEMY_METHOD]: p271EnemyPolicy(),
   [P197_ILLNESS_HUMOR_METHOD]: p197IllnessHumorPolicy(),
   [P263_FRIENDSHIP_METHOD]: p263FriendshipPolicy(),
+  [P273_PUNISHMENT_METHOD]: p273PunishmentPolicy(),
+  [P240_TRAVEL_CAUTION_METHOD]: p240TravelCautionPolicy(),
   [P172_MATTER_OUTCOME_METHOD]: p172MatterOutcomePolicy(),
   [P183_CURRENT_VS_NEW_METHOD]: p183CurrentVsNewPolicy(),
   [P256_HONOR_CONDITION_METHOD]: p256HonorConditionPolicy(),

@@ -921,8 +921,8 @@ window.QUESTION_BANK = [
   {
     id: 'q-travel-danger',
     category: 'travel', houseId: 9, topicId: 'travel', kashfTopicId: 'travel',
-    label: 'האם יש סכנה בדרך?',
-    desc: 'כשיש חשש מסכנות ספציפיות בנסיעה — האם הדרך בטוחה',
+    label: 'ממה להיזהר בדרך לפי הלוח?',
+    desc: 'בית 9 לטיב הדרך ובית 7 לסוג האזהרה לפי יסוד הצורה',
     clientFields: [F.destination, F.travelDate, F.travelType],
   },
   {
@@ -977,7 +977,7 @@ window.QUESTION_BANK = [
     id: 'q-fear-punishment',
     category: 'conflict', houseId: 12, topicId: 'fear', kashfTopicId: 'fear',
     label: 'האם יש לפחד מן העונש?',
-    desc: 'כשיש חשש מעונש — האם יתממש, האם אפשר לצאת ממנו',
+    desc: 'דין סימן ״אין לחשוש עליו״ בעמ׳ 273; היעדרו אינו פסק שהעונש יוטל',
     clientFields: [{ id: 'punishmentContext', label: 'ההקשר', type: 'textarea', placeholder: 'מה ההאשמה / האיום...' }],
   },
 

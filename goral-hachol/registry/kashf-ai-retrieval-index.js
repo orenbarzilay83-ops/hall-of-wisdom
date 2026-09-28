@@ -435,6 +435,16 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
     doNotMixWith: ['hope.p267.fulfillment', 'love.p205.directLoveH1PlacementH15'],
     houses: [1, 11],
   },
+  'fear.p273.punishmentSigns': {
+    aliases: ['האם יש לחשוש מעונש', 'חשש ממאסר או מלקות', 'דין פחד מעונש'],
+    doNotMixWith: ['prisoner.releaseTiming.unresolved', 'security.external.p235.h8'],
+    houses: [1, 4, 5, 10, 12],
+  },
+  'travel.p240.roadCautionsH9H7': {
+    aliases: ['ממה להיזהר בדרך', 'סכנות דרך לפי היסוד', 'זהירות בנסיעה'],
+    doNotMixWith: ['travel.p244.returnH1H2H9', 'travel.p242.vehicleSafety'],
+    houses: [9, 7],
+  },
   'theft.p225.thiefDescriptionH7': {
     aliases: ['תיאור הגנב', 'איך הגנב נראה', 'מראה הגנב', 'פרופיל הגנב'],
     doNotMixWith: ['theft.p224.relationshipH7Recurrence'],

@@ -264,9 +264,13 @@ assertRoute('q-war', {
 });
 assertRoute('q-fear-punishment', {
   ok: true,
-  canRunKashf: false,
+  canRunKashf: true,
   kashfIntentId: 'fear.punishment',
-  kashfRuntimeStatus: 'repair-required',
+  kashfRuntimeStatus: 'ready',
+});
+assertRoute('q-travel-danger', {
+  ok: true, canRunKashf: true, kashfIntentId: 'travel.roadDanger',
+  kashfMethodId: 'travel.p240.roadCautionsH9H7', kashfRuntimeStatus: 'ready',
 });
 assertRoute('q-prisoner-guilty', {
   ok: true,

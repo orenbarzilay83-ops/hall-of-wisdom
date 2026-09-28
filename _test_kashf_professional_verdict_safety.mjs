@@ -189,7 +189,7 @@ function auditOutputForSafety(safetyBlock, { draft = null, draftPolarity = 'none
   };
 }
 
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 49, 'certification registry contains forty-nine professionally certified methods');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 51, 'certification registry contains fifty-one professionally certified methods');
 for (const id of [
   'marriage.p210.generalMarriageH1H2H7H8H10Judge',
   'marriage.p211.dissolutionH7StateMatrix',
@@ -216,6 +216,8 @@ for (const id of [
   'enemy.p271.h1vsH12',
   'illness.p197.h1h8ElementHumor',
   'friends.p263.h1h11',
+  'fear.p273.punishmentSigns',
+  'travel.p240.roadCautionsH9H7',
   'theft.p224.relationshipH7Recurrence',
   'matter.p172.h17_h1011_thenCombine',
   'relocation.p183.currentVsNewPlace',
@@ -272,6 +274,29 @@ for (const [h1, h11, pairEvidence] of [
   assert(result?.pairEvidence === pairEvidence && typeof result?.derivedPattern === 'string', 'p263 pair and derived figure remain distinct');
   assert(reading.canonicalReading?.overallPositive === null, 'p263 does not force an aggregate verdict');
   assert(reading.professionalVerdictSafety?.clientFacingCertified === true, 'p263 source-bounded evidence certified');
+}
+for (const [h1, h12, h4, expectedHouse, noFear] of [
+  ['1222', '2222', '2111', 1, true],
+  ['2222', '1222', '2111', 12, true],
+  ['2222', '2222', '2111', null, null],
+  ['1222', '2222', '1111', 1, null],
+]) {
+  const reading = buildKashfCanonicalAiBridge({ questionId: 'q-fear-punishment', questionText: 'האם יש לחשוש מעונש?', board: makeBoard({ 1:h1, 4:h4, 5:'2111', 10:'2211', 12:h12 }) });
+  const result = reading.canonicalReading?.primaryFormula?.result?.executorResult;
+  assert(result?.ahyanHouse === expectedHouse && result?.noFear === noFear, 'p273 H1/H12 alternatives and pure H4 requirement');
+  assert(reading.canonicalReading?.overallPositive === (noFear ? false : null), 'p273 missing sign has no inverse verdict');
+  assert(reading.professionalVerdictSafety?.clientFacingCertified === true, 'p273 one-way source draft certified');
+}
+for (const [h7, element, caution] of [
+  ['1112', 'אש', 'ליסטים'], ['2111', 'אוויר', 'בהמות הדרך ודומיהן'],
+  ['2211', 'מים', 'טביעה, גנבה ומריבה'], ['1221', 'עפר', 'נחשים, עקרבים ומזיקים שבאדמה'],
+]) {
+  const reading = buildKashfCanonicalAiBridge({ questionId: 'q-travel-danger', questionText: 'ממה להיזהר בדרך?', board: makeBoard({ 7:h7, 9:'2111' }) });
+  const result = reading.canonicalReading?.primaryFormula?.result?.executorResult;
+  assert(result?.h7Element === element && result?.h7Caution === caution, 'p240 four elemental cautions are source-mapped');
+  assert(result?.h9Evidence === 'בית 9 מיטיב — הדרך טובה', 'p240 H9 source branch is independent');
+  assert(reading.canonicalReading?.overallPositive === null && reading.professionalVerdictSafety?.clientFacingCertified === true,
+    'p240 caution does not assert actual future danger');
 }
 const p224NotRecovered = buildKashfCanonicalAiBridge({ questionId: 'q-theft-return', questionText: 'האם אקבל את הרכוש שנגנב?', board: makeBoard({ 8:'1221' }) });
 const p224Mixed = buildKashfCanonicalAiBridge({ questionId: 'q-theft-return', questionText: 'האם אקבל את הרכוש שנגנב?', board: makeBoard({ 8:'1111' }) });
@@ -864,7 +889,7 @@ assert(p254Venus.professionalVerdictSafety?.binaryClientVerdictAllowed === false
 assert(p254Venus.professionalVerdictSafety?.authoritativeClientDraftHebrew === p254VenusExec?.outputHebrew, 'p254 safety gate locks the exact source-bounded executor draft');
 assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes('profession.p254.h9Planet'), 'p254 profession method is explicitly professionally certified');
 // Dhamir subject-identification remains outside the client-verdict registry.
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 49, 'professional client-verdict certification count includes p263');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 51, 'professional client-verdict certification count includes p240');
 
 
 

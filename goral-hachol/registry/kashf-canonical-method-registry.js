@@ -993,16 +993,16 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     notes: 'v57 preserves the sea/land element mapping, but the preceding two-figure construction is unresolved and the Hebrew fire branch omits the Arabic return-by-sea clause. Runtime remains source-blocked until v57 is explicitly corrected/closed.',
   }),
 
-  'travel.p242.roadDangerH7Element': method({
-    kashfMethodId: 'travel.p242.roadDangerH7Element',
+  'travel.p240.roadCautionsH9H7': method({
+    kashfMethodId: 'travel.p240.roadCautionsH9H7',
     kashfIntentId: 'travel.roadDanger',
     topicId: 'travel',
-    sourcePages: [242],
-    kashfRuntimeStatus: 'repair-required',
-    runtimeAllowed: false,
+    sourcePages: [240],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Body-source danger classification uses H7 element: fire=robbers; air=road animals and the like; water=drowning/theft/fighting; earth=snakes/scorpions/ground harms. The current generic element resolver must be verified before reuse.',
+    executorStatus: 'ready',
+    notes: 'Printed p240 (PDF p242), not p242: H9 benefic/good or malefic/caution, then H7 element maps caution categories. These are separate source indications, not factual danger prediction.',
   }),
 
   'travel.p244.returnH1H2H9': method({
@@ -1231,12 +1231,12 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfIntentId: 'fear.punishment',
     topicId: 'fear',
     sourcePages: [273],
-    kashfRuntimeStatus: 'repair-required',
-    runtimeAllowed: false,
-    executionKind: 'legacy-function',
-    executorStatus: 'pending',
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: true,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
     legacyTopicId: 'fear',
-    notes: 'Body-source punishment-fear rule requires Incoming Honor in H10, Incoming Threshold in H5, Ahyan/Nesu Rosh in H1 OR the enemy house, and H4 benefic. Existing computeFearOfPunishment checks the H1 branch but omits the alternative enemy-house branch.',
+    notes: 'Printed p273 one-way no-fear rule: Incoming Honor H10, Incoming Threshold H5, Ahyan H1 or enemy house H12, H4 pure benefic. Failure gives no reverse punishment verdict.',
   }),
 
   'war.external.p213-217.nonBody': method({

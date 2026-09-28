@@ -815,6 +815,52 @@ function computeFriendshipH1H11P263(chart) {
   };
 }
 
+function computePunishmentFearP273(chart) {
+  const pattern = house => findCanonicalHouse(chart, house)?.key || findCanonicalHouse(chart, house)?.pattern || null;
+  const h1Pattern = pattern(1);
+  const h4Pattern = pattern(4);
+  const h5Pattern = pattern(5);
+  const h10Pattern = pattern(10);
+  const h12Pattern = pattern(12);
+  if (![h1Pattern, h4Pattern, h5Pattern, h10Pattern, h12Pattern].every(Boolean)) return null;
+  const ahyanHouse = h1Pattern === '1222' ? 1 : h12Pattern === '1222' ? 12 : null;
+  const h4Quality = classifyCanonicalFigure(h4Pattern).saadNahs;
+  const noFear = h10Pattern === '2211' && h5Pattern === '2111'
+    && ahyanHouse !== null && h4Quality === 'saad' ? true : null;
+  return {
+    sourceRef: 'כשף אל־אסראר עמ׳ 273; סיווגי הצורות עמ׳ 57–60',
+    sourceText: 'כבוד נכנס בעשירי, סף נכנס בחמישי, נשוא ראש בראשון או בבית האויבים, ומיטיב ברביעי — אין לחשוש עליו מן העונש.',
+    housesUsed: [1, 4, 5, 10, 12], h1Pattern, h4Pattern, h5Pattern, h10Pattern, h12Pattern,
+    ahyanHouse, h4Quality, noFear, positive: noFear === true ? false : null,
+    outputHebrew: noFear === true
+      ? `כבוד נכנס בבית 10, סף נכנס בבית 5, נשוא ראש בבית ${ahyanHouse}, ובית 4 מיטיב. לפי דין עמ׳ 273 אין לחשוש עליו מן העונש.`
+      : 'לא התקיימו כל התנאים המצטברים של דין עמ׳ 273. הסעיף אינו קובע מכך שהעונש יוטל.',
+  };
+}
+
+function computeTravelRoadCautionsP240(chart) {
+  const h7Pattern = findCanonicalHouse(chart, 7)?.key || findCanonicalHouse(chart, 7)?.pattern || null;
+  const h9Pattern = findCanonicalHouse(chart, 9)?.key || findCanonicalHouse(chart, 9)?.pattern || null;
+  if (!h7Pattern || !h9Pattern) return null;
+  const h9Quality = classifyCanonicalFigure(h9Pattern).saadNahs;
+  const h7Element = HAWI_FIGURE_NAMES_BY_ID[h7Pattern]?.elementHebrew || null;
+  const cautions = {
+    'אש': 'ליסטים', 'אוויר': 'בהמות הדרך ודומיהן',
+    'מים': 'טביעה, גנבה ומריבה', 'עפר': 'נחשים, עקרבים ומזיקים שבאדמה',
+  };
+  const h9Evidence = h9Quality === 'saad' ? 'בית 9 מיטיב — הדרך טובה'
+    : h9Quality === 'nahs' ? 'בית 9 מזיק — הספר מורה להיזהר' : null;
+  const h7Caution = cautions[h7Element] || null;
+  return {
+    sourceRef: 'כשף אל־אסראר עמ׳ 240; יסודות הצורות עמ׳ 43–67',
+    sourceText: 'בית 9 מיטיב — טוב, מזיק — להיזהר. אחר כך ראה את בית 7: אש — ליסטים; אוויר — בהמות; מים — טביעה, גנבה ולחימה; עפר — נחשים, עקרבים ומזיקי אדמה.',
+    housesUsed: [9, 7], h9Pattern, h9Quality, h9Evidence,
+    h7Pattern, h7Element, h7Caution, positive: null,
+    outputHebrew: [h9Evidence ? `${h9Evidence}.` : 'בית 9 ממוזג; סעיף זה אינו קובע אם דרכו טובה או רעה.',
+      h7Caution ? `בית 7 מיסוד ${h7Element} — הספר מזהיר מפני ${h7Caution}.` : 'יסוד בית 7 אינו ידוע; אין אזהרה מסווגת.'].join(' '),
+  };
+}
+
 
 function computeLostItemReturnP202(chart) {
   if (!Array.isArray(chart)) return null;
@@ -2531,6 +2577,8 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'enemy.p271.h1vsH12': computeEnemyPresenceH1H12P271,
   'illness.p197.h1h8ElementHumor': computeIllnessHumorH1H8P197,
   'friends.p263.h1h11': computeFriendshipH1H11P263,
+  'fear.p273.punishmentSigns': computePunishmentFearP273,
+  'travel.p240.roadCautionsH9H7': computeTravelRoadCautionsP240,
   'theft.p224.recoveryH8': computeTheftRecoveryH8P224,
   'profession.p254.h9Planet': computeProfessionP254,
   'pregnancy.p191-192.miscarriageRedH7NakisH8': computeMiscarriageRedH7NakisH8P191P192,

@@ -343,6 +343,23 @@ export const KASHF_V57_KNOWLEDGE = Object.freeze({
     notes: 'שני דינים נפרדים; אין לאחדם בכוח אם הם חולקים או ממוזגים. המקור אינו מבחן כנות או זהות.',
   }),
 
+  'fear.p273.punishmentSigns': knowledge({
+    kashfMethodId: 'fear.p273.punishmentSigns', page: 273,
+    topic: 'הפרק השנים־עשר — האויבים והאסיר', heading: 'החושש מעונש',
+    hebrewRule: 'אם בעשירי כבוד נכנס, בחמישי סף נכנס, ובראשון נשוא ראש או שהוא בבית האויבים, וברביעי צורה מיטיבה — אין לחשוש עליו מן העונש.',
+    supportingPages: [57, 58, 59, 60], arabicVerificationPages: [273],
+    notes: 'בית האויבים הוא בית 12 לפי הפרק. כל התנאים מצטברים; ההפך אינו מנוסח בדפוס.',
+  }),
+
+  'travel.p240.roadCautionsH9H7': knowledge({
+    kashfMethodId: 'travel.p240.roadCautionsH9H7', page: 240,
+    topic: 'הפרק התשיעי — המסע', heading: 'טיב הדרך ואזהרותיה',
+    hebrewRule: 'ראה את התשיעי: אם הוא מיטיב — טוב; ואם מזיק — ייזהר. אחר כך ראה את השביעי: אש — ליסטים; אוויר — בהמות הדרך; מים — טביעה, גנבה ולחימה; עפר — נחשים, עקרבים ומזיקי האדמה.',
+    supportingPages: [43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67],
+    arabicVerificationPages: [240],
+    notes: 'הדפוס בעמ׳ 240 (PDF עמ׳ 242), אף שהרשומה הישנה כונתה p242. זהו סוג אזהרה, לא אירוע מוכח.',
+  }),
+
 
 
   'career.p266.returnToOffice': knowledge({
