@@ -333,11 +333,14 @@ assert(resolveKashfRouteByQuestionId('q-sorcery').kashfMethodId !== 'spiritual.p
 // ── Final question-bank coverage checks ---------------------------------
 assertRoute('q-illness-type', {
   ok: true,
-  canRunKashf: false,
+  canRunKashf: true,
   kashfIntentId: 'illness.humor',
   kashfMethodId: 'illness.p197.h1h8ElementHumor',
-  kashfRuntimeStatus: 'repair-required',
+  kashfRuntimeStatus: 'ready',
 });
+for (const qid of ['q-enemy-exists', 'q-hidden-enemy', 'q-enemy']) {
+  assertRoute(qid, { ok: true, canRunKashf: true, kashfMethodId: 'enemy.p271.h1vsH12', kashfRuntimeStatus: 'ready' });
+}
 for (const qid of [
   'q-agriculture','q-father','q-geo-direction','q-helpers','q-illness-cause',
   'q-lose-fortune','q-nativity','q-neighbor','q-official-docs','q-past-events',

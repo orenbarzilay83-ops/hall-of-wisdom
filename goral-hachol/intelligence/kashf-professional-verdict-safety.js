@@ -41,6 +41,8 @@ const P196_ILLNESS_RECOVERY_METHOD = 'illness.p196.outcomeH15';
 const P188_HIDDEN_STILL_THERE_METHOD = 'hidden.p188.isStillThere';
 const P224_THIEF_RELATIONSHIP_METHOD = 'theft.p224.relationshipH7Recurrence';
 const P224_THEFT_RECOVERY_METHOD = 'theft.p224.recoveryH8';
+const P271_ENEMY_METHOD = 'enemy.p271.h1vsH12';
+const P197_ILLNESS_HUMOR_METHOD = 'illness.p197.h1h8ElementHumor';
 const P172_MATTER_OUTCOME_METHOD = 'matter.p172.h17_h1011_thenCombine';
 const P183_CURRENT_VS_NEW_METHOD = 'relocation.p183.currentVsNewPlace';
 const P256_HONOR_CONDITION_METHOD = 'authority.p256.honorConditionH10Planet';
@@ -319,6 +321,32 @@ function p224TheftRecoveryPolicy() {
       'אדם מסוים גנב את הרכוש',
       'הרכוש יוחזר במועד או במקום מסוים',
     ]),
+  });
+}
+
+function p271EnemyPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified', certificationBatch: 'professional-backfill-12',
+    goldenCaseIds: freezeArray(['PV-BF12-P271-BOTH-GOOD', 'PV-BF12-P271-BOTH-BAD', 'PV-BF12-P271-QUERENT', 'PV-BF12-P271-ENEMY', 'PV-BF12-P271-MIXED']),
+    policyId: 'p271-enemy-h1-h12-v1', questionScopeHebrew: 'קיום אויב והתגברות לפי בתים 1 ו־12',
+    decisiveRuleHebrew: 'שני הבתים מיטיבים => אין אויב; שניהם מזיקים => יש אויבים; הראשון מיטיב והשנים־עשר מזיק => השואל גובר; להפך => האויב גובר.',
+    oneWayBranches: freezeArray(['H1/H12 מיטיב/מיטיב => אין אויב', 'מזיק/מזיק => יש אויבים', 'מיטיב/מזיק => השואל גובר', 'מזיק/מיטיב => האויב גובר']),
+    forbiddenInversions: freezeArray(['צורה ממוזגת אינה מוכרעת בארבעת הענפים.']),
+    excludedFromPrimaryVerdict: freezeArray(['זיהוי אדם, קביעה שהאויב נסתר, וקביעת רמת סכנה.']),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray(['פלוני הוא האויב', 'האויב פועל בסתר', 'האויב גרם כישוף']),
+  });
+}
+
+function p197IllnessHumorPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified', certificationBatch: 'professional-backfill-12',
+    goldenCaseIds: freezeArray(['PV-BF12-P197-WATER', 'PV-BF12-P197-EARTH', 'PV-BF12-P197-FIRE', 'PV-BF12-P197-AIR', 'PV-BF12-P197-MISMATCH']),
+    policyId: 'p197-illness-h1-h8-element-v1', questionScopeHebrew: 'סיווג מסורתי של סוג חולי לפי היסוד המשותף לבתים 1 ו־8',
+    decisiveRuleHebrew: 'מים => קור ולחות; עפר => מרה שחורה; אש => מרה צהובה; אוויר => רוחות שונות. יסודות שונים אינם מוכרעים.',
+    oneWayBranches: freezeArray(['H1/H8 אותו יסוד => קטגוריית הספר בלבד']),
+    forbiddenInversions: freezeArray(['שני יסודות שונים אינם מייצרים אבחנה או היעדר חולי.']),
+    excludedFromPrimaryVerdict: freezeArray(['אבחון רפואי מודרני, סיבה רוחנית, טיפול או תחזית החלמה.']),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray(['זו מחלה מאובחנת', 'אפשר להימנע מבדיקה רפואית', 'כישוף גרם לחולי']),
   });
 }
 
@@ -1506,6 +1534,8 @@ const METHOD_POLICIES = Object.freeze({
   [P188_HIDDEN_STILL_THERE_METHOD]: p188HiddenStillTherePolicy(),
   [P224_THIEF_RELATIONSHIP_METHOD]: p224ThiefRelationshipPolicy(),
   [P224_THEFT_RECOVERY_METHOD]: p224TheftRecoveryPolicy(),
+  [P271_ENEMY_METHOD]: p271EnemyPolicy(),
+  [P197_ILLNESS_HUMOR_METHOD]: p197IllnessHumorPolicy(),
   [P172_MATTER_OUTCOME_METHOD]: p172MatterOutcomePolicy(),
   [P183_CURRENT_VS_NEW_METHOD]: p183CurrentVsNewPolicy(),
   [P256_HONOR_CONDITION_METHOD]: p256HonorConditionPolicy(),

@@ -649,15 +649,15 @@ window.QUESTION_BANK = [
   {
     id: 'q-enemy',
     category: 'conflict', houseId: 7, topicId: 'enemies', kashfTopicId: 'enemies',
-    label: 'מי האויב ועד כמה מסוכן?',
-    desc: 'לאויב ידוע — מה כוחו, עד כמה מסוכן, האם יציב',
+    label: 'האם יש אויב ומי גובר?',
+    desc: 'דין בתי 1 ו־12: קיום אויב והכרעת המאבק, ללא זיהוי אדם',
     clientFields: [F.enemyWho, F.enemyWhat],
   },
   {
     id: 'q-hidden-enemy',
     category: 'conflict', houseId: 12, topicId: 'enemies', kashfTopicId: 'enemies',
-    label: 'האם יש אויב נסתר?',
-    desc: 'כשמרגישים שיש אויב אך לא יודעים מי — גילוי האויב הנסתר',
+    label: 'האם יש אויב לפי בית 12?',
+    desc: 'בדיקת קיום אויב לפי הספר, ללא זיהוי או קביעת הסתרה',
     clientFields: [F.enemyWho, F.enemyWhat],
   },
   {
@@ -970,7 +970,7 @@ window.QUESTION_BANK = [
     id: 'q-enemy-exists',
     category: 'conflict', houseId: 12, topicId: 'enemies', kashfTopicId: 'enemies',
     label: 'האם יש לי אויב?',
-    desc: 'בדיקה ראשונית — האם בכלל יש אויב פעיל',
+    desc: 'דין בתי 1 ו־12 בספר; ללא זיהוי אדם',
     clientFields: [F.enemyWho, F.enemyWhat],
   },
   {

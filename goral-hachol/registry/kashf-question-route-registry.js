@@ -1019,7 +1019,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     disposition: 'KEEP',
     kashfIntentId: 'illness.humor',
     kashfMethodId: 'illness.p197.h1h8ElementHumor',
-    kashfRuntimeStatus: 'repair-required',
+    kashfRuntimeStatus: 'ready',
     note: 'Use the p197 H1+H8 elemental/humoral classification only. It does not itself prescribe treatment.',
   }),
 
@@ -1174,7 +1174,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     disposition: 'KEEP',
     kashfIntentId: 'enemy.presenceAndDominance',
     kashfMethodId: 'enemy.p271.h1vsH12',
-    kashfRuntimeStatus: 'repair-required',
+    kashfRuntimeStatus: 'ready',
   }),
 
   'q-hidden-enemy': route({
@@ -1183,8 +1183,8 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     aliasOf: 'q-enemy-exists',
     kashfIntentId: 'enemy.presenceAndDominance',
     kashfMethodId: 'enemy.p271.h1vsH12',
-    kashfRuntimeStatus: 'repair-required',
-    note: 'The canonical method establishes enemy presence/dominance, not identity of a hidden enemy.',
+    kashfRuntimeStatus: 'ready',
+    note: 'Alias for the H1/H12 enemy presence/dominance question; it does not establish secrecy or identity.',
   }),
 
   'q-enemy': route({
@@ -1193,7 +1193,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     aliasOf: 'q-enemy-exists',
     kashfIntentId: 'enemy.presenceAndDominance',
     kashfMethodId: 'enemy.p271.h1vsH12',
-    kashfRuntimeStatus: 'repair-required',
+    kashfRuntimeStatus: 'ready',
     note: 'Rename away from “who is the enemy”; p271 does not identify a named person.',
   }),
 

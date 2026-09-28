@@ -15,8 +15,8 @@ const source = read('SOURCE_INDEX.json');
 const qawl = read('QAWL_SPIRITUAL_METHOD.json');
 assert.match(execFileSync(process.execPath, [path.join(dir, '_build', 'SELF_TEST.mjs')], { encoding: 'utf8' }), /SELF_TEST PASS/);
 
-assert.equal(methods.length, 47);
-assert.equal(methods.filter(item => item.clientFacingCertified).length, 46);
+assert.equal(methods.length, 49);
+assert.equal(methods.filter(item => item.clientFacingCertified).length, 48);
 assert.equal(routes.length, 138);
 assert(routes.every(item => typeof item.label === 'string' && item.label.trim() && typeof item.description === 'string'));
 assert.equal(source.records.length, 272);
@@ -37,9 +37,27 @@ for (const id of ['q-sorcery', 'q-sorcery-h10', 'q-jinn-type', 'q-sorcerer', 'q-
 assert.deepEqual(qawl.questionIds, ['q-sorcery', 'q-sorcery-h10', 'q-jinn-type']);
 assert.equal(qawl.directRules.length, 10);
 for (const id of qawl.questionIds) assert.match(routes.find(route => route.questionId === id)?.supplementalRuntime || '', /^AL_QAWL/);
-assert.equal(new Set(methods.map(item => item.methodId)).size, 47);
+assert.equal(new Set(methods.map(item => item.methodId)).size, 49);
 assert(methods.every(item => item.v57.hebrewRule && item.sourcePages.length));
 assert(routes.every(item => item.canRunKashf !== true || methods.some(method => method.methodId === item.methodId)));
+for (const [id, methodId] of [
+  ['q-enemy-exists', 'enemy.p271.h1vsH12'], ['q-hidden-enemy', 'enemy.p271.h1vsH12'],
+  ['q-enemy', 'enemy.p271.h1vsH12'], ['q-illness-type', 'illness.p197.h1h8ElementHumor'],
+]) {
+  const route = routes.find(item => item.questionId === id);
+  assert.equal(route?.canRunKashf, true);
+  assert.equal(route?.methodId, methodId);
+  assert.equal(methods.find(item => item.methodId === methodId)?.clientFacingCertified, true);
+}
+for (const [questionId, sourcePage, predicate] of [
+  ['q-enemy-exists', 271, x => x.branch === 'querent-prevails' && x.enemyPresent === true],
+  ['q-illness-type', 197, x => x.humor === null && x.sameElement === false],
+]) {
+  const result = runKashfPack({ mothers: ['2111', '1221', '1111', '1111'], questionId });
+  assert.equal(result.status, 'ok');
+  assert.equal(result.sourcePage, sourcePage);
+  assert(predicate(result.methodResult?.executorResult || {}));
+}
 
 for (const { mothers, expected } of [
   { mothers: ['1112', '1111', '1111', '1111'], expected: true },

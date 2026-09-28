@@ -17,6 +17,7 @@ import { combineRamlFigures } from './raml-figures.js';
 import { buildRamlBoardFromMothers } from './raml-board-generator.js';
 import { FIGURE_PLANET_MAP } from '../data/sources/kashf-al-asrar/kashf-hazz.js';
 import { classifyCanonicalFigure } from './kashf-canonical-figure-classifier.js';
+import { HAWI_FIGURE_NAMES_BY_ID } from '../data/sources/kashf-al-asrar/kashf-figure-names.js';
 
 const LEGACY_EXECUTORS = Object.freeze({
   'illness.bodyPart.h6Figure': computeBodyPartDiagnosisKashf,
@@ -732,6 +733,60 @@ function computeTheftRecoveryH8P224(chart) {
     stolenPropertyRecovered: recovered,
     positive: recovered,
     outputHebrew,
+  };
+}
+
+function computeEnemyPresenceH1H12P271(chart) {
+  const h1 = findCanonicalHouse(chart, 1);
+  const h12 = findCanonicalHouse(chart, 12);
+  const h1Pattern = h1?.key || h1?.pattern;
+  const h12Pattern = h12?.key || h12?.pattern;
+  if (!h1Pattern || !h12Pattern) return null;
+  const first = classifyCanonicalFigure(h1Pattern).saadNahs;
+  const twelfth = classifyCanonicalFigure(h12Pattern).saadNahs;
+  const branch = first === 'saad' && twelfth === 'saad' ? 'no-enemy'
+    : first === 'nahs' && twelfth === 'nahs' ? 'enemies'
+      : first === 'saad' && twelfth === 'nahs' ? 'querent-prevails'
+        : first === 'nahs' && twelfth === 'saad' ? 'enemy-prevails' : null;
+  const sayings = {
+    'no-enemy': 'אין לו אויב.',
+    enemies: 'יש לו אויבים.',
+    'querent-prevails': 'הוא יגבר על אויביו.',
+    'enemy-prevails': 'האויב יגבר עליו.',
+  };
+  return {
+    sourceRef: 'כשף אל־אסראר עמ׳ 271; סיווגי הצורות עמ׳ 57–60',
+    sourceText: 'אם הראשון והשנים־עשר מיטיבים — אין לו אויב; אם שניהם מזיקים — יש לו אויבים; הראשון מיטיב והשנים־עשר מזיק — הוא יגבר; הראשון מזיק והשנים־עשר מיטיב — האויב יגבר.',
+    housesUsed: [1, 12], h1Pattern, h12Pattern,
+    h1FigureHebrew: h1?.hebrew || HAWI_FIGURE_NAMES_BY_ID[h1Pattern]?.hebrewName,
+    h12FigureHebrew: h12?.hebrew || HAWI_FIGURE_NAMES_BY_ID[h12Pattern]?.hebrewName,
+    h1Quality: first, h12Quality: twelfth, branch,
+    enemyPresent: branch === 'no-enemy' ? false : branch ? true : null,
+    querentPrevails: branch === 'querent-prevails' ? true : branch === 'enemy-prevails' ? false : null,
+    positive: branch === 'no-enemy' ? false : branch ? true : null,
+    outputHebrew: branch ? `לפי דין בתי 1 ו־12: ${sayings[branch]}`
+      : 'בבתים 1 ו־12 יש צורה ממוזגת או בלתי מסווגת; ארבעת ענפי הדין בעמ׳ 271 אינם מכריעים צירוף זה.',
+  };
+}
+
+function computeIllnessHumorH1H8P197(chart) {
+  const h1 = findCanonicalHouse(chart, 1);
+  const h8 = findCanonicalHouse(chart, 8);
+  const h1Pattern = h1?.key || h1?.pattern;
+  const h8Pattern = h8?.key || h8?.pattern;
+  if (!h1Pattern || !h8Pattern) return null;
+  const h1Element = HAWI_FIGURE_NAMES_BY_ID[h1Pattern]?.elementHebrew || null;
+  const h8Element = HAWI_FIGURE_NAMES_BY_ID[h8Pattern]?.elementHebrew || null;
+  const sameElement = Boolean(h1Element && h1Element === h8Element);
+  const traditions = { 'מים': 'קור ולחות', 'עפר': 'מרה שחורה', 'אש': 'מרה צהובה', 'אוויר': 'רוחות שונות' };
+  const humor = sameElement ? traditions[h1Element] || null : null;
+  return {
+    sourceRef: 'כשף אל־אסראר עמ׳ 197; יסודות הצורות עמ׳ 43–67',
+    sourceText: 'אם בראשון ובשמיני צורות מימיות — קור ולחות; עפריות — מרה שחורה; אשיות — מרה צהובה; אוויריות — רוחות שונות.',
+    housesUsed: [1, 8], h1Pattern, h8Pattern, h1Element, h8Element,
+    sameElement, humor, positive: null,
+    outputHebrew: humor ? `לפי סיווג היסודות בספר, צורות בתי 1 ו־8 הן ${h1Element}; דינו המסורתי: ${humor}.`
+      : 'צורות בתי 1 ו־8 אינן מאותו יסוד; סעיף עמ׳ 197 אינו קובע להן סוג חולי.',
   };
 }
 
@@ -2448,6 +2503,8 @@ function computeHiddenActionP167(chart) {
 }
 
 const CUSTOM_EXECUTORS = Object.freeze({
+  'enemy.p271.h1vsH12': computeEnemyPresenceH1H12P271,
+  'illness.p197.h1h8ElementHumor': computeIllnessHumorH1H8P197,
   'theft.p224.recoveryH8': computeTheftRecoveryH8P224,
   'profession.p254.h9Planet': computeProfessionP254,
   'pregnancy.p191-192.miscarriageRedH7NakisH8': computeMiscarriageRedH7NakisH8P191P192,

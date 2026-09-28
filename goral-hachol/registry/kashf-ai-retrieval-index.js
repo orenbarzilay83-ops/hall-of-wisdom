@@ -420,6 +420,16 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
     doNotMixWith: ['lostItem.p202.returnH6H8', 'theft.p224.relationshipH7Recurrence', 'theft.p225.thiefDescriptionH7'],
     houses: [8],
   },
+  'enemy.p271.h1vsH12': {
+    aliases: ['האם יש אויב', 'האם השואל יגבר על האויב', 'בדיקת אויב לפי בית 12'],
+    doNotMixWith: ['theft.p224.relationshipH7Recurrence', 'spiritual.p167.hiddenActionAirRows46815'],
+    houses: [1, 12],
+  },
+  'illness.p197.h1h8ElementHumor': {
+    aliases: ['סוג חולי לפי היסודות', 'קור ולחות', 'מרה שחורה', 'מרה צהובה', 'רוחות שונות'],
+    doNotMixWith: ['illness.p196.outcomeH15', 'illness.bodyPart.h6Figure'],
+    houses: [1, 8],
+  },
   'theft.p225.thiefDescriptionH7': {
     aliases: ['תיאור הגנב', 'איך הגנב נראה', 'מראה הגנב', 'פרופיל הגנב'],
     doNotMixWith: ['theft.p224.relationshipH7Recurrence'],
