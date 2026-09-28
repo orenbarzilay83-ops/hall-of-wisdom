@@ -360,6 +360,22 @@ export const KASHF_V57_KNOWLEDGE = Object.freeze({
     notes: 'הדפוס בעמ׳ 240 (PDF עמ׳ 242), אף שהרשומה הישנה כונתה p242. זהו סוג אזהרה, לא אירוע מוכח.',
   }),
 
+  'dream.p254.h9AndTransit': knowledge({
+    kashfMethodId: 'dream.p254.h9AndTransit', page: 254,
+    topic: 'הפרק התשיעי — חלום ומלאכה', heading: 'דין ראיית חלום',
+    hebrewRule: 'דין החלום נלמד מן הבית התשיעי. אם הצורה השוכנת בו מיטיבה — דון לטוב; ואם היא מזיקה — דון להפך. ראה גם היכן מופיעה אותה צורה בלוח, ועל פיו תשפוט.',
+    supportingPages: [57, 58, 59, 60], arabicVerificationPages: [254],
+    notes: 'ההופעות הנוספות מדווחות כנתוני לוח בלבד; אין בסעיף מילון פשר תמונות החלום או דין נפרד לחלום יומי.',
+  }),
+
+  'travel.p236.timeSelectionH9H4': knowledge({
+    kashfMethodId: 'travel.p236.timeSelectionH9H4', page: 236,
+    topic: 'הפרק התשיעי — המסע', heading: 'בחירת זמן המסע',
+    hebrewRule: 'בבחירת זמן המסע רצוי שדרך, נשוא ראש או כבוד נכנס יהיו בתשיעי, בראש המערך או בבית השואל, ושבית רביעי יהיה מיטיב.',
+    supportingPages: [57, 58, 59, 60], arabicVerificationPages: [236],
+    notes: 'דפוס ראשון עמ׳ 236/PDF עמ׳ 238; בעותק הערבי השני מופיע במפורש עמוד 236. v56 סימן את הסעיף כעמ׳ 238 ויש לתקן את סימון התרגום בהמשך. השיטה בוחנת מועד מוצע, אינה מחשבת תאריך.',
+  }),
+
 
 
   'career.p266.returnToOffice': knowledge({

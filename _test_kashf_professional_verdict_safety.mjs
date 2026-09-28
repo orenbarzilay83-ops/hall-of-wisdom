@@ -189,7 +189,7 @@ function auditOutputForSafety(safetyBlock, { draft = null, draftPolarity = 'none
   };
 }
 
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 51, 'certification registry contains fifty-one professionally certified methods');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 53, 'certification registry contains fifty-three professionally certified methods');
 for (const id of [
   'marriage.p210.generalMarriageH1H2H7H8H10Judge',
   'marriage.p211.dissolutionH7StateMatrix',
@@ -218,6 +218,8 @@ for (const id of [
   'friends.p263.h1h11',
   'fear.p273.punishmentSigns',
   'travel.p240.roadCautionsH9H7',
+  'dream.p254.h9AndTransit',
+  'travel.p236.timeSelectionH9H4',
   'theft.p224.relationshipH7Recurrence',
   'matter.p172.h17_h1011_thenCombine',
   'relocation.p183.currentVsNewPlace',
@@ -297,6 +299,31 @@ for (const [h7, element, caution] of [
   assert(result?.h9Evidence === 'בית 9 מיטיב — הדרך טובה', 'p240 H9 source branch is independent');
   assert(reading.canonicalReading?.overallPositive === null && reading.professionalVerdictSafety?.clientFacingCertified === true,
     'p240 caution does not assert actual future danger');
+}
+for (const [h9, expected, sameHouse] of [
+  ['2111', true, 3], ['1221', false, 3], ['1111', null, 3],
+]) {
+  const reading = buildKashfCanonicalAiBridge({ questionId: 'q-dream', questionText: 'מה סימן החלום?', board: makeBoard({ 3:h9, 9:h9 }) });
+  const result = reading.canonicalReading?.primaryFormula?.result?.executorResult;
+  assert(result?.dreamGoodSign === expected && result?.sameFigureHouses?.includes(sameHouse), 'p254 H9 omen and exact occurrence');
+  assert(reading.canonicalReading?.overallPositive === expected, 'p254 mixed branch is not coerced to good or bad');
+  assert(reading.professionalVerdictSafety?.clientFacingCertified === true, 'p254 limited dream omen is certified');
+}
+const p254NoRepeat = buildKashfCanonicalAiBridge({ questionId: 'q-dream-daily', questionText: 'חלום יומי', board: makeBoard({ 9:'2111' }) });
+assert(p254NoRepeat.canonicalReading?.primaryFormula?.result?.executorResult?.sameFigureHouses?.length === 0,
+  'p254 no recurrence is reported without invented transit');
+for (const [h1, h9, h4, favorable, house] of [
+  ['2222', '1111', '2111', true, 9],
+  ['2211', '2222', '2111', true, 1],
+  ['2222', '1111', '1111', null, 9],
+  ['2222', '2222', '2111', null, null],
+]) {
+  const reading = buildKashfCanonicalAiBridge({ questionId: 'q-travel-timing', questionText: 'האם זמן היציאה מתאים?', board: makeBoard({ 1:h1, 4:h4, 9:h9 }) });
+  const result = reading.canonicalReading?.primaryFormula?.result?.executorResult;
+  assert(result?.favorableDepartureTime === favorable && (house === null || result?.namedHouses?.includes(house)),
+    'p236 named figure in H9 or H1 and pure H4 benefic');
+  assert(reading.canonicalReading?.overallPositive === favorable, 'p236 nonmatch has no invented adverse verdict');
+  assert(reading.professionalVerdictSafety?.clientFacingCertified === true, 'p236 proposed time source draft certified');
 }
 const p224NotRecovered = buildKashfCanonicalAiBridge({ questionId: 'q-theft-return', questionText: 'האם אקבל את הרכוש שנגנב?', board: makeBoard({ 8:'1221' }) });
 const p224Mixed = buildKashfCanonicalAiBridge({ questionId: 'q-theft-return', questionText: 'האם אקבל את הרכוש שנגנב?', board: makeBoard({ 8:'1111' }) });
@@ -889,7 +916,7 @@ assert(p254Venus.professionalVerdictSafety?.binaryClientVerdictAllowed === false
 assert(p254Venus.professionalVerdictSafety?.authoritativeClientDraftHebrew === p254VenusExec?.outputHebrew, 'p254 safety gate locks the exact source-bounded executor draft');
 assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes('profession.p254.h9Planet'), 'p254 profession method is explicitly professionally certified');
 // Dhamir subject-identification remains outside the client-verdict registry.
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 51, 'professional client-verdict certification count includes p240');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 53, 'professional client-verdict certification count includes p236 time');
 
 
 

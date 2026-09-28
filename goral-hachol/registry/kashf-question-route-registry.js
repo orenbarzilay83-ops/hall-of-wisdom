@@ -605,8 +605,9 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     questionId: 'q-travel-timing',
     disposition: 'RENAME',
     kashfIntentId: 'travel.timeSelection',
-    kashfMethodId: 'travel.p238.timeSelectionH9H4',
-    kashfRuntimeStatus: 'repair-required',
+    kashfMethodId: 'travel.p236.timeSelectionH9H4',
+    kashfRuntimeStatus: 'ready',
+    note: 'Judges only a proposed departure time by the printed p236 H9/H1 named figures and pure-benefic H4; it does not derive a future calendar date.',
     note: 'Source-safe wording is whether a proposed departure time is favorable. p238 does not calculate an arbitrary future date; the existing timing table also requires repair.',
   }),
 
@@ -1122,7 +1123,8 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     disposition: 'KEEP',
     kashfIntentId: 'dream.meaning',
     kashfMethodId: 'dream.p254.h9AndTransit',
-    kashfRuntimeStatus: 'repair-required',
+    kashfRuntimeStatus: 'ready',
+    note: 'Source-bounded p254 H9 good/adverse sign and same-figure occurrences, not interpretation of dream imagery.',
   }),
 
   'q-dream-daily': route({
@@ -1131,7 +1133,8 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     aliasOf: 'q-dream',
     kashfIntentId: 'dream.meaning',
     kashfMethodId: 'dream.p254.h9AndTransit',
-    kashfRuntimeStatus: 'repair-required',
+    kashfRuntimeStatus: 'ready',
+    note: 'Alias of p254 dream omen; the printed rule does not split daily and prophetic dreams into distinct methods.',
   }),
 
   'q-dream-omen': route({
@@ -1140,7 +1143,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     aliasOf: 'q-dream',
     kashfIntentId: 'dream.meaning',
     kashfMethodId: 'dream.p254.h9AndTransit',
-    kashfRuntimeStatus: 'repair-required',
+    kashfRuntimeStatus: 'ready',
   }),
 
   'q-friends': route({

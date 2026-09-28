@@ -272,6 +272,12 @@ assertRoute('q-travel-danger', {
   ok: true, canRunKashf: true, kashfIntentId: 'travel.roadDanger',
   kashfMethodId: 'travel.p240.roadCautionsH9H7', kashfRuntimeStatus: 'ready',
 });
+for (const questionId of ['q-dream', 'q-dream-daily', 'q-dream-omen']) {
+  assertRoute(questionId, { ok: true, canRunKashf: true,
+    kashfMethodId: 'dream.p254.h9AndTransit', kashfRuntimeStatus: 'ready' });
+}
+assertRoute('q-travel-timing', { ok: true, canRunKashf: true,
+  kashfMethodId: 'travel.p236.timeSelectionH9H4', kashfRuntimeStatus: 'ready' });
 assertRoute('q-prisoner-guilty', {
   ok: true,
   canRunKashf: false,

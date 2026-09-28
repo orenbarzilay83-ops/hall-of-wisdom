@@ -956,17 +956,17 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
   }),
 
   // ── TRAVEL + MISSING canonical slice ----------------------------------
-  'travel.p238.timeSelectionH9H4': method({
-    kashfMethodId: 'travel.p238.timeSelectionH9H4',
+  'travel.p236.timeSelectionH9H4': method({
+    kashfMethodId: 'travel.p236.timeSelectionH9H4',
     kashfIntentId: 'travel.timeSelection',
     topicId: 'travel',
-    sourcePages: [238],
-    kashfRuntimeStatus: 'repair-required',
-    runtimeAllowed: false,
+    sourcePages: [236],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
+    executorStatus: 'ready',
     legacyTopicId: 'travel',
-    notes: 'Canonical time-selection rule judges a proposed departure time: Road, Ahyan/Nesu Rosh, or Incoming Honor in H9 / the head / querent house, with H4 benefic. The existing timing helper has a named-figure table defect and must not run until repaired. This method does not calculate a future date from nothing.',
+    notes: 'Printed p236 (PDF p238), cross-checked in second Arabic edition; v56 page label p238 is wrong here. Road/Ahyan/Incoming Honor in H9 or H1 and H4 pure benefic give a one-way favorable sign for a proposed departure time, never a generated date.',
   }),
 
   'travel.p239.profitEarthRowH2': method({
@@ -1757,11 +1757,11 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfIntentId: 'dream.meaning',
     topicId: 'dream',
     sourcePages: [254],
-    kashfRuntimeStatus: 'repair-required',
-    runtimeAllowed: false,
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Must judge H9 and then where the H9 figure moved; current implementation is partial.',
+    executorStatus: 'ready',
+    notes: 'Printed p254 H9 pure benefic/malefic gives only a good/adverse sign; same-figure occurrences are reported without inventing a house-specific dream meaning. Mixed remains unresolved.',
   }),
 
   'friends.p263.h1h11': method({

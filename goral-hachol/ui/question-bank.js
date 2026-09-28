@@ -129,8 +129,8 @@ window.QUESTION_BANK = [
   {
     id: 'q-dream',
     category: 'general', houseId: 9, topicId: 'dream', kashfTopicId: 'dream',
-    label: 'מה משמעות החלום?',
-    desc: 'לחלום נבואי, דתי, שנחקק עמוק בזיכרון. לחלום יומיומי רגיל — בחר "חלום יומי" (בית 3)',
+    label: 'מה סימן החלום לפי בית 9?',
+    desc: 'דין מיטיב או מזיק לפי בית 9 ומקום הופעת הצורה; ללא פירוש תוכן החלום',
     clientFields: [F.dreamDesc],
   },
   {
@@ -505,9 +505,9 @@ window.QUESTION_BANK = [
   {
     id: 'q-travel-timing',
     category: 'travel', houseId: 9, topicId: 'travel', kashfTopicId: 'travel',
-    label: 'מתי כדאי לצאת לנסיעה?',
-    desc: 'לבחירת הזמן הטוב לנסיעה — מתי לצאת כדי להצליח',
-    clientFields: [F.destination, F.travelType],
+    label: 'האם זמן היציאה שבחרתי מתאים?',
+    desc: 'בודקים זמן יציאה מוצע לפי צורות בית 9 או 1 ובית 4; אין חישוב תאריך חלופי',
+    clientFields: [F.destination, F.travelType, F.travelDate],
   },
   {
     id: 'q-travel-direction',
@@ -830,9 +830,9 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-dream-daily',
-    category: 'general', houseId: 3, topicId: 'dream', kashfTopicId: 'dream',
-    label: 'חלום יומי — האם הוא בשורה?',
-    desc: 'לחלום רגיל/יומיומי. לחלום נבואי/דתי שנחקק — בחר "מה משמעות החלום" (בית 9)',
+    category: 'general', houseId: 9, topicId: 'dream', kashfTopicId: 'dream',
+    label: 'חלום יומי — סימן לפי בית 9',
+    desc: 'אותו כלל חלום בעמ׳ 254; אין בסעיף חלוקה נפרדת לחלום יומי',
     clientFields: [F.dreamDesc],
   },
   {
@@ -943,7 +943,7 @@ window.QUESTION_BANK = [
     id: 'q-dream-omen',
     category: 'general', houseId: 9, topicId: 'dream', kashfTopicId: 'dream',
     label: 'חלום — האם הוא בשורה טובה?',
-    desc: 'האם חלום ספציפי הוא בשורה טובה או רעה — לחלום שחקוק בזיכרון',
+    desc: 'סימן לטובה או להפך לפי צורת בית 9; ללא פירוש תוכן החלום',
     clientFields: [F.dreamDesc],
   },
 

@@ -46,6 +46,8 @@ const P197_ILLNESS_HUMOR_METHOD = 'illness.p197.h1h8ElementHumor';
 const P263_FRIENDSHIP_METHOD = 'friends.p263.h1h11';
 const P273_PUNISHMENT_METHOD = 'fear.p273.punishmentSigns';
 const P240_TRAVEL_CAUTION_METHOD = 'travel.p240.roadCautionsH9H7';
+const P254_DREAM_METHOD = 'dream.p254.h9AndTransit';
+const P236_TRAVEL_TIME_METHOD = 'travel.p236.timeSelectionH9H4';
 const P172_MATTER_OUTCOME_METHOD = 'matter.p172.h17_h1011_thenCombine';
 const P183_CURRENT_VS_NEW_METHOD = 'relocation.p183.currentVsNewPlace';
 const P256_HONOR_CONDITION_METHOD = 'authority.p256.honorConditionH10Planet';
@@ -389,6 +391,32 @@ function p240TravelCautionPolicy() {
     forbiddenInversions: freezeArray(['H9 ממוזג אינו מוכרע בדין זה.', 'אזהרת H7 אינה קביעה שאירוע יקרה.']),
     excludedFromPrimaryVerdict: freezeArray(['בטיחות כלי שיט, מועד חזרה, סכנת חיים מוכחת.']),
     forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray(['ודאי תיפגע בדרך', 'הדרך בטוחה בוודאות', 'תתרחש גנבה']),
+  });
+}
+
+function p254DreamPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified', certificationBatch: 'professional-backfill-14',
+    goldenCaseIds: freezeArray(['PV-BF14-P254-GOOD', 'PV-BF14-P254-ADVERSE', 'PV-BF14-P254-MIXED', 'PV-BF14-P254-OCCURRENCE']),
+    policyId: 'p254-dream-h9-omen-v1', questionScopeHebrew: 'סימן החלום לפי טיב צורת בית 9 והופעות אותה צורה בלוח',
+    decisiveRuleHebrew: 'H9 מיטיב => דון לטוב; מזיק => להפך. היכן עברה הצורה נרשם, ללא דין נוסף שאינו מפורט בסעיף.',
+    oneWayBranches: freezeArray(['H9 מיטיב טהור => סימן לטובה', 'H9 מזיק טהור => סימן הפוך']),
+    forbiddenInversions: freezeArray(['H9 ממוזג אינו פסק ביניים.', 'הופעת צורה בבית אחר אינה פשר חלום מפורט בלא כלל נוסף.']),
+    excludedFromPrimaryVerdict: freezeArray(['פירוש תמונות וסמלים בחלום; הבדל מובנה בין חלום יומי לנבואי.']),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray(['תוכן החלום מבשר על אירוע מסוים', 'החלום נבואי', 'החלום מלמד מי פגע בשואל']),
+  });
+}
+
+function p236TravelTimePolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified', certificationBatch: 'professional-backfill-14',
+    goldenCaseIds: freezeArray(['PV-BF14-P236-H9-ROAD', 'PV-BF14-P236-H1-HONOR', 'PV-BF14-P236-H4-MIXED', 'PV-BF14-P236-NO-MATCH']),
+    policyId: 'p236-travel-time-proposed-v1', questionScopeHebrew: 'התאמת זמן נסיעה שהוצע מראש לפי בתים 9/1 ו־4',
+    decisiveRuleHebrew: 'דרך, נשוא ראש או כבוד נכנס ב־H9 או H1, ובית 4 מיטיב טהור => סימן טוב לזמן המוצע.',
+    oneWayBranches: freezeArray(['צורה נקובה ב־H9 או H1 ו־H4 מיטיב טהור => זמן מוצע נוח']),
+    forbiddenInversions: freezeArray(['אי־קיום התנאי אינו קובע שהמסע ייכשל.', 'H4 ממוזג אינו מיטיב טהור.']),
+    excludedFromPrimaryVerdict: freezeArray(['חישוב תאריך עתידי, שעת יציאה, בטיחות הדרך.']),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray(['יש לצאת בתאריך מסוים שהמנוע חישב', 'המסע ייכשל בוודאות']),
   });
 }
 
@@ -1243,7 +1271,7 @@ function p238TravelSuccessPolicy() {
       'צורה ממוזגת אינה מקודמת לפי נטייתה להצלחה או לכישלון.',
     ]),
     excludedFromPrimaryVerdict: freezeArray([
-      'travel.p238.timeSelectionH9H4 — בחירת זמן לפי צורות נקובות היא דין נפרד.',
+      'travel.p236.timeSelectionH9H4 — בחירת זמן לפי צורות נקובות היא דין נפרד.',
       'travel.p244.returnH1H2H9 — חזרת הנוסע היא דין נפרד.',
       'כיוון, זמן, מועד חזרה או סכנה מסוימת שאינם חלק מן הכלל.',
     ]),
@@ -1581,6 +1609,8 @@ const METHOD_POLICIES = Object.freeze({
   [P263_FRIENDSHIP_METHOD]: p263FriendshipPolicy(),
   [P273_PUNISHMENT_METHOD]: p273PunishmentPolicy(),
   [P240_TRAVEL_CAUTION_METHOD]: p240TravelCautionPolicy(),
+  [P254_DREAM_METHOD]: p254DreamPolicy(),
+  [P236_TRAVEL_TIME_METHOD]: p236TravelTimePolicy(),
   [P172_MATTER_OUTCOME_METHOD]: p172MatterOutcomePolicy(),
   [P183_CURRENT_VS_NEW_METHOD]: p183CurrentVsNewPolicy(),
   [P256_HONOR_CONDITION_METHOD]: p256HonorConditionPolicy(),

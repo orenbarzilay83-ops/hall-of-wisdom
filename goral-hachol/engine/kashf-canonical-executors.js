@@ -861,6 +861,49 @@ function computeTravelRoadCautionsP240(chart) {
   };
 }
 
+function computeDreamH9AndOccurrencesP254(chart) {
+  const h9 = findCanonicalHouse(chart, 9);
+  const h9Pattern = h9?.key || h9?.pattern || null;
+  if (!h9Pattern) return null;
+  const quality = classifyCanonicalFigure(h9Pattern).saadNahs;
+  const occurrences = Array.from({ length: 16 }, (_, i) => i + 1)
+    .filter(house => house !== 9 && (findCanonicalHouse(chart, house)?.key || findCanonicalHouse(chart, house)?.pattern) === h9Pattern);
+  const good = quality === 'saad' ? true : quality === 'nahs' ? false : null;
+  return {
+    sourceRef: 'כשף אל־אסראר עמ׳ 254; סיווגי הצורות עמ׳ 57–60',
+    sourceText: 'דין ראיית החלום מן הבית התשיעי: אם צורתו מיטיבה, דון לטוב; אם מזיקה, להפך. ראה גם לאן עברה צורת התשיעי ועל פיו דון.',
+    housesUsed: [9], h9Pattern,
+    h9FigureHebrew: h9?.hebrew || h9?.hebrewName || HAWI_FIGURE_NAMES_BY_ID[h9Pattern]?.hebrewName || h9Pattern,
+    h9Quality: quality, sameFigureHouses: occurrences, dreamGoodSign: good, positive: good,
+    outputHebrew: `${good === true ? 'צורת בית 9 מיטיבה — לפי עמ׳ 254, דין החלום לטובה.'
+      : good === false ? 'צורת בית 9 מזיקה — לפי עמ׳ 254, דין החלום להפך.'
+        : 'צורת בית 9 ממוזגת; סעיף עמ׳ 254 אינו נותן לה ענף מיטיב או מזיק.'} `
+      + (occurrences.length ? `אותה צורה מופיעה גם בבתים ${occurrences.join(', ')}; הספר מורה לעיין במקום מעבר הצורה, אך אינו מפרט כאן פסק נוסף לפי כל בית.`
+        : 'לא נמצאה הופעה נוספת של צורת בית 9; אין להוסיף מסלול מעבר מן הדעת.'),
+  };
+}
+
+const P236_GOOD_TRAVEL_TIME_PATTERNS = new Set(['1111', '1222', '2211']);
+
+function computeProposedTravelTimeP236(chart) {
+  const h1Pattern = findCanonicalHouse(chart, 1)?.key || findCanonicalHouse(chart, 1)?.pattern || null;
+  const h4Pattern = findCanonicalHouse(chart, 4)?.key || findCanonicalHouse(chart, 4)?.pattern || null;
+  const h9Pattern = findCanonicalHouse(chart, 9)?.key || findCanonicalHouse(chart, 9)?.pattern || null;
+  if (!h1Pattern || !h4Pattern || !h9Pattern) return null;
+  const namedHouses = [1, 9].filter(h => P236_GOOD_TRAVEL_TIME_PATTERNS.has(h === 1 ? h1Pattern : h9Pattern));
+  const h4Quality = classifyCanonicalFigure(h4Pattern).saadNahs;
+  const favorable = namedHouses.length > 0 && h4Quality === 'saad' ? true : null;
+  return {
+    sourceRef: 'כשף אל־אסראר עמ׳ 236 (PDF עמ׳ 238); סיווגי הצורות עמ׳ 57–60',
+    sourceText: 'לבחירת זמן הנסיעה רצוי שדרך, נשוא ראש או כבוד נכנס יהיו בבית התשיעי, בראש המערך או בבית השואל; והרביעי חייב להיות מיטיב.',
+    housesUsed: [1, 4, 9], h1Pattern, h4Pattern, h9Pattern, namedHouses, h4Quality,
+    favorableDepartureTime: favorable, positive: favorable,
+    outputHebrew: favorable === true
+      ? `הצורה המבוקשת נמצאת בבית ${namedHouses.join(' או ')} ובית 4 מיטיב. לפי עמ׳ 236, אלה סימנים נוחים לזמן היציאה שנבדק.`
+      : 'תנאי בחירת הזמן בעמ׳ 236 אינם מתקיימים יחד בלוח זה; הסעיף אינו נותן מכך יום חלופי או פסק שהמסע ייכשל.',
+  };
+}
+
 
 function computeLostItemReturnP202(chart) {
   if (!Array.isArray(chart)) return null;
@@ -2579,6 +2622,8 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'friends.p263.h1h11': computeFriendshipH1H11P263,
   'fear.p273.punishmentSigns': computePunishmentFearP273,
   'travel.p240.roadCautionsH9H7': computeTravelRoadCautionsP240,
+  'dream.p254.h9AndTransit': computeDreamH9AndOccurrencesP254,
+  'travel.p236.timeSelectionH9H4': computeProposedTravelTimeP236,
   'theft.p224.recoveryH8': computeTheftRecoveryH8P224,
   'profession.p254.h9Planet': computeProfessionP254,
   'pregnancy.p191-192.miscarriageRedH7NakisH8': computeMiscarriageRedH7NakisH8P191P192,

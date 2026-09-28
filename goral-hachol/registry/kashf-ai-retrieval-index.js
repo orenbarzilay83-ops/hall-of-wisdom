@@ -196,7 +196,7 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
   },
   'travel.p244.returnH1H2H9': {
     aliases: ['האם הנוסע יחזור', 'האם ישוב מהמסע', 'חזרת הנוסע', 'האם יחזור הביתה מהנסיעה', 'האם ישוב לארצו'],
-    doNotMixWith: ['travel.p238.assemble1359', 'travel.p238.timeSelectionH9H4', 'missing.p249.returnAnglesJudge'],
+    doNotMixWith: ['travel.p238.assemble1359', 'travel.p236.timeSelectionH9H4', 'missing.p249.returnAnglesJudge'],
     houses: [1, 2, 9],
   },
   'marriage.p210.generalMarriageH1H2H7H8H10Judge': {
@@ -444,6 +444,16 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
     aliases: ['ממה להיזהר בדרך', 'סכנות דרך לפי היסוד', 'זהירות בנסיעה'],
     doNotMixWith: ['travel.p244.returnH1H2H9', 'travel.p242.vehicleSafety'],
     houses: [9, 7],
+  },
+  'dream.p254.h9AndTransit': {
+    aliases: ['סימן החלום לפי בית תשיעי', 'האם החלום לטובה', 'צורת בית תשיעי בחלום'],
+    doNotMixWith: ['profession.p254.h9Planet', 'religion.p253.h3h9Quality'],
+    houses: [9],
+  },
+  'travel.p236.timeSelectionH9H4': {
+    aliases: ['האם זמן היציאה מתאים', 'בחירת זמן נסיעה מוצע', 'דרך או נשוא ראש או כבוד נכנס בתשיעי'],
+    doNotMixWith: ['travel.p238.assemble1359', 'travel.p240.roadCautionsH9H7'],
+    houses: [9, 1, 4],
   },
   'theft.p225.thiefDescriptionH7': {
     aliases: ['תיאור הגנב', 'איך הגנב נראה', 'מראה הגנב', 'פרופיל הגנב'],
