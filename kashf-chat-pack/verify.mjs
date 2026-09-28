@@ -102,6 +102,12 @@ assert.equal(runKashfPack({ mothers: defaultMothers, methodId: 'dhamir.p159.subj
 assert.equal(runKashfPack({ mothers: ['1111'], questionId: 'q-pregnancy' }).status, 'blocked');
 
 const spiritualMothers = ['1111', '1121', '2212', '1221'];
+const zeroOpen = runKashfPack({ mothers: ['2222', '2222', '2222', '2222'], questionId: 'q-sorcery', gender: 'אישה' });
+assert.equal(zeroOpen.status, 'ok');
+assert.equal(zeroOpen.sourceStatus, 'partial-source-unresolved-zero-open');
+assert.equal(zeroOpen.remainder, null);
+assert.equal(zeroOpen.isqatEvidence, null);
+assert(zeroOpen.directEvidence.some(item => item.id === 'jamaa-house6-umm-sibyan-blocks-marriage-pregnancy-children'));
 for (const questionId of qawl.questionIds) {
   const result = runKashfPack({ mothers: spiritualMothers, questionId });
   assert.equal(result.status, 'ok', questionId);
@@ -121,7 +127,7 @@ for (const questionId of ['q-sorcerer', 'q-obsession']) {
 const nonJinn = runKashfPack({ mothers: ['1111', '1122', '2212', '1221'], questionId: 'q-jinn-type' });
 assert.equal(nonJinn.remainder, 4);
 assert.equal(nonJinn.jinnTypeEvidence, null);
-assert.equal(runKashfPack({ mothers: ['2222','2222','2222','2222'], questionId: 'q-sorcery' }).status, 'blocked');
+assert.equal(runKashfPack({ mothers: ['2222','2222','2222','2222'], questionId: 'q-sorcery' }).sourceStatus, 'partial-source-unresolved-zero-open');
 const boardWith = overrides => ({ entries: Array.from({ length: 16 }, (_, i) => ({
   houseNumber: i + 1, pattern: overrides[i + 1] || '1111',
 })), boardValidation: { isValid: true } });

@@ -104,35 +104,29 @@ export function buildQawlSpiritualReading(board, questionId = 'q-sorcery', clien
     return { valid: false, status: 'invalid-board', questionId, evidence: [], message: 'נדרש לוח גורל תקין ומלא בן 16 בתים.' };
   }
   const openCount = countOpenPoints(patterns);
-  if (openCount === 0) {
-    return {
-      valid: false, status: 'source-unresolved-zero-open', questionId, evidence: [],
-      message: 'בלוח אין נקודות פתוחות. פרק 7×7 מפרט שאריות 1–7 אך אינו מכריע כאן איך לטפל באפס; אין להפיק פסק מן הכלל הזה.',
-    };
-  }
-  const remainder = ((openCount - 1) % 7) + 1;
-  const isqat = SOURCE.isqatSevenRules.results.find(r => r.remainder === remainder);
+  const remainder = openCount === 0 ? null : ((openCount - 1) % 7) + 1;
+  const isqat = remainder === null ? null : SOURCE.isqatSevenRules.results.find(r => r.remainder === remainder);
   const direct = [...directEvidence(patterns, clientContext.gender), ...derivedEvidence(patterns)];
   const jinnType = questionId === 'q-jinn-type' && remainder === 1 ? jinnTypeEvidence(patterns) : null;
 
   return {
     valid: true,
-    status: 'ok',
+    status: remainder === null ? 'partial-source-unresolved-zero-open' : 'ok',
     sourceVolume: 'al-qawl-al-jami',
     sourceBook: 'القول الجامع في علم الرمل',
     questionId,
     openCount,
     remainder,
     // p. 58 counts the open points on the whole board, then reduces by seven.
-    isqatEvidence: {
+    isqatEvidence: isqat ? {
       id: 'isqat-7-7-spiritual-diagnosis', sourcePage: 58,
       sourceBook: 'القول الجامع في علم الرمل', text: isqat.hebrew,
       kind: 'open-points-remainder',
-    },
+    } : null,
     directEvidence: direct,
     jinnTypeEvidence: jinnType,
     evidence: [
-      { id: 'isqat-7-7-spiritual-diagnosis', sourcePage: 58 },
+      ...(isqat ? [{ id: 'isqat-7-7-spiritual-diagnosis', sourcePage: 58 }] : []),
       ...direct.map(({ id, sourcePage, houses }) => ({ id, sourcePage, houses })),
       ...(jinnType ? [{ id: jinnType.id, sourcePage: 58, houses: [15, 4] }] : []),
     ],
@@ -154,16 +148,17 @@ export function writeQawlSpiritualReading(reading) {
   const type = reading.questionId === 'q-jinn-type'
     ? reading.jinnTypeEvidence
       ? `<p>15×4: ${escapeHtml(reading.jinnTypeEvidence.resultFigure)} (${escapeHtml(reading.jinnTypeEvidence.resultPattern)}) — ${escapeHtml(reading.jinnTypeEvidence.text)}.</p>`
-      : '<p>שיטת סוג הג׳ין 15×4 אינה מופעלת כאן: שארית 7×7 לא הצביעה על מס ג׳ין.</p>'
+      : reading.remainder === null ? '<p>שיטת סוג הג׳ין 15×4 אינה מופעלת: דין אפס נקודות פתוחות אינו מפורש בכלל 7×7.</p>'
+        : '<p>שיטת סוג הג׳ין 15×4 אינה מופעלת כאן: שארית 7×7 לא הצביעה על מס ג׳ין.</p>'
     : '';
   return `<div class="kashf-reading-output qawl-spiritual-reading" dir="rtl">
     <h3>בדיקה רוחנית — מקור משלים</h3>
-    <p>שיטת 7×7: ${escapeHtml(reading.isqatEvidence.text)}</p>
+    <p>שיטת 7×7: ${reading.isqatEvidence ? escapeHtml(reading.isqatEvidence.text) : 'בלוח אין נקודות פתוחות; הספר אינו מורה כיצד לדון בשארית אפס. כללי צורה ובית מוצגים בנפרד, אם הם מתקיימים.'}</p>
     ${ruleItems ? `<p>כללי צורה ובית שנמצאו בלוח:</p><ul>${ruleItems}</ul>` : '<p>לא נמצאה בלוח התאמה לכללי הצורה והבית שנבדקו; אין בכך לבדו הכרעה שאין פגיעה.</p>'}
     ${type}
     <details><summary>פרטי חישוב ומקור ליועץ</summary>
       <p>القول الجامع في علم الرمل, עמ׳ 56–58. הספר נבדל מכשף אל־אסראר.</p>
-      <p>7×7: ${reading.openCount} נקודות פתוחות בכל 16 הבתים; שארית ${reading.remainder}.</p>
+      <p>7×7: ${reading.openCount} נקודות פתוחות בכל 16 הבתים; ${reading.remainder === null ? 'אין כלל שארית מאושר לאפס' : `שארית ${reading.remainder}`}.</p>
       ${reading.jinnTypeEvidence ? '<p>סוג ג׳ין: צורת בית 15 הוכתה בצורת בית 4; יסוד הצורה שנולדה קובע.</p>' : ''}
       <p>כללי 7×7 וכללי הצורה והבית מוצגים כראיות נפרדות. הספר אינו נותן כאן נוסחת דירוג או הכרעת רוב ביניהם.</p>
       <p>אין להסיק מן הכללים האלה שם מכשף, מיקום חפץ או סיבה רפואית.</p>

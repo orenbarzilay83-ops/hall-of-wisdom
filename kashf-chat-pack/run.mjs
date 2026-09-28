@@ -31,7 +31,7 @@ export function runKashfPack(input) {
       questionId, sourceVolume: 'al-qawl-al-jami', sourceBook: 'القول الجامع في علم الرمل' };
     return {
       status: 'ok', reason: null, ...boardOutput, questionId, methodId: null,
-      sourceVolume: reading.sourceVolume, sourceBook: reading.sourceBook, sourcePages: [57, 58],
+      sourceVolume: reading.sourceVolume, sourceBook: reading.sourceBook, sourcePages: [57, 58], sourceStatus: reading.status,
       openCount: reading.openCount, remainder: reading.remainder,
       isqatEvidence: reading.isqatEvidence, directEvidence: reading.directEvidence,
       jinnTypeEvidence: reading.jinnTypeEvidence, sourceEvidence: reading.evidence,

@@ -34,6 +34,13 @@ assert.equal(buildQawlSpiritualReading(board, 'q-sorcerer').valid, false);
 assert.equal(buildQawlSpiritualReading({ entries: board.entries.slice(0, 15) }, 'q-sorcery').status, 'invalid-board');
 assert.equal(buildQawlSpiritualReading({ ...board, boardValidation: { isValid: false } }, 'q-sorcery').status, 'invalid-board');
 const zeroOpenBoard = buildRamlBoardFromMothers(['2222', '2222', '2222', '2222']);
-assert.equal(buildQawlSpiritualReading(zeroOpenBoard, 'q-sorcery').status, 'source-unresolved-zero-open');
+const zeroGeneral = buildQawlSpiritualReading(zeroOpenBoard, 'q-sorcery');
+assert.equal(zeroGeneral.status, 'partial-source-unresolved-zero-open');
+assert.equal(zeroGeneral.isqatEvidence, null);
+assert.equal(zeroGeneral.remainder, null);
+assert.equal(zeroGeneral.verdict, null);
+const zeroFemale = buildQawlSpiritualReading(zeroOpenBoard, 'q-sorcery', { gender: 'אישה' });
+assert(zeroFemale.directEvidence.some(e => e.id === 'jamaa-house6-umm-sibyan-blocks-marriage-pregnancy-children'));
+assert(!writeQawlSpiritualReading(zeroFemale).includes('שארית 7'));
 
 console.log('Qawl spiritual Kashf bridge: PASS');
