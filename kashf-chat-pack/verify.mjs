@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
 import { runKashfPack } from './_build/run.mjs';
 import { buildQawlSpiritualReading } from './_build/runtime/goral-hachol/engine/qawl-spiritual-kashf-bridge.js';
 
@@ -12,6 +13,7 @@ const routes = read('QUESTION_ROUTES.json').routes;
 const cases = read('GOLDEN_CASES.json').cases;
 const source = read('SOURCE_INDEX.json');
 const qawl = read('QAWL_SPIRITUAL_METHOD.json');
+assert.match(execFileSync(process.execPath, [path.join(dir, '_build', 'SELF_TEST.mjs')], { encoding: 'utf8' }), /SELF_TEST PASS/);
 
 assert.equal(methods.length, 46);
 assert.equal(methods.filter(item => item.clientFacingCertified).length, 45);
