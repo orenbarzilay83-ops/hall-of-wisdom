@@ -415,6 +415,11 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
     doNotMixWith: ['theft.p225.thiefDescriptionH7'],
     houses: [7],
   },
+  'theft.p224.recoveryH8': {
+    aliases: ['האם הרכוש שנגנב יושג', 'השבת גניבה', 'האם אקבל את הגניבה בחזרה', 'דין בית שמיני בגניבה'],
+    doNotMixWith: ['lostItem.p202.returnH6H8', 'theft.p224.relationshipH7Recurrence', 'theft.p225.thiefDescriptionH7'],
+    houses: [8],
+  },
   'theft.p225.thiefDescriptionH7': {
     aliases: ['תיאור הגנב', 'איך הגנב נראה', 'מראה הגנב', 'פרופיל הגנב'],
     doNotMixWith: ['theft.p224.relationshipH7Recurrence'],

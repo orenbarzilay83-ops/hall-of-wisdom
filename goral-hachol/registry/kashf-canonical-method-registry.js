@@ -1156,12 +1156,12 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfIntentId: 'theft.recovery',
     topicId: 'theft',
     sourcePages: [224],
-    kashfRuntimeStatus: 'repair-required',
-    runtimeAllowed: false,
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
+    executorStatus: 'ready',
     legacyTopicId: 'theft',
-    notes: 'Body-source recovery rule: H8 benefic => the stolen property is obtained/recovered; H8 malefic => it is not. Legacy runtime softens this binary rule and adds mixed branches, so it must not run unchanged.',
+    notes: 'Source-scoped p224 H8 executor: pure benefic => recovered, pure malefic => not recovered. Mixed figures remain unresolved; the legacy theft helper is not invoked.',
   }),
 
   'theft.p224.relationshipH7Recurrence': method({

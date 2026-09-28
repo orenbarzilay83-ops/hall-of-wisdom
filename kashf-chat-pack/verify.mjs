@@ -15,8 +15,8 @@ const source = read('SOURCE_INDEX.json');
 const qawl = read('QAWL_SPIRITUAL_METHOD.json');
 assert.match(execFileSync(process.execPath, [path.join(dir, '_build', 'SELF_TEST.mjs')], { encoding: 'utf8' }), /SELF_TEST PASS/);
 
-assert.equal(methods.length, 46);
-assert.equal(methods.filter(item => item.clientFacingCertified).length, 45);
+assert.equal(methods.length, 47);
+assert.equal(methods.filter(item => item.clientFacingCertified).length, 46);
 assert.equal(routes.length, 138);
 assert(routes.every(item => typeof item.label === 'string' && item.label.trim() && typeof item.description === 'string'));
 assert.equal(source.records.length, 272);
@@ -37,9 +37,22 @@ for (const id of ['q-sorcery', 'q-sorcery-h10', 'q-jinn-type', 'q-sorcerer', 'q-
 assert.deepEqual(qawl.questionIds, ['q-sorcery', 'q-sorcery-h10', 'q-jinn-type']);
 assert.equal(qawl.directRules.length, 10);
 for (const id of qawl.questionIds) assert.match(routes.find(route => route.questionId === id)?.supplementalRuntime || '', /^AL_QAWL/);
-assert.equal(new Set(methods.map(item => item.methodId)).size, 46);
+assert.equal(new Set(methods.map(item => item.methodId)).size, 47);
 assert(methods.every(item => item.v57.hebrewRule && item.sourcePages.length));
 assert(routes.every(item => item.canRunKashf !== true || methods.some(method => method.methodId === item.methodId)));
+
+for (const { mothers, expected } of [
+  { mothers: ['1112', '1111', '1111', '1111'], expected: true },
+  { mothers: ['1111', '1112', '1112', '1111'], expected: false },
+  { mothers: ['1111', '1111', '1111', '1111'], expected: null },
+]) {
+  const result = runKashfPack({ mothers, questionId: 'q-theft-return' });
+  assert.equal(result.status, 'ok');
+  assert.equal(result.methodId, 'theft.p224.recoveryH8');
+  assert.equal(result.sourcePage, 224);
+  assert.equal(result.methodResult?.executorResult?.stolenPropertyRecovered, expected);
+  assert.equal(result.safety.authoritativePolarity, expected === null ? 'non-binary' : expected ? 'positive' : 'negative');
+}
 
 for (const item of cases) {
   const result = runKashfPack({ mothers: item.mothers, questionId: item.questionId });

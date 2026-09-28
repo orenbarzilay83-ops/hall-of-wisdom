@@ -706,6 +706,35 @@ function computeDowryH8P204(chart) {
   };
 }
 
+function computeTheftRecoveryH8P224(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h8 = findCanonicalHouse(chart, 8);
+  const h8Pattern = h8?.key || h8?.pattern || null;
+  if (!h8Pattern) return null;
+
+  const classification = classifyCanonicalFigure(h8Pattern);
+  const h8FigureHebrew = h8?.hebrew || h8?.hebrewName || classification.figureHebrew || h8Pattern;
+  const recovered = classification.saadNahs === 'saad' ? true
+    : classification.saadNahs === 'nahs' ? false : null;
+  const outputHebrew = recovered === true
+    ? `בית 8: ${h8FigureHebrew} (${h8Pattern}) — צורה מיטיבה. לפי כשף עמ׳ 224, בעל הדבר יזכה ברכוש שנגנב.`
+    : recovered === false
+      ? `בית 8: ${h8FigureHebrew} (${h8Pattern}) — צורה מזיקה. לפי כשף עמ׳ 224, בעל הדבר לא יזכה ברכוש שנגנב.`
+      : `בית 8: ${h8FigureHebrew} (${h8Pattern}) — ${classification.saadNahs === 'mixed' ? 'צורה ממוזגת' : 'סיווג לא ידוע'}. כלל עמ׳ 224 אינו מכריע כאן את השגת הרכוש שנגנב.`;
+
+  return {
+    sourceRef: 'כשף אל-אסראר עמ׳ 224; סיווגי הצורות עמ׳ 57–60',
+    sourceText: 'אם בשמיני צורה מיטיבה, בעל הדבר יזכה בגניבה; ואם בו צורה מזיקה, לא יזכה בה.',
+    housesUsed: [8],
+    h8Pattern,
+    h8FigureHebrew,
+    classification,
+    stolenPropertyRecovered: recovered,
+    positive: recovered,
+    outputHebrew,
+  };
+}
+
 
 function computeLostItemReturnP202(chart) {
   if (!Array.isArray(chart)) return null;
@@ -2419,6 +2448,7 @@ function computeHiddenActionP167(chart) {
 }
 
 const CUSTOM_EXECUTORS = Object.freeze({
+  'theft.p224.recoveryH8': computeTheftRecoveryH8P224,
   'profession.p254.h9Planet': computeProfessionP254,
   'pregnancy.p191-192.miscarriageRedH7NakisH8': computeMiscarriageRedH7NakisH8P191P192,
   'pregnancy.p191.deliveryDifficultyH1H5H15': computeDeliveryDifficultyP191,

@@ -621,8 +621,8 @@ window.QUESTION_BANK = [
   {
     id: 'q-theft-return',
     category: 'conflict', houseId: 8, topicId: 'theft', kashfTopicId: 'theft',
-    label: 'האם הגנוב יוחזר?',
-    desc: 'כשידוע מה נגנב — האם הגנוב ייחזר',
+    label: 'האם אשיג את הרכוש שנגנב?',
+    desc: 'כשידוע מה נגנב — האם בעל הדבר יזכה ברכוש שנגנב, לפי בית 8',
     clientFields: [F.stolen, F.stolenWhen],
   },
   {

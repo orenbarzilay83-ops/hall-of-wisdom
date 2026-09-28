@@ -207,10 +207,12 @@ assertRoute('q-missing-alive', {
 // ── Conflict/theft source-intent separation -----------------------------
 assertRoute('q-theft-return', {
   ok: true,
-  canRunKashf: false,
+  canRunKashf: true,
   kashfIntentId: 'theft.recovery',
   kashfMethodId: 'theft.p224.recoveryH8',
-  kashfRuntimeStatus: 'repair-required',
+  kashfRuntimeStatus: 'ready',
+  executorStatus: 'ready',
+  runtimeAllowed: true,
 });
 assertRoute('q-thief-near', {
   ok: true,

@@ -40,6 +40,7 @@ const P191_192_MISCARRIAGE_METHOD = 'pregnancy.p191-192.miscarriageRedH7NakisH8'
 const P196_ILLNESS_RECOVERY_METHOD = 'illness.p196.outcomeH15';
 const P188_HIDDEN_STILL_THERE_METHOD = 'hidden.p188.isStillThere';
 const P224_THIEF_RELATIONSHIP_METHOD = 'theft.p224.relationshipH7Recurrence';
+const P224_THEFT_RECOVERY_METHOD = 'theft.p224.recoveryH8';
 const P172_MATTER_OUTCOME_METHOD = 'matter.p172.h17_h1011_thenCombine';
 const P183_CURRENT_VS_NEW_METHOD = 'relocation.p183.currentVsNewPlace';
 const P256_HONOR_CONDITION_METHOD = 'authority.p256.honorConditionH10Planet';
@@ -291,6 +292,32 @@ function p204DowryPolicy() {
       'המוהר קטן',
       'המוהר בינוני',
       'הנישואין טובים או רעים בגלל H8 בלבד',
+    ]),
+  });
+}
+
+function p224TheftRecoveryPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-05',
+    goldenCaseIds: freezeArray(['PV-BF05-P224-RECOVERED', 'PV-BF05-P224-NOT-RECOVERED', 'PV-BF05-P224-MIXED']),
+    policyId: 'p224-theft-recovery-h8-v1',
+    questionScopeHebrew: 'השגת רכוש שנגנב לפי בית 8, עמ׳ 224',
+    decisiveRuleHebrew: 'H8 מיטיב טהור => בעל הדבר יזכה בגניבה; H8 מזיק טהור => לא יזכה בה. לצורה ממוזגת אין דין בסעיף.',
+    oneWayBranches: freezeArray([
+      'H8 מיטיב => הרכוש הגנוב יושג',
+      'H8 מזיק => הרכוש הגנוב לא יושג',
+    ]),
+    forbiddenInversions: freezeArray([
+      'H8 ממוזג אינו פסק חלקי או הסתברות להשבה.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'lostItem.p202.returnH6H8 — השבת אבדה היא שאלה נפרדת.',
+      'זהות הגנב, תיאורו ומיקום הגניבה הם דינים נפרדים.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'אדם מסוים גנב את הרכוש',
+      'הרכוש יוחזר במועד או במקום מסוים',
     ]),
   });
 }
@@ -1478,6 +1505,7 @@ const METHOD_POLICIES = Object.freeze({
   [P196_ILLNESS_RECOVERY_METHOD]: p196IllnessRecoveryPolicy(),
   [P188_HIDDEN_STILL_THERE_METHOD]: p188HiddenStillTherePolicy(),
   [P224_THIEF_RELATIONSHIP_METHOD]: p224ThiefRelationshipPolicy(),
+  [P224_THEFT_RECOVERY_METHOD]: p224TheftRecoveryPolicy(),
   [P172_MATTER_OUTCOME_METHOD]: p172MatterOutcomePolicy(),
   [P183_CURRENT_VS_NEW_METHOD]: p183CurrentVsNewPolicy(),
   [P256_HONOR_CONDITION_METHOD]: p256HonorConditionPolicy(),

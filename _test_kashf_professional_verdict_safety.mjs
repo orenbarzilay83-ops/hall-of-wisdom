@@ -189,7 +189,7 @@ function auditOutputForSafety(safetyBlock, { draft = null, draftPolarity = 'none
   };
 }
 
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 45, 'certification registry contains forty-five professionally certified methods');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 46, 'certification registry contains forty-six professionally certified methods');
 for (const id of [
   'marriage.p210.generalMarriageH1H2H7H8H10Judge',
   'marriage.p211.dissolutionH7StateMatrix',
@@ -212,6 +212,7 @@ for (const id of [
   'illness.p196.outcomeH15',
   'money.p182.h2h10Outlook',
   'hidden.p188.isStillThere',
+  'theft.p224.recoveryH8',
   'theft.p224.relationshipH7Recurrence',
   'matter.p172.h17_h1011_thenCombine',
   'relocation.p183.currentVsNewPlace',
@@ -235,6 +236,15 @@ for (const id of [
 ]) {
   assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes(id), id + ' is explicitly professionally certified');
 }
+
+// PV-BF05-P224 — printed H8 theft recovery branches and the unresolved mixed case.
+const p224Recovered = buildKashfCanonicalAiBridge({ questionId: 'q-theft-return', questionText: 'האם אקבל את הרכוש שנגנב?', board: makeBoard({ 8:'2111' }) });
+const p224NotRecovered = buildKashfCanonicalAiBridge({ questionId: 'q-theft-return', questionText: 'האם אקבל את הרכוש שנגנב?', board: makeBoard({ 8:'1221' }) });
+const p224Mixed = buildKashfCanonicalAiBridge({ questionId: 'q-theft-return', questionText: 'האם אקבל את הרכוש שנגנב?', board: makeBoard({ 8:'1111' }) });
+assert(p224Recovered.canonicalReading?.overallPositive === true && p224Recovered.professionalVerdictSafety?.clientFacingCertified === true, 'p224 H8 pure benefic yields source-certified recovery');
+assert(p224NotRecovered.canonicalReading?.overallPositive === false && p224NotRecovered.professionalVerdictSafety?.clientFacingCertified === true, 'p224 H8 pure malefic yields source-certified non-recovery');
+assert(p224Mixed.canonicalReading?.overallPositive === null && p224Mixed.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'p224 H8 mixed remains non-binary without invented soft verdict');
+assert(p224Recovered.canonicalReading?.primaryFormula?.result?.executorResult?.housesUsed?.join(',') === '8', 'p224 recovery reads only H8');
 
 // PV-BF01-P174 — six-house profile remains non-binary; no majority is allowed.
 const p174 = buildKashfCanonicalAiBridge({ questionId: 'q-general-state', questionText: 'מה מצבי הכללי?', board: makeBoard({ 1:'2111', 2:'1112', 4:'2111', 7:'1112', 10:'2111', 15:'1112' }) });
@@ -819,8 +829,8 @@ assert(p254Venus.professionalVerdictSafety?.authoritativePolarity === 'non-binar
 assert(p254Venus.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'p254 cannot be converted into a yes/no verdict');
 assert(p254Venus.professionalVerdictSafety?.authoritativeClientDraftHebrew === p254VenusExec?.outputHebrew, 'p254 safety gate locks the exact source-bounded executor draft');
 assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes('profession.p254.h9Planet'), 'p254 profession method is explicitly professionally certified');
-// The certified client-facing method registry contains 45 methods after Batch 21; Dhamir subject-identification remains outside this professional client-verdict registry.
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 45, 'professional client-verdict certification count is current after batch 21');
+// Dhamir subject-identification remains outside the client-verdict registry.
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 46, 'professional client-verdict certification count includes p224 recovery');
 
 
 

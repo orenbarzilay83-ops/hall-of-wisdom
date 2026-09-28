@@ -768,8 +768,8 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     disposition: 'KEEP',
     kashfIntentId: 'theft.recovery',
     kashfMethodId: 'theft.p224.recoveryH8',
-    kashfRuntimeStatus: 'repair-required',
-    note: 'Use the body p224 H8 binary recovery rule. Current legacy logic adds unsupported soft/mixed outcomes and remains blocked.',
+    kashfRuntimeStatus: 'ready',
+    note: 'Use only the body p224 H8 recovery rule; mixed figure remains unresolved. Do not mix with p202 lost-item return.',
   }),
 
   'q-thief-near': route({

@@ -307,6 +307,17 @@ export const KASHF_V57_KNOWLEDGE = Object.freeze({
     notes: 'זהו תיאור קשר/סיבה לפי בית החזרה, לא זיהוי ודאי של אדם מסוים ולא מד מרחק.',
   }),
 
+  'theft.p224.recoveryH8': knowledge({
+    kashfMethodId: 'theft.p224.recoveryH8',
+    page: 224,
+    topic: 'הפרק השמיני — גניבה והלוואה',
+    heading: 'בדיני הגניבה — השגת הדבר שנגנב',
+    hebrewRule: 'אם בשמיני צורה מיטיבה, בעל הדבר יזכה בגניבה; ואם בו צורה מזיקה, לא יזכה בה.',
+    supportingPages: [57, 58, 59, 60],
+    arabicVerificationPages: [224],
+    notes: 'דין H8 חל על רכוש שנגנב, בנפרד מכלל השבת אבדה H6+H8 בעמ׳ 202. צורה ממוזגת אינה מוכרעת בסעיף זה.',
+  }),
+
 
 
   'career.p266.returnToOffice': knowledge({
