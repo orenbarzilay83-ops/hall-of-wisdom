@@ -4,7 +4,9 @@
 
 ## קבצים להעלאה לפרויקט
 
-חלצו את `kashf-chat-pack.zip`. הגדירו את `PROJECT_INSTRUCTIONS.md` כהוראות הפרויקט, והעלו כקובצי ידע את `CANONICAL_METHODS.json`, `QUESTION_ROUTES.json`, `SOURCE_INDEX.json`, `QAWL_SPIRITUAL_METHOD.json` ו־`SPIRITUAL_SCOPE.md`. מסלולי השאלות כוללים כעת את שמות השאלות ותיאורן בעברית כדי לאפשר שיחה טבעית ומדויקת. `SPIRITUAL_SCOPE.md` מגדיר במפורש מה הספר אומר על כישוף, פעולה נסתרת, קנאה וג׳ין, ומה אינו אבחון פעיל. `SOURCE_INDEX.json` הוא מפת עזר וגבולות מקור; הוא אינו מתיר להפעיל שיטה. אפשר להעלות גם את `GOLDEN_CASES.json` לבדיקת דוגמאות.
+הגדרה מדויקת של שם הפרויקט, קובצי ההעלאה ושיחת הבדיקה נמצאת ב־`PROJECT_SETUP.md`.
+
+חלצו את `kashf-chat-pack.zip`. הגדירו את `PROJECT_INSTRUCTIONS.md` כהוראות הפרויקט, והעלו כקובצי ידע את `CANONICAL_METHODS.json`, `QUESTION_ROUTES.json`, `SOURCE_INDEX.json`, `QAWL_SPIRITUAL_METHOD.json`, `SPIRITUAL_SCOPE.md` ו־`PROJECT_WORKFLOWS.md`. מסלולי השאלות כוללים כעת את שמות השאלות ותיאורן בעברית כדי לאפשר שיחה טבעית ומדויקת. `SPIRITUAL_SCOPE.md` מגדיר במפורש מה הספר אומר על כישוף, פעולה נסתרת, קנאה וג׳ין, ומה אינו אבחון פעיל. `SOURCE_INDEX.json` הוא מפת עזר וגבולות מקור; הוא אינו מתיר להפעיל שיטה. אפשר להעלות גם את `GOLDEN_CASES.json` לבדיקת דוגמאות.
 
 לשם חישוב מדויק מארבע אמהות, סביבת הפרויקט צריכה להריץ Node.js עם הקבצים שחולצו. פקודת ההרצה:
 
