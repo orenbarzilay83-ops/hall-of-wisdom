@@ -43,6 +43,7 @@ const P224_THIEF_RELATIONSHIP_METHOD = 'theft.p224.relationshipH7Recurrence';
 const P224_THEFT_RECOVERY_METHOD = 'theft.p224.recoveryH8';
 const P271_ENEMY_METHOD = 'enemy.p271.h1vsH12';
 const P197_ILLNESS_HUMOR_METHOD = 'illness.p197.h1h8ElementHumor';
+const P263_FRIENDSHIP_METHOD = 'friends.p263.h1h11';
 const P172_MATTER_OUTCOME_METHOD = 'matter.p172.h17_h1011_thenCombine';
 const P183_CURRENT_VS_NEW_METHOD = 'relocation.p183.currentVsNewPlace';
 const P256_HONOR_CONDITION_METHOD = 'authority.p256.honorConditionH10Planet';
@@ -347,6 +348,19 @@ function p197IllnessHumorPolicy() {
     forbiddenInversions: freezeArray(['שני יסודות שונים אינם מייצרים אבחנה או היעדר חולי.']),
     excludedFromPrimaryVerdict: freezeArray(['אבחון רפואי מודרני, סיבה רוחנית, טיפול או תחזית החלמה.']),
     forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray(['זו מחלה מאובחנת', 'אפשר להימנע מבדיקה רפואית', 'כישוף גרם לחולי']),
+  });
+}
+
+function p263FriendshipPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified', certificationBatch: 'professional-backfill-12',
+    goldenCaseIds: freezeArray(['PV-BF12-P263-GOOD-PAIR', 'PV-BF12-P263-BAD-PAIR', 'PV-BF12-P263-MIXED']),
+    policyId: 'p263-friendship-pair-derived-v1', questionScopeHebrew: 'תועלת/נזק הדדי בחברות והצורה הנולדת מבתים 1 ו־11',
+    decisiveRuleHebrew: 'שני הבתים מיטיבים => תועלת הדדית; שניהם מזיקים => נזק הדדי. צורה נולדת מיטיבה => טוב ביניהם, מזיקה => להפך.',
+    oneWayBranches: freezeArray(['H1/H11 שניהם מיטיבים או שניהם מזיקים => עדות זוגית', 'הצורה הנולדת מיטיבה או מזיקה => עדות נפרדת']),
+    forbiddenInversions: freezeArray(['אין פסק כולל כאשר העדויות שונות או כשהסעיף שותק על צורה ממוזגת.']),
+    excludedFromPrimaryVerdict: freezeArray(['כנות פנימית, נאמנות מוחלטת, תקווה ושאלת אהבה ממקורות אחרים.']),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray(['החבר משקר', 'החבר בוגד', 'האדם אינו נאמן']),
   });
 }
 
@@ -1536,6 +1550,7 @@ const METHOD_POLICIES = Object.freeze({
   [P224_THEFT_RECOVERY_METHOD]: p224TheftRecoveryPolicy(),
   [P271_ENEMY_METHOD]: p271EnemyPolicy(),
   [P197_ILLNESS_HUMOR_METHOD]: p197IllnessHumorPolicy(),
+  [P263_FRIENDSHIP_METHOD]: p263FriendshipPolicy(),
   [P172_MATTER_OUTCOME_METHOD]: p172MatterOutcomePolicy(),
   [P183_CURRENT_VS_NEW_METHOD]: p183CurrentVsNewPolicy(),
   [P256_HONOR_CONDITION_METHOD]: p256HonorConditionPolicy(),

@@ -430,6 +430,11 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
     doNotMixWith: ['illness.p196.outcomeH15', 'illness.bodyPart.h6Figure'],
     houses: [1, 8],
   },
+  'friends.p263.h1h11': {
+    aliases: ['טיב הקשר בין חברים', 'האם חברים מועילים זה לזה', 'נזק הדדי בחברות'],
+    doNotMixWith: ['hope.p267.fulfillment', 'love.p205.directLoveH1PlacementH15'],
+    houses: [1, 11],
+  },
   'theft.p225.thiefDescriptionH7': {
     aliases: ['תיאור הגנב', 'איך הגנב נראה', 'מראה הגנב', 'פרופיל הגנב'],
     doNotMixWith: ['theft.p224.relationshipH7Recurrence'],

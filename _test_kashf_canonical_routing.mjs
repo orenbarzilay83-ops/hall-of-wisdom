@@ -174,13 +174,13 @@ const sorcery = assertRoute('q-sorcery', {
 });
 assert(sorcery.kashfMethodId !== 'spiritual.p167.querentActsBySorcery', 'q-sorcery is not mapped to the p167 querent-acts-by-sorcery method');
 
-// ── Acceptance test 5: friends bundle is hard-stopped until isolated -----
+// ── Acceptance test 5: friends p263 is isolated from the old bundle ------
 assertRoute('q-friends', {
   ok: true,
-  canRunKashf: false,
+  canRunKashf: true,
   kashfIntentId: 'friends.relationship',
   kashfMethodId: 'friends.p263.h1h11',
-  kashfRuntimeStatus: 'repair-required',
+  kashfRuntimeStatus: 'ready',
 });
 
 // ── Acceptance test 6: stability does not run broad authorityState -------
@@ -359,7 +359,7 @@ assertRoute('q-stranger-desc', {
 });
 
 // ── Acceptance test 8: runtimeAllowed=false is a hard stop ---------------
-for (const qid of ['q-promise', 'q-fear', 'q-sorcery', 'q-sea-voyage', 'q-prisoner', 'q-friends', 'q-stability']) {
+for (const qid of ['q-promise', 'q-fear', 'q-sorcery', 'q-sea-voyage', 'q-prisoner', 'q-stability']) {
   const route = resolveKashfRouteByQuestionId(qid);
   assert(route.canRunKashf === false, `${qid}: blocked/non-ready route cannot run`);
   let threw = false;

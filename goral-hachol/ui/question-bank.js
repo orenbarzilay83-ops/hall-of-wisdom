@@ -448,8 +448,8 @@ window.QUESTION_BANK = [
   {
     id: 'q-friends',
     category: 'love', houseId: 11, topicId: 'friendsHope', kashfTopicId: 'friendsHope',
-    label: 'האם החברים נאמנים?',
-    desc: 'לבדיקת כנות הידידות — האם הידידים נאמנים ואפשר לסמוך עליהם',
+    label: 'מה טיב הקשר בין שני חברים?',
+    desc: 'דין התועלת או הנזק ההדדיים והצורה הנולדת מבתים 1 ו־11',
     clientFields: [{ id: 'friendName', label: 'שם / תיאור הידיד', type: 'text', placeholder: 'שם' }],
   },
 

@@ -790,6 +790,31 @@ function computeIllnessHumorH1H8P197(chart) {
   };
 }
 
+function computeFriendshipH1H11P263(chart) {
+  const h1Pattern = findCanonicalHouse(chart, 1)?.key || findCanonicalHouse(chart, 1)?.pattern;
+  const h11Pattern = findCanonicalHouse(chart, 11)?.key || findCanonicalHouse(chart, 11)?.pattern;
+  if (!h1Pattern || !h11Pattern) return null;
+  const first = classifyCanonicalFigure(h1Pattern).saadNahs;
+  const eleventh = classifyCanonicalFigure(h11Pattern).saadNahs;
+  const pairEvidence = first === 'saad' && eleventh === 'saad' ? 'כל אחד נהנה מחברו'
+    : first === 'nahs' && eleventh === 'nahs' ? 'כל אחד מזיק לחברו' : null;
+  const derived = combineRamlFigures(h1Pattern, h11Pattern).resultPattern;
+  const derivedQuality = classifyCanonicalFigure(derived).saadNahs;
+  const derivedEvidence = derivedQuality === 'saad' ? 'דון לטובה ביניהם'
+    : derivedQuality === 'nahs' ? 'דון להפך ביניהם' : null;
+  const lines = [pairEvidence && `בתי 1 ו־11: ${pairEvidence}.`,
+    derivedEvidence && `הצורה הנולדת מהם (${HAWI_FIGURE_NAMES_BY_ID[derived]?.hebrewName || derived}): ${derivedEvidence}.`]
+    .filter(Boolean);
+  return {
+    sourceRef: 'כשף אל־אסראר עמ׳ 263; סיווגי הצורות עמ׳ 57–60',
+    sourceText: 'אם הראשון והאחד־עשר מיטיבים, כל אחד נהנה מחברו; אם שניהם מזיקים, כל אחד מזיק לחברו. הצורה הנולדת מהם: מיטיבה — לטובה ביניהם, מזיקה — להפך.',
+    housesUsed: [1, 11], h1Pattern, h11Pattern, h1Quality: first, h11Quality: eleventh,
+    pairEvidence, derivedPattern: derived, derivedQuality, derivedEvidence,
+    positive: null,
+    outputHebrew: lines.length ? lines.join(' ') : 'הצורות בבתי 1 ו־11 ובצורה הנולדת אינן נכללות בענפים המכריעים בסעיף עמ׳ 263.',
+  };
+}
+
 
 function computeLostItemReturnP202(chart) {
   if (!Array.isArray(chart)) return null;
@@ -2505,6 +2530,7 @@ function computeHiddenActionP167(chart) {
 const CUSTOM_EXECUTORS = Object.freeze({
   'enemy.p271.h1vsH12': computeEnemyPresenceH1H12P271,
   'illness.p197.h1h8ElementHumor': computeIllnessHumorH1H8P197,
+  'friends.p263.h1h11': computeFriendshipH1H11P263,
   'theft.p224.recoveryH8': computeTheftRecoveryH8P224,
   'profession.p254.h9Planet': computeProfessionP254,
   'pregnancy.p191-192.miscarriageRedH7NakisH8': computeMiscarriageRedH7NakisH8P191P192,

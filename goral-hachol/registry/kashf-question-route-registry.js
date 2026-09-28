@@ -1148,8 +1148,8 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     disposition: 'RENAME',
     kashfIntentId: 'friends.relationship',
     kashfMethodId: 'friends.p263.h1h11',
-    kashfRuntimeStatus: 'repair-required',
-    note: 'Do not execute the current friendsHope bundle; Nuzhat need/hope material must be isolated first.',
+    kashfRuntimeStatus: 'ready',
+    note: 'Only p263 H1/H11 pair and derived figure; not an assertion of honesty or access to a person’s private intentions.',
   }),
 
   'q-stability': route({

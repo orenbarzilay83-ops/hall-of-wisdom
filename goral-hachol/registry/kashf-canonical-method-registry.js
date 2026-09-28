@@ -1769,12 +1769,12 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfIntentId: 'friends.relationship',
     topicId: 'friendsHope',
     sourcePages: [263, 264],
-    kashfRuntimeStatus: 'repair-required',
-    runtimeAllowed: false,
-    executionKind: 'formula',
-    executorStatus: 'pending',
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: true,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
     legacyTopicId: 'friendsHope',
-    notes: 'Core friendship formula is usable only after removing unrelated hope/Nuzhat bundle execution.',
+    notes: 'Source-scoped p263 friendship pair and derived figure are reported as separate evidence; no loyalty diagnosis or unrelated hope/Nuzhat bundle.',
   }),
 
   'state.p265.h1h2h9h15': method({
