@@ -568,8 +568,8 @@ window.QUESTION_BANK = [
   {
     id: 'q-career-state',
     category: 'career', houseId: 10, topicId: 'authorityState', kashfTopicId: 'authorityState',
-    label: 'מה מצב הקריירה / התפקיד?',
-    desc: 'מצב תפקיד/קריירה נוכחי — האם יציב, מה מגמתו',
+    label: 'האם יש סימן ליציבות התפקיד הנוכחי?',
+    desc: 'סימן חיובי לפי כלל קיום המצב בעמ׳ 265; היעדר הסימן אינו מוכיח אובדן תפקיד',
     clientFields: [F.positionName, F.positionConcern],
   },
   {
@@ -603,8 +603,8 @@ window.QUESTION_BANK = [
   {
     id: 'q-stability',
     category: 'career', houseId: 11, topicId: 'authorityState', kashfTopicId: 'authorityState',
-    label: 'האם המצב יישאר יציב?',
-    desc: 'לבדיקה האם מצב נוכחי (עבודה, זוגיות, מגורים) ימשיך כך',
+    label: 'האם יש סימן ליציבות המצב הנוכחי?',
+    desc: 'ענף חיובי לפי עמ׳ 265 בלבד; היעדר התנאים אינו מכריע שהמצב ישתנה',
     clientFields: [F.matter],
   },
 

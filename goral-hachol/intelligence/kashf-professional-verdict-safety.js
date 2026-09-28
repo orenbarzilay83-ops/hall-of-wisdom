@@ -44,6 +44,7 @@ const P224_THEFT_RECOVERY_METHOD = 'theft.p224.recoveryH8';
 const P271_ENEMY_METHOD = 'enemy.p271.h1vsH12';
 const P197_ILLNESS_HUMOR_METHOD = 'illness.p197.h1h8ElementHumor';
 const P263_FRIENDSHIP_METHOD = 'friends.p263.h1h11';
+const P265_STATE_CONTINUITY_METHOD = 'state.p265.h1h2h9h15';
 const P273_PUNISHMENT_METHOD = 'fear.p273.punishmentSigns';
 const P240_TRAVEL_CAUTION_METHOD = 'travel.p240.roadCautionsH9H7';
 const P254_DREAM_METHOD = 'dream.p254.h9AndTransit';
@@ -1345,6 +1346,31 @@ function p191ChildSafetyPolicy() {
   });
 }
 
+function p265StateContinuityPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-state-p265-first-clause',
+    goldenCaseIds: freezeArray(['PV-P265-STATE-REPEAT-HAPPY', 'PV-P265-STATE-NO-HAPPY-REPEAT']),
+    policyId: 'p265-state-continuity-first-clause-v1',
+    questionScopeHebrew: 'סימן לקיום המצב הנוכחי לפי הענף הראשון בעמ׳ 265',
+    decisiveRuleHebrew: 'צורת H1 מיטיבה טהורה, חוזרת בבית מאושר נוסף לפי עמ׳ 174–175 וגם בבית 15 — סימן לקיום המצב ושלמות האושר.',
+    oneWayBranches: freezeArray([
+      'כל שלושת התנאים מתקיימים => סימן מקור ליציבות המצב',
+    ]),
+    forbiddenInversions: freezeArray([
+      'העדר חזרה או בית מאושר אינו מוכיח שהמצב יידרדר או שהתפקיד יאבד.',
+      'ענף H1/H2/H9/H15 השני אינו מוכרע באמצעות סיווג מיטיב טהור בלבד.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'העזר הישן computeStateStabilityKashf והאשכול authorityState הרחב.',
+      'career.p266.returnToOffice — חזרה לתפקיד לאחר הדחה היא שיטה אחרת.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'יציבות בינונית', 'ירידה צפויה', 'אובדן התפקיד', 'מועד שינוי המצב',
+    ]),
+  });
+}
+
 function p191DeliveryDifficultyPolicy() {
   return Object.freeze({
     certificationStatus: 'certified',
@@ -1607,6 +1633,7 @@ const METHOD_POLICIES = Object.freeze({
   [P271_ENEMY_METHOD]: p271EnemyPolicy(),
   [P197_ILLNESS_HUMOR_METHOD]: p197IllnessHumorPolicy(),
   [P263_FRIENDSHIP_METHOD]: p263FriendshipPolicy(),
+  [P265_STATE_CONTINUITY_METHOD]: p265StateContinuityPolicy(),
   [P273_PUNISHMENT_METHOD]: p273PunishmentPolicy(),
   [P240_TRAVEL_CAUTION_METHOD]: p240TravelCautionPolicy(),
   [P254_DREAM_METHOD]: p254DreamPolicy(),

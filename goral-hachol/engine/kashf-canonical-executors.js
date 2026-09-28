@@ -883,6 +883,34 @@ function computeDreamH9AndOccurrencesP254(chart) {
   };
 }
 
+// Printed Kashf pp174-175 defines the fortunate houses as the four angles
+// H1/H4/H7/H10 and their following houses H2/H5/H8/H11. The p265 first
+// state-continuity clause requires the H1 figure to appear AGAIN in one of
+// those houses and in H15. H1 alone cannot satisfy the extra recurrence.
+const P265_FORTUNATE_OTHER_HOUSES = [2, 4, 5, 7, 8, 10, 11];
+
+function computeStateContinuityFirstClauseP265(chart) {
+  const h1Pattern = findCanonicalHouse(chart, 1)?.key || findCanonicalHouse(chart, 1)?.pattern || null;
+  const h15Pattern = findCanonicalHouse(chart, 15)?.key || findCanonicalHouse(chart, 15)?.pattern || null;
+  if (!h1Pattern || !h15Pattern) return null;
+  const h1Quality = classifyCanonicalFigure(h1Pattern).saadNahs;
+  const fortunateOccurrences = P265_FORTUNATE_OTHER_HOUSES.filter(house => {
+    const entry = findCanonicalHouse(chart, house);
+    return (entry?.key || entry?.pattern) === h1Pattern;
+  });
+  const repeatsInJudge = h15Pattern === h1Pattern;
+  const stabilitySign = h1Quality === 'saad' && fortunateOccurrences.length > 0 && repeatsInJudge ? true : null;
+  return {
+    sourceRef: 'כשף אל־אסראר עמ׳ 265; הגדרת בתים מאושרים עמ׳ 174–175; סיווג הצורות עמ׳ 55–57',
+    sourceText: 'אם בראשון צורה מיטיבה והיא בבתים המאושרים וחוזרת גם בחמישה־עשר — הדבר מורה על קיום המצב ושלמות האושר.',
+    housesUsed: [1, ...P265_FORTUNATE_OTHER_HOUSES, 15], h1Pattern, h1Quality, h15Pattern,
+    fortunateOccurrences, repeatsInJudge, stabilitySign, positive: stabilitySign,
+    outputHebrew: stabilitySign === true
+      ? `צורת בית 1 מיטיבה (${h1Pattern}), חוזרת בבית/בתים המאושרים ${fortunateOccurrences.join(', ')} וגם בבית 15. לפי כשף עמ׳ 265 זהו סימן ליציבות המצב ולהשלמת האושר.`
+      : 'תנאי הענף הראשון בעמ׳ 265 אינם מתקיימים יחד. אין להסיק מכך שהמצב יתערער או יידרדר; הענף החלופי של אותו עמוד אינו מוכרע כאן.',
+  };
+}
+
 const P236_GOOD_TRAVEL_TIME_PATTERNS = new Set(['1111', '1222', '2211']);
 
 function computeProposedTravelTimeP236(chart) {
@@ -2623,6 +2651,7 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'fear.p273.punishmentSigns': computePunishmentFearP273,
   'travel.p240.roadCautionsH9H7': computeTravelRoadCautionsP240,
   'dream.p254.h9AndTransit': computeDreamH9AndOccurrencesP254,
+  'state.p265.h1h2h9h15': computeStateContinuityFirstClauseP265,
   'travel.p236.timeSelectionH9H4': computeProposedTravelTimeP236,
   'theft.p224.recoveryH8': computeTheftRecoveryH8P224,
   'profession.p254.h9Planet': computeProfessionP254,

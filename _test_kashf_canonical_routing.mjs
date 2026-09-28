@@ -183,15 +183,30 @@ assertRoute('q-friends', {
   kashfRuntimeStatus: 'ready',
 });
 
-// ── Acceptance test 6: stability does not run broad authorityState -------
+// ── Acceptance test 6: p265 first clause is isolated from authorityState -
 const stability = assertRoute('q-stability', {
   ok: true,
-  canRunKashf: false,
+  canRunKashf: true,
   kashfIntentId: 'state.stability',
   kashfMethodId: 'state.p265.h1h2h9h15',
-  kashfRuntimeStatus: 'repair-required',
+  kashfRuntimeStatus: 'ready',
 });
 assert(stability.legacyTopicId === 'authorityState', 'legacy topic retained only as migration metadata');
+assertRoute('q-career-state', { canRunKashf: true, kashfMethodId: 'state.p265.h1h2h9h15' });
+{
+  const cases = [
+    { mothers: ['1122', '1111', '1112', '2212'], positive: true, houses: [10] },
+    { mothers: ['1122', '1111', '1111', '2221'], positive: null, houses: [] },
+    { mothers: ['1111', '1111', '1111', '2221'], positive: null, houses: null },
+  ];
+  for (const [index, testCase] of cases.entries()) {
+    const reading = buildKashfReadingByQuestionId(buildRamlBoardFromMothers(testCase.mothers), 'q-stability', { question: 'האם יש סימן ליציבות המצב?' });
+    const result = reading.primaryFormula?.result?.executorResult;
+    assert(reading.valid === true, `p265 case ${index} runs`);
+    assert(result?.positive === testCase.positive, `p265 case ${index} preserves one-way polarity`);
+    if (testCase.houses) assert(JSON.stringify(result?.fortunateOccurrences) === JSON.stringify(testCase.houses), `p265 case ${index} reads only actual fortunate recurrence`);
+  }
+}
 
 // ── Acceptance test 7: missing alive/dead is isolated --------------------
 assertRoute('q-missing-alive', {
@@ -369,7 +384,7 @@ assertRoute('q-stranger-desc', {
 });
 
 // ── Acceptance test 8: runtimeAllowed=false is a hard stop ---------------
-for (const qid of ['q-promise', 'q-fear', 'q-sorcery', 'q-sea-voyage', 'q-prisoner', 'q-stability']) {
+for (const qid of ['q-promise', 'q-fear', 'q-sorcery', 'q-sea-voyage', 'q-prisoner']) {
   const route = resolveKashfRouteByQuestionId(qid);
   assert(route.canRunKashf === false, `${qid}: blocked/non-ready route cannot run`);
   let threw = false;
@@ -390,7 +405,7 @@ assert(unmapped.kashfMethodId === null, 'unmapped question does not invent a met
 
 // Ready method guard itself must be explicit.
 assert(canRunKashfMethod('travel.p238.assemble1359') === true, 'ready canonical travel method can run');
-assert(canRunKashfMethod('state.p265.h1h2h9h15') === false, 'repair-required method cannot run');
+assert(canRunKashfMethod('state.p265.h1h2h9h15') === true, 'p265 first-clause method can run');
 assert(canRunKashfMethod('travel.p242.vehicleSafety') === false, 'blocked-by-source method cannot run');
 assert(canRunKashfMethod('illness.p196.outcomeH15') === true, 'p196 H15 executor can run after explicit canonical cutover');
 

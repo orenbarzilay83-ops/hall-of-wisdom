@@ -189,7 +189,7 @@ function auditOutputForSafety(safetyBlock, { draft = null, draftPolarity = 'none
   };
 }
 
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 53, 'certification registry contains fifty-three professionally certified methods');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 54, 'certification registry contains fifty-four professionally certified methods');
 for (const id of [
   'marriage.p210.generalMarriageH1H2H7H8H10Judge',
   'marriage.p211.dissolutionH7StateMatrix',
@@ -916,7 +916,25 @@ assert(p254Venus.professionalVerdictSafety?.binaryClientVerdictAllowed === false
 assert(p254Venus.professionalVerdictSafety?.authoritativeClientDraftHebrew === p254VenusExec?.outputHebrew, 'p254 safety gate locks the exact source-bounded executor draft');
 assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes('profession.p254.h9Planet'), 'p254 profession method is explicitly professionally certified');
 // Dhamir subject-identification remains outside the client-verdict registry.
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 53, 'professional client-verdict certification count includes p236 time');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 54, 'professional client-verdict certification count includes p265 state');
+
+// PV-P265-STATE-* — only the first source clause may become a client sign.
+const p265StateGood = buildKashfCanonicalAiBridge({
+  questionId: 'q-stability', questionText: 'האם יש סימן ליציבות המצב הנוכחי?',
+  board: buildRamlBoardFromMothers(['1122', '1111', '1112', '2212']),
+});
+assert(p265StateGood.canonicalReading?.primaryFormula?.result?.executorResult?.fortunateOccurrences?.includes(10), 'p265 positive case repeats H1 in fortunate H10');
+assert(p265StateGood.canonicalReading?.primaryFormula?.result?.executorResult?.repeatsInJudge === true, 'p265 positive case also repeats H1 in H15');
+assert(p265StateGood.canonicalReading?.overallPositive === true, 'p265 complete first clause is positive');
+assert(p265StateGood.professionalVerdictSafety?.clientFacingCertified === true, 'p265 bounded positive draft is certified');
+const p265StateNoHappy = buildKashfCanonicalAiBridge({
+  questionId: 'q-stability', questionText: 'האם יש סימן ליציבות המצב הנוכחי?',
+  board: buildRamlBoardFromMothers(['1122', '1111', '1111', '2221']),
+});
+assert(p265StateNoHappy.canonicalReading?.primaryFormula?.result?.executorResult?.fortunateOccurrences?.length === 0, 'p265 H1/H15 alone omits the fortunate-house condition');
+assert(p265StateNoHappy.canonicalReading?.overallPositive === null, 'p265 missing condition cannot become a negative stability verdict');
+assert(p265StateNoHappy.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'p265 unresolved case has no binary client verdict');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes('state.p265.h1h2h9h15'), 'p265 state first clause is explicitly certified');
 
 
 

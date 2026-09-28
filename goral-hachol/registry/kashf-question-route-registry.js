@@ -704,8 +704,8 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     aliasOf: 'q-stability',
     kashfIntentId: 'state.stability',
     kashfMethodId: 'state.p265.h1h2h9h15',
-    kashfRuntimeStatus: 'repair-required',
-    note: 'The current wording mixes broad career condition with trend. Source-safe scope is whether the current professional/role state remains stable; route it to the dedicated state-stability method rather than the authorityState bundle.',
+    kashfRuntimeStatus: 'ready',
+    note: 'Only the source-defined positive sign of continuity in the present role, p265 first clause; no broad career diagnosis or negative verdict from absent signs.',
   }),
 
   'q-position-keep': route({
@@ -1160,7 +1160,8 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     disposition: 'KEEP',
     kashfIntentId: 'state.stability',
     kashfMethodId: 'state.p265.h1h2h9h15',
-    kashfRuntimeStatus: 'repair-required',
+    kashfRuntimeStatus: 'ready',
+    note: 'Only p265 first clause: H1 pure benefic recurring in a fortunate house and H15. The other p265 clause and negative inference remain unresolved.',
   }),
 
   'q-missing-alive': route({

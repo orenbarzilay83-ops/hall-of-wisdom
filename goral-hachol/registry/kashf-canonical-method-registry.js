@@ -1782,12 +1782,12 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfIntentId: 'state.stability',
     topicId: 'authorityState',
     sourcePages: [265],
-    kashfRuntimeStatus: 'repair-required',
-    runtimeAllowed: false,
-    executionKind: 'legacy-function',
-    executorStatus: 'pending',
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: true,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
     legacyTopicId: 'authorityState',
-    notes: 'Printed p265/PDF267 has two state-continuity clauses. The legacy helper invents outcomes and collapses mixed figures. Exhaustive 65,536-board test finds zero charts with H1,H2,derived H9,H15 all pure benefic, so the second clause cannot be wired with that static class. The first has 1,536 charts with pure-benefic H1 repeating in H15, but also requires that figure in happy houses; house-location semantics must be closed before an executor. Keep separate from the authorityState bundle.',
+    notes: 'Only the first printed p265 clause runs: pure-benefic H1 also appears in a fortunate house other than H1 (pp174-175: H2,H4,H5,H7,H8,H10,H11) and repeats in H15. Its absence is unresolved, never instability. The second H1/H2/H9/H15 clause remains excluded: zero of 65,536 boards have all four pure benefic; contextual fortune is not yet resolved. Never use the legacy helper or broad authorityState bundle.',
   }),
 
   'missing.p248-249.lifeH1H4H9Outcome': method({

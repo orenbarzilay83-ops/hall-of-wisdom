@@ -435,6 +435,11 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
     doNotMixWith: ['hope.p267.fulfillment', 'love.p205.directLoveH1PlacementH15'],
     houses: [1, 11],
   },
+  'state.p265.h1h2h9h15': {
+    aliases: ['סימן ליציבות המצב', 'האם המצב הנוכחי יציב', 'סימן לקיום התפקיד הנוכחי'],
+    doNotMixWith: ['career.p266.returnToOffice', 'authority.p257.appointmentH1H10Planet', 'hope.p267.fulfillment'],
+    houses: [1, 2, 4, 5, 7, 8, 10, 11, 15],
+  },
   'fear.p273.punishmentSigns': {
     aliases: ['האם יש לחשוש מעונש', 'חשש ממאסר או מלקות', 'דין פחד מעונש'],
     doNotMixWith: ['prisoner.releaseTiming.unresolved', 'security.external.p235.h8'],
