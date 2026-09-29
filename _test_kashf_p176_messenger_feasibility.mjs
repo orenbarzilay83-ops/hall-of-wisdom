@@ -36,20 +36,18 @@ assert.equal(allPureMalefic, 480);
 
 const negativeBoard = buildRamlBoardFromMothers(['1112', '1111', '1111', '1211']);
 const sourceSnapshot = negativeBoard.entries.map((entry) => entry.pattern);
+const recastBoard = buildRamlBoardFromMothers(sourceHouses.map((house) => sourceSnapshot[house - 1]));
+assert.equal(classifyCanonicalFigure(recastBoard.entries[7].pattern).saadNahs, 'saad', 'derived H8 is benefic next to the purportedly negative H7');
+assert.equal(classifyCanonicalFigure(recastBoard.entries[8].pattern).saadNahs, 'saad', 'derived H9 is benefic next to the purportedly negative H10');
 const negative = buildKashfReadingByQuestionId(negativeBoard, 'q-message');
-assert.equal(negative.valid, true);
-assert.equal(negative.overallPositive, false);
-assert.equal(negative.primaryFormula.result.executorResult.sourceOutcome, 'request-not-fulfilled');
-assert.deepEqual(negative.primaryFormula.result.executorResult.recastMotherPatterns, ['1112', '1211', '1111', '2221']);
-assert.deepEqual(negative.primaryFormula.result.executorResult.recastConditionHouses, derivedHouses);
+assert.equal(negative.valid, false);
+assert.equal(negative.reason, 'blocked-by-source');
 assert.deepEqual(negativeBoard.entries.map((entry) => entry.pattern), sourceSnapshot);
 
 const unresolvedBoard = buildRamlBoardFromMothers(['1111', '1111', '1111', '1111']);
 const unresolved = buildKashfReadingByQuestionId(unresolvedBoard, 'q-message');
-assert.equal(unresolved.valid, true);
-assert.equal(unresolved.overallPositive, null);
-assert.equal(unresolved.primaryFormula.result.executorResult.sourceOutcome, 'unresolved');
-assert.doesNotMatch(unresolved.verdict.text, /הבקשה תיענה\./);
+assert.equal(unresolved.valid, false);
+assert.equal(unresolved.reason, 'blocked-by-source');
 
 const news = buildKashfReadingByQuestionId(negativeBoard, 'q-news-arrive');
 assert.equal(news.valid, false);
@@ -57,14 +55,12 @@ assert.equal(news.reason, 'unsupported');
 
 for (const questionId of ['q-celebrations', 'q-joy-coming']) {
   const joyNegative = buildKashfReadingByQuestionId(negativeBoard, questionId);
-  assert.equal(joyNegative.valid, true, `${questionId} p196 route runs`);
-  assert.equal(joyNegative.overallPositive, false, `${questionId} all-five-malefic branch`);
-  assert.equal(joyNegative.primaryFormula.result.executorResult.sourceOutcome, 'request-not-fulfilled');
-  assert.match(joyNegative.primaryFormula.result.executorResult.sourceRef, /196/);
+  assert.equal(joyNegative.valid, false, `${questionId} p196 route is held`);
+  assert.equal(joyNegative.reason, 'blocked-by-source');
   const joyUnresolved = buildKashfReadingByQuestionId(unresolvedBoard, questionId);
-  assert.equal(joyUnresolved.valid, true);
-  assert.equal(joyUnresolved.overallPositive, null, `${questionId} mixed/partial remains unresolved`);
+  assert.equal(joyUnresolved.valid, false);
+  assert.equal(joyUnresolved.reason, 'blocked-by-source');
 }
 assert.deepEqual(negativeBoard.entries.map((entry) => entry.pattern), sourceSnapshot);
 
-console.log(`Kashf p176 recast: ${boardsChecked} boards, ${allPureBenefic} all-pure-benefic, ${allPureMalefic} all-pure-malefic; only the negative branch runs: PASS`);
+console.log(`Kashf pp176/196 recast: ${boardsChecked} boards, ${allPureBenefic} all-static-benefic, ${allPureMalefic} all-static-malefic; contextual verdicts blocked: PASS`);

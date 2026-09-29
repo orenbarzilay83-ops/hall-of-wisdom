@@ -167,11 +167,11 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfIntentId: 'messenger.outcome',
     topicId: 'siblings',
     sourcePages: [176],
-    kashfRuntimeStatus: 'ready',
-    runtimeAllowed: true,
+    kashfRuntimeStatus: 'blocked-by-source',
+    runtimeAllowed: false,
     executionKind: 'custom-engine',
-    executorStatus: 'ready',
-    notes: 'Printed p176 judges mission outcome, not letter/news arrival. A separate derived board uses H1,H4,H5,H11 as mothers. Only the source-explicit negative branch when derived H5 and all four angles are pure malefic executes; every other constellation remains unresolved. The all-five-pure-benefic reading is impossible on the 65,536 source boards and is not implemented. The source board is immutable.',
+    executorStatus: 'pending',
+    notes: 'Printed p176 judges mission outcome, not letter/news arrival. H1/H4/H5/H11 form a separate derived board. Runtime is held: static malefic classes do not settle the contextual neighbor/parentage qualifications printed on pp55-57; the previous five-malefic golden board has benefic neighbors. No operational group selector for positive/mixed evidence is certified. The source board remains immutable.',
   }),
 
   'news.arrival.unsupported': method({
@@ -322,11 +322,11 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfIntentId: 'joy.occurrence',
     topicId: 'completion',
     sourcePages: [196],
-    kashfRuntimeStatus: 'ready',
-    runtimeAllowed: true,
+    kashfRuntimeStatus: 'blocked-by-source',
+    runtimeAllowed: false,
     executionKind: 'custom-engine',
-    executorStatus: 'ready',
-    notes: 'The end of the children chapter on printed p196 explicitly repeats the H1/H4/H5/H11 derived-board method for children, joys and clothing, before the illness chapter begins. Only the all-five-pure-malefic negative branch is executable for a bounded joy request; mixed/partial groups remain unresolved. Generic good news or life improvement is not this intent.',
+    executorStatus: 'pending',
+    notes: 'Printed p196 explicitly repeats the H1/H4/H5/H11 recast for children, joys and clothing. The bounded joy intent is source-correct, but runtime is held for the same contextual valence and collective selector gaps as p176. Generic good news or life improvement is not this intent.',
   }),
 
   'relocation.p183.currentVsNewPlace': method({

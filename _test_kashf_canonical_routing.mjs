@@ -87,7 +87,7 @@ assert(p239SeaLandV57?.knowledgeLanguage === 'he', 'p239 sea/land has Hebrew v57
 assert(p239SeaLandV57?.arabicVerification?.notes?.includes('פער נוסח'), 'p239 sea/land records Hebrew/Arabic source discrepancy');
 assert(getKashfMethod('travel.p239.seaOrLandByElement')?.kashfRuntimeStatus === 'blocked-by-source', 'p239 sea/land is not mislabeled source-ready while derivation/discrepancy remain open');
 assert(getKashfMethod('travel.p239.profitEarthRowH2')?.kashfRuntimeStatus === 'blocked-by-source', 'p239 profit is not mislabeled source-ready while earth-row input remains unresolved');
-assert(getKashfMethod('joy.p196.recast14511')?.kashfRuntimeStatus === 'ready', 'p196 printed source explicitly includes bounded joy requests');
+assert(getKashfMethod('joy.p196.recast14511')?.kashfRuntimeStatus === 'blocked-by-source', 'p196 joy source scope is correct but the contextual verdict selector is unresolved');
 assert(getKashfV57Knowledge('joy.p196.recast14511')?.v57?.hebrewRule, 'p196 joy route has Hebrew operational knowledge');
 assert(JSON.stringify(getKashfMethod('missing.p248-249.lifeH1H4H9Outcome')?.sourcePages) === JSON.stringify([248, 249]), 'missing-person life/death method points to original-scan pp248-249');
 

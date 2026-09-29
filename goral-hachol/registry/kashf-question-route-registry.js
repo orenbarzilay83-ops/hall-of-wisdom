@@ -192,8 +192,8 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     disposition: 'RENAME',
     kashfIntentId: 'messenger.outcome',
     kashfMethodId: 'messenger.p176.recast14511',
-    kashfRuntimeStatus: 'ready',
-    note: 'Printed p176 tests mission outcome, not letter arrival. Only the all-pure-malefic derived H5+angles branch returns a negative source verdict; every other pattern is unresolved.',
+    kashfRuntimeStatus: 'blocked-by-source',
+    note: 'Printed p176 tests mission outcome, not letter arrival. The contextual valence of H5 and angles in the derived board remains unresolved; no client verdict runs.',
   }),
 
   'q-news-arrive': route({
@@ -227,8 +227,8 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     disposition: 'RENAME',
     kashfIntentId: 'joy.occurrence',
     kashfMethodId: 'joy.p196.recast14511',
-    kashfRuntimeStatus: 'ready',
-    note: 'Printed p196 children/joy/clothing recast. Only all-five-pure-malefic derived testimony yields the negative request branch; no general event prediction.',
+    kashfRuntimeStatus: 'blocked-by-source',
+    note: 'Printed p196 children/joy/clothing recast, held pending contextual valence and collective evidence selector; no general event prediction.',
   }),
 
   'q-joy-coming': route({
@@ -237,7 +237,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     aliasOf: 'q-celebrations',
     kashfIntentId: 'joy.occurrence',
     kashfMethodId: 'joy.p196.recast14511',
-    kashfRuntimeStatus: 'ready',
+    kashfRuntimeStatus: 'blocked-by-source',
     note: 'Alias of the bounded joy request only; excludes generic good news and overall improvement.',
   }),
 
