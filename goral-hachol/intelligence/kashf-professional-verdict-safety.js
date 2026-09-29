@@ -48,6 +48,7 @@ const P263_FRIENDSHIP_METHOD = 'friends.p263.h1h11';
 const P265_STATE_CONTINUITY_METHOD = 'state.p265.h1h2h9h15';
 const P257_MOTHER_METHOD = 'mother.p257.statusDayNight';
 const P267_HOPE_METHOD = 'hope.p267.fulfillment';
+const P176_MESSENGER_METHOD = 'messenger.p176.recast14511';
 const P273_PUNISHMENT_METHOD = 'fear.p273.punishmentSigns';
 const P240_TRAVEL_CAUTION_METHOD = 'travel.p240.roadCautionsH9H7';
 const P254_DREAM_METHOD = 'dream.p254.h9AndTransit';
@@ -382,6 +383,20 @@ function p273PunishmentPolicy() {
     forbiddenInversions: freezeArray(['אי־קיום התנאי אינו מוכיח שהעונש יוטל.', 'H4 ממוזג אינו מיטיב טהור.']),
     excludedFromPrimaryVerdict: freezeArray(['עיתוי ענישה, זיכוי משפטי ושחרור אסיר.']),
     forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray(['העונש ודאי יוטל', 'בית משפט יזכה אותך', 'אין צורך בייעוץ משפטי']),
+  });
+}
+
+function p176MessengerOutcomePolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified', certificationBatch: 'professional-backfill-16',
+    goldenCaseIds: freezeArray(['PV-BF16-P176-ALL-MALEFIC', 'PV-BF16-P176-MIXED', 'PV-BF16-P176-NEWS-BLOCKED']),
+    policyId: 'p176-messenger-derived-board-negative-only-v1',
+    questionScopeHebrew: 'אחרית השליחות והיענות הבקשה בלוח נגזר, לא הגעת מכתב או חדשות',
+    decisiveRuleHebrew: 'בתי מקור 1/4/5/11 נעשים אמהות ללוח חדש. כשבית 5 וכל היתדות 1/4/7/10 בלוח הנגזר מזיקים טהורים, תנאי הטובה אינו מתקיים והבקשה אינה נענית לפי ענף זה.',
+    oneWayBranches: freezeArray(['כל חמש העדויות בלוח הנגזר מזיקות טהורות => הבקשה אינה נענית']),
+    forbiddenInversions: freezeArray(['היעדר חמש עדויות מזיקות טהורות אינו מוכיח שהבקשה תיענה.', 'אין להגדיר כל צורה ממוזגת כמזיקה או כמיטיבה בשיטה זו.', 'אין להפעיל דרישה בלתי אפשרית של חמש צורות מיטיבות טהורות כדי להחזיר שלילה בכל לוח.']),
+    excludedFromPrimaryVerdict: freezeArray(['הגעת מכתב, חבילה או חדשות; לוח המקור כתחליף ללוח הנגזר; כללי שקלול יתדות מעמ׳ 173–174 שלא הוכחו כבורר לדין זה.']),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray(['השליחות בוודאות תצליח', 'המכתב יגיע', 'חדשות יגיעו', 'כל לוח שאינו מיטיב טהור מוכיח כישלון']),
   });
 }
 
@@ -1708,6 +1723,7 @@ const METHOD_POLICIES = Object.freeze({
   [P265_STATE_CONTINUITY_METHOD]: p265StateContinuityPolicy(),
   [P257_MOTHER_METHOD]: p257MotherNightPolicy(),
   [P267_HOPE_METHOD]: p267HopeHouse11Policy(),
+  [P176_MESSENGER_METHOD]: p176MessengerOutcomePolicy(),
   [P273_PUNISHMENT_METHOD]: p273PunishmentPolicy(),
   [P240_TRAVEL_CAUTION_METHOD]: p240TravelCautionPolicy(),
   [P254_DREAM_METHOD]: p254DreamPolicy(),

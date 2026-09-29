@@ -93,21 +93,20 @@ for (const methodId of [
   assert.equal(result.reason, 'executor-pending');
 }
 
-// p176 messenger recast: wording is source-aligned, but the collective
-// H5+angles fortune test is still unresolved and must fail closed.
+// p176 messenger recast: only the all-pure-malefic branch is runnable.
 const messengerMethod = getKashfMethod('messenger.p176.recast14511');
-assert.equal(messengerMethod.runtimeAllowed, false);
-assert.equal(messengerMethod.executionKind, 'recast-board');
-assert.equal(messengerMethod.executorStatus, 'pending');
-assert.equal(messengerMethod.kashfRuntimeStatus, 'repair-required');
-assert.match(messengerMethod.notes || '', /separate derived board|NEW board|Source board/i);
+assert.equal(messengerMethod.runtimeAllowed, true);
+assert.equal(messengerMethod.executionKind, 'custom-engine');
+assert.equal(messengerMethod.executorStatus, 'ready');
+assert.equal(messengerMethod.kashfRuntimeStatus, 'ready');
+assert.match(messengerMethod.notes || '', /separate derived board|source board/i);
 const messengerRoute = resolveKashfRouteByQuestionId('q-message');
 assert.equal(messengerRoute.kashfMethodId, 'messenger.p176.recast14511');
-assert.equal(messengerRoute.canRunKashf, false);
+assert.equal(messengerRoute.canRunKashf, true);
 assert.match(readFileSync(new URL('./goral-hachol/ui/question-bank.js', import.meta.url), 'utf8'), /id: 'q-message',[\s\S]*?label: 'האם השליחות תשיג את מטרתה\?'/);
 const messenger = buildKashfReadingByQuestionId(board, 'q-message', { question: 'האם השליחות תשיג את מטרתה?' });
-assert.equal(messenger.valid, false);
-assert.equal(messenger.reason, 'repair-required');
+assert.equal(messenger.valid, true);
+assert.deepEqual(messenger.canonicalExecution.methodsExecuted, ['messenger.p176.recast14511']);
 const newsRoute = resolveKashfRouteByQuestionId('q-news-arrive');
 assert.equal(newsRoute.kashfMethodId, 'news.arrival.unsupported');
 assert.equal(newsRoute.aliasOf, null);
@@ -167,6 +166,6 @@ for (const [query, methodId] of [
 
 console.log('Batch 17 p172-178 intent separation: PASS');
 console.log('p172/p173/p174 runnable intents remain isolated: PASS');
-console.log('p176 recast derived-board runtime block: PASS');
+console.log('p176 recast limited negative branch and news isolation: PASS');
 console.log('p177 relative-thirteenth source block: PASS');
 console.log('p178 lifespan computation block and p264 separation: PASS');

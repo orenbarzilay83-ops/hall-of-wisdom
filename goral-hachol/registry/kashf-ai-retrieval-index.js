@@ -39,6 +39,11 @@ const STOPWORDS = new Set([
  * executable rules.
  */
 const RETRIEVAL_OVERRIDES = Object.freeze({
+  'messenger.p176.recast14511': {
+    aliases: ['האם השליחות תשיג את מטרתה', 'אחרית שליחים', 'האם הבקשה שהעברתי באמצעות שליח תיענה'],
+    doNotMixWith: ['news.arrival.unsupported', 'request.p176.h1h2GateThenH1H4', 'joy.p196.recast14511'],
+    houses: [1, 4, 5, 11],
+  },
   'pregnancy.p191.existsH5SilentEmpty': {
     aliases: ['האם יש הריון', 'האם ההריון קיים', 'האם ההריון נכון', 'האם היא בהריון', 'קיום הריון', 'H5 שותקת ריקה הריון', 'פתיחת דין הריון עמ 191'],
     doNotMixWith: ['pregnancy.p191.genderH5', 'pregnancy.p191.childSafetyH1H6H8', 'pregnancy.p191.deliveryDifficultyH1H5H15', 'pregnancy.p191-192.miscarriageRedH7NakisH8', 'pregnancy.p192.maternalSafetyH6H8H12', 'pregnancy.p192.monthCount'],

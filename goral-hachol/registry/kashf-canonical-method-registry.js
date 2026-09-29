@@ -167,11 +167,11 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfIntentId: 'messenger.outcome',
     topicId: 'siblings',
     sourcePages: [176],
-    kashfRuntimeStatus: 'repair-required',
-    runtimeAllowed: false,
-    executionKind: 'recast-board',
-    executorStatus: 'pending',
-    notes: 'Printed p176 judges outcome of a mission and whether its request is fulfilled, not letter/news arrival. Build a separate derived board using H1,H4,H5,H11 as new mothers; judge derived H5 and angles without mutating source board. Exhaustive 65,536-input feasibility check found 0 boards with all five houses pure benefic (max four). The source does not state whether this is an all-five test or a collective fortune assessment; keep blocked pending source-grounded interpretation and positive/negative Golden Tests.',
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: true,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
+    notes: 'Printed p176 judges mission outcome, not letter/news arrival. A separate derived board uses H1,H4,H5,H11 as mothers. Only the source-explicit negative branch when derived H5 and all four angles are pure malefic executes; every other constellation remains unresolved. The all-five-pure-benefic reading is impossible on the 65,536 source boards and is not implemented. The source board is immutable.',
   }),
 
   'news.arrival.unsupported': method({

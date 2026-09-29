@@ -11,17 +11,20 @@ const derivedHouses = [5, 1, 4, 7, 10];
 let boardsChecked = 0;
 let allPureBenefic = 0;
 let maxPureBenefic = 0;
+let allPureMalefic = 0;
 
 for (const a of patterns) for (const b of patterns) for (const c of patterns) for (const d of patterns) {
   const sourceBoard = buildRamlBoardFromMothers([a, b, c, d]);
   const sourceSnapshot = sourceBoard.entries.map((entry) => entry.pattern);
   const recastMothers = sourceHouses.map((house) => sourceBoard.entries[house - 1].pattern);
   const derivedBoard = buildRamlBoardFromMothers(recastMothers);
-  const pureBeneficCount = derivedHouses.filter((house) =>
-    classifyCanonicalFigure(derivedBoard.entries[house - 1].pattern).saadNahs === 'saad'
-  ).length;
+  const qualities = derivedHouses.map((house) =>
+    classifyCanonicalFigure(derivedBoard.entries[house - 1].pattern).saadNahs
+  );
+  const pureBeneficCount = qualities.filter((quality) => quality === 'saad').length;
   boardsChecked++;
   if (pureBeneficCount === 5) allPureBenefic++;
+  if (qualities.every((quality) => quality === 'nahs')) allPureMalefic++;
   maxPureBenefic = Math.max(maxPureBenefic, pureBeneficCount);
   assert.deepEqual(sourceBoard.entries.map((entry) => entry.pattern), sourceSnapshot);
 }
@@ -29,13 +32,27 @@ for (const a of patterns) for (const b of patterns) for (const c of patterns) fo
 assert.equal(boardsChecked, 65536);
 assert.equal(allPureBenefic, 0);
 assert.equal(maxPureBenefic, 4);
+assert.equal(allPureMalefic, 480);
 
-const sample = buildRamlBoardFromMothers(['1111', '1111', '1111', '1111']);
-const messenger = buildKashfReadingByQuestionId(sample, 'q-message');
-const news = buildKashfReadingByQuestionId(sample, 'q-news-arrive');
-assert.equal(messenger.valid, false);
-assert.equal(messenger.reason, 'repair-required');
+const negativeBoard = buildRamlBoardFromMothers(['1112', '1111', '1111', '1211']);
+const sourceSnapshot = negativeBoard.entries.map((entry) => entry.pattern);
+const negative = buildKashfReadingByQuestionId(negativeBoard, 'q-message');
+assert.equal(negative.valid, true);
+assert.equal(negative.overallPositive, false);
+assert.equal(negative.primaryFormula.result.executorResult.sourceOutcome, 'request-not-fulfilled');
+assert.deepEqual(negative.primaryFormula.result.executorResult.recastMotherPatterns, ['1112', '1211', '1111', '2221']);
+assert.deepEqual(negative.primaryFormula.result.executorResult.recastConditionHouses, derivedHouses);
+assert.deepEqual(negativeBoard.entries.map((entry) => entry.pattern), sourceSnapshot);
+
+const unresolvedBoard = buildRamlBoardFromMothers(['1111', '1111', '1111', '1111']);
+const unresolved = buildKashfReadingByQuestionId(unresolvedBoard, 'q-message');
+assert.equal(unresolved.valid, true);
+assert.equal(unresolved.overallPositive, null);
+assert.equal(unresolved.primaryFormula.result.executorResult.sourceOutcome, 'unresolved');
+assert.doesNotMatch(unresolved.verdict.text, /הבקשה תיענה\./);
+
+const news = buildKashfReadingByQuestionId(negativeBoard, 'q-news-arrive');
 assert.equal(news.valid, false);
 assert.equal(news.reason, 'unsupported');
 
-console.log(`Kashf p176 recast feasibility: ${boardsChecked} boards, ${allPureBenefic} all-pure-benefic, maximum ${maxPureBenefic}/5; both routes fail closed: PASS`);
+console.log(`Kashf p176 recast: ${boardsChecked} boards, ${allPureBenefic} all-pure-benefic, ${allPureMalefic} all-pure-malefic; only the negative branch runs: PASS`);

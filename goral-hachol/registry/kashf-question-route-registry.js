@@ -192,8 +192,8 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     disposition: 'RENAME',
     kashfIntentId: 'messenger.outcome',
     kashfMethodId: 'messenger.p176.recast14511',
-    kashfRuntimeStatus: 'repair-required',
-    note: 'Printed p176 tests the outcome of messengers and fulfillment of a request, not letter arrival. The label is repaired, but the collective H5+angles fortune criterion remains under review; runtime stays blocked.',
+    kashfRuntimeStatus: 'ready',
+    note: 'Printed p176 tests mission outcome, not letter arrival. Only the all-pure-malefic derived H5+angles branch returns a negative source verdict; every other pattern is unresolved.',
   }),
 
   'q-news-arrive': route({

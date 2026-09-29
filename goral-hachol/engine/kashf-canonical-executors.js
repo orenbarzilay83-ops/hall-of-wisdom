@@ -2189,6 +2189,55 @@ function computeMoneyAcquireP181(chart) {
   };
 }
 
+// Kashf p176 — one source-secure branch of the messengers' outcome rule.
+// Do not turn the impossible all-five-pure-benefic condition into an
+// always-negative verdict; mixed/partial groups require further source work.
+function computeMessengerOutcomeP176(chart) {
+  if (!Array.isArray(chart)) return null;
+  const sourceMotherHouses = [1, 4, 5, 11];
+  const sourceMothers = sourceMotherHouses.map((houseNumber) => {
+    const entry = findCanonicalHouse(chart, houseNumber);
+    const pattern = entry?.key || entry?.pattern || null;
+    return /^[12]{4}$/.test(pattern || '') ? { houseNumber, pattern } : null;
+  });
+  if (sourceMothers.some((item) => !item)) return null;
+
+  const recastMotherPatterns = sourceMothers.map((item) => item.pattern);
+  const recastBoard = buildRamlBoardFromMothers(recastMotherPatterns);
+  const recastChart = recastBoard?.entries || [];
+  if (recastBoard?.boardValidation?.isValid === false || recastChart.length !== 16) return null;
+
+  const conditionHouses = [5, 1, 4, 7, 10];
+  const conditionResults = conditionHouses.map((houseNumber) => {
+    const entry = findCanonicalHouse(recastChart, houseNumber);
+    const pattern = entry?.key || entry?.pattern || null;
+    if (!/^[12]{4}$/.test(pattern || '')) return null;
+    return { houseNumber, pattern, classification: classifyCanonicalFigure(pattern) };
+  });
+  if (conditionResults.some((item) => !item)) return null;
+
+  const allPureMalefic = conditionResults.every((item) => item.classification.saadNahs === 'nahs');
+  const sourceOutcome = allPureMalefic ? 'request-not-fulfilled' : 'unresolved';
+  const outputHebrew = allPureMalefic
+    ? 'לוח נפרד נבנה מבתי 1, 4, 5 ו־11 של הלוח המקורי. בית 5 וכל ארבע היתדות בלוח הנגזר מזיקים טהורים. לפי דין אחרית השליחים הבקשה אינה נענית. דין זה אינו קובע אם מכתב או חדשות יגיעו.'
+    : 'לוח נפרד נבנה מבתי 1, 4, 5 ו־11 של הלוח המקורי. עדות בית 5 והיתדות אינה בענף המזיק הטהור המוגדר; בקטע זה אין הכרעה מאומתת למצב הלוח הזה. אין להסיק מכאן שהבקשה תיענה או שלא תיענה.';
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 176',
+    housesUsed: sourceMotherHouses,
+    sourceMotherHouses,
+    sourceMothers,
+    recastMotherPatterns,
+    recastBoardValid: true,
+    recastConditionHouses: conditionHouses,
+    recastConditionResults: conditionResults,
+    sourceOutcome,
+    positive: allPureMalefic ? false : null,
+    verdictType: 'messenger-outcome-recast-limited',
+    outputHebrew,
+  };
+}
+
 // Kashf v57 p266 — whether a person dismissed from service returns.
 function computeReturnToOfficeP266(chart) {
   if (!Array.isArray(chart)) return null;
@@ -2743,6 +2792,7 @@ function computeHiddenActionP167(chart) {
 }
 
 const CUSTOM_EXECUTORS = Object.freeze({
+  'messenger.p176.recast14511': computeMessengerOutcomeP176,
   'enemy.p271.h1vsH12': computeEnemyPresenceH1H12P271,
   'illness.p197.h1h8ElementHumor': computeIllnessHumorH1H8P197,
   'friends.p263.h1h11': computeFriendshipH1H11P263,
