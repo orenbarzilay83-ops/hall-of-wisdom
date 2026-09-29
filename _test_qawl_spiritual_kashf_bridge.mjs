@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { buildRamlBoardFromMothers } from './goral-hachol/engine/raml-board-generator.js';
 import { buildQawlSpiritualReading, writeQawlSpiritualReading } from './goral-hachol/engine/qawl-spiritual-kashf-bridge.js';
 import { saveQawlSpiritualReadingToArchive, getGoralArchive } from './goral-hachol/engine/goral-client-archive.js';
+import { interpretHawiQuestionInitial, formatHawiInitialInterpretationHebrew } from './goral-hachol/engine/hawi-interpreter.js';
 
 // Fixed board from four mothers: 36 open points, 36 mod 7 = 1 (jinn).
 // H15=1111 and H4=1221; multiplication must yield 2112 (air), never H15's water.
@@ -80,5 +81,36 @@ assert.equal(saved.record.chart.length, 16);
 assert.equal(getGoralArchive()[0].method, 'qawl');
 assert(!saved.record.conclusion.includes('מי עשה'));
 delete globalThis.localStorage;
+
+// The older public Hawi interpreter is also called without the UI. Its
+// spiritual conclusion must carry the same verified evidence and no score.
+const directHawi = (sourceBoard, topicId, question) => interpretHawiQuestionInitial(question, {
+  ...sourceBoard, chart: sourceBoard.entries, topicId,
+});
+const legacySpiritual = directHawi(board, 'spiritualDiagnostics', 'האם יש עלי כישוף?');
+assert.equal(legacySpiritual.spiritualDiagnosis.sourceVolume, 'al-qawl-al-jami');
+assert.equal(legacySpiritual.spiritualDiagnosis.grade, null);
+assert.equal(legacySpiritual.spiritualDiagnosis.genericScore, null);
+assert.equal(legacySpiritual.spiritualDiagnosis.sihrDetails, null);
+assert.equal(legacySpiritual.spiritualDiagnosis.organDiagnosisResult, null);
+assert.equal(legacySpiritual.spiritualDiagnosis.jinnTypeResult, null); // only q-jinn-type computes 15x4
+assert(legacySpiritual.clientReadingHebrew.includes('סוהר בבית 13'));
+assert(legacySpiritual.finalConclusionHebrew.includes('עדויות אל־קול'));
+assert(legacySpiritual.technicalConclusionHebrew.includes('עדויות אל־קול'));
+assert.equal(legacySpiritual.conclusionDraftHebrew, legacySpiritual.technicalConclusionHebrew);
+assert(!formatHawiInitialInterpretationHebrew(legacySpiritual).includes('ציון פנימי'));
+assert(!legacySpiritual.finalConclusionHebrew.includes('מי עשה'));
+assert(!legacySpiritual.finalConclusionHebrew.includes('מיקום הכישוף'));
+assert(!legacySpiritual.clientReadingHebrew.includes('אין פגיעה רוחנית'));
+const legacyJinn = directHawi(qarinBoard, 'spiritualDiagnostics', 'מה סוג הג׳ין?');
+assert.equal(legacyJinn.spiritualDiagnosis.qarinEvidence?.sourcePage, 58);
+assert(legacyJinn.clientReadingHebrew.includes('נזק מן הקרין'));
+const legacyZero = directHawi(zeroOpenBoard, 'spiritualDiagnostics', 'האם יש עלי כישוף?');
+assert(legacyZero.clientReadingHebrew.includes('אין בספר דין לאפס'));
+assert(!legacyZero.clientReadingHebrew.includes('אין פגיעה רוחנית'));
+const legacyCommerce = directHawi(board, 'commerce', 'האם העסק יצליח?');
+assert.equal(legacyCommerce.spiritualDiagnosis.active, false);
+assert(!legacyCommerce.clientReadingHebrew.includes('כישוף'));
+assert.equal(directHawi(board, 'commerce', 'האם העסק יצליח למרות כישוף?').spiritualDiagnosis.active, false);
 
 console.log('Qawl spiritual Kashf bridge: PASS');

@@ -671,6 +671,7 @@ function spiritualParagraph(spiritualDiagnosis, topicId) {
   if (!spiritualDiagnosis || !spiritualDiagnosis.active || !spiritualDiagnosis.hasBoard) {
     return '';
   }
+  if (spiritualDiagnosis.sourceVolume === 'al-qawl-al-jami') return '';
 
   const grade = spiritualDiagnosis.grade;
 
@@ -1655,6 +1656,10 @@ function buildSpiritualNarrative(result) {
   const { boardAnalysis, spiritualDiagnosis, judgeVerdict, clientContext } = result;
   if (!boardAnalysis?.hasBoard) return null;
 
+  if (spiritualDiagnosis?.sourceVolume === 'al-qawl-al-jami') {
+    return spiritualDiagnosis.finalHebrew || 'אין פסק מקור מאושר לשאלה זו.';
+  }
+
   const sd       = spiritualDiagnosis || {};
   const name     = clean(clientContext?.clientName || '');
   const isFemale = clientContext?.gender === 'female';
@@ -2311,6 +2316,7 @@ export function writeClientReadingHebrew(result) {
   if (topicId === 'spiritualDiagnostics') {
     const sd = spiritualDiagnosis;
     if (!sd) return null;
+    if (sd.sourceVolume === 'al-qawl-al-jami') return sd.finalHebrew;
     const clientName = clean(clientContext?.clientName || '');
     const prefix = clientName ? `${clientName}, ` : '';
     const sdParas = [];
@@ -2758,6 +2764,10 @@ export function writeClientReadingHebrew(result) {
     }
 
     case 'spiritualDiagnostics': {
+      if (result.spiritualDiagnosis?.sourceVolume === 'al-qawl-al-jami') {
+        push(result.spiritualDiagnosis.finalHebrew || 'אין פסק מקור מאושר לשאלה זו.');
+        break;
+      }
       // משתמשים ב-grade של מנוע הרוחניות — לא ב-boardScore הכללי שנותן תשובה שגויה
       const sdGrade = result.spiritualDiagnosis?.grade;
       const spiritFound = sdGrade === 'strong-suspicion' || sdGrade === 'medium-suspicion';

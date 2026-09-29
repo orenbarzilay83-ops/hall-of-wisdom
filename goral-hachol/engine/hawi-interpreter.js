@@ -2905,12 +2905,9 @@ export function interpretHawiQuestionInitial(question, board = null) {
   const boardScore = scoreBoard(boardAnalysis);
   const judgeVerdict = boardScore.judgeVerdict || buildJudgeVerdict(boardAnalysis);
   const spiritualDiagnosis = diagnoseSpiritualInfluence(question, board);
-  const technicalConclusionHebrew = buildFinalConclusion(
-    topicHebrew,
-    boardScore,
-    boardAnalysis,
-    relevantRules
-  );
+  const technicalConclusionHebrew = route.topicId === 'spiritualDiagnostics'
+    ? spiritualDiagnosis.finalHebrew
+    : buildFinalConclusion(topicHebrew, boardScore, boardAnalysis, relevantRules);
 
   const boardValidation = board?.boardValidation || { isValid: true, hasCritical: false, warnings: [] };
 
@@ -2996,8 +2993,10 @@ export function formatHawiInitialInterpretationHebrew(result) {
       lines.push(`- בית ${h.house}: ${h.figureHebrew || ''} — ${h.tone?.hebrew || ''}`);
     }
     lines.push('');
-    lines.push(`ציון פנימי: ${result.boardScore.score}`);
-    lines.push('');
+    if (result.topicId !== 'spiritualDiagnostics') {
+      lines.push(`ציון פנימי: ${result.boardScore.score}`);
+      lines.push('');
+    }
   }
 
   lines.push('מסקנה:');

@@ -1,4 +1,5 @@
 import * as APPROVED_SPIRITUAL_SOURCE from '../data/sources/approved-raml/spiritual-diagnostics/raml-spiritual-diagnostics-sihr-mass-hasad.js';
+import { buildQawlSpiritualReading } from './qawl-spiritual-kashf-bridge.js';
 
 // Mapping from Arabic figure names (as they appear in source rules) to Hebrew names used in the board
 const ARABIC_TO_HEBREW_FIGURE = {
@@ -656,88 +657,92 @@ function applyJinnTypeMethod(board, source) {
 }
 
 export function diagnoseSpiritualInfluence(question = '', board = null) {
-  const source = getApprovedSpiritualSource();
   const questionHits = detectSpiritualTopicFromQuestion(question);
-
+  const explicitSpiritualTopic = board?.topicId === 'spiritualDiagnostics';
+  const spiritualQuestion = board?.topicId
+    ? explicitSpiritualTopic
+    : questionHits.some(hit => ['sihr', 'ayin', 'hasad', 'jinn', 'mass'].includes(hit));
   if (!board || !Array.isArray(board.chart)) {
     return {
       id: 'goral-spiritual-diagnostics',
-      active: true,
+      active: spiritualQuestion,
       hasBoard: false,
       questionHits,
-      finalHebrew: 'שכבת האבחון הרוחני פעילה, אבל לא התקבל לוח גורל מלא. לכן אין לפסוק כישוף/עין/אחיזה בלי לוח.',
+      sourceVolume: 'al-qawl-al-jami',
+      grade: null,
+      verdict: null,
+      finalHebrew: 'לא התקבל לוח גורל מלא; לא הופעל כלל אבחון רוחני.',
     };
   }
-
-  const rawOpeningMatches = checkOpeningRules(board, source);
-  const specificMatches = [
-    ...checkFigureHouseRules(board, source),
-    ...checkJamaaDerivedRules(board, source),
-    ...rawOpeningMatches.filter((m) => m.inCriticalHouse),
-  ];
-  const openingMatches = rawOpeningMatches.filter((m) => !m.inCriticalHouse);
-  const genericScore = quickHouseScore(board) + (questionHits.length ? 2 : 0);
-  const isqatResult        = applyIsqatSevenMethod(board, source);
-  const jinnTypeResult      = applyJinnTypeMethod(board, source);
-  const organDiagnosisResult = applyOrganDiagnosisMethod(board, source);
-
-  const grade = gradeFromMatches(specificMatches, openingMatches, genericScore);
-  const crossReferenceNote = computeCrossReference(questionHits, isqatResult);
-  const sihrDetails = detectSihrDetails(board, specificMatches, isqatResult);
-  const finalHebrew = buildFinalHebrew(grade, specificMatches, openingMatches, isqatResult, jinnTypeResult, crossReferenceNote, sihrDetails);
-
-  const mainReasons = specificMatches.map((m) => ({
-    house: m.house,
-    role: m.house === 15 ? 'הדיין' : m.house === 13 ? 'עד ראשון' : m.house === 14 ? 'עד שני' : `בית ${m.house}`,
-    figureHebrew: m.figureHebrew,
-    score: severityScore(m.severity),
-    signals: [m.diagnosisHebrew],
-    sourceBased: true,
-  }));
-
-  if (!mainReasons.length && openingMatches.length) {
-    openingMatches.slice(0, 3).forEach((m) => {
-      mainReasons.push({
-        house: m.house,
-        role: m.house === 15 ? 'הדיין' : m.house === 13 ? 'עד ראשון' : m.house === 14 ? 'עד שני' : `בית ${m.house}`,
-        figureHebrew: m.figureHebrew,
-        score: 1,
-        signals: [m.diagnosisHebrew],
-        sourceBased: true,
-      });
-    });
+  if (!spiritualQuestion) {
+    return {
+      id: 'goral-spiritual-diagnostics', active: false, hasBoard: true,
+      sourceVolume: 'al-qawl-al-jami', questionHits, grade: null,
+      verdict: null, finalHebrew: '', specificMatches: [], openingMatches: [],
+      mainReasons: [], shouldShow: false,
+    };
   }
-
-  // Add isqat result as a signal if found
-  if (isqatResult?.hebrewText) {
-    mainReasons.push({
-      house: null,
-      role: 'גורל חולי 7×7',
-      figureHebrew: null,
-      score: 1,
-      signals: [isqatResult.hebrewText],
-      sourceBased: true,
-      isqat: true,
-    });
+  // Reuse the source-bounded executor. The former grade, generic house score,
+  // H9 identity/letter/treasure hints, 8×6 organ guess and H15-only jinn type
+  // are not rules of this chapter and must not reach any consultation consumer.
+  const questionId = questionHits.includes('jinn') ? 'q-jinn-type' : 'q-sorcery';
+  const sourceReading = buildQawlSpiritualReading(
+    { entries: board.chart, boardValidation: board.boardValidation },
+    questionId, { gender: board.clientContext?.gender }
+  );
+  if (!sourceReading.valid) {
+    return {
+      id: 'goral-spiritual-diagnostics', active: true, hasBoard: false,
+      sourceVolume: 'al-qawl-al-jami', questionHits, grade: null,
+      verdict: null, finalHebrew: sourceReading.message || 'לוח הגורל אינו תקין לאבחון.',
+    };
   }
-
+  const evidence = [
+    sourceReading.isqatEvidence,
+    ...sourceReading.directEvidence,
+    sourceReading.jinnTypeEvidence,
+    sourceReading.qarinEvidence,
+  ].filter(Boolean);
+  const zeroOpenNote = sourceReading.remainder === null
+    ? 'לשיטת 7×7 אין בספר דין לאפס נקודות פתוחות.' : '';
+  const finalHebrew = evidence.length
+    ? `עדויות אל־קול אל־ג׳אמיע (ללא פסק כולל):\n${[zeroOpenNote, ...evidence.map(item => item.text)].filter(Boolean).join('\n')}`
+    : [zeroOpenNote, 'בכללי אל־קול שנבדקו לא נמצאה עדות מפורשת בלוח; אין בכך פסק שאין פגיעה.'].filter(Boolean).join('\n');
   return {
     id: 'goral-spiritual-diagnostics',
     active: true,
     hasBoard: true,
+    sourceVolume: 'al-qawl-al-jami',
+    sourceReading,
     questionHits,
-    specificMatches,
-    openingMatches,
-    genericScore,
-    isqatResult,
-    jinnTypeResult,
-    organDiagnosisResult,
-    crossReferenceNote,
-    sihrDetails,
-    grade,
+    specificMatches: sourceReading.directEvidence.map(item => ({
+      ruleId: item.id, house: item.houses?.[0] ?? null,
+      diagnosisHebrew: item.text, meaningHebrew: item.text,
+      sourcePage: item.sourcePage, sourceBased: true,
+    })),
+    openingMatches: [],
+    genericScore: null,
+    isqatResult: sourceReading.isqatEvidence ? {
+      openCount: sourceReading.openCount, remainder: sourceReading.remainder,
+      hebrewText: sourceReading.isqatEvidence.text,
+      isSpiritual: sourceReading.remainder <= 3,
+    } : null,
+    jinnTypeResult: sourceReading.jinnTypeEvidence,
+    qarinEvidence: sourceReading.qarinEvidence,
+    organDiagnosisResult: null,
+    crossReferenceNote: null,
+    sihrDetails: null,
+    grade: null,
+    verdict: null,
     finalHebrew,
-    mainReasons,
-    shouldShow: grade !== 'mixed',
+    mainReasons: evidence.map(item => ({
+      house: item.houses?.[0] ?? null,
+      role: item.houses?.length ? `בתים ${item.houses.join(', ')}` : 'השמטת 7×7',
+      figureHebrew: item.resultFigure || null,
+      score: 0, signals: [item.text], sourceBased: true,
+      sourcePage: item.sourcePage,
+    })),
+    shouldShow: evidence.length > 0,
     isSpiritualQuestion: questionHits.length > 0,
     questionCategory: resolveQuestionCategory(questionHits),
   };
