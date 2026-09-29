@@ -51,18 +51,18 @@ if (ambiguous.resolution.state !== 'resolved') {
   assert(ambiguous.canonicalReading.canRunKashf === false, 'ambiguous retrieval does not execute');
 }
 
-// 4. A source-ready method whose executor is pending remains blocked even when
-// it is selected explicitly and has Hebrew v57 knowledge.
-const pending = buildKashfCanonicalAiBridge({
+// 4. The limited p257 night-placement route runs without inferring a day rule.
+const motherNight = buildKashfCanonicalAiBridge({
   questionId: 'q-mother',
   questionText: 'מה מצב האם?',
   board: BOARD,
+  clientContext: { dynFields: { motherCastPeriod: 'לילה' } },
 });
-assert(pending.resolution.kashfMethodId === 'mother.p257.statusDayNight', 'pending route resolves to exact source-ready method');
-assert(pending.resolution.executorStatus === 'pending', 'pending executor status is preserved');
-assert(pending.canonicalRetrieval?.knowledgeLanguage === 'he', 'pending method may still expose Hebrew knowledge');
-assert(pending.aiVerdictAllowed === false, 'retrieval cannot promote pending executor to runnable');
-assert(pending.canonicalReading.canRunKashf === false, 'canonical runtime stays blocked for pending executor');
+assert(motherNight.resolution.kashfMethodId === 'mother.p257.statusDayNight', 'mother route resolves to exact p257 method');
+assert(motherNight.resolution.executorStatus === 'ready', 'limited night method is ready');
+assert(motherNight.canonicalRetrieval?.knowledgeLanguage === 'he', 'mother method exposes Hebrew knowledge');
+assert(motherNight.canonicalReading.canRunKashf === true, 'canonical night-placement method executes');
+assert(motherNight.canonicalReading.primaryFormula.result.executorResult.period === 'לילה', 'explicit night time reaches executor');
 
 // 4a. p205 source repair is visible to the live bridge but cannot execute.
 const p205RepairLive = buildKashfCanonicalAiBridge({

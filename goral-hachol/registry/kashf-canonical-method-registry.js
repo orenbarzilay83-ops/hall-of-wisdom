@@ -594,10 +594,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'motherRules',
     sourcePages: [257],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Body-source mother rule. Night: house quality plus White/Road in angles or succedents vs cadents. Day: judge by Venus figures. Existing helper is incomplete and must not be reused unchanged.',
+    executorStatus: 'ready',
+    notes: 'Only the explicit night White/Road placements in angles/adjacent versus falling houses execute. Explicit cast period night is required; H10 “this house”, day/Venus and mixed placements cannot be resolved by this executor.',
   }),
 
   'hidden.p185.recursiveQuarterFireAir': method({

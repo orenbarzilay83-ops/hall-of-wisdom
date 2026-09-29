@@ -175,8 +175,8 @@ assert(p205RepairRecord?.questionIds.includes('q-love'), 'p205 retrieval stays l
 assert(JSON.stringify(p205RepairRecord?.houses) === JSON.stringify([1,15]), 'p205 retrieval exposes H1 and visually verified H15 as the primary source scope');
 assert(p205RepairRecord?.v57?.hebrewRule.includes('בבית החמישה־עשר'), 'p205 retrieval carries visually verified H15 Hebrew knowledge');
 
-const pendingKnowledgeRecord = getKashfAiRetrievalRecord('mother.p257.statusDayNight');
-assert(pendingKnowledgeRecord?.runtimeAllowed === false && pendingKnowledgeRecord?.executorStatus === 'pending', 'a source-ready pending method remains knowledge-visible without runtime authorization');
+const motherNightRecord = getKashfAiRetrievalRecord('mother.p257.statusDayNight');
+assert(motherNightRecord?.runtimeAllowed === true && motherNightRecord?.executorStatus === 'ready', 'p257 limited night-placement method is runnable with explicit time input');
 
 const runnableOnly = searchKashfAiRetrievalIndex('הריון', { runnableOnly: true, limit: 20 });
 assert(runnableOnly.every((item) => item.runtimeAllowed === true && item.executorStatus === 'ready'), 'runnableOnly filter never returns pending executor');

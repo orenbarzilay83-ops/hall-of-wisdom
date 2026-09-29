@@ -337,7 +337,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfIntentId: 'mother.status',
     kashfMethodId: 'mother.p257.statusDayNight',
     kashfRuntimeStatus: 'ready',
-    note: 'Must preserve day/night distinction and angles+succedents vs cadents; current broad mother helper is not sufficient.',
+    note: 'Only the night White/Road placement branch executes with an explicit cast-period input; day/Venus and the “this house” clause remain unresolved.',
   }),
 
   'q-lost-item': route({

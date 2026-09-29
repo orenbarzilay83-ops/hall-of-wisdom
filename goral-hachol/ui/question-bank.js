@@ -395,8 +395,11 @@ window.QUESTION_BANK = [
     id: 'q-mother',
     category: 'family', houseId: 10, topicId: 'motherRules', kashfTopicId: 'motherRules',
     label: 'מצב האם?',
-    desc: 'לשאלות על האם — בריאות, מזל, מצב כללי',
-    clientFields: [{ id: 'motherIssue', label: 'מה השאלה?', type: 'textarea', placeholder: 'בריאות האם / מצבה...' }],
+    desc: 'סימן למצב האם לפי מיקום לבן או דרך בלוח שנערך בלילה. ענף היום אינו מוכרע בשיטה זו.',
+    clientFields: [
+      { id: 'motherIssue', label: 'מה השאלה?', type: 'textarea', placeholder: 'מה מצבה של האם?' },
+      { id: 'motherCastPeriod', label: 'זמן עריכת הלוח', type: 'select', options: ['לילה', 'יום'] },
+    ],
   },
   {
     id: 'q-celebrations',

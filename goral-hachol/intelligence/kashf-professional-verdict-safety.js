@@ -46,6 +46,7 @@ const P271_ENEMY_METHOD = 'enemy.p271.h1vsH12';
 const P197_ILLNESS_HUMOR_METHOD = 'illness.p197.h1h8ElementHumor';
 const P263_FRIENDSHIP_METHOD = 'friends.p263.h1h11';
 const P265_STATE_CONTINUITY_METHOD = 'state.p265.h1h2h9h15';
+const P257_MOTHER_METHOD = 'mother.p257.statusDayNight';
 const P273_PUNISHMENT_METHOD = 'fear.p273.punishmentSigns';
 const P240_TRAVEL_CAUTION_METHOD = 'travel.p240.roadCautionsH9H7';
 const P254_DREAM_METHOD = 'dream.p254.h9AndTransit';
@@ -1400,6 +1401,28 @@ function p265StateContinuityPolicy() {
   });
 }
 
+function p257MotherNightPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-mother-p257-night-placement',
+    goldenCaseIds: freezeArray(['PV-P257-MOTHER-NIGHT-ANGLE', 'PV-P257-MOTHER-NIGHT-FALLING', 'PV-P257-MOTHER-DAY-BLOCK']),
+    policyId: 'p257-mother-night-white-road-placement-v1',
+    questionScopeHebrew: 'סימן למצב האם לפי מיקום לבן או דרך בשאלת לילה, עמ׳ 257',
+    decisiveRuleHebrew: 'לבן או דרך ביתד/סמוך לו — טוב ותיקון; בבית נופל — צרות; רק כאשר השאלה נשאלה בלילה.',
+    oneWayBranches: freezeArray([
+      'לילה עם הופעה רק בביתד/סמוך => סימן לטוב ותיקון',
+      'לילה עם הופעה רק בבית נופל => סימן לצרות',
+    ]),
+    forbiddenInversions: freezeArray([
+      'בהיעדר לבן/דרך אין פסק על מצב האם.',
+      'הופעה בשתי קבוצות הבתים אינה מקבלת כלל קדימות מומצא.',
+      'בחירת יום או זמן חסר אינם מפעילים את ענף הלילה.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray(['דין “בית זה” שאינו סגור', 'ענף היום וצורות נוגה', 'אבחון רפואי']),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray(['אבחון בריאות האם', 'פסק יום לפי נוגה']),
+  });
+}
+
 function p191DeliveryDifficultyPolicy() {
   return Object.freeze({
     certificationStatus: 'certified',
@@ -1664,6 +1687,7 @@ const METHOD_POLICIES = Object.freeze({
   [P197_ILLNESS_HUMOR_METHOD]: p197IllnessHumorPolicy(),
   [P263_FRIENDSHIP_METHOD]: p263FriendshipPolicy(),
   [P265_STATE_CONTINUITY_METHOD]: p265StateContinuityPolicy(),
+  [P257_MOTHER_METHOD]: p257MotherNightPolicy(),
   [P273_PUNISHMENT_METHOD]: p273PunishmentPolicy(),
   [P240_TRAVEL_CAUTION_METHOD]: p240TravelCautionPolicy(),
   [P254_DREAM_METHOD]: p254DreamPolicy(),

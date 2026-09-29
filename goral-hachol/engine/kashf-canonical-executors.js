@@ -2340,6 +2340,43 @@ function computeLivelihoodP180(chart) {
   };
 }
 
+// Kashf printed p257: the White/Road placement clause applies when the
+// question was cast at night. The H10 "this house" clause and the day/Venus
+// clause are separate unresolved operations and are not inferred here.
+function computeMotherNightWhiteRoadP257(chart, clientContext = {}) {
+  if (!Array.isArray(chart)) return null;
+  const period = clientContext?.dynFields?.motherCastPeriod || clientContext?.motherCastPeriod || null;
+  const placements = { '2212': [], '1111': [] };
+  for (let houseNumber = 1; houseNumber <= 12; houseNumber += 1) {
+    const entry = findCanonicalHouse(chart, houseNumber);
+    const pattern = entry?.key || entry?.pattern || null;
+    if (Object.hasOwn(placements, pattern)) placements[pattern].push(houseNumber);
+  }
+  const favorableHouses = new Set([1, 2, 4, 5, 7, 8, 10, 11]);
+  const fallingHouses = new Set([3, 6, 9, 12]);
+  const favorable = Object.values(placements).flat().filter(house => favorableHouses.has(house));
+  const falling = Object.values(placements).flat().filter(house => fallingHouses.has(house));
+  const signals = period === 'לילה' ? [
+    ...(favorable.length ? [`לבן או דרך בבית יתד או סמוך לו (${favorable.join(', ')}) — סימן לטוב ולתיקון לפי כשף עמ׳ 257.`] : []),
+    ...(falling.length ? [`לבן או דרך בבית נופל (${falling.join(', ')}) — סימן לצרות לפי כשף עמ׳ 257.`] : []),
+  ] : [];
+  const positive = period === 'לילה' && favorable.length && !falling.length ? true
+    : period === 'לילה' && falling.length && !favorable.length ? false : null;
+  const outputHebrew = period !== 'לילה'
+    ? 'כלל מיקום לבן ודרך בעמ׳ 257 נאמר על שאלת לילה בלבד. דרוש זמן ההטלה ״לילה״; ענף היום אינו מוכרע כאן.'
+    : signals.length
+      ? `${signals.join(' ')}${favorable.length && falling.length ? ' הסימנים מופיעים בשני סוגי הבתים; המקור אינו נותן כלל קדימות לפסק כולל.' : ''} דין ״בית זה״ וענף היום לא הופעלו.`
+      : 'לא נמצאו לבן או דרך בבתים 1–12; ענף המיקום הלילי בעמ׳ 257 אינו נותן פסק מכך. דין ״בית זה״ לא הופעל.';
+  return {
+    sourceRef: 'כשף אל-אסראר עמ׳ 257; סיווג הבתים עמ׳ 43–45',
+    sourceText: 'לבן או דרך ביתד או בסמוכים — טוב ותיקון; בנופלים — צרות. דין זה כשזמן השאלה בלילה.',
+    housesUsed: Object.values(placements).flat(),
+    period, placements, favorable, falling, signals,
+    positive,
+    outputHebrew,
+  };
+}
+
 const P248_249_MISSING_DEATH_PATTERNS = new Set([
   '2222', // קהלה / الجماعة
   '2112', // חיבור / الاجتماع
@@ -2731,6 +2768,7 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'authority.p256.honorConditionH10Planet': computeHonorConditionP256,
   'authority.p257.appointmentH1H10Planet': computeAppointmentCompletionP257,
   'authority.p257.rulerConditionH7H10': computeRulerConditionP257,
+  'mother.p257.statusDayNight': computeMotherNightWhiteRoadP257,
 });
 
 function toLegacyChart(board) {
