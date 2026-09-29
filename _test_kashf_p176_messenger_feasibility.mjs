@@ -55,4 +55,16 @@ const news = buildKashfReadingByQuestionId(negativeBoard, 'q-news-arrive');
 assert.equal(news.valid, false);
 assert.equal(news.reason, 'unsupported');
 
+for (const questionId of ['q-celebrations', 'q-joy-coming']) {
+  const joyNegative = buildKashfReadingByQuestionId(negativeBoard, questionId);
+  assert.equal(joyNegative.valid, true, `${questionId} p196 route runs`);
+  assert.equal(joyNegative.overallPositive, false, `${questionId} all-five-malefic branch`);
+  assert.equal(joyNegative.primaryFormula.result.executorResult.sourceOutcome, 'request-not-fulfilled');
+  assert.match(joyNegative.primaryFormula.result.executorResult.sourceRef, /196/);
+  const joyUnresolved = buildKashfReadingByQuestionId(unresolvedBoard, questionId);
+  assert.equal(joyUnresolved.valid, true);
+  assert.equal(joyUnresolved.overallPositive, null, `${questionId} mixed/partial remains unresolved`);
+}
+assert.deepEqual(negativeBoard.entries.map((entry) => entry.pattern), sourceSnapshot);
+
 console.log(`Kashf p176 recast: ${boardsChecked} boards, ${allPureBenefic} all-pure-benefic, ${allPureMalefic} all-pure-malefic; only the negative branch runs: PASS`);

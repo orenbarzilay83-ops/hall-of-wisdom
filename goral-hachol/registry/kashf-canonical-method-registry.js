@@ -322,11 +322,11 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfIntentId: 'joy.occurrence',
     topicId: 'completion',
     sourcePages: [196],
-    kashfRuntimeStatus: 'blocked-by-source',
-    runtimeAllowed: false,
-    executionKind: 'recast-board',
-    executorStatus: 'pending',
-    notes: 'v57 p196 is the illness/lost-item/animals chapter and does not contain the 1,4,5,11 joy/event recast. The known celebrations helper is sourced from an external PDF, not Kashf. Do not execute or backfill it as a Kashf method until a real v57 source method is identified.',
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: true,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
+    notes: 'The end of the children chapter on printed p196 explicitly repeats the H1/H4/H5/H11 derived-board method for children, joys and clothing, before the illness chapter begins. Only the all-five-pure-malefic negative branch is executable for a bounded joy request; mixed/partial groups remain unresolved. Generic good news or life improvement is not this intent.',
   }),
 
   'relocation.p183.currentVsNewPlace': method({

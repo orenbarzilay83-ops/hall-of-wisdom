@@ -49,6 +49,7 @@ const P265_STATE_CONTINUITY_METHOD = 'state.p265.h1h2h9h15';
 const P257_MOTHER_METHOD = 'mother.p257.statusDayNight';
 const P267_HOPE_METHOD = 'hope.p267.fulfillment';
 const P176_MESSENGER_METHOD = 'messenger.p176.recast14511';
+const P196_JOY_METHOD = 'joy.p196.recast14511';
 const P273_PUNISHMENT_METHOD = 'fear.p273.punishmentSigns';
 const P240_TRAVEL_CAUTION_METHOD = 'travel.p240.roadCautionsH9H7';
 const P254_DREAM_METHOD = 'dream.p254.h9AndTransit';
@@ -397,6 +398,20 @@ function p176MessengerOutcomePolicy() {
     forbiddenInversions: freezeArray(['היעדר חמש עדויות מזיקות טהורות אינו מוכיח שהבקשה תיענה.', 'אין להגדיר כל צורה ממוזגת כמזיקה או כמיטיבה בשיטה זו.', 'אין להפעיל דרישה בלתי אפשרית של חמש צורות מיטיבות טהורות כדי להחזיר שלילה בכל לוח.']),
     excludedFromPrimaryVerdict: freezeArray(['הגעת מכתב, חבילה או חדשות; לוח המקור כתחליף ללוח הנגזר; כללי שקלול יתדות מעמ׳ 173–174 שלא הוכחו כבורר לדין זה.']),
     forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray(['השליחות בוודאות תצליח', 'המכתב יגיע', 'חדשות יגיעו', 'כל לוח שאינו מיטיב טהור מוכיח כישלון']),
+  });
+}
+
+function p196JoyRequestPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified', certificationBatch: 'professional-backfill-16',
+    goldenCaseIds: freezeArray(['PV-BF16-P196-ALL-MALEFIC', 'PV-BF16-P196-MIXED', 'PV-BF16-P196-NEWS-EXCLUDED']),
+    policyId: 'p196-joy-derived-board-negative-only-v1',
+    questionScopeHebrew: 'בקשת שמחה או אירוע מוגדר לפי סעיף הילדים, השמחות והלבושים בעמ׳ 196',
+    decisiveRuleHebrew: 'בתי מקור 1/4/5/11 נעשים אמהות ללוח חדש. כשבית 5 וכל היתדות 1/4/7/10 בלוח הנגזר מזיקים טהורים, תנאי הטובה אינו מתקיים והבקשה אינה נענית בענף זה.',
+    oneWayBranches: freezeArray(['כל חמש העדויות בלוח הנגזר מזיקות טהורות => בקשת השמחה אינה נענית']),
+    forbiddenInversions: freezeArray(['היעדר חמש עדויות מזיקות טהורות אינו מוכיח ששמחה תבוא.', 'אין לקדם צורה ממוזגת למיטיבה או למזיקה בשיטה זו.', 'אין להשתמש בדרישת חמש מיטיבות טהורות כדי לפסוק שלילה בכל לוח.']),
+    excludedFromPrimaryVerdict: freezeArray(['זמן האירוע', 'חדשות טובות ושיפור כללי', 'לוח המקור במקום הלוח הנגזר', 'פסק השליחים מעמ׳ 176 כשיטה מאוחדת']),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray(['שמחה בוודאות תבוא', 'לא תהיה לעולם שמחה', 'חדשות טובות יגיעו', 'האירוע יתרחש בתאריך מסוים']),
   });
 }
 
@@ -1724,6 +1739,7 @@ const METHOD_POLICIES = Object.freeze({
   [P257_MOTHER_METHOD]: p257MotherNightPolicy(),
   [P267_HOPE_METHOD]: p267HopeHouse11Policy(),
   [P176_MESSENGER_METHOD]: p176MessengerOutcomePolicy(),
+  [P196_JOY_METHOD]: p196JoyRequestPolicy(),
   [P273_PUNISHMENT_METHOD]: p273PunishmentPolicy(),
   [P240_TRAVEL_CAUTION_METHOD]: p240TravelCautionPolicy(),
   [P254_DREAM_METHOD]: p254DreamPolicy(),

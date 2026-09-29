@@ -189,7 +189,7 @@ function auditOutputForSafety(safetyBlock, { draft = null, draftPolarity = 'none
   };
 }
 
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 58, 'certification registry contains fifty-eight professionally certified methods');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 59, 'certification registry contains fifty-nine professionally certified methods');
 for (const id of [
   'marriage.p210.generalMarriageH1H2H7H8H10Judge',
   'marriage.p211.dissolutionH7StateMatrix',
@@ -924,7 +924,7 @@ assert(p254Venus.professionalVerdictSafety?.binaryClientVerdictAllowed === false
 assert(p254Venus.professionalVerdictSafety?.authoritativeClientDraftHebrew === p254VenusExec?.outputHebrew, 'p254 safety gate locks the exact source-bounded executor draft');
 assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes('profession.p254.h9Planet'), 'p254 profession method is explicitly professionally certified');
 // Dhamir subject-identification remains outside the client-verdict registry.
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 58, 'professional client-verdict certification count includes bounded p176 messenger outcome');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 59, 'professional client-verdict certification count includes bounded p196 joy request');
 
 const p176Negative = buildKashfCanonicalAiBridge({
   questionId: 'q-message', questionText: 'האם השליחות תשיג את מטרתה?',
@@ -943,6 +943,21 @@ assert(p176Negative.professionalVerdictSafety?.clientFacingCertified === true &&
 assert(p176Negative.professionalVerdictSafety?.authoritativeClientDraftHebrew === p176Negative.canonicalReading?.primaryFormula?.result?.executorResult?.outputHebrew, 'p176 exact source-bounded client draft is locked');
 assert(p176Unresolved.canonicalReading?.overallPositive === null && p176Unresolved.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'p176 mixed/partial group cannot become yes or no');
 assert(p176News.canonicalReading?.valid !== true && p176News.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'news arrival remains blocked even on a negative messenger board');
+
+for (const questionId of ['q-celebrations', 'q-joy-coming']) {
+  const joyNegative = buildKashfCanonicalAiBridge({
+    questionId, questionText: 'האם בקשת השמחה תתקיים?',
+    board: buildRamlBoardFromMothers(['1112', '1111', '1111', '1211']),
+  });
+  const joyUnresolved = buildKashfCanonicalAiBridge({
+    questionId, questionText: 'האם בקשת השמחה תתקיים?',
+    board: buildRamlBoardFromMothers(['1111', '1111', '1111', '1111']),
+  });
+  assert(joyNegative.canonicalReading?.overallPositive === false, `${questionId} p196 negative branch`);
+  assert(joyNegative.professionalVerdictSafety?.clientFacingCertified === true && joyNegative.professionalVerdictSafety?.binaryClientVerdictAllowed === true, `${questionId} exact negative draft certified`);
+  assert(joyNegative.professionalVerdictSafety?.authoritativeClientDraftHebrew === joyNegative.canonicalReading?.primaryFormula?.result?.executorResult?.outputHebrew, `${questionId} exact draft locked`);
+  assert(joyUnresolved.canonicalReading?.overallPositive === null && joyUnresolved.professionalVerdictSafety?.binaryClientVerdictAllowed === false, `${questionId} unresolved group cannot become yes/no`);
+}
 
 // PV-P265-STATE-* — only the first source clause may become a client sign.
 const p265StateGood = buildKashfCanonicalAiBridge({

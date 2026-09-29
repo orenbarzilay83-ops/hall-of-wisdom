@@ -44,6 +44,11 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
     doNotMixWith: ['news.arrival.unsupported', 'request.p176.h1h2GateThenH1H4', 'joy.p196.recast14511'],
     houses: [1, 4, 5, 11],
   },
+  'joy.p196.recast14511': {
+    aliases: ['האם בקשת השמחה תתקיים', 'שמחה או אירוע מוגדר', 'ילדים שמחות לבושים לוח נגזר'],
+    doNotMixWith: ['messenger.p176.recast14511', 'news.arrival.unsupported', 'hope.p267.fulfillment'],
+    houses: [1, 4, 5, 11],
+  },
   'pregnancy.p191.existsH5SilentEmpty': {
     aliases: ['האם יש הריון', 'האם ההריון קיים', 'האם ההריון נכון', 'האם היא בהריון', 'קיום הריון', 'H5 שותקת ריקה הריון', 'פתיחת דין הריון עמ 191'],
     doNotMixWith: ['pregnancy.p191.genderH5', 'pregnancy.p191.childSafetyH1H6H8', 'pregnancy.p191.deliveryDifficultyH1H5H15', 'pregnancy.p191-192.miscarriageRedH7NakisH8', 'pregnancy.p192.maternalSafetyH6H8H12', 'pregnancy.p192.monthCount'],

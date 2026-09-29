@@ -2189,10 +2189,10 @@ function computeMoneyAcquireP181(chart) {
   };
 }
 
-// Kashf p176 — one source-secure branch of the messengers' outcome rule.
+// Kashf pp176/196 — one source-secure branch of the repeated derived-board rule.
 // Do not turn the impossible all-five-pure-benefic condition into an
 // always-negative verdict; mixed/partial groups require further source work.
-function computeMessengerOutcomeP176(chart) {
+function computeRecast14511NegativeOnly(chart, sourcePage, subjectHebrew) {
   if (!Array.isArray(chart)) return null;
   const sourceMotherHouses = [1, 4, 5, 11];
   const sourceMothers = sourceMotherHouses.map((houseNumber) => {
@@ -2219,11 +2219,11 @@ function computeMessengerOutcomeP176(chart) {
   const allPureMalefic = conditionResults.every((item) => item.classification.saadNahs === 'nahs');
   const sourceOutcome = allPureMalefic ? 'request-not-fulfilled' : 'unresolved';
   const outputHebrew = allPureMalefic
-    ? 'לוח נפרד נבנה מבתי 1, 4, 5 ו־11 של הלוח המקורי. בית 5 וכל ארבע היתדות בלוח הנגזר מזיקים טהורים. לפי דין אחרית השליחים הבקשה אינה נענית. דין זה אינו קובע אם מכתב או חדשות יגיעו.'
-    : 'לוח נפרד נבנה מבתי 1, 4, 5 ו־11 של הלוח המקורי. עדות בית 5 והיתדות אינה בענף המזיק הטהור המוגדר; בקטע זה אין הכרעה מאומתת למצב הלוח הזה. אין להסיק מכאן שהבקשה תיענה או שלא תיענה.';
+    ? `לוח נפרד נבנה מבתי 1, 4, 5 ו־11 של הלוח המקורי. בית 5 וכל ארבע היתדות בלוח הנגזר מזיקים טהורים. לפי דין ${subjectHebrew} הבקשה אינה נענית. דין זה אינו קובע אם מכתב או חדשות יגיעו.`
+    : `לוח נפרד נבנה מבתי 1, 4, 5 ו־11 של הלוח המקורי. עדות בית 5 והיתדות אינה בענף המזיק הטהור המוגדר; בדין ${subjectHebrew} אין הכרעה מאומתת למצב הלוח הזה. אין להסיק מכאן שהבקשה תיענה או שלא תיענה.`;
 
   return {
-    sourceRef: 'כשף אל-אסרר עמ׳ 176',
+    sourceRef: `כשף אל-אסרר עמ׳ ${sourcePage}`,
     housesUsed: sourceMotherHouses,
     sourceMotherHouses,
     sourceMothers,
@@ -2233,9 +2233,17 @@ function computeMessengerOutcomeP176(chart) {
     recastConditionResults: conditionResults,
     sourceOutcome,
     positive: allPureMalefic ? false : null,
-    verdictType: 'messenger-outcome-recast-limited',
+    verdictType: sourcePage === 176 ? 'messenger-outcome-recast-limited' : 'joy-request-recast-limited',
     outputHebrew,
   };
+}
+
+function computeMessengerOutcomeP176(chart) {
+  return computeRecast14511NegativeOnly(chart, 176, 'אחרית השליחים');
+}
+
+function computeJoyRequestP196(chart) {
+  return computeRecast14511NegativeOnly(chart, 196, 'בקשת השמחה');
 }
 
 // Kashf v57 p266 — whether a person dismissed from service returns.
@@ -2793,6 +2801,7 @@ function computeHiddenActionP167(chart) {
 
 const CUSTOM_EXECUTORS = Object.freeze({
   'messenger.p176.recast14511': computeMessengerOutcomeP176,
+  'joy.p196.recast14511': computeJoyRequestP196,
   'enemy.p271.h1vsH12': computeEnemyPresenceH1H12P271,
   'illness.p197.h1h8ElementHumor': computeIllnessHumorH1H8P197,
   'friends.p263.h1h11': computeFriendshipH1H11P263,

@@ -404,8 +404,8 @@ window.QUESTION_BANK = [
   {
     id: 'q-celebrations',
     category: 'family', houseId: 5, topicId: 'completion', kashfTopicId: 'completion',
-    label: 'האם תהיה שמחה / אירוע?',
-    desc: 'האם בקרוב יבוא אירוע שמח — חתונה, לידה, שמחה',
+    label: 'האם בקשת השמחה או האירוע תתקיים?',
+    desc: 'דין ילדים, שמחות ולבושים לפי הלוח הנגזר; אין כאן חישוב מועד',
     clientFields: [{ id: 'eventType', label: 'מהו האירוע?', type: 'text', placeholder: 'חתונה / בר-מצווה / מסיבה...' }],
   },
   {
@@ -875,8 +875,8 @@ window.QUESTION_BANK = [
   {
     id: 'q-joy-coming',
     category: 'general', houseId: 3, topicId: 'siblings', kashfTopicId: 'siblings',
-    label: 'האם תבוא שמחה בקרוב?',
-    desc: 'האם בקרוב יגיע אירוע שמח, חדשות טובות, שיפור',
+    label: 'האם בקשת השמחה תתקיים?',
+    desc: 'אותו דין שמחה מוגדר; אינו קובע הגעת חדשות או שיפור כללי',
     clientFields: [F.matter],
   },
 

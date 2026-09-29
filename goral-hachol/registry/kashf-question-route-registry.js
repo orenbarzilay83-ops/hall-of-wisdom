@@ -224,10 +224,11 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
 
   'q-celebrations': route({
     questionId: 'q-celebrations',
-    disposition: 'KEEP',
+    disposition: 'RENAME',
     kashfIntentId: 'joy.occurrence',
     kashfMethodId: 'joy.p196.recast14511',
-    kashfRuntimeStatus: 'blocked-by-source',
+    kashfRuntimeStatus: 'ready',
+    note: 'Printed p196 children/joy/clothing recast. Only all-five-pure-malefic derived testimony yields the negative request branch; no general event prediction.',
   }),
 
   'q-joy-coming': route({
@@ -236,7 +237,8 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     aliasOf: 'q-celebrations',
     kashfIntentId: 'joy.occurrence',
     kashfMethodId: 'joy.p196.recast14511',
-    kashfRuntimeStatus: 'blocked-by-source',
+    kashfRuntimeStatus: 'ready',
+    note: 'Alias of the bounded joy request only; excludes generic good news and overall improvement.',
   }),
 
   'q-gift': route({
