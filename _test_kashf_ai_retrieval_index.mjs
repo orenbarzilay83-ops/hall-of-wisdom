@@ -44,6 +44,9 @@ function expectTop(query, methodId, options = {}) {
 expectTop('האם החולה יחלים', 'illness.p196.outcomeH15');
 expectTop('איפה בגוף החולי', 'illness.bodyPart.h6Figure');
 expectTop('האם יש הריון', 'pregnancy.p191.existsH5SilentEmpty');
+expectTop('האם המשימה שנמסרה לשליח תושלם', 'completion.p173.fireRows15910');
+expectTop('האם האירוע המתוכנן יושלם', 'completion.p173.fireRows15910');
+expectTop('האם אירוע השמחה המתוכנן יתקיים', 'completion.p173.fireRows15910');
 expectTop('בן או בת', 'pregnancy.p191.genderH5');
 expectTop('בתולה או גרושה', 'marriage.p204.previousStatusH7inH10');
 expectTop('מה גודל המוהר', 'marriage.p204.dowryH8');

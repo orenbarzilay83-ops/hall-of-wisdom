@@ -40,12 +40,12 @@ const STOPWORDS = new Set([
  */
 const RETRIEVAL_OVERRIDES = Object.freeze({
   'messenger.p176.recast14511': {
-    aliases: ['האם השליחות תשיג את מטרתה', 'אחרית שליחים', 'האם הבקשה שהעברתי באמצעות שליח תיענה'],
+    aliases: ['אחרית שליחים בלוח נגזר עמ 176', 'בתים 1 4 5 11 לשליחים'],
     doNotMixWith: ['news.arrival.unsupported', 'request.p176.h1h2GateThenH1H4', 'joy.p196.recast14511'],
     houses: [1, 4, 5, 11],
   },
   'joy.p196.recast14511': {
-    aliases: ['האם בקשת השמחה תתקיים', 'שמחה או אירוע מוגדר', 'ילדים שמחות לבושים לוח נגזר'],
+    aliases: ['שמחה בלוח נגזר עמ 196', 'ילדים שמחות לבושים לוח נגזר'],
     doNotMixWith: ['messenger.p176.recast14511', 'news.arrival.unsupported', 'hope.p267.fulfillment'],
     houses: [1, 4, 5, 11],
   },
@@ -236,8 +236,8 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
     houses: [1, 2, 4, 7, 10, 15],
   },
   'completion.p173.fireRows15910': {
-    aliases: ['האם העניין יושלם', 'האם הדבר יצליח', 'האם אצליח', 'השלמת העניין', 'הצלחת העניין'],
-    doNotMixWith: ['matter.p172.h17_h1011_thenCombine'],
+    aliases: ['האם העניין יושלם', 'האם הדבר יצליח', 'האם אצליח', 'השלמת העניין', 'הצלחת העניין', 'האם המשימה שנמסרה לשליח תושלם', 'האם האירוע המתוכנן יושלם', 'האם אירוע השמחה המתוכנן יתקיים'],
+    doNotMixWith: ['matter.p172.h17_h1011_thenCombine', 'messenger.p176.recast14511', 'joy.p196.recast14511'],
     houses: [1, 5, 9, 10],
   },
   'matter.p172.locationH2H16': {

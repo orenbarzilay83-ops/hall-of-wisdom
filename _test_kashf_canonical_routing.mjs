@@ -89,6 +89,11 @@ assert(getKashfMethod('travel.p239.seaOrLandByElement')?.kashfRuntimeStatus === 
 assert(getKashfMethod('travel.p239.profitEarthRowH2')?.kashfRuntimeStatus === 'blocked-by-source', 'p239 profit is not mislabeled source-ready while earth-row input remains unresolved');
 assert(getKashfMethod('joy.p196.recast14511')?.kashfRuntimeStatus === 'blocked-by-source', 'p196 joy source scope is correct but the contextual verdict selector is unresolved');
 assert(getKashfV57Knowledge('joy.p196.recast14511')?.v57?.hebrewRule, 'p196 joy route has Hebrew operational knowledge');
+for (const questionId of ['q-message', 'q-celebrations', 'q-joy-coming']) {
+  assertRoute(questionId, { canRunKashf: true, kashfMethodId: 'completion.p173.fireRows15910' });
+}
+assert(canRunKashfMethod('messenger.p176.recast14511') === false, 'specialized p176 messenger method remains blocked');
+assert(canRunKashfMethod('joy.p196.recast14511') === false, 'specialized p196 joy method remains blocked');
 assert(JSON.stringify(getKashfMethod('missing.p248-249.lifeH1H4H9Outcome')?.sourcePages) === JSON.stringify([248, 249]), 'missing-person life/death method points to original-scan pp248-249');
 
 // ── p205 primary scan: sought person's fifth, runtime hard stop --------

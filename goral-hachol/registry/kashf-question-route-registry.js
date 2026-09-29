@@ -190,10 +190,10 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
   'q-message': route({
     questionId: 'q-message',
     disposition: 'RENAME',
-    kashfIntentId: 'messenger.outcome',
-    kashfMethodId: 'messenger.p176.recast14511',
-    kashfRuntimeStatus: 'blocked-by-source',
-    note: 'Printed p176 tests mission outcome, not letter arrival. The contextual valence of H5 and angles in the derived board remains unresolved; no client verdict runs.',
+    kashfIntentId: 'completion.willComplete',
+    kashfMethodId: 'completion.p173.fireRows15910',
+    kashfRuntimeStatus: 'ready',
+    note: 'Apply printed p173 general completion to the concrete task carried by a messenger. This is an alternative general matter method, not the special p176 messengers recast; it does not decide letter or news arrival.',
   }),
 
   'q-news-arrive': route({
@@ -225,20 +225,20 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
   'q-celebrations': route({
     questionId: 'q-celebrations',
     disposition: 'RENAME',
-    kashfIntentId: 'joy.occurrence',
-    kashfMethodId: 'joy.p196.recast14511',
-    kashfRuntimeStatus: 'blocked-by-source',
-    note: 'Printed p196 children/joy/clothing recast, held pending contextual valence and collective evidence selector; no general event prediction.',
+    kashfIntentId: 'completion.willComplete',
+    kashfMethodId: 'completion.p173.fireRows15910',
+    kashfRuntimeStatus: 'ready',
+    note: 'Apply printed p173 general completion only to a concrete planned celebration/event. This does not execute the p196 joy recast or predict timing or generic good news.',
   }),
 
   'q-joy-coming': route({
     questionId: 'q-joy-coming',
     disposition: 'ALIAS',
     aliasOf: 'q-celebrations',
-    kashfIntentId: 'joy.occurrence',
-    kashfMethodId: 'joy.p196.recast14511',
-    kashfRuntimeStatus: 'blocked-by-source',
-    note: 'Alias of the bounded joy request only; excludes generic good news and overall improvement.',
+    kashfIntentId: 'completion.willComplete',
+    kashfMethodId: 'completion.p173.fireRows15910',
+    kashfRuntimeStatus: 'ready',
+    note: 'Alias of concrete planned celebration completion under p173; excludes unspecified joy, generic news and overall improvement.',
   }),
 
   'q-gift': route({

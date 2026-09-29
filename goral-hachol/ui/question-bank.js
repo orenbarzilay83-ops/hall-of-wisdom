@@ -159,10 +159,10 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-message',
-    category: 'general', houseId: 3, topicId: 'siblings', kashfTopicId: 'siblings',
-    label: 'האם השליחות תשיג את מטרתה?',
-    desc: 'אחרית השליחות והיענות לבקשה; לא בדיקת הגעת מכתב או חבילה',
-    clientFields: [{ id: 'msgFrom', label: 'מי השליח?', type: 'text', placeholder: 'שם / קשר' }],
+    category: 'general', houseId: 3, topicId: 'siblings', kashfTopicId: 'completion',
+    label: 'האם המשימה שנמסרה לשליח תושלם?',
+    desc: 'דין השלמת עניין למשימה מסוימת; אינו קובע אם מכתב או חבילה יגיעו',
+    clientFields: [{ id: 'msgFrom', label: 'מי השליח?', type: 'text', placeholder: 'שם / קשר' }, F.matter],
   },
   {
     id: 'q-yearly-forecast',
@@ -404,8 +404,8 @@ window.QUESTION_BANK = [
   {
     id: 'q-celebrations',
     category: 'family', houseId: 5, topicId: 'completion', kashfTopicId: 'completion',
-    label: 'האם בקשת השמחה או האירוע תתקיים?',
-    desc: 'דין ילדים, שמחות ולבושים לפי הלוח הנגזר; אין כאן חישוב מועד',
+    label: 'האם האירוע המתוכנן יושלם?',
+    desc: 'דין השלמת עניין לשמחה או לאירוע מסוים שכבר הוגדר; אין כאן חישוב מועד',
     clientFields: [{ id: 'eventType', label: 'מהו האירוע?', type: 'text', placeholder: 'חתונה / בר-מצווה / מסיבה...' }],
   },
   {
@@ -874,9 +874,9 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-joy-coming',
-    category: 'general', houseId: 3, topicId: 'siblings', kashfTopicId: 'siblings',
-    label: 'האם בקשת השמחה תתקיים?',
-    desc: 'אותו דין שמחה מוגדר; אינו קובע הגעת חדשות או שיפור כללי',
+    category: 'general', houseId: 3, topicId: 'siblings', kashfTopicId: 'completion',
+    label: 'האם אירוע השמחה המתוכנן יתקיים?',
+    desc: 'דין השלמת עניין לאירוע מסוים; אינו קובע הגעת חדשות או שיפור כללי',
     clientFields: [F.matter],
   },
 

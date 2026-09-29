@@ -53,9 +53,9 @@ export const KASHF_TOPIC_RULES = {
       sourceText: 'קח את ראש הראשון, החמישי, התשיעי והעשירי, והעמד מהם צורה. אם יצאה חיצונית — העניין לא יושלם; ואם יצאה פנימית — יושלם.',
       verdictByDakhalKharij: {
         kharij:          { text: 'העניין לא יושלם', positive: false },
-        'mujassad-kharij': { text: 'העניין ספק — נוטה לאי-השלמה', positive: false },
+        'mujassad-kharij': { text: 'צורה מתהפכת — אין הכרעה בדין השלמת העניין', positive: null },
         dakhil:          { text: 'העניין יושלם', positive: true },
-        'mujassad-dakhil': { text: 'העניין ספק — נוטה להשלמה', positive: true },
+        'mujassad-dakhil': { text: 'צורה קבועה — אין הכרעה בדין השלמת העניין', positive: null },
       },
     },
     altFormula: {

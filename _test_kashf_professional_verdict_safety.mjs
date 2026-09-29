@@ -782,6 +782,10 @@ assert(p173Complete.professionalVerdictSafety?.methodSpecificPolicy?.excludedFro
 const p173No = buildKashfCanonicalAiBridge({ questionId: 'q-success', questionText: 'האם העניין יושלם', board: makeBoard({ 1:'1112', 5:'1112', 9:'1112', 10:'2111' }) });
 assert(p173No.canonicalReading?.primaryFormula?.result?.resultPattern === '1112', 'p173 external fixture builds 1112');
 assert(p173No.canonicalReading?.overallPositive === false, 'p173 external result gives explicit non-completion');
+const p173Fixed = buildKashfCanonicalAiBridge({ questionId: 'q-success', questionText: 'האם העניין יושלם', board: buildRamlBoardFromMothers(['2111', '1111', '1111', '1111']) });
+const p173Mutable = buildKashfCanonicalAiBridge({ questionId: 'q-success', questionText: 'האם העניין יושלם', board: buildRamlBoardFromMothers(['1111', '1111', '1111', '2111']) });
+assert(p173Fixed.canonicalReading?.overallPositive === null && p173Fixed.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'p173 fixed figure has no source binary branch');
+assert(p173Mutable.canonicalReading?.overallPositive === null && p173Mutable.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'p173 mutable figure has no source binary branch');
 
 // PV-BF07-P183-PLACE-* — H4+H15 has explicit good/bad/mixed branches.
 const p183PlaceGood = buildKashfCanonicalAiBridge({ questionId: 'q-move-city', questionText: 'מעבר ממקום למקום', board: makeBoard({ 4:'1111', 15:'2211' }) });
@@ -938,9 +942,23 @@ const p176News = buildKashfCanonicalAiBridge({
   questionId: 'q-news-arrive', questionText: 'האם חדשות מרחוק יגיעו?',
   board: buildRamlBoardFromMothers(['1112', '1111', '1111', '1211']),
 });
-assert(p176Negative.canonicalReading?.valid !== true && p176Negative.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'p176 static five-malefic fixture with benefic neighbors cannot yield a client verdict');
-assert(p176Unresolved.canonicalReading?.valid !== true && p176Unresolved.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'p176 mixed/partial group cannot become yes or no');
+assert(p176Negative.resolution?.kashfMethodId === 'completion.p173.fireRows15910' && p176Negative.canonicalReading?.overallPositive === false, 'messenger task uses general p173 completion, not p176 specialized recast');
+assert(p176Unresolved.resolution?.kashfMethodId === 'completion.p173.fireRows15910', 'messenger task stays on the distinct general completion method');
 assert(p176News.canonicalReading?.valid !== true && p176News.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'news arrival remains blocked even on a negative messenger board');
+
+for (const questionId of ['q-message', 'q-celebrations', 'q-joy-coming']) {
+  const explicitCompletion = buildKashfCanonicalAiBridge({
+    questionId, questionText: 'האם העניין המסוים יושלם?',
+    board: buildRamlBoardFromMothers(['2111', '1111', '1111', '2111']),
+  });
+  const fixedCompletion = buildKashfCanonicalAiBridge({
+    questionId, questionText: 'האם העניין המסוים יושלם?',
+    board: buildRamlBoardFromMothers(['2111', '1111', '1111', '1111']),
+  });
+  assert(explicitCompletion.resolution?.kashfMethodId === 'completion.p173.fireRows15910' && explicitCompletion.canonicalReading?.overallPositive === true, `${questionId} exact general-completion positive branch`);
+  assert(explicitCompletion.professionalVerdictSafety?.clientFacingCertified === true && explicitCompletion.professionalVerdictSafety?.binaryClientVerdictAllowed === true, `${questionId} p173 explicit branch is certified`);
+  assert(fixedCompletion.canonicalReading?.overallPositive === null && fixedCompletion.professionalVerdictSafety?.binaryClientVerdictAllowed === false, `${questionId} fixed branch cannot become yes/no`);
+}
 
 for (const questionId of ['q-celebrations', 'q-joy-coming']) {
   const joyNegative = buildKashfCanonicalAiBridge({
@@ -951,8 +969,8 @@ for (const questionId of ['q-celebrations', 'q-joy-coming']) {
     questionId, questionText: 'האם בקשת השמחה תתקיים?',
     board: buildRamlBoardFromMothers(['1111', '1111', '1111', '1111']),
   });
-  assert(joyNegative.canonicalReading?.valid !== true && joyNegative.professionalVerdictSafety?.binaryClientVerdictAllowed === false, `${questionId} p196 static negative cannot become client verdict`);
-  assert(joyUnresolved.canonicalReading?.valid !== true && joyUnresolved.professionalVerdictSafety?.binaryClientVerdictAllowed === false, `${questionId} unresolved group cannot become yes/no`);
+  assert(joyNegative.resolution?.kashfMethodId === 'completion.p173.fireRows15910' && joyNegative.canonicalReading?.overallPositive === false, `${questionId} uses general p173 completion instead of p196 special recast`);
+  assert(joyUnresolved.resolution?.kashfMethodId === 'completion.p173.fireRows15910', `${questionId} stays scoped to general completion`);
 }
 
 // PV-P265-STATE-* — only the first source clause may become a client sign.
