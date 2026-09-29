@@ -189,7 +189,7 @@ function auditOutputForSafety(safetyBlock, { draft = null, draftPolarity = 'none
   };
 }
 
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 54, 'certification registry contains fifty-four professionally certified methods');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 55, 'certification registry contains fifty-five professionally certified methods');
 for (const id of [
   'marriage.p210.generalMarriageH1H2H7H8H10Judge',
   'marriage.p211.dissolutionH7StateMatrix',
@@ -916,7 +916,7 @@ assert(p254Venus.professionalVerdictSafety?.binaryClientVerdictAllowed === false
 assert(p254Venus.professionalVerdictSafety?.authoritativeClientDraftHebrew === p254VenusExec?.outputHebrew, 'p254 safety gate locks the exact source-bounded executor draft');
 assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes('profession.p254.h9Planet'), 'p254 profession method is explicitly professionally certified');
 // Dhamir subject-identification remains outside the client-verdict registry.
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 54, 'professional client-verdict certification count includes p265 state');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 55, 'professional client-verdict certification count includes p188 four-cast direction');
 
 // PV-P265-STATE-* — only the first source clause may become a client sign.
 const p265StateGood = buildKashfCanonicalAiBridge({

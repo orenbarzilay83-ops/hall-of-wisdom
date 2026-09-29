@@ -39,6 +39,7 @@ const P191_PREGNANCY_GENDER_METHOD = 'pregnancy.p191.genderH5';
 const P191_192_MISCARRIAGE_METHOD = 'pregnancy.p191-192.miscarriageRedH7NakisH8';
 const P196_ILLNESS_RECOVERY_METHOD = 'illness.p196.outcomeH15';
 const P188_HIDDEN_STILL_THERE_METHOD = 'hidden.p188.isStillThere';
+const P188_QUARTER_DIRECTION_METHOD = 'hidden.p188.quarterDirection';
 const P224_THIEF_RELATIONSHIP_METHOD = 'theft.p224.relationshipH7Recurrence';
 const P224_THEFT_RECOVERY_METHOD = 'theft.p224.recoveryH8';
 const P271_ENEMY_METHOD = 'enemy.p271.h1vsH12';
@@ -765,6 +766,34 @@ function p188HiddenStillTherePolicy() {
       'יש מטמון במקום משום שהשיטה יצאה חיובית',
       'הדבר נמצא בכיוון מסוים או בעומק מסוים',
       'חמישה מתוך שישה בתים מיטיבים ולכן הדבר כנראה שם',
+    ]),
+  });
+}
+
+function p188QuarterDirectionPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'four-independent-casts-p188',
+    goldenCaseIds: freezeArray(['P188-FOUR-CASTS-ONE', 'P188-FOUR-CASTS-MULTIPLE', 'P188-FOUR-CASTS-UNRESOLVED']),
+    policyId: 'p188-four-independent-quarter-casts-v1',
+    questionScopeHebrew: 'כיוון הדבר הנסתר במקום שנחלק לארבעה רבעים, עמ׳ 188',
+    decisiveRuleHebrew: 'צורה מיטיבה טהורה ופנימית מסמנת רבע חשוד; מזיקה טהורה וחיצונית שוללת רבע. ארבע צורות עצמאיות נדרשות. צורות אחרות אינן מוכרעות.',
+    oneWayBranches: freezeArray([
+      'מיטיב טהור+פנימי => אותו רבע חשוד לפי הכלל',
+      'מזיק טהור+חיצוני => אין באותו רבע דבר לפי הכלל',
+    ]),
+    forbiddenInversions: freezeArray([
+      'רבע שלא סומן כחשוד אינו נשלל אלא אם הופיע בו מזיק טהור וחיצוני.',
+      'ריבוי רבעים חשודים אינו מוכרע בהצבעת רוב או בבחירת הראשון.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'ארבע האמהות ובתי הלוח הרגיל אינם ארבע ההטלות הייעודיות.',
+      'שיטות עמ׳ 185–187 ו־190, והדין הנפרד אם הדבר עדיין במקומו.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'נקודת חפירה מדויקת או כיוון מצפן שלא סומן בקלט',
+      'קיום ודאי של מטמון מתוך סימון רבע חשוד',
+      'פסק כולל בהיעדר רבע חשוד יחיד וכל יתר הרבעים מוכרעים',
     ]),
   });
 }
@@ -1628,6 +1657,7 @@ const METHOD_POLICIES = Object.freeze({
   [P191_192_MISCARRIAGE_METHOD]: p191192MiscarriagePolicy(),
   [P196_ILLNESS_RECOVERY_METHOD]: p196IllnessRecoveryPolicy(),
   [P188_HIDDEN_STILL_THERE_METHOD]: p188HiddenStillTherePolicy(),
+  [P188_QUARTER_DIRECTION_METHOD]: p188QuarterDirectionPolicy(),
   [P224_THIEF_RELATIONSHIP_METHOD]: p224ThiefRelationshipPolicy(),
   [P224_THEFT_RECOVERY_METHOD]: p224TheftRecoveryPolicy(),
   [P271_ENEMY_METHOD]: p271EnemyPolicy(),

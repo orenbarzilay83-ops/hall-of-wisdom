@@ -60,13 +60,29 @@ assert.equal(treasure.canonicalExecution?.topicSupportingChecksExecuted, false);
 assert.equal(treasure.canonicalExecution?.topicBundleExecuted, false);
 
 // Direction UI selects ONLY the p188 four-cast procedure.
-// It cannot execute until the dedicated additional-cast input flow exists.
 const directionRoute = resolveKashfRouteByQuestionId('q-dig-direction');
 assert.equal(directionRoute.kashfMethodId, 'hidden.p188.quarterDirection');
-assert.equal(directionRoute.canRunKashf, false);
+assert.equal(directionRoute.canRunKashf, true);
 const directionReading = buildKashfReadingByQuestionId(board, 'q-dig-direction', { question: 'לאיזה כיוון לחפש?' });
 assert.equal(directionReading.valid, false);
 assert.equal(directionReading.kashfMethodId, 'hidden.p188.quarterDirection');
+assert.equal(directionReading.reason, 'four-independent-casts-required');
+const casts = (patterns) => ({ question: 'לאיזה כיוון לחפש?', dynFields: Object.fromEntries(patterns.map((pattern, index) => [`quarter${index + 1}Pattern`, pattern])) });
+const oneQuarter = buildKashfReadingByQuestionId(board, 'q-dig-direction', casts(['2111', '1112', '1212', '1112']));
+assert.equal(oneQuarter.valid, true);
+assert.deepEqual(oneQuarter.primaryFormula.result.executorResult.suspected, [1]);
+assert.deepEqual(oneQuarter.primaryFormula.result.executorResult.excluded, [2, 3, 4]);
+assert.equal(oneQuarter.overallPositive, null);
+assert.match(oneQuarter.verdict.text, /רבע 1 הוא הרבע החשוד היחיד/);
+assert.equal(isKashfMethodProfessionallyCertified('hidden.p188.quarterDirection'), true);
+const multiple = buildKashfReadingByQuestionId(board, 'q-dig-direction', casts(['2111', '2121', '1112', '1212']));
+assert.deepEqual(multiple.primaryFormula.result.executorResult.suspected, [1, 2]);
+assert.match(multiple.verdict.text, /המקור אינו נותן כלל לבחירת אחד/);
+const unresolved = buildKashfReadingByQuestionId(board, 'q-dig-direction', casts(['2111', '1111', '1112', '1212']));
+assert.deepEqual(unresolved.primaryFormula.result.executorResult.unresolved, [2]);
+assert.doesNotMatch(unresolved.verdict.text, /הרבע החשוד היחיד/);
+const invalidCast = buildKashfReadingByQuestionId(board, 'q-dig-direction', casts(['2111', '1112', '9999', '1112']));
+assert.equal(invalidCast.reason, 'four-independent-casts-required');
 
 // p185 recursive arithmetic is blocked at the printed 94 vs apparent 16x4 conflict.
 const p185 = getKashfMethod('hidden.p185.recursiveQuarterFireAir');

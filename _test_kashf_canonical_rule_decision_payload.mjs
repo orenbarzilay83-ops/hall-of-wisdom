@@ -62,16 +62,28 @@ console.log('\n--- Canonical Kashf Rule Decision payload ---');
   assert(decision.rejectedRuleIds.includes('illness.bodyPart.h6Figure'));
 }
 
-// 5. A blocked authoritative route activates nothing and never falls back.
+// 5. A source-ready route still requires four independent casts to activate.
 {
   const { bridge, decision } = realDecision('q-dig-direction', 'לאיזה כיוון לחפור?');
   assert.equal(bridge.resolution.kashfMethodId, 'hidden.p188.quarterDirection');
-  assert.equal(bridge.resolution.canExecute, false);
+  assert.equal(bridge.resolution.canExecute, true);
   assert.deepEqual(decision.activatedRuleIds, []);
   assert(decision.rejectedRuleIds.includes('hidden.p188.quarterDirection'));
   assert.equal(decision.executionAllowed, false);
   assert(decision.decisionSummary.includes('לא הופעל כלל כשף'));
   assert(decision.decisionSummary.includes('לא הופעל fallback'));
+}
+
+{
+  const bridge = buildKashfCanonicalAiBridge({
+    questionId: 'q-dig-direction', questionText: 'לאיזה כיוון לחפש?', board,
+    clientContext: { dynFields: { quarter1Pattern: '2111', quarter2Pattern: '1112', quarter3Pattern: '1212', quarter4Pattern: '1112' } },
+  });
+  const decision = buildKashfCanonicalRuleDecisionPayload(bridge);
+  assert.equal(bridge.canonicalReading?.valid, true);
+  assert.equal(bridge.professionalVerdictSafety?.clientFacingCertified, true);
+  assert.deepEqual(decision.activatedRuleIds, ['hidden.p188.quarterDirection']);
+  assert.equal(decision.executionAllowed, true);
 }
 
 // 6. Free-text retrieval may disagree, but Question Bank route still owns activation.

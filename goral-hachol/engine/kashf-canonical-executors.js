@@ -1011,6 +1011,41 @@ function computeHiddenStillThereP188(chart) {
   };
 }
 
+// The p188 directional procedure requires four NEW casts, separate from the
+// ordinary board. Their order refers only to the practitioner's four marked
+// physical quarters; the passage does not prescribe compass directions.
+function computeQuarterDirectionP188(_chart, clientContext = {}) {
+  const quarters = [1, 2, 3, 4].map(quarterNumber => {
+    const pattern = clientContext.dynFields?.[`quarter${quarterNumber}Pattern`];
+    if (typeof pattern !== 'string' || !/^[12]{4}$/.test(pattern)) {
+      throw new Error('Four independent quarter casts are required');
+    }
+    const classification = classifyCanonicalFigure(pattern);
+    const indication = classification.saadNahs === 'saad' && classification.dakhalKharij === 'dakhil'
+      ? 'suspected'
+      : classification.saadNahs === 'nahs' && classification.dakhalKharij === 'kharij'
+        ? 'excluded'
+        : 'unresolved';
+    return { quarterNumber, pattern, figureHebrew: classification.figureHebrew, classification, indication };
+  });
+  const suspected = quarters.filter(q => q.indication === 'suspected').map(q => q.quarterNumber);
+  const excluded = quarters.filter(q => q.indication === 'excluded').map(q => q.quarterNumber);
+  const unresolved = quarters.filter(q => q.indication === 'unresolved').map(q => q.quarterNumber);
+  const detail = quarters.map(q => `רבע ${q.quarterNumber}: ${q.figureHebrew} (${q.pattern}) — ${q.indication === 'suspected' ? 'חשוד לפי הכלל' : q.indication === 'excluded' ? 'נשלל לפי הכלל' : 'ללא הכרעה בכלל זה'}`).join('; ');
+  const outputHebrew = `${detail}. ${suspected.length === 1 && unresolved.length === 0
+    ? `רבע ${suspected[0]} הוא הרבע החשוד היחיד לפי הכלל. זו אינה הוכחה לקיום הדבר.`
+    : suspected.length > 1
+      ? 'כמה רבעים מסומנים כחשודים; המקור אינו נותן כלל לבחירת אחד מהם.'
+      : 'אין רבע יחיד שהכלל יכול לבחור מתוך ארבע התוצאות.'}`;
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 188; סיווגי הצורות עמ׳ 57–60',
+    sourceText: 'לכל אחד מארבעת חלקי המקום צורה נפרדת; מיטיב פנימי מסמן את המקום החשוד, מזיק חיצוני שולל אותו.',
+    quarters, suspected, excluded, unresolved,
+    positive: null, // A location indication is not a yes/no proof of existence.
+    outputHebrew,
+  };
+}
+
 
 // Kashf p196: H15 alone gives the primary recovery/prolongation indication.
 // Benefic => the patient recovers. Malefic => the illness is prolonged.
@@ -2684,6 +2719,7 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'relocation.p183.currentVsNewPlace': computeRelocationCurrentVsNewP183,
   'illness.p196.outcomeH15': computeIllnessRecoveryP196,
   'hidden.p188.isStillThere': computeHiddenStillThereP188,
+  'hidden.p188.quarterDirection': computeQuarterDirectionP188,
   'lostItem.p202.returnH6H8': computeLostItemReturnP202,
   'marriage.p204.previousStatusH7inH10': computeMarriagePreviousStatusP204,
   'love.p204.attentionFireRows1713': computeLoveAttentionP204,
@@ -2736,7 +2772,7 @@ export function hasCanonicalCustomExecutor(kashfMethodId) {
   return typeof CUSTOM_EXECUTORS[kashfMethodId] === 'function';
 }
 
-export function executeCanonicalCustomMethod(kashfMethodId, board) {
+export function executeCanonicalCustomMethod(kashfMethodId, board, clientContext = {}) {
   const executor = CUSTOM_EXECUTORS[kashfMethodId];
   if (typeof executor !== 'function') {
     const error = new Error(`No approved canonical custom executor for ${kashfMethodId}`);
@@ -2744,7 +2780,7 @@ export function executeCanonicalCustomMethod(kashfMethodId, board) {
     throw error;
   }
 
-  return executor(toLegacyChart(board));
+  return executor(toLegacyChart(board), clientContext);
 }
 
 export function listApprovedCanonicalLegacyExecutors() {

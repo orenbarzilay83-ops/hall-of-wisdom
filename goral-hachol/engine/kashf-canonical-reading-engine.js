@@ -148,7 +148,7 @@ function buildLegacyFunctionReading(board, method, clientContext = {}, v57Knowle
 
   try {
     const executorResult = isCustomExecutor
-      ? executeCanonicalCustomMethod(method.kashfMethodId, board)
+      ? executeCanonicalCustomMethod(method.kashfMethodId, board, clientContext)
       : executeCanonicalLegacyMethod(method.kashfMethodId, board);
     if (!executorResult || typeof executorResult !== 'object') {
       throw new Error('Approved canonical method-scoped executor returned no result');
@@ -344,6 +344,20 @@ export function buildKashfReadingByMethod(board, kashfMethodId, clientContext = 
       reason: 'v57-knowledge-missing',
       userMessage: 'השיטה מוכנה לחישוב אך חסר לה עוגן ידע עברי v57; ההפעלה נחסמה כדי שה-AI לא יסתמך על מקור שאינו שכבת הידע העברית הקנונית.',
     });
+  }
+
+  if (method.kashfMethodId === 'hidden.p188.quarterDirection') {
+    const casts = [1, 2, 3, 4].map(n => clientContext?.dynFields?.[`quarter${n}Pattern`]);
+    if (casts.some(pattern => typeof pattern !== 'string' || !/^[12]{4}$/.test(pattern))) {
+      return blockedResult({
+        kashfMethodId: method.kashfMethodId,
+        kashfIntentId: method.kashfIntentId,
+        status: method.kashfRuntimeStatus,
+        executorStatus: method.executorStatus,
+        reason: 'four-independent-casts-required',
+        userMessage: 'לפי כשף עמ׳ 188 יש להזין ארבע צורות תקינות מהטלות עצמאיות, אחת לכל רבע במקום החשוד. אין להסיק אותן מארבע האמהות או מבתי הלוח.',
+      });
+    }
   }
 
   if (method.executionKind === 'legacy-function'

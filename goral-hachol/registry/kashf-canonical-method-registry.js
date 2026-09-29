@@ -666,10 +666,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'hiddenTreasure',
     sourcePages: [188],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
-    executionKind: 'additional-cast',
-    executorStatus: 'pending',
-    notes: 'Printed p188 divides the suspected place into four quarters and casts one figure per direction: internal benefic indicates the suspected quarter; external malefic indicates nothing there, until four figures are completed. This requires a dedicated four-cast input flow and cannot be inferred from the existing board. It is the single selected q-dig-direction route; the p185 recursive arithmetic, p186 name/day and Tamtam methods, p187 root method and p190 recursive-triangle method are separate alternatives and never vote with it.',
+    runtimeAllowed: true,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
+    notes: 'Printed p188 four-quarter casts are supplied separately as quarter1Pattern..quarter4Pattern; no figure is inferred from the ordinary board. Strict pure-benefic+internal marks a suspected quarter, pure-malefic+external excludes one. Other figures are unresolved; multiple positive quarters do not become one direction. The p185/p186/p187/p190 methods do not vote or fall back.',
   }),
 
   'well.p188.recast1468': method({
