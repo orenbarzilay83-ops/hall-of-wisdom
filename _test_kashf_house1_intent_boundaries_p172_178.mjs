@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 
 import {
   getKashfMethod,
@@ -92,8 +93,8 @@ for (const methodId of [
   assert.equal(result.reason, 'executor-pending');
 }
 
-// p176 messenger recast: source is known but runtime must fail closed until
-// a dedicated derived-board executor preserves source and derived boards separately.
+// p176 messenger recast: wording is source-aligned, but the collective
+// H5+angles fortune test is still unresolved and must fail closed.
 const messengerMethod = getKashfMethod('messenger.p176.recast14511');
 assert.equal(messengerMethod.runtimeAllowed, false);
 assert.equal(messengerMethod.executionKind, 'recast-board');
@@ -103,9 +104,15 @@ assert.match(messengerMethod.notes || '', /separate derived board|NEW board|Sour
 const messengerRoute = resolveKashfRouteByQuestionId('q-message');
 assert.equal(messengerRoute.kashfMethodId, 'messenger.p176.recast14511');
 assert.equal(messengerRoute.canRunKashf, false);
-const messenger = buildKashfReadingByQuestionId(board, 'q-message', { question: 'האם המסר יגיע?' });
+assert.match(readFileSync(new URL('./goral-hachol/ui/question-bank.js', import.meta.url), 'utf8'), /id: 'q-message',[\s\S]*?label: 'האם השליחות תשיג את מטרתה\?'/);
+const messenger = buildKashfReadingByQuestionId(board, 'q-message', { question: 'האם השליחות תשיג את מטרתה?' });
 assert.equal(messenger.valid, false);
 assert.equal(messenger.reason, 'repair-required');
+const newsRoute = resolveKashfRouteByQuestionId('q-news-arrive');
+assert.equal(newsRoute.kashfMethodId, 'news.arrival.unsupported');
+assert.equal(newsRoute.aliasOf, null);
+assert.equal(newsRoute.canRunKashf, false);
+assert.equal(buildKashfReadingByQuestionId(board, 'q-news-arrive').reason, 'unsupported');
 
 // p177 recursive relative-thirteenth remains source-blocked, with no inferred mapping.
 const p177 = getKashfMethod('person.p177.relativeThirteenth');

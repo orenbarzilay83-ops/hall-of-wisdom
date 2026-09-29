@@ -160,9 +160,9 @@ window.QUESTION_BANK = [
   {
     id: 'q-message',
     category: 'general', houseId: 3, topicId: 'siblings', kashfTopicId: 'siblings',
-    label: 'האם המסר / המכתב יגיע?',
-    desc: 'לכל שליחות: הודעה, מכתב, חבילה — האם תגיע ליעד',
-    clientFields: [{ id: 'msgFrom', label: 'ממי המסר?', type: 'text', placeholder: 'שם / קשר' }],
+    label: 'האם השליחות תשיג את מטרתה?',
+    desc: 'אחרית השליחות והיענות לבקשה; לא בדיקת הגעת מכתב או חבילה',
+    clientFields: [{ id: 'msgFrom', label: 'מי השליח?', type: 'text', placeholder: 'שם / קשר' }],
   },
   {
     id: 'q-yearly-forecast',

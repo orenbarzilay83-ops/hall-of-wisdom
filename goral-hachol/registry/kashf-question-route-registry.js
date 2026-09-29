@@ -189,21 +189,20 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
 
   'q-message': route({
     questionId: 'q-message',
-    disposition: 'KEEP',
+    disposition: 'RENAME',
     kashfIntentId: 'messenger.outcome',
     kashfMethodId: 'messenger.p176.recast14511',
     kashfRuntimeStatus: 'repair-required',
-    note: 'Printed p176 tests the outcome of messengers and fulfillment of a request; the current arrival-of-a-letter label is not equivalent. Repair question scope before runtime.',
+    note: 'Printed p176 tests the outcome of messengers and fulfillment of a request, not letter arrival. The label is repaired, but the collective H5+angles fortune criterion remains under review; runtime stays blocked.',
   }),
 
   'q-news-arrive': route({
     questionId: 'q-news-arrive',
-    disposition: 'ALIAS',
-    aliasOf: 'q-message',
-    kashfIntentId: 'messenger.outcome',
-    kashfMethodId: 'messenger.p176.recast14511',
-    kashfRuntimeStatus: 'repair-required',
-    note: 'Arrival of generic news is not the printed p176 outcome-of-messengers/request-fulfilled intent. Do not treat this as an alias until the question scope is repaired.',
+    disposition: 'BLOCK',
+    kashfIntentId: 'news.arrival',
+    kashfMethodId: 'news.arrival.unsupported',
+    kashfRuntimeStatus: 'unsupported',
+    note: 'Arrival of generic news is not the printed p176 outcome-of-messengers/request-fulfilled intent. No verified Kashf arrival method has been selected.',
   }),
 
   'q-clothing-lucky': route({
