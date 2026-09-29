@@ -98,6 +98,36 @@ export function saveKashfReadingToArchive(kashfReading) {
   return { ok: true, record, total: archive.length };
 }
 
+// The supplemental spiritual reading has its own source and cannot be stored
+// as a Kashf or Hawi verdict. Preserve the board and individual book evidence.
+export function saveQawlSpiritualReadingToArchive(reading, qawlReading) {
+  if (typeof localStorage === 'undefined') return { ok: false, reason: 'localStorage unavailable' };
+  if (!qawlReading?.valid || qawlReading.sourceVolume !== 'al-qawl-al-jami') {
+    return { ok: false, reason: 'invalid al-Qawl reading' };
+  }
+  const archive = getGoralArchive();
+  const clientContext = reading?.clientContext || {};
+  const evidence = [
+    qawlReading.isqatEvidence?.text,
+    ...(qawlReading.directEvidence || []).map(e => e.text),
+    qawlReading.jinnTypeEvidence?.text,
+    qawlReading.qarinEvidence?.text,
+  ].filter(Boolean);
+  const record = {
+    id: makeId(), createdAt: nowIso(), method: 'qawl',
+    clientName: normalizeClientName(clientContext), clientContext,
+    question: reading?.question || clientContext.question || '',
+    topicHebrew: 'בדיקה רוחנית — אל־קול אל־ג׳אמיע', topicId: 'spiritualDiagnostics',
+    focusHouseNumber: null,
+    conclusion: evidence.length ? evidence.join('\n') : 'לא נמצאה עדות מפורשת בכללים שנבדקו; אין בכך פסק שאין פגיעה.',
+    spiritualDiagnosis: { ...qawlReading, verdict: null }, boardScore: null,
+    chart: reading?.chart || [], interpretation: null,
+  };
+  archive.unshift(record);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(archive));
+  return { ok: true, record, total: archive.length };
+}
+
 export function deleteGoralArchiveRecord(id) {
   if (typeof localStorage === 'undefined') return { ok: false };
 
@@ -184,6 +214,7 @@ export default {
   getGoralArchive,
   saveGoralReadingToArchive,
   saveKashfReadingToArchive,
+  saveQawlSpiritualReadingToArchive,
   deleteGoralArchiveRecord,
   clearGoralArchive,
   getGoralClientHistory,
@@ -195,6 +226,7 @@ if (typeof module !== 'undefined') {
     getGoralArchive,
     saveGoralReadingToArchive,
     saveKashfReadingToArchive,
+    saveQawlSpiritualReadingToArchive,
     deleteGoralArchiveRecord,
     clearGoralArchive,
     getGoralClientHistory,

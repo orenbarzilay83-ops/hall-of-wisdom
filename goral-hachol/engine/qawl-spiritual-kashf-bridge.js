@@ -95,6 +95,23 @@ function jinnTypeEvidence(patterns) {
   } : null;
 }
 
+function qarinEvidence(patterns, typeEvidence) {
+  // Printed p58: the 15×4 result equals the fourth figure, explained there
+  // as Jamaa in the mizan. Keep this conditional evidence separate from the
+  // element-based type and never infer a person or a cumulative diagnosis.
+  if (!typeEvidence || typeEvidence.resultPattern !== patterns[3] || patterns[14] !== '2222') return null;
+  const rule = SOURCE.jinnTypeRules.find(r => r.id === 'same-fourth-figure-jamaa-in-mizan-qarin');
+  return rule ? {
+    id: rule.id,
+    houses: [15, 4],
+    resultPattern: typeEvidence.resultPattern,
+    text: rule.resultHebrew,
+    sourceBook: 'القول الجامع في علم الرمل',
+    sourcePage: 58,
+    kind: 'conditional-qarin',
+  } : null;
+}
+
 export function buildQawlSpiritualReading(board, questionId = 'q-sorcery', clientContext = {}) {
   if (!QAWL_SPIRITUAL_QUESTION_IDS.includes(questionId)) {
     return { valid: false, status: 'unsupported-question', evidence: [] };
@@ -108,6 +125,7 @@ export function buildQawlSpiritualReading(board, questionId = 'q-sorcery', clien
   const isqat = remainder === null ? null : SOURCE.isqatSevenRules.results.find(r => r.remainder === remainder);
   const direct = [...directEvidence(patterns, clientContext.gender), ...derivedEvidence(patterns)];
   const jinnType = questionId === 'q-jinn-type' && remainder === 1 ? jinnTypeEvidence(patterns) : null;
+  const qarin = questionId === 'q-jinn-type' && remainder === 1 ? qarinEvidence(patterns, jinnType) : null;
 
   return {
     valid: true,
@@ -125,10 +143,12 @@ export function buildQawlSpiritualReading(board, questionId = 'q-sorcery', clien
     } : null,
     directEvidence: direct,
     jinnTypeEvidence: jinnType,
+    qarinEvidence: qarin,
     evidence: [
       ...(isqat ? [{ id: 'isqat-7-7-spiritual-diagnosis', sourcePage: 58 }] : []),
       ...direct.map(({ id, sourcePage, houses }) => ({ id, sourcePage, houses })),
       ...(jinnType ? [{ id: jinnType.id, sourcePage: 58, houses: [15, 4] }] : []),
+      ...(qarin ? [{ id: qarin.id, sourcePage: 58, houses: [15, 4] }] : []),
     ],
     // Absence of a matching house rule is not a negative verdict.
     verdict: null,
@@ -151,11 +171,15 @@ export function writeQawlSpiritualReading(reading) {
       : reading.remainder === null ? '<p>שיטת סוג הג׳ין 15×4 אינה מופעלת: דין אפס נקודות פתוחות אינו מפורש בכלל 7×7.</p>'
         : '<p>שיטת סוג הג׳ין 15×4 אינה מופעלת כאן: שארית 7×7 לא הצביעה על מס ג׳ין.</p>'
     : '';
+  const qarin = reading.qarinEvidence
+    ? `<p>ענף הקרין בעמ׳ 58: תוצאת 15×4 זהה לצורת בית 4, ובמאזן קהלה — ${escapeHtml(reading.qarinEvidence.text)}. זו עדות נפרדת, לא פסק כולל.</p>`
+    : '';
   return `<div class="kashf-reading-output qawl-spiritual-reading" dir="rtl">
-    <h3>בדיקה רוחנית — מקור משלים</h3>
+    <h3>בדיקה רוחנית — אל־קול אל־ג׳אמיע (מקור משלים)</h3>
     <p>שיטת 7×7: ${reading.isqatEvidence ? escapeHtml(reading.isqatEvidence.text) : 'בלוח אין נקודות פתוחות; הספר אינו מורה כיצד לדון בשארית אפס. כללי צורה ובית מוצגים בנפרד, אם הם מתקיימים.'}</p>
     ${ruleItems ? `<p>כללי צורה ובית שנמצאו בלוח:</p><ul>${ruleItems}</ul>` : '<p>לא נמצאה בלוח התאמה לכללי הצורה והבית שנבדקו; אין בכך לבדו הכרעה שאין פגיעה.</p>'}
     ${type}
+    ${qarin}
     <details><summary>פרטי חישוב ומקור ליועץ</summary>
       <p>القول الجامع في علم الرمل, עמ׳ 56–58. הספר נבדל מכשף אל־אסראר.</p>
       <p>7×7: ${reading.openCount} נקודות פתוחות בכל 16 הבתים; ${reading.remainder === null ? 'אין כלל שארית מאושר לאפס' : `שארית ${reading.remainder}`}.</p>

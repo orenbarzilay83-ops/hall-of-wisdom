@@ -1128,6 +1128,30 @@ async function runReading() {
         reading.clientContext?.clientName || ""
       );
     }
+    // The separate spiritual-diagnostics menu used to display the old Hawi
+    // risk score and inferred sorcerer/location hints. Its source material is
+    // al-Qawl, so use the verified evidence-only executor for this exact topic.
+    if (goralMode !== 'kashf' && reading.topicId === 'spiritualDiagnostics') {
+      const { buildQawlSpiritualReading, writeQawlSpiritualReading } =
+        await import('/goral-hachol/engine/qawl-spiritual-kashf-bridge.js');
+      const qawlQuestionId = selectedTopicId === 'spiritualDiagnostics'
+        && _hawiSelectedQuestion?.id === 'hawi-q-spirit-jinn'
+        ? 'q-jinn-type' : 'q-sorcery';
+      const externalReading = buildQawlSpiritualReading(
+        { entries: reading.chart, boardValidation: reading.boardValidation },
+        qawlQuestionId, { gender: reading.clientContext?.gender }
+      );
+      boardResult.innerHTML = buildBoardHtml(reading) + writeQawlSpiritualReading(externalReading);
+      window._lastReading = reading;
+      window._lastQawlReading = externalReading;
+      window.__LAST_GORAL_READING = reading;
+      window.__LAST_GORAL_INTERPRETATION = null;
+      try {
+        window.GORAL_CLIENT_ARCHIVE?.saveQawlSpiritualReadingToArchive?.(reading, externalReading);
+      } catch { /* Archive storage must not hide a completed reading. */ }
+      showScreen('board');
+      return;
+    }
     if (goralMode !== 'kashf' && window.HAWI_INTERPRETER?.interpretHawiQuestionInitial) {
       reading._precomputedInsight = window.HAWI_INTERPRETER.interpretHawiQuestionInitial(reading.question, reading);
     }
@@ -1211,6 +1235,9 @@ async function runReading() {
         }
         window._lastReading = reading;
         window._lastKashfReading = externalReading;
+        try {
+          window.GORAL_CLIENT_ARCHIVE?.saveQawlSpiritualReadingToArchive?.(reading, externalReading);
+        } catch { /* Archive storage must not hide a completed reading. */ }
         showScreen("kashf-reading");
         return;
       }
