@@ -47,6 +47,7 @@ const P197_ILLNESS_HUMOR_METHOD = 'illness.p197.h1h8ElementHumor';
 const P263_FRIENDSHIP_METHOD = 'friends.p263.h1h11';
 const P265_STATE_CONTINUITY_METHOD = 'state.p265.h1h2h9h15';
 const P257_MOTHER_METHOD = 'mother.p257.statusDayNight';
+const P267_HOPE_METHOD = 'hope.p267.fulfillment';
 const P273_PUNISHMENT_METHOD = 'fear.p273.punishmentSigns';
 const P240_TRAVEL_CAUTION_METHOD = 'travel.p240.roadCautionsH9H7';
 const P254_DREAM_METHOD = 'dream.p254.h9AndTransit';
@@ -440,7 +441,7 @@ function p206WomanFavorPolicy() {
     ]),
     excludedFromPrimaryVerdict: freezeArray([
       'desire.p206.querentWantsH7H11ThenH5 — אותה מכניקה אך שאלה סמנטית אחרת.',
-      'love.p205.directLoveH1PlacementH15 — אהבה ישירה, כרגע repair-required.',
+      'love.p205.ascendantAndSoughtFifth — אהבה ישירה, כרגע repair-required.',
       'marriage.p210.generalMarriageH1H2H7H8H10Judge — התאמת נישואין.',
       'love.p204.attentionFireRows1713 — למי מופנה המבט.',
     ]),
@@ -470,7 +471,7 @@ function p206QuerentDesirePolicy() {
     ]),
     excludedFromPrimaryVerdict: freezeArray([
       'love.p206.womanFavorH7H11ThenH5 — אותה מכניקה אך שאלה אחרת.',
-      'love.p205.directLoveH1PlacementH15 — אהבת אדם אחר.',
+      'love.p205.ascendantAndSoughtFifth — אהבת אדם אחר.',
       'marriage.p210.generalMarriageH1H2H7H8H10Judge — התאמת נישואין.',
     ]),
     forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
@@ -1189,7 +1190,7 @@ function p204AttentionPolicy() {
       'אין לייבא את ענפי הכלל הדומה בעמ׳ 170 כדי להשלים תוצאה.',
     ]),
     excludedFromPrimaryVerdict: freezeArray([
-      'love.p205.directLoveH1PlacementH15 — שאלת אהבה היא שיטה נפרדת וחסומה כרגע.',
+      'love.p205.ascendantAndSoughtFifth — שאלת אהבה היא שיטה נפרדת וחסומה כרגע.',
       'love.p206.womanFavorH7H11ThenH5 — מציאת חן היא שיטה נפרדת.',
       'marriage.p210.generalMarriageH1H2H7H8H10Judge — התאמת נישואין היא שיטה נפרדת.',
     ]),
@@ -1420,6 +1421,24 @@ function p257MotherNightPolicy() {
     ]),
     excludedFromPrimaryVerdict: freezeArray(['דין “בית זה” שאינו סגור', 'ענף היום וצורות נוגה', 'אבחון רפואי']),
     forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray(['אבחון בריאות האם', 'פסק יום לפי נוגה']),
+  });
+}
+
+function p267HopeHouse11Policy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-hope-p267-house11-fallback',
+    goldenCaseIds: freezeArray(['PV-P267-H11-BENEFIC', 'PV-P267-H11-MALEFIC', 'PV-P267-H11-MIXED']),
+    policyId: 'p267-hope-house11-fallback-v1',
+    questionScopeHebrew: 'סימן למימוש תקווה מענף בית התקווה בלבד',
+    decisiveRuleHebrew: 'צורה מיטיבה טהורה בבית התקווה מורה זכייה וטוב; מזיקה טהורה מורה אי־השלמה.',
+    oneWayBranches: freezeArray(['H11 מיטיב טהור => זכייה וטוב', 'H11 מזיק טהור => הדבר אינו נשלם']),
+    forbiddenInversions: freezeArray([
+      'ממוזג בבית 11 אינו פסק מיטיב או מזיק.',
+      'התנאי המורכב של בתי 1/2/5/13, חזרת בית 11 וטבע הבקשה עדיין אינו מחושב.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray(['completion.p173.fireRows15910 — השלמת עניין בשיטה אחרת', 'hope.p174.h5h11ThroughH1 — תקווה בשיטה אחרת']),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray(['מועד מימוש התקווה', 'פסק מן התנאי המורכב', 'פירוש צורה ממוזגת כפסק']),
   });
 }
 
@@ -1688,6 +1707,7 @@ const METHOD_POLICIES = Object.freeze({
   [P263_FRIENDSHIP_METHOD]: p263FriendshipPolicy(),
   [P265_STATE_CONTINUITY_METHOD]: p265StateContinuityPolicy(),
   [P257_MOTHER_METHOD]: p257MotherNightPolicy(),
+  [P267_HOPE_METHOD]: p267HopeHouse11Policy(),
   [P273_PUNISHMENT_METHOD]: p273PunishmentPolicy(),
   [P240_TRAVEL_CAUTION_METHOD]: p240TravelCautionPolicy(),
   [P254_DREAM_METHOD]: p254DreamPolicy(),

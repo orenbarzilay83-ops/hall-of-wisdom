@@ -169,14 +169,14 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
     doNotMixWith: ['siblings.p182.h1h3'],
     houses: [3],
   },
-  'love.p205.directLoveH1PlacementH15': {
+  'love.p205.ascendantAndSoughtFifth': {
     aliases: ['האם הוא אוהב אותי', 'האם אדם זה אוהב אותי', 'האם הוא אוהב אותך', 'אהבה ישירה', 'האם יש לו רצון בי'],
     doNotMixWith: ['love.p204.attentionFireRows1713', 'love.p206.womanFavorH7H11ThenH5', 'marriage.p211.dissolutionH7StateMatrix'],
-    houses: [1, 15],
+    houses: [1], // The sought person's relative fifth is unresolved; H5/H15 are not licensed inputs.
   },
   'marriage.p211.dissolutionH7StateMatrix': {
     aliases: ['האם תהיה פרידה בנישואין', 'האם הזוג יתגרש', 'יציבות הנישואין', 'פירוק הנישואין', 'האם הנישואין יישארו קיימים'],
-    doNotMixWith: ['marriage.p210.generalMarriageH1H2H7H8H10Judge', 'love.p205.directLoveH1PlacementH15'],
+    doNotMixWith: ['marriage.p210.generalMarriageH1H2H7H8H10Judge', 'love.p205.ascendantAndSoughtFifth'],
     houses: [7],
   },
   'missing.p249.returnAnglesJudge': {
@@ -237,7 +237,7 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
   },
   'friend.p173.uniqueTariqBalance': {
     aliases: ['האם הידיד אוהב אותי לפי דרך במאזן', 'דרך יחידה במאזן ידיד', 'האם הידיד פונה לאחר'],
-    doNotMixWith: ['love.p205.directLoveH1PlacementH15', 'love.p204.attentionFireRows1713'],
+    doNotMixWith: ['love.p205.ascendantAndSoughtFifth', 'love.p204.attentionFireRows1713'],
     houses: [7, 15],
   },
   'hope.p174.h5h11ThroughH1': {
@@ -432,7 +432,7 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
   },
   'friends.p263.h1h11': {
     aliases: ['טיב הקשר בין חברים', 'האם חברים מועילים זה לזה', 'נזק הדדי בחברות'],
-    doNotMixWith: ['hope.p267.fulfillment', 'love.p205.directLoveH1PlacementH15'],
+    doNotMixWith: ['hope.p267.fulfillment', 'love.p205.ascendantAndSoughtFifth'],
     houses: [1, 11],
   },
   'state.p265.h1h2h9h15': {

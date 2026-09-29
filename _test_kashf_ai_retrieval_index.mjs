@@ -166,14 +166,14 @@ for (const [methodId, questionId, houses, separation] of [
   assert(record?.doNotMixWith.includes(separation), methodId + ' retrieval preserves neighboring-method separation');
 }
 
-const p205RepairRecord = getKashfAiRetrievalRecord('love.p205.directLoveH1PlacementH15');
+const p205RepairRecord = getKashfAiRetrievalRecord('love.p205.ascendantAndSoughtFifth');
 assert(p205RepairRecord != null, 'repaired p205 direct-love remains indexed for knowledge retrieval');
-assert(getKashfAiRetrievalRecord('love.p205.directLoveH1PlacementH5Relation') == null, 'mistaken H5 p205 retrieval id is absent');
+assert(getKashfAiRetrievalRecord('love.p205.directLoveH1PlacementH15') == null, 'mistaken H15 p205 retrieval id is absent');
 assert(p205RepairRecord?.kashfRuntimeStatus === 'repair-required', 'p205 retrieval exposes repair-required source status');
 assert(p205RepairRecord?.runtimeAllowed === false && p205RepairRecord?.executorStatus === 'pending', 'p205 retrieval cannot promote the blocked executor');
 assert(p205RepairRecord?.questionIds.includes('q-love'), 'p205 retrieval stays linked to q-love');
-assert(JSON.stringify(p205RepairRecord?.houses) === JSON.stringify([1,15]), 'p205 retrieval exposes H1 and visually verified H15 as the primary source scope');
-assert(p205RepairRecord?.v57?.hebrewRule.includes('בבית החמישה־עשר'), 'p205 retrieval carries visually verified H15 Hebrew knowledge');
+assert(JSON.stringify(p205RepairRecord?.houses) === JSON.stringify([1]), 'p205 retrieval exposes H1 without inventing a fixed house for the relative fifth');
+assert(p205RepairRecord?.v57?.hebrewRule.includes('בחמישי של המבוקש'), 'p205 retrieval carries the printed relative fifth');
 
 const motherNightRecord = getKashfAiRetrievalRecord('mother.p257.statusDayNight');
 assert(motherNightRecord?.runtimeAllowed === true && motherNightRecord?.executorStatus === 'ready', 'p257 limited night-placement method is runnable with explicit time input');

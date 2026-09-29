@@ -795,8 +795,8 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     notes: 'Canonical pp210-211 general-marriage executor is wired. It preserves the source roles of H1/H2 for the man and marriage, H7/H8 for the woman, H10 for what occurs between them and H15 for the outcome; it then performs the explicit H1+H5 derivation for the final good/opposite judgment. Only source-explicit branches are asserted, and mixed testimony remains unresolved.',
   }),
 
-  'love.p205.directLoveH1PlacementH15': method({
-    kashfMethodId: 'love.p205.directLoveH1PlacementH15',
+  'love.p205.ascendantAndSoughtFifth': method({
+    kashfMethodId: 'love.p205.ascendantAndSoughtFifth',
     kashfIntentId: 'love.doesPersonLoveMe',
     topicId: 'marriage',
     sourcePages: [205],
@@ -804,7 +804,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     runtimeAllowed: false,
     executionKind: 'custom-engine',
     executorStatus: 'pending',
-    notes: 'Visual recheck of the printed p205 scan confirms H15: انظر البيت الخامس عشر بالنسبة إلى الطالع. The prior H5 repair was based on a text-layer misread and is reversed. The H1/ascendant figure is judged by recurrence/placement; the printed negative list still names 6,8,3,12 while the standard cadents are 3,6,9,12. Runtime remains blocked until that placement anomaly, the H15↔ascendant نسبة relation, and the final وإن كان في قبضتك clause are source-closed. Do not substitute p204 attention or p206 favor/desire.',
+    notes: 'Printed p205 scan reads الخامس المطلوب بالنسبة إلى الطالع (the fifth of the sought relative to the ascendant), not H15. The secondary Arabic PDF is a derivative transcription that says H15 and conflicts with the scan. The printed negative list names 6,8,3,12, unlike standard cadents 3,6,9,12. Runtime remains blocked until the relative fifth, placement collisions, relation and final قبضتك clause are source-closed. Do not substitute p204 attention or p206 favor/desire.',
   }),
 
   'love.p204.attentionFireRows1713': method({
@@ -1745,11 +1745,11 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfIntentId: 'hope.fulfillment',
     topicId: 'friendsHope',
     sourcePages: [267],
-    kashfRuntimeStatus: 'repair-required',
-    runtimeAllowed: false,
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Canonical hope method requires incoming conditions, H11 recurrence, nature matching and fallback; current count-quality implementation is not source-equivalent.',
+    executorStatus: 'ready',
+    notes: 'Only the explicit p267 H11 fallback runs: pure benefic gives hope and good; pure malefic gives non-completion; mixed remains unresolved. The compound H1/H2/H5/H13, H11 recurrence and nature-of-request test remain unimplemented and are never inferred by absence.',
   }),
 
   'dream.p254.h9AndTransit': method({

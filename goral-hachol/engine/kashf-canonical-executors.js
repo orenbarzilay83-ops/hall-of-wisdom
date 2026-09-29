@@ -554,6 +554,32 @@ function computeLoveAttentionP204(chart) {
   };
 }
 
+// Printed p267 gives a separate House 11 fallback after the compound
+// H1/H2/H5/H13 and recurrence test. Only that explicit fallback runs here;
+// neither failure of the compound test nor a mixed H11 is inverted into a verdict.
+function computeHopeHouse11FallbackP267(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h11 = findCanonicalHouse(chart, 11);
+  const pattern = h11?.key || h11?.pattern || null;
+  if (!pattern) return null;
+  const classification = classifyCanonicalFigure(pattern);
+  const outcome = classification.saadNahs === 'saad' ? 'hope-and-good'
+    : classification.saadNahs === 'nahs' ? 'not-completed' : 'unresolved';
+  const outputHebrew = outcome === 'hope-and-good'
+    ? `בבית התקווה מופיעה ${classification.figureHebrew} (${pattern}), צורה מיטיבה. סימן זה מורה על זכייה וטוב.`
+    : outcome === 'not-completed'
+      ? `בבית התקווה מופיעה ${classification.figureHebrew} (${pattern}), צורה מזיקה. סימן זה מורה שהדבר אינו נשלם.`
+      : `צורת בית התקווה, ${classification.figureHebrew || pattern}, אינה נותנת הכרעה בענף זה.`;
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 267',
+    sourceText: 'אלא אם בבית התקווה צורה מיטיבה — זכייה וטוב; ואם מזיקה — הדבר אינו נשלם.',
+    housesUsed: [11], h11Pattern: pattern, classification: classification.saadNahs,
+    branch: 'house11-fallback-only', outcome,
+    positive: outcome === 'hope-and-good' ? true : outcome === 'not-completed' ? false : null,
+    outputHebrew,
+  };
+}
+
 // p204 uses the source's explicit "mutable" and "fixed" figure classes.
 // Source classification (working pp. 57-60): four mutable + four fixed only.
 // The other eight incoming/outgoing figures are NOT silently forced into either class.
@@ -2760,6 +2786,7 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'lostItem.p202.returnH6H8': computeLostItemReturnP202,
   'marriage.p204.previousStatusH7inH10': computeMarriagePreviousStatusP204,
   'love.p204.attentionFireRows1713': computeLoveAttentionP204,
+  'hope.p267.fulfillment': computeHopeHouse11FallbackP267,
   'marriage.p204.dowryH8': computeDowryH8P204,
   'theft.p225.thiefDescriptionH7': computeThiefDescriptionP225,
   'pregnancy.p191.existsH5SilentEmpty': computePregnancyExistenceP191,

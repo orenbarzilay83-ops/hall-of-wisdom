@@ -189,7 +189,7 @@ function auditOutputForSafety(safetyBlock, { draft = null, draftPolarity = 'none
   };
 }
 
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 55, 'certification registry contains fifty-five professionally certified methods');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 57, 'certification registry contains fifty-seven professionally certified methods');
 for (const id of [
   'marriage.p210.generalMarriageH1H2H7H8H10Judge',
   'marriage.p211.dissolutionH7StateMatrix',
@@ -240,8 +240,16 @@ for (const id of [
   'pregnancy.p191.deliveryDifficultyH1H5H15',
   'spiritual.p167.hiddenActionAirRows46815',
   'money.p179.sourceByIncomingHonorHouse',
+  'hope.p267.fulfillment',
 ]) {
   assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes(id), id + ' is explicitly professionally certified');
+}
+
+for (const [h11, polarity] of [['2211', 'positive'], ['2221', 'negative'], ['1121', 'non-binary']]) {
+  const bridge = buildKashfCanonicalAiBridge({ questionId: 'q-wish', questionText: 'האם משאלתי תתגשם?', board: makeBoard({ 11: h11 }) });
+  assert(bridge.professionalVerdictSafety?.clientFacingCertified === true, 'p267 limited H11 branch is professionally certified');
+  assert(bridge.professionalVerdictSafety?.authoritativePolarity === polarity, `p267 H11 ${h11} keeps exact source polarity`);
+  assert(bridge.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenInversions?.some(text => text.includes('התנאי המורכב')), 'p267 policy forbids deriving the compound condition');
 }
 
 // PV-BF05-P224 — printed H8 theft recovery branches and the unresolved mixed case.
@@ -916,7 +924,7 @@ assert(p254Venus.professionalVerdictSafety?.binaryClientVerdictAllowed === false
 assert(p254Venus.professionalVerdictSafety?.authoritativeClientDraftHebrew === p254VenusExec?.outputHebrew, 'p254 safety gate locks the exact source-bounded executor draft');
 assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes('profession.p254.h9Planet'), 'p254 profession method is explicitly professionally certified');
 // Dhamir subject-identification remains outside the client-verdict registry.
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 55, 'professional client-verdict certification count includes p188 four-cast direction');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 57, 'professional client-verdict certification count includes p257 mother and p267 hope');
 
 // PV-P265-STATE-* — only the first source clause may become a client sign.
 const p265StateGood = buildKashfCanonicalAiBridge({

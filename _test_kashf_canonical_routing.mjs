@@ -91,26 +91,26 @@ assert(getKashfMethod('joy.p196.recast14511')?.kashfRuntimeStatus === 'blocked-b
 assert(getKashfV57Knowledge('joy.p196.recast14511') === null, 'false p196 joy mapping is not fabricated into v57 Hebrew knowledge');
 assert(JSON.stringify(getKashfMethod('missing.p248-249.lifeH1H4H9Outcome')?.sourcePages) === JSON.stringify([248, 249]), 'missing-person life/death method points to original-scan pp248-249');
 
-// ── p205 visual-scan correction: H15 restored; runtime hard stop -------
-const p205LoveMethod = getKashfMethod('love.p205.directLoveH1PlacementH15');
+// ── p205 primary scan: sought person's fifth, runtime hard stop --------
+const p205LoveMethod = getKashfMethod('love.p205.ascendantAndSoughtFifth');
 assert(p205LoveMethod?.kashfRuntimeStatus === 'repair-required', 'p205 direct-love is repair-required after scan verification');
 assert(p205LoveMethod?.runtimeAllowed === false && p205LoveMethod?.executorStatus === 'pending', 'p205 direct-love cannot run while relation semantics are unresolved');
-assert(getKashfMethod('love.p205.directLoveH1PlacementH5Relation') == null, 'mistaken H5 p205 method id is removed');
+assert(getKashfMethod('love.p205.directLoveH1PlacementH15') == null, 'mistaken H15 p205 method id is removed');
 assertRoute('q-love', {
   ok: true,
   canRunKashf: false,
   kashfIntentId: 'love.doesPersonLoveMe',
-  kashfMethodId: 'love.p205.directLoveH1PlacementH15',
+  kashfMethodId: 'love.p205.ascendantAndSoughtFifth',
   kashfRuntimeStatus: 'repair-required',
   runtimeAllowed: false,
   executorStatus: 'pending',
 });
 const p205LoveAlias = resolveKashfRouteByQuestionId('q-love-desire');
 assert(p205LoveAlias.aliasOf === 'q-love', 'q-love-desire remains an explicit alias of q-love');
-assert(p205LoveAlias.kashfMethodId === 'love.p205.directLoveH1PlacementH15' && p205LoveAlias.canRunKashf === false, 'q-love-desire inherits the repaired p205 hard stop');
-const p205LoveV57 = getKashfV57Knowledge('love.p205.directLoveH1PlacementH15');
-assert(p205LoveV57?.v57?.hebrewRule.includes('בבית החמישה־עשר'), 'p205 Hebrew operational knowledge records visually verified H15 from the primary scan');
-assert(!p205LoveV57?.v57?.hebrewRule.includes('בבית החמישי, המכונה כאן המבוקש'), 'p205 Hebrew operational knowledge no longer carries the mistaken H5 repair wording');
+assert(p205LoveAlias.kashfMethodId === 'love.p205.ascendantAndSoughtFifth' && p205LoveAlias.canRunKashf === false, 'q-love-desire inherits the repaired p205 hard stop');
+const p205LoveV57 = getKashfV57Knowledge('love.p205.ascendantAndSoughtFifth');
+assert(p205LoveV57?.v57?.hebrewRule.includes('בחמישי של המבוקש'), 'p205 Hebrew knowledge records the printed relative fifth');
+assert(!p205LoveV57?.v57?.hebrewRule.includes('בבית החמישה־עשר'), 'p205 Hebrew knowledge does not assert the derivative PDF H15 reading');
 assert(p205LoveV57?.arabicVerification?.notes?.includes('6,8,3,12'), 'p205 verification notes preserve the printed 6,8,3,12 anomaly');
 assert(p205LoveV57?.arabicVerification?.notes?.includes('3,6,9,12'), 'p205 verification notes preserve the standard-cadent comparison instead of silently normalizing');
 
@@ -1062,6 +1062,16 @@ function makeP204Board(overrides = {}) {
     boardValidation: { isValid: true, warnings: [] },
   };
 }
+
+// p267: the House 11 fallback is independent of the unresolved compound test.
+assertRoute('q-wish', { ok: true, canRunKashf: true, kashfMethodId: 'hope.p267.fulfillment' });
+const wishGood = buildKashfReadingByQuestionId(makeP204Board({ 11: '2211' }), 'q-wish');
+const wishBad = buildKashfReadingByQuestionId(makeP204Board({ 11: '2221' }), 'q-wish');
+const wishMixed = buildKashfReadingByQuestionId(makeP204Board({ 11: '1121' }), 'q-wish');
+assert(wishGood.valid && wishGood.primaryFormula?.result?.executorResult?.outcome === 'hope-and-good', 'p267 H11 pure benefic gives the printed fallback');
+assert(wishBad.valid && wishBad.primaryFormula?.result?.executorResult?.outcome === 'not-completed', 'p267 H11 pure malefic gives the printed fallback');
+assert(wishMixed.valid && wishMixed.overallPositive === null, 'p267 mixed H11 remains unresolved');
+assert(wishGood.primaryFormula?.result?.executorResult?.housesUsed?.join(',') === '11', 'p267 limited executor does not silently calculate the compound condition');
 
 assertRoute('q-marriage-thayib', {
   ok: true,

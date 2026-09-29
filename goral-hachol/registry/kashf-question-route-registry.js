@@ -549,7 +549,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     questionId: 'q-love',
     disposition: 'KEEP',
     kashfIntentId: 'love.doesPersonLoveMe',
-    kashfMethodId: 'love.p205.directLoveH1PlacementH15',
+    kashfMethodId: 'love.p205.ascendantAndSoughtFifth',
     kashfRuntimeStatus: 'repair-required',
     note: 'Dedicated body-source p205 love question. Keep separate from p264 friendship/love material.',
   }),
@@ -559,7 +559,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     disposition: 'ALIAS',
     aliasOf: 'q-love',
     kashfIntentId: 'love.doesPersonLoveMe',
-    kashfMethodId: 'love.p205.directLoveH1PlacementH15',
+    kashfMethodId: 'love.p205.ascendantAndSoughtFifth',
     kashfRuntimeStatus: 'repair-required',
     note: 'Alias only after wording is made directional to match the source question “does this person love you?”.',
   }),
@@ -1114,8 +1114,8 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     disposition: 'KEEP',
     kashfIntentId: 'hope.fulfillment',
     kashfMethodId: 'hope.p267.fulfillment',
-    kashfRuntimeStatus: 'repair-required',
-    note: 'Must route to the dedicated p267 hope method, not completion p173.',
+    kashfRuntimeStatus: 'ready',
+    note: 'Dedicated p267 House 11 fallback only. Compound conditions and request-nature matching remain unimplemented; no p173 completion substitution.',
   }),
 
   'q-dream': route({
