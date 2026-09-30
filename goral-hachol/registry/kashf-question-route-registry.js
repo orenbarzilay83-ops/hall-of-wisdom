@@ -475,11 +475,11 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
 
   'q-debts': route({
     questionId: 'q-debts',
-    disposition: 'BLOCK',
-    kashfIntentId: 'debt.outcome',
-    kashfMethodId: 'debt.outcome.unsupported',
-    kashfRuntimeStatus: 'unsupported',
-    note: 'The broad old-debt question is not assigned a canonical body method. p179 financial-claim material is not generalized automatically.',
+    disposition: 'RENAME',
+    kashfIntentId: 'completion.willComplete',
+    kashfMethodId: 'completion.p173.fireRows15910',
+    kashfRuntimeStatus: 'ready',
+    note: 'Printed p173 general completion applies only to a concrete collection effort already underway. It does not execute p179 debt walking, decide amount/timing/payment mechanism, or diagnose the debtor.',
   }),
 
   'q-trade': route({
@@ -511,11 +511,11 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
 
   'q-sell-property': route({
     questionId: 'q-sell-property',
-    disposition: 'BLOCK',
-    kashfIntentId: 'property.sale',
-    kashfMethodId: 'property.sale.unsupported',
-    kashfRuntimeStatus: 'unsupported',
-    note: 'No audited body-source canonical method has been selected for sale of a specific property; do not fall back to p218 commerce.',
+    disposition: 'RENAME',
+    kashfIntentId: 'completion.willComplete',
+    kashfMethodId: 'completion.p173.fireRows15910',
+    kashfRuntimeStatus: 'ready',
+    note: 'Printed p173 general completion applies only to a concrete sale effort already underway. It does not execute p218 commerce or decide buyer, price, timing, or terms.',
   }),
 
   'q-missing-money': route({

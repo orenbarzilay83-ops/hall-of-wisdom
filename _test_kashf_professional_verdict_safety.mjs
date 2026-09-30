@@ -786,6 +786,15 @@ const p173Fixed = buildKashfCanonicalAiBridge({ questionId: 'q-success', questio
 const p173Mutable = buildKashfCanonicalAiBridge({ questionId: 'q-success', questionText: 'האם העניין יושלם', board: buildRamlBoardFromMothers(['1111', '1111', '1111', '2111']) });
 assert(p173Fixed.canonicalReading?.overallPositive === null && p173Fixed.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'p173 fixed figure has no source binary branch');
 assert(p173Mutable.canonicalReading?.overallPositive === null && p173Mutable.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'p173 mutable figure has no source binary branch');
+for (const [questionId, questionText] of [
+  ['q-debts', 'האם מהלך הגבייה המסוים יושלם?'],
+  ['q-sell-property', 'האם מהלך המכירה המסוים יושלם?'],
+]) {
+  const bridge = buildKashfCanonicalAiBridge({ questionId, questionText, board: buildRamlBoardFromMothers(['2111', '1111', '1111', '2111']) });
+  assert(bridge.resolution?.kashfMethodId === 'completion.p173.fireRows15910', `${questionId} uses only general completion`);
+  assert(bridge.professionalVerdictSafety?.isSafe === true && bridge.professionalVerdictSafety?.clientFacingCertified === true, `${questionId} completion passes professional safety`);
+  assert(bridge.canonicalReading?.overallPositive === true, `${questionId} explicit internal branch completes the stated process`);
+}
 
 // PV-BF07-P183-PLACE-* — H4+H15 has explicit good/bad/mixed branches.
 const p183PlaceGood = buildKashfCanonicalAiBridge({ questionId: 'q-move-city', questionText: 'מעבר ממקום למקום', board: makeBoard({ 4:'1111', 15:'2211' }) });

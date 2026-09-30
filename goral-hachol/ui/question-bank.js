@@ -347,10 +347,10 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-debts',
-    category: 'money', houseId: 12, topicId: 'loan', kashfTopicId: 'loan',
-    label: 'חובות — מה ייצא?',
-    desc: 'לחוב ישן שנמשך זמן רב — האם יגבה, יסולק, או יישאר תלוי',
-    clientFields: [F.debtAmount, F.debtPerson],
+    category: 'money', houseId: 12, topicId: 'loan', kashfTopicId: 'completion',
+    label: 'האם מהלך גבייה מסוים יושלם?',
+    desc: 'רק למהלך גבייה מוגדר שכבר ננקט; דין השלמת העניין הכללי, ללא סכום, מועד או אבחון מצב החייב',
+    clientFields: [F.debtAmount, F.debtPerson, { id: 'collectionAction', label: 'מהלך הגבייה שכבר ננקט', type: 'textarea', placeholder: 'פנייה לתשלום / הסדר / הליך גבייה מסוים...' }],
   },
 
   // ════════════════════════════════════════════════════════════════
@@ -741,12 +741,13 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-sell-property',
-    category: 'money', houseId: 4, topicId: 'commerce', kashfTopicId: 'commerce',
-    label: 'האם ימכר הנכס / הבית?',
-    desc: 'למכירת נדל"ן ספציפי: האם יימצא קונה ויסגר הסכם',
+    category: 'money', houseId: 4, topicId: 'commerce', kashfTopicId: 'completion',
+    label: 'האם מהלך מכירת נכס מסוים יושלם?',
+    desc: 'למכירה מוגדרת שכבר מתנהלת; דין השלמת העניין הכללי, ללא חיזוי קונה, מחיר או מועד',
     clientFields: [
       { id: 'propertyType', label: 'סוג הנכס', type: 'text', placeholder: 'דירה / קרקע / חנות...' },
       { id: 'propertyPrice', label: 'מחיר מבוקש', type: 'text', placeholder: 'סכום / טווח' },
+      { id: 'saleProcess', label: 'מהלך המכירה שכבר מתנהל', type: 'textarea', placeholder: 'פרסום / מגע עם קונה / משא ומתן...' },
     ],
   },
 

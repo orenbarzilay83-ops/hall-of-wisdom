@@ -143,6 +143,18 @@ assert(getKashfV57Knowledge('joy.p196.recast14511')?.v57?.hebrewRule, 'p196 joy 
 for (const questionId of ['q-message', 'q-celebrations', 'q-joy-coming']) {
   assertRoute(questionId, { canRunKashf: true, kashfMethodId: 'completion.p173.fireRows15910' });
 }
+for (const questionId of ['q-debts', 'q-sell-property']) {
+  assertRoute(questionId, { canRunKashf: true, kashfMethodId: 'completion.p173.fireRows15910' });
+  for (const [mothers, expected] of [
+    [['2111', '1111', '1111', '2111'], true],
+    [['1111', '1111', '1111', '1111'], false],
+    [['1111', '1111', '1111', '2111'], null],
+  ]) {
+    const reading = buildKashfReadingByQuestionId(buildRamlBoardFromMothers(mothers), questionId);
+    assert(reading.valid === true && reading.overallPositive === expected, `${questionId} p173 completion branch ${String(expected)}`);
+    assert(reading.canonicalExecution?.methodsExecuted?.length === 1, `${questionId} executes only p173`);
+  }
+}
 assert(canRunKashfMethod('messenger.p176.recast14511') === false, 'specialized p176 messenger method remains blocked');
 assert(canRunKashfMethod('joy.p196.recast14511') === false, 'specialized p196 joy method remains blocked');
 assert(JSON.stringify(getKashfMethod('missing.p248-249.lifeH1H4H9Outcome')?.sourcePages) === JSON.stringify([248, 249]), 'missing-person life/death method points to original-scan pp248-249');
