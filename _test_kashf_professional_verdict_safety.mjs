@@ -189,7 +189,7 @@ function auditOutputForSafety(safetyBlock, { draft = null, draftPolarity = 'none
   };
 }
 
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 57, 'certification registry excludes the p176/p196 unresolved recast verdicts');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 58, 'certification registry includes p174 hope and excludes p176/p196 unresolved recast verdicts');
 for (const id of [
   'marriage.p210.generalMarriageH1H2H7H8H10Judge',
   'marriage.p211.dissolutionH7StateMatrix',
@@ -928,7 +928,25 @@ assert(p254Venus.professionalVerdictSafety?.binaryClientVerdictAllowed === false
 assert(p254Venus.professionalVerdictSafety?.authoritativeClientDraftHebrew === p254VenusExec?.outputHebrew, 'p254 safety gate locks the exact source-bounded executor draft');
 assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes('profession.p254.h9Planet'), 'p254 profession method is explicitly professionally certified');
 // Dhamir subject-identification remains outside the client-verdict registry.
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 57, 'p176/p196 are excluded from client-verdict certification');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 58, 'p174 hope is certified while p176/p196 are excluded from client-verdict certification');
+
+for (const [mothers, expectedBranch] of [
+  [['1211', '1111', '1111', '1111'], 'benefic-incoming'],
+  [['1111', '1111', '1111', '1111'], 'unresolved'],
+]) {
+  const hopeBridge = buildKashfCanonicalAiBridge({
+    questionId: 'q-hope-p174',
+    questionText: 'האם תקוותי המסוימת תתגשם?',
+    board: buildRamlBoardFromMothers(mothers),
+  });
+  const hopeResult = hopeBridge.canonicalReading?.formula?.result?.executorResult;
+  assert(hopeResult?.branch === expectedBranch, `p174 hope bridge preserves ${expectedBranch}`);
+  assert(hopeBridge.professionalVerdictSafety?.authoritativeClientDraftHebrew === hopeResult?.outputHebrew, `p174 hope ${expectedBranch} draft is exact executor text`);
+  assert(hopeBridge.professionalVerdictSafety?.isSafe === true, `p174 hope ${expectedBranch} passes professional safety`);
+  if (expectedBranch === 'unresolved') {
+    assert(hopeBridge.professionalVerdictSafety?.authoritativePolarity === 'non-binary' && hopeBridge.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'p174 hope unresolved branch cannot become yes/no');
+  }
+}
 
 const p176Negative = buildKashfCanonicalAiBridge({
   questionId: 'q-message', questionText: 'האם השליחות תשיג את מטרתה?',

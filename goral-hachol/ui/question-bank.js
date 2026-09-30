@@ -120,6 +120,13 @@ window.QUESTION_BANK = [
     clientFields: [F.matter],
   },
   {
+    id: 'q-hope-p174',
+    category: 'general', houseId: 11, topicId: 'completion', kashfTopicId: 'friendsHope',
+    label: 'האם תקווה מסוימת תתגשם?',
+    desc: 'דין התקווה לפי הבית הראשון, החמישי והאחד־עשר; יש לציין את הבקשה המסוימת',
+    clientFields: [F.matter],
+  },
+  {
     id: 'q-promise',
     category: 'general', houseId: 9, topicId: 'completion', kashfTopicId: 'completion',
     label: 'האם יקיים את ההבטחה?',

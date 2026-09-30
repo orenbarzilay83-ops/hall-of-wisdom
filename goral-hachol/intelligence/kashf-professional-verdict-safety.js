@@ -48,6 +48,7 @@ const P263_FRIENDSHIP_METHOD = 'friends.p263.h1h11';
 const P265_STATE_CONTINUITY_METHOD = 'state.p265.h1h2h9h15';
 const P257_MOTHER_METHOD = 'mother.p257.statusDayNight';
 const P267_HOPE_METHOD = 'hope.p267.fulfillment';
+const P174_HOPE_METHOD = 'hope.p174.h5h11ThroughH1';
 const P273_PUNISHMENT_METHOD = 'fear.p273.punishmentSigns';
 const P240_TRAVEL_CAUTION_METHOD = 'travel.p240.roadCautionsH9H7';
 const P254_DREAM_METHOD = 'dream.p254.h9AndTransit';
@@ -1442,6 +1443,24 @@ function p267HopeHouse11Policy() {
   });
 }
 
+function p174HopeThroughIntermediatesPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-hope-p174-two-intermediates',
+    goldenCaseIds: freezeArray(['PV-P174-HOPE-INCOMING', 'PV-P174-HOPE-OUTGOING', 'PV-P174-HOPE-UNRESOLVED']),
+    policyId: 'p174-hope-two-intermediates-v1',
+    questionScopeHebrew: 'מימוש תקווה מסוימת לפי חיבורי הבתים 1, 5 ו־11',
+    decisiveRuleHebrew: 'חבר 5 עם 1 ו־11 עם 1, אחר כך את שתי הנולדות; דון בארבעה צירופי מיטיב/מזיק ופנימי/חיצוני שבמקור.',
+    oneWayBranches: freezeArray([
+      'מיטיב פנימי => הבקשה נענית; מיטיב חיצוני => מתעכבת ונענית',
+      'מזיק פנימי => מושגת בעמל; מזיק חיצוני => עדיף לעזוב',
+    ]),
+    forbiddenInversions: freezeArray(['ממוזג או קבוע/מתהפך אינם מקבלים הכרעה בארבעת הענפים.']),
+    excludedFromPrimaryVerdict: freezeArray(['hope.p267.fulfillment', 'completion.p173.fireRows15910']),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray(['מועד מדויק', 'פסק מתקווה בעמ׳ 267']),
+  });
+}
+
 function p191DeliveryDifficultyPolicy() {
   return Object.freeze({
     certificationStatus: 'certified',
@@ -1708,6 +1727,7 @@ const METHOD_POLICIES = Object.freeze({
   [P265_STATE_CONTINUITY_METHOD]: p265StateContinuityPolicy(),
   [P257_MOTHER_METHOD]: p257MotherNightPolicy(),
   [P267_HOPE_METHOD]: p267HopeHouse11Policy(),
+  [P174_HOPE_METHOD]: p174HopeThroughIntermediatesPolicy(),
   [P273_PUNISHMENT_METHOD]: p273PunishmentPolicy(),
   [P240_TRAVEL_CAUTION_METHOD]: p240TravelCautionPolicy(),
   [P254_DREAM_METHOD]: p254DreamPolicy(),

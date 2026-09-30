@@ -1119,6 +1119,15 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     note: 'Dedicated p267 House 11 fallback only. Compound conditions and request-nature matching remain unimplemented; no p173 completion substitution.',
   }),
 
+  'q-hope-p174': route({
+    questionId: 'q-hope-p174',
+    disposition: 'KEEP',
+    kashfIntentId: 'hope.fulfillmentP174',
+    kashfMethodId: 'hope.p174.h5h11ThroughH1',
+    kashfRuntimeStatus: 'ready',
+    note: 'Independent printed p174 hope calculation through two intermediates. Do not combine its verdict with the p267 House 11 fallback.',
+  }),
+
   'q-dream': route({
     questionId: 'q-dream',
     disposition: 'KEEP',

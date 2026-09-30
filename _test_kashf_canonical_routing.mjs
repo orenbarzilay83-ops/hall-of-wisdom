@@ -57,6 +57,25 @@ function assertRoute(questionId, expected) {
 const PILOT_MOTHERS = ['1112', '2122', '1121', '2211'];
 const PILOT_BOARD = buildRamlBoardFromMothers(PILOT_MOTHERS);
 
+// p174 hope is a distinct public question from the p267 House 11 fallback.
+const hopeP174Cases = [
+  { mothers: ['1211', '1111', '1111', '1111'], branch: 'benefic-incoming', result: '2111', positive: true },
+  { mothers: ['1111', '1111', '1211', '1211'], branch: 'benefic-outgoing', result: '1122', positive: true },
+  { mothers: ['1211', '1211', '1211', '1111'], branch: 'malefic-incoming', result: '2221', positive: true },
+  { mothers: ['1111', '1111', '1111', '1211'], branch: 'malefic-outgoing', result: '1112', positive: null },
+  { mothers: ['1111', '1111', '1111', '1111'], branch: 'unresolved', result: '1111', positive: null },
+];
+assertRoute('q-hope-p174', { canRunKashf: true, kashfMethodId: 'hope.p174.h5h11ThroughH1' });
+for (const item of hopeP174Cases) {
+  const reading = buildKashfReadingByQuestionId(buildRamlBoardFromMothers(item.mothers), 'q-hope-p174');
+  const result = reading.formula?.result?.executorResult;
+  assert(reading.valid === true, `p174 hope valid board ${item.mothers}`);
+  assert(result?.branch === item.branch, `p174 hope ${item.branch} exact branch`);
+  assert(result?.resultPattern === item.result, `p174 hope ${item.branch} exact result`);
+  assert(result?.positive === item.positive, `p174 hope ${item.branch} bounded polarity`);
+  assert(result?.firstIntermediatePattern && result?.secondIntermediatePattern, `p174 hope ${item.branch} preserves two intermediates`);
+}
+
 // ── Registry invariants ---------------------------------------------------
 {
   const result = validateKashfMethodRegistry();

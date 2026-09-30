@@ -232,12 +232,11 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfIntentId: 'hope.fulfillmentP174',
     topicId: 'friendsHope',
     sourcePages: [174],
-    methodRole: 'unresolved',
-    kashfRuntimeStatus: 'repair-required',
-    runtimeAllowed: false,
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Source requires TWO intermediate figures: H5 combined with H1, and H11 combined with H1; only then combine those intermediates and judge benefic/malefic plus internal/external. Current v57 collapses this procedure, so it cannot run and must not be merged with the separate p267 hope route.',
+    executorStatus: 'ready',
+    notes: 'Printed p174 and v57 require TWO intermediate figures: H5+H1 and H11+H1, then their combination. Pure benefic/malefic with incoming/outgoing has four explicit results. Mixed and fixed/mutable results remain undecided. Separate from p267 hope.',
   }),
 
   'authority.p175-176.needBeforeRulerChain': method({

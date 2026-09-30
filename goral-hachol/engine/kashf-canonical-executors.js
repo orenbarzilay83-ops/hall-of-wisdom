@@ -580,6 +580,47 @@ function computeHopeHouse11FallbackP267(chart) {
   };
 }
 
+// Printed p174: H5 and H11 are each combined with H1 before the two
+// intermediate figures are combined. This is distinct from the p267 H11 rule.
+function computeHopeThroughTwoIntermediatesP174(chart) {
+  if (!Array.isArray(chart)) return null;
+  const patterns = [1, 5, 11].map((house) => {
+    const entry = findCanonicalHouse(chart, house);
+    return entry?.key || entry?.pattern || null;
+  });
+  if (patterns.some((pattern) => !pattern)) return null;
+  const [h1Pattern, h5Pattern, h11Pattern] = patterns;
+  const first = combineRamlFigures(h5Pattern, h1Pattern).resultPattern;
+  const second = combineRamlFigures(h11Pattern, h1Pattern).resultPattern;
+  const resultPattern = combineRamlFigures(first, second).resultPattern;
+  const result = classifyCanonicalFigure(resultPattern);
+  const branch = result.saadNahs === 'saad' && result.dakhalKharij === 'dakhil'
+    ? 'benefic-incoming'
+    : result.saadNahs === 'saad' && result.dakhalKharij === 'kharij'
+      ? 'benefic-outgoing'
+      : result.saadNahs === 'nahs' && result.dakhalKharij === 'dakhil'
+        ? 'malefic-incoming'
+        : result.saadNahs === 'nahs' && result.dakhalKharij === 'kharij'
+          ? 'malefic-outgoing' : 'unresolved';
+  const conclusions = {
+    'benefic-incoming': 'הבקשה תיענה.',
+    'benefic-outgoing': 'הבקשה תתעכב ותיענה.',
+    'malefic-incoming': 'הבקשה תושג בעמל.',
+    'malefic-outgoing': 'טוב יותר לעזוב את הבקשה.',
+    unresolved: 'הצורה המתקבלת אינה משתייכת לאחד מארבעת הצירופים המפורשים בכלל זה; אין הכרעה.',
+  };
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 174',
+    sourceText: 'קח את החמישי ואת האחד־עשר והכה כל אחד בראשון; צרף את שתי הצורות היוצאות ודון במיטיב/מזיק ובפנימי/חיצוני.',
+    housesUsed: [1, 5, 11], h1Pattern, h5Pattern, h11Pattern,
+    firstIntermediatePattern: first, secondIntermediatePattern: second,
+    resultPattern, resultFigureHebrew: result.figureHebrew,
+    classification: result, branch,
+    positive: branch === 'benefic-incoming' || branch === 'benefic-outgoing' || branch === 'malefic-incoming' ? true : null,
+    outputHebrew: `שתי הצורות שנוצרו מן הבית הראשון עם החמישי ועם האחד־עשר הן ${first} ו־${second}; צורתן המצורפת היא ${result.figureHebrew || resultPattern} (${resultPattern}). ${conclusions[branch]}`,
+  };
+}
+
 // p204 uses the source's explicit "mutable" and "fixed" figure classes.
 // Source classification (working pp. 57-60): four mutable + four fixed only.
 // The other eight incoming/outgoing figures are NOT silently forced into either class.
@@ -2787,6 +2828,7 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'marriage.p204.previousStatusH7inH10': computeMarriagePreviousStatusP204,
   'love.p204.attentionFireRows1713': computeLoveAttentionP204,
   'hope.p267.fulfillment': computeHopeHouse11FallbackP267,
+  'hope.p174.h5h11ThroughH1': computeHopeThroughTwoIntermediatesP174,
   'marriage.p204.dowryH8': computeDowryH8P204,
   'theft.p225.thiefDescriptionH7': computeThiefDescriptionP225,
   'pregnancy.p191.existsH5SilentEmpty': computePregnancyExistenceP191,
