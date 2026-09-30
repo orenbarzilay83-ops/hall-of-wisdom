@@ -49,6 +49,8 @@ const P265_STATE_CONTINUITY_METHOD = 'state.p265.h1h2h9h15';
 const P257_MOTHER_METHOD = 'mother.p257.statusDayNight';
 const P267_HOPE_METHOD = 'hope.p267.fulfillment';
 const P174_HOPE_METHOD = 'hope.p174.h5h11ThroughH1';
+const P176_REQUEST_METHOD = 'request.p176.h1h2GateThenH1H4';
+const P176_PURPOSE_METHOD = 'intent.p176.h7h10';
 const P273_PUNISHMENT_METHOD = 'fear.p273.punishmentSigns';
 const P240_TRAVEL_CAUTION_METHOD = 'travel.p240.roadCautionsH9H7';
 const P254_DREAM_METHOD = 'dream.p254.h9AndTransit';
@@ -1461,6 +1463,39 @@ function p174HopeThroughIntermediatesPolicy() {
   });
 }
 
+function p176RequestGatePolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-request-p176-gate-outcome',
+    goldenCaseIds: freezeArray(['PV-P176-REQUEST-GATE', 'PV-P176-REQUEST-GOOD', 'PV-P176-REQUEST-DIFFICULT', 'PV-P176-REQUEST-MIDDLE', 'PV-P176-REQUEST-MIXED-GATE']),
+    policyId: 'p176-request-gate-outcome-v1',
+    questionScopeHebrew: 'אחרית בקשה מסוימת לפי שער הבתים 1/2 וחיבור 1+4',
+    decisiveRuleHebrew: 'מזיק טהור באחד מבתי השער מורה לעזוב; אחרי שער מיטיב טהור בשניהם דנים בצורת 1+4: מיטיב, מזיק או ממוזג.',
+    oneWayBranches: freezeArray([
+      'H1 או H2 מזיק טהור => עצת מקור לעזוב את הבקשה, בלי חישוב פסק אחרית',
+      'שער מיטיב בשניהם, 1+4 מיטיב => טוב ושלום; מזיק => עמל וקושי; ממוזג => אחרית ממוצעת',
+    ]),
+    forbiddenInversions: freezeArray(['שער ממוזג ללא מזיק טהור אינו נהפך לשער חיובי.', 'עצה לעזוב אינה קביעה ודאית שהבקשה תיכשל.']),
+    excludedFromPrimaryVerdict: freezeArray(['hope.p174.h5h11ThroughH1', 'hope.p267.fulfillment', 'completion.p173.fireRows15910']),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray(['מועד מימוש מדויק', 'כישלון ודאי מענף עצת העזיבה']),
+  });
+}
+
+function p176PersonPurposePolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-person-purpose-p176',
+    goldenCaseIds: freezeArray(['PV-P176-PURPOSE-FAVORABLE', 'PV-P176-PURPOSE-ADVERSE', 'PV-P176-PURPOSE-MIXED']),
+    policyId: 'p176-person-purpose-h7h10-v1',
+    questionScopeHebrew: 'סימן למטרתו של אדם בעניין מוגדר',
+    decisiveRuleHebrew: 'חיבור H7+H10: צורה מיטיבה נותנת סימן מיטיב למטרה, מזיקה נותנת סימן מזיק.',
+    oneWayBranches: freezeArray(['מיטיב טהור => סימן מיטיב', 'מזיק טהור => סימן מזיק']),
+    forbiddenInversions: freezeArray(['ממוזג אינו פסק מיטיב או מזיק.', 'אין ללמוד מן הסימן על יושר, מוסר או מחשבות נסתרות.']),
+    excludedFromPrimaryVerdict: freezeArray(['dhamir.p159.subjectByH6Recurrence', 'request.p176.h1h2GateThenH1H4']),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray(['הוא משקר', 'כוונתו נסתרת', 'אופיו רע']),
+  });
+}
+
 function p191DeliveryDifficultyPolicy() {
   return Object.freeze({
     certificationStatus: 'certified',
@@ -1728,6 +1763,8 @@ const METHOD_POLICIES = Object.freeze({
   [P257_MOTHER_METHOD]: p257MotherNightPolicy(),
   [P267_HOPE_METHOD]: p267HopeHouse11Policy(),
   [P174_HOPE_METHOD]: p174HopeThroughIntermediatesPolicy(),
+  [P176_REQUEST_METHOD]: p176RequestGatePolicy(),
+  [P176_PURPOSE_METHOD]: p176PersonPurposePolicy(),
   [P273_PUNISHMENT_METHOD]: p273PunishmentPolicy(),
   [P240_TRAVEL_CAUTION_METHOD]: p240TravelCautionPolicy(),
   [P254_DREAM_METHOD]: p254DreamPolicy(),

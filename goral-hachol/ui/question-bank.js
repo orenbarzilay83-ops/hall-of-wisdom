@@ -127,6 +127,20 @@ window.QUESTION_BANK = [
     clientFields: [F.matter],
   },
   {
+    id: 'q-request-p176',
+    category: 'general', houseId: 1, topicId: 'completion', kashfTopicId: 'completion',
+    label: 'מה תהיה אחרית הבקשה המסוימת?',
+    desc: 'בדיקת בקשה מוגדרת לפי מצב השואל והממון ואחרית העניין',
+    clientFields: [F.matter],
+  },
+  {
+    id: 'q-person-purpose-p176',
+    category: 'general', houseId: 7, topicId: 'generalReading', kashfTopicId: 'generalReading',
+    label: 'מה סימן מטרתו של אדם בעניין מסוים?',
+    desc: 'סימן מיטיב או מזיק למטרה מוגדרת של אדם; אינו קובע יושר או מחשבות נסתרות',
+    clientFields: [F.matter],
+  },
+  {
     id: 'q-promise',
     category: 'general', houseId: 9, topicId: 'completion', kashfTopicId: 'completion',
     label: 'האם יקיים את ההבטחה?',

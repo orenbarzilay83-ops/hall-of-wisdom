@@ -257,12 +257,11 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfIntentId: 'request.fulfillmentAndEnd',
     topicId: 'completion',
     sourcePages: [176],
-    methodRole: 'unresolved',
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Exact p176 request method: H1/H2 are a gate; if either is malefic the source says leave the request. Otherwise derive H1+H4 and judge benefic/malefic/mixed. Source is clear, but no canonical executor or approved public route is enabled yet.',
+    executorStatus: 'ready',
+    notes: 'Exact p176 request method: H1/H2 gate precedes H1+H4. A pure malefic gate gives the explicit advice to leave; two pure benefics allow the derivation. Mixed gate remains unresolved rather than being treated as a positive gate. Derived benefic/malefic/mixed outcomes remain separate from p174/p267 hope.',
   }),
 
   'intent.p176.h7h10': method({
@@ -270,12 +269,11 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfIntentId: 'person.intent',
     topicId: 'generalReading',
     sourcePages: [176],
-    methodRole: 'unresolved',
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Exact p176 person-intent method: derive H7+H10; benefic means good intent and malefic means bad/malefic intent. This is not Gate-4 Dhamir and must not auto-run with hidden-thought methods.',
+    executorStatus: 'ready',
+    notes: 'Exact p176 person-purpose clause: derive H7+H10 and judge benefic/malefic as favorable/adverse sign for a defined purpose. Mixed remains unresolved. This is not a finding of honesty, morality or hidden thoughts, and is distinct from Gate-4 Dhamir.',
   }),
 
   'meeting.p176.hopeHouseH1H13': method({

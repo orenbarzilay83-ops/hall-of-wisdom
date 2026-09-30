@@ -621,6 +621,71 @@ function computeHopeThroughTwoIntermediatesP174(chart) {
   };
 }
 
+// Printed p176: the H1/H2 gate is evaluated before the H1+H4 outcome.
+function computeRequestGateAndOutcomeP176(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h1Pattern = findCanonicalHouse(chart, 1)?.key || findCanonicalHouse(chart, 1)?.pattern || null;
+  const h2Pattern = findCanonicalHouse(chart, 2)?.key || findCanonicalHouse(chart, 2)?.pattern || null;
+  const h4Pattern = findCanonicalHouse(chart, 4)?.key || findCanonicalHouse(chart, 4)?.pattern || null;
+  if (!h1Pattern || !h2Pattern || !h4Pattern) return null;
+  const h1 = classifyCanonicalFigure(h1Pattern);
+  const h2 = classifyCanonicalFigure(h2Pattern);
+  const gate = h1.saadNahs === 'nahs' || h2.saadNahs === 'nahs'
+    ? 'leave-request'
+    : h1.saadNahs === 'saad' && h2.saadNahs === 'saad'
+      ? 'open' : 'unresolved';
+  const derivedPattern = gate === 'open' ? combineRamlFigures(h1Pattern, h4Pattern).resultPattern : null;
+  const derived = derivedPattern ? classifyCanonicalFigure(derivedPattern) : null;
+  const branch = gate !== 'open' ? gate
+    : derived.saadNahs === 'saad' ? 'good-end'
+      : derived.saadNahs === 'nahs' ? 'difficult-end'
+        : derived.saadNahs === 'mixed' ? 'middle-end' : 'unresolved';
+  const conclusions = {
+    'leave-request': 'אחת מצורות שער הבקשה מזיקה; הספר מורה לעזוב את הבקשה. אין מחשבים ממנה פסק אחרית.',
+    'good-end': 'צורת האחרית מיטיבה: טוב, שלום ואחרית טובה.',
+    'difficult-end': 'צורת האחרית מזיקה: חולשת האחרית, עמל וקושי.',
+    'middle-end': 'צורת האחרית ממוזגת: אחרית ממוצעת, לא טוב גמור ולא רע גמור.',
+    unresolved: 'שער הבקשה אינו מוכרע בצורות המיטיבות/המזיקות הטהורות; אין פסק אחרית בכלל זה.',
+  };
+  return {
+    sourceRef: 'כשף אל-אסראר עמ׳ 176',
+    sourceText: 'אם אחד מן הראשון והשני מזיק — עזוב את הבקשה; אחר כך הוצא צורה מן הראשון והרביעי ודון במיטיב, מזיק או ממוזג.',
+    housesUsed: [1, 2, 4], h1Pattern, h2Pattern, h4Pattern,
+    gate, gateClasses: { h1: h1.saadNahs, h2: h2.saadNahs },
+    derivedPattern, derivedFigureHebrew: derived?.figureHebrew || null,
+    derivedClass: derived?.saadNahs || null, branch,
+    positive: branch === 'good-end' ? true : branch === 'difficult-end' ? false : null,
+    outputHebrew: `שער הבקשה: בית 1 ${h1.figureHebrew || h1Pattern}, בית 2 ${h2.figureHebrew || h2Pattern}. ${derivedPattern ? `חיבור 1+4 נתן ${derived.figureHebrew || derivedPattern} (${derivedPattern}). ` : ''}${conclusions[branch]}`,
+  };
+}
+
+// Printed p176 مقصد الإنسان: a sign for a person's defined purpose,
+// not a claim about moral character or undisclosed thoughts.
+function computePersonPurposeSignP176(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h7 = findCanonicalHouse(chart, 7);
+  const h10 = findCanonicalHouse(chart, 10);
+  const h7Pattern = h7?.key || h7?.pattern || null;
+  const h10Pattern = h10?.key || h10?.pattern || null;
+  if (!h7Pattern || !h10Pattern) return null;
+  const resultPattern = combineRamlFigures(h7Pattern, h10Pattern).resultPattern;
+  const result = classifyCanonicalFigure(resultPattern);
+  const branch = result.saadNahs === 'saad' ? 'favorable'
+    : result.saadNahs === 'nahs' ? 'adverse' : 'unresolved';
+  const conclusion = branch === 'favorable' ? 'סימן מיטיב למטרה שנשאלה.'
+    : branch === 'adverse' ? 'סימן מזיק למטרה שנשאלה.'
+      : 'צורת התוצאה ממוזגת; הסעיף אינו נותן לה פסק חד־משמעי.';
+  return {
+    sourceRef: 'כשף אל-אסראר עמ׳ 176',
+    sourceText: 'במטרת אדם: הוצא צורה מן השביעי והעשירי; אם מיטיבה דון לטובה, ואם מזיקה דון לנחס.',
+    housesUsed: [7, 10], h7Pattern, h10Pattern,
+    resultPattern, resultFigureHebrew: result.figureHebrew,
+    classification: result, branch,
+    positive: branch === 'favorable' ? true : branch === 'adverse' ? false : null,
+    outputHebrew: `חיבור הבתים 7 ו־10 נתן ${result.figureHebrew || resultPattern} (${resultPattern}). ${conclusion} הסימן אינו קובע את יושרו של האדם או את מחשבותיו הנסתרות.`,
+  };
+}
+
 // p204 uses the source's explicit "mutable" and "fixed" figure classes.
 // Source classification (working pp. 57-60): four mutable + four fixed only.
 // The other eight incoming/outgoing figures are NOT silently forced into either class.
@@ -2829,6 +2894,8 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'love.p204.attentionFireRows1713': computeLoveAttentionP204,
   'hope.p267.fulfillment': computeHopeHouse11FallbackP267,
   'hope.p174.h5h11ThroughH1': computeHopeThroughTwoIntermediatesP174,
+  'request.p176.h1h2GateThenH1H4': computeRequestGateAndOutcomeP176,
+  'intent.p176.h7h10': computePersonPurposeSignP176,
   'marriage.p204.dowryH8': computeDowryH8P204,
   'theft.p225.thiefDescriptionH7': computeThiefDescriptionP225,
   'pregnancy.p191.existsH5SilentEmpty': computePregnancyExistenceP191,

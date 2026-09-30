@@ -76,6 +76,38 @@ for (const item of hopeP174Cases) {
   assert(result?.firstIntermediatePattern && result?.secondIntermediatePattern, `p174 hope ${item.branch} preserves two intermediates`);
 }
 
+const requestP176Cases = [
+  { mothers: ['1111', '1112', '1111', '1111'], branch: 'leave-request', derived: null, positive: null },
+  { mothers: ['1122', '1122', '1111', '1111'], branch: 'good-end', derived: '2211', positive: true },
+  { mothers: ['1122', '1122', '1111', '1112'], branch: 'middle-end', derived: '2212', positive: null },
+  { mothers: ['1122', '1122', '1111', '1121'], branch: 'difficult-end', derived: '2221', positive: false },
+  { mothers: ['1111', '1111', '1111', '1111'], branch: 'unresolved', derived: null, positive: null },
+];
+assertRoute('q-request-p176', { canRunKashf: true, kashfMethodId: 'request.p176.h1h2GateThenH1H4' });
+for (const item of requestP176Cases) {
+  const reading = buildKashfReadingByQuestionId(buildRamlBoardFromMothers(item.mothers), 'q-request-p176');
+  const result = reading.formula?.result?.executorResult;
+  assert(reading.valid === true, `p176 request valid board ${item.mothers}`);
+  assert(result?.branch === item.branch, `p176 request ${item.branch} exact branch`);
+  assert(result?.derivedPattern === item.derived, `p176 request ${item.branch} respects gate before derivation`);
+  assert(result?.positive === item.positive, `p176 request ${item.branch} bounded polarity`);
+}
+
+const purposeP176Cases = [
+  { mothers: ['1111', '1111', '1111', '1121'], branch: 'favorable', result: '1122', positive: true },
+  { mothers: ['1111', '1111', '1111', '1112'], branch: 'adverse', result: '1112', positive: false },
+  { mothers: ['1111', '1111', '1111', '1111'], branch: 'unresolved', result: '1111', positive: null },
+];
+assertRoute('q-person-purpose-p176', { canRunKashf: true, kashfMethodId: 'intent.p176.h7h10' });
+for (const item of purposeP176Cases) {
+  const reading = buildKashfReadingByQuestionId(buildRamlBoardFromMothers(item.mothers), 'q-person-purpose-p176');
+  const result = reading.formula?.result?.executorResult;
+  assert(reading.valid === true, `p176 person purpose valid board ${item.mothers}`);
+  assert(result?.branch === item.branch && result?.resultPattern === item.result, `p176 person purpose ${item.branch} exact figure and class`);
+  assert(result?.positive === item.positive, `p176 person purpose ${item.branch} bounded polarity`);
+  assert(result?.outputHebrew?.includes('אינו קובע את יושרו'), `p176 person purpose ${item.branch} does not impute character`);
+}
+
 // ── Registry invariants ---------------------------------------------------
 {
   const result = validateKashfMethodRegistry();

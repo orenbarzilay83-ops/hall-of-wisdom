@@ -1128,6 +1128,24 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     note: 'Independent printed p174 hope calculation through two intermediates. Do not combine its verdict with the p267 House 11 fallback.',
   }),
 
+  'q-request-p176': route({
+    questionId: 'q-request-p176',
+    disposition: 'KEEP',
+    kashfIntentId: 'request.fulfillmentAndEnd',
+    kashfMethodId: 'request.p176.h1h2GateThenH1H4',
+    kashfRuntimeStatus: 'ready',
+    note: 'Printed p176 request gate H1/H2 followed by outcome H1+H4. Independent from hope p174/p267 and general completion p173.',
+  }),
+
+  'q-person-purpose-p176': route({
+    questionId: 'q-person-purpose-p176',
+    disposition: 'KEEP',
+    kashfIntentId: 'person.intent',
+    kashfMethodId: 'intent.p176.h7h10',
+    kashfRuntimeStatus: 'ready',
+    note: 'Printed p176 purpose sign from H7+H10; no claim about character, honesty, secret thoughts or Gate-4 Dhamir.',
+  }),
+
   'q-dream': route({
     questionId: 'q-dream',
     disposition: 'KEEP',

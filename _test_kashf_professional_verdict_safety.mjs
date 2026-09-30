@@ -189,7 +189,7 @@ function auditOutputForSafety(safetyBlock, { draft = null, draftPolarity = 'none
   };
 }
 
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 58, 'certification registry includes p174 hope and excludes p176/p196 unresolved recast verdicts');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 60, 'certification registry includes p174 hope and two p176 methods but excludes unresolved recast verdicts');
 for (const id of [
   'marriage.p210.generalMarriageH1H2H7H8H10Judge',
   'marriage.p211.dissolutionH7StateMatrix',
@@ -928,7 +928,7 @@ assert(p254Venus.professionalVerdictSafety?.binaryClientVerdictAllowed === false
 assert(p254Venus.professionalVerdictSafety?.authoritativeClientDraftHebrew === p254VenusExec?.outputHebrew, 'p254 safety gate locks the exact source-bounded executor draft');
 assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes('profession.p254.h9Planet'), 'p254 profession method is explicitly professionally certified');
 // Dhamir subject-identification remains outside the client-verdict registry.
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 58, 'p174 hope is certified while p176/p196 are excluded from client-verdict certification');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 60, 'p174 hope and p176 request/purpose are certified while p176/p196 recasts are excluded');
 
 for (const [mothers, expectedBranch] of [
   [['1211', '1111', '1111', '1111'], 'benefic-incoming'],
@@ -945,6 +945,42 @@ for (const [mothers, expectedBranch] of [
   assert(hopeBridge.professionalVerdictSafety?.isSafe === true, `p174 hope ${expectedBranch} passes professional safety`);
   if (expectedBranch === 'unresolved') {
     assert(hopeBridge.professionalVerdictSafety?.authoritativePolarity === 'non-binary' && hopeBridge.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'p174 hope unresolved branch cannot become yes/no');
+  }
+}
+
+for (const [mothers, expectedBranch] of [
+  [['1111', '1112', '1111', '1111'], 'leave-request'],
+  [['1122', '1122', '1111', '1111'], 'good-end'],
+  [['1111', '1111', '1111', '1111'], 'unresolved'],
+]) {
+  const requestBridge = buildKashfCanonicalAiBridge({
+    questionId: 'q-request-p176', questionText: 'מה אחרית הבקשה?',
+    board: buildRamlBoardFromMothers(mothers),
+  });
+  const requestResult = requestBridge.canonicalReading?.formula?.result?.executorResult;
+  assert(requestResult?.branch === expectedBranch, `p176 request bridge preserves ${expectedBranch}`);
+  assert(requestBridge.professionalVerdictSafety?.authoritativeClientDraftHebrew === requestResult?.outputHebrew, `p176 request ${expectedBranch} draft is exact executor text`);
+  assert(requestBridge.professionalVerdictSafety?.isSafe === true, `p176 request ${expectedBranch} passes professional safety`);
+  if (expectedBranch !== 'good-end') {
+    assert(requestBridge.professionalVerdictSafety?.binaryClientVerdictAllowed === false, `p176 request ${expectedBranch} cannot become yes/no`);
+  }
+}
+
+for (const [mothers, expectedBranch] of [
+  [['1111', '1111', '1111', '1121'], 'favorable'],
+  [['1111', '1111', '1111', '1112'], 'adverse'],
+  [['1111', '1111', '1111', '1111'], 'unresolved'],
+]) {
+  const purposeBridge = buildKashfCanonicalAiBridge({
+    questionId: 'q-person-purpose-p176', questionText: 'מה סימן מטרתו בעניין?',
+    board: buildRamlBoardFromMothers(mothers),
+  });
+  const purposeResult = purposeBridge.canonicalReading?.formula?.result?.executorResult;
+  assert(purposeResult?.branch === expectedBranch, `p176 purpose bridge preserves ${expectedBranch}`);
+  assert(purposeBridge.professionalVerdictSafety?.authoritativeClientDraftHebrew === purposeResult?.outputHebrew, `p176 purpose ${expectedBranch} exact source-bounded draft`);
+  assert(purposeBridge.professionalVerdictSafety?.isSafe === true, `p176 purpose ${expectedBranch} passes professional safety`);
+  if (expectedBranch === 'unresolved') {
+    assert(purposeBridge.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'p176 purpose mixed result cannot become yes/no');
   }
 }
 
