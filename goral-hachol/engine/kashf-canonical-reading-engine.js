@@ -155,7 +155,12 @@ function buildLegacyFunctionReading(board, method, clientContext = {}, v57Knowle
     }
 
     const verdict = {
-      text: executorResult.outputHebrew || 'ללא הכרעה מפורשת',
+      // clientSafeHebrew (when an executor provides it) is a short, citation-free
+      // rendering meant to be read to the client; outputHebrew carries the full
+      // source-evidence trail (page citations, alternate-method markers, method
+      // notes) for the advisor record. Executors that don't yet provide a
+      // clientSafeHebrew keep falling back to outputHebrew unchanged.
+      text: executorResult.clientSafeHebrew || executorResult.outputHebrew || 'ללא הכרעה מפורשת',
       positive: typeof executorResult.positive === 'boolean' ? executorResult.positive : null,
     };
     const topicRules = method.legacyTopicId ? getTopicRules(method.legacyTopicId) : null;

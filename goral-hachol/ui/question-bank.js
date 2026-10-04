@@ -459,7 +459,8 @@ window.QUESTION_BANK = [
     category: 'love', houseId: 7, topicId: 'marriage', kashfTopicId: 'marriage',
     label: 'צניעות האישה?',
     desc: 'סימן צניעות/טהרה לפי צורות הלוח (בתים 1, 7, 9 והמאזן) — סימן אופי מן המקור, לא בירור עובדתי של נאמנות או עבר קונקרטי',
-    clientFields: [F.candidate],
+    // המקור פותח ב"השלם את גורל החול על שמה" (כשף עמ' 205) — שדה חובה לקריאה זו בלבד.
+    clientFields: [{ ...F.candidate, label: 'שם המועמדת (חובה — המקור: "השלם את גורל החול על שמה")', required: true }],
   },
   {
     id: 'q-love',

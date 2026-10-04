@@ -555,18 +555,20 @@ function renderDynamicClientFields() {
       fieldsEl.style.display = '';
       const fieldsHtml = fields.map(f => {
         const id = 'dynField_' + f.id;
+        const req = f.required ? ' required' : '';
         let inputHtml;
         if (f.type === 'textarea') {
-          inputHtml = `<textarea id="${id}" rows="2" placeholder="${escapeHtml(f.placeholder || '')}" autocomplete="off"></textarea>`;
+          inputHtml = `<textarea id="${id}" rows="2" placeholder="${escapeHtml(f.placeholder || '')}" autocomplete="off"${req}></textarea>`;
         } else if (f.type === 'select' && f.options) {
-          inputHtml = `<select id="${id}">
+          inputHtml = `<select id="${id}"${req}>
             <option value="">-- בחר --</option>
             ${f.options.map(o => `<option value="${escapeHtml(o)}">${escapeHtml(o)}</option>`).join('')}
           </select>`;
         } else {
-          inputHtml = `<input id="${id}" type="${f.type || 'text'}" placeholder="${escapeHtml(f.placeholder || '')}" autocomplete="off" />`;
+          inputHtml = `<input id="${id}" type="${f.type || 'text'}" placeholder="${escapeHtml(f.placeholder || '')}" autocomplete="off"${req} />`;
         }
-        return `<div class="open-field"><label>${escapeHtml(f.label)}</label>${inputHtml}</div>`;
+        const labelHtml = escapeHtml(f.label) + (f.required ? ' <span class="required-mark" style="color:#b71c1c;">*</span>' : '');
+        return `<div class="open-field"><label>${labelHtml}</label>${inputHtml}</div>`;
       }).join('');
       fieldsEl.innerHTML = `<div class="dynamic-fields-wrap">
         <div class="dynamic-fields-title">פרטים לפי הנושא</div>

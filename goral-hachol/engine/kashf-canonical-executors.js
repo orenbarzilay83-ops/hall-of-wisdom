@@ -3043,7 +3043,28 @@ function computeHiddenActionP167(chart) {
 // the Eighth") is not clearly decodable as a single operation from the
 // printed text alone (unlike "وافق الميزان" on p205, which is unambiguous),
 // so it is left out rather than guessed. See the delivery report.
-function computeMarriageChastityPurityP205(chart) {
+//
+// 2026-10-04 Codex audit fixes:
+// (1) kashf-v57-draft.html's displayed p205 text was corrected to phrase the
+//     H7+H9 clause as a combined-figure operation (matching this executor)
+//     instead of "both H7 and H9 individually benefic".
+// (2) The opening instruction "كمل الرمل على إسمها" (complete the casting on
+//     HER name) is a named-subject precondition, not a name-to-figure
+//     conversion algorithm — no such conversion procedure for a primary
+//     board appears anywhere near this passage (unlike the unrelated p186
+//     abjad direction-rule, which spells out its own name arithmetic in
+//     full). Inventing one would violate the no-invented-data rule. Instead
+//     this executor now checks whether a candidate name was actually
+//     recorded for this reading (clientContext.dynFields.candidate,
+//     question-bank.js field F.candidate, now required for this question)
+//     and reports plainly when that precondition is unconfirmed, rather than
+//     silently assuming it.
+// (3) outputHebrew (citations, "وقيل" markers, method notes) is evidence for
+//     the advisor record, not something to read to a client verbatim. A
+//     separate clientSafeHebrew field now carries a short, citation-free
+//     rendering of the same signals; kashf-canonical-reading-engine.js
+//     prefers it for the client-facing verdict text when present.
+function computeMarriageChastityPurityP205(chart, clientContext = {}) {
   if (!Array.isArray(chart)) return null;
   const h1 = findCanonicalHouse(chart, 1);
   const h7 = findCanonicalHouse(chart, 7);
@@ -3074,49 +3095,65 @@ function computeMarriageChastityPurityP205(chart) {
   const pattern79 = combined79?.resultPattern || null;
   const fortune79 = pattern79 ? fortuneOf(pattern79) : null;
 
+  const candidateName = String(clientContext?.dynFields?.candidate || '').trim();
+  const namedCastConfirmed = candidateName.length > 0;
+
   const lines = [];
+  const clientLines = [];
   const signals = [];
 
   if (p1 === p15 && pure1 === 'pure' && pure15 === 'pure') {
     lines.push('בית 1 זהה לצורת המאזן (בית 15) ושתיהן טהורות — "טהורה כליל, אין בה ספק ואין פירוש אחר" (כשף עמ׳ 205).');
+    clientLines.push('הלוח מראה טהרה וודאית — זהו סימן חזק לצניעותה.');
     signals.push('positive');
   } else if (pure1 === 'pure') {
     lines.push('צורת בית 1 טהורה — סימן לצניעותה (כשף עמ׳ 205).');
+    clientLines.push('הלוח מראה סימן טהרה — זהו סימן לצניעותה.');
     signals.push('positive');
   } else if (pure1 === 'impure') {
     lines.push('צורת בית 1 טמאה — אין בה סימן טהרה מסעיף זה.');
+    clientLines.push('הלוח אינו מראה כאן סימן טהרה.');
   }
 
   if (pure1 === 'pure' && pure7 === 'pure') {
     lines.push('לפי שיטה חלופית ("وقيل"): בית 1 ובית 7 שניהם טהורים — סימן לצניעותה.');
+    clientLines.push('סימן נוסף בלוח מחזק את סימן הצניעות.');
     signals.push('positive');
   }
 
   if (fortune79 === 'saad') {
     lines.push(`לפי שיטה חלופית נוספת ("وقيل"): הצורה הנולדת מהרכבת בית 7 ובית 9 (${pattern79}) מיטיבה — סימן ליראת שמים וצניעות ("תקיה").`);
+    clientLines.push('סימן נוסף בלוח מראה יראת שמים וצניעות.');
     signals.push('positive');
   } else if (fortune79 === 'nahs') {
     lines.push(`⚠ לפי אותה שיטה חלופית: הצורה הנולדת מהרכבת בית 7 ובית 9 (${pattern79}) מזיקה — סימן לפריצות ("פאסקה").`);
+    clientLines.push('יש בלוח סימן המעורר חשש בעניין צניעותה.');
     signals.push('negative');
   }
 
   if (p1 === p15 && fortune15 === 'nahs') {
     lines.push('⚠ בית 1 זהה לצורת המאזן, וזו מזיקה — "היא בהפך זאת" (כשף עמ׳ 205): סימן לפריצות.');
+    clientLines.push('יש בלוח סימן מובהק המעורר חשש בעניין צניעותה.');
     signals.push('negative');
   }
 
   if (fortune1 === 'saad' && pure1 === 'pure' && fortune9 === 'nahs') {
     lines.push('בית 1 מיטיב וטהור, אך בית 9 מזיק — נשקף חשש שתתקלקל אחרי תקופת צניעות (כשף עמ׳ 205-206).');
+    clientLines.push('לצד הסימן החיובי, יש בלוח רמז לחשש לעתיד שראוי לשים לב אליו.');
     signals.push('concern');
   }
 
   if (fortune1 === 'nahs' && pure9 === 'pure' && pure15 === 'pure') {
     lines.push('בית 1 מזיק, אך בית 9 והמאזן טהורים — "הנפש אינה חוששת ממשוכת דיבה" (כשף עמ׳ 206): אין חשש מרכילה.');
+    clientLines.push('גם כשיש סימן שלילי חלקי, הלוח מרגיע מפני חשש של רכילה או דיבה.');
     signals.push('positive');
   }
 
   const sourceRef = 'כשף אל־אסראר עמ׳ 205–206';
   const sourceText = 'נكتة על האישה וצניעותה: אם צורת בית 1 טהורה — טהורה; אם תואמת את המאזן בטהרה — טהורה כליל ואין בה ספק. "وقيل": אם בית 1 ובית 7 טהורים — טהורה. "وقيل": קח צורה מהרכבת בית 7 ובית 9 — אם מיטיבה, תקיה; אם מזיקה, פאסקה. אם בית 1 תואם את המאזן והוא מזיק — ההפך. אם בית 1 מיטיב וטהור ובית 9 מזיק — חשש שתתקלקל אחרי צניעות. אם בית 1 מזיק ובית 9 והמאזן טהורים — אין חשש מרכילה.';
+  const namePreconditionNote = namedCastConfirmed
+    ? `הלוח מתועד כמוטל על שם המועמדת ("${candidateName}"), כנדרש בפתיח המקור ("كمل الرمل على إسمها").`
+    : 'לא נרשם שם מועמדת לקריאה זו. המקור פותח בהוראה "השלם את גורל החול על שמה" — כלומר הטלה המיוחדת לאישה הנשאלת. אין בקוד נוסחה הממירה שם לאותיות/ספרות עבור הלוח הראשי (בשונה מכלל כיוון האב בעמ׳ 186 שמפרש נוסחת אבג״ד משלו); לכן אין להמיר שם אוטומטית, אבל התנאי שהלוח הוטל "על שמה" אינו מאומת כאן.';
 
   if (!lines.length) {
     return {
@@ -3126,7 +3163,10 @@ function computeMarriageChastityPurityP205(chart) {
       combinedH7H9Pattern: pattern79,
       branch: 'no-applicable-clause',
       positive: null,
-      outputHebrew: 'אף אחד מסעיפי הסימנים (עמ׳ 205-206) אינו חל על צירוף הצורות הזה בלוח הנוכחי.',
+      namedCastConfirmed,
+      candidateName: candidateName || null,
+      outputHebrew: `אף אחד מסעיפי הסימנים (עמ׳ 205-206) אינו חל על צירוף הצורות הזה בלוח הנוכחי. ${namePreconditionNote}`,
+      clientSafeHebrew: 'אין בלוח הזה סימן מכריע בעניין הצניעות.',
     };
   }
 
@@ -3146,7 +3186,10 @@ function computeMarriageChastityPurityP205(chart) {
     combinedH7H9Pattern: pattern79,
     branch,
     positive,
-    outputHebrew: `${lines.join(' ')} שימו לב: הסעיפים השונים הם שיטות חלופיות ("وقيل") של המקור ולא שלבי צבירה אחת; כל סימן שחל מוצג כפי שהוא במקור, בלי לקבוע ביניהם סדר עדיפות שאינו כתוב בטקסט.`,
+    namedCastConfirmed,
+    candidateName: candidateName || null,
+    outputHebrew: `${lines.join(' ')} שימו לב: הסעיפים השונים הם שיטות חלופיות ("وقيل") של המקור ולא שלבי צבירה אחת; כל סימן שחל מוצג כפי שהוא במקור, בלי לקבוע ביניהם סדר עדיפות שאינו כתוב בטקסט. ${namePreconditionNote}`,
+    clientSafeHebrew: clientLines.join(' '),
   };
 }
 

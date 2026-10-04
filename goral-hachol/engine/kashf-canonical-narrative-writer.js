@@ -90,6 +90,16 @@ export function writeCanonicalKashfReading(reading) {
   const methodId = escapeHtml(reading.kashfMethodId || '');
   const intentId = escapeHtml(reading.kashfIntentId || '');
 
+  // When an executor provides a client-safe verdict separately from its full
+  // outputHebrew (citations, alternate-method markers, method notes), show
+  // that full evidence here in the advisor-only details panel rather than
+  // dropping it — it is still the source-evidence record, just not what is
+  // read to the client.
+  const rawEvidence = reading.primaryFormula?.result?.executorResult?.outputHebrew || '';
+  const evidenceText = rawEvidence && rawEvidence !== (verdict.text || '')
+    ? escapeHtml(rawEvidence)
+    : '';
+
   return `<div class="kashf-reading-output canonical-kashf-reading">
     <div class="verdict-box ${cls}" style="direction:rtl;">
       <div class="verdict-title">${escapeHtml(heading)}</div>
@@ -112,6 +122,7 @@ export function writeCanonicalKashfReading(reading) {
         <p><strong>כוונת כשף:</strong> ${intentId}</p>
         ${houses ? `<p><strong>בתי החישוב:</strong> ${escapeHtml(houses)}</p>` : ''}
         ${sourceText ? `<p><strong>כלל המקור:</strong> ${sourceText}</p>` : ''}
+        ${evidenceText ? `<p><strong>עדויות מקור מפורטות (לא מיועד להקראה ללקוח כלשונו):</strong> ${evidenceText}</p>` : ''}
         <p><strong>מקור:</strong> ${source}</p>
         <p><strong>בקרת ניתוב:</strong> הופעלה שיטה קנונית אחת בלבד${Array.isArray(execution.methodsExecuted) ? ` (${escapeHtml(execution.methodsExecuted.join(', '))})` : ''}.</p>
       </div>

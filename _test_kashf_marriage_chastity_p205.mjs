@@ -29,9 +29,9 @@ function assert(condition, message) {
   }
 }
 
-function resultFor(mothers) {
+function resultFor(mothers, clientContext) {
   const board = buildRamlBoardFromMothers(mothers);
-  const reading = buildKashfReadingByQuestionId(board, 'q-marriage-chastity');
+  const reading = buildKashfReadingByQuestionId(board, 'q-marriage-chastity', clientContext);
   return { reading, result: reading.primaryFormula?.result?.executorResult };
 }
 
@@ -78,7 +78,7 @@ assert(route.kashfMethodId === 'marriage.p205.modestyPurity', 'q-marriage-chasti
   assert(reading.valid === true, 'no-applicable-clause board is a valid reading');
   assert(result.branch === 'no-applicable-clause', 'board with no matching clause reaches the explicit no-rule branch');
   assert(result.positive === null, 'no-applicable-clause board makes no polarity claim');
-  assert(result.outputHebrew === 'אף אחד מסעיפי הסימנים (עמ׳ 205-206) אינו חל על צירוף הצורות הזה בלוח הנוכחי.', 'no-applicable-clause board states the explicit no-rule-found message');
+  assert(result.outputHebrew.startsWith('אף אחד מסעיפי הסימנים (עמ׳ 205-206) אינו חל על צירוף הצורות הזה בלוח הנוכחי.'), 'no-applicable-clause board states the explicit no-rule-found message');
 }
 
 // ── Named clause coverage (each wording confirmed reachable on a real board) ─
@@ -108,6 +108,69 @@ assert(route.kashfMethodId === 'marriage.p205.modestyPurity', 'q-marriage-chasti
   assert(Boolean(knowledge), 'marriage.p205.modestyPurity has v57 knowledge registered');
   assert(reading.primaryFormula?.sourceText === knowledge?.v57?.hebrewRule, 'runtime sourceText is the registered Hebrew v57 rule');
   assert(reading.primaryFormula?.houses?.slice().sort().join(',') === '1,15,7,9'.split(',').sort().join(','), 'houses used are exactly H1, H7, H9, H15');
+}
+
+// ── Codex audit fix 1: v57 draft page shown by the app's book reader ────────
+// kashf-v57-draft.html's p205 section must no longer describe the H7+H9
+// clause as "both houses individually benefic" and must now describe a
+// combined-figure operation, matching computeMarriageChastityPurityP205.
+{
+  const fs = await import('node:fs');
+  const v57 = fs.readFileSync('./kashf-v57-draft.html', 'utf8');
+  const p205Match = v57.match(/<section class="page[^"]*" id="p205">([\s\S]*?)<\/section>/);
+  assert(Boolean(p205Match), 'kashf-v57-draft.html has a p205 section');
+  const p205Html = p205Match ? p205Match[1] : '';
+  assert(!p205Html.includes('צורות הבית השביעי והתשיעי מיטיבות'), 'v57 p205 no longer describes H7+H9 as two separately-benefic houses');
+  assert(p205Html.includes('מהרכבת'), 'v57 p205 now describes the H7+H9 combined-figure operation');
+  assert(p205Html.includes('תואם את המאזן וההתאמה מזיקה'), 'v57 p205 states the Mizan-match-malefic clause unambiguously (mirrors the purity-match clause)');
+}
+
+// ── Codex audit fix 2: the board must be confirmed cast on the woman's name ─
+// (كمل الرمل على إسمها). No name-to-figure algorithm exists in the source for
+// the primary board, so the executor reports whether the precondition was
+// recorded rather than inventing a conversion.
+{
+  const { result: withoutName } = resultFor(['1111', '1111', '1111', '1111']);
+  assert(withoutName.namedCastConfirmed === false, 'missing candidate name leaves namedCastConfirmed false');
+  assert(withoutName.candidateName === null, 'missing candidate name reports candidateName as null');
+  assert(withoutName.outputHebrew.includes('לא נרשם שם מועמדת'), 'missing-name evidence states the precondition was not confirmed');
+
+  const { result: withName } = resultFor(['1111', '1111', '1111', '1111'], { dynFields: { candidate: 'רחל' } });
+  assert(withName.namedCastConfirmed === true, 'recorded candidate name flips namedCastConfirmed to true');
+  assert(withName.candidateName === 'רחל', 'recorded candidate name is carried through verbatim');
+  assert(withName.outputHebrew.includes('מתועד כמוטל על שם המועמדת'), 'recorded-name evidence confirms the precondition');
+
+  // question-bank.js: the candidate field for this question must be marked required.
+  const fs = await import('node:fs');
+  const bank = fs.readFileSync('./goral-hachol/ui/question-bank.js', 'utf8');
+  const qStart = bank.indexOf("id: 'q-marriage-chastity'");
+  const qChunk = bank.slice(qStart, qStart + 600);
+  assert(qChunk.includes('required: true'), 'q-marriage-chastity candidate field is marked required in question-bank.js');
+}
+
+// ── Codex audit fix 3: client-facing text vs. detailed source evidence ──────
+// The "read to client" text must be free of page citations and source-method
+// markers; the full evidentiary text remains available separately for the
+// advisor record.
+{
+  const { reading, result } = resultFor(['1112', '1111', '1111', '1111']);
+  assert(typeof result.clientSafeHebrew === 'string' && result.clientSafeHebrew.length > 0, 'executor provides a non-empty clientSafeHebrew');
+  assert(!result.clientSafeHebrew.includes('עמ'), 'clientSafeHebrew has no page citations');
+  assert(!result.clientSafeHebrew.includes('وقيل'), 'clientSafeHebrew has no Arabic alternate-method markers');
+  assert(!result.clientSafeHebrew.includes('שיטה חלופית'), 'clientSafeHebrew has no internal methodology notes');
+  assert(result.outputHebrew.includes('עמ׳'), 'outputHebrew (the evidence record) keeps its page citations');
+
+  const verdictText = reading.verdict?.text || reading.primaryFormula?.verdict?.text;
+  assert(verdictText === result.clientSafeHebrew, 'the engine verdict surfaced to the UI uses clientSafeHebrew, not the full evidence text');
+
+  const { writeCanonicalKashfReading } = await import('./goral-hachol/engine/kashf-canonical-narrative-writer.js');
+  const html = writeCanonicalKashfReading(reading);
+  const clientPanelStart = html.indexOf('קרא ללקוח');
+  const clientPanelChunk = html.slice(clientPanelStart, clientPanelStart + 500);
+  assert(!clientPanelChunk.includes('עמ׳ 205'), 'rendered client-reading panel has no page citation');
+  assert(!clientPanelChunk.includes('وقيل'), 'rendered client-reading panel has no Arabic method markers');
+  assert(html.includes('עדויות מקור מפורטות'), 'rendered advisor details panel exposes the full source-evidence text separately');
+  assert(html.includes('עמ׳ 205'), 'the full evidence text (with its citation) is still present somewhere in the rendered output');
 }
 
 console.log(`Kashf marriage-chastity (p205) tests: ${passed} passed, ${failed} failed`);
