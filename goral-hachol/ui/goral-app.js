@@ -2597,10 +2597,29 @@ async function renderKashfBook() {
   const el = document.getElementById('guide-kashf');
   el.innerHTML = '<div style="text-align:center;padding:40px;color:#888;font-size:16px">טוען ספר...</div>';
   try {
-    const mod = await import('/goral-hachol/data/sources/kashf-al-asrar/kashf-al-asrar-book.js');
-    window._KASHF_BOOK = { toc: mod.KASHF_AL_ASRAR_TOC || [], pages: mod.KASHF_AL_ASRAR_PAGES || [] };
+    // Read the canonical corrected v57 itself. The older JS page transcription
+    // has shifted page numbers in part of the travel chapter and must not be
+    // presented as the current book.
+    const [response, mod] = await Promise.all([
+      fetch('/kashf-v57-draft.html'),
+      import('/goral-hachol/data/sources/kashf-al-asrar/kashf-al-asrar-book.js'),
+    ]);
+    if (!response.ok) throw new Error(`Kashf v57 HTTP ${response.status}`);
+    const source = new DOMParser().parseFromString(await response.text(), 'text/html');
+    const pages = [...source.querySelectorAll('section.page[id^="p"]')]
+      .map(section => {
+        const page = Number(section.id.slice(1));
+        const article = section.querySelector('article.text');
+        return { page, sourceHtml: article?.innerHTML || '' };
+      })
+      .filter(entry => Number.isInteger(entry.page) && entry.sourceHtml);
+    if (pages.length !== 256 || pages.some((entry, index) => entry.page !== index + 21)) {
+      throw new Error('Kashf v57 page anchors are incomplete or out of order');
+    }
+    window._KASHF_BOOK = { toc: mod.KASHF_AL_ASRAR_TOC || [], pages };
   } catch (e) {
-    el.innerHTML = '<div style="text-align:center;padding:40px;color:#c00;font-size:16px">שגיאה בטעינת הספר</div>';
+    console.error('Kashf v57 book loading failed:', e);
+    el.innerHTML = '<div style="text-align:center;padding:40px;color:#c00;font-size:16px">לא ניתן לטעון את מהדורת הספר המעודכנת כרגע</div>';
     return;
   }
   kashfBookRendered = true;
@@ -2657,9 +2676,9 @@ function showKashfPage(idx) {
       </div>
       <div class="kashf-page-meta">
         <div class="kashf-page-num">עמ׳ ${p.page} בספר</div>
-        <div class="kashf-chapter-title">${escapeHtml(p.chapterHebrew || '')}</div>
+        ${p.chapterHebrew ? `<div class="kashf-chapter-title">${escapeHtml(p.chapterHebrew)}</div>` : ''}
       </div>
-      <div class="kashf-page-text">${kashfMdToHtml(p.hebrewTranslation || '(אין תרגום לעמוד זה)')}</div>
+      <div class="kashf-page-text kashf-v57-page">${p.sourceHtml}</div>
       <div class="kashf-bottom-nav">
         <button class="btn gray" id="kashfPrevBtn" ${prevDis}>→ הקודם</button>
         <button class="btn gray" id="kashfNextBtn" ${nextDis}>הבא ←</button>
@@ -2670,63 +2689,6 @@ function showKashfPage(idx) {
   if (idx > 0) document.getElementById('kashfPrevBtn').addEventListener('click', () => showKashfPage(idx - 1));
   if (idx < pages.length - 1) document.getElementById('kashfNextBtn').addEventListener('click', () => showKashfPage(idx + 1));
   el.scrollTop = 0;
-}
-
-function kashfMdToHtml(text) {
-  if (!text) return '';
-  const lines = text.split('\n');
-  const out = [];
-  let tableRows = [];
-  let listItems = [];
-
-  const flushTable = () => {
-    if (!tableRows.length) return;
-    const dataRows = tableRows.filter(r => !/^\|[\s|:-]+\|$/.test(r));
-    const [header, ...body] = dataRows;
-    const thCells = header.split('|').slice(1, -1).map(c => `<th>${escapeHtml(c.trim())}</th>`).join('');
-    const trRows = body.map(r =>
-      `<tr>${r.split('|').slice(1, -1).map(c => `<td>${escapeHtml(c.trim())}</td>`).join('')}</tr>`
-    ).join('');
-    out.push(`<table><thead><tr>${thCells}</tr></thead><tbody>${trRows}</tbody></table>`);
-    tableRows = [];
-  };
-
-  const flushList = () => {
-    if (!listItems.length) return;
-    out.push(`<ul>${listItems.map(item => `<li>${item}</li>`).join('')}</ul>`);
-    listItems = [];
-  };
-
-  for (const line of lines) {
-    const trimmed = line.trim();
-
-    if (trimmed.startsWith('|') && trimmed.endsWith('|') && trimmed.includes('|', 1)) {
-      flushList();
-      tableRows.push(trimmed);
-      continue;
-    }
-    if (tableRows.length) flushTable();
-
-    if (/^[-•]\s+/.test(trimmed)) {
-      listItems.push(kashfInline(trimmed.replace(/^[-•]\s+/, '')));
-      continue;
-    }
-    if (listItems.length) flushList();
-
-    if (trimmed === '') { out.push('<br>'); continue; }
-
-    out.push(`<p>${kashfInline(trimmed)}</p>`);
-  }
-
-  if (tableRows.length) flushTable();
-  if (listItems.length) flushList();
-  return out.join('');
-}
-
-function kashfInline(text) {
-  return escapeHtml(text)
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g, '<em>$1</em>');
 }
 
 // ─── Journal Rendering ────────────────────────────────────────

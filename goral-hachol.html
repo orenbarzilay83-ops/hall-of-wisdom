@@ -2365,6 +2365,24 @@ body:has(#screen-open.active) .topbar { display: none !important; }
     .kashf-page-text table { border-collapse:collapse;width:100%;margin:14px 0;font-size:16px; }
     .kashf-page-text th,.kashf-page-text td { border:1px solid #ccc;padding:7px 11px;text-align:right; }
     .kashf-page-text th { background:#f0f4ff;font-weight:700; }
+    /* v57 page markup is displayed directly from the canonical HTML book. */
+    .kashf-v57-page .title,.kashf-v57-page .chapter-title { font-size:1.25em;font-weight:900;text-align:center;margin:0 0 1em; }
+    .kashf-v57-page .term { font-weight:900; }
+    .kashf-v57-page .note { font-size:.9em;line-height:1.7; }
+    .kashf-v57-page .arabic,.kashf-v57-page .quran { direction:rtl;unicode-bidi:isolate; }
+    .kashf-v57-page .raml,.kashf-v57-page .raml-group { display:inline-flex;direction:ltr;unicode-bidi:isolate;vertical-align:-.32em;align-items:center;white-space:nowrap;margin-inline:.1em; }
+    .kashf-v57-page .raml-group { gap:.2em;flex-wrap:wrap; }
+    .kashf-v57-page .br { font-family:"Times New Roman",serif;font-weight:800;line-height:1; }
+    .kashf-v57-page .rfig { display:inline-grid;grid-template-rows:repeat(4,.22em);row-gap:.105em;width:1.03em;min-width:1.03em;justify-items:center;align-items:center;margin:0 .09em; }
+    .kashf-v57-page .r { position:relative;display:block;width:100%;height:.22em; }
+    .kashf-v57-page .r.one::before { content:"";position:absolute;left:50%;top:50%;width:.18em;height:.18em;border-radius:50%;background:currentColor;transform:translate(-50%,-50%); }
+    .kashf-v57-page .r.two::before { content:"";position:absolute;left:17%;right:17%;top:50%;height:.095em;border-radius:999px;background:currentColor;transform:translateY(-50%); }
+    .kashf-v57-page .diagram { border:2px solid currentColor;min-height:142px;margin:1em 0;padding:10px; }
+    .kashf-v57-page .diagram svg { display:block;width:100%;height:142px; }
+    .kashf-v57-page .diagram path,.kashf-v57-page .diagram line { stroke:currentColor;stroke-width:4;stroke-linecap:round;fill:none;stroke-dasharray:6 12; }
+    .kashf-v57-page .seal-box { border:2px solid currentColor;margin:1em 0;padding:8px;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px; }
+    .kashf-v57-page table { table-layout:auto;max-width:100%; }
+    .kashf-v57-page td,.kashf-v57-page th { overflow-wrap:anywhere; }
     .kashf-bottom-nav { display:flex;justify-content:space-between;margin-top:22px;gap:8px; }
 
     /* ─── Journal Screen ───────────────────────────────────────── */
