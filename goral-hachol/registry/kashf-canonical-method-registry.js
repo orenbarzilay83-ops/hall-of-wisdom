@@ -579,7 +579,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfIntentId: 'lifespan.duration',
     topicId: 'generalReading',
     sourcePages: [178],
-    kashfRuntimeStatus: 'ready',
+    kashfRuntimeStatus: 'blocked-by-source',
     runtimeAllowed: false,
     executionKind: 'custom-engine',
     executorStatus: 'pending',
@@ -958,11 +958,11 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfIntentId: 'inheritance.whoInheritsWhom',
     topicId: 'deathInheritance',
     sourcePages: [180],
-    kashfRuntimeStatus: 'ready',
+    kashfRuntimeStatus: 'blocked-by-source',
     runtimeAllowed: false,
     executionKind: 'custom-engine',
     executorStatus: 'pending',
-    notes: 'Body-source inheritance method determines which side inherits the other through the stated element-row composites. It does not calculate shares, amounts, or inheritance disputes.',
+    notes: 'Body-source p180 supplies two element-row composites and a final combined figure, but does not operationally define how the final figure is assigned to the querent portion versus the other party portion. Pending executor must not be described as ready; no shares, amounts or dispute prediction.',
   }),
 
   // ── TRAVEL + MISSING canonical slice ----------------------------------
@@ -1208,6 +1208,18 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     executionKind: 'custom-engine',
     executorStatus: 'ready',
     notes: 'Canonical p212 reconciliation executor is wired. Generate one figure from H1+H7. A pure benefic generated figure gives the explicit source verdict that the two sides reconcile. Pure malefic, mixed, or unknown generated figures remain unresolved because p212 does not state the converse in this clause. Mediator identity clauses remain outside this yes/no executor.',
+  }),
+
+  'dispute.p212.winnerH1': method({
+    kashfMethodId: 'dispute.p212.winnerH1',
+    kashfIntentId: 'dispute.whoWinsH1Sign',
+    topicId: 'disputes',
+    sourcePages: [212],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: true,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
+    notes: 'Printed p212 independently says H1 malefic => the seeker prevails and H1 benefic => the opposite party. This is the exact H1 sign only; mixed remains unresolved. The H2/H8 victory signs on the same page can conflict and are excluded, as is the unresolved strength comparison on p213. No multi-sign final arbitration.',
   }),
 
   'dispute.p213.winnerStrengthUnresolved': method({
@@ -1926,6 +1938,39 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     notes: 'Source contradiction: house 12 appears in conflicting outcome groups. No code until textual resolution.',
   }),
 
+  'travel.p243-244.vesselH1Signs': method({
+    kashfMethodId: 'travel.p243-244.vesselH1Signs',
+    kashfIntentId: 'travel.vesselCondition',
+    topicId: 'travel',
+    sourcePages: [243, 244],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: true,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
+    notes: 'Separate printed H1 vessel-figure rule. Jamaa explicitly indicates arrival safely; named damage figures indicate a particular repairable defect. Three unnamed figures stay unresolved. Never import the conflicting H12 recurrence of p242, infer that damage means shipwreck, or promise factual safety.',
+  }),
+
+  'family.p184.fatherMoneyH5': method({
+    kashfMethodId: 'family.p184.fatherMoneyH5',
+    kashfIntentId: 'family.fatherMoneySign',
+    topicId: 'parentsProperty',
+    sourcePages: [184],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: true,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
+    notes: 'The father passage directly says H5 benefic indicates he has money and H5 malefic indicates no money or no benefit from what he has. This existing question is narrowed to that sign only; mixed H5 is unresolved. No father health, lifespan, property title or mother judgment.',
+  }),
+
+  'property.p184.landOwnershipH4': method({
+    kashfMethodId: 'property.p184.landOwnershipH4',
+    kashfIntentId: 'property.landOwnershipSign',
+    topicId: 'property', sourcePages: [184],
+    kashfRuntimeStatus: 'ready', runtimeAllowed: true,
+    executionKind: 'custom-engine', executorStatus: 'ready',
+    notes: 'Printed p184 directly says benefics in H4 indicate possession/acquisition of property, while absence of benefics indicates no possession and its departure. Narrow existing land/agriculture question to the land-ownership sign. Only pure benefic or pure malefic are used; mixed remains unresolved. No crop yield, irrigation, exact title or physical land assessment.',
+  }),
+
   'prisoner.releaseTiming.unresolved': method({
     kashfMethodId: 'prisoner.releaseTiming.unresolved',
     kashfIntentId: 'prisoner.releaseTiming',
@@ -1937,6 +1982,25 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     executionKind: null,
     executorStatus: 'not-applicable',
     notes: 'No canonical body method selected that yields release timing. Do not infer timing from outcome/exit rules.',
+  }),
+
+  'prisoner.p272-273.rapidExitH11WithH5Caution': method({
+    kashfMethodId: 'prisoner.p272-273.rapidExitH11WithH5Caution',
+    kashfIntentId: 'prisoner.rapidExitSign',
+    topicId: 'prisoner',
+    sourcePages: [272, 273],
+    kashfRuntimeStatus: 'ready', runtimeAllowed: true,
+    executionKind: 'custom-engine', executorStatus: 'ready',
+    notes: 'Printed p272 Incoming Honor in H11 explicitly indicates rapid exit; p273 Shallow Head in H5 separately warns that he may not exit. Both signs together must be reported as conflicting evidence without a yes/no verdict. Absence of the positive sign does not predict continued detention or supply a date.',
+  }),
+
+  'missing.p249.departedCityH7': method({
+    kashfMethodId: 'missing.p249.departedCityH7',
+    kashfIntentId: 'missing.departedCitySign',
+    topicId: 'missingPerson', sourcePages: [249],
+    kashfRuntimeStatus: 'ready', runtimeAllowed: true,
+    executionKind: 'custom-engine', executorStatus: 'ready',
+    notes: 'Printed p249 says a benefic outgoing figure in H7 indicates the absent person has left town; a fixed H7 figure indicates remaining in place, a separate non-geographic sign. The exact p249-250 directional calculation remains unresolved. No current position, direction or factual location inference.',
   }),
 
   // ── EDUCATIONAL / EXTERNAL --------------------------------------------

@@ -44,6 +44,31 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
     doNotMixWith: ['completion.p173.fireRows15910', 'joy.p196.recast14511'],
     houses: [5],
   },
+  'family.p184.fatherMoneyH5': {
+    aliases: ['ממון האב לפי בית חמישי', 'האם יש לאבי ממון', 'סימן הכסף של האב'],
+    doNotMixWith: ['family.fatherPropertyMixedScope.unsupported', 'property.p184-185.houseGardenMap'],
+    houses: [5],
+  },
+  'property.p184.landOwnershipH4': {
+    aliases: ['סימן קניין הקרקע', 'האם יהיה לי נכס', 'בעלות אדמה בית רביעי'],
+    doNotMixWith: ['agriculture.mixedScope.unsupported', 'property.p184-185.houseGardenMap'],
+    houses: [4],
+  },
+  'travel.p243-244.vesselH1Signs': {
+    aliases: ['מצב הספינה לפי בית ראשון', 'הגעת כלי השיט', 'פגם בכלי השיט', 'סימן למסע ים'],
+    doNotMixWith: ['travel.p242.vehicleSafety', 'travel.p240.roadCautionsH9H7'],
+    houses: [1],
+  },
+  'prisoner.p272-273.rapidExitH11WithH5Caution': {
+    aliases: ['סימן לשחרור מהיר', 'יציאה מהירה מן הכלא', 'כבוד נכנס בבית 11 אסיר', 'אזהרת שפל ראש בבית חמישי אסיר'],
+    doNotMixWith: ['prisoner.releaseTiming.unresolved', 'fear.p273.punishmentSigns'],
+    houses: [11, 5],
+  },
+  'missing.p249.departedCityH7': {
+    aliases: ['האם הנעדר יצא מהעיר', 'סימן שעזב את העיר', 'צורה חיצונית מיטיבה בבית השביעי של הנעדר'],
+    doNotMixWith: ['missing.p249.locationDirectionUnresolved', 'fugitive.external.p250.nuzhat'],
+    houses: [7],
+  },
   'messenger.p176.recast14511': {
     aliases: ['אחרית שליחים בלוח נגזר עמ 176', 'בתים 1 4 5 11 לשליחים'],
     doNotMixWith: ['news.arrival.unsupported', 'request.p176.h1h2GateThenH1H4', 'joy.p196.recast14511'],
@@ -487,6 +512,11 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
   'dispute.p212.reconciliationH1H7': {
     aliases: ['האם יהיה פיוס', 'האם הצדדים יתפייסו', 'פשרה בין הצדדים', 'שלום אחרי סכסוך', 'גישור ופיוס'],
     houses: [1, 7],
+  },
+  'dispute.p212.winnerH1': {
+    aliases: ['מי גובר בסכסוך לפי בית ראשון', 'מבקש ומבוקש מריבה בית ראשון', 'סימן המנצח בסכסוך'],
+    doNotMixWith: ['dispute.p212.reconciliationH1H7', 'dispute.p213.winnerStrengthUnresolved'],
+    houses: [1],
   },
   'desire.p206.querentWantsH7H11ThenH5': {
     aliases: ['האם השואל רוצה בדבר', 'האם אני רוצה בזה', 'רצון השואל בדבר', 'האם הוא רוצה בעניין'],

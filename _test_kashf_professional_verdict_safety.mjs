@@ -189,7 +189,7 @@ function auditOutputForSafety(safetyBlock, { draft = null, draftPolarity = 'none
   };
 }
 
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 61, 'certification registry includes p193 gift but excludes unresolved recast verdicts');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 67, 'certification registry includes five new source methods plus p249 city');
 for (const id of [
   'marriage.p210.generalMarriageH1H2H7H8H10Judge',
   'marriage.p211.dissolutionH7StateMatrix',
@@ -814,6 +814,69 @@ for (const [mothers, expectedBranch] of [
 }
 
 // PV-BF07-P183-PLACE-* — H4+H15 has explicit good/bad/mixed branches.
+for (const [mothers, expectedBranch] of [
+  [['1111', '1111', '2111', '2111'], 'money-sign'],
+  [['1111', '1111', '1111', '2111'], 'no-money-or-no-benefit-sign'],
+  [['1111', '1111', '1111', '1111'], 'unresolved'],
+]) {
+  const bridge = buildKashfCanonicalAiBridge({ questionId: 'q-father', questionText: 'מה סימן הממון אצל האב?', board: buildRamlBoardFromMothers(mothers) });
+  const result = bridge.canonicalReading?.formula?.result?.executorResult;
+  assert(result?.branch === expectedBranch && bridge.professionalVerdictSafety?.isSafe === true, `p184 father ${expectedBranch} bridge certified`);
+  assert(bridge.professionalVerdictSafety?.authoritativeClientDraftHebrew === result?.outputHebrew, `p184 father ${expectedBranch} exact draft`);
+  if (expectedBranch === 'unresolved') assert(bridge.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'p184 father mixed H5 has no binary verdict');
+}
+for (const [h4, expectedBranch] of [
+  ['1122', 'ownership-sign'], ['1112', 'absence-or-loss-sign'], ['1111', 'unresolved'],
+]) {
+  const bridge = buildKashfCanonicalAiBridge({ questionId: 'q-agriculture', questionText: 'מה סימן הבעלות על הקרקע?', board: buildRamlBoardFromMothers(['1111', '1111', '1111', h4]) });
+  const result = bridge.canonicalReading?.formula?.result?.executorResult;
+  assert(result?.branch === expectedBranch && bridge.professionalVerdictSafety?.isSafe === true, `p184 land ${expectedBranch} bridge certified`);
+  assert(bridge.professionalVerdictSafety?.authoritativeClientDraftHebrew === result?.outputHebrew, `p184 land ${expectedBranch} exact draft`);
+  if (expectedBranch === 'unresolved') assert(bridge.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'p184 land mixed H4 has no binary verdict');
+}
+for (const [pattern, expectedBranch] of [
+  ['2222', 'safe-arrival-sign'], ['1221', 'repairable-damage-sign'], ['2211', 'unresolved'],
+]) {
+  const bridge = buildKashfCanonicalAiBridge({ questionId: 'q-sea-voyage', questionText: 'מה סימן כלי השיט במסע ים?', board: buildRamlBoardFromMothers([pattern, '1111', '1111', '1111']) });
+  const result = bridge.canonicalReading?.formula?.result?.executorResult;
+  assert(result?.branch === expectedBranch && bridge.professionalVerdictSafety?.isSafe === true, `p243 vessel ${expectedBranch} bridge certified`);
+  assert(bridge.professionalVerdictSafety?.authoritativeClientDraftHebrew === result?.outputHebrew, `p243 vessel ${expectedBranch} exact draft`);
+  if (expectedBranch !== 'safe-arrival-sign') assert(bridge.professionalVerdictSafety?.binaryClientVerdictAllowed === false, `p243 vessel ${expectedBranch} cannot assert unsafe verdict`);
+}
+for (const [pattern, expectedBranch] of [
+  ['1112', 'seeker-prevails'], ['1122', 'other-party-prevails'], ['1111', 'unresolved'],
+]) {
+  const bridge = buildKashfCanonicalAiBridge({ questionId: 'q-dispute', questionText: 'מי גובר בסכסוך לפי בית ראשון?', board: buildRamlBoardFromMothers([pattern, '1111', '1111', '1111']) });
+  const result = bridge.canonicalReading?.formula?.result?.executorResult;
+  assert(result?.branch === expectedBranch && bridge.professionalVerdictSafety?.isSafe === true, `p212 dispute ${expectedBranch} bridge certified`);
+  assert(bridge.professionalVerdictSafety?.authoritativeClientDraftHebrew === result?.outputHebrew, `p212 dispute ${expectedBranch} exact draft`);
+  if (expectedBranch === 'unresolved') assert(bridge.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'p212 dispute mixed H1 has no binary verdict');
+}
+for (const [mothers, expectedBranch] of [
+  [['1111', '1111', '1211', '1211'], 'rapid-exit-sign'],
+  [['2111', '2111', '2111', '1111'], 'no-exit-caution'],
+  [['2211', '2211', '2111', '1211'], 'conflicting-signs'],
+  [['1111', '1111', '1111', '1111'], 'unresolved'],
+]) {
+  const bridge = buildKashfCanonicalAiBridge({ questionId: 'q-prisoner', questionText: 'האם יש סימן ליציאה מהירה מן הכלא?', board: buildRamlBoardFromMothers(mothers) });
+  const result = bridge.canonicalReading?.formula?.result?.executorResult;
+  assert(result?.branch === expectedBranch && bridge.professionalVerdictSafety?.isSafe === true, `p272 prisoner ${expectedBranch} bridge certified`);
+  assert(bridge.professionalVerdictSafety?.authoritativeClientDraftHebrew === result?.outputHebrew, `p272 prisoner ${expectedBranch} exact draft`);
+  if (expectedBranch !== 'rapid-exit-sign') assert(bridge.professionalVerdictSafety?.binaryClientVerdictAllowed === false, `p272 prisoner ${expectedBranch} cannot become a negative verdict`);
+}
+for (const [mothers, expectedBranch] of [
+  [['1111', '1111', '1121', '1121'], 'departed-city-sign'],
+  [['1121', '1111', '1111', '1121'], 'remains-in-place-sign'],
+  [['1111', '1111', '1111', '1111'], 'unresolved'],
+]) {
+  const bridge = buildKashfCanonicalAiBridge({ questionId: 'q-missing-location', questionText: 'האם יש סימן שהנעדר יצא מן העיר?', board: buildRamlBoardFromMothers(mothers) });
+  const result = bridge.canonicalReading?.formula?.result?.executorResult;
+  assert(result?.branch === expectedBranch && bridge.professionalVerdictSafety?.isSafe === true, `p249 missing city ${expectedBranch} bridge certified`);
+  assert(bridge.professionalVerdictSafety?.authoritativeClientDraftHebrew === result?.outputHebrew, `p249 missing city ${expectedBranch} exact draft`);
+  if (expectedBranch !== 'departed-city-sign') assert(bridge.professionalVerdictSafety?.binaryClientVerdictAllowed === false, `p249 missing city ${expectedBranch} cannot infer presence in city`);
+}
+
+// PV-BF07-P183-PLACE-* — H4+H15 has explicit good/bad/mixed branches.
 const p183PlaceGood = buildKashfCanonicalAiBridge({ questionId: 'q-move-city', questionText: 'מעבר ממקום למקום', board: makeBoard({ 4:'1111', 15:'2211' }) });
 assert(p183PlaceGood.resolution?.kashfMethodId === 'relocation.p183.h4h15', 'p183 place-to-place exact route selected');
 assert(p183PlaceGood.canonicalReading?.primaryFormula?.result?.resultPattern === '1122', 'p183 good fixture derives 1122');
@@ -954,7 +1017,7 @@ assert(p254Venus.professionalVerdictSafety?.binaryClientVerdictAllowed === false
 assert(p254Venus.professionalVerdictSafety?.authoritativeClientDraftHebrew === p254VenusExec?.outputHebrew, 'p254 safety gate locks the exact source-bounded executor draft');
 assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes('profession.p254.h9Planet'), 'p254 profession method is explicitly professionally certified');
 // Dhamir subject-identification remains outside the client-verdict registry.
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 61, 'p193 gift is certified while p176/p196 recasts are excluded');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 67, 'p184 father/land, p243 vessel, p212 winner, p272 prisoner and p249 city are certified');
 
 for (const [mothers, expectedBranch] of [
   [['1211', '1111', '1111', '1111'], 'benefic-incoming'],

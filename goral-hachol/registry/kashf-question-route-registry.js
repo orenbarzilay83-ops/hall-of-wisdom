@@ -310,8 +310,8 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     disposition: 'RENAME',
     kashfIntentId: 'lifespan.duration',
     kashfMethodId: 'lifespan.p178.elementCountToHouse',
-    kashfRuntimeStatus: 'ready',
-    note: 'The canonical p178 method calculates lifespan duration; do not substitute p264 life-stage houses.',
+    kashfRuntimeStatus: 'blocked-by-source',
+    note: 'p178 specifies the route but the figure-number-in-house lookup is not source-certified for execution. Do not substitute p264 life stages.',
   }),
 
   'q-lifespan-remaining': route({
@@ -320,7 +320,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     aliasOf: 'q-lifespan',
     kashfIntentId: 'lifespan.duration',
     kashfMethodId: 'lifespan.p178.elementCountToHouse',
-    kashfRuntimeStatus: 'ready',
+    kashfRuntimeStatus: 'blocked-by-source',
   }),
 
   'q-lifespan-stages': route({
@@ -443,8 +443,8 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     disposition: 'RENAME',
     kashfIntentId: 'inheritance.whoInheritsWhom',
     kashfMethodId: 'inheritance.p180.elementComposite',
-    kashfRuntimeStatus: 'ready',
-    note: 'Source-safe scope: which side inherits the other. The method does not calculate shares, amounts, or whether there will be a dispute.',
+    kashfRuntimeStatus: 'blocked-by-source',
+    note: 'The p180 final-figure selector for querent versus other party is not defined operationally; no executor is certified. The method does not calculate shares, amounts or disputes.',
   }),
 
   'q-loan': route({
@@ -656,11 +656,11 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
 
   'q-missing-location': route({
     questionId: 'q-missing-location',
-    disposition: 'BLOCK',
-    kashfIntentId: 'missing.location',
-    kashfMethodId: 'missing.p249.locationDirectionUnresolved',
-    kashfRuntimeStatus: 'blocked-by-source',
-    note: 'The body source supports in-city/outside-city evidence, but the exact directional operation is not closed. Do not borrow the later Nuzhat fugitive-direction rule.',
+    disposition: 'RENAME',
+    kashfIntentId: 'missing.departedCitySign',
+    kashfMethodId: 'missing.p249.departedCityH7',
+    kashfRuntimeStatus: 'ready',
+    note: 'Only the source-explicit outgoing-benefic H7 sign of leaving town, and fixed-H7 sign of remaining in place. The direction/current location computation remains unresolved.',
   }),
 
   'q-missing-return': route({
@@ -794,21 +794,21 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
 
   'q-dispute': route({
     questionId: 'q-dispute',
-    disposition: 'BLOCK',
-    kashfIntentId: 'dispute.whoWins',
-    kashfMethodId: 'dispute.p213.winnerStrengthUnresolved',
-    kashfRuntimeStatus: 'blocked-by-source',
-    note: 'The body winner/loser method is identified, but exact “strength” semantics are not closed. Do not fall back to post-marker non-body winner rules.',
+    disposition: 'RENAME',
+    kashfIntentId: 'dispute.whoWinsH1Sign',
+    kashfMethodId: 'dispute.p212.winnerH1',
+    kashfRuntimeStatus: 'ready',
+    note: 'Only the source-explicit H1 winner sign on p212; do not aggregate the H2/H8 clauses or the undefined strength comparison on p213.',
   }),
 
   'q-women-dispute': route({
     questionId: 'q-women-dispute',
     disposition: 'ALIAS',
     aliasOf: 'q-dispute',
-    kashfIntentId: 'dispute.whoWins',
-    kashfMethodId: 'dispute.p213.winnerStrengthUnresolved',
-    kashfRuntimeStatus: 'blocked-by-source',
-    note: 'No separate canonical winner method by opponent gender was found in the audited body passage.',
+    kashfIntentId: 'dispute.whoWinsH1Sign',
+    kashfMethodId: 'dispute.p212.winnerH1',
+    kashfRuntimeStatus: 'ready',
+    note: 'Same bounded H1 p212 sign; no gender-specific calculation is printed here.',
   }),
 
   'q-reconciliation': route({
@@ -973,20 +973,20 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
   // ── FINAL AUDITED QUESTION-BANK COVERAGE SLICE -----------------------
   'q-agriculture': route({
     questionId: 'q-agriculture',
-    disposition: 'SPLIT',
-    kashfIntentId: 'agriculture.mixedScope',
-    kashfMethodId: 'agriculture.mixedScope.unsupported',
-    kashfRuntimeStatus: 'unsupported',
-    note: 'Split crop/yield, irrigation and land ownership. The source uses different layers/methods for these and the agriculture-year material is Nuzhat.',
+    disposition: 'RENAME',
+    kashfIntentId: 'property.landOwnershipSign',
+    kashfMethodId: 'property.p184.landOwnershipH4',
+    kashfRuntimeStatus: 'ready',
+    note: 'Retain only the land-ownership aspect of the existing mixed agriculture/land question. Crop yield and irrigation are separate intents, not decided here.',
   }),
 
   'q-father': route({
     questionId: 'q-father',
-    disposition: 'SPLIT',
-    kashfIntentId: 'family.fatherPropertyMixedScope',
-    kashfMethodId: 'family.fatherPropertyMixedScope.unsupported',
-    kashfRuntimeStatus: 'unsupported',
-    note: 'p184 separates father condition from property/house/land. The current combined question cannot have one canonical verdict.',
+    disposition: 'RENAME',
+    kashfIntentId: 'family.fatherMoneySign',
+    kashfMethodId: 'family.p184.fatherMoneyH5',
+    kashfRuntimeStatus: 'ready',
+    note: 'Narrow existing mixed father/house/land question to the explicit father-money H5 clause of p184. No health, lifespan, property title or land judgment.',
   }),
 
   'q-geo-direction': route({
@@ -1232,19 +1232,20 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
   // ── BLOCKED BY SOURCE --------------------------------------------------
   'q-sea-voyage': route({
     questionId: 'q-sea-voyage',
-    disposition: 'BLOCK',
-    kashfIntentId: 'travel.vehicleSafety',
-    kashfMethodId: 'travel.p242.vehicleSafety',
-    kashfRuntimeStatus: 'blocked-by-source',
+    disposition: 'RENAME',
+    kashfIntentId: 'travel.vesselCondition',
+    kashfMethodId: 'travel.p243-244.vesselH1Signs',
+    kashfRuntimeStatus: 'ready',
+    note: 'Use the separate printed p243-244 H1 vessel signs, not the contradictory H12 recurrence on p242. Only named figures are judged; repairable defects are not shipwreck or a factual safety certificate.',
   }),
 
   'q-prisoner': route({
     questionId: 'q-prisoner',
     disposition: 'RENAME',
-    kashfIntentId: 'prisoner.releaseTiming',
-    kashfMethodId: 'prisoner.releaseTiming.unresolved',
-    kashfRuntimeStatus: 'blocked-by-source',
-    note: 'Current wording asks WHEN; selected body-source methods do not provide a canonical release-timing calculation.',
+    kashfIntentId: 'prisoner.rapidExitSign',
+    kashfMethodId: 'prisoner.p272-273.rapidExitH11WithH5Caution',
+    kashfRuntimeStatus: 'ready',
+    note: 'Scope is the p272 sign of rapid release and the p273 H5 caution. Neither gives a calendar date; conflicting signs stay unresolved.',
   }),
 
   // ── EDUCATIONAL ONLY ---------------------------------------------------

@@ -49,6 +49,12 @@ const P265_STATE_CONTINUITY_METHOD = 'state.p265.h1h2h9h15';
 const P257_MOTHER_METHOD = 'mother.p257.statusDayNight';
 const P267_HOPE_METHOD = 'hope.p267.fulfillment';
 const P193_GIFT_METHOD = 'gift.p193.h5Quality';
+const P184_FATHER_MONEY_METHOD = 'family.p184.fatherMoneyH5';
+const P184_LAND_OWNERSHIP_METHOD = 'property.p184.landOwnershipH4';
+const P243_244_VESSEL_METHOD = 'travel.p243-244.vesselH1Signs';
+const P212_DISPUTE_WINNER_METHOD = 'dispute.p212.winnerH1';
+const P272_273_PRISONER_METHOD = 'prisoner.p272-273.rapidExitH11WithH5Caution';
+const P249_MISSING_CITY_METHOD = 'missing.p249.departedCityH7';
 const P174_HOPE_METHOD = 'hope.p174.h5h11ThroughH1';
 const P176_REQUEST_METHOD = 'request.p176.h1h2GateThenH1H4';
 const P176_PURPOSE_METHOD = 'intent.p176.h7h10';
@@ -1461,6 +1467,93 @@ function p193GiftQualityPolicy() {
   });
 }
 
+function p184FatherMoneyPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-father-money-p184',
+    goldenCaseIds: freezeArray(['PV-P184-FATHER-MONEY', 'PV-P184-FATHER-NO-MONEY-OR-NO-BENEFIT', 'PV-P184-FATHER-MIXED']),
+    policyId: 'p184-father-money-h5-v1',
+    questionScopeHebrew: 'סימן ממונו של האב בבית החמישי בלבד',
+    decisiveRuleHebrew: 'מיטיב טהור בחמישי — יש לו ממון; מזיק טהור — אין לו ממון או שאין לו תועלת מן הממון שיש לו.',
+    oneWayBranches: freezeArray(['H5 מיטיב טהור => סימן ממון', 'H5 מזיק טהור => העדר ממון או העדר תועלת ממנו']),
+    forbiddenInversions: freezeArray(['H5 ממוזג אינו נותן פסק.', 'סעיף האב אינו סעיף נכס השואל.']),
+    excludedFromPrimaryVerdict: freezeArray(['property.p184-185.houseGardenMap', 'family.fatherPropertyMixedScope.unsupported']),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray(['אבחון בריאות האב', 'אורך חייו של האב', 'בעלות על בית או קרקע']),
+  });
+}
+
+function p184LandOwnershipPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified', certificationBatch: 'professional-land-ownership-p184',
+    goldenCaseIds: freezeArray(['PV-P184-LAND-POSITIVE', 'PV-P184-LAND-NEGATIVE', 'PV-P184-LAND-MIXED']),
+    policyId: 'p184-land-ownership-h4-v1',
+    questionScopeHebrew: 'סימן לקניין נכס או קרקע בבית הרביעי',
+    decisiveRuleHebrew: 'מיטיב טהור ברביעי מורה נכס וקניין; העדר מיטיב בטוח בענף המזיק מורה העדר קניין או יציאתו.',
+    oneWayBranches: freezeArray(['H4 מיטיב טהור => סימן לקניין', 'H4 מזיק טהור => סימן להעדר קניין או יציאתו']),
+    forbiddenInversions: freezeArray(['H4 ממוזג אינו מכריע.', 'סימן גורל אינו אישור בעלות משפטי.']),
+    excludedFromPrimaryVerdict: freezeArray(['property.p184-185.houseGardenMap', 'agriculture.mixedScope.unsupported']),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray(['תחזית יבול', 'מצב השקיה', 'בעלות רשומה בקרקע']),
+  });
+}
+
+function p243244VesselPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-vessel-h1-p243-244',
+    goldenCaseIds: freezeArray(['PV-P243-VESSEL-ARRIVAL', 'PV-P243-VESSEL-REPAIR', 'PV-P243-VESSEL-UNNAMED']),
+    policyId: 'p243-244-vessel-h1-signs-v1',
+    questionScopeHebrew: 'סימן הגעה או פגם בר תיקון של כלי שיט לפי בית ראשון',
+    decisiveRuleHebrew: 'קהלה בבית הראשון מורה על הגעה בשלום; הצורות המנויות האחרות מורות על מקום פגם ותיקונו.',
+    oneWayBranches: freezeArray(['H1 קהלה => סימן הגעה בשלום', 'H1 אחת הצורות המנויות לפגם => פגם מסוים ותיקון']),
+    forbiddenInversions: freezeArray(['שלוש צורות לא מנויות נשארות ללא פסק.', 'פגם ותיקון אינם שקולים לשבר או לאובדן הכלי.']),
+    excludedFromPrimaryVerdict: freezeArray(['travel.p242.vehicleSafety', 'travel.p240.roadCautionsH9H7']),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray(['אישור בטיחות עובדתי למסע', 'טביעה ודאית', 'הכרעה לפי חזרת הצורה בבית 12']),
+  });
+}
+
+function p212DisputeWinnerPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-dispute-h1-p212',
+    goldenCaseIds: freezeArray(['PV-P212-DISPUTE-SEEKER', 'PV-P212-DISPUTE-OTHER', 'PV-P212-DISPUTE-MIXED']),
+    policyId: 'p212-dispute-winner-h1-v1',
+    questionScopeHebrew: 'סימן המתגבר בסכסוך על פי צורת בית ראשון בלבד',
+    decisiveRuleHebrew: 'מזיק טהור ב-H1 מורה שהמבקש גובר; מיטיב טהור מורה שהצד השני גובר.',
+    oneWayBranches: freezeArray(['H1 מזיק טהור => המבקש גובר', 'H1 מיטיב טהור => הצד השני גובר']),
+    forbiddenInversions: freezeArray(['צורה ממוזגת אינה מוכרעת.', 'אין להציג את סימן H1 כפסק המאחד גם את בתי 2 ו־8.']),
+    excludedFromPrimaryVerdict: freezeArray(['dispute.p212.reconciliationH1H7', 'dispute.p213.winnerStrengthUnresolved']),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray(['פסק כולל כאשר עדויות הסכסוך חלוקות', 'הכרעה לפי חוזק בלתי מוגדר', 'תוצאת הליך משפטי בפועל']),
+  });
+}
+
+function p272273PrisonerPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified', certificationBatch: 'professional-prisoner-p272-273',
+    goldenCaseIds: freezeArray(['PV-P272-PRISONER-RAPID', 'PV-P273-PRISONER-CAUTION', 'PV-P272-273-PRISONER-CONFLICT', 'PV-P272-PRISONER-ABSENT']),
+    policyId: 'p272-273-prisoner-rapid-exit-and-caution-v1',
+    questionScopeHebrew: 'סימן יציאה מהירה של אסיר והאזהרה הנגדית בלבד',
+    decisiveRuleHebrew: 'כבוד נכנס ב-H11 מורה יציאה מהירה; שפל ראש ב-H5 מורה חשש שמא לא יצא.',
+    oneWayBranches: freezeArray(['H11 כבוד נכנס בלבד => סימן יציאה מהירה', 'H5 שפל ראש => אזהרה שמא לא יצא']),
+    forbiddenInversions: freezeArray(['העדר H11 אינו שולל שחרור.', 'נוכחות שני הסימנים אינה מוכרעת בהצבעה.', 'אזהרת H5 אינה ודאות של אי־יציאה.']),
+    excludedFromPrimaryVerdict: freezeArray(['prisoner.releaseTiming.unresolved', 'fear.p273.punishmentSigns']),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray(['תאריך שחרור', 'האסיר בוודאות לא ישוחרר', 'הכרעה כאשר סימני H11 ו־H5 סותרים']),
+  });
+}
+
+function p249MissingCityPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified', certificationBatch: 'professional-missing-city-p249',
+    goldenCaseIds: freezeArray(['PV-P249-MISSING-DEPARTED', 'PV-P249-MISSING-FIXED', 'PV-P249-MISSING-UNKNOWN']),
+    policyId: 'p249-missing-departed-city-h7-v1',
+    questionScopeHebrew: 'סימן עזיבת העיר או שהייה במקום לפי בית הנעדר',
+    decisiveRuleHebrew: 'מיטיב חיצוני בבית 7 מורה שיצא מן העיר; צורה קבועה מורה על שהייה במקום.',
+    oneWayBranches: freezeArray(['H7 מיטיב טהור וחיצוני => סימן יציאה מן העיר', 'H7 קבוע => שהייה במקום בלתי מזוהה']),
+    forbiddenInversions: freezeArray(['היעדר מיטיב חיצוני אינו אומר שהנעדר בעיר.', 'שהייה במקום אינה מזהה את העיר.']),
+    excludedFromPrimaryVerdict: freezeArray(['missing.p249.locationDirectionUnresolved', 'fugitive.external.p250.nuzhat']),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray(['מיקום נוכחי מאומת', 'כיוון גיאוגרפי', 'כתובת הנעדר']),
+  });
+}
+
 function p174HopeThroughIntermediatesPolicy() {
   return Object.freeze({
     certificationStatus: 'certified',
@@ -1779,6 +1872,12 @@ const METHOD_POLICIES = Object.freeze({
   [P257_MOTHER_METHOD]: p257MotherNightPolicy(),
   [P267_HOPE_METHOD]: p267HopeHouse11Policy(),
   [P193_GIFT_METHOD]: p193GiftQualityPolicy(),
+  [P184_FATHER_MONEY_METHOD]: p184FatherMoneyPolicy(),
+  [P184_LAND_OWNERSHIP_METHOD]: p184LandOwnershipPolicy(),
+  [P243_244_VESSEL_METHOD]: p243244VesselPolicy(),
+  [P212_DISPUTE_WINNER_METHOD]: p212DisputeWinnerPolicy(),
+  [P272_273_PRISONER_METHOD]: p272273PrisonerPolicy(),
+  [P249_MISSING_CITY_METHOD]: p249MissingCityPolicy(),
   [P174_HOPE_METHOD]: p174HopeThroughIntermediatesPolicy(),
   [P176_REQUEST_METHOD]: p176RequestGatePolicy(),
   [P176_PURPOSE_METHOD]: p176PersonPurposePolicy(),

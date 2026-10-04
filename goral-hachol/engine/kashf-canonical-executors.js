@@ -602,6 +602,156 @@ function computeSpecifiedGiftQualityH5P193(chart) {
   };
 }
 
+// A separate vessel rule follows the p242 movement passage. The H1 figures
+// below are named explicitly on printed pp243-244; three figures are omitted.
+const P243_VESSEL_DAMAGE_BY_PATTERN = Object.freeze({
+  '1221': 'פגם בחלק הקדמי, המתוקן לאחר מכן', // סוהר
+  '2112': 'פגם באחד הצדדים, המתוקן לאחר מכן', // חיבור
+  '1111': 'פגם באמצע הכלי, המתוקן לאחר מכן', // דרך
+  '1222': 'פגם גדול בראש הכלי; המקור אומר שהוא נשאר שלם', // נשוא ראש
+  '2221': 'פגם במוצא הפסולת, המתוקן לאחר מכן', // שפל ראש
+  '2122': 'פגם בחבלים, המתוקן לאחר מכן', // אדום
+  '2212': 'פגם בחבלים, המתוקן לאחר מכן', // לבן
+  '1112': 'פגם באחת הפינות, המתוקן לאחר מכן', // סף יוצא
+  '1121': 'פגם במעברים, במחסנים או בתיבה, המתוקן לאחר מכן', // נלחם
+  '1211': 'פגם במעברים, במחסנים או בתיבה, המתוקן לאחר מכן', // בר הלחי
+  '2121': 'פגם במעברים, במחסנים או בתיבה, המתוקן לאחר מכן', // ממון נכנס
+  '1212': 'פגם במעברים, במחסנים או בתיבה, המתוקן לאחר מכן', // ממון יוצא
+});
+
+function computeVesselH1SignsP243P244(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h1 = findCanonicalHouse(chart, 1);
+  const pattern = h1?.key || h1?.pattern || null;
+  if (!pattern) return null;
+  const figure = classifyCanonicalFigure(pattern);
+  const branch = pattern === '2222' ? 'safe-arrival-sign'
+    : P243_VESSEL_DAMAGE_BY_PATTERN[pattern] ? 'repairable-damage-sign' : 'unresolved';
+  const sign = branch === 'safe-arrival-sign' ? 'המקור מורה על הגעה בשלום.'
+    : branch === 'repairable-damage-sign'
+      ? `המקור מציין ${P243_VESSEL_DAMAGE_BY_PATTERN[pattern]}.`
+      : 'צורה זו אינה נמנית עם הצורות שקיבלו דין מפורש בכלל הזה.';
+  return {
+    sourceRef: 'כשף אל־אסראר עמ׳ 243–244',
+    sourceText: 'למצב כלי השיט הסתכל בצורת הבית הראשון: קהלה מורה על הגעה בשלום; הצורות המנויות האחרות מורות על פגמים מסוימים ותיקונם.',
+    housesUsed: [1], h1Pattern: pattern, h1FigureHebrew: figure.figureHebrew,
+    branch, damageSign: P243_VESSEL_DAMAGE_BY_PATTERN[pattern] || null,
+    positive: branch === 'safe-arrival-sign' ? true : null,
+    outputHebrew: `בבית 1 מופיעה ${figure.figureHebrew || pattern} (${pattern}). ${sign} זהו סימן לפי הספר, ולא אישור בטיחות עובדתי למסע.`,
+  };
+}
+
+function computeFatherMoneySignH5P184(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h5 = findCanonicalHouse(chart, 5);
+  const pattern = h5?.key || h5?.pattern || null;
+  if (!pattern) return null;
+  const figure = classifyCanonicalFigure(pattern);
+  const branch = figure.saadNahs === 'saad' ? 'money-sign'
+    : figure.saadNahs === 'nahs' ? 'no-money-or-no-benefit-sign' : 'unresolved';
+  const sign = branch === 'money-sign' ? 'לפי הכלל זהו סימן שיש לאב ממון.'
+    : branch === 'no-money-or-no-benefit-sign'
+      ? 'לפי הכלל זהו סימן שאין לו ממון, או שאינו נהנה מן הממון שיש לו.'
+      : 'הצורה ממוזגת; סעיף זה אינו נותן לה פסק על ממון האב.';
+  return {
+    sourceRef: 'כשף אל־אסראר עמ׳ 184; סיווגי הצורות עמ׳ 57–60',
+    sourceText: 'אם בחמישי מיטיב, יהיה לאב ממון; ואם מזיק, אין לו ממון או שאין לו תועלת בממונו.',
+    housesUsed: [5], h5Pattern: pattern, h5FigureHebrew: figure.figureHebrew,
+    classification: figure.saadNahs, branch,
+    positive: branch === 'money-sign' ? true : branch === 'no-money-or-no-benefit-sign' ? false : null,
+    outputHebrew: `בבית 5 מופיעה ${figure.figureHebrew || pattern} (${pattern}). ${sign} הכלל אינו קובע את מצב בריאות האב, אריכות ימיו או הבעלות על בית וקרקע.`,
+  };
+}
+
+function computeLandOwnershipSignH4P184(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h4 = findCanonicalHouse(chart, 4);
+  const pattern = h4?.key || h4?.pattern || null;
+  if (!pattern) return null;
+  const figure = classifyCanonicalFigure(pattern);
+  const branch = figure.saadNahs === 'saad' ? 'ownership-sign'
+    : figure.saadNahs === 'nahs' ? 'absence-or-loss-sign' : 'unresolved';
+  const sign = branch === 'ownership-sign' ? 'לפי הסעיף זהו סימן לקניין ולהחזקת נכס.'
+    : branch === 'absence-or-loss-sign' ? 'לפי הסעיף זהו סימן להעדר נכס או ליציאתו מיד השואל.'
+      : 'הצורה ממוזגת; סעיף זה אינו מכריע על הקניין.';
+  return {
+    sourceRef: 'כשף אל־אסראר עמ׳ 184; סיווגי הצורות עמ׳ 57–60',
+    sourceText: 'צורות מיטיבות ברביעי מורות שיהיה לשואל נכס ויקנה נכס; אם הרביעי פנוי ממיטיבים — העדר הקניין ויציאתו מידו.',
+    housesUsed: [4], h4Pattern: pattern, h4FigureHebrew: figure.figureHebrew,
+    classification: figure.saadNahs, branch,
+    positive: branch === 'ownership-sign' ? true : branch === 'absence-or-loss-sign' ? false : null,
+    outputHebrew: `בבית 4 מופיעה ${figure.figureHebrew || pattern} (${pattern}). ${sign} הכלל אינו קובע יבול, השקיה או זכויות רשומות במרשם מקרקעין.`,
+  };
+}
+
+function computeDisputeWinnerH1P212(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h1 = findCanonicalHouse(chart, 1);
+  const pattern = h1?.key || h1?.pattern || null;
+  if (!pattern) return null;
+  const figure = classifyCanonicalFigure(pattern);
+  const branch = figure.saadNahs === 'nahs' ? 'seeker-prevails'
+    : figure.saadNahs === 'saad' ? 'other-party-prevails' : 'unresolved';
+  const sign = branch === 'seeker-prevails' ? 'לפי סימן זה המבקש גובר.'
+    : branch === 'other-party-prevails' ? 'לפי סימן זה הצד השני גובר.'
+      : 'צורת הבית הראשון ממוזגת; הסעיף אינו מכריע מי גובר.';
+  return {
+    sourceRef: 'כשף אל־אסראר עמ׳ 212; סיווגי הצורות עמ׳ 57–60',
+    sourceText: 'במריבות: אם בראשון מזיק, המבקש גובר; אם מיטיב, להפך.',
+    housesUsed: [1], h1Pattern: pattern, h1FigureHebrew: figure.figureHebrew,
+    classification: figure.saadNahs, branch,
+    positive: branch === 'seeker-prevails' ? true : branch === 'other-party-prevails' ? false : null,
+    outputHebrew: `בבית 1 מופיעה ${figure.figureHebrew || pattern} (${pattern}). ${sign} זהו דין בית 1 בלבד; הספר מוסר באותו עמוד גם סימנים נוספים שאין כאן כלל הכרעה כאשר הם חלוקים.`,
+  };
+}
+
+function computePrisonerRapidExitP272P273(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h11 = findCanonicalHouse(chart, 11);
+  const h5 = findCanonicalHouse(chart, 5);
+  const h11Pattern = h11?.key || h11?.pattern || null;
+  const h5Pattern = h5?.key || h5?.pattern || null;
+  if (!h11Pattern || !h5Pattern) return null;
+  const rapidExitSign = h11Pattern === '2211'; // כבוד נכנס
+  const noExitCaution = h5Pattern === '2221'; // שפל ראש
+  const branch = rapidExitSign && noExitCaution ? 'conflicting-signs'
+    : rapidExitSign ? 'rapid-exit-sign' : noExitCaution ? 'no-exit-caution' : 'unresolved';
+  const sign = branch === 'conflicting-signs'
+    ? 'כבוד נכנס בבית 11 הוא סימן ליציאה מהירה, אך שפל ראש בבית 5 הוא אזהרה שמא לא יצא. הספר אינו נותן כאן כלל להכריע בין שני הסימנים.'
+    : branch === 'rapid-exit-sign' ? 'כבוד נכנס בבית 11 הוא סימן ליציאה מהירה מן הכלא לפי הספר.'
+      : branch === 'no-exit-caution' ? 'שפל ראש בבית 5 הוא אזהרה שמא לא יצא; אין בכך ודאות שלא ישוחרר.'
+        : 'שני הסימנים המפורשים אינם מופיעים; הסעיפים הללו אינם מכריעים על יציאה מהירה.';
+  return {
+    sourceRef: 'כשף אל־אסראר עמ׳ 272–273',
+    sourceText: 'כבוד נכנס בבית 11 בשאלת אסיר — יוצא במהירות; שפל ראש בבית 5 — יש לחשוש שמא לא יצא.',
+    housesUsed: [11, 5], h11Pattern, h5Pattern,
+    rapidExitSign, noExitCaution, branch,
+    positive: branch === 'rapid-exit-sign' ? true : null,
+    outputHebrew: `${sign} אין בסעיפים אלה תאריך שחרור.`,
+  };
+}
+
+function computeMissingDepartedCityH7P249(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h7 = findCanonicalHouse(chart, 7);
+  const pattern = h7?.key || h7?.pattern || null;
+  if (!pattern) return null;
+  const figure = classifyCanonicalFigure(pattern);
+  const branch = figure.saadNahs === 'saad' && figure.dakhalKharij === 'kharij' ? 'departed-city-sign'
+    : figure.dakhalKharij === 'mujassad-dakhil' ? 'remains-in-place-sign' : 'unresolved';
+  const sign = branch === 'departed-city-sign' ? 'לפי הספר זהו סימן שהנעדר יצא מן העיר.'
+    : branch === 'remains-in-place-sign' ? 'זוהי צורה קבועה; לפי הספר היא מורה שהנעדר שוהה במקומו, בלי לציין איזו עיר.'
+      : 'הצורה אינה מתאימה לשני סימני המקום המפורשים בסעיף זה.';
+  return {
+    sourceRef: 'כשף אל־אסראר עמ׳ 249; סיווגי הצורות עמ׳ 57–60',
+    sourceText: 'אם בשביעי צורה מיטיבה חיצונית — יצא מן העיר; אם צורה קבועה — הוא שוהה במקומו.',
+    housesUsed: [7], h7Pattern: pattern, h7FigureHebrew: figure.figureHebrew,
+    quality: figure.saadNahs, motion: figure.dakhalKharij, branch,
+    positive: branch === 'departed-city-sign' ? true : null,
+    outputHebrew: `בבית 7 מופיעה ${figure.figureHebrew || pattern} (${pattern}). ${sign} הסעיף אינו מוסר כתובת, כיוון או מיקום נוכחי מאומת.`,
+  };
+}
+
 // Printed p174: H5 and H11 are each combined with H1 before the two
 // intermediate figures are combined. This is distinct from the p267 H11 rule.
 function computeHopeThroughTwoIntermediatesP174(chart) {
@@ -2916,6 +3066,12 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'love.p204.attentionFireRows1713': computeLoveAttentionP204,
   'hope.p267.fulfillment': computeHopeHouse11FallbackP267,
   'gift.p193.h5Quality': computeSpecifiedGiftQualityH5P193,
+  'travel.p243-244.vesselH1Signs': computeVesselH1SignsP243P244,
+  'family.p184.fatherMoneyH5': computeFatherMoneySignH5P184,
+  'property.p184.landOwnershipH4': computeLandOwnershipSignH4P184,
+  'dispute.p212.winnerH1': computeDisputeWinnerH1P212,
+  'prisoner.p272-273.rapidExitH11WithH5Caution': computePrisonerRapidExitP272P273,
+  'missing.p249.departedCityH7': computeMissingDepartedCityH7P249,
   'hope.p174.h5h11ThroughH1': computeHopeThroughTwoIntermediatesP174,
   'request.p176.h1h2GateThenH1H4': computeRequestGateAndOutcomeP176,
   'intent.p176.h7h10': computePersonPurposeSignP176,

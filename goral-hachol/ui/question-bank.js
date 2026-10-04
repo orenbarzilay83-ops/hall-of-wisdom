@@ -408,9 +408,9 @@ window.QUESTION_BANK = [
   {
     id: 'q-father',
     category: 'family', houseId: 4, topicId: 'parentsProperty', kashfTopicId: 'parentsProperty',
-    label: 'מצב האב / הבית / הקרקע?',
-    desc: 'לשאלות על האב, הבית, הנכס, קרקע — גם מצב האב בריאותית',
-    clientFields: [{ id: 'fatherIssue', label: 'מה השאלה?', type: 'textarea', placeholder: 'בריאות האב / בית / קרקע...' }],
+    label: 'מה סימן הממון אצל האב?',
+    desc: 'דין ממונו של האב לפי הבית החמישי; אינו עוסק בבריאותו, בבית או בקרקע',
+    clientFields: [{ id: 'fatherIssue', label: 'העניין המסוים בממון האב', type: 'textarea', placeholder: 'ממון האב...' }],
   },
   {
     id: 'q-mother',
@@ -549,8 +549,8 @@ window.QUESTION_BANK = [
   {
     id: 'q-sea-voyage',
     category: 'travel', houseId: 9, topicId: 'seaVoyage', kashfTopicId: 'travel',
-    label: 'מסע ים — האם בטוח?',
-    desc: 'לנסיעת ים ספציפית — בטיחות, סכנות מים',
+    label: 'מה סימן כלי השיט במסע ים?',
+    desc: 'סימן הגעת כלי השיט או פגם בר תיקון לפי הצורה בבית הראשון',
     clientFields: [F.destination, F.travelDate],
   },
   {
@@ -563,8 +563,8 @@ window.QUESTION_BANK = [
   {
     id: 'q-missing-location',
     category: 'travel', houseId: 9, topicId: 'missingPerson', kashfTopicId: 'missingPerson',
-    label: 'היכן נמצא הנעדר?',
-    desc: 'לאחר אישור שהנעדר חי — לכיוון ומיקומו הגיאוגרפי',
+    label: 'האם יש סימן שהנעדר יצא מן העיר?',
+    desc: 'סימן עזיבת העיר לפי בית 7; אינו קובע מיקום נוכחי או כיוון',
     clientFields: [F.missingName, F.missingWhen, F.missingWhere],
   },
   {
@@ -665,8 +665,8 @@ window.QUESTION_BANK = [
   {
     id: 'q-dispute',
     category: 'conflict', houseId: 7, topicId: 'disputes', kashfTopicId: 'disputes',
-    label: 'מי ינצח בסכסוך?',
-    desc: 'לסכסוך עם גבר — מי יגבר. לסכסוך ספציפי עם אישה — בחר "מחלוקת עם אישה"',
+    label: 'מי גובר בסכסוך לפי בית ראשון?',
+    desc: 'סימן ההתגברות לפי הבית הראשון בלבד; אין כאן שקלול של שאר סימני המחלוקת',
     clientFields: [F.opponent, F.disputeIssue, F.disputeStage],
   },
   {
@@ -703,8 +703,8 @@ window.QUESTION_BANK = [
   {
     id: 'q-prisoner',
     category: 'conflict', houseId: 12, topicId: 'prisoner', kashfTopicId: 'prisoner',
-    label: 'מתי ישוחרר האסיר?',
-    desc: 'לאסיר — מתי ייצא, מה צפוי בהליך',
+    label: 'האם יש סימן ליציאה מהירה מן הכלא?',
+    desc: 'סימן כבוד נכנס בבית 11 ואזהרת שפל ראש בבית 5; אין חישוב תאריך',
     clientFields: [F.prisonerName, F.prisonerCharge, F.prisonerStage],
   },
   {
@@ -1041,18 +1041,18 @@ window.QUESTION_BANK = [
   {
     id: 'q-women-dispute',
     category: 'conflict', houseId: 2, topicId: 'disputes', kashfTopicId: 'disputes',
-    label: 'מחלוקת עם אישה — מי ינצח?',
-    desc: 'לסכסוך ספציפי מול אישה — כסף, ירושה, גט. לסכסוך עם גבר — בחר "מי ינצח בסכסוך"',
+    label: 'מחלוקת עם אישה — מי גובר לפי בית ראשון?',
+    desc: 'אותו סימן התגברות של בית 1; אין כלל חישוב נפרד לפי מין הצד השני',
     clientFields: [F.opponent, F.disputeIssue],
   },
 
   // ── בית 4 — הורים: "החקלאות, תכלית כל דבר ואחרית עניינו" ──
   {
     id: 'q-agriculture',
-    category: 'money', houseId: 4, topicId: 'yearlyForecast', kashfTopicId: 'yearlyForecast',
-    label: 'שאלת חקלאות / אדמה — מה ייצא?',
-    desc: 'לשאלות אדמה וחקלאות: יבול, השקיה, בעלות קרקע',
-    clientFields: [{ id: 'landTopic', label: 'נושא השאלה', type: 'textarea', placeholder: 'יבול / השקיה / בעלות / אדמה...' }],
+    category: 'money', houseId: 4, topicId: 'parentsProperty', kashfTopicId: 'parentsProperty',
+    label: 'מה סימן הבעלות על הקרקע?',
+    desc: 'דין הנכס והקרקע לפי הבית הרביעי; אינו מנבא יבול או השקיה',
+    clientFields: [{ id: 'landTopic', label: 'הקרקע המסוימת', type: 'textarea', placeholder: 'איזו קרקע או נכס?' }],
   },
   {
     id: 'q-matter-end',

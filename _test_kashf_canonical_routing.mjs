@@ -19,6 +19,7 @@ import {
   validateKashfV57KnowledgeCoverage,
 } from './goral-hachol/registry/kashf-v57-knowledge-registry.js';
 import {
+  KASHF_QUESTION_ROUTES,
   validateKashfQuestionRoutes,
 } from './goral-hachol/registry/kashf-question-route-registry.js';
 import {
@@ -51,6 +52,15 @@ function assertRoute(questionId, expected) {
     assert(route[key] === value, `${questionId}.${key}: expected ${String(value)}, got ${String(route[key])}`);
   }
   return route;
+}
+
+// A route described as ready must actually have an authorized executor.
+// Earlier lifespan and inheritance routes violated this invariant.
+for (const [questionId, record] of Object.entries(KASHF_QUESTION_ROUTES)) {
+  if (record.kashfRuntimeStatus === 'ready') {
+    assert(resolveKashfRouteByQuestionId(questionId).canRunKashf === true,
+      `${questionId}: ready status implies runnable route`);
+  }
 }
 
 // Reused, previously validated mother combination from the repository QA set.
@@ -166,6 +176,71 @@ for (const [mothers, expectedBranch, expectedH5, expectedPositive] of [
   assert(reading.valid === true && result?.branch === expectedBranch, `p193 gift ${expectedBranch} exact branch`);
   assert(result?.h5Pattern === expectedH5 && result?.positive === expectedPositive, `p193 gift ${expectedBranch} H5 and polarity`);
   assert(result?.outputHebrew?.includes('אינו קובע אם המתנה תגיע'), `p193 gift ${expectedBranch} excludes arrival`);
+}
+assertRoute('q-father', { canRunKashf: true, kashfMethodId: 'family.p184.fatherMoneyH5' });
+for (const [mothers, expectedBranch, expectedPositive] of [
+  [['1111', '1111', '2111', '2111'], 'money-sign', true],
+  [['1111', '1111', '1111', '2111'], 'no-money-or-no-benefit-sign', false],
+  [['1111', '1111', '1111', '1111'], 'unresolved', null],
+]) {
+  const reading = buildKashfReadingByQuestionId(buildRamlBoardFromMothers(mothers), 'q-father');
+  const result = reading.formula?.result?.executorResult;
+  assert(reading.valid && result?.branch === expectedBranch && result?.positive === expectedPositive, `p184 father H5 ${expectedBranch}`);
+  assert(result?.outputHebrew?.includes('אינו קובע את מצב בריאות האב'), `p184 father ${expectedBranch} excludes health`);
+}
+assertRoute('q-agriculture', { canRunKashf: true, kashfMethodId: 'property.p184.landOwnershipH4' });
+for (const [h4, branch, positive] of [
+  ['1122', 'ownership-sign', true], ['1112', 'absence-or-loss-sign', false], ['1111', 'unresolved', null],
+]) {
+  const reading = buildKashfReadingByQuestionId(buildRamlBoardFromMothers(['1111', '1111', '1111', h4]), 'q-agriculture');
+  const result = reading.formula?.result?.executorResult;
+  assert(reading.valid && result?.h4Pattern === h4 && result?.branch === branch && result?.positive === positive, `p184 land H4 ${branch}`);
+  assert(result?.outputHebrew?.includes('אינו קובע יבול'), `p184 land ${branch} excludes crop yield`);
+}
+assertRoute('q-sea-voyage', { canRunKashf: true, kashfMethodId: 'travel.p243-244.vesselH1Signs' });
+for (const [pattern, expectedBranch] of [
+  ['2222', 'safe-arrival-sign'], ['1221', 'repairable-damage-sign'],
+  ['2221', 'repairable-damage-sign'], ['1121', 'repairable-damage-sign'],
+  ['2211', 'unresolved'],
+]) {
+  const reading = buildKashfReadingByQuestionId(buildRamlBoardFromMothers([pattern, '1111', '1111', '1111']), 'q-sea-voyage');
+  const result = reading.formula?.result?.executorResult;
+  assert(reading.valid && result?.branch === expectedBranch && result?.h1Pattern === pattern, `p243 vessel H1 ${pattern} ${expectedBranch}`);
+  assert(result?.positive === (expectedBranch === 'safe-arrival-sign' ? true : null), `p243 vessel ${pattern} never turns repairable damage into shipwreck`);
+}
+for (const qid of ['q-dispute', 'q-women-dispute']) {
+  assertRoute(qid, { canRunKashf: true, kashfMethodId: 'dispute.p212.winnerH1' });
+  for (const [pattern, branch, positive] of [
+    ['1112', 'seeker-prevails', true], ['1122', 'other-party-prevails', false], ['1111', 'unresolved', null],
+  ]) {
+    const reading = buildKashfReadingByQuestionId(buildRamlBoardFromMothers([pattern, '1111', '1111', '1111']), qid);
+    const result = reading.formula?.result?.executorResult;
+    assert(reading.valid && result?.branch === branch && result?.positive === positive, `${qid} p212 H1 ${branch}`);
+    assert(result?.outputHebrew?.includes('דין בית 1 בלבד'), `${qid} p212 excludes H2/H8 adjudication`);
+  }
+}
+assertRoute('q-prisoner', { canRunKashf: true, kashfMethodId: 'prisoner.p272-273.rapidExitH11WithH5Caution' });
+for (const [mothers, branch, positive] of [
+  [['1111', '1111', '1211', '1211'], 'rapid-exit-sign', true],
+  [['2111', '2111', '2111', '1111'], 'no-exit-caution', null],
+  [['2211', '2211', '2111', '1211'], 'conflicting-signs', null],
+  [['1111', '1111', '1111', '1111'], 'unresolved', null],
+]) {
+  const reading = buildKashfReadingByQuestionId(buildRamlBoardFromMothers(mothers), 'q-prisoner');
+  const result = reading.formula?.result?.executorResult;
+  assert(reading.valid && result?.branch === branch && result?.positive === positive, `p272 prisoner ${branch} exact branch`);
+  assert(result?.outputHebrew?.includes('אין בסעיפים אלה תאריך'), `p272 prisoner ${branch} excludes calendar date`);
+}
+assertRoute('q-missing-location', { canRunKashf: true, kashfMethodId: 'missing.p249.departedCityH7' });
+for (const [mothers, branch, positive] of [
+  [['1111', '1111', '1121', '1121'], 'departed-city-sign', true],
+  [['1121', '1111', '1111', '1121'], 'remains-in-place-sign', null],
+  [['1111', '1111', '1111', '1111'], 'unresolved', null],
+]) {
+  const reading = buildKashfReadingByQuestionId(buildRamlBoardFromMothers(mothers), 'q-missing-location');
+  const result = reading.formula?.result?.executorResult;
+  assert(reading.valid && result?.branch === branch && result?.positive === positive, `p249 missing city ${branch}`);
+  assert(result?.outputHebrew?.includes('אינו מוסר כתובת'), `p249 missing city ${branch} excludes current location`);
 }
 assert(canRunKashfMethod('messenger.p176.recast14511') === false, 'specialized p176 messenger method remains blocked');
 assert(canRunKashfMethod('joy.p196.recast14511') === false, 'specialized p196 joy method remains blocked');
@@ -330,9 +405,9 @@ assertRoute('q-theft-who', {
 
 const dispute = assertRoute('q-dispute', {
   ok: true,
-  canRunKashf: false,
-  kashfIntentId: 'dispute.whoWins',
-  kashfRuntimeStatus: 'blocked-by-source',
+  canRunKashf: true,
+  kashfIntentId: 'dispute.whoWinsH1Sign',
+  kashfRuntimeStatus: 'ready',
 });
 const womenDispute = resolveKashfRouteByQuestionId('q-women-dispute');
 assert(womenDispute.kashfMethodId === dispute.kashfMethodId, 'women-dispute does not invent a gender-specific winner method');
@@ -447,7 +522,7 @@ for (const qid of ['q-enemy-exists', 'q-hidden-enemy', 'q-enemy']) {
   assertRoute(qid, { ok: true, canRunKashf: true, kashfMethodId: 'enemy.p271.h1vsH12', kashfRuntimeStatus: 'ready' });
 }
 for (const qid of [
-  'q-agriculture','q-father','q-geo-direction','q-helpers','q-illness-cause',
+  'q-geo-direction','q-helpers','q-illness-cause',
   'q-lose-fortune','q-nativity','q-neighbor','q-official-docs','q-past-events',
   'q-relative-state','q-separation','q-separation-loved','q-stalled'
 ]) {
@@ -464,7 +539,7 @@ assertRoute('q-stranger-desc', {
 });
 
 // ── Acceptance test 8: runtimeAllowed=false is a hard stop ---------------
-for (const qid of ['q-promise', 'q-fear', 'q-sorcery', 'q-sea-voyage', 'q-prisoner']) {
+for (const qid of ['q-promise', 'q-fear', 'q-sorcery']) {
   const route = resolveKashfRouteByQuestionId(qid);
   assert(route.canRunKashf === false, `${qid}: blocked/non-ready route cannot run`);
   let threw = false;
