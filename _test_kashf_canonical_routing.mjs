@@ -455,8 +455,9 @@ assertRoute('q-prisoner-guilty', {
 });
 assertRoute('q-partnership', {
   ok: true,
-  canRunKashf: false,
-  kashfRuntimeStatus: 'blocked-by-source',
+  canRunKashf: true,
+  kashfMethodId: 'partnership.p212.compatibilityH1H7H5H7',
+  kashfRuntimeStatus: 'ready',
 });
 assertRoute('q-victory-goal', {
   ok: true,

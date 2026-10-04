@@ -1651,6 +1651,90 @@ function computeDisputeReconciliationP212(chart) {
   };
 }
 
+// Kashf v57 p212 — partnership compatibility ("تحكم للشريك"), opened
+// 2026-10-04 while re-reading printed p212 (PDF 214) in full sequence for
+// the already-known "الجملة" partnership blocker. Immediately above the
+// "نكتة: في الشركة..." note (the still-unresolved 2-by-2 Jumla rule, kept
+// as partnership.p212.operationUnresolved), the SAME page's disputes
+// paragraph ends: "وكذلك تحكم للشريك من الأول والسابع، والخامس والسابع،
+// لأنهما بيتا مزاجهما، فما كان سعدا، فاحكم له بالخير، وما كان نحسا، فاحكم
+// بضده" — "and likewise, judge for the partner from [combining] the 1st
+// and 7th, and the 5th and 7th, because these are the two houses of their
+// [mutual] temperament; whichever is benefic, judge good for it; whichever
+// is malefic, judge the opposite."
+//
+// This is textually and thematically distinct from the nearby
+// dispute.p212.reconciliationH1H7 clause (which answers "will the two
+// disputing sides reconcile", a single H1+H7 figure, benefic-only verdict)
+// and from dispute.p212.winnerH1 (who wins a dispute): this clause is
+// introduced specifically for "الشريك" (the partner) and judges TWO
+// independent combined figures (H1+H7, H5+H7) each on its own fortune —
+// "بيتا مزاجهما" (the two houses of their temperament) — matching
+// partnership.goodOrBad's real-world question ("is there good in this
+// partnership or not") far more closely than a dispute-winner question.
+// The source gives NO combination/tie-break rule for when the two
+// generated figures disagree (unlike the p101-102 witness-disagreement
+// rule used elsewhere) — so when they disagree, both are reported as
+// evidence and no single good/bad verdict is produced, per the same
+// "do not invent an arbitration rule the source does not give" discipline
+// applied throughout this session.
+function computePartnershipCompatibilityP212(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h1 = findCanonicalHouse(chart, 1);
+  const h5 = findCanonicalHouse(chart, 5);
+  const h7 = findCanonicalHouse(chart, 7);
+  const h1Pattern = h1?.key || h1?.pattern || null;
+  const h5Pattern = h5?.key || h5?.pattern || null;
+  const h7Pattern = h7?.key || h7?.pattern || null;
+  if (!h1Pattern || !h5Pattern || !h7Pattern) return null;
+
+  const combined17 = combineRamlFigures(h1Pattern, h7Pattern);
+  const combined57 = combineRamlFigures(h5Pattern, h7Pattern);
+  const pattern17 = combined17?.resultPattern || null;
+  const pattern57 = combined57?.resultPattern || null;
+  if (!pattern17 || !pattern57) return null;
+
+  const fortune17 = classifyCanonicalFigure(pattern17).saadNahs;
+  const fortune57 = classifyCanonicalFigure(pattern57).saadNahs;
+
+  const sourceRef = 'כשף אל־אסראר עמ׳ 212';
+  const sourceText = 'וכן דנים בעד השותף מן [תולדת] הראשון והשביעי, ומן [תולדת] החמישי והשביעי, כי הם שני בתי המזג שביניהם; מה שהיה מיטיב — שפטו לו לטובה, ומה שהיה מזיק — שפטו להפך.';
+
+  let branch, positive, outputHebrew, clientSafeHebrew;
+
+  if (fortune17 === 'saad' && fortune57 === 'saad') {
+    branch = 'good';
+    positive = true;
+    outputHebrew = `שתי הצורות הנולדות — מבית 1+7 (${pattern17}) ומבית 5+7 (${pattern57}) — מיטיבות ללא מחלוקת. לפי כשף עמ׳ 212: "מה שהיה מיטיב, שפטו לו לטובה" — יש טובה בשותפות.`;
+    clientSafeHebrew = 'סימני הלוח מראים טובה בשותפות.';
+  } else if (fortune17 === 'nahs' && fortune57 === 'nahs') {
+    branch = 'bad';
+    positive = false;
+    outputHebrew = `שתי הצורות הנולדות — מבית 1+7 (${pattern17}) ומבית 5+7 (${pattern57}) — מזיקות ללא מחלוקת. לפי כשף עמ׳ 212: "ומה שהיה מזיק, שפטו להפך" — אין טובה בשותפות.`;
+    clientSafeHebrew = 'סימני הלוח מראים קושי בשותפות, לא טובה.';
+  } else if (fortune17 !== 'mixed' && fortune57 !== 'mixed' && fortune17 !== fortune57) {
+    branch = 'unresolved-disagreement';
+    positive = null;
+    outputHebrew = `הצורה הנולדת מבית 1+7 (${pattern17}) היא ${fortune17 === 'saad' ? 'מיטיבה' : 'מזיקה'}, והצורה הנולדת מבית 5+7 (${pattern57}) היא ${fortune57 === 'saad' ? 'מיטיבה' : 'מזיקה'} — שני הסימנים חלוקים. עמ׳ 212 נותן פסק נפרד לכל צורה ("מה שהיה... שפטו לו") אך אינו נותן כלל הכרעה בין שני סימנים חלוקים; לכן אין פסק טובה/קושי כולל אחד, ושני הסימנים מוצגים כעדות בלבד.`;
+    clientSafeHebrew = 'סימני הלוח בעניין השותפות חלוקים, והמקור אינו נותן כאן דרך ודאית להכריע ביניהם.';
+  } else {
+    branch = 'unresolved-mixed';
+    positive = null;
+    outputHebrew = `אחת מהצורות הנולדות ממוזגת (בית 1+7: ${pattern17}, ${fortune17}; בית 5+7: ${pattern57}, ${fortune57}) — עמ׳ 212 פוסק רק לפי מיטיב/מזיק מובהק, ואינו נותן פסק לצורה ממוזגת.`;
+    clientSafeHebrew = 'אין בלוח סימן מכריע לגבי טובת השותפות.';
+  }
+
+  return {
+    sourceRef, sourceText,
+    housesUsed: [1, 5, 7],
+    h1Pattern, h5Pattern, h7Pattern,
+    pattern17, pattern57,
+    fortune17, fortune57,
+    branch, positive,
+    outputHebrew, clientSafeHebrew,
+  };
+}
+
 
 // Kashf v57 pp178/183 — stay in the current place or move away.
 // The source gives exactly two opposite H1/H2 combinations. We do not infer
@@ -3355,6 +3439,7 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'clothing.p264-265.luck': computeClothingLuckP265,
   'relocation.p183.stayMoveH1H2': computeRelocationStayMoveH1H2,
   'dispute.p212.reconciliationH1H7': computeDisputeReconciliationP212,
+  'partnership.p212.compatibilityH1H7H5H7': computePartnershipCompatibilityP212,
   'religion.p253.h3h9Quality': computeReligionQualityP253,
   'matter.p172.h17_h1011_thenCombine': computeMatterOutcomeP172,
   'relocation.p183.currentVsNewPlace': computeRelocationCurrentVsNewP183,

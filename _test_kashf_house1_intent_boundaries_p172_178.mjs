@@ -124,12 +124,13 @@ assert.equal(blocked177.valid, false);
 assert.equal(blocked177.reason, 'blocked-by-source');
 
 // p178 lifespan duration is source-known but computationally blocked at executor
-// level until the exact figure-number-in-house lookup is certified.
+// level: the mod-16/Awtad-Mail-Zail procedure is fully confirmed (2026-10-04
+// re-read), but the "جمع العناصر" input depends on the same unresolved
+// SHIBUTZ_3 multi-element combination table as the dhamir sug-2 blocker.
 const lifespan = getKashfMethod('lifespan.p178.elementCountToHouse');
-assert.equal(lifespan.kashfRuntimeStatus, 'ready');
 assert.equal(lifespan.runtimeAllowed, false);
 assert.equal(lifespan.executorStatus, 'pending');
-assert.match(lifespan.notes || '', /figure number in that house|מספר|certified/i);
+assert.match(lifespan.notes || '', /SHIBUTZ_3_COMBINATION_RULE|multi-element/i);
 assert.match(lifespan.notes || '', /Do not substitute dignity|Hawi|p264/i);
 const lifespanRoute = resolveKashfRouteByQuestionId('q-lifespan');
 assert.equal(lifespanRoute.kashfMethodId, 'lifespan.p178.elementCountToHouse');

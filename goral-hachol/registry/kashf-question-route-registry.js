@@ -833,11 +833,11 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
 
   'q-partnership': route({
     questionId: 'q-partnership',
-    disposition: 'BLOCK',
+    disposition: 'KEEP',
     kashfIntentId: 'partnership.goodOrBad',
-    kashfMethodId: 'partnership.p212.operationUnresolved',
-    kashfRuntimeStatus: 'blocked-by-source',
-    note: 'The source variants and the operand of the 2-by-2 remainder rule are not closed. No aggregation or inferred operand.',
+    kashfMethodId: 'partnership.p212.compatibilityH1H7H5H7',
+    kashfRuntimeStatus: 'ready',
+    note: 'Opened 2026-10-04: printed p212\'s "تحكم للشريك" clause judges partnership compatibility from two generated figures (H1+H7, H5+H7), each on its own fortune. Agreeing branches (both benefic / both malefic) give a clear verdict; disagreement is left unresolved (no source tie-break). The separate 2-by-2 Jumla note on the same page (partnership.p212.operationUnresolved) remains independently blocked — see that method; it is not merged into this route.',
   }),
 
   'q-war': route({
