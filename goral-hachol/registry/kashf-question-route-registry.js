@@ -919,7 +919,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfIntentId: 'spiritual.sorcererIdentity',
     kashfMethodId: 'spiritual.sorcererIdentity.unsupported',
     kashfRuntimeStatus: 'unsupported',
-    note: 'Do not turn p167 “does the querent act by sorcery on the quesited?” into an identity-finding method.',
+    note: 'Re-checked 2026-10-04: the UI question ("מי הוא המכשף / המאחז?", question-bank.js) asks to IDENTIFY an unknown third-party perpetrator from the victim\'s side. The only p167 rule found (spiritual.p167.querentCastsSorceryMizan, now ready) answers the OPPOSITE direction — whether the QUERENT is casting sorcery on someone else — and must not be routed here; doing so would answer a different, inverted question. Do not turn p167 into an identity-finding method.',
   }),
 
   'q-obsession': route({
@@ -1283,7 +1283,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfIntentId: 'spiritual.affectedBySorcery',
     kashfMethodId: 'spiritual.affectedBySorcery.unsupported',
     kashfRuntimeStatus: 'unsupported',
-    note: 'p167 does not answer whether the querent is affected by sorcery/evil eye/jinn.',
+    note: 'Re-checked 2026-10-04: the p167 "هل ورائي عمل" rule is a GENERIC hidden-action diagnostic, already correctly implemented separately as q-hidden-action (spiritual.p167.hiddenActionAirRows46815) — its own boundary note explicitly says it does not identify sorcery, jinn or evil eye. Do not relabel it as sorcery-specific here; no dedicated sorcery-affected rule exists in the pages read so far.',
   }),
 
   'q-sorcery-h10': route({

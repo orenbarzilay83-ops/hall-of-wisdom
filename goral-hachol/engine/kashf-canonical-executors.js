@@ -3105,6 +3105,70 @@ function computeHiddenActionP167(chart) {
   };
 }
 
+// Kashf p167 — does the querent practice sorcery on the asked-about person.
+// Source construction: FIRE row only from H1, H4, H6 and H15 (the same
+// Mizan/Judge identification already used by the sibling hidden-action
+// method above), assembled in that order into one four-row figure.
+// Opened 2026-10-04, immediately after computeHiddenActionP167. UNLIKE that
+// sibling, this passage states only the malefic branch ("فإن نحسا، فالسائل
+// يعمل") with no "otherwise not" clause anywhere before the next نكتة
+// begins — confirmed by direct re-reading at printed p167. So the non-
+// malefic case here returns no verdict (null), not a disguised "not
+// sorcery" claim, matching the asymmetric-branch discipline already used
+// this session for travel.p239.profitH7Witness. Does not identify a
+// third-party sorcerer and does not diagnose jinn or evil eye.
+function computeQuerentCastsSorceryP167(chart) {
+  if (!Array.isArray(chart)) return null;
+  const housesUsed = [1, 4, 6, 15];
+  const fireRows = housesUsed.map((houseNumber) => {
+    const entry = findCanonicalHouse(chart, houseNumber);
+    const pattern = entry?.key || entry?.pattern || null;
+    const value = typeof pattern === 'string' && pattern.length === 4 ? pattern[0] : null;
+    return {
+      houseNumber,
+      pattern,
+      figureHebrew: entry?.hebrew || entry?.hebrewName || pattern,
+      fireRowValue: value,
+      fireRowState: getCanonicalRowState(pattern, 0),
+    };
+  });
+  if (fireRows.some((row) => row.fireRowValue !== '1' && row.fireRowValue !== '2')) return null;
+
+  const derivedPattern = fireRows.map((row) => row.fireRowValue).join('');
+  const classification = classifyCanonicalFigure(derivedPattern);
+  const derivedFigureHebrew = classification.figureHebrew || derivedPattern;
+  const querentCastsSorcery = classification.saadNahs === 'nahs';
+
+  let outputHebrew, clientSafeHebrew, positive;
+  if (querentCastsSorcery) {
+    positive = true;
+    outputHebrew = 'שורות האש של בתים 1, 4, 6 ו-15 (המאזן) יצרו את הצורה ' + derivedFigureHebrew + ' (' + derivedPattern + ') — צורה מזיקה. לפי כשף עמ׳ 167: "ואם היה השואל מכשף את הנשאל עליו, קח אש הראשון, והרביעי, והשישי, והמאזן... אם יצאה נחס, השואל פועל". המקור נותן כאן רק ענף מפורש אחד (מזיק); אין בו סעיף "אם לא" מפורש.';
+    clientSafeHebrew = 'סימני הלוח מצביעים על פעולת כישוף מצד השואל כלפי הנשאל, לפי כלל ייעודי בכשף.';
+  } else {
+    positive = null;
+    outputHebrew = 'שורות האש של בתים 1, 4, 6 ו-15 (המאזן) יצרו את הצורה ' + derivedFigureHebrew + ' (' + derivedPattern + ') — ' + (classification.saadNahsHebrew || classification.saadNahs || 'ללא סיווג') + ', לא מזיקה. כשף עמ׳ 167 נותן פסק מפורש רק לענף המזיק ("אם יצאה נחס, השואל פועל"); אין בטקסט סעיף "ואם לא" מפורש, ולכן אין כאן פסק של "אין כישוף" — רק היעדר תנאי הפסק המפורש.';
+    clientSafeHebrew = 'אין בלוח סימן מכריע לפי כלל זה; המקור אינו נותן כאן פסק שלילי מפורש.';
+  }
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 167',
+    sourceText: 'אם היה השואל מכשף את הנשאל או לא? קח את אש הראשון, והרביעי, והשישי, והמאזן; העמד מהם צורה; הבט בצורה ההיא: אם יצאה מזיקה, השואל פועל.',
+    housesUsed,
+    rowUsed: 'fire',
+    rowIndex: 0,
+    fireRows,
+    derivedPattern,
+    derivedFigureHebrew,
+    classification,
+    querentCastsSorcery,
+    sourceConditionMet: querentCastsSorcery,
+    positive,
+    diagnosisScope: 'querent-casts-sorcery-only',
+    outputHebrew,
+    clientSafeHebrew,
+  };
+}
+
 // Printed p205–206 — "نكتة: عن المرأة وصيانتها" (signs of a woman's chastity/
 // modesty). Repairs marriage.p205.modestyPurity. The pre-existing legacy
 // computeWomanModesty() (kashf-book-additions.js) tested fortune (saad/nahs)
@@ -3434,6 +3498,7 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'money.p179.sourceByIncomingHonorHouse': computeMoneySourceP179,
   'dhamir.p159.subjectByH6Recurrence': computeQuestionSubjectByH6P159,
   'spiritual.p167.hiddenActionAirRows46815': computeHiddenActionP167,
+  'spiritual.p167.querentCastsSorceryMizan': computeQuerentCastsSorceryP167,
   'love.p206.womanFavorH7H11ThenH5': computeWomanFavorP206,
   'desire.p206.querentWantsH7H11ThenH5': computeQuerentWantsMatterP206,
   'clothing.p264-265.luck': computeClothingLuckP265,

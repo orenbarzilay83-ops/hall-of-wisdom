@@ -319,6 +319,11 @@ assertRoute('q-promise', {
 assert(!canRunKashfMethod('promise.external.p255'), 'educational promise method can never run');
 
 // ── Acceptance test 4: q-sorcery must NOT trigger p167 ------------------
+// Re-checked 2026-10-04: p167's "هل ورائي عمل" is a GENERIC hidden-action
+// rule, already correctly implemented separately as q-hidden-action
+// (spiritual.p167.hiddenActionAirRows46815) — its own boundary note says
+// it does not diagnose sorcery, jinn or evil eye. q-sorcery remains
+// unsupported; no dedicated sorcery-affected rule has been found.
 const sorcery = assertRoute('q-sorcery', {
   ok: true,
   canRunKashf: false,
@@ -328,6 +333,8 @@ const sorcery = assertRoute('q-sorcery', {
   executorStatus: 'not-applicable',
 });
 assert(sorcery.kashfMethodId !== 'spiritual.p167.querentActsBySorcery', 'q-sorcery is not mapped to the p167 querent-acts-by-sorcery method');
+assert(sorcery.kashfMethodId !== 'spiritual.p167.hiddenActionAirRows46815', 'q-sorcery does not reuse the separate, generic hidden-action method');
+assert(sorcery.kashfMethodId === 'spiritual.affectedBySorcery.unsupported', 'q-sorcery remains mapped to the unsupported stub — no dedicated sorcery-affected rule found');
 
 // ── Acceptance test 5: friends p263 is isolated from the old bundle ------
 assertRoute('q-friends', {
@@ -506,6 +513,16 @@ for (const qid of ['q-jinn-type', 'q-sorcerer', 'q-obsession', 'q-slander', 'q-t
   assert(r.canRunKashf === false, qid + ': unsupported source scope cannot run');
   assert(r.kashfRuntimeStatus === 'unsupported', qid + ': explicitly marked unsupported');
 }
+// Re-checked 2026-10-04: a real, computable p167 rule exists
+// (spiritual.p167.querentCastsSorceryMizan, now ready), but it answers
+// whether the QUERENT casts sorcery on someone else — the opposite
+// direction from q-sorcerer's actual UI question ("מי הוא המכשף?" — who
+// is cursing me, identify a third party). It is intentionally NOT routed
+// to q-sorcerer or any other question; see _test_kashf_sorcerer_p167.mjs.
+assert(
+  resolveKashfRouteByQuestionId('q-sorcerer').kashfMethodId !== 'spiritual.p167.querentCastsSorceryMizan',
+  'q-sorcerer does not route to the inverted-direction querent-casts-sorcery method'
+);
 const securityH8 = resolveKashfRouteByQuestionId('q-security-h8');
 assert(securityH8.kashfRuntimeStatus === 'educational-only', 'q-security-h8 remains external/educational');
 assert(securityH8.canRunKashf === false, 'q-security-h8 cannot feed live Kashf verdict');
