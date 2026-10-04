@@ -1754,12 +1754,12 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfIntentId: 'marriage.modesty',
     topicId: 'marriage',
     sourcePages: [205, 206],
-    kashfRuntimeStatus: 'repair-required',
-    runtimeAllowed: false,
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
+    executorStatus: 'ready',
     legacyTopicId: 'marriage',
-    notes: 'Canonical source uses the explicit pure/impure figure classification, including H1/H7/H9 and the balance/judge conditions. Current code incorrectly substitutes benefic/malefic for pure/impure, so it must be repaired before runtime use.',
+    notes: 'Repaired 2026-10-04: new canonical executor computeMarriageChastityPurityP205 (kashf-canonical-executors.js) replaces the legacy computeWomanModesty(), which tested benefic/malefic for every clause even where the printed p205-206 scan states purity (tahir/najis). Purity is now read from HAWI_FIGURE_NAMES_BY_ID purityHebrew (independently cross-verified against kashf-al-asrar-book.js p63); fortune/saad-nahs is used only where the source itself says saad/nahs; the "take a figure from H7 and H9" clause is now an actual combineRamlFigures(H7,H9) composite, not two separate benefic checks. Each "وقيل" (alternate-authority) clause is reported as its own sign, not merged into one invented priority order. One further p206 clause relating H1 to H8 ("al-awwal fi al-thamin") is intentionally NOT implemented — its operator is not unambiguously decodable from the printed text, unlike the H1=Mizan match used elsewhere on p205; left as a documented open point.',
   }),
 
   'hope.p267.fulfillment': method({

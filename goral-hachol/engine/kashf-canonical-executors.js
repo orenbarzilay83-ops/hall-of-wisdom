@@ -3021,6 +3021,135 @@ function computeHiddenActionP167(chart) {
   };
 }
 
+// Printed p205–206 — "نكتة: عن المرأة وصيانتها" (signs of a woman's chastity/
+// modesty). Repairs marriage.p205.modestyPurity. The pre-existing legacy
+// computeWomanModesty() (kashf-book-additions.js) tested fortune (saad/nahs)
+// for every clause, including the ones the source states in explicit purity
+// (طاهر/طمئة) terms, and collapsed "take a figure from the 7th and 9th"
+// (خذ من السابع والتاسع شكلا) into "both H7 and H9 individually benefic" — a
+// different operation than deriving one combined figure from the two houses.
+// This executor applies purity where the source says purity, fortune where
+// the source says fortune, and the combined-figure operation where the
+// source says to combine. Verified against KASHF_ARABIC_PRINTED_SCAN.pdf
+// printed p205 (PDF p207) and p206 (PDF p208).
+//
+// The source lists several "وقيل" (= "and it is said") clauses — alternate
+// methods from different authorities, not sequential steps of one algorithm.
+// Each applicable clause is therefore reported as its own sign below, not
+// merged into a single invented priority order.
+//
+// One further clause on printed p206 ("فإن كان الأول في الثامن وهو طاهر...")
+// relates H1 to H8 and is NOT implemented here — its operator ("the First in
+// the Eighth") is not clearly decodable as a single operation from the
+// printed text alone (unlike "وافق الميزان" on p205, which is unambiguous),
+// so it is left out rather than guessed. See the delivery report.
+function computeMarriageChastityPurityP205(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h1 = findCanonicalHouse(chart, 1);
+  const h7 = findCanonicalHouse(chart, 7);
+  const h9 = findCanonicalHouse(chart, 9);
+  const h15 = findCanonicalHouse(chart, 15);
+  const p1 = h1?.key || h1?.pattern || null;
+  const p7 = h7?.key || h7?.pattern || null;
+  const p9 = h9?.key || h9?.pattern || null;
+  const p15 = h15?.key || h15?.pattern || null;
+  if (!p1 || !p7 || !p9 || !p15) return null;
+
+  const purityOf = (pattern) => {
+    const v = HAWI_FIGURE_NAMES_BY_ID?.[pattern]?.purityHebrew || null;
+    if (v === 'טהור') return 'pure';
+    if (typeof v === 'string' && v.startsWith('טמא')) return 'impure';
+    return null; // dual-classified (e.g. אדום) or unknown — no verdict from purity alone
+  };
+  const fortuneOf = (pattern) => classifyCanonicalFigure(pattern).saadNahs;
+
+  const pure1 = purityOf(p1);
+  const pure7 = purityOf(p7);
+  const pure9 = purityOf(p9);
+  const pure15 = purityOf(p15);
+  const fortune1 = fortuneOf(p1);
+  const fortune9 = fortuneOf(p9);
+  const fortune15 = fortuneOf(p15);
+  const combined79 = combineRamlFigures(p7, p9);
+  const pattern79 = combined79?.resultPattern || null;
+  const fortune79 = pattern79 ? fortuneOf(pattern79) : null;
+
+  const lines = [];
+  const signals = [];
+
+  if (p1 === p15 && pure1 === 'pure' && pure15 === 'pure') {
+    lines.push('בית 1 זהה לצורת המאזן (בית 15) ושתיהן טהורות — "טהורה כליל, אין בה ספק ואין פירוש אחר" (כשף עמ׳ 205).');
+    signals.push('positive');
+  } else if (pure1 === 'pure') {
+    lines.push('צורת בית 1 טהורה — סימן לצניעותה (כשף עמ׳ 205).');
+    signals.push('positive');
+  } else if (pure1 === 'impure') {
+    lines.push('צורת בית 1 טמאה — אין בה סימן טהרה מסעיף זה.');
+  }
+
+  if (pure1 === 'pure' && pure7 === 'pure') {
+    lines.push('לפי שיטה חלופית ("وقيل"): בית 1 ובית 7 שניהם טהורים — סימן לצניעותה.');
+    signals.push('positive');
+  }
+
+  if (fortune79 === 'saad') {
+    lines.push(`לפי שיטה חלופית נוספת ("وقيل"): הצורה הנולדת מהרכבת בית 7 ובית 9 (${pattern79}) מיטיבה — סימן ליראת שמים וצניעות ("תקיה").`);
+    signals.push('positive');
+  } else if (fortune79 === 'nahs') {
+    lines.push(`⚠ לפי אותה שיטה חלופית: הצורה הנולדת מהרכבת בית 7 ובית 9 (${pattern79}) מזיקה — סימן לפריצות ("פאסקה").`);
+    signals.push('negative');
+  }
+
+  if (p1 === p15 && fortune15 === 'nahs') {
+    lines.push('⚠ בית 1 זהה לצורת המאזן, וזו מזיקה — "היא בהפך זאת" (כשף עמ׳ 205): סימן לפריצות.');
+    signals.push('negative');
+  }
+
+  if (fortune1 === 'saad' && pure1 === 'pure' && fortune9 === 'nahs') {
+    lines.push('בית 1 מיטיב וטהור, אך בית 9 מזיק — נשקף חשש שתתקלקל אחרי תקופת צניעות (כשף עמ׳ 205-206).');
+    signals.push('concern');
+  }
+
+  if (fortune1 === 'nahs' && pure9 === 'pure' && pure15 === 'pure') {
+    lines.push('בית 1 מזיק, אך בית 9 והמאזן טהורים — "הנפש אינה חוששת ממשוכת דיבה" (כשף עמ׳ 206): אין חשש מרכילה.');
+    signals.push('positive');
+  }
+
+  const sourceRef = 'כשף אל־אסראר עמ׳ 205–206';
+  const sourceText = 'נكتة על האישה וצניעותה: אם צורת בית 1 טהורה — טהורה; אם תואמת את המאזן בטהרה — טהורה כליל ואין בה ספק. "وقيل": אם בית 1 ובית 7 טהורים — טהורה. "وقيل": קח צורה מהרכבת בית 7 ובית 9 — אם מיטיבה, תקיה; אם מזיקה, פאסקה. אם בית 1 תואם את המאזן והוא מזיק — ההפך. אם בית 1 מיטיב וטהור ובית 9 מזיק — חשש שתתקלקל אחרי צניעות. אם בית 1 מזיק ובית 9 והמאזן טהורים — אין חשש מרכילה.';
+
+  if (!lines.length) {
+    return {
+      sourceRef, sourceText,
+      housesUsed: [1, 7, 9, 15],
+      h1Pattern: p1, h7Pattern: p7, h9Pattern: p9, h15Pattern: p15,
+      combinedH7H9Pattern: pattern79,
+      branch: 'no-applicable-clause',
+      positive: null,
+      outputHebrew: 'אף אחד מסעיפי הסימנים (עמ׳ 205-206) אינו חל על צירוף הצורות הזה בלוח הנוכחי.',
+    };
+  }
+
+  const hasNegative = signals.includes('negative');
+  const hasConcern = signals.includes('concern');
+  const hasPositive = signals.includes('positive');
+  let branch;
+  let positive;
+  if (hasNegative && !hasPositive) { branch = 'impure-signs'; positive = false; }
+  else if (hasPositive && !hasNegative && !hasConcern) { branch = 'pure-signs'; positive = true; }
+  else { branch = 'mixed-signs'; positive = null; }
+
+  return {
+    sourceRef, sourceText,
+    housesUsed: [1, 7, 9, 15],
+    h1Pattern: p1, h7Pattern: p7, h9Pattern: p9, h15Pattern: p15,
+    combinedH7H9Pattern: pattern79,
+    branch,
+    positive,
+    outputHebrew: `${lines.join(' ')} שימו לב: הסעיפים השונים הם שיטות חלופיות ("وقيل") של המקור ולא שלבי צבירה אחת; כל סימן שחל מוצג כפי שהוא במקור, בלי לקבוע ביניהם סדר עדיפות שאינו כתוב בטקסט.`,
+  };
+}
+
 const CUSTOM_EXECUTORS = Object.freeze({
   'enemy.p271.h1vsH12': computeEnemyPresenceH1H12P271,
   'illness.p197.h1h8ElementHumor': computeIllnessHumorH1H8P197,
@@ -3085,6 +3214,7 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'authority.p257.appointmentH1H10Planet': computeAppointmentCompletionP257,
   'authority.p257.rulerConditionH7H10': computeRulerConditionP257,
   'mother.p257.statusDayNight': computeMotherNightWhiteRoadP257,
+  'marriage.p205.modestyPurity': computeMarriageChastityPurityP205,
 });
 
 function toLegacyChart(board) {

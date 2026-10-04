@@ -542,8 +542,8 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     disposition: 'RENAME',
     kashfIntentId: 'marriage.modesty',
     kashfMethodId: 'marriage.p205.modestyPurity',
-    kashfRuntimeStatus: 'repair-required',
-    note: 'Source question concerns modesty/chastity and explicit pure/impure classifications. Current wording also implies “past/loyalty”; do not overstate beyond the source.',
+    kashfRuntimeStatus: 'ready',
+    note: 'Repaired 2026-10-04: marriage.p205.modestyPurity now runs via computeMarriageChastityPurityP205. The method answers the SIGN of modesty/chastity/purity shown by the chart (H1, H7, H9, Mizan) per the printed p205-206 "وقيل" clauses — it is a character sign, not a factual finding about the candidate\'s actual past conduct or loyalty. question-bank.js desc was narrowed accordingly (2026-10-04) to remove the overstated "נאמנות ועבר" framing; that factual-history intent remains unanswered by this or any other Kashf method found.',
   }),
 
   'q-love': route({

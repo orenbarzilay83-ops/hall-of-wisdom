@@ -458,7 +458,7 @@ window.QUESTION_BANK = [
     id: 'q-marriage-chastity',
     category: 'love', houseId: 7, topicId: 'marriage', kashfTopicId: 'marriage',
     label: 'צניעות האישה?',
-    desc: 'לספקות על נאמנות ועבר המועמדת — שאלה רגישה לפני נישואין',
+    desc: 'סימן צניעות/טהרה לפי צורות הלוח (בתים 1, 7, 9 והמאזן) — סימן אופי מן המקור, לא בירור עובדתי של נאמנות או עבר קונקרטי',
     clientFields: [F.candidate],
   },
   {
