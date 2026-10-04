@@ -39,6 +39,11 @@ const STOPWORDS = new Set([
  * executable rules.
  */
 const RETRIEVAL_OVERRIDES = Object.freeze({
+  'gift.p193.h5Quality': {
+    aliases: ['סימן מתנה מסוימת', 'איכות המתנה בית חמישי', 'מתנות ותשורות לפי מיטיב ומזיק'],
+    doNotMixWith: ['completion.p173.fireRows15910', 'joy.p196.recast14511'],
+    houses: [5],
+  },
   'messenger.p176.recast14511': {
     aliases: ['אחרית שליחים בלוח נגזר עמ 176', 'בתים 1 4 5 11 לשליחים'],
     doNotMixWith: ['news.arrival.unsupported', 'request.p176.h1h2GateThenH1H4', 'joy.p196.recast14511'],

@@ -155,6 +155,18 @@ for (const questionId of ['q-debts', 'q-sell-property']) {
     assert(reading.canonicalExecution?.methodsExecuted?.length === 1, `${questionId} executes only p173`);
   }
 }
+assertRoute('q-gift', { canRunKashf: true, kashfMethodId: 'gift.p193.h5Quality' });
+for (const [mothers, expectedBranch, expectedH5, expectedPositive] of [
+  [['1111', '1111', '2111', '2111'], 'favorable', '1122', true],
+  [['1111', '1111', '1111', '2111'], 'adverse', '1112', false],
+  [['1111', '1111', '1111', '1111'], 'unresolved', '1111', null],
+]) {
+  const reading = buildKashfReadingByQuestionId(buildRamlBoardFromMothers(mothers), 'q-gift');
+  const result = reading.formula?.result?.executorResult;
+  assert(reading.valid === true && result?.branch === expectedBranch, `p193 gift ${expectedBranch} exact branch`);
+  assert(result?.h5Pattern === expectedH5 && result?.positive === expectedPositive, `p193 gift ${expectedBranch} H5 and polarity`);
+  assert(result?.outputHebrew?.includes('אינו קובע אם המתנה תגיע'), `p193 gift ${expectedBranch} excludes arrival`);
+}
 assert(canRunKashfMethod('messenger.p176.recast14511') === false, 'specialized p176 messenger method remains blocked');
 assert(canRunKashfMethod('joy.p196.recast14511') === false, 'specialized p196 joy method remains blocked');
 assert(JSON.stringify(getKashfMethod('missing.p248-249.lifeH1H4H9Outcome')?.sourcePages) === JSON.stringify([248, 249]), 'missing-person life/death method points to original-scan pp248-249');

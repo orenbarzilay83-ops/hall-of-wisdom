@@ -1072,10 +1072,13 @@ window.QUESTION_BANK = [
   },
   {
     id: 'q-gift',
-    category: 'general', houseId: 5, topicId: 'completion', kashfTopicId: 'completion',
-    label: 'האם אקבל מתנה / חסד?',
-    desc: 'האם יגיע חסד, מתנה, או טובה ממישהו',
-    clientFields: [{ id: 'giftFrom', label: 'ממי?', type: 'text', placeholder: 'שם / קשר' }],
+    category: 'general', houseId: 5, topicId: 'completion', kashfTopicId: 'children',
+    label: 'מה סימן המתנה המסוימת?',
+    desc: 'סימן לטובה או להפך במתנה מוגדרת לפי בית המתנות; אין דין על עצם הגעתה',
+    clientFields: [
+      { id: 'giftDescription', label: 'איזו מתנה?', type: 'text', placeholder: 'תאר מתנה מסוימת' },
+      { id: 'giftFrom', label: 'ממי?', type: 'text', placeholder: 'שם / קשר' },
+    ],
   },
   {
     id: 'q-neighbor',

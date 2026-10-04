@@ -48,6 +48,7 @@ const P263_FRIENDSHIP_METHOD = 'friends.p263.h1h11';
 const P265_STATE_CONTINUITY_METHOD = 'state.p265.h1h2h9h15';
 const P257_MOTHER_METHOD = 'mother.p257.statusDayNight';
 const P267_HOPE_METHOD = 'hope.p267.fulfillment';
+const P193_GIFT_METHOD = 'gift.p193.h5Quality';
 const P174_HOPE_METHOD = 'hope.p174.h5h11ThroughH1';
 const P176_REQUEST_METHOD = 'request.p176.h1h2GateThenH1H4';
 const P176_PURPOSE_METHOD = 'intent.p176.h7h10';
@@ -1445,6 +1446,21 @@ function p267HopeHouse11Policy() {
   });
 }
 
+function p193GiftQualityPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-gift-p193-h5',
+    goldenCaseIds: freezeArray(['PV-P193-GIFT-BENEFIC', 'PV-P193-GIFT-MALEFIC', 'PV-P193-GIFT-MIXED']),
+    policyId: 'p193-gift-quality-h5-v1',
+    questionScopeHebrew: 'סימן לטובה או להפך במתנה מסוימת',
+    decisiveRuleHebrew: 'בית המתנות הוא H5 בעמ׳ 48; עמ׳ 193 דן מתנות במיטיב לטובה ובמזיק להפך.',
+    oneWayBranches: freezeArray(['H5 מיטיב טהור => סימן לטובה', 'H5 מזיק טהור => סימן להפך']),
+    forbiddenInversions: freezeArray(['H5 ממוזג אינו מקבל פסק מיטיב או מזיק.', 'סימן איכות המתנה אינו מבטיח הגעת מתנה.']),
+    excludedFromPrimaryVerdict: freezeArray(['completion.p173.fireRows15910', 'joy.p196.recast14511']),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray(['המתנה תגיע', 'זהות הנותן ודאית', 'מועד קבלת המתנה']),
+  });
+}
+
 function p174HopeThroughIntermediatesPolicy() {
   return Object.freeze({
     certificationStatus: 'certified',
@@ -1762,6 +1778,7 @@ const METHOD_POLICIES = Object.freeze({
   [P265_STATE_CONTINUITY_METHOD]: p265StateContinuityPolicy(),
   [P257_MOTHER_METHOD]: p257MotherNightPolicy(),
   [P267_HOPE_METHOD]: p267HopeHouse11Policy(),
+  [P193_GIFT_METHOD]: p193GiftQualityPolicy(),
   [P174_HOPE_METHOD]: p174HopeThroughIntermediatesPolicy(),
   [P176_REQUEST_METHOD]: p176RequestGatePolicy(),
   [P176_PURPOSE_METHOD]: p176PersonPurposePolicy(),

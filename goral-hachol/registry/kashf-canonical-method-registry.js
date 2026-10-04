@@ -1862,17 +1862,17 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     notes: 'Printed pp184-185 map H4=land/ground, H10=trees, H7=vegetables/plants (البقول), H3=water channels (السواقي), and H2=the surrounding wall. Benefics in a mapped place are judged good and malefics the opposite, but the continuation says reliance is on “the witnesses” without defining which witness system applies here. The H7/H3 mapping is fixed from the printed source; runtime remains blocked until the applicable witness system is source-certified. Do not borrow a witness scheme from another chapter or infer one by symmetry.',
   }),
 
-  'gift.sourceInputUnclear': method({
-    kashfMethodId: 'gift.sourceInputUnclear',
-    kashfIntentId: 'gift.receive',
+  'gift.p193.h5Quality': method({
+    kashfMethodId: 'gift.p193.h5Quality',
+    kashfIntentId: 'gift.quality',
     topicId: 'children',
-    sourcePages: [193],
-    methodRole: 'unresolved',
-    kashfRuntimeStatus: 'blocked-by-source',
-    runtimeAllowed: false,
-    executionKind: null,
-    executorStatus: 'not-applicable',
-    notes: 'Gift verdict polarity is stated, but the exact house/input to which it applies is not sufficiently explicit.',
+    sourcePages: [48, 193],
+    sourceConfidence: 'cross-passage-inference',
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: true,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
+    notes: 'Printed p48 assigns gifts to H5. Printed p193 applies a benefic/malefic good/adverse judgment to gifts after the H5/H6 child passage. The H5 selector is a cross-passage interpretation; it judges the quality of a specified gift, not whether or when one will arrive. Mixed H5 is unresolved.',
   }),
 
   'pregnancy.miscarriageRisk.unresolved': method({

@@ -580,6 +580,28 @@ function computeHopeHouse11FallbackP267(chart) {
   };
 }
 
+// Printed p48 assigns gifts to H5; p193 judges gifts by benefic/malefic.
+// The cross-passage result concerns a specified gift's sign, not arrival.
+function computeSpecifiedGiftQualityH5P193(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h5 = findCanonicalHouse(chart, 5);
+  const pattern = h5?.key || h5?.pattern || null;
+  if (!pattern) return null;
+  const classification = classifyCanonicalFigure(pattern);
+  const branch = classification.saadNahs === 'saad' ? 'favorable'
+    : classification.saadNahs === 'nahs' ? 'adverse' : 'unresolved';
+  const conclusion = branch === 'favorable' ? 'סימן לטובה במתנה המסוימת.'
+    : branch === 'adverse' ? 'סימן להפך במתנה המסוימת.'
+      : 'צורת בית המתנות ממוזגת; אין פסק לטובה או להפך בסעיף זה.';
+  return {
+    sourceRef: 'כשף אל-אסראר עמ׳ 48, 193',
+    sourceText: 'בית 5 הוא בית המתנות; במתנות ובתשורות דנים במיטיב לטובה ובמזיק להפך.',
+    housesUsed: [5], h5Pattern: pattern, classification, branch,
+    positive: branch === 'favorable' ? true : branch === 'adverse' ? false : null,
+    outputHebrew: `בבית המתנות נמצאת ${classification.figureHebrew || pattern} (${pattern}). ${conclusion} הכלל אינו קובע אם המתנה תגיע או מתי.`,
+  };
+}
+
 // Printed p174: H5 and H11 are each combined with H1 before the two
 // intermediate figures are combined. This is distinct from the p267 H11 rule.
 function computeHopeThroughTwoIntermediatesP174(chart) {
@@ -2893,6 +2915,7 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'marriage.p204.previousStatusH7inH10': computeMarriagePreviousStatusP204,
   'love.p204.attentionFireRows1713': computeLoveAttentionP204,
   'hope.p267.fulfillment': computeHopeHouse11FallbackP267,
+  'gift.p193.h5Quality': computeSpecifiedGiftQualityH5P193,
   'hope.p174.h5h11ThroughH1': computeHopeThroughTwoIntermediatesP174,
   'request.p176.h1h2GateThenH1H4': computeRequestGateAndOutcomeP176,
   'intent.p176.h7h10': computePersonPurposeSignP176,

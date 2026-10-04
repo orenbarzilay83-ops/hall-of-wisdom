@@ -189,7 +189,7 @@ function auditOutputForSafety(safetyBlock, { draft = null, draftPolarity = 'none
   };
 }
 
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 60, 'certification registry includes p174 hope and two p176 methods but excludes unresolved recast verdicts');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 61, 'certification registry includes p193 gift but excludes unresolved recast verdicts');
 for (const id of [
   'marriage.p210.generalMarriageH1H2H7H8H10Judge',
   'marriage.p211.dissolutionH7StateMatrix',
@@ -795,6 +795,23 @@ for (const [questionId, questionText] of [
   assert(bridge.professionalVerdictSafety?.isSafe === true && bridge.professionalVerdictSafety?.clientFacingCertified === true, `${questionId} completion passes professional safety`);
   assert(bridge.canonicalReading?.overallPositive === true, `${questionId} explicit internal branch completes the stated process`);
 }
+for (const [mothers, expectedBranch] of [
+  [['1111', '1111', '2111', '2111'], 'favorable'],
+  [['1111', '1111', '1111', '2111'], 'adverse'],
+  [['1111', '1111', '1111', '1111'], 'unresolved'],
+]) {
+  const bridge = buildKashfCanonicalAiBridge({
+    questionId: 'q-gift', questionText: 'מה סימן המתנה המסוימת?',
+    board: buildRamlBoardFromMothers(mothers),
+  });
+  const result = bridge.canonicalReading?.formula?.result?.executorResult;
+  assert(result?.branch === expectedBranch, `p193 gift bridge preserves ${expectedBranch}`);
+  assert(bridge.professionalVerdictSafety?.authoritativeClientDraftHebrew === result?.outputHebrew, `p193 gift ${expectedBranch} draft is exact`);
+  assert(bridge.professionalVerdictSafety?.isSafe === true, `p193 gift ${expectedBranch} passes safety`);
+  if (expectedBranch === 'unresolved') {
+    assert(bridge.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'p193 gift mixed result cannot become binary');
+  }
+}
 
 // PV-BF07-P183-PLACE-* — H4+H15 has explicit good/bad/mixed branches.
 const p183PlaceGood = buildKashfCanonicalAiBridge({ questionId: 'q-move-city', questionText: 'מעבר ממקום למקום', board: makeBoard({ 4:'1111', 15:'2211' }) });
@@ -937,7 +954,7 @@ assert(p254Venus.professionalVerdictSafety?.binaryClientVerdictAllowed === false
 assert(p254Venus.professionalVerdictSafety?.authoritativeClientDraftHebrew === p254VenusExec?.outputHebrew, 'p254 safety gate locks the exact source-bounded executor draft');
 assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes('profession.p254.h9Planet'), 'p254 profession method is explicitly professionally certified');
 // Dhamir subject-identification remains outside the client-verdict registry.
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 60, 'p174 hope and p176 request/purpose are certified while p176/p196 recasts are excluded');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 61, 'p193 gift is certified while p176/p196 recasts are excluded');
 
 for (const [mothers, expectedBranch] of [
   [['1211', '1111', '1111', '1111'], 'benefic-incoming'],

@@ -243,11 +243,11 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
 
   'q-gift': route({
     questionId: 'q-gift',
-    disposition: 'BLOCK',
-    kashfIntentId: 'gift.receive',
-    kashfMethodId: 'gift.sourceInputUnclear',
-    kashfRuntimeStatus: 'blocked-by-source',
-    note: 'Gift polarity is stated, but the exact source input/house is not closed.',
+    disposition: 'RENAME',
+    kashfIntentId: 'gift.quality',
+    kashfMethodId: 'gift.p193.h5Quality',
+    kashfRuntimeStatus: 'ready',
+    note: 'Cross-passage p48 gift-house H5 plus p193 good/adverse gift sign. Only a specified gift and its quality; no arrival, giver identity, timing, or obligation.',
   }),
 
   // ── AUDITED FAMILY + HEALTH SLICE -------------------------------------
