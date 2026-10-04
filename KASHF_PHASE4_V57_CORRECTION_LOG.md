@@ -177,6 +177,23 @@ Status: **SOURCE RE-VERIFIED VISUALLY / 600+700 CONFIRMED / DEDICATED PATCH RECO
 
 No additional live v57 correction item was established on pp112–115 in this checkpoint, so no speculative correction was added there.
 
+## Batch 6 — printed p205, woman-modesty clause — `marriage.p205.modestyPurity`
+
+Triggered by an external Codex review of the canonical runtime repair committed on branch `chatgpt/kashf-downstream-batch05-p100-101-months` (commit `86017d098f3297ea715f3e42fd7317dc76f4ac8e`), which found that `kashf-v57-draft.html`'s displayed p205 text had not been updated to match the corrected runtime logic.
+
+Printed p205 / PDF p207 was re-checked against the scan. The fifth "وقيل" (alternate-authority) clause reads `خذ من السابع والتاسع شكلا` — derive ONE combined figure from houses 7 and 9, then judge that derived figure's own fortune. The pre-existing `kashf-v57-draft.html` text instead described this as "houses 7 and 9 both benefic" (two houses tested separately) — the same error the runtime executor (`kashf-book-additions.js`'s legacy `computeWomanModesty`) had, before it was repaired by a new canonical executor (`computeMarriageChastityPurityP205` in `kashf-canonical-executors.js`, registered as `marriage.p205.modestyPurity`, `kashfRuntimeStatus: 'ready'`).
+
+Correction applied directly to `kashf-v57-draft.html`'s `#p205` section:
+- The fifth clause now describes the combined-figure operation, matching the scan and the canonical executor.
+- The sixth clause (H1 matching the Mizan while malefic) was tightened to mirror the third clause's "matches the Mizan" structure explicitly, removing a reading that could otherwise be taken as "the Mizan house alone, regardless of H1."
+- The reader-facing editorial note states only the textual correction (what the scan says vs. what was previously displayed); it does not name the review process or any internal code identifier — those belong in this log, not in the book text shown to readers.
+
+`kashf-v57-ai-master-index.html` entry `gate6.house7.p205.love-and-chastity` carried the same stale "benefic-H7-H9 / malefic-H7-H9" branch wording and marked the whole entry `runtimeEligible: false`, which was also no longer accurate for the chastity portion (the love portion, `love.p205.ascendantAndSoughtFifth`, remains `repair-required` and correctly ineligible). The entry was split into `gate6.house7.p205.love` (unchanged ineligible status) and `gate6.house7.p205.chastity-purity` (corrected branches, cross-referenced to `marriage.p205.modestyPurity`, marked eligible) so the index does not understate an intent that is now actually answerable.
+
+`goral-hachol/registry/kashf-ai-retrieval-index.js` requires no manual correction — it is generated programmatically from `KASHF_CANONICAL_METHODS` / `KASHF_V57_KNOWLEDGE` / `KASHF_QUESTION_ROUTES`, so it already reflected the ready status and corrected `hebrewRule` text as soon as those registries were fixed. A curated alias entry was added there purely to improve retrieval quality (clearing a "no curated aliases yet" validator warning), not to fix a correctness gap.
+
+Status: **SOURCE RE-VERIFIED VISUALLY AGAINST PRINTED p205/p206 / v57 DRAFT CORRECTED / MASTER INDEX ENTRY SPLIT AND CORRECTED / PROGRAMMATIC RETRIEVAL INDEX CONFIRMED ALREADY ACCURATE**.
+
 ## Phase 4 status after exact-artifact application
 
 - exact user-supplied v57 artifact received and fingerprinted

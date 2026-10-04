@@ -214,6 +214,11 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
     doNotMixWith: ['love.p204.attentionFireRows1713', 'love.p206.womanFavorH7H11ThenH5', 'marriage.p211.dissolutionH7StateMatrix'],
     houses: [1], // The sought person's relative fifth is unresolved; H5/H15 are not licensed inputs.
   },
+  'marriage.p205.modestyPurity': {
+    aliases: ['צניעות האישה', 'טהרת האישה', 'סימן צניעות לפי הלוח', 'האם היא צנועה', 'סימן טהרה למועמדת'],
+    doNotMixWith: ['love.p205.ascendantAndSoughtFifth', 'marriage.p211.dissolutionH7StateMatrix', 'marriage.p210.generalMarriageH1H2H7H8H10Judge'],
+    houses: [1, 7, 9, 15], // Requires a board cast and confirmed on the woman's own name; not a factual loyalty/history check.
+  },
   'marriage.p211.dissolutionH7StateMatrix': {
     aliases: ['האם תהיה פרידה בנישואין', 'האם הזוג יתגרש', 'יציבות הנישואין', 'פירוק הנישואין', 'האם הנישואין יישארו קיימים'],
     doNotMixWith: ['marriage.p210.generalMarriageH1H2H7H8H10Judge', 'love.p205.ascendantAndSoughtFifth'],
