@@ -1942,12 +1942,12 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfMethodId: 'travel.p243-244.vesselH1Signs',
     kashfIntentId: 'travel.vesselCondition',
     topicId: 'travel',
-    sourcePages: [243, 244],
+    sourcePages: [241, 242],
     kashfRuntimeStatus: 'ready',
     runtimeAllowed: true,
     executionKind: 'custom-engine',
     executorStatus: 'ready',
-    notes: 'Separate printed H1 vessel-figure rule. Jamaa explicitly indicates arrival safely; named damage figures indicate a particular repairable defect. Three unnamed figures stay unresolved. Never import the conflicting H12 recurrence of p242, infer that damage means shipwreck, or promise factual safety.',
+    notes: 'Legacy method ID retains the old page label; the H1 vessel list is on printed pp241-242 (scan PDF pp243-244). Jamaa explicitly indicates arrival safely; named damage figures indicate a particular repairable defect. Three unnamed figures stay unresolved. Never import the conflicting H12 recurrence of printed p240, infer that damage means shipwreck, or promise factual safety.',
   }),
 
   'family.p184.fatherMoneyH5': method({
@@ -1997,10 +1997,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
   'missing.p249.departedCityH7': method({
     kashfMethodId: 'missing.p249.departedCityH7',
     kashfIntentId: 'missing.departedCitySign',
-    topicId: 'missingPerson', sourcePages: [249],
+    topicId: 'missingPerson', sourcePages: [247],
     kashfRuntimeStatus: 'ready', runtimeAllowed: true,
     executionKind: 'custom-engine', executorStatus: 'ready',
-    notes: 'Printed p249 says a benefic outgoing figure in H7 indicates the absent person has left town; a fixed H7 figure indicates remaining in place, a separate non-geographic sign. The exact p249-250 directional calculation remains unresolved. No current position, direction or factual location inference.',
+    notes: 'Legacy method ID retains the old page label; printed p247 (scan PDF p249) says a benefic outgoing figure in H7 indicates the absent person has left town; a fixed H7 figure indicates remaining in place. The distinct p249 directional calculation remains unresolved. No current position, direction or factual location inference.',
   }),
 
   // ── EDUCATIONAL / EXTERNAL --------------------------------------------

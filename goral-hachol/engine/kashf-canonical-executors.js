@@ -603,7 +603,8 @@ function computeSpecifiedGiftQualityH5P193(chart) {
 }
 
 // A separate vessel rule follows the p242 movement passage. The H1 figures
-// below are named explicitly on printed pp243-244; three figures are omitted.
+// The legacy method ID says p243-244; the H1 vessel list is on printed pp241-242
+// (scan PDF pp243-244). Three figures are omitted.
 const P243_VESSEL_DAMAGE_BY_PATTERN = Object.freeze({
   '1221': 'פגם בחלק הקדמי, המתוקן לאחר מכן', // סוהר
   '2112': 'פגם באחד הצדדים, המתוקן לאחר מכן', // חיבור
@@ -632,7 +633,7 @@ function computeVesselH1SignsP243P244(chart) {
       ? `המקור מציין ${P243_VESSEL_DAMAGE_BY_PATTERN[pattern]}.`
       : 'צורה זו אינה נמנית עם הצורות שקיבלו דין מפורש בכלל הזה.';
   return {
-    sourceRef: 'כשף אל־אסראר עמ׳ 243–244',
+    sourceRef: 'כשף אל־אסראר עמ׳ 241–242',
     sourceText: 'למצב כלי השיט הסתכל בצורת הבית הראשון: קהלה מורה על הגעה בשלום; הצורות המנויות האחרות מורות על פגמים מסוימים ותיקונם.',
     housesUsed: [1], h1Pattern: pattern, h1FigureHebrew: figure.figureHebrew,
     branch, damageSign: P243_VESSEL_DAMAGE_BY_PATTERN[pattern] || null,
@@ -743,7 +744,7 @@ function computeMissingDepartedCityH7P249(chart) {
     : branch === 'remains-in-place-sign' ? 'זוהי צורה קבועה; לפי הספר היא מורה שהנעדר שוהה במקומו, בלי לציין איזו עיר.'
       : 'הצורה אינה מתאימה לשני סימני המקום המפורשים בסעיף זה.';
   return {
-    sourceRef: 'כשף אל־אסראר עמ׳ 249; סיווגי הצורות עמ׳ 57–60',
+    sourceRef: 'כשף אל־אסראר עמ׳ 247; סיווגי הצורות עמ׳ 57–60',
     sourceText: 'אם בשביעי צורה מיטיבה חיצונית — יצא מן העיר; אם צורה קבועה — הוא שוהה במקומו.',
     housesUsed: [7], h7Pattern: pattern, h7FigureHebrew: figure.figureHebrew,
     quality: figure.saadNahs, motion: figure.dakhalKharij, branch,

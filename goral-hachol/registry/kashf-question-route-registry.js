@@ -1236,7 +1236,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfIntentId: 'travel.vesselCondition',
     kashfMethodId: 'travel.p243-244.vesselH1Signs',
     kashfRuntimeStatus: 'ready',
-    note: 'Use the separate printed p243-244 H1 vessel signs, not the contradictory H12 recurrence on p242. Only named figures are judged; repairable defects are not shipwreck or a factual safety certificate.',
+    note: 'Use the separate printed p241-242 H1 vessel signs (legacy method ID retains p243-244), not the contradictory H12 recurrence on printed p240. Only named figures are judged; repairable defects are not shipwreck or a factual safety certificate.',
   }),
 
   'q-prisoner': route({
