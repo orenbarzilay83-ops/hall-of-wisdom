@@ -3054,16 +3054,24 @@ function computeHiddenActionP167(chart) {
 //     board appears anywhere near this passage (unlike the unrelated p186
 //     abjad direction-rule, which spells out its own name arithmetic in
 //     full). Inventing one would violate the no-invented-data rule. Instead
-//     this executor now checks whether a candidate name was actually
-//     recorded for this reading (clientContext.dynFields.candidate,
-//     question-bank.js field F.candidate, now required for this question)
-//     and reports plainly when that precondition is unconfirmed, rather than
-//     silently assuming it.
+//     this executor checks whether a candidate name was actually recorded
+//     for this reading, and reports plainly when that precondition is
+//     unconfirmed, rather than silently assuming it.
 // (3) outputHebrew (citations, "وقيل" markers, method notes) is evidence for
 //     the advisor record, not something to read to a client verbatim. A
 //     separate clientSafeHebrew field now carries a short, citation-free
 //     rendering of the same signals; kashf-canonical-reading-engine.js
 //     prefers it for the client-facing verdict text when present.
+//
+// 2026-10-04 second audit round: typing a name is not proof the board was
+// actually cast for that name — a stale or reused board could carry any
+// text in the name field. The source's precondition is now enforced as a
+// HARD gate at this executor (not only in the UI): both a non-empty
+// candidate name AND an explicit confirmation flag
+// (clientContext.dynFields.castConfirmedOnName === true) are required, or
+// NO sign-reading verdict is produced at all — not even a partial one.
+// This applies to every caller of this function, including direct/
+// programmatic invocation that bypasses the UI form.
 function computeMarriageChastityPurityP205(chart, clientContext = {}) {
   if (!Array.isArray(chart)) return null;
   const h1 = findCanonicalHouse(chart, 1);
@@ -3075,6 +3083,29 @@ function computeMarriageChastityPurityP205(chart, clientContext = {}) {
   const p9 = h9?.key || h9?.pattern || null;
   const p15 = h15?.key || h15?.pattern || null;
   if (!p1 || !p7 || !p9 || !p15) return null;
+
+  const candidateName = String(clientContext?.dynFields?.candidate || '').trim();
+  const castConfirmedOnName = clientContext?.dynFields?.castConfirmedOnName === true;
+  const namedCastConfirmed = candidateName.length > 0 && castConfirmedOnName;
+
+  if (!namedCastConfirmed) {
+    const missing = [];
+    if (!candidateName) missing.push('שם המועמדת');
+    if (!castConfirmedOnName) missing.push('אישור מפורש שהלוח הוטל על שמה');
+    const sourceRef = 'כשף אל־אסראר עמ׳ 205–206';
+    const sourceText = 'נكتة על האישה וצניעותה: השלם את גורל החול על שמה... (ראו תיעוד מלא בסעיף זה כשהתנאי מתקיים).';
+    return {
+      sourceRef, sourceText,
+      housesUsed: [1, 7, 9, 15],
+      h1Pattern: p1, h7Pattern: p7, h9Pattern: p9, h15Pattern: p15,
+      branch: 'named-cast-not-confirmed',
+      positive: null,
+      namedCastConfirmed: false,
+      candidateName: candidateName || null,
+      outputHebrew: `המקור פותח בהוראה מפורשת "השלם את גורל החול על שמה" — הטלה המיוחדת לאישה הנשאלת, לא לוח כללי או לוח שהוטל למטרה אחרת. חסר: ${missing.join(' וגם ')}. אין בקוד נוסחה הממירה שם לאותיות/ספרות עבור הלוח הראשי (בשונה מכלל כיוון האב בעמ׳ 186 שמפרש נוסחת אבג״ד משלו משלו); לכן אין להמיר שם אוטומטית ואין להפיק סימן כלשהו לפני שהתנאי מאומת במפורש.`,
+      clientSafeHebrew: 'לא ניתן להפיק סימן צניעות — חסר שם המועמדת ו/או אישור מפורש שהלוח הוטל במיוחד על שמה, כנדרש במקור.',
+    };
+  }
 
   const purityOf = (pattern) => {
     const v = HAWI_FIGURE_NAMES_BY_ID?.[pattern]?.purityHebrew || null;
@@ -3094,9 +3125,6 @@ function computeMarriageChastityPurityP205(chart, clientContext = {}) {
   const combined79 = combineRamlFigures(p7, p9);
   const pattern79 = combined79?.resultPattern || null;
   const fortune79 = pattern79 ? fortuneOf(pattern79) : null;
-
-  const candidateName = String(clientContext?.dynFields?.candidate || '').trim();
-  const namedCastConfirmed = candidateName.length > 0;
 
   const lines = [];
   const clientLines = [];
@@ -3151,9 +3179,7 @@ function computeMarriageChastityPurityP205(chart, clientContext = {}) {
 
   const sourceRef = 'כשף אל־אסראר עמ׳ 205–206';
   const sourceText = 'נكتة על האישה וצניעותה: אם צורת בית 1 טהורה — טהורה; אם תואמת את המאזן בטהרה — טהורה כליל ואין בה ספק. "وقيل": אם בית 1 ובית 7 טהורים — טהורה. "وقيل": קח צורה מהרכבת בית 7 ובית 9 — אם מיטיבה, תקיה; אם מזיקה, פאסקה. אם בית 1 תואם את המאזן והוא מזיק — ההפך. אם בית 1 מיטיב וטהור ובית 9 מזיק — חשש שתתקלקל אחרי צניעות. אם בית 1 מזיק ובית 9 והמאזן טהורים — אין חשש מרכילה.';
-  const namePreconditionNote = namedCastConfirmed
-    ? `הלוח מתועד כמוטל על שם המועמדת ("${candidateName}"), כנדרש בפתיח המקור ("كمل الرمل على إسمها").`
-    : 'לא נרשם שם מועמדת לקריאה זו. המקור פותח בהוראה "השלם את גורל החול על שמה" — כלומר הטלה המיוחדת לאישה הנשאלת. אין בקוד נוסחה הממירה שם לאותיות/ספרות עבור הלוח הראשי (בשונה מכלל כיוון האב בעמ׳ 186 שמפרש נוסחת אבג״ד משלו); לכן אין להמיר שם אוטומטית, אבל התנאי שהלוח הוטל "על שמה" אינו מאומת כאן.';
+  const namePreconditionNote = `הלוח מתועד כמוטל על שם המועמדת ("${candidateName}"), עם אישור מפורש שההטלה נעשתה במיוחד על שמה, כנדרש בפתיח המקור ("كمل الرمل على إسمها").`;
 
   if (!lines.length) {
     return {

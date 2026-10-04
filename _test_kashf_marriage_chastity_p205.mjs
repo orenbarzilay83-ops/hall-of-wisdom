@@ -29,7 +29,13 @@ function assert(condition, message) {
   }
 }
 
-function resultFor(mothers, clientContext) {
+// Named-cast precondition fixture: a confirmed name is the default for the
+// sign-branch tests below (they test the sign logic, not the precondition
+// gate) — callers that need to test the gate itself pass clientContext
+// explicitly (even {} counts as explicit, per normal JS default-param rules).
+const CONFIRMED_CONTEXT = { dynFields: { candidate: 'רחל', castConfirmedOnName: true } };
+
+function resultFor(mothers, clientContext = CONFIRMED_CONTEXT) {
   const board = buildRamlBoardFromMothers(mothers);
   const reading = buildKashfReadingByQuestionId(board, 'q-marriage-chastity', clientContext);
   return { reading, result: reading.primaryFormula?.result?.executorResult };
@@ -125,27 +131,75 @@ assert(route.kashfMethodId === 'marriage.p205.modestyPurity', 'q-marriage-chasti
   assert(p205Html.includes('תואם את המאזן וההתאמה מזיקה'), 'v57 p205 states the Mizan-match-malefic clause unambiguously (mirrors the purity-match clause)');
 }
 
-// ── Codex audit fix 2: the board must be confirmed cast on the woman's name ─
-// (كمل الرمل على إسمها). No name-to-figure algorithm exists in the source for
-// the primary board, so the executor reports whether the precondition was
-// recorded rather than inventing a conversion.
+// ── Codex audit fix 2 (round 2 — hard gate): typing a name is not proof the
+// board was cast for that name. Both a non-empty candidate name AND an
+// explicit castConfirmedOnName flag are required, enforced at the executor
+// itself (not only the UI), or NO sign-reading verdict is produced at all —
+// not even a partial one. (كمل الرمل على إسمها) — no name-to-figure algorithm
+// exists in the source for the primary board, so this is a precondition gate,
+// not an invented conversion.
+const SAME_BOARD = ['1111', '1111', '1111', '1111']; // a pure-signs board, so any leaked content would be obvious
+
+// Path 1: neither name nor confirmation given at all.
 {
-  const { result: withoutName } = resultFor(['1111', '1111', '1111', '1111']);
-  assert(withoutName.namedCastConfirmed === false, 'missing candidate name leaves namedCastConfirmed false');
-  assert(withoutName.candidateName === null, 'missing candidate name reports candidateName as null');
-  assert(withoutName.outputHebrew.includes('לא נרשם שם מועמדת'), 'missing-name evidence states the precondition was not confirmed');
+  const { result } = resultFor(SAME_BOARD, {});
+  assert(result.branch === 'named-cast-not-confirmed', 'no name/no confirmation: blocked branch');
+  assert(result.positive === null, 'no name/no confirmation: no polarity');
+  assert(result.namedCastConfirmed === false, 'no name/no confirmation: namedCastConfirmed false');
+  assert(result.candidateName === null, 'no name/no confirmation: candidateName null');
+  assert(!result.outputHebrew.includes('טהורה'), 'no name/no confirmation: no sign content leaks into outputHebrew');
+  assert(!result.clientSafeHebrew.includes('טהור'), 'no name/no confirmation: no sign content leaks into clientSafeHebrew');
+  assert(result.outputHebrew.includes('שם המועמדת') && result.outputHebrew.includes('אישור מפורש'), 'no name/no confirmation: states both missing items');
+}
 
-  const { result: withName } = resultFor(['1111', '1111', '1111', '1111'], { dynFields: { candidate: 'רחל' } });
-  assert(withName.namedCastConfirmed === true, 'recorded candidate name flips namedCastConfirmed to true');
-  assert(withName.candidateName === 'רחל', 'recorded candidate name is carried through verbatim');
-  assert(withName.outputHebrew.includes('מתועד כמוטל על שם המועמדת'), 'recorded-name evidence confirms the precondition');
+// Path 2: name given, but the confirmation checkbox was not checked.
+{
+  const { result } = resultFor(SAME_BOARD, { dynFields: { candidate: 'רחל', castConfirmedOnName: false } });
+  assert(result.branch === 'named-cast-not-confirmed', 'name without confirmation: still blocked');
+  assert(result.namedCastConfirmed === false, 'name without confirmation: namedCastConfirmed false even though a name was typed');
+  assert(result.candidateName === 'רחל', 'name without confirmation: the typed name is still reported (for the advisor to see what was entered)');
+  assert(!result.outputHebrew.includes('טהורה'), 'name without confirmation: no sign content leaks');
+  assert(result.outputHebrew.includes('אישור מפורש'), 'name without confirmation: states the confirmation is what is missing');
+}
 
-  // question-bank.js: the candidate field for this question must be marked required.
+// Path 3: confirmation checked, but no name was typed (malformed/bypassed input).
+{
+  const { result } = resultFor(SAME_BOARD, { dynFields: { candidate: '  ', castConfirmedOnName: true } });
+  assert(result.branch === 'named-cast-not-confirmed', 'confirmation without a real name: still blocked');
+  assert(result.namedCastConfirmed === false, 'confirmation without a real name: namedCastConfirmed false (whitespace-only name does not count)');
+  assert(!result.outputHebrew.includes('טהורה'), 'confirmation without a real name: no sign content leaks');
+}
+
+// Path 4: both present — this is CONFIRMED_CONTEXT, already exercised by every
+// other test in this file via resultFor()'s default; spot-check it explicitly too.
+{
+  const { result } = resultFor(SAME_BOARD, { dynFields: { candidate: 'רחל', castConfirmedOnName: true } });
+  assert(result.branch !== 'named-cast-not-confirmed', 'name + confirmation together: gate passes');
+  assert(result.namedCastConfirmed === true, 'name + confirmation together: namedCastConfirmed true');
+  assert(result.candidateName === 'רחל', 'name + confirmation together: candidateName carried through');
+  assert(result.outputHebrew.includes('אישור מפורש שההטלה נעשתה'), 'name + confirmation together: evidence states both were confirmed');
+}
+
+// Direct engine-level invocation (no UI involved at all) must enforce the
+// same gate — this test calls buildKashfReadingByQuestionId exactly as the
+// UI does, but the point is that nothing here goes through any DOM/form
+// code; the gate lives in the executor itself, so any other caller (a test,
+// a script, a future integration) gets the same protection for free.
+{
+  const board = buildRamlBoardFromMothers(SAME_BOARD);
+  const readingNoContext = buildKashfReadingByQuestionId(board, 'q-marriage-chastity'); // clientContext omitted entirely
+  const resultNoContext = readingNoContext.primaryFormula?.result?.executorResult;
+  assert(resultNoContext.branch === 'named-cast-not-confirmed', 'direct engine call with no clientContext at all is blocked, not defaulted to a verdict');
+}
+
+// question-bank.js: both fields for this question must be marked required.
+{
   const fs = await import('node:fs');
   const bank = fs.readFileSync('./goral-hachol/ui/question-bank.js', 'utf8');
   const qStart = bank.indexOf("id: 'q-marriage-chastity'");
-  const qChunk = bank.slice(qStart, qStart + 600);
-  assert(qChunk.includes('required: true'), 'q-marriage-chastity candidate field is marked required in question-bank.js');
+  const qChunk = bank.slice(qStart, qStart + 800);
+  assert(qChunk.includes('required: true'), 'q-marriage-chastity candidate-name field is marked required in question-bank.js');
+  assert(qChunk.includes("type: 'checkbox'") && qChunk.includes('castConfirmedOnName'), 'q-marriage-chastity has a required castConfirmedOnName checkbox field');
 }
 
 // ── Codex audit fix 3: client-facing text vs. detailed source evidence ──────
@@ -158,7 +212,7 @@ assert(route.kashfMethodId === 'marriage.p205.modestyPurity', 'q-marriage-chasti
   assert(!result.clientSafeHebrew.includes('עמ'), 'clientSafeHebrew has no page citations');
   assert(!result.clientSafeHebrew.includes('وقيل'), 'clientSafeHebrew has no Arabic alternate-method markers');
   assert(!result.clientSafeHebrew.includes('שיטה חלופית'), 'clientSafeHebrew has no internal methodology notes');
-  assert(result.outputHebrew.includes('עמ׳'), 'outputHebrew (the evidence record) keeps its page citations');
+  assert(result.sourceRef.includes('עמ׳'), 'the evidence record (sourceRef) keeps its page citation');
 
   const verdictText = reading.verdict?.text || reading.primaryFormula?.verdict?.text;
   assert(verdictText === result.clientSafeHebrew, 'the engine verdict surfaced to the UI uses clientSafeHebrew, not the full evidence text');

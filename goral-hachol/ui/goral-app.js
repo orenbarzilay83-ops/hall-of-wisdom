@@ -556,6 +556,10 @@ function renderDynamicClientFields() {
       const fieldsHtml = fields.map(f => {
         const id = 'dynField_' + f.id;
         const req = f.required ? ' required' : '';
+        const labelHtml = escapeHtml(f.label) + (f.required ? ' <span class="required-mark" style="color:#b71c1c;">*</span>' : '');
+        if (f.type === 'checkbox') {
+          return `<div class="open-field open-field-checkbox"><label style="display:flex;align-items:center;gap:8px;"><input id="${id}" type="checkbox"${req} />${labelHtml}</label></div>`;
+        }
         let inputHtml;
         if (f.type === 'textarea') {
           inputHtml = `<textarea id="${id}" rows="2" placeholder="${escapeHtml(f.placeholder || '')}" autocomplete="off"${req}></textarea>`;
@@ -567,7 +571,6 @@ function renderDynamicClientFields() {
         } else {
           inputHtml = `<input id="${id}" type="${f.type || 'text'}" placeholder="${escapeHtml(f.placeholder || '')}" autocomplete="off"${req} />`;
         }
-        const labelHtml = escapeHtml(f.label) + (f.required ? ' <span class="required-mark" style="color:#b71c1c;">*</span>' : '');
         return `<div class="open-field"><label>${labelHtml}</label>${inputHtml}</div>`;
       }).join('');
       fieldsEl.innerHTML = `<div class="dynamic-fields-wrap">
@@ -645,7 +648,8 @@ function getClientContext(resolvedTopicId) {
   if (selectedQuestion && selectedQuestion.clientFields) {
     for (const field of selectedQuestion.clientFields) {
       const el = document.getElementById('dynField_' + field.id);
-      if (el) ctx[field.id] = el.value.trim();
+      if (!el) continue;
+      ctx[field.id] = field.type === 'checkbox' ? el.checked === true : el.value.trim();
     }
   }
   return ctx;
