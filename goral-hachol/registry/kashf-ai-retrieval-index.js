@@ -59,6 +59,11 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
     doNotMixWith: ['travel.p242.vehicleSafety', 'travel.p240.roadCautionsH9H7'],
     houses: [1],
   },
+  'travel.p239.profitH7Witness': {
+    aliases: ['האם הנוסע ירוויח במסחר', 'רווח בנסיעת עסקים', 'ארץ היעד ועדיה', 'סימן רווח או הפסד בנסיעה'],
+    doNotMixWith: ['travel.p239.profitEarthRowH2', 'travel.p239.seaOrLandByElement'],
+    houses: [7, 9, 5],
+  },
   'prisoner.p272-273.rapidExitH11WithH5Caution': {
     aliases: ['סימן לשחרור מהיר', 'יציאה מהירה מן הכלא', 'כבוד נכנס בבית 11 אסיר', 'אזהרת שפל ראש בבית חמישי אסיר'],
     doNotMixWith: ['prisoner.releaseTiming.unresolved', 'fear.p273.punishmentSigns'],

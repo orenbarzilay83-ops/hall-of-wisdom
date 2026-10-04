@@ -3219,6 +3219,87 @@ function computeMarriageChastityPurityP205(chart, clientContext = {}) {
   };
 }
 
+// Printed p239 (PDF 241) — a distinct, fully-decodable profit rule for H7
+// (the destination city), cross-verified against the witness-assignment
+// table on printed p101-102 (PDF 103-104): H9 witnesses H1/H5/H7, and H5
+// witnesses H3/H7/H11 — both lists include H7 (HOUSE_TESTIMONY in
+// kashf-figure-attributes-gate2.js, independently re-confirmed against the
+// scan). The source text reads: "والسابع البلد الذي قاصدها، فإن كان فيه
+// شكل سعد، وشهد له سعد، فإنه يربح في تجارته ويرجع سالما؛ وإن كان فيه نحس،
+// فالتجارة خاسرة" — the loss branch is stated unconditionally on H7 alone;
+// only the profit branch requires a confirming witness, so the two branches
+// are deliberately asymmetric and are kept asymmetric here.
+//
+// This is INDEPENDENT of the OTHER printed p237 (PDF 239) profit rule
+// ("تراب المنطقة" / "earth of the region"), which remains blocked because
+// its input term is undefined nowhere in the book (travel.p239.
+// profitEarthRowH2, still blocked-by-source) — this executor does not
+// substitute for or silently close that other method; it answers the same
+// real-world question through a different, independently-documented source
+// passage.
+//
+// Witness handling: "شهد له سعد" (a benefic witnessed for it) is singular,
+// not "both witnesses" — read here as at-least-one-of-H9/H5-benefic. When
+// H9 and H5 disagree (one benefic, one not), the branch still resolves to
+// profit per this reading, but the disagreement is reported explicitly
+// rather than silently merged. When H7 is benefic but NEITHER witness is
+// benefic, or H7 itself is mixed, no verdict is produced — the source does
+// not cover those combinations and none is invented here.
+function computeTravelProfitH7WitnessP239(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h7 = findCanonicalHouse(chart, 7);
+  const h9 = findCanonicalHouse(chart, 9);
+  const h5 = findCanonicalHouse(chart, 5);
+  const p7 = h7?.key || h7?.pattern || null;
+  const p9 = h9?.key || h9?.pattern || null;
+  const p5 = h5?.key || h5?.pattern || null;
+  if (!p7 || !p9 || !p5) return null;
+
+  const fortune7 = classifyCanonicalFigure(p7).saadNahs;
+  const fortune9 = classifyCanonicalFigure(p9).saadNahs;
+  const fortune5 = classifyCanonicalFigure(p5).saadNahs;
+
+  const sourceRef = 'כשף אל־אסראר עמ׳ 239 (קביעת עדי בית 7 לפי עמ׳ 101–102)';
+  const sourceText = 'והשביעי הוא הארץ שאליה הוא מכוון: אם יש בו צורה מיטיבה ועד מיטיב מעיד לה, הוא מרוויח במסחרו וחוזר בשלום; ואם יש בו צורה מזיקה, המסחר מפסיד. (עדי בית 7, לפי טבלת העדות בעמ׳ 101-102: בית 9 ובית 5.)';
+
+  let branch, positive, outputHebrew, clientSafeHebrew;
+
+  if (fortune7 === 'nahs') {
+    branch = 'loss';
+    positive = false;
+    outputHebrew = 'בית 7 (ארץ היעד) מזיק — "המסחר מפסיד" (כשף עמ׳ 239). הפסוק אינו מתנה ענף זה בעדות; הפסק חל ללא תלות בבתים 9/5.';
+    clientSafeHebrew = 'סימן בלוח מראה הפסד בנסיעת העסקים.';
+  } else if (fortune7 === 'saad' && (fortune9 === 'saad' || fortune5 === 'saad')) {
+    branch = 'profit';
+    positive = true;
+    const witnessNote = fortune9 === 'saad' && fortune5 === 'saad'
+      ? 'שני עדיו (בית 9 ובית 5) מיטיבים.'
+      : fortune9 === 'saad'
+        ? `העד מבית 9 מיטיב (העד מבית 5 ${fortune5 === 'nahs' ? 'מזיק' : 'ממוזג'} — אין בכך כדי לסתור: נוסח המקור דורש עד מיטיב אחד, לא את שניהם).`
+        : `העד מבית 5 מיטיב (העד מבית 9 ${fortune9 === 'nahs' ? 'מזיק' : 'ממוזג'} — אין בכך כדי לסתור: נוסח המקור דורש עד מיטיב אחד, לא את שניהם).`;
+    outputHebrew = `בית 7 מיטיב, ו${witnessNote} — "מרוויח במסחרו וחוזר בשלום" (כשף עמ׳ 239).`;
+    clientSafeHebrew = 'סימן בלוח מראה רווח בנסיעת העסקים וחזרה בשלום.';
+  } else if (fortune7 === 'saad') {
+    branch = 'unresolved-no-confirming-witness';
+    positive = null;
+    outputHebrew = `בית 7 מיטיב, אך אף אחד מעדיו (בית 9: ${fortune9 || 'לא ידוע'}; בית 5: ${fortune5 || 'לא ידוע'}) אינו מיטיב — המקור דורש עד מיטיב לפסק הרווח המפורש, ותנאי זה אינו מתקיים כאן. אין פסק רווח; הפסק השלילי גם הוא אינו חל, כי הוא מותנה במפורש בבית 7 מזיק, וזה אינו המצב.`;
+    clientSafeHebrew = 'יש בלוח סימן חיובי חלקי, אך בלי האישור הנוסף שהמקור דורש לפסק רווח ודאי.';
+  } else {
+    branch = 'unresolved-mixed-h7';
+    positive = null;
+    outputHebrew = 'צורת בית 7 ממוזגת — המקור אינו נותן כאן פסק לצורה ממוזגת; אין לפסוק רווח או הפסד.';
+    clientSafeHebrew = 'אין בלוח סימן מכריע לרווח או הפסד בנסיעת העסקים.';
+  }
+
+  return {
+    sourceRef, sourceText,
+    housesUsed: [7, 9, 5],
+    h7Pattern: p7, h9Pattern: p9, h5Pattern: p5,
+    branch, positive,
+    outputHebrew, clientSafeHebrew,
+  };
+}
+
 const CUSTOM_EXECUTORS = Object.freeze({
   'enemy.p271.h1vsH12': computeEnemyPresenceH1H12P271,
   'illness.p197.h1h8ElementHumor': computeIllnessHumorH1H8P197,
@@ -3284,6 +3365,7 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'authority.p257.rulerConditionH7H10': computeRulerConditionP257,
   'mother.p257.statusDayNight': computeMotherNightWhiteRoadP257,
   'marriage.p205.modestyPurity': computeMarriageChastityPurityP205,
+  'travel.p239.profitH7Witness': computeTravelProfitH7WitnessP239,
 });
 
 function toLegacyChart(board) {

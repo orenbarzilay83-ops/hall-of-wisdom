@@ -627,14 +627,16 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfIntentId: 'travel.seaOrLand',
     kashfMethodId: 'travel.p239.seaOrLandByElement',
     kashfRuntimeStatus: 'blocked-by-source',
+    note: 'Re-verified 2026-10-04 directly against the scan, not merged with the nearby profit blocker merely by page adjacency: "الشكل الخارج من الشكلين" (dual, definite) has no closer antecedent than the profit clause\'s own "تراب المنطقة"-derived figure and H2, which the text combines immediately before in the same unbroken passage (no new "نكتة" header between them; sourcePages corrected from 239 to the real location, printed p237). Genuinely still blocked, for the documented reason, not an assumption.',
   }),
 
   'q-travel-profit': route({
     questionId: 'q-travel-profit',
     disposition: 'KEEP',
     kashfIntentId: 'travel.profit',
-    kashfMethodId: 'travel.p239.profitEarthRowH2',
-    kashfRuntimeStatus: 'blocked-by-source',
+    kashfMethodId: 'travel.p239.profitH7Witness',
+    kashfRuntimeStatus: 'ready',
+    note: 'Repaired 2026-10-04: re-verified against the printed scan p239 (PDF p241) and the p101-102 witness table. The route previously pointed to travel.p239.profitEarthRowH2 (its sourcePages corrected from 239 to the real location, printed p237), which remains blocked on an undefined "تراب المنطقة" input — that method is NOT closed by this change. This question now answers through the independent H7+witness rule instead, which is fully decodable from the printed text.',
   }),
 
   'q-travel-danger': route({
