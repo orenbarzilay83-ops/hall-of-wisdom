@@ -3238,13 +3238,29 @@ function computeMarriageChastityPurityP205(chart, clientContext = {}) {
 // real-world question through a different, independently-documented source
 // passage.
 //
-// Witness handling: "شهد له سعد" (a benefic witnessed for it) is singular,
-// not "both witnesses" — read here as at-least-one-of-H9/H5-benefic. When
-// H9 and H5 disagree (one benefic, one not), the branch still resolves to
-// profit per this reading, but the disagreement is reported explicitly
-// rather than silently merged. When H7 is benefic but NEITHER witness is
-// benefic, or H7 itself is mixed, no verdict is produced — the source does
-// not cover those combinations and none is invented here.
+// Witness handling, corrected 2026-10-04 after reading printed p101-102
+// (PDF 103-104) in full sequence, not just the testimony-assignment table:
+// immediately after that table, the SAME passage continues "والتوليد من
+// الشكلين عند اختلافهما، هو شاهد لهما وعليهما؛ فمن مال إليه، فاحكم به من
+// السعد، والنحس، والممتزج" — "the generation from the two figures, when
+// they disagree, is itself a witness for and against them; whichever
+// [witness] it inclines toward, judge by that one's fortune." This DOES
+// apply here in principle: H9 and H5 are exactly the two witnesses of H7,
+// and when they disagree on fortune, the source's own prescribed procedure
+// is to derive a third figure (combineRamlFigures, the same "توليد"
+// operation used elsewhere) from them and use it to decide which witness to
+// trust. But "مال إليه" ("inclines toward") is never given a computable
+// definition anywhere in the book (same unresolved operator as the p182
+// money-halal rule's "مال الخارج إلى", which is in fact the same
+// terminology for the same kind of arbitration) — there is no stated way to
+// determine which of two parent figures a derived figure "inclines toward".
+// So: the disagreement-resolution procedure is correctly NOT invented here.
+// When H9 and H5 disagree on fortune (saad vs. not-saad), the generated
+// figure is computed and shown as evidence that the source's own procedure
+// was followed, but no profit verdict is produced — per the explicit
+// instruction that an undecodable arbitration must not be presented to the
+// client as a certain decision. Only when H9 and H5 AGREE (both saad) is
+// there no disagreement to arbitrate, and the profit branch fires cleanly.
 function computeTravelProfitH7WitnessP239(chart) {
   if (!Array.isArray(chart)) return null;
   const h7 = findCanonicalHouse(chart, 7);
@@ -3259,8 +3275,8 @@ function computeTravelProfitH7WitnessP239(chart) {
   const fortune9 = classifyCanonicalFigure(p9).saadNahs;
   const fortune5 = classifyCanonicalFigure(p5).saadNahs;
 
-  const sourceRef = 'כשף אל־אסראר עמ׳ 239 (קביעת עדי בית 7 לפי עמ׳ 101–102)';
-  const sourceText = 'והשביעי הוא הארץ שאליה הוא מכוון: אם יש בו צורה מיטיבה ועד מיטיב מעיד לה, הוא מרוויח במסחרו וחוזר בשלום; ואם יש בו צורה מזיקה, המסחר מפסיד. (עדי בית 7, לפי טבלת העדות בעמ׳ 101-102: בית 9 ובית 5.)';
+  const sourceRef = 'כשף אל־אסראר עמ׳ 239 (קביעת עדי בית 7 וכלל המחלוקת לפי עמ׳ 101–102)';
+  const sourceText = 'והשביעי הוא הארץ שאליה הוא מכוון: אם יש בו צורה מיטיבה ועד מיטיב מעיד לה, הוא מרוויח במסחרו וחוזר בשלום; ואם יש בו צורה מזיקה, המסחר מפסיד. (עדי בית 7, לפי טבלת העדות בעמ׳ 101-102: בית 9 ובית 5. אם העדים חלוקים: "התולדה משתי הצורות בעת מחלוקתן היא עדה בעדן ועליהן; למי שהיא נוטה — שפטו בו מן הסעד, הנחס והממוזג" — עמ׳ 101-102.)';
 
   let branch, positive, outputHebrew, clientSafeHebrew;
 
@@ -3269,20 +3285,24 @@ function computeTravelProfitH7WitnessP239(chart) {
     positive = false;
     outputHebrew = 'בית 7 (ארץ היעד) מזיק — "המסחר מפסיד" (כשף עמ׳ 239). הפסוק אינו מתנה ענף זה בעדות; הפסק חל ללא תלות בבתים 9/5.';
     clientSafeHebrew = 'סימן בלוח מראה הפסד בנסיעת העסקים.';
-  } else if (fortune7 === 'saad' && (fortune9 === 'saad' || fortune5 === 'saad')) {
+  } else if (fortune7 === 'saad' && fortune9 === 'saad' && fortune5 === 'saad') {
     branch = 'profit';
     positive = true;
-    const witnessNote = fortune9 === 'saad' && fortune5 === 'saad'
-      ? 'שני עדיו (בית 9 ובית 5) מיטיבים.'
-      : fortune9 === 'saad'
-        ? `העד מבית 9 מיטיב (העד מבית 5 ${fortune5 === 'nahs' ? 'מזיק' : 'ממוזג'} — אין בכך כדי לסתור: נוסח המקור דורש עד מיטיב אחד, לא את שניהם).`
-        : `העד מבית 5 מיטיב (העד מבית 9 ${fortune9 === 'nahs' ? 'מזיק' : 'ממוזג'} — אין בכך כדי לסתור: נוסח המקור דורש עד מיטיב אחד, לא את שניהם).`;
-    outputHebrew = `בית 7 מיטיב, ו${witnessNote} — "מרוויח במסחרו וחוזר בשלום" (כשף עמ׳ 239).`;
+    outputHebrew = 'בית 7 מיטיב, ושני עדיו (בית 9 ובית 5) מיטיבים ללא מחלוקת — "מרוויח במסחרו וחוזר בשלום" (כשף עמ׳ 239).';
     clientSafeHebrew = 'סימן בלוח מראה רווח בנסיעת העסקים וחזרה בשלום.';
+  } else if (fortune7 === 'saad' && (fortune9 === 'saad') !== (fortune5 === 'saad')) {
+    // Exactly one of the two witnesses is benefic — a genuine disagreement
+    // per "اختلافهما", since they do not agree on whether to confirm H7.
+    const combined95 = combineRamlFigures(p9, p5);
+    const pattern95 = combined95?.resultPattern || null;
+    branch = 'unresolved-disagreeing-witnesses';
+    positive = null;
+    outputHebrew = `בית 7 מיטיב, אך עדיו חלוקים (בית 9: ${fortune9}; בית 5: ${fortune5}). לפי כשף עמ׳ 101-102, במחלוקת עדים יש להוליד צורה משתיהן (${pattern95 || 'לא ניתן לחשב'}) ולשפוט לפי מי שהיא "נוטה" אליו מבין שני העדים — אך פעולת ה"נטייה" הזו אינה מוגדרת תפעולית בשום מקום בספר (אותו מונח לא-פתור כמו "مال إلى" בכלל הממון המותר/האסור, עמ׳ 182). הצורה הנולדת מוצגת כעדות שהנוהל מן המקור בוצע, אך אין בכך כדי להכריע — אין פסק רווח.`;
+    clientSafeHebrew = 'עדי הלוח חלוקים בעניין רווח נסיעת העסקים, והמקור אינו נותן כאן דרך ודאית להכריע ביניהם — אין פסק חד-משמעי.';
   } else if (fortune7 === 'saad') {
     branch = 'unresolved-no-confirming-witness';
     positive = null;
-    outputHebrew = `בית 7 מיטיב, אך אף אחד מעדיו (בית 9: ${fortune9 || 'לא ידוע'}; בית 5: ${fortune5 || 'לא ידוע'}) אינו מיטיב — המקור דורש עד מיטיב לפסק הרווח המפורש, ותנאי זה אינו מתקיים כאן. אין פסק רווח; הפסק השלילי גם הוא אינו חל, כי הוא מותנה במפורש בבית 7 מזיק, וזה אינו המצב.`;
+    outputHebrew = `בית 7 מיטיב, אך שני עדיו (בית 9: ${fortune9 || 'לא ידוע'}; בית 5: ${fortune5 || 'לא ידוע'}) מסכימים ביניהם שאינם מיטיבים — המקור דורש עד מיטיב לפסק הרווח המפורש, ותנאי זה אינו מתקיים כאן. אין פסק רווח; הפסק השלילי גם הוא אינו חל, כי הוא מותנה במפורש בבית 7 מזיק, וזה אינו המצב.`;
     clientSafeHebrew = 'יש בלוח סימן חיובי חלקי, אך בלי האישור הנוסף שהמקור דורש לפסק רווח ודאי.';
   } else {
     branch = 'unresolved-mixed-h7';

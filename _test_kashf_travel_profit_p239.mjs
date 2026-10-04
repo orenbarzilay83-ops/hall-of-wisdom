@@ -11,6 +11,22 @@
  * re-confirmed against the scan this round, and matching the pre-existing
  * HOUSE_TESTIMONY data in kashf-figure-attributes-gate2.js exactly).
  *
+ * Corrected 2026-10-04 (second pass): the SAME p101-102 passage continues,
+ * right after the testimony table, with a rule for disagreeing witnesses —
+ * "والتوليد من الشكلين عند اختلافهما، هو شاهد لهما وعليهما؛ فمن مال إليه،
+ * فاحكم به من السعد، والنحس، والممتزج" ("the generation from the two
+ * figures, when they disagree, is itself a witness for and against them;
+ * whichever it inclines toward, judge by that one's fortune"). This DOES
+ * apply to H9/H5 disagreeing about H7 — it was read in full, not assumed
+ * either way. But "مال إليه" ("inclines toward") has no computable
+ * definition anywhere in the book (the same unresolved operator as the
+ * p182 money-halal rule's "مال الخارج إلى"). So the executor now requires
+ * H9 AND H5 to BOTH be benefic for the profit branch (no disagreement to
+ * arbitrate); when they disagree, it computes the generated figure as
+ * evidence that the source's procedure was followed, but produces NO
+ * profit verdict — previously (first pass) a single confirming witness was
+ * treated as sufficient, which is corrected here.
+ *
  * This is INDEPENDENT of the other, still-blocked p237 "تراب المنطقة"
  * profit rule (travel.p239.profitEarthRowH2) and of the sea-or-land
  * blocker (travel.p239.seaOrLandByElement) — neither is closed by this file.
@@ -25,6 +41,7 @@ import { buildKashfReadingByQuestionId } from './goral-hachol/engine/kashf-canon
 import { getKashfV57Knowledge } from './goral-hachol/registry/kashf-v57-knowledge-registry.js';
 import { buildRamlBoardFromMothers } from './goral-hachol/engine/raml-board-generator.js';
 import { classifyCanonicalFigure } from './goral-hachol/engine/kashf-canonical-figure-classifier.js';
+import { combineRamlFigures } from './goral-hachol/engine/raml-figures.js';
 
 let passed = 0;
 let failed = 0;
@@ -67,30 +84,44 @@ assert(route.kashfMethodId === 'travel.p239.profitH7Witness', 'q-travel-profit r
   assert(result.outputHebrew.includes('ללא תלות'), 'loss board states the loss branch does not depend on witnesses, per the source\'s own asymmetry');
 }
 
-// ── Branch 2: profit (H7 benefic, at least one witness benefic) ────────────
+// ── Branch 2: profit (H7 benefic, BOTH witnesses benefic — no disagreement) ─
 {
-  const { reading, result } = resultFor(['1111', '1111', '2121', '2121']);
+  const { reading, result } = resultFor(['1111', '1122', '2121', '2121']);
   assert(reading.valid === true, 'profit board is a valid reading');
   assert(result.branch === 'profit', 'profit board reaches the profit branch');
   assert(result.positive === true, 'profit board is positive');
   assert(classifyCanonicalFigure(result.h7Pattern).saadNahs === 'saad', 'profit board genuinely has a benefic H7');
+  assert(classifyCanonicalFigure(result.h9Pattern).saadNahs === 'saad', 'profit board genuinely has a benefic H9 witness');
+  assert(classifyCanonicalFigure(result.h5Pattern).saadNahs === 'saad', 'profit board genuinely has a benefic H5 witness — both witnesses agree, no disagreement to arbitrate');
   assert(result.outputHebrew.includes('מרוויח במסחרו וחוזר בשלום'), 'profit board cites the source profit clause');
+  assert(result.outputHebrew.includes('ללא מחלוקת'), 'profit board states explicitly that the witnesses agree');
 }
 
-// ── Branch 2b: profit with CONTRADICTING witnesses (one confirms, one doesn't) ─
-// Explicitly exercises "handling mixed evidence": the branch still resolves
-// to profit (source says "a benefic witness", singular), but the
-// disagreement between H9 and H5 is reported rather than silently merged.
+// ── Branch 3: unresolved — witnesses DISAGREE (one benefic, one not) ───────
+// This is the corrected branch: the p101-102 disagreement-resolution
+// procedure applies in principle (generation from the two figures), but
+// "مال إليه" is undecodable, so no profit verdict is produced — the
+// generated figure is surfaced as evidence the procedure was followed.
 {
-  const { result } = resultFor(['1111', '1111', '2121', '2121']);
+  const { reading, result } = resultFor(['1111', '1111', '2121', '2121']);
+  assert(reading.valid === true, 'disagreeing-witnesses board is a valid reading');
+  assert(result.branch === 'unresolved-disagreeing-witnesses', 'board reaches the new disagreeing-witnesses branch');
+  assert(result.positive === null, 'disagreeing-witnesses board has no bounded polarity — not presented as a certain decision');
+  const f7 = classifyCanonicalFigure(result.h7Pattern).saadNahs;
   const f9 = classifyCanonicalFigure(result.h9Pattern).saadNahs;
   const f5 = classifyCanonicalFigure(result.h5Pattern).saadNahs;
-  assert(f9 !== f5, 'this fixture genuinely has disagreeing witnesses (one saad, one not)');
-  assert(result.branch === 'profit', 'disagreeing witnesses still resolve to profit when at least one is benefic');
-  assert(result.outputHebrew.includes('אין בכך כדי לסתור'), 'disagreement between witnesses is stated explicitly, not silently merged');
+  assert(f7 === 'saad', 'fixture genuinely has benefic H7');
+  assert((f9 === 'saad') !== (f5 === 'saad'), 'fixture genuinely has disagreeing witnesses (exactly one benefic)');
+  assert(result.outputHebrew.includes('עדיו חלוקים'), 'output states the witnesses disagree');
+  assert(result.outputHebrew.includes('עמ׳ 101-102'), 'output cites the p101-102 disagreement-resolution passage');
+  assert(result.outputHebrew.includes('אינה מוגדרת תפעולית'), 'output states explicitly that the "inclines toward" operator is not computably defined');
+  assert(!result.outputHebrew.includes('מרוויח'), 'output does not claim a profit verdict despite one confirming witness');
+  const expectedGenerated = combineRamlFigures(result.h9Pattern, result.h5Pattern)?.resultPattern;
+  assert(Boolean(expectedGenerated) && result.outputHebrew.includes(expectedGenerated), 'the generated (combined) figure from H9+H5 is computed and shown as evidence the source procedure was followed');
+  assert(result.clientSafeHebrew.includes('חלוקים') || result.clientSafeHebrew.includes('לא') , 'clientSafeHebrew does not present the disagreement as a certain decision');
 }
 
-// ── Branch 3: unresolved — H7 benefic but no confirming witness ────────────
+// ── Branch 4: unresolved — H7 benefic but BOTH witnesses agree they are not ─
 {
   const { reading, result } = resultFor(['1111', '1111', '1121', '1121']);
   assert(reading.valid === true, 'no-confirming-witness board is a valid reading');
@@ -102,7 +133,7 @@ assert(route.kashfMethodId === 'travel.p239.profitH7Witness', 'q-travel-profit r
   assert(!result.outputHebrew.includes('מפסיד'), 'no-confirming-witness board does not invent a loss verdict either — the source conditions the loss branch on H7 malefic only');
 }
 
-// ── Branch 4: unresolved — H7 itself mixed ──────────────────────────────────
+// ── Branch 5: unresolved — H7 itself mixed ──────────────────────────────────
 {
   const { reading, result } = resultFor(['1111', '1111', '1111', '1111']);
   assert(reading.valid === true, 'mixed-H7 board is a valid reading');

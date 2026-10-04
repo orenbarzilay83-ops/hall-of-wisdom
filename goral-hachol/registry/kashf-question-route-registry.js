@@ -627,7 +627,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfIntentId: 'travel.seaOrLand',
     kashfMethodId: 'travel.p239.seaOrLandByElement',
     kashfRuntimeStatus: 'blocked-by-source',
-    note: 'Re-verified 2026-10-04 directly against the scan, not merged with the nearby profit blocker merely by page adjacency: "الشكل الخارج من الشكلين" (dual, definite) has no closer antecedent than the profit clause\'s own "تراب المنطقة"-derived figure and H2, which the text combines immediately before in the same unbroken passage (no new "نكتة" header between them; sourcePages corrected from 239 to the real location, printed p237). Genuinely still blocked, for the documented reason, not an assumption.',
+    note: 'Re-verified 2026-10-04 directly against the scan, not merged with the nearby profit blocker merely by page adjacency: "الشكل الخارج من الشكلين" (dual, definite) has no closer antecedent than the profit clause\'s own "تراب المنطقة"-derived figure and H2, which the text combines immediately before in the same unbroken passage (no new "نكتة" header between them; sourcePages corrected from 239 to the real location, printed p237). This is a grounded grammatical conclusion about the most likely antecedent, not final proof that the two blockers share one undecoded input — still blocked on that basis, not on page adjacency alone.',
   }),
 
   'q-travel-profit': route({
