@@ -522,7 +522,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     runtimeAllowed: false,
     executionKind: 'source-procedure',
     executorStatus: 'pending',
-    notes: 'Printed p192 gives two month-count routes: strike the “third” in the pregnancy house and reduce nine-by-nine, with the remainder as months; alternatively use the balance figure as the month count. The exact computational meaning of the “third” operation and the precedence/reconciliation between the two routes are not closed for runtime. Preserve both; do not invent arithmetic or choose one silently.',
+    notes: 'Printed p192 gives two month-count routes. Re-read 2026-10-05 directly on the scan (PDF 194) and re-cropped at 1600 DPI to resolve the exact wording of the first route, which this note had previously paraphrased imprecisely as "strike the third in the pregnancy house" — the scan actually reads "اضرب الثالث في سابعه، وأسقطه (٩، ٩)، فالباقي عدة شهورها" ("strike/multiply the third by its seventh, and cast it out nine-by-nine (9,9); the remainder is the count of her months"), naming H3 and H7, not a "pregnancy house". "اضرب...في" is this book\'s standard verb for the figure-combination/"striking" operation used throughout (e.g. the p212 partnership and p206 love/desire derivations), but a combined figure\'s dot-total (4-8) can never require reduction "by nines" — so "اسقاط (٩،٩)" here only makes sense against a larger raw numeric total, the same category of raw pre-reduction quantity already found unavailable in this engine\'s data model for "الجملة" (partnership.p212.operationUnresolved) and "جمع العناصر" (lifespan.p178.elementCountToHouse): buildRamlBoardFromMothers only ever accepts already-reduced 4-character patterns, and no raw element-row or dot total is retained for any mother or house. The second route ("ومن غيره: انظر الشكل الحال في الميزان، فهو عدد شهورها" — look at the figure present in the Mizan/H15; it is the count of her months) is mechanically clear (a single house read, no raw-count dependency) but is explicitly offered as an alternative ("ومن غيره", "and from other than it"), not a stated reconciliation with route one, and the source gives no precedence rule between them. Implementing only route two while silently dropping route one\'s stated alternative status would misrepresent a two-route source passage as a single-route one. Preserve both; do not invent arithmetic for route one or silently prefer route two.',
   }),
 
   'child.p194.existenceH1H5Nature': method({
@@ -1968,12 +1968,12 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfMethodId: 'travel.p242.vehicleSafety',
     kashfIntentId: 'travel.vehicleSafety',
     topicId: 'travel',
-    sourcePages: [242],
+    sourcePages: [240],
     kashfRuntimeStatus: 'blocked-by-source',
     runtimeAllowed: false,
     executionKind: null,
     executorStatus: 'not-applicable',
-    notes: 'Source contradiction: house 12 appears in conflicting outcome groups. No code until textual resolution.',
+    notes: 'Re-read 2026-10-05 directly on the scan (printed p240, PDF 242) and re-cropped at 1600 DPI to confirm the contradiction precisely rather than just restate it. Exact quote: "نكتة: للمركب المسافر: كمل الضرب إلى السادس عشر، وانظر الشكل الحال في الأول، إلى أين اتصل من التخت: إن انتقل إلى السادس، أو الثامن، أو الثاني عشر، أو الرابع عشر، أو السادس عشر، فإن المركب ينكسر لا محالة؛ وإن انتقل إلى الثاني، أو الثالث، أو السابع، أو التاسع، أو الحادي عشر، أو الثاني عشر، أو الثالث عشر، أو الخامس عشر، فإن [المركب يصل مقصده سالما]..." — derive to H16, look at the figure present in H1, see which house it connects to on the board: connecting to {6,8,12,14,16} => the vessel WILL wreck without doubt; connecting to {2,3,7,9,11,12,13,15} => the vessel reaches its destination safely. House 12 (الثاني عشر) is explicitly named in BOTH lists, confirmed letter-by-letter at high resolution, not a scan artifact or an OCR-adjacent misread. This is the book\'s own internal contradiction, not this engine\'s; it cannot be resolved by picking one branch, since that would silently discard the other half of the printed text as if it did not exist. Distinct from the already-ready travel.p243-244.vesselH1Signs (printed pp241-242, PDF 243-244), which separately and unambiguously reads H1\'s own figure identity against a 13-of-16 figure damage-location table with no house-12-style conflict; that method\'s notes already correctly warn not to import this p240 H12 contradiction into it. No code until the printed contradiction itself is resolved by an external textual witness.',
   }),
 
   'travel.p243-244.vesselH1Signs': method({
