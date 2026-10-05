@@ -2989,6 +2989,84 @@ function computeMissingLifeStatusH8H14P249(chart) {
   };
 }
 
+// Printed p249 (PDF 251), the SAME sentence as computeMissingLifeStatusH8H14P249
+// above, continuing directly after it. Full quote: "نكتة: عن حال الغائب:
+// أنشئ من الثامن والرابع عشر شكلا، فإن كان سعدا، كان حاله صالحا، وإن كان
+// نحسا، فبضده؛ فإن إنفتح ناره وهواءه، كان حيا، وإلا بضد ذلك؛ وقدومه في
+// الثالث والخامس عشر، فإن كان داخلا، فهو قادم، لاسيما إن كان في بيت سعد."
+// (...and his arrival [is read] in the third and the fifteenth: if it is
+// inward [dakhil], then he is arriving -- especially if it is also [in
+// the state of] a benefic.)
+//
+// RESOLVED 2026-10-05 (re-read directly against the raw scan, full page):
+// an earlier round flagged "وقدومه في الثالث والخامس عشر... إن كان داخلا"
+// as an unresolved-referent blocker -- unclear whether it meant the SAME
+// H8+H14 figure already built, a fresh H3+H15 combination, or each house
+// read individually. Reading the full, unbroken sentence resolves this:
+// "وقدومه في الثالث والخامس عشر" mirrors, word-for-word in structure, the
+// sentence's own opening clause "أنشئ من الثامن والرابع عشر شكلا" (house
+// X و house Y, with "و" -- "and" -- joining the two house numbers, exactly
+// as in the first clause) -- an elliptical repetition of "construct a
+// figure from..." that economizes by not re-stating the verb once the
+// pattern is established, a normal feature of this author's style (the
+// prisoner.p272.releaseManner clause does the same kind of ellipsis with
+// its own house list). This is NOT a reuse of the earlier H8+H14 figure
+// (which would need no new house names at all) and NOT two independently
+// read houses (the source uses "و", not "أو", which this author
+// consistently uses to mean OR-across-a-list elsewhere, e.g. the p272
+// prisoner release-manner clause). "بيت سعد" here names no house NUMBER
+// unlike every other reference in this corpus, which always cites actual
+// numbered houses when a literal house is meant -- it is the ordinary
+// idiom for "being itself benefic" (saad), not a 17th house to look up,
+// so it is read as a strengthening condition on the SAME combined figure,
+// not a separate check.
+//
+// Computation: combine H3+H15 (parity-sum combineRamlFigures, same
+// operation already used earlier in this very sentence for H8+H14).
+// dakhalKharij === 'dakhil' (strictly -- not 'mujassad-dakhil', kept
+// distinct per this corpus's own p63 classification) => arrival sign,
+// strengthened when the SAME combined figure is also saad. The source
+// states no inverse ("وإلا") for this specific clause (unlike the
+// immediately preceding alive/dead clause, which does), so kharij/
+// mujassad patterns return positive:null, never a "not arriving" verdict.
+function computeMissingArrivalSignH3H15P249(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h3 = findCanonicalHouse(chart, 3);
+  const h15 = findCanonicalHouse(chart, 15);
+  const h3Pattern = h3?.key || h3?.pattern || null;
+  const h15Pattern = h15?.key || h15?.pattern || null;
+  if (!h3Pattern || !h15Pattern) return null;
+
+  const combined = combineRamlFigures(h3Pattern, h15Pattern);
+  const resultPattern = combined.resultPattern;
+  const classification = classifyCanonicalFigure(resultPattern);
+  const resultFigureHebrew = classification.figureHebrew || combined.result?.hebrewName || resultPattern;
+
+  const arrivalSign = classification.dakhalKharij === 'dakhil';
+  const strengthened = arrivalSign && classification.saadNahs === 'saad';
+
+  const outputHebrew = arrivalSign
+    ? `חיבור בית 3 (${h3Pattern}) ובית 15 (${h15Pattern}): ${resultFigureHebrew} (${resultPattern}) — צורה פנימית (داخل). לפי כשף עמ׳ 249: סימן שהנעדר בדרכו/מתקרב.${strengthened ? ' הצורה גם מיטיבה, המחזק את הסימן.' : ''}`
+    : `חיבור בית 3 (${h3Pattern}) ובית 15 (${h15Pattern}): ${resultFigureHebrew} (${resultPattern}) — אינה צורה פנימית. המקור אינו נותן כאן כלל הפוך; אין בכך הוכחה שאינו בדרכו.`;
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 249 (PDF 251)',
+    sourceText: 'وقدومه في الثالث والخامس عشر، فإن كان داخلا، فهو قادم، لاسيما إن كان في بيت سعد.',
+    housesUsed: [3, 15],
+    h3Pattern,
+    h15Pattern,
+    resultPattern,
+    resultFigureHebrew,
+    dakhalKharij: classification.dakhalKharij,
+    saadNahs: classification.saadNahs,
+    arrivalSign,
+    strengthened,
+    positive: arrivalSign ? true : null,
+    verdictType: 'missing-arrival-sign-h3h15',
+    outputHebrew,
+  };
+}
+
 // Kashf v57 p191 — ease/difficulty of delivery.
 function computeDeliveryDifficultyP191(chart) {
   if (!Array.isArray(chart)) return null;
@@ -4049,6 +4127,7 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'missing.p249.returnAnglesJudge': computeMissingReturnP249,
   'missing.p249.returnTimingTariqH10H11': computeMissingReturnTimingP249,
   'missing.p249.lifeStatusH8H14': computeMissingLifeStatusH8H14P249,
+  'missing.p249.arrivalSignH3H15': computeMissingArrivalSignH3H15P249,
   'pregnancy.p191.childSafetyH1H6H8': computeChildSafetyP191,
   'lifespan.p264.stagesH11H9H7': computeLifespanStagesP264,
   'travel.p244.returnH1H2H9': computeTravelerReturnP244,

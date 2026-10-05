@@ -2,11 +2,14 @@
 /**
  * _test_kashf_missing_p249_return_life.mjs
  *
- * Golden tests for the two p249 methods opened this round:
+ * Golden tests for p249 methods opened across this engagement:
  *   - missing.p249.returnTimingTariqH10H11 (new intent: missing.returnTiming)
  *   - missing.p249.lifeStatusH8H14 (supporting condition for missing.aliveOrDead)
+ *   - missing.p249.arrivalSignH3H15 (new intent: missing.arrivalSign, added
+ *     2026-10-05 -- resolves the referent that lifeStatusH8H14's own notes
+ *     previously flagged unresolved for this sentence's continuation)
  *
- * Both resolved from the actual printed-page scan image supplied for this
+ * All resolved from the actual printed-page scan image supplied for this
  * purpose: printed_249__pdf_251.jpg.
  */
 
@@ -244,10 +247,81 @@ for (const [h14Pattern, resultPattern, expectAliveSign, expectStateQuality, labe
     `${label}: no negative or "no verdict" wording on aliveness when positive is true`);
 }
 
-// Missing/incomplete board data for both methods: must not guess.
+// ── missing.p249.arrivalSignH3H15 ──────────────────────────────────────
+//
+// Photographed line (p249, PDF 251), continuing directly after the
+// lifeStatusH8H14 sentence: "...وإلا بضد ذلك؛ وقدومه في الثالث والخامس
+// عشر، فإن كان داخلا، فهو قادم، لاسيما إن كان في بيت سعد."
+//
+// Computation action: combine H3+H15; dakhalKharij==='dakhil' (strictly)
+// gives the arrival sign, strengthened (not a different verdict) when the
+// same combined figure is also saad. No inverse is stated for this
+// clause, so non-dakhil results return positive:null.
+
+const arrivalMethod = getKashfMethod('missing.p249.arrivalSignH3H15');
+ok(arrivalMethod.kashfRuntimeStatus === 'ready', 'missing.p249.arrivalSignH3H15 is ready');
+ok(arrivalMethod.executorStatus === 'ready', 'executor is wired');
+ok(arrivalMethod.runtimeAllowed === true, 'runtime is allowed');
+ok(arrivalMethod.kashfIntentId === 'missing.arrivalSign', 'registered under a new, distinct intent');
+ok(/الثالث والخامس عشر/.test(arrivalMethod.notes || ''), 'registry notes carry the exact photographed house reference');
+ok(/إن كان داخلا/.test(arrivalMethod.notes || ''), 'registry notes carry the exact photographed dakhil clause');
+ok(hasCanonicalCustomExecutor('missing.p249.arrivalSignH3H15'), 'executor is reachable via dispatch');
+
+const arrivalRoute = getKashfQuestionRoute('q-missing-arriving');
+ok(arrivalRoute != null, 'q-missing-arriving route exists');
+ok(arrivalRoute.kashfMethodId === 'missing.p249.arrivalSignH3H15', 'q-missing-arriving routes to the correct executor');
+
+// dakhil + saad: arrival sign, strengthened.
+{
+  const board = buildRamlBoardFromMothers(['1111', '1111', '1111', '2121']);
+  const entries = board.entries || board;
+  const h3 = entries.find((e) => Number(e.house || e.houseNumber) === 3);
+  const h15 = entries.find((e) => Number(e.house || e.houseNumber) === 15);
+  ok((h3.pattern || h3.key) === '1111', 'dakhil+saad case: real board lands H3=1111 as expected');
+  ok((h15.pattern || h15.key) === '1212', 'dakhil+saad case: real board lands H15=1212 as expected');
+
+  const result = executeCanonicalCustomMethod('missing.p249.arrivalSignH3H15', board);
+  ok(result.resultPattern === '2121', 'dakhil+saad case: combine(1111,1212) yields 2121 as expected');
+  ok(result.dakhalKharij === 'dakhil', 'dakhil+saad case: result is dakhil');
+  ok(result.saadNahs === 'saad', 'dakhil+saad case: result is also saad');
+  ok(result.arrivalSign === true, 'dakhil+saad case: arrivalSign is true');
+  ok(result.strengthened === true, 'dakhil+saad case: strengthened is true');
+  ok(result.positive === true, 'dakhil+saad case: positive is true');
+  ok(result.outputHebrew.includes('מתקרב') && result.outputHebrew.includes('מחזק'), 'dakhil+saad case: Hebrew output mentions arrival and the strengthening note');
+}
+
+// dakhil but not saad: arrival sign, not strengthened.
+{
+  const board = buildRamlBoardFromMothers(['1111', '1111', '1112', '2211']);
+  const result = executeCanonicalCustomMethod('missing.p249.arrivalSignH3H15', board);
+  ok(result.resultPattern === '2221', 'dakhil-only case: combine(1112,1111) yields 2221 as expected');
+  ok(result.dakhalKharij === 'dakhil', 'dakhil-only case: result is dakhil');
+  ok(result.saadNahs !== 'saad', 'dakhil-only case: result is not saad');
+  ok(result.arrivalSign === true, 'dakhil-only case: arrivalSign is still true');
+  ok(result.strengthened === false, 'dakhil-only case: strengthened is false');
+  ok(result.positive === true, 'dakhil-only case: positive is true');
+}
+
+// kharij: no verdict, never "not arriving".
+{
+  const board = buildRamlBoardFromMothers(['1111', '1111', '1111', '1121']);
+  const result = executeCanonicalCustomMethod('missing.p249.arrivalSignH3H15', board);
+  ok(result.resultPattern === '1122', 'kharij case: combine(1111,2211) yields 1122 as expected');
+  ok(result.dakhalKharij === 'kharij', 'kharij case: result is kharij');
+  ok(result.arrivalSign === false, 'kharij case: arrivalSign is false');
+  ok(result.positive === null, 'kharij case: positive is null (no verdict), never a "not arriving" verdict');
+  ok(result.outputHebrew.includes('אינה צורה פנימית') && result.outputHebrew.includes('אין בכך הוכחה'), 'kharij case: Hebrew output states no inverse is proven');
+}
+
+{
+  const result = executeCanonicalCustomMethod('missing.p249.arrivalSignH3H15', { entries: [] });
+  ok(result === null, 'missing.p249.arrivalSignH3H15: missing board data returns null rather than guessing');
+}
+
+// Missing/incomplete board data for the other methods: must not guess.
 {
   ok(executeCanonicalCustomMethod('missing.p249.returnTimingTariqH10H11', { entries: [] }) === null, 'timing: missing board data returns null');
   ok(executeCanonicalCustomMethod('missing.p249.lifeStatusH8H14', { entries: [] }) === null, 'life-status: missing board data returns null');
 }
 
-console.log(`Kashf p249 return-timing + life-status golden tests: ${assertions} assertions passed`);
+console.log(`Kashf p249 return-timing + life-status + arrival-sign golden tests: ${assertions} assertions passed`);

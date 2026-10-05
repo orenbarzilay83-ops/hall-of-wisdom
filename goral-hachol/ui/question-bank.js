@@ -607,6 +607,13 @@ window.QUESTION_BANK = [
     clientFields: [F.missingName, F.missingWhen],
   },
   {
+    id: 'q-missing-arriving',
+    category: 'travel', houseId: 9, topicId: 'missingPerson', kashfTopicId: 'missingPerson',
+    label: 'האם יש סימן שהנעדר בדרכו?',
+    desc: 'כלל נפרד עמ׳ 249: חיבור בית 3 ובית 15 — צורה פנימית היא סימן שהנעדר מתקרב; כשהצורה גם מיטיבה הסימן מתחזק. המקור אינו נותן כלל הפוך — היעדר הסימן אינו הוכחה שאינו בדרכו. אינו קובע תאריך.',
+    clientFields: [F.missingName, F.missingWhen],
+  },
+  {
     id: 'q-fugitive',
     category: 'travel', houseId: 12, topicId: 'missingPerson', kashfTopicId: 'missingPerson',
     label: 'האם הבורח ייתפס?',
