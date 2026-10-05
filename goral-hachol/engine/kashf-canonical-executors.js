@@ -701,6 +701,69 @@ function computeMutualGazeP170(chart) {
   };
 }
 
+// Printed p170 (PDF 172), second "also" note, immediately following the
+// derived-figure water-houses check (that one is NOT implemented here — see
+// below): "ـ وأيضا ـ انظر البيوت المائية، إذا انفتح فيهم الماء، فإن المسئلة
+// تحصل؛ وإن كان بخلاف ذلك، فالمسئلة مانعة على هذا النفس." (Also: look at the
+// watery houses. If the water opens in them, the matter is attained; if the
+// contrary, the matter is prevented for this person.)
+//
+// "The watery houses" (البيوت المائية, also "بيوت الماء" one sentence
+// earlier on the same page) is read as the four houses whose element is
+// fixed as water by the book's own general house classification — p43 (PDF
+// 45): "وفيها: ناري وهوائي، وماني (مائي) وترابي" lists fire/air/water/earth
+// as one of several house-attribute axes, and the per-house chapter gives
+// each house's fixed element explicitly; p47 (PDF 49) names House 3 itself
+// "ماء الماء" ("water of water") and "ماني" (water), confirming the fixed
+// Fire/Air/Water/Earth cycle that puts water at houses 3, 7, 11, 15. Both
+// phrasings on p170 are used back-to-back with no on-page redefinition, so
+// they are read as the same already-established set, not a casting-specific
+// alternative (e.g. "houses currently occupied by one of the four
+// water-element FIGURES" — considered and rejected: nothing on this page or
+// at p43-53 supports that second reading, and the two consecutive "also"
+// clauses would be an odd place to silently switch referents).
+//
+// IMPORTANT: this is only the SECOND of two adjacent p170 water-houses
+// notes. The FIRST ("كمل الضرب إلى السادس عشر، أقم من بيوت الماء شكلا، فإن
+// حل ذلك الشكل في وتد أو بيت سعيد، وكان الشكل داخلا، فاحكم بتحصيل
+// المسئلة" — construct ONE figure from the water houses, then judge by
+// where THAT figure falls) is NOT implemented: the source does not say
+// which row of each water house feeds the new figure (e.g. each house's own
+// water row stacked in house order, vs. successively combining the four
+// houses' full figures the way two figures are elsewhere combined in this
+// book) — guessing between those would be inventing a procedure the text
+// does not give.
+const WATER_HOUSE_NUMBERS = [3, 7, 11, 15];
+const WATER_ROW_INDEX = 2; // fire=0, air=1, water=2, earth=3 (p43/p347-cycle order)
+
+function computeWaterHousesOpenP170(chart) {
+  if (!Array.isArray(chart)) return null;
+
+  const houses = WATER_HOUSE_NUMBERS.map((houseNumber) => {
+    const house = findCanonicalHouse(chart, houseNumber);
+    const pattern = house?.key || house?.pattern || null;
+    const waterRowState = pattern ? getCanonicalRowState(pattern, WATER_ROW_INDEX) : null;
+    return { houseNumber, pattern, waterRowState };
+  });
+
+  if (houses.some((h) => !h.waterRowState)) return null;
+
+  const allWaterRowsOpen = houses.every((h) => h.waterRowState === 'open');
+  const outputHebrew = allWaterRowsOpen
+    ? 'שורת יסוד המים פתוחה בכל ארבעת בתי המים (3, 7, 11, 15). לפי כשף עמ׳ 170: הבקשה תתקיים.'
+    : 'שורת יסוד המים אינה פתוחה בכל ארבעת בתי המים (3, 7, 11, 15). לפי כשף עמ׳ 170: הבקשה נמנעת מן השואל הזה.';
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 170 (PDF 172)',
+    sourceText: 'ועוד: התבונן בבתי המים. אם שורת יסוד המים פתוחה בהם — הבקשה תתקיים; ואם לא — הבקשה נמנעת מן השואל הזה.',
+    housesUsed: WATER_HOUSE_NUMBERS,
+    houses,
+    allWaterRowsOpen,
+    positive: allWaterRowsOpen,
+    outputHebrew,
+  };
+}
+
 // Printed p267 gives a separate House 11 fallback after the compound
 // H1/H2/H5/H13 and recurrence test. Only that explicit fallback runs here;
 // neither failure of the compound test nor a mixed H11 is inverted into a verdict.
@@ -3686,6 +3749,7 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'mother.p257.statusDayNight': computeMotherNightWhiteRoadP257,
   'marriage.p205.modestyPurity': computeMarriageChastityPurityP205,
   'travel.p239.profitH7Witness': computeTravelProfitH7WitnessP239,
+  'need.p170.waterHousesRowOpen': computeWaterHousesOpenP170,
 });
 
 function toLegacyChart(board) {
