@@ -1104,8 +1104,33 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     notes: 'Opened 2026-10-05, re-read directly against the full raw p249 scan (PDF 251), prioritized per explicit instruction to complete p249 findings. Continuation of the SAME sentence as missing.p249.lifeStatusH8H14 (see that entry for the full citation and the referent-resolution reasoning): "...وإلا بضد ذلك؛ وقدومه في الثالث والخامس عشر، فإن كان داخلا، فهو قادم، لاسيما إن كان في بيت سعد." (and his arrival [is read] in the third and the fifteenth: if it is inward [دخل], then he is arriving -- especially if it is also benefic.) Combine H3+H15 (same combineRamlFigures parity-sum already used earlier in this sentence for H8+H14); dakhalKharij==="dakhil" (strictly -- not "mujassad-dakhil", kept distinct per this corpus\'s own p63 classification) gives the arrival sign, with a strengthened note (not a different verdict) when the same combined figure is also saad ("بيت سعد", read as the ordinary idiom for "being benefic", not a 17th numbered house -- every other literal house reference in this corpus cites an actual number, which this clause does not for "بيت سعد"). The source states no inverse ("وإلا") for THIS clause (unlike the immediately preceding alive/dead clause, which explicitly does), so a non-dakhil result returns positive:null, never a "not arriving" verdict. New intent missing.arrivalSign, distinct from missing.return (official return-or-not via H1/H4/H7/H10+H15), missing.returnTiming (same-day/within-the-hour meeting via H10/H11) and missing.aliveOrDead (alive/dead via H8+H14 fire/air) -- four independent p248-249 signs about a missing person, never merged or voted. Routed to a new question q-missing-arriving. Implemented via computeMissingArrivalSignH3H15P249 in kashf-canonical-executors.js.',
   }),
 
-  'missing.p249.locationDirectionUnresolved': method({
-    kashfMethodId: 'missing.p249.locationDirectionUnresolved',
+  'missing.p249.inCitySignAwtad': method({
+    kashfMethodId: 'missing.p249.inCitySignAwtad',
+    kashfIntentId: 'missing.currentlyInCity',
+    topicId: 'missingPerson',
+    sourcePages: [249],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: true,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
+    notes: 'Opened 2026-10-05, re-read directly against the raw p249-250 scan (PDF 251-252), prioritized per explicit instruction to review adjacent already-identified p249 rules. Exact quote: "نكتة: عن شخص هل هو في المدينة أم لا؟ خذ رؤوس الأشكال (العله: الأوتاد) الأربعة، فإن خلف داخلا، فهو فيها؛ وإن كان خارجا، فليس فيها." ("رؤوس الأشكال" = "heads of the figures" is glossed by the PRINTED BOOK ITSELF, in its own bracket, as "probably: the Awtad" -- not an inference made here.) Split out of the former combined entry missing.p249.locationDirectionUnresolved, which previously bundled this closed-form "in the city or not" clause together with a genuinely unresolved "which direction" continuation and later Nuzhat-attributed material -- see missing.p249.directionUnresolved for the remaining, still-blocked direction portion. This clause states BOTH an explicit positive (all four Awtad dakhil => in the city) AND an explicit stated inverse (all four kharij => "فليس فيها", not in the city) -- unlike most clauses in this corpus, so positive:false here is source-stated, not invented. Mirrors missing.p249.returnAnglesJudge\'s own all-four-Awtad reading convention (a strict ALL-four condition); any other mix, including the separate "mujassad-*" fixed/mutable axis, returns positive:null -- the source only ever addresses the uniform case. New intent missing.currentlyInCity, distinct from missing.departedCitySign (missing.p249.departedCityH7, a different H7-based sign of having LEFT the city) and missing.location (reserved for the still-blocked direction portion) -- never merged or voted. Routed to a new question q-missing-in-city. Implemented via computeMissingInCitySignAwtadP249 in kashf-canonical-executors.js.',
+  }),
+
+  'missing.p249.inCitySignH1H4': method({
+    kashfMethodId: 'missing.p249.inCitySignH1H4',
+    kashfIntentId: 'missing.currentlyInCity',
+    topicId: 'missingPerson',
+    sourcePages: [249, 250],
+    methodRole: 'supporting-condition',
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
+    notes: 'Opened 2026-10-05, same round and same scan as missing.p249.inCitySignAwtad: an explicit alternate method for the SAME question, introduced by the source\'s own "ومن غيره" ("and from another [method]"). Exact quote (printed p250, PDF 252): "ومن غيره: خذ من الرابع والأول شكلا، واحكم على ما يدل من دخول أو ضده: رجع." (take a figure from the fourth and the first, and judge by what it indicates of entering or its opposite: return[ed].) Combine H1+H4 (standard parity-sum combineRamlFigures); dakhil => in-city/returned sign, kharij => the source\'s own explicit stated opposite -- both source-stated, not invented. Registered as a supporting condition under the SAME missing.currentlyInCity intent as missing.p249.inCitySignAwtad, never merged or voted with it -- runtimeAllowed stays false so it is never silently selected as the operational primary, the same pattern already established for missing.p249.lifeStatusH8H14 alongside missing.p248-249.lifeH1H4H9Outcome. Implemented via computeMissingInCitySignH1H4P249 in kashf-canonical-executors.js.',
+  }),
+
+  'missing.p249.directionUnresolved': method({
+    kashfMethodId: 'missing.p249.directionUnresolved',
     kashfIntentId: 'missing.location',
     topicId: 'missingPerson',
     sourcePages: [249, 250],
@@ -1114,7 +1139,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     runtimeAllowed: false,
     executionKind: null,
     executorStatus: 'not-applicable',
-    notes: 'Body text distinguishes whether the absent person is in the city using the four angles and says to inspect direction, but the exact body-source directional operation is not sufficiently closed. Do not import the later Nuzhat fugitive-direction method.',
+    notes: 'RENAMED 2026-10-05 from missing.p249.locationDirectionUnresolved: the "in the city or not" portion of that former combined entry is now resolved and opened as missing.p249.inCitySignAwtad / missing.p249.inCitySignH1H4 -- see those entries. What remains genuinely blocked, narrowed to this id, is only the direction-determination continuation: "وانظره أيضا لأي الجهات هو: فقل: خرج إلى تلك الجهة" (and look also to which direction he is [in]: then say he went out toward that direction). The source gives no computational rule here for HOW to determine "which direction" -- no house, element, or figure-to-direction mapping is stated on this page for this specific clause. Do not import the later, explicitly attributed "ومن الزيادة المضافة من كتاب [نزهة العقول]" (addition from the book Nuzhat al-\'Uqul) fugitive-direction method that follows a few lines later on the same printed page (p250) -- confirmed, re-reading the raw scan this round, that it is marked attributed to a DIFFERENT book, the same category already excluded by travel.external.p246.directionNuzhat\'s own existing instruction. Do not guess an element-based or house-based direction rule to fill this gap.',
   }),
 
   'travel.external.p246.directionNuzhat': method({

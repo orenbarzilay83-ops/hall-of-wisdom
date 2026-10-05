@@ -136,4 +136,19 @@ function ok(cond, msg) { assertions++; assert(cond, msg); }
   ok(reading?.primaryFormula?.verdict?.positive === true, 'q-missing-return-timing: engine-level verdict.positive is true on the same-day branch');
 }
 
+// missing.p249.inCitySignAwtad (q-missing-in-city, added 2026-10-05):
+// all four Awtad (H1,H4,H7,H10) uniformly dakhil. Reachable in 256/65,536
+// boards (~0.39%) by exhaustive enumeration; the opposite, all-kharij,
+// branch is equally reachable at the same count (confirmed by the same
+// enumeration, not separately exercised here since the mechanism is
+// identical).
+{
+  const board = buildRamlBoardFromMothers(['2121', '1111', '2112', '2111']);
+  const reading = buildKashfReadingByQuestionId(board, 'q-missing-in-city', { question: 'test' });
+  const er = reading?.primaryFormula?.result?.executorResult;
+  ok(reading.valid === true, 'q-missing-in-city: real board produces a valid reading');
+  ok(er?.branch === 'in-city-sign', 'q-missing-in-city: in-city-sign branch fires on a real board (256/65536 boards reachable)');
+  ok(reading?.primaryFormula?.verdict?.positive === true, 'q-missing-in-city: engine-level verdict.positive is true on the in-city branch');
+}
+
 console.log(`Kashf rare-branch reachability: ${assertions} assertions passed`);

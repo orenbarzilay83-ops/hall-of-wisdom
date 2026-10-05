@@ -1008,6 +1008,16 @@ export const KASHF_V57_KNOWLEDGE = Object.freeze({
     notes: 'הכלל עוסק בשיבה כאשר היתדות והכרעת הסוף מעידות לכך; הוא אינו מחשב מועד חזרה.',
   }),
 
+  'missing.p249.inCitySignAwtad': knowledge({
+    kashfMethodId: 'missing.p249.inCitySignAwtad',
+    page: 249,
+    topic: 'הפרק התשיעי — מסע, נעדר, אבדה, חלום וחוב',
+    heading: 'האם האדם נמצא בעיר — ארבע היתדות',
+    hebrewRule: 'נקודה: על אדם — האם הוא בעיר או לא? קח את "ראשי הצורות" (בגוף הדפוס: ככל הנראה היתדות) הארבע: אם כולן פנימיות — הוא בעיר; אם כולן חיצוניות — אינו בעיר.',
+    detailPages: [250], arabicVerificationPages: [249, 250],
+    notes: 'פוצל 2026-10-05 מתוך missing.p249.locationDirectionUnresolved (שמה הישן) יחד עם missing.p249.inCitySignH1H4 (שיטה חלופית, "ومن غيره"); חלק ה"כיוון" שבאותו סעיף נותר חסום תחת missing.p249.directionUnresolved. אין ענף למקרה מעורב (לא כולן פנימיות ולא כולן חיצוניות).',
+  }),
+
   'missing.p249.returnTimingTariqH10H11': knowledge({
     kashfMethodId: 'missing.p249.returnTimingTariqH10H11',
     page: 249,

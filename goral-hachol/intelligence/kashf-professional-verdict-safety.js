@@ -1549,7 +1549,7 @@ function p249MissingCityPolicy() {
     decisiveRuleHebrew: 'מיטיב חיצוני בבית 7 מורה שיצא מן העיר; צורה קבועה מורה על שהייה במקום.',
     oneWayBranches: freezeArray(['H7 מיטיב טהור וחיצוני => סימן יציאה מן העיר', 'H7 קבוע => שהייה במקום בלתי מזוהה']),
     forbiddenInversions: freezeArray(['היעדר מיטיב חיצוני אינו אומר שהנעדר בעיר.', 'שהייה במקום אינה מזהה את העיר.']),
-    excludedFromPrimaryVerdict: freezeArray(['missing.p249.locationDirectionUnresolved', 'fugitive.external.p250.nuzhat']),
+    excludedFromPrimaryVerdict: freezeArray(['missing.p249.directionUnresolved', 'fugitive.external.p250.nuzhat']),
     forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray(['מיקום נוכחי מאומת', 'כיוון גיאוגרפי', 'כתובת הנעדר']),
   });
 }

@@ -282,7 +282,7 @@ console.log('No decision at all on every tested board (all confirmed reachable-b
 console.log('Of the above, methods that additionally require client input beyond the board (architectural, not a source gap):', missingInputCapable);
 
 // Sanity assertions.
-assert.equal(totalRunnable, 96, 'routed-to-ready count unchanged');
+assert.equal(totalRunnable, 97, 'routed-to-ready count unchanged');
 assert.ok(decisiveAtLeastOnce <= totalRunnable && decisiveOnAllBoards <= decisiveAtLeastOnce, 'counts are internally consistent');
 assert.equal(decisiveAtLeastOnce + descriptiveOnlyNeverDecisive + noDecisionOnEveryBoard, totalRunnable, 'every routed method falls into exactly one of: decisive at least once, descriptive-only, or no-decision-only');
 
@@ -300,8 +300,14 @@ const expectedNoDecisionOnly = new Set([
   // any of this file's 47 generic sample boards. Same category as the
   // other five: a confirmed-reachable rare condition, not a bug.
   'q-missing-return-timing',
+  // Added 2026-10-05 with the new q-missing-in-city route: its decisive
+  // branches require all four Awtad uniformly dakhil or uniformly kharij
+  // (each 256/65536 boards, ~0.39%) -- real, reachable, just not hit by
+  // any of this file's 47 generic sample boards. Same category as the
+  // other six.
+  'q-missing-in-city',
 ]);
 const actualNoDecisionOnly = new Set(perQuestion.filter((q) => q.decisiveCount === 0 && q.descriptiveOnlyCount === 0).map((q) => q.id));
-assert.deepEqual(actualNoDecisionOnly, expectedNoDecisionOnly, 'the no-decision-only set matches the six exhaustively-verified rare conditions exactly');
+assert.deepEqual(actualNoDecisionOnly, expectedNoDecisionOnly, 'the no-decision-only set matches the seven exhaustively-verified rare conditions exactly');
 
 console.log('Kashf verdict-rate audit: PASS');

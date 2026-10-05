@@ -593,6 +593,13 @@ window.QUESTION_BANK = [
     clientFields: [F.missingName, F.missingWhen, F.missingWhere],
   },
   {
+    id: 'q-missing-in-city',
+    category: 'travel', houseId: 9, topicId: 'missingPerson', kashfTopicId: 'missingPerson',
+    label: 'האם הנעדר נמצא כרגע בעיר?',
+    desc: 'כלל נפרד עמ׳ 249: ארבע היתדות (בתים 1, 4, 7, 10) — כולן פנימיות הוא סימן שהוא בעיר; כולן חיצוניות הוא סימן מפורש שאינו בעיר. במקרה מעורב אין הכרעה. אינו קובע כיוון.',
+    clientFields: [F.missingName, F.missingWhere],
+  },
+  {
     id: 'q-missing-return',
     category: 'travel', houseId: 9, topicId: 'missingPerson', kashfTopicId: 'missingPerson',
     label: 'האם הנעדר יחזור?',

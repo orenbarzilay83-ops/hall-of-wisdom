@@ -683,6 +683,15 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     note: 'Only the source-explicit outgoing-benefic H7 sign of leaving town, and fixed-H7 sign of remaining in place. The direction/current location computation remains unresolved.',
   }),
 
+  'q-missing-in-city': route({
+    questionId: 'q-missing-in-city',
+    disposition: 'KEEP',
+    kashfIntentId: 'missing.currentlyInCity',
+    kashfMethodId: 'missing.p249.inCitySignAwtad',
+    kashfRuntimeStatus: 'ready',
+    note: 'Added 2026-10-05: wires the newly-opened missing.p249.inCitySignAwtad (all four Awtad dakhil/kharij -> in-city/not-in-city, both source-stated) to a new, separately-scoped question. Split out of the former missing.p249.locationDirectionUnresolved (see that method\'s renamed successor, missing.p249.directionUnresolved, for the still-blocked direction portion). Kept separate from q-missing-location (a different H7-based sign of having LEFT the city, not of CURRENTLY being in it) -- never merged or voted. The H1+H4 alternate method (missing.p249.inCitySignH1H4) stays an unrouted supporting condition, same pattern as missing.p249.lifeStatusH8H14.',
+  }),
+
   'q-missing-return': route({
     questionId: 'q-missing-return',
     disposition: 'RENAME',

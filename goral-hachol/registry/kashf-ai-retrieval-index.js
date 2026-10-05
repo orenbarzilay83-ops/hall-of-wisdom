@@ -71,7 +71,7 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
   },
   'missing.p249.departedCityH7': {
     aliases: ['האם הנעדר יצא מהעיר', 'סימן שעזב את העיר', 'צורה חיצונית מיטיבה בבית השביעי של הנעדר'],
-    doNotMixWith: ['missing.p249.locationDirectionUnresolved', 'fugitive.external.p250.nuzhat'],
+    doNotMixWith: ['missing.p249.directionUnresolved', 'fugitive.external.p250.nuzhat'],
     houses: [7],
   },
   'messenger.p176.recast14511': {
@@ -171,7 +171,7 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
   },
   'missing.p248-249.lifeH1H4H9Outcome': {
     aliases: ['הנעדר חי או מת', 'האם הנעדר חי', 'מצב חייו של הנעדר', 'האם הנעדר בחיים'],
-    doNotMixWith: ['missing.p249.returnAnglesJudge', 'missing.p249.locationDirectionUnresolved', 'travel.p244.returnH1H2H9'],
+    doNotMixWith: ['missing.p249.returnAnglesJudge', 'missing.p249.directionUnresolved', 'travel.p244.returnH1H2H9'],
     houses: [1,4,6,7,8,9,15],
   },
   'child.p194.existenceH1H5Nature': {
@@ -231,7 +231,7 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
   },
   'missing.p249.returnAnglesJudge': {
     aliases: ['האם הנעדר יחזור', 'האם הנעדר ישוב', 'חזרת הנעדר', 'האם הבורח יחזור'],
-    doNotMixWith: ['travel.p244.returnH1H2H9', 'missing.p248-249.lifeH1H4H9Outcome', 'missing.p249.locationDirectionUnresolved'],
+    doNotMixWith: ['travel.p244.returnH1H2H9', 'missing.p248-249.lifeH1H4H9Outcome', 'missing.p249.directionUnresolved'],
     houses: [1, 4, 7, 10, 15],
   },
   'pregnancy.p191.childSafetyH1H6H8': {

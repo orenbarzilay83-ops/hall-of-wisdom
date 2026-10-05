@@ -2858,6 +2858,132 @@ function computeMissingReturnP249(chart) {
   };
 }
 
+// Printed p249-250 (PDF 251-252), a different "نكتة" from the IF-return
+// rule above: "نكتة: عن شخص هل هو في المدينة أم لا؟ خذ رؤوس الأشكال
+// (العله: الأوتاد) الأربعة، فإن خلف داخلا، فهو فيها؛ وإن كان خارجا، فليس
+// فيها؛ وانظره أيضا لأي الجهات هو، [فقل: خرج إلى تلك الجهة]." (Note: about
+// a person -- is he in the city or not? Take the four heads of the
+// figures [the printed book's own bracketed gloss: "probably: the
+// Awtad"]; if they settle/are dakhil, he IS in it [the city]; if kharij,
+// he is NOT in it. Also look to determine which direction he is in: then
+// say he went out toward that direction.)
+//
+// OPENED 2026-10-05 (re-read directly against the raw p249-250 scan,
+// prioritized per explicit instruction to review adjacent already-
+// identified p249 rules): this clause was previously bundled together
+// with an unrelated, genuinely-blocked "which direction" continuation and
+// the later "ومن الزيادة المضافة من كتاب [نزهة العقول]" (attributed
+// addition from the book Nuzhat al-'Uqul) material under one blocked id,
+// missing.p249.locationDirectionUnresolved. Splitting it: the "in the
+// city or not" portion via the four Awtad is body text, unattributed, and
+// closed-form on its own -- the printed "رؤوس الأشكال" gloss (itself part
+// of the printed page, not invented here) resolves to the Awtad (H1,H4,
+// H7,H10), and the source states BOTH an explicit positive (all dakhil =>
+// in the city) AND an explicit stated inverse (all kharij => not in the
+// city, "وإن كان خارجا، فليس فيها"), unlike most clauses in this corpus.
+// Mirrors the already-ready missing.p249.returnAnglesJudge's own
+// all-four-Awtad reading convention (a strict ALL-four condition, not an
+// OR-across-list or majority rule). The remaining "which direction"
+// portion stays blocked under the renamed, narrowed
+// missing.p249.directionUnresolved -- see that entry -- since no
+// computational direction-determination rule is given on this page (the
+// only direction method in this book this session has found, p246, is
+// explicitly marked attributed-to-another-book and must not be imported
+// here per that method's own existing instruction).
+//
+// Computation: all four Awtad dakhil => in-city sign (positive:true); all
+// four kharij => the source's own explicit inverse, not-in-city
+// (positive:false); any other mix (including fixed/mutable "mujassad-*"
+// patterns, a separate axis per this corpus's own p63 classification) =>
+// unresolved (positive:null) -- the source only ever speaks of all four
+// uniformly, never a mixed case.
+function computeMissingInCitySignAwtadP249(chart) {
+  if (!Array.isArray(chart)) return null;
+  const angleHouses = [1, 4, 7, 10];
+  const angleResults = angleHouses.map((houseNumber) => {
+    const entry = findCanonicalHouse(chart, houseNumber);
+    const pattern = entry?.key || entry?.pattern || null;
+    if (!pattern) return null;
+    const classification = classifyCanonicalFigure(pattern);
+    return { houseNumber, pattern, figureHebrew: classification.figureHebrew, dakhalKharij: classification.dakhalKharij };
+  });
+  if (angleResults.some((item) => !item)) return null;
+
+  const allDakhil = angleResults.every((item) => item.dakhalKharij === 'dakhil');
+  const allKharij = angleResults.every((item) => item.dakhalKharij === 'kharij');
+  const branch = allDakhil ? 'in-city-sign' : allKharij ? 'not-in-city-sign' : 'unresolved';
+
+  const outputHebrew = branch === 'in-city-sign'
+    ? 'כל ארבע היתדות (בתים 1, 4, 7, 10) פנימיות (داخل). לפי כשף עמ׳ 249: סימן שהאדם נמצא בעיר.'
+    : branch === 'not-in-city-sign'
+      ? 'כל ארבע היתדות (בתים 1, 4, 7, 10) חיצוניות (خارج). לפי כשף עמ׳ 249: סימן מפורש שהאדם אינו בעיר.'
+      : 'היתדות אינן כולן פנימיות ואינן כולן חיצוניות (ייתכן שחלקן צורות קבועות/מתהפכות). המקור מדבר רק על המקרה האחיד; אין כאן הכרעה.';
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 249 (PDF 251)',
+    sourceText: 'نكتة: عن شخص هل هو في المدينة أم لا؟ خذ رؤوس الأشكال (العله: الأوتاد) الأربعة، فإن خلف داخلا، فهو فيها؛ وإن كان خارجا، فليس فيها.',
+    housesUsed: angleHouses,
+    angleResults,
+    allDakhil,
+    allKharij,
+    branch,
+    positive: branch === 'in-city-sign' ? true : branch === 'not-in-city-sign' ? false : null,
+    verdictType: 'missing-in-city-sign-awtad',
+    outputHebrew,
+  };
+}
+
+// Same نكتة as computeMissingInCitySignAwtadP249, an explicit alternate
+// method for the SAME question ("ومن غيره" -- "and from another [method]"):
+// "ومن غيره: خذ من الرابع والأول شكلا، واحكم على ما يدل من دخول أو ضده:
+// رجع." (and from another [method]: take a figure from the fourth and the
+// first, and judge by what it indicates of entering or its opposite:
+// return[ed].) Combine H1+H4 (standard parity-sum combineRamlFigures);
+// dakhil => in-city/returned sign, kharij => the source's own explicit
+// stated opposite. Registered as a supporting condition under the SAME
+// missing.currentlyInCity intent as the Awtad method above, never merged
+// or voted with it -- runtimeAllowed stays false so it is never silently
+// selected as the operational primary, the same pattern already
+// established for missing.p249.lifeStatusH8H14 alongside missing.p248-249.lifeH1H4H9Outcome.
+function computeMissingInCitySignH1H4P249(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h1 = findCanonicalHouse(chart, 1);
+  const h4 = findCanonicalHouse(chart, 4);
+  const h1Pattern = h1?.key || h1?.pattern || null;
+  const h4Pattern = h4?.key || h4?.pattern || null;
+  if (!h1Pattern || !h4Pattern) return null;
+
+  const combined = combineRamlFigures(h1Pattern, h4Pattern);
+  const resultPattern = combined.resultPattern;
+  const classification = classifyCanonicalFigure(resultPattern);
+  const resultFigureHebrew = classification.figureHebrew || combined.result?.hebrewName || resultPattern;
+
+  const inCitySign = classification.dakhalKharij === 'dakhil';
+  const notInCitySign = classification.dakhalKharij === 'kharij';
+
+  const outputHebrew = inCitySign
+    ? `חיבור בית 1 (${h1Pattern}) ובית 4 (${h4Pattern}): ${resultFigureHebrew} (${resultPattern}) — צורה פנימית. לפי כשף עמ׳ 249-250 (שיטה חלופית): סימן שהאדם נמצא בעיר / חזר.`
+    : notInCitySign
+      ? `חיבור בית 1 (${h1Pattern}) ובית 4 (${h4Pattern}): ${resultFigureHebrew} (${resultPattern}) — צורה חיצונית. לפי כשף עמ׳ 249-250 (שיטה חלופית): סימן מפורש שההפך — האדם אינו בעיר.`
+      : `חיבור בית 1 (${h1Pattern}) ובית 4 (${h4Pattern}): ${resultFigureHebrew} (${resultPattern}) — אינה צורה פנימית או חיצונית מובהקת. אין כאן הכרעה.`;
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 249-250 (PDF 251-252)',
+    sourceText: 'ومن غيره: خذ من الرابع والأول شكلا، واحكم على ما يدل من دخول أو ضده: رجع.',
+    housesUsed: [1, 4],
+    h1Pattern,
+    h4Pattern,
+    resultPattern,
+    resultFigureHebrew,
+    dakhalKharij: classification.dakhalKharij,
+    inCitySign,
+    notInCitySign,
+    positive: inCitySign ? true : notInCitySign ? false : null,
+    verdictType: 'missing-in-city-sign-h1h4',
+    outputHebrew,
+  };
+}
+
 // Printed p249 (PDF 251), separate "نكتة" from the IF-return rule above (that
 // one is missing.p249.returnAnglesJudge and is explicitly kept isolated from
 // this one). Exact quote: "نكتة: للغائب الذي ترجوا قدومه: فإن خرج في العاشر
@@ -4125,6 +4251,8 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'siblings.p182.seniority': computeSiblingSeniorityP182,
   'marriage.p211.dissolutionH7StateMatrix': computeMarriageDissolutionP211,
   'missing.p249.returnAnglesJudge': computeMissingReturnP249,
+  'missing.p249.inCitySignAwtad': computeMissingInCitySignAwtadP249,
+  'missing.p249.inCitySignH1H4': computeMissingInCitySignH1H4P249,
   'missing.p249.returnTimingTariqH10H11': computeMissingReturnTimingP249,
   'missing.p249.lifeStatusH8H14': computeMissingLifeStatusH8H14P249,
   'missing.p249.arrivalSignH3H15': computeMissingArrivalSignH3H15P249,
