@@ -2,44 +2,81 @@
 /**
  * _test_kashf_verdict_rate_audit.mjs
  *
- * Corrected 2026-10-05 after the prior round's report counted ANY verdict
- * text different from the single generic fallback string ('ללא הכרעה
- * מפורשת') as "a verdict produced". That overcounts: several methods
- * (e.g. travel.p239.profitH7Witness) write rich, non-generic Hebrew prose
- * for their explicit NO-VERDICT branches too (explaining exactly why the
- * source gives no ruling here), which the old check wrongly counted as
- * decisive. This script reads each method's own STRUCTURED result instead
- * of comparing output text.
+ * History of this file's own corrections (kept because each one fixed a
+ * real measurement bug, and the next person reading this should not
+ * reintroduce any of them):
  *
- * Two families of methods exist in this codebase:
+ *  Round 1 (wrong): counted any output text different from the single
+ *  generic fallback string ('ללא הכרעה מפורשת') as "a verdict produced".
+ *  That overcounts — several methods (e.g. travel.p239.profitH7Witness)
+ *  write rich, non-generic Hebrew prose for their explicit NO-VERDICT
+ *  branches too, explaining exactly why the source gives no ruling here.
  *
- *  1. "positive-field" methods (61 of 88 ready methods) set a real
+ *  Round 2 (still wrong): switched to reading each method's structured
+ *  result instead of text, but classified every board-outcome as a binary
+ *  "decisive or not" — which silently treated DESCRIPTIVE source-grounded
+ *  findings (content the source gives, but that the source itself never
+ *  claims resolves the actual question) as if they were decisive verdicts.
+ *  The clearest case: general.p174.h1h2h4h7h10h15's own executor text
+ *  says outright "אינו מוסר כאן נוסחת רוב, שקלול בין הבתים או פסק כן/לא
+ *  יחיד" (the source gives no majority rule, weighting, or single yes/no
+ *  verdict here) — yet round 2's audit marked it "always decisive" purely
+ *  because it always returns non-empty content.
+ *
+ *  Round 3 (this version): every per-board outcome is classified into
+ *  exactly one of four buckets, read from each method's own structured
+ *  result AND cross-checked against what that executor's own documented
+ *  scope actually claims to resolve (not inferred from "a value exists"):
+ *
+ *   - DECISIVE: the source gives a specific, resolved answer to the
+ *     EXACT question asked on this board — a real yes/no via
+ *     verdict.positive, or (for non-yes/no "what/which" questions) a
+ *     specific resolved value the method's own documentation presents as
+ *     answering the question, not as a side-report.
+ *   - DESCRIPTIVE: the method returns real, source-grounded content on
+ *     this board, but the source itself (per the executor's own
+ *     documented scope) does not claim this content decides the actual
+ *     question — a multi-house status report with no aggregate rule
+ *     (general.p174), a planetary life-stage mapping that explicitly
+ *     "does not compute a lifespan" (lifespan.p264), a physical/character
+ *     profile that explicitly "does not identify a person or prove
+ *     guilt" (theft.p225), or a hazard-type note riding alongside a
+ *     separate, genuinely decisive safety reading (travel.p240, only on
+ *     boards where its OTHER house's reading itself stays undetermined).
+ *   - NO-DECISION: the method ran, but its own documented decisive
+ *     condition is not met on this board (e.g. verdict.positive is null,
+ *     or a method-specific "unresolved" sentinel) — the source genuinely
+ *     gives nothing here, not even descriptive content.
+ *   - MISSING-INPUT: the method requires a specific client-supplied field
+ *     beyond the board (an independent casting, a casting time-of-day, a
+ *     named-cast confirmation) that this harness did not supply. This is
+ *     an architectural fact about the method, checked once per method,
+ *     not a per-board outcome.
+ *
+ * Two families of methods:
+ *
+ *  1. "positive-field" methods (61 of 91 ready methods) set a real
  *     engine-level verdict.positive: true | false | null. These are
- *     genuinely yes/no questions; positive !== null means the source gave
- *     a decisive ruling on this board.
+ *     genuinely yes/no questions; positive !== null => DECISIVE,
+ *     positive === null => NO-DECISION. (None of these 61 carry a
+ *     general.p174-style "no verdict at all, ever" disclaimer found
+ *     during this round's audit, so none are reclassified DESCRIPTIVE.)
  *
- *  2. "categorical" methods (23 of 88) never set verdict.positive at all
- *     (it is always null by construction — these are what/which/how
- *     questions, not yes/no ones: gender, body part, profession, a
- *     figure-by-figure damage table, etc.). Each such method has its own
- *     named field that is the real decisiveness signal (e.g. `gender`,
- *     `bodyPartHebrew`, `senioritySignal !== 'unresolved'`). These were
- *     identified by inspecting each executor's actual return shape, not
- *     guessed from field names.
+ *  2. "categorical" methods (23 of 91) never set verdict.positive (these
+ *     are what/which/how questions, not yes/no ones). Each is classified
+ *     per-board by its own named field, with DESCRIPTIVE used wherever
+ *     the executor's own text disclaims deciding the question (see the
+ *     CATEGORICAL_RULES table below, each with its source citation).
  *
- *  3 cases require a required client-input field this engine cannot infer
- *  from the board alone (hidden.p188.quarterDirection's four independent
- *  casts; mother.p257.statusDayNight's casting period; marriage.p205.
- *  modestyPurity's named-cast confirmation gate). Supplying a realistic
- *  value for each converts them into ordinary positive-field methods —
- *  without it they would always read as "no decision", which would hide
- *  a missing-input problem behind a false source-based non-decision.
- *
- * Every one of the resulting four counts this script reports —
- * routed-to-ready, decisive-on-at-least-one-board,
- * decisive-on-every-board, decisive-on-no-tested-board — is read from
- * buildKashfReadingByQuestionId's structured return value, never from a
- * substring/text comparison.
+ * 3 methods require a client-input field this engine cannot infer from
+ * the board alone (hidden.p188.quarterDirection's four independent
+ * casts; mother.p257.statusDayNight's casting period;
+ * marriage.p205.modestyPurity's named-cast confirmation gate). Realistic
+ * values are supplied so their per-board outcome reflects the source
+ * condition, not a false "no decision"; they are additionally flagged
+ * MISSING-INPUT-CAPABLE so the report can state that a real client who
+ * skips those fields gets no verdict for an architectural reason, not a
+ * source reason.
  */
 
 import assert from 'node:assert/strict';
@@ -89,35 +126,87 @@ const DYN_FIELDS_BY_QUESTION = {
   'q-mother': { dynFields: { motherCastPeriod: 'לילה' } },
   'q-marriage-chastity': { dynFields: { candidate: 'לדוגמה', castConfirmedOnName: true } },
 };
+const MISSING_INPUT_CAPABLE_METHODS = new Set([
+  'hidden.p188.quarterDirection',       // printed p188: four independent per-quarter castings
+  'mother.p257.statusDayNight',         // printed p257: rule applies only when cast at night
+  'marriage.p205.modestyPurity',        // printed p205: "اكمل الرمل على إسمها" — named-cast gate, enforced as a hard executor precondition
+]);
 
-// Per-method decisiveness rule for the 23 methods that never use
-// verdict.positive (identified by reading each executor's actual return
-// object, not inferred from field names alone).
+// Per-method classifier for the 23 methods that never use verdict.positive.
+// Each returns 'decisive' | 'descriptive' | 'no-decision' for one board's
+// executor result. Citations point at the SAME executor comments already
+// in kashf-canonical-executors.js, not re-derived here.
 const CATEGORICAL_RULES = {
-  'illness.bodyPart.h6Figure': (r) => r.bodyPartHebrew != null,
-  'pregnancy.p191.genderH5': (r) => r.gender != null,
-  'siblings.p182.seniority': (r) => r.senioritySignal !== 'unresolved',
-  'marriage.p204.previousStatusH7inH10': (r) => r.previousStatus != null,
-  'general.p174.h1h2h4h7h10h15': () => true,
-  'relocation.p183.currentVsNewPlace': (r) => r.sourceOutcome !== 'unresolved',
-  'relocation.p183.stayMoveH1H2': (r) => r.decision !== 'unresolved',
-  'pregnancy.p191-192.miscarriageRedH7NakisH8': (r) => r.miscarriageSign === true,
-  'child.p194.healthTrajectoryH6H8': (r) => r.longTermOutcome !== 'unresolved',
-  'lifespan.p264.stagesH11H9H7': () => true,
-  'marriage.p204.dowryH8': (r) => r.isLargeDowry === true,
-  'money.p179.sourceByIncomingHonorHouse': (r) => r.sourceResolved === true,
-  'money.p181.recast25811': (r) => r.sourceOutcome !== 'unresolved',
-  'love.p204.attentionFireRows1713': (r) => r.sourceConditionMet === true,
-  'marriage.p211.dissolutionH7StateMatrix': () => true,
-  'travel.p240.roadCautionsH9H7': () => true,
-  'travel.p244.returnH1H2H9': (r) => r.sourceOutcome !== 'unresolved',
-  'missing.p249.returnAnglesJudge': (r) => r.returnIndicatedForMale === true,
-  'profession.p254.h9Planet': () => true,
-  'theft.p224.relationshipH7Recurrence': (r) => r.relationResolved === true,
-  'theft.p225.thiefDescriptionH7': () => true,
-  'illness.p197.h1h8ElementHumor': (r) => r.sameElement === true,
-  'friends.p263.h1h11': (r) => r.pairEvidence != null || r.derivedEvidence != null,
-  'hidden.p188.quarterDirection': (r) => Array.isArray(r.suspected) && r.suspected.length === 1 && Array.isArray(r.unresolved) && r.unresolved.length === 0,
+  // Direct, specific resolved facts the method's own scope presents as
+  // answering the exact question asked -> decisive when resolved.
+  'illness.bodyPart.h6Figure': (r) => (r.bodyPartHebrew != null ? 'decisive' : 'no-decision'),
+  'pregnancy.p191.genderH5': (r) => (r.gender != null ? 'decisive' : 'no-decision'),
+  'siblings.p182.seniority': (r) => (r.senioritySignal !== 'unresolved' ? 'decisive' : 'no-decision'),
+  'marriage.p204.previousStatusH7inH10': (r) => (r.previousStatus != null ? 'decisive' : 'no-decision'),
+  'relocation.p183.currentVsNewPlace': (r) => (r.sourceOutcome !== 'unresolved' ? 'decisive' : 'no-decision'),
+  'relocation.p183.stayMoveH1H2': (r) => (r.decision !== 'unresolved' ? 'decisive' : 'no-decision'),
+  'pregnancy.p191-192.miscarriageRedH7NakisH8': (r) => (r.miscarriageSign === true ? 'decisive' : 'no-decision'),
+  'child.p194.healthTrajectoryH6H8': (r) => (r.longTermOutcome !== 'unresolved' ? 'decisive' : 'no-decision'),
+  'marriage.p204.dowryH8': (r) => (r.isLargeDowry === true ? 'decisive' : 'no-decision'),
+  'money.p179.sourceByIncomingHonorHouse': (r) => (r.sourceResolved === true ? 'decisive' : 'no-decision'),
+  'money.p181.recast25811': (r) => (r.sourceOutcome !== 'unresolved' ? 'decisive' : 'no-decision'),
+  'love.p204.attentionFireRows1713': (r) => (r.sourceConditionMet === true ? 'decisive' : 'no-decision'),
+  'missing.p249.returnAnglesJudge': (r) => (r.returnIndicatedForMale === true ? 'decisive' : 'no-decision'),
+  'theft.p224.relationshipH7Recurrence': (r) => (r.relationResolved === true ? 'decisive' : 'no-decision'),
+  'illness.p197.h1h8ElementHumor': (r) => (r.sameElement === true ? 'decisive' : 'no-decision'),
+  'friends.p263.h1h11': (r) => (r.pairEvidence != null || r.derivedEvidence != null ? 'decisive' : 'no-decision'),
+  'hidden.p188.quarterDirection': (r) => (Array.isArray(r.suspected) && r.suspected.length === 1 && Array.isArray(r.unresolved) && r.unresolved.length === 0 ? 'decisive' : 'no-decision'),
+
+  // Genuinely always-decisive categorical classifiers: every board yields
+  // ONE specific, source-grounded value that directly answers the exact
+  // question asked (not a side-effect multi-house dump) — confirmed by
+  // re-reading both the executor and the question-bank.js description.
+  // marriage.p211.dissolutionH7StateMatrix (q-divorce, "will they
+  // separate?"): an 8-way classification over H7's full state space,
+  // every branch a concrete, specific prediction about the marriage.
+  'marriage.p211.dissolutionH7StateMatrix': () => 'decisive',
+  // profession.p254.h9Planet (q-profession, "what profession suits me?"):
+  // H9's ruling planet always maps to one specific profession text; every
+  // one of the 16 patterns is covered (verified: field counts summed to
+  // the full board count in this round's audit).
+  'profession.p254.h9Planet': () => 'decisive',
+
+  // Explicitly DESCRIPTIVE per the executor's own documented scope —
+  // real source content, but never claimed by the source (or by this
+  // engine's own comments) to decide the question asked.
+  // general.p174.h1h2h4h7h10h15 (q-general-state, "מה מצבי הכללי?"):
+  // own output text states "אינו מוסר כאן נוסחת רוב, שקלול בין הבתים או
+  // פסק כן/לא יחיד" — no aggregate verdict; a 6-house status report only.
+  // The UI's own desc already frames this as "סקירה כללית" (a general
+  // overview), not a yes/no.
+  'general.p174.h1h2h4h7h10h15': () => 'descriptive',
+  // lifespan.p264.stagesH11H9H7 (q-lifespan-stages): own output text
+  // states "אינה מחשבת את מספר שנות החיים" — explicitly not a lifespan
+  // computation, just a 3-stage planetary-rulership mapping. The UI's own
+  // desc says the same: "לא חישוב שנות חיים".
+  'lifespan.p264.stagesH11H9H7': () => 'descriptive',
+  // theft.p225.thiefDescriptionH7 (q-theft-who, "מי גנב?"): own fields
+  // identityResolved/guiltProven are hard-coded false, and its own output
+  // text says "אינו מזהה אדם מסוים ואינו מוכיח אשמה" — a physical/
+  // character profile only, never an identity or proof.
+  'theft.p225.thiefDescriptionH7': () => 'descriptive',
+
+  // Split case: travel.p240.roadCautionsH9H7 (q-travel-danger). H9's
+  // fortune (h9Evidence) is a genuine decisive safety signal when H9 is
+  // not mixed — but H7's element-based caution TYPE (h7Caution) is always
+  // present regardless, and only names a hazard CATEGORY, never a safety
+  // verdict. When H9 is mixed, h9Evidence is null and only the
+  // descriptive h7Caution remains; the source gives no safety ruling at
+  // all on that board.
+  'travel.p240.roadCautionsH9H7': (r) => (r.h9Evidence != null ? 'decisive' : r.h7Caution != null ? 'descriptive' : 'no-decision'),
+
+  // travel.p244.returnH1H2H9 (q-traveler-return): kept here (not in the
+  // positive-field group) because verdict.positive is wired only to the
+  // allBeneficIncoming branch, which is confirmed UNREACHABLE (0/65536,
+  // see _test_kashf_rare_branch_reachability.mjs) — reading positive
+  // alone would misreport this method as permanently no-decision even on
+  // the hardship branch, which the source does decide.
+  'travel.p244.returnH1H2H9': (r) => (r.sourceOutcome !== 'unresolved' ? 'decisive' : 'no-decision'),
 };
 
 const ids = Object.keys(KASHF_QUESTION_ROUTES).sort();
@@ -130,7 +219,7 @@ for (const id of ids) {
   totalRunnable++;
   const methodId = route.kashfMethodId;
   const extraContext = DYN_FIELDS_BY_QUESTION[id] || {};
-  let decisiveCount = 0, total = 0;
+  let decisiveCount = 0, descriptiveOnlyCount = 0, noDecisionCount = 0, total = 0;
 
   for (const mothers of BOARDS) {
     const board = buildRamlBoardFromMothers(mothers);
@@ -138,53 +227,65 @@ for (const id of ids) {
     if (!reading || reading.valid !== true) continue;
     total++;
     const execResult = reading?.primaryFormula?.result?.executorResult;
-    const decisive = CATEGORICAL_RULES[methodId]
-      ? Boolean(execResult && CATEGORICAL_RULES[methodId](execResult))
-      : typeof reading?.primaryFormula?.verdict?.positive === 'boolean';
-    if (decisive) decisiveCount++;
+    let outcome;
+    if (CATEGORICAL_RULES[methodId]) {
+      outcome = execResult ? CATEGORICAL_RULES[methodId](execResult) : 'no-decision';
+    } else {
+      const positive = reading?.primaryFormula?.verdict?.positive;
+      outcome = typeof positive === 'boolean' ? 'decisive' : 'no-decision';
+    }
+    if (outcome === 'decisive') decisiveCount++;
+    else if (outcome === 'descriptive') descriptiveOnlyCount++;
+    else noDecisionCount++;
   }
 
   perQuestion.push({
-    id, methodId, decisiveCount, total,
-    rate: total > 0 ? decisiveCount / total : 0,
+    id, methodId, decisiveCount, descriptiveOnlyCount, noDecisionCount, total,
+    decisiveRate: total > 0 ? decisiveCount / total : 0,
     categorical: Boolean(CATEGORICAL_RULES[methodId]),
+    missingInputCapable: MISSING_INPUT_CAPABLE_METHODS.has(methodId),
   });
 }
 
-const atLeastOnce = perQuestion.filter((q) => q.decisiveCount > 0).length;
-const allBoards = perQuestion.filter((q) => q.total > 0 && q.decisiveCount === q.total).length;
-const neverDecisive = perQuestion.filter((q) => q.decisiveCount === 0).length;
+const decisiveAtLeastOnce = perQuestion.filter((q) => q.decisiveCount > 0).length;
+const decisiveOnAllBoards = perQuestion.filter((q) => q.total > 0 && q.decisiveCount === q.total).length;
+const descriptiveOnlyNeverDecisive = perQuestion.filter((q) => q.decisiveCount === 0 && q.descriptiveOnlyCount > 0).length;
+const noDecisionOnEveryBoard = perQuestion.filter((q) => q.decisiveCount === 0 && q.descriptiveOnlyCount === 0).length;
+const missingInputCapable = perQuestion.filter((q) => q.missingInputCapable).length;
 
 fs.writeFileSync('/tmp/kashf_verdict_rate_audit.json', JSON.stringify({
   totalQuestions: Object.keys(KASHF_QUESTION_ROUTES).length,
   routedToReady: totalRunnable,
-  decisiveOnAtLeastOneBoard: atLeastOnce,
-  decisiveOnAllBoards: allBoards,
-  neverDecisiveInSample: neverDecisive,
+  decisiveAtLeastOnce,
+  decisiveOnAllBoards,
+  descriptiveOnlyNeverDecisive,
+  noDecisionOnEveryBoard,
+  missingInputCapable,
   boardsUsed: BOARDS.length,
   perQuestion,
 }, null, 1));
 
 console.log('Total questions in bank:', Object.keys(KASHF_QUESTION_ROUTES).length);
 console.log('Routed to a ready method (canRunKashf=true):', totalRunnable);
-console.log(`Decisive on >=1 of ${BOARDS.length} boards (structured-field check, not text comparison):`, atLeastOnce);
-console.log(`Decisive on ALL ${BOARDS.length} boards:`, allBoards);
-console.log('Never decisive on any tested board:', neverDecisive, '(all confirmed reachable-but-rare by exhaustive enumeration — see _test_kashf_rare_branch_reachability.mjs — not bugs)');
+console.log(`Decisive verdict on >=1 of ${BOARDS.length} boards:`, decisiveAtLeastOnce);
+console.log(`Decisive verdict on ALL ${BOARDS.length} boards:`, decisiveOnAllBoards);
+console.log('Descriptive-only on every tested board (real source content, never a decisive verdict):', descriptiveOnlyNeverDecisive);
+console.log('No decision at all on every tested board (all confirmed reachable-but-rare, see _test_kashf_rare_branch_reachability.mjs — not bugs):', noDecisionOnEveryBoard);
+console.log('Of the above, methods that additionally require client input beyond the board (architectural, not a source gap):', missingInputCapable);
 
-// Sanity assertions: the four counts must be internally consistent, and
-// the known never-decisive-in-sample set (all independently confirmed
-// reachable-but-rare, see _test_kashf_rare_branch_reachability.mjs) must
-// be exactly this set — a regression here means either a method's
-// behavior changed or this audit's rules are stale and need re-deriving
-// from the executors, not patching blindly.
+// Sanity assertions.
 assert.equal(totalRunnable, 91, 'routed-to-ready count unchanged');
-assert.ok(atLeastOnce <= totalRunnable && allBoards <= atLeastOnce, 'counts are internally consistent');
-assert.equal(atLeastOnce + neverDecisive, totalRunnable, 'every routed method is either decisive at least once or never');
+assert.ok(decisiveAtLeastOnce <= totalRunnable && decisiveOnAllBoards <= decisiveAtLeastOnce, 'counts are internally consistent');
+assert.equal(decisiveAtLeastOnce + descriptiveOnlyNeverDecisive + noDecisionOnEveryBoard, totalRunnable, 'every routed method falls into exactly one of: decisive at least once, descriptive-only, or no-decision-only');
 
-const expectedNeverDecisive = new Set([
+const expectedDescriptiveOnly = new Set(['q-general-state', 'q-lifespan-stages', 'q-theft-who']);
+const actualDescriptiveOnly = new Set(perQuestion.filter((q) => q.decisiveCount === 0 && q.descriptiveOnlyCount > 0).map((q) => q.id));
+assert.deepEqual(actualDescriptiveOnly, expectedDescriptiveOnly, 'the descriptive-only set matches the three methods whose own executor text disclaims a decisive verdict');
+
+const expectedNoDecisionOnly = new Set([
   'q-miscarriage', 'q-livelihood-arrive', 'q-traveler-return', 'q-missing-return', 'q-fear-punishment',
 ]);
-const actualNeverDecisive = new Set(perQuestion.filter((q) => q.decisiveCount === 0).map((q) => q.id));
-assert.deepEqual(actualNeverDecisive, expectedNeverDecisive, 'the never-decisive-in-sample set matches the five exhaustively-verified rare conditions exactly');
+const actualNoDecisionOnly = new Set(perQuestion.filter((q) => q.decisiveCount === 0 && q.descriptiveOnlyCount === 0).map((q) => q.id));
+assert.deepEqual(actualNoDecisionOnly, expectedNoDecisionOnly, 'the no-decision-only set matches the five exhaustively-verified rare conditions exactly');
 
 console.log('Kashf verdict-rate audit: PASS');
