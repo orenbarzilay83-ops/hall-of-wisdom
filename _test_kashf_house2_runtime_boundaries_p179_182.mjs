@@ -114,7 +114,10 @@ assert.equal(blockedOtherBook.valid, false);
 assert.equal(blockedOtherBook.reason, 'attributed-reference-only');
 
 // Broad old-debt UI remains distinct and is not silently generalized to p179.
-assert.equal(resolveKashfRouteByQuestionId('q-debts').kashfMethodId, 'debt.outcome.unsupported');
+// Updated 2026-10-05: q-debts was later RENAMEd to the general p173 completion
+// method (a concrete-collection-effort reading), same pattern as q-message and
+// q-sell-property; it still does not execute p179 debt-walking specifically.
+assert.equal(resolveKashfRouteByQuestionId('q-debts').kashfMethodId, 'completion.p173.fireRows15910');
 
 // AI retrieval exposes the exact blocked/source boundaries without authorizing them.
 for (const methodId of [

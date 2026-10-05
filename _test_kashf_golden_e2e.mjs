@@ -140,14 +140,29 @@ globalThis.fetch = async (_url, options = {}) => {
 try {
   console.log('\n--- Golden/E2E Tier A: complete canonical runtime matrix ---');
 
+  // hidden.p188.quarterDirection is intentionally excluded from this generic
+  // mothers-only loop: per its own registry note, it requires a dedicated
+  // four-independent-cast input flow (clientContext.dynFields.quarterNPattern)
+  // that cannot be inferred from an ordinary board, and buildKashfAiContextPackage
+  // (used by this harness) has no dynFields passthrough. This is a scope limit
+  // of this generic golden harness, not a runtime block — q-dig-direction's own
+  // dedicated test coverage lives in its gating/golden-board tests elsewhere.
+  const DEDICATED_INPUT_METHODS = new Set(['hidden.p188.quarterDirection']);
+
   const routedByMethod = new Map();
   for (const route of Object.values(KASHF_QUESTION_ROUTES)) {
     const method = getKashfMethod(route.kashfMethodId);
     if (!isRunnable(method)) continue;
+    if (DEDICATED_INPUT_METHODS.has(route.kashfMethodId)) continue;
     if (!routedByMethod.has(route.kashfMethodId)) routedByMethod.set(route.kashfMethodId, route);
   }
 
-  ok(routedByMethod.size === 44, `44 distinct runnable methods have an explicit Question Bank route (got ${routedByMethod.size})`);
+  // Updated 2026-10-05: this count is a drift-detector, not a hardcoded cap.
+  // Many rounds since this was last 44 have opened and routed new canonical
+  // methods (e.g. messenger/debt/sale renames to completion.p173, p210-211
+  // marriage methods, p206 love/desire, p212 partnership/dispute, etc.);
+  // the count grew to the current, legitimately larger figure below.
+  ok(routedByMethod.size === 68, `68 distinct runnable methods have an explicit Question Bank route, excluding the dedicated-input p188 quarter-direction method (got ${routedByMethod.size})`);
 
   let liveRoutedSuccess = 0;
   for (const [methodId, route] of routedByMethod.entries()) {
@@ -195,7 +210,7 @@ try {
     }
     liveRoutedSuccess += 1;
   }
-  ok(liveRoutedSuccess === 44, 'all 44 routed runnable methods complete the live mocked Advisor path');
+  ok(liveRoutedSuccess === 68, 'all 68 routed runnable methods complete the live mocked Advisor path');
 
   console.log('\n--- Golden/E2E Tier A2: two runnable non-Question-Bank methods ---');
 
@@ -237,7 +252,7 @@ try {
   }
 
   const allRunnable = new Set([...routedByMethod.keys(), 'desire.p206.querentWantsH7H11ThenH5', 'dhamir.p159.subjectByH6Recurrence']);
-  ok(allRunnable.size === 46, `Golden/E2E matrix accounts for all 46 runnable methods (got ${allRunnable.size})`);
+  ok(allRunnable.size === 70, `Golden/E2E matrix accounts for all 70 runnable methods exercised by this harness, plus the dedicated-input hidden.p188.quarterDirection excluded above (got ${allRunnable.size})`);
 
   console.log('\n--- Golden/E2E Tier B: source-derived fixed cases ---');
 

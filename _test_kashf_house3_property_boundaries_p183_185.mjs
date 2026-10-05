@@ -114,10 +114,12 @@ assert.equal(blockedPropertyMap.valid, false);
 assert.equal(blockedPropertyMap.reason, 'blocked-by-source');
 
 // Selling a specific property is a different intent and must not be repurposed
-// to the p184 ownership/house-garden passage.
+// to the p184 ownership/house-garden passage. Updated 2026-10-05: q-sell-property
+// was later RENAMEd to the general p173 completion method (same pattern as
+// q-message and q-debts); it still does not execute p218 commerce specifically.
 const saleRoute = resolveKashfRouteByQuestionId('q-sell-property');
-assert.equal(saleRoute.kashfMethodId, 'property.sale.unsupported');
-assert.equal(saleRoute.canRunKashf, false);
+assert.equal(saleRoute.kashfMethodId, 'completion.p173.fireRows15910');
+assert.equal(saleRoute.canRunKashf, true);
 
 // Retrieval must distinguish exact relocation intents and expose blocked source boundaries.
 for (const methodId of [

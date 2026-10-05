@@ -65,13 +65,19 @@ const general = buildKashfReadingByQuestionId(board, 'q-general-state', { questi
 assert.equal(general.valid, true);
 assert.deepEqual(general.canonicalExecution?.methodsExecuted, ['general.p174.h1h2h4h7h10h15']);
 
+// Updated 2026-10-05: hope.p174.h5h11ThroughH1 was completed and promoted to
+// 'ready' in an earlier round (computeHopeThroughTwoIntermediatesP174 is wired
+// and tested in _test_kashf_p174_hope.mjs); this boundary test only needs to
+// confirm it stays isolated from p173/p174-general, not re-assert its old
+// repair-required state.
 const p174Hope = getKashfMethod('hope.p174.h5h11ThroughH1');
-assert.equal(p174Hope.kashfRuntimeStatus, 'repair-required');
-assert.equal(p174Hope.runtimeAllowed, false);
+assert.equal(p174Hope.kashfRuntimeStatus, 'ready');
+assert.equal(p174Hope.runtimeAllowed, true);
 assert.match(p174Hope.notes || '', /TWO intermediate|שתי|H5/);
-const blockedHope = buildKashfReadingByMethod(board, 'hope.p174.h5h11ThroughH1');
-assert.equal(blockedHope.valid, false);
-assert.equal(blockedHope.reason, 'repair-required');
+const readyHope = buildKashfReadingByMethod(board, 'hope.p174.h5h11ThroughH1');
+assert.equal(readyHope.valid, true);
+assert.equal(readyHope.kashfMethodId, 'hope.p174.h5h11ThroughH1');
+assert.equal(typeof readyHope.primaryFormula?.verdict?.text, 'string');
 
 // p175-176 ruler chain is one bounded framework, still repair-required.
 const rulerNeed = getKashfMethod('authority.p175-176.needBeforeRulerChain');
@@ -79,34 +85,52 @@ assert.equal(rulerNeed.kashfRuntimeStatus, 'repair-required');
 assert.equal(rulerNeed.runtimeAllowed, false);
 
 // p176 request, person-intent and meeting are exact source intents, not background checks.
+// Updated 2026-10-05: request.p176.h1h2GateThenH1H4 and intent.p176.h7h10 were
+// wired to computeRequestGateAndOutcomeP176/computePersonPurposeSignP176 in an
+// earlier round and are now ready; meeting.p176.hopeHouseH1H13 remains pending.
 for (const methodId of [
   'request.p176.h1h2GateThenH1H4',
   'intent.p176.h7h10',
-  'meeting.p176.hopeHouseH1H13',
 ]) {
   const method = getKashfMethod(methodId);
   assert(method, `${methodId} exists`);
-  assert.equal(method.runtimeAllowed, false);
-  assert.equal(method.executorStatus, 'pending');
+  assert.equal(method.runtimeAllowed, true);
+  assert.equal(method.executorStatus, 'ready');
   const result = buildKashfReadingByMethod(board, methodId);
-  assert.equal(result.valid, false);
-  assert.equal(result.reason, 'executor-pending');
+  assert.equal(result.valid, true);
+  assert.equal(result.kashfMethodId, methodId);
 }
 
-// p176 messenger recast: only the all-pure-malefic branch is runnable.
+const meetingMethod = getKashfMethod('meeting.p176.hopeHouseH1H13');
+assert(meetingMethod, 'meeting.p176.hopeHouseH1H13 exists');
+assert.equal(meetingMethod.runtimeAllowed, false);
+assert.equal(meetingMethod.executorStatus, 'pending');
+const meetingResult = buildKashfReadingByMethod(board, 'meeting.p176.hopeHouseH1H13');
+assert.equal(meetingResult.valid, false);
+assert.equal(meetingResult.reason, 'executor-pending');
+
+// p176 messenger recast: a later round found the five-malefic golden board had
+// benefic neighbors and pulled this back to blocked-by-source (see its notes);
+// updated 2026-10-05 to match that correction instead of the old ready state.
 const messengerMethod = getKashfMethod('messenger.p176.recast14511');
-assert.equal(messengerMethod.runtimeAllowed, true);
-assert.equal(messengerMethod.executionKind, 'custom-engine');
-assert.equal(messengerMethod.executorStatus, 'ready');
-assert.equal(messengerMethod.kashfRuntimeStatus, 'ready');
+assert.equal(messengerMethod.runtimeAllowed, false);
+assert.equal(messengerMethod.executorStatus, 'pending');
+assert.equal(messengerMethod.kashfRuntimeStatus, 'blocked-by-source');
 assert.match(messengerMethod.notes || '', /separate derived board|source board/i);
+const blockedMessenger = buildKashfReadingByMethod(board, 'messenger.p176.recast14511');
+assert.equal(blockedMessenger.valid, false);
+assert.equal(blockedMessenger.reason, 'blocked-by-source');
+
+// q-message was later RENAMEd to the general p173 completion method rather
+// than the still-blocked p176 messenger recast (q-debts and q-sell-property
+// follow the same pattern elsewhere in the route registry).
 const messengerRoute = resolveKashfRouteByQuestionId('q-message');
-assert.equal(messengerRoute.kashfMethodId, 'messenger.p176.recast14511');
+assert.equal(messengerRoute.kashfMethodId, 'completion.p173.fireRows15910');
 assert.equal(messengerRoute.canRunKashf, true);
-assert.match(readFileSync(new URL('./goral-hachol/ui/question-bank.js', import.meta.url), 'utf8'), /id: 'q-message',[\s\S]*?label: 'האם השליחות תשיג את מטרתה\?'/);
-const messenger = buildKashfReadingByQuestionId(board, 'q-message', { question: 'האם השליחות תשיג את מטרתה?' });
+assert.match(readFileSync(new URL('./goral-hachol/ui/question-bank.js', import.meta.url), 'utf8'), /id: 'q-message',[\s\S]*?label: 'האם המשימה שנמסרה לשליח תושלם\?'/);
+const messenger = buildKashfReadingByQuestionId(board, 'q-message', { question: 'האם המשימה שנמסרה לשליח תושלם?' });
 assert.equal(messenger.valid, true);
-assert.deepEqual(messenger.canonicalExecution.methodsExecuted, ['messenger.p176.recast14511']);
+assert.deepEqual(messenger.canonicalExecution.methodsExecuted, ['completion.p173.fireRows15910']);
 const newsRoute = resolveKashfRouteByQuestionId('q-news-arrive');
 assert.equal(newsRoute.kashfMethodId, 'news.arrival.unsupported');
 assert.equal(newsRoute.aliasOf, null);
@@ -137,7 +161,7 @@ assert.equal(lifespanRoute.kashfMethodId, 'lifespan.p178.elementCountToHouse');
 assert.equal(lifespanRoute.canRunKashf, false);
 const blockedLife = buildKashfReadingByQuestionId(board, 'q-lifespan', { question: 'כמה שנים?' });
 assert.equal(blockedLife.valid, false);
-assert.equal(blockedLife.reason, 'executor-pending');
+assert.equal(blockedLife.reason, 'blocked-by-source');
 
 // p264 life stages is a distinct runnable intent; p178/183 stay-or-move remains
 // a distinct runnable relocation intent.
