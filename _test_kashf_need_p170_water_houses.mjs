@@ -95,6 +95,28 @@ ok(!/three distinct remaining/.test(bundle.notes || ''), 'bundle notes were upda
   ok(result.outputHebrew.includes('נמנעת'), 'one-closed case: Hebrew output preserves the negative source verdict');
 }
 
+// Branch C (exactly ONE water row closed, the other three open): real board
+// via buildRamlBoardFromMothers(['1111','1111','1111','1121']). Verifies the
+// negative branch is reached by a single disqualifying house, not only by
+// the all-four-closed extreme, and that the Hebrew/source citation for that
+// negative branch ("وإن كان بخلاف ذلك، فالمسئلة مانعة على هذا النفس" / "ואם
+// לא — הבקשה נמנעת מן השואל הזה") is genuinely supported by this board.
+{
+  const board = buildRamlBoardFromMothers(['1111', '1111', '1111', '1121']);
+  const result = executeCanonicalCustomMethod('need.p170.waterHousesRowOpen', board);
+  ok(result.houses.find((h) => h.houseNumber === 3).pattern === '1111', 'single-closed case: real board lands H3=1111 as expected');
+  ok(result.houses.find((h) => h.houseNumber === 7).pattern === '1112', 'single-closed case: real board lands H7=1112 as expected');
+  ok(result.houses.find((h) => h.houseNumber === 11).pattern === '2222', 'single-closed case: real board lands H11=2222 as expected');
+  ok(result.houses.find((h) => h.houseNumber === 15).pattern === '2211', 'single-closed case: real board lands H15=2211 as expected');
+  ok(result.houses.find((h) => h.houseNumber === 3).waterRowState === 'open', 'single-closed case: H3 water row reads as open');
+  ok(result.houses.find((h) => h.houseNumber === 7).waterRowState === 'open', 'single-closed case: H7 water row reads as open');
+  ok(result.houses.find((h) => h.houseNumber === 11).waterRowState === 'joined', 'single-closed case: H11 is the only closed water row (digit 2)');
+  ok(result.houses.find((h) => h.houseNumber === 15).waterRowState === 'open', 'single-closed case: H15 water row reads as open');
+  ok(result.allWaterRowsOpen === false, 'single-closed case: allWaterRowsOpen is false even with only one house closed');
+  ok(result.positive === false, 'single-closed case: matter judged prevented for this asker, per the photographed p170 negative branch');
+  ok(result.outputHebrew.includes('נמנעת'), 'single-closed case: Hebrew output preserves the exact negative source verdict wording');
+}
+
 // Missing/incomplete board data: must not guess.
 {
   const result = executeCanonicalCustomMethod('need.p170.waterHousesRowOpen', { entries: [] });
