@@ -94,9 +94,12 @@ const need = getKashfMethod('need.p169-170.outcomeRules');
 assert.equal(need.kashfRuntimeStatus, 'repair-required');
 assert.equal(need.runtimeAllowed, false);
 
+// Updated 2026-10-05: opened via computeMutualGazeP170; see
+// _test_kashf_attention_p170.mjs for full golden-test coverage, including
+// the no-merge boundary with love.p204.attentionFireRows1713.
 const p170Gaze = getKashfMethod('attention.p170.mutualGazeFireRows1713');
-assert.equal(p170Gaze.kashfRuntimeStatus, 'repair-required');
-assert.equal(p170Gaze.runtimeAllowed, false);
+assert.equal(p170Gaze.kashfRuntimeStatus, 'ready');
+assert.equal(p170Gaze.runtimeAllowed, true);
 
 // The live selected love-attention question stays on p204, never p170.
 const loveAttentionRoute = resolveKashfRouteByQuestionId('q-who-looks-love');

@@ -162,7 +162,7 @@ try {
   // methods (e.g. messenger/debt/sale renames to completion.p173, p210-211
   // marriage methods, p206 love/desire, p212 partnership/dispute, etc.);
   // the count grew to the current, legitimately larger figure below.
-  ok(routedByMethod.size === 69, `69 distinct runnable methods have an explicit Question Bank route, excluding the dedicated-input p188 quarter-direction method (got ${routedByMethod.size})`);
+  ok(routedByMethod.size === 70, `70 distinct runnable methods have an explicit Question Bank route, excluding the dedicated-input p188 quarter-direction method (got ${routedByMethod.size})`);
 
   let liveRoutedSuccess = 0;
   for (const [methodId, route] of routedByMethod.entries()) {
@@ -210,7 +210,7 @@ try {
     }
     liveRoutedSuccess += 1;
   }
-  ok(liveRoutedSuccess === 69, 'all 69 routed runnable methods complete the live mocked Advisor path');
+  ok(liveRoutedSuccess === 70, 'all 70 routed runnable methods complete the live mocked Advisor path');
 
   console.log('\n--- Golden/E2E Tier A2: two runnable non-Question-Bank methods ---');
 
@@ -252,7 +252,7 @@ try {
   }
 
   const allRunnable = new Set([...routedByMethod.keys(), 'desire.p206.querentWantsH7H11ThenH5', 'dhamir.p159.subjectByH6Recurrence']);
-  ok(allRunnable.size === 71, `Golden/E2E matrix accounts for all 71 runnable methods exercised by this harness, plus the dedicated-input hidden.p188.quarterDirection excluded above (got ${allRunnable.size})`);
+  ok(allRunnable.size === 72, `Golden/E2E matrix accounts for all 72 runnable methods exercised by this harness, plus the dedicated-input hidden.p188.quarterDirection excluded above (got ${allRunnable.size})`);
 
   console.log('\n--- Golden/E2E Tier B: source-derived fixed cases ---');
 

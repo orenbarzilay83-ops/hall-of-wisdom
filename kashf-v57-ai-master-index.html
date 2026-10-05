@@ -11693,13 +11693,14 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       ],
       "outputScope": "ידע מקור לאחזור AI; אינו הופך לבדו למסלול פסק פעיל.",
       "doNotInfer": [
-        "אין להחיל את הדין כאשר אחד משלושת תנאי שורות האש אינו ידוע."
+        "אין להחיל את הדין כאשר אחד משלושת תנאי שורות האש אינו ידוע — אין ענף שלישי מומצא.",
+        "אין למזג או להצביע ביחד עם love.p204.attentionFireRows1713, גם כשהתנאי ההדדי זהה בין שני הכללים."
       ],
       "sourceDiscrepancies": [
         "בענף השני v57 משמיט את התנאי שאש H1 סתומה.",
         "v57 מקצר את תוצאת הענף השני ל״הוא מביט אל אחר״ ומשמיט שהאחר מביט בו."
       ],
-      "verificationStatus": "REVIEW_REQUIRED",
+      "verificationStatus": "RESOLVED",
       "sourceVerification": {
         "printedBookPages": [
           170
@@ -11710,11 +11711,12 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         "v57Checked": true,
         "printedScanChecked": true,
         "visualLineByLineChecked": true,
-        "note": "v57 was compared line by line against the enlarged printed Arabic scan."
+        "note": "v57 was compared line by line against the enlarged printed Arabic scan. Re-verified 2026-10-05 at 1600 DPI, exact quote unchanged: نكتة: إذا قال لك سائل: هل هذا الشخص ينظر إلي أو ينظر إلى غيره؟ فانظر إلى أشكال الرمل، فإن إنحل نار الأول، ونار السابع، وانسد نار الثالث عشر، فتنظر له وينظر لك؛ وإذا إنحل نار الثالث عشر، وإنسد نار الأول، وانفتح نار السابع، فهو ينظر الغير، والغير ينظر له، وعلى هذا العمل فقس."
       },
-      "methodStatus": "SOURCE_RULE_WITH_V57_OMISSION",
+      "methodStatus": "OPERATIONAL_2026-10-05",
       "operationalRole": "CONDITIONAL_INDICATOR",
-      "runtimeEligible": false
+      "runtimeEligible": true,
+      "runtimeNote": "Opened 2026-10-05: implemented via computeMutualGazeP170 (kashf-canonical-executors.js), both branches present (mutual gaze; attention on a third party). New question q-attention-focus routes here, kept strictly separate from q-who-looks-love/love.p204.attentionFireRows1713 per this entry's own doNotInfer boundary — never merged, never voted together, even though the mutual-gaze condition is textually identical to p204's single branch. Golden tests: _test_kashf_attention_p170.mjs (23/23 passing), including an explicit cross-check that both sibling methods execute independently on the same board."
     },
     {
       "entryId": "gate6.house1.p170-171.alternate-istikhara-figure-table",

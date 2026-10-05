@@ -487,6 +487,13 @@ window.QUESTION_BANK = [
     clientFields: [F.candidate],
   },
   {
+    id: 'q-attention-focus',
+    category: 'love', houseId: 1, topicId: 'marriage', kashfTopicId: 'marriage',
+    label: 'האם אדם זה מביט אליי או לעבר אחר?',
+    desc: 'כלל נפרד לפי כשף עמ׳ 170 — מבט הדדי או תשומת לב המופנית לצד שלישי. שונה משאלת "לאן פונה תשומת ליבו" (עמ׳ 204): זו שאלה כללית יותר ואינה מוגבלת להקשר קשר רדום/פרידה',
+    clientFields: [F.candidate],
+  },
+  {
     id: 'q-friends',
     category: 'love', houseId: 11, topicId: 'friendsHope', kashfTopicId: 'friendsHope',
     label: 'מה טיב הקשר בין שני חברים?',

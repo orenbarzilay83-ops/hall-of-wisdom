@@ -583,6 +583,15 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     note: 'This is a distinct source intent: where the other person’s attention/look is directed, not whether love exists.',
   }),
 
+  'q-attention-focus': route({
+    questionId: 'q-attention-focus',
+    disposition: 'KEEP',
+    kashfIntentId: 'attention.mutualGaze',
+    kashfMethodId: 'attention.p170.mutualGazeFireRows1713',
+    kashfRuntimeStatus: 'ready',
+    note: 'Opened 2026-10-05 from printed p170. Same H1/H7/H13 fire-row houses as q-who-looks-love (love.p204), but a separate source method with its own second branch; never merged or voted together.',
+  }),
+
   'q-divorce': route({
     questionId: 'q-divorce',
     disposition: 'KEEP',

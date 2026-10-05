@@ -594,6 +594,65 @@ function computeLoveAttentionP204(chart) {
   };
 }
 
+// Printed p170 (PDF 172): "نكتة: إذا قال لك سائل: هل هذا الشخص ينظر إلي أو
+// ينظر إلى غيره؟ فانظر إلى أشكال الرمل، فإن إنحل نار الأول، ونار السابع،
+// وانسد نار الثالث عشر، فتنظر له وينظر لك؛ وإذا إنحل نار الثالث عشر، وإنسد
+// نار الأول، وانفتح نار السابع، فهو ينظر الغير، والغير ينظر له، وعلى هذا
+// العمل فقس، والله أعلم." Two explicit branches on the SAME three houses as
+// love.p204.attentionFireRows1713 (H1/H7/H13 fire rows), but this is a
+// separate, more general "does this person look at me or at someone else"
+// note (no marriage/romance framing), with a SECOND branch p204 does not
+// give at all: H1 open + H7 open + H13 joined => mutual gaze between
+// querent and the asked-about person; H13 open + H1 joined + H7 open =>
+// the asked-about person's attention is on a third party, not the
+// querent. Per the registry's own standing instruction this must never
+// replace, vote against, or be merged with love.p204.attentionFireRows1713
+// — kept entirely separate, with its own intent and question.
+function computeMutualGazeP170(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h1 = findCanonicalHouse(chart, 1);
+  const h7 = findCanonicalHouse(chart, 7);
+  const h13 = findCanonicalHouse(chart, 13);
+  const h1Pattern = h1?.key || h1?.pattern || null;
+  const h7Pattern = h7?.key || h7?.pattern || null;
+  const h13Pattern = h13?.key || h13?.pattern || null;
+  if (!h1Pattern || !h7Pattern || !h13Pattern) return null;
+
+  const h1Fire = getCanonicalRowState(h1Pattern, 0);
+  const h7Fire = getCanonicalRowState(h7Pattern, 0);
+  const h13Fire = getCanonicalRowState(h13Pattern, 0);
+  if (!h1Fire || !h7Fire || !h13Fire) return null;
+
+  const mutualGaze = h1Fire === 'open' && h7Fire === 'open' && h13Fire === 'joined';
+  const looksElsewhere = h13Fire === 'open' && h1Fire === 'joined' && h7Fire === 'open';
+
+  let gazeDirection, positive, outputHebrew;
+  if (mutualGaze) {
+    gazeDirection = 'mutual';
+    positive = true;
+    outputHebrew = 'שורת האש בבית 1 פתוחה, שורת האש בבית 7 פתוחה, ושורת האש בבית 13 מתחברת. לפי כשף עמ׳ 170: הוא/היא מביט/ה אליך ואתה/את מביט/ה אליו/ה — מבט הדדי.';
+  } else if (looksElsewhere) {
+    gazeDirection = 'elsewhere';
+    positive = false;
+    outputHebrew = 'שורת האש בבית 13 פתוחה, שורת האש בבית 1 מתחברת, ושורת האש בבית 7 פתוחה. לפי כשף עמ׳ 170: הוא/היא מביט/ה לעבר אדם אחר, והאחר מביט/ה אליו/ה בחזרה — לא מבט הדדי איתך.';
+  } else {
+    gazeDirection = null;
+    positive = null;
+    outputHebrew = 'תנאי עמ׳ 170 אינו מתקיים באף אחד משני ענפיו המפורשים (לא מבט הדדי ולא מבט מופנה לאחר). המקור אומר "ועל זה פקس" — ללמוד בהיקש ממקרים אלו — אך אינו נותן פסק מפורש לצירופים אחרים, ולכן אין להמציא ענף שלישי.';
+  }
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 170; מצב שורה פתוחה/מתחברת לפי כללי הצורות',
+    sourceText: 'האם אדם זה מביט אלי או מביט לעבר אחר? הבט בצורות החול: אם נפתחה אש הבית הראשון, ואש השביעי, ונסגרה אש השלושה־עשר — הוא מביט אליך ואתה מביט אליו. ואם נפתחה אש השלושה־עשר, ונסגרה אש הראשון, ונפתחה אש השביעי — הוא מביט לעבר אחר, והאחר מביט אליו. ועל פעולה זו הַקֵּש.',
+    housesUsed: [1, 7, 13],
+    h1Pattern, h7Pattern, h13Pattern,
+    fireRows: { h1: h1Fire, h7: h7Fire, h13: h13Fire },
+    mutualGaze, looksElsewhere, gazeDirection,
+    positive,
+    outputHebrew,
+  };
+}
+
 // Printed p267 gives a separate House 11 fallback after the compound
 // H1/H2/H5/H13 and recurrence test. Only that explicit fallback runs here;
 // neither failure of the compound test nor a mixed H11 is inverted into a verdict.
@@ -3571,6 +3630,7 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'pregnancy.p191.genderH5': computePregnancyGenderP191,
   'theft.p224.relationshipH7Recurrence': computeThiefRelationshipP224,
   'matter.p169.validityH6H8Planet': computeMatterValidityP169,
+  'attention.p170.mutualGazeFireRows1713': computeMutualGazeP170,
   'authority.p256.honorConditionH10Planet': computeHonorConditionP256,
   'authority.p257.appointmentH1H10Planet': computeAppointmentCompletionP257,
   'authority.p257.rulerConditionH7H10': computeRulerConditionP257,

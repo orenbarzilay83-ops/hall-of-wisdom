@@ -1423,12 +1423,11 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfIntentId: 'attention.mutualGaze',
     topicId: 'marriage',
     sourcePages: [170],
-    methodRole: 'unresolved',
-    kashfRuntimeStatus: 'repair-required',
-    runtimeAllowed: false,
-    executionKind: 'source-rule-set',
-    executorStatus: 'pending',
-    notes: 'p170 is a distinct gaze/attention rule with source conditions on fire rows H1/H7/H13. Current v57 omits a condition/result branch. It must not replace or vote against the separately selected p204 love-attention method used by q-who-looks-love.',
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: true,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
+    notes: 'Opened 2026-10-05: re-read printed p170 (PDF 172) at 1600 DPI, confirming the exact quote letter-by-letter: "نكتة: إذا قال لك سائل: هل هذا الشخص ينظر إلي أو ينظر إلى غيره؟ فانظر إلى أشكال الرمل، فإن إنحل نار الأول، ونار السابع، وانسد نار الثالث عشر، فتنظر له وينظر لك؛ وإذا إنحل نار الثالث عشر، وإنسد نار الأول، وانفتح نار السابع، فهو ينظر الغير، والغير ينظر له، وعلى هذا العمل فقس، والله أعلم." Body text, no attribution marker. This is the previously-missing SECOND branch the old "repair-required" note referred to: H1 open + H7 open + H13 joined => mutual gaze (identical fire-row condition to love.p204.attentionFireRows1713\'s single branch, independently cross-confirming it); H13 open + H1 joined + H7 open => the asked-about person\'s attention is on a third party, not the querent — a branch p204 does not give at all. "وعلى هذا العمل فقس" ("measure by analogy from this") is read as inviting inference for OTHER fire-row combinations, not as an instruction this engine can execute without inventing which combinations qualify — so only these two explicit branches are asserted; all other combinations return no verdict. Implemented via computeMutualGazeP170. Per the pre-existing standing instruction on this entry, kept entirely separate from love.p204.attentionFireRows1713 — never merged, never voted together, never used as a fallback for q-who-looks-love. New question q-attention-focus routes here with neutral (non-romantic-specific) wording matching the Arabic\'s own "هل هذا الشخص" framing.',
   }),
 
   'decision.external.p170-172.istikharaFigureTable': method({
