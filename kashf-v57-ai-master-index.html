@@ -20119,6 +20119,16 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "summary": "Do not state north for the munshaat branch until the difficult printed direction token ناحية الجاه is resolved from another source witness."
     },
     {
+      "id": "B14-P188-WELL-RECAST-MATHEMATICAL-EXPLANATION",
+      "entryId": "gate6.house4.p188.well-recast-reachability",
+      "page": 188,
+      "scanPdfPage": 190,
+      "status": "RESOLVED",
+      "target": "well.p188.recast1468 — still blocked-by-source, but now with a precise mathematical explanation instead of an unexplained zero",
+      "summary": "Re-investigated 2026-10-05: re-read the full p188 passage at 2400 DPI (confirmed the prior transcription was accurate), then re-derived the reachability mathematics independently to explain WHY the condition is unreachable, not just THAT it is.",
+      "resolution": "Printed p188 (PDF 190): \"يجعل الأول، والرابع، والسادس، والثامن، أمهاتا، وتكمل الضرب، فإن كان الرابع والأوتاد سعودا دواخلا، فالمقصود حاصل\" — make H1/H4/H6/H8 the new mothers, complete the derivation; if the 4th and the Awtad are benefic-and-inward, the goal is achieved. Three facts, each independently verified by exhaustive enumeration (not merely re-stating the prior \"0 of 65,536\"): (1) the condition is NOT a logical impossibility — for 4 FREELY chosen mothers, houses {1,4,7,10} are simultaneously dakhil-and-benefic in exactly 64/65,536 cases; (2) when the 4 new mothers are H1/H4/H6/H8 of an EXISTING board, H6 and H8 are derived (not free) from the original 4 mothers, so only 4,096/65,536 (H1,H4,H6,H8) tuples are reachable at all; (3) the intersection of the 64 target tuples and the 4,096 reachable tuples is exactly empty — a confirmed, exhaustively-verified mathematical fact, not an unexplained coincidence. Two source-grounded readings remain open: (a) \"يجعل...أمهاتا\" could mean a fresh, independent casting performed specifically for this question (the condition is then achievable, per fact 1, but requires new input-collection architecture this system does not have — the same category of gap as partnership.p212's \"الجملة\" and lifespan.p178's \"اجمع العناصر\"); (b) it could genuinely mean recasting from the existing board as implemented, in which case the condition is provably unreachable on any board this engine can construct and may describe an idealized/limiting best case rather than a routinely reachable one. Neither reading is adopted without further textual evidence; the classifier's dakhil definition (p63) is not broadened to manufacture a result. Golden tests: _test_kashf_p188_recast_reachability.mjs, extended this round with the three new facts (8/8 assertions passing)."
+    },
+    {
       "id": "B14-P188-189-OPEN-ELEMENTS-AND-EXAMPLE",
       "entryId": "gate6.house4.p188-189.depth-elements-and-worked-example",
       "page": "188-189",
