@@ -36,6 +36,15 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfRuntimeStatus: 'ready',
   }),
 
+  'q-matter-valid': route({
+    questionId: 'q-matter-valid',
+    disposition: 'KEEP',
+    kashfIntentId: 'matter.isRightForQuerent',
+    kashfMethodId: 'matter.p169.validityH6H8Planet',
+    kashfRuntimeStatus: 'ready',
+    note: 'Opened 2026-10-05 from printed p169. Distinct from q-success (completion.p173, outcome) — this answers suitability/rightness for the querent via H6+H8 and the planet-figure table, not whether the matter will succeed.',
+  }),
+
   'q-knowledge-success': route({
     questionId: 'q-knowledge-success',
     disposition: 'ALIAS',

@@ -400,6 +400,46 @@ function getVerifiedPlanetForPattern(pattern) {
   };
 }
 
+// Printed p169 (PDF 171): "هذا الأمر يصح لي أم لا؟ أخرج من السادس والثامن
+// شكلا، فإن كان من أشكال الزهرة، أو القمر، أو عطارد، فالأمر يصح؛ وإن كان
+// خلاف هذه الأشكال، فلا يصح." — derive a figure from H6+H8; if it is among
+// the figures of Venus, the Moon, or Mercury, the matter is valid/right for
+// the querent; any other figure, it is not. A clean, closed source
+// condition over all 16 figures (6 qualify, 10 do not) — no remainder
+// branch, no attribution marker, body text between two other "نكتة" notes.
+function computeMatterValidityP169(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h6 = findCanonicalHouse(chart, 6);
+  const h8 = findCanonicalHouse(chart, 8);
+  const h6Pattern = h6?.key || h6?.pattern || null;
+  const h8Pattern = h8?.key || h8?.pattern || null;
+  if (!h6Pattern || !h8Pattern) return null;
+
+  const combined = combineRamlFigures(h6Pattern, h8Pattern);
+  const resultPattern = combined?.resultPattern || null;
+  if (!resultPattern) return null;
+
+  const resultFigureHebrew = classifyCanonicalFigure(resultPattern).figureHebrew || resultPattern;
+  const planet = getVerifiedPlanetForPattern(resultPattern);
+  const planetHebrew = planet?.planetHebrew || null;
+  const qualifies = planetHebrew === 'נוגה' || planetHebrew === 'ירח' || planetHebrew === 'כוכב';
+  const positive = qualifies;
+
+  const outputHebrew = qualifies
+    ? `הצורה הנולדת מבית 6 ובית 8 (${resultFigureHebrew}, ${resultPattern}) משויכת ל${planetHebrew === 'כוכב' ? 'עטארד' : planetHebrew}. לפי כשף עמ׳ 169: הדבר כשר/נכון עבור השואל.`
+    : `הצורה הנולדת מבית 6 ובית 8 (${resultFigureHebrew}, ${resultPattern}) אינה משויכת לנוגה, ירח או עטארד. לפי כשף עמ׳ 169: הדבר אינו נכון עבור השואל.`;
+
+  return {
+    sourceRef: 'כשף אל-אסראר עמ׳ 169; שיוכי כוכבים עמ׳ 133–134',
+    sourceText: 'הוצא מהשישי והשמיני צורה; אם היא מצורות נוגה, הירח או כוכב (עטארד), הדבר נכון; ואם היפך צורות אלו, אינו נכון.',
+    housesUsed: [6, 8],
+    h6Pattern, h8Pattern, resultPattern, resultFigureHebrew,
+    planetHebrew, qualifies,
+    positive,
+    outputHebrew,
+  };
+}
+
 function computeHonorConditionP256(chart) {
   const h10 = findCanonicalHouse(chart, 10);
   const pattern = h10?.key || h10?.pattern || null;
@@ -3530,6 +3570,7 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'pregnancy.p191.existsH5SilentEmpty': computePregnancyExistenceP191,
   'pregnancy.p191.genderH5': computePregnancyGenderP191,
   'theft.p224.relationshipH7Recurrence': computeThiefRelationshipP224,
+  'matter.p169.validityH6H8Planet': computeMatterValidityP169,
   'authority.p256.honorConditionH10Planet': computeHonorConditionP256,
   'authority.p257.appointmentH1H10Planet': computeAppointmentCompletionP257,
   'authority.p257.rulerConditionH7H10': computeRulerConditionP257,

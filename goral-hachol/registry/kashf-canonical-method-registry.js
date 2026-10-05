@@ -1398,12 +1398,11 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     kashfIntentId: 'matter.isRightForQuerent',
     topicId: 'generalReading',
     sourcePages: [169],
-    methodRole: 'unresolved',
-    kashfRuntimeStatus: 'repair-required',
-    runtimeAllowed: false,
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: true,
     executionKind: 'custom-engine',
-    executorStatus: 'pending',
-    notes: 'Exact intent: “is this matter right/valid for me?”. Combine H6+H8; Venus, Moon or Mercury figures mean yes, otherwise no. Current v57 wording loses the explicit Mercury/عطارد term, so this remains non-runnable until the Hebrew operational text is repaired and separately certified.',
+    executorStatus: 'ready',
+    notes: 'Opened 2026-10-05: re-read printed p169 (PDF 171) directly at 1600 DPI, confirming the exact quote letter-by-letter: "نكتة: هذا الأمر يصح لي أم لا؟ أخرج من السادس والثامن شكلا، فإن كان من أشكال الزهرة، أو القمر، أو عطارد، فالأمر يصح؛ وإن كان خلاف هذه الأشكال، فلا يصح" — derive a figure from H6+H8; if it is among the figures of Venus (نوجה), the Moon (ירח) or Mercury (כוכב/عطارد), the matter is valid for the querent; any other figure, it is not. This is body text (no attribution marker) between two other unrelated "نكتة" notes, and is a closed condition over all 16 figures with no remainder branch — the prior "repair-required" block was specifically the v57 Hebrew knowledge layer losing the explicit Mercury term; the Arabic scan itself was never ambiguous. Implemented via computeMatterValidityP169, reusing the existing FIGURE_PLANET_MAP (kashf-hazz.js) already used by authority.p256.honorConditionH10Planet and lifespan.p264.stagesH11H9H7 for the same planet-figure assignments. Qualifying patterns (Venus {1121,2211} ∪ Moon {2212,1111} ∪ Mercury {2112,2222} = 6 of 16) give positive:true; the other 10 give positive:false — this is a genuine binary (not a partial/undetermined-branch) method. New question q-matter-valid routes here; distinct from q-success (completion.p173, "will it succeed") — this answers suitability/rightness, not outcome.',
   }),
 
   'need.p169-170.outcomeRules': method({

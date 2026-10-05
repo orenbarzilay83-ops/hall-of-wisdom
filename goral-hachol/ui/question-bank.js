@@ -106,6 +106,13 @@ window.QUESTION_BANK = [
     clientFields: [F.matter],
   },
   {
+    id: 'q-matter-valid',
+    category: 'general', houseId: 6, topicId: 'generalReading', kashfTopicId: 'generalReading',
+    label: 'האם הדבר הזה נכון/מתאים לי?',
+    desc: 'סימן התאמה/כשרות לפי כשף עמ׳ 169 — שונה משאלת "האם יצליח": זו בודקת אם הדבר מתאים לשואל מלכתחילה, לא את תוצאתו',
+    clientFields: [F.matter],
+  },
+  {
     id: 'q-geo-direction',
     category: 'general', houseId: 1, topicId: 'foundations', kashfTopicId: 'generalReading',
     label: 'באיזה כיוון גיאוגרפי נמצא הדבר?',

@@ -11583,13 +11583,13 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       ],
       "outputScope": "ידע מקור לאחזור AI; אינו הופך לבדו למסלול פסק פעיל.",
       "doNotInfer": [
-        "אין לפרש ״כוכב״ ככל כוכב לכת; המקור מציין דווקא את כוכב חמה.",
-        "PRIMARY_CANDIDATE אינו אישור runtime."
+        "אין לפרש ״כוכב״ ככל כוכב לכת; המקור מציין דווקא את כוכב חמה (עטארד).",
+        "PRIMARY_CANDIDATE אינו אישור runtime (היה נכון עד 2026-10-05; ראו runtimeEligible למטה)."
       ],
       "sourceDiscrepancies": [
         "המקור מונה الزهرة أو القمر أو عطارد — נוגה, הירח או כוכב חמה. v57 כותב ״נוגה, הירח או כוכב״ ומאבד את הזיהוי המפורש של عطارد."
       ],
-      "verificationStatus": "REVIEW_REQUIRED",
+      "verificationStatus": "RESOLVED",
       "sourceVerification": {
         "printedBookPages": [
           169
@@ -11600,11 +11600,12 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
         "v57Checked": true,
         "printedScanChecked": true,
         "visualLineByLineChecked": true,
-        "note": "v57 was compared line by line against the enlarged printed Arabic scan."
+        "note": "v57 was compared line by line against the enlarged printed Arabic scan. Re-verified 2026-10-05 at 1600 DPI, exact quote unchanged: نكتة: هذا الأمر يصح لي أم لا؟ أخرج من السادس والثامن شكلا، فإن كان من أشكال الزهرة، أو القمر، أو عطارد، فالأمر يصح؛ وإن كان خلاف هذه الأشكال، فلا يصح."
       },
-      "methodStatus": "SOURCE_METHOD_WITH_V57_TERM_ERROR",
+      "methodStatus": "OPERATIONAL_2026-10-05",
       "operationalRole": "PRIMARY_CANDIDATE",
-      "runtimeEligible": false
+      "runtimeEligible": true,
+      "runtimeNote": "Opened 2026-10-05: the v57 Hebrew knowledge entry (matter.p169.validityH6H8Planet in kashf-v57-knowledge-registry.js) now carries the explicit Mercury/עטארד term, and computeMatterValidityP169 (kashf-canonical-executors.js) is wired and ready, reusing the existing FIGURE_PLANET_MAP (kashf-hazz.js) already used by authority.p256.honorConditionH10Planet and lifespan.p264.stagesH11H9H7 for the same planet-figure assignments. A closed binary over all 16 figures (6 qualify via Venus/Moon/Mercury, 10 do not) — no undetermined branch. New question q-matter-valid routes here, kept distinct from q-success (completion.p173, outcome) since this answers suitability/rightness, not whether the matter will succeed. Golden tests: _test_kashf_matter_validity_p169.mjs (26/26 passing, boards found by brute-force search hitting all three qualifying planets plus the negative branch)."
     },
     {
       "entryId": "gate6.house1.p169-170.need-outcome-house-and-water-rules",

@@ -82,9 +82,12 @@ const location = getKashfMethod('need.p168-169.locationNameColorBalanceWalk');
 assert.equal(location.kashfRuntimeStatus, 'blocked-by-source');
 assert.equal(location.runtimeAllowed, false);
 
+// Updated 2026-10-05: opened via computeMatterValidityP169 (the v57
+// knowledge entry now carries the explicit Mercury/عطارد term); see
+// _test_kashf_matter_validity_p169.mjs for the full golden-test coverage.
 const validity = getKashfMethod('matter.p169.validityH6H8Planet');
-assert.equal(validity.kashfRuntimeStatus, 'repair-required');
-assert.equal(validity.runtimeAllowed, false);
+assert.equal(validity.kashfRuntimeStatus, 'ready');
+assert.equal(validity.runtimeAllowed, true);
 assert.match(validity.notes || '', /Mercury|عطارد/);
 
 const need = getKashfMethod('need.p169-170.outcomeRules');
