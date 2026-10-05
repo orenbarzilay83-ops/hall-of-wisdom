@@ -8,12 +8,25 @@
  *   - prisoner.p272.outcomeH1H4 (new intent: prisoner.outcomeFate)
  *   - prisoner.p272.exitSafetyH12 (new intent: prisoner.exitSafety)
  *
- * Also locks in the documented status of three related findings from the
- * same scan pages (p272-273) that were investigated but deliberately NOT
- * implemented:
- *   - prisoner.p272.releaseManner (blocked-by-source: house-set
- *     discrepancy between the main reading and a manuscript variant, plus
- *     no stated precedence when signs conflict)
+ * CORRECTED 2026-10-05 (flagged on Codex review against the raw scan):
+ * prisoner.p272.releaseManner was originally registered blocked-by-source
+ * on a wrong citation -- it described two ADJACENT, textually distinct
+ * clauses (voluntary/involuntary exit via H2/H3/H5/H9/H10, and a separate
+ * "forces the prison open" clause via H3/H4/H5/H9/H12) as if they were two
+ * manuscript readings of the SAME clause. Re-read directly against the raw
+ * scan: the page's one actual marked variant ("{وفي نسخة أخرى: تكرر}")
+ * concerns only the verb تكون/تكرر inside the LATER clause. With that
+ * fixed, prisoner.p272.releaseManner itself is now OPEN (ready, routed) --
+ * see below -- and the later clause was split out under its own id,
+ * prisoner.p272.forcedEscapeRepeatedBenefic, which remains genuinely
+ * blocked on its own separate merits.
+ *
+ * This file now also locks in the documented status of three related
+ * findings from the same scan pages (p272-273) that were investigated but
+ * deliberately NOT implemented:
+ *   - prisoner.p272.forcedEscapeRepeatedBenefic (blocked-by-source: its
+ *     own تكون/تكرر grammatical ambiguity -- single occurrence vs.
+ *     repetition -- plus no stated repetition threshold)
  *   - dispute.p272.enemyJudgmentRecast (blocked-by-source: recast method
  *     with an unnamed success-check house, same category as
  *     well.p188.recast1468 / joy.p196.recast14511 / messenger.p176.recast14511)
@@ -139,14 +152,63 @@ ok(safetyRoute.kashfMethodId === 'prisoner.p272.exitSafetyH12', 'q-prisoner-exit
   ok(result === null, 'prisoner.p272.exitSafetyH12: missing board data returns null rather than guessing');
 }
 
-// ── Documented-but-not-implemented findings from the same pages ───────
+// ── prisoner.p272.releaseManner ───────────────────────────────────────
+//
+// Photographed line (p272, PDF 274): "إن كان في الثاني، أو الثالث، أو
+// الخامس، أو التاسع، أو العاشر، شكل نحس، فإن المحبوس يخرج من غير اختيار
+// صاحب البلد؛ وإن كان في أحد هؤلاء سعد، خرج باختياره."
+//
+// Computation action: OR across H2,H3,H5,H9,H10. Any nahs present ->
+// involuntary-exit sign. Any saad present -> voluntary-exit sign. Both
+// present (the common case) -> report both, no forced winner (reusing the
+// rapidExitH11WithH5Caution convention). Neither -> no signal. `positive`
+// stays null throughout -- this is descriptive (manner), not a verdict.
 
 const releaseManner = getKashfMethod('prisoner.p272.releaseManner');
-ok(releaseManner.methodRole === 'unresolved', 'prisoner.p272.releaseManner stays unresolved');
-ok(releaseManner.kashfRuntimeStatus === 'blocked-by-source', 'prisoner.p272.releaseManner stays blocked-by-source');
-ok(releaseManner.runtimeAllowed === false, 'prisoner.p272.releaseManner is not runtime-allowed');
-ok(!hasCanonicalCustomExecutor('prisoner.p272.releaseManner'), 'prisoner.p272.releaseManner has no executor (correctly unimplemented)');
-ok(/تكرر/.test(releaseManner.notes || ''), 'release-manner notes document the manuscript-variant bracket');
+ok(releaseManner.kashfRuntimeStatus === 'ready', 'prisoner.p272.releaseManner is ready (corrected from blocked-by-source)');
+ok(releaseManner.executorStatus === 'ready', 'executor is wired');
+ok(releaseManner.runtimeAllowed === true, 'runtime is allowed');
+ok(releaseManner.kashfIntentId === 'prisoner.releaseManner', 'registered under its own intent');
+ok(/CORRECTED 2026-10-05/.test(releaseManner.notes || ''), 'registry notes document the citation correction');
+ok(/forcedEscapeRepeatedBenefic/.test(releaseManner.notes || ''), 'registry notes cross-reference the still-blocked, textually separate forced-escape clause');
+ok(hasCanonicalCustomExecutor('prisoner.p272.releaseManner'), 'executor is reachable via dispatch');
+
+const mannerRoute = getKashfQuestionRoute('q-prisoner-release-manner');
+ok(mannerRoute != null, 'q-prisoner-release-manner route exists');
+ok(mannerRoute.kashfMethodId === 'prisoner.p272.releaseManner', 'q-prisoner-release-manner routes to the correct executor');
+
+const MANNER_CASES = [
+  { mothers: ['1111', '1111', '1111', '1112'], branch: 'involuntary-exit-sign', label: 'involuntary-only (nahs present, no saad)' },
+  { mothers: ['1111', '1111', '1111', '1122'], branch: 'voluntary-exit-sign', label: 'voluntary-only (saad present, no nahs)' },
+  { mothers: ['1111', '1111', '1111', '2111'], branch: 'conflicting-signs', label: 'conflicting (both saad and nahs present)' },
+  { mothers: ['1111', '1111', '1111', '1111'], branch: 'unresolved', label: 'no clear saad/nahs among the five houses' },
+];
+
+for (const { mothers, branch, label } of MANNER_CASES) {
+  const board = buildRamlBoardFromMothers(mothers);
+  const result = executeCanonicalCustomMethod('prisoner.p272.releaseManner', board);
+  ok(result != null, `${label}: executor returns a result from a real generated board`);
+  ok(result.branch === branch, `${label}: branch is ${branch}`);
+  ok(result.positive === null, `${label}: positive is always null (descriptive manner, not a value judgment)`);
+  if (branch === 'conflicting-signs') {
+    ok(result.maleficHouses.length > 0 && result.beneficHouses.length > 0, `${label}: both malefic and benefic houses are reported`);
+  }
+}
+
+{
+  const result = executeCanonicalCustomMethod('prisoner.p272.releaseManner', { entries: [] });
+  ok(result === null, 'prisoner.p272.releaseManner: missing board data returns null rather than guessing');
+}
+
+// ── Documented-but-not-implemented findings from the same pages ───────
+
+const forcedEscape = getKashfMethod('prisoner.p272.forcedEscapeRepeatedBenefic');
+ok(forcedEscape.methodRole === 'unresolved', 'prisoner.p272.forcedEscapeRepeatedBenefic stays unresolved');
+ok(forcedEscape.kashfRuntimeStatus === 'blocked-by-source', 'prisoner.p272.forcedEscapeRepeatedBenefic stays blocked-by-source');
+ok(forcedEscape.runtimeAllowed === false, 'prisoner.p272.forcedEscapeRepeatedBenefic is not runtime-allowed');
+ok(!hasCanonicalCustomExecutor('prisoner.p272.forcedEscapeRepeatedBenefic'), 'prisoner.p272.forcedEscapeRepeatedBenefic has no executor (correctly unimplemented)');
+ok(/تكرر/.test(forcedEscape.notes || ''), 'forced-escape notes document the manuscript-variant bracket');
+ok(/threshold/i.test(forcedEscape.notes || ''), 'forced-escape notes document the missing repetition threshold as its own, separate problem');
 
 const enemyRecast = getKashfMethod('dispute.p272.enemyJudgmentRecast');
 ok(enemyRecast.methodRole === 'unresolved', 'dispute.p272.enemyJudgmentRecast stays unresolved');

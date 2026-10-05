@@ -190,6 +190,14 @@ const CATEGORICAL_RULES = {
   // text says "אינו מזהה אדם מסוים ואינו מוכיח אשמה" — a physical/
   // character profile only, never an identity or proof.
   'theft.p225.thiefDescriptionH7': () => 'descriptive',
+  // prisoner.p272.releaseManner (q-prisoner-release-manner): `positive`
+  // stays null in every branch by design -- the executor deliberately
+  // never asserts that voluntary or involuntary exit is the "good"
+  // outcome (the source states only the MANNER of exit, not its value).
+  // Any named branch (involuntary/voluntary/conflicting) is real,
+  // source-grounded descriptive content; only the true no-signal branch
+  // ("unresolved", none of the five houses clearly saad/nahs) is no-decision.
+  'prisoner.p272.releaseManner': (r) => (r.branch !== 'unresolved' ? 'descriptive' : 'no-decision'),
 
   // Split case: travel.p240.roadCautionsH9H7 (q-travel-danger). H9's
   // fortune (h9Evidence) is a genuine decisive safety signal when H9 is
@@ -274,13 +282,13 @@ console.log('No decision at all on every tested board (all confirmed reachable-b
 console.log('Of the above, methods that additionally require client input beyond the board (architectural, not a source gap):', missingInputCapable);
 
 // Sanity assertions.
-assert.equal(totalRunnable, 94, 'routed-to-ready count unchanged');
+assert.equal(totalRunnable, 95, 'routed-to-ready count unchanged');
 assert.ok(decisiveAtLeastOnce <= totalRunnable && decisiveOnAllBoards <= decisiveAtLeastOnce, 'counts are internally consistent');
 assert.equal(decisiveAtLeastOnce + descriptiveOnlyNeverDecisive + noDecisionOnEveryBoard, totalRunnable, 'every routed method falls into exactly one of: decisive at least once, descriptive-only, or no-decision-only');
 
-const expectedDescriptiveOnly = new Set(['q-general-state', 'q-lifespan-stages', 'q-theft-who']);
+const expectedDescriptiveOnly = new Set(['q-general-state', 'q-lifespan-stages', 'q-theft-who', 'q-prisoner-release-manner']);
 const actualDescriptiveOnly = new Set(perQuestion.filter((q) => q.decisiveCount === 0 && q.descriptiveOnlyCount > 0).map((q) => q.id));
-assert.deepEqual(actualDescriptiveOnly, expectedDescriptiveOnly, 'the descriptive-only set matches the three methods whose own executor text disclaims a decisive verdict');
+assert.deepEqual(actualDescriptiveOnly, expectedDescriptiveOnly, 'the descriptive-only set matches the four methods whose own executor text disclaims a decisive verdict');
 
 const expectedNoDecisionOnly = new Set([
   'q-miscarriage', 'q-livelihood-arrive', 'q-traveler-return', 'q-missing-return', 'q-fear-punishment',

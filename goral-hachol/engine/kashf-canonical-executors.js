@@ -1009,13 +1009,12 @@ function computePrisonerRapidExitP272P273(chart) {
 // and the fourth; if it is malefic, the prisoner's outcome is to harm; if
 // benefic, his outcome is to good.) Combine H1+H4 (standard parity-sum
 // combine); saad/nahs give a complete, closed-form binary outcome verdict.
-// Deliberately does NOT implement the adjacent release-MANNER clauses on
-// the same page (voluntary/involuntary exit via H2/H3/H5/H9/H10, and the
-// "forces the prison open" clause) -- those give two different house sets
-// across the main reading and a noted manuscript variant, with no stated
-// precedence when the signs conflict; see the blocked
-// prisoner.p272.releaseManner registry entry for the full citation and
-// exact reason it is not implemented.
+// The adjacent release-MANNER clause on the same page (voluntary/
+// involuntary exit via H2/H3/H5/H9/H10) is implemented separately below
+// as computePrisonerReleaseMannerP272. A further, textually distinct
+// "forces the prison open" clause (a different house set, H3/H4/H5/H9/H12,
+// with its own تكون/تكرر manuscript variant) stays blocked -- see the
+// blocked prisoner.p272.forcedEscapeRepeatedBenefic registry entry.
 function computePrisonerOutcomeH1H4P272(chart) {
   if (!Array.isArray(chart)) return null;
   const h1 = findCanonicalHouse(chart, 1);
@@ -1077,6 +1076,85 @@ function computePrisonerExitSafetyH12P272(chart) {
     positive: safeExitSign ? true : null,
     verdictType: 'prisoner-exit-safety-h12',
     outputHebrew,
+  };
+}
+
+// Same "نكتة: في المحبوس" as the other p272 prisoner methods. CORRECTED
+// 2026-10-05 (flagged on review): an earlier pass wrongly described this
+// clause's house list as a manuscript-variant swap against a SEPARATE,
+// later clause ("forces the prison open"). Re-read directly against the
+// raw scan, re-zoomed: these are two ADJACENT but textually distinct
+// clauses about two different topics, each with its OWN house list. The
+// manuscript variant actually printed on this page ("{وفي نسخة أخرى:
+// تكرر}") concerns only the verb تكون/تكرر inside the LATER clause -- see
+// the blocked prisoner.p272.forcedEscapeRepeatedBenefic entry for that
+// one. It has no bearing on this clause's own, un-varianted house list.
+//
+// Exact quote for THIS clause: "إن كان في الثاني، أو الثالث، أو الخامس،
+// أو التاسع، أو العاشر، شكل نحس، فإن المحبوس يخرج من غير اختيار صاحب
+// البلد؛ وإن كان في أحد هؤلاء سعد، خرج باختياره." (if H2, H3, H5, H9 or
+// H10 has a malefic figure, the prisoner leaves WITHOUT the city-ruler's
+// choice; if one of these has a benefic, he leaves BY his/the ruler's
+// choice.)
+//
+// Computation: check each of H2,H3,H5,H9,H10 ("أو" = OR across the list).
+// If at least one is nahs: an involuntary-exit sign is present. If at
+// least one is saad: a voluntary/official-exit sign is present. Both
+// conditions routinely fire together on a real board (five houses rarely
+// all share one class) -- when they do, report both signs as conflicting
+// evidence rather than picking a winner, the SAME non-forcing convention
+// already used one clause earlier on this exact page by
+// computePrisonerRapidExitP272P273 (not an invented tie-break rule, a
+// reapplication of this corpus's own existing one). The source never
+// states which exit manner is favorable or unfavorable for the prisoner
+// -- both describe only HOW he leaves, not whether that is good -- so
+// `positive` stays null in every branch; this is reported as descriptive
+// information only, like q-theft-who or q-general-state elsewhere in this
+// codebase.
+function computePrisonerReleaseMannerP272(chart) {
+  if (!Array.isArray(chart)) return null;
+  const houseNumbers = [2, 3, 5, 9, 10];
+  const details = houseNumbers.map((h) => {
+    const entry = findCanonicalHouse(chart, h);
+    const pattern = entry?.key || entry?.pattern || null;
+    if (!pattern) return null;
+    const figure = classifyCanonicalFigure(pattern);
+    return { house: h, pattern, figureHebrew: figure.figureHebrew, saadNahs: figure.saadNahs };
+  });
+  if (details.some((d) => d === null)) return null;
+
+  const maleficHouses = details.filter((d) => d.saadNahs === 'nahs');
+  const beneficHouses = details.filter((d) => d.saadNahs === 'saad');
+  const hasMalefic = maleficHouses.length > 0;
+  const hasBenefic = beneficHouses.length > 0;
+
+  const branch = hasMalefic && hasBenefic ? 'conflicting-signs'
+    : hasMalefic ? 'involuntary-exit-sign'
+      : hasBenefic ? 'voluntary-exit-sign'
+        : 'unresolved';
+
+  const maleficList = maleficHouses.map((d) => d.house).join(', ');
+  const beneficList = beneficHouses.map((d) => d.house).join(', ');
+
+  const sign = branch === 'conflicting-signs'
+    ? `נמצאה צורה מזיקה בבית/י ${maleficList} (סימן ליציאה שלא ברצון שליט העיר) וגם צורה מיטיבה בבית/י ${beneficList} (סימן ליציאה ברצונו). המקור אינו נותן כאן כלל להכריע בין שני הסימנים.`
+    : branch === 'involuntary-exit-sign'
+      ? `נמצאה צורה מזיקה בבית/י ${maleficList}. לפי כשף עמ׳ 272: סימן שהאסיר יוצא שלא ברצון שליט העיר.`
+      : branch === 'voluntary-exit-sign'
+        ? `נמצאה צורה מיטיבה בבית/י ${beneficList}. לפי כשף עמ׳ 272: סימן שהאסיר יוצא ברצון שליט העיר (שחרור רשמי).`
+        : 'אף אחד מחמשת הבתים (2, 3, 5, 9, 10) אינו מיטיב או מזיק באופן ברור; הסעיף הזה אינו נותן כאן סימן.';
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 272 (PDF 274)',
+    sourceText: 'إن كان في الثاني، أو الثالث، أو الخامس، أو التاسع، أو العاشر، شكل نحس، فإن المحبوس يخرج من غير اختيار صاحب البلد؛ وإن كان في أحد هؤلاء سعد، خرج باختياره.',
+    housesUsed: houseNumbers,
+    houseDetails: details,
+    maleficHouses: maleficHouses.map((d) => d.house),
+    beneficHouses: beneficHouses.map((d) => d.house),
+    branch,
+    positive: null,
+    verdictType: 'prisoner-release-manner-h2h3h5h9h10',
+    outputHebrew: `${sign} זהו תיאור אופן היציאה בלבד; אין בסעיף זה תאריך שחרור, קביעה אם האסיר אשם, או קביעה אם היציאה טובה או רעה לאסיר.`,
   };
 }
 
@@ -4004,6 +4082,7 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'prisoner.p272-273.rapidExitH11WithH5Caution': computePrisonerRapidExitP272P273,
   'prisoner.p272.outcomeH1H4': computePrisonerOutcomeH1H4P272,
   'prisoner.p272.exitSafetyH12': computePrisonerExitSafetyH12P272,
+  'prisoner.p272.releaseManner': computePrisonerReleaseMannerP272,
   'missing.p249.departedCityH7': computeMissingDepartedCityH7P249,
   'hope.p174.h5h11ThroughH1': computeHopeThroughTwoIntermediatesP174,
   'request.p176.h1h2GateThenH1H4': computeRequestGateAndOutcomeP176,

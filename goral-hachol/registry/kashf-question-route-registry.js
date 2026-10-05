@@ -1304,6 +1304,15 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     note: 'Added 2026-10-05: new, narrowly-scoped question wiring the newly-opened prisoner.p272.exitSafetyH12 (H12 benefic -> safe exit, positive-only). Kept separate from q-prisoner and q-prisoner-outcome -- a different house, a different specific claim (safety of the exit, not its speed or the prisoner\'s ultimate fate).',
   }),
 
+  'q-prisoner-release-manner': route({
+    questionId: 'q-prisoner-release-manner',
+    disposition: 'KEEP',
+    kashfIntentId: 'prisoner.releaseManner',
+    kashfMethodId: 'prisoner.p272.releaseManner',
+    kashfRuntimeStatus: 'ready',
+    note: 'Added 2026-10-05, same round as the corrected prisoner.p272.releaseManner citation: new, narrowly-scoped descriptive-only question (positive always null) for the voluntary/involuntary exit-manner sign via H2/H3/H5/H9/H10. Kept separate from q-prisoner (exit speed), q-prisoner-outcome (ultimate fate) and q-prisoner-exit-safety (H12 safety sign) -- four independent p272/273 signs, never merged or voted.',
+  }),
+
   // ── EDUCATIONAL ONLY ---------------------------------------------------
   'q-promise': route({
     questionId: 'q-promise',

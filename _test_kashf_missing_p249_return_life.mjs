@@ -49,6 +49,13 @@ ok(hasCanonicalCustomExecutor('missing.p249.returnTimingTariqH10H11'), 'timing e
 // will he return", overreaching the source. This block re-reads the live
 // question-bank.js source text and asserts the wording fix holds, and that
 // the route/method wiring for q-missing-return-timing stays intact.
+//
+// REVISED 2026-10-05 (second pass): the desc originally also spelled out
+// the 65,536-board reachability finding (within-the-hour branch
+// unreachable on any real board) directly in client-facing text. That is
+// correct professional documentation but the wrong register for an
+// end-client question description, so it was moved to the method
+// registry's own notes (asserted below) and simplified out of the desc.
 {
   const route = getKashfQuestionRoute('q-missing-return-timing');
   ok(route != null, 'q-missing-return-timing route exists');
@@ -68,10 +75,16 @@ ok(hasCanonicalCustomExecutor('missing.p249.returnTimingTariqH10H11'), 'timing e
   ok(/התאחדות|מפגש/.test(label), 'label speaks of a meeting/reunion (התאחדות/מפגש), matching the source\'s "اجتماع به"');
 
   ok(desc.length > 0, 'q-missing-return-timing desc is present');
+  ok(!/יחזור הנעדר\?/.test(desc), 'desc does not itself promise a "when will he return" answer');
   ok(/התאחדות|מפגש/.test(desc), 'desc frames this as a meeting/reunion, not a return');
   ok(/שובו הביתה|אינו קובע אם הנעדר יחזור/.test(desc), 'desc explicitly disclaims determining the return itself, distinguishing this from q-missing-return');
-  ok(/תוך השעה/.test(desc) && /65,536|65536/.test(desc), 'desc documents that the within-the-hour branch is not reachable on any of the 65,536 real generated boards');
+  ok(!/65,536|65536/.test(desc), 'desc stays client-appropriate: no raw board-count statistics in client-facing text');
+  ok(/תוך השעה/.test(desc), 'desc still plainly states the within-the-hour source branch (as a stated source rule, not a reachability claim)');
   ok(/q-missing-return|"האם הנעדר יחזור/.test(desc), 'desc cross-references the separate return-or-not question');
+
+  const timingMethodNotes = getKashfMethod('missing.p249.returnTimingTariqH10H11').notes || '';
+  ok(/REACHABILITY/.test(timingMethodNotes), 'the technical reachability finding is documented in the method registry notes (professional docs), not the client desc');
+  ok(/512\/65,536/.test(timingMethodNotes) && /UNREACHABLE \(0\/65,536\)/.test(timingMethodNotes), 'method registry notes carry the exact reachability figures for both branches');
 }
 
 // Branch A (same day): real board, found by brute-force search over all
