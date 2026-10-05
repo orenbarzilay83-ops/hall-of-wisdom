@@ -9,7 +9,11 @@
  * already-implemented generic hidden-action rule
  * (spiritual.p167.hiddenActionAirRows46815, q-hidden-action).
  *
- * Direct quote: "نكتة: إذا كان السائل يسحر عنه المسنول أو لا؟ خذ نار الأول،
+ * Direct quote (word order re-verified 2026-10-05 at high resolution after
+ * an external review; the scan reads "يسحر المسنول عنه", not "يسحر عنه
+ * المسنول" as first transcribed — the rule's direction, querent acting on
+ * the asked-about person, is unchanged):
+ * "نكتة: إذا كان السائل يسحر المسنول عنه أم لا؟ خذ نار الأول،
  * والرابع، والسادس، والميزان، قيم منهم شكلا، وانظر ذلك الشكل، فإن نحسا،
  * فالسائل يعمل" — fire-row of H1/H4/H6/Mizan(H15); malefic => querent
  * practices sorcery on the asked-about person.
