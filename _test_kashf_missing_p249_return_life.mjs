@@ -11,8 +11,10 @@
  */
 
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 
 import { getKashfMethod, validateKashfMethodRegistry } from './goral-hachol/registry/kashf-canonical-method-registry.js';
+import { getKashfQuestionRoute } from './goral-hachol/registry/kashf-question-route-registry.js';
 import { hasCanonicalCustomExecutor, executeCanonicalCustomMethod } from './goral-hachol/engine/kashf-canonical-executors.js';
 import { buildRamlBoardFromMothers } from './goral-hachol/engine/raml-board-generator.js';
 
@@ -40,6 +42,37 @@ ok(timingMethod.kashfIntentId === 'missing.returnTiming', 'registered under a ne
 ok(/مجرب/.test(timingMethod.notes || ''), 'registry notes carry the source\'s own "تested" marker');
 ok(/q-missing-return/.test(timingMethod.notes || ''), 'registry notes document the connection to the existing q-missing-return gap');
 ok(hasCanonicalCustomExecutor('missing.p249.returnTimingTariqH10H11'), 'timing executor is reachable via dispatch');
+
+// UI/routing wording check -- CORRECTED 2026-10-05 (flagged on review): the
+// source says "اجتماع به" (union/MEETING with the absent person), not
+// "عودته" (his return). The question-bank label/desc originally said "when
+// will he return", overreaching the source. This block re-reads the live
+// question-bank.js source text and asserts the wording fix holds, and that
+// the route/method wiring for q-missing-return-timing stays intact.
+{
+  const route = getKashfQuestionRoute('q-missing-return-timing');
+  ok(route != null, 'q-missing-return-timing route exists');
+  ok(route.kashfMethodId === 'missing.p249.returnTimingTariqH10H11', 'q-missing-return-timing routes to the p249 timing executor');
+  ok(route.kashfIntentId === 'missing.returnTiming', 'q-missing-return-timing keeps the distinct missing.returnTiming intent');
+
+  const bankSource = fs.readFileSync('./goral-hachol/ui/question-bank.js', 'utf8');
+  const marker = "id: 'q-missing-return-timing'";
+  const start = bankSource.indexOf(marker);
+  ok(start >= 0, 'q-missing-return-timing entry exists in question-bank.js');
+  const chunk = bankSource.slice(start, start + 1200);
+  const label = chunk.match(/label\s*:\s*'([^']+)'/)?.[1] || '';
+  const desc = chunk.match(/desc\s*:\s*'([^']+)'/)?.[1] || '';
+
+  ok(label.length > 0, 'q-missing-return-timing label is present');
+  ok(!/יחזור/.test(label), 'label does NOT claim to answer when the absent person "returns" (יחזור) -- the source speaks of a meeting, not a return');
+  ok(/התאחדות|מפגש/.test(label), 'label speaks of a meeting/reunion (התאחדות/מפגש), matching the source\'s "اجتماع به"');
+
+  ok(desc.length > 0, 'q-missing-return-timing desc is present');
+  ok(/התאחדות|מפגש/.test(desc), 'desc frames this as a meeting/reunion, not a return');
+  ok(/שובו הביתה|אינו קובע אם הנעדר יחזור/.test(desc), 'desc explicitly disclaims determining the return itself, distinguishing this from q-missing-return');
+  ok(/תוך השעה/.test(desc) && /65,536|65536/.test(desc), 'desc documents that the within-the-hour branch is not reachable on any of the 65,536 real generated boards');
+  ok(/q-missing-return|"האם הנעדר יחזור/.test(desc), 'desc cross-references the separate return-or-not question');
+}
 
 // Branch A (same day): real board, found by brute-force search over all
 // 65,536 mother combinations.
