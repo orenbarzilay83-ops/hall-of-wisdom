@@ -514,6 +514,58 @@ function computeLoveAttentionP204(chart) {
   };
 }
 
+// Kashf p170 "water houses" need-fulfilment check (separate from the p170
+// derived-figure check, which this method does NOT implement — see note
+// below). Houses 3, 7, 11 and 15 are the four water-element houses by the
+// book's own fixed Fire/Air/Water/Earth house cycle (explicit at p43, and
+// per-house at p47/p49/p51/p53: "השלישי... מיסוד המים... השביעי... מיסוד
+// המים... האחד־עשר... מיסוד המים... החמישה־עשר... מיסוד המים"). In the
+// canonical pattern encoding a row holds '1' (open) or '2' (joined); the
+// water row is index 2 (fire=0, air=1, water=2, earth=3), matching the same
+// fixed element cycle.
+//
+// IMPORTANT: p170 states two separate water-houses checks. This executor
+// implements only the second, simpler one ("ועוד: התבונן בבתי המים..."). The
+// first ("השלם את מערך ההכאה... והעמד צורה מבתי יסוד המים... אם אותה צורה
+// נפלה ביתד...") requires constructing a new derived figure from the four
+// houses' water rows and then judging where THAT figure "falls"; the source
+// does not state how a derived figure's own house-class is determined, so
+// that half of the rule is not implemented here. The p169-170 "look at the
+// tenth" house-class rule (inward figure + angle vs. succedent vs. "its
+// owner/lord" in a cadent house) is also not implemented: the referent of
+// "its owner/lord" (בעליו) is not defined anywhere accessible in this
+// source, so that rule remains blocked-by-source rather than guessed.
+const WATER_HOUSE_NUMBERS = [3, 7, 11, 15];
+const WATER_ROW_INDEX = 2;
+
+function computeWaterHousesOpenP170(chart) {
+  if (!Array.isArray(chart)) return null;
+
+  const houses = WATER_HOUSE_NUMBERS.map((houseNumber) => {
+    const house = findCanonicalHouse(chart, houseNumber);
+    const pattern = house?.key || house?.pattern || null;
+    const waterRowState = pattern ? getCanonicalRowState(pattern, WATER_ROW_INDEX) : null;
+    return { houseNumber, pattern, waterRowState };
+  });
+
+  if (houses.some((h) => !h.waterRowState)) return null;
+
+  const allWaterRowsOpen = houses.every((h) => h.waterRowState === 'open');
+  const outputHebrew = allWaterRowsOpen
+    ? 'שורת יסוד המים פתוחה בכל ארבעת בתי המים (3, 7, 11, 15). לפי כשף עמ׳ 170: הבקשה תתקיים.'
+    : 'שורת יסוד המים אינה פתוחה בכל ארבעת בתי המים (3, 7, 11, 15). לפי כשף עמ׳ 170: הבקשה נמנעת מן השואל הזה.';
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 170',
+    sourceText: 'ועוד: התבונן בבתי המים. אם שורת יסוד המים פתוחה בהם — הבקשה תתקיים; ואם לא — הבקשה נמנעת מן השואל הזה.',
+    housesUsed: WATER_HOUSE_NUMBERS,
+    houses,
+    allWaterRowsOpen,
+    positive: allWaterRowsOpen,
+    outputHebrew,
+  };
+}
+
 // p204 uses the source's explicit "mutable" and "fixed" figure classes.
 // Source classification (working pp. 57-60): four mutable + four fixed only.
 // The other eight incoming/outgoing figures are NOT silently forced into either class.
@@ -2464,6 +2516,7 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'authority.p256.honorConditionH10Planet': computeHonorConditionP256,
   'authority.p257.appointmentH1H10Planet': computeAppointmentCompletionP257,
   'authority.p257.rulerConditionH7H10': computeRulerConditionP257,
+  'needFulfillment.p170.waterHousesRowOpen': computeWaterHousesOpenP170,
 });
 
 function toLegacyChart(board) {

@@ -1609,6 +1609,34 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     executorStatus: 'not-applicable',
     notes: 'Compatibility placeholder only. p167 asks whether the querent acts by sorcery on the quesited person; it does not answer whether the querent is affected by sorcery/evil eye/jinn.',
   }),
+
+  // ── p169-170 need-fulfilment rules (researched together; split by what the
+  // source actually allows to run) ---------------------------------------
+  'needFulfillment.p170.waterHousesRowOpen': method({
+    kashfMethodId: 'needFulfillment.p170.waterHousesRowOpen',
+    kashfIntentId: 'completion.willComplete',
+    topicId: 'completion',
+    sourcePages: [170],
+    methodRole: 'supporting-condition',
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: false,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
+    notes: 'Canonical p170 water-houses executor is wired (computeWaterHousesOpenP170 in kashf-canonical-executors.js): houses 3/7/11/15 are the water-element houses by the book’s own fixed Fire/Air/Water/Earth house cycle (p43, p47, p49, p51, p53); the request is judged fulfilled only if the water row is open in all four. This is a second, source-attested check alongside completion.p173.fireRows15910, not a replacement for it — methodRole is supporting-condition and runtimeAllowed stays false so it is never silently selected as the operational primary for completion.willComplete without an explicit routing decision. The companion p170 rule (build one derived figure from the four houses’ water rows, then judge where that figure “falls”) is NOT implemented: the source never states how a derived figure’s own house-class is determined.',
+  }),
+
+  'needFulfillment.p169-170.h10OwnerHouseClass': method({
+    kashfMethodId: 'needFulfillment.p169-170.h10OwnerHouseClass',
+    kashfIntentId: 'completion.willComplete',
+    topicId: 'completion',
+    sourcePages: [169, 170],
+    methodRole: 'unresolved',
+    kashfRuntimeStatus: 'blocked-by-source',
+    runtimeAllowed: false,
+    executionKind: null,
+    executorStatus: 'not-applicable',
+    notes: 'p169-170: "look at the tenth. If there is an inward figure and it is an angle house — near attainment; if adjacent to the angles — delayed attainment; if its owner/lord (בעליו) is in a cadent house — not attained." House 10 is always an angle house by the book’s own fixed classification (p43/p46), so the first two branches cannot literally mean "is H10 an angle/succedent house" — that would be a tautology/impossibility. The third branch’s "its owner/lord" is never defined on this page or elsewhere accessible in this source (not a planetary ruler table, not a derived-house table). This entry was tracked only as a source-text correction (B11-P169-170-H10-HOUSE-CLASS in the Master Index, now also synced into kashf-al-asrar-book.js) — that index status describes the Hebrew transcription being faithful to the Arabic, not that a runtime method exists. No executor is implemented here; do not infer a referent for "its owner/lord" without a confirmed source definition.',
+  }),
 });
 
 export function getKashfMethod(kashfMethodId) {

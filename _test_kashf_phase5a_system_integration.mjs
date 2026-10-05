@@ -68,7 +68,7 @@ const methods = extractCallObjects(methodRegistry, 'method').map((x) => ({
   runtimeAllowed: x.bool('runtimeAllowed'),
   executorStatus: x.field('executorStatus'),
 }));
-assert.equal(methods.length, 118, 'unexpected canonical method count');
+assert.equal(methods.length, 120, 'unexpected canonical method count');
 
 const methodMap = new Map(methods.map((m) => [m.methodId, m]));
 for (const route of routes) {
