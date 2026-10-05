@@ -18,7 +18,7 @@ import { buildRamlBoardFromMothers } from './raml-board-generator.js';
 import { FIGURE_PLANET_MAP } from '../data/sources/kashf-al-asrar/kashf-hazz.js';
 import { classifyCanonicalFigure } from './kashf-canonical-figure-classifier.js';
 import { HAWI_FIGURE_NAMES_BY_ID } from '../data/sources/kashf-al-asrar/kashf-figure-names.js';
-import { isMujassadP95_97 } from './kashf-figure-classifier.js';
+import { isMujassadP95_97, isMujassadBodyConfirmed } from './kashf-figure-classifier.js';
 
 const LEGACY_EXECUTORS = Object.freeze({
   'illness.bodyPart.h6Figure': computeBodyPartDiagnosisKashf,
@@ -187,19 +187,25 @@ function computePregnancyGenderP191(chart) {
 // الكتاب: فصل في طبائع الأشكال على التقريب" — an ATTRIBUTED (not body-text)
 // chapter that walks all 16 figures and names "مجسد" for exactly six of
 // them (see MUJASSAD_P95_97_PATTERNS in kashf-figure-classifier.js for the
-// full citation and cross-check against this source's own scattered
-// individual figure descriptions, which independently confirm the same six
-// patterns). This is NOT the same set as the canonical classifier's
+// full citation). This is NOT the same set as the canonical classifier's
 // mujassad-dakhil/mujassad-kharij labels (those are an internal code name
 // for the unrelated, independently-confirmed "fixed"/"mutable" eight-figure
 // class; overlap with this true p95-97 مجسد list is only 2 of 6 figures).
 //
-// Per the explicit source framing, this executor only asserts the POSITIVE
-// branch: an H5 figure from the p95-97 مجسد list is a traditional sign of
-// twins. The source never states an inverse ("not مجسد => not twins"), so a
-// non-matching H5 figure returns positive:null (no verdict), never
-// positive:false. This is reported as a traditional source sign, not a
-// medical determination.
+// RESTRICTED 2026-10-05: of the six p95-97 figures, only THREE are also
+// independently called مجسد in their own standalone body-text profile
+// entry elsewhere in the source (the unattributed per-figure chapter,
+// pp70-94) -- Aqla/1221 (p76), Nakis/2221 (p77), Nusra Dakhila/2211 (p85).
+// The other three (Judla/1121, Ataba Dakhila/2111, Nusra Kharija/1122) are
+// named مجسد ONLY in the attributed p95-97 appendix; their own p74/p89/p82
+// body entries use different language ("مתهفك"/"mutable") and never say
+// مجسد. See MUJASSAD_BODY_CONFIRMED_PATTERNS /
+// MUJASSAD_P95_97_ATTRIBUTED_ONLY_PATTERNS in kashf-figure-classifier.js.
+// Per this restriction, this executor only asserts the POSITIVE branch for
+// the body-confirmed three. The source never states an inverse ("not مجسد
+// => not twins") either way, so every other H5 figure -- attributed-only or
+// unlisted -- returns positive:null (no verdict), never positive:false.
+// This is reported as a traditional source sign, not a medical determination.
 function computePregnancyTwinsMujassadP191(chart) {
   if (!Array.isArray(chart)) return null;
   const h5 = findCanonicalHouse(chart, 5);
@@ -207,19 +213,23 @@ function computePregnancyTwinsMujassadP191(chart) {
   if (!pattern) return null;
 
   const figureHebrew = h5?.hebrew || h5?.hebrewName || pattern;
-  const isTwinsSign = isMujassadP95_97(pattern);
+  const isTwinsSign = isMujassadBodyConfirmed(pattern);
+  const isAttributedOnly = !isTwinsSign && isMujassadP95_97(pattern);
 
   const outputHebrew = isTwinsSign
-    ? `בית 5: ${figureHebrew} (${pattern}) — צורה המכונה "مجسد" במפורש בכשף עמ׳ 95–97. לפי כשף עמ׳ 191: זהו סימן מסורתי שהלידה תאומים. זהו סימן ממקור קדום, לא קביעה רפואית, ואינו תחליף לבדיקה רפואית.`
-    : `בית 5: ${figureHebrew} (${pattern}) — אינה מופיעה ברשימת "مجسد" המפורשת של כשף עמ׳ 95–97. המקור אינו נותן כלל הפוך; היעדר הסימן אינו הוכחה שאין תאומים, וכלל זה לבדו אינו מכריע.`;
+    ? `בית 5: ${figureHebrew} (${pattern}) — צורה המכונה "مجسد" במפורש גם בפרק המיוחס (כשף עמ׳ 95–97) וגם בתיאורה העצמאי בגוף-הספר. לפי כשף עמ׳ 191: זהו סימן מסורתי שהלידה תאומים. זהו סימן ממקור קדום, לא קביעה רפואית, ואינו תחליף לבדיקה רפואית.`
+    : isAttributedOnly
+      ? `בית 5: ${figureHebrew} (${pattern}) — מופיעה כ"مجسد" רק בפרק המיוחס של כשף עמ׳ 95–97 ("ومن غير الكتاب"); תיאורה העצמאי בגוף-הספר אינו משתמש במילה הזו. אין כאן הכרעה: הצורה אינה נכללת בענף הסימן החיובי המוגבל לצורות המאומתות בגוף-הספר בלבד.`
+      : `בית 5: ${figureHebrew} (${pattern}) — אינה מופיעה ברשימת "مجسد" של כשף עמ׳ 95–97. המקור אינו נותן כלל הפוך; היעדר הסימן אינו הוכחה שאין תאומים, וכלל זה לבדו אינו מכריע.`;
 
   return {
-    sourceRef: 'כשף אל-אסרר עמ׳ 191; רשימת "مجسد" עמ׳ 95–97 (פרק מיוחס)',
+    sourceRef: 'כשף אל-אסרר עמ׳ 191; רשימת "مجسد" עמ׳ 95–97 (פרק מיוחס) מוגבלת לצורות המאומתות בגוף-הספר (עמ׳ 76, 77, 85)',
     sourceText: 'وإن كان مجسدا، فالمولود توأم.',
     houseNumber: 5,
     h5Pattern: pattern,
     h5FigureHebrew: figureHebrew,
     isTwinsSign,
+    isAttributedOnly,
     positive: isTwinsSign ? true : null,
     verdictType: 'traditional-sign-not-medical',
     outputHebrew,
@@ -2790,8 +2800,19 @@ function computeMissingLifeStatusH8H14P249(chart) {
     : stateQuality === 'bad' ? 'מצבו רע (היפוך הטוב)'
       : 'המקור אינו נותן כאן ענף לצורה ממוזגת; אין הכרעה למצבו הכללי';
 
+  // "وإلا بضد ذلك" ("and if not, the opposite of that") is the source's own
+  // explicit, fully-binary inverse of "فإن إنفتح ناره وهواءه، كان حيا" (if
+  // its fire and air open, he is alive) -- there is no third/mixed branch
+  // for this specific clause (unlike the separate saad/nahs state-quality
+  // clause above, which only covers saad/nahs and is left 'unresolved' for
+  // a mixed result). So positive:false here is a real source-stated verdict
+  // ("not alive"), not an absence of a rule -- the client/advisor text below
+  // must say so plainly and must never read as "no verdict."
   const resultFigureHebrew = classification.figureHebrew || combined.result?.hebrewName || resultPattern;
-  const outputHebrew = `חיבור בית 8 (${h8Pattern}) ובית 14 (${h14Pattern}): ${resultFigureHebrew} (${resultPattern}). ${stateQualityHebrew}. שורת האש ${fireState === 'open' ? 'פתוחה' : 'מתחברת'} ושורת האוויר ${airState === 'open' ? 'פתוחה' : 'מתחברת'} — לפי כשף עמ׳ 249: ${aliveSign ? 'סימן שהוא בחיים' : 'היפוך הסימן — אין כאן הכרעה שהוא בחיים'}. זהו סימן מסורתי מן המקור, לא אימות עובדתי.`;
+  const aliveSignHebrew = aliveSign
+    ? 'סימן שהוא בחיים'
+    : 'היפוך הסימן המפורש במקור ("وإلا بضد ذلك") — סימן שאינו בחיים';
+  const outputHebrew = `חיבור בית 8 (${h8Pattern}) ובית 14 (${h14Pattern}): ${resultFigureHebrew} (${resultPattern}). ${stateQualityHebrew}. שורת האש ${fireState === 'open' ? 'פתוחה' : 'מתחברת'} ושורת האוויר ${airState === 'open' ? 'פתוחה' : 'מתחברת'} — לפי כשף עמ׳ 249: ${aliveSignHebrew}. זהו סימן מסורתי מן המקור, לא אימות עובדתי ולא תחליף לבירור עובדתי בפועל.`;
 
   return {
     sourceRef: 'כשף אל-אסרר עמ׳ 249 (PDF 251)',

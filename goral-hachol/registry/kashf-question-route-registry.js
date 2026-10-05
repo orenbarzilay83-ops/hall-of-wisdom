@@ -692,6 +692,15 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     note: 'The selected body method answers whether the absent person returns. The current description also promises WHEN; timing must be removed or handled by a separate verified intent.',
   }),
 
+  'q-missing-return-timing': route({
+    questionId: 'q-missing-return-timing',
+    disposition: 'KEEP',
+    kashfIntentId: 'missing.returnTiming',
+    kashfMethodId: 'missing.p249.returnTimingTariqH10H11',
+    kashfRuntimeStatus: 'ready',
+    note: 'Added 2026-10-05: wires the previously-unrouted missing.p249.returnTimingTariqH10H11 (opened the same round, registered ready/canonical-operational but left unwired as an explicit open product decision) to a new, separately-scoped question, resolving the gap q-missing-return\'s own note names. Deliberately NOT merged into q-missing-return itself -- that question answers IF the person returns via a different H1/H4/H7/H10+H15 rule (missing.p249.returnAnglesJudge) and the two methods are never voted or blended together. This question is intentionally narrow: it only exposes the two explicit source branches (H10=H11=Tariq same-day; H10=Tariq+H11=Ijtima within-the-hour) and gives no verdict, and no timing claim, for any other H10/H11 pairing -- the question-bank description says so explicitly and cross-references q-missing-return for the separate return-or-not question.',
+  }),
+
   'q-fugitive': route({
     questionId: 'q-fugitive',
     disposition: 'EDUCATIONAL',

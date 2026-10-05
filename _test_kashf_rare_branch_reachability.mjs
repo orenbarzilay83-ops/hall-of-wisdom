@@ -2,27 +2,30 @@
 /**
  * _test_kashf_rare_branch_reachability.mjs
  *
- * Five ready, routed methods never produced a decisive verdict across a
+ * Six ready, routed methods never produced a decisive verdict across a
  * 47-board test battery (7 structured boards + 40 random boards, seeded)
  * built while correcting the verdict-measurement methodology on
  * 2026-10-05 (the prior round's metric wrongly counted any text different
  * from the single generic fallback string as "a verdict", which conflated
  * explicit no-decision prose with real decisions; this is unrelated to
- * that fix and addresses what it surfaced).
+ * that fix and addresses what it surfaced). A sixth, q-missing-return-timing,
+ * was added later the same round when that method's routing was opened.
  *
  * Per "do not presuppose the book or the code is wrong; give a precise
- * mathematical explanation", each of the five was checked by exhaustive or
- * targeted enumeration over the relevant board space, using the SAME
- * classifier each executor itself imports (kashf-canonical-figure-
- * classifier.js, not the simpler kashf-figure-classifier.js — the two
- * disagree on 6 of 16 figures' saad/nahs class for genuinely "mixed"
- * figures, confirmed by direct comparison this round). All five conditions
- * are confirmed REACHABLE from real 4-mother boards, just rare (0.01%-2.3%
- * of the 65,536 possible boards) — not bugs, not unreachable like
- * well.p188.recast1468. One further condition checked in the same pass
- * (travel.p244.returnH1H2H9's "allBeneficIncoming" branch) is NOT
- * reachable (0/65,536) and is documented separately in the method
- * registry; only its "allPureMalefic" branch is exercised below.
+ * mathematical explanation", each was checked by exhaustive or targeted
+ * enumeration over the relevant board space, using the SAME classifier
+ * each executor itself imports (kashf-canonical-figure-classifier.js, not
+ * the simpler kashf-figure-classifier.js — the two disagree on 6 of 16
+ * figures' saad/nahs class for genuinely "mixed" figures, confirmed by
+ * direct comparison this round). All six conditions are confirmed
+ * REACHABLE from real 4-mother boards, just rare (0.01%-2.3% of the 65,536
+ * possible boards) — not bugs, not unreachable like well.p188.recast1468.
+ * Two further conditions checked in the same overall effort
+ * (travel.p244.returnH1H2H9's "allBeneficIncoming" branch, and
+ * missing.p249.returnTimingTariqH10H11's "within-the-hour" branch) are NOT
+ * reachable (0/65,536) and are documented separately in the method
+ * registry and in that method's own golden test; only each method's OTHER,
+ * reachable branch is exercised below.
  *
  * Each case below supplies a real 4-mother board (via
  * buildRamlBoardFromMothers) found by exhaustive/targeted search, not a
@@ -112,6 +115,25 @@ function ok(cond, msg) { assertions++; assert(cond, msg); }
   ok(er?.allPureMalefic === true, 'q-traveler-return: all-pure-malefic fires on a real board (1536/65536 boards reachable)');
   ok(er?.sourceOutcome === 'hardship-possible-no-return', 'q-traveler-return: sourceOutcome reflects the only reachable decisive branch');
   ok(reading?.primaryFormula?.verdict?.positive === null, 'q-traveler-return: verdict.positive stays null even on this decisive branch — the engine-level positive field only ever captures the unreachable allBeneficIncoming branch, so client code must read sourceOutcome, not positive, for this method');
+}
+
+// missing.p249.returnTimingTariqH10H11 (q-missing-return-timing, added
+// 2026-10-05), same-day branch: H10=H11=Tariq(1111). Reachable in
+// 512/65,536 boards (~0.78%) by exhaustive enumeration (re-confirmed this
+// round). Its OTHER branch, within-the-hour (H10=Tariq/1111,
+// H11=Ijtima/2112), is confirmed UNREACHABLE (0/65,536) by the same
+// exhaustive method -- already documented in the original opening round's
+// golden test (_test_kashf_missing_p249_return_life.mjs), which exercises
+// that branch logic directly against a hand-built chart instead. This
+// method can therefore produce a decisive "same-day" verdict on a real
+// board, but never a real-board "within-the-hour" verdict.
+{
+  const board = buildRamlBoardFromMothers(['1211', '1211', '1211', '2122']);
+  const reading = buildKashfReadingByQuestionId(board, 'q-missing-return-timing', { question: 'test' });
+  const er = reading?.primaryFormula?.result?.executorResult;
+  ok(reading.valid === true, 'q-missing-return-timing: real board produces a valid reading');
+  ok(er?.timing === 'same-day', 'q-missing-return-timing: same-day branch fires on a real board (512/65536 boards reachable)');
+  ok(reading?.primaryFormula?.verdict?.positive === true, 'q-missing-return-timing: engine-level verdict.positive is true on the same-day branch');
 }
 
 console.log(`Kashf rare-branch reachability: ${assertions} assertions passed`);

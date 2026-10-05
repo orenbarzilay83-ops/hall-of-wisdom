@@ -274,7 +274,7 @@ console.log('No decision at all on every tested board (all confirmed reachable-b
 console.log('Of the above, methods that additionally require client input beyond the board (architectural, not a source gap):', missingInputCapable);
 
 // Sanity assertions.
-assert.equal(totalRunnable, 91, 'routed-to-ready count unchanged');
+assert.equal(totalRunnable, 92, 'routed-to-ready count unchanged');
 assert.ok(decisiveAtLeastOnce <= totalRunnable && decisiveOnAllBoards <= decisiveAtLeastOnce, 'counts are internally consistent');
 assert.equal(decisiveAtLeastOnce + descriptiveOnlyNeverDecisive + noDecisionOnEveryBoard, totalRunnable, 'every routed method falls into exactly one of: decisive at least once, descriptive-only, or no-decision-only');
 
@@ -284,8 +284,16 @@ assert.deepEqual(actualDescriptiveOnly, expectedDescriptiveOnly, 'the descriptiv
 
 const expectedNoDecisionOnly = new Set([
   'q-miscarriage', 'q-livelihood-arrive', 'q-traveler-return', 'q-missing-return', 'q-fear-punishment',
+  // Added 2026-10-05 with the new q-missing-return-timing route: its
+  // positive branches require H10=H11=Tariq(1111) or H10=Tariq(1111)+
+  // H11=Ijtima(2112) specifically -- both real, reachable combinations
+  // (the same-day branch is exercised directly by a hand-picked real
+  // board in _test_kashf_missing_p249_return_life.mjs), just not hit by
+  // any of this file's 47 generic sample boards. Same category as the
+  // other five: a confirmed-reachable rare condition, not a bug.
+  'q-missing-return-timing',
 ]);
 const actualNoDecisionOnly = new Set(perQuestion.filter((q) => q.decisiveCount === 0 && q.descriptiveOnlyCount === 0).map((q) => q.id));
-assert.deepEqual(actualNoDecisionOnly, expectedNoDecisionOnly, 'the no-decision-only set matches the five exhaustively-verified rare conditions exactly');
+assert.deepEqual(actualNoDecisionOnly, expectedNoDecisionOnly, 'the no-decision-only set matches the six exhaustively-verified rare conditions exactly');
 
 console.log('Kashf verdict-rate audit: PASS');

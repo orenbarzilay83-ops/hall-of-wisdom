@@ -105,6 +105,7 @@ ok(lifeMethod.methodRole === 'supporting-condition', 'registered as a supporting
 ok(lifeMethod.runtimeAllowed === false, 'not auto-selected as the operational primary for missing.aliveOrDead');
 ok(lifeMethod.kashfIntentId === 'missing.aliveOrDead', 'shares the missing.aliveOrDead intent with missing.p248-249.lifeH1H4H9Outcome, by design');
 ok(hasCanonicalCustomExecutor('missing.p249.lifeStatusH8H14'), 'life-status executor is reachable via dispatch');
+ok(/FIXED 2026-10-05/.test(lifeMethod.notes || ''), 'registry notes document the 2026-10-05 text/field contradiction fix');
 
 // Alive case: real board where H8+H14 combine to a figure with both fire
 // and air rows open.
@@ -151,6 +152,50 @@ ok(hasCanonicalCustomExecutor('missing.p249.lifeStatusH8H14'), 'life-status exec
   ok(result.fireState === 'joined' && result.airState === 'joined', 'hand-built closed case: fire and air rows both read as closed/joined');
   ok(result.aliveSign === false, 'hand-built closed case: aliveSign is false');
   ok(result.positive === false, 'hand-built closed case: positive is false (source-stated inverse, not invented)');
+  ok(result.stateQuality === 'unresolved', 'hand-built closed case: Jamaa (2222) is a mixed-fortune figure, so stateQuality is unresolved');
+  // FIXED 2026-10-05: this exact case previously had positive:false while
+  // outputHebrew said "no verdict" ("אין כאן הכרעה שהוא בחיים") about
+  // aliveness -- a direct text/field contradiction flagged on review. It
+  // must now state the negative verdict plainly. The SEPARATE mixed-state
+  // hedge ("אין הכרעה למצבו הכללי") is allowed to coexist -- it addresses
+  // the unrelated stateQuality field, not aliveSign/positive.
+  ok(result.outputHebrew.includes('סימן שאינו בחיים'), 'hand-built closed case: Hebrew output states the negative alive verdict plainly, not "no verdict"');
+  ok(!result.outputHebrew.includes('אין כאן הכרעה שהוא בחיים'), 'hand-built closed case: the old contradictory "no verdict on aliveness" phrasing is gone');
+  ok(result.outputHebrew.includes('אין הכרעה למצבו הכללי'), 'hand-built closed case: the separate, still-correct mixed-state-quality hedge is preserved');
+}
+
+// Full branch matrix (aliveSign x stateQuality), one real combine case per
+// branch, built from H8=1111 with H14 chosen so combine(H8,H14) yields the
+// target resultPattern (combine rule: result digit is '2' when the two
+// input digits match, '1' when they differ -- verified against the
+// existing 1111+2211=>1122 case above). Each case checks that `positive`,
+// `aliveSign`, `stateQuality` and `outputHebrew` all agree with each other,
+// per the explicit instruction to check a case for every branch.
+const LIFE_STATUS_MATRIX = [
+  // [h14Pattern, resultPattern, expectAliveSign, expectStateQuality, label]
+  ['2221', '1112', true, 'bad', 'alive x bad (Ataba Kharija/1112, nahs)'],
+  ['2222', '1111', true, 'unresolved', 'alive x mixed (Tariq/1111, mixed)'],
+  ['1122', '2211', false, 'good', 'dead x good (Nusra Dakhila/2211, saad)'],
+  ['1112', '2221', false, 'bad', 'dead x bad (Nakis/2221, nahs)'],
+];
+
+for (const [h14Pattern, resultPattern, expectAliveSign, expectStateQuality, label] of LIFE_STATUS_MATRIX) {
+  const chart = Array.from({ length: 16 }, (_, i) => {
+    const house = i + 1;
+    const pattern = house === 8 ? '1111' : house === 14 ? h14Pattern : '2222';
+    return { house, houseNumber: house, pattern, key: pattern, hebrew: pattern };
+  });
+  const result = executeCanonicalCustomMethod('missing.p249.lifeStatusH8H14', { entries: chart });
+  ok(result.resultPattern === resultPattern, `${label}: combine(1111,${h14Pattern}) yields ${resultPattern} as expected`);
+  ok(result.aliveSign === expectAliveSign, `${label}: aliveSign is ${expectAliveSign}`);
+  ok(result.positive === expectAliveSign, `${label}: positive mirrors aliveSign exactly`);
+  ok(result.stateQuality === expectStateQuality, `${label}: stateQuality is ${expectStateQuality}`);
+  ok(result.outputHebrew.includes(expectAliveSign ? 'סימן שהוא בחיים' : 'סימן שאינו בחיים'),
+    `${label}: Hebrew output's alive clause matches aliveSign/positive exactly (no text/field contradiction)`);
+  ok(!(result.positive === false && /אין כאן הכרעה/.test(result.outputHebrew)),
+    `${label}: no "no verdict" wording on aliveness when positive is false`);
+  ok(!(result.positive === true && /שאינו בחיים|אין כאן הכרעה/.test(result.outputHebrew)),
+    `${label}: no negative or "no verdict" wording on aliveness when positive is true`);
 }
 
 // Missing/incomplete board data for both methods: must not guess.

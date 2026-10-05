@@ -600,6 +600,13 @@ window.QUESTION_BANK = [
     clientFields: [F.missingName, F.missingWhen],
   },
   {
+    id: 'q-missing-return-timing',
+    category: 'travel', houseId: 9, topicId: 'missingPerson', kashfTopicId: 'missingPerson',
+    label: 'מתי יחזור הנעדר?',
+    desc: 'כלל נפרד עמ׳ 249 לפי בתים 10–11 בלבד: כששתיהן "דרך" — איחוד באותו היום; כשבית 10 "דרך" ובית 11 "חיבור" — איחוד תוך השעה (המקור עצמו מציין "מנוסה"). בכל צירוף אחר של בתים 10–11 אין במקור הכרעה למועד, וזה אינו קובע אם הנעדר יחזור כלל — לכך ראו "האם הנעדר יחזור?".',
+    clientFields: [F.missingName, F.missingWhen],
+  },
+  {
     id: 'q-fugitive',
     category: 'travel', houseId: 12, topicId: 'missingPerson', kashfTopicId: 'missingPerson',
     label: 'האם הבורח ייתפס?',
