@@ -1018,15 +1018,16 @@ export const KASHF_V57_KNOWLEDGE = Object.freeze({
     notes: 'הכלל עוסק בשיבה כאשר היתדות והכרעת הסוף מעידות לכך; הוא אינו מחשב מועד חזרה.',
   }),
 
-  'missing.p249.inCitySignAwtad': knowledge({
-    kashfMethodId: 'missing.p249.inCitySignAwtad',
-    page: 249,
-    topic: 'הפרק התשיעי — מסע, נעדר, אבדה, חלום וחוב',
-    heading: 'האם האדם נמצא בעיר — ארבע היתדות',
-    hebrewRule: 'נקודה: על אדם — האם הוא בעיר או לא? קח את "ראשי הצורות" (בגוף הדפוס: ככל הנראה היתדות) הארבע: אם כולן פנימיות — הוא בעיר; אם כולן חיצוניות — אינו בעיר.',
-    detailPages: [250], arabicVerificationPages: [249, 250],
-    notes: 'פוצל 2026-10-05 מתוך missing.p249.locationDirectionUnresolved (שמה הישן) יחד עם missing.p249.inCitySignH1H4 (שיטה חלופית, "ومن غيره"); חלק ה"כיוון" שבאותו סעיף נותר חסום תחת missing.p249.directionUnresolved. אין ענף למקרה מעורב (לא כולן פנימיות ולא כולן חיצוניות).',
-  }),
+  // missing.p249.inCitySignAwtad: WITHDRAWN 2026-10-05 (independent re-audit,
+  // flagged on review). The "ראשי הצורות (לعله: היתדות) הארבע" clause pairs
+  // a grammatically SINGULAR predicate ("خلف داخلا...فهو", re-verified
+  // letter-by-letter against the raw scan) with an explicitly plural,
+  // four-count named subject -- a mismatch that does not support an
+  // "all four must uniformly agree" reading, and no alternative specific
+  // mechanism could be proven either. No knowledge entry while unproven;
+  // see the method registry's own missing.p249.inCitySignAwtad entry for
+  // the full grammatical finding. Do not re-add a knowledge entry here
+  // without first re-adding a proven executor.
 
   'missing.p249.returnTimingTariqH10H11': knowledge({
     kashfMethodId: 'missing.p249.returnTimingTariqH10H11',
@@ -1044,9 +1045,19 @@ export const KASHF_V57_KNOWLEDGE = Object.freeze({
     page: 249,
     topic: 'הפרק התשיעי — מסע, נעדר, אבדה, חלום וחוב',
     heading: 'סימן התקרבות הנעדר — חיבור בית 3 ובית 15',
-    hebrewRule: 'המשך אותה נקודה (עם missing.p249.lifeStatusH8H14): "וקדומו בשלישי ובחמישה עשר — אם פנימית, הוא מתקרב/בא; במיוחד אם היא גם מיטיבה."',
+    hebrewRule: 'המשך אותה נקודה (עם missing.p249.lifeStatusH8H14): "וקדומו בשלישי ובחמישה עשר — אם פנימית, הוא מתקרב/בא." (הסעיף הנוסף "במיוחד אם היא בבית מיטיב" אינו מחושב — ראו הערה.)',
     detailPages: [249], arabicVerificationPages: [249],
-    notes: 'נפתר 2026-10-05: סעיף זה היה מתועד כחסום בשל ספק בזיהוי ההיפנה (האם הכוונה לצורת בית 8+14 שכבר נבנתה, לחיבור חדש של 3+15, או לקריאה נפרדת של כל בית) — נפתר בקריאה ישירה של המשפט המלא: "השלישי והחמישה עשר" (עם ו׳ מחברת, לא או׳) חוזר במדויק על התבנית התחבירית של פתיחת אותו משפט ("השמיני והארבעה עשר"), בהשמטה של הפועל שכבר נקבע. אין ענף הפוך במקור לצורה שאינה פנימית.',
+    notes: 'נפתר 2026-10-05: סעיף זה היה מתועד כחסום בשל ספק בזיהוי ההיפנה (האם הכוונה לצורת בית 8+14 שכבר נבנתה, לחיבור חדש של 3+15, או לקריאה נפרדת של כל בית). תוקן 2026-10-05 (ביקורת עצמאית שנייה): הטענה הקודמת ש"השלישי והחמישה עשר" הוא חזרה תחבירית מדויקת על פתיחת אותו משפט ("השמיני והארבעה עשר") הייתה מוגזמת — זהו צירוף שם-עצם ("קדומו ב...") ולא חזרה אליפטית על פועל "أنشئ...شكلا". הבסיס לקריאת-החיבור הוא המוסכמה הרחבה של כל הספר (כל "בית X ו-בית Y" במשפט פעולה הופך לחיבור צורות), לא אליפסה ספציפית. כמו כן הוסר סימן "חיזוק" שהניח ש"بيت سعد" (בית מיטיב) שקול לסיווג מיטיב/מזיק של הצורה המחוברת — אותו משפט עצמו, שתי פסקאות קודם לכן, משתמש בניסוח שונה ("فإن كان سعدا") לאותו רעיון; "بيت سعد" אינו מחושב, ונותר לא-מוכרע. אין ענף הפוך במקור לצורה שאינה פנימית.',
+  }),
+
+  'missing.p249.inCitySignH1H4': knowledge({
+    kashfMethodId: 'missing.p249.inCitySignH1H4',
+    page: 250,
+    topic: 'הפרק התשיעי — מסע, נעדר, אבדה, חלום וחוב',
+    heading: 'האם האדם בעיר / חזר — חיבור בית 4 ובית 1',
+    hebrewRule: 'ומן זולתו (שיטה חלופית): קח צורה מבית הרביעי והראשון, ושפוט לפי מה שהיא מורה עליו — כניסה (פנימית) או ההפך: חזר.',
+    detailPages: [250], arabicVerificationPages: [249, 250],
+    notes: 'קודם נרשם כתנאי תומך בלבד לצד missing.p249.inCitySignAwtad; לאחר שאותה שיטה בוטלה (ראו רישום השיטות) — זו הפכה לשיטה היחידה והראשית לכוונה missing.currentlyInCity. דקדוק תקין ועקבי ("خذ...شكلا" — לקיחת צורה אחת מוגדרת, חיבור סטנדרטי); אין ענף הפוך מומצא — "دخول أو ضده" הוא ניגוד מפורש במקור. מילת הסיכום של המקור עצמו היא "رجع" (חזר).',
   }),
 
   'debt.p179.creditorDebtorWalking': knowledge({

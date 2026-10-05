@@ -606,7 +606,7 @@ window.QUESTION_BANK = [
     id: 'q-missing-in-city',
     category: 'travel', houseId: 9, topicId: 'missingPerson', kashfTopicId: 'missingPerson',
     label: 'האם הנעדר נמצא כרגע בעיר?',
-    desc: 'כלל נפרד עמ׳ 249: ארבע היתדות (בתים 1, 4, 7, 10) — כולן פנימיות הוא סימן שהוא בעיר; כולן חיצוניות הוא סימן מפורש שאינו בעיר. במקרה מעורב אין הכרעה. אינו קובע כיוון.',
+    desc: 'כלל עמ׳ 249-250: חיבור בית 4 ובית 1 — צורה פנימית היא סימן שהאדם "חזר"/בעיר; צורה חיצונית היא סימן מפורש להפך. אינו קובע כיוון.',
     clientFields: [F.missingName, F.missingWhere],
   },
   {

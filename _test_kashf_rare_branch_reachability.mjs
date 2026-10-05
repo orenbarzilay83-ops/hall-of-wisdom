@@ -136,18 +136,24 @@ function ok(cond, msg) { assertions++; assert(cond, msg); }
   ok(reading?.primaryFormula?.verdict?.positive === true, 'q-missing-return-timing: engine-level verdict.positive is true on the same-day branch');
 }
 
-// missing.p249.inCitySignAwtad (q-missing-in-city, added 2026-10-05):
-// all four Awtad (H1,H4,H7,H10) uniformly dakhil. Reachable in 256/65,536
-// boards (~0.39%) by exhaustive enumeration; the opposite, all-kharij,
-// branch is equally reachable at the same count (confirmed by the same
-// enumeration, not separately exercised here since the mechanism is
-// identical).
+// missing.p249.inCitySignAwtad was WITHDRAWN 2026-10-05 (independent
+// re-audit, flagged on review, same round it was opened) for lack of
+// textual proof -- see that method's own registry entry and
+// _test_kashf_missing_p249_in_city.mjs. The reachability figures
+// previously recorded for it (256/65,536 boards for the all-four-Awtad
+// condition) are moot: no executor is registered for it any more.
+// q-missing-in-city is now routed to missing.p249.inCitySignH1H4 (combine
+// H1+H4, promoted to the sole primary method for this intent), which has
+// its own dakhil/kharij real-board cases proven directly in
+// _test_kashf_missing_p249_in_city.mjs. Exercised here via the same
+// engine-level reading path for consistency with the other five methods
+// in this file.
 {
-  const board = buildRamlBoardFromMothers(['2121', '1111', '2112', '2111']);
+  const board = buildRamlBoardFromMothers(['1111', '1111', '1111', '1122']);
   const reading = buildKashfReadingByQuestionId(board, 'q-missing-in-city', { question: 'test' });
   const er = reading?.primaryFormula?.result?.executorResult;
   ok(reading.valid === true, 'q-missing-in-city: real board produces a valid reading');
-  ok(er?.branch === 'in-city-sign', 'q-missing-in-city: in-city-sign branch fires on a real board (256/65536 boards reachable)');
+  ok(er?.inCitySign === true, 'q-missing-in-city: inCitySign fires true on a real H1+H4 dakhil board');
   ok(reading?.primaryFormula?.verdict?.positive === true, 'q-missing-in-city: engine-level verdict.positive is true on the in-city branch');
 }
 

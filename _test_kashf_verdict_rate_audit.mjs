@@ -302,14 +302,16 @@ const expectedNoDecisionOnly = new Set([
   // any of this file's 47 generic sample boards. Same category as the
   // other five: a confirmed-reachable rare condition, not a bug.
   'q-missing-return-timing',
-  // Added 2026-10-05 with the new q-missing-in-city route: its decisive
-  // branches require all four Awtad uniformly dakhil or uniformly kharij
-  // (each 256/65536 boards, ~0.39%) -- real, reachable, just not hit by
-  // any of this file's 47 generic sample boards. Same category as the
-  // other six.
-  'q-missing-in-city',
+  // q-missing-in-city was in this set only while routed to the
+  // now-withdrawn missing.p249.inCitySignAwtad (all four Awtad uniformly
+  // dakhil/kharij, ~0.39% of boards -- too rare to hit in this file's 47
+  // sample boards). Re-audited 2026-10-05 and re-pointed to
+  // missing.p249.inCitySignH1H4 (combine H1+H4; see
+  // _test_kashf_missing_p249_in_city.mjs), whose dakhil/kharij condition
+  // is common enough that it now fires decisively on >=1 of the 47
+  // boards below, moving q-missing-in-city out of this set entirely.
 ]);
 const actualNoDecisionOnly = new Set(perQuestion.filter((q) => q.decisiveCount === 0 && q.descriptiveOnlyCount === 0).map((q) => q.id));
-assert.deepEqual(actualNoDecisionOnly, expectedNoDecisionOnly, 'the no-decision-only set matches the seven exhaustively-verified rare conditions exactly');
+assert.deepEqual(actualNoDecisionOnly, expectedNoDecisionOnly, 'the no-decision-only set matches the six exhaustively-verified rare conditions exactly (q-missing-in-city moved out after being re-pointed to a more common method)');
 
 console.log('Kashf verdict-rate audit: PASS');

@@ -696,9 +696,9 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     questionId: 'q-missing-in-city',
     disposition: 'KEEP',
     kashfIntentId: 'missing.currentlyInCity',
-    kashfMethodId: 'missing.p249.inCitySignAwtad',
+    kashfMethodId: 'missing.p249.inCitySignH1H4',
     kashfRuntimeStatus: 'ready',
-    note: 'Added 2026-10-05: wires the newly-opened missing.p249.inCitySignAwtad (all four Awtad dakhil/kharij -> in-city/not-in-city, both source-stated) to a new, separately-scoped question. Split out of the former missing.p249.locationDirectionUnresolved (see that method\'s renamed successor, missing.p249.directionUnresolved, for the still-blocked direction portion). Kept separate from q-missing-location (a different H7-based sign of having LEFT the city, not of CURRENTLY being in it) -- never merged or voted. The H1+H4 alternate method (missing.p249.inCitySignH1H4) stays an unrouted supporting condition, same pattern as missing.p249.lifeStatusH8H14.',
+    note: 'RE-POINTED 2026-10-05 (independent re-audit, flagged on review): originally wired to missing.p249.inCitySignAwtad (all four Awtad dakhil/kharij -> in-city/not-in-city), which has since been WITHDRAWN -- its grammar does not support an "all four must agree" collective condition (singular predicate against an explicitly plural, four-count named subject; see that method\'s own registry entry for the full finding). Re-pointed to missing.p249.inCitySignH1H4, the clause\'s own explicit alternate method ("ومن غيره"), which is grammatically sound and was promoted from supporting-condition to the sole primary method for this intent. Split out of the former missing.p249.locationDirectionUnresolved (see missing.p249.directionUnresolved for the still-blocked direction portion). Kept separate from q-missing-location (a different H7-based sign of having LEFT the city, not of CURRENTLY being in it) -- never merged or voted.',
   }),
 
   'q-missing-return': route({

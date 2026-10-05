@@ -2858,93 +2858,78 @@ function computeMissingReturnP249(chart) {
   };
 }
 
-// Printed p249-250 (PDF 251-252), a different "نكتة" from the IF-return
-// rule above: "نكتة: عن شخص هل هو في المدينة أم لا؟ خذ رؤوس الأشكال
-// (العله: الأوتاد) الأربعة، فإن خلف داخلا، فهو فيها؛ وإن كان خارجا، فليس
-// فيها؛ وانظره أيضا لأي الجهات هو، [فقل: خرج إلى تلك الجهة]." (Note: about
-// a person -- is he in the city or not? Take the four heads of the
-// figures [the printed book's own bracketed gloss: "probably: the
-// Awtad"]; if they settle/are dakhil, he IS in it [the city]; if kharij,
-// he is NOT in it. Also look to determine which direction he is in: then
-// say he went out toward that direction.)
+// Printed p249-250 (PDF 251-252): "نكتة: عن شخص هل هو في المدينة أم لا؟
+// خذ رؤوس الأشكال (لعله: الأوتاد) الأربعة، فإن خلف داخلا، فهو فيها؛ وإن
+// كان خارجا، فليس فيها؛ وانظره أيضا لأي الجهات هو، فقل: خرج إلى تلك
+// الجهة."
 //
-// OPENED 2026-10-05 (re-read directly against the raw p249-250 scan,
-// prioritized per explicit instruction to review adjacent already-
-// identified p249 rules): this clause was previously bundled together
-// with an unrelated, genuinely-blocked "which direction" continuation and
-// the later "ومن الزيادة المضافة من كتاب [نزهة العقول]" (attributed
-// addition from the book Nuzhat al-'Uqul) material under one blocked id,
-// missing.p249.locationDirectionUnresolved. Splitting it: the "in the
-// city or not" portion via the four Awtad is body text, unattributed, and
-// closed-form on its own -- the printed "رؤوس الأشكال" gloss (itself part
-// of the printed page, not invented here) resolves to the Awtad (H1,H4,
-// H7,H10), and the source states BOTH an explicit positive (all dakhil =>
-// in the city) AND an explicit stated inverse (all kharij => not in the
-// city, "وإن كان خارجا، فليس فيها"), unlike most clauses in this corpus.
-// Mirrors the already-ready missing.p249.returnAnglesJudge's own
-// all-four-Awtad reading convention (a strict ALL-four condition, not an
-// OR-across-list or majority rule). The remaining "which direction"
-// portion stays blocked under the renamed, narrowed
-// missing.p249.directionUnresolved -- see that entry -- since no
-// computational direction-determination rule is given on this page (the
-// only direction method in this book this session has found, p246, is
-// explicitly marked attributed-to-another-book and must not be imported
-// here per that method's own existing instruction).
+// REMOVED 2026-10-05 (independent re-audit against the raw scan, flagged
+// on review): computeMissingInCitySignAwtadP249 was opened in an earlier
+// round reading "رؤوس الأشكال الأربعة" (the four heads of the figures) as
+// "the four Awtad, which must ALL agree (all dakhil / all kharij)". That
+// mechanism is NOT provable from the text and has been withdrawn:
 //
-// Computation: all four Awtad dakhil => in-city sign (positive:true); all
-// four kharij => the source's own explicit inverse, not-in-city
-// (positive:false); any other mix (including fixed/mutable "mujassad-*"
-// patterns, a separate axis per this corpus's own p63 classification) =>
-// unresolved (positive:null) -- the source only ever speaks of all four
-// uniformly, never a mixed case.
-function computeMissingInCitySignAwtadP249(chart) {
-  if (!Array.isArray(chart)) return null;
-  const angleHouses = [1, 4, 7, 10];
-  const angleResults = angleHouses.map((houseNumber) => {
-    const entry = findCanonicalHouse(chart, houseNumber);
-    const pattern = entry?.key || entry?.pattern || null;
-    if (!pattern) return null;
-    const classification = classifyCanonicalFigure(pattern);
-    return { houseNumber, pattern, figureHebrew: classification.figureHebrew, dakhalKharij: classification.dakhalKharij };
-  });
-  if (angleResults.some((item) => !item)) return null;
+// 1. "(لعله: الأوتاد)" -- "(perhaps: the Awtad)" -- is the PRINTED BOOK'S
+//    OWN hedge, not a confident identification; "لعله" (perhaps) already
+//    signals the book's editor was guessing.
+// 2. Decisively: the verb and predicate that follow are GRAMMATICALLY
+//    SINGULAR -- "فإن خلف داخلا، فهو فيها" ("if [it/he] settled dakhil,
+//    then HE is in it") uses خلف (3rd-person MASCULINE SINGULAR, no
+//    plural/dual marker and no attached pronoun -- re-verified letter by
+//    letter against the raw scan at high zoom), داخلا (singular accusative
+//    adjective) and هو (singular "he"). A collective "all four must
+//    agree" reading would need plural or distributive agreement (e.g.
+//    "إن كانت كلها داخلة" or "إن كان كل منها داخلا"), which is not what is
+//    printed. The explicitly plural, four-count subject ("رؤوس
+//    الأشكال...الأربعة") does not grammatically match the singular
+//    predicate that governs the verdict.
+// 3. No operation is stated for deriving ONE singular result from four
+//    named items either (contrast the adjacent, textually sound
+//    computeMissingInCitySignH1H4P249 below, which explicitly says "خذ...
+//    شكلا" -- take A figure [singular, via combination]). Nothing here
+//    says "construct a figure from the four" or similar.
+//
+// Per explicit instruction not to let a passing test stand in for proof
+// of the source's actual behavior: no alternative specific mechanism
+// could be proven either (which single house of the four? a derived
+// figure via an unstated operation? only the first?), so this clause
+// returns to blocked-by-source rather than keep an unproven guess live.
+// See missing.p249.directionUnresolved for the clause's own "which
+// direction" continuation, which remains blocked for a separate,
+// previously-documented reason (no computational rule stated at all).
+// No executor is registered for this clause; do not re-add one without
+// a textual proof of the actual single-result mechanism.
 
-  const allDakhil = angleResults.every((item) => item.dakhalKharij === 'dakhil');
-  const allKharij = angleResults.every((item) => item.dakhalKharij === 'kharij');
-  const branch = allDakhil ? 'in-city-sign' : allKharij ? 'not-in-city-sign' : 'unresolved';
-
-  const outputHebrew = branch === 'in-city-sign'
-    ? 'כל ארבע היתדות (בתים 1, 4, 7, 10) פנימיות (داخل). לפי כשף עמ׳ 249: סימן שהאדם נמצא בעיר.'
-    : branch === 'not-in-city-sign'
-      ? 'כל ארבע היתדות (בתים 1, 4, 7, 10) חיצוניות (خارج). לפי כשף עמ׳ 249: סימן מפורש שהאדם אינו בעיר.'
-      : 'היתדות אינן כולן פנימיות ואינן כולן חיצוניות (ייתכן שחלקן צורות קבועות/מתהפכות). המקור מדבר רק על המקרה האחיד; אין כאן הכרעה.';
-
-  return {
-    sourceRef: 'כשף אל-אסרר עמ׳ 249 (PDF 251)',
-    sourceText: 'نكتة: عن شخص هل هو في المدينة أم لا؟ خذ رؤوس الأشكال (العله: الأوتاد) الأربعة، فإن خلف داخلا، فهو فيها؛ وإن كان خارجا، فليس فيها.',
-    housesUsed: angleHouses,
-    angleResults,
-    allDakhil,
-    allKharij,
-    branch,
-    positive: branch === 'in-city-sign' ? true : branch === 'not-in-city-sign' ? false : null,
-    verdictType: 'missing-in-city-sign-awtad',
-    outputHebrew,
-  };
-}
-
-// Same نكتة as computeMissingInCitySignAwtadP249, an explicit alternate
-// method for the SAME question ("ومن غيره" -- "and from another [method]"):
+// Printed p249-250 (PDF 251-252), the SAME page's own explicit alternate
+// method, introduced right after the (now-removed, unproven) Awtad
+// attempt and the separate, still-blocked direction continuation:
 // "ومن غيره: خذ من الرابع والأول شكلا، واحكم على ما يدل من دخول أو ضده:
 // رجع." (and from another [method]: take a figure from the fourth and the
 // first, and judge by what it indicates of entering or its opposite:
-// return[ed].) Combine H1+H4 (standard parity-sum combineRamlFigures);
-// dakhil => in-city/returned sign, kharij => the source's own explicit
-// stated opposite. Registered as a supporting condition under the SAME
-// missing.currentlyInCity intent as the Awtad method above, never merged
-// or voted with it -- runtimeAllowed stays false so it is never silently
-// selected as the operational primary, the same pattern already
-// established for missing.p249.lifeStatusH8H14 alongside missing.p248-249.lifeH1H4H9Outcome.
+// return[ed].)
+//
+// RE-VERIFIED 2026-10-05 (independent re-audit, flagged on review):
+// grammatically sound throughout and distinct in construction from the
+// removed Awtad attempt -- "خذ...شكلا" (take...A figure, singular) names
+// an explicit combination operation (parity-sum combineRamlFigures, the
+// same operation this corpus uses everywhere it says "خذ من X و Y
+// شكلا"), and "يدل" (it indicates, singular) agrees cleanly with that one
+// resulting figure. No grammatical mismatch here. The clause's own
+// closing word is "رجع" (returned) -- the source anchors this
+// specifically to RETURN, not an abstract "in the city" status; this
+// executor keeps the "in city / returned" framing because the clause is
+// explicitly introduced as "ومن غيره" (an alternate for the SAME
+// question just asked, "هل هو في المدينة") immediately above it on the
+// same page, but the output text below names "رجع" directly so the
+// source's own word is not silently paraphrased away.
+//
+// PROMOTED 2026-10-05: this is now the sole, primary method for the
+// missing.currentlyInCity intent (methodRole: canonical-operational,
+// runtimeAllowed: true) -- the sibling Awtad method it was previously
+// registered as a supporting condition alongside has been withdrawn for
+// lack of textual proof (see the removed-executor note above). dakhil =>
+// in-city/returned sign, kharij => the source's own explicit stated
+// opposite ("دخول أو ضده").
 function computeMissingInCitySignH1H4P249(chart) {
   if (!Array.isArray(chart)) return null;
   const h1 = findCanonicalHouse(chart, 1);
@@ -2962,9 +2947,9 @@ function computeMissingInCitySignH1H4P249(chart) {
   const notInCitySign = classification.dakhalKharij === 'kharij';
 
   const outputHebrew = inCitySign
-    ? `חיבור בית 1 (${h1Pattern}) ובית 4 (${h4Pattern}): ${resultFigureHebrew} (${resultPattern}) — צורה פנימית. לפי כשף עמ׳ 249-250 (שיטה חלופית): סימן שהאדם נמצא בעיר / חזר.`
+    ? `חיבור בית 1 (${h1Pattern}) ובית 4 (${h4Pattern}): ${resultFigureHebrew} (${resultPattern}) — צורה פנימית (دخول). לפי כשף עמ׳ 249-250: סימן שהאדם "חזר" (رجع) — נמצא בעיר.`
     : notInCitySign
-      ? `חיבור בית 1 (${h1Pattern}) ובית 4 (${h4Pattern}): ${resultFigureHebrew} (${resultPattern}) — צורה חיצונית. לפי כשף עמ׳ 249-250 (שיטה חלופית): סימן מפורש שההפך — האדם אינו בעיר.`
+      ? `חיבור בית 1 (${h1Pattern}) ובית 4 (${h4Pattern}): ${resultFigureHebrew} (${resultPattern}) — צורה חיצונית. לפי כשף עמ׳ 249-250: סימן מפורש שההפך (ضده) — האדם לא חזר / אינו בעיר.`
       : `חיבור בית 1 (${h1Pattern}) ובית 4 (${h4Pattern}): ${resultFigureHebrew} (${resultPattern}) — אינה צורה פנימית או חיצונית מובהקת. אין כאן הכרעה.`;
 
   return {
@@ -3124,35 +3109,49 @@ function computeMissingLifeStatusH8H14P249(chart) {
 // inward [dakhil], then he is arriving -- especially if it is also [in
 // the state of] a benefic.)
 //
-// RESOLVED 2026-10-05 (re-read directly against the raw scan, full page):
-// an earlier round flagged "وقدومه في الثالث والخامس عشر... إن كان داخلا"
+// RESOLVED 2026-10-05 (re-read directly against the raw scan, full page);
+// RE-AUDITED 2026-10-05 (independent second pass, flagged on review --
+// the first pass's "elliptical repetition, word-for-word" claim overstated
+// the grammatical evidence and has been corrected below).
+//
+// An earlier round flagged "وقدومه في الثالث والخامس عشر... إن كان داخلا"
 // as an unresolved-referent blocker -- unclear whether it meant the SAME
 // H8+H14 figure already built, a fresh H3+H15 combination, or each house
-// read individually. Reading the full, unbroken sentence resolves this:
-// "وقدومه في الثالث والخامس عشر" mirrors, word-for-word in structure, the
-// sentence's own opening clause "أنشئ من الثامن والرابع عشر شكلا" (house
-// X و house Y, with "و" -- "and" -- joining the two house numbers, exactly
-// as in the first clause) -- an elliptical repetition of "construct a
-// figure from..." that economizes by not re-stating the verb once the
-// pattern is established, a normal feature of this author's style (the
-// prisoner.p272.releaseManner clause does the same kind of ellipsis with
-// its own house list). This is NOT a reuse of the earlier H8+H14 figure
-// (which would need no new house names at all) and NOT two independently
-// read houses (the source uses "و", not "أو", which this author
-// consistently uses to mean OR-across-a-list elsewhere, e.g. the p272
-// prisoner release-manner clause). "بيت سعد" here names no house NUMBER
-// unlike every other reference in this corpus, which always cites actual
-// numbered houses when a literal house is meant -- it is the ordinary
-// idiom for "being itself benefic" (saad), not a 17th house to look up,
-// so it is read as a strengthening condition on the SAME combined figure,
-// not a separate check.
+// read individually. CORRECTED framing: this clause is NOT a literal
+// elliptical repeat of the earlier "أنشئ من الثامن والرابع عشر شكلا" --
+// that one is a VERB phrase ("construct...a figure"); this one is a NOUN
+// phrase ("قدومه" = "his arrival", with "في X و Y" = "[found] in/through
+// X and Y"), with no "أنشئ...شكلا" verb repeated or implied by ellipsis.
+// What DOES support the combine reading is this corpus's own wider,
+// independently-confirmed convention: every other "H_X و H_Y" house-pairing
+// in an operative Kashf clause encountered this engagement (H8+H14 earlier
+// in this same sentence, H1+H4, H7+H9, etc.) resolves to combineRamlFigures,
+// with "و" (and) joining exactly two house numbers -- never "أو" (or),
+// which this author uses elsewhere for OR-across-a-list (e.g. the p272
+// prisoner release-manner clause). That corpus-wide pattern, not a claimed
+// grammatical ellipsis, is the basis for combining H3+H15 here; it is not
+// an outright proof, but a consistent convention with no observed
+// counter-example in this source. Still NOT a reuse of the earlier H8+H14
+// figure (which would need no new house names) and NOT two independently
+// read houses (no "أو" is present).
 //
-// Computation: combine H3+H15 (parity-sum combineRamlFigures, same
-// operation already used earlier in this very sentence for H8+H14).
+// "لاسيما إن كان في بيت سعد" (especially if it was in a house of benefic)
+// is deliberately NOT implemented as a "strengthened" sub-signal. On
+// review: this exact sentence, two clauses earlier, uses a DIFFERENT
+// phrase for "the combined figure is itself benefic" -- "فإن كان سعدا"
+// (if it was benefic) -- not "بيت سعد" (house of benefic). The author
+// distinguishes these two phrasings within the same passage, so treating
+// "بيت سعد" as equivalent to "the H3+H15 figure classifies as saad" would
+// substitute an unproven reading for the author's own, different words.
+// What "بيت سعد" denotes (a planetary domicile concept? a specific board
+// house? something else?) could not be established from this page or
+// elsewhere in the material reviewed this round, so it is left as an
+// explicitly undecided bonus clause -- not computed, not asserted.
+//
+// Computation: combine H3+H15 (parity-sum combineRamlFigures).
 // dakhalKharij === 'dakhil' (strictly -- not 'mujassad-dakhil', kept
-// distinct per this corpus's own p63 classification) => arrival sign,
-// strengthened when the SAME combined figure is also saad. The source
-// states no inverse ("وإلا") for this specific clause (unlike the
+// distinct per this corpus's own p63 classification) => arrival sign. The
+// source states no inverse ("وإلا") for this specific clause (unlike the
 // immediately preceding alive/dead clause, which does), so kharij/
 // mujassad patterns return positive:null, never a "not arriving" verdict.
 function computeMissingArrivalSignH3H15P249(chart) {
@@ -3169,24 +3168,21 @@ function computeMissingArrivalSignH3H15P249(chart) {
   const resultFigureHebrew = classification.figureHebrew || combined.result?.hebrewName || resultPattern;
 
   const arrivalSign = classification.dakhalKharij === 'dakhil';
-  const strengthened = arrivalSign && classification.saadNahs === 'saad';
 
   const outputHebrew = arrivalSign
-    ? `חיבור בית 3 (${h3Pattern}) ובית 15 (${h15Pattern}): ${resultFigureHebrew} (${resultPattern}) — צורה פנימית (داخل). לפי כשף עמ׳ 249: סימן שהנעדר בדרכו/מתקרב.${strengthened ? ' הצורה גם מיטיבה, המחזק את הסימן.' : ''}`
+    ? `חיבור בית 3 (${h3Pattern}) ובית 15 (${h15Pattern}): ${resultFigureHebrew} (${resultPattern}) — צורה פנימית (داخل). לפי כשף עמ׳ 249: סימן שהנעדר בדרכו/מתקרב. (הסעיף הנוסף "לاسيما إن كان في بيت سعد" אינו מחושב כאן — אין הוכחה שהוא שקול לסיווג מיטיב/מזיק של הצורה המחוברת.)`
     : `חיבור בית 3 (${h3Pattern}) ובית 15 (${h15Pattern}): ${resultFigureHebrew} (${resultPattern}) — אינה צורה פנימית. המקור אינו נותן כאן כלל הפוך; אין בכך הוכחה שאינו בדרכו.`;
 
   return {
     sourceRef: 'כשף אל-אסרר עמ׳ 249 (PDF 251)',
-    sourceText: 'وقدومه في الثالث والخامس عشر، فإن كان داخلا، فهو قادم، لاسيما إن كان في بيت سعد.',
+    sourceText: 'وقدومه في الثالث والخامس عشر، فإن كان داخلا، فهو قادم.',
     housesUsed: [3, 15],
     h3Pattern,
     h15Pattern,
     resultPattern,
     resultFigureHebrew,
     dakhalKharij: classification.dakhalKharij,
-    saadNahs: classification.saadNahs,
     arrivalSign,
-    strengthened,
     positive: arrivalSign ? true : null,
     verdictType: 'missing-arrival-sign-h3h15',
     outputHebrew,
@@ -4370,7 +4366,6 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'siblings.p182.seniority': computeSiblingSeniorityP182,
   'marriage.p211.dissolutionH7StateMatrix': computeMarriageDissolutionP211,
   'missing.p249.returnAnglesJudge': computeMissingReturnP249,
-  'missing.p249.inCitySignAwtad': computeMissingInCitySignAwtadP249,
   'missing.p249.inCitySignH1H4': computeMissingInCitySignH1H4P249,
   'missing.p249.returnTimingTariqH10H11': computeMissingReturnTimingP249,
   'missing.p249.lifeStatusH8H14': computeMissingLifeStatusH8H14P249,

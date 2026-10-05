@@ -254,9 +254,15 @@ for (const [h14Pattern, resultPattern, expectAliveSign, expectStateQuality, labe
 // عشر، فإن كان داخلا، فهو قادم، لاسيما إن كان في بيت سعد."
 //
 // Computation action: combine H3+H15; dakhalKharij==='dakhil' (strictly)
-// gives the arrival sign, strengthened (not a different verdict) when the
-// same combined figure is also saad. No inverse is stated for this
-// clause, so non-dakhil results return positive:null.
+// gives the arrival sign. No inverse is stated for this clause, so
+// non-dakhil results return positive:null. The source's own additional
+// clause "لاسيما إن كان في بيت سعد" (especially if it was in a house of
+// benefic) is deliberately NOT computed (see registry notes): it uses a
+// different phrase than "فإن كان سعدا" (used two clauses earlier in the
+// very same sentence for "the combined figure is itself benefic"), so
+// treating it as the combined figure's own saadNahs classification would
+// be an unproven substitution, not a decoded rule. There is accordingly
+// no "strengthened" field or branch on this result.
 
 const arrivalMethod = getKashfMethod('missing.p249.arrivalSignH3H15');
 ok(arrivalMethod.kashfRuntimeStatus === 'ready', 'missing.p249.arrivalSignH3H15 is ready');
@@ -265,41 +271,43 @@ ok(arrivalMethod.runtimeAllowed === true, 'runtime is allowed');
 ok(arrivalMethod.kashfIntentId === 'missing.arrivalSign', 'registered under a new, distinct intent');
 ok(/الثالث والخامس عشر/.test(arrivalMethod.notes || ''), 'registry notes carry the exact photographed house reference');
 ok(/إن كان داخلا/.test(arrivalMethod.notes || ''), 'registry notes carry the exact photographed dakhil clause');
+ok(/REMOVED 2026-10-05/.test(arrivalMethod.notes || ''), 'registry notes document the removal of the unproven "strengthened" sub-signal');
 ok(hasCanonicalCustomExecutor('missing.p249.arrivalSignH3H15'), 'executor is reachable via dispatch');
 
 const arrivalRoute = getKashfQuestionRoute('q-missing-arriving');
 ok(arrivalRoute != null, 'q-missing-arriving route exists');
 ok(arrivalRoute.kashfMethodId === 'missing.p249.arrivalSignH3H15', 'q-missing-arriving routes to the correct executor');
 
-// dakhil + saad: arrival sign, strengthened.
+// dakhil (regardless of the combined figure's own saad/nahs classification): arrival sign.
 {
   const board = buildRamlBoardFromMothers(['1111', '1111', '1111', '2121']);
   const entries = board.entries || board;
   const h3 = entries.find((e) => Number(e.house || e.houseNumber) === 3);
   const h15 = entries.find((e) => Number(e.house || e.houseNumber) === 15);
-  ok((h3.pattern || h3.key) === '1111', 'dakhil+saad case: real board lands H3=1111 as expected');
-  ok((h15.pattern || h15.key) === '1212', 'dakhil+saad case: real board lands H15=1212 as expected');
+  ok((h3.pattern || h3.key) === '1111', 'dakhil case: real board lands H3=1111 as expected');
+  ok((h15.pattern || h15.key) === '1212', 'dakhil case: real board lands H15=1212 as expected');
 
   const result = executeCanonicalCustomMethod('missing.p249.arrivalSignH3H15', board);
-  ok(result.resultPattern === '2121', 'dakhil+saad case: combine(1111,1212) yields 2121 as expected');
-  ok(result.dakhalKharij === 'dakhil', 'dakhil+saad case: result is dakhil');
-  ok(result.saadNahs === 'saad', 'dakhil+saad case: result is also saad');
-  ok(result.arrivalSign === true, 'dakhil+saad case: arrivalSign is true');
-  ok(result.strengthened === true, 'dakhil+saad case: strengthened is true');
-  ok(result.positive === true, 'dakhil+saad case: positive is true');
-  ok(result.outputHebrew.includes('מתקרב') && result.outputHebrew.includes('מחזק'), 'dakhil+saad case: Hebrew output mentions arrival and the strengthening note');
+  ok(result.resultPattern === '2121', 'dakhil case: combine(1111,1212) yields 2121 as expected');
+  ok(result.dakhalKharij === 'dakhil', 'dakhil case: result is dakhil');
+  ok(result.arrivalSign === true, 'dakhil case: arrivalSign is true');
+  ok(result.positive === true, 'dakhil case: positive is true');
+  ok(!('strengthened' in result), 'dakhil case: no "strengthened" field is present on the result');
+  ok(!('saadNahs' in result), 'dakhil case: no "saadNahs" field is present on the result');
+  ok(result.outputHebrew.includes('מתקרב'), 'dakhil case: Hebrew output mentions arrival');
+  ok(result.outputHebrew.includes('בית سعد') || result.outputHebrew.includes('אינו מחושב'), 'dakhil case: Hebrew output notes the uncomputed בית سعد clause rather than silently asserting strength');
 }
 
-// dakhil but not saad: arrival sign, not strengthened.
+// A second dakhil board (different combined figure, different saad/nahs
+// class) must still give exactly the same arrival sign -- confirming the
+// verdict no longer depends on the combined figure's own fortune.
 {
   const board = buildRamlBoardFromMothers(['1111', '1111', '1112', '2211']);
   const result = executeCanonicalCustomMethod('missing.p249.arrivalSignH3H15', board);
-  ok(result.resultPattern === '2221', 'dakhil-only case: combine(1112,1111) yields 2221 as expected');
-  ok(result.dakhalKharij === 'dakhil', 'dakhil-only case: result is dakhil');
-  ok(result.saadNahs !== 'saad', 'dakhil-only case: result is not saad');
-  ok(result.arrivalSign === true, 'dakhil-only case: arrivalSign is still true');
-  ok(result.strengthened === false, 'dakhil-only case: strengthened is false');
-  ok(result.positive === true, 'dakhil-only case: positive is true');
+  ok(result.resultPattern === '2221', 'second dakhil case: combine(1112,1111) yields 2221 as expected');
+  ok(result.dakhalKharij === 'dakhil', 'second dakhil case: result is dakhil');
+  ok(result.arrivalSign === true, 'second dakhil case: arrivalSign is true regardless of the result figure\'s own fortune');
+  ok(result.positive === true, 'second dakhil case: positive is true');
 }
 
 // kharij: no verdict, never "not arriving".
