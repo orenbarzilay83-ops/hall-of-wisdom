@@ -746,6 +746,20 @@ window.QUESTION_BANK = [
     desc: 'לגילוי מי גרם לכליאה — מי הכניס לבעיה',
     clientFields: [F.prisonerName],
   },
+  {
+    id: 'q-prisoner-outcome',
+    category: 'conflict', houseId: 12, topicId: 'prisoner', kashfTopicId: 'prisoner',
+    label: 'מה יהיה עתידו הכללי של האסיר?',
+    desc: 'כלל נפרד עמ׳ 272: חיבור בית 1 ובית 4 — צורה מזיקה מורה על עתיד לרעה, צורה מיטיבה מורה על עתיד לטובה. לצורה ממוזגת אין הכרעה. אינו קובע תאריך שחרור ואינו עוסק באופן היציאה.',
+    clientFields: [F.prisonerName],
+  },
+  {
+    id: 'q-prisoner-exit-safety',
+    category: 'conflict', houseId: 12, topicId: 'prisoner', kashfTopicId: 'prisoner',
+    label: 'האם יציאתו של האסיר תהיה בטוחה?',
+    desc: 'כלל נפרד עמ׳ 272: בית 12 מיטיב הוא סימן ליציאה בשלום. המקור אינו נותן כלל הפוך — היעדר הסימן אינו הוכחה לסכנה.',
+    clientFields: [F.prisonerName],
+  },
 
   // ════════════════════════════════════════════════════════════════
   // 💰 שאלות נוספות מכשף אל-אסרר

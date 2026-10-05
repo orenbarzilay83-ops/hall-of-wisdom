@@ -163,8 +163,11 @@ try {
   // marriage methods, p206 love/desire, p212 partnership/dispute, etc.);
   // the count grew to the current, legitimately larger figure below. Most
   // recently: q-missing-return-timing was added and routed to the
-  // previously-unrouted missing.p249.returnTimingTariqH10H11 (71 -> 72).
-  ok(routedByMethod.size === 72, `72 distinct runnable methods have an explicit Question Bank route, excluding the dedicated-input p188 quarter-direction method (got ${routedByMethod.size})`);
+  // previously-unrouted missing.p249.returnTimingTariqH10H11 (71 -> 72);
+  // then q-prisoner-outcome and q-prisoner-exit-safety were added and
+  // routed to the newly-opened prisoner.p272.outcomeH1H4 and
+  // prisoner.p272.exitSafetyH12 (72 -> 74).
+  ok(routedByMethod.size === 74, `74 distinct runnable methods have an explicit Question Bank route, excluding the dedicated-input p188 quarter-direction method (got ${routedByMethod.size})`);
 
   let liveRoutedSuccess = 0;
   for (const [methodId, route] of routedByMethod.entries()) {
@@ -212,7 +215,7 @@ try {
     }
     liveRoutedSuccess += 1;
   }
-  ok(liveRoutedSuccess === 72, 'all 72 routed runnable methods complete the live mocked Advisor path');
+  ok(liveRoutedSuccess === 74, 'all 74 routed runnable methods complete the live mocked Advisor path');
 
   console.log('\n--- Golden/E2E Tier A2: two runnable non-Question-Bank methods ---');
 
@@ -254,7 +257,7 @@ try {
   }
 
   const allRunnable = new Set([...routedByMethod.keys(), 'desire.p206.querentWantsH7H11ThenH5', 'dhamir.p159.subjectByH6Recurrence']);
-  ok(allRunnable.size === 74, `Golden/E2E matrix accounts for all 74 runnable methods exercised by this harness, plus the dedicated-input hidden.p188.quarterDirection excluded above (got ${allRunnable.size})`);
+  ok(allRunnable.size === 76, `Golden/E2E matrix accounts for all 76 runnable methods exercised by this harness, plus the dedicated-input hidden.p188.quarterDirection excluded above (got ${allRunnable.size})`);
 
   console.log('\n--- Golden/E2E Tier B: source-derived fixed cases ---');
 

@@ -1001,6 +1001,85 @@ function computePrisonerRapidExitP272P273(chart) {
   };
 }
 
+// Printed p272 (PDF 274), part of the same "نكتة: في المحبوس" (note:
+// concerning the imprisoned one) as computePrisonerRapidExitP272P273 above,
+// but a textually SEPARATE clause with its own complete binary. Exact
+// quote: "وأنشئ من الأول والرابع شكلا، فإن كان نحسا، فعاقبة المحبوس إلى
+// شر؛ وإن كان سعدا، فعاقبته إلى خير." (construct a figure from the first
+// and the fourth; if it is malefic, the prisoner's outcome is to harm; if
+// benefic, his outcome is to good.) Combine H1+H4 (standard parity-sum
+// combine); saad/nahs give a complete, closed-form binary outcome verdict.
+// Deliberately does NOT implement the adjacent release-MANNER clauses on
+// the same page (voluntary/involuntary exit via H2/H3/H5/H9/H10, and the
+// "forces the prison open" clause) -- those give two different house sets
+// across the main reading and a noted manuscript variant, with no stated
+// precedence when the signs conflict; see the blocked
+// prisoner.p272.releaseManner registry entry for the full citation and
+// exact reason it is not implemented.
+function computePrisonerOutcomeH1H4P272(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h1 = findCanonicalHouse(chart, 1);
+  const h4 = findCanonicalHouse(chart, 4);
+  const h1Pattern = h1?.key || h1?.pattern || null;
+  const h4Pattern = h4?.key || h4?.pattern || null;
+  if (!h1Pattern || !h4Pattern) return null;
+
+  const combined = combineRamlFigures(h1Pattern, h4Pattern);
+  const resultPattern = combined.resultPattern;
+  const classification = classifyCanonicalFigure(resultPattern);
+  const resultFigureHebrew = classification.figureHebrew || combined.result?.hebrewName || resultPattern;
+
+  const outcome = classification.saadNahs === 'saad' ? 'good'
+    : classification.saadNahs === 'nahs' ? 'bad' : 'unresolved';
+  const outcomeHebrew = outcome === 'good' ? 'עתידו של האסיר לטובה.'
+    : outcome === 'bad' ? 'עתידו של האסיר לרעה.'
+      : 'המקור אינו נותן כאן ענף לצורה ממוזגת; אין הכרעה לעתידו הכללי.';
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 272 (PDF 274)',
+    sourceText: 'وأنشئ من الأول والرابع شكلا، فإن كان نحسا، فعاقبة المحبوس إلى شر؛ وإن كان سعدا، فعاقبته إلى خير.',
+    housesUsed: [1, 4],
+    h1Pattern,
+    h4Pattern,
+    resultPattern,
+    resultFigureHebrew,
+    outcome,
+    positive: outcome === 'good' ? true : outcome === 'bad' ? false : null,
+    verdictType: 'prisoner-outcome-h1h4',
+    outputHebrew: `חיבור בית 1 (${h1Pattern}) ובית 4 (${h4Pattern}): ${resultFigureHebrew} (${resultPattern}). ${outcomeHebrew} זהו סימן מסורתי מן המקור, לא קביעה משפטית או עובדתית.`,
+  };
+}
+
+// Same "نكتة: في المحبوس", separate clause: "وإن كان الثاني عشر سعدا،
+// كان خروجه بسلامة." (and if the twelfth is benefic, his exit will be
+// safe.) Only the positive branch is stated; the source gives no explicit
+// inverse for a malefic or mixed H12, so a non-benefic H12 returns
+// positive:null (no verdict), never a "dangerous exit" verdict.
+function computePrisonerExitSafetyH12P272(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h12 = findCanonicalHouse(chart, 12);
+  const pattern = h12?.key || h12?.pattern || null;
+  if (!pattern) return null;
+  const figure = classifyCanonicalFigure(pattern);
+  const safeExitSign = figure.saadNahs === 'saad';
+
+  const outputHebrew = safeExitSign
+    ? `בבית 12 מופיעה ${figure.figureHebrew || pattern} (${pattern}) — צורה מיטיבה. לפי כשף עמ׳ 272: יציאתו של האסיר תהיה בשלום/בבטחה.`
+    : `בבית 12 מופיעה ${figure.figureHebrew || pattern} (${pattern}) — אינה מיטיבה. המקור אינו נותן כאן כלל הפוך; אין בכך הוכחה ליציאה לא בטוחה.`;
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 272 (PDF 274)',
+    sourceText: 'وإن كان الثاني عشر سعدا، كان خروجه بسلامة.',
+    housesUsed: [12],
+    h12Pattern: pattern,
+    h12FigureHebrew: figure.figureHebrew,
+    safeExitSign,
+    positive: safeExitSign ? true : null,
+    verdictType: 'prisoner-exit-safety-h12',
+    outputHebrew,
+  };
+}
+
 function computeMissingDepartedCityH7P249(chart) {
   if (!Array.isArray(chart)) return null;
   const h7 = findCanonicalHouse(chart, 7);
@@ -3923,6 +4002,8 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'property.p184.landOwnershipH4': computeLandOwnershipSignH4P184,
   'dispute.p212.winnerH1': computeDisputeWinnerH1P212,
   'prisoner.p272-273.rapidExitH11WithH5Caution': computePrisonerRapidExitP272P273,
+  'prisoner.p272.outcomeH1H4': computePrisonerOutcomeH1H4P272,
+  'prisoner.p272.exitSafetyH12': computePrisonerExitSafetyH12P272,
   'missing.p249.departedCityH7': computeMissingDepartedCityH7P249,
   'hope.p174.h5h11ThroughH1': computeHopeThroughTwoIntermediatesP174,
   'request.p176.h1h2GateThenH1H4': computeRequestGateAndOutcomeP176,

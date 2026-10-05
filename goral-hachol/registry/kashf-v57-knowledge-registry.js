@@ -531,6 +531,26 @@ export const KASHF_V57_KNOWLEDGE = Object.freeze({
     notes: 'היעדר סימן היציאה אינו הוכחת אי־שחרור. אין להפיק תאריך לוח שנה, ולא להפוך את אזהרת עמ׳ 273 לשלילה ודאית.',
   }),
 
+  'prisoner.p272.outcomeH1H4': knowledge({
+    kashfMethodId: 'prisoner.p272.outcomeH1H4',
+    page: 272,
+    topic: 'הפרק השנים־עשר — אויבים ואסירים',
+    heading: 'עתידו הכללי של האסיר — חיבור בית 1 ובית 4',
+    hebrewRule: 'מאותה "נקודה: במחבוס": חברו צורה מבית 1 ובית 4. אם התוצאה מזיקה — עתיד האסיר לרעה. אם מיטיבה — עתידו לטובה. למוזגת אין ענף במקור.',
+    detailPages: [272], arabicVerificationPages: [272],
+    notes: 'סעיף עצמאי וסגור בתוך אותה נקודה שממנה נלקח גם prisoner.p272-273.rapidExitH11WithH5Caution; אינו תלוי בסעיפי אופן השחרור (voluntary/involuntary) שנותרו חסומים (ראו prisoner.p272.releaseManner). אין כאן תאריך שחרור.',
+  }),
+
+  'prisoner.p272.exitSafetyH12': knowledge({
+    kashfMethodId: 'prisoner.p272.exitSafetyH12',
+    page: 272,
+    topic: 'הפרק השנים־עשר — אויבים ואסירים',
+    heading: 'סימן ליציאה בטוחה — בית 12 מיטיב',
+    hebrewRule: 'מאותה נקודה: אם בית 12 מיטיב, יציאת האסיר תהיה בשלום/בבטחה. המקור אינו נותן כלל הפוך לבית 12 מזיק או ממוזג.',
+    detailPages: [272], arabicVerificationPages: [272],
+    notes: 'סימן חיובי בלבד, כמו שאר הסעיפים ללא ענף הפוך בספר; היעדר הסימן אינו הוכחת סכנה.',
+  }),
+
   'missing.p249.departedCityH7': knowledge({
     kashfMethodId: 'missing.p249.departedCityH7',
     page: 247, topic: 'הפרק התשיעי — מסע, נעדר, אבדה, חלום וחוב',

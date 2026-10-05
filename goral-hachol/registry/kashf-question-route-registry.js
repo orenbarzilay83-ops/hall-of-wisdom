@@ -1286,6 +1286,24 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     note: 'Scope is the p272 sign of rapid release and the p273 H5 caution. Neither gives a calendar date; conflicting signs stay unresolved.',
   }),
 
+  'q-prisoner-outcome': route({
+    questionId: 'q-prisoner-outcome',
+    disposition: 'KEEP',
+    kashfIntentId: 'prisoner.outcomeFate',
+    kashfMethodId: 'prisoner.p272.outcomeH1H4',
+    kashfRuntimeStatus: 'ready',
+    note: 'Added 2026-10-05: new, narrowly-scoped question wiring the newly-opened prisoner.p272.outcomeH1H4 (H1+H4 combine, saad/nahs -> good/bad outcome). Deliberately separate from q-prisoner (exit speed, H11/H5) and q-prisoner-guilty (blocked, culpability) -- this question answers neither of those, only the prisoner\'s general eventual outcome. No release timing or manner is given.',
+  }),
+
+  'q-prisoner-exit-safety': route({
+    questionId: 'q-prisoner-exit-safety',
+    disposition: 'KEEP',
+    kashfIntentId: 'prisoner.exitSafety',
+    kashfMethodId: 'prisoner.p272.exitSafetyH12',
+    kashfRuntimeStatus: 'ready',
+    note: 'Added 2026-10-05: new, narrowly-scoped question wiring the newly-opened prisoner.p272.exitSafetyH12 (H12 benefic -> safe exit, positive-only). Kept separate from q-prisoner and q-prisoner-outcome -- a different house, a different specific claim (safety of the exit, not its speed or the prisoner\'s ultimate fate).',
+  }),
+
   // ── EDUCATIONAL ONLY ---------------------------------------------------
   'q-promise': route({
     questionId: 'q-promise',
