@@ -125,11 +125,13 @@ const DYN_FIELDS_BY_QUESTION = {
   'q-dig-direction': { dynFields: { quarter1Pattern: '2111', quarter2Pattern: '1112', quarter3Pattern: '1212', quarter4Pattern: '1112' } },
   'q-mother': { dynFields: { motherCastPeriod: 'לילה' } },
   'q-marriage-chastity': { dynFields: { candidate: 'לדוגמה', castConfirmedOnName: true } },
+  'q-marriage-woman-quality': { dynFields: { candidate: 'לדוגמה', castConfirmedOnName: true } },
 };
 const MISSING_INPUT_CAPABLE_METHODS = new Set([
   'hidden.p188.quarterDirection',       // printed p188: four independent per-quarter castings
   'mother.p257.statusDayNight',         // printed p257: rule applies only when cast at night
   'marriage.p205.modestyPurity',        // printed p205: "اكمل الرمل على إسمها" — named-cast gate, enforced as a hard executor precondition
+  'marriage.p208.womanQualityH5H4',     // printed p208: same chapter opener/named-cast gate as marriage.p205.modestyPurity
 ]);
 
 // Per-method classifier for the 23 methods that never use verdict.positive.
@@ -282,7 +284,7 @@ console.log('No decision at all on every tested board (all confirmed reachable-b
 console.log('Of the above, methods that additionally require client input beyond the board (architectural, not a source gap):', missingInputCapable);
 
 // Sanity assertions.
-assert.equal(totalRunnable, 97, 'routed-to-ready count unchanged');
+assert.equal(totalRunnable, 98, 'routed-to-ready count unchanged');
 assert.ok(decisiveAtLeastOnce <= totalRunnable && decisiveOnAllBoards <= decisiveAtLeastOnce, 'counts are internally consistent');
 assert.equal(decisiveAtLeastOnce + descriptiveOnlyNeverDecisive + noDecisionOnEveryBoard, totalRunnable, 'every routed method falls into exactly one of: decisive at least once, descriptive-only, or no-decision-only');
 

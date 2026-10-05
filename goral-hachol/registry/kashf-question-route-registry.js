@@ -555,6 +555,15 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     note: 'Repaired 2026-10-04: marriage.p205.modestyPurity now runs via computeMarriageChastityPurityP205. The method answers the SIGN of modesty/chastity/purity shown by the chart (H1, H7, H9, Mizan) per the printed p205-206 "وقيل" clauses — it is a character sign, not a factual finding about the candidate\'s actual past conduct or loyalty. question-bank.js desc was narrowed accordingly (2026-10-04) to remove the overstated "נאמנות ועבר" framing; that factual-history intent remains unanswered by this or any other Kashf method found.',
   }),
 
+  'q-marriage-woman-quality': route({
+    questionId: 'q-marriage-woman-quality',
+    disposition: 'KEEP',
+    kashfIntentId: 'marriage.womanQualitySign',
+    kashfMethodId: 'marriage.p208.womanQualityH5H4',
+    kashfRuntimeStatus: 'ready',
+    note: 'Added 2026-10-05: wires the newly-opened marriage.p208.womanQualityH5H4 (H5 named-figure positive sign; H15/H4 named-figure poor-outcome sign, reported but not forced to positive:false) to a new, separately-scoped question. Same chapter and same named-cast precondition as q-marriage-chastity -- the form carries the identical required name + cast-confirmation fields. Kept separate from q-marriage-chastity (H1/H7/H9/Mizan purity signs, a different source passage) and from the still-blocked marriage.p207-208.adulterySignsUnresolved (an unrelated, unresolved "بيت التزويج" table on the facing pages) -- never merged or voted.',
+  }),
+
   'q-love': route({
     questionId: 'q-love',
     disposition: 'KEEP',

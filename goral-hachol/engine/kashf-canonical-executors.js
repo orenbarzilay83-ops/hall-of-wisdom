@@ -4128,6 +4128,125 @@ function computeMarriageChastityPurityP205(chart, clientContext = {}) {
   };
 }
 
+// Printed p208 (PDF 210), SAME "كمل الرمل على إسمها" (complete the
+// casting on HER name) chapter opener as computeMarriageChastityPurityP205
+// (p205-206) -- a genuinely separate نكتة, found 2026-10-05 re-reading
+// p207-208 directly against the raw scan while re-examining the adjacent
+// marriage.p207-208.adulterySignsUnresolved blocker (that blocker's own
+// "بيت التزويج" character-signs table remains correctly unresolved for
+// its own, different reason -- see that entry; this is NOT a resolution
+// of it, a distinct clause on the facing page). Exact quote: "نكتة: إن
+// كان حل في الخامس النصرة الداخلة، أو النصرة الخارجة، أو العقلة، فالمرأة
+// جيدة ثابتة؛ وإن حل في الميزان القبض الخارج، أو الطريق، أو الإجتماع،
+// فعاقبتها غير حميدة، وليس لك فيها بركة، وكذلك الرابع، لأنهما: بيوت
+// العواقب." (if H5 holds Nusra Dakhila, Nusra Kharija, or Aqla, the woman
+// is good [and] stable; and if the Mizan [H15] holds Qabd Kharij, Tariq,
+// or Ijtima, her outcome is not praiseworthy and there is no blessing in
+// her for you -- and likewise [if in] the fourth -- because these two
+// [H15 and H4] are the "houses of outcomes".)
+//
+// Two independent, source-stated signs, each with its own house(s) and
+// named figure set -- not inverses of each other (different houses,
+// different figures), so both are reported as-is if they both fire on
+// the same board, with no forced single verdict, the same convention
+// already used for prisoner.p272.releaseManner and
+// prisoner.p272-273.rapidExitH11WithH5Caution. Same named-cast
+// precondition as computeMarriageChastityPurityP205 (the chapter's own
+// opening instruction applies to every نكتة in it, not only the first):
+// no sign is produced unless a candidate name AND an explicit
+// confirmation that the board was cast specifically for her are both
+// present. This is a traditional character-assessment sign from the
+// source, explicitly not a factual or moral determination.
+function computeMarriageWomanQualityH5H4P208(chart, clientContext = {}) {
+  if (!Array.isArray(chart)) return null;
+  const h4 = findCanonicalHouse(chart, 4);
+  const h5 = findCanonicalHouse(chart, 5);
+  const h15 = findCanonicalHouse(chart, 15);
+  const p4 = h4?.key || h4?.pattern || null;
+  const p5 = h5?.key || h5?.pattern || null;
+  const p15 = h15?.key || h15?.pattern || null;
+  if (!p4 || !p5 || !p15) return null;
+
+  const candidateName = String(clientContext?.dynFields?.candidate || '').trim();
+  const castConfirmedOnName = clientContext?.dynFields?.castConfirmedOnName === true;
+  const namedCastConfirmed = candidateName.length > 0 && castConfirmedOnName;
+
+  const sourceRef = 'כשף אל־אסראר עמ׳ 208';
+  const sourceText = 'نكتة: إن كان حل في الخامس النصرة الداخلة، أو النصرة الخارجة، أو العقلة، فالمرأة جيدة ثابتة؛ وإن حل في الميزان القبض الخارج، أو الطريق، أو الإجتماع، فعاقبتها غير حميدة، وليس لك فيها بركة، وكذلك الرابع، لأنهما: بيوت العواقب.';
+
+  if (!namedCastConfirmed) {
+    const missing = [];
+    if (!candidateName) missing.push('שם המועמדת');
+    if (!castConfirmedOnName) missing.push('אישור מפורש שהלוח הוטל על שמה');
+    return {
+      sourceRef, sourceText,
+      housesUsed: [4, 5, 15],
+      h4Pattern: p4, h5Pattern: p5, h15Pattern: p15,
+      branch: 'named-cast-not-confirmed',
+      positive: null,
+      namedCastConfirmed: false,
+      candidateName: candidateName || null,
+      outputHebrew: `נקودה זו שייכת לאותו פרק הפותח ב"كمل الرمل على إسمها" (כשף עמ׳ 205) — הטלה המיוחדת לאישה הנשאלת. חסר: ${missing.join(' וגם ')}. אין להפיק סימן כלשהו לפני שהתנאי מאומת במפורש.`,
+      clientSafeHebrew: 'לא ניתן להפיק סימן — חסר שם המועמדת ו/או אישור מפורש שהלוח הוטל במיוחד על שמה, כנדרש במקור.',
+    };
+  }
+
+  const GOOD_WOMAN_PATTERNS = new Set(['2211', '1122', '1221']); // נصرة داخלה, נصرة خارجة, العقلة
+  const BAD_OUTCOME_PATTERNS = new Set(['1212', '1111', '2112']); // قبض خارج, طريق, إجتماع
+
+  const goodWomanSign = GOOD_WOMAN_PATTERNS.has(p5);
+  const badOutcomeSign = BAD_OUTCOME_PATTERNS.has(p15) || BAD_OUTCOME_PATTERNS.has(p4);
+  const badOutcomeHouse = BAD_OUTCOME_PATTERNS.has(p15) && BAD_OUTCOME_PATTERNS.has(p4) ? 'both'
+    : BAD_OUTCOME_PATTERNS.has(p15) ? 15 : BAD_OUTCOME_PATTERNS.has(p4) ? 4 : null;
+
+  const branch = goodWomanSign && badOutcomeSign ? 'conflicting-signs'
+    : goodWomanSign ? 'good-stable-sign'
+      : badOutcomeSign ? 'poor-outcome-sign'
+        : 'no-applicable-clause';
+
+  const h5Figure = classifyCanonicalFigure(p5).figureHebrew || p5;
+  const h15Figure = classifyCanonicalFigure(p15).figureHebrew || p15;
+  const h4Figure = classifyCanonicalFigure(p4).figureHebrew || p4;
+
+  const goodLine = `בבית 5 מופיעה ${h5Figure} (${p5}) — לפי כשף עמ׳ 208: סימן מסורתי שהאישה "טובה ויציבה".`;
+  const badLine = `ב${badOutcomeHouse === 'both' ? 'בתים 15 (המאזן) ו-4' : badOutcomeHouse === 15 ? 'בית 15 (המאזן)' : 'בית 4'} מופיעה צורה מתוך הרשימה המזיקה (${badOutcomeHouse === 'both' ? `${h15Figure}/${h4Figure}` : badOutcomeHouse === 15 ? h15Figure : h4Figure}) — לפי כשף עמ׳ 208: "עתידה אינו משובח ואין בה ברכה".`;
+
+  const outputHebrew = branch === 'conflicting-signs'
+    ? `${goodLine} ${badLine} שני הסימנים עצמאיים (בתים שונים, צורות שונות) והמקור אינו נותן כלל להכרעה ביניהם; מוצגים שניהם בלי הכרעה.`
+    : branch === 'good-stable-sign' ? goodLine
+      : branch === 'poor-outcome-sign' ? badLine
+        : 'אף אחד מסעיפי הסימנים (עמ׳ 208) אינו חל על צירוף הצורות הזה בלוח הנוכחי.';
+
+  const clientSafeHebrew = branch === 'conflicting-signs'
+    ? 'יש בלוח גם סימן חיובי וגם סימן המעורר חשש; המקור אינו מכריע ביניהם.'
+    : branch === 'good-stable-sign' ? 'הלוח מראה כאן סימן מסורתי חיובי ויציב.'
+      : branch === 'poor-outcome-sign' ? 'יש בלוח סימן המעורר חשש לגבי התוצאה.'
+        : 'אין בלוח הזה סימן מכריע מסעיף זה.';
+
+  return {
+    sourceRef, sourceText,
+    housesUsed: [4, 5, 15],
+    h4Pattern: p4, h5Pattern: p5, h15Pattern: p15,
+    goodWomanSign, badOutcomeSign, badOutcomeHouse, branch,
+    // Conservative by design (reconsidered on review, consistent with this
+    // corpus's own prisoner.p272-273.rapidExitH11WithH5Caution precedent,
+    // which keeps its own real negative-leaning sign at positive:null, not
+    // false): only the explicit H5 good-woman sign sets positive:true.
+    // The poor-outcome sign is reported in full in outputHebrew/branch but
+    // does NOT set positive:false -- it is a separate, independently-
+    // sourced claim about a different house, not the grammatical inverse
+    // of the H5 clause, and this is a sensitive character-adjacent
+    // judgment about a named person, where this executor errs toward not
+    // asserting a hard negative value.
+    positive: branch === 'good-stable-sign' ? true : null,
+    namedCastConfirmed,
+    candidateName: candidateName || null,
+    verdictType: 'marriage-woman-quality-h5h4h15',
+    outputHebrew: `${outputHebrew} זהו סימן אופי מסורתי מן המקור, לא קביעה עובדתית או מוסרית.`,
+    clientSafeHebrew,
+  };
+}
+
 // Printed p239 (PDF 241) — a distinct, fully-decodable profit rule for H7
 // (the destination city), cross-verified against the witness-assignment
 // table on printed p101-102 (PDF 103-104): H9 witnesses H1/H5/H7, and H5
@@ -4308,6 +4427,7 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'authority.p257.rulerConditionH7H10': computeRulerConditionP257,
   'mother.p257.statusDayNight': computeMotherNightWhiteRoadP257,
   'marriage.p205.modestyPurity': computeMarriageChastityPurityP205,
+  'marriage.p208.womanQualityH5H4': computeMarriageWomanQualityH5H4P208,
   'travel.p239.profitH7Witness': computeTravelProfitH7WitnessP239,
   'need.p170.waterHousesRowOpen': computeWaterHousesOpenP170,
 });

@@ -480,6 +480,16 @@ window.QUESTION_BANK = [
     ],
   },
   {
+    id: 'q-marriage-woman-quality',
+    category: 'love', houseId: 7, topicId: 'marriage', kashfTopicId: 'marriage',
+    label: 'איכות האישה כבת זוג?',
+    desc: 'כלל נפרד עמ׳ 208: בית 5 — סימן מסורתי "טובה ויציבה"; במאזן (בית 15) או בית 4 — סימן חשש לגבי התוצאה, ללא הכרעה חד-משמעית. סימן אופי מן המקור, לא בירור עובדתי.',
+    clientFields: [
+      { ...F.candidate, label: 'שם המועמדת (חובה — המקור: "השלם את גורל החול על שמה")', required: true },
+      { id: 'castConfirmedOnName', label: 'מאשר/ת שהלוח הוטל במיוחד על שם המועמדת הנ"ל (לא לוח כללי/קודם)', type: 'checkbox', required: true },
+    ],
+  },
+  {
     id: 'q-love',
     category: 'love', houseId: 7, topicId: 'loveHate', kashfTopicId: 'marriage',
     label: 'האם הוא/היא אוהב/ת אותי?',
