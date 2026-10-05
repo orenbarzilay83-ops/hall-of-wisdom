@@ -38,10 +38,11 @@ for (const [questionId, methodId] of [
 }
 
 const twins = getKashfMethod('pregnancy.p191.twinsMujassad');
-assert.equal(twins.kashfRuntimeStatus, 'blocked-by-source');
-assert.equal(twins.runtimeAllowed, false);
-assert.match(twins.notes || '', /مجسدا/);
-assert.match(twins.notes || '', /Do not equate/i);
+assert.equal(twins.kashfRuntimeStatus, 'ready');
+assert.equal(twins.runtimeAllowed, true);
+assert.equal(twins.executorStatus, 'ready');
+assert.match(twins.notes || '', /مجسد/);
+assert.match(twins.notes || '', /NOT the same set as the canonical classifier/i);
 
 const miscarriageRoute = resolveKashfRouteByQuestionId('q-miscarriage');
 assert.equal(miscarriageRoute.kashfMethodId, 'pregnancy.p191-192.miscarriageRedH7NakisH8');

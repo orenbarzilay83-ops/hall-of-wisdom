@@ -18,6 +18,7 @@ import { buildRamlBoardFromMothers } from './raml-board-generator.js';
 import { FIGURE_PLANET_MAP } from '../data/sources/kashf-al-asrar/kashf-hazz.js';
 import { classifyCanonicalFigure } from './kashf-canonical-figure-classifier.js';
 import { HAWI_FIGURE_NAMES_BY_ID } from '../data/sources/kashf-al-asrar/kashf-figure-names.js';
+import { isMujassadP95_97 } from './kashf-figure-classifier.js';
 
 const LEGACY_EXECUTORS = Object.freeze({
   'illness.bodyPart.h6Figure': computeBodyPartDiagnosisKashf,
@@ -175,7 +176,55 @@ function computePregnancyGenderP191(chart) {
   };
 }
 
+// Printed p191 (PDF 193), immediately following the fixed-H5/difficult-delivery
+// clause with no new subject introduced: "...وإن كان في الخامس شكل ثابت،
+// تعسرت، لم تتخلص، بشهادة الشهود: الأول والخامس عشر؛ وإن كان مجسدا، فالمولود
+// توأم." The house is House 5 by unbroken paragraph sequence (every clause in
+// this run — silent/empty/male/female/fixed/مجسد — classifies the SAME H5
+// figure; "كان" never gets a new subject).
+//
+// "مجسد" here is resolved against printed pp95-97 (PDF 97-99), "ومن غير
+// الكتاب: فصل في طبائع الأشكال على التقريب" — an ATTRIBUTED (not body-text)
+// chapter that walks all 16 figures and names "مجسد" for exactly six of
+// them (see MUJASSAD_P95_97_PATTERNS in kashf-figure-classifier.js for the
+// full citation and cross-check against this source's own scattered
+// individual figure descriptions, which independently confirm the same six
+// patterns). This is NOT the same set as the canonical classifier's
+// mujassad-dakhil/mujassad-kharij labels (those are an internal code name
+// for the unrelated, independently-confirmed "fixed"/"mutable" eight-figure
+// class; overlap with this true p95-97 مجسد list is only 2 of 6 figures).
+//
+// Per the explicit source framing, this executor only asserts the POSITIVE
+// branch: an H5 figure from the p95-97 مجسد list is a traditional sign of
+// twins. The source never states an inverse ("not مجسد => not twins"), so a
+// non-matching H5 figure returns positive:null (no verdict), never
+// positive:false. This is reported as a traditional source sign, not a
+// medical determination.
+function computePregnancyTwinsMujassadP191(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h5 = findCanonicalHouse(chart, 5);
+  const pattern = h5?.key || h5?.pattern || null;
+  if (!pattern) return null;
 
+  const figureHebrew = h5?.hebrew || h5?.hebrewName || pattern;
+  const isTwinsSign = isMujassadP95_97(pattern);
+
+  const outputHebrew = isTwinsSign
+    ? `בית 5: ${figureHebrew} (${pattern}) — צורה המכונה "مجسد" במפורש בכשף עמ׳ 95–97. לפי כשף עמ׳ 191: זהו סימן מסורתי שהלידה תאומים. זהו סימן ממקור קדום, לא קביעה רפואית, ואינו תחליף לבדיקה רפואית.`
+    : `בית 5: ${figureHebrew} (${pattern}) — אינה מופיעה ברשימת "مجسد" המפורשת של כשף עמ׳ 95–97. המקור אינו נותן כלל הפוך; היעדר הסימן אינו הוכחה שאין תאומים, וכלל זה לבדו אינו מכריע.`;
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 191; רשימת "مجسد" עמ׳ 95–97 (פרק מיוחס)',
+    sourceText: 'وإن كان مجسدا، فالمولود توأم.',
+    houseNumber: 5,
+    h5Pattern: pattern,
+    h5FigureHebrew: figureHebrew,
+    isTwinsSign,
+    positive: isTwinsSign ? true : null,
+    verdictType: 'traditional-sign-not-medical',
+    outputHebrew,
+  };
+}
 
 
 // Kashf p225 gives the routing rule: take the thief's description from H7.
@@ -2642,6 +2691,126 @@ function computeMissingReturnP249(chart) {
   };
 }
 
+// Printed p249 (PDF 251), separate "نكتة" from the IF-return rule above (that
+// one is missing.p249.returnAnglesJudge and is explicitly kept isolated from
+// this one). Exact quote: "نكتة: للغائب الذي ترجوا قدومه: فإن خرج في العاشر
+// والحادي عشر طريق، فإنه يدل على إجتماع به في يومك. وإن كان في العاشر
+// طريق، وفي الحادي عشر إجتماع، كان الإجتماع في الساعة، مجرب." (Note: for the
+// absent one whose arrival is hoped for: if Tariq comes out in BOTH the
+// tenth and the eleventh, it indicates union with him within your day. And
+// if the tenth has Tariq and the eleventh has Ijtima, the union will be
+// within the hour -- tested/reliable, per the source's own "مجرب" marker.)
+//
+// This directly answers q-missing-return's own documented gap: that route's
+// note says the selected if-return method "also promises WHEN; timing must
+// be removed or handled by a separate verified intent." This is that
+// separate intent (missing.returnTiming) -- it does not replace or vote
+// with missing.p249.returnAnglesJudge.
+//
+// Only the two explicit branches are asserted. The source gives no
+// "otherwise" clause here, so any other H10/H11 combination returns
+// positive:null, not a negative/no-return verdict.
+function computeMissingReturnTimingP249(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h10 = findCanonicalHouse(chart, 10);
+  const h11 = findCanonicalHouse(chart, 11);
+  const h10Pattern = h10?.key || h10?.pattern || null;
+  const h11Pattern = h11?.key || h11?.pattern || null;
+  if (!h10Pattern || !h11Pattern) return null;
+
+  const sameDay = h10Pattern === '1111' && h11Pattern === '1111';
+  const withinTheHour = h10Pattern === '1111' && h11Pattern === '2112';
+
+  let timing = null;
+  let timingHebrew = 'התנאי המפורש של עמ׳ 249 אינו מתקיים באף אחד משני ענפיו (לא דרך בבתים 10+11, ולא דרך בבית 10 עם חיבור בבית 11); אין כלל-הפוך במקור, ולכן אין פסק שלילי על מועד החזרה.';
+  if (sameDay) {
+    timing = 'same-day';
+    timingHebrew = 'בית 10 ובית 11 — שניהם דרך. לפי כשף עמ׳ 249: סימן להתאחדות עימו באותו היום.';
+  } else if (withinTheHour) {
+    timing = 'within-the-hour';
+    timingHebrew = 'בית 10 — דרך; בית 11 — חיבור. לפי כשף עמ׳ 249: סימן להתאחדות תוך השעה (המקור מציין זאת במפורש כ"מְנֻסֶּה" — כלל שנבדק, عربית: مجرب).';
+  }
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 249 (PDF 251)',
+    sourceText: 'نكتة: للغائب الذي ترجوا قدومه: فإن خرج في العاشر والحادي عشر طريق، فإنه يدل على إجتماع به في يومك. وإن كان في العاشر طريق، وفي الحادي عشر إجتماع، كان الإجتماع في الساعة، مجرب.',
+    housesUsed: [10, 11],
+    h10Pattern,
+    h11Pattern,
+    timing,
+    sameDay,
+    withinTheHour,
+    positive: timing ? true : null,
+    verdictType: 'missing-return-timing',
+    outputHebrew: timingHebrew,
+  };
+}
+
+// Printed p249 (PDF 251), separate "نكتة" on the absent person's STATE (not
+// whether/when he returns). Exact quote: "نكتة: عن حال الغائب: أنشئ من
+// الثامن والرابع عشر شكلا، فإن كان سعدا، كان حاله صالحا، وإن كان نحسا،
+// فبضده؛ فإن إنفتح ناره وهواءه، كان حيا، وإلا بضد ذلك." (Note: on the state
+// of the absent one: construct a figure from the eighth and the fourteenth.
+// If benefic, his state is good; if malefic, the opposite. If its fire and
+// its air [rows] are open, he is alive; otherwise, the opposite of that.)
+//
+// This is a second, source-attested route to the missing.aliveOrDead
+// intent, alongside missing.p248-249.lifeH1H4H9Outcome (H1+H15+H4+H9 alive
+// sign vs. the named-figure H6+H7+H8+H15 death testimony) -- a DIFFERENT
+// derivation (combine H8+H14), not merged or voted with it. Registered as a
+// supporting condition, not a second canonical-operational method.
+//
+// The source's own continuation ("وقدومه في الثالث والخامس عشر...") adds a
+// THIRD, separate arrival-sign clause using H3+H15; that part is NOT
+// implemented here -- "قدومه... إن كان داخلا" does not state whether it
+// means the H8+H14 figure, a new H3+H15 combination, or each house read
+// individually, and guessing the referent would repeat the exact mistake
+// already documented for the p169-170 "its owner/lord" case.
+function computeMissingLifeStatusH8H14P249(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h8 = findCanonicalHouse(chart, 8);
+  const h14 = findCanonicalHouse(chart, 14);
+  const h8Pattern = h8?.key || h8?.pattern || null;
+  const h14Pattern = h14?.key || h14?.pattern || null;
+  if (!h8Pattern || !h14Pattern) return null;
+
+  const combined = combineRamlFigures(h8Pattern, h14Pattern);
+  const resultPattern = combined.resultPattern;
+  const classification = classifyCanonicalFigure(resultPattern);
+
+  const fireState = getCanonicalRowState(resultPattern, 0);
+  const airState = getCanonicalRowState(resultPattern, 1);
+  if (!fireState || !airState) return null;
+  const aliveSign = fireState === 'open' && airState === 'open';
+
+  const stateQuality = classification.saadNahs === 'saad' ? 'good'
+    : classification.saadNahs === 'nahs' ? 'bad'
+      : 'unresolved';
+  const stateQualityHebrew = stateQuality === 'good' ? 'מצבו טוב'
+    : stateQuality === 'bad' ? 'מצבו רע (היפוך הטוב)'
+      : 'המקור אינו נותן כאן ענף לצורה ממוזגת; אין הכרעה למצבו הכללי';
+
+  const resultFigureHebrew = classification.figureHebrew || combined.result?.hebrewName || resultPattern;
+  const outputHebrew = `חיבור בית 8 (${h8Pattern}) ובית 14 (${h14Pattern}): ${resultFigureHebrew} (${resultPattern}). ${stateQualityHebrew}. שורת האש ${fireState === 'open' ? 'פתוחה' : 'מתחברת'} ושורת האוויר ${airState === 'open' ? 'פתוחה' : 'מתחברת'} — לפי כשף עמ׳ 249: ${aliveSign ? 'סימן שהוא בחיים' : 'היפוך הסימן — אין כאן הכרעה שהוא בחיים'}. זהו סימן מסורתי מן המקור, לא אימות עובדתי.`;
+
+  return {
+    sourceRef: 'כשף אל-אסרר עמ׳ 249 (PDF 251)',
+    sourceText: 'نكتة: عن حال الغائب: أنشئ من الثامن والرابع عشر شكلا، فإن كان سعدا، كان حاله صالحا، وإن كان نحسا، فبضده؛ فإن إنفتح ناره وهواءه، كان حيا، وإلا بضد ذلك.',
+    housesUsed: [8, 14],
+    h8Pattern,
+    h14Pattern,
+    resultPattern,
+    resultFigureHebrew,
+    stateQuality,
+    fireState,
+    airState,
+    aliveSign,
+    positive: aliveSign,
+    verdictType: 'missing-life-status-h8h14',
+    outputHebrew,
+  };
+}
+
 // Kashf v57 p191 — ease/difficulty of delivery.
 function computeDeliveryDifficultyP191(chart) {
   if (!Array.isArray(chart)) return null;
@@ -3700,6 +3869,8 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'siblings.p182.seniority': computeSiblingSeniorityP182,
   'marriage.p211.dissolutionH7StateMatrix': computeMarriageDissolutionP211,
   'missing.p249.returnAnglesJudge': computeMissingReturnP249,
+  'missing.p249.returnTimingTariqH10H11': computeMissingReturnTimingP249,
+  'missing.p249.lifeStatusH8H14': computeMissingLifeStatusH8H14P249,
   'pregnancy.p191.childSafetyH1H6H8': computeChildSafetyP191,
   'lifespan.p264.stagesH11H9H7': computeLifespanStagesP264,
   'travel.p244.returnH1H2H9': computeTravelerReturnP244,
@@ -3739,6 +3910,7 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'theft.p225.thiefDescriptionH7': computeThiefDescriptionP225,
   'pregnancy.p191.existsH5SilentEmpty': computePregnancyExistenceP191,
   'pregnancy.p191.genderH5': computePregnancyGenderP191,
+  'pregnancy.p191.twinsMujassad': computePregnancyTwinsMujassadP191,
   'theft.p224.relationshipH7Recurrence': computeThiefRelationshipP224,
   'matter.p169.validityH6H8Planet': computeMatterValidityP169,
   'need.p169.fulfillmentH1Fortune': computeNeedFulfillmentP169,

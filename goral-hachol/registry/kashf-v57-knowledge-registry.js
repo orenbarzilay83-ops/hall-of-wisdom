@@ -978,6 +978,17 @@ export const KASHF_V57_KNOWLEDGE = Object.freeze({
     notes: 'הכלל עוסק בשיבה כאשר היתדות והכרעת הסוף מעידות לכך; הוא אינו מחשב מועד חזרה.',
   }),
 
+  'missing.p249.returnTimingTariqH10H11': knowledge({
+    kashfMethodId: 'missing.p249.returnTimingTariqH10H11',
+    page: 249,
+    topic: 'הפרק התשיעי — מסע, נעדר, אבדה, חלום וחוב',
+    heading: 'מועד ההתאחדות עם הנעדר המקווה',
+    hebrewRule: 'נקודה: לנעדר שמקווים לשובו — אם יצאה דרך בבית העשירי ובבית האחד־עשר, הדבר מורה על התאחדות עימו באותו היום. ואם יצאה דרך בעשירי וחיבור באחד־עשר, ההתאחדות תהיה תוך השעה — מנוסה.',
+    supportingPages: [249],
+    arabicVerificationPages: [249],
+    notes: 'כלל נפרד מ-missing.p249.returnAnglesJudge (שם נותר מבודד); עונה על הפער המתועד בנתיב q-missing-return עצמו — מועד חזרה, לא עצם החזרה. אין ענף הפוך במקור לצירופי בתים 10/11 אחרים.',
+  }),
+
   'debt.p179.creditorDebtorWalking': knowledge({
     kashfMethodId: 'debt.p179.creditorDebtorWalking',
     page: 179,
