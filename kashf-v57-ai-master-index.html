@@ -11556,6 +11556,58 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "runtimeEligible": false
     },
     {
+      "entryId": "gate6.house1.p169.need-fulfillment-h1-fortune",
+      "entryType": "question-intent-method-candidate",
+      "bookPages": [
+        169
+      ],
+      "scanPdfPages": [
+        171
+      ],
+      "v57Anchors": [
+        "kashf-v57-draft.html#p169"
+      ],
+      "topic": "האם הצורך ייפתר — צורת בית 1",
+      "keywords": [
+        "הצורך",
+        "בית הצורך",
+        "H1",
+        "מיטיב",
+        "ממוזג",
+        "מזיק",
+        "תקצ'ה"
+      ],
+      "criticalFacts": [
+        "המקור: \"في الحاجة هل تقضى أم لا؟ فانظر الذي في بيت الحاجة، فإن كان سعدا، إنقضت؛ وإن كان ممتزجا، ففيها بطئ؛ وإن كان نحسا، فلا تقضى\".",
+        "\"بيت الحاجة\" (בית הצורך) נקרא כ-H1 לפי הכלל הסמוך-הקודם באותו עמוד (gate6.house1.p169.need-axes-and-person-state), הקובע במפורש: הצורך ב-H1.",
+        "פסק סגור על כל שלושת מצבי המזל: מיטיב→ייפתר, ממוזג→איטיות/עיכוב, מזיק→לא ייפתר."
+      ],
+      "outputScope": "נפתח כמסלול פסק פעיל ב-2026-10-05.",
+      "doNotInfer": [
+        "אין למזג עם hope.p267.fulfillment (עמ׳ 267, בית 11, q-wish) — עמוד ומקור שונים."
+      ],
+      "sourceDiscrepancies": [
+        "לא נמצא תיעוד v57 קודם לסעיף הזה בכלל — זהו ממצא חדש של הסבב הזה, לא תיקון לשגיאת v57 קיימת."
+      ],
+      "verificationStatus": "RESOLVED",
+      "sourceVerification": {
+        "printedBookPages": [
+          169
+        ],
+        "scanPdfPages": [
+          171
+        ],
+        "v57Checked": true,
+        "printedScanChecked": true,
+        "visualLineByLineChecked": true,
+        "note": "Re-read directly on the scan at 1600 DPI 2026-10-05; no prior v57 or master-index entry existed for this specific note."
+      },
+      "methodStatus": "OPERATIONAL_2026-10-05",
+      "operationalRole": "PRIMARY_CANDIDATE",
+      "runtimeEligible": true,
+      "runtimeNote": "Opened 2026-10-05: implemented via computeNeedFulfillmentP169 (kashf-canonical-executors.js) as need.p169.fulfillmentH1Fortune, split out of the formerly-bundled need.p169-170.outcomeRules (now need.fulfillmentCompound intent, still blocked — see its own updated registry notes for the three sub-rules that remain genuinely unresolved: the H10/Awtad-wording ambiguity, and two water-house rules sharing the same open house-identity gap as hiddenDepth.p188-189/waterDepth.p189-190). New question q-need-fulfillment routes here. Golden tests: _test_kashf_need_fulfillment_p169.mjs (23/23 passing, all three fortune branches on real boards)."
+    },
+    {
       "entryId": "gate6.house1.p169.h6-h8-planetary-validity",
       "entryType": "question-intent-method-candidate",
       "bookPages": [
@@ -11641,14 +11693,15 @@ body{font-family:Arial,'Noto Sans Hebrew',sans-serif;background:#f5f0e7;color:#2
       "outputScope": "ידע מקור לאחזור AI; אינו הופך לבדו למסלול פסק פעיל.",
       "doNotInfer": [
         "אין להריץ את כל בדיקות הבקשה יחד ללא בחירת מסלול לפי ניסוח השאלה.",
-        "אין להחליף את ״סמוך ליתדות״ בבית נופל."
+        "אין להחליף את ״סמוך ליתדות״ בבית נופל.",
+        "ה-criticalFact הראשון (בית הבקשה=H1, מיטיב/ממוזג/מזיק) נפתח ומומש בנפרד ב-2026-10-05 כ-gate6.house1.p169.need-fulfillment-h1-fortune (need.p169.fulfillmentH1Fortune) — שלושת ה-criticalFacts הנותרים (H10/יתד, צורת בתי המים אחרי H16, בדיקת פתיחת המים) נשארים חסומים באותה אי-ודאות כפי שתועדה כאן."
       ],
       "sourceDiscrepancies": [
         "v57 מצרף עיכוב לענף היתד, בעוד המקור מייחס השגה קרובה ליתד ועיכוב לענף הסמוך ליתדות.",
         "v57 משמיט את ענף ההשגה לאחר עיכוב בסמוך ליתדות.",
         "v57 משמיט את הבדיקה הנוספת של פתיחת המים בבתים המימיים ואת הענף ההפוך שבו הבקשה מנועה."
       ],
-      "verificationStatus": "REVIEW_REQUIRED",
+      "verificationStatus": "PARTIALLY_RESOLVED",
       "sourceVerification": {
         "printedBookPages": [
           169,

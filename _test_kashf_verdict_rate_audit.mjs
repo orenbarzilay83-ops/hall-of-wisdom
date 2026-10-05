@@ -177,7 +177,7 @@ console.log('Never decisive on any tested board:', neverDecisive, '(all confirme
 // be exactly this set — a regression here means either a method's
 // behavior changed or this audit's rules are stale and need re-deriving
 // from the executors, not patching blindly.
-assert.equal(totalRunnable, 90, 'routed-to-ready count unchanged');
+assert.equal(totalRunnable, 91, 'routed-to-ready count unchanged');
 assert.ok(atLeastOnce <= totalRunnable && allBoards <= atLeastOnce, 'counts are internally consistent');
 assert.equal(atLeastOnce + neverDecisive, totalRunnable, 'every routed method is either decisive at least once or never');
 

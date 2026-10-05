@@ -1405,17 +1405,29 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     notes: 'Opened 2026-10-05: re-read printed p169 (PDF 171) directly at 1600 DPI, confirming the exact quote letter-by-letter: "نكتة: هذا الأمر يصح لي أم لا؟ أخرج من السادس والثامن شكلا، فإن كان من أشكال الزهرة، أو القمر، أو عطارد، فالأمر يصح؛ وإن كان خلاف هذه الأشكال، فلا يصح" — derive a figure from H6+H8; if it is among the figures of Venus (نوجה), the Moon (ירח) or Mercury (כוכב/عطارد), the matter is valid for the querent; any other figure, it is not. This is body text (no attribution marker) between two other unrelated "نكتة" notes, and is a closed condition over all 16 figures with no remainder branch — the prior "repair-required" block was specifically the v57 Hebrew knowledge layer losing the explicit Mercury term; the Arabic scan itself was never ambiguous. Implemented via computeMatterValidityP169, reusing the existing FIGURE_PLANET_MAP (kashf-hazz.js) already used by authority.p256.honorConditionH10Planet and lifespan.p264.stagesH11H9H7 for the same planet-figure assignments. Qualifying patterns (Venus {1121,2211} ∪ Moon {2212,1111} ∪ Mercury {2112,2222} = 6 of 16) give positive:true; the other 10 give positive:false — this is a genuine binary (not a partial/undetermined-branch) method. New question q-matter-valid routes here; distinct from q-success (completion.p173, "will it succeed") — this answers suitability/rightness, not outcome.',
   }),
 
+  'need.p169.fulfillmentH1Fortune': method({
+    kashfMethodId: 'need.p169.fulfillmentH1Fortune',
+    kashfIntentId: 'need.fulfillment',
+    topicId: 'generalReading',
+    sourcePages: [169],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: true,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
+    notes: 'Opened 2026-10-05, split out of the formerly-bundled need.p169-170.outcomeRules (that id is kept below for the three sub-rules still genuinely unresolved). Re-read printed p169 (PDF 171) at 1600 DPI. Two adjacent "نكتة" notes, both body text: "في الحاجة: فالحاجة: في الأول؛ والأصل: في الرابع؛ والقوة: في العاشر؛ والنهاية: في السابع" (the need itself is assigned to H1), immediately followed by "في الحاجة هل تقضى أم لا؟ فانظر الذي في بيت الحاجة، فإن كان سعدا، إنقضت؛ وإن كان ممتزجا، ففيها بطئ؛ وإن كان نحسا، فلا تقضى" (look at what is in the house of the need; benefic => fulfilled, mixed => delayed, malefic => not fulfilled). "بيت الحاجة" is read as H1 via the immediately preceding note\'s own explicit assignment — a context-based reading grounded directly in the adjacent text, not a guess. A fully closed 3-way branch over all three fortune classes, including mixed (unlike most methods in this corpus, the source gives an explicit verdict for the mixed case too: delay, not silence). Implemented via computeNeedFulfillmentP169. Distinct from hope.p267.fulfillment (H11, page 267, a different source page and a different book intent — "الحاجة"/need vs "الأمل"/hope) — never merged, never voted together. New question q-need-fulfillment routes here.',
+  }),
+
   'need.p169-170.outcomeRules': method({
     kashfMethodId: 'need.p169-170.outcomeRules',
-    kashfIntentId: 'need.fulfillment',
+    kashfIntentId: 'need.fulfillmentCompound',
     topicId: 'generalReading',
     sourcePages: [169, 170],
     methodRole: 'unresolved',
-    kashfRuntimeStatus: 'repair-required',
+    kashfRuntimeStatus: 'blocked-by-source',
     runtimeAllowed: false,
     executionKind: 'source-rule-set',
     executorStatus: 'pending',
-    notes: 'Need-fulfillment rules are their own intent. The printed source separates the need-house quality, H10 angle/succedent/cadent timing, a derived water-house figure after completing H16, and the open-water-house check. Current v57 omits/shifts branches, so no aggregate runtime is authorized.',
+    notes: 'Re-read 2026-10-05 at 1600 DPI, now precisely separated from need.p169.fulfillmentH1Fortune (the clean H1-fortune sub-rule, opened separately above) and from matter.p169.validityH6H8Planet. Three distinct remaining sub-notes, none yet closed: (1) "إذا سألك سائل: هل يصح ما سألت عنه أم لا؟ انظر إلى العاشر، فإن كان شكل داخل وهو في وتد، فإنه يكون قريب تحصيله؛ وإن كان فيما يلي الأوتاد، فهو يحصل بعد بطئ؛ وإن كان صاحبه في ساقط، فإنه لم ينل ما يطلب" (p169-170) — names "العاشر" (the Tenth) explicitly, then conditions on that SAME house also being "في وتد" (in an Awtad); since H10 is itself always one of the four Awtad houses (1,4,7,10) by the board\'s own structure, "وهو في وتد" would be a tautology if read as literally about H10 — genuinely ambiguous whether "العاشر" here means H10 specifically, a different counted position, or a secondary/derived figure not yet identified; not guessed past. (2) "هذا الشيء يحصل أم لا؟ كمل الضرب إلى السادس عشر، أقم من بيوت الماء شكلا..." (p170) — a full-board derivation naming "بيوت الماء" (the water houses) without the engine ever having closed which specific houses those are for this operation (the same category of gap as hiddenDepth.p188-189 and waterDepth.p189-190, both also still blocked). (3) a further open/closed water-house check on the same page, likewise dependent on (2)\'s unresolved house set. Current v57 omits/shifts branches for all three; no aggregate runtime is authorized for any of them. Do not infer house identities for (1) or (2) from symmetry or another book.',
   }),
 
   'attention.p170.mutualGazeFireRows1713': method({

@@ -127,6 +127,13 @@ window.QUESTION_BANK = [
     clientFields: [F.matter],
   },
   {
+    id: 'q-need-fulfillment',
+    category: 'general', houseId: 1, topicId: 'generalReading', kashfTopicId: 'generalReading',
+    label: 'האם הצורך ייפתר?',
+    desc: 'כלל נפרד לפי כשף עמ׳ 169 (בית 1 — בית הצורך). שונה משאלת "האם ישיג מה שרוצה" (עמ׳ 267): מקור ועמוד שונים לחלוטין',
+    clientFields: [F.matter],
+  },
+  {
     id: 'q-hope-p174',
     category: 'general', houseId: 11, topicId: 'completion', kashfTopicId: 'friendsHope',
     label: 'האם תקווה מסוימת תתגשם?',

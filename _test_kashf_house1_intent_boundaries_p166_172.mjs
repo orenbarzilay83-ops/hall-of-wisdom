@@ -90,9 +90,19 @@ assert.equal(validity.kashfRuntimeStatus, 'ready');
 assert.equal(validity.runtimeAllowed, true);
 assert.match(validity.notes || '', /Mercury|عطارد/);
 
+// Updated 2026-10-05: the clean H1-fortune sub-rule was split out as
+// need.p169.fulfillmentH1Fortune (ready; see
+// _test_kashf_need_fulfillment_p169.mjs). The remaining bundle (H10/Awtad
+// wording + two water-house rules) stays blocked, now blocked-by-source
+// rather than repair-required since the Arabic itself, not just v57, is
+// what remains unclear for those three sub-notes.
 const need = getKashfMethod('need.p169-170.outcomeRules');
-assert.equal(need.kashfRuntimeStatus, 'repair-required');
+assert.equal(need.kashfRuntimeStatus, 'blocked-by-source');
 assert.equal(need.runtimeAllowed, false);
+
+const needFulfillment = getKashfMethod('need.p169.fulfillmentH1Fortune');
+assert.equal(needFulfillment.kashfRuntimeStatus, 'ready');
+assert.equal(needFulfillment.runtimeAllowed, true);
 
 // Updated 2026-10-05: opened via computeMutualGazeP170; see
 // _test_kashf_attention_p170.mjs for full golden-test coverage, including

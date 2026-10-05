@@ -1139,6 +1139,15 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     note: 'Dedicated p267 House 11 fallback only. Compound conditions and request-nature matching remain unimplemented; no p173 completion substitution.',
   }),
 
+  'q-need-fulfillment': route({
+    questionId: 'q-need-fulfillment',
+    disposition: 'KEEP',
+    kashfIntentId: 'need.fulfillment',
+    kashfMethodId: 'need.p169.fulfillmentH1Fortune',
+    kashfRuntimeStatus: 'ready',
+    note: 'Opened 2026-10-05 from printed p169, split out of the formerly-bundled need.p169-170.outcomeRules. Distinct source page/intent from q-wish (hope.p267, House 11) — never merged or voted together.',
+  }),
+
   'q-hope-p174': route({
     questionId: 'q-hope-p174',
     disposition: 'KEEP',

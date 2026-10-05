@@ -440,6 +440,54 @@ function computeMatterValidityP169(chart) {
   };
 }
 
+// Printed p169 (PDF 171): two adjacent notes read together, both body text.
+// First: "نكتة: في الحاجة: فالحاجة: في الأول؛ والأصل: في الرابع؛ والقوة: في
+// العاشر؛ والنهاية: في السابع" — assigns the need itself to H1 (root to H4,
+// strength to H10, outcome to H7; only the "need" assignment is used here).
+// Second, immediately below: "نكتة: في الحاجة هل تقضى أم لا؟ فانظر الذي في
+// بيت الحاجة، فإن كان سعدا، إنقضت؛ وإن كان ممتزجا، ففيها بطئ؛ وإن كان
+// نحسا، فلا تقضى" — "بيت الحاجة" ("the house of the need") is read as H1
+// via the immediately preceding note's own explicit house assignment, not
+// guessed — a context-based reading, not an invented one. A fully closed
+// 3-way branch: benefic H1 => fulfilled; mixed H1 => delayed; malefic H1
+// => not fulfilled. Distinct from hope.p267.fulfillment (H11, a different
+// page and a different intent — "need" vs "hope"), which this must never
+// be merged with or vote against.
+function computeNeedFulfillmentP169(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h1 = findCanonicalHouse(chart, 1);
+  const h1Pattern = h1?.key || h1?.pattern || null;
+  if (!h1Pattern) return null;
+
+  const classification = classifyCanonicalFigure(h1Pattern);
+  const h1FigureHebrew = classification.figureHebrew || h1?.hebrew || h1?.hebrewName || h1Pattern;
+  const fortune = classification.saadNahs;
+
+  let outcome, positive, outputHebrew;
+  if (fortune === 'saad') {
+    outcome = 'fulfilled';
+    positive = true;
+    outputHebrew = `בית 1 (בית הצורך, לפי עמ׳ 169) הוא ${h1FigureHebrew} — מיטיב. לפי כשף עמ׳ 169: הצורך ייפתר/יתמלא.`;
+  } else if (fortune === 'nahs') {
+    outcome = 'not-fulfilled';
+    positive = false;
+    outputHebrew = `בית 1 (בית הצורך, לפי עמ׳ 169) הוא ${h1FigureHebrew} — מזיק. לפי כשף עמ׳ 169: הצורך לא ייפתר/לא יתמלא.`;
+  } else {
+    outcome = 'delayed';
+    positive = null;
+    outputHebrew = `בית 1 (בית הצורך, לפי עמ׳ 169) הוא ${h1FigureHebrew} — ממוזג. לפי כשף עמ׳ 169: יש עיכוב/איטיות בפתרון הצורך; המקור אינו קובע כאן כן/לא סופי לענף הממוזג.`;
+  }
+
+  return {
+    sourceRef: 'כשף אל-אסראר עמ׳ 169',
+    sourceText: 'הצורך הוא בבית הראשון. אם צורת הבית הראשון מיטיבה, הצורך ייפתר; אם ממוזגת, יש בה איטיות; אם מזיקה, לא ייפתר.',
+    housesUsed: [1],
+    h1Pattern, h1FigureHebrew, fortune, outcome,
+    positive,
+    outputHebrew,
+  };
+}
+
 function computeHonorConditionP256(chart) {
   const h10 = findCanonicalHouse(chart, 10);
   const pattern = h10?.key || h10?.pattern || null;
@@ -3630,6 +3678,7 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'pregnancy.p191.genderH5': computePregnancyGenderP191,
   'theft.p224.relationshipH7Recurrence': computeThiefRelationshipP224,
   'matter.p169.validityH6H8Planet': computeMatterValidityP169,
+  'need.p169.fulfillmentH1Fortune': computeNeedFulfillmentP169,
   'attention.p170.mutualGazeFireRows1713': computeMutualGazeP170,
   'authority.p256.honorConditionH10Planet': computeHonorConditionP256,
   'authority.p257.appointmentH1H10Planet': computeAppointmentCompletionP257,
