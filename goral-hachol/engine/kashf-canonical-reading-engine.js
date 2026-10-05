@@ -308,6 +308,33 @@ export function buildKashfReadingByMethod(board, kashfMethodId, clientContext = 
     });
   }
 
+  // Structural board validity gate (applies to every method, before any
+  // executor or formula runs): per raml-board-generator.js's validateBoard,
+  // only a `critical` finding (currently: the Judge, house 15, must be an
+  // even figure -- source: "הדיין (בית 15) חייב להיות זוג. אם לא -- הלוח
+  // כולו פסול") means the source itself declares the WHOLE BOARD invalid
+  // and requires re-casting. A `warning`-severity finding (Ras/Dhanab al-
+  // Tinnin in house 1, or none of the four liar-exposing figures present)
+  // is the source telling the reader to weigh it carefully or consider
+  // re-casting -- advisory, not a stop -- and must not block a verdict.
+  // Previously this engine attached boardValidation to the result purely
+  // for display and always returned valid:true/canRunKashf:true regardless
+  // of hasCritical, so a structurally-invalid board (by the source's own
+  // explicit rule) could still produce a client-facing verdict in both the
+  // canonical path and the AI bridge (both gate only on valid/canRunKashf,
+  // never on boardValidation itself). Fixed here, at the single shared
+  // entry point both paths call through.
+  if (board?.boardValidation?.hasCritical === true) {
+    return blockedResult({
+      kashfMethodId: method.kashfMethodId,
+      kashfIntentId: method.kashfIntentId,
+      status: method.kashfRuntimeStatus,
+      executorStatus: method.executorStatus,
+      reason: 'board-validation-critical',
+      userMessage: 'הלוח פסול במפורש לפי המקור (למשל: הדיין בבית 15 אינו זוגי) — יש להטיל מחדש. לא ניתן למסור פסק קנוני על בסיס לוח זה.',
+    });
+  }
+
   // Source/method readiness and executor readiness are separate facts.
   // A source-ready method with no canonical executor must not masquerade as
   // runnable and must not fall back to its broad legacy topic bundle.
