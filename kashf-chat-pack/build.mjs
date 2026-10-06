@@ -35,12 +35,12 @@ vm.runInNewContext(fs.readFileSync(path.join(root, 'goral-hachol/ui/question-ban
   { filename: 'goral-hachol/ui/question-bank.js', timeout: 1000 });
 const questionBank = new Map(questionContext.window.QUESTION_BANK.map(item => [item.id, item]));
 const count = (items, status) => items.filter(item => item.status === status).length;
-expect(index.records.length === 272, 'Master Index record count changed');
-expect(index.v57CorrectionQueue.length === 91 && count(index.v57CorrectionQueue, 'RESOLVED') === 91, 'v57 queue not closed');
-expect(index.downstreamCorrectionQueue.length === 46 && count(index.downstreamCorrectionQueue, 'RESOLVED') === 46, 'downstream queue not closed');
+expect(index.records.length === 275, 'Master Index record count changed');
+expect(index.v57CorrectionQueue.length === 93 && count(index.v57CorrectionQueue, 'RESOLVED') === 93, 'v57 queue not closed');
+expect(index.downstreamCorrectionQueue.length === 47 && count(index.downstreamCorrectionQueue, 'RESOLVED') === 47, 'downstream queue not closed');
 expect(index.sourceConflictQueue.length === 48 && count(index.sourceConflictQueue, 'RESOLVED') === 9
   && count(index.sourceConflictQueue, 'SOURCE_CONFLICT/NON_OPERATIONAL') === 39, 'Source Freeze status changed');
-expect(routes.length === 138 && runnable.length === 50, 'route/runnable inventory changed');
+expect(routes.length === 158 && questionBank.size === 158 && runnable.length === 90, 'question/route/runnable inventory changed');
 expect(routes.every(route => questionBank.has(route.questionId)), 'Question Bank labels missing');
 const spiritualCoverage = index.spiritualQuestionCoverage;
 expect(spiritualCoverage?.questionRoutes?.length === 8 && spiritualCoverage?.sourceMentions?.length === 8,
@@ -80,7 +80,7 @@ const methodData = runnable.map(method => {
     clientFacingCertified: isKashfMethodProfessionallyCertified(method.kashfMethodId),
   };
 });
-expect(methodData.filter(item => item.clientFacingCertified).length === 49, 'client certification inventory changed');
+expect(methodData.filter(item => item.clientFacingCertified).length === 87, 'client certification inventory changed');
 write('CANONICAL_METHODS.json', { role: 'operational-primary-v57', count: methodData.length, methods: methodData });
 write('QUESTION_ROUTES.json', { role: 'exact-question-id-routing', count: routes.length,
   routes: routes.map(route => {
@@ -126,7 +126,7 @@ write('SOURCE_INDEX.json', { role: 'source-map-reference-only-never-activates-me
     executorStatus: method.executorStatus, runtimeAllowed: method.runtimeAllowed, methodRole: method.methodRole,
     reason: method.notes,
   })) });
-write('GOLDEN_CASES.json', { role: 'fixed-source-evidence-cases', note: 'Four printed-source fixtures from KASHF_GOLDEN_E2E_AUDIT.md; not exhaustive for 50 methods.', cases: [
+write('GOLDEN_CASES.json', { role: 'fixed-source-evidence-cases', note: 'Four printed-source fixtures from KASHF_GOLDEN_E2E_AUDIT.md; not exhaustive for 90 methods.', cases: [
   { id: 'GT-P191-PREGNANCY-EXISTS-SILENT', mothers: ['2111','1111','1111','1111'], questionId: 'q-pregnancy', methodId: 'pregnancy.p191.existsH5SilentEmpty', sourcePage: 191, expected: { h5Pattern: '2111', classification: 'silent', pregnancyExists: true } },
   { id: 'GT-P191-GENDER-MALE', mothers: ['1111','1111','1111','2111'], questionId: 'q-gender', methodId: 'pregnancy.p191.genderH5', sourcePage: 191, expected: { h5Pattern: '1112', gender: 'male' } },
   { id: 'GT-P191-192-MISCARRIAGE-PAIR', mothers: ['1122','1112','1122','1121'], questionId: 'q-miscarriage', methodId: 'pregnancy.p191-192.miscarriageRedH7NakisH8', sourcePage: 191, expected: { h7Pattern: '2122', h8Pattern: '2221', miscarriageSign: true } },
@@ -164,8 +164,8 @@ const provenance = {
   masterIndexSha256: sha(path.join(root, 'kashf-v57-ai-master-index.html')),
   knowledgeRegistrySha256: sha(path.join(root, 'goral-hachol/registry/kashf-v57-knowledge-registry.js')),
   questionBankSha256: sha(path.join(root, 'goral-hachol/ui/question-bank.js')),
-  counts: { indexRecords: 272, v57Corrections: 91, downstream: 46, frozenSourceItems: 48,
-    nonOperationalSourceItems: 39, questionRoutes: 138, runnableMethods: 50, clientCertifiedMethods: 49,
+  counts: { indexRecords: 275, v57Corrections: 93, downstream: 47, frozenSourceItems: 48,
+    nonOperationalSourceItems: 39, questionRoutes: 158, runnableMethods: 90, clientCertifiedMethods: 87,
     runtimeDependencies: found.size },
 };
 write('MANIFEST.json', provenance);

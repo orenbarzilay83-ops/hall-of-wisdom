@@ -125,6 +125,8 @@ function assertClean(draft, label) {
   // marker word "مجرب" embedded inline.
   const { draft } = draftFor('q-missing-return-timing', ['1111', '1111', '1111', '1111']);
   assertClean(draft, 'q-missing-return-timing');
+  assert.match(draft, /מועד הפגישה/, 'the no-sign branch concerns meeting the absent person');
+  assert.doesNotMatch(draft, /מועד החזרה/, 'meeting timing must not be described as return timing');
 }
 
 {

@@ -15,11 +15,11 @@ const source = read('SOURCE_INDEX.json');
 const qawl = read('QAWL_SPIRITUAL_METHOD.json');
 assert.match(execFileSync(process.execPath, [path.join(dir, '_build', 'SELF_TEST.mjs')], { encoding: 'utf8' }), /SELF_TEST PASS/);
 
-assert.equal(methods.length, 50);
-assert.equal(methods.filter(item => item.clientFacingCertified).length, 49);
-assert.equal(routes.length, 138);
+assert.equal(methods.length, 90);
+assert.equal(methods.filter(item => item.clientFacingCertified).length, 87);
+assert.equal(routes.length, 158);
 assert(routes.every(item => typeof item.label === 'string' && item.label.trim() && typeof item.description === 'string'));
-assert.equal(source.records.length, 272);
+assert.equal(source.records.length, 275);
 assert.equal(source.spiritualQuestionCoverage.questionRoutes.length, 8);
 assert.equal(source.spiritualQuestionCoverage.sourceMentions.length, 8);
 for (const item of source.spiritualQuestionCoverage.questionRoutes) {
@@ -37,7 +37,7 @@ for (const id of ['q-sorcery', 'q-sorcery-h10', 'q-jinn-type', 'q-sorcerer', 'q-
 assert.deepEqual(qawl.questionIds, ['q-sorcery', 'q-sorcery-h10', 'q-jinn-type']);
 assert.equal(qawl.directRules.length, 10);
 for (const id of qawl.questionIds) assert.match(routes.find(route => route.questionId === id)?.supplementalRuntime || '', /^AL_QAWL/);
-assert.equal(new Set(methods.map(item => item.methodId)).size, 50);
+assert.equal(new Set(methods.map(item => item.methodId)).size, 90);
 assert(methods.every(item => item.v57.hebrewRule && item.sourcePages.length));
 assert(routes.every(item => item.canRunKashf !== true || methods.some(method => method.methodId === item.methodId)));
 for (const [id, methodId] of [
@@ -80,17 +80,46 @@ for (const item of cases) {
   assert.equal(result.sourcePage, item.sourcePage, item.id);
   const fields = result.methodResult?.executorResult;
   for (const [key, expected] of Object.entries(item.expected)) assert.equal(fields?.[key], expected, `${item.id}: ${key}`);
-  assert.equal(result.safety.clientFacingCertified, true, item.id);
-  assert.equal(result.clientAnswerDraft, null, 'raw engine wording cannot be sent as client draft');
+  assert.equal(result.safety.methodPolicyCertified, true, item.id);
+  if (result.safety.clientFacingCertified) assert.equal(typeof result.clientAnswerDraft, 'string', item.id);
+  else assert.equal(result.clientAnswerDraft, null, item.id);
 }
 
 const defaultMothers = ['2222', '2211', '2121', '2221'];
+const extraInputByMethod = {
+  'hidden.p188.quarterDirection': { quarterPatterns: ['2111', '1112', '1212', '1112'] },
+  'mother.p257.statusDayNight': { motherCastPeriod: 'לילה' },
+  'marriage.p205.modestyPurity': { candidate: 'שם בדיקה', castConfirmedOnName: true },
+  'marriage.p208.womanQualityH5H4': { candidate: 'שם בדיקה', castConfirmedOnName: true },
+};
 for (const item of methods) {
-  const result = runKashfPack({ mothers: defaultMothers, methodId: item.methodId });
+  const result = runKashfPack({ mothers: defaultMothers, methodId: item.methodId, methodInputs: extraInputByMethod[item.methodId] });
   assert.equal(result.status, 'ok', `${item.methodId}: ${result.reason}`);
   assert.equal(result.methodId, item.methodId);
-  assert.equal(result.safety.clientFacingCertified, item.clientFacingCertified);
+  assert.equal(result.safety.methodPolicyCertified, item.clientFacingCertified);
+  assert.equal(result.safety.clientFacingCertified, Boolean(result.clientAnswerDraft));
+  if (result.clientAnswerDraft) assert.doesNotMatch(result.clientAnswerDraft, /[\u0600-\u06ff]|(?:^|[^0-9])[12]{4}(?![0-9])|עמ[׳']/u);
 }
+assert.equal(runKashfPack({ mothers: defaultMothers, questionId: 'q-marriage-chastity', methodInputs: { candidate: 'שם בדיקה' } }).overallPositive, null,
+  'a name alone never confirms a named cast');
+assert.equal(runKashfPack({ mothers: defaultMothers, questionId: 'q-dig-direction' }).status, 'blocked',
+  'four independent quarter casts are required');
+assert.equal(runKashfPack({ mothers: defaultMothers, questionId: 'q-dig-direction', methodInputs: { quarterPatterns: ['2111', '1112', '1212', '1112'] } }).status, 'ok',
+  'four supplied independent casts enable the dedicated direction method');
+const meetingNoSign = runKashfPack({ mothers: ['1111', '1111', '1111', '1111'], questionId: 'q-missing-return-timing' });
+assert.equal(meetingNoSign.safety.clientFacingCertified, true);
+assert.match(meetingNoSign.clientAnswerDraft, /מועד הפגישה/);
+assert.doesNotMatch(meetingNoSign.clientAnswerDraft, /מועד החזרה|עמ[׳']|[\u0600-\u06ff]/u);
+const advisorOnly = runKashfPack({ mothers: defaultMothers, questionId: 'q-illness-heal' });
+assert.equal(advisorOnly.status, 'ok');
+assert.equal(advisorOnly.safety.methodPolicyCertified, true);
+assert.equal(advisorOnly.safety.clientFacingCertified, false,
+  'a policy certificate does not authorize raw advisor text as a client draft');
+assert.equal(advisorOnly.clientAnswerDraft, null);
+assert.match(advisorOnly.authoritativeEngineText, /עמ[׳']/u,
+  'the original explanation is retained for the advisor only');
+assert.equal(runKashfPack({ mothers: defaultMothers, questionId: 'q-illness-heal', methodInputs: { invented: true } }).status, 'blocked',
+  'unlisted client inputs cannot bypass the package schema');
 for (const questionId of ['q-best-city', 'q-lifespan', 'not-a-question']) {
   const result = runKashfPack({ mothers: defaultMothers, questionId });
   assert.equal(result.status, 'blocked', questionId);

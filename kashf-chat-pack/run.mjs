@@ -11,6 +11,18 @@ function blocked(reason) {
   return { status: 'blocked', reason, verdict: null, clientAnswerDraft: null };
 }
 
+function explicitClientDraft(reading) {
+  const text = reading?.primaryFormula?.result?.executorResult?.clientSafeHebrew;
+  if (typeof text !== 'string' || !text.trim()) return null;
+  const value = text.trim();
+  // The advisor's outputHebrew can include provenance, raw figures and
+  // working notes. Never fall back to it for a client draft.
+  if (/[\u0600-\u06ff]/u.test(value) || /(?:^|[^0-9])[12]{4}(?![0-9])/u.test(value) ||
+      /\b[a-z][a-z0-9]*\.[a-z][a-z0-9]*\.[a-zA-Z0-9]+\b/u.test(value) ||
+      /עמ[׳']|\bPDF\b/u.test(value)) return null;
+  return value;
+}
+
 export function runKashfPack(input) {
   if (!input || !Array.isArray(input.mothers) || input.mothers.length !== 4 ||
       input.mothers.some(pattern => typeof pattern !== 'string' || !/^[12]{4}$/.test(pattern))) {
@@ -19,6 +31,36 @@ export function runKashfPack(input) {
   const questionId = typeof input.questionId === 'string' ? input.questionId.trim() : '';
   const methodId = typeof input.methodId === 'string' ? input.methodId.trim() : '';
   if (Boolean(questionId) === Boolean(methodId)) return blocked('בחר questionId אחד או methodId אחד, לא שניהם.');
+
+  // Only the inputs required by the four explicitly named methods are passed
+  // through. They are per-reading values, never written into the package or
+  // returned to the caller as part of the board/evidence output.
+  const methodInputs = input.methodInputs ?? {};
+  if (!methodInputs || typeof methodInputs !== 'object' || Array.isArray(methodInputs) ||
+      Object.keys(methodInputs).some(key => !['candidate', 'castConfirmedOnName', 'motherCastPeriod', 'quarterPatterns'].includes(key))) {
+    return blocked('methodInputs מכיל שדה לא מוכר. מותר למסור רק קלט ייעודי לשיטה שנבחרה.');
+  }
+  const dynFields = {};
+  if ('candidate' in methodInputs) {
+    if (typeof methodInputs.candidate !== 'string' || !methodInputs.candidate.trim()) return blocked('יש למסור שם מועמדת תקין לשיטה הדורשת הטלה על שם.');
+    dynFields.candidate = methodInputs.candidate.trim();
+  }
+  if ('castConfirmedOnName' in methodInputs) {
+    if (typeof methodInputs.castConfirmedOnName !== 'boolean') return blocked('אישור הטלה על שם חייב להיות true או false מפורש.');
+    dynFields.castConfirmedOnName = methodInputs.castConfirmedOnName;
+  }
+  if ('motherCastPeriod' in methodInputs) {
+    if (!['יום', 'לילה'].includes(methodInputs.motherCastPeriod)) return blocked('זמן הטלה בשיטת האם חייב להיות יום או לילה.');
+    dynFields.motherCastPeriod = methodInputs.motherCastPeriod;
+  }
+  if ('quarterPatterns' in methodInputs) {
+    if (!Array.isArray(methodInputs.quarterPatterns) || methodInputs.quarterPatterns.length !== 4 ||
+        methodInputs.quarterPatterns.some(pattern => typeof pattern !== 'string' || !/^[12]{4}$/.test(pattern))) {
+      return blocked('לכיוון החפירה דרושות ארבע צורות תקינות מהטלות עצמאיות.');
+    }
+    methodInputs.quarterPatterns.forEach((pattern, index) => { dynFields[`quarter${index + 1}Pattern`] = pattern; });
+  }
+  const clientContext = { dynFields };
 
   const board = buildRamlBoardFromMothers(input.mothers);
   const houses = board.entries.map(({ houseNumber, pattern, hebrewName }) => ({ houseNumber, pattern, hebrewName }));
@@ -42,7 +84,7 @@ export function runKashfPack(input) {
 
   let resolution, canonicalReading, canonicalRetrieval, safety;
   if (questionId) {
-    const bridge = buildKashfCanonicalAiBridge({ board, questionId });
+    const bridge = buildKashfCanonicalAiBridge({ board, questionId, clientContext });
     ({ resolution, canonicalReading, canonicalRetrieval } = bridge);
     safety = bridge.professionalVerdictSafety;
   } else {
@@ -56,7 +98,7 @@ export function runKashfPack(input) {
     if (!record?.v57?.hebrewRule) return { ...blocked('כלל v57 עברי אינו זמין.'), ...boardOutput, methodId };
     resolution = { state: 'resolved', kashfMethodId: methodId, kashfIntentId: method.kashfIntentId,
       kashfRuntimeStatus: 'ready', runtimeAllowed: true, executorStatus: 'ready' };
-    canonicalReading = buildKashfReadingByMethod(board, methodId);
+    canonicalReading = buildKashfReadingByMethod(board, methodId, clientContext);
     canonicalRetrieval = record;
     safety = buildKashfProfessionalVerdictSafety({ resolution, canonicalReading,
       canonicalRetrieval, baseAiVerdictAllowed: canonicalReading?.valid === true && canonicalReading?.canRunKashf === true });
@@ -64,7 +106,9 @@ export function runKashfPack(input) {
 
   const activeMethodId = resolution?.kashfMethodId || methodId;
   const safe = safety?.isSafe === true && canonicalReading?.valid === true && canonicalReading?.canRunKashf === true;
-  const certified = safe && safety?.clientFacingCertified === true;
+  const methodPolicyCertified = safe && safety?.clientFacingCertified === true;
+  const clientDraft = methodPolicyCertified ? explicitClientDraft(canonicalReading) : null;
+  const certified = methodPolicyCertified && clientDraft !== null;
   return {
     status: safe ? 'ok' : 'blocked',
     reason: safe ? null : (resolution?.userMessage || canonicalReading?.userMessage || canonicalReading?.reason || 'שער הבטיחות חסם את הפסק.'),
@@ -77,12 +121,14 @@ export function runKashfPack(input) {
     methodResult: safe ? (canonicalReading?.primaryFormula?.result ?? null) : null,
     verdict: safe ? canonicalReading?.verdict ?? null : null,
     overallPositive: safe ? canonicalReading?.overallPositive ?? null : null,
-    safety: { isSafe: safe, certificationStatus: safety?.certificationStatus || 'not-applicable', clientFacingCertified: certified,
+    safety: { isSafe: safe, certificationStatus: safety?.certificationStatus || 'not-applicable',
+      methodPolicyCertified, clientFacingCertified: certified,
+      clientDraftGate: certified ? 'explicit-client-safe-text' : 'advisor-only',
       authoritativePolarity: safe ? safety?.authoritativePolarity ?? null : null },
     // Engine text is for the advisor. It can contain source locators and must
     // not be copied verbatim into the client answer.
-    authoritativeEngineText: certified ? safety?.authoritativeClientDraftHebrew ?? null : null,
-    clientAnswerDraft: null,
+    authoritativeEngineText: safe ? canonicalReading?.primaryFormula?.result?.executorResult?.outputHebrew ?? null : null,
+    clientAnswerDraft: certified ? clientDraft : null,
   };
 }
 
