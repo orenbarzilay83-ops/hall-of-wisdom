@@ -18,8 +18,6 @@ import { resolveKashfRouteByQuestionId } from '../engine/kashf-method-router.js'
 import {
   buildKashfReadingByMethod,
   buildKashfReadingByQuestionId,
-  buildKashfReadingByMethodForLegacyFixtureTests,
-  buildKashfReadingByQuestionIdForLegacyFixtureTests,
 } from '../engine/kashf-canonical-reading-engine.js';
 import {
   getKashfAiRetrievalRecord,
@@ -138,16 +136,7 @@ function blockedReadingFromResolution(resolution, reason, userMessage) {
  * @param {object} [input.board] Canonical Raml board.
  * @param {object} [input.clientContext] Minimal safe context for canonical engine.
  */
-/**
- * `useLegacyFixtureTestReadingPath` exists ONLY for
- * buildKashfCanonicalAiBridgeForLegacyFixtureTests below -- the production
- * export, buildKashfCanonicalAiBridge, always calls this with it false,
- * hardcoded, not derived from any argument a caller controls.
- */
-function buildKashfCanonicalAiBridgeInternal(input = {}, useLegacyFixtureTestReadingPath = false) {
-  const readingByMethod = useLegacyFixtureTestReadingPath ? buildKashfReadingByMethodForLegacyFixtureTests : buildKashfReadingByMethod;
-  const readingByQuestionId = useLegacyFixtureTestReadingPath ? buildKashfReadingByQuestionIdForLegacyFixtureTests : buildKashfReadingByQuestionId;
-
+export function buildKashfCanonicalAiBridge(input = {}) {
   const questionId = typeof input.questionId === 'string' && input.questionId.trim()
     ? input.questionId.trim()
     : null;
@@ -254,12 +243,12 @@ function buildKashfCanonicalAiBridgeInternal(input = {}, useLegacyFixtureTestRea
   } else if (questionId) {
     // The question route gets the final say. The canonical engine performs its
     // own fail-closed status/executor/v57 gates again.
-    canonicalReading = readingByQuestionId(board, questionId, {
+    canonicalReading = buildKashfReadingByQuestionId(board, questionId, {
       ...clientContext,
       question: questionText || clientContext.question || '',
     });
   } else {
-    canonicalReading = readingByMethod(board, resolution.kashfMethodId, {
+    canonicalReading = buildKashfReadingByMethod(board, resolution.kashfMethodId, {
       ...clientContext,
       question: questionText || clientContext.question || '',
     });
@@ -290,33 +279,7 @@ function buildKashfCanonicalAiBridgeInternal(input = {}, useLegacyFixtureTestRea
   });
 }
 
-/**
- * Production entry point. Always uses the board-structural-integrity-gated
- * reading-engine functions. This is the only one any real caller (Supabase
- * edge function, goral-app.js, any client-facing code) may use.
- */
-export function buildKashfCanonicalAiBridge(input = {}) {
-  return buildKashfCanonicalAiBridgeInternal(input, false);
-}
-
-/**
- * 2026-10-06: TEST-ONLY. Identical to buildKashfCanonicalAiBridge except it
- * drives the reading engine through buildKashfReadingByMethodForLegacyFixtureTests
- * / buildKashfReadingByQuestionIdForLegacyFixtureTests instead -- see those
- * functions' own comments in kashf-canonical-reading-engine.js for why this
- * exists (isolating this engagement's synthetic board-fixture convention
- * away from the real, hardened gate) and how its isolation is enforced
- * (_test_kashf_board_validation_gate.mjs greps the repository to confirm no
- * file outside _test_*.mjs imports this name or the reading-engine
- * functions it wraps). Do not import this from any production/client-facing
- * file.
- */
-export function buildKashfCanonicalAiBridgeForLegacyFixtureTests(input = {}) {
-  return buildKashfCanonicalAiBridgeInternal(input, true);
-}
-
 export default {
   buildKashfCanonicalAiBridge,
-  buildKashfCanonicalAiBridgeForLegacyFixtureTests,
   KASHF_CANONICAL_AI_BRIDGE_VERSION,
 };

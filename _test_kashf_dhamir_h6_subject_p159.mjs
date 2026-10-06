@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 
-import { buildKashfReadingByMethodForLegacyFixtureTests } from './goral-hachol/engine/kashf-canonical-reading-engine.js';
+import { buildKashfReadingByMethod } from './goral-hachol/engine/kashf-canonical-reading-engine.js';
 import {
   resolveBestKashfAiRetrievalHit,
   getKashfAiRetrievalRecord,
@@ -13,10 +13,14 @@ import {
 const METHOD_ID = 'dhamir.p159.subjectByH6Recurrence';
 
 function makeBoard(overrides = {}) {
-  const fallback = [
-    '1111','1112','1121','1122','1211','1212','1221','1222',
-    '2111','2112','2121','2122','2211','2212','2222','2222',
-  ];
+  // 2026-10-06: base board is now a REAL, structurally-consistent
+  // board (uniform Jamaa/2222 in every position satisfies both the
+  // Judge-parity check -- p.34 -- and the daughter/mother diagonal
+  // check -- p.35 -- trivially, since every house equals every other),
+  // not a naive 1111..2222 enumeration (which failed both). Overrides
+  // below still replace only the specific houses each test cares
+  // about.
+  const fallback = Array(16).fill('2222');
   const entries = fallback.map((pattern, i) => ({
     houseNumber: i + 1,
     house: i + 1,
@@ -33,6 +37,32 @@ function makeBoard(overrides = {}) {
       hebrewName: `צורה-${pattern}`,
     };
   }
+  // Auto-repair structural consistency (Kashf p.34 Judge parity is
+  // unaffected here; this repairs p.35's mother/daughter diagonal) for
+  // whichever of a mother(1-4)/daughter(5-8) pair the caller did NOT
+  // explicitly override, so overriding just one does not silently
+  // produce a board the structural-integrity gate would reject for a
+  // reason this test never intended to exercise. If the caller
+  // overrides BOTH sides of a pair, their explicit values are trusted
+  // as-is.
+  for (let rowIndex = 0; rowIndex < 4; rowIndex++) {
+    const motherHouse = rowIndex + 1;
+    const daughterHouse = 5 + rowIndex;
+    const motherGiven = motherHouse in overrides || String(motherHouse) in overrides;
+    const daughterGiven = daughterHouse in overrides || String(daughterHouse) in overrides;
+    if (motherGiven && !daughterGiven) {
+      const motherPattern = entries[motherHouse - 1].pattern;
+      const d = entries[daughterHouse - 1];
+      const fixed = d.pattern.slice(0, rowIndex) + motherPattern[rowIndex] + d.pattern.slice(rowIndex + 1);
+      entries[daughterHouse - 1] = { ...d, pattern: fixed, key: fixed, hebrewName: `צורה-${fixed}`, ...(d.hebrew !== undefined ? { hebrew: `צורה-${fixed}` } : {}) };
+    } else if (daughterGiven && !motherGiven) {
+      const daughterPattern = entries[daughterHouse - 1].pattern;
+      const m = entries[motherHouse - 1];
+      const fixed = m.pattern.slice(0, rowIndex) + daughterPattern[rowIndex] + m.pattern.slice(rowIndex + 1);
+      entries[motherHouse - 1] = { ...m, pattern: fixed, key: fixed, hebrewName: `צורה-${fixed}`, ...(m.hebrew !== undefined ? { hebrew: `צורה-${fixed}` } : {}) };
+    }
+  }
+
   return { entries, boardValidation: { isValid: true, warnings: [] } };
 }
 
@@ -65,7 +95,7 @@ const uniqueBoard = makeBoard({
   3: '2211',
   6: '2211',
 });
-const unique = buildKashfReadingByMethodForLegacyFixtureTests(uniqueBoard, METHOD_ID, {
+const unique = buildKashfReadingByMethod(uniqueBoard, METHOD_ID, {
   question: 'על מי השואל שואל?',
 });
 assert.equal(unique.valid, true);
@@ -83,7 +113,7 @@ const multipleBoard = makeBoard({
   6: '2211',
   7: '2211',
 });
-const multiple = buildKashfReadingByMethodForLegacyFixtureTests(multipleBoard, METHOD_ID, {
+const multiple = buildKashfReadingByMethod(multipleBoard, METHOD_ID, {
   question: 'על מי נסובה השאלה?',
 });
 assert.equal(multiple.valid, true);
@@ -96,7 +126,7 @@ assert.deepEqual(
 
 // No recurrence outside H6: remain unresolved; never invent a house.
 const noMatchBoard = makeBoard({ 6: '2211' });
-const noMatch = buildKashfReadingByMethodForLegacyFixtureTests(noMatchBoard, METHOD_ID, {
+const noMatch = buildKashfReadingByMethod(noMatchBoard, METHOD_ID, {
   question: 'על מי השואל שואל?',
 });
 assert.equal(noMatch.valid, true);

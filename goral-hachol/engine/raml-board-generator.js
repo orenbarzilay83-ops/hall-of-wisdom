@@ -215,11 +215,14 @@ function validateBoard(entries) {
 // (ב) כי היא -- בניגוד לשחזור-המלא שהוסר -- **מצוטטת במפורש במקור**
 // כקריטריון-תקפות ("التخت غلطا" אם היא נכשלת), לא מוסקת מהנדסית.
 // לוחות-fixture סינתטיים שאינם עומדים בה (או בזוגיות-הדיין) חייבים
-// לעבור דרך נתיב-בדיקה מבודד שאינו יכול להגיע ללקוח/לגשר ה-AI --
-// ראו buildKashfReadingByMethodForLegacyFixtureTests ב-
-// kashf-canonical-reading-engine.js ו-buildKashfCanonicalAiBridgeForLegacyFixtureTests
-// ב-kashf-canonical-ai-bridge.js, עם בדיקת-בידוד אוטומטית
-// ב-_test_kashf_board_validation_gate.mjs.
+// להיות ממותקנים (repaired) לערכים תקינים לפני שימוש -- ראו
+// repairMotherDaughterDiagonal-style helpers בתוך makeBoard/makeP204Board
+// ב-_test_kashf_*.mjs. סבב שלישי (2026-10-06) הסיר כליל גם את מנגנון
+// הדילוג-על-השער ואת ייצואי-הבדיקה המקבילים שתוארו כאן קודם -- השער
+// הזה רץ עכשיו ללא תנאי בכל קריאה לנתיב הייצור (buildKashfReadingByMethod
+// / buildKashfReadingByQuestionId / buildKashfCanonicalAiBridge), ואין
+// פרמטר שמדלג עליו. ראו _test_kashf_board_validation_gate.mjs לבדיקת-
+// רגרסיה שתתפוס החזרה של נתיב עוקף כזה.
 export function verifyKashfBoardStructuralIntegrity(entries) {
   const list = Array.isArray(entries) ? entries : null;
 

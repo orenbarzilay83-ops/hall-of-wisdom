@@ -44,18 +44,40 @@
  *   separately-stated validity CHECK). verifyKashfBoardStructuralIntegrity
  *   now checks this diagonal relation too, independent of Judge parity.
  *
- *   This round's change is weakening nothing: the fixture convention this
- *   broke again (confirmed: the same ~9-10 files, since their synthetic
- *   boards don't satisfy the diagonal relation either) is handled by
- *   isolating those fixtures to a dedicated test-only code path that
- *   CANNOT reach the client or the AI bridge --
- *   buildKashfReadingByMethodForLegacyFixtureTests /
+ *   This round's change initially weakened nothing by handling the broken
+ *   fixture convention (confirmed: the same ~9-10 files, since their
+ *   synthetic boards don't satisfy the diagonal relation either) via a
+ *   dedicated test-only code path that could not reach the client or the
+ *   AI bridge: buildKashfReadingByMethodForLegacyFixtureTests /
  *   buildKashfReadingByQuestionIdForLegacyFixtureTests
  *   (kashf-canonical-reading-engine.js) and
  *   buildKashfCanonicalAiBridgeForLegacyFixtureTests
- *   (kashf-canonical-ai-bridge.js) -- never the production gate itself.
- *   Section "isolation is enforced, not just named" below proves that by
- *   source-grepping the whole repository.
+ *   (kashf-canonical-ai-bridge.js), each exported alongside the production
+ *   function (including from kashf-canonical-ai-bridge.js's own default
+ *   export).
+ *
+ * - 2026-10-06 (3rd pass, this round): on review, that isolation-by-name
+ *   was itself a liability -- a grep showing no CURRENT importer does not
+ *   prevent a FUTURE one, and the bypass was reachable by name from any
+ *   file (including non-test, client-facing code) that chose to import
+ *   it. Rather than keep isolating it, it was removed ENTIRELY: the
+ *   `skipBoardIntegrityGate`/`useLegacyFixtureTestReadingPath` parameters,
+ *   the `...Internal` wrapper indirection, and all three
+ *   `...ForLegacyFixtureTests` exports are gone from both
+ *   kashf-canonical-reading-engine.js and kashf-canonical-ai-bridge.js.
+ *   Every test fixture that needed the bypass was converted to a
+ *   genuinely valid board instead (via repairMotherDaughterDiagonal-style
+ *   auto-repair helpers in each test file's makeBoard, or manual value
+ *   fixes where both sides of a mother/daughter pair were deliberately
+ *   overridden), with the small number of fixture combinations proven
+ *   mathematically unreachable on any real board (by exhaustive
+ *   65,536-board enumeration, not assumed) tested directly against the
+ *   executor layer instead of through the gated reading engine/AI bridge.
+ *   Section "no bypass mechanism exists, and reintroducing one is caught"
+ *   below now tests this by behavior (calling the production functions
+ *   with every shape of bypass signal this engagement has ever used) and
+ *   by source-grepping the whole repository for the bypass vocabulary,
+ *   rather than asserting specific bypass functions exist.
  *
  * Current scope, stated precisely (not "all 16 houses recomputed"): TWO
  * independent, source-cited critical checks -- (a) house 15's own declared
@@ -288,24 +310,81 @@ ok(warningOnlyCount + cleanCount === 65536, 'enumeration covers all 65,536 board
   ok(reading.reason === 'board-validation-critical', 'same block reason on the second method');
 }
 
-// ── Isolation is enforced, not just named ───────────────────────────────────
+// ── No bypass mechanism exists, and reintroducing one is caught ────────────
 //
-// buildKashfReadingByMethodForLegacyFixtureTests / ...ByQuestionId... and
-// buildKashfCanonicalAiBridgeForLegacyFixtureTests exist ONLY so this
-// engagement's long-established synthetic-board fixture convention (used
-// across ~10 _test_kashf_*.mjs files) can keep running without weakening
-// the real, source-cited gate above. Prove by direct source grep that
-// nothing outside the _test_*.mjs suite imports these names -- not
-// Supabase edge functions, not goral-app.js/goral-hachol-ui.js, not even
-// kashf-canonical-ai-bridge.js's own PRODUCTION export.
+// This engagement once had a `skipBoardIntegrityGate` parameter and a
+// parallel `...ForLegacyFixtureTests` export per production function, so
+// synthetic test fixtures could skip the structural-integrity gate. That
+// was removed entirely (see header history above) because a bypass
+// reachable by name from any importer is a standing liability, not because
+// any current caller was found misusing it. This section must therefore
+// not merely grep for specific bypass names (those names could be renamed
+// around a future reintroduction) -- it tests BEHAVIOR: a corrupted board
+// must be blocked by every production entry point under every shape of
+// "extra signal" a bypass could plausibly be smuggled in through, and it
+// also greps all production source for the bypass VOCABULARY in general
+// so a differently-named revival is still caught.
 
 {
-  const LEGACY_FIXTURE_NAMES = [
-    'buildKashfReadingByMethodForLegacyFixtureTests',
-    'buildKashfReadingByQuestionIdForLegacyFixtureTests',
-    'buildKashfCanonicalAiBridgeForLegacyFixtureTests',
-  ];
+  const realBoard = buildRamlBoardFromMothers(['1111', '1111', '1111', '1122']);
+  const criticalBoard = {
+    entries: realBoard.entries.map((e) => (e.houseNumber === 15 ? { ...e, pattern: '1112', key: '1112' } : e)),
+    boardValidation: { isValid: true, hasCritical: false, warnings: [] }, // lies, same as earlier cases
+  };
 
+  // (a) No extra argument, flag, or clientContext property can switch the
+  // gate off on any of the three production entry points. If a bypass
+  // parameter were reintroduced with any of these plausible shapes, at
+  // least one of these calls would start returning valid:true/aiVerdictAllowed:true
+  // and this would fail.
+  const bypassAttempts = [
+    () => buildKashfReadingByQuestionId(criticalBoard, 'q-missing-in-city', { question: 'test', skipBoardIntegrityGate: true }),
+    () => buildKashfReadingByQuestionId(criticalBoard, 'q-missing-in-city', { question: 'test', useLegacyFixtureTestReadingPath: true }),
+    () => buildKashfReadingByQuestionId(criticalBoard, 'q-missing-in-city', { question: 'test' }, true),
+    () => buildKashfCanonicalAiBridge({ questionId: 'q-missing-in-city', questionText: 'test', board: criticalBoard, clientContext: { question: 'test', skipBoardIntegrityGate: true } }),
+    () => buildKashfCanonicalAiBridge({ questionId: 'q-missing-in-city', questionText: 'test', board: criticalBoard, clientContext: { question: 'test' }, useLegacyFixtureTestReadingPath: true }),
+  ];
+  for (const attempt of bypassAttempts) {
+    const result = attempt();
+    const isReading = 'valid' in result;
+    if (isReading) {
+      ok(result.valid === false, 'an extra bypass-shaped argument/flag does not switch the gate off on buildKashfReadingByQuestionId');
+      ok(result.reason === 'board-validation-critical', 'the block reason stays board-validation-critical despite the bypass-shaped input');
+    } else {
+      ok(result.aiVerdictAllowed === false, 'an extra bypass-shaped argument/flag does not switch the gate off on buildKashfCanonicalAiBridge');
+    }
+  }
+
+  // (b) The production functions' own exported surface carries no bypass
+  // parameter in its signature source text, and no second exported
+  // function wraps the same logic with a bypass toggle.
+  const repoRoot = process.cwd();
+  const readingEngineSrc = fs.readFileSync(path.join(repoRoot, 'goral-hachol/engine/kashf-canonical-reading-engine.js'), 'utf8');
+  const bridgeSrc = fs.readFileSync(path.join(repoRoot, 'goral-hachol/intelligence/kashf-canonical-ai-bridge.js'), 'utf8');
+  ok(/export function buildKashfReadingByMethod\(board, kashfMethodId, clientContext = \{\}\) \{/.test(readingEngineSrc),
+    'buildKashfReadingByMethod has exactly its documented three-parameter signature, no bypass parameter');
+  ok(/export function buildKashfReadingByQuestionId\(board, questionId, clientContext = \{\}\) \{/.test(readingEngineSrc),
+    'buildKashfReadingByQuestionId has exactly its documented three-parameter signature, no bypass parameter');
+  ok(/export function buildKashfCanonicalAiBridge\(input = \{\}\) \{/.test(bridgeSrc),
+    'buildKashfCanonicalAiBridge has exactly its documented single-parameter signature, no bypass parameter');
+  ok(/export default \{\s*buildKashfReadingByMethod,\s*buildKashfReadingByQuestionId,\s*\};/.test(readingEngineSrc),
+    'kashf-canonical-reading-engine.js default-exports exactly the two gated functions, nothing else');
+  ok(/export default \{\s*buildKashfCanonicalAiBridge,\s*KASHF_CANONICAL_AI_BRIDGE_VERSION,\s*\};/.test(bridgeSrc),
+    'kashf-canonical-ai-bridge.js default-exports exactly the one gated function (plus its version string), nothing else');
+
+  // (c) Repository-wide: the bypass VOCABULARY itself must not reappear in
+  // any production source file, under any name this engagement has used
+  // for it, so a reintroduction under a fresh name is still caught as long
+  // as it reuses recognizable bypass language; this list intentionally
+  // stays broad rather than matching only the exact removed identifiers.
+  const BYPASS_VOCABULARY = [
+    'skipBoardIntegrityGate',
+    'useLegacyFixtureTestReadingPath',
+    'ForLegacyFixtureTests',
+    'BridgeInternal',
+    'ReadingByMethodInternal',
+    'ReadingByQuestionIdInternal',
+  ];
   function listFilesRecursive(dir, acc = []) {
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
       if (entry.name === 'node_modules' || entry.name.startsWith('.git')) continue;
@@ -315,48 +394,18 @@ ok(warningOnlyCount + cleanCount === 65536, 'enumeration covers all 65,536 board
     }
     return acc;
   }
-
-  // The only two files allowed to reference these names at all are the two
-  // engine files that DEFINE them (kashf-canonical-reading-engine.js
-  // defines the reading-engine pair and kashf-canonical-ai-bridge.js both
-  // defines the bridge one AND legitimately imports the reading-engine
-  // pair for its own test-only wrapper). Their production exports are
-  // separately verified below to hardcode the gated path. Every OTHER file
-  // under goral-hachol/** or supabase/** must have zero references.
-  const repoRoot = process.cwd();
-  const DEFINING_FILES = new Set([
-    path.join(repoRoot, 'goral-hachol/engine/kashf-canonical-reading-engine.js'),
-    path.join(repoRoot, 'goral-hachol/intelligence/kashf-canonical-ai-bridge.js'),
-    // raml-board-generator.js only mentions these names in its own
-    // explanatory comment (pointing a future reader at the isolation
-    // mechanism) -- it has no import of and cannot call either function.
-    path.join(repoRoot, 'goral-hachol/engine/raml-board-generator.js'),
-  ]);
-  const allSourceFiles = [
+  const productionFiles = [
     ...listFilesRecursive(path.join(repoRoot, 'goral-hachol')),
     ...listFilesRecursive(path.join(repoRoot, 'supabase')),
-  ].filter((file) => !DEFINING_FILES.has(file));
+  ];
   const violations = [];
-  for (const file of allSourceFiles) {
+  for (const file of productionFiles) {
     const content = fs.readFileSync(file, 'utf8');
-    for (const name of LEGACY_FIXTURE_NAMES) {
-      if (content.includes(name)) violations.push(`${path.relative(repoRoot, file)}: ${name}`);
+    for (const term of BYPASS_VOCABULARY) {
+      if (content.includes(term)) violations.push(`${path.relative(repoRoot, file)}: ${term}`);
     }
   }
-  ok(violations.length === 0, `no production/client-facing file outside the two defining engine files imports a *ForLegacyFixtureTests name (found: ${JSON.stringify(violations)})`);
-
-  // Confirm the names DO exist somewhere (i.e. this isn't vacuously true
-  // because the functions were renamed/removed without updating this list).
-  const readingEngineSrc = fs.readFileSync(path.join(repoRoot, 'goral-hachol/engine/kashf-canonical-reading-engine.js'), 'utf8');
-  const bridgeSrc = fs.readFileSync(path.join(repoRoot, 'goral-hachol/intelligence/kashf-canonical-ai-bridge.js'), 'utf8');
-  ok(readingEngineSrc.includes('export function buildKashfReadingByMethodForLegacyFixtureTests'), 'buildKashfReadingByMethodForLegacyFixtureTests is actually exported where expected');
-  ok(readingEngineSrc.includes('export function buildKashfReadingByQuestionIdForLegacyFixtureTests'), 'buildKashfReadingByQuestionIdForLegacyFixtureTests is actually exported where expected');
-  ok(bridgeSrc.includes('export function buildKashfCanonicalAiBridgeForLegacyFixtureTests'), 'buildKashfCanonicalAiBridgeForLegacyFixtureTests is actually exported where expected');
-
-  // And confirm the production exports in kashf-canonical-ai-bridge.js call
-  // the GATED reading-engine functions, not the bypass ones, by name.
-  ok(/function buildKashfCanonicalAiBridge\(input = \{\}\) \{\s*return buildKashfCanonicalAiBridgeInternal\(input, false\);/.test(bridgeSrc),
-    'buildKashfCanonicalAiBridge (production) hardcodes useLegacyFixtureTestReadingPath=false, not derived from any input');
+  ok(violations.length === 0, `no production source file contains bypass vocabulary (found: ${JSON.stringify(violations)})`);
 }
 
 console.log(`Kashf board-validation gate: ${assertions} assertions passed`);

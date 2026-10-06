@@ -7,18 +7,22 @@ import {
 } from './goral-hachol/registry/kashf-canonical-method-registry.js';
 import { resolveKashfRouteByQuestionId } from './goral-hachol/engine/kashf-method-router.js';
 import {
-  buildKashfReadingByMethodForLegacyFixtureTests,
-  buildKashfReadingByQuestionIdForLegacyFixtureTests,
+  buildKashfReadingByMethod,
+  buildKashfReadingByQuestionId,
 } from './goral-hachol/engine/kashf-canonical-reading-engine.js';
 import {
   resolveBestKashfAiRetrievalHit,
 } from './goral-hachol/registry/kashf-ai-retrieval-index.js';
 
 function makeBoard(overrides = {}) {
-  const fallback = [
-    '1111','1112','1121','1122','1211','1212','1221','1222',
-    '2111','2112','2121','2122','2211','2212','2222','2222',
-  ];
+  // 2026-10-06: base board is now a REAL, structurally-consistent
+  // board (uniform Jamaa/2222 in every position satisfies both the
+  // Judge-parity check -- p.34 -- and the daughter/mother diagonal
+  // check -- p.35 -- trivially, since every house equals every other),
+  // not a naive 1111..2222 enumeration (which failed both). Overrides
+  // below still replace only the specific houses each test cares
+  // about.
+  const fallback = Array(16).fill('2222');
   const entries = fallback.map((pattern, i) => ({
     house: i + 1,
     houseNumber: i + 1,
@@ -37,6 +41,32 @@ function makeBoard(overrides = {}) {
       hebrewName: `צורה-${pattern}`,
     };
   }
+  // Auto-repair structural consistency (Kashf p.34 Judge parity is
+  // unaffected here; this repairs p.35's mother/daughter diagonal) for
+  // whichever of a mother(1-4)/daughter(5-8) pair the caller did NOT
+  // explicitly override, so overriding just one does not silently
+  // produce a board the structural-integrity gate would reject for a
+  // reason this test never intended to exercise. If the caller
+  // overrides BOTH sides of a pair, their explicit values are trusted
+  // as-is.
+  for (let rowIndex = 0; rowIndex < 4; rowIndex++) {
+    const motherHouse = rowIndex + 1;
+    const daughterHouse = 5 + rowIndex;
+    const motherGiven = motherHouse in overrides || String(motherHouse) in overrides;
+    const daughterGiven = daughterHouse in overrides || String(daughterHouse) in overrides;
+    if (motherGiven && !daughterGiven) {
+      const motherPattern = entries[motherHouse - 1].pattern;
+      const d = entries[daughterHouse - 1];
+      const fixed = d.pattern.slice(0, rowIndex) + motherPattern[rowIndex] + d.pattern.slice(rowIndex + 1);
+      entries[daughterHouse - 1] = { ...d, pattern: fixed, key: fixed, hebrewName: `צורה-${fixed}`, ...(d.hebrew !== undefined ? { hebrew: `צורה-${fixed}` } : {}) };
+    } else if (daughterGiven && !motherGiven) {
+      const daughterPattern = entries[daughterHouse - 1].pattern;
+      const m = entries[motherHouse - 1];
+      const fixed = m.pattern.slice(0, rowIndex) + daughterPattern[rowIndex] + m.pattern.slice(rowIndex + 1);
+      entries[motherHouse - 1] = { ...m, pattern: fixed, key: fixed, hebrewName: `צורה-${fixed}`, ...(m.hebrew !== undefined ? { hebrew: `צורה-${fixed}` } : {}) };
+    }
+  }
+
   return { entries, boardValidation: { isValid: true, warnings: [] } };
 }
 
@@ -51,7 +81,7 @@ const hiddenRoute = resolveKashfRouteByQuestionId('q-hidden-action');
 assert.equal(hiddenRoute.kashfMethodId, 'spiritual.p167.hiddenActionAirRows46815');
 assert.equal(hiddenRoute.canRunKashf, true);
 
-const hiddenReading = buildKashfReadingByQuestionIdForLegacyFixtureTests(
+const hiddenReading = buildKashfReadingByQuestionId(
   makeBoard({ 4:'1111', 6:'1111', 8:'1111', 15:'1212' }),
   'q-hidden-action',
   { question: 'האם יש פעולה מאחורי השואל?' }
@@ -123,7 +153,7 @@ assert.equal(istikhara.kashfRuntimeStatus, 'educational-only');
 assert.equal(istikhara.runtimeAllowed, false);
 assert.notEqual(istikhara.attributedSourceBook, 'Kashf');
 
-const blockedIstikhara = buildKashfReadingByMethodForLegacyFixtureTests(
+const blockedIstikhara = buildKashfReadingByMethod(
   makeBoard(),
   'decision.external.p170-172.istikharaFigureTable',
   { question: 'אסתכארה' }

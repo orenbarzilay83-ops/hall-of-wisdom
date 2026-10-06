@@ -6,8 +6,8 @@ import {
 } from './goral-hachol/registry/kashf-canonical-method-registry.js';
 import { resolveKashfRouteByQuestionId } from './goral-hachol/engine/kashf-method-router.js';
 import {
-  buildKashfReadingByMethodForLegacyFixtureTests,
-  buildKashfReadingByQuestionIdForLegacyFixtureTests,
+  buildKashfReadingByMethod,
+  buildKashfReadingByQuestionId,
 } from './goral-hachol/engine/kashf-canonical-reading-engine.js';
 import {
   getKashfAiRetrievalRecord,
@@ -16,10 +16,14 @@ import {
 import { isKashfMethodProfessionallyCertified } from './goral-hachol/intelligence/kashf-professional-verdict-safety.js';
 
 function makeBoard(overrides = {}) {
-  const fallback = [
-    '1111','1112','1121','1122','1211','1212','1221','1222',
-    '2111','2112','2121','2122','2211','2212','2222','2222',
-  ];
+  // 2026-10-06: base board is now a REAL, structurally-consistent
+  // board (uniform Jamaa/2222 in every position satisfies both the
+  // Judge-parity check -- p.34 -- and the daughter/mother diagonal
+  // check -- p.35 -- trivially, since every house equals every other),
+  // not a naive 1111..2222 enumeration (which failed both). Overrides
+  // below still replace only the specific houses each test cares
+  // about.
+  const fallback = Array(16).fill('2222');
   const entries = fallback.map((pattern, i) => ({
     house: i + 1,
     houseNumber: i + 1,
@@ -38,6 +42,32 @@ function makeBoard(overrides = {}) {
       hebrewName: `צורה-${pattern}`,
     };
   }
+  // Auto-repair structural consistency (Kashf p.34 Judge parity is
+  // unaffected here; this repairs p.35's mother/daughter diagonal) for
+  // whichever of a mother(1-4)/daughter(5-8) pair the caller did NOT
+  // explicitly override, so overriding just one does not silently
+  // produce a board the structural-integrity gate would reject for a
+  // reason this test never intended to exercise. If the caller
+  // overrides BOTH sides of a pair, their explicit values are trusted
+  // as-is.
+  for (let rowIndex = 0; rowIndex < 4; rowIndex++) {
+    const motherHouse = rowIndex + 1;
+    const daughterHouse = 5 + rowIndex;
+    const motherGiven = motherHouse in overrides || String(motherHouse) in overrides;
+    const daughterGiven = daughterHouse in overrides || String(daughterHouse) in overrides;
+    if (motherGiven && !daughterGiven) {
+      const motherPattern = entries[motherHouse - 1].pattern;
+      const d = entries[daughterHouse - 1];
+      const fixed = d.pattern.slice(0, rowIndex) + motherPattern[rowIndex] + d.pattern.slice(rowIndex + 1);
+      entries[daughterHouse - 1] = { ...d, pattern: fixed, key: fixed, hebrewName: `צורה-${fixed}`, ...(d.hebrew !== undefined ? { hebrew: `צורה-${fixed}` } : {}) };
+    } else if (daughterGiven && !motherGiven) {
+      const daughterPattern = entries[daughterHouse - 1].pattern;
+      const m = entries[motherHouse - 1];
+      const fixed = m.pattern.slice(0, rowIndex) + daughterPattern[rowIndex] + m.pattern.slice(rowIndex + 1);
+      entries[motherHouse - 1] = { ...m, pattern: fixed, key: fixed, hebrewName: `צורה-${fixed}`, ...(m.hebrew !== undefined ? { hebrew: `צורה-${fixed}` } : {}) };
+    }
+  }
+
   return { entries, boardValidation: { isValid: true, warnings: [] } };
 }
 
@@ -52,7 +82,7 @@ const treasureRoute = resolveKashfRouteByQuestionId('q-treasure');
 assert.equal(treasureRoute.kashfMethodId, 'hidden.p188.isStillThere');
 assert.equal(treasureRoute.canRunKashf, true);
 assert.equal(isKashfMethodProfessionallyCertified('hidden.p188.isStillThere'), true);
-const treasure = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-treasure', { question: 'האם הדבר הנסתר עדיין במקומו?' });
+const treasure = buildKashfReadingByQuestionId(board, 'q-treasure', { question: 'האם הדבר הנסתר עדיין במקומו?' });
 assert.equal(treasure.valid, true);
 assert.deepEqual(treasure.canonicalExecution?.methodsExecuted, ['hidden.p188.isStillThere']);
 assert.equal(treasure.canonicalExecution?.altFormulaExecuted, false);
@@ -63,25 +93,25 @@ assert.equal(treasure.canonicalExecution?.topicBundleExecuted, false);
 const directionRoute = resolveKashfRouteByQuestionId('q-dig-direction');
 assert.equal(directionRoute.kashfMethodId, 'hidden.p188.quarterDirection');
 assert.equal(directionRoute.canRunKashf, true);
-const directionReading = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-dig-direction', { question: 'לאיזה כיוון לחפש?' });
+const directionReading = buildKashfReadingByQuestionId(board, 'q-dig-direction', { question: 'לאיזה כיוון לחפש?' });
 assert.equal(directionReading.valid, false);
 assert.equal(directionReading.kashfMethodId, 'hidden.p188.quarterDirection');
 assert.equal(directionReading.reason, 'four-independent-casts-required');
 const casts = (patterns) => ({ question: 'לאיזה כיוון לחפש?', dynFields: Object.fromEntries(patterns.map((pattern, index) => [`quarter${index + 1}Pattern`, pattern])) });
-const oneQuarter = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-dig-direction', casts(['2111', '1112', '1212', '1112']));
+const oneQuarter = buildKashfReadingByQuestionId(board, 'q-dig-direction', casts(['2111', '1112', '1212', '1112']));
 assert.equal(oneQuarter.valid, true);
 assert.deepEqual(oneQuarter.primaryFormula.result.executorResult.suspected, [1]);
 assert.deepEqual(oneQuarter.primaryFormula.result.executorResult.excluded, [2, 3, 4]);
 assert.equal(oneQuarter.overallPositive, null);
 assert.match(oneQuarter.verdict.text, /רבע 1 הוא הרבע החשוד היחיד/);
 assert.equal(isKashfMethodProfessionallyCertified('hidden.p188.quarterDirection'), true);
-const multiple = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-dig-direction', casts(['2111', '2121', '1112', '1212']));
+const multiple = buildKashfReadingByQuestionId(board, 'q-dig-direction', casts(['2111', '2121', '1112', '1212']));
 assert.deepEqual(multiple.primaryFormula.result.executorResult.suspected, [1, 2]);
 assert.match(multiple.verdict.text, /המקור אינו נותן כלל לבחירת אחד/);
-const unresolved = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-dig-direction', casts(['2111', '1111', '1112', '1212']));
+const unresolved = buildKashfReadingByQuestionId(board, 'q-dig-direction', casts(['2111', '1111', '1112', '1212']));
 assert.deepEqual(unresolved.primaryFormula.result.executorResult.unresolved, [2]);
 assert.doesNotMatch(unresolved.verdict.text, /הרבע החשוד היחיד/);
-const invalidCast = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-dig-direction', casts(['2111', '1112', '9999', '1112']));
+const invalidCast = buildKashfReadingByQuestionId(board, 'q-dig-direction', casts(['2111', '1112', '9999', '1112']));
 assert.equal(invalidCast.reason, 'four-independent-casts-required');
 
 // p185 recursive arithmetic is blocked at the printed 94 vs apparent 16x4 conflict.
@@ -90,7 +120,7 @@ assert.equal(p185.kashfRuntimeStatus, 'blocked-by-source');
 assert.equal(p185.runtimeAllowed, false);
 assert.match(p185.notes || '', /94/);
 assert.match(p185.notes || '', /16×4|64/);
-assert.equal(buildKashfReadingByMethodForLegacyFixtureTests(board, p185.kashfMethodId).valid, false);
+assert.equal(buildKashfReadingByMethod(board, p185.kashfMethodId).valid, false);
 
 // p186 alternatives are independent pending flows, not supporting votes.
 const p186Name = getKashfMethod('hidden.p186.nameDayAbjadQuarter');

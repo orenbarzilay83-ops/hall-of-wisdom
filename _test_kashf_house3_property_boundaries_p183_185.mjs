@@ -6,8 +6,8 @@ import {
 } from './goral-hachol/registry/kashf-canonical-method-registry.js';
 import { resolveKashfRouteByQuestionId } from './goral-hachol/engine/kashf-method-router.js';
 import {
-  buildKashfReadingByMethodForLegacyFixtureTests,
-  buildKashfReadingByQuestionIdForLegacyFixtureTests,
+  buildKashfReadingByMethod,
+  buildKashfReadingByQuestionId,
 } from './goral-hachol/engine/kashf-canonical-reading-engine.js';
 import {
   getKashfAiRetrievalRecord,
@@ -15,10 +15,14 @@ import {
 } from './goral-hachol/registry/kashf-ai-retrieval-index.js';
 
 function makeBoard(overrides = {}) {
-  const fallback = [
-    '1111','1112','1121','1122','1211','1212','1221','1222',
-    '2111','2112','2121','2122','2211','2212','2222','2222',
-  ];
+  // 2026-10-06: base board is now a REAL, structurally-consistent
+  // board (uniform Jamaa/2222 in every position satisfies both the
+  // Judge-parity check -- p.34 -- and the daughter/mother diagonal
+  // check -- p.35 -- trivially, since every house equals every other),
+  // not a naive 1111..2222 enumeration (which failed both). Overrides
+  // below still replace only the specific houses each test cares
+  // about.
+  const fallback = Array(16).fill('2222');
   const entries = fallback.map((pattern, i) => ({
     house: i + 1,
     houseNumber: i + 1,
@@ -37,11 +41,37 @@ function makeBoard(overrides = {}) {
       hebrewName: `צורה-${pattern}`,
     };
   }
+  // Auto-repair structural consistency (Kashf p.34 Judge parity is
+  // unaffected here; this repairs p.35's mother/daughter diagonal) for
+  // whichever of a mother(1-4)/daughter(5-8) pair the caller did NOT
+  // explicitly override, so overriding just one does not silently
+  // produce a board the structural-integrity gate would reject for a
+  // reason this test never intended to exercise. If the caller
+  // overrides BOTH sides of a pair, their explicit values are trusted
+  // as-is.
+  for (let rowIndex = 0; rowIndex < 4; rowIndex++) {
+    const motherHouse = rowIndex + 1;
+    const daughterHouse = 5 + rowIndex;
+    const motherGiven = motherHouse in overrides || String(motherHouse) in overrides;
+    const daughterGiven = daughterHouse in overrides || String(daughterHouse) in overrides;
+    if (motherGiven && !daughterGiven) {
+      const motherPattern = entries[motherHouse - 1].pattern;
+      const d = entries[daughterHouse - 1];
+      const fixed = d.pattern.slice(0, rowIndex) + motherPattern[rowIndex] + d.pattern.slice(rowIndex + 1);
+      entries[daughterHouse - 1] = { ...d, pattern: fixed, key: fixed, hebrewName: `צורה-${fixed}`, ...(d.hebrew !== undefined ? { hebrew: `צורה-${fixed}` } : {}) };
+    } else if (daughterGiven && !motherGiven) {
+      const daughterPattern = entries[daughterHouse - 1].pattern;
+      const m = entries[motherHouse - 1];
+      const fixed = m.pattern.slice(0, rowIndex) + daughterPattern[rowIndex] + m.pattern.slice(rowIndex + 1);
+      entries[motherHouse - 1] = { ...m, pattern: fixed, key: fixed, hebrewName: `צורה-${fixed}`, ...(m.hebrew !== undefined ? { hebrew: `צורה-${fixed}` } : {}) };
+    }
+  }
+
   return { entries, boardValidation: { isValid: true, warnings: [] } };
 }
 
 const board = makeBoard({
-  1:'1122', 2:'1112', 4:'2211', 6:'1211', 7:'2222',
+  1:'1122', 2:'1112', 4:'2211', 6:'1111', 7:'2222',
   8:'1221', 9:'2111', 10:'1122', 12:'1212', 15:'2211',
 });
 
@@ -51,7 +81,7 @@ assert.equal(validateKashfMethodRegistry().valid, true);
 const destinationRoute = resolveKashfRouteByQuestionId('q-move-city');
 assert.equal(destinationRoute.kashfMethodId, 'relocation.p183.h4h15');
 assert.equal(destinationRoute.canRunKashf, true);
-const destination = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-move-city', { question: 'מה טיב המקום החדש?' });
+const destination = buildKashfReadingByQuestionId(board, 'q-move-city', { question: 'מה טיב המקום החדש?' });
 assert.equal(destination.valid, true);
 assert.deepEqual(destination.canonicalExecution?.methodsExecuted, ['relocation.p183.h4h15']);
 assert.deepEqual(destination.primaryFormula?.houses, [4, 15]);
@@ -71,17 +101,17 @@ assert.match(twoCities.notes || '', /H1\/H2\/H7\/H8\/H9/);
 const twoCitiesRoute = resolveKashfRouteByQuestionId('q-best-city');
 assert.equal(twoCitiesRoute.kashfMethodId, 'relocation.p183.compare12vs78');
 assert.equal(twoCitiesRoute.canRunKashf, false);
-const blockedTwoCities = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-best-city', { question: 'איזו עיר עדיפה?' });
+const blockedTwoCities = buildKashfReadingByQuestionId(board, 'q-best-city', { question: 'איזו עיר עדיפה?' });
 assert.equal(blockedTwoCities.valid, false);
 assert.equal(blockedTwoCities.reason, 'blocked-by-source');
 
 // p183 current-vs-new and repeated H1/H2 stay/move remain distinct exact routes.
-const moveHome = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-move-home', { question: 'האם לעבור דירה?' });
+const moveHome = buildKashfReadingByQuestionId(board, 'q-move-home', { question: 'האם לעבור דירה?' });
 assert.equal(moveHome.valid, true);
 assert.deepEqual(moveHome.canonicalExecution?.methodsExecuted, ['relocation.p183.currentVsNewPlace']);
 assert.equal(moveHome.canonicalExecution?.topicSupportingChecksExecuted, false);
 
-const stayPlace = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-stay-place', { question: 'להישאר או לעבור?' });
+const stayPlace = buildKashfReadingByQuestionId(board, 'q-stay-place', { question: 'להישאר או לעבור?' });
 assert.equal(stayPlace.valid, true);
 assert.deepEqual(stayPlace.canonicalExecution?.methodsExecuted, ['relocation.p183.stayMoveH1H2']);
 assert.equal(stayPlace.canonicalExecution?.topicSupportingChecksExecuted, false);
@@ -94,7 +124,7 @@ assert.match(p184Indicators.notes || '', /H6\/H7/);
 assert.match(p184Indicators.notes || '', /H1\/H12/);
 assert.match(p184Indicators.notes || '', /H2/);
 assert.match(p184Indicators.notes || '', /no precedence|conflict-resolution|never aggregate|vote/i);
-const blockedIndicators = buildKashfReadingByMethodForLegacyFixtureTests(board, 'relocation.p184.multiIndicatorStayMove');
+const blockedIndicators = buildKashfReadingByMethod(board, 'relocation.p184.multiIndicatorStayMove');
 assert.equal(blockedIndicators.valid, false);
 assert.equal(blockedIndicators.reason, 'blocked-by-source');
 
@@ -109,7 +139,7 @@ assert.match(propertyMap.notes || '', /H7=vegetables\/plants/);
 assert.match(propertyMap.notes || '', /H3=water channels/);
 assert.match(propertyMap.notes || '', /H2=the surrounding wall/);
 assert.match(propertyMap.notes || '', /witness system/i);
-const blockedPropertyMap = buildKashfReadingByMethodForLegacyFixtureTests(board, 'property.p184-185.houseGardenMap');
+const blockedPropertyMap = buildKashfReadingByMethod(board, 'property.p184-185.houseGardenMap');
 assert.equal(blockedPropertyMap.valid, false);
 assert.equal(blockedPropertyMap.reason, 'blocked-by-source');
 

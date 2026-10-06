@@ -29,8 +29,6 @@ import {
 import {
   buildKashfReadingByQuestionId,
   buildKashfReadingByMethod,
-  buildKashfReadingByQuestionIdForLegacyFixtureTests,
-  buildKashfReadingByMethodForLegacyFixtureTests,
 } from './goral-hachol/engine/kashf-canonical-reading-engine.js';
 import { writeCanonicalKashfReading } from './goral-hachol/engine/kashf-canonical-narrative-writer.js';
 import { buildRamlBoardFromMothers } from './goral-hachol/engine/raml-board-generator.js';
@@ -894,7 +892,7 @@ const p212Knowledge = getKashfV57Knowledge('dispute.p212.reconciliationH1H7');
 assert(p212Knowledge?.v57?.hebrewRule.includes('מן הראשון והשביעי'), 'p212 v57 knowledge preserves H1+H7 generation');
 assert(p212Knowledge?.v57?.hebrewRule.includes('שניהם יתפייסו'), 'p212 v57 knowledge preserves explicit reconciliation branch');
 
-const p212Benefic = buildKashfReadingByQuestionIdForLegacyFixtureTests(
+const p212Benefic = buildKashfReadingByQuestionId(
   makeP204Board({ 1: '1111', 7: '2211' }),
   'q-reconciliation',
   { question: 'האם יהיה פיוס בין הצדדים?' }
@@ -911,7 +909,7 @@ assert(p212Benefic.canonicalExecution?.topicBundleExecuted === false, 'p212 does
 assert(p212Benefic.dhamir === null, 'p212 does not auto-run Dhamir');
 assert(p212Benefic.primaryFormula?.result?.executorResult?.mediatorResolved === false, 'p212 yes/no executor does not invent mediator identity');
 
-const p212Malefic = buildKashfReadingByQuestionIdForLegacyFixtureTests(
+const p212Malefic = buildKashfReadingByQuestionId(
   makeP204Board({ 1: '1111', 7: '2221' }),
   'q-reconciliation',
   { question: 'האם יהיה פיוס בין הצדדים?' }
@@ -922,7 +920,7 @@ assert(p212Malefic.primaryFormula?.result?.executorResult?.sourceOutcome === 'un
 assert(p212Malefic.primaryFormula?.result?.executorResult?.reconciliation === null, 'p212 malefic branch remains unresolved');
 assert(p212Malefic.overallPositive === null, 'p212 malefic branch is not collapsed into an unsourced negative verdict');
 
-const p212Mixed = buildKashfReadingByQuestionIdForLegacyFixtureTests(
+const p212Mixed = buildKashfReadingByQuestionId(
   makeP204Board({ 1: '1111', 7: '1121' }),
   'q-reconciliation',
   { question: 'האם יהיה פיוס בין הצדדים?' }
@@ -947,7 +945,7 @@ assert(religionV57?.v57?.heading === 'הנעדר לפי הזנאטי; דת וצ�
 assert(religionV57?.v57?.hebrewRule.includes('הוא מועט בדת'), 'p253 v57 knowledge preserves the malefic branch');
 assert(religionV57?.v57?.hebrewRule.includes('הוא בעל דת ויראת אלוהים'), 'p253 v57 knowledge preserves the benefic branch');
 
-const p253Benefic = buildKashfReadingByQuestionIdForLegacyFixtureTests(
+const p253Benefic = buildKashfReadingByQuestionId(
   makeP204Board({ 3: '1122', 9: '2211' }),
   'q-religion',
   { question: 'מה מצב דתו וצדקותו של האדם?' }
@@ -963,7 +961,7 @@ assert(p253Benefic.altFormula === null, 'p253 does not aggregate alternative rel
 assert(p253Benefic.canonicalExecution?.topicBundleExecuted === false, 'p253 does not execute broad religion bundle');
 assert(p253Benefic.dhamir === null, 'p253 does not auto-run Dhamir');
 
-const p253Malefic = buildKashfReadingByQuestionIdForLegacyFixtureTests(
+const p253Malefic = buildKashfReadingByQuestionId(
   makeP204Board({ 3: '1112', 9: '1221' }),
   'q-religion',
   { question: 'מה מצב דתו וצדקותו של האדם?' }
@@ -974,7 +972,7 @@ assert(p253Malefic.primaryFormula?.result?.executorResult?.sourceOutcome === 'li
 assert(p253Malefic.primaryFormula?.result?.executorResult?.sourceOutcomeHebrew === 'מועט בדת', 'p253 negative Hebrew result matches v57');
 assert(p253Malefic.overallPositive === false, 'p253 negative source branch is negative');
 
-const p253Mixed = buildKashfReadingByQuestionIdForLegacyFixtureTests(
+const p253Mixed = buildKashfReadingByQuestionId(
   makeP204Board({ 3: '2212', 9: '1122' }),
   'q-religion',
   { question: 'מה מצב דתו וצדקותו של האדם?' }
@@ -983,7 +981,7 @@ assert(p253Mixed.primaryFormula?.result?.executorResult?.h3Quality === 'mixed', 
 assert(p253Mixed.primaryFormula?.result?.executorResult?.sourceOutcome === 'unresolved', 'p253 mixed evidence remains unresolved');
 assert(p253Mixed.overallPositive === null, 'p253 mixed evidence is not collapsed to a binary moral judgment');
 
-const p253Split = buildKashfReadingByQuestionIdForLegacyFixtureTests(
+const p253Split = buildKashfReadingByQuestionId(
   makeP204Board({ 3: '1112', 9: '1122' }),
   'q-religion',
   { question: 'מה מצב דתו וצדקותו של האדם?' }
@@ -1008,7 +1006,7 @@ assertRoute('q-matter-end', {
 });
 assert(canRunKashfMethod('matter.p172.h17_h1011_thenCombine'), 'p172 matter-outcome method is explicitly runnable');
 
-const p172Good = buildKashfReadingByQuestionIdForLegacyFixtureTests(
+const p172Good = buildKashfReadingByQuestionId(
   makeP204Board({ 1: '1111', 7: '2222', 10: '1111', 11: '1122' }),
   'q-matter-end',
   { question: 'מה תהיה תוצאת העניין?' }
@@ -1025,7 +1023,7 @@ assert(p172Good.altFormula === null, 'p172 does not aggregate completion p173 or
 assert(p172Good.canonicalExecution?.topicBundleExecuted === false, 'p172 does not execute broad general-reading bundle');
 assert(p172Good.dhamir === null, 'p172 does not auto-run Dhamir');
 
-const p172Bad = buildKashfReadingByQuestionIdForLegacyFixtureTests(
+const p172Bad = buildKashfReadingByQuestionId(
   makeP204Board({ 1: '1111', 7: '2222', 10: '1111', 11: '1112' }),
   'q-matter-end',
   { question: 'מה תהיה תוצאת העניין?' }
@@ -1037,7 +1035,7 @@ assert(p172Bad.primaryFormula?.result?.executorResult?.classification?.saadNahs 
 assert(p172Bad.primaryFormula?.result?.executorResult?.sourceOutcome === 'bad', 'p172 pure malefic final figure means bad outcome');
 assert(p172Bad.overallPositive === false, 'p172 bad source outcome is negative');
 
-const p172Mixed = buildKashfReadingByQuestionIdForLegacyFixtureTests(
+const p172Mixed = buildKashfReadingByQuestionId(
   makeP204Board({ 1: '1111', 7: '2222', 10: '1111', 11: '2212' }),
   'q-matter-end',
   { question: 'מה תהיה תוצאת העניין?' }
@@ -1071,7 +1069,7 @@ assert(JSON.stringify(stayMoveV57?.v57?.detailPages) === JSON.stringify([178, 18
 assert(stayMoveV57?.v57?.hebrewRule.includes('המקום שבו הוא נמצא טוב לו'), 'stay/move v57 preserves the explicit current-place branch');
 assert(stayMoveV57?.v57?.hebrewRule.includes('הדין להפך'), 'stay/move v57 preserves the explicit reverse branch');
 
-const p178Stay = buildKashfReadingByQuestionIdForLegacyFixtureTests(
+const p178Stay = buildKashfReadingByQuestionId(
   makeP204Board({ 1: '1122', 2: '1112' }),
   'q-stay-place',
   { question: 'האם כדאי להישאר במקום זה או לעבור?' }
@@ -1088,7 +1086,7 @@ assert(p178Stay.altFormula === null, 'stay/move does not aggregate relocation al
 assert(p178Stay.canonicalExecution?.topicBundleExecuted === false, 'stay/move does not execute broad relocation bundle');
 assert(p178Stay.dhamir === null, 'stay/move does not auto-run Dhamir');
 
-const p178Move = buildKashfReadingByQuestionIdForLegacyFixtureTests(
+const p178Move = buildKashfReadingByQuestionId(
   makeP204Board({ 1: '1112', 2: '1122' }),
   'q-stay-place',
   { question: 'האם כדאי להישאר במקום זה או לעבור?' }
@@ -1100,7 +1098,7 @@ assert(p178Move.primaryFormula?.result?.executorResult?.currentPlaceBetter === f
 assert(p178Move.primaryFormula?.result?.executorResult?.moveBetter === true, 'stay/move reverse branch marks move preferred');
 assert(p178Move.overallPositive === null, 'stay/move reverse directional decision is not a sentiment verdict');
 
-const p178Same = buildKashfReadingByQuestionIdForLegacyFixtureTests(
+const p178Same = buildKashfReadingByQuestionId(
   makeP204Board({ 1: '1122', 2: '2211' }),
   'q-stay-place',
   { question: 'האם כדאי להישאר במקום זה או לעבור?' }
@@ -1109,7 +1107,7 @@ assert(p178Same.primaryFormula?.result?.executorResult?.h1Quality === 'saad' && 
 assert(p178Same.primaryFormula?.result?.executorResult?.decision === 'unresolved', 'stay/move does not invent a same-class branch');
 assert(p178Same.primaryFormula?.result?.executorResult?.currentPlaceBetter === null && p178Same.primaryFormula?.result?.executorResult?.moveBetter === null, 'stay/move same-class branch remains unresolved');
 
-const p178Mixed = buildKashfReadingByQuestionIdForLegacyFixtureTests(
+const p178Mixed = buildKashfReadingByQuestionId(
   makeP204Board({ 1: '2212', 2: '1112' }),
   'q-stay-place',
   { question: 'האם כדאי להישאר במקום זה או לעבור?' }
@@ -1134,7 +1132,7 @@ assertRoute('q-move-home', {
 });
 assert(canRunKashfMethod('relocation.p183.currentVsNewPlace'), 'p183 current-vs-new relocation method is explicitly runnable');
 
-const p183CurrentGood = buildKashfReadingByQuestionIdForLegacyFixtureTests(
+const p183CurrentGood = buildKashfReadingByQuestionId(
   makeP204Board({ 1: '1122', 4: '1122', 7: '1112', 10: '1112' }),
   'q-move-home',
   { question: 'האם טוב לי להישאר כאן או לעבור?' }
@@ -1149,7 +1147,7 @@ assert(p183CurrentGood.altFormula === null, 'p183 does not aggregate alternate r
 assert(p183CurrentGood.canonicalExecution?.topicBundleExecuted === false, 'p183 does not execute broad relocation bundle');
 assert(p183CurrentGood.dhamir === null, 'p183 does not auto-run Dhamir');
 
-const p183MoveGood = buildKashfReadingByQuestionIdForLegacyFixtureTests(
+const p183MoveGood = buildKashfReadingByQuestionId(
   makeP204Board({ 1: '1112', 4: '1112', 7: '1122', 10: '1122' }),
   'q-move-home',
   { question: 'האם טוב לי להישאר כאן או לעבור?' }
@@ -1159,7 +1157,7 @@ assert(p183MoveGood.primaryFormula?.result?.executorResult?.moveGood === true, '
 assert(p183MoveGood.primaryFormula?.result?.executorResult?.sourceOutcome === 'move-good', 'p183 move-only source outcome is explicit');
 assert(!p183MoveGood.primaryFormula?.result?.executorResult?.outputHebrew.includes('המקום הנוכחי רע'), 'p183 does not invent negative current-place clause');
 
-const p183BothGood = buildKashfReadingByQuestionIdForLegacyFixtureTests(
+const p183BothGood = buildKashfReadingByQuestionId(
   makeP204Board({ 1: '1122', 4: '1122', 7: '1122', 10: '1122' }),
   'q-move-home',
   { question: 'האם טוב לי להישאר כאן או לעבור?' }
@@ -1167,7 +1165,7 @@ const p183BothGood = buildKashfReadingByQuestionIdForLegacyFixtureTests(
 assert(p183BothGood.primaryFormula?.result?.executorResult?.sourceOutcome === 'both-good', 'p183 preserves both positive source clauses when both pairs qualify');
 assert(!p183BothGood.primaryFormula?.result?.executorResult?.outputHebrew.includes('טובה יותר'), 'p183 does not invent a ranking when both options qualify');
 
-const p183MixedGuard = buildKashfReadingByQuestionIdForLegacyFixtureTests(
+const p183MixedGuard = buildKashfReadingByQuestionId(
   makeP204Board({ 1: '2212', 4: '1122', 7: '1112', 10: '1112' }),
   'q-move-home',
   { question: 'האם טוב לי להישאר כאן או לעבור?' }
@@ -1192,7 +1190,7 @@ assertRoute('q-who-looks-love', {
 });
 assert(canRunKashfMethod('love.p204.attentionFireRows1713'), 'p204 attention method is explicitly runnable');
 
-const p204Attention = buildKashfReadingByQuestionIdForLegacyFixtureTests(
+const p204Attention = buildKashfReadingByQuestionId(
   makeP204Board({ 1: '1111', 7: '1121', 13: '2222' }),
   'q-who-looks-love',
   { question: 'האם אדם זה מביט אלי או אל אחר?' }
@@ -1212,7 +1210,7 @@ assert(p204Attention.canonicalExecution?.topicBundleExecuted === false, 'p204 at
 assert(p204Attention.dhamir === null, 'p204 attention does not auto-run Dhamir');
 assert(!p204Attention.primaryFormula?.result?.executorResult?.outputHebrew.includes('אוהב'), 'p204 attention does not convert gaze/attention into a love verdict');
 
-const p204AttentionOtherCombination = buildKashfReadingByQuestionIdForLegacyFixtureTests(
+const p204AttentionOtherCombination = buildKashfReadingByQuestionId(
   makeP204Board({ 1: '1111', 7: '1121', 13: '1111' }),
   'q-who-looks-love',
   { question: 'האם אדם זה מביט אלי או אל אחר?' }
@@ -1227,22 +1225,50 @@ assert(p204AttentionHtml.includes('love.p204.attentionFireRows1713'), 'p204 atte
 assert(p204AttentionHtml.includes('שניהם מביטים זה בזה וגם באחרים'), 'p204 attention narrative preserves v57 p204 result');
 
 // ── P10 corrected marriage p204 source contracts -----------------------
+
+// Auto-repair mother(1-4)/daughter(5-8) structural consistency (p.35) for
+// whichever side of a pair a caller did NOT explicitly override -- see
+// the identical rationale in the house-boundary test files' makeBoard
+// helpers. Judge parity (p.34) is unaffected: '2222' default is already
+// even, and no override in this file sets an odd Judge pattern.
+function repairMotherDaughterDiagonal(entries, overrides) {
+  for (let rowIndex = 0; rowIndex < 4; rowIndex++) {
+    const motherHouse = rowIndex + 1;
+    const daughterHouse = 5 + rowIndex;
+    const motherGiven = motherHouse in overrides || String(motherHouse) in overrides;
+    const daughterGiven = daughterHouse in overrides || String(daughterHouse) in overrides;
+    if (motherGiven && !daughterGiven) {
+      const motherPattern = entries[motherHouse - 1].pattern;
+      const d = entries[daughterHouse - 1];
+      const fixed = d.pattern.slice(0, rowIndex) + motherPattern[rowIndex] + d.pattern.slice(rowIndex + 1);
+      entries[daughterHouse - 1] = { ...d, pattern: fixed, key: fixed, hebrewName: fixed };
+    } else if (daughterGiven && !motherGiven) {
+      const daughterPattern = entries[daughterHouse - 1].pattern;
+      const m = entries[motherHouse - 1];
+      const fixed = m.pattern.slice(0, rowIndex) + daughterPattern[rowIndex] + m.pattern.slice(rowIndex + 1);
+      entries[motherHouse - 1] = { ...m, pattern: fixed, key: fixed, hebrewName: fixed };
+    }
+  }
+  return entries;
+}
+
 function makeP204Board(overrides = {}) {
+  const entries = Array.from({ length: 16 }, (_, index) => {
+    const house = index + 1;
+    const pattern = overrides[house] || '2222';
+    return { house, houseNumber: house, pattern, key: pattern, hebrewName: pattern };
+  });
   return {
-    entries: Array.from({ length: 16 }, (_, index) => {
-      const house = index + 1;
-      const pattern = overrides[house] || '2222';
-      return { house, houseNumber: house, pattern, key: pattern, hebrewName: pattern };
-    }),
+    entries: repairMotherDaughterDiagonal(entries, overrides),
     boardValidation: { isValid: true, warnings: [] },
   };
 }
 
 // p267: the House 11 fallback is independent of the unresolved compound test.
 assertRoute('q-wish', { ok: true, canRunKashf: true, kashfMethodId: 'hope.p267.fulfillment' });
-const wishGood = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 11: '2211' }), 'q-wish');
-const wishBad = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 11: '2221' }), 'q-wish');
-const wishMixed = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 11: '1121' }), 'q-wish');
+const wishGood = buildKashfReadingByQuestionId(makeP204Board({ 11: '2211' }), 'q-wish');
+const wishBad = buildKashfReadingByQuestionId(makeP204Board({ 11: '2221' }), 'q-wish');
+const wishMixed = buildKashfReadingByQuestionId(makeP204Board({ 11: '1121' }), 'q-wish');
 assert(wishGood.valid && wishGood.primaryFormula?.result?.executorResult?.outcome === 'hope-and-good', 'p267 H11 pure benefic gives the printed fallback');
 assert(wishBad.valid && wishBad.primaryFormula?.result?.executorResult?.outcome === 'not-completed', 'p267 H11 pure malefic gives the printed fallback');
 assert(wishMixed.valid && wishMixed.overallPositive === null, 'p267 mixed H11 remains unresolved');
@@ -1260,7 +1286,7 @@ assertRoute('q-marriage-thayib', {
 assert(canRunKashfMethod('marriage.p204.previousStatusH7inH10'), 'corrected p204 previous-status method is explicitly runnable');
 assert(!getKashfMethod('marriage.p204.previousStatusH7'), 'misleading old p204 H7-only method id no longer exists');
 
-const previousStatusDivorced = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 7: '1121', 10: '1121' }), 'q-marriage-thayib', { question: 'האם האישה בתולה או גרושה?' });
+const previousStatusDivorced = buildKashfReadingByQuestionId(makeP204Board({ 7: '1121', 10: '1121' }), 'q-marriage-thayib', { question: 'האם האישה בתולה או גרושה?' });
 assert(previousStatusDivorced.valid === true && previousStatusDivorced.canRunKashf === true, 'p204 repeated mutable H7 executes canonically');
 assert(previousStatusDivorced.kashfMethodId === 'marriage.p204.previousStatusH7inH10', 'p204 executes corrected H7-in-H10 method id');
 assert(JSON.stringify(previousStatusDivorced.primaryFormula?.houses) === JSON.stringify([7, 10]), 'p204 previous-status traces H7+H10');
@@ -1277,18 +1303,18 @@ assert(previousStatusDivorcedHtml.includes('marriage.p204.previousStatusH7inH10'
 assert(previousStatusDivorcedHtml.includes('גרושה'), 'p204 narrative preserves explicit divorced result');
 assert(!previousStatusDivorcedHtml.includes('אלמנה'), 'p204 runtime does not invent widow result');
 
-const previousStatusVirgin = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 7: '2222', 10: '2222' }), 'q-marriage-thayib', { question: 'האם האישה בתולה או גרושה?' });
+const previousStatusVirgin = buildKashfReadingByQuestionId(makeP204Board({ 7: '2222', 10: '2222' }), 'q-marriage-thayib', { question: 'האם האישה בתולה או גרושה?' });
 assert(previousStatusVirgin.primaryFormula?.result?.executorResult?.recursInH10 === true, 'p204 fixed fixture also requires recurrence');
 assert(previousStatusVirgin.primaryFormula?.result?.executorResult?.figureClass === 'fixed', 'p204 repeated 2222 is source-defined fixed');
 assert(previousStatusVirgin.primaryFormula?.result?.executorResult?.previousStatus === 'virgin', 'p204 fixed recurrence returns virgin');
 assert(previousStatusVirgin.primaryFormula?.result?.executorResult?.previousStatusHebrew === 'בתולה', 'p204 renders exact virgin result');
 
-const previousStatusNoRecurrence = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 7: '1121', 10: '2222' }), 'q-marriage-thayib', { question: 'האם האישה בתולה או גרושה?' });
+const previousStatusNoRecurrence = buildKashfReadingByQuestionId(makeP204Board({ 7: '1121', 10: '2222' }), 'q-marriage-thayib', { question: 'האם האישה בתולה או גרושה?' });
 assert(previousStatusNoRecurrence.primaryFormula?.result?.executorResult?.recursInH10 === false, 'p204 detects when H7 does not recur in H10');
 assert(previousStatusNoRecurrence.primaryFormula?.result?.executorResult?.previousStatus === null, 'p204 does not judge status without H7 recurrence in H10');
 assert(previousStatusNoRecurrence.overallPositive === null, 'p204 no-recurrence branch stays unresolved');
 
-const previousStatusOtherClass = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 7: '1112', 10: '1112' }), 'q-marriage-thayib', { question: 'האם האישה בתולה או גרושה?' });
+const previousStatusOtherClass = buildKashfReadingByQuestionId(makeP204Board({ 7: '1112', 10: '1112' }), 'q-marriage-thayib', { question: 'האם האישה בתולה או גרושה?' });
 assert(previousStatusOtherClass.primaryFormula?.result?.executorResult?.recursInH10 === true, 'p204 other-class fixture has required recurrence');
 assert(previousStatusOtherClass.primaryFormula?.result?.executorResult?.figureClass === 'other-source-class', 'p204 keeps outgoing/incoming figure outside fixed/mutable source classes');
 assert(previousStatusOtherClass.primaryFormula?.result?.executorResult?.previousStatus === null, 'p204 repeated other-class figure remains unresolved');
@@ -1304,7 +1330,7 @@ assertRoute('q-dowry', {
 });
 assert(canRunKashfMethod('marriage.p204.dowryH8'), 'p204 H8 dowry method is explicitly runnable');
 
-const dowryLarge = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 8: '1122' }), 'q-dowry', { question: 'האם המוהר גדול?' });
+const dowryLarge = buildKashfReadingByQuestionId(makeP204Board({ 8: '1122' }), 'q-dowry', { question: 'האם המוהר גדול?' });
 assert(dowryLarge.valid === true, 'p204 dowry benefic fixture executes canonically');
 assert(JSON.stringify(dowryLarge.primaryFormula?.houses) === JSON.stringify([8]), 'p204 dowry traces only H8');
 assert(dowryLarge.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'saad', 'p204 dowry fixture has pure benefic H8');
@@ -1316,12 +1342,12 @@ const dowryLargeHtml = writeCanonicalKashfReading(dowryLarge);
 assert(dowryLargeHtml.includes('marriage.p204.dowryH8'), 'p204 dowry narrative exposes exact method id');
 assert(dowryLargeHtml.includes('המוהר גדול'), 'p204 dowry narrative preserves exact large-mahr statement');
 
-const dowryMalefic = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 8: '1112' }), 'q-dowry', { question: 'האם המוהר גדול?' });
+const dowryMalefic = buildKashfReadingByQuestionId(makeP204Board({ 8: '1112' }), 'q-dowry', { question: 'האם המוהר גדול?' });
 assert(dowryMalefic.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'nahs', 'p204 dowry malefic fixture is classified as malefic');
 assert(dowryMalefic.primaryFormula?.result?.executorResult?.isLargeDowry === null, 'p204 does not turn malefic H8 into an unsourced small-mahr verdict');
 assert(dowryMalefic.overallPositive === null, 'p204 malefic H8 stays unresolved for mahr size');
 
-const dowryMixed = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 8: '2212' }), 'q-dowry', { question: 'האם המוהר גדול?' });
+const dowryMixed = buildKashfReadingByQuestionId(makeP204Board({ 8: '2212' }), 'q-dowry', { question: 'האם המוהר גדול?' });
 assert(dowryMixed.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'mixed', 'p204 dowry preserves mixed H8');
 assert(dowryMixed.primaryFormula?.result?.executorResult?.isLargeDowry === null, 'p204 mixed H8 does not invent a dowry-size verdict');
 assert(dowryMixed.overallPositive === null, 'p204 mixed H8 remains unresolved');
@@ -1344,18 +1370,19 @@ assert(getCanonicalSaadNahsDetail('1122').saadNahs === 'saad', 'canonical classi
 assert(getCanonicalSaadNahsDetail('1112').saadNahs === 'nahs', 'canonical classifier preserves pure malefic figure');
 
 function makeP9Board(overrides = {}) {
+  const entries = Array.from({ length: 16 }, (_, index) => {
+    const house = index + 1;
+    const pattern = overrides[house] || '2222';
+    return { house, houseNumber: house, pattern, key: pattern, hebrewName: pattern };
+  });
   return {
-    entries: Array.from({ length: 16 }, (_, index) => {
-      const house = index + 1;
-      const pattern = overrides[house] || '2222';
-      return { house, houseNumber: house, pattern, key: pattern, hebrewName: pattern };
-    }),
+    entries: repairMotherDaughterDiagonal(entries, overrides),
     boardValidation: { isValid: true, warnings: [] },
   };
 }
 
 const relocationMixedBoard = makeP9Board({ 4: '1111', 15: '2222' });
-const relocationMixedReading = buildKashfReadingByQuestionIdForLegacyFixtureTests(relocationMixedBoard, 'q-move-city', { question: 'האם כדאי לעבור מקום?' });
+const relocationMixedReading = buildKashfReadingByQuestionId(relocationMixedBoard, 'q-move-city', { question: 'האם כדאי לעבור מקום?' });
 assert(relocationMixedReading.valid === true, 'relocation mixed regression executes canonically');
 assert(relocationMixedReading.primaryFormula?.result?.resultPattern === '1111', 'relocation mixed fixture produces Road');
 assert(relocationMixedReading.primaryFormula?.result?.classification?.saadNahs === 'mixed', 'relocation canonical formula exposes mixed instead of collapsing it to nahs');
@@ -1374,7 +1401,7 @@ assertRoute('q-ruler-status', {
 });
 assert(canRunKashfMethod('authority.p257.rulerConditionH7H10') === true, 'p257 ruler-condition method is explicitly runnable');
 
-const rulerGood = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP9Board({ 7: '1122', 10: '2222' }), 'q-ruler-status', { question: 'מה מצב בעל השררה?' });
+const rulerGood = buildKashfReadingByQuestionId(makeP9Board({ 7: '1122', 10: '2222' }), 'q-ruler-status', { question: 'מה מצב בעל השררה?' });
 assert(rulerGood.valid === true, 'p257 ruler good fixture executes canonically');
 assert(rulerGood.canonicalExecution?.methodsExecuted?.length === 1, 'p257 ruler executes exactly one method');
 assert(rulerGood.canonicalExecution?.methodsExecuted?.[0] === 'authority.p257.rulerConditionH7H10', 'p257 ruler executes exact canonical method');
@@ -1385,11 +1412,11 @@ assert(rulerGood.overallPositive === true, 'p257 ruler benefic result is positiv
 assert(rulerGood.canonicalExecution?.topicBundleExecuted === false, 'p257 ruler does not execute broad authority bundle');
 assert(rulerGood.dhamir == null, 'p257 ruler does not auto-run Dhamir');
 
-const rulerBad = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP9Board({ 7: '1112', 10: '2222' }), 'q-ruler-status', { question: 'מה מצב בעל השררה?' });
+const rulerBad = buildKashfReadingByQuestionId(makeP9Board({ 7: '1112', 10: '2222' }), 'q-ruler-status', { question: 'מה מצב בעל השררה?' });
 assert(rulerBad.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'nahs', 'p257 ruler bad result is malefic');
 assert(rulerBad.overallPositive === false, 'p257 ruler malefic result is negative');
 
-const rulerMixed = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP9Board({ 7: '1111', 10: '2222' }), 'q-ruler-status', { question: 'מה מצב בעל השררה?' });
+const rulerMixed = buildKashfReadingByQuestionId(makeP9Board({ 7: '1111', 10: '2222' }), 'q-ruler-status', { question: 'מה מצב בעל השררה?' });
 assert(rulerMixed.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'mixed', 'p257 ruler mixed result stays mixed');
 assert(rulerMixed.primaryFormula?.result?.executorResult?.rulerCondition === null, 'p257 ruler mixed branch remains unresolved by this source rule');
 assert(rulerMixed.overallPositive === null, 'p257 ruler mixed branch does not invent positive or negative verdict');
@@ -1406,7 +1433,7 @@ assertRoute('q-lost-item', {
 });
 assert(canRunKashfMethod('lostItem.p202.returnH6H8') === true, 'p202 lost-item return method is explicitly runnable');
 
-const lostReturnYes = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP9Board({ 6: '2111', 8: '2121' }), 'q-lost-item', { question: 'האם האבדה תשוב?' });
+const lostReturnYes = buildKashfReadingByQuestionId(makeP9Board({ 6: '2111', 8: '2121' }), 'q-lost-item', { question: 'האם האבדה תשוב?' });
 assert(lostReturnYes.valid === true && lostReturnYes.canRunKashf === true, 'p202 lost-item positive fixture executes canonically');
 assert(lostReturnYes.canonicalExecution?.methodsExecuted?.length === 1, 'p202 lost-item executes exactly one method');
 assert(lostReturnYes.canonicalExecution?.methodsExecuted?.[0] === 'lostItem.p202.returnH6H8', 'p202 lost-item executes exact canonical method');
@@ -1422,13 +1449,13 @@ assert(lostReturnYes.altFormula === null, 'p202 does not aggregate lost-item alt
 assert(lostReturnYes.canonicalExecution?.topicBundleExecuted === false, 'p202 does not execute broad lost-animal/theft bundle');
 assert(lostReturnYes.dhamir === null, 'p202 does not auto-run Dhamir');
 
-const lostReturnMixedNo = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP9Board({ 6: '2212', 8: '2111' }), 'q-lost-item', { question: 'האם האבדה תשוב?' });
+const lostReturnMixedNo = buildKashfReadingByQuestionId(makeP9Board({ 6: '2212', 8: '2111' }), 'q-lost-item', { question: 'האם האבדה תשוב?' });
 assert(lostReturnMixedNo.primaryFormula?.result?.executorResult?.h6Classification?.saadNahs === 'mixed', 'p202 mixed-benefic tendency remains mixed');
 assert(lostReturnMixedNo.primaryFormula?.result?.executorResult?.h6Qualifies === false, 'p202 mixed figure is not promoted to explicit benefic+internal');
 assert(lostReturnMixedNo.primaryFormula?.result?.executorResult?.returns === false, 'p202 mixed H6 fails exact return condition');
 assert(lostReturnMixedNo.overallPositive === false, 'p202 source otherwise-no branch is negative');
 
-const lostReturnOutgoingNo = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP9Board({ 6: '2111', 8: '1122' }), 'q-lost-item', { question: 'האם האבדה תשוב?' });
+const lostReturnOutgoingNo = buildKashfReadingByQuestionId(makeP9Board({ 6: '2111', 8: '1122' }), 'q-lost-item', { question: 'האם האבדה תשוב?' });
 assert(lostReturnOutgoingNo.primaryFormula?.result?.executorResult?.h8Classification?.saadNahs === 'saad', 'p202 outgoing negative fixture remains benefic in quality');
 assert(lostReturnOutgoingNo.primaryFormula?.result?.executorResult?.h8Classification?.dakhalKharij === 'kharij', 'p202 outgoing negative fixture is explicitly external');
 assert(lostReturnOutgoingNo.primaryFormula?.result?.executorResult?.h8Qualifies === false, 'p202 benefic but outgoing H8 fails internal condition');
@@ -1444,7 +1471,7 @@ const lostAnimalRoute = assertRoute('q-lost-animal', {
   runtimeAllowed: true,
 });
 assert(lostAnimalRoute.aliasOf === 'q-lost-item', 'q-lost-animal remains an explicit alias of the same p202 return method');
-const lostAnimalReading = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP9Board({ 6: '2111', 8: '2121' }), 'q-lost-animal', { question: 'האם החיה האבודה תחזור?' });
+const lostAnimalReading = buildKashfReadingByQuestionId(makeP9Board({ 6: '2111', 8: '2121' }), 'q-lost-animal', { question: 'האם החיה האבודה תחזור?' });
 assert(lostAnimalReading.primaryFormula?.result?.executorResult?.returns === true, 'q-lost-animal alias reaches the same exact p202 executor');
 assert(lostAnimalReading.canonicalExecution?.methodsExecuted?.length === 1, 'q-lost-animal alias still executes one method only');
 
@@ -1460,7 +1487,7 @@ assertRoute('q-treasure', {
 });
 assert(canRunKashfMethod('hidden.p188.isStillThere') === true, 'p188 hidden-item method is explicitly runnable');
 
-const hiddenYes = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP9Board({
+const hiddenYes = buildKashfReadingByQuestionId(makeP9Board({
   1: '1122', 2: '1222', 4: '2111', 13: '2121', 14: '2211', 15: '1122',
 }), 'q-treasure', { question: 'האם הדבר הנסתר עדיין במקום?' });
 assert(hiddenYes.valid === true && hiddenYes.canRunKashf === true, 'p188 hidden positive fixture executes canonically');
@@ -1475,7 +1502,7 @@ assert(hiddenYes.canonicalExecution?.topicBundleExecuted === false, 'p188 hidden
 assert(hiddenYes.altFormula === null, 'p188 hidden does not execute direction/recast alternatives');
 assert(hiddenYes.dhamir === null, 'p188 hidden does not auto-run Dhamir');
 
-const hiddenNo = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP9Board({
+const hiddenNo = buildKashfReadingByQuestionId(makeP9Board({
   1: '1122', 2: '1222', 4: '1112', 13: '2121', 14: '2211', 15: '1122',
 }), 'q-treasure', { question: 'האם הדבר הנסתר עדיין במקום?' });
 assert(hiddenNo.primaryFormula?.result?.executorResult?.houseResults?.find((item) => item.houseNumber === 4)?.classification?.saadNahs === 'nahs', 'p188 negative fixture has H4 explicitly malefic');
@@ -1483,14 +1510,14 @@ assert(hiddenNo.primaryFormula?.result?.executorResult?.presentInPlace === false
 assert(hiddenNo.overallPositive === false, 'p188 source otherwise-not-there branch is negative');
 assert(hiddenNo.verdict?.text.includes('אינו במקום הנבדק'), 'p188 negative verdict says not in tested place');
 
-const hiddenMixedNo = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP9Board({
+const hiddenMixedNo = buildKashfReadingByQuestionId(makeP9Board({
   1: '1122', 2: '1222', 4: '2212', 13: '2121', 14: '2211', 15: '1122',
 }), 'q-treasure', { question: 'האם הדבר הנסתר עדיין במקום?' });
 assert(hiddenMixedNo.primaryFormula?.result?.executorResult?.houseResults?.find((item) => item.houseNumber === 4)?.classification?.saadNahs === 'mixed', 'p188 mixed figure remains mixed');
 assert(hiddenMixedNo.primaryFormula?.result?.executorResult?.presentInPlace === false, 'p188 mixed tendency is not promoted to benefic');
 
 // ── P12 illness recovery p196 H15 executor ----------------------------
-const illnessRecovers = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP9Board({ 15: '1122' }), 'q-illness-heal', { question: 'האם החולה יחלים?' });
+const illnessRecovers = buildKashfReadingByQuestionId(makeP9Board({ 15: '1122' }), 'q-illness-heal', { question: 'האם החולה יחלים?' });
 assert(illnessRecovers.valid === true, 'p196 benefic H15 executes canonically');
 assert(JSON.stringify(illnessRecovers.primaryFormula?.houses) === JSON.stringify([15]), 'p196 traces H15 only');
 assert(illnessRecovers.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'saad', 'p196 positive fixture is pure benefic');
@@ -1501,7 +1528,7 @@ assert(illnessRecovers.canonicalExecution?.methodsExecuted?.length === 1, 'p196 
 assert(illnessRecovers.canonicalExecution?.topicBundleExecuted === false, 'p196 does not execute broad illness bundle');
 assert(illnessRecovers.dhamir == null, 'p196 does not auto-run Dhamir');
 
-const illnessProlonged = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP9Board({ 15: '1212' }), 'q-illness-heal', { question: 'האם החולה יחלים?' });
+const illnessProlonged = buildKashfReadingByQuestionId(makeP9Board({ 15: '1212' }), 'q-illness-heal', { question: 'האם החולה יחלים?' });
 assert(illnessProlonged.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'nahs', 'p196 prolonged fixture is pure malefic');
 assert(illnessProlonged.primaryFormula?.result?.executorResult?.recoveryStatus === 'prolonged-illness', 'p196 malefic H15 means prolonged illness');
 assert(illnessProlonged.primaryFormula?.result?.executorResult?.recovers === null, 'p196 malefic H15 does not invent a categorical no-recovery verdict');
@@ -1510,7 +1537,7 @@ assert(illnessProlonged.verdict?.text?.includes('המחלה תתארך'), 'p196 
 assert(!illnessProlonged.verdict?.text?.includes('ימות'), 'p196 H15 malefic branch does not invent death');
 assert(!illnessProlonged.verdict?.text?.includes('לא יתרפא'), 'p196 H15 malefic branch does not invent permanent non-recovery');
 
-const illnessMixed = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP9Board({ 15: '1111' }), 'q-illness-heal', { question: 'האם החולה יחלים?' });
+const illnessMixed = buildKashfReadingByQuestionId(makeP9Board({ 15: '1111' }), 'q-illness-heal', { question: 'האם החולה יחלים?' });
 assert(illnessMixed.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'mixed', 'p196 mixed fixture stays mixed');
 assert(illnessMixed.primaryFormula?.result?.executorResult?.recoveryStatus === 'unresolved', 'p196 mixed branch remains unresolved');
 assert(illnessMixed.primaryFormula?.result?.executorResult?.recovers === null, 'p196 mixed branch does not invent recovery');
@@ -1588,7 +1615,7 @@ assert(clothingV57?.v57?.hebrewRule.includes('בחמישי ובאחד־עשר'),
 assert(clothingV57?.v57?.hebrewRule.includes('בעשירי צורה מזיקה'), 'p265 clothing knowledge preserves separate H10 royal-clothing clause');
 assert(clothingV57?.arabicVerification?.notes?.includes('צורה קבועה'), 'p265 verification records fixed/mutable translation boundary');
 
-const clothingGood = buildKashfReadingByQuestionIdForLegacyFixtureTests(
+const clothingGood = buildKashfReadingByQuestionId(
   makeP204Board({ 5: '1122', 10: '2211', 11: '2111' }),
   'q-clothing-lucky',
   { question: 'מה מזלי בלבוש?' }
@@ -1605,7 +1632,7 @@ assert(clothingGood.altFormula === null, 'p265 clothing does not aggregate alter
 assert(clothingGood.canonicalExecution?.topicBundleExecuted === false, 'p265 clothing does not execute broad generalReading bundle');
 assert(clothingGood.dhamir === null, 'p265 clothing does not auto-run Dhamir');
 
-const clothingBad = buildKashfReadingByQuestionIdForLegacyFixtureTests(
+const clothingBad = buildKashfReadingByQuestionId(
   makeP204Board({ 5: '1112', 10: '1122', 11: '1212' }),
   'q-clothing-lucky',
   { question: 'מה מזלי בלבוש?' }
@@ -1614,7 +1641,7 @@ assert(clothingBad.primaryFormula?.result?.executorResult?.clothingLuck === fals
 assert(clothingBad.primaryFormula?.result?.executorResult?.sourceOutcome === 'no-clothing-luck', 'p265 negative source branch is explicit');
 assert(clothingBad.overallPositive === false, 'p265 no-clothing-luck branch is negative');
 
-const clothingRoyal = buildKashfReadingByQuestionIdForLegacyFixtureTests(
+const clothingRoyal = buildKashfReadingByQuestionId(
   makeP204Board({ 5: '1122', 10: '1112', 11: '2111' }),
   'q-clothing-lucky',
   { question: 'מה מזלי בלבוש?' }
@@ -1623,7 +1650,7 @@ assert(clothingRoyal.primaryFormula?.result?.executorResult?.clothingLuck === tr
 assert(clothingRoyal.primaryFormula?.result?.executorResult?.royalClothingNoLuck === true, 'p265 malefic H10 triggers separate royal-clothing no-luck clause');
 assert(clothingRoyal.primaryFormula?.result?.executorResult?.royalClothingOutcome.includes('לבוש המלכים'), 'p265 royal-clothing qualifier preserves source wording');
 
-const clothingSplit = buildKashfReadingByQuestionIdForLegacyFixtureTests(
+const clothingSplit = buildKashfReadingByQuestionId(
   makeP204Board({ 5: '1122', 10: '2211', 11: '1112' }),
   'q-clothing-lucky',
   { question: 'מה מזלי בלבוש?' }
@@ -1632,7 +1659,7 @@ assert(clothingSplit.primaryFormula?.result?.executorResult?.clothingLuck === nu
 assert(clothingSplit.primaryFormula?.result?.executorResult?.sourceOutcome === 'unresolved', 'p265 split testimony does not invent partial luck');
 assert(clothingSplit.overallPositive === null, 'p265 split testimony is not collapsed into a verdict');
 
-const clothingMixed = buildKashfReadingByQuestionIdForLegacyFixtureTests(
+const clothingMixed = buildKashfReadingByQuestionId(
   makeP204Board({ 5: '1121', 10: '2211', 11: '2111' }),
   'q-clothing-lucky',
   { question: 'מה מזלי בלבוש?' }
@@ -1670,7 +1697,7 @@ assert(womanFavorBenefic.dhamir === null, 'p206 does not run Dhamir');
 assert(!womanFavorBenefic.verdict?.text?.includes('כימיה הדדית'), 'p206 does not invent mutual chemistry');
 
 const womanFavorMaleficBoard = makeP204Board({ 5: '1212', 7: '2222', 11: '2222' });
-const womanFavorMalefic = buildKashfReadingByQuestionIdForLegacyFixtureTests(womanFavorMaleficBoard, 'q-woman-grace', { question: 'האם האישה תמצא חן בעיני האיש?' });
+const womanFavorMalefic = buildKashfReadingByQuestionId(womanFavorMaleficBoard, 'q-woman-grace', { question: 'האם האישה תמצא חן בעיני האיש?' });
 assert(womanFavorMalefic.primaryFormula?.result?.executorResult?.finalPattern === '1212', 'p206 malefic fixture reaches pure malefic final');
 assert(womanFavorMalefic.primaryFormula?.result?.executorResult?.findsFavor === false, 'p206 pure malefic final means she does not find favor');
 assert(womanFavorMalefic.overallPositive === false, 'p206 malefic final exposes positive false');
@@ -1686,7 +1713,7 @@ const p206DesireMethod = getKashfMethod('desire.p206.querentWantsH7H11ThenH5');
 assert(p206DesireMethod?.executorStatus === 'ready' && p206DesireMethod?.runtimeAllowed === true, 'p206 querent-desire method is runnable');
 assert(canRunKashfMethod('desire.p206.querentWantsH7H11ThenH5') === true, 'p206 querent-desire canRunKashfMethod is true');
 
-const p206DesireBenefic = buildKashfReadingByMethodForLegacyFixtureTests(makeP204Board({ 5: '2211', 7: '2222', 11: '2222' }), 'desire.p206.querentWantsH7H11ThenH5', { question: 'האם השואל רוצה בדבר?' });
+const p206DesireBenefic = buildKashfReadingByMethod(makeP204Board({ 5: '2211', 7: '2222', 11: '2222' }), 'desire.p206.querentWantsH7H11ThenH5', { question: 'האם השואל רוצה בדבר?' });
 assert(p206DesireBenefic.valid === true, 'p206 querent-desire benefic fixture executes');
 assert(p206DesireBenefic.primaryFormula?.result?.executorResult?.firstDerivedPattern === '2222', 'p206 desire derives H7+H11 first');
 assert(p206DesireBenefic.primaryFormula?.result?.executorResult?.finalPattern === '2211', 'p206 desire then combines with H5');
@@ -1698,11 +1725,11 @@ assert(p206DesireBenefic.canonicalExecution?.methodsExecuted?.length === 1 && p2
 assert(p206DesireBenefic.dhamir === null && p206DesireBenefic.canonicalExecution?.topicBundleExecuted === false && p206DesireBenefic.canonicalExecution?.altFormulaExecuted === false, 'p206 desire runs no Dhamir/topic bundle/alternative');
 assert(!p206DesireBenefic.verdict?.text?.includes('תמצא חן'), 'p206 desire does not leak woman-favor semantics');
 
-const p206DesireMalefic = buildKashfReadingByMethodForLegacyFixtureTests(makeP204Board({ 5: '1212', 7: '2222', 11: '2222' }), 'desire.p206.querentWantsH7H11ThenH5');
+const p206DesireMalefic = buildKashfReadingByMethod(makeP204Board({ 5: '1212', 7: '2222', 11: '2222' }), 'desire.p206.querentWantsH7H11ThenH5');
 assert(p206DesireMalefic.primaryFormula?.result?.executorResult?.wantsMatter === false, 'p206 desire pure malefic means opposite / does not want matter');
 assert(p206DesireMalefic.overallPositive === false, 'p206 desire malefic is positive false');
 
-const p206DesireMixed = buildKashfReadingByMethodForLegacyFixtureTests(makeP204Board({ 5: '2222', 7: '2222', 11: '2222' }), 'desire.p206.querentWantsH7H11ThenH5');
+const p206DesireMixed = buildKashfReadingByMethod(makeP204Board({ 5: '2222', 7: '2222', 11: '2222' }), 'desire.p206.querentWantsH7H11ThenH5');
 assert(p206DesireMixed.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'mixed', 'p206 desire preserves mixed classification');
 assert(p206DesireMixed.primaryFormula?.result?.executorResult?.wantsMatter === null && p206DesireMixed.overallPositive === null, 'p206 desire mixed remains unresolved');
 
@@ -1711,7 +1738,7 @@ const p167HiddenMethod = getKashfMethod('spiritual.p167.hiddenActionAirRows46815
 assert(p167HiddenMethod?.runtimeAllowed === true && p167HiddenMethod?.executorStatus === 'ready', 'p167 hidden-action method is runnable');
 assert(canRunKashfMethod('spiritual.p167.hiddenActionAirRows46815') === true, 'p167 hidden-action canRunKashfMethod is true');
 
-const p167HiddenMalefic = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 4: '1111', 6: '2222', 8: '1111', 15: '2222' }), 'q-hidden-action', { question: 'האם יש פעולה מאחורי השואל?' });
+const p167HiddenMalefic = buildKashfReadingByQuestionId(makeP204Board({ 4: '1111', 6: '2222', 8: '1111', 15: '2222' }), 'q-hidden-action', { question: 'האם יש פעולה מאחורי השואל?' });
 assert(p167HiddenMalefic.valid === true && p167HiddenMalefic.canRunKashf === true, 'p167 hidden-action malefic fixture executes');
 assert(p167HiddenMalefic.primaryFormula?.result?.executorResult?.derivedPattern === '1212', 'p167 assembles only AIR rows H4,H6,H8,H15 in order');
 assert(p167HiddenMalefic.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'nahs', 'p167 malefic derived figure is classified as pure malefic');
@@ -1724,12 +1751,12 @@ assert(p167HiddenMalefic.canonicalExecution?.methodsExecuted?.length === 1 && p1
 assert(p167HiddenMalefic.dhamir === null && p167HiddenMalefic.canonicalExecution?.topicBundleExecuted === false && p167HiddenMalefic.canonicalExecution?.altFormulaExecuted === false, 'p167 runs no Dhamir/topic bundle/alternative');
 assert(p167HiddenMalefic.primaryFormula?.result?.executorResult?.diagnosisScope === 'hidden-action-only', 'p167 result is explicitly scoped to hidden action only');
 
-const p167HiddenBenefic = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 4: '2222', 6: '2222', 8: '1111', 15: '1111' }), 'q-hidden-action');
+const p167HiddenBenefic = buildKashfReadingByQuestionId(makeP204Board({ 4: '2222', 6: '2222', 8: '1112', 15: '1111' }), 'q-hidden-action');
 assert(p167HiddenBenefic.primaryFormula?.result?.executorResult?.derivedPattern === '2211', 'p167 benefic fixture derives 2211');
 assert(p167HiddenBenefic.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'saad', 'p167 benefic fixture is pure benefic');
 assert(p167HiddenBenefic.primaryFormula?.result?.executorResult?.hiddenAction === false && p167HiddenBenefic.overallPositive === false, 'p167 non-malefic result follows explicit otherwise-no branch');
 
-const p167HiddenMixed = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 4: '2222', 6: '2222', 8: '2222', 15: '2222' }), 'q-hidden-action');
+const p167HiddenMixed = buildKashfReadingByQuestionId(makeP204Board({ 4: '2222', 6: '2222', 8: '2222', 15: '2222' }), 'q-hidden-action');
 assert(p167HiddenMixed.primaryFormula?.result?.executorResult?.derivedPattern === '2222', 'p167 mixed fixture derives 2222');
 assert(p167HiddenMixed.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'mixed', 'p167 preserves mixed classification metadata');
 assert(p167HiddenMixed.primaryFormula?.result?.executorResult?.hiddenAction === false && p167HiddenMixed.overallPositive === false, 'p167 mixed still follows source explicit otherwise-no branch rather than being promoted to malefic');
@@ -1742,7 +1769,7 @@ assert(canRunKashfMethod('money.p179.sourceByIncomingHonorHouse') === true, 'p17
 const p179Route = resolveKashfRouteByQuestionId('q-money-source');
 assert(p179Route?.canRunKashf === true && p179Route?.kashfMethodId === 'money.p179.sourceByIncomingHonorHouse', 'q-money-source routes to the exact runnable p179 method');
 
-const p179H10 = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 2: '1222', 10: '2211' }), 'q-money-source', { question: 'מאיפה יגיע הכסף?' });
+const p179H10 = buildKashfReadingByQuestionId(makeP204Board({ 2: '1222', 10: '2211' }), 'q-money-source', { question: 'מאיפה יגיע הכסף?' });
 assert(p179H10.valid === true && p179H10.canRunKashf === true, 'p179 H10 fixture executes canonically');
 assert(p179H10.primaryFormula?.result?.executorResult?.beneficGateMet === true, 'p179 pure benefic H2 opens the source gate');
 assert(JSON.stringify(p179H10.primaryFormula?.result?.executorResult?.sourceHouseNumbers) === JSON.stringify([10]), 'p179 Incoming Honor in H10 gives H10 as the source house');
@@ -1753,21 +1780,21 @@ assert(p179H10.primaryFormula?.sourceText === getKashfV57Knowledge('money.p179.s
 assert(p179H10.canonicalExecution?.methodsExecuted?.length === 1 && p179H10.canonicalExecution.methodsExecuted[0] === 'money.p179.sourceByIncomingHonorHouse', 'p179 executes only its exact canonical method');
 assert(p179H10.dhamir === null && p179H10.canonicalExecution?.topicBundleExecuted === false && p179H10.canonicalExecution?.altFormulaExecuted === false, 'p179 runs no Dhamir/topic bundle/alternative');
 
-const p179Multiple = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 2: '1222', 3: '2211', 10: '2211' }), 'q-money-source');
+const p179Multiple = buildKashfReadingByQuestionId(makeP204Board({ 2: '1222', 3: '2211', 10: '2211' }), 'q-money-source');
 assert(JSON.stringify(p179Multiple.primaryFormula?.result?.executorResult?.sourceHouseNumbers) === JSON.stringify([3, 10]), 'p179 preserves multiple Incoming Honor source houses');
 assert(p179Multiple.primaryFormula?.result?.executorResult?.multipleSourceChannels === true, 'p179 multiple source channels are explicit and unranked');
 
-const p179MixedGate = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 2: '2222', 10: '2211' }), 'q-money-source');
+const p179MixedGate = buildKashfReadingByQuestionId(makeP204Board({ 2: '2222', 10: '2211' }), 'q-money-source');
 assert(p179MixedGate.primaryFormula?.result?.executorResult?.h2Classification?.saadNahs === 'mixed', 'p179 mixed H2 remains mixed');
 assert(p179MixedGate.primaryFormula?.result?.executorResult?.beneficGateMet === false, 'p179 mixed H2 does not get promoted to benefic gate');
 assert(p179MixedGate.primaryFormula?.result?.executorResult?.sourceResolved === false, 'p179 mixed gate leaves source unresolved even if Incoming Honor appears');
 
-const p179MoneyIncoming = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 2: '2121', 9: '2121', 10: '2211' }), 'q-money-source');
+const p179MoneyIncoming = buildKashfReadingByQuestionId(makeP204Board({ 2: '2121', 9: '2121', 10: '2211' }), 'q-money-source');
 assert(p179MoneyIncoming.primaryFormula?.result?.executorResult?.moneyIncomingInH2 === true, 'p179 detects Money Incoming in H2');
 assert(JSON.stringify(p179MoneyIncoming.primaryFormula?.result?.executorResult?.moneyIncomingJudgmentHouses) === JSON.stringify([2, 9]), 'p179 traces Money Incoming recurrences separately');
 assert(JSON.stringify(p179MoneyIncoming.primaryFormula?.result?.executorResult?.sourceHouseNumbers) === JSON.stringify([10]), 'p179 Money Incoming recurrence does not replace Incoming Honor source house');
 
-const p179WitnessOnly = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 2: '1222', 13: '2211' }), 'q-money-source');
+const p179WitnessOnly = buildKashfReadingByQuestionId(makeP204Board({ 2: '1222', 13: '2211' }), 'q-money-source');
 assert(JSON.stringify(p179WitnessOnly.primaryFormula?.result?.executorResult?.incomingHonorNonTopicalPositions) === JSON.stringify([13]), 'p179 traces Incoming Honor in witness positions');
 assert(p179WitnessOnly.primaryFormula?.result?.executorResult?.sourceResolved === false, 'p179 does not invent a financial channel from non-topical witness/judge positions');
 
@@ -1778,7 +1805,7 @@ assert(canRunKashfMethod('general.p174.h1h2h4h7h10h15') === true, 'p174 general-
 const p174GeneralRoute = resolveKashfRouteByQuestionId('q-general-state');
 assert(p174GeneralRoute?.canRunKashf === true && p174GeneralRoute?.kashfMethodId === 'general.p174.h1h2h4h7h10h15', 'q-general-state routes to the exact runnable p174 method');
 
-const p174GeneralReading = buildKashfReadingByQuestionIdForLegacyFixtureTests(
+const p174GeneralReading = buildKashfReadingByQuestionId(
   makeP204Board({ 1: '1222', 2: '1222', 4: '1222', 7: '1222', 10: '1222', 15: '1122' }),
   'q-general-state',
   { question: 'מה מצבי הכללי?' }
@@ -1808,34 +1835,34 @@ for (const [methodId, questionId] of [
   assert(route?.canRunKashf === true && route?.kashfMethodId === methodId, questionId + ' routes to its exact runnable method');
 }
 
-const p191Safety = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 1: '1222', 6: '1222', 8: '1222' }), 'q-child-survive');
+const p191Safety = buildKashfReadingByQuestionId(makeP204Board({ 1: '1222', 6: '1222', 8: '1222' }), 'q-child-survive');
 const p191SafetyExec = p191Safety.primaryFormula?.result?.executorResult;
 assert(p191SafetyExec?.sourceOutcome === 'safety' && p191SafetyExec?.positive === true, 'p191 pure-benefic H1 gives source safety testimony');
 assert(p191Safety.primaryFormula?.sourceText === getKashfV57Knowledge('pregnancy.p191.childSafetyH1H6H8')?.v57?.hebrewRule, 'p191 runtime sourceText comes from Hebrew v57');
-const p191Severe = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 1: '1222', 6: '1112', 8: '1112' }), 'q-child-survive');
+const p191Severe = buildKashfReadingByQuestionId(makeP204Board({ 1: '1222', 6: '1112', 8: '1112' }), 'q-child-survive');
 assert(p191Severe.primaryFormula?.result?.executorResult?.severeCondition === true, 'p191 H6+H8 pure malefic activates the severe source warning');
 assert(p191Severe.primaryFormula?.result?.executorResult?.positive === null, 'p191 severe warning is not converted into a certain death verdict');
-const p191Fear = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 1: '1112', 6: '1222', 8: '1222' }), 'q-child-survive');
+const p191Fear = buildKashfReadingByQuestionId(makeP204Board({ 1: '1112', 6: '1222', 8: '1222' }), 'q-child-survive');
 assert(p191Fear.primaryFormula?.result?.executorResult?.sourceOutcome === 'fear', 'p191 pure-malefic H1 gives fear/concern branch');
 
-const p264Stages = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 11: '2211', 9: '1222', 7: '2122' }), 'q-lifespan-stages');
+const p264Stages = buildKashfReadingByQuestionId(makeP204Board({ 11: '2211', 9: '1222', 7: '2122' }), 'q-lifespan-stages');
 const p264Exec = p264Stages.primaryFormula?.result?.executorResult;
 assert(JSON.stringify(p264Exec?.housesUsed) === JSON.stringify([11,9,7]), 'p264 uses H11/H9/H7 in source order');
 assert(p264Exec?.stages?.length === 3 && p264Exec.stages.every((stage) => stage.planetResolved === true), 'p264 resolves verified planetary attribution for each fixture stage');
 assert(p264Exec?.positive === null && p264Stages.overallPositive === null, 'p264 remains descriptive and does not invent a lifespan yes/no score');
 assert(p264Stages.primaryFormula?.sourceText === getKashfV57Knowledge('lifespan.p264.stagesH11H9H7')?.v57?.hebrewRule, 'p264 runtime sourceText comes from Hebrew v57');
 
-const p244Return = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 1: '2211', 2: '2211', 9: '2211' }), 'q-traveler-return');
+const p244Return = buildKashfReadingByQuestionId(makeP204Board({ 1: '2211', 2: '2211', 9: '2211' }), 'q-traveler-return');
 const p244Exec = p244Return.primaryFormula?.result?.executorResult;
 assert(p244Exec?.allBeneficIncoming === true && p244Exec?.sourceOutcome === 'good-return' && p244Exec?.positive === true, 'p244 all pure-benefic internal houses support good return');
-const p244Hard = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 1: '1112', 2: '1112', 9: '1112' }), 'q-traveler-return');
+const p244Hard = buildKashfReadingByQuestionId(makeP204Board({ 1: '1112', 2: '1112', 9: '1112' }), 'q-traveler-return');
 assert(p244Hard.primaryFormula?.result?.executorResult?.sourceOutcome === 'hardship-possible-no-return', 'p244 all pure-malefic houses expose hardship/possible non-return branch');
 assert(p244Hard.primaryFormula?.result?.executorResult?.positive === null, 'p244 hardship branch is not converted into certain no-return');
 assert(p244Return.primaryFormula?.sourceText === getKashfV57Knowledge('travel.p244.returnH1H2H9')?.v57?.hebrewRule, 'p244 runtime sourceText comes from Hebrew v57');
 
-const p210Marriage = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 1: '1111', 5: '2111', 7: '1222', 15: '1122' }), 'q-marriage-fit');
+const p210Marriage = buildKashfReadingByQuestionId(makeP204Board({ 1: '1111', 5: '1122', 7: '1222', 15: '1122' }), 'q-marriage-fit');
 const p210Exec = p210Marriage.primaryFormula?.result?.executorResult;
-assert(p210Exec?.finalPattern === '1222', 'p210 H1+H5 fixture derives expected final figure');
+assert(p210Exec?.finalPattern === '2211', 'p210 H1+H5 fixture derives expected final figure');
 assert(p210Exec?.finalOutcome === 'good' && p210Exec?.positive === true, 'p210 benefic H1+H5 result gives good final judgment');
 assert(p210Exec?.judgeGood === true, 'p210 benefic judge exposes the explicit good-outcome testimony');
 assert(p210Marriage.primaryFormula?.sourceText === getKashfV57Knowledge('marriage.p210.generalMarriageH1H2H7H8H10Judge')?.v57?.hebrewRule, 'p210 runtime sourceText comes from Hebrew v57');
@@ -1859,40 +1886,40 @@ for (const [methodId, questionId] of [
   assert(route?.canRunKashf === true && route?.kashfMethodId === methodId, questionId + ' routes to its exact runnable method');
 }
 
-const p194Child = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 6: '1112', 8: '1222' }), 'q-child-health');
+const p194Child = buildKashfReadingByQuestionId(makeP204Board({ 6: '1112', 8: '1222' }), 'q-child-health');
 const p194Exec = p194Child.primaryFormula?.result?.executorResult;
 assert(p194Exec?.childhoodPains === true, 'p194 pure-malefic H6 exposes childhood-pains warning');
 assert(p194Exec?.longTermOutcome === 'improves-with-age', 'p194 pure-benefic H8 exposes improvement-with-age branch');
 assert(p194Exec?.positive === null && p194Child.overallPositive === null, 'p194 keeps H6/H8 as separate descriptive witnesses');
 assert(p194Child.primaryFormula?.sourceText === getKashfV57Knowledge('child.p194.healthTrajectoryH6H8')?.v57?.hebrewRule, 'p194 runtime sourceText comes from Hebrew v57');
-const p194LowHope = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 6: '1222', 8: '1112' }), 'q-child-health');
+const p194LowHope = buildKashfReadingByQuestionId(makeP204Board({ 6: '1222', 8: '1112' }), 'q-child-health');
 assert(p194LowHope.primaryFormula?.result?.executorResult?.longTermOutcome === 'low-hope', 'p194 pure-malefic H8 exposes low-hope branch');
 
-const p182Jamaa = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 3: '2222' }), 'q-sibling-eldest');
+const p182Jamaa = buildKashfReadingByQuestionId(makeP204Board({ 3: '2222' }), 'q-sibling-eldest');
 assert(p182Jamaa.primaryFormula?.result?.executorResult?.senioritySignal === 'older-paternal-emphasis', 'p182 Jamaa in H3 indicates elders with paternal emphasis');
-const p182Nakis = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 3: '2221' }), 'q-sibling-eldest');
+const p182Nakis = buildKashfReadingByQuestionId(makeP204Board({ 3: '2221' }), 'q-sibling-eldest');
 assert(p182Nakis.primaryFormula?.result?.executorResult?.senioritySignal === 'older', 'p182 Nakis in H3 indicates elders');
-const p182Other = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 3: '1222' }), 'q-sibling-eldest');
+const p182Other = buildKashfReadingByQuestionId(makeP204Board({ 3: '1222' }), 'q-sibling-eldest');
 assert(p182Other.primaryFormula?.result?.executorResult?.senioritySignal === 'unresolved', 'p182 unlisted H3 figure is not inverted into younger');
 assert(p182Jamaa.primaryFormula?.sourceText === getKashfV57Knowledge('siblings.p182.seniority')?.v57?.hebrewRule, 'p182 runtime sourceText comes from Hebrew v57');
 
-const p211Stable = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 7: '2211' }), 'q-divorce');
+const p211Stable = buildKashfReadingByQuestionId(makeP204Board({ 7: '2211' }), 'q-divorce');
 assert(p211Stable.primaryFormula?.result?.executorResult?.sourceOutcome === 'stable', 'p211 pure-benefic internal H7 supports continuation');
-const p211Quarrel = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 7: '2221' }), 'q-divorce');
+const p211Quarrel = buildKashfReadingByQuestionId(makeP204Board({ 7: '2221' }), 'q-divorce');
 assert(p211Quarrel.primaryFormula?.result?.executorResult?.sourceOutcome === 'stable-with-quarrel', 'p211 malefic internal H7 gives quarrel but continuity');
-const p211PossibleSeparation = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 7: '1222' }), 'q-divorce');
+const p211PossibleSeparation = buildKashfReadingByQuestionId(makeP204Board({ 7: '1222' }), 'q-divorce');
 assert(p211PossibleSeparation.primaryFormula?.result?.executorResult?.sourceOutcome === 'good-but-separation-possible', 'p211 benefic external H7 gives good marriage with possible separation');
-const p211Breakdown = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 7: '1112' }), 'q-divorce');
+const p211Breakdown = buildKashfReadingByQuestionId(makeP204Board({ 7: '1112' }), 'q-divorce');
 assert(p211Breakdown.primaryFormula?.result?.executorResult?.sourceOutcome === 'breakdown-if-existing', 'p211 malefic external H7 gives source breakdown branch');
 assert(p211Stable.primaryFormula?.result?.executorResult?.positive === null && p211Stable.overallPositive === null, 'p211 does not reduce the source matrix to a forced yes/no');
 assert(p211Stable.primaryFormula?.sourceText === getKashfV57Knowledge('marriage.p211.dissolutionH7StateMatrix')?.v57?.hebrewRule, 'p211 runtime sourceText comes from Hebrew v57');
 
-const p249Return = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 1: '2211', 4: '2211', 7: '2211', 10: '2211', 15: '2211' }), 'q-missing-return');
+const p249Return = buildKashfReadingByQuestionId(makeP204Board({ 1: '2211', 4: '2211', 7: '2211', 10: '2211', 15: '2211' }), 'q-missing-return');
 const p249Exec = p249Return.primaryFormula?.result?.executorResult;
 assert(p249Exec?.allAnglesSupportReturn === true && p249Exec?.judgeSupportsReturn === true, 'p249 fixture satisfies angle and judge return testimony');
 assert(p249Exec?.returnIndicatedForMale === true && p249Exec?.sourceOutcome === 'male-return-indicated', 'p249 exposes source-scoped male-return sign');
 assert(p249Exec?.positive === null && p249Return.overallPositive === null, 'p249 does not generalize the male clause into a universal yes/no');
-const p249Incomplete = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 1: '1222', 4: '2211', 7: '2211', 10: '2211', 15: '2211' }), 'q-missing-return');
+const p249Incomplete = buildKashfReadingByQuestionId(makeP204Board({ 1: '1222', 4: '2211', 7: '2211', 10: '2211', 15: '2211' }), 'q-missing-return');
 assert(p249Incomplete.primaryFormula?.result?.executorResult?.sourceOutcome === 'unresolved', 'p249 incomplete positive condition is not inverted into non-return');
 assert(p249Return.primaryFormula?.sourceText === getKashfV57Knowledge('missing.p249.returnAnglesJudge')?.v57?.hebrewRule, 'p249 runtime sourceText comes from Hebrew v57');
 
@@ -1914,37 +1941,37 @@ for (const [methodId, questionId] of [
   assert(route?.canRunKashf === true && route?.kashfMethodId === methodId, questionId + ' routes to its exact runnable method');
 }
 
-const p191Ease = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 1: '1222', 5: '1122', 15: '2211' }), 'q-birth-ease');
+const p191Ease = buildKashfReadingByQuestionId(makeP204Board({ 1: '1222', 5: '1122', 15: '2211' }), 'q-birth-ease');
 const p191EaseExec = p191Ease.primaryFormula?.result?.executorResult;
 assert(p191EaseExec?.easeSign === true && p191EaseExec?.sourceOutcome === 'easy' && p191EaseExec?.positive === true, 'p191 masculine H1+H5 gives easy-delivery source sign');
-const p191MutableEase = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 1: '1121', 5: '1121', 15: '2211' }), 'q-birth-ease');
+const p191MutableEase = buildKashfReadingByQuestionId(makeP204Board({ 1: '1121', 5: '1121', 15: '2211' }), 'q-birth-ease');
 assert(p191MutableEase.primaryFormula?.result?.executorResult?.bothMutable === true, 'p191 mutable H1+H5 records the source strengthening clause');
-const p191Difficulty = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 1: '2211', 5: '2212', 15: '2211' }), 'q-birth-ease');
+const p191Difficulty = buildKashfReadingByQuestionId(makeP204Board({ 1: '2211', 5: '2212', 15: '2211' }), 'q-birth-ease');
 assert(p191Difficulty.primaryFormula?.result?.executorResult?.difficultySign === true && p191Difficulty.primaryFormula?.result?.executorResult?.sourceOutcome === 'difficult', 'p191 fixed H5 gives difficulty source sign');
-const p191Conflict = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 1: '1222', 5: '2122', 15: '2211' }), 'q-birth-ease');
+const p191Conflict = buildKashfReadingByQuestionId(makeP204Board({ 1: '2122', 5: '2122', 15: '2211' }), 'q-birth-ease');
 assert(p191Conflict.primaryFormula?.result?.executorResult?.sourceOutcome === 'conflicting-source-signs', 'p191 does not silently rank simultaneous ease/difficulty signs');
 assert(p191Ease.primaryFormula?.sourceText === getKashfV57Knowledge('pregnancy.p191.deliveryDifficultyH1H5H15')?.v57?.hebrewRule, 'p191 delivery runtime sourceText comes from Hebrew v57');
 
-const p180Expanded = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 1: '1222', 10: '2111' }), 'q-livelihood');
+const p180Expanded = buildKashfReadingByQuestionId(makeP204Board({ 1: '1222', 10: '2111' }), 'q-livelihood');
 const p180ExpandedExec = p180Expanded.primaryFormula?.result?.executorResult;
 assert(p180ExpandedExec?.resultPattern === '1222', 'p180 inversion 2111 -> 1222 is exact');
 assert(JSON.stringify(p180ExpandedExec?.anglePlacements) === JSON.stringify([1]), 'p180 finds derived figure in H1 angle');
 assert(p180ExpandedExec?.sourceOutcome === 'expanded-livelihood' && p180ExpandedExec?.positive === true, 'p180 pure-benefic derived figure in angle expands livelihood');
-const p180Cadent = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 3: '1222', 10: '2111' }), 'q-livelihood');
+const p180Cadent = buildKashfReadingByQuestionId(makeP204Board({ 3: '1222', 10: '2111' }), 'q-livelihood');
 assert(p180Cadent.primaryFormula?.result?.executorResult?.sourceOutcome === 'unfavorable-livelihood', 'p180 derived figure in cadent house gives unfavorable branch');
-const p180Conflict = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 1: '1222', 3: '1222', 10: '2111' }), 'q-livelihood');
+const p180Conflict = buildKashfReadingByQuestionId(makeP204Board({ 1: '1222', 3: '1222', 10: '2111' }), 'q-livelihood');
 assert(p180Conflict.primaryFormula?.result?.executorResult?.sourceOutcome === 'conflicting-placement', 'p180 angle+cadent recurrence remains unresolved instead of inventing priority');
 assert(p180Expanded.primaryFormula?.sourceText === getKashfV57Knowledge('money.p180.livelihoodH10Invert')?.v57?.hebrewRule, 'p180 livelihood runtime sourceText comes from Hebrew v57');
 
-const p250Alive = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 1: '2211', 4: '2211', 9: '2211', 15: '2211' }), 'q-missing-alive');
+const p250Alive = buildKashfReadingByQuestionId(makeP204Board({ 1: '2211', 4: '2211', 9: '2211', 15: '2211' }), 'q-missing-alive');
 const p250AliveExec = p250Alive.primaryFormula?.result?.executorResult;
 assert(p250AliveExec?.aliveIndicated === true && p250AliveExec?.sourceOutcome === 'alive-indicated', 'pp248-249 four pure-benefic life houses expose explicit alive sign');
-const p250Severe = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 6: '2222', 7: '2222', 8: '2222', 15: '2222' }), 'q-missing-alive');
+const p250Severe = buildKashfReadingByQuestionId(makeP204Board({ 6: '2222', 7: '2222', 8: '2222', 15: '2222' }), 'q-missing-alive');
 assert(p250Severe.primaryFormula?.result?.executorResult?.severeDeathTestimony === true && p250Severe.primaryFormula?.result?.executorResult?.sourceOutcome === 'severe-death-testimony', 'pp248-249 exact five-figure list exposes the severe source testimony');
 assert(p250Severe.primaryFormula?.result?.executorResult?.positive === null, 'severe missing-person testimony is not converted to a generic certain-death boolean');
-const p248NeighborExcluded = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 6: '2221', 7: '2221', 8: '2221', 15: '2222' }), 'q-missing-alive');
+const p248NeighborExcluded = buildKashfReadingByQuestionId(makeP204Board({ 6: '2221', 7: '2221', 8: '2221', 15: '2222' }), 'q-missing-alive');
 assert(p248NeighborExcluded.primaryFormula?.result?.executorResult?.severeDeathTestimony === false, 'p248-249 excludes Ankis from the five-figure death list');
-const p250Unresolved = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 1: '1222', 4: '1112', 6: '1222', 7: '1222', 8: '1222', 9: '1222', 15: '2112' }), 'q-missing-alive');
+const p250Unresolved = buildKashfReadingByQuestionId(makeP204Board({ 1: '1222', 4: '1112', 6: '1222', 7: '1222', 8: '1222', 9: '1222', 15: '2112' }), 'q-missing-alive');
 assert(p250Unresolved.primaryFormula?.result?.executorResult?.sourceOutcome === 'unresolved', 'incomplete missing-person conditions are not inverted into an unsourced verdict');
 assert(p250Alive.primaryFormula?.sourceText === getKashfV57Knowledge('missing.p248-249.lifeH1H4H9Outcome')?.v57?.hebrewRule, 'pp248-249 missing-life runtime sourceText comes from Hebrew v57');
 
@@ -1984,7 +2011,7 @@ assert(JSON.stringify(p181Result?.recastMotherPatterns) === JSON.stringify(['212
 assert(p181Result?.recastConditionResults?.every((item) => item.strictlyInternal) === true, 'p181 requires all recast angles plus H2 to be strictly internal');
 assert(p181Positive.primaryFormula?.sourceText === getKashfV57Knowledge('money.p181.recast25811')?.v57?.hebrewRule, 'p181 runtime sourceText comes from Hebrew v57');
 
-const p266Positive = buildKashfReadingByQuestionIdForLegacyFixtureTests(
+const p266Positive = buildKashfReadingByQuestionId(
   makeP204Board({ 1: '2211', 10: '2211', 16: '1122' }),
   'q-career-return'
 );
@@ -1992,9 +2019,9 @@ const p266PositiveResult = p266Positive.primaryFormula?.result?.executorResult;
 assert(p266PositiveResult?.sourceOutcome === 'returns', 'p266 positive source condition yields return');
 assert(p266PositiveResult?.strongRecurrenceHouses?.includes(10), 'p266 requires H1 figure recurrence in H10/another strong house');
 assert(p266PositiveResult?.outcomeHouse === 16 && p266PositiveResult?.outcomeSupportsReturn === true, 'p266 uses H16 as al-aqiba/outcome testimony');
-const p266Negative = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 1: '1112', 16: '1122' }), 'q-career-return');
+const p266Negative = buildKashfReadingByQuestionId(makeP204Board({ 1: '1112', 16: '1122' }), 'q-career-return');
 assert(p266Negative.primaryFormula?.result?.executorResult?.sourceOutcome === 'does-not-return', 'p266 pure-malefic H1 activates the explicit opposite branch');
-const p266Unresolved = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 1: '2211', 16: '1122' }), 'q-career-return');
+const p266Unresolved = buildKashfReadingByQuestionId(makeP204Board({ 1: '2211', 16: '1122' }), 'q-career-return');
 assert(p266Unresolved.primaryFormula?.result?.executorResult?.sourceOutcome === 'unresolved', 'p266 benefic incoming H1 without a strong-house recurrence is not over-read as a return');
 
 for (const reading of [p181Positive, p266Positive, p266Negative, p266Unresolved]) {
@@ -2004,10 +2031,10 @@ for (const reading of [p181Positive, p266Positive, p266Negative, p266Unresolved]
 
 
 // ── Batch 12: p211 complete H7 marriage matrix ---------------------------
-const p211FixedBenefic = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 7: '2212' }), 'q-divorce');
-const p211FixedMalefic = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 7: '2222' }), 'q-divorce');
-const p211MutableBenefic = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 7: '1121' }), 'q-divorce');
-const p211MutableMalefic = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeP204Board({ 7: '1111' }), 'q-divorce');
+const p211FixedBenefic = buildKashfReadingByQuestionId(makeP204Board({ 7: '2212' }), 'q-divorce');
+const p211FixedMalefic = buildKashfReadingByQuestionId(makeP204Board({ 7: '2222' }), 'q-divorce');
+const p211MutableBenefic = buildKashfReadingByQuestionId(makeP204Board({ 7: '1121' }), 'q-divorce');
+const p211MutableMalefic = buildKashfReadingByQuestionId(makeP204Board({ 7: '1111' }), 'q-divorce');
 
 assert(p211FixedBenefic.primaryFormula?.result?.executorResult?.sourceOutcome === 'fixed-benefic-repair', 'p211 fixed mixed-benefic H7 reaches the source repair branch');
 assert(p211FixedBenefic.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'mixed', 'p211 fixed-benefic fixture remains canonically mixed');
