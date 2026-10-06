@@ -134,6 +134,20 @@ window.QUESTION_BANK = [
     clientFields: [F.matter],
   },
   {
+    id: 'q-need-move-p168',
+    category: 'general', houseId: 5, topicId: 'generalReading', kashfTopicId: 'generalReading',
+    label: 'האם עליי לנוע כדי להשיג את הצורך?',
+    desc: 'כלל נפרד לפי כשף עמ׳ 168 (בתים 5, 9 ו-14; הכרעה לפי הרוב כשיש עדות מעורבת). שונה מדין עמ׳ 169 (בית 1) ומדין עמ׳ 267 (בית 11)',
+    clientFields: [F.matter],
+  },
+  {
+    id: 'q-request-ease-p168',
+    category: 'general', houseId: 5, topicId: 'generalReading', kashfTopicId: 'generalReading',
+    label: 'באיזו קלות תיענה הבקשה?',
+    desc: 'כלל נפרד לפי כשף עמ׳ 168 (בתים 5 ו-7, שניהם מיטיבים או שניהם מזיקים בלבד). שני הענפים מורים שהבקשה תיענה, בהבדל דרגת הקלות. שונה מדין עמ׳ 169 (בית 1) ומדין עמ׳ 267 (בית 11)',
+    clientFields: [F.matter],
+  },
+  {
     id: 'q-hope-p174',
     category: 'general', houseId: 11, topicId: 'completion', kashfTopicId: 'friendsHope',
     label: 'האם תקווה מסוימת תתגשם?',
@@ -751,6 +765,13 @@ window.QUESTION_BANK = [
     category: 'conflict', houseId: 7, topicId: 'disputes', kashfTopicId: 'disputes',
     label: 'מי גובר בסכסוך לפי בית ראשון?',
     desc: 'סימן ההתגברות לפי הבית הראשון בלבד; אין כאן שקלול של שאר סימני המחלוקת',
+    clientFields: [F.opponent, F.disputeIssue, F.disputeStage],
+  },
+  {
+    id: 'q-dispute-h2h8',
+    category: 'conflict', houseId: 2, topicId: 'disputes', kashfTopicId: 'disputes',
+    label: 'מי גובר בסכסוך לפי בתים שני ושמיני?',
+    desc: 'דין עמ׳ 212 בלבד: בית 2 מיטיב — סימן שהמבקש זוכה; בית 8 מיטיב — סימן שהמבוקש גובר. שני הסימנים נפרדים מבית ראשון ויכולים להתקיים יחד ללא הכרעה ביניהם',
     clientFields: [F.opponent, F.disputeIssue, F.disputeStage],
   },
   {

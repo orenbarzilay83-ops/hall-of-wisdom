@@ -90,6 +90,9 @@ const P196_DURATION_RISK_METHOD = 'illness.p196.h1RecurrenceDurationRisk';
 const P196_SENSORY_SIGNS_METHOD = 'illness.p196.sensorySignsH6H8';
 const P192_MATERNAL_SAFETY_METHOD = 'pregnancy.p192.maternalSafetyH6H8H12';
 const P194_CHILD_WELLBEING_METHOD = 'child.p194.wellbeingH5H16';
+const P212_DISPUTE_H2H8_METHOD = 'dispute.p212.winnerH2H8Sign';
+const P168_NEED_MOVE_METHOD = 'need.p168.moveToObtainH5H9H14';
+const P168_REQUEST_EASE_METHOD = 'request.p168.answeredEaseH5H7';
 
 function freezeArray(values = []) {
   return Object.freeze([...(Array.isArray(values) ? values : [])]);
@@ -1845,6 +1848,84 @@ function p194ChildWellbeingPolicy() {
   });
 }
 
+function p212DisputeH2H8Policy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-12',
+    goldenCaseIds: freezeArray(['PV-BF12-P212-H2H8-PETITIONER', 'PV-BF12-P212-H2H8-RESPONDENT', 'PV-BF12-P212-H2H8-CONFLICT', 'PV-BF12-P212-H2H8-NONE']),
+    policyId: 'p212-dispute-winner-h2h8-v1',
+    questionScopeHebrew: 'סימן המנצח בסכסוך לפי בתים 2 ו-8, עמ׳ 212 — נפרד מסימן בית 1',
+    decisiveRuleHebrew: 'בית 2 מיטיב => סימן שהמבקש זוכה במבוקש. בית 8 מיטיב => סימן שהמבוקש גובר. שני הסימנים עצמאיים ועלולים להתנגש; כשמתנגשים, אין הכרעה בין השניים. מזיק אינו נותן דין הפוך.',
+    oneWayBranches: freezeArray([
+      'בית 2 מיטיב => סימן שהמבקש זוכה במבוקש',
+      'בית 8 מיטיב => סימן שהמבוקש גובר על המבקש',
+    ]),
+    forbiddenInversions: freezeArray([
+      'בית 2 או 8 מזיק אינו נותן דין הפוך.',
+      'התנגשות בין שני הסימנים אינה מוכרעת מן הדעת לטובת אחד מהם.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'dispute.p212.winnerH1 — סימן בית 1 הוא דין נפרד ועצמאי.',
+      'dispute.p213.winnerStrengthUnresolved — השוואת החוזק אינה סגורה ואינה מצטרפת.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'הכרעה סופית וחד-משמעית בין המבקש למבוקש כשהסימנים מתנגשים',
+    ]),
+  });
+}
+
+function p168NeedMovePolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-12',
+    goldenCaseIds: freezeArray(['PV-BF12-P168-MOVE-ALLGOOD', 'PV-BF12-P168-MOVE-ALLBAD', 'PV-BF12-P168-MOVE-MAJORITY', 'PV-BF12-P168-MOVE-TIE']),
+    policyId: 'p168-need-move-h5h9h14-v1',
+    questionScopeHebrew: 'האם לנוע כדי להשיג צורך, לפי בתים 5, 9 ו-14, עמ׳ 168',
+    decisiveRuleHebrew: 'שלושת הבתים מיטיבים => נכון לנוע. שלושתם מזיקים => אין זה נכון. עדות מעורבת => הכרעה לפי הרוב בין הבתים המיטיבים/מזיקים הטהורים בלבד; בית ממוזג אינו נמנה, ואם זה משאיר שוויון — אין הכרעה.',
+    oneWayBranches: freezeArray([
+      'H5+H9+H14 כולם מיטיבים => נכון לנוע',
+      'H5+H9+H14 כולם מזיקים => אין זה נכון לנוע',
+      'עדות מעורבת עם רוב ברור => הכרעה לפי הרוב',
+    ]),
+    forbiddenInversions: freezeArray([
+      'אין להמציא שובר-שוויון כאשר הרוב שווה.',
+      'בית שצורתו ממוזגת אינו נמנה בהכרעת הרוב.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'need.p169.fulfillmentH1Fortune — האם הצורך עצמו ייפתר הוא דין נפרד (בית 1, עמ׳ 169).',
+      'hope.p267.fulfillment — דין נפרד (בית 11).',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'הבטחה שהצורך עצמו יושג כתוצאה מן הנסיעה',
+    ]),
+  });
+}
+
+function p168RequestEasePolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-12',
+    goldenCaseIds: freezeArray(['PV-BF12-P168-EASE-EASY', 'PV-BF12-P168-EASE-HARD', 'PV-BF12-P168-EASE-NONE']),
+    policyId: 'p168-request-answered-ease-h5h7-v1',
+    questionScopeHebrew: 'קלות מענה הבקשה לפי בתים 5 ו-7, עמ׳ 168',
+    decisiveRuleHebrew: 'שני הבתים מיטיבים => הבקשה תיענה בנחת. שניהם מזיקים => הבקשה תיענה אך רק בקושי. שני הענפים מורים שהבקשה תיענה; אין כאן ענף של אי-מענה. כל צירוף אחר אינו מוכרע.',
+    oneWayBranches: freezeArray([
+      'H5+H7 שניהם מיטיבים => הבקשה תיענה בנחת',
+      'H5+H7 שניהם מזיקים => הבקשה תיענה בקושי',
+    ]),
+    forbiddenInversions: freezeArray([
+      'אין להפוך צירוף שאינו שני הענפים הטהורים לפסק "לא תיענה".',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'need.p169.fulfillmentH1Fortune — דין נפרד (בית 1, עמ׳ 169).',
+      'hope.p267.fulfillment — דין נפרד (בית 11).',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'קביעה שהבקשה לא תיענה בכלל',
+    ]),
+  });
+}
+
 function p248249MissingLifePolicy() {
   return Object.freeze({
     certificationStatus: 'certified',
@@ -2028,6 +2109,9 @@ const METHOD_POLICIES = Object.freeze({
   [P196_SENSORY_SIGNS_METHOD]: p196SensorySignsPolicy(),
   [P192_MATERNAL_SAFETY_METHOD]: p192MaternalSafetyPolicy(),
   [P194_CHILD_WELLBEING_METHOD]: p194ChildWellbeingPolicy(),
+  [P212_DISPUTE_H2H8_METHOD]: p212DisputeH2H8Policy(),
+  [P168_NEED_MOVE_METHOD]: p168NeedMovePolicy(),
+  [P168_REQUEST_EASE_METHOD]: p168RequestEasePolicy(),
 });
 
 export const KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS = Object.freeze(

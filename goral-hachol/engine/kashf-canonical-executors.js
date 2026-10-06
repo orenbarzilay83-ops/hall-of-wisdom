@@ -272,11 +272,11 @@ function computePregnancyMaternalSafetyP192(chart) {
   const positive = allBenefic ? true : null;
 
   const outputHebrew = allBenefic
-    ? 'בתים 6, 8 ו-12 כולם מיטיבים. לפי כשף עמ׳ 192: היולדת ניצלת/בטוחה.'
-    : 'התנאי המפורש בכשף עמ׳ 192 (בתים 6, 8 ו-12 כולם מיטיבים) אינו מתקיים במלואו כאן. המקור אינו נותן דין הפוך לביטחון היולדת כאשר התנאי החיובי לא מתקיים במלואו; אין להכריע "אינה בטוחה" מכלל זה.';
+    ? 'בתים 6, 8 ו-12 כולם מיטיבים — סימן לפי כשף עמ׳ 192 שהיולדת ניצלת/בטוחה. זהו סימן מסורתי-מקורי בלבד, לא קביעה רפואית ולא הבטחת בטיחות בפועל.'
+    : 'התנאי המפורש בכשף עמ׳ 192 (בתים 6, 8 ו-12 כולם מיטיבים) אינו מתקיים במלואו כאן, ולכן הסימן אינו עולה. המקור אינו נותן דין הפוך לביטחון היולדת כאשר התנאי החיובי לא מתקיים במלואו; אין להכריע "אינה בטוחה" מכלל זה, וזה אינו קביעה רפואית.';
 
   return {
-    sourceRef: 'כשף אל-אסראר עמ׳ 192',
+    sourceRef: 'כשף אל-אסראר עמ׳ מודפס 192 (PDF 194); v57 kashf-v57-draft.html id="p192"',
     sourceText: 'אחר כך התבונן בשישי, בשמיני ובשנים־עשר. אם הם מיטיבים, היולדת ניצלת.',
     housesUsed: houseNumbers,
     houseResults: rows,
@@ -593,6 +593,137 @@ function computeNeedFulfillmentP169(chart) {
     housesUsed: [1],
     h1Pattern, h1FigureHebrew, fortune, outcome,
     positive,
+    outputHebrew,
+  };
+}
+
+// Kashf v57 p168 (closed sub-rule, opened 2026-10-06), verified against
+// kashf-v57-draft.html (id="p168"): "כלל מעשי: אם רצית לדעת האם עליו לנוע
+// כדי להשיג צורך מסוים, התבונן בבית החמישי, התשיעי והארבעה־עשר. אם נמצאו
+// בהם צורות מיטיבות — הדבר נכון; ואם נמצאו צורות מזיקות — אין הדבר נכון.
+// ואם מצאת בהן מיטיב ומזיק יחד, הכרֵע לפי הרוב." (Practical rule: if you
+// want to know whether he must move/travel to obtain a certain need, look
+// at houses 5, 9 and 14. If benefic figures are found there -- the matter
+// is correct [he should move]; if malefic figures are found -- it is not
+// correct. If you find among them benefic and malefic together, decide by
+// the majority.) A fully closed three-branch rule with an explicit,
+// source-stated majority tie-break -- distinct from
+// need.p169.fulfillmentH1Fortune (H1, a different intent: whether the need
+// itself will be fulfilled, not whether to travel for it) and from
+// hope.p267.fulfillment (H11). "Majority" is read conservatively: a house
+// whose own figure is neither saad nor nahs (mixed/undetermined) does not
+// cast a clean vote either way; if that leaves the clean votes themselves
+// tied (at most 1-1 with one house abstaining), the method gives no
+// verdict rather than inventing a tie-break the source does not state.
+function computeNeedMoveToObtainP168(chart) {
+  if (!Array.isArray(chart)) return null;
+  const houseNumbers = [5, 9, 14];
+  const rows = houseNumbers.map((houseNumber) => {
+    const entry = findCanonicalHouse(chart, houseNumber);
+    const pattern = entry?.key || entry?.pattern || null;
+    if (!pattern) return null;
+    const classification = classifyCanonicalFigure(pattern);
+    return {
+      houseNumber,
+      pattern,
+      figureHebrew: classification.figureHebrew || entry?.hebrew || entry?.hebrewName || pattern,
+      classification,
+    };
+  });
+  if (rows.some((item) => !item)) return null;
+
+  const saadCount = rows.filter((item) => item.classification.saadNahs === 'saad').length;
+  const nahsCount = rows.filter((item) => item.classification.saadNahs === 'nahs').length;
+
+  let moveOutcome = 'unresolved';
+  let positive = null;
+  let outputHebrew;
+
+  if (saadCount === 3) {
+    moveOutcome = 'move-correct';
+    positive = true;
+    outputHebrew = 'בתים 5, 9 ו-14 כולם מיטיבים. לפי כשף עמ׳ 168: נכון לנוע כדי להשיג את הצורך.';
+  } else if (nahsCount === 3) {
+    moveOutcome = 'move-incorrect';
+    positive = false;
+    outputHebrew = 'בתים 5, 9 ו-14 כולם מזיקים. לפי כשף עמ׳ 168: אין זה נכון לנוע כדי להשיג את הצורך.';
+  } else if (saadCount > 0 && nahsCount > 0) {
+    if (saadCount > nahsCount) {
+      moveOutcome = 'move-correct-by-majority';
+      positive = true;
+      outputHebrew = `עדות מעורבת בבתים 5, 9 ו-14 (${saadCount} מיטיבים מול ${nahsCount} מזיקים). לפי כשף עמ׳ 168: ההכרעה לפי הרוב — נכון לנוע.`;
+    } else if (nahsCount > saadCount) {
+      moveOutcome = 'move-incorrect-by-majority';
+      positive = false;
+      outputHebrew = `עדות מעורבת בבתים 5, 9 ו-14 (${nahsCount} מזיקים מול ${saadCount} מיטיבים). לפי כשף עמ׳ 168: ההכרעה לפי הרוב — אין זה נכון לנוע.`;
+    } else {
+      outputHebrew = 'עדות מעורבת בבתים 5, 9 ו-14 ללא רוב ברור (צורה ממוזגת מנעה הכרעה). כשף עמ׳ 168 נותן הכרעה לפי הרוב בלבד; אין להמציא שובר-שוויון שהמקור אינו נותן.';
+    }
+  } else {
+    outputHebrew = 'אין כאן רוב מיטיבים או רוב מזיקים ברור בבתים 5, 9 ו-14 (צורות ממוזגות מנעות הכרעה). כשף עמ׳ 168 אינו נותן כאן ענף מפורש.';
+  }
+
+  return {
+    sourceRef: 'כשף אל-אסראר עמ׳ מודפס 168 (PDF 170); v57 kashf-v57-draft.html id="p168"',
+    sourceText: 'אם רצית לדעת האם עליו לנוע כדי להשיג צורך מסוים, התבונן בבית החמישי, התשיעי והארבעה־עשר. אם נמצאו בהם צורות מיטיבות — הדבר נכון; ואם נמצאו צורות מזיקות — אין הדבר נכון. ואם מצאת בהן מיטיב ומזיק יחד, הכרֵע לפי הרוב.',
+    housesUsed: houseNumbers,
+    houseResults: rows,
+    saadCount, nahsCount,
+    moveOutcome,
+    positive,
+    verdictType: 'need-move-to-obtain-majority',
+    outputHebrew,
+  };
+}
+
+// Kashf v57 p168 (closed sub-rule, opened 2026-10-06), verified against
+// kashf-v57-draft.html (id="p168"): "כלל מעשי: בבקשה — האם תיענה? התבונן
+// בחמישי ובשביעי. אם שניהם מיטיבים, תיענה בנחת; ואם הם מזיקים, תיענה רק
+// בקושי, והאל יודע." (Practical rule: regarding a request -- will it be
+// answered? Look at the fifth and the seventh. If both are benefic, it
+// will be answered with ease; if they [both] are malefic, it will be
+// answered only with difficulty, and God knows.) Only the two stated
+// branches (both benefic / both malefic) are asserted; any other
+// combination (mixed saad/nahs across the two houses, or either house
+// itself mixed) is left without a verdict -- the source states no
+// fallback here, unlike the majority tie-break on the adjacent clause
+// above. Distinct from need.p169.fulfillmentH1Fortune (H1) and
+// hope.p267.fulfillment (H11); none of these vote together.
+function computeRequestAnsweredEaseP168(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h5 = findCanonicalHouse(chart, 5);
+  const h7 = findCanonicalHouse(chart, 7);
+  const h5Pattern = h5?.key || h5?.pattern || null;
+  const h7Pattern = h7?.key || h7?.pattern || null;
+  if (!h5Pattern || !h7Pattern) return null;
+
+  const h5Fortune = classifyCanonicalFigure(h5Pattern).saadNahs;
+  const h7Fortune = classifyCanonicalFigure(h7Pattern).saadNahs;
+
+  let easeOutcome = 'unresolved';
+  let positive = null;
+  let outputHebrew;
+
+  if (h5Fortune === 'saad' && h7Fortune === 'saad') {
+    easeOutcome = 'answered-with-ease';
+    positive = true;
+    outputHebrew = 'בית 5 ובית 7 שניהם מיטיבים. לפי כשף עמ׳ 168: הבקשה תיענה בנחת.';
+  } else if (h5Fortune === 'nahs' && h7Fortune === 'nahs') {
+    easeOutcome = 'answered-with-difficulty';
+    positive = true;
+    outputHebrew = 'בית 5 ובית 7 שניהם מזיקים. לפי כשף עמ׳ 168: הבקשה תיענה, אך רק בקושי. המקור אינו קובע כאן ענף של "לא תיענה בכלל".';
+  } else {
+    outputHebrew = 'כשף עמ׳ 168 נותן כאן דין מפורש רק כששני הבתים (5 ו-7) מיטיבים שניהם או מזיקים שניהם; הצירוף הנוכחי אינו עומד בתנאי זה ואין להכריע ממנו.';
+  }
+
+  return {
+    sourceRef: 'כשף אל-אסראר עמ׳ מודפס 168 (PDF 170); v57 kashf-v57-draft.html id="p168"',
+    sourceText: 'בבקשה — האם תיענה? התבונן בחמישי ובשביעי. אם שניהם מיטיבים, תיענה בנחת; ואם הם מזיקים, תיענה רק בקושי, והאל יודע.',
+    housesUsed: [5, 7],
+    h5Pattern, h7Pattern, h5Fortune, h7Fortune,
+    easeOutcome,
+    positive,
+    verdictType: 'request-answered-ease',
     outputHebrew,
   };
 }
@@ -1022,6 +1153,58 @@ function computeDisputeWinnerH1P212(chart) {
     classification: figure.saadNahs, branch,
     positive: branch === 'seeker-prevails' ? true : branch === 'other-party-prevails' ? false : null,
     outputHebrew: `בבית 1 מופיעה ${figure.figureHebrew || pattern} (${pattern}). ${sign} זהו דין בית 1 בלבד; הספר מוסר באותו עמוד גם סימנים נוספים שאין כאן כלל הכרעה כאשר הם חלוקים.`,
+  };
+}
+
+// Kashf v57 p212 (closed sub-rule, opened 2026-10-06), verified against
+// kashf-v57-draft.html (id="p212"): "אם בשני צורה מיטיבה, המבקש זוכה
+// במבוקש; ואם בשמיני צורה מיטיבה, המבוקש גובר על המבקש." (If H2 has a
+// benefic figure, the petitioner/seeker wins the matter sought; if H8 has
+// a benefic figure, the sought-about party [respondent] prevails over the
+// petitioner.) This is the EXACT H2/H8 pair that dispute.p212.winnerH1's
+// own registry note already names and deliberately excludes ("The H2/H8
+// victory signs on the same page can conflict and are excluded") -- that
+// exclusion was correct (H1 and H2/H8 are independently-sourced signs that
+// must not be merged into one verdict), but the H2/H8 sign itself was
+// never given its own method. It is opened here as its own, parallel,
+// non-aggregating intent. Each house is its own independent sign (not a
+// combined 2-house condition): H2 benefic alone fires the petitioner-wins
+// sign; H8 benefic alone fires the respondent-prevails sign; the source
+// does not say these are mutually exclusive, so a board where BOTH H2 and
+// H8 are benefic produces both signs together, reported as conflicting --
+// exactly as this engine already handles the analogous
+// prisoner.p272-273.rapidExitH11WithH5Caution conflicting-signs case.
+// Malefic H2/H8 states no inverse and fires no sign.
+function computeDisputeWinnerH2H8P212(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h2 = findCanonicalHouse(chart, 2);
+  const h8 = findCanonicalHouse(chart, 8);
+  const h2Pattern = h2?.key || h2?.pattern || null;
+  const h8Pattern = h8?.key || h8?.pattern || null;
+  if (!h2Pattern || !h8Pattern) return null;
+
+  const petitionerWinsSign = classifyCanonicalFigure(h2Pattern).saadNahs === 'saad';
+  const respondentPrevailsSign = classifyCanonicalFigure(h8Pattern).saadNahs === 'saad';
+  const branch = petitionerWinsSign && respondentPrevailsSign ? 'conflicting-signs'
+    : petitionerWinsSign ? 'petitioner-wins-sign'
+      : respondentPrevailsSign ? 'respondent-prevails-sign'
+        : 'unresolved';
+
+  const sign = branch === 'conflicting-signs'
+    ? 'בית 2 מיטיב (סימן שהמבקש זוכה במבוקש) ובית 8 מיטיב (סימן שהמבוקש גובר על המבקש) מתקיימים יחד. המקור אינו נותן כאן כלל להכרעה בין שני הסימנים הסותרים; אין לבחור ביניהם מן הדעת.'
+    : branch === 'petitioner-wins-sign' ? 'בית 2 מיטיב — סימן שהמבקש זוכה במבוקש.'
+      : branch === 'respondent-prevails-sign' ? 'בית 8 מיטיב — סימן שהמבוקש גובר על המבקש.'
+        : 'לא בית 2 ולא בית 8 מיטיב; אין כאן סימן מפורש מכלל זה. המקור אינו נותן דין הפוך לבית מזיק.';
+
+  return {
+    sourceRef: 'כשף אל-אסראר עמ׳ מודפס 212 (PDF 214); v57 kashf-v57-draft.html id="p212"',
+    sourceText: 'אם בשני צורה מיטיבה, המבקש זוכה במבוקש; ואם בשמיני צורה מיטיבה, המבוקש גובר על המבקש.',
+    housesUsed: [2, 8],
+    h2Pattern, h8Pattern,
+    petitionerWinsSign, respondentPrevailsSign, branch,
+    positive: branch === 'petitioner-wins-sign' ? true : branch === 'respondent-prevails-sign' ? false : null,
+    verdictType: 'dispute-winner-h2h8-independent-signs',
+    outputHebrew: `${sign} זהו דין נפרד מסימן בית 1 (dispute.p212.winnerH1); שני הדינים אינם משוקללים לפסק אחד.`,
   };
 }
 
@@ -1903,15 +2086,16 @@ function computeIllnessDurationRiskP196(chart) {
   const h1FigureHebrew = classifyCanonicalFigure(h1Pattern).figureHebrew || h1?.hebrew || h1?.hebrewName || h1Pattern;
 
   const signals = [];
-  if (recurresInH6) signals.push('בית 1 (' + h1FigureHebrew + ') חוזר בבית 6 — לפי כשף עמ׳ 196: המחלה מתארכת.');
-  if (recurresInH8) signals.push('בית 1 (' + h1FigureHebrew + ') חוזר בבית 8 — לפי כשף עמ׳ 196: המחלה מתארכת, ויש לחשוש.');
+  if (recurresInH6) signals.push('בית 1 (' + h1FigureHebrew + ') חוזר בבית 6 — סימן לפי כשף עמ׳ 196 שהמחלה מתארכת.');
+  if (recurresInH8) signals.push('בית 1 (' + h1FigureHebrew + ') חוזר בבית 8 — סימן לפי כשף עמ׳ 196 שהמחלה מתארכת, ויש לחשוש.');
 
-  const outputHebrew = signals.length
+  const outputHebrew = (signals.length
     ? signals.join(' ')
-    : 'צורת בית 1 אינה חוזרת בבית 6 ואינה חוזרת בבית 8. כלל כשף עמ׳ 196 נותן כאן דין הארכה רק במקרה של חזרה; היעדר חזרה אינו מוכיח שהמחלה קצרה.';
+    : 'צורת בית 1 אינה חוזרת בבית 6 ואינה חוזרת בבית 8. כלל כשף עמ׳ 196 נותן כאן סימן הארכה רק במקרה של חזרה; היעדר חזרה אינו מוכיח שהמחלה קצרה.')
+    + ' זהו סימן מסורתי-מקורי בלבד, לא אבחנה רפואית ולא קביעת משך בפועל.';
 
   return {
-    sourceRef: 'כשף אל-אסראר עמ׳ 196',
+    sourceRef: 'כשף אל-אסראר עמ׳ מודפס 196 (PDF 198); v57 kashf-v57-draft.html id="p196"',
     sourceText: 'אם הראשון נמצא בשישי, מחלה זו מתארכת. ואם הראשון בשמיני, מחלתו מתארכת ויש לחשוש עליו.',
     housesUsed: [1, 6, 8],
     h1Pattern, h6Pattern, h8Pattern, h1FigureHebrew,
@@ -1985,7 +2169,7 @@ function computeIllnessSensorySignsP196(chart) {
     : 'אין כאן את סימני העיוורון/חשכת הראייה (נשוא ראש חוזר מבית 1 לבית 8/6) ואין סימן כובד השמיעה (צורת שבתאי/צדק בבית 6 או 8). היעדר הסימנים אינו שולל בעיה חושית שלא נמסרה במקור הזה.';
 
   return {
-    sourceRef: 'כשף v57 עמ׳ 196–197 (kashf-v57-draft.html); שיוכי כוכבים עמ׳ 133–134',
+    sourceRef: 'כשף אל-אסראר עמ׳ מודפס 196–197 (PDF 198–199); v57 kashf-v57-draft.html id="p196"/"p197"; שיוכי כוכבים עמ׳ 133–134',
     sourceText: 'ואם צורת הראשון — כגון נשוא ראש, שהיא בעלת הבית הראשון — נכנסה לבית השמיני, הדבר מורה על עיוורון; ואם אותה צורה נמצאת בבית השישי, הדבר מורה על חשכת הראייה. ואם צורות שבתאי וצדק בשישי או בשמיני, הדבר מורה על כובד השמיעה.',
     housesUsed: [1, 6, 8],
     h1Pattern, h6Pattern, h8Pattern,
@@ -2918,7 +3102,7 @@ function computeChildWellbeingP194(chart) {
   }
 
   return {
-    sourceRef: 'כשף אל-אסראר עמ׳ 194',
+    sourceRef: 'כשף אל-אסראר עמ׳ מודפס 194 (PDF 196); v57 kashf-v57-draft.html id="p194"',
     sourceText: 'אחר כך התבונן בחמישי ובשישה־עשר. אם נמצאות בהם צורות מיטיבות, הדבר מורה על מזלו הטוב, על שיפור מצבו ועל ריבוי ממונו. ואם נמצאות שם צורות מזיקות, מצבו יהיה ירוד. ואם אחת מיטיבה ואחת מזיקה — מצבו בינוני.',
     housesUsed: houseNumbers,
     houseResults: rows,
@@ -4669,6 +4853,9 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'family.p184.fatherMoneyH5': computeFatherMoneySignH5P184,
   'property.p184.landOwnershipH4': computeLandOwnershipSignH4P184,
   'dispute.p212.winnerH1': computeDisputeWinnerH1P212,
+  'dispute.p212.winnerH2H8Sign': computeDisputeWinnerH2H8P212,
+  'need.p168.moveToObtainH5H9H14': computeNeedMoveToObtainP168,
+  'request.p168.answeredEaseH5H7': computeRequestAnsweredEaseP168,
   'prisoner.p272-273.rapidExitH11WithH5Caution': computePrisonerRapidExitP272P273,
   'prisoner.p272.outcomeH1H4': computePrisonerOutcomeH1H4P272,
   'prisoner.p272.exitSafetyH12': computePrisonerExitSafetyH12P272,

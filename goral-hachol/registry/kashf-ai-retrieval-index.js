@@ -525,8 +525,23 @@ const RETRIEVAL_OVERRIDES = Object.freeze({
   },
   'dispute.p212.winnerH1': {
     aliases: ['מי גובר בסכסוך לפי בית ראשון', 'מבקש ומבוקש מריבה בית ראשון', 'סימן המנצח בסכסוך'],
-    doNotMixWith: ['dispute.p212.reconciliationH1H7', 'dispute.p213.winnerStrengthUnresolved'],
+    doNotMixWith: ['dispute.p212.reconciliationH1H7', 'dispute.p213.winnerStrengthUnresolved', 'dispute.p212.winnerH2H8Sign'],
     houses: [1],
+  },
+  'dispute.p212.winnerH2H8Sign': {
+    aliases: ['מי גובר בסכסוך לפי בתים שני ושמיני', 'מבקש זוכה במבוקש בית שני', 'מבוקש גובר בית שמיני'],
+    doNotMixWith: ['dispute.p212.winnerH1', 'dispute.p213.winnerStrengthUnresolved'],
+    houses: [2, 8],
+  },
+  'need.p168.moveToObtainH5H9H14': {
+    aliases: ['האם לנוע כדי להשיג צורך', 'נסיעה להשגת צורך בתים 5 9 14', 'הכרעה לפי הרוב צורך'],
+    doNotMixWith: ['need.p169.fulfillmentH1Fortune', 'hope.p267.fulfillment'],
+    houses: [5, 9, 14],
+  },
+  'request.p168.answeredEaseH5H7': {
+    aliases: ['באיזו קלות תיענה הבקשה', 'בקשה תיענה בנחת או בקושי', 'בתים 5 7 מענה בקשה'],
+    doNotMixWith: ['need.p169.fulfillmentH1Fortune', 'hope.p267.fulfillment'],
+    houses: [5, 7],
   },
   'desire.p206.querentWantsH7H11ThenH5': {
     aliases: ['האם השואל רוצה בדבר', 'האם אני רוצה בזה', 'רצון השואל בדבר', 'האם הוא רוצה בעניין'],

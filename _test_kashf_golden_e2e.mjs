@@ -169,8 +169,11 @@ try {
   // prisoner.p272.exitSafetyH12 (72 -> 74); then four more closed sub-rules
   // were opened and routed on 2026-10-06 (q-illness-duration-risk,
   // q-illness-sensory-signs, q-pregnancy-maternal-safety, q-child-wellbeing
-  // -- see _test_kashf_p192_194_196_closed_subrules.mjs) (78 -> 82).
-  ok(routedByMethod.size === 82, `82 distinct runnable methods have an explicit Question Bank route, excluding the dedicated-input p188 quarter-direction method (got ${routedByMethod.size})`);
+  // -- see _test_kashf_p192_194_196_closed_subrules.mjs) (78 -> 82); then
+  // three more were opened and routed in a second round the same day
+  // (q-dispute-h2h8, q-need-move-p168, q-request-ease-p168 -- see
+  // _test_kashf_p168_212_closed_subrules.mjs) (82 -> 85).
+  ok(routedByMethod.size === 85, `85 distinct runnable methods have an explicit Question Bank route, excluding the dedicated-input p188 quarter-direction method (got ${routedByMethod.size})`);
 
   let liveRoutedSuccess = 0;
   for (const [methodId, route] of routedByMethod.entries()) {
@@ -218,7 +221,7 @@ try {
     }
     liveRoutedSuccess += 1;
   }
-  ok(liveRoutedSuccess === 82, 'all 82 routed runnable methods complete the live mocked Advisor path');
+  ok(liveRoutedSuccess === 85, 'all 85 routed runnable methods complete the live mocked Advisor path');
 
   console.log('\n--- Golden/E2E Tier A2: two runnable non-Question-Bank methods ---');
 
@@ -260,7 +263,7 @@ try {
   }
 
   const allRunnable = new Set([...routedByMethod.keys(), 'desire.p206.querentWantsH7H11ThenH5', 'dhamir.p159.subjectByH6Recurrence']);
-  ok(allRunnable.size === 84, `Golden/E2E matrix accounts for all 84 runnable methods exercised by this harness, plus the dedicated-input hidden.p188.quarterDirection excluded above (got ${allRunnable.size})`);
+  ok(allRunnable.size === 87, `Golden/E2E matrix accounts for all 87 runnable methods exercised by this harness, plus the dedicated-input hidden.p188.quarterDirection excluded above (got ${allRunnable.size})`);
 
   console.log('\n--- Golden/E2E Tier B: source-derived fixed cases ---');
 

@@ -893,6 +893,15 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     note: 'Only the source-explicit H1 winner sign on p212; do not aggregate the H2/H8 clauses or the undefined strength comparison on p213.',
   }),
 
+  'q-dispute-h2h8': route({
+    questionId: 'q-dispute-h2h8',
+    disposition: 'KEEP',
+    kashfIntentId: 'dispute.winnerH2H8Sign',
+    kashfMethodId: 'dispute.p212.winnerH2H8Sign',
+    kashfRuntimeStatus: 'ready',
+    note: 'Opened 2026-10-06: the H2/H8 victory signs that dispute.p212.winnerH1 explicitly names and excludes from its own verdict, given their own independent method. H2 benefic and H8 benefic are independent signs that can conflict; never merged with q-dispute (H1) or the unresolved p213 strength comparison.',
+  }),
+
   'q-women-dispute': route({
     questionId: 'q-women-dispute',
     disposition: 'ALIAS',
@@ -1218,6 +1227,24 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfMethodId: 'need.p169.fulfillmentH1Fortune',
     kashfRuntimeStatus: 'ready',
     note: 'Opened 2026-10-05 from printed p169, split out of the formerly-bundled need.p169-170.outcomeRules. Distinct source page/intent from q-wish (hope.p267, House 11) — never merged or voted together.',
+  }),
+
+  'q-need-move-p168': route({
+    questionId: 'q-need-move-p168',
+    disposition: 'KEEP',
+    kashfIntentId: 'need.moveToObtain',
+    kashfMethodId: 'need.p168.moveToObtainH5H9H14',
+    kashfRuntimeStatus: 'ready',
+    note: 'Opened 2026-10-06 from printed p168: H5/H9/H14 all-benefic/all-malefic/majority-tiebreak rule for whether one must travel to obtain a need. Distinct from q-need-fulfillment (H1, p169) and q-wish (hope.p267, H11) — never merged or voted together.',
+  }),
+
+  'q-request-ease-p168': route({
+    questionId: 'q-request-ease-p168',
+    disposition: 'KEEP',
+    kashfIntentId: 'request.answeredEase',
+    kashfMethodId: 'request.p168.answeredEaseH5H7',
+    kashfRuntimeStatus: 'ready',
+    note: 'Opened 2026-10-06 from printed p168: H5+H7 both-benefic/both-malefic rule for ease of a request being answered. Both stated branches indicate the request IS answered; distinct from q-need-fulfillment (H1, p169) and q-wish (hope.p267, H11) — never merged or voted together.',
   }),
 
   'q-hope-p174': route({

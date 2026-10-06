@@ -373,7 +373,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     runtimeAllowed: true,
     executionKind: 'custom-engine',
     executorStatus: 'ready',
-    notes: 'OPENED 2026-10-06, verified against kashf-v57-draft.html (id=\'p196\'), the canonical corrected working copy that drives this app\'s own in-app book screen, ranked above kashf-al-asrar-book.js per CLAUDE.md\'s source-priority order: "אם הראשון נמצא בשישי, מחלה זו מתארכת... ואם הראשון בשמיני, מחלתו מתארכת ויש לחשוש עליו." A closed recurrence rule: H1 pattern recurring at H6 indicates prolonged illness; H1 pattern recurring at H8 indicates prolonged illness plus fear/concern. Both branches are independent (not mutually exclusive) and are reported as separate observations. This is not the H15 recovery route (illness.p196.outcomeH15) and does not provide a numeric duration; it is not a death or no-recovery verdict. Absence of recurrence is reported as such, not inverted into "illness is short".',
+    notes: 'Printed p196 (PDF 198) in the original Arabic scan; also carried in kashf-v57-draft.html (id=\'p196\'). Independently re-checked directly against the raw Arabic scan by a separate review (2026-10-06); confirmed the rule and this implementation match the source. OPENED 2026-10-06, verified against kashf-v57-draft.html (id=\'p196\'), the canonical corrected working copy that drives this app\'s own in-app book screen, ranked above kashf-al-asrar-book.js per CLAUDE.md\'s source-priority order: "אם הראשון נמצא בשישי, מחלה זו מתארכת... ואם הראשון בשמיני, מחלתו מתארכת ויש לחשוש עליו." A closed recurrence rule: H1 pattern recurring at H6 indicates prolonged illness; H1 pattern recurring at H8 indicates prolonged illness plus fear/concern. Both branches are independent (not mutually exclusive) and are reported as separate observations. This is not the H15 recovery route (illness.p196.outcomeH15) and does not provide a numeric duration; it is not a death or no-recovery verdict. Absence of recurrence is reported as such, not inverted into "illness is short".',
   }),
 
   'illness.p196.sensorySignsH6H8': method({
@@ -385,7 +385,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     runtimeAllowed: true,
     executionKind: 'custom-engine',
     executorStatus: 'ready',
-    notes: 'OPENED 2026-10-06, verified against kashf-v57-draft.html (id="p196"/"p197") -- the canonical corrected working copy that drives this app\'s own in-app book screen, ranked above kashf-al-asrar-book.js per CLAUDE.md\'s source-priority order: "ואם צורת הראשון — כגון נשוא ראש, שהיא בעלת הבית הראשון — נכנסה לבית השמיני, הדבר מורה על עיוורון; ואם אותה צורה נמצאת בבית השישי, הדבר מורה על חשכת הראייה. ואם צורות שבתאי וצדק בשישי או בשמיני, הדבר מורה על כובד השמיעה." (H1\'s own figure, Ahyan/1222, recurring into H8 indicates blindness; the same figure recurring into H6 indicates dim/dark vision; Saturn or Jupiter figures in H6 or H8 indicate heaviness of hearing.) A same-round earlier pass, working only from kashf-al-asrar-book.js\'s older transcript, found that transcript missing the dim-vision sentence and wrongly concluded the clause was unconfirmed -- the v57 draft carries it, confirming this entry\'s original note was correct. "Saturn/Jupiter figures" resolves against FIGURE_PLANET_MAP (kashf-hazz.js, p133-134): Saturn={2221,1221}, Jupiter={2111,1222}. Ahyan(1222) is itself one of Jupiter\'s two figures, so a vision branch and the hearing branch can both fire on the same board (H1=H6=1222 or H1=H8=1222); the source does not rank one over the other, so all signs are reported independently, never merged or medicalized. Preserve as source knowledge only; do not use these signs as medical diagnosis and do not mix them into q-illness-heal.',
+    notes: 'Printed p196-197 (PDF 198-199) in the original Arabic scan -- the heaviness-of-hearing sentence runs across the page break; also carried in kashf-v57-draft.html (id="p196"/"p197"). Independently re-checked directly against the raw Arabic scan by a separate review (2026-10-06), including the restored dim-vision clause; confirmed the rule and this implementation match the source. OPENED 2026-10-06, verified against kashf-v57-draft.html (id="p196"/"p197") -- the canonical corrected working copy that drives this app\'s own in-app book screen, ranked above kashf-al-asrar-book.js per CLAUDE.md\'s source-priority order: "ואם צורת הראשון — כגון נשוא ראש, שהיא בעלת הבית הראשון — נכנסה לבית השמיני, הדבר מורה על עיוורון; ואם אותה צורה נמצאת בבית השישי, הדבר מורה על חשכת הראייה. ואם צורות שבתאי וצדק בשישי או בשמיני, הדבר מורה על כובד השמיעה." (H1\'s own figure, Ahyan/1222, recurring into H8 indicates blindness; the same figure recurring into H6 indicates dim/dark vision; Saturn or Jupiter figures in H6 or H8 indicate heaviness of hearing.) A same-round earlier pass, working only from kashf-al-asrar-book.js\'s older transcript, found that transcript missing the dim-vision sentence and wrongly concluded the clause was unconfirmed -- the v57 draft carries it, confirming this entry\'s original note was correct. "Saturn/Jupiter figures" resolves against FIGURE_PLANET_MAP (kashf-hazz.js, p133-134): Saturn={2221,1221}, Jupiter={2111,1222}. Ahyan(1222) is itself one of Jupiter\'s two figures, so a vision branch and the hearing branch can both fire on the same board (H1=H6=1222 or H1=H8=1222); the source does not rank one over the other, so all signs are reported independently, never merged or medicalized. Preserve as source knowledge only; do not use these signs as medical diagnosis and do not mix them into q-illness-heal.',
   }),
 
   'illness.bodyPart.h6Figure': method({
@@ -511,7 +511,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     runtimeAllowed: true,
     executionKind: 'custom-engine',
     executorStatus: 'ready',
-    notes: 'OPENED 2026-10-06, verified against kashf-v57-draft.html (id=\'p192\'), the canonical corrected working copy that drives this app\'s own in-app book screen, ranked above kashf-al-asrar-book.js per CLAUDE.md\'s source-priority order: "אחר כך התבונן בשישי, בשמיני ובשנים־עשר. אם הם מיטיבים, היולדת ניצלת." This clause immediately follows a DIFFERENT clause (Awtad+H5+H15, whether the pregnancy "holds") that explicitly carries its own inverse ("ואם לא — הדין להפך"); that inverse belongs only to that preceding clause and is not repeated for H6/H8/H12. H6,H8,H12 all benefic indicate the mother giving birth is saved/safe; this is not fetal safety (pregnancy.p191.childSafetyH1H6H8), miscarriage risk, gender, or delivery difficulty. No inverse verdict is authorized merely because the positive condition fails; explicitly framed as a traditional source sign, not a medical determination.',
+    notes: 'Printed p192 (PDF 194) in the original Arabic scan; also carried in kashf-v57-draft.html (id=\'p192\'). Independently re-checked directly against the raw Arabic scan by a separate review (2026-10-06); confirmed the rule and this implementation match the source. OPENED 2026-10-06, verified against kashf-v57-draft.html (id=\'p192\'), the canonical corrected working copy that drives this app\'s own in-app book screen, ranked above kashf-al-asrar-book.js per CLAUDE.md\'s source-priority order: "אחר כך התבונן בשישי, בשמיני ובשנים־עשר. אם הם מיטיבים, היולדת ניצלת." This clause immediately follows a DIFFERENT clause (Awtad+H5+H15, whether the pregnancy "holds") that explicitly carries its own inverse ("ואם לא — הדין להפך"); that inverse belongs only to that preceding clause and is not repeated for H6/H8/H12. H6,H8,H12 all benefic indicate the mother giving birth is saved/safe; this is not fetal safety (pregnancy.p191.childSafetyH1H6H8), miscarriage risk, gender, or delivery difficulty. No inverse verdict is authorized merely because the positive condition fails; explicitly framed as a traditional source sign, not a medical determination.',
   }),
 
   'pregnancy.p192.monthCount': method({
@@ -547,7 +547,7 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     runtimeAllowed: true,
     executionKind: 'custom-engine',
     executorStatus: 'ready',
-    notes: 'OPENED 2026-10-06, verified against kashf-v57-draft.html (id="p194"), the canonical corrected working copy that drives this app\'s own in-app book screen, ranked above kashf-al-asrar-book.js per CLAUDE.md\'s source-priority order: "אחר כך התבונן בחמישי ובשישה־עשר. אם נמצאות בהם צורות מיטיבות, הדבר מורה על מזלו הטוב, על שיפור מצבו ועל ריבוי ממונו. ואם נמצאות שם צורות מזיקות, מצבו יהיה ירוד. ואם אחת מיטיבה ואחת מזיקה — מצבו בינוני." Wellbeing branch distinct from health: H5+H16 both benefic => good fortune/improved condition/much money; both malefic => low condition; one benefic and one malefic => medium condition. A mixed (neither saad nor nahs) figure on either house is outside the three stated branches and is left without a verdict. Keep separate from H6/H8 health (child.p194.healthTrajectoryH6H8) and from current-illness recovery.',
+    notes: 'Printed p194 (PDF 196) in the original Arabic scan; also carried in kashf-v57-draft.html (id="p194"). Independently re-checked directly against the raw Arabic scan by a separate review (2026-10-06); confirmed the rule and this implementation match the source. OPENED 2026-10-06, verified against kashf-v57-draft.html (id="p194"), the canonical corrected working copy that drives this app\'s own in-app book screen, ranked above kashf-al-asrar-book.js per CLAUDE.md\'s source-priority order: "אחר כך התבונן בחמישי ובשישה־עשר. אם נמצאות בהם צורות מיטיבות, הדבר מורה על מזלו הטוב, על שיפור מצבו ועל ריבוי ממונו. ואם נמצאות שם צורות מזיקות, מצבו יהיה ירוד. ואם אחת מיטיבה ואחת מזיקה — מצבו בינוני." Wellbeing branch distinct from health: H5+H16 both benefic => good fortune/improved condition/much money; both malefic => low condition; one benefic and one malefic => medium condition. A mixed (neither saad nor nahs) figure on either house is outside the three stated branches and is left without a verdict. Keep separate from H6/H8 health (child.p194.healthTrajectoryH6H8) and from current-illness recovery.',
   }),
 
   'pregnancy.p194.deliveryH5Weight': method({
@@ -1312,6 +1312,18 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     notes: 'Printed p212 independently says H1 malefic => the seeker prevails and H1 benefic => the opposite party. This is the exact H1 sign only; mixed remains unresolved. The H2/H8 victory signs on the same page can conflict and are excluded, as is the unresolved strength comparison on p213. No multi-sign final arbitration.',
   }),
 
+  'dispute.p212.winnerH2H8Sign': method({
+    kashfMethodId: 'dispute.p212.winnerH2H8Sign',
+    kashfIntentId: 'dispute.winnerH2H8Sign',
+    topicId: 'disputes',
+    sourcePages: [212],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: true,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
+    notes: 'OPENED 2026-10-06. Printed p212 (PDF 214), verified against kashf-v57-draft.html (id="p212"): "אם בשני צורה מיטיבה, המבקש זוכה במבוקש; ואם בשמיני צורה מיטיבה, המבוקש גובר על המבקש." This is the exact H2/H8 pair that dispute.p212.winnerH1\'s own registry note already names and deliberately excludes ("The H2/H8 victory signs on the same page can conflict and are excluded") -- correctly, since H1 and H2/H8 are independently-sourced signs -- but the H2/H8 sign itself had never been given its own method. Each house is its own independent sign (H2 benefic alone => petitioner wins; H8 benefic alone => respondent prevails); a board with both H2 and H8 benefic produces both signs together, reported as conflicting, never arbitrated. Malefic H2/H8 states no inverse. Never merged with dispute.p212.winnerH1 or the still-unresolved dispute.p213.winnerStrengthUnresolved.',
+  }),
+
   'dispute.p213.winnerStrengthUnresolved': method({
     kashfMethodId: 'dispute.p213.winnerStrengthUnresolved',
     kashfIntentId: 'dispute.whoWins',
@@ -1455,6 +1467,30 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     executionKind: 'source-procedure',
     executorStatus: 'pending',
     notes: 'The source requires walking the balance point to its endpoint, then a second figure for name/color derivation, but does not define the walking endpoint or second-figure selection sufficiently for computation. Do not infer these mechanics from symmetry or another book.',
+  }),
+
+  'need.p168.moveToObtainH5H9H14': method({
+    kashfMethodId: 'need.p168.moveToObtainH5H9H14',
+    kashfIntentId: 'need.moveToObtain',
+    topicId: 'generalReading',
+    sourcePages: [168],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: true,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
+    notes: 'OPENED 2026-10-06. Printed p168 (PDF 170), verified against kashf-v57-draft.html (id="p168"): "אם רצית לדעת האם עליו לנוע כדי להשיג צורך מסוים, התבונן בבית החמישי, התשיעי והארבעה־עשר. אם נמצאו בהם צורות מיטיבות — הדבר נכון; ואם נמצאו צורות מזיקות — אין הדבר נכון. ואם מצאת בהן מיטיב ומזיק יחד, הכרֵע לפי הרוב." A closed three-branch rule (all-benefic / all-malefic / mixed-by-majority) with an explicit source-stated majority tie-break, unlike most rules in this corpus. Distinct from need.p169.fulfillmentH1Fortune (H1, whether the need itself is fulfilled -- a different intent and page) and hope.p267.fulfillment (H11); none of these vote together. A house whose own figure is itself mixed (neither saad nor nahs) does not cast a clean vote; if that leaves the clean votes tied, no verdict is forced.',
+  }),
+
+  'request.p168.answeredEaseH5H7': method({
+    kashfMethodId: 'request.p168.answeredEaseH5H7',
+    kashfIntentId: 'request.answeredEase',
+    topicId: 'generalReading',
+    sourcePages: [168],
+    kashfRuntimeStatus: 'ready',
+    runtimeAllowed: true,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
+    notes: 'OPENED 2026-10-06. Printed p168 (PDF 170), verified against kashf-v57-draft.html (id="p168"): "בבקשה — האם תיענה? התבונן בחמישי ובשביעי. אם שניהם מיטיבים, תיענה בנחת; ואם הם מזיקים, תיענה רק בקושי, והאל יודע." Both stated branches (H5+H7 both benefic, or both malefic) indicate the request IS answered -- the source states no "not answered" branch here at all, only an ease-of-answer distinction (easily vs. with difficulty). Any other combination (mixed saad/nahs across the two houses, or either house itself mixed) is left without a verdict. Distinct from need.p169.fulfillmentH1Fortune (H1) and hope.p267.fulfillment (H11); none of these vote together.',
   }),
 
   'matter.p169.validityH6H8Planet': method({

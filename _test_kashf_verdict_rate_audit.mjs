@@ -284,10 +284,12 @@ console.log('No decision at all on every tested board (all confirmed reachable-b
 console.log('Of the above, methods that additionally require client input beyond the board (architectural, not a source gap):', missingInputCapable);
 
 // Sanity assertions.
-// 2026-10-06: four closed sub-rules opened and routed this round
+// 2026-10-06: four closed sub-rules opened and routed earlier this day
 // (q-illness-duration-risk, q-illness-sensory-signs,
-// q-pregnancy-maternal-safety, q-child-wellbeing) raised this from 98 to 102.
-assert.equal(totalRunnable, 102, 'routed-to-ready count reflects the four p192/194/196 methods opened 2026-10-06');
+// q-pregnancy-maternal-safety, q-child-wellbeing) raised this from 98 to
+// 102; three more opened in a second round the same day
+// (q-dispute-h2h8, q-need-move-p168, q-request-ease-p168) raised it to 105.
+assert.equal(totalRunnable, 105, 'routed-to-ready count reflects the four p192/194/196 and three p168/212 methods opened 2026-10-06');
 assert.ok(decisiveAtLeastOnce <= totalRunnable && decisiveOnAllBoards <= decisiveAtLeastOnce, 'counts are internally consistent');
 assert.equal(decisiveAtLeastOnce + descriptiveOnlyNeverDecisive + noDecisionOnEveryBoard, totalRunnable, 'every routed method falls into exactly one of: decisive at least once, descriptive-only, or no-decision-only');
 
