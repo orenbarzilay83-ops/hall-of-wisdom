@@ -1,5 +1,5 @@
 import { buildRamlBoardFromMothers } from './goral-hachol/engine/raml-board-generator.js';
-import { buildKashfCanonicalAiBridge } from './goral-hachol/intelligence/kashf-canonical-ai-bridge.js';
+import { buildKashfCanonicalAiBridge, buildKashfCanonicalAiBridgeForLegacyFixtureTests } from './goral-hachol/intelligence/kashf-canonical-ai-bridge.js';
 import { buildKashfAiContextPackage } from './goral-hachol/intelligence/kashf-ai-context-builder.js';
 import {
   buildKashfProfessionalVerdictSafety,
@@ -246,20 +246,20 @@ for (const id of [
 }
 
 for (const [h11, polarity] of [['2211', 'positive'], ['2221', 'negative'], ['1121', 'non-binary']]) {
-  const bridge = buildKashfCanonicalAiBridge({ questionId: 'q-wish', questionText: 'האם משאלתי תתגשם?', board: makeBoard({ 11: h11 }) });
+  const bridge = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-wish', questionText: 'האם משאלתי תתגשם?', board: makeBoard({ 11: h11 }) });
   assert(bridge.professionalVerdictSafety?.clientFacingCertified === true, 'p267 limited H11 branch is professionally certified');
   assert(bridge.professionalVerdictSafety?.authoritativePolarity === polarity, `p267 H11 ${h11} keeps exact source polarity`);
   assert(bridge.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenInversions?.some(text => text.includes('התנאי המורכב')), 'p267 policy forbids deriving the compound condition');
 }
 
 // PV-BF05-P224 — printed H8 theft recovery branches and the unresolved mixed case.
-const p224Recovered = buildKashfCanonicalAiBridge({ questionId: 'q-theft-return', questionText: 'האם אקבל את הרכוש שנגנב?', board: makeBoard({ 8:'2111' }) });
+const p224Recovered = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-theft-return', questionText: 'האם אקבל את הרכוש שנגנב?', board: makeBoard({ 8:'2111' }) });
 for (const [h1, h12, presence, branch] of [
   ['2111', '2211', false, 'no-enemy'], ['1221', '1112', true, 'enemies'],
   ['2111', '1221', true, 'querent-prevails'], ['1221', '2111', true, 'enemy-prevails'],
   ['1111', '2111', null, null],
 ]) {
-  const reading = buildKashfCanonicalAiBridge({ questionId: 'q-enemy-exists', questionText: 'האם יש אויב?', board: makeBoard({ 1:h1, 12:h12 }) });
+  const reading = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-enemy-exists', questionText: 'האם יש אויב?', board: makeBoard({ 1:h1, 12:h12 }) });
   const result = reading.canonicalReading?.primaryFormula?.result?.executorResult;
   assert(result?.enemyPresent === presence && result?.branch === branch, 'p271 four source branches and mixed gap');
   assert(reading.professionalVerdictSafety?.clientFacingCertified === true, 'p271 source-bounded draft certified');
@@ -269,7 +269,7 @@ for (const [h1, h8, humor] of [
   ['1112', '1122', 'מרה צהובה'], ['2111', '1121', 'רוחות שונות'],
   ['2211', '1122', null],
 ]) {
-  const reading = buildKashfCanonicalAiBridge({ questionId: 'q-illness-type', questionText: 'סוג החולי לפי הספר?', board: makeBoard({ 1:h1, 8:h8 }) });
+  const reading = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-illness-type', questionText: 'סוג החולי לפי הספר?', board: makeBoard({ 1:h1, 8:h8 }) });
   const result = reading.canonicalReading?.primaryFormula?.result?.executorResult;
   assert(result?.humor === humor, 'p197 element pair yields only the printed humoral category');
   assert(reading.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'p197 is never a binary medical verdict');
@@ -279,7 +279,7 @@ for (const [h1, h11, pairEvidence] of [
   ['1221', '1112', 'כל אחד מזיק לחברו'],
   ['1111', '2111', null],
 ]) {
-  const reading = buildKashfCanonicalAiBridge({ questionId: 'q-friends', questionText: 'מה טיב הקשר בין שני חברים?', board: makeBoard({ 1:h1, 11:h11 }) });
+  const reading = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-friends', questionText: 'מה טיב הקשר בין שני חברים?', board: makeBoard({ 1:h1, 11:h11 }) });
   const result = reading.canonicalReading?.primaryFormula?.result?.executorResult;
   assert(result?.pairEvidence === pairEvidence && typeof result?.derivedPattern === 'string', 'p263 pair and derived figure remain distinct');
   assert(reading.canonicalReading?.overallPositive === null, 'p263 does not force an aggregate verdict');
@@ -291,7 +291,7 @@ for (const [h1, h12, h4, expectedHouse, noFear] of [
   ['2222', '2222', '2111', null, null],
   ['1222', '2222', '1111', 1, null],
 ]) {
-  const reading = buildKashfCanonicalAiBridge({ questionId: 'q-fear-punishment', questionText: 'האם יש לחשוש מעונש?', board: makeBoard({ 1:h1, 4:h4, 5:'2111', 10:'2211', 12:h12 }) });
+  const reading = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-fear-punishment', questionText: 'האם יש לחשוש מעונש?', board: makeBoard({ 1:h1, 4:h4, 5:'2111', 10:'2211', 12:h12 }) });
   const result = reading.canonicalReading?.primaryFormula?.result?.executorResult;
   assert(result?.ahyanHouse === expectedHouse && result?.noFear === noFear, 'p273 H1/H12 alternatives and pure H4 requirement');
   assert(reading.canonicalReading?.overallPositive === (noFear ? false : null), 'p273 missing sign has no inverse verdict');
@@ -301,7 +301,7 @@ for (const [h7, element, caution] of [
   ['1112', 'אש', 'ליסטים'], ['2111', 'אוויר', 'בהמות הדרך ודומיהן'],
   ['2211', 'מים', 'טביעה, גנבה ומריבה'], ['1221', 'עפר', 'נחשים, עקרבים ומזיקים שבאדמה'],
 ]) {
-  const reading = buildKashfCanonicalAiBridge({ questionId: 'q-travel-danger', questionText: 'ממה להיזהר בדרך?', board: makeBoard({ 7:h7, 9:'2111' }) });
+  const reading = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-travel-danger', questionText: 'ממה להיזהר בדרך?', board: makeBoard({ 7:h7, 9:'2111' }) });
   const result = reading.canonicalReading?.primaryFormula?.result?.executorResult;
   assert(result?.h7Element === element && result?.h7Caution === caution, 'p240 four elemental cautions are source-mapped');
   assert(result?.h9Evidence === 'בית 9 מיטיב — הדרך טובה', 'p240 H9 source branch is independent');
@@ -311,13 +311,13 @@ for (const [h7, element, caution] of [
 for (const [h9, expected, sameHouse] of [
   ['2111', true, 3], ['1221', false, 3], ['1111', null, 3],
 ]) {
-  const reading = buildKashfCanonicalAiBridge({ questionId: 'q-dream', questionText: 'מה סימן החלום?', board: makeBoard({ 3:h9, 9:h9 }) });
+  const reading = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-dream', questionText: 'מה סימן החלום?', board: makeBoard({ 3:h9, 9:h9 }) });
   const result = reading.canonicalReading?.primaryFormula?.result?.executorResult;
   assert(result?.dreamGoodSign === expected && result?.sameFigureHouses?.includes(sameHouse), 'p254 H9 omen and exact occurrence');
   assert(reading.canonicalReading?.overallPositive === expected, 'p254 mixed branch is not coerced to good or bad');
   assert(reading.professionalVerdictSafety?.clientFacingCertified === true, 'p254 limited dream omen is certified');
 }
-const p254NoRepeat = buildKashfCanonicalAiBridge({ questionId: 'q-dream-daily', questionText: 'חלום יומי', board: makeBoard({ 9:'2111' }) });
+const p254NoRepeat = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-dream-daily', questionText: 'חלום יומי', board: makeBoard({ 9:'2111' }) });
 assert(p254NoRepeat.canonicalReading?.primaryFormula?.result?.executorResult?.sameFigureHouses?.length === 0,
   'p254 no recurrence is reported without invented transit');
 for (const [h1, h9, h4, favorable, house] of [
@@ -326,22 +326,22 @@ for (const [h1, h9, h4, favorable, house] of [
   ['2222', '1111', '1111', null, 9],
   ['2222', '2222', '2111', null, null],
 ]) {
-  const reading = buildKashfCanonicalAiBridge({ questionId: 'q-travel-timing', questionText: 'האם זמן היציאה מתאים?', board: makeBoard({ 1:h1, 4:h4, 9:h9 }) });
+  const reading = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-travel-timing', questionText: 'האם זמן היציאה מתאים?', board: makeBoard({ 1:h1, 4:h4, 9:h9 }) });
   const result = reading.canonicalReading?.primaryFormula?.result?.executorResult;
   assert(result?.favorableDepartureTime === favorable && (house === null || result?.namedHouses?.includes(house)),
     'p236 named figure in H9 or H1 and pure H4 benefic');
   assert(reading.canonicalReading?.overallPositive === favorable, 'p236 nonmatch has no invented adverse verdict');
   assert(reading.professionalVerdictSafety?.clientFacingCertified === true, 'p236 proposed time source draft certified');
 }
-const p224NotRecovered = buildKashfCanonicalAiBridge({ questionId: 'q-theft-return', questionText: 'האם אקבל את הרכוש שנגנב?', board: makeBoard({ 8:'1221' }) });
-const p224Mixed = buildKashfCanonicalAiBridge({ questionId: 'q-theft-return', questionText: 'האם אקבל את הרכוש שנגנב?', board: makeBoard({ 8:'1111' }) });
+const p224NotRecovered = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-theft-return', questionText: 'האם אקבל את הרכוש שנגנב?', board: makeBoard({ 8:'1221' }) });
+const p224Mixed = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-theft-return', questionText: 'האם אקבל את הרכוש שנגנב?', board: makeBoard({ 8:'1111' }) });
 assert(p224Recovered.canonicalReading?.overallPositive === true && p224Recovered.professionalVerdictSafety?.clientFacingCertified === true, 'p224 H8 pure benefic yields source-certified recovery');
 assert(p224NotRecovered.canonicalReading?.overallPositive === false && p224NotRecovered.professionalVerdictSafety?.clientFacingCertified === true, 'p224 H8 pure malefic yields source-certified non-recovery');
 assert(p224Mixed.canonicalReading?.overallPositive === null && p224Mixed.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'p224 H8 mixed remains non-binary without invented soft verdict');
 assert(p224Recovered.canonicalReading?.primaryFormula?.result?.executorResult?.housesUsed?.join(',') === '8', 'p224 recovery reads only H8');
 
 // PV-BF01-P174 — six-house profile remains non-binary; no majority is allowed.
-const p174 = buildKashfCanonicalAiBridge({ questionId: 'q-general-state', questionText: 'מה מצבי הכללי?', board: makeBoard({ 1:'2111', 2:'1112', 4:'2111', 7:'1112', 10:'2111', 15:'1111' }) });
+const p174 = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-general-state', questionText: 'מה מצבי הכללי?', board: makeBoard({ 1:'2111', 2:'1112', 4:'2111', 7:'1112', 10:'2111', 15:'1111' }) });
 assert(p174.canonicalReading?.overallPositive === null, 'p174 remains non-binary even with a deliberately split 3/3 board');
 assert(p174.professionalVerdictSafety?.certificationStatus === 'certified', 'p174 passed professional backfill');
 assert(p174.professionalVerdictSafety?.clientFacingCertified === true, 'p174 client-facing explanation is certified');
@@ -349,27 +349,27 @@ assert(p174.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'p1
 assert(p174.professionalVerdictSafety?.methodSpecificPolicy?.excludedFromPrimaryVerdict?.some((x) => x.includes('רוב')), 'p174 policy explicitly forbids majority aggregation');
 
 // PV-BF01-P182 — named figures indicate seniority; every other H3 figure stays unresolved.
-const p182Named = buildKashfCanonicalAiBridge({ questionId: 'q-sibling-eldest', questionText: 'מי הגדול בין האחים?', board: makeBoard({ 3:'2222' }) });
+const p182Named = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-sibling-eldest', questionText: 'מי הגדול בין האחים?', board: makeBoard({ 3:'2222' }) });
 const p182NamedExec = p182Named.canonicalReading?.primaryFormula?.result?.executorResult;
 assert(p182NamedExec?.senioritySignal === 'older-paternal-emphasis', 'p182 Jamaa branch preserves older/paternal emphasis');
 assert(p182Named.professionalVerdictSafety?.certificationStatus === 'certified', 'p182 passed professional backfill');
-const p182Other = buildKashfCanonicalAiBridge({ questionId: 'q-sibling-eldest', questionText: 'מי הגדול בין האחים?', board: makeBoard({ 3:'2111' }) });
+const p182Other = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-sibling-eldest', questionText: 'מי הגדול בין האחים?', board: makeBoard({ 3:'2111' }) });
 assert(p182Other.canonicalReading?.primaryFormula?.result?.executorResult?.senioritySignal === 'unresolved', 'p182 unlisted H3 figure is not inverted into younger');
 assert(p182Other.canonicalReading?.overallPositive === null, 'p182 unlisted branch does not invent binary polarity');
 
 // PV-BF01-P244 — positive branch is binary; hardship branch is not a certain no-return.
-const p244Good = buildKashfCanonicalAiBridge({ questionId: 'q-traveler-return', questionText: 'האם הנוסע יחזור?', board: makeBoard({ 1:'2111', 2:'2111', 9:'2111' }) });
+const p244Good = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-traveler-return', questionText: 'האם הנוסע יחזור?', board: makeBoard({ 1:'2111', 2:'2111', 9:'2111' }) });
 assert(p244Good.canonicalReading?.overallPositive === true, 'p244 all-benefic/internal fixture gives the explicit positive return branch');
 assert(p244Good.professionalVerdictSafety?.certificationStatus === 'certified', 'p244 passed professional backfill');
 assert(p244Good.professionalVerdictSafety?.binaryClientVerdictAllowed === true, 'p244 explicit positive branch may be stated positively');
-const p244Hard = buildKashfCanonicalAiBridge({ questionId: 'q-traveler-return', questionText: 'האם הנוסע יחזור?', board: makeBoard({ 1:'1112', 2:'1112', 9:'1112' }) });
+const p244Hard = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-traveler-return', questionText: 'האם הנוסע יחזור?', board: makeBoard({ 1:'1112', 2:'1112', 9:'1112' }) });
 assert(p244Hard.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'hardship-possible-no-return', 'p244 malefic fixture exposes hardship/possible non-return only');
 assert(p244Hard.canonicalReading?.overallPositive === null, 'p244 hardship branch is not inverted into a certain negative verdict');
 const p244WrongNegative = validateKashfAdvisorOutput(auditOutputForSafety(p244Hard.professionalVerdictSafety, { draft: 'הנוסע לא יחזור.', draftPolarity: 'negative' }));
 assert(validateKashfAdvisorVerdictAlignment(p244WrongNegative.value, p244Hard.professionalVerdictSafety).ok === false, 'server rejects certain negative client verdict for p244 hardship/non-binary branch');
 
 // PV-BF01-P249 — return sign is explicitly male-scoped and remains non-binary globally.
-const p249 = buildKashfCanonicalAiBridge({ questionId: 'q-missing-return', questionText: 'האם הנעדר יחזור?', board: makeBoard({ 1:'2111', 4:'2111', 7:'2111', 10:'2111', 15:'2211' }) });
+const p249 = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-missing-return', questionText: 'האם הנעדר יחזור?', board: makeBoard({ 1:'2111', 4:'2111', 7:'2111', 10:'2111', 15:'2211' }) });
 const p249Exec = p249.canonicalReading?.primaryFormula?.result?.executorResult;
 assert(p249Exec?.returnIndicatedForMale === true, 'p249 exact angle+judge fixture exposes the male-return sign');
 assert(p249.canonicalReading?.overallPositive === null, 'p249 does not generalize male-return sign into universal yes/no');
@@ -383,33 +383,33 @@ assert(p249.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenInversions
 console.log('\n--- Professional backfill batch 02 ---');
 
 // PV-BF02-P204-PREVIOUS-* — the p204 rule is conditional on H7 recurring in H10.
-const p204PreviousMutable = buildKashfCanonicalAiBridge({ questionId: 'q-marriage-thayib', questionText: 'בתולה או גרושה?', board: makeBoard({ 7:'1121', 10:'1121' }) });
+const p204PreviousMutable = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-marriage-thayib', questionText: 'בתולה או גרושה?', board: makeBoard({ 7:'1121', 10:'1121' }) });
 assert(p204PreviousMutable.canonicalReading?.primaryFormula?.result?.executorResult?.previousStatus === 'divorced', 'p204 mutable H7 recurrence yields exactly divorced');
 assert(p204PreviousMutable.professionalVerdictSafety?.certificationStatus === 'certified', 'p204 previous-status method passed professional backfill');
 assert(p204PreviousMutable.professionalVerdictSafety?.authoritativePolarity === 'non-binary', 'p204 previous status remains categorical rather than sentiment polarity');
-const p204PreviousFixed = buildKashfCanonicalAiBridge({ questionId: 'q-marriage-thayib', questionText: 'בתולה או גרושה?', board: makeBoard({ 7:'2222', 10:'2222' }) });
+const p204PreviousFixed = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-marriage-thayib', questionText: 'בתולה או גרושה?', board: makeBoard({ 7:'2222', 10:'2222' }) });
 assert(p204PreviousFixed.canonicalReading?.primaryFormula?.result?.executorResult?.previousStatus === 'virgin', 'p204 fixed H7 recurrence yields exactly virgin');
-const p204PreviousNoRecurrence = buildKashfCanonicalAiBridge({ questionId: 'q-marriage-thayib', questionText: 'בתולה או גרושה?', board: makeBoard({ 7:'1121', 10:'2222' }) });
+const p204PreviousNoRecurrence = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-marriage-thayib', questionText: 'בתולה או גרושה?', board: makeBoard({ 7:'1121', 10:'2222' }) });
 assert(p204PreviousNoRecurrence.canonicalReading?.primaryFormula?.result?.executorResult?.previousStatus === null, 'p204 no-recurrence case stays unresolved');
 assert(p204PreviousNoRecurrence.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenInversions?.some((x) => x.includes('אי-חזרת')), 'p204 safety policy explicitly forbids guessing from absent recurrence');
 
 // PV-BF02-P204-DOWRY-* — only the stated benefic H8 branch proves a large mahr.
-const p204DowryLarge = buildKashfCanonicalAiBridge({ questionId: 'q-dowry', questionText: 'מה גודל המוהר?', board: makeBoard({ 8:'1122' }) });
+const p204DowryLarge = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-dowry', questionText: 'מה גודל המוהר?', board: makeBoard({ 8:'1122' }) });
 assert(p204DowryLarge.canonicalReading?.primaryFormula?.result?.executorResult?.isLargeDowry === true, 'p204 benefic H8 yields the explicit large-mahr branch');
 assert(p204DowryLarge.professionalVerdictSafety?.certificationStatus === 'certified', 'p204 dowry method passed professional backfill');
-const p204DowryMalefic = buildKashfCanonicalAiBridge({ questionId: 'q-dowry', questionText: 'מה גודל המוהר?', board: makeBoard({ 8:'1112' }) });
+const p204DowryMalefic = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-dowry', questionText: 'מה גודל המוהר?', board: makeBoard({ 8:'1112' }) });
 assert(p204DowryMalefic.canonicalReading?.primaryFormula?.result?.executorResult?.isLargeDowry === null, 'p204 malefic H8 does not invert into small mahr');
 assert(p204DowryMalefic.professionalVerdictSafety?.authoritativePolarity === 'non-binary', 'p204 malefic dowry branch remains non-binary');
 const p204DowryInventedSmall = validateKashfAdvisorOutput(auditOutputForSafety(p204DowryMalefic.professionalVerdictSafety, { draft: 'המוהר יהיה קטן.', draftPolarity: 'negative' }));
 assert(validateKashfAdvisorVerdictAlignment(p204DowryInventedSmall.value, p204DowryMalefic.professionalVerdictSafety).ok === false, 'server rejects invented small-mahr inverse verdict');
 
 // PV-BF02-P206-WOMAN-FAVOR-* — exact semantics: finding favor, not love/chemistry/marriage.
-const p206FavorGood = buildKashfCanonicalAiBridge({ questionId: 'q-woman-grace', questionText: 'האם האישה תמצא חן בעיני האיש?', board: makeBoard({ 5:'2211', 7:'2222', 11:'2222' }) });
+const p206FavorGood = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-woman-grace', questionText: 'האם האישה תמצא חן בעיני האיש?', board: makeBoard({ 5:'2211', 7:'2222', 11:'2222' }) });
 assert(p206FavorGood.canonicalReading?.overallPositive === true, 'p206 woman-favor benefic final is positive');
 assert(p206FavorGood.professionalVerdictSafety?.certificationStatus === 'certified', 'p206 woman-favor method passed professional backfill');
-const p206FavorBad = buildKashfCanonicalAiBridge({ questionId: 'q-woman-grace', questionText: 'האם האישה תמצא חן בעיני האיש?', board: makeBoard({ 5:'1212', 7:'2222', 11:'2222' }) });
+const p206FavorBad = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-woman-grace', questionText: 'האם האישה תמצא חן בעיני האיש?', board: makeBoard({ 5:'1212', 7:'2222', 11:'2222' }) });
 assert(p206FavorBad.canonicalReading?.overallPositive === false, 'p206 woman-favor malefic final is negative');
-const p206FavorMixed = buildKashfCanonicalAiBridge({ questionId: 'q-woman-grace', questionText: 'האם האישה תמצא חן בעיני האיש?', board: makeBoard({ 5:'2222', 7:'2222', 11:'2222' }) });
+const p206FavorMixed = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-woman-grace', questionText: 'האם האישה תמצא חן בעיני האיש?', board: makeBoard({ 5:'2222', 7:'2222', 11:'2222' }) });
 assert(p206FavorMixed.canonicalReading?.overallPositive === null, 'p206 woman-favor mixed final remains unresolved');
 assert(p206FavorGood.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenClientClaimsWithoutExplicitSelectedMethodBranch?.some((x) => x.includes('כימיה')), 'p206 woman-favor policy forbids mutual-chemistry expansion');
 const p206FavorUnsupportedLove = validateKashfAdvisorOutput(auditOutputForSafety(p206FavorGood.professionalVerdictSafety, { draft: 'הוא אוהב אותה.', draftPolarity: 'positive' }));
@@ -417,20 +417,20 @@ p206FavorUnsupportedLove.value.verdictAudit.unsupportedClientClaims = ['הוא �
 assert(validateKashfAdvisorVerdictAlignment(p206FavorUnsupportedLove.value, p206FavorGood.professionalVerdictSafety).ok === false, 'server rejects expansion from finding-favor to love');
 
 // PV-BF02-P206-DESIRE-* — same arithmetic as woman-favor, but a different semantic question.
-const p206DesireGood = buildKashfCanonicalAiBridge({ questionText: 'האם השואל רוצה בדבר', board: makeBoard({ 5:'2211', 7:'2222', 11:'2222' }) });
+const p206DesireGood = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionText: 'האם השואל רוצה בדבר', board: makeBoard({ 5:'2211', 7:'2222', 11:'2222' }) });
 assert(p206DesireGood.resolution.kashfMethodId === 'desire.p206.querentWantsH7H11ThenH5', 'p206 desire free text resolves only the exact desire method');
 assert(p206DesireGood.canonicalReading?.overallPositive === true, 'p206 desire benefic final means the querent wants the matter');
 assert(p206DesireGood.professionalVerdictSafety?.certificationStatus === 'certified', 'p206 desire method passed professional backfill');
-const p206DesireBad = buildKashfCanonicalAiBridge({ questionText: 'האם השואל רוצה בדבר', board: makeBoard({ 5:'1212', 7:'2222', 11:'2222' }) });
+const p206DesireBad = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionText: 'האם השואל רוצה בדבר', board: makeBoard({ 5:'1212', 7:'2222', 11:'2222' }) });
 assert(p206DesireBad.canonicalReading?.overallPositive === false, 'p206 desire malefic final means the querent does not want the matter');
-const p206DesireMixed = buildKashfCanonicalAiBridge({ questionText: 'האם השואל רוצה בדבר', board: makeBoard({ 5:'2222', 7:'2222', 11:'2222' }) });
+const p206DesireMixed = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionText: 'האם השואל רוצה בדבר', board: makeBoard({ 5:'2222', 7:'2222', 11:'2222' }) });
 assert(p206DesireMixed.canonicalReading?.overallPositive === null, 'p206 desire mixed final remains unresolved');
 assert(p206DesireGood.professionalVerdictSafety?.methodSpecificPolicy?.excludedFromPrimaryVerdict?.some((x) => x.includes('womanFavor')), 'p206 desire policy explicitly isolates the identical-arithmetic woman-favor method');
 
 console.log('\n--- Professional backfill batch 03 + exact client-draft lock ---');
 
 // The exact draft gate must protect categorical/non-binary methods too.
-const p204CategoryLock = buildKashfCanonicalAiBridge({ questionId: 'q-marriage-thayib', questionText: 'בתולה או גרושה?', board: makeBoard({ 7:'1121', 10:'1121' }) });
+const p204CategoryLock = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-marriage-thayib', questionText: 'בתולה או גרושה?', board: makeBoard({ 7:'1121', 10:'1121' }) });
 assert(p204CategoryLock.canonicalReading?.primaryFormula?.result?.executorResult?.previousStatus === 'divorced', 'category-lock fixture engine says divorced');
 assert(p204CategoryLock.professionalVerdictSafety?.authoritativePolarity === 'non-binary', 'category-lock fixture is non-binary by polarity');
 assert(p204CategoryLock.professionalVerdictSafety?.clientDraftExactMatchRequired === true, 'categorical certified method requires exact client text');
@@ -441,7 +441,7 @@ const p204WrongCategoryAlignment = validateKashfAdvisorVerdictAlignment(p204Wron
 assert(p204WrongCategoryAlignment.ok === false && p204WrongCategoryAlignment.category === 'client-draft-not-exact-engine-text', 'server rejects divorced→virgin category inversion even though both are non-binary');
 
 // PV-BF03-P183-* — two exact opposite branches; same-class remains unresolved.
-const p183Stay = buildKashfCanonicalAiBridge({ questionId: 'q-stay-place', questionText: 'האם כדאי להישאר במקום זה או לעבור?', board: makeBoard({ 1:'1122', 2:'1112' }) });
+const p183Stay = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-stay-place', questionText: 'האם כדאי להישאר במקום זה או לעבור?', board: makeBoard({ 1:'1122', 2:'1112' }) });
 assert(p183Stay.canonicalReading?.primaryFormula?.result?.executorResult?.decision === 'stay', 'p183 H1 benefic + H2 malefic chooses stay');
 assert(p183Stay.professionalVerdictSafety?.certificationStatus === 'certified', 'p183 passed professional backfill');
 assert(p183Stay.professionalVerdictSafety?.authoritativePolarity === 'non-binary', 'p183 directional decision remains non-binary polarity');
@@ -449,54 +449,54 @@ const p183StayExact = validateKashfAdvisorOutput(auditOutputForSafety(p183Stay.p
 assert(validateKashfAdvisorVerdictAlignment(p183StayExact.value, p183Stay.professionalVerdictSafety).ok === true, 'p183 exact stay text passes server gate');
 const p183WrongMove = validateKashfAdvisorOutput(auditOutputForSafety(p183Stay.professionalVerdictSafety, { draft: 'המעבר עדיף.', draftPolarity: 'non-binary' }));
 assert(validateKashfAdvisorVerdictAlignment(p183WrongMove.value, p183Stay.professionalVerdictSafety).ok === false, 'p183 server blocks stay→move category reversal');
-const p183Move = buildKashfCanonicalAiBridge({ questionId: 'q-stay-place', questionText: 'האם כדאי להישאר במקום זה או לעבור?', board: makeBoard({ 1:'1112', 2:'1122' }) });
+const p183Move = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-stay-place', questionText: 'האם כדאי להישאר במקום זה או לעבור?', board: makeBoard({ 1:'1112', 2:'1122' }) });
 assert(p183Move.canonicalReading?.primaryFormula?.result?.executorResult?.decision === 'move', 'p183 reverse explicit branch chooses move');
-const p183Same = buildKashfCanonicalAiBridge({ questionId: 'q-stay-place', questionText: 'האם כדאי להישאר במקום זה או לעבור?', board: makeBoard({ 1:'1122', 2:'2211' }) });
+const p183Same = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-stay-place', questionText: 'האם כדאי להישאר במקום זה או לעבור?', board: makeBoard({ 1:'1122', 2:'2211' }) });
 assert(p183Same.canonicalReading?.primaryFormula?.result?.executorResult?.decision === 'unresolved', 'p183 same-class testimony remains unresolved');
 
 // PV-BF03-P212-* — only the benefic result is an explicit reconciliation verdict.
-const p212Good = buildKashfCanonicalAiBridge({ questionId: 'q-reconciliation', questionText: 'האם יהיה פיוס בין הצדדים?', board: makeBoard({ 1:'1111', 7:'2211' }) });
+const p212Good = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-reconciliation', questionText: 'האם יהיה פיוס בין הצדדים?', board: makeBoard({ 1:'1111', 7:'2211' }) });
 assert(p212Good.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'reconciliation', 'p212 benefic generated figure yields explicit reconciliation');
 assert(p212Good.canonicalReading?.overallPositive === true, 'p212 explicit reconciliation branch is positive');
 assert(p212Good.professionalVerdictSafety?.certificationStatus === 'certified', 'p212 passed professional backfill');
-const p212Bad = buildKashfCanonicalAiBridge({ questionId: 'q-reconciliation', questionText: 'האם יהיה פיוס בין הצדדים?', board: makeBoard({ 1:'1111', 7:'2221' }) });
+const p212Bad = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-reconciliation', questionText: 'האם יהיה פיוס בין הצדדים?', board: makeBoard({ 1:'1111', 7:'2221' }) });
 assert(p212Bad.canonicalReading?.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'nahs', 'p212 counterfixture generates a malefic result');
 assert(p212Bad.canonicalReading?.overallPositive === null, 'p212 malefic result is not inverted into explicit no-reconciliation');
 assert(p212Bad.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenInversions?.some((x) => x.includes('מזיקה')), 'p212 policy records the no-inverse rule');
 
 // PV-BF03-P253-* — H3/H9 must agree in the same pure source class.
-const p253Good = buildKashfCanonicalAiBridge({ questionId: 'q-religion', questionText: 'מה מצב דתו וצדקותו של האדם?', board: makeBoard({ 3:'1122', 9:'2211' }) });
+const p253Good = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-religion', questionText: 'מה מצב דתו וצדקותו של האדם?', board: makeBoard({ 3:'1122', 9:'2211' }) });
 assert(p253Good.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'religious-and-god-fearing', 'p253 two benefics yield the exact positive source branch');
 assert(p253Good.canonicalReading?.overallPositive === true, 'p253 benefic branch is positive');
 assert(p253Good.professionalVerdictSafety?.certificationStatus === 'certified', 'p253 passed professional backfill');
-const p253Bad = buildKashfCanonicalAiBridge({ questionId: 'q-religion', questionText: 'מה מצב דתו וצדקותו של האדם?', board: makeBoard({ 3:'1112', 9:'1221' }) });
+const p253Bad = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-religion', questionText: 'מה מצב דתו וצדקותו של האדם?', board: makeBoard({ 3:'1112', 9:'1221' }) });
 assert(p253Bad.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'little-religion', 'p253 two malefics yield little-religion source branch');
 assert(p253Bad.canonicalReading?.overallPositive === false, 'p253 malefic branch is negative');
-const p253Split = buildKashfCanonicalAiBridge({ questionId: 'q-religion', questionText: 'מה מצב דתו וצדקותו של האדם?', board: makeBoard({ 3:'1112', 9:'1122' }) });
+const p253Split = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-religion', questionText: 'מה מצב דתו וצדקותו של האדם?', board: makeBoard({ 3:'1112', 9:'1122' }) });
 assert(p253Split.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'unresolved', 'p253 split testimony remains unresolved');
 assert(p253Split.canonicalReading?.overallPositive === null, 'p253 split testimony does not become an invented middle verdict');
 
 // PV-BF03-P202-* — source has an explicit else branch.
-const p202Yes = buildKashfCanonicalAiBridge({ questionId: 'q-lost-item', questionText: 'האם האבדה תשוב?', board: makeBoard({ 6:'2111', 8:'2121' }) });
+const p202Yes = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-lost-item', questionText: 'האם האבדה תשוב?', board: makeBoard({ 6:'2111', 8:'2121' }) });
 assert(p202Yes.canonicalReading?.overallPositive === true, 'p202 H6/H8 benefic+internal condition yields return');
 assert(p202Yes.professionalVerdictSafety?.certificationStatus === 'certified', 'p202 passed professional backfill');
-const p202No = buildKashfCanonicalAiBridge({ questionId: 'q-lost-item', questionText: 'האם האבדה תשוב?', board: makeBoard({ 6:'1112', 8:'2121' }) });
+const p202No = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-lost-item', questionText: 'האם האבדה תשוב?', board: makeBoard({ 6:'1112', 8:'2121' }) });
 assert(p202No.canonicalReading?.overallPositive === false, 'p202 failure of explicit H6/H8 condition yields the source else/no branch');
 assert(p202No.professionalVerdictSafety?.methodSpecificPolicy?.excludedFromPrimaryVerdict?.some((x) => x.includes('גנב')), 'p202 policy blocks theft-attribution expansion');
 
 // PV-BF03-P265-* — general clothing luck and H10 royal-clothing qualifier remain separate.
-const p265Good = buildKashfCanonicalAiBridge({ questionId: 'q-clothing-lucky', questionText: 'מה מזלי בלבוש?', board: makeBoard({ 5:'1122', 10:'2211', 11:'2111' }) });
+const p265Good = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-clothing-lucky', questionText: 'מה מזלי בלבוש?', board: makeBoard({ 5:'1122', 10:'2211', 11:'2111' }) });
 assert(p265Good.canonicalReading?.primaryFormula?.result?.executorResult?.clothingLuck === true, 'p265 H5/H11 benefic branch gives general clothing luck');
 assert(p265Good.canonicalReading?.overallPositive === true, 'p265 good clothing-luck branch is positive');
 assert(p265Good.professionalVerdictSafety?.certificationStatus === 'certified', 'p265 passed professional backfill');
-const p265Bad = buildKashfCanonicalAiBridge({ questionId: 'q-clothing-lucky', questionText: 'מה מזלי בלבוש?', board: makeBoard({ 5:'1112', 10:'1122', 11:'1212' }) });
+const p265Bad = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-clothing-lucky', questionText: 'מה מזלי בלבוש?', board: makeBoard({ 5:'1112', 10:'1122', 11:'1212' }) });
 assert(p265Bad.canonicalReading?.primaryFormula?.result?.executorResult?.clothingLuck === false, 'p265 H5/H11 malefic branch gives no general clothing luck');
 assert(p265Bad.canonicalReading?.overallPositive === false, 'p265 bad clothing-luck branch is negative');
-const p265Royal = buildKashfCanonicalAiBridge({ questionId: 'q-clothing-lucky', questionText: 'מה מזלי בלבוש?', board: makeBoard({ 5:'1122', 10:'1112', 11:'2111' }) });
+const p265Royal = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-clothing-lucky', questionText: 'מה מזלי בלבוש?', board: makeBoard({ 5:'1122', 10:'1112', 11:'2111' }) });
 assert(p265Royal.canonicalReading?.primaryFormula?.result?.executorResult?.clothingLuck === true, 'p265 general clothing luck remains positive when H5/H11 are benefic');
 assert(p265Royal.canonicalReading?.primaryFormula?.result?.executorResult?.royalClothingNoLuck === true, 'p265 malefic H10 remains a separate royal-clothing qualifier');
 assert(p265Royal.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenClientClaimsWithoutExplicitSelectedMethodBranch?.some((x) => x.includes('מבטל')), 'p265 policy forbids H10 from silently cancelling the general branch');
-const p265Mixed = buildKashfCanonicalAiBridge({ questionId: 'q-clothing-lucky', questionText: 'מה מזלי בלבוש?', board: makeBoard({ 5:'2212', 10:'1122', 11:'2111' }) });
+const p265Mixed = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-clothing-lucky', questionText: 'מה מזלי בלבוש?', board: makeBoard({ 5:'2212', 10:'1122', 11:'2111' }) });
 assert(p265Mixed.canonicalReading?.overallPositive === null, 'p265 mixed/split H5-H11 evidence remains unresolved');
 
 
@@ -504,19 +504,19 @@ assert(p265Mixed.canonicalReading?.overallPositive === null, 'p265 mixed/split H
 console.log('\n--- Professional backfill batch 04 ---');
 
 // PV-BF04-P191 existence — use silent/empty only; never substitute fortune.
-const p191ExistsYes = buildKashfCanonicalAiBridge({ questionId: 'q-pregnancy', questionText: 'האם יש הריון?', board: makeBoard({ 5:'2111' }) });
+const p191ExistsYes = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-pregnancy', questionText: 'האם יש הריון?', board: makeBoard({ 5:'2111' }) });
 assert(p191ExistsYes.canonicalReading?.primaryFormula?.result?.executorResult?.classification === 'silent', 'p191 existence silent H5 uses the exact silent class');
 assert(p191ExistsYes.canonicalReading?.overallPositive === true, 'p191 silent H5 gives the explicit pregnancy-exists branch');
 assert(p191ExistsYes.professionalVerdictSafety?.certificationStatus === 'certified', 'p191 pregnancy existence passed professional backfill');
 assert(p191ExistsYes.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenInversions?.some((x) => x.includes('מיטיב/מזיק')), 'p191 existence policy forbids replacing silent/empty with benefic/malefic');
-const p191ExistsNo = buildKashfCanonicalAiBridge({ questionId: 'q-pregnancy', questionText: 'האם יש הריון?', board: makeBoard({ 5:'1112' }) });
+const p191ExistsNo = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-pregnancy', questionText: 'האם יש הריון?', board: makeBoard({ 5:'1112' }) });
 assert(p191ExistsNo.canonicalReading?.primaryFormula?.result?.executorResult?.classification === 'empty', 'p191 existence empty H5 uses the exact empty class');
 assert(p191ExistsNo.canonicalReading?.overallPositive === false, 'p191 empty H5 gives the explicit pregnancy-nullified branch');
-const p191ExistsUnresolved = buildKashfCanonicalAiBridge({ questionId: 'q-pregnancy', questionText: 'האם יש הריון?', board: makeBoard({ 5:'1111' }) });
+const p191ExistsUnresolved = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-pregnancy', questionText: 'האם יש הריון?', board: makeBoard({ 5:'1111' }) });
 assert(p191ExistsUnresolved.canonicalReading?.overallPositive === null, 'p191 H5 outside silent/empty remains unresolved');
 
 // PV-BF04-P191 gender — categorical male/female needs exact-draft protection.
-const p191GenderMale = buildKashfCanonicalAiBridge({ questionId: 'q-gender', questionText: 'מה מין הוולד?', board: makeBoard({ 5:'1112' }) });
+const p191GenderMale = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-gender', questionText: 'מה מין הוולד?', board: makeBoard({ 5:'1112' }) });
 assert(p191GenderMale.canonicalReading?.primaryFormula?.result?.executorResult?.gender === 'male', 'p191 masculine H5 gives male');
 assert(p191GenderMale.canonicalReading?.overallPositive === null, 'p191 gender remains categorical/non-binary polarity');
 assert(p191GenderMale.professionalVerdictSafety?.certificationStatus === 'certified', 'p191 gender passed professional backfill');
@@ -525,35 +525,35 @@ assert(validateKashfAdvisorVerdictAlignment(p191GenderExact.value, p191GenderMal
 const p191GenderWrong = validateKashfAdvisorOutput(auditOutputForSafety(p191GenderMale.professionalVerdictSafety, { draft: 'לפי כשף עמ׳ 191: הוולד נקבה.', draftPolarity: 'non-binary' }));
 const p191GenderWrongAlignment = validateKashfAdvisorVerdictAlignment(p191GenderWrong.value, p191GenderMale.professionalVerdictSafety);
 assert(p191GenderWrongAlignment.ok === false && p191GenderWrongAlignment.category === 'client-draft-not-exact-engine-text', 'server blocks male→female category replacement even though both are non-binary');
-const p191GenderFemale = buildKashfCanonicalAiBridge({ questionId: 'q-gender', questionText: 'מה מין הוולד?', board: makeBoard({ 5:'2111' }) });
+const p191GenderFemale = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-gender', questionText: 'מה מין הוולד?', board: makeBoard({ 5:'2111' }) });
 assert(p191GenderFemale.canonicalReading?.primaryFormula?.result?.executorResult?.gender === 'female', 'p191 feminine H5 gives female');
-const p191GenderUnresolved = buildKashfCanonicalAiBridge({ questionId: 'q-gender', questionText: 'מה מין הוולד?', board: makeBoard({ 5:'1111' }) });
+const p191GenderUnresolved = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-gender', questionText: 'מה מין הוולד?', board: makeBoard({ 5:'1111' }) });
 assert(p191GenderUnresolved.canonicalReading?.primaryFormula?.result?.executorResult?.gender === null, 'p191 unclassified H5 does not invent a gender');
 
 // PV-BF04-P196 illness — malefic means prolongation, not death or permanent non-recovery.
-const p196Recovery = buildKashfCanonicalAiBridge({ questionId: 'q-illness-heal', questionText: 'האם החולה יחלים?', board: makeBoard({ 15:'1122' }) });
+const p196Recovery = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-illness-heal', questionText: 'האם החולה יחלים?', board: makeBoard({ 15:'1122' }) });
 assert(p196Recovery.canonicalReading?.primaryFormula?.result?.executorResult?.recoveryStatus === 'recovers', 'p196 benefic H15 gives explicit recovery');
 assert(p196Recovery.canonicalReading?.overallPositive === true, 'p196 recovery branch is positive');
 assert(p196Recovery.professionalVerdictSafety?.certificationStatus === 'certified', 'p196 illness recovery passed professional backfill');
-const p196Prolonged = buildKashfCanonicalAiBridge({ questionId: 'q-illness-heal', questionText: 'האם החולה יחלים?', board: makeBoard({ 15:'1212' }) });
+const p196Prolonged = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-illness-heal', questionText: 'האם החולה יחלים?', board: makeBoard({ 15:'1212' }) });
 assert(p196Prolonged.canonicalReading?.primaryFormula?.result?.executorResult?.recoveryStatus === 'prolonged-illness', 'p196 malefic H15 means prolonged illness');
 assert(p196Prolonged.canonicalReading?.primaryFormula?.result?.executorResult?.recovers === null && p196Prolonged.canonicalReading?.overallPositive === null, 'p196 prolongation is not inverted into categorical no-recovery');
 assert(p196Prolonged.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenClientClaimsWithoutExplicitSelectedMethodBranch?.includes('החולה ימות'), 'p196 policy explicitly forbids inventing death');
-const p196Mixed = buildKashfCanonicalAiBridge({ questionId: 'q-illness-heal', questionText: 'האם החולה יחלים?', board: makeBoard({ 15:'2112' }) });
+const p196Mixed = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-illness-heal', questionText: 'האם החולה יחלים?', board: makeBoard({ 15:'2112' }) });
 assert(p196Mixed.canonicalReading?.overallPositive === null, 'p196 mixed H15 remains unresolved');
 
 // PV-BF04-P188 hidden thing — all six required houses, no majority.
-const p188Present = buildKashfCanonicalAiBridge({ questionId: 'q-treasure', questionText: 'האם הדבר הנסתר עדיין במקומו?', board: makeBoard({ 1:'1122', 2:'1122', 4:'1122', 13:'1122', 14:'1122', 15:'1122' }) });
+const p188Present = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-treasure', questionText: 'האם הדבר הנסתר עדיין במקומו?', board: makeBoard({ 1:'1122', 2:'1122', 4:'1122', 13:'1122', 14:'1122', 15:'1122' }) });
 assert(p188Present.canonicalReading?.primaryFormula?.result?.executorResult?.allBenefic === true, 'p188 all six required houses are pure benefic');
 assert(p188Present.canonicalReading?.overallPositive === true, 'p188 all-six condition gives present-in-place');
 assert(p188Present.professionalVerdictSafety?.certificationStatus === 'certified', 'p188 hidden-item method passed professional backfill');
-const p188Absent = buildKashfCanonicalAiBridge({ questionId: 'q-treasure', questionText: 'האם הדבר הנסתר עדיין במקומו?', board: makeBoard({ 1:'1122', 2:'1122', 4:'1122', 13:'1122', 14:'1112', 15:'1122' }) });
+const p188Absent = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-treasure', questionText: 'האם הדבר הנסתר עדיין במקומו?', board: makeBoard({ 1:'1122', 2:'1122', 4:'1122', 13:'1122', 14:'1112', 15:'1122' }) });
 assert(p188Absent.canonicalReading?.primaryFormula?.result?.executorResult?.nonBeneficHouses?.includes(14), 'p188 identifies the single failing required house');
 assert(p188Absent.canonicalReading?.overallPositive === false, 'p188 one failing house triggers the explicit not-there branch');
 assert(p188Absent.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenClientClaimsWithoutExplicitSelectedMethodBranch?.some((x) => x.includes('חמישה מתוך שישה')), 'p188 policy explicitly forbids invented 5/6 majority');
 
 // PV-BF04-P224 thief relationship — recurrence describes a source-bounded relation, not identity.
-const p224Relation = buildKashfCanonicalAiBridge({ questionId: 'q-thief-near', questionText: 'מה הקשר של הגנב לבעל הדבר?', board: makeBoard({ 4:'1121', 7:'1121' }) });
+const p224Relation = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-thief-near', questionText: 'מה הקשר של הגנב לבעל הדבר?', board: makeBoard({ 4:'1121', 7:'1121' }) });
 const p224RelationExec = p224Relation.canonicalReading?.primaryFormula?.result?.executorResult;
 assert(p224RelationExec?.relationResolved === true, 'p224 H7 recurrence in H4 resolves a source-supported relation');
 assert(JSON.stringify(p224RelationExec?.recurrenceHouses) === JSON.stringify([4]), 'p224 reference H7 itself is excluded and only H4 recurrence is used');
@@ -562,7 +562,7 @@ assert(String(p224RelationExec?.outputHebrew || '').includes('שורש קרבה:
 assert(p224Relation.canonicalReading?.overallPositive === null, 'p224 relationship is descriptive/non-binary');
 assert(p224Relation.professionalVerdictSafety?.certificationStatus === 'certified', 'p224 thief relationship passed professional backfill');
 assert(p224Relation.professionalVerdictSafety?.methodSpecificPolicy?.excludedFromPrimaryVerdict?.some((x) => x.includes('זהות של אדם מסוים')), 'p224 policy blocks named-person identification');
-const p224NoRecurrence = buildKashfCanonicalAiBridge({ questionId: 'q-thief-near', questionText: 'מה הקשר של הגנב לבעל הדבר?', board: makeBoard({ 7:'1121' }) });
+const p224NoRecurrence = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-thief-near', questionText: 'מה הקשר של הגנב לבעל הדבר?', board: makeBoard({ 7:'1121' }) });
 assert(p224NoRecurrence.canonicalReading?.primaryFormula?.result?.executorResult?.relationResolved === false, 'p224 no H7 recurrence remains unresolved');
 assert(p224NoRecurrence.canonicalReading?.overallPositive === null, 'p224 no recurrence does not invent stranger/near/far polarity');
 
@@ -571,7 +571,7 @@ assert(p224NoRecurrence.canonicalReading?.overallPositive === null, 'p224 no rec
 console.log('\n--- Professional backfill batch 05 ---');
 
 // PV-BF05-P172 — only the final generated figure decides good/bad; mixed stays mixed.
-const p172BfGood = buildKashfCanonicalAiBridge({
+const p172BfGood = buildKashfCanonicalAiBridgeForLegacyFixtureTests({
   questionId: 'q-matter-end',
   questionText: 'מה תהיה תוצאת העניין?',
   board: makeBoard({ 1:'1111', 7:'2222', 10:'1111', 11:'1122' }),
@@ -582,13 +582,13 @@ assert(p172BfGoodExec?.resultPattern === '1122' && p172BfGoodExec?.sourceOutcome
 assert(p172BfGood.canonicalReading?.overallPositive === true, 'p172 good branch is positive');
 assert(p172BfGood.professionalVerdictSafety?.certificationStatus === 'certified', 'p172 matter outcome passed professional backfill');
 assert(p172BfGood.professionalVerdictSafety?.methodSpecificPolicy?.excludedFromPrimaryVerdict?.some((x) => x.includes('completion.p173')), 'p172 safety policy isolates the separate p173 completion method');
-const p172BfBad = buildKashfCanonicalAiBridge({
+const p172BfBad = buildKashfCanonicalAiBridgeForLegacyFixtureTests({
   questionId: 'q-matter-end', questionText: 'מה תהיה תוצאת העניין?',
   board: makeBoard({ 1:'1111', 7:'2222', 10:'1111', 11:'1112' }),
 });
 assert(p172BfBad.canonicalReading?.primaryFormula?.result?.executorResult?.resultPattern === '1112', 'p172 bad fixture generates the expected final figure');
 assert(p172BfBad.canonicalReading?.overallPositive === false, 'p172 pure-malefic final figure gives bad outcome');
-const p172BfMixed = buildKashfCanonicalAiBridge({
+const p172BfMixed = buildKashfCanonicalAiBridgeForLegacyFixtureTests({
   questionId: 'q-matter-end', questionText: 'מה תהיה תוצאת העניין?',
   board: makeBoard({ 1:'1111', 7:'2222', 10:'1111', 11:'2212' }),
 });
@@ -596,7 +596,7 @@ assert(p172BfMixed.canonicalReading?.primaryFormula?.result?.executorResult?.cla
 assert(p172BfMixed.canonicalReading?.overallPositive === null, 'p172 mixed final cannot become binary good/bad');
 
 // PV-BF05-P183 — two independent positive pairs; no inverse and no ranking.
-const p183BfCurrent = buildKashfCanonicalAiBridge({
+const p183BfCurrent = buildKashfCanonicalAiBridgeForLegacyFixtureTests({
   questionId: 'q-move-home', questionText: 'מקום נוכחי מול מקום חדש',
   board: makeBoard({ 1:'1122', 4:'1122', 7:'1112', 10:'1112' }),
 });
@@ -605,40 +605,40 @@ assert(p183BfCurrentExec?.sourceOutcome === 'current-place-good', 'p183 H1+H4 be
 assert(p183BfCurrentExec?.moveGood === false && p183BfCurrentExec?.sourceOutcome === 'current-place-good' && p183BfCurrent.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenInversions?.some((x) => x.includes('H7+H10')), 'p183 failed move pair stays non-positive and the safety policy explicitly forbids inversion into a bad move');
 assert(p183BfCurrent.canonicalReading?.overallPositive === null, 'p183 comparison stays descriptive/non-binary');
 assert(p183BfCurrent.professionalVerdictSafety?.certificationStatus === 'certified', 'p183 current-vs-new passed professional backfill');
-const p183BfMove = buildKashfCanonicalAiBridge({
+const p183BfMove = buildKashfCanonicalAiBridgeForLegacyFixtureTests({
   questionId: 'q-move-home', questionText: 'מקום נוכחי מול מקום חדש',
   board: makeBoard({ 1:'1112', 4:'1112', 7:'1122', 10:'1122' }),
 });
 assert(p183BfMove.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'move-good', 'p183 H7+H10 benefic pair gives the move positive clause');
 assert(!String(p183BfMove.canonicalReading?.primaryFormula?.result?.executorResult?.outputHebrew || '').includes('המקום הנוכחי רע'), 'p183 failed current pair is not inverted into a bad current place');
-const p183BfBoth = buildKashfCanonicalAiBridge({
+const p183BfBoth = buildKashfCanonicalAiBridgeForLegacyFixtureTests({
   questionId: 'q-move-home', questionText: 'מקום נוכחי מול מקום חדש',
   board: makeBoard({ 1:'1122', 4:'1122', 7:'1122', 10:'1122' }),
 });
 assert(p183BfBoth.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'both-good', 'p183 preserves both positive clauses together');
 assert(!String(p183BfBoth.canonicalReading?.primaryFormula?.result?.executorResult?.outputHebrew || '').includes('טובה יותר'), 'p183 does not invent a ranking when both options qualify');
-const p183BfMixed = buildKashfCanonicalAiBridge({
+const p183BfMixed = buildKashfCanonicalAiBridgeForLegacyFixtureTests({
   questionId: 'q-move-home', questionText: 'מקום נוכחי מול מקום חדש',
   board: makeBoard({ 1:'2212', 4:'1122', 7:'1112', 10:'1112' }),
 });
 assert(p183BfMixed.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'unresolved', 'p183 mixed/nonqualifying evidence remains unresolved');
 
 // PV-BF05-P256 — H10 planetary branch only; no fame or appointment inference.
-const p256BfSun = buildKashfCanonicalAiBridge({ questionId: 'q-fame', questionText: 'מה מצב הכבוד והמעמד?', board: makeBoard({ 10:'1122' }) });
+const p256BfSun = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-fame', questionText: 'מה מצב הכבוד והמעמד?', board: makeBoard({ 10:'1122' }) });
 const p256BfSunExec = p256BfSun.canonicalReading?.primaryFormula?.result?.executorResult;
 assert(p256BfSunExec?.planetHebrew === 'שמש' && p256BfSunExec?.condition === 'strong-honor-and-rank', 'p256 Sun branch preserves strength of honor/rank');
 assert(p256BfSun.canonicalReading?.overallPositive === true, 'p256 Sun branch is positive');
 assert(p256BfSun.professionalVerdictSafety?.certificationStatus === 'certified', 'p256 honor condition passed professional backfill');
 assert(p256BfSun.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenClientClaimsWithoutExplicitSelectedMethodBranch?.includes('האדם יהיה מפורסם'), 'p256 policy blocks expansion into fame prediction');
-const p256BfSaturn = buildKashfCanonicalAiBridge({ questionId: 'q-fame', questionText: 'מה מצב הכבוד והמעמד?', board: makeBoard({ 10:'1221' }) });
+const p256BfSaturn = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-fame', questionText: 'מה מצב הכבוד והמעמד?', board: makeBoard({ 10:'1221' }) });
 assert(p256BfSaturn.canonicalReading?.primaryFormula?.result?.executorResult?.planetHebrew === 'שבתאי', 'p256 Saturn fixture resolves the exact planet');
 assert(p256BfSaturn.canonicalReading?.overallPositive === false, 'p256 Saturn branch is negative');
-const p256BfOther = buildKashfCanonicalAiBridge({ questionId: 'q-fame', questionText: 'מה מצב הכבוד והמעמד?', board: makeBoard({ 10:'2222' }) });
+const p256BfOther = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-fame', questionText: 'מה מצב הכבוד והמעמד?', board: makeBoard({ 10:'2222' }) });
 assert(p256BfOther.canonicalReading?.primaryFormula?.result?.executorResult?.condition === 'unresolved-by-source', 'p256 unlisted planet remains source-unresolved');
 assert(p256BfOther.canonicalReading?.overallPositive === null, 'p256 unlisted planet is not invented into positive/negative');
 
 // PV-BF05-P257 appointment — exact planet-class test, with explicit else.
-const p257AppointmentYes = buildKashfCanonicalAiBridge({
+const p257AppointmentYes = buildKashfCanonicalAiBridgeForLegacyFixtureTests({
   questionId: 'q-position-keep', questionText: 'האם המינוי יתקיים?',
   board: makeBoard({ 1:'1111', 10:'2222' }),
 });
@@ -647,7 +647,7 @@ assert(p257AppointmentYesExec?.resultPattern === '1111' && p257AppointmentYesExe
 assert(p257AppointmentYesExec?.appointmentCompletes === true && p257AppointmentYes.canonicalReading?.overallPositive === true, 'p257 luminary result completes the appointment');
 assert(p257AppointmentYes.professionalVerdictSafety?.certificationStatus === 'certified', 'p257 appointment passed professional backfill');
 assert(p257AppointmentYes.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenInversions?.some((x) => x.includes('מיטיב/מזיק')), 'p257 appointment policy forbids fortune-class substitution');
-const p257AppointmentNo = buildKashfCanonicalAiBridge({
+const p257AppointmentNo = buildKashfCanonicalAiBridgeForLegacyFixtureTests({
   questionId: 'q-position-keep', questionText: 'האם המינוי יתקיים?',
   board: makeBoard({ 1:'1111', 10:'2112' }),
 });
@@ -656,15 +656,15 @@ assert(p257AppointmentNoExec?.resultPattern === '1221' && p257AppointmentNoExec?
 assert(p257AppointmentNoExec?.appointmentCompletes === false && p257AppointmentNo.canonicalReading?.overallPositive === false, 'p257 verified non-luminary/non-benefic planet activates the explicit no branch');
 
 // PV-BF05-P257 ruler condition — derived H7+H10 only; mixed stays unresolved.
-const p257RulerGood = buildKashfCanonicalAiBridge({ questionId: 'q-ruler-status', questionText: 'מה מצב בעל השררה?', board: makeBoard({ 7:'1122', 10:'2222' }) });
+const p257RulerGood = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-ruler-status', questionText: 'מה מצב בעל השררה?', board: makeBoard({ 7:'1122', 10:'2222' }) });
 const p257RulerGoodExec = p257RulerGood.canonicalReading?.primaryFormula?.result?.executorResult;
 assert(p257RulerGoodExec?.resultPattern === '1122' && p257RulerGoodExec?.rulerCondition === 'good', 'p257 ruler benefic derivation gives good condition');
 assert(p257RulerGood.canonicalReading?.overallPositive === true, 'p257 ruler good branch is positive');
 assert(p257RulerGood.professionalVerdictSafety?.certificationStatus === 'certified', 'p257 ruler condition passed professional backfill');
-const p257RulerBad = buildKashfCanonicalAiBridge({ questionId: 'q-ruler-status', questionText: 'מה מצב בעל השררה?', board: makeBoard({ 7:'1112', 10:'2222' }) });
+const p257RulerBad = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-ruler-status', questionText: 'מה מצב בעל השררה?', board: makeBoard({ 7:'1112', 10:'2222' }) });
 assert(p257RulerBad.canonicalReading?.primaryFormula?.result?.executorResult?.rulerCondition === 'bad', 'p257 ruler malefic derivation gives bad condition');
 assert(p257RulerBad.canonicalReading?.overallPositive === false, 'p257 ruler bad branch is negative');
-const p257RulerMixed = buildKashfCanonicalAiBridge({ questionId: 'q-ruler-status', questionText: 'מה מצב בעל השררה?', board: makeBoard({ 7:'1111', 10:'2222' }) });
+const p257RulerMixed = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-ruler-status', questionText: 'מה מצב בעל השררה?', board: makeBoard({ 7:'1111', 10:'2222' }) });
 assert(p257RulerMixed.canonicalReading?.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'mixed', 'p257 ruler mixed fixture preserves mixed classification');
 assert(p257RulerMixed.canonicalReading?.overallPositive === null, 'p257 ruler mixed result remains non-binary');
 assert(p257RulerMixed.professionalVerdictSafety?.methodSpecificPolicy?.excludedFromPrimaryVerdict?.some((x) => x.includes('משך המלכות')), 'p257 ruler policy isolates kingship-duration/removal rules');
@@ -674,7 +674,7 @@ assert(p257RulerMixed.professionalVerdictSafety?.methodSpecificPolicy?.excludedF
 console.log('\n--- Professional backfill batch 06 ---');
 
 // PV-BF06-P264 — descriptive planetary life stages only; no lifespan duration/aggregate verdict.
-const p264StagesBf = buildKashfCanonicalAiBridge({
+const p264StagesBf = buildKashfCanonicalAiBridgeForLegacyFixtureTests({
   questionId: 'q-lifespan-stages', questionText: 'ראשית אמצע וסוף החיים',
   board: makeBoard({ 11:'1122', 9:'1111', 7:'1221' }),
 });
@@ -689,7 +689,7 @@ assert(p264StagesBf.professionalVerdictSafety?.certificationStatus === 'certifie
 assert(p264StagesBf.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenClientClaimsWithoutExplicitSelectedMethodBranch?.includes('כמה שנים יחיה האדם'), 'p264 policy blocks lifespan-duration expansion');
 
 // PV-BF06-P180 — H10 inversion: angle+benefic positive, cadent negative, conflict unresolved.
-const p180Angle = buildKashfCanonicalAiBridge({
+const p180Angle = buildKashfCanonicalAiBridgeForLegacyFixtureTests({
   questionId: 'q-livelihood', questionText: 'מה מצב הפרנסה?',
   board: makeBoard({ 10:'2211', 1:'1122' }),
 });
@@ -697,13 +697,13 @@ const p180AngleExec = p180Angle.canonicalReading?.primaryFormula?.result?.execut
 assert(p180AngleExec?.resultPattern === '1122', 'p180 inversion fixture produces 1122');
 assert(p180AngleExec?.sourceOutcome === 'expanded-livelihood' && p180Angle.canonicalReading?.overallPositive === true, 'p180 benefic result in an angle gives expanded livelihood');
 assert(p180Angle.professionalVerdictSafety?.certificationStatus === 'certified', 'p180 livelihood passed professional backfill');
-const p180Cadent = buildKashfCanonicalAiBridge({
+const p180Cadent = buildKashfCanonicalAiBridgeForLegacyFixtureTests({
   questionId: 'q-livelihood', questionText: 'מה מצב הפרנסה?',
   board: makeBoard({ 10:'2211', 3:'1122' }),
 });
 assert(p180Cadent.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'unfavorable-livelihood', 'p180 cadent placement activates the explicit unfavorable branch');
 assert(p180Cadent.canonicalReading?.overallPositive === false, 'p180 cadent branch is negative');
-const p180Conflict = buildKashfCanonicalAiBridge({
+const p180Conflict = buildKashfCanonicalAiBridgeForLegacyFixtureTests({
   questionId: 'q-livelihood', questionText: 'מה מצב הפרנסה?',
   board: makeBoard({ 10:'2211', 1:'1122', 3:'1122' }),
 });
@@ -711,7 +711,7 @@ assert(p180Conflict.canonicalReading?.primaryFormula?.result?.executorResult?.so
 assert(p180Conflict.canonicalReading?.overallPositive === null, 'p180 conflicting placement is not resolved by invented priority');
 
 // PV-BF06-P181 — reconstructed board positive condition is one-way only.
-const p181Yes = buildKashfCanonicalAiBridge({
+const p181Yes = buildKashfCanonicalAiBridgeForLegacyFixtureTests({
   questionId: 'q-livelihood-arrive', questionText: 'האם הממון יושג?',
   board: makeBoard({ 2:'2121', 5:'2111', 8:'2112', 11:'2111' }),
 });
@@ -720,7 +720,7 @@ assert(p181YesExec?.recastMotherPatterns?.join(',') === '2121,2111,2112,2111', '
 assert(p181YesExec?.allRequiredInternal === true && p181YesExec?.moneyObtained === true, 'p181 all required recast houses strictly internal => money obtained');
 assert(p181Yes.canonicalReading?.overallPositive === true, 'p181 explicit money-obtained branch is positive');
 assert(p181Yes.professionalVerdictSafety?.certificationStatus === 'certified', 'p181 money acquisition passed professional backfill');
-const p181Unresolved = buildKashfCanonicalAiBridge({
+const p181Unresolved = buildKashfCanonicalAiBridgeForLegacyFixtureTests({
   questionId: 'q-livelihood-arrive', questionText: 'האם הממון יושג?',
   board: makeBoard({ 2:'2121', 5:'2111', 8:'2112', 11:'2222' }),
 });
@@ -730,7 +730,7 @@ assert(p181Unresolved.canonicalReading?.overallPositive === null, 'p181 failed c
 assert(p181Unresolved.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenInversions?.some((x) => x.includes('אינו מוכיח')), 'p181 policy explicitly locks the no-inverse rule');
 
 // PV-BF06-P266 — exact return-to-office positive/opposite branches and unresolved middle.
-const p266Return = buildKashfCanonicalAiBridge({
+const p266Return = buildKashfCanonicalAiBridgeForLegacyFixtureTests({
   questionId: 'q-career-return', questionText: 'האם אחזור לתפקיד?',
   board: makeBoard({ 1:'2121', 4:'2121', 16:'1122' }),
 });
@@ -738,13 +738,13 @@ const p266ReturnExec = p266Return.canonicalReading?.primaryFormula?.result?.exec
 assert(p266ReturnExec?.h1BeneficIncoming === true && p266ReturnExec?.appearsInStrongHouse === true && p266ReturnExec?.outcomeSupportsReturn === true && p266ReturnExec?.sourceOutcome === 'returns', 'p266 benefic-internal H1 + strong recurrence + benefic H16 gives return');
 assert(p266Return.canonicalReading?.overallPositive === true, 'p266 return branch is positive');
 assert(p266Return.professionalVerdictSafety?.certificationStatus === 'certified', 'p266 return-to-office passed professional backfill');
-const p266No = buildKashfCanonicalAiBridge({
+const p266No = buildKashfCanonicalAiBridgeForLegacyFixtureTests({
   questionId: 'q-career-return', questionText: 'האם אחזור לתפקיד?',
   board: makeBoard({ 1:'1112' }),
 });
 assert(p266No.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'does-not-return', 'p266 pure-malefic H1 activates the explicit opposite branch');
 assert(p266No.canonicalReading?.overallPositive === false, 'p266 explicit opposite branch is negative');
-const p266Unresolved = buildKashfCanonicalAiBridge({
+const p266Unresolved = buildKashfCanonicalAiBridgeForLegacyFixtureTests({
   questionId: 'q-career-return', questionText: 'האם אחזור לתפקיד?',
   board: makeBoard({ 1:'2121', 16:'1112' }),
 });
@@ -752,7 +752,7 @@ assert(p266Unresolved.canonicalReading?.primaryFormula?.result?.executorResult?.
 assert(p266Unresolved.canonicalReading?.overallPositive === null, 'p266 incomplete positive testimony is not inverted into no-return');
 
 // PV-BF06-P204 attention — one explicit row-state condition; never promote it to love/exclusivity.
-const p204AttentionMatch = buildKashfCanonicalAiBridge({
+const p204AttentionMatch = buildKashfCanonicalAiBridgeForLegacyFixtureTests({
   questionId: 'q-who-looks-love', questionText: 'האם אדם זה מביט אלי או אל אחר?',
   board: makeBoard({ 1:'1111', 7:'1121', 13:'2222' }),
 });
@@ -761,7 +761,7 @@ assert(p204AttentionMatchExec?.sourceConditionMet === true && p204AttentionMatch
 assert(p204AttentionMatch.canonicalReading?.overallPositive === null, 'p204 attention is categorical/non-binary, not sentiment polarity');
 assert(p204AttentionMatch.professionalVerdictSafety?.certificationStatus === 'certified', 'p204 attention passed professional backfill');
 assert(p204AttentionMatch.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenClientClaimsWithoutExplicitSelectedMethodBranch?.includes('הוא אוהב אותך'), 'p204 attention policy forbids expansion into love');
-const p204AttentionNoMatch = buildKashfCanonicalAiBridge({
+const p204AttentionNoMatch = buildKashfCanonicalAiBridgeForLegacyFixtureTests({
   questionId: 'q-who-looks-love', questionText: 'האם אדם זה מביט אלי או אל אחר?',
   board: makeBoard({ 1:'1111', 7:'1121', 13:'1111' }),
 });
@@ -773,13 +773,13 @@ assert(p204AttentionNoMatch.canonicalReading?.overallPositive === null, 'p204 fa
 console.log('\n--- Professional backfill batch 07 ---');
 
 // PV-BF07-P173-* — exact fire-row completion method; no H1+H16 alternate vote.
-const p173Complete = buildKashfCanonicalAiBridge({ questionId: 'q-success', questionText: 'האם העניין יושלם', board: makeBoard({ 1:'2111', 5:'1112', 9:'1112', 10:'1112' }) });
+const p173Complete = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-success', questionText: 'האם העניין יושלם', board: makeBoard({ 1:'2111', 5:'1112', 9:'1112', 10:'1112' }) });
 assert(p173Complete.resolution?.kashfMethodId === 'completion.p173.fireRows15910', 'p173 exact completion route selected');
 assert(p173Complete.canonicalReading?.primaryFormula?.result?.resultPattern === '2111', 'p173 fire-row fixture builds 2111');
 assert(p173Complete.canonicalReading?.overallPositive === true, 'p173 internal result gives explicit completion');
 assert(p173Complete.professionalVerdictSafety?.certificationStatus === 'certified', 'p173 completion passed professional backfill');
 assert(p173Complete.professionalVerdictSafety?.methodSpecificPolicy?.excludedFromPrimaryVerdict?.some((x) => x.includes('H1+H16')), 'p173 policy excludes alternate H1+H16 method');
-const p173No = buildKashfCanonicalAiBridge({ questionId: 'q-success', questionText: 'האם העניין יושלם', board: makeBoard({ 1:'1112', 5:'1112', 9:'1112', 10:'2111' }) });
+const p173No = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-success', questionText: 'האם העניין יושלם', board: makeBoard({ 1:'1112', 5:'1112', 9:'1112', 10:'2111' }) });
 assert(p173No.canonicalReading?.primaryFormula?.result?.resultPattern === '1112', 'p173 external fixture builds 1112');
 assert(p173No.canonicalReading?.overallPositive === false, 'p173 external result gives explicit non-completion');
 const p173Fixed = buildKashfCanonicalAiBridge({ questionId: 'q-success', questionText: 'האם העניין יושלם', board: buildRamlBoardFromMothers(['2111', '1111', '1111', '1111']) });
@@ -877,78 +877,78 @@ for (const [mothers, expectedBranch] of [
 }
 
 // PV-BF07-P183-PLACE-* — H4+H15 has explicit good/bad/mixed branches.
-const p183PlaceGood = buildKashfCanonicalAiBridge({ questionId: 'q-move-city', questionText: 'מעבר ממקום למקום', board: makeBoard({ 4:'1111', 15:'2211' }) });
+const p183PlaceGood = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-move-city', questionText: 'מעבר ממקום למקום', board: makeBoard({ 4:'1111', 15:'2211' }) });
 assert(p183PlaceGood.resolution?.kashfMethodId === 'relocation.p183.h4h15', 'p183 place-to-place exact route selected');
 assert(p183PlaceGood.canonicalReading?.primaryFormula?.result?.resultPattern === '1122', 'p183 good fixture derives 1122');
 assert(p183PlaceGood.canonicalReading?.overallPositive === true, 'p183 benefic H4+H15 gives good/blessed place');
 assert(p183PlaceGood.professionalVerdictSafety?.certificationStatus === 'certified', 'p183 place-to-place passed professional backfill');
-const p183PlaceBad = buildKashfCanonicalAiBridge({ questionId: 'q-move-city', questionText: 'מעבר ממקום למקום', board: makeBoard({ 4:'1111', 15:'2121' }) });
+const p183PlaceBad = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-move-city', questionText: 'מעבר ממקום למקום', board: makeBoard({ 4:'1111', 15:'2121' }) });
 assert(p183PlaceBad.canonicalReading?.primaryFormula?.result?.resultPattern === '1212', 'p183 bad fixture derives 1212');
 assert(p183PlaceBad.canonicalReading?.overallPositive === false, 'p183 malefic H4+H15 gives hardship branch');
-const p183PlaceMixed = buildKashfCanonicalAiBridge({ questionId: 'q-move-city', questionText: 'מעבר ממקום למקום', board: makeBoard({ 4:'2222', 15:'2222' }) });
+const p183PlaceMixed = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-move-city', questionText: 'מעבר ממקום למקום', board: makeBoard({ 4:'2222', 15:'2222' }) });
 assert(p183PlaceMixed.canonicalReading?.primaryFormula?.result?.classification?.saadNahs === 'mixed', 'p183 mixed fixture preserves mixed classification');
 assert(p183PlaceMixed.canonicalReading?.overallPositive === null, 'p183 mixed place remains non-binary');
 
 // PV-BF07-P182-REL-* — H1+H3 only; seniority and other sibling variants remain separate.
-const p182RelGood = buildKashfCanonicalAiBridge({ questionId: 'q-siblings', questionText: 'יחסים בין אחים', board: makeBoard({ 1:'1111', 3:'2211' }) });
+const p182RelGood = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-siblings', questionText: 'יחסים בין אחים', board: makeBoard({ 1:'1111', 3:'2211' }) });
 assert(p182RelGood.resolution?.kashfMethodId === 'siblings.p182.h1h3', 'p182 sibling relationship exact route selected');
 assert(p182RelGood.canonicalReading?.overallPositive === true, 'p182 benefic H1+H3 gives agreement');
 assert(p182RelGood.professionalVerdictSafety?.certificationStatus === 'certified', 'p182 sibling relationship passed professional backfill');
-const p182RelBad = buildKashfCanonicalAiBridge({ questionId: 'q-siblings', questionText: 'יחסים בין אחים', board: makeBoard({ 1:'1111', 3:'2221' }) });
+const p182RelBad = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-siblings', questionText: 'יחסים בין אחים', board: makeBoard({ 1:'1111', 3:'2221' }) });
 assert(p182RelBad.canonicalReading?.overallPositive === false, 'p182 malefic H1+H3 gives corruption/dispute branch');
 assert(p182RelGood.professionalVerdictSafety?.methodSpecificPolicy?.excludedFromPrimaryVerdict?.some((x) => x.includes('seniority')), 'p182 relationship policy isolates sibling-seniority method');
 
 // PV-BF07-P238-TRAVEL-* — exact four-house all-row assembly.
-const p238Good = buildKashfCanonicalAiBridge({ questionId: 'q-travel-safe', questionText: 'האם המסע טוב', board: makeBoard({ 1:'1122', 3:'2222', 5:'2222', 9:'2222' }) });
+const p238Good = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-travel-safe', questionText: 'האם המסע טוב', board: makeBoard({ 1:'1122', 3:'2222', 5:'2222', 9:'2222' }) });
 assert(p238Good.resolution?.kashfMethodId === 'travel.p238.assemble1359', 'p238 travel success exact route selected');
 assert(p238Good.canonicalReading?.primaryFormula?.result?.resultPattern === '1122', 'p238 assembly preserves benefic fixture');
 assert(p238Good.canonicalReading?.overallPositive === true, 'p238 benefic assembly gives good travel');
 assert(p238Good.professionalVerdictSafety?.certificationStatus === 'certified', 'p238 travel success passed professional backfill');
-const p238Bad = buildKashfCanonicalAiBridge({ questionId: 'q-travel-safe', questionText: 'האם המסע טוב', board: makeBoard({ 1:'1112', 3:'2222', 5:'2222', 9:'2222' }) });
+const p238Bad = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-travel-safe', questionText: 'האם המסע טוב', board: makeBoard({ 1:'1112', 3:'2222', 5:'2222', 9:'2222' }) });
 assert(p238Bad.canonicalReading?.primaryFormula?.result?.resultPattern === '1112', 'p238 assembly preserves malefic fixture');
 assert(p238Bad.canonicalReading?.overallPositive === false, 'p238 malefic assembly gives caution branch');
 assert(p238Good.professionalVerdictSafety?.methodSpecificPolicy?.excludedFromPrimaryVerdict?.some((x) => x.includes('timeSelection')), 'p238 success policy isolates named-figure time-selection method');
 
 // PV-BF07-P199-* — H6 source table only; missing table row remains unresolved.
-const p199Mapped = buildKashfCanonicalAiBridge({ questionText: 'איפה בגוף החולי', board: makeBoard({ 6:'1112' }) });
+const p199Mapped = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionText: 'איפה בגוף החולי', board: makeBoard({ 6:'1112' }) });
 assert(p199Mapped.resolution?.kashfMethodId === 'illness.bodyPart.h6Figure', 'p199 body-part free text resolves exact method');
 assert(p199Mapped.canonicalReading?.primaryFormula?.result?.executorResult?.bodyPartHebrew === 'הרגל השמאלית', 'p199 source table maps 1112 to left leg');
 assert(p199Mapped.professionalVerdictSafety?.certificationStatus === 'certified', 'p199 body-part method passed professional backfill');
 assert(p199Mapped.professionalVerdictSafety?.authoritativePolarity === 'non-binary', 'p199 body-part result stays categorical/non-binary');
-const p199Unlisted = buildKashfCanonicalAiBridge({ questionText: 'איפה בגוף החולי', board: makeBoard({ 6:'1121' }) });
+const p199Unlisted = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionText: 'איפה בגוף החולי', board: makeBoard({ 6:'1121' }) });
 assert(p199Unlisted.canonicalReading?.primaryFormula?.result?.executorResult?.bodyPartHebrew === null, 'p199 unlisted 1121 does not invent a body part');
 assert(p199Mapped.professionalVerdictSafety?.methodSpecificPolicy?.excludedFromPrimaryVerdict?.some((x) => x.includes('אבחנה רפואית')), 'p199 policy blocks medical-diagnosis expansion');
 
 // PV-BF07-P191-CHILD-* — safety, fear, and severe-risk wording stay distinct.
-const p191ChildSafe = buildKashfCanonicalAiBridge({ questionId: 'q-child-survive', questionText: 'האם הוולד יהיה בשלום', board: makeBoard({ 1:'2111', 6:'2222', 8:'2222' }) });
+const p191ChildSafe = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-child-survive', questionText: 'האם הוולד יהיה בשלום', board: makeBoard({ 1:'2111', 6:'2222', 8:'2222' }) });
 assert(p191ChildSafe.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'safety', 'p191 H1 benefic gives safety testimony');
 assert(p191ChildSafe.canonicalReading?.overallPositive === true, 'p191 safety branch is positive');
 assert(p191ChildSafe.professionalVerdictSafety?.certificationStatus === 'certified', 'p191 child-safety method passed professional backfill');
-const p191ChildFear = buildKashfCanonicalAiBridge({ questionId: 'q-child-survive', questionText: 'האם הוולד יהיה בשלום', board: makeBoard({ 1:'1112', 6:'2222', 8:'2222' }) });
+const p191ChildFear = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-child-survive', questionText: 'האם הוולד יהיה בשלום', board: makeBoard({ 1:'1112', 6:'2222', 8:'2222' }) });
 assert(p191ChildFear.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'fear', 'p191 H1 malefic preserves fear branch');
 assert(p191ChildFear.canonicalReading?.overallPositive === null, 'p191 fear is not inverted into certain non-survival');
-const p191ChildSevere = buildKashfCanonicalAiBridge({ questionId: 'q-child-survive', questionText: 'האם הוולד יהיה בשלום', board: makeBoard({ 1:'2111', 6:'1112', 8:'1112' }) });
+const p191ChildSevere = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-child-survive', questionText: 'האם הוולד יהיה בשלום', board: makeBoard({ 1:'2111', 6:'1112', 8:'1112' }) });
 assert(p191ChildSevere.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'severe-risk', 'p191 H6+H8 malefic activates severe source warning');
 assert(p191ChildSevere.canonicalReading?.overallPositive === null, 'p191 severe warning is not converted into certain death');
 assert(p191ChildSafe.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenInversions?.some((x) => x.includes('ודאי')), 'p191 child-safety policy blocks certainty inflation');
 
 // PV-BF07-P191-DELIVERY-* — exact ease/difficulty signs, no H15 vote.
-const p191DeliveryEasy = buildKashfCanonicalAiBridge({ questionId: 'q-birth-ease', questionText: 'לידה קלה או קשה', board: makeBoard({ 1:'1112', 5:'1112', 15:'2222' }) });
+const p191DeliveryEasy = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-birth-ease', questionText: 'לידה קלה או קשה', board: makeBoard({ 1:'1112', 5:'1112', 15:'2222' }) });
 assert(p191DeliveryEasy.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'easy', 'p191 masculine H1+H5 gives ease sign');
 assert(p191DeliveryEasy.canonicalReading?.overallPositive === true, 'p191 easy-delivery branch is positive');
 assert(p191DeliveryEasy.professionalVerdictSafety?.certificationStatus === 'certified', 'p191 delivery-difficulty method passed professional backfill');
-const p191DeliveryHard = buildKashfCanonicalAiBridge({ questionId: 'q-birth-ease', questionText: 'לידה קלה או קשה', board: makeBoard({ 1:'2222', 5:'2222', 15:'2112' }) });
+const p191DeliveryHard = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-birth-ease', questionText: 'לידה קלה או קשה', board: makeBoard({ 1:'2222', 5:'2222', 15:'2112' }) });
 assert(p191DeliveryHard.canonicalReading?.primaryFormula?.result?.executorResult?.sourceOutcome === 'difficult', 'p191 fixed H5 gives difficulty sign');
 assert(p191DeliveryHard.canonicalReading?.overallPositive === false, 'p191 difficult-delivery branch is negative');
 assert(p191DeliveryEasy.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenInversions?.some((x) => x.includes('H15')), 'p191 delivery policy forbids an invented H15 vote');
 
 // PV-BF07-P167-* — hidden action only; no sorcery/jinn/evil-eye promotion.
-const p167Hidden = buildKashfCanonicalAiBridge({ questionText: 'האם יש פעולה מאחורי השואל', board: makeBoard({ 4:'1111', 6:'1111', 8:'1111', 15:'1212' }) });
+const p167Hidden = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionText: 'האם יש פעולה מאחורי השואל', board: makeBoard({ 4:'1111', 6:'1111', 8:'1111', 15:'1212' }) });
 assert(p167Hidden.resolution?.kashfMethodId === 'spiritual.p167.hiddenActionAirRows46815', 'p167 hidden-action free text resolves exact method');
 assert(p167Hidden.canonicalReading?.primaryFormula?.result?.executorResult?.derivedPattern === '1112', 'p167 air rows derive the malefic fixture 1112');
 assert(p167Hidden.canonicalReading?.overallPositive === true, 'p167 malefic derived figure means hidden action exists');
 assert(p167Hidden.professionalVerdictSafety?.certificationStatus === 'certified', 'p167 hidden-action method passed professional backfill');
-const p167None = buildKashfCanonicalAiBridge({ questionText: 'האם יש פעולה מאחורי השואל', board: makeBoard({ 4:'1111', 6:'1111', 8:'1211', 15:'1212' }) });
+const p167None = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionText: 'האם יש פעולה מאחורי השואל', board: makeBoard({ 4:'1111', 6:'1111', 8:'1211', 15:'1212' }) });
 assert(p167None.canonicalReading?.primaryFormula?.result?.executorResult?.derivedPattern === '1122', 'p167 air rows derive benefic fixture 1122');
 assert(p167None.canonicalReading?.overallPositive === false, 'p167 non-malefic derived figure activates explicit no-action complement');
 assert(p167Hidden.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenClientClaimsWithoutExplicitSelectedMethodBranch?.some((x) => x.includes('כישוף')), 'p167 policy forbids expanding hidden action into sorcery');
@@ -957,7 +957,7 @@ assert(p167Hidden.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenClie
 console.log('\n--- Professional backfill batch 08 ---');
 
 // PV-BF08-P179-* — raw scan p179 explicitly says سعد in H2, closing the pure-benefic gate.
-const p179H10Certified = buildKashfCanonicalAiBridge({ questionId: 'q-money-source', questionText: 'מאיפה יגיע הכסף?', board: makeBoard({ 2:'1222', 10:'2211' }) });
+const p179H10Certified = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-money-source', questionText: 'מאיפה יגיע הכסף?', board: makeBoard({ 2:'1222', 10:'2211' }) });
 const p179H10Exec = p179H10Certified.canonicalReading?.primaryFormula?.result?.executorResult;
 assert(p179H10Certified.resolution?.kashfMethodId === 'money.p179.sourceByIncomingHonorHouse', 'p179 exact money-source route selected');
 assert(p179H10Exec?.beneficGateMet === true, 'p179 raw-scan سعد wording opens only on pure-benefic H2');
@@ -969,11 +969,11 @@ assert(p179H10Certified.professionalVerdictSafety?.methodSpecificPolicy?.decisiv
 const p179ExactDraft = validateKashfAdvisorOutput(auditOutputForSafety(p179H10Certified.professionalVerdictSafety, { draft: p179H10Certified.professionalVerdictSafety.authoritativeClientDraftHebrew, draftPolarity: 'non-binary' }));
 assert(validateKashfAdvisorVerdictAlignment(p179ExactDraft.value, p179H10Certified.professionalVerdictSafety).ok === true, 'p179 exact deterministic client explanation passes server alignment');
 
-const p179Multi = buildKashfCanonicalAiBridge({ questionId: 'q-money-source', questionText: 'מאיפה יגיע הכסף?', board: makeBoard({ 2:'1222', 4:'2211', 10:'2211' }) });
+const p179Multi = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-money-source', questionText: 'מאיפה יגיע הכסף?', board: makeBoard({ 2:'1222', 4:'2211', 10:'2211' }) });
 assert(JSON.stringify(p179Multi.canonicalReading?.primaryFormula?.result?.executorResult?.sourceHouseNumbers) === JSON.stringify([4,10]), 'p179 preserves multiple source channels without ranking them');
 assert(p179Multi.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenInversions?.some((x) => x.includes('עיקרי')), 'p179 policy forbids inventing a primary channel when several occur');
 
-const p179MixedGate = buildKashfCanonicalAiBridge({ questionId: 'q-money-source', questionText: 'מאיפה יגיע הכסף?', board: makeBoard({ 2:'2222', 10:'2211' }) });
+const p179MixedGate = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-money-source', questionText: 'מאיפה יגיע הכסף?', board: makeBoard({ 2:'2222', 10:'2211' }) });
 const p179MixedExec = p179MixedGate.canonicalReading?.primaryFormula?.result?.executorResult;
 assert(p179MixedExec?.h2Classification?.saadNahs === 'mixed', 'p179 counterfixture uses a genuinely mixed H2');
 assert(p179MixedExec?.beneficGateMet === false, 'p179 mixed H2 is not promoted into the raw-source سعد gate');
@@ -982,7 +982,7 @@ assert(p179MixedGate.professionalVerdictSafety?.clientFacingCertified === true, 
 
 console.log('\n--- Professional backfill batch 11 — p254 profession source closure ---');
 
-const p254Venus = buildKashfCanonicalAiBridge({ questionId: 'q-profession', questionText: 'מה המקצוע שלי לפי השיטה?', board: makeBoard({ 9:'1121', 10:'2111', 11:'2111' }) });
+const p254Venus = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-profession', questionText: 'מה המקצוע שלי לפי השיטה?', board: makeBoard({ 9:'1121', 10:'2111', 11:'2111' }) });
 const p254VenusExec = p254Venus.canonicalReading?.primaryFormula?.result?.executorResult;
 assert(p254Venus.resolution?.kashfMethodId === 'profession.p254.h9Planet', 'p254 profession route selects the exact method');
 assert(p254VenusExec?.attributionHebrew === 'נוגה', 'p254 maps Joudala 1121 to Venus from the corrected p133-134 source table');
@@ -990,20 +990,20 @@ assert(String(p254VenusExec?.profession || '').includes('דברי הימים'), 
 assert(p254VenusExec?.easeOfWorkIndicated === true, 'p254 pure-benefic H10+H11 activates the one-way ease-of-work clause');
 assert(String(p254VenusExec?.outputHebrew || '').includes('מלאכתו מעטה בטרחה'), 'p254 ease clause is preserved in the exact executor draft');
 
-const p254Saturn = buildKashfCanonicalAiBridge({ questionId: 'q-profession', questionText: 'מה המלאכה?', board: makeBoard({ 9:'1221', 10:'2111', 11:'2111' }) });
+const p254Saturn = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-profession', questionText: 'מה המלאכה?', board: makeBoard({ 9:'1221', 10:'2111', 11:'2111' }) });
 const p254SaturnExec = p254Saturn.canonicalReading?.primaryFormula?.result?.executorResult;
 assert(p254SaturnExec?.attributionHebrew === 'שבתאי', 'p254 maps Aqla/Sohar 1221 to Saturn, not to an unresolved node');
 assert(String(p254SaturnExec?.profession || '').includes('חקלאות'), 'p254 Saturn branch returns agriculture/earth work');
 
-const p254Head = buildKashfCanonicalAiBridge({ questionId: 'q-profession', questionText: 'מה המלאכה?', board: makeBoard({ 9:'1212' }) });
-const p254Tail = buildKashfCanonicalAiBridge({ questionId: 'q-profession', questionText: 'מה המלאכה?', board: makeBoard({ 9:'1112' }) });
+const p254Head = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-profession', questionText: 'מה המלאכה?', board: makeBoard({ 9:'1212' }) });
+const p254Tail = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-profession', questionText: 'מה המלאכה?', board: makeBoard({ 9:'1112' }) });
 const p254HeadExec = p254Head.canonicalReading?.primaryFormula?.result?.executorResult;
 const p254TailExec = p254Tail.canonicalReading?.primaryFormula?.result?.executorResult;
 assert(p254HeadExec?.attributionHebrew === 'ראש התלי' && String(p254HeadExec?.profession || '').includes('דתות'), 'p254 distinguishes Head 1212 and returns the religions/hidden-knowledge branch');
 assert(p254TailExec?.attributionHebrew === 'זנב התלי' && String(p254TailExec?.profession || '').includes('בורות'), 'p254 distinguishes Tail 1112 and returns the ignorance/treachery branch');
 assert(p254HeadExec?.profession !== p254TailExec?.profession, 'p254 no longer collapses Head and Tail into one ambiguous fallback');
 
-const p254MixedEase = buildKashfCanonicalAiBridge({ questionId: 'q-profession', questionText: 'מה המלאכה?', board: makeBoard({ 9:'1122', 10:'1121', 11:'2111' }) });
+const p254MixedEase = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-profession', questionText: 'מה המלאכה?', board: makeBoard({ 9:'1122', 10:'1121', 11:'2111' }) });
 const p254MixedEaseExec = p254MixedEase.canonicalReading?.primaryFormula?.result?.executorResult;
 assert(p254MixedEaseExec?.h10Quality === 'mixed', 'p254 Golden case exposes H10 mixed classification');
 assert(p254MixedEaseExec?.easeOfWorkIndicated === null, 'p254 mixed H10 does not activate the pure-saad ease clause');
@@ -1138,7 +1138,7 @@ assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes('state.p265.h1h2h9h15'),
 
 console.log('\n--- Professional backfill batch 09 — p225 thief source profile ---');
 
-const p225Joudala = buildKashfCanonicalAiBridge({ questionId: 'q-theft-who', questionText: 'תיאור הגנב', board: makeBoard({ 7:'1121' }) });
+const p225Joudala = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-theft-who', questionText: 'תיאור הגנב', board: makeBoard({ 7:'1121' }) });
 const p225JoudalaExec = p225Joudala.canonicalReading?.primaryFormula?.result?.executorResult;
 assert(p225Joudala.resolution?.kashfMethodId === 'theft.p225.thiefDescriptionH7', 'p225 description route selects exact method');
 assert(p225JoudalaExec?.profileResolved === true, 'p225 Joudala profile resolves from H7');
@@ -1149,7 +1149,7 @@ assert(p225JoudalaExec?.identityResolved === false && p225JoudalaExec?.guiltProv
 assert(p225Joudala.professionalVerdictSafety?.certificationStatus === 'certified', 'p225 thief description passed professional backfill');
 assert(p225Joudala.professionalVerdictSafety?.authoritativePolarity === 'non-binary', 'p225 profile remains descriptive/non-binary');
 
-const p225NusraIn = buildKashfCanonicalAiBridge({ questionId: 'q-theft-who', questionText: 'איך הגנב נראה', board: makeBoard({ 7:'2211' }) });
+const p225NusraIn = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-theft-who', questionText: 'איך הגנב נראה', board: makeBoard({ 7:'2211' }) });
 const p225NusraInExec = p225NusraIn.canonicalReading?.primaryFormula?.result?.executorResult;
 assert(String(p225NusraInExec?.description || '').includes('כפות רגליה קטנות'), 'p225 Nusra Dakhila preserves small feet from the source');
 assert(!String(p225NusraInExec?.description || '').includes('קומה קטנה'), 'p225 Nusra Dakhila removes the stale small-stature substitution');
@@ -1173,7 +1173,7 @@ console.log('\n--- Professional backfill batch 10 — p194 scan correction + p24
 assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes('child.p194.healthTrajectoryH6H8'), 'p194 child-health method is explicitly professionally certified');
 assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes('missing.p248-249.lifeH1H4H9Outcome'), 'p248-249 missing-life method is explicitly professionally certified');
 
-const p194PainImprove = buildKashfCanonicalAiBridge({ questionId: 'q-child-health', questionText: 'בריאות הילד לאורך הזמן', board: makeBoard({ 6:'1112', 8:'2211' }) });
+const p194PainImprove = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-child-health', questionText: 'בריאות הילד לאורך הזמן', board: makeBoard({ 6:'1112', 8:'2211' }) });
 const p194PainImproveExec = p194PainImprove.canonicalReading?.primaryFormula?.result?.executorResult;
 assert(JSON.stringify(p194PainImproveExec?.housesUsed) === JSON.stringify([6,8]), 'p194 executes H6/H8 only: no invented H5 empty-figure gate');
 assert(p194PainImproveExec?.childhoodPains === true, 'p194 pure-malefic H6 gives the explicit childhood-pains testimony');
@@ -1181,9 +1181,9 @@ assert(p194PainImproveExec?.longTermOutcome === 'improves-with-age', 'p194 pure-
 assert(p194PainImprove.professionalVerdictSafety?.certificationStatus === 'certified', 'p194 passed professional backfill after raw-scan antecedent correction');
 assert(p194PainImprove.professionalVerdictSafety?.clientFacingCertified === true, 'p194 exact source-bounded client explanation is certified');
 assert(p194PainImprove.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenInversions?.some((x) => x.includes('ריקות הבטן')), 'p194 safety policy blocks reintroducing the stale empty-womb gate');
-const p194LowHope = buildKashfCanonicalAiBridge({ questionId: 'q-child-health', questionText: 'בריאות הילד לאורך הזמן', board: makeBoard({ 6:'2211', 8:'1112' }) });
+const p194LowHope = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-child-health', questionText: 'בריאות הילד לאורך הזמן', board: makeBoard({ 6:'2211', 8:'1112' }) });
 assert(p194LowHope.canonicalReading?.primaryFormula?.result?.executorResult?.longTermOutcome === 'low-hope', 'p194 pure-malefic H8 preserves the low-hope source branch');
-const p194MixedH8 = buildKashfCanonicalAiBridge({ questionId: 'q-child-health', questionText: 'בריאות הילד לאורך הזמן', board: makeBoard({ 8:'1121' }) });
+const p194MixedH8 = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-child-health', questionText: 'בריאות הילד לאורך הזמן', board: makeBoard({ 8:'1121' }) });
 assert(p194MixedH8.canonicalReading?.primaryFormula?.result?.executorResult?.longTermOutcome === 'unresolved', 'p194 mixed H8 is not promoted to benefic or malefic');
 const p194Exact = validateKashfAdvisorOutput(auditOutputForSafety(p194PainImprove.professionalVerdictSafety, {
   draft: p194PainImprove.professionalVerdictSafety.authoritativeClientDraftHebrew,
@@ -1191,20 +1191,20 @@ const p194Exact = validateKashfAdvisorOutput(auditOutputForSafety(p194PainImprov
 }));
 assert(validateKashfAdvisorVerdictAlignment(p194Exact.value, p194PainImprove.professionalVerdictSafety).ok === true, 'p194 exact deterministic client draft passes');
 
-const p248Alive = buildKashfCanonicalAiBridge({ questionId: 'q-missing-alive', questionText: 'הנעדר חי או מת', board: makeBoard({ 1:'2111', 4:'2111', 9:'2111', 15:'2211' }) });
+const p248Alive = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-missing-alive', questionText: 'הנעדר חי או מת', board: makeBoard({ 1:'2111', 4:'2111', 9:'2111', 15:'2211' }) });
 const p248AliveExec = p248Alive.canonicalReading?.primaryFormula?.result?.executorResult;
 assert(p248AliveExec?.aliveIndicated === true && p248AliveExec?.sourceOutcome === 'alive-indicated', 'p248-249 four pure-benefic life houses give the explicit alive sign');
 assert(p248Alive.professionalVerdictSafety?.certificationStatus === 'certified', 'p248-249 missing-life method passed professional backfill');
 assert(p248Alive.professionalVerdictSafety?.authoritativePolarity === 'positive', 'p248-249 explicit alive branch keeps the engine-authored positive polarity');
 
-const p248Severe = buildKashfCanonicalAiBridge({ questionId: 'q-missing-alive', questionText: 'הנעדר חי או מת', board: makeBoard({ 6:'2222', 7:'2222', 8:'2222', 15:'2222' }) });
+const p248Severe = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-missing-alive', questionText: 'הנעדר חי או מת', board: makeBoard({ 6:'2222', 7:'2222', 8:'2222', 15:'2222' }) });
 const p248SevereExec = p248Severe.canonicalReading?.primaryFormula?.result?.executorResult;
 assert(p248SevereExec?.severeDeathTestimony === true && p248SevereExec?.sourceOutcome === 'severe-death-testimony', 'p248-249 exact named figure Jamaa is accepted in all four death-testimony houses');
 assert(String(p248SevereExec?.sourceText || '').includes('קהלה, חיבור, דרך, לבן או אדום'), 'p248-249 executor carries exactly the five source-listed figures');
 assert(!String(p248SevereExec?.sourceText || '').includes('סוהר') && !String(p248SevereExec?.sourceText || '').includes('שפל ראש'), 'p248-249 executor excludes Aqla/Ankis bleed from the neighboring rule');
-const p248NeighborBleed = buildKashfCanonicalAiBridge({ questionId: 'q-missing-alive', questionText: 'הנעדר חי או מת', board: makeBoard({ 6:'2221', 7:'2221', 8:'2221', 15:'2222' }) });
+const p248NeighborBleed = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-missing-alive', questionText: 'הנעדר חי או מת', board: makeBoard({ 6:'2221', 7:'2221', 8:'2221', 15:'2222' }) });
 assert(p248NeighborBleed.canonicalReading?.primaryFormula?.result?.executorResult?.severeDeathTestimony === false, 'p248-249 Ankis no longer falsely triggers the death testimony');
-const p248AqlaBleed = buildKashfCanonicalAiBridge({ questionId: 'q-missing-alive', questionText: 'הנעדר חי או מת', board: makeBoard({ 6:'1221', 7:'1221', 8:'1221', 15:'1221' }) });
+const p248AqlaBleed = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-missing-alive', questionText: 'הנעדר חי או מת', board: makeBoard({ 6:'1221', 7:'1221', 8:'1221', 15:'1221' }) });
 assert(p248AqlaBleed.canonicalReading?.primaryFormula?.result?.executorResult?.severeDeathTestimony === false, 'p248-249 Aqla no longer falsely triggers the death testimony');
 assert(p248Severe.professionalVerdictSafety?.methodSpecificPolicy?.forbiddenInversions?.some((x) => x.includes('סוהר ושפל ראש')), 'p248-249 safety policy locks the neighboring-rule exclusion');
 const p248Exact = validateKashfAdvisorOutput(auditOutputForSafety(p248Severe.professionalVerdictSafety, {
@@ -1216,14 +1216,14 @@ assert(validateKashfAdvisorVerdictAlignment(p248Exact.value, p248Severe.professi
 
 console.log('\n--- Professional backfill batch 12 — p211 complete marriage H7 matrix ---');
 
-const p211InternalGood = buildKashfCanonicalAiBridge({ questionId: 'q-divorce', questionText: 'האם תהיה פרידה בנישואין?', board: makeBoard({ 7:'2211' }) });
-const p211InternalBad = buildKashfCanonicalAiBridge({ questionId: 'q-divorce', questionText: 'האם תהיה פרידה בנישואין?', board: makeBoard({ 7:'2221' }) });
-const p211ExternalGood = buildKashfCanonicalAiBridge({ questionId: 'q-divorce', questionText: 'האם תהיה פרידה בנישואין?', board: makeBoard({ 7:'1122' }) });
-const p211ExternalBad = buildKashfCanonicalAiBridge({ questionId: 'q-divorce', questionText: 'האם תהיה פרידה בנישואין?', board: makeBoard({ 7:'1112' }) });
-const p211FixedGood = buildKashfCanonicalAiBridge({ questionId: 'q-divorce', questionText: 'האם תהיה פרידה בנישואין?', board: makeBoard({ 7:'2212' }) });
-const p211FixedBad = buildKashfCanonicalAiBridge({ questionId: 'q-divorce', questionText: 'האם תהיה פרידה בנישואין?', board: makeBoard({ 7:'2222' }) });
-const p211MutableGood = buildKashfCanonicalAiBridge({ questionId: 'q-divorce', questionText: 'האם תהיה פרידה בנישואין?', board: makeBoard({ 7:'1121' }) });
-const p211MutableBad = buildKashfCanonicalAiBridge({ questionId: 'q-divorce', questionText: 'האם תהיה פרידה בנישואין?', board: makeBoard({ 7:'1111' }) });
+const p211InternalGood = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-divorce', questionText: 'האם תהיה פרידה בנישואין?', board: makeBoard({ 7:'2211' }) });
+const p211InternalBad = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-divorce', questionText: 'האם תהיה פרידה בנישואין?', board: makeBoard({ 7:'2221' }) });
+const p211ExternalGood = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-divorce', questionText: 'האם תהיה פרידה בנישואין?', board: makeBoard({ 7:'1122' }) });
+const p211ExternalBad = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-divorce', questionText: 'האם תהיה פרידה בנישואין?', board: makeBoard({ 7:'1112' }) });
+const p211FixedGood = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-divorce', questionText: 'האם תהיה פרידה בנישואין?', board: makeBoard({ 7:'2212' }) });
+const p211FixedBad = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-divorce', questionText: 'האם תהיה פרידה בנישואין?', board: makeBoard({ 7:'2222' }) });
+const p211MutableGood = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-divorce', questionText: 'האם תהיה פרידה בנישואין?', board: makeBoard({ 7:'1121' }) });
+const p211MutableBad = buildKashfCanonicalAiBridgeForLegacyFixtureTests({ questionId: 'q-divorce', questionText: 'האם תהיה פרידה בנישואין?', board: makeBoard({ 7:'1111' }) });
 
 const p211Exec = (reading) => reading.canonicalReading?.primaryFormula?.result?.executorResult;
 assert(p211InternalGood.resolution?.kashfMethodId === 'marriage.p211.dissolutionH7StateMatrix', 'p211 q-divorce selects only the exact dissolution method');

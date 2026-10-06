@@ -284,8 +284,14 @@ function buildLegacyFunctionReading(board, method, clientContext = {}, v57Knowle
 /**
  * Executes ONE explicitly selected canonical Kashf method.
  * No topic fallback, no alt formula, no supporting bundle.
+ *
+ * `skipBoardIntegrityGate` exists ONLY for buildKashfReadingByMethodForLegacyFixtureTests
+ * below -- buildKashfReadingByMethod (the real, client/AI-bridge-facing export)
+ * always calls this with it false, hardcoded, not derived from any argument a
+ * caller controls. See that function's own comment for why it exists and how
+ * its isolation from production callers is enforced.
  */
-export function buildKashfReadingByMethod(board, kashfMethodId, clientContext = {}) {
+function buildKashfReadingByMethodInternal(board, kashfMethodId, clientContext = {}, { skipBoardIntegrityGate = false } = {}) {
   const method = getKashfMethod(kashfMethodId);
 
   if (!method) {
@@ -337,21 +343,23 @@ export function buildKashfReadingByMethod(board, kashfMethodId, clientContext = 
   // actually declared on the board, plus checks house 15's own declared
   // parity directly -- regardless of what boardValidation claims or
   // whether it is present at all.
-  const boardEntriesForIntegrity = Array.isArray(board)
-    ? board
-    : Array.isArray(board?.entries)
-      ? board.entries
-      : null;
-  const structuralIntegrity = verifyKashfBoardStructuralIntegrity(boardEntriesForIntegrity);
-  if (structuralIntegrity.hasCritical) {
-    return blockedResult({
-      kashfMethodId: method.kashfMethodId,
-      kashfIntentId: method.kashfIntentId,
-      status: method.kashfRuntimeStatus,
-      executorStatus: method.executorStatus,
-      reason: 'board-validation-critical',
-      userMessage: 'הלוח פסול במפורש לפי המקור (למשל: הדיין בבית 15 אינו זוגי, או שבית בלוח אינו תואם את כללי הבנייה מהאמהות) — יש להטיל מחדש. לא ניתן למסור פסק קנוני על בסיס לוח זה.',
-    });
+  if (!skipBoardIntegrityGate) {
+    const boardEntriesForIntegrity = Array.isArray(board)
+      ? board
+      : Array.isArray(board?.entries)
+        ? board.entries
+        : null;
+    const structuralIntegrity = verifyKashfBoardStructuralIntegrity(boardEntriesForIntegrity);
+    if (structuralIntegrity.hasCritical) {
+      return blockedResult({
+        kashfMethodId: method.kashfMethodId,
+        kashfIntentId: method.kashfIntentId,
+        status: method.kashfRuntimeStatus,
+        executorStatus: method.executorStatus,
+        reason: 'board-validation-critical',
+        userMessage: 'הלוח פסול במפורש לפי המקור (למשל: הדיין בבית 15 אינו זוגי, או שבית-בת בלוח אינו תואם את האם המתאימה) — יש להטיל מחדש. לא ניתן למסור פסק קנוני על בסיס לוח זה.',
+      });
+    }
   }
 
   // Source/method readiness and executor readiness are separate facts.
@@ -565,8 +573,11 @@ export function buildKashfReadingByMethod(board, kashfMethodId, clientContext = 
 /**
  * Question-id entry point for the new Kashf path.
  * The hard-stop router runs before any board calculation is interpreted.
+ *
+ * `skipBoardIntegrityGate` exists ONLY for buildKashfReadingByQuestionIdForLegacyFixtureTests
+ * below -- see buildKashfReadingByMethodForLegacyFixtureTests's comment.
  */
-export function buildKashfReadingByQuestionId(board, questionId, clientContext = {}) {
+function buildKashfReadingByQuestionIdInternal(board, questionId, clientContext = {}, { skipBoardIntegrityGate = false } = {}) {
   let route;
   try {
     route = requireRunnableKashfRoute(questionId);
@@ -589,13 +600,71 @@ export function buildKashfReadingByQuestionId(board, questionId, clientContext =
     });
   }
 
-  return buildKashfReadingByMethod(board, route.kashfMethodId, {
+  return buildKashfReadingByMethodInternal(board, route.kashfMethodId, {
     ...clientContext,
     questionId,
-  });
+  }, { skipBoardIntegrityGate });
+}
+
+/**
+ * Production entry point. The board-structural-integrity gate
+ * (verifyKashfBoardStructuralIntegrity: Judge parity, p.34; daughter/mother
+ * diagonal match, p.35) ALWAYS runs. This is the function the canonical AI
+ * bridge and every other client-facing caller must use.
+ */
+export function buildKashfReadingByMethod(board, kashfMethodId, clientContext = {}) {
+  return buildKashfReadingByMethodInternal(board, kashfMethodId, clientContext, { skipBoardIntegrityGate: false });
+}
+
+/**
+ * Production entry point (question-id form). See buildKashfReadingByMethod.
+ */
+export function buildKashfReadingByQuestionId(board, questionId, clientContext = {}) {
+  return buildKashfReadingByQuestionIdInternal(board, questionId, clientContext, { skipBoardIntegrityGate: false });
+}
+
+/**
+ * 2026-10-06: TEST-ONLY. Identical to buildKashfReadingByMethod except the
+ * board-structural-integrity gate is skipped. Exists because this
+ * engagement's test suite established, across ~10 files and many dozens of
+ * cases, a fixture convention of synthetic, non-reconstructed boards (a
+ * fixed 16-pattern array with 1-3 houses overridden per case) to exercise
+ * specific executor branches without needing a full, internally-consistent
+ * casting -- most such fixtures fail BOTH p.34 (Judge parity) and p.35
+ * (daughter/mother diagonal) once those are checked for real, since they
+ * were never built to satisfy them. Per explicit instruction: the fix for
+ * that is to isolate these fixtures to a test path that cannot reach the
+ * client or the AI bridge -- NOT to weaken the real gate. This function is
+ * that isolated path.
+ *
+ * Isolation is enforced, not just named: kashf-canonical-ai-bridge.js's own
+ * PRODUCTION export, buildKashfCanonicalAiBridge, always calls the gated
+ * functions above, hardcoded -- it has a SEPARATE test-only export of its
+ * own (buildKashfCanonicalAiBridgeForLegacyFixtureTests) for calling this
+ * one instead. _test_kashf_board_validation_gate.mjs asserts by direct
+ * source-grep that no file in this repository outside the _test_*.mjs
+ * suite imports this function's name (or buildKashfCanonicalAiBridgeForLegacyFixtureTests)
+ * -- not Supabase edge functions, not goral-app.js/goral-hachol/ui, not
+ * buildKashfCanonicalAiBridge itself. Do not import this function from any
+ * such file, and do not add a parameter to the production functions above
+ * that would let an external caller reach this behavior through them.
+ */
+export function buildKashfReadingByMethodForLegacyFixtureTests(board, kashfMethodId, clientContext = {}) {
+  return buildKashfReadingByMethodInternal(board, kashfMethodId, clientContext, { skipBoardIntegrityGate: true });
+}
+
+/**
+ * 2026-10-06: TEST-ONLY (question-id form). See
+ * buildKashfReadingByMethodForLegacyFixtureTests for why this exists and
+ * how its isolation from production callers is enforced.
+ */
+export function buildKashfReadingByQuestionIdForLegacyFixtureTests(board, questionId, clientContext = {}) {
+  return buildKashfReadingByQuestionIdInternal(board, questionId, clientContext, { skipBoardIntegrityGate: true });
 }
 
 export default {
   buildKashfReadingByMethod,
   buildKashfReadingByQuestionId,
+  buildKashfReadingByMethodForLegacyFixtureTests,
+  buildKashfReadingByQuestionIdForLegacyFixtureTests,
 };

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 
-import { buildKashfReadingByMethod } from './goral-hachol/engine/kashf-canonical-reading-engine.js';
+import { buildKashfReadingByMethodForLegacyFixtureTests } from './goral-hachol/engine/kashf-canonical-reading-engine.js';
 import {
   resolveBestKashfAiRetrievalHit,
   getKashfAiRetrievalRecord,
@@ -65,7 +65,7 @@ const uniqueBoard = makeBoard({
   3: '2211',
   6: '2211',
 });
-const unique = buildKashfReadingByMethod(uniqueBoard, METHOD_ID, {
+const unique = buildKashfReadingByMethodForLegacyFixtureTests(uniqueBoard, METHOD_ID, {
   question: 'על מי השואל שואל?',
 });
 assert.equal(unique.valid, true);
@@ -83,7 +83,7 @@ const multipleBoard = makeBoard({
   6: '2211',
   7: '2211',
 });
-const multiple = buildKashfReadingByMethod(multipleBoard, METHOD_ID, {
+const multiple = buildKashfReadingByMethodForLegacyFixtureTests(multipleBoard, METHOD_ID, {
   question: 'על מי נסובה השאלה?',
 });
 assert.equal(multiple.valid, true);
@@ -96,7 +96,7 @@ assert.deepEqual(
 
 // No recurrence outside H6: remain unresolved; never invent a house.
 const noMatchBoard = makeBoard({ 6: '2211' });
-const noMatch = buildKashfReadingByMethod(noMatchBoard, METHOD_ID, {
+const noMatch = buildKashfReadingByMethodForLegacyFixtureTests(noMatchBoard, METHOD_ID, {
   question: 'על מי השואל שואל?',
 });
 assert.equal(noMatch.valid, true);

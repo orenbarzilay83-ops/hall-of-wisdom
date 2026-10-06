@@ -6,8 +6,8 @@ import {
 } from './goral-hachol/registry/kashf-canonical-method-registry.js';
 import { resolveKashfRouteByQuestionId } from './goral-hachol/engine/kashf-method-router.js';
 import {
-  buildKashfReadingByMethod,
-  buildKashfReadingByQuestionId,
+  buildKashfReadingByMethodForLegacyFixtureTests,
+  buildKashfReadingByQuestionIdForLegacyFixtureTests,
 } from './goral-hachol/engine/kashf-canonical-reading-engine.js';
 import {
   getKashfAiRetrievalRecord,
@@ -51,7 +51,7 @@ assert.equal(validateKashfMethodRegistry().valid, true);
 const destinationRoute = resolveKashfRouteByQuestionId('q-move-city');
 assert.equal(destinationRoute.kashfMethodId, 'relocation.p183.h4h15');
 assert.equal(destinationRoute.canRunKashf, true);
-const destination = buildKashfReadingByQuestionId(board, 'q-move-city', { question: 'מה טיב המקום החדש?' });
+const destination = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-move-city', { question: 'מה טיב המקום החדש?' });
 assert.equal(destination.valid, true);
 assert.deepEqual(destination.canonicalExecution?.methodsExecuted, ['relocation.p183.h4h15']);
 assert.deepEqual(destination.primaryFormula?.houses, [4, 15]);
@@ -71,17 +71,17 @@ assert.match(twoCities.notes || '', /H1\/H2\/H7\/H8\/H9/);
 const twoCitiesRoute = resolveKashfRouteByQuestionId('q-best-city');
 assert.equal(twoCitiesRoute.kashfMethodId, 'relocation.p183.compare12vs78');
 assert.equal(twoCitiesRoute.canRunKashf, false);
-const blockedTwoCities = buildKashfReadingByQuestionId(board, 'q-best-city', { question: 'איזו עיר עדיפה?' });
+const blockedTwoCities = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-best-city', { question: 'איזו עיר עדיפה?' });
 assert.equal(blockedTwoCities.valid, false);
 assert.equal(blockedTwoCities.reason, 'blocked-by-source');
 
 // p183 current-vs-new and repeated H1/H2 stay/move remain distinct exact routes.
-const moveHome = buildKashfReadingByQuestionId(board, 'q-move-home', { question: 'האם לעבור דירה?' });
+const moveHome = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-move-home', { question: 'האם לעבור דירה?' });
 assert.equal(moveHome.valid, true);
 assert.deepEqual(moveHome.canonicalExecution?.methodsExecuted, ['relocation.p183.currentVsNewPlace']);
 assert.equal(moveHome.canonicalExecution?.topicSupportingChecksExecuted, false);
 
-const stayPlace = buildKashfReadingByQuestionId(board, 'q-stay-place', { question: 'להישאר או לעבור?' });
+const stayPlace = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-stay-place', { question: 'להישאר או לעבור?' });
 assert.equal(stayPlace.valid, true);
 assert.deepEqual(stayPlace.canonicalExecution?.methodsExecuted, ['relocation.p183.stayMoveH1H2']);
 assert.equal(stayPlace.canonicalExecution?.topicSupportingChecksExecuted, false);
@@ -94,7 +94,7 @@ assert.match(p184Indicators.notes || '', /H6\/H7/);
 assert.match(p184Indicators.notes || '', /H1\/H12/);
 assert.match(p184Indicators.notes || '', /H2/);
 assert.match(p184Indicators.notes || '', /no precedence|conflict-resolution|never aggregate|vote/i);
-const blockedIndicators = buildKashfReadingByMethod(board, 'relocation.p184.multiIndicatorStayMove');
+const blockedIndicators = buildKashfReadingByMethodForLegacyFixtureTests(board, 'relocation.p184.multiIndicatorStayMove');
 assert.equal(blockedIndicators.valid, false);
 assert.equal(blockedIndicators.reason, 'blocked-by-source');
 
@@ -109,7 +109,7 @@ assert.match(propertyMap.notes || '', /H7=vegetables\/plants/);
 assert.match(propertyMap.notes || '', /H3=water channels/);
 assert.match(propertyMap.notes || '', /H2=the surrounding wall/);
 assert.match(propertyMap.notes || '', /witness system/i);
-const blockedPropertyMap = buildKashfReadingByMethod(board, 'property.p184-185.houseGardenMap');
+const blockedPropertyMap = buildKashfReadingByMethodForLegacyFixtureTests(board, 'property.p184-185.houseGardenMap');
 assert.equal(blockedPropertyMap.valid, false);
 assert.equal(blockedPropertyMap.reason, 'blocked-by-source');
 

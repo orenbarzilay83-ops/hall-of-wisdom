@@ -76,26 +76,46 @@ console.log('\n--- 4. Hawi engine/UI files untouched (structural) ---');
   } catch { changedFiles = ['<git diff failed>']; }
   // 2026-10-06: raml-board-generator.js is genuinely SHARED infrastructure
   // (buildRamlBoardFromMothers/generateRamlEntriesFromMothers are imported
-  // by both hawi-interpreter.js and the Kashf canonical engine), not a
-  // Hawi-only file this isolation check is meant to protect. It is
-  // explicitly allow-listed here ONLY when the change to it is additive --
-  // i.e. no existing line was removed/modified (checked via git diff
-  // itself, not assumed) -- which is exactly the shape of this round's
-  // change (a new exported verifyKashfBoardStructuralIntegrity function,
-  // used by the board-validation gate fix). Section 3 above already proves
-  // the observable behavior (buildRamlBoardFromMothers's own output) is
-  // unaffected; this allow-list keeps that same guarantee at the file
-  // level instead of blocking any touch to shared infrastructure outright.
+  // by goral-hachol-ui.js, the Hawi-facing UI, as well as the Kashf
+  // canonical engine), not a Hawi-only file this isolation check is meant
+  // to protect. It is explicitly allow-listed here, scoped NOT to "no line
+  // removed" (too strict -- it blocked legitimate iteration within the
+  // Kashf-only verifyKashfBoardStructuralIntegrity function itself, added
+  // 2026-10-05 and extended 2026-10-06 with the p.35 daughter/mother
+  // diagonal check) but to a stronger, more precise guarantee: every byte
+  // of the file OUTSIDE that one function's own block (delimited by its
+  // leading "// ── אימות בלתי-תלוי..." divider comment and the next
+  // "// ──" divider that follows it) is byte-identical to HEAD. That block
+  // is never imported by Hawi (goral-hachol-ui.js only imports
+  // buildRamlBoardFromMothers, confirmed by the import-list check below),
+  // so edits confined to it cannot touch Hawi-observable behavior by
+  // construction, not just by assertion. Section 3 above additionally
+  // proves buildRamlBoardFromMothers's own OUTPUT is unaffected for a real
+  // case.
   const ALLOWED_SHARED_FILE = 'goral-hachol/engine/raml-board-generator.js';
-  let allowedFileIsPurelyAdditive = true;
+  const ALLOWED_BLOCK_START_MARKER = '// ── אימות בלתי-תלוי של תקינות'; // stable prefix -- the word after it may change (e.g. "הדיין" -> "הלוח") as the function's own scope/title is edited
+  let allowedFileChangeIsConfinedToAllowedBlock = true;
   if (changedFiles.includes(ALLOWED_SHARED_FILE)) {
     try {
-      const diffOutput = execSync(`git diff HEAD -- ${ALLOWED_SHARED_FILE}`, { cwd: process.cwd() }).toString();
-      const removedLines = diffOutput.split('\n').filter((line) => line.startsWith('-') && !line.startsWith('---'));
-      allowedFileIsPurelyAdditive = removedLines.length === 0;
-    } catch { allowedFileIsPurelyAdditive = false; }
+      const headContent = execSync(`git show HEAD:${ALLOWED_SHARED_FILE}`, { cwd: process.cwd() }).toString();
+      const workingContent = fs.readFileSync(ALLOWED_SHARED_FILE, 'utf8');
+      const stripAllowedBlock = (text) => {
+        const startIdx = text.indexOf(ALLOWED_BLOCK_START_MARKER);
+        if (startIdx === -1) return text; // block not present (e.g. pre-2026-10-05 HEAD) -- nothing to strip
+        const nextDividerIdx = text.indexOf('\n// ──', startIdx + ALLOWED_BLOCK_START_MARKER.length);
+        if (nextDividerIdx === -1) return text; // malformed -- fail open to the raw comparison below
+        return text.slice(0, startIdx) + text.slice(nextDividerIdx + 1);
+      };
+      const headOutsideBlock = stripAllowedBlock(headContent);
+      const workingOutsideBlock = stripAllowedBlock(workingContent);
+      allowedFileChangeIsConfinedToAllowedBlock = headOutsideBlock === workingOutsideBlock;
+      // Also confirm the shared import goral-hachol-ui.js actually relies on
+      // (buildRamlBoardFromMothers) is untouched by name, as a second,
+      // independent signal (not the only check).
+      assert(workingContent.includes('export function buildRamlBoardFromMothers'), '(4) buildRamlBoardFromMothers export still present by name');
+    } catch { allowedFileChangeIsConfinedToAllowedBlock = false; }
   }
-  assert(allowedFileIsPurelyAdditive, `(4) the one allow-listed shared file (${ALLOWED_SHARED_FILE}) must be a pure addition -- no existing line removed or modified`);
+  assert(allowedFileChangeIsConfinedToAllowedBlock, `(4) every change to the one allow-listed shared file (${ALLOWED_SHARED_FILE}) is confined to verifyKashfBoardStructuralIntegrity's own block -- everything else must be byte-identical to HEAD`);
   const hawiTouched = changedFiles.filter((f) => /hawi|raml/i.test(f) && !/kashf/i.test(f) && f !== ALLOWED_SHARED_FILE);
   assert(hawiTouched.length === 0, `(4) no Hawi/raml engine or UI file appears in git diff (got: ${JSON.stringify(hawiTouched)})`);
   assert(fs.existsSync('./goral-hachol/engine/hawi-interpreter.js'), '(4) hawi-interpreter.js still exists, untouched');

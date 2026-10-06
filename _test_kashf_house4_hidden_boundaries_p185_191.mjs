@@ -6,8 +6,8 @@ import {
 } from './goral-hachol/registry/kashf-canonical-method-registry.js';
 import { resolveKashfRouteByQuestionId } from './goral-hachol/engine/kashf-method-router.js';
 import {
-  buildKashfReadingByMethod,
-  buildKashfReadingByQuestionId,
+  buildKashfReadingByMethodForLegacyFixtureTests,
+  buildKashfReadingByQuestionIdForLegacyFixtureTests,
 } from './goral-hachol/engine/kashf-canonical-reading-engine.js';
 import {
   getKashfAiRetrievalRecord,
@@ -52,7 +52,7 @@ const treasureRoute = resolveKashfRouteByQuestionId('q-treasure');
 assert.equal(treasureRoute.kashfMethodId, 'hidden.p188.isStillThere');
 assert.equal(treasureRoute.canRunKashf, true);
 assert.equal(isKashfMethodProfessionallyCertified('hidden.p188.isStillThere'), true);
-const treasure = buildKashfReadingByQuestionId(board, 'q-treasure', { question: 'האם הדבר הנסתר עדיין במקומו?' });
+const treasure = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-treasure', { question: 'האם הדבר הנסתר עדיין במקומו?' });
 assert.equal(treasure.valid, true);
 assert.deepEqual(treasure.canonicalExecution?.methodsExecuted, ['hidden.p188.isStillThere']);
 assert.equal(treasure.canonicalExecution?.altFormulaExecuted, false);
@@ -63,25 +63,25 @@ assert.equal(treasure.canonicalExecution?.topicBundleExecuted, false);
 const directionRoute = resolveKashfRouteByQuestionId('q-dig-direction');
 assert.equal(directionRoute.kashfMethodId, 'hidden.p188.quarterDirection');
 assert.equal(directionRoute.canRunKashf, true);
-const directionReading = buildKashfReadingByQuestionId(board, 'q-dig-direction', { question: 'לאיזה כיוון לחפש?' });
+const directionReading = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-dig-direction', { question: 'לאיזה כיוון לחפש?' });
 assert.equal(directionReading.valid, false);
 assert.equal(directionReading.kashfMethodId, 'hidden.p188.quarterDirection');
 assert.equal(directionReading.reason, 'four-independent-casts-required');
 const casts = (patterns) => ({ question: 'לאיזה כיוון לחפש?', dynFields: Object.fromEntries(patterns.map((pattern, index) => [`quarter${index + 1}Pattern`, pattern])) });
-const oneQuarter = buildKashfReadingByQuestionId(board, 'q-dig-direction', casts(['2111', '1112', '1212', '1112']));
+const oneQuarter = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-dig-direction', casts(['2111', '1112', '1212', '1112']));
 assert.equal(oneQuarter.valid, true);
 assert.deepEqual(oneQuarter.primaryFormula.result.executorResult.suspected, [1]);
 assert.deepEqual(oneQuarter.primaryFormula.result.executorResult.excluded, [2, 3, 4]);
 assert.equal(oneQuarter.overallPositive, null);
 assert.match(oneQuarter.verdict.text, /רבע 1 הוא הרבע החשוד היחיד/);
 assert.equal(isKashfMethodProfessionallyCertified('hidden.p188.quarterDirection'), true);
-const multiple = buildKashfReadingByQuestionId(board, 'q-dig-direction', casts(['2111', '2121', '1112', '1212']));
+const multiple = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-dig-direction', casts(['2111', '2121', '1112', '1212']));
 assert.deepEqual(multiple.primaryFormula.result.executorResult.suspected, [1, 2]);
 assert.match(multiple.verdict.text, /המקור אינו נותן כלל לבחירת אחד/);
-const unresolved = buildKashfReadingByQuestionId(board, 'q-dig-direction', casts(['2111', '1111', '1112', '1212']));
+const unresolved = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-dig-direction', casts(['2111', '1111', '1112', '1212']));
 assert.deepEqual(unresolved.primaryFormula.result.executorResult.unresolved, [2]);
 assert.doesNotMatch(unresolved.verdict.text, /הרבע החשוד היחיד/);
-const invalidCast = buildKashfReadingByQuestionId(board, 'q-dig-direction', casts(['2111', '1112', '9999', '1112']));
+const invalidCast = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-dig-direction', casts(['2111', '1112', '9999', '1112']));
 assert.equal(invalidCast.reason, 'four-independent-casts-required');
 
 // p185 recursive arithmetic is blocked at the printed 94 vs apparent 16x4 conflict.
@@ -90,7 +90,7 @@ assert.equal(p185.kashfRuntimeStatus, 'blocked-by-source');
 assert.equal(p185.runtimeAllowed, false);
 assert.match(p185.notes || '', /94/);
 assert.match(p185.notes || '', /16×4|64/);
-assert.equal(buildKashfReadingByMethod(board, p185.kashfMethodId).valid, false);
+assert.equal(buildKashfReadingByMethodForLegacyFixtureTests(board, p185.kashfMethodId).valid, false);
 
 // p186 alternatives are independent pending flows, not supporting votes.
 const p186Name = getKashfMethod('hidden.p186.nameDayAbjadQuarter');

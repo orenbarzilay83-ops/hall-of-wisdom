@@ -7,8 +7,8 @@ import {
 } from './goral-hachol/registry/kashf-canonical-method-registry.js';
 import { resolveKashfRouteByQuestionId } from './goral-hachol/engine/kashf-method-router.js';
 import {
-  buildKashfReadingByMethod,
-  buildKashfReadingByQuestionId,
+  buildKashfReadingByMethodForLegacyFixtureTests,
+  buildKashfReadingByQuestionIdForLegacyFixtureTests,
 } from './goral-hachol/engine/kashf-canonical-reading-engine.js';
 import {
   resolveBestKashfAiRetrievalHit,
@@ -51,7 +51,7 @@ const hiddenRoute = resolveKashfRouteByQuestionId('q-hidden-action');
 assert.equal(hiddenRoute.kashfMethodId, 'spiritual.p167.hiddenActionAirRows46815');
 assert.equal(hiddenRoute.canRunKashf, true);
 
-const hiddenReading = buildKashfReadingByQuestionId(
+const hiddenReading = buildKashfReadingByQuestionIdForLegacyFixtureTests(
   makeBoard({ 4:'1111', 6:'1111', 8:'1111', 15:'1212' }),
   'q-hidden-action',
   { question: 'האם יש פעולה מאחורי השואל?' }
@@ -123,7 +123,7 @@ assert.equal(istikhara.kashfRuntimeStatus, 'educational-only');
 assert.equal(istikhara.runtimeAllowed, false);
 assert.notEqual(istikhara.attributedSourceBook, 'Kashf');
 
-const blockedIstikhara = buildKashfReadingByMethod(
+const blockedIstikhara = buildKashfReadingByMethodForLegacyFixtureTests(
   makeBoard(),
   'decision.external.p170-172.istikharaFigureTable',
   { question: 'אסתכארה' }

@@ -6,8 +6,8 @@ import {
 } from './goral-hachol/registry/kashf-canonical-method-registry.js';
 import { resolveKashfRouteByQuestionId } from './goral-hachol/engine/kashf-method-router.js';
 import {
-  buildKashfReadingByMethod,
-  buildKashfReadingByQuestionId,
+  buildKashfReadingByMethodForLegacyFixtureTests,
+  buildKashfReadingByQuestionIdForLegacyFixtureTests,
 } from './goral-hachol/engine/kashf-canonical-reading-engine.js';
 import {
   getKashfAiRetrievalRecord,
@@ -51,7 +51,7 @@ for (const questionId of ['q-loan', 'q-loan-return']) {
   assert.equal(route.kashfRuntimeStatus, 'blocked-by-source');
   assert.equal(route.canRunKashf, false);
   assert.notEqual(route.kashfMethodId, 'loan.external.p234.repayment');
-  const reading = buildKashfReadingByQuestionId(board, questionId, { question: 'האם החוב יוחזר?' });
+  const reading = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, questionId, { question: 'האם החוב יוחזר?' });
   assert.equal(reading.valid, false);
   assert.equal(reading.reason, 'blocked-by-source');
 }
@@ -65,7 +65,7 @@ assert.equal(p180.kashfIntentId, 'money.compareQuestionerAsked');
 assert.equal(p180.kashfRuntimeStatus, 'blocked-by-source');
 assert.equal(p180.runtimeAllowed, false);
 assert.match(p180.notes || '', /lower element|monetary amount|יסוד|number/i);
-const blocked180 = buildKashfReadingByMethod(board, 'money.p180.elementComparison');
+const blocked180 = buildKashfReadingByMethodForLegacyFixtureTests(board, 'money.p180.elementComparison');
 assert.equal(blocked180.valid, false);
 assert.equal(blocked180.reason, 'blocked-by-source');
 
@@ -73,7 +73,7 @@ assert.equal(blocked180.reason, 'blocked-by-source');
 const moneyStateRoute = resolveKashfRouteByQuestionId('q-money-state');
 assert.equal(moneyStateRoute.kashfMethodId, 'money.p182.h2h10Outlook');
 assert.equal(moneyStateRoute.canRunKashf, true);
-const moneyState = buildKashfReadingByQuestionId(board, 'q-money-state', { question: 'מה מצב הממון?' });
+const moneyState = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-money-state', { question: 'מה מצב הממון?' });
 assert.equal(moneyState.valid, true);
 assert.deepEqual(moneyState.canonicalExecution?.methodsExecuted, ['money.p182.h2h10Outlook']);
 assert.deepEqual(moneyState.primaryFormula?.result?.executorResult?.housesUsed, [2, 10]);
@@ -86,7 +86,7 @@ assert.equal(isKashfMethodProfessionallyCertified('money.p182.h2h10Outlook'), tr
 assert.equal(resolveKashfRouteByQuestionId('q-money-source').kashfMethodId, 'money.p179.sourceByIncomingHonorHouse');
 assert.equal(resolveKashfRouteByQuestionId('q-livelihood').kashfMethodId, 'money.p180.livelihoodH10Invert');
 assert.equal(resolveKashfRouteByQuestionId('q-livelihood-arrive').kashfMethodId, 'money.p181.recast25811');
-const acquire = buildKashfReadingByQuestionId(board, 'q-livelihood-arrive', { question: 'האם הממון יגיע?' });
+const acquire = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-livelihood-arrive', { question: 'האם הממון יגיע?' });
 if (acquire.valid) {
   assert.deepEqual(acquire.canonicalExecution?.methodsExecuted, ['money.p181.recast25811']);
   assert.equal(acquire.canonicalExecution?.altFormulaExecuted, false);
@@ -98,7 +98,7 @@ const halalRoute = resolveKashfRouteByQuestionId('q-money-halal');
 assert.equal(halalRoute.kashfMethodId, 'money.p182.lawfulnessInclination');
 assert.equal(halalRoute.kashfRuntimeStatus, 'blocked-by-source');
 assert.equal(halalRoute.canRunKashf, false);
-const halal = buildKashfReadingByQuestionId(board, 'q-money-halal', { question: 'האם הממון מותר או אסור?' });
+const halal = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-money-halal', { question: 'האם הממון מותר או אסור?' });
 assert.equal(halal.valid, false);
 assert.equal(halal.reason, 'blocked-by-source');
 
@@ -109,7 +109,7 @@ assert.equal(otherBook.attributedSourceBook, 'other');
 assert.equal(otherBook.methodRole, 'educational-only');
 assert.equal(otherBook.runtimeAllowed, false);
 assert.match(otherBook.notes || '', /two by two|1–7|internally incompatible|divisor/i);
-const blockedOtherBook = buildKashfReadingByMethod(board, 'money.p181.otherBookRemainder');
+const blockedOtherBook = buildKashfReadingByMethodForLegacyFixtureTests(board, 'money.p181.otherBookRemainder');
 assert.equal(blockedOtherBook.valid, false);
 assert.equal(blockedOtherBook.reason, 'attributed-reference-only');
 

@@ -169,7 +169,7 @@ function validateBoard(entries) {
   };
 }
 
-// ── אימות בלתי-תלוי של תקינות הדיין (לשימוש הקורא, לא רק של היוצר) ─────────────
+// ── אימות בלתי-תלוי של תקינות הלוח (לשימוש הקורא, לא רק של היוצר) ─────────────
 //
 // 2026-10-06: validateBoard/boardValidation לעיל מחושבים פעם אחת ב-
 // generateRamlEntriesFromMothers ו"נדבקים" כשדה על הלוח. כל קורא במורד
@@ -177,21 +177,49 @@ function validateBoard(entries) {
 // המצורף הזה -- דגל שניתן לצרף/לשכתב/להשמיט מבחוץ (לוח שנבנה ידנית,
 // נטען ממקור אחר, או תוקן אחרי היצירה) בלי שום בדיקה מול הנתונים עצמם.
 // הפונקציה הזו היא אימות עצמאי, שאינו סומך על אותו דגל כלל: היא קוראת
-// ישירות את התבנית המוצהרת בבית 15 (הדיין) בפועל מתוך entries, ובודקת
-// זוגיות -- לא רק את ה-boolean המצורף.
+// ישירות את התבניות המוצהרות בפועל מתוך entries.
 //
-// היקף מכוון, לא שכחה: גרסה קודמת של הפונקציה הזו, באותו יום, גם שחזרה
-// את כל 16 הבתים מתוך בתים 1-4 (האמהות) והשוותה לערך שבפועל -- אך זה
-// שבר כ-650 assertions קיימות (ראו _test_kashf_house2_runtime_boundaries_p179_182.mjs
-// ועוד כ-15 קבצי בדיקה דומים) שמשתמשים בכוונה בלוחות-fixture סינתטיים,
-// חלקיים (לדוגמה makeBoard() שם: סדרת 16 התבניות הקנוניות לפי הסדר,
-// עם override לבית-שתיים-שלושה ספציפיים בלבד לצורך הבדיקה) -- מוסכמה
-// נפוצה ומבוססת בכל קובצי הבדיקה של האנגייג'מנט הזה, כי המבצעים
-// (executors) קוראים רק בתים ספציפיים ולא דורשים עקביות מלאה של הלוח.
-// אכיפת עקביות-בנייה מלאה על כל קריאה הייתה דורשת לשכתב את כל
-// fixtures האלה -- היקף גדול בהרבה ממה שהתבקש בסבב הזה. הכלל הקריטי
-// היחיד המוכר כרגע מהמקור הוא זוגיות הדיין (בית 15) -- וזה בדיוק מה
-// שהפונקציה הזו מאמתת, ישירות מהנתון עצמו, ולא משחזור-עץ מלא.
+// שני כללים קריטיים, שניהם מאומתים ישירות מול הסריקה הגולמית (לא
+// הודגמה-מתוך-מוסכמה):
+//
+// (א) זוגיות הדיין -- עמ' מודפס 34 (PDF 36): "...فإذا أتى شكل فرد،
+//     فيكون الرمل غلطا" (ואם בא שבר/פרד, הרמל הוא טעות). מאומת ישירות
+//     מהתבנית המוצהרת בבית 15.
+//
+// (ב) התאמת-אלכסון בנות-אימהות -- עמ' מודפס 35 (PDF 37), מיד אחרי
+//     תיאור בניית הבנות: "ويلزم من هذا إذا كان الأول ناره مفتوحة
+//     فالخامس كذلك؛ وهواء الثاني هو السادس؛ وماء الثالث ماء السابع؛
+//     وتراب الرابع تراب الثامن، هذا كله في اختيار التخت؛ وإذا فقد شيء
+//     من ذلك كان التخت غلطا." (ונחוץ מזה: אם האש של הראשונה [אם 1]
+//     פתוחה אז גם החמישית [בת 1] כך; והאוויר של השנייה [אם 2] הוא
+//     [אוויר] השישית [בת 2]; והמים של השלישית הם מי השביעית; והעפר של
+//     הרביעית הוא עפר השמינית -- כל זה בבחירת הלוח; ואם חסר משהו מזה
+//     היה הלוח טעות.) זו בדיקת-אלכסון מפורשת אחת לכל בת: בית 5 (בת
+//     ראשונה, רowIndex=ROW.FIRE=0) חייב להתאים לאם 1 באותו מיקום-שורה
+//     (אש, מיקום 0); בית 6 (בת שנייה, ROW.AIR=1) לאם 2 במיקום 1
+//     (אוויר); בית 7 (בת שלישית, ROW.WATER=2) לאם 3 במיקום 2 (מים);
+//     בית 8 (בת רביעית, ROW.EARTH=3) לאם 4 במיקום 3 (עפר). זו בדיוק
+//     התוצאה ההכרחית (לازم) של בניית הבנות עצמה (טרנספוזיציה מלאה בין
+//     ארבע האמהות, כבר ממומשת ב-buildDaughtersFromMothers) -- לא נוסחה
+//     חדשה, אלא בדיקת-סבירות מפורשת-במקור על תוצאת אותה בנייה. המקור
+//     אינו אומר כאן שכל 4 הספרות של כל בת חייבות להתאים לכל ארבע
+//     האמהות -- רק את יחס-האלכסון החד-ספרתי הזה; לכן רק הוא מיושם,
+//     לא שחזור-מלא של הבנות (שהיה דורש הנחה מעבר למצוטט).
+//
+// היקף מכוון: גרסה קודמת של הפונקציה הזו, באותו יום, שחזרה את כל 16
+// הבתים (כולל נכדות/עדים/דיין/משפט) מתוך בתים 1-4 והשוותה לערך
+// בפועל -- מעבר למה שהמקור קובע במפורש (שם נקבע רק זוגיות-הדיין; שום
+// כלל-מקור מפורש לא צוטט עבור נכדות/עדים/משפט). זה גם שבר כ-650
+// assertions קיימות בלוחות-fixture סינתטיים. הפונקציה צומצמה אז לזוגיות-
+// דיין בלבד. הסבב הזה (2026-10-06, סבב שני) מוסיף את בדיקת-האלכסון
+// (ב) כי היא -- בניגוד לשחזור-המלא שהוסר -- **מצוטטת במפורש במקור**
+// כקריטריון-תקפות ("التخت غلطا" אם היא נכשלת), לא מוסקת מהנדסית.
+// לוחות-fixture סינתטיים שאינם עומדים בה (או בזוגיות-הדיין) חייבים
+// לעבור דרך נתיב-בדיקה מבודד שאינו יכול להגיע ללקוח/לגשר ה-AI --
+// ראו buildKashfReadingByMethodForLegacyFixtureTests ב-
+// kashf-canonical-reading-engine.js ו-buildKashfCanonicalAiBridgeForLegacyFixtureTests
+// ב-kashf-canonical-ai-bridge.js, עם בדיקת-בידוד אוטומטית
+// ב-_test_kashf_board_validation_gate.mjs.
 export function verifyKashfBoardStructuralIntegrity(entries) {
   const list = Array.isArray(entries) ? entries : null;
 
@@ -207,11 +235,25 @@ export function verifyKashfBoardStructuralIntegrity(entries) {
     };
   }
 
-  const issues = [];
-  const judgeEntry = list.find((entry) => Number(entry?.houseNumber ?? entry?.house) === 15) || null;
-  const judgePattern = judgeEntry?.pattern || judgeEntry?.key || null;
+  const byHouse = {};
+  for (const entry of list) {
+    const houseNumber = Number(entry?.houseNumber ?? entry?.house);
+    if (Number.isInteger(houseNumber) && houseNumber >= 1 && houseNumber <= 16) {
+      byHouse[houseNumber] = entry;
+    }
+  }
 
-  if (typeof judgePattern !== 'string' || !/^[12]{4}$/.test(judgePattern)) {
+  const patternOf = (houseNumber) => {
+    const entry = byHouse[houseNumber];
+    const pattern = entry?.pattern || entry?.key || null;
+    return typeof pattern === 'string' && /^[12]{4}$/.test(pattern) ? pattern : null;
+  };
+
+  const issues = [];
+
+  // (א) זוגיות הדיין -- עמ' 34.
+  const judgePattern = patternOf(15);
+  if (!judgePattern) {
     issues.push({
       code: 'missing-or-invalid-judge',
       severity: 'critical',
@@ -226,7 +268,38 @@ export function verifyKashfBoardStructuralIntegrity(entries) {
         severity: 'critical',
         houseNumber: 15,
         pattern: judgePattern,
-        hebrewMessage: 'בית 15 (הדיין) אינו זוגי בפועל. לפי המקור: הלוח כולו פסול, יש להטיל מחדש.',
+        hebrewMessage: 'בית 15 (הדיין) אינו זוגי בפועל. לפי המקור (עמ׳ 34): הלוח כולו פסול ("فيكون الرمل غلطا"), יש להטיל מחדש.',
+      });
+    }
+  }
+
+  // (ב) התאמת-אלכסון בנות-אימהות -- עמ' 35.
+  const DAUGHTER_DIAGONAL = [
+    { motherHouse: 1, daughterHouse: 5, rowIndex: 0, rowHebrew: 'אש' },
+    { motherHouse: 2, daughterHouse: 6, rowIndex: 1, rowHebrew: 'אוויר' },
+    { motherHouse: 3, daughterHouse: 7, rowIndex: 2, rowHebrew: 'מים' },
+    { motherHouse: 4, daughterHouse: 8, rowIndex: 3, rowHebrew: 'עפר' },
+  ];
+  for (const { motherHouse, daughterHouse, rowIndex, rowHebrew } of DAUGHTER_DIAGONAL) {
+    const motherPattern = patternOf(motherHouse);
+    const daughterPattern = patternOf(daughterHouse);
+    if (!motherPattern || !daughterPattern) {
+      issues.push({
+        code: 'missing-or-invalid-mother-or-daughter',
+        severity: 'critical',
+        houseNumber: !motherPattern ? motherHouse : daughterHouse,
+        hebrewMessage: `בית ${!motherPattern ? motherHouse : daughterHouse} חסר, או שאינו תבנית תקינה בת 4 ספרות (1/2).`,
+      });
+      continue;
+    }
+    if (motherPattern[rowIndex] !== daughterPattern[rowIndex]) {
+      issues.push({
+        code: 'daughter-mother-diagonal-mismatch',
+        severity: 'critical',
+        motherHouse,
+        daughterHouse,
+        rowIndex,
+        hebrewMessage: `בית ${daughterHouse} (בת) אינו תואם את בית ${motherHouse} (אם) בשורת ה${rowHebrew} (מיקום ${rowIndex}): אם=${motherPattern} (${rowHebrew}=${motherPattern[rowIndex]}), בת=${daughterPattern} (${rowHebrew}=${daughterPattern[rowIndex]}). לפי המקור (עמ׳ 35): "وإذا فقد شيء من ذلك كان التخت غلطا" — הלוח פסול.`,
       });
     }
   }

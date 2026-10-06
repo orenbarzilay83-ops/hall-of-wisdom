@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 
 import { getKashfMethod, validateKashfMethodRegistry } from './goral-hachol/registry/kashf-canonical-method-registry.js';
 import { resolveKashfRouteByQuestionId } from './goral-hachol/engine/kashf-method-router.js';
-import { buildKashfReadingByMethod, buildKashfReadingByQuestionId } from './goral-hachol/engine/kashf-canonical-reading-engine.js';
+import { buildKashfReadingByMethodForLegacyFixtureTests, buildKashfReadingByQuestionIdForLegacyFixtureTests } from './goral-hachol/engine/kashf-canonical-reading-engine.js';
 import { getKashfAiRetrievalRecord, resolveBestKashfAiRetrievalHit } from './goral-hachol/registry/kashf-ai-retrieval-index.js';
 import { isKashfMethodProfessionallyCertified } from './goral-hachol/intelligence/kashf-professional-verdict-safety.js';
 
@@ -30,7 +30,7 @@ for (const [questionId, methodId] of [
   const route = resolveKashfRouteByQuestionId(questionId);
   assert.equal(route.kashfMethodId, methodId);
   assert.equal(route.canRunKashf, true);
-  const reading = buildKashfReadingByQuestionId(makeBoard({ 1:'2111', 5:'2111', 6:'2111', 8:'2111', 15:'2112' }), questionId);
+  const reading = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeBoard({ 1:'2111', 5:'2111', 6:'2111', 8:'2111', 15:'2112' }), questionId);
   assert.equal(reading.valid, true);
   assert.deepEqual(reading.canonicalExecution?.methodsExecuted, [methodId]);
   assert.equal(reading.canonicalExecution?.topicSupportingChecksExecuted, false);
@@ -49,7 +49,7 @@ assert.equal(miscarriageRoute.kashfMethodId, 'pregnancy.p191-192.miscarriageRedH
 assert.equal(miscarriageRoute.canRunKashf, true);
 assert.equal(isKashfMethodProfessionallyCertified('pregnancy.p191-192.miscarriageRedH7NakisH8'), true);
 
-const signReading = buildKashfReadingByQuestionId(makeBoard({ 7:'2122', 8:'2221' }), 'q-miscarriage');
+const signReading = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeBoard({ 7:'2122', 8:'2221' }), 'q-miscarriage');
 const signExec = signReading.primaryFormula?.result?.executorResult;
 assert.equal(signReading.valid, true);
 assert.deepEqual(signReading.canonicalExecution?.methodsExecuted, ['pregnancy.p191-192.miscarriageRedH7NakisH8']);
@@ -58,7 +58,7 @@ assert.equal(signExec?.sourceOutcome, 'miscarriage-sign');
 assert.equal(signReading.overallPositive, null);
 assert.equal(signReading.canonicalExecution?.topicSupportingChecksExecuted, false);
 
-const absentReading = buildKashfReadingByQuestionId(makeBoard({ 7:'2111', 8:'2221' }), 'q-miscarriage');
+const absentReading = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeBoard({ 7:'2111', 8:'2221' }), 'q-miscarriage');
 assert.equal(absentReading.primaryFormula?.result?.executorResult?.miscarriageSign, false);
 assert.equal(absentReading.primaryFormula?.result?.executorResult?.sourceOutcome, 'unresolved');
 assert.equal(absentReading.overallPositive, null);
@@ -82,14 +82,14 @@ const childExistence = getKashfMethod('child.p194.existenceH1H5Nature');
 assert.equal(childExistence.runtimeAllowed, false);
 assert.match(childExistence.notes || '', /not a gate/i);
 assert.equal(getKashfMethod('child.p194.wellbeingH5H16').runtimeAllowed, false);
-const childHealth = buildKashfReadingByQuestionId(makeBoard({ 6:'1112', 8:'2211' }), 'q-child-health');
+const childHealth = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeBoard({ 6:'1112', 8:'2211' }), 'q-child-health');
 assert.equal(childHealth.valid, true);
 assert.deepEqual(childHealth.canonicalExecution?.methodsExecuted, ['child.p194.healthTrajectoryH6H8']);
 assert.deepEqual(childHealth.primaryFormula?.result?.executorResult?.housesUsed, [6,8]);
 assert.equal(childHealth.canonicalExecution?.topicSupportingChecksExecuted, false);
 assert.equal(getKashfMethod('pregnancy.p194.deliveryH5Weight').methodRole, 'educational-only');
 
-const illness = buildKashfReadingByQuestionId(makeBoard({ 15:'2112', 1:'1112', 6:'1112', 8:'1112' }), 'q-illness-heal');
+const illness = buildKashfReadingByQuestionIdForLegacyFixtureTests(makeBoard({ 15:'2112', 1:'1112', 6:'1112', 8:'1112' }), 'q-illness-heal');
 assert.equal(illness.valid, true);
 assert.deepEqual(illness.canonicalExecution?.methodsExecuted, ['illness.p196.outcomeH15']);
 assert.deepEqual(illness.primaryFormula?.result?.executorResult?.housesUsed, [15]);
@@ -97,7 +97,7 @@ assert.equal(illness.canonicalExecution?.topicSupportingChecksExecuted, false);
 for (const methodId of ['illness.p196.h1RecurrenceDurationRisk','illness.p196.sensorySignsH6H8']) {
   const method = getKashfMethod(methodId);
   assert.equal(method.runtimeAllowed, false);
-  assert.equal(buildKashfReadingByMethod(makeBoard(), methodId).valid, false);
+  assert.equal(buildKashfReadingByMethodForLegacyFixtureTests(makeBoard(), methodId).valid, false);
 }
 
 for (const methodId of [

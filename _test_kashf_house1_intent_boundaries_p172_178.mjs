@@ -7,8 +7,8 @@ import {
 } from './goral-hachol/registry/kashf-canonical-method-registry.js';
 import { resolveKashfRouteByQuestionId } from './goral-hachol/engine/kashf-method-router.js';
 import {
-  buildKashfReadingByMethod,
-  buildKashfReadingByQuestionId,
+  buildKashfReadingByMethodForLegacyFixtureTests,
+  buildKashfReadingByQuestionIdForLegacyFixtureTests,
 } from './goral-hachol/engine/kashf-canonical-reading-engine.js';
 import {
   getKashfAiRetrievalRecord,
@@ -46,7 +46,7 @@ assert.equal(validateKashfMethodRegistry().valid, true);
 const p172Method = getKashfMethod('matter.p172.h17_h1011_thenCombine');
 assert.equal(p172Method.runtimeAllowed, true);
 assert.match(p172Method.notes || '', /H16|16-position|שישה/);
-const p172 = buildKashfReadingByQuestionId(board, 'q-matter-end', { question: 'מה תוצאת העניין?' });
+const p172 = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-matter-end', { question: 'מה תוצאת העניין?' });
 assert.equal(p172.valid, true);
 assert.deepEqual(p172.canonicalExecution?.methodsExecuted, ['matter.p172.h17_h1011_thenCombine']);
 assert.equal(p172.canonicalExecution?.altFormulaExecuted, false);
@@ -55,13 +55,13 @@ assert.equal(p172.canonicalExecution?.topicBundleExecuted, false);
 assert.match(p172.hebrewKnowledge?.hebrewRule || '', /שישה־עשר|השישה/);
 
 // p173 completion remains a separate selected primary; quoted H1+H16 is not executed.
-const p173 = buildKashfReadingByQuestionId(board, 'q-success', { question: 'האם העניין יושלם?' });
+const p173 = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-success', { question: 'האם העניין יושלם?' });
 assert.equal(p173.valid, true);
 assert.deepEqual(p173.canonicalExecution?.methodsExecuted, ['completion.p173.fireRows15910']);
 assert.equal(p173.altFormula, null);
 
 // p174 general state stays distinct from the p174 hope algorithm.
-const general = buildKashfReadingByQuestionId(board, 'q-general-state', { question: 'מה מצבי הכללי?' });
+const general = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-general-state', { question: 'מה מצבי הכללי?' });
 assert.equal(general.valid, true);
 assert.deepEqual(general.canonicalExecution?.methodsExecuted, ['general.p174.h1h2h4h7h10h15']);
 
@@ -74,7 +74,7 @@ const p174Hope = getKashfMethod('hope.p174.h5h11ThroughH1');
 assert.equal(p174Hope.kashfRuntimeStatus, 'ready');
 assert.equal(p174Hope.runtimeAllowed, true);
 assert.match(p174Hope.notes || '', /TWO intermediate|שתי|H5/);
-const readyHope = buildKashfReadingByMethod(board, 'hope.p174.h5h11ThroughH1');
+const readyHope = buildKashfReadingByMethodForLegacyFixtureTests(board, 'hope.p174.h5h11ThroughH1');
 assert.equal(readyHope.valid, true);
 assert.equal(readyHope.kashfMethodId, 'hope.p174.h5h11ThroughH1');
 assert.equal(typeof readyHope.primaryFormula?.verdict?.text, 'string');
@@ -96,7 +96,7 @@ for (const methodId of [
   assert(method, `${methodId} exists`);
   assert.equal(method.runtimeAllowed, true);
   assert.equal(method.executorStatus, 'ready');
-  const result = buildKashfReadingByMethod(board, methodId);
+  const result = buildKashfReadingByMethodForLegacyFixtureTests(board, methodId);
   assert.equal(result.valid, true);
   assert.equal(result.kashfMethodId, methodId);
 }
@@ -105,7 +105,7 @@ const meetingMethod = getKashfMethod('meeting.p176.hopeHouseH1H13');
 assert(meetingMethod, 'meeting.p176.hopeHouseH1H13 exists');
 assert.equal(meetingMethod.runtimeAllowed, false);
 assert.equal(meetingMethod.executorStatus, 'pending');
-const meetingResult = buildKashfReadingByMethod(board, 'meeting.p176.hopeHouseH1H13');
+const meetingResult = buildKashfReadingByMethodForLegacyFixtureTests(board, 'meeting.p176.hopeHouseH1H13');
 assert.equal(meetingResult.valid, false);
 assert.equal(meetingResult.reason, 'executor-pending');
 
@@ -117,7 +117,7 @@ assert.equal(messengerMethod.runtimeAllowed, false);
 assert.equal(messengerMethod.executorStatus, 'pending');
 assert.equal(messengerMethod.kashfRuntimeStatus, 'blocked-by-source');
 assert.match(messengerMethod.notes || '', /separate derived board|source board/i);
-const blockedMessenger = buildKashfReadingByMethod(board, 'messenger.p176.recast14511');
+const blockedMessenger = buildKashfReadingByMethodForLegacyFixtureTests(board, 'messenger.p176.recast14511');
 assert.equal(blockedMessenger.valid, false);
 assert.equal(blockedMessenger.reason, 'blocked-by-source');
 
@@ -128,14 +128,14 @@ const messengerRoute = resolveKashfRouteByQuestionId('q-message');
 assert.equal(messengerRoute.kashfMethodId, 'completion.p173.fireRows15910');
 assert.equal(messengerRoute.canRunKashf, true);
 assert.match(readFileSync(new URL('./goral-hachol/ui/question-bank.js', import.meta.url), 'utf8'), /id: 'q-message',[\s\S]*?label: 'האם המשימה שנמסרה לשליח תושלם\?'/);
-const messenger = buildKashfReadingByQuestionId(board, 'q-message', { question: 'האם המשימה שנמסרה לשליח תושלם?' });
+const messenger = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-message', { question: 'האם המשימה שנמסרה לשליח תושלם?' });
 assert.equal(messenger.valid, true);
 assert.deepEqual(messenger.canonicalExecution.methodsExecuted, ['completion.p173.fireRows15910']);
 const newsRoute = resolveKashfRouteByQuestionId('q-news-arrive');
 assert.equal(newsRoute.kashfMethodId, 'news.arrival.unsupported');
 assert.equal(newsRoute.aliasOf, null);
 assert.equal(newsRoute.canRunKashf, false);
-assert.equal(buildKashfReadingByQuestionId(board, 'q-news-arrive').reason, 'unsupported');
+assert.equal(buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-news-arrive').reason, 'unsupported');
 
 // p177 recursive relative-thirteenth remains source-blocked, with no inferred mapping.
 const p177 = getKashfMethod('person.p177.relativeThirteenth');
@@ -143,7 +143,7 @@ assert.equal(p177.kashfRuntimeStatus, 'blocked-by-source');
 assert.equal(p177.runtimeAllowed, false);
 assert.match(p177.notes || '', /معموم/);
 assert.match(p177.notes || '', /relative-thirteenth|thirteenth/i);
-const blocked177 = buildKashfReadingByMethod(board, 'person.p177.relativeThirteenth');
+const blocked177 = buildKashfReadingByMethodForLegacyFixtureTests(board, 'person.p177.relativeThirteenth');
 assert.equal(blocked177.valid, false);
 assert.equal(blocked177.reason, 'blocked-by-source');
 
@@ -159,17 +159,17 @@ assert.match(lifespan.notes || '', /Do not substitute dignity|Hawi|p264/i);
 const lifespanRoute = resolveKashfRouteByQuestionId('q-lifespan');
 assert.equal(lifespanRoute.kashfMethodId, 'lifespan.p178.elementCountToHouse');
 assert.equal(lifespanRoute.canRunKashf, false);
-const blockedLife = buildKashfReadingByQuestionId(board, 'q-lifespan', { question: 'כמה שנים?' });
+const blockedLife = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-lifespan', { question: 'כמה שנים?' });
 assert.equal(blockedLife.valid, false);
 assert.equal(blockedLife.reason, 'blocked-by-source');
 
 // p264 life stages is a distinct runnable intent; p178/183 stay-or-move remains
 // a distinct runnable relocation intent.
-const stages = buildKashfReadingByQuestionId(board, 'q-lifespan-stages', { question: 'שלבי החיים' });
+const stages = buildKashfReadingByQuestionIdForLegacyFixtureTests(board, 'q-lifespan-stages', { question: 'שלבי החיים' });
 assert.equal(stages.valid, true);
 assert.equal(stages.kashfMethodId, 'lifespan.p264.stagesH11H9H7');
 
-const stayMove = buildKashfReadingByQuestionId(
+const stayMove = buildKashfReadingByQuestionIdForLegacyFixtureTests(
   makeBoard({ 1:'1122', 2:'1112' }),
   'q-stay-place',
   { question: 'האם להישאר או לעבור?' }
