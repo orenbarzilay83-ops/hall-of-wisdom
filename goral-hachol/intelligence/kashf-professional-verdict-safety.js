@@ -93,6 +93,29 @@ const P194_CHILD_WELLBEING_METHOD = 'child.p194.wellbeingH5H16';
 const P212_DISPUTE_H2H8_METHOD = 'dispute.p212.winnerH2H8Sign';
 const P168_NEED_MOVE_METHOD = 'need.p168.moveToObtainH5H9H14';
 const P168_REQUEST_EASE_METHOD = 'request.p168.answeredEaseH5H7';
+// 2026-10-06 (backfill-13): thirteen pre-existing, already-routed, ready
+// methods found carrying NO certification entry at all -- not opened or
+// touched this round, just never backfilled by an earlier certification
+// batch. This is a real functional gap: the live GPT system prompt
+// (supabase/functions/oren-smart-advisor/oren-smart-advisor-brain-prompt.ts)
+// forces clientAnswerDraft=null whenever certificationStatus!=="certified"
+// or clientFacingCertified!==true, regardless of aiVerdictAllowed -- so
+// every one of these already-shipped questions was silently producing no
+// client-facing draft through the AI path despite a correct, ready
+// computation underneath.
+const P169_MATTER_VALIDITY_METHOD = 'matter.p169.validityH6H8Planet';
+const P205_MODESTY_PURITY_METHOD = 'marriage.p205.modestyPurity';
+const P208_WOMAN_QUALITY_METHOD = 'marriage.p208.womanQualityH5H4';
+const P170_MUTUAL_GAZE_METHOD = 'attention.p170.mutualGazeFireRows1713';
+const P239_TRAVEL_PROFIT_WITNESS_METHOD = 'travel.p239.profitH7Witness';
+const P249_IN_CITY_H1H4_METHOD = 'missing.p249.inCitySignH1H4';
+const P249_RETURN_TIMING_METHOD = 'missing.p249.returnTimingTariqH10H11';
+const P249_ARRIVAL_SIGN_METHOD = 'missing.p249.arrivalSignH3H15';
+const P212_PARTNERSHIP_COMPAT_METHOD = 'partnership.p212.compatibilityH1H7H5H7';
+const P169_NEED_FULFILLMENT_METHOD = 'need.p169.fulfillmentH1Fortune';
+const P272_PRISONER_OUTCOME_METHOD = 'prisoner.p272.outcomeH1H4';
+const P272_PRISONER_EXIT_SAFETY_METHOD = 'prisoner.p272.exitSafetyH12';
+const P272_PRISONER_RELEASE_MANNER_METHOD = 'prisoner.p272.releaseManner';
 
 function freezeArray(values = []) {
   return Object.freeze([...(Array.isArray(values) ? values : [])]);
@@ -1926,6 +1949,344 @@ function p168RequestEasePolicy() {
   });
 }
 
+function p169MatterValidityPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-13',
+    goldenCaseIds: freezeArray(['PV-BF13-P169-VALID-VENUS', 'PV-BF13-P169-VALID-MOON', 'PV-BF13-P169-VALID-MERCURY', 'PV-BF13-P169-NOT-VALID']),
+    policyId: 'p169-matter-validity-h6h8-planet-v1',
+    questionScopeHebrew: 'התאמת העניין לשואל לפי צורת H6+H8 ושיוכי כוכב, עמ׳ 169',
+    decisiveRuleHebrew: 'הצורה הנולדת מ-H6+H8: אם היא מצורות נוגה, הירח או כוכב (עטארד) — הדבר נכון עבור השואל. כל צורה אחרת — אינו נכון. זהו דין בינארי מלא על כל 16 הצורות, לא ענף חלקי.',
+    oneWayBranches: freezeArray([
+      'H6+H8 נולדת צורת נוגה/ירח/כוכב (6 מ-16) => העניין נכון עבור השואל',
+      'H6+H8 נולדת כל צורה אחרת (10 מ-16) => העניין אינו נכון עבור השואל',
+    ]),
+    forbiddenInversions: freezeArray([
+      'אין ענף שלישי/לא-מוכרע כאן — כל 16 הצורות מכוסות; אין להמציא ענף "ממוזג" שאינו קיים.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'completion.p173.fireRows15910 (q-success) — האם העניין יצליח הוא דין נפרד מהתאמה/נכונות.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'קביעה שהעניין יצליח או יושלם',
+    ]),
+  });
+}
+
+function p205ModestyPurityPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-13',
+    goldenCaseIds: freezeArray(['PV-BF13-P205-NO-NAME', 'PV-BF13-P205-PURE', 'PV-BF13-P205-IMPURE', 'PV-BF13-P205-MIXED', 'PV-BF13-P205-NO-CLAUSE']),
+    policyId: 'p205-modesty-purity-v1',
+    questionScopeHebrew: 'סימן צניעות/טהרה לפי בתים 1, 7, 9 והמאזן, עמ׳ 205–206, בכפוף להטלה מאומתת על שם המועמדת',
+    decisiveRuleHebrew: 'ללא שם מועמדת + אישור הטלה-על-שם מפורש — אין סימן כלל. כשמאומת: כל "وقيل" (שיטה חלופית) מדווח כסימן עצמאי משלו (טהרת H1, התאמת H1/H7, הרכבת H7+H9, התאמת H1/המאזן והפכה, אזהרת H1-טהור+H9-מזיק, הרגעת H1-מזיק+H9/מאזן-טהורים) — אין סדר עדיפות מומצא בין הסימנים. אם כל הסימנים שחלים חיוביים — פסק חיובי; אם כולם שליליים — פסק שלילי; אחרת — ממוזג.',
+    oneWayBranches: freezeArray([
+      'אין שם מועמדת ואין אישור הטלה-על-שם => אין סימן; אין להמיר שם לצורה אוטומטית',
+      'H1=H15 וטהורים => טהורה כליל, אין ספק',
+      'H1 טהור => סימן צניעות',
+      'H1+H7 טהורים => סימן צניעות (שיטה חלופית)',
+      'הרכבת H7+H9 מיטיבה => יראת שמים/תקיה; מזיקה => אזהרת פריצות (שיטה חלופית)',
+      'H1=H15 ומזיק => סימן פריצות (ההפך המפורש)',
+      'H1 מיטיב+טהור ו-H9 מזיק => חשש לעתיד',
+      'H1 מזיק אך H9+המאזן טהורים => אין חשש מרכילה',
+    ]),
+    forbiddenInversions: freezeArray([
+      'אין להמציא סדר עדיפות בין הסעיפים ה"وقيل" השונים שאינו כתוב במקור.',
+      'אין להפיק סימן כלשהו לפני אישור הטלה-על-שם מפורש.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'marriage.p208.womanQualityH5H4 — דין נפרד (בתים 5/15/4).',
+      'marriage.p207-208.adulterySignsUnresolved — טבלת "בית התזווג" הנפרדת אינה סגורה ואינה מצטרפת.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'קביעה עובדתית או מוסרית על התנהגות עבר של המועמדת',
+      'ודאות המרה אוטומטית של שם לצורה',
+    ]),
+  });
+}
+
+function p208WomanQualityPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-13',
+    goldenCaseIds: freezeArray(['PV-BF13-P208-GOOD', 'PV-BF13-P208-POOR-OUTCOME', 'PV-BF13-P208-NO-NAME', 'PV-BF13-P208-NONE']),
+    policyId: 'p208-woman-quality-h5h4-v1',
+    policyScopeHebrew: 'איכות האישה לפי בית 5 מול בתים 15/4, עמ׳ 207–208, בכפוף להטלה מאומתת על שם',
+    questionScopeHebrew: 'איכות האישה לפי בית 5 מול בתים 15/4, עמ׳ 207–208, בכפוף להטלה מאומתת על שם',
+    decisiveRuleHebrew: 'ללא שם מועמדת מאומת — אין סימן. H5 בכבוד נכנס/כבוד יוצא/סוהר => האישה טובה ויציבה (פסק חיובי). המאזן (H15) או H4 בממון יוצא/דרך/חיבור => אחריתה אינה טובה — מדווח כסימן, אך אינו הופך positive:false (זהירות מכוונת, כמו תקדימי האסיר). שני הסימנים עצמאיים וללא יחס היפוך הדדי.',
+    oneWayBranches: freezeArray([
+      'H5 בכבוד נכנס/כבוד יוצא/סוהר => האישה טובה ויציבה',
+      'H15 או H4 בממון יוצא/דרך/חיבור => אחריתה אינה טובה (סימן בלבד, positive נשאר null)',
+    ]),
+    forbiddenInversions: freezeArray([
+      'סימן האחרית-הרעה אינו מקודם לפסק שלילי ("positive:false") — נשאר אזהרה בלבד, לפי המדיניות השמורנית בכוונה.',
+      'אין להפיק סימן לפני אישור הטלה-על-שם מפורש.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'marriage.p205.modestyPurity — דין נפרד (בתים 1/7/9/מאזן).',
+      'marriage.p207-208.adulterySignsUnresolved — טבלת "בית התזווג" הנפרדת אינה סגורה ואינה מצטרפת.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'קביעה עובדתית או מוסרית על האישה',
+      'הפיכת סימן האחרית-הרעה לפסק שלילי חד-משמעי',
+    ]),
+  });
+}
+
+function p170MutualGazePolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-13',
+    goldenCaseIds: freezeArray(['PV-BF13-P170-MUTUAL', 'PV-BF13-P170-OTHER-PARTY', 'PV-BF13-P170-NONE']),
+    policyId: 'p170-mutual-gaze-fire-rows-v1',
+    questionScopeHebrew: 'מבט הדדי בין שני אנשים לפי שורות אש בתים 1, 7 ו-13, עמ׳ 170',
+    decisiveRuleHebrew: 'שורת אש H1 פתוחה, H7 פתוחה, H13 סתומה => מבט הדדי. שורת אש H13 פתוחה, H1 סתומה, H7 פתוחה => האדם הנשאל מביט באחר, לא בשואל. כל צירוף אחר אינו מוכרע; "ועל זה פי קיש" (היקש) אינו מורחב לצירופים נוספים.',
+    oneWayBranches: freezeArray([
+      'אש H1 פתוחה + אש H7 פתוחה + אש H13 סתומה => מבט הדדי',
+      'אש H13 פתוחה + אש H1 סתומה + אש H7 פתוחה => האדם מביט באחר',
+    ]),
+    forbiddenInversions: freezeArray([
+      'אין להרחיב את "היקש" המקורי לצירופי שורות-אש נוספים שלא נמסרו במפורש.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'love.p204.attentionFireRows1713 — דין נפרד (H1/H7/H13 בניסוח אחר, לא ממוזג).',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'אבחון רומנטי או רגשי מעבר למבט המדווח במקור',
+    ]),
+  });
+}
+
+function p239TravelProfitWitnessPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-13',
+    goldenCaseIds: freezeArray(['PV-BF13-P239-PROFIT', 'PV-BF13-P239-LOSS', 'PV-BF13-P239-DISAGREE', 'PV-BF13-P239-NONE']),
+    policyId: 'p239-travel-profit-h7-witness-v1',
+    questionScopeHebrew: 'רווח במסע לפי בית 7 ועדי הבית (9, 5), עמ׳ 239',
+    decisiveRuleHebrew: 'H7 מיטיב וגם H9 וגם H5 מיטיבים (ללא מחלוקת) => ירוויח במסחרו וישוב בשלום. H7 מזיק => המסחר מפסיד (ללא תנאי בעדים). כאשר H9 ו-H5 חלוקים — אין דין "מאל אליה" מחושב (אופרטור לא מוגדר במקור); הענף נשאר "מחלוקת-עדים-לא-מוכרעת".',
+    oneWayBranches: freezeArray([
+      'H7 מיטיב + H9 מיטיב + H5 מיטיב (ללא מחלוקת) => רווח ושיבה בשלום',
+      'H7 מזיק => המסחר מפסיד',
+    ]),
+    forbiddenInversions: freezeArray([
+      'כאשר H9/H5 חלוקים — אין להמציא אופרטור "מאל אליה"; הענף נשאר לא-מוכרע.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'travel.p239.profitEarthRowH2 — חסום במקור (מנטקה לא מוגדרת); אינו מצטרף.',
+      'money.p182.lawfulnessInclination — אותו אופרטור "נוטה אל" לא מוגדר, דין נפרד.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'הכרעה כשהעדים חלוקים',
+    ]),
+  });
+}
+
+function p249InCityH1H4Policy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-13',
+    goldenCaseIds: freezeArray(['PV-BF13-P249-INCITY', 'PV-BF13-P249-RETURNED-OUT']),
+    policyId: 'p249-in-city-h1h4-v1',
+    questionScopeHebrew: 'האם הנעדר בעיר, לפי הרכבת בתים 1 ו-4, עמ׳ 249–250',
+    decisiveRuleHebrew: 'הרכבת H1+H4 פנימית (דאכיל) => סימן שהוא בעיר/חזר. חיצונית (כ׳ארג׳) => ההפך המפורש במקור ("دخول أو ضده").',
+    oneWayBranches: freezeArray([
+      'H1+H4 נולדת פנימית => בעיר/חזר',
+      'H1+H4 נולדת חיצונית => ההפך (אינו בעיר)',
+    ]),
+    forbiddenInversions: freezeArray([
+      'אין ענף שלישי כאן — שני הענפים (פנימי/חיצוני) מכוסים ישירות מהמקור, לא מומצאים.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'missing.p249.returnTimingTariqH10H11 — תזמון מפגש הוא דין נפרד.',
+      'missing.p249.arrivalSignH3H15 — תיאורי בלבד, אינו מצטרף.',
+      'missing.p248-249.lifeH1H4H9Outcome — חי/מת הוא דין נפרד.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'תאריך או זמן חזרה',
+    ]),
+  });
+}
+
+function p249ReturnTimingPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-13',
+    goldenCaseIds: freezeArray(['PV-BF13-P249-SAMEDAY', 'PV-BF13-P249-WITHINHOUR', 'PV-BF13-P249-NONE']),
+    policyId: 'p249-return-timing-tariq-h10h11-v1',
+    questionScopeHebrew: 'תזמון מפגש/התאחדות עם הנעדר, לפי בתים 10 ו-11, עמ׳ 249',
+    decisiveRuleHebrew: 'H10=H11=דרך(1111) => התאחדות באותו יום. H10=דרך(1111), H11=חיבור(2112) => התאחדות בתוך השעה (מנוסה, מצוין במקור). כל צירוף אחר אינו מוכרע. זהו דין מפגש/התאחדות, לא דין חזרה עצמה.',
+    oneWayBranches: freezeArray([
+      'H10=H11=דרך(1111) => התאחדות באותו יום',
+      'H10=דרך(1111) וH11=חיבור(2112) => התאחדות בתוך השעה',
+    ]),
+    forbiddenInversions: freezeArray([
+      'כל צירוף אחר אינו הופך לדין שלילי של "לא יחזור" — נשאר ללא הכרעה.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'missing.p249.returnAnglesJudge — דין חזרה כללי נפרד.',
+      'missing.p249.inCitySignH1H4 — דין נפרד (האם בעיר).',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'הבטחת שיבה/חזרה בפועל',
+    ]),
+  });
+}
+
+function p249ArrivalSignPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-13',
+    goldenCaseIds: freezeArray(['PV-BF13-P249-ARRIVAL-OBS']),
+    policyId: 'p249-arrival-sign-h3h15-descriptive-v1',
+    questionScopeHebrew: 'תצפית תיאורית בלבד על מצב דאכיל/כ׳ארג׳ של בתים 3 ו-15 בעניין הגעת נעדר, עמ׳ 249',
+    decisiveRuleHebrew: 'שיטה תיאורית בלבד: מדווחים סיווגי דאכיל/כ׳ארג׳ של H3 ו-H15 בנפרד. positive הוא null לעולם — לא הוכח כלל-שילוב (AND או אחר) סגור מהמקור. אין להפיק פסק בינארי מכלל זה.',
+    oneWayBranches: freezeArray([
+      'H3 ו-H15 מדווחים כתצפיות עצמאיות — ללא פסק מכריע',
+    ]),
+    forbiddenInversions: freezeArray([
+      'אין להמציא כלל-שילוב (AND/OR) בין H3 ל-H15 שאינו מוכח מהמקור.',
+      'positive חייב להישאר null בכל מקרה; זוהי שיטה תיאורית, לא פסק.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'missing.p249.returnAnglesJudge', 'missing.p249.returnTimingTariqH10H11', 'missing.p248-249.lifeH1H4H9Outcome',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'כל פסק כן/לא על הגעת הנעדר מכלל זה',
+    ]),
+  });
+}
+
+function p212PartnershipCompatPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-13',
+    goldenCaseIds: freezeArray(['PV-BF13-P212-COMPAT-GOOD', 'PV-BF13-P212-COMPAT-BAD', 'PV-BF13-P212-COMPAT-DISAGREE']),
+    policyId: 'p212-partnership-compatibility-h1h7-h5h7-v1',
+    questionScopeHebrew: 'התאמת שותפות לפי הצורות הנולדות מ-H1+H7 ומ-H5+H7, עמ׳ 212',
+    decisiveRuleHebrew: 'כל אחת מהצורות הנולדות (H1+H7, H5+H7) נבדקת בנפרד: מיטיבה => דון לטוב; מזיקה => דון להפך. כששתי הצורות מסכימות — פסק אחיד. כשהן חלוקות — המקור אינו נותן שובר-שוויון; שתי העדויות מדווחות בלי פסק כפוי אחד.',
+    oneWayBranches: freezeArray([
+      'שתי הצורות הנולדות (H1+H7, H5+H7) מיטיבות => השותפות טובה',
+      'שתי הצורות הנולדות מזיקות => השותפות רעה',
+    ]),
+    forbiddenInversions: freezeArray([
+      'כשהצורות חלוקות — אין להמציא שובר-שוויון; שתי העדויות מדווחות כפי שהן.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'partnership.p212.operationUnresolved — חסום (הג\'ומלה הגולמית לא זמינה במודל הנתונים); אינו מצטרף.',
+      'dispute.p212.reconciliationH1H7 — שאלה נפרדת (פיוס בסכסוך, לא התאמת שותפות).',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'הכרעה בין שני הסימנים כשהם חלוקים',
+    ]),
+  });
+}
+
+function p169NeedFulfillmentPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-13',
+    goldenCaseIds: freezeArray(['PV-BF13-P169-NEED-FULFILLED', 'PV-BF13-P169-NEED-DELAYED', 'PV-BF13-P169-NEED-NOTFULFILLED']),
+    policyId: 'p169-need-fulfillment-h1-fortune-v1',
+    questionScopeHebrew: 'האם הצורך ייפתר, לפי מזל בית 1 ("בית הצורך"), עמ׳ 169',
+    decisiveRuleHebrew: 'בית 1 מיטיב => הצורך ייפתר. בית 1 ממוזג => עיכוב/איטיות (ענף מפורש, לא שקט). בית 1 מזיק => הצורך לא ייפתר. דין סגור על כל שלושת מצבי המזל.',
+    oneWayBranches: freezeArray([
+      'בית 1 מיטיב => הצורך ייפתר',
+      'בית 1 ממוזג => עיכוב/איטיות',
+      'בית 1 מזיק => הצורך לא ייפתר',
+    ]),
+    forbiddenInversions: freezeArray([
+      'אין ענף רביעי — שלושת מצבי המזל מכוסים ישירות מהמקור.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'hope.p267.fulfillment — דין נפרד (בית 11, עמ׳ 267).',
+      'need.p168.moveToObtainH5H9H14 — דין נפרד (נסיעה להשגת הצורך, לא פתרון הצורך עצמו).',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'מועד פתרון הצורך',
+    ]),
+  });
+}
+
+function p272PrisonerOutcomePolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-13',
+    goldenCaseIds: freezeArray(['PV-BF13-P272-OUTCOME-GOOD', 'PV-BF13-P272-OUTCOME-BAD']),
+    policyId: 'p272-prisoner-outcome-h1h4-v1',
+    questionScopeHebrew: 'אחרית/גורל האסיר לפי הצורה הנולדת מ-H1+H4, עמ׳ 272',
+    decisiveRuleHebrew: 'הצורה הנולדת מ-H1+H4 מזיקה => אחרית האסיר לרע. מיטיבה => אחריתו לטוב. דין בינארי שלם; אין ענף מפורש לממוזג.',
+    oneWayBranches: freezeArray([
+      'H1+H4 נולדת מיטיבה => אחרית לטוב',
+      'H1+H4 נולדת מזיקה => אחרית לרע',
+    ]),
+    forbiddenInversions: freezeArray([
+      'צורה ממוזגת אינה מקודמת לאחד הענפים — נשארת ללא הכרעה.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'prisoner.p272-273.rapidExitH11WithH5Caution — מהירות יציאה, דין נפרד.',
+      'prisoner.p272.exitSafetyH12 — בטיחות יציאה, דין נפרד.',
+      'prisoner.releaseTiming.unresolved — תזמון (לא נמסר כאן).',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'תאריך שחרור',
+    ]),
+  });
+}
+
+function p272PrisonerExitSafetyPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-13',
+    goldenCaseIds: freezeArray(['PV-BF13-P272-EXITSAFE', 'PV-BF13-P272-EXITSAFE-NONE']),
+    policyId: 'p272-prisoner-exit-safety-h12-v1',
+    questionScopeHebrew: 'בטיחות יציאת האסיר לפי בית 12, עמ׳ 272',
+    decisiveRuleHebrew: 'בית 12 מיטיב => יציאתו בשלום. המקור אינו נותן הפך מפורש למזיק/ממוזג; שניהם נשארים ללא הכרעה (לא פסק "יציאה מסוכנת").',
+    oneWayBranches: freezeArray([
+      'בית 12 מיטיב => יציאה בשלום',
+    ]),
+    forbiddenInversions: freezeArray([
+      'בית 12 מזיק או ממוזג אינו הופך לפסק "יציאה מסוכנת" — נשאר ללא הכרעה.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'prisoner.p272.outcomeH1H4 — אחרית האסיר, דין נפרד (בתים אחרים).',
+      'prisoner.p272-273.rapidExitH11WithH5Caution — מהירות יציאה, דין נפרד.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'פסק סכנה כשהתנאי החיובי לא מתקיים',
+    ]),
+  });
+}
+
+function p272PrisonerReleaseMannerPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-13',
+    goldenCaseIds: freezeArray(['PV-BF13-P272-MANNER-FORCED', 'PV-BF13-P272-MANNER-CHOICE', 'PV-BF13-P272-MANNER-CONFLICT']),
+    policyId: 'p272-prisoner-release-manner-v1',
+    questionScopeHebrew: 'אופן השחרור (בכפייה/ברצון) לפי בתים 2, 3, 5, 9, 10, עמ׳ 272',
+    decisiveRuleHebrew: 'מזיק באחד מבתים 2/3/5/9/10 => האסיר יוצא שלא ברצון שלטון העיר. מיטיב באחד מהם => יוצא ברצונו. המקור אינו קובע סדר-עדיפות בין חמשת הבתים; סימנים סותרים מדווחים יחד בלי פסק כפוי. אין כאן שיפוט ערכי (לא "טוב"/"רע") — רק תיאור אופן היציאה.',
+    oneWayBranches: freezeArray([
+      'מזיק באחד מהבתים 2/3/5/9/10 => יציאה ללא רצון השלטון',
+      'מיטיב באחד מהם => יציאה ברצון',
+    ]),
+    forbiddenInversions: freezeArray([
+      'אין סדר-עדיפות מומצא בין חמשת הבתים כשחלקם מיטיבים וחלקם מזיקים.',
+      'אין שיפוט ערכי — אופן היציאה אינו "טוב" או "רע" מבחינת האסיר.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'prisoner.p272.outcomeH1H4 — אחרית האסיר, דין נפרד.',
+      'prisoner.releaseTiming.unresolved — תזמון (לא נמסר כאן).',
+      'prisoner.p272.forcedEscapeRepeatedBenefic — חסום (וריאנט כתב-יד לא פתור); אינו מצטרף.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'שיפוט ערכי על אופן השחרור',
+      'תאריך שחרור',
+    ]),
+  });
+}
+
 function p248249MissingLifePolicy() {
   return Object.freeze({
     certificationStatus: 'certified',
@@ -2112,6 +2473,19 @@ const METHOD_POLICIES = Object.freeze({
   [P212_DISPUTE_H2H8_METHOD]: p212DisputeH2H8Policy(),
   [P168_NEED_MOVE_METHOD]: p168NeedMovePolicy(),
   [P168_REQUEST_EASE_METHOD]: p168RequestEasePolicy(),
+  [P169_MATTER_VALIDITY_METHOD]: p169MatterValidityPolicy(),
+  [P205_MODESTY_PURITY_METHOD]: p205ModestyPurityPolicy(),
+  [P208_WOMAN_QUALITY_METHOD]: p208WomanQualityPolicy(),
+  [P170_MUTUAL_GAZE_METHOD]: p170MutualGazePolicy(),
+  [P239_TRAVEL_PROFIT_WITNESS_METHOD]: p239TravelProfitWitnessPolicy(),
+  [P249_IN_CITY_H1H4_METHOD]: p249InCityH1H4Policy(),
+  [P249_RETURN_TIMING_METHOD]: p249ReturnTimingPolicy(),
+  [P249_ARRIVAL_SIGN_METHOD]: p249ArrivalSignPolicy(),
+  [P212_PARTNERSHIP_COMPAT_METHOD]: p212PartnershipCompatPolicy(),
+  [P169_NEED_FULFILLMENT_METHOD]: p169NeedFulfillmentPolicy(),
+  [P272_PRISONER_OUTCOME_METHOD]: p272PrisonerOutcomePolicy(),
+  [P272_PRISONER_EXIT_SAFETY_METHOD]: p272PrisonerExitSafetyPolicy(),
+  [P272_PRISONER_RELEASE_MANNER_METHOD]: p272PrisonerReleaseMannerPolicy(),
 });
 
 export const KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS = Object.freeze(
