@@ -3123,31 +3123,43 @@ function computeMissingLifeStatusH8H14P249(chart) {
 // page, computeMissingReturnTimingP249's own source text: "خذ من
 // الرابع والأول شكلا" -- both "من...شكلا", never "في").
 //
-// Decisive same-page, same-author precedent for what "في X و Y" +
-// [single predicate] actually means operationally: the very next نكتة
-// on this same page (computeMissingReturnTimingP249, already
-// implemented and tested) reads "فإن خرج في العاشر والحادي عشر طريق"
-// ("if Tariq came out IN the tenth and the eleventh") as TWO
-// INDEPENDENT per-house checks joined by AND -- h10Pattern === '1111'
-// && h11Pattern === '1111' -- not a combine of H10+H11 into a third
-// figure. That executor's own comment confirms the author follows this
-// "في X و Y" with "وإن كان في العاشر طريق، وفي الحادي عشر إجتماع"
-// (splitting the SAME idea into two explicit parallel "في [house]
-// [figure]" clauses) a few words later, on the identical page -- the
-// author's own usage pattern for "في X و Y [predicate]" is a per-house
-// AND-condition, not a combine.
+// RE-AUDITED YET AGAIN 2026-10-06 (4th pass, independent, flagged on
+// review): the "AND" reading above (H3 dakhil AND H15 dakhil) rested
+// ENTIRELY on an analogy to the adjacent نكتة
+// (computeMissingReturnTimingP249's "في العاشر والحادي عشر طريق"). On
+// closer comparison that analogy does not transfer cleanly: in the Tariq
+// clause the grammatical subject IS a named figure ("طريق") whose
+// presence is checked at two locations -- "X [a named identity] found at
+// A and at B" straightforwardly means A=X and B=X (AND). In THIS clause
+// the grammatical subject is "قدومه" (his arrival), an abstract referent,
+// not a named figure-identity; "في الثالث والخامس عشر" locates where the
+// arrival-sign is read, and "فإن كان داخلا" (if it was dakhil) predicates
+// a CLASSIFICATION (داخل/dakhil), not an identity-match, of that abstract
+// referent. "A named identity appears at two locations" (Tariq) and "an
+// abstract sign is classified by examining two locations" (arrival) are
+// not the same grammatical situation, and the clause itself supplies no
+// independent marker -- no dual/plural verb form, no second instance of
+// "في X ... و في Y" split into parallel clauses the way the Tariq نكتة
+// explicitly does a few lines later -- that would settle AND vs. some
+// other combination rule (OR; one house weighted over the other; etc.)
+// for an abstract-referent case specifically. Searched the rest of this
+// printed page and p250's own adjacent "قدم الغائب" مسئلة for a second,
+// independent "two named houses + abstract-referent classification"
+// precedent; none was found in the material available this round (no
+// scan access to pages before p249 in this engagement's source set).
 //
-// Applying that SAME-PAGE, SAME-PREPOSITION precedent here: "قدومه في
-// الثالث والخامس عشر، فإن كان داخلا" reads as "[the arrival sign is
-// present] when house 3 AND house 15 [each, independently] are دخول
-// (dakhil)" -- not "combine H3+H15 into a new figure, then classify
-// THAT". The prior combine-based reading is WITHDRAWN as unproven (no
-// "من...شكلا" verb anywhere in this clause, and the one directly
-// analogous same-page "في X و Y" construction resolves the other way).
-// This correction is a genuine source-finding, not a test-confirms-itself
-// substitute: the evidence is the preposition choice plus the adjacent,
-// already-implemented same-page precedent, checkable independently of
-// this executor's own behavior.
+// Per explicit instruction: a single analogical inference from a
+// structurally different adjacent clause is not sufficient proof of the
+// source's actual combining rule, and a passing test must never
+// substitute for that proof. The AND-based positive verdict is therefore
+// WITHDRAWN. H3 and H15's own dakhil/kharij classifications are KEPT and
+// reported (they are independently well-established facts, not in
+// question) -- what is withdrawn is specifically the claim that "both
+// dakhil" is the source's stated condition for a positive arrival sign.
+// This method is demoted to descriptive-only: it always reports H3/H15's
+// classifications, and NEVER sets positive:true. (It still sets no
+// positive:false either -- the source states no inverse "وإلا" for this
+// clause regardless of this question.)
 //
 // "لاسيما إن كان في بيت سعد" (especially if it was in a house of benefic)
 // stays NOT implemented as a "strengthened" sub-signal, for the same
@@ -3158,12 +3170,9 @@ function computeMissingLifeStatusH8H14P249(chart) {
 // elsewhere in the material reviewed, so it stays an explicitly
 // undecided bonus clause -- not computed, not asserted.
 //
-// Computation: classify H3 and H15 EACH independently (no combine).
-// dakhalKharij === 'dakhil' (strictly -- not 'mujassad-dakhil', kept
-// distinct per this corpus's own p63 classification) for BOTH houses
-// => arrival sign. The source states no inverse ("وإلا") for this
-// specific clause, so any other combination (one dakhil, neither
-// dakhil, kharij) returns positive:null, never a "not arriving" verdict.
+// Computation: classify H3 and H15 EACH independently (no combine, no
+// AND-verdict). Both fields are reported for the advisor record; no
+// positive/negative client verdict is derived from them.
 function computeMissingArrivalSignH3H15P249(chart) {
   if (!Array.isArray(chart)) return null;
   const h3 = findCanonicalHouse(chart, 3);
@@ -3176,11 +3185,17 @@ function computeMissingArrivalSignH3H15P249(chart) {
   const h15Classification = classifyCanonicalFigure(h15Pattern);
   const h3Dakhil = h3Classification.dakhalKharij === 'dakhil';
   const h15Dakhil = h15Classification.dakhalKharij === 'dakhil';
-  const arrivalSign = h3Dakhil && h15Dakhil;
+  const bothDakhil = h3Dakhil && h15Dakhil;
 
-  const outputHebrew = arrivalSign
-    ? `בית 3 (${h3Pattern}, ${h3Classification.figureHebrew || h3Pattern}) ובית 15 (${h15Pattern}, ${h15Classification.figureHebrew || h15Pattern}) — שניהם צורה פנימית (داخل). לפי כשף עמ׳ 249: סימן שהנעדר בדרכו/מתקרב. (הסעיף הנוסף "لاسيما إن كان في بيت سعد" אינו מחושב כאן — אין הוכחה שהוא שקול לסיווג מיטיב/מזיק של אחת הצורות.)`
-    : `בית 3 (${h3Pattern}) ובית 15 (${h15Pattern}): לא שתיהן צורה פנימית (נדרש ששתיהן יהיו داخل לפי עמ׳ 249). המקור אינו נותן כאן כלל הפוך; אין בכך הוכחה שאינו בדרכו.`;
+  const outputHebrew = `בית 3 (${h3Pattern}, ${h3Classification.figureHebrew || h3Pattern}) ` +
+    `ובית 15 (${h15Pattern}, ${h15Classification.figureHebrew || h15Pattern}). ` +
+    `לפי כשף עמ׳ 249: "وقدومه في الثالث والخامس عشر، فإن كان داخلا، فهو قادم" — ` +
+    `המקור קושר את סימן ההגעה לשני הבתים יחד, אך הראיה הזמינה אינה מספיקה כדי לקבוע ` +
+    `בוודאות את אופן הצירוף (האם נדרשת פנימיות בשתיהן, באחת, או משהו אחר) כאשר ` +
+    `הנושא הדקדוקי הוא "הגעתו" (מושג מופשט) ולא צורה בעלת שם — בשונה מהתקדים הסמוך ` +
+    `(עמ׳ 249, "طريق" בבתים 10-11) שבו הנושא הוא זהות-צורה בעלת שם. ` +
+    `לכן אין כאן פסק: בית 3 — ${h3Classification.dakhalKharij === 'dakhil' ? 'פנימית' : 'אינה פנימית'}; ` +
+    `בית 15 — ${h15Classification.dakhalKharij === 'dakhil' ? 'פנימית' : 'אינה פנימית'}.`;
 
   return {
     sourceRef: 'כשף אל-אסרר עמ׳ 249 (PDF 251)',
@@ -3192,9 +3207,9 @@ function computeMissingArrivalSignH3H15P249(chart) {
     h15DakhalKharij: h15Classification.dakhalKharij,
     h3Dakhil,
     h15Dakhil,
-    arrivalSign,
-    positive: arrivalSign ? true : null,
-    verdictType: 'missing-arrival-sign-h3h15',
+    bothDakhil,
+    positive: null,
+    verdictType: 'missing-arrival-sign-h3h15-descriptive-only',
     outputHebrew,
   };
 }

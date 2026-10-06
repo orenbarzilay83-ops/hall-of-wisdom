@@ -310,8 +310,21 @@ const expectedNoDecisionOnly = new Set([
   // _test_kashf_missing_p249_in_city.mjs), whose dakhil/kharij condition
   // is common enough that it now fires decisively on >=1 of the 47
   // boards below, moving q-missing-in-city out of this set entirely.
+  //
+  // q-missing-arriving (missing.p249.arrivalSignH3H15) added here
+  // 2026-10-06: re-audited a 4th time, independently, and demoted to
+  // descriptive-only -- its AND-based positive verdict rested on a
+  // single analogy to a grammatically different clause (a named-figure
+  // subject vs. this clause's abstract "his arrival" referent) and was
+  // withdrawn as unproven; see the method's own registry notes. It now
+  // always returns positive:null, with no CATEGORICAL_RULES entry below
+  // (unlike the four prose-level "descriptive-only" methods, it has no
+  // resolved/unresolved axis to map -- h3Dakhil/h15Dakhil are always
+  // populated regardless of outcome), so this file's own categorization
+  // correctly places it in no-decision-only, not descriptive-only.
+  'q-missing-arriving',
 ]);
 const actualNoDecisionOnly = new Set(perQuestion.filter((q) => q.decisiveCount === 0 && q.descriptiveOnlyCount === 0).map((q) => q.id));
-assert.deepEqual(actualNoDecisionOnly, expectedNoDecisionOnly, 'the no-decision-only set matches the six exhaustively-verified rare conditions exactly (q-missing-in-city moved out after being re-pointed to a more common method)');
+assert.deepEqual(actualNoDecisionOnly, expectedNoDecisionOnly, 'the no-decision-only set matches the seven exhaustively-accounted-for rare/demoted conditions exactly');
 
 console.log('Kashf verdict-rate audit: PASS');
