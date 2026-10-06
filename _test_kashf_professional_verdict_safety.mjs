@@ -898,7 +898,8 @@ for (const [pattern, expectedBranch] of [
   const bridge = buildKashfCanonicalAiBridge({ questionId: 'q-dispute', questionText: 'מי גובר בסכסוך לפי בית ראשון?', board: buildRamlBoardFromMothers([pattern, '1111', '1111', '1111']) });
   const result = bridge.canonicalReading?.formula?.result?.executorResult;
   assert(result?.branch === expectedBranch && bridge.professionalVerdictSafety?.isSafe === true, `p212 dispute ${expectedBranch} bridge certified`);
-  assert(bridge.professionalVerdictSafety?.authoritativeClientDraftHebrew === result?.outputHebrew, `p212 dispute ${expectedBranch} exact draft`);
+  assert(bridge.professionalVerdictSafety?.authoritativeClientDraftHebrew === result?.clientSafeHebrew, `p212 dispute ${expectedBranch} exact client-safe draft`);
+  assert(!/[\u0600-\u06ff]|[12]{4}|עמ[׳']/u.test(result?.clientSafeHebrew || ''), `p212 dispute ${expectedBranch} omits advisor-only details`);
   if (expectedBranch === 'unresolved') assert(bridge.professionalVerdictSafety?.binaryClientVerdictAllowed === false, 'p212 dispute mixed H1 has no binary verdict');
 }
 for (const [mothers, expectedBranch] of [

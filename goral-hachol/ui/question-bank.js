@@ -703,8 +703,8 @@ window.QUESTION_BANK = [
   {
     id: 'q-career-duration',
     category: 'career', houseId: 10, topicId: 'authorityState', kashfTopicId: 'authorityState',
-    label: 'כמה זמן ישאר בתפקיד?',
-    desc: 'לתפקיד שנמצאים בו — כמה זמן עוד ישמר',
+    label: 'האם התפקיד יישמר?',
+    desc: 'האם המינוי או התפקיד יימשך; כלל זה אינו מחשב משך זמן',
     clientFields: [F.positionName],
   },
   {

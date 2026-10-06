@@ -86,6 +86,57 @@ for (const item of cases) {
 }
 
 const defaultMothers = ['2222', '2211', '2121', '2221'];
+// Every client phrase below is tied to a real board and the method's own
+// structured branch. A missing positive sign stays unresolved, and the
+// enemy branches never purport to identify a particular person.
+for (const [methodId, cases] of [
+  ['dream.p254.h9AndTransit', [
+    [['2222','2211','2121','2221'], true, null, 'לטובה'],
+    [['1122','1122','1122','1122'], null, null, 'אין לפי כלל זה סימן מכריע'],
+    [['2112','1222','2212','2121'], false, null, 'לרעה'],
+  ]],
+  ['enemy.p271.h1vsH12', [
+    [['2222','2211','2121','2221'], null, null, 'אין לפי כלל זה סימן מכריע'],
+    [['1122','2221','1122','2221'], false, 'no-enemy', 'אין לו אויב'],
+    [['2221','1122','2221','1122'], true, 'enemies', 'יש לו אויבים'],
+    [['1122','2121','1122','1211'], true, 'querent-prevails', 'הוא יגבר על אויביו'],
+    [['1112','1111','1111','1111'], true, 'enemy-prevails', 'האויב יגבר עליו'],
+  ]],
+  ['lostItem.p202.returnH6H8', [
+    [['2222','2211','2121','2221'], false, null, 'לא תשוב'],
+    [['2212','1111','2112','1111'], true, null, 'תשוב'],
+  ]],
+  ['dispute.p212.reconciliationH1H7', [
+    [['2222','2211','2121','2221'], null, null, 'אין לפי כלל זה סימן מכריע'],
+    [['1122','1122','1122','1122'], true, null, 'יתפייסו'],
+  ]],
+  ['dispute.p212.winnerH1', [
+    [['2222','2211','2121','2221'], null, 'unresolved', 'אינו מכריע'],
+    [['1122','1122','1122','1122'], false, 'other-party-prevails', 'הצד השני גובר'],
+    [['1221','1221','1221','1221'], true, 'seeker-prevails', 'המבקש גובר'],
+  ]],
+  ['authority.p257.appointmentH1H10Planet', [
+    [['2222','2211','2121','2221'], false, null, 'המינוי אינו מתקיים'],
+    [['1122','1122','1122','1122'], true, null, 'המינוי מתקיים'],
+  ]],
+]) {
+  for (const [mothers, positive, branch, phrase] of cases) {
+    const result = runKashfPack({ mothers, methodId });
+    const execution = result.methodResult?.executorResult;
+    assert.equal(result.status, 'ok', methodId);
+    assert.equal(execution?.positive, positive, methodId);
+    if (branch) assert.equal(execution?.branch, branch, methodId);
+    assert.equal(result.clientAnswerDraft, execution?.clientSafeHebrew, methodId);
+    assert.match(result.clientAnswerDraft, new RegExp(phrase), methodId);
+    assert.doesNotMatch(result.clientAnswerDraft, /[\u0600-\u06ff]|(?:^|[^0-9])[12]{4}(?![0-9])|עמ[׳']|\bPDF\b/u, methodId);
+    assert.equal(result.safety.clientFacingCertified, true, methodId);
+  }
+}
+const durationAlias = routes.find(item => item.questionId === 'q-career-duration');
+assert.equal(durationAlias?.methodId, 'authority.p257.appointmentH1H10Planet');
+assert.match(durationAlias.label, /יישמר/);
+assert.doesNotMatch(durationAlias.label, /כמה זמן/);
+assert.match(durationAlias.description, /אינו מחשב משך זמן/);
 // Four legacy formula routes produce exact, short verdict.text rather than
 // executorResult.clientSafeHebrew. Pin every outcome to a real board so the
 // package can expose these texts without a generic advisor-text fallback.

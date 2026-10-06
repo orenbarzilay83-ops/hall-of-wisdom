@@ -829,6 +829,9 @@ function computeAppointmentCompletionP257(chart) {
     appointmentCompletes,
     positive: appointmentCompletes,
     outputHebrew,
+    clientSafeHebrew: appointmentCompletes === true ? 'לפי סימן הלוח, המינוי מתקיים.'
+      : appointmentCompletes === false ? 'לפי סימן הלוח, המינוי אינו מתקיים.'
+        : 'אין לפי כלל זה סימן מכריע על קיום המינוי.',
   };
 }
 
@@ -1158,6 +1161,9 @@ function computeDisputeWinnerH1P212(chart) {
     classification: figure.saadNahs, branch,
     positive: branch === 'seeker-prevails' ? true : branch === 'other-party-prevails' ? false : null,
     outputHebrew: `בבית 1 מופיעה ${figure.figureHebrew || pattern} (${pattern}). ${sign} זהו דין בית 1 בלבד; הספר מוסר באותו עמוד גם סימנים נוספים שאין כאן כלל הכרעה כאשר הם חלוקים.`,
+    clientSafeHebrew: branch === 'seeker-prevails' ? 'לפי סימן זה המבקש גובר.'
+      : branch === 'other-party-prevails' ? 'לפי סימן זה הצד השני גובר.'
+        : 'סימן זה אינו מכריע מי גובר במחלוקת.',
   };
 }
 
@@ -1752,6 +1758,8 @@ function computeEnemyPresenceH1H12P271(chart) {
     positive: branch === 'no-enemy' ? false : branch ? true : null,
     outputHebrew: branch ? `לפי דין בתי 1 ו־12: ${sayings[branch]}`
       : 'בבתים 1 ו־12 יש צורה ממוזגת או בלתי מסווגת; ארבעת ענפי הדין בעמ׳ 271 אינם מכריעים צירוף זה.',
+    clientSafeHebrew: branch ? `לפי סימן הלוח: ${sayings[branch]}`
+      : 'אין לפי כלל זה סימן מכריע בשאלת האויב. אין להסיק מן הלוח שאדם מסוים הוא אויב.',
   };
 }
 
@@ -1866,6 +1874,9 @@ function computeDreamH9AndOccurrencesP254(chart) {
         : 'צורת בית 9 ממוזגת; סעיף עמ׳ 254 אינו נותן לה ענף מיטיב או מזיק.'} `
       + (occurrences.length ? `אותה צורה מופיעה גם בבתים ${occurrences.join(', ')}; הספר מורה לעיין במקום מעבר הצורה, אך אינו מפרט כאן פסק נוסף לפי כל בית.`
         : 'לא נמצאה הופעה נוספת של צורת בית 9; אין להוסיף מסלול מעבר מן הדעת.'),
+    clientSafeHebrew: good === true ? 'סימן החלום לפי כלל זה הוא לטובה; אין בכלל הזה פירוש נוסף לפרטי החלום.'
+      : good === false ? 'סימן החלום לפי כלל זה הוא לרעה; אין בכלל הזה פירוש נוסף לפרטי החלום.'
+        : 'אין לפי כלל זה סימן מכריע לטוב או לרע בחלום, ואין להוסיף פירוש לפרטי החלום מן הדעת.',
   };
 }
 
@@ -1954,6 +1965,7 @@ function computeLostItemReturnP202(chart) {
     returns,
     positive: returns,
     outputHebrew,
+    clientSafeHebrew: returns ? 'לפי סימן הלוח, האבדה תשוב.' : 'לפי סימן הלוח, האבדה לא תשוב.',
   };
 }
 
@@ -2450,6 +2462,8 @@ function computeDisputeReconciliationP212(chart) {
     positive,
     mediatorResolved: false,
     outputHebrew,
+    clientSafeHebrew: positive === true ? 'סימן הלוח מורה ששני הצדדים יתפייסו.'
+      : 'אין לפי כלל זה סימן מכריע לפיוס; אין להסיק מכך שלא יהיה פיוס.',
   };
 }
 

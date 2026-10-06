@@ -2,11 +2,11 @@
   "summary": {
     "boardCount": 47,
     "methodCount": 90,
-    "methodWithAnyDraft": 15,
-    "methodWithNoDraft": 75,
+    "methodWithAnyDraft": 21,
+    "methodWithNoDraft": 69,
     "methodWithPartialDraft": 0,
     "sampledMethodBranches": 200,
-    "sampledBranchesMissingDraft": 156
+    "sampledBranchesMissingDraft": 140
   },
   "methods": [
     {
@@ -1133,8 +1133,8 @@
           "branch": "(no branch field)",
           "positive": false,
           "sampledBoards": 45,
-          "clientDraftBoards": 0,
-          "advisorOnlyBoards": 45,
+          "clientDraftBoards": 45,
+          "advisorOnlyBoards": 0,
           "exampleMothers": [
             "2222",
             "2211",
@@ -1146,8 +1146,8 @@
           "branch": "(no branch field)",
           "positive": true,
           "sampledBoards": 2,
-          "clientDraftBoards": 0,
-          "advisorOnlyBoards": 2,
+          "clientDraftBoards": 2,
+          "advisorOnlyBoards": 0,
           "exampleMothers": [
             "2212",
             "1111",
@@ -1156,7 +1156,7 @@
           ]
         }
       ],
-      "clientDraftBoards": 0
+      "clientDraftBoards": 47
     },
     {
       "methodId": "marriage.p204.dowryH8",
@@ -1885,8 +1885,8 @@
           "branch": "(no branch field)",
           "positive": false,
           "sampledBoards": 24,
-          "clientDraftBoards": 0,
-          "advisorOnlyBoards": 24,
+          "clientDraftBoards": 24,
+          "advisorOnlyBoards": 0,
           "exampleMothers": [
             "2222",
             "2211",
@@ -1898,8 +1898,8 @@
           "branch": "(no branch field)",
           "positive": true,
           "sampledBoards": 23,
-          "clientDraftBoards": 0,
-          "advisorOnlyBoards": 23,
+          "clientDraftBoards": 23,
+          "advisorOnlyBoards": 0,
           "exampleMothers": [
             "1122",
             "1122",
@@ -1908,7 +1908,7 @@
           ]
         }
       ],
-      "clientDraftBoards": 0
+      "clientDraftBoards": 47
     },
     {
       "methodId": "authority.p257.rulerConditionH7H10",
@@ -2125,8 +2125,8 @@
           "branch": "(no branch field)",
           "positive": null,
           "sampledBoards": 37,
-          "clientDraftBoards": 0,
-          "advisorOnlyBoards": 37,
+          "clientDraftBoards": 37,
+          "advisorOnlyBoards": 0,
           "exampleMothers": [
             "2222",
             "2211",
@@ -2138,8 +2138,8 @@
           "branch": "(no branch field)",
           "positive": true,
           "sampledBoards": 10,
-          "clientDraftBoards": 0,
-          "advisorOnlyBoards": 10,
+          "clientDraftBoards": 10,
+          "advisorOnlyBoards": 0,
           "exampleMothers": [
             "1122",
             "1122",
@@ -2148,7 +2148,7 @@
           ]
         }
       ],
-      "clientDraftBoards": 0
+      "clientDraftBoards": 47
     },
     {
       "methodId": "dispute.p212.winnerH1",
@@ -2162,8 +2162,8 @@
           "branch": "unresolved",
           "positive": null,
           "sampledBoards": 20,
-          "clientDraftBoards": 0,
-          "advisorOnlyBoards": 20,
+          "clientDraftBoards": 20,
+          "advisorOnlyBoards": 0,
           "exampleMothers": [
             "2222",
             "2211",
@@ -2175,8 +2175,8 @@
           "branch": "other-party-prevails",
           "positive": false,
           "sampledBoards": 14,
-          "clientDraftBoards": 0,
-          "advisorOnlyBoards": 14,
+          "clientDraftBoards": 14,
+          "advisorOnlyBoards": 0,
           "exampleMothers": [
             "1122",
             "1122",
@@ -2188,8 +2188,8 @@
           "branch": "seeker-prevails",
           "positive": true,
           "sampledBoards": 13,
-          "clientDraftBoards": 0,
-          "advisorOnlyBoards": 13,
+          "clientDraftBoards": 13,
+          "advisorOnlyBoards": 0,
           "exampleMothers": [
             "1221",
             "1221",
@@ -2198,7 +2198,7 @@
           ]
         }
       ],
-      "clientDraftBoards": 0
+      "clientDraftBoards": 47
     },
     {
       "methodId": "dispute.p212.winnerH2H8Sign",
@@ -2860,8 +2860,8 @@
           "branch": "(no branch field)",
           "positive": true,
           "sampledBoards": 13,
-          "clientDraftBoards": 0,
-          "advisorOnlyBoards": 13,
+          "clientDraftBoards": 13,
+          "advisorOnlyBoards": 0,
           "exampleMothers": [
             "2222",
             "2211",
@@ -2873,8 +2873,8 @@
           "branch": "(no branch field)",
           "positive": null,
           "sampledBoards": 21,
-          "clientDraftBoards": 0,
-          "advisorOnlyBoards": 21,
+          "clientDraftBoards": 21,
+          "advisorOnlyBoards": 0,
           "exampleMothers": [
             "1122",
             "1122",
@@ -2886,8 +2886,8 @@
           "branch": "(no branch field)",
           "positive": false,
           "sampledBoards": 13,
-          "clientDraftBoards": 0,
-          "advisorOnlyBoards": 13,
+          "clientDraftBoards": 13,
+          "advisorOnlyBoards": 0,
           "exampleMothers": [
             "2112",
             "1222",
@@ -2896,7 +2896,7 @@
           ]
         }
       ],
-      "clientDraftBoards": 0
+      "clientDraftBoards": 47
     },
     {
       "methodId": "friends.p263.h1h11",
@@ -3007,8 +3007,8 @@
           "branch": "(no branch field)",
           "positive": null,
           "sampledBoards": 33,
-          "clientDraftBoards": 0,
-          "advisorOnlyBoards": 33,
+          "clientDraftBoards": 33,
+          "advisorOnlyBoards": 0,
           "exampleMothers": [
             "2222",
             "2211",
@@ -3020,8 +3020,8 @@
           "branch": "no-enemy",
           "positive": false,
           "sampledBoards": 5,
-          "clientDraftBoards": 0,
-          "advisorOnlyBoards": 5,
+          "clientDraftBoards": 5,
+          "advisorOnlyBoards": 0,
           "exampleMothers": [
             "1122",
             "2221",
@@ -3033,8 +3033,8 @@
           "branch": "enemies",
           "positive": true,
           "sampledBoards": 7,
-          "clientDraftBoards": 0,
-          "advisorOnlyBoards": 7,
+          "clientDraftBoards": 7,
+          "advisorOnlyBoards": 0,
           "exampleMothers": [
             "2221",
             "1122",
@@ -3046,8 +3046,8 @@
           "branch": "querent-prevails",
           "positive": true,
           "sampledBoards": 2,
-          "clientDraftBoards": 0,
-          "advisorOnlyBoards": 2,
+          "clientDraftBoards": 2,
+          "advisorOnlyBoards": 0,
           "exampleMothers": [
             "1122",
             "2121",
@@ -3056,7 +3056,7 @@
           ]
         }
       ],
-      "clientDraftBoards": 0
+      "clientDraftBoards": 47
     },
     {
       "methodId": "gift.p193.h5Quality",
