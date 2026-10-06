@@ -215,7 +215,7 @@ function auditOutputForSafety(safetyBlock, { draft = null, draftPolarity = 'none
   };
 }
 
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 67, 'certification registry includes five new source methods plus p249 city');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 71, 'certification registry includes five new source methods plus p249 city, plus the four p192/194/196 methods opened 2026-10-06');
 for (const id of [
   'marriage.p210.generalMarriageH1H2H7H8H10Judge',
   'marriage.p211.dissolutionH7StateMatrix',
@@ -1066,7 +1066,7 @@ assert(p254Venus.professionalVerdictSafety?.binaryClientVerdictAllowed === false
 assert(p254Venus.professionalVerdictSafety?.authoritativeClientDraftHebrew === p254VenusExec?.outputHebrew, 'p254 safety gate locks the exact source-bounded executor draft');
 assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.includes('profession.p254.h9Planet'), 'p254 profession method is explicitly professionally certified');
 // Dhamir subject-identification remains outside the client-verdict registry.
-assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 67, 'p184 father/land, p243 vessel, p212 winner, p272 prisoner and p249 city are certified');
+assert(KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS.length === 71, 'p184 father/land, p243 vessel, p212 winner, p272 prisoner and p249 city are certified, plus the four p192/194/196 methods opened 2026-10-06');
 
 for (const [mothers, expectedBranch] of [
   [['1211', '1111', '1111', '1111'], 'benefic-incoming'],

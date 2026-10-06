@@ -246,6 +246,20 @@ window.QUESTION_BANK = [
     clientFields: [F.symptoms, F.duration],
   },
   {
+    id: 'q-illness-duration-risk',
+    category: 'health', houseId: 1, topicId: 'illness', kashfTopicId: 'illness',
+    label: 'האם המחלה עתידה להתארך?',
+    desc: 'דין עמ׳ 196 בלבד: חזרת צורת בית 1 בבית 6 מורה על התארכות; חזרתה בבית 8 מורה על התארכות עם חשש. סימן תצפית בלבד, ללא משך מספרי וללא פסק מוות',
+    clientFields: [F.symptoms, F.duration],
+  },
+  {
+    id: 'q-illness-sensory-signs',
+    category: 'health', houseId: 1, topicId: 'illness', kashfTopicId: 'illness',
+    label: 'סימני ראייה או שמיעה לפי כשף עמ׳ 196–197',
+    desc: 'סימנים מסורתיים-מקוריים בלבד: נשוא ראש החוזר מבית 1 לבית 8 (עיוורון) או לבית 6 (חשכת ראייה); צורת שבתאי/צדק בבית 6 או 8 (כובד שמיעה). אינו אבחון רפואי ואינו תחליף לבדיקה',
+    clientFields: [F.symptoms],
+  },
+  {
     id: 'q-lifespan',
     category: 'health', houseId: 1, topicId: 'deathInheritance', kashfTopicId: 'deathInheritance',
     label: 'האם יחיה חיים ארוכים?',
@@ -411,6 +425,20 @@ window.QUESTION_BANK = [
     label: 'אורך חיים של הילד?',
     desc: 'שאלה על אורך חיים ואושר של ילד',
     clientFields: [{ id: 'childAge', label: 'גיל הילד', type: 'number', placeholder: 'שנים' }],
+  },
+  {
+    id: 'q-child-wellbeing',
+    category: 'family', houseId: 5, topicId: 'childrenPregnancy', kashfTopicId: 'children',
+    label: 'מה מצבו/מזלו הכללי של הילד?',
+    desc: 'דין עמ׳ 194 בלבד: בית 5+16 מיטיבים — מזל טוב, שיפור מצב וריבוי ממון; שניהם מזיקים — מצב ירוד; אחד מכל סוג — מצב בינוני. נפרד מבריאות (H6/H8) ומהחלמה ממחלה נוכחית',
+    clientFields: [{ id: 'childAge', label: 'גיל הילד', type: 'number', placeholder: 'שנים' }],
+  },
+  {
+    id: 'q-pregnancy-maternal-safety',
+    category: 'family', houseId: 5, topicId: 'childrenPregnancy', kashfTopicId: 'children',
+    label: 'האם היולדת בטוחה?',
+    desc: 'דין עמ׳ 192 בלבד: בתים 6, 8 ו-12 כולם מיטיבים מורה שהיולדת ניצלת/בטוחה. אינו דין בטיחות העובר, סיכון הפלה, מין הוולד או קלות הלידה, ואינו אבחון רפואי',
+    clientFields: [F.pregnancyMonths, F.pregnancyConcern],
   },
   {
     id: 'q-siblings',

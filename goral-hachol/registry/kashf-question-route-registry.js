@@ -99,6 +99,24 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfRuntimeStatus: 'ready',
   }),
 
+  'q-illness-duration-risk': route({
+    questionId: 'q-illness-duration-risk',
+    disposition: 'KEEP',
+    kashfIntentId: 'illness.durationRisk',
+    kashfMethodId: 'illness.p196.h1RecurrenceDurationRisk',
+    kashfRuntimeStatus: 'ready',
+    note: 'Opened 2026-10-06 from printed p196: H1 figure recurring in H6 indicates prolonged illness; H1 figure recurring in H8 indicates prolonged illness plus fear/concern. Both signs are independent observations, never a numeric duration or a death/no-recovery verdict. Distinct from q-illness-heal (H15 recovery) and q-illness-sensory-signs; none of these vote together.',
+  }),
+
+  'q-illness-sensory-signs': route({
+    questionId: 'q-illness-sensory-signs',
+    disposition: 'KEEP',
+    kashfIntentId: 'illness.sensorySigns',
+    kashfMethodId: 'illness.p196.sensorySignsH6H8',
+    kashfRuntimeStatus: 'ready',
+    note: 'Opened 2026-10-06 from printed p196-197 (kashf-v57-draft.html): H1=Ahyan(1222) recurring into H8 indicates blindness; the same figure recurring into H6 indicates dim/dark vision; Saturn/Jupiter figures (2221,1221,2111,1222) in H6 or H8 indicate heaviness of hearing. Traditional source signs only, explicitly not a medical diagnosis; never merged into q-illness-heal or q-illness-duration-risk.',
+  }),
+
   'q-gender': route({
     questionId: 'q-gender',
     disposition: 'KEEP',
@@ -312,6 +330,24 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfMethodId: 'child.lifespan.p195.provenanceUnresolved',
     kashfRuntimeStatus: 'blocked-by-source',
     note: 'The child-lifespan paragraph sits adjacent to al-Zanati material on p195. Passage-level provenance must be closed before runtime use.',
+  }),
+
+  'q-child-wellbeing': route({
+    questionId: 'q-child-wellbeing',
+    disposition: 'KEEP',
+    kashfIntentId: 'child.wellbeing',
+    kashfMethodId: 'child.p194.wellbeingH5H16',
+    kashfRuntimeStatus: 'ready',
+    note: 'Opened 2026-10-06 from printed p194: H5+H16 both benefic => good fortune/improved condition/much money; both malefic => low condition; one of each => medium condition. Distinct from q-child-health (H6/H8 health trajectory, child.p194.healthTrajectoryH6H8) and from current-illness recovery; none of these vote together.',
+  }),
+
+  'q-pregnancy-maternal-safety': route({
+    questionId: 'q-pregnancy-maternal-safety',
+    disposition: 'KEEP',
+    kashfIntentId: 'pregnancy.maternalSafety',
+    kashfMethodId: 'pregnancy.p192.maternalSafetyH6H8H12',
+    kashfRuntimeStatus: 'ready',
+    note: 'Opened 2026-10-06 from printed p192: H6,H8,H12 all benefic indicates the mother giving birth is saved/safe. No inverse verdict when the positive condition fails. Distinct from q-child-survive (fetal safety, pregnancy.p191.childSafetyH1H6H8), q-miscarriage, q-gender and q-birth-ease; none of these vote together. Explicitly not a medical determination.',
   }),
 
   'q-lifespan': route({

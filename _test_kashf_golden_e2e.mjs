@@ -166,8 +166,11 @@ try {
   // previously-unrouted missing.p249.returnTimingTariqH10H11 (71 -> 72);
   // then q-prisoner-outcome and q-prisoner-exit-safety were added and
   // routed to the newly-opened prisoner.p272.outcomeH1H4 and
-  // prisoner.p272.exitSafetyH12 (72 -> 74).
-  ok(routedByMethod.size === 78, `78 distinct runnable methods have an explicit Question Bank route, excluding the dedicated-input p188 quarter-direction method (got ${routedByMethod.size})`);
+  // prisoner.p272.exitSafetyH12 (72 -> 74); then four more closed sub-rules
+  // were opened and routed on 2026-10-06 (q-illness-duration-risk,
+  // q-illness-sensory-signs, q-pregnancy-maternal-safety, q-child-wellbeing
+  // -- see _test_kashf_p192_194_196_closed_subrules.mjs) (78 -> 82).
+  ok(routedByMethod.size === 82, `82 distinct runnable methods have an explicit Question Bank route, excluding the dedicated-input p188 quarter-direction method (got ${routedByMethod.size})`);
 
   let liveRoutedSuccess = 0;
   for (const [methodId, route] of routedByMethod.entries()) {
@@ -215,7 +218,7 @@ try {
     }
     liveRoutedSuccess += 1;
   }
-  ok(liveRoutedSuccess === 78, 'all 78 routed runnable methods complete the live mocked Advisor path');
+  ok(liveRoutedSuccess === 82, 'all 82 routed runnable methods complete the live mocked Advisor path');
 
   console.log('\n--- Golden/E2E Tier A2: two runnable non-Question-Bank methods ---');
 
@@ -257,7 +260,7 @@ try {
   }
 
   const allRunnable = new Set([...routedByMethod.keys(), 'desire.p206.querentWantsH7H11ThenH5', 'dhamir.p159.subjectByH6Recurrence']);
-  ok(allRunnable.size === 80, `Golden/E2E matrix accounts for all 80 runnable methods exercised by this harness, plus the dedicated-input hidden.p188.quarterDirection excluded above (got ${allRunnable.size})`);
+  ok(allRunnable.size === 84, `Golden/E2E matrix accounts for all 84 runnable methods exercised by this harness, plus the dedicated-input hidden.p188.quarterDirection excluded above (got ${allRunnable.size})`);
 
   console.log('\n--- Golden/E2E Tier B: source-derived fixed cases ---');
 

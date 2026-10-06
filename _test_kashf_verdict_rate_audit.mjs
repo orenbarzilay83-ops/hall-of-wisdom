@@ -284,7 +284,10 @@ console.log('No decision at all on every tested board (all confirmed reachable-b
 console.log('Of the above, methods that additionally require client input beyond the board (architectural, not a source gap):', missingInputCapable);
 
 // Sanity assertions.
-assert.equal(totalRunnable, 98, 'routed-to-ready count unchanged');
+// 2026-10-06: four closed sub-rules opened and routed this round
+// (q-illness-duration-risk, q-illness-sensory-signs,
+// q-pregnancy-maternal-safety, q-child-wellbeing) raised this from 98 to 102.
+assert.equal(totalRunnable, 102, 'routed-to-ready count reflects the four p192/194/196 methods opened 2026-10-06');
 assert.ok(decisiveAtLeastOnce <= totalRunnable && decisiveOnAllBoards <= decisiveAtLeastOnce, 'counts are internally consistent');
 assert.equal(decisiveAtLeastOnce + descriptiveOnlyNeverDecisive + noDecisionOnEveryBoard, totalRunnable, 'every routed method falls into exactly one of: decisive at least once, descriptive-only, or no-decision-only');
 
@@ -323,8 +326,23 @@ const expectedNoDecisionOnly = new Set([
   // populated regardless of outcome), so this file's own categorization
   // correctly places it in no-decision-only, not descriptive-only.
   'q-missing-arriving',
+  // Added 2026-10-06 with the three methods opened this round whose
+  // positive/negative conditions are real and independently confirmed
+  // reachable on hand-picked real boards (see
+  // _test_kashf_p192_194_196_closed_subrules.mjs), just narrower than any
+  // of this file's 47 generic sample boards happen to satisfy:
+  // q-illness-duration-risk needs H1's own pattern to literally recur at
+  // H6 or H8; q-illness-sensory-signs needs H1=Ahyan(1222) recurring at
+  // H6/H8, or a Saturn/Jupiter figure at H6/H8; q-pregnancy-maternal-safety
+  // needs H6, H8 AND H12 to be simultaneously pure-benefic. (The fourth
+  // method opened the same round, q-child-wellbeing, needs only a 2-house
+  // AND and does fire decisively on >=1 of the 47 boards, so it is not in
+  // this set.)
+  'q-illness-duration-risk',
+  'q-illness-sensory-signs',
+  'q-pregnancy-maternal-safety',
 ]);
 const actualNoDecisionOnly = new Set(perQuestion.filter((q) => q.decisiveCount === 0 && q.descriptiveOnlyCount === 0).map((q) => q.id));
-assert.deepEqual(actualNoDecisionOnly, expectedNoDecisionOnly, 'the no-decision-only set matches the seven exhaustively-accounted-for rare/demoted conditions exactly');
+assert.deepEqual(actualNoDecisionOnly, expectedNoDecisionOnly, 'the no-decision-only set matches the ten exhaustively-accounted-for rare/demoted conditions exactly');
 
 console.log('Kashf verdict-rate audit: PASS');

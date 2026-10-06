@@ -94,9 +94,13 @@ for (const methodId of ['pregnancy.p192.genderH5H11InOut','pregnancy.p192.gender
   assert.equal(method.methodRole, 'educational-only');
   assert.equal(method.runtimeAllowed, false);
 }
+// 2026-10-06: opened this round (see _test_kashf_p192_194_196_closed_subrules.mjs
+// for the full positive/negative branch coverage) -- now ready/runtimeAllowed,
+// not pending as this file previously asserted.
 const maternal = getKashfMethod('pregnancy.p192.maternalSafetyH6H8H12');
 assert.equal(maternal.kashfIntentId, 'pregnancy.maternalSafety');
-assert.equal(maternal.runtimeAllowed, false);
+assert.equal(maternal.runtimeAllowed, true);
+assert.equal(maternal.executorStatus, 'ready');
 assert.match(maternal.notes || '', /not fetal safety/i);
 const months = getKashfMethod('pregnancy.p192.monthCount');
 assert.equal(months.kashfRuntimeStatus, 'blocked-by-source');
@@ -107,7 +111,8 @@ assert.match(months.notes || '', /two month-count routes|two routes/i);
 const childExistence = getKashfMethod('child.p194.existenceH1H5Nature');
 assert.equal(childExistence.runtimeAllowed, false);
 assert.match(childExistence.notes || '', /not a gate/i);
-assert.equal(getKashfMethod('child.p194.wellbeingH5H16').runtimeAllowed, false);
+// 2026-10-06: opened this round (see _test_kashf_p192_194_196_closed_subrules.mjs).
+assert.equal(getKashfMethod('child.p194.wellbeingH5H16').runtimeAllowed, true);
 const childHealth = buildKashfReadingByQuestionId(makeBoard({ 6:'1112', 8:'2211' }), 'q-child-health');
 assert.equal(childHealth.valid, true);
 assert.deepEqual(childHealth.canonicalExecution?.methodsExecuted, ['child.p194.healthTrajectoryH6H8']);
@@ -120,10 +125,11 @@ assert.equal(illness.valid, true);
 assert.deepEqual(illness.canonicalExecution?.methodsExecuted, ['illness.p196.outcomeH15']);
 assert.deepEqual(illness.primaryFormula?.result?.executorResult?.housesUsed, [15]);
 assert.equal(illness.canonicalExecution?.topicSupportingChecksExecuted, false);
+// 2026-10-06: both opened this round (see _test_kashf_p192_194_196_closed_subrules.mjs).
 for (const methodId of ['illness.p196.h1RecurrenceDurationRisk','illness.p196.sensorySignsH6H8']) {
   const method = getKashfMethod(methodId);
-  assert.equal(method.runtimeAllowed, false);
-  assert.equal(buildKashfReadingByMethod(makeBoard(), methodId).valid, false);
+  assert.equal(method.runtimeAllowed, true);
+  assert.equal(buildKashfReadingByMethod(makeBoard(), methodId).valid, true);
 }
 
 for (const methodId of [

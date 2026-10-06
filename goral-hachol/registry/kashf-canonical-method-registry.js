@@ -370,10 +370,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'illness',
     sourcePages: [196],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
-    executionKind: 'source-procedure',
-    executorStatus: 'pending',
-    notes: 'Printed p196 opening gives a separate recurrence rule: the H1 figure occurring in H6 indicates prolonged illness; the H1 figure occurring in H8 indicates prolonged illness plus fear/danger. This is not the H15 recovery route and does not provide a numeric duration. No UI runtime is enabled until the recurrence wording and client-safe risk phrasing are separately certified.',
+    runtimeAllowed: true,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
+    notes: 'OPENED 2026-10-06, verified against kashf-v57-draft.html (id=\'p196\'), the canonical corrected working copy that drives this app\'s own in-app book screen, ranked above kashf-al-asrar-book.js per CLAUDE.md\'s source-priority order: "אם הראשון נמצא בשישי, מחלה זו מתארכת... ואם הראשון בשמיני, מחלתו מתארכת ויש לחשוש עליו." A closed recurrence rule: H1 pattern recurring at H6 indicates prolonged illness; H1 pattern recurring at H8 indicates prolonged illness plus fear/concern. Both branches are independent (not mutually exclusive) and are reported as separate observations. This is not the H15 recovery route (illness.p196.outcomeH15) and does not provide a numeric duration; it is not a death or no-recovery verdict. Absence of recurrence is reported as such, not inverted into "illness is short".',
   }),
 
   'illness.p196.sensorySignsH6H8': method({
@@ -382,10 +382,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'illness',
     sourcePages: [196],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
-    executionKind: 'source-procedure',
-    executorStatus: 'pending',
-    notes: 'Printed p196 sensory branches are separate from recovery: the Ahyan example in H8 indicates blindness, Ahyan in H6 indicates dark/dim vision, and Saturn/Jupiter figures in H6 or H8 indicate heaviness of hearing. Preserve as source knowledge only; do not use these signs as medical diagnosis and do not mix them into q-illness-heal.',
+    runtimeAllowed: true,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
+    notes: 'OPENED 2026-10-06, verified against kashf-v57-draft.html (id="p196"/"p197") -- the canonical corrected working copy that drives this app\'s own in-app book screen, ranked above kashf-al-asrar-book.js per CLAUDE.md\'s source-priority order: "ואם צורת הראשון — כגון נשוא ראש, שהיא בעלת הבית הראשון — נכנסה לבית השמיני, הדבר מורה על עיוורון; ואם אותה צורה נמצאת בבית השישי, הדבר מורה על חשכת הראייה. ואם צורות שבתאי וצדק בשישי או בשמיני, הדבר מורה על כובד השמיעה." (H1\'s own figure, Ahyan/1222, recurring into H8 indicates blindness; the same figure recurring into H6 indicates dim/dark vision; Saturn or Jupiter figures in H6 or H8 indicate heaviness of hearing.) A same-round earlier pass, working only from kashf-al-asrar-book.js\'s older transcript, found that transcript missing the dim-vision sentence and wrongly concluded the clause was unconfirmed -- the v57 draft carries it, confirming this entry\'s original note was correct. "Saturn/Jupiter figures" resolves against FIGURE_PLANET_MAP (kashf-hazz.js, p133-134): Saturn={2221,1221}, Jupiter={2111,1222}. Ahyan(1222) is itself one of Jupiter\'s two figures, so a vision branch and the hearing branch can both fire on the same board (H1=H6=1222 or H1=H8=1222); the source does not rank one over the other, so all signs are reported independently, never merged or medicalized. Preserve as source knowledge only; do not use these signs as medical diagnosis and do not mix them into q-illness-heal.',
   }),
 
   'illness.bodyPart.h6Figure': method({
@@ -508,10 +508,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'children',
     sourcePages: [192],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
-    executionKind: 'source-procedure',
-    executorStatus: 'pending',
-    notes: 'Printed p192 gives a distinct maternal-safety branch: H6,H8,H12 benefic indicate that the mother is saved/safe. This is not fetal safety, miscarriage risk, gender, or delivery difficulty. No inverse medical verdict is authorized merely because one house fails the positive condition. No UI route is enabled until a dedicated client-safe executor/policy is approved.',
+    runtimeAllowed: true,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
+    notes: 'OPENED 2026-10-06, verified against kashf-v57-draft.html (id=\'p192\'), the canonical corrected working copy that drives this app\'s own in-app book screen, ranked above kashf-al-asrar-book.js per CLAUDE.md\'s source-priority order: "אחר כך התבונן בשישי, בשמיני ובשנים־עשר. אם הם מיטיבים, היולדת ניצלת." This clause immediately follows a DIFFERENT clause (Awtad+H5+H15, whether the pregnancy "holds") that explicitly carries its own inverse ("ואם לא — הדין להפך"); that inverse belongs only to that preceding clause and is not repeated for H6/H8/H12. H6,H8,H12 all benefic indicate the mother giving birth is saved/safe; this is not fetal safety (pregnancy.p191.childSafetyH1H6H8), miscarriage risk, gender, or delivery difficulty. No inverse verdict is authorized merely because the positive condition fails; explicitly framed as a traditional source sign, not a medical determination.',
   }),
 
   'pregnancy.p192.monthCount': method({
@@ -544,10 +544,10 @@ export const KASHF_CANONICAL_METHODS = Object.freeze({
     topicId: 'children',
     sourcePages: [194],
     kashfRuntimeStatus: 'ready',
-    runtimeAllowed: false,
-    executionKind: 'source-procedure',
-    executorStatus: 'pending',
-    notes: 'Printed p194 wellbeing branch is distinct from health: H5+H16 both benefic => good fortune/improved condition/much money; both malefic => low condition; one benefic and one malefic => medium condition. Keep separate from H6/H8 health and from current-illness recovery.',
+    runtimeAllowed: true,
+    executionKind: 'custom-engine',
+    executorStatus: 'ready',
+    notes: 'OPENED 2026-10-06, verified against kashf-v57-draft.html (id="p194"), the canonical corrected working copy that drives this app\'s own in-app book screen, ranked above kashf-al-asrar-book.js per CLAUDE.md\'s source-priority order: "אחר כך התבונן בחמישי ובשישה־עשר. אם נמצאות בהם צורות מיטיבות, הדבר מורה על מזלו הטוב, על שיפור מצבו ועל ריבוי ממונו. ואם נמצאות שם צורות מזיקות, מצבו יהיה ירוד. ואם אחת מיטיבה ואחת מזיקה — מצבו בינוני." Wellbeing branch distinct from health: H5+H16 both benefic => good fortune/improved condition/much money; both malefic => low condition; one benefic and one malefic => medium condition. A mixed (neither saad nor nahs) figure on either house is outside the three stated branches and is left without a verdict. Keep separate from H6/H8 health (child.p194.healthTrajectoryH6H8) and from current-illness recovery.',
   }),
 
   'pregnancy.p194.deliveryH5Weight': method({

@@ -237,6 +237,56 @@ function computePregnancyTwinsMujassadP191(chart) {
 }
 
 
+// Kashf v57 p192 (closed sub-rule, opened 2026-10-06): "אחר כך התבונן
+// בשישי, בשמיני ובשנים־עשר. אם הם מיטיבים, היולדת ניצלת." (Then look at
+// the sixth, the eighth and the twelfth. If they are benefic, the mother
+// giving birth is saved/safe.) This clause stands on its own, immediately
+// AFTER a separate clause about the Awtad+H5+H15 (whether the pregnancy
+// "holds"), which explicitly DOES carry an inverse ("ואם לא — הדין
+// להפך" / and if not, the ruling is reversed) -- that inverse belongs to
+// the Awtad+H5+H15 clause only and is not repeated here. The H6/H8/H12
+// maternal-safety clause carries no "ואם לא" of its own, so only the
+// positive branch is asserted. Distinct from fetal safety
+// (pregnancy.p191.childSafetyH1H6H8, H1+H6+H8), miscarriage risk, gender
+// and delivery difficulty, all on adjacent pages. Explicitly not a medical
+// determination; a non-all-benefic board is left without a verdict, never
+// inverted into "the mother is unsafe".
+function computePregnancyMaternalSafetyP192(chart) {
+  if (!Array.isArray(chart)) return null;
+  const houseNumbers = [6, 8, 12];
+  const rows = houseNumbers.map((houseNumber) => {
+    const entry = findCanonicalHouse(chart, houseNumber);
+    const pattern = entry?.key || entry?.pattern || null;
+    if (!pattern) return null;
+    const classification = classifyCanonicalFigure(pattern);
+    return {
+      houseNumber,
+      pattern,
+      figureHebrew: classification.figureHebrew || entry?.hebrew || entry?.hebrewName || pattern,
+      classification,
+    };
+  });
+  if (rows.some((item) => !item)) return null;
+
+  const allBenefic = rows.every((item) => item.classification.saadNahs === 'saad');
+  const positive = allBenefic ? true : null;
+
+  const outputHebrew = allBenefic
+    ? 'בתים 6, 8 ו-12 כולם מיטיבים. לפי כשף עמ׳ 192: היולדת ניצלת/בטוחה.'
+    : 'התנאי המפורש בכשף עמ׳ 192 (בתים 6, 8 ו-12 כולם מיטיבים) אינו מתקיים במלואו כאן. המקור אינו נותן דין הפוך לביטחון היולדת כאשר התנאי החיובי לא מתקיים במלואו; אין להכריע "אינה בטוחה" מכלל זה.';
+
+  return {
+    sourceRef: 'כשף אל-אסראר עמ׳ 192',
+    sourceText: 'אחר כך התבונן בשישי, בשמיני ובשנים־עשר. אם הם מיטיבים, היולדת ניצלת.',
+    housesUsed: houseNumbers,
+    houseResults: rows,
+    allBenefic,
+    positive,
+    verdictType: 'maternal-safety-not-medical',
+    outputHebrew,
+  };
+}
+
 // Kashf p225 gives the routing rule: take the thief's description from H7.
 // The detailed sixteen-figure profile table begins on p231 and continues
 // through pp232-233.  This canonical copy is deliberately source-bounded:
@@ -1826,6 +1876,126 @@ function computeIllnessRecoveryP196(chart) {
 }
 
 
+// Kashf v57 p196 (closed sub-rule, opened 2026-10-06), immediately preceding
+// the H15 recovery clause with no new subject introduced: "דע: אם הראשון
+// נמצא בשישי, מחלה זו מתארכת... ואם הראשון בשמיני, מחלתו מתארכת ויש
+// לחשוש עליו." (Know: if the first [H1's figure] is found/recurs in the
+// sixth, this illness is prolonged... and if the first is in the eighth,
+// his illness is prolonged and there is cause for fear/concern for him.)
+// "H1 found in H6/H8" is read as figure-recurrence (H1's own pattern also
+// occupying H6 or H8), the same recurrence idiom already used elsewhere in
+// this engine (e.g. dhamir.p159.subjectByH6Recurrence). Distinct from and
+// never merged with the H15 recovery route (illness.p196.outcomeH15) or the
+// sensory signs below; this is a duration/risk observation only, carries no
+// numeric duration, and is not a death or no-recovery verdict.
+function computeIllnessDurationRiskP196(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h1 = findCanonicalHouse(chart, 1);
+  const h6 = findCanonicalHouse(chart, 6);
+  const h8 = findCanonicalHouse(chart, 8);
+  const h1Pattern = h1?.key || h1?.pattern || null;
+  const h6Pattern = h6?.key || h6?.pattern || null;
+  const h8Pattern = h8?.key || h8?.pattern || null;
+  if (!h1Pattern || !h6Pattern || !h8Pattern) return null;
+
+  const recurresInH6 = h1Pattern === h6Pattern;
+  const recurresInH8 = h1Pattern === h8Pattern;
+  const h1FigureHebrew = classifyCanonicalFigure(h1Pattern).figureHebrew || h1?.hebrew || h1?.hebrewName || h1Pattern;
+
+  const signals = [];
+  if (recurresInH6) signals.push('בית 1 (' + h1FigureHebrew + ') חוזר בבית 6 — לפי כשף עמ׳ 196: המחלה מתארכת.');
+  if (recurresInH8) signals.push('בית 1 (' + h1FigureHebrew + ') חוזר בבית 8 — לפי כשף עמ׳ 196: המחלה מתארכת, ויש לחשוש.');
+
+  const outputHebrew = signals.length
+    ? signals.join(' ')
+    : 'צורת בית 1 אינה חוזרת בבית 6 ואינה חוזרת בבית 8. כלל כשף עמ׳ 196 נותן כאן דין הארכה רק במקרה של חזרה; היעדר חזרה אינו מוכיח שהמחלה קצרה.';
+
+  return {
+    sourceRef: 'כשף אל-אסראר עמ׳ 196',
+    sourceText: 'אם הראשון נמצא בשישי, מחלה זו מתארכת. ואם הראשון בשמיני, מחלתו מתארכת ויש לחשוש עליו.',
+    housesUsed: [1, 6, 8],
+    h1Pattern, h6Pattern, h8Pattern, h1FigureHebrew,
+    recurresInH6, recurresInH8,
+    positive: null,
+    verdictType: 'illness-duration-risk-observation',
+    outputHebrew,
+  };
+}
+
+// Kashf v57 p196-197 (closed sub-rule, opened 2026-10-06), continuing
+// directly from the duration-risk clause above. Quoted from
+// kashf-v57-draft.html (id="p196"/"p197"), the canonical corrected working
+// copy that drives this app's own in-app book screen -- ranked above
+// kashf-al-asrar-book.js per CLAUDE.md's current source-priority order:
+// "ואם צורת הראשון — כגון [] נשוא ראש, שהיא בעלת הבית הראשון — נכנסה
+// לבית השמיני, הדבר מורה על עיוורון; ואם אותה צורה נמצאת בבית השישי,
+// הדבר מורה על חשכת הראייה (ظلمة البصر). ואם צורות שבתאי וצדק בשישי או
+// בשמיני, הדבר מורה על כובד השמיעה." (And if the figure of the first --
+// such as Nashu Rosh/Ahyan, which is H1's own figure -- enters the eighth,
+// the matter indicates blindness; and if that same figure is found in the
+// sixth, the matter indicates darkness/dimness of vision. And if the
+// figures of Saturn and Jupiter [are] in the sixth or the eighth, the
+// matter indicates heaviness of hearing.)
+//
+// CORRECTION (2026-10-06): an earlier pass this same round implemented
+// this method from kashf-al-asrar-book.js's older Hebrew transcript alone,
+// which is missing the "ואם אותה צורה נמצאת בבית השישי..." dim-vision
+// sentence entirely (a transcription gap, not a source absence) -- that
+// pass wrongly concluded the registry's original "Ahyan in H6 => dim
+// vision" note was unconfirmed and left it out. Re-checked directly
+// against kashf-v57-draft.html, which does carry the sentence; the
+// dim-vision branch is restored below using the SAME figure-recurrence
+// mechanism as the blindness branch (H1's figure, i.e. Ahyan/1222,
+// recurring into H6 rather than H8).
+//
+// "Saturn and Jupiter figures" (plural) resolves against FIGURE_PLANET_MAP
+// (kashf-hazz.js, source p133-134): Saturn={2221 Nakis, 1221 Aqla},
+// Jupiter={2111 Ataba Dakhila, 1222 Ahyan}. Note the overlap: 1222/Ahyan is
+// itself one of Jupiter's two figures, so a board with H1=H6=1222 or
+// H1=H8=1222 can satisfy both a vision branch and the hearing branch at
+// once. The source does not say these are mutually exclusive or rank one
+// over the other, so all signs are reported independently, exactly as this
+// engine already keeps other multi-sign pages (e.g.
+// child.p194.healthTrajectoryH6H8) separate rather than merged into one
+// verdict.
+const P196_SATURN_JUPITER_HEARING_PATTERNS = new Set(['2221', '1221', '2111', '1222']);
+
+function computeIllnessSensorySignsP196(chart) {
+  if (!Array.isArray(chart)) return null;
+  const h1 = findCanonicalHouse(chart, 1);
+  const h6 = findCanonicalHouse(chart, 6);
+  const h8 = findCanonicalHouse(chart, 8);
+  const h1Pattern = h1?.key || h1?.pattern || null;
+  const h6Pattern = h6?.key || h6?.pattern || null;
+  const h8Pattern = h8?.key || h8?.pattern || null;
+  if (!h1Pattern || !h6Pattern || !h8Pattern) return null;
+
+  const blindnessSign = h1Pattern === '1222' && h8Pattern === '1222';
+  const dimVisionSign = h1Pattern === '1222' && h6Pattern === '1222';
+  const hearingSign = P196_SATURN_JUPITER_HEARING_PATTERNS.has(h6Pattern)
+    || P196_SATURN_JUPITER_HEARING_PATTERNS.has(h8Pattern);
+
+  const signals = [];
+  if (blindnessSign) signals.push('בית 1 הוא נשוא ראש וחוזר בבית 8 — לפי כשף עמ׳ 196: סימן לעיוורון.');
+  if (dimVisionSign) signals.push('בית 1 הוא נשוא ראש וחוזר בבית 6 — לפי כשף עמ׳ 196: סימן לחשכת הראייה.');
+  if (hearingSign) signals.push('צורת שבתאי או צדק נמצאת בבית 6 או בבית 8 — לפי כשף עמ׳ 196–197: סימן לכובד שמיעה.');
+
+  const outputHebrew = signals.length
+    ? signals.join(' ') + ' אלו סימנים מסורתיים-מקוריים בלבד, לא אבחון רפואי ולא תחליף לבדיקה רפואית.'
+    : 'אין כאן את סימני העיוורון/חשכת הראייה (נשוא ראש חוזר מבית 1 לבית 8/6) ואין סימן כובד השמיעה (צורת שבתאי/צדק בבית 6 או 8). היעדר הסימנים אינו שולל בעיה חושית שלא נמסרה במקור הזה.';
+
+  return {
+    sourceRef: 'כשף v57 עמ׳ 196–197 (kashf-v57-draft.html); שיוכי כוכבים עמ׳ 133–134',
+    sourceText: 'ואם צורת הראשון — כגון נשוא ראש, שהיא בעלת הבית הראשון — נכנסה לבית השמיני, הדבר מורה על עיוורון; ואם אותה צורה נמצאת בבית השישי, הדבר מורה על חשכת הראייה. ואם צורות שבתאי וצדק בשישי או בשמיני, הדבר מורה על כובד השמיעה.',
+    housesUsed: [1, 6, 8],
+    h1Pattern, h6Pattern, h8Pattern,
+    blindnessSign, dimVisionSign, hearingSign,
+    positive: null,
+    verdictType: 'illness-sensory-signs-not-medical',
+    outputHebrew,
+  };
+}
+
 // Kashf v57 p183: current-place evidence is H1+H4, and move evidence is
 // H7+H10. The source gives positive clauses only. Absence of the positive
 // condition is not silently inverted into a negative verdict, and the method
@@ -2688,6 +2858,76 @@ function computeChildHealthTrajectoryP194(chart) {
     positive: null,
     verdictType: 'child-health-trajectory',
     outputHebrew: h6Text + ' ' + h8Text + ' שתי העדויות נשמרות בנפרד; אין ליצור מהן ציון בריאות כולל שלא נמסר במקור.',
+  };
+}
+
+// Kashf v57 p194 (closed sub-rule, opened 2026-10-06): "אחר כך התבונן
+// בחמישי ובשישה־עשר. אם נמצאות בהם צורות מיטיבות, הדבר מורה על מזלו הטוב,
+// על שיפור מצבו ועל ריבוי ממונו. ואם נמצאות שם צורות מזיקות, מצבו יהיה
+// ירוד. ואם אחת מיטיבה ואחת מזיקה — מצבו בינוני." (Then look at the fifth
+// and the sixteenth. If benefic figures are found in them, that indicates
+// his good fortune, improved condition and abundant money. If malefic
+// figures are found there, his condition will be poor. If one is benefic
+// and one is malefic, his condition is middling.) A closed three-branch
+// rule, fully distinct from child.p194.healthTrajectoryH6H8 (H6/H8,
+// illness) and child.p191.childSafetyH1H6H8 on the same page. Only the
+// pure benefic/pure malefic/one-of-each branches are stated; a mixed
+// (neither saad nor nahs) figure on either house is not covered and is
+// left without a verdict rather than forced into one of the three branches.
+function computeChildWellbeingP194(chart) {
+  if (!Array.isArray(chart)) return null;
+  const houseNumbers = [5, 16];
+  const rows = houseNumbers.map((houseNumber) => {
+    const entry = findCanonicalHouse(chart, houseNumber);
+    const pattern = entry?.key || entry?.pattern || null;
+    if (!pattern) return null;
+    const classification = classifyCanonicalFigure(pattern);
+    return {
+      houseNumber,
+      pattern,
+      figureHebrew: classification.figureHebrew || entry?.hebrew || entry?.hebrewName || pattern,
+      classification,
+    };
+  });
+  if (rows.some((item) => !item)) return null;
+
+  const byHouse = Object.fromEntries(rows.map((item) => [item.houseNumber, item]));
+  const h5Fortune = byHouse[5].classification.saadNahs;
+  const h16Fortune = byHouse[16].classification.saadNahs;
+
+  let wellbeingOutcome = 'unresolved';
+  let positive = null;
+  let outputHebrew;
+
+  if (h5Fortune === 'saad' && h16Fortune === 'saad') {
+    wellbeingOutcome = 'good-fortune';
+    positive = true;
+    outputHebrew = 'בית 5 ובית 16 שניהם מיטיבים. לפי כשף עמ׳ 194: הדבר מורה על מזלו הטוב של הילד, שיפור מצבו וריבוי ממונו.';
+  } else if (h5Fortune === 'nahs' && h16Fortune === 'nahs') {
+    wellbeingOutcome = 'poor-condition';
+    positive = false;
+    outputHebrew = 'בית 5 ובית 16 שניהם מזיקים. לפי כשף עמ׳ 194: מצבו של הילד יהיה ירוד.';
+  } else if (
+    (h5Fortune === 'saad' && h16Fortune === 'nahs')
+    || (h5Fortune === 'nahs' && h16Fortune === 'saad')
+  ) {
+    wellbeingOutcome = 'medium-condition';
+    outputHebrew = 'בית אחד (5 או 16) מיטיב והשני מזיק. לפי כשף עמ׳ 194: מצבו של הילד בינוני.';
+  } else {
+    outputHebrew = 'בית 5 ו/או בית 16 מכילים צורה ממוזגת. כלל כשף עמ׳ 194 נותן דין מפורש רק לשני הענפים הטהורים (מיטיב/מיטיב, מזיק/מזיק) ולענף האחד-מיטיב-אחד-מזיק; אין להשלים ממוזג לאחד מהם.';
+  }
+
+  return {
+    sourceRef: 'כשף אל-אסראר עמ׳ 194',
+    sourceText: 'אחר כך התבונן בחמישי ובשישה־עשר. אם נמצאות בהם צורות מיטיבות, הדבר מורה על מזלו הטוב, על שיפור מצבו ועל ריבוי ממונו. ואם נמצאות שם צורות מזיקות, מצבו יהיה ירוד. ואם אחת מיטיבה ואחת מזיקה — מצבו בינוני.',
+    housesUsed: houseNumbers,
+    houseResults: rows,
+    h5Fortune,
+    h16Fortune,
+    wellbeingOutcome,
+    positive,
+    verdictType: 'child-wellbeing-h5h16',
+    outputHebrew,
   };
 }
 
@@ -4414,6 +4654,10 @@ const CUSTOM_EXECUTORS = Object.freeze({
   'matter.p172.h17_h1011_thenCombine': computeMatterOutcomeP172,
   'relocation.p183.currentVsNewPlace': computeRelocationCurrentVsNewP183,
   'illness.p196.outcomeH15': computeIllnessRecoveryP196,
+  'illness.p196.h1RecurrenceDurationRisk': computeIllnessDurationRiskP196,
+  'illness.p196.sensorySignsH6H8': computeIllnessSensorySignsP196,
+  'pregnancy.p192.maternalSafetyH6H8H12': computePregnancyMaternalSafetyP192,
+  'child.p194.wellbeingH5H16': computeChildWellbeingP194,
   'hidden.p188.isStillThere': computeHiddenStillThereP188,
   'hidden.p188.quarterDirection': computeQuarterDirectionP188,
   'lostItem.p202.returnH6H8': computeLostItemReturnP202,

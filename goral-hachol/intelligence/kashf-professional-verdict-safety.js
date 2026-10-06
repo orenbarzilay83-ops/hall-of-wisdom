@@ -86,6 +86,10 @@ const P225_THIEF_DESCRIPTION_METHOD = 'theft.p225.thiefDescriptionH7';
 const P194_CHILD_HEALTH_METHOD = 'child.p194.healthTrajectoryH6H8';
 const P248_249_MISSING_LIFE_METHOD = 'missing.p248-249.lifeH1H4H9Outcome';
 const P254_PROFESSION_METHOD = 'profession.p254.h9Planet';
+const P196_DURATION_RISK_METHOD = 'illness.p196.h1RecurrenceDurationRisk';
+const P196_SENSORY_SIGNS_METHOD = 'illness.p196.sensorySignsH6H8';
+const P192_MATERNAL_SAFETY_METHOD = 'pregnancy.p192.maternalSafetyH6H8H12';
+const P194_CHILD_WELLBEING_METHOD = 'child.p194.wellbeingH5H16';
 
 function freezeArray(values = []) {
   return Object.freeze([...(Array.isArray(values) ? values : [])]);
@@ -1731,6 +1735,116 @@ function p194ChildHealthPolicy() {
   });
 }
 
+function p196DurationRiskPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-11',
+    goldenCaseIds: freezeArray(['PV-BF11-P196-DUR-H6', 'PV-BF11-P196-DUR-H8', 'PV-BF11-P196-DUR-NONE']),
+    policyId: 'p196-duration-risk-h1-recurrence-v1',
+    questionScopeHebrew: 'סימן משך/סיכון המחלה לפי חזרת צורת H1 בעמ׳ 196',
+    decisiveRuleHebrew: 'צורת H1 חוזרת בבית 6 => המחלה מתארכת. צורת H1 חוזרת בבית 8 => המחלה מתארכת ויש לחשוש. אין משך מספרי ואין פסק מוות.',
+    oneWayBranches: freezeArray([
+      'צורת H1 חוזרת בבית 6 => המחלה מתארכת',
+      'צורת H1 חוזרת בבית 8 => המחלה מתארכת ויש לחשוש',
+    ]),
+    forbiddenInversions: freezeArray([
+      'היעדר חזרה אינו מוכיח שהמחלה קצרה.',
+      'אין להמיר "יש לחשוש" לפסק מוות או אי-החלמה.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'illness.p196.outcomeH15 — החלמה/התארכות לפי H15 הוא דין נפרד.',
+      'illness.p196.sensorySignsH6H8 — סימני ראייה/שמיעה הם דין נפרד.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'מספר ימים/חודשים מדויק למחלה',
+      'ודאות מוות או אי-החלמה',
+    ]),
+  });
+}
+
+function p196SensorySignsPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-11',
+    goldenCaseIds: freezeArray(['PV-BF11-P196-SENSE-BLIND', 'PV-BF11-P196-SENSE-DIM', 'PV-BF11-P196-SENSE-HEARING', 'PV-BF11-P196-SENSE-NONE']),
+    policyId: 'p196-197-sensory-signs-v1',
+    questionScopeHebrew: 'סימני ראייה ושמיעה מסורתיים לפי עמ׳ 196–197',
+    decisiveRuleHebrew: 'H1=נשוא ראש (1222) חוזר בבית 8 => סימן לעיוורון; חוזר בבית 6 => סימן לחשכת הראייה. צורת שבתאי/צדק (2221,1221,2111,1222) בבית 6 או 8 => סימן לכובד שמיעה. הסימנים מדווחים בנפרד ואינם ממוזגים.',
+    oneWayBranches: freezeArray([
+      'H1=1222 וחוזר בבית 8 => סימן לעיוורון',
+      'H1=1222 וחוזר בבית 6 => סימן לחשכת הראייה',
+      'צורת שבתאי/צדק בבית 6 או 8 => סימן לכובד שמיעה',
+    ]),
+    forbiddenInversions: freezeArray([
+      'היעדר הסימנים אינו שולל בעיה חושית שלא נמסרה במקור.',
+      'אין להפוך סימן מסורתי לאבחנה רפואית.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'illness.p196.outcomeH15 — החלמה/התארכות לפי H15 הוא דין נפרד.',
+      'illness.p196.h1RecurrenceDurationRisk — משך/סיכון המחלה הוא דין נפרד.',
+      'illness.p197.h1h8ElementHumor — סיווג האח\'לאט הוא דין נפרד.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'זהו אבחון רפואי של עיוורון או חרשות',
+      'תחליף לבדיקה רפואית',
+    ]),
+  });
+}
+
+function p192MaternalSafetyPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-11',
+    goldenCaseIds: freezeArray(['PV-BF11-P192-SAFE', 'PV-BF11-P192-NOT-ALL-BENEFIC']),
+    policyId: 'p192-maternal-safety-h6h8h12-v1',
+    questionScopeHebrew: 'בטיחות היולדת לפי בתים 6, 8 ו-12, עמ׳ 192',
+    decisiveRuleHebrew: 'בתים 6, 8 ו-12 כולם מיטיבים => היולדת ניצלת/בטוחה. התנאי החיובי בלבד נמסר; אין דין הפוך.',
+    oneWayBranches: freezeArray([
+      'בתים 6, 8 ו-12 כולם מיטיבים => היולדת ניצלת',
+    ]),
+    forbiddenInversions: freezeArray([
+      'אי-התקיימות התנאי המלא אינה פסק שהיולדת בסכנה.',
+      'זהו סימן מסורתי, לא קביעה רפואית.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'pregnancy.p191.childSafetyH1H6H8 — בטיחות העובר היא דין נפרד.',
+      'pregnancy.p191-192.miscarriageRedH7NakisH8 — סיכון הפלה הוא דין נפרד.',
+      'pregnancy.p191.genderH5 — מין הוולד הוא דין נפרד.',
+      'pregnancy.p191.deliveryDifficultyH1H5H15 — קלות הלידה היא דין נפרד.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'קביעה רפואית על מצב היולדת',
+      'פסק סכנת חיים כאשר התנאי החיובי לא התקיים',
+    ]),
+  });
+}
+
+function p194ChildWellbeingPolicy() {
+  return Object.freeze({
+    certificationStatus: 'certified',
+    certificationBatch: 'professional-backfill-11',
+    goldenCaseIds: freezeArray(['PV-BF11-P194-WELL-GOOD', 'PV-BF11-P194-WELL-POOR', 'PV-BF11-P194-WELL-MEDIUM', 'PV-BF11-P194-WELL-MIXED']),
+    policyId: 'p194-child-wellbeing-h5h16-v1',
+    questionScopeHebrew: 'מזל ומצב הילד לפי בתים 5 ו-16, עמ׳ 194',
+    decisiveRuleHebrew: 'H5+H16 שניהם מיטיבים => מזל טוב, שיפור מצב וריבוי ממון. שניהם מזיקים => מצב ירוד. אחד מכל סוג => מצב בינוני. צורה ממוזגת אינה מקודמת לאחד הענפים.',
+    oneWayBranches: freezeArray([
+      'H5+H16 שניהם מיטיבים => מזל טוב, שיפור מצב וריבוי ממון',
+      'H5+H16 שניהם מזיקים => מצב ירוד',
+      'אחד מיטיב ואחד מזיק => מצב בינוני',
+    ]),
+    forbiddenInversions: freezeArray([
+      'צורה ממוזגת בבית 5 או 16 אינה מקודמת לפי נטייתה לאחד משלושת הענפים.',
+    ]),
+    excludedFromPrimaryVerdict: freezeArray([
+      'child.p194.healthTrajectoryH6H8 — בריאות הילד היא דין נפרד.',
+      'illness.p196.outcomeH15 — החלמה ממחלה נוכחית היא דין נפרד.',
+    ]),
+    forbiddenClientClaimsWithoutExplicitSelectedMethodBranch: freezeArray([
+      'אבחנה כלכלית מדויקת או סכום ממון',
+    ]),
+  });
+}
+
 function p248249MissingLifePolicy() {
   return Object.freeze({
     certificationStatus: 'certified',
@@ -1910,6 +2024,10 @@ const METHOD_POLICIES = Object.freeze({
   [P248_249_MISSING_LIFE_METHOD]: p248249MissingLifePolicy(),
   [P211_DISSOLUTION_METHOD]: p211DissolutionPolicy(),
   [P254_PROFESSION_METHOD]: p254ProfessionPolicy(),
+  [P196_DURATION_RISK_METHOD]: p196DurationRiskPolicy(),
+  [P196_SENSORY_SIGNS_METHOD]: p196SensorySignsPolicy(),
+  [P192_MATERNAL_SAFETY_METHOD]: p192MaternalSafetyPolicy(),
+  [P194_CHILD_WELLBEING_METHOD]: p194ChildWellbeingPolicy(),
 });
 
 export const KASHF_PROFESSIONAL_CERTIFIED_METHOD_IDS = Object.freeze(
