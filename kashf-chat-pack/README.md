@@ -30,3 +30,9 @@ node run.mjs '{"mothers":["2111","1111","1111","1111"],"questionId":"q-pregnancy
 מן השורש של הריפו: `node kashf-chat-pack/build.mjs` ואז `node kashf-chat-pack/verify.mjs`. הסקריפט מאמת 275 רשומות מקור, 93 תיקוני v57, 47 תיקוני downstream, 48 פריטי Source Freeze, 158 שאלות ו־90 שיטות רצות (87 מהן מאושרות לפלט לקוח); הוא עוצר אם מקור עברי או תלות ביצוע חסרים. הפלט הוא `kashf-chat-pack/kashf-chat-pack.zip`.
 
 אין לטעון שפרויקט ChatGPT הוגדר או נבדק חי רק מפני שה־ZIP נוצר. כל עדכון במקור, במיפוי או במנוע מחייב הפקה ובדיקה מחדש.
+For a reproducible coverage sample, run `node kashf-chat-pack/audit-client-drafts.mjs`
+after `build.mjs`. It evaluates 47 generated boards per method and reports
+distinct observed branches with and without an explicit client draft. The
+sample is a prioritization aid, not exhaustive branch coverage. Four audited
+legacy formula methods may use their exact short `verdict.text` as the client
+draft; every other method still requires `clientSafeHebrew` from the executor.

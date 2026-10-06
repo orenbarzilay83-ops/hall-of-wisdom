@@ -86,6 +86,41 @@ for (const item of cases) {
 }
 
 const defaultMothers = ['2222', '2211', '2121', '2221'];
+// Four legacy formula routes produce exact, short verdict.text rather than
+// executorResult.clientSafeHebrew. Pin every outcome to a real board so the
+// package can expose these texts without a generic advisor-text fallback.
+for (const [methodId, cases] of [
+  ['completion.p173.fireRows15910', [
+    [['2222','2211','2121','2221'], null, 'צורה קבועה — אין הכרעה בדין השלמת העניין'],
+    [['1122','1122','1122','1122'], false, 'העניין לא יושלם'],
+    [['2211','1122','2211','1122'], true, 'העניין יושלם'],
+  ]],
+  ['relocation.p183.h4h15', [
+    [['2222','2211','2121','2221'], true, 'המקום טוב ומבורך למעבר'],
+    [['1221','1221','1221','1221'], false, 'המקום מזיק, יש קושי ועמל'],
+    [['2221','1122','2221','1122'], null, 'המקום ממוצע — לא מצוין אך לא מזיק'],
+  ]],
+  ['siblings.p182.h1h3', [
+    [['2222','2211','2121','2221'], true, 'הקשר עם האחים טוב, יש הסכמה'],
+    [['1122','1122','1122','1122'], null, 'הקשר בינוני, יש מעלות וחסרונות'],
+    [['2112','1222','2212','2121'], false, 'קיים קלקול ביחסים, מריבות'],
+  ]],
+  ['travel.p238.assemble1359', [
+    [['2222','2211','2121','2221'], null, 'המסע עם אתגרים אך אפשרי'],
+    [['2211','1122','2211','1122'], false, 'המסע מסוכן — יש להיזהר'],
+    [['1122','2221','1122','2221'], true, 'המסע מבורך ונאה'],
+  ]],
+]) {
+  for (const [mothers, positive, text] of cases) {
+    const result = runKashfPack({ mothers, methodId });
+    assert.equal(result.status, 'ok', methodId);
+    assert.equal(result.verdict?.positive, positive, methodId);
+    assert.equal(result.verdict?.text, text, methodId);
+    assert.equal(result.clientAnswerDraft, text, methodId);
+    assert.equal(result.safety.clientFacingCertified, true, methodId);
+    assert.equal(result.methodResult?.executorResult, undefined, methodId);
+  }
+}
 const extraInputByMethod = {
   'hidden.p188.quarterDirection': { quarterPatterns: ['2111', '1112', '1212', '1112'] },
   'mother.p257.statusDayNight': { motherCastPeriod: 'לילה' },

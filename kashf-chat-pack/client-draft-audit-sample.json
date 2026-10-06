@@ -1,0 +1,3524 @@
+{
+  "summary": {
+    "boardCount": 47,
+    "methodCount": 90,
+    "methodWithAnyDraft": 15,
+    "methodWithNoDraft": 75,
+    "methodWithPartialDraft": 0,
+    "sampledMethodBranches": 200,
+    "sampledBranchesMissingDraft": 156
+  },
+  "methods": [
+    {
+      "methodId": "completion.p173.fireRows15910",
+      "questionIds": [
+        "q-success",
+        "q-knowledge-success",
+        "q-academic",
+        "q-spiritual-path",
+        "q-message",
+        "q-celebrations",
+        "q-joy-coming",
+        "q-debts",
+        "q-sell-property"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 16,
+          "clientDraftBoards": 16,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": false,
+          "sampledBoards": 14,
+          "clientDraftBoards": 14,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "1122",
+            "1122",
+            "1122",
+            "1122"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": true,
+          "sampledBoards": 17,
+          "clientDraftBoards": 17,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "2211",
+            "1122",
+            "2211",
+            "1122"
+          ]
+        }
+      ],
+      "clientDraftBoards": 47
+    },
+    {
+      "methodId": "relocation.p183.h4h15",
+      "questionIds": [
+        "q-move-city"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": true,
+          "sampledBoards": 13,
+          "clientDraftBoards": 13,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": false,
+          "sampledBoards": 15,
+          "clientDraftBoards": 15,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "1221",
+            "1221",
+            "1221",
+            "1221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 19,
+          "clientDraftBoards": 19,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "2221",
+            "1122",
+            "2221",
+            "1122"
+          ]
+        }
+      ],
+      "clientDraftBoards": 47
+    },
+    {
+      "methodId": "siblings.p182.h1h3",
+      "questionIds": [
+        "q-siblings",
+        "q-sibling-agreement"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": true,
+          "sampledBoards": 12,
+          "clientDraftBoards": 12,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 20,
+          "clientDraftBoards": 20,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "1122",
+            "1122",
+            "1122",
+            "1122"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": false,
+          "sampledBoards": 15,
+          "clientDraftBoards": 15,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "2112",
+            "1222",
+            "2212",
+            "2121"
+          ]
+        }
+      ],
+      "clientDraftBoards": 47
+    },
+    {
+      "methodId": "travel.p238.assemble1359",
+      "questionIds": [
+        "q-travel-safe",
+        "q-short-travel"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 16,
+          "clientDraftBoards": 16,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": false,
+          "sampledBoards": 21,
+          "clientDraftBoards": 21,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "2211",
+            "1122",
+            "2211",
+            "1122"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": true,
+          "sampledBoards": 10,
+          "clientDraftBoards": 10,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "1122",
+            "2221",
+            "1122",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 47
+    },
+    {
+      "methodId": "dhamir.p159.subjectByH6Recurrence",
+      "questionIds": [],
+      "policyCertified": false,
+      "sampledBranches": [
+        {
+          "branch": "question-subject-identification",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "general.p174.h1h2h4h7h10h15",
+      "questionIds": [
+        "q-general-state"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "general-state-profile",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "clothing.p264-265.luck",
+      "questionIds": [
+        "q-clothing-lucky"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 42,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 42,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": false,
+          "sampledBoards": 2,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 2,
+          "exampleMothers": [
+            "1221",
+            "2221",
+            "1221",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": true,
+          "sampledBoards": 3,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 3,
+          "exampleMothers": [
+            "1111",
+            "1111",
+            "2111",
+            "2112"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "hope.p174.h5h11ThroughH1",
+      "questionIds": [
+        "q-hope-p174"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "unresolved",
+          "positive": null,
+          "sampledBoards": 22,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 22,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "benefic-incoming",
+          "positive": true,
+          "sampledBoards": 8,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 8,
+          "exampleMothers": [
+            "2211",
+            "1122",
+            "2211",
+            "1122"
+          ]
+        },
+        {
+          "branch": "malefic-outgoing",
+          "positive": null,
+          "sampledBoards": 9,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 9,
+          "exampleMothers": [
+            "1122",
+            "2221",
+            "1122",
+            "2221"
+          ]
+        },
+        {
+          "branch": "malefic-incoming",
+          "positive": true,
+          "sampledBoards": 5,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 5,
+          "exampleMothers": [
+            "2222",
+            "1221",
+            "2222",
+            "1121"
+          ]
+        },
+        {
+          "branch": "benefic-outgoing",
+          "positive": true,
+          "sampledBoards": 3,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 3,
+          "exampleMothers": [
+            "1112",
+            "1111",
+            "1212",
+            "1222"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "request.p176.h1h2GateThenH1H4",
+      "questionIds": [
+        "q-request-p176"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "unresolved",
+          "positive": null,
+          "sampledBoards": 19,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 19,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "middle-end",
+          "positive": null,
+          "sampledBoards": 3,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 3,
+          "exampleMothers": [
+            "1122",
+            "1122",
+            "1122",
+            "1122"
+          ]
+        },
+        {
+          "branch": "leave-request",
+          "positive": null,
+          "sampledBoards": 24,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 24,
+          "exampleMothers": [
+            "1221",
+            "1221",
+            "1221",
+            "1221"
+          ]
+        },
+        {
+          "branch": "good-end",
+          "positive": true,
+          "sampledBoards": 1,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 1,
+          "exampleMothers": [
+            "1122",
+            "2121",
+            "1122",
+            "1211"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "intent.p176.h7h10",
+      "questionIds": [
+        "q-person-purpose-p176"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "unresolved",
+          "positive": null,
+          "sampledBoards": 21,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 21,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "favorable",
+          "positive": true,
+          "sampledBoards": 14,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 14,
+          "exampleMothers": [
+            "2211",
+            "1122",
+            "2211",
+            "1122"
+          ]
+        },
+        {
+          "branch": "adverse",
+          "positive": false,
+          "sampledBoards": 12,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 12,
+          "exampleMothers": [
+            "1121",
+            "2111",
+            "1211",
+            "2112"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "matter.p172.h17_h1011_thenCombine",
+      "questionIds": [
+        "q-matter-end"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 18,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 18,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": true,
+          "sampledBoards": 15,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 15,
+          "exampleMothers": [
+            "1122",
+            "1122",
+            "1122",
+            "1122"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": false,
+          "sampledBoards": 14,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 14,
+          "exampleMothers": [
+            "1122",
+            "2221",
+            "1122",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "relocation.p183.currentVsNewPlace",
+      "questionIds": [
+        "q-move-home"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "relocation.p183.stayMoveH1H2",
+      "questionIds": [
+        "q-stay-place"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "illness.p196.outcomeH15",
+      "questionIds": [
+        "q-illness-heal"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 28,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 28,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": true,
+          "sampledBoards": 19,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 19,
+          "exampleMothers": [
+            "1221",
+            "2221",
+            "1221",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "illness.p196.h1RecurrenceDurationRisk",
+      "questionIds": [
+        "q-illness-duration-risk"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "illness-duration-risk-observation",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "illness.p196.sensorySignsH6H8",
+      "questionIds": [
+        "q-illness-sensory-signs"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "illness-sensory-signs-not-medical",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "illness.bodyPart.h6Figure",
+      "questionIds": [
+        "q-illness-bodypart"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "pregnancy.p191.genderH5",
+      "questionIds": [
+        "q-gender"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "pregnancy.p191.twinsMujassad",
+      "questionIds": [],
+      "policyCertified": false,
+      "sampledBranches": [
+        {
+          "branch": "traditional-sign-not-medical",
+          "positive": null,
+          "sampledBoards": 42,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 42,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "traditional-sign-not-medical",
+          "positive": true,
+          "sampledBoards": 5,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 5,
+          "exampleMothers": [
+            "2121",
+            "2112",
+            "1111",
+            "1222"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "pregnancy.p191.existsH5SilentEmpty",
+      "questionIds": [
+        "q-pregnancy"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 14,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 14,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": true,
+          "sampledBoards": 20,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 20,
+          "exampleMothers": [
+            "2211",
+            "1122",
+            "2211",
+            "1122"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": false,
+          "sampledBoards": 13,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 13,
+          "exampleMothers": [
+            "1221",
+            "2221",
+            "1221",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "pregnancy.p191.childSafetyH1H6H8",
+      "questionIds": [
+        "q-child-survive"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "child-safety",
+          "positive": null,
+          "sampledBoards": 35,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 35,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "child-safety",
+          "positive": true,
+          "sampledBoards": 12,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 12,
+          "exampleMothers": [
+            "1122",
+            "1122",
+            "1122",
+            "1122"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "pregnancy.p191.deliveryDifficultyH1H5H15",
+      "questionIds": [
+        "q-birth-ease"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "delivery-difficulty",
+          "positive": false,
+          "sampledBoards": 10,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 10,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "delivery-difficulty",
+          "positive": null,
+          "sampledBoards": 30,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 30,
+          "exampleMothers": [
+            "1122",
+            "1122",
+            "1122",
+            "1122"
+          ]
+        },
+        {
+          "branch": "delivery-difficulty",
+          "positive": true,
+          "sampledBoards": 7,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 7,
+          "exampleMothers": [
+            "1122",
+            "2221",
+            "1122",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "pregnancy.p191-192.miscarriageRedH7NakisH8",
+      "questionIds": [
+        "q-miscarriage"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "miscarriage-source-sign",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "pregnancy.p192.maternalSafetyH6H8H12",
+      "questionIds": [
+        "q-pregnancy-maternal-safety"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "maternal-safety-not-medical",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "child.p194.wellbeingH5H16",
+      "questionIds": [
+        "q-child-wellbeing"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "child-wellbeing-h5h16",
+          "positive": null,
+          "sampledBoards": 38,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 38,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "child-wellbeing-h5h16",
+          "positive": true,
+          "sampledBoards": 4,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 4,
+          "exampleMothers": [
+            "2211",
+            "1122",
+            "2211",
+            "1122"
+          ]
+        },
+        {
+          "branch": "child-wellbeing-h5h16",
+          "positive": false,
+          "sampledBoards": 5,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 5,
+          "exampleMothers": [
+            "1122",
+            "2221",
+            "1122",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "child.p194.healthTrajectoryH6H8",
+      "questionIds": [
+        "q-child-health"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "child-health-trajectory",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "lifespan.p264.stagesH11H9H7",
+      "questionIds": [
+        "q-lifespan-stages"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "lifespan-stages",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "mother.p257.statusDayNight",
+      "questionIds": [
+        "q-mother"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 24,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 24,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": false,
+          "sampledBoards": 7,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 7,
+          "exampleMothers": [
+            "2112",
+            "1222",
+            "2212",
+            "2121"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": true,
+          "sampledBoards": 16,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 16,
+          "exampleMothers": [
+            "2212",
+            "1111",
+            "2112",
+            "1111"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "hidden.p188.isStillThere",
+      "questionIds": [
+        "q-treasure"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": false,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "hidden.p188.quarterDirection",
+      "questionIds": [
+        "q-dig-direction"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "lostItem.p202.returnH6H8",
+      "questionIds": [
+        "q-lost-item",
+        "q-lost-animal"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": false,
+          "sampledBoards": 45,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 45,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": true,
+          "sampledBoards": 2,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 2,
+          "exampleMothers": [
+            "2212",
+            "1111",
+            "2112",
+            "1111"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "marriage.p204.dowryH8",
+      "questionIds": [
+        "q-dowry"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "siblings.p182.seniority",
+      "questionIds": [
+        "q-sibling-eldest"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "sibling-seniority-sign",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "marriage.p204.previousStatusH7inH10",
+      "questionIds": [
+        "q-marriage-thayib"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "marriage.p210.generalMarriageH1H2H7H8H10Judge",
+      "questionIds": [
+        "q-marriage-fit"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "marriage-suitability",
+          "positive": null,
+          "sampledBoards": 14,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 14,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "marriage-suitability",
+          "positive": true,
+          "sampledBoards": 19,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 19,
+          "exampleMothers": [
+            "1122",
+            "1122",
+            "1122",
+            "1122"
+          ]
+        },
+        {
+          "branch": "marriage-suitability",
+          "positive": false,
+          "sampledBoards": 14,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 14,
+          "exampleMothers": [
+            "2221",
+            "1122",
+            "2221",
+            "1122"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "love.p204.attentionFireRows1713",
+      "questionIds": [
+        "q-who-looks-love"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "love.p206.womanFavorH7H11ThenH5",
+      "questionIds": [
+        "q-woman-grace"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 25,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 25,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": false,
+          "sampledBoards": 11,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 11,
+          "exampleMothers": [
+            "1122",
+            "2221",
+            "1122",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": true,
+          "sampledBoards": 11,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 11,
+          "exampleMothers": [
+            "2221",
+            "1122",
+            "2221",
+            "1122"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "desire.p206.querentWantsH7H11ThenH5",
+      "questionIds": [],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 25,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 25,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": false,
+          "sampledBoards": 11,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 11,
+          "exampleMothers": [
+            "1122",
+            "2221",
+            "1122",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": true,
+          "sampledBoards": 11,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 11,
+          "exampleMothers": [
+            "2221",
+            "1122",
+            "2221",
+            "1122"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "marriage.p211.dissolutionH7StateMatrix",
+      "questionIds": [
+        "q-divorce"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "marriage-stability-dissolution",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "money.p179.sourceByIncomingHonorHouse",
+      "questionIds": [
+        "q-money-source"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "money-source",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "money.p180.livelihoodH10Invert",
+      "questionIds": [
+        "q-livelihood"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "livelihood",
+          "positive": null,
+          "sampledBoards": 37,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 37,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "livelihood",
+          "positive": false,
+          "sampledBoards": 8,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 8,
+          "exampleMothers": [
+            "1122",
+            "1122",
+            "1122",
+            "1122"
+          ]
+        },
+        {
+          "branch": "livelihood",
+          "positive": true,
+          "sampledBoards": 2,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 2,
+          "exampleMothers": [
+            "2121",
+            "2112",
+            "1111",
+            "1222"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "money.p181.recast25811",
+      "questionIds": [
+        "q-livelihood-arrive"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "money-acquire-recast",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "money.p182.h2h10Outlook",
+      "questionIds": [
+        "q-money-state"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "money-general-condition-h2h10",
+          "positive": true,
+          "sampledBoards": 13,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 13,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "money-general-condition-h2h10",
+          "positive": false,
+          "sampledBoards": 16,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 16,
+          "exampleMothers": [
+            "1221",
+            "1221",
+            "1221",
+            "1221"
+          ]
+        },
+        {
+          "branch": "money-general-condition-h2h10",
+          "positive": null,
+          "sampledBoards": 18,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 18,
+          "exampleMothers": [
+            "2112",
+            "1222",
+            "2212",
+            "2121"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "travel.p236.timeSelectionH9H4",
+      "questionIds": [
+        "q-travel-timing"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 41,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 41,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": true,
+          "sampledBoards": 6,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 6,
+          "exampleMothers": [
+            "2211",
+            "1122",
+            "2211",
+            "1122"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "travel.p239.profitH7Witness",
+      "questionIds": [
+        "q-travel-profit"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "loss",
+          "positive": false,
+          "sampledBoards": 16,
+          "clientDraftBoards": 16,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "unresolved-mixed-h7",
+          "positive": null,
+          "sampledBoards": 20,
+          "clientDraftBoards": 20,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "1122",
+            "1122",
+            "1122",
+            "1122"
+          ]
+        },
+        {
+          "branch": "unresolved-no-confirming-witness",
+          "positive": null,
+          "sampledBoards": 7,
+          "clientDraftBoards": 7,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "1121",
+            "2111",
+            "1211",
+            "2112"
+          ]
+        },
+        {
+          "branch": "unresolved-disagreeing-witnesses",
+          "positive": null,
+          "sampledBoards": 4,
+          "clientDraftBoards": 4,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "2212",
+            "1121",
+            "2222",
+            "1121"
+          ]
+        }
+      ],
+      "clientDraftBoards": 47
+    },
+    {
+      "methodId": "travel.p240.roadCautionsH9H7",
+      "questionIds": [
+        "q-travel-danger"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "travel.p244.returnH1H2H9",
+      "questionIds": [
+        "q-traveler-return"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "traveler-return",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "missing.p249.returnAnglesJudge",
+      "questionIds": [
+        "q-missing-return"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "missing-return",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "missing.p249.returnTimingTariqH10H11",
+      "questionIds": [
+        "q-missing-return-timing"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "missing-return-timing",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 47,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 47
+    },
+    {
+      "methodId": "missing.p249.arrivalSignH3H15",
+      "questionIds": [
+        "q-missing-arriving"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "missing-arrival-sign-h3h15-descriptive-only",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 47,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 47
+    },
+    {
+      "methodId": "missing.p249.inCitySignH1H4",
+      "questionIds": [
+        "q-missing-in-city"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "missing-in-city-sign-h1h4",
+          "positive": true,
+          "sampledBoards": 12,
+          "clientDraftBoards": 12,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "missing-in-city-sign-h1h4",
+          "positive": null,
+          "sampledBoards": 25,
+          "clientDraftBoards": 25,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "1122",
+            "1122",
+            "1122",
+            "1122"
+          ]
+        },
+        {
+          "branch": "missing-in-city-sign-h1h4",
+          "positive": false,
+          "sampledBoards": 10,
+          "clientDraftBoards": 10,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "1221",
+            "2221",
+            "1221",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 47
+    },
+    {
+      "methodId": "authority.p256.honorConditionH10Planet",
+      "questionIds": [
+        "q-fame"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 26,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 26,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": true,
+          "sampledBoards": 15,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 15,
+          "exampleMothers": [
+            "1221",
+            "2221",
+            "1221",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": false,
+          "sampledBoards": 6,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 6,
+          "exampleMothers": [
+            "2212",
+            "1111",
+            "2112",
+            "1111"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "authority.p257.appointmentH1H10Planet",
+      "questionIds": [
+        "q-position-keep",
+        "q-career-duration"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": false,
+          "sampledBoards": 24,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 24,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": true,
+          "sampledBoards": 23,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 23,
+          "exampleMothers": [
+            "1122",
+            "1122",
+            "1122",
+            "1122"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "authority.p257.rulerConditionH7H10",
+      "questionIds": [
+        "q-ruler-status"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 21,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 21,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": true,
+          "sampledBoards": 14,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 14,
+          "exampleMothers": [
+            "2211",
+            "1122",
+            "2211",
+            "1122"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": false,
+          "sampledBoards": 12,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 12,
+          "exampleMothers": [
+            "1121",
+            "2111",
+            "1211",
+            "2112"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "career.p266.returnToOffice",
+      "questionIds": [
+        "q-career-return"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "return-to-office",
+          "positive": null,
+          "sampledBoards": 34,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 34,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "return-to-office",
+          "positive": false,
+          "sampledBoards": 13,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 13,
+          "exampleMothers": [
+            "1221",
+            "1221",
+            "1221",
+            "1221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "profession.p254.h9Planet",
+      "questionIds": [
+        "q-profession"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "profession-by-h9-attribution",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "theft.p224.recoveryH8",
+      "questionIds": [
+        "q-theft-return"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": true,
+          "sampledBoards": 16,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 16,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 17,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 17,
+          "exampleMothers": [
+            "1122",
+            "1122",
+            "1122",
+            "1122"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": false,
+          "sampledBoards": 14,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 14,
+          "exampleMothers": [
+            "2211",
+            "1122",
+            "2211",
+            "1122"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "theft.p224.relationshipH7Recurrence",
+      "questionIds": [
+        "q-thief-near"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "theft.p225.thiefDescriptionH7",
+      "questionIds": [
+        "q-theft-who"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "thief-source-profile",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "dispute.p212.reconciliationH1H7",
+      "questionIds": [
+        "q-reconciliation",
+        "q-compromise"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 37,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 37,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": true,
+          "sampledBoards": 10,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 10,
+          "exampleMothers": [
+            "1122",
+            "1122",
+            "1122",
+            "1122"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "dispute.p212.winnerH1",
+      "questionIds": [
+        "q-dispute",
+        "q-women-dispute"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "unresolved",
+          "positive": null,
+          "sampledBoards": 20,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 20,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "other-party-prevails",
+          "positive": false,
+          "sampledBoards": 14,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 14,
+          "exampleMothers": [
+            "1122",
+            "1122",
+            "1122",
+            "1122"
+          ]
+        },
+        {
+          "branch": "seeker-prevails",
+          "positive": true,
+          "sampledBoards": 13,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 13,
+          "exampleMothers": [
+            "1221",
+            "1221",
+            "1221",
+            "1221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "dispute.p212.winnerH2H8Sign",
+      "questionIds": [
+        "q-dispute-h2h8"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "conflicting-signs",
+          "positive": null,
+          "sampledBoards": 5,
+          "clientDraftBoards": 5,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "petitioner-wins-sign",
+          "positive": true,
+          "sampledBoards": 7,
+          "clientDraftBoards": 7,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "1122",
+            "1122",
+            "1122",
+            "1122"
+          ]
+        },
+        {
+          "branch": "unresolved",
+          "positive": null,
+          "sampledBoards": 24,
+          "clientDraftBoards": 24,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "1221",
+            "1221",
+            "1221",
+            "1221"
+          ]
+        },
+        {
+          "branch": "respondent-prevails-sign",
+          "positive": false,
+          "sampledBoards": 11,
+          "clientDraftBoards": 11,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "1122",
+            "2221",
+            "1122",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 47
+    },
+    {
+      "methodId": "partnership.p212.compatibilityH1H7H5H7",
+      "questionIds": [
+        "q-partnership"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "bad",
+          "positive": false,
+          "sampledBoards": 9,
+          "clientDraftBoards": 9,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "unresolved-mixed",
+          "positive": null,
+          "sampledBoards": 25,
+          "clientDraftBoards": 25,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "1122",
+            "1122",
+            "1122",
+            "1122"
+          ]
+        },
+        {
+          "branch": "unresolved-disagreement",
+          "positive": null,
+          "sampledBoards": 9,
+          "clientDraftBoards": 9,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "1122",
+            "2221",
+            "1122",
+            "2221"
+          ]
+        },
+        {
+          "branch": "good",
+          "positive": true,
+          "sampledBoards": 4,
+          "clientDraftBoards": 4,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "2121",
+            "2112",
+            "1111",
+            "1222"
+          ]
+        }
+      ],
+      "clientDraftBoards": 47
+    },
+    {
+      "methodId": "fear.p273.punishmentSigns",
+      "questionIds": [
+        "q-fear-punishment"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "spiritual.p167.hiddenActionAirRows46815",
+      "questionIds": [
+        "q-hidden-action"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": false,
+          "sampledBoards": 34,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 34,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": true,
+          "sampledBoards": 13,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 13,
+          "exampleMothers": [
+            "2112",
+            "1222",
+            "2212",
+            "2121"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "need.p168.moveToObtainH5H9H14",
+      "questionIds": [
+        "q-need-move-p168"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "need-move-to-obtain-majority",
+          "positive": null,
+          "sampledBoards": 39,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 39,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "need-move-to-obtain-majority",
+          "positive": true,
+          "sampledBoards": 2,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 2,
+          "exampleMothers": [
+            "1221",
+            "2221",
+            "1221",
+            "2221"
+          ]
+        },
+        {
+          "branch": "need-move-to-obtain-majority",
+          "positive": false,
+          "sampledBoards": 6,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 6,
+          "exampleMothers": [
+            "1121",
+            "2111",
+            "1211",
+            "2112"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "request.p168.answeredEaseH5H7",
+      "questionIds": [
+        "q-request-ease-p168"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "request-answered-ease",
+          "positive": null,
+          "sampledBoards": 40,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 40,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "request-answered-ease",
+          "positive": true,
+          "sampledBoards": 7,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 7,
+          "exampleMothers": [
+            "2112",
+            "1222",
+            "2212",
+            "2121"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "matter.p169.validityH6H8Planet",
+      "questionIds": [
+        "q-matter-valid"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": false,
+          "sampledBoards": 30,
+          "clientDraftBoards": 30,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": true,
+          "sampledBoards": 17,
+          "clientDraftBoards": 17,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "1122",
+            "1122",
+            "1122",
+            "1122"
+          ]
+        }
+      ],
+      "clientDraftBoards": 47
+    },
+    {
+      "methodId": "need.p169.fulfillmentH1Fortune",
+      "questionIds": [
+        "q-need-fulfillment"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 20,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 20,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": true,
+          "sampledBoards": 14,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 14,
+          "exampleMothers": [
+            "1122",
+            "1122",
+            "1122",
+            "1122"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": false,
+          "sampledBoards": 13,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 13,
+          "exampleMothers": [
+            "1221",
+            "1221",
+            "1221",
+            "1221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "attention.p170.mutualGazeFireRows1713",
+      "questionIds": [
+        "q-attention-focus"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 38,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 38,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": false,
+          "sampledBoards": 4,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 4,
+          "exampleMothers": [
+            "2112",
+            "1222",
+            "2212",
+            "2121"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": true,
+          "sampledBoards": 5,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 5,
+          "exampleMothers": [
+            "1111",
+            "1111",
+            "2111",
+            "2112"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "religion.p253.h3h9Quality",
+      "questionIds": [
+        "q-religion"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": true,
+          "sampledBoards": 1,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 1,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 41,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 41,
+          "exampleMothers": [
+            "1122",
+            "1122",
+            "1122",
+            "1122"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": false,
+          "sampledBoards": 5,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 5,
+          "exampleMothers": [
+            "2121",
+            "2122",
+            "2221",
+            "1112"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "illness.p197.h1h8ElementHumor",
+      "questionIds": [
+        "q-illness-type"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "marriage.p205.modestyPurity",
+      "questionIds": [
+        "q-marriage-chastity"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "pure-signs",
+          "positive": true,
+          "sampledBoards": 27,
+          "clientDraftBoards": 27,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "mixed-signs",
+          "positive": null,
+          "sampledBoards": 17,
+          "clientDraftBoards": 17,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "2221",
+            "1122",
+            "2221",
+            "1122"
+          ]
+        },
+        {
+          "branch": "impure-signs",
+          "positive": false,
+          "sampledBoards": 2,
+          "clientDraftBoards": 2,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "2122",
+            "1211",
+            "1122",
+            "2111"
+          ]
+        },
+        {
+          "branch": "no-applicable-clause",
+          "positive": null,
+          "sampledBoards": 1,
+          "clientDraftBoards": 1,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "2122",
+            "2122",
+            "1122",
+            "1221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 47
+    },
+    {
+      "methodId": "marriage.p208.womanQualityH5H4",
+      "questionIds": [
+        "q-marriage-woman-quality"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "poor-outcome-sign",
+          "positive": null,
+          "sampledBoards": 22,
+          "clientDraftBoards": 22,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "no-applicable-clause",
+          "positive": null,
+          "sampledBoards": 19,
+          "clientDraftBoards": 19,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "1122",
+            "1122",
+            "1122",
+            "1122"
+          ]
+        },
+        {
+          "branch": "good-stable-sign",
+          "positive": true,
+          "sampledBoards": 4,
+          "clientDraftBoards": 4,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "2121",
+            "2112",
+            "1111",
+            "1222"
+          ]
+        },
+        {
+          "branch": "conflicting-signs",
+          "positive": null,
+          "sampledBoards": 2,
+          "clientDraftBoards": 2,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "1111",
+            "1111",
+            "2111",
+            "2112"
+          ]
+        }
+      ],
+      "clientDraftBoards": 47
+    },
+    {
+      "methodId": "hope.p267.fulfillment",
+      "questionIds": [
+        "q-wish"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "house11-fallback-only",
+          "positive": null,
+          "sampledBoards": 25,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 25,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "house11-fallback-only",
+          "positive": false,
+          "sampledBoards": 9,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 9,
+          "exampleMothers": [
+            "1221",
+            "2221",
+            "1221",
+            "2221"
+          ]
+        },
+        {
+          "branch": "house11-fallback-only",
+          "positive": true,
+          "sampledBoards": 13,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 13,
+          "exampleMothers": [
+            "1121",
+            "2111",
+            "1211",
+            "2112"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "dream.p254.h9AndTransit",
+      "questionIds": [
+        "q-dream",
+        "q-dream-daily",
+        "q-dream-omen"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": true,
+          "sampledBoards": 13,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 13,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 21,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 21,
+          "exampleMothers": [
+            "1122",
+            "1122",
+            "1122",
+            "1122"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": false,
+          "sampledBoards": 13,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 13,
+          "exampleMothers": [
+            "2112",
+            "1222",
+            "2212",
+            "2121"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "friends.p263.h1h11",
+      "questionIds": [
+        "q-friends"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 47,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 47,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "state.p265.h1h2h9h15",
+      "questionIds": [
+        "q-career-state",
+        "q-stability"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 46,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 46,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": true,
+          "sampledBoards": 1,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 1,
+          "exampleMothers": [
+            "2211",
+            "2221",
+            "1112",
+            "1222"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "missing.p248-249.lifeH1H4H9Outcome",
+      "questionIds": [
+        "q-missing-alive"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "missing-life-status",
+          "positive": null,
+          "sampledBoards": 46,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 46,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "missing-life-status",
+          "positive": true,
+          "sampledBoards": 1,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 1,
+          "exampleMothers": [
+            "2121",
+            "2112",
+            "1111",
+            "1222"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "enemy.p271.h1vsH12",
+      "questionIds": [
+        "q-enemy-exists",
+        "q-hidden-enemy",
+        "q-enemy"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 33,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 33,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "no-enemy",
+          "positive": false,
+          "sampledBoards": 5,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 5,
+          "exampleMothers": [
+            "1122",
+            "2221",
+            "1122",
+            "2221"
+          ]
+        },
+        {
+          "branch": "enemies",
+          "positive": true,
+          "sampledBoards": 7,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 7,
+          "exampleMothers": [
+            "2221",
+            "1122",
+            "2221",
+            "1122"
+          ]
+        },
+        {
+          "branch": "querent-prevails",
+          "positive": true,
+          "sampledBoards": 2,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 2,
+          "exampleMothers": [
+            "1122",
+            "2121",
+            "1122",
+            "1211"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "gift.p193.h5Quality",
+      "questionIds": [
+        "q-gift"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "unresolved",
+          "positive": null,
+          "sampledBoards": 21,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 21,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "favorable",
+          "positive": true,
+          "sampledBoards": 16,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 16,
+          "exampleMothers": [
+            "2211",
+            "1122",
+            "2211",
+            "1122"
+          ]
+        },
+        {
+          "branch": "adverse",
+          "positive": false,
+          "sampledBoards": 10,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 10,
+          "exampleMothers": [
+            "1221",
+            "2221",
+            "1221",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "travel.p243-244.vesselH1Signs",
+      "questionIds": [
+        "q-sea-voyage"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "safe-arrival-sign",
+          "positive": true,
+          "sampledBoards": 3,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 3,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "unresolved",
+          "positive": null,
+          "sampledBoards": 9,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 9,
+          "exampleMothers": [
+            "1122",
+            "1122",
+            "1122",
+            "1122"
+          ]
+        },
+        {
+          "branch": "repairable-damage-sign",
+          "positive": null,
+          "sampledBoards": 35,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 35,
+          "exampleMothers": [
+            "1221",
+            "1221",
+            "1221",
+            "1221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "family.p184.fatherMoneyH5",
+      "questionIds": [
+        "q-father"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "unresolved",
+          "positive": null,
+          "sampledBoards": 21,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 21,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "money-sign",
+          "positive": true,
+          "sampledBoards": 16,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 16,
+          "exampleMothers": [
+            "2211",
+            "1122",
+            "2211",
+            "1122"
+          ]
+        },
+        {
+          "branch": "no-money-or-no-benefit-sign",
+          "positive": false,
+          "sampledBoards": 10,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 10,
+          "exampleMothers": [
+            "1221",
+            "2221",
+            "1221",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "property.p184.landOwnershipH4",
+      "questionIds": [
+        "q-agriculture"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "absence-or-loss-sign",
+          "positive": false,
+          "sampledBoards": 16,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 16,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "ownership-sign",
+          "positive": true,
+          "sampledBoards": 17,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 17,
+          "exampleMothers": [
+            "1122",
+            "1122",
+            "1122",
+            "1122"
+          ]
+        },
+        {
+          "branch": "unresolved",
+          "positive": null,
+          "sampledBoards": 14,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 14,
+          "exampleMothers": [
+            "1121",
+            "2111",
+            "1211",
+            "2112"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "prisoner.p272-273.rapidExitH11WithH5Caution",
+      "questionIds": [
+        "q-prisoner"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "unresolved",
+          "positive": null,
+          "sampledBoards": 39,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 39,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "rapid-exit-sign",
+          "positive": true,
+          "sampledBoards": 6,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 6,
+          "exampleMothers": [
+            "1111",
+            "1111",
+            "2111",
+            "2112"
+          ]
+        },
+        {
+          "branch": "no-exit-caution",
+          "positive": null,
+          "sampledBoards": 2,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 2,
+          "exampleMothers": [
+            "2122",
+            "2212",
+            "2111",
+            "1122"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "prisoner.p272.outcomeH1H4",
+      "questionIds": [
+        "q-prisoner-outcome"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "prisoner-outcome-h1h4",
+          "positive": false,
+          "sampledBoards": 11,
+          "clientDraftBoards": 11,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "prisoner-outcome-h1h4",
+          "positive": null,
+          "sampledBoards": 21,
+          "clientDraftBoards": 21,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "1122",
+            "1122",
+            "1122",
+            "1122"
+          ]
+        },
+        {
+          "branch": "prisoner-outcome-h1h4",
+          "positive": true,
+          "sampledBoards": 15,
+          "clientDraftBoards": 15,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "1221",
+            "2221",
+            "1221",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 47
+    },
+    {
+      "methodId": "prisoner.p272.exitSafetyH12",
+      "questionIds": [
+        "q-prisoner-exit-safety"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "prisoner-exit-safety-h12",
+          "positive": true,
+          "sampledBoards": 12,
+          "clientDraftBoards": 12,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "prisoner-exit-safety-h12",
+          "positive": null,
+          "sampledBoards": 35,
+          "clientDraftBoards": 35,
+          "advisorOnlyBoards": 0,
+          "exampleMothers": [
+            "1122",
+            "1122",
+            "1122",
+            "1122"
+          ]
+        }
+      ],
+      "clientDraftBoards": 47
+    },
+    {
+      "methodId": "prisoner.p272.releaseManner",
+      "questionIds": [
+        "q-prisoner-release-manner"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "conflicting-signs",
+          "positive": null,
+          "sampledBoards": 30,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 30,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "voluntary-exit-sign",
+          "positive": null,
+          "sampledBoards": 9,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 9,
+          "exampleMothers": [
+            "1122",
+            "1122",
+            "1122",
+            "1122"
+          ]
+        },
+        {
+          "branch": "involuntary-exit-sign",
+          "positive": null,
+          "sampledBoards": 8,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 8,
+          "exampleMothers": [
+            "1221",
+            "1221",
+            "1221",
+            "1221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "missing.p249.departedCityH7",
+      "questionIds": [
+        "q-missing-location"
+      ],
+      "policyCertified": true,
+      "sampledBranches": [
+        {
+          "branch": "remains-in-place-sign",
+          "positive": null,
+          "sampledBoards": 17,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 17,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "unresolved",
+          "positive": null,
+          "sampledBoards": 27,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 27,
+          "exampleMothers": [
+            "2211",
+            "1122",
+            "2211",
+            "1122"
+          ]
+        },
+        {
+          "branch": "departed-city-sign",
+          "positive": true,
+          "sampledBoards": 3,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 3,
+          "exampleMothers": [
+            "2212",
+            "1222",
+            "1122",
+            "2221"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    },
+    {
+      "methodId": "spiritual.p167.querentCastsSorceryMizan",
+      "questionIds": [],
+      "policyCertified": false,
+      "sampledBranches": [
+        {
+          "branch": "(no branch field)",
+          "positive": null,
+          "sampledBoards": 34,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 34,
+          "exampleMothers": [
+            "2222",
+            "2211",
+            "2121",
+            "2221"
+          ]
+        },
+        {
+          "branch": "(no branch field)",
+          "positive": true,
+          "sampledBoards": 13,
+          "clientDraftBoards": 0,
+          "advisorOnlyBoards": 13,
+          "exampleMothers": [
+            "1122",
+            "1122",
+            "1122",
+            "1122"
+          ]
+        }
+      ],
+      "clientDraftBoards": 0
+    }
+  ]
+}

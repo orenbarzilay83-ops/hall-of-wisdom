@@ -11,8 +11,20 @@ function blocked(reason) {
   return { status: 'blocked', reason, verdict: null, clientAnswerDraft: null };
 }
 
-function explicitClientDraft(reading) {
-  const text = reading?.primaryFormula?.result?.executorResult?.clientSafeHebrew;
+// These four legacy formula routes already return short, branch-specific
+// Hebrew verdicts, rather than an advisor explanation. Each of their three
+// reachable outcomes is pinned against real boards in verify.mjs.
+const DIRECT_VERDICT_TEXT_METHODS = new Set([
+  'completion.p173.fireRows15910',
+  'relocation.p183.h4h15',
+  'siblings.p182.h1h3',
+  'travel.p238.assemble1359',
+]);
+
+function explicitClientDraft(reading, methodId) {
+  const execution = reading?.primaryFormula?.result?.executorResult;
+  const text = execution?.clientSafeHebrew ??
+    (execution == null && DIRECT_VERDICT_TEXT_METHODS.has(methodId) ? reading?.verdict?.text : null);
   if (typeof text !== 'string' || !text.trim()) return null;
   const value = text.trim();
   // The advisor's outputHebrew can include provenance, raw figures and
@@ -107,7 +119,7 @@ export function runKashfPack(input) {
   const activeMethodId = resolution?.kashfMethodId || methodId;
   const safe = safety?.isSafe === true && canonicalReading?.valid === true && canonicalReading?.canRunKashf === true;
   const methodPolicyCertified = safe && safety?.clientFacingCertified === true;
-  const clientDraft = methodPolicyCertified ? explicitClientDraft(canonicalReading) : null;
+  const clientDraft = methodPolicyCertified ? explicitClientDraft(canonicalReading, activeMethodId) : null;
   const certified = methodPolicyCertified && clientDraft !== null;
   return {
     status: safe ? 'ok' : 'blocked',
