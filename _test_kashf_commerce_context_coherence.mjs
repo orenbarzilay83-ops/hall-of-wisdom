@@ -20,7 +20,7 @@ function assert(condition, message) {
   else { console.log(`✓ ${message}`); }
 }
 
-const ALL = ['1111','1112','1121','1122','1211','1212','1221','1222','2111','2112','2121','2122','2211','2212','2221','2222'];
+const ALL = ['1111','1112','1121','1122','1211','1212','1221','1222','2111','2112','2121','2122','2211','2212','2222','2222'];
 const PHONE = '0521234567';
 const SENSITIVE_MARK = 'ZZZSENSITIVE999';
 const NONSENSITIVE_MARK = 'MATTER777';

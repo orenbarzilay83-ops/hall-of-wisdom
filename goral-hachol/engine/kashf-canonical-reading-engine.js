@@ -20,6 +20,7 @@ import {
   getHousePattern,
 } from './kashf-formula-engine.js';
 import { classifyCanonicalFigure } from './kashf-canonical-figure-classifier.js';
+import { verifyKashfBoardStructuralIntegrity } from './raml-board-generator.js';
 import { getTopicRules } from './kashf-topic-rules.js';
 import { getKashfMethod } from '../registry/kashf-canonical-method-registry.js';
 import { getKashfV57Knowledge } from '../registry/kashf-v57-knowledge-registry.js';
@@ -317,21 +318,39 @@ export function buildKashfReadingByMethod(board, kashfMethodId, clientContext = 
   // Tinnin in house 1, or none of the four liar-exposing figures present)
   // is the source telling the reader to weigh it carefully or consider
   // re-casting -- advisory, not a stop -- and must not block a verdict.
-  // Previously this engine attached boardValidation to the result purely
-  // for display and always returned valid:true/canRunKashf:true regardless
-  // of hasCritical, so a structurally-invalid board (by the source's own
-  // explicit rule) could still produce a client-facing verdict in both the
-  // canonical path and the AI bridge (both gate only on valid/canRunKashf,
-  // never on boardValidation itself). Fixed here, at the single shared
-  // entry point both paths call through.
-  if (board?.boardValidation?.hasCritical === true) {
+  //
+  // 2026-10-06 hardening (independent re-audit, flagged on review): this
+  // gate originally (2026-10-05) trusted board?.boardValidation?.hasCritical
+  // -- a flag computed once at board-creation time and then attached to the
+  // board object. That flag can be missing, stale, or simply wrong for a
+  // board that didn't pass through generateRamlEntriesFromMothers exactly
+  // as constructed (hand-built test fixture, a board patched after
+  // creation, a future alternate construction path) -- a caller could set
+  // boardValidation: {isValid:true, hasCritical:false} (or omit it
+  // entirely) on a board whose actual house patterns are internally
+  // inconsistent or whose Judge is not actually even, and this gate would
+  // have let it straight through to a client-facing verdict. Fixed by no
+  // longer trusting that attached flag at all: verifyKashfBoardStructuralIntegrity
+  // independently RECOMPUTES all 16 houses from whatever houses 1-4 are
+  // actually present in board.entries (same transpose/combine construction
+  // rules the generator itself uses) and compares the result to what is
+  // actually declared on the board, plus checks house 15's own declared
+  // parity directly -- regardless of what boardValidation claims or
+  // whether it is present at all.
+  const boardEntriesForIntegrity = Array.isArray(board)
+    ? board
+    : Array.isArray(board?.entries)
+      ? board.entries
+      : null;
+  const structuralIntegrity = verifyKashfBoardStructuralIntegrity(boardEntriesForIntegrity);
+  if (structuralIntegrity.hasCritical) {
     return blockedResult({
       kashfMethodId: method.kashfMethodId,
       kashfIntentId: method.kashfIntentId,
       status: method.kashfRuntimeStatus,
       executorStatus: method.executorStatus,
       reason: 'board-validation-critical',
-      userMessage: 'הלוח פסול במפורש לפי המקור (למשל: הדיין בבית 15 אינו זוגי) — יש להטיל מחדש. לא ניתן למסור פסק קנוני על בסיס לוח זה.',
+      userMessage: 'הלוח פסול במפורש לפי המקור (למשל: הדיין בבית 15 אינו זוגי, או שבית בלוח אינו תואם את כללי הבנייה מהאמהות) — יש להטיל מחדש. לא ניתן למסור פסק קנוני על בסיס לוח זה.',
     });
   }
 

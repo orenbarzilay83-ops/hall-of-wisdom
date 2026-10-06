@@ -169,6 +169,75 @@ function validateBoard(entries) {
   };
 }
 
+// ── אימות בלתי-תלוי של תקינות הדיין (לשימוש הקורא, לא רק של היוצר) ─────────────
+//
+// 2026-10-06: validateBoard/boardValidation לעיל מחושבים פעם אחת ב-
+// generateRamlEntriesFromMothers ו"נדבקים" כשדה על הלוח. כל קורא במורד
+// הזרם (kashf-canonical-reading-engine.js ואחריו) בדק עד כה רק את השדה
+// המצורף הזה -- דגל שניתן לצרף/לשכתב/להשמיט מבחוץ (לוח שנבנה ידנית,
+// נטען ממקור אחר, או תוקן אחרי היצירה) בלי שום בדיקה מול הנתונים עצמם.
+// הפונקציה הזו היא אימות עצמאי, שאינו סומך על אותו דגל כלל: היא קוראת
+// ישירות את התבנית המוצהרת בבית 15 (הדיין) בפועל מתוך entries, ובודקת
+// זוגיות -- לא רק את ה-boolean המצורף.
+//
+// היקף מכוון, לא שכחה: גרסה קודמת של הפונקציה הזו, באותו יום, גם שחזרה
+// את כל 16 הבתים מתוך בתים 1-4 (האמהות) והשוותה לערך שבפועל -- אך זה
+// שבר כ-650 assertions קיימות (ראו _test_kashf_house2_runtime_boundaries_p179_182.mjs
+// ועוד כ-15 קבצי בדיקה דומים) שמשתמשים בכוונה בלוחות-fixture סינתטיים,
+// חלקיים (לדוגמה makeBoard() שם: סדרת 16 התבניות הקנוניות לפי הסדר,
+// עם override לבית-שתיים-שלושה ספציפיים בלבד לצורך הבדיקה) -- מוסכמה
+// נפוצה ומבוססת בכל קובצי הבדיקה של האנגייג'מנט הזה, כי המבצעים
+// (executors) קוראים רק בתים ספציפיים ולא דורשים עקביות מלאה של הלוח.
+// אכיפת עקביות-בנייה מלאה על כל קריאה הייתה דורשת לשכתב את כל
+// fixtures האלה -- היקף גדול בהרבה ממה שהתבקש בסבב הזה. הכלל הקריטי
+// היחיד המוכר כרגע מהמקור הוא זוגיות הדיין (בית 15) -- וזה בדיוק מה
+// שהפונקציה הזו מאמתת, ישירות מהנתון עצמו, ולא משחזור-עץ מלא.
+export function verifyKashfBoardStructuralIntegrity(entries) {
+  const list = Array.isArray(entries) ? entries : null;
+
+  if (!list || list.length !== 16) {
+    return {
+      structurallyValid: false,
+      hasCritical: true,
+      issues: [{
+        code: 'malformed-board',
+        severity: 'critical',
+        hebrewMessage: `הלוח אינו מכיל בדיוק 16 בתים תקינים (נמצאו: ${list ? list.length : 0}).`,
+      }],
+    };
+  }
+
+  const issues = [];
+  const judgeEntry = list.find((entry) => Number(entry?.houseNumber ?? entry?.house) === 15) || null;
+  const judgePattern = judgeEntry?.pattern || judgeEntry?.key || null;
+
+  if (typeof judgePattern !== 'string' || !/^[12]{4}$/.test(judgePattern)) {
+    issues.push({
+      code: 'missing-or-invalid-judge',
+      severity: 'critical',
+      houseNumber: 15,
+      hebrewMessage: 'בית 15 (הדיין) חסר, או שאינו תבנית תקינה בת 4 ספרות (1/2).',
+    });
+  } else {
+    const onesCount = judgePattern.split('').filter((ch) => ch === '1').length;
+    if (onesCount % 2 !== 0) {
+      issues.push({
+        code: 'judge-not-even',
+        severity: 'critical',
+        houseNumber: 15,
+        pattern: judgePattern,
+        hebrewMessage: 'בית 15 (הדיין) אינו זוגי בפועל. לפי המקור: הלוח כולו פסול, יש להטיל מחדש.',
+      });
+    }
+  }
+
+  return {
+    structurallyValid: issues.length === 0,
+    hasCritical: issues.some((issue) => issue.severity === 'critical'),
+    issues,
+  };
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function generateRamlEntriesFromMothers(mothers) {

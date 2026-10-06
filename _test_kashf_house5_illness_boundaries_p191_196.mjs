@@ -7,7 +7,7 @@ import { getKashfAiRetrievalRecord, resolveBestKashfAiRetrievalHit } from './gor
 import { isKashfMethodProfessionallyCertified } from './goral-hachol/intelligence/kashf-professional-verdict-safety.js';
 
 function makeBoard(overrides = {}) {
-  const fallback = ['1111','1112','1121','1122','1211','1212','1221','1222','2111','2112','2121','2122','2211','2212','2221','2222'];
+  const fallback = ['1111','1112','1121','1122','1211','1212','1221','1222','2111','2112','2121','2122','2211','2212','2222','2222'];
   const entries = fallback.map((pattern, i) => ({
     house: i + 1, houseNumber: i + 1, pattern, key: pattern,
     hebrew: `צורה-${pattern}`, hebrewName: `צורה-${pattern}`,
@@ -30,7 +30,7 @@ for (const [questionId, methodId] of [
   const route = resolveKashfRouteByQuestionId(questionId);
   assert.equal(route.kashfMethodId, methodId);
   assert.equal(route.canRunKashf, true);
-  const reading = buildKashfReadingByQuestionId(makeBoard({ 1:'2111', 5:'2111', 6:'2111', 8:'2111', 15:'2111' }), questionId);
+  const reading = buildKashfReadingByQuestionId(makeBoard({ 1:'2111', 5:'2111', 6:'2111', 8:'2111', 15:'2112' }), questionId);
   assert.equal(reading.valid, true);
   assert.deepEqual(reading.canonicalExecution?.methodsExecuted, [methodId]);
   assert.equal(reading.canonicalExecution?.topicSupportingChecksExecuted, false);
@@ -89,7 +89,7 @@ assert.deepEqual(childHealth.primaryFormula?.result?.executorResult?.housesUsed,
 assert.equal(childHealth.canonicalExecution?.topicSupportingChecksExecuted, false);
 assert.equal(getKashfMethod('pregnancy.p194.deliveryH5Weight').methodRole, 'educational-only');
 
-const illness = buildKashfReadingByQuestionId(makeBoard({ 15:'2111', 1:'1112', 6:'1112', 8:'1112' }), 'q-illness-heal');
+const illness = buildKashfReadingByQuestionId(makeBoard({ 15:'2112', 1:'1112', 6:'1112', 8:'1112' }), 'q-illness-heal');
 assert.equal(illness.valid, true);
 assert.deepEqual(illness.canonicalExecution?.methodsExecuted, ['illness.p196.outcomeH15']);
 assert.deepEqual(illness.primaryFormula?.result?.executorResult?.housesUsed, [15]);

@@ -148,16 +148,18 @@ function ok(cond, msg) { assertions++; assert(cond, msg); }
 // ── (f) a state requiring a stop / re-cast per a verified source ────────
 // judge-not-even is the source's own explicit "whole board is invalid"
 // rule (p35 context notwithstanding; this is validateJudgeIsEven, a
-// separate, unrelated structural rule). Forced directly here because it is
-// proven unreachable from any real buildRamlBoardFromMothers casting (see
-// _test_kashf_board_validation_gate.mjs and KASHF_AI_BRIDGE_OPERATING_RULES.md
+// separate, unrelated structural rule). Forced directly here, by corrupting
+// the board's actual house-15 DATA (not merely an attached flag -- see the
+// 2026-10-06 hardening in _test_kashf_board_validation_gate.mjs: the gate
+// no longer trusts board.boardValidation at all, it independently recomputes
+// from board.entries), because it is proven unreachable from any real
+// buildRamlBoardFromMothers casting (see KASHF_AI_BRIDGE_OPERATING_RULES.md
 // section 1.3) -- this proves the STOP mechanism itself works end to end.
 
 {
   const realBoard = buildRamlBoardFromMothers(['1111', '1111', '1111', '1122']);
   const criticalBoard = {
-    ...realBoard,
-    boardValidation: { isValid: false, hasCritical: true, warnings: [{ code: 'judge-not-even', severity: 'critical' }] },
+    entries: realBoard.entries.map((e) => (e.houseNumber === 15 ? { ...e, pattern: '1112', key: '1112' } : e)),
   };
 
   const reading = buildKashfReadingByQuestionId(criticalBoard, 'q-missing-in-city', { question: 'test' });

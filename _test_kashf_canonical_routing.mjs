@@ -1499,7 +1499,7 @@ assert(illnessRecovers.canonicalExecution?.methodsExecuted?.length === 1, 'p196 
 assert(illnessRecovers.canonicalExecution?.topicBundleExecuted === false, 'p196 does not execute broad illness bundle');
 assert(illnessRecovers.dhamir == null, 'p196 does not auto-run Dhamir');
 
-const illnessProlonged = buildKashfReadingByQuestionId(makeP9Board({ 15: '1112' }), 'q-illness-heal', { question: 'האם החולה יחלים?' });
+const illnessProlonged = buildKashfReadingByQuestionId(makeP9Board({ 15: '1212' }), 'q-illness-heal', { question: 'האם החולה יחלים?' });
 assert(illnessProlonged.primaryFormula?.result?.executorResult?.classification?.saadNahs === 'nahs', 'p196 prolonged fixture is pure malefic');
 assert(illnessProlonged.primaryFormula?.result?.executorResult?.recoveryStatus === 'prolonged-illness', 'p196 malefic H15 means prolonged illness');
 assert(illnessProlonged.primaryFormula?.result?.executorResult?.recovers === null, 'p196 malefic H15 does not invent a categorical no-recovery verdict');
@@ -1777,7 +1777,7 @@ const p174GeneralRoute = resolveKashfRouteByQuestionId('q-general-state');
 assert(p174GeneralRoute?.canRunKashf === true && p174GeneralRoute?.kashfMethodId === 'general.p174.h1h2h4h7h10h15', 'q-general-state routes to the exact runnable p174 method');
 
 const p174GeneralReading = buildKashfReadingByQuestionId(
-  makeP204Board({ 1: '1222', 2: '1222', 4: '1222', 7: '1222', 10: '1222', 15: '1222' }),
+  makeP204Board({ 1: '1222', 2: '1222', 4: '1222', 7: '1222', 10: '1222', 15: '1122' }),
   'q-general-state',
   { question: 'מה מצבי הכללי?' }
 );
@@ -1831,7 +1831,7 @@ assert(p244Hard.primaryFormula?.result?.executorResult?.sourceOutcome === 'hards
 assert(p244Hard.primaryFormula?.result?.executorResult?.positive === null, 'p244 hardship branch is not converted into certain no-return');
 assert(p244Return.primaryFormula?.sourceText === getKashfV57Knowledge('travel.p244.returnH1H2H9')?.v57?.hebrewRule, 'p244 runtime sourceText comes from Hebrew v57');
 
-const p210Marriage = buildKashfReadingByQuestionId(makeP204Board({ 1: '1111', 5: '2111', 7: '1222', 15: '1222' }), 'q-marriage-fit');
+const p210Marriage = buildKashfReadingByQuestionId(makeP204Board({ 1: '1111', 5: '2111', 7: '1222', 15: '1122' }), 'q-marriage-fit');
 const p210Exec = p210Marriage.primaryFormula?.result?.executorResult;
 assert(p210Exec?.finalPattern === '1222', 'p210 H1+H5 fixture derives expected final figure');
 assert(p210Exec?.finalOutcome === 'good' && p210Exec?.positive === true, 'p210 benefic H1+H5 result gives good final judgment');
@@ -1940,7 +1940,7 @@ assert(p250AliveExec?.aliveIndicated === true && p250AliveExec?.sourceOutcome ==
 const p250Severe = buildKashfReadingByQuestionId(makeP204Board({ 6: '2222', 7: '2222', 8: '2222', 15: '2222' }), 'q-missing-alive');
 assert(p250Severe.primaryFormula?.result?.executorResult?.severeDeathTestimony === true && p250Severe.primaryFormula?.result?.executorResult?.sourceOutcome === 'severe-death-testimony', 'pp248-249 exact five-figure list exposes the severe source testimony');
 assert(p250Severe.primaryFormula?.result?.executorResult?.positive === null, 'severe missing-person testimony is not converted to a generic certain-death boolean');
-const p248NeighborExcluded = buildKashfReadingByQuestionId(makeP204Board({ 6: '2221', 7: '2221', 8: '2221', 15: '2221' }), 'q-missing-alive');
+const p248NeighborExcluded = buildKashfReadingByQuestionId(makeP204Board({ 6: '2221', 7: '2221', 8: '2221', 15: '2222' }), 'q-missing-alive');
 assert(p248NeighborExcluded.primaryFormula?.result?.executorResult?.severeDeathTestimony === false, 'p248-249 excludes Ankis from the five-figure death list');
 const p250Unresolved = buildKashfReadingByQuestionId(makeP204Board({ 1: '1222', 4: '1112', 6: '1222', 7: '1222', 8: '1222', 9: '1222', 15: '2112' }), 'q-missing-alive');
 assert(p250Unresolved.primaryFormula?.result?.executorResult?.sourceOutcome === 'unresolved', 'incomplete missing-person conditions are not inverted into an unsourced verdict');

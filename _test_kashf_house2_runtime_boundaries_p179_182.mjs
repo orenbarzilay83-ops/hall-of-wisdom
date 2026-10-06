@@ -18,7 +18,7 @@ import { isKashfMethodProfessionallyCertified } from './goral-hachol/intelligenc
 function makeBoard(overrides = {}) {
   const fallback = [
     '1111','1112','1121','1122','1211','1212','1221','1222',
-    '2111','2112','2121','2122','2211','2212','2221','2222',
+    '2111','2112','2121','2122','2211','2212','2222','2222',
   ];
   const entries = fallback.map((pattern, i) => ({
     house: i + 1,
