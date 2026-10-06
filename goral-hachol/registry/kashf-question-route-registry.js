@@ -725,7 +725,7 @@ export const KASHF_QUESTION_ROUTES = Object.freeze({
     kashfIntentId: 'missing.arrivalSign',
     kashfMethodId: 'missing.p249.arrivalSignH3H15',
     kashfRuntimeStatus: 'ready',
-    note: 'Added 2026-10-05: wires the newly-opened missing.p249.arrivalSignH3H15 (H3+H15 combine, dakhil -> arrival sign, strengthened if also saad) to a new, separately-scoped question. This resolves the referent that was previously flagged unresolved in missing.p249.lifeStatusH8H14\'s own notes -- see that method\'s registry entry and missing.p249.arrivalSignH3H15\'s own notes for the full re-reading that settled it. Kept separate from q-missing-return (official return-or-not), q-missing-return-timing (meeting timing via H10/H11) and the aliveOrDead intent (H8+H14) -- four independent p248-249 signs, never merged or voted.',
+    note: 'Added 2026-10-05: wires the newly-opened missing.p249.arrivalSignH3H15 to a new, separately-scoped question. RE-AUDITED 2026-10-06 (3rd pass, independent): the method\'s operation was corrected from an unproven H3+H15 combine to checking H3 and H15 EACH independently for dakhil (both required, AND) -- see that method\'s own registry entry for the full grammatical finding (preposition "في" vs "من", and the decisive same-page precedent in missing.p249.returnTimingTariqH10H11). This resolves the referent that was previously flagged unresolved in missing.p249.lifeStatusH8H14\'s own notes. Kept separate from q-missing-return (official return-or-not), q-missing-return-timing (meeting timing via H10/H11) and the aliveOrDead intent (H8+H14) -- four independent p248-249 signs, never merged or voted.',
   }),
 
   'q-fugitive': route({

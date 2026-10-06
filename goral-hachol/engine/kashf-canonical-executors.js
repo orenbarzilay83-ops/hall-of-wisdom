@@ -3105,55 +3105,65 @@ function computeMissingLifeStatusH8H14P249(chart) {
 // أنشئ من الثامن والرابع عشر شكلا، فإن كان سعدا، كان حاله صالحا، وإن كان
 // نحسا، فبضده؛ فإن إنفتح ناره وهواءه، كان حيا، وإلا بضد ذلك؛ وقدومه في
 // الثالث والخامس عشر، فإن كان داخلا، فهو قادم، لاسيما إن كان في بيت سعد."
-// (...and his arrival [is read] in the third and the fifteenth: if it is
-// inward [dakhil], then he is arriving -- especially if it is also [in
-// the state of] a benefic.)
 //
-// RESOLVED 2026-10-05 (re-read directly against the raw scan, full page);
-// RE-AUDITED 2026-10-05 (independent second pass, flagged on review --
-// the first pass's "elliptical repetition, word-for-word" claim overstated
-// the grammatical evidence and has been corrected below).
+// RESOLVED 2026-10-05 (re-read against the raw scan, full page);
+// RE-AUDITED 2026-10-05 (independent second pass -- corrected an
+// overstated "elliptical repetition" claim, replaced it with a weaker
+// "corpus-wide convention" basis for combining H3+H15);
+// RE-AUDITED AGAIN 2026-10-06 (independent third pass, flagged on
+// review): the "corpus-wide convention" basis was ITSELF not adequate --
+// it rests on this corpus's "من X و Y شكلا" (FROM X and Y, a figure)
+// combine idiom, which uses the preposition "من" (from/material-source).
+// This clause does not use "من" at all. It uses "في" (in/location):
+// "قدومه في الثالث والخامس عشر" = "his arrival [sign, found] IN the
+// third and the fifteenth" -- a locative construction, grammatically
+// distinct from every confirmed combine instruction on this exact
+// sentence and page (compare, two clauses earlier in this SAME
+// sentence: "أنشئ من الثامن والرابع عشر شكلا"; and on the SAME printed
+// page, computeMissingReturnTimingP249's own source text: "خذ من
+// الرابع والأول شكلا" -- both "من...شكلا", never "في").
 //
-// An earlier round flagged "وقدومه في الثالث والخامس عشر... إن كان داخلا"
-// as an unresolved-referent blocker -- unclear whether it meant the SAME
-// H8+H14 figure already built, a fresh H3+H15 combination, or each house
-// read individually. CORRECTED framing: this clause is NOT a literal
-// elliptical repeat of the earlier "أنشئ من الثامن والرابع عشر شكلا" --
-// that one is a VERB phrase ("construct...a figure"); this one is a NOUN
-// phrase ("قدومه" = "his arrival", with "في X و Y" = "[found] in/through
-// X and Y"), with no "أنشئ...شكلا" verb repeated or implied by ellipsis.
-// What DOES support the combine reading is this corpus's own wider,
-// independently-confirmed convention: every other "H_X و H_Y" house-pairing
-// in an operative Kashf clause encountered this engagement (H8+H14 earlier
-// in this same sentence, H1+H4, H7+H9, etc.) resolves to combineRamlFigures,
-// with "و" (and) joining exactly two house numbers -- never "أو" (or),
-// which this author uses elsewhere for OR-across-a-list (e.g. the p272
-// prisoner release-manner clause). That corpus-wide pattern, not a claimed
-// grammatical ellipsis, is the basis for combining H3+H15 here; it is not
-// an outright proof, but a consistent convention with no observed
-// counter-example in this source. Still NOT a reuse of the earlier H8+H14
-// figure (which would need no new house names) and NOT two independently
-// read houses (no "أو" is present).
+// Decisive same-page, same-author precedent for what "في X و Y" +
+// [single predicate] actually means operationally: the very next نكتة
+// on this same page (computeMissingReturnTimingP249, already
+// implemented and tested) reads "فإن خرج في العاشر والحادي عشر طريق"
+// ("if Tariq came out IN the tenth and the eleventh") as TWO
+// INDEPENDENT per-house checks joined by AND -- h10Pattern === '1111'
+// && h11Pattern === '1111' -- not a combine of H10+H11 into a third
+// figure. That executor's own comment confirms the author follows this
+// "في X و Y" with "وإن كان في العاشر طريق، وفي الحادي عشر إجتماع"
+// (splitting the SAME idea into two explicit parallel "في [house]
+// [figure]" clauses) a few words later, on the identical page -- the
+// author's own usage pattern for "في X و Y [predicate]" is a per-house
+// AND-condition, not a combine.
+//
+// Applying that SAME-PAGE, SAME-PREPOSITION precedent here: "قدومه في
+// الثالث والخامس عشر، فإن كان داخلا" reads as "[the arrival sign is
+// present] when house 3 AND house 15 [each, independently] are دخول
+// (dakhil)" -- not "combine H3+H15 into a new figure, then classify
+// THAT". The prior combine-based reading is WITHDRAWN as unproven (no
+// "من...شكلا" verb anywhere in this clause, and the one directly
+// analogous same-page "في X و Y" construction resolves the other way).
+// This correction is a genuine source-finding, not a test-confirms-itself
+// substitute: the evidence is the preposition choice plus the adjacent,
+// already-implemented same-page precedent, checkable independently of
+// this executor's own behavior.
 //
 // "لاسيما إن كان في بيت سعد" (especially if it was in a house of benefic)
-// is deliberately NOT implemented as a "strengthened" sub-signal. On
-// review: this exact sentence, two clauses earlier, uses a DIFFERENT
-// phrase for "the combined figure is itself benefic" -- "فإن كان سعدا"
-// (if it was benefic) -- not "بيت سعد" (house of benefic). The author
-// distinguishes these two phrasings within the same passage, so treating
-// "بيت سعد" as equivalent to "the H3+H15 figure classifies as saad" would
-// substitute an unproven reading for the author's own, different words.
-// What "بيت سعد" denotes (a planetary domicile concept? a specific board
-// house? something else?) could not be established from this page or
-// elsewhere in the material reviewed this round, so it is left as an
-// explicitly undecided bonus clause -- not computed, not asserted.
+// stays NOT implemented as a "strengthened" sub-signal, for the same
+// reason established in the prior audit: this exact sentence, two
+// clauses earlier, uses a DIFFERENT phrase ("فإن كان سعدا") for "the
+// figure itself is benefic" -- not "بيت سعد" (house of benefic). What
+// "بيت سعد" denotes here could not be established from this page or
+// elsewhere in the material reviewed, so it stays an explicitly
+// undecided bonus clause -- not computed, not asserted.
 //
-// Computation: combine H3+H15 (parity-sum combineRamlFigures).
+// Computation: classify H3 and H15 EACH independently (no combine).
 // dakhalKharij === 'dakhil' (strictly -- not 'mujassad-dakhil', kept
-// distinct per this corpus's own p63 classification) => arrival sign. The
-// source states no inverse ("وإلا") for this specific clause (unlike the
-// immediately preceding alive/dead clause, which does), so kharij/
-// mujassad patterns return positive:null, never a "not arriving" verdict.
+// distinct per this corpus's own p63 classification) for BOTH houses
+// => arrival sign. The source states no inverse ("وإلا") for this
+// specific clause, so any other combination (one dakhil, neither
+// dakhil, kharij) returns positive:null, never a "not arriving" verdict.
 function computeMissingArrivalSignH3H15P249(chart) {
   if (!Array.isArray(chart)) return null;
   const h3 = findCanonicalHouse(chart, 3);
@@ -3162,16 +3172,15 @@ function computeMissingArrivalSignH3H15P249(chart) {
   const h15Pattern = h15?.key || h15?.pattern || null;
   if (!h3Pattern || !h15Pattern) return null;
 
-  const combined = combineRamlFigures(h3Pattern, h15Pattern);
-  const resultPattern = combined.resultPattern;
-  const classification = classifyCanonicalFigure(resultPattern);
-  const resultFigureHebrew = classification.figureHebrew || combined.result?.hebrewName || resultPattern;
-
-  const arrivalSign = classification.dakhalKharij === 'dakhil';
+  const h3Classification = classifyCanonicalFigure(h3Pattern);
+  const h15Classification = classifyCanonicalFigure(h15Pattern);
+  const h3Dakhil = h3Classification.dakhalKharij === 'dakhil';
+  const h15Dakhil = h15Classification.dakhalKharij === 'dakhil';
+  const arrivalSign = h3Dakhil && h15Dakhil;
 
   const outputHebrew = arrivalSign
-    ? `חיבור בית 3 (${h3Pattern}) ובית 15 (${h15Pattern}): ${resultFigureHebrew} (${resultPattern}) — צורה פנימית (داخل). לפי כשף עמ׳ 249: סימן שהנעדר בדרכו/מתקרב. (הסעיף הנוסף "לاسيما إن كان في بيت سعد" אינו מחושב כאן — אין הוכחה שהוא שקול לסיווג מיטיב/מזיק של הצורה המחוברת.)`
-    : `חיבור בית 3 (${h3Pattern}) ובית 15 (${h15Pattern}): ${resultFigureHebrew} (${resultPattern}) — אינה צורה פנימית. המקור אינו נותן כאן כלל הפוך; אין בכך הוכחה שאינו בדרכו.`;
+    ? `בית 3 (${h3Pattern}, ${h3Classification.figureHebrew || h3Pattern}) ובית 15 (${h15Pattern}, ${h15Classification.figureHebrew || h15Pattern}) — שניהם צורה פנימית (داخل). לפי כשף עמ׳ 249: סימן שהנעדר בדרכו/מתקרב. (הסעיף הנוסף "لاسيما إن كان في بيت سعد" אינו מחושב כאן — אין הוכחה שהוא שקול לסיווג מיטיב/מזיק של אחת הצורות.)`
+    : `בית 3 (${h3Pattern}) ובית 15 (${h15Pattern}): לא שתיהן צורה פנימית (נדרש ששתיהן יהיו داخل לפי עמ׳ 249). המקור אינו נותן כאן כלל הפוך; אין בכך הוכחה שאינו בדרכו.`;
 
   return {
     sourceRef: 'כשף אל-אסרר עמ׳ 249 (PDF 251)',
@@ -3179,9 +3188,10 @@ function computeMissingArrivalSignH3H15P249(chart) {
     housesUsed: [3, 15],
     h3Pattern,
     h15Pattern,
-    resultPattern,
-    resultFigureHebrew,
-    dakhalKharij: classification.dakhalKharij,
+    h3DakhalKharij: h3Classification.dakhalKharij,
+    h15DakhalKharij: h15Classification.dakhalKharij,
+    h3Dakhil,
+    h15Dakhil,
     arrivalSign,
     positive: arrivalSign ? true : null,
     verdictType: 'missing-arrival-sign-h3h15',
