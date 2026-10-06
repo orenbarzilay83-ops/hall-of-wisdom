@@ -129,7 +129,16 @@ function polarityFromReading(reading) {
 }
 
 function authoritativeClientDraftFromReading(reading) {
-  const executorText = reading?.primaryFormula?.result?.executorResult?.outputHebrew;
+  const executorResult = reading?.primaryFormula?.result?.executorResult;
+  // clientSafeHebrew, where the executor provides it, is the short,
+  // client-appropriate wording for the verdict it computed -- stripped of
+  // method IDs, source-language quotes, and advisor-only reasoning that
+  // outputHebrew (the full advisor-facing explanation) may still contain.
+  // It must never be allowed to change the verdict outputHebrew carries;
+  // it only rewords the same branch/positive the executor already decided.
+  const clientSafeText = executorResult?.clientSafeHebrew;
+  if (typeof clientSafeText === 'string' && clientSafeText.trim().length > 0) return clientSafeText.trim();
+  const executorText = executorResult?.outputHebrew;
   if (typeof executorText === 'string' && executorText.trim().length > 0) return executorText.trim();
   const verdictText = reading?.verdict?.text;
   if (typeof verdictText === 'string' && verdictText.trim().length > 0) return verdictText.trim();

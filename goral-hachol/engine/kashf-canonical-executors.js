@@ -538,6 +538,10 @@ function computeMatterValidityP169(chart) {
     ? `הצורה הנולדת מבית 6 ובית 8 (${resultFigureHebrew}, ${resultPattern}) משויכת ל${planetHebrew === 'כוכב' ? 'עטארד' : planetHebrew}. לפי כשף עמ׳ 169: הדבר כשר/נכון עבור השואל.`
     : `הצורה הנולדת מבית 6 ובית 8 (${resultFigureHebrew}, ${resultPattern}) אינה משויכת לנוגה, ירח או עטארד. לפי כשף עמ׳ 169: הדבר אינו נכון עבור השואל.`;
 
+  const clientSafeHebrew = qualifies
+    ? 'סימן הלוח — הדבר נכון עבור השואל.'
+    : 'סימן הלוח — הדבר אינו נכון עבור השואל.';
+
   return {
     sourceRef: 'כשף אל-אסראר עמ׳ 169; שיוכי כוכבים עמ׳ 133–134',
     sourceText: 'הוצא מהשישי והשמיני צורה; אם היא מצורות נוגה, הירח או כוכב (עטארד), הדבר נכון; ואם היפך צורות אלו, אינו נכון.',
@@ -546,6 +550,7 @@ function computeMatterValidityP169(chart) {
     planetHebrew, qualifies,
     positive,
     outputHebrew,
+    clientSafeHebrew,
   };
 }
 
@@ -1196,6 +1201,12 @@ function computeDisputeWinnerH2H8P212(chart) {
       : branch === 'respondent-prevails-sign' ? 'בית 8 מיטיב — סימן שהמבוקש גובר על המבקש.'
         : 'לא בית 2 ולא בית 8 מיטיב; אין כאן סימן מפורש מכלל זה. המקור אינו נותן דין הפוך לבית מזיק.';
 
+  const clientSafeHebrew = branch === 'conflicting-signs'
+    ? 'בלוח מתקיימים שני סימנים חלוקים — אחד לטובת המבקש ואחד לטובת המבוקש. המקור אינו נותן כאן כלל להכרעה ביניהם, ולכן אין פסק אחיד לשאלה זו.'
+    : branch === 'petitioner-wins-sign' ? 'סימן הלוח — המבקש זוכה במבוקש.'
+      : branch === 'respondent-prevails-sign' ? 'סימן הלוח — המבוקש גובר על המבקש.'
+        : 'אין בלוח סימן מפורש לפי כלל זה.';
+
   return {
     sourceRef: 'כשף אל-אסראר עמ׳ מודפס 212 (PDF 214); v57 kashf-v57-draft.html id="p212"',
     sourceText: 'אם בשני צורה מיטיבה, המבקש זוכה במבוקש; ואם בשמיני צורה מיטיבה, המבוקש גובר על המבקש.',
@@ -1205,6 +1216,7 @@ function computeDisputeWinnerH2H8P212(chart) {
     positive: branch === 'petitioner-wins-sign' ? true : branch === 'respondent-prevails-sign' ? false : null,
     verdictType: 'dispute-winner-h2h8-independent-signs',
     outputHebrew: `${sign} זהו דין נפרד מסימן בית 1 (dispute.p212.winnerH1); שני הדינים אינם משוקללים לפסק אחד.`,
+    clientSafeHebrew,
   };
 }
 
@@ -1267,6 +1279,10 @@ function computePrisonerOutcomeH1H4P272(chart) {
     : outcome === 'bad' ? 'עתידו של האסיר לרעה.'
       : 'המקור אינו נותן כאן ענף לצורה ממוזגת; אין הכרעה לעתידו הכללי.';
 
+  const clientSafeHebrew = outcome === 'good' ? 'סימן הלוח — עתידו של האסיר לטובה.'
+    : outcome === 'bad' ? 'סימן הלוח — עתידו של האסיר לרעה.'
+      : 'אין בלוח סימן מכריע לעתידו של האסיר.';
+
   return {
     sourceRef: 'כשף אל-אסרר עמ׳ 272 (PDF 274)',
     sourceText: 'وأنشئ من الأول والرابع شكلا، فإن كان نحسا، فعاقبة المحبوس إلى شر؛ وإن كان سعدا، فعاقبته إلى خير.',
@@ -1279,6 +1295,7 @@ function computePrisonerOutcomeH1H4P272(chart) {
     positive: outcome === 'good' ? true : outcome === 'bad' ? false : null,
     verdictType: 'prisoner-outcome-h1h4',
     outputHebrew: `חיבור בית 1 (${h1Pattern}) ובית 4 (${h4Pattern}): ${resultFigureHebrew} (${resultPattern}). ${outcomeHebrew} זהו סימן מסורתי מן המקור, לא קביעה משפטית או עובדתית.`,
+    clientSafeHebrew,
   };
 }
 
@@ -1299,6 +1316,10 @@ function computePrisonerExitSafetyH12P272(chart) {
     ? `בבית 12 מופיעה ${figure.figureHebrew || pattern} (${pattern}) — צורה מיטיבה. לפי כשף עמ׳ 272: יציאתו של האסיר תהיה בשלום/בבטחה.`
     : `בבית 12 מופיעה ${figure.figureHebrew || pattern} (${pattern}) — אינה מיטיבה. המקור אינו נותן כאן כלל הפוך; אין בכך הוכחה ליציאה לא בטוחה.`;
 
+  const clientSafeHebrew = safeExitSign
+    ? 'סימן הלוח — יציאתו של האסיר תהיה בשלום ובבטחה.'
+    : 'אין בלוח סימן מכריע לבטיחות יציאתו של האסיר.';
+
   return {
     sourceRef: 'כשף אל-אסרר עמ׳ 272 (PDF 274)',
     sourceText: 'وإن كان الثاني عشر سعدا، كان خروجه بسلامة.',
@@ -1309,6 +1330,7 @@ function computePrisonerExitSafetyH12P272(chart) {
     positive: safeExitSign ? true : null,
     verdictType: 'prisoner-exit-safety-h12',
     outputHebrew,
+    clientSafeHebrew,
   };
 }
 
@@ -3376,6 +3398,12 @@ function computeMissingInCitySignH1H4P249(chart) {
       ? `חיבור בית 1 (${h1Pattern}) ובית 4 (${h4Pattern}): ${resultFigureHebrew} (${resultPattern}) — צורה חיצונית. לפי כשף עמ׳ 249-250: סימן מפורש שההפך (ضده) — האדם לא חזר / אינו בעיר.`
       : `חיבור בית 1 (${h1Pattern}) ובית 4 (${h4Pattern}): ${resultFigureHebrew} (${resultPattern}) — אינה צורה פנימית או חיצונית מובהקת. אין כאן הכרעה.`;
 
+  const clientSafeHebrew = inCitySign
+    ? 'סימן הלוח — שהאדם חזר ונמצא בעיר.'
+    : notInCitySign
+      ? 'סימן הלוח — שהאדם לא חזר ואינו בעיר.'
+      : 'אין בלוח סימן מכריע בעניין החזרה לעיר.';
+
   return {
     sourceRef: 'כשף אל-אסרר עמ׳ 249-250 (PDF 251-252)',
     sourceText: 'ومن غيره: خذ من الرابع والأول شكلا، واحكم على ما يدل من دخول أو ضده: رجع.',
@@ -3390,6 +3418,7 @@ function computeMissingInCitySignH1H4P249(chart) {
     positive: inCitySign ? true : notInCitySign ? false : null,
     verdictType: 'missing-in-city-sign-h1h4',
     outputHebrew,
+    clientSafeHebrew,
   };
 }
 
@@ -3425,12 +3454,15 @@ function computeMissingReturnTimingP249(chart) {
 
   let timing = null;
   let timingHebrew = 'התנאי המפורש של עמ׳ 249 אינו מתקיים באף אחד משני ענפיו (לא דרך בבתים 10+11, ולא דרך בבית 10 עם חיבור בבית 11); אין כלל-הפוך במקור, ולכן אין פסק שלילי על מועד החזרה.';
+  let clientSafeHebrew = 'אין בלוח סימן מכריע למועד החזרה.';
   if (sameDay) {
     timing = 'same-day';
     timingHebrew = 'בית 10 ובית 11 — שניהם דרך. לפי כשף עמ׳ 249: סימן להתאחדות עימו באותו היום.';
+    clientSafeHebrew = 'סימן הלוח — התאחדות עימו באותו היום.';
   } else if (withinTheHour) {
     timing = 'within-the-hour';
     timingHebrew = 'בית 10 — דרך; בית 11 — חיבור. לפי כשף עמ׳ 249: סימן להתאחדות תוך השעה (המקור מציין זאת במפורש כ"מְנֻסֶּה" — כלל שנבדק, عربית: مجرب).';
+    clientSafeHebrew = 'סימן הלוח — התאחדות עימו תוך השעה.';
   }
 
   return {
@@ -3445,6 +3477,7 @@ function computeMissingReturnTimingP249(chart) {
     positive: timing ? true : null,
     verdictType: 'missing-return-timing',
     outputHebrew: timingHebrew,
+    clientSafeHebrew,
   };
 }
 
@@ -3621,6 +3654,9 @@ function computeMissingArrivalSignH3H15P249(chart) {
     `לכן אין כאן פסק: בית 3 — ${h3Classification.dakhalKharij === 'dakhil' ? 'פנימית' : 'אינה פנימית'}; ` +
     `בית 15 — ${h15Classification.dakhalKharij === 'dakhil' ? 'פנימית' : 'אינה פנימית'}.`;
 
+  const clientSafeHebrew = `בית 3 ${h3Dakhil ? 'פנימית' : 'אינה פנימית'}, ובית 15 ${h15Dakhil ? 'פנימית' : 'אינה פנימית'}. ` +
+    `אלו שני סימנים נפרדים לפי המקור, ואין בהם די כדי לקבוע פסק הגעה אחד וברור.`;
+
   return {
     sourceRef: 'כשף אל-אסרר עמ׳ 249 (PDF 251)',
     sourceText: 'وقدومه في الثالث والخامس عشر، فإن كان داخلا، فهو قادم.',
@@ -3635,6 +3671,7 @@ function computeMissingArrivalSignH3H15P249(chart) {
     positive: null,
     verdictType: 'missing-arrival-sign-h3h15-descriptive-only',
     outputHebrew,
+    clientSafeHebrew,
   };
 }
 
